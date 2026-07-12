@@ -65,6 +65,32 @@
     </style>
     <script>
         (function() {
+            window.addEventListener('error', function(event) {
+                const details = [event.message, event.filename, event.error?.stack].filter(Boolean).join(' ');
+                const isStaleThemeBundle = details.includes("reading 'appearance'")
+                    || details.includes('useThemeConfig-CMn459mP.js')
+                    || details.includes('AppLayout-CDEtE47D.js');
+
+                if (! isStaleThemeBundle || sessionStorage.getItem('ografi-asset-recovery') === '1') {
+                    return;
+                }
+
+                sessionStorage.setItem('ografi-asset-recovery', '1');
+
+                Promise.all([
+                    'caches' in window
+                        ? caches.keys().then((keys) => Promise.all(keys.map((key) => caches.delete(key))))
+                        : Promise.resolve(),
+                    'serviceWorker' in navigator
+                        ? navigator.serviceWorker.getRegistrations().then((items) => Promise.all(items.map((item) => item.unregister())))
+                        : Promise.resolve(),
+                ]).finally(() => {
+                    const url = new URL(window.location.href);
+                    url.searchParams.set('_assets', Date.now().toString());
+                    window.location.replace(url.toString());
+                });
+            });
+
             var root = document.documentElement;
             var theme = @json('theme-'.config('alma.appearance.theme', 'emerald'));
             root.classList.remove('dark');
