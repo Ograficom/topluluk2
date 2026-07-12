@@ -14,6 +14,7 @@ return new class() extends Migration {
 
         Schema::table('stories', function (Blueprint $table) use ($supportsFullText) {
             if (Schema::hasColumn('stories', 'comment_visibility')) {
+                $table->dropIndex(['comment_visibility']);
                 $table->dropColumn('comment_visibility');
             }
             $table->unsignedBigInteger('views_count')->default(0)->index()->after('meta');
