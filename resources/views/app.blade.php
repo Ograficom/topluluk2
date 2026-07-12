@@ -69,10 +69,23 @@
                 });
             };
 
-            document.addEventListener('DOMContentLoaded', replaceLegacyLogo);
-            document.addEventListener('inertia:navigate', replaceLegacyLogo);
+            const openResourcesMenu = () => {
+                document.querySelectorAll('button[data-state="closed"]').forEach((button) => {
+                    if (button.textContent.trim().includes('Resources')) {
+                        button.click();
+                    }
+                });
+            };
 
-            new MutationObserver(replaceLegacyLogo).observe(document.documentElement, {
+            const applyLegacyUiFixes = () => {
+                replaceLegacyLogo();
+                openResourcesMenu();
+            };
+
+            document.addEventListener('DOMContentLoaded', applyLegacyUiFixes);
+            document.addEventListener('inertia:navigate', applyLegacyUiFixes);
+
+            new MutationObserver(applyLegacyUiFixes).observe(document.documentElement, {
                 childList: true,
                 subtree: true,
             });
