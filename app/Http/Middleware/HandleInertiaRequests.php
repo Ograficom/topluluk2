@@ -10,6 +10,7 @@ use App\Models\Community;
 use App\Models\Page;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Inertia\Middleware;
 use Tighten\Ziggy\Ziggy;
@@ -108,7 +109,18 @@ class HandleInertiaRequests extends Middleware
                 });
             },
             'settings' => fn () => [
-                'general' => fn () => settings()->group('general')->all(false),
+                'general' => function () {
+                    $settings = settings()->group('general')->all(false);
+                    $disk = getCurrentDisk();
+
+                    foreach (['site_logo', 'site_logo_dark', 'site_favicon'] as $asset) {
+                        if (! empty($settings[$asset])) {
+                            $settings[$asset] = Storage::disk($disk)->url($settings[$asset]);
+                        }
+                    }
+
+                    return $settings;
+                },
                 'advanced' => fn () => settings()->group('advanced')->all(false),
                 'social_media_links' => fn () => settings()->group('social_media_links')->all(false),
             ],
