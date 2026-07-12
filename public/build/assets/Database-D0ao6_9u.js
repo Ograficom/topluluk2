@@ -34,7 +34,7 @@ import {
 	n as W,
 	e as h,
 	N as j
-} from "./app-brandfix-25e169d.js";
+} from "./app-final-9d54526.js";
 import {
 	_ as K
 } from "./InstallerLayout-BZOiPsjO.js";

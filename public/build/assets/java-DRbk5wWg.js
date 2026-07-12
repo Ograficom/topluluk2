@@ -1,4 +1,4 @@
-import{C as $}from"./app-brandfix-25e169d.js";function o(p,s){for(var t=0;t<s.length;t++){const n=s[t];if(typeof n!="string"&&!Array.isArray(n)){for(const e in n)if(e!=="default"&&!(e in p)){const i=Object.getOwnPropertyDescriptor(n,e);i&&Object.defineProperty(p,e,i.get?i:{enumerable:!0,get:()=>n[e]})}}}return Object.freeze(Object.defineProperty(p,Symbol.toStringTag,{value:"Module"}))}var r={exports:{}};(function(p,s){ace.define("ace/snippets/java.snippets",["require","exports","module"],function(t,n,e){e.exports=`## Access Modifiers
+import{C as $}from"./app-final-9d54526.js";function o(p,s){for(var t=0;t<s.length;t++){const n=s[t];if(typeof n!="string"&&!Array.isArray(n)){for(const e in n)if(e!=="default"&&!(e in p)){const i=Object.getOwnPropertyDescriptor(n,e);i&&Object.defineProperty(p,e,i.get?i:{enumerable:!0,get:()=>n[e]})}}}return Object.freeze(Object.defineProperty(p,Symbol.toStringTag,{value:"Module"}))}var r={exports:{}};(function(p,s){ace.define("ace/snippets/java.snippets",["require","exports","module"],function(t,n,e){e.exports=`## Access Modifiers
 snippet po
 	protected
 snippet pu

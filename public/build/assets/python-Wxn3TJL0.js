@@ -1,4 +1,4 @@
-import{C as c}from"./app-brandfix-25e169d.js";function $(p,i){for(var n=0;n<i.length;n++){const t=i[n];if(typeof t!="string"&&!Array.isArray(t)){for(const e in t)if(e!=="default"&&!(e in p)){const o=Object.getOwnPropertyDescriptor(t,e);o&&Object.defineProperty(p,e,o.get?o:{enumerable:!0,get:()=>t[e]})}}}return Object.freeze(Object.defineProperty(p,Symbol.toStringTag,{value:"Module"}))}var r={exports:{}};(function(p,i){ace.define("ace/snippets/python.snippets",["require","exports","module"],function(n,t,e){e.exports=`snippet #!
+import{C as c}from"./app-final-9d54526.js";function $(p,i){for(var n=0;n<i.length;n++){const t=i[n];if(typeof t!="string"&&!Array.isArray(t)){for(const e in t)if(e!=="default"&&!(e in p)){const o=Object.getOwnPropertyDescriptor(t,e);o&&Object.defineProperty(p,e,o.get?o:{enumerable:!0,get:()=>t[e]})}}}return Object.freeze(Object.defineProperty(p,Symbol.toStringTag,{value:"Module"}))}var r={exports:{}};(function(p,i){ace.define("ace/snippets/python.snippets",["require","exports","module"],function(n,t,e){e.exports=`snippet #!
 	#!/usr/bin/env python
 snippet imp
 	import \${1:module}
