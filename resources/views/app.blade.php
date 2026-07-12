@@ -77,8 +77,24 @@
                 });
             };
 
+            const addHeaderBrandName = () => {
+                const logo = document.querySelector('header img[alt="Ografi"], header img[alt="logo"]');
+                const logoLink = logo?.closest('a');
+
+                if (! logoLink || logoLink.querySelector('[data-ografi-brand-name]')) {
+                    return;
+                }
+
+                const brandName = document.createElement('span');
+                brandName.dataset.ografiBrandName = 'true';
+                brandName.textContent = 'Ografi';
+                brandName.className = 'ml-2 text-xl font-bold tracking-tight text-foreground';
+                logoLink.appendChild(brandName);
+            };
+
             const applyLegacyUiFixes = () => {
                 replaceLegacyLogo();
+                addHeaderBrandName();
                 openResourcesMenu();
             };
 
