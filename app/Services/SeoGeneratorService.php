@@ -50,12 +50,12 @@ class SeoGeneratorService
 
     public function getOGSiteName(): string
     {
-        return '<meta property="og:site_name" content="'.$this->settings['og_site_name'].'">';
+        return '<meta property="og:site_name" content="'.($this->settings['og_site_name'] ?? config('app.name', '')).'">';
     }
 
     public function getOGType(): string
     {
-        return '<meta property="og:type" content="'.$this->settings['og_type'].'">';
+        return '<meta property="og:type" content="'.($this->settings['og_type'] ?? 'website').'">';
     }
 
     public function getOGLocale(): string

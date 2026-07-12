@@ -17,7 +17,7 @@ class RegistrationDisableMiddleware
     {
         $registration = config('alma.registration');
 
-        if (! $registration && $request->route()->getName() == 'register') {
+        if (! $registration && $request->is('register')) {
             toast_warning(__('Registration is disabled. For questions about you can write from Contact form!'));
 
             return redirect()->route('feed.home');
