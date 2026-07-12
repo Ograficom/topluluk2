@@ -1,4 +1,4 @@
-import{C as $}from"./app-final-9d54526.js";function o(t,p){for(var n=0;n<p.length;n++){const e=p[n];if(typeof e!="string"&&!Array.isArray(e)){for(const r in e)if(r!=="default"&&!(r in t)){const s=Object.getOwnPropertyDescriptor(e,r);s&&Object.defineProperty(t,r,s.get?s:{enumerable:!0,get:()=>e[r]})}}}return Object.freeze(Object.defineProperty(t,Symbol.toStringTag,{value:"Module"}))}var i={exports:{}};(function(t,p){ace.define("ace/snippets/xquery.snippets",["require","exports","module"],function(n,e,r){r.exports=`snippet for
+import{C as $}from"./app-ografi-a978d3b.js";function o(t,p){for(var n=0;n<p.length;n++){const e=p[n];if(typeof e!="string"&&!Array.isArray(e)){for(const r in e)if(r!=="default"&&!(r in t)){const s=Object.getOwnPropertyDescriptor(e,r);s&&Object.defineProperty(t,r,s.get?s:{enumerable:!0,get:()=>e[r]})}}}return Object.freeze(Object.defineProperty(t,Symbol.toStringTag,{value:"Module"}))}var i={exports:{}};(function(t,p){ace.define("ace/snippets/xquery.snippets",["require","exports","module"],function(n,e,r){r.exports=`snippet for
 		for $\${1:item} in \${2:expr}
 	snippet return
 		return \${1:expr}

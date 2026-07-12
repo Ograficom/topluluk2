@@ -1,4 +1,4 @@
-import{C as l}from"./app-final-9d54526.js";function r(p,i){for(var n=0;n<i.length;n++){const t=i[n];if(typeof t!="string"&&!Array.isArray(t)){for(const e in t)if(e!=="default"&&!(e in p)){const s=Object.getOwnPropertyDescriptor(t,e);s&&Object.defineProperty(p,e,s.get?s:{enumerable:!0,get:()=>t[e]})}}}return Object.freeze(Object.defineProperty(p,Symbol.toStringTag,{value:"Module"}))}var $={exports:{}};(function(p,i){ace.define("ace/snippets/html.snippets",["require","exports","module"],function(n,t,e){e.exports=`# Some useful Unicode entities
+import{C as l}from"./app-ografi-a978d3b.js";function r(p,i){for(var n=0;n<i.length;n++){const t=i[n];if(typeof t!="string"&&!Array.isArray(t)){for(const e in t)if(e!=="default"&&!(e in p)){const s=Object.getOwnPropertyDescriptor(t,e);s&&Object.defineProperty(p,e,s.get?s:{enumerable:!0,get:()=>t[e]})}}}return Object.freeze(Object.defineProperty(p,Symbol.toStringTag,{value:"Module"}))}var $={exports:{}};(function(p,i){ace.define("ace/snippets/html.snippets",["require","exports","module"],function(n,t,e){e.exports=`# Some useful Unicode entities
 # Non-Breaking Space
 snippet nbs
 	&nbsp;

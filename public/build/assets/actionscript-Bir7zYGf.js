@@ -1,4 +1,4 @@
-import{C as c}from"./app-final-9d54526.js";function o(i,s){for(var n=0;n<s.length;n++){const t=s[n];if(typeof t!="string"&&!Array.isArray(t)){for(const e in t)if(e!=="default"&&!(e in i)){const a=Object.getOwnPropertyDescriptor(t,e);a&&Object.defineProperty(i,e,a.get?a:{enumerable:!0,get:()=>t[e]})}}}return Object.freeze(Object.defineProperty(i,Symbol.toStringTag,{value:"Module"}))}var r={exports:{}};(function(i,s){ace.define("ace/snippets/actionscript.snippets",["require","exports","module"],function(n,t,e){e.exports=`snippet main
+import{C as c}from"./app-ografi-a978d3b.js";function o(i,s){for(var n=0;n<s.length;n++){const t=s[n];if(typeof t!="string"&&!Array.isArray(t)){for(const e in t)if(e!=="default"&&!(e in i)){const a=Object.getOwnPropertyDescriptor(t,e);a&&Object.defineProperty(i,e,a.get?a:{enumerable:!0,get:()=>t[e]})}}}return Object.freeze(Object.defineProperty(i,Symbol.toStringTag,{value:"Module"}))}var r={exports:{}};(function(i,s){ace.define("ace/snippets/actionscript.snippets",["require","exports","module"],function(n,t,e){e.exports=`snippet main
 	package {
 		import flash.display.*;
 		import flash.Events.*;

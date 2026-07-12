@@ -1,4 +1,4 @@
-import{C as a}from"./app-final-9d54526.js";function u(r,o){for(var t=0;t<o.length;t++){const e=o[t];if(typeof e!="string"&&!Array.isArray(e)){for(const n in e)if(n!=="default"&&!(n in r)){const s=Object.getOwnPropertyDescriptor(e,n);s&&Object.defineProperty(r,n,s.get?s:{enumerable:!0,get:()=>e[n]})}}}return Object.freeze(Object.defineProperty(r,Symbol.toStringTag,{value:"Module"}))}var p={exports:{}};(function(r,o){ace.define("ace/snippets/drools.snippets",["require","exports","module"],function(t,e,n){n.exports=`
+import{C as a}from"./app-ografi-a978d3b.js";function u(r,o){for(var t=0;t<o.length;t++){const e=o[t];if(typeof e!="string"&&!Array.isArray(e)){for(const n in e)if(n!=="default"&&!(n in r)){const s=Object.getOwnPropertyDescriptor(e,n);s&&Object.defineProperty(r,n,s.get?s:{enumerable:!0,get:()=>e[n]})}}}return Object.freeze(Object.defineProperty(r,Symbol.toStringTag,{value:"Module"}))}var p={exports:{}};(function(r,o){ace.define("ace/snippets/drools.snippets",["require","exports","module"],function(t,e,n){n.exports=`
 snippet rule
 	rule "\${1?:rule_name}"
 	when

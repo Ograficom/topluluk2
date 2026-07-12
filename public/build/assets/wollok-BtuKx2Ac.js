@@ -1,4 +1,4 @@
-import{C as l}from"./app-final-9d54526.js";function a(o,s){for(var t=0;t<s.length;t++){const n=s[t];if(typeof n!="string"&&!Array.isArray(n)){for(const e in n)if(e!=="default"&&!(e in o)){const p=Object.getOwnPropertyDescriptor(n,e);p&&Object.defineProperty(o,e,p.get?p:{enumerable:!0,get:()=>n[e]})}}}return Object.freeze(Object.defineProperty(o,Symbol.toStringTag,{value:"Module"}))}var i={exports:{}};(function(o,s){ace.define("ace/snippets/wollok.snippets",["require","exports","module"],function(t,n,e){e.exports=`##
+import{C as l}from"./app-ografi-a978d3b.js";function a(o,s){for(var t=0;t<s.length;t++){const n=s[t];if(typeof n!="string"&&!Array.isArray(n)){for(const e in n)if(e!=="default"&&!(e in o)){const p=Object.getOwnPropertyDescriptor(n,e);p&&Object.defineProperty(o,e,p.get?p:{enumerable:!0,get:()=>n[e]})}}}return Object.freeze(Object.defineProperty(o,Symbol.toStringTag,{value:"Module"}))}var i={exports:{}};(function(o,s){ace.define("ace/snippets/wollok.snippets",["require","exports","module"],function(t,n,e){e.exports=`##
 ## Basic Java packages and import
 snippet im
 	import

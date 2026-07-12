@@ -1,4 +1,4 @@
-import{C as o}from"./app-final-9d54526.js";function c(p,r){for(var n=0;n<r.length;n++){const e=r[n];if(typeof e!="string"&&!Array.isArray(e)){for(const t in e)if(t!=="default"&&!(t in p)){const i=Object.getOwnPropertyDescriptor(e,t);i&&Object.defineProperty(p,t,i.get?i:{enumerable:!0,get:()=>e[t]})}}}return Object.freeze(Object.defineProperty(p,Symbol.toStringTag,{value:"Module"}))}var s={exports:{}};(function(p,r){ace.define("ace/snippets/graphqlschema.snippets",["require","exports","module"],function(n,e,t){t.exports=`# Type Snippet
+import{C as o}from"./app-ografi-a978d3b.js";function c(p,r){for(var n=0;n<r.length;n++){const e=r[n];if(typeof e!="string"&&!Array.isArray(e)){for(const t in e)if(t!=="default"&&!(t in p)){const i=Object.getOwnPropertyDescriptor(e,t);i&&Object.defineProperty(p,t,i.get?i:{enumerable:!0,get:()=>e[t]})}}}return Object.freeze(Object.defineProperty(p,Symbol.toStringTag,{value:"Module"}))}var s={exports:{}};(function(p,r){ace.define("ace/snippets/graphqlschema.snippets",["require","exports","module"],function(n,e,t){t.exports=`# Type Snippet
 trigger type
 snippet type
 	type \${1:type_name} {

@@ -1,4 +1,4 @@
-import{C as a}from"./app-final-9d54526.js";function $(r,p){for(var n=0;n<p.length;n++){const e=p[n];if(typeof e!="string"&&!Array.isArray(e)){for(const t in e)if(t!=="default"&&!(t in r)){const s=Object.getOwnPropertyDescriptor(e,t);s&&Object.defineProperty(r,t,s.get?s:{enumerable:!0,get:()=>e[t]})}}}return Object.freeze(Object.defineProperty(r,Symbol.toStringTag,{value:"Module"}))}var i={exports:{}};(function(r,p){ace.define("ace/snippets/jsoniq.snippets",["require","exports","module"],function(n,e,t){t.exports=`snippet for
+import{C as a}from"./app-ografi-a978d3b.js";function $(r,p){for(var n=0;n<p.length;n++){const e=p[n];if(typeof e!="string"&&!Array.isArray(e)){for(const t in e)if(t!=="default"&&!(t in r)){const s=Object.getOwnPropertyDescriptor(e,t);s&&Object.defineProperty(r,t,s.get?s:{enumerable:!0,get:()=>e[t]})}}}return Object.freeze(Object.defineProperty(r,Symbol.toStringTag,{value:"Module"}))}var i={exports:{}};(function(r,p){ace.define("ace/snippets/jsoniq.snippets",["require","exports","module"],function(n,e,t){t.exports=`snippet for
 		for $\${1:item} in \${2:expr}
 	snippet return
 		return \${1:expr}

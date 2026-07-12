@@ -34,7 +34,7 @@ import {
 	n as W,
 	e as h,
 	N as j
-} from "./app-final-9d54526.js";
+} from "./app-ografi-a978d3b.js";
 import {
 	_ as K
 } from "./InstallerLayout-BZOiPsjO.js";
