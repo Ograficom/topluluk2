@@ -54,6 +54,30 @@
             } catch (error) {}
         }());
     </script>
+    <script>
+        (function() {
+            const logoUrl = 'https://ografi.com/uploads/media/01KXC0BBQ5RS7D6914VPF4R9AJ.png';
+
+            const replaceLegacyLogo = () => {
+                document.querySelectorAll('svg.max-h-7').forEach((legacyLogo) => {
+                    const image = document.createElement('img');
+                    image.src = logoUrl;
+                    image.alt = 'Ografi';
+                    image.className = legacyLogo.getAttribute('class') || 'max-h-7 w-full h-full';
+                    image.style.objectFit = 'contain';
+                    legacyLogo.replaceWith(image);
+                });
+            };
+
+            document.addEventListener('DOMContentLoaded', replaceLegacyLogo);
+            document.addEventListener('inertia:navigate', replaceLegacyLogo);
+
+            new MutationObserver(replaceLegacyLogo).observe(document.documentElement, {
+                childList: true,
+                subtree: true,
+            });
+        }());
+    </script>
     @if ($google_analytics_code !== '')
         {!! $google_analytics_code !!}
     @endif
