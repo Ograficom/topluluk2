@@ -20,10 +20,10 @@ class CreateTaggableTable extends Migration
 
         switch ($driver) {
             case 'pgsql':
-                $collation = null;
-                break;
             case 'sqlite':
             case 'sqlsrv':
+                $collation = null;
+                break;
             default:
                 $collation = $charset.'_bin';
         }
