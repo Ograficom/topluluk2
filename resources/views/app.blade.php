@@ -40,6 +40,28 @@
         ,
         system-ui, -apple-system, sans-serif !important;
         }
+
+        @media (max-width: 639px) {
+            header > div > div:first-child {
+                gap: 0.375rem !important;
+            }
+
+            header > div > div:first-child > a {
+                height: 2.5rem !important;
+                width: auto !important;
+                align-items: center !important;
+            }
+
+            header > div > div:first-child > a img {
+                width: auto !important;
+                height: 2.25rem !important;
+                max-height: 2.25rem !important;
+            }
+
+            header [data-ografi-brand-name] {
+                margin-left: 0.25rem !important;
+            }
+        }
     </style>
     <script>
         (function() {
