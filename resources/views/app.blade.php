@@ -65,17 +65,17 @@
     </style>
     <script>
         (function() {
-            window.addEventListener('error', function(event) {
-                const details = [event.message, event.filename, event.error?.stack].filter(Boolean).join(' ');
+            const recoverFromStaleThemeBundle = (values) => {
+                const details = values.filter(Boolean).map(String).join(' ');
                 const isStaleThemeBundle = details.includes("reading 'appearance'")
                     || details.includes('useThemeConfig-CMn459mP.js')
                     || details.includes('AppLayout-CDEtE47D.js');
 
-                if (! isStaleThemeBundle || sessionStorage.getItem('ografi-asset-recovery') === '1') {
+                if (! isStaleThemeBundle || sessionStorage.getItem('ografi-asset-recovery-v2') === '1') {
                     return;
                 }
 
-                sessionStorage.setItem('ografi-asset-recovery', '1');
+                sessionStorage.setItem('ografi-asset-recovery-v2', '1');
 
                 Promise.all([
                     'caches' in window
@@ -89,7 +89,20 @@
                     url.searchParams.set('_assets', Date.now().toString());
                     window.location.replace(url.toString());
                 });
+            };
+
+            window.addEventListener('error', (event) => {
+                recoverFromStaleThemeBundle([event.message, event.filename, event.error?.stack]);
             });
+            window.addEventListener('unhandledrejection', (event) => {
+                recoverFromStaleThemeBundle([event.reason?.message, event.reason?.stack, event.reason]);
+            });
+
+            const originalConsoleError = console.error.bind(console);
+            console.error = (...args) => {
+                originalConsoleError(...args);
+                recoverFromStaleThemeBundle(args.map((item) => item?.stack || item?.message || item));
+            };
 
             var root = document.documentElement;
             var theme = @json('theme-'.config('alma.appearance.theme', 'emerald'));
