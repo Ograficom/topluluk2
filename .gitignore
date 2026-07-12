@@ -21,5 +21,6 @@
 /public/uploads
 /public/temp
 /public/storage
+/public/vendor/
 /bootstrap/cache/*.php
 !/bootstrap/cache/.gitignore
