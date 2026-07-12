@@ -1056,7 +1056,7 @@ git push origin feature/yeni-ozellik
 Ografi, Enes Bodur tarafından geliştirilen bir içerik ve sosyal topluluk projesidir.
 
 - Website: [ografi.com](https://ografi.com)
-- E-posta: [smtp@ografi.com](mailto:smtp@ografi.com)
+- E-posta: [destek@ografi.com](mailto:destek@ografi.com)
 
 ---
 
