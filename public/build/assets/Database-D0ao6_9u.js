@@ -40,7 +40,7 @@ import {
 } from "./InstallerLayout-BZOiPsjO.js";
 import {
 	i as M
-} from "./useThemeConfig-safe-82fea8c.js";
+} from "./useThemeConfig-final-9c013f8.js";
 import "./index-T_RycVZ9.js";
 import "./Link-BxabHujp.js";
 import "./_plugin-vue_export-helper-DlAUqK2U.js";
