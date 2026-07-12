@@ -1,0 +1,136 @@
+.w-content {
+  @apply mx-auto w-full sm:max-w-3xl px-3 sm:px-0;
+}
+
+.w-content-embed-twitter {
+  @apply mx-auto w-full sm:w-[600px] px-3 sm:px-0;
+}
+
+.w-content-embed-caption {
+  @apply mx-auto max-w-3xl text-base leading-5 mt-3 px-4 sm:px-0;
+}
+
+.content-block {
+  @apply my-3;
+}
+
+.content-block-delimiter {
+  @apply mt-3 text-center font-semibold text-3xl;
+}
+
+/*Lists*/
+.content-block-list-unordered {
+  @apply list-disc list-outside;
+}
+
+.content-block-list-ordered {
+  @apply list-decimal list-outside;
+}
+
+.content-block-list-item {
+  @apply my-2 ml-8 break-words;
+}
+
+/* Inline code */
+.inline-code {
+  @apply py-0.5 px-1 bg-primary/5 text-primary font-normal rounded-md;
+}
+
+/*Quotes*/
+.content-quote {
+  @apply bg-muted p-4 rounded-2xl my-6;
+}
+
+.content-block-quote {
+  @apply text-2xl leading-9 mb-2;
+}
+
+.content-quote figcaption {
+  @apply text-base italic;
+}
+
+/*Image*/
+.content-block-image {
+  @apply my-4 rounded-xl;
+}
+
+.content-block-image img {
+  @apply mx-auto;
+}
+
+.content-block-image--stretched {
+  @apply w-full max-w-full object-cover;
+}
+
+/* .content-block-image__caption{
+  @apply mx-auto w-full sm:max-w-3xl px-3 sm:px-0 my-3 text-sm;
+} */
+
+/* .content-block-image--with-background{
+  @apply bg-primary/10 p-10 mx-auto;
+}
+
+.content-block-image--with-border{
+  @apply border-2 border-primary mx-auto;
+} */
+.medium-zoom-overlay {
+  z-index: 99;
+}
+
+.medium-zoom-image--opened {
+  z-index: 100;
+}
+.content-wrapper {
+  @apply text-foreground;
+}
+
+.content-wrapper p,
+.cdx-marker {
+  @apply my-3;
+}
+
+.content-wrapper h2,
+.content-wrapper h3,
+.content-wrapper h4 {
+  @apply font-semibold mt-6 mb-2 text-foreground;
+}
+
+.content-wrapper h2 {
+  @apply text-xl;
+}
+
+.content-wrapper h3 {
+  @apply text-lg;
+}
+
+.content-wrapper h4 {
+  @apply text-base;
+}
+
+.content-wrapper .cdx-underline {
+  @apply decoration-primary/50;
+}
+
+.content-wrapper .cdx-marker {
+  @apply bg-primary/10 py-1 px-0.5 mt-0.5;
+}
+
+.content-wrapper a,
+.comment-body a {
+  @apply text-primary border-b border-transparent cursor-pointer hover:text-primary/90 hover:border-primary/90
+  dark:text-primary dark:border-transparent dark:hover:text-primary/90 dark:hover:border-primary/90 transition ease-in duration-200;
+}
+
+.block-wrapper--default {
+  @apply my-3;
+}
+.block-wrapper--media {
+  @apply my-5;
+}
+.block-content {
+  @apply px-4 sm:px-6;
+}
+
+.block-content--stretched {
+  @apply w-full max-w-full object-cover;
+}

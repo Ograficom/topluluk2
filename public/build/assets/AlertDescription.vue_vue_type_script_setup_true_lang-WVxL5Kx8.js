@@ -1,0 +1,1 @@
+import{c as r}from"./useThemeConfig-CMn459mP.js";import{h as o,o as n,f as t,r as c,n as l,u as p}from"./app-DKvfoN-y.js";const _=o({__name:"AlertDescription",props:{class:{}},setup(s){const e=s;return(a,m)=>(n(),t("div",{class:l(p(r)("text-sm [&_p]:leading-relaxed",e.class))},[c(a.$slots,"default")],2))}});export{_};

@@ -1,0 +1,103 @@
+.ace_gutter{
+  z-index: 0;
+}
+.ct:before, .ct:after{
+  @apply dark:bg-deeper;
+}
+
+.cdx-block,
+.ce-header,
+.inlineToolButton,
+.ce-toolbar__plus,
+.ce-toolbar__settings-btn,
+.ce-popover__search {
+  @apply bg-background text-foreground dark:bg-background;
+}
+
+.ce-popover-item-separator__line{
+  @apply bg-border dark:bg-border
+}
+
+.ce-toolbar__plus:hover,
+.ce-toolbar__settings-btn:hover,
+.cdx-loader,
+.cdx-button {
+  @apply bg-secondary text-foreground dark:bg-deeper;
+}
+
+.cdx-button:hover {
+  @apply bg-muted;
+}
+
+.ce-popover,
+.ce-popover-item,
+.ce-popover-item__icon,
+.ce-popover-items {
+  @apply bg-background text-foreground dark:bg-deeper dark:border-border;
+}
+.ce-popover__items{
+  @apply scrollbar-thin scrollbar-track-transparent scrollbar-thumb-border dark:scrollbar-track-transparent dark:scrollbar-thumb-border;
+}
+.ce-popover-item:hover{
+  @apply bg-secondary text-foreground dark:bg-secondary
+}
+.ce-popover__container{
+ @apply bg-background text-foreground dark:bg-deeper border-border;
+}
+.ce-popover--opened >.ce-popover__container{
+  @apply border-border
+}
+.ce-inline-toolbar{
+  @apply bg-background text-foreground dark:bg-deeper dark:border-border;
+}
+
+.ce-inline-toolbar__dropdown:hover{
+  @apply bg-background text-foreground dark:bg-deeper;
+}
+
+.ce-conversion-toolbar{
+  @apply bg-background text-foreground dark:bg-deeper dark:border-border;
+}
+
+.ce-conversion-tool:hover{
+  @apply hover:bg-foreground dark:hover:bg-deeper
+}
+
+.ce-conversion-tool__icon{
+  @apply bg-background text-foreground dark:bg-deeper;
+}
+.ce-inline-tool{
+  @apply text-foreground;
+}
+.ce-inline-tool:hover{
+  @apply bg-secondary text-foreground dark:bg-secondary;
+}
+.ce-inline-tool-input{
+  @apply bg-background text-foreground dark:bg-deeper;
+}
+.ce-inline-tool--active{
+  @apply bg-primary text-white dark:bg-primary/10;
+}
+.cdx-input{
+  @apply bg-muted focus:bg-background text-foreground border-border focus:border-primary dark:ring-0 dark:focus:outline-none dark:focus:border-primary;
+}
+.ce-popover-item--confirmation{
+  @apply bg-destructive/10 dark:bg-destructive/10 text-white
+}
+.ce-popover-item--confirmation .ce-popover-item__title{
+  @apply text-destructive
+}
+.ce-paragraph[data-placeholder]:empty:before{
+  @apply text-endpoint
+}
+
+/* mobile */
+.ce-toolbar__plus, .ce-toolbar__settings-btn{
+  @apply dark:border-border
+}
+.cdx-search-field__input{
+  @apply ring-0 focus:ring-0
+}
+.ce-block--selected .ce-block__content{
+  @apply bg-muted
+}
