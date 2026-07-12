@@ -1,4 +1,4 @@
-import{C as R}from"./app-DKvfoN-y.js";function w(d,b){for(var r=0;r<b.length;r++){const h=b[r];if(typeof h!="string"&&!Array.isArray(h)){for(const p in h)if(p!=="default"&&!(p in d)){const i=Object.getOwnPropertyDescriptor(h,p);i&&Object.defineProperty(d,p,i.get?i:{enumerable:!0,get:()=>h[p]})}}}return Object.freeze(Object.defineProperty(d,Symbol.toStringTag,{value:"Module"}))}var O={exports:{}};(function(d,b){ace.define("ace/ext/searchbox-css",["require","exports","module"],function(r,h,p){p.exports=`
+import{C as R}from"./app-brandfix-25e169d.js";function w(d,b){for(var r=0;r<b.length;r++){const h=b[r];if(typeof h!="string"&&!Array.isArray(h)){for(const p in h)if(p!=="default"&&!(p in d)){const i=Object.getOwnPropertyDescriptor(h,p);i&&Object.defineProperty(d,p,i.get?i:{enumerable:!0,get:()=>h[p]})}}}return Object.freeze(Object.defineProperty(d,Symbol.toStringTag,{value:"Module"}))}var O={exports:{}};(function(d,b){ace.define("ace/ext/searchbox-css",["require","exports","module"],function(r,h,p){p.exports=`
 
 /* ------------------------------------------------------------------------------------------
  * Editor Search Form

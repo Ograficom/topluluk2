@@ -1,4 +1,4 @@
-import{C as o}from"./app-DKvfoN-y.js";function d(p,s){for(var n=0;n<s.length;n++){const t=s[n];if(typeof t!="string"&&!Array.isArray(t)){for(const e in t)if(e!=="default"&&!(e in p)){const i=Object.getOwnPropertyDescriptor(t,e);i&&Object.defineProperty(p,e,i.get?i:{enumerable:!0,get:()=>t[e]})}}}return Object.freeze(Object.defineProperty(p,Symbol.toStringTag,{value:"Module"}))}var r={exports:{}};(function(p,s){ace.define("ace/snippets/c_cpp.snippets",["require","exports","module"],function(n,t,e){e.exports=`## STL Collections
+import{C as o}from"./app-brandfix-25e169d.js";function d(p,s){for(var n=0;n<s.length;n++){const t=s[n];if(typeof t!="string"&&!Array.isArray(t)){for(const e in t)if(e!=="default"&&!(e in p)){const i=Object.getOwnPropertyDescriptor(t,e);i&&Object.defineProperty(p,e,i.get?i:{enumerable:!0,get:()=>t[e]})}}}return Object.freeze(Object.defineProperty(p,Symbol.toStringTag,{value:"Module"}))}var r={exports:{}};(function(p,s){ace.define("ace/snippets/c_cpp.snippets",["require","exports","module"],function(n,t,e){e.exports=`## STL Collections
 # std::array
 snippet array
 	std::array<\${1:T}, \${2:N}> \${3};\${4}

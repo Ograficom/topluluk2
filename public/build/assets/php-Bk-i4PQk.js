@@ -1,4 +1,4 @@
-import{C as r}from"./app-DKvfoN-y.js";function a($,p){for(var n=0;n<p.length;n++){const t=p[n];if(typeof t!="string"&&!Array.isArray(t)){for(const e in t)if(e!=="default"&&!(e in $)){const i=Object.getOwnPropertyDescriptor(t,e);i&&Object.defineProperty($,e,i.get?i:{enumerable:!0,get:()=>t[e]})}}}return Object.freeze(Object.defineProperty($,Symbol.toStringTag,{value:"Module"}))}var s={exports:{}};(function($,p){ace.define("ace/snippets/php.snippets",["require","exports","module"],function(n,t,e){e.exports=`snippet ec
+import{C as r}from"./app-brandfix-25e169d.js";function a($,p){for(var n=0;n<p.length;n++){const t=p[n];if(typeof t!="string"&&!Array.isArray(t)){for(const e in t)if(e!=="default"&&!(e in $)){const i=Object.getOwnPropertyDescriptor(t,e);i&&Object.defineProperty($,e,i.get?i:{enumerable:!0,get:()=>t[e]})}}}return Object.freeze(Object.defineProperty($,Symbol.toStringTag,{value:"Module"}))}var s={exports:{}};(function($,p){ace.define("ace/snippets/php.snippets",["require","exports","module"],function(n,t,e){e.exports=`snippet ec
 	echo \${1};
 snippet ns
 	namespace \${1:Foo\\Bar\\Baz};

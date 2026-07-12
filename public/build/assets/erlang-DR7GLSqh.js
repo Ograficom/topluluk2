@@ -1,4 +1,4 @@
-import{C as p}from"./app-DKvfoN-y.js";function c(r,o){for(var t=0;t<o.length;t++){const n=o[t];if(typeof n!="string"&&!Array.isArray(n)){for(const e in n)if(e!=="default"&&!(e in r)){const i=Object.getOwnPropertyDescriptor(n,e);i&&Object.defineProperty(r,e,i.get?i:{enumerable:!0,get:()=>n[e]})}}}return Object.freeze(Object.defineProperty(r,Symbol.toStringTag,{value:"Module"}))}var a={exports:{}};(function(r,o){ace.define("ace/snippets/erlang.snippets",["require","exports","module"],function(t,n,e){e.exports=`# module and export all
+import{C as p}from"./app-brandfix-25e169d.js";function c(r,o){for(var t=0;t<o.length;t++){const n=o[t];if(typeof n!="string"&&!Array.isArray(n)){for(const e in n)if(e!=="default"&&!(e in r)){const i=Object.getOwnPropertyDescriptor(n,e);i&&Object.defineProperty(r,e,i.get?i:{enumerable:!0,get:()=>n[e]})}}}return Object.freeze(Object.defineProperty(r,Symbol.toStringTag,{value:"Module"}))}var a={exports:{}};(function(r,o){ace.define("ace/snippets/erlang.snippets",["require","exports","module"],function(t,n,e){e.exports=`# module and export all
 snippet mod
 	-module(\${1:\`Filename('', 'my')\`}).
 	

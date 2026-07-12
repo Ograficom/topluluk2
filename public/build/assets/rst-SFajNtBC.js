@@ -1,4 +1,4 @@
-import{C as c}from"./app-DKvfoN-y.js";function a(r,s){for(var t=0;t<s.length;t++){const e=s[t];if(typeof e!="string"&&!Array.isArray(e)){for(const n in e)if(n!=="default"&&!(n in r)){const p=Object.getOwnPropertyDescriptor(e,n);p&&Object.defineProperty(r,n,p.get?p:{enumerable:!0,get:()=>e[n]})}}}return Object.freeze(Object.defineProperty(r,Symbol.toStringTag,{value:"Module"}))}var i={exports:{}};(function(r,s){ace.define("ace/snippets/rst.snippets",["require","exports","module"],function(t,e,n){n.exports=`# rst
+import{C as c}from"./app-brandfix-25e169d.js";function a(r,s){for(var t=0;t<s.length;t++){const e=s[t];if(typeof e!="string"&&!Array.isArray(e)){for(const n in e)if(n!=="default"&&!(n in r)){const p=Object.getOwnPropertyDescriptor(e,n);p&&Object.defineProperty(r,n,p.get?p:{enumerable:!0,get:()=>e[n]})}}}return Object.freeze(Object.defineProperty(r,Symbol.toStringTag,{value:"Module"}))}var i={exports:{}};(function(r,s){ace.define("ace/snippets/rst.snippets",["require","exports","module"],function(t,e,n){n.exports=`# rst
 
 snippet :
 	:\${1:field name}: \${2:field body}

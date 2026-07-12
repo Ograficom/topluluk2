@@ -1,4 +1,4 @@
-import{C as a}from"./app-DKvfoN-y.js";function c(o,s){for(var t=0;t<s.length;t++){const e=s[t];if(typeof e!="string"&&!Array.isArray(e)){for(const n in e)if(n!=="default"&&!(n in o)){const i=Object.getOwnPropertyDescriptor(e,n);i&&Object.defineProperty(o,n,i.get?i:{enumerable:!0,get:()=>e[n]})}}}return Object.freeze(Object.defineProperty(o,Symbol.toStringTag,{value:"Module"}))}var r={exports:{}};(function(o,s){ace.define("ace/snippets/robot.snippets",["require","exports","module"],function(t,e,n){n.exports=`# scope: robot
+import{C as a}from"./app-brandfix-25e169d.js";function c(o,s){for(var t=0;t<s.length;t++){const e=s[t];if(typeof e!="string"&&!Array.isArray(e)){for(const n in e)if(n!=="default"&&!(n in o)){const i=Object.getOwnPropertyDescriptor(e,n);i&&Object.defineProperty(o,n,i.get?i:{enumerable:!0,get:()=>e[n]})}}}return Object.freeze(Object.defineProperty(o,Symbol.toStringTag,{value:"Module"}))}var r={exports:{}};(function(o,s){ace.define("ace/snippets/robot.snippets",["require","exports","module"],function(t,e,n){n.exports=`# scope: robot
 ### Sections
 snippet settingssection
 description *** Settings *** section

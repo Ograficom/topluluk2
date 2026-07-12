@@ -1,4 +1,4 @@
-import{C as c}from"./app-DKvfoN-y.js";function f(s,o){for(var t=0;t<o.length;t++){const n=o[t];if(typeof n!="string"&&!Array.isArray(n)){for(const e in n)if(e!=="default"&&!(e in s)){const i=Object.getOwnPropertyDescriptor(n,e);i&&Object.defineProperty(s,e,i.get?i:{enumerable:!0,get:()=>n[e]})}}}return Object.freeze(Object.defineProperty(s,Symbol.toStringTag,{value:"Module"}))}var r={exports:{}};(function(s,o){ace.define("ace/snippets/coffee.snippets",["require","exports","module"],function(t,n,e){e.exports=`# Closure loop
+import{C as c}from"./app-brandfix-25e169d.js";function f(s,o){for(var t=0;t<o.length;t++){const n=o[t];if(typeof n!="string"&&!Array.isArray(n)){for(const e in n)if(e!=="default"&&!(e in s)){const i=Object.getOwnPropertyDescriptor(n,e);i&&Object.defineProperty(s,e,i.get?i:{enumerable:!0,get:()=>n[e]})}}}return Object.freeze(Object.defineProperty(s,Symbol.toStringTag,{value:"Module"}))}var r={exports:{}};(function(s,o){ace.define("ace/snippets/coffee.snippets",["require","exports","module"],function(t,n,e){e.exports=`# Closure loop
 snippet forindo
 	for \${1:name} in \${2:array}
 		do ($1) ->

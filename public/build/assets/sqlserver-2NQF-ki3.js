@@ -1,4 +1,4 @@
-import{C as i}from"./app-DKvfoN-y.js";function c(r,s){for(var e=0;e<s.length;e++){const t=s[e];if(typeof t!="string"&&!Array.isArray(t)){for(const n in t)if(n!=="default"&&!(n in r)){const a=Object.getOwnPropertyDescriptor(t,n);a&&Object.defineProperty(r,n,a.get?a:{enumerable:!0,get:()=>t[n]})}}}return Object.freeze(Object.defineProperty(r,Symbol.toStringTag,{value:"Module"}))}var p={exports:{}};(function(r,s){ace.define("ace/snippets/sqlserver.snippets",["require","exports","module"],function(e,t,n){n.exports=`# ISNULL
+import{C as i}from"./app-brandfix-25e169d.js";function c(r,s){for(var e=0;e<s.length;e++){const t=s[e];if(typeof t!="string"&&!Array.isArray(t)){for(const n in t)if(n!=="default"&&!(n in r)){const a=Object.getOwnPropertyDescriptor(t,n);a&&Object.defineProperty(r,n,a.get?a:{enumerable:!0,get:()=>t[n]})}}}return Object.freeze(Object.defineProperty(r,Symbol.toStringTag,{value:"Module"}))}var p={exports:{}};(function(r,s){ace.define("ace/snippets/sqlserver.snippets",["require","exports","module"],function(e,t,n){n.exports=`# ISNULL
 snippet isnull
 	ISNULL(\${1:check_expression}, \${2:replacement_value})
 # FORMAT
