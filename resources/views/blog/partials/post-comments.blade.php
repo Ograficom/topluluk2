@@ -217,14 +217,12 @@
           name="content"
           data-mentionable="users"
           data-comment-main-input
-          data-ogx-autogrow
           data-ogx-max-height="520"
           class="ogx3-textarea"
           rows="1"
           maxlength="500"
           placeholder="Yorumunu buraya yaz..."
-          wrap="soft"
-          oninput="this.style.setProperty('height','0px','important');var h=Math.min(Math.max(this.scrollHeight+2,72),360);this.style.setProperty('height',h+'px','important');this.style.setProperty('overflow-y',this.scrollHeight>360?'auto':'hidden','important');">{{ old('content') }}</textarea>
+          wrap="soft">{{ old('content') }}</textarea>
 
         <div class="ogx3-preview" id="show-comment-image-preview" data-ogx-preview hidden></div>
         <div id="show-comment-gif-preview" data-gif-preview class="ogx3-preview" hidden></div>
@@ -2145,7 +2143,7 @@
     color: var(--foreground, #18181b) !important;
     box-shadow: none !important;
     transition: border-color 150ms ease, box-shadow 150ms ease !important;
-    height: auto !important;
+    height: 72px !important;
     overflow: visible !important;
   }
 
@@ -2176,7 +2174,7 @@
     caret-color: currentColor !important;
     cursor: text !important;
     resize: none !important;
-    field-sizing: content !important;
+    field-sizing: fixed !important;
   }
 
   html body .post-show-shell #show-comment-form textarea.ogx3-textarea::placeholder {

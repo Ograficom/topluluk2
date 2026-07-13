@@ -1,4 +1,5 @@
 import './bootstrap';
+import './comment-composer';
 
 const searchShell = document.querySelector('[data-search-shell]');
 const searchTrigger = searchShell?.querySelector('[data-search-trigger]') || null;
