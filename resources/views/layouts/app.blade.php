@@ -21,7 +21,6 @@
     <link rel="icon" type="image/png" sizes="64x64" href="{{ asset('favicon-64.png') }}?v=20260714a">
     <link rel="icon" type="image/png" sizes="192x192" href="{{ asset('pwa/icon-192.png') }}?v=20260714a">
     <link rel="apple-touch-icon" href="{{ asset('pwa/icon-192.png') }}?v=20260714a">
-    <link rel="manifest" href="{{ asset('manifest.json') }}">
     <title>{{ $documentTitle }}</title>
     @stack('seo')
     @include('partials.system-appearance')
