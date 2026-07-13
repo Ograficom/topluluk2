@@ -5,19 +5,20 @@
 ])
 
 @php
-    $baseClasses = 'inline-flex items-center justify-center gap-2 rounded-lg font-semibold leading-6 tracking-normal focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed [&_iconify-icon]:shrink-0 [&_svg]:shrink-0';
+    $baseClasses = 'inline-flex items-center justify-center gap-2 rounded-2xl border border-transparent bg-clip-padding font-medium whitespace-nowrap transition-colors outline-none focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_iconify-icon]:shrink-0 [&_svg]:shrink-0';
 
     $variantClasses = [
-        'primary' => 'bg-zinc-900 text-white hover:bg-zinc-800 active:bg-zinc-950 dark:bg-zinc-100 dark:text-zinc-950 dark:hover:bg-white dark:active:bg-zinc-200',
-        'secondary' => 'bg-zinc-100 text-zinc-950 hover:bg-zinc-200 active:bg-zinc-300 dark:bg-zinc-800 dark:text-white dark:hover:bg-zinc-700 dark:active:bg-zinc-600',
-        'plain' => 'bg-transparent text-zinc-950 hover:bg-zinc-100 active:bg-zinc-200 dark:text-white dark:hover:bg-zinc-800 dark:active:bg-zinc-700',
-        'danger' => 'bg-red-600 text-white hover:bg-red-700 active:bg-red-800',
+        'primary' => 'bg-primary text-primary-foreground hover:opacity-90',
+        'secondary' => 'bg-secondary text-secondary-foreground hover:bg-muted',
+        'plain' => 'bg-transparent text-foreground hover:bg-muted',
+        'outline' => 'border-border bg-background text-foreground hover:bg-muted',
+        'danger' => 'bg-destructive text-white hover:opacity-90',
     ];
 
     $sizeClasses = [
-        'sm' => 'min-h-8 px-3 py-1.5 text-sm',
-        'md' => 'min-h-10 px-3.5 py-2 text-sm',
-        'lg' => 'min-h-11 px-5 py-2.5 text-base',
+        'sm' => 'h-7 px-3 text-sm',
+        'md' => 'h-8 px-3 text-sm',
+        'lg' => 'h-9 px-4 text-sm',
     ];
 @endphp
 

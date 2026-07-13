@@ -1,17 +1,5 @@
 import './bootstrap';
 
-const darkQuery = window.matchMedia('(prefers-color-scheme: dark)');
-const applyTheme = () => {
-    document.documentElement.classList.toggle('dark', darkQuery.matches);
-};
-
-applyTheme();
-if (typeof darkQuery.addEventListener === 'function') {
-    darkQuery.addEventListener('change', applyTheme);
-} else if (typeof darkQuery.addListener === 'function') {
-    darkQuery.addListener(applyTheme);
-}
-
 const searchShell = document.querySelector('[data-search-shell]');
 const searchTrigger = searchShell?.querySelector('[data-search-trigger]') || null;
 const searchInput = searchShell?.querySelector('[data-search-input]') || null;

@@ -1,5 +1,7 @@
 const defaultTheme = require('tailwindcss/defaultTheme');
 
+const token = (name) => `oklch(from var(--${name}) l c h / <alpha-value>)`;
+
 module.exports = {
     darkMode: 'class',
     content: [
@@ -8,6 +10,7 @@ module.exports = {
         './config/**/*.php',
         './resources/**/*.blade.php',
         './resources/**/*.js',
+        './resources/**/*.jsx',
         './resources/**/*.vue',
         './routes/**/*.php',
     ],
@@ -20,14 +23,24 @@ module.exports = {
             },
             colors: {
                 sitebg: '#f4f4f5',
-                primary: 'hsl(var(--primary) / <alpha-value>)',
-                background: 'hsl(var(--background) / <alpha-value>)',
-                foreground: 'hsl(var(--foreground) / <alpha-value>)',
-                muted: 'hsl(var(--muted) / <alpha-value>)',
-                'muted-foreground': 'hsl(var(--muted-foreground) / <alpha-value>)',
-                secondary: 'hsl(var(--secondary) / <alpha-value>)',
-                border: 'hsl(var(--border) / <alpha-value>)',
-                destructive: 'hsl(var(--destructive) / <alpha-value>)',
+                primary: token('primary'),
+                'primary-foreground': token('primary-foreground'),
+                background: token('background'),
+                foreground: token('foreground'),
+                card: token('card'),
+                'card-foreground': token('card-foreground'),
+                popover: token('popover'),
+                'popover-foreground': token('popover-foreground'),
+                muted: token('muted'),
+                'muted-foreground': token('muted-foreground'),
+                accent: token('accent'),
+                'accent-foreground': token('accent-foreground'),
+                secondary: token('secondary'),
+                'secondary-foreground': token('secondary-foreground'),
+                border: token('border'),
+                input: token('input'),
+                ring: token('ring'),
+                destructive: token('destructive'),
                 deeper: 'hsl(var(--deeper) / <alpha-value>)',
                 endpoint: 'hsl(var(--endpoint) / <alpha-value>)',
                 'primary-dark': '#27272a',
@@ -49,7 +62,10 @@ module.exports = {
                 'text-sub-dark': '#a1a1aa',
             },
             borderRadius: {
-                DEFAULT: '0.5rem',
+                DEFAULT: 'var(--radius)',
+                lg: 'var(--radius)',
+                md: 'calc(var(--radius) - 2px)',
+                sm: 'calc(var(--radius) - 4px)',
                 full: '9999px',
             },
         },

@@ -4,7 +4,7 @@
             {{ $logo }}
         </div>
 
-        <div class="overflow-hidden rounded-[28px] border border-slate-200 bg-white px-6 py-6">
+        <div class="overflow-hidden rounded-2xl border border-border bg-card px-6 py-6 text-card-foreground shadow-sm">
             {{ $slot }}
         </div>
     </div>
