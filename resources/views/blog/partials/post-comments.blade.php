@@ -224,7 +224,7 @@
           maxlength="500"
           placeholder="Yorumunu buraya yaz..."
           wrap="soft"
-          oninput="if(window.ogxStableComposerGrow){window.ogxStableComposerGrow(this)}else{this.style.height='auto';this.style.height=Math.max(this.scrollHeight,64)+'px';}">{{ old('content') }}</textarea>
+          oninput="window.ogx3ResizeComment && window.ogx3ResizeComment(this)">{{ old('content') }}</textarea>
 
         <div class="ogx3-preview" id="show-comment-image-preview" data-ogx-preview hidden></div>
         <div id="show-comment-gif-preview" data-gif-preview class="ogx3-preview" hidden></div>
@@ -2137,6 +2137,8 @@
     color: var(--foreground, #18181b) !important;
     box-shadow: none !important;
     transition: border-color 150ms ease, box-shadow 150ms ease !important;
+    height: auto !important;
+    overflow: visible !important;
   }
 
   html body .post-show-shell #show-comment-form .ogx3-field:focus-within {
@@ -2148,8 +2150,11 @@
     all: unset !important;
     display: block !important;
     width: 100% !important;
-    min-height: 64px !important;
-    max-height: 260px !important;
+    position: static !important;
+    flex: 0 0 auto !important;
+    height: 72px !important;
+    min-height: 72px !important;
+    max-height: 360px !important;
     padding: 4px 0 10px !important;
     box-sizing: border-box !important;
     overflow-y: auto !important;
@@ -2158,10 +2163,12 @@
     font-family: "Roboto", Arial, Helvetica, sans-serif !important;
     font-size: 15px !important;
     font-weight: 400 !important;
-    line-height: 1.5 !important;
+    line-height: 24px !important;
     color: var(--foreground, #18181b) !important;
     caret-color: currentColor !important;
     cursor: text !important;
+    resize: none !important;
+    field-sizing: content !important;
   }
 
   html body .post-show-shell #show-comment-form textarea.ogx3-textarea::placeholder {
@@ -2182,6 +2189,9 @@
     width: 100% !important;
     min-height: 38px !important;
     margin-top: auto !important;
+    position: static !important;
+    flex: 0 0 auto !important;
+    clear: both !important;
   }
 
   html body .post-show-shell #show-comment-form .ogx3-tools,
@@ -2725,6 +2735,57 @@
 (function () {
   if (!window.ogxStableComposerGrow && window.ogxGrowTextarea) {
     window.ogxStableComposerGrow = window.ogxGrowTextarea;
+  }
+})();
+</script>
+
+<script>
+(function () {
+  function resizeComment(textarea) {
+    if (!textarea || !textarea.classList.contains('ogx3-textarea')) return;
+
+    var minHeight = 72;
+    var maxHeight = 360;
+
+    textarea.style.setProperty('height', '0px', 'important');
+    textarea.style.setProperty('min-height', minHeight + 'px', 'important');
+    textarea.style.setProperty('max-height', maxHeight + 'px', 'important');
+
+    var contentHeight = Math.max(textarea.scrollHeight + 2, minHeight);
+    var nextHeight = Math.min(contentHeight, maxHeight);
+
+    textarea.style.setProperty('height', nextHeight + 'px', 'important');
+    textarea.style.setProperty('overflow-y', contentHeight > maxHeight ? 'auto' : 'hidden', 'important');
+
+    var field = textarea.closest('.ogx3-field');
+    if (field) {
+      field.style.setProperty('height', 'auto', 'important');
+      field.style.setProperty('min-height', '146px', 'important');
+      field.style.setProperty('overflow', 'visible', 'important');
+    }
+  }
+
+  window.ogx3ResizeComment = resizeComment;
+
+  function initialize() {
+    document.querySelectorAll('#show-comment-form textarea.ogx3-textarea').forEach(resizeComment);
+  }
+
+  document.addEventListener('input', function (event) {
+    if (event.target && event.target.matches('#show-comment-form textarea.ogx3-textarea')) {
+      resizeComment(event.target);
+    }
+  }, true);
+
+  document.addEventListener('paste', function (event) {
+    if (!event.target || !event.target.matches('#show-comment-form textarea.ogx3-textarea')) return;
+    window.requestAnimationFrame(function () { resizeComment(event.target); });
+  }, true);
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initialize, { once: true });
+  } else {
+    initialize();
   }
 })();
 </script>
