@@ -6534,6 +6534,7 @@
 
     @include('partials.external-link-bridge')
     @include('partials.image-lightbox')
+    @include('partials.feed-load-more-styles')
 
 
     @stack('modals')

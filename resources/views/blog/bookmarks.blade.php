@@ -84,6 +84,8 @@
                         {{ __('site.bookmarks_page.empty_posts') }}
                     </div>
                 @endforelse
+
+                @include('partials.feed-load-more', ['posts' => $posts])
             @endif
         </section>
     </div>

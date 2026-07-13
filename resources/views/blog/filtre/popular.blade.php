@@ -78,5 +78,7 @@
                 {{ __('site.popular_page.empty_posts') }}
             </div>
         @endforelse
+
+        @include('partials.feed-load-more', ['posts' => $posts])
     </div>
 @endsection
