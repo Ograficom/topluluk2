@@ -115,63 +115,6 @@
             } catch (error) {}
         }());
     </script>
-    <script>
-        (function() {
-            const logoUrl = 'https://ografi.com/uploads/media/01KXC8H7ENWNCD3VE38WXP3YTJ.png';
-
-            const replaceLegacyLogo = () => {
-                document.querySelectorAll('svg.max-h-7').forEach((legacyLogo) => {
-                    const image = document.createElement('img');
-                    image.src = logoUrl;
-                    image.alt = 'Ografi';
-                    image.className = legacyLogo.getAttribute('class') || 'max-h-7 w-full h-full';
-                    image.style.objectFit = 'contain';
-                    legacyLogo.replaceWith(image);
-                });
-
-                document.querySelectorAll('img.max-h-7[alt="logo"]').forEach((image) => {
-                    if (image.src !== logoUrl) image.src = logoUrl;
-                });
-            };
-
-            const openResourcesMenu = () => {
-                document.querySelectorAll('button[data-state="closed"]').forEach((button) => {
-                    if (button.textContent.trim().includes('Resources')) {
-                        button.click();
-                    }
-                });
-            };
-
-            const addHeaderBrandName = () => {
-                const logo = document.querySelector('header img[alt="Ografi"], header img[alt="logo"]');
-                const logoLink = logo?.closest('a');
-
-                if (! logoLink || logoLink.querySelector('[data-ografi-brand-name]')) {
-                    return;
-                }
-
-                const brandName = document.createElement('span');
-                brandName.dataset.ografiBrandName = 'true';
-                brandName.textContent = 'Ografi';
-                brandName.className = 'ml-2 text-xl font-bold tracking-tight text-foreground';
-                logoLink.appendChild(brandName);
-            };
-
-            const applyLegacyUiFixes = () => {
-                replaceLegacyLogo();
-                addHeaderBrandName();
-                openResourcesMenu();
-            };
-
-            document.addEventListener('DOMContentLoaded', applyLegacyUiFixes);
-            document.addEventListener('inertia:navigate', applyLegacyUiFixes);
-
-            new MutationObserver(applyLegacyUiFixes).observe(document.documentElement, {
-                childList: true,
-                subtree: true,
-            });
-        }());
-    </script>
     @if ($google_analytics_code !== '')
         {!! $google_analytics_code !!}
     @endif
