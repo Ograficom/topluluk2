@@ -22,6 +22,8 @@ class StoryResource extends JsonResource
             'slug' => $this->slug,
             'type' => $this->type,
             'content' => $this->body ? json_decode($this->body, true)['blocks'] : null,
+            'source_url' => $this->canonical_url,
+            'source_host' => $this->canonical_url ? parse_url($this->canonical_url, PHP_URL_HOST) : null,
             'original_post' => StoryOriginalCardResource::make($this->whenLoaded('originalPost')),
             'user_can' => [
                 'report' => auth()->user()?->can('report', $this->resource),

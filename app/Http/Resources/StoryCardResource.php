@@ -21,6 +21,8 @@ class StoryCardResource extends JsonResource
             'slug' => $this->slug,
             'type' => $this->type,
             'first_paragraph' => $this->getFirstParagraph(),
+            'source_url' => $this->canonical_url,
+            'source_host' => $this->canonical_url ? parse_url($this->canonical_url, PHP_URL_HOST) : null,
             'media_url' => $this->getFirstMediaUrl() ?? null,
             'original_post' => new StoryOriginalCardResource($this->originalPost),
             'user_can' => [
