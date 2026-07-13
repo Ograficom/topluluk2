@@ -130,19 +130,30 @@
     @inertia
     @if (($page['component'] ?? null) === 'Story/Show' && ! empty($page['props']['story']))
         @php($fallbackStory = $page['props']['story'])
-        <main data-story-fallback class="min-h-screen bg-[#f4f4f5] px-4 py-8 text-[#18181b]">
-            <article class="mx-auto max-w-3xl rounded-2xl bg-white p-6 shadow-sm sm:p-10">
-                <h1 class="text-2xl font-bold leading-tight sm:text-4xl">
+        <main data-story-fallback class="ogf-fallback">
+            <header class="ogf-fallback__header">
+                <a href="/" class="ogf-fallback__brand"><img src="https://ografi.com/uploads/media/01KXC8H7ENWNCD3VE38WXP3YTJ.png" alt="Ografi"><strong>Ografi</strong></a>
+                <a href="/login" class="ogf-fallback__login">Giriş yap</a>
+            </header>
+            <div class="ogf-fallback__page">
+            <article class="ogf-fallback__card">
+                @if (! empty($fallbackStory['user']))
+                    <div class="ogf-fallback__author">
+                        <img src="{{ $fallbackStory['user']['avatar_url'] ?? '' }}" alt="">
+                        <div><strong>{{ $fallbackStory['user']['display_name'] ?? $fallbackStory['user']['username'] ?? '' }}</strong><span>{{ $fallbackStory['created_at']['human'] ?? '' }}</span></div>
+                    </div>
+                @endif
+                <h1>
                     {{ $fallbackStory['title'] ?? '' }}
                 </h1>
 
                 @if (! empty($fallbackStory['subtitle']))
-                    <p class="mt-4 text-base text-[#71717a] sm:text-lg">
+                    <p class="ogf-fallback__subtitle">
                         {{ $fallbackStory['subtitle'] }}
                     </p>
                 @endif
 
-                <div class="mt-8 space-y-4 text-base leading-7 sm:text-lg">
+                <div class="ogf-fallback__content">
                     @foreach (($fallbackStory['content'] ?? []) as $block)
                         @if (! empty($block['data']['text']))
                             <p>{{ strip_tags($block['data']['text']) }}</p>
@@ -154,18 +165,41 @@
                     <a href="{{ $fallbackStory['source_url'] }}"
                        target="_blank"
                        rel="noopener noreferrer"
-                       class="mt-8 flex items-center justify-between rounded-2xl bg-[#f7f7f8] px-5 py-4 text-[#18181b] no-underline">
+                       class="ogf-fallback__source">
                         <span>
-                            <span class="block text-xs uppercase tracking-wide text-[#71717a]">Source</span>
-                            <strong class="mt-1 block">{{ $fallbackStory['source_host'] ?? $fallbackStory['source_url'] }}</strong>
+                            <span>Source</span>
+                            <strong>{{ $fallbackStory['source_host'] ?? $fallbackStory['source_url'] }}</strong>
                         </span>
-                        <span aria-hidden="true" class="text-xl">↗</span>
+                        <b aria-hidden="true">&nearr;</b>
                     </a>
                 @endif
             </article>
+            </div>
         </main>
         <style>
             #app:not(:empty) + [data-story-fallback] { display: none; }
+            .ogf-fallback { min-height: 100vh; background: #f4f4f5; color: #18181b; font-family: Roboto, Arial, sans-serif; }
+            .ogf-fallback__header { height: 64px; padding: 0 max(20px, calc((100vw - 884px) / 2)); background: rgba(255,255,255,.94); border-bottom: 1px solid #e4e4e7; display: flex; align-items: center; justify-content: space-between; }
+            .ogf-fallback__brand { display: flex; align-items: center; gap: 9px; color: #18181b; text-decoration: none; font-size: 20px; }
+            .ogf-fallback__brand img { width: 30px; height: 30px; object-fit: contain; }
+            .ogf-fallback__login { padding: 9px 15px; border-radius: 10px; background: #2563eb; color: white; text-decoration: none; font-size: 14px; font-weight: 600; }
+            .ogf-fallback__page { width: min(100% - 32px, 720px); margin: 32px auto; }
+            .ogf-fallback__card { background: white; border: 1px solid #e4e4e7; border-radius: 16px; padding: 28px; box-shadow: 0 1px 2px rgba(0,0,0,.04); }
+            .ogf-fallback__author { display: flex; align-items: center; gap: 11px; margin-bottom: 24px; }
+            .ogf-fallback__author img { width: 42px; height: 42px; border-radius: 50%; background: #f4f4f5; }
+            .ogf-fallback__author strong, .ogf-fallback__author span { display: block; }
+            .ogf-fallback__author strong { font-size: 15px; }
+            .ogf-fallback__author span { margin-top: 3px; color: #71717a; font-size: 13px; }
+            .ogf-fallback__card h1 { margin: 0; font-size: clamp(25px, 4vw, 38px); line-height: 1.18; letter-spacing: -.025em; }
+            .ogf-fallback__subtitle { margin: 16px 0 0; color: #52525b; font-size: 17px; line-height: 1.65; }
+            .ogf-fallback__content { margin-top: 28px; font-size: 17px; line-height: 1.75; }
+            .ogf-fallback__content p { margin: 0 0 16px; }
+            .ogf-fallback__source { margin-top: 30px; padding: 16px 18px; border-radius: 14px; background: #f7f7f8; color: #18181b; text-decoration: none; display: flex; align-items: center; justify-content: space-between; transition: background .15s ease; }
+            .ogf-fallback__source:hover { background: #eeeeef; }
+            .ogf-fallback__source span span { display: block; color: #71717a; font-size: 11px; line-height: 1; letter-spacing: .08em; text-transform: uppercase; }
+            .ogf-fallback__source strong { display: block; margin-top: 6px; font-size: 15px; }
+            .ogf-fallback__source b { font-size: 22px; font-weight: 400; }
+            @media (max-width: 640px) { .ogf-fallback__header { padding: 0 16px; } .ogf-fallback__page { width: 100%; margin: 0; } .ogf-fallback__card { border-width: 0 0 1px; border-radius: 0; padding: 22px 18px 28px; } }
         </style>
     @endif
     @if ($custom_footer_code !== '')
