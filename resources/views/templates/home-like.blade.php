@@ -4563,8 +4563,9 @@
 
 .home-feed-shell [data-post-card-shell] .post-title,
 .home-feed-shell [data-post-card-shell] .post-title__link {
-    font-size: 18px !important;
-    line-height: 1.4 !important;
+    font-size: 22px !important;
+    font-weight: 700 !important;
+    line-height: 1.35 !important;
 }
 
 .home-feed-shell [data-post-card-shell] .post-summary,

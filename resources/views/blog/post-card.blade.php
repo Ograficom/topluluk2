@@ -877,7 +877,7 @@
         }
 
         if ($isImage) {
-            return '<img src="' . e($resolvedValue) . '" alt="' . e($labelText ?: 'reaction') . '" class="post-card__reaction-asset" loading="lazy" decoding="async">';
+            return '<img src="' . e($resolvedValue) . '" alt="' . e($labelText ?: 'reaction') . '" class="post-card__reaction-asset" style="width:32px!important;height:32px!important;min-width:32px!important;max-width:32px!important;object-fit:contain!important" loading="lazy" decoding="async">';
         }
 
         return e($trimmedValue);
@@ -1567,7 +1567,7 @@ SVG;
 
     <h2 class="post-title" id="post-title" style="font-family: 'Roboto', Arial, Helvetica, sans-serif !important; font-size: 20px !important; font-weight: 700 !important; line-height: 1.35 !important;">
         @if($postUrl !== '#')
-            <a href="{{ $postUrl }}" class="post-title__link">{{ $title }}</a>
+            <a href="{{ $postUrl }}" class="post-title__link" style="font-family:'Roboto',Arial,Helvetica,sans-serif!important;font-size:22px!important;font-weight:700!important;line-height:1.35!important">{{ $title }}</a>
         @else
             {{ $title }}
         @endif
@@ -1952,12 +1952,12 @@ SVG;
                                     <input type="hidden" name="reaction_type_id" value="{{ $reactionTypeId }}">
                                 @endif
                                 <button type="submit" class="post-card__reaction-option" aria-label="{{ $reactionTypeLabel }}">
-                                    <span class="reaction-emoji reaction-emoji--html">{!! $reactionTypeIcon !!}</span>
+                                    <span class="reaction-emoji reaction-emoji--html" style="display:inline-flex!important;width:32px!important;height:32px!important;min-width:32px!important;font-size:32px!important;line-height:32px!important">{!! $reactionTypeIcon !!}</span>
                                 </button>
                             </form>
                         @elseif(\Illuminate\Support\Facades\Route::has('login'))
                             <a href="{{ route('login') }}" class="post-card__reaction-option" aria-label="{{ $reactionTypeLabel }}">
-                                <span class="reaction-emoji reaction-emoji--html">{!! $reactionTypeIcon !!}</span>
+                                <span class="reaction-emoji reaction-emoji--html" style="display:inline-flex!important;width:32px!important;height:32px!important;min-width:32px!important;font-size:32px!important;line-height:32px!important">{!! $reactionTypeIcon !!}</span>
                             </a>
                         @endif
                     @endforeach
@@ -2000,12 +2000,12 @@ SVG;
                                     <input type="hidden" name="reaction_type_id" value="{{ $reactionTypeId }}">
                                 @endif
                                 <button type="submit" class="post-card__reaction-option" aria-label="{{ $reactionTypeLabel }}">
-                                    <span class="reaction-emoji reaction-emoji--html">{!! $reactionTypeIcon !!}</span>
+                                    <span class="reaction-emoji reaction-emoji--html" style="display:inline-flex!important;width:32px!important;height:32px!important;min-width:32px!important;font-size:32px!important;line-height:32px!important">{!! $reactionTypeIcon !!}</span>
                                 </button>
                             </form>
                         @elseif(\Illuminate\Support\Facades\Route::has('login'))
                             <a href="{{ route('login') }}" class="post-card__reaction-option" aria-label="{{ $reactionTypeLabel }}">
-                                <span class="reaction-emoji reaction-emoji--html">{!! $reactionTypeIcon !!}</span>
+                                <span class="reaction-emoji reaction-emoji--html" style="display:inline-flex!important;width:32px!important;height:32px!important;min-width:32px!important;font-size:32px!important;line-height:32px!important">{!! $reactionTypeIcon !!}</span>
                             </a>
                         @endif
                     @endforeach
