@@ -1,5 +1,5 @@
 @php
-    $logoUrl = asset('images/ografi-logo.png') . '?v=20260714';
+    $logoUrl = asset('images/ografi-logo.png') . '?v=20260714a';
     [$logoWidth, $logoHeight] = [512, 512];
 @endphp
 
