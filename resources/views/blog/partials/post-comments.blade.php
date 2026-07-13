@@ -193,7 +193,7 @@
         </svg>
       </button>
 
-      <div class="ogx-filter-menu shadcn-menu shadcn-menu--compact" data-ogx-filter-menu hidden>
+      <div class="ogx-filter-menu shadcn-menu shadcn-menu--compact" data-ogx-filter-menu hidden style="width: 152px !important; min-width: 152px !important; max-width: min(152px, calc(100vw - 24px)) !important; box-sizing: border-box !important; padding: 8px !important; overflow: hidden !important; border: 1px solid #e4e4e7 !important; border-radius: 16px !important; background: #ffffff !important; color: #18181b !important; box-shadow: 0 1px 2px rgba(0,0,0,.05), 0 8px 24px rgba(15,23,42,.08) !important; filter: none !important;">
         <button type="button" class="ogx-filter-item is-active" data-ogx-sort="popular">
           <span>Popüler</span>
         </button>

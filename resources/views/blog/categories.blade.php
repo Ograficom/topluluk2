@@ -936,7 +936,7 @@
                         </svg>
                     </button>
 
-                    <div id="categories-sort-menu" class="categories-sort__menu shadcn-menu shadcn-menu--compact" data-categories-sort-menu hidden>
+                    <div id="categories-sort-menu" class="categories-sort__menu shadcn-menu shadcn-menu--compact" data-categories-sort-menu hidden style="width: 160px !important; min-width: 160px !important; max-width: min(160px, calc(100vw - 24px)) !important; box-sizing: border-box !important; padding: 8px !important; overflow: hidden !important; border: 1px solid #e4e4e7 !important; border-radius: 16px !important; background: #ffffff !important; color: #18181b !important; box-shadow: 0 1px 2px rgba(0,0,0,.05), 0 8px 24px rgba(15,23,42,.08) !important; filter: none !important;">
                         <div class="categories-sort__title">Göre sırala</div>
 
                         <div class="categories-sort__options">

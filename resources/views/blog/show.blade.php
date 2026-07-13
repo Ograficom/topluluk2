@@ -11088,7 +11088,7 @@ body.dark .post-show-shell .ps-comment-more-item--danger:focus-visible,
               <button type="button" class="ps-menu-trigger" data-ps-menu-trigger aria-label="Diğer işlemler">
                 <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M6 12a2 2 0 1 1-4 0a2 2 0 0 1 4 0m8 0a2 2 0 1 1-4 0a2 2 0 0 1 4 0m8 0a2 2 0 1 1-4 0a2 2 0 0 1 4 0"/></svg>
               </button>
-              <div class="ps-menu-panel">
+              <div class="ps-menu-panel shadcn-menu shadcn-menu--compact" style="width: 152px !important; min-width: 152px !important; max-width: min(152px, calc(100vw - 24px)) !important; box-sizing: border-box !important; padding: 8px !important; overflow: hidden !important; border: 1px solid #e4e4e7 !important; border-radius: 16px !important; background: #ffffff !important; color: #18181b !important; box-shadow: 0 1px 2px rgba(0,0,0,.05), 0 8px 24px rgba(15,23,42,.08) !important; filter: none !important;">
                 @if($postShowReportUrl)
                   <a href="{{ $postShowReportUrl }}" class="ps-menu-item"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.7" d="M4 15s1-1 4-1s5 2 8 2s4-1 4-1V3s-1 1-4 1s-5-2-8-2s-4 1-4 1zM4 22v-7"/></svg>Bildir</a>
                 @endif

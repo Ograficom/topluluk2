@@ -2466,7 +2466,7 @@
                                 <summary aria-label="{{ $moreActionsLabel }}" title="{{ $moreActionsLabel }}" class="og-menu-summary-icon-only">
                                     <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="5" cy="12" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="19" cy="12" r="1.8"/></svg>
                                 </summary>
-                                <div class="og-menu-panel shadcn-menu">
+                                <div class="og-menu-panel shadcn-menu" style="width: 192px !important; min-width: 192px !important; max-width: min(192px, calc(100vw - 24px)) !important; box-sizing: border-box !important; padding: 8px !important; overflow: hidden !important; border: 1px solid #e4e4e7 !important; border-radius: 16px !important; background: #ffffff !important; color: #18181b !important; box-shadow: 0 1px 2px rgba(0,0,0,.05), 0 8px 24px rgba(15,23,42,.08) !important; filter: none !important;">
                                     <button type="button" class="og-menu-item" data-profile-share data-share-url="{{ $profilePageUrl }}" data-share-title="{{ $profileHeadingTitle }}">
                                         <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M8 12h8M14 6l6 6-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M20 12H6a2 2 0 0 0-2 2v4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
                                         {{ $shareProfileLabel }}

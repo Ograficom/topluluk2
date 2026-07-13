@@ -3572,7 +3572,7 @@ body:has(.category-reference-card) .profile-reference-tab {
                                             {!! $menuIcon !!}
                                         </summary>
 
-                                        <div class="profile-reference-more-panel shadcn-menu shadcn-menu--compact" role="menu">
+                                        <div class="profile-reference-more-panel shadcn-menu shadcn-menu--compact" role="menu" style="width: 152px !important; min-width: 152px !important; max-width: min(152px, calc(100vw - 24px)) !important; box-sizing: border-box !important; padding: 8px !important; overflow: hidden !important; border: 1px solid #e4e4e7 !important; border-radius: 16px !important; background: #ffffff !important; color: #18181b !important; box-shadow: 0 1px 2px rgba(0,0,0,.05), 0 8px 24px rgba(15,23,42,.08) !important; filter: none !important;">
                                             <a href="{{ route('blog.category.edit', $categoryToShow) }}" class="profile-reference-menu-item" role="menuitem">
                                                 <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                                                     <path d="M12 15.5A3.5 3.5 0 1 0 12 8a3.5 3.5 0 0 0 0 7.5Z" stroke="currentColor" stroke-width="1.7"/>
