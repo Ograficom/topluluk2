@@ -1079,7 +1079,12 @@
     $repostCreateUrl = $viewer ? route('blog.repost.create', ['post' => optional($postObj)->id ?? $postSlug]) : null;
     $summaryExpandedText = trim((string) ($resolvedExcerptExpanded !== '' ? $resolvedExcerptExpanded : ($resolvedExcerptRaw !== '' ? $resolvedExcerptRaw : $summaryText)));
     $hasFullPostContent = $contentBlocks->isNotEmpty() || trim($contentHtml) !== '' || $mediaItems->isNotEmpty();
-    $summaryCollapsedText = $summaryExpandedText !== '' ? $summaryExpandedText : $resolvedExcerptShort;
+    $summaryCollapsedSource = $summaryExpandedText !== '' ? $summaryExpandedText : $resolvedExcerptShort;
+    $summaryCollapsedLength = \Illuminate\Support\Str::length($summaryCollapsedSource);
+    $summaryHalfLength = $summaryCollapsedLength > 1 ? (int) ceil($summaryCollapsedLength * 0.5) : $summaryCollapsedLength;
+    $summaryCollapsedText = $summaryCollapsedLength > $summaryHalfLength
+        ? rtrim(\Illuminate\Support\Str::substr($summaryCollapsedSource, 0, $summaryHalfLength), " \t\n\r\0\x0B,.;:-") . '...'
+        : $summaryCollapsedSource;
     // Buton sadece uzun yazılarda değil, bütün post kartlarında görünsün.
     // İçerik yoksa tıklama yine karta zarar vermez; varsa 2 satırdan tam içeriğe açılır.
     $summaryCanExpand = $summaryCollapsedText !== '' || $summaryExpandedText !== '' || $hasFullPostContent || $hasSourcePreview || $postUrl !== '#';
@@ -1560,7 +1565,7 @@ SVG;
         @endif
     </div>
 
-    <h2 class="post-title" id="post-title">
+    <h2 class="post-title" id="post-title" style="font-family: 'Roboto', Arial, Helvetica, sans-serif !important; font-size: 18px !important; line-height: 1.4 !important;">
         @if($postUrl !== '#')
             <a href="{{ $postUrl }}" class="post-title__link">{{ $title }}</a>
         @else
@@ -8094,6 +8099,47 @@ SVG;
             [data-post-card-shell] .expand-link[data-post-card-expand] {
                 font-size: 14.5px !important;
             }
+        }
+
+        /* Final typography and reaction sizing requested for feed cards. */
+        html body [data-post-card-shell] .post-title,
+        html body [data-post-card-shell] .post-title__link {
+            font-family: "Roboto", Arial, Helvetica, sans-serif !important;
+            font-size: 18px !important;
+            line-height: 1.4 !important;
+        }
+
+        html body [data-post-card-reaction-menu] .post-card__reaction-option .reaction-emoji,
+        html body [data-post-card-reaction-menu] .post-card__reaction-option .reaction-emoji--html,
+        html body [data-post-card-reaction-menu] .post-card__reaction-option .reaction-emoji--html img,
+        html body [data-post-card-reaction-menu] .post-card__reaction-option .reaction-emoji--html svg,
+        html body [data-post-card-reaction-menu] .post-card__reaction-option .reaction-emoji--html iconify-icon {
+            width: 26px !important;
+            height: 26px !important;
+            min-width: 26px !important;
+            font-size: 26px !important;
+            line-height: 26px !important;
+        }
+
+        html body [data-post-card-reaction-menu] .post-card__reaction-option {
+            min-width: 42px !important;
+            min-height: 42px !important;
+        }
+
+        html body [data-post-card-shell] [data-post-card-summary-shell].is-collapsed,
+        html body [data-post-card-shell] .post-summary-shell.is-collapsed {
+            max-height: none !important;
+            overflow: visible !important;
+        }
+
+        html body [data-post-card-shell] [data-post-card-summary-shell].is-collapsed [data-post-card-summary],
+        html body [data-post-card-shell] .post-summary-shell.is-collapsed .post-summary {
+            display: block !important;
+            -webkit-line-clamp: unset !important;
+            line-clamp: unset !important;
+            max-height: none !important;
+            overflow: visible !important;
+            white-space: normal !important;
         }
 
 </style>

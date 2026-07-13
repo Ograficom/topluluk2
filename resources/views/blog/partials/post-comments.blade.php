@@ -2127,7 +2127,7 @@
     background: #ffffff !important;
     color: #18181b !important;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03) !important;
-    font-family: "Inter Variable", Inter, Arial, sans-serif !important;
+    font-family: "Roboto", Arial, Helvetica, sans-serif !important;
   }
 
   html body .shadcn-comment-card > .ogx-panel-header {
