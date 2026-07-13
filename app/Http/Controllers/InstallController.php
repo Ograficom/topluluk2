@@ -2,386 +2,267 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Auth\CreateNewAdminController;
+use App\Models\Team;
 use App\Models\User;
-use Illuminate\Auth\Events\Registered;
+use App\Support\InstallState;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rules\Password;
-use Inertia\Inertia;
-use PDOException;
-use Spatie\Permission\PermissionRegistrar;
-use Spatie\Permission\Models\Role;
 
 class InstallController extends Controller
 {
-    protected $dbConfig;
-
-    public function index()
-    {
-        return Inertia::render('Installer/Index');
-    }
-
-    public function license()
-    {
-        Artisan::call('optimize:clear');
-
-        return Inertia::render('Installer/License');
-    }
-
-    public function storeLicense(Request $request)
-    {
-        $request->validate([
-            'license_key' => 'required',
-        ]);
-
-        if (isPurchaseCode($request->license_key)) {
-            $result = activatePurchaseCode($request->license_key);
-
-            if (isset($result['buyer']) && $result['buyer'] === true) {
-                session()->put('license_key', $request->license_key);
-
-                return to_route('installer.requirements');
-            } else {
-                toast_warning(__('Activation limit exceeded or purchase code is invalid'));
-
-                return back();
-            }
-        } else {
-            toast_warning(__('Invalid purchase code'));
-
-            return back();
-        }
-    }
-
     public function requirements()
     {
-        $php_version = '8.2';
-
-        $results = [
-            'php_version' => [
-                'acceptable' => version_compare(PHP_VERSION, $php_version, '>='),
-                'current' => phpversion(),
-                'minimal' => $php_version,
+        $requirements = [
+            'php' => [
+                'label' => 'PHP >= 8.2',
+                'passed' => version_compare(PHP_VERSION, '8.2.0', '>='),
             ],
-            'extensions' => [
-                'bcmath' => extension_loaded('bcmath'),
-                'fileinfo' => extension_loaded('fileinfo'),
-                'ctype' => extension_loaded('ctype'),
-                'exif' => extension_loaded('exif'),
-                'json' => extension_loaded('json'),
-                'mbstring' => extension_loaded('mbstring'),
-                'openssl' => extension_loaded('openssl'),
-                'intl' => extension_loaded('intl'),
-                'gd' => extension_loaded('gd'),
-                'pdo_mysql' => extension_loaded('pdo_mysql'),
-                'tokenizer' => extension_loaded('tokenizer'),
-                'xml' => extension_loaded('xml'),
+            'ext_pdo' => [
+                'label' => 'PDO',
+                'passed' => extension_loaded('pdo'),
             ],
-            'writable' => [
-                'env_writable' => File::isWritable(base_path('.env')),
-                'storage_writable' => File::isWritable(storage_path()) && File::isWritable(storage_path('logs')),
+            'ext_pdo_mysql' => [
+                'label' => 'PDO MySQL',
+                'passed' => extension_loaded('pdo_mysql'),
+            ],
+            'ext_mbstring' => [
+                'label' => 'Mbstring',
+                'passed' => extension_loaded('mbstring'),
+            ],
+            'ext_openssl' => [
+                'label' => 'OpenSSL',
+                'passed' => extension_loaded('openssl'),
+            ],
+            'ext_xml' => [
+                'label' => 'XML',
+                'passed' => extension_loaded('xml'),
+            ],
+            'ext_curl' => [
+                'label' => 'cURL',
+                'passed' => extension_loaded('curl'),
+            ],
+            'ext_json' => [
+                'label' => 'JSON',
+                'passed' => extension_loaded('json'),
+            ],
+            'ext_fileinfo' => [
+                'label' => 'Fileinfo',
+                'passed' => extension_loaded('fileinfo'),
             ],
         ];
 
-        $success = ! in_multidimensional_array(false, $results);
+        $permissions = [
+            'storage' => [
+                'label' => 'storage/ yazilabilir',
+                'passed' => is_writable(storage_path()),
+            ],
+            'bootstrap_cache' => [
+                'label' => 'bootstrap/cache yazilabilir',
+                'passed' => is_writable(base_path('bootstrap/cache')),
+            ],
+            'env' => [
+                'label' => '.env yazilabilir',
+                'passed' => $this->isEnvWritable(),
+            ],
+        ];
 
-        return Inertia::render('Installer/Requirements', compact('results', 'success'));
+        $allPassed = collect($requirements)->every(fn ($item) => $item['passed'])
+            && collect($permissions)->every(fn ($item) => $item['passed']);
+
+        return view('install.requirements', compact('requirements', 'permissions', 'allPassed'));
     }
 
     public function database()
     {
-        return Inertia::render('Installer/Database');
+        return view('install.database');
     }
 
-    public function storeDatabase(Request $request)
+    public function saveDatabase(Request $request)
     {
-        $request->validate([
-            'db_host' => 'required|string',
-            'db_port' => 'required|numeric',
-            'db_name' => 'required|string',
-            'db_user' => 'required|string',
-            'db_password' => 'nullable|string',
-            'db_overwrite_data' => 'boolean',
+        $data = $request->validate([
+            'db_host' => ['required', 'string'],
+            'db_port' => ['required', 'integer'],
+            'db_name' => ['required', 'string'],
+            'db_user' => ['required', 'string'],
+            'db_pass' => ['nullable', 'string'],
+            'app_url' => ['nullable', 'url'],
         ]);
 
-        $this->temporaryDatabaseConnection([
-            'db_host' => $request->db_host,
-            'db_port' => $request->db_port,
-            'db_name' => $request->db_name,
-            'db_user' => $request->db_user,
-            'db_password' => $request->db_password,
+        $this->configureDatabase($data);
+
+        try {
+            DB::connection()->getPdo();
+        } catch (\Throwable $e) {
+            return back()
+                ->withErrors(['db_host' => 'Veritabani baglantisi kurulamadi. Bilgileri ve sunucuyu kontrol edin.'])
+                ->withInput();
+        }
+
+        $this->writeEnv([
+            'DB_CONNECTION' => 'mysql',
+            'DB_HOST' => $data['db_host'],
+            'DB_PORT' => $data['db_port'],
+            'DB_DATABASE' => $data['db_name'],
+            'DB_USERNAME' => $data['db_user'],
+            'DB_PASSWORD' => $data['db_pass'] ?? '',
         ]);
 
-        if ($this->databaseHasData() && ! $request->db_overwrite_data) {
-            $request->session()->flash('db_alert', __('Caution! We found data in the database you specified! Please make sure that you have a backup of that database and confirm the deletion of all data.'));
+        if (!empty($data['app_url'])) {
+            $this->writeEnv(['APP_URL' => $data['app_url']]);
+        }
 
-            return back();
+        if (empty(config('app.key'))) {
+            $key = 'base64:' . base64_encode(random_bytes(32));
+            $this->writeEnv(['APP_KEY' => $key]);
+            config(['app.key' => $key]);
         }
 
         try {
-            config([
-                'database.connections.mysql' => [
-                    'driver' => 'mysql',
-                    'host' => $request->input('db_host'),
-                    'port' => $request->input('db_port'),
-                    'database' => $request->input('db_name'),
-                    'username' => $request->input('db_user'),
-                    'password' => $request->input('db_password'),
-                ],
-            ]);
-            DB::reconnect('mysql');
-
-            DB::connection('mysql')->getPdo();
-        } catch (\Exception $e) {
-            $alert = __('Database could not be configured. Please check your connection details. Details:').' '.$e->getMessage();
-
-            toast_error($alert);
-
-            return back();
+            Artisan::call('migrate', ['--force' => true]);
+        } catch (\Throwable $e) {
+            return back()
+                ->withErrors(['db_host' => 'Migrasyonlar basarisiz oldu. Veritabani kullanici izinlerini kontrol edin.'])
+                ->withInput();
         }
 
-        Artisan::call('migrate:fresh', [
-            '--seed' => true,
-            '--force' => true,
-            '--no-interaction' => true,
-        ]);
-
-        setEnvironmentValue([
-            'db_host' => $request->input('db_host'),
-            'db_port' => $request->input('db_port'),
-            'db_database' => $request->input('db_name'),
-            'db_username' => $request->input('db_user'),
-            'db_password' => $request->input('db_password'),
-            'app_url' => getAppURL(),
-        ]);
-
-        if (app()->environment('production')) {
-            Artisan::call('config:cache');
-        }
-
-        return to_route('installer.account');
+        return redirect()->route('install.admin');
     }
 
-    public function temporaryDatabaseConnection(array $credentials): void
+    public function admin()
     {
-        $this->dbConfig = config('database.connections.mysql');
-        $this->dbConfig['host'] = $credentials['db_host'];
-        $this->dbConfig['port'] = $credentials['db_port'];
-        $this->dbConfig['database'] = $credentials['db_name'];
-        $this->dbConfig['username'] = $credentials['db_user'];
-        $this->dbConfig['password'] = $credentials['db_password'];
+        if (!$this->canConnectDatabase()) {
+            return redirect()->route('install.database')
+                ->withErrors(['db_host' => 'Veritabani baglantisi bulunamadi.']);
+        }
 
-        Config::set('database.connections.setup', $this->dbConfig);
+        if (User::query()->exists()) {
+            $this->markInstalled();
+            return redirect()->route('install.finished');
+        }
+
+        return view('install.admin');
     }
 
-    public function databaseHasData(): bool
+    public function saveAdmin(Request $request)
+    {
+        if (!$this->canConnectDatabase()) {
+            return redirect()->route('install.database')
+                ->withErrors(['db_host' => 'Veritabani baglantisi bulunamadi.']);
+        }
+
+        $data = $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
+            'password' => ['required', 'confirmed', Password::min(8)],
+        ]);
+
+        $user = User::create([
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'password' => Hash::make($data['password']),
+            'email_verified_at' => now(),
+            'role' => User::ROLE_ADMIN,
+        ]);
+
+        $team = Team::forceCreate([
+            'user_id' => $user->id,
+            'name' => explode(' ', $user->name, 2)[0] . ' Takimi',
+            'personal_team' => true,
+        ]);
+
+        $user->ownedTeams()->save($team);
+        $user->switchTeam($team);
+
+        $this->markInstalled();
+
+        return redirect()->route('install.finished');
+    }
+
+    public function finished()
+    {
+        return view('install.finished');
+    }
+
+    private function configureDatabase(array $data): void
+    {
+        config([
+            'database.default' => 'mysql',
+            'database.connections.mysql.host' => $data['db_host'],
+            'database.connections.mysql.port' => $data['db_port'],
+            'database.connections.mysql.database' => $data['db_name'],
+            'database.connections.mysql.username' => $data['db_user'],
+            'database.connections.mysql.password' => $data['db_pass'] ?? '',
+        ]);
+
+        DB::purge('mysql');
+        DB::reconnect('mysql');
+    }
+
+    private function canConnectDatabase(): bool
     {
         try {
-            $tables = DB::connection('setup')->select('SHOW TABLES');
-        } catch (PDOException $e) {
-            Log::error($e->getMessage());
-
+            DB::connection()->getPdo();
+            return true;
+        } catch (\Throwable $e) {
             return false;
         }
-
-        return count($tables) > 0;
     }
 
-    public function upgrade()
+    private function isEnvWritable(): bool
     {
-        return Inertia::render('Installer/Upgrade');
-    }
-
-    public function upgradeApp(Request $request)
-    {
-        $request->validate([
-            'upgrade_confirmation' => 'required|boolean',
-        ]);
-
-        try {
-            $hasTables = count(DB::select('SHOW TABLES')) > 0;
-        } catch (\Exception $e) {
-            $alert = __('Database could not be configured. Please check your connection details. Details:').' '.$e->getMessage();
-
-            toast_error($alert);
-
-            return back();
+        $envPath = base_path('.env');
+        if (file_exists($envPath)) {
+            return is_writable($envPath);
         }
 
-        if ($hasTables && $request->upgrade_confirmation) {
-            Artisan::call('migrate', [
-                '--force' => true,
-            ]);
-
-            Artisan::call('db:seed', [
-                '--class' => 'SettingSeeder',
-                '--force' => true,
-            ]);
-
-            Artisan::call('db:seed', [
-                '--class' => 'RolesSeeder',
-                '--force' => true,
-            ]);
-
-            Artisan::call('db:seed', [
-                '--class' => 'PermissionsSeeder',
-                '--force' => true,
-            ]);
-
-            Artisan::call('db:seed', [
-                '--class' => 'LevelSeeder',
-                '--force' => true,
-            ]);
-
-            Artisan::call('db:seed', [
-                '--class' => 'BadgeSeeder',
-                '--force' => true,
-            ]);
-
-            Artisan::call('db:seed', [
-                '--class' => 'AdSeeder',
-                '--force' => true,
-            ]);
-
-            Artisan::call('db:seed', [
-                '--class' => 'LicenseKeySeeder',
-                '--force' => true,
-            ]);
-
-            Artisan::call('db:seed', [
-                '--class' => 'UserSettingsSeeder',
-                '--force' => true,
-            ]);
-
-            DB::table('notifications')->truncate();
-
-            User::where('id', 1)->first()->assignRole(Role::where('name', 'administrator')->first());
-            User::where('id', '!=', 1)->get()->each(function ($user) {
-                $user->assignRole(Role::where('name', 'author')->first());
-            });
-
-            return to_route('installer.complete');
-        }
+        return is_writable(base_path());
     }
 
-    public function account()
+    private function writeEnv(array $values): void
     {
-        return Inertia::render('Installer/Account');
-    }
-
-    public function storeAccount(Request $request)
-    {
-        $this->ensureInstallerAuthorizationData();
-
-        $existingUser = User::query()
-            ->where('email', $request->input('email'))
-            ->orWhere('username', $request->input('username'))
-            ->first();
-
-        if ($existingUser) {
-            $request->validate([
-                'username' => ['required', 'string', 'min:3', 'max:60', 'alpha_dash'],
-                'email' => ['required', 'string', 'email', 'max:255'],
-                'password' => ['required', 'confirmed', Password::defaults()],
-            ]);
-
-            $existingUser->update([
-                'name' => $request->input('username'),
-                'username' => $request->input('username'),
-                'email' => $request->input('email'),
-                'password' => Hash::make($request->input('password')),
-                'email_verified_at' => now(),
-            ]);
-
-            $user = $existingUser;
-        } else {
-            $user = (new CreateNewAdminController())->create($request->input());
+        $envPath = base_path('.env');
+        if (!file_exists($envPath)) {
+            $example = base_path('.env.example');
+            if (file_exists($example)) {
+                copy($example, $envPath);
+            } else {
+                file_put_contents($envPath, '');
+            }
         }
 
-        $user->profile()->firstOrCreate([]);
-
-        $user->assignRole('administrator');
-
-        $user->update([
-            'preference_settings' => [
-                'show_nsfw' => true,
-                'blur_nsfw' => true,
-                'open_posts_new_tab' => false,
-            ],
-            'notify_settings' => [
-                'new_comments' => true,
-                'replies_comments' => true,
-                'liked' => true,
-                'new_follower' => true,
-                'mentions' => true,
-            ],
-        ]);
-
-        event(new Registered($user));
-
-        Auth::login($user, true);
-
-        return redirect()->route('installer.complete');
-    }
-
-    private function ensureInstallerAuthorizationData(): void
-    {
-        Artisan::call('db:seed', [
-            '--class' => 'RolesSeeder',
-            '--force' => true,
-            '--no-interaction' => true,
-        ]);
-
-        Artisan::call('db:seed', [
-            '--class' => 'PermissionsSeeder',
-            '--force' => true,
-            '--no-interaction' => true,
-        ]);
-
-        app(PermissionRegistrar::class)->forgetCachedPermissions();
-    }
-
-    public function complete()
-    {
-        Artisan::call('key:generate', [
-            '--force' => true,
-        ]);
-
-        Artisan::call('storage:link', [
-            '--force' => true,
-        ]);
-
-        // Store the bootstrap license key in the database
-        $bootstrapKey = session()->get('bootstrap_license_key');
-        $generatedKey = null;
-
-        if ($bootstrapKey && \App\Models\LicenseKey::count() === 0) {
-            \App\Models\LicenseKey::create([
-                'key_hash' => hash('sha256', $bootstrapKey),
-                'label' => 'Initial installation key',
-                'status' => 'active',
-                'activated_at' => now(),
-                'domain' => request()->getHost(),
-                'max_domains' => 5,
-            ]);
-            $generatedKey = $bootstrapKey;
-        } elseif (\App\Models\LicenseKey::count() === 0) {
-            $generatedKey = \App\Models\LicenseKey::generate('Initial installation key', maxDomains: 5);
+        $contents = file_get_contents($envPath);
+        foreach ($values as $key => $value) {
+            $value = $this->escapeEnvValue($value);
+            if (preg_match("/^{$key}=.*$/m", $contents)) {
+                $contents = preg_replace("/^{$key}=.*$/m", "{$key}={$value}", $contents);
+            } else {
+                $contents .= PHP_EOL . "{$key}={$value}";
+            }
         }
 
-        session()->forget(['license_key', 'bootstrap_license_key']);
+        file_put_contents($envPath, trim($contents) . PHP_EOL);
+    }
 
-        file_put_contents(storage_path('installed'), '');
+    private function escapeEnvValue(string $value): string
+    {
+        if ($value === '') {
+            return '';
+        }
 
-        return Inertia::render('Installer/Complete', [
-            'license_key' => $generatedKey,
-        ]);
+        if (preg_match('/\s|#|"|\'/', $value)) {
+            $escaped = str_replace('"', '\"', $value);
+            return "\"{$escaped}\"";
+        }
+
+        return $value;
+    }
+
+    private function markInstalled(): void
+    {
+        $this->writeEnv(['APP_INSTALLED' => 'true']);
+        InstallState::markInstalled();
     }
 }

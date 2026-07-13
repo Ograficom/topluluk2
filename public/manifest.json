@@ -1,0 +1,53 @@
+{
+  "name": "OGrafi",
+  "short_name": "OGrafi",
+  "description": "OGrafi: paylasimlar, kategoriler ve etiketler.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "theme_color": "#2563eb",
+  "background_color": "#ffffff",
+  "orientation": "portrait",
+  "lang": "tr",
+  "dir": "ltr",
+  "icons": [
+    {
+      "src": "/storage/pwa/icons/01KF6SQ6M0VZQ55DYQYVYHNBDP.png",
+      "sizes": "1024x1024",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/storage/pwa/icons/01KF6SQ6M41YYEQ1QE73H9ZBYC.png",
+      "sizes": "1024x1024",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/storage/pwa/icons/01KF6SQ6M73YPD857VM0KKEZ80.png",
+      "sizes": "1024x1024",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/storage/pwa/icons/01KF6SQ6M9XHKEA8CNZZNS9AFK.png",
+      "sizes": "1024x1024",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Yeni Mesajlar",
+      "url": "/messages"
+    },
+    {
+      "name": "Profil",
+      "url": "/user/profile"
+    },
+    {
+      "name": "Bildirimler",
+      "url": "/notifications"
+    }
+  ]
+}

@@ -1,0 +1,82 @@
+@import '../../../../vendor/slimani/filament-media-manager/resources/css/media-manager.css';
+
+@source '../../../../vendor/slimani/filament-media-manager/resources/**/*';
+
+:root {
+    --ografi-topbar-bg: linear-gradient(120deg, #0f172a, #0b1936);
+    --ografi-topbar-border: rgba(255, 255, 255, 0.1);
+    --ografi-topbar-accent: #fbbf24;
+    --ografi-topbar-muted: #cbd5e1;
+}
+
+.fi-topbar-ctn {
+    background: var(--ografi-topbar-bg);
+    border-bottom: 1px solid var(--ografi-topbar-border);
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.25);
+}
+
+.fi-topbar {
+    background: transparent;
+    color: var(--ografi-topbar-muted);
+}
+
+.fi-topbar .fi-logo img {
+    filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.35));
+}
+
+.fi-topbar-item-btn {
+    color: var(--ografi-topbar-muted);
+    border-radius: 10px;
+}
+
+.fi-topbar-item:hover .fi-topbar-item-btn,
+.fi-topbar-item.fi-active .fi-topbar-item-btn {
+    color: #fff;
+    background: rgba(251, 191, 36, 0.12);
+    border: 1px solid rgba(251, 191, 36, 0.3);
+}
+
+.fi-topbar-item .fi-topbar-item-icon {
+    color: var(--ografi-topbar-accent);
+}
+
+.fi-topbar .fi-badge {
+    background: var(--ografi-topbar-accent);
+    color: #0f172a;
+    font-weight: 700;
+}
+
+.fi-topbar-nav-groups {
+    gap: 0.5rem;
+}
+
+.fi-topbar-open-sidebar-btn,
+.fi-topbar-close-sidebar-btn,
+.fi-topbar-open-collapse-sidebar-btn,
+.fi-topbar-close-collapse-sidebar-btn {
+    color: var(--ografi-topbar-muted);
+}
+
+.fi-btn.fi-color-primary,
+.fi-btn-color-primary {
+    background: #ffffff !important;
+    border: 1px solid #cbd5e1 !important;
+    color: #334155 !important;
+    box-shadow: none !important;
+}
+
+.fi-btn.fi-color-primary:hover,
+.fi-btn-color-primary:hover,
+.fi-btn.fi-color-primary:focus-visible,
+.fi-btn-color-primary:focus-visible {
+    background: #f8fafc !important;
+    border-color: #94a3b8 !important;
+    color: #0f172a !important;
+}
+
+.fi-btn.fi-color-primary .fi-btn-label,
+.fi-btn-color-primary .fi-btn-label,
+.fi-btn.fi-color-primary .fi-icon,
+.fi-btn-color-primary .fi-icon {
+    color: inherit !important;
+}

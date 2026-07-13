@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\CommentResource\Pages;
 
 use App\Filament\Resources\CommentResource;
+use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
 
 class ListComments extends ListRecords
@@ -11,6 +12,8 @@ class ListComments extends ListRecords
 
     protected function getHeaderActions(): array
     {
-        return [];
+        return [
+            Actions\CreateAction::make(),
+        ];
     }
 }

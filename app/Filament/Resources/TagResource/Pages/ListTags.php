@@ -13,7 +13,7 @@ class ListTags extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            Actions\CreateAction::make()->modalWidth('lg')->createAnother(false),
+            Actions\CreateAction::make(),
         ];
     }
 }

@@ -4,92 +4,79 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\PageResource\Pages;
 use App\Models\Page;
+use Filament\Actions;
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
+use Filament\Schemas\Components\Grid;
 use Filament\Tables;
-use Filament\Tables\Columns\ViewColumn;
 use Filament\Tables\Table;
+use Filament\Schemas\Schema;
 use Illuminate\Support\Str;
 
 class PageResource extends Resource
 {
     protected static ?string $model = Page::class;
 
-    protected static ?int $navigationSort = 5;
+    protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-document-text';
 
-    protected static ?string $navigationIcon = 'heroicon-o-document-text';
+    protected static string | \UnitEnum | null $navigationGroup = 'Icerik';
 
-    public static function getNavigationGroup(): ?string
+    protected static ?string $navigationLabel = 'Sayfalar';
+
+    protected static ?string $pluralModelLabel = 'Sayfalar';
+
+    protected static ?string $modelLabel = 'Sayfa';
+
+    public static function form(Schema $schema): Schema
     {
-        return __('Main');
-    }
-
-    public static function getPluralModelLabel(): string
-    {
-        return __('Pages');
-    }
-
-    public static function form(Form $form): Form
-    {
-        return $form
+        return $schema
             ->schema([
-                Forms\Components\Group::make()
-                    ->schema([
-                        Forms\Components\Section::make()
-                            ->schema([
-                                Forms\Components\TextInput::make('title')
-                                    ->label(__('Title'))
-                                    ->required()
-                                    ->live(onBlur: true)
-                                    ->afterStateUpdated(fn (string $operation, $state, Forms\Set $set) => $operation === 'create' ? $set('slug', Str::slug($state)) : null),
+                Grid::make(2)->schema([
+                    Forms\Components\TextInput::make('title')
+                        ->label('Baslik')
+                        ->required()
+                        ->maxLength(255)
+                        ->live(onBlur: true)
+                        ->afterStateUpdated(function (string $state, callable $set, callable $get) {
+                            if ($get('slug')) {
+                                return;
+                            }
 
-                                Forms\Components\TextInput::make('slug')
-                                    ->label(__('Slug'))
-                                    ->disabled()
-                                    ->dehydrated()
-                                    ->required()
-                                    ->unique(Page::class, 'slug', ignoreRecord: true),
-
-                                Forms\Components\Toggle::make('show_footer_menu')
-                                    ->label(__('Show in footer menu'))
-                                    ->default(true),
-
-                                Forms\Components\Textarea::make('description')
-                                    ->label(__('Description'))
-                                    ->required()
-                                    ->autosize()
-                                    ->columnSpan('full'),
-
-                                Forms\Components\RichEditor::make('content')
-                                    ->label(__('Content'))
-                                    ->required()
-                                    ->fileAttachmentsDisk(getCurrentDisk())
-                                    ->fileAttachmentsDirectory('pages')
-                                    ->columnSpan('full'),
-
-                            ])
-                            ->columns(2),
+                            $set('slug', Str::slug($state));
+                        }),
+                    Forms\Components\TextInput::make('slug')
+                        ->label('Slug')
+                        ->required()
+                        ->maxLength(255)
+                        ->unique(Page::class, 'slug', ignoreRecord: true),
+                ]),
+                Forms\Components\RichEditor::make('content')
+                    ->label('Icerik')
+                    ->columnSpanFull()
+                    ->toolbarButtons([
+                        'bold',
+                        'italic',
+                        'strike',
+                        'underline',
+                        'bulletList',
+                        'orderedList',
+                        'blockquote',
+                        'link',
+                        'codeBlock',
                     ])
-                    ->columnSpan(['lg' => fn (?Page $record) => $record === null ? 3 : 2]),
-
-                Forms\Components\Section::make()
-                    ->schema([
-                        Forms\Components\Placeholder::make('created_at')
-                            ->label(__('Created'))
-                            ->content(fn (Page $record): ?string => $record->created_at?->diffForHumans()),
-
-                        Forms\Components\Placeholder::make('updated_at')
-                            ->label(__('Last modified'))
-                            ->content(fn (Page $record): ?string => $record->updated_at?->diffForHumans()),
-                    ])
-                    ->columnSpan(['lg' => 1])
-                    ->hidden(fn (?Page $record) => $record === null),
-            ])
-            ->columns([
-                'sm' => 3,
-                'lg' => null,
+                    ->fileAttachmentsDisk(config('filesystems.default', 'public'))
+                    ->fileAttachmentsVisibility('public'),
+                Grid::make(2)->schema([
+                    Forms\Components\Toggle::make('is_published')
+                        ->label('Yayinda')
+                        ->inline(false),
+                    Forms\Components\DateTimePicker::make('published_at')
+                        ->label('Yayin tarihi')
+                        ->seconds(false)
+                        ->native(false)
+                        ->helperText('Bos birakilirsa hemen yayinlanir.')
+                        ->default(now()),
+                ]),
             ]);
     }
 
@@ -98,53 +85,33 @@ class PageResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('title')
-                    ->label(__('Title'))
-                    ->sortable()
-                    ->searchable(),
+                    ->label('Baslik')
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('slug')
-                    ->label(__('Slug'))
+                    ->searchable(),
+                Tables\Columns\IconColumn::make('is_published')
+                    ->label('Yayinda')
+                    ->boolean(),
+                Tables\Columns\TextColumn::make('published_at')
+                    ->label('Yayin')
+                    ->dateTime()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('updated_at')
-                    ->label(__('Updated'))
-                    ->date()
-                    ->label(__('Date')),
-                ViewColumn::make('link')
-                    ->label(__('URL'))
-                    ->view('filament.tables.columns.page-link'),
-            ])->defaultSort('id', 'desc')
-            ->filters([
-                //
+                    ->label('Guncellendi')
+                    ->since(),
             ])
+            ->filters([])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make()->before(
-                    function ($record, Tables\Actions\DeleteAction $action) {
-                        if (env('DEMO_MODE') == true) {
-                            Notification::make()
-                                ->title('Warning!')
-                                ->body("You can't delete because DEMO_MODE is enabled.")
-                                ->status('warning')
-                                ->send();
-                            $action->cancel();
-                        }
-                    }
-                ),
+                Actions\EditAction::make(),
+                Actions\Action::make('view_public')
+                    ->label('Goruntule')
+                    ->icon('heroicon-o-eye')
+                    ->url(fn (Page $record) => route('pages.show', $record->slug))
+                    ->visible(fn (Page $record) => $record->is_published),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make()->before(
-                        function ($records, Tables\Actions\DeleteBulkAction $action) {
-                            if (env('DEMO_MODE') == true) {
-                                Notification::make()
-                                    ->title('Warning!')
-                                    ->body("You can't delete because DEMO_MODE is enabled.")
-                                    ->status('warning')
-                                    ->send();
-                                $action->cancel();
-                            }
-                        }
-                    ),
-                ]),
+                Actions\DeleteBulkAction::make(),
             ]);
     }
 
@@ -157,3 +124,15 @@ class PageResource extends Resource
         ];
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+

@@ -32,21 +32,22 @@ return [
 
         'local' => [
             'driver' => 'local',
-            'root' => storage_path('app/uploads'),
-            'url' => env('APP_URL').'/uploads',
-            'visibility' => 'public',
+            'root' => storage_path('app/private'),
+            'serve' => true,
             'throw' => false,
+            'report' => false,
         ],
 
-        'temp' => [
+        'public' => [
             'driver' => 'local',
-            'root' => storage_path('app/temp'),
-            'url' => env('APP_URL').'/temp',
+            'root' => storage_path('app/public'),
+            'url' => env('FILESYSTEM_PUBLIC_URL', '/storage'),
             'visibility' => 'public',
             'throw' => false,
+            'report' => false,
         ],
 
-        'aws' => [
+        's3' => [
             'driver' => 's3',
             'key' => env('AWS_ACCESS_KEY_ID'),
             'secret' => env('AWS_SECRET_ACCESS_KEY'),
@@ -54,52 +55,9 @@ return [
             'bucket' => env('AWS_BUCKET'),
             'url' => env('AWS_URL'),
             'endpoint' => env('AWS_ENDPOINT'),
-            'use_path_style_endpoint' => false,
+            'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', false),
             'throw' => false,
-        ],
-
-        'dos' => [
-            'driver' => 's3',
-            'key' => env('DOS_ACCESS_KEY_ID'),
-            'secret' => env('DOS_SECRET_ACCESS_KEY'),
-            'region' => env('DOS_DEFAULT_REGION'),
-            'bucket' => env('DOS_BUCKET'),
-            'folder' => env('DOS_FOLDER'),
-            'cdn_endpoint' => env('DOS_CDN_ENDPOINT'),
-            'url' => env('DOS_URL'),
-            'endpoint' => env('DOS_ENDPOINT'),
-            'use_path_style_endpoint' => false,
-        ],
-
-        'wasabi' => [
-            'driver' => 's3',
-            'key' => env('WASABI_ACCESS_KEY_ID'),
-            'secret' => env('WASABI_SECRET_ACCESS_KEY'),
-            'region' => env('WASABI_DEFAULT_REGION', 'eu-central-1'),
-            'bucket' => env('WASABI_BUCKET'),
-            'endpoint' => env('WASABI_ENDPOINT', 'https://s3.eu-central-1.wasabisys.com/'),
-        ],
-
-        'backblaze' => [
-            'driver' => 's3',
-            'key' => env('B2_APPLICATION_KEY_ID'),
-            'secret' => env('B2_APPLICATION_KEY_SECRET'),
-            'bucket' => env('B2_BUCKET_NAME'),
-            'region' => env('B2_REGION', 'eu-central-003'),
-            'endpoint' => env('B2_ENDPOINT', 'https://s3.eu-central-003.backblazeb2.com'),
-            'use_path_style_endpoint' => false,
-            'options' => [
-                'ACL' => '',
-            ],
-        ],
-
-        'snapshots' => [
-            'driver' => 'local',
-            'root' => database_path('snapshots'),
-        ],
-        'tmp-for-tests' => [
-            'driver' => 'local',
-            'root' => storage_path('app/livewire-tmp'),
+            'report' => false,
         ],
 
     ],
@@ -116,8 +74,7 @@ return [
     */
 
     'links' => [
-        public_path('uploads') => storage_path('app/uploads'),
-        public_path('temp') => storage_path('app/temp'),
+        public_path('storage') => storage_path('app/public'),
     ],
 
 ];

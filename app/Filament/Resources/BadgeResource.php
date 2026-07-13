@@ -4,214 +4,114 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\BadgeResource\Pages;
 use App\Models\Badge;
-use App\Models\Level;
+use Filament\Actions;
 use Filament\Forms;
-use Filament\Forms\Components\Grid;
-use Filament\Forms\Components\Select;
-use Filament\Forms\Form;
-use Filament\Forms\Get;
-use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
+use Filament\Schemas\Components\Grid;
+use Filament\Schemas\Schema;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Support\HtmlString;
-use Illuminate\Support\Str;
 
 class BadgeResource extends Resource
 {
     protected static ?string $model = Badge::class;
 
-    protected static ?int $navigationSort = 12;
+    protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-check-badge';
 
-    protected static ?string $navigationIcon = 'heroicon-o-check-badge';
+    protected static string | \UnitEnum | null $navigationGroup = 'Kullanicilar';
 
-    public static function getNavigationGroup(): ?string
+    protected static ?string $navigationLabel = 'Rozetler';
+
+    protected static ?string $pluralModelLabel = 'Rozetler';
+
+    protected static ?string $modelLabel = 'Rozet';
+
+    public static function form(Schema $schema): Schema
     {
-        return __('Main');
-    }
-
-    public static function getPluralModelLabel(): string
-    {
-        return __('Badges');
-    }
-
-    public static function form(Form $form): Form
-    {
-        return $form
-            ->schema([
-                Forms\Components\Group::make()
-                    ->schema([
-                        Forms\Components\Section::make()
-                            ->schema([
-                                Forms\Components\TextInput::make('name')
-                                    ->label(__('Name'))
-                                    ->maxValue(250)
-                                    ->live(onBlur: true)
-                                    ->afterStateUpdated(fn (string $operation, $state, Forms\Set $set) => $operation === 'create' ? $set('alias', str_replace('-', '_', Str::slug($state))) : null),
-
-                                Forms\Components\TextInput::make('alias')
-                                    ->label(__('Alias'))
-                                    ->disabled()
-                                    ->dehydrated()
-                                    ->required()
-                                    ->unique(Badge::class, 'alias', ignoreRecord: true),
-
-                                Forms\Components\Textarea::make('description')
-                                    ->label(__('Description'))
-                                    ->autosize()
-                                    ->maxLength(1500),
-
-                                Select::make('advanced_options')
-                                    ->label(__('Type (Optional)'))
-                                    ->options([
-                                        'level' => __('Level'),
-                                        'membership_years' => __('Membership Years'),
-                                    ])
-                                    ->disabled(fn (?Badge $record) => $record !== $record->is_default)
-                                    ->native(false)
-                                    ->disabledOn('edit')
-                                    ->selectablePlaceholder(false)
-                                    ->live()
-                                    ->dehydrated(false)
-                                    ->afterStateUpdated(fn (Select $component) => $component
-                                        ->getContainer()
-                                        ->getComponent('dynamicTypeFields')
-                                        ->getChildComponentContainer()
-                                        ->fill()),
-
-                                Grid::make(1)
-                                    ->schema(fn (Get $get): array => match ($get('advanced_options')) {
-                                        'membership_years' => [
-                                            Forms\Components\TextInput::make('membership_years')
-                                                ->numeric()
-                                                ->minValue(1)
-                                                ->required(),
-                                        ],
-                                        'level' => [
-                                            Select::make('level_id')
-                                                ->label(__('Select level'))
-                                                ->options(Level::query()->orderBy('id')->pluck('name', 'id'))
-                                                ->native(false)
-                                                ->required(),
-                                        ],
-                                        default => [],
-                                    })
-                                    ->key('dynamicTypeFields'),
-                            ])
-                            ->columns(2),
-                    ])->columnSpan(['lg' => fn (?Badge $record) => $record === null ? 2 : 2]),
-
-                Forms\Components\Section::make()
-                    ->schema([
-                        Forms\Components\FileUpload::make('image')
-                            ->label(__('Image'))
-                            ->image()
-                            ->disk(getCurrentDisk())
-                            ->directory('badges')
-                            ->visibility('public')
-                            ->required(),
-                        Forms\Components\Placeholder::make('membership_years')
-                            ->label(__('Membership Years'))
-                            ->content(fn (Badge $record): ?string => $record->membership_years)
-                            ->hidden(fn (Badge $record = null): bool => $record === null || $record->membership_years === null),
-
-                        Forms\Components\Placeholder::make('level.name')
-                            ->label(__('Level'))
-                            ->content(fn (Badge $record): ?string => $record->level->name)
-                            ->hidden(fn (Badge $record = null): bool => $record === null || $record->level_id === null),
+        return $schema->schema([
+            Grid::make(2)->schema([
+                Forms\Components\TextInput::make('name')
+                    ->label('Rozet adi')
+                    ->required()
+                    ->maxLength(120),
+                Forms\Components\TextInput::make('slug')
+                    ->label('Slug')
+                    ->required()
+                    ->unique(ignoreRecord: true)
+                    ->maxLength(120),
+                Forms\Components\TextInput::make('min_points')
+                    ->label('Minimum puan')
+                    ->numeric()
+                    ->required()
+                    ->minValue(0),
+                Forms\Components\TextInput::make('sort_order')
+                    ->label('Siralama')
+                    ->numeric()
+                    ->default(0)
+                    ->minValue(0),
+                Forms\Components\ColorPicker::make('color')
+                    ->label('Renk')
+                    ->default('#9ca3af'),
+                Forms\Components\TextInput::make('icon')
+                    ->label('Heroicon adi')
+                    ->maxLength(120)
+                    ->placeholder('heroicon-m-check-badge')
+                    ->helperText('Heroicon kullanmak isterseniz adini girin. Ornek: heroicon-m-check-badge'),
+                Forms\Components\FileUpload::make('icon_svg_path')
+                    ->label('SVG ikon')
+                    ->directory('badge-icons')
+                    ->disk('public')
+                    ->acceptedFileTypes(['image/svg+xml'])
+                    ->helperText('SVG yuklerseniz profil tarafinda heroicon yerine bu ikon gosterilir.'),
+                Forms\Components\Select::make('eligible_profile_type')
+                    ->label('Profil turu')
+                    ->options([
+                        'person' => 'Kisi',
+                        'organization' => 'Kurulus',
                     ])
-                    ->columnSpan(['lg' => 1]),
-            ])
-            ->columns(3);
+                    ->placeholder('Tum profiller')
+                    ->helperText('Secerseniz bu rozet sadece o profil turundeki hesaplara verilir.'),
+                Forms\Components\Toggle::make('requires_verified')
+                    ->label('Onayli hesap gerekli')
+                    ->default(false)
+                    ->helperText('Aciksa rozet sadece onayli hesaplara verilir.'),
+            ]),
+            Forms\Components\Textarea::make('description')
+                ->label('Aciklama')
+                ->rows(2)
+                ->maxLength(255),
+            Forms\Components\Toggle::make('is_active')
+                ->label('Aktif')
+                ->default(true),
+        ]);
     }
 
     public static function table(Table $table): Table
     {
         return $table
             ->columns([
-                Tables\Columns\ImageColumn::make('images')
-                    ->label(__('Badge'))
-                    ->circular()
-                    ->defaultImageUrl(fn ($record): string => $record->getImageUrl()),
-                Tables\Columns\TextColumn::make('name')
-                    ->label(__('Name'))
-                    ->formatStateUsing(function ($state) {
-                        $truncatedValue = Str::limit($state, 40);
-
-                        return new HtmlString("<span title='{$state}'>{$truncatedValue}</span>");
+                Tables\Columns\TextColumn::make('name')->label('Rozet')->searchable()->sortable(),
+                Tables\Columns\TextColumn::make('icon')->label('Heroicon')->toggleable(),
+                Tables\Columns\TextColumn::make('icon_svg_path')->label('SVG')->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('eligible_profile_type')
+                    ->label('Profil Turu')
+                    ->formatStateUsing(fn (?string $state) => match ($state) {
+                        'person' => 'Kisi',
+                        'organization' => 'Kurulus',
+                        default => 'Tum',
                     })
-                    ->sortable()
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('description')
-                    ->label(__('Description'))
-                    ->formatStateUsing(function ($state) {
-                        $truncatedValue = Str::limit($state, 40);
-
-                        return new HtmlString("<span title='{$state}'>{$truncatedValue}</span>");
-                    })
-                    ->sortable()
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('level.name')
-                    ->label(__('Level'))
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('membership_years')
-                    ->label(__('Membership Years'))
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->label(__('Date'))
-                    ->sortable()
-                    ->searchable(),
-            ])->defaultSort('id', 'asc')
-            ->filters([
+                    ->toggleable(),
+                Tables\Columns\IconColumn::make('requires_verified')->label('Onayli')->boolean()->toggleable(),
+                Tables\Columns\TextColumn::make('min_points')->label('Min Puan')->numeric()->sortable(),
+                Tables\Columns\ColorColumn::make('color')->label('Renk'),
+                Tables\Columns\IconColumn::make('is_active')->label('Aktif')->boolean(),
+                Tables\Columns\TextColumn::make('sort_order')->label('Sira')->numeric()->sortable(),
             ])
+            ->defaultSort('sort_order')
             ->actions([
-                Tables\Actions\EditAction::make()->label(false)->size('md')->tooltip(__('Edit')),
-                Tables\Actions\DeleteAction::make()->before(
-                    function ($record, Tables\Actions\DeleteAction $action) {
-                        if (env('DEMO_MODE') == true) {
-                            Notification::make()
-                                ->title('Warning!')
-                                ->body("You can't delete because DEMO_MODE is enabled.")
-                                ->status('warning')
-                                ->send();
-                            $action->cancel();
-                        }
-                    }
-                )
-                    ->label(false)
-                    ->size('md')
-                    ->tooltip(__('Delete'))
-                    ->hidden(fn ($record) => $record->is_default == true),
+                Actions\EditAction::make(),
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make()->before(
-                        function ($records, Tables\Actions\DeleteBulkAction $action) {
-                            if (env('DEMO_MODE') == true) {
-                                Notification::make()
-                                    ->title('Warning!')
-                                    ->body("You can't delete because DEMO_MODE is enabled.")
-                                    ->status('warning')
-                                    ->send();
-                                $action->cancel();
-                            }
-                        }
-                    ),
-                    Tables\Actions\ForceDeleteBulkAction::make()->before(
-                        function ($records, Tables\Actions\ForceDeleteBulkAction $action) {
-                            if (env('DEMO_MODE') == true) {
-                                Notification::make()
-                                    ->title('Warning!')
-                                    ->body("You can't delete because DEMO_MODE is enabled.")
-                                    ->status('warning')
-                                    ->send();
-                                $action->cancel();
-                            }
-                        }
-                    ),
-                    Tables\Actions\RestoreBulkAction::make(),
-                ]),
-            ]);
+            ->bulkActions([]);
     }
 
     public static function getPages(): array
@@ -221,5 +121,15 @@ class BadgeResource extends Resource
             'create' => Pages\CreateBadge::route('/create'),
             'edit' => Pages\EditBadge::route('/{record}/edit'),
         ];
+    }
+
+    public static function shouldRegisterNavigation(): bool
+    {
+        return auth()->user()?->isAdmin() ?? false;
+    }
+
+    public static function canViewAny(): bool
+    {
+        return auth()->user()?->isAdmin() ?? false;
     }
 }

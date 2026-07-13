@@ -2,61 +2,56 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Resources\AdOrderResource;
 use Filament\Http\Middleware\Authenticate;
+use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
-use Filament\Enums\ThemeMode;
-use Filament\Navigation\MenuItem;
 use Filament\Pages;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
+use Filament\Widgets;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
-use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use NoteBrainsLab\FilamentEmailTemplates\FilamentEmailTemplatesPlugin;
+use Slimani\MediaManager\MediaManagerPlugin;
+use WallaceMartinss\FilamentSecurity\FilamentSecurityPlugin;
 
 class AdminPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
     {
         return $panel
+            ->id('admin')
             ->default()
-            ->id('cp')
-            ->path('cp')
+            ->path('admin')
             ->login()
-            ->defaultThemeMode(ThemeMode::Light)
             ->colors([
-                'primary' => Color::Amber,
+                'primary' => Color::Gray,
             ])
-            ->brandLogo(fn () => view('filament.components.logo'))
-            ->darkModeBrandLogo(fn () => view('filament.components.logo-darkmode'))
-            ->favicon(asset('images/favicon.png'))
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
+            ->resources([
+                AdOrderResource::class,
+            ])
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->pages([
                 Pages\Dashboard::class,
             ])
-            ->userMenuItems([
-                MenuItem::make()
-                    ->label(fn () => __('Visit site'))
-                    ->url('/')
-                    ->openUrlInNewTab(true)
-                    ->icon('heroicon-o-arrow-top-right-on-square'),
-                MenuItem::make()
-                    ->label(fn () => __('My profile'))
-                    ->url(fn () => route('user.show', ['user' => auth()->user()]))
-                    ->openUrlInNewTab(true)
-                    ->icon('heroicon-o-arrow-top-right-on-square'),
-                'logout' => MenuItem::make()->label(fn () => __('Log out')),
-            ])
-            ->breadcrumbs(false)
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
-            ->sidebarCollapsibleOnDesktop()
-            ->collapsibleNavigationGroups(true)
+            ->widgets([
+                Widgets\AccountWidget::class,
+                Widgets\FilamentInfoWidget::class,
+            ])
+            ->plugins([
+                FilamentEmailTemplatesPlugin::make(),
+                FilamentSecurityPlugin::make(),
+                MediaManagerPlugin::make(),
+            ])
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,

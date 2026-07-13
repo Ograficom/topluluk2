@@ -4,159 +4,100 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\CommentResource\Pages;
 use App\Models\Comment;
+use Filament\Actions;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
-use Filament\Forms\Form;
-use Filament\Infolists\Components\TextEntry;
-use Filament\Infolists\Infolist;
-use Filament\Notifications\Notification;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
 use Filament\Resources\Resource;
-use Filament\Tables;
+use Filament\Schemas\Schema;
+use Filament\Tables\Columns\IconColumn;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\SelectFilter;
+use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Illuminate\Support\HtmlString;
-use Illuminate\Support\Str;
 
 class CommentResource extends Resource
 {
     protected static ?string $model = Comment::class;
 
-    protected static ?int $navigationSort = 2;
+    protected static string | \UnitEnum | null $navigationGroup = 'Blog';
 
-    protected static ?string $navigationIcon = 'heroicon-o-chat-bubble-bottom-center-text';
+    protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-chat-bubble-bottom-center-text';
 
-    public static function getNavigationGroup(): ?string
+    protected static bool $isGloballySearchable = true;
+
+    public static function form(Schema $schema): Schema
     {
-        return __('Main');
-    }
-
-    public static function getPluralModelLabel(): string
-    {
-        return __('Comments');
-    }
-
-    public static function form(Form $form): Form
-    {
-        return $form
-            ->schema([
-                Textarea::make('comment')
-                    ->hiddenLabel(__('Comment'))
-                    ->autosize(),
-            ])->columns(1);
+        return $schema->schema([
+            Select::make('post_id')
+                ->label('Gonderi')
+                ->relationship('post', 'title')
+                ->searchable()
+                ->required()
+                ->preload(),
+            Select::make('user_id')
+                ->label('Kullanici')
+                ->relationship('user', 'name')
+                ->searchable()
+                ->preload()
+                ->nullable(),
+            TextInput::make('author_name')
+                ->label('Ad')
+                ->maxLength(255)
+                ->requiredWithout('user_id'),
+            TextInput::make('author_email')
+                ->label('E-posta')
+                ->email()
+                ->maxLength(255)
+                ->requiredWithout('user_id'),
+            Textarea::make('content')
+                ->label('Yorum')
+                ->required()
+                ->columnSpanFull(),
+            Toggle::make('is_approved')
+                ->label('Onayli')
+                ->default(true),
+        ]);
     }
 
     public static function table(Table $table): Table
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('user.username')
-                    ->label(__('Author'))
+                TextColumn::make('post.title')
+                    ->label('Gonderi')
                     ->sortable()
                     ->searchable(),
-                Tables\Columns\TextColumn::make('comment')
-                    ->label(__('Comment'))
-                    ->formatStateUsing(function ($state) {
-                        $truncatedValue = Str::limit($state, 60);
-
-                        return new HtmlString("<span title='{$state}'>{$truncatedValue}</span>");
-                    })
-                    ->sortable()
+                TextColumn::make('author_name')
+                    ->label('Ad')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('story.title')
-                    ->label(__('Story'))
-                    ->formatStateUsing(function ($state) {
-                        $truncatedValue = Str::limit($state, 50);
-
-                        return new HtmlString("<span title='{$state}'>{$truncatedValue}</span>");
-                    })
-                    ->sortable()
+                TextColumn::make('author_email')
+                    ->label('E-posta')
+                    ->toggleable()
                     ->searchable(),
-            ])->defaultSort('id', 'desc')
+                TextColumn::make('content')
+                    ->label('Yorum')
+                    ->limit(50),
+                IconColumn::make('is_approved')
+                    ->label('Onayli')
+                    ->boolean(),
+                TextColumn::make('created_at')
+                    ->label('Olusturulma')
+                    ->dateTime()
+                    ->sortable(),
+            ])
             ->filters([
-                Tables\Filters\TrashedFilter::make(),
+                SelectFilter::make('post')->relationship('post', 'title'),
+                TernaryFilter::make('is_approved')
+                    ->label('Onay'),
             ])
             ->actions([
-                Tables\Actions\ViewAction::make()->modalWidth('xl'),
-                Tables\Actions\EditAction::make()->modalWidth('xl')->label(false)->size('md')->tooltip(__('Edit')),
-                Tables\Actions\DeleteAction::make()->before(
-                    function ($record, Tables\Actions\DeleteAction $action) {
-                        if (env('DEMO_MODE') == true) {
-                            Notification::make()
-                                ->title('Warning!')
-                                ->body("You can't delete because DEMO_MODE is enabled.")
-                                ->status('warning')
-                                ->send();
-                            $action->cancel();
-                        }
-                    }
-                )
-                    ->label(false)
-                    ->size('md')
-                    ->tooltip(__('Delete'))
-                    ->action(function (Comment $record): void {
-                        $record->favorites()->where('favoriteable_id', $record->id)->each(function ($favorite) {
-                            $favorite->delete();
-                        });
-
-                        $record->likes()->where('likeable_type', 'App\Models\Comment')->where('likeable_id', $record->id)->each(function ($like) {
-                            $like->delete();
-                        });
-
-                        $record->delete();
-
-                        Notification::make()
-                            ->success()
-                            ->title(__('Comment successfully was deleted!'))
-                            ->seconds(10)
-                            ->send();
-                    }),
+                Actions\EditAction::make(),
+                Actions\DeleteAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make()->before(
-                        function ($records, Tables\Actions\DeleteBulkAction $action) {
-                            if (env('DEMO_MODE') == true) {
-                                Notification::make()
-                                    ->title('Warning!')
-                                    ->body("You can't delete because DEMO_MODE is enabled.")
-                                    ->status('warning')
-                                    ->send();
-                                $action->cancel();
-                            }
-                        }
-                    ),
-                    Tables\Actions\ForceDeleteBulkAction::make()->before(
-                        function ($records, Tables\Actions\ForceDeleteBulkAction $action) {
-                            if (env('DEMO_MODE') == true) {
-                                Notification::make()
-                                    ->title('Warning!')
-                                    ->body("You can't delete because DEMO_MODE is enabled.")
-                                    ->status('warning')
-                                    ->send();
-                                $action->cancel();
-                            }
-                        }
-                    ),
-                    Tables\Actions\RestoreBulkAction::make(),
-                ]),
-            ]);
-    }
-
-    public static function infolist(Infolist $infolist): Infolist
-    {
-        return $infolist
-            ->columns(1)
-            ->schema([
-                TextEntry::make('user.username')
-                    ->label(__('Author')),
-                TextEntry::make('story.title')
-                    ->label(__('Story')),
-                TextEntry::make('comment')
-                    ->label(__('Comment'))
-                    ->html(),
-                TextEntry::make('created_at')
-                    ->label(__('Created'))
-                    ->badge(),
+                Actions\DeleteBulkAction::make(),
             ]);
     }
 
@@ -164,14 +105,20 @@ class CommentResource extends Resource
     {
         return [
             'index' => Pages\ListComments::route('/'),
+            'create' => Pages\CreateComment::route('/create'),
+            'edit' => Pages\EditComment::route('/{record}/edit'),
         ];
     }
 
-    public static function getEloquentQuery(): Builder
+    public static function getGloballySearchableAttributes(): array
     {
-        return parent::getEloquentQuery()
-            ->withoutGlobalScopes([
-                SoftDeletingScope::class,
-            ]);
+        return ['author_name', 'author_email', 'content'];
     }
 }
+
+
+
+
+
+
+

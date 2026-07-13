@@ -65,7 +65,7 @@ return [
     |
     */
 
-    'timezone' => env('APP_TIMEZONE', 'UTC'),
+    'timezone' => 'UTC',
 
     /*
     |--------------------------------------------------------------------------
@@ -78,9 +78,13 @@ return [
     |
     */
 
-    'locale' => env('APP_LOCALE') ?: 'tr',
+    'locale' => env('APP_LOCALE', 'tr'),
 
-    'fallback_locale' => env('APP_FALLBACK_LOCALE') ?: 'en',
+    'fallback_locale' => env('APP_FALLBACK_LOCALE', 'tr'),
+
+    'available_locales' => [
+        'tr' => 'Turkce',
+    ],
 
     'faker_locale' => env('APP_FAKER_LOCALE', 'en_US'),
 
@@ -101,7 +105,7 @@ return [
 
     'previous_keys' => [
         ...array_filter(
-            explode(',', env('APP_PREVIOUS_KEYS', ''))
+            explode(',', (string) env('APP_PREVIOUS_KEYS', ''))
         ),
     ],
 

@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\BadgeResource\Pages;
 
 use App\Filament\Resources\BadgeResource;
+use App\Services\BadgeAwardSyncService;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
 
@@ -15,5 +16,10 @@ class EditBadge extends EditRecord
         return [
             Actions\DeleteAction::make(),
         ];
+    }
+
+    protected function afterSave(): void
+    {
+        app(BadgeAwardSyncService::class)->syncForBadge($this->record);
     }
 }

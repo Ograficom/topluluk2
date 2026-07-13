@@ -1,0 +1,36 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class CookieConsent extends Model
+{
+    use HasFactory;
+
+    protected $fillable = [
+        'cookie_policy_id',
+        'user_id',
+        'device_id',
+        'ip_address',
+        'user_agent',
+        'policy_version',
+        'accepted',
+    ];
+
+    protected $casts = [
+        'accepted' => 'boolean',
+        'policy_version' => 'integer',
+    ];
+
+    public function policy()
+    {
+        return $this->belongsTo(CookiePolicy::class, 'cookie_policy_id');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+}

@@ -1,9 +1,7 @@
 <?php
 
-declare(strict_types=1);
-
 return [
-    'failed'   => 'Bu kimlik bilgileri kayıtlarımızla eşleşmiyor.',
-    'password' => 'Parola geçersiz.',
-    'throttle' => 'Çok fazla giriş denemesi. :seconds saniye sonra lütfen tekrar deneyin.',
+    'failed' => 'Bu bilgiler kayitlarimizla eslesmiyor.',
+    'password' => 'Sifre hatali.',
+    'throttle' => 'Cok fazla giris denemesi. Lutfen :seconds saniye sonra tekrar deneyin.',
 ];

@@ -2,8 +2,10 @@
 
 namespace Database\Seeders;
 
+use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Database\Seeders\FaqSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -12,33 +14,15 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        $this->call([
-            SettingSeeder::class,
-            RolesSeeder::class,
-            PermissionsSeeder::class,
-            LicenseKeySeeder::class,
-            PageSeeder::class,
-            LevelSeeder::class,
-            BadgeSeeder::class,
-            AdSeeder::class,
+        // User::factory(10)->withPersonalTeam()->create();
+
+        User::factory()->withPersonalTeam()->create([
+            'name' => 'Test User',
+            'email' => 'test@example.com',
         ]);
 
-        if (config('alma.demo_mode') === true && app()->environment('production')) {
-            $this->call([
-                UserSeeder::class,
-                UserSettingsSeeder::class,
-                CommunitySeeder::class,
-            ]);
-        }
-
-        if (config('alma.demo_mode') === true && app()->environment('local')) {
-            $this->call([
-                UserSeeder::class,
-                UserSettingsSeeder::class,
-                CommunitySeeder::class,
-                StorySeeder::class,
-                TagSeeder::class,
-            ]);
-        }
+        $this->call([
+            FaqSeeder::class,
+        ]);
     }
 }

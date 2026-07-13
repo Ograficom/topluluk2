@@ -1,8 +1,15 @@
 <?php
 
+use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
 
 define('LARAVEL_START', microtime(true));
+
+// Ensure large media uploads don't crash due low php memory/time limits.
+@ini_set('memory_limit', '2048M');
+@ini_set('max_execution_time', '3600');
+@ini_set('max_input_time', '3600');
+@set_time_limit(3600);
 
 // Determine if the application is in maintenance mode...
 if (file_exists($maintenance = __DIR__.'/../storage/framework/maintenance.php')) {
@@ -11,8 +18,9 @@ if (file_exists($maintenance = __DIR__.'/../storage/framework/maintenance.php'))
 
 // Register the Composer autoloader...
 require __DIR__.'/../vendor/autoload.php';
-require __DIR__.'/../bootstrap/local_autoload.php';
 
 // Bootstrap Laravel and handle the request...
-(require_once __DIR__.'/../bootstrap/app.php')
-    ->handleRequest(Request::capture());
+/** @var Application $app */
+$app = require_once __DIR__.'/../bootstrap/app.php';
+
+$app->handleRequest(Request::capture());

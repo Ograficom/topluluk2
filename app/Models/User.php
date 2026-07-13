@@ -2,54 +2,89 @@
 
 namespace App\Models;
 
-use App\Models\Traits\Blockable;
-use App\Models\Traits\Favoriter;
-use App\Models\Traits\Followable;
-use App\Models\Traits\Follower;
-use App\Models\Traits\Liker;
-use App\Models\Traits\Pointable;
-use App\Notifications\Auth\ResetPasswordQueued;
-use App\Notifications\Auth\VerifyEmailQueued;
-use Carbon\Carbon;
 use Filament\Models\Contracts\FilamentUser;
-use Filament\Models\Contracts\HasAvatar;
-use Filament\Models\Contracts\HasName;
 use Filament\Panel;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Str;
+use Laravel\Fortify\TwoFactorAuthenticatable;
+use Laravel\Jetstream\HasProfilePhoto;
+use Laravel\Jetstream\HasTeams;
 use Laravel\Sanctum\HasApiTokens;
-use Mews\Purifier\Casts\CleanHtmlInput;
-use Spatie\MediaLibrary\HasMedia;
-use Spatie\MediaLibrary\InteractsWithMedia;
-use Spatie\Permission\Traits\HasRoles;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use App\Services\BadgeAwardSyncService;
 
-class User extends Authenticatable implements HasMedia, MustVerifyEmail, FilamentUser, HasAvatar, HasName
+class User extends Authenticatable implements FilamentUser, MustVerifyEmail
 {
     use HasApiTokens;
+
+    /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory;
+    use HasProfilePhoto;
+    use HasTeams;
     use Notifiable;
-    use Follower;
-    use Followable;
-    use InteractsWithMedia;
-    use Favoriter;
-    use HasRoles;
-    use Pointable;
-    use SoftDeletes;
-    use Blockable;
-    use Liker;
+    use TwoFactorAuthenticatable;
 
-    protected $table = 'users';
+    public const ROLE_ADMIN = 'admin';
 
-    protected $guarded = [];
+    public const ROLE_EDITOR = 'editor';
+
+    public const ROLE_WRITER = 'writer';
+
+    public const ROLE_BANNED = 'banned';
+
+    public const LEGACY_ROLE_USER = 'user';
+
+    public const LEGACY_ROLE_BLOCKED = 'blocked';
+
+    public const LEGACY_ROLE_SUPER_ADMIN = 'super_admin';
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'name',
+        'username',
+        'email',
+        'password',
+        'role',
+        'block_messages',
+        'block_posts',
+        'block_categories',
+        'block_tags',
+        'block_comments',
+        'block_reactions',
+        'profile_photo_path',
+        'cover_photo_path',
+        'bio',
+        'location',
+        'company',
+        'education',
+        'social_provider',
+        'social_provider_id',
+        'social_x',
+        'social_instagram',
+        'social_whatsapp',
+        'social_tiktok',
+        'social_facebook',
+        'social_youtube',
+        'website_url',
+        'joined_at',
+        'is_verified',
+        'verification_badge',
+        'verification_badge_svg',
+        'profile_type',
+        'badge_points',
+        'profile_completed_rewarded_at',
+    ];
 
     /**
      * The attributes that should be hidden for serialization.
@@ -59,333 +94,418 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail, Filamen
     protected $hidden = [
         'password',
         'remember_token',
+        'two_factor_recovery_codes',
+        'two_factor_secret',
     ];
 
     /**
-     * The attributes that should be cast.
+     * The accessors to append to the model's array form.
      *
-     * @var array<string, string>
+     * @var array<int, string>
      */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-        'last_seen' => 'datetime',
-        'name' => CleanHtmlInput::class,
-        'username' => CleanHtmlInput::class,
-        'email' => CleanHtmlInput::class,
-        'notify_settings' => 'array',
-        'preference_settings' => 'array',
+    protected $appends = [
+        'profile_photo_url',
     ];
 
-    protected static function boot()
+    /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
+    protected function casts(): array
     {
-        parent::boot();
-
-        static::saving(function () {
-            Cache::forget('topAuthors');
-        });
+        return [
+            'email_verified_at' => 'datetime',
+            'password' => 'hashed',
+            'joined_at' => 'datetime',
+            'is_verified' => 'boolean',
+            'block_messages' => 'boolean',
+            'block_posts' => 'boolean',
+            'block_categories' => 'boolean',
+            'block_tags' => 'boolean',
+            'block_comments' => 'boolean',
+            'block_reactions' => 'boolean',
+            'badge_points' => 'integer',
+            'profile_completed_rewarded_at' => 'datetime',
+        ];
     }
 
-    public function registerMediaCollections(): void
+    public function earnedBadges()
     {
-        $this->addMediaCollection('avatars')->singleFile();
+        if (!Schema::hasTable('badge_user')) {
+            return Badge::query()
+                ->active()
+                ->eligibleForUser($this)
+                ->where('min_points', '<=', (int) $this->badge_points)
+                ->orderByDesc('min_points')
+                ->orderBy('id');
+        }
+
+        return $this->awardedBadges()
+            ->where('badges.is_active', true)
+            ->where(function ($query): void {
+                $query
+                    ->whereNull('badges.eligible_profile_type')
+                    ->orWhere('badges.eligible_profile_type', '')
+                    ->orWhere('badges.eligible_profile_type', strtolower(trim((string) ($this->profile_type ?? 'person'))));
+            })
+            ->when(!(bool) $this->is_verified, fn ($query) => $query->where('badges.requires_verified', false))
+            ->where('badges.min_points', '<=', (int) $this->badge_points)
+            ->orderByDesc('badges.min_points')
+            ->orderBy('badges.id');
     }
 
-    public function isLoggedInUser(): bool
+    public function earnedBadgesCollection(): Collection
     {
-        return $this->id() === Auth::id();
+        if (Schema::hasTable('badge_user')) {
+            app(BadgeAwardSyncService::class)->syncForUser($this);
+        }
+
+        return $this->earnedBadges()->get();
     }
 
-    public function isModerator(): bool
+    public function nextBadge(): ?Badge
     {
-        return $this->hasRole('moderator');
+        return Badge::query()
+            ->active()
+            ->eligibleForUser($this)
+            ->where('min_points', '>', (int) $this->badge_points)
+            ->orderBy('min_points')
+            ->first();
+    }
+
+    public static function roleOptions(): array
+    {
+        return [
+            self::ROLE_ADMIN => 'Admin',
+            self::ROLE_EDITOR => 'Editor',
+            self::ROLE_WRITER => 'Yazar',
+            self::ROLE_BANNED => 'Banned',
+        ];
+    }
+
+    public static function roleDescriptions(): array
+    {
+        return [
+            self::ROLE_ADMIN => 'Admin paneline erisir, kullanicilari ve tum ayarlari yonetir.',
+            self::ROLE_EDITOR => 'Icerik duzenler, kategori ve etiket yonetebilir ama admin paneline giremez.',
+            self::ROLE_WRITER => 'Yazi ve yorum uretir, kategori ve etiket acamaz, admin paneline giremez.',
+            self::ROLE_BANNED => 'Tum icerik ve etkilesim yetkileri kapatilir, admin paneline giremez.',
+        ];
+    }
+
+    public static function restrictionLabels(): array
+    {
+        return [
+            'admin' => 'admin paneli',
+            'messages' => 'mesaj',
+            'posts' => 'gonderi',
+            'categories' => 'kategori',
+            'tags' => 'etiket',
+            'comments' => 'yorum',
+            'reactions' => 'reaksiyon',
+        ];
+    }
+
+    public static function manualRestrictionFields(): array
+    {
+        return [
+            'block_messages',
+            'block_posts',
+            'block_categories',
+            'block_tags',
+            'block_comments',
+            'block_reactions',
+        ];
+    }
+
+    public static function normalizeRoleValue(?string $role): string
+    {
+        $role = trim((string) $role);
+
+        return match ($role) {
+            self::ROLE_ADMIN,
+            self::ROLE_EDITOR,
+            self::ROLE_WRITER,
+            self::ROLE_BANNED => $role,
+            self::LEGACY_ROLE_SUPER_ADMIN => self::ROLE_ADMIN,
+            self::LEGACY_ROLE_BLOCKED => self::ROLE_BANNED,
+            self::LEGACY_ROLE_USER, '' => self::ROLE_WRITER,
+            default => self::ROLE_WRITER,
+        };
+    }
+
+    public static function roleBaseRestrictions(?string $role): array
+    {
+        return match (self::normalizeRoleValue($role)) {
+            self::ROLE_ADMIN => [],
+            self::ROLE_EDITOR => ['admin'],
+            self::ROLE_WRITER => ['admin', 'categories', 'tags'],
+            self::ROLE_BANNED => ['admin', 'messages', 'posts', 'categories', 'tags', 'comments', 'reactions'],
+            default => ['admin', 'categories', 'tags'],
+        };
+    }
+
+    public static function roleBaseRestrictionLabels(?string $role): array
+    {
+        $labels = self::restrictionLabels();
+
+        return collect(self::roleBaseRestrictions($role))
+            ->map(fn (string $ability) => $labels[$ability] ?? $ability)
+            ->values()
+            ->all();
+    }
+
+    public function normalizedRole(): string
+    {
+        return self::normalizeRoleValue($this->role);
+    }
+
+    public function roleLabel(): string
+    {
+        return self::roleOptions()[$this->normalizedRole()] ?? 'Yazar';
     }
 
     public function isAdmin(): bool
     {
-        return $this->hasRole('administrator');
+        return $this->normalizedRole() === self::ROLE_ADMIN;
     }
 
-    public function isSuspended(): bool
+    public function isEditor(): bool
     {
-        return $this->suspended_until !== null && Carbon::parse($this->suspended_until)->greaterThan(Carbon::now());
+        return $this->normalizedRole() === self::ROLE_EDITOR;
     }
 
-    public function isSoftDeleted(): bool
+    public function isWriter(): bool
     {
-        return $this->deleted_at !== null;
+        return $this->normalizedRole() === self::ROLE_WRITER;
     }
 
-    public function hasPassword(): bool
+    public function isBanned(): bool
     {
-        $password = $this->getAuthPassword();
-
-        return $password !== '' && $password !== null;
+        return $this->normalizedRole() === self::ROLE_BANNED;
     }
 
-    // Profile
-    public function profileBio()
+    public function isLastAdmin(): bool
     {
-        return $this->profile->bio();
-    }
-
-    public function location()
-    {
-        return $this->profile->location();
-    }
-
-    public function company()
-    {
-        return $this->profile->company();
-    }
-
-    public function education()
-    {
-        return $this->profile->education();
-    }
-
-    public function profileWebsite()
-    {
-        return $this->profile->website();
-    }
-
-    public function profileFacebook()
-    {
-        return $this->profile->facebook();
-    }
-
-    public function profileTwitter()
-    {
-        return $this->profile->twitter();
-    }
-
-    public function profileInstagram()
-    {
-        return $this->profile->instagram();
-    }
-
-    public function profileTiktok()
-    {
-        return $this->profile->tiktok();
-    }
-
-    public function profileYoutube()
-    {
-        return $this->profile->youtube();
-    }
-
-    public function profile(): HasOne
-    {
-        return $this->hasOne(Profile::class);
-    }
-
-    public function joinedDate()
-    {
-        return $this->created_at->format('d/m/Y');
-    }
-
-    public function stories(): HasMany
-    {
-        return $this->hasMany(Story::class);
-    }
-
-    public function comments(): HasMany
-    {
-        return $this->hasMany(Comment::class);
-    }
-
-    public function communities(): HasMany
-    {
-        return $this->hasMany(Community::class);
-    }
-
-    public function pollVotes()
-    {
-        return $this->hasMany(PollVote::class);
-    }
-
-    public function level()
-    {
-        return $this->belongsTo(Level::class);
-    }
-
-    public function badges()
-    {
-        return $this->hasMany(UserBadge::class);
-    }
-
-    public function conversations()
-    {
-        return $this->belongsToMany(Conversation::class)
-            ->withPivot('last_read_at')
-            ->withTimestamps()
-            ->latest('conversation_user.updated_at');
-    }
-
-    public function messages()
-    {
-        return $this->hasMany(Message::class);
-    }
-
-    public function kycDocument()
-    {
-        return $this->hasOne(KycDocument::class);
-    }
-
-    public function activityLogs()
-    {
-        return $this->hasMany(ActivityLog::class);
-    }
-
-    public function totalUnreadMessages(): int
-    {
-        $total = 0;
-        foreach ($this->conversations as $conversation) {
-            $total += $conversation->unreadCountForUser($this->id);
+        if (!$this->exists || !$this->isAdmin()) {
+            return false;
         }
 
-        return $total;
+        return !static::query()
+            ->where('role', self::ROLE_ADMIN)
+            ->whereKeyNot($this->getKey())
+            ->exists();
     }
 
-    public function getCommunityForMenu()
+    public function isBlockedRole(): bool
     {
-        return Community::select('name', 'avatar', 'slug')->where('user_id', $this->id)->get();
+        return $this->isBanned();
     }
 
-    public function countCommunities(): int
+    public function isBlockedFrom(string $capability): bool
     {
-        return $this->communities()->count();
-    }
+        $capability = strtolower(trim($capability));
 
-    public function countStories(): int
-    {
-        return $this->stories()->published()->count();
-    }
-
-    public function getUserPrimaryBadge()
-    {
-        return $this->badges()->where('sort_id', 1)->first();
-    }
-
-    public function primaryBadge()
-    {
-        return $this->hasOne(UserBadge::class)->with('badge')->where('sort_id', 1);
-    }
-
-    public function getAvatar()
-    {
-        if (! $this->avatar) {
-            if (isset($this->name)) {
-                return 'https://api.dicebear.com/7.x/avataaars/svg?seed='.urlencode($this->name).'?backgroundColor=%23caeaff';
-            }
-
-            return 'https://api.dicebear.com/7.x/avataaars/svg?seed='.urlencode($this->username).'?backgroundColor=%23caeaff';
+        if (in_array($capability, self::roleBaseRestrictions($this->role), true)) {
+            return true;
         }
 
-        if (isset($this->provider)) {
-            if (filter_var($this->avatar, FILTER_VALIDATE_URL)) {
-                return $this->avatar;
-            } else {
-                return Storage::disk(getCurrentDisk())->url($this->avatar);
-            }
-        } else {
-            return Storage::disk(getCurrentDisk())->url($this->avatar);
-        }
+        return match ($capability) {
+            'messages' => (bool) $this->block_messages,
+            'posts' => (bool) $this->block_posts,
+            'categories' => (bool) $this->block_categories,
+            'tags' => (bool) $this->block_tags,
+            'comments' => (bool) $this->block_comments,
+            'reactions' => (bool) $this->block_reactions,
+            default => false,
+        };
     }
 
-    public function getCoverImage()
+    public function blockedAbilityLabels(): array
     {
-        if (! $this->cover_image) {
-            return asset('images/cover_default.jpg');
-        }
+        $labels = self::roleBaseRestrictionLabels($this->role);
 
-        return Storage::disk(getCurrentDisk())->url($this->cover_image);
-    }
+        if ($this->block_messages) $labels[] = 'mesaj';
+        if ($this->block_posts) $labels[] = 'gonderi';
+        if ($this->block_categories) $labels[] = 'kategori';
+        if ($this->block_tags) $labels[] = 'etiket';
+        if ($this->block_comments) $labels[] = 'yorum';
+        if ($this->block_reactions) $labels[] = 'reaksiyon';
 
-    public function scopeActive($query)
-    {
-        return $query->whereNull('deleted_at');
-    }
-
-    public function scopeMostStories(Builder $query, int $inLastDays = null)
-    {
-        return $query->withCount(['stories as stories_count' => function ($query) use ($inLastDays) {
-            if ($inLastDays) {
-                $query->where('stories.published_at', '>=', now()->subDays($inLastDays));
-            }
-
-            return $query;
-        }])->orderByDesc('stories_count');
-    }
-
-    public function scopeMostStoriesInLastDays(Builder $query, int $days)
-    {
-        return $query->mostStories($days);
-    }
-
-    public function hasPollVoted($pollId)
-    {
-        return $this->pollVotes()->where('poll_id', $pollId)->count() > 0;
-    }
-
-    public function isChosenByUser($userId, $choiceId)
-    {
-        return $this->pollVotes->where('user_id', $userId)->where('poll_choice_id', $choiceId)->count() > 0;
-    }
-
-    // Need __supervisor__ to manage running your job server on the background.
-
-    // public function sendEmailVerificationNotification()
-    // {
-    //     $this->notify(new VerifyEmailQueued());
-    // }
-
-    // public function sendPasswordResetNotification($token)
-    // {
-    //     $this->notify(new ResetPasswordQueued($token));
-    // }
-
-    public function getFilamentAvatarUrl(): ?string
-    {
-        if (! $this->avatar) {
-            if (isset($this->name)) {
-                return 'https://api.dicebear.com/7.x/avataaars/svg?seed='.urlencode($this->name).'?backgroundColor=%23caeaff';
-            }
-
-            return 'https://api.dicebear.com/7.x/avataaars/svg?seed='.urlencode($this->username).'?backgroundColor=%23caeaff';
-        }
-
-        return Storage::disk(getCurrentDisk())->url($this->avatar);
+        return array_values(array_unique($labels));
     }
 
     public function canAccessPanel(Panel $panel): bool
     {
-        return auth()->user()->hasRole('administrator');
+        return $panel->getId() === 'admin'
+            && $this->isAdmin()
+            && !$this->isBlockedFrom('admin');
     }
 
-    public function getFilamentName(): string
+    protected static function booted(): void
     {
-        return auth()->user()->name ? $this->name : $this->username;
-    }
+        static::creating(function (User $user) {
+            if (empty($user->role)) {
+                $user->role = static::query()->exists() ? self::ROLE_WRITER : self::ROLE_ADMIN;
+            }
 
-    public function isOnline()
-    {
-        return Cache::has('is-online-'.$this->id) ? Cache::has('is-online-'.$this->id) : null;
-    }
+            $user->role = self::normalizeRoleValue($user->role);
 
-    public function addBadge($badge)
-    {
-        if ($badge) {
-            if (! $this->badges()->where('badge_id', $badge->id)->exists()) {
-                $userBadge = $this->badges()->where('badge_alias', $badge->alias)->first();
-                if (! $userBadge) {
-                    $userBadge = new UserBadge();
-                    $userBadge->sort_id = (UserBadge::count() + 1);
+            foreach (self::manualRestrictionFields() as $field) {
+                if (!array_key_exists($field, $user->attributes)) {
+                    $user->{$field} = false;
                 }
-                $userBadge->user_id = $this->id;
-                $userBadge->badge_id = $badge->id;
-                $userBadge->badge_alias = $badge->alias;
-                $userBadge->save();
+            }
+
+            if (empty($user->username)) {
+                $user->username = static::generateUniqueUsername($user->name ?? 'user');
+            }
+        });
+
+        static::saving(function (User $user) {
+            $user->role = self::normalizeRoleValue($user->role);
+
+            foreach (self::manualRestrictionFields() as $field) {
+                $user->{$field} = (bool) ($user->{$field} ?? false);
+            }
+
+            if ($user->isBanned()) {
+                foreach (self::manualRestrictionFields() as $field) {
+                    $user->{$field} = true;
+                }
+            }
+        });
+    }
+
+    public static function generateUniqueUsername(string $name): string
+    {
+        $base = Str::slug($name) ?: 'user';
+        $username = $base;
+        $suffix = 1;
+
+        while (static::where('username', $username)->exists()) {
+            $username = $base . '-' . $suffix;
+            $suffix++;
+        }
+
+        return $username;
+    }
+
+    public function getRouteKeyName(): string
+    {
+        return 'username';
+    }
+
+    public function posts(): HasMany
+    {
+        return $this->hasMany(Post::class, 'author_id');
+    }
+
+    public function bookmarks(): BelongsToMany
+    {
+        return $this->belongsToMany(Post::class, 'bookmarks')->withTimestamps();
+    }
+
+    public function followers(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'follows', 'followed_id', 'follower_id');
+    }
+
+    public function followings(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'follows', 'follower_id', 'followed_id');
+    }
+
+    public function followedCategories(): BelongsToMany
+    {
+        return $this->belongsToMany(Category::class, 'category_user')->withTimestamps();
+    }
+
+    public function awardedBadges(): BelongsToMany
+    {
+        return $this->belongsToMany(Badge::class, 'badge_user')
+            ->withPivot(['awarded_points', 'awarded_at'])
+            ->withTimestamps();
+    }
+
+    public function cookieConsents(): HasMany
+    {
+        return $this->hasMany(CookieConsent::class);
+    }
+
+    public function blockedUsers(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'user_blocks', 'blocker_id', 'blocked_id');
+    }
+
+    public function blockers(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'user_blocks', 'blocked_id', 'blocker_id');
+    }
+
+    public function hasBlocked(User $user): bool
+    {
+        return $this->blockedUsers()->where('blocked_id', $user->id)->exists();
+    }
+
+    public function isBlockedBy(User $user): bool
+    {
+        return $this->blockers()->where('blocker_id', $user->id)->exists();
+    }
+
+    public function getCoverPhotoUrlAttribute(): string
+    {
+        if ($this->cover_photo_path) {
+            $path = $this->cover_photo_path;
+
+            if (Storage::disk('public')->exists($path)) {
+                return Storage::disk('public')->url($path);
+            }
+
+            if (Str::startsWith($path, ['http://', 'https://', '//'])) {
+                return $path;
+            }
+
+            if (Str::startsWith($path, '/storage/')) {
+                return url($path);
+            }
+
+            if (Str::startsWith($path, 'storage/')) {
+                return url('/storage/' . Str::after($path, 'storage/'));
             }
         }
+
+        return 'https://images.unsplash.com/photo-1523906834658-6e24ef2386f9?auto=format&fit=crop&w=1200&q=80';
+    }
+
+    public function getProfilePhotoUrlAttribute(): string
+    {
+        $path = $this->profile_photo_path;
+
+        if ($path && Storage::disk($this->profilePhotoDisk())->exists($path)) {
+            return Storage::disk($this->profilePhotoDisk())->url($path);
+        }
+
+        if ($path && Str::startsWith($path, ['http://', 'https://', '//'])) {
+            $parsedHost = parse_url($path, PHP_URL_HOST);
+            $parsedPath = parse_url($path, PHP_URL_PATH);
+
+            if (is_string($parsedPath) && Str::startsWith($parsedPath, '/storage/') && in_array($parsedHost, ['localhost', '127.0.0.1'], true)) {
+                return url($parsedPath);
+            }
+
+            return $path;
+        }
+
+        if ($path && Str::startsWith($path, '/storage/')) {
+            return url($path);
+        }
+
+        if ($path && Str::startsWith($path, 'storage/')) {
+            return url('/storage/' . Str::after($path, 'storage/'));
+        }
+
+        return $this->defaultProfilePhotoUrl();
     }
 }

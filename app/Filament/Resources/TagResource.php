@@ -3,109 +3,82 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\TagResource\Pages;
-use Cviebrock\EloquentTaggable\Models\Tag;
-use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Infolists\Components\TextEntry;
-use Filament\Infolists\Infolist;
-use Filament\Notifications\Notification;
+use App\Models\Tag;
+use Filament\Actions;
+use Filament\Forms\Components\TextInput;
 use Filament\Resources\Resource;
-use Filament\Tables;
+use Filament\Schemas\Schema;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Illuminate\Support\Str;
 
 class TagResource extends Resource
 {
     protected static ?string $model = Tag::class;
 
-    protected static ?int $navigationSort = 3;
+    protected static string | \UnitEnum | null $navigationGroup = 'Blog';
 
-    protected static ?string $navigationIcon = 'heroicon-o-tag';
+    protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-tag';
 
-    public static function getNavigationGroup(): ?string
+    protected static bool $isGloballySearchable = true;
+
+    public static function form(Schema $schema): Schema
     {
-        return __('Main');
-    }
-
-    public static function getPluralModelLabel(): string
-    {
-        return __('Tags');
-    }
-
-    public static function form(Form $form): Form
-    {
-        return $form
-            ->schema([
-                Forms\Components\TextInput::make('name')
-                    ->label(__('Name'))
-                    ->required()
-                    ->maxValue(60),
-            ])->columns(1);
+        return $schema->schema([
+            TextInput::make('name')
+                ->label('Etiket adi')
+                ->required()
+                ->maxLength(255)
+                ->live(onBlur: true)
+                ->afterStateUpdated(fn (callable $set, ?string $state) => $set('slug', Str::slug($state))),
+            TextInput::make('slug')
+                ->required()
+                ->maxLength(255)
+                ->unique(table: 'tags', column: 'slug', ignoreRecord: true),
+        ]);
     }
 
     public static function table(Table $table): Table
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name')
-                    ->label(__('Name'))
-                    ->sortable()
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('normalized')
-                    ->label(__('Slug'))
+                TextColumn::make('name')
+                    ->label('Etiket')
+                    ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->label(__('Date'))
-                    ->date(),
-            ])->defaultSort('tag_id', 'desc')
-            ->filters([
-                //
+                TextColumn::make('slug')
+                    ->searchable(),
+                TextColumn::make('posts_count')
+                    ->label('Gonderi Sayisi')
+                    ->counts('posts'),
             ])
             ->actions([
-                Tables\Actions\EditAction::make()->modalWidth('md'),
-                Tables\Actions\DeleteAction::make()->before(
-                    function ($record, Tables\Actions\DeleteAction $action) {
-                        if (env('DEMO_MODE') == true) {
-                            Notification::make()
-                                ->title('Warning!')
-                                ->body("You can't delete because DEMO_MODE is enabled.")
-                                ->status('warning')
-                                ->send();
-                            $action->cancel();
-                        }
-                    }
-                ),
-            ])->bulkActions([
-                    Tables\Actions\BulkActionGroup::make([
-                        Tables\Actions\DeleteBulkAction::make()->before(
-                            function ($records, Tables\Actions\DeleteBulkAction $action) {
-                                if (env('DEMO_MODE') == true) {
-                                    Notification::make()
-                                        ->title('Warning!')
-                                        ->body("You can't delete because DEMO_MODE is enabled.")
-                                        ->status('warning')
-                                        ->send();
-                                    $action->cancel();
-                                }
-                            }
-                        ),
-                    ]),
-                ]);
-    }
-
-    public static function infolist(Infolist $infolist): Infolist
-    {
-        return $infolist
-            ->schema([
-                TextEntry::make('name'),
+                Actions\EditAction::make(),
+                Actions\DeleteAction::make(),
             ])
-            ->columns(1)
-            ->inlineLabel();
+            ->bulkActions([
+                Actions\DeleteBulkAction::make(),
+            ]);
     }
 
     public static function getPages(): array
     {
         return [
             'index' => Pages\ListTags::route('/'),
+            'create' => Pages\CreateTag::route('/create'),
+            'edit' => Pages\EditTag::route('/{record}/edit'),
         ];
     }
+
+    public static function getGloballySearchableAttributes(): array
+    {
+        return ['name', 'slug'];
+    }
 }
+
+
+
+
+
+
+

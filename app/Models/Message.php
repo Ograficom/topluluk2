@@ -2,38 +2,40 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Message extends Model
 {
-    protected $table = 'messages';
+    use HasFactory;
 
-    protected $guarded = [];
+    protected $fillable = [
+        'sender_id',
+        'recipient_id',
+        'body',
+        'read_at',
+        'attachment_path',
+        'attachment_mime',
+        'attachment_name',
+        'attachment_size',
+        'deleted_by_sender',
+        'deleted_by_recipient',
+    ];
 
     protected $casts = [
         'read_at' => 'datetime',
+        'deleted_by_sender' => 'boolean',
+        'deleted_by_recipient' => 'boolean',
     ];
 
-    public function conversation(): BelongsTo
+    public function sender(): BelongsTo
     {
-        return $this->belongsTo(Conversation::class);
+        return $this->belongsTo(User::class, 'sender_id');
     }
 
-    public function user(): BelongsTo
+    public function recipient(): BelongsTo
     {
-        return $this->belongsTo(User::class);
-    }
-
-    public function isRead(): bool
-    {
-        return $this->read_at !== null;
-    }
-
-    public function markAsRead(): void
-    {
-        if (! $this->read_at) {
-            $this->update(['read_at' => now()]);
-        }
+        return $this->belongsTo(User::class, 'recipient_id');
     }
 }

@@ -2,121 +2,57 @@
 
 namespace App\Models;
 
-use App\Models\Traits\Favoriteable;
-use App\Models\Traits\Likeable;
-use App\Services\CommentMentionExtractorService;
-use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Support\Facades\Storage;
-use Mews\Purifier\Casts\CleanHtmlInput;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Comment extends Model
 {
-    use Favoriteable;
-    use Likeable;
-    use SoftDeletes;
+    use HasFactory;
 
     protected $fillable = [
-        'user_id',
-        'comment',
+        'post_id',
         'parent_id',
-        'commentable_id',
-        'commentable_type',
-        'spam_reports',
+        'user_id',
+        'author_name',
+        'author_email',
+        'content',
+        'is_approved',
     ];
 
     protected $casts = [
-        'comment' => CleanHtmlInput::class,
+        'is_approved' => 'boolean',
     ];
 
-    // Event hook
-    public static function boot()
+    public function post(): BelongsTo
     {
-        parent::boot();
-
-        static::created(function (Comment $comment) {
-            $comment->mentions()->createMany(
-                (new CommentMentionExtractorService($comment->comment))->getMentionEntities()
-            );
-        });
+        return $this->belongsTo(Post::class);
     }
 
-    public function getLikersCountAttribute()
+    public function user(): BelongsTo
     {
-        return $this->likers()->count();
+        return $this->belongsTo(User::class);
     }
 
-    public function getFavoritersCountAttribute()
+    public function parent(): BelongsTo
     {
-        return $this->favoriters()->count();
+        return $this->belongsTo(Comment::class, 'parent_id');
     }
 
-    public function isReply()
+    public function replies(): HasMany
     {
-        return $this->parent_id !== null;
+        return $this->hasMany(Comment::class, 'parent_id');
     }
 
-    public function scopeParent(Builder $builder)
+    public function reactions(): HasMany
     {
-        $builder->whereNull('parent_id');
+        return $this->hasMany(CommentReaction::class);
     }
 
-    public function parentComment()
+    public function scopeApproved(Builder $query): Builder
     {
-        return $this->belongsTo(self::class, 'parent_id');
-    }
-
-    public function user()
-    {
-        return $this->belongsTo(User::class, 'user_id');
-    }
-
-    public function story()
-    {
-        return $this->belongsTo(Story::class, 'commentable_id');
-    }
-
-    public function replies()
-    {
-        return $this->hasMany(self::class, 'parent_id')->withTrashed();
-    }
-
-    public function commentable()
-    {
-        return $this->morphTo();
-    }
-
-    public function mentions()
-    {
-        return $this->hasMany(CommentMention::class);
-    }
-
-    public function likes()
-    {
-        return $this->morphMany(Like::class, 'likeable');
-    }
-
-    public function getMedia()
-    {
-        if (! $this->media_path) {
-            return null;
-        }
-
-        return Storage::disk(getCurrentDisk())->url($this->media_path);
-    }
-
-    public function getMediaMimeType(): ?string
-    {
-        return str_contains($this->media_mime_type, 'video/')
-            ? 'video'
-            : (str_contains($this->media_mime_type, 'image/')
-                ? 'image'
-                : null);
-    }
-
-    public function isPostAuthor()
-    {
-        return $this->story->user_id == $this->user_id;
+        return $query->where('is_approved', true);
     }
 }

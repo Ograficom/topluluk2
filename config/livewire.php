@@ -38,7 +38,19 @@ return [
     |
     */
 
-    'layout' => 'layouts.app',
+    'layout' => 'components.layouts.app',
+
+    /*
+    |---------------------------------------------------------------------------
+    | Lazy Loading Placeholder
+    |---------------------------------------------------------------------------
+    | Livewire allows you to lazy load components that would otherwise slow down
+    | the initial page load. Every component can have a custom placeholder or
+    | you can define the default placeholder view for all components below.
+    |
+    */
+
+    'lazy_placeholder' => null,
 
     /*
     |---------------------------------------------------------------------------
@@ -52,16 +64,22 @@ return [
     */
 
     'temporary_file_upload' => [
-        'disk' => 'temp',        // Example: 'local', 's3'              | Default: 'default'
-        'rules' => ['required', 'file', 'mimes:png,jpg,jpeg,webp,gif,mp3,mp4,mov,avi,wmv,webm,mpeg4,ts,mpg,rm,rmvb,mkv', 'max:512000'],       // Example: ['file', 'mimes:png,jpg']  | Default: ['required', 'file', 'max:12288'] (12MB)
+        'disk' => null,        // Example: 'local', 's3'              | Default: 'default'
+        'rules' => [
+            'required',
+            'file',
+            'max:5242880', // 5GB (KB)
+            'mimetypes:video/mp4,video/webm,video/quicktime,video/ogg,video/x-matroska,video/x-msvideo,video/avi,video/mpeg,video/3gpp,application/octet-stream,image/jpeg,image/png,image/gif,image/webp,image/svg+xml',
+        ],
         'directory' => null,   // Example: 'tmp'                      | Default: 'livewire-tmp'
-        'middleware' => null,  // Example: 'throttle:5,1'             | Default: 'throttle:60,1'
+        'middleware' => 'throttle:240,1',
         'preview_mimes' => [   // Supported file types for temporary pre-signed file URLs...
             'png', 'gif', 'bmp', 'svg', 'wav', 'mp4',
             'mov', 'avi', 'wmv', 'mp3', 'm4a',
             'jpg', 'jpeg', 'mpga', 'webp', 'wma',
         ],
-        'max_upload_time' => 5, // Max duration (in minutes) before an upload is invalidated...
+        'max_upload_time' => 120, // Max duration (in minutes) before an upload is invalidated...
+        'cleanup' => true, // Should cleanup temporary uploads older than 24 hrs...
     ],
 
     /*
@@ -116,6 +134,7 @@ return [
 
     'navigate' => [
         'show_progress_bar' => true,
+        'progress_bar_color' => '#2299dd',
     ],
 
     /*
@@ -133,6 +152,19 @@ return [
 
     /*
     |---------------------------------------------------------------------------
+    | Smart Wire Keys
+    |---------------------------------------------------------------------------
+    |
+    | Livewire uses loops and keys used within loops to generate smart keys that
+    | are applied to nested components that don't have them. This makes using
+    | nested components more reliable by ensuring that they all have keys.
+    |
+    */
+
+    'smart_wire_keys' => false,
+
+    /*
+    |---------------------------------------------------------------------------
     | Pagination Theme
     |---------------------------------------------------------------------------
     |
@@ -143,4 +175,17 @@ return [
     */
 
     'pagination_theme' => 'tailwind',
+
+    /*
+    |---------------------------------------------------------------------------
+    | Release Token
+    |---------------------------------------------------------------------------
+    |
+    | This token is stored client-side and sent along with each request to check
+    | a users session to see if a new release has invalidated it. If there is
+    | a mismatch it will throw an error and prompt for a browser refresh.
+    |
+    */
+
+    'release_token' => 'a',
 ];

@@ -3,354 +3,205 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\UserResource\Pages;
-use App\Filament\Resources\UserResource\RelationManagers;
 use App\Models\User;
-use Carbon\Carbon;
+use Filament\Actions;
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
+use Filament\Schemas\Components\Grid;
+use Filament\Schemas\Components\Utilities\Get;
+use Filament\Schemas\Schema;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\ValidationException;
 
 class UserResource extends Resource
 {
     protected static ?string $model = User::class;
 
-    protected static ?string $recordTitleAttribute = 'username';
+    protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-users';
 
-    protected static ?int $navigationSort = 4;
+    protected static string | \UnitEnum | null $navigationGroup = 'Kullanicilar';
 
-    protected static ?string $navigationIcon = 'heroicon-o-users';
+    protected static ?string $navigationLabel = 'Kullanicilar';
 
-    public static function getNavigationGroup(): ?string
+    protected static ?string $pluralModelLabel = 'Kullanicilar';
+
+    protected static ?string $modelLabel = 'Kullanici';
+
+    protected static bool $isGloballySearchable = true;
+
+    public static function form(Schema $schema): Schema
     {
-        return __('Main');
-    }
-
-    public static function getPluralModelLabel(): string
-    {
-        return __('Users');
-    }
-
-    public static function form(Form $form): Form
-    {
-        return $form
-            ->schema([
-                Forms\Components\Group::make()
-                    ->schema([
-                        Forms\Components\Section::make(__('Account'))
-                            ->schema([
-                                Forms\Components\TextInput::make('name')
-                                    ->label(__('Name'))
-                                    ->maxValue(100),
-
-                                Forms\Components\TextInput::make('username')
-                                    ->label(__('Username'))
-                                    ->maxValue(60)
-                                    ->required(),
-
-                                Forms\Components\TextInput::make('email')
-                                    ->label(__('Email address'))
-                                    ->required()
-                                    ->email()
-                                    ->unique(ignoreRecord: true)
-                                    ->columnSpanFull(),
-
-                                Forms\Components\TextInput::make('password')
-                                    ->password()
-                                    ->label(__('Password'))
-                                    ->dehydrateStateUsing(fn (string $state): string => Hash::make($state))
-                                    ->dehydrated(fn (?string $state): bool => filled($state))
-                                    ->columnSpanFull(),
-
-                                Forms\Components\Select::make('roles')
-                                    ->label(__('Select role'))
-                                    ->multiple()
-                                    ->relationship('roles', 'name')
-                                    ->maxItems(1)
-                                    ->preload()
-                                    ->required()
-                                    ->columnSpanFull(),
-
-                            ])
-                            ->columns(2)
-                            ->collapsible(),
-                        Forms\Components\Section::make(__('Cover image'))
-                            ->schema([
-                                Forms\Components\FileUpload::make('cover_image')
-                                    ->image()
-                                    ->imageEditor()
-                                    ->disk(getCurrentDisk())
-                                    ->directory('covers')
-                                    ->visibility('public')
-                                    ->hiddenLabel(),
-                            ])->collapsed(),
-                        Forms\Components\Section::make(__('Profile'))
-                            ->relationship('profile')
-                            ->schema([
-                                Forms\Components\Textarea::make('bio')
-                                    ->label(__('Bio'))
-                                    ->autosize()
-                                    ->minLength(5)
-                                    ->maxLength(200),
-                                Forms\Components\TextInput::make('website')
-                                    ->label(__('Website'))
-                                    ->prefixIcon('heroicon-m-globe-alt')
-                                    ->url()
-                                    ->minValue(5)
-                                    ->maxValue(100),
-                                Forms\Components\TextInput::make('location')
-                                    ->label(__('Location'))
-                                    ->prefixIcon('heroicon-m-map')
-                                    ->minValue(3)
-                                    ->maxValue(100),
-                                Forms\Components\TextInput::make('company')
-                                    ->label(__('Company'))
-                                    ->prefixIcon('heroicon-m-briefcase')
-                                    ->minValue(3)
-                                    ->maxValue(100),
-                                Forms\Components\TextInput::make('education')
-                                    ->label(__('Education'))
-                                    ->prefixIcon('heroicon-m-academic-cap')
-                                    ->minValue(10)
-                                    ->maxValue(100),
-                                Forms\Components\TextInput::make('facebook')
-                                    ->label(__('Facebook'))
-                                    ->prefixIcon('heroicon-m-globe-alt')
-                                    ->url()
-                                    ->minValue(6)
-                                    ->maxValue(200),
-                                Forms\Components\TextInput::make('twitter')
-                                    ->label(__('Twitter'))
-                                    ->prefixIcon('heroicon-m-globe-alt')
-                                    ->url()
-                                    ->minValue(6)
-                                    ->maxValue(200),
-                                Forms\Components\TextInput::make('instagram')
-                                    ->label(__('Instagram'))
-                                    ->prefixIcon('heroicon-m-globe-alt')
-                                    ->url()
-                                    ->minValue(6)
-                                    ->maxValue(200),
-                                Forms\Components\TextInput::make('tiktok')
-                                    ->label(__('Tiktok'))
-                                    ->prefixIcon('heroicon-m-globe-alt')
-                                    ->url()
-                                    ->minValue(6)
-                                    ->maxValue(200),
-                                Forms\Components\TextInput::make('youtube')
-                                    ->label(__('Youtube'))
-                                    ->prefixIcon('heroicon-m-globe-alt')
-                                    ->url()
-                                    ->minValue(6)
-                                    ->maxValue(200),
-                            ])->collapsed(),
-                    ])->columnSpan(['lg' => fn (?User $record) => $record === null ? 2 : 2]),
-
-                Forms\Components\Section::make()
-                    ->schema([
-                        Forms\Components\FileUpload::make('avatar')
-                            ->label(__('Avatar'))
-                            ->image()
-                            ->imageEditor()
-                            ->imageEditorMode(2)
-                            ->disk(getCurrentDisk())
-                            ->directory('avatars')
-                            ->visibility('public'),
-
-                        Forms\Components\DatePicker::make('email_verified_at')
-                            ->label(__('Email verified'))
-                            ->native(false)
-                            ->placeholder(__('Not verified'))
-                            ->timezone(config('app.timezone')),
-
-                        Forms\Components\Placeholder::make('created_at')
-                            ->label(__('Created'))
-                            ->content(fn (User $record): ?string => $record->created_at?->diffForHumans())
-                            ->hidden(fn (?User $record) => $record === null),
-
-                        Forms\Components\Placeholder::make('last_seen')
-                            ->label(__('Last online'))
-                            ->content(fn (User $record): ?string => $record->last_seen?->diffForHumans())
-                            ->hidden(fn (User|null $record) => $record === null),
-
-                        Forms\Components\Placeholder::make('suspended_until')
-                            ->label(__('Status'))
-                            ->content(fn (User $record): ?string => $record->suspended_until !== null && Carbon::parse($record->suspended_until)->greaterThan(Carbon::now()) ? __('Suspended') : __('Active'))
-                            ->hidden(fn (?User $record) => $record === null),
+        return $schema->schema([
+            Grid::make(2)->schema([
+                Forms\Components\FileUpload::make('profile_photo_path')
+                    ->label('Profil foto')
+                    ->image()
+                    ->imageEditor()
+                    ->directory('profile-photos')
+                    ->disk('public')
+                    ->previewable(true),
+                Forms\Components\FileUpload::make('cover_photo_path')
+                    ->label('Kapak foto')
+                    ->image()
+                    ->imageEditor()
+                    ->directory('cover-photos')
+                    ->disk('public')
+                    ->previewable(true),
+            ]),
+            Grid::make(2)->schema([
+                Forms\Components\TextInput::make('name')
+                    ->label('Isim')
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('email')
+                    ->label('Email')
+                    ->email()
+                    ->required()
+                    ->unique(ignoreRecord: true),
+                Forms\Components\Select::make('role')
+                    ->label('Rol')
+                    ->options(User::roleOptions())
+                    ->default(User::ROLE_WRITER)
+                    ->required()
+                    ->live()
+                    ->helperText(fn (Get $get) => User::roleDescriptions()[User::normalizeRoleValue($get('role'))] ?? null),
+                Forms\Components\Select::make('profile_type')
+                    ->label('Profil turu')
+                    ->options([
+                        'person' => 'Kisi',
+                        'organization' => 'Kurulus',
                     ])
-                    ->columnSpan(['lg' => 1]),
-            ])
-            ->columns(3);
+                    ->default('person')
+                    ->required(),
+                Forms\Components\TextInput::make('password')
+                    ->label('Parola')
+                    ->password()
+                    ->dehydrated(fn (?string $state) => filled($state))
+                    ->dehydrateStateUsing(fn (?string $state) => filled($state) ? Hash::make($state) : null)
+                    ->required(fn (string $context) => $context === 'create')
+                    ->maxLength(255),
+            ]),
+            Forms\Components\Placeholder::make('role_rules')
+                ->label('Rol kurali')
+                ->content(function (Get $get): string {
+                    $labels = User::roleBaseRestrictionLabels($get('role'));
+
+                    return empty($labels)
+                        ? 'Bu rolde sabit bir kisit yok.'
+                        : 'Bu rolde sabit kisitlar: ' . implode(', ', $labels) . '.';
+                }),
+            Forms\Components\Placeholder::make('restriction_info')
+                ->label('Ek kisitlamalar')
+                ->content('Asagidaki togglelar role ek olarak ekstra yasak uygular. Banned rolu secilirse tum etkileşimler otomatik kapanir.'),
+            Grid::make(2)
+                ->schema([
+                    Forms\Components\Toggle::make('block_messages')->label('Mesaj engeli'),
+                    Forms\Components\Toggle::make('block_posts')->label('Gonderi engeli'),
+                    Forms\Components\Toggle::make('block_categories')->label('Kategori engeli'),
+                    Forms\Components\Toggle::make('block_tags')->label('Etiket engeli'),
+                    Forms\Components\Toggle::make('block_comments')->label('Yorum engeli'),
+                    Forms\Components\Toggle::make('block_reactions')->label('Reaksiyon engeli'),
+                ])
+                ->visible(fn (Get $get) => User::normalizeRoleValue($get('role')) !== User::ROLE_BANNED),
+            Forms\Components\Placeholder::make('banned_notice')
+                ->label('Banned modu')
+                ->content('Banned rolunde admin paneli, mesaj, gonderi, kategori, etiket, yorum ve reaksiyon yetkileri otomatik olarak kapanir.')
+                ->visible(fn (Get $get) => User::normalizeRoleValue($get('role')) === User::ROLE_BANNED),
+            Forms\Components\Textarea::make('bio')
+                ->label('Bio')
+                ->rows(3),
+            Grid::make(2)->schema([
+                Forms\Components\TextInput::make('social_x')
+                    ->label('X')
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('social_instagram')
+                    ->label('Instagram')
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('social_whatsapp')
+                    ->label('WhatsApp')
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('social_tiktok')
+                    ->label('TikTok')
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('social_facebook')
+                    ->label('Facebook')
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('website_url')
+                    ->label('Website')
+                    ->url()
+                    ->maxLength(255),
+            ]),
+            Grid::make(2)->schema([
+                Forms\Components\DateTimePicker::make('joined_at')
+                    ->label('Katilma tarihi'),
+                Forms\Components\Toggle::make('is_verified')
+                    ->label('Onayli hesap'),
+                Forms\Components\TextInput::make('badge_points')
+                    ->label('Rozet puani')
+                    ->numeric()
+                    ->default(0)
+                    ->minValue(0)
+                    ->helperText('Kullanici bu puana gore birden fazla rozet kazanabilir.'),
+            ]),
+        ]);
     }
 
     public static function table(Table $table): Table
     {
         return $table
             ->columns([
-                Tables\Columns\ImageColumn::make('avatar')
-                    ->label('Avatar')
-                    ->circular()
-                    ->extraImgAttributes(['loading' => 'lazy'])
-                    ->defaultImageUrl(fn ($record): string => $record->getAvatar()),
                 Tables\Columns\TextColumn::make('name')
-                    ->label(__('Name'))
-                    ->sortable()
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('username')
-                    ->label(__('Username'))
-                    ->sortable()
-                    ->searchable(),
+                    ->label('Isim')
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('email')
-                    ->label(__('Email'))
-                    ->sortable()
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('roles.name')
-                    ->label(__('Role'))
-                    ->badge()
-                    ->color(fn (string $state): string => match ($state) {
-                        'user' => 'gray',
-                        'author' => 'gray',
-                        'editor' => 'gray',
-                        'moderator' => 'warning',
-                        'administrator' => 'success',
-                        'readonly' => 'danger',
-                    })
+                    ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('suspended_until')
-                    ->badge()
-                    ->getStateUsing(fn (User $record): string => $record->suspended_until !== null && Carbon::parse($record->suspended_until)->greaterThan(Carbon::now()) ? __('Suspended') : __('Active'))
-                    ->color(fn (string $state): string => match ($state) {
-                        __('Active') => 'success',
-                        __('Suspended') => 'warning',
-                    })
-                    ->label(__('Status'))
+                Tables\Columns\BadgeColumn::make('role')
+                    ->label('Rol')
+                    ->formatStateUsing(fn (?string $state) => User::roleOptions()[User::normalizeRoleValue($state)] ?? 'Yazar')
+                    ->color(fn (?string $state) => match (User::normalizeRoleValue($state)) {
+                        User::ROLE_ADMIN => 'success',
+                        User::ROLE_EDITOR => 'warning',
+                        User::ROLE_WRITER => 'gray',
+                        User::ROLE_BANNED => 'danger',
+                        default => 'gray',
+                    }),
+                Tables\Columns\TextColumn::make('restriction_summary')
+                    ->label('Kisitlar')
+                    ->state(fn (User $record) => $record->blockedAbilityLabels()
+                        ? implode(', ', $record->blockedAbilityLabels())
+                        : 'Yok')
+                    ->wrap(),
+                Tables\Columns\IconColumn::make('is_verified')
+                    ->label('Onayli')
+                    ->boolean(),
+                Tables\Columns\TextColumn::make('badge_points')
+                    ->label('Rozet Puani')
+                    ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('stories_count')
-                    ->counts([
-                        'stories' => fn (Builder $query) => $query->whereNotNull('published_at'),
-                    ])
-                    ->badge()
-                    ->color('gray')
-                    ->label(__('Stories'))
+                Tables\Columns\TextColumn::make('joined_at')
+                    ->label('Katilma')
+                    ->dateTime()
                     ->sortable(),
-            ])->defaultSort('id', 'desc')
+                Tables\Columns\TextColumn::make('created_at')
+                    ->label('Olusturuldu')
+                    ->since(),
+            ])
             ->filters([
-                Tables\Filters\TrashedFilter::make(),
+                Tables\Filters\SelectFilter::make('role')
+                    ->options(User::roleOptions()),
             ])
             ->actions([
-                Tables\Actions\EditAction::make()->label(false)->size('md')->tooltip(__('Edit')),
-                Tables\Actions\DeleteAction::make()->before(
-                    function ($record, Tables\Actions\DeleteAction $action) {
-                        if (env('DEMO_MODE') == true) {
-                            Notification::make()
-                                ->title('Warning!')
-                                ->body("You can't delete because DEMO_MODE is enabled.")
-                                ->status('warning')
-                                ->send();
-                            $action->cancel();
-                        }
-                    }
-                )
-                    ->label(false)
-                    ->size('md')
-                    ->tooltip(__('Delete'))
-                    ->action(function (User $user): void {
-                        if ($user->stories()->published()->count() > 0) {
-                            Notification::make()
-                                ->warning()
-                                ->title(__('Can\'t delete account!'))
-                                ->body($user->stories->count().__(' stories please delete them before deleting account!'))
-                                ->seconds(10)
-                                ->send();
-                        } else {
-                            $user->favorites()->where('user_id', $user->id)->each(function ($favorite) {
-                                $favorite->delete();
-                            });
-
-                            $user->likes()->where('user_id', $user->id)->each(function ($like) {
-                                $like->delete();
-                            });
-
-                            $user->followables()->where('followable_id', $user->id)->each(function ($follows) {
-                                $follows->delete();
-                            });
-                            $user->followings()->where('user_id', $user->id)->each(function ($following) {
-                                $following->delete();
-                            });
-
-                            $user->blokers()->each(function ($bloker) {
-                                $bloker->delete();
-                            });
-
-                            $user->blocking()->each(function ($blocking) {
-                                $blocking->delete();
-                            });
-
-                            $user->badges()->each(function ($badge) {
-                                $badge->delete();
-                            });
-
-                            $user->comments()->each(function ($comment) {
-                                $comment->delete();
-                            });
-
-                            if ($user->pollVotes()->exists()) {
-                                $user->pollVotes()->delete();
-                            }
-
-                            $user->delete();
-
-                            Notification::make()
-                                ->success()
-                                ->title(__('Account deleted'))
-                                ->seconds(10)
-                                ->send();
-                        }
-                    }),
+                Actions\EditAction::make(),
+                Actions\DeleteAction::make()
+                    ->disabled(fn (User $record) => $record->isLastAdmin())
+                    ->tooltip(fn (User $record) => $record->isLastAdmin() ? 'Son admin kullanici silinemez.' : null),
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make()->before(
-                        function ($records, Tables\Actions\DeleteBulkAction $action) {
-                            if (env('DEMO_MODE') == true) {
-                                Notification::make()
-                                    ->title('Warning!')
-                                    ->body("You can't delete because DEMO_MODE is enabled.")
-                                    ->status('warning')
-                                    ->send();
-                                $action->cancel();
-                            }
-                        }
-                    ),
-                    Tables\Actions\ForceDeleteBulkAction::make()->before(
-                        function ($records, Tables\Actions\ForceDeleteBulkAction $action) {
-                            if (env('DEMO_MODE') == true) {
-                                Notification::make()
-                                    ->title('Warning!')
-                                    ->body("You can't delete because DEMO_MODE is enabled.")
-                                    ->status('warning')
-                                    ->send();
-                                $action->cancel();
-                            }
-                        }
-                    ),
-                    Tables\Actions\RestoreBulkAction::make(),
-                ]),
-            ]);
-    }
-
-    public static function getRelations(): array
-    {
-        return [
-            RelationManagers\StoriesRelationManager::class,
-            RelationManagers\CommentsRelationManager::class,
-            RelationManagers\BadgesRelationManager::class,
-        ];
+            ->bulkActions([]);
     }
 
     public static function getPages(): array
@@ -362,11 +213,66 @@ class UserResource extends Resource
         ];
     }
 
-    public static function getEloquentQuery(): Builder
+    public static function shouldRegisterNavigation(): bool
     {
-        return parent::getEloquentQuery()->with(['stories', 'comments'])
-            ->withoutGlobalScopes([
-                SoftDeletingScope::class,
+        return auth()->user()?->isAdmin() ?? false;
+    }
+
+    public static function canViewAny(): bool
+    {
+        return auth()->user()?->isAdmin() ?? false;
+    }
+
+    public static function canCreate(): bool
+    {
+        return auth()->user()?->isAdmin() ?? false;
+    }
+
+    public static function canEdit(Model $record): bool
+    {
+        return auth()->user()?->isAdmin() ?? false;
+    }
+
+    public static function canDelete(Model $record): bool
+    {
+        return (auth()->user()?->isAdmin() ?? false) && !$record->isLastAdmin();
+    }
+
+    public static function canDeleteAny(): bool
+    {
+        return auth()->user()?->isAdmin() ?? false;
+    }
+
+    public static function normalizeFormData(array $data): array
+    {
+        $data['role'] = User::normalizeRoleValue($data['role'] ?? null);
+
+        foreach (User::manualRestrictionFields() as $field) {
+            $data[$field] = (bool) ($data[$field] ?? false);
+        }
+
+        if ($data['role'] === User::ROLE_BANNED) {
+            foreach (User::manualRestrictionFields() as $field) {
+                $data[$field] = true;
+            }
+        }
+
+        return $data;
+    }
+
+    public static function ensureAdminIntegrity(?User $record, array $data): void
+    {
+        $targetRole = User::normalizeRoleValue($data['role'] ?? $record?->role);
+
+        if (
+            $record
+            && $record->isAdmin()
+            && $targetRole !== User::ROLE_ADMIN
+            && $record->isLastAdmin()
+        ) {
+            throw ValidationException::withMessages([
+                'role' => 'Sistemde en az bir admin kalmalidir.',
             ]);
+        }
     }
 }
