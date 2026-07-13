@@ -19964,6 +19964,28 @@ body.dark .post-show-shell .ps-show-stats-close,
       bottom: calc(142px + env(safe-area-inset-bottom, 0px)) !important;
     }
   }
+
+  /* Featured image alignment: match article-body media on every viewport. */
+  .post-show-shell .ps-post-image {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 0 14px !important;
+    box-sizing: border-box !important;
+    transform: none !important;
+  }
+
+  .post-show-shell .ps-post-image > img {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    height: auto !important;
+    margin: 0 !important;
+    box-sizing: border-box !important;
+    object-fit: cover !important;
+    object-position: center center !important;
+    transform: none !important;
+  }
 </style>
 @endpush
 
