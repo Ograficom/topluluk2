@@ -15,4 +15,6 @@ Schedule::command('app:update-user-membership-years-badge')->daily();
 
 Schedule::command('app:update-sitemap')->daily();
 
+Schedule::command('rss:import')->hourly()->withoutOverlapping()->onOneServer();
+
 Schedule::command('disposable:update')->weekly();
