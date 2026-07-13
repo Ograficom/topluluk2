@@ -224,7 +224,7 @@
           maxlength="500"
           placeholder="Yorumunu buraya yaz..."
           wrap="soft"
-          oninput="window.ogx3ResizeComment && window.ogx3ResizeComment(this)">{{ old('content') }}</textarea>
+          oninput="this.style.setProperty('height','0px','important');var h=Math.min(Math.max(this.scrollHeight+2,72),360);this.style.setProperty('height',h+'px','important');this.style.setProperty('overflow-y',this.scrollHeight>360?'auto':'hidden','important');">{{ old('content') }}</textarea>
 
         <div class="ogx3-preview" id="show-comment-image-preview" data-ogx-preview hidden></div>
         <div id="show-comment-gif-preview" data-gif-preview class="ogx3-preview" hidden></div>
@@ -1800,7 +1800,10 @@
   window.ogxGrowTextarea = function (textarea) {
     if (!textarea) return;
 
-    var minHeight = textarea.classList && textarea.classList.contains('ogx3-textarea') ? 64 : 36;
+    /* Main shadcn composer owns its sizing through its inline input handler. */
+    if (textarea.classList && textarea.classList.contains('ogx3-textarea')) return;
+
+    var minHeight = 36;
     var maxHeight = Number(textarea.getAttribute('data-ogx-max-height') || 520);
 
     textarea.style.setProperty('height', 'auto', 'important');
@@ -1887,7 +1890,11 @@
     textarea.value = before + text + after;
     textarea.focus();
     textarea.selectionStart = textarea.selectionEnd = start + text.length;
-    grow(textarea);
+    if (textarea.classList.contains('ogx3-textarea') && typeof textarea.oninput === 'function') {
+      textarea.oninput();
+    } else {
+      grow(textarea);
+    }
 
     var composer = closestIn(textarea, '[data-ogx-composer]', null);
     if (composer) refreshComposer(composer);
@@ -2125,8 +2132,9 @@
   }
 
   html body .post-show-shell #show-comment-form .ogx3-field {
-    display: flex !important;
-    flex-direction: column !important;
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    grid-template-rows: auto auto auto !important;
     width: 100% !important;
     min-height: 146px !important;
     padding: 16px 18px 14px !important;
@@ -2152,7 +2160,7 @@
     width: 100% !important;
     position: static !important;
     flex: 0 0 auto !important;
-    height: 72px !important;
+    height: auto !important;
     min-height: 72px !important;
     max-height: 360px !important;
     padding: 4px 0 10px !important;
@@ -2188,7 +2196,7 @@
     gap: 14px !important;
     width: 100% !important;
     min-height: 38px !important;
-    margin-top: auto !important;
+    margin-top: 8px !important;
     position: static !important;
     flex: 0 0 auto !important;
     clear: both !important;
@@ -2727,65 +2735,5 @@
   document.addEventListener('keydown', function (event) {
     if (event.key === 'Escape' && !modal.hidden) closeGiphy();
   }, true);
-})();
-</script>
-
-
-<script>
-(function () {
-  if (!window.ogxStableComposerGrow && window.ogxGrowTextarea) {
-    window.ogxStableComposerGrow = window.ogxGrowTextarea;
-  }
-})();
-</script>
-
-<script>
-(function () {
-  function resizeComment(textarea) {
-    if (!textarea || !textarea.classList.contains('ogx3-textarea')) return;
-
-    var minHeight = 72;
-    var maxHeight = 360;
-
-    textarea.style.setProperty('height', '0px', 'important');
-    textarea.style.setProperty('min-height', minHeight + 'px', 'important');
-    textarea.style.setProperty('max-height', maxHeight + 'px', 'important');
-
-    var contentHeight = Math.max(textarea.scrollHeight + 2, minHeight);
-    var nextHeight = Math.min(contentHeight, maxHeight);
-
-    textarea.style.setProperty('height', nextHeight + 'px', 'important');
-    textarea.style.setProperty('overflow-y', contentHeight > maxHeight ? 'auto' : 'hidden', 'important');
-
-    var field = textarea.closest('.ogx3-field');
-    if (field) {
-      field.style.setProperty('height', 'auto', 'important');
-      field.style.setProperty('min-height', '146px', 'important');
-      field.style.setProperty('overflow', 'visible', 'important');
-    }
-  }
-
-  window.ogx3ResizeComment = resizeComment;
-
-  function initialize() {
-    document.querySelectorAll('#show-comment-form textarea.ogx3-textarea').forEach(resizeComment);
-  }
-
-  document.addEventListener('input', function (event) {
-    if (event.target && event.target.matches('#show-comment-form textarea.ogx3-textarea')) {
-      resizeComment(event.target);
-    }
-  }, true);
-
-  document.addEventListener('paste', function (event) {
-    if (!event.target || !event.target.matches('#show-comment-form textarea.ogx3-textarea')) return;
-    window.requestAnimationFrame(function () { resizeComment(event.target); });
-  }, true);
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initialize, { once: true });
-  } else {
-    initialize();
-  }
 })();
 </script>
