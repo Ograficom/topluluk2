@@ -78,8 +78,6 @@ class RssArticleRewriteService
                 throw new \RuntimeException('Ollama eksik veya cok kisa icerik dondurdu.');
             }
 
-            $content = $this->appendSourceLink($content, $item->link);
-
             $item->forceFill([
                 'ai_source_hash' => $sourceHash,
                 'ai_title' => $title,
@@ -154,22 +152,6 @@ class RssArticleRewriteService
         return trim($html);
     }
 
-    private function appendSourceLink(string $html, ?string $url): string
-    {
-        if (! filter_var($url, FILTER_VALIDATE_URL)) {
-            return $html;
-        }
-
-        return trim(
-            $html .
-            "\n<p>Kaynak: <a href=\"" .
-            e($url) .
-            "\" rel=\"nofollow noopener\" target=\"_blank\">" .
-            e($url) .
-            '</a></p>'
-        );
-    }
-
     private function normalizeTags(array $tags): array
     {
         return collect($tags)
@@ -188,12 +170,12 @@ Asagidaki RSS kaynagindan Turkce, ozgun ve okunabilir yeni bir tanitim yazisi ur
 Metni kelime kelime degistirme. Bilgileri yeniden organize ederek yeni bir anlatim kur.
 Kaynakta bulunmayan bilgi, alinti, tarih veya iddia ekleme.
 Tarafsiz ve bilgilendirici bir dil kullan.
+Metnin icine kaynak, kaynak URL, internet adresi veya baglanti ekleme. Kaynak ayri bir kutuda gosterilecek.
 JSON disinda hicbir sey dondurme.
 
 JSON semasi:
 {"title":"benzersiz baslik","summary":"en fazla 2 cumlelik ozet","content_html":"yalnizca p, h2, h3, ul, ol, li, strong, em ve blockquote etiketleriyle HTML","tags":["3-8 kisa etiket"]}
 
-Kaynak URL: {$item->link}
 Kaynak metin:
 {$sourceText}
 PROMPT;

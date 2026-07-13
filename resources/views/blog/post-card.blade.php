@@ -1475,7 +1475,7 @@ SVG;
                 </button>
 
                 <div
-                    class="og-action-menu fixed z-[999999999] hidden w-[235px] rounded-2xl border border-gray-200 bg-white p-[7px] shadow-[0_2px_7px_rgba(0,0,0,0.025)] max-sm:w-[225px]"
+                    class="og-action-menu fixed z-[999999999] hidden w-[205px] rounded-2xl border border-gray-200 bg-white p-[6px] shadow-[0_2px_7px_rgba(0,0,0,0.025)] max-sm:w-[198px]"
                     data-og-action-menu
                 >
                     <button
@@ -2237,8 +2237,8 @@ SVG;
         [data-post-card-shell] .og-action-menu {
             position: fixed !important;
             z-index: 999999999 !important;
-            width: 235px !important;
-            padding: 7px !important;
+            width: 205px !important;
+            padding: 6px !important;
             padding-bottom: 6px !important;
             overflow: hidden !important;
             border: 1px solid #e5e7eb !important;

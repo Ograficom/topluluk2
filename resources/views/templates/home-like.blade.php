@@ -234,7 +234,7 @@
 
             <div class="live-market-widget__track">
                 <a href="{{ route('markets.show', 'usdtry') }}" class="live-market-widget__item" data-symbol="usdtry">
-                    <span class="live-market-widget__label" data-short="USD">Amerikan Doları</span>
+                    <span class="live-market-widget__label" data-short="USD">USD</span>
                     <span class="live-market-widget__value" data-value>Yükleniyor</span>
                     <span class="live-market-widget__arrow is-flat" data-arrow></span>
                 </a>
@@ -246,13 +246,13 @@
                 </a>
 
                 <a href="{{ route('markets.show', 'btcusd') }}" class="live-market-widget__item" data-symbol="btcusd">
-                    <span class="live-market-widget__label" data-short="BTC/USD">BTC /USD</span>
+                    <span class="live-market-widget__label" data-short="BTC">BTC</span>
                     <span class="live-market-widget__value" data-value>Yükleniyor</span>
                     <span class="live-market-widget__arrow is-flat" data-arrow></span>
                 </a>
 
                 <a href="{{ route('markets.show', 'goldtry') }}" class="live-market-widget__item" data-symbol="goldtry">
-                    <span class="live-market-widget__label" data-short="ALTIN">Altın</span>
+                    <span class="live-market-widget__label" data-short="ALT">ALT</span>
                     <span class="live-market-widget__value" data-value>Yükleniyor</span>
                     <span class="live-market-widget__arrow is-flat" data-arrow></span>
                 </a>
@@ -4210,6 +4210,19 @@
                 }
             };
 
+            const fetchServerMarketRates = async () => {
+                const data = await fetchJsonWithTimeout(@json(route('borsa.ticker')));
+                const rates = data?.rates ?? {};
+
+                if (Number.isFinite(Number(rates.usdtry))) {
+                    updateItem('usdtry', Number(rates.usdtry), formatTry);
+                }
+
+                if (Number.isFinite(Number(rates.eurtry))) {
+                    updateItem('eurtry', Number(rates.eurtry), formatTry);
+                }
+            };
+
             const showStoredMarketValues = () => {
                 if (Number.isFinite(previousValues.usdtry)) {
                     updateItem('usdtry', previousValues.usdtry, formatTry);
@@ -4247,10 +4260,7 @@
                 try {
                     showStoredMarketValues();
 
-                    await Promise.allSettled([
-                        fetchCurrencyAndGoldRates(),
-                        fetchCryptoRates(),
-                    ]);
+                    await fetchServerMarketRates().catch(() => {});
 
                     setMarketFallbackText();
                 } finally {
@@ -4533,5 +4543,48 @@
         padding-right: 16px !important;
         transform: translateX(-8px) !important;
     }
+}
+
+/* Compact market row and more readable feed typography. */
+@media (min-width: 641px) {
+    .home-feed-shell .live-market-widget__track {
+        width: max-content !important;
+        max-width: 100% !important;
+        gap: 10px !important;
+        margin-left: auto !important;
+        margin-right: 0 !important;
+    }
+
+    .home-feed-shell .live-market-widget__item {
+        gap: 3px !important;
+        font-size: 12px !important;
+    }
+}
+
+.home-feed-shell [data-post-card-shell] .post-title,
+.home-feed-shell [data-post-card-shell] .post-title__link {
+    font-size: 18px !important;
+    line-height: 1.4 !important;
+}
+
+.home-feed-shell [data-post-card-shell] .post-summary,
+.home-feed-shell [data-post-card-shell] .post-card__full-content,
+.home-feed-shell [data-post-card-shell] .post-card__inline-text {
+    font-size: 15.5px !important;
+    line-height: 1.62 !important;
+}
+
+.home-feed-shell [data-post-card-shell] .post-card__tag,
+.home-feed-shell [data-post-card-shell] .expand-link {
+    font-size: 14.5px !important;
+}
+
+.home-feed-shell [data-post-card-shell] .author-name {
+    font-size: 15px !important;
+}
+
+.home-feed-shell [data-post-card-shell] .author-subline,
+.home-feed-shell [data-post-card-shell] .post-time {
+    font-size: 13px !important;
 }
 </style>
