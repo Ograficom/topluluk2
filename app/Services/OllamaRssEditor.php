@@ -9,8 +9,13 @@ class OllamaRssEditor
 {
     public function edit(string $title, string $summary): array
     {
-        $response = Http::timeout(config('rss_import.ollama_timeout'))
-            ->post(config('rss_import.ollama_url').'/api/generate', [
+        $request = Http::timeout(config('rss_import.ollama_timeout'));
+
+        if ($apiKey = config('rss_import.ollama_api_key')) {
+            $request = $request->withToken($apiKey);
+        }
+
+        $response = $request->post(config('rss_import.ollama_url').'/api/generate', [
                 'model' => config('rss_import.ollama_model'),
                 'stream' => false,
                 'format' => 'json',
