@@ -71,7 +71,9 @@ class RssArticleRewriteService
 
             $title = Str::limit(trim(strip_tags((string) ($payload['title'] ?? ''))), 500, '');
             $summary = Str::limit($this->plainText((string) ($payload['summary'] ?? '')), 500, '');
-            $content = $this->sanitizeGeneratedHtml((string) ($payload['content_html'] ?? ''));
+            $content = $this->stripSourceAttribution(
+                $this->sanitizeGeneratedHtml((string) ($payload['content_html'] ?? ''))
+            );
             $tags = $this->normalizeTags((array) ($payload['tags'] ?? []));
 
             if ($title === '' || $summary === '' || mb_strlen($this->plainText($content)) < 120) {
@@ -103,7 +105,7 @@ class RssArticleRewriteService
         return [
             'title' => (string) $item->ai_title,
             'summary' => (string) $item->ai_summary,
-            'content' => (string) $item->ai_content,
+            'content' => $this->stripSourceAttribution((string) $item->ai_content),
             'tags' => $this->normalizeTags((array) ($item->ai_tags ?? [])),
         ];
     }
@@ -148,6 +150,17 @@ class RssArticleRewriteService
                 $paragraphs
             ));
         }
+
+        return trim($html);
+    }
+
+    private function stripSourceAttribution(string $html): string
+    {
+        $html = preg_replace(
+            '#<p>\s*(?:Kaynak|Source)\s*:\s*(?:<a\b[^>]*>.*?</a>|https?://\S+)\s*</p>#isu',
+            '',
+            $html
+        ) ?? $html;
 
         return trim($html);
     }

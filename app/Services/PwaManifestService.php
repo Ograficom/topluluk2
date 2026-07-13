@@ -36,7 +36,7 @@ class PwaManifestService
             ['path' => $pwa->icon_maskable_512, 'sizes' => '512x512', 'purpose' => 'maskable'],
         ];
         foreach ($iconPairs as $icon) {
-            if (!empty($icon['path'])) {
+            if (!empty($icon['path']) && Storage::disk('public')->exists($icon['path'])) {
                 $realSizes = $this->getImageSizesFromStorage($icon['path']) ?: $icon['sizes'];
                 $icons[] = [
                     'src' => $this->manifestUrl($pwa->iconUrl($icon['path'])),
