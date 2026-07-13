@@ -1214,12 +1214,12 @@
 
     html.dark .site-header-logo-light-image,
     .dark .site-header-logo-light-image {
-        display: none !important;
+        display: inline-flex !important;
     }
 
     html.dark .site-header-logo-dark-image,
     .dark .site-header-logo-dark-image {
-        display: inline-flex !important;
+        display: none !important;
     }
 
     .site-header-logo-image,
@@ -1294,10 +1294,10 @@
 
     html.dark .site-header,
     .dark .site-header {
-        background: rgba(2, 6, 23, 0.96) !important;
-        background-color: rgba(2, 6, 23, 0.96) !important;
-        border-bottom-color: #1e293b !important;
-        color: #f8fafc !important;
+        background: rgba(255, 255, 255, 0.96) !important;
+        background-color: rgba(255, 255, 255, 0.96) !important;
+        border-bottom-color: #e5e7eb !important;
+        color: #0f172a !important;
         backdrop-filter: blur(14px) !important;
         -webkit-backdrop-filter: blur(14px) !important;
         box-shadow: none !important;
@@ -1306,7 +1306,7 @@
     html.dark .site-header-shell,
     .dark .site-header-shell {
         background: transparent !important;
-        color: #f8fafc !important;
+        color: #0f172a !important;
         box-shadow: none !important;
     }
 
@@ -1314,7 +1314,7 @@
     html.dark .site-header-logo-wordmark,
     .dark .site-header-logo,
     .dark .site-header-logo-wordmark {
-        color: #f8fafc !important;
+        color: #0f172a !important;
         font-weight: 400 !important;
     }
 
@@ -1326,7 +1326,7 @@
     .dark .site-header-logo-image *,
     .dark .site-header-logo svg,
     .dark .site-header-logo svg * {
-        color: #f8fafc !important;
+        color: #0f172a !important;
         fill: currentColor !important;
         stroke: currentColor !important;
     }

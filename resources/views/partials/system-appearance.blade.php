@@ -1,4 +1,4 @@
-<meta name="color-scheme" content="light dark">
+<meta name="color-scheme" content="light">
 <script>
     (() => {
         const root = document.documentElement;
@@ -15,7 +15,9 @@
         };
 
         const applyScheme = (preferredTheme = getStoredTheme()) => {
-            const isDark = preferredTheme ? preferredTheme === 'dark' : media.matches;
+            // Ografi opens in light mode by default. Dark mode is only enabled
+            // after the visitor explicitly chooses it.
+            const isDark = preferredTheme === 'dark';
             root.classList.toggle('dark', isDark);
             root.style.colorScheme = isDark ? 'dark' : 'light';
             root.dataset.systemTheme = isDark ? 'dark' : 'light';
@@ -46,19 +48,8 @@
 
         applyScheme();
 
-        if (typeof media.addEventListener === 'function') {
-            media.addEventListener('change', () => {
-                if (!getStoredTheme()) {
-                    applyScheme(null);
-                }
-            });
-        } else if (typeof media.addListener === 'function') {
-            media.addListener(() => {
-                if (!getStoredTheme()) {
-                    applyScheme(null);
-                }
-            });
-        }
+        // Do not follow the operating-system colour scheme automatically. This
+        // prevents the header from unexpectedly switching to dark mode.
     })();
 </script>
 <style>
