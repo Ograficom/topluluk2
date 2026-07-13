@@ -16,10 +16,11 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="description" content="{{ e($metaDescription) }}">
     <link rel="canonical" href="{{ $canonicalUrl }}">
-    <link rel="icon" href="{{ asset('favicon.ico') }}" sizes="any">
-    <link rel="shortcut icon" href="{{ asset('favicon.ico') }}">
-    <link rel="icon" type="image/png" sizes="192x192" href="{{ asset('pwa/icon-192.png') }}">
-    <link rel="apple-touch-icon" href="{{ asset('pwa/icon-192.png') }}">
+    <link rel="icon" href="{{ asset('favicon.ico') }}?v=20260714" sizes="any">
+    <link rel="shortcut icon" href="{{ asset('favicon.ico') }}?v=20260714">
+    <link rel="icon" type="image/png" sizes="64x64" href="{{ asset('favicon-64.png') }}?v=20260714">
+    <link rel="icon" type="image/png" sizes="192x192" href="{{ asset('pwa/icon-192.png') }}?v=20260714">
+    <link rel="apple-touch-icon" href="{{ asset('pwa/icon-192.png') }}?v=20260714">
     <link rel="manifest" href="{{ asset('manifest.json') }}">
     <title>{{ $documentTitle }}</title>
     @stack('seo')

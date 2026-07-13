@@ -194,7 +194,7 @@
     <main class="page" aria-labelledby="error-title">
         <section class="card">
             <a href="{{ url('/') }}" class="logo" aria-label="Ografi ana sayfa">
-                <img src="https://ografi.com/storage/branding/logo--header-96.png" alt="Ografi">
+                <img src="{{ asset('images/ografi-logo.png') }}?v=20260714" alt="Ografi">
             </a>
 
             <h1 id="error-title">Sayfa bulunamadı</h1>

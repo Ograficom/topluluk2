@@ -12,8 +12,9 @@
         @include('partials.google-analytics')
 
         <!-- Favicon -->
-        <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
-        <link rel="icon" href="/favicon.ico" type="image/x-icon">
+        <link rel="shortcut icon" href="/favicon.ico?v=20260714" type="image/x-icon">
+        <link rel="icon" href="/favicon.ico?v=20260714" type="image/x-icon">
+        <link rel="icon" href="/favicon-64.png?v=20260714" type="image/png" sizes="64x64">
 
         <!-- Fonts -->
         @include('partials.font-assets')

@@ -1288,7 +1288,7 @@
         $viewer = auth()->user();
         $composeUrl = $viewer ? route('blog.create') : route('login');
 
-        $brandLogoUrl = 'https://ografi.com/public/storage/branding/S.png';
+        $brandLogoUrl = asset('images/ografi-logo.png') . '?v=20260714';
 
         $userProfileUrl = '#';
 

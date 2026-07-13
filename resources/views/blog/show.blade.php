@@ -1261,7 +1261,7 @@
     $seoModifiedIso = $seoModifiedSource ? \Illuminate\Support\Carbon::parse($seoModifiedSource)->toIso8601String() : $seoPublishedIso;
     $seoLocale = app()->getLocale() ?: 'tr';
     $seoLanguage = str_replace('_', '-', $seoLocale);
-    $seoLogoUrl = $seoNormalizePublicUrl(config('seo.logo_url') ?: config('app.logo_url') ?: asset('storage/branding/logo--header-96.png'));
+    $seoLogoUrl = $seoNormalizePublicUrl(config('seo.logo_url') ?: config('app.logo_url') ?: asset('images/ografi-logo.png') . '?v=20260714');
     $seoOrganizationId = rtrim($seoSiteUrl, '/') . '/#organization';
     $seoWebSiteId = rtrim($seoSiteUrl, '/') . '/#website';
     $seoWebPageId = $postUrl . '#webpage';

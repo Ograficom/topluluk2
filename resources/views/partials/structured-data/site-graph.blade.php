@@ -3,7 +3,7 @@
     $siteName = trim((string) config('app.name', 'ografi'));
     $organizationId = $appUrl . '/#organization';
     $websiteId = $appUrl . '/#website';
-    $logoUrl = asset('storage/branding/logo.png');
+    $logoUrl = asset('images/ografi-logo.png') . '?v=20260714';
     $locale = str_replace('_', '-', app()->getLocale());
 
     $organization = [

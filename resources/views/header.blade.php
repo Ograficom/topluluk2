@@ -1814,6 +1814,7 @@
         -webkit-backdrop-filter: blur(14px) !important;
         border: 0 !important;
         box-shadow: none !important;
+        filter: invert(1) !important;
         z-index: 9990 !important;
     }
 
@@ -1877,7 +1878,7 @@
             <a class="site-header-logo" href="{{ route('home') }}" aria-label="{{ config('app.name', 'Ografi') }}">
                 <span class="site-header-logo-mark" aria-hidden="true">
                     <x-application-logo class="site-header-logo-image site-header-logo-light-image site-header-logo-main-image" />
-                    <img class="site-header-logo-dark-image site-header-logo-main-image" src="/storage/app/public/branding/S.png" alt="">
+                    <img class="site-header-logo-dark-image site-header-logo-main-image" src="{{ asset('images/ografi-logo.png') }}?v=20260714" alt="">
                 </span>
                 <span class="site-header-logo-wordmark">Ografi</span>
             </a>
@@ -2149,7 +2150,7 @@
             <a class="site-header-logo min-w-0" href="{{ route('home') }}" aria-label="{{ config('app.name', 'Ografi') }}">
                 <span class="site-header-logo-mark" aria-hidden="true">
                     <x-application-logo class="site-header-logo-image site-header-logo-light-image site-header-logo-main-image" />
-                    <img class="site-header-logo-dark-image site-header-logo-main-image" src="/storage/app/public/branding/S.png" alt="">
+                    <img class="site-header-logo-dark-image site-header-logo-main-image" src="{{ asset('images/ografi-logo.png') }}?v=20260714" alt="">
                 </span>
                 <span class="site-header-logo-wordmark">Ografi</span>
             </a>

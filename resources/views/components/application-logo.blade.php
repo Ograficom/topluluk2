@@ -1,7 +1,6 @@
 @php
-    $logoUrl = \App\Support\OptimizedImage::variantUrl(asset('storage/branding/logo.png'), 'header-96')
-        ?? asset('storage/branding/logo.png');
-    [$logoWidth, $logoHeight] = \App\Support\OptimizedImage::dimensions($logoUrl, [96, 96]);
+    $logoUrl = asset('images/ografi-logo.png') . '?v=20260714';
+    [$logoWidth, $logoHeight] = [512, 512];
 @endphp
 
 <img
