@@ -207,11 +207,11 @@
   @if($commentsDisabled)
     <div class="ogx-empty">Bu gönderide yorumlar yazar tarafından kapatıldı.</div>
   @else
-    <form method="POST" action="{{ route('blog.post.comment', $post) }}" enctype="multipart/form-data" id="show-comment-form" class="ogx-composer-form" data-comment-authenticated="{{ auth()->check() ? '1' : '0' }}" data-login-url="{{ route('login') }}">
+    <form method="POST" action="{{ route('blog.post.comment', $post) }}" enctype="multipart/form-data" id="show-comment-form" class="ogx3-composer" data-ogx-composer data-comment-authenticated="{{ auth()->check() ? '1' : '0' }}" data-login-url="{{ route('login') }}">
       @csrf
       <input type="hidden" name="parent_id" value="">
 
-      <div class="ogx-composer-box shadcn-comment-composer">
+      <div class="ogx3-field">
         <textarea
           id="show-comment-input"
           name="content"
@@ -219,22 +219,20 @@
           data-comment-main-input
           data-ogx-autogrow
           data-ogx-max-height="520"
-          class="ogx-comment-input"
+          class="ogx3-textarea"
           rows="1"
           maxlength="500"
           placeholder="Yorumunu buraya yaz..."
           wrap="soft"
-          style="height:48px;min-height:48px;max-height:none;overflow-y:hidden;resize:none;font-size:16px;line-height:24px;padding-top:0;padding-bottom:0;"
-          wrap="soft"
-          oninput="if(window.ogxStableComposerGrow){window.ogxStableComposerGrow(this)}else{this.style.setProperty('height','auto','important');this.style.setProperty('height',Math.max(this.scrollHeight+2,48)+'px','important');}">{{ old('content') }}</textarea>
+          oninput="if(window.ogxStableComposerGrow){window.ogxStableComposerGrow(this)}else{this.style.height='auto';this.style.height=Math.max(this.scrollHeight,64)+'px';}">{{ old('content') }}</textarea>
 
-        <div class="ogx-preview-strip" id="show-comment-image-preview" data-ogx-preview hidden></div>
-        <div id="show-comment-gif-preview" data-gif-preview class="ogx-preview-strip" hidden></div>
+        <div class="ogx3-preview" id="show-comment-image-preview" data-ogx-preview hidden></div>
+        <div id="show-comment-gif-preview" data-gif-preview class="ogx3-preview" hidden></div>
 
-        <div class="ogx-composer-actions">
-          <div class="ogx-composer-left">
-            <div class="ogx-emoji-wrap" data-comment-emoji>
-              <button class="ogx-emoji-btn" type="button" data-comment-emoji-button aria-haspopup="menu" aria-expanded="false" aria-label="Emoji ekle" title="Emoji ekle">
+        <div class="ogx3-toolbar">
+          <div class="ogx3-tools">
+            <div class="ogx3-emoji" data-comment-emoji>
+              <button class="ogx3-icon-button" type="button" data-comment-emoji-button aria-haspopup="menu" aria-expanded="false" aria-label="Emoji ekle" title="Emoji ekle">
                 <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
                   <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.9"></circle>
                   <path d="M8.5 10h.01M15.5 10h.01" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"></path>
@@ -242,14 +240,14 @@
                 </svg>
               </button>
 
-              <div class="ogx-emoji-menu" data-comment-emoji-menu hidden>
+              <div class="ogx3-emoji-menu" data-comment-emoji-menu hidden>
                 @foreach(['😀','😁','😂','😍','😎','😢','😡','👍','👎','👏','🙏','🔥','❤️','🎉'] as $ogxEmoji)
-                  <button type="button" class="ogx-emoji-item" data-comment-emoji-value="{{ $ogxEmoji }}">{{ $ogxEmoji }}</button>
+                  <button type="button" class="ogx3-emoji-item" data-comment-emoji-value="{{ $ogxEmoji }}">{{ $ogxEmoji }}</button>
                 @endforeach
               </div>
             </div>
 
-            <button class="ogx-image-btn" type="button" data-comment-file-button data-comment-file-target="#show-comment-image-file" aria-label="Fotoğraf ekle" title="Fotoğraf ekle">
+            <button class="ogx3-icon-button" type="button" data-comment-file-button data-comment-file-target="#show-comment-image-file" aria-label="Fotoğraf ekle" title="Fotoğraf ekle">
               <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
                 <rect x="3" y="5" width="18" height="14" rx="3" stroke="currentColor" stroke-width="1.9"></rect>
                 <circle cx="8.5" cy="10" r="1.4" stroke="currentColor" stroke-width="1.9"></circle>
@@ -259,13 +257,13 @@
             </button>
 
             @if($ogxGiphySearchUrl)
-              <button class="ogx-gif-btn" type="button" data-giphy-trigger aria-haspopup="dialog" aria-expanded="false" aria-label="GIF ekle" title="GIF ekle">GIF</button>
+              <button class="ogx3-gif-button" type="button" data-giphy-trigger aria-haspopup="dialog" aria-expanded="false" aria-label="GIF ekle" title="GIF ekle">GIF</button>
             @endif
           </div>
 
-          <div class="ogx-composer-right">
-            <span class="ogx-char-counter"><span data-ogx-char-count>0</span>/500</span>
-            <button class="ogx-submit-btn" type="submit" data-ogx-submit-comment aria-label="Yorumu gönder" title="Yorumu gönder" disabled>
+          <div class="ogx3-submit-group">
+            <span class="ogx3-counter"><span data-ogx-char-count>0</span>/500</span>
+            <button class="ogx3-submit" type="submit" data-ogx-submit-comment aria-label="Yorumu gönder" title="Yorumu gönder" disabled>
               <svg viewBox="0 0 24 24" aria-hidden="true">
                 <path d="M3.65 20.35c-.34.14-.68.11-.98-.1a1.02 1.02 0 0 1-.43-.88l.82-5.62L13.2 12 3.06 10.25l-.82-5.62c-.05-.37.09-.67.43-.88.3-.21.64-.24.98-.1l17.32 7.4c.45.19.68.51.68.95s-.23.76-.68.95L3.65 20.35Z" fill="currentColor"></path>
               </svg>
@@ -274,8 +272,8 @@
         </div>
       </div>
 
-      <div class="ogx-mention-menu" data-comment-mention-menu hidden></div>
-      <input id="show-comment-image-file" name="image" type="file" accept="image/*" class="ogx-file-input" data-comment-file-input data-comment-preview-target="#show-comment-image-preview">
+      <div class="ogx3-mention-menu" data-comment-mention-menu hidden></div>
+      <input id="show-comment-image-file" name="image" type="file" accept="image/*" class="ogx3-file-input" data-comment-file-input data-comment-preview-target="#show-comment-image-preview">
     </form>
   @endif
 
@@ -1802,7 +1800,7 @@
   window.ogxGrowTextarea = function (textarea) {
     if (!textarea) return;
 
-    var minHeight = textarea.classList && textarea.classList.contains('ogx-comment-input') ? 42 : 36;
+    var minHeight = textarea.classList && textarea.classList.contains('ogx3-textarea') ? 64 : 36;
     var maxHeight = Number(textarea.getAttribute('data-ogx-max-height') || 520);
 
     textarea.style.setProperty('height', 'auto', 'important');
@@ -1891,13 +1889,13 @@
     textarea.selectionStart = textarea.selectionEnd = start + text.length;
     grow(textarea);
 
-    var composer = closestIn(textarea, '.ogx-composer-form', null);
+    var composer = closestIn(textarea, '[data-ogx-composer]', null);
     if (composer) refreshComposer(composer);
   }
 
   function boot(root) {
     (root || document).querySelectorAll('.ogx-comments-panel textarea, [data-ogx-autogrow]').forEach(grow);
-    (root || document).querySelectorAll('.ogx-composer-form').forEach(refreshComposer);
+    (root || document).querySelectorAll('[data-ogx-composer]').forEach(refreshComposer);
   }
 
   document.addEventListener('DOMContentLoaded', function () {
@@ -1914,7 +1912,7 @@
     var textarea = closestIn(event.target, 'textarea', root);
     if (textarea) grow(textarea);
 
-    var composer = closestIn(event.target, '.ogx-composer-form', root);
+    var composer = closestIn(event.target, '[data-ogx-composer]', root);
     if (composer) refreshComposer(composer);
   }, true);
 
@@ -1939,7 +1937,7 @@
     }
 
     var item = document.createElement('span');
-    item.className = 'ogx-preview-item';
+    item.className = 'ogx3-preview-item';
 
     if (file.type && file.type.indexOf('video/') === 0) {
       var video = document.createElement('video');
@@ -1960,7 +1958,7 @@
   }, true);
 
   document.addEventListener('submit', function (event) {
-    var form = closestIn(event.target, '.ogx-composer-form', null);
+    var form = closestIn(event.target, '[data-ogx-composer]', null);
     if (!form) return;
 
     refreshComposer(form);
@@ -2005,7 +2003,7 @@
     var emojiItem = closestIn(event.target, '[data-comment-emoji-value]', root);
     if (emojiItem) {
       event.preventDefault();
-      var form = closestIn(emojiItem, '.ogx-composer-form', root) || root.querySelector('#show-comment-form');
+      var form = closestIn(emojiItem, '[data-ogx-composer]', root) || root.querySelector('#show-comment-form');
       var textarea = form ? form.querySelector('textarea[name="content"]') : root.querySelector('textarea[name="content"]');
       insertTextAtCursor(textarea, emojiItem.getAttribute('data-comment-emoji-value') || emojiItem.textContent || '');
       closeMenus(root, null);
@@ -2074,12 +2072,12 @@
 
   document.addEventListener('paste', function (event) {
     var textarea = event.target && event.target.matches && event.target.matches('.ogx-comments-panel textarea') ? event.target : null;
-    if (textarea) setTimeout(function () { grow(textarea); refreshComposer(closestIn(textarea, '.ogx-composer-form', null)); }, 0);
+    if (textarea) setTimeout(function () { grow(textarea); refreshComposer(closestIn(textarea, '[data-ogx-composer]', null)); }, 0);
   }, true);
 
   document.addEventListener('cut', function (event) {
     var textarea = event.target && event.target.matches && event.target.matches('.ogx-comments-panel textarea') ? event.target : null;
-    if (textarea) setTimeout(function () { grow(textarea); refreshComposer(closestIn(textarea, '.ogx-composer-form', null)); }, 0);
+    if (textarea) setTimeout(function () { grow(textarea); refreshComposer(closestIn(textarea, '[data-ogx-composer]', null)); }, 0);
   }, true);
 
   document.addEventListener('click', function (event) {
@@ -2113,6 +2111,224 @@
   }, true);
 })();
 </script>
+
+<style>
+  /* shadcn/base-nova comment composer v3 — the only active main composer skin */
+  html body .post-show-shell #show-comment-form.ogx3-composer {
+    display: block !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+  }
+
+  html body .post-show-shell #show-comment-form .ogx3-field {
+    display: flex !important;
+    flex-direction: column !important;
+    width: 100% !important;
+    min-height: 146px !important;
+    padding: 16px 18px 14px !important;
+    box-sizing: border-box !important;
+    border: 1px solid var(--border, #e4e4e7) !important;
+    border-radius: 12px !important;
+    background: var(--muted, #f4f4f5) !important;
+    color: var(--foreground, #18181b) !important;
+    box-shadow: none !important;
+    transition: border-color 150ms ease, box-shadow 150ms ease !important;
+  }
+
+  html body .post-show-shell #show-comment-form .ogx3-field:focus-within {
+    border-color: var(--ring, #a1a1aa) !important;
+    box-shadow: 0 0 0 2px color-mix(in oklab, var(--ring, #a1a1aa) 18%, transparent) !important;
+  }
+
+  html body .post-show-shell #show-comment-form textarea.ogx3-textarea {
+    all: unset !important;
+    display: block !important;
+    width: 100% !important;
+    min-height: 64px !important;
+    max-height: 260px !important;
+    padding: 4px 0 10px !important;
+    box-sizing: border-box !important;
+    overflow-y: auto !important;
+    white-space: pre-wrap !important;
+    overflow-wrap: anywhere !important;
+    font-family: "Roboto", Arial, Helvetica, sans-serif !important;
+    font-size: 15px !important;
+    font-weight: 400 !important;
+    line-height: 1.5 !important;
+    color: var(--foreground, #18181b) !important;
+    caret-color: currentColor !important;
+    cursor: text !important;
+  }
+
+  html body .post-show-shell #show-comment-form textarea.ogx3-textarea::placeholder {
+    color: var(--muted-foreground, #71717a) !important;
+    opacity: 1 !important;
+  }
+
+  html body .post-show-shell #show-comment-form .ogx3-toolbar,
+  html body .post-show-shell #show-comment-form .ogx3-tools,
+  html body .post-show-shell #show-comment-form .ogx3-submit-group {
+    display: flex !important;
+    align-items: center !important;
+  }
+
+  html body .post-show-shell #show-comment-form .ogx3-toolbar {
+    justify-content: space-between !important;
+    gap: 14px !important;
+    width: 100% !important;
+    min-height: 38px !important;
+    margin-top: auto !important;
+  }
+
+  html body .post-show-shell #show-comment-form .ogx3-tools,
+  html body .post-show-shell #show-comment-form .ogx3-submit-group {
+    gap: 10px !important;
+  }
+
+  html body .post-show-shell #show-comment-form .ogx3-icon-button,
+  html body .post-show-shell #show-comment-form .ogx3-gif-button,
+  html body .post-show-shell #show-comment-form .ogx3-submit {
+    all: unset !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    box-sizing: border-box !important;
+    cursor: pointer !important;
+  }
+
+  html body .post-show-shell #show-comment-form .ogx3-icon-button {
+    width: 30px !important;
+    height: 30px !important;
+    border-radius: 8px !important;
+    color: var(--foreground, #18181b) !important;
+  }
+
+  html body .post-show-shell #show-comment-form .ogx3-icon-button:hover {
+    background: var(--accent, #f4f4f5) !important;
+  }
+
+  html body .post-show-shell #show-comment-form .ogx3-icon-button svg {
+    width: 20px !important;
+    height: 20px !important;
+  }
+
+  html body .post-show-shell #show-comment-form .ogx3-gif-button {
+    min-width: 32px !important;
+    height: 30px !important;
+    border-radius: 8px !important;
+    font-family: "Roboto", Arial, Helvetica, sans-serif !important;
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    color: var(--foreground, #18181b) !important;
+  }
+
+  html body .post-show-shell #show-comment-form .ogx3-counter {
+    font-family: "Roboto", Arial, Helvetica, sans-serif !important;
+    font-size: 13px !important;
+    color: var(--muted-foreground, #71717a) !important;
+    white-space: nowrap !important;
+  }
+
+  html body .post-show-shell #show-comment-form .ogx3-submit {
+    width: 38px !important;
+    height: 38px !important;
+    border-radius: 999px !important;
+    background: var(--muted-foreground, #71717a) !important;
+    color: var(--background, #ffffff) !important;
+    opacity: .35 !important;
+  }
+
+  html body .post-show-shell #show-comment-form.has-comment-ready .ogx3-submit {
+    background: var(--foreground, #18181b) !important;
+    opacity: 1 !important;
+  }
+
+  html body .post-show-shell #show-comment-form .ogx3-submit:disabled {
+    cursor: not-allowed !important;
+  }
+
+  html body .post-show-shell #show-comment-form .ogx3-submit svg {
+    width: 19px !important;
+    height: 19px !important;
+  }
+
+  html body .post-show-shell #show-comment-form .ogx3-preview {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 8px !important;
+    margin: 0 0 10px !important;
+  }
+
+  html body .post-show-shell #show-comment-form .ogx3-preview[hidden],
+  html body .post-show-shell #show-comment-form .ogx3-emoji-menu[hidden],
+  html body .post-show-shell #show-comment-form .ogx3-mention-menu[hidden],
+  html body .post-show-shell #show-comment-form .ogx3-file-input {
+    display: none !important;
+  }
+
+  html body .post-show-shell #show-comment-form .ogx3-preview-item {
+    position: relative !important;
+    width: 76px !important;
+    height: 76px !important;
+    overflow: hidden !important;
+    border: 1px solid var(--border, #e4e4e7) !important;
+    border-radius: 10px !important;
+    background: var(--background, #ffffff) !important;
+  }
+
+  html body .post-show-shell #show-comment-form .ogx3-preview-item :is(img, video) {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+  }
+
+  html body .post-show-shell #show-comment-form .ogx3-emoji {
+    position: relative !important;
+  }
+
+  html body .post-show-shell #show-comment-form .ogx3-emoji-menu,
+  html body .post-show-shell #show-comment-form .ogx3-mention-menu {
+    position: absolute !important;
+    z-index: 80 !important;
+    padding: 8px !important;
+    border: 1px solid var(--border, #e4e4e7) !important;
+    border-radius: 12px !important;
+    background: var(--popover, #ffffff) !important;
+    box-shadow: 0 10px 30px rgb(0 0 0 / .1) !important;
+  }
+
+  html body .post-show-shell #show-comment-form .ogx3-emoji-menu {
+    left: 0 !important;
+    bottom: 38px !important;
+    display: grid !important;
+    grid-template-columns: repeat(7, 32px) !important;
+  }
+
+  html body .post-show-shell #show-comment-form .ogx3-emoji-item {
+    all: unset !important;
+    display: grid !important;
+    place-items: center !important;
+    width: 32px !important;
+    height: 32px !important;
+    border-radius: 7px !important;
+    cursor: pointer !important;
+  }
+
+  @media (max-width: 640px) {
+    html body .post-show-shell #show-comment-form .ogx3-field {
+      min-height: 138px !important;
+      padding: 14px !important;
+    }
+
+    html body .post-show-shell #show-comment-form textarea.ogx3-textarea {
+      font-size: 16px !important;
+    }
+  }
+</style>
 
 <style>
   /* base-nova preset: final comment composer surface */
