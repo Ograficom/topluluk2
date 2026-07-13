@@ -3572,7 +3572,7 @@ body:has(.category-reference-card) .profile-reference-tab {
                                             {!! $menuIcon !!}
                                         </summary>
 
-                                        <div class="profile-reference-more-panel" role="menu">
+                                        <div class="profile-reference-more-panel shadcn-menu shadcn-menu--compact" role="menu">
                                             <a href="{{ route('blog.category.edit', $categoryToShow) }}" class="profile-reference-menu-item" role="menuitem">
                                                 <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                                                     <path d="M12 15.5A3.5 3.5 0 1 0 12 8a3.5 3.5 0 0 0 0 7.5Z" stroke="currentColor" stroke-width="1.7"/>

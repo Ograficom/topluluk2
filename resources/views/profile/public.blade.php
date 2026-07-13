@@ -2466,7 +2466,7 @@
                                 <summary aria-label="{{ $moreActionsLabel }}" title="{{ $moreActionsLabel }}" class="og-menu-summary-icon-only">
                                     <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="5" cy="12" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="19" cy="12" r="1.8"/></svg>
                                 </summary>
-                                <div class="og-menu-panel">
+                                <div class="og-menu-panel shadcn-menu">
                                     <button type="button" class="og-menu-item" data-profile-share data-share-url="{{ $profilePageUrl }}" data-share-title="{{ $profileHeadingTitle }}">
                                         <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M8 12h8M14 6l6 6-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M20 12H6a2 2 0 0 0-2 2v4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
                                         {{ $shareProfileLabel }}

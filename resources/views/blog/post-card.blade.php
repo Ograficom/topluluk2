@@ -1475,7 +1475,7 @@ SVG;
                 </button>
 
                 <div
-                    class="og-action-menu fixed z-[999999999] hidden w-[205px] rounded-2xl border border-gray-200 bg-white p-[6px] shadow-[0_2px_7px_rgba(0,0,0,0.025)] max-sm:w-[198px]"
+                    class="og-action-menu shadcn-menu fixed z-[999999999] hidden w-[205px] rounded-2xl border border-gray-200 bg-white p-[6px] shadow-[0_2px_7px_rgba(0,0,0,0.025)] max-sm:w-[198px]"
                     data-og-action-menu
                 >
                     <button

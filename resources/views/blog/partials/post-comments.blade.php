@@ -193,7 +193,7 @@
         </svg>
       </button>
 
-      <div class="ogx-filter-menu" data-ogx-filter-menu hidden>
+      <div class="ogx-filter-menu shadcn-menu shadcn-menu--compact" data-ogx-filter-menu hidden>
         <button type="button" class="ogx-filter-item is-active" data-ogx-sort="popular">
           <span>Popüler</span>
         </button>

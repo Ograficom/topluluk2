@@ -936,7 +936,7 @@
                         </svg>
                     </button>
 
-                    <div id="categories-sort-menu" class="categories-sort__menu" data-categories-sort-menu hidden>
+                    <div id="categories-sort-menu" class="categories-sort__menu shadcn-menu shadcn-menu--compact" data-categories-sort-menu hidden>
                         <div class="categories-sort__title">Göre sırala</div>
 
                         <div class="categories-sort__options">
