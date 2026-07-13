@@ -1,4 +1,4 @@
-import{C as l}from"./app-ografi-a978d3b.js";function $(o,p){for(var e=0;e<p.length;e++){const t=p[e];if(typeof t!="string"&&!Array.isArray(t)){for(const n in t)if(n!=="default"&&!(n in o)){const i=Object.getOwnPropertyDescriptor(t,n);i&&Object.defineProperty(o,n,i.get?i:{enumerable:!0,get:()=>t[n]})}}}return Object.freeze(Object.defineProperty(o,Symbol.toStringTag,{value:"Module"}))}var s={exports:{}};(function(o,p){ace.define("ace/snippets/markdown.snippets",["require","exports","module"],function(e,t,n){n.exports=`# Markdown
+import{C as l}from"./app-ografi-fix-1577318.js";function $(o,p){for(var e=0;e<p.length;e++){const t=p[e];if(typeof t!="string"&&!Array.isArray(t)){for(const n in t)if(n!=="default"&&!(n in o)){const i=Object.getOwnPropertyDescriptor(t,n);i&&Object.defineProperty(o,n,i.get?i:{enumerable:!0,get:()=>t[n]})}}}return Object.freeze(Object.defineProperty(o,Symbol.toStringTag,{value:"Module"}))}var s={exports:{}};(function(o,p){ace.define("ace/snippets/markdown.snippets",["require","exports","module"],function(e,t,n){n.exports=`# Markdown
 
 # Includes octopress (http://octopress.org/) snippets
 

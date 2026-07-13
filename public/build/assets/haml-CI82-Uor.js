@@ -1,4 +1,4 @@
-import{C as o}from"./app-ografi-a978d3b.js";function l(n,p){for(var e=0;e<p.length;e++){const t=p[e];if(typeof t!="string"&&!Array.isArray(t)){for(const r in t)if(r!=="default"&&!(r in n)){const a=Object.getOwnPropertyDescriptor(t,r);a&&Object.defineProperty(n,r,a.get?a:{enumerable:!0,get:()=>t[r]})}}}return Object.freeze(Object.defineProperty(n,Symbol.toStringTag,{value:"Module"}))}var i={exports:{}};(function(n,p){ace.define("ace/snippets/haml.snippets",["require","exports","module"],function(e,t,r){r.exports=`snippet t
+import{C as o}from"./app-ografi-fix-1577318.js";function l(n,p){for(var e=0;e<p.length;e++){const t=p[e];if(typeof t!="string"&&!Array.isArray(t)){for(const r in t)if(r!=="default"&&!(r in n)){const a=Object.getOwnPropertyDescriptor(t,r);a&&Object.defineProperty(n,r,a.get?a:{enumerable:!0,get:()=>t[r]})}}}return Object.freeze(Object.defineProperty(n,Symbol.toStringTag,{value:"Module"}))}var i={exports:{}};(function(n,p){ace.define("ace/snippets/haml.snippets",["require","exports","module"],function(e,t,r){r.exports=`snippet t
 	%table
 		%tr
 			%th

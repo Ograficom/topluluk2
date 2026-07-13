@@ -1,4 +1,4 @@
-import{C as l}from"./app-ografi-a978d3b.js";function a(i,r){for(var t=0;t<r.length;t++){const e=r[t];if(typeof e!="string"&&!Array.isArray(e)){for(const n in e)if(n!=="default"&&!(n in i)){const o=Object.getOwnPropertyDescriptor(e,n);o&&Object.defineProperty(i,n,o.get?o:{enumerable:!0,get:()=>e[n]})}}}return Object.freeze(Object.defineProperty(i,Symbol.toStringTag,{value:"Module"}))}var p={exports:{}};(function(i,r){ace.define("ace/snippets/textile.snippets",["require","exports","module"],function(t,e,n){n.exports=`# Jekyll post header
+import{C as l}from"./app-ografi-fix-1577318.js";function a(i,r){for(var t=0;t<r.length;t++){const e=r[t];if(typeof e!="string"&&!Array.isArray(e)){for(const n in e)if(n!=="default"&&!(n in i)){const o=Object.getOwnPropertyDescriptor(e,n);o&&Object.defineProperty(i,n,o.get?o:{enumerable:!0,get:()=>e[n]})}}}return Object.freeze(Object.defineProperty(i,Symbol.toStringTag,{value:"Module"}))}var p={exports:{}};(function(i,r){ace.define("ace/snippets/textile.snippets",["require","exports","module"],function(t,e,n){n.exports=`# Jekyll post header
 snippet header
 	---
 	title: \${1:title}

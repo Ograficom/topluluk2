@@ -1,4 +1,4 @@
-import{C as a}from"./app-ografi-a978d3b.js";function o(l,i){for(var e=0;e<i.length;e++){const t=i[e];if(typeof t!="string"&&!Array.isArray(t)){for(const n in t)if(n!=="default"&&!(n in l)){const s=Object.getOwnPropertyDescriptor(t,n);s&&Object.defineProperty(l,n,s.get?s:{enumerable:!0,get:()=>t[n]})}}}return Object.freeze(Object.defineProperty(l,Symbol.toStringTag,{value:"Module"}))}var r={exports:{}};(function(l,i){ace.define("ace/snippets/lsl.snippets",["require","exports","module"],function(e,t,n){n.exports=`snippet @
+import{C as a}from"./app-ografi-fix-1577318.js";function o(l,i){for(var e=0;e<i.length;e++){const t=i[e];if(typeof t!="string"&&!Array.isArray(t)){for(const n in t)if(n!=="default"&&!(n in l)){const s=Object.getOwnPropertyDescriptor(t,n);s&&Object.defineProperty(l,n,s.get?s:{enumerable:!0,get:()=>t[n]})}}}return Object.freeze(Object.defineProperty(l,Symbol.toStringTag,{value:"Module"}))}var r={exports:{}};(function(l,i){ace.define("ace/snippets/lsl.snippets",["require","exports","module"],function(e,t,n){n.exports=`snippet @
 	@\${1:label};
 snippet CAMERA_ACTIVE
 	CAMERA_ACTIVE, \${1:integer isActive}, $0

@@ -1,4 +1,4 @@
-import{C as s}from"./app-ografi-a978d3b.js";function a(o,r){for(var t=0;t<r.length;t++){const e=r[t];if(typeof e!="string"&&!Array.isArray(e)){for(const n in e)if(n!=="default"&&!(n in o)){const i=Object.getOwnPropertyDescriptor(e,n);i&&Object.defineProperty(o,n,i.get?i:{enumerable:!0,get:()=>e[n]})}}}return Object.freeze(Object.defineProperty(o,Symbol.toStringTag,{value:"Module"}))}var c={exports:{}};(function(o,r){ace.define("ace/snippets/velocity.snippets",["require","exports","module"],function(t,e,n){n.exports=`# macro
+import{C as s}from"./app-ografi-fix-1577318.js";function a(o,r){for(var t=0;t<r.length;t++){const e=r[t];if(typeof e!="string"&&!Array.isArray(e)){for(const n in e)if(n!=="default"&&!(n in o)){const i=Object.getOwnPropertyDescriptor(e,n);i&&Object.defineProperty(o,n,i.get?i:{enumerable:!0,get:()=>e[n]})}}}return Object.freeze(Object.defineProperty(o,Symbol.toStringTag,{value:"Module"}))}var c={exports:{}};(function(o,r){ace.define("ace/snippets/velocity.snippets",["require","exports","module"],function(t,e,n){n.exports=`# macro
 snippet #macro
 	#macro ( \${1:macroName} \${2:\\$var1, [\\$var2, ...]} )
 		\${3:## macro code}

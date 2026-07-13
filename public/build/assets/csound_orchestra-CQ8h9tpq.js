@@ -1,4 +1,4 @@
-import{C as c}from"./app-ografi-a978d3b.js";function a(s,o){for(var e=0;e<o.length;e++){const t=o[e];if(typeof t!="string"&&!Array.isArray(t)){for(const n in t)if(n!=="default"&&!(n in s)){const i=Object.getOwnPropertyDescriptor(t,n);i&&Object.defineProperty(s,n,i.get?i:{enumerable:!0,get:()=>t[n]})}}}return Object.freeze(Object.defineProperty(s,Symbol.toStringTag,{value:"Module"}))}var r={exports:{}};(function(s,o){ace.define("ace/snippets/csound_orchestra.snippets",["require","exports","module"],function(e,t,n){n.exports=`# else
+import{C as c}from"./app-ografi-fix-1577318.js";function a(s,o){for(var e=0;e<o.length;e++){const t=o[e];if(typeof t!="string"&&!Array.isArray(t)){for(const n in t)if(n!=="default"&&!(n in s)){const i=Object.getOwnPropertyDescriptor(t,n);i&&Object.defineProperty(s,n,i.get?i:{enumerable:!0,get:()=>t[n]})}}}return Object.freeze(Object.defineProperty(s,Symbol.toStringTag,{value:"Module"}))}var r={exports:{}};(function(s,o){ace.define("ace/snippets/csound_orchestra.snippets",["require","exports","module"],function(e,t,n){n.exports=`# else
 snippet else
 	else
 		\${1:/* statements */}

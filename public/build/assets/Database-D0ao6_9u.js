@@ -34,13 +34,13 @@ import {
 	n as W,
 	e as h,
 	N as j
-} from "./app-ografi-a978d3b.js";
+} from "./app-ografi-fix-1577318.js";
 import {
 	_ as K
 } from "./InstallerLayout-BZOiPsjO.js";
 import {
 	i as M
-} from "./useThemeConfig-stable-f7512a0.js";
+} from "./useThemeConfig-fix-1577318.js";
 import "./index-T_RycVZ9.js";
 import "./Link-BxabHujp.js";
 import "./_plugin-vue_export-helper-DlAUqK2U.js";

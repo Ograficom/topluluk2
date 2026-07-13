@@ -1,4 +1,4 @@
-import{C as s}from"./app-ografi-a978d3b.js";function l(t,r){for(var n=0;n<r.length;n++){const e=r[n];if(typeof e!="string"&&!Array.isArray(e)){for(const a in e)if(a!=="default"&&!(a in t)){const o=Object.getOwnPropertyDescriptor(e,a);o&&Object.defineProperty(t,a,o.get?o:{enumerable:!0,get:()=>e[a]})}}}return Object.freeze(Object.defineProperty(t,Symbol.toStringTag,{value:"Module"}))}var c={exports:{}};(function(t,r){ace.define("ace/snippets/vala",["require","exports","module"],function(n,e,a){e.snippets=[{content:`case \${1:condition}:
+import{C as s}from"./app-ografi-fix-1577318.js";function l(t,r){for(var n=0;n<r.length;n++){const e=r[n];if(typeof e!="string"&&!Array.isArray(e)){for(const a in e)if(a!=="default"&&!(a in t)){const o=Object.getOwnPropertyDescriptor(e,a);o&&Object.defineProperty(t,a,o.get?o:{enumerable:!0,get:()=>e[a]})}}}return Object.freeze(Object.defineProperty(t,Symbol.toStringTag,{value:"Module"}))}var c={exports:{}};(function(t,r){ace.define("ace/snippets/vala",["require","exports","module"],function(n,e,a){e.snippets=[{content:`case \${1:condition}:
 	$0
 	break;
 `,name:"case",scope:"vala",tabTrigger:"case"},{content:`/**

@@ -1,4 +1,4 @@
-import{C as $}from"./app-ografi-a978d3b.js";function c(i,p){for(var t=0;t<p.length;t++){const n=p[t];if(typeof n!="string"&&!Array.isArray(n)){for(const e in n)if(e!=="default"&&!(e in i)){const s=Object.getOwnPropertyDescriptor(n,e);s&&Object.defineProperty(i,e,s.get?s:{enumerable:!0,get:()=>n[e]})}}}return Object.freeze(Object.defineProperty(i,Symbol.toStringTag,{value:"Module"}))}var a={exports:{}};(function(i,p){ace.define("ace/snippets/tex.snippets",["require","exports","module"],function(t,n,e){e.exports=`#PREAMBLE
+import{C as $}from"./app-ografi-fix-1577318.js";function c(i,p){for(var t=0;t<p.length;t++){const n=p[t];if(typeof n!="string"&&!Array.isArray(n)){for(const e in n)if(e!=="default"&&!(e in i)){const s=Object.getOwnPropertyDescriptor(n,e);s&&Object.defineProperty(i,e,s.get?s:{enumerable:!0,get:()=>n[e]})}}}return Object.freeze(Object.defineProperty(i,Symbol.toStringTag,{value:"Module"}))}var a={exports:{}};(function(i,p){ace.define("ace/snippets/tex.snippets",["require","exports","module"],function(t,n,e){e.exports=`#PREAMBLE
 #newcommand
 snippet nc
 	\\newcommand{\\\${1:cmd}}[\${2:opt}]{\${3:realcmd}}\${4}

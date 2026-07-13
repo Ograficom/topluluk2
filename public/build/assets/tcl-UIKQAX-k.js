@@ -1,4 +1,4 @@
-import{C as c}from"./app-ografi-a978d3b.js";function a(i,s){for(var n=0;n<s.length;n++){const t=s[n];if(typeof t!="string"&&!Array.isArray(t)){for(const e in t)if(e!=="default"&&!(e in i)){const p=Object.getOwnPropertyDescriptor(t,e);p&&Object.defineProperty(i,e,p.get?p:{enumerable:!0,get:()=>t[e]})}}}return Object.freeze(Object.defineProperty(i,Symbol.toStringTag,{value:"Module"}))}var r={exports:{}};(function(i,s){ace.define("ace/snippets/tcl.snippets",["require","exports","module"],function(n,t,e){e.exports=`# #!/usr/bin/env tclsh
+import{C as c}from"./app-ografi-fix-1577318.js";function a(i,s){for(var n=0;n<s.length;n++){const t=s[n];if(typeof t!="string"&&!Array.isArray(t)){for(const e in t)if(e!=="default"&&!(e in i)){const p=Object.getOwnPropertyDescriptor(t,e);p&&Object.defineProperty(i,e,p.get?p:{enumerable:!0,get:()=>t[e]})}}}return Object.freeze(Object.defineProperty(i,Symbol.toStringTag,{value:"Module"}))}var r={exports:{}};(function(i,s){ace.define("ace/snippets/tcl.snippets",["require","exports","module"],function(n,t,e){e.exports=`# #!/usr/bin/env tclsh
 snippet #!
 	#!/usr/bin/env tclsh
 	

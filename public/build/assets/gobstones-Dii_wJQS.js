@@ -1,4 +1,4 @@
-import{C as o}from"./app-ografi-a978d3b.js";function F(p,e){for(var n=0;n<e.length;n++){const _=e[n];if(typeof _!="string"&&!Array.isArray(_)){for(const T in _)if(T!=="default"&&!(T in p)){const t=Object.getOwnPropertyDescriptor(_,T);t&&Object.defineProperty(p,T,t.get?t:{enumerable:!0,get:()=>_[T]})}}}return Object.freeze(Object.defineProperty(p,Symbol.toStringTag,{value:"Module"}))}var K={exports:{}};(function(p,e){ace.define("ace/snippets/gobstones.snippets",["require","exports","module"],function(n,_,T){T.exports=`# scope: gobstones
+import{C as o}from"./app-ografi-fix-1577318.js";function F(p,e){for(var n=0;n<e.length;n++){const _=e[n];if(typeof _!="string"&&!Array.isArray(_)){for(const T in _)if(T!=="default"&&!(T in p)){const t=Object.getOwnPropertyDescriptor(_,T);t&&Object.defineProperty(p,T,t.get?t:{enumerable:!0,get:()=>_[T]})}}}return Object.freeze(Object.defineProperty(p,Symbol.toStringTag,{value:"Module"}))}var K={exports:{}};(function(p,e){ace.define("ace/snippets/gobstones.snippets",["require","exports","module"],function(n,_,T){T.exports=`# scope: gobstones
 
 # program
 snippet program

@@ -1,4 +1,4 @@
-import{C as o}from"./app-ografi-a978d3b.js";function $(s,i){for(var t=0;t<i.length;t++){const n=i[t];if(typeof n!="string"&&!Array.isArray(n)){for(const e in n)if(e!=="default"&&!(e in s)){const p=Object.getOwnPropertyDescriptor(n,e);p&&Object.defineProperty(s,e,p.get?p:{enumerable:!0,get:()=>n[e]})}}}return Object.freeze(Object.defineProperty(s,Symbol.toStringTag,{value:"Module"}))}var r={exports:{}};(function(s,i){ace.define("ace/snippets/perl.snippets",["require","exports","module"],function(t,n,e){e.exports=`# #!/usr/bin/perl
+import{C as o}from"./app-ografi-fix-1577318.js";function $(s,i){for(var t=0;t<i.length;t++){const n=i[t];if(typeof n!="string"&&!Array.isArray(n)){for(const e in n)if(e!=="default"&&!(e in s)){const p=Object.getOwnPropertyDescriptor(n,e);p&&Object.defineProperty(s,e,p.get?p:{enumerable:!0,get:()=>n[e]})}}}return Object.freeze(Object.defineProperty(s,Symbol.toStringTag,{value:"Module"}))}var r={exports:{}};(function(s,i){ace.define("ace/snippets/perl.snippets",["require","exports","module"],function(t,n,e){e.exports=`# #!/usr/bin/perl
 snippet #!
 	#!/usr/bin/env perl
 
