@@ -238,7 +238,6 @@
     
 </head>
 <body>
-@include('partials.preloader')
 <div
   class="export-wrapper"
   style="

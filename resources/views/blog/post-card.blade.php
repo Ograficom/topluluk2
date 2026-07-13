@@ -877,7 +877,7 @@
         }
 
         if ($isImage) {
-            return '<img src="' . e($resolvedValue) . '" alt="' . e($labelText ?: 'reaction') . '" class="post-card__reaction-asset" style="width:32px!important;height:32px!important;min-width:32px!important;max-width:32px!important;object-fit:contain!important" loading="lazy" decoding="async">';
+            return '<img src="' . e($resolvedValue) . '" alt="' . e($labelText ?: 'reaction') . '" class="post-card__reaction-asset" style="width:24px!important;height:24px!important;min-width:24px!important;max-width:24px!important;object-fit:contain!important" loading="lazy" decoding="async">';
         }
 
         return e($trimmedValue);
@@ -1952,12 +1952,12 @@ SVG;
                                     <input type="hidden" name="reaction_type_id" value="{{ $reactionTypeId }}">
                                 @endif
                                 <button type="submit" class="post-card__reaction-option" aria-label="{{ $reactionTypeLabel }}">
-                                    <span class="reaction-emoji reaction-emoji--html" style="display:inline-flex!important;width:32px!important;height:32px!important;min-width:32px!important;font-size:32px!important;line-height:32px!important">{!! $reactionTypeIcon !!}</span>
+                                    <span class="reaction-emoji reaction-emoji--html" style="display:inline-flex!important;width:24px!important;height:24px!important;min-width:24px!important;font-size:24px!important;line-height:24px!important">{!! $reactionTypeIcon !!}</span>
                                 </button>
                             </form>
                         @elseif(\Illuminate\Support\Facades\Route::has('login'))
                             <a href="{{ route('login') }}" class="post-card__reaction-option" aria-label="{{ $reactionTypeLabel }}">
-                                <span class="reaction-emoji reaction-emoji--html" style="display:inline-flex!important;width:32px!important;height:32px!important;min-width:32px!important;font-size:32px!important;line-height:32px!important">{!! $reactionTypeIcon !!}</span>
+                                <span class="reaction-emoji reaction-emoji--html" style="display:inline-flex!important;width:24px!important;height:24px!important;min-width:24px!important;font-size:24px!important;line-height:24px!important">{!! $reactionTypeIcon !!}</span>
                             </a>
                         @endif
                     @endforeach
@@ -2000,12 +2000,12 @@ SVG;
                                     <input type="hidden" name="reaction_type_id" value="{{ $reactionTypeId }}">
                                 @endif
                                 <button type="submit" class="post-card__reaction-option" aria-label="{{ $reactionTypeLabel }}">
-                                    <span class="reaction-emoji reaction-emoji--html" style="display:inline-flex!important;width:32px!important;height:32px!important;min-width:32px!important;font-size:32px!important;line-height:32px!important">{!! $reactionTypeIcon !!}</span>
+                                    <span class="reaction-emoji reaction-emoji--html" style="display:inline-flex!important;width:24px!important;height:24px!important;min-width:24px!important;font-size:24px!important;line-height:24px!important">{!! $reactionTypeIcon !!}</span>
                                 </button>
                             </form>
                         @elseif(\Illuminate\Support\Facades\Route::has('login'))
                             <a href="{{ route('login') }}" class="post-card__reaction-option" aria-label="{{ $reactionTypeLabel }}">
-                                <span class="reaction-emoji reaction-emoji--html" style="display:inline-flex!important;width:32px!important;height:32px!important;min-width:32px!important;font-size:32px!important;line-height:32px!important">{!! $reactionTypeIcon !!}</span>
+                                <span class="reaction-emoji reaction-emoji--html" style="display:inline-flex!important;width:24px!important;height:24px!important;min-width:24px!important;font-size:24px!important;line-height:24px!important">{!! $reactionTypeIcon !!}</span>
                             </a>
                         @endif
                     @endforeach
@@ -8137,20 +8137,20 @@ SVG;
         html body [data-post-card-reaction-menu] .post-card__reaction-option .reaction-emoji--html img,
         html body [data-post-card-reaction-menu] .post-card__reaction-option .reaction-emoji--html svg,
         html body [data-post-card-reaction-menu] .post-card__reaction-option .reaction-emoji--html iconify-icon {
-            width: 32px !important;
-            height: 32px !important;
-            min-width: 32px !important;
-            max-width: 32px !important;
-            font-size: 32px !important;
-            line-height: 32px !important;
+            width: 24px !important;
+            height: 24px !important;
+            min-width: 24px !important;
+            max-width: 24px !important;
+            font-size: 24px !important;
+            line-height: 24px !important;
             object-fit: contain !important;
         }
 
         html body [data-post-card-reaction-layer] .post-card__reaction-option,
         html body [data-post-card-reaction-menu] .post-card__reaction-option {
-            min-width: 48px !important;
-            min-height: 48px !important;
-            padding: 8px !important;
+            min-width: 40px !important;
+            min-height: 40px !important;
+            padding: 6px !important;
         }
 
         html body [data-post-card-shell] [data-post-card-summary-shell].is-collapsed,

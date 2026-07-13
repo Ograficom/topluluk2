@@ -234,7 +234,6 @@
     @stack('head')
 </head>
 <body class="bg-gray-100 dark:bg-gray-900 text-text-light dark:text-text-dark font-sans antialiased transition-colors duration-200 theme-minimal alma-app">
-    @include('partials.preloader')
     @include('header')
     @include('partials.pwa-install-banner')
 

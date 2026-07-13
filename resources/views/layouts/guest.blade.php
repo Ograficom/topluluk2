@@ -1465,7 +1465,6 @@
                    @if($themeLayout->dark_border_color) --border-dark: {{ $themeLayout->dark_border_color }}; @endif
                    @if($themeLayout->dark_primary_color) --primary-dark: {{ $themeLayout->dark_primary_color }}; @endif"
           @endif>
-        @include('partials.preloader')
         @include('partials.toasts')
         <div class="min-h-screen">
             @if ($authSingle)

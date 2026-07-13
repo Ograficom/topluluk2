@@ -190,7 +190,6 @@
     </style>
 </head>
 <body>
-    @include('partials.preloader')
     <main class="page" aria-labelledby="error-title">
         <section class="card">
             <a href="{{ url('/') }}" class="logo" aria-label="Ografi ana sayfa">

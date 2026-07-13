@@ -147,7 +147,6 @@
         $themeLayout = null;
     @endphp
     <body class="bg-background-light dark:bg-background-dark text-gray-900 dark:text-gray-100 font-body antialiased transition-colors duration-200 theme-minimal alma-app @auth logged-in @else logged-out @endauth">
-        @include('partials.preloader')
         <main class="mx-auto w-full max-w-[656px] px-4 pb-6 pt-0">
             <div class="flex min-h-screen flex-col py-4">
                 <header class="mb-4">

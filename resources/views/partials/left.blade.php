@@ -1015,6 +1015,31 @@
         scrollbar-color: rgba(255, 255, 255, 0.24) transparent !important;
     }
 
+    /* Sol menü okunabilirliği: mevcut kompakt ölçüyü bozmadan içerik büyütüldü. */
+    @media (min-width: 1024px) {
+        .nav-item-label {
+            font-size: 17px !important;
+            line-height: 1.3 !important;
+        }
+
+        .nav-item-icon-outline,
+        .nav-item-icon-outline iconify-icon {
+            font-size: 22px !important;
+        }
+
+        .nav-item-icon-outline svg {
+            width: 23px !important;
+            height: 23px !important;
+        }
+
+        .sidebar-footer-link,
+        .sidebar-footer-brand,
+        .sidebar-footer-bottom {
+            font-size: 12.5px !important;
+            line-height: 1.55 !important;
+        }
+    }
+
     .dark .sidebar-wrapper:hover .sidebar-scroll::-webkit-scrollbar-thumb,
     .dark .sidebar-scroll.is-scrolling::-webkit-scrollbar-thumb {
         background: rgba(255, 255, 255, 0.24) !important;
