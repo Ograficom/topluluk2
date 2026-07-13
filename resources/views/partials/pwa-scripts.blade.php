@@ -4,16 +4,23 @@
     (function () {
         const basePath = @json(rtrim(request()->getBaseUrl(), '/') . '/');
 
-        const isLocalHost = ['127.0.0.1', 'localhost'].includes(window.location.hostname);
-
-        if (!isLocalHost && 'serviceWorker' in navigator) {
-            const swUrl = `${basePath}sw.js`;
-            const swScope = basePath;
-
-            navigator.serviceWorker.register(swUrl, { scope: swScope }).catch(() => {});
-        } else if (isLocalHost && 'serviceWorker' in navigator) {
+        // PWA registration is intentionally disabled. Older service workers caused
+        // a navigation loop, so remove every registration and stale cache once.
+        if ('serviceWorker' in navigator) {
             navigator.serviceWorker.getRegistrations?.().then((registrations) => {
                 registrations.forEach((registration) => registration.unregister());
+            }).catch(() => {});
+
+            navigator.serviceWorker.addEventListener('message', (event) => {
+                if (event.data?.type === 'OGRAFI_SERVICE_WORKER_REMOVED') {
+                    console.info('Ografi service worker removed.');
+                }
+            });
+        }
+
+        if ('caches' in window) {
+            caches.keys().then((keys) => {
+                keys.forEach((key) => caches.delete(key));
             }).catch(() => {});
         }
 
