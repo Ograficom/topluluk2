@@ -17,7 +17,7 @@
     ];
 @endphp
 
-<nav data-mobile-bottom-nav class="fixed bottom-3 left-1/2 z-50 h-[64px] w-[calc(100%_-_12px)] max-w-[390px] -translate-x-1/2 rounded-[22px] border border-black/10 bg-white px-2 sm:hidden" aria-label="{{ __('site.mobile_nav.menu') }}">
+<nav data-mobile-bottom-nav class="mobile-bottom-nav fixed bottom-3 left-1/2 z-50 h-[64px] w-[calc(100%_-_12px)] max-w-[390px] -translate-x-1/2 rounded-[22px] border border-black/10 bg-white px-2 sm:hidden" aria-label="{{ __('site.mobile_nav.menu') }}">
     <div class="grid h-full grid-cols-5 items-center gap-1">
         <a
             href="{{ route('home') }}"
@@ -104,6 +104,85 @@
         @endauth
     </div>
 </nav>
+
+<style>
+    /* Mobile nav lock: scrolling must never change its geometry or visibility. */
+    @media (max-width: 639.98px) {
+        html body [data-mobile-bottom-nav].mobile-bottom-nav {
+            position: fixed !important;
+            left: 50% !important;
+            right: auto !important;
+            top: auto !important;
+            bottom: max(8px, env(safe-area-inset-bottom, 0px)) !important;
+            z-index: 900 !important;
+            display: block !important;
+            width: calc(100% - 16px) !important;
+            max-width: 390px !important;
+            height: 60px !important;
+            min-height: 60px !important;
+            max-height: 60px !important;
+            margin: 0 !important;
+            padding: 0 8px !important;
+            overflow: hidden !important;
+            border: 1px solid rgba(15, 23, 42, .10) !important;
+            border-radius: 18px !important;
+            background: rgba(250, 250, 250, .98) !important;
+            background-color: rgba(250, 250, 250, .98) !important;
+            color: #0f172a !important;
+            opacity: 1 !important;
+            visibility: visible !important;
+            transform: translate3d(-50%, 0, 0) !important;
+            translate: none !important;
+            scale: 1 !important;
+            filter: none !important;
+            backdrop-filter: none !important;
+            -webkit-backdrop-filter: none !important;
+            box-shadow: 0 8px 24px rgba(15, 23, 42, .10) !important;
+            transition: none !important;
+            animation: none !important;
+            will-change: auto !important;
+            isolation: isolate !important;
+        }
+
+        html body [data-mobile-bottom-nav].mobile-bottom-nav > div {
+            display: grid !important;
+            grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+            align-items: center !important;
+            width: 100% !important;
+            height: 100% !important;
+            gap: 2px !important;
+            opacity: 1 !important;
+            visibility: visible !important;
+            background: transparent !important;
+        }
+
+        html body [data-mobile-bottom-nav].mobile-bottom-nav :is(a, button, .mobile-bottom-nav__plus) {
+            opacity: 1 !important;
+            visibility: visible !important;
+            transform: none !important;
+            translate: none !important;
+            transition: none !important;
+            animation: none !important;
+            background: transparent !important;
+            color: #0f172a !important;
+        }
+
+        html body [data-mobile-bottom-nav].mobile-bottom-nav svg {
+            display: block !important;
+            width: 22px !important;
+            height: 22px !important;
+            color: currentColor !important;
+            opacity: 1 !important;
+            visibility: visible !important;
+        }
+
+        html body {
+            padding-bottom: calc(76px + env(safe-area-inset-bottom, 0px)) !important;
+            background-color: var(--page-bg, #f4f4f5) !important;
+            overscroll-behavior-y: none !important;
+        }
+    }
+</style>
 
 <div data-mobile-login-drawer class="pointer-events-none fixed inset-0 z-50 flex flex-col items-center justify-end sm:hidden">
     <div data-mobile-login-backdrop class="absolute inset-0 bg-black/40 opacity-0 transition-opacity duration-200"></div>
