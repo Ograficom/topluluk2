@@ -36,7 +36,7 @@ class ImportRssWithOllama extends Command
             try {
                 foreach ($this->readFeed($source['url']) as $item) {
                     if ($imported >= $limit) break;
-                    if (Story::where('canonical_url', $item['url'])->exists()) continue;
+                    if (Story::withoutGlobalScopes()->where('canonical_url', $item['url'])->exists()) continue;
 
                     $edited = $editor->edit($item['title'], mb_substr($item['summary'], 0, 4000));
                     $this->line($edited['title']);
