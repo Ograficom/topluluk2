@@ -1814,7 +1814,7 @@
         -webkit-backdrop-filter: blur(14px) !important;
         border: 0 !important;
         box-shadow: none !important;
-        filter: invert(1) !important;
+        filter: none !important;
         z-index: 9990 !important;
     }
 

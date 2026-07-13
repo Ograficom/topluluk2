@@ -4,6 +4,19 @@
         const root = document.documentElement;
         const media = window.matchMedia('(prefers-color-scheme: dark)');
         const storageKey = 'ografi-theme';
+        const lightMigrationKey = 'ografi-light-default-v2';
+
+        // Clear the legacy dark preference once. Older builds saved the
+        // operating-system theme as an explicit choice, leaving the header
+        // permanently dark even after the site default changed to light.
+        try {
+            if (!window.localStorage.getItem(lightMigrationKey)) {
+                window.localStorage.removeItem(storageKey);
+                window.localStorage.setItem(lightMigrationKey, '1');
+            }
+        } catch (error) {
+            // Storage can be unavailable in private/restricted browsers.
+        }
 
         const getStoredTheme = () => {
             try {
