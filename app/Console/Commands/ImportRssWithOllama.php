@@ -3,11 +3,13 @@
 namespace App\Console\Commands;
 
 use App\Models\Community;
+use App\Models\RssSource;
 use App\Models\Story;
 use App\Models\User;
 use App\Services\OllamaRssEditor;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
 use SimpleXMLElement;
 use Throwable;
@@ -20,29 +22,20 @@ class ImportRssWithOllama extends Command
 
     public function handle(OllamaRssEditor $editor): int
     {
-        $sources = array_values(array_filter($this->option('source') ?: config('rss_import.sources')));
-        $limit = max(1, (int) ($this->option('limit') ?: config('rss_import.limit')));
-        $user = User::where('email', config('rss_import.user_email'))->first();
-        $community = config('rss_import.community_slug')
-            ? Community::where('slug', config('rss_import.community_slug'))->first()
-            : null;
+        $sources = $this->configuredSources();
 
         if ($sources === []) {
-            $this->error('No RSS source configured. Set RSS_IMPORT_SOURCES.');
-            return self::FAILURE;
-        }
-        if (! $user) {
-            $this->error('RSS import user was not found. Set RSS_IMPORT_USER_EMAIL.');
+            $this->error('No active RSS source configured. Add one in Filament or set RSS_IMPORT_SOURCES.');
             return self::FAILURE;
         }
 
-        $imported = 0;
         foreach ($sources as $source) {
-            if ($imported >= $limit) break;
+            $imported = 0;
+            $limit = max(1, (int) ($this->option('limit') ?: $source['limit']));
 
             try {
-                foreach ($this->readFeed($source) as $item) {
-                    if ($imported >= $limit) break 2;
+                foreach ($this->readFeed($source['url']) as $item) {
+                    if ($imported >= $limit) break;
                     if (Story::where('canonical_url', $item['url'])->exists()) continue;
 
                     $edited = $editor->edit($item['title'], mb_substr($item['summary'], 0, 4000));
@@ -59,8 +52,8 @@ class ImportRssWithOllama extends Command
                     }
 
                     Story::create([
-                        'user_id' => $user->id,
-                        'community_id' => $community?->id,
+                        'user_id' => $source['user_id'],
+                        'community_id' => $source['community_id'],
                         'title' => $edited['title'],
                         'subtitle' => $edited['summary'] ?: null,
                         'summary' => $edited['summary'] ?: null,
@@ -68,20 +61,72 @@ class ImportRssWithOllama extends Command
                         'body_rendered' => collect($paragraphs)->map(fn ($p) => '<p>'.e($p).'</p>')->implode("\n"),
                         'canonical_url' => $item['url'],
                         'content_visibility' => 'All',
-                        'published_at' => config('rss_import.publish') ? now() : null,
-                        'approved_at' => config('rss_import.publish') ? now() : null,
+                        'published_at' => $source['publish'] ? now() : null,
+                        'approved_at' => $source['publish'] ? now() : null,
                         'meta' => ['meta_title' => $edited['title'], 'meta_description' => $edited['summary'], 'meta_canonical_url' => $item['url']],
                     ]);
                     $imported++;
                 }
+
+                $source['model']?->update(['last_run_at' => now(), 'last_error' => null]);
             } catch (Throwable $exception) {
                 report($exception);
-                $this->warn($source.': '.$exception->getMessage());
+                $source['model']?->update(['last_run_at' => now(), 'last_error' => mb_substr($exception->getMessage(), 0, 2000)]);
+                $this->warn($source['url'].': '.$exception->getMessage());
             }
+
+            $this->info("{$source['name']}: imported {$imported} RSS item(s).");
         }
 
-        $this->info("Imported {$imported} RSS item(s).");
         return self::SUCCESS;
+    }
+
+    private function configuredSources(): array
+    {
+        if ($urls = array_values(array_filter($this->option('source')))) {
+            $user = User::where('email', config('rss_import.user_email'))->first();
+            if (! $user) return [];
+
+            return array_map(fn ($url) => [
+                'name' => $url,
+                'url' => $url,
+                'user_id' => $user->id,
+                'community_id' => null,
+                'publish' => (bool) config('rss_import.publish'),
+                'limit' => config('rss_import.limit'),
+                'model' => null,
+            ], $urls);
+        }
+
+        if (Schema::hasTable('rss_sources')) {
+            $databaseSources = RssSource::query()->where('is_active', true)->get()->map(fn (RssSource $source) => [
+                'name' => $source->name,
+                'url' => $source->url,
+                'user_id' => $source->user_id,
+                'community_id' => $source->community_id,
+                'publish' => $source->auto_publish,
+                'limit' => $source->item_limit,
+                'model' => $source,
+            ])->all();
+
+            if ($databaseSources !== []) return $databaseSources;
+        }
+
+        $user = User::where('email', config('rss_import.user_email'))->first();
+        if (! $user) return [];
+        $community = config('rss_import.community_slug')
+            ? Community::where('slug', config('rss_import.community_slug'))->first()
+            : null;
+
+        return array_map(fn ($url) => [
+            'name' => $url,
+            'url' => $url,
+            'user_id' => $user->id,
+            'community_id' => $community?->id,
+            'publish' => (bool) config('rss_import.publish'),
+            'limit' => config('rss_import.limit'),
+            'model' => null,
+        ], array_values(array_filter(config('rss_import.sources'))));
     }
 
     private function readFeed(string $url): array
