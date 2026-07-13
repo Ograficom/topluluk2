@@ -448,6 +448,9 @@ body.theme-minimal .rounded-3xl {
   html {
     @apply font-sans;
     }
+  button:not(:disabled), [role="button"]:not(:disabled) {
+    cursor: pointer;
+    }
 }
 
 @layer components {

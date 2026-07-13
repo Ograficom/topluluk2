@@ -179,7 +179,7 @@
     </script>
 @endif
 
-<section id="comments" class="ogx-comments-panel" data-ogx-comments aria-labelledby="comments-title">
+<section id="comments" class="ogx-comments-panel shadcn-comment-card" data-ogx-comments aria-labelledby="comments-title">
   <header class="ogx-panel-header">
     <h2 class="ogx-comment-count" id="comments-title">{{ ((int) ($commentsCount ?? 0) > 0) ? ('Yorumlar ' . number_format((int) ($commentsCount ?? 0), 0, ',', '.')) : 'Yorumlar' }}</h2>
 
@@ -211,7 +211,7 @@
       @csrf
       <input type="hidden" name="parent_id" value="">
 
-      <div class="ogx-composer-box">
+      <div class="ogx-composer-box shadcn-comment-composer">
         <textarea
           id="show-comment-input"
           name="content"
@@ -2113,6 +2113,161 @@
   }, true);
 })();
 </script>
+
+<style>
+  /* base-nova preset: final comment composer surface */
+  html body .shadcn-comment-card {
+    width: 100% !important;
+    max-width: 680px !important;
+    margin: 14px auto 0 !important;
+    padding: 20px 16px 16px !important;
+    overflow: visible !important;
+    border: 1px solid #e4e4e7 !important;
+    border-radius: 12px !important;
+    background: #ffffff !important;
+    color: #18181b !important;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03) !important;
+    font-family: "Inter Variable", Inter, Arial, sans-serif !important;
+  }
+
+  html body .shadcn-comment-card > .ogx-panel-header {
+    min-height: 24px !important;
+    margin: 0 0 28px !important;
+  }
+
+  html body .shadcn-comment-card .ogx-comment-count {
+    color: #18181b !important;
+    font-size: 16px !important;
+    font-weight: 600 !important;
+    line-height: 24px !important;
+  }
+
+  html body .shadcn-comment-card .ogx-filter-btn {
+    width: 32px !important;
+    height: 32px !important;
+    border-radius: 8px !important;
+    background: transparent !important;
+    color: #27272a !important;
+  }
+
+  html body .shadcn-comment-card .ogx-filter-btn:is(:hover, :focus-visible, .is-open) {
+    background: #f4f4f5 !important;
+    color: #18181b !important;
+  }
+
+  html body .shadcn-comment-card .shadcn-comment-composer {
+    min-height: 112px !important;
+    padding: 16px !important;
+    overflow: visible !important;
+    border: 1px solid #d4d4d8 !important;
+    border-radius: 10px !important;
+    background: #f1f3f6 !important;
+    box-shadow: none !important;
+  }
+
+  html body .shadcn-comment-card .ogx-composer-form {
+    margin: 0 12px 12px !important;
+  }
+
+  html body .shadcn-comment-card .ogx-comment-input {
+    min-height: 44px !important;
+    padding: 6px 6px 8px !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    color: #18181b !important;
+    font-size: 15px !important;
+    line-height: 24px !important;
+    box-shadow: none !important;
+  }
+
+  html body .shadcn-comment-card .ogx-comment-input::placeholder {
+    color: #71717a !important;
+    opacity: 1 !important;
+  }
+
+  html body .shadcn-comment-card .ogx-composer-actions {
+    min-height: 36px !important;
+    margin-top: 4px !important;
+  }
+
+  html body .shadcn-comment-card :is(.ogx-emoji-btn, .ogx-image-btn) {
+    width: 32px !important;
+    height: 32px !important;
+    border-radius: 8px !important;
+    color: #27272a !important;
+  }
+
+  html body .shadcn-comment-card :is(.ogx-emoji-btn, .ogx-image-btn):is(:hover, :focus-visible) {
+    background: #e4e4e7 !important;
+    color: #18181b !important;
+  }
+
+  html body .shadcn-comment-card .ogx-gif-btn {
+    min-width: 32px !important;
+    height: 32px !important;
+    padding: 0 6px !important;
+    border: 0 !important;
+    border-radius: 8px !important;
+    background: transparent !important;
+    color: #27272a !important;
+    font-size: 12px !important;
+    font-weight: 600 !important;
+  }
+
+  html body .shadcn-comment-card .ogx-gif-btn:is(:hover, :focus-visible) {
+    background: #e4e4e7 !important;
+    color: #18181b !important;
+  }
+
+  html body .shadcn-comment-card .ogx-char-counter {
+    color: #71717a !important;
+    font-size: 13px !important;
+    font-weight: 400 !important;
+  }
+
+  html body .shadcn-comment-card .ogx-submit-btn {
+    width: 36px !important;
+    height: 36px !important;
+    border: 0 !important;
+    border-radius: 9999px !important;
+    background: #ffffff !important;
+    color: #d4d4d8 !important;
+    box-shadow: none !important;
+  }
+
+  html body .shadcn-comment-card .ogx-composer-form.has-comment-ready .ogx-submit-btn {
+    background: #18181b !important;
+    color: #ffffff !important;
+  }
+
+  html body .shadcn-comment-card > .ogx-comments-list > .ogx-empty {
+    min-height: 52px !important;
+    margin: 0 !important;
+    padding: 14px 16px !important;
+    border: 1px dashed #d4d4d8 !important;
+    border-radius: 10px !important;
+    background: #fafafa !important;
+    color: #71717a !important;
+    font-size: 14px !important;
+    line-height: 22px !important;
+    text-align: center !important;
+  }
+
+  @media (max-width: 640px) {
+    html body .shadcn-comment-card {
+      padding: 16px 10px 12px !important;
+      border-left: 0 !important;
+      border-right: 0 !important;
+      border-radius: 0 !important;
+    }
+
+    html body .shadcn-comment-card .ogx-composer-form {
+      margin-left: 0 !important;
+      margin-right: 0 !important;
+    }
+  }
+</style>
 <script>
 (function () {
   var modal = document.getElementById('ogx-giphy-modal');
