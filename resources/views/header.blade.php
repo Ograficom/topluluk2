@@ -1833,6 +1833,40 @@
         box-shadow: none !important;
     }
 
+    /* Marka kilidi: logo ile ad arasındaki görünmez boşluğu kaldır. */
+    html body .site-header .site-header-logo {
+        display: inline-flex !important;
+        align-items: center !important;
+        gap: 2px !important;
+        column-gap: 2px !important;
+        font-family: "Roboto", Arial, Helvetica, sans-serif !important;
+    }
+
+    html body .site-header .site-header-logo-mark {
+        width: 32px !important;
+        height: 36px !important;
+        min-width: 32px !important;
+        flex: 0 0 32px !important;
+    }
+
+    html body .site-header .site-header-logo-mark .site-header-logo-main-image {
+        width: 32px !important;
+        height: 32px !important;
+        max-width: 32px !important;
+        max-height: 32px !important;
+        inset: 2px 0 !important;
+    }
+
+    html body .site-header .site-header-logo-wordmark,
+    html.dark body .site-header .site-header-logo-wordmark {
+        margin: 0 !important;
+        font-family: "Roboto", Arial, Helvetica, sans-serif !important;
+        font-size: 20px !important;
+        line-height: 1 !important;
+        font-weight: 600 !important;
+        letter-spacing: -0.01em !important;
+    }
+
 </style>
 
 <header class="site-header" data-site-header style="background: rgba(255,255,255,.98) !important; background-color: rgba(255,255,255,.98) !important; color: #0f172a !important; filter: none !important; border-bottom: 1px solid #e5e7eb !important;">
