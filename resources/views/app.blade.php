@@ -128,6 +128,46 @@
 
 <body class="font-sans antialiased">
     @inertia
+    @if (($page['component'] ?? null) === 'Story/Show' && ! empty($page['props']['story']))
+        @php($fallbackStory = $page['props']['story'])
+        <main data-story-fallback class="min-h-screen bg-[#f4f4f5] px-4 py-8 text-[#18181b]">
+            <article class="mx-auto max-w-3xl rounded-2xl bg-white p-6 shadow-sm sm:p-10">
+                <h1 class="text-2xl font-bold leading-tight sm:text-4xl">
+                    {{ $fallbackStory['title'] ?? '' }}
+                </h1>
+
+                @if (! empty($fallbackStory['subtitle']))
+                    <p class="mt-4 text-base text-[#71717a] sm:text-lg">
+                        {{ $fallbackStory['subtitle'] }}
+                    </p>
+                @endif
+
+                <div class="mt-8 space-y-4 text-base leading-7 sm:text-lg">
+                    @foreach (($fallbackStory['content'] ?? []) as $block)
+                        @if (! empty($block['data']['text']))
+                            <p>{{ strip_tags($block['data']['text']) }}</p>
+                        @endif
+                    @endforeach
+                </div>
+
+                @if (! empty($fallbackStory['source_url']))
+                    <a href="{{ $fallbackStory['source_url'] }}"
+                       target="_blank"
+                       rel="noopener noreferrer"
+                       class="mt-8 flex items-center justify-between rounded-2xl bg-[#f7f7f8] px-5 py-4 text-[#18181b] no-underline">
+                        <span>
+                            <span class="block text-xs uppercase tracking-wide text-[#71717a]">Source</span>
+                            <strong class="mt-1 block">{{ $fallbackStory['source_host'] ?? $fallbackStory['source_url'] }}</strong>
+                        </span>
+                        <span aria-hidden="true" class="text-xl">↗</span>
+                    </a>
+                @endif
+            </article>
+        </main>
+        <style>
+            #app:not(:empty) + [data-story-fallback] { display: none; }
+        </style>
+    @endif
     @if ($custom_footer_code !== '')
         {!! $custom_footer_code !!}
     @endif
