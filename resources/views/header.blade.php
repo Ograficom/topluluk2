@@ -1835,7 +1835,7 @@
 
 </style>
 
-<header class="site-header" data-site-header>
+<header class="site-header" data-site-header style="background: rgba(255,255,255,.98) !important; background-color: rgba(255,255,255,.98) !important; color: #0f172a !important; filter: none !important; border-bottom: 1px solid #e5e7eb !important;">
     <div class="site-header-shell">
         @php
             $currentUser = auth()->user();
@@ -1992,7 +1992,7 @@
                         <span class="site-status-dot {{ $unreadNotifications > 0 ? '' : 'hidden' }}" aria-hidden="true" data-notifications-dot></span>
                     </button>
 
-                    <div class="site-notifications-panel hidden" data-notifications-panel>
+                    <div class="site-notifications-panel hidden" data-notifications-panel style="background: #ffffff !important; background-color: #ffffff !important; color: #0f172a !important; border-color: #e2e8f0 !important; filter: none !important;">
                         <div class="site-notifications-panel-head">
                             <div>
                                 <h3 class="site-notifications-panel-title">Bildirimler</h3>
@@ -2066,7 +2066,7 @@
                         @endif
                     </button>
 
-                    <div class="site-menu-panel hidden" data-user-menu-panel>
+                    <div class="site-menu-panel hidden" data-user-menu-panel style="background: #ffffff !important; background-color: #ffffff !important; color: #0f172a !important; border-color: #e2e8f0 !important; filter: none !important;">
                         <div class="site-user-menu-card">
                             <span class="site-user-menu-avatar">
                                 @if ($avatarUrl)

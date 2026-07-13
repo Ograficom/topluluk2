@@ -18,19 +18,12 @@
             // Storage can be unavailable in private/restricted browsers.
         }
 
-        const getStoredTheme = () => {
-            try {
-                const value = window.localStorage.getItem(storageKey);
-                return value === 'dark' || value === 'light' ? value : null;
-            } catch (error) {
-                return null;
-            }
-        };
+        const getStoredTheme = () => 'light';
 
         const applyScheme = (preferredTheme = getStoredTheme()) => {
             // Ografi opens in light mode by default. Dark mode is only enabled
             // after the visitor explicitly chooses it.
-            const isDark = preferredTheme === 'dark';
+            const isDark = false;
             root.classList.toggle('dark', isDark);
             root.style.colorScheme = isDark ? 'dark' : 'light';
             root.dataset.systemTheme = isDark ? 'dark' : 'light';
@@ -44,7 +37,7 @@
         };
 
         window.setPreferredTheme = (theme) => {
-            const normalized = theme === 'dark' || theme === 'light' ? theme : null;
+            const normalized = 'light';
 
             try {
                 if (normalized) {
