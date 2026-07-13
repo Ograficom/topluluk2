@@ -1565,7 +1565,7 @@ SVG;
         @endif
     </div>
 
-    <h2 class="post-title" id="post-title" style="font-family: 'Roboto', Arial, Helvetica, sans-serif !important; font-size: 18px !important; line-height: 1.4 !important;">
+    <h2 class="post-title" id="post-title" style="font-family: 'Roboto', Arial, Helvetica, sans-serif !important; font-size: 20px !important; font-weight: 700 !important; line-height: 1.35 !important;">
         @if($postUrl !== '#')
             <a href="{{ $postUrl }}" class="post-title__link">{{ $title }}</a>
         @else
@@ -8105,8 +8105,9 @@ SVG;
         html body [data-post-card-shell] .post-title,
         html body [data-post-card-shell] .post-title__link {
             font-family: "Roboto", Arial, Helvetica, sans-serif !important;
-            font-size: 18px !important;
-            line-height: 1.4 !important;
+            font-size: 20px !important;
+            font-weight: 700 !important;
+            line-height: 1.35 !important;
         }
 
         html body [data-post-card-reaction-menu] .post-card__reaction-option .reaction-emoji,
@@ -8124,6 +8125,32 @@ SVG;
         html body [data-post-card-reaction-menu] .post-card__reaction-option {
             min-width: 42px !important;
             min-height: 42px !important;
+        }
+
+        html body [data-post-card-reaction-layer] .post-card__reaction-option .reaction-emoji,
+        html body [data-post-card-reaction-layer] .post-card__reaction-option .reaction-emoji--html,
+        html body [data-post-card-reaction-layer] .post-card__reaction-option .reaction-emoji--html img,
+        html body [data-post-card-reaction-layer] .post-card__reaction-option .reaction-emoji--html svg,
+        html body [data-post-card-reaction-layer] .post-card__reaction-option .reaction-emoji--html iconify-icon,
+        html body [data-post-card-reaction-menu] .post-card__reaction-option .reaction-emoji,
+        html body [data-post-card-reaction-menu] .post-card__reaction-option .reaction-emoji--html,
+        html body [data-post-card-reaction-menu] .post-card__reaction-option .reaction-emoji--html img,
+        html body [data-post-card-reaction-menu] .post-card__reaction-option .reaction-emoji--html svg,
+        html body [data-post-card-reaction-menu] .post-card__reaction-option .reaction-emoji--html iconify-icon {
+            width: 32px !important;
+            height: 32px !important;
+            min-width: 32px !important;
+            max-width: 32px !important;
+            font-size: 32px !important;
+            line-height: 32px !important;
+            object-fit: contain !important;
+        }
+
+        html body [data-post-card-reaction-layer] .post-card__reaction-option,
+        html body [data-post-card-reaction-menu] .post-card__reaction-option {
+            min-width: 48px !important;
+            min-height: 48px !important;
+            padding: 8px !important;
         }
 
         html body [data-post-card-shell] [data-post-card-summary-shell].is-collapsed,
