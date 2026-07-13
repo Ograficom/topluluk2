@@ -8974,6 +8974,7 @@
 
     const initMentionTextarea = function (textarea) {
       if (!textarea || textarea.dataset.mentionPaintReady === 'true') return;
+      if (textarea.classList.contains('ogx3-textarea') || textarea.closest('[data-ogx-composer]')) return;
       textarea.dataset.mentionPaintReady = 'true';
       textarea.classList.add('ps-mention-live-input');
 
@@ -8997,7 +8998,7 @@
     };
 
     const initAllMentionTextareas = function () {
-      document.querySelectorAll('.post-show-shell textarea[name="content"], .post-show-shell textarea[data-mentionable="users"]').forEach(initMentionTextarea);
+      document.querySelectorAll('.post-show-shell textarea[name="content"]:not(.ogx3-textarea), .post-show-shell textarea[data-mentionable="users"]:not(.ogx3-textarea)').forEach(initMentionTextarea);
     };
 
     initAllMentionTextareas();
