@@ -64,7 +64,7 @@ class ImportRssWithOllama extends Command
                         'title' => $edited['title'],
                         'subtitle' => $edited['summary'] ?: null,
                         'summary' => $edited['summary'] ?: null,
-                        'body' => $body,
+                        'body' => json_encode($body, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES),
                         'body_rendered' => collect($paragraphs)->map(fn ($p) => '<p>'.e($p).'</p>')->implode("\n"),
                         'canonical_url' => $item['url'],
                         'content_visibility' => 'All',
