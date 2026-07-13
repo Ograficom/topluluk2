@@ -17,11 +17,16 @@ class OllamaRssEditor
                 'prompt' => implode("\n", [
                     'Aşağıdaki RSS içeriğini Türkçe, tarafsız ve özgün bir haber metni olarak düzenle.',
                     'Bilgi ekleme, iddia uydurma, kaynak URL üretme ve reklam dili kullanma.',
-                    'Yalnızca JSON döndür: {"title":"en fazla 160 karakter","summary":"en fazla 250 karakter","content":"2-5 kısa paragraf"}',
+                    'Yalnızca JSON döndür: {"title":"en fazla 160 karakter","summary":"en fazla 250 karakter","content":"2 kısa paragraf"}',
                     'Başlık: '.$title,
                     'Metin: '.$summary,
                 ]),
-                'options' => ['temperature' => 0.2],
+                'keep_alive' => '10m',
+                'options' => [
+                    'temperature' => 0.2,
+                    'num_ctx' => 2048,
+                    'num_predict' => 300,
+                ],
             ]);
 
         if (! $response->successful()) {

@@ -45,7 +45,7 @@ class ImportRssWithOllama extends Command
                     if ($imported >= $limit) break 2;
                     if (Story::where('canonical_url', $item['url'])->exists()) continue;
 
-                    $edited = $editor->edit($item['title'], $item['summary']);
+                    $edited = $editor->edit($item['title'], mb_substr($item['summary'], 0, 4000));
                     $this->line($edited['title']);
                     if ($this->option('dry-run')) {
                         $imported++;
