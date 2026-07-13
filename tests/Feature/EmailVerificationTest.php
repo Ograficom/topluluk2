@@ -51,6 +51,48 @@ class EmailVerificationTest extends TestCase
         $response->assertRedirect(route('dashboard', absolute: false).'?verified=1');
     }
 
+    public function test_email_can_be_verified_without_an_active_browser_session(): void
+    {
+        if (! Features::enabled(Features::emailVerification())) {
+            $this->markTestSkipped('Email verification not enabled.');
+        }
+
+        Event::fake();
+
+        $user = User::factory()->unverified()->create();
+
+        $verificationUrl = URL::temporarySignedRoute(
+            'verification.verify',
+            now()->addMinutes(60),
+            ['id' => $user->id, 'hash' => sha1($user->email)]
+        );
+
+        $response = $this->get($verificationUrl);
+
+        Event::assertDispatched(Verified::class);
+        $this->assertTrue($user->fresh()->hasVerifiedEmail());
+        $response->assertRedirect(route('login', ['verified' => 1], absolute: false));
+    }
+
+    public function test_opening_the_verification_link_again_keeps_email_verified(): void
+    {
+        Event::fake();
+
+        $user = User::factory()->create();
+
+        $verificationUrl = URL::temporarySignedRoute(
+            'verification.verify',
+            now()->addMinutes(60),
+            ['id' => $user->id, 'hash' => sha1($user->email)]
+        );
+
+        $this->get($verificationUrl)
+            ->assertRedirect(route('login', ['verified' => 1], absolute: false));
+
+        $this->assertTrue($user->fresh()->hasVerifiedEmail());
+        Event::assertNotDispatched(Verified::class);
+    }
+
     public function test_email_can_not_verified_with_invalid_hash(): void
     {
         if (! Features::enabled(Features::emailVerification())) {
