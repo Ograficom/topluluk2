@@ -1213,11 +1213,6 @@
             padding: 20px 16px !important;
         }
 
-        body.alma-app .sidebar-wrapper--drawer .nav-list > li:nth-child(2),
-        body.alma-app .sidebar-wrapper--drawer .nav-list > li:nth-child(5) {
-            display: none !important;
-        }
-
         body.alma-app .sidebar-wrapper--drawer .nav-list,
         body.alma-app .sidebar-wrapper--drawer .sidebar-category-list {
             gap: 4px !important;
