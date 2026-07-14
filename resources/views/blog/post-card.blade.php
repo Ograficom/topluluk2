@@ -1066,7 +1066,7 @@
         ->take(3)
         ->values();
 
-    $showCommentPreviewAvatars = $commentPreviewPeople->isNotEmpty();
+    $showCommentPreviewAvatars = $commentsCount >= 3 && $commentPreviewPeople->isNotEmpty();
 @endphp
 
 @php
@@ -8186,6 +8186,39 @@ SVG;
             max-height: none !important;
             overflow: visible !important;
             white-space: normal !important;
+        }
+
+        /* Commenter stack appears from three comments onward; feed actions stay black. */
+        html body [data-post-card-shell] .comment-avatar,
+        html body [data-post-card-shell] .comment-avatar-overflow {
+            width: 32px !important;
+            height: 32px !important;
+            min-width: 32px !important;
+            font-size: 11px !important;
+        }
+
+        html body [data-post-card-shell] .comment-avatar + .comment-avatar,
+        html body [data-post-card-shell] .comment-avatar-overflow {
+            margin-left: -9px !important;
+        }
+
+        html body [data-post-card-shell] .action-bar :is(
+            .action-btn,
+            .post-card__action-link,
+            .post-card__action-button,
+            .action-chip,
+            .post-metric,
+            .post-metric--views,
+            .post-card__inline-icon,
+            .post-card__inline-icon svg,
+            .post-card__inline-icon iconify-icon,
+            .post-card__bookmark-icon,
+            .post-card__share-icon,
+            .action-chip__label,
+            [data-post-card-view-count]
+        ) {
+            color: #111111 !important;
+            stroke: currentColor !important;
         }
 
 </style>
