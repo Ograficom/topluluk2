@@ -1072,9 +1072,9 @@
     @media (min-width: 1024px) {
         body.alma-app .sidebar-wrapper:not(.sidebar-wrapper--drawer) {
             top: 86px !important;
-            transform: translateX(-10px) !important;
-            width: 202px !important;
-            max-width: 200px !important;
+            transform: translateX(-39px) !important;
+            width: 210px !important;
+            max-width: 210px !important;
             height: calc(100dvh - 86px) !important;
             max-height: calc(100dvh - 86px) !important;
         }
@@ -1084,26 +1084,26 @@
 
         body.alma-app .nav-list,
         body.alma-app .sidebar-category-list {
-            width: 200px !important;
+            width: 210px !important;
             gap: 0 !important;
         }
 
         body.alma-app .nav-item,
         body.alma-app .sidebar-category-link {
-            width: 202px !important;
-            max-width: 202px !important;
-            height: 58px !important;
-            min-height: 58px !important;
+            width: 210px !important;
+            max-width: 210px !important;
+            height: 54px !important;
+            min-height: 54px !important;
             padding: 0 8px !important;
-            grid-template-columns: 26px minmax(0, 1fr) !important;
-            column-gap: 7px !important;
+            grid-template-columns: 34px minmax(0, 1fr) !important;
+            column-gap: 9px !important;
             border-radius: 10px !important;
             color: #4b5563 !important;
         }
 
         body.alma-app .nav-item[data-active="true"] {
-            height: 54px !important;
-            min-height: 54px !important;
+            height: 50px !important;
+            min-height: 50px !important;
             margin: 2px 0 !important;
             background: #ffffff !important;
             color: #18181b !important;
@@ -1114,6 +1114,19 @@
         }
 
         body.alma-app .nav-item[data-active="true"] .nav-item-icon-outline {
+            color: #10b981 !important;
+        }
+
+        body.alma-app .nav-item:is(:hover, :focus-visible) {
+            background: #ffffff !important;
+            color: #18181b !important;
+        }
+
+        body.alma-app .nav-item:is(:hover, :focus-visible) .nav-item-icon-outline {
+            color: #6b7280 !important;
+        }
+
+        body.alma-app .nav-item[data-active="true"]:is(:hover, :focus-visible) .nav-item-icon-outline {
             color: #10b981 !important;
         }
 
@@ -1147,21 +1160,21 @@
         }
 
         body.alma-app .sidebar-category-link {
-            height: 58px !important;
-            min-height: 58px !important;
+            height: 54px !important;
+            min-height: 54px !important;
         }
 
         body.alma-app .sidebar-category-avatar,
         body.alma-app .sidebar-category-avatar--fallback {
-            width: 34px !important;
-            height: 34px !important;
-            min-width: 34px !important;
-            min-height: 34px !important;
-            max-width: 34px !important;
-            max-height: 34px !important;
+            width: 29px !important;
+            height: 29px !important;
+            min-width: 29px !important;
+            min-height: 29px !important;
+            max-width: 29px !important;
+            max-height: 29px !important;
             border: 0 !important;
             color: #ffffff !important;
-            font-size: 12px !important;
+            font-size: 10px !important;
             font-weight: 500 !important;
         }
 
