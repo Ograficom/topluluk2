@@ -1385,6 +1385,13 @@
             ->all();
     }
 
+    // Publisher article comments belong to Article/NewsArticle; Google advises
+    // against marking publisher article comments as DiscussionForumPosting.
+    $newsArticleSchema['commentCount'] = (int) $commentsCount;
+    if (!empty($discussionForumComments)) {
+        $newsArticleSchema['comment'] = $discussionForumComments;
+    }
+
     // VideoObject is emitted only when the page contains a real video/embed and a
     // truthful thumbnail is available. This keeps the schema aligned with visible content.
     $seoVideoCandidates = collect();
@@ -1513,7 +1520,6 @@
             $webPageSchema,
             $breadcrumbSchema,
             $newsArticleSchema,
-            $discussionForumSchema,
             ...$seoVideoSchemas->all(),
         ],
     ];
