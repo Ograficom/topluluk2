@@ -1114,7 +1114,7 @@
 
         body.alma-app .nav-item:is(:hover, :focus-visible) {
             background: #ffffff !important;
-            color: #18181b !important;
+            color: #2563eb !important;
         }
 
         body.alma-app .nav-item:is(:hover, :focus-visible) .nav-item-icon-outline {
