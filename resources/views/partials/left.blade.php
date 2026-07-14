@@ -1205,6 +1205,15 @@
 
 <style>
     @media (max-width: 1023.98px) {
+        body.alma-app:has(#mobile-sidebar-drawer[aria-hidden="false"]) .site-header {
+            visibility: hidden !important;
+            pointer-events: none !important;
+        }
+
+        #mobile-sidebar-drawer {
+            z-index: 10000 !important;
+        }
+
         #mobile-sidebar-drawer [data-mobile-sidebar-panel] > div:first-child {
             display: none !important;
         }
