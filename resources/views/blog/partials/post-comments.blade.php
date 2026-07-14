@@ -2486,6 +2486,10 @@
     text-align: center !important;
   }
 
+  html body .post-show-shell .shadcn-comment-card > #show-comment-form + .ogx-comments-list {
+    margin-top: 18px !important;
+  }
+
   @media (max-width: 640px) {
     html body .shadcn-comment-card {
       padding: 16px 10px 12px !important;
