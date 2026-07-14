@@ -42,8 +42,9 @@ Artisan::command('rss:sync {--feed_id=} {--force}', function (RssSyncService $se
 })->purpose('Sync RSS feeds and import as posts');
 
 Schedule::command('rss:sync')
-    ->everyFiveMinutes()
-    ->withoutOverlapping();
+    ->hourly()
+    ->withoutOverlapping(55)
+    ->runInBackground();
 
 Artisan::command('posts:seo-backfill {--force : Replace existing generated metadata too}', function () {
     $force = (bool) $this->option('force');
