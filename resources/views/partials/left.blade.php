@@ -1205,18 +1205,85 @@
 
 <style>
     @media (max-width: 1023.98px) {
+        #mobile-sidebar-drawer [data-mobile-sidebar-panel] > div:first-child {
+            display: none !important;
+        }
+
+        #mobile-sidebar-drawer [data-mobile-sidebar-panel] > div:nth-child(2) {
+            padding: 20px 16px !important;
+        }
+
+        body.alma-app .sidebar-wrapper--drawer .nav-list > li:nth-child(2),
+        body.alma-app .sidebar-wrapper--drawer .nav-list > li:nth-child(5) {
+            display: none !important;
+        }
+
+        body.alma-app .sidebar-wrapper--drawer .nav-list,
+        body.alma-app .sidebar-wrapper--drawer .sidebar-category-list {
+            gap: 4px !important;
+        }
+
+        body.alma-app .sidebar-wrapper--drawer .nav-item,
+        body.alma-app .sidebar-wrapper--drawer .sidebar-category-link {
+            width: 100% !important;
+            max-width: none !important;
+            min-height: 56px !important;
+            padding: 10px 16px !important;
+            gap: 14px !important;
+            border-radius: 14px !important;
+        }
+
+        body.alma-app .sidebar-wrapper--drawer .nav-item-label,
+        body.alma-app .sidebar-wrapper--drawer .sidebar-category-name {
+            font-family: "Roboto", Arial, Helvetica, sans-serif !important;
+            font-size: 20px !important;
+            line-height: 1.2 !important;
+            font-weight: 600 !important;
+            color: #111111 !important;
+        }
+
+        body.alma-app .sidebar-wrapper--drawer .nav-item-icon-outline,
+        body.alma-app .sidebar-wrapper--drawer .nav-item-icon-outline :is(iconify-icon, svg) {
+            width: 24px !important;
+            height: 24px !important;
+            min-width: 24px !important;
+            font-size: 24px !important;
+        }
+
+        body.alma-app .sidebar-wrapper--drawer .sidebar-category-avatar,
+        body.alma-app .sidebar-wrapper--drawer .sidebar-category-avatar--fallback {
+            width: 26px !important;
+            height: 26px !important;
+            min-width: 26px !important;
+            min-height: 26px !important;
+            max-width: 26px !important;
+            max-height: 26px !important;
+            flex: 0 0 26px !important;
+            font-size: 11px !important;
+        }
+
         body.alma-app .sidebar-wrapper--drawer .nav-item:is(:hover, :focus-visible, :active),
-        body.alma-app .sidebar-wrapper--drawer .nav-item[data-active="true"] {
+        body.alma-app .sidebar-wrapper--drawer .sidebar-category-link:is(:hover, :focus-visible, :active) {
             background: #f3f4f6 !important;
             border-radius: 14px !important;
             color: #4b5563 !important;
         }
 
         body.alma-app .sidebar-wrapper--drawer .nav-item:is(:hover, :focus-visible, :active) .nav-item-icon-outline,
-        body.alma-app .sidebar-wrapper--drawer .nav-item:is(:hover, :focus-visible, :active) .nav-item-icon-outline :is(iconify-icon, svg),
+        body.alma-app .sidebar-wrapper--drawer .nav-item:is(:hover, :focus-visible, :active) .nav-item-icon-outline :is(iconify-icon, svg) {
+            color: #6b7280 !important;
+        }
+
+        body.alma-app .sidebar-wrapper--drawer .nav-item[data-active="true"] {
+            background: #effaf6 !important;
+            border-radius: 14px !important;
+            color: #00a971 !important;
+        }
+
+        body.alma-app .sidebar-wrapper--drawer .nav-item[data-active="true"] .nav-item-label,
         body.alma-app .sidebar-wrapper--drawer .nav-item[data-active="true"] .nav-item-icon-outline,
         body.alma-app .sidebar-wrapper--drawer .nav-item[data-active="true"] .nav-item-icon-outline :is(iconify-icon, svg) {
-            color: #6b7280 !important;
+            color: #00a971 !important;
         }
     }
 </style>
