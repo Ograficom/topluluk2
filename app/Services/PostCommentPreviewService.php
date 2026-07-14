@@ -12,7 +12,7 @@ use Illuminate\Support\Collection;
 
 class PostCommentPreviewService
 {
-    public function attachToPosts(mixed $posts, int $limit = 2): void
+    public function attachToPosts(mixed $posts, int $limit = 3): void
     {
         $collection = $this->extractCollection($posts);
         if ($collection->isEmpty()) {
@@ -37,10 +37,12 @@ class PostCommentPreviewService
                 'reactions as likes_count' => fn ($query) => $query->where('is_like', true),
             ])
             ->orderByDesc('created_at')
+            ->orderByDesc('id')
             ->limit(max(50, $postIds->count() * 12))
             ->get(['id', 'post_id', 'user_id', 'author_name', 'author_email', 'content', 'created_at']);
 
         $byPost = [];
+        $commenterKeysByPost = [];
         $latestPreviewByPost = [];
         foreach ($comments as $comment) {
             $postId = (int) $comment->post_id;
@@ -49,6 +51,12 @@ class PostCommentPreviewService
             }
 
             $email = mb_strtolower(trim((string) ($comment->author_email ?? '')));
+            $user = $comment->user;
+            $previewKey = $user
+                ? 'user:' . $user->id
+                : ($email !== '' ? 'guest:' . $email : 'comment:' . $comment->id);
+
+            $commenterKeysByPost[$postId][$previewKey] = true;
 
             if (!isset($latestPreviewByPost[$postId])) {
                 $previewText = trim((string) preg_replace('/\[(gif|img):([^\]\s]+|data:image\/[^\]\s]+)\]/i', '', (string) ($comment->content ?? '')));
@@ -70,15 +78,10 @@ class PostCommentPreviewService
                 ];
             }
 
-            if ((int) ($comment->likes_count ?? 0) < 2) {
-                continue;
-            }
-
             if (count($byPost[$postId]) >= $limit) {
                 continue;
             }
 
-            $user = $comment->user;
             $name = trim((string) ($user?->name ?? $comment->author_name ?? 'Topluluk uyesi'));
             if ($name === '') {
                 $name = 'Topluluk uyesi';
@@ -91,10 +94,6 @@ class PostCommentPreviewService
             if (!$avatar) {
                 $avatar = 'https://placehold.co/96x96';
             }
-
-            $previewKey = $user
-                ? 'user:' . $user->id
-                : ($email !== '' ? 'guest:' . $email : 'comment:' . $comment->id);
 
             $exists = false;
             foreach ($byPost[$postId] as $entry) {
@@ -116,9 +115,11 @@ class PostCommentPreviewService
             ];
         }
 
-        $collection->each(function ($post) use ($byPost, $latestPreviewByPost) {
+        $collection->each(function ($post) use ($byPost, $commenterKeysByPost, $latestPreviewByPost) {
             $postId = $post->id ?? null;
             $post->commenter_previews = $postId ? ($byPost[(int) $postId] ?? []) : [];
+            $commenterCount = $postId ? count($commenterKeysByPost[(int) $postId] ?? []) : 0;
+            $post->commenter_preview_extra_count = max(0, $commenterCount - count($post->commenter_previews));
             $post->latest_comment_preview = $postId ? ($latestPreviewByPost[(int) $postId] ?? null) : null;
         });
     }

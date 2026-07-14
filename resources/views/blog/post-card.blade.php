@@ -947,11 +947,10 @@
     $isPinned = (bool) (optional($postObj)->is_pinned ?? $postArr['is_pinned'] ?? false);
     $isCommentsDisabled = (bool) (optional($postObj)->comments_disabled ?? $postArr['comments_disabled'] ?? false);
     $isNsfw = (bool) (optional($postObj)->is_nsfw ?? $postArr['is_nsfw'] ?? false);
-    $popularCommentAvatarMinLikes = 2;
     $commenterPreviews = collect(optional($postObj)->commenter_previews ?? $postArr['commenter_previews'] ?? [])
-        ->filter(fn ($preview) => (int) data_get($preview, 'likes_count', 0) >= $popularCommentAvatarMinLikes)
-        ->take(2)
+        ->take(3)
         ->values();
+    $commenterPreviewExtraCount = max(0, (int) (optional($postObj)->commenter_preview_extra_count ?? $postArr['commenter_preview_extra_count'] ?? 0));
     $latestCommentPreview = optional($postObj)->latest_comment_preview ?? $postArr['latest_comment_preview'] ?? null;
     $latestCommentAvatar = $latestCommentPreview['avatar'] ?? data_get($commenterPreviews->first(), 'avatar');
     $latestCommentContent = trim((string) ($latestCommentPreview['content'] ?? ''));
@@ -1064,7 +1063,7 @@
                 'accent' => $index % 2 === 0 ? 'ca-1' : 'ca-2',
             ];
         })
-        ->take(2)
+        ->take(3)
         ->values();
 
     $showCommentPreviewAvatars = $commentPreviewPeople->isNotEmpty();
@@ -2155,11 +2154,11 @@ SVG;
                                 <span class="comment-avatar {{ $commentPreview['accent'] }}">{{ $commentPreview['initial'] }}</span>
                             @endif
                         @endforeach
+                        @if($commenterPreviewExtraCount > 0)
+                            <span class="comment-avatar-overflow">+{{ $commenterPreviewExtraCount }}</span>
+                        @endif
                     </div>
                 @endif
-                <div class="comment-text-wrap">
-                    <span class="comment-label">{{ $commentDisplayText }}</span>
-                </div>
             </div>
         @else
             <a class="comment-row" id="comment-row" href="{{ $commentsUrl }}" aria-label="{{ $commentsLinkLabel }}">
@@ -2178,11 +2177,11 @@ SVG;
                                 <span class="comment-avatar {{ $commentPreview['accent'] }}">{{ $commentPreview['initial'] }}</span>
                             @endif
                         @endforeach
+                        @if($commenterPreviewExtraCount > 0)
+                            <span class="comment-avatar-overflow">+{{ $commenterPreviewExtraCount }}</span>
+                        @endif
                     </div>
                 @endif
-                <div class="comment-text-wrap">
-                    <span class="comment-label">{{ $commentDisplayText }}</span>
-                </div>
             </a>
         @endif
     @endif
@@ -2446,6 +2445,8 @@ SVG;
             width: 42px;
             height: 42px;
             border-radius: 50%;
+            border: 2px solid #fff;
+            box-sizing: border-box;
             object-fit: cover;
             flex: 0 0 auto;
         }
@@ -3646,20 +3647,38 @@ SVG;
         }
 
         [data-post-card-shell] .comment-avatar {
-            width: 32px;
-            height: 32px;
+            width: 24px;
+            height: 24px;
+            min-width: 24px;
             display: flex;
             align-items: center;
             justify-content: center;
             border-radius: 50%;
             object-fit: cover;
-            font-size: 11px;
+            font-size: 9px;
             font-weight: 400;
             color: #fff;
         }
 
         [data-post-card-shell] .comment-avatar + .comment-avatar {
-            margin-left: -10px;
+            margin-left: -7px;
+        }
+
+        [data-post-card-shell] .comment-avatar-overflow {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 24px;
+            height: 24px;
+            min-width: 24px;
+            margin-left: -7px;
+            border: 2px solid #fff;
+            border-radius: 999px;
+            background: #f4f4f5;
+            color: #52525b;
+            font-size: 10px;
+            font-weight: 500;
+            line-height: 1;
         }
 
         [data-post-card-shell] .ca-1 {
