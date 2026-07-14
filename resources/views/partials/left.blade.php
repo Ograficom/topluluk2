@@ -1101,15 +1101,15 @@
             min-height: 56px !important;
             margin: 2px 0 !important;
             background: #ffffff !important;
-            color: #18181b !important;
+            color: #2563eb !important;
         }
 
         body.alma-app .nav-item[data-active="true"] :is(.nav-item-label, .nav-item-icon-outline, iconify-icon, svg) {
-            color: #18181b !important;
+            color: #2563eb !important;
         }
 
         body.alma-app .nav-item[data-active="true"] .nav-item-icon-outline {
-            color: #10b981 !important;
+            color: #2563eb !important;
         }
 
         body.alma-app .nav-item:is(:hover, :focus-visible) {
