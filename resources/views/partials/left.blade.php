@@ -16,28 +16,26 @@
         ->take(10)
         ->get();
     $badgeColors = ['#ef4444', '#e11d48', '#ec4899', '#f43f5e', '#f97316', '#06b6d4', '#0ea5e9', '#10b981', '#84cc16', '#a855f7'];
-    $referenceCategories = collect([
-        ['name' => 'News', 'initials' => 'NE', 'color' => '#ef4444'],
-        ['name' => 'Lifestyle', 'initials' => 'LI', 'color' => '#db1463'],
-        ['name' => 'Fashion', 'initials' => 'FA', 'color' => '#ef4444'],
-        ['name' => 'Politics', 'initials' => 'PO', 'color' => '#d91668'],
-        ['name' => 'World', 'initials' => 'WO', 'color' => '#ef3d3d'],
-        ['name' => 'Sports', 'initials' => 'SP', 'color' => '#16a9bf'],
-        ['name' => 'Business', 'initials' => 'BU', 'color' => '#4ba447'],
-        ['name' => 'Gadgets', 'initials' => 'GA', 'color' => '#df1260'],
-        ['name' => 'Showbiz', 'initials' => 'SH', 'color' => '#ef4638'],
-        ['name' => 'Crypto', 'initials' => 'CR', 'color' => '#f7b719'],
-    ])->map(function (array $item) use ($sidebarCategories) {
-        $matchedCategory = $sidebarCategories->first(
-            fn ($category) => mb_strtolower((string) $category->name) === mb_strtolower($item['name'])
-        );
+    $referenceCategories = $sidebarCategories->values()->map(function ($category, int $index) use ($badgeColors) {
+        $words = preg_split('/\s+/u', trim((string) $category->name), -1, PREG_SPLIT_NO_EMPTY) ?: [];
+        $initials = collect($words)
+            ->take(2)
+            ->map(fn ($word) => mb_strtoupper(mb_substr($word, 0, 1)))
+            ->implode('');
 
-        $item['url'] = $matchedCategory
-            ? route('blog.category', ['category' => $matchedCategory->slug])
-            : route('blog.categories');
-        $item['slug'] = (string) optional($matchedCategory)->slug;
+        if ($initials === '') {
+            $initials = mb_strtoupper(mb_substr((string) $category->name, 0, 2));
+        } elseif (count($words) === 1) {
+            $initials = mb_strtoupper(mb_substr((string) $category->name, 0, 2));
+        }
 
-        return $item;
+        return [
+            'name' => (string) $category->name,
+            'initials' => $initials,
+            'color' => $badgeColors[$index % count($badgeColors)],
+            'url' => route('blog.category', ['category' => $category->slug]),
+            'slug' => (string) $category->slug,
+        ];
     });
     $staticFooterLinks = collect([
         ['label' => __('site.discover_page.title'), 'route' => 'discover'],
@@ -1071,12 +1069,12 @@
     /* Desktop reference clone: only the left column. */
     @media (min-width: 1024px) {
         body.alma-app .sidebar-wrapper:not(.sidebar-wrapper--drawer) {
-            top: 25px !important;
+            top: 86px !important;
             transform: translateX(-39px) !important;
             width: 210px !important;
             max-width: 210px !important;
-            height: calc(100dvh - 25px) !important;
-            max-height: calc(100dvh - 25px) !important;
+            height: calc(100dvh - 86px) !important;
+            max-height: calc(100dvh - 86px) !important;
         }
 
         body.alma-app .sidebar-scroll { padding: 0 8px 12px 0 !important; }
@@ -1191,7 +1189,80 @@
         }
 
         body.alma-app .nav-list > li:last-child {
-            margin-top: 15px !important;
+            margin-top: 0 !important;
+        }
+    }
+
+    /* 14.07 referans ekran: masaustu sol kolonunun birebir kompakt olculeri. */
+    @media (min-width: 1024px) {
+        body.alma-app .sidebar-wrapper:not(.sidebar-wrapper--drawer) {
+            top: 10px !important;
+            height: calc(100dvh - 10px) !important;
+            max-height: calc(100dvh - 10px) !important;
+        }
+
+        body.alma-app .nav-item,
+        body.alma-app .sidebar-category-link {
+            height: 38px !important;
+            min-height: 38px !important;
+            padding: 0 8px !important;
+            grid-template-columns: 18px minmax(0, 1fr) !important;
+            column-gap: 10px !important;
+            border-radius: 0 !important;
+        }
+
+        body.alma-app .nav-item[data-active="true"],
+        body.alma-app .nav-item:is(:hover, :focus-visible),
+        body.alma-app .sidebar-category-link[data-active="true"],
+        body.alma-app .sidebar-category-link:is(:hover, :focus-visible) {
+            height: 38px !important;
+            min-height: 38px !important;
+            margin: 0 !important;
+            background: transparent !important;
+        }
+
+        body.alma-app .nav-item-icon-outline,
+        body.alma-app .nav-item-icon-outline :is(iconify-icon, svg) {
+            width: 16px !important;
+            height: 16px !important;
+            min-width: 16px !important;
+            font-size: 16px !important;
+        }
+
+        body.alma-app .nav-item-label,
+        body.alma-app .sidebar-category-name {
+            font-size: 12px !important;
+            font-weight: 400 !important;
+            line-height: 1.2 !important;
+        }
+
+        body.alma-app .sidebar-category-avatar,
+        body.alma-app .sidebar-category-avatar--fallback {
+            width: 20px !important;
+            height: 20px !important;
+            min-width: 20px !important;
+            min-height: 20px !important;
+            max-width: 20px !important;
+            max-height: 20px !important;
+            flex: 0 0 20px !important;
+            font-size: 9px !important;
+        }
+
+        body.alma-app .sidebar-category-list {
+            margin-top: 4px !important;
+            padding-bottom: 4px !important;
+        }
+
+        body.alma-app .sidebar-footer {
+            margin-top: 8px !important;
+            padding-left: 8px !important;
+        }
+
+        body.alma-app .sidebar-footer-link,
+        body.alma-app .sidebar-footer-brand,
+        body.alma-app .sidebar-footer-bottom {
+            font-size: 11px !important;
+            line-height: 1.45 !important;
         }
     }
 
