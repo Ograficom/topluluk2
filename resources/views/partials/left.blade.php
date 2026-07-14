@@ -16,6 +16,29 @@
         ->take(10)
         ->get();
     $badgeColors = ['#ef4444', '#e11d48', '#ec4899', '#f43f5e', '#f97316', '#06b6d4', '#0ea5e9', '#10b981', '#84cc16', '#a855f7'];
+    $referenceCategories = collect([
+        ['name' => 'News', 'initials' => 'NE', 'color' => '#ef4444'],
+        ['name' => 'Lifestyle', 'initials' => 'LI', 'color' => '#db1463'],
+        ['name' => 'Fashion', 'initials' => 'FA', 'color' => '#ef4444'],
+        ['name' => 'Politics', 'initials' => 'PO', 'color' => '#d91668'],
+        ['name' => 'World', 'initials' => 'WO', 'color' => '#ef3d3d'],
+        ['name' => 'Sports', 'initials' => 'SP', 'color' => '#16a9bf'],
+        ['name' => 'Business', 'initials' => 'BU', 'color' => '#4ba447'],
+        ['name' => 'Gadgets', 'initials' => 'GA', 'color' => '#df1260'],
+        ['name' => 'Showbiz', 'initials' => 'SH', 'color' => '#ef4638'],
+        ['name' => 'Crypto', 'initials' => 'CR', 'color' => '#f7b719'],
+    ])->map(function (array $item) use ($sidebarCategories) {
+        $matchedCategory = $sidebarCategories->first(
+            fn ($category) => mb_strtolower((string) $category->name) === mb_strtolower($item['name'])
+        );
+
+        $item['url'] = $matchedCategory
+            ? route('blog.category', ['category' => $matchedCategory->slug])
+            : route('blog.categories');
+        $item['slug'] = (string) optional($matchedCategory)->slug;
+
+        return $item;
+    });
     $staticFooterLinks = collect([
         ['label' => __('site.discover_page.title'), 'route' => 'discover'],
         ['label' => __('site.search.title'), 'route' => 'search'],
@@ -1048,12 +1071,12 @@
     /* Desktop reference clone: only the left column. */
     @media (min-width: 1024px) {
         body.alma-app .sidebar-wrapper:not(.sidebar-wrapper--drawer) {
-            top: 70px !important;
+            top: 86px !important;
             transform: translateX(-10px) !important;
             width: 202px !important;
             max-width: 200px !important;
-            height: calc(100dvh - 70px) !important;
-            max-height: calc(100dvh - 70px) !important;
+            height: calc(100dvh - 86px) !important;
+            max-height: calc(100dvh - 86px) !important;
         }
 
         body.alma-app .sidebar-scroll { padding: 0 8px 12px 0 !important; }
@@ -1069,8 +1092,8 @@
         body.alma-app .sidebar-category-link {
             width: 202px !important;
             max-width: 202px !important;
-            height: 52px !important;
-            min-height: 52px !important;
+            height: 58px !important;
+            min-height: 58px !important;
             padding: 0 8px !important;
             grid-template-columns: 26px minmax(0, 1fr) !important;
             column-gap: 7px !important;
@@ -1079,8 +1102,8 @@
         }
 
         body.alma-app .nav-item[data-active="true"] {
-            height: 48px !important;
-            min-height: 48px !important;
+            height: 54px !important;
+            min-height: 54px !important;
             margin: 2px 0 !important;
             background: #ffffff !important;
             color: #18181b !important;
@@ -1110,7 +1133,7 @@
 
         body.alma-app .nav-item-label {
             color: inherit !important;
-            font-size: 17px !important;
+            font-size: 18px !important;
             font-weight: 500 !important;
             line-height: 1.2 !important;
             letter-spacing: 0 !important;
@@ -1119,32 +1142,32 @@
         body.alma-app .nav-item-badge-new { display: none !important; }
 
         body.alma-app .sidebar-category-list {
-            margin-top: 10px !important;
+            margin-top: 0 !important;
             padding-bottom: 12px !important;
         }
 
         body.alma-app .sidebar-category-link {
-            height: 52px !important;
-            min-height: 52px !important;
+            height: 58px !important;
+            min-height: 58px !important;
         }
 
         body.alma-app .sidebar-category-avatar,
         body.alma-app .sidebar-category-avatar--fallback {
-            width: 30px !important;
-            height: 30px !important;
-            min-width: 30px !important;
-            min-height: 30px !important;
-            max-width: 30px !important;
-            max-height: 30px !important;
+            width: 34px !important;
+            height: 34px !important;
+            min-width: 34px !important;
+            min-height: 34px !important;
+            max-width: 34px !important;
+            max-height: 34px !important;
             border: 0 !important;
             color: #ffffff !important;
-            font-size: 11px !important;
+            font-size: 12px !important;
             font-weight: 500 !important;
         }
 
         body.alma-app .sidebar-category-name {
             color: #374151 !important;
-            font-size: 16px !important;
+            font-size: 18px !important;
             font-weight: 500 !important;
             line-height: 1.2 !important;
         }
@@ -1152,6 +1175,10 @@
         body.alma-app .sidebar-footer {
             margin-top: 8px !important;
             padding-left: 10px !important;
+        }
+
+        body.alma-app .nav-list > li:last-child {
+            margin-top: 15px !important;
         }
     }
 
@@ -1238,39 +1265,18 @@
                 </li>
             </ul>
 
-            @if($sidebarCategories->isNotEmpty())
+            @if($referenceCategories->isNotEmpty())
                 <div class="sidebar-category-list">
-                    @foreach($sidebarCategories as $category)
-                        @php
-                            $categoryName = (string) ($category->name ?? '');
-                            $categoryImage = $category->profile_image_url ?? $category->profile_image ?? null;
-                            $categoryImage = \App\Support\OptimizedImage::variantUrl($categoryImage, 'sidebar-64') ?? $categoryImage;
-                            $categoryInitials = mb_strtoupper(mb_substr($categoryName, 0, 2));
-                            $categoryColor = $badgeColors[$loop->index % count($badgeColors)];
-                        @endphp
-
+                    @foreach($referenceCategories as $category)
                         <a
-                            href="{{ route('blog.category', ['category' => $category->slug]) }}"
+                            href="{{ $category['url'] }}"
                             class="sidebar-category-link"
-                            data-active="{{ $activeCategorySlug === (string) $category->slug ? 'true' : 'false' }}"
+                            data-active="{{ $category['slug'] !== '' && $activeCategorySlug === $category['slug'] ? 'true' : 'false' }}"
                         >
-                            @if($categoryImage)
-                                <img
-                                    src="{{ $categoryImage }}"
-                                    alt="{{ $categoryName }}"
-                                    class="sidebar-category-avatar"
-                                    width="64"
-                                    height="64"
-                                    loading="lazy"
-                                    decoding="async"
-                                >
-                            @else
-                                <span class="sidebar-category-avatar sidebar-category-avatar--fallback" style="background-color: {{ $categoryColor }} !important;">
-                                    {{ $categoryInitials }}
-                                </span>
-                            @endif
-
-                            <span class="sidebar-category-name">{{ $categoryName }}</span>
+                            <span class="sidebar-category-avatar sidebar-category-avatar--fallback" style="background-color: {{ $category['color'] }} !important;">
+                                {{ $category['initials'] }}
+                            </span>
+                            <span class="sidebar-category-name">{{ $category['name'] }}</span>
                         </a>
                     @endforeach
                 </div>
