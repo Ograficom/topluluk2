@@ -16,28 +16,20 @@
         ->take(10)
         ->get();
     $badgeColors = ['#ef4444', '#e11d48', '#ec4899', '#f43f5e', '#f97316', '#06b6d4', '#0ea5e9', '#10b981', '#84cc16', '#a855f7'];
-    $referenceCategories = collect([
-        ['name' => 'News', 'initials' => 'NE', 'color' => '#ef4444'],
-        ['name' => 'Lifestyle', 'initials' => 'LI', 'color' => '#db1463'],
-        ['name' => 'Fashion', 'initials' => 'FA', 'color' => '#ef4444'],
-        ['name' => 'Politics', 'initials' => 'PO', 'color' => '#d91668'],
-        ['name' => 'World', 'initials' => 'WO', 'color' => '#ef3d3d'],
-        ['name' => 'Sports', 'initials' => 'SP', 'color' => '#16a9bf'],
-        ['name' => 'Business', 'initials' => 'BU', 'color' => '#4ba447'],
-        ['name' => 'Gadgets', 'initials' => 'GA', 'color' => '#df1260'],
-        ['name' => 'Showbiz', 'initials' => 'SH', 'color' => '#ef4638'],
-        ['name' => 'Crypto', 'initials' => 'CR', 'color' => '#f7b719'],
-    ])->map(function (array $item) use ($sidebarCategories) {
-        $matchedCategory = $sidebarCategories->first(
-            fn ($category) => mb_strtolower((string) $category->name) === mb_strtolower($item['name'])
-        );
+    $referenceCategories = $sidebarCategories->values()->map(function ($category, int $index) use ($badgeColors) {
+        $name = trim((string) $category->name);
+        $words = preg_split('/\s+/u', $name, -1, PREG_SPLIT_NO_EMPTY) ?: [];
+        $initials = count($words) > 1
+            ? collect($words)->take(2)->map(fn ($word) => mb_substr($word, 0, 1))->implode('')
+            : mb_substr($name, 0, 2);
 
-        $item['url'] = $matchedCategory
-            ? route('blog.category', ['category' => $matchedCategory->slug])
-            : route('blog.categories');
-        $item['slug'] = (string) optional($matchedCategory)->slug;
-
-        return $item;
+        return [
+            'name' => $name,
+            'initials' => mb_strtoupper($initials),
+            'color' => $badgeColors[$index % count($badgeColors)],
+            'url' => route('blog.category', ['category' => $category->slug]),
+            'slug' => (string) $category->slug,
+        ];
     });
     $staticFooterLinks = collect([
         ['label' => __('site.discover_page.title'), 'route' => 'discover'],
@@ -1072,7 +1064,8 @@
     @media (min-width: 1024px) {
         body.alma-app .sidebar-wrapper:not(.sidebar-wrapper--drawer) {
             top: 86px !important;
-            transform: translateX(-39px) !important;
+            left: 325px !important;
+            transform: none !important;
             width: 210px !important;
             max-width: 210px !important;
             height: calc(100dvh - 86px) !important;
@@ -1090,10 +1083,10 @@
 
         body.alma-app .nav-item,
         body.alma-app .sidebar-category-link {
-            width: 210px !important;
-            max-width: 210px !important;
-            height: 54px !important;
-            min-height: 54px !important;
+            width: 200px !important;
+            max-width: 200px !important;
+            height: 56px !important;
+            min-height: 56px !important;
             padding: 0 8px !important;
             grid-template-columns: 34px minmax(0, 1fr) !important;
             column-gap: 9px !important;
@@ -1102,8 +1095,10 @@
         }
 
         body.alma-app .nav-item[data-active="true"] {
-            height: 50px !important;
-            min-height: 50px !important;
+            width: 200px !important;
+            max-width: 200px !important;
+            height: 56px !important;
+            min-height: 56px !important;
             margin: 2px 0 !important;
             background: #ffffff !important;
             color: #18181b !important;
@@ -1139,14 +1134,24 @@
         }
 
         body.alma-app .nav-item-icon-outline :is(iconify-icon, svg) {
-            width: 22px !important;
-            height: 22px !important;
-            font-size: 22px !important;
+            width: 28px !important;
+            height: 28px !important;
+            font-size: 28px !important;
+        }
+
+        body.alma-app .nav-item-icon-outline .nav-home-icon {
+            width: 32px !important;
+            height: 32px !important;
+        }
+
+        body.alma-app .nav-home-label {
+            font-size: 26px !important;
         }
 
         body.alma-app .nav-item-label {
             color: inherit !important;
-            font-size: 18px !important;
+            font-family: "Roboto", Arial, Helvetica, sans-serif !important;
+            font-size: 25px !important;
             font-weight: 500 !important;
             line-height: 1.2 !important;
             letter-spacing: 0 !important;
@@ -1160,18 +1165,18 @@
         }
 
         body.alma-app .sidebar-category-link {
-            height: 54px !important;
-            min-height: 54px !important;
+            height: 56px !important;
+            min-height: 56px !important;
         }
 
         body.alma-app .sidebar-category-avatar,
         body.alma-app .sidebar-category-avatar--fallback {
-            width: 29px !important;
-            height: 29px !important;
-            min-width: 29px !important;
-            min-height: 29px !important;
-            max-width: 29px !important;
-            max-height: 29px !important;
+            width: 35px !important;
+            height: 35px !important;
+            min-width: 35px !important;
+            min-height: 35px !important;
+            max-width: 35px !important;
+            max-height: 35px !important;
             border: 0 !important;
             color: #ffffff !important;
             font-size: 10px !important;
@@ -1180,7 +1185,8 @@
 
         body.alma-app .sidebar-category-name {
             color: #374151 !important;
-            font-size: 18px !important;
+            font-family: "Roboto", Arial, Helvetica, sans-serif !important;
+            font-size: 25px !important;
             font-weight: 500 !important;
             line-height: 1.2 !important;
         }
@@ -1214,10 +1220,13 @@
                 <li>
                     <a class="nav-item" href="{{ route('home') }}" data-active="{{ $isFeed ? 'true' : 'false' }}">
                         <div class="nav-item-icon-outline">
-                            <iconify-icon icon="lucide:panel-top"></iconify-icon>
+                            <svg class="nav-home-icon" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" aria-hidden="true">
+                                <path d="M0 0h24v24H0z" fill="none" />
+                                <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="m19.633 7.11l-6.474-4.02a2.23 2.23 0 0 0-2.362 0L4.324 7.133A2.23 2.23 0 0 0 3.31 9.362l1.67 10.027a2.23 2.23 0 0 0 2.228 1.86h9.582a2.23 2.23 0 0 0 2.229-1.86l1.67-10.027a2.23 2.23 0 0 0-1.058-2.251" />
+                            </svg>
                         </div>
                         <div class="nav-item-label-row">
-                            <span class="nav-item-label">Feed</span>
+                            <span class="nav-item-label nav-home-label">Feed</span>
                         </div>
                     </a>
                 </li>
@@ -1236,7 +1245,7 @@
                 <li>
                     <a class="nav-item" href="{{ route('blog.popular') }}" data-active="{{ $isFeatured ? 'true' : 'false' }}">
                         <div class="nav-item-icon-outline">
-                            <iconify-icon icon="lucide:badge"></iconify-icon>
+                            <iconify-icon icon="lucide:circle-star"></iconify-icon>
                         </div>
                         <div class="nav-item-label-row">
                             <span class="nav-item-label">Featured</span>
@@ -1258,7 +1267,7 @@
                 <li>
                     <a class="nav-item" href="{{ route('messages.index') }}" data-active="{{ $isMessages ? 'true' : 'false' }}">
                         <div class="nav-item-icon-outline">
-                            <iconify-icon icon="lucide:message-square"></iconify-icon>
+                            <iconify-icon icon="lucide:messages-square"></iconify-icon>
                         </div>
                         <div class="nav-item-label-row">
                             <span class="nav-item-label">Messages</span>
