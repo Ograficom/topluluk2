@@ -1121,6 +1121,12 @@
             color: #2563eb !important;
         }
 
+        body.alma-app .nav-item:is(:hover, :focus-visible) .nav-item-label,
+        body.alma-app .nav-item:is(:hover, :focus-visible) .nav-item-icon-outline,
+        body.alma-app .nav-item:is(:hover, :focus-visible) .nav-item-icon-outline :is(iconify-icon, svg) {
+            color: #2563eb !important;
+        }
+
         body.alma-app .nav-item[data-active="true"]:is(:hover, :focus-visible) .nav-item-icon-outline {
             color: #2563eb !important;
         }
