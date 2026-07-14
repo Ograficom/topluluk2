@@ -4,6 +4,8 @@ use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Schedule;
 use App\Models\RssFeed;
+use App\Models\Post;
+use App\Support\PostSeoText;
 use App\Services\Rss\RssSyncService;
 use App\Console\Commands\GenerateVideoSubtitles;
 use Symfony\Component\Console\Input\ArrayInput;
@@ -41,6 +43,31 @@ Artisan::command('rss:sync {--feed_id=} {--force}', function (RssSyncService $se
 Schedule::command('rss:sync')
     ->everyFiveMinutes()
     ->withoutOverlapping();
+
+Artisan::command('posts:seo-backfill {--force : Replace existing generated metadata too}', function () {
+    $force = (bool) $this->option('force');
+    $updated = 0;
+
+    Post::query()->orderBy('id')->chunkById(200, function ($posts) use ($force, &$updated) {
+        foreach ($posts as $post) {
+            $title = PostSeoText::title($post->title);
+            $description = PostSeoText::description($post->excerpt, $post->content, $post->title);
+            $changes = [];
+            if ($force || blank($post->meta_title)) {
+                $changes['meta_title'] = $title;
+            }
+            if ($force || blank($post->meta_description)) {
+                $changes['meta_description'] = $description;
+            }
+            if ($changes !== [] && collect($changes)->contains(fn ($value, $key) => $post->{$key} !== $value)) {
+                $post->forceFill($changes)->saveQuietly();
+                $updated++;
+            }
+        }
+    });
+
+    $this->info("SEO metadata updated for {$updated} posts.");
+})->purpose('Backfill SEO titles and descriptions for all posts');
 
 Artisan::command('subtitles:generate {postId}', function ($postId) {
     $command = new GenerateVideoSubtitles();

@@ -1385,6 +1385,54 @@
             ->all();
     }
 
+    // VideoObject is emitted only when the page contains a real video/embed and a
+    // truthful thumbnail is available. This keeps the schema aligned with visible content.
+    $seoVideoCandidates = collect();
+    $seoContentForMedia = (string) ($postShowFullContentHtml ?: ($post->content ?? ''));
+    if (preg_match_all('/<(video|source|iframe)\b[^>]*(?:src|data-src)=["\']([^"\']+)["\'][^>]*>/iu', $seoContentForMedia, $seoVideoMatches, PREG_SET_ORDER)) {
+        foreach ($seoVideoMatches as $match) {
+            $videoUrl = $seoNormalizePublicUrl(html_entity_decode((string) ($match[2] ?? ''), ENT_QUOTES | ENT_HTML5, 'UTF-8'));
+            if ($videoUrl) {
+                $seoVideoCandidates->push(['url' => $videoUrl, 'embed' => strtolower((string) ($match[1] ?? '')) === 'iframe']);
+            }
+        }
+    }
+    $seoVideoCandidates = $seoVideoCandidates->unique('url')->values();
+    $seoVideoSchemas = $seoVideoCandidates->map(function (array $candidate, int $index) use (
+        $seoTitleBase,
+        $description,
+        $seoPublishedIso,
+        $seoModifiedIso,
+        $seoPrimaryImage,
+        $postUrl
+    ) {
+        $videoUrl = (string) $candidate['url'];
+        $thumbnailUrl = $seoPrimaryImage;
+        if (!$thumbnailUrl && preg_match('#(?:youtube\.com/(?:embed/|watch\?v=)|youtu\.be/)([A-Za-z0-9_-]{6,})#i', $videoUrl, $youtubeMatch)) {
+            $thumbnailUrl = 'https://i.ytimg.com/vi/' . $youtubeMatch[1] . '/hqdefault.jpg';
+        }
+        if (!$thumbnailUrl) {
+            return null;
+        }
+
+        $schema = [
+            '@type' => 'VideoObject',
+            '@id' => $postUrl . '#video-' . ($index + 1),
+            'name' => $seoTitleBase,
+            'description' => $description,
+            'thumbnailUrl' => [$thumbnailUrl],
+            'uploadDate' => $seoPublishedIso,
+            'dateModified' => $seoModifiedIso,
+        ];
+        $schema[$candidate['embed'] ? 'embedUrl' : 'contentUrl'] = $videoUrl;
+
+        return $schema;
+    })->filter()->values();
+
+    if ($seoVideoSchemas->isNotEmpty()) {
+        $newsArticleSchema['video'] = $seoVideoSchemas->map(fn (array $video) => ['@id' => $video['@id']])->all();
+    }
+
     $discussionForumSchema['@id'] = $seoDiscussionId;
     $discussionForumSchema['mainEntityOfPage'] = ['@type' => 'WebPage', '@id' => $seoWebPageId];
     $discussionForumSchema['url'] = $postUrl;
@@ -1466,6 +1514,7 @@
             $breadcrumbSchema,
             $newsArticleSchema,
             $discussionForumSchema,
+            ...$seoVideoSchemas->all(),
         ],
     ];
 

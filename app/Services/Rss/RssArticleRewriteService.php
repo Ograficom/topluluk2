@@ -8,9 +8,18 @@ use Illuminate\Support\Str;
 
 class RssArticleRewriteService
 {
+    /** Incrementing this value intentionally refreshes previously cached AI rewrites. */
+    public const PROMPT_VERSION = 'seo-2026-07-v2';
+
+    public static function expectedSourceHash(string $itemHash): string
+    {
+        return hash('sha256', self::PROMPT_VERSION . '|' . $itemHash);
+    }
+
     public function rewrite(RssItem $item, ?string $model = null): array
     {
-        $sourceHash = $item->hash ?: hash('sha256', (string) $item->content);
+        $itemHash = $item->hash ?: hash('sha256', (string) $item->content);
+        $sourceHash = self::expectedSourceHash($itemHash);
 
         if (
             $item->ai_source_hash === $sourceHash
@@ -49,7 +58,7 @@ class RssArticleRewriteService
                     'format' => 'json',
                     'prompt' => $this->prompt($item, $sourceText),
                     'options' => [
-                        'temperature' => 0.7,
+                        'temperature' => 0.35,
                     ],
                 ]);
 
@@ -179,10 +188,15 @@ class RssArticleRewriteService
     private function prompt(RssItem $item, string $sourceText): string
     {
         return <<<PROMPT
-Asagidaki RSS kaynagindan Turkce, ozgun ve okunabilir yeni bir tanitim yazisi uret.
+Asagidaki RSS kaynagindan Turkce, ozgun, insan odakli ve arama motorlarinda anlasilir yeni bir haber/tanitim yazisi uret.
 Metni kelime kelime degistirme. Bilgileri yeniden organize ederek yeni bir anlatim kur.
 Kaynakta bulunmayan bilgi, alinti, tarih veya iddia ekleme.
 Tarafsiz ve bilgilendirici bir dil kullan.
+Baslik 45-65 karakter civarinda olsun; ana konuyu ilk bolumde acikca anlatsin, tik tuzagi ve anahtar kelime yigini olmasin.
+Summary 120-160 karakter civarinda, tek basina anlamli bir meta aciklamasi olsun; ayni ifadeyi gereksiz tekrarlamasin.
+Ilk paragraf haberin temel sorusunu dogrudan cevaplasin. Devaminda anlamli h2/h3 basliklari, kisa paragraflar ve gerekiyorsa listeler kullan.
+Kaynaktaki kisi, kurum, yer, urun ve konu adlarini dogal baglaminda koru. Arama motoru icin anlamsiz kelime tekrari yapma.
+Gorsel veya video hakkinda kaynakta bulunmayan aciklama uydurma.
 Metnin icine kaynak, kaynak URL, internet adresi veya baglanti ekleme. Kaynak ayri bir kutuda gosterilecek.
 JSON disinda hicbir sey dondurme.
 

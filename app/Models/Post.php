@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
 use App\Notifications\CategoryPostPublishedNotification;
+use App\Support\PostSeoText;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Post extends Model
@@ -60,6 +61,15 @@ class Post extends Model
 
     protected static function booted(): void
     {
+        static::saving(function (Post $post) {
+            if (blank($post->meta_title)) {
+                $post->meta_title = PostSeoText::title($post->title);
+            }
+            if (blank($post->meta_description)) {
+                $post->meta_description = PostSeoText::description($post->excerpt, $post->content, $post->title);
+            }
+        });
+
         static::created(function (Post $post) {
             $post->notifyCategoryFollowersIfPublished();
         });

@@ -121,7 +121,7 @@ class RssSyncService
                 $item['tags'] = $this->normalizeTagNames(array_merge($item['tags'] ?? [], $this->extractHashtagsFromText($rawContent)));
                 $rawContent = $this->cleanArticleHtmlFragment($rawContent, $title, (string) ($item['summary'] ?? ''));
                 $content = $this->sanitizeHtml($this->absolutizeHtmlUrls($rawContent, $link ?: $feed->url));
-                $content = $this->appendMediaHtml($content, $item['media_items'] ?? []);
+                $content = $this->appendMediaHtml($content, $item['media_items'] ?? [], $title);
 
                 $hash = hash('sha256', json_encode([
                     'title' => $title,
@@ -191,15 +191,13 @@ class RssSyncService
     {
         $feed->items()
             ->whereNotNull('hash')
-            ->where(function ($query) {
-                $query->whereNull('ai_source_hash')
-                    ->orWhereColumn('ai_source_hash', '!=', 'hash')
-                    ->orWhereNull('ai_content');
-            })
             ->orderByDesc('published_at')
             ->orderByDesc('id')
-            ->limit(20)
+            ->limit(500)
             ->get()
+            ->filter(fn (RssItem $item) => blank($item->ai_content)
+                || $item->ai_source_hash !== RssArticleRewriteService::expectedSourceHash((string) $item->hash))
+            ->take(20)
             ->each(function (RssItem $item) use ($feed, &$result) {
                 try {
                     $postChange = $this->importItemAsPost($feed, $item, [
@@ -227,7 +225,7 @@ class RssSyncService
             $rewritten = app(RssArticleRewriteService::class)->rewrite($item, $feed->ai_model);
             $title = $rewritten['title'];
             $excerpt = $rewritten['summary'];
-            $html = $this->appendMediaHtml($rewritten['content'], $raw['media_items'] ?? []);
+            $html = $this->appendMediaHtml($rewritten['content'], $raw['media_items'] ?? [], $title);
             $raw['tags'] = $this->normalizeTagNames(array_merge($raw['tags'] ?? [], $rewritten['tags'] ?? []));
         }
 
@@ -339,12 +337,11 @@ class RssSyncService
 
         return $feed->items()
             ->whereNotNull('hash')
-            ->where(function ($query) {
-                $query->whereNull('ai_source_hash')
-                    ->orWhereColumn('ai_source_hash', '!=', 'hash')
-                    ->orWhereNull('ai_content');
-            })
-            ->exists();
+            ->orderByDesc('published_at')
+            ->limit(500)
+            ->get(['id', 'hash', 'ai_source_hash', 'ai_content'])
+            ->contains(fn (RssItem $item) => blank($item->ai_content)
+                || $item->ai_source_hash !== RssArticleRewriteService::expectedSourceHash((string) $item->hash));
     }
 
     private function parseXmlItems(string $xml): array
@@ -1629,8 +1626,26 @@ class RssSyncService
         return $width >= 300 && $height > 0 && $height <= 250 && ($width / $height) >= 3.2;
     }
 
-    private function appendMediaHtml(string $html, array $mediaItems): string
+    private function appendMediaHtml(string $html, array $mediaItems, string $title = ''): string
     {
+        $altText = Str::limit(trim($this->sanitizeHtmlToText($title)), 125, '');
+        if ($altText !== '') {
+            $html = preg_replace_callback('/<img\b([^>]*)>/iu', static function (array $matches) use ($altText): string {
+                $attributes = $matches[1] ?? '';
+                if (preg_match('/\balt\s*=\s*(["\'])\s*\1/iu', $attributes)) {
+                    $attributes = preg_replace('/\balt\s*=\s*(["\'])\s*\1/iu', 'alt="' . e($altText) . '"', $attributes, 1) ?? $attributes;
+                } elseif (!preg_match('/\balt\s*=/iu', $attributes)) {
+                    $attributes .= ' alt="' . e($altText) . '"';
+                }
+
+                if (!preg_match('/\bloading\s*=/iu', $attributes)) {
+                    $attributes .= ' loading="lazy"';
+                }
+
+                return '<img' . $attributes . '>';
+            }, $html) ?? $html;
+        }
+
         $mediaItems = $this->normalizeMediaItems($mediaItems);
         if ($mediaItems === []) {
             return $html;
@@ -1649,7 +1664,7 @@ class RssSyncService
             }
 
             if (($item['kind'] ?? '') === 'image') {
-                $blocks[] = '<figure><img src="' . e($url) . '" alt=""></figure>';
+                $blocks[] = '<figure><img src="' . e($url) . '" alt="' . e($altText) . '" loading="lazy"></figure>';
                 continue;
             }
 
