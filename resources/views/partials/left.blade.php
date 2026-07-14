@@ -1227,6 +1227,14 @@
             gap: 4px !important;
         }
 
+        body.alma-app .sidebar-wrapper--drawer .sidebar-section {
+            gap: 0 !important;
+        }
+
+        body.alma-app .sidebar-wrapper--drawer .sidebar-category-list {
+            margin-top: 0 !important;
+        }
+
         body.alma-app .sidebar-wrapper--drawer .nav-item,
         body.alma-app .sidebar-wrapper--drawer .sidebar-category-link {
             width: 100% !important;
