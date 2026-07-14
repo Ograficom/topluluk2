@@ -8223,7 +8223,7 @@ SVG;
 
         /* Authoritative mobile proportions based on the supplied reference card. */
         @media (max-width: 640px) {
-            html body .home-feed-shell article[data-post-card-shell] {
+            html body article.post-card[data-post-card-shell] {
                 width: 100% !important;
                 max-width: 100% !important;
                 margin: 0 !important;
@@ -8235,34 +8235,34 @@ SVG;
                 overflow: hidden !important;
             }
 
-            html body .home-feed-shell article[data-post-card-shell] .post-header {
+            html body article.post-card[data-post-card-shell] .post-header {
                 min-height: 39px !important;
                 margin: 0 0 6px !important;
             }
 
-            html body .home-feed-shell article[data-post-card-shell] .author-block {
+            html body article.post-card[data-post-card-shell] .author-block {
                 gap: 7px !important;
             }
 
-            html body .home-feed-shell article[data-post-card-shell] .author-avatar {
+            html body article.post-card[data-post-card-shell] .author-avatar {
                 width: 34px !important;
                 height: 34px !important;
                 min-width: 34px !important;
             }
 
-            html body .home-feed-shell article[data-post-card-shell] .author-name {
+            html body article.post-card[data-post-card-shell] .author-name {
                 font-size: 14px !important;
                 font-weight: 600 !important;
                 line-height: 18px !important;
             }
 
-            html body .home-feed-shell article[data-post-card-shell] :is(.author-subline, .post-time, .author-subline__topic) {
+            html body article.post-card[data-post-card-shell] :is(.author-subline, .post-time, .author-subline__topic) {
                 font-size: 12px !important;
                 line-height: 16px !important;
             }
 
-            html body .home-feed-shell article[data-post-card-shell] h2.post-title,
-            html body .home-feed-shell article[data-post-card-shell] h2.post-title > a.post-title__link {
+            html body article.post-card[data-post-card-shell] h2.post-title,
+            html body article.post-card[data-post-card-shell] h2.post-title > a.post-title__link {
                 display: block !important;
                 margin: 0 0 18px !important;
                 padding: 0 !important;
@@ -8274,7 +8274,7 @@ SVG;
                 color: #050505 !important;
             }
 
-            html body .home-feed-shell article[data-post-card-shell] .post-card__media-wrap {
+            html body article.post-card[data-post-card-shell] .post-card__media-wrap {
                 width: 100% !important;
                 margin: 0 0 17px !important;
                 border: 0 !important;
@@ -8282,12 +8282,12 @@ SVG;
                 overflow: hidden !important;
             }
 
-            html body .home-feed-shell article[data-post-card-shell] :is(.post-card__media-scroller, .post-card__media-slide, .post-card__media-link, .post-card__media-frame) {
+            html body article.post-card[data-post-card-shell] :is(.post-card__media-scroller, .post-card__media-slide, .post-card__media-link, .post-card__media-frame) {
                 width: 100% !important;
                 max-width: 100% !important;
             }
 
-            html body .home-feed-shell article[data-post-card-shell] :is(.post-card__media-frame, .post-card__media-image, .hero-image) {
+            html body article.post-card[data-post-card-shell] :is(.post-card__media-frame, .post-card__media-image, .hero-image) {
                 display: block !important;
                 width: 100% !important;
                 min-height: 0 !important;
@@ -8298,14 +8298,14 @@ SVG;
                 border-radius: 8px !important;
             }
 
-            html body .home-feed-shell article[data-post-card-shell] :is(.post-summary-shell, .post-summary-shell.is-collapsed) {
+            html body article.post-card[data-post-card-shell] :is(.post-summary-shell, .post-summary-shell.is-collapsed) {
                 max-height: none !important;
                 margin: 0 0 3px !important;
                 padding: 0 !important;
                 overflow: hidden !important;
             }
 
-            html body .home-feed-shell article[data-post-card-shell] :is(.post-summary, .post-summary.is-collapsed, [data-post-card-summary]) {
+            html body article.post-card[data-post-card-shell] :is(.post-summary, .post-summary.is-collapsed, [data-post-card-summary]) {
                 display: -webkit-box !important;
                 max-height: none !important;
                 margin: 0 !important;
@@ -8319,7 +8319,7 @@ SVG;
                 color: #111 !important;
             }
 
-            html body .home-feed-shell article[data-post-card-shell] .expand-link {
+            html body article.post-card[data-post-card-shell] .expand-link {
                 margin: 5px 0 15px !important;
                 padding: 0 !important;
                 font-size: 15px !important;
@@ -8328,18 +8328,18 @@ SVG;
                 color: #009a62 !important;
             }
 
-            html body .home-feed-shell article[data-post-card-shell] .post-card__tags {
+            html body article.post-card[data-post-card-shell] .post-card__tags {
                 gap: 8px 12px !important;
                 margin: 0 0 17px !important;
             }
 
-            html body .home-feed-shell article[data-post-card-shell] .post-card__tag {
+            html body article.post-card[data-post-card-shell] .post-card__tag {
                 font-size: 15px !important;
                 line-height: 20px !important;
                 color: #009a62 !important;
             }
 
-            html body .home-feed-shell article[data-post-card-shell] .reactions-row {
+            html body article.post-card[data-post-card-shell] .reactions-row {
                 min-height: 35px !important;
                 margin: 0 0 6px !important;
                 padding: 0 !important;
@@ -8347,7 +8347,7 @@ SVG;
                 border: 0 !important;
             }
 
-            html body .home-feed-shell article[data-post-card-shell] .action-bar {
+            html body article.post-card[data-post-card-shell] .action-bar {
                 min-height: 48px !important;
                 height: 48px !important;
                 margin: 0 -15px !important;
@@ -8355,12 +8355,12 @@ SVG;
                 border-top: 1px solid #e5e7eb !important;
             }
 
-            html body .home-feed-shell article[data-post-card-shell] :is(.action-btn, .action-stat, .post-card__action-link, .post-card__action-button) {
+            html body article.post-card[data-post-card-shell] :is(.action-btn, .action-stat, .post-card__action-link, .post-card__action-button) {
                 min-height: 36px !important;
                 height: 36px !important;
             }
 
-            html body .home-feed-shell article[data-post-card-shell] :is(.post-card__inline-icon, .post-card__inline-icon svg, .post-card__bookmark-icon, .post-card__share-icon) {
+            html body article.post-card[data-post-card-shell] :is(.post-card__inline-icon, .post-card__inline-icon svg, .post-card__bookmark-icon, .post-card__share-icon) {
                 width: 22px !important;
                 height: 22px !important;
             }
