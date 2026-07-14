@@ -1045,6 +1045,116 @@
         background: rgba(255, 255, 255, 0.24) !important;
     }
 
+    /* Desktop reference clone: only the left column. */
+    @media (min-width: 1024px) {
+        body.alma-app .sidebar-wrapper:not(.sidebar-wrapper--drawer) {
+            top: 70px !important;
+            transform: translateX(-10px) !important;
+            width: 200px !important;
+            max-width: 200px !important;
+            height: calc(100dvh - 70px) !important;
+            max-height: calc(100dvh - 70px) !important;
+        }
+
+        body.alma-app .sidebar-scroll { padding: 0 8px 12px 0 !important; }
+        body.alma-app .sidebar-section { gap: 0 !important; }
+
+        body.alma-app .nav-list,
+        body.alma-app .sidebar-category-list {
+            width: 200px !important;
+            gap: 0 !important;
+        }
+
+        body.alma-app .nav-item,
+        body.alma-app .sidebar-category-link {
+            width: 200px !important;
+            max-width: 200px !important;
+            height: 46px !important;
+            min-height: 46px !important;
+            padding: 0 10px !important;
+            grid-template-columns: 26px minmax(0, 1fr) !important;
+            column-gap: 10px !important;
+            border-radius: 10px !important;
+            color: #4b5563 !important;
+        }
+
+        body.alma-app .nav-item[data-active="true"] {
+            height: 40px !important;
+            min-height: 40px !important;
+            margin: 3px 0 !important;
+            background: #ffffff !important;
+            color: #18181b !important;
+        }
+
+        body.alma-app .nav-item[data-active="true"] :is(.nav-item-label, .nav-item-icon-outline, iconify-icon, svg) {
+            color: #18181b !important;
+        }
+
+        body.alma-app .nav-item[data-active="true"] .nav-item-icon-outline {
+            color: #10b981 !important;
+        }
+
+        body.alma-app .nav-item-icon-outline {
+            width: 24px !important;
+            height: 24px !important;
+            min-width: 24px !important;
+            border-radius: 7px !important;
+            color: #6b7280 !important;
+        }
+
+        body.alma-app .nav-item-icon-outline :is(iconify-icon, svg) {
+            width: 19px !important;
+            height: 19px !important;
+            font-size: 19px !important;
+        }
+
+        body.alma-app .nav-item-label {
+            color: inherit !important;
+            font-size: 14px !important;
+            font-weight: 500 !important;
+            line-height: 1.2 !important;
+            letter-spacing: 0 !important;
+        }
+
+        body.alma-app .nav-item-badge-new { display: none !important; }
+
+        body.alma-app .sidebar-category-list {
+            margin-top: 10px !important;
+            padding-bottom: 12px !important;
+        }
+
+        body.alma-app .sidebar-category-link {
+            height: 43px !important;
+            min-height: 43px !important;
+        }
+
+        body.alma-app .sidebar-category-avatar,
+        body.alma-app .sidebar-category-avatar--fallback {
+            width: 23px !important;
+            height: 23px !important;
+            min-width: 23px !important;
+            min-height: 23px !important;
+            max-width: 23px !important;
+            max-height: 23px !important;
+            border: 0 !important;
+            color: #ffffff !important;
+            font-size: 9px !important;
+            font-weight: 500 !important;
+        }
+
+        body.alma-app .sidebar-category-name {
+            color: #374151 !important;
+            font-size: 13.5px !important;
+            font-weight: 500 !important;
+            line-height: 1.2 !important;
+        }
+
+        body.alma-app .sidebar-footer {
+            margin-top: 8px !important;
+            padding-left: 10px !important;
+        }
+    }
+
 </style>
 
 <aside
@@ -1064,10 +1174,10 @@
                 <li>
                     <a class="nav-item" href="{{ route('home') }}" data-active="{{ $isFeed ? 'true' : 'false' }}">
                         <div class="nav-item-icon-outline">
-                            <iconify-icon icon="lucide:house"></iconify-icon>
+                            <iconify-icon icon="lucide:panel-top"></iconify-icon>
                         </div>
                         <div class="nav-item-label-row">
-                            <span class="nav-item-label">Akış</span>
+                            <span class="nav-item-label">Feed</span>
                         </div>
                     </a>
                 </li>
@@ -1075,24 +1185,10 @@
                 <li>
                     <a class="nav-item" href="{{ route('video') }}" data-active="{{ $isVideo ? 'true' : 'false' }}">
                         <div class="nav-item-icon-outline" aria-hidden="true">
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 0 24 24"
-                                fill="none"
-                            >
-                                <path
-                                    fill="none"
-                                    stroke="currentColor"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    stroke-width="1.5"
-                                    d="M12 5.32H6.095A3.595 3.595 0 0 0 2.5 8.923v6.162a3.595 3.595 0 0 0 3.595 3.595H12a3.595 3.595 0 0 0 3.595-3.595V8.924A3.594 3.594 0 0 0 12 5.319m9.5 4.119v5.135c0 .25-.071.496-.205.708a1.355 1.355 0 0 1-.555.493a1.27 1.27 0 0 1-.73.124a1.367 1.367 0 0 1-.677-.278l-3.225-2.588a1.376 1.376 0 0 1-.503-1.047c0-.2.045-.397.133-.575c.092-.168.218-.315.37-.432l3.225-2.567a1.36 1.36 0 0 1 .678-.278c.25-.032.504.011.729.123a1.336 1.336 0 0 1 .76 1.182"
-                                />
-                            </svg>
+                            <iconify-icon icon="lucide:newspaper"></iconify-icon>
                         </div>
                         <div class="nav-item-label-row">
-                            <span class="nav-item-label">Shorts</span>
-                            <span class="nav-item-badge-new">Yeni</span>
+                            <span class="nav-item-label">News</span>
                         </div>
                     </a>
                 </li>
@@ -1100,10 +1196,10 @@
                 <li>
                     <a class="nav-item" href="{{ route('blog.popular') }}" data-active="{{ $isFeatured ? 'true' : 'false' }}">
                         <div class="nav-item-icon-outline">
-                            <iconify-icon icon="lucide:star"></iconify-icon>
+                            <iconify-icon icon="lucide:badge"></iconify-icon>
                         </div>
                         <div class="nav-item-label-row">
-                            <span class="nav-item-label">Öne Çıkanlar</span>
+                            <span class="nav-item-label">Featured</span>
                         </div>
                     </a>
                 </li>
@@ -1114,7 +1210,7 @@
                             <iconify-icon icon="lucide:compass"></iconify-icon>
                         </div>
                         <div class="nav-item-label-row">
-                            <span class="nav-item-label">Keşfet</span>
+                            <span class="nav-item-label">Explore</span>
                         </div>
                     </a>
                 </li>
@@ -1125,7 +1221,7 @@
                             <iconify-icon icon="lucide:message-square"></iconify-icon>
                         </div>
                         <div class="nav-item-label-row">
-                            <span class="nav-item-label">Mesajlar</span>
+                            <span class="nav-item-label">Messages</span>
                         </div>
                     </a>
                 </li>
@@ -1133,10 +1229,10 @@
                 <li>
                     <a class="nav-item" href="{{ route('blog.categories') }}" data-active="{{ $isCategories ? 'true' : 'false' }}">
                         <div class="nav-item-icon-outline">
-                            <iconify-icon icon="lucide:folders"></iconify-icon>
+                            <iconify-icon icon="lucide:users-round"></iconify-icon>
                         </div>
                         <div class="nav-item-label-row">
-                            <span class="nav-item-label">Topluluklar</span>
+                            <span class="nav-item-label">Communities</span>
                         </div>
                     </a>
                 </li>
@@ -1169,7 +1265,7 @@
                                     decoding="async"
                                 >
                             @else
-                                <span class="sidebar-category-avatar sidebar-category-avatar--fallback">
+                                <span class="sidebar-category-avatar sidebar-category-avatar--fallback" style="background-color: {{ $categoryColor }} !important;">
                                     {{ $categoryInitials }}
                                 </span>
                             @endif
