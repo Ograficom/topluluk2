@@ -2805,6 +2805,13 @@ class BlogController extends Controller
         ])->header('Content-Type', 'application/xml');
     }
 
+    public function sitemapNews(SitemapManager $manager)
+    {
+        return response()->view('xml.news-sitemap', [
+            'items' => $manager->newsEntries(),
+        ])->header('Content-Type', 'application/xml; charset=UTF-8');
+    }
+
     public function sitemapCategories(SitemapManager $manager)
     {
         return response()->view('xml.sitemaps', [

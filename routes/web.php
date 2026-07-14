@@ -549,6 +549,7 @@ Route::get('/sitemap', function () {
 });
 Route::get('/sitemap.xml', [BlogController::class, 'sitemapIndex'])->name('sitemap.index');
 Route::get('/posts.xml', [BlogController::class, 'sitemapPosts'])->name('sitemap.posts');
+Route::get('/news-sitemap.xml', [BlogController::class, 'sitemapNews'])->name('sitemap.news');
 Route::get('/categories.xml', [BlogController::class, 'sitemapCategories'])->name('sitemap.categories');
 Route::get('/tags.xml', [BlogController::class, 'sitemapTags'])->name('sitemap.tags');
 Route::get('/pages.xml', [BlogController::class, 'sitemapPages'])->name('sitemap.pages');

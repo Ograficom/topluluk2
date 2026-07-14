@@ -63,6 +63,11 @@ class SitemapManager
         $settings = $this->getSettings();
         $items = [];
 
+        $items[] = [
+            'loc' => url('/news-sitemap.xml'),
+            'lastmod' => Carbon::now()->toAtomString(),
+        ];
+
         if ($settings['include_posts'] ?? false) {
             $items[] = [
                 'loc' => url('/posts.xml'),
@@ -99,6 +104,26 @@ class SitemapManager
         return ($this->getSettings()['include_posts'] ?? false)
             ? $this->cachedEntries('posts', fn () => $this->buildPostItems())
             : [];
+    }
+
+    public function newsEntries(): array
+    {
+        return Post::query()
+            ->published()
+            ->where('published_at', '>=', now()->subDays(2))
+            ->orderByDesc('published_at')
+            ->limit(1000)
+            ->get(['slug', 'title', 'published_at', 'created_at'])
+            ->map(fn (Post $post) => [
+                'loc' => route('blog.post', ['post' => $post]),
+                'publication_name' => (string) config('seo.news.publication_name', 'Ografi'),
+                'language' => (string) config('seo.news.language', 'tr'),
+                'publication_date' => ($post->published_at ?: $post->created_at ?: now())->toAtomString(),
+                'title' => trim((string) $post->title),
+            ])
+            ->filter(fn (array $item) => $item['title'] !== '')
+            ->values()
+            ->all();
     }
 
     public function categoriesEntries(): array
