@@ -8223,9 +8223,29 @@ SVG;
 
         /* Authoritative mobile proportions based on the supplied reference card. */
         @media (max-width: 640px) {
+            html,
+            body {
+                max-width: 100vw !important;
+                overflow-x: hidden !important;
+            }
+
+            html body .home-feed-shell,
+            html body .home-feed-shell > .ografi-filterable-post {
+                width: 100vw !important;
+                min-width: 0 !important;
+                max-width: 100vw !important;
+                margin-left: 0 !important;
+                margin-right: 0 !important;
+                padding-left: 0 !important;
+                padding-right: 0 !important;
+                overflow-x: hidden !important;
+                box-sizing: border-box !important;
+            }
+
             html body article.post-card[data-post-card-shell] {
-                width: 100% !important;
-                max-width: 100% !important;
+                width: calc(100vw - 2px) !important;
+                min-width: 0 !important;
+                max-width: calc(100vw - 2px) !important;
                 margin: 0 !important;
                 padding: 10px 15px 0 !important;
                 border: 1px solid #e5e7eb !important;
@@ -8233,6 +8253,11 @@ SVG;
                 background: #fff !important;
                 box-shadow: none !important;
                 overflow: hidden !important;
+            }
+
+            html body article.post-card[data-post-card-shell] * {
+                min-width: 0;
+                box-sizing: border-box;
             }
 
             html body article.post-card[data-post-card-shell] .post-header {
@@ -8272,6 +8297,8 @@ SVG;
                 line-height: 1.32 !important;
                 letter-spacing: 0 !important;
                 color: #050505 !important;
+                white-space: normal !important;
+                overflow-wrap: anywhere !important;
             }
 
             html body article.post-card[data-post-card-shell] .post-card__media-wrap {
