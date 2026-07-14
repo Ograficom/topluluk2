@@ -68,4 +68,10 @@ return [
         'timeout' => env('OLLAMA_TIMEOUT', 120),
     ],
 
+    'indexnow' => [
+        'enabled' => env('INDEXNOW_ENABLED', true),
+        'key' => env('INDEXNOW_KEY', '709dcfb81bcefd7351e940caf74b8179'),
+        'endpoint' => env('INDEXNOW_ENDPOINT', 'https://api.indexnow.org/indexnow'),
+    ],
+
 ];

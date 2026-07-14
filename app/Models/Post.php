@@ -15,6 +15,8 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
 use App\Notifications\CategoryPostPublishedNotification;
 use App\Support\PostSeoText;
+use App\Services\IndexNowService;
+use App\Services\SitemapManager;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Post extends Model
@@ -77,6 +79,20 @@ class Post extends Model
         static::updated(function (Post $post) {
             if (!$post->wasPublishedBeforeUpdate() && $post->isPublishedNow()) {
                 $post->notifyCategoryFollowers();
+            }
+        });
+
+        static::saved(function (Post $post) {
+            if (! $post->isPublishedNow()) {
+                return;
+            }
+
+            try {
+                app(SitemapManager::class)->regenerate();
+                $url = route('blog.post', ['post' => $post]);
+                app(IndexNowService::class)->queue($url);
+            } catch (\Throwable $e) {
+                report($e);
             }
         });
     }

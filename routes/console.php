@@ -7,6 +7,7 @@ use App\Models\RssFeed;
 use App\Models\Post;
 use App\Support\PostSeoText;
 use App\Services\Rss\RssSyncService;
+use App\Services\IndexNowService;
 use App\Console\Commands\GenerateVideoSubtitles;
 use Symfony\Component\Console\Input\ArrayInput;
 
@@ -68,6 +69,27 @@ Artisan::command('posts:seo-backfill {--force : Replace existing generated metad
 
     $this->info("SEO metadata updated for {$updated} posts.");
 })->purpose('Backfill SEO titles and descriptions for all posts');
+
+Artisan::command('indexnow:submit-posts {--hours= : Submit posts changed in the last N hours}', function (IndexNowService $indexNow) {
+    $query = Post::query()->published()->orderByDesc('updated_at');
+    if ($hours = $this->option('hours')) {
+        $query->where('updated_at', '>=', now()->subHours(max(1, (int) $hours)));
+    }
+    $urls = $query->limit(10000)->get()->map(fn (Post $post) => route('blog.post', ['post' => $post]))->all();
+    $response = $indexNow->submit($urls);
+
+    if ($response === null) {
+        $this->warn('No eligible URLs were submitted.');
+        return 0;
+    }
+
+    $this->info('IndexNow submitted ' . count($urls) . ' URLs; HTTP ' . $response->status() . '.');
+    return $response->successful() ? 0 : 1;
+})->purpose('Notify IndexNow about published or updated post URLs');
+
+Schedule::command('indexnow:submit-posts --hours=2')
+    ->hourly()
+    ->withoutOverlapping();
 
 Artisan::command('subtitles:generate {postId}', function ($postId) {
     $command = new GenerateVideoSubtitles();
