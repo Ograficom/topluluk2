@@ -194,12 +194,12 @@
 
         <div class="home-feed-toolbar" aria-label="Gönderi filtreleri">
             <div class="home-feed-toolbar__modes" role="tablist" aria-label="Akış türü">
-                <button type="button" class="home-feed-toolbar__mode is-active" role="tab" aria-selected="true" data-feed-mode>Tüm</button>
-                <button type="button" class="home-feed-toolbar__mode" role="tab" aria-selected="false" data-feed-mode>Tartışmak</button>
-                <button type="button" class="home-feed-toolbar__mode" role="tab" aria-selected="false" data-feed-mode>Okumak</button>
+                <button type="button" class="home-feed-toolbar__mode is-active" role="tab" aria-selected="true" data-feed-mode="all">Tüm</button>
+                <button type="button" class="home-feed-toolbar__mode" role="tab" aria-selected="false" data-feed-mode="discuss">Tartışmak</button>
+                <button type="button" class="home-feed-toolbar__mode" role="tab" aria-selected="false" data-feed-mode="read">Okumak</button>
             </div>
 
-            <div class="home-feed-toolbar__period" data-feed-filter-menu>
+            <div class="home-feed-toolbar__period is-mode-hidden" data-feed-filter-menu>
                 <button
                     type="button"
                     class="home-feed-toolbar__period-toggle"
@@ -244,6 +244,10 @@
                 background: #fff !important;
                 box-shadow: 0 1px 2px rgba(15, 23, 42, .03) !important;
                 font-family: "Roboto", system-ui, sans-serif !important;
+            }
+
+            .home-feed-toolbar__period.is-mode-hidden {
+                display: none !important;
             }
             .home-feed-toolbar__modes {
                 display: flex !important;
@@ -4534,6 +4538,10 @@
                     const active = button === mode;
                     button.classList.toggle('is-active', active);
                     button.setAttribute('aria-selected', active ? 'true' : 'false');
+                });
+
+                document.querySelectorAll('[data-feed-filter-menu]').forEach((period) => {
+                    period.classList.toggle('is-mode-hidden', mode.dataset.feedMode !== 'read');
                 });
             });
             applyFeedFilter(feedFilterState.active || 'latest');
