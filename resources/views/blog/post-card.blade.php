@@ -8221,6 +8221,151 @@ SVG;
             stroke: currentColor !important;
         }
 
+        /* Authoritative mobile proportions based on the supplied reference card. */
+        @media (max-width: 640px) {
+            html body .home-feed-shell article[data-post-card-shell] {
+                width: 100% !important;
+                max-width: 100% !important;
+                margin: 0 !important;
+                padding: 10px 15px 0 !important;
+                border: 1px solid #e5e7eb !important;
+                border-radius: 8px !important;
+                background: #fff !important;
+                box-shadow: none !important;
+                overflow: hidden !important;
+            }
+
+            html body .home-feed-shell article[data-post-card-shell] .post-header {
+                min-height: 39px !important;
+                margin: 0 0 6px !important;
+            }
+
+            html body .home-feed-shell article[data-post-card-shell] .author-block {
+                gap: 7px !important;
+            }
+
+            html body .home-feed-shell article[data-post-card-shell] .author-avatar {
+                width: 34px !important;
+                height: 34px !important;
+                min-width: 34px !important;
+            }
+
+            html body .home-feed-shell article[data-post-card-shell] .author-name {
+                font-size: 13px !important;
+                font-weight: 600 !important;
+                line-height: 17px !important;
+            }
+
+            html body .home-feed-shell article[data-post-card-shell] :is(.author-subline, .post-time, .author-subline__topic) {
+                font-size: 11px !important;
+                line-height: 15px !important;
+            }
+
+            html body .home-feed-shell article[data-post-card-shell] h2.post-title,
+            html body .home-feed-shell article[data-post-card-shell] h2.post-title > a.post-title__link {
+                display: block !important;
+                margin: 0 0 18px !important;
+                padding: 0 !important;
+                font-family: Roboto, Arial, sans-serif !important;
+                font-size: 17px !important;
+                font-weight: 700 !important;
+                line-height: 1.38 !important;
+                letter-spacing: 0 !important;
+                color: #050505 !important;
+            }
+
+            html body .home-feed-shell article[data-post-card-shell] .post-card__media-wrap {
+                width: 100% !important;
+                margin: 0 0 17px !important;
+                border: 0 !important;
+                border-radius: 8px !important;
+                overflow: hidden !important;
+            }
+
+            html body .home-feed-shell article[data-post-card-shell] :is(.post-card__media-scroller, .post-card__media-slide, .post-card__media-link, .post-card__media-frame) {
+                width: 100% !important;
+                max-width: 100% !important;
+            }
+
+            html body .home-feed-shell article[data-post-card-shell] :is(.post-card__media-frame, .post-card__media-image, .hero-image) {
+                display: block !important;
+                width: 100% !important;
+                min-height: 0 !important;
+                height: auto !important;
+                max-height: none !important;
+                aspect-ratio: 1.5 / 1 !important;
+                object-fit: cover !important;
+                border-radius: 8px !important;
+            }
+
+            html body .home-feed-shell article[data-post-card-shell] :is(.post-summary-shell, .post-summary-shell.is-collapsed) {
+                max-height: none !important;
+                margin: 0 0 3px !important;
+                padding: 0 !important;
+                overflow: hidden !important;
+            }
+
+            html body .home-feed-shell article[data-post-card-shell] :is(.post-summary, .post-summary.is-collapsed, [data-post-card-summary]) {
+                display: -webkit-box !important;
+                max-height: none !important;
+                margin: 0 !important;
+                overflow: hidden !important;
+                -webkit-box-orient: vertical !important;
+                -webkit-line-clamp: 6 !important;
+                line-clamp: 6 !important;
+                white-space: normal !important;
+                font-size: 15px !important;
+                line-height: 1.48 !important;
+                color: #111 !important;
+            }
+
+            html body .home-feed-shell article[data-post-card-shell] .expand-link {
+                margin: 5px 0 15px !important;
+                padding: 0 !important;
+                font-size: 14px !important;
+                font-weight: 600 !important;
+                line-height: 19px !important;
+                color: #009a62 !important;
+            }
+
+            html body .home-feed-shell article[data-post-card-shell] .post-card__tags {
+                gap: 8px 12px !important;
+                margin: 0 0 17px !important;
+            }
+
+            html body .home-feed-shell article[data-post-card-shell] .post-card__tag {
+                font-size: 13px !important;
+                line-height: 18px !important;
+                color: #009a62 !important;
+            }
+
+            html body .home-feed-shell article[data-post-card-shell] .reactions-row {
+                min-height: 35px !important;
+                margin: 0 0 6px !important;
+                padding: 0 !important;
+                gap: 7px !important;
+                border: 0 !important;
+            }
+
+            html body .home-feed-shell article[data-post-card-shell] .action-bar {
+                min-height: 48px !important;
+                height: 48px !important;
+                margin: 0 -15px !important;
+                padding: 0 15px !important;
+                border-top: 1px solid #e5e7eb !important;
+            }
+
+            html body .home-feed-shell article[data-post-card-shell] :is(.action-btn, .action-stat, .post-card__action-link, .post-card__action-button) {
+                min-height: 36px !important;
+                height: 36px !important;
+            }
+
+            html body .home-feed-shell article[data-post-card-shell] :is(.post-card__inline-icon, .post-card__inline-icon svg, .post-card__bookmark-icon, .post-card__share-icon) {
+                width: 20px !important;
+                height: 20px !important;
+            }
+        }
+
 </style>
 
     <script>
