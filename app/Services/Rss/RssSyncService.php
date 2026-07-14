@@ -876,8 +876,13 @@ class RssSyncService
                 continue;
             }
 
+            $imageUrl = $this->bestMediaUrl($image, ['src', 'data-src', 'data-original', 'data-lazy-src', 'data-srcset', 'srcset'], $baseUrl) ?? '';
+            if ($this->looksLikeNonArticleImageElement($image, $imageUrl)) {
+                continue;
+            }
+
             $items[] = $this->mediaItemFromUrl(
-                $this->bestMediaUrl($image, ['src', 'data-src', 'data-original', 'data-lazy-src', 'data-srcset', 'srcset'], $baseUrl) ?? '',
+                $imageUrl,
                 'image/*',
                 'image'
             );
@@ -1551,6 +1556,7 @@ class RssSyncService
     {
         return collect($items)
             ->filter(fn ($item) => is_array($item) && filled($item['url'] ?? null) && filled($item['kind'] ?? null))
+            ->reject(fn ($item) => ($item['kind'] ?? null) === 'image' && $this->looksLikeSiteAsset((string) ($item['url'] ?? '')))
             ->unique(fn ($item) => $item['url'])
             ->values()
             ->all();
@@ -1565,9 +1571,62 @@ class RssSyncService
 
     private function looksLikeSiteAsset(string $url): bool
     {
-        $path = strtolower((string) parse_url($url, PHP_URL_PATH));
+        $decodedUrl = mb_strtolower(rawurldecode($url));
+        $path = mb_strtolower(rawurldecode((string) parse_url($url, PHP_URL_PATH)));
+
+        $nonArticleTerms = [
+            'logo', 'icon', 'favicon', 'avatar', 'profile', 'placeholder', 'default', 'no-image', 'site-logo',
+            'banner', 'reklam', 'advert', 'advertisement', 'promo', 'promotion', 'sponsor', 'sponsored',
+            'subscribe', 'subscription', 'abonelik', 'e-dergi', 'edergi', 'dergi-abone',
+            'google-kaynak', 'google-source', 'preferred-source', 'tercih-edilen-kaynak', 'kaynak-olarak-ekle',
+            'badge', 'button', 'sidebar-widget', 'footer-widget',
+        ];
+
+        foreach ($nonArticleTerms as $term) {
+            if (str_contains($decodedUrl, $term)) {
+                return true;
+            }
+        }
+
+        if (preg_match('/(?:^|[-_\/.])(ads?|adserver|doubleclick)(?:[-_\/.]|$)/i', $decodedUrl)) {
+            return true;
+        }
+
+        // Common advertising creative sizes embedded in filenames or URL parameters.
+        if (preg_match('/(?:^|[^0-9])(728x90|970x90|970x250|468x60|320x50|320x100|300x250|300x600|160x600)(?:[^0-9]|$)/i', $decodedUrl)) {
+            return true;
+        }
 
         return (bool) preg_match('/(?:^|[-_\/.])(logo|icon|favicon|avatar|profile|placeholder|default|no-image|site-logo)(?:[-_\/.]|$)/i', $path);
+    }
+
+    private function looksLikeNonArticleImageElement(\DOMElement $image, string $url): bool
+    {
+        if ($this->looksLikeSiteAsset($url)) {
+            return true;
+        }
+
+        $signals = [];
+        foreach (['alt', 'title', 'class', 'id', 'role', 'aria-label'] as $attribute) {
+            $signals[] = (string) $image->getAttribute($attribute);
+        }
+
+        $ancestor = $image->parentNode;
+        for ($level = 0; $level < 3 && $ancestor instanceof \DOMElement; $level++, $ancestor = $ancestor->parentNode) {
+            foreach (['class', 'id', 'role', 'aria-label'] as $attribute) {
+                $signals[] = (string) $ancestor->getAttribute($attribute);
+            }
+        }
+
+        $metadata = mb_strtolower(html_entity_decode(implode(' ', $signals), ENT_QUOTES | ENT_HTML5, 'UTF-8'));
+        if (preg_match('/\b(reklam|banner|advert(?:isement)?|sponsor(?:ed)?|promo(?:tion)?|abonelik|abone ol|e-?dergi|google.{0,30}(kaynak|source|ekle))\b/ui', $metadata)) {
+            return true;
+        }
+
+        $width = (int) preg_replace('/[^0-9].*/', '', (string) $image->getAttribute('width'));
+        $height = (int) preg_replace('/[^0-9].*/', '', (string) $image->getAttribute('height'));
+
+        return $width >= 300 && $height > 0 && $height <= 250 && ($width / $height) >= 3.2;
     }
 
     private function appendMediaHtml(string $html, array $mediaItems): string
