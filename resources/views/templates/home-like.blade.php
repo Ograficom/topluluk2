@@ -8,13 +8,13 @@
 
     // Varsayılan akış: tarih filtresi uygulama, en son paylaşılan gönderileri göster.
     // Üstteki buton metni yine "Bugün" olarak kalır; sadece filtre mantığı varsayılanda kapalıdır.
-    $activeFeedTimeFilter = request()->query('feed_time', 'latest');
+    $activeFeedTimeFilter = request()->query('feed_time', '24h');
     $feedTimeFilters = collect([
-        'latest' => 'En Son',
-        '24h' => 'Son 24 saat',
-        'week' => 'Bu hafta',
-        'month' => 'Bu ay',
-        'year' => 'Bu yıl',
+        '24h' => 'Bugün',
+        'week' => 'Hafta',
+        'month' => 'Ay',
+        'year' => 'Yıl',
+        'latest' => 'Tüm zamanlar',
     ]);
 
     if (! $feedTimeFilters->has($activeFeedTimeFilter)) {
@@ -192,72 +192,176 @@
             }
         </style>
 
-        <div
-            class="live-market-widget is-market-loading"
-            data-live-market-widget
-            aria-label="Canlı piyasa verileri"
-            aria-busy="true"
-        >
-            <div class="live-market-widget__mobile-panel" aria-label="Gönderi filtreleri" data-feed-filter-menu>
+        <div class="home-feed-toolbar" aria-label="Gönderi filtreleri">
+            <div class="home-feed-toolbar__modes" role="tablist" aria-label="Akış türü">
+                <button type="button" class="home-feed-toolbar__mode" role="tab" aria-selected="false" data-feed-mode>Tüm</button>
+                <button type="button" class="home-feed-toolbar__mode" role="tab" aria-selected="false" data-feed-mode>Tartışmak</button>
+                <button type="button" class="home-feed-toolbar__mode is-active" role="tab" aria-selected="true" data-feed-mode>Okumak</button>
+            </div>
+
+            <div class="home-feed-toolbar__period" data-feed-filter-menu>
                 <button
                     type="button"
-                    class="live-market-widget__mobile-filter"
+                    class="home-feed-toolbar__period-toggle"
                     aria-label="Gönderileri tarihe göre sırala"
                     aria-expanded="false"
                     data-feed-filter-toggle
                 >
-                    <span class="live-market-widget__mobile-filter-content">
-                        <span class="live-market-widget__mobile-date">Bugün</span>
-                        @if($hasNewPosts)
-                            <span class="live-market-widget__pulse-dot" aria-hidden="true"></span>
-                        @endif
-                    </span>
-                    <svg class="live-market-widget__chevron-icon" viewBox="0 0 24 24" fill="none" focusable="false" aria-hidden="true">
-                        <path d="m7 10 5 5 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <span data-feed-filter-label>Bugün</span>
+                    <svg viewBox="0 0 20 20" fill="none" focusable="false" aria-hidden="true">
+                        <path d="m6 12 4-4 4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
                     </svg>
                 </button>
 
-                <div class="live-market-widget__mobile-dropdown" data-feed-filter-dropdown>
+                <div class="home-feed-toolbar__dropdown" data-feed-filter-dropdown>
                     @foreach($feedTimeFilters as $filterKey => $filterLabel)
                         <a
                             href="{{ $filterKey === 'latest' ? request()->fullUrlWithoutQuery(['feed_time', 'page']) : request()->fullUrlWithQuery(['feed_time' => $filterKey, 'page' => null]) }}"
-                            class="live-market-widget__mobile-option @if($activeFeedTimeFilter === $filterKey) is-active @endif"
+                            class="home-feed-toolbar__option @if($activeFeedTimeFilter === $filterKey) is-active @endif"
                             data-feed-filter-option
                             data-filter="{{ $filterKey }}"
                         >
                             <span>{{ $filterLabel }}</span>
-                            <span class="live-market-widget__mobile-option-dot" aria-hidden="true"></span>
                         </a>
                     @endforeach
                 </div>
             </div>
-
-            <div class="live-market-widget__track">
-                <a href="{{ route('markets.show', 'usdtry') }}" class="live-market-widget__item" data-symbol="usdtry">
-                    <span class="live-market-widget__label" data-short="USD">USD</span>
-                    <span class="live-market-widget__value" data-value>Yükleniyor</span>
-                    <span class="live-market-widget__arrow is-flat" data-arrow></span>
-                </a>
-
-                <a href="{{ route('markets.show', 'eurtry') }}" class="live-market-widget__item" data-symbol="eurtry">
-                    <span class="live-market-widget__label" data-short="EUR">EUR</span>
-                    <span class="live-market-widget__value" data-value>Yükleniyor</span>
-                    <span class="live-market-widget__arrow is-flat" data-arrow></span>
-                </a>
-
-                <a href="{{ route('markets.show', 'btcusd') }}" class="live-market-widget__item" data-symbol="btcusd">
-                    <span class="live-market-widget__label" data-short="BTC">BTC</span>
-                    <span class="live-market-widget__value" data-value>Yükleniyor</span>
-                    <span class="live-market-widget__arrow is-flat" data-arrow></span>
-                </a>
-
-                <a href="{{ route('markets.show', 'goldtry') }}" class="live-market-widget__item" data-symbol="goldtry">
-                    <span class="live-market-widget__label" data-short="ALT">ALT</span>
-                    <span class="live-market-widget__value" data-value>Yükleniyor</span>
-                    <span class="live-market-widget__arrow is-flat" data-arrow></span>
-                </a>
-            </div>
         </div>
+
+        <style>
+            .home-feed-toolbar {
+                position: relative !important;
+                z-index: 40 !important;
+                display: flex !important;
+                align-items: center !important;
+                width: 100% !important;
+                min-height: 38px !important;
+                padding: 3px 10px !important;
+                margin: 0 !important;
+                overflow: visible !important;
+                border: 1px solid #d9dde3 !important;
+                border-radius: 16px !important;
+                background: #fff !important;
+                box-shadow: 0 1px 2px rgba(15, 23, 42, .03) !important;
+                font-family: "Roboto", system-ui, sans-serif !important;
+            }
+            .home-feed-toolbar__modes {
+                display: flex !important;
+                align-items: center !important;
+                gap: 2px !important;
+            }
+            .home-feed-toolbar__mode,
+            .home-feed-toolbar__period-toggle {
+                display: inline-flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+                min-height: 32px !important;
+                padding: 0 14px !important;
+                border: 0 !important;
+                border-radius: 12px !important;
+                background: transparent !important;
+                color: #6b7280 !important;
+                font-size: 14px !important;
+                font-weight: 500 !important;
+                line-height: 1 !important;
+                white-space: nowrap !important;
+                box-shadow: none !important;
+                cursor: pointer !important;
+            }
+            .home-feed-toolbar__mode.is-active {
+                background: #f1f1f3 !important;
+                color: #171717 !important;
+                font-weight: 600 !important;
+            }
+            .home-feed-toolbar__period {
+                position: relative !important;
+                margin-left: 2px !important;
+            }
+            .home-feed-toolbar__period-toggle {
+                gap: 3px !important;
+                padding: 0 8px 0 14px !important;
+                color: #111827 !important;
+                font-weight: 600 !important;
+            }
+            .home-feed-toolbar__period-toggle svg {
+                width: 14px !important;
+                height: 14px !important;
+                transition: transform .16s ease !important;
+            }
+            .home-feed-toolbar__period.is-open .home-feed-toolbar__period-toggle svg {
+                transform: rotate(180deg) !important;
+            }
+            .home-feed-toolbar__dropdown {
+                position: absolute !important;
+                top: calc(100% + 4px) !important;
+                left: 0 !important;
+                z-index: 1000 !important;
+                display: flex !important;
+                flex-direction: column !important;
+                width: 128px !important;
+                padding: 5px !important;
+                border: 1px solid #d9dde3 !important;
+                border-radius: 10px !important;
+                background: #fff !important;
+                box-shadow: 0 3px 8px rgba(15, 23, 42, .18) !important;
+                opacity: 0 !important;
+                visibility: hidden !important;
+                pointer-events: none !important;
+                transform: translateY(-4px) !important;
+                transition: opacity .14s ease, transform .14s ease, visibility .14s ease !important;
+            }
+            .home-feed-toolbar__period.is-open .home-feed-toolbar__dropdown {
+                opacity: 1 !important;
+                visibility: visible !important;
+                pointer-events: auto !important;
+                transform: translateY(0) !important;
+            }
+            .home-feed-toolbar__option {
+                display: flex !important;
+                align-items: center !important;
+                min-height: 36px !important;
+                padding: 0 8px !important;
+                border-radius: 7px !important;
+                color: #222 !important;
+                font-size: 14px !important;
+                font-weight: 400 !important;
+                text-decoration: none !important;
+            }
+            .home-feed-toolbar__option:hover,
+            .home-feed-toolbar__option.is-active {
+                background: #f1f1f3 !important;
+                color: #111 !important;
+            }
+            html.dark .home-feed-toolbar,
+            .dark .home-feed-toolbar,
+            html.dark .home-feed-toolbar__dropdown,
+            .dark .home-feed-toolbar__dropdown {
+                border-color: #374151 !important;
+                background: #111827 !important;
+            }
+            html.dark .home-feed-toolbar__mode,
+            .dark .home-feed-toolbar__mode,
+            html.dark .home-feed-toolbar__period-toggle,
+            .dark .home-feed-toolbar__period-toggle,
+            html.dark .home-feed-toolbar__option,
+            .dark .home-feed-toolbar__option {
+                color: #d1d5db !important;
+            }
+            html.dark .home-feed-toolbar__mode.is-active,
+            .dark .home-feed-toolbar__mode.is-active,
+            html.dark .home-feed-toolbar__option:hover,
+            html.dark .home-feed-toolbar__option.is-active,
+            .dark .home-feed-toolbar__option:hover,
+            .dark .home-feed-toolbar__option.is-active {
+                background: #273244 !important;
+                color: #fff !important;
+            }
+            @media (max-width: 640px) {
+                .home-feed-toolbar { padding-inline: 5px !important; }
+                .home-feed-toolbar__mode { padding-inline: 9px !important; font-size: 13px !important; }
+                .home-feed-toolbar__period-toggle { padding-inline: 8px 5px !important; font-size: 13px !important; }
+            }
+        </style>
 
         @if($showFeedAd)
             @include('partials.ads.slot', [
@@ -4250,6 +4354,10 @@
             };
 
             const loadMarketData = async () => {
+                if (widgets.length === 0) {
+                    return;
+                }
+
                 const isInitialLoad = !hasCompletedInitialMarketLoad;
                 const initialMarketLoadingStartedAt = Date.now();
 
@@ -4418,11 +4526,22 @@
             };
 
             setupFeedFilterMenu();
+            document.addEventListener('click', (event) => {
+                const mode = event.target.closest('[data-feed-mode]');
+                if (!mode) return;
+
+                document.querySelectorAll('[data-feed-mode]').forEach((button) => {
+                    const active = button === mode;
+                    button.classList.toggle('is-active', active);
+                    button.setAttribute('aria-selected', active ? 'true' : 'false');
+                });
+            });
             applyFeedFilter(feedFilterState.active || 'latest');
 
-            loadMarketData();
-
-            window.__ografiLiveMarketInterval = setInterval(loadMarketData, 60000);
+            if (widgets.length > 0) {
+                loadMarketData();
+                window.__ografiLiveMarketInterval = setInterval(loadMarketData, 60000);
+            }
         })();
     </script>
     <script>
