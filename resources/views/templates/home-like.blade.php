@@ -4812,6 +4812,59 @@
         height: 18px !important;
     }
 
+    html body .home-feed-shell,
+    html body .home-feed-shell .ografi-filterable-post {
+        width: 100vw !important;
+        min-width: 0 !important;
+        max-width: 100vw !important;
+        overflow-x: hidden !important;
+    }
+
+    html body .home-feed-shell article.post-card[data-post-card-shell] {
+        width: calc(100vw - 2px) !important;
+        min-width: 0 !important;
+        max-width: calc(100vw - 2px) !important;
+    }
+
+    html body .home-feed-shell article.post-card[data-post-card-shell] :is(
+        .post-header,
+        .post-title,
+        .post-summary-shell,
+        .post-card__full-content,
+        .post-card__tags,
+        .reactions-row,
+        .comment-row
+    ) {
+        width: calc(100vw - 32px) !important;
+        min-width: 0 !important;
+        max-width: calc(100vw - 32px) !important;
+    }
+
+    html body .home-feed-shell article.post-card[data-post-card-shell] :is(
+        .post-card__media-wrap,
+        .post-card__media-scroller,
+        .post-card__media-slide,
+        .post-card__media-link,
+        .post-card__media-frame,
+        .post-card__media-image
+    ) {
+        width: calc(100vw - 32px) !important;
+        min-width: calc(100vw - 32px) !important;
+        max-width: calc(100vw - 32px) !important;
+    }
+
+    html body .home-feed-shell article.post-card[data-post-card-shell] :is(.post-title, .post-title__link, .post-summary, .post-card__tag) {
+        white-space: normal !important;
+        overflow-wrap: anywhere !important;
+        word-break: normal !important;
+    }
+
+    html body .home-feed-shell article.post-card[data-post-card-shell] .action-bar {
+        width: calc(100vw - 2px) !important;
+        min-width: calc(100vw - 2px) !important;
+        max-width: calc(100vw - 2px) !important;
+    }
+
     /* Reference mobile card: dense editorial layout, without a vote row. */
     .home-feed-shell [data-post-card-shell] {
         padding: 10px 15px 0 !important;
