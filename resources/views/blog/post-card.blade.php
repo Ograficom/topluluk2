@@ -8406,6 +8406,109 @@ SVG;
             const rootSelector = '[data-post-card-shell]';
             const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '';
 
+            const applyMobileReferenceCardStyles = function () {
+                if (!window.matchMedia('(max-width: 640px)').matches) {
+                    return;
+                }
+
+                const viewportWidth = Math.max(280, document.documentElement.clientWidth || window.innerWidth || 360);
+                const cardWidth = Math.max(278, viewportWidth - 2) + 'px';
+                const contentWidth = Math.max(248, viewportWidth - 32) + 'px';
+
+                document.querySelectorAll(rootSelector).forEach(function (card) {
+                    const force = function (element, properties) {
+                        if (!element) return;
+                        Object.entries(properties).forEach(function ([property, value]) {
+                            element.style.setProperty(property, value, 'important');
+                        });
+                    };
+
+                    force(card, {
+                        width: cardWidth,
+                        'min-width': '0',
+                        'max-width': cardWidth,
+                        margin: '0',
+                        padding: '10px 15px 0',
+                        overflow: 'hidden',
+                        'box-sizing': 'border-box',
+                        'border-radius': '8px'
+                    });
+
+                    card.querySelectorAll('.post-header, .post-title, .post-summary-shell, .post-card__full-content, .post-card__tags, .reactions-row, .comment-row').forEach(function (element) {
+                        force(element, { width: contentWidth, 'min-width': '0', 'max-width': contentWidth });
+                    });
+
+                    card.querySelectorAll('.post-card__media-wrap, .post-card__media-scroller, .post-card__media-slide, .post-card__media-link, .post-card__media-frame, .post-card__media-image').forEach(function (element) {
+                        force(element, { width: contentWidth, 'min-width': contentWidth, 'max-width': contentWidth });
+                    });
+
+                    card.querySelectorAll('.post-title, .post-title__link').forEach(function (element) {
+                        force(element, {
+                            'font-size': '20px',
+                            'font-weight': '700',
+                            'line-height': '1.32',
+                            'white-space': 'normal',
+                            'overflow-wrap': 'anywhere'
+                        });
+                    });
+
+                    card.querySelectorAll('.post-summary, [data-post-card-summary]').forEach(function (element) {
+                        force(element, {
+                            display: '-webkit-box',
+                            'font-size': '16px',
+                            'line-height': '1.5',
+                            overflow: 'hidden',
+                            '-webkit-box-orient': 'vertical',
+                            '-webkit-line-clamp': '6',
+                            'white-space': 'normal'
+                        });
+                    });
+
+                    card.querySelectorAll('.author-name').forEach(function (element) {
+                        force(element, { 'font-size': '14px', 'line-height': '18px', 'font-weight': '600' });
+                    });
+
+                    card.querySelectorAll('.author-subline, .post-time, .author-subline__topic').forEach(function (element) {
+                        force(element, { 'font-size': '12px', 'line-height': '16px' });
+                    });
+
+                    card.querySelectorAll('.expand-link, .post-card__tag').forEach(function (element) {
+                        force(element, { 'font-size': '15px', 'line-height': '20px' });
+                    });
+
+                    card.querySelectorAll('.post-card__media-frame, .post-card__media-image').forEach(function (element) {
+                        force(element, { height: 'auto', 'aspect-ratio': '1.5 / 1', 'object-fit': 'cover' });
+                    });
+
+                    const actionBar = card.querySelector('.action-bar');
+                    force(actionBar, {
+                        width: cardWidth,
+                        'min-width': cardWidth,
+                        'max-width': cardWidth,
+                        height: '48px',
+                        'min-height': '48px',
+                        margin: '0 -15px',
+                        padding: '0 15px'
+                    });
+
+                    card.querySelectorAll('.post-card__inline-icon, .post-card__inline-icon svg, .post-card__bookmark-icon, .post-card__share-icon').forEach(function (element) {
+                        force(element, { width: '22px', height: '22px' });
+                    });
+                });
+            };
+
+            window.__applyMobilePostCardReference = applyMobileReferenceCardStyles;
+            applyMobileReferenceCardStyles();
+            document.addEventListener('DOMContentLoaded', applyMobileReferenceCardStyles, { once: true });
+            window.addEventListener('resize', applyMobileReferenceCardStyles, { passive: true });
+
+            const mobileCardObserver = new MutationObserver(function (mutations) {
+                if (mutations.some(function (mutation) { return mutation.addedNodes.length > 0; })) {
+                    applyMobileReferenceCardStyles();
+                }
+            });
+            mobileCardObserver.observe(document.body, { childList: true, subtree: true });
+
             const forceFinishPreload = function (card) {
                 if (!card) {
                     return;
