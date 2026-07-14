@@ -1287,15 +1287,15 @@
         }
 
         body.alma-app .sidebar-wrapper--drawer .nav-item[data-active="true"] {
-            background: #effaf6 !important;
+            background: #eff6ff !important;
             border-radius: 14px !important;
-            color: #00a971 !important;
+            color: #2563eb !important;
         }
 
         body.alma-app .sidebar-wrapper--drawer .nav-item[data-active="true"] .nav-item-label,
         body.alma-app .sidebar-wrapper--drawer .nav-item[data-active="true"] .nav-item-icon-outline,
         body.alma-app .sidebar-wrapper--drawer .nav-item[data-active="true"] .nav-item-icon-outline :is(iconify-icon, svg) {
-            color: #00a971 !important;
+            color: #2563eb !important;
         }
     }
 </style>
