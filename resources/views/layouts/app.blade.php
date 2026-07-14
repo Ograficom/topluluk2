@@ -6435,6 +6435,26 @@
         }
 
         @media (max-width: 900px) {
+            html {
+                min-height: 100% !important;
+                overflow-x: hidden !important;
+            }
+
+            body.alma-app {
+                min-height: 100dvh !important;
+                padding-bottom: calc(100px + env(safe-area-inset-bottom, 0px)) !important;
+            }
+
+            html:has(body.route-post-show),
+            body.alma-app.route-post-show {
+                height: auto !important;
+                max-height: none !important;
+                overflow-y: auto !important;
+                overscroll-behavior-y: auto !important;
+                touch-action: pan-y !important;
+                -webkit-overflow-scrolling: touch !important;
+            }
+
             body.alma-app .site-header-shell,
             body.alma-app .main-grid,
             body.alma-app .main-grid.main-grid--padded,
@@ -6447,6 +6467,17 @@
             body.alma-app .main-grid.main-grid--no-pad {
                 grid-template-columns: minmax(0, 1fr) !important;
                 padding: 16px 14px 24px !important;
+            }
+
+            body.alma-app.route-post-show .main-grid,
+            body.alma-app.route-post-show .main-grid.main-grid--padded,
+            body.alma-app.route-post-show .main-grid.main-grid--no-pad,
+            body.alma-app.route-post-show .layout-main,
+            body.alma-app.route-post-show .post-show-shell {
+                height: auto !important;
+                max-height: none !important;
+                overflow-y: visible !important;
+                touch-action: pan-y !important;
             }
 
             body.alma-app .layout-side--left,
@@ -6469,9 +6500,10 @@
 </head>
 @php($isMessagesRoute = request()->routeIs('messages.*'))
 @php($isCategoryRoute = request()->routeIs('blog.categories', 'blog.category', 'blog.category.*'))
+@php($isPostShowRoute = request()->routeIs('blog.post'))
 
 <body
-    class="bg-[#f7f9fa] text-slate-900 font-sans antialiased theme-minimal alma-app {{ request()->routeIs('home') ? 'route-home' : '' }} {{ request()->routeIs('discover') ? 'route-discover' : '' }} {{ request()->routeIs('video') ? 'route-video' : '' }} {{ $isCategoryRoute ? 'route-category' : '' }}"
+    class="bg-[#f7f9fa] text-slate-900 font-sans antialiased theme-minimal alma-app {{ request()->routeIs('home') ? 'route-home' : '' }} {{ request()->routeIs('discover') ? 'route-discover' : '' }} {{ request()->routeIs('video') ? 'route-video' : '' }} {{ $isCategoryRoute ? 'route-category' : '' }} {{ $isPostShowRoute ? 'route-post-show' : '' }}"
     data-mentions-endpoint="{{ auth()->check() ? route('mentions.users') : '' }}"
 >
     @include('partials.toasts')
