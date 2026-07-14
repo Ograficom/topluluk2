@@ -8251,14 +8251,14 @@ SVG;
             }
 
             html body .home-feed-shell article[data-post-card-shell] .author-name {
-                font-size: 13px !important;
+                font-size: 14px !important;
                 font-weight: 600 !important;
-                line-height: 17px !important;
+                line-height: 18px !important;
             }
 
             html body .home-feed-shell article[data-post-card-shell] :is(.author-subline, .post-time, .author-subline__topic) {
-                font-size: 11px !important;
-                line-height: 15px !important;
+                font-size: 12px !important;
+                line-height: 16px !important;
             }
 
             html body .home-feed-shell article[data-post-card-shell] h2.post-title,
@@ -8267,9 +8267,9 @@ SVG;
                 margin: 0 0 18px !important;
                 padding: 0 !important;
                 font-family: Roboto, Arial, sans-serif !important;
-                font-size: 17px !important;
+                font-size: 20px !important;
                 font-weight: 700 !important;
-                line-height: 1.38 !important;
+                line-height: 1.32 !important;
                 letter-spacing: 0 !important;
                 color: #050505 !important;
             }
@@ -8314,15 +8314,15 @@ SVG;
                 -webkit-line-clamp: 6 !important;
                 line-clamp: 6 !important;
                 white-space: normal !important;
-                font-size: 15px !important;
-                line-height: 1.48 !important;
+                font-size: 16px !important;
+                line-height: 1.5 !important;
                 color: #111 !important;
             }
 
             html body .home-feed-shell article[data-post-card-shell] .expand-link {
                 margin: 5px 0 15px !important;
                 padding: 0 !important;
-                font-size: 14px !important;
+                font-size: 15px !important;
                 font-weight: 600 !important;
                 line-height: 19px !important;
                 color: #009a62 !important;
@@ -8334,8 +8334,8 @@ SVG;
             }
 
             html body .home-feed-shell article[data-post-card-shell] .post-card__tag {
-                font-size: 13px !important;
-                line-height: 18px !important;
+                font-size: 15px !important;
+                line-height: 20px !important;
                 color: #009a62 !important;
             }
 
@@ -8361,8 +8361,8 @@ SVG;
             }
 
             html body .home-feed-shell article[data-post-card-shell] :is(.post-card__inline-icon, .post-card__inline-icon svg, .post-card__bookmark-icon, .post-card__share-icon) {
-                width: 20px !important;
-                height: 20px !important;
+                width: 22px !important;
+                height: 22px !important;
             }
         }
 
