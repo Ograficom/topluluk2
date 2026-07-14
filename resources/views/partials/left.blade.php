@@ -854,8 +854,8 @@
 
         .nav-item,
         .sidebar-category-link {
-            width: 200px !important;
-            max-width: 200px !important;
+            width: 202px !important;
+            max-width: 202px !important;
             min-height: 46px !important;
             height: 46px !important;
             padding: 0 12px !important;
@@ -1050,7 +1050,7 @@
         body.alma-app .sidebar-wrapper:not(.sidebar-wrapper--drawer) {
             top: 70px !important;
             transform: translateX(-10px) !important;
-            width: 200px !important;
+            width: 202px !important;
             max-width: 200px !important;
             height: calc(100dvh - 70px) !important;
             max-height: calc(100dvh - 70px) !important;
@@ -1067,21 +1067,21 @@
 
         body.alma-app .nav-item,
         body.alma-app .sidebar-category-link {
-            width: 200px !important;
-            max-width: 200px !important;
-            height: 46px !important;
-            min-height: 46px !important;
-            padding: 0 10px !important;
+            width: 202px !important;
+            max-width: 202px !important;
+            height: 52px !important;
+            min-height: 52px !important;
+            padding: 0 8px !important;
             grid-template-columns: 26px minmax(0, 1fr) !important;
-            column-gap: 10px !important;
+            column-gap: 7px !important;
             border-radius: 10px !important;
             color: #4b5563 !important;
         }
 
         body.alma-app .nav-item[data-active="true"] {
-            height: 40px !important;
-            min-height: 40px !important;
-            margin: 3px 0 !important;
+            height: 48px !important;
+            min-height: 48px !important;
+            margin: 2px 0 !important;
             background: #ffffff !important;
             color: #18181b !important;
         }
@@ -1095,22 +1095,22 @@
         }
 
         body.alma-app .nav-item-icon-outline {
-            width: 24px !important;
-            height: 24px !important;
-            min-width: 24px !important;
+            width: 26px !important;
+            height: 26px !important;
+            min-width: 26px !important;
             border-radius: 7px !important;
             color: #6b7280 !important;
         }
 
         body.alma-app .nav-item-icon-outline :is(iconify-icon, svg) {
-            width: 19px !important;
-            height: 19px !important;
-            font-size: 19px !important;
+            width: 22px !important;
+            height: 22px !important;
+            font-size: 22px !important;
         }
 
         body.alma-app .nav-item-label {
             color: inherit !important;
-            font-size: 14px !important;
+            font-size: 17px !important;
             font-weight: 500 !important;
             line-height: 1.2 !important;
             letter-spacing: 0 !important;
@@ -1124,27 +1124,27 @@
         }
 
         body.alma-app .sidebar-category-link {
-            height: 43px !important;
-            min-height: 43px !important;
+            height: 52px !important;
+            min-height: 52px !important;
         }
 
         body.alma-app .sidebar-category-avatar,
         body.alma-app .sidebar-category-avatar--fallback {
-            width: 23px !important;
-            height: 23px !important;
-            min-width: 23px !important;
-            min-height: 23px !important;
-            max-width: 23px !important;
-            max-height: 23px !important;
+            width: 30px !important;
+            height: 30px !important;
+            min-width: 30px !important;
+            min-height: 30px !important;
+            max-width: 30px !important;
+            max-height: 30px !important;
             border: 0 !important;
             color: #ffffff !important;
-            font-size: 9px !important;
+            font-size: 11px !important;
             font-weight: 500 !important;
         }
 
         body.alma-app .sidebar-category-name {
             color: #374151 !important;
-            font-size: 13.5px !important;
+            font-size: 16px !important;
             font-weight: 500 !important;
             line-height: 1.2 !important;
         }
