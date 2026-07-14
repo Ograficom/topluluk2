@@ -1071,12 +1071,12 @@
     /* Desktop reference clone: only the left column. */
     @media (min-width: 1024px) {
         body.alma-app .sidebar-wrapper:not(.sidebar-wrapper--drawer) {
-            top: 86px !important;
+            top: 25px !important;
             transform: translateX(-39px) !important;
             width: 210px !important;
             max-width: 210px !important;
-            height: calc(100dvh - 86px) !important;
-            max-height: calc(100dvh - 86px) !important;
+            height: calc(100dvh - 25px) !important;
+            max-height: calc(100dvh - 25px) !important;
         }
 
         body.alma-app .sidebar-scroll { padding: 0 8px 12px 0 !important; }
