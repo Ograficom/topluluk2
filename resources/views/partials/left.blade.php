@@ -1197,7 +1197,7 @@
         }
 
         body.alma-app .nav-list > li:last-child {
-            margin-top: 15px !important;
+            margin-top: 0 !important;
         }
     }
 
@@ -1234,7 +1234,10 @@
                 <li>
                     <a class="nav-item" href="{{ route('video') }}" data-active="{{ $isVideo ? 'true' : 'false' }}">
                         <div class="nav-item-icon-outline" aria-hidden="true">
-                            <iconify-icon icon="lucide:newspaper"></iconify-icon>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
+                                <path d="M0 0h24v24H0z" fill="none" />
+                                <path fill="currentColor" fill-rule="evenodd" d="M14.062 5.62a37 37 0 0 0-7.118-.055l-1.582.141A2.835 2.835 0 0 0 2.81 8.12a26.8 26.8 0 0 0 0 7.76a2.836 2.836 0 0 0 2.553 2.414l1.582.14a37 37 0 0 0 7.118-.054l.608-.064a2.845 2.845 0 0 0 2.493-2.272l3.047 1.618a.75.75 0 0 0 1.099-.597l.025-.284a55 55 0 0 0 0-9.563l-.025-.284a.75.75 0 0 0-1.1-.596l-3.046 1.618a2.845 2.845 0 0 0-2.493-2.272zM7.078 7.059a35.3 35.3 0 0 1 6.827.053l.608.064a1.346 1.346 0 0 1 1.19 1.143c.358 2.441.358 4.92 0 7.362a1.346 1.346 0 0 1-1.19 1.143l-.608.064a35.3 35.3 0 0 1-6.827.053l-1.582-.142a1.336 1.336 0 0 1-1.203-1.136a25.3 25.3 0 0 1 0-7.326A1.335 1.335 0 0 1 5.496 7.2zM17.36 9.55c.149 1.63.149 3.27 0 4.9l2.547 1.353a53 53 0 0 0 0-7.606z" clip-rule="evenodd" />
+                            </svg>
                         </div>
                         <div class="nav-item-label-row">
                             <span class="nav-item-label">News</span>
@@ -1245,7 +1248,12 @@
                 <li>
                     <a class="nav-item" href="{{ route('blog.popular') }}" data-active="{{ $isFeatured ? 'true' : 'false' }}">
                         <div class="nav-item-icon-outline">
-                            <iconify-icon icon="lucide:circle-star"></iconify-icon>
+                            <svg viewBox="0 0 24 24" width="1.2em" height="1.2em" aria-hidden="true">
+                                <g fill="none" stroke="currentColor" stroke-width="1.5">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <path d="M10.577 8.204C11.21 7.068 11.527 6.5 12 6.5s.79.568 1.423 1.704l.164.294c.18.323.27.484.41.59c.14.107.316.147.665.226l.318.072c1.23.278 1.845.417 1.991.888c.147.47-.273.96-1.111 1.941l-.217.254c-.238.278-.357.418-.41.59c-.055.172-.037.358 0 .73l.032.338c.127 1.308.19 1.962-.193 2.253c-.383.29-.958.026-2.11-.504l-.298-.138c-.327-.15-.49-.226-.664-.226c-.173 0-.337.076-.664.226l-.298.138c-1.152.53-1.727.795-2.11.504c-.383-.29-.32-.945-.193-2.253l.032-.338c.037-.372.055-.558 0-.73c-.053-.172-.172-.312-.41-.59l-.217-.254c-.838-.98-1.258-1.47-1.111-1.941c.146-.47.76-.61 1.99-.888l.319-.072c.35-.08.524-.119.665-.225c.14-.107.23-.268.41-.59z"></path>
+                                </g>
+                            </svg>
                         </div>
                         <div class="nav-item-label-row">
                             <span class="nav-item-label">Featured</span>
@@ -1256,7 +1264,10 @@
                 <li>
                     <a class="nav-item" href="{{ route('discover') }}" data-active="{{ $isExplore ? 'true' : 'false' }}">
                         <div class="nav-item-icon-outline">
-                            <iconify-icon icon="lucide:compass"></iconify-icon>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 16 16" aria-hidden="true">
+                                <path d="M0 0h16v16H0z" fill="none" />
+                                <path fill="currentColor" d="M8 .8A7.2 7.2 0 1 0 15.2 8A7.21 7.21 0 0 0 8 .8m0 13.553A6.353 6.353 0 1 1 14.355 8A6.36 6.36 0 0 1 8 14.353m3.2-10.12L6.682 6.492a.42.42 0 0 0-.19.19l-2.259 4.517a.423.423 0 0 0 .569.568L9.319 9.51a.42.42 0 0 0 .19-.19L11.77 4.8a.423.423 0 0 0-.57-.568m-2.385 4.58l-3.255 1.63l1.623-3.255l3.255-1.623z" />
+                            </svg>
                         </div>
                         <div class="nav-item-label-row">
                             <span class="nav-item-label">Explore</span>
@@ -1267,7 +1278,13 @@
                 <li>
                     <a class="nav-item" href="{{ route('messages.index') }}" data-active="{{ $isMessages ? 'true' : 'false' }}">
                         <div class="nav-item-icon-outline">
-                            <iconify-icon icon="lucide:messages-square"></iconify-icon>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" aria-hidden="true">
+                                <path d="M0 0h24v24H0z" fill="none" />
+                                <g fill="none">
+                                    <path d="m12.593 23.258l-.011.002l-.071.035l-.02.004l-.014-.004l-.071-.035q-.016-.005-.024.005l-.004.01l-.017.428l.005.02l.01.013l.104.074l.015.004l.012-.004l.104-.074l.012-.016l.004-.017l-.017-.427q-.004-.016-.017-.018m.265-.113l-.013.002l-.185.093l-.01.01l-.003.011l.018.43l.005.012l.008.007l.201.093q.019.005.029-.008l.004-.014l-.034-.614q-.005-.018-.02-.022m-.715.002a.02.02 0 0 0-.027.006l-.006.014l-.034.614q.001.018.017.024l.015-.002l.201-.093l.01-.008l.004-.011l.017-.43l-.003-.012l-.01-.01z" />
+                                    <path fill="currentColor" d="M13.5 3a8.5 8.5 0 0 1 0 17H13v.99A1.01 1.01 0 0 1 11.989 22c-2.46-.002-4.952-.823-6.843-2.504C3.238 17.798 2.002 15.275 2 12.009V11.5A8.5 8.5 0 0 1 10.5 3zm0 2h-3A6.5 6.5 0 0 0 4 11.5l.001.665c.04 2.642 1.041 4.562 2.475 5.836C7.714 19.103 9.317 19.76 11 19.945v-.935c0-.558.452-1.01 1.01-1.01h1.49a6.5 6.5 0 1 0 0-13m-5 5a1.5 1.5 0 1 1 0 3a1.5 1.5 0 0 1 0-3m7 0a1.5 1.5 0 1 1 0 3a1.5 1.5 0 0 1 0-3" />
+                                </g>
+                            </svg>
                         </div>
                         <div class="nav-item-label-row">
                             <span class="nav-item-label">Messages</span>
