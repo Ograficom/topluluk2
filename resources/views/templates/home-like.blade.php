@@ -194,9 +194,9 @@
 
         <div class="home-feed-toolbar" aria-label="Gönderi filtreleri">
             <div class="home-feed-toolbar__modes" role="tablist" aria-label="Akış türü">
-                <button type="button" class="home-feed-toolbar__mode" role="tab" aria-selected="false" data-feed-mode>Tüm</button>
+                <button type="button" class="home-feed-toolbar__mode is-active" role="tab" aria-selected="true" data-feed-mode>Tüm</button>
                 <button type="button" class="home-feed-toolbar__mode" role="tab" aria-selected="false" data-feed-mode>Tartışmak</button>
-                <button type="button" class="home-feed-toolbar__mode is-active" role="tab" aria-selected="true" data-feed-mode>Okumak</button>
+                <button type="button" class="home-feed-toolbar__mode" role="tab" aria-selected="false" data-feed-mode>Okumak</button>
             </div>
 
             <div class="home-feed-toolbar__period" data-feed-filter-menu>
