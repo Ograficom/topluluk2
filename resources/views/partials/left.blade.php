@@ -1205,14 +1205,17 @@
 
 <style>
     @media (max-width: 1023.98px) {
-        body.alma-app .sidebar-wrapper--drawer .nav-item:is(:hover, :focus-visible, :active) {
+        body.alma-app .sidebar-wrapper--drawer .nav-item:is(:hover, :focus-visible, :active),
+        body.alma-app .sidebar-wrapper--drawer .nav-item[data-active="true"] {
             background: #f3f4f6 !important;
             border-radius: 14px !important;
             color: #4b5563 !important;
         }
 
         body.alma-app .sidebar-wrapper--drawer .nav-item:is(:hover, :focus-visible, :active) .nav-item-icon-outline,
-        body.alma-app .sidebar-wrapper--drawer .nav-item:is(:hover, :focus-visible, :active) .nav-item-icon-outline :is(iconify-icon, svg) {
+        body.alma-app .sidebar-wrapper--drawer .nav-item:is(:hover, :focus-visible, :active) .nav-item-icon-outline :is(iconify-icon, svg),
+        body.alma-app .sidebar-wrapper--drawer .nav-item[data-active="true"] .nav-item-icon-outline,
+        body.alma-app .sidebar-wrapper--drawer .nav-item[data-active="true"] .nav-item-icon-outline :is(iconify-icon, svg) {
             color: #6b7280 !important;
         }
     }
