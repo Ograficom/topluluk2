@@ -4707,4 +4707,101 @@
 .home-feed-shell [data-post-card-shell] .post-time {
     font-size: 13px !important;
 }
+
+/* Mobile post cards: full-width, readable typography and solid black actions. */
+@media (max-width: 640px) {
+    .home-feed-shell {
+        width: 100% !important;
+        max-width: 100% !important;
+        padding-inline: 0 !important;
+    }
+
+    .home-feed-shell [data-post-card-shell] {
+        width: 100% !important;
+        max-width: 100% !important;
+        margin-inline: 0 !important;
+        padding: 14px 15px 12px !important;
+        border-radius: 12px !important;
+        box-sizing: border-box !important;
+    }
+
+    .home-feed-shell [data-post-card-shell] .post-header {
+        margin-bottom: 10px !important;
+    }
+
+    .home-feed-shell [data-post-card-shell] .author-name {
+        font-size: 14px !important;
+        font-weight: 600 !important;
+        color: #111 !important;
+    }
+
+    .home-feed-shell [data-post-card-shell] .author-subline,
+    .home-feed-shell [data-post-card-shell] .post-time {
+        font-size: 12px !important;
+        line-height: 1.35 !important;
+        color: #4b5563 !important;
+    }
+
+    .home-feed-shell [data-post-card-shell] .post-title,
+    .home-feed-shell [data-post-card-shell] .post-title__link {
+        font-size: 19px !important;
+        font-weight: 700 !important;
+        line-height: 1.32 !important;
+        letter-spacing: -.01em !important;
+        color: #050505 !important;
+    }
+
+    .home-feed-shell [data-post-card-shell] .post-summary,
+    .home-feed-shell [data-post-card-shell] .post-card__full-content,
+    .home-feed-shell [data-post-card-shell] .post-card__inline-text {
+        font-size: 15px !important;
+        line-height: 1.5 !important;
+        color: #111 !important;
+    }
+
+    .home-feed-shell [data-post-card-shell] .post-card__media-wrap,
+    .home-feed-shell [data-post-card-shell] .post-card__media-scroller,
+    .home-feed-shell [data-post-card-shell] .post-card__media-frame {
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+
+    .home-feed-shell [data-post-card-shell] .post-card__media-image,
+    .home-feed-shell [data-post-card-shell] .hero-image {
+        width: 100% !important;
+        min-height: 210px !important;
+        max-height: 430px !important;
+        object-fit: cover !important;
+        border-radius: 10px !important;
+    }
+
+    .home-feed-shell [data-post-card-shell] .action-bar {
+        min-height: 48px !important;
+        padding-top: 9px !important;
+        margin-top: 10px !important;
+        border-top: 1px solid #e5e7eb !important;
+    }
+
+    .home-feed-shell [data-post-card-shell] :where(.action-btn, .post-metric, .action-chip, .post-card__inline-icon),
+    .home-feed-shell [data-post-card-shell] :where(.action-btn, .post-metric, .action-chip, .post-card__inline-icon) * {
+        color: #050505 !important;
+        stroke: currentColor !important;
+    }
+
+    .home-feed-shell [data-post-card-shell] .post-card__inline-icon {
+        width: 22px !important;
+        height: 22px !important;
+    }
+
+    .home-feed-shell [data-post-card-shell] .post-card__comment-icon,
+    .home-feed-shell [data-post-card-shell] .post-card__bookmark-icon {
+        width: 21px !important;
+        height: 21px !important;
+    }
+
+    .home-feed-shell [data-post-card-shell] .post-card__view-icon {
+        width: 18px !important;
+        height: 18px !important;
+    }
+}
 </style>

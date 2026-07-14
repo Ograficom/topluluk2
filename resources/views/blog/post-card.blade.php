@@ -1101,10 +1101,10 @@
     $isBookmarked = (bool) (optional($postObj)->is_bookmarked ?? $postArr['is_bookmarked'] ?? false);
     $createdSublineLabel = $createdHuman !== '' ? $createdHuman : $createdMetaLabel;
     $bookmarkOutlineIcon = <<<'SVG'
-<svg class="post-card__bookmark-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="1.5" d="M4.75 20.113c0 .498.554.803.983.54l5.702-3.48a1.09 1.09 0 0 1 1.13 0l5.702 3.48a.644.644 0 0 0 .983-.54V6.25a3 3 0 0 0-3-3h-8.5a3 3 0 0 0-3 3z"/></svg>
+<svg class="post-card__bookmark-icon" viewBox="0 0 24 24" width="1.2em" height="1.2em" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.5"><path class="ps-bookmark-shape" d="M21 16.09v-4.992c0-4.29 0-6.433-1.318-7.766C18.364 2 16.242 2 12 2S5.636 2 4.318 3.332S3 6.81 3 11.098v4.993c0 3.096 0 4.645.734 5.321c.35.323.792.526 1.263.58c.987.113 2.14-.907 4.445-2.946c1.02-.901 1.529-1.352 2.118-1.47c.29-.06.59-.06.88 0c.59.118 1.099.569 2.118 1.47c2.305 2.039 3.458 3.059 4.445 2.945c.47-.053.913-.256 1.263-.579c.734-.676.734-2.224.734-5.321Z"></path><path class="ps-bookmark-line" stroke-linecap="round" d="M15 6H9"></path></g></svg>
 SVG;
     $bookmarkFilledIcon = <<<'SVG'
-<svg class="post-card__bookmark-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 304 384" aria-hidden="true"><path fill="currentColor" d="M256 0q18 0 30.5 12.5T299 43v341l-150-64L0 384V43q0-18 12.5-30.5T43 0h213z"/></svg>
+<svg class="post-card__bookmark-icon" viewBox="0 0 24 24" width="1.2em" height="1.2em" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.5"><path class="ps-bookmark-shape" d="M21 16.09v-4.992c0-4.29 0-6.433-1.318-7.766C18.364 2 16.242 2 12 2S5.636 2 4.318 3.332S3 6.81 3 11.098v4.993c0 3.096 0 4.645.734 5.321c.35.323.792.526 1.263.58c.987.113 2.14-.907 4.445-2.946c1.02-.901 1.529-1.352 2.118-1.47c.29-.06.59-.06.88 0c.59.118 1.099.569 2.118 1.47c2.305 2.039 3.458 3.059 4.445 2.945c.47-.053.913-.256 1.263-.579c.734-.676.734-2.224.734-5.321Z"></path><path class="ps-bookmark-line" stroke-linecap="round" d="M15 6H9"></path></g></svg>
 SVG;
     $shareIcon = <<<'SVG'
 <svg class="post-card__share-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" aria-hidden="true"><path fill="currentColor" d="m229.66 109.66l-48 48a8 8 0 0 1-11.32-11.32L204.69 112H128a88.1 88.1 0 0 0-88 88a8 8 0 0 1-16 0A104.11 104.11 0 0 1 128 96h76.69l-34.35-34.34a8 8 0 0 1 11.32-11.32l48 48a8 8 0 0 1 0 11.32"/></svg>
@@ -2020,7 +2020,7 @@ SVG;
             @if($isCommentsDisabled ?? false)
                 <span class="action-btn action-chip action-chip--metric action-chip--disabled action-chip--subtle" aria-disabled="true">
                     <div class="post-card__inline-icon">
-                        <iconify-icon icon="lucide:message-circle" style="font-size: 18px; color: currentColor"></iconify-icon>
+                        <svg class="post-card__comment-icon" viewBox="0 0 24 24" width="1.2em" height="1.2em" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-linejoin="round"><path stroke-width="1.5" d="M14.17 20.89c4.184-.277 7.516-3.657 7.79-7.9c.053-.83.053-1.69 0-2.52c-.274-4.242-3.606-7.62-7.79-7.899a33 33 0 0 0-4.34 0c-4.184.278-7.516 3.657-7.79 7.9a20 20 0 0 0 0 2.52c.1 1.545.783 2.976 1.588 4.184c.467.845.159 1.9-.328 2.823c-.35.665-.526.997-.385 1.237c.14.24.455.248 1.084.263c1.245.03 2.084-.322 2.75-.813c.377-.279.566-.418.696-.434s.387.09.899.3c.46.19.995.307 1.485.34c1.425.094 2.914.094 4.342 0Z"></path><path stroke-linecap="round" stroke-width="2" d="M11.995 12h.01m3.986 0H16m-8 0h.009"></path></g></svg>
                     </div>
                     @if($showCommentsCountLabel)
                         <span class="action-chip__label">{{ $commentsCountDisplay }}</span>
@@ -2029,7 +2029,7 @@ SVG;
             @else
                 <a href="{{ $commentsUrl }}" class="action-btn post-card__action-link action-chip action-chip--metric action-chip--subtle" data-media-type="banani-button" aria-label="{{ $commentsLinkLabel }}">
                     <div class="post-card__inline-icon">
-                        <iconify-icon icon="lucide:message-circle" style="font-size: 18px; color: currentColor"></iconify-icon>
+                        <svg class="post-card__comment-icon" viewBox="0 0 24 24" width="1.2em" height="1.2em" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-linejoin="round"><path stroke-width="1.5" d="M14.17 20.89c4.184-.277 7.516-3.657 7.79-7.9c.053-.83.053-1.69 0-2.52c-.274-4.242-3.606-7.62-7.79-7.899a33 33 0 0 0-4.34 0c-4.184.278-7.516 3.657-7.79 7.9a20 20 0 0 0 0 2.52c.1 1.545.783 2.976 1.588 4.184c.467.845.159 1.9-.328 2.823c-.35.665-.526.997-.385 1.237c.14.24.455.248 1.084.263c1.245.03 2.084-.322 2.75-.813c.377-.279.566-.418.696-.434s.387.09.899.3c.46.19.995.307 1.485.34c1.425.094 2.914.094 4.342 0Z"></path><path stroke-linecap="round" stroke-width="2" d="M11.995 12h.01m3.986 0H16m-8 0h.009"></path></g></svg>
                     </div>
                     @if($showCommentsCountLabel)
                         <span class="action-chip__label">{{ $commentsCountDisplay }}</span>
@@ -2083,7 +2083,7 @@ SVG;
             @if(!$showViewsMetric) hidden @endif
         >
             <div class="post-card__inline-icon">
-                <iconify-icon icon="lucide:eye" style="font-size: 18px; color: currentColor"></iconify-icon>
+                <svg class="post-card__view-icon" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" viewBox="0 0 24 24" aria-hidden="true"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"></path><circle cx="12" cy="12" r="3"></circle></svg>
             </div>
             <span data-post-card-view-count>{{ $viewsCountDisplay }}</span>
         </button>
