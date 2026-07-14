@@ -1203,6 +1203,16 @@
 
 </style>
 
+<style>
+    @media (max-width: 1023.98px) {
+        body.alma-app .sidebar-wrapper--drawer .nav-item:is(:hover, :focus-visible, :active) {
+            background: #f3f4f6 !important;
+            border-radius: 14px !important;
+            color: #111827 !important;
+        }
+    }
+</style>
+
 <aside
     class="sidebar-wrapper{{ $mobileSidebar ? ' sidebar-wrapper--drawer' : '' }}"
     @if($mobileSidebar)
