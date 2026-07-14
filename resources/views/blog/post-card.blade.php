@@ -1564,9 +1564,9 @@ SVG;
         @endif
     </div>
 
-    <h2 class="post-title" id="post-title" style="font-family: 'Roboto', Arial, Helvetica, sans-serif !important; font-size: 20px !important; font-weight: 700 !important; line-height: 1.35 !important;">
+    <h2 class="post-title" id="post-title">
         @if($postUrl !== '#')
-            <a href="{{ $postUrl }}" class="post-title__link" style="font-family:'Roboto',Arial,Helvetica,sans-serif!important;font-size:22px!important;font-weight:700!important;line-height:1.35!important">{{ $title }}</a>
+            <a href="{{ $postUrl }}" class="post-title__link">{{ $title }}</a>
         @else
             {{ $title }}
         @endif

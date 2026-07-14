@@ -4803,5 +4803,127 @@
         width: 18px !important;
         height: 18px !important;
     }
+
+    /* Reference mobile card: dense editorial layout, without a vote row. */
+    .home-feed-shell [data-post-card-shell] {
+        padding: 10px 15px 0 !important;
+        border: 1px solid #e5e7eb !important;
+        border-radius: 8px !important;
+        background: #fff !important;
+        box-shadow: none !important;
+        overflow: hidden !important;
+    }
+
+    .home-feed-shell [data-post-card-shell] .post-header {
+        min-height: 38px !important;
+        margin: 0 0 5px !important;
+        align-items: flex-start !important;
+    }
+
+    .home-feed-shell [data-post-card-shell] .author-avatar {
+        width: 34px !important;
+        height: 34px !important;
+        min-width: 34px !important;
+    }
+
+    .home-feed-shell [data-post-card-shell] .author-block {
+        gap: 7px !important;
+    }
+
+    .home-feed-shell [data-post-card-shell] .author-name {
+        font-size: 13px !important;
+        line-height: 17px !important;
+        font-weight: 600 !important;
+    }
+
+    .home-feed-shell [data-post-card-shell] .author-subline,
+    .home-feed-shell [data-post-card-shell] .post-time,
+    .home-feed-shell [data-post-card-shell] .author-subline__topic {
+        font-size: 11px !important;
+        line-height: 15px !important;
+    }
+
+    .home-feed-shell [data-post-card-shell] .post-title,
+    .home-feed-shell [data-post-card-shell] .post-title__link {
+        margin: 0 0 18px !important;
+        font-family: Roboto, Arial, sans-serif !important;
+        font-size: 17px !important;
+        font-weight: 700 !important;
+        line-height: 1.35 !important;
+        letter-spacing: 0 !important;
+        color: #050505 !important;
+    }
+
+    .home-feed-shell [data-post-card-shell] .post-card__media-wrap {
+        margin: 0 0 17px !important;
+        border: 0 !important;
+        border-radius: 8px !important;
+        overflow: hidden !important;
+    }
+
+    .home-feed-shell [data-post-card-shell] .post-card__media-frame,
+    .home-feed-shell [data-post-card-shell] .post-card__media-image,
+    .home-feed-shell [data-post-card-shell] .hero-image {
+        display: block !important;
+        width: 100% !important;
+        min-height: 0 !important;
+        height: auto !important;
+        max-height: none !important;
+        aspect-ratio: 1.5 / 1 !important;
+        object-fit: cover !important;
+        border-radius: 8px !important;
+    }
+
+    .home-feed-shell [data-post-card-shell] .post-summary-shell,
+    .home-feed-shell [data-post-card-shell] .post-summary-shell.is-collapsed {
+        max-height: none !important;
+        margin: 0 0 3px !important;
+        overflow: visible !important;
+    }
+
+    .home-feed-shell [data-post-card-shell] .post-summary,
+    .home-feed-shell [data-post-card-shell] .post-summary.is-collapsed,
+    .home-feed-shell [data-post-card-shell] [data-post-card-summary] {
+        display: -webkit-box !important;
+        margin: 0 !important;
+        overflow: hidden !important;
+        -webkit-box-orient: vertical !important;
+        -webkit-line-clamp: 6 !important;
+        font-size: 14px !important;
+        line-height: 1.48 !important;
+        color: #111 !important;
+    }
+
+    .home-feed-shell [data-post-card-shell] .expand-link {
+        margin: 4px 0 14px !important;
+        padding: 0 !important;
+        font-size: 14px !important;
+        font-weight: 600 !important;
+        color: #009a62 !important;
+    }
+
+    .home-feed-shell [data-post-card-shell] .post-card__tags {
+        gap: 8px 12px !important;
+        margin: 0 0 17px !important;
+    }
+
+    .home-feed-shell [data-post-card-shell] .post-card__tag {
+        font-size: 12px !important;
+        line-height: 18px !important;
+        color: #009a62 !important;
+    }
+
+    .home-feed-shell [data-post-card-shell] .reactions-row {
+        min-height: 35px !important;
+        margin: 0 0 6px !important;
+        gap: 7px !important;
+    }
+
+    .home-feed-shell [data-post-card-shell] .action-bar {
+        min-height: 48px !important;
+        margin: 0 -15px !important;
+        padding: 0 15px !important;
+        border-top: 1px solid #e5e7eb !important;
+    }
 }
 </style>
