@@ -7,6 +7,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            justify-content: center;
             padding: 28px 16px;
             background: #f4f4f5;
             color: #111;
@@ -21,6 +22,7 @@
             letter-spacing: -1.5px;
         }
         .simple-auth-card {
+            position: relative;
             width: 100%;
             max-width: 400px;
             margin: 0;
@@ -30,6 +32,23 @@
             background: #fff;
             box-shadow: 0 1px 2px rgba(0,0,0,.12);
         }
+        .simple-auth-close {
+            position: absolute;
+            top: 14px;
+            right: 14px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 34px;
+            height: 34px;
+            padding: 0;
+            border: 0;
+            border-radius: 50%;
+            background: #f4f4f5;
+            color: #18181b;
+            cursor: pointer;
+        }
+        .simple-auth-close svg { width: 20px; height: 20px; }
         .simple-auth-field { margin-bottom: 22px; }
         .simple-auth-label {
             display: block;
@@ -137,6 +156,9 @@
         <h1 class="simple-auth-brand">alma</h1>
 
         <section class="simple-auth-card" aria-label="Giriş">
+            <button type="button" class="simple-auth-close" aria-label="Kapat" data-simple-auth-close>
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            </button>
             @if (session('status'))
                 <div class="simple-auth-alert" style="border-color:#a7f3d0;background:#ecfdf5;color:#047857;">{{ session('status') }}</div>
             @endif
@@ -184,4 +206,14 @@
             </p>
         </section>
     </main>
+
+    <script>
+        document.querySelector('[data-simple-auth-close]')?.addEventListener('click', function () {
+            if (window.history.length > 1) {
+                window.history.back();
+                return;
+            }
+            window.location.href = @json(route('home'));
+        });
+    </script>
 </x-guest-layout>
