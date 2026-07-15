@@ -4823,8 +4823,8 @@
         width: 100vw !important;
         min-width: 0 !important;
         max-width: 100vw !important;
-        margin-right: 0 !important;
-        margin-left: 0 !important;
+        margin-right: calc(50% - 50vw) !important;
+        margin-left: calc(50% - 50vw) !important;
     }
 
     html body .home-feed-shell article.post-card[data-post-card-shell] :is(

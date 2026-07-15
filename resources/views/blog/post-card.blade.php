@@ -8259,9 +8259,9 @@ SVG;
                 min-width: 0 !important;
                 max-width: 100vw !important;
                 margin-top: 0 !important;
-                margin-right: 0 !important;
+                margin-right: calc(50% - 50vw) !important;
                 margin-bottom: 0 !important;
-                margin-left: 0 !important;
+                margin-left: calc(50% - 50vw) !important;
                 padding: 10px 15px 0 !important;
                 border: 1px solid #e5e7eb !important;
                 border-radius: 8px !important;
@@ -8494,8 +8494,8 @@ SVG;
                 }
 
                 const viewportWidth = Math.max(280, document.documentElement.clientWidth || window.innerWidth || 360);
-                const cardWidth = Math.max(278, viewportWidth - 2) + 'px';
-                const contentWidth = Math.max(248, viewportWidth - 32) + 'px';
+                const cardWidth = viewportWidth + 'px';
+                const contentWidth = Math.max(250, viewportWidth - 30) + 'px';
 
                 document.querySelectorAll(rootSelector).forEach(function (card) {
                     const force = function (element, properties) {
@@ -8509,7 +8509,10 @@ SVG;
                         width: cardWidth,
                         'min-width': '0',
                         'max-width': cardWidth,
-                        margin: '0',
+                        'margin-top': '0',
+                        'margin-right': 'calc(50% - 50vw)',
+                        'margin-bottom': '0',
+                        'margin-left': 'calc(50% - 50vw)',
                         padding: '10px 15px 0',
                         overflow: 'hidden',
                         'box-sizing': 'border-box',
