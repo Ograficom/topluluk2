@@ -1869,12 +1869,12 @@
 
     /* Visual-only enlargement: no width, height, gap, padding or position changes. */
     html body .site-header .site-header-logo-main-image {
-        transform: scale(1.18) !important;
+        transform: scale(1.30) !important;
         transform-origin: center !important;
     }
 
     html body .site-header .site-header-logo-wordmark:not(#comments *):not(#app *) {
-        transform: scale(1.15) !important;
+        transform: scale(1.30) !important;
         transform-origin: left center !important;
     }
 
