@@ -2391,11 +2391,27 @@ html body .site-header {
     --site-header-icon-size: 26px;
 }
 
+html body .site-header :is(
+    .site-search-trigger,
+    button[data-notifications-btn],
+    :is(a, button).site-icon-btn
+) {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    align-self: center !important;
+    line-height: 0 !important;
+    vertical-align: middle !important;
+}
+
 html body .site-header .site-header-logo-mark,
 html body .site-header .site-header-logo-mark .site-header-logo-main-image,
 html body .site-header .mobile-sidebar-trigger > svg,
-html body .site-header :is(.site-search-trigger, button[data-notifications-btn], a.site-icon-btn[aria-label]) > iconify-icon,
+html body .site-header :is(.site-search-trigger, button[data-notifications-btn], :is(a, button).site-icon-btn[aria-label]) > iconify-icon,
 html body .site-header button[data-user-menu-btn] > :is(img, .site-avatar-fallback) {
+    display: block !important;
+    flex: 0 0 var(--site-header-icon-size) !important;
+    align-self: center !important;
     width: var(--site-header-icon-size) !important;
     height: var(--site-header-icon-size) !important;
     min-width: var(--site-header-icon-size) !important;
@@ -2404,6 +2420,7 @@ html body .site-header button[data-user-menu-btn] > :is(img, .site-avatar-fallba
     max-height: var(--site-header-icon-size) !important;
     font-size: var(--site-header-icon-size) !important;
     line-height: var(--site-header-icon-size) !important;
+    vertical-align: middle !important;
     transform: none !important;
 }
 
