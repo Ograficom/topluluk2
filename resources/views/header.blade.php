@@ -2359,6 +2359,17 @@ html body .site-header {
     html body .site-header {
         --site-header-logo-size: 42px;
     }
+
+    html body .site-header .site-header-logo-mark,
+    html body .site-header .site-header-logo-mark .site-header-logo-main-image {
+        flex: 0 0 var(--site-header-logo-size) !important;
+        width: var(--site-header-logo-size) !important;
+        height: var(--site-header-logo-size) !important;
+        min-width: var(--site-header-logo-size) !important;
+        max-width: var(--site-header-logo-size) !important;
+        min-height: var(--site-header-logo-size) !important;
+        max-height: var(--site-header-logo-size) !important;
+    }
 }
 
 html body .site-header :is(
