@@ -8460,18 +8460,18 @@ SVG;
 
         @media (min-width: 1024px) {
             html body article.post-card[data-post-card-shell] :is(.post-title, .post-title__link) {
-                font-size: 22px !important;
-                line-height: 1.38 !important;
+                font-size: 26px !important;
+                line-height: 1.34 !important;
             }
 
             html body article.post-card[data-post-card-shell] :is(.post-summary, [data-post-card-summary], .post-card__full-content, .post-card__inline-text) {
-                font-size: 18px !important;
-                line-height: 1.52 !important;
+                font-size: 20px !important;
+                line-height: 1.5 !important;
             }
 
             html body article.post-card[data-post-card-shell] .expand-link {
-                font-size: 17px !important;
-                line-height: 24px !important;
+                font-size: 18px !important;
+                line-height: 26px !important;
             }
         }
 
