@@ -4876,9 +4876,25 @@
         .post-card__action-button,
         .action-chip
     ) {
+        width: 42px !important;
         min-width: 42px !important;
-        padding-left: 9px !important;
-        padding-right: 9px !important;
+        height: 42px !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+        border-radius: 50% !important;
+    }
+
+    html body .home-feed-shell article.post-card[data-post-card-shell] .action-left :is(
+        .action-btn,
+        .post-card__action-link,
+        .post-card__action-button,
+        .action-chip
+    ):has(.action-chip__label) {
+        width: auto !important;
+        min-width: 48px !important;
+        padding-left: 10px !important;
+        padding-right: 10px !important;
+        border-radius: 999px !important;
     }
 
     /* Reference mobile card: dense editorial layout, without a vote row. */
