@@ -1930,8 +1930,8 @@
 
             <a class="site-header-logo" href="{{ route('home') }}" aria-label="{{ config('app.name', 'Ografi') }}">
                 <span class="site-header-logo-mark" aria-hidden="true">
-                    <x-application-logo class="site-header-logo-image site-header-logo-light-image site-header-logo-main-image" />
-                    <img class="site-header-logo-dark-image site-header-logo-main-image" src="{{ asset('images/ografi-logo.png') }}?v=20260714a" alt="">
+                    <x-application-logo class="site-header-logo-image site-header-logo-light-image site-header-logo-main-image" style="width: var(--site-header-icon-size) !important; height: var(--site-header-icon-size) !important; font-size: var(--site-header-icon-size) !important;" />
+                    <img class="site-header-logo-dark-image site-header-logo-main-image" style="width: var(--site-header-icon-size) !important; height: var(--site-header-icon-size) !important; font-size: var(--site-header-icon-size) !important;" src="{{ asset('images/ografi-logo.png') }}?v=20260714a" alt="">
                 </span>
                 <span class="site-header-logo-wordmark">Ografi</span>
             </a>
@@ -1948,7 +1948,7 @@
                     data-search-trigger
                     style="background: transparent !important; background-color: transparent !important; box-shadow: none !important; border-color: transparent !important;"
                 >
-                    <iconify-icon icon="lucide:search"></iconify-icon>
+                    <iconify-icon icon="lucide:search" style="width: var(--site-header-icon-size) !important; height: var(--site-header-icon-size) !important; font-size: var(--site-header-icon-size) !important;"></iconify-icon>
                 </button>
 
                 <div id="site-header-search-dropdown" class="site-search-dropdown hidden" data-search-dropdown>
@@ -2040,7 +2040,7 @@
                         data-notifications-btn
                         style="background: transparent !important; background-color: transparent !important; box-shadow: none !important; border-color: transparent !important;"
                     >
-                        <iconify-icon icon="lucide:bell" style="font-size: 19px;"></iconify-icon>
+                        <iconify-icon icon="lucide:bell" style="width: var(--site-header-icon-size) !important; height: var(--site-header-icon-size) !important; font-size: var(--site-header-icon-size) !important;"></iconify-icon>
                         <span class="site-status-dot {{ $unreadNotifications > 0 ? '' : 'hidden' }}" aria-hidden="true" data-notifications-dot></span>
                     </button>
 
@@ -2096,7 +2096,7 @@
                     aria-label="Mesajlar"
                     style="background: transparent !important; background-color: transparent !important; box-shadow: none !important; border-color: transparent !important;"
                 >
-                    <iconify-icon icon="lucide:message-circle-more" style="font-size: 19px;"></iconify-icon>
+                    <iconify-icon icon="lucide:message-circle-more" style="width: var(--site-header-icon-size) !important; height: var(--site-header-icon-size) !important; font-size: var(--site-header-icon-size) !important;"></iconify-icon>
                     @if ($unreadMessages > 0)
                         <span class="site-status-dot" aria-hidden="true"></span>
                     @endif
@@ -2177,7 +2177,7 @@
                     aria-label="{{ __('site.header.login') }}"
                     style="background: transparent !important; background-color: transparent !important; box-shadow: none !important; border-color: transparent !important;"
                 >
-                    <iconify-icon icon="lucide:circle-user-round" style="font-size: 22px;"></iconify-icon>
+                    <iconify-icon icon="lucide:circle-user-round" style="width: var(--site-header-icon-size) !important; height: var(--site-header-icon-size) !important; font-size: var(--site-header-icon-size) !important;"></iconify-icon>
                 </a>
             @endif
         </div>
