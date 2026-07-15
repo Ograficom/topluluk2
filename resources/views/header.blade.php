@@ -1902,6 +1902,51 @@
         }
     }
 
+    /* Visible brand scaling: enlarge both the logo artwork and the Ografi wordmark. */
+    html body .site-header .site-header-logo-mark:not(#comments *):not(#app *) {
+        width: 42px !important;
+        height: 44px !important;
+        min-width: 42px !important;
+        flex: 0 0 42px !important;
+    }
+
+    html body .site-header .site-header-logo-mark:not(#comments *):not(#app *) .site-header-logo-main-image,
+    html body .site-header .site-header-logo-mark:not(#comments *):not(#app *) .site-header-logo-main-image svg {
+        width: 42px !important;
+        height: 42px !important;
+        max-width: 42px !important;
+        max-height: 42px !important;
+        inset: 1px 0 !important;
+    }
+
+    html body .site-header .site-header-logo-wordmark:not(#comments *):not(#app *),
+    html.dark body .site-header .site-header-logo-wordmark:not(#comments *):not(#app *) {
+        font-size: 24px !important;
+        font-weight: 600 !important;
+    }
+
+    @media (max-width: 640px) {
+        html body .site-header .site-header-logo-mark:not(#comments *):not(#app *) {
+            width: 36px !important;
+            height: 38px !important;
+            min-width: 36px !important;
+            flex-basis: 36px !important;
+        }
+
+        html body .site-header .site-header-logo-mark:not(#comments *):not(#app *) .site-header-logo-main-image,
+        html body .site-header .site-header-logo-mark:not(#comments *):not(#app *) .site-header-logo-main-image svg {
+            width: 36px !important;
+            height: 36px !important;
+            max-width: 36px !important;
+            max-height: 36px !important;
+        }
+
+        html body .site-header .site-header-logo-wordmark:not(#comments *):not(#app *),
+        html.dark body .site-header .site-header-logo-wordmark:not(#comments *):not(#app *) {
+            font-size: 19px !important;
+        }
+    }
+
 </style>
 
 <header class="site-header" data-site-header style="background: rgba(255,255,255,.98) !important; background-color: rgba(255,255,255,.98) !important; color: #0f172a !important; filter: none !important; border-bottom: 1px solid #e5e7eb !important;">
