@@ -4877,9 +4877,10 @@
         .post-card__action-button,
         .action-chip
     ) {
-        width: 42px !important;
-        min-width: 42px !important;
-        height: 42px !important;
+        width: 36px !important;
+        min-width: 36px !important;
+        height: 36px !important;
+        min-height: 36px !important;
         padding-left: 0 !important;
         padding-right: 0 !important;
         border-radius: 50% !important;
@@ -4896,6 +4897,33 @@
         padding-left: 10px !important;
         padding-right: 10px !important;
         border-radius: 999px !important;
+    }
+
+    html body .home-feed-shell article.post-card[data-post-card-shell] :is(
+        .post-title,
+        .post-title__link
+    ) {
+        font-family: Roboto, Arial, sans-serif !important;
+        font-size: 18px !important;
+        font-weight: 700 !important;
+        line-height: 1.42 !important;
+    }
+
+    html body .home-feed-shell article.post-card[data-post-card-shell] :is(
+        .post-summary,
+        .post-summary.is-collapsed,
+        [data-post-card-summary]
+    ) {
+        font-family: Roboto, Arial, sans-serif !important;
+        font-size: 17px !important;
+        font-weight: 400 !important;
+        line-height: 1.48 !important;
+    }
+
+    html body .home-feed-shell article.post-card[data-post-card-shell] .expand-link {
+        font-size: 16px !important;
+        font-weight: 600 !important;
+        line-height: 22px !important;
     }
 
     /* Reference mobile card: dense editorial layout, without a vote row. */
