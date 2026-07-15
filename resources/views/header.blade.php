@@ -1930,8 +1930,8 @@
 
             <a class="site-header-logo" href="{{ route('home') }}" aria-label="{{ config('app.name', 'Ografi') }}">
                 <span class="site-header-logo-mark" aria-hidden="true">
-                    <x-application-logo class="site-header-logo-image site-header-logo-light-image site-header-logo-main-image" style="width: var(--site-header-icon-size) !important; height: var(--site-header-icon-size) !important; font-size: var(--site-header-icon-size) !important;" />
-                    <img class="site-header-logo-dark-image site-header-logo-main-image" style="width: var(--site-header-icon-size) !important; height: var(--site-header-icon-size) !important; font-size: var(--site-header-icon-size) !important;" src="{{ asset('images/ografi-logo.png') }}?v=20260714a" alt="">
+                    <x-application-logo class="site-header-logo-image site-header-logo-light-image site-header-logo-main-image" style="width: var(--site-header-logo-size) !important; height: var(--site-header-logo-size) !important; font-size: var(--site-header-logo-size) !important;" />
+                    <img class="site-header-logo-dark-image site-header-logo-main-image" style="width: var(--site-header-logo-size) !important; height: var(--site-header-logo-size) !important; font-size: var(--site-header-logo-size) !important;" src="{{ asset('images/ografi-logo.png') }}?v=20260714a" alt="">
                 </span>
                 <span class="site-header-logo-wordmark">Ografi</span>
             </a>
@@ -2352,6 +2352,7 @@
 /* Header ikonlarinin tek boyutlandirma noktasi. Yalnizca bu degeri degistirin. */
 html body .site-header {
     --site-header-icon-size: 24px;
+    --site-header-logo-size: 34px;
 }
 
 html body .site-header :is(
