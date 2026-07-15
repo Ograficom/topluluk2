@@ -142,7 +142,7 @@
         }
         .simple-auth-alert ul { margin: 0; padding-left: 18px; }
         @media (max-width: 480px) {
-            .simple-auth-page { padding-top: 24px; }
+            .simple-auth-page { justify-content: flex-start; padding-top: 24px; }
             .simple-auth-brand { margin-bottom: 24px; font-size: 21px; }
             .simple-auth-card { padding: 52px 24px 24px; }
         }
