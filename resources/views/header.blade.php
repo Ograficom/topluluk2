@@ -2171,18 +2171,52 @@
                     </div>
                 </div>
             @else
-                <a
-                    href="{{ route('login') }}"
+                <button
+                    type="button"
                     class="site-icon-btn"
                     aria-label="{{ __('site.header.login') }}"
+                    aria-haspopup="dialog"
+                    aria-controls="site-login-modal"
+                    data-login-modal-open
                     style="background: transparent !important; background-color: transparent !important; box-shadow: none !important; border-color: transparent !important;"
                 >
                     <iconify-icon icon="lucide:circle-user-round" style="font-size: 22px;"></iconify-icon>
-                </a>
+                </button>
             @endif
         </div>
     </div>
 </header>
+
+@guest
+    <dialog id="site-login-modal" class="site-login-modal" aria-labelledby="site-login-modal-title">
+        <button type="button" class="site-login-modal__close" aria-label="Kapat" data-login-modal-close><iconify-icon icon="lucide:x"></iconify-icon></button>
+        <h2 id="site-login-modal-title" class="site-login-modal__brand">alma</h2>
+        <form method="POST" action="{{ route('login') }}" class="site-login-modal__form">
+            @csrf
+            <label class="site-login-modal__label" for="modal-login-email">E-posta</label>
+            <input class="site-login-modal__input" id="modal-login-email" name="email" type="email" autocomplete="email" required>
+            <label class="site-login-modal__label" for="modal-login-password">Şifre</label>
+            <input class="site-login-modal__input" id="modal-login-password" name="password" type="password" autocomplete="current-password" required>
+            <div class="site-login-modal__options">
+                <label class="site-login-modal__remember" for="modal-login-remember"><input id="modal-login-remember" name="remember" type="checkbox" value="1"><span>Beni Hatırla</span></label>
+                <a href="{{ route('password.request') }}">Şifrenizi mi unuttunuz?</a>
+            </div>
+            <button class="site-login-modal__submit" type="submit">Giriş yapmak</button>
+        </form>
+        <p class="site-login-modal__register">Hesabınız yok mu? <a href="{{ route('register') }}">Kayıt olun</a></p>
+    </dialog>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const modal = document.getElementById('site-login-modal');
+            document.querySelector('[data-login-modal-open]')?.addEventListener('click', function () {
+                modal?.showModal();
+                modal?.querySelector('input[type="email"]')?.focus();
+            });
+            modal?.querySelector('[data-login-modal-close]')?.addEventListener('click', function () { modal.close(); });
+            modal?.addEventListener('click', function (event) { if (event.target === modal) modal.close(); });
+        });
+    </script>
+@endguest
 
 <div
     id="mobile-sidebar-drawer"
@@ -2466,6 +2500,58 @@ html body .site-search-dropdown-top .site-search-close :is(iconify-icon, svg) {
     height: 20px !important;
     font-size: 20px !important;
     line-height: 20px !important;
+}
+
+html body dialog.site-login-modal {
+    position: fixed !important;
+    inset: 0 !important;
+    width: min(400px, calc(100vw - 32px)) !important;
+    max-width: 400px !important;
+    max-height: calc(100vh - 32px) !important;
+    margin: auto !important;
+    padding: 58px 24px 26px !important;
+    overflow-y: auto !important;
+    border: 1px solid #d9d9d9 !important;
+    border-radius: 12px !important;
+    background: #fff !important;
+    color: #111 !important;
+    box-shadow: 0 18px 60px rgba(0, 0, 0, .18) !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+}
+html body dialog.site-login-modal::backdrop { background: rgba(24, 24, 27, .38) !important; backdrop-filter: blur(2px) !important; }
+html body .site-login-modal__close {
+    position: absolute !important; top: 14px !important; right: 14px !important;
+    display: inline-flex !important; align-items: center !important; justify-content: center !important;
+    width: 34px !important; height: 34px !important; padding: 0 !important; border: 0 !important;
+    border-radius: 50% !important; background: #f4f4f5 !important; color: #18181b !important; cursor: pointer !important;
+}
+html body .site-login-modal__close iconify-icon { width: 20px !important; height: 20px !important; font-size: 20px !important; }
+html body .site-login-modal__brand {
+    margin: 0 0 38px !important; color: #18181b !important; font-size: 42px !important;
+    font-weight: 800 !important; line-height: 1 !important; letter-spacing: -1.5px !important; text-align: center !important;
+}
+html body .site-login-modal__label { display: block !important; margin: 0 0 7px !important; color: #111 !important; font-size: 14px !important; font-weight: 600 !important; }
+html body .site-login-modal__input {
+    display: block !important; width: 100% !important; height: 36px !important; margin: 0 0 22px !important; padding: 0 11px !important;
+    border: 1px solid #dedede !important; border-radius: 6px !important; background: #fff !important; color: #111 !important;
+    font-size: 14px !important; outline: none !important; box-shadow: 0 1px 2px rgba(0, 0, 0, .06) !important;
+}
+html body .site-login-modal__input:focus { border-color: #10a37f !important; box-shadow: 0 0 0 1px #10a37f !important; }
+html body .site-login-modal__options { display: flex !important; align-items: center !important; justify-content: space-between !important; gap: 14px !important; margin: 0 0 26px !important; }
+html body .site-login-modal__remember { display: inline-flex !important; align-items: center !important; gap: 8px !important; white-space: nowrap !important; }
+html body .site-login-modal__remember input { appearance: auto !important; width: 16px !important; height: 16px !important; margin: 0 !important; accent-color: #10a37f !important; }
+html body .site-login-modal__options,
+html body .site-login-modal__options a,
+html body .site-login-modal__register,
+html body .site-login-modal__register a { color: #71717a !important; font-size: 14px !important; font-weight: 400 !important; text-decoration: none !important; }
+html body .site-login-modal__submit {
+    width: 100% !important; height: 36px !important; padding: 0 12px !important; border: 0 !important; border-radius: 6px !important;
+    background: #10a37f !important; color: #fff !important; font-size: 14px !important; font-weight: 700 !important; cursor: pointer !important;
+}
+html body .site-login-modal__register { margin: 40px 0 0 !important; color: #111 !important; text-align: center !important; }
+@media (max-width: 480px) {
+    html body dialog.site-login-modal { width: calc(100vw - 24px) !important; padding: 52px 20px 24px !important; }
+    html body .site-login-modal__brand { margin-bottom: 30px !important; font-size: 38px !important; }
 }
 
 </style>
