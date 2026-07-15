@@ -1,39 +1,30 @@
 @if(($showBanner ?? false) && isset($policy))
-    <div id="cookie-banner" class="fixed bottom-3 left-1/2 z-[60] w-[calc(100%-1.5rem)] max-w-md -translate-x-1/2 sm:bottom-4 sm:w-[calc(100%-2rem)]">
-        <div class="rounded-2xl px-3 py-2.5 backdrop-blur-2xl backdrop-saturate-150 sm:px-4 sm:py-3">
-            <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-3">
-                <div class="flex items-start gap-2.5 sm:items-center sm:gap-3">
-                    <div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-2xl bg-transparent text-slate-900 sm:h-9 sm:w-9">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-4 w-4 sm:h-5 sm:w-5" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 3a9 9 0 1 0 9 9"/>
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M20.5 7.5a2.7 2.7 0 0 1-2.7-2.7"/>
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 9.2h0.01M12.6 7.6h0.01M15.7 10.2h0.01M10.6 13.4h0.01M14.8 14.8h0.01"/>
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M7.9 18.2a1.8 1.8 0 0 1-.9-2.3 1.8 1.8 0 0 1 1.9-1.1 1.8 1.8 0 0 1 1.6-1.7 1.8 1.8 0 0 1 2.2.9 1.8 1.8 0 0 1 2.4.6 1.8 1.8 0 0 1-.1 2.4"/>
-                        </svg>
-                    </div>
-
-                    <p class="min-w-0 text-[11px] leading-relaxed text-slate-600 sm:text-xs">
+    <div id="cookie-banner" class="cookie-consent-bar">
+        <div class="cookie-consent-bar__surface">
+            <div class="cookie-consent-bar__content">
+                <div class="cookie-consent-bar__message-wrap">
+                    <p class="cookie-consent-bar__message">
                         {{ $policy->banner_message ?? __('site.cookie.default_message') }}
                         @if (Route::has('cookie.policy'))
-                            <a href="{{ route('cookie.policy') }}" class="font-semibold text-slate-700 underline underline-offset-4 hover:text-slate-900">
+                            <a href="{{ route('cookie.policy') }}" class="cookie-consent-bar__link">
                                 {{ __('site.common.privacy_policy') }}
                             </a>
                         @endif
                     </p>
                 </div>
 
-                <div class="flex items-center justify-end gap-2 sm:ml-auto">
+                <div class="cookie-consent-bar__actions">
                     <button type="button"
                             data-consent-action="accept"
-                            class="whitespace-nowrap rounded-full bg-slate-900 px-3.5 py-1.5 text-[11px] font-semibold text-white transition hover:bg-slate-800 active:scale-95 sm:px-4 sm:py-2 sm:text-xs">
+                            class="cookie-consent-bar__accept">
                         {{ __('site.cookie.accept') }}
                     </button>
 
                     <button type="button"
                             data-consent-action="reject"
-                            class="inline-flex h-8 w-8 items-center justify-center rounded-full text-slate-900 transition hover:bg-slate-100 active:scale-95 sm:h-9 sm:w-9"
+                            class="cookie-consent-bar__reject"
                             aria-label="{{ __('site.cookie.close') }}">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-4 w-4 sm:h-5 sm:w-5" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M6 6l12 12M18 6 6 18"/>
                         </svg>
                     </button>
@@ -41,6 +32,96 @@
             </div>
         </div>
     </div>
+
+    <style>
+        .cookie-consent-bar {
+            position: fixed;
+            left: 16px;
+            bottom: 14px;
+            z-index: 10000;
+            width: auto;
+            max-width: min(340px, calc(100vw - 32px));
+            font-family: Arial, Helvetica, sans-serif;
+        }
+        .cookie-consent-bar__surface {
+            padding: 7px 8px 7px 12px;
+            border: 1px solid #e5e7eb;
+            border-radius: 14px;
+            background: rgba(255,255,255,.96);
+            box-shadow: 0 4px 18px rgba(15,23,42,.10);
+            backdrop-filter: blur(10px);
+        }
+        .cookie-consent-bar__content,
+        .cookie-consent-bar__actions {
+            display: flex;
+            align-items: center;
+        }
+        .cookie-consent-bar__content { gap: 10px; }
+        .cookie-consent-bar__message-wrap { min-width: 0; }
+        .cookie-consent-bar__message {
+            margin: 0;
+            color: #64748b;
+            font-size: 11px;
+            font-weight: 400;
+            line-height: 1.25;
+        }
+        .cookie-consent-bar__link { color: #475569; text-decoration: none; }
+        .cookie-consent-bar__actions { flex: 0 0 auto; gap: 3px; }
+        .cookie-consent-bar__accept {
+            min-height: 28px;
+            padding: 0 13px;
+            border: 0;
+            border-radius: 999px;
+            background: #f1f1f1;
+            color: #27272a;
+            font-size: 11px;
+            font-weight: 600;
+            white-space: nowrap;
+            cursor: pointer;
+        }
+        .cookie-consent-bar__reject {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 26px;
+            height: 26px;
+            padding: 0;
+            border: 0;
+            border-radius: 50%;
+            background: transparent;
+            color: #94a3b8;
+            cursor: pointer;
+        }
+        .cookie-consent-bar__reject svg { width: 13px; height: 13px; }
+        @media (max-width: 640px) {
+            .cookie-consent-bar {
+                left: 6px;
+                right: 6px;
+                bottom: 6px;
+                width: auto;
+                max-width: none;
+            }
+            .cookie-consent-bar__surface {
+                padding: 5px 6px 5px 10px;
+                border-radius: 10px;
+                box-shadow: 0 2px 10px rgba(15,23,42,.08);
+            }
+            .cookie-consent-bar__content { gap: 6px; }
+            .cookie-consent-bar__message {
+                overflow: hidden;
+                font-size: 10px;
+                line-height: 1.15;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+            .cookie-consent-bar__accept {
+                min-height: 26px;
+                padding: 0 11px;
+                font-size: 10px;
+            }
+            .cookie-consent-bar__reject { width: 24px; height: 24px; }
+        }
+    </style>
 
     <script>
         (() => {
