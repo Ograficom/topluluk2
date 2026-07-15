@@ -2355,6 +2355,12 @@ html body .site-header {
     --site-header-logo-size: 34px;
 }
 
+@media (max-width: 640px) {
+    html body .site-header {
+        --site-header-logo-size: 38px;
+    }
+}
+
 html body .site-header :is(
     .site-search-trigger,
     button[data-notifications-btn],
