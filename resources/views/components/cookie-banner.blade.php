@@ -19,14 +19,6 @@
                         <span>{{ __('site.cookie.accept') }}</span>
                     </button>
 
-                    <button type="button"
-                            data-consent-action="reject"
-                            class="cookie-consent-bar__reject"
-                            aria-label="{{ __('site.cookie.close') }}">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 6l12 12M18 6 6 18"/>
-                        </svg>
-                    </button>
                 </div>
             </div>
         </div>
@@ -116,20 +108,6 @@
             flex-basis: 13px !important;
             opacity: 1 !important;
         }
-        .cookie-consent-bar__reject {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 26px;
-            height: 26px;
-            padding: 0;
-            border: 0;
-            border-radius: 50%;
-            background: transparent;
-            color: #94a3b8;
-            cursor: pointer;
-        }
-        .cookie-consent-bar__reject svg { width: 13px; height: 13px; }
         @media (max-width: 640px) {
             html body #cookie-banner.cookie-consent-bar {
                 --cookie-mobile-font-size: 12px;
@@ -211,14 +189,6 @@
                 min-width: 12px !important;
                 flex-basis: 12px !important;
             }
-            html body #cookie-banner .cookie-consent-bar__reject {
-                width: 28px !important;
-                min-width: 28px !important;
-                height: 28px !important;
-                min-height: 28px !important;
-                max-height: 28px !important;
-                padding: 0 !important;
-            }
         }
     </style>
 
@@ -260,7 +230,6 @@
                 event.currentTarget.classList.add('is-accepting');
                 sendDecision('accept');
             });
-            banner.querySelector('[data-consent-action="reject"]')?.addEventListener('click', () => sendDecision('reject'));
         })();
     </script>
 @endif
