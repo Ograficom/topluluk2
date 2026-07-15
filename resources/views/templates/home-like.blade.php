@@ -4820,9 +4820,11 @@
     }
 
     html body .home-feed-shell article.post-card[data-post-card-shell] {
-        width: calc(100vw - 2px) !important;
+        width: 100vw !important;
         min-width: 0 !important;
-        max-width: calc(100vw - 2px) !important;
+        max-width: 100vw !important;
+        margin-right: calc(50% - 50vw) !important;
+        margin-left: calc(50% - 50vw) !important;
     }
 
     html body .home-feed-shell article.post-card[data-post-card-shell] :is(
@@ -4859,9 +4861,9 @@
     }
 
     html body .home-feed-shell article.post-card[data-post-card-shell] .action-bar {
-        width: calc(100vw - 2px) !important;
-        min-width: calc(100vw - 2px) !important;
-        max-width: calc(100vw - 2px) !important;
+        width: 100vw !important;
+        min-width: 100vw !important;
+        max-width: 100vw !important;
         padding-left: 0 !important;
         padding-right: 0 !important;
     }

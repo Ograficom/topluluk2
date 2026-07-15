@@ -8245,10 +8245,13 @@ SVG;
             }
 
             html body article.post-card[data-post-card-shell] {
-                width: calc(100vw - 2px) !important;
+                width: 100vw !important;
                 min-width: 0 !important;
-                max-width: calc(100vw - 2px) !important;
-                margin: 0 !important;
+                max-width: 100vw !important;
+                margin-top: 0 !important;
+                margin-right: calc(50% - 50vw) !important;
+                margin-bottom: 0 !important;
+                margin-left: calc(50% - 50vw) !important;
                 padding: 10px 15px 0 !important;
                 border: 1px solid #e5e7eb !important;
                 border-radius: 8px !important;
