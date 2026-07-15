@@ -18,6 +18,12 @@
     $popularPosts = $popularPosts ?? collect();
     $categories = collect($categories ?? []);
     $reactionTypes = $reactionTypes ?? collect();
+    $activeTagSlug = trim((string) ($activeTag ?? request()->query('tag', '')));
+    $activeTagModel = collect($tags ?? [])->first(function ($item) use ($activeTagSlug) {
+        return trim((string) ($item->slug ?? '')) === $activeTagSlug;
+    });
+    $activeTagName = trim((string) ($activeTagModel->name ?? $activeTagSlug));
+    $isTagPage = $activeTagSlug !== '';
 
     $routeCategoryParam = request()->route('category');
     $routeCategorySlug = '';
@@ -112,6 +118,27 @@
         padding: 0 12px;
         box-sizing: border-box;
         text-align: center;
+    }
+
+    .tag-page-identity {
+        width: 100%;
+        margin: 0 0 16px;
+        padding: 16px 24px;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        background: #ffffff;
+        color: #111111;
+        font-size: 20px;
+        font-weight: 600;
+        line-height: 1.35;
+        box-sizing: border-box;
+    }
+
+    html.dark .tag-page-identity,
+    .dark .tag-page-identity {
+        border-color: #27272a;
+        background: #18181b;
+        color: #fafafa;
     }
 
     .ografi-feed-loadmore__button {
@@ -1326,6 +1353,10 @@ html.dark .ografi-feed-page-button--next:active,
             </div>
         </div>
     @else
+        @if($isTagPage)
+            <h1 class="tag-page-identity">#{{ $activeTagName }}</h1>
+        @endif
+
         @include('partials.ads.slot', [
             'slotKey' => 'ads_feed_top',
             'wrapperClass' => 'mb-4',
