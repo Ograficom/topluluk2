@@ -93,6 +93,10 @@
     @endsection
 @endif
 
+@if($isTagPage)
+    @section('hide_feed_header', '1')
+@endif
+
 @section('title', $isCategoryPage && !empty($categoryToShow) && !empty($categoryToShow->name) ? $categoryToShow->name : 'Ografi Ana Sayfa')
 
 @push('head')
@@ -121,17 +125,21 @@
     }
 
     .tag-page-identity {
+        display: flex;
+        align-items: center;
         width: 100%;
+        min-height: 38px;
         margin: 0 0 16px;
-        padding: 16px 24px;
-        border: 1px solid #e5e7eb;
-        border-radius: 12px;
+        padding: 3px 17px;
+        border: 1px solid #d9dde3;
+        border-radius: 18px;
         background: #ffffff;
-        color: #111111;
-        font-size: 20px;
+        color: #050505;
+        font-size: 14px;
         font-weight: 600;
-        line-height: 1.35;
+        line-height: 1;
         box-sizing: border-box;
+        box-shadow: none;
     }
 
     html.dark .tag-page-identity,
@@ -139,6 +147,16 @@
         border-color: #27272a;
         background: #18181b;
         color: #fafafa;
+    }
+
+    @media (max-width: 640px) {
+        .tag-page-identity {
+            min-height: 34px;
+            margin-bottom: 16px;
+            padding: 2px 14px;
+            border-radius: 16px;
+            font-size: 13px;
+        }
     }
 
     .ografi-feed-loadmore__button {
