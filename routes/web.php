@@ -136,6 +136,7 @@ Route::get('/locale/{locale}', function (string $locale, Request $request) {
 Route::redirect('/user/login', '/login', 301);
 Route::redirect('/user/forgot-password', '/forgot-password', 301);
 Route::redirect('/user/reset-password', '/forgot-password', 301);
+Route::get('/cerez-politikasi', [CookiePolicyController::class, 'show'])->name('cookie.policy');
 Route::view('/4040', 'errors.404')->name('errors.preview.4040');
 Route::view('/template/home-like', 'templates.home-like')->name('templates.home-like');
 

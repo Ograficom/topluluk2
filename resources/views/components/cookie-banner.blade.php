@@ -4,12 +4,8 @@
             <div class="cookie-consent-bar__content">
                 <div class="cookie-consent-bar__message-wrap">
                     <p class="cookie-consent-bar__message">
-                        {{ $policy->banner_message ?? __('site.cookie.default_message') }}
-                        @if (Route::has('cookie.policy'))
-                            <a href="{{ route('cookie.policy') }}" class="cookie-consent-bar__link">
-                                {{ __('site.common.privacy_policy') }}
-                            </a>
-                        @endif
+                        <a href="{{ route('cookie.policy') }}" class="cookie-consent-bar__link">Çerezler</a>
+                        kullanıyoruz.
                     </p>
                 </div>
 
@@ -65,7 +61,7 @@
             font-weight: 400;
             line-height: 1.25;
         }
-        .cookie-consent-bar__link { color: #475569; text-decoration: none; }
+        .cookie-consent-bar__link { color: #475569; text-decoration: underline; text-underline-offset: 2px; }
         .cookie-consent-bar__actions { flex: 0 0 auto; gap: 3px; }
         .cookie-consent-bar__accept {
             min-height: 28px;
