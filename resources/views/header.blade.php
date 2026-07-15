@@ -1867,6 +1867,41 @@
         letter-spacing: -0.01em !important;
     }
 
+    /* Final brand and account sizing; outrank the global body typography rule. */
+    html body .site-header .site-header-logo-wordmark:not(#comments *):not(#app *),
+    html.dark body .site-header .site-header-logo-wordmark:not(#comments *):not(#app *) {
+        font-size: 20px !important;
+        font-weight: 600 !important;
+        line-height: 1 !important;
+    }
+
+    html body .site-header :is(
+        button[data-user-menu-btn],
+        a.site-icon-btn[aria-label]
+    ) > iconify-icon:not(#comments *):not(#app *) {
+        width: 30px !important;
+        height: 30px !important;
+        font-size: 30px !important;
+        line-height: 30px !important;
+    }
+
+    @media (max-width: 640px) {
+        html body .site-header .site-header-logo-wordmark:not(#comments *):not(#app *),
+        html.dark body .site-header .site-header-logo-wordmark:not(#comments *):not(#app *) {
+            font-size: 16px !important;
+        }
+
+        html body .site-header :is(
+            button[data-user-menu-btn],
+            a.site-icon-btn[aria-label]
+        ) > iconify-icon:not(#comments *):not(#app *) {
+            width: 26px !important;
+            height: 26px !important;
+            font-size: 26px !important;
+            line-height: 26px !important;
+        }
+    }
+
 </style>
 
 <header class="site-header" data-site-header style="background: rgba(255,255,255,.98) !important; background-color: rgba(255,255,255,.98) !important; color: #0f172a !important; filter: none !important; border-bottom: 1px solid #e5e7eb !important;">
