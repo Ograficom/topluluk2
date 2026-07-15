@@ -4862,6 +4862,8 @@
         width: calc(100vw - 2px) !important;
         min-width: calc(100vw - 2px) !important;
         max-width: calc(100vw - 2px) !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
     }
 
     /* Reference mobile card: dense editorial layout, without a vote row. */
@@ -4907,7 +4909,7 @@
     .home-feed-shell [data-post-card-shell] .post-title__link {
         margin: 0 0 18px !important;
         font-family: Roboto, Arial, sans-serif !important;
-        font-size: 17px !important;
+        font-size: 18px !important;
         font-weight: 700 !important;
         line-height: 1.42 !important;
         letter-spacing: 0 !important;
@@ -4950,7 +4952,7 @@
         -webkit-box-orient: vertical !important;
         -webkit-line-clamp: 6 !important;
         font-family: Roboto, Arial, sans-serif !important;
-        font-size: 16.5px !important;
+        font-size: 17px !important;
         font-weight: 400 !important;
         line-height: 1.48 !important;
         color: #111 !important;
@@ -4959,7 +4961,7 @@
     .home-feed-shell [data-post-card-shell] .expand-link {
         margin: 4px 0 14px !important;
         padding: 0 !important;
-        font-size: 15px !important;
+        font-size: 16px !important;
         font-weight: 600 !important;
         line-height: 20px !important;
         color: #009b55 !important;
