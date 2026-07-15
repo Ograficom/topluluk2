@@ -123,6 +123,7 @@
         html body .simple-auth-page .simple-auth-input:not(#comments *):not(#app *) { height: 36px !important; padding: 0 11px !important; border: 1px solid #dedede !important; border-radius: 6px !important; background: #fff !important; color: #111 !important; font-size: 14px !important; box-shadow: 0 1px 2px rgba(0,0,0,.06) !important; }
         html body .simple-auth-page .simple-auth-input:not(#comments *):not(#app *):focus { border-color: #10a37f !important; box-shadow: 0 0 0 1px #10a37f !important; }
         html body .simple-auth-page .simple-auth-remember:not(#comments *):not(#app *),
+        html body .simple-auth-page .simple-auth-remember span:not(#comments *):not(#app *),
         html body .simple-auth-page .simple-auth-link:not(#comments *):not(#app *),
         html body .simple-auth-page .simple-auth-register:not(#comments *):not(#app *),
         html body .simple-auth-page .simple-auth-register a:not(#comments *):not(#app *) { font-size: 14px !important; font-weight: 400 !important; line-height: 1.3 !important; }
