@@ -8458,7 +8458,7 @@ SVG;
             }
         }
 
-        @media (min-width: 1280px) {
+        @media (min-width: 1440px) {
             html body article.post-card[data-post-card-shell] :is(.post-title, .post-title__link):not(#comments *):not(#app *) {
                 font-family: Roboto, Arial, sans-serif !important;
                 font-size: 26px !important;

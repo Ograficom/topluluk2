@@ -6582,7 +6582,7 @@
 
     <style>
         /* Tablet landscape: use a centered single-column feed, not desktop sidebars. */
-        @media (min-width: 1024px) and (max-width: 1279px) {
+        @media (min-width: 1024px) and (max-width: 1439px) {
             html body.alma-app:not(#comments):not(#app) .main-grid {
                 width: 100% !important;
                 max-width: var(--profile-shell-width, 656px) !important;
