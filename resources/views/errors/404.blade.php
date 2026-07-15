@@ -102,24 +102,33 @@
 
         .actions {
             display: flex;
-            gap: 10px;
-            margin-top: 22px;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 20px;
         }
 
         .btn {
-            width: 100%;
-            height: 43px;
-            border-radius: 12px;
+            width: auto;
+            min-width: 104px;
+            height: 36px;
+            padding: 0 14px;
+            border-radius: 9px;
             border: 1px solid var(--border);
             display: inline-flex;
             align-items: center;
             justify-content: center;
             text-decoration: none;
             font-family: inherit;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 500;
+            line-height: 1;
             cursor: pointer;
-            transition: background .18s ease, border-color .18s ease, color .18s ease;
+            transition:
+                background .18s ease,
+                border-color .18s ease,
+                color .18s ease;
         }
 
         .btn-primary {
@@ -152,6 +161,10 @@
             font-weight: 400;
         }
 
+        .bottom-text a {
+            color: inherit;
+        }
+
         @keyframes openPopup {
             from {
                 opacity: 0;
@@ -179,12 +192,15 @@
                 max-width: 145px;
             }
 
-            .actions {
-                flex-direction: column;
-            }
-
             h1 {
                 font-size: 23px;
+            }
+
+            .btn {
+                min-width: 100px;
+                height: 35px;
+                padding: 0 12px;
+                font-size: 12.5px;
             }
         }
     </style>
@@ -193,23 +209,36 @@
     <main class="page" aria-labelledby="error-title">
         <section class="card">
             <a href="{{ url('/') }}" class="logo" aria-label="Ografi ana sayfa">
-                <img src="{{ asset('images/ografi-logo.png') }}?v=20260714a" alt="Ografi">
+                <img
+                    src="{{ asset('images/ografi-logo.png') }}?v=20260714a"
+                    alt="Ografi"
+                >
             </a>
 
             <h1 id="error-title">Sayfa bulunamadı</h1>
 
             <p>
-                Açmaya çalıştığın sayfa silinmiş, taşınmış veya bağlantı hatalı olabilir.
-                Ana sayfaya dönebilir ya da önceki sayfaya geri gidebilirsin.
+                Üzgünüz, aradığınız sayfa bulunamadı.
             </p>
 
             <div class="actions">
-                <a href="{{ url('/') }}" class="btn btn-primary">Ana sayfa</a>
-                <button type="button" class="btn btn-light" onclick="goBackOrHome()">Geri dön</button>
+                <a href="{{ url('/') }}" class="btn btn-primary">
+                    Ana sayfa
+                </a>
+
+                <button
+                    type="button"
+                    class="btn btn-light"
+                    onclick="goBackOrHome()"
+                >
+                    Geri dön
+                </button>
             </div>
 
             <div class="bottom-text">
-                Bağlantının doğru olduğundan emin ol. Sorun devam ederse daha sonra tekrar deneyebilirsin.
+                Destek için
+                <a href="{{ url('/contact') }}">iletişim</a>
+                sayfasını ziyaret edebilirsin.
             </div>
         </section>
     </main>
@@ -218,9 +247,10 @@
         function goBackOrHome() {
             if (window.history.length > 1) {
                 window.history.back();
-            } else {
-                window.location.href = "{{ url('/') }}";
+                return;
             }
+
+            window.location.href = @json(url('/'));
         }
     </script>
 </body>

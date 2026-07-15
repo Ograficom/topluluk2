@@ -13,7 +13,10 @@
                     <button type="button"
                             data-consent-action="accept"
                             class="cookie-consent-bar__accept">
-                        {{ __('site.cookie.accept') }}
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="m5 12.5 4.2 4.2L19 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        <span>{{ __('site.cookie.accept') }}</span>
                     </button>
 
                     <button type="button"
@@ -61,9 +64,13 @@
             font-weight: 400;
             line-height: 1.25;
         }
-        .cookie-consent-bar__link { color: #475569; text-decoration: underline; text-underline-offset: 2px; }
+        .cookie-consent-bar__link { color: #2563eb; text-decoration: underline; text-underline-offset: 2px; }
         .cookie-consent-bar__actions { flex: 0 0 auto; gap: 3px; }
         .cookie-consent-bar__accept {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
             min-height: 28px;
             padding: 0 13px;
             border: 0;
@@ -74,6 +81,17 @@
             font-weight: 600;
             white-space: nowrap;
             cursor: pointer;
+        }
+        .cookie-consent-bar__accept svg {
+            width: 13px;
+            height: 13px;
+            flex: 0 0 13px;
+        }
+        @media (hover: hover) {
+            .cookie-consent-bar__accept:hover {
+                background: #2563eb;
+                color: #ffffff;
+            }
         }
         .cookie-consent-bar__reject {
             display: inline-flex;
@@ -145,6 +163,11 @@
                 border-radius: 999px !important;
                 font-size: 10px !important;
                 line-height: 26px !important;
+            }
+            html body #cookie-banner .cookie-consent-bar__accept svg {
+                width: 12px !important;
+                height: 12px !important;
+                flex-basis: 12px !important;
             }
             html body #cookie-banner .cookie-consent-bar__reject {
                 width: 24px !important;
