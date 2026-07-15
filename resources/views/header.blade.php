@@ -1867,195 +1867,23 @@
         letter-spacing: -0.01em !important;
     }
 
-    /* Final brand and account sizing; outrank the global body typography rule. */
-    html body .site-header .site-header-logo-wordmark:not(#comments *):not(#app *),
-    html.dark body .site-header .site-header-logo-wordmark:not(#comments *):not(#app *) {
-        font-size: 20px !important;
-        font-weight: 600 !important;
-        line-height: 1 !important;
+    /* Visual-only enlargement: no width, height, gap, padding or position changes. */
+    html body .site-header .site-header-logo-main-image {
+        transform: scale(1.18) !important;
+        transform-origin: center !important;
+    }
+
+    html body .site-header .site-header-logo-wordmark:not(#comments *):not(#app *) {
+        transform: scale(1.15) !important;
+        transform-origin: left center !important;
     }
 
     html body .site-header :is(
         button[data-user-menu-btn],
         a.site-icon-btn[aria-label]
-    ) > iconify-icon:not(#comments *):not(#app *) {
-        width: 30px !important;
-        height: 30px !important;
-        font-size: 30px !important;
-        line-height: 30px !important;
-    }
-
-    @media (max-width: 640px) {
-        html body .site-header .site-header-logo-wordmark:not(#comments *):not(#app *),
-        html.dark body .site-header .site-header-logo-wordmark:not(#comments *):not(#app *) {
-            font-size: 16px !important;
-        }
-
-        html body .site-header :is(
-            button[data-user-menu-btn],
-            a.site-icon-btn[aria-label]
-        ) > iconify-icon:not(#comments *):not(#app *) {
-            width: 26px !important;
-            height: 26px !important;
-            font-size: 26px !important;
-            line-height: 26px !important;
-        }
-    }
-
-    /* Visible brand scaling: enlarge both the logo artwork and the Ografi wordmark. */
-    html body .site-header .site-header-logo-mark:not(#comments *):not(#app *) {
-        width: 34px !important;
-        height: 36px !important;
-        min-width: 34px !important;
-        flex: 0 0 34px !important;
-    }
-
-    html body .site-header .site-header-logo-mark:not(#comments *):not(#app *) .site-header-logo-main-image,
-    html body .site-header .site-header-logo-mark:not(#comments *):not(#app *) .site-header-logo-main-image svg {
-        width: 34px !important;
-        height: 34px !important;
-        max-width: 34px !important;
-        max-height: 34px !important;
-        inset: 1px 0 !important;
-    }
-
-    html body .site-header .site-header-logo-wordmark:not(#comments *):not(#app *),
-    html.dark body .site-header .site-header-logo-wordmark:not(#comments *):not(#app *) {
-        font-size: 19px !important;
-        font-weight: 600 !important;
-    }
-
-    @media (max-width: 640px) {
-        html body .site-header .site-header-logo-mark:not(#comments *):not(#app *) {
-            width: 30px !important;
-            height: 32px !important;
-            min-width: 30px !important;
-            flex-basis: 30px !important;
-        }
-
-        html body .site-header .site-header-logo-mark:not(#comments *):not(#app *) .site-header-logo-main-image,
-        html body .site-header .site-header-logo-mark:not(#comments *):not(#app *) .site-header-logo-main-image svg {
-            width: 30px !important;
-            height: 30px !important;
-            max-width: 30px !important;
-            max-height: 30px !important;
-        }
-
-        html body .site-header .site-header-logo-wordmark:not(#comments *):not(#app *),
-        html.dark body .site-header .site-header-logo-wordmark:not(#comments *):not(#app *) {
-            font-size: 16px !important;
-        }
-    }
-
-    html body .site-header {
-        width: 100vw !important;
-        max-width: 100vw !important;
-        overflow-x: clip !important;
-    }
-
-    /* The PNG contains transparent padding; scale the artwork itself, not only its box. */
-    html body .site-header .site-header-logo-mark:not(#comments *):not(#app *) {
-        width: 38px !important;
-        height: 40px !important;
-        min-width: 38px !important;
-        flex: 0 0 38px !important;
-        overflow: hidden !important;
-    }
-
-    html body .site-header .site-header-logo-mark:not(#comments *):not(#app *) .site-header-logo-main-image {
-        width: 38px !important;
-        height: 38px !important;
-        max-width: 38px !important;
-        max-height: 38px !important;
-        inset: 1px 0 !important;
-        transform: scale(1.32) !important;
+    ) > iconify-icon {
+        transform: scale(1.18) !important;
         transform-origin: center !important;
-    }
-
-    html body .site-header .site-header-logo-wordmark:not(#comments *):not(#app *),
-    html.dark body .site-header .site-header-logo-wordmark:not(#comments *):not(#app *) {
-        font-size: 22px !important;
-        font-weight: 600 !important;
-    }
-
-    @media (max-width: 640px) {
-        html body .site-header .site-header-logo-mark:not(#comments *):not(#app *) {
-            width: 34px !important;
-            height: 36px !important;
-            min-width: 34px !important;
-            flex-basis: 34px !important;
-        }
-
-        html body .site-header .site-header-logo-mark:not(#comments *):not(#app *) .site-header-logo-main-image {
-            width: 34px !important;
-            height: 34px !important;
-            max-width: 34px !important;
-            max-height: 34px !important;
-            transform: scale(1.32) !important;
-        }
-
-        html body .site-header .site-header-logo-wordmark:not(#comments *):not(#app *),
-        html.dark body .site-header .site-header-logo-wordmark:not(#comments *):not(#app *) {
-            font-size: 20px !important;
-        }
-    }
-
-    /* Preserve the original header geometry; only scale the requested visuals. */
-    html body .site-header {
-        width: 100% !important;
-        max-width: none !important;
-        overflow-x: visible !important;
-    }
-
-    html body .site-header .site-header-logo {
-        gap: 2px !important;
-        column-gap: 2px !important;
-    }
-
-    html body .site-header .site-header-logo-mark:not(#comments *):not(#app *) {
-        width: 32px !important;
-        height: 36px !important;
-        min-width: 32px !important;
-        flex: 0 0 32px !important;
-        overflow: visible !important;
-    }
-
-    html body .site-header .site-header-logo-mark:not(#comments *):not(#app *) .site-header-logo-main-image {
-        width: 32px !important;
-        height: 32px !important;
-        max-width: 32px !important;
-        max-height: 32px !important;
-        inset: 2px 0 !important;
-        transform: scale(1.22) !important;
-        transform-origin: center !important;
-    }
-
-    html body .site-header .site-header-logo-wordmark:not(#comments *):not(#app *),
-    html.dark body .site-header .site-header-logo-wordmark:not(#comments *):not(#app *) {
-        font-size: 20px !important;
-        font-weight: 600 !important;
-    }
-
-    @media (max-width: 640px) {
-        html body .site-header .site-header-logo-mark:not(#comments *):not(#app *) {
-            width: 32px !important;
-            height: 36px !important;
-            min-width: 32px !important;
-            flex: 0 0 32px !important;
-        }
-
-        html body .site-header .site-header-logo-mark:not(#comments *):not(#app *) .site-header-logo-main-image {
-            width: 32px !important;
-            height: 32px !important;
-            max-width: 32px !important;
-            max-height: 32px !important;
-            transform: scale(1.22) !important;
-        }
-
-        html body .site-header .site-header-logo-wordmark:not(#comments *):not(#app *),
-        html.dark body .site-header .site-header-logo-wordmark:not(#comments *):not(#app *) {
-            font-size: 18px !important;
-        }
     }
 
 </style>
