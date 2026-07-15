@@ -2426,6 +2426,29 @@ html body .site-header button[data-user-menu-btn] > :is(img, .site-avatar-fallba
     transform: none !important;
 }
 
+/* Logo PNG'sindeki seffaf kenarlari telafi et; masaustu ve mobilde gercek logoyu buyut. */
+html body .site-header .site-header-logo-mark {
+    flex: 0 0 var(--site-header-logo-size) !important;
+    width: var(--site-header-logo-size) !important;
+    height: var(--site-header-logo-size) !important;
+    min-width: var(--site-header-logo-size) !important;
+    max-width: var(--site-header-logo-size) !important;
+    min-height: var(--site-header-logo-size) !important;
+    max-height: var(--site-header-logo-size) !important;
+    overflow: visible !important;
+}
+
+html body .site-header .site-header-logo-mark .site-header-logo-main-image {
+    width: var(--site-header-logo-size) !important;
+    height: var(--site-header-logo-size) !important;
+    min-width: var(--site-header-logo-size) !important;
+    max-width: var(--site-header-logo-size) !important;
+    min-height: var(--site-header-logo-size) !important;
+    max-height: var(--site-header-logo-size) !important;
+    transform: scale(1.35) !important;
+    transform-origin: center !important;
+}
+
 html body .site-search-dropdown-top {
     gap: 10px !important;
     align-items: center !important;
