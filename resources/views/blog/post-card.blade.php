@@ -8473,9 +8473,9 @@ SVG;
 
                     card.querySelectorAll('.post-title, .post-title__link').forEach(function (element) {
                         force(element, {
-                            'font-size': '20px',
+                            'font-size': '18px',
                             'font-weight': '700',
-                            'line-height': '1.32',
+                            'line-height': '1.42',
                             'white-space': 'normal',
                             'overflow-wrap': 'anywhere'
                         });
@@ -8484,8 +8484,9 @@ SVG;
                     card.querySelectorAll('.post-summary, [data-post-card-summary]').forEach(function (element) {
                         force(element, {
                             display: '-webkit-box',
-                            'font-size': '16px',
-                            'line-height': '1.5',
+                            'font-size': '17px',
+                            'font-weight': '400',
+                            'line-height': '1.48',
                             overflow: 'hidden',
                             '-webkit-box-orient': 'vertical',
                             '-webkit-line-clamp': '6',
@@ -8502,7 +8503,7 @@ SVG;
                     });
 
                     card.querySelectorAll('.expand-link, .post-card__tag').forEach(function (element) {
-                        force(element, { 'font-size': '15px', 'line-height': '20px' });
+                        force(element, { 'font-size': '16px', 'line-height': '22px', 'font-weight': '600' });
                     });
 
                     card.querySelectorAll('.post-card__media-frame, .post-card__media-image').forEach(function (element) {
@@ -8517,14 +8518,16 @@ SVG;
                         height: '48px',
                         'min-height': '48px',
                         margin: '0 -15px',
-                        padding: '0 15px'
+                        padding: '0'
                     });
 
                     card.querySelectorAll('.post-card__inline-icon, .post-card__inline-icon svg, .post-card__bookmark-icon, .post-card__share-icon').forEach(function (element) {
-                        force(element, { width: '22px', height: '22px' });
+                        force(element, { width: '24px', height: '24px' });
                     });
                 });
             };
+
+            applyMobileReferenceCardStyles();
 
             const forceFinishPreload = function (card) {
                 if (!card) {
