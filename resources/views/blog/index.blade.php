@@ -151,10 +151,15 @@
 
     @media (max-width: 640px) {
         .tag-page-identity {
+            width: 100vw;
             min-height: 34px;
+            margin-right: calc(50% - 50vw);
             margin-bottom: 16px;
+            margin-left: calc(50% - 50vw);
             padding: 2px 14px;
-            border-radius: 16px;
+            border-right: 0;
+            border-left: 0;
+            border-radius: 0;
             font-size: 13px;
         }
     }
@@ -361,9 +366,12 @@
             box-sizing: border-box !important;
         }
 
-        body [data-post-card-shell],
-        body .post-card,
-        body article[data-post-card-shell] {
+        body.route-category [data-post-card-shell],
+        body.route-category .post-card,
+        body.route-category article[data-post-card-shell],
+        body:has(.category-reference-card) [data-post-card-shell],
+        body:has(.category-reference-card) .post-card,
+        body:has(.category-reference-card) article[data-post-card-shell] {
             width: 100% !important;
             max-width: 100% !important;
             min-width: 0 !important;
@@ -1442,7 +1450,7 @@ html.dark .ografi-feed-page-button--next:active,
                 'authorAvatar' => optional($post->author)->profile_photo_url ?? null,
                 'reactions' => $reactionPills,
                 'reactionTypes' => $reactionTypesAll,
-                'isHero' => $loop->first,
+                'isHero' => $isTagPage ? false : $loop->first,
             ])
 
             @include('partials.ads.feed-breaks', [
