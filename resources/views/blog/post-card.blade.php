@@ -8225,10 +8225,20 @@ SVG;
         @media (max-width: 640px) {
             html,
             body {
+                width: 100% !important;
                 max-width: 100vw !important;
                 overflow-x: clip !important;
                 overflow-y: visible !important;
+                scrollbar-width: none !important;
+                -ms-overflow-style: none !important;
                 touch-action: pan-y pinch-zoom !important;
+            }
+
+            html::-webkit-scrollbar,
+            body::-webkit-scrollbar {
+                width: 0 !important;
+                height: 0 !important;
+                display: none !important;
             }
 
             html body .home-feed-shell,
