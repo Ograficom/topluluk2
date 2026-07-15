@@ -36,4 +36,13 @@ class EnsureImageAltTextTest extends TestCase
 
         $this->assertStringNotContainsString('alt=', (string) $response->getContent());
     }
+
+    public function test_it_processes_laravel_html_before_content_type_is_prepared(): void
+    {
+        $response = (new EnsureImageAltText())->handle(Request::create('/haber'), function () {
+            return new Response('<html><head><title>Ekonomi Haberi</title></head><body><img src="/news.jpg" alt=""></body></html>');
+        });
+
+        $this->assertStringContainsString('alt="news görseli"', (string) $response->getContent());
+    }
 }

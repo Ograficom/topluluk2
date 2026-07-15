@@ -4,7 +4,9 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class EnsureImageAltText
 {
@@ -13,7 +15,11 @@ class EnsureImageAltText
         $response = $next($request);
         $contentType = strtolower((string) $response->headers->get('Content-Type'));
 
-        if (!str_contains($contentType, 'text/html') || method_exists($response, 'getCallback')) {
+        if ($response instanceof StreamedResponse || $response instanceof BinaryFileResponse) {
+            return $response;
+        }
+
+        if ($contentType !== '' && !str_contains($contentType, 'text/html')) {
             return $response;
         }
 
