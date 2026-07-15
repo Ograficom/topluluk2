@@ -4867,7 +4867,7 @@
     }
 
     html body .home-feed-shell article.post-card[data-post-card-shell] .action-left {
-        gap: clamp(2px, 1.5vw, 6px) !important;
+        gap: clamp(0px, .75vw, 3px) !important;
     }
 
     html body .home-feed-shell article.post-card[data-post-card-shell] .action-left :is(
@@ -4876,9 +4876,9 @@
         .post-card__action-button,
         .action-chip
     ) {
-        min-width: 44px !important;
-        padding-left: 10px !important;
-        padding-right: 10px !important;
+        min-width: 42px !important;
+        padding-left: 9px !important;
+        padding-right: 9px !important;
     }
 
     /* Reference mobile card: dense editorial layout, without a vote row. */
