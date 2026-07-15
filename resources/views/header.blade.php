@@ -2359,12 +2359,25 @@ html body .site-header :is(
     button[data-notifications-btn],
     :is(a, button).site-icon-btn
 ) {
+    position: relative !important;
     display: inline-flex !important;
     align-items: center !important;
     justify-content: center !important;
     align-self: center !important;
     line-height: 0 !important;
     vertical-align: middle !important;
+}
+
+html body .site-header :is(
+    .site-search-trigger,
+    button[data-notifications-btn],
+    :is(a, button).site-icon-btn[aria-label]
+) > iconify-icon {
+    position: absolute !important;
+    top: 50% !important;
+    left: 50% !important;
+    margin: 0 !important;
+    transform: translate(-50%, -50%) !important;
 }
 
 html body .site-header .site-header-logo-mark,
@@ -2384,11 +2397,15 @@ html body .site-header button[data-user-menu-btn] > :is(img, .site-avatar-fallba
     font-size: var(--site-header-icon-size) !important;
     line-height: var(--site-header-icon-size) !important;
     vertical-align: middle !important;
-    transform: none !important;
 }
 
 html body .site-header .site-header-logo-mark {
     flex: 0 0 var(--site-header-icon-size) !important;
+}
+
+html body .site-header .site-header-logo-mark .site-header-logo-main-image,
+html body .site-header button[data-user-menu-btn] > :is(img, .site-avatar-fallback) {
+    transform: none !important;
 }
 
 html body .site-search-dropdown-top {
