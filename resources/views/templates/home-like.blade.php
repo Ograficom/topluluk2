@@ -4796,19 +4796,19 @@
     }
 
     .home-feed-shell [data-post-card-shell] .post-card__inline-icon {
-        width: 22px !important;
-        height: 22px !important;
+        width: 24px !important;
+        height: 24px !important;
     }
 
     .home-feed-shell [data-post-card-shell] .post-card__comment-icon,
     .home-feed-shell [data-post-card-shell] .post-card__bookmark-icon {
-        width: 21px !important;
-        height: 21px !important;
+        width: 23px !important;
+        height: 23px !important;
     }
 
     .home-feed-shell [data-post-card-shell] .post-card__view-icon {
-        width: 18px !important;
-        height: 18px !important;
+        width: 20px !important;
+        height: 20px !important;
     }
 
     html body .home-feed-shell,
@@ -4907,9 +4907,9 @@
     .home-feed-shell [data-post-card-shell] .post-title__link {
         margin: 0 0 18px !important;
         font-family: Roboto, Arial, sans-serif !important;
-        font-size: 16px !important;
+        font-size: 17px !important;
         font-weight: 700 !important;
-        line-height: 1.45 !important;
+        line-height: 1.42 !important;
         letter-spacing: 0 !important;
         color: #050505 !important;
     }
@@ -4950,16 +4950,16 @@
         -webkit-box-orient: vertical !important;
         -webkit-line-clamp: 6 !important;
         font-family: Roboto, Arial, sans-serif !important;
-        font-size: 16px !important;
+        font-size: 16.5px !important;
         font-weight: 400 !important;
-        line-height: 1.45 !important;
+        line-height: 1.48 !important;
         color: #111 !important;
     }
 
     .home-feed-shell [data-post-card-shell] .expand-link {
         margin: 4px 0 14px !important;
         padding: 0 !important;
-        font-size: 14px !important;
+        font-size: 15px !important;
         font-weight: 600 !important;
         line-height: 20px !important;
         color: #009b55 !important;
@@ -4985,7 +4985,7 @@
     .home-feed-shell [data-post-card-shell] .action-bar {
         min-height: 48px !important;
         margin: 0 -15px !important;
-        padding: 0 15px !important;
+        padding: 0 8px !important;
         border-top: 1px solid #e5e7eb !important;
     }
 }
