@@ -6579,6 +6579,38 @@
     </script>
     @include('partials.mention-assets')
     @stack('scripts')
+
+    <style>
+        /* Tablet landscape: use a centered single-column feed, not desktop sidebars. */
+        @media (min-width: 1024px) and (max-width: 1279px) {
+            body.alma-app .main-grid {
+                width: 100% !important;
+                max-width: var(--profile-shell-width, 656px) !important;
+                grid-template-columns: minmax(0, 1fr) !important;
+                column-gap: 0 !important;
+                margin-left: auto !important;
+                margin-right: auto !important;
+                padding-left: 0 !important;
+                padding-right: 0 !important;
+            }
+
+            body.alma-app .layout-side--left,
+            body.alma-app .layout-side--right {
+                display: none !important;
+            }
+
+            body.alma-app .layout-main {
+                grid-column: 1 !important;
+                width: 100% !important;
+                max-width: var(--profile-shell-width, 656px) !important;
+                min-width: 0 !important;
+                margin-left: auto !important;
+                margin-right: auto !important;
+                padding-left: 0 !important;
+                padding-right: 0 !important;
+            }
+        }
+    </style>
 </body>
 </html>
 
