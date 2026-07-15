@@ -2434,6 +2434,14 @@ html body .site-search-dropdown-top .site-search-close {
     box-shadow: none !important;
 }
 
+html body .site-search-dropdown-top .site-search-close:is(:hover, :focus, :focus-visible, :active) {
+    border: 0 !important;
+    background: #f3f6fc !important;
+    background-color: #f3f6fc !important;
+    color: #2563eb !important;
+    box-shadow: none !important;
+}
+
 html body .site-search-dropdown-top .site-search-close :is(iconify-icon, svg) {
     width: 20px !important;
     height: 20px !important;
