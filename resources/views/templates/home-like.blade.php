@@ -4866,6 +4866,21 @@
         padding-right: 0 !important;
     }
 
+    html body .home-feed-shell article.post-card[data-post-card-shell] .action-left {
+        gap: clamp(2px, 1.5vw, 6px) !important;
+    }
+
+    html body .home-feed-shell article.post-card[data-post-card-shell] .action-left :is(
+        .action-btn,
+        .post-card__action-link,
+        .post-card__action-button,
+        .action-chip
+    ) {
+        min-width: 44px !important;
+        padding-left: 10px !important;
+        padding-right: 10px !important;
+    }
+
     /* Reference mobile card: dense editorial layout, without a vote row. */
     .home-feed-shell [data-post-card-shell] {
         padding: 10px 15px 0 !important;
