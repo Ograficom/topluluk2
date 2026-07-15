@@ -109,6 +109,7 @@
         .cookie-consent-bar__reject svg { width: 13px; height: 13px; }
         @media (max-width: 640px) {
             html body #cookie-banner.cookie-consent-bar {
+                --cookie-mobile-font-size: 11px;
                 left: 50% !important;
                 right: auto !important;
                 bottom: max(6px, env(safe-area-inset-bottom, 0px)) !important;
@@ -144,7 +145,7 @@
                 display: block !important;
                 overflow: hidden !important;
                 margin: 0 !important;
-                font-size: 10px !important;
+                font-size: var(--cookie-mobile-font-size) !important;
                 line-height: 30px !important;
                 text-overflow: ellipsis !important;
                 white-space: nowrap !important;
@@ -161,7 +162,7 @@
                 max-height: 26px !important;
                 padding: 0 10px !important;
                 border-radius: 999px !important;
-                font-size: 10px !important;
+                font-size: var(--cookie-mobile-font-size) !important;
                 line-height: 26px !important;
             }
             html body #cookie-banner .cookie-consent-bar__accept svg {
