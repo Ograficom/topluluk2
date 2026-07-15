@@ -19,6 +19,9 @@ use Laravel\Jetstream\HasTeams;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use App\Services\BadgeAwardSyncService;
+use App\Notifications\EmailVerificationCodeNotification;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Support\Facades\Hash;
 
 class User extends Authenticatable implements FilamentUser, MustVerifyEmail
 {
@@ -128,6 +131,29 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
             'badge_points' => 'integer',
             'profile_completed_rewarded_at' => 'datetime',
         ];
+    }
+
+    public function emailVerificationCode(): HasOne
+    {
+        return $this->hasOne(EmailVerificationCode::class);
+    }
+
+    public function sendEmailVerificationNotification(): void
+    {
+        if ($this->hasVerifiedEmail()) {
+            return;
+        }
+
+        $code = (string) random_int(100000, 999999);
+
+        $this->emailVerificationCode()->updateOrCreate([], [
+            'code_hash' => Hash::make($code),
+            'attempts' => 0,
+            'expires_at' => now()->addMinutes(10),
+            'sent_at' => now(),
+        ]);
+
+        $this->notify(new EmailVerificationCodeNotification($code));
     }
 
     public function earnedBadges()

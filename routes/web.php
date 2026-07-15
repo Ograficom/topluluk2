@@ -35,12 +35,17 @@ use Illuminate\Http\Middleware\ValidatePostSize;
 use Illuminate\Validation\Rule;
 use App\Http\Controllers\AiController;
 use App\Http\Controllers\VerifyEmailController;
+use App\Http\Controllers\EmailVerificationCodeController;
 
 // E-posta istemcisindeki bağlantı, kullanıcının web oturumu olmasa da imzalı URL
 // ve e-posta hash'i ile güvenle doğrulanabilmelidir.
 Route::get('/email/verify/{id}/{hash}', VerifyEmailController::class)
     ->middleware(['signed', 'throttle:6,1'])
     ->name('verification.verify');
+
+Route::post('/email/verify-code', EmailVerificationCodeController::class)
+    ->middleware(['auth', 'throttle:10,1'])
+    ->name('verification.code.verify');
 
 Route::middleware(RedirectIfInstalled::class)->prefix('install')->name('install.')->group(function () {
     Route::get('/', [InstallController::class, 'requirements'])->name('requirements');
