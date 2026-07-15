@@ -2349,19 +2349,29 @@
 @endonce
 
 <style>
-/* Final request: only header icon scale and reference search appearance. */
-html body .site-header :is(.site-search-trigger, button[data-notifications-btn], a.site-icon-btn[aria-label="Mesajlar"]) > iconify-icon:not(#comments *):not(#app *) {
-    width: 24px !important;
-    height: 24px !important;
-    font-size: 24px !important;
-    line-height: 24px !important;
+/* Header ikonlarinin tek boyutlandirma noktasi. Yalnizca bu degeri degistirin. */
+html body .site-header {
+    --site-header-icon-size: 26px;
 }
 
-html body .site-header :is(button[data-user-menu-btn], a.site-icon-btn[aria-label]) > iconify-icon:not(#comments *):not(#app *) {
-    width: 26px !important;
-    height: 26px !important;
-    font-size: 26px !important;
-    line-height: 26px !important;
+html body .site-header .site-header-logo-mark,
+html body .site-header .site-header-logo-mark .site-header-logo-main-image,
+html body .site-header .mobile-sidebar-trigger > svg,
+html body .site-header :is(.site-search-trigger, button[data-notifications-btn], a.site-icon-btn[aria-label]) > iconify-icon,
+html body .site-header button[data-user-menu-btn] > :is(img, .site-avatar-fallback) {
+    width: var(--site-header-icon-size) !important;
+    height: var(--site-header-icon-size) !important;
+    min-width: var(--site-header-icon-size) !important;
+    max-width: var(--site-header-icon-size) !important;
+    min-height: var(--site-header-icon-size) !important;
+    max-height: var(--site-header-icon-size) !important;
+    font-size: var(--site-header-icon-size) !important;
+    line-height: var(--site-header-icon-size) !important;
+    transform: none !important;
+}
+
+html body .site-header .site-header-logo-mark {
+    flex: 0 0 var(--site-header-icon-size) !important;
 }
 
 html body .site-search-dropdown-top {
@@ -2458,19 +2468,4 @@ html body .site-search-dropdown-top .site-search-close :is(iconify-icon, svg) {
     line-height: 20px !important;
 }
 
-@media (max-width: 1023px) {
-    html body .site-header :is(.site-search-trigger, button[data-notifications-btn], a.site-icon-btn[aria-label="Mesajlar"]) > iconify-icon:not(#comments *):not(#app *) {
-        width: 22px !important;
-        height: 22px !important;
-        font-size: 22px !important;
-        line-height: 22px !important;
-    }
-
-    html body .site-header :is(button[data-user-menu-btn], a.site-icon-btn[aria-label]) > iconify-icon:not(#comments *):not(#app *) {
-        width: 24px !important;
-        height: 24px !important;
-        font-size: 24px !important;
-        line-height: 24px !important;
-    }
-}
 </style>
