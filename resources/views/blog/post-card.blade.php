@@ -1464,7 +1464,7 @@ SVG;
         </div>
 
         @if($viewer)
-            <div class="og-action-wrap relative z-[999999] inline-flex overflow-visible" data-og-action-wrap>
+            <div class="og-action-wrap relative z-[2] inline-flex overflow-visible" data-og-action-wrap>
                 <button
                     type="button"
                     class="flex h-[30px] w-[30px] items-center justify-center gap-[3px] rounded-full border border-gray-200 bg-gray-100 p-0 transition hover:border-gray-300 hover:bg-gray-200"
@@ -1479,7 +1479,7 @@ SVG;
                 </button>
 
                 <div
-                    class="og-action-menu shadcn-menu fixed z-[999999999] hidden w-[205px] rounded-2xl border border-gray-200 bg-white p-[6px] shadow-[0_2px_7px_rgba(0,0,0,0.025)] max-sm:w-[198px]"
+                    class="og-action-menu shadcn-menu fixed z-[100] hidden w-[205px] rounded-2xl border border-gray-200 bg-white p-[6px] shadow-[0_2px_7px_rgba(0,0,0,0.025)] max-sm:w-[198px]"
                     data-og-action-menu
                     style="width: 192px !important; min-width: 192px !important; max-width: min(192px, calc(100vw - 24px)) !important; box-sizing: border-box !important; padding: 8px !important; overflow: hidden !important; border: 1px solid #e4e4e7 !important; border-radius: 16px !important; background: #ffffff !important; color: #18181b !important; box-shadow: 0 1px 2px rgba(0,0,0,.05), 0 8px 24px rgba(15,23,42,.08) !important; filter: none !important;"
                 >
@@ -8478,6 +8478,28 @@ SVG;
                 font-weight: 600 !important;
                 line-height: 26px !important;
             }
+        }
+
+        /* Keep the three-dot trigger inside its own card's stacking layer. */
+        html body article.post-card[data-post-card-shell] {
+            isolation: isolate !important;
+            z-index: 0 !important;
+        }
+
+        html body article.post-card[data-post-card-shell] [data-og-action-wrap] {
+            z-index: 2 !important;
+        }
+
+        html body article.post-card[data-post-card-shell] [data-og-action-menu] {
+            z-index: 100 !important;
+        }
+
+        html body article.post-card[data-post-card-shell]:has([data-og-action-trigger][aria-expanded="true"]) {
+            z-index: 50 !important;
+        }
+
+        html body article.post-card[data-post-card-shell] [data-og-action-wrap]:has([data-og-action-trigger][aria-expanded="true"]) {
+            z-index: 100 !important;
         }
 
 </style>
