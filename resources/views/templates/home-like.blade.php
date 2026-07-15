@@ -4958,9 +4958,10 @@
     .home-feed-shell [data-post-card-shell] .expand-link {
         margin: 4px 0 14px !important;
         padding: 0 !important;
-        font-size: 14px !important;
+        font-size: 17px !important;
         font-weight: 600 !important;
-        color: #009a62 !important;
+        line-height: 22px !important;
+        color: #2563eb !important;
     }
 
     .home-feed-shell [data-post-card-shell] .post-card__tags {
@@ -4969,9 +4970,9 @@
     }
 
     .home-feed-shell [data-post-card-shell] .post-card__tag {
-        font-size: 12px !important;
-        line-height: 18px !important;
-        color: #009a62 !important;
+        font-size: 14px !important;
+        line-height: 20px !important;
+        color: #2563eb !important;
     }
 
     .home-feed-shell [data-post-card-shell] .reactions-row {

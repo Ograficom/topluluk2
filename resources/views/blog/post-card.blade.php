@@ -1881,7 +1881,7 @@ SVG;
         >
             <span data-post-card-expand-label>{{ $expandCollapsedLabel }}</span>
             <span class="post-card__expand-icon" aria-hidden="true">
-                <iconify-icon icon="lucide:chevron-down" style="font-size: 16px; color: currentColor"></iconify-icon>
+                <iconify-icon icon="lucide:chevron-down" style="font-size: 20px; color: currentColor"></iconify-icon>
             </span>
         </button>
     @endif
@@ -8349,10 +8349,18 @@ SVG;
             html body article.post-card[data-post-card-shell] .expand-link {
                 margin: 5px 0 15px !important;
                 padding: 0 !important;
-                font-size: 15px !important;
+                font-size: 17px !important;
                 font-weight: 600 !important;
-                line-height: 19px !important;
-                color: #009a62 !important;
+                line-height: 22px !important;
+                color: #2563eb !important;
+            }
+
+            html body article.post-card[data-post-card-shell] .post-card__expand-icon,
+            html body article.post-card[data-post-card-shell] .post-card__expand-icon iconify-icon {
+                width: 20px !important;
+                height: 20px !important;
+                font-size: 20px !important;
+                color: #2563eb !important;
             }
 
             html body article.post-card[data-post-card-shell] .post-card__tags {
@@ -8363,7 +8371,7 @@ SVG;
             html body article.post-card[data-post-card-shell] .post-card__tag {
                 font-size: 15px !important;
                 line-height: 20px !important;
-                color: #009a62 !important;
+                color: #2563eb !important;
             }
 
             html body article.post-card[data-post-card-shell] .reactions-row {
@@ -8391,6 +8399,25 @@ SVG;
                 width: 22px !important;
                 height: 22px !important;
             }
+        }
+
+        html body article.post-card[data-post-card-shell] .expand-link,
+        html body article.post-card[data-post-card-shell] .post-card__tag {
+            color: #2563eb !important;
+        }
+
+        html body article.post-card[data-post-card-shell] .expand-link {
+            font-size: 17px !important;
+            line-height: 22px !important;
+            font-weight: 600 !important;
+        }
+
+        html body article.post-card[data-post-card-shell] .post-card__expand-icon,
+        html body article.post-card[data-post-card-shell] .post-card__expand-icon iconify-icon {
+            width: 20px !important;
+            height: 20px !important;
+            font-size: 20px !important;
+            color: #2563eb !important;
         }
 
 </style>
@@ -8496,18 +8523,6 @@ SVG;
                     });
                 });
             };
-
-            window.__applyMobilePostCardReference = applyMobileReferenceCardStyles;
-            applyMobileReferenceCardStyles();
-            document.addEventListener('DOMContentLoaded', applyMobileReferenceCardStyles, { once: true });
-            window.addEventListener('resize', applyMobileReferenceCardStyles, { passive: true });
-
-            const mobileCardObserver = new MutationObserver(function (mutations) {
-                if (mutations.some(function (mutation) { return mutation.addedNodes.length > 0; })) {
-                    applyMobileReferenceCardStyles();
-                }
-            });
-            mobileCardObserver.observe(document.body, { childList: true, subtree: true });
 
             const forceFinishPreload = function (card) {
                 if (!card) {
