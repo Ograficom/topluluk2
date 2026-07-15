@@ -8226,7 +8226,9 @@ SVG;
             html,
             body {
                 max-width: 100vw !important;
-                overflow-x: hidden !important;
+                overflow-x: clip !important;
+                overflow-y: visible !important;
+                touch-action: pan-y pinch-zoom !important;
             }
 
             html body .home-feed-shell,
