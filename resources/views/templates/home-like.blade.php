@@ -4633,6 +4633,7 @@
 
     .home-feed-shell {
         touch-action: pan-y !important;
+        overflow-anchor: none !important;
     }
 
     .live-market-widget {
@@ -5005,35 +5006,76 @@
         window.__ografiHomeMultiTouchGuard = true;
 
         let multiTouchActive = false;
+        let lockedScrollX = 0;
+        let lockedScrollY = 0;
+        const activePointers = new Set();
         const isMobileHome = function () {
             return window.matchMedia('(max-width: 640px)').matches && document.querySelector('.home-feed-shell');
         };
         const blockGesture = function (event) {
             if (isMobileHome()) event.preventDefault();
         };
+        const lockCurrentScroll = function () {
+            lockedScrollX = window.scrollX || 0;
+            lockedScrollY = window.scrollY || document.documentElement.scrollTop || 0;
+        };
+        const restoreLockedScroll = function () {
+            if (!multiTouchActive) return;
+            window.scrollTo(lockedScrollX, lockedScrollY);
+        };
 
-        document.addEventListener('touchstart', function (event) {
+        window.addEventListener('touchstart', function (event) {
             if (!isMobileHome()) return;
-            multiTouchActive = event.touches.length > 1;
-            if (multiTouchActive) event.preventDefault();
-        }, { passive: false });
-
-        document.addEventListener('touchmove', function (event) {
-            if (!isMobileHome()) return;
-            if (multiTouchActive || event.touches.length > 1) {
+            if (event.touches.length > 1) {
+                if (!multiTouchActive) lockCurrentScroll();
                 multiTouchActive = true;
                 event.preventDefault();
+                restoreLockedScroll();
             }
-        }, { passive: false });
+        }, { passive: false, capture: true });
 
-        document.addEventListener('touchend', function (event) {
+        window.addEventListener('touchmove', function (event) {
+            if (!isMobileHome()) return;
+            if (multiTouchActive || event.touches.length > 1) {
+                if (!multiTouchActive) lockCurrentScroll();
+                multiTouchActive = true;
+                event.preventDefault();
+                restoreLockedScroll();
+            }
+        }, { passive: false, capture: true });
+
+        window.addEventListener('touchend', function (event) {
             if (event.touches.length < 2) multiTouchActive = false;
-        }, { passive: true });
-        document.addEventListener('touchcancel', function () {
+        }, { passive: true, capture: true });
+        window.addEventListener('touchcancel', function () {
             multiTouchActive = false;
-        }, { passive: true });
+        }, { passive: true, capture: true });
 
-        document.addEventListener('gesturestart', blockGesture, { passive: false });
-        document.addEventListener('gesturechange', blockGesture, { passive: false });
+        window.addEventListener('pointerdown', function (event) {
+            if (!isMobileHome() || event.pointerType === 'mouse') return;
+            activePointers.add(event.pointerId);
+            if (activePointers.size > 1) {
+                if (!multiTouchActive) lockCurrentScroll();
+                multiTouchActive = true;
+                event.preventDefault();
+                restoreLockedScroll();
+            }
+        }, { passive: false, capture: true });
+        window.addEventListener('pointermove', function (event) {
+            if (!isMobileHome() || event.pointerType === 'mouse' || activePointers.size < 2) return;
+            event.preventDefault();
+            restoreLockedScroll();
+        }, { passive: false, capture: true });
+        const releasePointer = function (event) {
+            activePointers.delete(event.pointerId);
+            if (activePointers.size < 2) multiTouchActive = false;
+        };
+        window.addEventListener('pointerup', releasePointer, { passive: true, capture: true });
+        window.addEventListener('pointercancel', releasePointer, { passive: true, capture: true });
+
+        window.addEventListener('scroll', restoreLockedScroll, { passive: true });
+
+        window.addEventListener('gesturestart', blockGesture, { passive: false, capture: true });
+        window.addEventListener('gesturechange', blockGesture, { passive: false, capture: true });
     })();
 </script>
