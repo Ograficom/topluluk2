@@ -8512,6 +8512,65 @@ SVG;
             background: #e5e7eb !important;
         }
 
+        /* Reaction menu: baslik ayiricisi ve dort sutunlu gri hover hucreleri. */
+        html body [data-post-card-reaction-menu]:not([hidden]) {
+            gap: 6px !important;
+        }
+
+        html body [data-post-card-reaction-menu] .post-card__reaction-menu-title {
+            flex: 0 0 100% !important;
+            width: 100% !important;
+            margin: 0 0 2px !important;
+            padding: 0 2px 8px !important;
+            border-bottom: 1px solid #e5e7eb !important;
+        }
+
+        html body [data-post-card-reaction-menu] .post-card__reaction-option {
+            min-width: 38px !important;
+            width: 38px !important;
+            min-height: 38px !important;
+            height: 38px !important;
+            padding: 7px !important;
+            border-radius: 9px !important;
+            background: transparent !important;
+            transition: background-color 120ms ease !important;
+        }
+
+        html body [data-post-card-reaction-menu] .post-card__reaction-option:is(:hover, :focus-visible) {
+            background: #f1f2f4 !important;
+            outline: none !important;
+        }
+
+        /* Ilk yuklemede blur yerine kartin ustunden gecen dalgali isik. */
+        @keyframes postCardInitialWave {
+            from { transform: translateX(-125%); }
+            to { transform: translateX(125%); }
+        }
+
+        html body [data-post-card-shell].is-preloading {
+            filter: none !important;
+        }
+
+        html body [data-post-card-shell].is-preloading::after {
+            content: "" !important;
+            position: absolute !important;
+            inset: 0 !important;
+            z-index: 200 !important;
+            display: block !important;
+            pointer-events: none !important;
+            border-radius: inherit !important;
+            background: linear-gradient(105deg, transparent 25%, rgba(255,255,255,.58) 47%, rgba(226,232,240,.38) 52%, transparent 75%) !important;
+            animation: postCardInitialWave 1.15s ease-in-out infinite !important;
+            filter: none !important;
+        }
+
+        html body [data-post-card-shell]:not(.is-preloading)::after,
+        html body [data-post-card-shell].is-preloading-done::after {
+            content: none !important;
+            display: none !important;
+            animation: none !important;
+        }
+
 </style>
 
     <script>
