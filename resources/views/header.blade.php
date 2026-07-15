@@ -2000,6 +2000,64 @@
         }
     }
 
+    /* Preserve the original header geometry; only scale the requested visuals. */
+    html body .site-header {
+        width: 100% !important;
+        max-width: none !important;
+        overflow-x: visible !important;
+    }
+
+    html body .site-header .site-header-logo {
+        gap: 2px !important;
+        column-gap: 2px !important;
+    }
+
+    html body .site-header .site-header-logo-mark:not(#comments *):not(#app *) {
+        width: 32px !important;
+        height: 36px !important;
+        min-width: 32px !important;
+        flex: 0 0 32px !important;
+        overflow: visible !important;
+    }
+
+    html body .site-header .site-header-logo-mark:not(#comments *):not(#app *) .site-header-logo-main-image {
+        width: 32px !important;
+        height: 32px !important;
+        max-width: 32px !important;
+        max-height: 32px !important;
+        inset: 2px 0 !important;
+        transform: scale(1.22) !important;
+        transform-origin: center !important;
+    }
+
+    html body .site-header .site-header-logo-wordmark:not(#comments *):not(#app *),
+    html.dark body .site-header .site-header-logo-wordmark:not(#comments *):not(#app *) {
+        font-size: 20px !important;
+        font-weight: 600 !important;
+    }
+
+    @media (max-width: 640px) {
+        html body .site-header .site-header-logo-mark:not(#comments *):not(#app *) {
+            width: 32px !important;
+            height: 36px !important;
+            min-width: 32px !important;
+            flex: 0 0 32px !important;
+        }
+
+        html body .site-header .site-header-logo-mark:not(#comments *):not(#app *) .site-header-logo-main-image {
+            width: 32px !important;
+            height: 32px !important;
+            max-width: 32px !important;
+            max-height: 32px !important;
+            transform: scale(1.22) !important;
+        }
+
+        html body .site-header .site-header-logo-wordmark:not(#comments *):not(#app *),
+        html.dark body .site-header .site-header-logo-wordmark:not(#comments *):not(#app *) {
+            font-size: 18px !important;
+        }
+    }
+
 </style>
 
 <header class="site-header" data-site-header style="background: rgba(255,255,255,.98) !important; background-color: rgba(255,255,255,.98) !important; color: #0f172a !important; filter: none !important; border-bottom: 1px solid #e5e7eb !important;">
