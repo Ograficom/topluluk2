@@ -2348,3 +2348,113 @@
         </script>
     @endpush
 @endonce
+
+<style>
+/* Final request: only header icon scale and reference search appearance. */
+html body .site-header :is(.site-search-trigger, button[data-notifications-btn], a.site-icon-btn[aria-label="Mesajlar"]) > iconify-icon:not(#comments *):not(#app *) {
+    width: 24px !important;
+    height: 24px !important;
+    font-size: 24px !important;
+    line-height: 24px !important;
+}
+
+html body .site-header :is(button[data-user-menu-btn], a.site-icon-btn[aria-label]) > iconify-icon:not(#comments *):not(#app *) {
+    width: 26px !important;
+    height: 26px !important;
+    font-size: 26px !important;
+    line-height: 26px !important;
+}
+
+html body .site-search-dropdown-top {
+    gap: 10px !important;
+    align-items: center !important;
+}
+
+html body .site-search-dropdown-top label.site-search-field {
+    height: 40px !important;
+    min-height: 40px !important;
+    padding: 0 14px !important;
+    border: 1px solid #dfe3e8 !important;
+    border-radius: 9999px !important;
+    background: #fff !important;
+    box-shadow: none !important;
+}
+
+html body .site-search-dropdown-top .site-search-icon {
+    width: 18px !important;
+    height: 18px !important;
+    min-width: 18px !important;
+    font-size: 18px !important;
+    color: #525866 !important;
+}
+
+html body .site-search-dropdown-top input[data-search-input] {
+    height: 38px !important;
+    padding: 0 !important;
+    border: 0 !important;
+    background: transparent !important;
+    font-size: 14px !important;
+    line-height: 38px !important;
+    outline: 0 !important;
+    box-shadow: none !important;
+}
+
+html body .site-search-dropdown-top input[data-search-input]::placeholder {
+    color: #6b7280 !important;
+    opacity: 1 !important;
+}
+
+html body .site-search-dropdown-top .site-search-clear {
+    width: 28px !important;
+    height: 28px !important;
+    min-width: 28px !important;
+    min-height: 28px !important;
+    padding: 0 !important;
+    border: 0 !important;
+    background: transparent !important;
+    color: #666 !important;
+}
+
+html body .site-search-dropdown-top .site-search-clear :is(iconify-icon, svg) {
+    width: 17px !important;
+    height: 17px !important;
+    font-size: 17px !important;
+}
+
+html body .site-search-dropdown-top .site-search-close {
+    width: 40px !important;
+    height: 40px !important;
+    min-width: 40px !important;
+    min-height: 40px !important;
+    flex: 0 0 40px !important;
+    padding: 0 !important;
+    border: 0 !important;
+    border-radius: 9999px !important;
+    background: #f3f6fc !important;
+    color: #2563eb !important;
+    box-shadow: none !important;
+}
+
+html body .site-search-dropdown-top .site-search-close :is(iconify-icon, svg) {
+    width: 20px !important;
+    height: 20px !important;
+    font-size: 20px !important;
+    line-height: 20px !important;
+}
+
+@media (max-width: 1023px) {
+    html body .site-header :is(.site-search-trigger, button[data-notifications-btn], a.site-icon-btn[aria-label="Mesajlar"]) > iconify-icon:not(#comments *):not(#app *) {
+        width: 22px !important;
+        height: 22px !important;
+        font-size: 22px !important;
+        line-height: 22px !important;
+    }
+
+    html body .site-header :is(button[data-user-menu-btn], a.site-icon-btn[aria-label]) > iconify-icon:not(#comments *):not(#app *) {
+        width: 24px !important;
+        height: 24px !important;
+        font-size: 24px !important;
+        line-height: 24px !important;
+    }
+}
+</style>
