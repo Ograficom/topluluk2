@@ -4626,29 +4626,6 @@
 <style>
 /* ===== Mobil doviz alanını sağ kenardan içeri / sola alma düzeltmesi ===== */
 @media (max-width: 640px) {
-    html,
-    body {
-        overscroll-behavior-y: none !important;
-    }
-
-    .home-feed-shell {
-        touch-action: pan-y !important;
-        overflow-anchor: none !important;
-    }
-
-    html.ografi-multitouch-locked,
-    html.ografi-multitouch-locked body {
-        overscroll-behavior: none !important;
-    }
-
-    html.ografi-multitouch-locked body {
-        position: fixed !important;
-        left: 0 !important;
-        right: 0 !important;
-        width: 100% !important;
-        overflow: hidden !important;
-    }
-
     .live-market-widget {
         justify-content: flex-start !important;
         gap: 8px !important;
@@ -4931,9 +4908,9 @@
     .home-feed-shell [data-post-card-shell] .post-title__link {
         margin: 0 0 18px !important;
         font-family: Roboto, Arial, sans-serif !important;
-        font-size: 17px !important;
+        font-size: 16px !important;
         font-weight: 700 !important;
-        line-height: 1.35 !important;
+        line-height: 1.45 !important;
         letter-spacing: 0 !important;
         color: #050505 !important;
     }
@@ -4973,18 +4950,20 @@
         overflow: hidden !important;
         -webkit-box-orient: vertical !important;
         -webkit-line-clamp: 6 !important;
-        font-size: 14px !important;
-        line-height: 1.48 !important;
+        font-family: Roboto, Arial, sans-serif !important;
+        font-size: 16px !important;
+        font-weight: 400 !important;
+        line-height: 1.45 !important;
         color: #111 !important;
     }
 
     .home-feed-shell [data-post-card-shell] .expand-link {
         margin: 4px 0 14px !important;
         padding: 0 !important;
-        font-size: 17px !important;
+        font-size: 14px !important;
         font-weight: 600 !important;
-        line-height: 22px !important;
-        color: #2563eb !important;
+        line-height: 20px !important;
+        color: #009b55 !important;
     }
 
     .home-feed-shell [data-post-card-shell] .post-card__tags {
@@ -4993,9 +4972,9 @@
     }
 
     .home-feed-shell [data-post-card-shell] .post-card__tag {
-        font-size: 14px !important;
+        font-size: 13px !important;
         line-height: 20px !important;
-        color: #2563eb !important;
+        color: #009b55 !important;
     }
 
     .home-feed-shell [data-post-card-shell] .reactions-row {
@@ -5012,99 +4991,3 @@
     }
 }
 </style>
-
-<script>
-    (function () {
-        if (window.__ografiHomeMultiTouchGuard) return;
-        window.__ografiHomeMultiTouchGuard = true;
-
-        let multiTouchActive = false;
-        let lockedScrollX = 0;
-        let lockedScrollY = 0;
-        const activePointers = new Set();
-        const isMobileHome = function () {
-            return window.matchMedia('(max-width: 640px)').matches && document.querySelector('.home-feed-shell');
-        };
-        const blockGesture = function (event) {
-            if (isMobileHome()) event.preventDefault();
-        };
-        const lockCurrentScroll = function () {
-            lockedScrollX = window.scrollX || 0;
-            lockedScrollY = window.scrollY || document.documentElement.scrollTop || 0;
-            document.documentElement.classList.add('ografi-multitouch-locked');
-            document.body.style.setProperty('top', '-' + lockedScrollY + 'px', 'important');
-        };
-        const restoreLockedScroll = function () {
-            if (!multiTouchActive) return;
-            window.scrollTo(lockedScrollX, lockedScrollY);
-        };
-        const unlockCurrentScroll = function () {
-            document.documentElement.classList.remove('ografi-multitouch-locked');
-            document.body.style.removeProperty('top');
-            window.scrollTo(lockedScrollX, lockedScrollY);
-        };
-
-        window.addEventListener('touchstart', function (event) {
-            if (!isMobileHome()) return;
-            if (event.touches.length > 1) {
-                if (!multiTouchActive) lockCurrentScroll();
-                multiTouchActive = true;
-                event.preventDefault();
-                restoreLockedScroll();
-            }
-        }, { passive: false, capture: true });
-
-        window.addEventListener('touchmove', function (event) {
-            if (!isMobileHome()) return;
-            if (multiTouchActive || event.touches.length > 1) {
-                if (!multiTouchActive) lockCurrentScroll();
-                multiTouchActive = true;
-                event.preventDefault();
-                restoreLockedScroll();
-            }
-        }, { passive: false, capture: true });
-
-        window.addEventListener('touchend', function (event) {
-            if (event.touches.length < 2 && multiTouchActive) {
-                multiTouchActive = false;
-                unlockCurrentScroll();
-            }
-        }, { passive: true, capture: true });
-        window.addEventListener('touchcancel', function () {
-            if (multiTouchActive) {
-                multiTouchActive = false;
-                unlockCurrentScroll();
-            }
-        }, { passive: true, capture: true });
-
-        window.addEventListener('pointerdown', function (event) {
-            if (!isMobileHome() || event.pointerType === 'mouse') return;
-            activePointers.add(event.pointerId);
-            if (activePointers.size > 1) {
-                if (!multiTouchActive) lockCurrentScroll();
-                multiTouchActive = true;
-                event.preventDefault();
-                restoreLockedScroll();
-            }
-        }, { passive: false, capture: true });
-        window.addEventListener('pointermove', function (event) {
-            if (!isMobileHome() || event.pointerType === 'mouse' || activePointers.size < 2) return;
-            event.preventDefault();
-            restoreLockedScroll();
-        }, { passive: false, capture: true });
-        const releasePointer = function (event) {
-            activePointers.delete(event.pointerId);
-            if (activePointers.size < 2 && multiTouchActive) {
-                multiTouchActive = false;
-                unlockCurrentScroll();
-            }
-        };
-        window.addEventListener('pointerup', releasePointer, { passive: true, capture: true });
-        window.addEventListener('pointercancel', releasePointer, { passive: true, capture: true });
-
-        window.addEventListener('scroll', restoreLockedScroll, { passive: true });
-
-        window.addEventListener('gesturestart', blockGesture, { passive: false, capture: true });
-        window.addEventListener('gesturechange', blockGesture, { passive: false, capture: true });
-    })();
-</script>
