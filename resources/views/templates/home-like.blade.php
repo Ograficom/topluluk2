@@ -5131,5 +5131,33 @@ html body .home-feed-shell .home-feed-toolbar__mode.is-active {
         transform: translateX(-6px) !important;
     }
 }
+
+@media (max-width: 640px) {
+    html body .home-feed-shell .home-feed-toolbar {
+        width: 100% !important;
+        min-height: 34px !important;
+        padding: 2px 4px !important;
+        margin: 0 !important;
+        border-radius: 16px !important;
+        transform: none !important;
+    }
+
+    html body .home-feed-shell .home-feed-toolbar__modes {
+        gap: 0 !important;
+    }
+
+    html body .home-feed-shell .home-feed-toolbar__mode {
+        min-height: 28px !important;
+        padding: 0 10px !important;
+        border-radius: 12px !important;
+        font-size: 13px !important;
+        font-weight: 600 !important;
+        line-height: 1 !important;
+    }
+
+    html body .home-feed-shell .home-feed-toolbar__mode.is-active {
+        font-weight: 700 !important;
+    }
+}
 </style>
 @endsection
