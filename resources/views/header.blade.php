@@ -2357,7 +2357,7 @@ html body .site-header {
 
 @media (max-width: 640px) {
     html body .site-header {
-        --site-header-logo-size: 42px;
+        --site-header-logo-size: 40px;
     }
 
     html body .site-header .site-header-logo-mark,
