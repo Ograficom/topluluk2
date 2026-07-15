@@ -6583,7 +6583,7 @@
     <style>
         /* Tablet landscape: use a centered single-column feed, not desktop sidebars. */
         @media (min-width: 1024px) and (max-width: 1279px) {
-            body.alma-app .main-grid {
+            html body.alma-app:not(#comments):not(#app) .main-grid {
                 width: 100% !important;
                 max-width: var(--profile-shell-width, 656px) !important;
                 grid-template-columns: minmax(0, 1fr) !important;
@@ -6594,13 +6594,14 @@
                 padding-right: 0 !important;
             }
 
-            body.alma-app .layout-side--left,
-            body.alma-app .layout-side--right {
+            html body.alma-app:not(#comments):not(#app) .layout-side--left,
+            html body.alma-app:not(#comments):not(#app) .layout-side--right {
                 display: none !important;
             }
 
-            body.alma-app .layout-main {
+            html body.alma-app:not(#comments):not(#app) .main-grid > main.layout-main {
                 grid-column: 1 !important;
+                grid-row: 1 !important;
                 width: 100% !important;
                 max-width: var(--profile-shell-width, 656px) !important;
                 min-width: 0 !important;
