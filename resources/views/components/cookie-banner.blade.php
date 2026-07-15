@@ -85,6 +85,11 @@
             white-space: nowrap;
             cursor: pointer;
         }
+        html body #cookie-banner button.cookie-consent-bar__accept {
+            background: #f1f1f1 !important;
+            background-color: #f1f1f1 !important;
+            color: #27272a !important;
+        }
         html body #cookie-banner .cookie-consent-bar__accept svg {
             display: block !important;
             width: 0 !important;
