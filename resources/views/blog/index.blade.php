@@ -129,7 +129,7 @@
         align-items: center;
         width: 100%;
         min-height: 38px;
-        margin: 0 0 16px;
+        margin: 0 0 -16px;
         padding: 3px 17px;
         border: 1px solid #d9dde3;
         border-radius: 18px;
@@ -154,7 +154,7 @@
             width: 100vw;
             min-height: 34px;
             margin-right: calc(50% - 50vw);
-            margin-bottom: 16px;
+            margin-bottom: -16px;
             margin-left: calc(50% - 50vw);
             padding: 2px 14px;
             border-right: 0;

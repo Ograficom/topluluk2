@@ -36,7 +36,7 @@
     <style>
         .cookie-consent-bar {
             position: fixed;
-            left: 16px;
+            left: max(16px, calc(50% - 636px));
             bottom: 14px;
             z-index: 10000;
             width: auto;
