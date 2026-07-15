@@ -1953,6 +1953,53 @@
         overflow-x: clip !important;
     }
 
+    /* The PNG contains transparent padding; scale the artwork itself, not only its box. */
+    html body .site-header .site-header-logo-mark:not(#comments *):not(#app *) {
+        width: 38px !important;
+        height: 40px !important;
+        min-width: 38px !important;
+        flex: 0 0 38px !important;
+        overflow: hidden !important;
+    }
+
+    html body .site-header .site-header-logo-mark:not(#comments *):not(#app *) .site-header-logo-main-image {
+        width: 38px !important;
+        height: 38px !important;
+        max-width: 38px !important;
+        max-height: 38px !important;
+        inset: 1px 0 !important;
+        transform: scale(1.32) !important;
+        transform-origin: center !important;
+    }
+
+    html body .site-header .site-header-logo-wordmark:not(#comments *):not(#app *),
+    html.dark body .site-header .site-header-logo-wordmark:not(#comments *):not(#app *) {
+        font-size: 22px !important;
+        font-weight: 600 !important;
+    }
+
+    @media (max-width: 640px) {
+        html body .site-header .site-header-logo-mark:not(#comments *):not(#app *) {
+            width: 34px !important;
+            height: 36px !important;
+            min-width: 34px !important;
+            flex-basis: 34px !important;
+        }
+
+        html body .site-header .site-header-logo-mark:not(#comments *):not(#app *) .site-header-logo-main-image {
+            width: 34px !important;
+            height: 34px !important;
+            max-width: 34px !important;
+            max-height: 34px !important;
+            transform: scale(1.32) !important;
+        }
+
+        html body .site-header .site-header-logo-wordmark:not(#comments *):not(#app *),
+        html.dark body .site-header .site-header-logo-wordmark:not(#comments *):not(#app *) {
+            font-size: 20px !important;
+        }
+    }
+
 </style>
 
 <header class="site-header" data-site-header style="background: rgba(255,255,255,.98) !important; background-color: rgba(255,255,255,.98) !important; color: #0f172a !important; filter: none !important; border-bottom: 1px solid #e5e7eb !important;">
