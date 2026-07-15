@@ -5076,5 +5076,25 @@
         border-top: 1px solid #e5e7eb !important;
     }
 }
+
+@media (min-width: 1024px) {
+    html body .home-feed-shell article.post-card[data-post-card-shell] :is(.post-title, .post-title__link) {
+        font-size: 22px !important;
+        font-weight: 700 !important;
+        line-height: 1.38 !important;
+    }
+
+    html body .home-feed-shell article.post-card[data-post-card-shell] :is(.post-summary, [data-post-card-summary], .post-card__full-content, .post-card__inline-text) {
+        font-size: 18px !important;
+        font-weight: 400 !important;
+        line-height: 1.52 !important;
+    }
+
+    html body .home-feed-shell article.post-card[data-post-card-shell] .expand-link {
+        font-size: 17px !important;
+        font-weight: 600 !important;
+        line-height: 24px !important;
+    }
+}
 </style>
 @endsection
