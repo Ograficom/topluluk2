@@ -4926,6 +4926,29 @@
         line-height: 22px !important;
     }
 
+    html body.route-home .home-feed-shell article.post-card.post-card[data-post-card-shell] h2.post-title,
+    html body.route-home .home-feed-shell article.post-card.post-card[data-post-card-shell] h2.post-title > a.post-title__link {
+        font-family: Roboto, Arial, sans-serif !important;
+        font-size: 18px !important;
+        font-weight: 700 !important;
+        line-height: 1.42 !important;
+    }
+
+    html body.route-home .home-feed-shell article.post-card.post-card[data-post-card-shell] .post-summary-shell .post-summary,
+    html body.route-home .home-feed-shell article.post-card.post-card[data-post-card-shell] .post-summary-shell .post-summary.is-collapsed {
+        font-family: Roboto, Arial, sans-serif !important;
+        font-size: 17px !important;
+        font-weight: 400 !important;
+        line-height: 1.48 !important;
+    }
+
+    html body.route-home .home-feed-shell article.post-card.post-card[data-post-card-shell] a.expand-link,
+    html body.route-home .home-feed-shell article.post-card.post-card[data-post-card-shell] button.expand-link {
+        font-size: 16px !important;
+        font-weight: 600 !important;
+        line-height: 22px !important;
+    }
+
     /* Reference mobile card: dense editorial layout, without a vote row. */
     .home-feed-shell [data-post-card-shell] {
         padding: 10px 15px 0 !important;
