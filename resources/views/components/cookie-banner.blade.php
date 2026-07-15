@@ -161,6 +161,13 @@
                 text-overflow: ellipsis !important;
                 white-space: nowrap !important;
             }
+            html body #cookie-banner .cookie-consent-bar__message,
+            html body #cookie-banner .cookie-consent-bar__message a.cookie-consent-bar__link,
+            html body #cookie-banner .cookie-consent-bar__accept,
+            html body #cookie-banner .cookie-consent-bar__accept span {
+                font-size: var(--cookie-mobile-font-size) !important;
+                font-weight: 400 !important;
+            }
             html body #cookie-banner .cookie-consent-bar__actions {
                 flex: 0 0 auto !important;
                 height: 30px !important;
@@ -175,6 +182,10 @@
                 border-radius: 999px !important;
                 font-size: var(--cookie-mobile-font-size) !important;
                 line-height: 26px !important;
+            }
+            html body #cookie-banner .cookie-consent-bar__accept span {
+                line-height: 26px !important;
+                white-space: nowrap !important;
             }
             html body #cookie-banner .cookie-consent-bar__accept svg {
                 width: 12px !important;
