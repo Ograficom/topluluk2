@@ -8435,6 +8435,29 @@ SVG;
             color: #2563eb !important;
         }
 
+        /* Keep the approved post typography identical on tablet and desktop. */
+        @media (min-width: 641px) {
+            html body article.post-card[data-post-card-shell] :is(.post-title, .post-title__link) {
+                font-family: Roboto, Arial, sans-serif !important;
+                font-size: 18px !important;
+                font-weight: 700 !important;
+                line-height: 1.42 !important;
+            }
+
+            html body article.post-card[data-post-card-shell] :is(.post-summary, [data-post-card-summary], .post-card__full-content, .post-card__inline-text) {
+                font-family: Roboto, Arial, sans-serif !important;
+                font-size: 17px !important;
+                font-weight: 400 !important;
+                line-height: 1.48 !important;
+            }
+
+            html body article.post-card[data-post-card-shell] .expand-link {
+                font-size: 16px !important;
+                font-weight: 600 !important;
+                line-height: 22px !important;
+            }
+        }
+
 </style>
 
     <script>
