@@ -5078,19 +5078,19 @@
 }
 
 @media (min-width: 1024px) {
-    html body .home-feed-shell article.post-card[data-post-card-shell] :is(.post-title, .post-title__link):not(#comments *) {
+    html body .home-feed-shell article.post-card[data-post-card-shell] :is(.post-title, .post-title__link):not(#comments *):not(#app *) {
         font-size: 26px !important;
         font-weight: 700 !important;
         line-height: 1.34 !important;
     }
 
-    html body .home-feed-shell article.post-card[data-post-card-shell] :is(.post-summary, [data-post-card-summary], .post-card__full-content, .post-card__inline-text):not(#comments *) {
+    html body .home-feed-shell article.post-card[data-post-card-shell] :is(.post-summary, [data-post-card-summary], .post-card__full-content, .post-card__inline-text):not(#comments *):not(#app *) {
         font-size: 20px !important;
         font-weight: 400 !important;
         line-height: 1.5 !important;
     }
 
-    html body .home-feed-shell article.post-card[data-post-card-shell] .expand-link:not(#comments *) {
+    html body .home-feed-shell article.post-card[data-post-card-shell] .expand-link:not(#comments *):not(#app *) {
         font-size: 18px !important;
         font-weight: 600 !important;
         line-height: 26px !important;
