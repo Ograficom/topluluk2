@@ -4626,6 +4626,15 @@
 <style>
 /* ===== Mobil doviz alanını sağ kenardan içeri / sola alma düzeltmesi ===== */
 @media (max-width: 640px) {
+    html,
+    body {
+        overscroll-behavior-y: none !important;
+    }
+
+    .home-feed-shell {
+        touch-action: pan-y !important;
+    }
+
     .live-market-widget {
         justify-content: flex-start !important;
         gap: 8px !important;
@@ -4989,3 +4998,42 @@
     }
 }
 </style>
+
+<script>
+    (function () {
+        if (window.__ografiHomeMultiTouchGuard) return;
+        window.__ografiHomeMultiTouchGuard = true;
+
+        let multiTouchActive = false;
+        const isMobileHome = function () {
+            return window.matchMedia('(max-width: 640px)').matches && document.querySelector('.home-feed-shell');
+        };
+        const blockGesture = function (event) {
+            if (isMobileHome()) event.preventDefault();
+        };
+
+        document.addEventListener('touchstart', function (event) {
+            if (!isMobileHome()) return;
+            multiTouchActive = event.touches.length > 1;
+            if (multiTouchActive) event.preventDefault();
+        }, { passive: false });
+
+        document.addEventListener('touchmove', function (event) {
+            if (!isMobileHome()) return;
+            if (multiTouchActive || event.touches.length > 1) {
+                multiTouchActive = true;
+                event.preventDefault();
+            }
+        }, { passive: false });
+
+        document.addEventListener('touchend', function (event) {
+            if (event.touches.length < 2) multiTouchActive = false;
+        }, { passive: true });
+        document.addEventListener('touchcancel', function () {
+            multiTouchActive = false;
+        }, { passive: true });
+
+        document.addEventListener('gesturestart', blockGesture, { passive: false });
+        document.addEventListener('gesturechange', blockGesture, { passive: false });
+    })();
+</script>
