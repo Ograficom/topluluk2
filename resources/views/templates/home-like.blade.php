@@ -4636,6 +4636,19 @@
         overflow-anchor: none !important;
     }
 
+    html.ografi-multitouch-locked,
+    html.ografi-multitouch-locked body {
+        overscroll-behavior: none !important;
+    }
+
+    html.ografi-multitouch-locked body {
+        position: fixed !important;
+        left: 0 !important;
+        right: 0 !important;
+        width: 100% !important;
+        overflow: hidden !important;
+    }
+
     .live-market-widget {
         justify-content: flex-start !important;
         gap: 8px !important;
@@ -5018,9 +5031,16 @@
         const lockCurrentScroll = function () {
             lockedScrollX = window.scrollX || 0;
             lockedScrollY = window.scrollY || document.documentElement.scrollTop || 0;
+            document.documentElement.classList.add('ografi-multitouch-locked');
+            document.body.style.setProperty('top', '-' + lockedScrollY + 'px', 'important');
         };
         const restoreLockedScroll = function () {
             if (!multiTouchActive) return;
+            window.scrollTo(lockedScrollX, lockedScrollY);
+        };
+        const unlockCurrentScroll = function () {
+            document.documentElement.classList.remove('ografi-multitouch-locked');
+            document.body.style.removeProperty('top');
             window.scrollTo(lockedScrollX, lockedScrollY);
         };
 
@@ -5045,10 +5065,16 @@
         }, { passive: false, capture: true });
 
         window.addEventListener('touchend', function (event) {
-            if (event.touches.length < 2) multiTouchActive = false;
+            if (event.touches.length < 2 && multiTouchActive) {
+                multiTouchActive = false;
+                unlockCurrentScroll();
+            }
         }, { passive: true, capture: true });
         window.addEventListener('touchcancel', function () {
-            multiTouchActive = false;
+            if (multiTouchActive) {
+                multiTouchActive = false;
+                unlockCurrentScroll();
+            }
         }, { passive: true, capture: true });
 
         window.addEventListener('pointerdown', function (event) {
@@ -5068,7 +5094,10 @@
         }, { passive: false, capture: true });
         const releasePointer = function (event) {
             activePointers.delete(event.pointerId);
-            if (activePointers.size < 2) multiTouchActive = false;
+            if (activePointers.size < 2 && multiTouchActive) {
+                multiTouchActive = false;
+                unlockCurrentScroll();
+            }
         };
         window.addEventListener('pointerup', releasePointer, { passive: true, capture: true });
         window.addEventListener('pointercancel', releasePointer, { passive: true, capture: true });
