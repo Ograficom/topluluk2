@@ -2190,7 +2190,10 @@
 @guest
     <dialog id="site-login-modal" class="site-login-modal" aria-labelledby="site-login-modal-title">
         <button type="button" class="site-login-modal__close" aria-label="Kapat" data-login-modal-close><iconify-icon icon="lucide:x"></iconify-icon></button>
-        <h2 id="site-login-modal-title" class="site-login-modal__brand">alma</h2>
+        <h2 id="site-login-modal-title" class="site-login-modal__brand">
+            <img src="{{ asset('images/ografi-logo.png') }}?v=20260714a" alt="">
+            <span>Ografi</span>
+        </h2>
         <form method="POST" action="{{ route('login') }}" class="site-login-modal__form">
             @csrf
             <label class="site-login-modal__label" for="modal-login-email">E-posta</label>
@@ -2527,14 +2530,16 @@ html body .site-login-modal__close {
 }
 html body .site-login-modal__close iconify-icon { width: 20px !important; height: 20px !important; font-size: 20px !important; }
 html body .site-login-modal__brand {
-    margin: 0 0 38px !important; color: #18181b !important; font-size: 42px !important;
-    font-weight: 800 !important; line-height: 1 !important; letter-spacing: -1.5px !important; text-align: center !important;
+    display: flex !important; align-items: center !important; justify-content: center !important; gap: 7px !important;
+    margin: 0 0 38px !important; color: #18181b !important; font-size: 22px !important;
+    font-weight: 600 !important; line-height: 1 !important; letter-spacing: -0.2px !important; text-align: center !important;
 }
-html body .site-login-modal__label { display: block !important; margin: 0 0 7px !important; color: #111 !important; font-size: 14px !important; font-weight: 600 !important; }
+html body .site-login-modal__brand img { display: block !important; width: 34px !important; height: 34px !important; object-fit: contain !important; }
+html body .site-login-modal__label { display: block !important; margin: 0 0 7px !important; color: #111 !important; font-size: 12px !important; font-weight: 600 !important; }
 html body .site-login-modal__input {
     display: block !important; width: 100% !important; height: 36px !important; margin: 0 0 22px !important; padding: 0 11px !important;
     border: 1px solid #dedede !important; border-radius: 6px !important; background: #fff !important; color: #111 !important;
-    font-size: 14px !important; outline: none !important; box-shadow: 0 1px 2px rgba(0, 0, 0, .06) !important;
+    font-size: 13px !important; outline: none !important; box-shadow: 0 1px 2px rgba(0, 0, 0, .06) !important;
 }
 html body .site-login-modal__input:focus { border-color: #10a37f !important; box-shadow: 0 0 0 1px #10a37f !important; }
 html body .site-login-modal__options { display: flex !important; align-items: center !important; justify-content: space-between !important; gap: 14px !important; margin: 0 0 26px !important; }
@@ -2543,15 +2548,15 @@ html body .site-login-modal__remember input { appearance: auto !important; width
 html body .site-login-modal__options,
 html body .site-login-modal__options a,
 html body .site-login-modal__register,
-html body .site-login-modal__register a { color: #71717a !important; font-size: 14px !important; font-weight: 400 !important; text-decoration: none !important; }
+html body .site-login-modal__register a { color: #71717a !important; font-size: 12px !important; font-weight: 400 !important; text-decoration: none !important; }
 html body .site-login-modal__submit {
     width: 100% !important; height: 36px !important; padding: 0 12px !important; border: 0 !important; border-radius: 6px !important;
-    background: #10a37f !important; color: #fff !important; font-size: 14px !important; font-weight: 700 !important; cursor: pointer !important;
+    background: #10a37f !important; color: #fff !important; font-size: 12px !important; font-weight: 700 !important; cursor: pointer !important;
 }
 html body .site-login-modal__register { margin: 40px 0 0 !important; color: #111 !important; text-align: center !important; }
 @media (max-width: 480px) {
     html body dialog.site-login-modal { width: calc(100vw - 24px) !important; padding: 52px 20px 24px !important; }
-    html body .site-login-modal__brand { margin-bottom: 30px !important; font-size: 38px !important; }
+    html body .site-login-modal__brand { margin-bottom: 30px !important; font-size: 21px !important; }
 }
 
 </style>
