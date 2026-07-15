@@ -4868,6 +4868,7 @@
 
     html body .home-feed-shell article.post-card[data-post-card-shell] .action-left {
         gap: clamp(0px, .75vw, 3px) !important;
+        padding-left: 8px !important;
     }
 
     html body .home-feed-shell article.post-card[data-post-card-shell] .action-left :is(
