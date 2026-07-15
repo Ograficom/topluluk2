@@ -159,7 +159,7 @@
             padding: 2px 14px;
             border-right: 0;
             border-left: 0;
-            border-radius: 0;
+            border-radius: 16px;
             font-size: 13px;
         }
     }
