@@ -2398,6 +2398,15 @@ html body .site-search-dropdown-top input[data-search-input] {
     box-shadow: none !important;
 }
 
+html body .site-search-dropdown-top input[data-search-input]:not(#comments *):not(#app *),
+html body .site-search-dropdown-top input[data-search-input]:not(#comments *):not(#app *):is(:hover, :focus, :focus-visible, :active),
+html body .site-search-dropdown-top input[data-search-input]:not(#comments *):not(#app *):-webkit-autofill {
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+    -webkit-box-shadow: 0 0 0 1000px #ffffff inset !important;
+    box-shadow: 0 0 0 1000px #ffffff inset !important;
+}
+
 html body .site-search-dropdown-top input[data-search-input]::placeholder {
     color: #6b7280 !important;
     opacity: 1 !important;
