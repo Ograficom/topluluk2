@@ -66,8 +66,7 @@
         }
         html body #cookie-banner a.cookie-consent-bar__link {
             color: #2563eb !important;
-            text-decoration: underline !important;
-            text-underline-offset: 2px !important;
+            text-decoration: none !important;
         }
         .cookie-consent-bar__actions { flex: 0 0 auto; gap: 3px; }
         .cookie-consent-bar__accept {
@@ -88,21 +87,29 @@
         }
         html body #cookie-banner .cookie-consent-bar__accept svg {
             display: block !important;
-            width: 13px !important;
-            min-width: 13px !important;
+            width: 0 !important;
+            min-width: 0 !important;
             height: 13px !important;
             min-height: 13px !important;
-            flex: 0 0 13px !important;
+            flex: 0 0 0 !important;
             color: currentColor !important;
             visibility: visible !important;
-            opacity: 1 !important;
+            opacity: 0 !important;
+            overflow: hidden !important;
+            transition: width .15s ease, flex-basis .15s ease, opacity .15s ease !important;
         }
-        @media (hover: hover) {
-            html body #cookie-banner .cookie-consent-bar__accept:hover {
-                background: #2563eb !important;
-                background-color: #2563eb !important;
-                color: #ffffff !important;
-            }
+        html body #cookie-banner .cookie-consent-bar__accept:is(:hover, :focus-visible, :active),
+        html body #cookie-banner .cookie-consent-bar__accept.is-accepting {
+            background: #2563eb !important;
+            background-color: #2563eb !important;
+            color: #ffffff !important;
+        }
+        html body #cookie-banner .cookie-consent-bar__accept:is(:hover, :focus-visible, :active) svg,
+        html body #cookie-banner .cookie-consent-bar__accept.is-accepting svg {
+            width: 13px !important;
+            min-width: 13px !important;
+            flex-basis: 13px !important;
+            opacity: 1 !important;
         }
         .cookie-consent-bar__reject {
             display: inline-flex;
@@ -188,8 +195,15 @@
                 white-space: nowrap !important;
             }
             html body #cookie-banner .cookie-consent-bar__accept svg {
-                width: 12px !important;
+                width: 0 !important;
+                min-width: 0 !important;
                 height: 12px !important;
+                flex-basis: 0 !important;
+            }
+            html body #cookie-banner .cookie-consent-bar__accept:is(:hover, :focus-visible, :active) svg,
+            html body #cookie-banner .cookie-consent-bar__accept.is-accepting svg {
+                width: 12px !important;
+                min-width: 12px !important;
                 flex-basis: 12px !important;
             }
             html body #cookie-banner .cookie-consent-bar__reject {
@@ -237,7 +251,10 @@
                 }
             };
 
-            banner.querySelector('[data-consent-action="accept"]')?.addEventListener('click', () => sendDecision('accept'));
+            banner.querySelector('[data-consent-action="accept"]')?.addEventListener('click', (event) => {
+                event.currentTarget.classList.add('is-accepting');
+                sendDecision('accept');
+            });
             banner.querySelector('[data-consent-action="reject"]')?.addEventListener('click', () => sendDecision('reject'));
         })();
     </script>
