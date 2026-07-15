@@ -1981,7 +1981,6 @@
                             class="site-search-close"
                             aria-label="Aramayi kapat"
                             data-search-close
-                            style="background: transparent !important; background-color: transparent !important; box-shadow: none !important; border-color: transparent !important;"
                         >
                             <iconify-icon icon="lucide:x"></iconify-icon>
                         </button>
