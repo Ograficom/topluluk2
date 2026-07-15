@@ -131,7 +131,7 @@
                 left: 50% !important;
                 right: auto !important;
                 bottom: max(6px, env(safe-area-inset-bottom, 0px)) !important;
-                width: calc(100% - 16px) !important;
+                width: calc(100% - 28px) !important;
                 max-width: 390px !important;
                 transform: translateX(-50%) !important;
             }
