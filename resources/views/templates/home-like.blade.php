@@ -4622,7 +4622,6 @@
             }
         });
     </script>
-@endsection
 <style>
 /* ===== Mobil doviz alanını sağ kenardan içeri / sola alma düzeltmesi ===== */
 @media (max-width: 640px) {
@@ -4991,3 +4990,4 @@
     }
 }
 </style>
+@endsection
