@@ -20,14 +20,14 @@
             margin: 0 0 26px;
             color: #18181b;
             font-size: 22px;
-            font-weight: 600;
+            font-weight: 400;
             line-height: 1;
             letter-spacing: -1.5px;
         }
         .simple-auth-brand img {
             display: block;
-            width: 34px;
-            height: 34px;
+            width: 44px;
+            height: 44px;
             object-fit: contain;
         }
         .simple-auth-card {
@@ -64,7 +64,7 @@
             margin-bottom: 7px;
             color: #111;
             font-size: 12px;
-            font-weight: 600;
+            font-weight: 400;
             line-height: 1.2;
         }
         .simple-auth-input {
@@ -119,7 +119,7 @@
             background: #7fcdb7;
             color: #fff;
             font-size: 12px;
-            font-weight: 700;
+            font-weight: 400;
             cursor: pointer;
         }
         .simple-auth-submit:hover { background: #70bea8; }
@@ -146,8 +146,8 @@
             .simple-auth-brand { margin-bottom: 24px; font-size: 21px; }
             .simple-auth-card { padding: 52px 24px 24px; }
         }
-        html body .simple-auth-page .simple-auth-brand:not(#comments *):not(#app *) { font-size: 22px !important; font-weight: 600 !important; line-height: 1 !important; }
-        html body .simple-auth-page .simple-auth-label:not(#comments *):not(#app *) { font-size: 12px !important; font-weight: 600 !important; line-height: 1.2 !important; }
+        html body .simple-auth-page .simple-auth-brand:not(#comments *):not(#app *) { font-size: 22px !important; font-weight: 400 !important; line-height: 1 !important; }
+        html body .simple-auth-page .simple-auth-label:not(#comments *):not(#app *) { font-size: 12px !important; font-weight: 400 !important; line-height: 1.2 !important; }
         html body .simple-auth-page .simple-auth-input:not(#comments *):not(#app *) { height: 36px !important; padding: 0 11px !important; border: 1px solid #dedede !important; border-radius: 6px !important; background: #fff !important; color: #111 !important; font-size: 13px !important; box-shadow: 0 1px 2px rgba(0,0,0,.06) !important; }
         html body .simple-auth-page .simple-auth-input:not(#comments *):not(#app *):focus { border-color: #10a37f !important; box-shadow: 0 0 0 1px #10a37f !important; }
         html body .simple-auth-page .simple-auth-remember:not(#comments *):not(#app *),
@@ -156,7 +156,7 @@
         html body .simple-auth-page .simple-auth-register:not(#comments *):not(#app *),
         html body .simple-auth-page .simple-auth-register a:not(#comments *):not(#app *) { font-size: 12px !important; font-weight: 400 !important; line-height: 1.3 !important; }
         html body .simple-auth-page .simple-auth-remember input:not(#comments *):not(#app *) { appearance: auto !important; width: 16px !important; height: 16px !important; min-width: 16px !important; min-height: 16px !important; padding: 0 !important; border-radius: 3px !important; background: #fff !important; }
-        html body .simple-auth-page .simple-auth-submit:not(#comments *):not(#app *) { height: 36px !important; min-height: 36px !important; padding: 0 12px !important; border: 0 !important; border-radius: 6px !important; background: #7fcdb7 !important; color: #fff !important; font-size: 12px !important; font-weight: 700 !important; line-height: 36px !important; box-shadow: none !important; }
+        html body .simple-auth-page .simple-auth-submit:not(#comments *):not(#app *) { height: 36px !important; min-height: 36px !important; padding: 0 12px !important; border: 0 !important; border-radius: 6px !important; background: #7fcdb7 !important; color: #fff !important; font-size: 12px !important; font-weight: 400 !important; line-height: 36px !important; box-shadow: none !important; }
         html body .simple-auth-page .simple-auth-submit:not(#comments *):not(#app *):hover { background: #70bea8 !important; color: #fff !important; }
         @media (max-width: 480px) { html body .simple-auth-page .simple-auth-brand:not(#comments *):not(#app *) { font-size: 21px !important; } }
     </style>
