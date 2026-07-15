@@ -1904,47 +1904,53 @@
 
     /* Visible brand scaling: enlarge both the logo artwork and the Ografi wordmark. */
     html body .site-header .site-header-logo-mark:not(#comments *):not(#app *) {
-        width: 42px !important;
-        height: 44px !important;
-        min-width: 42px !important;
-        flex: 0 0 42px !important;
+        width: 34px !important;
+        height: 36px !important;
+        min-width: 34px !important;
+        flex: 0 0 34px !important;
     }
 
     html body .site-header .site-header-logo-mark:not(#comments *):not(#app *) .site-header-logo-main-image,
     html body .site-header .site-header-logo-mark:not(#comments *):not(#app *) .site-header-logo-main-image svg {
-        width: 42px !important;
-        height: 42px !important;
-        max-width: 42px !important;
-        max-height: 42px !important;
+        width: 34px !important;
+        height: 34px !important;
+        max-width: 34px !important;
+        max-height: 34px !important;
         inset: 1px 0 !important;
     }
 
     html body .site-header .site-header-logo-wordmark:not(#comments *):not(#app *),
     html.dark body .site-header .site-header-logo-wordmark:not(#comments *):not(#app *) {
-        font-size: 24px !important;
+        font-size: 19px !important;
         font-weight: 600 !important;
     }
 
     @media (max-width: 640px) {
         html body .site-header .site-header-logo-mark:not(#comments *):not(#app *) {
-            width: 36px !important;
-            height: 38px !important;
-            min-width: 36px !important;
-            flex-basis: 36px !important;
+            width: 30px !important;
+            height: 32px !important;
+            min-width: 30px !important;
+            flex-basis: 30px !important;
         }
 
         html body .site-header .site-header-logo-mark:not(#comments *):not(#app *) .site-header-logo-main-image,
         html body .site-header .site-header-logo-mark:not(#comments *):not(#app *) .site-header-logo-main-image svg {
-            width: 36px !important;
-            height: 36px !important;
-            max-width: 36px !important;
-            max-height: 36px !important;
+            width: 30px !important;
+            height: 30px !important;
+            max-width: 30px !important;
+            max-height: 30px !important;
         }
 
         html body .site-header .site-header-logo-wordmark:not(#comments *):not(#app *),
         html.dark body .site-header .site-header-logo-wordmark:not(#comments *):not(#app *) {
-            font-size: 19px !important;
+            font-size: 16px !important;
         }
+    }
+
+    html body .site-header {
+        width: 100vw !important;
+        max-width: 100vw !important;
+        overflow-x: clip !important;
     }
 
 </style>
