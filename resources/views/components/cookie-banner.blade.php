@@ -110,7 +110,7 @@
         }
         @media (max-width: 640px) {
             html body #cookie-banner.cookie-consent-bar {
-                --cookie-mobile-font-size: 12px;
+                --cookie-mobile-font-size: 13px;
                 left: 50% !important;
                 right: auto !important;
                 bottom: max(6px, env(safe-area-inset-bottom, 0px)) !important;
@@ -123,10 +123,10 @@
             }
             html body #cookie-banner .cookie-consent-bar__surface {
                 width: 100% !important;
-                height: 44px !important;
-                min-height: 44px !important;
-                max-height: 44px !important;
-                padding: 4px 6px 4px 12px !important;
+                height: 48px !important;
+                min-height: 48px !important;
+                max-height: 48px !important;
+                padding: 5px 7px 5px 14px !important;
                 overflow: hidden !important;
                 border-radius: 12px !important;
                 box-shadow: 0 2px 10px rgba(15,23,42,.08) !important;
@@ -134,7 +134,7 @@
             }
             html body #cookie-banner .cookie-consent-bar__content {
                 width: 100% !important;
-                height: 36px !important;
+                height: 38px !important;
                 gap: 6px !important;
             }
             html body #cookie-banner .cookie-consent-bar__message-wrap {
@@ -147,7 +147,7 @@
                 overflow: hidden !important;
                 margin: 0 !important;
                 font-size: var(--cookie-mobile-font-size) !important;
-                line-height: 36px !important;
+                line-height: 38px !important;
                 text-overflow: ellipsis !important;
                 white-space: nowrap !important;
             }
@@ -160,21 +160,21 @@
             }
             html body #cookie-banner .cookie-consent-bar__actions {
                 flex: 0 0 auto !important;
-                height: 36px !important;
+                height: 38px !important;
                 gap: 2px !important;
             }
             html body #cookie-banner .cookie-consent-bar__accept {
                 width: auto !important;
-                height: 30px !important;
-                min-height: 30px !important;
-                max-height: 30px !important;
-                padding: 0 12px !important;
+                height: 34px !important;
+                min-height: 34px !important;
+                max-height: 34px !important;
+                padding: 0 14px !important;
                 border-radius: 999px !important;
                 font-size: var(--cookie-mobile-font-size) !important;
-                line-height: 30px !important;
+                line-height: 34px !important;
             }
             html body #cookie-banner .cookie-consent-bar__accept span {
-                line-height: 30px !important;
+                line-height: 34px !important;
                 white-space: nowrap !important;
             }
             html body #cookie-banner .cookie-consent-bar__accept svg {
