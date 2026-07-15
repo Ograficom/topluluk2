@@ -8502,6 +8502,16 @@ SVG;
             z-index: 100 !important;
         }
 
+        /* Post-card tepki ekleme ikonunun kalici yuvarlak gri zemini. */
+        html body.alma-app [data-post-card-shell] :is(.smiley-btn, .reaction-add) {
+            background: #f3f4f6 !important;
+            border-radius: 999px !important;
+        }
+
+        html body.alma-app [data-post-card-shell] :is(.smiley-btn, .reaction-add):is(:hover, :focus-visible, :active) {
+            background: #e5e7eb !important;
+        }
+
 </style>
 
     <script>
