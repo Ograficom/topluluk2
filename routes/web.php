@@ -36,6 +36,7 @@ use Illuminate\Validation\Rule;
 use App\Http\Controllers\AiController;
 use App\Http\Controllers\VerifyEmailController;
 use App\Http\Controllers\EmailVerificationCodeController;
+use App\Http\Controllers\RegistrationVerificationController;
 
 // E-posta istemcisindeki bağlantı, kullanıcının web oturumu olmasa da imzalı URL
 // ve e-posta hash'i ile güvenle doğrulanabilmelidir.
@@ -46,6 +47,18 @@ Route::get('/email/verify/{id}/{hash}', VerifyEmailController::class)
 Route::post('/email/verify-code', EmailVerificationCodeController::class)
     ->middleware(['auth', 'throttle:10,1'])
     ->name('verification.code.verify');
+
+Route::middleware('guest')->group(function (): void {
+    Route::view('/register', 'auth.register')->name('register');
+    Route::post('/register/email', [RegistrationVerificationController::class, 'requestCode'])
+        ->middleware('throttle:5,1')->name('register.email');
+    Route::get('/register/verify-code', [RegistrationVerificationController::class, 'showVerify'])->name('register.verify');
+    Route::post('/register/verify-code', [RegistrationVerificationController::class, 'verify'])
+        ->middleware('throttle:10,1')->name('register.verify.submit');
+    Route::get('/register/complete', [RegistrationVerificationController::class, 'showComplete'])->name('register.complete');
+    Route::post('/register/complete', [RegistrationVerificationController::class, 'complete'])
+        ->middleware('throttle:10,1')->name('register.complete.submit');
+});
 
 Route::middleware(RedirectIfInstalled::class)->prefix('install')->name('install.')->group(function () {
     Route::get('/', [InstallController::class, 'requirements'])->name('requirements');
