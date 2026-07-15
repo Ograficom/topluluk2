@@ -2351,7 +2351,7 @@
 <style>
 /* Header ikonlarinin tek boyutlandirma noktasi. Yalnizca bu degeri degistirin. */
 html body .site-header {
-    --site-header-icon-size: 35px;
+    --site-header-icon-size: 24px;
 }
 
 html body .site-header :is(
