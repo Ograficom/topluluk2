@@ -5096,5 +5096,40 @@
         line-height: 26px !important;
     }
 }
+
+/* Final feed toolbar appearance: match the compact reference tabs. */
+html body .home-feed-shell .home-feed-toolbar {
+    min-height: 38px !important;
+    padding: 3px 6px !important;
+    border: 1px solid #d9dde3 !important;
+    border-radius: 18px !important;
+    background: #fff !important;
+    box-shadow: none !important;
+}
+
+html body .home-feed-shell .home-feed-toolbar__modes {
+    gap: 0 !important;
+}
+
+html body .home-feed-shell .home-feed-toolbar__mode {
+    min-height: 32px !important;
+    padding: 0 11px !important;
+    border-radius: 13px !important;
+    color: #73737c !important;
+    font-size: 14px !important;
+    font-weight: 600 !important;
+}
+
+html body .home-feed-shell .home-feed-toolbar__mode.is-active {
+    background: #f1f1f3 !important;
+    color: #050505 !important;
+    font-weight: 700 !important;
+}
+
+@media (min-width: 641px) {
+    html body .home-feed-shell .home-feed-toolbar {
+        transform: translateX(-6px) !important;
+    }
+}
 </style>
 @endsection
