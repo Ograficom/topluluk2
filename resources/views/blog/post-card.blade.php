@@ -8529,6 +8529,32 @@ SVG;
 
             applyMobileReferenceCardStyles();
 
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', applyMobileReferenceCardStyles, { once: true });
+            }
+
+            let mobileCardStyleFrame = 0;
+            const mobileCardObserver = new MutationObserver(function (mutations) {
+                const hasNewCard = mutations.some(function (mutation) {
+                    return Array.from(mutation.addedNodes).some(function (node) {
+                        return node.nodeType === Node.ELEMENT_NODE
+                            && (node.matches?.(rootSelector) || node.querySelector?.(rootSelector));
+                    });
+                });
+
+                if (!hasNewCard || mobileCardStyleFrame) return;
+
+                mobileCardStyleFrame = window.requestAnimationFrame(function () {
+                    mobileCardStyleFrame = 0;
+                    applyMobileReferenceCardStyles();
+                });
+            });
+
+            mobileCardObserver.observe(document.documentElement, {
+                childList: true,
+                subtree: true
+            });
+
             const forceFinishPreload = function (card) {
                 if (!card) {
                     return;
