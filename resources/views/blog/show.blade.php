@@ -1368,6 +1368,14 @@
 
     if ($seoPrimaryImage) {
         $newsArticleSchema['thumbnailUrl'] = $seoPrimaryImage;
+        $newsArticleSchema['primaryImageOfPage'] = [
+            '@type' => 'ImageObject',
+            'url' => $seoPrimaryImage,
+            'width' => $seoPrimaryImageWidth,
+            'height' => $seoPrimaryImageHeight,
+            'name' => $seoTitleBase,
+            'caption' => $seoTitleBase . ' görseli',
+        ];
     }
 
     $newsArticleSchema['copyrightHolder'] = ['@id' => $seoOrganizationId];
@@ -1380,6 +1388,8 @@
                 'url' => $imageUrl,
                 'width' => $seoPrimaryImageWidth,
                 'height' => $seoPrimaryImageHeight,
+                'name' => $seoTitleBase,
+                'caption' => $seoTitleBase . ' görseli',
             ])
             ->values()
             ->all();
@@ -8972,6 +8982,7 @@
 <meta name="twitter:description" content="{{ e($description) }}">
 @if($seoPrimaryImage)
 <meta name="twitter:image" content="{{ e($seoPrimaryImage) }}">
+<meta name="twitter:image:alt" content="{{ e($seoTitleBase) }}">
 <link rel="image_src" href="{{ e($seoPrimaryImage) }}">
 @endif
 <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">

@@ -59,14 +59,21 @@
         'name' => $seoSiteName,
         'url' => $seoBaseUrl,
         'description' => 'Ografi; güncel haberleri, kategorileri, toplulukları ve dijital içerikleri bir araya getiren modern bir içerik platformudur.',
-        'image' => [$seoImage],
-        'logo' => $defaultSeoImage,
+        'image' => [[
+            '@type' => 'ImageObject',
+            'url' => $seoImage,
+            'caption' => $seoImageAlt,
+        ]],
+        'logo' => [
+            '@type' => 'ImageObject',
+            'url' => $defaultSeoImage,
+            'caption' => $seoSiteName . ' logosu',
+        ],
         'priceRange' => '₺₺',
         'menu' => $seoMenuUrl,
         'hasMenu' => $seoMenuUrl,
         'sameAs' => [$seoBaseUrl],
         'openingHoursSpecification' => [[
-            '@type' => 'OpeningHoursSpecification',
             'dayOfWeek' => [
                 'Monday',
                 'Tuesday',

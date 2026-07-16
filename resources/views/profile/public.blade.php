@@ -33,6 +33,17 @@
     } elseif (!empty($user->profile_photo_url) && !str_contains($user->profile_photo_url, 'placehold.co')) {
         $profileImageForSchema = $user->profile_photo_url;
     }
+    $profileDescription = trim((string) ($user->bio ?? ''));
+    if ($profileDescription === '') {
+        $profileDescription = __('site.profile_page.meta_description');
+    }
+    if ($profileImageForSchema) {
+        $profileImageForSchema = [
+            '@type' => 'ImageObject',
+            'url' => $profileImageForSchema,
+            'caption' => $profileName . ' profil fotoğrafı',
+        ];
+    }
 
     $sameAs = [];
     $addUrl = function (?string $value) use (&$sameAs) {
@@ -204,6 +215,19 @@
 @endphp
 
 @push('head')
+<meta property="og:type" content="profile">
+<meta property="og:title" content="{{ e($profileName) }} - {{ e(config('app.name', 'Ografi')) }}">
+<meta property="og:description" content="{{ e($profileDescription) }}">
+<meta property="og:url" content="{{ e($profilePageUrl) }}">
+@if($profileImageForSchema)
+    <meta property="og:image" content="{{ e($profileImageForSchema['url']) }}">
+    <meta property="og:image:alt" content="{{ e($profileName . ' profil fotoğrafı') }}">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="{{ e($profileImageForSchema['url']) }}">
+    <meta name="twitter:image:alt" content="{{ e($profileName . ' profil fotoğrafı') }}">
+@endif
+<meta name="twitter:title" content="{{ e($profileName) }} - {{ e(config('app.name', 'Ografi')) }}">
+<meta name="twitter:description" content="{{ e($profileDescription) }}">
 <script type="application/ld+json">
 {!! json_encode($profileSchema, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!}
 </script>

@@ -14,6 +14,8 @@
         'logo' => [
             '@type' => 'ImageObject',
             'url' => $logoUrl,
+            'name' => $siteName . ' logo',
+            'caption' => $siteName . ' logosu',
         ],
     ];
 
