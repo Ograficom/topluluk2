@@ -17,25 +17,25 @@
             display: inline-flex;
             align-items: center;
             gap: 7px;
-            margin: 0 0 26px;
+            margin: 0 0 18px;
             color: #18181b;
-            font-size: 22px;
+            font-size: 18px;
             font-weight: 400;
             line-height: 1;
-            letter-spacing: -1.5px;
+            letter-spacing: -0.04em;
         }
         .simple-auth-brand img {
             display: block;
-            width: 44px;
-            height: 44px;
+            width: 36px;
+            height: 36px;
             object-fit: contain;
         }
         .simple-auth-card {
             position: relative;
             width: 100%;
-            max-width: 400px;
+            max-width: 380px;
             margin: 0;
-            padding: 68px 24px 26px;
+            padding: 48px 20px 22px;
             border: 1px solid #d9d9d9;
             border-radius: 12px;
             background: #fff;
@@ -48,30 +48,31 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            width: 34px;
-            height: 34px;
+            width: 30px;
+            height: 30px;
             padding: 0;
             border: 0;
-            border-radius: 50%;
+            border-radius: 999px;
             background: #f4f4f5;
             color: #18181b;
+            font-size: 16px;
             cursor: pointer;
         }
-        .simple-auth-close svg { width: 20px; height: 20px; }
-        .simple-auth-field { margin-bottom: 22px; }
+        .simple-auth-close svg { width: 18px; height: 18px; }
+        .simple-auth-field { margin-bottom: 20px; }
         .simple-auth-label {
             display: block;
-            margin-bottom: 7px;
+            margin-bottom: 6px;
             color: #111;
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 400;
-            line-height: 1.2;
+            line-height: 1.3;
         }
         .simple-auth-input {
             display: block;
             width: 100%;
-            height: 36px;
-            padding: 0 11px;
+            height: 34px;
+            padding: 0 10px;
             border: 1px solid #dedede;
             border-radius: 6px;
             background: #fff;

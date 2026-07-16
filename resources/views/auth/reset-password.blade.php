@@ -1,360 +1,914 @@
 <x-guest-layout>
     <style>
-        @media (prefers-color-scheme: dark) {
-            .auth-page {
-                background: #020617 !important;
-                color: #fff !important;
+        .simple-auth-page,
+        .simple-auth-page * {
+            box-sizing: border-box;
+        }
+
+        .simple-auth-page {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 28px 16px;
+            background: #f4f4f5;
+            color: #111;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        .simple-auth-brand {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            margin: 0 0 18px;
+            color: #18181b;
+            font-size: 22px;
+            font-weight: 400;
+            line-height: 1;
+            letter-spacing: -0.04em;
+            text-decoration: none;
+        }
+
+        .simple-auth-brand img {
+            display: block;
+            width: 36px;
+            height: 36px;
+            object-fit: contain;
+        }
+
+        .simple-auth-card {
+            position: relative;
+            width: 100%;
+            max-width: 380px;
+            margin: 0;
+            padding: 48px 20px 22px;
+            border: 1px solid #d9d9d9;
+            border-radius: 12px;
+            background: #fff;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, .12);
+        }
+
+        .simple-auth-title {
+            margin: 0 0 8px;
+            color: #18181b;
+            font-size: 15px;
+            font-weight: 500;
+            line-height: 1.3;
+            text-align: left;
+        }
+
+        .simple-auth-description {
+            margin: 0 0 24px;
+            color: #71717a;
+            font-size: 12px;
+            font-weight: 400;
+            line-height: 1.55;
+            text-align: left;
+        }
+
+        .simple-auth-description-email {
+            color: #3f3f46;
+            overflow-wrap: anywhere;
+        }
+
+        .simple-auth-field {
+            margin-bottom: 20px;
+        }
+
+        .simple-auth-label {
+            display: block;
+            margin-bottom: 6px;
+            color: #111;
+            font-size: 12px;
+            font-weight: 400;
+            line-height: 1.2;
+        }
+
+        .simple-auth-input-wrap {
+            position: relative;
+            width: 100%;
+        }
+
+        .simple-auth-input-icon {
+            position: absolute;
+            top: 50%;
+            left: 11px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 14px;
+            height: 14px;
+            color: #71717a;
+            transform: translateY(-50%);
+            pointer-events: none;
+        }
+
+        .simple-auth-input-icon svg {
+            display: block;
+            width: 14px;
+            height: 14px;
+        }
+
+        .simple-auth-input {
+            display: block;
+            width: 100%;
+            height: 36px;
+            padding: 0 11px;
+            border: 1px solid #dedede;
+            border-radius: 6px;
+            background: #fff;
+            color: #111;
+            font-size: 13px;
+            font-weight: 400;
+            outline: none;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, .06);
+        }
+
+        .simple-auth-input.has-left-icon {
+            padding-left: 35px;
+        }
+
+        .simple-auth-input.has-both-icons {
+            padding-right: 40px;
+            padding-left: 35px;
+        }
+
+        .simple-auth-input:focus {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 1px #2563eb;
+        }
+
+        .simple-auth-code {
+            padding: 0 12px;
+            font-size: 16px;
+            letter-spacing: .22em;
+            text-align: center;
+        }
+
+        .simple-auth-eye {
+            position: absolute;
+            top: 50%;
+            right: 4px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            padding: 0;
+            border: 0;
+            border-radius: 5px;
+            background: transparent;
+            color: #71717a;
+            transform: translateY(-50%);
+            cursor: pointer;
+        }
+
+        .simple-auth-eye:hover {
+            background: #f4f4f5;
+            color: #18181b;
+        }
+
+        .simple-auth-eye svg {
+            display: block;
+            width: 16px;
+            height: 16px;
+            flex: 0 0 16px;
+        }
+
+        .simple-auth-eye svg[hidden] {
+            display: none !important;
+        }
+
+        .simple-auth-submit {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            width: 100%;
+            height: 36px;
+            min-height: 36px;
+            margin-top: 4px;
+            padding: 0 12px;
+            border: 0;
+            border-radius: 6px;
+            background: #2563eb;
+            color: #fff;
+            font-size: 12px;
+            font-weight: 400;
+            line-height: 36px;
+            cursor: pointer;
+            box-shadow: none;
+            transition: background-color .2s ease;
+        }
+
+        .simple-auth-submit:hover {
+            background: #1d4ed8;
+            color: #fff;
+        }
+
+        .simple-auth-submit svg {
+            display: block;
+            width: 13px;
+            height: 13px;
+            flex: 0 0 13px;
+        }
+
+        .simple-auth-footer {
+            margin: 32px 0 0;
+            color: #111;
+            font-size: 12px;
+            font-weight: 400;
+            line-height: 1.3;
+            text-align: center;
+        }
+
+        .simple-auth-footer a,
+        .simple-auth-change {
+            color: #71717a;
+            font-size: 12px;
+            font-weight: 400;
+            text-decoration: none;
+        }
+
+        .simple-auth-footer a:hover,
+        .simple-auth-change:hover {
+            color: #111;
+            text-decoration: underline;
+        }
+
+        .simple-auth-change {
+            display: block;
+            width: fit-content;
+            margin: 28px auto 0;
+            text-align: center;
+        }
+
+        @media (max-width: 480px) {
+            .simple-auth-page {
+                justify-content: flex-start;
+                padding-top: 24px;
             }
 
-            .auth-card {
-                background: #0f172a !important;
-                border-color: #1e293b !important;
-                box-shadow: 0 24px 80px rgba(0, 0, 0, .55) !important;
+            .simple-auth-brand {
+                margin-bottom: 24px;
+                font-size: 21px;
             }
 
-            .auth-logo-wrap {
-                background: transparent !important;
+            .simple-auth-card {
+                padding: 52px 24px 24px;
             }
+        }
 
-            .auth-badge {
-                background: rgba(59, 130, 246, .16) !important;
-                border-color: rgba(59, 130, 246, .35) !important;
-                color: #93c5fd !important;
-            }
+        html body .simple-auth-page .simple-auth-brand:not(#comments *):not(#app *) {
+            font-size: 22px !important;
+            font-weight: 400 !important;
+            line-height: 1 !important;
+        }
 
-            .auth-title {
-                color: #fff !important;
-            }
+        html body .simple-auth-page .simple-auth-title:not(#comments *):not(#app *) {
+            margin: 0 0 8px !important;
+            color: #18181b !important;
+            font-size: 15px !important;
+            font-weight: 500 !important;
+            line-height: 1.3 !important;
+            text-align: left !important;
+        }
 
-            .auth-muted {
-                color: #94a3b8 !important;
-            }
+        html body .simple-auth-page .simple-auth-description:not(#comments *):not(#app *) {
+            margin: 0 0 24px !important;
+            color: #71717a !important;
+            font-size: 12px !important;
+            font-weight: 400 !important;
+            line-height: 1.55 !important;
+            text-align: left !important;
+        }
 
-            .auth-label {
-                color: #e2e8f0 !important;
-            }
+        html body .simple-auth-page .simple-auth-label:not(#comments *):not(#app *) {
+            margin-bottom: 6px !important;
+            color: #111 !important;
+            font-size: 12px !important;
+            font-weight: 400 !important;
+            line-height: 1.2 !important;
+        }
 
-            .auth-input {
-                background: #020617 !important;
-                border-color: #334155 !important;
-                color: #fff !important;
-            }
+        html body .simple-auth-page .simple-auth-input:not(#comments *):not(#app *) {
+            height: 36px !important;
+            border: 1px solid #dedede !important;
+            border-radius: 6px !important;
+            background: #fff !important;
+            color: #111 !important;
+            font-size: 13px !important;
+            font-weight: 400 !important;
+            line-height: normal !important;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, .06) !important;
+        }
 
-            .auth-input::placeholder {
-                color: #64748b !important;
-            }
+        html body .simple-auth-page .simple-auth-input:not(#comments *):not(#app *):focus {
+            border-color: #2563eb !important;
+            box-shadow: 0 0 0 1px #2563eb !important;
+        }
 
-            .auth-input:hover {
-                border-color: #475569 !important;
-            }
+        html body .simple-auth-page .simple-auth-code:not(#comments *):not(#app *) {
+            padding: 0 12px !important;
+            font-size: 16px !important;
+            letter-spacing: .22em !important;
+            text-align: center !important;
+        }
 
-            .auth-input:focus {
-                border-color: #3b82f6 !important;
-                box-shadow: 0 0 0 4px rgba(59, 130, 246, .18) !important;
-            }
+        html body .simple-auth-page .simple-auth-eye:not(#comments *):not(#app *) {
+            width: 28px !important;
+            height: 28px !important;
+            min-width: 28px !important;
+            min-height: 28px !important;
+            padding: 0 !important;
+            border: 0 !important;
+            border-radius: 5px !important;
+            background: transparent !important;
+            color: #71717a !important;
+            box-shadow: none !important;
+        }
 
-            .auth-input-icon {
-                color: #64748b !important;
-            }
+        html body .simple-auth-page .simple-auth-eye:not(#comments *):not(#app *):hover {
+            background: #f4f4f5 !important;
+            color: #18181b !important;
+        }
 
-            .auth-eye-button {
-                background: transparent !important;
-                color: #94a3b8 !important;
-            }
+        html body .simple-auth-page .simple-auth-submit:not(#comments *):not(#app *) {
+            height: 36px !important;
+            min-height: 36px !important;
+            padding: 0 12px !important;
+            border: 0 !important;
+            border-radius: 6px !important;
+            background: #2563eb !important;
+            color: #fff !important;
+            font-size: 12px !important;
+            font-weight: 400 !important;
+            line-height: 36px !important;
+            box-shadow: none !important;
+        }
 
-            .auth-eye-button:hover {
-                background: #1e293b !important;
-                color: #fff !important;
-            }
+        html body .simple-auth-page .simple-auth-submit:not(#comments *):not(#app *):hover {
+            background: #1d4ed8 !important;
+            color: #fff !important;
+        }
 
-            .auth-submit {
-                background: linear-gradient(135deg, #3b82f6, #06b6d4) !important;
-                box-shadow: 0 18px 35px rgba(59, 130, 246, .28) !important;
-                color: #fff !important;
-            }
+        html body .simple-auth-page .simple-auth-footer:not(#comments *):not(#app *),
+        html body .simple-auth-page .simple-auth-footer a:not(#comments *):not(#app *),
+        html body .simple-auth-page .simple-auth-change:not(#comments *):not(#app *) {
+            font-size: 12px !important;
+            font-weight: 400 !important;
+            line-height: 1.3 !important;
+        }
 
-            .auth-submit:hover {
-                background: linear-gradient(135deg, #60a5fa, #22d3ee) !important;
-            }
-
-            .auth-link {
-                color: #60a5fa !important;
-            }
-
-            .auth-link:hover {
-                color: #93c5fd !important;
-            }
-
-            .auth-footer-box {
-                background: #020617 !important;
-                border-color: #1e293b !important;
-            }
-
-            .auth-status {
-                background: rgba(16, 185, 129, .12) !important;
-                border-color: rgba(16, 185, 129, .30) !important;
-                color: #6ee7b7 !important;
-            }
-
-            .auth-error {
-                background: rgba(244, 63, 94, .10) !important;
-                border-color: rgba(244, 63, 94, .30) !important;
-                color: #fda4af !important;
-            }
-
-            .auth-error-title {
-                color: #fecdd3 !important;
+        @media (max-width: 480px) {
+            html body .simple-auth-page .simple-auth-brand:not(#comments *):not(#app *) {
+                font-size: 21px !important;
             }
         }
     </style>
 
-    <main class="auth-page h-screen overflow-hidden bg-slate-100 px-4 py-4 text-slate-950">
-        <section class="flex h-full w-full items-center justify-center">
-            <div class="auth-card w-full max-w-md rounded-3xl border border-slate-200 bg-white p-6 shadow-xl">
+    <main class="simple-auth-page">
+        <a class="simple-auth-brand" href="{{ route('home') }}">
+            <img src="{{ asset('images/ografi-logo.png') }}?v=20260714a" alt="Ografi">
+            <span>Ografi</span>
+        </a>
 
-                {{-- LOGO / HEADER --}}
-                <div class="mb-6 text-center">
-                    <div class="auth-logo-wrap mx-auto mb-4 flex h-20 w-20 items-center justify-center rounded-2xl bg-white">
-                        <x-application-logo class="block h-12 w-auto object-contain" />
-                    </div>
+        <section class="simple-auth-card" aria-label="Üyelik oluşturma">
+            @if (session('status'))
+                <div
+                    role="alert"
+                    style="
+                        all: initial !important;
+                        display: grid !important;
+                        grid-template-columns: 13px minmax(0, 1fr) !important;
+                        align-items: start !important;
+                        column-gap: 8px !important;
+                        width: 100% !important;
+                        margin: 0 0 14px !important;
+                        padding: 10px 11px !important;
+                        box-sizing: border-box !important;
+                        border: 1px solid #d4d4d8 !important;
+                        border-radius: 7px !important;
+                        background: #ffffff !important;
+                        color: #18181b !important;
+                        font-family: Arial, Helvetica, sans-serif !important;
+                    "
+                >
+                    <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="#16a34a"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        aria-hidden="true"
+                        style="
+                            all: initial !important;
+                            display: block !important;
+                            width: 13px !important;
+                            height: 13px !important;
+                            margin-top: 1px !important;
+                        "
+                    >
+                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                        <path d="m9 11 3 3L22 4"/>
+                    </svg>
 
-                    <div class="auth-badge mb-3 inline-flex items-center gap-2 rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-xs font-black text-blue-700">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none">
-                            <path d="M12 22s8-4 8-10V5l-8-3l-8 3v7c0 6 8 10 8 10Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                        Güvenli işlem
-                    </div>
-
-                    <h2 class="auth-title text-2xl font-black tracking-tight text-slate-950">
-                        {{ __('site.auth.reset_title') }}
-                    </h2>
-
-                    <p class="auth-muted mt-2 text-sm leading-6 text-slate-500">
-                        {{ __('site.auth.reset_subtitle') }}
-                    </p>
-                </div>
-
-                {{-- STATUS --}}
-                @if (session('status'))
-                    <div class="auth-status mb-3 rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm font-semibold text-emerald-800">
-                        {{ session('status') }}
-                    </div>
-                @endif
-
-                {{-- ERRORS --}}
-                @if ($errors->any())
-                    <div class="auth-error mb-3 rounded-2xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700">
-                        <div class="auth-error-title mb-2 font-black text-rose-800">
-                            Şifre güncellenemedi
+                    <div style="all:initial!important;display:block!important;min-width:0!important;font-family:Arial,Helvetica,sans-serif!important;">
+                        <div
+                            style="
+                                all: initial !important;
+                                display: block !important;
+                                margin: 0 0 2px !important;
+                                color: #18181b !important;
+                                font-family: Arial, Helvetica, sans-serif !important;
+                                font-size: 11px !important;
+                                font-weight: 500 !important;
+                                line-height: 14px !important;
+                            "
+                        >
+                            İşlem başarılı
                         </div>
 
-                        <ul class="list-disc space-y-1 ps-5">
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
+                        <div
+                            style="
+                                all: initial !important;
+                                display: block !important;
+                                margin: 0 !important;
+                                color: #71717a !important;
+                                font-family: Arial, Helvetica, sans-serif !important;
+                                font-size: 10px !important;
+                                font-weight: 400 !important;
+                                line-height: 14px !important;
+                            "
+                        >
+                            {{ session('status') }}
+                        </div>
                     </div>
-                @endif
+                </div>
+            @endif
 
-                <form method="POST" action="{{ route('password.update') }}" class="space-y-3" novalidate>
+            @if ($errors->any())
+                <div
+                    role="alert"
+                    style="
+                        all: initial !important;
+                        display: grid !important;
+                        grid-template-columns: 13px minmax(0, 1fr) !important;
+                        align-items: start !important;
+                        column-gap: 8px !important;
+                        width: 100% !important;
+                        margin: 0 0 14px !important;
+                        padding: 10px 11px !important;
+                        box-sizing: border-box !important;
+                        border: 1px solid #fecaca !important;
+                        border-radius: 7px !important;
+                        background: #ffffff !important;
+                        color: #dc2626 !important;
+                        font-family: Arial, Helvetica, sans-serif !important;
+                    "
+                >
+                    <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="#dc2626"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        aria-hidden="true"
+                        style="
+                            all: initial !important;
+                            display: block !important;
+                            width: 13px !important;
+                            height: 13px !important;
+                            margin-top: 1px !important;
+                        "
+                    >
+                        <circle cx="12" cy="12" r="10"/>
+                        <line x1="12" x2="12" y1="8" y2="12"/>
+                        <line x1="12" x2="12.01" y1="16" y2="16"/>
+                    </svg>
+
+                    <div style="all:initial!important;display:block!important;min-width:0!important;font-family:Arial,Helvetica,sans-serif!important;">
+                        <div
+                            style="
+                                all: initial !important;
+                                display: block !important;
+                                margin: 0 0 2px !important;
+                                color: #dc2626 !important;
+                                font-family: Arial, Helvetica, sans-serif !important;
+                                font-size: 11px !important;
+                                font-weight: 500 !important;
+                                line-height: 14px !important;
+                            "
+                        >
+                            İşlem başarısız
+                        </div>
+
+                        <div
+                            style="
+                                all: initial !important;
+                                display: block !important;
+                                margin: 0 !important;
+                                color: #b91c1c !important;
+                                font-family: Arial, Helvetica, sans-serif !important;
+                                font-size: 10px !important;
+                                font-weight: 400 !important;
+                                line-height: 14px !important;
+                            "
+                        >
+                            @foreach ($errors->all() as $error)
+                                <div
+                                    style="
+                                        all: initial !important;
+                                        display: block !important;
+                                        margin: 0 !important;
+                                        color: #b91c1c !important;
+                                        font-family: Arial, Helvetica, sans-serif !important;
+                                        font-size: 10px !important;
+                                        font-weight: 400 !important;
+                                        line-height: 14px !important;
+                                    "
+                                >
+                                    {{ $error }}
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+                </div>
+            @endif
+
+            @if ($stage === 'email')
+                <h1 class="simple-auth-title">Üyelik oluşturun</h1>
+
+                <p class="simple-auth-description">
+                    Önce e-posta adresinizi doğrulayın. Kod doğrulanmadan üyelik oluşturulmaz.
+                </p>
+
+                <form method="POST" action="{{ route('register.email') }}" novalidate>
                     @csrf
 
-                    <input type="hidden" name="token" value="{{ $request->route('token') }}">
+                    <div class="simple-auth-field">
+                        <label class="simple-auth-label" for="email">E-posta</label>
 
-                    {{-- E-POSTA --}}
-                    <div>
-                        <label for="email" class="auth-label mb-1.5 block text-sm font-black text-slate-800">
-                            E-posta
-                        </label>
-
-                        <div class="relative">
-                            <span class="auth-input-icon pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none">
-                                    <path d="M4 6h16v12H4V6Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
-                                    <path d="m4 7l8 6l8-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                        <div class="simple-auth-input-wrap">
+                            <span class="simple-auth-input-icon" aria-hidden="true">
+                                <svg viewBox="0 0 24 24" fill="none">
+                                    <rect
+                                        x="3"
+                                        y="5"
+                                        width="18"
+                                        height="14"
+                                        rx="2"
+                                        stroke="currentColor"
+                                        stroke-width="1.8"
+                                    />
+                                    <path
+                                        d="m3 7 9 6 9-6"
+                                        stroke="currentColor"
+                                        stroke-width="1.8"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                    />
                                 </svg>
                             </span>
 
                             <input
+                                class="simple-auth-input has-left-icon"
                                 id="email"
                                 name="email"
                                 type="email"
+                                value="{{ old('email') }}"
                                 autocomplete="email"
-                                placeholder="ornek@mail.com"
-                                value="{{ old('email', $request->email) }}"
-                                class="auth-input block w-full rounded-2xl border border-slate-200 bg-white py-3 pl-12 pr-4 text-sm font-semibold text-slate-900 shadow-sm outline-none transition placeholder:text-slate-400 hover:border-slate-300 focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
+                                autofocus
+                                required
                             >
                         </div>
-
-                        @error('email')
-                            <p class="mt-1.5 text-xs font-semibold text-rose-600">
-                                {{ $message }}
-                            </p>
-                        @enderror
                     </div>
 
-                    {{-- YENİ ŞİFRE --}}
-                    <div>
-                        <label for="password" class="auth-label mb-1.5 block text-sm font-black text-slate-800">
-                            {{ __('site.auth.new_password') }}
-                        </label>
+                    <button class="simple-auth-submit" type="submit">
+                        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                            <path
+                                d="M22 2 11 13"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                            />
+                            <path
+                                d="m22 2-7 20-4-9-9-4 20-7Z"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                            />
+                        </svg>
+                        Doğrulama Kodu Gönder
+                    </button>
+                </form>
 
-                        <div class="relative">
-                            <span class="auth-input-icon pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none">
-                                    <path d="M7 11V8a5 5 0 0 1 10 0v3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-                                    <path d="M6 11h12a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-6a2 2 0 0 1 2-2Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+                <p class="simple-auth-footer">
+                    Hesabınız var mı?
+                    <a href="{{ route('login') }}">Giriş yapın</a>
+                </p>
+            @elseif ($stage === 'verify')
+                <h1 class="simple-auth-title">Doğrulama kodunu girin</h1>
+
+                <p class="simple-auth-description">
+                    <span class="simple-auth-description-email">{{ $pending->email }}</span>
+                    adresine gönderilen 6 haneli kodu girin.
+                </p>
+
+                <form method="POST" action="{{ route('register.verify.submit') }}" novalidate>
+                    @csrf
+
+                    <div class="simple-auth-field">
+                        <label class="simple-auth-label" for="code">Doğrulama kodu</label>
+
+                        <input
+                            class="simple-auth-input simple-auth-code"
+                            id="code"
+                            name="code"
+                            type="text"
+                            value="{{ old('code') }}"
+                            inputmode="numeric"
+                            autocomplete="one-time-code"
+                            maxlength="6"
+                            pattern="[0-9]{6}"
+                            autofocus
+                            required
+                        >
+                    </div>
+
+                    <button class="simple-auth-submit" type="submit">
+                        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                            <path
+                                d="m5 12 4 4L19 6"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                            />
+                        </svg>
+                        Kodu Doğrula
+                    </button>
+                </form>
+
+                <a class="simple-auth-change" href="{{ route('register') }}">
+                    E-posta adresini değiştir
+                </a>
+            @else
+                <h1 class="simple-auth-title">Üyeliğinizi tamamlayın</h1>
+
+                <p class="simple-auth-description">
+                    E-postanız doğrulandı. Şimdi adınızı ve giriş şifrenizi oluşturun.
+                </p>
+
+                <form method="POST" action="{{ route('register.complete.submit') }}" novalidate>
+                    @csrf
+
+                    <div class="simple-auth-field">
+                        <label class="simple-auth-label" for="name">Ad Soyad</label>
+
+                        <div class="simple-auth-input-wrap">
+                            <span class="simple-auth-input-icon" aria-hidden="true">
+                                <svg viewBox="0 0 24 24" fill="none">
+                                    <circle
+                                        cx="12"
+                                        cy="8"
+                                        r="4"
+                                        stroke="currentColor"
+                                        stroke-width="1.8"
+                                    />
+                                    <path
+                                        d="M4 21a8 8 0 0 1 16 0"
+                                        stroke="currentColor"
+                                        stroke-width="1.8"
+                                        stroke-linecap="round"
+                                    />
                                 </svg>
                             </span>
 
                             <input
+                                class="simple-auth-input has-left-icon"
+                                id="name"
+                                name="name"
+                                type="text"
+                                value="{{ old('name') }}"
+                                autocomplete="name"
+                                autofocus
+                                required
+                            >
+                        </div>
+                    </div>
+
+                    <div class="simple-auth-field">
+                        <label class="simple-auth-label" for="password">Şifre</label>
+
+                        <div class="simple-auth-input-wrap">
+                            <span class="simple-auth-input-icon" aria-hidden="true">
+                                <svg viewBox="0 0 24 24" fill="none">
+                                    <path
+                                        d="M7 11V8a5 5 0 0 1 10 0v3"
+                                        stroke="currentColor"
+                                        stroke-width="1.8"
+                                        stroke-linecap="round"
+                                    />
+                                    <path
+                                        d="M6 11h12a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-6a2 2 0 0 1 2-2Z"
+                                        stroke="currentColor"
+                                        stroke-width="1.8"
+                                        stroke-linejoin="round"
+                                    />
+                                </svg>
+                            </span>
+
+                            <input
+                                class="simple-auth-input has-both-icons"
                                 id="password"
                                 name="password"
                                 type="password"
                                 autocomplete="new-password"
-                                placeholder="••••••••"
-                                class="auth-input block w-full rounded-2xl border border-slate-200 bg-white py-3 pl-12 pr-14 text-sm font-semibold text-slate-900 shadow-sm outline-none transition placeholder:text-slate-400 hover:border-slate-300 focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
+                                required
                             >
 
                             <button
-                                id="toggle1"
+                                class="simple-auth-eye"
                                 type="button"
-                                class="auth-eye-button absolute right-2 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-xl text-slate-500 transition hover:bg-slate-100 hover:text-slate-900 focus:outline-none focus:ring-4 focus:ring-slate-100"
-                                aria-label="{{ __('site.auth.show_password') }}"
+                                data-password-toggle="password"
+                                aria-label="Şifreyi göster"
+                                aria-pressed="false"
                             >
-                                <svg id="eyeOpen1" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none">
-                                    <path d="M2 12s3.5-6 10-6s10 6 10 6s-3.5 6-10 6S2 12 2 12Z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-                                    <path d="M12 15a3 3 0 1 0 0-6a3 3 0 0 0 0 6Z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                                <svg data-eye-open viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                    <path
+                                        d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12Z"
+                                        stroke="currentColor"
+                                        stroke-width="1.8"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                    />
+                                    <circle
+                                        cx="12"
+                                        cy="12"
+                                        r="3"
+                                        stroke="currentColor"
+                                        stroke-width="1.8"
+                                    />
                                 </svg>
 
-                                <svg id="eyeClosed1" xmlns="http://www.w3.org/2000/svg" class="hidden h-5 w-5" viewBox="0 0 24 24" fill="none">
-                                    <path d="M3 3l18 18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-                                    <path d="M10.7 10.7a2 2 0 0 0 2.6 2.6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-                                    <path d="M9.88 5.18A10.94 10.94 0 0 1 12 5c6.5 0 10 7 10 7a18.5 18.5 0 0 1-2.18 3.1M6.61 6.61C3.75 8.54 2 12 2 12s3.5 7 10 7a10.8 10.8 0 0 0 4.38-.9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                                <svg data-eye-closed viewBox="0 0 24 24" fill="none" aria-hidden="true" hidden style="display:none;">
+                                    <path
+                                        d="M3 3l18 18"
+                                        stroke="currentColor"
+                                        stroke-width="1.8"
+                                        stroke-linecap="round"
+                                    />
+                                    <path
+                                        d="M10.7 10.7a2 2 0 0 0 2.6 2.6"
+                                        stroke="currentColor"
+                                        stroke-width="1.8"
+                                        stroke-linecap="round"
+                                    />
+                                    <path
+                                        d="M9.88 5.18A10.94 10.94 0 0 1 12 5c6.5 0 10 7 10 7a18.5 18.5 0 0 1-2.18 3.1M6.61 6.61C3.75 8.54 2 12 2 12s3.5 7 10 7a10.8 10.8 0 0 0 4.38-.9"
+                                        stroke="currentColor"
+                                        stroke-width="1.8"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                    />
                                 </svg>
                             </button>
                         </div>
-
-                        @error('password')
-                            <p class="mt-1.5 text-xs font-semibold text-rose-600">
-                                {{ $message }}
-                            </p>
-                        @enderror
                     </div>
 
-                    {{-- YENİ ŞİFRE TEKRAR --}}
-                    <div>
-                        <label for="password_confirmation" class="auth-label mb-1.5 block text-sm font-black text-slate-800">
-                            {{ __('site.auth.new_password_repeat') }}
+                    <div class="simple-auth-field">
+                        <label class="simple-auth-label" for="password_confirmation">
+                            Şifre tekrar
                         </label>
 
-                        <div class="relative">
-                            <span class="auth-input-icon pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none">
-                                    <path d="M9 12l2 2l4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-                                    <path d="M7 11V8a5 5 0 0 1 10 0v3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-                                    <path d="M6 11h12a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-6a2 2 0 0 1 2-2Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+                        <div class="simple-auth-input-wrap">
+                            <span class="simple-auth-input-icon" aria-hidden="true">
+                                <svg viewBox="0 0 24 24" fill="none">
+                                    <path
+                                        d="M7 11V8a5 5 0 0 1 10 0v3"
+                                        stroke="currentColor"
+                                        stroke-width="1.8"
+                                        stroke-linecap="round"
+                                    />
+                                    <path
+                                        d="M6 11h12a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-6a2 2 0 0 1 2-2Z"
+                                        stroke="currentColor"
+                                        stroke-width="1.8"
+                                        stroke-linejoin="round"
+                                    />
                                 </svg>
                             </span>
 
                             <input
+                                class="simple-auth-input has-both-icons"
                                 id="password_confirmation"
                                 name="password_confirmation"
                                 type="password"
                                 autocomplete="new-password"
-                                placeholder="••••••••"
-                                class="auth-input block w-full rounded-2xl border border-slate-200 bg-white py-3 pl-12 pr-14 text-sm font-semibold text-slate-900 shadow-sm outline-none transition placeholder:text-slate-400 hover:border-slate-300 focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
+                                required
                             >
 
                             <button
-                                id="toggle2"
+                                class="simple-auth-eye"
                                 type="button"
-                                class="auth-eye-button absolute right-2 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-xl text-slate-500 transition hover:bg-slate-100 hover:text-slate-900 focus:outline-none focus:ring-4 focus:ring-slate-100"
-                                aria-label="{{ __('site.auth.show_password') }}"
+                                data-password-toggle="password_confirmation"
+                                aria-label="Şifreyi göster"
+                                aria-pressed="false"
                             >
-                                <svg id="eyeOpen2" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none">
-                                    <path d="M2 12s3.5-6 10-6s10 6 10 6s-3.5 6-10 6S2 12 2 12Z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-                                    <path d="M12 15a3 3 0 1 0 0-6a3 3 0 0 0 0 6Z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                                <svg data-eye-open viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                    <path
+                                        d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12Z"
+                                        stroke="currentColor"
+                                        stroke-width="1.8"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                    />
+                                    <circle
+                                        cx="12"
+                                        cy="12"
+                                        r="3"
+                                        stroke="currentColor"
+                                        stroke-width="1.8"
+                                    />
                                 </svg>
 
-                                <svg id="eyeClosed2" xmlns="http://www.w3.org/2000/svg" class="hidden h-5 w-5" viewBox="0 0 24 24" fill="none">
-                                    <path d="M3 3l18 18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-                                    <path d="M10.7 10.7a2 2 0 0 0 2.6 2.6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-                                    <path d="M9.88 5.18A10.94 10.94 0 0 1 12 5c6.5 0 10 7 10 7a18.5 18.5 0 0 1-2.18 3.1M6.61 6.61C3.75 8.54 2 12 2 12s3.5 7 10 7a10.8 10.8 0 0 0 4.38-.9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                                <svg data-eye-closed viewBox="0 0 24 24" fill="none" aria-hidden="true" hidden style="display:none;">
+                                    <path
+                                        d="M3 3l18 18"
+                                        stroke="currentColor"
+                                        stroke-width="1.8"
+                                        stroke-linecap="round"
+                                    />
+                                    <path
+                                        d="M10.7 10.7a2 2 0 0 0 2.6 2.6"
+                                        stroke="currentColor"
+                                        stroke-width="1.8"
+                                        stroke-linecap="round"
+                                    />
+                                    <path
+                                        d="M9.88 5.18A10.94 10.94 0 0 1 12 5c6.5 0 10 7 10 7a18.5 18.5 0 0 1-2.18 3.1M6.61 6.61C3.75 8.54 2 12 2 12s3.5 7 10 7a10.8 10.8 0 0 0 4.38-.9"
+                                        stroke="currentColor"
+                                        stroke-width="1.8"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                    />
                                 </svg>
                             </button>
                         </div>
-
-                        @error('password_confirmation')
-                            <p class="mt-1.5 text-xs font-semibold text-rose-600">
-                                {{ $message }}
-                            </p>
-                        @enderror
                     </div>
 
-                    {{-- SUBMIT --}}
-                    <button
-                        type="submit"
-                        class="auth-submit inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-blue-600 px-4 py-3 text-sm font-black text-white shadow-lg shadow-blue-200 transition hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-100 disabled:cursor-not-allowed disabled:opacity-60"
-                    >
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none">
-                            <path d="M12 15v2m-6 4h12a2 2 0 0 0 2-2v-6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2Zm10-10V7a4 4 0 0 0-8 0v4h8Z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    <button class="simple-auth-submit" type="submit">
+                        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                            <path
+                                d="M12 5v14M5 12h14"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                            />
                         </svg>
-                        {{ __('site.auth.update_password') }}
+                        Üyeliği Oluştur
                     </button>
                 </form>
-
-                {{-- FOOTER --}}
-                <div class="auth-footer-box mt-4 rounded-2xl border border-slate-200 bg-slate-50 px-5 py-4">
-                    <div class="flex items-center justify-between gap-3 text-sm">
-                        <a href="{{ route('password.request') }}" class="auth-link font-black text-blue-600 transition hover:text-blue-700">
-                            {{ __('site.auth.back') }}
-                        </a>
-
-                        <a href="{{ route('login') }}" class="auth-link font-black text-blue-600 transition hover:text-blue-700">
-                            {{ __('site.auth.back_to_login') }}
-                        </a>
-                    </div>
-                </div>
-            </div>
+            @endif
         </section>
     </main>
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            const pass1 = document.getElementById('password');
-            const pass2 = document.getElementById('password_confirmation');
-            const toggle1 = document.getElementById('toggle1');
-            const toggle2 = document.getElementById('toggle2');
+            document.querySelectorAll('[data-password-toggle]').forEach(function (button) {
+                const inputId = button.getAttribute('data-password-toggle');
+                const input = document.getElementById(inputId);
+                const eyeOpen = button.querySelector('[data-eye-open]');
+                const eyeClosed = button.querySelector('[data-eye-closed]');
 
-            const eyeOpen1 = document.getElementById('eyeOpen1');
-            const eyeClosed1 = document.getElementById('eyeClosed1');
-            const eyeOpen2 = document.getElementById('eyeOpen2');
-            const eyeClosed2 = document.getElementById('eyeClosed2');
-
-            function togglePassword(input, openIcon, closedIcon) {
-                if (!input) return;
-
-                const isPassword = input.type === 'password';
-                input.type = isPassword ? 'text' : 'password';
-
-                if (openIcon && closedIcon) {
-                    openIcon.classList.toggle('hidden', isPassword);
-                    closedIcon.classList.toggle('hidden', !isPassword);
+                if (!input || !eyeOpen || !eyeClosed) {
+                    return;
                 }
-            }
 
-            if (toggle1 && pass1) {
-                toggle1.addEventListener('click', function () {
-                    togglePassword(pass1, eyeOpen1, eyeClosed1);
-                });
-            }
+                button.addEventListener('click', function () {
+                    const showPassword = input.type === 'password';
 
-            if (toggle2 && pass2) {
-                toggle2.addEventListener('click', function () {
-                    togglePassword(pass2, eyeOpen2, eyeClosed2);
+                    input.type = showPassword ? 'text' : 'password';
+
+                    eyeOpen.hidden = showPassword;
+                    eyeClosed.hidden = !showPassword;
+
+                    eyeOpen.style.display = showPassword ? 'none' : 'block';
+                    eyeClosed.style.display = showPassword ? 'block' : 'none';
+
+                    button.setAttribute('aria-pressed', showPassword ? 'true' : 'false');
+                    button.setAttribute(
+                        'aria-label',
+                        showPassword ? 'Şifreyi gizle' : 'Şifreyi göster'
+                    );
                 });
-            }
+            });
         });
     </script>
 </x-guest-layout>

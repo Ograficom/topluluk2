@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'failed' => 'Bu bilgiler kayitlarimizla eslesmiyor.',
-    'password' => 'Sifre hatali.',
-    'throttle' => 'Cok fazla giris denemesi. Lutfen :seconds saniye sonra tekrar deneyin.',
+    'failed' => 'Bu bilgiler kayıtlarımızla eşleşmiyor.',
+    'password' => 'Şifre hatalı.',
+    'throttle' => 'Çok fazla giriş denemesi. Lütfen :seconds saniye sonra tekrar deneyin.',
 ];

@@ -1445,10 +1445,12 @@
         $authSingle = request()->routeIs(
             'login',
             'register',
+            'register.*',
             'password.*',
             'forgot-password',
             'reset-password',
-            'two-factor.*'
+            'two-factor.*',
+            'verification.*'
         );
     @endphp
     <body class="bg-gray-100 dark:bg-gray-900 text-text-light dark:text-text-dark font-sans antialiased transition-colors duration-200 theme-minimal alma-app @auth logged-in @else logged-out @endauth {{ $authSingle ? 'auth-single' : '' }}"
