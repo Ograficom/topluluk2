@@ -1513,7 +1513,9 @@
             <x-mobile-bottom-nav />
         @endunless
 
-        <x-cookie-banner />
+        @unless($authSingle)
+            <x-cookie-banner />
+        @endunless
 
     @include('partials.google-one-tap')
     @include('partials.mention-assets')

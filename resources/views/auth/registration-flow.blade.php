@@ -1,25 +1,25 @@
 <x-guest-layout>
     <style>
-        .reg-page { min-height:100vh; display:flex; align-items:flex-start; justify-content:center; padding:44px 18px 30px; background:#f5f5f6; color:#18181b; font-family:Arial,Helvetica,sans-serif; }
-        .reg-shell { width:100%; max-width:400px; }
-        .reg-brand { display:flex; align-items:center; justify-content:center; gap:6px; margin-bottom:25px; color:#18181b; font-size:20px; font-weight:400; text-decoration:none; }
-        .reg-brand img { width:38px; height:38px; object-fit:contain; transform:scale(1.3); }
-        .reg-card { position:relative; padding:28px 24px; border:1px solid #d9d9dd; border-radius:12px; background:#fff; box-shadow:0 1px 2px rgba(0,0,0,.05); }
-        .reg-close { position:absolute; top:13px; right:13px; display:flex; width:36px; height:36px; align-items:center; justify-content:center; border:0; border-radius:999px; background:#f4f4f5; color:#52525b; font-size:24px; line-height:1; text-decoration:none; }
-        .reg-title { margin:4px 42px 8px; font-size:17px; line-height:1.35; font-weight:500; text-align:center; }
-        .reg-copy { margin:0 0 22px; color:#71717a; font-size:12.5px; line-height:1.55; text-align:center; }
-        .reg-label { display:block; margin:0 0 7px; font-size:12.5px; font-weight:400; }
-        .reg-field { width:100%; height:42px; margin:0 0 16px; padding:0 11px; border:1px solid #d4d4d8; border-radius:6px; background:#fff; color:#18181b; font-size:13px; font-weight:400; outline:none; }
-        .reg-field:focus { border-color:#2563eb; box-shadow:0 0 0 2px rgba(37,99,235,.11); }
-        .reg-code { height:48px; font-size:20px; letter-spacing:.3em; text-align:center; }
-        .reg-button { width:100%; height:38px; border:0; border-radius:6px; background:#2563eb; color:#fff; font-size:12.5px; font-weight:500; cursor:pointer; }
-        .reg-button:hover { background:#1d4ed8; }
-        .reg-error { margin:-9px 0 13px; color:#dc2626; font-size:12px; }
-        .reg-footer { margin:22px 0 0; color:#18181b; font-size:12px; text-align:center; }
-        .reg-footer a { color:#71717a; text-decoration:none; }
-        .reg-change { display:block; margin:15px auto 0; color:#2563eb; font-size:12px; text-align:center; text-decoration:none; }
-        @media(max-width:640px){ .reg-page{padding-top:22px}.reg-brand{margin-bottom:18px}.reg-card{padding:26px 21px} }
-    </style>
+            .reg-page { min-height:100vh; display:flex; align-items:center; justify-content:center; padding:24px 18px; background:#eef5ff; color:#111827; font-family:Arial,Helvetica,sans-serif; }
+            .reg-shell { width:100%; max-width:420px; }
+            .reg-brand { display:flex; align-items:center; justify-content:center; gap:8px; margin-bottom:22px; color:#111827; font-size:22px; font-weight:700; text-decoration:none; }
+            .reg-brand img { width:40px; height:40px; object-fit:contain; }
+            .reg-card { position:relative; padding:32px 26px; border:1px solid #dbeafe; border-radius:18px; background:#ffffff; box-shadow:0 20px 50px rgba(15,23,42,.08); }
+            .reg-close { position:absolute; top:16px; right:16px; display:flex; width:36px; height:36px; align-items:center; justify-content:center; border:0; border-radius:999px; background:#f8fafc; color:#475569; font-size:20px; line-height:1; text-decoration:none; }
+            .reg-title { margin:0 0 10px; font-size:20px; line-height:1.3; font-weight:700; text-align:center; color:#0f172a; }
+            .reg-copy { margin:0 0 24px; color:#475569; font-size:13px; line-height:1.6; text-align:center; }
+            .reg-label { display:block; margin:0 0 8px; color:#475569; font-size:13px; font-weight:500; }
+            .reg-field { width:100%; height:44px; margin:0 0 18px; padding:0 14px; border:1px solid #cbd5e1; border-radius:12px; background:#f8fafc; color:#0f172a; font-size:14px; outline:none; transition:all .2s ease; }
+            .reg-field:focus { border-color:#2563eb; box-shadow:0 0 0 3px rgba(37,99,235,.12); }
+            .reg-code { height:50px; font-size:20px; letter-spacing:.24em; text-align:center; }
+            .reg-button { width:100%; min-height:44px; border:0; border-radius:12px; background:#2563eb; color:#ffffff; font-size:14px; font-weight:600; cursor:pointer; transition:background .2s ease; }
+            .reg-button:hover { background:#1d4ed8; }
+            .reg-error { margin:-10px 0 14px; color:#dc2626; font-size:12px; }
+            .reg-footer { margin:24px 0 0; color:#475569; font-size:13px; text-align:center; }
+            .reg-footer a { color:#2563eb; text-decoration:none; font-weight:600; }
+            .reg-change { display:block; margin:16px auto 0; color:#2563eb; font-size:13px; text-align:center; text-decoration:none; font-weight:600; }
+            @media(max-width:640px){ .reg-page{padding:18px 14px}.reg-card{padding:28px 22px}.reg-brand{margin-bottom:18px} }
+        </style>
 
     <main class="reg-page">
         <div class="reg-shell">
