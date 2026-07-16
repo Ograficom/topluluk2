@@ -110,5 +110,6 @@
     "You may delete any of your existing tokens if they are no longer needed.": "Artık ihtiyacınız yoksa mevcut anahtarlarınızdan herhangi birini silebilirsiniz.",
     "You may not leave a team that you created.": "Oluşturduğunuz bir ekipten ayrılamazsınız.",
     "Your email address is unverified.": "E-posta adresiniz henüz doğrulanmadı.",
-    "The provided password does not match your current password.": "Girilen şifre mevcut şifrenizle eşleşmiyor."
+    "The provided password does not match your current password.": "Girilen şifre mevcut şifrenizle eşleşmiyor.",
+    "You have not enabled two factor authentication.": "İki faktörlü kimlik doğrulamayı etkinleştirmediniz."
 }
