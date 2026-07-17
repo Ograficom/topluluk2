@@ -198,10 +198,9 @@
 
 @section('title', $pageTitle . ' | ' . $siteName)
 @section('meta_description', $pageDescription)
+@section('canonical_url', $canonicalUrl)
 
 @push('head')
-    <link rel="canonical" href="{{ $canonicalUrl }}">
-
     <meta name="robots" content="index, follow, max-image-preview:large">
     <meta name="author" content="{{ $siteName }}">
     <meta name="theme-color" content="#2563eb">

@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <meta name="description" content="@yield('meta_description', 'OGrafi: giris ve kayit sayfalari.')">
-        <link rel="canonical" href="{{ trim($__env->yieldContent('canonical_url')) ?: url()->current() }}">
+        <link rel="canonical" href="{!! trim($__env->yieldContent('canonical_url')) ?: url()->current() !!}">
 
         <title>{{ config('app.name', 'Laravel') }}</title>
         @include('partials.system-appearance')
