@@ -92,6 +92,11 @@ class RssSyncService
                 $guid = Str::limit((string) ($item['guid'] ?: $item['link'] ?: Str::uuid()), 512, '');
                 $title = Str::limit((string) ($item['title'] ?? ''), 500, '');
                 $link = $this->safeUrl($item['link'] ?? null);
+
+                if ($this->isLikelyAdvertisementItem($title, $item['tags'] ?? [], $link)) {
+                    continue;
+                }
+
                 $publishedAt = $this->parsePublishedAt((string) ($item['published_at'] ?? ''));
 
                 $summary = $this->sanitizeHtmlToText($item['summary'] ?? '');
@@ -99,9 +104,11 @@ class RssSyncService
                 if ($link && (bool) ($feed->fetch_dom_content ?? true)) {
                     $articleData = $this->fetchArticleData($link);
                     $fetchedContent = (string) ($articleData['content'] ?? '');
+                    // The feed's own enclosure/media:thumbnail is the publisher's explicit
+                    // featured image for this item, so it outranks anything scraped from the page.
                     $item['media_items'] = $this->normalizeMediaItems(array_merge(
-                        $articleData['media_items'] ?? [],
-                        $item['media_items'] ?? []
+                        $item['media_items'] ?? [],
+                        $articleData['media_items'] ?? []
                     ));
                     $item['media_url'] = $this->firstImageUrl($item['media_items'] ?? []) ?? ($item['media_url'] ?? null);
                     $item['tags'] = $this->normalizeTagNames(array_merge(
@@ -605,7 +612,7 @@ class RssSyncService
         $queries = [
             '//script|//style|//noscript|//nav|//header|//footer|//form|//aside|//button|//svg|//canvas|//link',
             '//div[@id="skip-to-content"]|//div[@class="skip-nav"]',
-            '//*[contains(translate(concat(" ", normalize-space(@class), " ", normalize-space(@id), " ", normalize-space(@role), " ", normalize-space(@aria-label), " "), "ABCDEFGHIJKLMNOPQRSTUVWXYZ", "abcdefghijklmnopqrstuvwxyz"), " advertisement ") or contains(translate(concat(" ", normalize-space(@class), " ", normalize-space(@id), " ", normalize-space(@role), " ", normalize-space(@aria-label), " "), "ABCDEFGHIJKLMNOPQRSTUVWXYZ", "abcdefghijklmnopqrstuvwxyz"), " ads ") or contains(translate(concat(" ", normalize-space(@class), " ", normalize-space(@id), " ", normalize-space(@role), " ", normalize-space(@aria-label), " "), "ABCDEFGHIJKLMNOPQRSTUVWXYZ", "abcdefghijklmnopqrstuvwxyz"), " sponsored ")]',
+            '//*[contains(translate(concat(" ", normalize-space(@class), " ", normalize-space(@id), " ", normalize-space(@role), " ", normalize-space(@aria-label), " "), "ABCDEFGHIJKLMNOPQRSTUVWXYZ", "abcdefghijklmnopqrstuvwxyz"), " advertisement ") or contains(translate(concat(" ", normalize-space(@class), " ", normalize-space(@id), " ", normalize-space(@role), " ", normalize-space(@aria-label), " "), "ABCDEFGHIJKLMNOPQRSTUVWXYZ", "abcdefghijklmnopqrstuvwxyz"), " ads ") or contains(translate(concat(" ", normalize-space(@class), " ", normalize-space(@id), " ", normalize-space(@role), " ", normalize-space(@aria-label), " "), "ABCDEFGHIJKLMNOPQRSTUVWXYZ", "abcdefghijklmnopqrstuvwxyz"), " sponsored ") or contains(translate(concat(" ", normalize-space(@class), " ", normalize-space(@id), " ", normalize-space(@role), " ", normalize-space(@aria-label), " "), "ABCDEFGHIJKLMNOPQRSTUVWXYZ", "abcdefghijklmnopqrstuvwxyz"), " reklam ")]',
             '//*[contains(translate(concat(" ", normalize-space(@class), " ", normalize-space(@id), " ", normalize-space(@role), " ", normalize-space(@aria-label), " "), "ABCDEFGHIJKLMNOPQRSTUVWXYZ", "abcdefghijklmnopqrstuvwxyz"), " advert ")]',
             '//*[contains(translate(concat(" ", normalize-space(@class), " ", normalize-space(@id), " ", normalize-space(@role), " ", normalize-space(@aria-label), " "), "ABCDEFGHIJKLMNOPQRSTUVWXYZ", "abcdefghijklmnopqrstuvwxyz"), " banner ")]',
             '//*[contains(translate(concat(" ", normalize-space(@class), " ", normalize-space(@id), " ", normalize-space(@role), " ", normalize-space(@aria-label), " "), "ABCDEFGHIJKLMNOPQRSTUVWXYZ", "abcdefghijklmnopqrstuvwxyz"), " breadcrumb ")]',
@@ -779,7 +786,7 @@ class RssSyncService
             return true;
         }
 
-        if (mb_strlen($text) <= 140 && preg_match('/\b(takip et|paylas|paylaş|abone ol|favorilerine ekle|favori kaynaklarına ekle)\b/u', $text)) {
+        if (mb_strlen($text) <= 140 && preg_match('/\b(takip et|paylas|paylaş|abone ol|favorilerine ekle|favori kaynaklarına ekle|reklam|sponsorlu içerik|sponsorlu)\b/u', $text)) {
             return true;
         }
 
@@ -868,6 +875,22 @@ class RssSyncService
     private function extractDomMediaItems(\DOMXPath $xpath, \DOMNode $contentNode, string $baseUrl): array
     {
         $items = [];
+
+        // Publisher-curated featured image/video (og:image, twitter:image) takes priority
+        // over any incidental image found inside the article body, so it is listed first.
+        foreach ([
+            ['property', 'og:image', 'image/*', 'image'],
+            ['name', 'twitter:image', 'image/*', 'image'],
+            ['property', 'og:video', '', 'video'],
+            ['property', 'og:video:url', '', 'video'],
+            ['property', 'og:video:secure_url', '', 'video'],
+        ] as [$attribute, $value, $type, $medium]) {
+            $url = $this->extractMetaContent($xpath, [[$attribute, $value]]);
+            if ($url !== '') {
+                $items[] = $this->mediaItemFromUrl($this->resolveUrl($url, $baseUrl) ?? '', $type, $medium);
+            }
+        }
+
         foreach ($xpath->query('.//img[@src or @data-src or @data-original or @data-lazy-src or @data-srcset or @srcset]', $contentNode) as $image) {
             if (!$image instanceof \DOMElement) {
                 continue;
@@ -925,19 +948,6 @@ class RssSyncService
             $items[] = $this->mediaItemFromUrl($this->resolveUrl((string) $iframe->getAttribute('src'), $baseUrl) ?? '', '', '');
         }
 
-        foreach ([
-            ['property', 'og:image', 'image/*', 'image'],
-            ['name', 'twitter:image', 'image/*', 'image'],
-            ['property', 'og:video', '', 'video'],
-            ['property', 'og:video:url', '', 'video'],
-            ['property', 'og:video:secure_url', '', 'video'],
-        ] as [$attribute, $value, $type, $medium]) {
-            $url = $this->extractMetaContent($xpath, [[$attribute, $value]]);
-            if ($url !== '') {
-                $items[] = $this->mediaItemFromUrl($this->resolveUrl($url, $baseUrl) ?? '', $type, $medium);
-            }
-        }
-
         return $this->normalizeMediaItems($items);
     }
 
@@ -968,6 +978,45 @@ class RssSyncService
         }
 
         return $this->normalizeTagNames($matches[1] ?? []);
+    }
+
+    private function isLikelyAdvertisementItem(?string $title, array $tags, ?string $link): bool
+    {
+        $haystack = mb_strtolower(trim((string) $title));
+        foreach ($tags as $tag) {
+            $haystack .= ' ' . mb_strtolower((string) $tag);
+        }
+
+        if ($haystack !== '' && preg_match(
+            '/\b(reklam|sponsorlu\s*icerik|sponsorlu|advertorial|advertisement|sponsored\s*content|sponsored\s*post|tanitim\s*icerigi|ilanli\s*haber)\b/ui',
+            $this->normalizeComparableText($haystack)
+        )) {
+            return true;
+        }
+
+        $link = $this->safeUrl($link);
+        if (!$link) {
+            return false;
+        }
+
+        $host = mb_strtolower((string) parse_url($link, PHP_URL_HOST));
+        if ($host === '') {
+            return false;
+        }
+
+        $adHosts = [
+            'doubleclick.net', 'googlesyndication.com', 'googleadservices.com', 'adservice.google.com',
+            'taboola.com', 'outbrain.com', 'adnxs.com', 'criteo.com', 'pubmatic.com', 'rubiconproject.com',
+            'openx.net', 'yieldmo.com', 'media.net', 'mgid.com', 'revcontent.com', 'zemanta.com',
+        ];
+
+        foreach ($adHosts as $adHost) {
+            if ($host === $adHost || str_ends_with($host, '.' . $adHost)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private function safeUrl(?string $url): ?string
@@ -1487,10 +1536,35 @@ class RssSyncService
             return null;
         }
 
-        $candidate = end($candidates);
-        $parts = preg_split('/\s+/', (string) $candidate);
+        $bestUrl = null;
+        $bestScore = -1;
 
-        return trim((string) ($parts[0] ?? '')) ?: null;
+        foreach ($candidates as $candidate) {
+            $parts = preg_split('/\s+/', $candidate) ?: [];
+            $url = trim((string) ($parts[0] ?? ''));
+            if ($url === '') {
+                continue;
+            }
+
+            $descriptor = trim((string) ($parts[1] ?? ''));
+            $score = 0;
+            if ($descriptor !== '') {
+                if (preg_match('/^(\d+(?:\.\d+)?)w$/i', $descriptor, $m)) {
+                    $score = (float) $m[1];
+                } elseif (preg_match('/^(\d+(?:\.\d+)?)x$/i', $descriptor, $m)) {
+                    // Pixel-density descriptors are much smaller numbers than widths;
+                    // scale them up so a higher density still outranks a plain, undescribed URL.
+                    $score = ((float) $m[1]) * 10000;
+                }
+            }
+
+            if ($bestUrl === null || $score >= $bestScore) {
+                $bestUrl = $url;
+                $bestScore = $score;
+            }
+        }
+
+        return $bestUrl;
     }
 
     private function resolveUrl(string $url, string $baseUrl): ?string
