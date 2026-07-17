@@ -234,7 +234,7 @@
                 z-index: 40 !important;
                 display: flex !important;
                 align-items: center !important;
-                width: 100% !important;
+                width: auto !important;
                 min-height: 38px !important;
                 padding: 3px 10px !important;
                 margin: 0 !important;

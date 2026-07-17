@@ -10,7 +10,7 @@
         z-index: 2147483000;
         display: flex;
         justify-content: center;
-        background: #f4f4f5;
+        background: #f6f1e6;
         opacity: 1;
         visibility: visible;
         padding: 16px;
@@ -37,7 +37,7 @@
     .ografi-skeleton {
         position: relative;
         overflow: hidden;
-        background: #e9ecef;
+        background: #ece2cd;
     }
 
     .ografi-skeleton::after {
@@ -45,7 +45,7 @@
         position: absolute;
         inset: 0;
         transform: translateX(-120%);
-        background: linear-gradient(105deg, transparent 0%, rgba(255, 255, 255, .78) 45%, transparent 82%);
+        background: linear-gradient(105deg, transparent 0%, rgba(255, 255, 255, .78) 45%, rgba(14, 124, 134, .12) 60%, transparent 82%);
         animation: ografiSkeletonWave 980ms ease-in-out infinite;
     }
 
@@ -78,7 +78,7 @@
 
     .ografi-preloader__post {
         width: 100%;
-        background: #ffffff;
+        background: #fffcf5;
         border-radius: 8px;
         padding: 20px;
     }
@@ -153,7 +153,7 @@
     }
 
     .ografi-preloader__right-card {
-        background: #ffffff;
+        background: #fffcf5;
         border-radius: 8px;
         padding: 16px;
         margin-bottom: 16px;

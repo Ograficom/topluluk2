@@ -1479,9 +1479,9 @@ SVG;
                 </button>
 
                 <div
-                    class="og-action-menu shadcn-menu fixed z-[100] hidden w-[205px] rounded-2xl border border-gray-200 bg-white p-[6px] shadow-[0_2px_7px_rgba(0,0,0,0.025)] max-sm:w-[198px]"
+                    class="og-action-menu shadcn-menu fixed z-[100] hidden w-[172px] rounded-2xl border border-gray-200 bg-white p-[6px] shadow-[0_2px_7px_rgba(0,0,0,0.025)] max-sm:w-[198px]"
                     data-og-action-menu
-                    style="width: 192px !important; min-width: 192px !important; max-width: min(192px, calc(100vw - 24px)) !important; box-sizing: border-box !important; padding: 8px !important; overflow: hidden !important; border: 1px solid #e4e4e7 !important; border-radius: 16px !important; background: #ffffff !important; color: #18181b !important; box-shadow: 0 1px 2px rgba(0,0,0,.05), 0 8px 24px rgba(15,23,42,.08) !important; filter: none !important;"
+                    style="width: 172px !important; min-width: 172px !important; max-width: min(172px, calc(100vw - 24px)) !important; box-sizing: border-box !important; padding: 8px !important; overflow: hidden !important; border: 1px solid #e4e4e7 !important; border-radius: 16px !important; background: #ffffff !important; color: #18181b !important; box-shadow: 0 1px 2px rgba(0,0,0,.05), 0 8px 24px rgba(15,23,42,.08) !important; filter: none !important;"
                 >
                     <button
                         type="button"
@@ -2242,7 +2242,7 @@ SVG;
         [data-post-card-shell] .og-action-menu {
             position: fixed !important;
             z-index: 999999999 !important;
-            width: 205px !important;
+            width: 172px !important;
             padding: 6px !important;
             padding-bottom: 6px !important;
             overflow: hidden !important;
@@ -2430,10 +2430,16 @@ SVG;
 
         [data-post-card-shell] .author-block {
             display: flex;
-            align-items: flex-start;
+            align-items: center;
             gap: 10px;
             min-width: 0;
             flex: 1;
+            border-radius: 12px;
+            transition: background-color 0.15s ease;
+        }
+
+        [data-post-card-shell] .author-block:hover {
+            background-color: #f4f4f5;
         }
 
         [data-post-card-shell] .avatar-wrap {
@@ -2578,8 +2584,14 @@ SVG;
             border: 0;
             background: transparent;
             color: #7b8591;
+            font-size: 12.5px;
             cursor: pointer;
             transition: opacity 0.12s ease, color 0.12s ease;
+        }
+
+        [data-post-card-shell] .author-subline__edit-toggle svg {
+            width: 1em;
+            height: 1em;
         }
 
         [data-post-card-shell] .author-subline__edit-toggle:hover,
@@ -3743,8 +3755,8 @@ SVG;
         }
 
         [data-post-card-shell] .author-avatar {
-            width: 34px;
-            height: 34px;
+            width: 40px;
+            height: 40px;
         }
 
         [data-post-card-shell] .author-avatar--fallback,
@@ -4416,8 +4428,8 @@ SVG;
 
         [data-post-card-shell] .smiley-btn,
         [data-post-card-shell] .reaction-add {
-            width: 38px;
-            height: 38px;
+            width: 42px;
+            height: 42px;
             border-radius: 999px;
             background: #f5f7fb;
             color: #4b5563;
@@ -4425,8 +4437,8 @@ SVG;
 
         [data-post-card-shell] .post-card__reaction-custom-icon,
         [data-post-card-shell] .post-card__inline-icon {
-            width: 20px;
-            height: 20px;
+            width: 22px;
+            height: 22px;
         }
 
         [data-post-card-shell] .post-card__reaction-custom-icon svg,
@@ -4800,6 +4812,7 @@ SVG;
         [data-post-card-shell] .author-name {
             font-size: 14.5px !important;
             line-height: 1.35 !important;
+            font-weight: 600 !important;
         }
 
         [data-post-card-shell] .author-subline,
@@ -6207,7 +6220,7 @@ SVG;
         }
 
         [data-post-card-shell] .action-bar .action-left {
-            gap: 10px !important;
+            gap: 4px !important;
         }
 
         [data-post-card-shell] .action-bar .post-card__inline-icon {
@@ -8285,9 +8298,9 @@ SVG;
             }
 
             html body article.post-card[data-post-card-shell] .author-avatar {
-                width: 34px !important;
-                height: 34px !important;
-                min-width: 34px !important;
+                width: 38px !important;
+                height: 38px !important;
+                min-width: 38px !important;
             }
 
             html body article.post-card[data-post-card-shell] .author-name {
@@ -8422,16 +8435,16 @@ SVG;
         }
 
         html body article.post-card[data-post-card-shell] .expand-link {
-            font-size: 17px !important;
-            line-height: 22px !important;
+            font-size: 19px !important;
+            line-height: 24px !important;
             font-weight: 600 !important;
         }
 
         html body article.post-card[data-post-card-shell] .post-card__expand-icon,
         html body article.post-card[data-post-card-shell] .post-card__expand-icon iconify-icon {
-            width: 20px !important;
-            height: 20px !important;
-            font-size: 20px !important;
+            width: 22px !important;
+            height: 22px !important;
+            font-size: 22px !important;
             color: #0e7c86 !important;
         }
 

@@ -6537,6 +6537,7 @@
     class="bg-[#f6f1e6] text-slate-900 font-sans antialiased theme-minimal alma-app {{ request()->routeIs('home') ? 'route-home' : '' }} {{ request()->routeIs('discover') ? 'route-discover' : '' }} {{ request()->routeIs('video') ? 'route-video' : '' }} {{ $isCategoryRoute ? 'route-category' : '' }} {{ $isPostShowRoute ? 'route-post-show' : '' }}"
     data-mentions-endpoint="{{ auth()->check() ? route('mentions.users') : '' }}"
 >
+    @include('partials.preloader')
     @include('partials.toasts')
     @unless ($__env->hasSection('hide_global_header'))
         @include('header')
