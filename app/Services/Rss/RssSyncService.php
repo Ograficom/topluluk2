@@ -1174,7 +1174,19 @@ class RssSyncService
         $this->stripDomLinks($xpath, $dom);
         $this->pruneArticleContentNode($xpath, $dom, $title, $description);
 
-        return $this->stripXmlEncodingDeclaration($dom->saveHTML() ?: $html);
+        $cleaned = $this->stripXmlEncodingDeclaration($dom->saveHTML() ?: $html);
+
+        // Safety net: the boilerplate/description-dedup pruning above must never wipe out
+        // the entire article body. That happens when a feed's own <description> is reused
+        // as both the content and the description (e.g. fetch_dom_content is disabled, so
+        // there is no scraped article page) - the only paragraph then matches $description
+        // exactly and gets removed as a "duplicate", leaving the post with no text at all.
+        // Fall back to the original, un-pruned fragment rather than publishing empty posts.
+        if (trim($this->sanitizeHtmlToText($cleaned)) === '' && trim($this->sanitizeHtmlToText($html)) !== '') {
+            return $html;
+        }
+
+        return $cleaned;
     }
 
     private function truncateRawContentAtStopMarker(string $html): string
