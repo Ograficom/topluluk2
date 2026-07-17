@@ -378,13 +378,13 @@ class RssSyncService
                     $mediaChildren = $item->children($mediaNs);
                     foreach ($mediaChildren->content as $mediaContent) {
                         $mediaItems[] = $this->mediaItemFromUrl(
-                            (string) ($mediaContent['url'] ?? ''),
-                            (string) ($mediaContent['type'] ?? ''),
-                            (string) ($mediaContent['medium'] ?? '')
+                            $this->simpleXmlAttr($mediaContent, 'url'),
+                            $this->simpleXmlAttr($mediaContent, 'type'),
+                            $this->simpleXmlAttr($mediaContent, 'medium')
                         );
                     }
                     foreach ($mediaChildren->thumbnail as $mediaThumb) {
-                        $mediaItems[] = $this->mediaItemFromUrl((string) ($mediaThumb['url'] ?? ''), 'image/*', 'image');
+                        $mediaItems[] = $this->mediaItemFromUrl($this->simpleXmlAttr($mediaThumb, 'url'), 'image/*', 'image');
                     }
                 }
                 foreach ($item->enclosure as $enclosure) {
@@ -429,13 +429,13 @@ class RssSyncService
                     $mediaChildren = $entry->children($mediaNs);
                     foreach ($mediaChildren->content as $mediaContent) {
                         $mediaItems[] = $this->mediaItemFromUrl(
-                            (string) ($mediaContent['url'] ?? ''),
-                            (string) ($mediaContent['type'] ?? ''),
-                            (string) ($mediaContent['medium'] ?? '')
+                            $this->simpleXmlAttr($mediaContent, 'url'),
+                            $this->simpleXmlAttr($mediaContent, 'type'),
+                            $this->simpleXmlAttr($mediaContent, 'medium')
                         );
                     }
                     foreach ($mediaChildren->thumbnail as $mediaThumb) {
-                        $mediaItems[] = $this->mediaItemFromUrl((string) ($mediaThumb['url'] ?? ''), 'image/*', 'image');
+                        $mediaItems[] = $this->mediaItemFromUrl($this->simpleXmlAttr($mediaThumb, 'url'), 'image/*', 'image');
                     }
                 }
                 $mediaItems = $this->normalizeMediaItems($mediaItems);
@@ -459,6 +459,20 @@ class RssSyncService
         }
 
         return $items;
+    }
+
+    private function simpleXmlAttr(\SimpleXMLElement $node, string $attribute): string
+    {
+        // ArrayAccess (`$node['attr']`) silently returns an empty value for plain,
+        // unprefixed attributes on an element that was reached through a namespaced
+        // children() call (e.g. media:content/url) — a long-standing SimpleXML quirk.
+        // Reading via attributes() resolves the un-namespaced attribute correctly.
+        $value = (string) ($node->attributes()[$attribute] ?? '');
+        if ($value !== '') {
+            return $value;
+        }
+
+        return (string) ($node[$attribute] ?? '');
     }
 
     private function parsePublishedAt(string $value): ?Carbon
