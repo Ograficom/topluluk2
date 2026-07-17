@@ -1,5 +1,5 @@
 @php
-    $browserThemeColor = '#2563eb';
+    $browserThemeColor = '#0e7c86';
 @endphp
 <meta name="theme-color" content="{{ $browserThemeColor }}">
 <meta name="application-name" content="{{ config('app.name', 'OGrafi') }}">

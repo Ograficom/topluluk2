@@ -80,7 +80,7 @@
                     href="{{ $targetUrl }}"
                     data-external-bridge="off"
                     rel="nofollow noopener noreferrer"
-                    style="background-color:#2563eb !important; color:#ffffff !important; border-color:#2563eb !important;"
+                    style="background-color:#0e7c86 !important; color:#ffffff !important; border-color:#0e7c86 !important;"
                     class="inline-flex items-center justify-center rounded-lg border border-blue-600 !bg-blue-600 px-4 py-2 text-sm font-medium !text-white shadow-none transition hover:!bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:border-blue-500 dark:!bg-blue-500 dark:!text-white dark:hover:!bg-blue-600 dark:focus:ring-blue-400 dark:focus:ring-offset-slate-900"
                 >
                     Siteye git

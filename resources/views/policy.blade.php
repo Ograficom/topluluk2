@@ -41,7 +41,7 @@
         .cookie-policy-content :is(ul, ol) { padding-left: 22px; }
         .cookie-policy-content ul { list-style: disc; }
         .cookie-policy-content ol { list-style: decimal; }
-        .cookie-policy-content a { color: #2563eb; text-decoration: underline; text-underline-offset: 3px; }
+        .cookie-policy-content a { color: #0e7c86; text-decoration: underline; text-underline-offset: 3px; }
         .cookie-policy-content table { width: 100%; margin: 18px 0; border-collapse: collapse; }
         .cookie-policy-content :is(th, td) { padding: 10px 12px; border: 1px solid #e5e7eb; text-align: left; }
         .cookie-policy-content th { background: #f8fafc; color: #18181b; font-weight: 600; }

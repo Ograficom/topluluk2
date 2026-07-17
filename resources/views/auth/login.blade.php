@@ -82,8 +82,8 @@
             box-shadow: 0 1px 2px rgba(0,0,0,.06);
         }
         .simple-auth-input:focus {
-            border-color: #2563eb;
-            box-shadow: 0 0 0 1px #2563eb;
+            border-color: #0e7c86;
+            box-shadow: 0 0 0 1px #0e7c86;
         }
         .simple-auth-options {
             display: flex;
@@ -104,7 +104,7 @@
             width: 16px;
             height: 16px;
             margin: 0;
-            accent-color: #2563eb;
+            accent-color: #0e7c86;
         }
         .simple-auth-link {
             color: #71717a;
@@ -117,7 +117,7 @@
             height: 36px;
             border: 0;
             border-radius: 6px;
-            background: #2563eb;
+            background: #0e7c86;
             color: #fff;
             font-size: 12px;
             font-weight: 400;
@@ -150,14 +150,14 @@
         html body .simple-auth-page .simple-auth-brand:not(#comments *):not(#app *) { font-size: 22px !important; font-weight: 400 !important; line-height: 1 !important; }
         html body .simple-auth-page .simple-auth-label:not(#comments *):not(#app *) { font-size: 12px !important; font-weight: 400 !important; line-height: 1.2 !important; }
         html body .simple-auth-page .simple-auth-input:not(#comments *):not(#app *) { height: 36px !important; padding: 0 11px !important; border: 1px solid #dedede !important; border-radius: 6px !important; background: #fff !important; color: #111 !important; font-size: 13px !important; box-shadow: 0 1px 2px rgba(0,0,0,.06) !important; }
-        html body .simple-auth-page .simple-auth-input:not(#comments *):not(#app *):focus { border-color: #2563eb !important; box-shadow: 0 0 0 1px #2563eb !important; }
+        html body .simple-auth-page .simple-auth-input:not(#comments *):not(#app *):focus { border-color: #0e7c86 !important; box-shadow: 0 0 0 1px #0e7c86 !important; }
         html body .simple-auth-page .simple-auth-remember:not(#comments *):not(#app *),
         html body .simple-auth-page .simple-auth-remember span:not(#comments *):not(#app *),
         html body .simple-auth-page .simple-auth-link:not(#comments *):not(#app *),
         html body .simple-auth-page .simple-auth-register:not(#comments *):not(#app *),
         html body .simple-auth-page .simple-auth-register a:not(#comments *):not(#app *) { font-size: 12px !important; font-weight: 400 !important; line-height: 1.3 !important; }
         html body .simple-auth-page .simple-auth-remember input:not(#comments *):not(#app *) { appearance: auto !important; width: 16px !important; height: 16px !important; min-width: 16px !important; min-height: 16px !important; padding: 0 !important; border-radius: 3px !important; background: #fff !important; }
-        html body .simple-auth-page .simple-auth-submit:not(#comments *):not(#app *) { height: 36px !important; min-height: 36px !important; padding: 0 12px !important; border: 0 !important; border-radius: 6px !important; background: #2563eb !important; color: #fff !important; font-size: 12px !important; font-weight: 400 !important; line-height: 36px !important; box-shadow: none !important; }
+        html body .simple-auth-page .simple-auth-submit:not(#comments *):not(#app *) { height: 36px !important; min-height: 36px !important; padding: 0 12px !important; border: 0 !important; border-radius: 6px !important; background: #0e7c86 !important; color: #fff !important; font-size: 12px !important; font-weight: 400 !important; line-height: 36px !important; box-shadow: none !important; }
         html body .simple-auth-page .simple-auth-submit:not(#comments *):not(#app *):hover { background: #1d4ed8 !important; color: #fff !important; }
         @media (max-width: 480px) { html body .simple-auth-page .simple-auth-brand:not(#comments *):not(#app *) { font-size: 21px !important; } }
     </style>

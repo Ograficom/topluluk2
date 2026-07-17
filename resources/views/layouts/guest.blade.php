@@ -41,8 +41,8 @@
             input[type="file"]:focus,
             input[type="file"]:focus-visible {
                 outline: none;
-                border-color: #0b79ff;
-                box-shadow: 0 0 0 3px rgba(11, 121, 255, 0.14);
+                border-color: #0e7c86;
+                box-shadow: 0 0 0 3px rgba(14, 124, 134, 0.14);
             }
             input[type="file"]::file-selector-button {
                 margin-right: 12px;

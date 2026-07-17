@@ -57,7 +57,7 @@
             line-height: 1.25;
         }
         html body #cookie-banner a.cookie-consent-bar__link {
-            color: #2563eb !important;
+            color: #0e7c86 !important;
             text-decoration: none !important;
         }
         .cookie-consent-bar__actions { flex: 0 0 auto; gap: 3px; }
@@ -97,8 +97,8 @@
         }
         html body #cookie-banner .cookie-consent-bar__accept:is(:hover, :focus-visible, :active),
         html body #cookie-banner .cookie-consent-bar__accept.is-accepting {
-            background: #2563eb !important;
-            background-color: #2563eb !important;
+            background: #0e7c86 !important;
+            background-color: #0e7c86 !important;
             color: #ffffff !important;
         }
         html body #cookie-banner .cookie-consent-bar__accept:is(:hover, :focus-visible, :active) svg,

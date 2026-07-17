@@ -85,7 +85,7 @@
                     width: 8px;
                     height: 8px;
                     border-radius: 999px;
-                    background: #2563eb;
+                    background: #0e7c86;
                 }
 
                 .ad-payment-method:has(input:checked) .ad-payment-toggle {
@@ -102,7 +102,7 @@
 
                 .ad-payment-method input {
                     margin: 0;
-                    accent-color: #2563eb;
+                    accent-color: #0e7c86;
                 }
 
                 .ad-payment-panel {
@@ -237,7 +237,7 @@
                     margin-top: 18px;
                     border: 0;
                     border-radius: 10px;
-                    background: #2563eb;
+                    background: #0e7c86;
                     color: #ffffff;
                     text-decoration: none;
                     font-size: 15px;

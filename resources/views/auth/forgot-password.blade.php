@@ -85,8 +85,8 @@
         }
 
         .simple-auth-input:focus {
-            border-color: #2563eb;
-            box-shadow: 0 0 0 1px #2563eb;
+            border-color: #0e7c86;
+            box-shadow: 0 0 0 1px #0e7c86;
         }
 
         .simple-auth-submit {
@@ -97,7 +97,7 @@
             padding: 0 12px;
             border: 0;
             border-radius: 6px;
-            background: #2563eb;
+            background: #0e7c86;
             color: #fff;
             font-size: 12px;
             font-weight: 400;
@@ -160,8 +160,8 @@
         }
 
         html body .simple-auth-page .simple-auth-input:not(#comments *):not(#app *):focus {
-            border-color: #2563eb !important;
-            box-shadow: 0 0 0 1px #2563eb !important;
+            border-color: #0e7c86 !important;
+            box-shadow: 0 0 0 1px #0e7c86 !important;
         }
 
         html body .simple-auth-page .simple-auth-submit:not(#comments *):not(#app *) {
@@ -170,7 +170,7 @@
             padding: 0 12px !important;
             border: 0 !important;
             border-radius: 6px !important;
-            background: #2563eb !important;
+            background: #0e7c86 !important;
             color: #fff !important;
             font-size: 12px !important;
             font-weight: 400 !important;

@@ -258,14 +258,14 @@
         margin-left: 9px;
         padding: 3px 8px;
         border-radius: 999px;
-        background: linear-gradient(135deg, #2563eb, #38bdf8);
+        background: linear-gradient(135deg, #0e7c86, #38bdf8);
         color: #ffffff;
         font-family: "Roboto", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
         font-size: 10.5px;
         line-height: 1;
         font-weight: 400;
         letter-spacing: -0.01em;
-        box-shadow: 0 8px 20px rgba(37, 99, 235, 0.22);
+        box-shadow: 0 8px 20px rgba(14, 124, 134, 0.22);
         transform-origin: center;
         animation: navNewBadgeFloat 2.2s ease-in-out infinite;
     }
@@ -275,7 +275,7 @@
         position: absolute;
         inset: -3px;
         border-radius: inherit;
-        border: 1px solid rgba(37, 99, 235, 0.35);
+        border: 1px solid rgba(14, 124, 134, 0.35);
         opacity: 0;
         transform: scale(0.85);
         animation: navNewBadgePulse 2.2s ease-in-out infinite;
@@ -1101,34 +1101,34 @@
             min-height: 56px !important;
             margin: 2px 0 !important;
             background: #ffffff !important;
-            color: #2563eb !important;
+            color: #0e7c86 !important;
         }
 
         body.alma-app .nav-item[data-active="true"] :is(.nav-item-label, .nav-item-icon-outline, iconify-icon, svg) {
-            color: #2563eb !important;
+            color: #0e7c86 !important;
         }
 
         body.alma-app .nav-item[data-active="true"] .nav-item-icon-outline {
-            color: #2563eb !important;
+            color: #0e7c86 !important;
         }
 
         body.alma-app .nav-item:is(:hover, :focus-visible) {
             background: #ffffff !important;
-            color: #2563eb !important;
+            color: #0e7c86 !important;
         }
 
         body.alma-app .nav-item:is(:hover, :focus-visible) .nav-item-icon-outline {
-            color: #2563eb !important;
+            color: #0e7c86 !important;
         }
 
         body.alma-app .nav-item:is(:hover, :focus-visible) .nav-item-label,
         body.alma-app .nav-item:is(:hover, :focus-visible) .nav-item-icon-outline,
         body.alma-app .nav-item:is(:hover, :focus-visible) .nav-item-icon-outline :is(iconify-icon, svg) {
-            color: #2563eb !important;
+            color: #0e7c86 !important;
         }
 
         body.alma-app .nav-item[data-active="true"]:is(:hover, :focus-visible) .nav-item-icon-outline {
-            color: #2563eb !important;
+            color: #0e7c86 !important;
         }
 
         body.alma-app .nav-item-icon-outline {
@@ -1295,13 +1295,13 @@
         body.alma-app .sidebar-wrapper--drawer .nav-item[data-active="true"] {
             background: #eff6ff !important;
             border-radius: 14px !important;
-            color: #2563eb !important;
+            color: #0e7c86 !important;
         }
 
         body.alma-app .sidebar-wrapper--drawer .nav-item[data-active="true"] .nav-item-label,
         body.alma-app .sidebar-wrapper--drawer .nav-item[data-active="true"] .nav-item-icon-outline,
         body.alma-app .sidebar-wrapper--drawer .nav-item[data-active="true"] .nav-item-icon-outline :is(iconify-icon, svg) {
-            color: #2563eb !important;
+            color: #0e7c86 !important;
         }
     }
 </style>

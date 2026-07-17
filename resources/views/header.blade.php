@@ -256,9 +256,9 @@
         min-height: 42px !important;
         padding: 0 18px !important;
         border-radius: 9999px !important;
-        background: #2563eb !important;
-        background-color: #2563eb !important;
-        border: 1px solid #2563eb !important;
+        background: #0e7c86 !important;
+        background-color: #0e7c86 !important;
+        border: 1px solid #0e7c86 !important;
         color: #ffffff !important;
         font-weight: 400 !important;
         box-shadow: none !important;
@@ -557,7 +557,7 @@
     .site-notifications-menu-item iconify-icon {
         flex: 0 0 auto !important;
         font-size: 16px !important;
-        color: #2563eb !important;
+        color: #0e7c86 !important;
     }
 
     .site-notifications-menu-item[data-notifications-delete-all] iconify-icon {
@@ -604,7 +604,7 @@
         margin: 0 !important;
         padding: 14px 16px !important;
         border-top: 1px solid #f1f5f9 !important;
-        color: #2563eb !important;
+        color: #0e7c86 !important;
         font-size: 13px !important;
         font-weight: 400 !important;
         text-decoration: none !important;
@@ -677,7 +677,7 @@
         flex: 0 0 auto !important;
         overflow: hidden !important;
         background: #dbeafe !important;
-        color: #2563eb !important;
+        color: #0e7c86 !important;
         font-size: 14px !important;
         font-weight: 400 !important;
         box-shadow: none !important;
@@ -753,7 +753,7 @@
     .site-user-menu-link:hover,
     .site-user-menu-button:hover {
         background: #f8fafc !important;
-        color: #2563eb !important;
+        color: #0e7c86 !important;
         transform: none !important;
         box-shadow: none !important;
     }
@@ -774,7 +774,7 @@
     .site-user-menu-link:hover .site-user-menu-icon,
     .site-user-menu-button:hover .site-user-menu-icon {
         background: #dbeafe !important;
-        color: #2563eb !important;
+        color: #0e7c86 !important;
         box-shadow: none !important;
     }
 
@@ -815,9 +815,9 @@
     html.dark a.site-header-write-btn,
     .dark .site-header-write-btn,
     .dark a.site-header-write-btn {
-        background: #2563eb !important;
-        background-color: #2563eb !important;
-        border-color: #2563eb !important;
+        background: #0e7c86 !important;
+        background-color: #0e7c86 !important;
+        border-color: #0e7c86 !important;
         color: #ffffff !important;
         box-shadow: none !important;
         font-weight: 400 !important;
@@ -1260,7 +1260,7 @@
     }
 
     .site-status-dot {
-        background: #2563eb !important;
+        background: #0e7c86 !important;
         border-color: #ffffff !important;
         box-shadow: none !important;
     }
@@ -1281,7 +1281,7 @@
     }
 
     .site-search-all {
-        color: #2563eb !important;
+        color: #0e7c86 !important;
         background: transparent !important;
         font-weight: 400 !important;
         text-decoration: none !important;
@@ -2007,9 +2007,9 @@
                     min-height: 42px !important;
                     padding: 0 18px !important;
                     border-radius: 9999px !important;
-                    background: #2563eb !important;
-                    background-color: #2563eb !important;
-                    border: 1px solid #2563eb !important;
+                    background: #0e7c86 !important;
+                    background-color: #0e7c86 !important;
+                    border: 1px solid #0e7c86 !important;
                     color: #ffffff !important;
                     font-weight: 400 !important;
                     box-shadow: none !important;
@@ -2524,7 +2524,7 @@ html body .site-search-dropdown-top .site-search-close {
     border: 0 !important;
     border-radius: 9999px !important;
     background: #f3f6fc !important;
-    color: #2563eb !important;
+    color: #0e7c86 !important;
     box-shadow: none !important;
 }
 
@@ -2532,7 +2532,7 @@ html body .site-search-dropdown-top .site-search-close:is(:hover, :focus, :focus
     border: 0 !important;
     background: #f3f6fc !important;
     background-color: #f3f6fc !important;
-    color: #2563eb !important;
+    color: #0e7c86 !important;
     box-shadow: none !important;
 }
 

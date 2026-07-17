@@ -59,8 +59,8 @@
         }
 
         .blue-switch-wrap input[type="checkbox"]:checked ~ span:first-of-type {
-            border-color: #2563eb !important;
-            background-color: #2563eb !important;
+            border-color: #0e7c86 !important;
+            background-color: #0e7c86 !important;
         }
 
         .blue-switch-wrap input[type="checkbox"]:checked ~ span:last-of-type {
@@ -69,7 +69,7 @@
         }
 
         .blue-switch-wrap input[type="checkbox"]:focus-visible ~ span:first-of-type {
-            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.25) !important;
+            box-shadow: 0 0 0 3px rgba(14, 124, 134, 0.25) !important;
         }
 
         .blue-switch-wrap input[type="checkbox"]:disabled ~ span:first-of-type,
@@ -219,9 +219,9 @@
                         <div class="pt-2">
                             <button
                                 type="submit"
-                                style="background-color: #2563eb !important; color: #ffffff !important; border: none !important;"
+                                style="background-color: #0e7c86 !important; color: #ffffff !important; border: none !important;"
                                 onmouseover="this.style.setProperty('background-color', '#1d4ed8', 'important'); this.style.setProperty('color', '#ffffff', 'important');"
-                                onmouseout="this.style.setProperty('background-color', '#2563eb', 'important'); this.style.setProperty('color', '#ffffff', 'important');"
+                                onmouseout="this.style.setProperty('background-color', '#0e7c86', 'important'); this.style.setProperty('color', '#ffffff', 'important');"
                                 onmousedown="this.style.setProperty('background-color', '#1e40af', 'important'); this.style.setProperty('color', '#ffffff', 'important');"
                                 onmouseup="this.style.setProperty('background-color', '#1d4ed8', 'important'); this.style.setProperty('color', '#ffffff', 'important');"
                                 class="w-full rounded-xl px-6 py-3 text-sm font-medium shadow-sm transition focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 sm:w-auto sm:py-2.5"

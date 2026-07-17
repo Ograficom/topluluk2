@@ -203,7 +203,7 @@
 @push('head')
     <meta name="robots" content="index, follow, max-image-preview:large">
     <meta name="author" content="{{ $siteName }}">
-    <meta name="theme-color" content="#2563eb">
+    <meta name="theme-color" content="#0e7c86">
 
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="{{ $siteName }}">
@@ -257,7 +257,7 @@
         padding: 0 0 28px;
         overflow: visible !important;
 
-        --categories-blue: #2563eb;
+        --categories-blue: #0e7c86;
         --categories-blue-hover: #1d4ed8;
         --categories-text: #000000;
         --categories-muted: #71717a;

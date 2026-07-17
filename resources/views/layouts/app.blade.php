@@ -66,8 +66,8 @@
         input[type="file"]:focus,
         input[type="file"]:focus-visible {
             outline: none;
-            border-color: #0b79ff;
-            box-shadow: 0 0 0 3px rgba(11, 121, 255, 0.14);
+            border-color: #0e7c86;
+            box-shadow: 0 0 0 3px rgba(14, 124, 134, 0.14);
         }
         input[type="file"]::file-selector-button {
             margin-right: 12px;
@@ -313,41 +313,41 @@
             --layout-shell-max: calc(
                 var(--layout-left-width) + var(--profile-shell-width) + var(--layout-right-width) + (var(--layout-column-gap) * 2) + (var(--layout-shell-inline) * 2)
             );
-            --site-bg: #f4f4f5;
-            --site-surface: #ffffff;
-            --site-surface-muted: #fafafa;
-            --site-border: rgba(39, 39, 42, 0.1);
+            --site-bg: #f6f1e6;
+            --site-surface: #fffcf5;
+            --site-surface-muted: #efe4ce;
+            --site-border: rgba(120, 98, 62, 0.16);
             --site-shadow: none;
             --site-shadow-soft: none;
-            --site-accent: #18181b;
-            --site-accent-soft: #ffffff;
-            --site-text: #18181b;
-            --site-muted: #71717a;
-            --site-header-bg: #ffffff;
-            --site-hover-white: #ffffff;
-            --site-hover-muted: #f4f4f5;
-            --background: #f7f9fa;
-            --foreground: #18181b;
-            --border: rgba(39, 39, 42, 0.12);
-            --primary: #18181b;
+            --site-accent: #0e7c86;
+            --site-accent-soft: #e3f1ef;
+            --site-text: #2b2620;
+            --site-muted: #8a7a5f;
+            --site-header-bg: #fffcf5;
+            --site-hover-white: #fffcf5;
+            --site-hover-muted: #efe4ce;
+            --background: #f6f1e6;
+            --foreground: #2b2620;
+            --border: rgba(120, 98, 62, 0.16);
+            --primary: #0e7c86;
             --primary-foreground: #ffffff;
-            --secondary: #ffffff;
-            --secondary-foreground: #3f3f46;
-            --muted: #f4f4f5;
-            --muted-foreground: #71717a;
+            --secondary: #fffcf5;
+            --secondary-foreground: #4a4030;
+            --muted: #efe4ce;
+            --muted-foreground: #8a7a5f;
             --success: #ecfdf5;
             --success-foreground: #027a48;
-            --accent: #0f766e;
+            --accent: #0e7c86;
             --accent-foreground: #ffffff;
             --destructive: #feefef;
             --destructive-foreground: #981b1b;
             --warning: #fff8e6;
             --warning-foreground: #7a4b00;
-            --card: #ffffff;
-            --card-foreground: #18181b;
-            --sidebar: #ffffff;
-            --sidebar-foreground: #18181b;
-            --sidebar-primary: #18181b;
+            --card: #fffcf5;
+            --card-foreground: #2b2620;
+            --sidebar: #fffcf5;
+            --sidebar-foreground: #2b2620;
+            --sidebar-primary: #0e7c86;
             --sidebar-primary-foreground: #ffffff;
             --radius-sm: 4px;
             --radius-md: 6px;
@@ -371,7 +371,7 @@
 
         body.route-discover .site-header,
         body.route-discover .site-header-shell {
-            background: #ffffff !important;
+            background: #fffcf5 !important;
         }
 
         .site-header .site-primary-btn {
@@ -386,7 +386,7 @@
 
     .site-header .site-primary-btn:hover {
         transform: none;
-        background: #27272a;
+        background: #0a5f68;
         box-shadow: none;
     }
 
@@ -651,17 +651,17 @@
     }
 
     :root {
-        --alma-bg: #f4f4f5;
-        --alma-header-bg: #ffffff;
-        --alma-primary: #18181b;
-        --alma-primary-strong: #27272a;
-        --alma-text: #18181b;
-        --alma-muted: #71717a;
-        --alma-soft: #a1a1aa;
-        --alma-hover-white: #ffffff;
-        --alma-hover-muted: #f4f4f5;
-        --alma-card: #ffffff;
-        --alma-border: rgba(39, 39, 42, 0.1);
+        --alma-bg: #f6f1e6;
+        --alma-header-bg: #fffcf5;
+        --alma-primary: #0e7c86;
+        --alma-primary-strong: #0a5f68;
+        --alma-text: #2b2620;
+        --alma-muted: #8a7a5f;
+        --alma-soft: #ab9c81;
+        --alma-hover-white: #fffcf5;
+        --alma-hover-muted: #efe4ce;
+        --alma-card: #fffcf5;
+        --alma-border: rgba(120, 98, 62, 0.16);
         --alma-shadow: none;
         --alma-page-inline: 14px;
         --alma-page-inline-tight: 12px;
@@ -731,7 +731,7 @@
         height: 40px;
         border-radius: 999px;
         border: 1px solid rgba(17, 24, 39, 0.08);
-        background: #ffffff;
+        background: var(--alma-hover-white);
         display: inline-flex;
         align-items: center;
         justify-content: center;
@@ -787,6 +787,27 @@
 
     .site-header .site-primary-btn:hover {
         background: var(--alma-primary-strong);
+    }
+
+    /* Subtle decorative wave divider under the header - purely cosmetic, does not
+       affect header height, layout flow, or any element positions. */
+    .site-header {
+        position: relative;
+    }
+
+    .site-header::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: -8px;
+        height: 8px;
+        pointer-events: none;
+        z-index: 1;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 240 16' preserveAspectRatio='none'%3E%3Cpath d='M0 8 C 20 16 40 0 60 8 C 80 16 100 0 120 8 C 140 16 160 0 180 8 C 200 16 220 0 240 8 V16 H0 Z' fill='%230e7c86' fill-opacity='0.12'/%3E%3C/svg%3E");
+        background-repeat: repeat-x;
+        background-size: 120px 8px;
+        opacity: 0.9;
     }
 
     .site-search-panel {
@@ -852,7 +873,7 @@
         padding: 0 16px;
         border-radius: 999px;
         border: 1px solid rgba(17, 24, 39, 0.08);
-        background: #ffffff;
+        background: var(--alma-hover-white);
         box-shadow: none;
         transition: background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
     }
@@ -863,7 +884,7 @@
     }
 
     .site-search-field:focus-within {
-        background: #ffffff;
+        background: var(--alma-hover-white);
         border-color: rgba(17, 24, 39, 0.14);
         box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
     }
@@ -5120,24 +5141,24 @@
         --layout-column-gap: 32px;
         --layout-shell-inline: 0px;
         --layout-shell-max: 1150px;
-        --alma-primary: #00a971;
-        --alma-primary-strong: #00a971;
-        --site-accent: #00a971;
-        --primary: #00a971;
-        --accent: #00a971;
-        --site-bg: #f7f9fa;
-        --background: #f7f9fa;
-        --site-text: #0f1419;
-        --foreground: #0f1419;
-        --site-muted: #536471;
-        --muted-foreground: #536471;
-        background-color: #f7f9fa !important;
-        color: #0f1419 !important;
+        --alma-primary: #0e7c86;
+        --alma-primary-strong: #0a5f68;
+        --site-accent: #0e7c86;
+        --primary: #0e7c86;
+        --accent: #0e7c86;
+        --site-bg: #f6f1e6;
+        --background: #f6f1e6;
+        --site-text: #2b2620;
+        --foreground: #2b2620;
+        --site-muted: #8a7a5f;
+        --muted-foreground: #8a7a5f;
+        background-color: #f6f1e6 !important;
+        color: #2b2620 !important;
         font-family: "Roboto", Arial, Helvetica, sans-serif !important;
     }
 
     body.alma-app .site-header {
-        background-color: #ffffff !important;
+        background-color: #fffcf5 !important;
         background-image: none !important;
         box-shadow: none !important;
     }
@@ -5182,9 +5203,9 @@
     body.alma-app .site-header .site-header-write-btn,
     body.alma-app .profile-reference-btn-primary,
     body.alma-app .alma-button {
-        background-color: #00a971 !important;
+        background-color: #0e7c86 !important;
         color: #ffffff !important;
-        border-color: #00a971 !important;
+        border-color: #0e7c86 !important;
         border-radius: 8px !important;
         box-shadow: none !important;
     }
@@ -5193,9 +5214,9 @@
     body.alma-app .site-header .site-header-write-btn:hover,
     body.alma-app .profile-reference-btn-primary:hover,
     body.alma-app .alma-button:hover {
-        background-color: #00a971 !important;
+        background-color: #0a5f68 !important;
         color: #ffffff !important;
-        border-color: #00a971 !important;
+        border-color: #0a5f68 !important;
     }
 
     
@@ -5259,26 +5280,26 @@
         --layout-shell-inline: 0px;
         --layout-shell-max: 1182px;
 
-        --alma-primary: #00a971;
-        --alma-primary-strong: #00a971;
-        --site-accent: #00a971;
-        --primary: #00a971;
-        --accent: #00a971;
+        --alma-primary: #0e7c86;
+        --alma-primary-strong: #0a5f68;
+        --site-accent: #0e7c86;
+        --primary: #0e7c86;
+        --accent: #0e7c86;
 
-        --site-bg: #f7f9fa;
-        --background: #f7f9fa;
-        --site-text: #0f1419;
-        --foreground: #0f1419;
-        --site-muted: #536471;
-        --muted-foreground: #536471;
+        --site-bg: #f6f1e6;
+        --background: #f6f1e6;
+        --site-text: #2b2620;
+        --foreground: #2b2620;
+        --site-muted: #8a7a5f;
+        --muted-foreground: #8a7a5f;
 
-        background-color: #f7f9fa !important;
-        color: #0f1419 !important;
+        background-color: #f6f1e6 !important;
+        color: #2b2620 !important;
         font-family: "Roboto", Arial, Helvetica, sans-serif !important;
     }
 
     body.alma-app .site-header {
-        background-color: #ffffff !important;
+        background-color: #fffcf5 !important;
         background-image: none !important;
         box-shadow: none !important;
     }
@@ -6168,15 +6189,17 @@
             --grid-gap: 56px;
             --header-height: 64px;
             --card-radius: 10px;
-            --page-bg: #f4f4f5;
-            --header-bg: #d9f0ff;
-            --card-bg: #ffffff;
+            --page-bg: #f6f1e6;
+            --header-bg: #fffcf5;
+            --card-bg: #fffcf5;
         }
 
         html,
         body.alma-app {
-            background: var(--page-bg) !important;
             background-color: var(--page-bg) !important;
+            background-image:
+                radial-gradient(circle at 12% 6%, rgba(14, 124, 134, 0.07), transparent 42%),
+                radial-gradient(circle at 88% 94%, rgba(14, 124, 134, 0.06), transparent 46%) !important;
         }
 
         body.alma-app {
@@ -6197,8 +6220,8 @@
             right: 0 !important;
             height: var(--header-height) !important;
             min-height: var(--header-height) !important;
-            background: rgba(255, 255, 255, 0.82) !important;
-            background-color: rgba(255, 255, 255, 0.82) !important;
+            background: rgba(255, 252, 245, 0.86) !important;
+            background-color: rgba(255, 252, 245, 0.86) !important;
             backdrop-filter: blur(14px) !important;
             -webkit-backdrop-filter: blur(14px) !important;
             border: 0 !important;
@@ -6511,7 +6534,7 @@
 @php($isPostShowRoute = request()->routeIs('blog.post'))
 
 <body
-    class="bg-[#f7f9fa] text-slate-900 font-sans antialiased theme-minimal alma-app {{ request()->routeIs('home') ? 'route-home' : '' }} {{ request()->routeIs('discover') ? 'route-discover' : '' }} {{ request()->routeIs('video') ? 'route-video' : '' }} {{ $isCategoryRoute ? 'route-category' : '' }} {{ $isPostShowRoute ? 'route-post-show' : '' }}"
+    class="bg-[#f6f1e6] text-slate-900 font-sans antialiased theme-minimal alma-app {{ request()->routeIs('home') ? 'route-home' : '' }} {{ request()->routeIs('discover') ? 'route-discover' : '' }} {{ request()->routeIs('video') ? 'route-video' : '' }} {{ $isCategoryRoute ? 'route-category' : '' }} {{ $isPostShowRoute ? 'route-post-show' : '' }}"
     data-mentions-endpoint="{{ auth()->check() ? route('mentions.users') : '' }}"
 >
     @include('partials.toasts')

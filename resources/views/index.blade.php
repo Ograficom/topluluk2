@@ -122,7 +122,7 @@
     .ografi-feed-loadmore__button:hover,
     .ografi-feed-loadmore__button:focus,
     .ografi-feed-loadmore__button:active {
-        background: #2563eb;
+        background: #0e7c86;
         color: #ffffff;
         text-decoration: none;
         outline: none;
@@ -281,7 +281,7 @@
 
     html.dark .ografi-feed-loadmore__button,
     .dark .ografi-feed-loadmore__button {
-        background: #2563eb;
+        background: #0e7c86;
         color: #ffffff;
     }
 

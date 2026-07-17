@@ -19,7 +19,7 @@
             --muted: #6b7280;
             --border: #e5e7eb;
             --soft: #f3f4f6;
-            --blue: #2563eb;
+            --blue: #0e7c86;
             --blue-hover: #1d4ed8;
         }
 
@@ -32,7 +32,7 @@
                 --border: rgba(255, 255, 255, .10);
                 --soft: rgba(255, 255, 255, .06);
                 --blue: #3b82f6;
-                --blue-hover: #2563eb;
+                --blue-hover: #0e7c86;
             }
         }
 
