@@ -14,14 +14,22 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <meta name="description" content="{{ e($metaDescription) }}">
-    <link rel="canonical" href="{{ $canonicalUrl }}">
+    {{--
+        $documentTitle / $metaDescription / $canonicalUrl come from @section('title', $x)-style
+        inline sections. Laravel's Factory::startSection() HTML-escapes the value the moment an
+        inline (two-argument) @section() call stores it, so it is already safe here. Echoing it
+        again with {{ }} (which also calls e()) or an explicit e() call double/triple-encodes
+        entities (e.g. a title with an apostrophe renders as "AB&amp;#039;den" instead of
+        "AB&#039;den"). Use {!! !!} for these three values only, everything else keeps auto-escaping.
+    --}}
+    <meta name="description" content="{!! $metaDescription !!}">
+    <link rel="canonical" href="{!! $canonicalUrl !!}">
     <link rel="icon" href="{{ asset('favicon.ico') }}?v=20260714a" sizes="any">
     <link rel="shortcut icon" href="{{ asset('favicon.ico') }}?v=20260714a">
     <link rel="icon" type="image/png" sizes="64x64" href="{{ asset('favicon-64.png') }}?v=20260714a">
     <link rel="icon" type="image/png" sizes="192x192" href="{{ asset('pwa/icon-192.png') }}?v=20260714a">
     <link rel="apple-touch-icon" href="{{ asset('pwa/icon-192.png') }}?v=20260714a">
-    <title>{{ $documentTitle }}</title>
+    <title>{!! $documentTitle !!}</title>
     @stack('seo')
     @include('partials.system-appearance')
     @include('partials.google-analytics')
@@ -6614,6 +6622,3 @@
     </style>
 </body>
 </html>
-
-<title>@yield('title', config('app.name', 'Ografi'))</title>
-<meta name="description" content="@yield('meta_description', 'Ografi üzerinde yeni yazılar, profiller, kategoriler ve topluluk içeriklerini keşfet.')">

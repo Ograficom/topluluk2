@@ -227,15 +227,21 @@ SVG;
 SVG;
 @endphp
 
+{{--
+    Title/meta-description/canonical are set through the shared @section mechanism (rendered
+    once by layouts/app.blade.php) instead of being hardcoded here, so this richer,
+    category-specific SEO copy replaces the generic title the parent index view sets, without
+    producing duplicate <title>/<meta name="description">/<link rel="canonical"> tags.
+--}}
+@section('title', $seoTitle)
+@section('meta_description', $seoDescription)
+@section('canonical_url', $seoUrl)
+
 @push('head')
-    <title>{{ $seoTitle }}</title>
-    <meta name="title" content="{{ $seoTitle }}">
-    <meta name="description" content="{{ $seoDescription }}">
     <meta name="keywords" content="{{ $seoKeywords }}">
     <meta name="author" content="{{ $seoSiteName }}">
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
     <meta name="googlebot" content="index, follow">
-    <link rel="canonical" href="{{ $seoUrl }}">
 
     <meta property="og:locale" content="{{ $seoLocale }}">
     <meta property="og:type" content="website">

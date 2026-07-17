@@ -8951,7 +8951,8 @@
 </style>
 
 <!-- SEO / Open Graph / NewsArticle Schema -->
-<meta name="description" content="{{ e($description) }}">
+{{-- meta[name=description] is already rendered once in layouts/app.blade.php from the
+     same $description via @section('meta_description', ...); do not duplicate it here. --}}
 <meta name="author" content="{{ e($authorName) }}">
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="{{ e($siteName !== '' ? $siteName : 'Ografi') }}">
