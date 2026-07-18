@@ -804,7 +804,7 @@
         height: 8px;
         pointer-events: none;
         z-index: 1;
-        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 240 16' preserveAspectRatio='none'%3E%3Cpath d='M0 8 C 20 16 40 0 60 8 C 80 16 100 0 120 8 C 140 16 160 0 180 8 C 200 16 220 0 240 8 V16 H0 Z' fill='%230e7c86' fill-opacity='0.12'/%3E%3C/svg%3E");
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 240 16' preserveAspectRatio='none'%3E%3Cpath d='M0 8 C 20 16 40 0 60 8 C 80 16 100 0 120 8 C 140 16 160 0 180 8 C 200 16 220 0 240 8 V16 H0 Z' fill='%232563eb' fill-opacity='0.12'/%3E%3C/svg%3E");
         background-repeat: repeat-x;
         background-size: 120px 8px;
         opacity: 0.9;
