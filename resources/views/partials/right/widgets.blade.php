@@ -129,19 +129,19 @@
 
     .ografi-comment-avatar,
     .ografi-comment-avatar-fallback {
-        width: 29px !important;
-        height: 29px !important;
-        min-width: 29px !important;
-        max-width: 29px !important;
-        flex: 0 0 29px !important;
+        width: 34px !important;
+        height: 34px !important;
+        min-width: 34px !important;
+        max-width: 34px !important;
+        flex: 0 0 34px !important;
         border-radius: 999px !important;
     }
 
     .ografi-comment-avatar-link {
         display: inline-flex !important;
-        width: 29px !important;
-        height: 29px !important;
-        min-width: 29px !important;
+        width: 34px !important;
+        height: 34px !important;
+        min-width: 34px !important;
         text-decoration: none !important;
     }
 
@@ -169,7 +169,6 @@
         justify-content: center !important;
         gap: 2px !important;
         min-width: 0 !important;
-        max-height: 29px !important;
         flex: 1 1 auto !important;
         overflow: hidden !important;
     }
@@ -179,9 +178,9 @@
         max-width: 210px !important;
         overflow: hidden !important;
         color: #000000 !important;
-        font-size: 9px !important;
+        font-size: 13px !important;
         font-weight: 700 !important;
-        line-height: 1.15 !important;
+        line-height: 1.2 !important;
         text-overflow: ellipsis !important;
         white-space: nowrap !important;
         text-decoration: none !important;
@@ -193,9 +192,9 @@
         max-width: 210px !important;
         overflow: hidden !important;
         color: #000000 !important;
-        font-size: 9px !important;
+        font-size: 13px !important;
         font-weight: 700 !important;
-        line-height: 1.15 !important;
+        line-height: 1.2 !important;
         text-overflow: ellipsis !important;
         white-space: nowrap !important;
         text-decoration: none !important;
