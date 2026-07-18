@@ -54,8 +54,8 @@
         }
 
         .contact-consent-switch input:checked + .contact-consent-switch__track {
-            background: #0e7c86;
-            box-shadow: inset 0 0 0 1px rgba(14, 124, 134, 0.2);
+            background: #2563eb;
+            box-shadow: inset 0 0 0 1px rgba(37, 99, 235, 0.2);
         }
 
         .contact-consent-switch input:checked + .contact-consent-switch__track::before {
@@ -63,16 +63,16 @@
         }
 
         .contact-consent-switch input:focus-visible + .contact-consent-switch__track {
-            outline: 3px solid rgba(14, 124, 134, 0.25);
+            outline: 3px solid rgba(37, 99, 235, 0.25);
             outline-offset: 3px;
         }
 
 
 
         .contact-submit-button {
-            background: #0e7c86 !important;
+            background: #2563eb !important;
             color: #ffffff !important;
-            border: 1px solid #0e7c86 !important;
+            border: 1px solid #2563eb !important;
             box-shadow: none;
         }
 
@@ -82,7 +82,7 @@
         }
 
         .contact-submit-button:focus-visible {
-            outline: 3px solid rgba(14, 124, 134, 0.25);
+            outline: 3px solid rgba(37, 99, 235, 0.25);
             outline-offset: 3px;
         }
 
@@ -130,7 +130,7 @@
             }
 
             .contact-consent-switch input:checked + .contact-consent-switch__track {
-                background: #0e7c86;
+                background: #2563eb;
             }
         }
     </style>
@@ -250,9 +250,9 @@
                         id="contact-submit-button"
                         type="submit"
                         class="contact-submit-button w-full rounded-xl px-6 py-3 text-sm font-medium shadow-sm transition focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 sm:w-auto sm:py-2.5"
-                        style="background-color: #0e7c86 !important; color: #ffffff !important; border: none !important;"
+                        style="background-color: #2563eb !important; color: #ffffff !important; border: none !important;"
                         onmouseover="this.style.setProperty('background-color', '#1d4ed8', 'important'); this.style.setProperty('color', '#ffffff', 'important');"
-                        onmouseout="this.style.setProperty('background-color', '#0e7c86', 'important'); this.style.setProperty('color', '#ffffff', 'important');"
+                        onmouseout="this.style.setProperty('background-color', '#2563eb', 'important'); this.style.setProperty('color', '#ffffff', 'important');"
                         onmousedown="this.style.setProperty('background-color', '#1e40af', 'important'); this.style.setProperty('color', '#ffffff', 'important');"
                         onmouseup="this.style.setProperty('background-color', '#1d4ed8', 'important'); this.style.setProperty('color', '#ffffff', 'important');"
                         {{ old('consent') ? '' : 'disabled' }}

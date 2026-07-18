@@ -66,8 +66,8 @@
         input[type="file"]:focus,
         input[type="file"]:focus-visible {
             outline: none;
-            border-color: #0e7c86;
-            box-shadow: 0 0 0 3px rgba(14, 124, 134, 0.14);
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.14);
         }
         input[type="file"]::file-selector-button {
             margin-right: 12px;
@@ -313,41 +313,41 @@
             --layout-shell-max: calc(
                 var(--layout-left-width) + var(--profile-shell-width) + var(--layout-right-width) + (var(--layout-column-gap) * 2) + (var(--layout-shell-inline) * 2)
             );
-            --site-bg: #f6f1e6;
-            --site-surface: #fffcf5;
-            --site-surface-muted: #efe4ce;
+            --site-bg: #eef2fb;
+            --site-surface: #ffffff;
+            --site-surface-muted: #dbe6fb;
             --site-border: rgba(120, 98, 62, 0.16);
             --site-shadow: none;
             --site-shadow-soft: none;
-            --site-accent: #0e7c86;
+            --site-accent: #2563eb;
             --site-accent-soft: #e3f1ef;
             --site-text: #2b2620;
             --site-muted: #8a7a5f;
-            --site-header-bg: #fffcf5;
-            --site-hover-white: #fffcf5;
-            --site-hover-muted: #efe4ce;
-            --background: #f6f1e6;
+            --site-header-bg: #ffffff;
+            --site-hover-white: #ffffff;
+            --site-hover-muted: #dbe6fb;
+            --background: #eef2fb;
             --foreground: #2b2620;
             --border: rgba(120, 98, 62, 0.16);
-            --primary: #0e7c86;
+            --primary: #2563eb;
             --primary-foreground: #ffffff;
-            --secondary: #fffcf5;
+            --secondary: #ffffff;
             --secondary-foreground: #4a4030;
-            --muted: #efe4ce;
+            --muted: #dbe6fb;
             --muted-foreground: #8a7a5f;
             --success: #ecfdf5;
             --success-foreground: #027a48;
-            --accent: #0e7c86;
+            --accent: #2563eb;
             --accent-foreground: #ffffff;
             --destructive: #feefef;
             --destructive-foreground: #981b1b;
             --warning: #fff8e6;
             --warning-foreground: #7a4b00;
-            --card: #fffcf5;
+            --card: #ffffff;
             --card-foreground: #2b2620;
-            --sidebar: #fffcf5;
+            --sidebar: #ffffff;
             --sidebar-foreground: #2b2620;
-            --sidebar-primary: #0e7c86;
+            --sidebar-primary: #2563eb;
             --sidebar-primary-foreground: #ffffff;
             --radius-sm: 4px;
             --radius-md: 6px;
@@ -371,7 +371,7 @@
 
         body.route-discover .site-header,
         body.route-discover .site-header-shell {
-            background: #fffcf5 !important;
+            background: #ffffff !important;
         }
 
         .site-header .site-primary-btn {
@@ -386,7 +386,7 @@
 
     .site-header .site-primary-btn:hover {
         transform: none;
-        background: #0a5f68;
+        background: #1d4ed8;
         box-shadow: none;
     }
 
@@ -651,16 +651,16 @@
     }
 
     :root {
-        --alma-bg: #f6f1e6;
-        --alma-header-bg: #fffcf5;
-        --alma-primary: #0e7c86;
-        --alma-primary-strong: #0a5f68;
+        --alma-bg: #eef2fb;
+        --alma-header-bg: #ffffff;
+        --alma-primary: #2563eb;
+        --alma-primary-strong: #1d4ed8;
         --alma-text: #2b2620;
         --alma-muted: #8a7a5f;
         --alma-soft: #ab9c81;
-        --alma-hover-white: #fffcf5;
-        --alma-hover-muted: #efe4ce;
-        --alma-card: #fffcf5;
+        --alma-hover-white: #ffffff;
+        --alma-hover-muted: #dbe6fb;
+        --alma-card: #ffffff;
         --alma-border: rgba(120, 98, 62, 0.16);
         --alma-shadow: none;
         --alma-page-inline: 14px;
@@ -5141,24 +5141,24 @@
         --layout-column-gap: 32px;
         --layout-shell-inline: 0px;
         --layout-shell-max: 1150px;
-        --alma-primary: #0e7c86;
-        --alma-primary-strong: #0a5f68;
-        --site-accent: #0e7c86;
-        --primary: #0e7c86;
-        --accent: #0e7c86;
-        --site-bg: #f6f1e6;
-        --background: #f6f1e6;
+        --alma-primary: #2563eb;
+        --alma-primary-strong: #1d4ed8;
+        --site-accent: #2563eb;
+        --primary: #2563eb;
+        --accent: #2563eb;
+        --site-bg: #eef2fb;
+        --background: #eef2fb;
         --site-text: #2b2620;
         --foreground: #2b2620;
         --site-muted: #8a7a5f;
         --muted-foreground: #8a7a5f;
-        background-color: #f6f1e6 !important;
+        background-color: #eef2fb !important;
         color: #2b2620 !important;
         font-family: "Roboto", Arial, Helvetica, sans-serif !important;
     }
 
     body.alma-app .site-header {
-        background-color: #fffcf5 !important;
+        background-color: #ffffff !important;
         background-image: none !important;
         box-shadow: none !important;
     }
@@ -5203,9 +5203,9 @@
     body.alma-app .site-header .site-header-write-btn,
     body.alma-app .profile-reference-btn-primary,
     body.alma-app .alma-button {
-        background-color: #0e7c86 !important;
+        background-color: #2563eb !important;
         color: #ffffff !important;
-        border-color: #0e7c86 !important;
+        border-color: #2563eb !important;
         border-radius: 8px !important;
         box-shadow: none !important;
     }
@@ -5214,9 +5214,9 @@
     body.alma-app .site-header .site-header-write-btn:hover,
     body.alma-app .profile-reference-btn-primary:hover,
     body.alma-app .alma-button:hover {
-        background-color: #0a5f68 !important;
+        background-color: #1d4ed8 !important;
         color: #ffffff !important;
-        border-color: #0a5f68 !important;
+        border-color: #1d4ed8 !important;
     }
 
     
@@ -5280,26 +5280,26 @@
         --layout-shell-inline: 0px;
         --layout-shell-max: 1182px;
 
-        --alma-primary: #0e7c86;
-        --alma-primary-strong: #0a5f68;
-        --site-accent: #0e7c86;
-        --primary: #0e7c86;
-        --accent: #0e7c86;
+        --alma-primary: #2563eb;
+        --alma-primary-strong: #1d4ed8;
+        --site-accent: #2563eb;
+        --primary: #2563eb;
+        --accent: #2563eb;
 
-        --site-bg: #f6f1e6;
-        --background: #f6f1e6;
+        --site-bg: #eef2fb;
+        --background: #eef2fb;
         --site-text: #2b2620;
         --foreground: #2b2620;
         --site-muted: #8a7a5f;
         --muted-foreground: #8a7a5f;
 
-        background-color: #f6f1e6 !important;
+        background-color: #eef2fb !important;
         color: #2b2620 !important;
         font-family: "Roboto", Arial, Helvetica, sans-serif !important;
     }
 
     body.alma-app .site-header {
-        background-color: #fffcf5 !important;
+        background-color: #ffffff !important;
         background-image: none !important;
         box-shadow: none !important;
     }
@@ -6189,17 +6189,17 @@
             --grid-gap: 56px;
             --header-height: 64px;
             --card-radius: 10px;
-            --page-bg: #f6f1e6;
-            --header-bg: #fffcf5;
-            --card-bg: #fffcf5;
+            --page-bg: #eef2fb;
+            --header-bg: #ffffff;
+            --card-bg: #ffffff;
         }
 
         html,
         body.alma-app {
             background-color: var(--page-bg) !important;
             background-image:
-                radial-gradient(circle at 12% 6%, rgba(14, 124, 134, 0.07), transparent 42%),
-                radial-gradient(circle at 88% 94%, rgba(14, 124, 134, 0.06), transparent 46%) !important;
+                radial-gradient(circle at 12% 6%, rgba(37, 99, 235, 0.07), transparent 42%),
+                radial-gradient(circle at 88% 94%, rgba(37, 99, 235, 0.06), transparent 46%) !important;
         }
 
         body.alma-app {
@@ -6527,6 +6527,95 @@
         }
     </style>
 
+    @php
+        $ografiBrand = \App\Models\ThemeSetting::currentOrNull();
+        $ografiSanitizeColor = static function (?string $value, string $fallback): string {
+            $value = trim((string) $value);
+            return preg_match('/^#[0-9a-fA-F]{3,8}$/', $value) ? $value : $fallback;
+        };
+        $ografiBrandBg = $ografiSanitizeColor($ografiBrand->brand_background_color ?? null, '#eef2fb');
+        $ografiBrandSurface = $ografiSanitizeColor($ografiBrand->brand_surface_color ?? null, '#ffffff');
+        $ografiBrandButton = $ografiSanitizeColor($ografiBrand->brand_button_color ?? null, '#2563eb');
+        $ografiBrandButtonHover = $ografiSanitizeColor($ografiBrand->brand_button_hover_color ?? null, '#1d4ed8');
+        $ografiBrandButtonText = $ografiSanitizeColor($ografiBrand->brand_button_text_color ?? null, '#ffffff');
+        $ografiBrandText = $ografiSanitizeColor($ografiBrand->brand_text_color ?? null, '#0f172a');
+        $ografiBrandFontRaw = trim((string) ($ografiBrand->brand_font_family ?? ''));
+        $ografiBrandFont = $ografiBrandFontRaw !== '' && preg_match('/^[A-Za-z0-9 \-]+$/', $ografiBrandFontRaw)
+            ? $ografiBrandFontRaw
+            : 'Roboto';
+    @endphp
+    {{--
+        Filament > Site > Gorunum Ayarlari sayfasindan yonetilen marka renkleri/font.
+        Bu blok, yukarida tanimlanan tum --site-*/--alma-*/--page-bg gibi degiskenleri
+        ve daha once bazi dosyalarda sabit (hardcoded) yazilmis buton renklerini en son
+        (dolayisiyla en oncelikli) noktada ezerek gunceller. Admin panelinden bir deger
+        girilmezse yukaridaki varsayilan mavi paleti kullanilir.
+    --}}
+    <style id="ografi-brand-appearance">
+        :root,
+        body.alma-app {
+            --ografi-font-family: "{{ $ografiBrandFont }}", Arial, Helvetica, sans-serif !important;
+            --site-bg: {{ $ografiBrandBg }} !important;
+            --background: {{ $ografiBrandBg }} !important;
+            --page-bg: {{ $ografiBrandBg }} !important;
+            --alma-bg: {{ $ografiBrandBg }} !important;
+
+            --site-surface: {{ $ografiBrandSurface }} !important;
+            --card: {{ $ografiBrandSurface }} !important;
+            --alma-card: {{ $ografiBrandSurface }} !important;
+            --card-bg: {{ $ografiBrandSurface }} !important;
+            --site-header-bg: {{ $ografiBrandSurface }} !important;
+            --alma-header-bg: {{ $ografiBrandSurface }} !important;
+            --header-bg: {{ $ografiBrandSurface }} !important;
+            --sidebar: {{ $ografiBrandSurface }} !important;
+            --secondary: {{ $ografiBrandSurface }} !important;
+
+            --site-accent: {{ $ografiBrandButton }} !important;
+            --primary: {{ $ografiBrandButton }} !important;
+            --accent: {{ $ografiBrandButton }} !important;
+            --alma-primary: {{ $ografiBrandButton }} !important;
+            --sidebar-primary: {{ $ografiBrandButton }} !important;
+            --alma-primary-strong: {{ $ografiBrandButtonHover }} !important;
+
+            --site-text: {{ $ografiBrandText }} !important;
+            --foreground: {{ $ografiBrandText }} !important;
+            --alma-text: {{ $ografiBrandText }} !important;
+            --card-foreground: {{ $ografiBrandText }} !important;
+            --sidebar-foreground: {{ $ografiBrandText }} !important;
+
+            font-family: "{{ $ografiBrandFont }}", Arial, Helvetica, sans-serif !important;
+        }
+
+        html,
+        body.alma-app {
+            background-color: {{ $ografiBrandBg }} !important;
+        }
+
+        body.alma-app .site-header,
+        body.alma-app .site-header-shell {
+            background-color: {{ $ografiBrandSurface }} !important;
+            background-image: none !important;
+        }
+
+        body.alma-app .site-primary-btn,
+        body.alma-app .site-header .site-header-write-btn,
+        body.alma-app .profile-reference-btn-primary,
+        body.alma-app .alma-button {
+            background-color: {{ $ografiBrandButton }} !important;
+            border-color: {{ $ografiBrandButton }} !important;
+            color: {{ $ografiBrandButtonText }} !important;
+        }
+
+        body.alma-app .site-primary-btn:hover,
+        body.alma-app .site-header .site-header-write-btn:hover,
+        body.alma-app .profile-reference-btn-primary:hover,
+        body.alma-app .alma-button:hover {
+            background-color: {{ $ografiBrandButtonHover }} !important;
+            border-color: {{ $ografiBrandButtonHover }} !important;
+            color: {{ $ografiBrandButtonText }} !important;
+        }
+    </style>
+
     @include('partials.pwa-meta')
 </head>
 @php($isMessagesRoute = request()->routeIs('messages.*'))
@@ -6534,7 +6623,7 @@
 @php($isPostShowRoute = request()->routeIs('blog.post'))
 
 <body
-    class="bg-[#f6f1e6] text-slate-900 font-sans antialiased theme-minimal alma-app {{ request()->routeIs('home') ? 'route-home' : '' }} {{ request()->routeIs('discover') ? 'route-discover' : '' }} {{ request()->routeIs('video') ? 'route-video' : '' }} {{ $isCategoryRoute ? 'route-category' : '' }} {{ $isPostShowRoute ? 'route-post-show' : '' }}"
+    class="bg-[#eef2fb] text-slate-900 font-sans antialiased theme-minimal alma-app {{ request()->routeIs('home') ? 'route-home' : '' }} {{ request()->routeIs('discover') ? 'route-discover' : '' }} {{ request()->routeIs('video') ? 'route-video' : '' }} {{ $isCategoryRoute ? 'route-category' : '' }} {{ $isPostShowRoute ? 'route-post-show' : '' }}"
     data-mentions-endpoint="{{ auth()->check() ? route('mentions.users') : '' }}"
 >
     @include('partials.preloader')

@@ -216,7 +216,7 @@
             bottom: 0 !important;
             height: 3px !important;
             border-radius: 999px 999px 0 0 !important;
-            background: #0e7c86 !important;
+            background: #2563eb !important;
         }
 
         .market-tab__label {
@@ -303,8 +303,8 @@
             margin: 0 auto !important;
             border: 0 !important;
             border-radius: 999px !important;
-            background: #0e7c86 !important;
-            background-color: #0e7c86 !important;
+            background: #2563eb !important;
+            background-color: #2563eb !important;
             color: #ffffff !important;
             opacity: 1 !important;
             visibility: visible !important;
@@ -363,7 +363,7 @@
         html.dark .market-converter-card, .dark .market-converter-card { background: #0f172a !important; }
         html.dark .market-converter-box, .dark .market-converter-box { background: #111827 !important; }
         html.dark .market-converter-input, html.dark .market-converter-select, .dark .market-converter-input, .dark .market-converter-select { color: #f8fafc !important; }
-        html.dark .market-page .market-converter button.market-swap-button, html.dark .market-page button[data-swap-button], .dark .market-page .market-converter button.market-swap-button, .dark .market-page button[data-swap-button] { background: #0e7c86 !important; background-color: #0e7c86 !important; color: #ffffff !important; }
+        html.dark .market-page .market-converter button.market-swap-button, html.dark .market-page button[data-swap-button], .dark .market-page .market-converter button.market-swap-button, .dark .market-page button[data-swap-button] { background: #2563eb !important; background-color: #2563eb !important; color: #ffffff !important; }
         html.dark .market-page .market-converter button.market-swap-button:hover, html.dark .market-page .market-converter button.market-swap-button:focus, html.dark .market-page .market-converter button.market-swap-button:active, .dark .market-page .market-converter button.market-swap-button:hover, .dark .market-page .market-converter button.market-swap-button:focus, .dark .market-page .market-converter button.market-swap-button:active { background: #1d4ed8 !important; background-color: #1d4ed8 !important; color: #ffffff !important; }
 
         @media (max-width: 640px) {
@@ -393,7 +393,7 @@
             .market-converter-box { width: 100% !important; max-width: 100% !important; min-height: 42px !important; grid-template-columns: minmax(78px, 96px) minmax(0, 1fr) !important; border-radius: 12px !important; background: #f1f3f4 !important; box-sizing: border-box !important; }
             .market-converter-input { height: 42px !important; padding: 0 12px !important; font-size: 14px !important; font-weight: 400 !important; }
             .market-converter-select { height: 42px !important; justify-content: flex-end !important; padding: 0 12px !important; font-size: 13px !important; font-weight: 400 !important; }
-            .market-page .market-converter button.market-swap-button, .market-page button[data-swap-button] { width: 42px !important; min-width: 42px !important; height: 42px !important; min-height: 42px !important; margin: 0 auto !important; background: #0e7c86 !important; background-color: #0e7c86 !important; color: #ffffff !important; }
+            .market-page .market-converter button.market-swap-button, .market-page button[data-swap-button] { width: 42px !important; min-width: 42px !important; height: 42px !important; min-height: 42px !important; margin: 0 auto !important; background: #2563eb !important; background-color: #2563eb !important; color: #ffffff !important; }
             .market-page .market-converter button.market-swap-button svg, .market-page button[data-swap-button] svg { width: 18px !important; height: 18px !important; stroke: #ffffff !important; }
             html.dark .market-card, .dark .market-card { background: #0f172a !important; border-color: #1e293b !important; }
             html.dark .market-converter-box, .dark .market-converter-box { background: #111827 !important; }

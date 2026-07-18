@@ -188,7 +188,7 @@
     .ografi-feed-loadmore__button:hover,
     .ografi-feed-loadmore__button:focus,
     .ografi-feed-loadmore__button:active {
-        background: #0e7c86;
+        background: #2563eb;
         color: #ffffff;
         text-decoration: none;
         outline: none;
@@ -275,14 +275,14 @@
 
     .category-index-tab:hover,
     .category-index-tab:focus {
-        color: #0e7c86;
+        color: #2563eb;
         text-decoration: none;
         outline: none;
     }
 
     .category-index-tab[aria-current="page"] {
-        color: #0e7c86;
-        border-bottom-color: #0e7c86;
+        color: #2563eb;
+        border-bottom-color: #2563eb;
     }
 
     html.dark .category-index-tabs,
@@ -413,7 +413,7 @@
 
     html.dark .ografi-feed-loadmore__button,
     .dark .ografi-feed-loadmore__button {
-        background: #0e7c86;
+        background: #2563eb;
         color: #ffffff;
     }
 
@@ -447,16 +447,16 @@
     align-items: center !important;
     justify-content: center !important;
     gap: 10px !important;
-    border: 1px solid rgba(14, 124, 134, 0.22) !important;
+    border: 1px solid rgba(37, 99, 235, 0.22) !important;
     border-radius: 18px !important;
-    background: linear-gradient(135deg, #0e7c86 0%, #3b82f6 100%) !important;
+    background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%) !important;
     color: #ffffff !important;
     font-family: "Poppins", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
     font-size: 18px !important;
     font-weight: 500 !important;
     line-height: 1 !important;
     text-decoration: none !important;
-    box-shadow: 0 12px 26px rgba(14, 124, 134, 0.24) !important;
+    box-shadow: 0 12px 26px rgba(37, 99, 235, 0.24) !important;
     cursor: pointer !important;
     overflow: hidden !important;
     -webkit-tap-highlight-color: transparent !important;
@@ -474,11 +474,11 @@
 .ografi-feed-loadmore__button:hover,
 .ografi-feed-loadmore__button:focus,
 .ografi-feed-loadmore__button:active {
-    background: linear-gradient(135deg, #1d4ed8 0%, #0e7c86 100%) !important;
+    background: linear-gradient(135deg, #1d4ed8 0%, #2563eb 100%) !important;
     color: #ffffff !important;
     text-decoration: none !important;
     outline: none !important;
-    box-shadow: 0 12px 26px rgba(14, 124, 134, 0.28) !important;
+    box-shadow: 0 12px 26px rgba(37, 99, 235, 0.28) !important;
 }
 
 .ografi-feed-loadmore__icon,
@@ -570,7 +570,7 @@ html.dark .ografi-feed-loadmore__count,
 
 html.dark .ografi-feed-loadmore__button,
 .dark .ografi-feed-loadmore__button {
-    background: linear-gradient(135deg, #0e7c86 0%, #3b82f6 100%) !important;
+    background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%) !important;
     border-color: rgba(96, 165, 250, 0.22) !important;
     color: #ffffff !important;
 }
@@ -604,7 +604,7 @@ html.dark .ografi-feed-loadmore__button,
     align-items: center !important;
     justify-content: center !important;
     gap: 9px !important;
-    border: 1px solid rgba(14, 124, 134, 0.18) !important;
+    border: 1px solid rgba(37, 99, 235, 0.18) !important;
     border-radius: 17px !important;
     color: #ffffff !important;
     font-family: "Poppins", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
@@ -612,7 +612,7 @@ html.dark .ografi-feed-loadmore__button,
     font-weight: 500 !important;
     line-height: 1 !important;
     text-decoration: none !important;
-    box-shadow: 0 10px 22px rgba(14, 124, 134, 0.20) !important;
+    box-shadow: 0 10px 22px rgba(37, 99, 235, 0.20) !important;
     cursor: pointer !important;
     overflow: hidden !important;
     -webkit-tap-highlight-color: transparent !important;
@@ -625,7 +625,7 @@ html.dark .ografi-feed-loadmore__button,
 }
 
 .ografi-feed-page-button--next {
-    background: linear-gradient(135deg, #0e7c86 0%, #3b82f6 100%) !important;
+    background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%) !important;
 }
 
 .ografi-feed-page-button::before {
@@ -654,7 +654,7 @@ html.dark .ografi-feed-loadmore__button,
 .ografi-feed-page-button--next:hover,
 .ografi-feed-page-button--next:focus,
 .ografi-feed-page-button--next:active {
-    background: linear-gradient(135deg, #1d4ed8 0%, #0e7c86 100%) !important;
+    background: linear-gradient(135deg, #1d4ed8 0%, #2563eb 100%) !important;
 }
 
 .ografi-feed-page-button__icon,
@@ -811,8 +811,8 @@ html.dark .ografi-feed-loadmore__count,
 }
 
 .ografi-feed-page-button--next {
-    border: 1px solid #0e7c86 !important;
-    background: #0e7c86 !important;
+    border: 1px solid #2563eb !important;
+    background: #2563eb !important;
     color: #ffffff !important;
 }
 
@@ -1009,8 +1009,8 @@ html.dark .ografi-feed-loadmore__count,
 }
 
 .ografi-feed-page-button--next {
-    background: #0e7c86 !important;
-    border: 1px solid #0e7c86 !important;
+    background: #2563eb !important;
+    border: 1px solid #2563eb !important;
     color: #ffffff !important;
 }
 

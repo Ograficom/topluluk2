@@ -846,7 +846,7 @@
   .ogx-emoji-btn.is-open,
   .ogx-image-btn:hover {
     background: transparent !important;
-    color: #0e7c86 !important;
+    color: #2563eb !important;
   }
 
   .ogx-filter-btn svg,
@@ -915,7 +915,7 @@
   .ogx-comment-menu button:hover,
   .ogx-comment-menu a:hover {
     background: transparent !important;
-    color: #0e7c86 !important;
+    color: #2563eb !important;
   }
 
   .ogx-filter-item.is-active::after {
@@ -923,7 +923,7 @@
     width: 6px !important;
     height: 6px !important;
     border-radius: 50% !important;
-    background: #0e7c86 !important;
+    background: #2563eb !important;
     flex-shrink: 0 !important;
   }
 
@@ -949,8 +949,8 @@
   }
 
   .ogx-composer-form.has-comment-ready .ogx-composer-box {
-    border-color: #0e7c86 !important;
-    box-shadow: 0 0 0 3px rgba(14, 124, 134, 0.10) !important;
+    border-color: #2563eb !important;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.10) !important;
   }
 
   .ogx-comment-input {
@@ -1063,7 +1063,7 @@
   }
 
   .ogx-composer-form.has-comment-ready .ogx-submit-btn {
-    background: #0e7c86 !important;
+    background: #2563eb !important;
     color: #ffffff !important;
     opacity: 1 !important;
     cursor: pointer !important;
@@ -1145,7 +1145,7 @@
     overflow: hidden !important;
     display: grid !important;
     place-items: center !important;
-    background: #0e7c86 !important;
+    background: #2563eb !important;
     color: #ffffff !important;
     font-size: 12px !important;
     font-weight: 700 !important;
@@ -1191,7 +1191,7 @@
   }
 
   .ogx-author-label {
-    color: #0e7c86 !important;
+    color: #2563eb !important;
     font-weight: 600 !important;
   }
 
@@ -1243,7 +1243,7 @@
   .ogx-vote-btn:hover,
   .ogx-reply-btn:hover,
   .ogx-replies-plus-btn:hover {
-    color: #0e7c86 !important;
+    color: #2563eb !important;
     background: transparent !important;
   }
 
@@ -1296,8 +1296,8 @@
   }
 
   .ogx-reply-compose:focus-within {
-    border-color: #0e7c86 !important;
-    box-shadow: 0 0 0 3px rgba(14, 124, 134, 0.10) !important;
+    border-color: #2563eb !important;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.10) !important;
   }
 
   .ogx-reply-compose textarea {
@@ -1339,7 +1339,7 @@
   }
 
   .ogx-primary-btn {
-    background: #0e7c86 !important;
+    background: #2563eb !important;
     color: #ffffff !important;
   }
 
@@ -1586,7 +1586,7 @@
 
   .ogx-comments-panel .ogx-gif-btn:hover,
   .ogx-comments-panel .ogx-gif-btn:focus {
-    color: #0e7c86 !important;
+    color: #2563eb !important;
   }
 
   .ogx-comments-panel .ogx-submit-btn {
@@ -1598,8 +1598,8 @@
 
   .ogx-comments-panel .ogx-composer-form.has-comment-ready .ogx-submit-btn,
   .ogx-comments-panel .ogx-reply-form.has-comment-ready .ogx-submit-btn {
-    background: #0e7c86 !important;
-    background-color: #0e7c86 !important;
+    background: #2563eb !important;
+    background-color: #2563eb !important;
     color: #ffffff !important;
     opacity: 1 !important;
   }
@@ -1692,7 +1692,7 @@
   }
 
   #ogx-giphy-modal .ogx-giphy-search:focus {
-    border-color: #0e7c86 !important;
+    border-color: #2563eb !important;
   }
 
   #ogx-giphy-modal .ogx-giphy-status {

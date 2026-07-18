@@ -723,8 +723,8 @@
         }
 
         .ografi-feed-page-button--next {
-            background: #0e7c86 !important;
-            border: 1px solid #0e7c86 !important;
+            background: #2563eb !important;
+            border: 1px solid #2563eb !important;
             color: #ffffff !important;
             padding-inline: 10px !important;
         }
@@ -834,8 +834,8 @@
 
         html.dark .ografi-feed-page-button--next,
         .dark .ografi-feed-page-button--next {
-            background: #0e7c86 !important;
-            border-color: #0e7c86 !important;
+            background: #2563eb !important;
+            border-color: #2563eb !important;
             color: #ffffff !important;
         }
 
@@ -1306,7 +1306,7 @@
                 width: 6px !important;
                 height: 6px !important;
                 border-radius: 999px !important;
-                background: #0e7c86 !important;
+                background: #2563eb !important;
                 margin-left: 8px !important;
                 flex: 0 0 auto !important;
             }
@@ -1562,7 +1562,7 @@
                 height: 6px !important;
                 flex: 0 0 6px !important;
                 border-radius: 999px !important;
-                background: #0e7c86 !important;
+                background: #2563eb !important;
             }
 
             .live-market-widget__mobile-option.is-active .live-market-widget__mobile-option-dot {
@@ -1835,7 +1835,7 @@
             }
 
             .live-market-widget__mobile-option.is-active .live-market-widget__mobile-option-dot {
-                background: #0e7c86 !important;
+                background: #2563eb !important;
             }
 
             .live-market-widget__track {
@@ -2232,8 +2232,8 @@
             width: 6px !important;
             height: 6px !important;
             border-radius: 999px !important;
-            background: #0e7c86 !important;
-            box-shadow: 0 0 0 0 rgba(14, 124, 134, .45) !important;
+            background: #2563eb !important;
+            box-shadow: 0 0 0 0 rgba(37, 99, 235, .45) !important;
             animation: ografi-blue-dot-pulse 1.15s ease-in-out infinite !important;
             pointer-events: none !important;
             z-index: 3 !important;
@@ -2243,12 +2243,12 @@
             0%, 100% {
                 opacity: .45;
                 transform: scale(.82);
-                box-shadow: 0 0 0 0 rgba(14, 124, 134, .25);
+                box-shadow: 0 0 0 0 rgba(37, 99, 235, .25);
             }
             50% {
                 opacity: 1;
                 transform: scale(1);
-                box-shadow: 0 0 0 4px rgba(14, 124, 134, 0);
+                box-shadow: 0 0 0 4px rgba(37, 99, 235, 0);
             }
         }
 
@@ -2340,8 +2340,8 @@
             min-width: 5px !important;
             min-height: 5px !important;
             border-radius: 999px !important;
-            background: #0e7c86 !important;
-            box-shadow: 0 0 0 0 rgba(14, 124, 134, .38) !important;
+            background: #2563eb !important;
+            box-shadow: 0 0 0 0 rgba(37, 99, 235, .38) !important;
             animation: ografi-blue-dot-pulse 1.15s ease-in-out infinite !important;
         }
 
@@ -2402,12 +2402,12 @@
             0%, 100% {
                 opacity: .35;
                 transform: scale(.82);
-                box-shadow: 0 0 0 0 rgba(14, 124, 134, .32);
+                box-shadow: 0 0 0 0 rgba(37, 99, 235, .32);
             }
             50% {
                 opacity: 1;
                 transform: scale(1.08);
-                box-shadow: 0 0 0 5px rgba(14, 124, 134, 0);
+                box-shadow: 0 0 0 5px rgba(37, 99, 235, 0);
             }
         }
 
@@ -2567,8 +2567,8 @@
             width: 5px !important;
             height: 5px !important;
             border-radius: 999px !important;
-            background: #0e7c86 !important;
-            box-shadow: 0 0 0 0 rgba(14, 124, 134, .42) !important;
+            background: #2563eb !important;
+            box-shadow: 0 0 0 0 rgba(37, 99, 235, .42) !important;
             animation: ografi-blue-dot-pulse 1.15s ease-in-out infinite !important;
             pointer-events: none !important;
             z-index: 4 !important;
@@ -2599,7 +2599,7 @@
             height: 6px !important;
             min-width: 6px !important;
             border-radius: 999px !important;
-            background: #0e7c86 !important;
+            background: #2563eb !important;
             flex: 0 0 6px !important;
         }
 
@@ -2721,8 +2721,8 @@
             min-width: 5px !important;
             min-height: 5px !important;
             border-radius: 999px !important;
-            background: #0e7c86 !important;
-            box-shadow: 0 0 0 0 rgba(14, 124, 134, .42) !important;
+            background: #2563eb !important;
+            box-shadow: 0 0 0 0 rgba(37, 99, 235, .42) !important;
             animation: ografi-blue-dot-pulse 1.15s ease-in-out infinite !important;
             pointer-events: none !important;
             z-index: 5 !important;
@@ -2818,7 +2818,7 @@
             height: 6px !important;
             min-width: 6px !important;
             border-radius: 999px !important;
-            background: #0e7c86 !important;
+            background: #2563eb !important;
             flex: 0 0 6px !important;
         }
 
@@ -3261,7 +3261,7 @@
             width: 6px !important;
             height: 6px !important;
             border-radius: 999px !important;
-            background: #0e7c86 !important;
+            background: #2563eb !important;
         }
 
         .live-market-widget__mobile-dropdown {
@@ -3575,7 +3575,7 @@
         }
 
         .live-market-widget__mobile-option.is-active .live-market-widget__mobile-option-dot {
-            background: #0e7c86 !important;
+            background: #2563eb !important;
         }
 
         html.dark .live-market-widget,

@@ -135,8 +135,8 @@
         }
 
         .simple-auth-input:focus {
-            border-color: #0e7c86;
-            box-shadow: 0 0 0 1px #0e7c86;
+            border-color: #2563eb;
+            box-shadow: 0 0 0 1px #2563eb;
         }
 
         .simple-auth-code {
@@ -192,7 +192,7 @@
             padding: 0 12px;
             border: 0;
             border-radius: 6px;
-            background: #0e7c86;
+            background: #2563eb;
             color: #fff;
             font-size: 12px;
             font-weight: 400;
@@ -305,8 +305,8 @@
         }
 
         html body .simple-auth-page .simple-auth-input:not(#comments *):not(#app *):focus {
-            border-color: #0e7c86 !important;
-            box-shadow: 0 0 0 1px #0e7c86 !important;
+            border-color: #2563eb !important;
+            box-shadow: 0 0 0 1px #2563eb !important;
         }
 
         html body .simple-auth-page .simple-auth-code:not(#comments *):not(#app *) {
@@ -340,7 +340,7 @@
             padding: 0 12px !important;
             border: 0 !important;
             border-radius: 6px !important;
-            background: #0e7c86 !important;
+            background: #2563eb !important;
             color: #fff !important;
             font-size: 12px !important;
             font-weight: 400 !important;

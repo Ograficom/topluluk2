@@ -68,6 +68,13 @@ class ThemeSetting extends Model
         'dark_primary_color',
         'global_shadow',
         'header_shadow',
+        'brand_background_color',
+        'brand_surface_color',
+        'brand_button_color',
+        'brand_button_hover_color',
+        'brand_button_text_color',
+        'brand_text_color',
+        'brand_font_family',
     ];
 
     public static function current(): self

@@ -122,7 +122,7 @@
             --video-safe-top: max(12px, env(safe-area-inset-top));
             --video-safe-bottom: max(16px, env(safe-area-inset-bottom));
             --video-pink: #ff2f55;
-            --video-blue: #0e7c86;
+            --video-blue: #2563eb;
         }
 
         .reels-page {
@@ -236,7 +236,7 @@
             place-items: center;
             background:
                 radial-gradient(circle at 20% 15%, rgba(255, 255, 255, .12), transparent 26%),
-                radial-gradient(circle at 80% 85%, rgba(14, 124, 134, .28), transparent 32%),
+                radial-gradient(circle at 80% 85%, rgba(37, 99, 235, .28), transparent 32%),
                 linear-gradient(180deg, #111827 0%, #020617 100%);
         }
 
@@ -524,7 +524,7 @@
             place-items: center;
             color: #fff;
             font-size: 14px;
-            background: linear-gradient(135deg, #0e7c86, #ff2f55);
+            background: linear-gradient(135deg, #2563eb, #ff2f55);
         }
 
         .reels-user-dropdown {
@@ -1097,7 +1097,7 @@
         @media (min-width: 1024px) {
             .reels-page {
                 background:
-                    radial-gradient(circle at left center, rgba(14, 124, 134, .16), transparent 34%),
+                    radial-gradient(circle at left center, rgba(37, 99, 235, .16), transparent 34%),
                     radial-gradient(circle at right bottom, rgba(255, 47, 85, .14), transparent 34%),
                     #020617;
             }

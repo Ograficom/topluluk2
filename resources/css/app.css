@@ -211,7 +211,7 @@ html body .shadcn-menu .ogx-filter-item.is-active::after {
     height: 0.375rem !important;
     margin-left: auto !important;
     border-radius: 9999px !important;
-    background: #0e7c86 !important;
+    background: #2563eb !important;
 }
 
 html,

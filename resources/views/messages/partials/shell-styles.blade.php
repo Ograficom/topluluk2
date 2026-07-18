@@ -572,7 +572,7 @@
 
             body.alma-app:has(.messages-show-layout) .messages-composer-dock button[type="button"] {
                 background: rgba(59, 130, 246, 0.10) !important;
-                color: #0e7c86 !important;
+                color: #2563eb !important;
             }
 
             body.alma-app:has(.messages-show-layout) .messages-composer-dock label[for="messageAttachmentInput"] {

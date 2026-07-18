@@ -262,8 +262,8 @@ SVG;
     <meta name="twitter:image" content="{{ $seoImage }}">
     <meta name="twitter:image:alt" content="{{ $seoImageAlt }}">
 
-    <meta name="theme-color" content="#0e7c86">
-    <meta name="msapplication-TileColor" content="#0e7c86">
+    <meta name="theme-color" content="#2563eb">
+    <meta name="msapplication-TileColor" content="#2563eb">
 
     <script type="application/ld+json">
         @json($categoryStructuredData, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT)
@@ -485,7 +485,7 @@ SVG;
     }
 
 .profile-reference-tab[aria-current="page"] {
-        border-bottom-color: #0e7c86;
+        border-bottom-color: #2563eb;
         color: #111827;
     }
 
@@ -612,7 +612,7 @@ SVG;
     }
 
 .profile-reference-info-link {
-        color: #0e7c86;
+        color: #2563eb;
         text-decoration: none;
     }
 
@@ -666,7 +666,7 @@ SVG;
         padding: 0 14px;
         border: 0;
         border-radius: 10px;
-        background: #0e7c86;
+        background: #2563eb;
         color: #ffffff;
         font-size: 13px;
         font-weight: 700;
@@ -925,7 +925,7 @@ body:has(.category-reference-card) .profile-reference-btn-primary {
         min-width: 86px !important;
         height: 36px !important;
         border-radius: 8px !important;
-        background: #0e7c86 !important;
+        background: #2563eb !important;
         color: #ffffff !important;
         font-size: 14px !important;
         font-weight: 800 !important;
@@ -964,8 +964,8 @@ body:has(.category-reference-card) .profile-reference-tab {
     }
 
 body:has(.category-reference-card) .profile-reference-tab[aria-current="page"] {
-        color: #0e7c86 !important;
-        border-bottom-color: #0e7c86 !important;
+        color: #2563eb !important;
+        border-bottom-color: #2563eb !important;
     }
 
 body:has(.category-reference-card) .profile-reference-sort {
@@ -1081,7 +1081,7 @@ body.route-category .profile-reference-btn-primary {
         min-width: 86px !important;
         height: 36px !important;
         border-radius: 8px !important;
-        background: #0e7c86 !important;
+        background: #2563eb !important;
         color: #ffffff !important;
         font-size: 14px !important;
         font-weight: 800 !important;
@@ -1120,8 +1120,8 @@ body.route-category .profile-reference-tab {
     }
 
 body.route-category .profile-reference-tab[aria-current="page"] {
-        color: #0e7c86 !important;
-        border-bottom-color: #0e7c86 !important;
+        color: #2563eb !important;
+        border-bottom-color: #2563eb !important;
     }
 
 body.route-category .profile-reference-sort {
@@ -1214,7 +1214,7 @@ body.route-category .profile-reference-btn-primary {
         height: 34px !important;
         padding: 0 16px !important;
         border-radius: 8px !important;
-        background-color: #0e7c86 !important;
+        background-color: #2563eb !important;
         color: #ffffff !important;
         font-size: 14px !important;
         font-weight: 700 !important;
@@ -1276,8 +1276,8 @@ body.route-category .profile-reference-tab {
     }
 
 body.route-category .profile-reference-tab[aria-current="page"] {
-        color: #0e7c86 !important;
-        border-bottom-color: #0e7c86 !important;
+        color: #2563eb !important;
+        border-bottom-color: #2563eb !important;
     }
 
 body.route-category .profile-reference-content {
@@ -1474,15 +1474,15 @@ body.route-category .profile-reference-tab:hover,
 body:has(.category-reference-card) .profile-reference-tab:hover,
 .profile-reference-page.category-reference-page .profile-reference-tab:hover {
         background: transparent !important;
-        color: #0e7c86 !important;
+        color: #2563eb !important;
     }
 
 body.route-category .profile-reference-tab[aria-current="page"],
 body:has(.category-reference-card) .profile-reference-tab[aria-current="page"],
 .profile-reference-page.category-reference-page .profile-reference-tab[aria-current="page"] {
         background: transparent !important;
-        color: #0e7c86 !important;
-        border-bottom-color: #0e7c86 !important;
+        color: #2563eb !important;
+        border-bottom-color: #2563eb !important;
     }
 
 @media (max-width: 640px) {
@@ -1522,7 +1522,7 @@ body:has(.category-reference-card) .profile-reference-avatar,
         width: 104px !important;
         height: 104px !important;
         border: 4px solid #ffffff !important;
-        background-color: #0e7c86 !important;
+        background-color: #2563eb !important;
     }
 
 body.route-category .profile-reference-avatar span,
@@ -1545,16 +1545,16 @@ body:has(.category-reference-card) .profile-reference-actions-wrapper,
 body.route-category .profile-reference-btn-primary,
 body:has(.category-reference-card) .profile-reference-btn-primary,
 .profile-reference-page.category-reference-page .profile-reference-btn-primary {
-        background-color: #0e7c86 !important;
+        background-color: #2563eb !important;
         color: #ffffff !important;
-        border-color: #0e7c86 !important;
+        border-color: #2563eb !important;
     }
 
 body.route-category .profile-reference-tab[aria-current="page"],
 body:has(.category-reference-card) .profile-reference-tab[aria-current="page"],
 .profile-reference-page.category-reference-page .profile-reference-tab[aria-current="page"] {
-        color: #0e7c86 !important;
-        border-bottom-color: #0e7c86 !important;
+        color: #2563eb !important;
+        border-bottom-color: #2563eb !important;
     }
 
 @media (max-width: 640px) {
@@ -1721,9 +1721,9 @@ body:has(.category-reference-card) .profile-reference-btn-primary,
         height: 36px !important;
         padding: 0 18px !important;
         border-radius: 9px !important;
-        background: #0e7c86 !important;
+        background: #2563eb !important;
         color: #ffffff !important;
-        border-color: #0e7c86 !important;
+        border-color: #2563eb !important;
     }
 
 @media (max-width: 640px) {
@@ -1894,7 +1894,7 @@ body:has(.category-reference-card) .profile-reference-avatar,
         width: 116px !important;
         height: 116px !important;
         border: 4px solid #ffffff !important;
-        background-color: #0e7c86 !important;
+        background-color: #2563eb !important;
     }
 
 body.route-category .profile-reference-avatar span,
@@ -1933,16 +1933,16 @@ body:has(.category-reference-card) .profile-reference-tab,
 body.route-category .profile-reference-tab[aria-current="page"],
 body:has(.category-reference-card) .profile-reference-tab[aria-current="page"],
 .profile-reference-page.category-reference-page .profile-reference-tab[aria-current="page"] {
-        color: #0e7c86 !important;
-        border-bottom-color: #0e7c86 !important;
+        color: #2563eb !important;
+        border-bottom-color: #2563eb !important;
     }
 
 body.route-category .profile-reference-btn-primary,
 body:has(.category-reference-card) .profile-reference-btn-primary,
 .profile-reference-page.category-reference-page .profile-reference-btn-primary {
-        background: #0e7c86 !important;
-        background-color: #0e7c86 !important;
-        border-color: #0e7c86 !important;
+        background: #2563eb !important;
+        background-color: #2563eb !important;
+        border-color: #2563eb !important;
         color: #ffffff !important;
         font-weight: 500 !important;
         box-shadow: none !important;

@@ -1,6 +1,6 @@
 <style>
     .mention-link {
-        color: #0e7c86;
+        color: #2563eb;
         font-weight: 600;
         text-decoration: none;
     }
