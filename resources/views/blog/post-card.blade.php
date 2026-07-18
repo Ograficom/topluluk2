@@ -3512,7 +3512,9 @@ SVG;
             z-index: 2147483000;
             display: block;
             padding: 18px 12px;
-            background: rgba(0, 0, 0, 0.42);
+            background: rgba(15, 23, 42, 0.94);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
         }
 
         [data-post-card-shell] .post-card__stats-modal[hidden] {

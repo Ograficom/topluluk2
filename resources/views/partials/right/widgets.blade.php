@@ -105,6 +105,19 @@
         border-bottom: 0 !important;
     }
 
+    .ografi-comment-hover-box {
+        display: block !important;
+        width: auto !important;
+        margin: -6px -13px !important;
+        padding: 6px 13px !important;
+        border-radius: 10px !important;
+        transition: background-color 0.15s ease !important;
+    }
+
+    .ografi-comment-item:hover .ografi-comment-hover-box {
+        background-color: #f4f4f5 !important;
+    }
+
     .ografi-comment-top {
         display: flex !important;
         align-items: center !important;
@@ -112,14 +125,6 @@
         width: 100% !important;
         min-width: 0 !important;
         position: relative !important;
-        margin: -6px -13px !important;
-        padding: 6px 13px !important;
-        border-radius: 10px !important;
-        transition: background-color 0.15s ease !important;
-    }
-
-    .ografi-comment-item:hover .ografi-comment-top {
-        background-color: #f4f4f5 !important;
     }
 
     .ografi-comment-avatar,
@@ -373,43 +378,45 @@
                 @endphp
 
                 <div class="ografi-comment-item">
-                    <div class="ografi-comment-top">
-                        <a href="{{ $profileUrl }}" class="ografi-comment-avatar-link">
-                            @if ($commentAvatar)
-                                <img
-                                    src="{{ $commentAvatar }}"
-                                    alt="{{ $commentAuthor }}"
-                                    class="ografi-comment-avatar"
-                                    loading="lazy"
-                                    decoding="async"
-                                >
-                            @else
-                                <span class="ografi-comment-avatar-fallback">
-                                    {{ $commentInitials }}
-                                </span>
-                            @endif
+                    <div class="ografi-comment-hover-box">
+                        <div class="ografi-comment-top">
+                            <a href="{{ $profileUrl }}" class="ografi-comment-avatar-link">
+                                @if ($commentAvatar)
+                                    <img
+                                        src="{{ $commentAvatar }}"
+                                        alt="{{ $commentAuthor }}"
+                                        class="ografi-comment-avatar"
+                                        loading="lazy"
+                                        decoding="async"
+                                    >
+                                @else
+                                    <span class="ografi-comment-avatar-fallback">
+                                        {{ $commentInitials }}
+                                    </span>
+                                @endif
+                            </a>
+
+                            <div class="ografi-comment-meta">
+                                <a href="{{ $profileUrl }}" class="ografi-comment-author">
+                                    {{ $commentAuthor }}
+                                </a>
+
+                                <a href="{{ $commentUrl }}" class="ografi-comment-post">
+                                    {{ $commentTitle }}
+                                </a>
+                            </div>
+                        </div>
+
+                        <a href="{{ $commentUrl }}" class="ografi-comment-body-link">
+                            <div class="ografi-comment-text">
+                                {{ $commentText }}
+                            </div>
+
+                            <div class="ografi-comment-time">
+                                {{ optional($comment->created_at)->diffForHumans() ?? __('site.common.recently') }}
+                            </div>
                         </a>
-
-                        <div class="ografi-comment-meta">
-                            <a href="{{ $profileUrl }}" class="ografi-comment-author">
-                                {{ $commentAuthor }}
-                            </a>
-
-                            <a href="{{ $commentUrl }}" class="ografi-comment-post">
-                                {{ $commentTitle }}
-                            </a>
-                        </div>
                     </div>
-
-                    <a href="{{ $commentUrl }}" class="ografi-comment-body-link">
-                        <div class="ografi-comment-text">
-                            {{ $commentText }}
-                        </div>
-
-                        <div class="ografi-comment-time">
-                            {{ optional($comment->created_at)->diffForHumans() ?? __('site.common.recently') }}
-                        </div>
-                    </a>
                 </div>
             @empty
                 <div class="ografi-empty-state">
