@@ -112,6 +112,14 @@
         width: 100% !important;
         min-width: 0 !important;
         position: relative !important;
+        margin: -6px -13px !important;
+        padding: 6px 13px !important;
+        border-radius: 10px !important;
+        transition: background-color 0.15s ease !important;
+    }
+
+    .ografi-comment-item:hover .ografi-comment-top {
+        background-color: #f4f4f5 !important;
     }
 
     .ografi-comment-avatar,
@@ -153,10 +161,12 @@
     .ografi-comment-meta {
         display: flex !important;
         flex-direction: column !important;
+        justify-content: center !important;
         gap: 2px !important;
         min-width: 0 !important;
+        max-height: 29px !important;
         flex: 1 1 auto !important;
-        overflow: visible !important;
+        overflow: hidden !important;
     }
 
     .ografi-comment-author {
@@ -164,8 +174,8 @@
         max-width: 210px !important;
         overflow: hidden !important;
         color: #000000 !important;
-        font-size: 10px !important;
-        font-weight: 400 !important;
+        font-size: 9px !important;
+        font-weight: 700 !important;
         line-height: 1.15 !important;
         text-overflow: ellipsis !important;
         white-space: nowrap !important;
@@ -178,8 +188,8 @@
         max-width: 210px !important;
         overflow: hidden !important;
         color: #000000 !important;
-        font-size: 10px !important;
-        font-weight: 400 !important;
+        font-size: 9px !important;
+        font-weight: 700 !important;
         line-height: 1.15 !important;
         text-overflow: ellipsis !important;
         white-space: nowrap !important;
