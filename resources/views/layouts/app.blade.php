@@ -43,7 +43,77 @@
     @endphp
     @include('partials.structured-data.site-graph')
     @include('partials.tailwind-cdn')
-    
+
+    {{--
+        Tum sayfayi kaplayan tek bir "ilk yukleme" ekrani yerine, her gorsel kendi
+        yerinde dalgali (shimmer) bir iskelet gosterir ve yuklendigi an gercek
+        icerikle degisir. Header/logo, post-card avatarlari/gorselleri, sag-sol
+        sutunlardaki tum <img> etiketleri dahil - tek bir genel mekanizma.
+    --}}
+    <style>
+        img:not(.ografi-img-ready):not([data-no-shimmer]) {
+            background: linear-gradient(105deg, #eef2fb 0%, #ffffff 45%, #eef2fb 82%);
+            background-size: 200% 100%;
+            animation: ografiImgWave 1.15s ease-in-out infinite;
+        }
+
+        img.ografi-img-ready {
+            animation: none;
+        }
+
+        @keyframes ografiImgWave {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            img:not(.ografi-img-ready):not([data-no-shimmer]) {
+                animation: none;
+                background: #eef2fb;
+            }
+        }
+    </style>
+    <script>
+        (function () {
+            var readyClass = 'ografi-img-ready';
+
+            var markReady = function (img) {
+                img.classList.add(readyClass);
+            };
+
+            var watch = function (img) {
+                if (img.classList.contains(readyClass)) return;
+
+                if (img.complete && img.naturalWidth > 0) {
+                    markReady(img);
+                    return;
+                }
+
+                img.addEventListener('load', function () { markReady(img); }, { once: true });
+                img.addEventListener('error', function () { markReady(img); }, { once: true });
+            };
+
+            var scan = function (root) {
+                if (!root) return;
+                if (root.tagName === 'IMG') {
+                    watch(root);
+                    return;
+                }
+                root.querySelectorAll && root.querySelectorAll('img').forEach(watch);
+            };
+
+            scan(document);
+
+            new MutationObserver(function (mutations) {
+                mutations.forEach(function (mutation) {
+                    mutation.addedNodes.forEach(function (node) {
+                        if (node.nodeType === 1) scan(node);
+                    });
+                });
+            }).observe(document.documentElement, { childList: true, subtree: true });
+        })();
+    </script>
+
     <style>
         [x-cloak] {
             display: none;
@@ -787,27 +857,6 @@
 
     .site-header .site-primary-btn:hover {
         background: var(--alma-primary-strong);
-    }
-
-    /* Subtle decorative wave divider under the header - purely cosmetic, does not
-       affect header height, layout flow, or any element positions. */
-    .site-header {
-        position: relative;
-    }
-
-    .site-header::after {
-        content: "";
-        position: absolute;
-        left: 0;
-        right: 0;
-        bottom: -8px;
-        height: 8px;
-        pointer-events: none;
-        z-index: 1;
-        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 240 16' preserveAspectRatio='none'%3E%3Cpath d='M0 8 C 20 16 40 0 60 8 C 80 16 100 0 120 8 C 140 16 160 0 180 8 C 200 16 220 0 240 8 V16 H0 Z' fill='%232563eb' fill-opacity='0.12'/%3E%3C/svg%3E");
-        background-repeat: repeat-x;
-        background-size: 120px 8px;
-        opacity: 0.9;
     }
 
     .site-search-panel {
@@ -6626,7 +6675,6 @@
     class="bg-[#eef2fb] text-slate-900 font-sans antialiased theme-minimal alma-app {{ request()->routeIs('home') ? 'route-home' : '' }} {{ request()->routeIs('discover') ? 'route-discover' : '' }} {{ request()->routeIs('video') ? 'route-video' : '' }} {{ $isCategoryRoute ? 'route-category' : '' }} {{ $isPostShowRoute ? 'route-post-show' : '' }}"
     data-mentions-endpoint="{{ auth()->check() ? route('mentions.users') : '' }}"
 >
-    @include('partials.preloader')
     @include('partials.toasts')
     @unless ($__env->hasSection('hide_global_header'))
         @include('header')

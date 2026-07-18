@@ -1080,7 +1080,7 @@
     $hasFullPostContent = $contentBlocks->isNotEmpty() || trim($contentHtml) !== '' || $mediaItems->isNotEmpty();
     $summaryCollapsedSource = $summaryExpandedText !== '' ? $summaryExpandedText : $resolvedExcerptShort;
     $summaryCollapsedLength = \Illuminate\Support\Str::length($summaryCollapsedSource);
-    $summaryHalfLength = $summaryCollapsedLength > 1 ? (int) ceil($summaryCollapsedLength * 0.5) : $summaryCollapsedLength;
+    $summaryHalfLength = $summaryCollapsedLength > 1 ? (int) ceil($summaryCollapsedLength * 0.25) : $summaryCollapsedLength;
     $summaryCollapsedText = $summaryCollapsedLength > $summaryHalfLength
         ? rtrim(\Illuminate\Support\Str::substr($summaryCollapsedSource, 0, $summaryHalfLength), " \t\n\r\0\x0B,.;:-") . '...'
         : $summaryCollapsedSource;
@@ -2434,12 +2434,6 @@ SVG;
             gap: 10px;
             min-width: 0;
             flex: 1;
-            border-radius: 12px;
-            transition: background-color 0.15s ease;
-        }
-
-        [data-post-card-shell] .author-block:hover {
-            background-color: #f4f4f5;
         }
 
         [data-post-card-shell] .avatar-wrap {
@@ -6220,7 +6214,7 @@ SVG;
         }
 
         [data-post-card-shell] .action-bar .action-left {
-            gap: 4px !important;
+            gap: 0 !important;
         }
 
         [data-post-card-shell] .action-bar .post-card__inline-icon {

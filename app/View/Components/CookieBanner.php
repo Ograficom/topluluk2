@@ -30,16 +30,21 @@ class CookieBanner extends Component
         }
 
         $deviceId = request()->attributes->get('device_id') ?? request()->cookie(EnsureDeviceIdCookie::COOKIE_NAME);
+        $ipAddress = request()->ip();
 
-        $hasConsent = false;
+        $hasConsent = CookieConsent::query()
+            ->where('cookie_policy_id', $policy->id)
+            ->where('policy_version', $policy->version)
+            ->where(function ($query) use ($deviceId, $ipAddress) {
+                if ($deviceId) {
+                    $query->orWhere('device_id', $deviceId);
+                }
 
-        if ($deviceId) {
-            $hasConsent = CookieConsent::query()
-                ->where('cookie_policy_id', $policy->id)
-                ->where('policy_version', $policy->version)
-                ->where('device_id', $deviceId)
-                ->exists();
-        }
+                if ($ipAddress) {
+                    $query->orWhere('ip_address', $ipAddress);
+                }
+            })
+            ->exists();
 
         return view('components.cookie-banner', [
             'policy' => $policy,
