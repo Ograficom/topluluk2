@@ -251,9 +251,9 @@
         --og-li-muted: rgba(0, 0, 0, 0.60);
         --og-li-soft: rgba(0, 0, 0, 0.08);
         --og-li-line: #e0dfdc;
-        --og-li-blue: #0a66c2;
-        --og-li-blue-hover: #004182;
-        --og-li-pill-hover: rgba(10, 102, 194, 0.10);
+        --og-li-blue: #2563eb;
+        --og-li-blue-hover: #1d4ed8;
+        --og-li-pill-hover: rgba(37, 99, 235, 0.10);
         --og-li-hover: rgba(0, 0, 0, 0.04);
         background: var(--og-li-bg) !important;
     }
@@ -445,9 +445,9 @@
     .og-menu > summary {
         min-width: 0 !important;
         width: auto !important;
-        border: 1px solid var(--og-li-muted) !important;
-        background: transparent !important;
-        color: var(--og-li-muted) !important;
+        border: 0 !important;
+        background: var(--og-li-soft) !important;
+        color: var(--og-li-text) !important;
     }
 
     .og-icon-btn:hover,
@@ -455,9 +455,8 @@
     .og-menu > summary:hover,
     .og-menu > summary:focus-visible,
     .og-menu[open] > summary {
-        border-color: rgba(0, 0, 0, 0.75) !important;
-        background: var(--og-li-hover) !important;
-        color: rgba(0, 0, 0, 0.75) !important;
+        background: rgba(0, 0, 0, 0.13) !important;
+        color: var(--og-li-text) !important;
     }
 
     .og-icon-btn svg,
@@ -2174,8 +2173,12 @@
 
 @section('content')
     @php
-        $defaultCoverUrl = 'https://images.unsplash.com/photo-1523906834658-6e24ef2386f9?auto=format&fit=crop&w=1400&q=80';
-        $coverUrl = $user->cover_photo_url ?? $user->cover_image ?? $defaultCoverUrl;
+        // Harici bir stok foto URL'sine varsayilan olarak guvenmek yerine (yavas/engellenmis
+        // yuklemede bos/kirik gri bir alan olarak goruluyordu), kullanicinin gercekten
+        // yukledigi bir kapak fotografi yoksa hic <img> render etmiyoruz; .og-cover'daki
+        // CSS gradient zemin boylece dogrudan gorunur.
+        $hasCustomCover = !empty($user->cover_photo_path) || !empty($user->cover_image);
+        $coverUrl = $hasCustomCover ? ($user->cover_photo_url ?? $user->cover_image) : null;
         $profileUrl = $user->profile_photo_url ?? null;
         $joinedLabel = $user->joined_at ? $user->joined_at->translatedFormat('Y') . "'den beri" : ($user->created_at ? $user->created_at->translatedFormat('Y') . "'den beri" : null);
         $website = trim((string) ($user->website_url ?? ''));
@@ -2441,12 +2444,14 @@
         <div class="og-profile-wrap">
             <section class="og-card" aria-label="{{ $profileHeadingTitle }}">
                 <div class="og-cover">
-                    <img
-                        src="{{ $coverUrl }}"
-                        alt="{{ $profileHeadingTitle }} {{ __('site.profile_page.cover_alt') }}"
-                        loading="lazy"
-                        onerror="this.onerror=null;this.src='{{ $defaultCoverUrl }}';"
-                    >
+                    @if($coverUrl)
+                        <img
+                            src="{{ $coverUrl }}"
+                            alt="{{ $profileHeadingTitle }} {{ __('site.profile_page.cover_alt') }}"
+                            loading="lazy"
+                            onerror="this.remove();"
+                        >
+                    @endif
                 </div>
 
                 <div class="og-body">
