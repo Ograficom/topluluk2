@@ -9,17 +9,26 @@
 @push('head')
 <style>
     .post-report-page {
-        min-height: 100vh;
-        background: rgba(15, 23, 42, 0.3);
-        backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(10px);
+        position: fixed !important;
+        inset: 0 !important;
+        z-index: 2147483000 !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        width: 100vw !important;
+        height: 100vh !important;
+        overflow-y: auto !important;
+        background: rgba(0, 0, 0, 0.82) !important;
+        backdrop-filter: blur(14px) saturate(140%) !important;
+        -webkit-backdrop-filter: blur(14px) saturate(140%) !important;
         padding: 24px 16px;
+        box-sizing: border-box;
     }
 
     .post-report-shell {
         width: 100%;
         max-width: 32rem;
-        margin: 0 auto;
+        margin: auto;
     }
 
     .post-report-card {
@@ -50,11 +59,19 @@
         align-items: center;
         justify-content: center;
         border: 0;
-        background: transparent;
-        color: #6b7280;
+        border-radius: 999px;
+        background: #f1f1f1;
+        color: #6b6b6b;
         text-decoration: none;
         font-size: 22px;
         line-height: 1;
+        transition: background-color 0.15s ease, color 0.15s ease;
+    }
+
+    .post-report-close:hover,
+    .post-report-close:focus-visible {
+        background: #e4e4e4;
+        color: #111111;
     }
 
     .post-report-form {
