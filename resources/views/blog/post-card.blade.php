@@ -3507,14 +3507,14 @@ SVG;
         }
 
         [data-post-card-shell] .post-card__stats-modal {
-            position: fixed;
-            inset: 0;
-            z-index: 2147483000;
-            display: block;
-            padding: 18px 12px;
-            background: rgba(15, 23, 42, 0.94);
-            backdrop-filter: blur(6px);
-            -webkit-backdrop-filter: blur(6px);
+            position: fixed !important;
+            inset: 0 !important;
+            z-index: 2147483000 !important;
+            display: block !important;
+            padding: 18px 12px !important;
+            background: rgba(0, 0, 0, 0.82) !important;
+            backdrop-filter: blur(14px) saturate(140%) !important;
+            -webkit-backdrop-filter: blur(14px) saturate(140%) !important;
         }
 
         [data-post-card-shell] .post-card__stats-modal[hidden] {
