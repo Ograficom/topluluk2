@@ -3506,7 +3506,10 @@ SVG;
             cursor: pointer;
         }
 
-        [data-post-card-shell] .post-card__stats-modal {
+        /* Bu modal JS ile document.body'ye tasindigi icin artik [data-post-card-shell]
+           atasina bagimli olmadan, kendi basina secilebilir olmali (aksi halde tasindiktan
+           sonra hicbir stil uygulanmaz). */
+        .post-card__stats-modal {
             position: fixed !important;
             inset: 0 !important;
             z-index: 2147483000 !important;
@@ -3517,11 +3520,11 @@ SVG;
             -webkit-backdrop-filter: blur(14px) saturate(140%) !important;
         }
 
-        [data-post-card-shell] .post-card__stats-modal[hidden] {
+        .post-card__stats-modal[hidden] {
             display: none !important;
         }
 
-        [data-post-card-shell] .post-card__stats-panel {
+        .post-card__stats-panel {
             position: absolute;
             top: 50%;
             left: 50%;
@@ -3535,7 +3538,7 @@ SVG;
             transform: translate(-50%, -50%);
         }
 
-        [data-post-card-shell] .post-card__stats-head {
+        .post-card__stats-head {
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -3543,13 +3546,13 @@ SVG;
             margin-bottom: 26px;
         }
 
-        [data-post-card-shell] .post-card__stats-head strong {
+        .post-card__stats-head strong {
             font-size: 20px;
             font-weight: 700;
             line-height: 1.2;
         }
 
-        [data-post-card-shell] .post-card__stats-close {
+        .post-card__stats-close {
             display: inline-flex;
             align-items: center;
             justify-content: center;
@@ -3565,18 +3568,18 @@ SVG;
             -webkit-appearance: none;
         }
 
-        [data-post-card-shell] .post-card__stats-grid {
+        .post-card__stats-grid {
             display: grid;
             grid-template-columns: repeat(3, minmax(0, 1fr));
             column-gap: 34px;
             row-gap: 46px;
         }
 
-        [data-post-card-shell] .post-card__stats-item {
+        .post-card__stats-item {
             min-width: 0;
         }
 
-        [data-post-card-shell] .post-card__stats-item strong {
+        .post-card__stats-item strong {
             display: block;
             margin-bottom: 3px;
             color: #111111;
@@ -3585,7 +3588,7 @@ SVG;
             line-height: 1.1;
         }
 
-        [data-post-card-shell] .post-card__stats-item span {
+        .post-card__stats-item span {
             display: block;
             color: #666666;
             font-size: 13px;
@@ -3594,17 +3597,17 @@ SVG;
         }
 
         @media (max-width: 520px) {
-            [data-post-card-shell] .post-card__stats-modal {
+            .post-card__stats-modal {
                 padding: 16px 10px;
             }
 
-            [data-post-card-shell] .post-card__stats-panel {
+            .post-card__stats-panel {
                 width: min(356px, calc(100vw - 20px));
                 min-height: 240px;
                 padding: 18px 20px 24px;
             }
 
-            [data-post-card-shell] .post-card__stats-grid {
+            .post-card__stats-grid {
                 grid-template-columns: repeat(2, minmax(0, 1fr));
                 column-gap: 24px;
                 row-gap: 28px;
@@ -8874,8 +8877,46 @@ SVG;
                 return new Intl.NumberFormat('tr-TR').format(Math.max(Number(value) || 0, 0));
             };
 
+            // İstatistik modalı, kart içinde kalınca bazı kartların (transform/animasyon
+            // kullanan) stacking context'i modalı z-index'e rağmen arka planda hapsedip
+            // besleme içeriğinin üzerine binmesine neden oluyordu. Modalı bir kez body'ye
+            // taşıyıp gerçek bir tam ekran overlay haline getiriyoruz; kartla bağlantısını
+            // data-owner-card-id ile koruyoruz.
+            const relocateStatsModalsToBody = function () {
+                document.querySelectorAll('[data-post-card-stats-modal]').forEach(function (modal) {
+                    if (modal.parentElement === document.body) {
+                        return;
+                    }
+
+                    const ownerCard = modal.closest('[data-post-card-shell]');
+                    if (ownerCard?.id) {
+                        modal.setAttribute('data-owner-card-id', ownerCard.id);
+                    }
+
+                    document.body.appendChild(modal);
+                });
+            };
+
+            relocateStatsModalsToBody();
+            document.addEventListener('ografi:feed-appended', relocateStatsModalsToBody);
+
+            const getStatsModal = function (card) {
+                if (!card) {
+                    return null;
+                }
+
+                if (card.id) {
+                    const relocated = document.querySelector('[data-post-card-stats-modal][data-owner-card-id="' + CSS.escape(card.id) + '"]');
+                    if (relocated) {
+                        return relocated;
+                    }
+                }
+
+                return card.querySelector('[data-post-card-stats-modal]');
+            };
+
             const syncStatsModalCounts = function (card) {
-                const modal = card?.querySelector('[data-post-card-stats-modal]');
+                const modal = getStatsModal(card);
                 if (!modal) {
                     return;
                 }
@@ -8906,7 +8947,7 @@ SVG;
 
             const setStatsModalState = function (card, open) {
                 const trigger = card?.querySelector('[data-post-card-stats-trigger]');
-                const modal = card?.querySelector('[data-post-card-stats-modal]');
+                const modal = getStatsModal(card);
                 if (!trigger || !modal) {
                     return;
                 }
@@ -8935,7 +8976,7 @@ SVG;
                     node.hidden = numericCount < 1;
                 });
 
-                const statsModal = card.querySelector('[data-post-card-stats-modal]');
+                const statsModal = getStatsModal(card);
                 if (statsModal) {
                     if (statsModal.dataset.postCardStatsFeedFollowsViews === 'true') {
                         statsModal.dataset.postCardStatsFeedCount = String(numericCount);
