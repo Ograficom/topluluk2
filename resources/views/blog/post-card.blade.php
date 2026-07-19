@@ -2089,7 +2089,7 @@ SVG;
         </button>
     </div>
 
-    <div
+    <dialog
         class="post-card__stats-modal"
         data-post-card-stats-modal
         data-post-card-stats-feed-count="{{ $statsFeedViews }}"
@@ -2099,9 +2099,6 @@ SVG;
         data-post-card-stats-bookmarks-count="{{ $bookmarksCount }}"
         data-post-card-stats-feed-follows-views="{{ $statsFeedViews === $viewsCount ? 'true' : 'false' }}"
         data-post-card-stats-listing-follows-views="{{ $statsListingViews === $viewsCount ? 'true' : 'false' }}"
-        hidden
-        role="dialog"
-        aria-modal="true"
         aria-label="Gonderi istatistikleri"
     >
         <div class="post-card__stats-panel">
@@ -2134,7 +2131,7 @@ SVG;
                 </div>
             </div>
         </div>
-    </div>
+    </dialog>
 
     @if($commentsCount > 0)
         @if($isCommentsDisabled ?? false)
@@ -3509,7 +3506,27 @@ SVG;
         /* Bu modal JS ile document.body'ye tasindigi icin artik [data-post-card-shell]
            atasina bagimli olmadan, kendi basina secilebilir olmali (aksi halde tasindiktan
            sonra hicbir stil uygulanmaz). */
+        /* <dialog> ile .showModal() cagirildiginda tarayici bunu otomatik olarak
+           "top layer"e cikarir; hicbir atanin stacking context'inden (transform,
+           filter, will-change vb.) etkilenmez - z-index yarisina gerek kalmadan
+           daima her seyin ustunde gorunur. */
         .post-card__stats-modal {
+            margin: 0 !important;
+            padding: 0 !important;
+            border: 0 !important;
+            max-width: none !important;
+            max-height: none !important;
+            width: auto !important;
+            height: auto !important;
+            background: transparent !important;
+            color: inherit !important;
+        }
+
+        .post-card__stats-modal::backdrop {
+            background: transparent !important;
+        }
+
+        .post-card__stats-modal[open] {
             position: fixed !important;
             inset: 0 !important;
             z-index: 2147483000 !important;
@@ -3518,10 +3535,6 @@ SVG;
             background: rgba(0, 0, 0, 0.82) !important;
             backdrop-filter: blur(14px) saturate(140%) !important;
             -webkit-backdrop-filter: blur(14px) saturate(140%) !important;
-        }
-
-        .post-card__stats-modal[hidden] {
-            display: none !important;
         }
 
         .post-card__stats-panel {
@@ -8877,43 +8890,33 @@ SVG;
                 return new Intl.NumberFormat('tr-TR').format(Math.max(Number(value) || 0, 0));
             };
 
-            // İstatistik modalı, kart içinde kalınca bazı kartların (transform/animasyon
-            // kullanan) stacking context'i modalı z-index'e rağmen arka planda hapsedip
-            // besleme içeriğinin üzerine binmesine neden oluyordu. Modalı bir kez body'ye
-            // taşıyıp gerçek bir tam ekran overlay haline getiriyoruz; kartla bağlantısını
-            // data-owner-card-id ile koruyoruz.
-            const relocateStatsModalsToBody = function () {
-                document.querySelectorAll('[data-post-card-stats-modal]').forEach(function (modal) {
-                    if (modal.parentElement === document.body) {
-                        return;
-                    }
+            // İstatistik kutusu artık native <dialog> elementi + .showModal() ile açılıyor.
+            // Tarayıcı bunu otomatik olarak "top layer"a çıkarır; kartın DOM konumundan
+            // veya olası stacking context'inden (transform/filter/will-change) tamamen
+            // bağımsız, her zaman her şeyin üstünde görünür - ayrıca DOM'da taşımaya
+            // gerek kalmadan.
+            const getStatsModal = function (card) {
+                return card?.querySelector('[data-post-card-stats-modal]') ?? null;
+            };
 
-                    const ownerCard = modal.closest('[data-post-card-shell]');
-                    if (ownerCard?.id) {
-                        modal.setAttribute('data-owner-card-id', ownerCard.id);
-                    }
-
-                    document.body.appendChild(modal);
+            // Kullanici Escape tusuyla kapatirsa (dialog'un native davranisi) tetikleyici
+            // butonun aria-expanded durumunu senkron tutmak icin.
+            const bindStatsModalCloseSync = function (modal) {
+                if (!modal || modal.__ografiCloseBound) {
+                    return;
+                }
+                modal.__ografiCloseBound = true;
+                modal.addEventListener('close', function () {
+                    const card = modal.closest('[data-post-card-shell]');
+                    const trigger = card?.querySelector('[data-post-card-stats-trigger]');
+                    trigger?.setAttribute('aria-expanded', 'false');
                 });
             };
 
-            relocateStatsModalsToBody();
-            document.addEventListener('ografi:feed-appended', relocateStatsModalsToBody);
-
-            const getStatsModal = function (card) {
-                if (!card) {
-                    return null;
-                }
-
-                if (card.id) {
-                    const relocated = document.querySelector('[data-post-card-stats-modal][data-owner-card-id="' + CSS.escape(card.id) + '"]');
-                    if (relocated) {
-                        return relocated;
-                    }
-                }
-
-                return card.querySelector('[data-post-card-stats-modal]');
-            };
+            document.querySelectorAll('[data-post-card-stats-modal]').forEach(bindStatsModalCloseSync);
+            document.addEventListener('ografi:feed-appended', function () {
+                document.querySelectorAll('[data-post-card-stats-modal]').forEach(bindStatsModalCloseSync);
+            });
 
             const syncStatsModalCounts = function (card) {
                 const modal = getStatsModal(card);
@@ -8957,7 +8960,12 @@ SVG;
                 }
 
                 trigger.setAttribute('aria-expanded', open ? 'true' : 'false');
-                modal.hidden = !open;
+
+                if (open && !modal.open) {
+                    modal.showModal();
+                } else if (!open && modal.open) {
+                    modal.close();
+                }
             };
 
             const syncViewCount = function (card, count) {
