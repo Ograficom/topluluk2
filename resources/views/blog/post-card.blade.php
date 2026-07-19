@@ -3565,6 +3565,14 @@ SVG;
             line-height: 1.2;
         }
 
+        /* app.css'deki genel "span { font-size: 14px !important }" kurali bu sayiyi
+           (bir <span> icinde) kucultuyordu; oz gecerli oznitelik secici ile geri aliyoruz. */
+        .post-card__stats-head strong [data-post-card-stats-total] {
+            font-size: 20px !important;
+            font-weight: 700 !important;
+            line-height: 1.2 !important;
+        }
+
         .post-card__stats-close {
             display: inline-flex;
             align-items: center;
@@ -3579,6 +3587,13 @@ SVG;
             cursor: pointer;
             appearance: none;
             -webkit-appearance: none;
+            transition: background-color 0.15s ease, color 0.15s ease;
+        }
+
+        .post-card__stats-close:hover,
+        .post-card__stats-close:focus-visible {
+            background: #e4e4e4;
+            color: #111111;
         }
 
         .post-card__stats-grid {
@@ -8900,7 +8915,9 @@ SVG;
             };
 
             // Kullanici Escape tusuyla kapatirsa (dialog'un native davranisi) tetikleyici
-            // butonun aria-expanded durumunu senkron tutmak icin.
+            // butonun aria-expanded durumunu senkron tutmak icin. Kapat (X) butonuna da,
+            // yukaridaki delegasyon zincirinden bagimsiz, dogrudan bir dinleyici bagliyoruz
+            // - boylece herhangi bir event-delegation aksakligindan etkilenmez.
             const bindStatsModalCloseSync = function (modal) {
                 if (!modal || modal.__ografiCloseBound) {
                     return;
@@ -8910,6 +8927,21 @@ SVG;
                     const card = modal.closest('[data-post-card-shell]');
                     const trigger = card?.querySelector('[data-post-card-stats-trigger]');
                     trigger?.setAttribute('aria-expanded', 'false');
+                });
+
+                modal.querySelector('[data-post-card-stats-close]')?.addEventListener('click', function (event) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    if (modal.open) {
+                        modal.close();
+                    }
+                });
+
+                // Panel disina (koyu arka plana) tiklaninca da kapansin.
+                modal.addEventListener('click', function (event) {
+                    if (event.target === modal && modal.open) {
+                        modal.close();
+                    }
                 });
             };
 
