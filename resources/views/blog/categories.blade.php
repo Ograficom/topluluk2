@@ -500,7 +500,7 @@
         z-index: 1;
         display: flex;
         flex-direction: column;
-        margin-top: 20px;
+        margin-top: 0;
         border-top: 1px solid var(--categories-border);
     }
 
@@ -880,7 +880,7 @@
             position: relative;
             z-index: 1 !important;
             width: 100%;
-            margin-top: 12px;
+            margin-top: 0;
             padding: 0;
         }
 
