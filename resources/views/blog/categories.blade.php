@@ -598,7 +598,7 @@
     .categories-item__stats {
         display: flex;
         align-items: center;
-        gap: 8px;
+        gap: 5px;
         margin-top: 2px;
         color: var(--categories-muted);
         font-size: var(--categories-stats-size);
