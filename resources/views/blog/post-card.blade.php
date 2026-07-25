@@ -4851,9 +4851,14 @@ SVG;
             line-height: 1.4 !important;
         }
 
+        /* Editorial baslik hiyerarsisi: govde metninden belirgin sekilde ayrisan
+           kalin baslik agirligi ve hafif negatif tracking (Swiss/International
+           Typographic Style). */
         [data-post-card-shell] .post-title {
             font-size: clamp(18px, 2.2vw, 20px) !important;
-            line-height: 1.48 !important;
+            font-weight: 700 !important;
+            letter-spacing: -0.015em !important;
+            line-height: 1.32 !important;
         }
 
         [data-post-card-shell] .post-summary,

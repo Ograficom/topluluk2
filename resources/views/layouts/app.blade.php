@@ -195,8 +195,15 @@
             font-family: "Inter", Arial, Helvetica, sans-serif;
             font-weight: 400;
         }
-        body :where(h1, h2, h3, h4, h5, h6, strong, b, button, .site-header-logo, .font-light, .font-medium, .font-semibold, .font-bold, .font-extrabold, .font-black) {
+        body :where(strong, b, button, .site-header-logo, .font-light, .font-medium, .font-semibold, .font-bold, .font-extrabold, .font-black) {
             font-weight: 500 !important;
+        }
+        /* Swiss/International Typographic Style: baslik-govde metni arasinda net agirlik
+           kontrasti (700 vs 400) ve hafif negatif tracking - Linear/Vercel'in de kullandigi
+           keskin, yapisal tipografi hissi. */
+        body :where(h1, h2, h3, h4, h5, h6) {
+            font-weight: 700 !important;
+            letter-spacing: -0.02em !important;
         }
         body :where(em, i) {
             font-style: italic;

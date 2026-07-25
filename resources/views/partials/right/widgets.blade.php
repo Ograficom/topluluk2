@@ -223,45 +223,68 @@
         line-height: 1.2 !important;
     }
 
-    .ografi-tag-list {
+    /* Bento grid: ilk (en populer) etiket iki sutunu birden kaplayan "hero" hucre,
+       geri kalanlar duzenli iki sutunlu izgarada - degisken boyutlu ama hizali kutular. */
+    .ografi-tag-bento {
+        display: grid !important;
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        gap: 8px !important;
+        width: 100% !important;
+    }
+
+    .ografi-tag-cell {
         display: flex !important;
         flex-direction: column !important;
-        gap: 13px !important;
-        width: 100% !important;
-    }
-
-    .ografi-tag-item {
-        display: flex !important;
-        align-items: center !important;
         justify-content: space-between !important;
-        gap: 12px !important;
-        width: 100% !important;
-        padding: 0 !important;
-        margin: 0 !important;
+        gap: 10px !important;
+        min-height: 64px !important;
+        padding: 12px 12px !important;
+        border: 1px solid rgba(15, 15, 18, 0.09) !important;
+        border-radius: 8px !important;
         color: inherit !important;
         text-decoration: none !important;
-        background: transparent !important;
-        border: 0 !important;
+        background: #fafafa !important;
+        transition: background-color 0.15s ease, border-color 0.15s ease !important;
     }
 
-    .ografi-tag-name {
+    .ografi-tag-cell:hover,
+    .ografi-tag-cell:focus-visible {
+        background: #f1f1f2 !important;
+        border-color: rgba(15, 15, 18, 0.16) !important;
+    }
+
+    .ografi-tag-cell--hero {
+        grid-column: 1 / -1 !important;
+        flex-direction: row !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        min-height: 48px !important;
+        background: #ffffff !important;
+    }
+
+    .ografi-tag-cell__name {
         display: block !important;
         min-width: 0 !important;
         overflow: hidden !important;
-        color: #000000 !important;
-        font-size: 14px !important;
-        font-weight: 400 !important;
+        color: #0d0d10 !important;
+        font-size: 13px !important;
+        font-weight: 600 !important;
         line-height: 1.25 !important;
+        letter-spacing: -0.01em !important;
         text-overflow: ellipsis !important;
         white-space: nowrap !important;
     }
 
-    .ografi-tag-count {
+    .ografi-tag-cell--hero .ografi-tag-cell__name {
+        font-size: 15px !important;
+    }
+
+    .ografi-tag-cell__count {
         display: block !important;
         flex: 0 0 auto !important;
-        color: #000000 !important;
-        font-size: 13px !important;
-        font-weight: 400 !important;
+        color: #6b6f76 !important;
+        font-size: 12px !important;
+        font-weight: 500 !important;
         line-height: 1.25 !important;
     }
 
@@ -286,11 +309,25 @@
     [data-theme="dark"] .ografi-comment-post,
     .dark .ografi-comment-text,
     [data-theme="dark"] .ografi-comment-text,
-    .dark .ografi-tag-name,
-    [data-theme="dark"] .ografi-tag-name,
-    .dark .ografi-tag-count,
-    [data-theme="dark"] .ografi-tag-count {
+    .dark .ografi-tag-cell,
+    [data-theme="dark"] .ografi-tag-cell {
+        background: #18181b !important;
+        border-color: rgba(255, 255, 255, 0.1) !important;
+    }
+
+    .dark .ografi-tag-cell--hero,
+    [data-theme="dark"] .ografi-tag-cell--hero {
+        background: #1f1f23 !important;
+    }
+
+    .dark .ografi-tag-cell__name,
+    [data-theme="dark"] .ografi-tag-cell__name {
         color: #ffffff !important;
+    }
+
+    .dark .ografi-tag-cell__count,
+    [data-theme="dark"] .ografi-tag-cell__count {
+        color: #9ca3af !important;
     }
 
     .dark .ografi-sidebar-icon-hash,
@@ -437,16 +474,14 @@
             ></iconify-icon>
         </div>
 
-        <div class="ografi-tag-list">
+        <div class="ografi-tag-bento">
             @forelse ($popularTags as $tag)
-                <a href="{{ route('blog.index', ['tag' => $tag->slug]) }}" class="ografi-tag-item">
-                    <span class="ografi-tag-name">
-                        #{{ $tag->name }}
-                    </span>
-
-                    <span class="ografi-tag-count">
-                        {{ number_format((int) $tag->posts_count) }}
-                    </span>
+                <a
+                    href="{{ route('blog.index', ['tag' => $tag->slug]) }}"
+                    class="ografi-tag-cell {{ $loop->first ? 'ografi-tag-cell--hero' : '' }}"
+                >
+                    <span class="ografi-tag-cell__name">#{{ $tag->name }}</span>
+                    <span class="ografi-tag-cell__count">{{ number_format((int) $tag->posts_count) }}</span>
                 </a>
             @empty
                 <div class="ografi-empty-state">
