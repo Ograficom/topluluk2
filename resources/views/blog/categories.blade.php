@@ -281,7 +281,6 @@
     }
 
     .categories-item {
-        background: transparent;
         border-radius: 0;
         box-shadow: none;
     }
@@ -511,12 +510,14 @@
         display: block;
         padding: 16px 4px;
         border-bottom: 1px solid var(--categories-border);
+        background: var(--categories-bg);
         text-decoration: none;
         transition: background-color 0.15s ease;
     }
 
     .categories-item:hover,
-    .categories-item:focus-visible {
+    .categories-item:focus-visible,
+    .categories-item:active {
         background: var(--categories-hover);
     }
 
@@ -567,15 +568,24 @@
         align-items: center;
         gap: 8px;
         margin-top: 2px;
-        color: var(--categories-blue);
+        color: var(--categories-muted);
         font-size: 13.5px;
         font-weight: 500;
         line-height: 1.2;
     }
 
-    .categories-item__stats strong {
-        color: var(--categories-blue);
+    .categories-item__stats-primary,
+    .categories-item__stats-primary strong {
+        color: var(--categories-muted);
         font-weight: 500;
+        transition: color 0.15s ease;
+    }
+
+    .categories-item:hover .categories-item__stats-primary,
+    .categories-item:hover .categories-item__stats-primary strong,
+    .categories-item:focus-visible .categories-item__stats-primary,
+    .categories-item:focus-visible .categories-item__stats-primary strong {
+        color: var(--categories-blue);
     }
 
     .categories-item__stats-secondary {
@@ -992,9 +1002,9 @@
                                 <h2 class="categories-item__name">{{ $name }}</h2>
 
                                 <div class="categories-item__stats">
-                                    <span><strong>{{ number_format((int) ($category->followers_count ?? 0)) }}</strong> katılımcılar</span>
+                                    <span class="categories-item__stats-primary"><strong>{{ number_format((int) ($category->followers_count ?? 0)) }}</strong> aboneler</span>
                                     <span class="categories-dot" aria-hidden="true"></span>
-                                    <span class="categories-item__stats-secondary">{{ number_format((int) ($category->posts_count ?? 0)) }} hikayeler</span>
+                                    <span class="categories-item__stats-secondary">{{ number_format((int) ($category->posts_count ?? 0)) }} gönderiler</span>
                                 </div>
                             </div>
                         </div>
