@@ -2557,13 +2557,15 @@
                     if ($inlineSvg !== '') {
                         // JS taraflı rozet modali da bu URL'yi <img src> olarak
                         // kullaniyor; bu yuzden inline SVG'yi de data-URI'ye
-                        // cevirip 'url' olarak donduruyoruz, "currentColor" ise
-                        // <img> baglaminda CSS'ten renk almayacagi icin beyaza
-                        // sabitliyoruz.
-                        $whiteSvg = str_replace('currentColor', '#ffffff', $inlineSvg);
+                        // cevirip 'url' olarak donduruyoruz. "currentColor" ise
+                        // <img> baglaminda CSS'ten renk almayacagi icin sabit
+                        // bir renge cevirmemiz gerekiyor - rozetin ic plakasi
+                        // beyaz oldugundan beyaz degil, koyu bir renk kullanmaliyiz
+                        // (yoksa ikon beyaz zemin uzerinde beyaz kalip görünmez olur).
+                        $coloredSvg = str_replace('currentColor', '#111827', $inlineSvg);
 
                         return [
-                            'url' => 'data:image/svg+xml;base64,' . base64_encode($whiteSvg),
+                            'url' => 'data:image/svg+xml;base64,' . base64_encode($coloredSvg),
                             'fallback' => null,
                         ];
                     }
