@@ -229,17 +229,23 @@
         justify-content: space-between !important;
         gap: 10px !important;
         width: 100% !important;
-        padding: 11px 0 !important;
+        margin: 0 -13px !important;
+        padding: 8px 13px !important;
         border-bottom: 0 !important;
+        border-radius: 8px !important;
         color: inherit !important;
         text-decoration: none !important;
         background: transparent !important;
-        transition: opacity 0.15s ease !important;
+        transition: background-color 0.15s ease !important;
     }
 
     .ografi-tag-row:hover,
     .ografi-tag-row:focus-visible {
-        opacity: 0.72 !important;
+        background: #f4f4f5 !important;
+    }
+
+    .ografi-tag-row--top {
+        background: #f4f4f5 !important;
     }
 
     .ografi-tag-row__name {
@@ -551,7 +557,10 @@
 
         <div class="ografi-tag-list">
             @forelse ($popularTags as $tag)
-                <a href="{{ route('blog.index', ['tag' => $tag->slug]) }}" class="ografi-tag-row">
+                <a
+                    href="{{ route('blog.index', ['tag' => $tag->slug]) }}"
+                    class="ografi-tag-row {{ $loop->first ? 'ografi-tag-row--top' : '' }}"
+                >
                     <span class="ografi-tag-row__name">#{{ $tag->name }}</span>
                     <span class="ografi-tag-row__count">{{ number_format((int) $tag->posts_count) }}</span>
                 </a>
