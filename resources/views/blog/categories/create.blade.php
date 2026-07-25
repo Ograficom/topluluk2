@@ -10,7 +10,7 @@
                 <h1 class="text-2xl font-bold tracking-tight text-slate-900">Kategori Oluştur</h1>
                 <p class="mt-1 text-sm text-slate-500">Toplulukta yeni bir alan açın.</p>
             </div>
-            <a href="{{ route('blog.categories') }}" class="rounded-xl border border-slate-200 bg-white px-4 py-2 text-xs font-semibold text-slate-600 shadow-sm transition hover:bg-slate-50">
+            <a href="{{ route('blog.categories') }}" class="rounded-xl border border-slate-300 bg-slate-100 px-4 py-2 text-xs font-semibold text-slate-800 shadow-sm transition hover:border-slate-400 hover:bg-slate-200">
                 Kategorilere dön
             </a>
         </div>
@@ -55,14 +55,28 @@
             </div>
 
             <div>
-                <label for="description" class="mb-1.5 block text-sm font-semibold text-slate-700">Açıklama</label>
-                <textarea
-                    id="description"
-                    name="description"
-                    rows="3"
-                    placeholder="Kategorinizi kısaca tanımlayın..."
-                    class="w-full resize-y rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm text-slate-800 placeholder:text-slate-400 focus:border-blue-500 focus:outline-none focus:ring-4 focus:ring-blue-500/10"
-                >{{ old('description') }}</textarea>
+                <label for="description-editor" class="mb-1.5 block text-sm font-semibold text-slate-700">Açıklama</label>
+
+                <div data-rich-editor class="overflow-hidden rounded-xl border border-slate-200 bg-white focus-within:border-blue-500 focus-within:ring-4 focus-within:ring-blue-500/10">
+                    <div class="flex flex-wrap items-center gap-0.5 border-b border-slate-100 bg-slate-50/60 p-1.5">
+                        <button type="button" data-rich-command="bold" title="Kalın" class="rounded-lg px-2.5 py-1.5 text-sm font-bold text-slate-600 transition hover:bg-slate-200 hover:text-slate-900">B</button>
+                        <button type="button" data-rich-command="italic" title="İtalik" class="rounded-lg px-2.5 py-1.5 text-sm italic text-slate-600 transition hover:bg-slate-200 hover:text-slate-900">I</button>
+                        <button type="button" data-rich-command="underline" title="Altı çizili" class="rounded-lg px-2.5 py-1.5 text-sm underline text-slate-600 transition hover:bg-slate-200 hover:text-slate-900">U</button>
+                        <span class="mx-1 h-4 w-px bg-slate-200"></span>
+                        <button type="button" data-rich-command="insertUnorderedList" title="Madde işaretli liste" class="rounded-lg px-2.5 py-1.5 text-sm text-slate-600 transition hover:bg-slate-200 hover:text-slate-900">•≡</button>
+                        <button type="button" data-rich-command="insertOrderedList" title="Numaralı liste" class="rounded-lg px-2.5 py-1.5 text-sm text-slate-600 transition hover:bg-slate-200 hover:text-slate-900">1≡</button>
+                    </div>
+
+                    <div
+                        id="description-editor"
+                        data-rich-editor-surface
+                        contenteditable="true"
+                        data-placeholder="Kategorinizi kısaca tanımlayın..."
+                        class="rich-editor-surface min-h-[110px] px-4 py-2.5 text-sm text-slate-800 focus:outline-none"
+                    >{!! old('description') !!}</div>
+
+                    <textarea id="description" name="description" data-rich-editor-input class="hidden">{{ old('description') }}</textarea>
+                </div>
                 @error('description')
                     <p class="mt-1.5 text-xs text-rose-600">{{ $message }}</p>
                 @enderror
@@ -119,17 +133,66 @@
             </div>
 
             <div class="mt-6 flex items-center justify-end gap-3 border-t border-slate-100 pt-5">
-                <a href="{{ route('blog.categories') }}" class="rounded-xl px-5 py-2.5 text-xs font-semibold text-slate-600 transition hover:bg-slate-100">
+                <a href="{{ route('blog.categories') }}" class="rounded-xl bg-slate-100 px-5 py-2.5 text-xs font-semibold text-slate-600 transition hover:bg-slate-300 hover:text-slate-900">
                     İptal
                 </a>
-                <button type="submit" class="rounded-xl bg-blue-600 px-5 py-2.5 text-xs font-semibold text-white shadow-md shadow-blue-200 transition hover:bg-blue-700 active:scale-95">
-                    Kategoriyi oluştur
-                </button>
+                <button 
+  type="submit" 
+  class="rounded-xl bg-blue-600 px-5 py-2.5 text-xs font-semibold text-white shadow-md shadow-blue-200 transition hover:bg-blue-700 active:scale-95 focus:outline-none focus:ring-4 focus:ring-blue-100">
+  Kategoriyi oluştur
+</button>
             </div>
         </form>
     </div>
 
+    <style>
+        .rich-editor-surface:empty:before {
+            content: attr(data-placeholder);
+            color: #94a3b8;
+            pointer-events: none;
+        }
+
+        .rich-editor-surface ul {
+            list-style: disc;
+            padding-left: 1.25rem;
+        }
+
+        .rich-editor-surface ol {
+            list-style: decimal;
+            padding-left: 1.25rem;
+        }
+    </style>
+
     <script>
+        document.querySelectorAll('[data-rich-editor]').forEach(function (wrap) {
+            const surface = wrap.querySelector('[data-rich-editor-surface]');
+            const input = wrap.querySelector('[data-rich-editor-input]');
+            const toolbar = wrap.querySelectorAll('[data-rich-command]');
+
+            if (!surface || !input) {
+                return;
+            }
+
+            const syncInput = function () {
+                input.value = surface.innerHTML.trim();
+            };
+
+            toolbar.forEach(function (button) {
+                button.addEventListener('click', function () {
+                    surface.focus();
+                    document.execCommand(button.dataset.richCommand, false, null);
+                    syncInput();
+                });
+            });
+
+            surface.addEventListener('input', syncInput);
+
+            const form = wrap.closest('form');
+            form?.addEventListener('submit', syncInput);
+
+            syncInput();
+        });
+
         document.querySelectorAll('[data-category-upload]').forEach(function (wrap) {
             const input = wrap.querySelector('[data-category-upload-input]');
             const preview = wrap.querySelector('[data-category-upload-preview]');

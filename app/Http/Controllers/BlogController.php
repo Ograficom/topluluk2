@@ -89,7 +89,7 @@ class BlogController extends Controller
             'created_by_user_id' => $user->id,
             'name' => $data['name'],
             'slug' => $slug,
-            'description' => $data['description'] ?? null,
+            'description' => $this->sanitizeCategoryDescription($data['description'] ?? null),
         ]);
 
         $updates = [];
@@ -108,6 +108,19 @@ class BlogController extends Controller
         return redirect()
             ->route('blog.category', ['category' => $category->slug])
             ->with('status', 'Kategori olusturuldu.');
+    }
+
+    protected function sanitizeCategoryDescription(?string $html): ?string
+    {
+        $html = trim((string) $html);
+        if ($html === '') {
+            return null;
+        }
+
+        $allowed = '<p><br><b><strong><i><em><u><ul><ol><li>';
+        $clean = strip_tags($html, $allowed);
+
+        return $clean !== '' ? $clean : null;
     }
 
     public function toggleCategoryJoin(Request $request, Category $category)
@@ -174,7 +187,7 @@ class BlogController extends Controller
 
         $updates = [
             'name' => $data['name'],
-            'description' => $data['description'] ?? null,
+            'description' => $this->sanitizeCategoryDescription($data['description'] ?? null),
         ];
 
         $deleteIfLocal = function (?string $path): void {

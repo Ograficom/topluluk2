@@ -3609,7 +3609,7 @@ body:has(.category-reference-card) .profile-reference-tab {
             </div>
 
             @if($description !== '')
-                <p class="profile-reference-bio mt-3">{{ $description }}</p>
+                <div class="profile-reference-bio mt-3">{!! $description !!}</div>
             @endif
 
         </div>
