@@ -529,8 +529,8 @@
     }
 
     .categories-avatar {
-        width: 40px;
-        height: 40px;
+        width: 36px;
+        height: 36px;
         flex: 0 0 auto;
         overflow: hidden;
         border-radius: 999px;
@@ -546,7 +546,7 @@
         align-items: center;
         justify-content: center;
         object-fit: cover;
-        font-size: 15px;
+        font-size: 13px;
         font-weight: 500;
         line-height: 1;
     }
@@ -558,7 +558,7 @@
     .categories-item__name {
         margin: 0;
         color: #000000;
-        font-size: 16px;
+        font-size: 14.5px;
         font-weight: 700;
         line-height: 1.25;
     }
@@ -569,7 +569,7 @@
         gap: 8px;
         margin-top: 2px;
         color: var(--categories-muted);
-        font-size: 13.5px;
+        font-size: 12.5px;
         font-weight: 500;
         line-height: 1.2;
     }
@@ -603,7 +603,7 @@
     .categories-item__description {
         margin: 8px 0 0;
         color: var(--categories-desc);
-        font-size: 14px;
+        font-size: 13px;
         font-weight: 400;
         line-height: 1.45;
     }
@@ -891,11 +891,11 @@
         }
 
         .categories-item__name {
-            font-size: 17px;
+            font-size: 15px;
         }
 
         .categories-item__description {
-            font-size: 14.5px;
+            font-size: 13.5px;
         }
 
         .categories-count {
