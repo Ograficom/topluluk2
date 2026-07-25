@@ -2157,6 +2157,8 @@
         background: #ff0000 !important;
     }
 
+    /* Rozetler: 3B donen kureden duz, pul/muhur seklinde (Duolingo tarzi) rozete gecis */
+    .og-badge::before,
     .og-badge::after {
         display: none !important;
         content: none !important;
@@ -2166,7 +2168,134 @@
     .og-badge:hover,
     .og-badge:focus-visible,
     .og-badge.is-dragging {
+        width: 46px !important;
+        height: 46px !important;
+        border: 0 !important;
+        border-radius: 0 !important;
+        clip-path: polygon(50.00% 0.00%, 60.87% 9.43%, 75.00% 6.70%, 79.70% 20.30%, 93.30% 25.00%, 90.57% 39.13%, 100.00% 50.00%, 90.57% 60.87%, 93.30% 75.00%, 79.70% 79.70%, 75.00% 93.30%, 60.87% 90.57%, 50.00% 100.00%, 39.13% 90.57%, 25.00% 93.30%, 20.30% 79.70%, 6.70% 75.00%, 9.43% 60.87%, 0.00% 50.00%, 9.43% 39.13%, 6.70% 25.00%, 20.30% 20.30%, 25.00% 6.70%, 39.13% 9.43%) !important;
+        background: var(--badge-color) !important;
         box-shadow: none !important;
+        transform: none !important;
+        cursor: pointer !important;
+        touch-action: auto !important;
+    }
+
+    .og-badge:hover,
+    .og-badge:focus-visible {
+        transform: scale(1.06) !important;
+    }
+
+    .og-badge__face {
+        width: 62% !important;
+        height: 44% !important;
+        border-radius: 6px !important;
+        background: #ffffff !important;
+        transform: none !important;
+        opacity: 1 !important;
+    }
+
+    .og-badge__fallback,
+    .og-badge__fallback--backup {
+        width: 100% !important;
+        height: 100% !important;
+        border-radius: 6px !important;
+        background: #ffffff !important;
+        color: #111827 !important;
+        font-size: 13px !important;
+        font-weight: 800 !important;
+        text-shadow: none !important;
+        letter-spacing: -0.02em !important;
+    }
+
+    .og-badge__media {
+        width: 100% !important;
+        height: 100% !important;
+        max-width: 100% !important;
+        max-height: 100% !important;
+        padding: 6px !important;
+        object-fit: contain !important;
+        filter: none !important;
+        box-sizing: border-box !important;
+    }
+
+    /* Rozet modalindaki buyuk onizleme de ayni duz muhur seklini kullanir, 3B donme kapali */
+    .og-ref-badge-stage {
+        width: 168px !important;
+        height: 168px !important;
+        perspective: none !important;
+        cursor: default !important;
+        touch-action: auto !important;
+    }
+
+    .og-ref-badge-rotor {
+        transform: none !important;
+        transition: none !important;
+    }
+
+    .og-ref-badge-layer--back {
+        display: none !important;
+    }
+
+    .og-ref-badge-layer--front {
+        clip-path: polygon(50.00% 0.00%, 60.87% 9.43%, 75.00% 6.70%, 79.70% 20.30%, 93.30% 25.00%, 90.57% 39.13%, 100.00% 50.00%, 90.57% 60.87%, 93.30% 75.00%, 79.70% 79.70%, 75.00% 93.30%, 60.87% 90.57%, 50.00% 100.00%, 39.13% 90.57%, 25.00% 93.30%, 20.30% 79.70%, 6.70% 75.00%, 9.43% 60.87%, 0.00% 50.00%, 9.43% 39.13%, 6.70% 25.00%, 20.30% 20.30%, 25.00% 6.70%, 39.13% 9.43%) !important;
+        border: 0 !important;
+        border-radius: 0 !important;
+        background: var(--badge-preview-color) !important;
+        transform: none !important;
+    }
+
+    .og-ref-badge-content {
+        width: 58% !important;
+        height: 40% !important;
+        border-radius: 8px !important;
+        background: #ffffff !important;
+        transform: none !important;
+    }
+
+    .og-ref-badge-fallback {
+        width: 100% !important;
+        height: 100% !important;
+        border-radius: 8px !important;
+        background: #ffffff !important;
+        color: #111827 !important;
+        font-size: 26px !important;
+        font-weight: 800 !important;
+        text-shadow: none !important;
+        letter-spacing: -0.02em !important;
+    }
+
+    .og-ref-badge-media {
+        width: 100% !important;
+        height: 100% !important;
+        padding: 10px !important;
+        filter: none !important;
+        box-sizing: border-box !important;
+    }
+
+    .og-ref-badge-glow,
+    .og-ref-badge-shadow {
+        display: none !important;
+    }
+
+    .og-badge-sheet-media {
+        min-height: 0 !important;
+        padding-top: 6px !important;
+    }
+
+    .og-badge-sheet-close-text {
+        justify-content: center !important;
+        margin-top: 18px !important;
+        border: 0 !important;
+        border-radius: 999px !important;
+        background: #16a34a !important;
+        color: #ffffff !important;
+        font-weight: 700 !important;
+        min-height: 46px !important;
+    }
+
+    .og-badge-sheet-close-text:hover,
+    .og-badge-sheet-close-text:focus-visible {
+        background: #15803d !important;
     }
 
     @media (max-width: 960px) {
@@ -2689,7 +2818,11 @@
                                         $badgeIcon = $resolveBadgeIcon($badge);
                                         $badgeIconUrl = $badgeIcon['url'] ?? null;
                                         $badgeIconFallbackUrl = $badgeIcon['fallback'] ?? null;
-                                        $badgeFallbackLetter = mb_strtoupper(mb_substr((string) ($badge->name ?? 'R'), 0, 1, 'UTF-8'), 'UTF-8');
+                                        $badgeFallbackLetter = collect(preg_split('/\s+/', trim((string) ($badge->name ?? 'Rozet')), -1, PREG_SPLIT_NO_EMPTY))
+                                            ->take(2)
+                                            ->map(fn ($part) => \Illuminate\Support\Str::upper(\Illuminate\Support\Str::substr($part, 0, 1)))
+                                            ->implode('');
+                                        $badgeFallbackLetter = $badgeFallbackLetter !== '' ? $badgeFallbackLetter : 'R';
                                     @endphp
                                     <button
                                         type="button"
@@ -2981,7 +3114,7 @@
                 <span class="og-chip"><strong data-profile-badge-points></strong> puan</span>
                 <span class="og-chip" data-profile-badge-awarded-at></span>
             </div>
-            <button type="button" class="og-sheet-close og-badge-sheet-close-text" data-profile-badge-close>{{ __('post_create.close') }}</button>
+            <button type="button" class="og-sheet-close og-badge-sheet-close-text" data-profile-badge-close>Anladım</button>
         </div>
     </div>
 @endsection
