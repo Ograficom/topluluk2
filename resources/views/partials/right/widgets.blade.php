@@ -228,7 +228,7 @@
         align-items: center !important;
         justify-content: space-between !important;
         gap: 10px !important;
-        width: 100% !important;
+        width: auto !important;
         margin: 0 -13px !important;
         padding: 8px 13px !important;
         border-bottom: 0 !important;
