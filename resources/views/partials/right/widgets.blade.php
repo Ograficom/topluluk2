@@ -230,7 +230,7 @@
         gap: 10px !important;
         width: auto !important;
         margin: 0 -13px !important;
-        padding: 8px 13px !important;
+        padding: 3px 13px !important;
         border-bottom: 0 !important;
         border-radius: 8px !important;
         color: inherit !important;
