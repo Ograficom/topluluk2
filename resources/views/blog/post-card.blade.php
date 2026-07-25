@@ -1080,7 +1080,7 @@
     $hasFullPostContent = $contentBlocks->isNotEmpty() || trim($contentHtml) !== '' || $mediaItems->isNotEmpty();
     $summaryCollapsedSource = $summaryExpandedText !== '' ? $summaryExpandedText : $resolvedExcerptShort;
     $summaryCollapsedLength = \Illuminate\Support\Str::length($summaryCollapsedSource);
-    $summaryHalfLength = $summaryCollapsedLength > 1 ? (int) ceil($summaryCollapsedLength * 0.25) : $summaryCollapsedLength;
+    $summaryHalfLength = $summaryCollapsedLength > 1 ? (int) ceil($summaryCollapsedLength * 0.1) : $summaryCollapsedLength;
     $summaryCollapsedText = $summaryCollapsedLength > $summaryHalfLength
         ? rtrim(\Illuminate\Support\Str::substr($summaryCollapsedSource, 0, $summaryHalfLength), " \t\n\r\0\x0B,.;:-") . '...'
         : $summaryCollapsedSource;
@@ -2213,7 +2213,7 @@ SVG;
             padding: 0 !important;
             border: 1px solid #e5e7eb !important;
             border-radius: 9999px !important;
-            background: #f3f4f6 !important;
+            background: #ffffff !important;
             box-shadow: none !important;
             color: inherit !important;
             transform: none !important;
@@ -2581,8 +2581,8 @@ SVG;
         }
 
         [data-post-card-shell] .author-subline__edit-toggle svg {
-            width: 1em;
-            height: 1em;
+            width: 10px !important;
+            height: 10px !important;
         }
 
         [data-post-card-shell] .author-subline__edit-toggle:hover,
@@ -3783,8 +3783,8 @@ SVG;
         }
 
         [data-post-card-shell] .author-avatar {
-            width: 40px;
-            height: 40px;
+            width: 46px;
+            height: 46px;
         }
 
         [data-post-card-shell] .author-avatar--fallback,
@@ -3793,8 +3793,8 @@ SVG;
         }
 
         [data-post-card-shell] .category-badge {
-            width: 16px;
-            height: 16px;
+            width: 20px;
+            height: 20px;
             right: -3px;
             bottom: -3px;
             border: 0;
@@ -7476,9 +7476,9 @@ SVG;
             position: absolute;
             left: 0;
             top: calc(100% + 8px);
-            z-index: 9999;
+            z-index: 999999;
             display: block;
-            width: min(258px, calc(100vw - 28px));
+            width: min(288px, calc(100vw - 28px));
             padding: 0 0 10px;
             border: 1px solid rgba(226, 232, 240, .95);
             border-radius: 14px;
@@ -7491,10 +7491,10 @@ SVG;
             transform: translate3d(0, 6px, 0);
             pointer-events: none;
             transition: opacity .12s ease, visibility .12s ease, transform .12s ease;
-            box-shadow: none !important;
+            box-shadow: 0 12px 32px rgba(15, 23, 42, .16), 0 2px 8px rgba(15, 23, 42, .08) !important;
             text-align: left;
             white-space: normal;
-            font-family: var(--font-family-body), Roboto, Arial, sans-serif;
+            font-family: var(--font-family-body), Inter, Arial, sans-serif;
         }
 
         [data-post-card-shell] .ps-hover-zone--author-name:hover > .ps-hover-card,
@@ -7591,23 +7591,23 @@ SVG;
             align-items: flex-end;
             gap: 8px;
             min-width: 0;
-            margin-top: -18px;
-            padding: 0 11px;
+            margin-top: -24px;
+            padding: 0 12px;
         }
 
         [data-post-card-shell] .ps-hover-card-avatar {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            width: 46px;
-            height: 46px;
-            flex: 0 0 46px;
-            border: 2px solid #ffffff;
+            width: 58px;
+            height: 58px;
+            flex: 0 0 58px;
+            border: 3px solid #ffffff;
             border-radius: 999px;
             overflow: hidden;
             background: #f1f5f9;
             color: #64748b;
-            font-size: 12px;
+            font-size: 14px;
             font-weight: 400;
             line-height: 1;
         }
@@ -7634,19 +7634,19 @@ SVG;
 
         [data-post-card-shell] .ps-hover-card-title {
             display: block;
-            max-width: 168px;
+            max-width: 190px;
             overflow: hidden;
             color: #0f172a;
-            font-size: 13px;
-            font-weight: 400;
-            line-height: 1.18;
+            font-size: 14px;
+            font-weight: 700;
+            line-height: 1.2;
             text-overflow: ellipsis;
             white-space: nowrap;
         }
 
         [data-post-card-shell] .ps-hover-card-subtitle {
             display: block;
-            max-width: 168px;
+            max-width: 190px;
             overflow: hidden;
             color: #64748b;
             font-size: 11px;
@@ -8331,9 +8331,9 @@ SVG;
             }
 
             html body article.post-card[data-post-card-shell] .author-avatar {
-                width: 38px !important;
-                height: 38px !important;
-                min-width: 38px !important;
+                width: 42px !important;
+                height: 42px !important;
+                min-width: 42px !important;
             }
 
             html body article.post-card[data-post-card-shell] .author-name {
