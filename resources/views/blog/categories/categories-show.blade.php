@@ -3603,9 +3603,9 @@ body:has(.category-reference-card) .profile-reference-tab {
             </div>
 
             <div class="profile-reference-meta-row mt-2">
-                <span><strong>{{ number_format($postsCount) }}</strong> Hikayeler</span>
-                <span><strong>{{ number_format($followersCount) }}</strong> Üyeler</span>
-                <span><strong>{{ number_format((int) ($categoryViews ?? 0)) }}</strong> Görüşler</span>
+                <span><strong>{{ number_format($postsCount) }}</strong> Postlar</span>
+                <span><strong>{{ number_format($followersCount) }}</strong> Aboneler</span>
+                <span><strong>{{ number_format((int) ($categoryViews ?? 0)) }}</strong> Görüntüleme</span>
             </div>
 
             @if($description !== '')
