@@ -244,10 +244,6 @@
         background: #f4f4f5 !important;
     }
 
-    .ografi-tag-row--top {
-        background: #f4f4f5 !important;
-    }
-
     .ografi-tag-row__name {
         display: block !important;
         min-width: 0 !important;
@@ -557,10 +553,7 @@
 
         <div class="ografi-tag-list">
             @forelse ($popularTags as $tag)
-                <a
-                    href="{{ route('blog.index', ['tag' => $tag->slug]) }}"
-                    class="ografi-tag-row {{ $loop->first ? 'ografi-tag-row--top' : '' }}"
-                >
+                <a href="{{ route('blog.index', ['tag' => $tag->slug]) }}" class="ografi-tag-row">
                     <span class="ografi-tag-row__name">#{{ $tag->name }}</span>
                     <span class="ografi-tag-row__count">{{ number_format((int) $tag->posts_count) }}</span>
                 </a>
