@@ -229,22 +229,17 @@
         justify-content: space-between !important;
         gap: 10px !important;
         width: 100% !important;
-        padding: 10px 0 !important;
-        border-bottom: 1px solid #e5e7eb !important;
+        padding: 11px 0 !important;
+        border-bottom: 0 !important;
         color: inherit !important;
         text-decoration: none !important;
         background: transparent !important;
-        transition: color 0.15s ease !important;
+        transition: opacity 0.15s ease !important;
     }
 
-    .ografi-tag-row:last-child {
-        padding-bottom: 0 !important;
-        border-bottom: 0 !important;
-    }
-
-    .ografi-tag-row:hover .ografi-tag-row__name,
-    .ografi-tag-row:focus-visible .ografi-tag-row__name {
-        color: #2563eb !important;
+    .ografi-tag-row:hover,
+    .ografi-tag-row:focus-visible {
+        opacity: 0.72 !important;
     }
 
     .ografi-tag-row__name {
@@ -252,20 +247,20 @@
         min-width: 0 !important;
         overflow: hidden !important;
         color: #0d0d10 !important;
-        font-size: 13px !important;
-        font-weight: 500 !important;
+        font-size: 14.5px !important;
+        font-weight: 700 !important;
         line-height: 1.25 !important;
+        letter-spacing: -0.01em !important;
         text-overflow: ellipsis !important;
         white-space: nowrap !important;
-        transition: color 0.15s ease !important;
     }
 
     .ografi-tag-row__count {
         display: block !important;
         flex: 0 0 auto !important;
-        color: #9ca3af !important;
-        font-size: 12px !important;
-        font-weight: 500 !important;
+        color: #2563eb !important;
+        font-size: 14px !important;
+        font-weight: 600 !important;
         line-height: 1.25 !important;
     }
 
@@ -306,20 +301,23 @@
 
     .ografi-trend-thumb {
         display: block !important;
-        width: 40px !important;
-        height: 40px !important;
-        min-width: 40px !important;
-        border-radius: 8px !important;
+        width: 56px !important;
+        height: 56px !important;
+        min-width: 56px !important;
+        border-radius: 10px !important;
         object-fit: cover !important;
         background: #f1f5f9 !important;
+        order: 2 !important;
     }
 
     .ografi-trend-body {
         display: flex !important;
         flex-direction: column !important;
+        justify-content: center !important;
         gap: 3px !important;
         min-width: 0 !important;
         flex: 1 1 auto !important;
+        order: 1 !important;
     }
 
     .ografi-trend-title {
@@ -328,23 +326,16 @@
         -webkit-box-orient: vertical !important;
         overflow: hidden !important;
         color: #0d0d10 !important;
-        font-size: 12.5px !important;
-        font-weight: 600 !important;
-        line-height: 1.3 !important;
+        font-size: 13.5px !important;
+        font-weight: 700 !important;
+        letter-spacing: -0.01em !important;
+        line-height: 1.32 !important;
         transition: color 0.15s ease !important;
     }
 
     .ografi-trend-item:hover .ografi-trend-title,
     .ografi-trend-item:focus-visible .ografi-trend-title {
         color: #2563eb !important;
-    }
-
-    .ografi-trend-meta {
-        display: block !important;
-        color: #9ca3af !important;
-        font-size: 11px !important;
-        font-weight: 500 !important;
-        line-height: 1.2 !important;
     }
 
     .dark .ografi-sidebar-card,
@@ -367,8 +358,6 @@
         color: #ffffff !important;
     }
 
-    .dark .ografi-tag-row,
-    [data-theme="dark"] .ografi-tag-row,
     .dark .ografi-comment-item,
     [data-theme="dark"] .ografi-comment-item,
     .dark .ografi-trend-item,
@@ -377,11 +366,12 @@
     }
 
     .dark .ografi-tag-row__count,
-    [data-theme="dark"] .ografi-tag-row__count,
+    [data-theme="dark"] .ografi-tag-row__count {
+        color: #60a5fa !important;
+    }
+
     .dark .ografi-comment-time,
     [data-theme="dark"] .ografi-comment-time,
-    .dark .ografi-trend-meta,
-    [data-theme="dark"] .ografi-trend-meta,
     .dark .ografi-empty-state,
     [data-theme="dark"] .ografi-empty-state {
         color: #9ca3af !important;
@@ -538,13 +528,6 @@
 
                             <div class="ografi-trend-body">
                                 <span class="ografi-trend-title">{{ \Illuminate\Support\Str::limit($trendPost->title, 60) }}</span>
-                                <span class="ografi-trend-meta">
-                                    @if ($group['metric'] === 'views')
-                                        {{ number_format((int) $trendPost->views_count) }} {{ __('site.widgets.views_suffix') }}
-                                    @else
-                                        {{ number_format((int) $trendPost->reactions_count) }} {{ __('site.widgets.reactions_suffix') }}
-                                    @endif
-                                </span>
                             </div>
                         </a>
                     @empty
