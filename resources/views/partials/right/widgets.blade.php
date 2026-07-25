@@ -65,9 +65,10 @@
     .ografi-sidebar-title {
         margin: 0 !important;
         color: #000000 !important;
-        font-size: 12px !important;
-        font-weight: 600 !important;
-        line-height: 1.2 !important;
+        font-size: clamp(18px, 2.2vw, 20px) !important;
+        font-weight: 700 !important;
+        letter-spacing: -0.015em !important;
+        line-height: 1.32 !important;
     }
 
     .ografi-comment-list {
@@ -277,16 +278,6 @@
     }
 
     /* Populer gonderiler: kucuk kapak resmi + baslik listesi (Haberler stili). */
-    .ografi-trend-subheading {
-        margin: 0 0 8px 0 !important;
-        color: #6b7280 !important;
-        font-size: 11px !important;
-        font-weight: 600 !important;
-        letter-spacing: 0.02em !important;
-        text-transform: uppercase !important;
-        line-height: 1.2 !important;
-    }
-
     .ografi-trend-group + .ografi-trend-group {
         margin-top: 18px !important;
     }
@@ -392,9 +383,7 @@
     .dark .ografi-trend-meta,
     [data-theme="dark"] .ografi-trend-meta,
     .dark .ografi-empty-state,
-    [data-theme="dark"] .ografi-empty-state,
-    .dark .ografi-trend-subheading,
-    [data-theme="dark"] .ografi-trend-subheading {
+    [data-theme="dark"] .ografi-empty-state {
         color: #9ca3af !important;
     }
 
@@ -532,8 +521,6 @@
 
         @foreach ($trendGroups as $group)
             <div class="ografi-trend-group">
-                <p class="ografi-trend-subheading">{{ $group['label'] }}</p>
-
                 <div class="ografi-trend-list">
                     @forelse ($group['posts'] as $trendPost)
                         <a href="{{ route('blog.post', $trendPost->slug) }}" class="ografi-trend-item">
