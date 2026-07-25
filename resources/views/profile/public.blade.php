@@ -882,8 +882,8 @@
     }
 
     .og-tab[aria-current="page"] {
-        border-bottom-color: #057642 !important;
-        color: #057642 !important;
+        border-bottom-color: var(--og-li-blue) !important;
+        color: var(--og-li-blue) !important;
     }
 
     .og-sort {
@@ -2058,8 +2058,8 @@
     .og-actions form .og-btn,
     .og-actions form .og-btn--primary {
         min-width: 96px !important;
-        border: 1px solid #057642 !important;
-        background: #057642 !important;
+        border: 1px solid var(--og-li-blue) !important;
+        background: var(--og-li-blue) !important;
         color: #ffffff !important;
         font-weight: 500 !important;
     }
@@ -2068,8 +2068,8 @@
     .og-actions .og-btn:focus-visible,
     .og-actions .og-btn--primary:hover,
     .og-actions .og-btn--primary:focus-visible {
-        border-color: #046236 !important;
-        background: #046236 !important;
+        border-color: var(--og-li-blue-hover) !important;
+        background: var(--og-li-blue-hover) !important;
         color: #ffffff !important;
     }
 
