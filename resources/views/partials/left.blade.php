@@ -1320,12 +1320,16 @@
     >
         <div class="sidebar-section">
             <ul class="nav-list">
+                @unless($mobileSidebar)
                 <li>
                     <a class="nav-item" href="{{ route('home') }}" data-active="{{ $isFeed ? 'true' : 'false' }}">
                         <div class="nav-item-icon-outline">
-                            <svg class="nav-home-icon" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" aria-hidden="true">
+                            <svg class="nav-home-icon" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
                                 <path d="M0 0h24v24H0z" fill="none" />
-                                <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="m19.633 7.11l-6.474-4.02a2.23 2.23 0 0 0-2.362 0L4.324 7.133A2.23 2.23 0 0 0 3.31 9.362l1.67 10.027a2.23 2.23 0 0 0 2.228 1.86h9.582a2.23 2.23 0 0 0 2.229-1.86l1.67-10.027a2.23 2.23 0 0 0-1.058-2.251" />
+                                <g fill="none" stroke="currentColor" stroke-width="1.5">
+                                    <path d="M2 12.204c0-2.289 0-3.433.52-4.381c.518-.949 1.467-1.537 3.364-2.715l2-1.241C9.889 2.622 10.892 2 12 2s2.11.622 4.116 1.867l2 1.241c1.897 1.178 2.846 1.766 3.365 2.715S22 9.915 22 12.203v1.522c0 3.9 0 5.851-1.172 7.063S17.771 22 14 22h-4c-3.771 0-5.657 0-6.828-1.212S2 17.626 2 13.725z" />
+                                    <path stroke-linecap="round" d="M12 15v3" />
+                                </g>
                             </svg>
                         </div>
                         <div class="nav-item-label-row">
@@ -1333,6 +1337,7 @@
                         </div>
                     </a>
                 </li>
+                @endunless
 
                 <li>
                     <a class="nav-item" href="{{ route('video') }}" data-active="{{ $isVideo ? 'true' : 'false' }}">
