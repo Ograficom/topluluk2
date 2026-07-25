@@ -305,6 +305,110 @@
         border-bottom-color: #60a5fa;
     }
 
+    .category-info-panel {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+        width: 100%;
+        border-radius: 16px;
+        background: #ffffff;
+        padding: 20px;
+        box-sizing: border-box;
+    }
+
+    .category-info-panel__title {
+        margin: 0;
+        color: #111827;
+        font-size: 17px;
+        font-weight: 700;
+        line-height: 1.3;
+    }
+
+    .category-info-panel__description {
+        color: #374151;
+        font-size: 14px;
+        line-height: 1.55;
+    }
+
+    .category-info-panel__description ul,
+    .category-info-panel__description ol {
+        margin: 4px 0;
+        padding-left: 1.25rem;
+    }
+
+    .category-info-panel__empty {
+        margin: 0;
+        color: #9ca3af;
+        font-size: 13.5px;
+    }
+
+    .category-info-panel__meta {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin-top: 4px;
+        padding-top: 14px;
+        border-top: 1px solid #eef0f2;
+    }
+
+    .category-info-panel__meta-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .category-info-panel__meta-icon {
+        width: 18px;
+        height: 18px;
+        flex: 0 0 18px;
+        color: #9ca3af;
+    }
+
+    .category-info-panel__meta-text {
+        color: #4b5563;
+        font-size: 13.5px;
+        font-weight: 400;
+    }
+
+    .category-info-panel__meta-text strong {
+        color: #111827;
+        font-weight: 600;
+    }
+
+    .category-info-panel__meta-link {
+        color: #16a34a;
+        font-weight: 600;
+        text-decoration: none;
+    }
+
+    .category-info-panel__meta-link:hover {
+        text-decoration: underline;
+    }
+
+    .dark .category-info-panel {
+        background: #111827;
+    }
+
+    .dark .category-info-panel__title {
+        color: #f3f4f6;
+    }
+
+    .dark .category-info-panel__description {
+        color: #d1d5db;
+    }
+
+    .dark .category-info-panel__meta {
+        border-top-color: #1f2937;
+    }
+
+    .dark .category-info-panel__meta-text {
+        color: #9ca3af;
+    }
+
+    .dark .category-info-panel__meta-text strong {
+        color: #f3f4f6;
+    }
+
     @media (max-width: 640px) {
         html,
         body {
@@ -1237,6 +1341,50 @@ html.dark .ografi-feed-page-button--next:active,
                 </nav>
 
                 <div class="category-index-feed__content profile-reference-content" data-category-post-panel>
+                @if($categoryCurrentSort === 'info')
+                    @php
+                        $categoryInfoDescription = trim((string) ($categoryToShow?->description ?? ''));
+                        $categoryInfoCreator = $categoryToShow?->creator;
+                    @endphp
+
+                    <div class="category-info-panel">
+                        <h2 class="category-info-panel__title">Topluluk Bilgileri</h2>
+
+                        @if($categoryInfoDescription !== '')
+                            <div class="category-info-panel__description">{!! $categoryInfoDescription !!}</div>
+                        @else
+                            <p class="category-info-panel__empty">Bu kategori için henüz açıklama eklenmemiş.</p>
+                        @endif
+
+                        <div class="category-info-panel__meta">
+                            <div class="category-info-panel__meta-row">
+                                <svg class="category-info-panel__meta-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <rect x="3" y="4.5" width="18" height="16" rx="3" stroke="currentColor" stroke-width="1.6"/>
+                                    <path d="M3 9.5H21" stroke="currentColor" stroke-width="1.6"/>
+                                    <path d="M8 2.5V5.5M16 2.5V5.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+                                </svg>
+                                <span class="category-info-panel__meta-text">
+                                    Oluşturulma tarihi: <strong>{{ optional($categoryToShow?->created_at)->translatedFormat('d F Y') ?? 'Bilinmiyor' }}</strong>
+                                </span>
+                            </div>
+
+                            @if($categoryInfoCreator)
+                                <div class="category-info-panel__meta-row">
+                                    <svg class="category-info-panel__meta-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M11.05 3.55 4.5 10.1a2 2 0 0 0-.55 1.03l-.93 5.1a1 1 0 0 0 1.16 1.16l5.1-.93a2 2 0 0 0 1.03-.55l6.55-6.55a2.5 2.5 0 0 0 0-3.54l-1.17-1.17a2.5 2.5 0 0 0-3.54 0Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+                                        <circle cx="15.5" cy="8.5" r="1" fill="currentColor"/>
+                                    </svg>
+                                    <span class="category-info-panel__meta-text">
+                                        Yaratıcı
+                                        <a href="{{ route('profile.show', $categoryInfoCreator->username) }}" class="category-info-panel__meta-link">
+                                            {{ '@' . $categoryInfoCreator->username }}
+                                        </a>
+                                    </span>
+                                </div>
+                            @endif
+                        </div>
+                    </div>
+                @else
                     @forelse($posts as $post)
                         @php
                             $featured = $post->featured_image_url
@@ -1375,6 +1523,7 @@ html.dark .ografi-feed-page-button--next:active,
                             </div>
                         </div>
                     @endif
+                @endif
                 </div>
             </div>
         </div>
