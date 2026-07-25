@@ -263,7 +263,7 @@
         --categories-muted: #71717a;
         --categories-desc: #5f6472;
         --categories-bg: #ffffff;
-        --categories-hover: #f4f4f5;
+        --categories-hover: #f9fafb;
         --categories-border: #e4e4e7;
         --categories-menu-bg: #ffffff;
         --categories-menu-border: #d4d4d8;
@@ -546,7 +546,7 @@
         align-items: center;
         justify-content: center;
         object-fit: cover;
-        font-size: 13px;
+        font-size: 15px;
         font-weight: 500;
         line-height: 1;
     }
@@ -578,14 +578,6 @@
     .categories-item__stats-primary strong {
         color: var(--categories-muted);
         font-weight: 500;
-        transition: color 0.15s ease;
-    }
-
-    .categories-item:hover .categories-item__stats-primary,
-    .categories-item:hover .categories-item__stats-primary strong,
-    .categories-item:focus-visible .categories-item__stats-primary,
-    .categories-item:focus-visible .categories-item__stats-primary strong {
-        color: var(--categories-blue);
     }
 
     .categories-item__stats-secondary {
