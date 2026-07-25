@@ -309,9 +309,19 @@
         height: 196px !important;
         overflow: hidden !important;
         border-radius: 8px 8px 0 0 !important;
-        background:
-            radial-gradient(circle at 18% 28%, rgba(255, 255, 255, 0.50), transparent 22%),
-            linear-gradient(135deg, #66a8df 0%, #2777b8 43%, #b4d2e9 100%) !important;
+        background: #f4f4f5 !important;
+    }
+
+    .og-cover::before {
+        content: "" !important;
+        position: absolute !important;
+        inset: 0 !important;
+        z-index: 0 !important;
+        background-image: radial-gradient(circle, rgba(15, 23, 42, 0.65) 1.4px, transparent 1.4px) !important;
+        background-size: 13px 13px !important;
+        -webkit-mask-image: radial-gradient(ellipse 110% 90% at 14% 12%, #000 15%, transparent 72%) !important;
+        mask-image: radial-gradient(ellipse 110% 90% at 14% 12%, #000 15%, transparent 72%) !important;
+        pointer-events: none !important;
     }
 
     .og-cover::after {
@@ -599,7 +609,7 @@
     }
 
     .og-stat {
-        color: var(--og-li-blue) !important;
+        color: var(--og-li-text) !important;
         font-size: 14px !important;
         font-weight: 600 !important;
         line-height: 1.35 !important;
@@ -608,12 +618,12 @@
 
     .og-stat strong {
         color: inherit !important;
-        font-weight: 600 !important;
+        font-weight: 700 !important;
     }
 
     .og-stat:hover,
     .og-stat:focus-visible {
-        color: var(--og-li-blue-hover) !important;
+        color: var(--og-li-blue) !important;
         text-decoration: underline !important;
     }
 
@@ -1674,6 +1684,16 @@
         color: var(--og-li-blue) !important;
     }
 
+    body.dark .og-cover,
+    .dark .og-cover {
+        background: #1b1f23 !important;
+    }
+
+    body.dark .og-cover::before,
+    .dark .og-cover::before {
+        background-image: radial-gradient(circle, rgba(255, 255, 255, 0.35) 1.4px, transparent 1.4px) !important;
+    }
+
     body.dark .og-btn,
     .dark .og-btn {
         background: var(--og-li-blue) !important;
@@ -2038,8 +2058,8 @@
     .og-actions form .og-btn,
     .og-actions form .og-btn--primary {
         min-width: 96px !important;
-        border: 1px solid var(--og-li-blue, #0a66c2) !important;
-        background: var(--og-li-blue, #0a66c2) !important;
+        border: 1px solid #057642 !important;
+        background: #057642 !important;
         color: #ffffff !important;
         font-weight: 500 !important;
     }
@@ -2048,8 +2068,8 @@
     .og-actions .og-btn:focus-visible,
     .og-actions .og-btn--primary:hover,
     .og-actions .og-btn--primary:focus-visible {
-        border-color: var(--og-li-blue-hover, #004182) !important;
-        background: var(--og-li-blue-hover, #004182) !important;
+        border-color: #046236 !important;
+        background: #046236 !important;
         color: #ffffff !important;
     }
 
