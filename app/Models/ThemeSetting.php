@@ -81,6 +81,16 @@ class ThemeSetting extends Model
         'widget_tags_count',
         'widget_trending_enabled',
         'widget_trending_count',
+        'categories_name_color',
+        'categories_stats_color',
+        'categories_description_color',
+        'categories_accent_color',
+        'categories_hover_bg_color',
+        'categories_border_color',
+        'categories_avatar_size',
+        'categories_name_font_size',
+        'categories_stats_font_size',
+        'categories_description_font_size',
     ];
 
     protected $casts = [
@@ -90,6 +100,10 @@ class ThemeSetting extends Model
         'widget_comments_count' => 'integer',
         'widget_tags_count' => 'integer',
         'widget_trending_count' => 'integer',
+        'categories_avatar_size' => 'integer',
+        'categories_name_font_size' => 'float',
+        'categories_stats_font_size' => 'float',
+        'categories_description_font_size' => 'float',
     ];
 
     public static function current(): self

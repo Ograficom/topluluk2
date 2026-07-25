@@ -8,6 +8,34 @@
 
 @php
     use Illuminate\Support\Str;
+    use App\Models\ThemeSetting;
+
+    $categoriesThemeSettings = ThemeSetting::currentOrNull();
+    $categoriesSanitizeColor = function ($value, string $fallback) {
+        $value = is_string($value) ? trim($value) : '';
+
+        return $value !== '' && preg_match('/^#[0-9a-fA-F]{3,8}$/', $value) ? $value : $fallback;
+    };
+    $categoriesSanitizeSize = function ($value, float $fallback, float $min = 8, float $max = 96) {
+        if (!is_numeric($value)) {
+            return $fallback;
+        }
+
+        $value = (float) $value;
+
+        return $value >= $min && $value <= $max ? $value : $fallback;
+    };
+
+    $categoriesNameColor = $categoriesSanitizeColor($categoriesThemeSettings->categories_name_color ?? null, '#000000');
+    $categoriesStatsColor = $categoriesSanitizeColor($categoriesThemeSettings->categories_stats_color ?? null, '#71717a');
+    $categoriesDescriptionColor = $categoriesSanitizeColor($categoriesThemeSettings->categories_description_color ?? null, '#5f6472');
+    $categoriesAccentColor = $categoriesSanitizeColor($categoriesThemeSettings->categories_accent_color ?? null, '#2563eb');
+    $categoriesHoverBgColor = $categoriesSanitizeColor($categoriesThemeSettings->categories_hover_bg_color ?? null, '#f9fafb');
+    $categoriesBorderColor = $categoriesSanitizeColor($categoriesThemeSettings->categories_border_color ?? null, '#e4e4e7');
+    $categoriesAvatarSize = $categoriesSanitizeSize($categoriesThemeSettings->categories_avatar_size ?? null, 36, 24, 80);
+    $categoriesNameFontSize = $categoriesSanitizeSize($categoriesThemeSettings->categories_name_font_size ?? null, 14.5, 10, 28);
+    $categoriesStatsFontSize = $categoriesSanitizeSize($categoriesThemeSettings->categories_stats_font_size ?? null, 12.5, 9, 20);
+    $categoriesDescriptionFontSize = $categoriesSanitizeSize($categoriesThemeSettings->categories_description_font_size ?? null, 13, 10, 20);
 
     $categoryCollection = $categories ?? collect();
 
@@ -257,14 +285,18 @@
         padding: 0 0 28px;
         overflow: visible !important;
 
-        --categories-blue: #2563eb;
+        --categories-blue: {{ $categoriesAccentColor }};
         --categories-blue-hover: #1d4ed8;
-        --categories-text: #000000;
-        --categories-muted: #71717a;
-        --categories-desc: #5f6472;
+        --categories-text: {{ $categoriesNameColor }};
+        --categories-muted: {{ $categoriesStatsColor }};
+        --categories-desc: {{ $categoriesDescriptionColor }};
         --categories-bg: #ffffff;
-        --categories-hover: #f9fafb;
-        --categories-border: #e4e4e7;
+        --categories-hover: {{ $categoriesHoverBgColor }};
+        --categories-border: {{ $categoriesBorderColor }};
+        --categories-avatar-size: {{ $categoriesAvatarSize }}px;
+        --categories-name-size: {{ $categoriesNameFontSize }}px;
+        --categories-stats-size: {{ $categoriesStatsFontSize }}px;
+        --categories-description-size: {{ $categoriesDescriptionFontSize }}px;
         --categories-menu-bg: #ffffff;
         --categories-menu-border: #d4d4d8;
         --categories-menu-divider: #e5e7eb;
@@ -529,8 +561,8 @@
     }
 
     .categories-avatar {
-        width: 36px;
-        height: 36px;
+        width: var(--categories-avatar-size);
+        height: var(--categories-avatar-size);
         flex: 0 0 auto;
         overflow: hidden;
         border-radius: 999px;
@@ -546,7 +578,7 @@
         align-items: center;
         justify-content: center;
         object-fit: cover;
-        font-size: 15px;
+        font-size: calc(var(--categories-avatar-size) * 0.36);
         font-weight: 500;
         line-height: 1;
     }
@@ -557,8 +589,8 @@
 
     .categories-item__name {
         margin: 0;
-        color: #000000;
-        font-size: 14.5px;
+        color: var(--categories-text);
+        font-size: var(--categories-name-size);
         font-weight: 700;
         line-height: 1.25;
     }
@@ -569,7 +601,7 @@
         gap: 8px;
         margin-top: 2px;
         color: var(--categories-muted);
-        font-size: 12.5px;
+        font-size: var(--categories-stats-size);
         font-weight: 500;
         line-height: 1.2;
     }
@@ -595,7 +627,7 @@
     .categories-item__description {
         margin: 8px 0 0;
         color: var(--categories-desc);
-        font-size: 13px;
+        font-size: var(--categories-description-size);
         font-weight: 400;
         line-height: 1.45;
     }
@@ -880,14 +912,6 @@
             z-index: 1 !important;
             width: 100%;
             padding: 16px 14px;
-        }
-
-        .categories-item__name {
-            font-size: 15px;
-        }
-
-        .categories-item__description {
-            font-size: 13.5px;
         }
 
         .categories-count {

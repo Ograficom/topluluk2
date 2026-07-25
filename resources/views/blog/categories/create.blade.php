@@ -1,9 +1,12 @@
 @extends('layouts.app')
 
-@section('title', 'Kategori Olustur')
-@section('meta_description', 'Yeni kategori olusturun.')
+@section('title', 'Kategori Oluştur')
+@section('meta_description', 'Yeni kategori oluşturun.')
 
 @section('content')
+    <!-- Tailwind CDN'i Blade section'ı içine alındı -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
     <div class="mx-auto w-full max-w-2xl space-y-6 rounded-2xl border border-slate-100 bg-white p-6 shadow-xl shadow-slate-100/50 md:p-8">
         <div class="flex items-start justify-between gap-3 border-b border-slate-100 pb-5">
             <div>
@@ -136,11 +139,14 @@
                 <a href="{{ route('blog.categories') }}" class="rounded-xl bg-slate-100 px-5 py-2.5 text-xs font-semibold text-slate-600 transition hover:bg-slate-300 hover:text-slate-900">
                     İptal
                 </a>
+                
+                <!-- Mavi Buton (CSS çakışmalarına karşı inline stili de eklendi) -->
                 <button 
-  type="submit" 
-  class="rounded-xl bg-blue-600 px-5 py-2.5 text-xs font-semibold text-white shadow-md shadow-blue-200 transition hover:bg-blue-700 active:scale-95 focus:outline-none focus:ring-4 focus:ring-blue-100">
-  Kategoriyi oluştur
-</button>
+                    type="submit" 
+                    style="background-color: #2563eb !important; color: #ffffff !important;"
+                    class="rounded-xl bg-blue-600 px-5 py-2.5 text-xs font-semibold text-white transition hover:bg-blue-700 active:scale-95">
+                    Kategoriyi oluştur
+                </button>
             </div>
         </form>
     </div>
