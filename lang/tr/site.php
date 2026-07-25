@@ -213,7 +213,7 @@ return [
         'promo_text' => 'Hikâyeleri takip et, yeni üreticileri keşfet ve sohbete katıl.',
         'promo_link' => 'Konuları keşfet',
         'cover_alt' => 'Kapak görseli',
-        'follow' => 'Takip et',
+        'follow' => 'Takip etmek',
         'following' => 'Takiptesin',
         'edit_profile' => 'Profili Düzenle',
         'website_aria' => 'Web sitesi',

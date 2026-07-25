@@ -2116,9 +2116,13 @@
         min-width: 32px !important;
         height: 32px !important;
         padding: 0 !important;
+        border: 0 !important;
         text-transform: none !important;
         font-size: 0 !important;
-        color: rgba(0, 0, 0, 0.72) !important;
+        color: #ffffff !important;
+        background: #9ca3af !important;
+        opacity: 1 !important;
+        transition: filter 0.12s ease, transform 0.12s ease !important;
     }
 
     .og-social svg {
@@ -2127,34 +2131,30 @@
         height: 16px !important;
     }
 
-    .og-social--facebook:hover,
-    .og-social--facebook:focus-visible {
-        color: #1877f2 !important;
-        border-color: #1877f2 !important;
+    .og-social:hover,
+    .og-social:focus-visible {
+        filter: brightness(0.92) !important;
+        transform: translateY(-1px) !important;
     }
 
-    .og-social--instagram:hover,
-    .og-social--instagram:focus-visible {
-        color: #c13584 !important;
-        border-color: #c13584 !important;
+    .og-social--facebook {
+        background: #1877f2 !important;
     }
 
-    .og-social--x:hover,
-    .og-social--x:focus-visible {
-        color: #000000 !important;
-        border-color: #000000 !important;
+    .og-social--instagram {
+        background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%) !important;
     }
 
-    .og-social--tiktok:hover,
-    .og-social--tiktok:focus-visible {
-        color: #111827 !important;
-        border-color: #111827 !important;
+    .og-social--x {
+        background: #000000 !important;
     }
 
-    .og-social--youtube:hover,
-    .og-social--youtube:focus-visible {
-        color: #ff0000 !important;
-        border-color: #ff0000 !important;
+    .og-social--tiktok {
+        background: #111827 !important;
+    }
+
+    .og-social--youtube {
+        background: #ff0000 !important;
     }
 
     .og-badge::after {
