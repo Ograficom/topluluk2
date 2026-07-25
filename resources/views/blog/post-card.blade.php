@@ -2065,7 +2065,7 @@ SVG;
                 </span>
             @endif
 
-            <button type="button" class="action-btn post-card__action-button action-chip action-chip--subtle" data-media-type="banani-button" data-post-card-copy data-post-card-share-trigger aria-label="Paylas">
+            <button type="button" class="action-btn post-card__action-button action-chip action-chip--subtle" data-media-type="banani-button" data-post-card-share-menu-trigger aria-haspopup="menu" aria-expanded="false" aria-label="Paylas">
                 <div class="post-card__inline-icon">
                     {!! $shareIcon !!}
                 </div>
@@ -2211,19 +2211,18 @@ SVG;
             justify-content: center !important;
             gap: 3px !important;
             padding: 0 !important;
-            border: 1px solid #e5e7eb !important;
+            border: 0 !important;
             border-radius: 9999px !important;
             background: #ffffff !important;
             box-shadow: none !important;
             color: inherit !important;
             transform: none !important;
-            transition: background-color .15s ease, border-color .15s ease !important;
+            transition: background-color .15s ease !important;
         }
 
         [data-post-card-shell] [data-og-action-trigger]:hover,
         [data-post-card-shell] [data-og-action-trigger]:focus-visible,
         [data-post-card-shell] [data-og-action-trigger][aria-expanded="true"] {
-            border-color: #d1d5db !important;
             background: #e5e7eb !important;
             outline: none !important;
         }
@@ -3228,14 +3227,14 @@ SVG;
         [data-post-card-shell] .reaction-item {
             display: inline-flex;
             align-items: center;
-            gap: 6px;
-            padding: 7px 11px;
+            gap: 7px;
+            padding: 8px 13px;
             border: 0;
             border-radius: 999px;
             background: #f5f6f8;
             color: #111827;
-            font-size: 14px;
-            font-weight: 400;
+            font-size: 15px;
+            font-weight: 500;
             white-space: nowrap;
             box-shadow: none;
             transition: background 0.12s ease;
@@ -3251,7 +3250,7 @@ SVG;
 
         [data-post-card-shell] .reaction-emoji,
         [data-post-card-reaction-menu] .reaction-emoji {
-            font-size: 20px;
+            font-size: 23px;
             line-height: 1;
         }
 
@@ -5839,7 +5838,7 @@ SVG;
             height: 36px !important;
             padding: 0 13px !important;
             border: 0 !important;
-            border-radius: 999px !important;
+            border-radius: 8px !important;
             background: #f1f5f9 !important;
             color: #475569 !important;
             line-height: 1 !important;
@@ -5905,7 +5904,7 @@ SVG;
         [data-post-card-shell] .action-bar .post-card__action-button:focus-visible {
             background: #e2e8f0 !important;
             color: #0f172a !important;
-            border-radius: 999px !important;
+            border-radius: 8px !important;
             outline: none !important;
             transform: translateY(-1px) !important;
         }
@@ -5920,7 +5919,7 @@ SVG;
         [data-post-card-shell] .action-bar .post-metric--views:active {
             background: #cbd5e1 !important;
             color: #020617 !important;
-            border-radius: 999px !important;
+            border-radius: 8px !important;
             transform: translateY(0) scale(.98) !important;
         }
 
@@ -6042,7 +6041,7 @@ SVG;
             height: 36px !important;
             padding: 0 13px !important;
             border: 0 !important;
-            border-radius: 999px !important;
+            border-radius: 8px !important;
             background: transparent !important;
             color: #475569 !important;
             line-height: 1 !important;
@@ -6114,7 +6113,7 @@ SVG;
         [data-post-card-shell] .action-bar .post-metric--views:focus-visible {
             background: #f1f5f9 !important;
             color: #334155 !important;
-            border-radius: 999px !important;
+            border-radius: 8px !important;
             outline: none !important;
             transition: none !important;
             transform: none !important;
@@ -6130,7 +6129,7 @@ SVG;
         [data-post-card-shell] .action-bar .post-metric--views:active {
             background: #e2e8f0 !important;
             color: #0f172a !important;
-            border-radius: 999px !important;
+            border-radius: 8px !important;
             transition: none !important;
             transform: none !important;
         }
@@ -6249,7 +6248,7 @@ SVG;
             min-width: 48px !important;
             height: 38px !important;
             padding: 0 14px !important;
-            border-radius: 999px !important;
+            border-radius: 8px !important;
         }
 
         [data-post-card-shell] .action-bar .action-left {
@@ -7659,11 +7658,13 @@ SVG;
         [data-post-card-shell] .ps-hover-card-description {
             display: block;
             min-height: 28px;
-            padding: 11px 11px 0;
+            margin-top: 10px;
+            padding: 12px 12px 0;
+            border-top: 1px solid #f1f5f9;
             color: #475569;
-            font-size: 11.5px;
+            font-size: 12px;
             font-weight: 400;
-            line-height: 1.38;
+            line-height: 1.45;
             overflow-wrap: anywhere;
             word-break: normal;
         }
@@ -7689,14 +7690,14 @@ SVG;
             display: inline-flex !important;
             align-items: center;
             justify-content: center;
-            min-height: 30px;
+            min-height: 34px;
             margin: 0 !important;
-            padding: 8px 8px !important;
+            padding: 8px 10px !important;
             border: 1px solid transparent;
-            border-radius: 9px;
-            font-family: var(--font-family-body), Roboto, Arial, sans-serif;
-            font-size: 11.5px;
-            font-weight: 400;
+            border-radius: 10px;
+            font-family: var(--font-family-body), Inter, Arial, sans-serif;
+            font-size: 12.5px;
+            font-weight: 600;
             line-height: 1;
             text-decoration: none !important;
             white-space: nowrap;
@@ -9070,14 +9071,18 @@ SVG;
                 card.setAttribute('data-post-view-recorded', 'true');
             };
 
-            const setMenuState = function (card, open) {
+            const setMenuState = function (card, open, anchorButton) {
                 const button = card?.querySelector('[data-og-action-trigger]');
+                const shareButton = card?.querySelector('[data-post-card-share-menu-trigger]');
                 const panel = card?.querySelector('[data-og-action-menu]');
                 if (!button || !panel) {
                     return;
                 }
 
-                button.setAttribute('aria-expanded', open ? 'true' : 'false');
+                const positionAnchor = anchorButton || button;
+
+                button.setAttribute('aria-expanded', open && positionAnchor === button ? 'true' : 'false');
+                shareButton?.setAttribute('aria-expanded', open && positionAnchor === shareButton ? 'true' : 'false');
                 panel.classList.toggle('hidden', !open);
 
                 if (!open) {
@@ -9086,7 +9091,7 @@ SVG;
                     return;
                 }
 
-                const rect = button.getBoundingClientRect();
+                const rect = positionAnchor.getBoundingClientRect();
                 const menuWidth = panel.offsetWidth;
                 const menuHeight = panel.offsetHeight;
                 const padding = 10;
@@ -9496,7 +9501,20 @@ SVG;
                     const card = menuTrigger.closest(rootSelector);
                     const open = menuTrigger.getAttribute('aria-expanded') !== 'true';
                     closeFloatingPanels(card);
-                    setMenuState(card, open);
+                    setMenuState(card, open, menuTrigger);
+                    return;
+                }
+
+                // Aksiyon cubugundaki paylas (ok) ikonu artik dogrudan paylasmiyor;
+                // "Linki kopyala" ve "Yeniden paylas" seceneklerini gosteren ayni
+                // og-action-menu'yu kendi konumuna gore aciyor.
+                const shareMenuTrigger = event.target.closest('[data-post-card-share-menu-trigger]');
+                if (shareMenuTrigger) {
+                    event.preventDefault();
+                    const card = shareMenuTrigger.closest(rootSelector);
+                    const open = shareMenuTrigger.getAttribute('aria-expanded') !== 'true';
+                    closeFloatingPanels(card);
+                    setMenuState(card, open, shareMenuTrigger);
                     return;
                 }
 
