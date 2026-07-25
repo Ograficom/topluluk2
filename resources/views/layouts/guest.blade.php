@@ -96,7 +96,7 @@
                 font-size: 14px;
             }
             body {
-                font-family: "Roboto", Arial, Helvetica, sans-serif;
+                font-family: "Inter", Arial, Helvetica, sans-serif;
                 font-weight: 400;
             }
             body :where(h1, h2, h3, h4, h5, h6, strong, b, button, .site-header-logo, .font-light, .font-medium, .font-semibold, .font-bold, .font-extrabold, .font-black) {
@@ -360,7 +360,7 @@
         align-items: center;
         gap: 10px;
         line-height: 1;
-        font-family: "Roboto", Arial, Helvetica, sans-serif;
+        font-family: "Inter", Arial, Helvetica, sans-serif;
         color: var(--alma-text);
     }
 
@@ -1401,7 +1401,7 @@
         @stack('head')
         <style>
             :root {
-                --ografi-font-family: "Roboto", Arial, Helvetica, sans-serif;
+                --ografi-font-family: "Inter", Arial, Helvetica, sans-serif;
                 --ografi-title-size: 24px;
                 --ografi-description-size: 16px;
                 --ografi-body-size: 19px;

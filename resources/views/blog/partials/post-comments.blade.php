@@ -2166,7 +2166,7 @@
     overflow-y: auto !important;
     white-space: pre-wrap !important;
     overflow-wrap: anywhere !important;
-    font-family: "Roboto", Arial, Helvetica, sans-serif !important;
+    font-family: "Inter", Arial, Helvetica, sans-serif !important;
     font-size: 15px !important;
     font-weight: 400 !important;
     line-height: 24px !important;
@@ -2236,14 +2236,14 @@
     min-width: 32px !important;
     height: 30px !important;
     border-radius: 8px !important;
-    font-family: "Roboto", Arial, Helvetica, sans-serif !important;
+    font-family: "Inter", Arial, Helvetica, sans-serif !important;
     font-size: 13px !important;
     font-weight: 600 !important;
     color: var(--foreground, #18181b) !important;
   }
 
   html body .post-show-shell #show-comment-form .ogx3-counter {
-    font-family: "Roboto", Arial, Helvetica, sans-serif !important;
+    font-family: "Inter", Arial, Helvetica, sans-serif !important;
     font-size: 13px !important;
     color: var(--muted-foreground, #71717a) !important;
     white-space: nowrap !important;
@@ -2359,7 +2359,7 @@
     background: #ffffff !important;
     color: #18181b !important;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03) !important;
-    font-family: "Roboto", Arial, Helvetica, sans-serif !important;
+    font-family: "Inter", Arial, Helvetica, sans-serif !important;
   }
 
   html body .shadcn-comment-card > .ogx-panel-header {

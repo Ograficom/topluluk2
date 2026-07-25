@@ -75,7 +75,7 @@
         z-index: 20;
         width: 100%;
         background: transparent !important;
-        font-family: "Roboto", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        font-family: "Inter", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     }
 
     @media (min-width: 1024px) {
@@ -130,7 +130,7 @@
         box-sizing: border-box !important;
         padding-top: 10px;
         padding-bottom: 12px;
-        font-family: "Roboto", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        font-family: "Inter", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     }
 
     @supports not (height: 100dvh) {
@@ -188,7 +188,7 @@
         color: #111827;
         text-decoration: none;
         background: transparent;
-        font-family: "Roboto", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        font-family: "Inter", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
         font-size: 15px;
         line-height: 1.25;
         font-weight: 400;
@@ -243,7 +243,7 @@
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
-        font-family: "Roboto", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        font-family: "Inter", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
         font-size: 15px;
         line-height: 1.25;
         font-weight: 400;
@@ -260,7 +260,7 @@
         border-radius: 999px;
         background: linear-gradient(135deg, #2563eb, #38bdf8);
         color: #ffffff;
-        font-family: "Roboto", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        font-family: "Inter", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
         font-size: 10.5px;
         line-height: 1;
         font-weight: 400;
@@ -334,7 +334,7 @@
         color: #111827;
         text-decoration: none;
         background: transparent;
-        font-family: "Roboto", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        font-family: "Inter", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
         font-size: 14px;
         line-height: 1.25;
         font-weight: 400;
@@ -391,7 +391,7 @@
         padding: 0 !important;
         background: transparent !important;
         color: currentColor !important;
-        font-family: "Roboto", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        font-family: "Inter", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
         font-size: 10.5px;
         font-weight: 400;
         line-height: 1 !important;
@@ -405,7 +405,7 @@
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
-        font-family: "Roboto", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        font-family: "Inter", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
         font-size: 14px;
         line-height: 1.25;
         font-weight: 400;
@@ -421,7 +421,7 @@
     .sidebar-footer-link,
     .sidebar-footer-brand,
     .sidebar-footer-bottom {
-        font-family: "Roboto", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        font-family: "Inter", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
         font-weight: 400;
         font-size: 11px;
         line-height: 1.45;
@@ -710,7 +710,7 @@
     .sidebar-footer-link,
     .sidebar-footer-brand,
     .sidebar-footer-bottom {
-        font-family: "Roboto", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
+        font-family: "Inter", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
         font-size: 11px !important;
         line-height: 1.45 !important;
         font-weight: 400 !important;
@@ -782,7 +782,7 @@
     .sidebar-footer-link,
     .sidebar-footer-brand,
     .sidebar-footer-bottom {
-        font-family: "Roboto", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
+        font-family: "Inter", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
         font-size: 10.5px !important;
         line-height: 1.45 !important;
         font-weight: 400 !important;
@@ -1156,7 +1156,7 @@
 
         body.alma-app .nav-item-label {
             color: inherit !important;
-            font-family: "Roboto", Arial, Helvetica, sans-serif !important;
+            font-family: "Inter", Arial, Helvetica, sans-serif !important;
             font-size: 25px !important;
             font-weight: 500 !important;
             line-height: 1.2 !important;
@@ -1191,7 +1191,7 @@
 
         body.alma-app .sidebar-category-name {
             color: #374151 !important;
-            font-family: "Roboto", Arial, Helvetica, sans-serif !important;
+            font-family: "Inter", Arial, Helvetica, sans-serif !important;
             font-size: 25px !important;
             font-weight: 500 !important;
             line-height: 1.2 !important;
@@ -1253,7 +1253,7 @@
 
         body.alma-app .sidebar-wrapper--drawer .nav-item-label,
         body.alma-app .sidebar-wrapper--drawer .sidebar-category-name {
-            font-family: "Roboto", Arial, Helvetica, sans-serif !important;
+            font-family: "Inter", Arial, Helvetica, sans-serif !important;
             font-size: 20px !important;
             line-height: 1.2 !important;
             font-weight: 600 !important;

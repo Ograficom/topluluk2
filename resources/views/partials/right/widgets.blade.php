@@ -36,8 +36,8 @@
     .ografi-sidebar-card {
         width: 100% !important;
         background: #ffffff !important;
-        border: 0 !important;
-        border-radius: 6px !important;
+        border: 1px solid rgba(15, 15, 18, 0.09) !important;
+        border-radius: 10px !important;
         padding: 18px 13px !important;
         box-shadow: none !important;
         overflow: visible !important;

@@ -2919,7 +2919,7 @@ SVG;
             border-radius: 9999px;
             background: #e5e7eb;
             color: #374151;
-            font-family: 'Roboto', sans-serif;
+            font-family: 'Inter', sans-serif;
             font-size: 12px;
             font-weight: 500;
             line-height: 1;
@@ -2940,7 +2940,7 @@ SVG;
             border-radius: 9999px;
             background: #2563eb;
             color: #ffffff;
-            font-family: 'Roboto', sans-serif;
+            font-family: 'Inter', sans-serif;
             font-size: 13px;
             font-weight: 400;
             line-height: 1;
@@ -3771,7 +3771,8 @@ SVG;
         [data-post-card-shell] {
             max-width: 100%;
             padding: 18px 18px 14px;
-            border-radius: 8px;
+            border: 1px solid rgba(15, 15, 18, 0.09);
+            border-radius: 10px;
             background: #ffffff;
             box-shadow: none;
         }
@@ -4336,7 +4337,7 @@ SVG;
 
         /* Typography balance: kalın fontlar kaldırıldı, boyutlar orantılı hale getirildi. */
         [data-post-card-shell] {
-            font-family: 'Roboto', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
             font-size: 14px;
             font-weight: 400;
             line-height: 1.5;
@@ -8163,7 +8164,7 @@ SVG;
         /* Final typography and reaction sizing requested for feed cards. */
         html body [data-post-card-shell] .post-title,
         html body [data-post-card-shell] .post-title__link {
-            font-family: "Roboto", Arial, Helvetica, sans-serif !important;
+            font-family: "Inter", Arial, Helvetica, sans-serif !important;
             font-size: 20px !important;
             font-weight: 700 !important;
             line-height: 1.35 !important;

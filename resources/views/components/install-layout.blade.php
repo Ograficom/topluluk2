@@ -14,7 +14,7 @@
             }
 
             body {
-                font-family: "Roboto", Arial, Helvetica, sans-serif;
+                font-family: "Inter", Arial, Helvetica, sans-serif;
                 font-weight: 400;
             }
 

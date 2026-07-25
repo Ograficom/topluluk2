@@ -43,7 +43,7 @@
         body {
             margin: 0;
             min-height: 100vh;
-            font-family: "Roboto", Arial, Helvetica, sans-serif;
+            font-family: "Inter", Arial, Helvetica, sans-serif;
             background: var(--bg);
             color: var(--text);
             display: flex;

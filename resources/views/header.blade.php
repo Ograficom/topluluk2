@@ -6,7 +6,7 @@
     .site-menu-panel,
     .site-notifications-panel,
     .site-notifications-actions-menu {
-        font-family: "Roboto", Arial, Helvetica, sans-serif !important;
+        font-family: "Inter", Arial, Helvetica, sans-serif !important;
     }
 
     .site-header,
@@ -1332,7 +1332,7 @@
     }
 
     .site-header .site-header-logo-wordmark {
-        font-family: "Poppins", "Roboto", Arial, Helvetica, sans-serif !important;
+        font-family: "Poppins", "Inter", Arial, Helvetica, sans-serif !important;
         font-size: 1.38rem !important;
         font-weight: 600 !important;
         letter-spacing: 0 !important;
@@ -1378,7 +1378,7 @@
 
     html.dark .site-header .site-header-logo-wordmark,
     .dark .site-header .site-header-logo-wordmark {
-        font-family: "Poppins", "Roboto", Arial, Helvetica, sans-serif !important;
+        font-family: "Poppins", "Inter", Arial, Helvetica, sans-serif !important;
         font-size: 1.38rem !important;
         font-weight: 600 !important;
         letter-spacing: 0 !important;
@@ -1839,7 +1839,7 @@
         align-items: center !important;
         gap: 2px !important;
         column-gap: 2px !important;
-        font-family: "Roboto", Arial, Helvetica, sans-serif !important;
+        font-family: "Inter", Arial, Helvetica, sans-serif !important;
     }
 
     html body .site-header .site-header-logo-mark {
@@ -1860,7 +1860,7 @@
     html body .site-header .site-header-logo-wordmark,
     html.dark body .site-header .site-header-logo-wordmark {
         margin: 0 !important;
-        font-family: "Roboto", Arial, Helvetica, sans-serif !important;
+        font-family: "Inter", Arial, Helvetica, sans-serif !important;
         font-size: 20px !important;
         line-height: 1 !important;
         font-weight: 600 !important;

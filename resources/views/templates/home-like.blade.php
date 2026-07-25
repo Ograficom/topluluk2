@@ -243,7 +243,7 @@
                 border-radius: 16px !important;
                 background: #fff !important;
                 box-shadow: 0 1px 2px rgba(15, 23, 42, .03) !important;
-                font-family: "Roboto", system-ui, sans-serif !important;
+                font-family: "Inter", system-ui, sans-serif !important;
             }
 
             .home-feed-toolbar__period.is-mode-hidden {
@@ -541,7 +541,7 @@
             border: 0 !important;
             box-shadow: none !important;
             text-align: right !important;
-            font-family: "Roboto", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
+            font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
         }
 
         .live-market-widget__mobile-panel {
@@ -707,7 +707,7 @@
             justify-content: center !important;
             gap: 5px !important;
             border-radius: 11px !important;
-            font-family: "Roboto", sans-serif !important;
+            font-family: "Inter", sans-serif !important;
             font-size: 12px !important;
             font-weight: 500 !important;
             line-height: 1 !important;
@@ -781,7 +781,7 @@
             border-radius: 999px !important;
             background: #ffffff !important;
             color: #111827 !important;
-            font-family: "Roboto", sans-serif !important;
+            font-family: "Inter", sans-serif !important;
             font-size: 11px !important;
             font-weight: 500 !important;
             line-height: 1 !important;
@@ -1161,7 +1161,7 @@
             background: #ffffff !important;
             border: 1px solid #eef0f3 !important;
             color: #6b7280 !important;
-            font-family: "Roboto", sans-serif !important;
+            font-family: "Inter", sans-serif !important;
             font-size: 13px !important;
             font-weight: 400 !important;
             text-align: center !important;
@@ -1965,7 +1965,7 @@
             border-radius: 0 !important;
             box-shadow: none !important;
             color: #111827 !important;
-            font-family: "Roboto", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
+            font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
             font-size: 12px !important;
             font-weight: 400 !important;
             line-height: 1 !important;
@@ -1999,7 +1999,7 @@
             min-height: 0 !important;
             height: auto !important;
             color: #111827 !important;
-            font-family: "Roboto", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
+            font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
             font-size: 12px !important;
             font-weight: 400 !important;
             line-height: 1 !important;
@@ -2061,7 +2061,7 @@
             border: 0 !important;
             box-shadow: none !important;
             color: #111827 !important;
-            font-family: "Roboto", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
+            font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
             font-size: 12px !important;
             font-weight: 400 !important;
             line-height: 1 !important;
@@ -2207,7 +2207,7 @@
             border: 0 !important;
             box-shadow: none !important;
             color: #111827 !important;
-            font-family: "Roboto", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
+            font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
             font-size: 12px !important;
             font-weight: 400 !important;
             line-height: 1 !important;
@@ -2788,7 +2788,7 @@
             border-radius: 10px !important;
             background: transparent !important;
             color: #111827 !important;
-            font-family: "Roboto", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
+            font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
             font-size: 12px !important;
             font-weight: 400 !important;
             line-height: 1 !important;
@@ -3224,7 +3224,7 @@
             border-radius: 0 !important;
             box-shadow: none !important;
             color: #111827 !important;
-            font-family: "Roboto", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
+            font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
             font-size: 12px !important;
             font-weight: 400 !important;
             line-height: 1 !important;

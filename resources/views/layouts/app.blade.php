@@ -37,7 +37,7 @@
     {{-- Roboto font: post başlığı kalın, açıklama normal --}}
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     @php
         $schemaThemeLayout = \App\Models\ThemeSetting::currentOrNull();
     @endphp
@@ -192,7 +192,7 @@
             scroll-behavior: smooth;
         }
         body {
-            font-family: "Roboto", Arial, Helvetica, sans-serif;
+            font-family: "Inter", Arial, Helvetica, sans-serif;
             font-weight: 400;
         }
         body :where(h1, h2, h3, h4, h5, h6, strong, b, button, .site-header-logo, .font-light, .font-medium, .font-semibold, .font-bold, .font-extrabold, .font-black) {
@@ -464,7 +464,7 @@
         .sidebar-card {
             background: var(--site-surface);
             border: 1px solid var(--site-border);
-            border-radius: 20px;
+            border-radius: var(--radius-lg, 10px);
             box-shadow: var(--site-shadow-soft);
         }
 
@@ -771,7 +771,7 @@
         align-items: center;
         gap: 10px;
         line-height: 1;
-        font-family: "Roboto", Arial, Helvetica, sans-serif;
+        font-family: "Inter", Arial, Helvetica, sans-serif;
         color: var(--alma-text);
     }
 
@@ -1454,7 +1454,7 @@
     .alma-panel {
         background: var(--alma-card);
         border: 1px solid var(--alma-border);
-        border-radius: 20px;
+        border-radius: var(--radius-lg, 10px);
         box-shadow: var(--alma-shadow);
         padding-left: var(--alma-card-inline) !important;
         padding-right: var(--alma-card-inline) !important;
@@ -5203,7 +5203,7 @@
         --muted-foreground: #8a7a5f;
         background-color: #eef2fb !important;
         color: #2b2620 !important;
-        font-family: "Roboto", Arial, Helvetica, sans-serif !important;
+        font-family: "Inter", Arial, Helvetica, sans-serif !important;
     }
 
     body.alma-app .site-header {
@@ -5344,7 +5344,7 @@
 
         background-color: #eef2fb !important;
         color: #2b2620 !important;
-        font-family: "Roboto", Arial, Helvetica, sans-serif !important;
+        font-family: "Inter", Arial, Helvetica, sans-serif !important;
     }
 
     body.alma-app .site-header {
@@ -5776,12 +5776,12 @@
             (var(--layout-column-gap) * 2)
         ) !important;
 
-        font-family: "Roboto", Arial, Helvetica, sans-serif !important;
+        font-family: "Inter", Arial, Helvetica, sans-serif !important;
     }
 
     body.alma-app,
     body.alma-app * {
-        font-family: "Roboto", Arial, Helvetica, sans-serif !important;
+        font-family: "Inter", Arial, Helvetica, sans-serif !important;
     }
 
     body.alma-app .main-grid {
@@ -6174,7 +6174,7 @@
         body.alma-app .alma-post-card__title,
         body.alma-app .alma-post-card__title.is-hero,
         body.alma-app .alma-post-card__title a {
-            font-family: "Roboto", Arial, Helvetica, sans-serif !important;
+            font-family: "Inter", Arial, Helvetica, sans-serif !important;
             font-weight: 700 !important;
         }
 
@@ -6182,7 +6182,7 @@
         body.alma-app .alma-post-card__summary-text,
         body.alma-app .alma-post-card__inline-preview,
         body.alma-app .alma-post-card__inline-text {
-            font-family: "Roboto", Arial, Helvetica, sans-serif !important;
+            font-family: "Inter", Arial, Helvetica, sans-serif !important;
             font-weight: 400 !important;
         }
     </style>
@@ -6246,9 +6246,7 @@
         html,
         body.alma-app {
             background-color: var(--page-bg) !important;
-            background-image:
-                radial-gradient(circle at 12% 6%, rgba(37, 99, 235, 0.07), transparent 42%),
-                radial-gradient(circle at 88% 94%, rgba(37, 99, 235, 0.06), transparent 46%) !important;
+            background-image: none !important;
         }
 
         body.alma-app {
@@ -6582,16 +6580,16 @@
             $value = trim((string) $value);
             return preg_match('/^#[0-9a-fA-F]{3,8}$/', $value) ? $value : $fallback;
         };
-        $ografiBrandBg = $ografiSanitizeColor($ografiBrand->brand_background_color ?? null, '#eef2fb');
+        $ografiBrandBg = $ografiSanitizeColor($ografiBrand->brand_background_color ?? null, '#fafafa');
         $ografiBrandSurface = $ografiSanitizeColor($ografiBrand->brand_surface_color ?? null, '#ffffff');
         $ografiBrandButton = $ografiSanitizeColor($ografiBrand->brand_button_color ?? null, '#2563eb');
         $ografiBrandButtonHover = $ografiSanitizeColor($ografiBrand->brand_button_hover_color ?? null, '#1d4ed8');
         $ografiBrandButtonText = $ografiSanitizeColor($ografiBrand->brand_button_text_color ?? null, '#ffffff');
-        $ografiBrandText = $ografiSanitizeColor($ografiBrand->brand_text_color ?? null, '#0f172a');
+        $ografiBrandText = $ografiSanitizeColor($ografiBrand->brand_text_color ?? null, '#0d0d10');
         $ografiBrandFontRaw = trim((string) ($ografiBrand->brand_font_family ?? ''));
         $ografiBrandFont = $ografiBrandFontRaw !== '' && preg_match('/^[A-Za-z0-9 \-]+$/', $ografiBrandFontRaw)
             ? $ografiBrandFontRaw
-            : 'Roboto';
+            : 'Inter';
     @endphp
     {{--
         Filament > Site > Gorunum Ayarlari sayfasindan yonetilen marka renkleri/font.
@@ -6631,6 +6629,22 @@
             --alma-text: {{ $ografiBrandText }} !important;
             --card-foreground: {{ $ografiBrandText }} !important;
             --sidebar-foreground: {{ $ografiBrandText }} !important;
+
+            /* Linear/Vercel tarzi: golgesiz, keskin/notr ince kenarlik, sikilastirilmis radius */
+            --site-border: rgba(15, 15, 18, 0.09) !important;
+            --alma-border: rgba(15, 15, 18, 0.09) !important;
+            --border: rgba(15, 15, 18, 0.09) !important;
+            --site-shadow: none !important;
+            --site-shadow-soft: none !important;
+            --alma-shadow: none !important;
+            --shadow: none !important;
+            --radius-sm: 6px !important;
+            --radius-md: 8px !important;
+            --radius-lg: 10px !important;
+            --radius-xl: 12px !important;
+            --site-muted: #6b6f76 !important;
+            --alma-muted: #6b6f76 !important;
+            --muted-foreground: #6b6f76 !important;
 
             font-family: "{{ $ografiBrandFont }}", Arial, Helvetica, sans-serif !important;
         }
@@ -6672,7 +6686,7 @@
 @php($isPostShowRoute = request()->routeIs('blog.post'))
 
 <body
-    class="bg-[#eef2fb] text-slate-900 font-sans antialiased theme-minimal alma-app {{ request()->routeIs('home') ? 'route-home' : '' }} {{ request()->routeIs('discover') ? 'route-discover' : '' }} {{ request()->routeIs('video') ? 'route-video' : '' }} {{ $isCategoryRoute ? 'route-category' : '' }} {{ $isPostShowRoute ? 'route-post-show' : '' }}"
+    class="bg-[#fafafa] text-slate-900 font-sans antialiased theme-minimal alma-app {{ request()->routeIs('home') ? 'route-home' : '' }} {{ request()->routeIs('discover') ? 'route-discover' : '' }} {{ request()->routeIs('video') ? 'route-video' : '' }} {{ $isCategoryRoute ? 'route-category' : '' }} {{ $isPostShowRoute ? 'route-post-show' : '' }}"
     data-mentions-endpoint="{{ auth()->check() ? route('mentions.users') : '' }}"
 >
     @include('partials.toasts')

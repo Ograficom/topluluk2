@@ -17,7 +17,7 @@
             display: none;
         }
         body {
-            font-family: "Roboto", Arial, Helvetica, sans-serif;
+            font-family: "Inter", Arial, Helvetica, sans-serif;
             font-weight: 400;
         }
         body :where(h1, h2, h3, h4, h5, h6, strong, b, button, .font-light, .font-medium, .font-semibold, .font-bold, .font-extrabold, .font-black) {

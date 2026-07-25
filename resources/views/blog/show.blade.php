@@ -14794,7 +14794,7 @@ body.dark .post-show-shell .ps-wave-media::after,
 body,
 .post-show-shell,
 .post-show-shell :where(a, button, input, textarea, select) {
-  font-family: "Roboto", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif !important;
+  font-family: "Inter", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif !important;
   letter-spacing: -0.012em !important;
 }
 
