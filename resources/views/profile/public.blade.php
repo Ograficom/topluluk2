@@ -294,7 +294,7 @@
     .og-list-card,
     .og-empty,
     .og-post-wrapper [data-post-card-shell] {
-        border: 1px solid var(--og-li-line) !important;
+        border: 0 !important;
         border-radius: 8px !important;
         background: var(--og-li-card) !important;
         box-shadow: none !important;
