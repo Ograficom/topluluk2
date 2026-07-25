@@ -5479,13 +5479,6 @@
         line-height: 1.2 !important;
     }
 
-    body.alma-app .layout-side--right .alma-widget__header-icon,
-    body.alma-app .layout-side--right .ografi-sidebar-icon,
-    body.alma-app .layout-side--right .ografi-right-widget-icon {
-        color: #059669 !important;
-        font-size: 18px !important;
-        line-height: 1 !important;
-    }
 
     body.alma-app .layout-side--right .alma-widget__comment,
     body.alma-app .layout-side--right .ografi-comment-item {
@@ -5929,14 +5922,6 @@
         border: 0 !important;
     }
 
-    body.alma-app .layout-side--right .ografi-widget-icon,
-    body.alma-app .layout-side--right .alma-widget__header-icon,
-    body.alma-app .layout-side--right .ografi-sidebar-icon,
-    body.alma-app .layout-side--right .ografi-right-widget-icon {
-        color: #059669 !important;
-        font-size: 20px !important;
-        line-height: 1 !important;
-    }
 
     body.alma-app .layout-side--right .ografi-comment-item,
     body.alma-app .layout-side--right .alma-widget__comment {

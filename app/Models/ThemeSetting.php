@@ -75,6 +75,21 @@ class ThemeSetting extends Model
         'brand_button_text_color',
         'brand_text_color',
         'brand_font_family',
+        'widget_comments_enabled',
+        'widget_comments_count',
+        'widget_tags_enabled',
+        'widget_tags_count',
+        'widget_trending_enabled',
+        'widget_trending_count',
+    ];
+
+    protected $casts = [
+        'widget_comments_enabled' => 'boolean',
+        'widget_tags_enabled' => 'boolean',
+        'widget_trending_enabled' => 'boolean',
+        'widget_comments_count' => 'integer',
+        'widget_tags_count' => 'integer',
+        'widget_trending_count' => 'integer',
     ];
 
     public static function current(): self

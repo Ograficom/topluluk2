@@ -48,6 +48,12 @@ return [
         'popular_tags' => 'Popular tags',
         'no_comments' => 'No comments yet.',
         'no_tags' => 'No tags yet.',
+        'trending_posts' => 'Trending posts',
+        'most_viewed' => 'Most viewed',
+        'most_reacted' => 'Most reacted',
+        'no_posts' => 'No posts yet.',
+        'views_suffix' => 'views',
+        'reactions_suffix' => 'reactions',
     ],
     'community_feed' => [
         'pulse' => 'Community pulse',

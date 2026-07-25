@@ -16,6 +16,11 @@
         ->values();
 
     $popularTags = collect($popularTags ?? []);
+    $mostViewedPosts = collect($mostViewedPosts ?? []);
+    $mostReactedPosts = collect($mostReactedPosts ?? []);
+    $commentsEnabled = $commentsEnabled ?? true;
+    $tagsEnabled = $tagsEnabled ?? true;
+    $trendingEnabled = $trendingEnabled ?? true;
 @endphp
 
 <style>
@@ -60,22 +65,9 @@
     .ografi-sidebar-title {
         margin: 0 !important;
         color: #000000 !important;
-        font-size: 13px !important;
-        font-weight: 400 !important;
+        font-size: 12px !important;
+        font-weight: 600 !important;
         line-height: 1.2 !important;
-    }
-
-    .ografi-sidebar-icon {
-        display: inline-flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-        color: #059669 !important;
-        font-size: 18px !important;
-        line-height: 1 !important;
-    }
-
-    .ografi-sidebar-icon-hash {
-        color: #000000 !important;
     }
 
     .ografi-comment-list {
@@ -223,66 +215,54 @@
         line-height: 1.2 !important;
     }
 
-    /* Bento grid: ilk (en populer) etiket iki sutunu birden kaplayan "hero" hucre,
-       geri kalanlar duzenli iki sutunlu izgarada - degisken boyutlu ama hizali kutular. */
-    .ografi-tag-bento {
-        display: grid !important;
-        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-        gap: 8px !important;
+    /* Populer etiketler: sade dikey liste, ad solda / sayi sagda. */
+    .ografi-tag-list {
+        display: flex !important;
+        flex-direction: column !important;
         width: 100% !important;
     }
 
-    .ografi-tag-cell {
+    .ografi-tag-row {
         display: flex !important;
-        flex-direction: column !important;
-        justify-content: space-between !important;
-        gap: 10px !important;
-        min-height: 64px !important;
-        padding: 12px 12px !important;
-        border: 1px solid rgba(15, 15, 18, 0.09) !important;
-        border-radius: 8px !important;
-        color: inherit !important;
-        text-decoration: none !important;
-        background: #fafafa !important;
-        transition: background-color 0.15s ease, border-color 0.15s ease !important;
-    }
-
-    .ografi-tag-cell:hover,
-    .ografi-tag-cell:focus-visible {
-        background: #f1f1f2 !important;
-        border-color: rgba(15, 15, 18, 0.16) !important;
-    }
-
-    .ografi-tag-cell--hero {
-        grid-column: 1 / -1 !important;
-        flex-direction: row !important;
         align-items: center !important;
         justify-content: space-between !important;
-        min-height: 48px !important;
-        background: #ffffff !important;
+        gap: 10px !important;
+        width: 100% !important;
+        padding: 10px 0 !important;
+        border-bottom: 1px solid #e5e7eb !important;
+        color: inherit !important;
+        text-decoration: none !important;
+        background: transparent !important;
+        transition: color 0.15s ease !important;
     }
 
-    .ografi-tag-cell__name {
+    .ografi-tag-row:last-child {
+        padding-bottom: 0 !important;
+        border-bottom: 0 !important;
+    }
+
+    .ografi-tag-row:hover .ografi-tag-row__name,
+    .ografi-tag-row:focus-visible .ografi-tag-row__name {
+        color: #2563eb !important;
+    }
+
+    .ografi-tag-row__name {
         display: block !important;
         min-width: 0 !important;
         overflow: hidden !important;
         color: #0d0d10 !important;
         font-size: 13px !important;
-        font-weight: 600 !important;
+        font-weight: 500 !important;
         line-height: 1.25 !important;
-        letter-spacing: -0.01em !important;
         text-overflow: ellipsis !important;
         white-space: nowrap !important;
+        transition: color 0.15s ease !important;
     }
 
-    .ografi-tag-cell--hero .ografi-tag-cell__name {
-        font-size: 15px !important;
-    }
-
-    .ografi-tag-cell__count {
+    .ografi-tag-row__count {
         display: block !important;
         flex: 0 0 auto !important;
-        color: #6b6f76 !important;
+        color: #9ca3af !important;
         font-size: 12px !important;
         font-weight: 500 !important;
         line-height: 1.25 !important;
@@ -294,6 +274,86 @@
         font-size: 12px !important;
         line-height: 1.4 !important;
         text-align: left !important;
+    }
+
+    /* Populer gonderiler: kucuk kapak resmi + baslik listesi (Haberler stili). */
+    .ografi-trend-subheading {
+        margin: 0 0 8px 0 !important;
+        color: #6b7280 !important;
+        font-size: 11px !important;
+        font-weight: 600 !important;
+        letter-spacing: 0.02em !important;
+        text-transform: uppercase !important;
+        line-height: 1.2 !important;
+    }
+
+    .ografi-trend-group + .ografi-trend-group {
+        margin-top: 18px !important;
+    }
+
+    .ografi-trend-list {
+        display: flex !important;
+        flex-direction: column !important;
+        width: 100% !important;
+    }
+
+    .ografi-trend-item {
+        display: flex !important;
+        align-items: center !important;
+        gap: 10px !important;
+        width: 100% !important;
+        padding: 9px 0 !important;
+        border-bottom: 1px solid #e5e7eb !important;
+        color: inherit !important;
+        text-decoration: none !important;
+    }
+
+    .ografi-trend-item:last-child {
+        padding-bottom: 0 !important;
+        border-bottom: 0 !important;
+    }
+
+    .ografi-trend-thumb {
+        display: block !important;
+        width: 40px !important;
+        height: 40px !important;
+        min-width: 40px !important;
+        border-radius: 8px !important;
+        object-fit: cover !important;
+        background: #f1f5f9 !important;
+    }
+
+    .ografi-trend-body {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 3px !important;
+        min-width: 0 !important;
+        flex: 1 1 auto !important;
+    }
+
+    .ografi-trend-title {
+        display: -webkit-box !important;
+        -webkit-line-clamp: 2 !important;
+        -webkit-box-orient: vertical !important;
+        overflow: hidden !important;
+        color: #0d0d10 !important;
+        font-size: 12.5px !important;
+        font-weight: 600 !important;
+        line-height: 1.3 !important;
+        transition: color 0.15s ease !important;
+    }
+
+    .ografi-trend-item:hover .ografi-trend-title,
+    .ografi-trend-item:focus-visible .ografi-trend-title {
+        color: #2563eb !important;
+    }
+
+    .ografi-trend-meta {
+        display: block !important;
+        color: #9ca3af !important;
+        font-size: 11px !important;
+        font-weight: 500 !important;
+        line-height: 1.2 !important;
     }
 
     .dark .ografi-sidebar-card,
@@ -309,42 +369,38 @@
     [data-theme="dark"] .ografi-comment-post,
     .dark .ografi-comment-text,
     [data-theme="dark"] .ografi-comment-text,
-    .dark .ografi-tag-cell,
-    [data-theme="dark"] .ografi-tag-cell {
-        background: #18181b !important;
-        border-color: rgba(255, 255, 255, 0.1) !important;
-    }
-
-    .dark .ografi-tag-cell--hero,
-    [data-theme="dark"] .ografi-tag-cell--hero {
-        background: #1f1f23 !important;
-    }
-
-    .dark .ografi-tag-cell__name,
-    [data-theme="dark"] .ografi-tag-cell__name {
+    .dark .ografi-tag-row__name,
+    [data-theme="dark"] .ografi-tag-row__name,
+    .dark .ografi-trend-title,
+    [data-theme="dark"] .ografi-trend-title {
         color: #ffffff !important;
     }
 
-    .dark .ografi-tag-cell__count,
-    [data-theme="dark"] .ografi-tag-cell__count {
-        color: #9ca3af !important;
-    }
-
-    .dark .ografi-sidebar-icon-hash,
-    [data-theme="dark"] .ografi-sidebar-icon-hash {
-        color: #ffffff !important;
-    }
-
+    .dark .ografi-tag-row,
+    [data-theme="dark"] .ografi-tag-row,
     .dark .ografi-comment-item,
-    [data-theme="dark"] .ografi-comment-item {
+    [data-theme="dark"] .ografi-comment-item,
+    .dark .ografi-trend-item,
+    [data-theme="dark"] .ografi-trend-item {
         border-bottom-color: rgba(255, 255, 255, 0.12) !important;
     }
 
+    .dark .ografi-tag-row__count,
+    [data-theme="dark"] .ografi-tag-row__count,
     .dark .ografi-comment-time,
     [data-theme="dark"] .ografi-comment-time,
+    .dark .ografi-trend-meta,
+    [data-theme="dark"] .ografi-trend-meta,
     .dark .ografi-empty-state,
-    [data-theme="dark"] .ografi-empty-state {
+    [data-theme="dark"] .ografi-empty-state,
+    .dark .ografi-trend-subheading,
+    [data-theme="dark"] .ografi-trend-subheading {
         color: #9ca3af !important;
+    }
+
+    .dark .ografi-trend-thumb,
+    [data-theme="dark"] .ografi-trend-thumb {
+        background: #27272a !important;
     }
 
     @media (max-width: 640px) {
@@ -369,16 +425,12 @@
 </style>
 
 <div class="ografi-sidebar-force">
+    @if ($commentsEnabled)
     <section class="ografi-sidebar-card">
         <div class="ografi-sidebar-header">
             <h3 class="ografi-sidebar-title">
                 {{ __('site.widgets.latest_comments') }}
             </h3>
-
-            <iconify-icon
-                icon="lucide:zap"
-                class="ografi-sidebar-icon"
-            ></iconify-icon>
         </div>
 
         <div class="ografi-comment-list">
@@ -461,27 +513,77 @@
             @endforelse
         </div>
     </section>
+    @endif
 
+    @if ($trendingEnabled)
+    <section class="ografi-sidebar-card">
+        <div class="ografi-sidebar-header">
+            <h3 class="ografi-sidebar-title">
+                {{ __('site.widgets.trending_posts') }}
+            </h3>
+        </div>
+
+        @php
+            $trendGroups = [
+                ['label' => __('site.widgets.most_viewed'), 'posts' => $mostViewedPosts, 'metric' => 'views'],
+                ['label' => __('site.widgets.most_reacted'), 'posts' => $mostReactedPosts, 'metric' => 'reactions'],
+            ];
+        @endphp
+
+        @foreach ($trendGroups as $group)
+            <div class="ografi-trend-group">
+                <p class="ografi-trend-subheading">{{ $group['label'] }}</p>
+
+                <div class="ografi-trend-list">
+                    @forelse ($group['posts'] as $trendPost)
+                        <a href="{{ route('blog.post', $trendPost->slug) }}" class="ografi-trend-item">
+                            @if ($trendPost->featured_image_url)
+                                <img
+                                    src="{{ $trendPost->featured_image_url }}"
+                                    alt="{{ $trendPost->title }}"
+                                    class="ografi-trend-thumb"
+                                    loading="lazy"
+                                    decoding="async"
+                                >
+                            @else
+                                <span class="ografi-trend-thumb"></span>
+                            @endif
+
+                            <div class="ografi-trend-body">
+                                <span class="ografi-trend-title">{{ \Illuminate\Support\Str::limit($trendPost->title, 60) }}</span>
+                                <span class="ografi-trend-meta">
+                                    @if ($group['metric'] === 'views')
+                                        {{ number_format((int) $trendPost->views_count) }} {{ __('site.widgets.views_suffix') }}
+                                    @else
+                                        {{ number_format((int) $trendPost->reactions_count) }} {{ __('site.widgets.reactions_suffix') }}
+                                    @endif
+                                </span>
+                            </div>
+                        </a>
+                    @empty
+                        <div class="ografi-empty-state">
+                            {{ __('site.widgets.no_posts') }}
+                        </div>
+                    @endforelse
+                </div>
+            </div>
+        @endforeach
+    </section>
+    @endif
+
+    @if ($tagsEnabled)
     <section class="ografi-sidebar-card">
         <div class="ografi-sidebar-header">
             <h3 class="ografi-sidebar-title">
                 {{ __('site.widgets.popular_tags') }}
             </h3>
-
-            <iconify-icon
-                icon="lucide:hash"
-                class="ografi-sidebar-icon ografi-sidebar-icon-hash"
-            ></iconify-icon>
         </div>
 
-        <div class="ografi-tag-bento">
+        <div class="ografi-tag-list">
             @forelse ($popularTags as $tag)
-                <a
-                    href="{{ route('blog.index', ['tag' => $tag->slug]) }}"
-                    class="ografi-tag-cell {{ $loop->first ? 'ografi-tag-cell--hero' : '' }}"
-                >
-                    <span class="ografi-tag-cell__name">#{{ $tag->name }}</span>
-                    <span class="ografi-tag-cell__count">{{ number_format((int) $tag->posts_count) }}</span>
+                <a href="{{ route('blog.index', ['tag' => $tag->slug]) }}" class="ografi-tag-row">
+                    <span class="ografi-tag-row__name">#{{ $tag->name }}</span>
+                    <span class="ografi-tag-row__count">{{ number_format((int) $tag->posts_count) }}</span>
                 </a>
             @empty
                 <div class="ografi-empty-state">
@@ -490,4 +592,5 @@
             @endforelse
         </div>
     </section>
+    @endif
 </div>

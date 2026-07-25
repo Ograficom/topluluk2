@@ -92,25 +92,62 @@ class AppServiceProvider extends ServiceProvider
 
         View::composer('partials.right', function ($view) {
             $data = $view->getData();
+            $widgetSettings = ThemeSetting::currentOrNull();
+
+            $commentsEnabled = $widgetSettings?->widget_comments_enabled ?? true;
+            $commentsCount = $widgetSettings?->widget_comments_count ?? 10;
+            $tagsEnabled = $widgetSettings?->widget_tags_enabled ?? true;
+            $tagsCount = $widgetSettings?->widget_tags_count ?? 10;
+            $trendingEnabled = $widgetSettings?->widget_trending_enabled ?? true;
+            $trendingCount = $widgetSettings?->widget_trending_count ?? 5;
+
             $popularTags = $data['popularTags'] ?? null;
             $popularComments = $data['popularComments'] ?? null;
 
             if (!array_key_exists('popularTags', $data)) {
-                $popularTags = Tag::withCount('posts')
-                    ->orderByDesc('posts_count')
-                    ->take(10)
-                    ->get();
+                $popularTags = $tagsEnabled
+                    ? Tag::withCount('posts')
+                        ->orderByDesc('posts_count')
+                        ->take($tagsCount)
+                        ->get()
+                    : collect();
             }
 
             if (!array_key_exists('popularComments', $data)) {
-                $popularComments = Comment::with(['user', 'post'])
-                    ->whereNull('parent_id')
-                    ->orderByDesc('id')
-                    ->take(10)
+                $popularComments = $commentsEnabled
+                    ? Comment::with(['user', 'post'])
+                        ->whereNull('parent_id')
+                        ->orderByDesc('id')
+                        ->take($commentsCount)
+                        ->get()
+                    : collect();
+            }
+
+            $mostViewedPosts = collect();
+            $mostReactedPosts = collect();
+
+            if ($trendingEnabled) {
+                $mostViewedPosts = \App\Models\Post::published()
+                    ->orderByDesc('views_count')
+                    ->take($trendingCount)
+                    ->get();
+
+                $mostReactedPosts = \App\Models\Post::published()
+                    ->withCount('reactions')
+                    ->orderByDesc('reactions_count')
+                    ->take($trendingCount)
                     ->get();
             }
 
-            $view->with(compact('popularTags', 'popularComments'));
+            $view->with(compact(
+                'popularTags',
+                'popularComments',
+                'commentsEnabled',
+                'tagsEnabled',
+                'trendingEnabled',
+                'mostViewedPosts',
+                'mostReactedPosts'
+            ));
         });
 
         View::composer('partials.community-feed', function ($view) {

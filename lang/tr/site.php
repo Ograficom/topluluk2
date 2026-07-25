@@ -48,6 +48,12 @@ return [
         'popular_tags' => 'Popüler etiketler',
         'no_comments' => 'Henüz yorum yok.',
         'no_tags' => 'Henüz etiket yok.',
+        'trending_posts' => 'Popüler gönderiler',
+        'most_viewed' => 'En çok görüntülenenler',
+        'most_reacted' => 'En çok tepki alanlar',
+        'no_posts' => 'Henüz gönderi yok.',
+        'views_suffix' => 'görüntülenme',
+        'reactions_suffix' => 'tepki',
     ],
     'community_feed' => [
         'pulse' => 'Topluluk gündemi',
