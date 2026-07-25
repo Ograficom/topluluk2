@@ -65,10 +65,10 @@
     .ografi-sidebar-title {
         margin: 0 !important;
         color: #000000 !important;
-        font-size: clamp(18px, 2.2vw, 20px) !important;
+        font-size: 15px !important;
         font-weight: 700 !important;
-        letter-spacing: -0.015em !important;
-        line-height: 1.32 !important;
+        letter-spacing: -0.01em !important;
+        line-height: 1.3 !important;
     }
 
     .ografi-comment-list {
