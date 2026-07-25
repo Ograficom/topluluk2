@@ -252,7 +252,7 @@
         isolation: isolate;
         z-index: 1;
         width: 100%;
-        max-width: 41rem;
+        max-width: var(--main-col, 41rem);
         margin: 16px auto 0;
         padding: 0 0 28px;
         overflow: visible !important;
@@ -274,10 +274,15 @@
         --categories-filter-active: #e5e7eb;
     }
 
-    .categories-panel,
-    .categories-item {
+    .categories-panel {
         background: var(--categories-bg);
         border-radius: 8px;
+        box-shadow: none;
+    }
+
+    .categories-item {
+        background: transparent;
+        border-radius: 0;
         box-shadow: none;
     }
 
@@ -494,35 +499,37 @@
     .categories-list {
         position: relative;
         z-index: 1;
-        display: grid;
-        gap: 14px;
+        display: flex;
+        flex-direction: column;
         margin-top: 20px;
+        border-top: 1px solid var(--categories-border);
     }
 
     .categories-item {
         position: relative;
         z-index: 1;
         display: block;
-        min-height: 112px;
-        padding: 20px;
+        padding: 16px 4px;
+        border-bottom: 1px solid var(--categories-border);
         text-decoration: none;
+        transition: background-color 0.15s ease;
     }
 
     .categories-item:hover,
     .categories-item:focus-visible {
-        background: var(--categories-bg);
+        background: var(--categories-hover);
     }
 
     .categories-item__head {
         display: flex;
         align-items: center;
-        gap: 14px;
+        gap: 12px;
         min-width: 0;
     }
 
     .categories-avatar {
-        width: 48px;
-        height: 48px;
+        width: 40px;
+        height: 40px;
         flex: 0 0 auto;
         overflow: hidden;
         border-radius: 999px;
@@ -538,7 +545,7 @@
         align-items: center;
         justify-content: center;
         object-fit: cover;
-        font-size: 18px;
+        font-size: 15px;
         font-weight: 500;
         line-height: 1;
     }
@@ -550,7 +557,7 @@
     .categories-item__name {
         margin: 0;
         color: #000000;
-        font-size: 18px;
+        font-size: 16px;
         font-weight: 700;
         line-height: 1.25;
     }
@@ -559,29 +566,34 @@
         display: flex;
         align-items: center;
         gap: 8px;
-        margin-top: 6px;
-        color: var(--categories-muted);
-        font-size: 14px;
-        font-weight: 400;
+        margin-top: 2px;
+        color: var(--categories-blue);
+        font-size: 13.5px;
+        font-weight: 500;
         line-height: 1.2;
     }
 
     .categories-item__stats strong {
+        color: var(--categories-blue);
+        font-weight: 500;
+    }
+
+    .categories-item__stats-secondary {
         color: var(--categories-muted);
         font-weight: 400;
     }
 
     .categories-dot {
-        width: 4px;
-        height: 4px;
+        width: 3px;
+        height: 3px;
         border-radius: 999px;
         background: #a1a1aa;
     }
 
     .categories-item__description {
-        margin: 16px 0 0;
+        margin: 8px 0 0;
         color: var(--categories-desc);
-        font-size: 15px;
+        font-size: 14px;
         font-weight: 400;
         line-height: 1.45;
     }
@@ -858,7 +870,6 @@
             position: relative;
             z-index: 1 !important;
             width: 100%;
-            gap: 12px;
             margin-top: 12px;
             padding: 0;
         }
@@ -866,8 +877,7 @@
         .categories-item {
             z-index: 1 !important;
             width: 100%;
-            border-radius: 0;
-            padding: 18px 14px;
+            padding: 16px 14px;
         }
 
         .categories-item__name {
@@ -982,9 +992,9 @@
                                 <h2 class="categories-item__name">{{ $name }}</h2>
 
                                 <div class="categories-item__stats">
-                                    <span><strong>{{ number_format((int) ($category->posts_count ?? 0)) }}</strong> hikayeler</span>
+                                    <span><strong>{{ number_format((int) ($category->followers_count ?? 0)) }}</strong> katılımcılar</span>
                                     <span class="categories-dot" aria-hidden="true"></span>
-                                    <span><strong>{{ number_format((int) ($category->followers_count ?? 0)) }}</strong> üyeler</span>
+                                    <span class="categories-item__stats-secondary">{{ number_format((int) ($category->posts_count ?? 0)) }} hikayeler</span>
                                 </div>
                             </div>
                         </div>
