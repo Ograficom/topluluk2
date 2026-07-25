@@ -2322,7 +2322,6 @@
                 $badge->logo_url ?? null,
                 $badge->svg_url ?? null,
 
-                $badge->icon ?? null,
                 $badge->image ?? null,
                 $badge->photo ?? null,
                 $badge->logo ?? null,
@@ -2416,6 +2415,32 @@
                     'url' => asset('storage/' . $candidate),
                     'fallback' => asset($candidate),
                 ];
+            }
+
+            // Hicbir dosya/URL adayi bulunamadi: "icon" sutunu Filament tarafinda
+            // Heroicon adi olarak doldurulmus olabilir (or. "heroicon-m-star").
+            // Bunu bozuk bir dosya URL'si gibi ele alip 404 fallback'ine
+            // dusmemek icin blade-icons paketiyle inline SVG olarak cozmeyi dene.
+            $iconName = trim((string) ($badge->icon ?? ''));
+            if ($iconName !== '' && function_exists('svg') && !str_contains($iconName, '/') && !str_contains($iconName, '.')) {
+                try {
+                    $inlineSvg = svg($iconName, 'og-badge__inline-svg')->toHtml();
+                    if ($inlineSvg !== '') {
+                        // JS taraflı rozet modali da bu URL'yi <img src> olarak
+                        // kullaniyor; bu yuzden inline SVG'yi de data-URI'ye
+                        // cevirip 'url' olarak donduruyoruz, "currentColor" ise
+                        // <img> baglaminda CSS'ten renk almayacagi icin beyaza
+                        // sabitliyoruz.
+                        $whiteSvg = str_replace('currentColor', '#ffffff', $inlineSvg);
+
+                        return [
+                            'url' => 'data:image/svg+xml;base64,' . base64_encode($whiteSvg),
+                            'fallback' => null,
+                        ];
+                    }
+                } catch (\Throwable $e) {
+                    // Gecersiz/bilinmeyen heroicon adi - sessizce yoksay.
+                }
             }
 
             return [
