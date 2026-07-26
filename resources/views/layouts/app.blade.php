@@ -6582,6 +6582,44 @@
         $ografiBrandFont = $ografiBrandFontRaw !== '' && preg_match('/^[A-Za-z0-9 \-]+$/', $ografiBrandFontRaw)
             ? $ografiBrandFontRaw
             : 'Inter';
+
+        // Rol bazli tipografi sistemi (Filament > Site > Gorunum Ayarlari > Yazi Tipleri).
+        // Her rol icin ozel font dosyasi yuklenmisse @font-face uretilir ve
+        // --site-font-* degiskeni o ozel fonta, yoksa girilen/varsayilan yedek
+        // font yigina isaret eder.
+        $ografiFontRoles = [
+            'heading' => ['default' => "{$ografiBrandFont}, Arial, Helvetica, sans-serif"],
+            'body' => ['default' => "{$ografiBrandFont}, Arial, Helvetica, sans-serif"],
+            'button' => ['default' => "{$ografiBrandFont}, Arial, Helvetica, sans-serif"],
+            'nav' => ['default' => "{$ografiBrandFont}, Arial, Helvetica, sans-serif"],
+            'code' => ['default' => "ui-monospace, Consolas, Menlo, monospace"],
+        ];
+        $ografiFontFaceCss = '';
+        $ografiFontVars = [];
+        foreach ($ografiFontRoles as $ografiRole => $ografiRoleConfig) {
+            $ografiFontFile = trim((string) ($ografiBrand->{"font_{$ografiRole}_file"} ?? ''));
+            $ografiFontFallbackRaw = trim((string) ($ografiBrand->{"font_{$ografiRole}_fallback"} ?? ''));
+            $ografiFontFallback = $ografiFontFallbackRaw !== '' && preg_match('/^[A-Za-z0-9 ,\'"\-]+$/', $ografiFontFallbackRaw)
+                ? $ografiFontFallbackRaw
+                : $ografiRoleConfig['default'];
+
+            if ($ografiFontFile !== '') {
+                $ografiFontFamilyName = 'OgrafiFont' . ucfirst($ografiRole);
+                $ografiFontExt = strtolower(pathinfo($ografiFontFile, PATHINFO_EXTENSION));
+                $ografiFontFormat = match ($ografiFontExt) {
+                    'woff2' => 'woff2',
+                    'woff' => 'woff',
+                    'ttf' => 'truetype',
+                    'otf' => 'opentype',
+                    default => 'woff2',
+                };
+                $ografiFontUrl = \Illuminate\Support\Facades\Storage::disk('public')->url($ografiFontFile);
+                $ografiFontFaceCss .= "\n        @font-face {\n            font-family: '{$ografiFontFamilyName}';\n            src: url('{$ografiFontUrl}') format('{$ografiFontFormat}');\n            font-display: swap;\n        }\n";
+                $ografiFontVars[$ografiRole] = "'{$ografiFontFamilyName}', {$ografiFontFallback}";
+            } else {
+                $ografiFontVars[$ografiRole] = $ografiFontFallback;
+            }
+        }
     @endphp
     {{--
         Filament > Site > Gorunum Ayarlari sayfasindan yonetilen marka renkleri/font.
@@ -6591,9 +6629,16 @@
         girilmezse yukaridaki varsayilan mavi paleti kullanilir.
     --}}
     <style id="ografi-brand-appearance">
+        {!! $ografiFontFaceCss !!}
+
         :root,
         body.alma-app {
             --ografi-font-family: "{{ $ografiBrandFont }}", Arial, Helvetica, sans-serif !important;
+            --site-font-heading: {!! $ografiFontVars['heading'] !!} !important;
+            --site-font-body: {!! $ografiFontVars['body'] !!} !important;
+            --site-font-button: {!! $ografiFontVars['button'] !!} !important;
+            --site-font-nav: {!! $ografiFontVars['nav'] !!} !important;
+            --site-font-code: {!! $ografiFontVars['code'] !!} !important;
             --site-bg: {{ $ografiBrandBg }} !important;
             --background: {{ $ografiBrandBg }} !important;
             --page-bg: {{ $ografiBrandBg }} !important;
@@ -6638,7 +6683,54 @@
             --alma-muted: #6b6f76 !important;
             --muted-foreground: #6b6f76 !important;
 
-            font-family: "{{ $ografiBrandFont }}", Arial, Helvetica, sans-serif !important;
+            font-family: var(--site-font-body) !important;
+        }
+
+        html,
+        body,
+        body.alma-app,
+        input,
+        textarea,
+        select {
+            font-family: var(--site-font-body) !important;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: var(--site-font-heading) !important;
+        }
+
+        button,
+        input[type="submit"],
+        input[type="button"],
+        .btn,
+        .site-primary-btn,
+        .site-header .site-header-write-btn,
+        .profile-reference-btn-primary,
+        .alma-button,
+        .og-btn,
+        .og-badge-sheet-close-text,
+        [class$="-btn"],
+        [class*="-button"] {
+            font-family: var(--site-font-button) !important;
+        }
+
+        nav,
+        .nav-item,
+        .nav-item-label,
+        .sidebar-category-name,
+        .og-tab,
+        .og-tabs,
+        .categories-item__name,
+        [class^="nav-"] {
+            font-family: var(--site-font-nav) !important;
+        }
+
+        code,
+        pre,
+        kbd,
+        samp,
+        .font-mono {
+            font-family: var(--site-font-code) !important;
         }
 
         html,

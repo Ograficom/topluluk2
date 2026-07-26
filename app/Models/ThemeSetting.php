@@ -91,6 +91,16 @@ class ThemeSetting extends Model
         'categories_name_font_size',
         'categories_stats_font_size',
         'categories_description_font_size',
+        'font_heading_file',
+        'font_heading_fallback',
+        'font_body_file',
+        'font_body_fallback',
+        'font_button_file',
+        'font_button_fallback',
+        'font_nav_file',
+        'font_nav_fallback',
+        'font_code_file',
+        'font_code_fallback',
     ];
 
     protected $casts = [

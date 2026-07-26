@@ -4,6 +4,7 @@ namespace App\Filament\Pages;
 
 use App\Models\ThemeSetting;
 use Filament\Forms\Components\ColorPicker;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Concerns\InteractsWithForms;
@@ -46,6 +47,16 @@ class ThemeAppearance extends Page implements HasForms
             'categories_name_font_size' => $settings->categories_name_font_size,
             'categories_stats_font_size' => $settings->categories_stats_font_size,
             'categories_description_font_size' => $settings->categories_description_font_size,
+            'font_heading_file' => $settings->font_heading_file,
+            'font_heading_fallback' => $settings->font_heading_fallback,
+            'font_body_file' => $settings->font_body_file,
+            'font_body_fallback' => $settings->font_body_fallback,
+            'font_button_file' => $settings->font_button_file,
+            'font_button_fallback' => $settings->font_button_fallback,
+            'font_nav_file' => $settings->font_nav_file,
+            'font_nav_fallback' => $settings->font_nav_fallback,
+            'font_code_file' => $settings->font_code_file,
+            'font_code_fallback' => $settings->font_code_fallback,
         ]);
     }
 
@@ -143,6 +154,62 @@ class ThemeAppearance extends Page implements HasForms
                         ->placeholder('#e4e4e7'),
                 ])
                 ->columns(2),
+
+            Section::make('Yazi Tipleri (Tipografi)')
+                ->description('Sitedeki fontlari rol bazinda yonet: her rol icin kendi .woff2/.woff/.ttf/.otf dosyani yukleyebilir veya sadece yedek (fallback) font ismi girebilirsin. Dosya yuklenmezse yedek font kullanilir.')
+                ->collapsible()
+                ->schema([
+                    FileUpload::make('font_heading_file')
+                        ->label('Baslik fontu (h1-h6) dosyasi')
+                        ->disk('public')
+                        ->directory('fonts')
+                        ->acceptedFileTypes(['.woff2', '.woff', '.ttf', '.otf'])
+                        ->helperText('Basliklarda kullanilacak ozel font dosyasi.'),
+                    TextInput::make('font_heading_fallback')
+                        ->label('Baslik yedek font adi')
+                        ->placeholder('Poppins, Arial, sans-serif'),
+
+                    FileUpload::make('font_body_file')
+                        ->label('Govde metni fontu dosyasi')
+                        ->disk('public')
+                        ->directory('fonts')
+                        ->acceptedFileTypes(['.woff2', '.woff', '.ttf', '.otf'])
+                        ->helperText('Paragraf, yorum, gonderi metni gibi genel govde yazilari.'),
+                    TextInput::make('font_body_fallback')
+                        ->label('Govde metni yedek font adi')
+                        ->placeholder('Inter, Arial, sans-serif'),
+
+                    FileUpload::make('font_button_file')
+                        ->label('Buton fontu dosyasi')
+                        ->disk('public')
+                        ->directory('fonts')
+                        ->acceptedFileTypes(['.woff2', '.woff', '.ttf', '.otf'])
+                        ->helperText('Butonlar ve tiklanabilir aksiyon yazilari.'),
+                    TextInput::make('font_button_fallback')
+                        ->label('Buton yedek font adi')
+                        ->placeholder('Inter, Arial, sans-serif'),
+
+                    FileUpload::make('font_nav_file')
+                        ->label('Menu / navigasyon fontu dosyasi')
+                        ->disk('public')
+                        ->directory('fonts')
+                        ->acceptedFileTypes(['.woff2', '.woff', '.ttf', '.otf'])
+                        ->helperText('Sol menu, sekmeler, kategori listesi gibi navigasyon yazilari.'),
+                    TextInput::make('font_nav_fallback')
+                        ->label('Menu yedek font adi')
+                        ->placeholder('Inter, Arial, sans-serif'),
+
+                    FileUpload::make('font_code_file')
+                        ->label('Kod / monospace fontu dosyasi')
+                        ->disk('public')
+                        ->directory('fonts')
+                        ->acceptedFileTypes(['.woff2', '.woff', '.ttf', '.otf'])
+                        ->helperText('Kod bloklari ve sabit genislikli yazilar.'),
+                    TextInput::make('font_code_fallback')
+                        ->label('Kod yedek font adi')
+                        ->placeholder('Consolas, Menlo, monospace'),
+                ])
+                ->columns(2),
         ];
     }
 
@@ -180,6 +247,16 @@ class ThemeAppearance extends Page implements HasForms
             'categories_name_font_size' => null,
             'categories_stats_font_size' => null,
             'categories_description_font_size' => null,
+            'font_heading_file' => null,
+            'font_heading_fallback' => null,
+            'font_body_file' => null,
+            'font_body_fallback' => null,
+            'font_button_file' => null,
+            'font_button_fallback' => null,
+            'font_nav_file' => null,
+            'font_nav_fallback' => null,
+            'font_code_file' => null,
+            'font_code_fallback' => null,
         ]);
 
         Cache::forget('theme-appearance-css');
