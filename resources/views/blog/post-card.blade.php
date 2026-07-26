@@ -2441,7 +2441,7 @@ SVG;
             width: 42px;
             height: 42px;
             border-radius: 50%;
-            border: 2px solid #fff;
+            border: none;
             box-sizing: border-box;
             object-fit: cover;
             flex: 0 0 auto;
@@ -2461,18 +2461,18 @@ SVG;
 
         [data-post-card-shell] .category-badge {
             position: absolute;
-            right: -7px;
-            bottom: -7px;
-            width: 24px;
-            height: 24px;
+            right: -9px;
+            bottom: -9px;
+            width: 28px;
+            height: 28px;
             display: inline-flex;
             align-items: center;
             justify-content: center;
             overflow: hidden;
-            border: 2px solid #fff;
+            border: 3px solid #fff;
             border-radius: 999px;
             background: #fff;
-            box-shadow: 0 1px 3px rgba(15, 23, 42, 0.18);
+            box-shadow: none;
         }
 
         [data-post-card-shell] .category-badge__image {
@@ -3792,13 +3792,13 @@ SVG;
         }
 
         [data-post-card-shell] .category-badge {
-            width: 24px;
-            height: 24px;
-            right: -7px;
-            bottom: -7px;
-            border: 2px solid #fff;
+            width: 28px;
+            height: 28px;
+            right: -9px;
+            bottom: -9px;
+            border: 3px solid #fff;
             background: #ffffff;
-            box-shadow: 0 1px 3px rgba(15, 23, 42, 0.18);
+            box-shadow: none;
         }
 
         [data-post-card-shell] .category-badge__fallback {
