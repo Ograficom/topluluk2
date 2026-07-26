@@ -251,14 +251,17 @@
                 </div>
             </div>
 
-            <div class="home-feed-toolbar__read is-mode-hidden" data-feed-read-panel>
-                <label class="home-feed-toolbar__date">
-                    <input type="date" data-read-date-from aria-label="Başlangıç tarihi">
-                </label>
-                <label class="home-feed-toolbar__date">
-                    <input type="date" data-read-date-to aria-label="Bitiş tarihi">
-                </label>
+        </div>
 
+        <div class="home-feed-toolbar__read is-mode-hidden" data-feed-read-panel aria-label="Okuma filtreleri">
+            <label class="home-feed-toolbar__date">
+                <input type="date" data-read-date-from aria-label="Başlangıç tarihi">
+            </label>
+            <label class="home-feed-toolbar__date">
+                <input type="date" data-read-date-to aria-label="Bitiş tarihi">
+            </label>
+
+            <div class="home-feed-toolbar__radios">
                 <label class="home-feed-toolbar__radio">
                     <input type="radio" name="home-feed-read-length" value="long" data-read-length-option>
                     <span>Uzun</span>
@@ -403,13 +406,23 @@
                 display: flex !important;
                 align-items: center !important;
                 flex-wrap: wrap !important;
-                gap: 8px !important;
-                margin-left: 8px !important;
-                padding-left: 8px !important;
-                border-left: 1px solid #e5e7eb !important;
+                width: 100% !important;
+                gap: 10px !important;
+                margin: 8px 0 0 !important;
+                padding: 10px 12px !important;
+                border: 1px solid #d9dde3 !important;
+                border-radius: 16px !important;
+                background: #fff !important;
+                box-sizing: border-box !important;
+                font-family: "Inter", system-ui, sans-serif !important;
+            }
+            .home-feed-toolbar__date {
+                flex: 1 1 130px !important;
+                min-width: 0 !important;
             }
             .home-feed-toolbar__date input[type="date"] {
-                min-height: 30px !important;
+                width: 100% !important;
+                min-height: 34px !important;
                 padding: 0 8px !important;
                 border: 1px solid #d9dde3 !important;
                 border-radius: 999px !important;
@@ -417,6 +430,14 @@
                 color: #111827 !important;
                 font-size: 13px !important;
                 font-family: inherit !important;
+                box-sizing: border-box !important;
+            }
+            .home-feed-toolbar__radios {
+                display: flex !important;
+                align-items: center !important;
+                flex-wrap: wrap !important;
+                gap: 12px !important;
+                margin-left: auto !important;
             }
             .home-feed-toolbar__radio {
                 display: inline-flex !important;
@@ -429,15 +450,16 @@
                 white-space: nowrap !important;
             }
             .home-feed-toolbar__radio input[type="radio"] {
-                width: 15px !important;
-                height: 15px !important;
+                width: 16px !important;
+                height: 16px !important;
                 margin: 0 !important;
                 accent-color: #16a34a !important;
                 cursor: pointer !important;
             }
             html.dark .home-feed-toolbar__read,
             .dark .home-feed-toolbar__read {
-                border-left-color: #374151 !important;
+                border-color: #374151 !important;
+                background: #111827 !important;
             }
             html.dark .home-feed-toolbar__date input[type="date"],
             .dark .home-feed-toolbar__date input[type="date"] {
@@ -448,11 +470,35 @@
             }
             @media (max-width: 640px) {
                 .home-feed-toolbar__read {
-                    width: 100% !important;
+                    gap: 8px !important;
+                    padding: 10px !important;
+                    border-radius: 14px !important;
+                }
+                .home-feed-toolbar__date {
+                    flex: 1 1 calc(50% - 4px) !important;
+                }
+                .home-feed-toolbar__date input[type="date"] {
+                    min-height: 36px !important;
+                    font-size: 13px !important;
+                }
+                .home-feed-toolbar__radios {
+                    flex: 1 1 100% !important;
                     margin-left: 0 !important;
-                    padding-left: 0 !important;
-                    border-left: 0 !important;
-                    padding-top: 6px !important;
+                    justify-content: space-between !important;
+                    padding-top: 4px !important;
+                    border-top: 1px solid #eef0f2 !important;
+                }
+                html.dark .home-feed-toolbar__radios,
+                .dark .home-feed-toolbar__radios {
+                    border-top-color: #374151 !important;
+                }
+                .home-feed-toolbar__radio {
+                    font-size: 13px !important;
+                }
+            }
+            @media (max-width: 380px) {
+                .home-feed-toolbar__date {
+                    flex: 1 1 100% !important;
                 }
             }
             html.dark .home-feed-toolbar__mode.is-active,
