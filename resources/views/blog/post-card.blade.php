@@ -8541,7 +8541,8 @@ SVG;
             z-index: 100 !important;
         }
 
-        html body article.post-card[data-post-card-shell]:has([data-og-action-trigger][aria-expanded="true"]) {
+        html body article.post-card[data-post-card-shell]:has([data-og-action-trigger][aria-expanded="true"]),
+        html body article.post-card[data-post-card-shell]:has([data-post-card-share-menu-trigger][aria-expanded="true"]) {
             z-index: 50 !important;
         }
 
