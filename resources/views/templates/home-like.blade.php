@@ -199,7 +199,7 @@
                 <button type="button" class="home-feed-toolbar__mode" role="tab" aria-selected="false" data-feed-mode="read">Okumak</button>
             </div>
 
-            <div class="home-feed-toolbar__period is-mode-hidden" data-feed-filter-menu>
+            <div class="home-feed-toolbar__period is-mode-hidden" data-feed-filter-menu="all">
                 <button
                     type="button"
                     class="home-feed-toolbar__period-toggle"
@@ -225,6 +225,52 @@
                         </a>
                     @endforeach
                 </div>
+            </div>
+
+            <div class="home-feed-toolbar__period is-mode-hidden" data-feed-filter-menu="discuss">
+                <button
+                    type="button"
+                    class="home-feed-toolbar__period-toggle"
+                    aria-label="Gönderileri sırala"
+                    aria-expanded="false"
+                    data-feed-filter-toggle
+                >
+                    <span data-discuss-sort-label>En yeni</span>
+                    <svg viewBox="0 0 20 20" fill="none" focusable="false" aria-hidden="true">
+                        <path d="m6 12 4-4 4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+
+                <div class="home-feed-toolbar__dropdown" data-feed-filter-dropdown>
+                    <a href="#" class="home-feed-toolbar__option is-active" data-discuss-sort-option data-sort="newest">
+                        <span>En yeni</span>
+                    </a>
+                    <a href="#" class="home-feed-toolbar__option" data-discuss-sort-option data-sort="comments">
+                        <span>En çok yorum alan</span>
+                    </a>
+                </div>
+            </div>
+
+            <div class="home-feed-toolbar__read is-mode-hidden" data-feed-read-panel>
+                <label class="home-feed-toolbar__date">
+                    <input type="date" data-read-date-from aria-label="Başlangıç tarihi">
+                </label>
+                <label class="home-feed-toolbar__date">
+                    <input type="date" data-read-date-to aria-label="Bitiş tarihi">
+                </label>
+
+                <label class="home-feed-toolbar__radio">
+                    <input type="radio" name="home-feed-read-length" value="long" data-read-length-option>
+                    <span>Uzun</span>
+                </label>
+                <label class="home-feed-toolbar__radio">
+                    <input type="radio" name="home-feed-read-length" value="short" data-read-length-option>
+                    <span>Kısa</span>
+                </label>
+                <label class="home-feed-toolbar__radio">
+                    <input type="radio" name="home-feed-read-length" value="editor" data-read-length-option>
+                    <span>Editör</span>
+                </label>
             </div>
         </div>
 
@@ -351,6 +397,63 @@
             .dark .home-feed-toolbar__option {
                 color: #d1d5db !important;
             }
+
+            .home-feed-toolbar__read {
+                display: flex !important;
+                align-items: center !important;
+                flex-wrap: wrap !important;
+                gap: 8px !important;
+                margin-left: 8px !important;
+                padding-left: 8px !important;
+                border-left: 1px solid #e5e7eb !important;
+            }
+            .home-feed-toolbar__date input[type="date"] {
+                min-height: 30px !important;
+                padding: 0 8px !important;
+                border: 1px solid #d9dde3 !important;
+                border-radius: 999px !important;
+                background: #fff !important;
+                color: #111827 !important;
+                font-size: 13px !important;
+                font-family: inherit !important;
+            }
+            .home-feed-toolbar__radio {
+                display: inline-flex !important;
+                align-items: center !important;
+                gap: 5px !important;
+                color: #16a34a !important;
+                font-size: 13px !important;
+                font-weight: 600 !important;
+                cursor: pointer !important;
+                white-space: nowrap !important;
+            }
+            .home-feed-toolbar__radio input[type="radio"] {
+                width: 15px !important;
+                height: 15px !important;
+                margin: 0 !important;
+                accent-color: #16a34a !important;
+                cursor: pointer !important;
+            }
+            html.dark .home-feed-toolbar__read,
+            .dark .home-feed-toolbar__read {
+                border-left-color: #374151 !important;
+            }
+            html.dark .home-feed-toolbar__date input[type="date"],
+            .dark .home-feed-toolbar__date input[type="date"] {
+                border-color: #374151 !important;
+                background: #111827 !important;
+                color: #d1d5db !important;
+                color-scheme: dark !important;
+            }
+            @media (max-width: 640px) {
+                .home-feed-toolbar__read {
+                    width: 100% !important;
+                    margin-left: 0 !important;
+                    padding-left: 0 !important;
+                    border-left: 0 !important;
+                    padding-top: 6px !important;
+                }
+            }
             html.dark .home-feed-toolbar__mode.is-active,
             .dark .home-feed-toolbar__mode.is-active,
             html.dark .home-feed-toolbar__option:hover,
@@ -436,7 +539,13 @@
                 }
             @endphp
 
-            <div class="ografi-filterable-post" data-post-published="{{ $postPublishedAtIso }}">
+            <div
+                class="ografi-filterable-post"
+                data-post-published="{{ $postPublishedAtIso }}"
+                data-post-comments-count="{{ (int) ($post->comments_count ?? 0) }}"
+                data-post-length-chars="{{ mb_strlen(trim(strip_tags($post->content ?? ''))) }}"
+                data-post-pinned="{{ $post->is_pinned ? '1' : '0' }}"
+            >
                 @include('blog.post-card', [
                     'post' => $post,
                     'title' => filled($post->title) ? $post->title : ('/' . ltrim((string) ($post->slug ?? ''), '/')),
@@ -1150,7 +1259,8 @@
         }
 
 
-        .ografi-filterable-post.is-filter-hidden {
+        .ografi-filterable-post.is-filter-hidden,
+        .ografi-filterable-post.is-mode-filter-hidden {
             display: none !important;
         }
 
@@ -4530,20 +4640,126 @@
             };
 
             setupFeedFilterMenu();
+
+            // "Tartışmak" (discuss) modunda en çok yorum alan gönderiye gore
+            // siralama, "Okumak" (read) modunda tarih araligi + uzunluk/editor
+            // filtresi - hepsi zaten sayfaya yuklenmis gonderiler uzerinde
+            // istemci tarafinda calisir (feed_time filtresiyle ayni mimari).
+            let ografiFeedMode = 'all';
+            let ografiDiscussSort = 'newest';
+
+            const ografiPostsContainer = document.querySelector('[data-post-published]')?.parentElement || null;
+
+            const applyOgrafiFeedModeFilter = () => {
+                const posts = Array.from(document.querySelectorAll('.ografi-filterable-post'));
+                const dateFrom = document.querySelector('[data-read-date-from]')?.value || '';
+                const dateTo = document.querySelector('[data-read-date-to]')?.value || '';
+                const lengthOption = document.querySelector('[data-read-length-option]:checked')?.value || '';
+
+                if (ografiFeedMode === 'discuss' && ografiDiscussSort === 'comments' && ografiPostsContainer) {
+                    posts
+                        .slice()
+                        .sort((a, b) => {
+                            const aCount = parseInt(a.getAttribute('data-post-comments-count') || '0', 10);
+                            const bCount = parseInt(b.getAttribute('data-post-comments-count') || '0', 10);
+                            return bCount - aCount;
+                        })
+                        .forEach((post) => ografiPostsContainer.appendChild(post));
+                } else if (ografiFeedMode === 'discuss' && ografiPostsContainer) {
+                    posts
+                        .slice()
+                        .sort((a, b) => {
+                            const aDate = Date.parse(a.getAttribute('data-post-published') || '') || 0;
+                            const bDate = Date.parse(b.getAttribute('data-post-published') || '') || 0;
+                            return bDate - aDate;
+                        })
+                        .forEach((post) => ografiPostsContainer.appendChild(post));
+                }
+
+                posts.forEach((post) => {
+                    let visible = true;
+
+                    if (ografiFeedMode === 'read') {
+                        const published = post.getAttribute('data-post-published') || '';
+                        const publishedDay = published ? published.slice(0, 10) : '';
+
+                        if (dateFrom && (!publishedDay || publishedDay < dateFrom)) {
+                            visible = false;
+                        }
+
+                        if (visible && dateTo && (!publishedDay || publishedDay > dateTo)) {
+                            visible = false;
+                        }
+
+                        if (visible && lengthOption) {
+                            const chars = parseInt(post.getAttribute('data-post-length-chars') || '0', 10);
+                            const isPinned = post.getAttribute('data-post-pinned') === '1';
+
+                            if (lengthOption === 'long' && chars < 2500) {
+                                visible = false;
+                            } else if (lengthOption === 'short' && chars >= 2500) {
+                                visible = false;
+                            } else if (lengthOption === 'editor' && !isPinned) {
+                                visible = false;
+                            }
+                        }
+                    }
+
+                    post.classList.toggle('is-mode-filter-hidden', !visible);
+                });
+            };
+
             document.addEventListener('click', (event) => {
                 const mode = event.target.closest('[data-feed-mode]');
-                if (!mode) return;
+                if (mode) {
+                    document.querySelectorAll('[data-feed-mode]').forEach((button) => {
+                        const active = button === mode;
+                        button.classList.toggle('is-active', active);
+                        button.setAttribute('aria-selected', active ? 'true' : 'false');
+                    });
 
-                document.querySelectorAll('[data-feed-mode]').forEach((button) => {
-                    const active = button === mode;
-                    button.classList.toggle('is-active', active);
-                    button.setAttribute('aria-selected', active ? 'true' : 'false');
-                });
+                    ografiFeedMode = mode.dataset.feedMode || 'all';
 
-                document.querySelectorAll('[data-feed-filter-menu]').forEach((period) => {
-                    period.classList.toggle('is-mode-hidden', mode.dataset.feedMode !== 'read');
-                });
+                    document.querySelectorAll('[data-feed-filter-menu]').forEach((menu) => {
+                        menu.classList.toggle('is-mode-hidden', menu.dataset.feedFilterMenu !== ografiFeedMode);
+                    });
+
+                    document.querySelectorAll('[data-feed-read-panel]').forEach((panel) => {
+                        panel.classList.toggle('is-mode-hidden', ografiFeedMode !== 'read');
+                    });
+
+                    applyOgrafiFeedModeFilter();
+
+                    return;
+                }
+
+                const discussOption = event.target.closest('[data-discuss-sort-option]');
+                if (discussOption) {
+                    event.preventDefault();
+
+                    ografiDiscussSort = discussOption.getAttribute('data-sort') || 'newest';
+
+                    document.querySelectorAll('[data-discuss-sort-option]').forEach((option) => {
+                        option.classList.toggle('is-active', option === discussOption);
+                    });
+
+                    const label = document.querySelector('[data-discuss-sort-label]');
+                    if (label) {
+                        label.textContent = discussOption.querySelector('span')?.textContent || 'En yeni';
+                    }
+
+                    applyOgrafiFeedModeFilter();
+                }
             });
+
+            document.querySelectorAll('[data-read-date-from], [data-read-date-to]').forEach((input) => {
+                input.addEventListener('change', applyOgrafiFeedModeFilter);
+            });
+
+            document.querySelectorAll('[data-read-length-option]').forEach((input) => {
+                input.addEventListener('change', applyOgrafiFeedModeFilter);
+            });
+
             applyFeedFilter(feedFilterState.active || 'latest');
 
             if (widgets.length > 0) {
@@ -5099,12 +5315,14 @@
 
 /* Final feed toolbar appearance: match the compact reference tabs. */
 html body .home-feed-shell .home-feed-toolbar {
+    width: 100% !important;
     min-height: 38px !important;
     padding: 3px 6px !important;
     border: 1px solid #d9dde3 !important;
     border-radius: 18px !important;
     background: #fff !important;
     box-shadow: none !important;
+    box-sizing: border-box !important;
 }
 
 html body .home-feed-shell .home-feed-toolbar__modes {
@@ -5128,7 +5346,7 @@ html body .home-feed-shell .home-feed-toolbar__mode.is-active {
 
 @media (min-width: 641px) {
     html body .home-feed-shell .home-feed-toolbar {
-        transform: translateX(-6px) !important;
+        transform: none !important;
     }
 }
 
