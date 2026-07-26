@@ -127,16 +127,42 @@ class AppServiceProvider extends ServiceProvider
             $mostReactedPosts = collect();
 
             if ($trendingEnabled) {
+                // "Populer gonderiler" gercekten O HAFTA one cikanlari
+                // gostersin diye son 7 gune sinirlandi - onceden zaman
+                // penceresi hic yoktu, bu yuzden cok eski/tek seferlik
+                // viral bir gonderi surekli listeyi isgal edip o haftaki
+                // gercekten populer gonderilerin hic gorunmemesine yol
+                // aciyordu. Son 7 gunde yeterli veri yoksa (yeni/dusuk
+                // trafikli site durumu), tum zamanlara geri donuluyor.
+                $trendingSince = now()->subDays(7);
+
                 $mostViewedPosts = \App\Models\Post::published()
+                    ->where('published_at', '>=', $trendingSince)
                     ->orderByDesc('views_count')
                     ->take($trendingCount)
                     ->get();
 
+                if ($mostViewedPosts->isEmpty()) {
+                    $mostViewedPosts = \App\Models\Post::published()
+                        ->orderByDesc('views_count')
+                        ->take($trendingCount)
+                        ->get();
+                }
+
                 $mostReactedPosts = \App\Models\Post::published()
+                    ->where('published_at', '>=', $trendingSince)
                     ->withCount('reactions')
                     ->orderByDesc('reactions_count')
                     ->take($trendingCount)
                     ->get();
+
+                if ($mostReactedPosts->isEmpty()) {
+                    $mostReactedPosts = \App\Models\Post::published()
+                        ->withCount('reactions')
+                        ->orderByDesc('reactions_count')
+                        ->take($trendingCount)
+                        ->get();
+                }
             }
 
             $view->with(compact(
