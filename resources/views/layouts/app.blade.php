@@ -6779,6 +6779,32 @@
         }
     </style>
 
+    @php
+        // Kullanicinin kendi yukledigi/yazdigi ozel tema CSS'i - bilerek en son
+        // (dolayisiyla en oncelikli) noktada, yukaridaki her seyi (renk, font,
+        // boyut) ezebilecek sekilde ekleniyor. "</style" kacislari kirilmasin
+        // diye temizleniyor (admin-only alan olsa da savunma amacli).
+        $ografiCustomCssFile = trim((string) ($ografiBrand->custom_css_file ?? ''));
+        $ografiCustomCssFileContent = '';
+        if ($ografiCustomCssFile !== '') {
+            try {
+                if (\Illuminate\Support\Facades\Storage::disk('public')->exists($ografiCustomCssFile)) {
+                    $ografiCustomCssFileContent = \Illuminate\Support\Facades\Storage::disk('public')->get($ografiCustomCssFile);
+                }
+            } catch (\Throwable $e) {
+                $ografiCustomCssFileContent = '';
+            }
+        }
+        $ografiCustomCssInline = (string) ($ografiBrand->custom_css ?? '');
+        $ografiCustomCssCombined = trim($ografiCustomCssFileContent . "\n" . $ografiCustomCssInline);
+        $ografiCustomCssSafe = str_ireplace('</style', '<\\/style', $ografiCustomCssCombined);
+    @endphp
+    @if($ografiCustomCssSafe !== '')
+    <style id="ografi-custom-theme">
+        {!! $ografiCustomCssSafe !!}
+    </style>
+    @endif
+
     @include('partials.pwa-meta')
 </head>
 @php($isMessagesRoute = request()->routeIs('messages.*'))

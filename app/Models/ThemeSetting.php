@@ -102,6 +102,8 @@ class ThemeSetting extends Model
         'font_code_file',
         'font_code_fallback',
         'global_text_scale',
+        'custom_css_file',
+        'custom_css',
     ];
 
     protected $casts = [

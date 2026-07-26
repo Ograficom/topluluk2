@@ -6,6 +6,7 @@ use App\Models\ThemeSetting;
 use Filament\Forms\Components\ColorPicker;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
@@ -58,6 +59,8 @@ class ThemeAppearance extends Page implements HasForms
             'font_code_file' => $settings->font_code_file,
             'font_code_fallback' => $settings->font_code_fallback,
             'global_text_scale' => $settings->global_text_scale,
+            'custom_css_file' => $settings->custom_css_file,
+            'custom_css' => $settings->custom_css,
         ]);
     }
 
@@ -219,6 +222,25 @@ class ThemeAppearance extends Page implements HasForms
                         ->placeholder('Consolas, Menlo, monospace'),
                 ])
                 ->columns(2),
+
+            Section::make('Ozel Tema (Kendi CSS Kodun)')
+                ->description('Kendi temani/CSS kodunu yukle veya yapistir. Bu, yukaridaki tum renk/font/boyut ayarlarinin da ustune biner - yani istedigin her seyi buradan ezebilirsin. Once dosya, sonra asagidaki kod kutusu uygulanir (kod kutusu her zaman son soz sahibidir).')
+                ->collapsible()
+                ->schema([
+                    FileUpload::make('custom_css_file')
+                        ->label('CSS dosyasi yukle (.css)')
+                        ->disk('public')
+                        ->directory('custom-theme')
+                        ->acceptedFileTypes(['.css', 'text/css'])
+                        ->helperText('Tam bir stylesheet dosyasi yukleyebilirsin, siteye otomatik uygulanir.'),
+                    Textarea::make('custom_css')
+                        ->label('Ozel CSS kodu')
+                        ->rows(16)
+                        ->placeholder(".og-cover {\n  background: #111 !important;\n}")
+                        ->helperText('Buraya yazdigin/yapistirdigin CSS, sayfanin en sonunda uygulanir; yukaridaki her ayari (ve yukledigin dosyayi) ezebilir.')
+                        ->extraInputAttributes(['style' => 'font-family: ui-monospace, Consolas, Menlo, monospace; font-size: 13px;']),
+                ])
+                ->columns(1),
         ];
     }
 
@@ -267,6 +289,8 @@ class ThemeAppearance extends Page implements HasForms
             'font_code_file' => null,
             'font_code_fallback' => null,
             'global_text_scale' => null,
+            'custom_css_file' => null,
+            'custom_css' => null,
         ]);
 
         Cache::forget('theme-appearance-css');
