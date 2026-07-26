@@ -93,6 +93,158 @@
 
 @section('content')
     <div class="home-feed-shell space-y-6 pt-2 sm:pt-3 lg:pt-4">
+        <div class="ografi-newpost-wrap">
+            <button type="button" class="ografi-newpost-btn" id="ografiNewPostBtn" data-newpost-btn hidden>
+                <svg class="ografi-newpost-btn__icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <path d="M20 11a8.1 8.1 0 0 0-15.5-2M4 5v4h4m-4 4a8.1 8.1 0 0 0 15.5 2M20 19v-4h-4"
+                        stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path>
+                </svg>
+                <span class="ografi-newpost-btn__text">yeni gönderiler var</span>
+            </button>
+        </div>
+
+        <style>
+            .ografi-newpost-wrap {
+                display: flex;
+                justify-content: center;
+            }
+
+            .ografi-newpost-btn {
+                display: inline-flex;
+                align-items: center;
+                gap: 10px;
+                margin-bottom: 10px;
+                background-color: #ffffff;
+                border: 1px solid #dcdfe3;
+                border-radius: 9999px;
+                padding: 10px 18px;
+                cursor: pointer;
+                box-shadow: 0 1px 2px rgba(15, 23, 42, .04);
+                outline: none;
+                max-width: 100%;
+                box-sizing: border-box;
+                -webkit-tap-highlight-color: transparent;
+                touch-action: manipulation;
+                transition: background-color .2s ease, opacity .2s ease, transform .2s ease;
+            }
+
+            .ografi-newpost-btn[hidden] {
+                display: none;
+            }
+
+            .ografi-newpost-btn:hover {
+                background-color: #f8f9fa;
+            }
+
+            .ografi-newpost-btn:active {
+                background-color: #f1f3f5;
+            }
+
+            .ografi-newpost-btn__icon {
+                width: 20px;
+                height: 20px;
+                color: #000000;
+                flex-shrink: 0;
+            }
+
+            .ografi-newpost-btn__text {
+                color: #000000;
+                font-size: 15px;
+                font-weight: 500;
+                font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+                white-space: nowrap;
+                text-transform: lowercase;
+            }
+
+            @keyframes ografi-newpost-spin {
+                from { transform: rotate(0deg); }
+                to { transform: rotate(360deg); }
+            }
+
+            .ografi-newpost-btn__icon.is-spinning {
+                animation: ografi-newpost-spin .6s ease-in-out;
+            }
+
+            html.dark .ografi-newpost-btn,
+            .dark .ografi-newpost-btn {
+                background-color: #18181b;
+                border-color: #3f3f46;
+            }
+
+            html.dark .ografi-newpost-btn:hover,
+            .dark .ografi-newpost-btn:hover {
+                background-color: #27272a;
+            }
+
+            html.dark .ografi-newpost-btn__icon,
+            html.dark .ografi-newpost-btn__text,
+            .dark .ografi-newpost-btn__icon,
+            .dark .ografi-newpost-btn__text {
+                color: #f4f4f5;
+            }
+
+            @media (max-width: 360px) {
+                .ografi-newpost-btn {
+                    padding: 8px 14px;
+                    gap: 8px;
+                }
+                .ografi-newpost-btn__text {
+                    font-size: 14px;
+                }
+                .ografi-newpost-btn__icon {
+                    width: 18px;
+                    height: 18px;
+                }
+            }
+        </style>
+        <script>
+            (() => {
+                const btn = document.getElementById('ografiNewPostBtn');
+                if (!btn) return;
+
+                const icon = btn.querySelector('.ografi-newpost-btn__icon');
+                const checkUrl = @json(route('feed.latest-check'));
+
+                const getKnownLatestId = () => {
+                    const ids = Array.from(document.querySelectorAll('[data-post-id]'))
+                        .map((el) => parseInt(el.getAttribute('data-post-id') || '0', 10))
+                        .filter((id) => Number.isFinite(id) && id > 0);
+                    return ids.length ? Math.max(...ids) : 0;
+                };
+
+                let knownLatestId = getKnownLatestId();
+
+                const checkForNewPosts = async () => {
+                    try {
+                        const response = await fetch(checkUrl, {
+                            headers: { Accept: 'application/json' },
+                            cache: 'no-store',
+                        });
+                        if (!response.ok) return;
+
+                        const data = await response.json();
+                        const latestId = parseInt(data.latest_id || '0', 10);
+
+                        if (Number.isFinite(latestId) && latestId > knownLatestId) {
+                            btn.hidden = false;
+                        }
+                    } catch (error) {
+                        // Sessizce yoksay, bir sonraki denemede tekrar kontrol edilecek.
+                    }
+                };
+
+                btn.addEventListener('click', () => {
+                    icon.classList.remove('is-spinning');
+                    void icon.offsetWidth;
+                    icon.classList.add('is-spinning');
+                    window.location.reload();
+                });
+
+                checkForNewPosts();
+                window.setInterval(checkForNewPosts, 30000);
+            })();
+        </script>
+
         <style>
             /* İlk boya düzeltmesi: CSS dosyanın altına gelmeden önce üst borsa alanını skeleton olarak gösterir */
             @keyframes ografi-market-wave-critical {
@@ -594,6 +746,7 @@
 
             <div
                 class="ografi-filterable-post"
+                data-post-id="{{ (int) $post->id }}"
                 data-post-published="{{ $postPublishedAtIso }}"
                 data-post-comments-count="{{ (int) ($post->comments_count ?? 0) }}"
                 data-post-length-chars="{{ mb_strlen(trim(strip_tags($post->content ?? ''))) }}"

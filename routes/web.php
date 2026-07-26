@@ -331,6 +331,19 @@ Route::get('/', function () {
         'popularTags' => $popularTags,
     ]);
 })->name('home');
+
+Route::get('/feed/latest-check', function () {
+    $latest = Post::query()
+        ->published()
+        ->orderByDesc('published_at')
+        ->orderByDesc('created_at')
+        ->first(['id', 'published_at']);
+
+    return response()->json([
+        'latest_id' => $latest?->id,
+    ]);
+})->name('feed.latest-check');
+
 Route::get('/social-feed', $socialFeedHandler)->name('social-feed');
 
 Route::get('/discover', function () {
