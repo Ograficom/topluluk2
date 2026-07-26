@@ -1075,7 +1075,10 @@
         ->map(fn ($part) => \Illuminate\Support\Str::upper(\Illuminate\Support\Str::substr($part, 0, 1)))
         ->implode('');
     $previewInitial = $previewInitial !== '' ? $previewInitial : 'TU';
-    $repostCreateUrl = $viewer ? route('blog.repost.create', ['post' => optional($postObj)->id ?? $postSlug]) : null;
+    // "Yeniden paylaş" herkese gorunur; blog.repost.create zaten auth
+    // middleware'i altinda oldugundan giris yapmamis ziyaretci tikladiginda
+    // Laravel otomatik olarak giris sayfasina yonlendirir (sonra geri doner).
+    $repostCreateUrl = route('blog.repost.create', ['post' => optional($postObj)->id ?? $postSlug]);
     $summaryExpandedText = trim((string) ($resolvedExcerptExpanded !== '' ? $resolvedExcerptExpanded : ($resolvedExcerptRaw !== '' ? $resolvedExcerptRaw : $summaryText)));
     $hasFullPostContent = $contentBlocks->isNotEmpty() || trim($contentHtml) !== '' || $mediaItems->isNotEmpty();
     $summaryCollapsedSource = $summaryExpandedText !== '' ? $summaryExpandedText : $resolvedExcerptShort;
