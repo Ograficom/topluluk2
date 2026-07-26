@@ -6620,6 +6620,16 @@
                 $ografiFontVars[$ografiRole] = $ografiFontFallback;
             }
         }
+
+        // Genel yazi/arayuz boyutu: font-size degil "zoom" kullanilir, cunku
+        // sitede 1000+ yerde class bazli hardcoded font-size !important kurali var
+        // (ör. .ps-post-title) ve bunlarin ozgunlugu (specificity) her zaman basit
+        // h1/h2/body gibi eleman secicilerinden yuksek oldugu icin klasik CSS
+        // degiskeni/override yaklasimi TUM siteyi kapsayamaz. "zoom" tarayici
+        // render seviyesinde olcekleme yaptigindan CSS ozgunlugunden bagimsizdir
+        // ve gercekten butun frontend'i (yazi + bosluklar) kapsar.
+        $ografiTextScaleRaw = (int) ($ografiBrand->global_text_scale ?? 100);
+        $ografiTextScale = ($ografiTextScaleRaw >= 50 && $ografiTextScaleRaw <= 200) ? $ografiTextScaleRaw : 100;
     @endphp
     {{--
         Filament > Site > Gorunum Ayarlari sayfasindan yonetilen marka renkleri/font.
@@ -6732,6 +6742,12 @@
         .font-mono {
             font-family: var(--site-font-code) !important;
         }
+
+        @if($ografiTextScale !== 100)
+        html {
+            zoom: {{ $ografiTextScale }}% !important;
+        }
+        @endif
 
         html,
         body.alma-app {

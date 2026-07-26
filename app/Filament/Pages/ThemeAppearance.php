@@ -57,6 +57,7 @@ class ThemeAppearance extends Page implements HasForms
             'font_nav_fallback' => $settings->font_nav_fallback,
             'font_code_file' => $settings->font_code_file,
             'font_code_fallback' => $settings->font_code_fallback,
+            'global_text_scale' => $settings->global_text_scale,
         ]);
     }
 
@@ -99,6 +100,14 @@ class ThemeAppearance extends Page implements HasForms
                         ])
                         ->native(false)
                         ->placeholder('Varsayilan (Roboto)'),
+                    TextInput::make('global_text_scale')
+                        ->label('Genel yazi/arayuz boyutu (%)')
+                        ->numeric()
+                        ->minValue(50)
+                        ->maxValue(200)
+                        ->step(5)
+                        ->placeholder('100')
+                        ->helperText('Tum sitedeki yazi ve arayuz elemanlarini tek seferde buyutur/kucultur (orn. 110 = %10 daha buyuk). Tek tek her bilesenin font-size kuralini ezmek yerine, dogrudan tarayici olcegini degistirir - bu yuzden gercekten TUM frontend uzerinde etkilidir.'),
                 ])
                 ->columns(2),
 
@@ -257,6 +266,7 @@ class ThemeAppearance extends Page implements HasForms
             'font_nav_fallback' => null,
             'font_code_file' => null,
             'font_code_fallback' => null,
+            'global_text_scale' => null,
         ]);
 
         Cache::forget('theme-appearance-css');

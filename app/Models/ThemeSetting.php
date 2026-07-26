@@ -101,6 +101,7 @@ class ThemeSetting extends Model
         'font_nav_fallback',
         'font_code_file',
         'font_code_fallback',
+        'global_text_scale',
     ];
 
     protected $casts = [
@@ -114,6 +115,7 @@ class ThemeSetting extends Model
         'categories_name_font_size' => 'float',
         'categories_stats_font_size' => 'float',
         'categories_description_font_size' => 'float',
+        'global_text_scale' => 'integer',
     ];
 
     public static function current(): self
