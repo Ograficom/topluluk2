@@ -65,7 +65,7 @@
     .ografi-sidebar-title {
         margin: 0 !important;
         color: #000000 !important;
-        font-size: 13px !important;
+        font-size: 12px !important;
         font-weight: 700 !important;
         letter-spacing: -0.01em !important;
         line-height: 1.3 !important;
