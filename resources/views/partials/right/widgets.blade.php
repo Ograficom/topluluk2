@@ -274,7 +274,7 @@
         text-align: left !important;
     }
 
-    .ografi-comments-empty {
+    .ografi-widget-empty {
         display: flex !important;
         flex-direction: column !important;
         align-items: center !important;
@@ -283,13 +283,13 @@
         padding: 14px 0 6px !important;
     }
 
-    .ografi-comments-empty__svg {
+    .ografi-widget-empty__svg {
         width: 100% !important;
         max-width: 220px !important;
         overflow: visible !important;
     }
 
-    .ografi-comments-empty__line {
+    .ografi-widget-empty__line {
         fill: none !important;
         stroke: #e55361 !important;
         stroke-width: 12 !important;
@@ -297,16 +297,16 @@
         stroke-linejoin: round !important;
         stroke-dasharray: 1200 !important;
         stroke-dashoffset: 1200 !important;
-        animation: ografiCommentsHeartbeatDraw 2.5s linear infinite !important;
+        animation: ografiWidgetHeartbeatDraw 2.5s linear infinite !important;
     }
 
-    @keyframes ografiCommentsHeartbeatDraw {
+    @keyframes ografiWidgetHeartbeatDraw {
         0% { stroke-dashoffset: 1200; }
         45% { stroke-dashoffset: 0; }
         100% { stroke-dashoffset: -1200; }
     }
 
-    .ografi-comments-empty__text {
+    .ografi-widget-empty__text {
         margin-top: 10px !important;
         color: #64748b !important;
         font-size: 13px !important;
@@ -315,8 +315,8 @@
         letter-spacing: -0.01em !important;
     }
 
-    .dark .ografi-comments-empty__text,
-    [data-theme="dark"] .ografi-comments-empty__text {
+    .dark .ografi-widget-empty__text,
+    [data-theme="dark"] .ografi-widget-empty__text {
         color: #9ca3af !important;
     }
 
@@ -534,14 +534,14 @@
                     </div>
                 </div>
             @empty
-                <div class="ografi-comments-empty">
-                    <svg class="ografi-comments-empty__svg" viewBox="0 0 800 250" aria-hidden="true">
+                <div class="ografi-widget-empty">
+                    <svg class="ografi-widget-empty__svg" viewBox="0 0 800 250" aria-hidden="true">
                         <path
-                            class="ografi-comments-empty__line"
+                            class="ografi-widget-empty__line"
                             d="M20 125 L100 125 L135 35 L180 230 L235 65 L270 150 L305 110 L340 125 L780 125"
                         />
                     </svg>
-                    <div class="ografi-comments-empty__text">
+                    <div class="ografi-widget-empty__text">
                         {{ __('site.widgets.no_comments') }}
                     </div>
                 </div>
@@ -589,8 +589,16 @@
                             </div>
                         </a>
                     @empty
-                        <div class="ografi-empty-state">
-                            {{ __('site.widgets.no_posts') }}
+                        <div class="ografi-widget-empty">
+                            <svg class="ografi-widget-empty__svg" viewBox="0 0 800 250" aria-hidden="true">
+                                <path
+                                    class="ografi-widget-empty__line"
+                                    d="M20 125 L100 125 L135 35 L180 230 L235 65 L270 150 L305 110 L340 125 L780 125"
+                                />
+                            </svg>
+                            <div class="ografi-widget-empty__text">
+                                {{ __('site.widgets.no_posts') }}
+                            </div>
                         </div>
                     @endforelse
                 </div>
@@ -614,8 +622,16 @@
                     <span class="ografi-tag-row__count">{{ number_format((int) $tag->posts_count) }}</span>
                 </a>
             @empty
-                <div class="ografi-empty-state">
-                    {{ __('site.widgets.no_tags') }}
+                <div class="ografi-widget-empty">
+                    <svg class="ografi-widget-empty__svg" viewBox="0 0 800 250" aria-hidden="true">
+                        <path
+                            class="ografi-widget-empty__line"
+                            d="M20 125 L100 125 L135 35 L180 230 L235 65 L270 150 L305 110 L340 125 L780 125"
+                        />
+                    </svg>
+                    <div class="ografi-widget-empty__text">
+                        {{ __('site.widgets.no_tags') }}
+                    </div>
                 </div>
             @endforelse
         </div>
