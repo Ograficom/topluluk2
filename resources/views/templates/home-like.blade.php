@@ -405,7 +405,7 @@
             .home-feed-toolbar__read {
                 display: flex !important;
                 align-items: center !important;
-                flex-wrap: wrap !important;
+                flex-wrap: nowrap !important;
                 width: 100% !important;
                 gap: 10px !important;
                 margin: 8px 0 0 !important;
@@ -417,6 +417,7 @@
                 font-family: "Inter", system-ui, sans-serif !important;
             }
             .home-feed-toolbar__date {
+                display: block !important;
                 flex: 1 1 130px !important;
                 min-width: 0 !important;
             }
@@ -450,11 +451,28 @@
                 white-space: nowrap !important;
             }
             .home-feed-toolbar__radio input[type="radio"] {
+                appearance: none !important;
+                -webkit-appearance: none !important;
+                -moz-appearance: none !important;
+                display: inline-block !important;
                 width: 16px !important;
                 height: 16px !important;
+                min-width: 16px !important;
                 margin: 0 !important;
-                accent-color: #16a34a !important;
+                padding: 0 !important;
+                border: 2px solid #16a34a !important;
+                border-radius: 999px !important;
+                background: #fff !important;
+                box-shadow: none !important;
+                outline: none !important;
                 cursor: pointer !important;
+                box-sizing: border-box !important;
+                position: relative !important;
+                flex: 0 0 auto !important;
+            }
+            .home-feed-toolbar__radio input[type="radio"]:checked {
+                background: #16a34a !important;
+                box-shadow: inset 0 0 0 3px #fff !important;
             }
             html.dark .home-feed-toolbar__read,
             .dark .home-feed-toolbar__read {
@@ -470,22 +488,26 @@
             }
             @media (max-width: 640px) {
                 .home-feed-toolbar__read {
+                    display: grid !important;
+                    grid-template-columns: 1fr 1fr !important;
+                    align-items: stretch !important;
                     gap: 8px !important;
                     padding: 10px !important;
                     border-radius: 14px !important;
                 }
                 .home-feed-toolbar__date {
-                    flex: 1 1 calc(50% - 4px) !important;
+                    flex: none !important;
+                    min-width: 0 !important;
                 }
                 .home-feed-toolbar__date input[type="date"] {
                     min-height: 36px !important;
                     font-size: 13px !important;
                 }
                 .home-feed-toolbar__radios {
-                    flex: 1 1 100% !important;
+                    grid-column: 1 / -1 !important;
                     margin-left: 0 !important;
                     justify-content: space-between !important;
-                    padding-top: 4px !important;
+                    padding-top: 8px !important;
                     border-top: 1px solid #eef0f2 !important;
                 }
                 html.dark .home-feed-toolbar__radios,
@@ -497,8 +519,11 @@
                 }
             }
             @media (max-width: 380px) {
+                .home-feed-toolbar__read {
+                    grid-template-columns: 1fr !important;
+                }
                 .home-feed-toolbar__date {
-                    flex: 1 1 100% !important;
+                    flex: none !important;
                 }
             }
             html.dark .home-feed-toolbar__mode.is-active,
