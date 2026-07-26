@@ -340,7 +340,12 @@ Route::get('/feed/latest-check', function () {
         ->first(['id', 'published_at']);
 
     return response()->json([
+        // RSS ile iceri aktarilan gonderiler kendi orijinal (gecmis) yayin
+        // tarihiyle kaydedilebiliyor, bu yuzden id her zaman kronolojik
+        // sirayla artmiyor. "Yeni gonderi" karsilastirmasi id yerine
+        // published_at uzerinden yapilmali.
         'latest_id' => $latest?->id,
+        'latest_published_at' => optional($latest?->published_at)->toIso8601String(),
     ]);
 })->name('feed.latest-check');
 

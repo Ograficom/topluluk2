@@ -197,49 +197,70 @@
         </style>
         <script>
             (() => {
-                const btn = document.getElementById('ografiNewPostBtn');
-                if (!btn) return;
+                const init = () => {
+                    const btn = document.getElementById('ografiNewPostBtn');
+                    if (!btn) return;
 
-                const icon = btn.querySelector('.ografi-newpost-btn__icon');
-                const checkUrl = @json(route('feed.latest-check'));
+                    const icon = btn.querySelector('.ografi-newpost-btn__icon');
+                    const checkUrl = @json(route('feed.latest-check'));
 
-                const getKnownLatestId = () => {
-                    const ids = Array.from(document.querySelectorAll('[data-post-id]'))
-                        .map((el) => parseInt(el.getAttribute('data-post-id') || '0', 10))
-                        .filter((id) => Number.isFinite(id) && id > 0);
-                    return ids.length ? Math.max(...ids) : 0;
-                };
+                    // RSS ile aktarilan gonderiler kendi orijinal (gecmis) yayin
+                    // tarihiyle kaydedilebiliyor, bu yuzden id her zaman kronolojik
+                    // artmiyor. "Yeni gonderi" karsilastirmasi id yerine
+                    // published_at (data-post-published) uzerinden yapiliyor.
+                    // Not: bu script buton hemen altinda ama sayfadaki gonderi
+                    // elemanlari HTML akisinda daha asagida oldugundan, bu kodun
+                    // DOMContentLoaded sonrasina ertelenmesi sarttir - yoksa
+                    // querySelectorAll henuz parse edilmemis gonderileri hic
+                    // bulamaz ve baz tarihi hep 1970 olarak yanlis hesaplanir.
+                    const getKnownLatestPublishedAt = () => {
+                        const times = Array.from(document.querySelectorAll('[data-post-published]'))
+                            .map((el) => Date.parse(el.getAttribute('data-post-published') || ''))
+                            .filter((time) => Number.isFinite(time));
+                        return times.length ? Math.max(...times) : 0;
+                    };
 
-                let knownLatestId = getKnownLatestId();
+                    const knownLatestPublishedAt = getKnownLatestPublishedAt();
+                    let alreadyShown = false;
 
-                const checkForNewPosts = async () => {
-                    try {
-                        const response = await fetch(checkUrl, {
-                            headers: { Accept: 'application/json' },
-                            cache: 'no-store',
-                        });
-                        if (!response.ok) return;
+                    const checkForNewPosts = async () => {
+                        if (alreadyShown) return;
 
-                        const data = await response.json();
-                        const latestId = parseInt(data.latest_id || '0', 10);
+                        try {
+                            const response = await fetch(checkUrl, {
+                                headers: { Accept: 'application/json' },
+                                cache: 'no-store',
+                            });
+                            if (!response.ok) return;
 
-                        if (Number.isFinite(latestId) && latestId > knownLatestId) {
-                            btn.hidden = false;
+                            const data = await response.json();
+                            const latestPublishedAt = Date.parse(data.latest_published_at || '');
+
+                            if (Number.isFinite(latestPublishedAt) && latestPublishedAt > knownLatestPublishedAt) {
+                                btn.hidden = false;
+                                alreadyShown = true;
+                            }
+                        } catch (error) {
+                            // Sessizce yoksay, bir sonraki denemede tekrar kontrol edilecek.
                         }
-                    } catch (error) {
-                        // Sessizce yoksay, bir sonraki denemede tekrar kontrol edilecek.
-                    }
+                    };
+
+                    btn.addEventListener('click', () => {
+                        icon.classList.remove('is-spinning');
+                        void icon.offsetWidth;
+                        icon.classList.add('is-spinning');
+                        window.location.reload();
+                    });
+
+                    checkForNewPosts();
+                    window.setInterval(checkForNewPosts, 60000);
                 };
 
-                btn.addEventListener('click', () => {
-                    icon.classList.remove('is-spinning');
-                    void icon.offsetWidth;
-                    icon.classList.add('is-spinning');
-                    window.location.reload();
-                });
-
-                checkForNewPosts();
-                window.setInterval(checkForNewPosts, 30000);
+                if (document.readyState === 'loading') {
+                    document.addEventListener('DOMContentLoaded', init);
+                } else {
+                    init();
+                }
             })();
         </script>
 
