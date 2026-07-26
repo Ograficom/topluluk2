@@ -523,6 +523,8 @@
                                     class="ografi-trend-thumb"
                                     loading="lazy"
                                     decoding="async"
+                                    referrerpolicy="no-referrer"
+                                    onerror="this.replaceWith(Object.assign(document.createElement('span'), {className: 'ografi-trend-thumb'}))"
                                 >
                             @else
                                 <span class="ografi-trend-thumb"></span>
