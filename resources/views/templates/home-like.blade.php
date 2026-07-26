@@ -199,34 +199,6 @@
                 <button type="button" class="home-feed-toolbar__mode" role="tab" aria-selected="false" data-feed-mode="read">Okumak</button>
             </div>
 
-            <div class="home-feed-toolbar__period is-mode-hidden" data-feed-filter-menu="all">
-                <button
-                    type="button"
-                    class="home-feed-toolbar__period-toggle"
-                    aria-label="Gönderileri tarihe göre sırala"
-                    aria-expanded="false"
-                    data-feed-filter-toggle
-                >
-                    <span data-feed-filter-label>Bugün</span>
-                    <svg viewBox="0 0 20 20" fill="none" focusable="false" aria-hidden="true">
-                        <path d="m6 12 4-4 4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                </button>
-
-                <div class="home-feed-toolbar__dropdown" data-feed-filter-dropdown>
-                    @foreach($feedTimeFilters as $filterKey => $filterLabel)
-                        <a
-                            href="{{ $filterKey === 'latest' ? request()->fullUrlWithoutQuery(['feed_time', 'page']) : request()->fullUrlWithQuery(['feed_time' => $filterKey, 'page' => null]) }}"
-                            class="home-feed-toolbar__option @if($activeFeedTimeFilter === $filterKey) is-active @endif"
-                            data-feed-filter-option
-                            data-filter="{{ $filterKey }}"
-                        >
-                            <span>{{ $filterLabel }}</span>
-                        </a>
-                    @endforeach
-                </div>
-            </div>
-
             <div class="home-feed-toolbar__period is-mode-hidden" data-feed-filter-menu="discuss">
                 <button
                     type="button"
