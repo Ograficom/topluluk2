@@ -1463,20 +1463,21 @@ SVG;
             </div>
         </div>
 
-        @if($viewer)
-            <div class="og-action-wrap relative z-[2] inline-flex overflow-visible" data-og-action-wrap>
-                <button
-                    type="button"
-                    class="flex h-[30px] w-[30px] items-center justify-center gap-[3px] rounded-full border border-gray-200 bg-gray-100 p-0 transition hover:border-gray-300 hover:bg-gray-200"
-                    data-og-action-trigger
-                    aria-haspopup="menu"
-                    aria-expanded="false"
-                    aria-label="Menüyü aç"
-                >
-                    <span class="block h-[3px] w-[3px] rounded-full bg-gray-500"></span>
-                    <span class="block h-[3px] w-[3px] rounded-full bg-gray-500"></span>
-                    <span class="block h-[3px] w-[3px] rounded-full bg-gray-500"></span>
-                </button>
+        <div class="og-action-wrap relative z-[2] inline-flex overflow-visible" data-og-action-wrap>
+                @if($viewer)
+                    <button
+                        type="button"
+                        class="flex h-[30px] w-[30px] items-center justify-center gap-[3px] rounded-full border border-gray-200 bg-gray-100 p-0 transition hover:border-gray-300 hover:bg-gray-200"
+                        data-og-action-trigger
+                        aria-haspopup="menu"
+                        aria-expanded="false"
+                        aria-label="Menüyü aç"
+                    >
+                        <span class="block h-[3px] w-[3px] rounded-full bg-gray-500"></span>
+                        <span class="block h-[3px] w-[3px] rounded-full bg-gray-500"></span>
+                        <span class="block h-[3px] w-[3px] rounded-full bg-gray-500"></span>
+                    </button>
+                @endif
 
                 <div
                     class="og-action-menu shadcn-menu fixed z-[100] hidden w-[172px] rounded-2xl border border-gray-200 bg-white p-[6px] shadow-[0_2px_7px_rgba(0,0,0,0.025)] max-sm:w-[198px]"
@@ -1503,7 +1504,7 @@ SVG;
                     @endif
 
                     @if($isOwnPost)
-                        <form method="POST" action="{{ $pinAction }}">
+                        <form method="POST" action="{{ $pinAction }}" class="og-action-menu__item--options-only">
                             @csrf
                             <button
                                 type="submit"
@@ -1516,7 +1517,7 @@ SVG;
                     @endif
 
                     @if($bookmarkAction && $viewer)
-                        <form method="POST" action="{{ $bookmarkAction }}">
+                        <form method="POST" action="{{ $bookmarkAction }}" class="og-action-menu__item--options-only">
                             @csrf
                             <button
                                 type="submit"
@@ -1529,17 +1530,17 @@ SVG;
                     @endif
 
                     @if($isOwnPost)
-                        <div class="og-action-divider my-1.5 mx-1 h-px bg-gray-200"></div>
+                        <div class="og-action-divider my-1.5 mx-1 h-px bg-gray-200 og-action-menu__item--options-only"></div>
 
                         <a
                             href="{{ $editUrl }}"
-                            class="group flex h-10 w-full items-center gap-3 rounded-[11px] bg-transparent px-3 text-left text-sm font-normal text-gray-600 transition hover:bg-gray-100"
+                            class="group flex h-10 w-full items-center gap-3 rounded-[11px] bg-transparent px-3 text-left text-sm font-normal text-gray-600 transition hover:bg-gray-100 og-action-menu__item--options-only"
                         >
                             <iconify-icon icon="lucide:square-pen" class="h-[17px] w-[17px] min-w-[17px] text-gray-400 transition group-hover:text-amber-700"></iconify-icon>
                             <span class="font-normal text-gray-600">Düzenle</span>
                         </a>
 
-                        <form method="POST" action="{{ $deleteAction }}" onsubmit="return confirm('Bu gonderi silinsin mi?');">
+                        <form method="POST" action="{{ $deleteAction }}" onsubmit="return confirm('Bu gonderi silinsin mi?');" class="og-action-menu__item--options-only">
                             @csrf
                             @method('DELETE')
                             <button
@@ -1553,7 +1554,7 @@ SVG;
                     @elseif($reportUrl)
                         <a
                             href="{{ $reportUrl }}"
-                            class="group flex h-10 w-full items-center gap-3 rounded-[11px] bg-transparent px-3 text-left text-sm font-normal text-gray-600 transition hover:bg-gray-100"
+                            class="group flex h-10 w-full items-center gap-3 rounded-[11px] bg-transparent px-3 text-left text-sm font-normal text-gray-600 transition hover:bg-gray-100 og-action-menu__item--options-only"
                         >
                             <iconify-icon icon="lucide:flag" class="h-[17px] w-[17px] min-w-[17px] text-gray-400 transition group-hover:text-orange-600"></iconify-icon>
                             <span class="font-normal text-gray-600">Şikayet et</span>
@@ -1561,7 +1562,6 @@ SVG;
                     @endif
                 </div>
             </div>
-        @endif
     </div>
 
     <h2 class="post-title" id="post-title">
@@ -2251,6 +2251,13 @@ SVG;
         }
 
         [data-post-card-shell] .og-action-menu.hidden {
+            display: none !important;
+        }
+
+        /* Paylas (ok) ikonundan acilan menude sadece "Linki kopyala"
+           gorunsun; Sabit/Bookmark/Duzenle/Sil gibi gonderi yonetim
+           secenekleri sadece uc-nokta (...) menusunde kalsin. */
+        [data-post-card-shell] .og-action-menu[data-menu-mode="share"] .og-action-menu__item--options-only {
             display: none !important;
         }
 
@@ -9073,18 +9080,26 @@ SVG;
             };
 
             const setMenuState = function (card, open, anchorButton) {
+                // Uc-nokta (...) tetikleyicisi sadece giris yapmis kullanicilar
+                // icin render ediliyor; misafirlerde bu buton hic yok ama
+                // paylas butonu (ve menu) her zaman var - bu yuzden "button"
+                // zorunlu degil, sadece "panel" (menunun kendisi) zorunlu.
                 const button = card?.querySelector('[data-og-action-trigger]');
                 const shareButton = card?.querySelector('[data-post-card-share-menu-trigger]');
                 const panel = card?.querySelector('[data-og-action-menu]');
-                if (!button || !panel) {
+                if (!panel) {
                     return;
                 }
 
-                const positionAnchor = anchorButton || button;
+                const positionAnchor = anchorButton || button || shareButton;
 
-                button.setAttribute('aria-expanded', open && positionAnchor === button ? 'true' : 'false');
+                button?.setAttribute('aria-expanded', open && positionAnchor === button ? 'true' : 'false');
                 shareButton?.setAttribute('aria-expanded', open && positionAnchor === shareButton ? 'true' : 'false');
                 panel.classList.toggle('hidden', !open);
+
+                if (open) {
+                    panel.dataset.menuMode = positionAnchor === shareButton ? 'share' : 'options';
+                }
 
                 if (!open) {
                     panel.style.top = '';
