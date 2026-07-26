@@ -2461,10 +2461,10 @@ SVG;
 
         [data-post-card-shell] .category-badge {
             position: absolute;
-            right: -4px;
-            bottom: -4px;
-            width: 20px;
-            height: 20px;
+            right: -7px;
+            bottom: -7px;
+            width: 24px;
+            height: 24px;
             display: inline-flex;
             align-items: center;
             justify-content: center;
@@ -3792,10 +3792,10 @@ SVG;
         }
 
         [data-post-card-shell] .category-badge {
-            width: 20px;
-            height: 20px;
-            right: -4px;
-            bottom: -4px;
+            width: 24px;
+            height: 24px;
+            right: -7px;
+            bottom: -7px;
             border: 2px solid #fff;
             background: #ffffff;
             box-shadow: 0 1px 3px rgba(15, 23, 42, 0.18);
