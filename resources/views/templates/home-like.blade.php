@@ -264,14 +264,17 @@
             <div class="home-feed-toolbar__radios">
                 <label class="home-feed-toolbar__radio">
                     <input type="radio" name="home-feed-read-length" value="long" data-read-length-option>
+                    <span class="home-feed-toolbar__radio-dot" aria-hidden="true"></span>
                     <span>Uzun</span>
                 </label>
                 <label class="home-feed-toolbar__radio">
                     <input type="radio" name="home-feed-read-length" value="short" data-read-length-option>
+                    <span class="home-feed-toolbar__radio-dot" aria-hidden="true"></span>
                     <span>Kısa</span>
                 </label>
                 <label class="home-feed-toolbar__radio">
                     <input type="radio" name="home-feed-read-length" value="editor" data-read-length-option>
+                    <span class="home-feed-toolbar__radio-dot" aria-hidden="true"></span>
                     <span>Editör</span>
                 </label>
             </div>
@@ -451,28 +454,34 @@
                 white-space: nowrap !important;
             }
             .home-feed-toolbar__radio input[type="radio"] {
-                appearance: none !important;
-                -webkit-appearance: none !important;
-                -moz-appearance: none !important;
+                position: absolute !important;
+                width: 1px !important;
+                height: 1px !important;
+                margin: -1px !important;
+                padding: 0 !important;
+                border: 0 !important;
+                overflow: hidden !important;
+                clip: rect(0, 0, 0, 0) !important;
+                white-space: nowrap !important;
+            }
+            .home-feed-toolbar__radio-dot {
                 display: inline-block !important;
                 width: 16px !important;
                 height: 16px !important;
                 min-width: 16px !important;
-                margin: 0 !important;
-                padding: 0 !important;
                 border: 2px solid #16a34a !important;
-                border-radius: 999px !important;
+                border-radius: 50% !important;
                 background: #fff !important;
-                box-shadow: none !important;
-                outline: none !important;
-                cursor: pointer !important;
                 box-sizing: border-box !important;
-                position: relative !important;
                 flex: 0 0 auto !important;
             }
-            .home-feed-toolbar__radio input[type="radio"]:checked {
+            .home-feed-toolbar__radio input[type="radio"]:checked + .home-feed-toolbar__radio-dot {
                 background: #16a34a !important;
                 box-shadow: inset 0 0 0 3px #fff !important;
+            }
+            .home-feed-toolbar__radio input[type="radio"]:focus-visible + .home-feed-toolbar__radio-dot {
+                outline: 2px solid #16a34a !important;
+                outline-offset: 2px !important;
             }
             html.dark .home-feed-toolbar__read,
             .dark .home-feed-toolbar__read {
