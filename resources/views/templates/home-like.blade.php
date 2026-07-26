@@ -447,7 +447,7 @@
                 display: inline-flex !important;
                 align-items: center !important;
                 gap: 5px !important;
-                color: #16a34a !important;
+                color: #111827 !important;
                 font-size: 13px !important;
                 font-weight: 600 !important;
                 cursor: pointer !important;
@@ -469,18 +469,18 @@
                 width: 16px !important;
                 height: 16px !important;
                 min-width: 16px !important;
-                border: 2px solid #16a34a !important;
+                border: 2px solid #2563eb !important;
                 border-radius: 50% !important;
                 background: #fff !important;
                 box-sizing: border-box !important;
                 flex: 0 0 auto !important;
             }
             .home-feed-toolbar__radio input[type="radio"]:checked + .home-feed-toolbar__radio-dot {
-                background: #16a34a !important;
+                background: #2563eb !important;
                 box-shadow: inset 0 0 0 3px #fff !important;
             }
             .home-feed-toolbar__radio input[type="radio"]:focus-visible + .home-feed-toolbar__radio-dot {
-                outline: 2px solid #16a34a !important;
+                outline: 2px solid #2563eb !important;
                 outline-offset: 2px !important;
             }
             html.dark .home-feed-toolbar__read,
