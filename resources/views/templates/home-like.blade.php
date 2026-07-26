@@ -93,39 +93,37 @@
 
 @section('content')
     <div class="home-feed-shell space-y-6 pt-2 sm:pt-3 lg:pt-4">
-        <div class="ografi-newpost-wrap">
-            <button type="button" class="ografi-newpost-btn" id="ografiNewPostBtn" data-newpost-btn hidden>
-                <svg class="ografi-newpost-btn__icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                    <path d="M20 11a8.1 8.1 0 0 0-15.5-2M4 5v4h4m-4 4a8.1 8.1 0 0 0 15.5 2M20 19v-4h-4"
-                        stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path>
-                </svg>
-                <span class="ografi-newpost-btn__text">yeni gönderiler var</span>
-            </button>
-        </div>
+        <button type="button" class="ografi-newpost-btn" id="ografiNewPostBtn" data-newpost-btn hidden>
+            <svg class="ografi-newpost-btn__icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M20 11a8.1 8.1 0 0 0-15.5-2M4 5v4h4m-4 4a8.1 8.1 0 0 0 15.5 2M20 19v-4h-4"
+                    stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path>
+            </svg>
+            <span class="ografi-newpost-btn__text">yeni gönderiler var</span>
+        </button>
 
         <style>
-            .ografi-newpost-wrap {
-                display: flex;
-                justify-content: center;
-            }
-
             .ografi-newpost-btn {
+                position: fixed;
+                top: calc(var(--header-height, 64px) + 10px);
+                left: 50%;
+                transform: translateX(-50%);
+                z-index: 500;
                 display: inline-flex;
                 align-items: center;
                 gap: 10px;
-                margin-bottom: 10px;
+                margin: 0;
                 background-color: #ffffff;
                 border: 1px solid #dcdfe3;
                 border-radius: 9999px;
                 padding: 10px 18px;
                 cursor: pointer;
-                box-shadow: 0 1px 2px rgba(15, 23, 42, .04);
+                box-shadow: 0 2px 8px rgba(15, 23, 42, .12);
                 outline: none;
-                max-width: 100%;
+                max-width: calc(100% - 24px);
                 box-sizing: border-box;
                 -webkit-tap-highlight-color: transparent;
                 touch-action: manipulation;
-                transition: background-color .2s ease, opacity .2s ease, transform .2s ease;
+                transition: background-color .2s ease, opacity .2s ease;
             }
 
             .ografi-newpost-btn[hidden] {
