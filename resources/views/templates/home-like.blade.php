@@ -304,7 +304,7 @@
             }
             .home-feed-toolbar__period {
                 position: relative !important;
-                margin-left: 2px !important;
+                margin-left: auto !important;
             }
             .home-feed-toolbar__period-toggle {
                 gap: 3px !important;
@@ -5417,6 +5417,7 @@ html body .home-feed-shell .home-feed-toolbar__mode.is-active {
         min-height: 34px !important;
         padding: 2px 4px !important;
         margin: 0 !important;
+        border: 0 !important;
         border-radius: 16px !important;
         transform: none !important;
     }
@@ -5436,6 +5437,11 @@ html body .home-feed-shell .home-feed-toolbar__mode.is-active {
 
     html body .home-feed-shell .home-feed-toolbar__mode.is-active {
         font-weight: 700 !important;
+    }
+
+    html body .home-feed-shell .home-feed-toolbar__period-toggle {
+        padding: 0 4px 0 8px !important;
+        font-size: 12px !important;
     }
 }
 </style>
