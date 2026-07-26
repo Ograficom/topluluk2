@@ -477,9 +477,9 @@
                         </div>
 
                         <a href="{{ $commentUrl }}" class="ografi-comment-body-link">
-                            <div class="ografi-comment-text">
+                            <p class="ografi-comment-text">
                                 {{ $commentText }}
-                            </div>
+                            </p>
 
                             <div class="ografi-comment-time">
                                 {{ optional($comment->created_at)->diffForHumans() ?? __('site.common.recently') }}
