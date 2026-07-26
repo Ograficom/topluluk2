@@ -292,7 +292,8 @@
                 font-family: "Inter", system-ui, sans-serif !important;
             }
 
-            .home-feed-toolbar__period.is-mode-hidden {
+            .home-feed-toolbar__period.is-mode-hidden,
+            .home-feed-toolbar__read.is-mode-hidden {
                 display: none !important;
             }
             .home-feed-toolbar__modes {
