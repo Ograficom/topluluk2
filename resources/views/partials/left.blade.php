@@ -29,6 +29,7 @@
             'color' => $badgeColors[$index % count($badgeColors)],
             'url' => route('blog.category', ['category' => $category->slug]),
             'slug' => (string) $category->slug,
+            'avatarUrl' => $category->profile_image_url,
         ];
     });
     $staticFooterLinks = collect([
@@ -1427,9 +1428,21 @@
                             class="sidebar-category-link"
                             data-active="{{ $category['slug'] !== '' && $activeCategorySlug === $category['slug'] ? 'true' : 'false' }}"
                         >
-                            <span class="sidebar-category-avatar sidebar-category-avatar--fallback" style="background-color: {{ $category['color'] }} !important;">
-                                {{ $category['initials'] }}
-                            </span>
+                            @if($category['avatarUrl'])
+                                <img
+                                    src="{{ $category['avatarUrl'] }}"
+                                    alt="{{ $category['name'] }}"
+                                    class="sidebar-category-avatar"
+                                    loading="lazy"
+                                    decoding="async"
+                                    referrerpolicy="no-referrer"
+                                    onerror="this.replaceWith(Object.assign(document.createElement('span'), {className: 'sidebar-category-avatar sidebar-category-avatar--fallback', style: 'background-color: {{ $category['color'] }} !important;', textContent: '{{ $category['initials'] }}'}))"
+                                >
+                            @else
+                                <span class="sidebar-category-avatar sidebar-category-avatar--fallback" style="background-color: {{ $category['color'] }} !important;">
+                                    {{ $category['initials'] }}
+                                </span>
+                            @endif
                             <span class="sidebar-category-name">{{ $category['name'] }}</span>
                         </a>
                     @endforeach
