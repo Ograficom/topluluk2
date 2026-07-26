@@ -2461,10 +2461,10 @@ SVG;
 
         [data-post-card-shell] .category-badge {
             position: absolute;
-            right: -2px;
-            bottom: -2px;
-            width: 18px;
-            height: 18px;
+            right: -4px;
+            bottom: -4px;
+            width: 20px;
+            height: 20px;
             display: inline-flex;
             align-items: center;
             justify-content: center;
@@ -2472,7 +2472,7 @@ SVG;
             border: 2px solid #fff;
             border-radius: 999px;
             background: #fff;
-            box-shadow: 0 1px 2px rgba(15, 23, 42, 0.12);
+            box-shadow: 0 1px 3px rgba(15, 23, 42, 0.18);
         }
 
         [data-post-card-shell] .category-badge__image {
@@ -3794,11 +3794,11 @@ SVG;
         [data-post-card-shell] .category-badge {
             width: 20px;
             height: 20px;
-            right: -3px;
-            bottom: -3px;
-            border: 0;
+            right: -4px;
+            bottom: -4px;
+            border: 2px solid #fff;
             background: #ffffff;
-            box-shadow: none;
+            box-shadow: 0 1px 3px rgba(15, 23, 42, 0.18);
         }
 
         [data-post-card-shell] .category-badge__fallback {
