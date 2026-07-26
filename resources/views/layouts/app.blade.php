@@ -333,6 +333,19 @@
         .layout-side {
             min-width: 0;
         }
+        /* Tailwind'in "hidden lg:block" varyant siniflari, projedeki
+           tailwind.config.cjs/Vite build zincirinde bir uyumsuzluk nedeniyle
+           derlenen CSS'e hic girmiyor (lg:/dark:/hover: gibi tum varyantlar
+           etkileniyor) - bu yuzden sol/sag sidebar'i masaustunde gostermek
+           icin ayni davranisi elle CSS ile yeniden olusturuyoruz. */
+        .ografi-sidebar-responsive {
+            display: none !important;
+        }
+        @media (min-width: 1024px) {
+            .ografi-sidebar-responsive {
+                display: block !important;
+            }
+        }
         .layout-main {
             min-width: 0;
             width: 100%;
@@ -6825,7 +6838,7 @@
         @yield('custom_shell')
     @else
         <div class="main-grid {{ $__env->hasSection('no_container_padding') ? 'main-grid--no-pad' : 'main-grid--padded' }}">
-            <aside class="hidden lg:block layout-side layout-side--left">
+            <aside class="ografi-sidebar-responsive layout-side layout-side--left">
                 @include('partials.ads.context-slot', [
                     'slotKey' => 'ads_left_sidebar_top',
                 ])
@@ -6861,7 +6874,7 @@
                 ])
             </main>
 
-            <aside class="hidden lg:block space-y-6 custom-scrollbar layout-side layout-side--right">
+            <aside class="ografi-sidebar-responsive space-y-6 custom-scrollbar layout-side layout-side--right">
                 @include('partials.right')
             </aside>
         </div>
