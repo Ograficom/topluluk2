@@ -4502,6 +4502,19 @@
 
 
 
+
+            if (widgets.length > 0) {
+                loadMarketData();
+                window.__ografiLiveMarketInterval = setInterval(loadMarketData, 60000);
+            }
+        })();
+    </script>
+
+    <script>
+        // Feed toolbar (Tum/Tartismak/Okumak, tarih/uzunluk filtreleri) - piyasa
+        // widget elementinin sayfada olup olmamasindan bagimsiz calismasi icin
+        // ayri bir IIFE'de, disari alindi.
+        (() => {
             const feedFilterState = {
                 active: @json($activeFeedTimeFilter),
                 labels: @json($feedTimeFilters),
@@ -4762,11 +4775,6 @@
             });
 
             applyFeedFilter(feedFilterState.active || 'latest');
-
-            if (widgets.length > 0) {
-                loadMarketData();
-                window.__ografiLiveMarketInterval = setInterval(loadMarketData, 60000);
-            }
         })();
     </script>
     <script>
