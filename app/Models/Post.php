@@ -74,11 +74,16 @@ class Post extends Model
 
         static::created(function (Post $post) {
             $post->notifyCategoryFollowersIfPublished();
+
+            if ($post->isPublishedNow()) {
+                event(\App\Events\PostPublished::fromPost($post));
+            }
         });
 
         static::updated(function (Post $post) {
             if (!$post->wasPublishedBeforeUpdate() && $post->isPublishedNow()) {
                 $post->notifyCategoryFollowers();
+                event(\App\Events\PostPublished::fromPost($post));
             }
         });
 

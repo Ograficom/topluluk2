@@ -220,9 +220,35 @@
                         return times.length ? Math.max(...times) : 0;
                     };
 
-                    const knownLatestPublishedAt = getKnownLatestPublishedAt();
+                    let knownLatestPublishedAt = getKnownLatestPublishedAt();
                     let alreadyShown = false;
 
+                    const maybeShowFor = (publishedAtRaw) => {
+                        if (alreadyShown) return;
+
+                        const publishedAt = Date.parse(publishedAtRaw || '');
+                        if (Number.isFinite(publishedAt) && publishedAt > knownLatestPublishedAt) {
+                            btn.hidden = false;
+                            alreadyShown = true;
+                        }
+                    };
+
+                    // Ana yontem: Reverb (WebSocket) uzerinden PostPublished
+                    // yayinini anlik dinle - gonderi paylasilir paylasilmaz
+                    // (Facebook/Twitter tarzi) buton aninda beliriyor.
+                    if (window.Echo) {
+                        try {
+                            window.Echo.channel('posts').listen('.PostPublished', (event) => {
+                                maybeShowFor(event.published_at);
+                            });
+                        } catch (error) {
+                            // Echo/Reverb baglanamazsa asagidaki periyodik kontrol
+                            // yedek olarak calismaya devam eder.
+                        }
+                    }
+
+                    // Yedek yontem: WebSocket baglantisi kurulamazsa (sunucuda
+                    // Reverb calismiyorsa vb.) periyodik kontrol ile devam eder.
                     const checkForNewPosts = async () => {
                         if (alreadyShown) return;
 
@@ -234,12 +260,7 @@
                             if (!response.ok) return;
 
                             const data = await response.json();
-                            const latestPublishedAt = Date.parse(data.latest_published_at || '');
-
-                            if (Number.isFinite(latestPublishedAt) && latestPublishedAt > knownLatestPublishedAt) {
-                                btn.hidden = false;
-                                alreadyShown = true;
-                            }
+                            maybeShowFor(data.latest_published_at);
                         } catch (error) {
                             // Sessizce yoksay, bir sonraki denemede tekrar kontrol edilecek.
                         }
