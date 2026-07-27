@@ -18,7 +18,7 @@ class SidebarWidgets extends Page implements HasForms
 
     protected string $view = 'filament.pages.sidebar-widgets';
     protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-view-columns';
-    protected static string | \UnitEnum | null $navigationGroup = 'Site';
+    protected static string | \UnitEnum | null $navigationGroup = 'Ayarlar';
     protected static ?string $navigationLabel = 'Sag Sutun Widget Ayarlari';
 
     public array $state = [];

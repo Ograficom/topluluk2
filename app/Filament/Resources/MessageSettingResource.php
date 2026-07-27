@@ -18,7 +18,7 @@ class MessageSettingResource extends Resource
 {
     protected static ?string $model = MessageSetting::class;
 
-    protected static string | \UnitEnum | null $navigationGroup = 'Ayarlar';
+    protected static string | \UnitEnum | null $navigationGroup = 'Mesajlar';
 
     protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-chat-bubble-left-right';
 

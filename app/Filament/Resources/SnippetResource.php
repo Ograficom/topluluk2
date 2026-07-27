@@ -20,7 +20,7 @@ class SnippetResource extends Resource
 {
     protected static ?string $model = Snippet::class;
 
-    protected static string | \UnitEnum | null $navigationGroup = 'Icerik';
+    protected static string | \UnitEnum | null $navigationGroup = 'Sayfalar ve SEO';
 
     protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-code-bracket-square';
 

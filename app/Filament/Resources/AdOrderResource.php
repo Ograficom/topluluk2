@@ -22,7 +22,7 @@ class AdOrderResource extends Resource
 {
     protected static ?string $model = AdOrder::class;
 
-    protected static string | \UnitEnum | null $navigationGroup = 'Icerik';
+    protected static string | \UnitEnum | null $navigationGroup = 'Ayarlar';
 
     protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-megaphone';
 

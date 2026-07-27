@@ -15,7 +15,7 @@ class SitemapSettings extends Page implements HasForms
 
     protected string $view = 'filament.pages.sitemap-settings';
     protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-rss';
-    protected static string | \UnitEnum | null $navigationGroup = 'Site';
+    protected static string | \UnitEnum | null $navigationGroup = 'Sayfalar ve SEO';
     protected static ?string $navigationLabel = 'Sitemap Ayarlari';
 
     protected ?SitemapManager $manager = null;

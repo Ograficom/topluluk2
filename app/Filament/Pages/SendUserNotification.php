@@ -21,7 +21,7 @@ class SendUserNotification extends Page implements HasForms
 
     protected string $view = 'filament.pages.send-user-notification';
     protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-bell';
-    protected static string | \UnitEnum | null $navigationGroup = 'Bildirimler';
+    protected static string | \UnitEnum | null $navigationGroup = 'Mesajlar';
     protected static ?string $navigationLabel = 'Bildirim Gonder';
 
     public array $state = [];

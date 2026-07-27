@@ -7,6 +7,7 @@ use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
+use Filament\Navigation\NavigationGroup;
 use Filament\Pages;
 use Filament\Panel;
 use Filament\PanelProvider;
@@ -46,8 +47,17 @@ class AdminPanelProvider extends PanelProvider
                 Widgets\AccountWidget::class,
                 Widgets\FilamentInfoWidget::class,
             ])
+            ->navigationGroups([
+                NavigationGroup::make('Blog'),
+                NavigationGroup::make('Sayfalar ve SEO'),
+                NavigationGroup::make('Mesajlar'),
+                NavigationGroup::make('Kullanicilar'),
+                NavigationGroup::make('Moderasyon'),
+                NavigationGroup::make('Ayarlar'),
+            ])
             ->plugins([
-                FilamentEmailTemplatesPlugin::make(),
+                FilamentEmailTemplatesPlugin::make()
+                    ->navigationGroup('Mesajlar'),
                 FilamentSecurityPlugin::make(),
             ])
             ->middleware([

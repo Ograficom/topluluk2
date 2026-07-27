@@ -24,7 +24,7 @@ class ContactSubmissionResource extends Resource
 {
     protected static ?string $model = ContactSubmission::class;
 
-    protected static string | \UnitEnum | null $navigationGroup = 'Iletisim';
+    protected static string | \UnitEnum | null $navigationGroup = 'Mesajlar';
 
     protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-envelope';
 

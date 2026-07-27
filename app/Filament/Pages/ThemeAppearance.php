@@ -21,7 +21,7 @@ class ThemeAppearance extends Page implements HasForms
 
     protected string $view = 'filament.pages.theme-appearance';
     protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-swatch';
-    protected static string | \UnitEnum | null $navigationGroup = 'Site';
+    protected static string | \UnitEnum | null $navigationGroup = 'Ayarlar';
     protected static ?string $navigationLabel = 'Gorunum Ayarlari';
 
     public array $state = [];

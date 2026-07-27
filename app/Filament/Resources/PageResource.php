@@ -19,7 +19,7 @@ class PageResource extends Resource
 
     protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-document-text';
 
-    protected static string | \UnitEnum | null $navigationGroup = 'Icerik';
+    protected static string | \UnitEnum | null $navigationGroup = 'Sayfalar ve SEO';
 
     protected static ?string $navigationLabel = 'Sayfalar';
 

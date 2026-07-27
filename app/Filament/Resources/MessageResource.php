@@ -13,7 +13,7 @@ class MessageResource extends Resource
 {
     protected static ?string $model = Message::class;
 
-    protected static string | \UnitEnum | null $navigationGroup = 'Iletisim';
+    protected static string | \UnitEnum | null $navigationGroup = 'Mesajlar';
 
     protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-chat-bubble-left-right';
 

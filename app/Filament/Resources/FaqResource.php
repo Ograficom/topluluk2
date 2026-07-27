@@ -22,7 +22,7 @@ class FaqResource extends Resource
 {
     protected static ?string $model = Faq::class;
 
-    protected static string | \UnitEnum | null $navigationGroup = 'Icerik';
+    protected static string | \UnitEnum | null $navigationGroup = 'Sayfalar ve SEO';
 
     protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-question-mark-circle';
 
