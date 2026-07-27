@@ -632,7 +632,7 @@
         border: 1px solid rgba(226, 232, 240, 0.95) !important;
         border-radius: 24px !important;
         background: #ffffff !important;
-        box-shadow: none !important;
+        box-shadow: 0 12px 32px -8px rgba(15, 23, 42, 0.16), 0 2px 8px rgba(15, 23, 42, 0.06) !important;
         backdrop-filter: none !important;
         -webkit-backdrop-filter: none !important;
         transition: none !important;
@@ -650,7 +650,7 @@
         background: #ffffff !important;
         border-left: 1px solid rgba(226, 232, 240, 0.95) !important;
         border-top: 1px solid rgba(226, 232, 240, 0.95) !important;
-        box-shadow: none !important;
+        box-shadow: -2px -2px 4px -2px rgba(15, 23, 42, 0.06) !important;
     }
 
     .site-user-menu-card {
@@ -816,17 +816,15 @@
 
     button[data-user-menu-btn] {
         border-radius: 9999px !important;
-        outline-offset: 2px !important;
     }
 
     button[data-user-menu-btn] > :is(img, .site-avatar-fallback) {
-        border: 2px solid #ffffff !important;
-        outline: 1px solid #e2e8f0 !important;
         box-sizing: border-box !important;
+        box-shadow: inset 0 0 0 1.5px rgba(255, 255, 255, 0.9) !important;
     }
 
     button[data-user-menu-btn][aria-expanded="true"] > :is(img, .site-avatar-fallback) {
-        outline: 1px solid #93c5fd !important;
+        box-shadow: inset 0 0 0 1.5px #bfdbfe !important;
     }
 
     /*
@@ -1053,6 +1051,11 @@
         box-shadow: none !important;
     }
 
+    html.dark .site-menu-panel,
+    .dark .site-menu-panel {
+        box-shadow: 0 12px 32px -8px rgba(0, 0, 0, 0.45), 0 2px 8px rgba(0, 0, 0, 0.25) !important;
+    }
+
     html.dark .site-notifications-panel-head,
     .dark .site-notifications-panel-head,
     html.dark .site-notifications-footer-link,
@@ -1120,8 +1123,7 @@
 
     html.dark button[data-user-menu-btn] > :is(img, .site-avatar-fallback),
     .dark button[data-user-menu-btn] > :is(img, .site-avatar-fallback) {
-        border-color: #0f172a !important;
-        outline-color: #334155 !important;
+        box-shadow: inset 0 0 0 1.5px rgba(15, 23, 42, 0.85) !important;
     }
 
     html.dark .site-user-menu-card,
@@ -1673,6 +1675,11 @@
         background-color: #020617 !important;
         border-color: #334155 !important;
         box-shadow: none !important;
+    }
+
+    html.dark .site-menu-panel,
+    .dark .site-menu-panel {
+        box-shadow: 0 12px 32px -8px rgba(0, 0, 0, 0.5), 0 2px 8px rgba(0, 0, 0, 0.3) !important;
     }
 
     html.dark .site-notifications-panel-title,
