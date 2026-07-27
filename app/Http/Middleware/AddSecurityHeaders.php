@@ -58,6 +58,15 @@ class AddSecurityHeaders
             $response->headers->set('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
         }
 
+        // Eski PWA service worker'i kaydi olan tarayicilarda sayfa bazen bayat
+        // (eski) cache'ten servis edilip yorum/etiket gibi widget'lar bos
+        // gorunebiliyordu. Bu header, sayfanin kendi temizlik script'i hic
+        // calisamasa bile tarayiciyi service worker'i silmeye zorluyor
+        // (genel HTTP cache'e dokunmuyor, performansi etkilemiyor).
+        if (!$response->headers->has('Clear-Site-Data')) {
+            $response->headers->set('Clear-Site-Data', '"service-workers"');
+        }
+
         return $response;
     }
 }

@@ -659,27 +659,31 @@
         display: flex !important;
         align-items: center !important;
         gap: 12px !important;
-        padding: 12px !important;
+        padding: 14px 12px !important;
         margin-bottom: 8px !important;
         border-radius: 18px !important;
-        background: #f8fafc !important;
+        background: linear-gradient(135deg, #eff6ff 0%, #f8fafc 65%) !important;
         border: 1px solid #e2e8f0 !important;
         box-shadow: none !important;
     }
 
     .site-user-menu-avatar {
-        width: 46px !important;
-        height: 46px !important;
+        width: 48px !important;
+        height: 48px !important;
         border-radius: 9999px !important;
         display: inline-flex !important;
         align-items: center !important;
         justify-content: center !important;
         flex: 0 0 auto !important;
         overflow: hidden !important;
-        background: #dbeafe !important;
-        color: #2563eb !important;
-        font-size: 14px !important;
-        font-weight: 400 !important;
+        background: linear-gradient(135deg, #60a5fa 0%, #2563eb 100%) !important;
+        color: #ffffff !important;
+        font-size: 15px !important;
+        font-weight: 600 !important;
+        letter-spacing: 0.01em !important;
+        border: 2px solid #ffffff !important;
+        outline: 1px solid #dbeafe !important;
+        box-sizing: border-box !important;
         box-shadow: none !important;
     }
 
@@ -699,8 +703,8 @@
     .site-user-menu-name {
         display: block !important;
         color: #0f172a !important;
-        font-size: 14px !important;
-        font-weight: 400 !important;
+        font-size: 14.5px !important;
+        font-weight: 600 !important;
         line-height: 1.25 !important;
         overflow: hidden !important;
         text-overflow: ellipsis !important;
@@ -802,10 +806,27 @@
     }
 
     button[data-user-menu-btn] .site-avatar-fallback {
-        background: #e0edff !important;
-        color: #4f46e5 !important;
-        font-weight: 400 !important;
+        background: linear-gradient(135deg, #60a5fa 0%, #2563eb 100%) !important;
+        background-image: linear-gradient(135deg, #60a5fa 0%, #2563eb 100%) !important;
+        color: #ffffff !important;
+        font-weight: 600 !important;
+        letter-spacing: 0.01em !important;
         box-shadow: none !important;
+    }
+
+    button[data-user-menu-btn] {
+        border-radius: 9999px !important;
+        outline-offset: 2px !important;
+    }
+
+    button[data-user-menu-btn] > :is(img, .site-avatar-fallback) {
+        border: 2px solid #ffffff !important;
+        outline: 1px solid #e2e8f0 !important;
+        box-sizing: border-box !important;
+    }
+
+    button[data-user-menu-btn][aria-expanded="true"] > :is(img, .site-avatar-fallback) {
+        outline: 1px solid #93c5fd !important;
     }
 
     /*
@@ -1091,16 +1112,31 @@
 
     html.dark button[data-user-menu-btn] .site-avatar-fallback,
     .dark button[data-user-menu-btn] .site-avatar-fallback {
-        background: #1e3a8a !important;
-        color: #dbeafe !important;
-        font-weight: 400 !important;
+        background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%) !important;
+        background-image: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%) !important;
+        color: #ffffff !important;
+        font-weight: 600 !important;
+    }
+
+    html.dark button[data-user-menu-btn] > :is(img, .site-avatar-fallback),
+    .dark button[data-user-menu-btn] > :is(img, .site-avatar-fallback) {
+        border-color: #0f172a !important;
+        outline-color: #334155 !important;
     }
 
     html.dark .site-user-menu-card,
     .dark .site-user-menu-card {
-        background: #111827 !important;
+        background: linear-gradient(135deg, #1e293b 0%, #111827 65%) !important;
         border-color: #1e293b !important;
         box-shadow: none !important;
+    }
+
+    html.dark .site-user-menu-avatar,
+    .dark .site-user-menu-avatar {
+        background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%) !important;
+        color: #ffffff !important;
+        border-color: #111827 !important;
+        outline-color: #1e3a8a !important;
     }
 
     html.dark .site-user-menu-divider,
@@ -1896,6 +1932,12 @@
                 ?? $currentUser?->avatar
                 ?? $currentUser?->photo
                 ?? null;
+            // Gercek fotograf yoksa Jetstream, ui-avatars.com'dan solgun/marka disi
+            // bir yer tutucu uretiyor; onun yerine kendi gradyanli ilk harf
+            // rozetimizi gostermek icin bu jenerik yer tutucuyu yok sayiyoruz.
+            if ($avatarUrl && str_contains($avatarUrl, 'ui-avatars.com')) {
+                $avatarUrl = null;
+            }
             $initial = $currentUser
                 ? strtoupper(mb_substr($currentUser->name ?? 'U', 0, 1))
                 : 'U';
