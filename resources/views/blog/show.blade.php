@@ -4956,6 +4956,7 @@
 
   .post-show-shell .ps-mention-live-layer,
   .post-show-shell .ps-mention-live-input {
+    display: block !important;
     width: 100% !important;
     min-height: inherit !important;
     margin: 0 !important;
