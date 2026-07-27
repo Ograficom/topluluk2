@@ -1,49 +1,57 @@
-<x-action-section>
-    <x-slot name="title"></x-slot>
-
-    <x-slot name="description"></x-slot>
-
-    <x-slot name="content">
-        <div class="max-w-xl text-sm text-gray-600">
-            {{ __('Once your account is deleted, all of its resources and data will be permanently deleted. Before deleting your account, please download any data or information that you wish to retain.') }}
+<div id="section-danger" class="settings-card settings-card--danger">
+    <div class="settings-card__head">
+        <span class="settings-card__icon">
+            <iconify-icon icon="lucide:trash-2"></iconify-icon>
+        </span>
+        <div class="min-w-0">
+            <h2 class="settings-card__title">Hesabı Sil</h2>
+            <p class="settings-card__desc">
+                Tehlikeli alan — bu işlem geri alınamaz.
+            </p>
         </div>
+    </div>
 
-        <div class="mt-5">
+    <div class="settings-card__body">
+        <p class="text-sm leading-relaxed text-slate-500">
+            Hesabın silindiğinde tüm içerik ve verilerin kalıcı olarak silinir. Hesabını silmeden önce saklamak istediğin verileri indirdiğinden emin ol.
+        </p>
+
+        <div class="mt-4">
             <x-danger-button wire:click="confirmUserDeletion" wire:loading.attr="disabled">
-                {{ __('Delete Account') }}
+                <iconify-icon icon="lucide:trash-2" style="font-size: 14px;"></iconify-icon>
+                Hesabı Sil
             </x-danger-button>
         </div>
+    </div>
 
-        <!-- Delete User Confirmation Modal -->
-        <x-dialog-modal wire:model.live="confirmingUserDeletion">
-            <x-slot name="title">
-                {{ __('Delete Account') }}
-            </x-slot>
+    <x-dialog-modal wire:model.live="confirmingUserDeletion">
+        <x-slot name="title">
+            Hesabı Sil
+        </x-slot>
 
-            <x-slot name="content">
-                {{ __('Are you sure you want to delete your account? Once your account is deleted, all of its resources and data will be permanently deleted. Please enter your password to confirm you would like to permanently delete your account.') }}
+        <x-slot name="content">
+            Hesabını silmek istediğinden emin misin? Hesabın silindiğinde tüm içerik ve verilerin kalıcı olarak silinir. Onaylamak için lütfen şifreni gir.
 
-                <div class="mt-4" x-data="{}" x-on:confirming-delete-user.window="setTimeout(() => $refs.password.focus(), 250)">
-                    <x-input type="password" class="mt-1 block w-3/4"
-                                autocomplete="current-password"
-                                placeholder="{{ __('Password') }}"
-                                x-ref="password"
-                                wire:model="password"
-                                wire:keydown.enter="deleteUser" />
+            <div class="mt-4" x-data="{}" x-on:confirming-delete-user.window="setTimeout(() => $refs.password.focus(), 250)">
+                <input type="password" class="block w-full rounded-2xl border border-input bg-transparent px-3.5 py-2.5 text-sm shadow-sm outline-none focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring"
+                       autocomplete="current-password"
+                       placeholder="Şifre"
+                       x-ref="password"
+                       wire:model="password"
+                       wire:keydown.enter="deleteUser">
 
-                    <x-input-error for="password" class="mt-2" />
-                </div>
-            </x-slot>
+                <x-input-error for="password" class="mt-2" />
+            </div>
+        </x-slot>
 
-            <x-slot name="footer">
-                <x-secondary-button wire:click="$toggle('confirmingUserDeletion')" wire:loading.attr="disabled">
-                    {{ __('Cancel') }}
-                </x-secondary-button>
+        <x-slot name="footer">
+            <x-secondary-button wire:click="$toggle('confirmingUserDeletion')" wire:loading.attr="disabled">
+                İptal
+            </x-secondary-button>
 
-                <x-danger-button class="ms-3" wire:click="deleteUser" wire:loading.attr="disabled">
-                    {{ __('Delete Account') }}
-                </x-danger-button>
-            </x-slot>
-        </x-dialog-modal>
-    </x-slot>
-</x-action-section>
+            <x-danger-button class="ms-3" wire:click="deleteUser" wire:loading.attr="disabled">
+                Hesabı Sil
+            </x-danger-button>
+        </x-slot>
+    </x-dialog-modal>
+</div>
