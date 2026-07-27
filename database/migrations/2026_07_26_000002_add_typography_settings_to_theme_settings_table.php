@@ -10,8 +10,8 @@ return new class extends Migration
     {
         Schema::table('theme_settings', function (Blueprint $table) {
             foreach (['heading', 'body', 'button', 'nav', 'code'] as $role) {
-                $table->string("font_{$role}_file")->nullable();
-                $table->string("font_{$role}_fallback")->nullable();
+                $table->text("font_{$role}_file")->nullable();
+                $table->text("font_{$role}_fallback")->nullable();
             }
         });
     }
