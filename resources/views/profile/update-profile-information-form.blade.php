@@ -45,7 +45,7 @@
 
                     <div class="absolute right-3 top-3 flex gap-2">
                         <button type="button"
-                                class="inline-flex items-center gap-1.5 rounded-full bg-white/90 px-3 py-1.5 text-xs font-medium text-slate-800 shadow-sm backdrop-blur transition hover:bg-white"
+                                class="settings-cover-btn inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-medium shadow-sm backdrop-blur transition"
                                 x-on:click.prevent="$refs.cover_photo.click()">
                             <iconify-icon icon="lucide:image-up" style="font-size: 14px;"></iconify-icon>
                             Kapağı değiştir
@@ -53,7 +53,7 @@
 
                         @if ($this->user->cover_photo_path)
                             <button type="button"
-                                    class="inline-flex h-7 w-7 items-center justify-center rounded-full bg-white/90 text-slate-600 shadow-sm backdrop-blur transition hover:bg-white hover:text-red-600"
+                                    class="settings-cover-btn inline-flex h-7 w-7 items-center justify-center rounded-full shadow-sm backdrop-blur transition"
                                     wire:click="deleteCoverPhoto"
                                     aria-label="Kapak görselini kaldır">
                                 <iconify-icon icon="lucide:trash-2" style="font-size: 14px;"></iconify-icon>
@@ -82,7 +82,7 @@
                     </div>
 
                     <button type="button"
-                            class="absolute -bottom-0.5 -right-0.5 inline-flex h-8 w-8 items-center justify-center rounded-full border-2 border-white bg-slate-900 text-white shadow-sm transition hover:bg-slate-700"
+                            class="settings-avatar-cam-btn absolute -bottom-0.5 -right-0.5 inline-flex h-8 w-8 items-center justify-center rounded-full border-2 shadow-sm transition"
                             x-on:click.prevent="$refs.photo.click()"
                             aria-label="Profil fotoğrafını değiştir">
                         <iconify-icon icon="lucide:camera" style="font-size: 14px;"></iconify-icon>
@@ -139,7 +139,7 @@
                             E-posta adresin doğrulanmadı
                         </span>
 
-                        <button type="button" class="text-xs font-medium text-blue-600 underline-offset-2 hover:underline" wire:click.prevent="sendEmailVerification">
+                        <button type="button" class="settings-link-btn text-xs font-medium underline-offset-2 hover:underline" wire:click.prevent="sendEmailVerification">
                             Doğrulama bağlantısını yeniden gönder
                         </button>
                     </div>

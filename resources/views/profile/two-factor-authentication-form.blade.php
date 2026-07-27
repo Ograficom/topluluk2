@@ -45,7 +45,7 @@
                         <div class="mt-1 flex items-center gap-2">
                             <code x-ref="setupKey" class="truncate rounded-lg bg-white px-2.5 py-1.5 font-mono text-xs text-slate-700 ring-1 ring-slate-200">{{ decrypt($this->user->two_factor_secret) }}</code>
                             <button type="button"
-                                    class="inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-lg text-slate-400 transition hover:bg-white hover:text-slate-700"
+                                    class="settings-icon-btn inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-lg transition"
                                     x-on:click="navigator.clipboard.writeText($refs.setupKey.textContent.trim()); copied = true; setTimeout(() => copied = false, 1500)"
                                     aria-label="Kurulum anahtarını kopyala">
                                 <iconify-icon x-bind:icon="copied ? 'lucide:check' : 'lucide:copy'" style="font-size: 14px;"></iconify-icon>

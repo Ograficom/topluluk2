@@ -356,7 +356,7 @@
 
     .og-avatar-button {
         display: inline-flex !important;
-        margin-top: -76px !important;
+        margin-top: -64px !important;
         padding: 0 !important;
         border: 0 !important;
         border-radius: 999px !important;
@@ -367,8 +367,8 @@
 
     .og-avatar {
         display: inline-flex !important;
-        width: 152px !important;
-        height: 152px !important;
+        width: 128px !important;
+        height: 128px !important;
         align-items: center !important;
         justify-content: center !important;
         overflow: hidden !important;
@@ -376,7 +376,7 @@
         border-radius: 999px !important;
         background: #d9e5ef !important;
         color: #0a66c2 !important;
-        font-size: 54px !important;
+        font-size: 46px !important;
         font-weight: 600 !important;
         line-height: 1 !important;
         box-shadow: none !important;
@@ -423,7 +423,7 @@
     .og-avatar-wrap {
         position: relative !important;
         display: inline-flex !important;
-        margin-top: -76px !important;
+        margin-top: -64px !important;
         flex: 0 0 auto !important;
     }
 
@@ -461,7 +461,7 @@
 
     @media (max-width: 640px) {
         .og-avatar-wrap {
-            margin-top: -52px !important;
+            margin-top: -44px !important;
         }
 
         .og-avatar-edit-btn {
@@ -1014,19 +1014,33 @@
     }
 
     .og-sort-option {
-        display: block !important;
+        display: flex !important;
+        align-items: center !important;
+        gap: 10px !important;
+        min-height: 40px !important;
         border-radius: 0 !important;
         color: var(--og-li-text) !important;
-        padding: 10px 14px !important;
+        padding: 0 14px !important;
         font-size: 14px !important;
         font-weight: 500 !important;
         text-decoration: none !important;
+    }
+
+    .og-sort-option svg {
+        flex-shrink: 0 !important;
+        color: var(--og-li-muted) !important;
     }
 
     .og-sort-option:hover,
     .og-sort-option:focus-visible,
     .og-sort-option[aria-current="true"] {
         background: var(--og-li-hover) !important;
+        color: var(--og-li-blue) !important;
+    }
+
+    .og-sort-option:hover svg,
+    .og-sort-option:focus-visible svg,
+    .og-sort-option[aria-current="true"] svg {
         color: var(--og-li-blue) !important;
     }
 
@@ -1587,14 +1601,14 @@
         }
 
         .og-avatar-button {
-            margin-top: -52px !important;
+            margin-top: -44px !important;
         }
 
         .og-avatar {
-            width: 104px !important;
-            height: 104px !important;
+            width: 88px !important;
+            height: 88px !important;
             border-width: 3px !important;
-            font-size: 38px !important;
+            font-size: 32px !important;
         }
 
         .og-actions {
@@ -2990,7 +3004,14 @@
                         </summary>
                         <div class="og-sort-panel">
                             @foreach($sortOptions as $sortKey => $sortLabel)
-                                <a href="{{ route('users.show', ['user' => $user, 'tab' => 'stories', 'sort' => $sortKey]) }}" class="og-sort-option" aria-current="{{ $activeSort === $sortKey ? 'true' : 'false' }}">{{ $sortLabel }}</a>
+                                <a href="{{ route('users.show', ['user' => $user, 'tab' => 'stories', 'sort' => $sortKey]) }}" class="og-sort-option" aria-current="{{ $activeSort === $sortKey ? 'true' : 'false' }}">
+                                    @if($sortKey === 'popular')
+                                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M12 2c1 3-2 4-2 7a3 3 0 0 0 6 0c1.5 1 2 3 2 4.5a6 6 0 1 1-12 0C6 9 9 8 12 2Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>
+                                    @else
+                                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M13 3a9 9 0 1 0 8.5 12" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><path d="M21 3v6h-6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                                    @endif
+                                    <span>{{ $sortLabel }}</span>
+                                </a>
                             @endforeach
                         </div>
                     </details>

@@ -271,6 +271,98 @@
                 color: #027a48;
                 border: 1px solid rgba(2, 122, 72, 0.16);
             }
+
+            /*
+             * Sitede tum <button> elemanlari icin genel bir sifirlama var
+             * (body.alma-app :where(button, ...) { background:#fff!important; color:#18181b!important }),
+             * bu yuzden bu sayfadaki mavi/kirmizi butonlar bu genel kurali daha
+             * spesifik + !important secicilerle ezmesi gerekiyor.
+             */
+            .settings-card button.bg-primary {
+                background: #2563eb !important;
+                border-color: #2563eb !important;
+                color: #ffffff !important;
+            }
+
+            .settings-card button.bg-primary:hover {
+                background: #1d4ed8 !important;
+                border-color: #1d4ed8 !important;
+                color: #ffffff !important;
+            }
+
+            .settings-card button.bg-primary:disabled {
+                background: #93b4f5 !important;
+                border-color: #93b4f5 !important;
+                color: #ffffff !important;
+            }
+
+            .settings-card button.bg-secondary {
+                background: #f1f5f9 !important;
+                border-color: #f1f5f9 !important;
+                color: #334155 !important;
+            }
+
+            .settings-card button.bg-secondary:hover {
+                background: #e2e8f0 !important;
+                border-color: #e2e8f0 !important;
+                color: #0f172a !important;
+            }
+
+            .settings-card button.bg-destructive {
+                background: #dc2626 !important;
+                border-color: #dc2626 !important;
+                color: #ffffff !important;
+            }
+
+            .settings-card button.bg-destructive:hover {
+                background: #b91c1c !important;
+                border-color: #b91c1c !important;
+                color: #ffffff !important;
+            }
+
+            .settings-card .settings-cover-btn {
+                background: rgba(255, 255, 255, 0.92) !important;
+                border-color: transparent !important;
+                color: #1e293b !important;
+            }
+
+            .settings-card .settings-cover-btn:hover {
+                background: #ffffff !important;
+                color: #dc2626 !important;
+            }
+
+            .settings-card .settings-avatar-cam-btn {
+                background: #0f172a !important;
+                border-color: #ffffff !important;
+                color: #ffffff !important;
+            }
+
+            .settings-card .settings-avatar-cam-btn:hover {
+                background: #1e293b !important;
+                color: #ffffff !important;
+            }
+
+            .settings-card .settings-icon-btn {
+                background: transparent !important;
+                border-color: transparent !important;
+                color: #94a3b8 !important;
+            }
+
+            .settings-card .settings-icon-btn:hover {
+                background: transparent !important;
+                color: #475569 !important;
+            }
+
+            .settings-card .settings-link-btn {
+                background: transparent !important;
+                border-color: transparent !important;
+                color: #2563eb !important;
+            }
+
+            .settings-card .settings-link-btn:hover {
+                background: transparent !important;
+                color: #1d4ed8 !important;
+            }
         </style>
     @endonce
 </x-app-layout>

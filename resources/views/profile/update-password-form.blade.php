@@ -19,7 +19,7 @@
                 <label for="current_password" class="settings-field-label">Mevcut şifre</label>
                 <div class="relative">
                     <input :type="show ? 'text' : 'password'" id="current_password" class="{{ $fieldClass }}" wire:model="state.current_password" autocomplete="current-password">
-                    <button type="button" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 transition hover:text-slate-600" x-on:click="show = !show" tabindex="-1">
+                    <button type="button" class="settings-icon-btn absolute right-3 top-1/2 -translate-y-1/2 transition" x-on:click="show = !show" tabindex="-1">
                         <iconify-icon x-bind:icon="show ? 'lucide:eye-off' : 'lucide:eye'" style="font-size: 16px;"></iconify-icon>
                     </button>
                 </div>
@@ -30,7 +30,7 @@
                 <label for="password" class="settings-field-label">Yeni şifre</label>
                 <div class="relative">
                     <input :type="show ? 'text' : 'password'" id="password" class="{{ $fieldClass }}" wire:model="state.password" autocomplete="new-password">
-                    <button type="button" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 transition hover:text-slate-600" x-on:click="show = !show" tabindex="-1">
+                    <button type="button" class="settings-icon-btn absolute right-3 top-1/2 -translate-y-1/2 transition" x-on:click="show = !show" tabindex="-1">
                         <iconify-icon x-bind:icon="show ? 'lucide:eye-off' : 'lucide:eye'" style="font-size: 16px;"></iconify-icon>
                     </button>
                 </div>
@@ -41,7 +41,7 @@
                 <label for="password_confirmation" class="settings-field-label">Yeni şifre (tekrar)</label>
                 <div class="relative">
                     <input :type="show ? 'text' : 'password'" id="password_confirmation" class="{{ $fieldClass }}" wire:model="state.password_confirmation" autocomplete="new-password">
-                    <button type="button" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 transition hover:text-slate-600" x-on:click="show = !show" tabindex="-1">
+                    <button type="button" class="settings-icon-btn absolute right-3 top-1/2 -translate-y-1/2 transition" x-on:click="show = !show" tabindex="-1">
                         <iconify-icon x-bind:icon="show ? 'lucide:eye-off' : 'lucide:eye'" style="font-size: 16px;"></iconify-icon>
                     </button>
                 </div>
