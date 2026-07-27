@@ -403,18 +403,18 @@
                   </button>
                   <div class="ogx-comment-menu" data-comment-more-menu hidden>
                     @if($canEditComment && \Illuminate\Support\Facades\Route::has('blog.comment.update'))
-                      <button type="button" data-comment-edit-toggle="#edit-form-{{ $comment->id }}">Düzenle</button>
+                      <button type="button" data-comment-edit-toggle="#edit-form-{{ $comment->id }}"><iconify-icon icon="lucide:pencil" class="ogx-comment-menu-icon"></iconify-icon><span>Düzenle</span></button>
                     @endif
                     @if($canEditComment && \Illuminate\Support\Facades\Route::has('blog.comment.delete'))
                       <form method="POST" action="{{ route('blog.comment.delete', $comment) }}" onsubmit="return confirm('Bu yorum silinsin mi?');">
                         @csrf
                         @method('DELETE')
-                        <button class="danger" type="submit">Sil</button>
+                        <button class="danger" type="submit"><iconify-icon icon="lucide:trash-2" class="ogx-comment-menu-icon"></iconify-icon><span>Sil</span></button>
                       </form>
                     @endif
-                    <button type="button" data-comment-share-link data-url="{{ url()->current() }}#comment-{{ $comment->id }}">Paylaş</button>
+                    <button type="button" data-comment-share-link data-url="{{ url()->current() }}#comment-{{ $comment->id }}"><iconify-icon icon="lucide:share-2" class="ogx-comment-menu-icon"></iconify-icon><span>Paylaş</span></button>
                     @if($commentReportUrl)
-                      <a href="{{ $commentReportUrl }}" @if($commentReportUrl === '#') onclick="event.preventDefault();" @endif>Şikayet et</a>
+                      <a href="{{ $commentReportUrl }}" @if($commentReportUrl === '#') onclick="event.preventDefault();" @endif><iconify-icon icon="lucide:flag" class="ogx-comment-menu-icon"></iconify-icon><span>Şikayet et</span></a>
                     @endif
                   </div>
                 </div>
@@ -593,18 +593,18 @@
                             </button>
                             <div class="ogx-comment-menu" data-comment-more-menu hidden>
                               @if($canEditReply && \Illuminate\Support\Facades\Route::has('blog.comment.update'))
-                                <button type="button" data-comment-edit-toggle="#edit-form-{{ $reply->id }}">Düzenle</button>
+                                <button type="button" data-comment-edit-toggle="#edit-form-{{ $reply->id }}"><iconify-icon icon="lucide:pencil" class="ogx-comment-menu-icon"></iconify-icon><span>Düzenle</span></button>
                               @endif
                               @if($canEditReply && \Illuminate\Support\Facades\Route::has('blog.comment.delete'))
                                 <form method="POST" action="{{ route('blog.comment.delete', $reply) }}" onsubmit="return confirm('Bu yanıt silinsin mi?');">
                                   @csrf
                                   @method('DELETE')
-                                  <button class="danger" type="submit">Sil</button>
+                                  <button class="danger" type="submit"><iconify-icon icon="lucide:trash-2" class="ogx-comment-menu-icon"></iconify-icon><span>Sil</span></button>
                                 </form>
                               @endif
-                              <button type="button" data-comment-share-link data-url="{{ url()->current() }}#comment-{{ $reply->id }}">Paylaş</button>
+                              <button type="button" data-comment-share-link data-url="{{ url()->current() }}#comment-{{ $reply->id }}"><iconify-icon icon="lucide:share-2" class="ogx-comment-menu-icon"></iconify-icon><span>Paylaş</span></button>
                               @if($replyReportUrl)
-                                <a href="{{ $replyReportUrl }}" @if($replyReportUrl === '#') onclick="event.preventDefault();" @endif>Şikayet et</a>
+                                <a href="{{ $replyReportUrl }}" @if($replyReportUrl === '#') onclick="event.preventDefault();" @endif><iconify-icon icon="lucide:flag" class="ogx-comment-menu-icon"></iconify-icon><span>Şikayet et</span></a>
                               @endif
                             </div>
                           </div>
@@ -926,6 +926,25 @@
 
   .ogx-comment-menu button.is-copied {
     background: #ecfdf5 !important;
+    color: #059669 !important;
+  }
+
+  .ogx-comment-menu button,
+  .ogx-comment-menu a {
+    justify-content: flex-start !important;
+  }
+
+  .ogx-comment-menu-icon {
+    font-size: 16px !important;
+    min-width: 16px !important;
+    color: #9ca3af !important;
+  }
+
+  .ogx-comment-menu .danger .ogx-comment-menu-icon {
+    color: #dc2626 !important;
+  }
+
+  .ogx-comment-menu button.is-copied .ogx-comment-menu-icon {
     color: #059669 !important;
   }
 
@@ -1303,7 +1322,7 @@
     padding: 10px !important;
     border: 1px solid #d7dbe0 !important;
     border-radius: 10px !important;
-    background: #eef0f3 !important;
+    background: #ffffff !important;
   }
 
   .ogx-reply-compose:focus-within {
@@ -1344,14 +1363,18 @@
     cursor: pointer !important;
   }
 
-  .ogx-ghost-btn {
+  html body .ogx-ghost-btn {
     background: #ffffff !important;
     color: #374151 !important;
   }
 
-  .ogx-primary-btn {
+  html body .ogx-primary-btn {
     background: #2563eb !important;
     color: #ffffff !important;
+  }
+
+  html body .ogx-primary-btn:hover {
+    background: #1d4ed8 !important;
   }
 
   .ogx-replies {
@@ -2044,14 +2067,15 @@
     if (shareBtn) {
       event.preventDefault();
       var shareUrl = shareBtn.getAttribute('data-url') || window.location.href;
-      var revertText = shareBtn.textContent;
+      var shareLabel = shareBtn.querySelector('span');
+      var revertText = shareLabel ? shareLabel.textContent : shareBtn.textContent;
 
       var markCopied = function () {
         shareBtn.classList.add('is-copied');
-        shareBtn.textContent = 'Kopyalandı!';
+        if (shareLabel) shareLabel.textContent = 'Kopyalandı!'; else shareBtn.textContent = 'Kopyalandı!';
         window.setTimeout(function () {
           shareBtn.classList.remove('is-copied');
-          shareBtn.textContent = revertText;
+          if (shareLabel) shareLabel.textContent = revertText; else shareBtn.textContent = revertText;
         }, 1200);
       };
 
