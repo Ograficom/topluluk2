@@ -389,6 +389,91 @@
         object-fit: cover !important;
     }
 
+    .og-cover-edit-btn {
+        position: absolute !important;
+        top: 12px !important;
+        right: 12px !important;
+        z-index: 1 !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        gap: 6px !important;
+        border: 0 !important;
+        border-radius: 999px !important;
+        background: rgba(255, 255, 255, 0.92) !important;
+        backdrop-filter: blur(4px) !important;
+        padding: 7px 14px !important;
+        color: #18181b !important;
+        font-size: 12px !important;
+        font-weight: 500 !important;
+        line-height: 1 !important;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, .12) !important;
+        transition: background-color .15s ease !important;
+    }
+
+    .og-cover-edit-btn:hover,
+    .og-cover-edit-btn:focus-visible {
+        background: #ffffff !important;
+        color: #18181b !important;
+    }
+
+    .og-cover-edit-btn iconify-icon {
+        font-size: 14px !important;
+    }
+
+    .og-avatar-wrap {
+        position: relative !important;
+        display: inline-flex !important;
+        margin-top: -76px !important;
+        flex: 0 0 auto !important;
+    }
+
+    .og-avatar-wrap .og-avatar-button {
+        margin-top: 0 !important;
+    }
+
+    .og-avatar-edit-btn {
+        position: absolute !important;
+        right: 4px !important;
+        bottom: 4px !important;
+        z-index: 1 !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        width: 32px !important;
+        height: 32px !important;
+        border: 2px solid var(--og-li-card) !important;
+        border-radius: 999px !important;
+        background: var(--og-li-blue) !important;
+        color: #ffffff !important;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, .16) !important;
+        transition: background-color .15s ease !important;
+    }
+
+    .og-avatar-edit-btn:hover,
+    .og-avatar-edit-btn:focus-visible {
+        background: var(--og-li-blue-hover) !important;
+        color: #ffffff !important;
+    }
+
+    .og-avatar-edit-btn iconify-icon {
+        font-size: 14px !important;
+    }
+
+    @media (max-width: 640px) {
+        .og-avatar-wrap {
+            margin-top: -52px !important;
+        }
+
+        .og-avatar-edit-btn {
+            width: 26px !important;
+            height: 26px !important;
+        }
+
+        .og-avatar-edit-btn iconify-icon {
+            font-size: 12px !important;
+        }
+    }
+
     .og-actions {
         display: flex !important;
         align-items: center !important;
@@ -2628,19 +2713,44 @@
                             onerror="this.remove();"
                         >
                     @endif
+
+                    @if($isOwnProfile)
+                        <a href="{{ route('profile.edit') }}#section-profile" class="og-cover-edit-btn" aria-label="{{ app()->getLocale() === 'tr' ? 'Kapak görselini değiştir' : 'Change cover photo' }}">
+                            <iconify-icon icon="lucide:image-up"></iconify-icon>
+                            {{ app()->getLocale() === 'tr' ? 'Kapağı değiştir' : 'Change cover' }}
+                        </a>
+                    @endif
                 </div>
 
                 <div class="og-body">
                     <div class="og-topline">
-                        <button type="button" class="og-avatar-button" data-profile-avatar-open aria-label="{{ $profileHeadingTitle }}">
-                            <span class="og-avatar">
-                                @if($profileUrl)
-                                    <img src="{{ $profileUrl }}" alt="{{ $profileHeadingTitle }}" loading="lazy">
-                                @else
-                                    <span>{{ $profileInitial }}</span>
-                                @endif
-                            </span>
-                        </button>
+                        @if($isOwnProfile)
+                            <div class="og-avatar-wrap">
+                                <button type="button" class="og-avatar-button" data-profile-avatar-open aria-label="{{ $profileHeadingTitle }}">
+                                    <span class="og-avatar">
+                                        @if($profileUrl)
+                                            <img src="{{ $profileUrl }}" alt="{{ $profileHeadingTitle }}" loading="lazy">
+                                        @else
+                                            <span>{{ $profileInitial }}</span>
+                                        @endif
+                                    </span>
+                                </button>
+
+                                <a href="{{ route('profile.edit') }}#section-profile" class="og-avatar-edit-btn" aria-label="{{ app()->getLocale() === 'tr' ? 'Profil fotoğrafını değiştir' : 'Change profile photo' }}">
+                                    <iconify-icon icon="lucide:camera"></iconify-icon>
+                                </a>
+                            </div>
+                        @else
+                            <button type="button" class="og-avatar-button" data-profile-avatar-open aria-label="{{ $profileHeadingTitle }}">
+                                <span class="og-avatar">
+                                    @if($profileUrl)
+                                        <img src="{{ $profileUrl }}" alt="{{ $profileHeadingTitle }}" loading="lazy">
+                                    @else
+                                        <span>{{ $profileInitial }}</span>
+                                    @endif
+                                </span>
+                            </button>
+                        @endif
 
                         <div class="og-actions">
                             @if(!$isOwnProfile)

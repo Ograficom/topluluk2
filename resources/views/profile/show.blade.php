@@ -158,23 +158,23 @@
             }
 
             .settings-quicknav__pill.is-active {
-                background: #2563eb;
-                border-color: #2563eb;
-                color: #ffffff;
+                background: #2563eb !important;
+                border-color: #2563eb !important;
+                color: #ffffff !important;
             }
 
             .settings-quicknav__pill.is-active iconify-icon {
-                color: #ffffff;
+                color: #ffffff !important;
             }
 
             .settings-quicknav__pill--danger.is-active {
-                background: #dc2626;
-                border-color: #dc2626;
-                color: #ffffff;
+                background: #dc2626 !important;
+                border-color: #dc2626 !important;
+                color: #ffffff !important;
             }
 
             .settings-quicknav__pill--danger.is-active iconify-icon {
-                color: #ffffff;
+                color: #ffffff !important;
             }
 
             .settings-card {
