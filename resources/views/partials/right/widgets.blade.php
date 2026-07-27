@@ -295,14 +295,18 @@
         stroke-width: 12 !important;
         stroke-linecap: round !important;
         stroke-linejoin: round !important;
-        stroke-dasharray: 1200 !important;
-        stroke-dashoffset: 1200 !important;
+        /* Onceki "ciz - sil - tekrar" desenninde animasyonun buyuk bolumu
+           (dashoffset 0'dan -1200'e giderken) cizgi tamamen gorunmez
+           oluyordu - rastgele bir anda bakinca kutu bos gorunuyordu.
+           Bunun yerine 1200px'lik yolun uzerinde surekli kayan kisa bir
+           segment kullaniyoruz: her zaman bir kismi gorunur, hic bos an
+           olmuyor. */
+        stroke-dasharray: 250 950 !important;
         animation: ografiWidgetHeartbeatDraw 2.5s linear infinite !important;
     }
 
     @keyframes ografiWidgetHeartbeatDraw {
-        0% { stroke-dashoffset: 1200; }
-        45% { stroke-dashoffset: 0; }
+        0% { stroke-dashoffset: 0; }
         100% { stroke-dashoffset: -1200; }
     }
 
