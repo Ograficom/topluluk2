@@ -396,7 +396,7 @@
                 @endunless
               @endauth
 
-              @if($canEditComment || $commentReportUrl)
+              @if(true)
                 <div class="ogx-menu-wrap" data-comment-more>
                   <button class="ogx-more-btn" type="button" data-comment-more-trigger aria-haspopup="menu" aria-expanded="false" aria-label="Yorum menüsü">
                     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 12h.01M12 12h.01M17.5 12h.01" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round"/></svg>
@@ -412,6 +412,7 @@
                         <button class="danger" type="submit">Sil</button>
                       </form>
                     @endif
+                    <button type="button" data-comment-share-link data-url="{{ url()->current() }}#comment-{{ $comment->id }}">Paylaş</button>
                     @if($commentReportUrl)
                       <a href="{{ $commentReportUrl }}" @if($commentReportUrl === '#') onclick="event.preventDefault();" @endif>Şikayet et</a>
                     @endif
@@ -585,7 +586,7 @@
                           @endif
                         </div>
 
-                        @if($canEditReply || $replyReportUrl)
+                        @if(true)
                           <div class="ogx-menu-wrap" data-comment-more>
                             <button class="ogx-more-btn" type="button" data-comment-more-trigger aria-haspopup="menu" aria-expanded="false" aria-label="Yanıt menüsü">
                               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 12h.01M12 12h.01M17.5 12h.01" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round"/></svg>
@@ -601,6 +602,7 @@
                                   <button class="danger" type="submit">Sil</button>
                                 </form>
                               @endif
+                              <button type="button" data-comment-share-link data-url="{{ url()->current() }}#comment-{{ $reply->id }}">Paylaş</button>
                               @if($replyReportUrl)
                                 <a href="{{ $replyReportUrl }}" @if($replyReportUrl === '#') onclick="event.preventDefault();" @endif>Şikayet et</a>
                               @endif
@@ -914,8 +916,17 @@
   .ogx-filter-item.is-active,
   .ogx-comment-menu button:hover,
   .ogx-comment-menu a:hover {
-    background: transparent !important;
-    color: #2563eb !important;
+    background: #f3f4f6 !important;
+    color: #18181b !important;
+  }
+
+  .ogx-comment-menu .danger:hover {
+    color: #dc2626 !important;
+  }
+
+  .ogx-comment-menu button.is-copied {
+    background: #ecfdf5 !important;
+    color: #059669 !important;
   }
 
   .ogx-filter-item.is-active::after {
@@ -2029,6 +2040,49 @@
       return;
     }
 
+    var shareBtn = closestIn(event.target, '[data-comment-share-link]', root);
+    if (shareBtn) {
+      event.preventDefault();
+      var shareUrl = shareBtn.getAttribute('data-url') || window.location.href;
+      var revertText = shareBtn.textContent;
+
+      var markCopied = function () {
+        shareBtn.classList.add('is-copied');
+        shareBtn.textContent = 'Kopyalandı!';
+        window.setTimeout(function () {
+          shareBtn.classList.remove('is-copied');
+          shareBtn.textContent = revertText;
+        }, 1200);
+      };
+
+      if (navigator.clipboard && navigator.clipboard.writeText && window.isSecureContext) {
+        navigator.clipboard.writeText(shareUrl).then(markCopied).catch(function () {
+          window.prompt('Linki kopyala:', shareUrl);
+        });
+      } else {
+        var textarea = document.createElement('textarea');
+        textarea.value = shareUrl;
+        textarea.setAttribute('readonly', 'readonly');
+        textarea.style.position = 'fixed';
+        textarea.style.left = '-9999px';
+        document.body.appendChild(textarea);
+        textarea.select();
+        try {
+          document.execCommand('copy');
+          markCopied();
+        } catch (error) {
+          window.prompt('Linki kopyala:', shareUrl);
+        } finally {
+          textarea.remove();
+        }
+      }
+
+      window.setTimeout(function () {
+        closeMenus(root, null);
+      }, 700);
+      return;
+    }
+
     var toggle = closestIn(event.target, '[data-comment-reply-toggle], [data-comment-edit-toggle]', root);
     if (toggle) {
       event.preventDefault();
@@ -2259,8 +2313,12 @@
   }
 
   html body .post-show-shell #show-comment-form.has-comment-ready .ogx3-submit {
-    background: var(--foreground, #18181b) !important;
+    background: #2563eb !important;
     opacity: 1 !important;
+  }
+
+  html body .post-show-shell #show-comment-form.has-comment-ready .ogx3-submit:hover {
+    background: #1d4ed8 !important;
   }
 
   html body .post-show-shell #show-comment-form .ogx3-submit:disabled {

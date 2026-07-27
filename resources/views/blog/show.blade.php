@@ -11803,9 +11803,13 @@ body.dark .post-show-shell .ps-comment-more-item--danger:focus-visible,
     });
 
     const markShareCopied = function (button) {
+      const label = button.querySelector('span');
+      const originalText = label ? label.textContent : null;
       button.classList.add('is-copied');
+      if (label) label.textContent = 'Kopyalandı!';
       window.setTimeout(function () {
         button.classList.remove('is-copied');
+        if (label && originalText !== null) label.textContent = originalText;
       }, 1200);
     };
 
@@ -11895,7 +11899,9 @@ body.dark .post-show-shell .ps-comment-more-item--danger:focus-visible,
       const url = shareButton.getAttribute('data-url') || window.location.href;
 
       fallbackCopyPostLink(url, shareButton);
-      closeAllShareMenus();
+      window.setTimeout(function () {
+        closeAllShareMenus();
+      }, 700);
     });
 
     const locker = document.querySelector('[data-nsfw-locker]');
@@ -14816,6 +14822,16 @@ body.dark .post-show-shell .ps-reaction-trigger,
   font-size: 17px !important;
   min-width: 17px !important;
   color: #9ca3af !important;
+}
+
+.ps-share-menu__item.is-copied,
+.ps-share-menu__item.is-copied:hover {
+  background: #ecfdf5 !important;
+  color: #059669 !important;
+}
+
+.ps-share-menu__item.is-copied .ps-share-menu__icon {
+  color: #059669 !important;
 }
 
 html.dark .ps-share-menu,
