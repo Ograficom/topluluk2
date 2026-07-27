@@ -24,8 +24,12 @@
             class="inline-flex h-11 items-center justify-center rounded-[14px] bg-transparent transition hover:bg-transparent {{ $homeActive ? 'text-emerald-600' : 'text-slate-900' }}"
             aria-label="{{ __('site.mobile_nav.home') }}"
         >
-            <svg class="h-6 w-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.9" d="m4.75 10.75 7.25-6 7.25 6V19a1.25 1.25 0 0 1-1.25 1.25h-3.25v-4.5a1.25 1.25 0 0 0-1.25-1.25h-3a1.25 1.25 0 0 0-1.25 1.25v4.5H6A1.25 1.25 0 0 1 4.75 19v-8.25Z" />
+            <svg class="h-6 w-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <path d="M0 0h24v24H0z" fill="none" />
+                <g fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path d="M2 12.204c0-2.289 0-3.433.52-4.381c.518-.949 1.467-1.537 3.364-2.715l2-1.241C9.889 2.622 10.892 2 12 2s2.11.622 4.116 1.867l2 1.241c1.897 1.178 2.846 1.766 3.365 2.715S22 9.915 22 12.203v1.522c0 3.9 0 5.851-1.172 7.063S17.771 22 14 22h-4c-3.771 0-5.657 0-6.828-1.212S2 17.626 2 13.725z" />
+                    <path stroke-linecap="round" d="M12 15v3" />
+                </g>
             </svg>
             <span class="sr-only">{{ __('site.mobile_nav.home') }}</span>
         </a>

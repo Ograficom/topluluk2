@@ -6921,6 +6921,22 @@
                 display: none !important;
             }
 
+            /*
+             * Bu genislik araliginda sol/sag sidebar gizleniyor, ama menuye
+             * ulasmanin tek yolu olan hamburger tetikleyicisi normalde
+             * sadece <1024px'de gorunuyordu (lg:hidden). Tablet/kucuk masaustu
+             * genisliginde de menuye erisim kalsin diye burada tekrar acik.
+             */
+            html body.alma-app:not(#comments):not(#app) .mobile-sidebar-trigger {
+                display: inline-flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+            }
+
+            html body.alma-app:not(#comments):not(#app) #mobile-sidebar-drawer {
+                display: block !important;
+            }
+
             html body.alma-app:not(#comments):not(#app) .main-grid > main.layout-main {
                 grid-column: 1 !important;
                 grid-row: 1 !important;

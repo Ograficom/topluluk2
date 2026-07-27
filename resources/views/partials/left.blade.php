@@ -1271,26 +1271,33 @@
 
         body.alma-app .sidebar-wrapper--drawer .sidebar-category-avatar,
         body.alma-app .sidebar-wrapper--drawer .sidebar-category-avatar--fallback {
-            width: 26px !important;
-            height: 26px !important;
-            min-width: 26px !important;
-            min-height: 26px !important;
-            max-width: 26px !important;
-            max-height: 26px !important;
-            flex: 0 0 26px !important;
-            font-size: 11px !important;
+            width: 42px !important;
+            height: 42px !important;
+            min-width: 42px !important;
+            min-height: 42px !important;
+            max-width: 42px !important;
+            max-height: 42px !important;
+            flex: 0 0 42px !important;
+            font-size: 15px !important;
         }
 
         body.alma-app .sidebar-wrapper--drawer .nav-item:is(:hover, :focus-visible, :active),
         body.alma-app .sidebar-wrapper--drawer .sidebar-category-link:is(:hover, :focus-visible, :active) {
-            background: #f3f4f6 !important;
+            background: #eff6ff !important;
             border-radius: 14px !important;
-            color: #4b5563 !important;
+            color: #2563eb !important;
         }
 
         body.alma-app .sidebar-wrapper--drawer .nav-item:is(:hover, :focus-visible, :active) .nav-item-icon-outline,
-        body.alma-app .sidebar-wrapper--drawer .nav-item:is(:hover, :focus-visible, :active) .nav-item-icon-outline :is(iconify-icon, svg) {
-            color: #6b7280 !important;
+        body.alma-app .sidebar-wrapper--drawer .nav-item:is(:hover, :focus-visible, :active) .nav-item-icon-outline :is(iconify-icon, svg),
+        body.alma-app .sidebar-wrapper--drawer .nav-item:is(:hover, :focus-visible, :active) .nav-item-label,
+        body.alma-app .sidebar-wrapper--drawer .sidebar-category-link:is(:hover, :focus-visible, :active) .sidebar-category-name,
+        body.alma-app .sidebar-wrapper--drawer .sidebar-category-link:is(:hover, :focus-visible, :active) .sidebar-category-avatar--fallback {
+            color: #2563eb !important;
+        }
+
+        body.alma-app .sidebar-wrapper--drawer .sidebar-category-link:is(:hover, :focus-visible, :active) .sidebar-category-avatar {
+            border-color: rgba(37, 99, 235, 0.35) !important;
         }
 
         body.alma-app .sidebar-wrapper--drawer .nav-item[data-active="true"] {

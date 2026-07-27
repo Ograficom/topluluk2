@@ -2256,6 +2256,20 @@
         background: #ff0000 !important;
     }
 
+    /* Dokunma hedefi mobilde 44px onerilen minimuma yaklastirildi (32px cok kucuktu). */
+    @media (max-width: 640px) {
+        .og-social {
+            width: 40px !important;
+            min-width: 40px !important;
+            height: 40px !important;
+        }
+
+        .og-social svg {
+            width: 19px !important;
+            height: 19px !important;
+        }
+    }
+
     /* Rozetler: 3B donen kureden duz, pul/muhur seklinde (Duolingo tarzi) rozete gecis */
     .og-badge::before,
     .og-badge::after {
@@ -2912,7 +2926,7 @@
                                     </a>
                                 @endif
                                 @foreach($socialPills as $pill)
-                                    <a href="{{ $pill['url'] }}" target="_blank" rel="noopener noreferrer" class="og-social {{ $pill['class'] }}" aria-label="{{ $pill['label'] }}" title="{{ $pill['label'] }}">
+                                    <a href="{{ $pill['url'] }}" target="_blank" rel="noopener noreferrer" data-external-bridge="off" class="og-social {{ $pill['class'] }}" aria-label="{{ $pill['label'] }}" title="{{ $pill['label'] }}">
                                         @switch($pill['platform'])
                                             @case('facebook')
                                                 <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M14 8.35h2.2V5.08c-.38-.05-1.68-.16-3.2-.16-3.16 0-5.33 1.88-5.33 5.36v3H4.2v3.66h3.47V24h4.25v-7.06h3.33l.53-3.66h-3.86v-2.64c0-1.06.3-2.29 2.08-2.29Z"/></svg>
