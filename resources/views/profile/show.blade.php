@@ -34,53 +34,71 @@
             <p class="mt-1 text-sm text-slate-500">Herkese açık profilini ve hesap güvenliğini buradan yönet.</p>
         </div>
 
-        <nav class="settings-quicknav" aria-label="Profil ayarları bölümleri">
-            <a href="#section-profile" class="settings-quicknav__pill">
-                <iconify-icon icon="lucide:user-round"></iconify-icon>
-                Profil
-            </a>
-            @if (Laravel\Fortify\Features::enabled(Laravel\Fortify\Features::updatePasswords()))
-                <a href="#section-password" class="settings-quicknav__pill">
-                    <iconify-icon icon="lucide:lock"></iconify-icon>
-                    Şifre
+        <div
+            x-data="{
+                tab: (window.location.hash || '#section-profile').replace('#section-', ''),
+                go(name) { this.tab = name; window.location.hash = 'section-' + name; },
+            }"
+            x-init="window.addEventListener('hashchange', () => { tab = (window.location.hash || '#section-profile').replace('#section-', ''); })"
+        >
+            <nav class="settings-quicknav" aria-label="Profil ayarları bölümleri">
+                <a href="#section-profile" x-on:click.prevent="go('profile')" class="settings-quicknav__pill" x-bind:class="tab === 'profile' && 'is-active'">
+                    <iconify-icon icon="lucide:user-round"></iconify-icon>
+                    Profil
                 </a>
-            @endif
-            @if (Laravel\Fortify\Features::canManageTwoFactorAuthentication())
-                <a href="#section-2fa" class="settings-quicknav__pill">
-                    <iconify-icon icon="lucide:shield-check"></iconify-icon>
-                    Güvenlik
+                @if (Laravel\Fortify\Features::enabled(Laravel\Fortify\Features::updatePasswords()))
+                    <a href="#section-password" x-on:click.prevent="go('password')" class="settings-quicknav__pill" x-bind:class="tab === 'password' && 'is-active'">
+                        <iconify-icon icon="lucide:lock"></iconify-icon>
+                        Şifre
+                    </a>
+                @endif
+                @if (Laravel\Fortify\Features::canManageTwoFactorAuthentication())
+                    <a href="#section-2fa" x-on:click.prevent="go('2fa')" class="settings-quicknav__pill" x-bind:class="tab === '2fa' && 'is-active'">
+                        <iconify-icon icon="lucide:shield-check"></iconify-icon>
+                        Güvenlik
+                    </a>
+                @endif
+                <a href="#section-sessions" x-on:click.prevent="go('sessions')" class="settings-quicknav__pill" x-bind:class="tab === 'sessions' && 'is-active'">
+                    <iconify-icon icon="lucide:monitor-smartphone"></iconify-icon>
+                    Oturumlar
                 </a>
-            @endif
-            <a href="#section-sessions" class="settings-quicknav__pill">
-                <iconify-icon icon="lucide:monitor-smartphone"></iconify-icon>
-                Oturumlar
-            </a>
-            @if (Laravel\Jetstream\Jetstream::hasAccountDeletionFeatures())
-                <a href="#section-danger" class="settings-quicknav__pill settings-quicknav__pill--danger">
-                    <iconify-icon icon="lucide:trash-2"></iconify-icon>
-                    Hesabı sil
-                </a>
-            @endif
-        </nav>
+                @if (Laravel\Jetstream\Jetstream::hasAccountDeletionFeatures())
+                    <a href="#section-danger" x-on:click.prevent="go('danger')" class="settings-quicknav__pill settings-quicknav__pill--danger" x-bind:class="tab === 'danger' && 'is-active'">
+                        <iconify-icon icon="lucide:trash-2"></iconify-icon>
+                        Hesabı sil
+                    </a>
+                @endif
+            </nav>
 
-        <div class="space-y-5">
-            @if (Laravel\Fortify\Features::canUpdateProfileInformation())
-                @livewire('profile.update-profile-information-form')
-            @endif
+            <div class="mt-5">
+                @if (Laravel\Fortify\Features::canUpdateProfileInformation())
+                    <div x-show="tab === 'profile'">
+                        @livewire('profile.update-profile-information-form')
+                    </div>
+                @endif
 
-            @if (Laravel\Fortify\Features::enabled(Laravel\Fortify\Features::updatePasswords()))
-                @livewire('profile.update-password-form')
-            @endif
+                @if (Laravel\Fortify\Features::enabled(Laravel\Fortify\Features::updatePasswords()))
+                    <div x-show="tab === 'password'">
+                        @livewire('profile.update-password-form')
+                    </div>
+                @endif
 
-            @if (Laravel\Fortify\Features::canManageTwoFactorAuthentication())
-                @livewire('profile.two-factor-authentication-form')
-            @endif
+                @if (Laravel\Fortify\Features::canManageTwoFactorAuthentication())
+                    <div x-show="tab === '2fa'">
+                        @livewire('profile.two-factor-authentication-form')
+                    </div>
+                @endif
 
-            @livewire('profile.logout-other-browser-sessions-form')
+                <div x-show="tab === 'sessions'">
+                    @livewire('profile.logout-other-browser-sessions-form')
+                </div>
 
-            @if (Laravel\Jetstream\Jetstream::hasAccountDeletionFeatures())
-                @livewire('profile.delete-user-form')
-            @endif
+                @if (Laravel\Jetstream\Jetstream::hasAccountDeletionFeatures())
+                    <div x-show="tab === 'danger'">
+                        @livewire('profile.delete-user-form')
+                    </div>
+                @endif
+            </div>
         </div>
     </div>
 
@@ -137,6 +155,26 @@
                 background: #fef2f2;
                 color: #991b1b;
                 border-color: rgba(239, 68, 68, 0.25);
+            }
+
+            .settings-quicknav__pill.is-active {
+                background: #2563eb;
+                border-color: #2563eb;
+                color: #ffffff;
+            }
+
+            .settings-quicknav__pill.is-active iconify-icon {
+                color: #ffffff;
+            }
+
+            .settings-quicknav__pill--danger.is-active {
+                background: #dc2626;
+                border-color: #dc2626;
+                color: #ffffff;
+            }
+
+            .settings-quicknav__pill--danger.is-active iconify-icon {
+                color: #ffffff;
             }
 
             .settings-card {

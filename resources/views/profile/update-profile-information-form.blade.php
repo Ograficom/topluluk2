@@ -125,7 +125,9 @@
             <div>
                 <label for="email" class="settings-field-label">E-posta</label>
                 <div class="relative">
-                    <iconify-icon icon="lucide:mail" class="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" style="font-size: 16px;"></iconify-icon>
+                    <span class="pointer-events-none absolute inset-y-0 left-0 flex w-10 items-center justify-center text-slate-400">
+                        <iconify-icon icon="lucide:mail" style="font-size: 16px;"></iconify-icon>
+                    </span>
                     <input id="email" type="email" class="{{ $iconFieldClass }}" wire:model="state.email" required autocomplete="username">
                 </div>
                 <x-input-error for="email" class="mt-2" />
@@ -168,7 +170,9 @@
                     <div>
                         <label for="social_x" class="settings-field-label">X (Twitter)</label>
                         <div class="relative">
-                            <iconify-icon icon="lucide:at-sign" class="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" style="font-size: 16px;"></iconify-icon>
+                            <span class="pointer-events-none absolute inset-y-0 left-0 flex w-10 items-center justify-center text-slate-400">
+                                <iconify-icon icon="lucide:at-sign" style="font-size: 16px;"></iconify-icon>
+                            </span>
                             <input id="social_x" type="text" class="{{ $iconFieldClass }}" wire:model="state.social_x" placeholder="kullanici">
                         </div>
                         <x-input-error for="social_x" class="mt-2" />
@@ -177,7 +181,9 @@
                     <div>
                         <label for="social_instagram" class="settings-field-label">Instagram</label>
                         <div class="relative">
-                            <iconify-icon icon="lucide:camera" class="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" style="font-size: 16px;"></iconify-icon>
+                            <span class="pointer-events-none absolute inset-y-0 left-0 flex w-10 items-center justify-center text-slate-400">
+                                <iconify-icon icon="lucide:camera" style="font-size: 16px;"></iconify-icon>
+                            </span>
                             <input id="social_instagram" type="text" class="{{ $iconFieldClass }}" wire:model="state.social_instagram" placeholder="kullanici">
                         </div>
                         <x-input-error for="social_instagram" class="mt-2" />
@@ -186,7 +192,9 @@
                     <div>
                         <label for="social_whatsapp" class="settings-field-label">WhatsApp</label>
                         <div class="relative">
-                            <iconify-icon icon="lucide:message-circle" class="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" style="font-size: 16px;"></iconify-icon>
+                            <span class="pointer-events-none absolute inset-y-0 left-0 flex w-10 items-center justify-center text-slate-400">
+                                <iconify-icon icon="lucide:message-circle" style="font-size: 16px;"></iconify-icon>
+                            </span>
                             <input id="social_whatsapp" type="text" class="{{ $iconFieldClass }}" wire:model="state.social_whatsapp" placeholder="+90...">
                         </div>
                         <x-input-error for="social_whatsapp" class="mt-2" />
@@ -195,7 +203,9 @@
                     <div>
                         <label for="social_tiktok" class="settings-field-label">TikTok</label>
                         <div class="relative">
-                            <iconify-icon icon="lucide:music-2" class="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" style="font-size: 16px;"></iconify-icon>
+                            <span class="pointer-events-none absolute inset-y-0 left-0 flex w-10 items-center justify-center text-slate-400">
+                                <iconify-icon icon="lucide:music-2" style="font-size: 16px;"></iconify-icon>
+                            </span>
                             <input id="social_tiktok" type="text" class="{{ $iconFieldClass }}" wire:model="state.social_tiktok" placeholder="kullanici">
                         </div>
                         <x-input-error for="social_tiktok" class="mt-2" />
@@ -204,7 +214,9 @@
                     <div>
                         <label for="social_facebook" class="settings-field-label">Facebook</label>
                         <div class="relative">
-                            <iconify-icon icon="lucide:thumbs-up" class="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" style="font-size: 16px;"></iconify-icon>
+                            <span class="pointer-events-none absolute inset-y-0 left-0 flex w-10 items-center justify-center text-slate-400">
+                                <iconify-icon icon="lucide:thumbs-up" style="font-size: 16px;"></iconify-icon>
+                            </span>
                             <input id="social_facebook" type="text" class="{{ $iconFieldClass }}" wire:model="state.social_facebook" placeholder="profil veya sayfa URL">
                         </div>
                         <x-input-error for="social_facebook" class="mt-2" />
@@ -213,7 +225,9 @@
                     <div>
                         <label for="website_url" class="settings-field-label">Website</label>
                         <div class="relative">
-                            <iconify-icon icon="lucide:globe" class="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" style="font-size: 16px;"></iconify-icon>
+                            <span class="pointer-events-none absolute inset-y-0 left-0 flex w-10 items-center justify-center text-slate-400">
+                                <iconify-icon icon="lucide:globe" style="font-size: 16px;"></iconify-icon>
+                            </span>
                             <input id="website_url" type="url" class="{{ $iconFieldClass }}" wire:model="state.website_url" placeholder="https://...">
                         </div>
                         <x-input-error for="website_url" class="mt-2" />
@@ -225,7 +239,9 @@
             <div class="sm:w-1/2 sm:pr-2.5">
                 <label for="joined_at" class="settings-field-label">Katılma tarihi</label>
                 <div class="relative">
-                    <iconify-icon icon="lucide:calendar-days" class="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" style="font-size: 16px;"></iconify-icon>
+                    <span class="pointer-events-none absolute inset-y-0 left-0 flex w-10 items-center justify-center text-slate-400">
+                        <iconify-icon icon="lucide:calendar-days" style="font-size: 16px;"></iconify-icon>
+                    </span>
                     <input id="joined_at" type="date" class="{{ $iconFieldClass }}" wire:model="state.joined_at">
                 </div>
                 <x-input-error for="joined_at" class="mt-2" />
