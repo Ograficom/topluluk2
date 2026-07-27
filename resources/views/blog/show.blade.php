@@ -1099,6 +1099,10 @@
 
     $postUrl = $seoNormalizePublicUrl($postUrl) ?: $postUrl;
     $postShareUrl = $postUrl;
+    // "Yeniden paylas" herkese gorunur; blog.repost.create zaten auth
+    // middleware'i altinda oldugundan giris yapmamis ziyaretci tikladiginda
+    // Laravel otomatik olarak giris sayfasina yonlendirir (sonra geri doner).
+    $postRepostCreateUrl = route('blog.repost.create', ['post' => $post->id ?? $post->slug]);
 
     $discussionForumPostText = $stripSchemaText($postShowFullContentHtml ?: ($post->content ?? $description));
     if ($discussionForumPostText === '') {
@@ -9844,7 +9848,7 @@ html body.alma-app:has(.post-show-shell) .main-grid.main-grid--padded {
 
 .ps-layout.post-show-shell,
 .post-show-shell.ps-layout {
-  padding: 24px 12px 96px !important;
+  padding: 24px 0 96px !important;
   margin-top: 0 !important;
   flex-direction: column !important;
   align-items: center !important;
@@ -11400,13 +11404,26 @@ body.dark .post-show-shell .ps-comment-more-item--danger:focus-visible,
               </a>
             @endauth
 
-            <button type="button" class="ps-action-btn ps-action-btn--share" data-copy-post-link data-url="{{ $postShareUrl }}" data-title="{{ e($postShareTitle) }}" aria-label="Paylaş">
-              <span class="ps-action-icon">
-                <svg viewBox="0 0 256 256" width="1.2em" height="1.2em" class="h-5 w-5 group-hover:text-primary text-foreground" aria-hidden="true">
-                  <path fill="currentColor" d="m229.66 109.66l-48 48a8 8 0 0 1-11.32-11.32L204.69 112H128a88.1 88.1 0 0 0-88 88a8 8 0 0 1-16 0A104.11 104.11 0 0 1 128 96h76.69l-34.35-34.34a8 8 0 0 1 11.32-11.32l48 48a8 8 0 0 1 0 11.32"></path>
-                </svg>
-              </span>
-            </button>
+            <div class="ps-share-wrap" data-ps-share-wrap>
+              <button type="button" class="ps-action-btn ps-action-btn--share" data-ps-share-trigger aria-haspopup="menu" aria-expanded="false" aria-label="Paylaş">
+                <span class="ps-action-icon">
+                  <svg viewBox="0 0 256 256" width="1.2em" height="1.2em" class="h-5 w-5 group-hover:text-primary text-foreground" aria-hidden="true">
+                    <path fill="currentColor" d="m229.66 109.66l-48 48a8 8 0 0 1-11.32-11.32L204.69 112H128a88.1 88.1 0 0 0-88 88a8 8 0 0 1-16 0A104.11 104.11 0 0 1 128 96h76.69l-34.35-34.34a8 8 0 0 1 11.32-11.32l48 48a8 8 0 0 1 0 11.32"></path>
+                  </svg>
+                </span>
+              </button>
+
+              <div class="ps-share-menu" data-ps-share-menu hidden>
+                <button type="button" class="ps-share-menu__item" data-copy-post-link data-url="{{ $postShareUrl }}" data-title="{{ e($postShareTitle) }}">
+                  <iconify-icon icon="lucide:link-2" class="ps-share-menu__icon"></iconify-icon>
+                  <span>Linki kopyala</span>
+                </button>
+                <a href="{{ $postRepostCreateUrl }}" class="ps-share-menu__item">
+                  <iconify-icon icon="lucide:repeat-2" class="ps-share-menu__icon"></iconify-icon>
+                  <span>Yeniden paylaş</span>
+                </a>
+              </div>
+            </div>
           </div>
 
           <button
@@ -11519,9 +11536,22 @@ body.dark .post-show-shell .ps-comment-more-item--danger:focus-visible,
         </svg>
       </button>
 
-      <button type="button" class="ps-mobile-long-action" data-copy-post-link data-url="{{ $postShareUrl }}" data-title="{{ e($postShareTitle) }}" aria-label="Paylaş">
-        <svg viewBox="0 0 256 256" aria-hidden="true"><path fill="currentColor" d="m229.66 109.66l-48 48a8 8 0 0 1-11.32-11.32L204.69 112H128a88.1 88.1 0 0 0-88 88a8 8 0 0 1-16 0A104.11 104.11 0 0 1 128 96h76.69l-34.35-34.34a8 8 0 0 1 11.32-11.32l48 48a8 8 0 0 1 0 11.32"/></svg>
-      </button>
+      <div class="ps-share-wrap ps-share-wrap--mobile" data-ps-share-wrap>
+        <button type="button" class="ps-mobile-long-action" data-ps-share-trigger aria-haspopup="menu" aria-expanded="false" aria-label="Paylaş">
+          <svg viewBox="0 0 256 256" aria-hidden="true"><path fill="currentColor" d="m229.66 109.66l-48 48a8 8 0 0 1-11.32-11.32L204.69 112H128a88.1 88.1 0 0 0-88 88a8 8 0 0 1-16 0A104.11 104.11 0 0 1 128 96h76.69l-34.35-34.34a8 8 0 0 1 11.32-11.32l48 48a8 8 0 0 1 0 11.32"/></svg>
+        </button>
+
+        <div class="ps-share-menu" data-ps-share-menu hidden>
+          <button type="button" class="ps-share-menu__item" data-copy-post-link data-url="{{ $postShareUrl }}" data-title="{{ e($postShareTitle) }}">
+            <iconify-icon icon="lucide:link-2" class="ps-share-menu__icon"></iconify-icon>
+            <span>Linki kopyala</span>
+          </button>
+          <a href="{{ $postRepostCreateUrl }}" class="ps-share-menu__item">
+            <iconify-icon icon="lucide:repeat-2" class="ps-share-menu__icon"></iconify-icon>
+            <span>Yeniden paylaş</span>
+          </a>
+        </div>
+      </div>
     </div>
 
     <div class="ps-mobile-accessibility-backdrop" data-mobile-accessibility-backdrop hidden></div>
@@ -11806,7 +11836,56 @@ body.dark .post-show-shell .ps-comment-more-item--danger:focus-visible,
       }
     };
 
+    const closeAllShareMenus = function (exceptWrap) {
+      document.querySelectorAll('[data-ps-share-wrap]').forEach(function (wrap) {
+        if (exceptWrap && wrap === exceptWrap) return;
+
+        const menu = wrap.querySelector('[data-ps-share-menu]');
+        const trigger = wrap.querySelector('[data-ps-share-trigger]');
+        if (menu) menu.hidden = true;
+        if (trigger) trigger.setAttribute('aria-expanded', 'false');
+      });
+    };
+
     document.addEventListener('click', function (event) {
+      const trigger = event.target.closest('[data-ps-share-trigger]');
+      if (trigger) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        const wrap = trigger.closest('[data-ps-share-wrap]');
+        const menu = wrap ? wrap.querySelector('[data-ps-share-menu]') : null;
+        if (!menu) return;
+
+        const willOpen = menu.hidden;
+        closeAllShareMenus(wrap);
+
+        if (willOpen) {
+          const rect = trigger.getBoundingClientRect();
+          menu.hidden = false;
+          const menuWidth = menu.offsetWidth;
+          const menuHeight = menu.offsetHeight;
+          const padding = 10;
+
+          let top = rect.bottom + 8;
+          let left = rect.right - menuWidth;
+
+          if (left < padding) left = padding;
+          if (left + menuWidth > window.innerWidth - padding) left = window.innerWidth - menuWidth - padding;
+          if (top + menuHeight > window.innerHeight - padding) top = rect.top - menuHeight - 8;
+
+          menu.style.top = Math.round(top) + 'px';
+          menu.style.left = Math.round(left) + 'px';
+          trigger.setAttribute('aria-expanded', 'true');
+        }
+
+        return;
+      }
+
+      if (!event.target.closest('[data-ps-share-wrap]')) {
+        closeAllShareMenus();
+      }
+
       const shareButton = event.target.closest('[data-copy-post-link]');
       if (!shareButton) return;
 
@@ -11814,18 +11893,9 @@ body.dark .post-show-shell .ps-comment-more-item--danger:focus-visible,
       event.stopPropagation();
 
       const url = shareButton.getAttribute('data-url') || window.location.href;
-      const title = shareButton.getAttribute('data-title') || document.title || 'Paylaş';
-
-      if (navigator.share) {
-        navigator.share({ title: title, url: url }).then(function () {
-          markShareCopied(shareButton);
-        }).catch(function () {
-          fallbackCopyPostLink(url, shareButton);
-        });
-        return;
-      }
 
       fallbackCopyPostLink(url, shareButton);
+      closeAllShareMenus();
     });
 
     const locker = document.querySelector('[data-nsfw-locker]');
@@ -14695,6 +14765,80 @@ body.dark .post-show-shell .ps-reaction-trigger,
 .post-show-shell .ps-action-row .ps-action-btn--share {
   margin-left: 0 !important;
   margin-right: 0 !important;
+}
+
+.ps-share-wrap {
+  position: relative !important;
+  display: inline-flex !important;
+}
+
+.ps-share-menu {
+  position: fixed !important;
+  z-index: 999999999 !important;
+  width: 178px !important;
+  box-sizing: border-box !important;
+  padding: 6px !important;
+  border: 1px solid #e5e7eb !important;
+  border-radius: 14px !important;
+  background: #ffffff !important;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.12) !important;
+}
+
+.ps-share-menu[hidden] {
+  display: none !important;
+}
+
+.ps-share-menu__item {
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+  width: 100% !important;
+  min-height: 40px !important;
+  padding: 0 10px !important;
+  border: 0 !important;
+  border-radius: 10px !important;
+  background: transparent !important;
+  color: #4b5563 !important;
+  font-size: 14px !important;
+  font-weight: 400 !important;
+  text-align: left !important;
+  text-decoration: none !important;
+  cursor: pointer !important;
+}
+
+.ps-share-menu__item:hover,
+.ps-share-menu__item:focus-visible {
+  background: #f3f4f6 !important;
+  color: #18181b !important;
+}
+
+.ps-share-menu__icon {
+  font-size: 17px !important;
+  min-width: 17px !important;
+  color: #9ca3af !important;
+}
+
+html.dark .ps-share-menu,
+body.dark .ps-share-menu,
+.dark .ps-share-menu,
+[data-theme="dark"] .ps-share-menu {
+  border-color: #374151 !important;
+  background: #18181b !important;
+}
+
+html.dark .ps-share-menu__item,
+body.dark .ps-share-menu__item,
+.dark .ps-share-menu__item,
+[data-theme="dark"] .ps-share-menu__item {
+  color: #d1d5db !important;
+}
+
+html.dark .ps-share-menu__item:hover,
+body.dark .ps-share-menu__item:hover,
+.dark .ps-share-menu__item:hover,
+[data-theme="dark"] .ps-share-menu__item:hover {
+  background: #27272a !important;
+  color: #ffffff !important;
 }
 
 .post-show-shell .ps-view-count {

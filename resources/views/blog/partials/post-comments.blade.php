@@ -1369,9 +1369,9 @@
   .ogx-empty {
     margin: 0 !important;
     padding: 14px !important;
-    border: 1px dashed #d7dbe0 !important;
+    border: 0 !important;
     border-radius: 10px !important;
-    background: #f9fafb !important;
+    background: #ffffff !important;
     color: #6b7280 !important;
     font-size: 14px !important;
     text-align: center !important;
@@ -2139,7 +2139,7 @@
     box-sizing: border-box !important;
     border: 1px solid var(--border, #e4e4e7) !important;
     border-radius: 12px !important;
-    background: var(--muted, #f4f4f5) !important;
+    background: #f4f4f5 !important;
     color: var(--foreground, #18181b) !important;
     box-shadow: none !important;
     transition: border-color 150ms ease, box-shadow 150ms ease !important;
@@ -2477,9 +2477,9 @@
     min-height: 52px !important;
     margin: 0 !important;
     padding: 14px 16px !important;
-    border: 1px dashed #d4d4d8 !important;
+    border: 0 !important;
     border-radius: 10px !important;
-    background: #fafafa !important;
+    background: #ffffff !important;
     color: #71717a !important;
     font-size: 14px !important;
     line-height: 22px !important;
