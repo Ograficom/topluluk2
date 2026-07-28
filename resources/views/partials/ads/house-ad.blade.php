@@ -3,7 +3,6 @@
 
     $sizes = [
         'ads_sidebar_top' => ['h' => 380, 'layout' => 'vertical'],
-        'ads_sidebar_story' => ['h' => 540, 'layout' => 'vertical'],
         'ads_feed_top' => ['h' => 369, 'layout' => 'wide'],
         'ads_feed_inline' => ['h' => 369, 'layout' => 'wide'],
         'ads_main_before_content' => ['h' => 220, 'layout' => 'compact'],

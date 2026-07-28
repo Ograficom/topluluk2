@@ -20,7 +20,6 @@ class AdOrderSnippetSync
      */
     public const PLACEMENT_TO_SNIPPET_KEY = [
         'sidebar_top' => 'ads_sidebar_top',
-        'sidebar_story' => 'ads_sidebar_story',
         'feed_inline' => 'ads_feed_inline',
         'mobile_inline' => 'ads_mobile_inline',
     ];

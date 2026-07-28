@@ -72,15 +72,11 @@
 </style>
 
 <div class="space-y-6 ografi-right-stack">
+    @include('partials.right.widgets')
+
     <div class="layout-sticky ografi-ad-sticky">
         @include('partials.ads.slot', [
             'slotKey' => 'ads_sidebar_top',
         ])
-
-        @include('partials.ads.context-slot', [
-            'slotKey' => 'ads_sidebar_story',
-        ])
     </div>
-
-    @include('partials.right.widgets')
 </div>

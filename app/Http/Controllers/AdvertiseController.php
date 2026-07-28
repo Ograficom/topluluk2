@@ -16,13 +16,7 @@ class AdvertiseController extends Controller
             'label' => 'Sağ sidebar üst',
             'width' => 304,
             'height' => 380,
-            'description' => 'Masaüstünde sağ kolonda yorumların üstünde görünür.',
-        ],
-        'sidebar_story' => [
-            'label' => 'Sağ sidebar orta',
-            'width' => 304,
-            'height' => 540,
-            'description' => 'Masaüstünde sağ kolonda yorumlar ile etiketler arasında görünür.',
+            'description' => 'Masaüstünde sağ kolonda, diğer kutucukların altında sabit kalarak görünür.',
         ],
         'feed_inline' => [
             'label' => 'Akış içi',

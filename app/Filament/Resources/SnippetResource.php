@@ -43,8 +43,7 @@ class SnippetResource extends Resource
             'ads_feed_top' => 'Reklam - Feed Üst (Ana sayfa/kategori akışının en üstü)',
             'ads_feed_inline' => 'Reklam - Feed Arası (Her 3 gönderiden sonra)',
             'ads_mobile_inline' => 'Reklam - Mobil Akış (Sadece mobilde, akış içi)',
-            'ads_sidebar_top' => 'Reklam - Sağ Sütun Üst',
-            'ads_sidebar_story' => 'Reklam - Sağ Sütun Orta (Story kartının altı)',
+            'ads_sidebar_top' => 'Reklam - Sağ Sütun (widget\'ların altında, sabit)',
             'ads_main_before_content' => 'Reklam - İçerik Öncesi (Ana kolon, sadece akış olmayan sayfalarda)',
             'ads_main_after_content' => 'Reklam - İçerik Sonrası (Ana kolon)',
         ];

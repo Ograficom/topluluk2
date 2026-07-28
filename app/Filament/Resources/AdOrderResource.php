@@ -45,7 +45,6 @@ class AdOrderResource extends Resource
     {
         return [
             'sidebar_top' => 'Sag sidebar ust',
-            'sidebar_story' => 'Sag sidebar orta',
             'feed_inline' => 'Akis ici',
             'mobile_inline' => 'Mobil akis',
         ];
