@@ -239,10 +239,6 @@
 
     <div class="blog-layout-shell">
         <aside class="blog-layout-side blog-layout-side--left hidden lg:block space-y-6 layout-sticky">
-            @include('partials.ads.context-slot', [
-                'slotKey' => 'ads_left_sidebar_top',
-            ])
-
             @include('partials.left')
         </aside>
 

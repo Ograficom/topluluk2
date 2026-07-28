@@ -6839,10 +6839,6 @@
     @else
         <div class="main-grid {{ $__env->hasSection('no_container_padding') ? 'main-grid--no-pad' : 'main-grid--padded' }}">
             <aside class="ografi-sidebar-responsive layout-side layout-side--left">
-                @include('partials.ads.context-slot', [
-                    'slotKey' => 'ads_left_sidebar_top',
-                ])
-
                 @include('partials.left')
             </aside>
 

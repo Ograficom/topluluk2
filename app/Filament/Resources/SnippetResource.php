@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\SnippetResource\Pages;
 use App\Models\Snippet;
 use Filament\Actions;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
@@ -44,8 +45,7 @@ class SnippetResource extends Resource
             'ads_mobile_inline' => 'Reklam - Mobil Akış (Sadece mobilde, akış içi)',
             'ads_sidebar_top' => 'Reklam - Sağ Sütun Üst',
             'ads_sidebar_story' => 'Reklam - Sağ Sütun Orta (Story kartının altı)',
-            'ads_left_sidebar_top' => 'Reklam - Sol Sütun Üst',
-            'ads_main_before_content' => 'Reklam - İçerik Öncesi (Ana kolon)',
+            'ads_main_before_content' => 'Reklam - İçerik Öncesi (Ana kolon, sadece akış olmayan sayfalarda)',
             'ads_main_after_content' => 'Reklam - İçerik Sonrası (Ana kolon)',
         ];
     }
@@ -70,11 +70,25 @@ class SnippetResource extends Resource
                 ->label('Açıklama')
                 ->maxLength(500)
                 ->rows(2),
+            FileUpload::make('image_path')
+                ->label('Reklam Görseli')
+                ->image()
+                ->directory('ads/snippets')
+                ->disk('public')
+                ->visibility('public')
+                ->maxSize(4096)
+                ->imagePreviewHeight('160')
+                ->helperText('Görsel yüklerseniz, aşağıdaki HTML kodu yerine bu görsel otomatik olarak gösterilir.'),
+            TextInput::make('link_url')
+                ->label('Görsele Tıklanınca Gidilecek Link')
+                ->url()
+                ->maxLength(255)
+                ->placeholder('https://...')
+                ->helperText('Sadece görsel yüklediyseniz kullanılır. Boş bırakılırsa görsel tıklanamaz, sadece görüntülenir.'),
             Textarea::make('content')
-                ->label('HTML İçerik')
+                ->label('HTML İçerik (görsel yüklemediyseniz)')
                 ->rows(12)
-                ->helperText('Bu alana ham HTML girilir ve @snippet(\'anahtar\') ile Blade içinde gösterilir.')
-                ->required(),
+                ->helperText('Görsel yüklemediyseniz bu alana ham reklam HTML/JS kodu girin. Görsel yüklerseniz bu alan yok sayılır.'),
             Toggle::make('is_active')
                 ->label('Aktif')
                 ->default(true),

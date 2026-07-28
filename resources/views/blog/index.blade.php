@@ -1385,6 +1385,11 @@ html.dark .ografi-feed-page-button--next:active,
                         </div>
                     </div>
                 @else
+                    @include('partials.ads.slot', [
+                        'slotKey' => 'ads_feed_top',
+                        'wrapperClass' => 'mb-4',
+                    ])
+
                     @forelse($posts as $post)
                         @php
                             $featured = $post->featured_image_url
