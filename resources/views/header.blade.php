@@ -2139,9 +2139,23 @@
                     </div>
                 </div>
 
+                {{--
+                    Mobilde alt gezinme cubugunda zaten kendi Mesajlar sekmesi var,
+                    bu yuzden ust bardaki bu ikon orada gereksiz tekrar oluyor - mobilde
+                    gizlenip yerini soldaki bildirim zilinin almasi icin ozel bir sinif
+                    kullaniliyor (site-header-desktop-only hicbir CSS'e baglanmadigi
+                    icin tek basina bunu saglamiyordu).
+                --}}
+                <style>
+                    @media (max-width: 639.98px) {
+                        .site-header-messages-link {
+                            display: none !important;
+                        }
+                    }
+                </style>
                 <a
                     href="{{ route('messages.index') }}"
-                    class="site-icon-btn site-icon-btn--status site-header-desktop-only"
+                    class="site-icon-btn site-icon-btn--status site-header-desktop-only site-header-messages-link"
                     aria-label="Mesajlar"
                     style="background: transparent !important; background-color: transparent !important; box-shadow: none !important; border-color: transparent !important;"
                 >

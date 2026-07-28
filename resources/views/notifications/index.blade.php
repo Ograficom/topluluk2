@@ -43,6 +43,13 @@
                                         <span>Tumunu okundu isaretle</span>
                                     </button>
                                 </form>
+                            @else
+                                <button type="button" disabled aria-disabled="true" class="flex w-full cursor-not-allowed items-center gap-3 px-4 py-2.5 text-left text-sm text-slate-300">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-4 w-4 text-slate-300" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="m5 12 5 5L20 7"/>
+                                    </svg>
+                                    <span>Tumunu okundu isaretle</span>
+                                </button>
                             @endif
 
                             @if ($notifications->count() > 0)
@@ -59,6 +66,17 @@
                                         <span>Tumunu sil</span>
                                     </button>
                                 </form>
+                            @else
+                                <button type="button" disabled aria-disabled="true" class="flex w-full cursor-not-allowed items-center gap-3 px-4 py-2.5 text-left text-sm text-slate-300">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-4 w-4 text-slate-300" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M3 6h18"/>
+                                        <path d="M8 6V4h8v2"/>
+                                        <path d="M19 6l-1 14H6L5 6"/>
+                                        <path d="M10 11v6"/>
+                                        <path d="M14 11v6"/>
+                                    </svg>
+                                    <span>Tumunu sil</span>
+                                </button>
                             @endif
                         </div>
                     </details>

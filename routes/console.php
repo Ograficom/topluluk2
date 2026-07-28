@@ -7,6 +7,7 @@ use App\Models\RssFeed;
 use App\Models\Post;
 use App\Support\PostSeoText;
 use App\Services\Rss\RssSyncService;
+use App\Services\AdOrderSnippetSync;
 use App\Services\IndexNowService;
 use App\Console\Commands\GenerateVideoSubtitles;
 use Symfony\Component\Console\Input\ArrayInput;
@@ -42,7 +43,16 @@ Artisan::command('rss:sync {--feed_id=} {--force}', function (RssSyncService $se
 })->purpose('Sync RSS feeds and import as posts');
 
 Schedule::command('rss:sync')
-    ->everyMinute()
+    ->everyFiveMinutes()
+    ->withoutOverlapping();
+
+Artisan::command('ads:sync-orders', function (AdOrderSnippetSync $service) {
+    $service->syncAll();
+    $this->info('Ad orders synced into their placement snippets.');
+})->purpose('Sync active "reklam ver" orders into the matching ad Snippet and expire overdue ones');
+
+Schedule::command('ads:sync-orders')
+    ->everyFiveMinutes()
     ->withoutOverlapping();
 
 Artisan::command('posts:seo-backfill {--force : Replace existing generated metadata too}', function () {

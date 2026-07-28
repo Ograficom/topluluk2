@@ -42,6 +42,7 @@
                     'preferences' => $preferences,
                     'blockedFromMessages' => $blockedFromMessages,
                     'activeConversationId' => null,
+                    'followingContacts' => $followingContacts,
                 ])
 
                 @if (count($threads) > 0)

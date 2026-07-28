@@ -125,6 +125,18 @@ class RssSyncService
                         $rawContent = $fetchedContent;
                     }
                 }
+
+                if ($this->firstImageUrl($item['media_items'] ?? []) === null) {
+                    $item['media_items'] = $this->normalizeMediaItems(array_merge(
+                        $item['media_items'] ?? [],
+                        $this->mediaItemsFromHtmlFragment(
+                            (string) ($item['content'] ?? $item['summary'] ?? ''),
+                            $link ?: $feed->url
+                        )
+                    ));
+                    $item['media_url'] = $this->firstImageUrl($item['media_items'] ?? []) ?? ($item['media_url'] ?? null);
+                }
+
                 $item['tags'] = $this->normalizeTagNames(array_merge($item['tags'] ?? [], $this->extractHashtagsFromText($rawContent)));
                 $rawContent = $this->cleanArticleHtmlFragment($rawContent, $title, (string) ($item['summary'] ?? ''));
                 $content = $this->sanitizeHtml($this->absolutizeHtmlUrls($rawContent, $link ?: $feed->url));
@@ -963,6 +975,33 @@ class RssSyncService
         }
 
         return $this->normalizeMediaItems($items);
+    }
+
+    /**
+     * Son çare görsel yakalama: bazı beslemeler media:content/enclosure koymaz
+     * ve makale sayfası taraması (fetchArticleData) da og:image bulamayabilir
+     * veya engellenmiş olabilir - bu durumda öğenin kendi description/
+     * content:encoded HTML'i içindeki ilk <img>'i öne çıkan görsel adayı yapar.
+     */
+    private function mediaItemsFromHtmlFragment(string $html, string $baseUrl): array
+    {
+        $html = trim($html);
+        if ($html === '') {
+            return [];
+        }
+
+        $dom = new \DOMDocument();
+        libxml_use_internal_errors(true);
+        $loaded = $dom->loadHTML('<?xml encoding="utf-8" ?><div>' . $html . '</div>');
+        libxml_clear_errors();
+        if (!$loaded) {
+            return [];
+        }
+
+        $xpath = new \DOMXPath($dom);
+        $this->promoteLazyMediaAttributes($xpath, $baseUrl);
+
+        return $this->extractDomMediaItems($xpath, $dom, $baseUrl);
     }
 
     private function extractDomTags(\DOMXPath $xpath): array

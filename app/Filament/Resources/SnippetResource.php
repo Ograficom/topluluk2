@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\SnippetResource\Pages;
 use App\Models\Snippet;
 use Filament\Actions;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
@@ -30,6 +31,25 @@ class SnippetResource extends Resource
 
     protected static ?string $pluralModelLabel = 'Kısa Kodlar';
 
+    /**
+     * Şablonlarda gerçekten okunan tek geçerli anahtar listesi. Serbest metin
+     * yerine seçim kutusu kullanılıyor, çünkü yanlış/yazım hatalı bir anahtar
+     * hiçbir hata vermeden sessizce hiçbir yerde görünmüyordu.
+     */
+    public static function keyOptions(): array
+    {
+        return [
+            'ads_feed_top' => 'Reklam - Feed Üst (Ana sayfa/kategori akışının en üstü)',
+            'ads_feed_inline' => 'Reklam - Feed Arası (Her 3 gönderiden sonra)',
+            'ads_mobile_inline' => 'Reklam - Mobil Akış (Sadece mobilde, akış içi)',
+            'ads_sidebar_top' => 'Reklam - Sağ Sütun Üst',
+            'ads_sidebar_story' => 'Reklam - Sağ Sütun Orta (Story kartının altı)',
+            'ads_left_sidebar_top' => 'Reklam - Sol Sütun Üst',
+            'ads_main_before_content' => 'Reklam - İçerik Öncesi (Ana kolon)',
+            'ads_main_after_content' => 'Reklam - İçerik Sonrası (Ana kolon)',
+        ];
+    }
+
     public static function form(Schema $schema): Schema
     {
         return $schema->schema([
@@ -37,10 +57,13 @@ class SnippetResource extends Resource
                 TextInput::make('title')
                     ->label('Başlık')
                     ->maxLength(255),
-                TextInput::make('key')
-                    ->label('Anahtar')
+                Select::make('key')
+                    ->label('Konum (Anahtar)')
+                    ->options(self::keyOptions())
+                    ->searchable()
                     ->required()
-                    ->maxLength(100)
+                    ->native(false)
+                    ->helperText('Reklamın sitede tam olarak nerede görüneceğini belirler.')
                     ->unique(ignoreRecord: true),
             ]),
             Textarea::make('description')
@@ -67,7 +90,8 @@ class SnippetResource extends Resource
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('key')
-                    ->label('Anahtar')
+                    ->label('Konum')
+                    ->formatStateUsing(fn (string $state) => self::keyOptions()[$state] ?? $state)
                     ->searchable()
                     ->sortable(),
                 IconColumn::make('is_active')

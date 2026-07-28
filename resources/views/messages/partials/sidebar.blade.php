@@ -51,6 +51,45 @@
                 <div class="messages-empty-state px-5 py-8 text-center">
                     <p class="text-sm font-medium text-gray-600">{{ __('messages.sidebar.empty') }}</p>
                 </div>
+
+                @if (isset($followingContacts))
+                    @php
+                        $suggested = collect($followingContacts)
+                            ->filter(fn ($contact) => $contact['can_message'] && !$contact['thread_exists'])
+                            ->take(6);
+                    @endphp
+
+                    @if ($suggested->isNotEmpty())
+                        <div class="mt-5">
+                            <p class="mb-2 px-1 text-xs font-medium uppercase tracking-wide text-gray-400">
+                                {{ __('messages.sidebar.suggestions_title') }}
+                            </p>
+
+                            <div class="space-y-1">
+                                @foreach ($suggested as $contact)
+                                    @php
+                                        $person = $contact['user'];
+                                    @endphp
+                                    <a href="{{ $contact['thread_url'] }}" class="flex items-center gap-3 rounded-xl p-2 transition hover:bg-gray-50">
+                                        <img class="h-9 w-9 shrink-0 rounded-full object-cover" src="{{ $person->profile_photo_url }}" alt="{{ $person->name }}">
+                                        <span class="min-w-0 flex-1">
+                                            <span class="block truncate text-sm font-medium text-gray-900">{{ $person->name }}</span>
+                                            @if ($person->username)
+                                                <span class="block truncate text-xs text-gray-500">{{ '@' . $person->username }}</span>
+                                            @endif
+                                        </span>
+                                        <iconify-icon icon="lucide:message-circle-plus" style="font-size: 16px; color: #9ca3af; flex-shrink: 0;"></iconify-icon>
+                                    </a>
+                                @endforeach
+                            </div>
+
+                            <a href="{{ route('messages.contacts') }}" class="mt-2 flex items-center justify-center gap-1.5 rounded-xl p-2.5 text-sm font-medium text-slate-600 transition hover:bg-gray-50">
+                                {{ __('messages.sidebar.suggestions_see_all') }}
+                                <iconify-icon icon="lucide:arrow-right" style="font-size: 14px;"></iconify-icon>
+                            </a>
+                        </div>
+                    @endif
+                @endif
             </div>
         @else
             <div class="divide-y divide-gray-100">

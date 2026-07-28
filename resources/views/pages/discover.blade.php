@@ -395,6 +395,10 @@
             </div>
         </section>
 
+        @include('partials.ads.slot', [
+            'slotKey' => 'ads_feed_top',
+        ])
+
         {{-- Kullanıcılar --}}
         <section class="discover-section">
             <div class="discover-section__head">

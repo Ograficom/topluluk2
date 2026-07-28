@@ -21,6 +21,8 @@ return [
         'empty' => 'No conversations to display yet.',
         'empty_search' => 'No conversation matched your search.',
         'file_shared' => 'File shared.',
+        'suggestions_title' => 'You can message',
+        'suggestions_see_all' => 'See all contacts',
     ],
     'status' => [
         'online' => 'Online',

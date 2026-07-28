@@ -1680,12 +1680,13 @@
         }
 
         .og-menu-panel {
-            position: fixed !important;
-            top: auto !important;
-            right: 10px !important;
-            bottom: calc(10px + env(safe-area-inset-bottom)) !important;
-            left: 10px !important;
-            width: auto !important;
+            position: absolute !important;
+            top: calc(100% + 8px) !important;
+            right: 0 !important;
+            bottom: auto !important;
+            left: auto !important;
+            width: 240px !important;
+            max-width: calc(100vw - 24px) !important;
             border-radius: 12px !important;
             padding: 8px 0 !important;
         }
@@ -2256,17 +2257,16 @@
         background: #ff0000 !important;
     }
 
-    /* Dokunma hedefi mobilde 44px onerilen minimuma yaklastirildi (32px cok kucuktu). */
     @media (max-width: 640px) {
         .og-social {
-            width: 40px !important;
-            min-width: 40px !important;
-            height: 40px !important;
+            width: 26px !important;
+            min-width: 26px !important;
+            height: 26px !important;
         }
 
         .og-social svg {
-            width: 19px !important;
-            height: 19px !important;
+            width: 13px !important;
+            height: 13px !important;
         }
     }
 

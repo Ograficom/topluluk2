@@ -3,7 +3,7 @@
         <style>
             .messages-page {
                 min-height: 100vh;
-                background: #f3f4f6;
+                background: transparent;
             }
 
             .messages-shell {
@@ -946,7 +946,7 @@
             }
 
             body.alma-app:has(.messages-page):not(:has(.messages-show-layout)) .messages-page {
-                background: #f4f4f5 !important;
+                background: transparent !important;
                 padding: 0 !important;
             }
 

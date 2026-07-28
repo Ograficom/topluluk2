@@ -22,6 +22,8 @@ return [
         'empty' => 'Henüz görüntülenecek sohbet yok.',
         'empty_search' => 'Aramana uygun bir sohbet bulunamadı.',
         'file_shared' => 'Dosya paylaşıldı.',
+        'suggestions_title' => 'Mesaj gönderebilirsin',
+        'suggestions_see_all' => 'Tüm kişileri gör',
     ],
 
     'status' => [

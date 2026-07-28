@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Services\AdOrderSnippetSync;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -10,6 +11,16 @@ use Illuminate\Support\Facades\Storage;
 class AdOrder extends Model
 {
     use HasFactory;
+
+    protected static function booted(): void
+    {
+        $sync = static function (AdOrder $order): void {
+            app(AdOrderSnippetSync::class)->syncPlacement($order->placement);
+        };
+
+        static::saved($sync);
+        static::deleted($sync);
+    }
 
     protected $fillable = [
         'user_id',
