@@ -936,6 +936,11 @@
                 </a>
             </div>
 
+            @include('partials.ads.slot', [
+                'slotKey' => 'ads_feed_top',
+                'wrapperClass' => 'mb-4',
+            ])
+
             <div class="categories-panel__tabs">
                 <div class="categories-tabs-left">
                     <a

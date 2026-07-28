@@ -2703,30 +2703,6 @@
         ];
         $activeSort = array_key_exists((string) ($sort ?? 'new'), $sortOptions) ? (string) ($sort ?? 'new') : 'new';
         $activeSortLabel = $sortOptions[$activeSort];
-        $renderProfileAdSlot = static function (string $slotKey, string $device = 'all', string $wrapperClass = ''): ?array {
-            $content = \App\Models\Snippet::render($slotKey);
-            if (trim((string) $content) === '') {
-                return null;
-            }
-
-            $classes = ['alma-ad-slot'];
-            if ($device === 'desktop') {
-                $classes[] = 'alma-ad-slot--desktop';
-            } elseif ($device === 'mobile') {
-                $classes[] = 'alma-ad-slot--mobile';
-            }
-
-            $wrapperClass = trim($wrapperClass);
-            if ($wrapperClass !== '') {
-                $classes[] = $wrapperClass;
-            }
-
-            return [
-                'slotKey' => $slotKey,
-                'classes' => implode(' ', $classes),
-                'content' => $content,
-            ];
-        };
     @endphp
 
     <div class="og-profile-page">
@@ -3036,17 +3012,9 @@
                 @if(($hasBlockedUser ?? false) || ($isBlockedByUser ?? false))
                     <div class="og-empty">{{ __('site.profile_page.restricted') }}</div>
                 @elseif($activeTab === 'stories')
-                    @php
-                        $topFeedAd = $renderProfileAdSlot('ads_feed_top');
-                    @endphp
-                    @if($topFeedAd)
-                        <div class="{{ $topFeedAd['classes'] }}" data-ad-slot="{{ $topFeedAd['slotKey'] }}">
-                            @include('partials.ads.icon')
-                            <div class="alma-ad-slot__inner">
-                                {!! $topFeedAd['content'] !!}
-                            </div>
-                        </div>
-                    @endif
+                    @include('partials.ads.slot', [
+                        'slotKey' => 'ads_feed_top',
+                    ])
 
                     @forelse($posts as $post)
                         @php
@@ -3105,22 +3073,12 @@
                             ])
                         </div>
 
-                        @php
-                            $feedBreakAd = null;
-                            if ($loop->iteration === 1) {
-                                $feedBreakAd = $renderProfileAdSlot('ads_mobile_inline', 'mobile');
-                            } elseif ($loop->iteration > 0 && $loop->iteration % 3 === 0 && !$loop->last) {
-                                $feedBreakAd = $renderProfileAdSlot('ads_feed_inline', 'all');
-                            }
-                        @endphp
-                        @if($feedBreakAd)
-                            <div class="{{ $feedBreakAd['classes'] }}" data-ad-slot="{{ $feedBreakAd['slotKey'] }}">
-                                @include('partials.ads.icon')
-                                <div class="alma-ad-slot__inner">
-                                    {!! $feedBreakAd['content'] !!}
-                                </div>
-                            </div>
-                        @endif
+                        @unless($loop->last)
+                            @include('partials.ads.feed-breaks', [
+                                'iteration' => $loop->iteration,
+                                'isLast' => $loop->last,
+                            ])
+                        @endunless
                     @empty
                         <div class="og-empty">{{ __('site.profile_page.empty_posts') }}</div>
                     @endforelse

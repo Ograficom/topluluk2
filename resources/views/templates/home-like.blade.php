@@ -805,6 +805,13 @@
                     'isHero' => $loop->first,
                 ])
             </div>
+
+            @unless($loop->last)
+                @include('partials.ads.feed-breaks', [
+                    'iteration' => $loop->iteration,
+                    'isLast' => $loop->last,
+                ])
+            @endunless
         @empty
             <div class="alma-empty-state">
                 {{ $emptyText ?? __('There is nothing here yet') }}
