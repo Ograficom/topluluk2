@@ -1,413 +1,406 @@
-<x-app-layout>
-    @section('title', 'Reklam Ödeme')
-    @section('custom_shell')
-        <main class="ad-payment-page">
-            <style>
-                .ad-payment-page {
-                    min-height: calc(100vh - var(--site-header-height, 64px));
-                    padding: 28px 16px 48px;
-                    background: #f4f4f5;
-                }
+@extends('layouts.app')
 
-                .ad-payment-shell {
-                    width: min(100%, 980px);
-                    margin: 0 auto;
-                    display: grid;
-                    grid-template-columns: minmax(0, 1fr) 320px;
-                    gap: 24px;
-                    align-items: start;
-                }
+@section('title', 'Reklam Ödeme')
+@section('hide_feed_header')
 
-                .ad-payment-card {
-                    background: #ffffff;
-                    border-radius: 10px;
-                    padding: 22px;
-                }
+@section('content')
+<div class="adx-page">
+    <style>
+        .adx-page {
+            display: grid;
+            gap: 14px;
+            padding-bottom: 24px;
+        }
 
-                .ad-payment-title {
-                    margin: 0 0 8px;
-                    color: #111827;
-                    font-size: 24px;
-                    line-height: 1.2;
-                    font-weight: 700;
-                }
+        .adx-pay-hero {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 18px 20px;
+            border-radius: 20px;
+            border: 1px solid rgba(15, 23, 42, 0.08);
+            background: #ffffff;
+            box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+        }
 
-                .ad-payment-subtitle {
-                    margin: 0 0 18px;
-                    color: #64748b;
-                    font-size: 13px;
-                    line-height: 1.45;
-                }
+        .adx-pay-hero__icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 42px;
+            height: 42px;
+            flex-shrink: 0;
+            border-radius: 14px;
+            background: #fef9c3;
+            color: #a16207;
+        }
 
-                .ad-payment-list,
-                .ad-payment-methods {
-                    display: grid;
-                    gap: 12px;
-                    margin: 0;
-                }
+        .adx-pay-hero__icon svg {
+            width: 22px;
+            height: 22px;
+        }
 
-                .ad-payment-methods {
-                    margin-top: 18px;
-                }
+        .adx-pay-hero h1 {
+            margin: 0;
+            color: #0f172a;
+            font-size: 17px;
+            font-weight: 800;
+        }
 
-                .ad-payment-method {
-                    display: grid;
-                    grid-template-columns: 24px minmax(0, 1fr) auto;
-                    gap: 12px;
-                    align-items: center;
-                    min-height: 62px;
-                    padding: 14px;
-                    border-radius: 10px;
-                    background: #f8fafc;
-                    color: #111827;
-                    cursor: pointer;
-                }
+        .adx-pay-hero p {
+            margin: 2px 0 0;
+            color: #64748b;
+            font-size: 12.5px;
+        }
 
-                .ad-payment-method input {
-                    position: absolute;
-                    opacity: 0;
-                    pointer-events: none;
-                }
+        .adx-card {
+            border-radius: 20px;
+            border: 1px solid rgba(15, 23, 42, 0.08);
+            background: #ffffff;
+            box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+            padding: 20px;
+        }
 
-                .ad-payment-toggle {
-                    display: inline-flex;
-                    align-items: center;
-                    justify-content: center;
-                    width: 18px;
-                    height: 18px;
-                    border-radius: 999px;
-                    background: #ffffff;
-                }
+        .adx-card__title {
+            margin: 0 0 14px;
+            color: #0f172a;
+            font-size: 15px;
+            font-weight: 700;
+        }
 
-                .ad-payment-toggle::after {
-                    content: "";
-                    display: none;
-                    width: 8px;
-                    height: 8px;
-                    border-radius: 999px;
-                    background: #2563eb;
-                }
+        .adx-preview {
+            width: 100%;
+            border-radius: 14px;
+            background: #f1f5f9;
+            overflow: hidden;
+            margin-bottom: 16px;
+        }
 
-                .ad-payment-method:has(input:checked) .ad-payment-toggle {
-                    background: #dbeafe;
-                }
+        .adx-preview img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
 
-                .ad-payment-method:has(input:checked) .ad-payment-toggle::after {
-                    display: block;
-                }
+        .adx-order-list {
+            display: grid;
+            gap: 10px;
+            margin: 0;
+        }
 
-                .ad-payment-method:has(input:checked) {
-                    background: #eff6ff;
-                }
+        .adx-order-row {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            gap: 16px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(15, 23, 42, 0.06);
+        }
 
-                .ad-payment-method input {
-                    margin: 0;
-                    accent-color: #2563eb;
-                }
+        .adx-order-row:last-child {
+            padding-bottom: 0;
+            border-bottom: 0;
+        }
 
-                .ad-payment-panel {
-                    display: none;
-                    margin-top: -6px;
-                    padding: 16px;
-                    border-radius: 10px;
-                    background: #f8fafc;
-                    color: #334155;
-                    font-size: 13px;
-                    line-height: 1.45;
-                }
+        .adx-order-row dt {
+            color: #94a3b8;
+            font-size: 12.5px;
+            font-weight: 600;
+        }
 
-                .ad-payment-panel.is-open {
-                    display: block;
-                }
+        .adx-order-row dd {
+            margin: 0;
+            color: #0f172a;
+            font-size: 13px;
+            font-weight: 600;
+            text-align: right;
+            word-break: break-all;
+        }
 
-                .ad-payment-panel strong {
-                    display: block;
-                    margin-bottom: 4px;
-                    color: #111827;
-                    font-size: 13px;
-                }
+        .adx-status-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 3px 10px;
+            border-radius: 999px;
+            background: #fef9c3;
+            color: #854d0e;
+            font-size: 12px;
+            font-weight: 700;
+        }
 
-                .ad-payment-method-title {
-                    display: block;
-                    color: #111827;
-                    font-size: 14px;
-                    font-weight: 700;
-                    line-height: 1.25;
-                }
+        .adx-status-pill::before {
+            content: "";
+            width: 6px;
+            height: 6px;
+            border-radius: 999px;
+            background: #ca8a04;
+        }
 
-                .ad-payment-method-text {
-                    display: block;
-                    margin-top: 3px;
-                    color: #64748b;
-                    font-size: 12px;
-                    line-height: 1.35;
-                }
+        .adx-status-pill--active {
+            background: #dcfce7;
+            color: #166534;
+        }
 
-                .ad-payment-logos {
-                    display: flex;
-                    flex-wrap: wrap;
-                    justify-content: flex-end;
-                    gap: 6px;
-                }
+        .adx-status-pill--active::before {
+            background: #16a34a;
+        }
 
-                .pay-logo {
-                    display: inline-flex;
-                    align-items: center;
-                    justify-content: center;
-                    min-width: 42px;
-                    height: 24px;
-                    border-radius: 5px;
-                    background: #ffffff;
-                    color: #111827;
-                    font-size: 10px;
-                    font-weight: 800;
-                    letter-spacing: 0;
-                    padding: 0 7px;
-                    white-space: nowrap;
-                }
+        .adx-total-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid rgba(15, 23, 42, 0.08);
+        }
 
-                .pay-logo--visa {
-                    color: #1634a4;
-                }
+        .adx-total-label {
+            color: #64748b;
+            font-size: 13px;
+            font-weight: 600;
+        }
 
-                .pay-logo--mastercard {
-                    color: #eb001b;
-                }
+        .adx-total-price {
+            color: #0f172a;
+            font-size: 26px;
+            font-weight: 800;
+        }
 
-                .pay-logo--amex {
-                    color: #0f72b8;
-                }
+        .adx-next-steps {
+            display: grid;
+            gap: 12px;
+        }
 
-                .pay-logo--discover {
-                    color: #f58220;
-                }
+        .adx-step-row {
+            display: flex;
+            gap: 12px;
+        }
 
-                .pay-logo--troy {
-                    color: #00a6d6;
-                }
+        .adx-step-row__index {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 26px;
+            height: 26px;
+            flex-shrink: 0;
+            border-radius: 999px;
+            background: #eff6ff;
+            color: #2563eb;
+            font-size: 12px;
+            font-weight: 700;
+        }
 
-                .pay-logo--btc {
-                    color: #f7931a;
-                }
+        .adx-step-row__text {
+            padding-top: 2px;
+            color: #334155;
+            font-size: 13px;
+            line-height: 1.5;
+        }
 
-                .pay-logo--isbank {
-                    color: #164194;
-                    min-width: 76px;
-                }
+        .adx-step-row__text strong {
+            display: block;
+            color: #0f172a;
+            font-size: 13.5px;
+            margin-bottom: 1px;
+        }
 
-                .ad-payment-row {
-                    display: flex;
-                    justify-content: space-between;
-                    gap: 16px;
-                    color: #111827;
-                    font-size: 14px;
-                }
+        .adx-contact-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            min-height: 48px;
+            margin-top: 18px;
+            border: 0;
+            border-radius: 12px;
+            background: #2563eb;
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 700;
+            transition: background-color .15s ease;
+        }
 
-                .ad-payment-muted {
-                    color: #64748b;
-                }
+        .adx-contact-btn:hover {
+            background: #1d4ed8;
+        }
 
-                .ad-payment-price {
-                    color: #059669;
-                    font-size: 28px;
-                    line-height: 1.2;
-                    font-weight: 700;
-                }
+        .adx-contact-btn svg {
+            width: 16px;
+            height: 16px;
+        }
 
-                .ad-payment-preview {
-                    width: 100%;
-                    background: #f4f4f5;
-                    border-radius: 10px;
-                    overflow: hidden;
-                }
+        .adx-back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 14px;
+            color: #94a3b8;
+            font-size: 12.5px;
+            font-weight: 600;
+            text-decoration: none;
+        }
 
-                .ad-payment-preview img {
-                    display: block;
-                    width: 100%;
-                    height: 100%;
-                    object-fit: cover;
-                }
+        .adx-back-link:hover {
+            color: #64748b;
+        }
 
-                .ad-payment-button {
-                    display: inline-flex;
-                    align-items: center;
-                    justify-content: center;
-                    width: 100%;
-                    min-height: 48px;
-                    margin-top: 18px;
-                    border: 0;
-                    border-radius: 10px;
-                    background: #2563eb;
-                    color: #ffffff;
-                    text-decoration: none;
-                    font-size: 15px;
-                    font-weight: 700;
-                    cursor: pointer;
-                }
+        html.dark .adx-pay-hero,
+        [data-theme="dark"] .adx-pay-hero,
+        html.dark .adx-card,
+        [data-theme="dark"] .adx-card {
+            background: #111827;
+            border-color: rgba(255, 255, 255, 0.08);
+        }
 
-                .ad-payment-note {
-                    margin: 18px 0 0;
-                    color: #64748b;
-                    font-size: 13px;
-                    line-height: 1.45;
-                }
+        html.dark .adx-pay-hero h1,
+        [data-theme="dark"] .adx-pay-hero h1,
+        html.dark .adx-card__title,
+        [data-theme="dark"] .adx-card__title,
+        html.dark .adx-order-row dd,
+        [data-theme="dark"] .adx-order-row dd,
+        html.dark .adx-total-price,
+        [data-theme="dark"] .adx-total-price,
+        html.dark .adx-step-row__text strong,
+        [data-theme="dark"] .adx-step-row__text strong {
+            color: #ffffff;
+        }
 
-                @media (max-width: 760px) {
-                    .ad-payment-shell {
-                        grid-template-columns: 1fr;
-                        max-width: 656px;
-                    }
+        html.dark .adx-step-row__text,
+        [data-theme="dark"] .adx-step-row__text {
+            color: #cbd5e1;
+        }
 
-                    .ad-payment-method {
-                        grid-template-columns: 24px minmax(0, 1fr);
-                    }
+        html.dark .adx-order-row,
+        [data-theme="dark"] .adx-order-row,
+        html.dark .adx-total-row,
+        [data-theme="dark"] .adx-total-row {
+            border-color: rgba(255, 255, 255, 0.08);
+        }
 
-                    .ad-payment-logos {
-                        grid-column: 2;
-                        justify-content: flex-start;
-                    }
+        @media (max-width: 640px) {
+            .adx-pay-hero {
+                padding: 14px 16px;
+            }
 
-                    .ad-payment-panel {
-                        padding: 14px;
-                    }
-                }
-            </style>
+            .adx-card {
+                padding: 16px;
+                border-radius: 16px;
+            }
 
-            <div class="ad-payment-shell">
-                <section class="ad-payment-card">
-                    <h1 class="ad-payment-title">Ödeme</h1>
-                    <p class="ad-payment-subtitle">Tüm işlemler güvenli şekilde tamamlanır. Ödeme yöntemini seçip devam edebilirsin.</p>
+            .adx-order-row {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 2px;
+            }
 
-                    <dl class="ad-payment-list">
-                        <div class="ad-payment-row">
-                            <dt class="ad-payment-muted">Reklam yeri</dt>
-                            <dd>{{ $placement['label'] ?? $adOrder->placement }}</dd>
-                        </div>
-                        <div class="ad-payment-row">
-                            <dt class="ad-payment-muted">Boyut</dt>
-                            <dd>{{ $adOrder->width }}x{{ $adOrder->height }} px</dd>
-                        </div>
-                        <div class="ad-payment-row">
-                            <dt class="ad-payment-muted">Süre</dt>
-                            <dd>{{ $adOrder->duration_days }} gün</dd>
-                        </div>
-                        @if($adOrder->target_url)
-                            <div class="ad-payment-row">
-                                <dt class="ad-payment-muted">Hedef bağlantı</dt>
-                                <dd>{{ $adOrder->target_url }}</dd>
-                            </div>
-                        @endif
-                        <div class="ad-payment-row">
-                            <dt class="ad-payment-muted">Durum</dt>
-                            <dd>Ödeme bekliyor</dd>
-                        </div>
-                    </dl>
+            .adx-order-row dd {
+                text-align: left;
+            }
+        }
+    </style>
 
-                    <div class="ad-payment-methods" role="radiogroup" aria-label="Ödeme yöntemi" data-payment-methods>
-                        <label class="ad-payment-method" data-payment-option="card">
-                            <input type="radio" name="payment_method" value="card" checked>
-                            <span class="ad-payment-toggle" aria-hidden="true"></span>
-                            <span>
-                                <span class="ad-payment-method-title">Kredi kartı</span>
-                                <span class="ad-payment-method-text">Visa, Mastercard, American Express, Discover ve Troy desteklenir.</span>
-                            </span>
-                            <span class="ad-payment-logos" aria-hidden="true">
-                                <span class="pay-logo pay-logo--visa">VISA</span>
-                                <span class="pay-logo pay-logo--mastercard">MC</span>
-                                <span class="pay-logo pay-logo--amex">AMEX</span>
-                                <span class="pay-logo pay-logo--discover">DISC</span>
-                                <span class="pay-logo pay-logo--troy">TROY</span>
-                            </span>
-                        </label>
-                        <div class="ad-payment-panel is-open" data-payment-panel="card">
-                            <strong>Kredi kartı ile devam et</strong>
-                            Kart ödeme altyapısı bağlandığında Visa, Mastercard, American Express, Discover veya Troy kart bilgileri burada alınacak.
-                        </div>
+    <div class="adx-pay-hero">
+        <span class="adx-pay-hero__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/><path d="M12 7.5v5l3 2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </span>
+        <div>
+            <h1>Sipariş Özeti</h1>
+            <p>#{{ $adOrder->id }} numaralı reklam siparişiniz oluşturuldu.</p>
+        </div>
+    </div>
 
-                        <label class="ad-payment-method" data-payment-option="iban">
-                            <input type="radio" name="payment_method" value="iban">
-                            <span class="ad-payment-toggle" aria-hidden="true"></span>
-                            <span>
-                                <span class="ad-payment-method-title">IBAN ile öde</span>
-                                <span class="ad-payment-method-text">İş Bankası hesabına havale/EFT ile ödeme yap.</span>
-                            </span>
-                            <span class="ad-payment-logos" aria-hidden="true">
-                                <span class="pay-logo pay-logo--isbank">İş Bankası</span>
-                            </span>
-                        </label>
-                        <div class="ad-payment-panel" data-payment-panel="iban">
-                            <strong>IBAN ödeme bilgileri</strong>
-                            İş Bankası IBAN bilgisi ve açıklama kodu ödeme entegrasyonu tamamlandığında bu alanda gösterilecek.
-                        </div>
+    <div class="adx-card">
+        @if($adOrder->image_url)
+            <div class="adx-preview" style="aspect-ratio: {{ $adOrder->width }} / {{ $adOrder->height ?: 1 }};">
+                <img src="{{ $adOrder->image_url }}" alt="{{ $adOrder->title ?: 'Reklam görseli' }}">
+            </div>
+        @endif
 
-                        <label class="ad-payment-method" data-payment-option="crypto">
-                            <input type="radio" name="payment_method" value="crypto">
-                            <span class="ad-payment-toggle" aria-hidden="true"></span>
-                            <span>
-                                <span class="ad-payment-method-title">Kripto ile öde</span>
-                                <span class="ad-payment-method-text">BTC ile ödeme için ödeme bilgileri sipariş onayında paylaşılır.</span>
-                            </span>
-                            <span class="ad-payment-logos" aria-hidden="true">
-                                <span class="pay-logo pay-logo--btc">BTC</span>
-                            </span>
-                        </label>
-                        <div class="ad-payment-panel" data-payment-panel="crypto">
-                            <strong>BTC ile ödeme</strong>
-                            BTC cüzdan adresi ve aktarılacak tutar ödeme entegrasyonu tamamlandığında bu alanda gösterilecek.
-                        </div>
-                    </div>
+        <dl class="adx-order-list">
+            @if($adOrder->title)
+                <div class="adx-order-row">
+                    <dt>Reklam başlığı</dt>
+                    <dd>{{ $adOrder->title }}</dd>
+                </div>
+            @endif
+            <div class="adx-order-row">
+                <dt>Reklam alanı</dt>
+                <dd>{{ $placement['label'] ?? $adOrder->placement }}</dd>
+            </div>
+            <div class="adx-order-row">
+                <dt>Boyut</dt>
+                <dd>{{ $adOrder->width }}×{{ $adOrder->height }} px</dd>
+            </div>
+            <div class="adx-order-row">
+                <dt>Yayın süresi</dt>
+                <dd>{{ $adOrder->duration_days }} gün</dd>
+            </div>
+            @if($adOrder->target_url)
+                <div class="adx-order-row">
+                    <dt>Hedef bağlantı</dt>
+                    <dd>{{ $adOrder->target_url }}</dd>
+                </div>
+            @endif
+            <div class="adx-order-row">
+                <dt>Durum</dt>
+                <dd>
+                    @if($adOrder->status === 'active')
+                        <span class="adx-status-pill adx-status-pill--active">Yayında</span>
+                    @else
+                        <span class="adx-status-pill">Ödeme bekliyor</span>
+                    @endif
+                </dd>
+            </div>
+        </dl>
 
-                    <p class="ad-payment-note">
-                        Ödeme altyapısı bağlandığında seçilen yönteme göre kart, IBAN veya kripto ödeme adımı burada tamamlanacak. Şu an reklam siparişi ödeme bekliyor olarak kaydedildi.
+        <div class="adx-total-row">
+            <span class="adx-total-label">Toplam tutar</span>
+            <span class="adx-total-price">{{ $adOrder->formatted_price }}</span>
+        </div>
+    </div>
+
+    @if($adOrder->status !== 'active')
+        <div class="adx-card">
+            <h2 class="adx-card__title">Ödemeyi tamamlamak için</h2>
+
+            <div class="adx-next-steps">
+                <div class="adx-step-row">
+                    <span class="adx-step-row__index">1</span>
+                    <p class="adx-step-row__text">
+                        <strong>Bizimle iletişime geçin</strong>
+                        Sipariş numaranızı (#{{ $adOrder->id }}) belirterek iletişim formundan ekibimize ulaşın.
                     </p>
-
-                    <button type="button" class="ad-payment-button" data-payment-continue>İşleme Devam Et</button>
-                </section>
-
-                <aside class="ad-payment-card">
-                    <h2 class="ad-payment-title">Reklam Ön İzleme</h2>
-                    <div class="ad-payment-preview" style="aspect-ratio: {{ $adOrder->width }} / {{ $adOrder->height ?: 1 }};">
-                        @if($adOrder->image_url)
-                            <img src="{{ $adOrder->image_url }}" alt="{{ $adOrder->title ?: 'Reklam görseli' }}">
-                        @endif
-                    </div>
-                    <p class="ad-payment-note">Toplam tutar</p>
-                    <div class="ad-payment-price">{{ $adOrder->formatted_price }}</div>
-                </aside>
+                </div>
+                <div class="adx-step-row">
+                    <span class="adx-step-row__index">2</span>
+                    <p class="adx-step-row__text">
+                        <strong>Ödeme yönteminizi belirleyin</strong>
+                        Ekibimiz size uygun ödeme yöntemini (havale/EFT veya kart) paylaşır.
+                    </p>
+                </div>
+                <div class="adx-step-row">
+                    <span class="adx-step-row__index">3</span>
+                    <p class="adx-step-row__text">
+                        <strong>Reklamınız yayına girsin</strong>
+                        Ödeme onaylandıktan sonra reklamınız seçtiğiniz sürede otomatik olarak yayınlanır.
+                    </p>
+                </div>
             </div>
 
-            <script>
-                document.addEventListener('DOMContentLoaded', function () {
-                    const methods = document.querySelector('[data-payment-methods]');
-                    const continueButton = document.querySelector('[data-payment-continue]');
+            <a href="{{ route('contact.create') }}" class="adx-contact-btn">
+                İletişime Geç
+                <svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+        </div>
+    @endif
 
-                    if (!methods) {
-                        return;
-                    }
-
-                    const syncPanels = function () {
-                        const checked = methods.querySelector('input[name="payment_method"]:checked');
-                        const selected = checked ? checked.value : 'card';
-
-                        methods.querySelectorAll('[data-payment-panel]').forEach(function (panel) {
-                            panel.classList.toggle('is-open', panel.dataset.paymentPanel === selected);
-                        });
-                    };
-
-                    methods.querySelectorAll('input[name="payment_method"]').forEach(function (input) {
-                        input.addEventListener('change', syncPanels);
-                    });
-
-                    continueButton?.addEventListener('click', function () {
-                        syncPanels();
-                        methods.querySelector('.ad-payment-panel.is-open')?.scrollIntoView({
-                            block: 'nearest'
-                        });
-                    });
-
-                    syncPanels();
-                });
-            </script>
-        </main>
-    @endsection
-</x-app-layout>
+    <a href="{{ route('advertise.create') }}" class="adx-back-link">
+        <svg viewBox="0 0 24 24" fill="none" style="width:14px;height:14px;"><path d="M15 6 9 12l6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Yeni bir reklam siparişi oluştur
+    </a>
+</div>
+@endsection

@@ -13,12 +13,19 @@
     $size = $sizes[$slotKey] ?? ['h' => 220, 'layout' => 'compact'];
     $advertiseUrl = route('advertise.create');
     $logoUrl = asset('images/ografi-logo.png') . '?v=20260714a';
+
+    // "wide" duzen (feed_top/feed_inline) akistaki gonderi fotograflariyla ayni
+    // 16:9 orana sahip olmali - min-height yerine gercek aspect-ratio kullanarak
+    // her ekran geniskliginde fotograf boyutuyla birebir eslesir.
+    $boxStyle = $size['layout'] === 'wide'
+        ? 'aspect-ratio: 16 / 9;'
+        : 'min-height: ' . $size['h'] . 'px;';
 @endphp
 
 <a
     href="{{ $advertiseUrl }}"
     class="house-ad house-ad--{{ $size['layout'] }}"
-    style="min-height: {{ $size['h'] }}px;"
+    style="{{ $boxStyle }}"
 >
     @if ($size['layout'] === 'vertical')
         <div class="house-ad__body house-ad__body--vertical">
