@@ -78,14 +78,18 @@ class AdOrderSnippetSync
         }
 
         $alt = e((string) ($order->title ?: 'Reklam'));
-        $width = (int) ($order->width ?: 0);
-        $height = (int) ($order->height ?: 0);
+
+        // Onemli: width/height HTML ozniteligi BILEREK eklenmiyor. Siparisin
+        // width/height alanlari (formda secilen yerlesimin nominal boyutu)
+        // yuklenen gorselin GERCEK piksel oranindan farkli olabiliyor - bu
+        // durumda tarayici, resim yuklenmeden once yanlis bir alan ayirip
+        // resim yuklendikten sonra da bosluk birakiyordu (kutu "sarkiyor"
+        // gibi gorunuyordu). width:100%;height:auto ile tarayici resmin
+        // GERCEK oranini kullaniyor, hicbir zaman yanlis olmuyor.
         $img = sprintf(
-            '<img src="%s" alt="%s"%s%s style="display:block;width:100%%;height:auto;border-radius:12px;">',
+            '<img src="%s" alt="%s" style="display:block;width:100%%;height:auto;border-radius:12px;">',
             e($imageUrl),
-            $alt,
-            $width > 0 ? ' width="' . $width . '"' : '',
-            $height > 0 ? ' height="' . $height . '"' : ''
+            $alt
         );
 
         $targetUrl = trim((string) ($order->target_url ?? ''));
