@@ -4,6 +4,10 @@
     $device = (string) ($device ?? 'all');
     $content = $slotKey !== '' ? \App\Models\Snippet::render($slotKey) : '';
 
+    // Admin Filament'ta bu konumu bilerek kapattiysa (Aktif: kapali), kutu
+    // hicbir sekilde gorunmemeli - ne gercek reklam ne de "reklam ver" yedegi.
+    $isDisabled = $slotKey !== '' && trim($content) === '' && \App\Models\Snippet::isExplicitlyDisabled($slotKey);
+
     $classes = ['alma-ad-slot', 'alma-ad-slot--dismissible'];
     if ($device === 'desktop') {
         $classes[] = 'alma-ad-slot--desktop';
@@ -51,11 +55,15 @@
             });
         </script>
     @endonce
-@elseif($slotKey !== '')
+@elseif($slotKey !== '' && !$isDisabled)
     {{--
-        Snippet bos/pasif ise kutuyu tamamen bos birakmak yerine (bozuk gorunuyor
-        ve reklam alani hic tanitilmiyor), Ografi'nin kendi "reklam ver" cagrisini
-        gosteriyoruz - ayni boyut/konumda, gercek reklam geldiginde otomatik yerini birakir.
+        Snippet hic yapilandirilmamis/icerik girilmemisse kutuyu tamamen bos
+        birakmak yerine (bozuk gorunuyor ve reklam alani hic tanitilmiyor),
+        Ografi'nin kendi "reklam ver" cagrisini gosteriyoruz - ayni boyut/
+        konumda, gercek reklam geldiginde otomatik yerini birakir. Ancak admin
+        bu konumu Filament'tan bilerek kapattiysa ($isDisabled), bu yedek de
+        gosterilmez - admin'in "burada hicbir sey olmasin" tercihine saygi
+        gosterilir.
     --}}
     <div class="{{ implode(' ', $classes) }}" data-ad-slot="{{ $slotKey }}" data-ad-slot-house="1">
         @include('partials.ads.tagbar')

@@ -82,7 +82,7 @@ class AdOrderSnippetSync
         $width = (int) ($order->width ?: 0);
         $height = (int) ($order->height ?: 0);
         $img = sprintf(
-            '<img src="%s" alt="%s"%s%s style="display:block;width:100%%;height:auto;border-radius:12px;" loading="lazy">',
+            '<img src="%s" alt="%s"%s%s style="display:block;width:100%%;height:auto;border-radius:12px;">',
             e($imageUrl),
             $alt,
             $width > 0 ? ' width="' . $width . '"' : '',

@@ -40,16 +40,47 @@
         min-height: 0 !important;
         border: 0 !important;
     }
+
+    .ografi-ad-sticky {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 18px !important;
+        row-gap: 18px !important;
+        z-index: 5 !important;
+    }
+
+    /*
+        Sag sutunun kendisi, ana akis kadar uzun bir grid hucresine
+        "stretch" ile yayilmazsa, reklam kutusunun sticky kalabilecegi
+        alan sadece sag sutunun kendi (kisa) icerigi kadar olur ve akis
+        cok daha uzun oldugunda reklam erkenden "birakiliyor". Bu yuzden
+        sag sutunu grid satirinin tam yuksekligine yayiyoruz.
+    */
+    body.alma-app .layout-side--right {
+        align-self: stretch !important;
+    }
+
+    body.alma-app .layout-side--right .ografi-right-stack {
+        min-height: 100% !important;
+    }
+
+    body.alma-app .layout-side--right .ografi-ad-sticky {
+        position: sticky !important;
+        top: calc(var(--site-header-height, 70px) + 14px) !important;
+        align-self: start !important;
+    }
 </style>
 
 <div class="space-y-6 ografi-right-stack">
-    @include('partials.ads.slot', [
-        'slotKey' => 'ads_sidebar_top',
-    ])
+    <div class="layout-sticky ografi-ad-sticky">
+        @include('partials.ads.slot', [
+            'slotKey' => 'ads_sidebar_top',
+        ])
 
-    @include('partials.ads.context-slot', [
-        'slotKey' => 'ads_sidebar_story',
-    ])
+        @include('partials.ads.context-slot', [
+            'slotKey' => 'ads_sidebar_story',
+        ])
+    </div>
 
     @include('partials.right.widgets')
 </div>

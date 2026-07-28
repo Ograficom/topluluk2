@@ -1440,6 +1440,7 @@
         position: static;
         width: 100%;
         max-width: none;
+        align-self: stretch;
     }
 
     .layout-sticky {
@@ -1546,18 +1547,6 @@
 
     .alma-ad-slot__inner {
         padding: 16px;
-    }
-
-    .alma-ad-slot--cover {
-        aspect-ratio: 16 / 9;
-        min-height: 0 !important;
-    }
-
-    .alma-ad-slot--cover .alma-ad-slot__inner {
-        width: 100%;
-        min-height: 0 !important;
-        height: 100%;
-        aspect-ratio: 16 / 9;
     }
 
     .alma-ad-slot iframe,
@@ -5158,14 +5147,7 @@
     }
 
     
-    .layout-side--right {
-        position: sticky;
-        top: calc(var(--site-header-height) + 14px);
-        max-height: calc(100vh - var(--site-header-height) - 24px);
-        overflow: auto;
-    }
 
-    
 
     .site-card,
     .sidebar-card,
@@ -5835,8 +5817,8 @@
     }
 
     body.alma-app .layout-side--right .layout-sticky {
-        position: static !important;
-        top: auto !important;
+        position: sticky !important;
+        top: calc(var(--site-header-height, 70px) + 14px) !important;
         width: 100% !important;
         min-width: 100% !important;
         max-width: 100% !important;
@@ -6370,25 +6352,15 @@
             justify-content: center !important;
         }
 
-        body.alma-app .alma-ad-slot--cover,
-        body.alma-app .alma-ad-slot--cover .alma-ad-slot__inner {
-            aspect-ratio: 16 / 9 !important;
-            min-height: 0 !important;
-        }
-
         body.alma-app .layout-side--right .alma-ad-slot {
             width: var(--right-col) !important;
             max-width: var(--right-col) !important;
             min-width: 0 !important;
-            aspect-ratio: 9 / 16 !important;
-            min-height: 0 !important;
             height: auto !important;
         }
 
         body.alma-app .layout-side--right .alma-ad-slot__inner {
             width: 100% !important;
-            min-height: 0 !important;
-            aspect-ratio: 9 / 16 !important;
         }
 
         body.alma-app .layout-side--right .alma-ad-slot__inner > * {

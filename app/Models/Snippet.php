@@ -30,6 +30,7 @@ class Snippet extends Model
     {
         $forgetCache = static function (Snippet $snippet): void {
             Cache::forget(self::cacheKey($snippet->key));
+            Cache::forget(self::disabledCacheKey($snippet->key));
         };
 
         static::saved($forgetCache);
@@ -41,6 +42,11 @@ class Snippet extends Model
         return "snippet:{$key}";
     }
 
+    public static function disabledCacheKey(string $key): string
+    {
+        return "snippet:{$key}:disabled";
+    }
+
     public static function findActiveByKey(string $key): ?self
     {
         return Cache::remember(
@@ -50,6 +56,24 @@ class Snippet extends Model
                 ->where('key', $key)
                 ->where('is_active', true)
                 ->first()
+        );
+    }
+
+    /**
+     * Admin bu konumu Filament'ta bilerek "Aktif" toggle'ini kapattiysa true
+     * doner. Boyle bir durumda kutu tamamen gizlenir - hicbir zaman bos-durum
+     * "reklam ver" yedegi gosterilmez, cunku bu admin'in bilincli tercihidir
+     * (henuz hic icerik girilmemis bos bir konumdan farklidir).
+     */
+    public static function isExplicitlyDisabled(string $key): bool
+    {
+        return Cache::remember(
+            self::disabledCacheKey($key),
+            now()->addMinutes(10),
+            fn () => self::query()
+                ->where('key', $key)
+                ->where('is_active', false)
+                ->exists()
         );
     }
 
@@ -80,7 +104,7 @@ class Snippet extends Model
         $alt = e((string) ($snippet->title ?: 'Reklam'));
 
         $img = sprintf(
-            '<img src="%s" alt="%s" style="display:block;width:100%%;height:auto;border-radius:10px;" loading="lazy">',
+            '<img src="%s" alt="%s" style="display:block;width:100%%;height:auto;border-radius:10px;">',
             e($imageUrl),
             $alt
         );
