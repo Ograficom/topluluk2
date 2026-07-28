@@ -58,6 +58,7 @@
             'url' => route('pages.sss'),
         ],
     ])->merge($staticFooterLinks)->merge($dynamicPageLinks)->unique('url')->values();
+    $socialLinks = \App\Models\SocialLink::activeLinks();
 @endphp
 
 <style>
@@ -1314,6 +1315,69 @@
     }
 </style>
 
+<style>
+    .sidebar-social-icons {
+        display: flex !important;
+        flex-wrap: wrap !important;
+        align-items: center !important;
+        gap: 8px !important;
+        margin: 0 0 12px !important;
+        padding: 0 !important;
+    }
+
+    .sidebar-social-icon {
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        width: 30px !important;
+        height: 30px !important;
+        flex-shrink: 0 !important;
+        border-radius: 999px !important;
+        background: #f3f4f6 !important;
+        color: #4b5563 !important;
+        text-decoration: none !important;
+        transition: background-color .15s ease, color .15s ease !important;
+    }
+
+    .sidebar-social-icon:hover,
+    .sidebar-social-icon:focus-visible {
+        background: #eff6ff !important;
+        color: #2563eb !important;
+    }
+
+    .sidebar-social-icon iconify-icon {
+        width: 15px !important;
+        height: 15px !important;
+        pointer-events: none !important;
+    }
+
+    .dark .sidebar-social-icon,
+    [data-theme="dark"] .sidebar-social-icon {
+        background: #27272a !important;
+        color: #d4d4d8 !important;
+    }
+
+    .dark .sidebar-social-icon:hover,
+    [data-theme="dark"] .sidebar-social-icon:hover {
+        background: rgba(37, 99, 235, 0.18) !important;
+        color: #60a5fa !important;
+    }
+
+    body.alma-app .sidebar-footer-links {
+        display: grid !important;
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        gap: 6px 10px !important;
+    }
+
+    body.alma-app .sidebar-footer-link {
+        font-size: 11px !important;
+        line-height: 1.4 !important;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+    }
+</style>
+
 <aside
     class="sidebar-wrapper{{ $mobileSidebar ? ' sidebar-wrapper--drawer' : '' }}"
     @if($mobileSidebar)
@@ -1458,9 +1522,27 @@
         </div>
 
         <div class="sidebar-footer">
+            @if($socialLinks->isNotEmpty())
+                <div class="sidebar-social-icons">
+                    @foreach($socialLinks as $social)
+                        <a
+                            href="{{ $social['url'] }}"
+                            class="sidebar-social-icon"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            data-external-bridge="off"
+                            aria-label="{{ $social['label'] }}"
+                            title="{{ $social['label'] }}"
+                        >
+                            <iconify-icon icon="{{ $social['icon'] }}" aria-hidden="true"></iconify-icon>
+                        </a>
+                    @endforeach
+                </div>
+            @endif
+
             <div class="sidebar-footer-links">
                 @foreach($footerLinks as $link)
-                    <a class="sidebar-footer-link" href="{{ $link['url'] }}">{{ $link['label'] }}</a>
+                    <a class="sidebar-footer-link" href="{{ $link['url'] }}" style="font-size: 11px !important; line-height: 1.4 !important; white-space: nowrap !important; overflow: hidden !important; text-overflow: ellipsis !important;">{{ $link['label'] }}</a>
                 @endforeach
             </div>
 
