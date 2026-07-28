@@ -143,6 +143,185 @@
             transform: translateY(0) !important;
         }
 
+        .create-brand {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 26px;
+            height: 26px;
+            border-radius: 8px;
+            background: #2563eb;
+            color: #fff;
+            flex-shrink: 0;
+        }
+
+        .create-category-pill {
+            display: inline-flex !important;
+            align-items: center !important;
+            gap: 5px !important;
+            border-radius: 999px !important;
+            border: 1px solid #bfdbfe !important;
+            background: #eff6ff !important;
+            color: #1d4ed8 !important;
+            padding: .3rem .7rem !important;
+            font-size: .72rem !important;
+            font-weight: 600 !important;
+            transition: .18s ease !important;
+        }
+
+        .create-category-pill:hover {
+            background: #dbeafe !important;
+            border-color: #93c5fd !important;
+        }
+
+        .create-cover {
+            position: relative;
+            display: block;
+            width: 100%;
+            border-radius: 18px;
+            overflow: hidden;
+        }
+
+        .create-cover-drop {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: .35rem;
+            width: 100%;
+            min-height: 128px;
+            border-radius: 18px;
+            border: 1.5px dashed #cbd5e1;
+            background: #f8fafc;
+            color: #64748b;
+            cursor: pointer;
+            transition: .18s ease;
+            padding: 1.1rem;
+        }
+
+        .create-cover-drop:hover {
+            border-color: #93c5fd;
+            background: #eff6ff;
+            color: #1d4ed8;
+        }
+
+        .create-cover-preview {
+            display: none;
+            position: relative;
+            width: 100%;
+            max-height: 320px;
+            border-radius: 18px;
+            overflow: hidden;
+            background: #0f172a;
+        }
+
+        .create-cover-preview img {
+            width: 100%;
+            max-height: 320px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .create-cover-preview__actions {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            display: flex;
+            gap: 6px;
+        }
+
+        .create-cover-preview__actions button {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            border-radius: 999px;
+            background: rgba(15, 23, 42, .62);
+            color: #fff;
+            font-size: .72rem;
+            font-weight: 600;
+            padding: .4rem .7rem;
+            backdrop-filter: blur(6px);
+            transition: .16s ease;
+        }
+
+        .create-cover-preview__actions button:hover {
+            background: rgba(15, 23, 42, .8);
+        }
+
+        .create-cover.has-image .create-cover-drop { display: none; }
+        .create-cover.has-image .create-cover-preview { display: block; }
+
+        .create-title-input {
+            width: 100%;
+            border: 0;
+            background: transparent;
+            padding: 0;
+            font-size: 1.7rem;
+            font-weight: 700;
+            letter-spacing: -0.01em;
+            line-height: 1.28;
+            color: #0b0f19;
+            outline: none;
+        }
+
+        .create-title-input::placeholder {
+            color: #a8b0bd;
+            font-weight: 700;
+        }
+
+        @media (min-width: 640px) {
+            .create-title-input {
+                font-size: 2.15rem;
+            }
+        }
+
+        .create-meta-row {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 10px;
+            margin-top: .65rem;
+        }
+
+        .create-meta-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            font-size: .76rem;
+            font-weight: 500;
+            color: #94a3b8;
+        }
+
+        .create-editor-hint {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 4px;
+            padding: 0 .1rem;
+            font-size: .78rem;
+            color: #b6bcc7;
+            transition: opacity .18s ease;
+        }
+
+        .create-editor-hint iconify-icon {
+            font-size: 15px;
+            color: #c7cdd6;
+        }
+
+        [data-editorjs-wrapper] .ce-paragraph.cdx-block,
+        [data-editorjs-wrapper] .ce-paragraph[data-empty] {
+            background: transparent !important;
+        }
+
+        [data-editorjs-wrapper] .codex-editor__redactor {
+            padding-bottom: 120px !important;
+        }
+
+        [data-editorjs-wrapper] .ce-block:first-child .ce-paragraph[data-placeholder-active]:empty::before,
+        [data-editorjs-wrapper] .ce-paragraph:empty::before {
+            color: #a8b0bd !important;
+        }
+
         @media (min-width: 768px) {
             .settings-panel {
                 left: auto !important;
@@ -177,14 +356,19 @@
                             </svg>
                         </a>
 
+                        <div class="create-brand">
+                            <iconify-icon icon="lucide:feather" class="text-[14px]"></iconify-icon>
+                        </div>
+
                         <div class="min-w-0">
                             <div class="truncate text-sm font-semibold text-slate-950">Yeni gönderi</div>
 
                             <details class="relative" data-category-menu>
-                                <summary class="mt-0.5 inline-flex max-w-full cursor-pointer list-none items-center gap-1 text-xs text-slate-500 transition hover:text-slate-700 [&::-webkit-details-marker]:hidden">
+                                <summary class="create-category-pill mt-1 max-w-full cursor-pointer list-none [&::-webkit-details-marker]:hidden">
+                                    <iconify-icon icon="lucide:tag" class="text-[12px]"></iconify-icon>
                                     <span class="truncate" data-category-label>{{ $selectedCategory?->name ?: __('post_create.select_category') }}</span>
-                                    <svg viewBox="0 0 20 20" fill="none" class="h-3.5 w-3.5 shrink-0" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                                        <path d="m5 7.5 5 5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <svg viewBox="0 0 20 20" fill="none" class="h-3 w-3 shrink-0" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                        <path d="m5 7.5 5 5 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
                                     </svg>
                                 </summary>
 
@@ -254,15 +438,47 @@
 
                     <section class="create-card overflow-hidden rounded-[22px]">
                         <div class="border-b border-slate-100 px-4 py-4 sm:px-7 sm:py-6">
-                            <input id="title" name="title" type="text" required value="{{ old('title') }}"
+                            <div class="create-cover" data-cover-field>
+                                <label for="featured_image" class="create-cover-drop">
+                                    <iconify-icon icon="lucide:image-plus" class="text-2xl"></iconify-icon>
+                                    <span class="text-sm font-medium">{{ __('post_create.featured_image') }}</span>
+                                    <span class="text-xs text-slate-400">{{ __('post_create.max_file_size') }}</span>
+                                </label>
+                                <div class="create-cover-preview" data-cover-preview>
+                                    <img data-cover-preview-img alt="">
+                                    <div class="create-cover-preview__actions">
+                                        <button type="button" data-cover-change><iconify-icon icon="lucide:pencil" class="text-[13px]"></iconify-icon>Değiştir</button>
+                                        <button type="button" data-cover-remove><iconify-icon icon="lucide:x" class="text-[13px]"></iconify-icon>Kaldır</button>
+                                    </div>
+                                </div>
+                                <input id="featured_image" name="featured_image" type="file" accept="image/*" class="sr-only" data-cover-input>
+                            </div>
+
+                            <textarea id="title" name="title" required rows="1" data-autogrow
                                    placeholder="{{ __('post_create.title_placeholder') }}"
-                                   class="w-full rounded-2xl bg-slate-100/80 px-4 py-3 text-[1.65rem] font-semibold leading-tight text-slate-950 placeholder:text-slate-400 focus:outline-none sm:text-[2.1rem]">
+                                   class="create-title-input mt-5"
+                                   style="min-height:0 !important;border:0 !important;border-radius:0 !important;background:transparent !important;box-shadow:none !important;outline:none !important;padding:0 !important;resize:none !important;overflow:hidden !important;font-family:inherit !important;font-size:clamp(1.7rem, 1.45rem + 1.4vw, 2.15rem) !important;line-height:1.28 !important;font-weight:700 !important;color:#0b0f19 !important;letter-spacing:-0.01em !important;">{{ old('title') }}</textarea>
+
+                            <div class="create-meta-row">
+                                <span class="create-meta-chip">
+                                    <iconify-icon icon="lucide:clock" class="text-[13px]"></iconify-icon>
+                                    <span data-reading-time>0 dk okuma</span>
+                                </span>
+                                <span class="create-meta-chip">
+                                    <iconify-icon icon="lucide:type" class="text-[13px]"></iconify-icon>
+                                    <span data-word-count>0 kelime</span>
+                                </span>
+                            </div>
                         </div>
 
                         <div data-editorjs-wrapper class="bg-white">
-                            <div x-ref="holder" class="min-h-[58vh] px-4 py-6 text-slate-800 sm:px-7 sm:py-7"></div>
+                            <div x-ref="holder" class="min-h-[52vh] px-4 py-6 text-slate-800 sm:px-7 sm:py-7"></div>
+                            <div class="create-editor-hint px-4 pb-6 sm:px-7">
+                                <iconify-icon icon="lucide:sparkles"></iconify-icon>
+                                <span>Blok eklemek için satır başındaki <strong class="font-semibold text-slate-400">“+”</strong> simgesine dokunun; biçimlendirmek için metni seçin.</span>
+                            </div>
                             <input type="hidden" name="content_json" id="content_json" data-editor-json value="{{ old('content_json') }}">
-                            <textarea id="content" name="content" data-editor-content data-mentionable="users" class="hidden min-h-[58vh] w-full resize-none px-4 py-6 text-slate-800 focus:outline-none sm:px-7 sm:py-7" placeholder="Gönderinizi buraya yazmaya başlayın...">{{ old('content') }}</textarea>
+                            <textarea id="content" name="content" data-editor-content data-mentionable="users" class="hidden min-h-[52vh] w-full resize-none px-4 py-6 text-slate-800 focus:outline-none sm:px-7 sm:py-7" placeholder="Gönderinizi buraya yazmaya başlayın...">{{ old('content') }}</textarea>
                         </div>
                     </section>
 
@@ -347,20 +563,14 @@
                                                 <div class="flex min-w-0 items-center gap-3">
                                                     <span class="inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-blue-50 text-xs font-bold text-blue-600">3</span>
                                                     <div class="min-w-0">
-                                                        <div class="text-sm font-semibold text-slate-950">Görsel ve yayın</div>
-                                                        <div class="mt-0.5 text-xs text-slate-500">Kapak görseli ve zamanlama.</div>
+                                                        <div class="text-sm font-semibold text-slate-950">Yayın zamanlaması</div>
+                                                        <div class="mt-0.5 text-xs text-slate-500">Hemen ya da ileri bir tarihte yayınla.</div>
                                                     </div>
                                                 </div>
                                                 <svg viewBox="0 0 20 20" fill="none" class="h-4 w-4 shrink-0 text-slate-400 transition group-open:rotate-180" xmlns="http://www.w3.org/2000/svg"><path d="m5 7.5 5 5 5-5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
                                             </summary>
                                             <div class="mt-3 space-y-3">
                                                 <input id="published_at" name="published_at" type="datetime-local" value="{{ old('published_at') }}" class="create-input">
-                                                <label for="featured_image" class="flex cursor-pointer flex-col items-center justify-center rounded-[22px] border border-dashed border-slate-300 bg-slate-50 px-4 py-6 text-center transition hover:border-blue-300 hover:bg-white">
-                                                    <iconify-icon icon="lucide:image-plus" class="text-2xl text-slate-400"></iconify-icon>
-                                                    <span class="mt-2 text-sm font-medium text-slate-700">{{ __('post_create.featured_image') }}</span>
-                                                    <span class="mt-1 text-xs text-slate-500">{{ __('post_create.max_file_size') }}</span>
-                                                    <input id="featured_image" name="featured_image" type="file" accept="image/*" class="sr-only">
-                                                </label>
                                             </div>
                                         </details>
                                     </section>
@@ -472,6 +682,78 @@
             const settingsModal = document.getElementById('settings-modal');
             const settingsOverlay = settingsModal?.querySelector('[data-settings-overlay]');
             let settingsTimer = null;
+
+            const coverField = document.querySelector('[data-cover-field]');
+            const coverInput = document.querySelector('[data-cover-input]');
+            const coverPreview = document.querySelector('[data-cover-preview]');
+            const coverPreviewImg = document.querySelector('[data-cover-preview-img]');
+
+            const setCoverFile = (file) => {
+                if (!file || !coverPreviewImg || !coverField) return;
+                const reader = new FileReader();
+                reader.onload = () => {
+                    coverPreviewImg.src = String(reader.result || '');
+                    coverField.classList.add('has-image');
+                };
+                reader.readAsDataURL(file);
+            };
+
+            coverInput?.addEventListener('change', () => {
+                const file = coverInput.files?.[0];
+                if (file) setCoverFile(file);
+            });
+
+            document.querySelector('[data-cover-change]')?.addEventListener('click', () => coverInput?.click());
+            document.querySelector('[data-cover-remove]')?.addEventListener('click', () => {
+                if (coverInput) coverInput.value = '';
+                if (coverPreviewImg) coverPreviewImg.src = '';
+                coverField?.classList.remove('has-image');
+            });
+
+            const readingTimeEl = document.querySelector('[data-reading-time]');
+            const wordCountEl = document.querySelector('[data-word-count]');
+            const blockText = (block) => {
+                const data = block?.data || {};
+                return [data.text, data.caption, data.question, data.answer, data.title, ...(Array.isArray(data.items) ? data.items : [])]
+                    .filter((value) => typeof value === 'string')
+                    .join(' ');
+            };
+            const updateReadingStats = async () => {
+                if (!readingTimeEl && !wordCountEl) return;
+                let text = '';
+                if (wrapper?.__editorInstance?.save) {
+                    try {
+                        const data = await wrapper.__editorInstance.save();
+                        text = (data?.blocks || []).map(blockText).join(' ');
+                    } catch { text = ''; }
+                }
+                if (!text) text = fallbackTextarea?.value || '';
+                const words = (text.match(/\S+/g) || []).length;
+                if (wordCountEl) wordCountEl.textContent = `${words} kelime`;
+                if (readingTimeEl) readingTimeEl.textContent = `${Math.max(1, Math.round(words / 200))} dk okuma`;
+            };
+            let readingStatsTimer = null;
+            const scheduleReadingStats = () => {
+                if (readingStatsTimer) clearTimeout(readingStatsTimer);
+                readingStatsTimer = window.setTimeout(updateReadingStats, 600);
+            };
+            wrapper?.addEventListener('input', scheduleReadingStats);
+            wrapper?.addEventListener('keyup', scheduleReadingStats);
+
+            const titleField = document.getElementById('title');
+            const autoGrowTitle = () => {
+                if (!titleField) return;
+                titleField.style.height = 'auto';
+                titleField.style.height = `${titleField.scrollHeight}px`;
+            };
+            titleField?.addEventListener('input', () => { autoGrowTitle(); scheduleReadingStats(); });
+            titleField?.addEventListener('keydown', (e) => {
+                if (e.key !== 'Enter') return;
+                e.preventDefault();
+                wrapper?.querySelector('[contenteditable]')?.focus();
+            });
+            autoGrowTitle();
+            window.setTimeout(updateReadingStats, 1200);
 
             const showFallback = () => {
                 wrapper?.classList.add('hidden');
