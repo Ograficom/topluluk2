@@ -51,6 +51,12 @@ class Snippet extends Model
 
     public static function render(string $key, string $default = ''): string
     {
-        return self::findActiveByKey($key)?->content ?? $default;
+        $content = self::findActiveByKey($key)?->content;
+
+        if ($content === null || trim(preg_replace('/<!--.*?-->/s', '', $content)) === '') {
+            return $default;
+        }
+
+        return $content;
     }
 }
