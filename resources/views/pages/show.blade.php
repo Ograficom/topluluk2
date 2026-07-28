@@ -1,6 +1,50 @@
 @extends('layouts.app')
 
-@section('title', $page->title)
+@php
+    use Illuminate\Support\Str;
+
+    $siteName = trim((string) config('app.name', 'Ografi'));
+    $pageSeoTitle = trim((string) ($page->meta_title ?: $page->title ?: $siteName));
+    $pageDescriptionSource = trim((string) ($page->meta_description ?: strip_tags((string) $page->content)));
+    $pageDescriptionSource = html_entity_decode($pageDescriptionSource, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+    $pageDescriptionSource = preg_replace('/\s+/u', ' ', $pageDescriptionSource) ?? $pageDescriptionSource;
+    $pageDescription = $pageDescriptionSource !== ''
+        ? Str::limit(trim($pageDescriptionSource), 155)
+        : ($siteName !== '' ? $page->title . ' - ' . $siteName : $page->title);
+    $pageCanonicalUrl = route('pages.show', $page->slug);
+@endphp
+
+@section('title', $pageSeoTitle)
+@section('meta_description', $pageDescription)
+@section('canonical_url', $pageCanonicalUrl)
+
+@push('seo')
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="{{ e($siteName !== '' ? $siteName : 'Ografi') }}">
+<meta property="og:title" content="{{ e($pageSeoTitle) }}">
+<meta property="og:description" content="{{ e($pageDescription) }}">
+<meta property="og:url" content="{{ e($pageCanonicalUrl) }}">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="{{ e($pageSeoTitle) }}">
+<meta name="twitter:description" content="{{ e($pageDescription) }}">
+@if($page->meta_keywords)
+<meta name="keywords" content="{{ e($page->meta_keywords) }}">
+@endif
+<script type="application/ld+json">
+{!! json_encode([
+    '@context' => 'https://schema.org',
+    '@type' => 'WebPage',
+    'name' => $pageSeoTitle,
+    'description' => $pageDescription,
+    'url' => $pageCanonicalUrl,
+    'isPartOf' => [
+        '@type' => 'WebSite',
+        'name' => $siteName !== '' ? $siteName : 'Ografi',
+        'url' => url('/'),
+    ],
+], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) !!}
+</script>
+@endpush
 
 @push('head')
 <style>

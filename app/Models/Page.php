@@ -15,6 +15,9 @@ class Page extends Model
         'title',
         'slug',
         'content',
+        'meta_title',
+        'meta_description',
+        'meta_keywords',
         'is_published',
         'published_at',
     ];

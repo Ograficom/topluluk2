@@ -8,6 +8,7 @@ use Filament\Actions;
 use Filament\Forms;
 use Filament\Resources\Resource;
 use Filament\Schemas\Components\Grid;
+use Filament\Schemas\Components\Section;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Filament\Schemas\Schema;
@@ -66,6 +67,24 @@ class PageResource extends Resource
                     ])
                     ->fileAttachmentsDisk(config('filesystems.default', 'public'))
                     ->fileAttachmentsVisibility('public'),
+                Section::make('SEO')
+                    ->description('Arama motorlarinda ve paylasimlarda gorunecek bilgiler. Bos birakilirsa sayfa basligi kullanilir.')
+                    ->collapsible()
+                    ->schema([
+                        Forms\Components\TextInput::make('meta_title')
+                            ->label('Meta baslik')
+                            ->maxLength(255)
+                            ->helperText('Bos birakilirsa sayfa basligi kullanilir.'),
+                        Forms\Components\Textarea::make('meta_description')
+                            ->label('Meta aciklama')
+                            ->maxLength(320)
+                            ->rows(3)
+                            ->helperText('Arama sonuclarinda basligin altinda gorunur. 150-160 karakter onerilir.'),
+                        Forms\Components\TextInput::make('meta_keywords')
+                            ->label('Anahtar kelimeler')
+                            ->maxLength(255)
+                            ->helperText('Virgulle ayirin (opsiyonel).'),
+                    ]),
                 Grid::make(2)->schema([
                     Forms\Components\Toggle::make('is_published')
                         ->label('Yayinda')

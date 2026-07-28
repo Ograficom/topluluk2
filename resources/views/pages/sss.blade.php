@@ -1,7 +1,26 @@
 @extends('layouts.app')
 
-@section('title', 'Sıkça Sorulan Sorular')
-@section('meta_description', 'Sıkça sorulan sorular ve cevaplar.')
+@php
+    $faqSiteName = trim((string) config('app.name', 'Ografi'));
+    $faqPageTitle = 'Sıkça Sorulan Sorular';
+    $faqPageDescription = 'Sıkça sorulan sorular ve cevaplar.';
+    $faqCanonicalUrl = route('pages.sss');
+@endphp
+
+@section('title', $faqPageTitle)
+@section('meta_description', $faqPageDescription)
+@section('canonical_url', $faqCanonicalUrl)
+
+@push('seo')
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="{{ e($faqSiteName !== '' ? $faqSiteName : 'Ografi') }}">
+<meta property="og:title" content="{{ e($faqPageTitle) }}">
+<meta property="og:description" content="{{ e($faqPageDescription) }}">
+<meta property="og:url" content="{{ e($faqCanonicalUrl) }}">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="{{ e($faqPageTitle) }}">
+<meta name="twitter:description" content="{{ e($faqPageDescription) }}">
+@endpush
 
 @php
     $faqItems = \App\Models\Faq::query()
