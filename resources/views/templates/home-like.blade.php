@@ -8,7 +8,7 @@
 
     // Varsayılan akış: tarih filtresi uygulama, en son paylaşılan gönderileri göster.
     // Üstteki buton metni yine "Bugün" olarak kalır; sadece filtre mantığı varsayılanda kapalıdır.
-    $activeFeedTimeFilter = request()->query('feed_time', '24h');
+    $activeFeedTimeFilter = request()->query('feed_time', 'latest');
     $feedTimeFilters = collect([
         '24h' => 'Bugün',
         'week' => 'Hafta',
@@ -4794,7 +4794,9 @@
             };
 
             const applyFeedFilter = (filter) => {
-                const limit = getFilterLimit(filter);
+                // "Tum" modu saat/tarih filtresinden tamamen muaf: en yeniden en eskiye,
+                // hicbir zaman araligi kisitlamasi olmadan tum gonderiler gorunur.
+                const limit = ografiFeedMode === 'all' ? null : getFilterLimit(filter);
                 const posts = Array.from(document.querySelectorAll('[data-post-published]'));
                 const emptyState = document.querySelector('[data-feed-filter-empty]');
                 const label = document.querySelector('[data-feed-filter-label]');
@@ -4988,6 +4990,7 @@
                     });
 
                     applyOgrafiFeedModeFilter();
+                    applyFeedFilter(feedFilterState.active || 'latest');
 
                     return;
                 }
