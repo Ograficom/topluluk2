@@ -34,6 +34,7 @@ class SocialLink extends Model
         'telegram' => 'simple-icons:telegram',
         'discord' => 'simple-icons:discord',
         'github' => 'simple-icons:github',
+        'linkedin' => 'simple-icons:linkedin',
     ];
 
     /**
@@ -51,6 +52,7 @@ class SocialLink extends Model
         'telegram' => 'https://t.me/%s',
         'discord' => 'https://discord.gg/%s',
         'github' => 'https://github.com/%s',
+        'linkedin' => 'https://linkedin.com/company/%s',
     ];
 
     protected static function booted(): void

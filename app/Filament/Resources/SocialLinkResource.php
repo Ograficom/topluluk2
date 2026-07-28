@@ -40,6 +40,7 @@ class SocialLinkResource extends Resource
             'discord' => 'Örn. sunucu davet kodu (abc123) veya tam discord.gg linki',
             'youtube' => 'Örn. kanal-adi veya tam youtube.com linki',
             'tiktok' => 'Örn. kullanici.adi veya tam tiktok.com linki',
+            'linkedin' => 'Örn. sirket-sayfasi veya tam linkedin.com linki',
             default => 'Örn. kullanici.adi veya tam bağlantı (https://...)',
         };
     }

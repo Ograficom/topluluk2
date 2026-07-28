@@ -68,9 +68,9 @@
         }
 
         .create-input:focus {
-            border-color: #86efac;
+            border-color: #93c5fd;
             background: #ffffff;
-            box-shadow: 0 0 0 4px rgba(16, 185, 129, .10);
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, .10);
         }
 
         label[data-tag-option] {
@@ -112,16 +112,16 @@
         }
 
         label[data-tag-option]:hover span {
-            border-color: #bbf7d0 !important;
-            background: #f0fdf4 !important;
-            color: #047857 !important;
+            border-color: #bfdbfe !important;
+            background: #eff6ff !important;
+            color: #1d4ed8 !important;
         }
 
         label[data-tag-option]:has(input[type="checkbox"]:checked) span {
-            border-color: #34d399 !important;
-            background: #ecfdf5 !important;
-            color: #047857 !important;
-            box-shadow: inset 0 0 0 1px #34d399 !important;
+            border-color: #3b82f6 !important;
+            background: #eff6ff !important;
+            color: #1d4ed8 !important;
+            box-shadow: inset 0 0 0 1px #3b82f6 !important;
         }
 
         .settings-panel {
@@ -132,7 +132,7 @@
             width: 100% !important;
             max-height: 86vh !important;
             overflow: hidden !important;
-            border-radius: 30px 30px 0 0 !important;
+            border-radius: 22px 22px 0 0 !important;
             background: #ffffff !important;
             transform: translateY(105%) !important;
             transition: transform .28s ease !important;
@@ -152,7 +152,7 @@
                 width: 430px !important;
                 max-width: calc(100vw - 48px) !important;
                 max-height: calc(100vh - 48px) !important;
-                border-radius: 30px !important;
+                border-radius: 22px !important;
                 border: 1px solid #e2e8f0 !important;
                 transform: translateX(calc(100% + 32px)) !important;
                 box-shadow: 0 24px 70px -35px rgba(15, 23, 42, .32) !important;
@@ -217,7 +217,7 @@
                     </div>
 
                     <div class="flex shrink-0 items-center gap-2">
-                        <div class="hidden items-center gap-1.5 text-xs text-emerald-700 sm:flex">
+                        <div class="hidden items-center gap-1.5 text-xs text-blue-700 sm:flex">
                             <iconify-icon icon="lucide:check" class="text-[14px]"></iconify-icon>
                             <span>Taslak hazır</span>
                         </div>
@@ -227,7 +227,7 @@
                         </button>
 
                         <button type="submit" form="post-create-form" data-submit-intent="publish"
-                                class="inline-flex h-11 items-center justify-center rounded-2xl bg-emerald-600 px-4 text-sm font-semibold text-white shadow-[0_18px_34px_-18px_rgba(5,150,105,.9)] transition hover:bg-emerald-700 active:bg-emerald-800 sm:px-5">
+                                class="inline-flex h-11 items-center justify-center rounded-2xl bg-blue-600 px-4 text-sm font-semibold text-white shadow-[0_18px_34px_-18px_rgba(37,99,235,.9)] transition hover:bg-blue-700 active:bg-blue-800 sm:px-5">
                             <iconify-icon icon="lucide:send" class="text-base" aria-hidden="true"></iconify-icon>
                             <span class="sr-only sm:not-sr-only sm:ml-2">{{ __('post_create.publish') }}</span>
                         </button>
@@ -252,7 +252,7 @@
                     <input type="hidden" name="is_published" id="is_published" value="{{ old('is_published') ? 1 : 0 }}">
                     <input type="hidden" id="category_id" name="category_id" data-category-input value="{{ $initialCategoryId ?: '' }}">
 
-                    <section class="create-card overflow-hidden rounded-[30px]">
+                    <section class="create-card overflow-hidden rounded-[22px]">
                         <div class="border-b border-slate-100 px-4 py-4 sm:px-7 sm:py-6">
                             <input id="title" name="title" type="text" required value="{{ old('title') }}"
                                    placeholder="{{ __('post_create.title_placeholder') }}"
@@ -284,13 +284,13 @@
 
                             <div class="flex-1 overflow-y-auto bg-slate-50 p-3 sm:p-4">
                                 <div class="space-y-3">
-                                    <section class="rounded-[24px] border border-slate-200 bg-white p-4 shadow-sm">
-                                        <div class="mb-3 flex items-center justify-between gap-3">
-                                            <div>
-                                                <div class="text-sm font-semibold text-slate-950">1. İçerik bilgileri</div>
+                                    <section class="rounded-[18px] border border-slate-200 bg-white p-4 shadow-sm">
+                                        <div class="mb-3 flex items-center gap-3">
+                                            <span class="inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-blue-50 text-xs font-bold text-blue-600">1</span>
+                                            <div class="min-w-0">
+                                                <div class="text-sm font-semibold text-slate-950">İçerik bilgileri</div>
                                                 <div class="mt-0.5 text-xs text-slate-500">Etiket ve kısa açıklama.</div>
                                             </div>
-                                            <span class="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-2xl bg-slate-100 text-slate-500"><iconify-icon icon="lucide:file-text" class="text-[15px]"></iconify-icon></span>
                                         </div>
 
                                         <div class="space-y-3">
@@ -302,7 +302,7 @@
                                                     <div class="flex flex-wrap gap-2">
                                                         @foreach($tags as $tag)
                                                             <label data-tag-option data-tag-name="{{ \Illuminate\Support\Str::lower($tag->name) }}" class="inline-flex cursor-pointer items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-1.5 text-xs text-slate-600 transition hover:border-slate-300 hover:bg-slate-50">
-                                                                <input type="checkbox" name="tags[]" value="{{ $tag->id }}" @checked(collect(old('tags', []))->contains($tag->id)) class="h-3.5 w-3.5 rounded border-slate-300 text-emerald-600 focus:ring-emerald-200">
+                                                                <input type="checkbox" name="tags[]" value="{{ $tag->id }}" @checked(collect(old('tags', []))->contains($tag->id)) class="h-3.5 w-3.5 rounded border-slate-300 text-blue-600 focus:ring-blue-200">
                                                                 <span>#{{ $tag->name }}</span>
                                                             </label>
                                                         @endforeach
@@ -317,14 +317,17 @@
                                         </div>
                                     </section>
 
-                                    <section class="rounded-[24px] border border-slate-200 bg-white p-4 shadow-sm">
+                                    <section class="rounded-[18px] border border-slate-200 bg-white p-4 shadow-sm">
                                         <details class="group" open>
                                             <summary class="flex cursor-pointer list-none items-center justify-between gap-3 [&::-webkit-details-marker]:hidden">
-                                                <div>
-                                                    <div class="text-sm font-semibold text-slate-950">2. SEO</div>
-                                                    <div class="mt-0.5 text-xs text-slate-500">Arama görünümü ayarları.</div>
+                                                <div class="flex min-w-0 items-center gap-3">
+                                                    <span class="inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-blue-50 text-xs font-bold text-blue-600">2</span>
+                                                    <div class="min-w-0">
+                                                        <div class="text-sm font-semibold text-slate-950">SEO</div>
+                                                        <div class="mt-0.5 text-xs text-slate-500">Arama görünümü ayarları.</div>
+                                                    </div>
                                                 </div>
-                                                <svg viewBox="0 0 20 20" fill="none" class="h-4 w-4 text-slate-400 transition group-open:rotate-180" xmlns="http://www.w3.org/2000/svg"><path d="m5 7.5 5 5 5-5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                                                <svg viewBox="0 0 20 20" fill="none" class="h-4 w-4 shrink-0 text-slate-400 transition group-open:rotate-180" xmlns="http://www.w3.org/2000/svg"><path d="m5 7.5 5 5 5-5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
                                             </summary>
                                             <div class="mt-3 space-y-3">
                                                 <input id="meta_title" name="meta_title" type="text" value="{{ old('meta_title') }}" placeholder="Arama sonuçlarında görünecek başlık" class="create-input">
@@ -338,18 +341,21 @@
                                         </details>
                                     </section>
 
-                                    <section class="rounded-[24px] border border-slate-200 bg-white p-4 shadow-sm">
+                                    <section class="rounded-[18px] border border-slate-200 bg-white p-4 shadow-sm">
                                         <details class="group">
                                             <summary class="flex cursor-pointer list-none items-center justify-between gap-3 [&::-webkit-details-marker]:hidden">
-                                                <div>
-                                                    <div class="text-sm font-semibold text-slate-950">3. Görsel ve yayın</div>
-                                                    <div class="mt-0.5 text-xs text-slate-500">Kapak görseli ve zamanlama.</div>
+                                                <div class="flex min-w-0 items-center gap-3">
+                                                    <span class="inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-blue-50 text-xs font-bold text-blue-600">3</span>
+                                                    <div class="min-w-0">
+                                                        <div class="text-sm font-semibold text-slate-950">Görsel ve yayın</div>
+                                                        <div class="mt-0.5 text-xs text-slate-500">Kapak görseli ve zamanlama.</div>
+                                                    </div>
                                                 </div>
-                                                <svg viewBox="0 0 20 20" fill="none" class="h-4 w-4 text-slate-400 transition group-open:rotate-180" xmlns="http://www.w3.org/2000/svg"><path d="m5 7.5 5 5 5-5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                                                <svg viewBox="0 0 20 20" fill="none" class="h-4 w-4 shrink-0 text-slate-400 transition group-open:rotate-180" xmlns="http://www.w3.org/2000/svg"><path d="m5 7.5 5 5 5-5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
                                             </summary>
                                             <div class="mt-3 space-y-3">
                                                 <input id="published_at" name="published_at" type="datetime-local" value="{{ old('published_at') }}" class="create-input">
-                                                <label for="featured_image" class="flex cursor-pointer flex-col items-center justify-center rounded-[22px] border border-dashed border-slate-300 bg-slate-50 px-4 py-6 text-center transition hover:border-emerald-300 hover:bg-white">
+                                                <label for="featured_image" class="flex cursor-pointer flex-col items-center justify-center rounded-[22px] border border-dashed border-slate-300 bg-slate-50 px-4 py-6 text-center transition hover:border-blue-300 hover:bg-white">
                                                     <iconify-icon icon="lucide:image-plus" class="text-2xl text-slate-400"></iconify-icon>
                                                     <span class="mt-2 text-sm font-medium text-slate-700">{{ __('post_create.featured_image') }}</span>
                                                     <span class="mt-1 text-xs text-slate-500">{{ __('post_create.max_file_size') }}</span>
@@ -359,14 +365,17 @@
                                         </details>
                                     </section>
 
-                                    <section class="rounded-[24px] border border-slate-200 bg-white p-4 shadow-sm">
+                                    <section class="rounded-[18px] border border-slate-200 bg-white p-4 shadow-sm">
                                         <details class="group">
                                             <summary class="flex cursor-pointer list-none items-center justify-between gap-3 [&::-webkit-details-marker]:hidden">
-                                                <div>
-                                                    <div class="text-sm font-semibold text-slate-950">4. Lisans bilgileri</div>
-                                                    <div class="mt-0.5 text-xs text-slate-500">Görsel kaynak ve telif alanları.</div>
+                                                <div class="flex min-w-0 items-center gap-3">
+                                                    <span class="inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-blue-50 text-xs font-bold text-blue-600">4</span>
+                                                    <div class="min-w-0">
+                                                        <div class="text-sm font-semibold text-slate-950">Lisans bilgileri</div>
+                                                        <div class="mt-0.5 text-xs text-slate-500">Görsel kaynak ve telif alanları.</div>
+                                                    </div>
                                                 </div>
-                                                <svg viewBox="0 0 20 20" fill="none" class="h-4 w-4 text-slate-400 transition group-open:rotate-180" xmlns="http://www.w3.org/2000/svg"><path d="m5 7.5 5 5 5-5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                                                <svg viewBox="0 0 20 20" fill="none" class="h-4 w-4 shrink-0 text-slate-400 transition group-open:rotate-180" xmlns="http://www.w3.org/2000/svg"><path d="m5 7.5 5 5 5-5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
                                             </summary>
                                             <div class="mt-3 space-y-3">
                                                 <input id="image_license_url" name="image_license_url" type="url" value="{{ old('image_license_url') }}" placeholder="https://example.com/license" class="create-input">
@@ -378,8 +387,11 @@
                                         </details>
                                     </section>
 
-                                    <section class="rounded-[24px] border border-slate-200 bg-white p-4 shadow-sm">
-                                        <div class="mb-3 text-sm font-semibold text-slate-950">5. Tercihler</div>
+                                    <section class="rounded-[18px] border border-slate-200 bg-white p-4 shadow-sm">
+                                        <div class="mb-3 flex items-center gap-3">
+                                            <span class="inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-blue-50 text-xs font-bold text-blue-600">5</span>
+                                            <div class="text-sm font-semibold text-slate-950">Tercihler</div>
+                                        </div>
                                         <div class="divide-y divide-slate-100 overflow-hidden rounded-2xl border border-slate-100 bg-slate-50">
                                             <div class="flex items-center justify-between gap-4 px-3 py-3">
                                                 <span class="text-sm text-slate-800">{{ __('post_create.disable_comments') }}</span>
@@ -404,7 +416,7 @@
                             <div class="border-t border-slate-200 bg-white p-3 sm:p-4">
                                 <div class="grid grid-cols-2 gap-2.5">
                                     <button type="button" data-settings-close class="inline-flex h-11 items-center justify-center rounded-full bg-slate-100 px-4 text-sm font-medium text-slate-700 transition hover:bg-slate-200 active:bg-slate-300">{{ __('post_create.close') }}</button>
-                                    <button type="submit" form="post-create-form" data-submit-intent="publish" class="inline-flex h-11 items-center justify-center rounded-full bg-emerald-600 px-4 text-sm font-semibold text-white shadow-[0_14px_28px_-18px_rgba(5,150,105,.9)] transition hover:bg-emerald-700 active:bg-emerald-800">{{ __('post_create.publish') }}</button>
+                                    <button type="submit" form="post-create-form" data-submit-intent="publish" class="inline-flex h-11 items-center justify-center rounded-full bg-blue-600 px-4 text-sm font-semibold text-white shadow-[0_14px_28px_-18px_rgba(37,99,235,.9)] transition hover:bg-blue-700 active:bg-blue-800">{{ __('post_create.publish') }}</button>
                                 </div>
                             </div>
                         </aside>
@@ -416,7 +428,7 @@
                 <div class="fixed inset-0 bg-slate-950/55 backdrop-blur-sm" data-preview-close></div>
                 <div class="fixed inset-0 overflow-y-auto">
                     <div class="mx-auto mt-4 w-full max-w-3xl px-3 sm:mt-10 sm:px-4">
-                        <div class="overflow-hidden rounded-[24px] bg-white shadow-2xl">
+                        <div class="overflow-hidden rounded-[18px] bg-white shadow-2xl">
                             <div class="flex items-center justify-between gap-3 border-b border-slate-100 px-4 py-3">
                                 <div class="text-sm font-medium text-slate-950">{{ __('post_create.preview_title') }}</div>
                                 <button type="button" data-preview-close class="rounded-full p-2 text-slate-500 hover:bg-slate-100 hover:text-slate-700" aria-label="{{ __('post_create.close') }}">
@@ -551,7 +563,7 @@
             const renderNewTagChips = () => {
                 if (!newTagsChips) return;
                 const tags = Array.from(newTagSet);
-                newTagsChips.innerHTML = tags.map((tag) => `<span class="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-medium text-emerald-700">#${tag}<button type="button" data-remove-new-tag="${tag}" class="rounded-full px-1 text-emerald-700 hover:bg-emerald-100">x</button></span>`).join('');
+                newTagsChips.innerHTML = tags.map((tag) => `<span class="inline-flex items-center gap-1 rounded-full bg-blue-50 px-2.5 py-1 text-xs font-medium text-blue-700">#${tag}<button type="button" data-remove-new-tag="${tag}" class="rounded-full px-1 text-blue-700 hover:bg-blue-100">x</button></span>`).join('');
             };
 
             const filterExistingTags = (term) => {

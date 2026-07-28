@@ -22,7 +22,7 @@
         {{ $attributes->merge(['class' => 'peer sr-only']) }}
     >
     <span
-        class="relative h-7 w-12 rounded-full border border-slate-300 bg-slate-200 transition-all duration-200 group-hover:bg-white peer-focus-visible:ring-4 peer-focus-visible:ring-emerald-500/15 peer-checked:border-emerald-500 peer-checked:bg-emerald-500 peer-checked:group-hover:bg-emerald-500 peer-disabled:cursor-not-allowed peer-disabled:opacity-50"
+        class="relative h-7 w-12 rounded-full border border-slate-300 bg-slate-200 transition-all duration-200 group-hover:bg-white peer-focus-visible:ring-4 peer-focus-visible:ring-blue-500/15 peer-checked:border-blue-600 peer-checked:bg-blue-600 peer-checked:group-hover:bg-blue-600 peer-disabled:cursor-not-allowed peer-disabled:opacity-50"
         aria-hidden="true"
     ></span>
     <span

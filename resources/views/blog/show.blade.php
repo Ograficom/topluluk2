@@ -559,9 +559,11 @@
         $postShowContentJson = is_array($decodedPostShowContentJson) ? $decodedPostShowContentJson : null;
     }
 
+    $postShowPollBlocksById = collect($pollBlocks ?? [])->keyBy('id');
+
     $postShowJsonBlocks = collect(is_array($postShowContentJson) ? ($postShowContentJson['blocks'] ?? []) : []);
     $postShowJsonContentHtml = $postShowJsonBlocks
-        ->map(function ($block) use ($linkifyPostShowHtml, $normalizeShowContentHeadings, $normalizePostShowMediaUrl, $buildPostShowEmbedUrlFromUrl, $sanitizePostShowEmbedUrl) {
+        ->map(function ($block) use ($linkifyPostShowHtml, $normalizeShowContentHeadings, $normalizePostShowMediaUrl, $buildPostShowEmbedUrlFromUrl, $sanitizePostShowEmbedUrl, $postShowPollBlocksById, $post) {
             if (!is_array($block)) {
                 return null;
             }
@@ -699,6 +701,195 @@
 
             if ($type === 'delimiter') {
                 return '<hr class="ps-full-delimiter">';
+            }
+
+            if ($type === 'code') {
+                $code = (string) ($data['code'] ?? '');
+                return trim($code) !== '' ? '<pre class="ps-code"><code>' . e($code) . '</code></pre>' : null;
+            }
+
+            if (in_array($type, ['warning', 'infoBox', 'successBox', 'tipBox', 'noteBox'], true)) {
+                $presets = [
+                    'warning' => 'ps-notice--warning',
+                    'infoBox' => 'ps-notice--info',
+                    'successBox' => 'ps-notice--success',
+                    'tipBox' => 'ps-notice--tip',
+                    'noteBox' => 'ps-notice--note',
+                ];
+                $labels = [
+                    'warning' => 'Uyarı',
+                    'infoBox' => 'Bilgi',
+                    'successBox' => 'Başarılı',
+                    'tipBox' => 'İpucu',
+                    'noteBox' => 'Not',
+                ];
+                $title = $renderTextHtml($data['title'] ?? $labels[$type]);
+                $message = $renderTextHtml($data['message'] ?? '');
+                if ($title === '' && $message === '') {
+                    return null;
+                }
+
+                return '<div class="ps-notice ' . $presets[$type] . '">'
+                    . ($title !== '' ? '<span class="ps-notice__badge">' . $title . '</span>' : '')
+                    . ($message !== '' ? '<div class="ps-notice__text">' . $message . '</div>' : '')
+                    . '</div>';
+            }
+
+            if ($type === 'faq') {
+                $question = $renderTextHtml($data['question'] ?? 'Soru');
+                $answer = $renderTextHtml($data['answer'] ?? '');
+                if ($answer === '') {
+                    return null;
+                }
+
+                return '<details class="ps-faq"><summary class="ps-faq__q">' . $question . '</summary><div class="ps-faq__a">' . $answer . '</div></details>';
+            }
+
+            if ($type === 'steps') {
+                $title = $renderTextHtml($data['title'] ?? '');
+                $items = collect($data['items'] ?? [])
+                    ->map(fn ($item) => $renderTextHtml($item))
+                    ->filter(fn ($html) => $html !== '')
+                    ->values();
+                if ($items->isEmpty()) {
+                    return null;
+                }
+
+                $list = $items->map(fn ($html, $i) => '<li class="ps-steps__item"><span class="ps-steps__num">' . ($i + 1) . '</span><span>' . $html . '</span></li>')->implode('');
+
+                return '<div class="ps-steps">' . ($title !== '' ? '<h3 class="ps-steps__title">' . $title . '</h3>' : '') . '<ol class="ps-steps__list">' . $list . '</ol></div>';
+            }
+
+            if ($type === 'prosCons') {
+                $renderColumn = function ($label, $items) use ($renderTextHtml) {
+                    $rows = collect($items ?? [])->map(fn ($item) => $renderTextHtml($item))->filter(fn ($html) => $html !== '')->values();
+                    if ($rows->isEmpty()) {
+                        return '';
+                    }
+
+                    return '<div class="ps-proscons__col"><div class="ps-proscons__label">' . $label . '</div><ul class="ps-proscons__list">'
+                        . $rows->map(fn ($html) => '<li>' . $html . '</li>')->implode('')
+                        . '</ul></div>';
+                };
+                $pros = $renderColumn('Artılar', $data['pros'] ?? []);
+                $cons = $renderColumn('Eksiler', $data['cons'] ?? []);
+                if ($pros === '' && $cons === '') {
+                    return null;
+                }
+
+                return '<div class="ps-proscons ps-proscons--pros">' . $pros . '</div><div class="ps-proscons ps-proscons--cons">' . $cons . '</div>';
+            }
+
+            if ($type === 'statsCard') {
+                $value = $renderTextHtml($data['value'] ?? '');
+                $label = $renderTextHtml($data['label'] ?? '');
+                $note = $renderTextHtml($data['note'] ?? '');
+                if ($value === '' && $label === '') {
+                    return null;
+                }
+
+                return '<div class="ps-stats"><div class="ps-stats__value">' . $value . '</div>'
+                    . ($label !== '' ? '<div class="ps-stats__label">' . $label . '</div>' : '')
+                    . ($note !== '' ? '<div class="ps-stats__note">' . $note . '</div>' : '')
+                    . '</div>';
+            }
+
+            if ($type === 'ctaBox') {
+                $title = $renderTextHtml($data['title'] ?? '');
+                $text = $renderTextHtml($data['text'] ?? '');
+                $label = $renderTextHtml($data['label'] ?? 'Devam et');
+                $url = trim((string) ($data['url'] ?? ''));
+                if ($title === '' && $text === '') {
+                    return null;
+                }
+
+                $action = ($url !== '' && preg_match('#^https?://#i', $url))
+                    ? '<a class="ps-cta__btn" href="' . e($url) . '" target="_blank" rel="nofollow noopener noreferrer">' . $label . '</a>'
+                    : '';
+
+                return '<div class="ps-cta">'
+                    . ($title !== '' ? '<h3 class="ps-cta__title">' . $title . '</h3>' : '')
+                    . ($text !== '' ? '<p class="ps-cta__text">' . $text . '</p>' : '')
+                    . $action
+                    . '</div>';
+            }
+
+            if ($type === 'audioNarration') {
+                $title = $renderTextHtml($data['title'] ?? '');
+                $text = $renderTextHtml($data['text'] ?? '');
+                $plainText = trim((string) strip_tags((string) ($data['text'] ?? '')));
+                $buttonLabel = $renderTextHtml($data['buttonLabel'] ?? 'Sesli oku');
+                if ($plainText === '') {
+                    return null;
+                }
+
+                return '<div class="ps-audio">'
+                    . ($title !== '' ? '<div class="ps-audio__title">' . $title . '</div>' : '')
+                    . '<div class="ps-audio__text">' . $text . '</div>'
+                    . '<button type="button" class="ps-audio__btn" data-audio-read-btn'
+                    . ' data-audio-read-text="' . e($plainText) . '"'
+                    . ' data-audio-read-rate="' . e((string) (float) ($data['rate'] ?? 1)) . '"'
+                    . ' data-audio-read-pitch="' . e((string) (float) ($data['pitch'] ?? 1)) . '"'
+                    . ' data-audio-read-lang="' . e((string) ($data['lang'] ?? 'tr-TR')) . '">' . $buttonLabel . '</button>'
+                    . '</div>';
+            }
+
+            if ($type === 'downloadButton') {
+                $url = trim((string) ($data['url'] ?? ''));
+                $label = $renderTextHtml($data['text'] ?? 'İndir');
+                if ($url === '' || !preg_match('#^https?://#i', $url)) {
+                    return null;
+                }
+
+                return '<div class="ps-download"><a class="ps-download__btn" href="' . e($url) . '" target="_blank" rel="nofollow noopener noreferrer" download>'
+                    . '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 4v11m0 0 4-4m-4 4-4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 18h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>'
+                    . '<span>' . $label . '</span></a></div>';
+            }
+
+            if ($type === 'linkTool') {
+                $url = trim((string) ($data['link'] ?? ''));
+                if ($url === '' || !preg_match('#^https?://#i', $url)) {
+                    return null;
+                }
+
+                $title = $renderTextHtml(data_get($data, 'meta.title') ?: $url);
+                $description = $renderTextHtml(data_get($data, 'meta.description') ?: '');
+                $host = parse_url($url, PHP_URL_HOST) ?: $url;
+
+                return '<a class="ps-link-preview" href="' . e($url) . '" target="_blank" rel="nofollow noopener noreferrer">'
+                    . '<span class="ps-link-preview__title">' . $title . '</span>'
+                    . ($description !== '' ? '<span class="ps-link-preview__desc">' . $description . '</span>' : '')
+                    . '<span class="ps-link-preview__host">' . e($host) . '</span>'
+                    . '</a>';
+            }
+
+            if ($type === 'poll') {
+                $poll = $postShowPollBlocksById->get((string) ($block['id'] ?? ''));
+                if (!$poll) {
+                    return null;
+                }
+
+                $showResults = $poll['expired'] || $poll['user_vote'] !== null;
+                $optionsHtml = collect($poll['options'])->map(function ($label, $idx) use ($poll, $showResults) {
+                    $pct = (float) ($poll['percentages'][$idx] ?? 0);
+                    $isVoted = (int) $poll['user_vote'] === (int) $idx;
+
+                    if ($showResults) {
+                        return '<div class="ps-poll__result' . ($isVoted ? ' ps-poll__result--voted' : '') . '">'
+                            . '<div class="ps-poll__result-row"><span>' . e($label) . ($isVoted ? ' ✓' : '') . '</span><span>' . $pct . '%</span></div>'
+                            . '<div class="ps-poll__bar"><div class="ps-poll__bar-fill" style="width:' . $pct . '%"></div></div>'
+                            . '</div>';
+                    }
+
+                    return '<button type="button" class="ps-poll__option" data-poll-option="' . (int) $idx . '">' . e($label) . '</button>';
+                })->implode('');
+
+                return '<div class="ps-poll"' . (!$showResults ? ' data-poll-block data-poll-id="' . e($poll['id']) . '" data-poll-vote-url="' . e(route('blog.post.poll.vote', $post)) . '"' : '') . '>'
+                    . '<div class="ps-poll__question">' . e($poll['question']) . '</div>'
+                    . '<div class="ps-poll__options">' . $optionsHtml . '</div>'
+                    . '<div class="ps-poll__meta">' . number_format($poll['total']) . ' oy'
+                    . ($poll['expired'] ? ' · Anket süresi doldu' : '') . '</div>'
+                    . '</div>';
             }
 
             return null;
@@ -20216,5 +20407,480 @@ body.dark .post-show-shell .ps-show-stats-close,
     transform: none !important;
   }
 </style>
+@endpush
+
+@push('scripts')
+<style>
+    /* EditorJS eklenti bloklari (uyari/bilgi kutulari, SSS, adimlar, artilar-eksiler,
+       istatistik karti, cagri kutusu, sesli okuma, kod, indirme butonu, link onizleme,
+       anket) - post-show sayfasinda gorunmesi icin eklendi. */
+    .ps-post-body .ps-notice {
+        margin: 18px 0;
+        padding: 16px;
+        border-radius: 14px;
+        border: 1px solid;
+    }
+
+    .ps-post-body .ps-notice__badge {
+        display: inline-flex;
+        margin-bottom: 8px;
+        padding: 3px 10px;
+        border-radius: 999px;
+        font-size: 11px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+    }
+
+    .ps-post-body .ps-notice__text {
+        font-size: 14.5px;
+        line-height: 1.6;
+    }
+
+    .ps-post-body .ps-notice--warning { background: #fffbeb; border-color: #fde68a; color: #78350f; }
+    .ps-post-body .ps-notice--warning .ps-notice__badge { background: #fef3c7; color: #92400e; }
+    .ps-post-body .ps-notice--info { background: #f8fafc; border-color: #e2e8f0; color: #1e293b; }
+    .ps-post-body .ps-notice--info .ps-notice__badge { background: #e2e8f0; color: #334155; }
+    .ps-post-body .ps-notice--success { background: #ecfdf5; border-color: #a7f3d0; color: #065f46; }
+    .ps-post-body .ps-notice--success .ps-notice__badge { background: #d1fae5; color: #047857; }
+    .ps-post-body .ps-notice--tip { background: #eff6ff; border-color: #bfdbfe; color: #1e3a8a; }
+    .ps-post-body .ps-notice--tip .ps-notice__badge { background: #dbeafe; color: #1d4ed8; }
+    .ps-post-body .ps-notice--note { background: #f8fafc; border-color: #e2e8f0; color: #334155; }
+    .ps-post-body .ps-notice--note .ps-notice__badge { background: #e2e8f0; color: #475569; }
+
+    .ps-post-body .ps-faq {
+        margin: 18px 0;
+        padding: 14px 16px;
+        border: 1px solid #e2e8f0;
+        border-radius: 14px;
+        background: #ffffff;
+    }
+
+    .ps-post-body .ps-faq__q {
+        cursor: pointer;
+        font-size: 15px;
+        font-weight: 700;
+        color: #0f172a;
+    }
+
+    .ps-post-body .ps-faq__a {
+        margin-top: 10px;
+        font-size: 14.5px;
+        line-height: 1.6;
+        color: #475569;
+    }
+
+    .ps-post-body .ps-steps {
+        margin: 18px 0;
+        padding: 16px;
+        border: 1px solid #e2e8f0;
+        border-radius: 14px;
+        background: #ffffff;
+    }
+
+    .ps-post-body .ps-steps__title {
+        margin: 0 0 12px;
+        font-size: 15px;
+        font-weight: 700;
+        color: #0f172a;
+    }
+
+    .ps-post-body .ps-steps__list {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    .ps-post-body .ps-steps__item {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        font-size: 14.5px;
+        line-height: 1.55;
+        color: #334155;
+    }
+
+    .ps-post-body .ps-steps__num {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 26px;
+        height: 26px;
+        flex-shrink: 0;
+        border-radius: 999px;
+        background: #2563eb;
+        color: #ffffff;
+        font-size: 12px;
+        font-weight: 700;
+    }
+
+    .ps-post-body .ps-proscons {
+        display: inline-block;
+        width: calc(50% - 6px);
+        vertical-align: top;
+        margin: 18px 0;
+        padding: 16px;
+        border-radius: 14px;
+        border: 1px solid;
+    }
+
+    .ps-post-body .ps-proscons--pros { margin-right: 12px; background: #ecfdf5; border-color: #a7f3d0; }
+    .ps-post-body .ps-proscons--cons { background: #fef2f2; border-color: #fecaca; }
+
+    .ps-post-body .ps-proscons__label {
+        margin-bottom: 8px;
+        font-size: 13px;
+        font-weight: 700;
+    }
+
+    .ps-post-body .ps-proscons--pros .ps-proscons__label { color: #047857; }
+    .ps-post-body .ps-proscons--cons .ps-proscons__label { color: #b91c1c; }
+
+    .ps-post-body .ps-proscons__list {
+        margin: 0;
+        padding-left: 18px;
+        font-size: 14px;
+        line-height: 1.6;
+        color: #334155;
+    }
+
+    .ps-post-body .ps-stats {
+        margin: 18px 0;
+        padding: 22px;
+        border-radius: 16px;
+        border: 1px solid #e2e8f0;
+        background: #ffffff;
+        text-align: center;
+    }
+
+    .ps-post-body .ps-stats__value {
+        font-size: 34px;
+        font-weight: 800;
+        color: #0f172a;
+        letter-spacing: -0.02em;
+    }
+
+    .ps-post-body .ps-stats__label {
+        margin-top: 6px;
+        font-size: 14px;
+        font-weight: 600;
+        color: #334155;
+    }
+
+    .ps-post-body .ps-stats__note {
+        margin-top: 6px;
+        font-size: 12.5px;
+        color: #94a3b8;
+    }
+
+    .ps-post-body .ps-cta {
+        margin: 18px 0;
+        padding: 22px;
+        border-radius: 16px;
+        border: 1px solid #dbeafe;
+        background: linear-gradient(180deg, #eff6ff 0%, #ffffff 100%);
+    }
+
+    .ps-post-body .ps-cta__title {
+        margin: 0;
+        font-size: 17px;
+        font-weight: 700;
+        color: #0f172a;
+    }
+
+    .ps-post-body .ps-cta__text {
+        margin: 8px 0 0;
+        font-size: 14.5px;
+        line-height: 1.6;
+        color: #475569;
+    }
+
+    .ps-post-body .ps-cta__btn {
+        display: inline-flex;
+        margin-top: 14px;
+        padding: 10px 18px;
+        border-radius: 10px;
+        background: #2563eb;
+        color: #ffffff !important;
+        font-size: 14px;
+        font-weight: 700;
+        text-decoration: none !important;
+    }
+
+    .ps-post-body .ps-cta__btn:hover { background: #1d4ed8; }
+
+    .ps-post-body .ps-audio {
+        margin: 18px 0;
+        padding: 16px;
+        border-radius: 14px;
+        border: 1px solid #e2e8f0;
+        background: #ffffff;
+    }
+
+    .ps-post-body .ps-audio__title {
+        margin-bottom: 6px;
+        font-size: 14.5px;
+        font-weight: 700;
+        color: #0f172a;
+    }
+
+    .ps-post-body .ps-audio__text {
+        font-size: 14px;
+        line-height: 1.6;
+        color: #475569;
+    }
+
+    .ps-post-body .ps-audio__btn {
+        display: inline-flex;
+        align-items: center;
+        margin-top: 12px;
+        padding: 9px 16px;
+        border: 0;
+        border-radius: 10px;
+        background: #0f172a;
+        color: #ffffff;
+        font-size: 13.5px;
+        font-weight: 700;
+        cursor: pointer;
+    }
+
+    .ps-post-body .ps-audio__btn.is-playing { background: #2563eb; }
+
+    .ps-post-body .ps-code {
+        margin: 18px 0;
+        padding: 14px 16px;
+        border-radius: 12px;
+        background: #0f172a;
+        color: #e2e8f0;
+        font-size: 13px;
+        line-height: 1.6;
+        overflow-x: auto;
+    }
+
+    .ps-post-body .ps-code code {
+        font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+        white-space: pre;
+    }
+
+    .ps-post-body .ps-download {
+        margin: 18px 0;
+    }
+
+    .ps-post-body .ps-download__btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 18px;
+        border-radius: 10px;
+        background: #0f172a;
+        color: #ffffff !important;
+        font-size: 14px;
+        font-weight: 700;
+        text-decoration: none !important;
+    }
+
+    .ps-post-body .ps-download__btn:hover { background: #1e293b; }
+    .ps-post-body .ps-download__btn svg { width: 16px; height: 16px; }
+
+    .ps-post-body .ps-link-preview {
+        display: block;
+        margin: 18px 0;
+        padding: 14px 16px;
+        border-radius: 14px;
+        border: 1px solid #e2e8f0;
+        background: #ffffff;
+        text-decoration: none !important;
+    }
+
+    .ps-post-body .ps-link-preview__title {
+        display: block;
+        font-size: 14.5px;
+        font-weight: 700;
+        color: #0f172a;
+    }
+
+    .ps-post-body .ps-link-preview__desc {
+        display: block;
+        margin-top: 4px;
+        font-size: 13px;
+        color: #64748b;
+    }
+
+    .ps-post-body .ps-link-preview__host {
+        display: block;
+        margin-top: 8px;
+        font-size: 12px;
+        color: #2563eb;
+    }
+
+    .ps-post-body .ps-poll {
+        margin: 18px 0;
+        padding: 18px;
+        border-radius: 16px;
+        border: 1px solid #e2e8f0;
+        background: #ffffff;
+    }
+
+    .ps-post-body .ps-poll__question {
+        margin-bottom: 12px;
+        font-size: 15.5px;
+        font-weight: 700;
+        color: #0f172a;
+    }
+
+    .ps-post-body .ps-poll__options {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .ps-post-body .ps-poll__option {
+        width: 100%;
+        padding: 11px 14px;
+        border: 1.5px solid #e2e8f0;
+        border-radius: 10px;
+        background: #f8fafc;
+        color: #0f172a;
+        font-size: 14px;
+        font-weight: 600;
+        text-align: left;
+        cursor: pointer;
+        transition: border-color .15s ease, background-color .15s ease;
+    }
+
+    .ps-post-body .ps-poll__option:hover {
+        border-color: #2563eb;
+        background: #eff6ff;
+    }
+
+    .ps-post-body .ps-poll__result-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 4px;
+        font-size: 13.5px;
+        font-weight: 600;
+        color: #334155;
+    }
+
+    .ps-post-body .ps-poll__result--voted .ps-poll__result-row {
+        color: #2563eb;
+    }
+
+    .ps-post-body .ps-poll__bar {
+        height: 8px;
+        border-radius: 999px;
+        background: #e2e8f0;
+        overflow: hidden;
+        margin-bottom: 10px;
+    }
+
+    .ps-post-body .ps-poll__bar-fill {
+        height: 100%;
+        border-radius: 999px;
+        background: #2563eb;
+        transition: width .3s ease;
+    }
+
+    .ps-post-body .ps-poll__meta {
+        margin-top: 10px;
+        font-size: 12.5px;
+        color: #94a3b8;
+    }
+
+    @media (max-width: 640px) {
+        .ps-post-body .ps-proscons {
+            width: 100%;
+            margin-right: 0 !important;
+        }
+
+        .ps-post-body .ps-stats__value {
+            font-size: 28px;
+        }
+    }
+</style>
+<script>
+    document.addEventListener('click', function (event) {
+        const audioBtn = event.target.closest('[data-audio-read-btn]');
+        if (audioBtn) {
+            if (!('speechSynthesis' in window)) {
+                return;
+            }
+
+            if (audioBtn.classList.contains('is-playing')) {
+                window.speechSynthesis.cancel();
+                audioBtn.classList.remove('is-playing');
+                return;
+            }
+
+            window.speechSynthesis.cancel();
+            const utter = new SpeechSynthesisUtterance(audioBtn.dataset.audioReadText || '');
+            utter.lang = audioBtn.dataset.audioReadLang || 'tr-TR';
+            utter.rate = Number(audioBtn.dataset.audioReadRate || 1);
+            utter.pitch = Number(audioBtn.dataset.audioReadPitch || 1);
+            utter.onend = function () { audioBtn.classList.remove('is-playing'); };
+            utter.onerror = function () { audioBtn.classList.remove('is-playing'); };
+            document.querySelectorAll('.ps-audio__btn.is-playing').forEach(function (btn) {
+                btn.classList.remove('is-playing');
+            });
+            audioBtn.classList.add('is-playing');
+            window.speechSynthesis.speak(utter);
+            return;
+        }
+
+        const pollOption = event.target.closest('[data-poll-option]');
+        if (pollOption) {
+            const wrapper = pollOption.closest('[data-poll-block]');
+            if (!wrapper || wrapper.dataset.pollSubmitting === '1') {
+                return;
+            }
+
+            wrapper.dataset.pollSubmitting = '1';
+            const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '';
+
+            fetch(wrapper.dataset.pollVoteUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken,
+                    'Accept': 'application/json',
+                },
+                body: JSON.stringify({
+                    block_id: wrapper.dataset.pollId,
+                    option_index: Number(pollOption.dataset.pollOption),
+                }),
+            })
+                .then(function (res) { return res.ok ? res.json() : Promise.reject(res); })
+                .then(function (data) {
+                    const options = Array.from(wrapper.querySelectorAll('[data-poll-option]'));
+                    const optionsWrap = wrapper.querySelector('.ps-poll__options');
+                    const votedIndex = Number(pollOption.dataset.pollOption);
+                    const percentages = data.percentages || {};
+
+                    optionsWrap.innerHTML = options.map(function (opt) {
+                        const idx = Number(opt.dataset.pollOption);
+                        const pct = percentages[idx] ?? 0;
+                        const isVoted = idx === votedIndex;
+                        return '<div class="ps-poll__result' + (isVoted ? ' ps-poll__result--voted' : '') + '">'
+                            + '<div class="ps-poll__result-row"><span>' + opt.textContent + (isVoted ? ' ✓' : '') + '</span><span>' + pct + '%</span></div>'
+                            + '<div class="ps-poll__bar"><div class="ps-poll__bar-fill" style="width:' + pct + '%"></div></div>'
+                            + '</div>';
+                    }).join('');
+
+                    wrapper.removeAttribute('data-poll-block');
+                    const meta = wrapper.querySelector('.ps-poll__meta');
+                    if (meta && typeof data.total !== 'undefined') {
+                        meta.textContent = data.total + ' oy';
+                    }
+                })
+                .catch(function () {
+                    wrapper.dataset.pollSubmitting = '0';
+                });
+        }
+    });
+</script>
 @endpush
 
