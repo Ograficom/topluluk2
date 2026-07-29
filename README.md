@@ -1,59 +1,292 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 🎨 Ografi
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+<div align="center">
 
-## About Laravel
+![Laravel](https://img.shields.io/badge/Laravel-13-FF2D20?style=for-the-badge&logo=laravel&logoColor=white)
+![PHP](https://img.shields.io/badge/PHP-8.3+-777BB4?style=for-the-badge&logo=php&logoColor=white)
+![Filament](https://img.shields.io/badge/Filament-v5-F59E0B?style=for-the-badge)
+![TailwindCSS](https://img.shields.io/badge/TailwindCSS-4-38BDF8?style=for-the-badge&logo=tailwindcss&logoColor=white)
+![License](https://img.shields.io/badge/License-Proprietary-red?style=for-the-badge)
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+### Modern • Hızlı • Güvenli • SEO Odaklı Sosyal İçerik Platformu
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+**Ografi**, modern web standartlarına göre geliştirilmiş Laravel tabanlı sosyal paylaşım ve içerik yönetim platformudur.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+🌐 **Website:** https://ografi.com
 
-## Learning Laravel
+</div>
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+---
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+# 📖 Hakkında
 
-## Laravel Sponsors
+Ografi, kullanıcıların;
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+- Haber paylaşabileceği
+- Makale yayınlayabileceği
+- Fotoğraf paylaşabileceği
+- Kategorilere göre içerik oluşturabileceği
+- Beğeni ve etkileşim sağlayabileceği
+- Modern sosyal akış deneyimi yaşayabileceği
 
-### Premium Partners
+tam kapsamlı yeni nesil bir içerik platformudur.
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+Minimal tasarım anlayışı, yüksek performans ve SEO optimizasyonu temel hedefleridir.
 
-## Contributing
+---
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+# ✨ Özellikler
 
-## Code of Conduct
+## 👥 Kullanıcı Sistemi
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+- Kayıt Ol
+- Giriş Yap
+- Şifre Sıfırlama
+- Profil Sayfası
+- Avatar
+- Kapak Fotoğrafı
+- Profil Düzenleme
+- Doğrulama Rozeti
+- Takip Sistemi
 
-## Security Vulnerabilities
+---
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## 📝 İçerik Yönetimi
 
-## License
+- Haber
+- Makale
+- Blog
+- Galeri
+- Görsel Paylaşımı
+- Taslak Kaydetme
+- Zengin Editör
+- Etiket Sistemi
+- Kategori Sistemi
+- SEO URL
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+---
+
+## ❤️ Sosyal Özellikler
+
+- Beğeni Sistemi
+- Reaksiyonlar
+- Kaydet
+- Paylaş
+- Yorum Sistemi
+- Bildirimler
+- Trend İçerikler
+- Popüler Gönderiler
+
+---
+
+## 🔍 Arama
+
+- Gerçek zamanlı arama
+- Etiket arama
+- Kullanıcı arama
+- İçerik arama
+- Kategori filtreleme
+
+---
+
+## 🎨 Modern Arayüz
+
+- Responsive Tasarım
+- TailwindCSS
+- Glassmorphism
+- Minimal UI
+- Mobil Uyumlu
+- Karanlık Mod Desteği
+- Yüksek Performans
+
+---
+
+## 🚀 SEO
+
+- JSON-LD
+- OpenGraph
+- Twitter Cards
+- Sitemap
+- Robots.txt
+- Canonical URL
+- Meta Yönetimi
+
+---
+
+## ⚙️ Yönetim Paneli
+
+Filament Admin Panel üzerinden;
+
+- Kullanıcı Yönetimi
+- İçerik Yönetimi
+- Reklam Yönetimi
+- Sayfa Yönetimi
+- Menü Yönetimi
+- Medya Yönetimi
+- Kategori Yönetimi
+- İstatistikler
+- Log Yönetimi
+
+---
+
+# 🛠 Teknolojiler
+
+| Teknoloji | Açıklama |
+|-----------|----------|
+| Laravel | Backend Framework |
+| PHP 8.3+ | Programlama Dili |
+| Filament v5 | Yönetim Paneli |
+| TailwindCSS | UI Framework |
+| Alpine.js | Frontend |
+| MySQL | Veritabanı |
+| Vite | Asset Builder |
+| Blade | Template Engine |
+
+---
+
+# 📦 Kurulum
+
+```bash
+git clone https://github.com/yourusername/ografi.git
+```
+
+```bash
+cd ografi
+```
+
+```bash
+composer install
+```
+
+```bash
+cp .env.example .env
+```
+
+```bash
+php artisan key:generate
+```
+
+```bash
+php artisan migrate
+```
+
+```bash
+php artisan storage:link
+```
+
+```bash
+npm install
+```
+
+```bash
+npm run build
+```
+
+veya geliştirme ortamı için
+
+```bash
+npm run dev
+```
+
+Son olarak;
+
+```bash
+php artisan serve
+```
+
+---
+
+# 📁 Proje Yapısı
+
+```
+app/
+bootstrap/
+config/
+database/
+public/
+resources/
+routes/
+storage/
+tests/
+vendor/
+```
+
+---
+
+# 📷 Ekran Görüntüleri
+
+Yakında eklenecektir.
+
+---
+
+# 🔐 Güvenlik
+
+- CSRF Koruması
+- XSS Koruması
+- SQL Injection Koruması
+- Laravel Security Features
+- Rate Limiting
+- Authentication
+- Authorization
+
+---
+
+# ⚡ Performans
+
+- Lazy Loading
+- Image Optimization
+- Queue System
+- Cache
+- Route Cache
+- Config Cache
+- Blade Cache
+- CDN Desteği
+
+---
+
+# 🌍 Tarayıcı Desteği
+
+- Chrome
+- Edge
+- Firefox
+- Safari
+- Opera
+
+---
+
+# 🤝 Katkıda Bulunma
+
+Bu proje özel (proprietary) olarak geliştirilmektedir.
+
+Katkıda bulunmak istiyorsanız lütfen önce iletişime geçiniz.
+
+---
+
+# 📜 Lisans
+
+Bu yazılım telif hakkı ile korunmaktadır.
+
+Tüm hakları saklıdır.
+
+Bu projenin herhangi bir bölümünün;
+
+- Kopyalanması
+- Dağıtılması
+- Ticari kullanımı
+- Yeniden yayınlanması
+
+izin alınmadan yapılamaz.
+
+© 2026 Ografi. All Rights Reserved.
+
+---
+
+<div align="center">
+
+# ❤️ Ografi
+
+Modern Sosyal İçerik Platformu
+
+https://ografi.com
+
+</div>
