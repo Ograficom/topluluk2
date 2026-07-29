@@ -693,21 +693,18 @@ class BlogController extends Controller
         $ip = $request->ip();
         $viewKey = $userId ? ('u:' . $userId) : ('ip:' . ($ip ?: 'unknown'));
 
-        $exists = PostView::query()
-            ->where('post_id', $post->id)
-            ->where('view_key', $viewKey)
-            ->exists();
-
-        if ($exists) {
-            return false;
-        }
-
-        PostView::create([
+        $inserted = PostView::query()->insertOrIgnore([[
             'post_id' => $post->id,
             'user_id' => $userId,
             'ip_address' => $userId ? null : $ip,
             'view_key' => $viewKey,
-        ]);
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]]);
+
+        if (!$inserted) {
+            return false;
+        }
 
         $post->increment('views_count');
 
