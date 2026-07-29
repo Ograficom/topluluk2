@@ -93,8 +93,6 @@
             height: calc(100dvh - 82px) !important;
             max-height: calc(100dvh - 82px) !important;
             overflow: hidden !important;
-            display: flex !important;
-            flex-direction: column !important;
         }
 
         @supports not (height: 100dvh) {
@@ -102,21 +100,6 @@
                 height: calc(100vh - 82px) !important;
                 max-height: calc(100vh - 82px) !important;
             }
-        }
-
-        /* Kategori/nav listesi kendi icinde kayar, alttaki link+telif satiri
-           her zaman gorunur kalir (kisa ekranlarda kaybolmasin diye). */
-        .sidebar-wrapper:not(.sidebar-wrapper--drawer) .sidebar-scroll {
-            flex: 1 1 auto !important;
-            min-height: 0 !important;
-            min-width: 0 !important;
-            width: 100% !important;
-        }
-
-        .sidebar-wrapper:not(.sidebar-wrapper--drawer) .sidebar-footer {
-            flex: 0 0 auto !important;
-            min-width: 0 !important;
-            width: 100% !important;
         }
     }
 
@@ -1565,32 +1548,32 @@
                 </div>
             @endif
         </div>
-    </div>
 
-    <div class="sidebar-footer">
-        @if($socialLinks->isNotEmpty())
-            <div class="sidebar-social-icons">
-                @foreach($socialLinks as $social)
-                    <a
-                        href="{{ $social['url'] }}"
-                        class="sidebar-social-icon"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        data-external-bridge="off"
-                        aria-label="{{ $social['label'] }}"
-                        title="{{ $social['label'] }}"
-                    >
-                        <iconify-icon icon="{{ $social['icon'] }}" aria-hidden="true"></iconify-icon>
-                    </a>
+        <div class="sidebar-footer">
+            @if($socialLinks->isNotEmpty())
+                <div class="sidebar-social-icons">
+                    @foreach($socialLinks as $social)
+                        <a
+                            href="{{ $social['url'] }}"
+                            class="sidebar-social-icon"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            data-external-bridge="off"
+                            aria-label="{{ $social['label'] }}"
+                            title="{{ $social['label'] }}"
+                        >
+                            <iconify-icon icon="{{ $social['icon'] }}" aria-hidden="true"></iconify-icon>
+                        </a>
+                    @endforeach
+                </div>
+            @endif
+
+            <div class="sidebar-footer-links">
+                @foreach($footerLinks as $link)
+                    <a class="sidebar-footer-link" href="{{ $link['url'] }}" style="font-size: 11px !important; line-height: 1.4 !important; white-space: nowrap !important; overflow: hidden !important; text-overflow: ellipsis !important;">{{ $link['label'] }}</a>
                 @endforeach
+                <span class="sidebar-footer-link" style="font-size: 11px !important; line-height: 1.4 !important; white-space: nowrap !important; overflow: hidden !important; text-overflow: ellipsis !important; cursor: default !important;">&copy; 2026 Ografi</span>
             </div>
-        @endif
-
-        <div class="sidebar-footer-links">
-            @foreach($footerLinks as $link)
-                <a class="sidebar-footer-link" href="{{ $link['url'] }}" style="font-size: 11px !important; line-height: 1.4 !important; white-space: nowrap !important; overflow: hidden !important; text-overflow: ellipsis !important;">{{ $link['label'] }}</a>
-            @endforeach
-            <span class="sidebar-footer-link" style="font-size: 11px !important; line-height: 1.4 !important; white-space: nowrap !important; overflow: hidden !important; text-overflow: ellipsis !important; cursor: default !important;">&copy; 2026 Ografi</span>
         </div>
     </div>
 </aside>
