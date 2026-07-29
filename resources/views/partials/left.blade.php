@@ -1572,15 +1572,7 @@
                 @foreach($footerLinks as $link)
                     <a class="sidebar-footer-link" href="{{ $link['url'] }}" style="font-size: 11px !important; line-height: 1.4 !important; white-space: nowrap !important; overflow: hidden !important; text-overflow: ellipsis !important;">{{ $link['label'] }}</a>
                 @endforeach
-            </div>
-
-            <a href="{{ route('home') }}" class="sidebar-footer-logo">
-                <img src="{{ asset('images/ografi-logo.png') }}?v=20260714a" alt="Ografi" class="sidebar-footer-logo__img">
-                <span class="sidebar-footer-logo__text">Ografi</span>
-            </a>
-
-            <div class="sidebar-footer-bottom">
-                <span class="sidebar-footer-brand">&copy; 2026 Ografi</span>
+                <span class="sidebar-footer-link" style="font-size: 11px !important; line-height: 1.4 !important; white-space: nowrap !important; overflow: hidden !important; text-overflow: ellipsis !important; cursor: default !important;">&copy; 2026 Ografi</span>
             </div>
         </div>
     </div>
