@@ -959,7 +959,7 @@
         }
     }
 
-    /* Alt menü linkleri biraz daha koyu; Ografi metni aynı bırakıldı */
+    /* Alt menü linkleri biraz daha koyu; marka metni aynı bırakıldı */
     .sidebar-footer-link {
         color: #4b5563 !important;
     }
@@ -1321,7 +1321,7 @@
         flex-wrap: wrap !important;
         align-items: center !important;
         gap: 8px !important;
-        margin: 0 0 12px !important;
+        margin: 0 0 14px !important;
         padding: 0 !important;
     }
 
@@ -1329,8 +1329,8 @@
         display: inline-flex !important;
         align-items: center !important;
         justify-content: center !important;
-        width: 30px !important;
-        height: 30px !important;
+        width: 32px !important;
+        height: 32px !important;
         flex-shrink: 0 !important;
         border-radius: 999px !important;
         background: #f3f4f6 !important;
@@ -1346,8 +1346,8 @@
     }
 
     .sidebar-social-icon iconify-icon {
-        width: 15px !important;
-        height: 15px !important;
+        width: 16px !important;
+        height: 16px !important;
         pointer-events: none !important;
     }
 
@@ -1363,46 +1363,47 @@
         color: #60a5fa !important;
     }
 
+    /* Alt bağlantılar: resimdeki gibi doğal akış — kısa etiketler yan yana sığar,
+       uzun etiket kendi satırına düşer. Sabit sütun yok, kesme (...) yok. */
     body.alma-app .sidebar-footer-links {
-        display: grid !important;
-        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-        gap: 6px 10px !important;
+        display: flex !important;
+        flex-wrap: wrap !important;
+        align-items: baseline !important;
+        row-gap: 8px !important;
+        column-gap: 16px !important;
+        margin-bottom: 0 !important;
     }
 
     body.alma-app .sidebar-footer-link {
-        font-size: 11px !important;
-        line-height: 1.4 !important;
+        flex: 0 0 auto !important;
+        font-size: 12px !important;
+        line-height: 1.5 !important;
+        color: #4b5563 !important;
         white-space: nowrap !important;
-        overflow: hidden !important;
-        text-overflow: ellipsis !important;
+        overflow: visible !important;
+        text-overflow: clip !important;
     }
 
-    .sidebar-footer-logo {
-        display: flex !important;
-        align-items: center !important;
-        gap: 8px !important;
-        margin: 14px 0 6px !important;
-        text-decoration: none !important;
-    }
-
-    .sidebar-footer-logo__img {
-        width: 20px !important;
-        height: 20px !important;
-        object-fit: contain !important;
-        flex-shrink: 0 !important;
-    }
-
-    .sidebar-footer-logo__text {
-        font-family: "Inter", Arial, Helvetica, sans-serif !important;
-        font-size: 14px !important;
+    /* Marka adı: linklerin altında, tek başına, biraz daha koyu ve kalın */
+    .sidebar-footer-brand {
+        display: block !important;
+        margin-top: 14px !important;
+        font-size: 13px !important;
         font-weight: 700 !important;
-        color: #0f172a !important;
-        letter-spacing: -0.01em !important;
+        color: #111827 !important;
     }
 
-    .dark .sidebar-footer-logo__text,
-    [data-theme="dark"] .sidebar-footer-logo__text {
+    .dark .sidebar-footer-brand,
+    [data-theme="dark"] .sidebar-footer-brand {
         color: #f8fafc !important;
+    }
+
+    /* Telif satırı: marka adının hemen altında, daha soluk */
+    .sidebar-footer-bottom {
+        display: block !important;
+        margin-top: 4px !important;
+        font-size: 12px !important;
+        color: #9ca3af !important;
     }
 </style>
 
@@ -1549,6 +1550,7 @@
             @endif
         </div>
 
+        {{-- Alt bölüm: resimdeki gibi 4 kat -> sosyal ikonlar / linkler (2 sütun) / marka adı / telif --}}
         <div class="sidebar-footer">
             @if($socialLinks->isNotEmpty())
                 <div class="sidebar-social-icons">
@@ -1568,12 +1570,16 @@
                 </div>
             @endif
 
-            <div class="sidebar-footer-links">
-                @foreach($footerLinks as $link)
-                    <a class="sidebar-footer-link" href="{{ $link['url'] }}" style="font-size: 11px !important; line-height: 1.4 !important; white-space: nowrap !important; overflow: hidden !important; text-overflow: ellipsis !important;">{{ $link['label'] }}</a>
-                @endforeach
-                <span class="sidebar-footer-link" style="font-size: 11px !important; line-height: 1.4 !important; white-space: nowrap !important; overflow: hidden !important; text-overflow: ellipsis !important; cursor: default !important;">&copy; 2026 Ografi</span>
-            </div>
+            @if($footerLinks->isNotEmpty())
+                <div class="sidebar-footer-links">
+                    @foreach($footerLinks as $link)
+                        <a class="sidebar-footer-link" href="{{ $link['url'] }}">{{ $link['label'] }}</a>
+                    @endforeach
+                </div>
+            @endif
+
+            <span class="sidebar-footer-brand">Ografi</span>
+            <span class="sidebar-footer-bottom">&copy; {{ now()->year }} Ografi</span>
         </div>
     </div>
 </aside>
