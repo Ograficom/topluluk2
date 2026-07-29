@@ -12,7 +12,7 @@ jobs:
       - name: Deploy via SSH
         uses: appleboy/ssh-action@v1.0.1
         with:
-          host: 72.62.1.89
+          host: 2.24.139.184
           username: root
           password: ${{ secrets.SERVER_SSH_PASSWORD }}
           port: 22
@@ -20,12 +20,15 @@ jobs:
             set -e
             TARGET_PATH="${{ secrets.SERVER_PATH }}"
             if [ -z "$TARGET_PATH" ]; then
-              TARGET_PATH="/var/www/ografi.com"
+              TARGET_PATH="/www/wwwroot/ografi_com_app"
             fi
             cd "$TARGET_PATH"
             git pull origin main
+            npm run build
             php artisan migrate --force || true
+            php artisan optimize:clear || true
+            chown -R www:www "$TARGET_PATH"
             php artisan config:cache || true
             php artisan route:cache || true
-            php artisan view:clear || true
-            php artisan optimize || true
+            php artisan view:cache || true
+            /etc/init.d/php-fpm-84 restart || true
