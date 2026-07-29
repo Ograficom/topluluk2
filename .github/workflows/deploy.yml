@@ -14,10 +14,15 @@ jobs:
         with:
           host: 72.62.1.89
           username: root
-          password: Gizemli15900@
+          password: ${{ secrets.SERVER_SSH_PASSWORD }}
           port: 22
           script: |
-            cd /var/www/ografi.com || cd /var/www/html || true
+            set -e
+            TARGET_PATH="${{ secrets.SERVER_PATH }}"
+            if [ -z "$TARGET_PATH" ]; then
+              TARGET_PATH="/var/www/ografi.com"
+            fi
+            cd "$TARGET_PATH"
             git pull origin main
             php artisan migrate --force || true
             php artisan config:cache || true
