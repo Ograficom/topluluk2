@@ -1,0 +1,26 @@
+name: Deploy to Server
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1.0.1
+        with:
+          host: 72.62.1.89
+          username: root
+          password: Gizemli15900@
+          port: 22
+          script: |
+            cd /var/www/ografi.com || cd /var/www/html || true
+            git pull origin main
+            php artisan migrate --force || true
+            php artisan config:cache || true
+            php artisan route:cache || true
+            php artisan view:clear || true
+            php artisan optimize || true
