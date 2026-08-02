@@ -195,11 +195,15 @@
     $categoryBadgeText = $hasCategory ? ($categoryInitials !== '' ? $categoryInitials : 'AI') : 'AI';
     $siteName = trim((string) config('app.name', 'Ografi'));
     $seoTitleBase = trim((string) ($post->meta_title ?: $post->title ?: 'Gonderi'));
-    $seoTitle = collect([
-        $seoTitleBase,
-        $hasCategory ? $categoryName : null,
-        $siteName,
-    ])->filter()->unique(fn ($part) => mb_strtolower((string) $part))->implode(' | ');
+    $seoTitleBase = Str::limit($seoTitleBase, 65, '');
+    // Kategori adi baslik etiketine eklenmiyor: cogu kategori (orn. "Rss Akisi",
+    // besleme kaynaklarinin varsayilan kovasi) arama sonuclarinda hicbir konu
+    // sinyali vermiyor ve baslik uzunlugunu (Google ~60 karakterde kesiyor) bosa
+    // harciyordu. Kategori bilgisi breadcrumb + JSON-LD icinde zaten mevcut.
+    $seoTitle = collect([$seoTitleBase, $siteName])
+        ->filter()
+        ->unique(fn ($part) => mb_strtolower((string) $part))
+        ->implode(' | ');
     $rawDescriptionSource = trim((string) (
         $post->meta_description
         ?? $post->excerpt
@@ -211,14 +215,15 @@
     $rawDescriptionSource = preg_replace('/\s+/u', ' ', trim($rawDescriptionSource)) ?? trim($rawDescriptionSource);
     $description = trim((string) ($post->meta_description ?? ''));
     if ($description === '' && $rawDescriptionSource !== '') {
-        $description = Str::limit($rawDescriptionSource, 155);
+        $description = $rawDescriptionSource;
     }
     if ($description === '') {
-        $description = Str::limit(
-            trim($seoTitleBase . ($hasCategory ? ' - ' . $categoryName : '') . ' yazisini ' . ($siteName !== '' ? $siteName . ' uzerinde okuyun.' : ' okuyun.')),
-            155
-        );
+        $description = trim($seoTitleBase . ($hasCategory ? ' - ' . $categoryName : '') . ' yazisini ' . ($siteName !== '' ? $siteName . ' uzerinde okuyun.' : ' okuyun.'));
     }
+    // Kaynagi ne olursa olsun (elle girilmis, eski RSS ice aktarma, otomatik
+    // uretilmis) meta aciklama her zaman Google'in kestigi ~155-160 karakter
+    // sinirinin altinda tutulur.
+    $description = Str::limit($description, 155);
 
     $reactionPills = collect($reactionSummary ?? [])->filter(function ($row) {
         return (int) ($row['count'] ?? 0) > 0;

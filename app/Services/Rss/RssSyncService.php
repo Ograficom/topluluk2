@@ -6,6 +6,7 @@ use App\Models\Post;
 use App\Models\RssFeed;
 use App\Models\RssItem;
 use App\Models\Tag;
+use App\Support\PostSeoText;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
@@ -255,8 +256,8 @@ class RssSyncService
             $post = new Post();
             $post->title = $title;
             $post->slug = $this->uniquePostSlug(Str::slug($title) ?: 'rss', $item->id);
-            $post->meta_title = $title;
-            $post->meta_description = $excerpt ?: null;
+            $post->meta_title = PostSeoText::title($title);
+            $post->meta_description = PostSeoText::description($excerpt);
             $post->meta_keywords = null;
             $post->excerpt = $excerpt ?: null;
             $post->featured_image = $featured;
@@ -307,8 +308,8 @@ class RssSyncService
         }
 
         $post->title = $title;
-        $post->meta_title = $title;
-        $post->meta_description = $excerpt ?: null;
+        $post->meta_title = PostSeoText::title($title);
+        $post->meta_description = PostSeoText::description($excerpt);
         $post->excerpt = $excerpt ?: null;
         $post->content = $html ?: $post->content;
         if ($featured) {
