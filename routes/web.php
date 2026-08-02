@@ -321,7 +321,6 @@ Route::get('/', function () {
         ->get(['id', 'name', 'slug']);
 
     return view('templates.home-like', [
-        'templateTitle' => 'Ografi',
         'posts' => $posts,
         'reactionTypes' => $reactionTypes,
         'communityCategories' => $communityCategories,

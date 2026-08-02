@@ -1,7 +1,9 @@
 @extends('layouts.app')
 
 @php
-    $templateTitle = $templateTitle ?? 'Ografi Template';
+    // templateTitle bos birakilirsa layout, SEO ayarlarindaki site geneli
+    // basligi/aciklamayi varsayilan olarak kullanir (bkz. layouts/app.blade.php).
+    $templateTitle = $templateTitle ?? null;
     $posts = $posts ?? collect();
     $reactionTypes = $reactionTypes ?? collect();
     $showFeedAd = $showFeedAd ?? true;
@@ -63,7 +65,9 @@
         });
 @endphp
 
+@if($templateTitle)
 @section('title', $templateTitle)
+@endif
 
 
 

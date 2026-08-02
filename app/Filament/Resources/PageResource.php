@@ -73,17 +73,32 @@ class PageResource extends Resource
                     ->schema([
                         Forms\Components\TextInput::make('meta_title')
                             ->label('Meta baslik')
-                            ->maxLength(255)
-                            ->helperText('Bos birakilirsa sayfa basligi kullanilir.'),
+                            ->maxLength(65)
+                            ->helperText('Bos birakilirsa sayfa basligi kullanilir. Onerilen: 50-60 karakter.'),
                         Forms\Components\Textarea::make('meta_description')
                             ->label('Meta aciklama')
-                            ->maxLength(320)
+                            ->maxLength(160)
                             ->rows(3)
-                            ->helperText('Arama sonuclarinda basligin altinda gorunur. 150-160 karakter onerilir.'),
+                            ->helperText('Arama sonuclarinda basligin altinda gorunur. 140-160 karakter onerilir.'),
                         Forms\Components\TextInput::make('meta_keywords')
                             ->label('Anahtar kelimeler')
                             ->maxLength(255)
                             ->helperText('Virgulle ayirin (opsiyonel).'),
+                        Grid::make(2)->schema([
+                            Forms\Components\FileUpload::make('og_image')
+                                ->label('Paylasim gorseli (opsiyonel)')
+                                ->disk('public')
+                                ->directory('seo')
+                                ->visibility('public')
+                                ->image()
+                                ->imagePreviewHeight('120')
+                                ->helperText('Sosyal medyada paylasilirken gorunecek gorsel. Onerilen: 1200x630px.')
+                                ->acceptedFileTypes(['image/png', 'image/jpeg', 'image/webp']),
+                            Forms\Components\Toggle::make('noindex')
+                                ->label('Arama motorlarindan gizle (noindex)')
+                                ->helperText('Acilirsa bu sayfa Google gibi arama motorlarinin dizinine eklenmez.')
+                                ->inline(false),
+                        ]),
                     ]),
                 Grid::make(2)->schema([
                     Forms\Components\Toggle::make('is_published')

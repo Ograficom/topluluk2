@@ -12,11 +12,14 @@
         ? Str::limit(trim($pageDescriptionSource), 155)
         : ($siteName !== '' ? $page->title . ' - ' . $siteName : $page->title);
     $pageCanonicalUrl = route('pages.show', $page->slug);
+    $pageOgImage = $page->ogImageUrl();
+    $pageRobotsDirective = $page->noindex ? 'noindex, follow' : 'index, follow';
 @endphp
 
 @section('title', $pageSeoTitle)
 @section('meta_description', $pageDescription)
 @section('canonical_url', $pageCanonicalUrl)
+@section('has_custom_seo', '1')
 
 @push('seo')
 <meta property="og:type" content="website">
@@ -24,9 +27,18 @@
 <meta property="og:title" content="{{ e($pageSeoTitle) }}">
 <meta property="og:description" content="{{ e($pageDescription) }}">
 <meta property="og:url" content="{{ e($pageCanonicalUrl) }}">
-<meta name="twitter:card" content="summary">
+@if($pageOgImage)
+<meta property="og:image" content="{{ e($pageOgImage) }}">
+<meta property="og:image:secure_url" content="{{ e($pageOgImage) }}">
+<meta property="og:image:alt" content="{{ e($pageSeoTitle) }}">
+@endif
+<meta name="twitter:card" content="{{ $pageOgImage ? 'summary_large_image' : 'summary' }}">
 <meta name="twitter:title" content="{{ e($pageSeoTitle) }}">
 <meta name="twitter:description" content="{{ e($pageDescription) }}">
+@if($pageOgImage)
+<meta name="twitter:image" content="{{ e($pageOgImage) }}">
+@endif
+<meta name="robots" content="{{ $pageRobotsDirective }}">
 @if($page->meta_keywords)
 <meta name="keywords" content="{{ e($page->meta_keywords) }}">
 @endif

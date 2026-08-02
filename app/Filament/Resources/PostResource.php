@@ -16,6 +16,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Components\ViewField;
 use Filament\Schemas\Components\Grid;
+use Filament\Schemas\Components\Section;
 use Filament\Resources\Resource;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TagsColumn;
@@ -119,19 +120,45 @@ class PostResource extends Resource
                 ->label('Icerik')
                 ->view('filament.forms.editorjs-post')
                 ->columnSpanFull(),
-            Grid::make(3)->schema([
-                TextInput::make('meta_title')
-                    ->label('Meta baslik')
-                    ->maxLength(255),
-                Textarea::make('meta_description')
-                    ->label('Meta aciklama')
-                    ->rows(2)
-                    ->columnSpan(2),
-            ]),
-            Textarea::make('meta_keywords')
-                ->label('Meta anahtar kelimeler')
-                ->rows(2)
-                ->columnSpanFull(),
+            Section::make('SEO')
+                ->description('Arama motorlarinda ve paylasimlarda gorunecek bilgiler. Bos birakilirsa basliktan/icerikten otomatik uretilir.')
+                ->collapsible()
+                ->schema([
+                    Grid::make(3)->schema([
+                        TextInput::make('meta_title')
+                            ->label('Meta baslik')
+                            ->maxLength(65)
+                            ->helperText('Onerilen uzunluk: 50-60 karakter.')
+                            ->columnSpan(1),
+                        Textarea::make('meta_description')
+                            ->label('Meta aciklama')
+                            ->rows(2)
+                            ->maxLength(160)
+                            ->helperText('Onerilen uzunluk: 140-160 karakter.')
+                            ->columnSpan(2),
+                    ]),
+                    Textarea::make('meta_keywords')
+                        ->label('Meta anahtar kelimeler')
+                        ->rows(2)
+                        ->maxLength(255)
+                        ->helperText('Virgulle ayirin (opsiyonel).')
+                        ->columnSpanFull(),
+                    Grid::make(2)->schema([
+                        FileUpload::make('og_image')
+                            ->label('Paylasim gorseli (opsiyonel)')
+                            ->disk('public')
+                            ->directory('seo')
+                            ->visibility('public')
+                            ->image()
+                            ->imagePreviewHeight('120')
+                            ->helperText('Bos birakilirsa gonderi icindeki ilk gorsel kullanilir. Onerilen: 1200x630px.')
+                            ->acceptedFileTypes(['image/png', 'image/jpeg', 'image/webp']),
+                        Toggle::make('noindex')
+                            ->label('Arama motorlarindan gizle (noindex)')
+                            ->helperText('Acilirsa bu gonderi Google gibi arama motorlarinin dizinine eklenmez.')
+                            ->inline(false),
+                    ]),
+                ]),
             Grid::make(2)->schema([
                 Toggle::make('is_published')
                     ->label('Yayinla')

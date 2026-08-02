@@ -31,6 +31,8 @@ class Post extends Model
         'meta_title',
         'meta_description',
         'meta_keywords',
+        'og_image',
+        'noindex',
         'excerpt',
         'featured_image',
         'image_license_url',
@@ -57,6 +59,7 @@ class Post extends Model
         'is_pinned' => 'boolean',
         'comments_disabled' => 'boolean',
         'is_nsfw' => 'boolean',
+        'noindex' => 'boolean',
         'views_count' => 'integer',
         'content_json' => 'array',
     ];
@@ -188,6 +191,20 @@ class Post extends Model
         }
 
         return Storage::disk('public')->url($this->featured_image);
+    }
+
+    public function ogImageUrl(): ?string
+    {
+        $path = trim((string) $this->og_image);
+        if ($path === '') {
+            return null;
+        }
+
+        if (Str::startsWith($path, ['http://', 'https://', '//'])) {
+            return $path;
+        }
+
+        return Storage::disk('public')->url($path);
     }
 
     public function isPublishedNow(): bool

@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Storage;
 
 class Page extends Model
 {
@@ -18,12 +19,15 @@ class Page extends Model
         'meta_title',
         'meta_description',
         'meta_keywords',
+        'og_image',
+        'noindex',
         'is_published',
         'published_at',
     ];
 
     protected $casts = [
         'is_published' => 'boolean',
+        'noindex' => 'boolean',
         'published_at' => 'datetime',
     ];
 
@@ -34,5 +38,15 @@ class Page extends Model
                 $q->whereNull('published_at')
                     ->orWhere('published_at', '<=', Carbon::now());
             });
+    }
+
+    public function ogImageUrl(): ?string
+    {
+        $path = trim((string) $this->og_image);
+        if ($path === '') {
+            return null;
+        }
+
+        return Storage::disk('public')->url($path);
     }
 }

@@ -73,12 +73,36 @@
         ];
     }
 
+    /*
+        SiteNavigationElement: Google'a sitenin ana gezinme yapisini bildirir.
+        Bu, arama sonuclarindaki "sitelinks" (ana sonucun altinda cikan alt
+        baglantilar) icin bir SINYALDIR - Google bu baglantilari tamamen kendi
+        algoritmasiyla secer, hicbir site sahibi bunlari elle belirleyemez.
+        Duzgun bir SiteNavigationElement + acik site yapisi, zaman icinde
+        Google'in daha anlamli sitelinks secmesine yardimci olabilir.
+    */
+    $navigationLinks = collect([
+        ['name' => 'Ana Sayfa', 'route' => 'home'],
+        ['name' => 'Kesfet', 'route' => 'discover'],
+        ['name' => 'Populer Yazilar', 'route' => 'blog.popular'],
+        ['name' => 'Uye Ol', 'route' => 'register'],
+        ['name' => 'SSS', 'route' => 'pages.sss'],
+    ])
+        ->filter(fn ($link) => app('router')->has($link['route']))
+        ->map(fn ($link) => [
+            '@type' => 'SiteNavigationElement',
+            'name' => $link['name'],
+            'url' => route($link['route']),
+        ])
+        ->values()
+        ->all();
+
     $graph = [
         '@context' => 'https://schema.org',
-        '@graph' => [
-            $organization,
-            $website,
-        ],
+        '@graph' => array_merge(
+            [$organization, $website],
+            $navigationLinks
+        ),
     ];
 @endphp
 <script type="application/ld+json">

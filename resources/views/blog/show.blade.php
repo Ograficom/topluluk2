@@ -1342,11 +1342,20 @@
         ->unique()
         ->values();
 
-    $seoPrimaryImage = $discussionForumImages->first();
+    $seoPrimaryImage = $post->ogImageUrl() ?: $discussionForumImages->first();
     $seoPrimaryImageWidth = (int) ($featuredImageWidth ?? 1200);
     $seoPrimaryImageHeight = (int) ($featuredImageHeight ?? 675);
     $seoPrimaryImageWidth = $seoPrimaryImageWidth > 0 ? $seoPrimaryImageWidth : 1200;
     $seoPrimaryImageHeight = $seoPrimaryImageHeight > 0 ? $seoPrimaryImageHeight : 675;
+    $seoRobotsDirective = $post->noindex
+        ? 'noindex, follow'
+        : 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1';
+    $seoPrimaryImageType = match (strtolower(pathinfo((string) parse_url((string) $seoPrimaryImage, PHP_URL_PATH), PATHINFO_EXTENSION))) {
+        'png' => 'image/png',
+        'webp' => 'image/webp',
+        'gif' => 'image/gif',
+        default => 'image/jpeg',
+    };
 
     $buildSchemaPerson = function ($user, ?string $fallbackName = null) use ($seoNormalizePublicUrl): array {
         $name = trim((string) (optional($user)->name ?? $fallbackName ?? 'Ografi Editör'));
@@ -1830,6 +1839,7 @@
 @section('title', $seoTitle)
 @section('meta_description', $description)
 @section('canonical_url', $postUrl)
+@section('has_custom_seo', '1')
 @section('hide_feed_header', '1')
 
 @push('head')
@@ -9175,6 +9185,7 @@
 @if($seoPrimaryImage)
 <meta property="og:image" content="{{ e($seoPrimaryImage) }}">
 <meta property="og:image:secure_url" content="{{ e($seoPrimaryImage) }}">
+<meta property="og:image:type" content="{{ $seoPrimaryImageType }}">
 <meta property="og:image:width" content="{{ $seoPrimaryImageWidth }}">
 <meta property="og:image:height" content="{{ $seoPrimaryImageHeight }}">
 <meta property="og:image:alt" content="{{ e($seoTitleBase) }}">
@@ -9187,7 +9198,7 @@
 <meta name="twitter:image:alt" content="{{ e($seoTitleBase) }}">
 <link rel="image_src" href="{{ e($seoPrimaryImage) }}">
 @endif
-<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+<meta name="robots" content="{{ $seoRobotsDirective }}">
 <meta name="googlebot" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 <meta name="bingbot" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 <meta name="language" content="{{ e($seoLanguage) }}">

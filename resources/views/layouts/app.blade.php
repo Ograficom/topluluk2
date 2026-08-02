@@ -2,14 +2,18 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
     @php
+        $globalSeoSetting = \App\Models\SeoSetting::currentOrNull();
         $appName = trim((string) config('app.name', 'Ografi'));
-        $rawPageTitle = trim((string) $__env->yieldContent('title', $appName));
-        $documentTitle = $rawPageTitle !== '' ? $rawPageTitle : $appName;
+        $seoSiteDefaultTitle = trim((string) ($globalSeoSetting->site_meta_title ?? '')) ?: $appName;
+        $seoSiteDefaultDescription = trim((string) ($globalSeoSetting->site_meta_description ?? '')) ?: $appName;
+        $rawPageTitle = trim((string) $__env->yieldContent('title', $seoSiteDefaultTitle));
+        $documentTitle = $rawPageTitle !== '' ? $rawPageTitle : $seoSiteDefaultTitle;
         if ($appName !== '' && !str_contains(mb_strtolower($documentTitle), mb_strtolower($appName))) {
             $documentTitle .= ' | ' . $appName;
         }
-        $metaDescription = trim((string) $__env->yieldContent('meta_description', $appName));
+        $metaDescription = trim((string) $__env->yieldContent('meta_description', $seoSiteDefaultDescription));
         $canonicalUrl = trim((string) $__env->yieldContent('canonical_url')) ?: url()->current();
+        $hasCustomSeoPush = trim((string) $__env->yieldContent('has_custom_seo')) !== '';
     @endphp
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -30,7 +34,32 @@
     <link rel="icon" type="image/png" sizes="192x192" href="{{ asset('pwa/icon-192.png') }}?v=20260714a">
     <link rel="apple-touch-icon" href="{{ asset('pwa/icon-192.png') }}?v=20260714a">
     <title>{!! $documentTitle !!}</title>
+    @if($globalSeoSetting && trim((string) $globalSeoSetting->site_meta_keywords) !== '')
+    <meta name="keywords" content="{{ $globalSeoSetting->site_meta_keywords }}">
+    @endif
     @stack('seo')
+    {{--
+        Sayfaya ozel OG/Twitter etiketleri (blog gonderisi, statik sayfa vb.) zaten
+        yukaridaki @stack('seo') icinde kendi degerlerini basar ve
+        @section('has_custom_seo', '1') ile bunu isaretler. Bu isaret yoksa (ana
+        sayfa, kategori, kesfet gibi genel sayfalar) SEO ayarlarindan gelen
+        varsayilan Open Graph degerleri kullanilir; boylece hicbir sayfa
+        paylasimda gorselsiz/basliksiz kalmaz ve etiketler asla ikilenmez.
+    --}}
+    @if(!$hasCustomSeoPush && $globalSeoSetting)
+    <meta property="og:type" content="{{ $globalSeoSetting->og_type ?: 'website' }}">
+    <meta property="og:site_name" content="{{ $globalSeoSetting->og_site_name ?: $appName }}">
+    <meta property="og:title" content="{{ $globalSeoSetting->og_default_title ?: $documentTitle }}">
+    <meta property="og:description" content="{{ $globalSeoSetting->og_default_description ?: $metaDescription }}">
+    <meta property="og:url" content="{{ $globalSeoSetting->og_url ?: $canonicalUrl }}">
+    <meta name="twitter:card" content="{{ $globalSeoSetting->ogDefaultImageUrl() ? 'summary_large_image' : 'summary' }}">
+    <meta name="twitter:title" content="{{ $globalSeoSetting->og_default_title ?: $documentTitle }}">
+    <meta name="twitter:description" content="{{ $globalSeoSetting->og_default_description ?: $metaDescription }}">
+    @if($globalSeoSetting->ogDefaultImageUrl())
+    <meta property="og:image" content="{{ $globalSeoSetting->ogDefaultImageUrl() }}">
+    <meta name="twitter:image" content="{{ $globalSeoSetting->ogDefaultImageUrl() }}">
+    @endif
+    @endif
     @include('partials.system-appearance')
     @include('partials.google-analytics')
     @include('partials.font-assets')
