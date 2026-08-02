@@ -627,7 +627,7 @@
         top: calc(100% + 14px) !important;
         right: 0 !important;
         z-index: 99970 !important;
-        width: 304px !important;
+        width: 288px !important;
         padding: 10px !important;
         border: 1px solid rgba(226, 232, 240, 0.95) !important;
         border-radius: 24px !important;
@@ -802,15 +802,15 @@
         width: 100% !important;
         display: flex !important;
         align-items: center !important;
-        gap: 14px !important;
-        min-height: 52px !important;
-        padding: 12px 14px !important;
+        gap: 12px !important;
+        min-height: 44px !important;
+        padding: 10px 12px !important;
         border-radius: 16px !important;
         border: 0 !important;
         background: transparent !important;
         color: #0f172a !important;
-        font-size: 15px !important;
-        font-weight: 500 !important;
+        font-size: 14px !important;
+        font-weight: 400 !important;
         line-height: 1.2 !important;
         text-align: left !important;
         text-decoration: none !important;
@@ -828,8 +828,8 @@
     }
 
     .site-user-menu-icon {
-        width: 38px !important;
-        height: 38px !important;
+        width: 32px !important;
+        height: 32px !important;
         border-radius: 12px !important;
         display: inline-flex !important;
         align-items: center !important;
@@ -837,7 +837,6 @@
         flex: 0 0 auto !important;
         background: #f1f5f9 !important;
         color: #334155 !important;
-        font-size: 19px !important;
         box-shadow: none !important;
     }
 
@@ -2116,7 +2115,7 @@
 
             @if ($currentUser)
                 <div
-                    class="relative site-header-desktop-only"
+                    class="relative"
                     data-notifications-root
                     data-notifications-endpoint="{{ route('notifications.dropdown') }}"
                     data-notifications-index-url="{{ route('notifications.index') }}"
@@ -2259,7 +2258,7 @@
                             aria-pressed="false"
                         >
                             <span class="site-user-menu-icon">
-                                <iconify-icon icon="lucide:moon" data-user-menu-theme-icon style="font-size: 19px;"></iconify-icon>
+                                <iconify-icon icon="lucide:moon" data-user-menu-theme-icon style="font-size: 16px;"></iconify-icon>
                             </span>
                             <span>{{ __('site.common.dark_mode') }}</span>
                             <span class="site-user-menu-switch" data-user-menu-theme-switch aria-hidden="true">
@@ -2271,35 +2270,35 @@
 
                         <a href="{{ route('dashboard') }}" class="site-user-menu-link">
                             <span class="site-user-menu-icon">
-                                <iconify-icon icon="lucide:layout-dashboard" style="font-size: 19px;"></iconify-icon>
+                                <iconify-icon icon="lucide:layout-dashboard" style="font-size: 16px;"></iconify-icon>
                             </span>
                             <span>{{ __('site.common.dashboard') }}</span>
                         </a>
 
                         <a href="{{ route('blog.categories') }}" class="site-user-menu-link">
                             <span class="site-user-menu-icon">
-                                <iconify-icon icon="lucide:users" style="font-size: 19px;"></iconify-icon>
+                                <iconify-icon icon="lucide:users" style="font-size: 16px;"></iconify-icon>
                             </span>
                             <span>{{ __('site.common.my_communities') }}</span>
                         </a>
 
                         <a href="{{ route('blog.drafts') }}" class="site-user-menu-link">
                             <span class="site-user-menu-icon">
-                                <iconify-icon icon="lucide:file-edit" style="font-size: 19px;"></iconify-icon>
+                                <iconify-icon icon="lucide:file-edit" style="font-size: 16px;"></iconify-icon>
                             </span>
                             <span>{{ __('site.common.drafts') }}</span>
                         </a>
 
                         <a href="{{ route('blog.bookmarks') }}" class="site-user-menu-link">
                             <span class="site-user-menu-icon">
-                                <iconify-icon icon="lucide:bookmark" style="font-size: 19px;"></iconify-icon>
+                                <iconify-icon icon="lucide:bookmark" style="font-size: 16px;"></iconify-icon>
                             </span>
                             <span>{{ __('site.common.bookmarks') }}</span>
                         </a>
 
                         <a href="{{ route('dashboard.profile') }}" class="site-user-menu-link">
                             <span class="site-user-menu-icon">
-                                <iconify-icon icon="lucide:settings" style="font-size: 19px;"></iconify-icon>
+                                <iconify-icon icon="lucide:settings" style="font-size: 16px;"></iconify-icon>
                             </span>
                             <span>{{ __('site.common.settings') }}</span>
                         </a>
@@ -2310,7 +2309,7 @@
                             @csrf
                             <button type="submit" class="site-user-menu-button site-user-menu-button-danger">
                                 <span class="site-user-menu-icon">
-                                    <iconify-icon icon="lucide:log-out" style="font-size: 19px;"></iconify-icon>
+                                    <iconify-icon icon="lucide:log-out" style="font-size: 16px;"></iconify-icon>
                                 </span>
                                 <span>{{ __('site.common.sign_out') }}</span>
                             </button>
@@ -2714,4 +2713,438 @@ html.dark body .site-header[data-site-header] .site-header-logo-wordmark {
     color: #e5e7eb !important;
 }
 
+/* ============================
+   DROPDOWN MENU - EKRAN GORUNTUSUNDEKI GIBI (RAFINE)
+   Ikon arkasinda kutu/daire yok, duz sade liste.
+   Ic duzen: tum icerik ayni sol hizada (20px), hover
+   zemini ise kenarlara tasarak tam genislik hissi verir.
+   ============================ */
+.site-menu-panel {
+    width: 240px !important;
+    padding: 14px 16px 10px !important;
+    border-radius: 16px !important;
+    box-shadow: 0 16px 40px -10px rgba(15, 23, 42, 0.16), 0 2px 8px rgba(15, 23, 42, 0.06) !important;
+    border-color: #eef1f5 !important;
+}
+
+.site-user-menu-card {
+    padding: 10px 10px !important;
+    margin: 0 0 8px 0 !important;
+    border-radius: 14px !important;
+    background: #f4f6f8 !important;
+    background-image: none !important;
+    border: 0 !important;
+    gap: 11px !important;
+}
+
+.site-user-menu-card:hover {
+    background: #eef1f4 !important;
+    background-image: none !important;
+    border: 0 !important;
+}
+
+.site-user-menu-card:hover .site-user-menu-name {
+    color: #0f172a !important;
+}
+
+.site-user-menu-avatar {
+    width: 38px !important;
+    height: 38px !important;
+    font-size: 13px !important;
+    border-width: 0 !important;
+    outline: 0 !important;
+}
+
+.site-user-menu-name {
+    font-size: 14px !important;
+    font-weight: 600 !important;
+    letter-spacing: -0.01em !important;
+    transition: color 150ms ease !important;
+}
+
+.site-user-menu-meta {
+    margin-top: 2px !important;
+}
+
+.site-user-menu-username {
+    font-size: 12.5px !important;
+    color: #64748b !important;
+}
+
+.site-user-menu-points {
+    background: transparent !important;
+    border: 0 !important;
+    padding: 0 !important;
+    color: #2563eb !important;
+    font-weight: 700 !important;
+    font-size: 12.5px !important;
+    gap: 3px !important;
+}
+
+.site-user-menu-points iconify-icon {
+    color: #2563eb !important;
+    font-size: 13px !important;
+}
+
+.site-user-menu-divider {
+    display: block !important;
+    height: 1px !important;
+    margin: 6px -6px !important;
+    background: #f1f5f9 !important;
+}
+
+/* Ilk divider (Karanlik Mod'un altindaki) gorunur kalir,
+   liste boylece "tema / sayfalar / cikis" olarak uc bolume ayrilir. */
+
+.site-user-menu-link,
+.site-user-menu-button {
+    gap: 12px !important;
+    min-height: 36px !important;
+    padding: 7px 10px !important;
+    margin: 0 -6px !important;
+    width: calc(100% + 12px) !important;
+    border-radius: 10px !important;
+    font-size: 13.5px !important;
+    font-weight: 400 !important;
+    color: #1e293b !important;
+    transition: background-color 150ms ease, color 150ms ease !important;
+}
+
+.site-user-menu-icon {
+    width: 18px !important;
+    height: 18px !important;
+    background: transparent !important;
+    border-radius: 0 !important;
+    color: #475569 !important;
+    box-shadow: none !important;
+    flex: 0 0 18px !important;
+}
+
+.site-user-menu-icon iconify-icon {
+    font-size: 17px !important;
+}
+
+.site-user-menu-link:hover,
+.site-user-menu-button:hover {
+    background: #f8fafc !important;
+    color: #0f172a !important;
+}
+
+.site-user-menu-link:hover .site-user-menu-icon,
+.site-user-menu-button:hover .site-user-menu-icon {
+    background: transparent !important;
+    color: #2563eb !important;
+}
+
+.site-user-menu-switch {
+    background: #e2e8f0 !important;
+    transition: background-color 150ms ease !important;
+}
+
+.site-user-menu-switch__knob {
+    transition: left 150ms ease !important;
+}
+
+.site-user-menu-button.site-user-menu-button-danger {
+    color: #1e293b !important;
+}
+
+.site-user-menu-button.site-user-menu-button-danger .site-user-menu-icon {
+    background: transparent !important;
+    color: #475569 !important;
+}
+
+.site-user-menu-button.site-user-menu-button-danger:hover {
+    background: #fef2f2 !important;
+    color: #dc2626 !important;
+}
+
+.site-user-menu-button.site-user-menu-button-danger:hover .site-user-menu-icon {
+    background: transparent !important;
+    color: #dc2626 !important;
+}
+
+/* ---- Dark mode ---- */
+html.dark .site-menu-panel,
+.dark .site-menu-panel {
+    border-color: #1e293b !important;
+    box-shadow: 0 16px 40px -10px rgba(0, 0, 0, 0.55), 0 2px 8px rgba(0, 0, 0, 0.3) !important;
+}
+
+html.dark .site-user-menu-card,
+.dark .site-user-menu-card {
+    background: #16202f !important;
+    background-image: none !important;
+    border: 0 !important;
+}
+
+html.dark .site-user-menu-card:hover,
+.dark .site-user-menu-card:hover {
+    background: #1b2739 !important;
+    background-image: none !important;
+    border: 0 !important;
+}
+
+html.dark .site-user-menu-card:hover .site-user-menu-name,
+.dark .site-user-menu-card:hover .site-user-menu-name {
+    color: #f8fafc !important;
+}
+
+html.dark .site-user-menu-divider,
+.dark .site-user-menu-divider {
+    display: block !important;
+    background: #1e293b !important;
+    background-color: #1e293b !important;
+    border: 0 !important;
+}
+
+html.dark .site-user-menu-link,
+html.dark .site-user-menu-button,
+.dark .site-user-menu-link,
+.dark .site-user-menu-button {
+    color: #cbd5e1 !important;
+}
+
+html.dark .site-user-menu-icon,
+.dark .site-user-menu-icon {
+    background: transparent !important;
+    color: #94a3b8 !important;
+}
+
+html.dark .site-user-menu-link:hover,
+html.dark .site-user-menu-button:hover,
+.dark .site-user-menu-link:hover,
+.dark .site-user-menu-button:hover {
+    background: #17233a !important;
+    color: #f8fafc !important;
+}
+
+html.dark .site-user-menu-link:hover .site-user-menu-icon,
+html.dark .site-user-menu-button:hover .site-user-menu-icon,
+.dark .site-user-menu-link:hover .site-user-menu-icon,
+.dark .site-user-menu-button:hover .site-user-menu-icon {
+    background: transparent !important;
+    color: #93c5fd !important;
+}
+
+html.dark .site-user-menu-switch,
+.dark .site-user-menu-switch {
+    background: #334155 !important;
+}
+
+html.dark .site-user-menu-button.site-user-menu-button-danger,
+.dark .site-user-menu-button.site-user-menu-button-danger {
+    color: #cbd5e1 !important;
+}
+
+html.dark .site-user-menu-button.site-user-menu-button-danger .site-user-menu-icon,
+.dark .site-user-menu-button.site-user-menu-button-danger .site-user-menu-icon {
+    background: transparent !important;
+    color: #94a3b8 !important;
+}
+
+html.dark .site-user-menu-button.site-user-menu-button-danger:hover,
+.dark .site-user-menu-button.site-user-menu-button-danger:hover {
+    background: rgba(127, 29, 29, 0.22) !important;
+    color: #fecaca !important;
+}
+
+html.dark .site-user-menu-button.site-user-menu-button-danger:hover .site-user-menu-icon,
+.dark .site-user-menu-button.site-user-menu-button-danger:hover .site-user-menu-icon {
+    background: transparent !important;
+    color: #fecaca !important;
+}
+
+/* ============================
+   PROFIL AVATARI - AYARLANABILIR BOYUT
+   Avatar boyutunu SADECE asagidaki --site-header-avatar-size
+   degerini degistirerek buyutup kucultebilirsin.
+   Diger ikonlardan bagimsizdir.
+   ============================ */
+html body .site-header {
+    --site-header-avatar-size: 36px; /* <-- BURADAN AYARLA (or: 32px, 40px, 42px) */
+}
+
+html body .site-header .site-header-actions button[data-user-menu-btn].site-icon-btn,
+html body .site-header [data-user-menu] button[data-user-menu-btn] {
+    width: var(--site-header-avatar-size) !important;
+    height: var(--site-header-avatar-size) !important;
+    min-width: var(--site-header-avatar-size) !important;
+    min-height: var(--site-header-avatar-size) !important;
+    max-width: var(--site-header-avatar-size) !important;
+    max-height: var(--site-header-avatar-size) !important;
+    flex: 0 0 var(--site-header-avatar-size) !important;
+    border-radius: 9999px !important;
+}
+
+html body .site-header .site-header-actions button[data-user-menu-btn].site-icon-btn > img,
+html body .site-header .site-header-actions button[data-user-menu-btn].site-icon-btn > .site-avatar-fallback,
+html body .site-header [data-user-menu] button[data-user-menu-btn] > img,
+html body .site-header [data-user-menu] button[data-user-menu-btn] > .site-avatar-fallback {
+    width: var(--site-header-avatar-size) !important;
+    height: var(--site-header-avatar-size) !important;
+    min-width: var(--site-header-avatar-size) !important;
+    min-height: var(--site-header-avatar-size) !important;
+    max-width: var(--site-header-avatar-size) !important;
+    max-height: var(--site-header-avatar-size) !important;
+    font-size: calc(var(--site-header-avatar-size) * 0.42) !important;
+    line-height: var(--site-header-avatar-size) !important;
+    border-radius: 9999px !important;
+    object-fit: cover !important;
+    transform: none !important;
+}
+
+/* Mobilde istersen farkli boyut kullan (istege bagli) */
+@media (max-width: 640px) {
+    html body .site-header {
+        --site-header-avatar-size: 34px;
+    }
+}
+
+/* ============================
+   BILDIRIM ZILI - MOBIL GORUNURLUK
+   Mesaj ikonunun solunda, ayni satirda gorunur.
+   ============================ */
+[data-notifications-root] {
+    display: flex !important;
+    align-items: center !important;
+}
+
+/* ============================
+   BILDIRIM PANELI - IC DUZEN RAFINESI (KOMPAKT)
+   Alma referansindaki gibi: dar panel, sade baslik,
+   alt baslik yok, profil menusuyle ayni koseler/golge.
+   ============================ */
+.site-notifications-panel {
+    width: 320px !important;
+    border-radius: 16px !important;
+    border-color: #eef1f5 !important;
+    box-shadow: 0 16px 40px -10px rgba(15, 23, 42, 0.16), 0 2px 8px rgba(15, 23, 42, 0.06) !important;
+}
+
+.site-notifications-panel-head {
+    padding: 14px 16px 12px !important;
+}
+
+.site-notifications-panel-title {
+    font-size: 15px !important;
+    font-weight: 600 !important;
+    letter-spacing: -0.01em !important;
+}
+
+.site-notifications-panel-subtitle {
+    display: none !important;
+}
+
+.site-notifications-list {
+    max-height: 360px !important;
+    padding: 6px 10px !important;
+}
+
+.site-notifications-empty {
+    padding: 34px 16px !important;
+    font-size: 13.5px !important;
+}
+
+.site-notifications-more,
+button[data-notifications-actions-btn] {
+    width: 32px !important;
+    height: 32px !important;
+}
+
+.site-notifications-actions-menu,
+div[data-notifications-actions-menu] {
+    border-radius: 14px !important;
+    padding: 6px !important;
+    min-width: 210px !important;
+    box-shadow: 0 12px 30px -8px rgba(15, 23, 42, 0.18) !important;
+}
+
+.site-notifications-menu-item,
+button[data-notifications-mark-all],
+button[data-notifications-delete-all] {
+    border-radius: 10px !important;
+    padding: 9px 11px !important;
+    font-size: 13px !important;
+}
+
+.site-notifications-footer-link {
+    padding: 11px 16px !important;
+    font-size: 13px !important;
+    font-weight: 500 !important;
+}
+
+html.dark .site-notifications-panel,
+.dark .site-notifications-panel {
+    box-shadow: 0 16px 40px -10px rgba(0, 0, 0, 0.55), 0 2px 8px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* ============================
+   BILDIRIM PANELI - MOBIL OPTIMIZASYON
+   Kucuk ekranlarda buton altina degil, arama kutusu
+   gibi ust bara sabitlenmis, kenar bosluklu tam genislik
+   panel olarak acilir. Dokunma hedefleri buyutulur.
+   ============================ */
+@media (max-width: 640px) {
+    .site-notifications-panel {
+        position: fixed !important;
+        top: 70px !important;
+        left: 10px !important;
+        right: 10px !important;
+        width: auto !important;
+        max-width: none !important;
+        max-height: calc(100vh - 96px) !important;
+        border-radius: 20px !important;
+    }
+
+    .site-notifications-panel:not(.hidden) {
+        display: flex !important;
+        flex-direction: column !important;
+    }
+
+    .site-notifications-panel::before {
+        display: none !important;
+    }
+
+    .site-notifications-panel-head {
+        padding: 16px 16px 12px !important;
+        flex: 0 0 auto !important;
+    }
+
+    .site-notifications-panel-title {
+        font-size: 16px !important;
+    }
+
+    .site-notifications-list {
+        flex: 1 1 auto !important;
+        max-height: none !important;
+        padding: 8px !important;
+    }
+
+    .site-notifications-more,
+    button[data-notifications-actions-btn] {
+        width: 38px !important;
+        height: 38px !important;
+    }
+
+    .site-notifications-menu-item,
+    button[data-notifications-mark-all],
+    button[data-notifications-delete-all] {
+        padding: 13px 12px !important;
+        font-size: 14px !important;
+    }
+
+    .site-notifications-footer-link {
+        flex: 0 0 auto !important;
+        padding: 14px 16px !important;
+        padding-bottom: calc(14px + env(safe-area-inset-bottom, 0px)) !important;
+    }
+}
+
+@media (min-width: 641px) and (max-width: 1023.98px) {
+    .site-notifications-panel {
+        width: 360px !important;
+        max-width: calc(100vw - 24px) !important;
+    }
+}
 </style>
