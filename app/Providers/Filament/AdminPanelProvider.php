@@ -11,7 +11,6 @@ use Filament\Navigation\NavigationGroup;
 use Filament\Pages;
 use Filament\Panel;
 use Filament\PanelProvider;
-use Filament\Support\Colors\Color;
 use Filament\Widgets;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
@@ -19,7 +18,9 @@ use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use LaBoiteACode\FilamentDashboardWidgets\FilamentDashboardWidgetsPlugin;
 use NoteBrainsLab\FilamentEmailTemplates\FilamentEmailTemplatesPlugin;
+use Openplain\FilamentShadcnTheme\Color as ShadcnColor;
 use WallaceMartinss\FilamentSecurity\FilamentSecurityPlugin;
 
 class AdminPanelProvider extends PanelProvider
@@ -32,7 +33,7 @@ class AdminPanelProvider extends PanelProvider
             ->path('admin')
             ->login()
             ->colors([
-                'primary' => Color::Gray,
+                'primary' => ShadcnColor::Blue,
             ])
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->resources([
@@ -46,6 +47,14 @@ class AdminPanelProvider extends PanelProvider
             ->widgets([
                 Widgets\AccountWidget::class,
                 Widgets\FilamentInfoWidget::class,
+                \App\Filament\Widgets\OverviewStats::class,
+                \App\Filament\Widgets\PostsPerMonthChart::class,
+                \App\Filament\Widgets\UsersGrowthChart::class,
+                \App\Filament\Widgets\CategoryCompositionWidget::class,
+                \App\Filament\Widgets\MonthlyGoalWidget::class,
+                \App\Filament\Widgets\RecentCommentsWidget::class,
+                \App\Filament\Widgets\RecentActivityTimeline::class,
+                \App\Filament\Widgets\PlatformSummaryWidget::class,
             ])
             ->navigationGroups([
                 NavigationGroup::make('Blog'),
@@ -59,6 +68,7 @@ class AdminPanelProvider extends PanelProvider
                 FilamentEmailTemplatesPlugin::make()
                     ->navigationGroup('Mesajlar'),
                 FilamentSecurityPlugin::make(),
+                FilamentDashboardWidgetsPlugin::make(),
             ])
             ->middleware([
                 EncryptCookies::class,

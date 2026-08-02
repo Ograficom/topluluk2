@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4374709bd526fe50eb38b413ab370e1f",
+    "content-hash": "0d7870342e20b2eef4a133bfba328d37",
     "packages": [
         {
             "name": "anourvalar/eloquent-serialize",
@@ -2829,6 +2829,80 @@
             "time": "2026-07-23T11:41:37+00:00"
         },
         {
+            "name": "laboiteacode/filament-dashboard-widgets",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/La-boite-a-code/Filament-Dashboard-Widgets.git",
+                "reference": "b38ea179fab3fb1ac64e01c33e9ec5cbfb1e1405"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/La-boite-a-code/Filament-Dashboard-Widgets/zipball/b38ea179fab3fb1ac64e01c33e9ec5cbfb1e1405",
+                "reference": "b38ea179fab3fb1ac64e01c33e9ec5cbfb1e1405",
+                "shasum": ""
+            },
+            "require": {
+                "filament/filament": "^4.12|^5.7.1",
+                "illuminate/contracts": "^12.0|^13.0",
+                "php": "^8.3",
+                "spatie/laravel-package-tools": "^1.15"
+            },
+            "require-dev": {
+                "larastan/larastan": "^3.0",
+                "laravel/pint": "^1.18",
+                "orchestra/testbench": "^10.0|^11.0",
+                "pestphp/pest": "^3.7|^4.0",
+                "pestphp/pest-plugin-livewire": "^3.0|^4.0",
+                "phpstan/extension-installer": "^1.4",
+                "phpstan/phpstan": "^2.0",
+                "phpstan/phpstan-deprecation-rules": "^2.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "LaBoiteACode\\FilamentDashboardWidgets\\FilamentDashboardWidgetsServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "LaBoiteACode\\FilamentDashboardWidgets\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "La Boite A Code",
+                    "email": "alexandre@laboiteacode.fr",
+                    "role": "Developer"
+                }
+            ],
+            "description": "A collection of ready to use, professional dashboard widgets for Filament: metrics, goals, breakdowns, trends and recent items.",
+            "homepage": "https://github.com/la-boite-a-code/filament-dashboard-widgets",
+            "keywords": [
+                "Metrics",
+                "analytics",
+                "dashboard",
+                "filament",
+                "filamentphp",
+                "kpi",
+                "laboiteacode",
+                "laravel",
+                "widgets"
+            ],
+            "support": {
+                "docs": "https://github.com/la-boite-a-code/filament-dashboard-widgets/blob/main/README.md",
+                "issues": "https://github.com/la-boite-a-code/filament-dashboard-widgets/issues",
+                "source": "https://github.com/la-boite-a-code/filament-dashboard-widgets"
+            },
+            "time": "2026-07-24T06:13:18+00:00"
+        },
+        {
             "name": "laravel/fortify",
             "version": "v1.37.3",
             "source": {
@@ -5459,6 +5533,65 @@
                 }
             ],
             "time": "2026-02-16T23:10:27+00:00"
+        },
+        {
+            "name": "openplain/filament-shadcn-theme",
+            "version": "v1.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/openplain/filament-shadcn-theme.git",
+                "reference": "e4918c8a34d6089326af25d21ff26ed069f0d05a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/openplain/filament-shadcn-theme/zipball/e4918c8a34d6089326af25d21ff26ed069f0d05a",
+                "reference": "e4918c8a34d6089326af25d21ff26ed069f0d05a",
+                "shasum": ""
+            },
+            "require": {
+                "filament/filament": "^4.0|^5.0",
+                "php": "^8.2|^8.3|^8.4"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Openplain\\FilamentShadcnTheme\\FilamentShadcnThemeServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Openplain\\FilamentShadcnTheme\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Openplain",
+                    "email": "hello@openplain.dev"
+                }
+            ],
+            "description": "Shadcn UI theme for Filament - Beautiful color themes with the iconic Shadcn design system",
+            "homepage": "https://github.com/openplain/filament-shadcn-theme",
+            "keywords": [
+                "colors",
+                "dark-mode",
+                "filament",
+                "filament-theme",
+                "light-mode",
+                "shadcn",
+                "shadcn-ui",
+                "theme"
+            ],
+            "support": {
+                "issues": "https://github.com/openplain/filament-shadcn-theme/issues",
+                "source": "https://github.com/openplain/filament-shadcn-theme/tree/v1.1.0"
+            },
+            "time": "2026-01-19T14:22:59+00:00"
         },
         {
             "name": "openspout/openspout",
