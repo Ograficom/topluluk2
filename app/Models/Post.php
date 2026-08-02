@@ -18,10 +18,12 @@ use App\Support\PostSeoText;
 use App\Services\IndexNowService;
 use App\Services\SitemapManager;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Martin6363\FilamentSmartSeo\Traits\HasSeo;
 
 class Post extends Model
 {
     use HasFactory;
+    use HasSeo;
 
     protected $fillable = [
         'category_id',
@@ -195,7 +197,7 @@ class Post extends Model
 
     public function ogImageUrl(): ?string
     {
-        $path = trim((string) $this->og_image);
+        $path = trim((string) ($this->og_image ?: $this->seo?->og_image));
         if ($path === '') {
             return null;
         }

@@ -7,10 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Storage;
+use Martin6363\FilamentSmartSeo\Traits\HasSeo;
 
 class Page extends Model
 {
     use HasFactory;
+    use HasSeo;
 
     protected $fillable = [
         'title',
@@ -42,7 +44,7 @@ class Page extends Model
 
     public function ogImageUrl(): ?string
     {
-        $path = trim((string) $this->og_image);
+        $path = trim((string) ($this->og_image ?: $this->seo?->og_image));
         if ($path === '') {
             return null;
         }

@@ -27,6 +27,7 @@ use Filament\Tables\Table;
 use Filament\Schemas\Schema;
 use Filament\Tables\Columns\BadgeColumn;
 use Illuminate\Support\Str;
+use Martin6363\FilamentSmartSeo\Forms\Components\SeoSection;
 
 class PostResource extends Resource
 {
@@ -159,6 +160,12 @@ class PostResource extends Resource
                             ->inline(false),
                     ]),
                 ]),
+            SeoSection::make('Akilli SEO (AI)')
+                ->description('Doldurulursa yukaridaki Meta baslik/aciklamanin yerine kullanilir. AI ile otomatik doldurmak icin sag ustteki isik simgesine tiklayin (Gemini API anahtari gerektirir).')
+                ->sourceTitleField('title')
+                ->sourceDescriptionField('content')
+                ->collapsible()
+                ->collapsed(),
             Grid::make(2)->schema([
                 Toggle::make('is_published')
                     ->label('Yayinla')

@@ -4,8 +4,9 @@
     use Illuminate\Support\Str;
 
     $siteName = trim((string) config('app.name', 'Ografi'));
-    $pageSeoTitle = trim((string) ($page->meta_title ?: $page->title ?: $siteName));
-    $pageDescriptionSource = trim((string) ($page->meta_description ?: strip_tags((string) $page->content)));
+    $pageSmartSeo = $page->seo;
+    $pageSeoTitle = trim((string) (($pageSmartSeo?->title) ?: $page->meta_title ?: $page->title ?: $siteName));
+    $pageDescriptionSource = trim((string) (($pageSmartSeo?->description) ?: $page->meta_description ?: strip_tags((string) $page->content)));
     $pageDescriptionSource = html_entity_decode($pageDescriptionSource, ENT_QUOTES | ENT_HTML5, 'UTF-8');
     $pageDescriptionSource = preg_replace('/\s+/u', ' ', $pageDescriptionSource) ?? $pageDescriptionSource;
     $pageDescription = $pageDescriptionSource !== ''

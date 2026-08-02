@@ -194,7 +194,8 @@
         ->implode('');
     $categoryBadgeText = $hasCategory ? ($categoryInitials !== '' ? $categoryInitials : 'AI') : 'AI';
     $siteName = trim((string) config('app.name', 'Ografi'));
-    $seoTitleBase = trim((string) ($post->meta_title ?: $post->title ?: 'Gonderi'));
+    $smartSeo = $post->seo;
+    $seoTitleBase = trim((string) (($smartSeo?->title) ?: $post->meta_title ?: $post->title ?: 'Gonderi'));
     $seoTitleBase = Str::limit($seoTitleBase, 65, '');
     // Kategori adi baslik etiketine eklenmiyor: cogu kategori (orn. "Rss Akisi",
     // besleme kaynaklarinin varsayilan kovasi) arama sonuclarinda hicbir konu
@@ -213,7 +214,7 @@
     $rawDescriptionSource = html_entity_decode($rawDescriptionSource, ENT_QUOTES | ENT_HTML5, 'UTF-8');
     $rawDescriptionSource = preg_replace('/\[(gif|img):([^\]\s]+)\]/i', ' ', $rawDescriptionSource) ?? $rawDescriptionSource;
     $rawDescriptionSource = preg_replace('/\s+/u', ' ', trim($rawDescriptionSource)) ?? trim($rawDescriptionSource);
-    $description = trim((string) ($post->meta_description ?? ''));
+    $description = trim((string) (($smartSeo?->description) ?: $post->meta_description ?? ''));
     if ($description === '' && $rawDescriptionSource !== '') {
         $description = $rawDescriptionSource;
     }

@@ -13,6 +13,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Filament\Schemas\Schema;
 use Illuminate\Support\Str;
+use Martin6363\FilamentSmartSeo\Forms\Components\SeoSection;
 
 class PageResource extends Resource
 {
@@ -100,6 +101,12 @@ class PageResource extends Resource
                                 ->inline(false),
                         ]),
                     ]),
+                SeoSection::make('Akilli SEO (AI)')
+                    ->description('Doldurulursa yukaridaki Meta baslik/aciklamanin yerine kullanilir. AI ile otomatik doldurmak icin sag ustteki isik simgesine tiklayin (Gemini API anahtari gerektirir).')
+                    ->sourceTitleField('title')
+                    ->sourceDescriptionField('content')
+                    ->collapsible()
+                    ->collapsed(),
                 Grid::make(2)->schema([
                     Forms\Components\Toggle::make('is_published')
                         ->label('Yayinda')
