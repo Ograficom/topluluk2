@@ -627,7 +627,7 @@
         top: calc(100% + 14px) !important;
         right: 0 !important;
         z-index: 99970 !important;
-        width: 288px !important;
+        width: 304px !important;
         padding: 10px !important;
         border: 1px solid rgba(226, 232, 240, 0.95) !important;
         border-radius: 24px !important;
@@ -802,15 +802,15 @@
         width: 100% !important;
         display: flex !important;
         align-items: center !important;
-        gap: 12px !important;
-        min-height: 44px !important;
-        padding: 10px 12px !important;
+        gap: 14px !important;
+        min-height: 52px !important;
+        padding: 12px 14px !important;
         border-radius: 16px !important;
         border: 0 !important;
         background: transparent !important;
         color: #0f172a !important;
-        font-size: 14px !important;
-        font-weight: 400 !important;
+        font-size: 15px !important;
+        font-weight: 500 !important;
         line-height: 1.2 !important;
         text-align: left !important;
         text-decoration: none !important;
@@ -828,8 +828,8 @@
     }
 
     .site-user-menu-icon {
-        width: 32px !important;
-        height: 32px !important;
+        width: 38px !important;
+        height: 38px !important;
         border-radius: 12px !important;
         display: inline-flex !important;
         align-items: center !important;
@@ -837,6 +837,7 @@
         flex: 0 0 auto !important;
         background: #f1f5f9 !important;
         color: #334155 !important;
+        font-size: 19px !important;
         box-shadow: none !important;
     }
 
@@ -2258,7 +2259,7 @@
                             aria-pressed="false"
                         >
                             <span class="site-user-menu-icon">
-                                <iconify-icon icon="lucide:moon" data-user-menu-theme-icon style="font-size: 16px;"></iconify-icon>
+                                <iconify-icon icon="lucide:moon" data-user-menu-theme-icon style="font-size: 19px;"></iconify-icon>
                             </span>
                             <span>{{ __('site.common.dark_mode') }}</span>
                             <span class="site-user-menu-switch" data-user-menu-theme-switch aria-hidden="true">
@@ -2270,35 +2271,35 @@
 
                         <a href="{{ route('dashboard') }}" class="site-user-menu-link">
                             <span class="site-user-menu-icon">
-                                <iconify-icon icon="lucide:layout-dashboard" style="font-size: 16px;"></iconify-icon>
+                                <iconify-icon icon="lucide:layout-dashboard" style="font-size: 19px;"></iconify-icon>
                             </span>
                             <span>{{ __('site.common.dashboard') }}</span>
                         </a>
 
                         <a href="{{ route('blog.categories') }}" class="site-user-menu-link">
                             <span class="site-user-menu-icon">
-                                <iconify-icon icon="lucide:users" style="font-size: 16px;"></iconify-icon>
+                                <iconify-icon icon="lucide:users" style="font-size: 19px;"></iconify-icon>
                             </span>
                             <span>{{ __('site.common.my_communities') }}</span>
                         </a>
 
                         <a href="{{ route('blog.drafts') }}" class="site-user-menu-link">
                             <span class="site-user-menu-icon">
-                                <iconify-icon icon="lucide:file-edit" style="font-size: 16px;"></iconify-icon>
+                                <iconify-icon icon="lucide:file-edit" style="font-size: 19px;"></iconify-icon>
                             </span>
                             <span>{{ __('site.common.drafts') }}</span>
                         </a>
 
                         <a href="{{ route('blog.bookmarks') }}" class="site-user-menu-link">
                             <span class="site-user-menu-icon">
-                                <iconify-icon icon="lucide:bookmark" style="font-size: 16px;"></iconify-icon>
+                                <iconify-icon icon="lucide:bookmark" style="font-size: 19px;"></iconify-icon>
                             </span>
                             <span>{{ __('site.common.bookmarks') }}</span>
                         </a>
 
                         <a href="{{ route('dashboard.profile') }}" class="site-user-menu-link">
                             <span class="site-user-menu-icon">
-                                <iconify-icon icon="lucide:settings" style="font-size: 16px;"></iconify-icon>
+                                <iconify-icon icon="lucide:settings" style="font-size: 19px;"></iconify-icon>
                             </span>
                             <span>{{ __('site.common.settings') }}</span>
                         </a>
@@ -2309,7 +2310,7 @@
                             @csrf
                             <button type="submit" class="site-user-menu-button site-user-menu-button-danger">
                                 <span class="site-user-menu-icon">
-                                    <iconify-icon icon="lucide:log-out" style="font-size: 16px;"></iconify-icon>
+                                    <iconify-icon icon="lucide:log-out" style="font-size: 19px;"></iconify-icon>
                                 </span>
                                 <span>{{ __('site.common.sign_out') }}</span>
                             </button>
