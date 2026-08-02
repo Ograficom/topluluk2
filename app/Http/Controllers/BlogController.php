@@ -478,6 +478,47 @@ class BlogController extends Controller
         ]);
     }
 
+    public function drafts(Request $request)
+    {
+        $user = $request->user();
+        abort_unless($user, 403);
+
+        $posts = Post::query()
+            ->where('author_id', $user->id)
+            ->where('is_published', false)
+            ->with([
+                'category:id,name,slug,profile_image,cover_image',
+                'author:id,name,username,profile_photo_path,is_verified,verification_badge,verification_badge_svg',
+            ])
+            ->withCount(['comments', 'reactions'])
+            ->latest('updated_at')
+            ->paginate(25)
+            ->withQueryString();
+
+        $postsCollection = $posts->getCollection();
+
+        $reactionTypes = ReactionType::query()
+            ->where('is_active', true)
+            ->get(['id', 'label', 'short_code', 'emoji', 'gif_url']);
+
+        $postsCollection->each(function ($post) use ($reactionTypes) {
+            $post->reaction_counts = collect();
+            $post->setRelation('reactionTypes', $reactionTypes);
+        });
+
+        $posts->setCollection($postsCollection);
+
+        $popularTags = Tag::withCount('posts')->orderByDesc('posts_count')->take(10)->get();
+        $popularComments = Comment::with(['user', 'post'])->whereNull('parent_id')->orderByDesc('id')->take(10)->get();
+
+        return view('blog.drafts', [
+            'posts' => $posts,
+            'reactionTypes' => $reactionTypes,
+            'popularTags' => $popularTags,
+            'popularComments' => $popularComments,
+        ]);
+    }
+
     public function bookmarks(Request $request)
     {
         $user = $request->user();

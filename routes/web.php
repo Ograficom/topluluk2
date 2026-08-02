@@ -647,6 +647,7 @@ Route::prefix('blog')->group(function () {
         Route::post('/posts/{post:slug}/bookmark', [BlogController::class, 'toggleBookmark'])->name('blog.post.bookmark');
         Route::delete('/posts/{post:slug}', [BlogController::class, 'destroy'])->name('blog.post.destroy');
         Route::get('/bookmarks', [BlogController::class, 'bookmarks'])->name('blog.bookmarks');
+        Route::get('/drafts', [BlogController::class, 'drafts'])->name('blog.drafts');
     });
 
     Route::post('/editorjs/image', [BlogController::class, 'editorJsImage'])

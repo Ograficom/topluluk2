@@ -18,12 +18,19 @@
             // Storage can be unavailable in private/restricted browsers.
         }
 
-        const getStoredTheme = () => 'light';
+        const getStoredTheme = () => {
+            try {
+                const value = window.localStorage.getItem(storageKey);
+                return value === 'dark' || value === 'light' ? value : null;
+            } catch (error) {
+                return null;
+            }
+        };
 
         const applyScheme = (preferredTheme = getStoredTheme()) => {
             // Ografi opens in light mode by default. Dark mode is only enabled
-            // after the visitor explicitly chooses it.
-            const isDark = false;
+            // after the visitor explicitly chooses it (no OS-preference auto-switch).
+            const isDark = preferredTheme === 'dark';
             root.classList.toggle('dark', isDark);
             root.style.colorScheme = isDark ? 'dark' : 'light';
             root.dataset.systemTheme = isDark ? 'dark' : 'light';
@@ -37,7 +44,7 @@
         };
 
         window.setPreferredTheme = (theme) => {
-            const normalized = 'light';
+            const normalized = theme === 'dark' || theme === 'light' ? theme : null;
 
             try {
                 if (normalized) {
@@ -55,7 +62,8 @@
         applyScheme();
 
         // Do not follow the operating-system colour scheme automatically. This
-        // prevents the header from unexpectedly switching to dark mode.
+        // prevents the header from unexpectedly switching to dark mode on its own;
+        // the visitor must explicitly toggle it via window.setPreferredTheme.
     })();
 </script>
 <style>
@@ -397,9 +405,12 @@
         color: var(--alma-text, var(--site-text, #e5e7eb));
     }
 
-    html.dark .site-header {
+    html.dark .site-header,
+    html.dark body.alma-app .site-header {
         background: var(--alma-header-bg, var(--site-header-bg, rgba(15, 23, 42, 0.84))) !important;
+        background-color: var(--alma-header-bg, var(--site-header-bg, rgba(15, 23, 42, 0.84))) !important;
         border-bottom-color: rgba(148, 163, 184, 0.14) !important;
+        color: var(--alma-text, var(--site-text, #e5e7eb)) !important;
     }
 
     html.dark .site-search-field input,

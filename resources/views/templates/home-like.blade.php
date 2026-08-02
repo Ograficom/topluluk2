@@ -4059,40 +4059,36 @@
             background-color: #070f1f !important;
         }
 
-        html.dark header,
-        html.dark .site-header,
+        {{--
+            .site-header'in karanlik moddeki rengi partials/system-appearance.blade.php
+            icinde TEK yerden yonetiliyor - burada tekrarlamiyoruz (sayfadan sayfaya
+            farkli gorunmesine yol acan cakismalari onlemek icin). Diger genel
+            header/navbar seciciler (app-header, topbar, navbar, main-header) bu
+            sitede kullanilmiyor ama olur da baska bir yerde kullanilirsa diye
+            .site-header disindakiler burada birakildi.
+        --}}
         html.dark .app-header,
         html.dark .topbar,
         html.dark .navbar,
         html.dark .main-header,
-        html.dark [data-site-header],
-        .dark header,
-        .dark .site-header,
         .dark .app-header,
         .dark .topbar,
         .dark .navbar,
-        .dark .main-header,
-        .dark [data-site-header] {
+        .dark .main-header {
             background: #070f1f !important;
             background-color: #070f1f !important;
             color: #ffffff !important;
             border-color: #1f2937 !important;
         }
 
-        html.dark header *,
-        html.dark .site-header *,
         html.dark .app-header *,
         html.dark .topbar *,
         html.dark .navbar *,
         html.dark .main-header *,
-        html.dark [data-site-header] *,
-        .dark header *,
-        .dark .site-header *,
         .dark .app-header *,
         .dark .topbar *,
         .dark .navbar *,
-        .dark .main-header *,
-        .dark [data-site-header] * {
+        .dark .main-header * {
             color: #ffffff !important;
         }
 

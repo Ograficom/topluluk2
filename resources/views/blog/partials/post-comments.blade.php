@@ -2230,6 +2230,15 @@
     box-shadow: 0 0 0 2px color-mix(in oklab, var(--ring, #a1a1aa) 18%, transparent) !important;
   }
 
+  html.dark body .post-show-shell #show-comment-form .ogx3-field,
+  body.dark .post-show-shell #show-comment-form .ogx3-field,
+  html body.dark .post-show-shell #show-comment-form .ogx3-field,
+  [data-theme="dark"] body .post-show-shell #show-comment-form .ogx3-field {
+    background: #27272a !important;
+    border-color: #3f3f46 !important;
+    color: #f4f4f5 !important;
+  }
+
   html body .post-show-shell #show-comment-form textarea.ogx3-textarea {
     all: unset !important;
     display: block !important;
@@ -2566,6 +2575,14 @@
     font-size: 14px !important;
     line-height: 22px !important;
     text-align: center !important;
+  }
+
+  html.dark body .shadcn-comment-card > .ogx-comments-list > .ogx-empty,
+  body.dark .shadcn-comment-card > .ogx-comments-list > .ogx-empty,
+  html body.dark .shadcn-comment-card > .ogx-comments-list > .ogx-empty,
+  [data-theme="dark"] body .shadcn-comment-card > .ogx-comments-list > .ogx-empty {
+    background: #18181b !important;
+    color: #a1a1aa !important;
   }
 
   html body .post-show-shell .shadcn-comment-card > #show-comment-form + .ogx-comments-list {

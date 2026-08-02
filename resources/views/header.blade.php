@@ -665,6 +665,14 @@
         background: linear-gradient(135deg, #eff6ff 0%, #f8fafc 65%) !important;
         border: 1px solid #e2e8f0 !important;
         box-shadow: none !important;
+        text-decoration: none !important;
+        cursor: pointer !important;
+        transition: none !important;
+    }
+
+    .site-user-menu-card:hover {
+        background: linear-gradient(135deg, #dbeafe 0%, #f1f5f9 65%) !important;
+        border-color: #bfdbfe !important;
     }
 
     .site-user-menu-avatar {
@@ -711,9 +719,16 @@
         white-space: nowrap !important;
     }
 
+    .site-user-menu-meta {
+        display: flex !important;
+        align-items: center !important;
+        gap: 8px !important;
+        margin-top: 2px !important;
+        min-width: 0 !important;
+    }
+
     .site-user-menu-username {
         display: block !important;
-        margin-top: 2px !important;
         color: #64748b !important;
         font-size: 12px !important;
         font-weight: 400 !important;
@@ -721,6 +736,56 @@
         overflow: hidden !important;
         text-overflow: ellipsis !important;
         white-space: nowrap !important;
+        min-width: 0 !important;
+    }
+
+    .site-user-menu-points {
+        display: inline-flex !important;
+        align-items: center !important;
+        gap: 3px !important;
+        flex: 0 0 auto !important;
+        padding: 1px 7px !important;
+        border-radius: 999px !important;
+        background: #fef3c7 !important;
+        color: #b45309 !important;
+        font-size: 11.5px !important;
+        font-weight: 700 !important;
+        line-height: 1.6 !important;
+    }
+
+    .site-user-menu-link--switch {
+        cursor: pointer !important;
+    }
+
+    .site-user-menu-switch {
+        margin-left: auto !important;
+        flex: 0 0 auto !important;
+        position: relative !important;
+        width: 34px !important;
+        height: 20px !important;
+        border-radius: 999px !important;
+        background: #d1d5db !important;
+        transition: none !important;
+    }
+
+    .site-user-menu-switch__knob {
+        position: absolute !important;
+        top: 2px !important;
+        left: 2px !important;
+        width: 16px !important;
+        height: 16px !important;
+        border-radius: 999px !important;
+        background: #ffffff !important;
+        box-shadow: 0 1px 2px rgba(15, 23, 42, 0.25) !important;
+        transition: none !important;
+    }
+
+    .site-user-menu-link--switch[aria-pressed="true"] .site-user-menu-switch {
+        background: #2563eb !important;
+    }
+
+    .site-user-menu-link--switch[aria-pressed="true"] .site-user-menu-switch__knob {
+        left: 16px !important;
     }
 
     .site-user-menu-divider {
@@ -1330,43 +1395,17 @@
         color: #1d4ed8 !important;
     }
 
-    html.dark .site-header,
-    .dark .site-header {
-        background: rgba(255, 255, 255, 0.96) !important;
-        background-color: rgba(255, 255, 255, 0.96) !important;
-        border-bottom-color: #e5e7eb !important;
-        color: #0f172a !important;
-        backdrop-filter: blur(14px) !important;
-        -webkit-backdrop-filter: blur(14px) !important;
-        box-shadow: none !important;
-    }
-
-    html.dark .site-header-shell,
-    .dark .site-header-shell {
-        background: transparent !important;
-        color: #0f172a !important;
-        box-shadow: none !important;
-    }
-
-    html.dark .site-header-logo,
+    {{--
+        ONEMLI: Header'in karanlik moddeki rengi TEK bir yerden yonetiliyor:
+        partials/system-appearance.blade.php icindeki "html.dark .site-header"
+        kurali. Burada AYNI secici ile tekrar tanimlamayin - iki farkli dosyada
+        ayni seciciyle cakisan kurallar, hangi sablonun (home-like, blog/show
+        vb.) once/sonra render edildigine gore header'in sayfadan sayfaya
+        farkli (bazen acik, bazen koyu) gorunmesine yol aciyordu.
+    --}}
     html.dark .site-header-logo-wordmark,
-    .dark .site-header-logo,
     .dark .site-header-logo-wordmark {
-        color: #0f172a !important;
         font-weight: 400 !important;
-    }
-
-    html.dark .site-header-logo-image,
-    html.dark .site-header-logo-image *,
-    html.dark .site-header-logo svg,
-    html.dark .site-header-logo svg *,
-    .dark .site-header-logo-image,
-    .dark .site-header-logo-image *,
-    .dark .site-header-logo svg,
-    .dark .site-header-logo svg * {
-        color: #0f172a !important;
-        fill: currentColor !important;
-        stroke: currentColor !important;
     }
 
     .site-header .site-header-logo-wordmark {
@@ -1853,9 +1892,11 @@
         min-height: 64px !important;
         background: rgba(255, 255, 255, 0.82) !important;
         background-color: rgba(255, 255, 255, 0.82) !important;
+        color: #0f172a !important;
         backdrop-filter: blur(14px) !important;
         -webkit-backdrop-filter: blur(14px) !important;
         border: 0 !important;
+        border-bottom: 1px solid #e5e7eb !important;
         box-shadow: none !important;
         filter: none !important;
         z-index: 9990 !important;
@@ -1931,7 +1972,7 @@
 
 </style>
 
-<header class="site-header" data-site-header style="background: rgba(255,255,255,.98) !important; background-color: rgba(255,255,255,.98) !important; color: #0f172a !important; filter: none !important; border-bottom: 1px solid #e5e7eb !important;">
+<header class="site-header" data-site-header>
     <div class="site-header-shell">
         @php
             $currentUser = auth()->user();
@@ -2185,7 +2226,7 @@
                     </button>
 
                     <div class="site-menu-panel hidden" data-user-menu-panel style="background: #ffffff !important; background-color: #ffffff !important; color: #0f172a !important; border-color: #e2e8f0 !important; filter: none !important;">
-                        <div class="site-user-menu-card">
+                        <a href="{{ route('users.show', ['user' => $currentUser->username]) }}" class="site-user-menu-card">
                             <span class="site-user-menu-avatar">
                                 @if ($avatarUrl)
                                     <img src="{{ $avatarUrl }}" alt="{{ $currentUser->name }}">
@@ -2196,18 +2237,36 @@
 
                             <div class="site-user-menu-info">
                                 <span class="site-user-menu-name">{{ $currentUser->name }}</span>
-                                <span class="site-user-menu-username">
-                                    {{ '@' . ($currentUser->username ?? $currentUser->name ?? 'user') }}
+                                <span class="site-user-menu-meta">
+                                    <span class="site-user-menu-username">
+                                        {{ '@' . ($currentUser->username ?? $currentUser->name ?? 'user') }}
+                                    </span>
+                                    @if ((int) ($currentUser->badge_points ?? 0) > 0)
+                                        <span class="site-user-menu-points">
+                                            <iconify-icon icon="lucide:award" style="font-size: 14px;"></iconify-icon>
+                                            {{ number_format((int) $currentUser->badge_points) }}
+                                        </span>
+                                    @endif
                                 </span>
                             </div>
-                        </div>
-
-                        <a href="{{ route('users.show', ['user' => $currentUser->username]) }}" class="site-user-menu-link">
-                            <span class="site-user-menu-icon">
-                                <iconify-icon icon="lucide:user-round" style="font-size: 16px;"></iconify-icon>
-                            </span>
-                            <span>{{ __('site.common.profile') }}</span>
                         </a>
+
+                        <button
+                            type="button"
+                            class="site-user-menu-link site-user-menu-link--switch"
+                            data-user-menu-theme-toggle
+                            aria-pressed="false"
+                        >
+                            <span class="site-user-menu-icon">
+                                <iconify-icon icon="lucide:moon" data-user-menu-theme-icon style="font-size: 16px;"></iconify-icon>
+                            </span>
+                            <span>{{ __('site.common.dark_mode') }}</span>
+                            <span class="site-user-menu-switch" data-user-menu-theme-switch aria-hidden="true">
+                                <span class="site-user-menu-switch__knob"></span>
+                            </span>
+                        </button>
+
+                        <div class="site-user-menu-divider"></div>
 
                         <a href="{{ route('dashboard') }}" class="site-user-menu-link">
                             <span class="site-user-menu-icon">
@@ -2216,11 +2275,32 @@
                             <span>{{ __('site.common.dashboard') }}</span>
                         </a>
 
+                        <a href="{{ route('blog.categories') }}" class="site-user-menu-link">
+                            <span class="site-user-menu-icon">
+                                <iconify-icon icon="lucide:users" style="font-size: 16px;"></iconify-icon>
+                            </span>
+                            <span>{{ __('site.common.my_communities') }}</span>
+                        </a>
+
+                        <a href="{{ route('blog.drafts') }}" class="site-user-menu-link">
+                            <span class="site-user-menu-icon">
+                                <iconify-icon icon="lucide:file-edit" style="font-size: 16px;"></iconify-icon>
+                            </span>
+                            <span>{{ __('site.common.drafts') }}</span>
+                        </a>
+
                         <a href="{{ route('blog.bookmarks') }}" class="site-user-menu-link">
                             <span class="site-user-menu-icon">
                                 <iconify-icon icon="lucide:bookmark" style="font-size: 16px;"></iconify-icon>
                             </span>
                             <span>{{ __('site.common.bookmarks') }}</span>
+                        </a>
+
+                        <a href="{{ route('dashboard.profile') }}" class="site-user-menu-link">
+                            <span class="site-user-menu-icon">
+                                <iconify-icon icon="lucide:settings" style="font-size: 16px;"></iconify-icon>
+                            </span>
+                            <span>{{ __('site.common.settings') }}</span>
                         </a>
 
                         <div class="site-user-menu-divider"></div>
@@ -2298,8 +2378,8 @@
     @push('scripts')
         <script>
             document.addEventListener('DOMContentLoaded', () => {
-                const themeButtons = document.querySelectorAll('[data-theme-toggle]');
-                const themeIcons = document.querySelectorAll('[data-theme-icon]');
+                const themeButtons = document.querySelectorAll('[data-theme-toggle], [data-user-menu-theme-toggle]');
+                const themeIcons = document.querySelectorAll('[data-theme-icon], [data-user-menu-theme-icon]');
 
                 const syncThemeButtons = () => {
                     const isDark = document.documentElement.classList.contains('dark');
@@ -2607,6 +2687,30 @@ html body .site-search-dropdown-top .site-search-close :is(iconify-icon, svg) {
     height: 20px !important;
     font-size: 20px !important;
     line-height: 20px !important;
+}
+
+{{--
+    ONEMLI - TEK GECERLI KURAL: Dosyanin baska yerlerinde (ve layouts/app.blade.php,
+    templates/home-like.blade.php gibi diger dosyalarda) header'i "her zaman acik
+    renk" yapan birden fazla eski/cakisan kural birikmisti - bu da header'in
+    sayfadan sayfaya bazen koyu bazen acik gorunmesine yol aciyordu. Bu blok, bu
+    dosyadaki EN SON <style> etiketinin en sonunda oldugu ve yuksek ozguelluge
+    sahip oldugu icin, karanlik moddaki header rengi icin GERCEKTEN kazanan
+    kural budur. Baska yerde ".site-header" icin karanlik mod kurali eklemeyin.
+--}}
+html.dark body.alma-app .site-header[data-site-header],
+html.dark body .site-header[data-site-header] {
+    background: rgba(15, 23, 42, 0.92) !important;
+    background-color: rgba(15, 23, 42, 0.92) !important;
+    background-image: none !important;
+    border-bottom-color: rgba(148, 163, 184, 0.16) !important;
+    color: #e5e7eb !important;
+    box-shadow: none !important;
+}
+
+html.dark body.alma-app .site-header[data-site-header] .site-header-logo-wordmark,
+html.dark body .site-header[data-site-header] .site-header-logo-wordmark {
+    color: #e5e7eb !important;
 }
 
 </style>
