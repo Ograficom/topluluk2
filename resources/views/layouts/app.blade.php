@@ -6530,13 +6530,32 @@
             }
 
             html:has(body.route-post-show),
-            body.alma-app.route-post-show {
+            html:has(body.route-category),
+            html:has(body.route-profile),
+            body.alma-app.route-post-show,
+            body.alma-app.route-category,
+            body.alma-app.route-profile {
                 height: auto !important;
                 max-height: none !important;
                 overflow-y: auto !important;
                 overscroll-behavior-y: auto !important;
                 touch-action: pan-y !important;
                 -webkit-overflow-scrolling: touch !important;
+            }
+
+            body.alma-app.route-category .main-grid,
+            body.alma-app.route-category .main-grid.main-grid--padded,
+            body.alma-app.route-category .main-grid.main-grid--no-pad,
+            body.alma-app.route-category .layout-main,
+            body.alma-app.route-profile .main-grid,
+            body.alma-app.route-profile .main-grid.main-grid--padded,
+            body.alma-app.route-profile .main-grid.main-grid--no-pad,
+            body.alma-app.route-profile .layout-main,
+            body.alma-app.route-profile .og-profile-page {
+                height: auto !important;
+                max-height: none !important;
+                overflow-y: visible !important;
+                touch-action: pan-y !important;
             }
 
             body.alma-app .site-header-shell,
@@ -6824,9 +6843,10 @@
 @php($isMessagesRoute = request()->routeIs('messages.*'))
 @php($isCategoryRoute = request()->routeIs('blog.categories', 'blog.category', 'blog.category.*'))
 @php($isPostShowRoute = request()->routeIs('blog.post'))
+@php($isProfileRoute = request()->routeIs('users.show'))
 
 <body
-    class="bg-[#fafafa] text-slate-900 font-sans antialiased theme-minimal alma-app {{ request()->routeIs('home') ? 'route-home' : '' }} {{ request()->routeIs('discover') ? 'route-discover' : '' }} {{ request()->routeIs('video') ? 'route-video' : '' }} {{ $isCategoryRoute ? 'route-category' : '' }} {{ $isPostShowRoute ? 'route-post-show' : '' }}"
+    class="bg-[#fafafa] text-slate-900 font-sans antialiased theme-minimal alma-app {{ request()->routeIs('home') ? 'route-home' : '' }} {{ request()->routeIs('discover') ? 'route-discover' : '' }} {{ request()->routeIs('video') ? 'route-video' : '' }} {{ $isCategoryRoute ? 'route-category' : '' }} {{ $isPostShowRoute ? 'route-post-show' : '' }} {{ $isProfileRoute ? 'route-profile' : '' }}"
     data-mentions-endpoint="{{ auth()->check() ? route('mentions.users') : '' }}"
 >
     @include('partials.toasts')
