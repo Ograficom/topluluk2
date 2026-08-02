@@ -46,6 +46,18 @@ Schedule::command('rss:sync')
     ->everyFiveMinutes()
     ->withoutOverlapping();
 
+Artisan::command('rss:ai-process {--limit=5}', function (RssSyncService $service) {
+    $limit = max(1, (int) $this->option('limit'));
+    $result = $service->processPendingAiQueue($limit);
+
+    $this->info("OK. processed={$result['processed']} posts_created={$result['posts_created']} posts_updated={$result['posts_updated']} rejected={$result['rejected']} errors={$result['errors']}");
+    return $result['errors'] ? 1 : 0;
+})->purpose('Rewrite, moderate and publish up to N pending AI-enabled RSS items (rate-limited Ollama queue)');
+
+Schedule::command('rss:ai-process')
+    ->everyMinute()
+    ->withoutOverlapping();
+
 Artisan::command('ads:sync-orders', function (AdOrderSnippetSync $service) {
     $service->syncAll();
     $this->info('Ad orders synced into their placement snippets.');

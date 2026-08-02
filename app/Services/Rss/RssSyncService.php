@@ -179,7 +179,11 @@ class RssSyncService
                 ]);
                 $rssItem->save();
 
-                if ($feed->import_as_posts) {
+                // AI-rewrite-enabled feeds are intentionally NOT imported as posts here.
+                // Rewriting + moderation is rate-limited (see processPendingAiQueue(), run
+                // by the `rss:ai-process` scheduled command) so this fetch step never calls
+                // Ollama for more than a handful of items per sync.
+                if ($feed->import_as_posts && !$feed->ai_rewrite_enabled) {
                     try {
                         $postChange = $this->importItemAsPost($feed, $rssItem, $item);
                         $result['posts_created'] += $postChange['created'] ? 1 : 0;
@@ -188,10 +192,6 @@ class RssSyncService
                         $result['error'] = $e->getMessage();
                     }
                 }
-            }
-
-            if ($feed->import_as_posts && $feed->ai_rewrite_enabled) {
-                $this->processPendingAiItems($feed, $result);
             }
 
             $feed->last_success_at = now();
@@ -207,39 +207,77 @@ class RssSyncService
         return $result;
     }
 
-    private function processPendingAiItems(RssFeed $feed, array &$result): void
+    /**
+     * Rate-limited AI processing queue shared across every ai_rewrite_enabled feed,
+     * run every minute by `rss:ai-process` (see routes/console.php). Keeps Ollama
+     * throughput to a predictable handful of items per minute regardless of how many
+     * feeds are enabled or how large a single sync batch is.
+     *
+     * @return array{processed: int, posts_created: int, posts_updated: int, rejected: int, errors: int}
+     */
+    public function processPendingAiQueue(int $limit = 5): array
     {
-        $feed->items()
+        $result = ['processed' => 0, 'posts_created' => 0, 'posts_updated' => 0, 'rejected' => 0, 'errors' => 0];
+
+        $items = RssItem::query()
             ->whereNotNull('hash')
+            ->whereNull('ai_rejected_at')
+            ->whereHas('feed', function ($query) {
+                $query->where('is_enabled', true)
+                    ->where('import_as_posts', true)
+                    ->where('ai_rewrite_enabled', true);
+            })
+            ->with('feed')
             ->orderByDesc('published_at')
             ->orderByDesc('id')
             ->limit(500)
             ->get()
             ->filter(fn (RssItem $item) => blank($item->ai_content)
                 || $item->ai_source_hash !== RssArticleRewriteService::expectedSourceHash((string) $item->hash))
-            ->take(20)
-            ->each(function (RssItem $item) use ($feed, &$result) {
-                try {
-                    $postChange = $this->importItemAsPost($feed, $item, [
-                        'tags' => $this->extractHashtagsFromText($item->content ?: ''),
-                        'media_items' => [],
-                        'media_url' => null,
-                    ]);
-                    $result['posts_created'] += $postChange['created'] ? 1 : 0;
-                    $result['posts_updated'] += $postChange['updated'] ? 1 : 0;
-                } catch (\Throwable $e) {
-                    $result['error'] = $e->getMessage();
+            ->take($limit);
+
+        foreach ($items as $item) {
+            $feed = $item->feed;
+
+            if (!$feed) {
+                continue;
+            }
+
+            try {
+                $wasRejectedBefore = $item->ai_rejected_at !== null;
+                $postChange = $this->importItemAsPost($feed, $item, [
+                    'tags' => $this->extractHashtagsFromText($item->content ?: ''),
+                    'media_items' => [],
+                    'media_url' => null,
+                ]);
+                $result['processed']++;
+                $result['posts_created'] += $postChange['created'] ? 1 : 0;
+                $result['posts_updated'] += $postChange['updated'] ? 1 : 0;
+
+                if (!$wasRejectedBefore && $item->fresh()?->ai_rejected_at) {
+                    $result['rejected']++;
                 }
-            });
+            } catch (\Throwable $e) {
+                $result['errors']++;
+            }
+        }
+
+        return $result;
     }
 
     private function importItemAsPost(RssFeed $feed, RssItem $item, array $raw): array
     {
         $change = ['created' => false, 'updated' => false];
 
+        if ($item->ai_rejected_at) {
+            return $change;
+        }
+
         $title = $item->title ?: 'Untitled';
         $html = $item->content ?: '';
         $excerpt = $item->summary ?: Str::limit(trim($this->sanitizeHtmlToText($html)), 200);
+        $rewritten = null;
+        $isNsfw = false;
 
         if ($feed->ai_rewrite_enabled) {
             $rewritten = app(RssArticleRewriteService::class)->rewrite($item, $feed->ai_model);
@@ -247,6 +285,20 @@ class RssSyncService
             $excerpt = $rewritten['summary'];
             $html = $this->appendMediaHtml($rewritten['content'], $raw['media_items'] ?? [], $title);
             $raw['tags'] = $this->normalizeTagNames(array_merge($raw['tags'] ?? [], $rewritten['tags'] ?? []));
+
+            $moderation = app(RssContentModerationService::class)->moderate(
+                $item,
+                $rewritten,
+                $this->firstImageUrl($raw['media_items'] ?? []) ?? $this->safeUrl($raw['media_url'] ?? null),
+            );
+
+            if ($moderation['reject']) {
+                $this->rejectItem($item, (string) ($moderation['reject_reason'] ?? 'Icerik reddedildi'));
+
+                return $change;
+            }
+
+            $isNsfw = $moderation['is_nsfw'];
         }
 
         $featured = $this->firstImageUrl($raw['media_items'] ?? []) ?? $this->safeUrl($raw['media_url'] ?? null);
@@ -265,6 +317,7 @@ class RssSyncService
             $post->content_json = null;
             $post->category_id = $feed->default_category_id;
             $post->author_id = $feed->default_author_id;
+            $post->is_nsfw = $isNsfw;
             $post->is_published = (bool) $feed->auto_publish;
             $post->published_at = $feed->auto_publish ? ($item->published_at ?: now()) : null;
             $post->save();
@@ -275,6 +328,10 @@ class RssSyncService
             $item->post_id = $post->id;
             $item->imported_at = now();
             $item->save();
+
+            if ($rewritten !== null) {
+                app(RssAutoCommentService::class)->commentOn($post, $rewritten);
+            }
 
             $change['created'] = true;
             return $change;
@@ -312,6 +369,9 @@ class RssSyncService
         $post->meta_description = PostSeoText::description($excerpt);
         $post->excerpt = $excerpt ?: null;
         $post->content = $html ?: $post->content;
+        if ($rewritten !== null) {
+            $post->is_nsfw = $isNsfw;
+        }
         if ($featured) {
             $post->featured_image = $featured;
         } elseif ($currentFeaturedIsSiteAsset) {
@@ -328,6 +388,24 @@ class RssSyncService
 
         $change['updated'] = true;
         return $change;
+    }
+
+    /**
+     * Rejects an RssItem permanently (e.g. clickbait-question headline). Removes any
+     * previously-created Post and marks the item so future syncs skip it without
+     * re-running AI moderation.
+     */
+    private function rejectItem(RssItem $item, string $reason): void
+    {
+        if ($item->post_id) {
+            Post::find($item->post_id)?->delete();
+        }
+
+        $item->forceFill([
+            'post_id' => null,
+            'ai_rejected_at' => now(),
+            'ai_rejection_reason' => Str::limit($reason, 255, ''),
+        ])->save();
     }
 
     private function uniquePostSlug(string $base, int $rssItemId): string

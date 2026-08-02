@@ -406,6 +406,10 @@
                             <span>Taslak hazır</span>
                         </div>
 
+                        <button type="button" data-ai-assist class="inline-flex h-11 w-11 items-center justify-center rounded-2xl border border-slate-200 bg-white text-slate-700 transition hover:bg-slate-50 active:bg-slate-100" aria-label="Yapay zeka yardımcısı" title="Yapay zeka yardımcısı: SEO alanlarını doldur ve öneri al">
+                            <iconify-icon icon="lucide:sparkles" data-ai-assist-icon class="text-[17px]"></iconify-icon>
+                        </button>
+
                         <button type="button" data-open-settings class="inline-flex h-11 w-11 items-center justify-center rounded-2xl border border-slate-200 bg-white text-slate-700 transition hover:bg-slate-50 active:bg-slate-100" aria-label="{{ __('post_create.settings') }}">
                             <iconify-icon icon="lucide:sliders-horizontal" class="text-[17px]"></iconify-icon>
                         </button>
@@ -670,8 +674,10 @@
             const categoryLabel = document.querySelector('[data-category-label]');
             const categoryMenu = document.querySelector('[data-category-menu]');
             const categoryOptions = Array.from(document.querySelectorAll('[data-category-option]'));
+            const metaTitleField = document.getElementById('meta_title');
             const metaDescription = document.getElementById('meta_description');
             const metaDescriptionCount = document.querySelector('[data-meta-description-count]');
+            const metaKeywordsField = document.getElementById('meta_keywords');
             const tagSearchInput = document.getElementById('tag_search');
             const newTagsInput = document.getElementById('new_tags');
             const newTagsChips = document.getElementById('new-tags-chips');
@@ -1043,6 +1049,84 @@
                 const target = e.target;
                 if (!(target instanceof Element)) return;
                 if (categoryMenu && !categoryMenu.contains(target)) categoryMenu.removeAttribute('open');
+            });
+
+            const aiAssistButton = document.querySelector('[data-ai-assist]');
+            const aiAssistIcon = document.querySelector('[data-ai-assist-icon]');
+            let aiAssistBusy = false;
+
+            const readEditorPlainText = () => (fallbackTextarea ? fallbackTextarea.value : '');
+
+            const showAiToast = (message, isError = false) => {
+                const toast = document.createElement('div');
+                toast.className = `fixed bottom-24 left-1/2 z-[9999] w-[min(92vw,420px)] -translate-x-1/2 rounded-2xl border px-4 py-3 text-sm shadow-lg sm:bottom-6 ${isError ? 'border-rose-200 bg-rose-50 text-rose-800' : 'border-blue-200 bg-blue-50 text-blue-900'}`;
+                toast.textContent = message;
+                document.body.appendChild(toast);
+                setTimeout(() => toast.remove(), isError ? 6000 : 8000);
+            };
+
+            aiAssistButton?.addEventListener('click', async () => {
+                if (aiAssistBusy) return;
+
+                const titleValue = (document.getElementById('title')?.value || '').trim();
+                const contentValue = readEditorPlainText().trim();
+
+                if (titleValue === '' && contentValue === '') {
+                    showAiToast('Önce bir başlık veya içerik yazın, yapay zeka ondan sonra yardımcı olabilir.', true);
+                    return;
+                }
+
+                aiAssistBusy = true;
+                aiAssistIcon?.classList.add('animate-pulse');
+                aiAssistButton.disabled = true;
+
+                try {
+                    const response = await fetch('{{ route('blog.ai-assist') }}', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || '',
+                        },
+                        body: JSON.stringify({ title: titleValue, content: contentValue }),
+                    });
+
+                    const data = await response.json();
+
+                    if (!response.ok || !data.ok) {
+                        showAiToast(data.message || 'Yapay zeka şu anda yardımcı olamadı.', true);
+                        return;
+                    }
+
+                    if (data.meta_title && metaTitleField) metaTitleField.value = data.meta_title;
+                    if (data.meta_description && metaDescription) {
+                        metaDescription.value = data.meta_description;
+                        metaDescription.dispatchEvent(new Event('input'));
+                    }
+                    if (Array.isArray(data.meta_keywords) && data.meta_keywords.length && metaKeywordsField) {
+                        metaKeywordsField.value = data.meta_keywords.join(', ');
+                    }
+                    if (data.excerpt) {
+                        const excerptField = document.getElementById('excerpt');
+                        if (excerptField && excerptField.value.trim() === '') {
+                            excerptField.value = data.excerpt;
+                        }
+                    }
+
+                    openSettings();
+
+                    if (data.suggestions) {
+                        showAiToast(data.suggestions);
+                    } else {
+                        showAiToast('SEO alanları yapay zeka tarafından dolduruldu.');
+                    }
+                } catch (error) {
+                    showAiToast('Yapay zeka isteği başarısız oldu. Bağlantınızı kontrol edip tekrar deneyin.', true);
+                } finally {
+                    aiAssistBusy = false;
+                    aiAssistIcon?.classList.remove('animate-pulse');
+                    aiAssistButton.disabled = false;
+                }
             });
         });
     </script>

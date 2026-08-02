@@ -25,6 +25,7 @@ use App\Services\MentionService;
 use App\Services\RecaptchaV3Verifier;
 use App\Services\PostCommentPreviewService;
 use App\Services\PostLinkPreviewService;
+use App\Services\PostAiAssistantService;
 use App\Services\SitemapManager;
 use App\Notifications\PostCommentedNotification;
 use App\Notifications\PostReactedNotification;
@@ -1325,6 +1326,32 @@ class BlogController extends Controller
             ->get(['id', 'label', 'short_code', 'emoji', 'gif_url']);
 
         return view('blog.create', compact('categories', 'tags', 'reactionTypes'));
+    }
+
+    public function aiAssist(Request $request, PostAiAssistantService $assistant): JsonResponse
+    {
+        $validated = $request->validate([
+            'title' => ['nullable', 'string', 'max:255'],
+            'content' => ['nullable', 'string', 'max:20000'],
+        ]);
+
+        try {
+            $result = $assistant->assist(
+                (string) ($validated['title'] ?? ''),
+                (string) ($validated['content'] ?? ''),
+            );
+
+            return response()->json(['ok' => true] + $result);
+        } catch (\InvalidArgumentException $e) {
+            return response()->json(['ok' => false, 'message' => $e->getMessage()], 422);
+        } catch (\Throwable $e) {
+            report($e);
+
+            return response()->json([
+                'ok' => false,
+                'message' => 'Yapay zeka su anda yanit veremiyor. Birazdan tekrar deneyin.',
+            ], 500);
+        }
     }
 
     public function repostCreate(Request $request, ?Post $post = null)

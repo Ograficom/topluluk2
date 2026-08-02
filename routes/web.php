@@ -921,10 +921,9 @@ Route::get('/tr/{post:slug}', [BlogController::class, 'show'])->name('blog.post'
 Route::middleware(['auth', 'throttle:10,1'])->post('/ai/ask', [AiController::class, 'ask'])
     ->name('ai.ask');
 
-
 Route::middleware(['auth'])->get('/ai', function () {
     return view('ai.index');
 })->name('ai.index');
 
-Route::middleware(['auth', 'throttle:10,1'])->post('/ai/ask', [AiController::class, 'ask'])
-    ->name('ai.ask');
+Route::middleware(['auth', 'throttle:10,1'])->post('/blog/ai-assist', [BlogController::class, 'aiAssist'])
+    ->name('blog.ai-assist');
