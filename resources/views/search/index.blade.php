@@ -120,8 +120,8 @@
     }
 
     .og-search-pill.is-active {
-        background: #e2e8f0 !important;
-        border-color: #2563eb !important;
+        background: #eff6ff !important;
+        border-color: #bfdbfe !important;
         color: #1d4ed8 !important;
     }
 
@@ -175,13 +175,50 @@
     }
 
     .og-search-type-pill.is-active {
-        background: #e2e8f0 !important;
-        border-color: #2563eb !important;
+        background: #eff6ff !important;
+        border-color: #bfdbfe !important;
         color: #1d4ed8 !important;
     }
 
     .og-search-type-pill.is-active iconify-icon {
         color: #2563eb;
+    }
+
+    .og-search-follow-btn,
+    body.alma-app .og-search-follow-btn {
+        flex: 0 0 auto;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        height: 32px;
+        padding: 0 16px;
+        border-radius: 9999px;
+        border: 0 !important;
+        background: #2563eb !important;
+        color: #ffffff !important;
+        font-size: 12.5px;
+        font-weight: 700;
+        white-space: nowrap;
+        transition: background-color 120ms ease;
+    }
+
+    .og-search-follow-btn:hover,
+    body.alma-app .og-search-follow-btn:hover {
+        background: #1d4ed8 !important;
+    }
+
+    .og-search-follow-btn.is-following,
+    body.alma-app .og-search-follow-btn.is-following {
+        background: #f1f5f9 !important;
+        color: #334155 !important;
+        border: 1px solid #e2e8f0 !important;
+    }
+
+    .og-search-follow-btn.is-following:hover,
+    body.alma-app .og-search-follow-btn.is-following:hover {
+        background: #fef2f2 !important;
+        color: #b91c1c !important;
+        border-color: #fecaca !important;
     }
 
     .og-search-results {
@@ -215,11 +252,9 @@
     }
 
     .og-search-box-title {
-        font-size: 13px;
+        font-size: 16px;
         font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: 0.03em;
-        color: #64748b;
+        color: #0f172a;
     }
 
     .og-search-box-count {
@@ -230,30 +265,28 @@
     .og-search-box-more {
         display: inline-flex;
         align-items: center;
-        justify-content: center;
-        gap: 6px;
+        gap: 4px;
         margin-top: 10px;
-        width: 100%;
-        padding: 9px 0;
-        border-radius: 10px;
-        border: 1px solid #e2e8f0 !important;
-        background: #f8fafc !important;
-        color: #0f172a !important;
+        padding: 4px 2px;
+        border: 0 !important;
+        background: transparent !important;
+        color: #2563eb !important;
         font-size: 13px;
         font-weight: 600;
     }
 
     .og-search-box-more iconify-icon {
-        font-size: 15px;
+        font-size: 14px;
         color: #2563eb;
     }
 
     .og-search-box-more:hover {
-        background: #f1f5f9 !important;
+        color: #1d4ed8 !important;
+        text-decoration: underline;
     }
 
     .og-search-box-more:active {
-        background: #e2e8f0 !important;
+        color: #1e40af !important;
     }
 
     .og-result-list {
@@ -427,11 +460,26 @@
     }
 
     html.dark .og-search-pill,
-    html.dark .og-search-type-pill,
-    html.dark .og-search-box-more {
+    html.dark .og-search-type-pill {
         background: #0f172a !important;
         border-color: #1e293b !important;
         color: #e2e8f0 !important;
+    }
+
+    html.dark .og-search-box-title {
+        color: #e2e8f0 !important;
+    }
+
+    html.dark .og-search-box-more {
+        color: #60a5fa !important;
+    }
+
+    html.dark .og-search-box-more iconify-icon {
+        color: #60a5fa;
+    }
+
+    html.dark .og-search-box-more:hover {
+        color: #93c5fd !important;
     }
 
     html.dark .og-search-pill:hover,
@@ -462,6 +510,12 @@
 
     html.dark .og-result-row:hover {
         background: #1e293b;
+    }
+
+    html.dark .og-search-follow-btn.is-following {
+        background: #1e293b !important;
+        color: #cbd5e1 !important;
+        border-color: #334155 !important;
     }
 
     html.dark .og-result-row-title {
@@ -495,6 +549,8 @@
         'inPost' => __('site.search.in_post'),
         'categoryBadge' => __('site.search.category_badge'),
         'searchFailed' => __('site.mobile_nav.search_failed'),
+        'follow' => __('site.profile_page.follow'),
+        'following' => __('site.profile_page.following'),
     ];
 @endphp
 
@@ -507,6 +563,8 @@
          data-initial-nsfw="{{ $meta['nsfw'] ? '1' : '0' }}"
          data-initial-ai="{{ $meta['ai'] ? '1' : '0' }}"
          data-i18n="{{ json_encode($searchI18n, JSON_UNESCAPED_UNICODE) }}"
+         data-authenticated="{{ auth()->check() ? '1' : '0' }}"
+         data-login-url="{{ route('login') }}"
     >
         <div class="og-search-bar">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" class="og-search-bar-icon" aria-hidden="true">
@@ -663,7 +721,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 <span class="og-result-row-title">${escapeHtml(user.title)}</span>
                 ${user.subtitle ? `<span class="og-result-row-subtitle">${escapeHtml(user.subtitle)}</span>` : ''}
             </span>
-            <span class="og-result-row-badge">${i18n.followersCount.replace(':count', Number(user.followers_count || 0).toLocaleString('tr-TR'))}</span>
+            ${user.is_self ? '' : `
+                <button type="button"
+                    class="og-search-follow-btn ${user.is_following ? 'is-following' : ''}"
+                    data-follow-btn
+                    data-follow-username="${escapeHtml(user.username || '')}"
+                    data-following="${user.is_following ? '1' : '0'}"
+                >${user.is_following ? escapeHtml(i18n.following) : escapeHtml(i18n.follow)}</button>
+            `}
         </a>
     `).join('');
 
@@ -864,6 +929,51 @@ document.addEventListener('DOMContentLoaded', () => {
     moreBtn.addEventListener('click', () => {
         state.offset = (accumulated ? accumulated.length : 0);
         runSearch(true);
+    });
+
+    const isAuthenticated = root.dataset.authenticated === '1';
+    const loginUrl = root.dataset.loginUrl || '/login';
+    const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content || '';
+
+    resultsContainer.addEventListener('click', (event) => {
+        const btn = event.target.closest('[data-follow-btn]');
+        if (!btn) return;
+
+        event.preventDefault();
+        event.stopPropagation();
+
+        if (!isAuthenticated) {
+            window.location.href = loginUrl;
+            return;
+        }
+
+        const username = btn.dataset.followUsername;
+        if (!username || btn.disabled) return;
+
+        btn.disabled = true;
+
+        fetch(`/u/${encodeURIComponent(username)}/follow`, {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'X-CSRF-TOKEN': csrfToken,
+                'Content-Type': 'application/json',
+            },
+        })
+            .then((response) => {
+                if (!response.ok) throw new Error('follow request failed');
+                return response.json();
+            })
+            .then((data) => {
+                const following = Boolean(data.following);
+                btn.dataset.following = following ? '1' : '0';
+                btn.classList.toggle('is-following', following);
+                btn.textContent = following ? i18n.following : i18n.follow;
+            })
+            .catch(() => {})
+            .finally(() => {
+                btn.disabled = false;
+            });
     });
 
     syncPillStates();

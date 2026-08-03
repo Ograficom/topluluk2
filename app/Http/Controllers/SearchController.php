@@ -243,9 +243,14 @@ class SearchController extends Controller
 
     private function fetchUsers(string $like, array $filters, int $limit, int $offset): array
     {
+        $viewerId = auth()->id();
+
         $usersQuery = User::query()
             ->select(['id', 'name', 'username', 'profile_photo_path', 'created_at'])
             ->withCount('followers')
+            ->when($viewerId, fn ($q) => $q->withExists([
+                'followers as is_following' => fn ($sub) => $sub->where('users.id', $viewerId),
+            ]))
             ->where(function ($q) use ($like) {
                 $q->where('name', 'like', $like)
                     ->orWhere('username', 'like', $like);
@@ -263,6 +268,8 @@ class SearchController extends Controller
             'url' => route('users.show', $user),
             'avatar' => $user->profile_photo_url,
             'followers_count' => $user->followers_count,
+            'is_following' => $viewerId ? (bool) $user->is_following : false,
+            'is_self' => $viewerId === $user->id,
         ]);
 
         return [$mapped, $hasMore];
