@@ -69,6 +69,10 @@
         background: #e2e8f0 !important;
     }
 
+    .og-search-bar-clear:active {
+        background: #cbd5e1 !important;
+    }
+
     .og-search-filters {
         display: flex;
         align-items: center;
@@ -87,38 +91,42 @@
     .og-search-pill {
         display: inline-flex;
         align-items: center;
+        gap: 6px;
         height: 34px;
         padding: 0 16px;
         border-radius: 9999px;
         border: 1px solid #e2e8f0 !important;
         background: #ffffff !important;
-        color: #475569 !important;
+        color: #0f172a !important;
         font-size: 13px;
         font-weight: 600;
         white-space: nowrap;
         transition: background-color 120ms ease, color 120ms ease, border-color 120ms ease;
     }
 
+    .og-search-pill iconify-icon {
+        flex-shrink: 0;
+        font-size: 15px;
+        color: #64748b;
+        transition: color 120ms ease;
+    }
+
     .og-search-pill:hover {
-        background: #f8fafc !important;
+        background: #f1f5f9 !important;
     }
 
-    .og-search-pill--sort.is-active {
-        background: #0f766e !important;
-        border-color: #0f766e !important;
-        color: #ffffff !important;
+    .og-search-pill:active {
+        background: #e2e8f0 !important;
     }
 
-    .og-search-pill--toggle.is-active {
-        background: #eef2ff !important;
-        border-color: #6366f1 !important;
-        color: #4338ca !important;
+    .og-search-pill.is-active {
+        background: #e2e8f0 !important;
+        border-color: #2563eb !important;
+        color: #1d4ed8 !important;
     }
 
-    .og-search-pill--toggle[data-toggle="nsfw"].is-active {
-        background: #fef2f2 !important;
-        border-color: #ef4444 !important;
-        color: #b91c1c !important;
+    .og-search-pill.is-active iconify-icon {
+        color: #2563eb;
     }
 
     .og-search-types {
@@ -138,25 +146,42 @@
         flex: 0 0 auto;
         display: inline-flex;
         align-items: center;
+        gap: 6px;
         height: 32px;
         padding: 0 14px;
         border-radius: 9999px;
         border: 1px solid #e2e8f0 !important;
         background: #f8fafc !important;
-        color: #334155 !important;
+        color: #0f172a !important;
         font-size: 13px;
         font-weight: 500;
         white-space: nowrap;
+        transition: background-color 120ms ease, color 120ms ease, border-color 120ms ease;
+    }
+
+    .og-search-type-pill iconify-icon {
+        flex-shrink: 0;
+        font-size: 15px;
+        color: #64748b;
+        transition: color 120ms ease;
     }
 
     .og-search-type-pill:hover {
         background: #f1f5f9 !important;
     }
 
+    .og-search-type-pill:active {
+        background: #e2e8f0 !important;
+    }
+
     .og-search-type-pill.is-active {
-        background: #0f172a !important;
-        border-color: #0f172a !important;
-        color: #ffffff !important;
+        background: #e2e8f0 !important;
+        border-color: #2563eb !important;
+        color: #1d4ed8 !important;
+    }
+
+    .og-search-type-pill.is-active iconify-icon {
+        color: #2563eb;
     }
 
     .og-search-results {
@@ -203,19 +228,32 @@
     }
 
     .og-search-box-more {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
         margin-top: 10px;
         width: 100%;
         padding: 9px 0;
         border-radius: 10px;
         border: 1px solid #e2e8f0 !important;
         background: #f8fafc !important;
-        color: #334155 !important;
+        color: #0f172a !important;
         font-size: 13px;
         font-weight: 600;
     }
 
+    .og-search-box-more iconify-icon {
+        font-size: 15px;
+        color: #2563eb;
+    }
+
     .og-search-box-more:hover {
         background: #f1f5f9 !important;
+    }
+
+    .og-search-box-more:active {
+        background: #e2e8f0 !important;
     }
 
     .og-result-list {
@@ -342,18 +380,31 @@
     }
 
     .og-search-more-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 7px;
         width: 100%;
         padding: 12px 0;
         border-radius: 14px;
         border: 1px solid #e2e8f0 !important;
         background: #ffffff !important;
-        color: #334155 !important;
+        color: #0f172a !important;
         font-size: 14px;
         font-weight: 600;
     }
 
+    .og-search-more-btn iconify-icon {
+        font-size: 16px;
+        color: #2563eb;
+    }
+
     .og-search-more-btn:hover {
         background: #f8fafc !important;
+    }
+
+    .og-search-more-btn:active {
+        background: #e2e8f0 !important;
     }
 
     @media (max-width: 640px) {
@@ -380,7 +431,29 @@
     html.dark .og-search-box-more {
         background: #0f172a !important;
         border-color: #1e293b !important;
-        color: #cbd5e1 !important;
+        color: #e2e8f0 !important;
+    }
+
+    html.dark .og-search-pill:hover,
+    html.dark .og-search-type-pill:hover {
+        background: #1e293b !important;
+    }
+
+    html.dark .og-search-pill:active,
+    html.dark .og-search-type-pill:active {
+        background: #334155 !important;
+    }
+
+    html.dark .og-search-pill.is-active,
+    html.dark .og-search-type-pill.is-active {
+        background: #1e293b !important;
+        border-color: #3b82f6 !important;
+        color: #60a5fa !important;
+    }
+
+    html.dark .og-search-pill.is-active iconify-icon,
+    html.dark .og-search-type-pill.is-active iconify-icon {
+        color: #3b82f6;
     }
 
     html.dark .og-search-bar-input {
@@ -455,24 +528,24 @@
 
         <div class="og-search-filters">
             <div class="og-search-pills" data-search-sort-pills>
-                <button type="button" class="og-search-pill og-search-pill--sort" data-sort="relevance">{{ __('site.search.sort_relevance') }}</button>
-                <button type="button" class="og-search-pill og-search-pill--sort" data-sort="newest">{{ __('site.search.sort_newest') }}</button>
-                <button type="button" class="og-search-pill og-search-pill--sort" data-sort="popular">{{ __('site.search.sort_popular') }}</button>
+                <button type="button" class="og-search-pill og-search-pill--sort" data-sort="relevance"><iconify-icon icon="lucide:sparkles"></iconify-icon>{{ __('site.search.sort_relevance') }}</button>
+                <button type="button" class="og-search-pill og-search-pill--sort" data-sort="newest"><iconify-icon icon="lucide:clock"></iconify-icon>{{ __('site.search.sort_newest') }}</button>
+                <button type="button" class="og-search-pill og-search-pill--sort" data-sort="popular"><iconify-icon icon="lucide:flame"></iconify-icon>{{ __('site.search.sort_popular') }}</button>
             </div>
             <div class="og-search-pills og-search-pills--toggles">
-                <button type="button" class="og-search-pill og-search-pill--toggle" data-toggle="nsfw">{{ __('site.search.filter_nsfw') }}</button>
-                <button type="button" class="og-search-pill og-search-pill--toggle" data-toggle="ai">{{ __('site.search.filter_ai') }}</button>
+                <button type="button" class="og-search-pill og-search-pill--toggle" data-toggle="nsfw"><iconify-icon icon="lucide:eye-off"></iconify-icon>{{ __('site.search.filter_nsfw') }}</button>
+                <button type="button" class="og-search-pill og-search-pill--toggle" data-toggle="ai"><iconify-icon icon="lucide:bot"></iconify-icon>{{ __('site.search.filter_ai') }}</button>
             </div>
         </div>
 
         <div class="og-search-types" data-search-type-pills>
-            <button type="button" class="og-search-type-pill" data-type="all">{{ __('site.search.all') }}</button>
-            <button type="button" class="og-search-type-pill" data-type="posts">{{ __('site.search.posts') }}</button>
-            <button type="button" class="og-search-type-pill" data-type="categories">{{ __('site.search.categories') }}</button>
-            <button type="button" class="og-search-type-pill" data-type="tags">{{ __('site.search.tags') }}</button>
-            <button type="button" class="og-search-type-pill" data-type="users">{{ __('site.search.users') }}</button>
-            <button type="button" class="og-search-type-pill" data-type="comments">{{ __('site.search.comments') }}</button>
-            <button type="button" class="og-search-type-pill" data-type="pages">{{ __('site.search.pages') }}</button>
+            <button type="button" class="og-search-type-pill" data-type="all"><iconify-icon icon="lucide:layout-grid"></iconify-icon>{{ __('site.search.all') }}</button>
+            <button type="button" class="og-search-type-pill" data-type="posts"><iconify-icon icon="lucide:file-text"></iconify-icon>{{ __('site.search.posts') }}</button>
+            <button type="button" class="og-search-type-pill" data-type="categories"><iconify-icon icon="lucide:folder"></iconify-icon>{{ __('site.search.categories') }}</button>
+            <button type="button" class="og-search-type-pill" data-type="tags"><iconify-icon icon="lucide:tag"></iconify-icon>{{ __('site.search.tags') }}</button>
+            <button type="button" class="og-search-type-pill" data-type="users"><iconify-icon icon="lucide:users"></iconify-icon>{{ __('site.search.users') }}</button>
+            <button type="button" class="og-search-type-pill" data-type="comments"><iconify-icon icon="lucide:message-circle"></iconify-icon>{{ __('site.search.comments') }}</button>
+            <button type="button" class="og-search-type-pill" data-type="pages"><iconify-icon icon="lucide:file"></iconify-icon>{{ __('site.search.pages') }}</button>
         </div>
 
         <div class="og-search-results" data-search-results-container>
@@ -480,7 +553,7 @@
         </div>
 
         <div class="og-search-more-wrap hidden" data-search-more-wrap>
-            <button type="button" class="og-search-more-btn" data-search-more-btn>{{ __('site.search.show_more') }}</button>
+            <button type="button" class="og-search-more-btn" data-search-more-btn><iconify-icon icon="lucide:chevron-down"></iconify-icon>{{ __('site.search.show_more') }}</button>
         </div>
     </div>
 @endsection
@@ -646,7 +719,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 label,
                 items.length,
                 `<div class="${isFlow ? 'og-result-flow' : 'og-result-list'}">${inner}</div>`,
-                `<button type="button" class="og-search-box-more" data-search-jump-type="${key}">${i18n.showMore}</button>`,
+                `<button type="button" class="og-search-box-more" data-search-jump-type="${key}"><iconify-icon icon="lucide:chevron-down"></iconify-icon>${i18n.showMore}</button>`,
             ));
         });
 

@@ -4544,12 +4544,14 @@
 
   .post-show-shell strong,
   .post-show-shell b {
-    font-weight: 500 !important;
+    font-weight: 700 !important;
   }
 
 
 
-  /* FINAL OVERRIDE: Kalın font yok - başlık dahil normal Poppins */
+  /* FINAL OVERRIDE: baslik/govde metni normal Poppins, ancak icerik basliklari (h1-h6)
+     ve vurgulanan (strong/b) metinler haric - bunlar okunurlugu icin belirgin kalin
+     kalmali (asagidaki .ps-post-body h2/h3/h4 kurallariyla eslesir). */
   .post-show-shell,
   .post-show-shell * {
     font-family: Poppins, Arial, sans-serif !important;
@@ -4557,12 +4559,6 @@
 
   .post-show-shell .ps-post-title,
   .post-show-shell h1.ps-post-title,
-  .post-show-shell .ps-post-body h1,
-  .post-show-shell .ps-post-body h2,
-  .post-show-shell .ps-post-body h3,
-  .post-show-shell .ps-post-body h4,
-  .post-show-shell .ps-post-body h5,
-  .post-show-shell .ps-post-body h6,
   .post-show-shell .ps-comments-title,
   .post-show-shell .ps-post-author-name,
   .post-show-shell .post-author-name,
@@ -4570,9 +4566,7 @@
   .post-show-shell .post-author-category,
   .post-show-shell .ps-comment-author,
   .post-show-shell .ps-tag,
-  .post-show-shell .ps-reaction-pill,
-  .post-show-shell strong,
-  .post-show-shell b {
+  .post-show-shell .ps-reaction-pill {
     font-weight: 400 !important;
   }
 
@@ -10472,6 +10466,30 @@ body.dark .post-show-shell .ps-wave-media::after,
 .post-show-shell .ps-post-body .ce-header[data-level="3"] { font-size: 21px !important; }
 .post-show-shell .ps-post-body h4,
 .post-show-shell .ps-post-body .ce-header[data-level="4"] { font-size: 18px !important; }
+
+/* app.css'teki site geneli tipografi sifirlama kurali
+   (html, body, body :not(#comments):not(#comments *)) ayni ozellik uzerinde IKI ayri
+   :not() zinciri kullandigi icin ID seviyesinde CIFT ozgunluge sahip ((2,0,1)) ve
+   yukaridaki .post-show-shell kurallarini eziyor, basliklari/kalin metni 400 agirliga
+   dusuruyor. Ayni cift :not() hilesini kullanarak esdeger-veya-uzeri ozgunlukte ama
+   daha fazla sinifla onu geciyoruz. */
+.post-show-shell .ps-post-body :where(h1, h2, h3, h4, h5, h6):not(#comments):not(#comments *) {
+  font-weight: 700 !important;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+.post-show-shell .ps-post-title,
+.post-show-shell .ps-post-body,
+.post-show-shell .ps-post-body p {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+.post-show-shell .ps-post-body :where(h2):not(#comments):not(#comments *) { font-size: 24px !important; line-height: 1.3 !important; }
+.post-show-shell .ps-post-body :where(h3):not(#comments):not(#comments *) { font-size: 21px !important; line-height: 1.3 !important; }
+.post-show-shell .ps-post-body :where(h4):not(#comments):not(#comments *) { font-size: 18px !important; line-height: 1.32 !important; }
+.post-show-shell .ps-post-body :where(strong, b):not(#comments):not(#comments *) {
+  font-weight: 700 !important;
+}
 
 /* EditorJS image/gallery/embed/video plugin çıktıları */
 .post-show-shell .ps-post-body :where(.image-tool, .ps-full-media, .ps-full-gallery, figure) {

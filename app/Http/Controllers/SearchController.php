@@ -178,7 +178,7 @@ class SearchController extends Controller
         $mapped = $rows->map(fn (Post $post) => [
             'id' => $post->id,
             'title' => $post->title,
-            'snippet' => Str::limit(strip_tags($post->excerpt ?? $post->content), 140),
+            'snippet' => Str::limit(html_entity_decode(strip_tags($post->excerpt ?? $post->content), ENT_QUOTES | ENT_HTML5, 'UTF-8'), 140),
             'url' => route('blog.post', $post),
             'category' => optional($post->category)->name,
             'author' => optional($post->author)->name,
@@ -291,7 +291,7 @@ class SearchController extends Controller
 
         $mapped = $rows->filter(fn (Comment $comment) => $comment->post !== null)->map(fn (Comment $comment) => [
             'id' => $comment->id,
-            'snippet' => Str::limit(strip_tags((string) $comment->content), 160),
+            'snippet' => Str::limit(html_entity_decode(strip_tags((string) $comment->content), ENT_QUOTES | ENT_HTML5, 'UTF-8'), 160),
             'author' => optional($comment->user)->name ?? $comment->author_name,
             'author_avatar' => optional($comment->user)->profile_photo_url,
             'post_title' => optional($comment->post)->title,
@@ -319,7 +319,7 @@ class SearchController extends Controller
         $mapped = $rows->map(fn (Page $page) => [
             'id' => $page->id,
             'title' => $page->title,
-            'snippet' => Str::limit(strip_tags($page->content ?? ''), 140),
+            'snippet' => Str::limit(html_entity_decode(strip_tags($page->content ?? ''), ENT_QUOTES | ENT_HTML5, 'UTF-8'), 140),
             'url' => route('pages.show.short', $page->slug),
         ]);
 
