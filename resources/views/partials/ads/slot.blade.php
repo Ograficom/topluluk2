@@ -65,197 +65,76 @@
         gosterilmez - admin'in "burada hicbir sey olmasin" tercihine saygi
         gosterilir.
     --}}
-    <div class="{{ implode(' ', $classes) }}" data-ad-slot="{{ $slotKey }}" data-ad-slot-house="1">
-        @include('partials.ads.tagbar')
+    <div class="{{ implode(' ', array_merge($classes, ['alma-ad-slot--bare'])) }}" data-ad-slot="{{ $slotKey }}" data-ad-slot-house="1">
         @include('partials.ads.house-ad', ['slotKey' => $slotKey])
     </div>
 @endif
 
 @once
     <style>
-        .house-ad {
-            display: flex;
+        /* Bos reklam alanlarinin yeni kutu tasarimi - kullanicinin verdigi kod
+           birebir korunuyor (stil degistirilmiyor). */
+        .reklam-alani {
             width: 100%;
-            box-sizing: border-box;
-            flex-direction: column;
-            position: relative;
-            border: 1px solid #27272a;
-            border-radius: 10px;
-            background: #18181b;
-            padding: 16px;
-            text-decoration: none;
+            max-width: 728px;
+            background-color: #ffffff;
+            border-radius: 8px;
             overflow: hidden;
-        }
-
-        .house-ad__visual {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
             display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-            box-sizing: border-box;
-            border-radius: 14px;
-            background: #ffffff;
-            border: 1px solid #ffffff;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
-        }
-
-        .house-ad__visual--vertical {
-            width: 100%;
-            aspect-ratio: 16 / 10;
-            margin-bottom: 4px;
-        }
-
-        .house-ad__visual--vertical .house-ad__logo {
-            width: 64px;
-            height: 64px;
-        }
-
-        .house-ad__visual--wide {
-            width: 96px;
-            height: 96px;
-        }
-
-        .house-ad__visual--wide .house-ad__logo {
-            width: 56px;
-            height: 56px;
-        }
-
-        .house-ad__visual--compact {
-            width: 64px;
-            height: 64px;
-        }
-
-        .house-ad__visual--compact .house-ad__logo {
-            width: 40px;
-            height: 40px;
-        }
-
-        .house-ad__body {
-            display: flex;
-            flex: 1 1 auto;
-            min-height: 0;
-        }
-
-        .house-ad__body--vertical {
             flex-direction: column;
+        }
+
+        .reklam-ust {
+            display: flex;
+            justify-content: flex-end;
             align-items: center;
-            justify-content: center;
-            gap: 10px;
-            text-align: center;
-            padding-top: 8px;
-        }
-
-        .house-ad__body--wide {
-            align-items: center;
-            gap: 20px;
-        }
-
-        .house-ad__body--compact {
-            align-items: center;
-            gap: 14px;
-        }
-
-        .house-ad__logo {
-            display: block;
-            width: 40px;
-            height: 40px;
-            object-fit: contain;
-            flex-shrink: 0;
-        }
-
-        .house-ad__logo--wide {
-            width: 56px;
-            height: 56px;
-        }
-
-        .house-ad__copy {
-            min-width: 0;
-            flex: 1 1 auto;
-        }
-
-        .house-ad__title {
-            margin: 0;
-            color: #f8fafc;
-            font-family: "Inter", Arial, Helvetica, sans-serif;
-            font-size: 15px;
-            font-weight: 700;
-            line-height: 1.3;
-            letter-spacing: -0.01em;
-        }
-
-        .house-ad__title--compact {
+            background-color: #ffffff;
+            padding: 6px 12px;
             font-size: 13px;
+            font-weight: 700;
+            color: #333;
         }
 
-        .house-ad__text {
-            margin: 0;
-            color: #a1a1aa;
-            font-family: "Inter", Arial, Helvetica, sans-serif;
-            font-size: 12.5px;
-            line-height: 1.5;
-        }
-
-        .house-ad__body--vertical .house-ad__text {
-            max-width: 220px;
-        }
-
-        .house-ad__cta {
-            display: inline-flex;
-            align-items: center;
+        .kapat-btn {
+            background-color: #1a1a1a;
+            color: #ffffff;
+            border: none;
+            border-radius: 4px;
+            width: 20px;
+            height: 20px;
+            margin-left: 8px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: bold;
+            display: flex;
             justify-content: center;
-            flex-shrink: 0;
-            border-radius: 999px;
-            background: #2563eb;
-            color: #ffffff !important;
-            padding: 8px 16px;
-            font-family: "Inter", Arial, Helvetica, sans-serif;
-            font-size: 12.5px;
-            font-weight: 600;
-            white-space: nowrap;
+            align-items: center;
         }
 
-        .house-ad__body--compact .house-ad__cta {
-            margin-top: 6px;
-            padding: 6px 13px;
-            font-size: 11.5px;
+        .kapat-btn:hover {
+            background-color: #444;
         }
 
-        .house-ad:hover .house-ad__cta {
-            background: #1d4ed8;
+        .reklam-icerik {
+            width: 100%;
+            line-height: 0;
         }
 
-        .house-ad:hover {
-            border-color: #3f3f46;
+        .reklam-resim {
+            width: 100%;
+            height: auto;
+            display: block;
         }
 
-        [data-ad-slot-house="1"] .alma-ad-tagbar__label {
-            border-color: #3f3f46;
-            background: #27272a;
-            color: #d4d4d8;
-        }
-
-        [data-ad-slot-house="1"] .alma-ad-tagbar__close {
-            border-color: #3f3f46;
-            background: #27272a;
-            color: #a1a1aa;
-        }
-
-        [data-ad-slot-house="1"] .alma-ad-tagbar__close:hover {
-            background: #3f3f46;
-            color: #f4f4f5;
-        }
-
-        @media (max-width: 480px) {
-            .house-ad__body--wide {
-                flex-direction: column;
-                align-items: flex-start;
-                text-align: left;
-                gap: 10px;
-            }
-
-            .house-ad__body--wide .house-ad__cta--wide {
-                align-self: flex-start;
-            }
+        /* .alma-ad-slot'un kendi kart cercevesi (border/arka plan/dolgu) yeni kutu
+           tasarimiyla cakismasin diye bos reklam alanlarinda kaldiriliyor - boylece
+           .reklam-alani kendi cercevesiyle temiz gorunuyor. */
+        .alma-ad-slot--bare {
+            border: 0 !important;
+            border-radius: 0 !important;
+            background: transparent !important;
+            overflow: visible !important;
         }
 
         .alma-ad-slot--dismissible {
@@ -336,6 +215,18 @@
             window.setTimeout(function () {
                 wrapper.remove();
             }, 160);
+        });
+
+        document.addEventListener('click', function (event) {
+            var kapatBtn = event.target.closest('[data-reklam-kapat]');
+            if (!kapatBtn) {
+                return;
+            }
+
+            var box = document.getElementById(kapatBtn.getAttribute('data-reklam-kapat'));
+            if (box) {
+                box.style.display = 'none';
+            }
         });
     </script>
 @endonce
