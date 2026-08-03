@@ -38,8 +38,8 @@ const setSearchViewAll = (query = '') => {
         : searchEndpoint;
     if (searchViewAllLabel) {
         searchViewAllLabel.textContent = cleanQuery
-            ? `Show all results for: ${cleanQuery}`
-            : 'Show all results';
+            ? `Tum sonuclari goster: ${cleanQuery}`
+            : 'Tum sonuclari goster';
     }
 };
 

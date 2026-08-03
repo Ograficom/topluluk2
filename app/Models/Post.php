@@ -112,6 +112,16 @@ class Post extends Model
         return $this->belongsTo(Category::class);
     }
 
+    public function rssItem(): HasOne
+    {
+        return $this->hasOne(RssItem::class);
+    }
+
+    public function scopeAiWritten(Builder $query): Builder
+    {
+        return $query->whereHas('rssItem', fn ($q) => $q->whereNotNull('ai_rewritten_at'));
+    }
+
     public function author(): BelongsTo
     {
         return $this->belongsTo(User::class, 'author_id');

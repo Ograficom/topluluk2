@@ -1369,10 +1369,10 @@
     }
 
     .site-search-results-panel {
-        margin-top: 10px !important;
-        padding: 10px !important;
+        margin-top: 8px !important;
+        padding: 8px !important;
         border: 1px solid #e2e8f0 !important;
-        border-radius: 20px !important;
+        border-radius: 16px !important;
         background: #ffffff !important;
         color: #0f172a !important;
         box-shadow: none !important;
@@ -2728,23 +2728,23 @@ html.dark body .site-header[data-site-header] .site-header-logo-wordmark {
 }
 
 .site-user-menu-card {
-    padding: 10px 10px !important;
-    margin: 0 0 8px 0 !important;
-    border-radius: 14px !important;
-    background: #f4f6f8 !important;
-    background-image: none !important;
+    padding: 0 0 12px 0 !important;
+    margin: 0 0 6px 0 !important;
+    border-radius: 0 !important;
+    background: transparent !important;
     border: 0 !important;
+    border-bottom: 1px solid #f1f5f9 !important;
     gap: 11px !important;
 }
 
 .site-user-menu-card:hover {
-    background: #eef1f4 !important;
-    background-image: none !important;
-    border: 0 !important;
+    background: transparent !important;
+    border-color: transparent !important;
+    border-bottom-color: #f1f5f9 !important;
 }
 
 .site-user-menu-card:hover .site-user-menu-name {
-    color: #0f172a !important;
+    color: #2563eb !important;
 }
 
 .site-user-menu-avatar {
@@ -2873,21 +2873,19 @@ html.dark .site-menu-panel,
 
 html.dark .site-user-menu-card,
 .dark .site-user-menu-card {
-    background: #16202f !important;
-    background-image: none !important;
-    border: 0 !important;
+    background: transparent !important;
+    border-bottom-color: #1e293b !important;
 }
 
 html.dark .site-user-menu-card:hover,
 .dark .site-user-menu-card:hover {
-    background: #1b2739 !important;
-    background-image: none !important;
-    border: 0 !important;
+    background: transparent !important;
+    border-bottom-color: #1e293b !important;
 }
 
 html.dark .site-user-menu-card:hover .site-user-menu-name,
 .dark .site-user-menu-card:hover .site-user-menu-name {
-    color: #f8fafc !important;
+    color: #93c5fd !important;
 }
 
 html.dark .site-user-menu-divider,

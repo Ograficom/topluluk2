@@ -1058,7 +1058,7 @@
         top: 50%;
         right: 0;
         left: auto;
-        width: min(420px, calc(100vw - 260px));
+        width: min(360px, calc(100vw - 300px));
         overflow: visible;
         border-radius: 0;
         border: 0;
@@ -1075,16 +1075,16 @@
         width: 100%;
         margin-top: 0;
         overflow: hidden;
-        border-radius: 18px;
+        border-radius: 16px;
         border: 1px solid rgba(17, 24, 39, 0.08);
         background: #ffffff;
-        box-shadow: 0 18px 36px rgba(15, 23, 42, 0.12);
+        box-shadow: 0 14px 28px rgba(15, 23, 42, 0.12);
     }
 
     .site-search-results {
-        max-height: min(60vh, 420px);
+        max-height: min(46vh, 320px);
         overflow-y: auto;
-        padding: 10px 0 6px;
+        padding: 8px 0 4px;
     }
 
     .site-search-empty {
@@ -6532,9 +6532,11 @@
             html:has(body.route-post-show),
             html:has(body.route-category),
             html:has(body.route-profile),
+            html:has(body.route-search),
             body.alma-app.route-post-show,
             body.alma-app.route-category,
-            body.alma-app.route-profile {
+            body.alma-app.route-profile,
+            body.alma-app.route-search {
                 height: auto !important;
                 max-height: none !important;
                 overflow-y: auto !important;
@@ -6551,11 +6553,27 @@
             body.alma-app.route-profile .main-grid.main-grid--padded,
             body.alma-app.route-profile .main-grid.main-grid--no-pad,
             body.alma-app.route-profile .layout-main,
-            body.alma-app.route-profile .og-profile-page {
+            body.alma-app.route-profile .og-profile-page,
+            body.alma-app.route-search .main-grid,
+            body.alma-app.route-search .main-grid.main-grid--padded,
+            body.alma-app.route-search .main-grid.main-grid--no-pad,
+            body.alma-app.route-search .layout-main {
                 height: auto !important;
                 max-height: none !important;
                 overflow-y: visible !important;
                 touch-action: pan-y !important;
+            }
+
+            body.alma-app.route-search .main-grid,
+            body.alma-app.route-search .main-grid.main-grid--padded,
+            body.alma-app.route-search .main-grid.main-grid--no-pad {
+                padding-left: 0 !important;
+                padding-right: 0 !important;
+            }
+
+            body.alma-app.route-search .layout-main {
+                width: 100% !important;
+                max-width: 100% !important;
             }
 
             body.alma-app .site-header-shell,
@@ -6844,9 +6862,10 @@
 @php($isCategoryRoute = request()->routeIs('blog.categories', 'blog.category', 'blog.category.*'))
 @php($isPostShowRoute = request()->routeIs('blog.post'))
 @php($isProfileRoute = request()->routeIs('users.show'))
+@php($isSearchRoute = request()->routeIs('search'))
 
 <body
-    class="bg-[#fafafa] text-slate-900 font-sans antialiased theme-minimal alma-app {{ request()->routeIs('home') ? 'route-home' : '' }} {{ request()->routeIs('discover') ? 'route-discover' : '' }} {{ request()->routeIs('video') ? 'route-video' : '' }} {{ $isCategoryRoute ? 'route-category' : '' }} {{ $isPostShowRoute ? 'route-post-show' : '' }} {{ $isProfileRoute ? 'route-profile' : '' }}"
+    class="bg-[#fafafa] text-slate-900 font-sans antialiased theme-minimal alma-app {{ request()->routeIs('home') ? 'route-home' : '' }} {{ request()->routeIs('discover') ? 'route-discover' : '' }} {{ request()->routeIs('video') ? 'route-video' : '' }} {{ $isCategoryRoute ? 'route-category' : '' }} {{ $isPostShowRoute ? 'route-post-show' : '' }} {{ $isProfileRoute ? 'route-profile' : '' }} {{ $isSearchRoute ? 'route-search' : '' }}"
     data-mentions-endpoint="{{ auth()->check() ? route('mentions.users') : '' }}"
 >
     @include('partials.toasts')
