@@ -245,10 +245,22 @@ class RssSyncService
 
             try {
                 $wasRejectedBefore = $item->ai_rejected_at !== null;
+
+                // syncFeed() bu satirdaki item icin media_items'i sadece $item->content
+                // HTML'ine gomuyor (appendMediaHtml), ayri bir kolonda saklamiyor - bu
+                // yuzden burada, AI kuyrugu isleme aninda, o resimleri content'ten geri
+                // cikarmazsak $raw['media_items'] hep bos kalir ve importItemAsPost()
+                // featured_image'i hic set edemez/siler (AI duzenledikten sonra one cikan
+                // resmin kaybolmasinin kok nedeni buydu).
+                $mediaItems = $this->mediaItemsFromHtmlFragment(
+                    (string) ($item->content ?? ''),
+                    $item->link ?: $feed->url
+                );
+
                 $postChange = $this->importItemAsPost($feed, $item, [
                     'tags' => $this->extractHashtagsFromText($item->content ?: ''),
-                    'media_items' => [],
-                    'media_url' => null,
+                    'media_items' => $mediaItems,
+                    'media_url' => $this->firstImageUrl($mediaItems),
                 ]);
                 $result['processed']++;
                 $result['posts_created'] += $postChange['created'] ? 1 : 0;
