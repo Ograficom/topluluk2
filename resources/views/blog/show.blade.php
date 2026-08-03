@@ -10490,6 +10490,58 @@ body.dark .post-show-shell .ps-wave-media::after,
 .post-show-shell .ps-post-body :where(strong, b):not(#comments):not(#comments *) {
   font-weight: 700 !important;
 }
+.post-show-shell :where(.ps-post-title, h1.ps-post-title):not(#comments):not(#comments *) {
+  font-weight: 800 !important;
+}
+
+/* .ps-notice/.ps-stats/.ps-cta/.ps-faq/.ps-steps/.ps-proscons bilesenlerinin buyuk/kalin
+   baslik-deger metinleri de ayni site geneli sifirlama kurali yuzunden govde yazisiyla
+   ayni 14px/400 agirliga dusuyordu (ornegin .ps-stats__value 34px/800 yerine 14px/400
+   goruniyordu) - ayni ID-ozgunluk hilesiyle asil boyut/agirliklari geri kazandirildi. */
+.post-show-shell .ps-post-body :where(.ps-notice__badge):not(#comments):not(#comments *) {
+  font-size: 11px !important;
+  font-weight: 700 !important;
+}
+.post-show-shell .ps-post-body :where(.ps-notice__text):not(#comments):not(#comments *) {
+  font-size: 14.5px !important;
+}
+.post-show-shell .ps-post-body :where(.ps-stats__value):not(#comments):not(#comments *) {
+  font-size: 34px !important;
+  font-weight: 800 !important;
+}
+.post-show-shell .ps-post-body :where(.ps-stats__label):not(#comments):not(#comments *) {
+  font-size: 14px !important;
+  font-weight: 600 !important;
+}
+.post-show-shell .ps-post-body :where(.ps-stats__note):not(#comments):not(#comments *) {
+  font-size: 12.5px !important;
+}
+.post-show-shell .ps-post-body :where(.ps-cta__title):not(#comments):not(#comments *) {
+  font-size: 17px !important;
+  font-weight: 700 !important;
+}
+.post-show-shell .ps-post-body :where(.ps-cta__text):not(#comments):not(#comments *) {
+  font-size: 14.5px !important;
+}
+.post-show-shell .ps-post-body :where(.ps-faq__q):not(#comments):not(#comments *) {
+  font-size: 15px !important;
+  font-weight: 700 !important;
+}
+.post-show-shell .ps-post-body :where(.ps-steps__title):not(#comments):not(#comments *) {
+  font-size: 15px !important;
+  font-weight: 700 !important;
+}
+.post-show-shell .ps-post-body :where(.ps-proscons__label):not(#comments):not(#comments *) {
+  font-size: 13px !important;
+  font-weight: 700 !important;
+}
+.post-show-shell .ps-post-body :where(.ps-notice, .ps-stats, .ps-cta, .ps-faq, .ps-steps, .ps-proscons):not(#comments):not(#comments *) {
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04), 0 4px 14px rgba(15, 23, 42, 0.05) !important;
+}
+.post-show-shell .ps-post-body :where(blockquote, .cdx-quote):not(#comments):not(#comments *) {
+  font-size: 15px !important;
+  font-style: italic;
+}
 
 /* EditorJS image/gallery/embed/video plugin çıktıları */
 .post-show-shell .ps-post-body :where(.image-tool, .ps-full-media, .ps-full-gallery, figure) {

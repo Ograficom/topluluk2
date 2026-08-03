@@ -2197,6 +2197,15 @@ class BlogController extends Controller
                 continue;
             }
 
+            // EditorJS.js her blogun kendi id'sini gonderir; bu id anket (poll) blogu icin
+            // oy sayimini eslestirmede zorunlu (bkz. buildPollBlocks). Asagida orijinal id
+            // korunuyor, yoksa (ornegin elle olusturulmus icerik) yeni bir id uretiliyor -
+            // aksi halde id'siz kalan anketler post-show sayfasinda hic gorunmuyordu.
+            $blockId = trim((string) ($block['id'] ?? ''));
+            if ($blockId === '') {
+                $blockId = Str::random(10);
+            }
+
             $data = $block['data'] ?? [];
             if (!is_array($data)) {
                 if (is_string($data)) {
@@ -2256,6 +2265,7 @@ class BlogController extends Controller
             }
 
             $cleanBlocks[] = [
+                'id' => $blockId,
                 'type' => $type,
                 'data' => $data,
             ];
