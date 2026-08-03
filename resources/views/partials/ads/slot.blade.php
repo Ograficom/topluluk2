@@ -66,75 +66,123 @@
         gosterilir.
     --}}
     <div class="{{ implode(' ', array_merge($classes, ['alma-ad-slot--bare'])) }}" data-ad-slot="{{ $slotKey }}" data-ad-slot-house="1">
-        @include('partials.ads.house-ad', ['slotKey' => $slotKey])
+        
+        <!-- PREMIUM HOUSE AD (REKLAM VER) BAŞLANGICI -->
+        <div class="reklam-alani" id="reklamKutusu-{{ $slotKey }}">
+            <div class="reklam-ust">
+                <span class="reklam-etiketi">Reklam</span>
+                <!-- Buton hedefi dinamik $slotKey ile belirlendi -->
+                <button class="kapat-btn" data-reklam-kapat="reklamKutusu-{{ $slotKey }}" title="Reklamı Kapat">&#x2715;</button>
+            </div>
+            <div class="reklam-icerik">
+                <!-- href kısmına kendi Reklam Ver sayfanın linkini girebilirsin -->
+                <a href="/reklam-ver">
+                    <img src="https://picsum.photos/728/200" alt="Reklam Ver" class="reklam-resim">
+                </a>
+            </div>
+        </div>
+        <!-- PREMIUM HOUSE AD BİTİŞİ -->
+
     </div>
 @endif
 
 @once
     <style>
-        /* Bos reklam alanlarinin yeni kutu tasarimi - kullanicinin verdigi kod
-           birebir korunuyor (stil degistirilmiyor). */
+        /* ========================================================= */
+        /* PREMIUM HOUSE AD (YEDEK REKLAM) TASARIMI                  */
+        /* ========================================================= */
         .reklam-alani {
             width: 100%;
             max-width: 728px;
             background-color: #ffffff;
-            border-radius: 8px;
+            border-radius: 10px;
             overflow: hidden;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15), 0 4px 10px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(0, 0, 0, 0.04);
             display: flex;
             flex-direction: column;
+            position: relative;
+            margin: 0 auto; /* Kutuyu bulunduğu alanda ortalamak için */
         }
 
         .reklam-ust {
             display: flex;
             justify-content: flex-end;
             align-items: center;
-            background-color: #ffffff;
-            padding: 6px 12px;
-            font-size: 13px;
-            font-weight: 700;
-            color: #333;
+            background-color: #fbfbfb;
+            padding: 6px 10px;
+            border-bottom: 1px solid #f0f0f0;
         }
 
-        .kapat-btn {
-            background-color: #1a1a1a;
-            color: #ffffff;
+        .reklam-etiketi {
+            background-color: #eeeeee;
+            color: #666666;
+            font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 3px 8px;
+            border-radius: 5px;
+            margin-right: 10px;
+            user-select: none;
+        }
+
+        .kapat-btn,
+        body.alma-app .kapat-btn {
+            background-color: #e4e4e4 !important;
+            color: #555555 !important;
             border: none;
-            border-radius: 4px;
-            width: 20px;
-            height: 20px;
-            margin-left: 8px;
+            border-radius: 6px;
+            width: 22px;
+            height: 22px;
             cursor: pointer;
-            font-size: 12px;
+            font-family: sans-serif;
+            font-size: 11px;
             font-weight: bold;
             display: flex;
             justify-content: center;
             align-items: center;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            padding: 0;
         }
 
-        .kapat-btn:hover {
-            background-color: #444;
+        .kapat-btn:hover,
+        body.alma-app .kapat-btn:hover {
+            background-color: #ff4757 !important;
+            color: #ffffff !important;
+            transform: rotate(90deg);
+            box-shadow: 0 3px 8px rgba(255, 71, 87, 0.3);
         }
 
         .reklam-icerik {
             width: 100%;
             line-height: 0;
+            background-color: #f5f5f5;
         }
 
         .reklam-resim {
             width: 100%;
             height: auto;
             display: block;
+            transition: opacity 0.2s ease;
         }
 
-        /* .alma-ad-slot'un kendi kart cercevesi (border/arka plan/dolgu) yeni kutu
-           tasarimiyla cakismasin diye bos reklam alanlarinda kaldiriliyor - boylece
-           .reklam-alani kendi cercevesiyle temiz gorunuyor. */
+        .reklam-resim:hover {
+            opacity: 0.93; /* Üzerine gelince resmin hafif solması tıkla hissini artırır */
+        }
+
+        /* ========================================================= */
+        /* ALMA AD SLOT SİSTEM STİLLERİ                              */
+        /* ========================================================= */
+        
+        /* Premium tasarımın kendi gölgesi olduğu için sistemin dış çerçevesi iptal edilir */
         .alma-ad-slot--bare {
             border: 0 !important;
             border-radius: 0 !important;
             background: transparent !important;
             overflow: visible !important;
+            box-shadow: none !important;
         }
 
         .alma-ad-slot--dismissible {
@@ -200,6 +248,7 @@
         }
     </style>
     <script>
+        // 1. Standart sistem reklamını (Iframe vb.) kapatma
         document.addEventListener('click', function (event) {
             var closeBtn = event.target.closest('[data-ad-dismiss]');
             if (!closeBtn) {
@@ -217,6 +266,7 @@
             }, 160);
         });
 
+        // 2. Premium Yedek Reklamı (House Ad) Kapatma ve Animasyonu
         document.addEventListener('click', function (event) {
             var kapatBtn = event.target.closest('[data-reklam-kapat]');
             if (!kapatBtn) {
@@ -225,7 +275,15 @@
 
             var box = document.getElementById(kapatBtn.getAttribute('data-reklam-kapat'));
             if (box) {
-                box.style.display = 'none';
+                // Küçülme ve silinme efekti
+                box.style.transition = "opacity 0.3s ease, transform 0.3s ease";
+                box.style.opacity = "0";
+                box.style.transform = "scale(0.96)";
+                
+                // Animasyon bitince DOM'da yer kaplamaması için display: none
+                window.setTimeout(function () {
+                    box.style.display = 'none';
+                }, 300);
             }
         });
     </script>
