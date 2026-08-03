@@ -80,8 +80,10 @@ class RssArticleRewriteService
 
             $title = Str::limit(trim(strip_tags((string) ($payload['title'] ?? ''))), 500, '');
             $summary = Str::limit($this->plainText((string) ($payload['summary'] ?? '')), 500, '');
-            $content = $this->stripSourceAttribution(
-                $this->sanitizeGeneratedHtml((string) ($payload['content_html'] ?? ''))
+            $content = $this->stripTrailingTagList(
+                $this->stripSourceAttribution(
+                    $this->sanitizeGeneratedHtml((string) ($payload['content_html'] ?? ''))
+                )
             );
             $tags = $this->normalizeTags((array) ($payload['tags'] ?? []));
 
@@ -114,7 +116,7 @@ class RssArticleRewriteService
         return [
             'title' => (string) $item->ai_title,
             'summary' => (string) $item->ai_summary,
-            'content' => $this->stripSourceAttribution((string) $item->ai_content),
+            'content' => $this->stripTrailingTagList($this->stripSourceAttribution((string) $item->ai_content)),
             'tags' => $this->normalizeTags((array) ($item->ai_tags ?? [])),
         ];
     }
@@ -168,6 +170,38 @@ class RssArticleRewriteService
         $html = preg_replace(
             '#<p>\s*(?:Kaynak|Source)\s*:\s*(?:<a\b[^>]*>.*?</a>|https?://\S+)\s*</p>#isu',
             '',
+            $html
+        ) ?? $html;
+
+        return trim($html);
+    }
+
+    /**
+     * The rewrite prompt explicitly asks the model to keep tags in the separate
+     * `tags` JSON field, but LLMs occasionally ignore this and append a trailing
+     * "Etiketler: #x #y" style line (or a paragraph made up almost entirely of
+     * hashtags) inside content_html anyway. Strip it defensively so tags never
+     * end up duplicated inside the published article body.
+     */
+    private function stripTrailingTagList(string $html): string
+    {
+        // A trailing paragraph explicitly labelled as a tag/keyword list.
+        $html = preg_replace(
+            '#<p>\s*(?:Etiketler|Anahtar\s*Kelimeler|Tags|Keywords)\s*:.*?</p>\s*$#isu',
+            '',
+            $html
+        ) ?? $html;
+
+        // A trailing paragraph that is (almost) nothing but hashtags, e.g.
+        // "<p>#deprem #istanbul #afad #sondakika</p>".
+        $html = preg_replace_callback(
+            '#<p>([^<]*)</p>\s*$#isu',
+            function (array $matches): string {
+                $text = trim($matches[1]);
+                $withoutHashtags = trim(preg_replace('/#[\p{L}\p{N}_]{2,80}/u', '', $text) ?? $text);
+
+                return $withoutHashtags === '' && $text !== '' ? '' : $matches[0];
+            },
             $html
         ) ?? $html;
 

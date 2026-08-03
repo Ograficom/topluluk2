@@ -29,14 +29,18 @@
 >
     @if ($size['layout'] === 'vertical')
         <div class="house-ad__body house-ad__body--vertical">
-            <img src="{{ $logoUrl }}" alt="Ografi" class="house-ad__logo">
+            <span class="house-ad__visual house-ad__visual--vertical">
+                <img src="{{ $logoUrl }}" alt="Ografi" class="house-ad__logo">
+            </span>
             <h3 class="house-ad__title">Bu alan senin<br>reklamın olabilir</h3>
             <p class="house-ad__text">Ografi kullanıcılarına bu alandan ulaş. Kurulum birkaç dakika sürer.</p>
             <span class="house-ad__cta">Reklam Ver</span>
         </div>
     @elseif ($size['layout'] === 'wide')
         <div class="house-ad__body house-ad__body--wide">
-            <img src="{{ $logoUrl }}" alt="Ografi" class="house-ad__logo house-ad__logo--wide">
+            <span class="house-ad__visual house-ad__visual--wide">
+                <img src="{{ $logoUrl }}" alt="Ografi" class="house-ad__logo house-ad__logo--wide">
+            </span>
             <div class="house-ad__copy">
                 <h3 class="house-ad__title">Bu alan senin reklamın olabilir</h3>
                 <p class="house-ad__text">Ografi'de akış içinde, sağ sütunda veya sayfa üstünde - binlerce kullanıcıya ulaş.</p>
@@ -45,7 +49,9 @@
         </div>
     @else
         <div class="house-ad__body house-ad__body--compact">
-            <img src="{{ $logoUrl }}" alt="Ografi" class="house-ad__logo">
+            <span class="house-ad__visual house-ad__visual--compact">
+                <img src="{{ $logoUrl }}" alt="Ografi" class="house-ad__logo">
+            </span>
             <div class="house-ad__copy">
                 <h3 class="house-ad__title house-ad__title--compact">Bu alan senin reklamın olabilir</h3>
                 <span class="house-ad__cta">Reklam Ver</span>

@@ -225,8 +225,30 @@ class PostResource extends Resource
                     ->falseLabel('Taslak'),
             ])
             ->actions([
-                Actions\EditAction::make(),
-                Actions\DeleteAction::make(),
+                Actions\ActionGroup::make([
+                    Actions\Action::make('toggle_publish')
+                        ->label(fn (Post $record) => $record->is_published ? 'Yayından Kaldır' : 'Yayınla')
+                        ->icon(fn (Post $record) => $record->is_published ? 'heroicon-o-x-circle' : 'heroicon-o-check-circle')
+                        ->color(fn (Post $record) => $record->is_published ? 'warning' : 'success')
+                        ->requiresConfirmation()
+                        ->action(function (Post $record): void {
+                            $record->is_published = ! $record->is_published;
+                            if ($record->is_published && ! $record->published_at) {
+                                $record->published_at = now();
+                            }
+                            $record->save();
+                        }),
+                    Actions\ViewAction::make()
+                        ->label('Görüntüle')
+                        ->icon('heroicon-o-eye'),
+                    Actions\EditAction::make()
+                        ->label('Düzenle')
+                        ->icon('heroicon-o-pencil-square'),
+                    Actions\DeleteAction::make()
+                        ->label('Sil')
+                        ->icon('heroicon-o-trash')
+                        ->color('danger'),
+                ]),
             ])
             ->bulkActions([
                 Actions\DeleteBulkAction::make(),
@@ -251,8 +273,17 @@ class PostResource extends Resource
         return [
             'index' => Pages\ListPosts::route('/'),
             'create' => Pages\CreatePost::route('/create'),
+            'view' => Pages\ViewPost::route('/{record}'),
             'edit' => Pages\EditPost::route('/{record}/edit'),
         ];
+    }
+
+    public static function getRecordSubNavigation(\Filament\Resources\Pages\Page $page): array
+    {
+        return $page->generateNavigationItems([
+            Pages\ViewPost::class,
+            Pages\EditPost::class,
+        ]);
     }
 }
 

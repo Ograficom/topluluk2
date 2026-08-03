@@ -600,6 +600,7 @@
                 border-radius: 999px !important;
                 background: #fff !important;
                 color: #111827 !important;
+                color-scheme: light !important;
                 font-size: 13px !important;
                 font-family: inherit !important;
                 box-sizing: border-box !important;

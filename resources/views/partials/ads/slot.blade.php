@@ -81,10 +81,53 @@
             position: relative;
             border: 1px solid #e2e8f0;
             border-radius: 10px;
-            background: #ffffff;
+            background: #f8fafc;
             padding: 16px;
             text-decoration: none;
             overflow: hidden;
+        }
+
+        .house-ad__visual {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            box-sizing: border-box;
+            border-radius: 14px;
+            background: #ffffff;
+            border: 1px solid #e9edf3;
+            box-shadow: 0 1px 3px rgba(15, 23, 42, 0.05);
+        }
+
+        .house-ad__visual--vertical {
+            width: 100%;
+            aspect-ratio: 16 / 10;
+            margin-bottom: 4px;
+        }
+
+        .house-ad__visual--vertical .house-ad__logo {
+            width: 64px;
+            height: 64px;
+        }
+
+        .house-ad__visual--wide {
+            width: 96px;
+            height: 96px;
+        }
+
+        .house-ad__visual--wide .house-ad__logo {
+            width: 56px;
+            height: 56px;
+        }
+
+        .house-ad__visual--compact {
+            width: 64px;
+            height: 64px;
+        }
+
+        .house-ad__visual--compact .house-ad__logo {
+            width: 40px;
+            height: 40px;
         }
 
         .house-ad__body {
@@ -209,12 +252,19 @@
         }
 
         .alma-ad-tagbar__label {
+            display: inline-flex;
+            align-items: center;
+            height: 20px;
+            padding: 0 8px;
+            border-radius: 999px;
+            border: 1px solid #e2e8f0;
+            background: #ffffff;
             font-family: "Inter", Arial, Helvetica, sans-serif;
             font-size: 10px;
-            font-weight: 600;
+            font-weight: 700;
             letter-spacing: 0.04em;
             text-transform: uppercase;
-            color: #94a3b8;
+            color: #64748b;
         }
 
         .alma-ad-tagbar__close {

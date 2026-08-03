@@ -1797,8 +1797,13 @@ class RssSyncService
             'badge', 'button', 'sidebar-widget', 'footer-widget',
         ];
 
+        // Word-boundary-anchored match: a plain str_contains() here misclassifies
+        // legitimate article images as site assets whenever their URL happens to
+        // contain one of these words as a substring of something longer (e.g. a
+        // CDN path segment like ".../banner-1200x630/photo.jpg" wrongly matched
+        // "banner" and wiped out a real featured image on the next RSS sync).
         foreach ($nonArticleTerms as $term) {
-            if (str_contains($decodedUrl, $term)) {
+            if (preg_match('/(?:^|[-_\/.])' . preg_quote($term, '/') . '(?:[-_\/.]|$)/i', $decodedUrl)) {
                 return true;
             }
         }
