@@ -9,7 +9,7 @@ use Illuminate\Support\Str;
 class RssArticleRewriteService
 {
     /** Incrementing this value intentionally refreshes previously cached AI rewrites. */
-    public const PROMPT_VERSION = 'seo-2026-07-v2';
+    public const PROMPT_VERSION = 'seo-2026-08-v3';
 
     public static function expectedSourceHash(string $itemHash): string
     {
@@ -145,10 +145,10 @@ class RssArticleRewriteService
 
         $html = preg_replace('#<(script|style)[^>]*>.*?</\1>#is', '', $html) ?? $html;
 
-        $html = strip_tags($html, '<p><h2><h3><ul><ol><li><strong><em><blockquote>');
+        $html = strip_tags($html, '<p><h2><h3><ul><ol><li><strong><em><blockquote><table><thead><tbody><tr><th><td>');
 
         $html = preg_replace(
-            '/<(p|h2|h3|ul|ol|li|strong|em|blockquote)\b[^>]*>/i',
+            '/<(p|h2|h3|ul|ol|li|strong|em|blockquote|table|thead|tbody|tr|th|td)\b[^>]*>/i',
             '<$1>',
             $html
         ) ?? $html;
@@ -232,10 +232,14 @@ Ilk paragraf haberin temel sorusunu dogrudan cevaplasin. Devaminda anlamli h2/h3
 Kaynaktaki kisi, kurum, yer, urun ve konu adlarini dogal baglaminda koru. Arama motoru icin anlamsiz kelime tekrari yapma.
 Gorsel veya video hakkinda kaynakta bulunmayan aciklama uydurma.
 Metnin icine kaynak, kaynak URL, internet adresi veya baglanti ekleme. Kaynak ayri bir kutuda gosterilecek.
+Yaziyi tek duzden, alt alta siralanmis ayni bicimde paragraflar halinde yazma. Icerigin yapisini konuya gore cesitlendir:
+- Kaynakta karsilastirilabilir sayisal veri, fiyat, tarih/program, siralama veya liste halinde durum varsa (ornegin birden fazla kurum/urun/rakam karsilastirmasi) bunu <table><tr><th>...</th></tr><tr><td>...</td></tr></table> ile duzenli bir tabloda goster, ayni bilgiyi ayrica duz paragrafta tekrarlama.
+- Kaynakta bir kisiye (yetkili, tanik, uzman) ait dogrudan alinti/aciklama varsa bunu <blockquote> ile ayri ve belirgin goster.
+- Sadece kaynakta gercekten var olan veriler icin tablo/alinti kullan; veri veya alinti yoksa uydurma, düz paragraf ve basliklarla devam et.
 JSON disinda hicbir sey dondurme.
 
 JSON semasi:
-{"title":"benzersiz baslik","summary":"en fazla 2 cumlelik ozet","content_html":"yalnizca p, h2, h3, ul, ol, li, strong, em ve blockquote etiketleriyle HTML","tags":["3-8 kisa etiket"]}
+{"title":"benzersiz baslik","summary":"en fazla 2 cumlelik ozet","content_html":"yalnizca p, h2, h3, ul, ol, li, strong, em, blockquote, table, thead, tbody, tr, th, td etiketleriyle HTML - uygun oldugunda tablo ve alinti kullan, sadece duz paragraflar yigma","tags":["3-8 kisa etiket"]}
 
 Kaynak metin:
 {$sourceText}

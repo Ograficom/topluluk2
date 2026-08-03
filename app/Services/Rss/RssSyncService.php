@@ -341,10 +341,6 @@ class RssSyncService
             $item->imported_at = now();
             $item->save();
 
-            if ($rewritten !== null) {
-                app(RssAutoCommentService::class)->commentOn($post, $rewritten);
-            }
-
             $change['created'] = true;
             return $change;
         }
