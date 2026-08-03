@@ -3,11 +3,53 @@
 @section('title', __('site.popular_page.title'))
 @section('meta_description', __('site.popular_page.meta_description'))
 
+@push('head')
+<style>
+    .page-title-identity {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        min-height: 38px;
+        padding: 3px 17px;
+        border: 1px solid #d9dde3;
+        border-radius: 18px;
+        background: #ffffff;
+        color: #050505;
+        font-size: 14px;
+        font-weight: 600;
+        line-height: 1;
+        box-sizing: border-box;
+        box-shadow: none;
+    }
+
+    html.dark .page-title-identity,
+    .dark .page-title-identity {
+        border-color: #27272a;
+        background: #18181b;
+        color: #fafafa;
+    }
+
+    @media (max-width: 640px) {
+        .page-title-identity {
+            width: 100vw;
+            min-height: 34px;
+            margin-right: calc(50% - 50vw);
+            margin-left: calc(50% - 50vw);
+            padding: 2px 14px;
+            border-right: 0;
+            border-left: 0;
+            border-radius: 16px;
+            font-size: 13px;
+        }
+    }
+</style>
+@endpush
+
 @section('content')
-    <div class="space-y-6">
-        <div class="alma-page-header alma-page-header--compact-card">
-            <h1 class="alma-page-title alma-page-title--compact-card">{{ __('site.popular_page.heading') }}</h1>
-        </div>
+    <div class="space-y-4">
+        <section class="space-y-4">
+            <h1 class="page-title-identity">{{ __('site.popular_page.heading') }}</h1>
+        </section>
 
         @include('partials.ads.slot', [
             'slotKey' => 'ads_feed_top',
