@@ -17,6 +17,11 @@
     if ($wrapperClass !== '') {
         $classes[] = $wrapperClass;
     }
+
+    // IAB standart olculerine gore kutu sekli: genis akis alanlari icin
+    // leaderboard (728x90), diger tum konumlar icin rectangle (300x250).
+    $leaderboardSlots = ['ads_feed_top', 'ads_feed_inline'];
+    $adShape = in_array($slotKey, $leaderboardSlots, true) ? 'leaderboard' : 'rectangle';
 @endphp
 
 @if($slotKey !== '' && trim($content) !== '')
@@ -65,157 +70,101 @@
         gosterilmez - admin'in "burada hicbir sey olmasin" tercihine saygi
         gosterilir.
     --}}
-    <div class="{{ implode(' ', array_merge($classes, ['alma-ad-slot--bare'])) }}" data-ad-slot="{{ $slotKey }}" data-ad-slot-house="1">
-        
-        <!-- PREMIUM HOUSE AD (REKLAM VER) BAŞLANGICI -->
-        <div class="reklam-alani" id="reklamKutusu-{{ $slotKey }}">
-            <div class="reklam-ust">
-                <span class="reklam-etiketi">Reklam</span>
-                <!-- Buton hedefi dinamik $slotKey ile belirlendi -->
-                <button class="kapat-btn" data-reklam-kapat="reklamKutusu-{{ $slotKey }}" title="Reklamı Kapat">&#x2715;</button>
-            </div>
-            <div class="reklam-icerik">
-                <!-- href kısmına kendi Reklam Ver sayfanın linkini girebilirsin -->
-                <a href="/reklam-ver">
-                    <img src="https://picsum.photos/728/200" alt="Reklam Ver" class="reklam-resim">
-                </a>
-            </div>
-        </div>
-        <!-- PREMIUM HOUSE AD BİTİŞİ -->
-
+    <div class="{{ implode(' ', $classes) }}" data-ad-slot="{{ $slotKey }}" data-ad-slot-house="1" data-ad-shape="{{ $adShape }}">
+        @include('partials.ads.tagbar')
+        @include('partials.ads.house-ad', ['slotKey' => $slotKey, 'shape' => $adShape])
     </div>
 @endif
 
 @once
     <style>
-        /* ========================================================= */
-        /* PREMIUM HOUSE AD (YEDEK REKLAM) TASARIMI                  */
-        /* ========================================================= */
-        .reklam-alani {
+        /* ============================================================
+           Reklam kutusu tasarimi - IAB standart reklam olculerine
+           (leaderboard 728x90, rectangle 300x250) ve profesyonel
+           "house ad" konvansiyonlarina (kenara kadar dolu gorsel, kutu
+           icinde kutu yok, kucuk kose etiketi - buyuk ayri bar degil)
+           dayali. Bkz: MonetizePros/IAB house-ad arastirmasi.
+           ============================================================ */
+        .alma-ad-slot {
             width: 100%;
             max-width: 728px;
-            background-color: #ffffff;
-            border-radius: 10px;
+            border-radius: 8px;
             overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15), 0 4px 10px rgba(0, 0, 0, 0.05);
-            border: 1px solid rgba(0, 0, 0, 0.04);
-            display: flex;
-            flex-direction: column;
+            margin: 0 auto 20px auto;
             position: relative;
-            margin: 0 auto; /* Kutuyu bulunduğu alanda ortalamak için */
-        }
-
-        .reklam-ust {
-            display: flex;
-            justify-content: flex-end;
-            align-items: center;
-            background-color: #fbfbfb;
-            padding: 6px 10px;
-            border-bottom: 1px solid #f0f0f0;
-        }
-
-        .reklam-etiketi {
-            background-color: #eeeeee;
-            color: #666666;
-            font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
-            font-size: 10px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            padding: 3px 8px;
-            border-radius: 5px;
-            margin-right: 10px;
-            user-select: none;
-        }
-
-        .kapat-btn,
-        body.alma-app .kapat-btn {
-            background-color: #e4e4e4 !important;
-            color: #555555 !important;
-            border: none;
-            border-radius: 6px;
-            width: 22px;
-            height: 22px;
-            cursor: pointer;
-            font-family: sans-serif;
-            font-size: 11px;
-            font-weight: bold;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-            padding: 0;
-        }
-
-        .kapat-btn:hover,
-        body.alma-app .kapat-btn:hover {
-            background-color: #ff4757 !important;
-            color: #ffffff !important;
-            transform: rotate(90deg);
-            box-shadow: 0 3px 8px rgba(255, 71, 87, 0.3);
-        }
-
-        .reklam-icerik {
-            width: 100%;
-            line-height: 0;
-            background-color: #f5f5f5;
-        }
-
-        .reklam-resim {
-            width: 100%;
-            height: auto;
-            display: block;
-            transition: opacity 0.2s ease;
-        }
-
-        .reklam-resim:hover {
-            opacity: 0.93; /* Üzerine gelince resmin hafif solması tıkla hissini artırır */
-        }
-
-        /* ========================================================= */
-        /* ALMA AD SLOT SİSTEM STİLLERİ                              */
-        /* ========================================================= */
-        
-        /* Premium tasarımın kendi gölgesi olduğu için sistemin dış çerçevesi iptal edilir */
-        .alma-ad-slot--bare {
-            border: 0 !important;
-            border-radius: 0 !important;
-            background: transparent !important;
-            overflow: visible !important;
-            box-shadow: none !important;
         }
 
         .alma-ad-slot--dismissible {
             position: relative;
         }
 
+        /* House-ad govde gorseli her zaman kenardan kenara, bosluksuz */
+        .alma-ad-slot[data-ad-slot-house="1"] .house-ad {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+
+        .alma-ad-slot[data-ad-slot-house="1"] .house-ad img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* body.alma-app .alma-ad-slot { min-height:128px !important; ... } site geneli
+           kurali ayni ozellik uzerinde !important kullandigi icin asagidaki oran
+           kilitleme kurallari da !important olmak zorunda, aksi halde min-height
+           tabani aspect-ratio hesaplamasini eziyor (bkz. bu oturumdaki tekrar eden
+           .kapat-btn/.alma-ad-tagbar__close sifirlama sorunuyla ayni kok neden). */
+        body.alma-app .alma-ad-slot[data-ad-slot-house="1"] {
+            min-height: 0 !important;
+        }
+
+        /* Leaderboard orani (728x90 ~ 8:1) - ust/ic akis reklamlari */
+        body.alma-app .alma-ad-slot[data-ad-slot-house="1"][data-ad-shape="leaderboard"] {
+            aspect-ratio: 728 / 90 !important;
+        }
+
+        /* Rectangle orani (300x250 ~ 1.2:1) - kompakt/mobil reklamlari */
+        body.alma-app .alma-ad-slot[data-ad-slot-house="1"][data-ad-shape="rectangle"] {
+            aspect-ratio: 300 / 250 !important;
+            max-width: 300px !important;
+        }
+
+        /* ============================================================
+           Kucuk kose etiketi - IAB native reklam etiketi konvansiyonuna
+           uygun: gorselin uzerine bindirilmis, dusuk kontrastli, kucuk.
+           Buyuk ayri bir bar DEGIL.
+           ============================================================ */
         .alma-ad-tagbar {
             position: absolute;
-            top: 10px;
-            right: 12px;
+            top: 8px;
+            right: 8px;
             z-index: 3;
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 4px;
         }
 
         .alma-ad-tagbar__label {
             display: inline-flex;
             align-items: center;
-            height: 20px;
-            padding: 0 8px;
-            border-radius: 999px;
-            border: 1px solid #e2e8f0;
-            background: #ffffff;
+            height: 18px;
+            padding: 0 7px;
+            border-radius: 4px;
+            background: rgba(15, 23, 42, 0.55);
+            backdrop-filter: blur(2px);
             font-family: "Inter", Arial, Helvetica, sans-serif;
-            font-size: 10px;
+            font-size: 9px;
             font-weight: 700;
             letter-spacing: 0.04em;
             text-transform: uppercase;
-            color: #64748b;
+            color: #ffffff;
         }
 
-        .alma-ad-tagbar__close {
+        .alma-ad-tagbar__close,
+        body.alma-app .alma-ad-tagbar__close {
             display: flex;
             align-items: center;
             justify-content: center;
@@ -223,17 +172,18 @@
             width: 18px;
             height: 18px;
             padding: 0;
-            border: 1px solid #e2e8f0;
-            border-radius: 999px;
-            background: #ffffff;
-            color: #94a3b8;
+            border: 0 !important;
+            border-radius: 4px;
+            background: rgba(15, 23, 42, 0.55) !important;
+            color: #ffffff !important;
             cursor: pointer;
-            transition: background-color .15s ease, color .15s ease;
+            transition: background-color .15s ease;
         }
 
-        .alma-ad-tagbar__close:hover {
-            background: #f1f5f9;
-            color: #475569;
+        .alma-ad-tagbar__close:hover,
+        body.alma-app .alma-ad-tagbar__close:hover {
+            background: rgba(220, 38, 38, 0.85) !important;
+            color: #ffffff !important;
         }
 
         .alma-ad-tagbar__close svg {
@@ -248,7 +198,6 @@
         }
     </style>
     <script>
-        // 1. Standart sistem reklamını (Iframe vb.) kapatma
         document.addEventListener('click', function (event) {
             var closeBtn = event.target.closest('[data-ad-dismiss]');
             if (!closeBtn) {
@@ -264,27 +213,6 @@
             window.setTimeout(function () {
                 wrapper.remove();
             }, 160);
-        });
-
-        // 2. Premium Yedek Reklamı (House Ad) Kapatma ve Animasyonu
-        document.addEventListener('click', function (event) {
-            var kapatBtn = event.target.closest('[data-reklam-kapat]');
-            if (!kapatBtn) {
-                return;
-            }
-
-            var box = document.getElementById(kapatBtn.getAttribute('data-reklam-kapat'));
-            if (box) {
-                // Küçülme ve silinme efekti
-                box.style.transition = "opacity 0.3s ease, transform 0.3s ease";
-                box.style.opacity = "0";
-                box.style.transform = "scale(0.96)";
-                
-                // Animasyon bitince DOM'da yer kaplamaması için display: none
-                window.setTimeout(function () {
-                    box.style.display = 'none';
-                }, 300);
-            }
         });
     </script>
 @endonce
