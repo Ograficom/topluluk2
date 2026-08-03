@@ -79,9 +79,9 @@
             box-sizing: border-box;
             flex-direction: column;
             position: relative;
-            border: 1px solid #e2e8f0;
+            border: 1px solid #27272a;
             border-radius: 10px;
-            background: #f8fafc;
+            background: #18181b;
             padding: 16px;
             text-decoration: none;
             overflow: hidden;
@@ -95,8 +95,8 @@
             box-sizing: border-box;
             border-radius: 14px;
             background: #ffffff;
-            border: 1px solid #e9edf3;
-            box-shadow: 0 1px 3px rgba(15, 23, 42, 0.05);
+            border: 1px solid #ffffff;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
         }
 
         .house-ad__visual--vertical {
@@ -175,7 +175,7 @@
 
         .house-ad__title {
             margin: 0;
-            color: #0f172a;
+            color: #f8fafc;
             font-family: "Inter", Arial, Helvetica, sans-serif;
             font-size: 15px;
             font-weight: 700;
@@ -189,7 +189,7 @@
 
         .house-ad__text {
             margin: 0;
-            color: #64748b;
+            color: #a1a1aa;
             font-family: "Inter", Arial, Helvetica, sans-serif;
             font-size: 12.5px;
             line-height: 1.5;
@@ -222,6 +222,27 @@
 
         .house-ad:hover .house-ad__cta {
             background: #1d4ed8;
+        }
+
+        .house-ad:hover {
+            border-color: #3f3f46;
+        }
+
+        [data-ad-slot-house="1"] .alma-ad-tagbar__label {
+            border-color: #3f3f46;
+            background: #27272a;
+            color: #d4d4d8;
+        }
+
+        [data-ad-slot-house="1"] .alma-ad-tagbar__close {
+            border-color: #3f3f46;
+            background: #27272a;
+            color: #a1a1aa;
+        }
+
+        [data-ad-slot-house="1"] .alma-ad-tagbar__close:hover {
+            background: #3f3f46;
+            color: #f4f4f5;
         }
 
         @media (max-width: 480px) {
