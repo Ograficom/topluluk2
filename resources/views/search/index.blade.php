@@ -11,6 +11,40 @@
         width: 100%;
     }
 
+    .og-search-bar-row {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        width: 100%;
+    }
+
+    .og-search-back-btn,
+    body.alma-app .og-search-back-btn {
+        flex: 0 0 auto;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        border-radius: 9999px;
+        border: 0 !important;
+        background: transparent !important;
+        color: #334155 !important;
+        font-size: 20px;
+        cursor: pointer;
+    }
+
+    .og-search-back-btn:hover,
+    body.alma-app .og-search-back-btn:hover {
+        background: #f1f5f9 !important;
+    }
+
+    @media (max-width: 640px) {
+        .og-search-back-btn {
+            display: inline-flex !important;
+        }
+    }
+
     .og-search-bar {
         position: relative;
         display: flex;
@@ -459,6 +493,16 @@
         border-color: #1e293b !important;
     }
 
+    html.dark .og-search-back-btn,
+    body.alma-app.dark .og-search-back-btn {
+        color: #cbd5e1 !important;
+    }
+
+    html.dark .og-search-back-btn:hover,
+    body.alma-app.dark .og-search-back-btn:hover {
+        background: #1e293b !important;
+    }
+
     html.dark .og-search-pill,
     html.dark .og-search-type-pill {
         background: #0f172a !important;
@@ -566,22 +610,27 @@
          data-authenticated="{{ auth()->check() ? '1' : '0' }}"
          data-login-url="{{ route('login') }}"
     >
-        <div class="og-search-bar">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" class="og-search-bar-icon" aria-hidden="true">
-                <path d="M13.78 12.72a6 6 0 10-1.06 1.06l3.75 3.75a.75.75 0 101.06-1.06l-3.75-3.75zM12 9a5 5 0 11-10 0 5 5 0 0110 0z" fill="currentColor"/>
-            </svg>
-            <input
-                type="text"
-                value="{{ $query }}"
-                placeholder="{{ __('site.search.placeholder') }}"
-                class="og-search-bar-input"
-                autocomplete="off"
-                autofocus
-                data-search-query-input
-            >
-            <button type="button" class="og-search-bar-clear {{ $query === '' ? 'hidden' : '' }}" aria-label="{{ __('site.mobile_nav.clear') ?? 'Temizle' }}" data-search-query-clear>
-                <iconify-icon icon="lucide:x"></iconify-icon>
+        <div class="og-search-bar-row">
+            <button type="button" class="og-search-back-btn" data-search-back aria-label="{{ __('site.mobile_nav.back') ?? 'Geri' }}">
+                <iconify-icon icon="lucide:arrow-left"></iconify-icon>
             </button>
+            <div class="og-search-bar">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" class="og-search-bar-icon" aria-hidden="true">
+                    <path d="M13.78 12.72a6 6 0 10-1.06 1.06l3.75 3.75a.75.75 0 101.06-1.06l-3.75-3.75zM12 9a5 5 0 11-10 0 5 5 0 0110 0z" fill="currentColor"/>
+                </svg>
+                <input
+                    type="text"
+                    value="{{ $query }}"
+                    placeholder="{{ __('site.search.placeholder') }}"
+                    class="og-search-bar-input"
+                    autocomplete="off"
+                    autofocus
+                    data-search-query-input
+                >
+                <button type="button" class="og-search-bar-clear {{ $query === '' ? 'hidden' : '' }}" aria-label="{{ __('site.mobile_nav.clear') ?? 'Temizle' }}" data-search-query-clear>
+                    <iconify-icon icon="lucide:x"></iconify-icon>
+                </button>
+            </div>
         </div>
 
         <div class="og-search-filters">
@@ -627,6 +676,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const queryInput = root.querySelector('[data-search-query-input]');
     const queryClear = root.querySelector('[data-search-query-clear]');
+    const backBtn = root.querySelector('[data-search-back]');
     const sortPills = Array.from(root.querySelectorAll('[data-search-sort-pills] [data-sort]'));
     const togglePills = Array.from(root.querySelectorAll('[data-toggle]'));
     const typePills = Array.from(root.querySelectorAll('[data-search-type-pills] [data-type]'));
@@ -897,6 +947,16 @@ document.addEventListener('DOMContentLoaded', () => {
         renderMessage(i18n.emptyQuery);
         queryInput.focus();
     });
+
+    if (backBtn) {
+        backBtn.addEventListener('click', () => {
+            if (window.history.length > 1) {
+                window.history.back();
+            } else {
+                window.location.href = '{{ route('home') }}';
+            }
+        });
+    }
 
     sortPills.forEach((btn) => btn.addEventListener('click', () => {
         state.sort = btn.dataset.sort;
