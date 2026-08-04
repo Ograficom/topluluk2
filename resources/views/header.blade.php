@@ -2089,6 +2089,17 @@
                 </div>
             </form>
 
+            <button
+                type="button"
+                class="site-icon-btn"
+                aria-label="Dark mode"
+                aria-pressed="false"
+                data-theme-toggle
+                style="background: transparent !important; background-color: transparent !important; box-shadow: none !important; border-color: transparent !important;"
+            >
+                <iconify-icon data-theme-icon icon="lucide:moon" style="width: var(--site-header-icon-size) !important; height: var(--site-header-icon-size) !important; font-size: var(--site-header-icon-size) !important;"></iconify-icon>
+            </button>
+
             <a
                 href="{{ route('blog.create') }}"
                 class="site-header-write-btn site-header-desktop-only inline-flex items-center gap-2 text-sm"
