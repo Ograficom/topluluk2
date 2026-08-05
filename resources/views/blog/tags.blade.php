@@ -11,10 +11,8 @@
     @endif
 
     <div class="alma-panel p-6">
-        <div class="alma-page-header mb-6">
-            <p class="alma-page-kicker">{{ __('site.tags_page.kicker') }}</p>
-            <h1 class="alma-page-title">{{ __('site.tags_page.title') }}</h1>
-            <p class="alma-page-subtitle">{{ __('site.tags_page.subtitle') }}</p>
+        <div class="mb-6">
+            <h1 class="page-title-identity">{{ __('site.tags_page.title') }}</h1>
         </div>
 
         <div class="grid gap-3 sm:grid-cols-2 md:grid-cols-3">

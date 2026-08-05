@@ -605,7 +605,6 @@ Route::prefix('blog')->group(function () {
     Route::get('/', [BlogController::class, 'index'])->name('blog.index');
     Route::get('/posts', [BlogController::class, 'index'])->name('blog.posts');
     Route::get('/popular', [BlogController::class, 'popular'])->name('blog.popular');
-    Route::get('/archive', [BlogController::class, 'archive'])->name('blog.archive');
 
     Route::get('/posts/{post:slug}', function (Post $post) {
         return redirect()->route('blog.post', ['post' => $post->slug], 301);

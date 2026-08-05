@@ -4,9 +4,7 @@
 @section('meta_description', __('site.users.meta_description'))
 
 @section('content')
-    <div class="rounded-3xl bg-white p-4 shadow-sm ring-1 ring-slate-200/80 sm:p-5">
-        <h1 class="text-xl font-semibold text-slate-900">{{ __('site.users.title') }}</h1>
-    </div>
+    <h1 class="page-title-identity">{{ __('site.users.title') }}</h1>
 
     <div class="mt-2 grid grid-cols-1 gap-2">
         @forelse ($users as $user)
