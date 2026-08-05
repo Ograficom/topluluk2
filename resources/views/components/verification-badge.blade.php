@@ -43,7 +43,18 @@
             $customSvgInline = $badgeSvg;
         } else {
             $rawPath = trim($badgeSvg);
-            if (Str::startsWith($rawPath, ['http://', 'https://', '//', '/storage/', 'storage/'])) {
+
+            // A previous admin/user-verification bug could save a raw, unresolved
+            // upload object (e.g. `[{}]` or `{"<uuid>":{}}`) instead of a real disk
+            // path. Refuse to build an <img> src out of that - fall through to the
+            // plain colored checkmark below instead of a permanently broken image.
+            if (Str::startsWith($rawPath, ['{', '['])) {
+                $rawPath = '';
+            }
+
+            if ($rawPath === '') {
+                // no-op, falls through to the default icon below
+            } elseif (Str::startsWith($rawPath, ['http://', 'https://', '//', '/storage/', 'storage/'])) {
                 $customSvgUrl = Str::startsWith($rawPath, 'storage/')
                     ? url('/storage/' . Str::after($rawPath, 'storage/'))
                     : $rawPath;

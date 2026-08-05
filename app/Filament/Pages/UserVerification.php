@@ -80,15 +80,30 @@ class UserVerification extends Page
             'data.userId' => ['required', 'exists:users,id'],
             'data.is_verified' => ['boolean'],
             'data.verification_badge' => ['nullable', 'in:none,blue-check,gold-check,gray-check,custom'],
-            'data.badge_file' => ['nullable'],
         ]);
 
-        $user = User::findOrFail($this->data['userId']);
+        // Reading $this->data['badge_file'] directly (as this used to) skips Filament's
+        // upload pipeline: FileUpload only converts a freshly-picked file from a raw
+        // Livewire temporary-upload object into a real "badges/xxx.svg" disk path when
+        // the schema's state is dehydrated via getState(). Without that step, the raw
+        // upload object gets json-encoded straight into the DB (e.g. `[{}]` or
+        // `{"<uuid>":{}}`) - a broken path that can never resolve to a real image, which
+        // is why a previously-selected blue/gold/custom badge could silently end up
+        // rendering nothing (or, before that "gray" override existed, always gray).
+        $state = $this->form->getState();
+
+        $user = User::findOrFail($state['userId']);
+        $badgeType = $state['verification_badge'] ?? null;
+        $uploadedSvg = $state['badge_file'] ?? null;
 
         $user->update([
-            'is_verified' => (bool) $this->data['is_verified'],
-            'verification_badge' => $this->data['verification_badge'],
-            'verification_badge_svg' => $this->data['badge_file'],
+            'is_verified' => (bool) $state['is_verified'],
+            'verification_badge' => $badgeType,
+            'verification_badge_svg' => $badgeType === 'custom'
+                // Keep the existing custom SVG if the admin re-saves without picking a
+                // new file (e.g. just flipping "Onayli hesap"), instead of wiping it.
+                ? ($uploadedSvg ?: $user->verification_badge_svg)
+                : null,
         ]);
 
         Notification::make()
