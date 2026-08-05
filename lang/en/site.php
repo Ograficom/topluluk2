@@ -301,6 +301,16 @@ return [
         'subtitle' => 'The posts getting the most attention in the community.',
         'empty_posts' => 'No posts found yet.',
     ],
+    'archive_page' => [
+        'title' => 'Search by Date',
+        'meta_description' => 'OGrafi archive: discover posts published in a chosen date range.',
+        'kicker' => 'Archive',
+        'heading' => 'Search by Date',
+        'subtitle' => 'Pick a date range to see posts published in that period.',
+        'range_label' => ':from to :to',
+        'no_range' => 'No date range selected yet, showing the newest posts.',
+        'empty_posts' => 'No posts found in this date range.',
+    ],
     'category_page' => [
         'promo_text' => 'Discover the latest stories in this community.',
         'promo_link' => 'Explore topics',

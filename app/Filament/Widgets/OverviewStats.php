@@ -6,7 +6,7 @@ use App\Models\Post;
 use App\Models\Reaction;
 use App\Models\User;
 use Filament\Widgets\StatsOverviewWidget;
-use Filament\Widgets\StatsOverviewWidget\Stat;
+use Gsferro\FilamentStatPlusEasy\Widgets\StatPlus;
 
 class OverviewStats extends StatsOverviewWidget
 {
@@ -22,7 +22,7 @@ class OverviewStats extends StatsOverviewWidget
     /**
      * @param  \Illuminate\Database\Eloquent\Builder<\Illuminate\Database\Eloquent\Model>  $query
      */
-    private function buildStat(string $label, $query, string $icon): Stat
+    private function buildStat(string $label, $query, string $icon): StatPlus
     {
         $total = (clone $query)->count();
 
@@ -49,7 +49,7 @@ class OverviewStats extends StatsOverviewWidget
 
         $isUp = $change >= 0;
 
-        return Stat::make($label, number_format($total))
+        return StatPlus::make($label, number_format($total))
             ->description(($isUp ? '+' : '') . $change . '% (son 7 gün)')
             ->descriptionIcon($isUp ? 'heroicon-m-arrow-trending-up' : 'heroicon-m-arrow-trending-down')
             ->descriptionColor($isUp ? 'success' : 'danger')

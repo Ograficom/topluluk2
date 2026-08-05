@@ -1,0 +1,602 @@
+/* Internal palette. Every colored state resolves through these, so a calendar dropped into a
+   panel takes that panel's primary color instead of the package's own hue. Filament injects
+   --primary-* on :root; the amber literals are the standalone fallback, matching Filament's own
+   default primary. These are private — themes override the public --fi-fila-calendar-* variables,
+   which still win because the rules below read them first. */
+.fi-fila-calendar {
+    --fi-fila-calendar-primary: var(--primary-500, rgb(245 158 11));
+    --fi-fila-calendar-primary-soft: var(--primary-300, rgb(252 211 77));
+
+    width: 100%;
+    min-width: 0;
+}
+
+.dark .fi-fila-calendar {
+    --fi-fila-calendar-primary: var(--primary-500, rgb(251 191 36));
+    --fi-fila-calendar-primary-soft: var(--primary-200, rgb(253 230 138));
+}
+
+.fi-fila-calendar--readonly .fi-calendar-day {
+    cursor: default;
+}
+
+.fi-fila-calendar__toolbar {
+    display: grid;
+    grid-template-columns: 2.5rem 1fr auto;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+}
+
+.fi-fila-calendar__toolbar-center {
+    display: flex;
+    justify-content: center;
+    min-width: 0;
+}
+
+.fi-fila-calendar__toolbar-label {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: rgb(24 24 27);
+    text-align: center;
+}
+
+.dark .fi-fila-calendar__toolbar-label {
+    color: rgb(244 244 245);
+}
+
+.fi-fila-calendar__toolbar-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.5rem;
+}
+
+.fi-fila-calendar__viewport {
+    width: 100%;
+    min-width: 0;
+    min-height: 20rem;
+}
+
+.fi-fila-calendar--scrollable .fi-fila-calendar__viewport {
+    max-height: min(70vh, 52rem);
+    overflow-y: auto;
+    overflow-x: hidden;
+    overscroll-behavior: contain;
+    padding-inline: 0.25rem;
+}
+
+.fi-fila-calendar__months {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+    width: 100%;
+}
+
+/* Months stack below sm, then follow the column count set for the widest matching breakpoint.
+   Each var falls back to the next narrower one, so a single entry holds from there upwards. */
+@media (min-width: 640px) {
+    .fi-fila-calendar__months {
+        display: grid;
+        grid-template-columns: repeat(var(--fi-calendar-columns-sm, var(--fi-calendar-columns, 2)), minmax(0, 1fr));
+    }
+}
+
+@media (min-width: 768px) {
+    .fi-fila-calendar__months {
+        grid-template-columns: repeat(var(--fi-calendar-columns-md, var(--fi-calendar-columns-sm, var(--fi-calendar-columns, 2))), minmax(0, 1fr));
+    }
+}
+
+@media (min-width: 1024px) {
+    .fi-fila-calendar__months {
+        grid-template-columns: repeat(var(--fi-calendar-columns-lg, var(--fi-calendar-columns-md, var(--fi-calendar-columns-sm, var(--fi-calendar-columns, 2)))), minmax(0, 1fr));
+    }
+}
+
+@media (min-width: 1280px) {
+    .fi-fila-calendar__months {
+        grid-template-columns: repeat(var(--fi-calendar-columns-xl, var(--fi-calendar-columns-lg, var(--fi-calendar-columns-md, var(--fi-calendar-columns-sm, var(--fi-calendar-columns, 2))))), minmax(0, 1fr));
+    }
+}
+
+@media (min-width: 1536px) {
+    .fi-fila-calendar__months {
+        grid-template-columns: repeat(var(--fi-calendar-columns-2xl, var(--fi-calendar-columns-xl, var(--fi-calendar-columns-lg, var(--fi-calendar-columns-md, var(--fi-calendar-columns-sm, var(--fi-calendar-columns, 2)))))), minmax(0, 1fr));
+    }
+}
+
+.fi-fila-calendar__month {
+    min-width: 0;
+    width: 100%;
+    border-radius: 0.75rem;
+    border: 1px solid rgb(228 228 231);
+    background: rgb(255 255 255);
+    padding: 0.875rem;
+    box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.04);
+}
+
+.dark .fi-fila-calendar__month {
+    border-color: rgb(39 39 42);
+    background: rgb(24 24 27);
+    box-shadow: none;
+}
+
+.fi-fila-calendar__header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0.75rem;
+}
+
+.fi-fila-calendar__heading {
+    min-width: 0;
+    text-align: center;
+}
+
+.fi-fila-calendar__label {
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 600;
+    line-height: 1.25rem;
+    color: rgb(24 24 27);
+}
+
+.dark .fi-fila-calendar__label {
+    color: rgb(244 244 245);
+}
+
+.fi-fila-calendar__selects {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    width: 100%;
+}
+
+.fi-fila-calendar__select-field {
+    min-width: 9rem;
+}
+
+.fi-fila-calendar__select-field--year {
+    min-width: 6.5rem;
+}
+
+.fi-fila-calendar__select-field .fi-select-input {
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+.fi-fila-calendar__nav {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    border: 0;
+    border-radius: 0.5rem;
+    background: transparent;
+    color: rgb(82 82 91);
+    cursor: pointer;
+}
+
+.fi-fila-calendar__nav:hover:not(:disabled) {
+    background: rgb(244 244 245);
+}
+
+.dark .fi-fila-calendar__nav {
+    color: rgb(212 212 216);
+}
+
+.dark .fi-fila-calendar__nav:hover:not(:disabled) {
+    background: rgb(39 39 42);
+}
+
+.fi-fila-calendar__nav:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.fi-fila-calendar__nav-icon {
+    width: 1rem;
+    height: 1rem;
+}
+
+.fi-fila-calendar__weekdays,
+.fi-fila-calendar__days {
+    display: grid;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+    gap: 0.25rem;
+}
+
+.fi-fila-calendar__weekday {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 1.75rem;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: rgb(113 113 122);
+}
+
+.fi-fila-calendar__days {
+    margin-top: 0.25rem;
+}
+
+.fi-calendar-day {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-height: 2rem;
+    border: 0;
+    border-radius: 0.5rem;
+    background: transparent;
+    padding: 0;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    line-height: 1;
+    color: rgb(24 24 27);
+    cursor: pointer;
+    transition: background-color 150ms ease, color 150ms ease, box-shadow 150ms ease;
+}
+
+.fi-fila-calendar--xs .fi-calendar-day {
+    min-height: 1.75rem;
+    font-size: 0.75rem;
+}
+
+.dark .fi-calendar-day {
+    color: rgb(244 244 245);
+}
+
+.fi-calendar-day--outside {
+    color: rgb(161 161 170);
+}
+
+.fi-calendar-day--placeholder {
+    pointer-events: none;
+    background: transparent;
+    border: 0;
+    visibility: hidden;
+}
+
+.fi-calendar-day--today:not(.fi-calendar-day--selected):not(.fi-calendar-day--range-start):not(.fi-calendar-day--range-end):not(.fi-calendar-day--in-range) {
+    box-shadow: inset 0 0 0 1px var(--fi-fila-calendar-primary);
+}
+
+.dark .fi-calendar-day--today:not(.fi-calendar-day--selected):not(.fi-calendar-day--range-start):not(.fi-calendar-day--range-end):not(.fi-calendar-day--in-range) {
+    box-shadow: inset 0 0 0 1px var(--fi-fila-calendar-primary-soft);
+}
+
+/* Today is marked with a dot so it stays visible on top of any range color */
+.fi-calendar-day--today::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: 0.25rem;
+    width: 3px;
+    height: 3px;
+    margin-left: -1.5px;
+    border-radius: 9999px;
+    background: currentColor;
+}
+
+.fi-fila-calendar--xs .fi-calendar-day--today::after {
+    bottom: 0.15rem;
+}
+
+.fi-calendar-day:hover:not(:disabled):not(.fi-calendar-day--selected):not(.fi-calendar-day--range-start):not(.fi-calendar-day--range-end):not(.fi-calendar-day--in-range-hover):not(.fi-calendar-day--in-range) {
+    background: rgb(244 244 245);
+}
+
+.dark .fi-calendar-day:hover:not(:disabled):not(.fi-calendar-day--selected):not(.fi-calendar-day--range-start):not(.fi-calendar-day--range-end):not(.fi-calendar-day--in-range-hover):not(.fi-calendar-day--in-range) {
+    background: rgb(39 39 42);
+}
+
+.fi-calendar-day--selected,
+.fi-calendar-day--range-start {
+    background: var(--fi-fila-calendar-range-start-bg, var(--fi-fila-calendar-primary));
+    color: var(--fi-fila-calendar-range-start-color, white);
+}
+
+.fi-calendar-day--range-end:not(.fi-calendar-day--range-start) {
+    background: var(--fi-fila-calendar-range-end-bg, var(--fi-fila-calendar-primary));
+    color: var(--fi-fila-calendar-range-end-color, white);
+}
+
+.fi-calendar-day--range-start:not(.fi-calendar-day--range-end) {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.fi-calendar-day--range-end:not(.fi-calendar-day--range-start) {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+/* The day waiting for its second click already carries the range-start fill, so the ring is drawn
+   in the day's own text color. Any palette keeps it legible without a second color to tune. */
+.fi-calendar-day--range-pending {
+    box-shadow: inset 0 0 0 2px var(--fi-fila-calendar-range-pending-ring, currentColor);
+}
+
+.dark .fi-calendar-day--selected,
+.dark .fi-calendar-day--range-start {
+    background: var(--fi-fila-calendar-range-start-bg, var(--fi-fila-calendar-primary));
+    color: var(--fi-fila-calendar-range-start-color, white);
+}
+
+.dark .fi-calendar-day--range-end:not(.fi-calendar-day--range-start) {
+    background: var(--fi-fila-calendar-range-end-bg, var(--fi-fila-calendar-primary));
+    color: var(--fi-fila-calendar-range-end-color, white);
+}
+
+.fi-calendar-day--in-range {
+    border-radius: 0;
+    background: var(--fi-fila-calendar-range-middle-bg, color-mix(in oklab, var(--fi-fila-calendar-primary) 18%, transparent));
+    color: var(--fi-fila-calendar-range-middle-color, var(--fi-fila-calendar-primary));
+}
+
+.dark .fi-calendar-day--in-range {
+    background: var(--fi-fila-calendar-range-middle-bg, color-mix(in oklab, var(--fi-fila-calendar-primary) 28%, transparent));
+    color: var(--fi-fila-calendar-range-middle-color, var(--fi-fila-calendar-primary-soft));
+}
+
+.fi-calendar-day--in-range:hover:not(:disabled) {
+    background: var(--fi-fila-calendar-range-middle-hover-bg, color-mix(in oklab, var(--fi-fila-calendar-primary) 28%, transparent));
+    color: var(--fi-fila-calendar-range-middle-hover-text, var(--fi-fila-calendar-range-middle-color, var(--fi-fila-calendar-primary)));
+}
+
+.dark .fi-calendar-day--in-range:hover:not(:disabled) {
+    background: var(--fi-fila-calendar-range-middle-hover-bg, color-mix(in oklab, var(--fi-fila-calendar-primary) 38%, transparent));
+    color: var(--fi-fila-calendar-range-middle-hover-text, var(--fi-fila-calendar-range-middle-color, var(--fi-fila-calendar-primary-soft)));
+}
+
+.fi-calendar-day--in-range-hover {
+    border-radius: 0;
+    background: var(--fi-fila-calendar-range-middle-hover-bg, rgb(161 161 170 / 0.22));
+    color: var(--fi-fila-calendar-range-middle-hover-text, var(--fi-fila-calendar-range-middle-color, rgb(63 63 70)));
+}
+
+.dark .fi-calendar-day--in-range-hover {
+    background: var(--fi-fila-calendar-range-middle-hover-bg, rgb(161 161 170 / 0.18));
+    color: var(--fi-fila-calendar-range-middle-hover-text, var(--fi-fila-calendar-range-middle-color, rgb(212 212 216)));
+}
+
+.fi-calendar-day__number {
+    position: relative;
+    display: inline-block;
+    line-height: 1;
+}
+
+.fi-calendar-day--unavailable {
+    cursor: not-allowed;
+    color: rgb(113 113 122);
+    background: rgb(244 244 245);
+    opacity: 1;
+}
+
+.dark .fi-calendar-day--unavailable {
+    color: rgb(161 161 170);
+    background: rgb(39 39 42);
+}
+
+.fi-calendar-day--unavailable .fi-calendar-day__number::before {
+    content: '';
+    position: absolute;
+    left: -0.2em;
+    right: -0.2em;
+    top: 50%;
+    height: 1.5px;
+    margin-top: -0.75px;
+    background-color: rgb(113 113 122);
+    transform: rotate(-14deg);
+    pointer-events: none;
+    z-index: 1;
+}
+
+.dark .fi-calendar-day--unavailable .fi-calendar-day__number::before {
+    background-color: rgb(212 212 216);
+}
+
+.fi-calendar-day--unavailable:hover {
+    background: rgb(244 244 245);
+}
+
+.dark .fi-calendar-day--unavailable:hover {
+    background: rgb(39 39 42);
+}
+
+/* Reserved days keep whatever background they would otherwise have; only the icon marks
+   them. Opacity stays at 1 so the icon is still legible on days the --disabled rule dims. */
+.fi-fila-calendar .fi-calendar-day--reserved {
+    cursor: not-allowed;
+    opacity: 1;
+}
+
+/* A hairline ring gives the corner marker a cell to sit in. Without it the icon floats in the
+   empty space of an unfilled day; filled days already have their range color to anchor it.
+   Ring and marker follow the panel's primary color, overridable per theme with
+   --fi-fila-calendar-reserved-color. */
+.fi-fila-calendar .fi-calendar-day--reserved:not(.fi-calendar-day--selected):not(.fi-calendar-day--range-start):not(.fi-calendar-day--range-end):not(.fi-calendar-day--in-range) {
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--fi-fila-calendar-reserved-color, var(--fi-fila-calendar-primary)) 45%, transparent);
+}
+
+/* Corner marker, kept small so it annotates the day rather than competing with the number.
+   Two-class selector so the size wins over Filament's .fi-size-md on the svg. */
+.fi-calendar-day .fi-calendar-day__icon {
+    position: absolute;
+    top: 0.2rem;
+    right: 0.3rem;
+    width: 0.625rem;
+    height: 0.625rem;
+    color: var(--fi-fila-calendar-reserved-color, var(--fi-fila-calendar-primary));
+    pointer-events: none;
+}
+
+.fi-fila-calendar--xs .fi-calendar-day .fi-calendar-day__icon {
+    width: 0.5625rem;
+    height: 0.5625rem;
+}
+
+/* Filled days carry the glyph in the day's own text color, at full strength: white on a range
+   fill, and still legible on a theme whose in-range days stay light. */
+.fi-calendar-day--selected .fi-calendar-day__icon,
+.fi-calendar-day--range-start .fi-calendar-day__icon,
+.fi-calendar-day--range-end .fi-calendar-day__icon,
+.fi-calendar-day--in-range .fi-calendar-day__icon {
+    color: currentColor;
+}
+
+.fi-calendar-day[aria-disabled='true']:not(:disabled) {
+    opacity: 1;
+}
+
+.fi-calendar-day--week-end {
+    cursor: not-allowed;
+    color: rgb(113 113 122);
+    background: rgb(250 250 250);
+    opacity: 0.7;
+}
+
+.dark .fi-calendar-day--week-end {
+    color: rgb(161 161 170);
+    background: rgb(24 24 27);
+}
+
+.fi-calendar-day--week-end:hover {
+    background: rgb(250 250 250);
+}
+
+.dark .fi-calendar-day--week-end:hover {
+    background: rgb(24 24 27);
+}
+
+/* Blocked days inside a range keep the range highlight and their blocked marking */
+.fi-calendar-day--unavailable.fi-calendar-day--in-range,
+.fi-calendar-day--unavailable.fi-calendar-day--in-range:hover,
+.fi-calendar-day--week-end.fi-calendar-day--in-range,
+.fi-calendar-day--week-end.fi-calendar-day--in-range:hover {
+    background: var(--fi-fila-calendar-range-middle-bg, color-mix(in oklab, var(--fi-fila-calendar-primary) 18%, transparent));
+    color: var(--fi-fila-calendar-range-middle-color, var(--fi-fila-calendar-primary));
+    opacity: 1;
+}
+
+.dark .fi-calendar-day--unavailable.fi-calendar-day--in-range,
+.dark .fi-calendar-day--unavailable.fi-calendar-day--in-range:hover,
+.dark .fi-calendar-day--week-end.fi-calendar-day--in-range,
+.dark .fi-calendar-day--week-end.fi-calendar-day--in-range:hover {
+    background: var(--fi-fila-calendar-range-middle-bg, color-mix(in oklab, var(--fi-fila-calendar-primary) 28%, transparent));
+    color: var(--fi-fila-calendar-range-middle-color, var(--fi-fila-calendar-primary-soft));
+}
+
+.fi-calendar-day--unavailable.fi-calendar-day--in-range .fi-calendar-day__number::before,
+.fi-calendar-day--unavailable.fi-calendar-day--in-range-hover .fi-calendar-day__number::before,
+.fi-calendar-day--unavailable.fi-calendar-day--range-start .fi-calendar-day__number::before,
+.fi-calendar-day--unavailable.fi-calendar-day--range-end .fi-calendar-day__number::before,
+.fi-calendar-day--unavailable.fi-calendar-day--selected .fi-calendar-day__number::before {
+    background-color: currentColor;
+}
+
+/* A blocked day that starts or ends a range keeps the range color, the blocked style only marks it */
+.fi-calendar-day--unavailable.fi-calendar-day--range-start,
+.fi-calendar-day--unavailable.fi-calendar-day--selected,
+.fi-calendar-day--week-end.fi-calendar-day--range-start,
+.fi-calendar-day--week-end.fi-calendar-day--selected {
+    background: var(--fi-fila-calendar-range-start-bg, var(--fi-fila-calendar-primary));
+    color: var(--fi-fila-calendar-range-start-color, white);
+}
+
+.dark .fi-calendar-day--unavailable.fi-calendar-day--range-start,
+.dark .fi-calendar-day--unavailable.fi-calendar-day--selected,
+.dark .fi-calendar-day--week-end.fi-calendar-day--range-start,
+.dark .fi-calendar-day--week-end.fi-calendar-day--selected {
+    background: var(--fi-fila-calendar-range-start-bg, var(--fi-fila-calendar-primary));
+    color: var(--fi-fila-calendar-range-start-color, white);
+}
+
+.fi-calendar-day--unavailable.fi-calendar-day--range-end:not(.fi-calendar-day--range-start),
+.fi-calendar-day--week-end.fi-calendar-day--range-end:not(.fi-calendar-day--range-start) {
+    background: var(--fi-fila-calendar-range-end-bg, var(--fi-fila-calendar-primary));
+    color: var(--fi-fila-calendar-range-end-color, white);
+}
+
+.dark .fi-calendar-day--unavailable.fi-calendar-day--range-end:not(.fi-calendar-day--range-start),
+.dark .fi-calendar-day--week-end.fi-calendar-day--range-end:not(.fi-calendar-day--range-start) {
+    background: var(--fi-fila-calendar-range-end-bg, var(--fi-fila-calendar-primary));
+    color: var(--fi-fila-calendar-range-end-color, white);
+}
+
+/* Blocked days are never interactive, so they take no hover or focus treatment */
+.fi-calendar-day--unavailable,
+.fi-calendar-day--week-end {
+    pointer-events: none;
+}
+
+.fi-calendar-day--disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    color: rgb(161 161 170);
+    background: rgb(244 244 245);
+}
+
+.dark .fi-calendar-day--disabled {
+    color: rgb(113 113 122);
+    background: rgb(39 39 42);
+}
+
+.fi-calendar-day--disabled:hover {
+    background: rgb(244 244 245);
+}
+
+.dark .fi-calendar-day--disabled:hover {
+    background: rgb(39 39 42);
+}
+
+/* Past days keep their own range color, faded, so old ranges read as past but stay identifiable.
+   The fade comes from the color rather than opacity, which would dim the reserved marker too.
+   Start, end and middle each fade their matching variable, so a past range reads the same shape
+   as a live one. */
+.fi-calendar-day--disabled.fi-calendar-day--range-start,
+.fi-calendar-day--disabled.fi-calendar-day--selected {
+    opacity: 1;
+    background: color-mix(in srgb, var(--fi-fila-calendar-range-start-bg, var(--fi-fila-calendar-primary)) 45%, transparent);
+    color: var(--fi-fila-calendar-range-start-color, white);
+}
+
+.dark .fi-calendar-day--disabled.fi-calendar-day--range-start,
+.dark .fi-calendar-day--disabled.fi-calendar-day--selected {
+    background: color-mix(in srgb, var(--fi-fila-calendar-range-start-bg, var(--fi-fila-calendar-primary)) 45%, transparent);
+    color: var(--fi-fila-calendar-range-start-color, white);
+}
+
+.fi-calendar-day--disabled.fi-calendar-day--range-end:not(.fi-calendar-day--range-start) {
+    opacity: 1;
+    background: color-mix(in srgb, var(--fi-fila-calendar-range-end-bg, var(--fi-fila-calendar-primary)) 45%, transparent);
+    color: var(--fi-fila-calendar-range-end-color, white);
+}
+
+.dark .fi-calendar-day--disabled.fi-calendar-day--range-end:not(.fi-calendar-day--range-start) {
+    background: color-mix(in srgb, var(--fi-fila-calendar-range-end-bg, var(--fi-fila-calendar-primary)) 45%, transparent);
+    color: var(--fi-fila-calendar-range-end-color, white);
+}
+
+.fi-calendar-day--disabled.fi-calendar-day--in-range {
+    opacity: 1;
+    background: color-mix(in srgb, var(--fi-fila-calendar-range-middle-bg, color-mix(in oklab, var(--fi-fila-calendar-primary) 18%, transparent)) 45%, transparent);
+    color: var(--fi-fila-calendar-range-middle-color, var(--fi-fila-calendar-primary));
+}
+
+.dark .fi-calendar-day--disabled.fi-calendar-day--in-range {
+    background: color-mix(in srgb, var(--fi-fila-calendar-range-middle-bg, color-mix(in oklab, var(--fi-fila-calendar-primary) 28%, transparent)) 45%, transparent);
+    color: var(--fi-fila-calendar-range-middle-color, var(--fi-fila-calendar-primary-soft));
+}
+
+.fi-modal .fi-fila-calendar__months {
+    gap: 0.75rem;
+}

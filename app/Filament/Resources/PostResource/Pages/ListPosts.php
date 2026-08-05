@@ -4,11 +4,14 @@ namespace App\Filament\Resources\PostResource\Pages;
 
 use App\Filament\Resources\PostResource;
 use App\Filament\Resources\PostResource\Widgets\PostsOverview;
+use Asmit\ResizedColumn\HasResizableColumn;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
 
 class ListPosts extends ListRecords
 {
+    use HasResizableColumn;
+
     protected static string $resource = PostResource::class;
 
     protected function getHeaderActions(): array

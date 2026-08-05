@@ -13,6 +13,14 @@ use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
+use Spatie\Health\Checks\Checks\CacheCheck;
+use Spatie\Health\Checks\Checks\DatabaseCheck;
+use Spatie\Health\Checks\Checks\DebugModeCheck;
+use Spatie\Health\Checks\Checks\EnvironmentCheck;
+use Spatie\Health\Checks\Checks\OptimizedAppCheck;
+use Spatie\Health\Checks\Checks\ScheduleCheck;
+use Spatie\Health\Checks\Checks\UsedDiskSpaceCheck;
+use Spatie\Health\Facades\Health;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -29,6 +37,16 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        Health::checks([
+            EnvironmentCheck::new(),
+            DebugModeCheck::new(),
+            OptimizedAppCheck::new(),
+            DatabaseCheck::new(),
+            CacheCheck::new(),
+            UsedDiskSpaceCheck::new(),
+            ScheduleCheck::new(),
+        ]);
+
         $appUrl = config('app.url');
         if ($this->app->runningInConsole() && is_string($appUrl) && $appUrl !== '') {
             URL::forceRootUrl($appUrl);

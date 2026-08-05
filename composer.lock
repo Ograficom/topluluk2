@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "fdd24d7871bc90a5c0a3b7eaedece18f",
+    "content-hash": "4baa1c27d2882be4a8890c6a3b2d1d23",
     "packages": [
         {
             "name": "anourvalar/eloquent-serialize",
@@ -70,6 +70,116 @@
                 "source": "https://github.com/AnourValar/eloquent-serialize/tree/1.3.10"
             },
             "time": "2026-06-20T14:30:25+00:00"
+        },
+        {
+            "name": "asmit/fila-calendar",
+            "version": "v0.5.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/AsmitNepali/fila-calendar.git",
+                "reference": "39d55166f9b3f544b453aa86b8c1f768094a8fda"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/AsmitNepali/fila-calendar/zipball/39d55166f9b3f544b453aa86b8c1f768094a8fda",
+                "reference": "39d55166f9b3f544b453aa86b8c1f768094a8fda",
+                "shasum": ""
+            },
+            "require": {
+                "filament/forms": "^4.0|^5.0",
+                "filament/infolists": "^4.0|^5.0",
+                "nesbot/carbon": "^3.0",
+                "php": "^8.2",
+                "spatie/laravel-package-tools": "^1.16"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Asmit\\FilaCalendar\\FilaCalendarServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Asmit\\FilaCalendar\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Asmit Nepali",
+                    "email": "asmit@thefireflytech.com"
+                }
+            ],
+            "description": "A polished inline calendar form field for Filament.",
+            "support": {
+                "issues": "https://github.com/AsmitNepali/fila-calendar/issues",
+                "source": "https://github.com/AsmitNepali/fila-calendar/tree/v0.5.0"
+            },
+            "time": "2026-07-30T09:27:13+00:00"
+        },
+        {
+            "name": "asmit/resized-column",
+            "version": "4.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/AsmitNepali/resized-column.git",
+                "reference": "7743d92b8d3b8935e2bdb5e99018e544f279f72e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/AsmitNepali/resized-column/zipball/7743d92b8d3b8935e2bdb5e99018e544f279f72e",
+                "reference": "7743d92b8d3b8935e2bdb5e99018e544f279f72e",
+                "shasum": ""
+            },
+            "require": {
+                "filament/support": "^3.2|^4.0|^5.0"
+            },
+            "require-dev": {
+                "filament/filament": "^4.0",
+                "filament/tables": "^4.0",
+                "orchestra/testbench": "^9.0|^10.0|^11.0",
+                "pestphp/pest": "^3.0 || ^4.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Asmit\\ResizedColumn\\ResizedColumnServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Asmit\\ResizedColumn\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "AsmitNepali",
+                    "email": "mail2asmitnepali@gmail.com"
+                }
+            ],
+            "description": "Resizeable column for filament",
+            "support": {
+                "issues": "https://github.com/AsmitNepali/resized-column/issues",
+                "source": "https://github.com/AsmitNepali/resized-column/tree/v4.0.2"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/asmitnepali",
+                    "type": "github"
+                }
+            ],
+            "time": "2026-07-31T23:55:44+00:00"
         },
         {
             "name": "backstage/laravel-mails",
@@ -2354,6 +2464,219 @@
                 }
             ],
             "time": "2025-12-27T19:43:20+00:00"
+        },
+        {
+            "name": "gsferro/filament-odometer-easy",
+            "version": "v1.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/gsferro/filament-odometer-easy.git",
+                "reference": "a65caae69a46412494f5f72382d3a8fb53b518d6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/gsferro/filament-odometer-easy/zipball/a65caae69a46412494f5f72382d3a8fb53b518d6",
+                "reference": "a65caae69a46412494f5f72382d3a8fb53b518d6",
+                "shasum": ""
+            },
+            "require": {
+                "filament/filament": "^3.2|^4.0|^5.0",
+                "gsferro/odometer-easy": "^1.0",
+                "php": "^8.2",
+                "spatie/laravel-package-tools": "^1.15.0"
+            },
+            "require-dev": {
+                "larastan/larastan": "^3.0",
+                "laravel/pint": "^1.0",
+                "nunomaduro/collision": "^8.0",
+                "orchestra/testbench": "^9.0|^10.0|^11.0",
+                "pestphp/pest": "^3.7|^4.0",
+                "pestphp/pest-plugin-arch": "^3.0|^4.0",
+                "pestphp/pest-plugin-laravel": "^3.0|^4.0",
+                "pestphp/pest-plugin-livewire": "^3.0|^4.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "aliases": {
+                        "FilamentOdometerEasy": "Gsferro\\FilamentOdometerEasy\\Facades\\FilamentOdometerEasy"
+                    },
+                    "providers": [
+                        "Gsferro\\FilamentOdometerEasy\\FilamentOdometerEasyServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Gsferro\\FilamentOdometerEasy\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "gsferro",
+                    "email": "g_santana26@yahoo.com.br",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Animated counters for Filament v3, v4 and v5 — tables, infolists, stats and navigation badges — powered by number-flow (default) or odometer.js.",
+            "homepage": "https://github.com/gsferro/filament-odometer-easy",
+            "keywords": [
+                "Odometer",
+                "animation",
+                "counter",
+                "dashboard",
+                "filament",
+                "filament-odometer-easy",
+                "filament-plugin",
+                "filamentphp",
+                "gsferro",
+                "laravel",
+                "number-flow"
+            ],
+            "support": {
+                "issues": "https://github.com/gsferro/filament-odometer-easy/issues",
+                "source": "https://github.com/gsferro/filament-odometer-easy"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/gsferro",
+                    "type": "github"
+                }
+            ],
+            "time": "2026-08-01T22:53:16+00:00"
+        },
+        {
+            "name": "gsferro/filament-stat-plus-easy",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/gsferro/filament-stat-plus-easy.git",
+                "reference": "a9eedf0af8811734c18c32e93a9c2cbc5adc7e71"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/gsferro/filament-stat-plus-easy/zipball/a9eedf0af8811734c18c32e93a9c2cbc5adc7e71",
+                "reference": "a9eedf0af8811734c18c32e93a9c2cbc5adc7e71",
+                "shasum": ""
+            },
+            "require": {
+                "filament/filament": "^3.2|^4.0|^5.0",
+                "gsferro/filament-odometer-easy": "^1.1",
+                "php": "^8.2",
+                "spatie/laravel-package-tools": "^1.15.0"
+            },
+            "require-dev": {
+                "larastan/larastan": "^3.0",
+                "laravel/pint": "^1.0",
+                "nunomaduro/collision": "^8.0",
+                "orchestra/testbench": "^9.0|^10.0|^11.0",
+                "pestphp/pest": "^3.7|^4.0",
+                "pestphp/pest-plugin-arch": "^3.0|^4.0",
+                "pestphp/pest-plugin-laravel": "^3.0|^4.0",
+                "pestphp/pest-plugin-livewire": "^3.0|^4.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "aliases": {
+                        "FilamentStatPlusEasy": "Gsferro\\FilamentStatPlusEasy\\Facades\\FilamentStatPlusEasy"
+                    },
+                    "providers": [
+                        "Gsferro\\FilamentStatPlusEasy\\FilamentStatPlusEasyServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Gsferro\\FilamentStatPlusEasy\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "gsferro",
+                    "email": "g_santana26@yahoo.com.br",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Stat cards with a corner icon and a colored accent border for Filament v3, v4 and v5 — animated counter included, plus a matching lazy-loading skeleton.",
+            "homepage": "https://github.com/gsferro/filament-stat-plus-easy",
+            "keywords": [
+                "Skeleton",
+                "dashboard",
+                "filament",
+                "filament-plugin",
+                "filament-stat-plus-easy",
+                "filamentphp",
+                "gsferro",
+                "laravel",
+                "placeholder",
+                "stat",
+                "stats-overview",
+                "widget"
+            ],
+            "support": {
+                "issues": "https://github.com/gsferro/filament-stat-plus-easy/issues",
+                "source": "https://github.com/gsferro/filament-stat-plus-easy"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/gsferro",
+                    "type": "github"
+                }
+            ],
+            "time": "2026-08-01T15:22:19+00:00"
+        },
+        {
+            "name": "gsferro/odometer-easy",
+            "version": "v1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/GuilhermeFerro/laravel-odometer-easy.git",
+                "reference": "ffed3f3a7ba43d1cbca1b6b137cd26a245f7dc50"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/GuilhermeFerro/laravel-odometer-easy/zipball/ffed3f3a7ba43d1cbca1b6b137cd26a245f7dc50",
+                "reference": "ffed3f3a7ba43d1cbca1b6b137cd26a245f7dc50",
+                "shasum": ""
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Gsferro\\OdometerEasy\\Providers\\OdometerEasyServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Gsferro\\OdometerEasy\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Guilherme Ferro",
+                    "email": "gsferroti@gmail.com"
+                }
+            ],
+            "description": "Use the plugin odometer in project Laravel easy",
+            "support": {
+                "issues": "https://github.com/GuilhermeFerro/laravel-odometer-easy/issues",
+                "source": "https://github.com/GuilhermeFerro/laravel-odometer-easy/tree/v1.0"
+            },
+            "time": "2023-01-28T01:17:09+00:00"
         },
         {
             "name": "guzzlehttp/guzzle",
@@ -8124,6 +8447,82 @@
             "time": "2022-12-17T21:53:22+00:00"
         },
         {
+            "name": "shuvroroy/filament-spatie-laravel-health",
+            "version": "v3.3.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/shuvroroy/filament-spatie-laravel-health.git",
+                "reference": "60770b5478ec28cb00abd3769b25246c9438c161"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/shuvroroy/filament-spatie-laravel-health/zipball/60770b5478ec28cb00abd3769b25246c9438c161",
+                "reference": "60770b5478ec28cb00abd3769b25246c9438c161",
+                "shasum": ""
+            },
+            "require": {
+                "filament/filament": "^4.0|^5.0",
+                "php": "^8.2",
+                "spatie/laravel-health": "^1.23",
+                "spatie/laravel-package-tools": "^1.9"
+            },
+            "require-dev": {
+                "larastan/larastan": "^3.0",
+                "laravel/pint": "^1.0",
+                "nunomaduro/collision": "^7.0||^8.0||^9.0",
+                "orchestra/testbench": "^9.0||^10.0||^11.0",
+                "pestphp/pest": "^2.0||^3.0||^4.0",
+                "pestphp/pest-plugin-arch": "^2.0||^3.0||^4.0",
+                "pestphp/pest-plugin-laravel": "^2.0||^3.0||^4.0",
+                "phpstan/extension-installer": "^1.4",
+                "phpstan/phpstan": "^2.1",
+                "phpstan/phpstan-deprecation-rules": "^2.0",
+                "phpstan/phpstan-phpunit": "^2.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "ShuvroRoy\\FilamentSpatieLaravelHealth\\FilamentSpatieLaravelHealthServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "ShuvroRoy\\FilamentSpatieLaravelHealth\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Shuvro Roy",
+                    "email": "shuvro.nsu.cse@gmail.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "This plugin is built on top of Spatie's Laravel-health package",
+            "homepage": "https://github.com/shuvroroy/filament-spatie-laravel-health",
+            "keywords": [
+                "filament",
+                "filament-spatie-laravel-health",
+                "laravel-health"
+            ],
+            "support": {
+                "issues": "https://github.com/shuvroroy/filament-spatie-laravel-health/issues",
+                "source": "https://github.com/shuvroroy/filament-spatie-laravel-health/tree/v3.3.1"
+            },
+            "funding": [
+                {
+                    "url": "https://www.buymeacoffee.com/shuvroroy",
+                    "type": "buy_me_a_coffee"
+                }
+            ],
+            "time": "2026-06-14T07:47:18+00:00"
+        },
+        {
             "name": "slimani/filament-media-manager",
             "version": "v0.9.11",
             "source": {
@@ -8196,6 +8595,82 @@
                 "source": "https://github.com/slimani-dev/filament-media-manager"
             },
             "time": "2026-03-29T18:14:19+00:00"
+        },
+        {
+            "name": "spatie/enum",
+            "version": "3.13.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/spatie/enum.git",
+                "reference": "f1a0f464ba909491a53e60a955ce84ad7cd93a2c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/spatie/enum/zipball/f1a0f464ba909491a53e60a955ce84ad7cd93a2c",
+                "reference": "f1a0f464ba909491a53e60a955ce84ad7cd93a2c",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "php": "^8.0"
+            },
+            "require-dev": {
+                "fakerphp/faker": "^1.9.1",
+                "larapack/dd": "^1.1",
+                "phpunit/phpunit": "^9.0",
+                "vimeo/psalm": "^4.3"
+            },
+            "suggest": {
+                "fakerphp/faker": "To use the enum faker provider",
+                "phpunit/phpunit": "To use the enum assertions"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Spatie\\Enum\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Brent Roose",
+                    "email": "brent@spatie.be",
+                    "homepage": "https://spatie.be",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Tom Witkowski",
+                    "email": "dev@gummibeer.de",
+                    "homepage": "https://gummibeer.de",
+                    "role": "Developer"
+                }
+            ],
+            "description": "PHP Enums",
+            "homepage": "https://github.com/spatie/enum",
+            "keywords": [
+                "enum",
+                "enumerable",
+                "spatie"
+            ],
+            "support": {
+                "docs": "https://docs.spatie.be/enum",
+                "issues": "https://github.com/spatie/enum/issues",
+                "source": "https://github.com/spatie/enum"
+            },
+            "funding": [
+                {
+                    "url": "https://spatie.be/open-source/support-us",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/spatie",
+                    "type": "github"
+                }
+            ],
+            "time": "2022-04-22T08:51:55+00:00"
         },
         {
             "name": "spatie/image",
@@ -8385,6 +8860,99 @@
                 }
             ],
             "time": "2024-05-17T09:06:10+00:00"
+        },
+        {
+            "name": "spatie/laravel-health",
+            "version": "1.40.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/spatie/laravel-health.git",
+                "reference": "e66c00d430a0f7a5b179b48b8d09149e18fa2232"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/spatie/laravel-health/zipball/e66c00d430a0f7a5b179b48b8d09149e18fa2232",
+                "reference": "e66c00d430a0f7a5b179b48b8d09149e18fa2232",
+                "shasum": ""
+            },
+            "require": {
+                "dragonmantank/cron-expression": "^3.3.1",
+                "guzzlehttp/guzzle": "^6.5|^7.4.5|^7.2",
+                "illuminate/console": "^11.0|^12.0|^13.0",
+                "illuminate/contracts": "^11.0|^12.0|^13.0",
+                "illuminate/database": "^11.0|^12.0|^13.0",
+                "illuminate/notifications": "^11.0|^12.0|^13.0",
+                "illuminate/support": "^11.0|^12.0|^13.0",
+                "laravel/serializable-closure": "^1.3|^2.0",
+                "nunomaduro/termwind": "^1.0|^2.0",
+                "php": "^8.2",
+                "spatie/enum": "^3.13",
+                "spatie/laravel-package-tools": "^1.12.1",
+                "spatie/regex": "^3.1.1|^3.1",
+                "symfony/process": "^5.4|^6.0|^7.0|^8.0"
+            },
+            "require-dev": {
+                "laravel/horizon": "^5.9.10",
+                "nunomaduro/collision": "^5.10|^6.2.1|^6.1|^8.0",
+                "orchestra/testbench": "^9.0|^10.0|^11.0",
+                "pestphp/pest": "^2.34|^3.0|^4.0",
+                "pestphp/pest-plugin-laravel": "^2.3|^3.0|^4.0",
+                "phpstan/extension-installer": "^1.1",
+                "phpstan/phpstan-deprecation-rules": "^1.0|^2.0",
+                "phpstan/phpstan-phpunit": "^1.1.1|^2.0",
+                "phpunit/phpunit": "^9.5.21|^9.5.10|^10.5|^11.0|^12.0",
+                "spatie/laravel-ray": "^1.30",
+                "spatie/pest-plugin-snapshots": "^1.1|^2.3|^3.0",
+                "spatie/pest-plugin-test-time": "^1.1.1|^1.1|^2.0|^3.0",
+                "spatie/temporary-directory": "^2.2",
+                "spatie/test-time": "^1.3|^2.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "aliases": {
+                        "Health": "Spatie\\Health\\Facades\\Health"
+                    },
+                    "providers": [
+                        "Spatie\\Health\\HealthServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Spatie\\Health\\": "src",
+                    "Spatie\\Health\\Database\\Factories\\": "database/factories"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Freek Van der Herten",
+                    "email": "freek@spatie.be",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Monitor the health of a Laravel application",
+            "homepage": "https://github.com/spatie/laravel-health",
+            "keywords": [
+                "laravel",
+                "laravel-health",
+                "spatie"
+            ],
+            "support": {
+                "issues": "https://github.com/spatie/laravel-health/issues",
+                "source": "https://github.com/spatie/laravel-health/tree/1.40.1"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/spatie",
+                    "type": "github"
+                }
+            ],
+            "time": "2026-07-22T07:01:14+00:00"
         },
         {
             "name": "spatie/laravel-honeypot",
@@ -8715,6 +9283,69 @@
                 }
             ],
             "time": "2026-04-23T08:26:29+00:00"
+        },
+        {
+            "name": "spatie/regex",
+            "version": "3.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/spatie/regex.git",
+                "reference": "d543de2019a0068e7b80da0ba24f1c51c7469303"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/spatie/regex/zipball/d543de2019a0068e7b80da0ba24f1c51c7469303",
+                "reference": "d543de2019a0068e7b80da0ba24f1c51c7469303",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^8.0|^8.1"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^9.3"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Spatie\\Regex\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Sebastian De Deyne",
+                    "email": "sebastian@spatie.be",
+                    "homepage": "https://spatie.be",
+                    "role": "Developer"
+                }
+            ],
+            "description": "A sane interface for php's built in preg_* functions",
+            "homepage": "https://github.com/spatie/regex",
+            "keywords": [
+                "expression",
+                "expressions",
+                "regex",
+                "regular",
+                "spatie"
+            ],
+            "support": {
+                "issues": "https://github.com/spatie/regex/issues",
+                "source": "https://github.com/spatie/regex/tree/3.1.1"
+            },
+            "funding": [
+                {
+                    "url": "https://spatie.be/open-source/support-us",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/spatie",
+                    "type": "github"
+                }
+            ],
+            "time": "2021-11-30T21:13:59+00:00"
         },
         {
             "name": "spatie/shiki-php",
@@ -12615,6 +13246,62 @@
                 "source": "https://github.com/webmozarts/assert/tree/2.4.1"
             },
             "time": "2026-06-15T15:31:57+00:00"
+        },
+        {
+            "name": "wezlo/filament-lookups",
+            "version": "1.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mustafakhaleddev/filament-lookups.git",
+                "reference": "a2af872fe7f6b5ec8feb4ff41ad54b304ee6988c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mustafakhaleddev/filament-lookups/zipball/a2af872fe7f6b5ec8feb4ff41ad54b304ee6988c",
+                "reference": "a2af872fe7f6b5ec8feb4ff41ad54b304ee6988c",
+                "shasum": ""
+            },
+            "require": {
+                "filament/filament": "^4.0 || ^5.0",
+                "php": "^8.2",
+                "spatie/laravel-package-tools": "^1.0"
+            },
+            "require-dev": {
+                "orchestra/testbench": "^10.0",
+                "pestphp/pest": "^4.0",
+                "pestphp/pest-plugin-livewire": "^3.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Wezlo\\FilamentLookups\\FilamentLookupsServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Wezlo\\FilamentLookups\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Hierarchical Lookup Management for Filament with multi-tenant support",
+            "keywords": [
+                "categories",
+                "filament",
+                "hierarchical",
+                "laravel",
+                "lookups",
+                "multi-tenant"
+            ],
+            "support": {
+                "issues": "https://github.com/mustafakhaleddev/filament-lookups/issues",
+                "source": "https://github.com/mustafakhaleddev/filament-lookups/tree/1.0.3"
+            },
+            "time": "2026-04-16T18:23:11+00:00"
         }
     ],
     "packages-dev": [

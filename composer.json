@@ -7,8 +7,11 @@
     "license": "MIT",
     "require": {
         "php": "^8.3",
+        "asmit/fila-calendar": "^0.5.0",
+        "asmit/resized-column": "^4.0",
         "backstage/laravel-mails": "^2.1",
         "filament/filament": "^5.0",
+        "gsferro/filament-stat-plus-easy": "^1.0",
         "laboiteacode/filament-dashboard-widgets": "^1.0",
         "laravel/framework": "^13.0",
         "laravel/jetstream": "^5.4",
@@ -21,8 +24,10 @@
         "notebrainslab/filament-email-templates": "^2.0",
         "openplain/filament-shadcn-theme": "^1.1",
         "rawand201/filament-connection-badge": "*",
+        "shuvroroy/filament-spatie-laravel-health": "^3.3",
         "slimani/filament-media-manager": "^0.9.11",
-        "wallacemartinss/filament-security": "^2.0"
+        "wallacemartinss/filament-security": "^2.0",
+        "wezlo/filament-lookups": "^1.0"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^4.0",

@@ -18,10 +18,14 @@ use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use Asmit\ResizedColumn\ResizedColumnPlugin;
+use Gsferro\FilamentStatPlusEasy\FilamentStatPlusEasyPlugin;
 use LaBoiteACode\FilamentDashboardWidgets\FilamentDashboardWidgetsPlugin;
 use NoteBrainsLab\FilamentEmailTemplates\FilamentEmailTemplatesPlugin;
 use Openplain\FilamentShadcnTheme\Color as ShadcnColor;
+use ShuvroRoy\FilamentSpatieLaravelHealth\FilamentSpatieLaravelHealthPlugin;
 use WallaceMartinss\FilamentSecurity\FilamentSecurityPlugin;
+use Wezlo\FilamentLookups\FilamentLookupsPlugin;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -69,6 +73,11 @@ class AdminPanelProvider extends PanelProvider
                     ->navigationGroup('Mesajlar'),
                 FilamentSecurityPlugin::make(),
                 FilamentDashboardWidgetsPlugin::make(),
+                ResizedColumnPlugin::make(),
+                FilamentStatPlusEasyPlugin::make(),
+                FilamentSpatieLaravelHealthPlugin::make(),
+                FilamentLookupsPlugin::make()
+                    ->navigationGroup('Ayarlar'),
             ])
             ->middleware([
                 EncryptCookies::class,

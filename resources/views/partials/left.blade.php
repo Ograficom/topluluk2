@@ -3,6 +3,7 @@
     $isFeed = request()->routeIs('home');
     $isVideo = request()->routeIs('video');
     $isFeatured = request()->routeIs('blog.popular');
+    $isArchive = request()->routeIs('blog.archive');
     $isExplore = request()->routeIs('discover', 'discover.*');
     $isCategories = request()->routeIs('blog.categories', 'blog.category', 'blog.category.*');
     $isMessages = request()->routeIs('messages.*');
@@ -1469,6 +1470,20 @@
                         </div>
                         <div class="nav-item-label-row">
                             <span class="nav-item-label">Featured</span>
+                        </div>
+                    </a>
+                </li>
+
+                <li>
+                    <a class="nav-item" href="{{ route('blog.archive') }}" data-active="{{ $isArchive ? 'true' : 'false' }}">
+                        <div class="nav-item-icon-outline">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="1.2em" height="1.2em" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                <rect x="3" y="4" width="18" height="18" rx="2" stroke="currentColor" stroke-width="1.5"></rect>
+                                <path d="M3 9h18M8 2v4M16 2v4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path>
+                            </svg>
+                        </div>
+                        <div class="nav-item-label-row">
+                            <span class="nav-item-label">{{ __('site.archive_page.kicker') }}</span>
                         </div>
                     </a>
                 </li>

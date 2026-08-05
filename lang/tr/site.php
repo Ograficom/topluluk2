@@ -313,6 +313,16 @@ return [
         'empty_followings' => 'Henüz takip edilen kullanıcı yok.',
         'empty_posts' => 'Henüz yazı bulunamadı.',
     ],
+    'archive_page' => [
+        'title' => 'Tarihe Göre Ara',
+        'meta_description' => 'Ografi arşiv: seçtiğin tarih aralığındaki yazıları keşfet.',
+        'kicker' => 'Arşiv',
+        'heading' => 'Tarihe Göre Ara',
+        'subtitle' => 'Bir tarih aralığı seç, o aralıkta yayınlanan yazıları gör.',
+        'range_label' => ':from - :to arası',
+        'no_range' => 'Bir tarih aralığı seçilmedi, en yeni yazılar gösteriliyor.',
+        'empty_posts' => 'Bu tarih aralığında yazı bulunamadı.',
+    ],
     'category_page' => [
         'promo_text' => 'Bu topluluktaki en yeni hikâyeleri keşfet.',
         'promo_link' => 'Konuları keşfet',
