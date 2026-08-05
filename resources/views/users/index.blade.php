@@ -5,7 +5,7 @@
 
 @section('content')
     <div class="space-y-4">
-        <h1 class="page-title-identity">{{ __('site.users.title') }}</h1>
+        @include('partials.page-title-identity', ['title' => __('site.users.title')])
 
         <div class="grid grid-cols-1 gap-2">
         @forelse ($users as $user)

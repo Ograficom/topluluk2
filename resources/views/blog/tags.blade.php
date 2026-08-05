@@ -12,7 +12,7 @@
 
     <div class="alma-panel p-6">
         <div class="mb-6">
-            <h1 class="page-title-identity">{{ __('site.tags_page.title') }}</h1>
+            @include('partials.page-title-identity', ['title' => __('site.tags_page.title')])
         </div>
 
         <div class="grid gap-3 sm:grid-cols-2 md:grid-cols-3">

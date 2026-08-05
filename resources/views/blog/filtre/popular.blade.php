@@ -6,7 +6,7 @@
 @section('content')
     <div class="space-y-4">
         <section class="space-y-4">
-            <h1 class="page-title-identity">{{ __('site.popular_page.heading') }}</h1>
+            @include('partials.page-title-identity', ['title' => __('site.popular_page.heading')])
         </section>
 
         @include('partials.ads.slot', [

@@ -17,16 +17,18 @@
 }
 
 /*
- * Shared pill-style page title (used on Popular, Users, Tags, FAQ, etc.) so every
- * simple listing page gets the same compact rounded header instead of each page
- * re-declaring its own box/heading style.
+ * Shared pill-style page title (used on Popular, Users, Tags, FAQ, static pages,
+ * etc.) so every simple listing page gets the same compact rounded header instead
+ * of each page re-declaring its own box/heading style. Home + back shortcuts live
+ * inside the same pill via resources/views/partials/page-title-identity.blade.php.
  */
 .page-title-identity {
     display: flex;
     align-items: center;
+    gap: 6px;
     width: 100%;
     min-height: 38px;
-    padding: 3px 17px;
+    padding: 3px 12px;
     border: 1px solid #d9dde3;
     border-radius: 18px;
     background: #ffffff;
@@ -38,11 +40,61 @@
     box-shadow: none;
 }
 
+.page-title-identity__text {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.page-title-identity__nav {
+    display: inline-flex;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    border: 0;
+    border-radius: 999px;
+    background: transparent;
+    color: inherit;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color .15s ease;
+}
+
+.page-title-identity__nav svg {
+    width: 15px;
+    height: 15px;
+    color: inherit;
+}
+
+.page-title-identity__nav:hover,
+.page-title-identity__nav:focus-visible {
+    background: rgba(15, 15, 18, .06);
+    outline: none;
+}
+
+.page-title-identity__divider {
+    width: 1px;
+    height: 16px;
+    flex: 0 0 auto;
+    background: currentColor;
+    opacity: .15;
+}
+
 html.dark .page-title-identity,
 .dark .page-title-identity {
     border-color: #27272a;
     background: #18181b;
     color: #fafafa;
+}
+
+html.dark .page-title-identity__nav:hover,
+.dark .page-title-identity__nav:hover,
+html.dark .page-title-identity__nav:focus-visible,
+.dark .page-title-identity__nav:focus-visible {
+    background: rgba(255, 255, 255, .1);
 }
 
 @media (max-width: 640px) {
@@ -51,7 +103,7 @@ html.dark .page-title-identity,
         min-height: 34px;
         margin-right: calc(50% - 50vw);
         margin-left: calc(50% - 50vw);
-        padding: 2px 14px;
+        padding: 2px 10px;
         border-right: 0;
         border-left: 0;
         border-radius: 16px;

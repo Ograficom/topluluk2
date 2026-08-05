@@ -196,7 +196,9 @@
 
 @section('content')
     <div class="ografi-faq-page">
-        <h1 class="page-title-identity mb-4">{{ $faqPageTitle }}</h1>
+        <div class="mb-4">
+            @include('partials.page-title-identity', ['title' => $faqPageTitle])
+        </div>
 
         <section class="ografi-faq-list flex flex-col gap-3 sm:gap-4">
             @foreach($faqItems as $item)
