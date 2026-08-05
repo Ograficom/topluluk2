@@ -1363,6 +1363,61 @@
         color: #60a5fa !important;
     }
 
+    .sidebar-utility-icons {
+        display: flex !important;
+        align-items: center !important;
+        gap: 8px !important;
+        margin: 0 0 14px !important;
+        padding: 0 !important;
+    }
+
+    .sidebar-utility-icon {
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        width: 32px !important;
+        height: 32px !important;
+        flex-shrink: 0 !important;
+        border-radius: 999px !important;
+        border: 0 !important;
+        background: #f3f4f6 !important;
+        color: #4b5563 !important;
+        text-decoration: none !important;
+        cursor: pointer !important;
+        transition: background-color .15s ease, color .15s ease !important;
+    }
+
+    .sidebar-utility-icon:hover,
+    .sidebar-utility-icon:focus-visible {
+        background: #eff6ff !important;
+        color: #2563eb !important;
+        outline: none !important;
+    }
+
+    .sidebar-utility-icon iconify-icon {
+        width: 16px !important;
+        height: 16px !important;
+        pointer-events: none !important;
+    }
+
+    .sidebar-utility-icon--text {
+        font-size: 12px !important;
+        font-weight: 600 !important;
+        letter-spacing: .02em !important;
+    }
+
+    .dark .sidebar-utility-icon,
+    [data-theme="dark"] .sidebar-utility-icon {
+        background: #27272a !important;
+        color: #d4d4d8 !important;
+    }
+
+    .dark .sidebar-utility-icon:hover,
+    [data-theme="dark"] .sidebar-utility-icon:hover {
+        background: rgba(37, 99, 235, 0.18) !important;
+        color: #60a5fa !important;
+    }
+
     /* Alt bağlantılar: resimdeki gibi doğal akış — kısa etiketler yan yana sığar,
        uzun etiket kendi satırına düşer. Sabit sütun yok, kesme (...) yok. */
     body.alma-app .sidebar-footer-links {
@@ -1569,6 +1624,29 @@
                     @endforeach
                 </div>
             @endif
+
+            <div class="sidebar-utility-icons">
+                <button
+                    type="button"
+                    class="sidebar-utility-icon"
+                    aria-label="{{ __('site.common.dark_mode') }}"
+                    aria-pressed="false"
+                    data-theme-toggle
+                    data-label-dark="{{ __('site.common.dark_mode') }}"
+                    data-label-light="{{ __('site.common.light_mode') }}"
+                >
+                    <iconify-icon data-theme-icon icon="lucide:moon" aria-hidden="true"></iconify-icon>
+                </button>
+
+                <a
+                    href="{{ route('locale.switch', ['locale' => ($currentLocale ?? 'tr') === 'en' ? 'tr' : 'en']) }}"
+                    class="sidebar-utility-icon sidebar-utility-icon--text"
+                    aria-label="{{ ($currentLocale ?? 'tr') === 'en' ? 'Turkce' : 'English' }}"
+                    title="{{ ($currentLocale ?? 'tr') === 'en' ? 'Turkce' : 'English' }}"
+                >
+                    {{ ($currentLocale ?? 'tr') === 'en' ? 'TR' : 'EN' }}
+                </a>
+            </div>
 
             @if($footerLinks->isNotEmpty())
                 <div class="sidebar-footer-links">

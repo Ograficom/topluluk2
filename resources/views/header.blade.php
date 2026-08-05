@@ -2089,29 +2089,6 @@
                 </div>
             </form>
 
-            <button
-                type="button"
-                class="site-icon-btn"
-                aria-label="{{ __('site.common.dark_mode') }}"
-                aria-pressed="false"
-                data-theme-toggle
-                data-label-dark="{{ __('site.common.dark_mode') }}"
-                data-label-light="{{ __('site.common.light_mode') }}"
-                style="background: transparent !important; background-color: transparent !important; box-shadow: none !important; border-color: transparent !important;"
-            >
-                <iconify-icon data-theme-icon icon="lucide:moon" style="width: var(--site-header-icon-size) !important; height: var(--site-header-icon-size) !important; font-size: var(--site-header-icon-size) !important;"></iconify-icon>
-            </button>
-
-            <a
-                href="{{ route('locale.switch', ['locale' => ($currentLocale ?? 'tr') === 'en' ? 'tr' : 'en']) }}"
-                class="site-icon-btn"
-                aria-label="{{ ($currentLocale ?? 'tr') === 'en' ? 'Turkce' : 'English' }}"
-                title="{{ ($currentLocale ?? 'tr') === 'en' ? 'Turkce' : 'English' }}"
-                style="background: transparent !important; background-color: transparent !important; box-shadow: none !important; border-color: transparent !important; font-size: 13px; font-weight: 600; letter-spacing: 0.02em;"
-            >
-                {{ ($currentLocale ?? 'tr') === 'en' ? 'TR' : 'EN' }}
-            </a>
-
             <a
                 href="{{ route('blog.create') }}"
                 class="site-header-write-btn site-header-desktop-only inline-flex items-center gap-2 text-sm"
