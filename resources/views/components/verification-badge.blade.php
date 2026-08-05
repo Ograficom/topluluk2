@@ -12,9 +12,11 @@
     $badgeType = Str::lower(trim((string) ($user?->verification_badge ?? '')));
     $badgeSvg = (string) ($user?->verification_badge_svg ?? '');
 
-    if ($profileType === 'organization' && $isVerified) {
+    // Organizations only fall back to the plain gray tick when the admin hasn't
+    // explicitly configured a badge - an explicit blue/gold/custom choice (set via
+    // admin/user-verification) must never be silently overridden.
+    if ($profileType === 'organization' && $isVerified && ($badgeType === '' || $badgeType === 'none')) {
         $badgeType = 'gray-check';
-        $badgeSvg = '';
     }
 
     $hasCustom = trim($badgeSvg) !== '';

@@ -179,18 +179,9 @@
                     {{ $name }}
                 </a>
 
-                @if($isVerified)
-                    <span class="ografi-profile-popover__verified" title="Doğrulanmış kullanıcı" aria-label="Doğrulanmış kullanıcı">
-                        @if($verifiedSvg)
-                            {!! $verifiedSvg !!}
-                        @else
-                            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                                <path d="M12 2.25l2.02 1.48 2.5-.05 1.3 2.14 2.28 1.06-.35 2.48 1.08 2.27-1.79 1.76-.44 2.47-2.42.67-1.87 1.68L12 17.25l-2.31.96-1.87-1.68-2.42-.67-.44-2.47-1.79-1.76 1.08-2.27-.35-2.48 2.28-1.06 1.3-2.14 2.5.05L12 2.25z" />
-                                <path d="M10.55 13.75l5.18-5.18 1.06 1.06-6.24 6.24-3.34-3.34 1.06-1.06 2.28 2.28z" />
-                            </svg>
-                        @endif
-                    </span>
-                @endif
+                <span class="ografi-profile-popover__verified">
+                    <x-verification-badge :user="$profileUser" size="sm" />
+                </span>
             </span>
 
             @if($username)
