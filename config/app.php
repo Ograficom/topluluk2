@@ -84,6 +84,7 @@ return [
 
     'available_locales' => [
         'tr' => 'Turkce',
+        'en' => 'English',
     ],
 
     'faker_locale' => env('APP_FAKER_LOCALE', 'en_US'),

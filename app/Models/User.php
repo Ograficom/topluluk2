@@ -80,6 +80,7 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
         'social_facebook',
         'social_youtube',
         'website_url',
+        'preferred_locale',
         'joined_at',
         'is_verified',
         'verification_badge',

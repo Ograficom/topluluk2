@@ -74,4 +74,14 @@ return [
         'endpoint' => env('INDEXNOW_ENDPOINT', 'https://api.indexnow.org/indexnow'),
     ],
 
+    // MyMemory: free, no-signup translation API used to render posts in the
+    // reader's chosen language. Registering an email raises the free daily
+    // quota roughly 10x (see https://mymemory.translated.net/doc/spec.php) -
+    // optional, translation still works without it.
+    'mymemory' => [
+        'url' => env('MYMEMORY_URL', 'https://api.mymemory.translated.net/get'),
+        'email' => env('MYMEMORY_EMAIL'),
+        'timeout' => env('MYMEMORY_TIMEOUT', 10),
+    ],
+
 ];

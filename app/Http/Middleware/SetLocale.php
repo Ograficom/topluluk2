@@ -19,6 +19,18 @@ class SetLocale
             $request->session()->put('locale', $locale);
         }
 
+        // A signed-in user's saved preference (set via the locale switcher on any
+        // device) seeds a fresh session that has no `locale` key yet, so the choice
+        // survives logging in from a new browser/device instead of only living in
+        // the current session cookie.
+        if (
+            !$request->session()->has('locale')
+            && $request->user()
+            && in_array($request->user()->preferred_locale, $availableLocales, true)
+        ) {
+            $request->session()->put('locale', $request->user()->preferred_locale);
+        }
+
         $activeLocale = $request->session()->get('locale', $defaultLocale);
         if (!in_array($activeLocale, $availableLocales, true)) {
             $activeLocale = $defaultLocale;

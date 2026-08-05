@@ -25,6 +25,7 @@ use App\Services\MentionService;
 use App\Services\RecaptchaV3Verifier;
 use App\Services\PostCommentPreviewService;
 use App\Services\PostLinkPreviewService;
+use App\Services\PostTranslationService;
 use App\Services\PostAiAssistantService;
 use App\Services\SitemapManager;
 use App\Notifications\PostCommentedNotification;
@@ -669,6 +670,24 @@ class BlogController extends Controller
         app(PostLinkPreviewService::class)->attachToPosts($recommendedPosts);
 
         $post->content = $this->renderSocialEmbedsInHtml((string) ($post->content ?? ''));
+
+        if (app()->getLocale() !== 'tr') {
+            $translated = app(PostTranslationService::class)->translatePost($post, app()->getLocale());
+            $post->title = $translated['title'];
+            $post->excerpt = $translated['excerpt'];
+            $post->content = $translated['content'];
+
+            // meta_title/meta_description (and the optional SmartSeo override row) are
+            // separate stored columns the translator never touches - clear them so the
+            // page's <title>/meta description fall back to the already-translated
+            // title/excerpt above instead of leaking the original Turkish SEO text.
+            $post->meta_title = null;
+            $post->meta_description = null;
+            if ($post->seo) {
+                $post->seo->title = null;
+                $post->seo->description = null;
+            }
+        }
 
         return view('blog.show', [
             'post' => $post,

@@ -1,0 +1,60 @@
+<?php
+
+return [
+    'accepted' => 'The :attribute must be accepted.',
+    'array' => 'The :attribute must be an array.',
+    'boolean' => 'The :attribute must be true or false.',
+    'confirmed' => 'The :attribute confirmation does not match.',
+    'date' => 'The :attribute must be a valid date.',
+    'email' => 'The :attribute must be a valid email address.',
+    'exists' => 'The selected :attribute is invalid.',
+    'file' => 'The :attribute must be a valid file.',
+    'image' => 'The :attribute must be an image.',
+    'in' => 'The selected :attribute is invalid.',
+    'integer' => 'The :attribute must be an integer.',
+
+    'max' => [
+        'numeric' => 'The :attribute may not be greater than :max.',
+        'file' => 'The :attribute may not be greater than :max kilobytes.',
+        'string' => 'The :attribute may not be greater than :max characters.',
+        'array' => 'The :attribute may not have more than :max items.',
+    ],
+
+    'min' => [
+        'numeric' => 'The :attribute must be at least :min.',
+        'file' => 'The :attribute must be at least :min kilobytes.',
+        'string' => 'The :attribute must be at least :min characters.',
+        'array' => 'The :attribute must have at least :min items.',
+    ],
+
+    'mimes' => 'The :attribute must be a file of type: :values.',
+    'numeric' => 'The :attribute must be a number.',
+    'required' => 'The :attribute field is required.',
+    'required_without' => 'The :attribute field is required when :other is not present.',
+    'regex' => 'The :attribute format is invalid.',
+    'string' => 'The :attribute must be a string.',
+    'unique' => 'This :attribute has already been taken.',
+    'url' => 'The :attribute must be a valid URL.',
+
+    'attributes' => [
+        'name' => 'name',
+        'email' => 'email address',
+        'password' => 'password',
+        'password_confirmation' => 'password confirmation',
+        'full_name' => 'full name',
+        'subject' => 'subject',
+        'message' => 'message',
+        'consent' => 'consent',
+        'db_host' => 'database host',
+        'db_port' => 'database port',
+        'db_name' => 'database name',
+        'db_user' => 'database username',
+        'db_pass' => 'database password',
+        'app_url' => 'application URL',
+        'title' => 'title',
+        'content' => 'content',
+        'category_id' => 'category',
+        'terms' => 'terms of service',
+        'recaptcha_token' => 'security verification',
+    ],
+];

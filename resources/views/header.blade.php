@@ -2006,7 +2006,7 @@
                 <button
                     type="button"
                     class="mobile-sidebar-trigger lg:hidden"
-                    aria-label="Menu"
+                    aria-label="{{ __('site.header.menu') }}"
                     aria-expanded="false"
                     aria-controls="mobile-sidebar-drawer"
                     data-mobile-sidebar-toggle
@@ -2032,7 +2032,7 @@
                 <button
                     type="button"
                     class="site-search-trigger"
-                    aria-label="Ara"
+                    aria-label="{{ __('site.common.search') }}"
                     aria-controls="site-header-search-dropdown"
                     aria-expanded="false"
                     data-search-trigger
@@ -2050,7 +2050,7 @@
                                 type="search"
                                 name="q"
                                 value="{{ request('q') }}"
-                                placeholder="Kullanici, kategori, tag, post ve sayfa ara..."
+                                placeholder="{{ __('site.header.search_full_placeholder') }}"
                                 autocomplete="off"
                                 data-search-input
                             />
@@ -2058,7 +2058,7 @@
                             <button
                                 type="button"
                                 class="site-search-clear hidden"
-                                aria-label="Aramayi temizle"
+                                aria-label="{{ __('site.header.clear_search') }}"
                                 data-search-clear
                                 style="background: transparent !important; background-color: transparent !important; box-shadow: none !important; border-color: transparent !important;"
                             >
@@ -2069,7 +2069,7 @@
                         <button
                             type="button"
                             class="site-search-close"
-                            aria-label="Aramayi kapat"
+                            aria-label="{{ __('site.header.close_search') }}"
                             data-search-close
                         >
                             <iconify-icon icon="lucide:x"></iconify-icon>
@@ -2078,12 +2078,12 @@
 
                     <div class="site-search-results-panel">
                         <div class="site-search-results" data-search-results>
-                            <p class="site-search-empty">Kullanici, kategori, tag, post veya sayfa aramak icin yaz.</p>
+                            <p class="site-search-empty">{{ __('site.header.search_empty_hint') }}</p>
                         </div>
 
                         <a href="{{ route('search') }}" class="site-search-all" data-search-view-all>
                             <iconify-icon icon="lucide:corner-down-left"></iconify-icon>
-                            <span data-search-view-all-label>Tum sonuclari goster</span>
+                            <span data-search-view-all-label>{{ __('site.header.view_all_results') }}</span>
                         </a>
                     </div>
                 </div>
@@ -2092,13 +2092,25 @@
             <button
                 type="button"
                 class="site-icon-btn"
-                aria-label="Dark mode"
+                aria-label="{{ __('site.common.dark_mode') }}"
                 aria-pressed="false"
                 data-theme-toggle
+                data-label-dark="{{ __('site.common.dark_mode') }}"
+                data-label-light="{{ __('site.common.light_mode') }}"
                 style="background: transparent !important; background-color: transparent !important; box-shadow: none !important; border-color: transparent !important;"
             >
                 <iconify-icon data-theme-icon icon="lucide:moon" style="width: var(--site-header-icon-size) !important; height: var(--site-header-icon-size) !important; font-size: var(--site-header-icon-size) !important;"></iconify-icon>
             </button>
+
+            <a
+                href="{{ route('locale.switch', ['locale' => ($currentLocale ?? 'tr') === 'en' ? 'tr' : 'en']) }}"
+                class="site-icon-btn"
+                aria-label="{{ ($currentLocale ?? 'tr') === 'en' ? 'Turkce' : 'English' }}"
+                title="{{ ($currentLocale ?? 'tr') === 'en' ? 'Turkce' : 'English' }}"
+                style="background: transparent !important; background-color: transparent !important; box-shadow: none !important; border-color: transparent !important; font-size: 13px; font-weight: 600; letter-spacing: 0.02em;"
+            >
+                {{ ($currentLocale ?? 'tr') === 'en' ? 'TR' : 'EN' }}
+            </a>
 
             <a
                 href="{{ route('blog.create') }}"
@@ -2136,7 +2148,7 @@
                     <button
                         type="button"
                         class="site-icon-btn site-icon-btn--status"
-                        aria-label="Bildirimler"
+                        aria-label="{{ __('site.header.notifications') }}"
                         aria-expanded="false"
                         data-notifications-btn
                         style="background: transparent !important; background-color: transparent !important; box-shadow: none !important; border-color: transparent !important;"
@@ -2148,9 +2160,9 @@
                     <div class="site-notifications-panel hidden" data-notifications-panel style="background: #ffffff !important; background-color: #ffffff !important; color: #0f172a !important; border-color: #e2e8f0 !important; filter: none !important;">
                         <div class="site-notifications-panel-head">
                             <div>
-                                <h3 class="site-notifications-panel-title">Bildirimler</h3>
+                                <h3 class="site-notifications-panel-title">{{ __('site.header.notifications') }}</h3>
                                 <p class="site-notifications-panel-subtitle">
-                                    Yeni hareketleri buradan takip et.
+                                    {{ __('site.header.notifications_subtitle') }}
                                 </p>
                             </div>
 
@@ -2158,7 +2170,7 @@
                                 <button
                                     type="button"
                                     class="site-notifications-more"
-                                    aria-label="Bildirim islemleri"
+                                    aria-label="{{ __('site.header.notification_actions') }}"
                                     aria-expanded="false"
                                     data-notifications-actions-btn
                                     style="background: transparent !important; background-color: transparent !important; box-shadow: none !important; border-color: transparent !important;"
@@ -2169,23 +2181,23 @@
                                 <div class="site-notifications-actions-menu hidden" data-notifications-actions-menu>
                                     <button type="button" class="site-notifications-menu-item" data-notifications-mark-all>
                                         <iconify-icon icon="lucide:check-check"></iconify-icon>
-                                        <span>Tumunu okundu isaretle</span>
+                                        <span>{{ __('site.header.mark_all_read') }}</span>
                                     </button>
 
                                     <button type="button" class="site-notifications-menu-item" data-notifications-delete-all>
                                         <iconify-icon icon="lucide:trash-2"></iconify-icon>
-                                        <span>Tumunu sil</span>
+                                        <span>{{ __('site.header.delete_all') }}</span>
                                     </button>
                                 </div>
                             </div>
                         </div>
 
                         <div class="site-notifications-list" data-notifications-list>
-                            <p class="site-notifications-empty">Bildirimler yukleniyor...</p>
+                            <p class="site-notifications-empty">{{ __('site.header.notifications_loading') }}</p>
                         </div>
 
                         <a href="{{ route('notifications.index') }}" class="site-notifications-footer-link">
-                            <span>Tum bildirimleri gor</span>
+                            <span>{{ __('site.header.view_all_notifications') }}</span>
                             <iconify-icon icon="lucide:arrow-right" style="font-size: 15px;"></iconify-icon>
                         </a>
                     </div>
@@ -2208,7 +2220,7 @@
                 <a
                     href="{{ route('messages.index') }}"
                     class="site-icon-btn site-icon-btn--status site-header-desktop-only site-header-messages-link"
-                    aria-label="Mesajlar"
+                    aria-label="{{ __('site.header.messages') }}"
                     style="background: transparent !important; background-color: transparent !important; box-shadow: none !important; border-color: transparent !important;"
                 >
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" style="width: var(--site-header-icon-size) !important; height: var(--site-header-icon-size) !important;">
@@ -2266,6 +2278,8 @@
                             type="button"
                             class="site-user-menu-link site-user-menu-link--switch"
                             data-user-menu-theme-toggle
+                            data-label-dark="{{ __('site.common.dark_mode') }}"
+                            data-label-light="{{ __('site.common.light_mode') }}"
                             aria-pressed="false"
                         >
                             <span class="site-user-menu-icon">
@@ -2276,6 +2290,16 @@
                                 <span class="site-user-menu-switch__knob"></span>
                             </span>
                         </button>
+
+                        <a
+                            href="{{ route('locale.switch', ['locale' => ($currentLocale ?? 'tr') === 'en' ? 'tr' : 'en']) }}"
+                            class="site-user-menu-link"
+                        >
+                            <span class="site-user-menu-icon">
+                                <iconify-icon icon="lucide:languages" style="font-size: 16px;"></iconify-icon>
+                            </span>
+                            <span>{{ __('site.common.language') }}: {{ ($currentLocale ?? 'tr') === 'en' ? 'English' : 'Turkce' }}</span>
+                        </a>
 
                         <div class="site-user-menu-divider"></div>
 
@@ -2368,7 +2392,7 @@
                 <button
                     type="button"
                     class="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-slate-300 bg-white text-slate-700 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200"
-                    aria-label="Menüyü kapat"
+                    aria-label="{{ __('site.header.close_menu') }}"
                     data-mobile-sidebar-close
                     style="box-shadow: none !important; transition: none !important;"
                 >
@@ -2396,9 +2420,12 @@
                     const isDark = document.documentElement.classList.contains('dark');
 
                     themeButtons.forEach((button) => {
+                        const label = isDark
+                            ? (button.dataset.labelLight || 'Light mode')
+                            : (button.dataset.labelDark || 'Dark mode');
                         button.setAttribute('aria-pressed', isDark ? 'true' : 'false');
-                        button.setAttribute('aria-label', isDark ? 'Light mode' : 'Dark mode');
-                        button.setAttribute('title', isDark ? 'Light mode' : 'Dark mode');
+                        button.setAttribute('aria-label', label);
+                        button.setAttribute('title', label);
                     });
 
                     themeIcons.forEach((icon) => {
