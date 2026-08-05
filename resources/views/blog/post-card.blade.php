@@ -1954,12 +1954,12 @@ SVG;
                                     <input type="hidden" name="reaction_type_id" value="{{ $reactionTypeId }}">
                                 @endif
                                 <button type="submit" class="post-card__reaction-option" aria-label="{{ $reactionTypeLabel }}">
-                                    <span class="reaction-emoji reaction-emoji--html" style="display:inline-flex!important;width:24px!important;height:24px!important;min-width:24px!important;font-size:24px!important;line-height:24px!important">{!! $reactionTypeIcon !!}</span>
+                                    <span class="reaction-emoji reaction-emoji--html" style="display:inline-flex">{!! $reactionTypeIcon !!}</span>
                                 </button>
                             </form>
                         @elseif(\Illuminate\Support\Facades\Route::has('login'))
                             <a href="{{ route('login') }}" class="post-card__reaction-option" aria-label="{{ $reactionTypeLabel }}">
-                                <span class="reaction-emoji reaction-emoji--html" style="display:inline-flex!important;width:24px!important;height:24px!important;min-width:24px!important;font-size:24px!important;line-height:24px!important">{!! $reactionTypeIcon !!}</span>
+                                <span class="reaction-emoji reaction-emoji--html" style="display:inline-flex">{!! $reactionTypeIcon !!}</span>
                             </a>
                         @endif
                     @endforeach
@@ -2002,12 +2002,12 @@ SVG;
                                     <input type="hidden" name="reaction_type_id" value="{{ $reactionTypeId }}">
                                 @endif
                                 <button type="submit" class="post-card__reaction-option" aria-label="{{ $reactionTypeLabel }}">
-                                    <span class="reaction-emoji reaction-emoji--html" style="display:inline-flex!important;width:24px!important;height:24px!important;min-width:24px!important;font-size:24px!important;line-height:24px!important">{!! $reactionTypeIcon !!}</span>
+                                    <span class="reaction-emoji reaction-emoji--html" style="display:inline-flex">{!! $reactionTypeIcon !!}</span>
                                 </button>
                             </form>
                         @elseif(\Illuminate\Support\Facades\Route::has('login'))
                             <a href="{{ route('login') }}" class="post-card__reaction-option" aria-label="{{ $reactionTypeLabel }}">
-                                <span class="reaction-emoji reaction-emoji--html" style="display:inline-flex!important;width:24px!important;height:24px!important;min-width:24px!important;font-size:24px!important;line-height:24px!important">{!! $reactionTypeIcon !!}</span>
+                                <span class="reaction-emoji reaction-emoji--html" style="display:inline-flex">{!! $reactionTypeIcon !!}</span>
                             </a>
                         @endif
                     @endforeach
@@ -8627,6 +8627,130 @@ SVG;
             content: none !important;
             display: none !important;
             animation: none !important;
+        }
+
+        /*
+         * FINAL: reaksiyon rozeti, ekleme dugmesi ve secim kutusu artik post-show
+         * sayfasindaki (.ps-reaction-*) degerlerle birebir ayni - boyut, renk, emoji
+         * olcusu ve secim kutusunun genisligi/mobil davranisi dahil. Kaynak:
+         * resources/views/blog/show.blade.php icindeki .ps-reaction-pill /
+         * .ps-reaction-menu / .ps-reaction-option kurallari.
+         */
+        html body [data-post-card-shell] .reaction-item {
+            min-width: 42px !important;
+            height: auto !important;
+            min-height: 34px !important;
+            padding: 0 12px !important;
+            gap: 6px !important;
+            border: 1px solid #edf0f4 !important;
+            background: #f8fafc !important;
+            font-size: 13px !important;
+            font-weight: 500 !important;
+        }
+
+        html body [data-post-card-shell] .smiley-btn.reaction-add {
+            width: auto !important;
+            min-width: 42px !important;
+            height: auto !important;
+            min-height: 34px !important;
+            padding: 0 10px !important;
+            background: transparent !important;
+        }
+
+        html body [data-post-card-shell] .smiley-btn.reaction-add:hover,
+        html body [data-post-card-shell] .smiley-btn.reaction-add:focus-visible,
+        html body [data-post-card-shell] .smiley-btn.reaction-add[aria-expanded="true"] {
+            background: #f3f4f6 !important;
+        }
+
+        /* Emoji karakteri (duz metin) artik sarmalayicidan zorla boyut almiyor,
+           post-show'daki gibi cevresindeki kutunun font-size'ini miras aliyor
+           (rozette 13px, secim kutusunda sayfa varsayilani). Sadece gercek bir
+           gorsel/GIF reaksiyon (img/svg) icin sabit olcu uygulanmaya devam ediyor. */
+        html body [data-post-card-shell] .reaction-emoji.reaction-emoji--html,
+        html body [data-post-card-reaction-menu] .reaction-emoji.reaction-emoji--html {
+            width: auto !important;
+            height: auto !important;
+            min-width: 0 !important;
+            min-height: 0 !important;
+            font-size: inherit !important;
+            line-height: 1 !important;
+        }
+
+        html body [data-post-card-shell] .reaction-emoji--html img,
+        html body [data-post-card-shell] .reaction-emoji--html svg {
+            width: 22px !important;
+            height: 22px !important;
+            min-width: 22px !important;
+            min-height: 22px !important;
+            border-radius: 999px !important;
+            object-fit: cover !important;
+        }
+
+        html body [data-post-card-reaction-menu] .reaction-emoji--html img,
+        html body [data-post-card-reaction-menu] .reaction-emoji--html svg {
+            width: 30px !important;
+            height: 30px !important;
+            min-width: 30px !important;
+            min-height: 30px !important;
+        }
+
+        html body [data-post-card-reaction-menu] {
+            width: 244px !important;
+            max-width: calc(100vw - 24px) !important;
+            padding: 12px !important;
+            border: 1px solid rgba(203, 213, 225, .95) !important;
+            border-radius: 18px !important;
+            background: rgba(255, 255, 255, .98) !important;
+            backdrop-filter: blur(14px) !important;
+            box-shadow: none !important;
+        }
+
+        html body [data-post-card-reaction-menu]:not([hidden]) {
+            display: grid !important;
+            grid-template-columns: repeat(5, 36px) !important;
+            gap: 10px !important;
+            align-items: center !important;
+            justify-content: start !important;
+        }
+
+        html body [data-post-card-reaction-menu] .post-card__reaction-option {
+            min-width: 36px !important;
+            width: 36px !important;
+            min-height: 36px !important;
+            height: 36px !important;
+            padding: 0 !important;
+            border-radius: 999px !important;
+            background: transparent !important;
+        }
+
+        html body [data-post-card-reaction-menu] .post-card__reaction-option:is(:hover, :focus-visible) {
+            background: #eef2f7 !important;
+        }
+
+        @media (max-width: 640px) {
+            html body [data-post-card-reaction-menu] {
+                position: fixed !important;
+                left: 12px !important;
+                right: 12px !important;
+                top: auto !important;
+                bottom: calc(12px + env(safe-area-inset-bottom, 0px)) !important;
+                width: auto !important;
+                max-width: none !important;
+                max-height: min(72vh, 430px) !important;
+                overflow-y: auto !important;
+                overscroll-behavior: contain !important;
+                z-index: 2147483647 !important;
+                border-radius: 18px !important;
+                border: 1px solid #e5e7eb !important;
+                background: #ffffff !important;
+                backdrop-filter: none !important;
+            }
+
+            html body [data-post-card-reaction-menu]:not([hidden]) {
+                display: grid !important;
+                grid-template-columns: repeat(5, minmax(42px, 1fr)) !important;
+            }
         }
 
 </style>
