@@ -66,10 +66,15 @@ class UserVerification extends Page
                 ]),
             Forms\Components\FileUpload::make('badge_file')
                 ->label('Ozel rozet SVG (yukleme)')
-                ->acceptedFileTypes(['image/svg+xml'])
+                // A valid .svg file's detected content MIME type is inconsistent across
+                // environments (image/svg+xml, image/svg, text/xml, application/xml all
+                // occur for genuinely valid files - filamentphp/filament#14219), so every
+                // realistic variant is accepted here instead of only the "correct" one -
+                // otherwise a real SVG can silently fail this check and never upload.
+                ->acceptedFileTypes(['image/svg+xml', 'image/svg', 'text/xml', 'application/xml'])
                 ->directory('badges')
                 ->visibility('public')
-                ->helperText('Sadece rozet ayari esnasinda gosterilir.')
+                ->helperText('Sadece rozet ayari esnasinda gosterilir. .svg dosyasi yukleyin.')
                 ->hidden(fn (callable $get) => $get('verification_badge') !== 'custom'),
         ];
     }

@@ -69,7 +69,15 @@ return [
             'required',
             'file',
             'max:5242880', // 5GB (KB)
-            'mimetypes:video/mp4,video/webm,video/quicktime,video/ogg,video/x-matroska,video/x-msvideo,video/avi,video/mpeg,video/3gpp,application/octet-stream,image/jpeg,image/png,image/gif,image/webp,image/svg+xml',
+            // SVG's detected MIME type is notoriously inconsistent across servers/PHP
+            // fileinfo versions (image/svg+xml, image/svg, text/xml, application/xml
+            // all show up in the wild for a genuinely valid SVG - see
+            // filamentphp/filament#14219) - those variants are allowed here (this list
+            // is global, applying to every Livewire upload in the app, so it stays
+            // scoped to SVG-specific MIME strings rather than something broad like
+            // text/plain) so a real SVG never gets silently rejected before it even
+            // reaches a field's own validation.
+            'mimetypes:video/mp4,video/webm,video/quicktime,video/ogg,video/x-matroska,video/x-msvideo,video/avi,video/mpeg,video/3gpp,application/octet-stream,image/jpeg,image/png,image/gif,image/webp,image/svg+xml,image/svg,text/xml,application/xml',
         ],
         'directory' => null,   // Example: 'tmp'                      | Default: 'livewire-tmp'
         'middleware' => 'throttle:240,1',
