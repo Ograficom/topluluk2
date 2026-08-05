@@ -4,9 +4,10 @@
 @section('meta_description', __('site.users.meta_description'))
 
 @section('content')
-    <h1 class="page-title-identity">{{ __('site.users.title') }}</h1>
+    <div class="space-y-4">
+        <h1 class="page-title-identity">{{ __('site.users.title') }}</h1>
 
-    <div class="mt-2 grid grid-cols-1 gap-2">
+        <div class="grid grid-cols-1 gap-2">
         @forelse ($users as $user)
             <div class="rounded-[26px] bg-white px-4 py-3 shadow-sm ring-1 ring-slate-200/80">
                 <div class="flex items-center justify-between gap-3">
@@ -42,11 +43,12 @@
                 {{ __('site.users.empty') }}
             </div>
         @endforelse
-    </div>
+        </div>
 
-    <div class="mt-2 flex items-center justify-between gap-3 text-xs text-slate-500">
-        <span>Sayfa basina {{ $users->perPage() }} kullanici</span>
-        {{ $users->links() }}
+        <div class="flex items-center justify-between gap-3 text-xs text-slate-500">
+            <span>Sayfa basina {{ $users->perPage() }} kullanici</span>
+            {{ $users->links() }}
+        </div>
     </div>
 @endsection
 
