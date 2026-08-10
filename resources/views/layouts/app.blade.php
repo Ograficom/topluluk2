@@ -6315,7 +6315,7 @@
             row-gap: 0 !important;
             align-items: start !important;
             justify-content: center !important;
-            padding: 16px 0 24px !important;
+            padding: 15px 0 24px !important;
         }
 
         body.alma-app .layout-side--left {
@@ -6587,7 +6587,7 @@
             body.alma-app .main-grid.main-grid--padded,
             body.alma-app .main-grid.main-grid--no-pad {
                 grid-template-columns: minmax(0, 1fr) !important;
-                padding: 16px 14px 24px !important;
+                padding: 15px 14px 24px !important;
             }
 
             body.alma-app.route-post-show .main-grid,
@@ -6941,7 +6941,7 @@
 
             
 
-            <main class="space-y-6 layout-main">
+            <main class="layout-main">
                 @unless ($__env->hasSection('hide_feed_header') || $isMessagesRoute || request()->routeIs('home'))
                     @include('partials.community-feed')
                 @endunless

@@ -10051,7 +10051,7 @@ html body.alma-app:has(.post-show-shell) .main-grid.main-grid--padded {
 
 .ps-layout.post-show-shell,
 .post-show-shell.ps-layout {
-  padding: 16px 0 96px !important;
+  padding: 15px 0 96px !important;
   margin-top: 0 !important;
   flex-direction: column !important;
   align-items: center !important;
