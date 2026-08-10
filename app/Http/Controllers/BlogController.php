@@ -1249,13 +1249,22 @@ class BlogController extends Controller
 
     public function tags(Request $request)
     {
-        $tags = Tag::withCount('posts')->orderBy('name')->paginate(50);
+        $sort = in_array((string) $request->query('sort', 'popular'), ['popular', 'newest', 'oldest'], true)
+            ? (string) $request->query('sort', 'popular')
+            : 'popular';
+
+        $tags = Tag::withCount('posts')
+            ->when($sort === 'popular', fn ($query) => $query->orderByDesc('posts_count')->orderBy('name'))
+            ->when($sort === 'newest', fn ($query) => $query->orderByDesc('created_at'))
+            ->when($sort === 'oldest', fn ($query) => $query->orderBy('created_at'))
+            ->paginate(50)
+            ->withQueryString();
 
         if ($request->expectsJson()) {
             return Response::json($tags);
         }
 
-        return view('blog.tags', ['tags' => $tags]);
+        return view('blog.tags', ['tags' => $tags, 'sort' => $sort]);
     }
 
     private function isVisible(Post $post): bool
