@@ -216,6 +216,7 @@ return [
         'kicker' => 'Etiketler',
         'subtitle' => 'Topluluktaki en aktif etiketleri inceleyin.',
         'posts_count' => 'Yazılar (:count)',
+        'load_more' => 'Daha fazla etiket göster',
     ],
     'discover_page' => [
         'title' => 'Keşfet',

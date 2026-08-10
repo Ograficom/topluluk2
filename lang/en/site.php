@@ -216,6 +216,7 @@ return [
         'kicker' => 'Tags',
         'subtitle' => 'Review the most active tags in the community.',
         'posts_count' => 'Posts (:count)',
+        'load_more' => 'Show more tags',
     ],
     'discover_page' => [
         'title' => 'Discover',
