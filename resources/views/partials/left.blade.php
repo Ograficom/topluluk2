@@ -1320,34 +1320,36 @@
         display: flex !important;
         flex-wrap: wrap !important;
         align-items: center !important;
-        gap: 8px !important;
+        gap: 6px !important;
         margin: 0 0 14px !important;
         padding: 0 !important;
     }
 
+    /* 24px'lik kutu + 6px bosluk, 180px genisligindeki sidebar-footer icine
+       satir basina 6 logo sigacak sekilde hesaplandi (6*24 + 5*6 = 174px). */
     .sidebar-social-icon {
         display: inline-flex !important;
         align-items: center !important;
         justify-content: center !important;
-        width: 32px !important;
-        height: 32px !important;
+        width: 24px !important;
+        height: 24px !important;
         flex-shrink: 0 !important;
         border-radius: 999px !important;
         background: #f3f4f6 !important;
         color: #4b5563 !important;
         text-decoration: none !important;
-        transition: background-color .15s ease, color .15s ease !important;
+        transition: background-color .15s ease, transform .15s ease !important;
     }
 
     .sidebar-social-icon:hover,
     .sidebar-social-icon:focus-visible {
-        background: #eff6ff !important;
-        color: #2563eb !important;
+        background: #e5e7eb !important;
+        transform: scale(1.08) !important;
     }
 
     .sidebar-social-icon iconify-icon {
-        width: 16px !important;
-        height: 16px !important;
+        width: 14px !important;
+        height: 14px !important;
         pointer-events: none !important;
     }
 
@@ -1359,8 +1361,32 @@
 
     .dark .sidebar-social-icon:hover,
     [data-theme="dark"] .sidebar-social-icon:hover {
-        background: rgba(37, 99, 235, 0.18) !important;
-        color: #60a5fa !important;
+        background: #3f3f46 !important;
+    }
+
+    /*
+        Resmi marka logolari: her platformun kendi resmi marka rengi
+        (Simple Icons / marka basin kitleri kaynakli). Acik/koyu tema
+        farketmeksizin marka rengi sabit kalir, sadece arka plan degisir.
+    */
+    .sidebar-social-icon[data-platform="facebook"]  { color: #1877F2 !important; }
+    .sidebar-social-icon[data-platform="instagram"] { color: #E4405F !important; }
+    .sidebar-social-icon[data-platform="x"]         { color: #000000 !important; }
+    .sidebar-social-icon[data-platform="youtube"]   { color: #FF0000 !important; }
+    .sidebar-social-icon[data-platform="whatsapp"]  { color: #25D366 !important; }
+    .sidebar-social-icon[data-platform="tiktok"]    { color: #000000 !important; }
+    .sidebar-social-icon[data-platform="telegram"]  { color: #26A5E4 !important; }
+    .sidebar-social-icon[data-platform="discord"]   { color: #5865F2 !important; }
+    .sidebar-social-icon[data-platform="github"]    { color: #181717 !important; }
+    .sidebar-social-icon[data-platform="linkedin"]  { color: #0A66C2 !important; }
+
+    .dark .sidebar-social-icon[data-platform="x"],
+    [data-theme="dark"] .sidebar-social-icon[data-platform="x"],
+    .dark .sidebar-social-icon[data-platform="tiktok"],
+    [data-theme="dark"] .sidebar-social-icon[data-platform="tiktok"],
+    .dark .sidebar-social-icon[data-platform="github"],
+    [data-theme="dark"] .sidebar-social-icon[data-platform="github"] {
+        color: #e4e4e7 !important;
     }
 
     .sidebar-utility-icons {
@@ -1613,6 +1639,7 @@
                         <a
                             href="{{ $social['url'] }}"
                             class="sidebar-social-icon"
+                            data-platform="{{ $social['platform'] }}"
                             target="_blank"
                             rel="noopener noreferrer"
                             data-external-bridge="off"
