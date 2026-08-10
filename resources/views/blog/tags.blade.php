@@ -19,56 +19,53 @@
     @endif
 
     <style>
-        .tags-toolbar {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .tags-toolbar .page-title-identity {
-            flex: 1 1 auto;
-            min-width: 0;
-        }
-
+        /* Siralama tetikleyicisi artik bagimsiz bir kutu degil, page-title-identity
+           kutusunun ("trailing" slotu) icinde, kutunun sag ucunda duruyor. */
         .tags-sort {
             position: relative;
             display: inline-flex;
             align-items: center;
             flex-shrink: 0;
+            margin-left: auto;
         }
 
         .tags-sort__trigger {
             display: inline-flex;
-            width: 38px;
-            height: 38px;
+            flex: 0 0 auto;
+            width: 26px;
+            height: 26px;
             align-items: center;
             justify-content: center;
-            border: 1px solid #d9dde3 !important;
+            border: 0 !important;
             border-radius: 999px;
-            background: #ffffff !important;
-            color: #52525b !important;
+            background: transparent !important;
+            color: inherit !important;
             cursor: pointer;
-            transition: background-color .15s ease, color .15s ease;
+            transition: background-color .15s ease;
         }
 
         .tags-sort__trigger svg {
-            width: 16px;
-            height: 16px;
+            width: 15px;
+            height: 15px;
             pointer-events: none;
         }
 
         .tags-sort__trigger:hover,
         .tags-sort__trigger:focus-visible,
         .tags-sort.is-open .tags-sort__trigger {
-            background: #f3f4f6 !important;
-            color: #0f172a !important;
+            background: rgba(15, 15, 18, .06) !important;
             outline: none;
+        }
+
+        html.dark .tags-sort__trigger:hover,
+        html.dark .tags-sort.is-open .tags-sort__trigger {
+            background: rgba(255, 255, 255, .1) !important;
         }
 
         .tags-sort__menu {
             position: absolute;
             top: calc(100% + 8px);
-            left: 0;
+            right: 0;
             width: 168px;
             border-radius: 14px;
             border: 1px solid #e4e4e7;
@@ -113,18 +110,6 @@
             background: #f3f4f6;
             color: #0f172a;
             outline: none;
-        }
-
-        html.dark .tags-sort__trigger {
-            background: #18181b !important;
-            border-color: #27272a !important;
-            color: #a1a1aa !important;
-        }
-
-        html.dark .tags-sort__trigger:hover,
-        html.dark .tags-sort.is-open .tags-sort__trigger {
-            background: #27272a !important;
-            color: #f4f4f5 !important;
         }
 
         html.dark .tags-sort__menu {
@@ -212,39 +197,10 @@
     </style>
 
     <div class="space-y-4">
-        <div class="tags-toolbar">
-            <div class="tags-sort" data-tags-sort>
-                <button
-                    type="button"
-                    class="tags-sort__trigger"
-                    data-tags-sort-trigger
-                    aria-label="Sıralama menüsünü aç"
-                    aria-expanded="false"
-                    aria-controls="tags-sort-menu"
-                >
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 14 14" aria-hidden="true">
-                        <path fill="currentColor" fill-rule="evenodd" d="M2.402 1.494c3.114-.326 6.1-.326 9.215 0c.38.04.745.281.957.625c.205.333.242.715.054 1.064c-.952 1.773-2.301 3.403-4.186 4.626a.63.63 0 0 0-.284.524V11.7c0 .16-.095.304-.242.368l-1.494.648a.4.4 0 0 1-.561-.368V8.334a.63.63 0 0 0-.285-.525C3.692 6.586 2.342 4.956 1.39 3.183c-.375-.699.088-1.593 1.012-1.69M11.747.25a45 45 0 0 0-9.475 0C.602.425-.57 2.175.289 3.775c.987 1.838 2.383 3.561 4.322 4.893v3.68a1.65 1.65 0 0 0 2.31 1.514l1.493-.649a1.65 1.65 0 0 0 .994-1.514V8.668c1.939-1.332 3.334-3.055 4.322-4.894c.43-.8.31-1.659-.092-2.31C13.243.82 12.55.333 11.747.25" clip-rule="evenodd"></path>
-                    </svg>
-                </button>
-
-                <div id="tags-sort-menu" class="tags-sort__menu" data-tags-sort-menu hidden>
-                    <div class="tags-sort__options">
-                        @foreach ($sortOptions as $sortKey => $sortOption)
-                            <a
-                                href="{{ route('blog.tags', ['sort' => $sortKey]) }}"
-                                class="tags-sort__option"
-                                aria-current="{{ $sort === $sortKey ? 'true' : 'false' }}"
-                            >
-                                <iconify-icon icon="{{ $sortOption['icon'] }}" aria-hidden="true"></iconify-icon>
-                                <span>{{ $sortOption['label'] }}</span>
-                            </a>
-                        @endforeach
-                    </div>
-                </div>
-            </div>
-
-            @include('partials.page-title-identity', ['title' => __('site.tags_page.title')])
-        </div>
+        @include('partials.page-title-identity', [
+            'title' => __('site.tags_page.title'),
+            'trailing' => view('blog.partials.tags-sort-trigger', ['sort' => $sort, 'sortOptions' => $sortOptions])->render(),
+        ])
 
         @foreach ($tags as $tag)
             <a

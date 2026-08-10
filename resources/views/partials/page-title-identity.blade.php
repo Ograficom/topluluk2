@@ -1,5 +1,6 @@
 @php
     $pageTitleIdentityText = $title ?? '';
+    $pageTitleIdentityTrailing = $trailing ?? '';
 @endphp
 
 <div class="page-title-identity">
@@ -11,6 +12,9 @@
     </button>
     <span class="page-title-identity__divider" aria-hidden="true"></span>
     <h1 class="page-title-identity__text">{{ $pageTitleIdentityText }}</h1>
+    @if ($pageTitleIdentityTrailing !== '')
+        {!! $pageTitleIdentityTrailing !!}
+    @endif
 </div>
 
 @once
