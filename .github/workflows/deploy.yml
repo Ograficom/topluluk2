@@ -23,6 +23,7 @@ jobs:
               TARGET_PATH="/www/wwwroot/ografi_com_app"
             fi
             cd "$TARGET_PATH"
+            git stash --include-untracked || true
             git pull origin main
             composer install --no-interaction --prefer-dist --optimize-autoloader
             npm run build
