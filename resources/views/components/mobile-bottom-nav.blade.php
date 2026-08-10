@@ -184,6 +184,101 @@
             overscroll-behavior-y: none !important;
         }
     }
+
+    @media (max-width: 639.98px) {
+        html.dark body [data-mobile-bottom-nav].mobile-bottom-nav {
+            border-color: var(--alma-border, rgba(148, 163, 184, .18)) !important;
+            background: var(--alma-card, #111827) !important;
+            background-color: var(--alma-card, #111827) !important;
+            color: var(--alma-text, #e5e7eb) !important;
+            box-shadow: 0 8px 24px rgba(2, 6, 23, .45) !important;
+        }
+
+        html.dark body [data-mobile-bottom-nav].mobile-bottom-nav :is(a, button, .mobile-bottom-nav__plus) {
+            color: var(--alma-text, #e5e7eb) !important;
+        }
+    }
+
+    html.dark [data-mobile-bottom-nav] .text-slate-900 {
+        color: var(--alma-text, #e5e7eb);
+    }
+
+    html.dark [data-mobile-login-drawer] aside {
+        background: var(--alma-card, #111827) !important;
+        color: var(--alma-text, #e5e7eb);
+    }
+
+    html.dark [data-mobile-login-handle] {
+        background: var(--alma-border, rgba(148, 163, 184, .3));
+    }
+
+    html.dark [data-mobile-login-drawer] .text-slate-900,
+    html.dark [data-mobile-login-drawer] .text-slate-800 {
+        color: var(--alma-text, #e5e7eb);
+    }
+
+    html.dark [data-mobile-login-drawer] .text-slate-600,
+    html.dark [data-mobile-login-drawer] .text-slate-700 {
+        color: var(--alma-muted, #94a3b8);
+    }
+
+    html.dark [data-mobile-login-drawer] .text-slate-500 {
+        color: var(--alma-muted, #94a3b8);
+    }
+
+    html.dark [data-mobile-login-drawer] input[name="email"],
+    html.dark [data-mobile-login-drawer] input[name="password"] {
+        background: var(--alma-bg, #0b1220) !important;
+        color: var(--alma-text, #e5e7eb) !important;
+    }
+
+    html.dark [data-mobile-login-drawer] button[type="submit"] {
+        background: var(--alma-primary, #029d71) !important;
+    }
+
+    html.dark [data-mobile-search-drawer] [data-mobile-search-backdrop] {
+        background: rgba(2, 6, 23, .6) !important;
+    }
+
+    html.dark [data-mobile-search-surface] {
+        background: var(--alma-bg, #0b1220) !important;
+    }
+
+    html.dark [data-mobile-search-surface] label,
+    html.dark [data-mobile-search-surface] [data-mobile-search-close],
+    html.dark [data-mobile-search-surface] [data-mobile-search-clear],
+    html.dark [data-mobile-search-results],
+    html.dark [data-mobile-search-surface] [data-mobile-search-all] {
+        background: var(--alma-card, #111827) !important;
+        border-color: var(--alma-border, rgba(148, 163, 184, .18)) !important;
+        color: var(--alma-text, #e5e7eb) !important;
+    }
+
+    html.dark [data-mobile-search-surface] .text-slate-900 {
+        color: var(--alma-text, #e5e7eb) !important;
+    }
+
+    html.dark [data-mobile-search-surface] .text-slate-500,
+    html.dark [data-mobile-search-surface] .text-slate-400 {
+        color: var(--alma-muted, #94a3b8) !important;
+    }
+
+    html.dark [data-mobile-search-surface] input[data-mobile-search-input] {
+        color: var(--alma-text, #e5e7eb) !important;
+    }
+
+    html.dark [data-mobile-search-surface] input[data-mobile-search-input]::placeholder {
+        color: var(--alma-muted, #94a3b8) !important;
+    }
+
+    html.dark [data-mobile-search-results] .hover\:bg-slate-100:hover,
+    html.dark [data-mobile-search-surface] .hover\:bg-slate-100:hover {
+        background: var(--alma-hover-muted, rgba(30, 41, 59, .82)) !important;
+    }
+
+    html.dark [data-mobile-search-results] .bg-slate-200 {
+        background: var(--alma-border, rgba(148, 163, 184, .3)) !important;
+    }
 </style>
 
 <div data-mobile-login-drawer class="pointer-events-none fixed inset-0 z-50 flex flex-col items-center justify-end sm:hidden">
@@ -397,12 +492,12 @@
 
         const renderMessage = (message, query = '') => {
             if (!searchResultsWrap) return;
-            searchResultsWrap.innerHTML = `<p class="px-4 py-5 text-sm text-slate-500">${escapeHtml(message)}</p>`;
+            searchResultsWrap.innerHTML = `<p class="px-4 py-5 text-sm text-slate-500 dark:text-slate-400">${escapeHtml(message)}</p>`;
             setSearchAllState(query, false);
         };
 
         const searchIconSvg = `
-            <svg class="h-5 w-5 text-slate-900" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <svg class="h-5 w-5 text-slate-900 dark:text-slate-200" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                 <circle cx="11" cy="11" r="6.75" stroke="currentColor" stroke-width="1.9"></circle>
                 <path stroke="currentColor" stroke-linecap="round" stroke-width="1.9" d="m16 16 3.75 3.75"></path>
             </svg>
@@ -410,16 +505,16 @@
 
         const sectionWrapper = (label, itemsHtml) => `
             <section class="px-2 py-2">
-                <div class="mb-2 flex items-center gap-2 px-2 text-[0.78rem] font-semibold text-slate-500">
+                <div class="mb-2 flex items-center gap-2 px-2 text-[0.78rem] font-semibold text-slate-500 dark:text-slate-400">
                     <span>${escapeHtml(label)}</span>
-                    <span class="h-px flex-1 bg-slate-200"></span>
+                    <span class="h-px flex-1 bg-slate-200 dark:bg-slate-700"></span>
                 </div>
                 <div class="space-y-1">${itemsHtml}</div>
             </section>
         `;
 
         const buildRow = (innerHtml, url = '#') => `
-            <a href="${escapeHtml(url)}" class="flex items-center gap-3 rounded-[16px] px-3 py-2.5 text-sm text-slate-900 transition hover:bg-slate-100">
+            <a href="${escapeHtml(url)}" class="flex items-center gap-3 rounded-[16px] px-3 py-2.5 text-sm text-slate-900 dark:text-slate-100 transition hover:bg-slate-100 dark:hover:bg-slate-800">
                 ${innerHtml}
             </a>
         `;
@@ -439,7 +534,7 @@
                     const title = escapeHtml(user.title ?? '');
                     const avatar = user.avatar
                         ? `<img src="${escapeHtml(user.avatar)}" alt="${title}" class="h-9 w-9 rounded-full object-cover" />`
-                        : `<span class="inline-flex h-9 w-9 items-center justify-center rounded-full bg-slate-100 text-xs font-semibold text-slate-700">${escapeHtml((user.title || 'U').trim().charAt(0).toUpperCase() || 'U')}</span>`;
+                        : `<span class="inline-flex h-9 w-9 items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800 text-xs font-semibold text-slate-700 dark:text-slate-300">${escapeHtml((user.title || 'U').trim().charAt(0).toUpperCase() || 'U')}</span>`;
 
                     return buildRow(`
                         ${avatar}

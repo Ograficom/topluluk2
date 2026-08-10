@@ -108,6 +108,28 @@
             flex-basis: 13px !important;
             opacity: 1 !important;
         }
+        html.dark #cookie-banner .cookie-consent-bar__surface {
+            border-color: var(--alma-border, rgba(148, 163, 184, .18));
+            background: var(--alma-card, #111827);
+            box-shadow: 0 4px 18px rgba(2, 6, 23, .38);
+        }
+        html.dark #cookie-banner .cookie-consent-bar__message {
+            color: var(--alma-muted, #94a3b8);
+        }
+        html.dark body #cookie-banner a.cookie-consent-bar__link {
+            color: var(--alma-primary, #029d71) !important;
+        }
+        html.dark body #cookie-banner button.cookie-consent-bar__accept {
+            background: var(--alma-hover-muted, rgba(30, 41, 59, .82)) !important;
+            background-color: var(--alma-hover-muted, rgba(30, 41, 59, .82)) !important;
+            color: var(--alma-text, #e5e7eb) !important;
+        }
+        html.dark body #cookie-banner .cookie-consent-bar__accept:is(:hover, :focus-visible, :active),
+        html.dark body #cookie-banner .cookie-consent-bar__accept.is-accepting {
+            background: var(--alma-primary, #029d71) !important;
+            background-color: var(--alma-primary, #029d71) !important;
+            color: #ffffff !important;
+        }
         @media (max-width: 640px) {
             html body #cookie-banner.cookie-consent-bar {
                 --cookie-mobile-font-size: 13px;

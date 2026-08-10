@@ -79,7 +79,7 @@
                         @csrf
                         <button
                             type="submit"
-                            class="inline-flex h-10 items-center justify-center rounded-xl border border-slate-200 bg-white px-4 text-sm font-medium text-slate-700 transition hover:bg-slate-100"
+                            class="inline-flex h-10 items-center justify-center rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-4 text-sm font-medium text-slate-700 dark:text-slate-300 transition hover:bg-slate-100 dark:hover:bg-slate-700"
                         >
                             {{ $isPinnedThread ? __('messages.actions.unpin') : __('messages.actions.pin') }}
                         </button>
@@ -87,7 +87,7 @@
 
                     @include('messages.partials.settings-dropdown', [
                         'preferences' => $preferences,
-                        'buttonClass' => 'inline-flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-700 transition hover:bg-slate-100',
+                        'buttonClass' => 'inline-flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 transition hover:bg-slate-100 dark:hover:bg-slate-700',
                     ])
                 </div>
             </div>
@@ -138,17 +138,17 @@
                                         name="body"
                                         value="{{ old('body') }}"
                                         placeholder="{{ __('messages.composer.placeholder') }}"
-                                        class="w-full flex-1 rounded-xl border border-gray-300 px-4 py-3 text-sm text-gray-700 outline-none transition focus:ring-2 focus:ring-gray-300"
+                                        class="w-full flex-1 rounded-xl border border-gray-300 dark:border-slate-700 px-4 py-3 text-sm text-gray-700 dark:text-slate-200 outline-none transition focus:ring-2 focus:ring-gray-300 dark:focus:ring-slate-600 dark:bg-slate-800"
                                     />
 
                                     <div class="flex items-center justify-end gap-2.5 sm:gap-3">
 
                                         <label
                                             for="messageAttachmentInput"
-                                            class="flex h-11 w-11 cursor-pointer items-center justify-center rounded-xl border border-slate-200 bg-white transition hover:bg-slate-100"
+                                            class="flex h-11 w-11 cursor-pointer items-center justify-center rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 transition hover:bg-slate-100 dark:hover:bg-slate-700"
                                             aria-label="{{ __('messages.composer.upload_aria') }}"
                                         >
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-slate-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-slate-700 dark:text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
                                                 <path stroke-linecap="round" stroke-linejoin="round" d="M21.44 11.05l-8.49 8.49a5 5 0 01-7.07-7.07l9.19-9.2a3.5 3.5 0 114.95 4.96l-9.2 9.19a2 2 0 01-2.82-2.83l8.48-8.48"></path>
                                             </svg>
                                         </label>
@@ -156,7 +156,7 @@
 
                                         <button
                                             type="submit"
-                                            class="flex h-11 w-11 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-700 transition hover:bg-slate-100"
+                                            class="flex h-11 w-11 items-center justify-center rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 transition hover:bg-slate-100 dark:hover:bg-slate-700"
                                             aria-label="{{ __('messages.actions.send') }}"
                                         >
                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">

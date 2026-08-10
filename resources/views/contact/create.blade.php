@@ -123,41 +123,39 @@
             }
         }
 
-        @media (prefers-color-scheme: dark) {
-            .contact-consent-switch__track {
-                background: #334155;
-                box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
-            }
+        html.dark .contact-consent-switch__track {
+            background: var(--alma-hover-muted, rgba(30, 41, 59, .82));
+            box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+        }
 
-            .contact-consent-switch input:checked + .contact-consent-switch__track {
-                background: #2563eb;
-            }
+        html.dark .contact-consent-switch input:checked + .contact-consent-switch__track {
+            background: var(--alma-primary, #029d71);
         }
     </style>
 
     <section class="mt-4 space-y-4 sm:mt-6">
         @if (session('contact_status'))
-            <div class="rounded-[20px] border border-blue-200 bg-blue-50 px-4 py-3 text-sm font-medium text-blue-700">
+            <div class="rounded-[20px] border border-blue-200 dark:border-blue-500/30 bg-blue-50 dark:bg-blue-500/10 px-4 py-3 text-sm font-medium text-blue-700 dark:text-blue-400">
                 {{ session('contact_status') }}
             </div>
         @endif
 
-        <div class="overflow-hidden rounded-[22px] bg-white shadow-[0_20px_50px_rgba(15,23,42,0.05)]">
-            <div class="border-b border-slate-200 px-6 py-4">
-                <h1 class="text-[1.7rem] font-semibold tracking-[-0.02em] text-slate-950">Bize ulaşın</h1>
+        <div class="overflow-hidden rounded-[22px] bg-white dark:bg-slate-900 shadow-[0_20px_50px_rgba(15,23,42,0.05)]">
+            <div class="border-b border-slate-200 dark:border-slate-700 px-6 py-4">
+                <h1 class="text-[1.7rem] font-semibold tracking-[-0.02em] text-slate-950 dark:text-slate-100">Bize ulaşın</h1>
             </div>
 
             <form method="POST" action="{{ route('contact.store') }}" class="space-y-5 px-6 py-5">
                 @csrf
 
                 <div class="space-y-2">
-                    <label for="contact-full-name" class="block text-[1rem] font-semibold text-slate-900">Ad Soyad</label>
+                    <label for="contact-full-name" class="block text-[1rem] font-semibold text-slate-900 dark:text-slate-100">Ad Soyad</label>
                     <input
                         id="contact-full-name"
                         name="full_name"
                         type="text"
                         value="{{ old('full_name', $user?->name) }}"
-                        class="block h-12 w-full rounded-xl border border-slate-300 bg-white px-4 text-[0.98rem] text-slate-900 outline-none transition focus:border-slate-400"
+                        class="block h-12 w-full rounded-xl border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 px-4 text-[0.98rem] text-slate-900 dark:text-slate-100 outline-none transition focus:border-slate-400"
                         required
                     >
                     @error('full_name')
@@ -166,13 +164,13 @@
                 </div>
 
                 <div class="space-y-2">
-                    <label for="contact-email" class="block text-[1rem] font-semibold text-slate-900">E-posta</label>
+                    <label for="contact-email" class="block text-[1rem] font-semibold text-slate-900 dark:text-slate-100">E-posta</label>
                     <input
                         id="contact-email"
                         name="email"
                         type="email"
                         value="{{ old('email', $user?->email) }}"
-                        class="block h-12 w-full rounded-xl border border-slate-300 bg-white px-4 text-[0.98rem] text-slate-900 outline-none transition focus:border-slate-400"
+                        class="block h-12 w-full rounded-xl border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 px-4 text-[0.98rem] text-slate-900 dark:text-slate-100 outline-none transition focus:border-slate-400"
                         required
                     >
                     @error('email')
@@ -181,13 +179,13 @@
                 </div>
 
                 <div class="space-y-2">
-                    <label for="contact-subject" class="block text-[1rem] font-semibold text-slate-900">Konu</label>
+                    <label for="contact-subject" class="block text-[1rem] font-semibold text-slate-900 dark:text-slate-100">Konu</label>
                     <input
                         id="contact-subject"
                         name="subject"
                         type="text"
                         value="{{ old('subject') }}"
-                        class="block h-12 w-full rounded-xl border border-slate-300 bg-white px-4 text-[0.98rem] text-slate-900 outline-none transition focus:border-slate-400"
+                        class="block h-12 w-full rounded-xl border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 px-4 text-[0.98rem] text-slate-900 dark:text-slate-100 outline-none transition focus:border-slate-400"
                         required
                     >
                     @error('subject')
@@ -196,12 +194,12 @@
                 </div>
 
                 <div class="space-y-2">
-    <label for="contact-message" class="block text-[1rem] font-semibold text-slate-900">Mesaj</label>
+    <label for="contact-message" class="block text-[1rem] font-semibold text-slate-900 dark:text-slate-100">Mesaj</label>
     <textarea
         id="contact-message"
         name="message"
         rows="7"
-        class="block w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-[0.98rem] text-slate-900 outline-none transition focus:border-slate-400 overflow-hidden resize-none"
+        class="block w-full rounded-xl border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 px-4 py-3 text-[0.98rem] text-slate-900 dark:text-slate-100 outline-none transition focus:border-slate-400 overflow-hidden resize-none"
         oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px'"
         required
     >{{ old('message') }}</textarea>
@@ -211,7 +209,7 @@
 </div>
 
                 <div class="space-y-2">
-                    <label for="contact-consent" class="contact-consent-row text-[0.95rem] text-slate-700">
+                    <label for="contact-consent" class="contact-consent-row text-[0.95rem] text-slate-700 dark:text-slate-300">
                         <span class="contact-consent-switch">
                             <input
                                 id="contact-consent"

@@ -6831,6 +6831,63 @@
     </style>
 
     @php
+        // Yukaridaki #ografi-brand-appearance blogu :root/body.alma-app uzerinde
+        // kosulsuz (dark mod fark etmeksizin) calisiyor, bu yuzden karanlik modda
+        // da acik (light) marka renklerini !important ile ezip token'lari (--card,
+        // --background, --foreground, --border, --muted-foreground vb.) bozuyordu.
+        // Bu blok, ayni token'lari sadece html.dark aktifken, admin'in Gorunum
+        // Ayarlari'ndan girdigi karanlik mod paletiyle (yoksa sistem varsayilanlarla)
+        // tekrar dogru degerlere donduruyor.
+        $ografiDarkColor = static function (?string $value, string $fallback): string {
+            $value = trim((string) $value);
+            return $value !== '' ? $value : $fallback;
+        };
+        $ografiDarkBg = $ografiDarkColor($ografiBrand->dark_bg_color ?? null, '#0b1220');
+        $ografiDarkSurface = $ografiDarkColor($ografiBrand->dark_surface_color ?? null, '#111827');
+        $ografiDarkText = $ografiDarkColor($ografiBrand->dark_text_color ?? null, '#e5e7eb');
+        $ografiDarkMuted = $ografiDarkColor($ografiBrand->dark_muted_color ?? null, '#94a3b8');
+        $ografiDarkBorder = $ografiDarkColor($ografiBrand->dark_border_color ?? null, 'rgba(148, 163, 184, 0.16)');
+    @endphp
+    <style id="ografi-brand-appearance-dark">
+        html.dark {
+            --site-bg: {{ $ografiDarkBg }} !important;
+            --background: {{ $ografiDarkBg }} !important;
+            --page-bg: {{ $ografiDarkBg }} !important;
+            --alma-bg: {{ $ografiDarkBg }} !important;
+
+            --site-surface: {{ $ografiDarkSurface }} !important;
+            --card: {{ $ografiDarkSurface }} !important;
+            --alma-card: {{ $ografiDarkSurface }} !important;
+            --card-bg: {{ $ografiDarkSurface }} !important;
+            --site-header-bg: {{ $ografiDarkSurface }} !important;
+            --alma-header-bg: {{ $ografiDarkSurface }} !important;
+            --header-bg: {{ $ografiDarkSurface }} !important;
+            --sidebar: {{ $ografiDarkSurface }} !important;
+            --secondary: {{ $ografiDarkSurface }} !important;
+
+            --site-text: {{ $ografiDarkText }} !important;
+            --foreground: {{ $ografiDarkText }} !important;
+            --alma-text: {{ $ografiDarkText }} !important;
+            --card-foreground: {{ $ografiDarkText }} !important;
+            --sidebar-foreground: {{ $ografiDarkText }} !important;
+
+            --site-border: {{ $ografiDarkBorder }} !important;
+            --alma-border: {{ $ografiDarkBorder }} !important;
+            --border: {{ $ografiDarkBorder }} !important;
+
+            --site-muted: {{ $ografiDarkMuted }} !important;
+            --alma-muted: {{ $ografiDarkMuted }} !important;
+            --muted-foreground: {{ $ografiDarkMuted }} !important;
+        }
+
+        html.dark [data-mobile-bottom-nav] {
+            background: {{ $ografiDarkSurface }} !important;
+            border: 1px solid {{ $ografiDarkBorder }} !important;
+            box-shadow: 0 12px 28px rgba(2, 6, 23, 0.45) !important;
+        }
+    </style>
+
+    @php
         // Kullanicinin kendi yukledigi/yazdigi ozel tema CSS'i - bilerek en son
         // (dolayisiyla en oncelikli) noktada, yukaridaki her seyi (renk, font,
         // boyut) ezebilecek sekilde ekleniyor. "</style" kacislari kirilmasin

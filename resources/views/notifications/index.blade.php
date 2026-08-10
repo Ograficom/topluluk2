@@ -12,11 +12,11 @@
                 </div>
             @endif
 
-            <section class="overflow-hidden rounded-[28px] border border-slate-200 bg-white">
-                <div class="flex items-start justify-between gap-4 border-b border-slate-200 px-5 py-4 sm:px-7">
+            <section class="overflow-hidden rounded-[28px] border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900">
+                <div class="flex items-start justify-between gap-4 border-b border-slate-200 dark:border-slate-700 px-5 py-4 sm:px-7">
                     <div>
-                        <h1 class="text-[1.75rem] font-semibold tracking-[-0.02em] text-slate-900">Bildirimler</h1>
-                        <p class="mt-1 text-sm text-slate-500">
+                        <h1 class="text-[1.75rem] font-semibold tracking-[-0.02em] text-slate-900 dark:text-slate-100">Bildirimler</h1>
+                        <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">
                             @if ($unreadCount > 0)
                                 {{ $unreadCount }} okunmamis bildirim var.
                             @else
@@ -26,17 +26,17 @@
                     </div>
 
                     <details class="relative">
-                        <summary class="inline-flex h-10 w-10 cursor-pointer list-none items-center justify-center rounded-full text-slate-500 transition hover:bg-slate-100 hover:text-slate-800">
+                        <summary class="inline-flex h-10 w-10 cursor-pointer list-none items-center justify-center rounded-full text-slate-500 dark:text-slate-400 transition hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-800 dark:hover:text-slate-200">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
                                 <path d="M12 6h.01M12 12h.01M12 18h.01"/>
                             </svg>
                         </summary>
 
-                        <div class="absolute right-0 top-full z-20 mt-2 w-56 overflow-hidden rounded-2xl border border-slate-200 bg-white py-2 shadow-[0_18px_44px_rgba(15,23,42,0.14)]">
+                        <div class="absolute right-0 top-full z-20 mt-2 w-56 overflow-hidden rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 py-2 shadow-[0_18px_44px_rgba(15,23,42,0.14)]">
                             @if ($unreadCount > 0)
                                 <form method="POST" action="{{ route('notifications.mark-all') }}">
                                     @csrf
-                                    <button type="submit" class="flex w-full items-center gap-3 px-4 py-2.5 text-left text-sm text-slate-700 transition hover:bg-slate-50">
+                                    <button type="submit" class="flex w-full items-center gap-3 px-4 py-2.5 text-left text-sm text-slate-700 dark:text-slate-300 transition hover:bg-slate-50 dark:hover:bg-slate-700">
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-4 w-4 text-slate-400" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
                                             <path d="m5 12 5 5L20 7"/>
                                         </svg>
@@ -44,8 +44,8 @@
                                     </button>
                                 </form>
                             @else
-                                <button type="button" disabled aria-disabled="true" class="flex w-full cursor-not-allowed items-center gap-3 px-4 py-2.5 text-left text-sm text-slate-300">
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-4 w-4 text-slate-300" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                <button type="button" disabled aria-disabled="true" class="flex w-full cursor-not-allowed items-center gap-3 px-4 py-2.5 text-left text-sm text-slate-300 dark:text-slate-600">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-4 w-4 text-slate-300 dark:text-slate-600" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
                                         <path d="m5 12 5 5L20 7"/>
                                     </svg>
                                     <span>Tumunu okundu isaretle</span>
@@ -55,7 +55,7 @@
                             @if ($notifications->count() > 0)
                                 <form method="POST" action="{{ route('notifications.delete-all') }}">
                                     @csrf
-                                    <button type="submit" class="flex w-full items-center gap-3 px-4 py-2.5 text-left text-sm text-slate-700 transition hover:bg-slate-50">
+                                    <button type="submit" class="flex w-full items-center gap-3 px-4 py-2.5 text-left text-sm text-slate-700 dark:text-slate-300 transition hover:bg-slate-50 dark:hover:bg-slate-700">
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-4 w-4 text-slate-400" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
                                             <path d="M3 6h18"/>
                                             <path d="M8 6V4h8v2"/>
@@ -67,8 +67,8 @@
                                     </button>
                                 </form>
                             @else
-                                <button type="button" disabled aria-disabled="true" class="flex w-full cursor-not-allowed items-center gap-3 px-4 py-2.5 text-left text-sm text-slate-300">
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-4 w-4 text-slate-300" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                <button type="button" disabled aria-disabled="true" class="flex w-full cursor-not-allowed items-center gap-3 px-4 py-2.5 text-left text-sm text-slate-300 dark:text-slate-600">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-4 w-4 text-slate-300 dark:text-slate-600" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
                                         <path d="M3 6h18"/>
                                         <path d="M8 6V4h8v2"/>
                                         <path d="M19 6l-1 14H6L5 6"/>
@@ -82,7 +82,7 @@
                     </details>
                 </div>
 
-                <div class="divide-y divide-slate-100">
+                <div class="divide-y divide-slate-100 dark:divide-slate-800">
                     @forelse ($notifications as $notification)
                         @php
                             $avatarName = $notification['actor_name'] ?: $notification['title'];
@@ -91,7 +91,7 @@
 
                         <a
                             href="{{ $notification['read_url'] }}"
-                            class="group flex items-start gap-4 px-5 py-5 transition hover:bg-slate-50 sm:px-7 {{ $notification['is_unread'] ? 'bg-white' : 'bg-white/80' }}"
+                            class="group flex items-start gap-4 px-5 py-5 transition hover:bg-slate-50 dark:hover:bg-slate-800 sm:px-7 {{ $notification['is_unread'] ? 'bg-white dark:bg-slate-900' : 'bg-white/80 dark:bg-slate-900/80' }}"
                         >
                             @if (!empty($notification['actor_avatar']))
                                 <img
@@ -100,13 +100,13 @@
                                     class="h-12 w-12 shrink-0 rounded-full object-cover"
                                 >
                             @else
-                                <span class="inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-slate-100 text-sm font-semibold text-slate-600">
+                                <span class="inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800 text-sm font-semibold text-slate-600 dark:text-slate-300">
                                     {{ $avatarInitial }}
                                 </span>
                             @endif
 
                             <div class="min-w-0 flex-1">
-                                <div class="mb-1 flex items-center gap-2 text-xs text-slate-400">
+                                <div class="mb-1 flex items-center gap-2 text-xs text-slate-400 dark:text-slate-500">
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-3.5 w-3.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
                                         <circle cx="12" cy="12" r="9"/>
                                         <path d="M12 7v5l3 3"/>
@@ -114,18 +114,18 @@
                                     <span>{{ $notification['time_human'] }}</span>
                                 </div>
 
-                                <p class="text-[1.08rem] leading-6 text-slate-800">
-                                    <span class="font-semibold text-slate-900">{{ $notification['actor_name'] }}</span>
+                                <p class="text-[1.08rem] leading-6 text-slate-800 dark:text-slate-200">
+                                    <span class="font-semibold text-slate-900 dark:text-slate-100">{{ $notification['actor_name'] }}</span>
                                     <span>{{ ' ' . $notification['action_text'] . ' ' }}</span>
                                     @if ($notification['subject'] !== '')
-                                        <span class="font-semibold text-slate-900">{{ $notification['subject'] }}</span>
+                                        <span class="font-semibold text-slate-900 dark:text-slate-100">{{ $notification['subject'] }}</span>
                                     @elseif ($notification['actor_name'] === 'Bir kullanici')
-                                        <span class="font-semibold text-slate-900">{{ $notification['title'] }}</span>
+                                        <span class="font-semibold text-slate-900 dark:text-slate-100">{{ $notification['title'] }}</span>
                                     @endif
                                 </p>
 
                                 @if ($notification['preview'] !== '')
-                                    <p class="mt-1 text-[0.97rem] leading-6 text-slate-500">
+                                    <p class="mt-1 text-[0.97rem] leading-6 text-slate-500 dark:text-slate-400">
                                         {{ $notification['preview'] }}
                                     </p>
                                 @endif
@@ -136,7 +136,7 @@
                             @endif
                         </a>
                     @empty
-                        <div class="px-6 py-12 text-center text-sm text-slate-500">
+                        <div class="px-6 py-12 text-center text-sm text-slate-500 dark:text-slate-400">
                             Henuz bildirim yok.
                         </div>
                     @endforelse

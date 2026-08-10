@@ -27,37 +27,37 @@
             @endphp
 
             <div class="profile-post-card-wrapper">
-                <div class="profile-public-card flex items-center justify-between gap-4 rounded-[16px] bg-white p-4">
+                <div class="profile-public-card flex items-center justify-between gap-4 rounded-[16px] bg-white dark:bg-slate-900 p-4">
                     <a
                         href="{{ route('blog.category', $category) }}"
                         class="flex min-w-0 items-center gap-3 focus:outline-none"
                         style="-webkit-tap-highlight-color: transparent;"
                     >
-                        <div class="h-14 w-14 overflow-hidden rounded-full bg-slate-100">
+                        <div class="h-14 w-14 overflow-hidden rounded-full bg-slate-100 dark:bg-slate-800">
                             @if ($featured)
                                 <img src="{{ $featured }}" alt="{{ $name }}" class="h-full w-full object-cover" loading="lazy">
                             @else
-                                <div class="flex h-full w-full items-center justify-center text-xs font-medium text-slate-700">
+                                <div class="flex h-full w-full items-center justify-center text-xs font-medium text-slate-700 dark:text-slate-300">
                                     {{ $initials }}
                                 </div>
                             @endif
                         </div>
 
                         <div class="min-w-0">
-                            <p class="truncate text-sm font-medium text-slate-900">{{ $name }}</p>
-                            <p class="mt-1 text-xs text-slate-500">Kategori</p>
+                            <p class="truncate text-sm font-medium text-slate-900 dark:text-slate-100">{{ $name }}</p>
+                            <p class="mt-1 text-xs text-slate-500 dark:text-slate-400">Kategori</p>
                         </div>
                     </a>
 
                     @if ($viewer)
                         <form method="POST" action="{{ route('blog.category.join', $category) }}" class="m-0 shrink-0">
                             @csrf
-                            <button type="submit" class="rounded-full bg-slate-100 px-4 py-2 text-sm font-medium text-slate-700">
+                            <button type="submit" class="rounded-full bg-slate-100 dark:bg-slate-800 px-4 py-2 text-sm font-medium text-slate-700 dark:text-slate-300">
                                 {{ $isJoined ? 'Takiptesin' : 'Takip et' }}
                             </button>
                         </form>
                     @elseif(\Illuminate\Support\Facades\Route::has('login'))
-                        <a href="{{ route('login') }}" class="shrink-0 rounded-full bg-slate-100 px-4 py-2 text-sm font-medium text-slate-700">
+                        <a href="{{ route('login') }}" class="shrink-0 rounded-full bg-slate-100 dark:bg-slate-800 px-4 py-2 text-sm font-medium text-slate-700 dark:text-slate-300">
                             Takip et
                         </a>
                     @endif
@@ -71,7 +71,7 @@
     </div>
 
     @if (method_exists($categories, 'links'))
-        <div class="flex flex-wrap items-center justify-end gap-3 pt-2 text-xs text-slate-500">
+        <div class="flex flex-wrap items-center justify-end gap-3 pt-2 text-xs text-slate-500 dark:text-slate-400">
             <div class="w-full">
                 {{ $categories->links() }}
             </div>

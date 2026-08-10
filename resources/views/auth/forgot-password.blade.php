@@ -188,6 +188,77 @@
                 font-size: 21px !important;
             }
         }
+
+        .simple-auth-notice {
+            display: grid;
+            grid-template-columns: 13px minmax(0, 1fr);
+            align-items: start;
+            column-gap: 8px;
+            width: 100%;
+            margin: 0 0 14px;
+            padding: 10px 11px;
+            box-sizing: border-box;
+            border: 1px solid #d4d4d8;
+            border-radius: 7px;
+            background: #ffffff;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+        .simple-auth-notice__icon { display: block; width: 13px; height: 13px; margin-top: 1px; }
+        .simple-auth-notice__title { margin: 0 0 2px; font-size: 11px; font-weight: 500; line-height: 14px; }
+        .simple-auth-notice__text { margin: 0; font-size: 10px; font-weight: 400; line-height: 14px; }
+        .simple-auth-notice--success { border-color: #d4d4d8; color: #18181b; }
+        .simple-auth-notice--success .simple-auth-notice__icon { color: #16a34a; }
+        .simple-auth-notice--success .simple-auth-notice__text { color: #71717a; }
+        .simple-auth-notice--error { border-color: #fecaca; color: #dc2626; }
+        .simple-auth-notice--error .simple-auth-notice__icon { color: #dc2626; }
+        .simple-auth-notice--error .simple-auth-notice__title { color: #dc2626; }
+        .simple-auth-notice--error .simple-auth-notice__text { color: #b91c1c; }
+
+        html.dark .simple-auth-page { background: var(--alma-bg, #0b1220); color: var(--alma-text, #e5e7eb); }
+        html.dark .simple-auth-brand { color: var(--alma-text, #e5e7eb); }
+        html.dark .simple-auth-card {
+            border-color: var(--alma-border, rgba(148, 163, 184, .18));
+            background: var(--alma-card, #111827);
+            box-shadow: 0 1px 2px rgba(2, 6, 23, .4);
+        }
+        html.dark .simple-auth-description,
+        html body .simple-auth-page .simple-auth-description:not(#comments *):not(#app *) {
+            color: var(--alma-muted, #94a3b8) !important;
+        }
+        html.dark .simple-auth-label,
+        html body .simple-auth-page .simple-auth-label:not(#comments *):not(#app *) {
+            color: var(--alma-text, #e5e7eb) !important;
+        }
+        html.dark .simple-auth-input,
+        html body .simple-auth-page .simple-auth-input:not(#comments *):not(#app *) {
+            border-color: var(--alma-border, rgba(148, 163, 184, .18)) !important;
+            background: var(--alma-bg, #0b1220) !important;
+            color: var(--alma-text, #e5e7eb) !important;
+        }
+        html.dark .simple-auth-input:focus,
+        html body .simple-auth-page .simple-auth-input:not(#comments *):not(#app *):focus {
+            border-color: var(--alma-primary, #029d71) !important;
+            box-shadow: 0 0 0 1px var(--alma-primary, #029d71) !important;
+        }
+        html.dark .simple-auth-submit,
+        html body .simple-auth-page .simple-auth-submit:not(#comments *):not(#app *) {
+            background: var(--alma-primary, #029d71) !important;
+        }
+        html.dark .simple-auth-submit:hover,
+        html body .simple-auth-page .simple-auth-submit:not(#comments *):not(#app *):hover {
+            background: var(--alma-primary-strong, #029d71) !important;
+        }
+        html.dark .simple-auth-notice {
+            border-color: var(--alma-border, rgba(148, 163, 184, .18));
+            background: var(--alma-card, #111827);
+        }
+        html.dark .simple-auth-notice--success { color: var(--alma-text, #e5e7eb); }
+        html.dark .simple-auth-notice--success .simple-auth-notice__icon { color: #34d399; }
+        html.dark .simple-auth-notice--success .simple-auth-notice__text { color: var(--alma-muted, #94a3b8); }
+        html.dark .simple-auth-notice--error { border-color: rgba(248, 113, 113, .35); color: #fca5a5; }
+        html.dark .simple-auth-notice--error .simple-auth-notice__icon { color: #fca5a5; }
+        html.dark .simple-auth-notice--error .simple-auth-notice__title { color: #fca5a5; }
+        html.dark .simple-auth-notice--error .simple-auth-notice__text { color: #fca5a5; }
     </style>
 
     <main class="simple-auth-page">
@@ -203,85 +274,15 @@
             </p>
 
             @if (session('status'))
-                <div
-                    role="alert"
-                    style="
-                        all: initial !important;
-                        display: grid !important;
-                        grid-template-columns: 13px minmax(0, 1fr) !important;
-                        align-items: start !important;
-                        column-gap: 8px !important;
-                        width: 100% !important;
-                        margin: 0 0 14px !important;
-                        padding: 10px 11px !important;
-                        box-sizing: border-box !important;
-                        border: 1px solid #d4d4d8 !important;
-                        border-radius: 7px !important;
-                        background: #ffffff !important;
-                        color: #18181b !important;
-                        font-family: Arial, Helvetica, sans-serif !important;
-                    "
-                >
-                    <svg
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="#16a34a"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        aria-hidden="true"
-                        style="
-                            all: initial !important;
-                            display: block !important;
-                            width: 13px !important;
-                            height: 13px !important;
-                            margin-top: 1px !important;
-                            color: #16a34a !important;
-                        "
-                    >
+                <div role="alert" class="simple-auth-notice simple-auth-notice--success">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="simple-auth-notice__icon">
                         <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
                         <path d="m9 11 3 3L22 4"/>
                     </svg>
 
-                    <div
-                        style="
-                            all: initial !important;
-                            display: block !important;
-                            min-width: 0 !important;
-                            font-family: Arial, Helvetica, sans-serif !important;
-                        "
-                    >
-                        <div
-                            style="
-                                all: initial !important;
-                                display: block !important;
-                                margin: 0 0 2px !important;
-                                padding: 0 !important;
-                                color: #18181b !important;
-                                font-family: Arial, Helvetica, sans-serif !important;
-                                font-size: 11px !important;
-                                font-weight: 500 !important;
-                                line-height: 14px !important;
-                                letter-spacing: 0 !important;
-                            "
-                        >
-                            Bağlantı gönderildi
-                        </div>
-
-                        <div
-                            style="
-                                all: initial !important;
-                                display: block !important;
-                                margin: 0 !important;
-                                padding: 0 !important;
-                                color: #71717a !important;
-                                font-family: Arial, Helvetica, sans-serif !important;
-                                font-size: 10px !important;
-                                font-weight: 400 !important;
-                                line-height: 14px !important;
-                                letter-spacing: 0 !important;
-                            "
-                        >
+                    <div>
+                        <div class="simple-auth-notice__title">Bağlantı gönderildi</div>
+                        <div class="simple-auth-notice__text">
                             @if (session('status') === 'passwords.sent')
                                 Şifre sıfırlama bağlantısı e-posta adresinize gönderildi.
                             @else
@@ -293,101 +294,18 @@
             @endif
 
             @if ($errors->any())
-                <div
-                    role="alert"
-                    style="
-                        all: initial !important;
-                        display: grid !important;
-                        grid-template-columns: 13px minmax(0, 1fr) !important;
-                        align-items: start !important;
-                        column-gap: 8px !important;
-                        width: 100% !important;
-                        margin: 0 0 14px !important;
-                        padding: 10px 11px !important;
-                        box-sizing: border-box !important;
-                        border: 1px solid #fecaca !important;
-                        border-radius: 7px !important;
-                        background: #ffffff !important;
-                        color: #dc2626 !important;
-                        font-family: Arial, Helvetica, sans-serif !important;
-                    "
-                >
-                    <svg
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="#dc2626"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        aria-hidden="true"
-                        style="
-                            all: initial !important;
-                            display: block !important;
-                            width: 13px !important;
-                            height: 13px !important;
-                            margin-top: 1px !important;
-                            color: #dc2626 !important;
-                        "
-                    >
+                <div role="alert" class="simple-auth-notice simple-auth-notice--error">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="simple-auth-notice__icon">
                         <circle cx="12" cy="12" r="10"/>
                         <line x1="12" x2="12" y1="8" y2="12"/>
                         <line x1="12" x2="12.01" y1="16" y2="16"/>
                     </svg>
 
-                    <div
-                        style="
-                            all: initial !important;
-                            display: block !important;
-                            min-width: 0 !important;
-                            font-family: Arial, Helvetica, sans-serif !important;
-                        "
-                    >
-                        <div
-                            style="
-                                all: initial !important;
-                                display: block !important;
-                                margin: 0 0 2px !important;
-                                padding: 0 !important;
-                                color: #dc2626 !important;
-                                font-family: Arial, Helvetica, sans-serif !important;
-                                font-size: 11px !important;
-                                font-weight: 500 !important;
-                                line-height: 14px !important;
-                                letter-spacing: 0 !important;
-                            "
-                        >
-                            İşlem başarısız
-                        </div>
-
-                        <div
-                            style="
-                                all: initial !important;
-                                display: block !important;
-                                margin: 0 !important;
-                                padding: 0 !important;
-                                color: #b91c1c !important;
-                                font-family: Arial, Helvetica, sans-serif !important;
-                                font-size: 10px !important;
-                                font-weight: 400 !important;
-                                line-height: 14px !important;
-                                letter-spacing: 0 !important;
-                            "
-                        >
+                    <div>
+                        <div class="simple-auth-notice__title">İşlem başarısız</div>
+                        <div class="simple-auth-notice__text">
                             @foreach ($errors->all() as $error)
-                                <div
-                                    style="
-                                        all: initial !important;
-                                        display: block !important;
-                                        margin: 0 !important;
-                                        padding: 0 !important;
-                                        color: #b91c1c !important;
-                                        font-family: Arial, Helvetica, sans-serif !important;
-                                        font-size: 10px !important;
-                                        font-weight: 400 !important;
-                                        line-height: 14px !important;
-                                        letter-spacing: 0 !important;
-                                    "
-                                >
+                                <div>
                                     @if ($error === 'passwords.user')
                                         Bu e-posta adresiyle kayıtlı bir kullanıcı bulunamadı.
                                     @elseif ($error === 'passwords.throttled')

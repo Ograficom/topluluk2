@@ -32,10 +32,13 @@
     $categoriesAccentColor = $categoriesSanitizeColor($categoriesThemeSettings->categories_accent_color ?? null, '#2563eb');
     $categoriesHoverBgColor = $categoriesSanitizeColor($categoriesThemeSettings->categories_hover_bg_color ?? null, '#f9fafb');
     $categoriesBorderColor = $categoriesSanitizeColor($categoriesThemeSettings->categories_border_color ?? null, '#e4e4e7');
-    $categoriesAvatarSize = $categoriesSanitizeSize($categoriesThemeSettings->categories_avatar_size ?? null, 36, 24, 80);
-    $categoriesNameFontSize = $categoriesSanitizeSize($categoriesThemeSettings->categories_name_font_size ?? null, 14.5, 10, 28);
-    $categoriesStatsFontSize = $categoriesSanitizeSize($categoriesThemeSettings->categories_stats_font_size ?? null, 12.5, 9, 20);
-    $categoriesDescriptionFontSize = $categoriesSanitizeSize($categoriesThemeSettings->categories_description_font_size ?? null, 13, 10, 20);
+    // Not: Kategori kartı yazı tipi boyutları artık admin paneldeki (ThemeSetting)
+    // eski kayıtlı değerlerden değil, verdiğiniz referans tasarımla birebir
+    // eşleşmesi için sabit (hardcoded) değerlerden okunuyor.
+    $categoriesAvatarSize = 40;
+    $categoriesNameFontSize = 15;
+    $categoriesStatsFontSize = 12;
+    $categoriesDescriptionFontSize = 13;
 
     $categoryCollection = $categories ?? collect();
 
@@ -273,6 +276,13 @@
     @endif
 @endpush
 
+{{-- Yeni tasarımın yazı tipi ve ikon fontu (sadece görsel amaçlı, SEO etiketlerine dokunulmadı) --}}
+@push('head')
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+@endpush
+
 @push('head')
 <style>
     .categories-page {
@@ -281,9 +291,10 @@
         z-index: 1;
         width: 100%;
         max-width: var(--main-col, 41rem);
-        margin: 16px auto 0;
+        margin: 0 auto;
         padding: 0 0 28px;
         overflow: visible !important;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 
         --categories-blue: {{ $categoriesAccentColor }};
         --categories-blue-hover: #1d4ed8;
@@ -298,29 +309,25 @@
         --categories-stats-size: {{ $categoriesStatsFontSize }}px;
         --categories-description-size: {{ $categoriesDescriptionFontSize }}px;
         --categories-menu-bg: #ffffff;
-        --categories-menu-border: #d4d4d8;
-        --categories-menu-divider: #e5e7eb;
-        --categories-menu-hover: #f3f4f6;
-        --categories-filter-icon: #000000;
-        --categories-filter-hover: #f4f4f5;
+        --categories-menu-border: #e7e7e7;
+        --categories-menu-divider: #ededed;
+        --categories-menu-hover: #f4f5f7;
+        --categories-filter-icon: #444444;
+        --categories-filter-hover: #f0f1f4;
         --categories-filter-active: #e5e7eb;
+        --categories-shadow-base: rgba(0, 0, 0, 0.08);
+        --categories-shadow-hover: rgba(0, 0, 0, 0.06);
     }
 
-    .categories-panel {
-        background: var(--categories-bg);
-        border-radius: 8px;
-        box-shadow: none;
-    }
-
-    .categories-item {
-        border-radius: 0;
-        box-shadow: none;
-    }
-
+    /* Kart / panel görünümlü üst başlık */
     .categories-panel {
         position: relative;
         overflow: visible !important;
         z-index: 1000;
+        background: var(--categories-bg);
+        border: 1px solid var(--categories-border);
+        border-radius: 12px;
+        box-shadow: none;
     }
 
     .categories-panel:has(.categories-sort.is-open) {
@@ -333,33 +340,34 @@
         align-items: center;
         justify-content: space-between;
         gap: 16px;
-        padding: 10px 16px;
-        border-bottom: 1px solid var(--categories-border);
+        padding: 14px 16px;
+        border-bottom: none;
     }
 
     .categories-title {
         margin: 0;
         color: var(--categories-text);
-        font-size: 20px;
-        font-weight: 500;
+        font-size: 10x;
+        font-weight: 600;
         line-height: 1.25;
     }
 
     .categories-create {
         display: inline-flex;
-        height: 38px;
-        min-width: 166px;
+        height: 36px;
+        min-width: auto;
         align-items: center;
         justify-content: center;
         border: 0;
         border-radius: 8px;
         background: var(--categories-blue);
         color: #ffffff !important;
-        padding: 0 16px;
-        font-size: 14.5px;
+        padding: 0 14px;
+        font-size: 13px;
         font-weight: 500;
         line-height: 1;
         text-decoration: none;
+        transition: background 0.25s ease;
     }
 
     .categories-create:hover,
@@ -371,35 +379,37 @@
     .categories-panel__tabs {
         position: relative;
         display: flex;
-        min-height: 50px;
+        min-height: 46px;
         align-items: center;
         justify-content: space-between;
         gap: 16px;
         padding: 0 16px;
         overflow: visible !important;
         z-index: 2000;
+        border-top: 1px solid var(--categories-border);
     }
 
     .categories-tabs-left {
         display: inline-flex;
-        height: 50px;
+        height: 46px;
         align-items: center;
-        gap: 22px;
+        gap: 20px;
         min-width: 0;
     }
 
     .categories-tab {
         display: inline-flex;
-        height: 50px;
+        height: 46px;
         align-items: center;
         border-bottom: 2px solid transparent;
         background: transparent;
         color: var(--categories-muted);
-        font-size: 15.5px;
+        font-size: 13px;
         font-weight: 400;
         line-height: 1;
         text-decoration: none;
         white-space: nowrap;
+        transition: color 0.2s ease, border-color 0.2s ease;
     }
 
     .categories-tab:hover,
@@ -408,11 +418,12 @@
     }
 
     .categories-tab.is-active {
-        border-bottom-color: #000000;
-        color: #000000;
-        font-weight: 500;
+        border-bottom-color: var(--categories-text);
+        color: var(--categories-text);
+        font-weight: 600;
     }
 
+    /* Filtre / sıralama */
     .categories-sort {
         position: relative;
         display: inline-flex;
@@ -428,18 +439,20 @@
         position: relative;
         z-index: 10000;
         display: inline-flex;
-        width: 34px;
-        height: 34px;
+        width: 30px;
+        height: 30px;
         align-items: center;
         justify-content: center;
         border: 0;
-        border-radius: 8px;
+        border-radius: 6px;
         background: transparent !important;
         color: var(--categories-filter-icon) !important;
         cursor: pointer;
-        padding: 0;
+        padding: 5px 6px;
+        font-size: 16px;
         -webkit-tap-highlight-color: transparent;
         touch-action: manipulation;
+        transition: background 0.2s ease, color 0.2s ease;
     }
 
     .categories-sort__trigger:hover,
@@ -455,8 +468,8 @@
     }
 
     .categories-sort__trigger svg {
-        width: 16px;
-        height: 16px;
+        width: 15px;
+        height: 15px;
         display: block;
         color: currentColor !important;
         fill: currentColor !important;
@@ -469,14 +482,14 @@
 
     .categories-sort__menu {
         position: absolute;
-        top: calc(100% + 5px);
+        top: calc(100% + 8px);
         right: 0;
-        width: 184px;
-        border-radius: 7px;
+        width: 150px;
+        border-radius: 12px;
         border: 1px solid var(--categories-menu-border);
         background: var(--categories-menu-bg);
-        padding: 0;
-        box-shadow: 0 8px 18px rgba(0, 0, 0, 0.12);
+        padding: 8px;
+        box-shadow: 0 4px 16px var(--categories-shadow-base);
         z-index: 99999;
         overflow: hidden;
     }
@@ -488,36 +501,37 @@
     .categories-sort__title {
         display: block;
         width: 100%;
-        padding: 9px 12px 8px;
-        color: var(--categories-text);
-        font-size: 14px;
+        padding: 4px 8px 6px;
+        color: var(--categories-muted);
+        font-size: 11px;
         font-weight: 400;
         line-height: 1.2;
         pointer-events: none;
         user-select: none;
-        border-bottom: 1px solid var(--categories-menu-divider);
+        border-bottom: none;
         background: transparent;
     }
 
     .categories-sort__options {
-        padding: 3px;
+        padding: 0;
     }
 
     .categories-sort__option {
         display: flex;
         width: 100%;
-        min-height: 34px;
+        min-height: 32px;
         align-items: center;
         border: 0;
-        border-radius: 5px;
+        border-radius: 6px;
         background: transparent;
         color: var(--categories-text);
-        font-size: 13.5px;
+        font-size: 13px;
         font-weight: 400;
         line-height: 1.2;
-        padding: 0 9px;
+        padding: 0 8px;
         text-align: left;
         text-decoration: none;
+        transition: background 0.2s ease, color 0.2s ease;
     }
 
     .categories-sort__option[aria-current='true'],
@@ -527,37 +541,47 @@
         color: var(--categories-text);
     }
 
+    /* Kategori kartları */
     .categories-list {
         position: relative;
         z-index: 1;
         display: flex;
         flex-direction: column;
-        margin-top: 0;
-        border-top: 1px solid var(--categories-border);
+        margin-top: 12px;
+        border-top: none;
+        gap: 10px;
     }
 
     .categories-item {
         position: relative;
         z-index: 1;
-        display: block;
-        padding: 16px 4px;
-        border-bottom: 1px solid var(--categories-border);
+        display: flex;
+        gap: 12px;
+        padding: 14px;
+        border: 1px solid var(--categories-border);
+        border-radius: 12px;
         background: var(--categories-bg);
         text-decoration: none;
-        transition: background-color 0.15s ease;
+        transition: transform 0.25s ease, box-shadow 0.25s ease, background-color 0.15s ease;
     }
 
     .categories-item:hover,
-    .categories-item:focus-visible,
+    .categories-item:focus-visible {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px var(--categories-shadow-hover);
+        background: var(--categories-bg);
+    }
+
     .categories-item:active {
         background: var(--categories-hover);
     }
 
     .categories-item__head {
         display: flex;
-        align-items: center;
+        align-items: flex-start;
         gap: 12px;
         min-width: 0;
+        width: 100%;
     }
 
     .categories-avatar {
@@ -579,20 +603,21 @@
         justify-content: center;
         object-fit: cover;
         font-size: calc(var(--categories-avatar-size) * 0.36);
-        font-weight: 500;
+        font-weight: 600;
         line-height: 1;
     }
 
     .categories-item__meta {
         min-width: 0;
+        flex: 1;
     }
 
     .categories-item__name {
         margin: 0;
         color: var(--categories-text);
         font-size: var(--categories-name-size);
-        font-weight: 700;
-        line-height: 1.25;
+        font-weight: 600;
+        line-height: 1.3;
     }
 
     .categories-item__stats {
@@ -602,14 +627,14 @@
         margin-top: 2px;
         color: var(--categories-muted);
         font-size: var(--categories-stats-size);
-        font-weight: 500;
+        font-weight: 400;
         line-height: 1.2;
     }
 
     .categories-item__stats-primary,
     .categories-item__stats-primary strong {
         color: var(--categories-muted);
-        font-weight: 500;
+        font-weight: 400;
     }
 
     .categories-item__stats-secondary {
@@ -629,16 +654,17 @@
         color: var(--categories-desc);
         font-size: var(--categories-description-size);
         font-weight: 400;
-        line-height: 1.45;
+        line-height: 1.5;
     }
 
     .categories-empty {
-        margin-top: 20px;
-        border-radius: 8px;
+        margin-top: 12px;
+        border: 1px solid var(--categories-border);
+        border-radius: 12px;
         background: var(--categories-bg);
         padding: 18px;
         color: var(--categories-muted);
-        font-size: 15px;
+        font-size: 14px;
         font-weight: 400;
         text-align: center;
     }
@@ -647,7 +673,7 @@
         margin: 14px 0 0;
         padding: 0 4px;
         color: var(--categories-muted);
-        font-size: 13.5px;
+        font-size: 12.5px;
         font-weight: 400;
         line-height: 1.4;
         text-align: center;
@@ -659,166 +685,40 @@
 
     @media (prefers-color-scheme: dark) {
         .categories-page {
-            --categories-text: #ffffff;
-            --categories-muted: #d4d4d8;
-            --categories-desc: #d4d4d8;
-            --categories-bg: #18181b;
-            --categories-hover: #27272a;
-            --categories-border: #3f3f46;
-            --categories-menu-bg: #18181b;
-            --categories-menu-border: #3f3f46;
-            --categories-menu-divider: #3f3f46;
-            --categories-menu-hover: #27272a;
-            --categories-filter-icon: #ffffff;
-            --categories-filter-hover: #27272a;
-            --categories-filter-active: #3f3f46;
-        }
-
-        .categories-title,
-        .categories-tab.is-active,
-        .categories-item__name,
-        .categories-sort__title,
-        .categories-sort__option {
-            color: #ffffff;
-        }
-
-        .categories-tab {
-            color: #d4d4d8;
-        }
-
-        .categories-tab:hover,
-        .categories-tab:focus-visible {
-            color: #ffffff;
-        }
-
-        .categories-tab.is-active {
-            border-bottom-color: #ffffff;
-        }
-
-        .categories-sort__trigger {
-            color: #ffffff !important;
-        }
-
-        .categories-sort__trigger:hover,
-        .categories-sort__trigger:focus-visible {
-            background: #27272a !important;
-            color: #ffffff !important;
-        }
-
-        .categories-sort__trigger:active,
-        .categories-sort.is-open .categories-sort__trigger {
-            background: #3f3f46 !important;
-            color: #ffffff !important;
-        }
-
-        .categories-sort__trigger svg,
-        .categories-sort__trigger svg path {
-            color: #ffffff !important;
-            fill: #ffffff !important;
-        }
-
-        .categories-sort__menu {
-            background: #18181b !important;
-            border-color: #3f3f46;
-            box-shadow: 0 8px 18px rgba(0, 0, 0, 0.45);
-        }
-
-        .categories-sort__title {
-            color: #ffffff;
-            border-bottom-color: #3f3f46;
-        }
-
-        .categories-sort__option {
-            color: #ffffff;
-        }
-
-        .categories-sort__option[aria-current='true'],
-        .categories-sort__option:hover,
-        .categories-sort__option:focus-visible {
-            background: #27272a;
-            color: #ffffff;
+            --categories-text: #e4e4e7;
+            --categories-muted: #9ca3af;
+            --categories-desc: #d1d5db;
+            --categories-bg: #0b1120;
+            --categories-hover: #151d33;
+            --categories-border: #1f2a44;
+            --categories-menu-bg: #0b1120;
+            --categories-menu-border: #1f2a44;
+            --categories-menu-divider: #1f2a44;
+            --categories-menu-hover: #151d33;
+            --categories-filter-icon: #d4d4d8;
+            --categories-filter-hover: #151d33;
+            --categories-filter-active: #1f2a44;
+            --categories-shadow-base: rgba(0, 0, 0, 0.3);
+            --categories-shadow-hover: rgba(0, 0, 0, 0.4);
         }
     }
 
     .dark .categories-page {
-        --categories-text: #ffffff;
-        --categories-muted: #d4d4d8;
-        --categories-desc: #d4d4d8;
-        --categories-bg: #18181b;
-        --categories-hover: #27272a;
-        --categories-border: #3f3f46;
-        --categories-menu-bg: #18181b;
-        --categories-menu-border: #3f3f46;
-        --categories-menu-divider: #3f3f46;
-        --categories-menu-hover: #27272a;
-        --categories-filter-icon: #ffffff;
-        --categories-filter-hover: #27272a;
-        --categories-filter-active: #3f3f46;
-    }
-
-    .dark .categories-title,
-    .dark .categories-tab.is-active,
-    .dark .categories-item__name,
-    .dark .categories-sort__title,
-    .dark .categories-sort__option {
-        color: #ffffff;
-    }
-
-    .dark .categories-tab {
-        color: #d4d4d8;
-    }
-
-    .dark .categories-tab:hover,
-    .dark .categories-tab:focus-visible {
-        color: #ffffff;
-    }
-
-    .dark .categories-tab.is-active {
-        border-bottom-color: #ffffff;
-    }
-
-    .dark .categories-sort__trigger {
-        color: #ffffff !important;
-    }
-
-    .dark .categories-sort__trigger:hover,
-    .dark .categories-sort__trigger:focus-visible {
-        background: #27272a !important;
-        color: #ffffff !important;
-    }
-
-    .dark .categories-sort__trigger:active,
-    .dark .categories-sort.is-open .categories-sort__trigger {
-        background: #3f3f46 !important;
-        color: #ffffff !important;
-    }
-
-    .dark .categories-sort__trigger svg,
-    .dark .categories-sort__trigger svg path {
-        color: #ffffff !important;
-        fill: #ffffff !important;
-    }
-
-    .dark .categories-sort__menu {
-        background: #18181b !important;
-        border-color: #3f3f46;
-        box-shadow: 0 8px 18px rgba(0, 0, 0, 0.45);
-    }
-
-    .dark .categories-sort__title {
-        color: #ffffff;
-        border-bottom-color: #3f3f46;
-    }
-
-    .dark .categories-sort__option {
-        color: #ffffff;
-    }
-
-    .dark .categories-sort__option[aria-current='true'],
-    .dark .categories-sort__option:hover,
-    .dark .categories-sort__option:focus-visible {
-        background: #27272a;
-        color: #ffffff;
+        --categories-text: #e4e4e7;
+        --categories-muted: #9ca3af;
+        --categories-desc: #d1d5db;
+        --categories-bg: #0b1120;
+        --categories-hover: #151d33;
+        --categories-border: #1f2a44;
+        --categories-menu-bg: #0b1120;
+        --categories-menu-border: #1f2a44;
+        --categories-menu-divider: #1f2a44;
+        --categories-menu-hover: #151d33;
+        --categories-filter-icon: #d4d4d8;
+        --categories-filter-hover: #151d33;
+        --categories-filter-active: #1f2a44;
+        --categories-shadow-base: rgba(0, 0, 0, 0.3);
+        --categories-shadow-hover: rgba(0, 0, 0, 0.4);
     }
 
     @media (max-width: 640px) {
@@ -828,7 +728,7 @@
             z-index: 1 !important;
             width: 100vw;
             max-width: none;
-            margin: 12px calc(50% - 50vw) 0;
+            margin: 0 calc(50% - 50vw) 0;
             padding: 0 0 24px;
             overflow: visible !important;
         }
@@ -836,6 +736,9 @@
         .categories-panel {
             width: 100%;
             border-radius: 0;
+            border-left: none;
+            border-right: none;
+            border-top: none;
             overflow: visible !important;
             z-index: 5000 !important;
         }
@@ -856,14 +759,14 @@
         }
 
         .categories-title {
-            font-size: 19px;
+            font-size: 16px;
         }
 
         .categories-create {
             min-width: auto;
-            height: 36px;
+            height: 34px;
             padding: 0 12px;
-            font-size: 13.5px;
+            font-size: 12.5px;
         }
 
         .categories-tabs-left {
@@ -871,7 +774,7 @@
         }
 
         .categories-tab {
-            font-size: 15px;
+            font-size: 13px;
         }
 
         .categories-sort {
@@ -884,18 +787,13 @@
 
         .categories-sort__trigger {
             z-index: 100000 !important;
-            width: 36px;
-            height: 36px;
-        }
-
-        .categories-sort__trigger svg {
-            width: 17px;
-            height: 17px;
+            width: 32px;
+            height: 32px;
         }
 
         .categories-sort__menu {
-            top: calc(100% + 5px);
-            width: min(190px, calc(100vw - 28px));
+            top: calc(100% + 8px);
+            width: min(150px, calc(100vw - 28px));
             max-width: calc(100vw - 28px);
             z-index: 100001 !important;
         }
@@ -904,14 +802,24 @@
             position: relative;
             z-index: 1 !important;
             width: 100%;
-            margin-top: 0;
-            padding: 0;
+            margin-top: 12px;
+            padding: 0 14px;
+            gap: 10px;
         }
 
         .categories-item {
             z-index: 1 !important;
             width: 100%;
-            padding: 16px 14px;
+            border-radius: 0;
+            border-left: none;
+            border-right: none;
+            padding: 12px 0;
+        }
+
+        .categories-item:hover,
+        .categories-item:focus-visible {
+            transform: none;
+            box-shadow: none;
         }
 
         .categories-count {
@@ -920,6 +828,11 @@
 
         .categories-empty {
             border-radius: 0;
+            border-left: none;
+            border-right: none;
+            margin-left: -14px;
+            margin-right: -14px;
+            width: calc(100% + 28px);
         }
     }
 </style>
@@ -971,12 +884,12 @@
                         aria-expanded="false"
                         aria-controls="categories-sort-menu"
                     >
-                        <svg width="200" height="200" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 14 14" aria-hidden="true">
+                        <svg width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 14 14" aria-hidden="true">
                             <path fill="currentColor" fill-rule="evenodd" d="M2.402 1.494c3.114-.326 6.1-.326 9.215 0c.38.04.745.281.957.625c.205.333.242.715.054 1.064c-.952 1.773-2.301 3.403-4.186 4.626a.63.63 0 0 0-.284.524V11.7c0 .16-.095.304-.242.368l-1.494.648a.4.4 0 0 1-.561-.368V8.334a.63.63 0 0 0-.285-.525C3.692 6.586 2.342 4.956 1.39 3.183c-.375-.699.088-1.593 1.012-1.69M11.747.25a45 45 0 0 0-9.475 0C.602.425-.57 2.175.289 3.775c.987 1.838 2.383 3.561 4.322 4.893v3.68a1.65 1.65 0 0 0 2.31 1.514l1.493-.649a1.65 1.65 0 0 0 .994-1.514V8.668c1.939-1.332 3.334-3.055 4.322-4.894c.43-.8.31-1.659-.092-2.31C13.243.82 12.55.333 11.747.25" clip-rule="evenodd"/>
                         </svg>
                     </button>
 
-                    <div id="categories-sort-menu" class="categories-sort__menu shadcn-menu shadcn-menu--compact" data-categories-sort-menu hidden style="width: 160px !important; min-width: 160px !important; max-width: min(160px, calc(100vw - 24px)) !important; box-sizing: border-box !important; padding: 8px !important; overflow: hidden !important; border: 1px solid #e4e4e7 !important; border-radius: 16px !important; background: #ffffff !important; color: #18181b !important; box-shadow: 0 1px 2px rgba(0,0,0,.05), 0 8px 24px rgba(15,23,42,.08) !important; filter: none !important;">
+                    <div id="categories-sort-menu" class="categories-sort__menu" data-categories-sort-menu hidden>
                         <div class="categories-sort__title">Göre sırala</div>
 
                         <div class="categories-sort__options">
@@ -1011,7 +924,7 @@
 
                     <a href="{{ route('blog.category', $category) }}" class="categories-item">
                         <div class="categories-item__head">
-                            <div class="categories-avatar" style="background: hsl({{ $avatarHue }} 84% 48%);">
+                            <div class="categories-avatar" style="background: linear-gradient(135deg, hsl({{ $avatarHue }} 90% 70%), hsl({{ $avatarHue }} 84% 45%));">
                                 @if($featured)
                                     <img src="{{ $featured }}" alt="{{ $name }}" loading="lazy">
                                 @else
@@ -1027,12 +940,12 @@
                                     <span class="categories-dot" aria-hidden="true"></span>
                                     <span class="categories-item__stats-secondary">{{ number_format((int) ($category->posts_count ?? 0)) }} gönderiler</span>
                                 </div>
+
+                                <p class="categories-item__description">
+                                    {{ Str::limit(strip_tags($description), 140) }}
+                                </p>
                             </div>
                         </div>
-
-                        <p class="categories-item__description">
-                            {{ Str::limit(strip_tags($description), 140) }}
-                        </p>
                     </a>
                 @endforeach
             </div>

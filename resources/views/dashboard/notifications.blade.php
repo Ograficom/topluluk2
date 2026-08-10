@@ -77,40 +77,50 @@
             opacity: 0.55 !important;
             cursor: not-allowed !important;
         }
+
+        html.dark .blue-switch-wrap label > span:first-of-type {
+            border-color: var(--alma-border, rgba(148, 163, 184, .3)) !important;
+            background-color: var(--alma-hover-muted, rgba(30, 41, 59, .82)) !important;
+        }
+
+        html.dark .blue-switch-wrap input[type="checkbox"]:checked ~ span:first-of-type {
+            border-color: var(--alma-primary, #029d71) !important;
+            background-color: var(--alma-primary, #029d71) !important;
+        }
     </style>
 
     <div class="w-full sm:mx-auto sm:max-w-[45rem] sm:px-6 lg:px-8">
         <main class="w-full">
-            <div class="relative left-1/2 right-1/2 mb-[calc(7rem+env(safe-area-inset-bottom))] w-screen -translate-x-1/2 bg-white text-gray-900 dark:bg-white dark:text-slate-900 sm:left-auto sm:right-auto sm:mb-0 sm:w-full sm:translate-x-0 sm:rounded-xl sm:border sm:border-gray-200 sm:shadow-sm">
-                <div class="flex items-center gap-3 border-b border-gray-200 px-4 py-4 sm:p-6">
-                    <div class="flex min-w-0 items-center gap-2 rounded-full bg-gray-100 px-3 py-1.5">
+            <div class="relative left-1/2 right-1/2 mb-[calc(7rem+env(safe-area-inset-bottom))] w-screen -translate-x-1/2 bg-white dark:bg-slate-900 text-gray-900 dark:text-slate-100 sm:left-auto sm:right-auto sm:mb-0 sm:w-full sm:translate-x-0 sm:rounded-xl sm:border sm:border-gray-200 dark:sm:border-slate-700 sm:shadow-sm">
+                <div class="flex items-center gap-3 border-b border-gray-200 dark:border-slate-700 px-4 py-4 sm:p-6">
+                    <div class="flex min-w-0 items-center gap-2 rounded-full bg-gray-100 dark:bg-slate-800 px-3 py-1.5">
                         <img
                             src="{{ auth()->user()->profile_photo_url }}"
                             alt="{{ auth()->user()->name }}"
                             class="h-7 w-7 shrink-0 rounded-full object-cover"
                         >
 
-                        <span class="truncate text-sm font-medium text-gray-900">
+                        <span class="truncate text-sm font-medium text-gray-900 dark:text-slate-100">
                             {{ auth()->user()->name }}
                         </span>
                     </div>
 
-                    <span class="shrink-0 text-gray-400">&rsaquo;</span>
+                    <span class="shrink-0 text-gray-400 dark:text-slate-600">&rsaquo;</span>
 
-                    <a href="{{ route('dashboard') }}" class="shrink-0 text-sm text-gray-500 hover:text-gray-700">
+                    <a href="{{ route('dashboard') }}" class="shrink-0 text-sm text-gray-500 dark:text-slate-400 hover:text-gray-700 dark:hover:text-slate-200">
                         Ayarlar
                     </a>
 
-                    <span class="shrink-0 text-gray-400">&rsaquo;</span>
+                    <span class="shrink-0 text-gray-400 dark:text-slate-600">&rsaquo;</span>
 
-                    <span class="min-w-0 truncate text-sm font-medium text-gray-700">
+                    <span class="min-w-0 truncate text-sm font-medium text-gray-700 dark:text-slate-300">
                         Bildirimler
                     </span>
                 </div>
 
                 <div class="px-2 pt-3 pb-6 sm:p-6 sm:pb-8">
                     @if (session('status') === 'notifications-updated')
-                        <div class="mb-4 rounded-xl border border-blue-200 bg-blue-50 px-4 py-3 text-sm text-blue-700">
+                        <div class="mb-4 rounded-xl border border-blue-200 dark:border-blue-500/30 bg-blue-50 dark:bg-blue-500/10 px-4 py-3 text-sm text-blue-700 dark:text-blue-400">
                             Bildirim tercihleri guncellendi.
                         </div>
                     @endif
@@ -120,13 +130,13 @@
                         @method('PUT')
 
                         <div class="space-y-3 sm:space-y-5">
-                            <div class="flex items-center justify-between gap-4 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-5 sm:gap-6 sm:px-4 sm:py-4">
+                            <div class="flex items-center justify-between gap-4 rounded-2xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 px-4 py-5 sm:gap-6 sm:px-4 sm:py-4">
                                 <div class="min-w-0 flex-1">
-                                    <h3 class="text-[15px] font-medium leading-6 text-gray-950">
+                                    <h3 class="text-[15px] font-medium leading-6 text-gray-950 dark:text-slate-100">
                                         Yorum bildirimleri
                                     </h3>
 
-                                    <p class="mt-1 text-sm leading-6 text-gray-600">
+                                    <p class="mt-1 text-sm leading-6 text-gray-600 dark:text-slate-400">
                                         Gonderilerime yeni yorumlar geldiginde bildirim al.
                                     </p>
                                 </div>
@@ -139,13 +149,13 @@
                                 </div>
                             </div>
 
-                            <div class="flex items-center justify-between gap-4 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-5 sm:gap-6 sm:px-4 sm:py-4">
+                            <div class="flex items-center justify-between gap-4 rounded-2xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 px-4 py-5 sm:gap-6 sm:px-4 sm:py-4">
                                 <div class="min-w-0 flex-1">
-                                    <h3 class="text-[15px] font-medium leading-6 text-gray-950">
+                                    <h3 class="text-[15px] font-medium leading-6 text-gray-950 dark:text-slate-100">
                                         Yanit bildirimleri
                                     </h3>
 
-                                    <p class="mt-1 text-sm leading-6 text-gray-600">
+                                    <p class="mt-1 text-sm leading-6 text-gray-600 dark:text-slate-400">
                                         Yorumlarima verilen yanitlar icin bildirim al.
                                     </p>
                                 </div>
@@ -158,13 +168,13 @@
                                 </div>
                             </div>
 
-                            <div class="flex items-center justify-between gap-4 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-5 sm:gap-6 sm:px-4 sm:py-4">
+                            <div class="flex items-center justify-between gap-4 rounded-2xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 px-4 py-5 sm:gap-6 sm:px-4 sm:py-4">
                                 <div class="min-w-0 flex-1">
-                                    <h3 class="text-[15px] font-medium leading-6 text-gray-950">
+                                    <h3 class="text-[15px] font-medium leading-6 text-gray-950 dark:text-slate-100">
                                         Begeni bildirimleri
                                     </h3>
 
-                                    <p class="mt-1 text-sm leading-6 text-gray-600">
+                                    <p class="mt-1 text-sm leading-6 text-gray-600 dark:text-slate-400">
                                         Gonderi veya yorumlarim begenildiginde bildirim al.
                                     </p>
                                 </div>
@@ -177,13 +187,13 @@
                                 </div>
                             </div>
 
-                            <div class="flex items-center justify-between gap-4 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-5 sm:gap-6 sm:px-4 sm:py-4">
+                            <div class="flex items-center justify-between gap-4 rounded-2xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 px-4 py-5 sm:gap-6 sm:px-4 sm:py-4">
                                 <div class="min-w-0 flex-1">
-                                    <h3 class="text-[15px] font-medium leading-6 text-gray-950">
+                                    <h3 class="text-[15px] font-medium leading-6 text-gray-950 dark:text-slate-100">
                                         Takipci bildirimleri
                                     </h3>
 
-                                    <p class="mt-1 text-sm leading-6 text-gray-600">
+                                    <p class="mt-1 text-sm leading-6 text-gray-600 dark:text-slate-400">
                                         Yeni biri beni takip ettiginde bildirim al.
                                     </p>
                                 </div>
@@ -196,13 +206,13 @@
                                 </div>
                             </div>
 
-                            <div class="flex items-center justify-between gap-4 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-5 sm:gap-6 sm:px-4 sm:py-4">
+                            <div class="flex items-center justify-between gap-4 rounded-2xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 px-4 py-5 sm:gap-6 sm:px-4 sm:py-4">
                                 <div class="min-w-0 flex-1">
-                                    <h3 class="text-[15px] font-medium leading-6 text-gray-950">
+                                    <h3 class="text-[15px] font-medium leading-6 text-gray-950 dark:text-slate-100">
                                         Bahsetme bildirimleri
                                     </h3>
 
-                                    <p class="mt-1 text-sm leading-6 text-gray-600">
+                                    <p class="mt-1 text-sm leading-6 text-gray-600 dark:text-slate-400">
                                         Yorumlarda benden bahsedildiginde bildirim al.
                                     </p>
                                 </div>

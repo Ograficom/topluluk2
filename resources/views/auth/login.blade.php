@@ -142,6 +142,11 @@
             font-size: 13px;
         }
         .simple-auth-alert ul { margin: 0; padding-left: 18px; }
+        .simple-auth-alert--success {
+            border-color: #a7f3d0;
+            background: #ecfdf5;
+            color: #047857;
+        }
         @media (max-width: 480px) {
             .simple-auth-page { justify-content: flex-start; padding-top: 24px; }
             .simple-auth-brand { margin-bottom: 24px; font-size: 21px; }
@@ -160,6 +165,74 @@
         html body .simple-auth-page .simple-auth-submit:not(#comments *):not(#app *) { height: 36px !important; min-height: 36px !important; padding: 0 12px !important; border: 0 !important; border-radius: 6px !important; background: #2563eb !important; color: #fff !important; font-size: 12px !important; font-weight: 400 !important; line-height: 36px !important; box-shadow: none !important; }
         html body .simple-auth-page .simple-auth-submit:not(#comments *):not(#app *):hover { background: #1d4ed8 !important; color: #fff !important; }
         @media (max-width: 480px) { html body .simple-auth-page .simple-auth-brand:not(#comments *):not(#app *) { font-size: 21px !important; } }
+
+        html.dark .simple-auth-page {
+            background: var(--alma-bg, #0b1220);
+            color: var(--alma-text, #e5e7eb);
+        }
+        html.dark .simple-auth-brand { color: var(--alma-text, #e5e7eb); }
+        html.dark .simple-auth-card {
+            border-color: var(--alma-border, rgba(148, 163, 184, .18));
+            background: var(--alma-card, #111827);
+            box-shadow: 0 1px 2px rgba(2, 6, 23, .4);
+        }
+        html.dark .simple-auth-close {
+            background: var(--alma-hover-muted, rgba(30, 41, 59, .82));
+            color: var(--alma-text, #e5e7eb);
+        }
+        html.dark .simple-auth-label,
+        html body .simple-auth-page .simple-auth-label:not(#comments *):not(#app *) {
+            color: var(--alma-text, #e5e7eb) !important;
+        }
+        html.dark .simple-auth-input,
+        html body .simple-auth-page .simple-auth-input:not(#comments *):not(#app *) {
+            border-color: var(--alma-border, rgba(148, 163, 184, .18)) !important;
+            background: var(--alma-bg, #0b1220) !important;
+            color: var(--alma-text, #e5e7eb) !important;
+        }
+        html.dark .simple-auth-input:focus,
+        html body .simple-auth-page .simple-auth-input:not(#comments *):not(#app *):focus {
+            border-color: var(--alma-primary, #029d71) !important;
+            box-shadow: 0 0 0 1px var(--alma-primary, #029d71) !important;
+        }
+        html.dark .simple-auth-remember,
+        html.dark .simple-auth-link,
+        html body .simple-auth-page .simple-auth-remember:not(#comments *):not(#app *),
+        html body .simple-auth-page .simple-auth-link:not(#comments *):not(#app *) {
+            color: var(--alma-muted, #94a3b8) !important;
+        }
+        html.dark .simple-auth-link:hover { color: var(--alma-text, #e5e7eb); }
+        html.dark .simple-auth-remember input,
+        html body .simple-auth-page .simple-auth-remember input:not(#comments *):not(#app *) {
+            background: var(--alma-card, #111827) !important;
+        }
+        html.dark .simple-auth-submit,
+        html body .simple-auth-page .simple-auth-submit:not(#comments *):not(#app *) {
+            background: var(--alma-primary, #029d71) !important;
+        }
+        html.dark .simple-auth-submit:hover,
+        html body .simple-auth-page .simple-auth-submit:not(#comments *):not(#app *):hover {
+            background: var(--alma-primary-strong, #029d71) !important;
+        }
+        html.dark .simple-auth-register,
+        html body .simple-auth-page .simple-auth-register:not(#comments *):not(#app *) {
+            color: var(--alma-text, #e5e7eb) !important;
+        }
+        html.dark .simple-auth-register a,
+        html body .simple-auth-page .simple-auth-register a:not(#comments *):not(#app *) {
+            color: var(--alma-muted, #94a3b8) !important;
+        }
+        html.dark .simple-auth-register a:hover { color: var(--alma-text, #e5e7eb); }
+        html.dark .simple-auth-alert {
+            border-color: rgba(248, 113, 113, .35);
+            background: rgba(248, 113, 113, .12);
+            color: #fca5a5;
+        }
+        html.dark .simple-auth-alert--success {
+            border-color: rgba(52, 211, 153, .35);
+            background: rgba(52, 211, 153, .12);
+            color: #6ee7b7;
+        }
     </style>
 
     <main class="simple-auth-page">
@@ -173,7 +246,7 @@
                 <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
             </button>
             @if (session('status'))
-                <div class="simple-auth-alert" style="border-color:#a7f3d0;background:#ecfdf5;color:#047857;">{{ session('status') }}</div>
+                <div class="simple-auth-alert simple-auth-alert--success">{{ session('status') }}</div>
             @endif
 
             @if ($errors->any())

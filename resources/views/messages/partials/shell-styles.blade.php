@@ -1322,6 +1322,86 @@
                 }
             }
 
+            /* Karanlik mod: bu dosyada hic dark selector yoktu, tum sabit acik
+               renkleri html.dark altinda --alma-* token'lariyla eziyoruz. Orijinal
+               kurallarla ayni (veya daha yuksek) ozgunlukte ve dosyanin en sonunda
+               oldugu icin kaskad sirasinda kazaniyor. */
+            html.dark .messages-card,
+            html.dark body.alma-app:has(.messages-page) .messages-card,
+            html.dark body.alma-app:has(.messages-page) [data-message-search],
+            html.dark body.alma-app:has(.messages-page):not(:has(.messages-show-layout)) [data-message-search],
+            html.dark body.alma-app:has(.messages-page):not(:has(.messages-show-layout)) .messages-thread-item textarea,
+            html.dark body.alma-app:has(.messages-show-layout) #messageInput,
+            html.dark body.alma-app:has(.messages-show-layout) .messages-mobile-thread-button {
+                border-color: var(--alma-border, rgba(148, 163, 184, .18)) !important;
+                background: var(--alma-card, #111827) !important;
+                color: var(--alma-text, #e5e7eb) !important;
+            }
+
+            html.dark .messages-composer-dock,
+            html.dark body.alma-app:has(.messages-show-layout) .messages-composer-dock {
+                border-color: var(--alma-border, rgba(148, 163, 184, .18)) !important;
+                background: var(--alma-card, #111827) !important;
+                background-color: var(--alma-card, #111827) !important;
+            }
+
+            html.dark .messages-thread-item:hover,
+            html.dark .messages-thread-item.is-active,
+            html.dark body.alma-app:has(.messages-page) .messages-thread-item:hover,
+            html.dark body.alma-app:has(.messages-page) .messages-thread-item.is-active {
+                background: var(--alma-hover-muted, rgba(30, 41, 59, .82)) !important;
+            }
+
+            html.dark .messages-empty-state {
+                border-color: var(--alma-border, rgba(148, 163, 184, .18));
+                background: var(--alma-card, #111827);
+            }
+
+            html.dark .message-scrollbar::-webkit-scrollbar-thumb {
+                background: var(--alma-border, rgba(148, 163, 184, .3));
+            }
+
+            html.dark body.alma-app:has(.messages-page) .messages-page,
+            html.dark body.alma-app:has(.messages-page) .messages-page h1,
+            html.dark body.alma-app:has(.messages-page) .messages-thread-item h3,
+            html.dark body.alma-app:has(.messages-page):not(:has(.messages-show-layout)) .messages-thread-item h3,
+            html.dark body.alma-app:has(.messages-show-layout) #messageInput,
+            html.dark body.alma-app:has(.messages-show-layout) .messages-mobile-thread-button {
+                color: var(--alma-text, #e5e7eb) !important;
+            }
+
+            html.dark body.alma-app:has(.messages-page) .messages-conversation-actions button,
+            html.dark body.alma-app:has(.messages-page) [data-message-search]::placeholder,
+            html.dark body.alma-app:has(.messages-page):not(:has(.messages-show-layout)) [data-message-search]::placeholder,
+            html.dark body.alma-app:has(.messages-page) .messages-thread-item p,
+            html.dark body.alma-app:has(.messages-page) .messages-thread-item span,
+            html.dark body.alma-app:has(.messages-page):not(:has(.messages-show-layout)) .messages-thread-item p,
+            html.dark body.alma-app:has(.messages-page):not(:has(.messages-show-layout)) .messages-thread-item span,
+            html.dark body.alma-app:has(.messages-show-layout) #messageInput::placeholder,
+            html.dark body.alma-app:has(.messages-show-layout) .messages-bubble + div,
+            html.dark body.alma-app:has(.messages-show-layout) .message-fade .text-gray-400 {
+                color: var(--alma-muted, #94a3b8) !important;
+            }
+
+            html.dark body.alma-app:has(.messages-page) .messages-thread-item .rounded-full,
+            html.dark body.alma-app:has(.messages-page):not(:has(.messages-show-layout)) .messages-thread-item .rounded-full {
+                background: var(--alma-hover-muted, rgba(30, 41, 59, .82)) !important;
+                color: var(--alma-muted, #94a3b8) !important;
+            }
+
+            html.dark body.alma-app:has(.messages-show-layout) .messages-bubble--other {
+                background: var(--alma-card, #111827) !important;
+                color: var(--alma-text, #e5e7eb) !important;
+            }
+
+            html.dark body.alma-app:has(.messages-show-layout) .messages-page,
+            html.dark body.alma-app:has(.messages-show-layout) .messages-main-panel,
+            html.dark body.alma-app:has(.messages-show-layout) .messages-thread-scroller {
+                background-color: var(--alma-bg, #0b1220) !important;
+                background-image:
+                    linear-gradient(rgba(148, 163, 184, 0.08) 1px, transparent 1px),
+                    linear-gradient(90deg, rgba(148, 163, 184, 0.08) 1px, transparent 1px) !important;
+            }
         </style>
     @endpush
 @endonce

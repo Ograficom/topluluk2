@@ -9,29 +9,29 @@
     <div class="space-y-5 pb-12">
         <div class="flex flex-wrap items-center gap-2 px-1 text-sm">
             <a href="{{ $editUser?->username ? route('users.show', ['user' => $editUser->username]) : route('profile.show') }}"
-               class="flex min-w-0 items-center gap-2 rounded-full bg-slate-100 px-3 py-1.5 transition-colors hover:bg-slate-200">
-                <span class="relative flex h-5 w-5 shrink-0 overflow-hidden rounded-full bg-slate-200">
+               class="flex min-w-0 items-center gap-2 rounded-full bg-slate-100 dark:bg-slate-800 px-3 py-1.5 transition-colors hover:bg-slate-200 dark:hover:bg-slate-700">
+                <span class="relative flex h-5 w-5 shrink-0 overflow-hidden rounded-full bg-slate-200 dark:bg-slate-700">
                     <img src="{{ $editUser?->profile_photo_url }}" alt="{{ $editUser?->name }}" class="h-full w-full object-cover">
                 </span>
-                <span class="truncate text-sm font-medium text-slate-900">{{ $editUser?->name }}</span>
+                <span class="truncate text-sm font-medium text-slate-900 dark:text-slate-100">{{ $editUser?->name }}</span>
             </a>
 
             <iconify-icon icon="lucide:chevron-right" style="font-size: 15px; color: #94a3b8;"></iconify-icon>
 
-            <a href="{{ route('dashboard') }}" class="shrink-0 text-slate-500 transition-colors hover:text-slate-700">
+            <a href="{{ route('dashboard') }}" class="shrink-0 text-slate-500 dark:text-slate-400 transition-colors hover:text-slate-700 dark:hover:text-slate-200">
                 Ayarlar
             </a>
 
             <iconify-icon icon="lucide:chevron-right" style="font-size: 15px; color: #94a3b8;"></iconify-icon>
 
-            <span class="min-w-0 truncate font-medium text-slate-900">
+            <span class="min-w-0 truncate font-medium text-slate-900 dark:text-slate-100">
                 Profili Düzenle
             </span>
         </div>
 
         <div class="px-1">
-            <h1 class="text-xl font-bold tracking-tight text-slate-900">Profili Düzenle</h1>
-            <p class="mt-1 text-sm text-slate-500">Herkese açık profilini ve hesap güvenliğini buradan yönet.</p>
+            <h1 class="text-xl font-bold tracking-tight text-slate-900 dark:text-slate-100">Profili Düzenle</h1>
+            <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">Herkese açık profilini ve hesap güvenliğini buradan yönet.</p>
         </div>
 
         <div
@@ -362,6 +362,90 @@
             .settings-card .settings-link-btn:hover {
                 background: transparent !important;
                 color: #1d4ed8 !important;
+            }
+
+            html.dark .settings-quicknav__pill {
+                border-color: var(--alma-border, rgba(148, 163, 184, .18));
+                background: var(--alma-card, #111827);
+                color: var(--alma-muted, #94a3b8);
+            }
+
+            html.dark .settings-quicknav__pill:hover {
+                background: var(--alma-hover-muted, rgba(30, 41, 59, .82));
+                color: var(--alma-text, #e5e7eb);
+                border-color: var(--alma-border, rgba(148, 163, 184, .28));
+            }
+
+            html.dark .settings-quicknav__pill--danger {
+                color: #f87171;
+            }
+
+            html.dark .settings-quicknav__pill--danger:hover {
+                background: rgba(239, 68, 68, 0.12);
+                color: #fca5a5;
+                border-color: rgba(239, 68, 68, 0.3);
+            }
+
+            html.dark .settings-card {
+                border-color: var(--alma-border, rgba(148, 163, 184, .18));
+                background: var(--alma-card, #111827);
+                box-shadow: 0 1px 2px rgba(2, 6, 23, .4);
+            }
+
+            html.dark .settings-card__icon {
+                background: rgba(2, 157, 113, 0.14);
+                color: var(--alma-primary, #029d71);
+            }
+
+            html.dark .settings-card--danger {
+                border-color: rgba(239, 68, 68, 0.3);
+            }
+
+            html.dark .settings-card--danger .settings-card__icon {
+                background: rgba(239, 68, 68, 0.12);
+                color: #f87171;
+            }
+
+            html.dark .settings-card--danger .settings-card__title {
+                color: #fca5a5;
+            }
+
+            html.dark .settings-card__title {
+                color: var(--alma-text, #e5e7eb);
+            }
+
+            html.dark .settings-card__desc {
+                color: var(--alma-muted, #94a3b8);
+            }
+
+            html.dark .settings-field-label {
+                color: var(--alma-muted, #94a3b8);
+            }
+
+            html.dark .settings-status-banner--success {
+                background: rgba(2, 157, 113, 0.14);
+                color: #34d399;
+                border-color: rgba(2, 157, 113, 0.3);
+            }
+
+            html.dark .settings-card button.bg-secondary {
+                background: var(--alma-hover-muted, rgba(30, 41, 59, .82)) !important;
+                border-color: var(--alma-hover-muted, rgba(30, 41, 59, .82)) !important;
+                color: var(--alma-text, #e5e7eb) !important;
+            }
+
+            html.dark .settings-card button.bg-secondary:hover {
+                background: var(--alma-card, #111827) !important;
+                border-color: var(--alma-border, rgba(148, 163, 184, .28)) !important;
+                color: var(--alma-text, #e5e7eb) !important;
+            }
+
+            html.dark .settings-card .settings-icon-btn {
+                color: var(--alma-muted, #94a3b8) !important;
+            }
+
+            html.dark .settings-card .settings-icon-btn:hover {
+                color: var(--alma-text, #e5e7eb) !important;
             }
         </style>
     @endonce

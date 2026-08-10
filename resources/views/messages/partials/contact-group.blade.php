@@ -1,24 +1,24 @@
 @php($contactCollection = collect($contacts))
 
-<section class="rounded-[18px] border border-slate-200 bg-white p-4">
+<section class="rounded-[18px] border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 p-4">
     <div class="mb-4 flex items-center justify-between gap-3">
         <div class="flex items-center gap-3">
             @if (!empty($icon ?? null))
-                <span class="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-slate-100 text-slate-600">
+                <span class="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">
                     {!! $icon !!}
                 </span>
             @endif
             <div>
-                <h2 class="text-sm font-medium text-slate-900">{{ $title }}</h2>
-                <p class="text-xs text-slate-500">{{ __('messages.contacts.count', ['count' => $contactCollection->count()]) }}</p>
+                <h2 class="text-sm font-medium text-slate-900 dark:text-slate-100">{{ $title }}</h2>
+                <p class="text-xs text-slate-500 dark:text-slate-400">{{ __('messages.contacts.count', ['count' => $contactCollection->count()]) }}</p>
             </div>
         </div>
     </div>
 
     @if ($contactCollection->isEmpty())
-        <p class="text-sm text-slate-500">{{ $emptyText }}</p>
+        <p class="text-sm text-slate-500 dark:text-slate-400">{{ $emptyText }}</p>
     @else
-        <div class="divide-y divide-slate-100">
+        <div class="divide-y divide-slate-100 dark:divide-slate-800">
             @foreach ($contactCollection as $contact)
                 @php($person = $contact['user'])
                 @php($lastMessage = $contact['last_message'])
@@ -34,16 +34,16 @@
 
                     <span class="min-w-0 flex-1">
                         <span class="flex items-center justify-between gap-3">
-                            <span class="truncate text-sm font-medium text-slate-900">{{ $person->name }}</span>
+                            <span class="truncate text-sm font-medium text-slate-900 dark:text-slate-100">{{ $person->name }}</span>
 
                             @if ($contact['unread'] > 0)
-                                <span class="inline-flex min-w-[1.5rem] items-center justify-center rounded-full bg-slate-200 px-2 py-0.5 text-[0.7rem] font-medium text-slate-700">
+                                <span class="inline-flex min-w-[1.5rem] items-center justify-center rounded-full bg-slate-200 dark:bg-slate-700 px-2 py-0.5 text-[0.7rem] font-medium text-slate-700 dark:text-slate-200">
                                     {{ $contact['unread'] }}
                                 </span>
                             @endif
                         </span>
 
-                        <span class="mt-1 block truncate text-xs text-slate-500">
+                        <span class="mt-1 block truncate text-xs text-slate-500 dark:text-slate-400">
                             {{ $person->username ? '@' . $person->username . ' · ' : '' }}{{ \Illuminate\Support\Str::limit($lastSnippet, 72) }}
                         </span>
                     </span>

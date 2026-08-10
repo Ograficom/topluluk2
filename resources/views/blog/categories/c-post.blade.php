@@ -12,16 +12,16 @@
         ?? (is_object($postsSource) && method_exists($postsSource, 'hasPages'));
 @endphp
 
-<section class="bg-white rounded-[15px]" data-tab-root="profile-tabs" data-tab-initial="posts">
+<section class="bg-white dark:bg-slate-900 rounded-[15px]" data-tab-root="profile-tabs" data-tab-initial="posts">
     <div class="flex flex-wrap items-center gap-3 px-4 sm:px-8 py-4">
-        <div class="flex flex-wrap items-center gap-2 text-xs font-semibold text-slate-700" data-tab-group>
+        <div class="flex flex-wrap items-center gap-2 text-xs font-semibold text-slate-700 dark:text-slate-300" data-tab-group>
             @foreach(['posts' => 'Yayinlar', 'comments' => 'Yorumlar', 'followers' => 'Takipciler', 'following' => 'Takip Edilen'] as $value => $label)
                 <button type="button"
                     data-tab-target="{{ $value }}"
                     data-base-class="rounded-xl px-3 py-1.5 ring-1 transition focus:outline-none text-xs"
                     class="rounded-xl px-3 py-1.5 ring-1 transition focus:outline-none text-xs"
-                    data-active-class="bg-slate-900 text-white ring-slate-900"
-                    data-inactive-class="bg-white text-slate-700 ring-slate-200 hover:bg-slate-50"
+                    data-active-class="bg-slate-900 text-white ring-slate-900 dark:bg-slate-100 dark:text-slate-900 dark:ring-slate-100"
+                    data-inactive-class="bg-white text-slate-700 ring-slate-200 hover:bg-slate-50 dark:bg-slate-800 dark:text-slate-300 dark:ring-slate-700 dark:hover:bg-slate-700"
                     role="tab"
                     aria-controls="profile-tabs-{{ $value }}">
                     {{ $label }}
@@ -31,7 +31,7 @@
 
         <div class="relative ml-auto text-xs" data-sort-menu>
             <button type="button"
-                class="inline-flex items-center gap-2 rounded-[6px] px-3 py-1.5 font-semibold text-slate-800 focus:outline-none"
+                class="inline-flex items-center gap-2 rounded-[6px] px-3 py-1.5 font-semibold text-slate-800 dark:text-slate-200 focus:outline-none"
                 aria-expanded="false"
                 data-sort-toggle>
                 <span data-sort-label>{{ ($sort ?? 'new') === 'popular' ? 'Populer' : 'En Yeni' }}</span>
@@ -39,11 +39,11 @@
                     <path d="m6 9 6 6 6-6" stroke-linecap="round" stroke-linejoin="round" />
                 </svg>
             </button>
-            <div class="absolute right-0 mt-1 hidden w-36 overflow-hidden rounded-[6px] text-left" data-sort-list>
-                <button type="button" data-sort-value="new" class="flex w-full items-center px-3 py-2 text-left text-xs font-semibold text-slate-800 hover:bg-slate-50">
+            <div class="absolute right-0 mt-1 hidden w-36 overflow-hidden rounded-[6px] text-left bg-white dark:bg-slate-800 shadow-lg ring-1 ring-slate-200 dark:ring-slate-700" data-sort-list>
+                <button type="button" data-sort-value="new" class="flex w-full items-center px-3 py-2 text-left text-xs font-semibold text-slate-800 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-700">
                     En Yeni
                 </button>
-                <button type="button" data-sort-value="popular" class="flex w-full items-center px-3 py-2 text-left text-xs font-semibold text-slate-800 hover:bg-slate-50">
+                <button type="button" data-sort-value="popular" class="flex w-full items-center px-3 py-2 text-left text-xs font-semibold text-slate-800 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-700">
                     Populer
                 </button>
             </div>
@@ -72,46 +72,46 @@
                         <div class="absolute inset-0 bg-gradient-to-t from-slate-950/30 via-transparent to-transparent"></div>
 
                         @if($post->category)
-                            <span class="absolute left-3 top-3 inline-flex items-center gap-2 rounded-full px-2.5 py-1 text-[11px] font-semibold text-slate-700">
-                                <span class="h-5 w-5 overflow-hidden rounded-full bg-slate-200">
+                            <span class="absolute left-3 top-3 inline-flex items-center gap-2 rounded-full px-2.5 py-1 text-[11px] font-semibold text-slate-700 bg-white/90 dark:bg-slate-900/90 dark:text-slate-200">
+                                <span class="h-5 w-5 overflow-hidden rounded-full bg-slate-200 dark:bg-slate-700">
                                     <img src="{{ $categoryAvatar }}" alt="{{ $post->category->name }}" class="h-full w-full object-cover">
                                 </span>
                                 {{ $post->category->name }}
                             </span>
                         @endif
 
-                        <span class="absolute right-3 top-3 rounded-full px-2.5 py-1 text-[11px] font-semibold text-slate-700">
+                        <span class="absolute right-3 top-3 rounded-full px-2.5 py-1 text-[11px] font-semibold text-slate-700 bg-white/90 dark:bg-slate-900/90 dark:text-slate-200">
                             {{ $dateLabel }}
                         </span>
                     </a>
 
                     <div class="flex h-full flex-col p-4 space-y-3">
-                        <div class="flex items-center gap-2 text-xs text-slate-500">
+                        <div class="flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400">
                             <span>{{ number_format($post->views_count ?? 0) }} goruntulenme</span>
                             <span>·</span>
                             <span>{{ number_format($post->comments_count ?? 0) }} yorum</span>
                         </div>
 
-                        <h2 class="text-lg font-semibold leading-snug text-slate-900 line-clamp-2 group-hover:text-gray-700 transition">
+                        <h2 class="text-lg font-semibold leading-snug text-slate-900 dark:text-slate-100 line-clamp-2 group-hover:text-gray-700 dark:group-hover:text-slate-300 transition">
                             <a href="{{ route('blog.post', $post) }}" aria-label="{{ $post->title ?: 'Gonderi' }}">{{ $post->title }}</a>
                         </h2>
 
                         @if($excerpt)
-                            <p class="text-sm text-slate-600 line-clamp-2">{{ $excerpt }}</p>
+                            <p class="text-sm text-slate-600 dark:text-slate-400 line-clamp-2">{{ $excerpt }}</p>
                         @endif
 
                         <div class="mt-auto flex items-center gap-2 pt-1">
                             <img src="{{ $authorAvatar }}" alt="{{ optional($post->author)->name }}" class="h-8 w-8 rounded-full object-cover">
                             <div class="min-w-0">
-                                <p class="text-sm font-semibold text-slate-900 truncate">{{ optional($post->author)->name ?? 'Topluluk' }}</p>
-                                <p class="text-xs text-slate-500">{{ optional($post->published_at)->translatedFormat('d M Y') ?? 'Taslak' }}</p>
+                                <p class="text-sm font-semibold text-slate-900 dark:text-slate-100 truncate">{{ optional($post->author)->name ?? 'Topluluk' }}</p>
+                                <p class="text-xs text-slate-500 dark:text-slate-400">{{ optional($post->published_at)->translatedFormat('d M Y') ?? 'Taslak' }}</p>
                             </div>
                         </div>
                     </div>
                 </article>
             @empty
-                <div class="rounded-[15px] bg-slate-50 p-10 text-center text-sm text-slate-600">
-                    <div class="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-[15px] text-slate-700">
+                <div class="rounded-[15px] bg-slate-50 dark:bg-slate-800 p-10 text-center text-sm text-slate-600 dark:text-slate-400">
+                    <div class="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-[15px] text-slate-700 dark:text-slate-300">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" d="M4 7h16M4 12h10m-6 5h6"/></svg>
                     </div>
                     Henuz yayin yok. Takip ederek yeni paylasimlardan haberdar olun.
@@ -127,7 +127,7 @@
     </div>
 
     <div class="p-6 sm:p-8" data-tab-panel="comments" id="profile-tabs-comments" role="tabpanel" tabindex="0" hidden>
-        <div class="rounded-[15px] bg-slate-50 p-6 text-sm text-slate-600">
+        <div class="rounded-[15px] bg-slate-50 dark:bg-slate-800 p-6 text-sm text-slate-600 dark:text-slate-400">
             Yorumlar yakinda burada gorunecek.
         </div>
     </div>
@@ -140,17 +140,17 @@
                         $avatar = $person->profile_photo_url ?? 'https://placehold.co/80x80';
                     @endphp
                     <a href="{{ route('users.show', $person) }}"
-                       class="flex items-center gap-3 rounded-xl px-3 py-2 transition hover:-translate-y-[1px] hover:bg-gray-100">
+                       class="flex items-center gap-3 rounded-xl px-3 py-2 transition hover:-translate-y-[1px] hover:bg-gray-100 dark:hover:bg-slate-800">
                         <img src="{{ $avatar }}" alt="{{ $person->name }}" class="h-10 w-10 rounded-full object-cover">
                         <div class="min-w-0">
-                            <div class="text-sm font-semibold text-slate-900 truncate">{{ $person->name }}</div>
-                            <div class="text-xs text-slate-500 truncate">{{ '@' . ($person->username ?? 'kullanici') }}</div>
+                            <div class="text-sm font-semibold text-slate-900 dark:text-slate-100 truncate">{{ $person->name }}</div>
+                            <div class="text-xs text-slate-500 dark:text-slate-400 truncate">{{ '@' . ($person->username ?? 'kullanici') }}</div>
                         </div>
                     </a>
                 @endforeach
             </div>
         @else
-            <div class="rounded-[15px] bg-slate-50 p-6 text-sm text-slate-600">
+            <div class="rounded-[15px] bg-slate-50 dark:bg-slate-800 p-6 text-sm text-slate-600 dark:text-slate-400">
                 Henuz takipci yok.
             </div>
         @endif
@@ -164,17 +164,17 @@
                         $avatar = $person->profile_photo_url ?? 'https://placehold.co/80x80';
                     @endphp
                     <a href="{{ route('users.show', $person) }}"
-                       class="flex items-center gap-3 rounded-xl px-3 py-2 transition hover:-translate-y-[1px] hover:bg-gray-100">
+                       class="flex items-center gap-3 rounded-xl px-3 py-2 transition hover:-translate-y-[1px] hover:bg-gray-100 dark:hover:bg-slate-800">
                         <img src="{{ $avatar }}" alt="{{ $person->name }}" class="h-10 w-10 rounded-full object-cover">
                         <div class="min-w-0">
-                            <div class="text-sm font-semibold text-slate-900 truncate">{{ $person->name }}</div>
-                            <div class="text-xs text-slate-500 truncate">{{ '@' . ($person->username ?? 'kullanici') }}</div>
+                            <div class="text-sm font-semibold text-slate-900 dark:text-slate-100 truncate">{{ $person->name }}</div>
+                            <div class="text-xs text-slate-500 dark:text-slate-400 truncate">{{ '@' . ($person->username ?? 'kullanici') }}</div>
                         </div>
                     </a>
                 @endforeach
             </div>
         @else
-            <div class="rounded-[15px] bg-slate-50 p-6 text-sm text-slate-600">
+            <div class="rounded-[15px] bg-slate-50 dark:bg-slate-800 p-6 text-sm text-slate-600 dark:text-slate-400">
                 Henuz takip edilen yok.
             </div>
         @endif

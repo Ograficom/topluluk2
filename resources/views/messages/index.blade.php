@@ -31,7 +31,7 @@
                 <div class="messages-conversation-actions">
                     @include('messages.partials.settings-dropdown', [
                         'preferences' => $preferences,
-                        'buttonClass' => 'inline-flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-700 transition hover:bg-slate-100',
+                        'buttonClass' => 'inline-flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 transition hover:bg-slate-100 dark:hover:bg-slate-700',
                     ])
                 </div>
             </div>

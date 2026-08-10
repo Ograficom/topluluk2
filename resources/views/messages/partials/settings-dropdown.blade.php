@@ -1,5 +1,5 @@
 @php
-    $buttonClass = $buttonClass ?? 'inline-flex h-11 w-11 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-600 transition hover:bg-slate-100';
+    $buttonClass = $buttonClass ?? 'inline-flex h-11 w-11 items-center justify-center rounded-full border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 transition hover:bg-slate-100 dark:hover:bg-slate-700';
     $panelClass = $panelClass ?? '';
     $buttonLabel = $buttonLabel ?? __('messages.actions.settings');
 @endphp
@@ -113,6 +113,46 @@
                     background: #f1f5f9;
                 }
             }
+
+            html.dark .message-settings-panel {
+                border-color: var(--alma-border, rgba(148, 163, 184, .18));
+                background: var(--alma-card, #111827);
+                box-shadow: 0 24px 48px rgba(2, 6, 23, .45);
+            }
+
+            html.dark .message-settings-row {
+                border-color: var(--alma-border, rgba(148, 163, 184, .18));
+                background: var(--alma-hover-muted, rgba(30, 41, 59, .82));
+            }
+
+            html.dark .message-settings-row:hover {
+                background: var(--alma-card, #111827);
+            }
+
+            html.dark .message-settings-close {
+                border-color: var(--alma-border, rgba(148, 163, 184, .22));
+                background: var(--alma-card, #111827);
+                color: var(--alma-muted, #94a3b8);
+            }
+
+            html.dark .message-settings-close:hover {
+                background: var(--alma-hover-muted, rgba(30, 41, 59, .82));
+                color: var(--alma-text, #e5e7eb);
+            }
+
+            @media (max-width: 639px) {
+                html.dark .message-settings-panel {
+                    background: var(--alma-bg, #0b1220);
+                }
+
+                html.dark .message-settings-row {
+                    background: var(--alma-card, #111827);
+                }
+
+                html.dark .message-settings-row:hover {
+                    background: var(--alma-hover-muted, rgba(30, 41, 59, .82));
+                }
+            }
         </style>
     @endpush
 @endonce
@@ -131,7 +171,7 @@
         <div class="message-settings-panel-head">
             <div class="px-1">
                 <p class="text-[11px] font-semibold uppercase tracking-[0.22em] text-slate-400">{{ __('messages.settings.title') }}</p>
-                <p class="mt-1 text-sm font-semibold text-slate-900">{{ __('messages.settings.subtitle') }}</p>
+                <p class="mt-1 text-sm font-semibold text-slate-900 dark:text-slate-100">{{ __('messages.settings.subtitle') }}</p>
             </div>
 
             <button type="button" class="message-settings-close" data-message-settings-close aria-label="{{ __('messages.actions.close') }}">
@@ -146,8 +186,8 @@
 
             <div class="message-settings-row flex items-center justify-between gap-4">
                 <div>
-                    <div class="text-sm font-semibold text-slate-900">{{ __('messages.settings.allow_messages') }}</div>
-                    <div class="text-xs text-slate-500">{{ __('messages.settings.allow_messages_help') }}</div>
+                    <div class="text-sm font-semibold text-slate-900 dark:text-slate-100">{{ __('messages.settings.allow_messages') }}</div>
+                    <div class="text-xs text-slate-500 dark:text-slate-400">{{ __('messages.settings.allow_messages_help') }}</div>
                 </div>
                 <x-ui.switch
                     name="allow_messages"
@@ -157,8 +197,8 @@
 
             <div class="message-settings-row flex items-center justify-between gap-4">
                 <div>
-                    <div class="text-sm font-semibold text-slate-900">{{ __('messages.settings.following_only') }}</div>
-                    <div class="text-xs text-slate-500">{{ __('messages.settings.following_only_help') }}</div>
+                    <div class="text-sm font-semibold text-slate-900 dark:text-slate-100">{{ __('messages.settings.following_only') }}</div>
+                    <div class="text-xs text-slate-500 dark:text-slate-400">{{ __('messages.settings.following_only_help') }}</div>
                 </div>
                 <x-ui.switch
                     name="allow_following_only"
