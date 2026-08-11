@@ -227,6 +227,10 @@
         gap: 14px;
     }
 
+    .og-search-settings-menu__label {
+        display: none;
+    }
+
     @media (max-width: 640px) {
         .og-search-identity {
             min-height: 40px;
@@ -292,9 +296,49 @@
             display: flex !important;
         }
 
+        .og-search-settings-menu {
+            gap: 20px;
+        }
+
+        .og-search-settings-menu__label {
+            display: block;
+            margin: 0 0 8px;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: .04em;
+            text-transform: uppercase;
+            color: #94a3b8;
+        }
+
         .og-search-filters {
+            flex-direction: column !important;
+            align-items: stretch !important;
+            justify-content: flex-start !important;
+            gap: 18px !important;
+        }
+
+        .og-search-filters .og-search-pills {
             flex-direction: column;
             align-items: stretch;
+            flex-wrap: nowrap;
+            gap: 6px;
+        }
+
+        .og-search-filters .og-search-pill {
+            width: 100%;
+            justify-content: flex-start;
+            height: 40px;
+            padding: 0 14px;
+        }
+
+        .og-search-types {
+            flex-wrap: wrap;
+            overflow-x: visible;
+        }
+
+        .og-search-types .og-search-type-pill {
+            flex: 1 1 calc(50% - 4px);
+            justify-content: flex-start;
         }
     }
 
@@ -330,6 +374,10 @@
     html.dark .og-search-settings-menu {
         background: #0f172a !important;
         border-color: #1e293b !important;
+    }
+
+    html.dark .og-search-settings-menu__label {
+        color: #64748b !important;
     }
 
     .og-search-filters {
@@ -493,9 +541,6 @@
         text-align: center;
         font-size: 14px;
         color: #64748b;
-        border-radius: var(--card-radius, 16px);
-        border: 1px solid #e2e8f0;
-        background: #ffffff;
     }
 
     .og-search-box {
@@ -714,15 +759,13 @@
 
     html.dark .og-search-bar,
     html.dark .og-search-box,
-    html.dark .og-search-message,
     html.dark .og-search-more-btn {
         background: #0f172a !important;
         border-color: #1e293b !important;
     }
 
-    html.dark .og-search-back-btn,
-    body.alma-app.dark .og-search-back-btn {
-        color: #cbd5e1 !important;
+    html.dark .og-search-message {
+        color: #94a3b8 !important;
     }
 
     html.dark .og-search-back-btn:hover,
@@ -881,18 +924,26 @@
 
                 <div class="og-search-settings-menu" data-search-settings-menu>
                     <div class="og-search-filters">
-                        <div class="og-search-pills" data-search-sort-pills>
-                            <button type="button" class="og-search-pill og-search-pill--sort" data-sort="relevance"><iconify-icon icon="lucide:sparkles"></iconify-icon>{{ __('site.search.sort_relevance') }}</button>
-                            <button type="button" class="og-search-pill og-search-pill--sort" data-sort="newest"><iconify-icon icon="lucide:clock"></iconify-icon>{{ __('site.search.sort_newest') }}</button>
-                            <button type="button" class="og-search-pill og-search-pill--sort" data-sort="popular"><iconify-icon icon="lucide:flame"></iconify-icon>{{ __('site.search.sort_popular') }}</button>
+                        <div>
+                            <span class="og-search-settings-menu__label">{{ __('site.search.sort_label') }}</span>
+                            <div class="og-search-pills" data-search-sort-pills>
+                                <button type="button" class="og-search-pill og-search-pill--sort" data-sort="relevance"><iconify-icon icon="lucide:sparkles"></iconify-icon>{{ __('site.search.sort_relevance') }}</button>
+                                <button type="button" class="og-search-pill og-search-pill--sort" data-sort="newest"><iconify-icon icon="lucide:clock"></iconify-icon>{{ __('site.search.sort_newest') }}</button>
+                                <button type="button" class="og-search-pill og-search-pill--sort" data-sort="popular"><iconify-icon icon="lucide:flame"></iconify-icon>{{ __('site.search.sort_popular') }}</button>
+                            </div>
                         </div>
-                        <div class="og-search-pills og-search-pills--toggles">
-                            <button type="button" class="og-search-pill og-search-pill--toggle" data-toggle="nsfw"><iconify-icon icon="lucide:eye-off"></iconify-icon>{{ __('site.search.filter_nsfw') }}</button>
-                            <button type="button" class="og-search-pill og-search-pill--toggle" data-toggle="ai"><iconify-icon icon="lucide:bot"></iconify-icon>{{ __('site.search.filter_ai') }}</button>
+                        <div>
+                            <span class="og-search-settings-menu__label">{{ __('site.search.filter_label') }}</span>
+                            <div class="og-search-pills og-search-pills--toggles">
+                                <button type="button" class="og-search-pill og-search-pill--toggle" data-toggle="nsfw"><iconify-icon icon="lucide:eye-off"></iconify-icon>{{ __('site.search.filter_nsfw') }}</button>
+                                <button type="button" class="og-search-pill og-search-pill--toggle" data-toggle="ai"><iconify-icon icon="lucide:bot"></iconify-icon>{{ __('site.search.filter_ai') }}</button>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="og-search-types" data-search-type-pills>
+                    <div>
+                        <span class="og-search-settings-menu__label">{{ __('site.search.type_label') }}</span>
+                        <div class="og-search-types" data-search-type-pills>
                         <button type="button" class="og-search-type-pill" data-type="all"><iconify-icon icon="lucide:layout-grid"></iconify-icon>{{ __('site.search.all') }}</button>
                         <button type="button" class="og-search-type-pill" data-type="posts"><iconify-icon icon="lucide:file-text"></iconify-icon>{{ __('site.search.posts') }}</button>
                         <button type="button" class="og-search-type-pill" data-type="categories"><iconify-icon icon="lucide:folder"></iconify-icon>{{ __('site.search.categories') }}</button>
@@ -900,6 +951,7 @@
                         <button type="button" class="og-search-type-pill" data-type="users"><iconify-icon icon="lucide:users"></iconify-icon>{{ __('site.search.users') }}</button>
                         <button type="button" class="og-search-type-pill" data-type="comments"><iconify-icon icon="lucide:message-circle"></iconify-icon>{{ __('site.search.comments') }}</button>
                         <button type="button" class="og-search-type-pill" data-type="pages"><iconify-icon icon="lucide:file"></iconify-icon>{{ __('site.search.pages') }}</button>
+                        </div>
                     </div>
                 </div>
             </div>
