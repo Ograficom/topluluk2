@@ -56,6 +56,12 @@
         border: 1px solid #e2e8f0;
         background: #ffffff !important;
         box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+        transition: border-color .15s ease, box-shadow .15s ease;
+    }
+
+    .og-search-bar:focus-within {
+        border-color: #93c5fd;
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, .12) !important;
     }
 
     /* Arama ve temizle (x) ikonlari ayni sag ust bosluga (ayni "slot") yerlesir;
@@ -63,14 +69,19 @@
        gorunmez - boylece ikonlar ust uste binmez. */
     .og-search-bar-icon,
     .og-search-bar-clear {
-        position: absolute;
-        right: 12px;
-        top: 50%;
-        transform: translateY(-50%);
+        position: absolute !important;
+        right: 12px !important;
+        top: 50% !important;
+        transform: translateY(-50%) !important;
     }
 
+    /* Site genelinde iconify-icon etiketlerine "transform: none !important"
+       uygulayan bir sifirlama var (bkz. .site-icon-btn * ... , iconify-icon
+       kurali); ust satirdaki !important olmadan bu, yukaridaki dikey ortalama
+       translateY'sini eziyor ve ikonun kutunun alt kenarina dogru kaymasina
+       yol aciyordu. */
     .og-search-bar-icon {
-        display: inline-flex;
+        display: inline-flex !important;
         width: 26px;
         height: 26px;
         align-items: center;
