@@ -157,6 +157,140 @@
         background: #cbd5e1 !important;
     }
 
+    /*
+    Mobilde arama kutusunun hemen altinda, sayfayi "Arama" olarak belli eden
+    kimlik kutusu + ayarlar (filtre) menusu. Masaustunde filtreler zaten tek
+    satira sigdigi icin sadece kimlik kutusunun GORSEL kabugu (kenarlik/
+    arka plan/baslik/dislaili buton) gizlenir; sarmalayici kendisi HICBIR
+    ZAMAN display:none olmaz, cunku icinde .og-search-settings-menu (yani
+    filtre/tur pilleri) barinir - disina display:none konursa masaustunde
+    de gizlenirdi. Mobilde ise butun siralama/tur/NSFW-AI pilleri bu acilir
+    menuye tasinip sayfa boyu kisaliyor ("boyutlandirmayi duzgunlestir").
+    */
+    .og-search-identity {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+    }
+
+    .og-search-identity__title,
+    .og-search-settings__trigger {
+        display: none;
+    }
+
+    .og-search-settings {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        flex-shrink: 0;
+    }
+
+    .og-search-settings__trigger iconify-icon {
+        font-size: 17px;
+    }
+
+    .og-search-settings__trigger:hover,
+    .og-search-settings__trigger:focus-visible,
+    .og-search-settings.is-open .og-search-settings__trigger {
+        background: #f3f4f6 !important;
+    }
+
+    /* Masaustunde bu sarmalayici sade bir kutu, hep gorunur (filtreler eskisi
+       gibi tek satirda). Mobilde ise acilir menuye donusur ve JS'in ekleyip
+       cikardigi ".is-open" sinifiyla kontrol edilir - native "hidden" ozniteligi
+       KASITLI olarak kullanilmadi: Chromium'da bazi durumlarda [hidden] elemente
+       CSS ile display verilse bile layout hesaba katmiyor (olcum: display:flex
+       computed style'da gorunuyor ama getBoundingClientRect() hep 0x0 donuyordu). */
+    .og-search-settings-menu {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+    }
+
+    @media (max-width: 640px) {
+        .og-search-identity {
+            min-height: 40px;
+            padding: 3px 6px 3px 16px;
+            border: 1px solid #e2e8f0;
+            border-radius: 18px;
+            background: #ffffff;
+        }
+
+        .og-search-identity__title {
+            display: block;
+            margin: 0;
+            font-size: 14px;
+            font-weight: 600;
+            color: #0f172a;
+        }
+
+        .og-search-settings__trigger {
+            display: inline-flex !important;
+            width: 32px !important;
+            height: 32px !important;
+            align-items: center;
+            justify-content: center;
+            border: 0 !important;
+            border-radius: 999px !important;
+            background: transparent !important;
+            color: #52525b !important;
+            cursor: pointer;
+            transition: background-color .15s ease;
+        }
+
+        .og-search-settings-menu {
+            display: none;
+            position: absolute;
+            top: calc(100% + 8px);
+            right: 0;
+            width: min(300px, calc(100vw - 32px));
+            max-height: 60vh;
+            overflow-y: auto;
+            padding: 16px;
+            border-radius: 18px;
+            border: 1px solid #e2e8f0;
+            background: #ffffff;
+            box-shadow: 0 16px 36px rgba(15, 23, 42, .14);
+            z-index: 40;
+        }
+
+        .og-search-settings-menu.is-open {
+            display: flex !important;
+        }
+
+        .og-search-filters {
+            flex-direction: column;
+            align-items: stretch;
+        }
+    }
+
+    @media (max-width: 640px) {
+        html.dark .og-search-identity {
+            background: #0f172a !important;
+            border-color: #1e293b !important;
+        }
+    }
+
+    html.dark .og-search-identity__title {
+        color: #e2e8f0 !important;
+    }
+
+    html.dark .og-search-settings__trigger {
+        color: #cbd5e1 !important;
+    }
+
+    html.dark .og-search-settings__trigger:hover,
+    html.dark .og-search-settings__trigger:focus-visible,
+    html.dark .og-search-settings.is-open .og-search-settings__trigger {
+        background: #1e293b !important;
+    }
+
+    html.dark .og-search-settings-menu {
+        background: #0f172a !important;
+        border-color: #1e293b !important;
+    }
+
     .og-search-filters {
         display: flex;
         align-items: center;
@@ -687,26 +821,44 @@
             </div>
         </div>
 
-        <div class="og-search-filters">
-            <div class="og-search-pills" data-search-sort-pills>
-                <button type="button" class="og-search-pill og-search-pill--sort" data-sort="relevance"><iconify-icon icon="lucide:sparkles"></iconify-icon>{{ __('site.search.sort_relevance') }}</button>
-                <button type="button" class="og-search-pill og-search-pill--sort" data-sort="newest"><iconify-icon icon="lucide:clock"></iconify-icon>{{ __('site.search.sort_newest') }}</button>
-                <button type="button" class="og-search-pill og-search-pill--sort" data-sort="popular"><iconify-icon icon="lucide:flame"></iconify-icon>{{ __('site.search.sort_popular') }}</button>
-            </div>
-            <div class="og-search-pills og-search-pills--toggles">
-                <button type="button" class="og-search-pill og-search-pill--toggle" data-toggle="nsfw"><iconify-icon icon="lucide:eye-off"></iconify-icon>{{ __('site.search.filter_nsfw') }}</button>
-                <button type="button" class="og-search-pill og-search-pill--toggle" data-toggle="ai"><iconify-icon icon="lucide:bot"></iconify-icon>{{ __('site.search.filter_ai') }}</button>
-            </div>
-        </div>
+        <div class="og-search-identity">
+            <h2 class="og-search-identity__title">{{ __('site.search.title') }}</h2>
 
-        <div class="og-search-types" data-search-type-pills>
-            <button type="button" class="og-search-type-pill" data-type="all"><iconify-icon icon="lucide:layout-grid"></iconify-icon>{{ __('site.search.all') }}</button>
-            <button type="button" class="og-search-type-pill" data-type="posts"><iconify-icon icon="lucide:file-text"></iconify-icon>{{ __('site.search.posts') }}</button>
-            <button type="button" class="og-search-type-pill" data-type="categories"><iconify-icon icon="lucide:folder"></iconify-icon>{{ __('site.search.categories') }}</button>
-            <button type="button" class="og-search-type-pill" data-type="tags"><iconify-icon icon="lucide:tag"></iconify-icon>{{ __('site.search.tags') }}</button>
-            <button type="button" class="og-search-type-pill" data-type="users"><iconify-icon icon="lucide:users"></iconify-icon>{{ __('site.search.users') }}</button>
-            <button type="button" class="og-search-type-pill" data-type="comments"><iconify-icon icon="lucide:message-circle"></iconify-icon>{{ __('site.search.comments') }}</button>
-            <button type="button" class="og-search-type-pill" data-type="pages"><iconify-icon icon="lucide:file"></iconify-icon>{{ __('site.search.pages') }}</button>
+            <div class="og-search-settings" data-search-settings>
+                <button
+                    type="button"
+                    class="og-search-settings__trigger"
+                    data-search-settings-trigger
+                    aria-label="{{ __('site.common.settings') }}"
+                    aria-expanded="false"
+                >
+                    <iconify-icon icon="lucide:settings-2" aria-hidden="true"></iconify-icon>
+                </button>
+
+                <div class="og-search-settings-menu" data-search-settings-menu>
+                    <div class="og-search-filters">
+                        <div class="og-search-pills" data-search-sort-pills>
+                            <button type="button" class="og-search-pill og-search-pill--sort" data-sort="relevance"><iconify-icon icon="lucide:sparkles"></iconify-icon>{{ __('site.search.sort_relevance') }}</button>
+                            <button type="button" class="og-search-pill og-search-pill--sort" data-sort="newest"><iconify-icon icon="lucide:clock"></iconify-icon>{{ __('site.search.sort_newest') }}</button>
+                            <button type="button" class="og-search-pill og-search-pill--sort" data-sort="popular"><iconify-icon icon="lucide:flame"></iconify-icon>{{ __('site.search.sort_popular') }}</button>
+                        </div>
+                        <div class="og-search-pills og-search-pills--toggles">
+                            <button type="button" class="og-search-pill og-search-pill--toggle" data-toggle="nsfw"><iconify-icon icon="lucide:eye-off"></iconify-icon>{{ __('site.search.filter_nsfw') }}</button>
+                            <button type="button" class="og-search-pill og-search-pill--toggle" data-toggle="ai"><iconify-icon icon="lucide:bot"></iconify-icon>{{ __('site.search.filter_ai') }}</button>
+                        </div>
+                    </div>
+
+                    <div class="og-search-types" data-search-type-pills>
+                        <button type="button" class="og-search-type-pill" data-type="all"><iconify-icon icon="lucide:layout-grid"></iconify-icon>{{ __('site.search.all') }}</button>
+                        <button type="button" class="og-search-type-pill" data-type="posts"><iconify-icon icon="lucide:file-text"></iconify-icon>{{ __('site.search.posts') }}</button>
+                        <button type="button" class="og-search-type-pill" data-type="categories"><iconify-icon icon="lucide:folder"></iconify-icon>{{ __('site.search.categories') }}</button>
+                        <button type="button" class="og-search-type-pill" data-type="tags"><iconify-icon icon="lucide:tag"></iconify-icon>{{ __('site.search.tags') }}</button>
+                        <button type="button" class="og-search-type-pill" data-type="users"><iconify-icon icon="lucide:users"></iconify-icon>{{ __('site.search.users') }}</button>
+                        <button type="button" class="og-search-type-pill" data-type="comments"><iconify-icon icon="lucide:message-circle"></iconify-icon>{{ __('site.search.comments') }}</button>
+                        <button type="button" class="og-search-type-pill" data-type="pages"><iconify-icon icon="lucide:file"></iconify-icon>{{ __('site.search.pages') }}</button>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <div class="og-search-results" data-search-results-container>
@@ -732,6 +884,37 @@ document.addEventListener('DOMContentLoaded', () => {
     const queryClear = root.querySelector('[data-search-query-clear]');
     const queryIcon = root.querySelector('[data-search-query-icon]');
     const backBtn = root.querySelector('[data-search-back]');
+
+    // Mobilde arama filtrelerini barindiran acilir "ayarlar" menusu.
+    const settingsRoot = root.querySelector('[data-search-settings]');
+    const settingsTrigger = root.querySelector('[data-search-settings-trigger]');
+    const settingsMenu = root.querySelector('[data-search-settings-menu]');
+
+    if (settingsRoot && settingsTrigger && settingsMenu) {
+        const openSettings = () => {
+            settingsRoot.classList.add('is-open');
+            settingsMenu.classList.add('is-open');
+            settingsTrigger.setAttribute('aria-expanded', 'true');
+        };
+
+        const closeSettings = () => {
+            settingsRoot.classList.remove('is-open');
+            settingsMenu.classList.remove('is-open');
+            settingsTrigger.setAttribute('aria-expanded', 'false');
+        };
+
+        settingsTrigger.addEventListener('click', (event) => {
+            event.preventDefault();
+            event.stopPropagation();
+            if (settingsMenu.classList.contains('is-open')) closeSettings(); else openSettings();
+        });
+
+        settingsRoot.addEventListener('click', (event) => event.stopPropagation());
+        document.addEventListener('click', closeSettings);
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape') closeSettings();
+        });
+    }
     const sortPills = Array.from(root.querySelectorAll('[data-search-sort-pills] [data-sort]'));
     const togglePills = Array.from(root.querySelectorAll('[data-toggle]'));
     const typePills = Array.from(root.querySelectorAll('[data-search-type-pills] [data-type]'));
