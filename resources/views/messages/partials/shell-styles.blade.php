@@ -1402,6 +1402,153 @@
                     linear-gradient(rgba(148, 163, 184, 0.08) 1px, transparent 1px),
                     linear-gradient(90deg, rgba(148, 163, 184, 0.08) 1px, transparent 1px) !important;
             }
+
+            /*
+            |--------------------------------------------------------------------------
+            | HOTFIX: sidebar arama satiri + ikon butonlari + "henuz sohbet yok" durumu
+            |--------------------------------------------------------------------------
+            | Bu blok en sonda durmali; yukaridaki [data-message-search]/.messages-empty-state
+            | kurallarini bilerek eziyor. Referans tasarim: sade arama kutusu (buyutec
+            | ikonlu, kenarliksiz), sagda "tumunu okundu" ve "yeni mesaj" ikon butonlari,
+            | altta ince ayrac + ortalanmis duz metin bos durumu.
+            */
+            .messages-search-row {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+            }
+
+            .messages-search-field {
+                position: relative;
+                display: flex;
+                flex: 1 1 auto;
+                align-items: center;
+                min-width: 0;
+            }
+
+            .messages-search-field__icon {
+                position: absolute;
+                left: 2px;
+                font-size: 18px;
+                color: #9ca3af;
+                pointer-events: none;
+            }
+
+            .messages-toolbar-actions {
+                display: flex;
+                align-items: center;
+                gap: 2px;
+                flex-shrink: 0;
+            }
+
+            body.alma-app:has(.messages-page) .messages-toolbar-actions .messages-icon-btn {
+                display: inline-flex;
+                width: 34px !important;
+                height: 34px !important;
+                align-items: center;
+                justify-content: center;
+                border: 0 !important;
+                border-radius: 999px !important;
+                background: transparent !important;
+                color: #6b7280 !important;
+                padding: 0 !important;
+                cursor: pointer;
+                transition: background-color .15s ease, color .15s ease;
+            }
+
+            .messages-icon-btn iconify-icon {
+                font-size: 17px;
+            }
+
+            body.alma-app:has(.messages-page) .messages-toolbar-actions .messages-icon-btn:hover,
+            body.alma-app:has(.messages-page) .messages-toolbar-actions .messages-icon-btn:focus-visible {
+                background: #f3f4f6 !important;
+                color: #111827 !important;
+                outline: none;
+            }
+
+            .messages-no-threads {
+                padding: 48px 20px;
+                text-align: center;
+            }
+
+            .messages-no-threads__text {
+                margin: 0;
+                font-size: 14px;
+                font-weight: 500;
+                color: #6b7280;
+            }
+
+            /*
+            HOTFIX: sitede body.alma-app :where(input, textarea, select):not(#comments *)
+            seklinde genel bir form-input sifirlama kurali var; :not(#comments *) icindeki
+            #comments ID secicisi bu kurala yanlislikla ID-seviyesi ozgullugu kazandiriyor,
+            bu yuzden asagidaki [data-message-search] kurali onu ezemiyordu. ID ekleyip
+            ayni/daha yuksek ozgullukte hedefliyoruz (bkz. arama sayfasindaki ayni sorun).
+            */
+            html body #messages-sidebar-search-input[data-message-search] {
+                -webkit-appearance: none !important;
+                appearance: none !important;
+                height: auto !important;
+                min-height: 0 !important;
+                border: 0 !important;
+                border-radius: 0 !important;
+                background: transparent !important;
+                color: #111827 !important;
+                padding: 6px 6px 6px 28px !important;
+                font-size: 14px !important;
+                box-shadow: none !important;
+            }
+
+            html body #messages-sidebar-search-input[data-message-search]::placeholder {
+                color: #9ca3af !important;
+            }
+
+            body.alma-app:has(.messages-page) .messages-shell--simple .messages-sidebar-panel {
+                background: #ffffff !important;
+                border: 1px solid #e5e7eb !important;
+                border-radius: 20px !important;
+            }
+
+            body.alma-app:has(.messages-page) .messages-shell--simple .messages-sidebar-panel > .border-b {
+                border-bottom: 1px solid #f1f5f9 !important;
+                padding: 16px 20px !important;
+            }
+
+            html.dark .messages-search-field__icon {
+                color: #71717a;
+            }
+
+            html.dark #messages-sidebar-search-input[data-message-search] {
+                color: #f4f4f5 !important;
+            }
+
+            html.dark #messages-sidebar-search-input[data-message-search]::placeholder {
+                color: #71717a !important;
+            }
+
+            html.dark body.alma-app:has(.messages-page) .messages-toolbar-actions .messages-icon-btn {
+                color: #a1a1aa !important;
+            }
+
+            html.dark body.alma-app:has(.messages-page) .messages-toolbar-actions .messages-icon-btn:hover,
+            html.dark body.alma-app:has(.messages-page) .messages-toolbar-actions .messages-icon-btn:focus-visible {
+                background: #27272a !important;
+                color: #f4f4f5 !important;
+            }
+
+            html.dark .messages-no-threads__text {
+                color: #a1a1aa;
+            }
+
+            html.dark body.alma-app:has(.messages-page) .messages-shell--simple .messages-sidebar-panel {
+                background: #18181b !important;
+                border-color: #27272a !important;
+            }
+
+            html.dark body.alma-app:has(.messages-page) .messages-shell--simple .messages-sidebar-panel > .border-b {
+                border-bottom-color: #27272a !important;
+            }
         </style>
     @endpush
 @endonce

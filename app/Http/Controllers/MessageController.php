@@ -23,6 +23,22 @@ class MessageController extends Controller
         return view('messages.index', $this->buildInboxViewData($request->user(), $settings));
     }
 
+    public function markAllRead(Request $request)
+    {
+        $viewer = $request->user();
+
+        Message::query()
+            ->where('recipient_id', $viewer->id)
+            ->whereNull('read_at')
+            ->update(['read_at' => now()]);
+
+        if ($request->expectsJson()) {
+            return response()->json(['ok' => true]);
+        }
+
+        return redirect()->route('messages.index')->with('status', __('messages.sidebar.mark_all_read_status'));
+    }
+
     public function contacts(Request $request)
     {
         $settings = MessageSetting::current();

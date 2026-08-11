@@ -77,5 +77,10 @@
         </div>
     </div>
 
+    @include('messages.partials.contacts-modal', [
+        'followingContacts' => $followingContacts,
+        'followerContacts' => $followerContacts,
+    ])
+
     @include('messages.partials.sidebar-scripts')
 </x-app-layout>

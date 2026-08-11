@@ -23,6 +23,9 @@ return [
         'file_shared' => 'File shared.',
         'suggestions_title' => 'You can message',
         'suggestions_see_all' => 'See all contacts',
+        'mark_all_read' => 'Mark all as read',
+        'compose' => 'New message',
+        'mark_all_read_status' => 'All conversations marked as read.',
     ],
     'status' => [
         'online' => 'Online',

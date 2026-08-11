@@ -699,6 +699,7 @@ Route::middleware('auth')->prefix('messages')->name('messages.')->group(function
     Route::get('/contacts', [MessageController::class, 'contacts'])->name('contacts');
     Route::get('/settings', [MessageController::class, 'settings'])->name('settings');
     Route::post('/settings', [MessageController::class, 'updateSettings'])->name('settings.update');
+    Route::post('/mark-all-read', [MessageController::class, 'markAllRead'])->name('mark-all-read');
     Route::post('/{user:username}/pin', [MessageController::class, 'togglePin'])->name('pin');
     Route::post('/{user:username}/delete', [MessageController::class, 'deleteThread'])->name('delete');
     Route::post('/message/{message}/delete', [MessageController::class, 'deleteMessage'])->name('message.delete');

@@ -24,6 +24,9 @@ return [
         'file_shared' => 'Dosya paylaşıldı.',
         'suggestions_title' => 'Mesaj gönderebilirsin',
         'suggestions_see_all' => 'Tüm kişileri gör',
+        'mark_all_read' => 'Tümünü okundu işaretle',
+        'compose' => 'Yeni mesaj',
+        'mark_all_read_status' => 'Tüm sohbetler okundu olarak işaretlendi.',
     ],
 
     'status' => [

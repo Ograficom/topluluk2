@@ -29,13 +29,41 @@
             </div>
         @endif
 
-        <div>
-            <input
-                type="text"
-                placeholder="{{ __('messages.sidebar.search_placeholder') }}"
-                data-message-search
-                class="w-full rounded-xl border border-gray-300 dark:border-slate-700 dark:bg-slate-800 px-4 py-2.5 text-sm text-gray-700 dark:text-slate-200 outline-none transition focus:ring-2 focus:ring-gray-300 dark:focus:ring-slate-600"
-            />
+        <div class="messages-search-row">
+            <div class="messages-search-field">
+                <iconify-icon icon="lucide:search" class="messages-search-field__icon" aria-hidden="true"></iconify-icon>
+                <input
+                    type="text"
+                    id="messages-sidebar-search-input"
+                    placeholder="{{ __('messages.sidebar.search_placeholder') }}"
+                    data-message-search
+                    class="messages-search-field__input"
+                />
+            </div>
+
+            <div class="messages-toolbar-actions">
+                <form method="POST" action="{{ route('messages.mark-all-read') }}">
+                    @csrf
+                    <button
+                        type="submit"
+                        class="messages-icon-btn"
+                        aria-label="{{ __('messages.sidebar.mark_all_read') }}"
+                        title="{{ __('messages.sidebar.mark_all_read') }}"
+                    >
+                        <iconify-icon icon="lucide:check-check" aria-hidden="true"></iconify-icon>
+                    </button>
+                </form>
+
+                <button
+                    type="button"
+                    class="messages-icon-btn"
+                    data-message-contacts-open
+                    aria-label="{{ __('messages.sidebar.compose') }}"
+                    title="{{ __('messages.sidebar.compose') }}"
+                >
+                    <iconify-icon icon="lucide:mail-plus" aria-hidden="true"></iconify-icon>
+                </button>
+            </div>
         </div>
     </div>
 
@@ -48,8 +76,8 @@
 
         @if (count($threads) === 0)
             <div class="p-4">
-                <div class="messages-empty-state px-5 py-8 text-center">
-                    <p class="text-sm font-medium text-gray-600 dark:text-slate-400">{{ __('messages.sidebar.empty') }}</p>
+                <div class="messages-no-threads">
+                    <p class="messages-no-threads__text">{{ __('messages.sidebar.empty') }}</p>
                 </div>
 
                 @if (isset($followingContacts))
