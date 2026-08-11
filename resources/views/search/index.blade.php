@@ -9,6 +9,7 @@
         flex-direction: column;
         gap: 14px;
         width: 100%;
+        min-width: 0;
     }
 
     .og-search-bar-row {
@@ -18,31 +19,37 @@
         width: 100%;
     }
 
-    .og-search-back-btn,
-    body.alma-app .og-search-back-btn {
+    /* Geri butonu artik arama kutusunun yaninda degil, asagidaki kimlik
+       kutusunun (.og-search-identity) icinde - Etiketler/SSS sayfalarindaki
+       "< | Baslik" desenoyla ayni yerlesim. */
+    .og-search-identity__back,
+    body.alma-app .og-search-identity__back {
         flex: 0 0 auto;
         display: none;
         align-items: center;
         justify-content: center;
-        width: 40px;
-        height: 40px;
+        width: 26px;
+        height: 26px;
         border-radius: 9999px;
         border: 0 !important;
         background: transparent !important;
         color: #334155 !important;
-        font-size: 20px;
+        font-size: 15px;
         cursor: pointer;
     }
 
-    .og-search-back-btn:hover,
-    body.alma-app .og-search-back-btn:hover {
+    .og-search-identity__back:hover,
+    body.alma-app .og-search-identity__back:hover {
         background: #f1f5f9 !important;
     }
 
-    @media (max-width: 640px) {
-        .og-search-back-btn {
-            display: inline-flex !important;
-        }
+    .og-search-identity__divider {
+        display: none;
+        width: 1px;
+        height: 16px;
+        flex: 0 0 auto;
+        background: currentColor;
+        opacity: .15;
     }
 
     .og-search-bar {
@@ -170,7 +177,7 @@
     .og-search-identity {
         display: flex;
         align-items: center;
-        justify-content: space-between;
+        gap: 6px;
         width: 100%;
     }
 
@@ -179,11 +186,23 @@
         display: none;
     }
 
+    /* Masaustunde bu, kimlik kutusunun TEK gorunen icerigi (baslik/tetikleyici
+       gizli) ve filtreleri barindirdigi icin tam genislik kaplayip
+       kuculebilmeli; aksi halde (flex-shrink:0 ile) icerigin dogal genisligine
+       gore buyuyup sag kenar cubuguna tasiyordu. Mobilde ise sadece kucuk bir
+       dislaili dugme oldugundan kuculmemesi gerekiyor (bkz. media query). */
     .og-search-settings {
         position: relative;
-        display: inline-flex;
+        display: flex;
         align-items: center;
-        flex-shrink: 0;
+        flex: 1 1 auto;
+        min-width: 0;
+        width: 100%;
+    }
+
+    .og-search-settings-menu {
+        width: 100%;
+        min-width: 0;
     }
 
     .og-search-settings__trigger iconify-icon {
@@ -211,10 +230,18 @@
     @media (max-width: 640px) {
         .og-search-identity {
             min-height: 40px;
-            padding: 3px 6px 3px 16px;
+            padding: 3px 12px;
             border: 1px solid #e2e8f0;
             border-radius: 18px;
             background: #ffffff;
+        }
+
+        .og-search-identity__back {
+            display: inline-flex !important;
+        }
+
+        .og-search-identity__divider {
+            display: block;
         }
 
         .og-search-identity__title {
@@ -223,6 +250,12 @@
             font-size: 14px;
             font-weight: 600;
             color: #0f172a;
+        }
+
+        .og-search-settings {
+            flex: 0 0 auto !important;
+            width: auto !important;
+            margin-left: auto;
         }
 
         .og-search-settings__trigger {
@@ -274,6 +307,14 @@
 
     html.dark .og-search-identity__title {
         color: #e2e8f0 !important;
+    }
+
+    html.dark .og-search-identity__back {
+        color: #cbd5e1 !important;
+    }
+
+    html.dark .og-search-identity__back:hover {
+        background: #1e293b !important;
     }
 
     html.dark .og-search-settings__trigger {
@@ -351,6 +392,8 @@
         display: flex;
         align-items: center;
         gap: 8px;
+        width: 100%;
+        min-width: 0;
         overflow-x: auto;
         padding-bottom: 2px;
         scrollbar-width: none;
@@ -795,9 +838,6 @@
          data-login-url="{{ route('login') }}"
     >
         <div class="og-search-bar-row">
-            <button type="button" class="og-search-back-btn" data-search-back aria-label="{{ __('site.mobile_nav.back') ?? 'Geri' }}">
-                <iconify-icon icon="lucide:arrow-left"></iconify-icon>
-            </button>
             <div class="og-search-bar">
                 <input
                     type="text"
@@ -822,6 +862,10 @@
         </div>
 
         <div class="og-search-identity">
+            <button type="button" class="og-search-identity__back" data-search-back aria-label="{{ __('site.mobile_nav.back') ?? 'Geri' }}">
+                <iconify-icon icon="lucide:arrow-left" aria-hidden="true"></iconify-icon>
+            </button>
+            <span class="og-search-identity__divider" aria-hidden="true"></span>
             <h2 class="og-search-identity__title">{{ __('site.search.title') }}</h2>
 
             <div class="og-search-settings" data-search-settings>
