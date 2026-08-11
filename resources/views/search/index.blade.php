@@ -51,43 +51,82 @@
         align-items: center;
         width: 100%;
         height: 52px;
-        padding: 0 46px 0 46px;
+        padding: 0 46px 0 16px;
         border-radius: 16px;
         border: 1px solid #e2e8f0;
-        background: #ffffff;
+        background: #ffffff !important;
         box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
     }
 
-    .og-search-bar-icon {
+    /* Arama ve temizle (x) ikonlari ayni sag ust bosluga (ayni "slot") yerlesir;
+       JS (syncPillStates) ikisinden sadece birini gosterir, asla ikisi birden
+       gorunmez - boylece ikonlar ust uste binmez. */
+    .og-search-bar-icon,
+    .og-search-bar-clear {
         position: absolute;
-        left: 16px;
+        right: 12px;
         top: 50%;
         transform: translateY(-50%);
-        width: 18px;
-        height: 18px;
+    }
+
+    .og-search-bar-icon {
+        display: inline-flex;
+        width: 26px;
+        height: 26px;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
         color: #94a3b8;
         pointer-events: none;
+    }
+
+    .og-search-bar-icon.hidden {
+        display: none !important;
     }
 
     .og-search-bar-input {
         width: 100%;
         height: 100%;
         border: 0;
-        background: transparent;
+        background: transparent !important;
         font-size: 15px;
         color: #0f172a;
         outline: none;
+    }
+
+    /*
+    HOTFIX: sitede body.alma-app :where(input, textarea, select):not(#comments *)
+    seklinde genel bir form-input sifirlama kurali var; :not(#comments *) icindeki
+    #comments ID secicisi bu kurala yanlislikla ID-seviyesi ozgullugu kazandiriyor
+    (bkz. .og-search-bar/.og-search-bar-input arka planinin gri kalmasi sorunu).
+    Bunu asmak icin input'a ID verip ayni/daha yuksek ozgullukte eziyoruz.
+    */
+    html body #og-search-page-input.og-search-bar-input {
+        min-height: 0 !important;
+        border: 0 !important;
+        border-radius: 0 !important;
+        background: transparent !important;
+        color: #0f172a !important;
+        box-shadow: none !important;
     }
 
     .og-search-bar-input::placeholder {
         color: #94a3b8;
     }
 
+    /* Tarayicinin otomatik doldurma (autofill) on izleme rengi olmasa bile
+       bazi tarayicilarda input'a varsayilan gri bir kutu arka plani
+       uygulayabiliyor; input'un beyaz kalmasini garanti eder. */
+    .og-search-bar-input:-webkit-autofill,
+    .og-search-bar-input:-webkit-autofill:hover,
+    .og-search-bar-input:-webkit-autofill:focus {
+        -webkit-text-fill-color: #0f172a !important;
+        -webkit-box-shadow: 0 0 0 1000px #ffffff inset !important;
+        box-shadow: 0 0 0 1000px #ffffff inset !important;
+        background-color: #ffffff !important;
+    }
+
     .og-search-bar-clear {
-        position: absolute;
-        right: 12px;
-        top: 50%;
-        transform: translateY(-50%);
         display: inline-flex;
         align-items: center;
         justify-content: center;
@@ -615,11 +654,9 @@
                 <iconify-icon icon="lucide:arrow-left"></iconify-icon>
             </button>
             <div class="og-search-bar">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" class="og-search-bar-icon" aria-hidden="true">
-                    <path d="M13.78 12.72a6 6 0 10-1.06 1.06l3.75 3.75a.75.75 0 101.06-1.06l-3.75-3.75zM12 9a5 5 0 11-10 0 5 5 0 0110 0z" fill="currentColor"/>
-                </svg>
                 <input
                     type="text"
+                    id="og-search-page-input"
                     value="{{ $query }}"
                     placeholder="{{ __('site.search.placeholder') }}"
                     class="og-search-bar-input"
@@ -627,6 +664,12 @@
                     autofocus
                     data-search-query-input
                 >
+                <iconify-icon
+                    icon="lucide:search"
+                    class="og-search-bar-icon {{ $query !== '' ? 'hidden' : '' }}"
+                    data-search-query-icon
+                    aria-hidden="true"
+                ></iconify-icon>
                 <button type="button" class="og-search-bar-clear {{ $query === '' ? 'hidden' : '' }}" aria-label="{{ __('site.mobile_nav.clear') ?? 'Temizle' }}" data-search-query-clear>
                     <iconify-icon icon="lucide:x"></iconify-icon>
                 </button>
@@ -676,6 +719,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const queryInput = root.querySelector('[data-search-query-input]');
     const queryClear = root.querySelector('[data-search-query-clear]');
+    const queryIcon = root.querySelector('[data-search-query-icon]');
     const backBtn = root.querySelector('[data-search-back]');
     const sortPills = Array.from(root.querySelectorAll('[data-search-sort-pills] [data-sort]'));
     const togglePills = Array.from(root.querySelectorAll('[data-toggle]'));
@@ -709,6 +753,7 @@ document.addEventListener('DOMContentLoaded', () => {
         togglePills.forEach((btn) => btn.classList.toggle('is-active', Boolean(state[btn.dataset.toggle])));
         typePills.forEach((btn) => btn.classList.toggle('is-active', btn.dataset.type === state.type));
         queryClear.classList.toggle('hidden', !queryInput.value.trim());
+        queryIcon?.classList.toggle('hidden', Boolean(queryInput.value.trim()));
     };
 
     const syncUrl = () => {
