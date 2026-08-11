@@ -232,11 +232,21 @@
     }
 
     @media (max-width: 640px) {
+        /* Etiketler/SSS/Kullanicilar sayfalarindaki .page-title-identity ile
+           ayni "tam genislik" deseni: sayfanin kendi 12px yan bosluguna
+           (.og-search-page padding-left/right) ragmen ekran kenarina kadar
+           uzansin diye 100vw + negatif kenar bosluguyla disari tasiyor. */
         .og-search-identity {
             min-height: 40px;
+            width: 100vw;
+            margin-left: calc(50% - 50vw);
+            margin-right: calc(50% - 50vw);
             padding: 3px 12px;
-            border: 1px solid #e2e8f0;
-            border-radius: 18px;
+            border-top: 1px solid #e2e8f0;
+            border-bottom: 1px solid #e2e8f0;
+            border-left: 0;
+            border-right: 0;
+            border-radius: 16px;
             background: #ffffff;
         }
 
