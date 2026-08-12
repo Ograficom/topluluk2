@@ -2239,6 +2239,71 @@
     color: #f4f4f5 !important;
   }
 
+  /* HOTFIX: textarea.ogx3-textarea / .ogx3-icon-button / .ogx3-gif-button sadece
+     "color: var(--foreground, #18181b)" kullaniyor; --foreground degiskeni bu
+     satirdan miras alinirken beklendigi gibi acilmiyor (baska bir yerde tekrar
+     tanimlanmis olabilir), sonuc olarak yazi alani ve arac cubugu ikonlari koyu
+     modda siyaha yakin kalip neredeyse hic gorunmuyordu - yazdigin yorumu bile
+     goremiyordun. .ogx3-field'daki calisan cozumle ayni desen tekrarlaniyor. */
+  html.dark body .post-show-shell #show-comment-form textarea.ogx3-textarea,
+  body.dark .post-show-shell #show-comment-form textarea.ogx3-textarea,
+  html body.dark .post-show-shell #show-comment-form textarea.ogx3-textarea,
+  [data-theme="dark"] body .post-show-shell #show-comment-form textarea.ogx3-textarea {
+    color: #f4f4f5 !important;
+  }
+
+  html.dark body .post-show-shell #show-comment-form textarea.ogx3-textarea::placeholder,
+  body.dark .post-show-shell #show-comment-form textarea.ogx3-textarea::placeholder,
+  html body.dark .post-show-shell #show-comment-form textarea.ogx3-textarea::placeholder,
+  [data-theme="dark"] body .post-show-shell #show-comment-form textarea.ogx3-textarea::placeholder {
+    color: #a1a1aa !important;
+  }
+
+  html.dark body .post-show-shell #show-comment-form .ogx3-icon-button,
+  body.dark .post-show-shell #show-comment-form .ogx3-icon-button,
+  html body.dark .post-show-shell #show-comment-form .ogx3-icon-button,
+  [data-theme="dark"] body .post-show-shell #show-comment-form .ogx3-icon-button,
+  html.dark body .post-show-shell #show-comment-form .ogx3-gif-button,
+  body.dark .post-show-shell #show-comment-form .ogx3-gif-button,
+  html body.dark .post-show-shell #show-comment-form .ogx3-gif-button,
+  [data-theme="dark"] body .post-show-shell #show-comment-form .ogx3-gif-button {
+    color: #f4f4f5 !important;
+  }
+
+  html.dark body .post-show-shell #show-comment-form .ogx3-icon-button:hover,
+  body.dark .post-show-shell #show-comment-form .ogx3-icon-button:hover,
+  html body.dark .post-show-shell #show-comment-form .ogx3-icon-button:hover,
+  [data-theme="dark"] body .post-show-shell #show-comment-form .ogx3-icon-button:hover {
+    background: rgba(255, 255, 255, 0.08) !important;
+  }
+
+  html.dark body .post-show-shell #show-comment-form .ogx3-counter,
+  body.dark .post-show-shell #show-comment-form .ogx3-counter,
+  html body.dark .post-show-shell #show-comment-form .ogx3-counter,
+  [data-theme="dark"] body .post-show-shell #show-comment-form .ogx3-counter {
+    color: #a1a1aa !important;
+  }
+
+  html.dark body .post-show-shell #show-comment-form .ogx3-preview-item,
+  body.dark .post-show-shell #show-comment-form .ogx3-preview-item,
+  html body.dark .post-show-shell #show-comment-form .ogx3-preview-item,
+  [data-theme="dark"] body .post-show-shell #show-comment-form .ogx3-preview-item {
+    border-color: #3f3f46 !important;
+    background: #27272a !important;
+  }
+
+  html.dark body .post-show-shell #show-comment-form .ogx3-emoji-menu,
+  body.dark .post-show-shell #show-comment-form .ogx3-emoji-menu,
+  html body.dark .post-show-shell #show-comment-form .ogx3-emoji-menu,
+  [data-theme="dark"] body .post-show-shell #show-comment-form .ogx3-emoji-menu,
+  html.dark body .post-show-shell #show-comment-form .ogx3-mention-menu,
+  body.dark .post-show-shell #show-comment-form .ogx3-mention-menu,
+  html body.dark .post-show-shell #show-comment-form .ogx3-mention-menu,
+  [data-theme="dark"] body .post-show-shell #show-comment-form .ogx3-mention-menu {
+    border-color: #3f3f46 !important;
+    background: #27272a !important;
+  }
+
   html body .post-show-shell #show-comment-form textarea.ogx3-textarea {
     all: unset !important;
     display: block !important;
@@ -2478,6 +2543,32 @@
     color: #18181b !important;
   }
 
+  /* HOTFIX: yukaridaki "base-nova preset" kurallari (html body .shadcn-comment-card ...)
+     dark-guard'siz eklenmis, ozgullugu html.dark .ogx-comment-count gibi daha erken
+     tanimlanmis dark kurallarini eziyordu - "Yorumlar" basligi ve filtre ikonu koyu
+     modda neredeyse gorunmuyordu (siyaha yakin renk, koyu arka plan uzerinde). */
+  html.dark body .shadcn-comment-card .ogx-comment-count,
+  body.dark body .shadcn-comment-card .ogx-comment-count,
+  .dark body .shadcn-comment-card .ogx-comment-count,
+  [data-theme="dark"] body .shadcn-comment-card .ogx-comment-count {
+    color: #f8fafc !important;
+  }
+
+  html.dark body .shadcn-comment-card .ogx-filter-btn,
+  body.dark body .shadcn-comment-card .ogx-filter-btn,
+  .dark body .shadcn-comment-card .ogx-filter-btn,
+  [data-theme="dark"] body .shadcn-comment-card .ogx-filter-btn {
+    color: #d4d4d8 !important;
+  }
+
+  html.dark body .shadcn-comment-card .ogx-filter-btn:is(:hover, :focus-visible, .is-open),
+  body.dark body .shadcn-comment-card .ogx-filter-btn:is(:hover, :focus-visible, .is-open),
+  .dark body .shadcn-comment-card .ogx-filter-btn:is(:hover, :focus-visible, .is-open),
+  [data-theme="dark"] body .shadcn-comment-card .ogx-filter-btn:is(:hover, :focus-visible, .is-open) {
+    background: rgba(255, 255, 255, 0.08) !important;
+    color: #f8fafc !important;
+  }
+
   html body .shadcn-comment-card .shadcn-comment-composer {
     min-height: 112px !important;
     padding: 16px !important;
@@ -2562,6 +2653,85 @@
   html body .shadcn-comment-card .ogx-composer-form.has-comment-ready .ogx-submit-btn {
     background: #18181b !important;
     color: #ffffff !important;
+  }
+
+  /* HOTFIX: bu "base-nova preset" bloğunun kalan kısmı da (komposer kutusu,
+     yazı alanı, emoji/gif/gönder butonları) dark-guard'sızdı - şu an bu satıra
+     denk gelen yorum bileşeni gerçekte render olmasa bile ileride kullanılırsa
+     aynı kontrast hatasına düşmesin diye tüm parçaları koyu tema ile eşleniyor. */
+  html.dark body .shadcn-comment-card .shadcn-comment-composer,
+  body.dark body .shadcn-comment-card .shadcn-comment-composer,
+  .dark body .shadcn-comment-card .shadcn-comment-composer,
+  [data-theme="dark"] body .shadcn-comment-card .shadcn-comment-composer {
+    border-color: rgba(255, 255, 255, 0.1) !important;
+    background: #1a1d24 !important;
+  }
+
+  html.dark body .shadcn-comment-card .ogx-comment-input,
+  body.dark body .shadcn-comment-card .ogx-comment-input,
+  .dark body .shadcn-comment-card .ogx-comment-input,
+  [data-theme="dark"] body .shadcn-comment-card .ogx-comment-input {
+    color: #f8fafc !important;
+  }
+
+  html.dark body .shadcn-comment-card .ogx-comment-input::placeholder,
+  body.dark body .shadcn-comment-card .ogx-comment-input::placeholder,
+  .dark body .shadcn-comment-card .ogx-comment-input::placeholder,
+  [data-theme="dark"] body .shadcn-comment-card .ogx-comment-input::placeholder {
+    color: #a1a1aa !important;
+  }
+
+  html.dark body .shadcn-comment-card :is(.ogx-emoji-btn, .ogx-image-btn),
+  body.dark body .shadcn-comment-card :is(.ogx-emoji-btn, .ogx-image-btn),
+  .dark body .shadcn-comment-card :is(.ogx-emoji-btn, .ogx-image-btn),
+  [data-theme="dark"] body .shadcn-comment-card :is(.ogx-emoji-btn, .ogx-image-btn) {
+    color: #d4d4d8 !important;
+  }
+
+  html.dark body .shadcn-comment-card :is(.ogx-emoji-btn, .ogx-image-btn):is(:hover, :focus-visible),
+  body.dark body .shadcn-comment-card :is(.ogx-emoji-btn, .ogx-image-btn):is(:hover, :focus-visible),
+  .dark body .shadcn-comment-card :is(.ogx-emoji-btn, .ogx-image-btn):is(:hover, :focus-visible),
+  [data-theme="dark"] body .shadcn-comment-card :is(.ogx-emoji-btn, .ogx-image-btn):is(:hover, :focus-visible) {
+    background: rgba(255, 255, 255, 0.08) !important;
+    color: #f8fafc !important;
+  }
+
+  html.dark body .shadcn-comment-card .ogx-gif-btn,
+  body.dark body .shadcn-comment-card .ogx-gif-btn,
+  .dark body .shadcn-comment-card .ogx-gif-btn,
+  [data-theme="dark"] body .shadcn-comment-card .ogx-gif-btn {
+    color: #d4d4d8 !important;
+  }
+
+  html.dark body .shadcn-comment-card .ogx-gif-btn:is(:hover, :focus-visible),
+  body.dark body .shadcn-comment-card .ogx-gif-btn:is(:hover, :focus-visible),
+  .dark body .shadcn-comment-card .ogx-gif-btn:is(:hover, :focus-visible),
+  [data-theme="dark"] body .shadcn-comment-card .ogx-gif-btn:is(:hover, :focus-visible) {
+    background: rgba(255, 255, 255, 0.08) !important;
+    color: #f8fafc !important;
+  }
+
+  html.dark body .shadcn-comment-card .ogx-char-counter,
+  body.dark body .shadcn-comment-card .ogx-char-counter,
+  .dark body .shadcn-comment-card .ogx-char-counter,
+  [data-theme="dark"] body .shadcn-comment-card .ogx-char-counter {
+    color: #a1a1aa !important;
+  }
+
+  html.dark body .shadcn-comment-card .ogx-submit-btn,
+  body.dark body .shadcn-comment-card .ogx-submit-btn,
+  .dark body .shadcn-comment-card .ogx-submit-btn,
+  [data-theme="dark"] body .shadcn-comment-card .ogx-submit-btn {
+    background: rgba(255, 255, 255, 0.08) !important;
+    color: #52525b !important;
+  }
+
+  html.dark body .shadcn-comment-card .ogx-composer-form.has-comment-ready .ogx-submit-btn,
+  body.dark body .shadcn-comment-card .ogx-composer-form.has-comment-ready .ogx-submit-btn,
+  .dark body .shadcn-comment-card .ogx-composer-form.has-comment-ready .ogx-submit-btn,
+  [data-theme="dark"] body .shadcn-comment-card .ogx-composer-form.has-comment-ready .ogx-submit-btn {
+    background: #f8fafc !important;
+    color: #18181b !important;
   }
 
   html body .shadcn-comment-card > .ogx-comments-list > .ogx-empty {
