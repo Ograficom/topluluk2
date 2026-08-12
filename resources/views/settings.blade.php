@@ -1,15 +1,15 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="flex items-start gap-3">
-            <div class="mt-1 flex h-10 w-10 items-center justify-center rounded-xl bg-slate-900 text-white">
+            <div class="mt-1 flex h-10 w-10 items-center justify-center rounded-xl bg-slate-900 dark:bg-slate-800 text-white">
                 <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                     <circle cx="12" cy="12" r="3"></circle>
                     <path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3a1.7 1.7 0 0 0-1 1.5V22a2 2 0 1 1-4 0v-.2a1.7 1.7 0 0 0-1-1.5a1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8a1.7 1.7 0 0 0-1.5-1H2a2 2 0 1 1 0-4h.2a1.7 1.7 0 0 0 1.5-1a1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H8a1.7 1.7 0 0 0 1-1.5V2a2 2 0 1 1 4 0v.2a1.7 1.7 0 0 0 1 1.5a1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V8c0 .7.4 1.3 1 1.5h.2a2 2 0 1 1 0 4h-.2a1.7 1.7 0 0 0-1.5 1Z"></path>
                 </svg>
             </div>
             <div>
-                <h2 class="font-semibold text-xl text-slate-900 leading-tight">Ayarlar</h2>
-                <p class="mt-1 text-sm text-slate-500">Kullanici, bildirim ve mesaj tercihlerini yonet.</p>
+                <h2 class="font-semibold text-xl text-slate-900 dark:text-slate-100 leading-tight">Ayarlar</h2>
+                <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">Kullanici, bildirim ve mesaj tercihlerini yonet.</p>
             </div>
         </div>
     </x-slot>
@@ -20,16 +20,16 @@
                 <div class="rounded-2xl p-4 shadow-sm">
                     <div class="flex items-start justify-between gap-4">
                         <div class="flex items-start gap-3">
-                            <div class="mt-0.5 flex h-10 w-10 items-center justify-center rounded-xl bg-slate-900 text-white">
+                            <div class="mt-0.5 flex h-10 w-10 items-center justify-center rounded-xl bg-slate-900 dark:bg-slate-800 text-white">
                                 <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                                     <path d="M12 12a4 4 0 1 0-4-4 4 4 0 0 0 4 4z"></path>
                                     <path d="M4 20a8 8 0 0 1 16 0"></path>
                                 </svg>
                             </div>
                             <div>
-                                <p class="text-sm font-semibold text-slate-900">Profil gorunurlugu</p>
-                                <p class="mt-1 text-xs text-slate-500">Profilini herkese acik tut.</p>
-                                <span class="mt-2 inline-flex items-center gap-2 text-xs text-slate-500">
+                                <p class="text-sm font-semibold text-slate-900 dark:text-slate-100">Profil gorunurlugu</p>
+                                <p class="mt-1 text-xs text-slate-500 dark:text-slate-400">Profilini herkese acik tut.</p>
+                                <span class="mt-2 inline-flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400">
                                     <span class="text-slate-400">
                                         <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                                             <circle cx="12" cy="12" r="3"></circle>
@@ -40,23 +40,23 @@
                                 </span>
                             </div>
                         </div>
-                        <input type="checkbox" class="mt-1 h-5 w-5 rounded text-slate-900">
+                        <input type="checkbox" class="mt-1 h-5 w-5 rounded text-slate-900 dark:text-slate-100 dark:bg-slate-800 dark:border-slate-600">
                     </div>
                 </div>
 
                 <div class="rounded-2xl p-4 shadow-sm">
                     <div class="flex items-start justify-between gap-4">
                         <div class="flex items-start gap-3">
-                            <div class="mt-0.5 flex h-10 w-10 items-center justify-center rounded-xl bg-slate-900 text-white">
+                            <div class="mt-0.5 flex h-10 w-10 items-center justify-center rounded-xl bg-slate-900 dark:bg-slate-800 text-white">
                                 <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                                     <rect x="3" y="11" width="18" height="10" rx="2"></rect>
                                     <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
                                 </svg>
                             </div>
                             <div>
-                                <p class="text-sm font-semibold text-slate-900">Iki adimli koruma</p>
-                                <p class="mt-1 text-xs text-slate-500">Giris guvenligini artir.</p>
-                                <span class="mt-2 inline-flex items-center gap-2 text-xs text-slate-500">
+                                <p class="text-sm font-semibold text-slate-900 dark:text-slate-100">Iki adimli koruma</p>
+                                <p class="mt-1 text-xs text-slate-500 dark:text-slate-400">Giris guvenligini artir.</p>
+                                <span class="mt-2 inline-flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400">
                                     <span class="text-slate-400">
                                         <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                                             <path d="M12 12a4 4 0 1 0-4-4 4 4 0 0 0 4 4z"></path>
@@ -67,23 +67,23 @@
                                 </span>
                             </div>
                         </div>
-                        <input type="checkbox" class="mt-1 h-5 w-5 rounded text-slate-900">
+                        <input type="checkbox" class="mt-1 h-5 w-5 rounded text-slate-900 dark:text-slate-100 dark:bg-slate-800 dark:border-slate-600">
                     </div>
                 </div>
 
                 <div class="rounded-2xl p-4 shadow-sm">
                     <div class="flex items-start justify-between gap-4">
                         <div class="flex items-start gap-3">
-                            <div class="mt-0.5 flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-700">
+                            <div class="mt-0.5 flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300">
                                 <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                                     <path d="M4 4h16v16H4z"></path>
                                     <path d="M22 6l-10 7L2 6"></path>
                                 </svg>
                             </div>
                             <div>
-                                <p class="text-sm font-semibold text-slate-900">Eposta bildirimleri</p>
-                                <p class="mt-1 text-xs text-slate-500">Onemli guncellemeler.</p>
-                                <span class="mt-2 inline-flex items-center gap-2 text-xs text-slate-500">
+                                <p class="text-sm font-semibold text-slate-900 dark:text-slate-100">Eposta bildirimleri</p>
+                                <p class="mt-1 text-xs text-slate-500 dark:text-slate-400">Onemli guncellemeler.</p>
+                                <span class="mt-2 inline-flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400">
                                     <span class="text-slate-400">
                                         <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                                             <path d="M14 10a2 2 0 10-4 0c0 3.5-1.5 4.5-2 5h8c-.5-.5-2-1.5-2-5z"></path>
@@ -95,23 +95,23 @@
                                 </span>
                             </div>
                         </div>
-                        <input type="checkbox" class="mt-1 h-5 w-5 rounded text-slate-900" checked>
+                        <input type="checkbox" class="mt-1 h-5 w-5 rounded text-slate-900 dark:text-slate-100 dark:bg-slate-800 dark:border-slate-600" checked>
                     </div>
                 </div>
 
                 <div class="rounded-2xl p-4 shadow-sm">
                     <div class="flex items-start justify-between gap-4">
                         <div class="flex items-start gap-3">
-                            <div class="mt-0.5 flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-700">
+                            <div class="mt-0.5 flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300">
                                 <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                                     <path d="M12 2a7 7 0 0 1 7 7v3l2 3H3l2-3V9a7 7 0 0 1 7-7Z"></path>
                                     <path d="M8 21a4 4 0 0 0 8 0"></path>
                                 </svg>
                             </div>
                             <div>
-                                <p class="text-sm font-semibold text-slate-900">Push bildirimleri</p>
-                                <p class="mt-1 text-xs text-slate-500">Anlik haberdar ol.</p>
-                                <span class="mt-2 inline-flex items-center gap-2 text-xs text-slate-500">
+                                <p class="text-sm font-semibold text-slate-900 dark:text-slate-100">Push bildirimleri</p>
+                                <p class="mt-1 text-xs text-slate-500 dark:text-slate-400">Anlik haberdar ol.</p>
+                                <span class="mt-2 inline-flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400">
                                     <span class="text-slate-400">
                                         <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                                             <path d="M14 10a2 2 0 10-4 0c0 3.5-1.5 4.5-2 5h8c-.5-.5-2-1.5-2-5z"></path>
@@ -123,14 +123,14 @@
                                 </span>
                             </div>
                         </div>
-                        <input type="checkbox" class="mt-1 h-5 w-5 rounded text-slate-900">
+                        <input type="checkbox" class="mt-1 h-5 w-5 rounded text-slate-900 dark:text-slate-100 dark:bg-slate-800 dark:border-slate-600">
                     </div>
                 </div>
 
                 <div class="rounded-2xl p-4 shadow-sm">
                     <div class="flex items-start justify-between gap-4">
                         <div class="flex items-start gap-3">
-                            <div class="mt-0.5 flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-700">
+                            <div class="mt-0.5 flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300">
                                 <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                                     <rect x="3" y="4" width="18" height="18" rx="2"></rect>
                                     <path d="M16 2v4"></path>
@@ -139,9 +139,9 @@
                                 </svg>
                             </div>
                             <div>
-                                <p class="text-sm font-semibold text-slate-900">Haftalik ozet</p>
-                                <p class="mt-1 text-xs text-slate-500">Haftalik rapor al.</p>
-                                <span class="mt-2 inline-flex items-center gap-2 text-xs text-slate-500">
+                                <p class="text-sm font-semibold text-slate-900 dark:text-slate-100">Haftalik ozet</p>
+                                <p class="mt-1 text-xs text-slate-500 dark:text-slate-400">Haftalik rapor al.</p>
+                                <span class="mt-2 inline-flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400">
                                     <span class="text-slate-400">
                                         <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                                             <path d="M14 10a2 2 0 10-4 0c0 3.5-1.5 4.5-2 5h8c-.5-.5-2-1.5-2-5z"></path>
@@ -153,7 +153,7 @@
                                 </span>
                             </div>
                         </div>
-                        <input type="checkbox" class="mt-1 h-5 w-5 rounded text-slate-900">
+                        <input type="checkbox" class="mt-1 h-5 w-5 rounded text-slate-900 dark:text-slate-100 dark:bg-slate-800 dark:border-slate-600">
                     </div>
                 </div>
 
@@ -167,9 +167,9 @@
                                 </svg>
                             </div>
                             <div>
-                                <p class="text-sm font-semibold text-slate-900">Okundu bilgisi</p>
-                                <p class="mt-1 text-xs text-slate-500">Okundu bildirimi goster.</p>
-                                <span class="mt-2 inline-flex items-center gap-2 text-xs text-slate-500">
+                                <p class="text-sm font-semibold text-slate-900 dark:text-slate-100">Okundu bilgisi</p>
+                                <p class="mt-1 text-xs text-slate-500 dark:text-slate-400">Okundu bildirimi goster.</p>
+                                <span class="mt-2 inline-flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400">
                                     <span class="text-slate-400">
                                         <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                                             <path d="M21 11.5a8.5 8.5 0 1 1-4.9-7.7"></path>
@@ -180,7 +180,7 @@
                                 </span>
                             </div>
                         </div>
-                        <input type="checkbox" class="mt-1 h-5 w-5 rounded text-slate-900" checked>
+                        <input type="checkbox" class="mt-1 h-5 w-5 rounded text-slate-900 dark:text-slate-100 dark:bg-slate-800 dark:border-slate-600" checked>
                     </div>
                 </div>
 
@@ -193,9 +193,9 @@
                                 </svg>
                             </div>
                             <div>
-                                <p class="text-sm font-semibold text-slate-900">Sohbet onizleme</p>
-                                <p class="mt-1 text-xs text-slate-500">Mesaj onizlemesini goster.</p>
-                                <span class="mt-2 inline-flex items-center gap-2 text-xs text-slate-500">
+                                <p class="text-sm font-semibold text-slate-900 dark:text-slate-100">Sohbet onizleme</p>
+                                <p class="mt-1 text-xs text-slate-500 dark:text-slate-400">Mesaj onizlemesini goster.</p>
+                                <span class="mt-2 inline-flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400">
                                     <span class="text-slate-400">
                                         <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                                             <path d="M21 11.5a8.5 8.5 0 1 1-4.9-7.7"></path>
@@ -206,7 +206,7 @@
                                 </span>
                             </div>
                         </div>
-                        <input type="checkbox" class="mt-1 h-5 w-5 rounded text-slate-900">
+                        <input type="checkbox" class="mt-1 h-5 w-5 rounded text-slate-900 dark:text-slate-100 dark:bg-slate-800 dark:border-slate-600">
                     </div>
                 </div>
 
@@ -220,9 +220,9 @@
                                 </svg>
                             </div>
                             <div>
-                                <p class="text-sm font-semibold text-slate-900">Yaziyor bildirimi</p>
-                                <p class="mt-1 text-xs text-slate-500">Yaziyor durumunu goster.</p>
-                                <span class="mt-2 inline-flex items-center gap-2 text-xs text-slate-500">
+                                <p class="text-sm font-semibold text-slate-900 dark:text-slate-100">Yaziyor bildirimi</p>
+                                <p class="mt-1 text-xs text-slate-500 dark:text-slate-400">Yaziyor durumunu goster.</p>
+                                <span class="mt-2 inline-flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400">
                                     <span class="text-slate-400">
                                         <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                                             <path d="M21 11.5a8.5 8.5 0 1 1-4.9-7.7"></path>
@@ -233,7 +233,7 @@
                                 </span>
                             </div>
                         </div>
-                        <input type="checkbox" class="mt-1 h-5 w-5 rounded text-slate-900" checked>
+                        <input type="checkbox" class="mt-1 h-5 w-5 rounded text-slate-900 dark:text-slate-100 dark:bg-slate-800 dark:border-slate-600" checked>
                     </div>
                 </div>
 
@@ -247,9 +247,9 @@
                                 </svg>
                             </div>
                             <div>
-                                <p class="text-sm font-semibold text-slate-900">Otomatik tema</p>
-                                <p class="mt-1 text-xs text-slate-500">Sisteme gore tema.</p>
-                                <span class="mt-2 inline-flex items-center gap-2 text-xs text-slate-500">
+                                <p class="text-sm font-semibold text-slate-900 dark:text-slate-100">Otomatik tema</p>
+                                <p class="mt-1 text-xs text-slate-500 dark:text-slate-400">Sisteme gore tema.</p>
+                                <span class="mt-2 inline-flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400">
                                     <span class="text-slate-400">
                                         <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                                             <path d="M12 1v6"></path>
@@ -267,7 +267,7 @@
                                 </span>
                             </div>
                         </div>
-                        <input type="checkbox" class="mt-1 h-5 w-5 rounded text-slate-900" checked>
+                        <input type="checkbox" class="mt-1 h-5 w-5 rounded text-slate-900 dark:text-slate-100 dark:bg-slate-800 dark:border-slate-600" checked>
                     </div>
                 </div>
 
@@ -282,9 +282,9 @@
                                 </svg>
                             </div>
                             <div>
-                                <p class="text-sm font-semibold text-slate-900">Otomatik kaydet</p>
-                                <p class="mt-1 text-xs text-slate-500">Icerigi otomatik kaydet.</p>
-                                <span class="mt-2 inline-flex items-center gap-2 text-xs text-slate-500">
+                                <p class="text-sm font-semibold text-slate-900 dark:text-slate-100">Otomatik kaydet</p>
+                                <p class="mt-1 text-xs text-slate-500 dark:text-slate-400">Icerigi otomatik kaydet.</p>
+                                <span class="mt-2 inline-flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400">
                                     <span class="text-slate-400">
                                         <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                                             <path d="M12 1v6"></path>
@@ -302,7 +302,7 @@
                                 </span>
                             </div>
                         </div>
-                        <input type="checkbox" class="mt-1 h-5 w-5 rounded text-slate-900">
+                        <input type="checkbox" class="mt-1 h-5 w-5 rounded text-slate-900 dark:text-slate-100 dark:bg-slate-800 dark:border-slate-600">
                     </div>
                 </div>
 
@@ -317,9 +317,9 @@
                                 </svg>
                             </div>
                             <div>
-                                <p class="text-sm font-semibold text-slate-900">Dil</p>
-                                <p class="mt-1 text-xs text-slate-500">Turkce (TR)</p>
-                                <span class="mt-2 inline-flex items-center gap-2 text-xs text-slate-500">
+                                <p class="text-sm font-semibold text-slate-900 dark:text-slate-100">Dil</p>
+                                <p class="mt-1 text-xs text-slate-500 dark:text-slate-400">Turkce (TR)</p>
+                                <span class="mt-2 inline-flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400">
                                     <span class="text-slate-400">
                                         <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                                             <path d="M12 1v6"></path>
@@ -337,7 +337,7 @@
                                 </span>
                             </div>
                         </div>
-                        <button type="button" class="mt-1 inline-flex items-center gap-2 rounded-lg px-2.5 py-1 text-xs font-semibold text-slate-700 hover:bg-slate-50">
+                        <button type="button" class="mt-1 inline-flex items-center gap-2 rounded-lg px-2.5 py-1 text-xs font-semibold text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800">
                             <span class="text-slate-400">
                                 <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                                     <path d="M12 5v14"></path>
@@ -351,7 +351,7 @@
             </div>
 
             <div class="mt-6 flex items-center justify-end">
-                <button type="button" class="inline-flex items-center gap-2 rounded-xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-slate-800">
+                <button type="button" class="inline-flex items-center gap-2 rounded-xl bg-slate-900 dark:bg-slate-100 px-4 py-2 text-sm font-semibold text-white dark:text-slate-900 shadow-sm hover:bg-slate-800 dark:hover:bg-white">
                     <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                         <path d="M20 6 9 17l-5-5"></path>
                     </svg>

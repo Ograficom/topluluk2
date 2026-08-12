@@ -11,8 +11,8 @@
     }
 
     .ografi-ai-shell {
-        background: #ffffff;
-        border: 1px solid #e5e7eb;
+        background: var(--ui-surface, #ffffff) !important;
+        border: 1px solid var(--ui-surface-strong, #e5e7eb) !important;
         border-radius: 22px;
         overflow: hidden;
     }
@@ -23,27 +23,27 @@
         justify-content: space-between;
         gap: 12px;
         padding: 16px;
-        border-bottom: 1px solid #e5e7eb;
-        background: rgba(255, 255, 255, 0.92);
+        border-bottom: 1px solid var(--ui-surface-strong, #e5e7eb) !important;
+        background: color-mix(in srgb, var(--ui-surface, #ffffff) 92%, transparent) !important;
     }
 
     .ografi-ai-title {
         margin: 0;
         font-size: 18px;
         font-weight: 400;
-        color: #111827;
+        color: var(--ui-text, #111827) !important;
     }
 
     .ografi-ai-desc {
         margin: 4px 0 0;
         font-size: 13px;
-        color: #6b7280;
+        color: var(--ui-muted, #6b7280) !important;
     }
 
     .ografi-ai-new {
-        border: 1px solid #e5e7eb;
-        background: #f9fafb;
-        color: #111827;
+        border: 1px solid var(--ui-surface-strong, #e5e7eb) !important;
+        background: var(--ui-surface-muted, #f9fafb) !important;
+        color: var(--ui-text, #111827) !important;
         border-radius: 999px;
         padding: 8px 13px;
         font-size: 13px;
@@ -52,7 +52,7 @@
     }
 
     .ografi-ai-new:hover {
-        background: #f3f4f6;
+        background: var(--ui-surface-strong, #f3f4f6) !important;
     }
 
     .ografi-ai-chat {
@@ -60,7 +60,7 @@
         min-height: 420px;
         overflow-y: auto;
         padding: 18px 16px;
-        background: #fafafa;
+        background: var(--ui-surface-muted, #fafafa) !important;
     }
 
     .ografi-ai-empty {
@@ -70,7 +70,7 @@
         align-items: center;
         justify-content: center;
         text-align: center;
-        color: #6b7280;
+        color: var(--ui-muted, #6b7280) !important;
         font-size: 14px;
         line-height: 1.6;
     }
@@ -100,15 +100,15 @@
     }
 
     .ografi-ai-message-row.user .ografi-ai-bubble {
-        background: #111827;
-        color: #ffffff;
+        background: var(--ui-primary, #111827) !important;
+        color: var(--ui-surface, #ffffff) !important;
         border-bottom-right-radius: 6px;
     }
 
     .ografi-ai-message-row.assistant .ografi-ai-bubble {
-        background: #ffffff;
-        color: #111827;
-        border: 1px solid #e5e7eb;
+        background: var(--ui-surface, #ffffff) !important;
+        color: var(--ui-text, #111827) !important;
+        border: 1px solid var(--ui-surface-strong, #e5e7eb) !important;
         border-bottom-left-radius: 6px;
     }
 
@@ -122,7 +122,7 @@
         width: 6px;
         height: 6px;
         border-radius: 999px;
-        background: #9ca3af;
+        background: var(--ui-muted, #9ca3af) !important;
         animation: ografiAiPulse 1s infinite ease-in-out;
     }
 
@@ -151,8 +151,8 @@
         align-items: flex-end;
         gap: 10px;
         padding: 14px;
-        border-top: 1px solid #e5e7eb;
-        background: #ffffff;
+        border-top: 1px solid var(--ui-surface-strong, #e5e7eb) !important;
+        background: var(--ui-surface, #ffffff) !important;
     }
 
     .ografi-ai-textarea {
@@ -160,24 +160,24 @@
         min-height: 46px;
         max-height: 160px;
         resize: none;
-        border: 1px solid #e5e7eb;
+        border: 1px solid var(--ui-surface-strong, #e5e7eb) !important;
         border-radius: 16px;
         padding: 13px 14px;
         font-size: 14px;
         line-height: 1.5;
         outline: none;
-        color: #111827;
-        background: #ffffff;
+        color: var(--ui-text, #111827) !important;
+        background: var(--ui-surface, #ffffff) !important;
     }
 
     .ografi-ai-textarea:focus {
-        border-color: #111827;
+        border-color: var(--ui-primary, #111827) !important;
     }
 
     .ografi-ai-send {
         border: none;
-        background: #111827;
-        color: #ffffff;
+        background: var(--ui-primary, #111827) !important;
+        color: var(--ui-surface, #ffffff) !important;
         border-radius: 16px;
         padding: 13px 18px;
         font-size: 14px;
@@ -188,6 +188,28 @@
     .ografi-ai-send:disabled {
         opacity: .55;
         cursor: not-allowed;
+    }
+
+    /* HOTFIX: layouts/app.blade.php'deki site geneli
+       "body.alma-app :where(button, ...) { background:#fff!important; border-color:transparent!important; color:#18181b!important }"
+       kurali, sinif tabanli .ografi-ai-new/.ografi-ai-send kurallarindan daha yuksek
+       ozgullukte (body.alma-app), bu yuzden dark modda butonlari hep beyaz/kenarliksiz
+       birakiyordu. ID tabanli secici ile eziliyor (search/messages sayfalarindaki ayni
+       cozum). */
+    html body #ai-new-chat.ografi-ai-new {
+        background: var(--ui-surface-muted, #f9fafb) !important;
+        border-color: var(--ui-surface-strong, #e5e7eb) !important;
+        color: var(--ui-text, #111827) !important;
+    }
+
+    html body #ai-new-chat.ografi-ai-new:hover {
+        background: var(--ui-surface-strong, #f3f4f6) !important;
+        border-color: var(--ui-surface-strong, #e5e7eb) !important;
+    }
+
+    html body #ai-send.ografi-ai-send {
+        background: var(--ui-primary, #111827) !important;
+        color: var(--ui-surface, #ffffff) !important;
     }
 
     @media (max-width: 640px) {
