@@ -197,7 +197,7 @@
     .ografi-feed-loadmore__count {
         display: block;
         margin-top: 12px;
-        color: #111827;
+        color: var(--ui-text, #111827);
         font-family: "Poppins", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
         font-size: 16px;
         font-weight: 500;
@@ -311,21 +311,21 @@
         gap: 14px;
         width: 100%;
         border-radius: 16px;
-        background: #ffffff;
+        background: var(--ui-surface, #ffffff);
         padding: 20px;
         box-sizing: border-box;
     }
 
     .category-info-panel__title {
         margin: 0;
-        color: #111827;
+        color: var(--ui-text, #111827);
         font-size: 17px;
         font-weight: 700;
         line-height: 1.3;
     }
 
     .category-info-panel__description {
-        color: #374151;
+        color: var(--ui-muted, #374151);
         font-size: 14px;
         line-height: 1.55;
     }
@@ -338,7 +338,7 @@
 
     .category-info-panel__empty {
         margin: 0;
-        color: #9ca3af;
+        color: var(--ui-soft, #9ca3af);
         font-size: 13.5px;
     }
 
