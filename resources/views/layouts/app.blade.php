@@ -86,6 +86,11 @@
             animation: ografiImgWave 1.15s ease-in-out infinite;
         }
 
+        html.dark img:not(.ografi-img-ready):not([data-no-shimmer]) {
+            background: linear-gradient(105deg, #1e293b 0%, #334155 45%, #1e293b 82%);
+            background-size: 200% 100%;
+        }
+
         img.ografi-img-ready {
             animation: none;
         }
@@ -99,6 +104,11 @@
             img:not(.ografi-img-ready):not([data-no-shimmer]) {
                 animation: none;
                 background: #eef2fb;
+            }
+
+            html.dark img:not(.ografi-img-ready):not([data-no-shimmer]) {
+                animation: none;
+                background: #1e293b;
             }
         }
     </style>

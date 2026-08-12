@@ -49,7 +49,7 @@
             @endif
 
             @if (session('status'))
-                <div class="mb-4 rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-800">
+                <div class="mb-4 rounded-2xl border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-950 px-4 py-3 text-sm text-emerald-800 dark:text-emerald-300">
                     {{ session('status') }}
                 </div>
             @endif
@@ -58,17 +58,17 @@
                 @if (filled($otherUser->profile_photo_url ?? null))
                     <img class="h-11 w-11 shrink-0 rounded-full object-cover sm:h-12 sm:w-12" src="{{ $otherUser->profile_photo_url }}" alt="{{ $otherDisplayName }}">
                 @else
-                    <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-gray-200 text-sm font-semibold text-gray-700 sm:h-12 sm:w-12">
+                    <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-gray-200 dark:bg-slate-700 text-sm font-semibold text-gray-700 dark:text-slate-300 sm:h-12 sm:w-12">
                         {{ $otherInitials }}
                     </div>
                 @endif
 
                 <div class="min-w-0 flex-1">
-                    <h2 class="truncate text-sm font-semibold leading-tight text-gray-900 sm:text-[15px]">{{ $otherDisplayName }}</h2>
-                    <p class="truncate text-xs text-gray-500">
+                    <h2 class="truncate text-sm font-semibold leading-tight text-gray-900 dark:text-white sm:text-[15px]">{{ $otherDisplayName }}</h2>
+                    <p class="truncate text-xs text-gray-500 dark:text-slate-400">
                         @if($otherUsernameLabel)
                             {{ $otherUsernameLabel }}
-                            <span class="mx-1 text-gray-300">&bull;</span>
+                            <span class="mx-1 text-gray-300 dark:text-slate-600">&bull;</span>
                         @endif
                         {{ $conversationStatus }}
                     </p>
@@ -106,7 +106,7 @@
                 ])
 
                 <section class="messages-card messages-main-panel relative">
-                    <div id="messagesContainer" class="message-scrollbar messages-thread-scroller flex-1 overflow-y-auto bg-gray-50 p-3 sm:p-4">
+                    <div id="messagesContainer" class="message-scrollbar messages-thread-scroller flex-1 overflow-y-auto bg-gray-50 dark:bg-slate-900 p-3 sm:p-4">
                         <div class="mx-auto flex w-full max-w-3xl flex-col gap-4" data-thread data-last-id="{{ $messages->last()?->id ?? 0 }}">
                             @include('messages.partials.thread', ['messages' => $messages])
                         </div>
@@ -114,11 +114,11 @@
 
                     <div class="messages-composer-dock p-3 sm:p-4">
                         @if (! $canMessage && !empty($blockedFromMessages))
-                            <div class="rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800">
+                            <div class="rounded-2xl border border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950 px-4 py-3 text-sm text-amber-800 dark:text-amber-300">
                                 {{ __('messages.permissions.blocked_self') }}
                             </div>
                         @elseif (! $canMessage)
-                            <div class="rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800">
+                            <div class="rounded-2xl border border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950 px-4 py-3 text-sm text-amber-800 dark:text-amber-300">
                                 {{ __('messages.permissions.following_only') }}
                             </div>
                         @else
@@ -126,7 +126,7 @@
                                 @csrf
 
                                 @if ($errors->any())
-                                    <div class="mb-3 rounded-2xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700">
+                                    <div class="mb-3 rounded-2xl border border-rose-200 dark:border-rose-800 bg-rose-50 dark:bg-rose-950 px-4 py-3 text-sm text-rose-700 dark:text-rose-300">
                                         {{ $errors->first() }}
                                     </div>
                                 @endif
