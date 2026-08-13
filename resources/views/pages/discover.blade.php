@@ -63,17 +63,33 @@
             padding: 14px 18px 8px;
         }
 
+        /* Tailwind'in dark: varyanti bu projede derlenmiyor (build/purge
+           konfigurasyonu sadece bu dosyada kullanilan diger dark: siniflari
+           uretmemis) - sitenin geri kalani gibi el yazimi .dark kurallariyla
+           yaziliyor. Aksi halde baslik koyu modda #030712 gibi neredeyse
+           siyah kaliyor, arka planla okunmuyordu (Vibrancy ilkesi ihlali). */
         .discover-section__head .alma-page-title,
         .discover-section__head h2 {
             font-size: 16px !important;
-            font-weight: 400 !important;
+            font-weight: 600 !important;
             line-height: 1.25 !important;
             letter-spacing: 0 !important;
+            color: rgb(2 6 23);
+        }
+
+        html.dark .discover-section__head .alma-page-title,
+        html.dark .discover-section__head h2 {
+            color: #ffffff;
         }
 
         .discover-section__head a {
             font-size: 13px !important;
             font-weight: 400 !important;
+            color: rgb(15 23 42);
+        }
+
+        html.dark .discover-section__head a {
+            color: #e2e8f0;
         }
 
         .discover-section__body {
@@ -132,7 +148,7 @@
 
         .discover-item-name {
             font-size: 14px !important;
-            font-weight: 400 !important;
+            font-weight: 600 !important;
             line-height: 1.2 !important;
             color: rgb(2 6 23);
         }
@@ -157,11 +173,9 @@
             justify-content: center !important;
             border: 0 !important;
             border-radius: 9999px !important;
-            background-color: #f1f5f9 !important;
             padding: 0 16px !important;
-            color: #0f172a !important;
             font-size: 13px !important;
-            font-weight: 400 !important;
+            font-weight: 500 !important;
             line-height: 1 !important;
             cursor: pointer !important;
             text-decoration: none !important;
@@ -169,49 +183,140 @@
             outline: none !important;
             appearance: none !important;
             -webkit-appearance: none !important;
-            transition: background-color .15s ease, color .15s ease, transform .12s ease !important;
+            transition: background-color .15s ease, color .15s ease, transform .1s ease-out !important;
         }
 
-        .discover-follow-btn:hover,
-        .discover-follow-btn:focus,
-        button.discover-follow-btn:hover,
-        button.discover-follow-btn:focus,
-        a.discover-follow-btn:hover,
-        a.discover-follow-btn:focus {
+        /* Zaten yapilmis (Takiptesin/Katildin) - notr gri, geri cekilmis */
+        .discover-follow-btn--done,
+        button.discover-follow-btn--done,
+        a.discover-follow-btn--done {
+            background-color: #f1f5f9 !important;
+            color: #0f172a !important;
+        }
+
+        .discover-follow-btn--done:hover,
+        .discover-follow-btn--done:focus,
+        button.discover-follow-btn--done:hover,
+        button.discover-follow-btn--done:focus,
+        a.discover-follow-btn--done:hover,
+        a.discover-follow-btn--done:focus {
             background-color: #cbd5e1 !important;
             color: #0f172a !important;
+        }
+
+        .discover-follow-btn--done:active,
+        button.discover-follow-btn--done:active,
+        a.discover-follow-btn--done:active {
+            background-color: #94a3b8 !important;
+            color: #0f172a !important;
+        }
+
+        .dark .discover-follow-btn--done,
+        .dark button.discover-follow-btn--done,
+        .dark a.discover-follow-btn--done {
+            background-color: #334155 !important;
+            color: #ffffff !important;
+        }
+
+        .dark .discover-follow-btn--done:hover,
+        .dark .discover-follow-btn--done:focus,
+        .dark button.discover-follow-btn--done:hover,
+        .dark button.discover-follow-btn--done:focus,
+        .dark a.discover-follow-btn--done:hover,
+        .dark a.discover-follow-btn--done:focus {
+            background-color: #475569 !important;
+            color: #ffffff !important;
+        }
+
+        .dark .discover-follow-btn--done:active,
+        .dark button.discover-follow-btn--done:active,
+        .dark a.discover-follow-btn--done:active {
+            background-color: #64748b !important;
+            color: #ffffff !important;
+        }
+
+        /* Henuz yapilmamis (Takip et/Katil) - marka mavisi, eylemi cagirir.
+           Ayni renk hem acik hem koyu temada kalir (site geneli birincil
+           buton rengiyle tutarli - bkz. Kullanicilar sayfasi Takip et). */
+        .discover-follow-btn--action,
+        button.discover-follow-btn--action,
+        a.discover-follow-btn--action {
+            background-color: #2563eb !important;
+            color: #ffffff !important;
+        }
+
+        .discover-follow-btn--action:hover,
+        .discover-follow-btn--action:focus,
+        button.discover-follow-btn--action:hover,
+        button.discover-follow-btn--action:focus,
+        a.discover-follow-btn--action:hover,
+        a.discover-follow-btn--action:focus {
+            background-color: #1d4ed8 !important;
+            color: #ffffff !important;
+        }
+
+        .discover-follow-btn--action:active,
+        button.discover-follow-btn--action:active,
+        a.discover-follow-btn--action:active {
+            background-color: #1e40af !important;
+            color: #ffffff !important;
         }
 
         .discover-follow-btn:active,
         button.discover-follow-btn:active,
         a.discover-follow-btn:active {
-            background-color: #94a3b8 !important;
-            color: #0f172a !important;
             transform: scale(.96) !important;
         }
 
-        .dark .discover-follow-btn,
-        .dark button.discover-follow-btn,
-        .dark a.discover-follow-btn {
-            background-color: #334155 !important;
+        @media (prefers-reduced-motion: reduce) {
+            .discover-follow-btn,
+            button.discover-follow-btn,
+            a.discover-follow-btn {
+                transition: background-color .15s ease, color .15s ease !important;
+            }
+
+            .discover-follow-btn:active,
+            button.discover-follow-btn:active,
+            a.discover-follow-btn:active {
+                transform: none !important;
+            }
+        }
+
+        /* Site genelindeki "body.alma-app :where(input,textarea,select)
+           :not(#comments *) {background:var(--ui-surface-muted) !important}"
+           resetiyle ayni ozgulluk sorunu (bkz. Kullanicilar sayfasi arama
+           kutusu) - input#id + iki class + input turu = (id:1, class:2,
+           type:1), o kuralin (id:1, class:1, type:1) class katmaninda
+           gececek sekilde eziyor. Odakta (Response ilkesi - aninda, surekli
+           geri bildirim) marka mavisiyle halka belirir. */
+        input#discover-search-input.discover-search-input.discover-search-input {
+            background: #ffffff !important;
+            border-color: #e2e8f0 !important;
+            color: #334155 !important;
+            box-shadow: none !important;
+            transition: border-color .15s ease, box-shadow .15s ease;
+        }
+
+        input#discover-search-input.discover-search-input.discover-search-input:focus {
+            border-color: #2563eb !important;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, .15) !important;
+        }
+
+        html.dark input#discover-search-input.discover-search-input.discover-search-input {
+            background: rgb(15 23 42) !important;
+            border-color: rgb(30 41 59) !important;
             color: #ffffff !important;
         }
 
-        .dark .discover-follow-btn:hover,
-        .dark .discover-follow-btn:focus,
-        .dark button.discover-follow-btn:hover,
-        .dark button.discover-follow-btn:focus,
-        .dark a.discover-follow-btn:hover,
-        .dark a.discover-follow-btn:focus {
-            background-color: #475569 !important;
-            color: #ffffff !important;
+        html.dark input#discover-search-input.discover-search-input.discover-search-input:focus {
+            border-color: #3b82f6 !important;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, .2) !important;
         }
 
-        .dark .discover-follow-btn:active,
-        .dark button.discover-follow-btn:active,
-        .dark a.discover-follow-btn:active {
-            background-color: #64748b !important;
-            color: #ffffff !important;
+        @media (prefers-reduced-motion: reduce) {
+            input#discover-search-input.discover-search-input.discover-search-input {
+                transition: none;
+            }
         }
 
         .discover-recommendations {
@@ -385,10 +490,11 @@
 
                     <input
                         type="search"
+                        id="discover-search-input"
                         name="q"
                         value="{{ request('q') }}"
                         placeholder="{{ __('site.header.search_placeholder') }}..."
-                        class="h-11 w-full rounded-[16px] border border-slate-200 bg-white pl-12 pr-4 text-sm text-slate-700 outline-none transition placeholder:text-slate-400 focus:border-slate-300 focus:ring-0 dark:border-slate-800 dark:bg-slate-900 dark:text-white dark:placeholder:text-slate-500 dark:focus:border-slate-700"
+                        class="discover-search-input h-11 w-full rounded-[16px] border pl-12 pr-4 text-sm text-slate-700 outline-none placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-500"
                         autocomplete="off"
                     >
                 </form>
@@ -440,23 +546,25 @@
                         @endphp
 
                         <div class="discover-compact-row">
-                            <a href="{{ route('users.show', $user) }}" class="discover-compact-link">
-                                @if($user->profile_photo_url)
-                                    <img
-                                        src="{{ $user->profile_photo_url }}"
-                                        alt="{{ $user->name }}"
-                                        class="discover-avatar ring-1 ring-slate-200 dark:ring-slate-700"
-                                        loading="lazy"
-                                        decoding="async"
-                                    >
-                                @else
-                                    <span class="discover-avatar-fallback">
-                                        {{ $userInitials }}
-                                    </span>
-                                @endif
+                            <div class="discover-compact-link">
+                                <a href="{{ route('users.show', $user) }}" class="shrink-0">
+                                    @if($user->profile_photo_url)
+                                        <img
+                                            src="{{ $user->profile_photo_url }}"
+                                            alt="{{ $user->name }}"
+                                            class="discover-avatar ring-1 ring-slate-200 dark:ring-slate-700"
+                                            loading="lazy"
+                                            decoding="async"
+                                        >
+                                    @else
+                                        <span class="discover-avatar-fallback">
+                                            {{ $userInitials }}
+                                        </span>
+                                    @endif
+                                </a>
 
                                 <div class="min-w-0">
-                                    <div class="flex items-center gap-1.5">
+                                    <a href="{{ route('users.show', $user) }}" class="flex w-fit max-w-full items-center gap-1.5">
                                         <p class="discover-item-name truncate">
                                             {{ $user->name }}
                                         </p>
@@ -464,23 +572,23 @@
                                         @if($showVerified)
                                             <x-verification-badge :user="$user" size="sm" class="text-[16px]" />
                                         @endif
-                                    </div>
+                                    </a>
 
                                     <p class="discover-item-meta truncate text-[#4B6EA8] dark:text-blue-300">
                                         {{ $userHandle }}
                                     </p>
                                 </div>
-                            </a>
+                            </div>
 
                             @auth
                                 <form method="POST" action="{{ route('users.follow', ['user' => $user->username]) }}" class="m-0 shrink-0">
                                     @csrf
-                                    <button type="submit" class="discover-follow-btn">
+                                    <button type="submit" class="discover-follow-btn {{ $isFollowingUser ? 'discover-follow-btn--done' : 'discover-follow-btn--action' }}">
                                         {{ $isFollowingUser ? __('site.profile_page.following') : __('site.profile_page.follow') }}
                                     </button>
                                 </form>
                             @else
-                                <a href="{{ route('login') }}" class="discover-follow-btn shrink-0">
+                                <a href="{{ route('login') }}" class="discover-follow-btn discover-follow-btn--action shrink-0">
                                     {{ __('site.profile_page.follow') }}
                                 </a>
                             @endauth
@@ -527,44 +635,48 @@
                         @endphp
 
                         <div class="discover-compact-row">
-                            <a href="{{ route('blog.category', $community) }}" class="discover-compact-link">
-                                @if($community->profile_image_url)
-                                    <img
-                                        src="{{ $community->profile_image_url }}"
-                                        alt="{{ $communityName }}"
-                                        class="discover-avatar ring-1 ring-slate-200 dark:ring-slate-700"
-                                        loading="lazy"
-                                        decoding="async"
-                                    >
-                                @else
-                                    <span
-                                        class="flex discover-avatar items-center justify-center text-sm font-normal text-white"
-                                        style="background-color: {{ $communityColor }};"
-                                    >
-                                        {{ $communityInitials }}
-                                    </span>
-                                @endif
+                            <div class="discover-compact-link">
+                                <a href="{{ route('blog.category', $community) }}" class="shrink-0">
+                                    @if($community->profile_image_url)
+                                        <img
+                                            src="{{ $community->profile_image_url }}"
+                                            alt="{{ $communityName }}"
+                                            class="discover-avatar ring-1 ring-slate-200 dark:ring-slate-700"
+                                            loading="lazy"
+                                            decoding="async"
+                                        >
+                                    @else
+                                        <span
+                                            class="flex discover-avatar items-center justify-center text-sm font-normal text-white"
+                                            style="background-color: {{ $communityColor }};"
+                                        >
+                                            {{ $communityInitials }}
+                                        </span>
+                                    @endif
+                                </a>
 
                                 <div class="min-w-0">
-                                    <p class="discover-item-name truncate">
-                                        {{ $communityName }}
-                                    </p>
+                                    <a href="{{ route('blog.category', $community) }}" class="block w-fit max-w-full">
+                                        <p class="discover-item-name truncate">
+                                            {{ $communityName }}
+                                        </p>
+                                    </a>
 
                                     <p class="discover-item-meta truncate text-slate-500 dark:text-slate-400">
                                         {{ $communityMeta }}
                                     </p>
                                 </div>
-                            </a>
+                            </div>
 
                             @auth
                                 <form method="POST" action="{{ route('blog.category.join', $community) }}" class="m-0 shrink-0">
                                     @csrf
-                                    <button type="submit" class="discover-follow-btn">
+                                    <button type="submit" class="discover-follow-btn {{ $isCommunityJoined ? 'discover-follow-btn--done' : 'discover-follow-btn--action' }}">
                                         {{ $isCommunityJoined ? __('site.category_page.joined') : __('site.category_page.join') }}
                                     </button>
                                 </form>
                             @else
-                                <a href="{{ route('login') }}" class="discover-follow-btn shrink-0">
+                                <a href="{{ route('login') }}" class="discover-follow-btn discover-follow-btn--action shrink-0">
                                     {{ __('site.category_page.join') }}
                                 </a>
                             @endauth
