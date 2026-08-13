@@ -52,23 +52,28 @@
         opacity: .15;
     }
 
+    /* iOS native arama alani: beyaz+kenarlikli kutu degil, sistemin kendi
+       "systemGray6" tonuna yakin duz/yumusak dolgu (Apple'in Ayarlar/Mail/
+       Mesajlar uygulamalarindaki arama cubugu ile ayni dil) - kenarlik yok,
+       odaklaninca parlak mavi halka yerine dolgu hafifce koyulasip ince bir
+       vurgu halkasi beliriyor (Response ilkesi: aninda ama gösterişsiz). */
     .og-search-bar {
         position: relative;
         display: flex;
         align-items: center;
         width: 100%;
-        height: 52px;
-        padding: 0 46px 0 16px;
-        border-radius: 16px;
-        border: 1px solid #e2e8f0;
-        background: #ffffff !important;
-        box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
-        transition: border-color .15s ease, box-shadow .15s ease;
+        height: 44px;
+        padding: 0 44px 0 14px;
+        border-radius: 12px;
+        border: 0;
+        background: #f4f4f5 !important;
+        box-shadow: none;
+        transition: background-color .15s ease, box-shadow .15s ease;
     }
 
     .og-search-bar:focus-within {
-        border-color: #93c5fd;
-        box-shadow: 0 0 0 3px rgba(37, 99, 235, .12) !important;
+        background: #ececef !important;
+        box-shadow: 0 0 0 2px rgba(37, 99, 235, .35) !important;
     }
 
     /* Arama ve temizle (x) ikonlari ayni sag ust bosluga (ayni "slot") yerlesir;
@@ -189,6 +194,11 @@
 
     .og-search-identity__back {
         display: inline-flex !important;
+        transition: background-color .15s ease, transform .08s ease-out;
+    }
+
+    .og-search-identity__back:active {
+        transform: translateY(1px);
     }
 
     .og-search-identity__divider {
@@ -212,7 +222,12 @@
         margin-left: auto;
     }
 
-    .og-search-settings__trigger {
+    /* .og-search-settings__trigger iki kez yazildi: site genelindeki
+       "body.alma-app :where(button...) {background:#fff !important}"
+       resetiyle ayni ozgulluk yarisi (bkz. Kullanicilar/Discover sayfalari) -
+       tek class + !important o kuraldan (body+class) daha dusuk ozgullukte
+       kalip beyaza eziliyordu, ikon koyu modda beyaz daire gibi duruyordu. */
+    .og-search-settings__trigger.og-search-settings__trigger {
         display: inline-flex !important;
         width: 32px !important;
         height: 32px !important;
@@ -223,16 +238,20 @@
         background: transparent !important;
         color: #52525b !important;
         cursor: pointer;
-        transition: background-color .15s ease;
+        transition: background-color .15s ease, transform .08s ease-out;
+    }
+
+    .og-search-settings__trigger:active {
+        transform: translateY(1px);
     }
 
     .og-search-settings__trigger iconify-icon {
         font-size: 17px;
     }
 
-    .og-search-settings__trigger:hover,
-    .og-search-settings__trigger:focus-visible,
-    .og-search-settings.is-open .og-search-settings__trigger {
+    .og-search-settings__trigger.og-search-settings__trigger:hover,
+    .og-search-settings__trigger.og-search-settings__trigger:focus-visible,
+    .og-search-settings.is-open .og-search-settings__trigger.og-search-settings__trigger {
         background: #f3f4f6 !important;
     }
 
@@ -240,9 +259,16 @@
        edilir; native "hidden" ozniteligi KASITLI olarak kullanilmadi:
        Chromium'da bazi durumlarda [hidden] elemente CSS ile display
        verilse bile layout hesaba katmiyor (olcum: display:flex computed
-       style'da gorunuyor ama getBoundingClientRect() hep 0x0 donuyordu). */
+       style'da gorunuyor ama getBoundingClientRect() hep 0x0 donuyordu).
+       display:none yerine gorunmezligi visibility+opacity+transform ile
+       kontrol ediyoruz - boylece Materials ilkesindeki "materialize, don't
+       just fade" tavsiyesine uyup tetikleyiciden (sag ust) dogru kucuk bir
+       olcek+kayma ile "belirir", duz bir acilma/kapanma yerine. Kapanista
+       visibility gecisi opaklik/olcek animasyonu bitene kadar geciktiriliyor
+       (0s linear .16s delay) - boylece erisilebilirlik agacindan/tiklama
+       hedefinden duzgunce kalkarken de gorsel olarak aniden kesilmiyor. */
     .og-search-settings-menu {
-        display: none;
+        display: flex;
         position: absolute;
         top: calc(100% + 8px);
         right: 0;
@@ -257,10 +283,30 @@
         z-index: 40;
         flex-direction: column;
         gap: 20px;
+        visibility: hidden;
+        opacity: 0;
+        transform: scale(.96) translateY(-6px);
+        transform-origin: top right;
+        transition: opacity .16s ease, transform .16s ease, visibility 0s linear .16s;
     }
 
     .og-search-settings-menu.is-open {
-        display: flex !important;
+        visibility: visible;
+        opacity: 1;
+        transform: scale(1) translateY(0);
+        transition: opacity .16s ease, transform .16s ease;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .og-search-settings-menu {
+            transform: none;
+            transition: opacity .12s ease, visibility 0s linear .12s;
+        }
+
+        .og-search-settings-menu.is-open {
+            transform: none;
+            transition: opacity .12s ease;
+        }
     }
 
     .og-search-settings-menu__label {
@@ -740,11 +786,19 @@
         }
     }
 
-    html.dark .og-search-bar,
     html.dark .og-search-box,
     html.dark .og-search-more-btn {
         background: #0f172a !important;
         border-color: #1e293b !important;
+    }
+
+    html.dark .og-search-bar {
+        background: #27272a !important;
+    }
+
+    html.dark .og-search-bar:focus-within {
+        background: #2f2f33 !important;
+        box-shadow: 0 0 0 2px rgba(59, 130, 246, .4) !important;
     }
 
     html.dark .og-search-message {
@@ -863,30 +917,6 @@
          data-authenticated="{{ auth()->check() ? '1' : '0' }}"
          data-login-url="{{ route('login') }}"
     >
-        <div class="og-search-bar-row">
-            <div class="og-search-bar">
-                <input
-                    type="text"
-                    id="og-search-page-input"
-                    value="{{ $query }}"
-                    placeholder="{{ __('site.search.placeholder') }}"
-                    class="og-search-bar-input"
-                    autocomplete="off"
-                    autofocus
-                    data-search-query-input
-                >
-                <iconify-icon
-                    icon="lucide:search"
-                    class="og-search-bar-icon {{ $query !== '' ? 'hidden' : '' }}"
-                    data-search-query-icon
-                    aria-hidden="true"
-                ></iconify-icon>
-                <button type="button" class="og-search-bar-clear {{ $query === '' ? 'hidden' : '' }}" aria-label="{{ __('site.mobile_nav.clear') ?? 'Temizle' }}" data-search-query-clear>
-                    <iconify-icon icon="lucide:x"></iconify-icon>
-                </button>
-            </div>
-        </div>
-
         <div class="og-search-identity">
             <button type="button" class="og-search-identity__back" data-search-back aria-label="{{ __('site.mobile_nav.back') ?? 'Geri' }}">
                 <iconify-icon icon="lucide:arrow-left" aria-hidden="true"></iconify-icon>
@@ -937,6 +967,30 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+
+        <div class="og-search-bar-row">
+            <div class="og-search-bar">
+                <input
+                    type="text"
+                    id="og-search-page-input"
+                    value="{{ $query }}"
+                    placeholder="{{ __('site.search.placeholder') }}"
+                    class="og-search-bar-input"
+                    autocomplete="off"
+                    autofocus
+                    data-search-query-input
+                >
+                <iconify-icon
+                    icon="lucide:search"
+                    class="og-search-bar-icon {{ $query !== '' ? 'hidden' : '' }}"
+                    data-search-query-icon
+                    aria-hidden="true"
+                ></iconify-icon>
+                <button type="button" class="og-search-bar-clear {{ $query === '' ? 'hidden' : '' }}" aria-label="{{ __('site.mobile_nav.clear') ?? 'Temizle' }}" data-search-query-clear>
+                    <iconify-icon icon="lucide:x"></iconify-icon>
+                </button>
             </div>
         </div>
 
