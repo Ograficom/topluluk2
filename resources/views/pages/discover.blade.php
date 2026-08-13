@@ -381,19 +381,39 @@
            kabinin icine GOMULU - viewport'a gore degil, o kabin
            genisligine gore hizalanmali. Sonuc: kart konteynerin disina
            tasip sola/saga kayik goruntyordu (Spatial consistency ilkesi
-           ihlali - kartin nerede durdugu tahmin edilebilir olmali). */
+           ihlali - kartin nerede durdugu tahmin edilebilir olmali).
+
+           Son duzeltme: kart kendi ic dolgusunu (18-24px) TASIRKEN,
+           .discover-section__body'nin PAYLASILAN 18px yan dolgusu da
+           ustune binince Kullanicilar/Topluluklar'daki tek katmanli 18px
+           girintiden 2 kat fazla bosluk olusuyor, "kutu icinde kutu"
+           gorunuyordu ve iki ayri beyaz yuzey ust uste biniyordu. Simdi
+           feed govdesinin (--feed) yan dolgusu sifirlandi - kart ARTIK
+           konteynerin kendi kenariyla birlesip TEK yuzey gibi duruyor,
+           kendi ic dolgusu digger kutulardaki 18px'e denk bir bosluk
+           birakiyor. Golge kaldirildi (.discover-section'in overflow:
+           hidden'i kenarda kesip yarim golge birakirdi); mobilde kose de
+           konteynerin kendisi gibi sifirlaniyor - boylece mobilde sag/sol
+           ic bosluk hic yok, kart ekran kenarina kadar uzaniyor. */
         body.alma-app.route-discover [data-post-card-shell] {
             border: 0 !important;
             border-radius: 18px !important;
-            box-shadow: 0 1px 2px rgba(15, 23, 42, .04), 0 10px 24px -8px rgba(15, 23, 42, .10) !important;
+            box-shadow: none !important;
             width: 100% !important;
             max-width: 100% !important;
             margin-left: 0 !important;
             margin-right: 0 !important;
         }
 
-        html.dark body.alma-app.route-discover [data-post-card-shell] {
-            box-shadow: 0 1px 2px rgba(0, 0, 0, .25), 0 10px 24px -8px rgba(0, 0, 0, .45) !important;
+        .discover-section__body--feed {
+            padding-left: 0 !important;
+            padding-right: 0 !important;
+        }
+
+        @media (max-width: 640px) {
+            body.alma-app.route-discover [data-post-card-shell] {
+                border-radius: 0 !important;
+            }
         }
 
         @media (max-width: 640px) {
@@ -704,7 +724,7 @@
                 </h2>
             </div>
 
-            <div class="discover-section__body">
+            <div class="discover-section__body discover-section__body--feed">
                 <div class="discover-feed-list">
                     @forelse($recommendedPosts as $post)
                         @include('blog.post-card', [
