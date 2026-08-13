@@ -361,6 +361,26 @@
             gap: 16px;
         }
 
+        /* [data-post-card-shell]'in kendi stil bloğunda (blog/post-card.blade.php,
+           6500+ satır) aynı selector için üst üste yazılmış birbiriyle
+           çelişen birden fazla !important kural var (18px yumuşak gölge,
+           10px ince kenarlık, 8px sert reset... hepsi ayrı satırlarda) -
+           kazanan hicbiri degil, en yuksek ozgullukteki genel tema reset'i
+           (radius:8px, kenarlik:1px gri, golge:none) - kart bu yuzden diger
+           sayfalardaki gibi duz/eski gorunuyordu. Bu sadece discover
+           sayfasina ozel, body.alma-app.route-discover ile hem .alma-app
+           hem .route-discover class'ini ayni anda tasiyan tek body'yi
+           hedefleyip o kuralin ozgulluk katmanini (2 class) asiyor. */
+        body.alma-app.route-discover [data-post-card-shell] {
+            border: 0 !important;
+            border-radius: 18px !important;
+            box-shadow: 0 1px 2px rgba(15, 23, 42, .04), 0 10px 24px -8px rgba(15, 23, 42, .10) !important;
+        }
+
+        html.dark body.alma-app.route-discover [data-post-card-shell] {
+            box-shadow: 0 1px 2px rgba(0, 0, 0, .25), 0 10px 24px -8px rgba(0, 0, 0, .45) !important;
+        }
+
         @media (max-width: 640px) {
             body:has(.discover-page-shell) .layout-main,
             body:has(.discover-page-shell) main,

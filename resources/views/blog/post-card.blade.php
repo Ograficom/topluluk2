@@ -8771,6 +8771,19 @@ SVG;
                     return;
                 }
 
+                // Discover sayfasindaki kartlar .discover-section'in kendi
+                // ic bosluguna (18px) gomulu, koseleri yuvarlak duruyor -
+                // bu fonksiyon inline style'i "!important" ile enjekte
+                // ettigi icin HICBIR CSS kurali onu ezemiyor; kart tam
+                // viewport genisligine ("width:100vw" negatif margin ile)
+                // zorlanip 8px'e sabitleniyordu, digger iki kutuyla (18px,
+                // golgeli) hic uyusmuyordu. Bu sayfada devre disi - kartlar
+                // zaten dar/gomulu bir kap icinde, tam-genislik-tasma
+                // "referans" tasarimina ihtiyaclari yok.
+                if (document.body.classList.contains('route-discover')) {
+                    return;
+                }
+
                 const viewportWidth = Math.max(280, document.documentElement.clientWidth || window.innerWidth || 360);
                 const cardWidth = viewportWidth + 'px';
                 const contentWidth = Math.max(250, viewportWidth - 30) + 'px';
