@@ -370,11 +370,26 @@
            sayfalardaki gibi duz/eski gorunuyordu. Bu sadece discover
            sayfasina ozel, body.alma-app.route-discover ile hem .alma-app
            hem .route-discover class'ini ayni anda tasiyan tek body'yi
-           hedefleyip o kuralin ozgulluk katmanini (2 class) asiyor. */
+           hedefleyip o kuralin ozgulluk katmanini (2 class) asiyor.
+
+           Ayrica: 640-960px arasinda [data-post-card-shell] sabit
+           genislikte (--main-col, 656px) ve "calc(50% + 8px - 50vw)"
+           gibi viewport-goreli negatif margin ile tasiyordu - bu formul
+           kartin SAYFA GENELINDE ortalanmis, tam genislikte bir ana sutun
+           icinde oldugunu varsayiyor (blog/profil sayfalarindaki gibi).
+           Discover'da kart, kendi ic bosluklu (.discover-section__body)
+           kabinin icine GOMULU - viewport'a gore degil, o kabin
+           genisligine gore hizalanmali. Sonuc: kart konteynerin disina
+           tasip sola/saga kayik goruntyordu (Spatial consistency ilkesi
+           ihlali - kartin nerede durdugu tahmin edilebilir olmali). */
         body.alma-app.route-discover [data-post-card-shell] {
             border: 0 !important;
             border-radius: 18px !important;
             box-shadow: 0 1px 2px rgba(15, 23, 42, .04), 0 10px 24px -8px rgba(15, 23, 42, .10) !important;
+            width: 100% !important;
+            max-width: 100% !important;
+            margin-left: 0 !important;
+            margin-right: 0 !important;
         }
 
         html.dark body.alma-app.route-discover [data-post-card-shell] {
