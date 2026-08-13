@@ -66,6 +66,40 @@
             background: rgba(255, 255, 255, .1) !important;
         }
 
+        /* Bu sayfadaki TUM buton ve tiklanabilir alanlar icin tek, tutarli
+           "fare uzerine gelince gri" kurali - site genelindeki
+           "body.alma-app :where(button...) {!important}" resetiyle ayni
+           ozgulluk yarisini kazanmasi icin .users-page iki kez yazildi. */
+        .users-page.users-page button:not(.users-toolbar__icon):hover,
+        .users-page.users-page button:not(.users-toolbar__icon):focus-visible,
+        .users-page.users-page .users-follow-trigger:hover,
+        .users-page.users-page .users-follow-trigger:focus-visible,
+        .users-page.users-page .users-row-link:hover,
+        .users-page.users-page .users-row-link:focus-visible {
+            background: rgba(15, 15, 18, .06) !important;
+            outline: none;
+        }
+
+        html.dark .users-page.users-page button:not(.users-toolbar__icon):hover,
+        html.dark .users-page.users-page button:not(.users-toolbar__icon):focus-visible,
+        html.dark .users-page.users-page .users-follow-trigger:hover,
+        html.dark .users-page.users-page .users-follow-trigger:focus-visible,
+        html.dark .users-page.users-page .users-row-link:hover,
+        html.dark .users-page.users-page .users-row-link:focus-visible {
+            background: rgba(255, 255, 255, .1) !important;
+        }
+
+        .users-row-link {
+            margin: -6px -8px;
+            padding: 6px 8px;
+            border-radius: 16px;
+            transition: background-color .15s ease;
+        }
+
+        .users-follow-trigger {
+            transition: background-color .15s ease;
+        }
+
         .users-toolbar__menu {
             position: absolute;
             top: calc(100% + 8px);
@@ -154,43 +188,40 @@
         .users-search-panel__form {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 4px;
             margin-top: 8px;
-            padding: 6px 6px 6px 14px;
+            padding: 4px 4px 4px 14px;
             border: 1px solid #d9dde3;
             border-radius: 999px;
             background: #ffffff;
         }
 
-        .users-search-panel__input {
+        /* Input#id + iki class + input turu = (id:1, class:2, type:1),
+           site genelindeki "body.alma-app :where(input,textarea,select)
+           :not(#comments *) {background:var(--ui-surface-muted) !important}"
+           kuralini (id:1, class:1, type:1) ozgulluk kiyaslamasinda class
+           katmaninda gececek sekilde eziyor - boylece kutu duz gri
+           dikdortgen degil, pill'in kendi beyaz/cerceveli gorunumunu alir. */
+        input#users-search-input.users-search-panel__input.users-search-panel__input {
             flex: 1 1 auto;
             min-width: 0;
-            border: 0;
-            background: transparent;
+            min-height: 0 !important;
+            border: 0 !important;
+            border-radius: 0 !important;
+            background: transparent !important;
+            box-shadow: none !important;
+            padding: 6px 0 !important;
             font-size: 14px;
-            color: #050505;
-            outline: none;
+            color: #050505 !important;
+            outline: none !important;
         }
 
-        .users-search-panel__input::placeholder {
+        input#users-search-input.users-search-panel__input.users-search-panel__input::placeholder {
             color: #9ca3af;
         }
 
         .users-search-panel__submit {
             flex: 0 0 auto;
-            border: 0;
-            border-radius: 999px;
-            background: #f4f4f5;
-            color: #18181b;
-            font-size: 13px;
-            font-weight: 600;
-            padding: 7px 14px;
-            cursor: pointer;
-            transition: background-color .15s ease;
-        }
-
-        .users-search-panel__submit:hover {
-            background: #e4e4e7;
         }
 
         html.dark .users-search-panel__form {
@@ -198,27 +229,30 @@
             background: #18181b;
         }
 
-        html.dark .users-search-panel__input {
-            color: #fafafa;
+        html.dark input#users-search-input.users-search-panel__input.users-search-panel__input {
+            color: #fafafa !important;
         }
 
-        html.dark .users-search-panel__submit {
-            background: #27272a;
-            color: #fafafa;
+        /* Canli arama sirasinda liste hafifce sonukleserek "araniyor" hissi
+           verir; sonuc gelince normale doner. Response ilkesi: geri bildirim
+           beklemeden, ama sonuc gelene kadar da liste donuk kalmaz. */
+        .users-page-list {
+            transition: opacity .15s ease;
         }
 
-        html.dark .users-search-panel__submit:hover {
-            background: #3f3f46;
+        .users-page-list.is-loading {
+            opacity: .55;
         }
 
         @media (prefers-reduced-motion: reduce) {
-            .users-search-panel {
+            .users-search-panel,
+            .users-page-list {
                 transition: none;
             }
         }
     </style>
 
-    <div class="space-y-4">
+    <div class="space-y-4 users-page">
         @include('partials.page-title-identity', [
             'title' => __('site.users.title'),
             'trailing' => view('users.partials.users-toolbar', ['sort' => $sort, 'search' => $search])->render(),
@@ -226,28 +260,35 @@
 
         <div class="users-search-panel {{ $search !== '' ? 'is-open' : '' }}" data-users-search-panel>
             <div class="users-search-panel__inner">
-                <form method="GET" action="{{ route('users.index') }}" class="users-search-panel__form">
+                <form method="GET" action="{{ route('users.index') }}" class="users-search-panel__form" data-users-search-form>
                     @if ($sort !== 'newest')
                         <input type="hidden" name="sort" value="{{ $sort }}">
                     @endif
                     <input
                         type="search"
+                        id="users-search-input"
                         name="q"
                         value="{{ $search }}"
                         placeholder="{{ __('site.users.search_placeholder') }}"
                         class="users-search-panel__input"
+                        autocomplete="off"
                         data-users-search-input
                     >
-                    <button type="submit" class="users-search-panel__submit">{{ __('site.users.search_button') }}</button>
+                    <button type="submit" class="users-toolbar__icon users-search-panel__submit" aria-label="{{ __('site.users.search_button') }}">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" aria-hidden="true">
+                            <path fill="currentColor" fill-rule="evenodd" d="M7 1.5a5.5 5.5 0 1 0 3.397 9.83l3.387 3.384a.75.75 0 1 0 1.06-1.061l-3.386-3.384A5.5 5.5 0 0 0 7 1.5M2.75 7a4.25 4.25 0 1 1 8.5 0a4.25 4.25 0 0 1-8.5 0" clip-rule="evenodd"></path>
+                        </svg>
+                    </button>
                 </form>
+                <p class="sr-only" role="status" aria-live="polite" data-users-status></p>
             </div>
         </div>
 
-        <div class="grid grid-cols-1 gap-2">
+        <div class="grid grid-cols-1 gap-2 users-page-list" data-users-list data-total="{{ $users->total() }}">
         @forelse ($users as $user)
             <div class="rounded-[26px] bg-white dark:bg-slate-900 px-4 py-3 shadow-sm ring-1 ring-slate-200/80 dark:ring-slate-700/80">
                 <div class="flex items-center justify-between gap-3">
-                    <a href="{{ route('users.show', $user) }}" class="flex min-w-0 items-center gap-3">
+                    <a href="{{ route('users.show', $user) }}" class="users-row-link flex min-w-0 items-center gap-3">
                         <img src="{{ $user->profile_photo_url }}" alt="{{ $user->name }}" class="h-12 w-12 rounded-full object-cover">
                         <div class="min-w-0 flex-1">
                             <div class="flex items-center gap-1">
@@ -262,13 +303,13 @@
                         @if(auth()->id() !== $user->id)
                             <form method="POST" action="{{ route('users.follow', $user) }}" class="m-0 shrink-0">
                                 @csrf
-                                <button type="submit" class="rounded-full bg-slate-100 dark:bg-slate-800 px-5 py-2 text-sm font-medium text-slate-700 dark:text-slate-300 transition hover:bg-slate-200 dark:hover:bg-slate-700">
+                                <button type="submit" class="users-follow-trigger rounded-full bg-slate-100 dark:bg-slate-800 px-5 py-2 text-sm font-medium text-slate-700 dark:text-slate-300 transition">
                                     {{ (bool) ($user->is_followed_by_viewer ?? false) ? 'Takiptesin' : 'Takip et' }}
                                 </button>
                             </form>
                         @endif
                     @else
-                        <a href="{{ route('login') }}" class="shrink-0 rounded-full bg-slate-100 dark:bg-slate-800 px-5 py-2 text-sm font-medium text-slate-700 dark:text-slate-300 transition hover:bg-slate-200 dark:hover:bg-slate-700">
+                        <a href="{{ route('login') }}" class="users-follow-trigger shrink-0 rounded-full bg-slate-100 dark:bg-slate-800 px-5 py-2 text-sm font-medium text-slate-700 dark:text-slate-300 transition">
                             Takip et
                         </a>
                     @endauth
@@ -281,7 +322,7 @@
         @endforelse
         </div>
 
-        <div class="flex items-center justify-between gap-3 text-xs text-slate-500 dark:text-slate-400">
+        <div class="flex items-center justify-between gap-3 text-xs text-slate-500 dark:text-slate-400" data-users-meta>
             <span>Sayfa basina {{ $users->perPage() }} kullanici</span>
             {{ $users->links() }}
         </div>
@@ -336,6 +377,88 @@
                         if (event.key === 'Escape') closeMenu();
                     });
                 }
+            })();
+
+            (() => {
+                // Kullanicilar listesi: yazarken 300ms sonra otomatik arar
+                // (Enter/ikona tiklamak beklemeden aninda arar), yarim kalan
+                // istekleri iptal eder ve sonucu sayfa yenilenmeden altta
+                // gosterir. URL da sessizce (replaceState) guncellenir ki
+                // sayfa yenilendiginde arama kaybolmasin.
+                const form = document.querySelector('[data-users-search-form]');
+                const input = document.querySelector('[data-users-search-input]');
+                const list = document.querySelector('[data-users-list]');
+                const meta = document.querySelector('[data-users-meta]');
+                const status = document.querySelector('[data-users-status]');
+
+                if (!form || !input || !list) return;
+
+                let debounceTimer = null;
+                let activeController = null;
+
+                const runSearch = async () => {
+                    if (activeController) activeController.abort();
+                    const controller = new AbortController();
+                    activeController = controller;
+
+                    const url = new URL(form.action, window.location.origin);
+                    const formData = new FormData(form);
+                    for (const [key, value] of formData.entries()) {
+                        if (value !== '') url.searchParams.set(key, value);
+                        else url.searchParams.delete(key);
+                    }
+
+                    list.classList.add('is-loading');
+
+                    try {
+                        const response = await fetch(url, {
+                            headers: { 'X-Requested-With': 'XMLHttpRequest', Accept: 'text/html, application/xhtml+xml' },
+                            credentials: 'same-origin',
+                            signal: controller.signal,
+                        });
+
+                        if (!response.ok) {
+                            throw new Error('Kullanici aramasi basarisiz: ' + response.status);
+                        }
+
+                        const doc = new DOMParser().parseFromString(await response.text(), 'text/html');
+                        const newList = doc.querySelector('[data-users-list]');
+                        const newMeta = doc.querySelector('[data-users-meta]');
+
+                        if (newList) {
+                            list.innerHTML = newList.innerHTML;
+                            list.dataset.total = newList.dataset.total || '0';
+                        }
+                        if (newMeta && meta) {
+                            meta.innerHTML = newMeta.innerHTML;
+                        }
+                        if (status) {
+                            status.textContent = (list.dataset.total || '0') + ' kullanıcı bulundu';
+                        }
+
+                        window.history.replaceState(null, '', url.toString());
+                    } catch (error) {
+                        if (error.name !== 'AbortError') {
+                            console.error(error);
+                        }
+                    } finally {
+                        if (activeController === controller) {
+                            list.classList.remove('is-loading');
+                            activeController = null;
+                        }
+                    }
+                };
+
+                input.addEventListener('input', () => {
+                    clearTimeout(debounceTimer);
+                    debounceTimer = setTimeout(runSearch, 300);
+                });
+
+                form.addEventListener('submit', (event) => {
+                    event.preventDefault();
+                    clearTimeout(debounceTimer);
+                    runSearch();
+                });
             })();
         </script>
     @endpush
