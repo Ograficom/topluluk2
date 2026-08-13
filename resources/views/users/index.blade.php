@@ -69,27 +69,21 @@
         /* Bu sayfadaki TUM buton ve tiklanabilir alanlar icin tek, tutarli
            "fare uzerine gelince gri" kurali - site genelindeki
            "body.alma-app :where(button...) {!important}" resetiyle ayni
-           ozgulluk yarisini kazanmasi icin .users-page iki kez yazildi. */
+           ozgulluk yarisini kazanmasi icin .users-page iki kez yazildi.
+           Kullanici satirinin kendisi (avatar+isim linki) BU kuralin disinda
+           birakildi: kutunun kendi yuvarlatilmis kartina gomulu, ayri bir
+           gri kutu olarak tasip kart kenarlariyla uyumsuz gorunuyordu -
+           satir zaten tikla-profile-git olarak calisiyor, ekstra bir hover
+           kutusuna ihtiyaci yok (Sadelik ilkesi: her eleman yerini hak eder). */
         .users-page.users-page button:not(.users-toolbar__icon):not(.users-follow-trigger):hover,
-        .users-page.users-page button:not(.users-toolbar__icon):not(.users-follow-trigger):focus-visible,
-        .users-page.users-page .users-row-link:hover,
-        .users-page.users-page .users-row-link:focus-visible {
+        .users-page.users-page button:not(.users-toolbar__icon):not(.users-follow-trigger):focus-visible {
             background: rgba(15, 15, 18, .06) !important;
             outline: none;
         }
 
         html.dark .users-page.users-page button:not(.users-toolbar__icon):not(.users-follow-trigger):hover,
-        html.dark .users-page.users-page button:not(.users-toolbar__icon):not(.users-follow-trigger):focus-visible,
-        html.dark .users-page.users-page .users-row-link:hover,
-        html.dark .users-page.users-page .users-row-link:focus-visible {
+        html.dark .users-page.users-page button:not(.users-toolbar__icon):not(.users-follow-trigger):focus-visible {
             background: rgba(255, 255, 255, .1) !important;
-        }
-
-        .users-row-link {
-            margin: -6px -8px;
-            padding: 6px 8px;
-            border-radius: 16px;
-            transition: background-color .15s ease;
         }
 
         /* Takip et/Takiptesin: durum kendi rengini tasir (mavi = eylem
@@ -334,7 +328,7 @@
         @forelse ($users as $user)
             <div class="rounded-[26px] bg-white dark:bg-slate-900 px-4 py-3 shadow-sm ring-1 ring-slate-200/80 dark:ring-slate-700/80">
                 <div class="flex items-center justify-between gap-3">
-                    <a href="{{ route('users.show', $user) }}" class="users-row-link flex min-w-0 items-center gap-3">
+                    <a href="{{ route('users.show', $user) }}" class="flex min-w-0 items-center gap-3">
                         <img src="{{ $user->profile_photo_url }}" alt="{{ $user->name }}" class="h-12 w-12 rounded-full object-cover">
                         <div class="min-w-0 flex-1">
                             <div class="flex items-center gap-1">
@@ -369,8 +363,7 @@
         @endforelse
         </div>
 
-        <div class="flex items-center justify-between gap-3 text-xs text-slate-500 dark:text-slate-400" data-users-meta>
-            <span>Sayfa basina {{ $users->perPage() }} kullanici</span>
+        <div class="text-xs text-slate-500 dark:text-slate-400" data-users-meta>
             {{ $users->links() }}
         </div>
     </div>
