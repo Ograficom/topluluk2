@@ -165,44 +165,65 @@
     }
 
     /*
-    Mobilde arama kutusunun hemen altinda, sayfayi "Arama" olarak belli eden
-    kimlik kutusu + ayarlar (filtre) menusu. Masaustunde filtreler zaten tek
-    satira sigdigi icin sadece kimlik kutusunun GORSEL kabugu (kenarlik/
-    arka plan/baslik/dislaili buton) gizlenir; sarmalayici kendisi HICBIR
-    ZAMAN display:none olmaz, cunku icinde .og-search-settings-menu (yani
-    filtre/tur pilleri) barinir - disina display:none konursa masaustunde
-    de gizlenirdi. Mobilde ise butun siralama/tur/NSFW-AI pilleri bu acilir
-    menuye tasinip sayfa boyu kisaliyor ("boyutlandirmayi duzgunlestir").
-    */
+    Once bu kimlik kutusu (geri + "Arama" basligi + ayarlar tetikleyicisi)
+    sadece <640px'te goruniyordu; masaustunde tum siralama/filtre/tur
+    pilleri acik satirlar halinde goruntyordu. Artik Etiketler/SSS/
+    Kullanicilar sayfalarindaki .page-title-identity ile AYNI davranisi
+    her genislikte gosteriyor: kutu her zaman gorunur, tetikleyici (ayarlar
+    dislisi ikonu - filtre huni ikonu DEGIL, cunku burada sirala+filtrele+
+    tur olmak uzere BIRDEN FAZLA ayar grubu var) her zaman tikla-ac/kapa
+    acilir menuyu kontrol eder. Masaustunde kutu normal (kenarlikli,
+    yuvarlak) duruyor; sadece <640px'te Etiketler/SSS'deki gibi ekran
+    kenarina kadar tam-genislik tasiyor (asagidaki media query). */
     .og-search-identity {
         display: flex;
         align-items: center;
         gap: 6px;
         width: 100%;
+        min-height: 38px;
+        padding: 3px 12px;
+        border: 1px solid #d9dde3;
+        border-radius: 18px;
+        background: #ffffff;
     }
 
-    .og-search-identity__title,
-    .og-search-settings__trigger {
-        display: none;
+    .og-search-identity__back {
+        display: inline-flex !important;
     }
 
-    /* Masaustunde bu, kimlik kutusunun TEK gorunen icerigi (baslik/tetikleyici
-       gizli) ve filtreleri barindirdigi icin tam genislik kaplayip
-       kuculebilmeli; aksi halde (flex-shrink:0 ile) icerigin dogal genisligine
-       gore buyuyup sag kenar cubuguna tasiyordu. Mobilde ise sadece kucuk bir
-       dislaili dugme oldugundan kuculmemesi gerekiyor (bkz. media query). */
+    .og-search-identity__divider {
+        display: block;
+    }
+
+    .og-search-identity__title {
+        display: block;
+        margin: 0;
+        font-size: 14px;
+        font-weight: 600;
+        color: #0f172a;
+    }
+
     .og-search-settings {
         position: relative;
         display: flex;
         align-items: center;
-        flex: 1 1 auto;
-        min-width: 0;
-        width: 100%;
+        flex: 0 0 auto;
+        width: auto;
+        margin-left: auto;
     }
 
-    .og-search-settings-menu {
-        width: 100%;
-        min-width: 0;
+    .og-search-settings__trigger {
+        display: inline-flex !important;
+        width: 32px !important;
+        height: 32px !important;
+        align-items: center;
+        justify-content: center;
+        border: 0 !important;
+        border-radius: 999px !important;
+        background: transparent !important;
+        color: #52525b !important;
+        cursor: pointer;
+        transition: background-color .15s ease;
     }
 
     .og-search-settings__trigger iconify-icon {
@@ -215,20 +236,72 @@
         background: #f3f4f6 !important;
     }
 
-    /* Masaustunde bu sarmalayici sade bir kutu, hep gorunur (filtreler eskisi
-       gibi tek satirda). Mobilde ise acilir menuye donusur ve JS'in ekleyip
-       cikardigi ".is-open" sinifiyla kontrol edilir - native "hidden" ozniteligi
-       KASITLI olarak kullanilmadi: Chromium'da bazi durumlarda [hidden] elemente
-       CSS ile display verilse bile layout hesaba katmiyor (olcum: display:flex
-       computed style'da gorunuyor ama getBoundingClientRect() hep 0x0 donuyordu). */
+    /* Acilir menu - JS'in ekleyip cikardigi ".is-open" sinifiyla kontrol
+       edilir; native "hidden" ozniteligi KASITLI olarak kullanilmadi:
+       Chromium'da bazi durumlarda [hidden] elemente CSS ile display
+       verilse bile layout hesaba katmiyor (olcum: display:flex computed
+       style'da gorunuyor ama getBoundingClientRect() hep 0x0 donuyordu). */
     .og-search-settings-menu {
-        display: flex;
+        display: none;
+        position: absolute;
+        top: calc(100% + 8px);
+        right: 0;
+        width: min(320px, calc(100vw - 32px));
+        max-height: 70vh;
+        overflow-y: auto;
+        padding: 16px;
+        border-radius: 18px;
+        border: 1px solid #e2e8f0;
+        background: #ffffff;
+        box-shadow: 0 16px 36px rgba(15, 23, 42, .14);
+        z-index: 40;
         flex-direction: column;
-        gap: 14px;
+        gap: 20px;
+    }
+
+    .og-search-settings-menu.is-open {
+        display: flex !important;
     }
 
     .og-search-settings-menu__label {
-        display: none;
+        display: block;
+        margin: 0 0 8px;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: .04em;
+        text-transform: uppercase;
+        color: #94a3b8;
+    }
+
+    .og-search-filters {
+        flex-direction: column !important;
+        align-items: stretch !important;
+        justify-content: flex-start !important;
+        gap: 18px !important;
+    }
+
+    .og-search-filters .og-search-pills {
+        flex-direction: column;
+        align-items: stretch;
+        flex-wrap: nowrap;
+        gap: 6px;
+    }
+
+    .og-search-filters .og-search-pill {
+        width: 100%;
+        justify-content: flex-start;
+        height: 40px;
+        padding: 0 14px;
+    }
+
+    .og-search-types {
+        flex-wrap: wrap;
+        overflow-x: visible;
+    }
+
+    .og-search-types .og-search-type-pill {
+        flex: 1 1 calc(50% - 4px);
+        justify-content: flex-start;
     }
 
     @media (max-width: 640px) {
@@ -249,114 +322,11 @@
             border-radius: 16px;
             background: #ffffff;
         }
-
-        .og-search-identity__back {
-            display: inline-flex !important;
-        }
-
-        .og-search-identity__divider {
-            display: block;
-        }
-
-        .og-search-identity__title {
-            display: block;
-            margin: 0;
-            font-size: 14px;
-            font-weight: 600;
-            color: #0f172a;
-        }
-
-        .og-search-settings {
-            flex: 0 0 auto !important;
-            width: auto !important;
-            margin-left: auto;
-        }
-
-        .og-search-settings__trigger {
-            display: inline-flex !important;
-            width: 32px !important;
-            height: 32px !important;
-            align-items: center;
-            justify-content: center;
-            border: 0 !important;
-            border-radius: 999px !important;
-            background: transparent !important;
-            color: #52525b !important;
-            cursor: pointer;
-            transition: background-color .15s ease;
-        }
-
-        .og-search-settings-menu {
-            display: none;
-            position: absolute;
-            top: calc(100% + 8px);
-            right: 0;
-            width: min(300px, calc(100vw - 32px));
-            max-height: 60vh;
-            overflow-y: auto;
-            padding: 16px;
-            border-radius: 18px;
-            border: 1px solid #e2e8f0;
-            background: #ffffff;
-            box-shadow: 0 16px 36px rgba(15, 23, 42, .14);
-            z-index: 40;
-        }
-
-        .og-search-settings-menu.is-open {
-            display: flex !important;
-        }
-
-        .og-search-settings-menu {
-            gap: 20px;
-        }
-
-        .og-search-settings-menu__label {
-            display: block;
-            margin: 0 0 8px;
-            font-size: 11px;
-            font-weight: 700;
-            letter-spacing: .04em;
-            text-transform: uppercase;
-            color: #94a3b8;
-        }
-
-        .og-search-filters {
-            flex-direction: column !important;
-            align-items: stretch !important;
-            justify-content: flex-start !important;
-            gap: 18px !important;
-        }
-
-        .og-search-filters .og-search-pills {
-            flex-direction: column;
-            align-items: stretch;
-            flex-wrap: nowrap;
-            gap: 6px;
-        }
-
-        .og-search-filters .og-search-pill {
-            width: 100%;
-            justify-content: flex-start;
-            height: 40px;
-            padding: 0 14px;
-        }
-
-        .og-search-types {
-            flex-wrap: wrap;
-            overflow-x: visible;
-        }
-
-        .og-search-types .og-search-type-pill {
-            flex: 1 1 calc(50% - 4px);
-            justify-content: flex-start;
-        }
     }
 
-    @media (max-width: 640px) {
-        html.dark .og-search-identity {
-            background: #0f172a !important;
-            border-color: #1e293b !important;
-        }
+    html.dark .og-search-identity {
+        background: #0f172a !important;
+        border-color: #1e293b !important;
     }
 
     html.dark .og-search-identity__title {
