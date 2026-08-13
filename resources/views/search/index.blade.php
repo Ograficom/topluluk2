@@ -446,19 +446,22 @@
         color: #2563eb;
     }
 
+    /* Masaustunde (>640px) icerik-turu pilleri once yatay kaydirilan tek
+       satirdaydi (overflow-x:auto) - sag kenardaki "Yorumlar" pili yarim
+       kesilip goruniyor, kaydirilabilir oldugunu belli eden hicbir ipucu
+       (fade/ok) yoktu, boylece bozuk/eksik gorunuyordu (Craft ilkesi
+       ihlali - "hicbir sey rastgele/kazayla gorunmemeli"). .og-search-
+       filters (siralama/NSFW-AI pilleri) zaten flex-wrap kullaniyordu;
+       ayni tutarli davranisi burada da uygulayip masaustunde tum pilleri
+       ikinci satira sararak gosteriyoruz - hicbir seyin kesilmis/gizli
+       kalmasina gerek yok, mobilde zaten ayri bir wrap kurali var. */
     .og-search-types {
         display: flex;
         align-items: center;
+        flex-wrap: wrap;
         gap: 8px;
         width: 100%;
         min-width: 0;
-        overflow-x: auto;
-        padding-bottom: 2px;
-        scrollbar-width: none;
-    }
-
-    .og-search-types::-webkit-scrollbar {
-        display: none;
     }
 
     .og-search-type-pill {
