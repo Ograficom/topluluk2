@@ -70,20 +70,16 @@
            "fare uzerine gelince gri" kurali - site genelindeki
            "body.alma-app :where(button...) {!important}" resetiyle ayni
            ozgulluk yarisini kazanmasi icin .users-page iki kez yazildi. */
-        .users-page.users-page button:not(.users-toolbar__icon):hover,
-        .users-page.users-page button:not(.users-toolbar__icon):focus-visible,
-        .users-page.users-page .users-follow-trigger:hover,
-        .users-page.users-page .users-follow-trigger:focus-visible,
+        .users-page.users-page button:not(.users-toolbar__icon):not(.users-follow-trigger):hover,
+        .users-page.users-page button:not(.users-toolbar__icon):not(.users-follow-trigger):focus-visible,
         .users-page.users-page .users-row-link:hover,
         .users-page.users-page .users-row-link:focus-visible {
             background: rgba(15, 15, 18, .06) !important;
             outline: none;
         }
 
-        html.dark .users-page.users-page button:not(.users-toolbar__icon):hover,
-        html.dark .users-page.users-page button:not(.users-toolbar__icon):focus-visible,
-        html.dark .users-page.users-page .users-follow-trigger:hover,
-        html.dark .users-page.users-page .users-follow-trigger:focus-visible,
+        html.dark .users-page.users-page button:not(.users-toolbar__icon):not(.users-follow-trigger):hover,
+        html.dark .users-page.users-page button:not(.users-toolbar__icon):not(.users-follow-trigger):focus-visible,
         html.dark .users-page.users-page .users-row-link:hover,
         html.dark .users-page.users-page .users-row-link:focus-visible {
             background: rgba(255, 255, 255, .1) !important;
@@ -96,8 +92,58 @@
             transition: background-color .15s ease;
         }
 
+        /* Takip et/Takiptesin: durum kendi rengini tasir (mavi = eylem
+           bekliyor, gri = zaten yapildi - iOS'taki "Follow/Following" ayrimi
+           gibi), fare uzerine gelince kendi tonunun koyusuna doner. Basinca
+           ("Response" ilkesi - aninda, beklemeden) hafifce kuculur. */
         .users-follow-trigger {
-            transition: background-color .15s ease;
+            transition: background-color .15s ease, color .15s ease, transform .08s ease-out;
+        }
+
+        .users-follow-trigger:active {
+            transform: scale(0.96);
+        }
+
+        .users-follow-trigger.users-follow-trigger--follow {
+            background: #2563eb !important;
+            color: #ffffff !important;
+        }
+
+        .users-follow-trigger.users-follow-trigger--follow:hover,
+        .users-follow-trigger.users-follow-trigger--follow:focus-visible {
+            background: #1d4ed8 !important;
+            outline: none;
+        }
+
+        .users-follow-trigger.users-follow-trigger--following {
+            background: #f1f5f9 !important;
+            color: #334155 !important;
+        }
+
+        .users-follow-trigger.users-follow-trigger--following:hover,
+        .users-follow-trigger.users-follow-trigger--following:focus-visible {
+            background: #e2e8f0 !important;
+            outline: none;
+        }
+
+        html.dark .users-follow-trigger.users-follow-trigger--following {
+            background: #1e293b !important;
+            color: #cbd5e1 !important;
+        }
+
+        html.dark .users-follow-trigger.users-follow-trigger--following:hover,
+        html.dark .users-follow-trigger.users-follow-trigger--following:focus-visible {
+            background: #334155 !important;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .users-follow-trigger {
+                transition: background-color .15s ease, color .15s ease;
+            }
+
+            .users-follow-trigger:active {
+                transform: none;
+            }
         }
 
         .users-toolbar__menu {
@@ -301,24 +347,25 @@
 
                     @auth
                         @if(auth()->id() !== $user->id)
+                            @php $isFollowing = (bool) ($user->is_followed_by_viewer ?? false); @endphp
                             <form method="POST" action="{{ route('users.follow', $user) }}" class="m-0 shrink-0">
                                 @csrf
-                                <button type="submit" class="users-follow-trigger rounded-full bg-slate-100 dark:bg-slate-800 px-5 py-2 text-sm font-medium text-slate-700 dark:text-slate-300 transition">
-                                    {{ (bool) ($user->is_followed_by_viewer ?? false) ? 'Takiptesin' : 'Takip et' }}
+                                <button type="submit" class="users-follow-trigger {{ $isFollowing ? 'users-follow-trigger--following' : 'users-follow-trigger--follow' }} rounded-full px-5 py-2 text-sm font-medium">
+                                    {{ $isFollowing ? 'Takiptesin' : 'Takip et' }}
                                 </button>
                             </form>
                         @endif
                     @else
-                        <a href="{{ route('login') }}" class="users-follow-trigger shrink-0 rounded-full bg-slate-100 dark:bg-slate-800 px-5 py-2 text-sm font-medium text-slate-700 dark:text-slate-300 transition">
+                        <a href="{{ route('login') }}" class="users-follow-trigger users-follow-trigger--follow shrink-0 rounded-full px-5 py-2 text-sm font-medium">
                             Takip et
                         </a>
                     @endauth
                 </div>
             </div>
         @empty
-            <div class="rounded-3xl bg-white dark:bg-slate-900 p-6 text-sm text-slate-500 dark:text-slate-400 shadow-sm ring-1 ring-slate-200/80 dark:ring-slate-700/80">
+            <p class="text-sm text-slate-500 dark:text-slate-400 text-center py-6">
                 {{ __('site.users.empty') }}
-            </div>
+            </p>
         @endforelse
         </div>
 

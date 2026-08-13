@@ -34,8 +34,13 @@ class UserController extends Controller
                 });
             })
             ->when($viewer, function ($query) use ($viewer) {
+                // 'followers' User<->User self-iliskisinde Laravel ic tabloyu
+                // "laravel_reserved_0" olarak alias'liyor; 'users.id' burada o
+                // alias'a degil DIS sorgunun kendi id'sine baglaniyordu (hep
+                // false donuyordu). Pivot tablonun kendi sutunu ('follows.
+                // follower_id') alias çakismasi olmadan doğru satiri hedefler.
                 $query->withExists([
-                    'followers as is_followed_by_viewer' => fn ($inner) => $inner->where('users.id', $viewer->id),
+                    'followers as is_followed_by_viewer' => fn ($inner) => $inner->where('follows.follower_id', $viewer->id),
                 ]);
             })
             ->withCount(['followers', 'followings'])
