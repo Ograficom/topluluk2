@@ -82,14 +82,43 @@
             color: #ffffff;
         }
 
+        /* "Tumunu Gor": dinlenme -> hover'da griye doner -> basinca daha
+           koyu grilesir (Response ilkesi - anlik, surekli geri bildirim,
+           hover ve basma ayri, okunabilir adimlar). */
         .discover-section__head a {
             font-size: 13px !important;
             font-weight: 400 !important;
-            color: rgb(15 23 42);
+            color: rgb(15 23 42) !important;
+            transition: color .15s ease;
+        }
+
+        .discover-section__head a:hover,
+        .discover-section__head a:focus-visible {
+            color: #64748b !important;
+            outline: none;
+        }
+
+        .discover-section__head a:active {
+            color: #334155 !important;
         }
 
         html.dark .discover-section__head a {
-            color: #e2e8f0;
+            color: #e2e8f0 !important;
+        }
+
+        html.dark .discover-section__head a:hover,
+        html.dark .discover-section__head a:focus-visible {
+            color: #94a3b8 !important;
+        }
+
+        html.dark .discover-section__head a:active {
+            color: #64748b !important;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .discover-section__head a {
+                transition: none;
+            }
         }
 
         .discover-section__body {
@@ -319,60 +348,17 @@
             }
         }
 
-        .discover-recommendations {
-            width: 100% !important;
-            max-width: 100% !important;
-            margin: 16px 0 0 0 !important;
-            padding: 0 !important;
-            overflow: hidden;
-            border-radius: 10px;
-            background: #ffffff;
-            box-shadow: none;
-        }
-
-        .dark .discover-recommendations {
-            background: rgb(2 6 23);
-        }
-
-        .discover-recommendations__head {
+        /* Oneriler artik Kullanicilar/Topluluklar ile AYNI .discover-section
+           kabini kullaniyor (ayni 18px kose, ayni baslik/govde) - once
+           kendi ayri 10px kose + alt-cizgili baslik deseni vardi, uc kutu
+           birbirine hic benzemiyordu (Tutarlilik/Familiarity ilkesi). Post
+           kartlari kendi kenarligini zaten tasidigi icin sadece aralarina
+           16px bosluk (sitenin geri kalanindaki space-y-4 ile ayni) yeterli -
+           once margin/padding 0 !important ile tamamen bastirilmisti. */
+        .discover-feed-list {
             display: flex;
-            align-items: center;
-            justify-content: flex-start;
-            min-height: 50px;
-            border-bottom: 1px solid #e5e7eb;
-            padding: 0 20px;
-            background: #ffffff;
-        }
-
-        .dark .discover-recommendations__head {
-            border-bottom-color: rgb(30 41 59);
-            background: rgb(2 6 23);
-        }
-
-        .discover-recommendations__title {
-            margin: 0;
-            color: #000000;
-            font-size: 16px;
-            font-weight: 400;
-            line-height: 1.2;
-        }
-
-        .dark .discover-recommendations__title {
-            color: #ffffff;
-        }
-
-        .discover-recommendations__list {
-            width: 100% !important;
-            max-width: 100% !important;
-            padding: 0 !important;
-            margin: 0 !important;
-        }
-
-        .discover-recommendations__item {
-            width: 100% !important;
-            max-width: 100% !important;
-            margin: 0 !important;
-            padding: 0 !important;
+            flex-direction: column;
+            gap: 16px;
         }
 
         @media (max-width: 640px) {
@@ -457,21 +443,6 @@
                 font-size: 12px !important;
             }
 
-            .discover-recommendations {
-                width: 100% !important;
-                max-width: 100% !important;
-                margin-top: 16px !important;
-                border-radius: 0 !important;
-            }
-
-            .discover-recommendations__head {
-                min-height: 48px;
-                padding: 0 16px;
-            }
-
-            .discover-recommendations__title {
-                font-size: 15px;
-            }
         }
     </style>
 
@@ -512,7 +483,7 @@
                     {{ __('site.search.users') }}
                 </h2>
 
-                <a href="{{ route('users.index') }}" class="shrink-0 text-slate-900 transition hover:text-slate-700 dark:text-slate-100 dark:hover:text-white">
+                <a href="{{ route('users.index') }}" class="shrink-0">
                     {{ __('site.discover_page.view_all') }}
                 </a>
             </div>
@@ -609,7 +580,7 @@
                     {{ __('site.common.communities') }}
                 </h2>
 
-                <a href="{{ route('blog.categories') }}" class="shrink-0 text-slate-900 transition hover:text-slate-700 dark:text-slate-100 dark:hover:text-white">
+                <a href="{{ route('blog.categories') }}" class="shrink-0">
                     {{ __('site.discover_page.view_all') }}
                 </a>
             </div>
@@ -691,30 +662,30 @@
         </section>
 
         {{-- Öneriler --}}
-        <section class="discover-recommendations">
-            <div class="discover-recommendations__head">
-                <h2 class="discover-recommendations__title">
+        <section class="discover-section">
+            <div class="discover-section__head">
+                <h2 class="alma-page-title alma-page-title--compact-card">
                     {{ __('site.post_show.recommendations') }}
                 </h2>
             </div>
 
-            <div class="discover-recommendations__list space-y-0">
-                @forelse($recommendedPosts as $post)
-                    <div class="discover-recommendations__item">
+            <div class="discover-section__body">
+                <div class="discover-feed-list">
+                    @forelse($recommendedPosts as $post)
                         @include('blog.post-card', [
                             'post' => $post,
                         ])
-                    </div>
 
-                    @include('partials.ads.feed-breaks', [
-                        'iteration' => $loop->iteration,
-                        'isLast' => $loop->last,
-                    ])
-                @empty
-                    <div class="pb-4 pt-4 text-center text-sm text-slate-500 dark:text-slate-400">
-                        {{ __('site.profile_page.empty_posts') }}
-                    </div>
-                @endforelse
+                        @include('partials.ads.feed-breaks', [
+                            'iteration' => $loop->iteration,
+                            'isLast' => $loop->last,
+                        ])
+                    @empty
+                        <div class="pb-4 pt-4 text-center text-sm text-slate-500 dark:text-slate-400">
+                            {{ __('site.profile_page.empty_posts') }}
+                        </div>
+                    @endforelse
+                </div>
             </div>
         </section>
     </div>
