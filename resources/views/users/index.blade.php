@@ -328,16 +328,18 @@
         @forelse ($users as $user)
             <div class="rounded-[26px] bg-white dark:bg-slate-900 px-4 py-3 shadow-sm ring-1 ring-slate-200/80 dark:ring-slate-700/80">
                 <div class="flex items-center justify-between gap-3">
-                    <a href="{{ route('users.show', $user) }}" class="flex min-w-0 items-center gap-3">
-                        <img src="{{ $user->profile_photo_url }}" alt="{{ $user->name }}" class="h-12 w-12 rounded-full object-cover">
+                    <div class="flex min-w-0 items-center gap-3">
+                        <a href="{{ route('users.show', $user) }}" class="shrink-0">
+                            <img src="{{ $user->profile_photo_url }}" alt="{{ $user->name }}" class="h-12 w-12 rounded-full object-cover">
+                        </a>
                         <div class="min-w-0 flex-1">
-                            <div class="flex items-center gap-1">
+                            <a href="{{ route('users.show', $user) }}" class="flex w-fit max-w-full items-center gap-1">
                                 <p class="truncate text-lg font-semibold leading-tight text-slate-900 dark:text-slate-100">{{ $user->name }}</p>
                                 <x-verification-badge :user="$user" class="inline-flex h-4 w-4 shrink-0 items-center justify-center" size="sm" />
-                            </div>
+                            </a>
                             <p class="truncate text-sm text-slate-500 dark:text-slate-400">{{ '@' . ($user->username ?: __('site.users.default_username')) }}</p>
                         </div>
-                    </a>
+                    </div>
 
                     @auth
                         @if(auth()->id() !== $user->id)
