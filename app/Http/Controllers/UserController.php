@@ -22,6 +22,10 @@ class UserController extends Controller
         $search = trim((string) $request->query('q', ''));
         $viewer = $request->user();
 
+        $sort = in_array((string) $request->query('sort', 'newest'), ['popular', 'newest', 'oldest'], true)
+            ? (string) $request->query('sort', 'newest')
+            : 'newest';
+
         $users = User::query()
             ->when($search !== '', function ($query) use ($search) {
                 $query->where(function ($inner) use ($search) {
@@ -35,7 +39,9 @@ class UserController extends Controller
                 ]);
             })
             ->withCount(['followers', 'followings'])
-            ->orderByDesc('id')
+            ->when($sort === 'popular', fn ($query) => $query->orderByDesc('followers_count')->orderByDesc('id'))
+            ->when($sort === 'oldest', fn ($query) => $query->orderBy('id'))
+            ->when($sort === 'newest', fn ($query) => $query->orderByDesc('id'))
             ->paginate(18)
             ->withQueryString();
 
@@ -45,6 +51,7 @@ class UserController extends Controller
         return view('users.index', [
             'users' => $users,
             'search' => $search,
+            'sort' => $sort,
             'popularTags' => $popularTags,
             'popularComments' => $popularComments,
         ]);
