@@ -1309,12 +1309,12 @@
         background: rgba(255, 255, 255, .82) !important;
         backdrop-filter: blur(20px) saturate(180%) !important;
         -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
-        box-shadow: 0 1px 0 rgba(255, 255, 255, .55) inset, 0 10px 28px rgba(15, 23, 42, .08) !important;
+        box-shadow: none !important;
     }
 
     body.alma-app.route-search .og-search-bar:focus-within {
         border-color: rgba(217, 221, 227, .92) !important;
-        box-shadow: 0 1px 0 rgba(255, 255, 255, .65) inset, 0 10px 28px rgba(15, 23, 42, .1) !important;
+        box-shadow: none !important;
     }
 
     html body.alma-app.route-search #og-search-page-input.og-search-bar-input {
@@ -1577,7 +1577,7 @@
     html.dark body.alma-app.route-search .og-search-bar {
         border-color: rgba(63, 63, 70, .76) !important;
         background: rgba(24, 24, 27, .82) !important;
-        box-shadow: 0 1px 0 rgba(255, 255, 255, .08) inset, 0 10px 28px rgba(0, 0, 0, .22) !important;
+        box-shadow: none !important;
     }
 
     html.dark body.alma-app.route-search #og-search-page-input.og-search-bar-input {
