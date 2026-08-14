@@ -488,12 +488,15 @@
         /* Partial yerine bu sayfada dogrudan uretilen gercek beyaz kapsul. */
         .tags-page-title.tags-page-title {
             display: flex !important;
+            box-sizing: border-box !important;
+            position: relative !important;
+            z-index: 3 !important;
             width: 100% !important;
             min-height: 38px !important;
             align-items: center !important;
             gap: 0 !important;
             padding: 2px 10px !important;
-            border: 1px solid #dfe3e8 !important;
+            border: 1px solid #cbd5e1 !important;
             border-radius: 999px !important;
             background: #ffffff !important;
             background-color: #ffffff !important;
@@ -566,15 +569,6 @@
             background: rgba(246, 244, 240, 0.62);
             backdrop-filter: blur(8px);
             -webkit-backdrop-filter: blur(8px);
-        }
-
-        body.route-tags .page-title-identity__edge-blur--bottom {
-            top: calc(100% - 1px);
-            right: 0;
-            left: 0;
-            width: 100%;
-            height: 5px;
-            transform: none;
         }
 
         body.route-tags [data-tags-search-panel] {
@@ -752,7 +746,7 @@
                     identity.style.setProperty('background', '#ffffff', 'important');
                     identity.style.setProperty('background-color', '#ffffff', 'important');
                     identity.style.setProperty('background-image', 'none', 'important');
-                    identity.style.setProperty('border', '1px solid #e1e5eb', 'important');
+                    identity.style.setProperty('border', '1px solid #dfe3e8', 'important');
                     identity.style.setProperty('border-radius', '999px', 'important');
                     identity.style.setProperty('backdrop-filter', 'none', 'important');
                     identity.style.setProperty('-webkit-backdrop-filter', 'none', 'important');
