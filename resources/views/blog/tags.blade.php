@@ -484,7 +484,7 @@
                 min-height: 34px;
                 padding: 2px 10px;
                 border-radius: 16px;
-                background: rgba(255, 255, 255, .88);
+                background: #ffffff;
                 backdrop-filter: blur(20px) saturate(180%);
                 -webkit-backdrop-filter: blur(20px) saturate(180%);
             }
