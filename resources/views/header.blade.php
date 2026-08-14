@@ -2594,6 +2594,7 @@
 
                 const applyTransform = () => {
                     header.style.transform = hiddenAmount > 0 ? `translateY(-${hiddenAmount}px)` : '';
+                    document.body.style.setProperty('--route-header-height', `${headerHeight - hiddenAmount}px`);
 
                     if (identityBox) {
                         const identityTop = headerHeight - hiddenAmount + GAP;
@@ -2673,6 +2674,7 @@
                 // yoksa bir sonraki scroll olayina kadar top:0'da kalip
                 // basligin ustune biner.
                 syncSpacerHeight();
+                document.body.style.setProperty('--route-header-height', `${headerHeight}px`);
                 applyTransform();
             })();
         </script>

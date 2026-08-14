@@ -2799,7 +2799,25 @@
             height: 112px;
         }
 
+        body.route-tags::after {
+            content: '';
+            position: fixed;
+            z-index: 42;
+            top: var(--route-header-height, 64px);
+            right: 0;
+            left: 0;
+            height: 10px;
+            background: rgba(255, 255, 255, .68);
+            backdrop-filter: blur(100px) saturate(180%);
+            -webkit-backdrop-filter: blur(100px) saturate(180%);
+            pointer-events: none;
+        }
+
         html.dark body.route-tags::before {
+            background: rgba(24, 24, 27, .68);
+        }
+
+        html.dark body.route-tags::after {
             background: rgba(24, 24, 27, .68);
         }
 
