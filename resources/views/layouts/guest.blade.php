@@ -1502,7 +1502,6 @@
                                    @endif"
                          @endif>
                         <section class="layout-main lg:col-span-12 guest-content" @if($themeLayout?->main_column_bg_color) style="background: {{ $themeLayout->main_column_bg_color }};" @endif>
-                            @include('partials.community-feed')
                             <x-page-builder />
                             {{ $slot }}
                         </section>

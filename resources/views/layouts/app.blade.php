@@ -7297,7 +7297,6 @@
 
             <main class="layout-main">
                 @unless ($__env->hasSection('hide_feed_header') || $isMessagesRoute || request()->routeIs('home'))
-                    @include('partials.community-feed')
                 @endunless
 
                 @include('partials.ads.context-slot', [
