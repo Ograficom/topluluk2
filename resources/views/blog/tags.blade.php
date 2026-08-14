@@ -165,6 +165,29 @@
             opacity: .55;
         }
 
+        /* Post-show yukleme dalgasi: mevcut kartlar da iskelet satirlari gibi
+           sabit boyutlarini koruyarak ustunden yumusak bir shimmer gecirir. */
+        .tags-list.is-loading .tag-row:not(.tag-row--skeleton) {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tags-list.is-loading .tag-row:not(.tag-row--skeleton)::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            z-index: 2;
+            pointer-events: none;
+            background: linear-gradient(105deg, transparent 12%, rgba(255, 255, 255, .62) 45%, transparent 78%);
+            background-size: 220% 100%;
+            animation: ografiImgWave 1.15s ease-in-out infinite;
+        }
+
+        html.dark .tags-list.is-loading .tag-row:not(.tag-row--skeleton)::after {
+            background: linear-gradient(105deg, transparent 12%, rgba(255, 255, 255, .12) 45%, transparent 78%);
+            background-size: 220% 100%;
+        }
+
         .tags-list__empty {
             padding: 24px 0;
             text-align: center;
