@@ -2531,6 +2531,7 @@
 
                 const identityBox = document.querySelector('.og-search-identity, .page-title-identity');
                 const identitySpacer = document.querySelector('[data-identity-spacer]');
+                const searchPanel = document.querySelector('[data-tags-search-panel], [data-users-search-panel]');
                 const contentList = document.querySelector('[data-search-results-container], [data-tags-list], [data-users-list]');
                 const edgeBlurEls = identityBox
                     ? Array.from(identityBox.querySelectorAll('.page-title-identity__edge-blur, .og-search-identity__edge-blur'))
@@ -2578,6 +2579,7 @@
                     hiddenAmount = 0;
                     header.style.transform = '';
                     if (identityBox) identityBox.style.top = '';
+                    if (searchPanel) searchPanel.style.top = '';
                     if (contentList) contentList.style.filter = '';
                     edgeBlurEls.forEach((el) => {
                         el.style.backdropFilter = '';
@@ -2587,7 +2589,14 @@
 
                 const applyTransform = () => {
                     header.style.transform = hiddenAmount > 0 ? `translateY(-${hiddenAmount}px)` : '';
-                    if (identityBox) identityBox.style.top = `${headerHeight - hiddenAmount + GAP}px`;
+
+                    if (identityBox) {
+                        const identityTop = headerHeight - hiddenAmount + GAP;
+                        identityBox.style.top = `${identityTop}px`;
+                        if (searchPanel) {
+                            searchPanel.style.top = `${identityTop + identityBox.offsetHeight}px`;
+                        }
+                    }
 
                     const speedRatio = clamp(Math.abs(lastDelta) / MAX_BLUR_SPEED, 0, 1);
 

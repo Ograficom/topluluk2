@@ -2994,6 +2994,37 @@
                 transition: filter .22s ease-out;
                 will-change: filter;
             }
+
+            /* Etiketler/Kullanicilar arama paneli - once normal akista, kimlik
+               kutusunun hemen altinda oturuyordu. Kutu sabitlenip (position:
+               fixed) sayfa kaydirildiginda hep ayni yerde kalinca, bu panel
+               HALA belgenin orijinal (kaydirilmis, ekran disi) noktasinda
+               kaliyordu - ikon tiklanip input.focus() cagrilinca tarayici
+               onu gorunur kilmak icin sayfayi TEPEYE zipratiyordu (input
+               ekran disindaydi). Panel de artik sabit ve kutunun TAM
+               altinda ("top" JS'te kutununkiyle senkron) - artik sayfanin
+               neresinde olursak olalim arama orada, oldugu yerde aciliyor,
+               hicbir zipla yok. */
+            body.route-tags [data-tags-search-panel],
+            body.route-users [data-users-search-panel] {
+                position: fixed;
+                left: 0;
+                right: 0;
+                z-index: 44;
+                padding-left: max(var(--alma-page-inline), env(safe-area-inset-left));
+                padding-right: max(var(--alma-page-inline), env(safe-area-inset-right));
+                box-sizing: border-box;
+            }
+
+            [data-search-panel-spacer] {
+                display: none;
+            }
+
+            body.route-tags [data-search-panel-spacer],
+            body.route-users [data-search-panel-spacer] {
+                display: block;
+                transition: height .2s ease;
+            }
         }
 
         .site-header-shell {

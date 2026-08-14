@@ -447,6 +447,7 @@
                 <p class="sr-only" role="status" aria-live="polite" data-tags-status></p>
             </div>
         </div>
+        <div data-search-panel-spacer aria-hidden="true"></div>
 
         <div class="space-y-4 tags-list" data-tags-list data-total="{{ $tags->total() }}">
             @forelse ($tags as $tag)
@@ -471,15 +472,32 @@
     @push('scripts')
         <script>
             (() => {
+                // Panel artik position:fixed (header.blade.php'deki paylasilan
+                // script kutunun hemen altina "top" ile sabitliyor) - normal
+                // akistan ciktigi icin altindaki icerigin ziplamamasi icin bu
+                // spacer'i panel acilip kapanirken elle (an-be-an, CSS
+                // transition ile) buyutup kucultuyoruz.
                 const panel = document.querySelector('[data-tags-search-panel]');
                 const trigger = document.querySelector('[data-tags-search-trigger]');
                 const input = document.querySelector('[data-tags-search-input]');
+                const inner = panel?.querySelector('.tags-search-panel__inner');
+                const panelSpacer = document.querySelector('[data-search-panel-spacer]');
+
+                const syncPanelSpacer = (open) => {
+                    if (!panelSpacer || !inner) return;
+                    panelSpacer.style.height = open ? `${inner.scrollHeight}px` : '0px';
+                };
 
                 if (panel && trigger && input) {
+                    if (panel.classList.contains('is-open')) {
+                        syncPanelSpacer(true);
+                    }
+
                     trigger.addEventListener('click', () => {
                         const willOpen = !panel.classList.contains('is-open');
                         panel.classList.toggle('is-open', willOpen);
                         trigger.setAttribute('aria-expanded', willOpen ? 'true' : 'false');
+                        syncPanelSpacer(willOpen);
                         if (willOpen) {
                             window.requestAnimationFrame(() => input.focus());
                         }
