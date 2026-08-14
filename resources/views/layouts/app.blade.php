@@ -3072,7 +3072,16 @@
                 box-shadow: 0 8px 24px rgba(15, 23, 42, .08);
                 isolation: isolate;
                 overflow: visible;
-                min-height: 52px;
+                min-height: 0;
+            }
+
+            body.route-tags [data-tags-search-panel]:not(.is-open) {
+                display: none;
+                height: 0;
+                min-height: 0;
+                padding-top: 0;
+                padding-bottom: 0;
+                box-shadow: none;
             }
 
             /* Formun disinda kalan yan/ust/alt padding degerleri de ayni
