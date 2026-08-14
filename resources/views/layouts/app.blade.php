@@ -2927,8 +2927,9 @@
                 left: 0;
                 right: 0;
                 pointer-events: none;
-                backdrop-filter: blur(20px) saturate(180%);
-                -webkit-backdrop-filter: blur(20px) saturate(180%);
+                backdrop-filter: blur(16px) saturate(180%);
+                -webkit-backdrop-filter: blur(16px) saturate(180%);
+                background: rgba(255, 255, 255, .72);
                 transition: backdrop-filter .22s ease-out, -webkit-backdrop-filter .22s ease-out;
             }
 
@@ -2936,10 +2937,7 @@
             body.route-tags .page-title-identity__edge-blur--bottom,
             body.route-users .page-title-identity__edge-blur--bottom {
                 top: 100%;
-                height: 28px;
-                background: linear-gradient(to bottom, rgba(255, 255, 255, .55), rgba(255, 255, 255, 0));
-                mask-image: linear-gradient(to bottom, #000 0%, transparent 100%);
-                -webkit-mask-image: linear-gradient(to bottom, #000 0%, transparent 100%);
+                height: 2px;
             }
 
             /* --top KASITLI olarak mask-image ile solmuyor (bottom'un
@@ -2952,14 +2950,13 @@
             body.route-tags .page-title-identity__edge-blur--top,
             body.route-users .page-title-identity__edge-blur--top {
                 bottom: 100%;
-                height: 10px;
-                background: rgba(255, 255, 255, .72);
+                height: 2px;
             }
 
             html.dark body.route-search .og-search-identity__edge-blur--bottom,
             html.dark body.route-tags .page-title-identity__edge-blur--bottom,
             html.dark body.route-users .page-title-identity__edge-blur--bottom {
-                background: linear-gradient(to bottom, rgba(24, 24, 27, .55), rgba(24, 24, 27, 0));
+                background: rgba(24, 24, 27, .72);
             }
 
             html.dark body.route-search .og-search-identity__edge-blur--top,
@@ -3025,7 +3022,7 @@
             body.route-tags [data-tags-search-panel] {
                 padding-top: 3px;
                 padding-bottom: 5px;
-                background-color: rgba(255, 255, 255, .88) !important;
+                background-color: rgba(255, 255, 255, .82) !important;
                 backdrop-filter: blur(20px) saturate(180%);
                 -webkit-backdrop-filter: blur(20px) saturate(180%);
                 box-shadow: 0 8px 24px rgba(15, 23, 42, .08);
@@ -3043,7 +3040,7 @@
                 right: 0;
                 bottom: 0;
                 left: 0;
-                background-color: rgba(255, 255, 255, .88);
+                background-color: rgba(255, 255, 255, .82);
                 backdrop-filter: blur(20px) saturate(180%);
                 -webkit-backdrop-filter: blur(20px) saturate(180%);
                 pointer-events: none;
@@ -3055,12 +3052,12 @@
             }
 
             html.dark body.route-tags [data-tags-search-panel] {
-                background-color: rgba(24, 24, 27, .88) !important;
+                background-color: rgba(24, 24, 27, .82) !important;
                 box-shadow: 0 8px 24px rgba(0, 0, 0, .22);
             }
 
             html.dark body.route-tags [data-tags-search-panel]::before {
-                background-color: rgba(24, 24, 27, .88);
+                background-color: rgba(24, 24, 27, .82);
             }
 
             @media (prefers-reduced-transparency: reduce) {
