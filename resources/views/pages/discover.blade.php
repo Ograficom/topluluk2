@@ -358,7 +358,22 @@
         .discover-feed-list {
             display: flex;
             flex-direction: column;
-            gap: 16px;
+            gap: 14px !important;
+            background: #f6f4f0;
+        }
+
+        /* Kartlar beyaz oldugu icin beyaz section zemini uzerindeki gap
+           gorunmuyordu. Liste zemini sayfa rengine donerek her iki post
+           arasinda gercek, okunabilir bir ayirici serit olusturur. Kartlarin
+           genel post stillerinden gelen dikey margin'leri de bu ritmi ezemez. */
+        .discover-feed-list > [data-post-card-shell] {
+            margin-top: 0 !important;
+            margin-bottom: 0 !important;
+        }
+
+        html.dark .discover-feed-list,
+        .dark .discover-feed-list {
+            background: #020817;
         }
 
         /* [data-post-card-shell]'in kendi stil bloğunda (blog/post-card.blade.php,
