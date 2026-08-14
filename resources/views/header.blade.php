@@ -2524,7 +2524,7 @@
                 const header = document.querySelector('[data-site-header]');
                 if (!header) return;
 
-                const targetRouteClasses = ['route-search', 'route-tags', 'route-users', 'route-sss'];
+                const targetRouteClasses = ['route-search', 'route-tags', 'route-users', 'route-sss', 'route-page'];
                 if (!targetRouteClasses.some((cls) => document.body.classList.contains(cls))) return;
 
                 if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
@@ -2532,7 +2532,7 @@
                 const identityBox = document.querySelector('.og-search-identity, .page-title-identity');
                 const identitySpacer = document.querySelector('[data-identity-spacer]');
                 const searchPanel = document.querySelector('[data-search-page-panel], [data-tags-search-panel], [data-users-search-panel], [data-faq-search-panel]');
-                const contentList = document.querySelector('[data-search-results-container], [data-tags-list], [data-users-list], [data-faq-list]');
+                const contentList = document.querySelector('[data-search-results-container], [data-tags-list], [data-users-list], [data-faq-list], [data-static-page-content]');
                 // Kimlik kutusunun VE arama panelinin kendi __edge-blur
                 // cocuklari - ayni class isimlerini paylastiklari icin tek
                 // sorguda ikisi de yakalaniyor, panel acilinca (skill #12:
