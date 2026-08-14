@@ -311,39 +311,87 @@
             }
         }
 
-        /* Site genelindeki "body.alma-app :where(input,textarea,select)
-           :not(#comments *) {background:var(--ui-surface-muted) !important}"
-           resetiyle ayni ozgulluk sorunu (bkz. Kullanicilar sayfasi arama
-           kutusu) - input#id + iki class + input turu = (id:1, class:2,
-           type:1), o kuralin (id:1, class:1, type:1) class katmaninda
-           gececek sekilde eziyor. Odakta (Response ilkesi - aninda, surekli
-           geri bildirim) marka mavisiyle halka belirir. */
-        input#discover-search-input.discover-search-input.discover-search-input {
-            background: #ffffff !important;
-            border-color: #e2e8f0 !important;
-            color: #334155 !important;
-            box-shadow: none !important;
-            transition: border-color .15s ease, box-shadow .15s ease;
+        /* Arama sayfasindaki arama kapsulunun aynisi: buyuk beyaz section
+           yerine 40px yuksekliginde, golgesiz ve blur'lu tek bir yuzey. */
+        .discover-search-panel {
+            width: 100%;
+            padding: 0 14px;
         }
 
-        input#discover-search-input.discover-search-input.discover-search-input:focus {
-            border-color: #2563eb !important;
-            box-shadow: 0 0 0 3px rgba(37, 99, 235, .15) !important;
+        .discover-search-bar {
+            position: relative;
+            display: flex;
+            box-sizing: border-box;
+            width: 100%;
+            height: 40px;
+            min-height: 40px;
+            align-items: center;
+            padding: 4px 40px 4px 14px;
+            border: 1px solid rgba(217, 221, 227, .78);
+            border-radius: 999px;
+            background: rgba(255, 255, 255, .82);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            box-shadow: none;
+            transition: border-color .15s ease;
+        }
+
+        .discover-search-bar:focus-within {
+            border-color: rgba(217, 221, 227, .92);
+            box-shadow: none;
+        }
+
+        input#discover-search-input.discover-search-input.discover-search-input {
+            width: 100% !important;
+            height: 100% !important;
+            min-height: 0 !important;
+            padding: 6px 0 !important;
+            border: 0 !important;
+            border-radius: 0 !important;
+            background: transparent !important;
+            box-shadow: none !important;
+            color: #050505 !important;
+            font-size: 14px !important;
+            font-weight: 400 !important;
+            line-height: 1.4 !important;
+            outline: none !important;
+        }
+
+        input#discover-search-input.discover-search-input.discover-search-input::placeholder {
+            color: #9ca3af !important;
+            font-size: 14px !important;
+        }
+
+        .discover-search-icon {
+            position: absolute !important;
+            top: 50% !important;
+            right: 4px !important;
+            display: inline-flex !important;
+            width: 32px !important;
+            height: 32px !important;
+            align-items: center;
+            justify-content: center;
+            color: #52525b;
+            font-size: 16px;
+            pointer-events: none;
+            transform: translateY(-50%) !important;
+        }
+
+        html.dark .discover-search-bar {
+            border-color: rgba(63, 63, 70, .76);
+            background: rgba(24, 24, 27, .82);
         }
 
         html.dark input#discover-search-input.discover-search-input.discover-search-input {
-            background: rgb(15 23 42) !important;
-            border-color: rgb(30 41 59) !important;
-            color: #ffffff !important;
+            color: #fafafa !important;
         }
 
-        html.dark input#discover-search-input.discover-search-input.discover-search-input:focus {
-            border-color: #3b82f6 !important;
-            box-shadow: 0 0 0 3px rgba(59, 130, 246, .2) !important;
+        html.dark .discover-search-icon {
+            color: #cbd5e1;
         }
 
         @media (prefers-reduced-motion: reduce) {
-            input#discover-search-input.discover-search-input.discover-search-input {
+            .discover-search-bar {
                 transition: none;
             }
         }
@@ -459,6 +507,11 @@
                 padding-right: 0 !important;
             }
 
+            .discover-search-panel {
+                padding-right: 12px;
+                padding-left: 12px;
+            }
+
             .discover-section {
                 width: 100% !important;
                 max-width: 100% !important;
@@ -518,28 +571,21 @@
 
     <div class="discover-page-shell space-y-4">
 
-        {{-- Arama Kutusu --}}
-        <section class="discover-section">
-            <div class="p-4 sm:p-5">
-                <form action="{{ route('search') }}" method="GET" class="relative">
-                    <span class="pointer-events-none absolute inset-y-0 left-4 flex items-center text-slate-400 dark:text-slate-500">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2">
-                            <circle cx="11" cy="11" r="7"></circle>
-                            <path d="m20 20-3.5-3.5"></path>
-                        </svg>
-                    </span>
-
-                    <input
-                        type="search"
-                        id="discover-search-input"
-                        name="q"
-                        value="{{ request('q') }}"
-                        placeholder="{{ __('site.header.search_placeholder') }}..."
-                        class="discover-search-input h-11 w-full rounded-[16px] border pl-12 pr-4 text-sm text-slate-700 outline-none placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-500"
-                        autocomplete="off"
-                    >
-                </form>
-            </div>
+        {{-- Arama sayfasiyla ortak arama kapsulu --}}
+        <section class="discover-search-panel">
+            <form action="{{ route('search') }}" method="GET" class="discover-search-bar" role="search" aria-label="{{ __('site.common.search') }}">
+                <input
+                    type="search"
+                    id="discover-search-input"
+                    name="q"
+                    value="{{ request('q') }}"
+                    placeholder="{{ __('site.search.placeholder') }}"
+                    aria-label="{{ __('site.search.placeholder') }}"
+                    class="discover-search-input"
+                    autocomplete="off"
+                >
+                <iconify-icon icon="lucide:search" class="discover-search-icon" aria-hidden="true"></iconify-icon>
+            </form>
         </section>
 
         @include('partials.ads.slot', [
