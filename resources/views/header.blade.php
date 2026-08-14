@@ -2505,6 +2505,78 @@
                     }
                 });
             });
+
+            (() => {
+                // Arama/Etiketler/Kullanicilar sayfalarinda mobilde: asagi
+                // kaydirinca basligi gizle, yukari kaydirinca geri getir -
+                // Twitter/iOS Safari tarzi "hide on scroll" davranisi.
+                // Kaydirma miktariyla 1:1 takip ediyor (Response + Direct
+                // manipulation ilkeleri) - esik degeri yerine surekli geri
+                // bildirim, ani "gorunur/gizli" ziplamasi yerine akici bir
+                // his veriyor. Sayfanin kendi kimlik kutusu (page-title-
+                // identity/og-search-identity) CSS ile sticky top:0, ama bu
+                // top degeri her karede baslikla AYNI miktarda guncelleniyor
+                // (headerHeight - hiddenAmount) - yoksa baslik geri gelirken
+                // ikisi ayni yerde (top:0) ust uste biner, kimlik kutusu
+                // baslikta kalirken (yuksek z-index) tamamen kaybolurdu.
+                const header = document.querySelector('[data-site-header]');
+                if (!header) return;
+
+                const targetRouteClasses = ['route-search', 'route-tags', 'route-users'];
+                if (!targetRouteClasses.some((cls) => document.body.classList.contains(cls))) return;
+
+                if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+                const identityBox = document.querySelector('.og-search-identity, .page-title-identity');
+                const mobileQuery = window.matchMedia('(max-width: 640px)');
+                const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
+
+                let hiddenAmount = 0;
+                let headerHeight = header.offsetHeight;
+                let lastScrollY = window.scrollY;
+                let ticking = false;
+
+                const resetHeader = () => {
+                    hiddenAmount = 0;
+                    header.style.transform = '';
+                    if (identityBox) identityBox.style.top = '';
+                };
+
+                const applyTransform = () => {
+                    header.style.transform = hiddenAmount > 0 ? `translateY(-${hiddenAmount}px)` : '';
+                    if (identityBox) identityBox.style.top = `${headerHeight - hiddenAmount}px`;
+                    ticking = false;
+                };
+
+                const onScroll = () => {
+                    if (!mobileQuery.matches) {
+                        if (hiddenAmount !== 0) resetHeader();
+                        lastScrollY = window.scrollY;
+                        return;
+                    }
+
+                    const currentY = window.scrollY;
+                    const delta = currentY - lastScrollY;
+                    lastScrollY = currentY;
+
+                    hiddenAmount = currentY <= 0 ? 0 : clamp(hiddenAmount + delta, 0, headerHeight);
+
+                    if (!ticking) {
+                        ticking = true;
+                        window.requestAnimationFrame(applyTransform);
+                    }
+                };
+
+                window.addEventListener('resize', () => {
+                    headerHeight = header.offsetHeight;
+                });
+
+                mobileQuery.addEventListener('change', (event) => {
+                    if (!event.matches) resetHeader();
+                });
+
+                window.addEventListener('scroll', onScroll, { passive: true });
+            })();
         </script>
     @endpush
 @endonce

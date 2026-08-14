@@ -2852,6 +2852,30 @@
             z-index: 50;
         }
 
+        /* Arama/Etiketler/Kullanicilar sayfalarinda mobilde: JS (header.blade.php)
+           basligi kaydirma yonune gore transform: translateY() ile gizleyip
+           gosteriyor - will-change tarayiciya bu animasyonu onceden hazirlamasi
+           icin ipucu verir (Frame-level smoothness ilkesi). Sayfanin kendi
+           kimlik kutusu (page-title-identity / og-search-identity) da sticky
+           bir katman (z-index'i baslikdan dusuk: 45); "top" degeri ayni JS
+           tarafindan basligin o anki gorunur yuksekligiyle (headerHeight -
+           hiddenAmount) senkronize tutuluyor - yoksa baslik geri gelirken
+           ikisi ayni noktada (top:0) ust uste biner, kimlik kutusu tamamen
+           kaybolurdu. */
+        body.route-search .site-header,
+        body.route-tags .site-header,
+        body.route-users .site-header {
+            will-change: transform;
+        }
+
+        body.route-search .og-search-identity,
+        body.route-tags .page-title-identity,
+        body.route-users .page-title-identity {
+            position: sticky;
+            top: 0;
+            z-index: 45;
+        }
+
         .site-header-shell {
             min-height: 64px;
             gap: 12px;
@@ -6930,9 +6954,11 @@
 @php($isPostShowRoute = request()->routeIs('blog.post'))
 @php($isProfileRoute = request()->routeIs('users.show'))
 @php($isSearchRoute = request()->routeIs('search'))
+@php($isTagsRoute = request()->routeIs('blog.tags'))
+@php($isUsersRoute = request()->routeIs('users.index'))
 
 <body
-    class="bg-[#fafafa] text-slate-900 font-sans antialiased theme-minimal alma-app {{ request()->routeIs('home') ? 'route-home' : '' }} {{ request()->routeIs('discover') ? 'route-discover' : '' }} {{ request()->routeIs('video') ? 'route-video' : '' }} {{ $isCategoryRoute ? 'route-category' : '' }} {{ $isPostShowRoute ? 'route-post-show' : '' }} {{ $isProfileRoute ? 'route-profile' : '' }} {{ $isSearchRoute ? 'route-search' : '' }}"
+    class="bg-[#fafafa] text-slate-900 font-sans antialiased theme-minimal alma-app {{ request()->routeIs('home') ? 'route-home' : '' }} {{ request()->routeIs('discover') ? 'route-discover' : '' }} {{ request()->routeIs('video') ? 'route-video' : '' }} {{ $isCategoryRoute ? 'route-category' : '' }} {{ $isPostShowRoute ? 'route-post-show' : '' }} {{ $isProfileRoute ? 'route-profile' : '' }} {{ $isSearchRoute ? 'route-search' : '' }} {{ $isTagsRoute ? 'route-tags' : '' }} {{ $isUsersRoute ? 'route-users' : '' }}"
     data-mentions-endpoint="{{ auth()->check() ? route('mentions.users') : '' }}"
 >
     @include('partials.toasts')
