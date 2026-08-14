@@ -2899,6 +2899,13 @@
             z-index: 45;
         }
 
+        body.route-tags .page-title-identity {
+            background-color: rgba(255, 255, 255, .82);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            overflow: visible;
+        }
+
         body.route-search [data-identity-spacer],
         body.route-tags [data-identity-spacer],
         body.route-users [data-identity-spacer] {
@@ -3028,6 +3035,7 @@
                 box-shadow: 0 8px 24px rgba(15, 23, 42, .08);
                 isolation: isolate;
                 overflow: visible;
+                min-height: 52px;
             }
 
             /* Formun disinda kalan yan/ust/alt padding degerleri de ayni
@@ -3043,6 +3051,23 @@
                 background-color: rgba(255, 255, 255, .82);
                 backdrop-filter: blur(20px) saturate(180%);
                 -webkit-backdrop-filter: blur(20px) saturate(180%);
+                pointer-events: none;
+            }
+
+            /* Yan gutter'lar formun degil, acilan panelin yuzeyidir. Formu
+               daraltip paneli tam viewport genisliginde tutmak, blur'un sag
+               ve solda kesin olarak devam etmesini saglar. */
+            body.route-tags [data-tags-search-panel]::after {
+                content: '';
+                position: absolute;
+                z-index: 0;
+                top: 0;
+                right: 0;
+                bottom: 0;
+                left: 0;
+                border-top: 1px solid rgba(255, 255, 255, .46);
+                border-bottom: 2px solid rgba(255, 255, 255, .66);
+                box-shadow: 0 10px 22px rgba(15, 23, 42, .06);
                 pointer-events: none;
             }
 
