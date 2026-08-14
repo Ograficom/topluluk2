@@ -484,18 +484,18 @@
                 min-height: 34px;
                 padding: 2px 10px;
                 border-radius: 16px;
-                background: rgba(246, 244, 240, 0.70);
-                backdrop-filter: blur(12px);
-                -webkit-backdrop-filter: blur(12px);
+                background: rgba(255, 255, 255, .88);
+                backdrop-filter: blur(20px) saturate(180%);
+                -webkit-backdrop-filter: blur(20px) saturate(180%);
             }
 
             body.route-tags [data-tags-search-panel] {
                 position: sticky;
                 top: 104px;
                 z-index: 29;
-                background: rgba(246, 244, 240, 0.70);
-                backdrop-filter: blur(12px);
-                -webkit-backdrop-filter: blur(12px);
+                background: rgba(255, 255, 255, .82);
+                backdrop-filter: blur(20px) saturate(180%);
+                -webkit-backdrop-filter: blur(20px) saturate(180%);
             }
 
             body.route-tags [data-tags-search-panel]::before {
@@ -504,8 +504,8 @@
                 inset: 0;
                 z-index: 0;
                 background: transparent;
-                backdrop-filter: blur(12px);
-                -webkit-backdrop-filter: blur(12px);
+                backdrop-filter: blur(20px) saturate(180%);
+                -webkit-backdrop-filter: blur(20px) saturate(180%);
                 pointer-events: none;
             }
 
@@ -521,18 +521,18 @@
                 left: 0;
                 height: 2px;
                 z-index: 2;
-                background: rgba(246, 244, 240, 0.70);
-                backdrop-filter: blur(12px);
-                -webkit-backdrop-filter: blur(12px);
+                background: rgba(255, 255, 255, .72);
+                backdrop-filter: blur(16px) saturate(180%);
+                -webkit-backdrop-filter: blur(16px) saturate(180%);
                 pointer-events: none;
             }
 
             body.route-tags .page-title-identity__edge-blur--top {
                 bottom: 100%;
                 height: 44px;
-                background: rgba(246, 244, 240, 0.70);
-                backdrop-filter: blur(12px);
-                -webkit-backdrop-filter: blur(12px);
+                background: rgba(255, 255, 255, .82);
+                backdrop-filter: blur(100px) saturate(180%);
+                -webkit-backdrop-filter: blur(100px) saturate(180%);
             }
 
             body.route-tags .page-title-identity__edge-blur--bottom {
