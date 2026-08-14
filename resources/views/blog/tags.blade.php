@@ -88,6 +88,7 @@
            grid-satir buyume/kuculme animasyonu: acilirken "materyal" gibi
            belirir, kapanirken katlanir. */
         .tags-search-panel {
+            position: relative;
             display: grid;
             grid-template-rows: 0fr;
             opacity: 0;
@@ -467,13 +468,12 @@
             background-size: 200% 100%;
         }
 
-        /* Etiket baslik kutusu her ekranda beyaz kalir. Kutunun ustundeki
-           bosluk, sayfanin #f6f4f0 arka plan rengini koruyan yari saydam
-           katmanla tamamen kaplanir; arkadan gecen icerik hafifce bulanir. */
+        /* Etiket baslik kutusu: tamamen opak beyaz + ince gri sinir, blur/edge
+           katmani yok - kutunun altinda "ince beyaz serit" birakan
+           edge-blur tamamen kaldirildi (bkz. asagidaki not). */
         .page-title-identity.page-title-identity {
             overflow: visible;
-            isolation: isolate;
-            border: 1px solid #e1e5eb !important;
+            border: 1px solid #e2e5ea !important;
             border-radius: 999px !important;
             background: #ffffff !important;
             background-color: #ffffff !important;
@@ -487,16 +487,15 @@
 
         /* Partial yerine bu sayfada dogrudan uretilen gercek beyaz kapsul. */
         .tags-page-title.tags-page-title {
+            position: relative;
             display: flex !important;
             box-sizing: border-box !important;
-            position: relative !important;
-            z-index: 3 !important;
             width: 100% !important;
-            min-height: 38px !important;
+            min-height: 40px !important;
             align-items: center !important;
             gap: 0 !important;
-            padding: 2px 10px !important;
-            border: 1px solid #cbd5e1 !important;
+            padding: 2px 12px !important;
+            border: 1px solid #e2e5ea !important;
             border-radius: 999px !important;
             background: #ffffff !important;
             background-color: #ffffff !important;
@@ -505,9 +504,33 @@
             opacity: 1 !important;
         }
 
+        /* Yalnizca beyaz baslik kutusunun USTUNDE kalan 16px main boslugu.
+           Kapsulun beyaz zemini ve ince gri siniri kesinlikle degismez. */
+        .tags-page-title.tags-page-title::before {
+            content: '' !important;
+            display: block !important;
+            position: absolute;
+            right: 0;
+            bottom: 100%;
+            left: 0;
+            z-index: 0;
+            width: 100%;
+            height: 16px;
+            background: rgba(246, 244, 240, .64);
+            backdrop-filter: blur(12px) saturate(115%);
+            -webkit-backdrop-filter: blur(12px) saturate(115%);
+            pointer-events: none;
+        }
+
+        .tags-page-title__back,
+        .tags-page-title__text,
+        .tags-page-title__trailing {
+            position: relative;
+            z-index: 1;
+        }
+
         .tags-page-title__back {
             position: relative;
-            z-index: 3;
             display: inline-flex;
             flex: 0 0 auto;
             width: 34px;
@@ -529,8 +552,6 @@
         }
 
         .tags-page-title__text {
-            position: relative;
-            z-index: 3;
             min-width: 0;
             color: #111111 !important;
             font-size: 18px;
@@ -540,35 +561,9 @@
         }
 
         .tags-page-title__trailing {
-            position: relative;
-            z-index: 3;
             display: flex;
             align-items: center;
             margin-left: auto;
-        }
-
-        body.route-tags .page-title-identity__edge-blur {
-            display: block;
-            position: absolute;
-            z-index: -1;
-            pointer-events: none;
-            background: rgba(246, 244, 240, 0.62);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-        }
-
-        /* Blur yalnizca baslik kutusunun ve main sutununun genisliginde kalir;
-           sol menuye veya sag panele tasmaz. */
-        body.route-tags .page-title-identity__edge-blur--top {
-            right: 0;
-            bottom: -6px;
-            left: 0;
-            width: 100%;
-            height: calc(100% + 18px);
-            transform: none;
-            background: rgba(246, 244, 240, 0.62);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
         }
 
         body.route-tags [data-tags-search-panel] {
@@ -580,6 +575,24 @@
         body.route-tags [data-tags-search-panel]::before {
             display: none !important;
             content: none !important;
+        }
+
+        /* Arama acilinca baslik ile arama kapsulu arasinda kalan 16px bosluk.
+           Panel kapaliyken bu katman hic uretilmez. */
+        body.route-tags [data-tags-search-panel].is-open::before {
+            content: '' !important;
+            display: block !important;
+            position: absolute;
+            right: 0;
+            bottom: 100%;
+            left: 0;
+            z-index: 0;
+            width: 100%;
+            height: 16px;
+            background: rgba(246, 244, 240, .64);
+            backdrop-filter: blur(12px) saturate(115%);
+            -webkit-backdrop-filter: blur(12px) saturate(115%);
+            pointer-events: none;
         }
 
         body.route-tags [data-tags-search-panel] > * {
@@ -595,26 +608,31 @@
         }
 
         html.dark .page-title-identity.page-title-identity {
-            border-color: #e1e5eb !important;
-            background: #ffffff !important;
-            background-color: #ffffff !important;
+            border-color: #27272a !important;
+            background: #18181b !important;
+            background-color: #18181b !important;
             background-image: none !important;
-            color: #111827 !important;
+            color: #f4f4f5 !important;
+        }
+
+        html.dark .tags-page-title.tags-page-title {
+            border-color: #27272a !important;
+            background: #18181b !important;
+            background-color: #18181b !important;
+        }
+
+        html.dark .tags-page-title__back {
+            border-right-color: #27272a !important;
+            background: #18181b !important;
+            color: #f4f4f5 !important;
+        }
+
+        html.dark .tags-page-title__text {
+            color: #f4f4f5 !important;
         }
 
         html.dark body.route-tags .page-title-identity .tags-toolbar__icon {
-            color: #52525b !important;
-        }
-
-        /* Mobilde de beyaz kutu + tam genislikte hafif blur korunur. */
-        @media (max-width: 640px) {
-            body.route-tags .page-title-identity {
-                background: #ffffff !important;
-            }
-
-            body.route-tags .page-title-identity__edge-blur--top {
-                height: calc(100% + 18px + env(safe-area-inset-top, 0px));
-            }
+            color: #cbd5e1 !important;
         }
 
         /* Masaustunde header kaybolmaz; Etiketler kimlik kutusu ve acilan
@@ -630,13 +648,6 @@
                 position: sticky;
                 top: 64px;
                 z-index: 30;
-                min-height: 34px;
-                padding: 2px 10px;
-                border: 1px solid #e1e5eb !important;
-                border-radius: 999px !important;
-                background: #ffffff !important;
-                background-color: #ffffff !important;
-                background-image: none !important;
             }
 
             body.route-tags [data-tags-search-panel] {
@@ -648,16 +659,8 @@
                 -webkit-backdrop-filter: none !important;
             }
 
-            body.route-tags .page-title-identity__edge-blur--top {
-                height: calc(100% + 18px);
-            }
-
             html.dark body.route-tags [data-tags-search-panel] {
                 background: rgba(24, 24, 27, .82);
-            }
-
-            html.dark body.route-tags .page-title-identity__edge-blur {
-                background: rgba(24, 24, 27, .68);
             }
         }
     </style>
@@ -666,7 +669,6 @@
 
     <div class="space-y-4">
         <div class="page-title-identity tags-page-title">
-            <div class="page-title-identity__edge-blur page-title-identity__edge-blur--top" aria-hidden="true"></div>
             <a href="{{ url()->previous() }}" class="tags-page-title__back" aria-label="Geri">
                 <iconify-icon icon="lucide:arrow-left" aria-hidden="true"></iconify-icon>
             </a>
@@ -675,7 +677,6 @@
                 {!! view('blog.partials.tags-toolbar', ['sort' => $sort, 'sortOptions' => $sortOptions, 'search' => $search])->render() !!}
             </div>
         </div>
-        <div data-identity-spacer aria-hidden="true"></div>
 
         <div class="tags-search-panel {{ $search !== '' ? 'is-open' : '' }}" data-tags-search-panel>
             <div class="tags-search-panel__inner">
@@ -737,31 +738,11 @@
                 const panelSpacer = document.querySelector('[data-search-panel-spacer]');
                 const identity = document.querySelector('.page-title-identity');
 
-                /* Tema/layout hangi sirada yuklenirse yuklensin baslik kutusu
-                   yari saydam kalmasin. Degerler dogrudan elemente important
-                   olarak yazilir; blur sadece dis edge katmaninda kalir. */
-                const forceWhiteIdentity = () => {
-                    if (!identity) return;
-
-                    identity.style.setProperty('background', '#ffffff', 'important');
-                    identity.style.setProperty('background-color', '#ffffff', 'important');
-                    identity.style.setProperty('background-image', 'none', 'important');
-                    identity.style.setProperty('border', '1px solid #dfe3e8', 'important');
-                    identity.style.setProperty('border-radius', '999px', 'important');
-                    identity.style.setProperty('backdrop-filter', 'none', 'important');
-                    identity.style.setProperty('-webkit-backdrop-filter', 'none', 'important');
-                    identity.style.setProperty('box-shadow', 'none', 'important');
-                    identity.style.setProperty('filter', 'none', 'important');
-                    identity.style.setProperty('opacity', '1', 'important');
-                };
-
                 /* Layout mobil/masaustu akisi paneli position:fixed yaptiginda
                    genislik viewport'a tasmasin. Panel her zaman Etiketler
                    kutusunun soluna ve genisligine birebir oturur. */
                 const syncPanelGeometry = () => {
                     if (!panel || !identity) return;
-
-                    forceWhiteIdentity();
 
                     const panelPosition = window.getComputedStyle(panel).position;
 
@@ -785,10 +766,7 @@
                 };
 
                 if (panel && trigger && input) {
-                    forceWhiteIdentity();
                     window.requestAnimationFrame(syncPanelGeometry);
-                    window.setTimeout(forceWhiteIdentity, 100);
-                    window.setTimeout(forceWhiteIdentity, 500);
 
                     if (panel.classList.contains('is-open')) {
                         syncPanelSpacer(true);
