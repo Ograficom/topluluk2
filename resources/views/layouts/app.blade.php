@@ -2971,6 +2971,24 @@
                     -webkit-backdrop-filter: none;
                 }
             }
+
+            /* Motion blur - skill #11 "Frame-level smoothness": hizli kaydirma
+               sirasinda liste icerigi (JS'te kaydirma hizina oranli) hafifce
+               bulanir, kaydirma durunca/yavaslayinca netlige "geri coker".
+               Bu, sabit basligin altindaki bosluklarin (GAP + edge-blur
+               seritleri) icerik hizla oradan gecerken de gorsel olarak "bos"
+               kalmayip surekli doldurulmus hissettirmesini saglar - kaydirma
+               ne kadar hizliysa gecis o kadar akiciymis gibi okunuyor. Tek
+               deger degisikligi JS'ten geliyor (inline filter); buradaki
+               transition onu 0'a "kayip olan" bir bulanikliga yumusak
+               dondurur (Interruptibility ilkesi: her yeni hedef, o anki
+               ekran degerinden baslar, ani ziplama yok). */
+            body.route-search [data-search-results-container],
+            body.route-tags [data-tags-list],
+            body.route-users [data-users-list] {
+                transition: filter .22s ease-out;
+                will-change: filter;
+            }
         }
 
         .site-header-shell {

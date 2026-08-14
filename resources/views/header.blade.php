@@ -2531,6 +2531,7 @@
 
                 const identityBox = document.querySelector('.og-search-identity, .page-title-identity');
                 const identitySpacer = document.querySelector('[data-identity-spacer]');
+                const contentList = document.querySelector('[data-search-results-container], [data-tags-list], [data-users-list]');
                 const mobileQuery = window.matchMedia('(max-width: 640px)');
                 const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
 
@@ -2540,10 +2541,20 @@
                 // kutunun ALTINDAKI blur efektinin simetrisi.
                 const GAP = 10;
 
+                // Motion blur ayarlari: kaydirma hizi (bir onceki scroll
+                // olayindan bu yana kat edilen px) MAX_BLUR_SPEED'e ulasinca
+                // tam MAX_BLUR'a ulasir; kaydirma durunca CLEAR_DELAY ms
+                // sonra 0'a doner (CSS transition ile yumusakca).
+                const MAX_BLUR = 5;
+                const MAX_BLUR_SPEED = 70;
+                const CLEAR_DELAY = 120;
+
                 let hiddenAmount = 0;
                 let headerHeight = header.offsetHeight;
                 let lastScrollY = window.scrollY;
+                let lastDelta = 0;
                 let ticking = false;
+                let blurClearTimer = null;
 
                 const syncSpacerHeight = () => {
                     if (identityBox && identitySpacer) {
@@ -2555,11 +2566,23 @@
                     hiddenAmount = 0;
                     header.style.transform = '';
                     if (identityBox) identityBox.style.top = '';
+                    if (contentList) contentList.style.filter = '';
                 };
 
                 const applyTransform = () => {
                     header.style.transform = hiddenAmount > 0 ? `translateY(-${hiddenAmount}px)` : '';
                     if (identityBox) identityBox.style.top = `${headerHeight - hiddenAmount + GAP}px`;
+
+                    if (contentList) {
+                        const blurAmount = clamp((Math.abs(lastDelta) / MAX_BLUR_SPEED) * MAX_BLUR, 0, MAX_BLUR);
+                        contentList.style.filter = blurAmount > 0.15 ? `blur(${blurAmount.toFixed(2)}px)` : '';
+
+                        clearTimeout(blurClearTimer);
+                        blurClearTimer = setTimeout(() => {
+                            contentList.style.filter = '';
+                        }, CLEAR_DELAY);
+                    }
+
                     ticking = false;
                 };
 
@@ -2573,6 +2596,7 @@
                     const currentY = window.scrollY;
                     const delta = currentY - lastScrollY;
                     lastScrollY = currentY;
+                    lastDelta = delta;
 
                     hiddenAmount = currentY <= 0 ? 0 : clamp(hiddenAmount + delta, 0, headerHeight);
 
