@@ -25,33 +25,33 @@
            icin) - site genelindeki "body.alma-app :where(button...) {
            background:#fff !important}" resetiyle esitlik/oncelik yarisini
            kaybetmesin diye. Tek sinif + !important o kuraldan (body+class
-           turunden) daha dusuk ozgullukte kalip eziliyordu. */
+           turunden) daha dusuk ozgullukte kalip eziliyordu. Etiketler
+           sayfasindaki tags-toolbar__icon ile BIREBIR AYNI kalip: 32x32,
+           #f3f4f6/#1e293b hover, iconify-icon 16px, basma geri bildirimi. */
         .users-toolbar__icon.users-toolbar__icon {
-            display: inline-flex;
+            display: inline-flex !important;
             flex: 0 0 auto;
-            width: 26px;
-            height: 26px;
+            width: 32px !important;
+            height: 32px !important;
             align-items: center;
             justify-content: center;
             border: 0 !important;
-            border-radius: 999px;
+            border-radius: 999px !important;
             background: transparent !important;
-            color: inherit !important;
+            color: #52525b !important;
             cursor: pointer;
-            transition: background-color .15s ease, transform .1s ease;
+            transition: background-color .15s ease, transform .08s ease-out;
         }
 
-        .users-toolbar__icon svg {
-            width: 15px;
-            height: 15px;
-            pointer-events: none;
+        .users-toolbar__icon iconify-icon {
+            font-size: 16px;
         }
 
         .users-toolbar__icon.users-toolbar__icon:hover,
         .users-toolbar__icon.users-toolbar__icon:focus-visible,
         .users-toolbar__icon.users-toolbar__icon[aria-expanded="true"],
         .users-toolbar__sort.is-open .users-toolbar__icon.users-toolbar__icon {
-            background: rgba(15, 15, 18, .06) !important;
+            background: #f3f4f6 !important;
             outline: none;
         }
 
@@ -59,11 +59,15 @@
             transform: translateY(1px);
         }
 
+        html.dark .users-toolbar__icon {
+            color: #cbd5e1 !important;
+        }
+
         html.dark .users-toolbar__icon.users-toolbar__icon:hover,
         html.dark .users-toolbar__icon.users-toolbar__icon:focus-visible,
         html.dark .users-toolbar__icon.users-toolbar__icon[aria-expanded="true"],
         html.dark .users-toolbar__sort.is-open .users-toolbar__icon.users-toolbar__icon {
-            background: rgba(255, 255, 255, .1) !important;
+            background: #1e293b !important;
         }
 
         /* Bu sayfadaki TUM buton ve tiklanabilir alanlar icin tek, tutarli
@@ -140,21 +144,59 @@
             }
         }
 
+        /* Acilir menu - Etiketler sayfasindaki tags-sort__menu ile BIREBIR
+           AYNI "materialize, don't just fade" davranisi: [hidden] yerine
+           visibility+opacity+kucuk olcek/kayma, tetikleyiciden (sag ust)
+           belirir. [hidden] KASITLI kullanilmiyor - Chromium'da bazi
+           durumlarda display:none donusumu getBoundingClientRect()'i 0x0
+           birakiyor. */
         .users-toolbar__menu {
+            display: flex;
             position: absolute;
             top: calc(100% + 8px);
             right: 0;
-            width: 168px;
-            border-radius: 14px;
+            width: 190px;
+            border-radius: 16px;
             border: 1px solid #e4e4e7;
             background: #ffffff;
-            padding: 6px;
-            box-shadow: 0 12px 28px rgba(15, 23, 42, .12);
+            padding: 8px;
+            box-shadow: 0 16px 36px rgba(15, 23, 42, .14);
             z-index: 40;
+            flex-direction: column;
+            visibility: hidden;
+            opacity: 0;
+            transform: scale(.96) translateY(-6px);
+            transform-origin: top right;
+            transition: opacity .16s ease, transform .16s ease, visibility 0s linear .16s;
         }
 
-        .users-toolbar__menu[hidden] {
-            display: none !important;
+        .users-toolbar__menu.is-open {
+            visibility: visible;
+            opacity: 1;
+            transform: scale(1) translateY(0);
+            transition: opacity .16s ease, transform .16s ease;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .users-toolbar__menu {
+                transform: none;
+                transition: opacity .12s ease, visibility 0s linear .12s;
+            }
+
+            .users-toolbar__menu.is-open {
+                transform: none;
+                transition: opacity .12s ease;
+            }
+        }
+
+        .users-toolbar__label {
+            display: block;
+            margin: 4px 8px 6px;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: .05em;
+            text-transform: uppercase;
+            color: #94a3b8;
         }
 
         .users-toolbar__options {
@@ -169,7 +211,7 @@
             gap: 8px;
             min-height: 36px;
             padding: 0 10px;
-            border-radius: 9px;
+            border-radius: 10px;
             color: #3f3f46;
             font-size: 13px;
             font-weight: 500;
@@ -190,9 +232,21 @@
             outline: none;
         }
 
+        .users-toolbar__option[aria-current="true"] {
+            color: #1d4ed8;
+        }
+
+        .users-toolbar__option[aria-current="true"] iconify-icon {
+            color: #2563eb;
+        }
+
         html.dark .users-toolbar__menu {
             background: #18181b;
             border-color: #27272a;
+        }
+
+        html.dark .users-toolbar__label {
+            color: #71717a;
         }
 
         html.dark .users-toolbar__option {
@@ -204,6 +258,14 @@
         html.dark .users-toolbar__option:focus-visible {
             background: #27272a;
             color: #f4f4f5;
+        }
+
+        html.dark .users-toolbar__option[aria-current="true"] {
+            color: #93c5fd;
+        }
+
+        html.dark .users-toolbar__option[aria-current="true"] iconify-icon {
+            color: #93c5fd;
         }
 
         /* Arama paneli - buyume/kuculme yuksekligi grid ile animasyonlu,
@@ -315,9 +377,7 @@
                         data-users-search-input
                     >
                     <button type="submit" class="users-toolbar__icon users-search-panel__submit" aria-label="{{ __('site.users.search_button') }}">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" aria-hidden="true">
-                            <path fill="currentColor" fill-rule="evenodd" d="M7 1.5a5.5 5.5 0 1 0 3.397 9.83l3.387 3.384a.75.75 0 1 0 1.06-1.061l-3.386-3.384A5.5 5.5 0 0 0 7 1.5M2.75 7a4.25 4.25 0 1 1 8.5 0a4.25 4.25 0 0 1-8.5 0" clip-rule="evenodd"></path>
-                        </svg>
+                        <iconify-icon icon="lucide:search" aria-hidden="true"></iconify-icon>
                     </button>
                 </form>
                 <p class="sr-only" role="status" aria-live="polite" data-users-status></p>
@@ -326,7 +386,7 @@
 
         <div class="grid grid-cols-1 gap-2 users-page-list" data-users-list data-total="{{ $users->total() }}">
         @forelse ($users as $user)
-            <div class="rounded-[26px] bg-white dark:bg-slate-900 px-4 py-3 shadow-sm ring-1 ring-slate-200/80 dark:ring-slate-700/80">
+            <div class="rounded-[14px] bg-white dark:bg-slate-900 px-4 py-3 shadow-sm ring-1 ring-slate-200/80 dark:ring-slate-700/80">
                 <div class="flex items-center justify-between gap-3">
                     <div class="flex min-w-0 items-center gap-3">
                         <a href="{{ route('users.show', $user) }}" class="shrink-0">
@@ -397,20 +457,20 @@
                 if (root && trigger && menu) {
                     const openMenu = () => {
                         root.classList.add('is-open');
-                        menu.hidden = false;
+                        menu.classList.add('is-open');
                         trigger.setAttribute('aria-expanded', 'true');
                     };
 
                     const closeMenu = () => {
                         root.classList.remove('is-open');
-                        menu.hidden = true;
+                        menu.classList.remove('is-open');
                         trigger.setAttribute('aria-expanded', 'false');
                     };
 
                     trigger.addEventListener('click', (event) => {
                         event.preventDefault();
                         event.stopPropagation();
-                        if (menu.hidden) openMenu(); else closeMenu();
+                        if (menu.classList.contains('is-open')) closeMenu(); else openMenu();
                     });
 
                     root.addEventListener('click', (event) => event.stopPropagation());
