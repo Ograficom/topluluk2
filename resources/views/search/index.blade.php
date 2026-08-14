@@ -1160,6 +1160,459 @@
     html.dark .og-result-row-title {
         color: #e2e8f0;
     }
+
+    /*
+       Etiketler sayfasiyla ortak ust bolge dili: opak beyaz 40px baslik
+       kapsulu, 32px aksiyonlar, blur'lu hap arama alani ve duz menü satirlari.
+       Arama sayfasinin mevcut canli arama/filtre davranisi degismez.
+    */
+    body.alma-app.route-search .og-search-page-title.og-search-page-title {
+        display: flex !important;
+        box-sizing: border-box !important;
+        width: 100% !important;
+        min-height: 40px !important;
+        align-items: center !important;
+        gap: 0 !important;
+        padding: 2px 12px !important;
+        overflow: visible !important;
+        border: 1px solid #e2e5ea !important;
+        border-radius: 999px !important;
+        background: #ffffff !important;
+        background-color: #ffffff !important;
+        background-image: none !important;
+        box-shadow: none !important;
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+        filter: none !important;
+        opacity: 1 !important;
+    }
+
+    body.alma-app.route-search .og-search-page-title > :not(.og-search-identity__edge-blur) {
+        position: relative;
+        z-index: 1;
+    }
+
+    body.alma-app.route-search .og-search-page-title .og-search-identity__back {
+        position: relative;
+        display: inline-flex !important;
+        flex: 0 0 auto !important;
+        width: 34px !important;
+        height: 30px !important;
+        align-items: center !important;
+        justify-content: flex-start !important;
+        margin: 0 10px 0 0 !important;
+        padding: 0 10px 0 2px !important;
+        border: 0 !important;
+        border-right: 1px solid #e5e7eb !important;
+        border-radius: 0 !important;
+        background: #ffffff !important;
+        color: #111827 !important;
+        transform: none !important;
+    }
+
+    body.alma-app.route-search .og-search-page-title .og-search-identity__back:hover,
+    body.alma-app.route-search .og-search-page-title .og-search-identity__back:focus-visible,
+    body.alma-app.route-search .og-search-page-title .og-search-identity__back:active {
+        background: #ffffff !important;
+        color: #111827 !important;
+        transform: none !important;
+        outline: none !important;
+    }
+
+    body.alma-app.route-search .og-search-page-title .og-search-identity__back iconify-icon {
+        width: 17px !important;
+        height: 17px !important;
+        font-size: 17px !important;
+    }
+
+    body.alma-app.route-search .og-search-page-title .og-search-identity__divider {
+        display: none !important;
+    }
+
+    body.alma-app.route-search .og-search-page-title .og-search-identity__title {
+        min-width: 0;
+        margin: 0 !important;
+        color: #111111 !important;
+        font-size: 18px !important;
+        font-weight: 500 !important;
+        line-height: 1.2 !important;
+        white-space: nowrap;
+    }
+
+    /* Genel h2 tipografi secicisi :not(#...) nedeniyle ID seviyesinde
+       ozgulluk tasiyor; Etiketler'deki 18px basligi hesaplanan degerde koru. */
+    html body.alma-app:not(#comments):not(#app).route-search .og-search-page-title .og-search-identity__title {
+        font-size: 18px !important;
+        font-weight: 500 !important;
+        line-height: 1.2 !important;
+    }
+
+    body.alma-app.route-search .og-search-page-title .og-search-identity__actions {
+        gap: 2px !important;
+        margin-left: auto !important;
+    }
+
+    body.alma-app.route-search .og-search-toolbar__trigger.og-search-toolbar__trigger,
+    body.alma-app.route-search .og-search-info__trigger.og-search-info__trigger,
+    body.alma-app.route-search .og-search-settings__trigger.og-search-settings__trigger {
+        display: inline-flex !important;
+        flex: 0 0 32px !important;
+        width: 32px !important;
+        height: 32px !important;
+        min-width: 32px !important;
+        align-items: center !important;
+        justify-content: center !important;
+        padding: 0 !important;
+        border: 0 !important;
+        border-radius: 999px !important;
+        background: transparent !important;
+        color: #52525b !important;
+        transform: none !important;
+        transition: background-color .15s ease !important;
+    }
+
+    body.alma-app.route-search .og-search-toolbar__trigger iconify-icon,
+    body.alma-app.route-search .og-search-info__trigger iconify-icon,
+    body.alma-app.route-search .og-search-settings__trigger iconify-icon {
+        width: 16px !important;
+        height: 16px !important;
+        font-size: 16px !important;
+        transform: none !important;
+    }
+
+    body.alma-app.route-search .og-search-toolbar__trigger:is(:hover, :focus-visible),
+    body.alma-app.route-search .og-search-info__trigger:is(:hover, :focus-visible),
+    body.alma-app.route-search .og-search-settings__trigger:is(:hover, :focus-visible),
+    body.alma-app.route-search .og-search-info.is-open .og-search-info__trigger,
+    body.alma-app.route-search .og-search-settings.is-open .og-search-settings__trigger {
+        background: #f3f4f6 !important;
+        transform: none !important;
+        outline: none !important;
+    }
+
+    body.alma-app.route-search .og-search-bar-row {
+        position: relative;
+        z-index: 29;
+        box-sizing: border-box;
+        width: 100%;
+        margin: 0 !important;
+    }
+
+    body.alma-app.route-search .og-search-bar {
+        box-sizing: border-box !important;
+        width: 100% !important;
+        height: 40px !important;
+        min-height: 40px !important;
+        padding: 4px 40px 4px 14px !important;
+        border: 1px solid rgba(217, 221, 227, .78) !important;
+        border-radius: 999px !important;
+        background: rgba(255, 255, 255, .82) !important;
+        backdrop-filter: blur(20px) saturate(180%) !important;
+        -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+        box-shadow: 0 1px 0 rgba(255, 255, 255, .55) inset, 0 10px 28px rgba(15, 23, 42, .08) !important;
+    }
+
+    body.alma-app.route-search .og-search-bar:focus-within {
+        border-color: rgba(217, 221, 227, .92) !important;
+        box-shadow: 0 1px 0 rgba(255, 255, 255, .65) inset, 0 10px 28px rgba(15, 23, 42, .1) !important;
+    }
+
+    html body.alma-app.route-search #og-search-page-input.og-search-bar-input {
+        width: 100% !important;
+        height: 100% !important;
+        min-height: 0 !important;
+        padding: 6px 0 !important;
+        border: 0 !important;
+        border-radius: 0 !important;
+        background: transparent !important;
+        box-shadow: none !important;
+        color: #050505 !important;
+        font-size: 14px !important;
+        font-weight: 400 !important;
+        line-height: 1.4 !important;
+        outline: none !important;
+    }
+
+    html body.alma-app.route-search #og-search-page-input.og-search-bar-input::placeholder {
+        color: #9ca3af !important;
+        font-size: 14px !important;
+    }
+
+    body.alma-app.route-search .og-search-bar-icon,
+    body.alma-app.route-search .og-search-bar-clear {
+        top: 50% !important;
+        right: 4px !important;
+        display: inline-flex !important;
+        width: 32px !important;
+        height: 32px !important;
+        min-width: 32px !important;
+        align-items: center !important;
+        justify-content: center !important;
+        padding: 0 !important;
+        border: 0 !important;
+        border-radius: 999px !important;
+        background: transparent !important;
+        color: #52525b !important;
+        font-size: 16px !important;
+        transform: translateY(-50%) !important;
+    }
+
+    body.alma-app.route-search .og-search-bar-icon.hidden,
+    body.alma-app.route-search .og-search-bar-clear.hidden {
+        display: none !important;
+    }
+
+    body.alma-app.route-search .og-search-bar-clear:is(:hover, :focus-visible) {
+        background: #f3f4f6 !important;
+        outline: none !important;
+    }
+
+    /* Etiketler siralama menusundeki kenarliksiz, sabit satir duzeni. */
+    body.alma-app.route-search .og-search-settings-menu {
+        width: min(272px, calc(100vw - 32px)) !important;
+        padding: 8px !important;
+        gap: 8px !important;
+        border: 1px solid #e4e4e7 !important;
+        border-radius: 16px !important;
+        background: #ffffff !important;
+        box-shadow: 0 16px 36px rgba(15, 23, 42, .14) !important;
+    }
+
+    body.alma-app.route-search .og-search-settings-menu__label {
+        margin: 4px 8px 6px !important;
+        color: #94a3b8 !important;
+        font-size: 10px !important;
+        font-weight: 700 !important;
+        letter-spacing: .05em !important;
+    }
+
+    body.alma-app.route-search .og-search-filters {
+        gap: 8px !important;
+    }
+
+    body.alma-app.route-search .og-search-pills {
+        gap: 2px !important;
+    }
+
+    body.alma-app.route-search .og-search-settings-menu .og-search-pill,
+    body.alma-app.route-search .og-search-settings-menu .og-search-type-pill {
+        display: flex !important;
+        width: 100% !important;
+        min-height: 36px !important;
+        height: 36px !important;
+        align-items: center !important;
+        justify-content: flex-start !important;
+        gap: 8px !important;
+        padding: 0 10px !important;
+        border: 0 !important;
+        border-radius: 10px !important;
+        background: transparent !important;
+        color: #3f3f46 !important;
+        font-size: 13px !important;
+        font-weight: 500 !important;
+        line-height: 1.2 !important;
+        transform: none !important;
+    }
+
+    body.alma-app.route-search .og-search-settings-menu .og-search-pill iconify-icon,
+    body.alma-app.route-search .og-search-settings-menu .og-search-type-pill iconify-icon {
+        width: 15px !important;
+        height: 15px !important;
+        flex: 0 0 15px !important;
+        color: currentColor !important;
+        font-size: 15px !important;
+    }
+
+    body.alma-app.route-search .og-search-settings-menu .og-search-pill:is(:hover, :focus-visible),
+    body.alma-app.route-search .og-search-settings-menu .og-search-type-pill:is(:hover, :focus-visible),
+    body.alma-app.route-search .og-search-settings-menu .og-search-pill.is-active,
+    body.alma-app.route-search .og-search-settings-menu .og-search-type-pill.is-active {
+        background: #f3f4f6 !important;
+        color: #0f172a !important;
+        outline: none !important;
+        transform: none !important;
+    }
+
+    body.alma-app.route-search .og-search-settings-menu .og-search-pill.is-active,
+    body.alma-app.route-search .og-search-settings-menu .og-search-type-pill.is-active {
+        color: #1d4ed8 !important;
+    }
+
+    body.alma-app.route-search .og-search-settings-menu .og-search-types {
+        display: grid !important;
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        gap: 2px !important;
+        width: 100% !important;
+    }
+
+    [data-search-page-panel-spacer] {
+        display: none;
+        height: 0;
+    }
+
+    @media (max-width: 640px) {
+        body.alma-app.route-search .og-search-page-title .og-search-identity__edge-blur {
+            display: block !important;
+            position: absolute;
+            right: 0;
+            left: 0;
+            z-index: 0;
+            height: 16px !important;
+            background: rgba(246, 244, 240, .68) !important;
+            backdrop-filter: blur(12px) saturate(115%);
+            -webkit-backdrop-filter: blur(12px) saturate(115%);
+            pointer-events: none;
+        }
+
+        body.alma-app.route-search .og-search-page-title .og-search-identity__edge-blur--top {
+            bottom: 100%;
+        }
+
+        body.alma-app.route-search .og-search-page-title .og-search-identity__edge-blur--bottom {
+            top: 100%;
+        }
+
+        body.alma-app.route-search [data-search-page-panel] {
+            position: fixed;
+            right: 0;
+            left: 0;
+            z-index: 44;
+            box-sizing: border-box;
+            width: auto !important;
+            margin: 0 !important;
+            padding-right: max(var(--alma-page-inline), env(safe-area-inset-right));
+            padding-left: max(var(--alma-page-inline), env(safe-area-inset-left));
+            overflow: visible;
+        }
+
+        body.alma-app.route-search [data-search-page-panel]::before {
+            content: '';
+            position: absolute;
+            right: 0;
+            bottom: 100%;
+            left: 0;
+            z-index: 0;
+            width: 100%;
+            height: 16px;
+            background: rgba(246, 244, 240, .68);
+            backdrop-filter: blur(12px) saturate(115%);
+            -webkit-backdrop-filter: blur(12px) saturate(115%);
+            pointer-events: none;
+        }
+
+        body.alma-app.route-search [data-search-page-panel] > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        body.alma-app.route-search [data-search-page-panel-spacer] {
+            display: block;
+            height: 40px;
+            margin: 0 !important;
+        }
+    }
+
+    @media (min-width: 641px) {
+        body.alma-app.route-search .site-header {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+
+        body.alma-app.route-search .og-search-page-title {
+            position: sticky;
+            top: 64px;
+            z-index: 30;
+        }
+
+        body.alma-app.route-search [data-search-page-panel] {
+            position: sticky;
+            top: 104px;
+            z-index: 29;
+        }
+
+        body.alma-app.route-search .og-search-page-title::before,
+        body.alma-app.route-search [data-search-page-panel]::before {
+            content: '';
+            position: absolute;
+            right: 0;
+            bottom: 100%;
+            left: 0;
+            z-index: 0;
+            width: 100%;
+            height: 16px;
+            background: rgba(246, 244, 240, .64);
+            backdrop-filter: blur(12px) saturate(115%);
+            -webkit-backdrop-filter: blur(12px) saturate(115%);
+            pointer-events: none;
+        }
+    }
+
+    html.dark body.alma-app.route-search .og-search-page-title.og-search-page-title,
+    html.dark body.alma-app.route-search .og-search-page-title .og-search-identity__back {
+        border-color: #27272a !important;
+        background: #18181b !important;
+        background-color: #18181b !important;
+        color: #f4f4f5 !important;
+    }
+
+    html.dark body.alma-app.route-search .og-search-page-title .og-search-identity__title {
+        color: #f4f4f5 !important;
+    }
+
+    html.dark body.alma-app.route-search .og-search-toolbar__trigger,
+    html.dark body.alma-app.route-search .og-search-info__trigger,
+    html.dark body.alma-app.route-search .og-search-settings__trigger {
+        color: #cbd5e1 !important;
+    }
+
+    html.dark body.alma-app.route-search .og-search-toolbar__trigger:is(:hover, :focus-visible),
+    html.dark body.alma-app.route-search .og-search-info__trigger:is(:hover, :focus-visible),
+    html.dark body.alma-app.route-search .og-search-settings__trigger:is(:hover, :focus-visible),
+    html.dark body.alma-app.route-search .og-search-info.is-open .og-search-info__trigger,
+    html.dark body.alma-app.route-search .og-search-settings.is-open .og-search-settings__trigger {
+        background: #27272a !important;
+    }
+
+    html.dark body.alma-app.route-search .og-search-bar {
+        border-color: rgba(63, 63, 70, .76) !important;
+        background: rgba(24, 24, 27, .82) !important;
+        box-shadow: 0 1px 0 rgba(255, 255, 255, .08) inset, 0 10px 28px rgba(0, 0, 0, .22) !important;
+    }
+
+    html.dark body.alma-app.route-search #og-search-page-input.og-search-bar-input {
+        color: #fafafa !important;
+    }
+
+    html.dark body.alma-app.route-search .og-search-settings-menu {
+        border-color: #27272a !important;
+        background: #18181b !important;
+    }
+
+    html.dark body.alma-app.route-search .og-search-settings-menu .og-search-pill,
+    html.dark body.alma-app.route-search .og-search-settings-menu .og-search-type-pill {
+        color: #d4d4d8 !important;
+    }
+
+    html.dark body.alma-app.route-search .og-search-settings-menu .og-search-pill:is(:hover, :focus-visible),
+    html.dark body.alma-app.route-search .og-search-settings-menu .og-search-type-pill:is(:hover, :focus-visible),
+    html.dark body.alma-app.route-search .og-search-settings-menu .og-search-pill.is-active,
+    html.dark body.alma-app.route-search .og-search-settings-menu .og-search-type-pill.is-active {
+        background: #27272a !important;
+        color: #f4f4f5 !important;
+    }
+
+    html.dark body.alma-app.route-search .og-search-settings-menu .og-search-pill.is-active,
+    html.dark body.alma-app.route-search .og-search-settings-menu .og-search-type-pill.is-active {
+        color: #93c5fd !important;
+    }
+
+    @media (max-width: 640px) {
+        html.dark body.alma-app.route-search .og-search-page-title .og-search-identity__edge-blur,
+        html.dark body.alma-app.route-search [data-search-page-panel]::before {
+            background: rgba(24, 24, 27, .72) !important;
+        }
+    }
 </style>
 
 @php
@@ -1205,7 +1658,7 @@
          data-authenticated="{{ auth()->check() ? '1' : '0' }}"
          data-login-url="{{ route('login') }}"
     >
-        <div class="og-search-identity">
+        <div class="og-search-identity og-search-page-title">
             <div class="og-search-identity__edge-blur og-search-identity__edge-blur--top" aria-hidden="true"></div>
             <button type="button" class="og-search-identity__back" data-search-back aria-label="{{ __('site.mobile_nav.back') ?? 'Geri' }}">
                 <iconify-icon icon="lucide:arrow-left" aria-hidden="true"></iconify-icon>
@@ -1214,6 +1667,15 @@
             <h2 class="og-search-identity__title">{{ __('site.search.title') }}</h2>
 
             <div class="og-search-identity__actions">
+                <button
+                    type="button"
+                    class="og-search-toolbar__trigger"
+                    data-search-query-focus
+                    aria-label="{{ __('site.common.search') }}"
+                >
+                    <iconify-icon icon="lucide:search" aria-hidden="true"></iconify-icon>
+                </button>
+
                 <div class="og-search-info" data-search-info>
                     <button
                         type="button"
@@ -1246,7 +1708,7 @@
                         aria-label="{{ __('site.common.settings') }}"
                         aria-expanded="false"
                     >
-                        <iconify-icon icon="lucide:settings-2" aria-hidden="true"></iconify-icon>
+                        <iconify-icon icon="lucide:sliders-horizontal" aria-hidden="true"></iconify-icon>
                     </button>
 
                     <div class="og-search-settings-menu" data-search-settings-menu>
@@ -1287,7 +1749,7 @@
         </div>
         <div data-identity-spacer aria-hidden="true"></div>
 
-        <div class="og-search-bar-row">
+        <div class="og-search-bar-row" data-search-page-panel>
             <div class="og-search-bar">
                 <input
                     type="text"
@@ -1310,6 +1772,7 @@
                 </button>
             </div>
         </div>
+        <div data-search-page-panel-spacer aria-hidden="true"></div>
 
         <div class="og-search-results" data-search-results-container>
             <p class="og-search-message">{{ __('site.search.loading') }}</p>
@@ -1333,6 +1796,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const queryInput = root.querySelector('[data-search-query-input]');
     const queryClear = root.querySelector('[data-search-query-clear]');
     const queryIcon = root.querySelector('[data-search-query-icon]');
+    const queryFocus = root.querySelector('[data-search-query-focus]');
     const backBtn = root.querySelector('[data-search-back]');
 
     // Mobilde arama filtrelerini barindiran acilir "ayarlar" menusu.
@@ -1694,6 +2158,11 @@ document.addEventListener('DOMContentLoaded', () => {
         syncUrl();
         renderMessage(i18n.emptyQuery);
         queryInput.focus();
+    });
+
+    queryFocus?.addEventListener('click', () => {
+        queryInput.focus({ preventScroll: true });
+        queryInput.select();
     });
 
     if (backBtn) {

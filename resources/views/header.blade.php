@@ -2531,7 +2531,7 @@
 
                 const identityBox = document.querySelector('.og-search-identity, .page-title-identity');
                 const identitySpacer = document.querySelector('[data-identity-spacer]');
-                const searchPanel = document.querySelector('[data-tags-search-panel], [data-users-search-panel], [data-faq-search-panel]');
+                const searchPanel = document.querySelector('[data-search-page-panel], [data-tags-search-panel], [data-users-search-panel], [data-faq-search-panel]');
                 const contentList = document.querySelector('[data-search-results-container], [data-tags-list], [data-users-list], [data-faq-list]');
                 // Kimlik kutusunun VE arama panelinin kendi __edge-blur
                 // cocuklari - ayni class isimlerini paylastiklari icin tek
