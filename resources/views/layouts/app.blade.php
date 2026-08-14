@@ -2929,6 +2929,7 @@
                 pointer-events: none;
                 backdrop-filter: blur(20px) saturate(180%);
                 -webkit-backdrop-filter: blur(20px) saturate(180%);
+                transition: backdrop-filter .22s ease-out, -webkit-backdrop-filter .22s ease-out;
             }
 
             body.route-search .og-search-identity__edge-blur--bottom,
@@ -2941,14 +2942,18 @@
                 -webkit-mask-image: linear-gradient(to bottom, #000 0%, transparent 100%);
             }
 
+            /* --top KASITLI olarak mask-image ile solmuyor (bottom'un
+               aksine): bu bosluk cok kisa (GAP=10px), yarisi seffafa
+               solursa basligin hemen dibinde "hala bulanmamis" bir yarik
+               gibi goze batiyordu (bkz. kullanici ekran goruntusu). Baştan
+               sona AYNI yogunlukta dolu bir malzeme seridi - "kalan
+               bosluklari doldur" talebinin karsiligi. */
             body.route-search .og-search-identity__edge-blur--top,
             body.route-tags .page-title-identity__edge-blur--top,
             body.route-users .page-title-identity__edge-blur--top {
                 bottom: 100%;
                 height: 10px;
-                background: rgba(255, 255, 255, .35);
-                mask-image: linear-gradient(to top, #000 0%, transparent 100%);
-                -webkit-mask-image: linear-gradient(to top, #000 0%, transparent 100%);
+                background: rgba(255, 255, 255, .72);
             }
 
             html.dark body.route-search .og-search-identity__edge-blur--bottom,
@@ -2960,7 +2965,7 @@
             html.dark body.route-search .og-search-identity__edge-blur--top,
             html.dark body.route-tags .page-title-identity__edge-blur--top,
             html.dark body.route-users .page-title-identity__edge-blur--top {
-                background: rgba(24, 24, 27, .35);
+                background: rgba(24, 24, 27, .72);
             }
 
             @media (prefers-reduced-transparency: reduce) {

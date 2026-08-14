@@ -2532,6 +2532,9 @@
                 const identityBox = document.querySelector('.og-search-identity, .page-title-identity');
                 const identitySpacer = document.querySelector('[data-identity-spacer]');
                 const contentList = document.querySelector('[data-search-results-container], [data-tags-list], [data-users-list]');
+                const edgeBlurEls = identityBox
+                    ? Array.from(identityBox.querySelectorAll('.page-title-identity__edge-blur, .og-search-identity__edge-blur'))
+                    : [];
                 const mobileQuery = window.matchMedia('(max-width: 640px)');
                 const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
 
@@ -2544,9 +2547,18 @@
                 // Motion blur ayarlari: kaydirma hizi (bir onceki scroll
                 // olayindan bu yana kat edilen px) MAX_BLUR_SPEED'e ulasinca
                 // tam MAX_BLUR'a ulasir; kaydirma durunca CLEAR_DELAY ms
-                // sonra 0'a doner (CSS transition ile yumusakca).
+                // sonra 0'a doner (CSS transition ile yumusakca). Kenar
+                // bulanikligi (edgeBlurEls - basligin ustundeki/kutunun
+                // altindaki seritler) CSS'teki sabit 20px tabanindan, hizli
+                // kaydirirken +EDGE_BLUR_BOOST kadar daha da guclenip ayni
+                // ritimle geri doner - butun gecis bolgesi (baslik -> bosluk
+                // -> kutu -> icerik) TEK bir "hizla birlikte bulanan malzeme"
+                // gibi tepki verir, "kalan bosluklari motion blur ile
+                // doldur" talebinin karsiligi.
                 const MAX_BLUR = 5;
                 const MAX_BLUR_SPEED = 70;
+                const EDGE_BLUR_BASE = 20;
+                const EDGE_BLUR_BOOST = 12;
                 const CLEAR_DELAY = 120;
 
                 let hiddenAmount = 0;
@@ -2567,21 +2579,40 @@
                     header.style.transform = '';
                     if (identityBox) identityBox.style.top = '';
                     if (contentList) contentList.style.filter = '';
+                    edgeBlurEls.forEach((el) => {
+                        el.style.backdropFilter = '';
+                        el.style.webkitBackdropFilter = '';
+                    });
                 };
 
                 const applyTransform = () => {
                     header.style.transform = hiddenAmount > 0 ? `translateY(-${hiddenAmount}px)` : '';
                     if (identityBox) identityBox.style.top = `${headerHeight - hiddenAmount + GAP}px`;
 
-                    if (contentList) {
-                        const blurAmount = clamp((Math.abs(lastDelta) / MAX_BLUR_SPEED) * MAX_BLUR, 0, MAX_BLUR);
-                        contentList.style.filter = blurAmount > 0.15 ? `blur(${blurAmount.toFixed(2)}px)` : '';
+                    const speedRatio = clamp(Math.abs(lastDelta) / MAX_BLUR_SPEED, 0, 1);
 
-                        clearTimeout(blurClearTimer);
-                        blurClearTimer = setTimeout(() => {
-                            contentList.style.filter = '';
-                        }, CLEAR_DELAY);
+                    if (contentList) {
+                        const blurAmount = speedRatio * MAX_BLUR;
+                        contentList.style.filter = blurAmount > 0.15 ? `blur(${blurAmount.toFixed(2)}px)` : '';
                     }
+
+                    if (edgeBlurEls.length) {
+                        const edgeBlurPx = EDGE_BLUR_BASE + speedRatio * EDGE_BLUR_BOOST;
+                        const edgeFilter = `blur(${edgeBlurPx.toFixed(1)}px) saturate(180%)`;
+                        edgeBlurEls.forEach((el) => {
+                            el.style.backdropFilter = edgeFilter;
+                            el.style.webkitBackdropFilter = edgeFilter;
+                        });
+                    }
+
+                    clearTimeout(blurClearTimer);
+                    blurClearTimer = setTimeout(() => {
+                        if (contentList) contentList.style.filter = '';
+                        edgeBlurEls.forEach((el) => {
+                            el.style.backdropFilter = '';
+                            el.style.webkitBackdropFilter = '';
+                        });
+                    }, CLEAR_DELAY);
 
                     ticking = false;
                 };
