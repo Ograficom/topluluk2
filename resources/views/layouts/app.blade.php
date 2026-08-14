@@ -2789,9 +2789,9 @@
             right: 0;
             left: 0;
             height: 56px;
-            background: rgba(255, 255, 255, .58);
-            backdrop-filter: blur(20px) saturate(180%);
-            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            background: rgba(255, 255, 255, .68);
+            backdrop-filter: blur(100px) saturate(180%);
+            -webkit-backdrop-filter: blur(100px) saturate(180%);
             pointer-events: none;
         }
 
@@ -2800,7 +2800,7 @@
         }
 
         html.dark body.route-tags::before {
-            background: rgba(24, 24, 27, .58);
+            background: rgba(24, 24, 27, .68);
         }
 
         @media (prefers-reduced-transparency: reduce) {
