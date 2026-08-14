@@ -335,6 +335,19 @@
             color: #fafafa !important;
         }
 
+        /* Kullanici satirlari - Etiketler sayfasindaki tag-row ile BIREBIR
+           AYNI kutu: ince 1px kenarlik (once golgeli Tailwind "ring" idi,
+           gercek border degildi), golgesiz duz yuzey, satirlar arasi bosluk
+           16px (once 8px'ti - gap-2 yerine yukarida gap-4). */
+        .users-row {
+            border: 1px solid rgba(226, 232, 240, .9);
+        }
+
+        html.dark .users-row {
+            background: #18181b !important;
+            border-color: #27272a;
+        }
+
         /* Canli arama sirasinda liste hafifce sonukleserek "araniyor" hissi
            verir; sonuc gelince normale doner. Response ilkesi: geri bildirim
            beklemeden, ama sonuc gelene kadar da liste donuk kalmaz. */
@@ -384,9 +397,9 @@
             </div>
         </div>
 
-        <div class="grid grid-cols-1 gap-2 users-page-list" data-users-list data-total="{{ $users->total() }}">
+        <div class="grid grid-cols-1 gap-4 users-page-list" data-users-list data-total="{{ $users->total() }}">
         @forelse ($users as $user)
-            <div class="rounded-[14px] bg-white dark:bg-slate-900 px-4 py-3 shadow-sm ring-1 ring-slate-200/80 dark:ring-slate-700/80">
+            <div class="users-row rounded-[14px] bg-white px-4 py-3">
                 <div class="flex items-center justify-between gap-3">
                     <div class="flex min-w-0 items-center gap-3">
                         <a href="{{ route('users.show', $user) }}" class="shrink-0">
