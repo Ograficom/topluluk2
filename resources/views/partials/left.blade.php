@@ -975,7 +975,9 @@
 
     /* Scroll çubuğu sadece left menü üzerinde gezinirken/kaydırırken görünsün */
     .sidebar-scroll {
-        scrollbar-width: none !important;
+        scrollbar-width: thin !important;
+        scrollbar-color: transparent transparent !important;
+        scrollbar-gutter: stable !important;
         -ms-overflow-style: none !important;
         padding-right: 10px !important;
     }
@@ -1320,36 +1322,40 @@
         display: flex !important;
         flex-wrap: wrap !important;
         align-items: center !important;
-        gap: 6px !important;
-        margin: 0 0 14px !important;
+        gap: 5px !important;
+        margin: 0 0 12px !important;
         padding: 0 !important;
     }
 
-    /* 24px'lik kutu + 6px bosluk, 180px genisligindeki sidebar-footer icine
-       satir basina 6 logo sigacak sekilde hesaplandi (6*24 + 5*6 = 174px). */
+    /* Kompakt ve sabit sosyal ikonlar: hover geometriyi degistirmez. */
     .sidebar-social-icon {
         display: inline-flex !important;
         align-items: center !important;
         justify-content: center !important;
-        width: 24px !important;
-        height: 24px !important;
-        flex-shrink: 0 !important;
+        width: 20px !important;
+        height: 20px !important;
+        min-width: 20px !important;
+        flex: 0 0 20px !important;
         border-radius: 999px !important;
         background: #f3f4f6 !important;
         color: #4b5563 !important;
         text-decoration: none !important;
-        transition: background-color .15s ease, transform .15s ease !important;
+        transform: none !important;
+        transition: background-color .15s ease, color .15s ease !important;
     }
 
     .sidebar-social-icon:hover,
     .sidebar-social-icon:focus-visible {
         background: #e5e7eb !important;
-        transform: scale(1.08) !important;
+        transform: none !important;
+        outline: none !important;
     }
 
     .sidebar-social-icon iconify-icon {
-        width: 14px !important;
-        height: 14px !important;
+        width: 12px !important;
+        height: 12px !important;
+        font-size: 12px !important;
+        transform: none !important;
         pointer-events: none !important;
     }
 
@@ -1392,8 +1398,8 @@
     .sidebar-utility-icons {
         display: flex !important;
         align-items: center !important;
-        gap: 8px !important;
-        margin: 0 0 14px !important;
+        gap: 6px !important;
+        margin: 0 0 12px !important;
         padding: 0 !important;
     }
 
@@ -1401,15 +1407,17 @@
         display: inline-flex !important;
         align-items: center !important;
         justify-content: center !important;
-        width: 32px !important;
-        height: 32px !important;
-        flex-shrink: 0 !important;
+        width: 28px !important;
+        height: 28px !important;
+        min-width: 28px !important;
+        flex: 0 0 28px !important;
         border-radius: 999px !important;
         border: 0 !important;
         background: #f3f4f6 !important;
         color: #4b5563 !important;
         text-decoration: none !important;
         cursor: pointer !important;
+        transform: none !important;
         transition: background-color .15s ease, color .15s ease !important;
     }
 
@@ -1417,17 +1425,20 @@
     .sidebar-utility-icon:focus-visible {
         background: #eff6ff !important;
         color: #2563eb !important;
+        transform: none !important;
         outline: none !important;
     }
 
     .sidebar-utility-icon iconify-icon {
-        width: 16px !important;
-        height: 16px !important;
+        width: 14px !important;
+        height: 14px !important;
+        font-size: 14px !important;
+        transform: none !important;
         pointer-events: none !important;
     }
 
     .sidebar-utility-icon--text {
-        font-size: 12px !important;
+        font-size: 11px !important;
         font-weight: 600 !important;
         letter-spacing: .02em !important;
     }
@@ -1450,27 +1461,45 @@
         display: flex !important;
         flex-wrap: wrap !important;
         align-items: baseline !important;
-        row-gap: 8px !important;
-        column-gap: 16px !important;
+        row-gap: 7px !important;
+        column-gap: 14px !important;
         margin-bottom: 0 !important;
     }
 
     body.alma-app .sidebar-footer-link {
         flex: 0 0 auto !important;
-        font-size: 12px !important;
-        line-height: 1.5 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        border: 0 !important;
+        background: transparent !important;
+        font-size: 11px !important;
+        line-height: 1.45 !important;
+        font-weight: 400 !important;
         color: #4b5563 !important;
         white-space: nowrap !important;
         overflow: visible !important;
         text-overflow: clip !important;
+        transform: none !important;
+        transition: color .15s ease !important;
+    }
+
+    body.alma-app .sidebar-footer-link:is(:hover, :focus-visible, :active) {
+        margin: 0 !important;
+        padding: 0 !important;
+        background: transparent !important;
+        font-size: 11px !important;
+        line-height: 1.45 !important;
+        font-weight: 400 !important;
+        color: #374151 !important;
+        transform: none !important;
     }
 
     /* Marka adı: linklerin altında, tek başına, biraz daha koyu ve kalın */
     .sidebar-footer-brand {
         display: block !important;
-        margin-top: 14px !important;
-        font-size: 13px !important;
-        font-weight: 700 !important;
+        margin-top: 12px !important;
+        font-size: 12px !important;
+        font-weight: 600 !important;
         color: #111827 !important;
     }
 
@@ -1483,8 +1512,39 @@
     .sidebar-footer-bottom {
         display: block !important;
         margin-top: 4px !important;
-        font-size: 12px !important;
+        font-size: 11px !important;
         color: #9ca3af !important;
+    }
+
+    /* Footer ve cocuklarinin hover/focus halinde konumu kesinlikle degismez. */
+    body.alma-app .sidebar-footer,
+    body.alma-app .sidebar-wrapper:hover .sidebar-footer,
+    body.alma-app .sidebar-footer:is(:hover, :focus-within) {
+        transform: translateX(0) !important;
+        translate: none !important;
+    }
+
+    /* Genel site tipografi kurallarindaki :not(#...) secicileri yuksek
+       ozgulluk tasiyor. Footer olculerini gercek hesaplanan degerlerde de
+       sabitlemek icin ayni ozgulluk katmaninda son soz. */
+    html body.alma-app:not(#comments):not(#app) .sidebar-footer .sidebar-footer-link,
+    html body.alma-app:not(#comments):not(#app) .sidebar-footer .sidebar-footer-link:is(:hover, :focus-visible, :active) {
+        margin: 0 !important;
+        padding: 0 !important;
+        font-size: 11px !important;
+        line-height: 1.45 !important;
+        font-weight: 400 !important;
+        transform: none !important;
+    }
+
+    html body.alma-app:not(#comments):not(#app) .sidebar-footer .sidebar-utility-icon--text,
+    html body.alma-app:not(#comments):not(#app) .sidebar-footer .sidebar-footer-bottom {
+        font-size: 11px !important;
+    }
+
+    html body.alma-app:not(#comments):not(#app) .sidebar-footer .sidebar-footer-brand {
+        font-size: 12px !important;
+        font-weight: 600 !important;
     }
 </style>
 
