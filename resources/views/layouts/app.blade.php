@@ -322,7 +322,7 @@
             }
         }
         .custom-scrollbar::-webkit-scrollbar-track {
-            background: transparent;
+            background: rgba(255, 255, 255, .58);
         }
         .custom-scrollbar::-webkit-scrollbar-thumb {
             background-color: rgba(156, 163, 175, 0.5);
@@ -2789,7 +2789,7 @@
             right: 0;
             left: 0;
             height: 56px;
-            background: transparent;
+            background: rgba(255, 255, 255, .58);
             backdrop-filter: blur(20px) saturate(180%);
             -webkit-backdrop-filter: blur(20px) saturate(180%);
             pointer-events: none;
@@ -2800,18 +2800,18 @@
         }
 
         html.dark body.route-tags::before {
-            background: transparent;
+            background: rgba(24, 24, 27, .58);
         }
 
         @media (prefers-reduced-transparency: reduce) {
             body.route-tags::before {
-                background: transparent;
+                background: #ffffff;
                 backdrop-filter: none;
                 -webkit-backdrop-filter: none;
             }
 
             html.dark body.route-tags::before {
-                background: transparent;
+                background: #18181b;
             }
         }
 
