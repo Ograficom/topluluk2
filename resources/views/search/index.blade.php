@@ -1283,6 +1283,7 @@
                 </div>
             </div>
         </div>
+        <div data-identity-spacer aria-hidden="true"></div>
 
         <div class="og-search-bar-row">
             <div class="og-search-bar">

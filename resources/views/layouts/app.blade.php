@@ -2856,12 +2856,18 @@
            basligi kaydirma yonune gore transform: translateY() ile gizleyip
            gosteriyor - will-change tarayiciya bu animasyonu onceden hazirlamasi
            icin ipucu verir (Frame-level smoothness ilkesi). Sayfanin kendi
-           kimlik kutusu (page-title-identity / og-search-identity) da sticky
-           bir katman (z-index'i baslikdan dusuk: 45); "top" degeri ayni JS
-           tarafindan basligin o anki gorunur yuksekligiyle (headerHeight -
-           hiddenAmount) senkronize tutuluyor - yoksa baslik geri gelirken
-           ikisi ayni noktada (top:0) ust uste biner, kimlik kutusu tamamen
-           kaybolurdu. */
+           kimlik kutusu (page-title-identity / og-search-identity) position:
+           fixed (sticky degil KASITLI - bu 4 rotada (bkz. asagidaki
+           html:has(body.route-search) kurali) body'ye zorla overflow-y:auto
+           veriliyor; bu, sticky'nin "en yakin kaydirma atasi" hesabini
+           body'ye baglayip document.scrollingElement'i null yapiyor, sticky
+           tamamen calismiyor - fixed, viewport'a gore konumlandigi icin bu
+           belirsizlikten tamamen bagimsiz). "top" degeri JS'te basligin o
+           anki gorunur yuksekligiyle (headerHeight - hiddenAmount) senkronize
+           tutuluyor - yoksa baslik geri gelirken ikisi ayni noktada (top:0)
+           ust uste biner. Kutu artik normal akistan cikti, hemen altindaki
+           [data-identity-spacer] bosluk elemani onun yuksekligi kadar yer
+           tutarak icerigin yukari ziplamasini engelliyor. */
         body.route-search .site-header,
         body.route-tags .site-header,
         body.route-users .site-header {
@@ -2871,9 +2877,24 @@
         body.route-search .og-search-identity,
         body.route-tags .page-title-identity,
         body.route-users .page-title-identity {
-            position: sticky;
+            position: fixed;
+            left: 0;
+            right: 0;
             top: 0;
+            width: auto;
+            margin-left: 0;
+            margin-right: 0;
             z-index: 45;
+        }
+
+        [data-identity-spacer] {
+            display: none;
+        }
+
+        body.route-search [data-identity-spacer],
+        body.route-tags [data-identity-spacer],
+        body.route-users [data-identity-spacer] {
+            display: block;
         }
 
         .site-header-shell {

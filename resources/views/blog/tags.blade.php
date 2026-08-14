@@ -422,6 +422,7 @@
             'title' => __('site.tags_page.title'),
             'trailing' => view('blog.partials.tags-toolbar', ['sort' => $sort, 'sortOptions' => $sortOptions, 'search' => $search])->render(),
         ])
+        <div data-identity-spacer aria-hidden="true"></div>
 
         <div class="tags-search-panel {{ $search !== '' ? 'is-open' : '' }}" data-tags-search-panel>
             <div class="tags-search-panel__inner">

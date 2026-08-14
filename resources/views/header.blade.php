@@ -2514,11 +2514,13 @@
                 // manipulation ilkeleri) - esik degeri yerine surekli geri
                 // bildirim, ani "gorunur/gizli" ziplamasi yerine akici bir
                 // his veriyor. Sayfanin kendi kimlik kutusu (page-title-
-                // identity/og-search-identity) CSS ile sticky top:0, ama bu
-                // top degeri her karede baslikla AYNI miktarda guncelleniyor
+                // identity/og-search-identity) CSS ile position:fixed - "top"
+                // degeri her karede baslikla AYNI miktarda guncelleniyor
                 // (headerHeight - hiddenAmount) - yoksa baslik geri gelirken
-                // ikisi ayni yerde (top:0) ust uste biner, kimlik kutusu
-                // baslikta kalirken (yuksek z-index) tamamen kaybolurdu.
+                // ikisi ayni yerde ust uste biner, kimlik kutusu baslikta
+                // kalirken (yuksek z-index) tamamen kaybolurdu. Kutu normal
+                // akistan ciktigi icin hemen altindaki [data-identity-spacer]
+                // onun yuksekligi kadar yer tutup icerigin ziplamasini onler.
                 const header = document.querySelector('[data-site-header]');
                 if (!header) return;
 
@@ -2528,6 +2530,7 @@
                 if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
                 const identityBox = document.querySelector('.og-search-identity, .page-title-identity');
+                const identitySpacer = document.querySelector('[data-identity-spacer]');
                 const mobileQuery = window.matchMedia('(max-width: 640px)');
                 const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
 
@@ -2535,6 +2538,12 @@
                 let headerHeight = header.offsetHeight;
                 let lastScrollY = window.scrollY;
                 let ticking = false;
+
+                const syncSpacerHeight = () => {
+                    if (identityBox && identitySpacer) {
+                        identitySpacer.style.height = `${identityBox.offsetHeight}px`;
+                    }
+                };
 
                 const resetHeader = () => {
                     hiddenAmount = 0;
@@ -2569,6 +2578,7 @@
 
                 window.addEventListener('resize', () => {
                     headerHeight = header.offsetHeight;
+                    syncSpacerHeight();
                 });
 
                 mobileQuery.addEventListener('change', (event) => {
@@ -2576,6 +2586,13 @@
                 });
 
                 window.addEventListener('scroll', onScroll, { passive: true });
+
+                // Ilk render'da kimlik kutusu (fixed) hemen dogru "top" (=
+                // headerHeight, cunku henuz kaydirma yok) degerini alsin,
+                // yoksa bir sonraki scroll olayina kadar top:0'da kalip
+                // basligin ustune biner.
+                syncSpacerHeight();
+                applyTransform();
             })();
         </script>
     @endpush

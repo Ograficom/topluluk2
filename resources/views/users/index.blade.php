@@ -372,6 +372,7 @@
             'title' => __('site.users.title'),
             'trailing' => view('users.partials.users-toolbar', ['sort' => $sort, 'search' => $search])->render(),
         ])
+        <div data-identity-spacer aria-hidden="true"></div>
 
         <div class="users-search-panel {{ $search !== '' ? 'is-open' : '' }}" data-users-search-panel>
             <div class="users-search-panel__inner">
