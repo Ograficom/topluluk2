@@ -52,28 +52,23 @@
         opacity: .15;
     }
 
-    /* iOS native arama alani: beyaz+kenarlikli kutu degil, sistemin kendi
-       "systemGray6" tonuna yakin duz/yumusak dolgu (Apple'in Ayarlar/Mail/
-       Mesajlar uygulamalarindaki arama cubugu ile ayni dil) - kenarlik yok,
-       odaklaninca parlak mavi halka yerine dolgu hafifce koyulasip ince bir
-       vurgu halkasi beliriyor (Response ilkesi: aninda ama gösterişsiz). */
     .og-search-bar {
         position: relative;
         display: flex;
         align-items: center;
         width: 100%;
-        height: 44px;
-        padding: 0 44px 0 14px;
-        border-radius: 12px;
-        border: 0;
-        background: #f4f4f5 !important;
-        box-shadow: none;
-        transition: background-color .15s ease, box-shadow .15s ease;
+        height: 48px;
+        padding: 0 46px 0 16px;
+        border-radius: 14px;
+        border: 1px solid #e2e8f0;
+        background: #ffffff !important;
+        box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+        transition: border-color .15s ease, box-shadow .15s ease;
     }
 
     .og-search-bar:focus-within {
-        background: #ececef !important;
-        box-shadow: 0 0 0 2px rgba(37, 99, 235, .35) !important;
+        border-color: #93c5fd;
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, .12) !important;
     }
 
     /* Arama ve temizle (x) ikonlari ayni sag ust bosluga (ayni "slot") yerlesir;
@@ -650,8 +645,13 @@
     }
 
     .og-result-row--post,
-    .og-result-row--comment {
+    .og-result-row--comment,
+    .og-result-row--page {
         align-items: flex-start;
+    }
+
+    .og-result-row:active {
+        background: #f1f5f9;
     }
 
     .og-result-row-main {
@@ -666,6 +666,18 @@
         display: flex;
         align-items: center;
         gap: 8px;
+    }
+
+    /* Kategori/kullanici satirlarinda (chip) baslik gerisindeki rozet ve
+       ok her zaman sag kenara yaslanmali - baslik esnek alani doldurup
+       tasarsa tek satirda uc uca kesiliyor, digger satirlarin (post/
+       sayfa) coklu-satir davranisini etkilemiyor. */
+    .og-result-row--chip .og-result-row-title {
+        flex: 1 1 auto;
+        min-width: 0;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 
     .og-result-row-snippet {
@@ -710,6 +722,61 @@
         flex: 0 0 auto;
         font-size: 11.5px;
         color: #94a3b8;
+    }
+
+    /* Yazi sonuclarindaki kare on-izleme kucuk resmi (iOS Notlar/Mail arama
+       sonuclarindaki kucuk resim-sag desenoyle ayni dil) - resim yoksa
+       nazikce bir yer-tutucu ikon gosterilir, bos beyaz kutu birakilmaz. */
+    .og-result-row-thumb {
+        flex: 0 0 auto;
+        width: 56px;
+        height: 56px;
+        border-radius: 12px;
+        object-fit: cover;
+        background: #f1f5f9;
+    }
+
+    .og-result-row-thumb--placeholder {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: #cbd5e1;
+        font-size: 20px;
+    }
+
+    /* Kategoriler/Sayfalar icin iOS Ayarlar uygulamasindaki renkli-kare
+       ikon rozeti deseni - her sonuc turu kendi rengini tasir, boylece
+       liste tarayan goz turleri aninda ayirt edebilir (Grouping & mapping
+       ilkesi). */
+    .og-result-icon {
+        flex: 0 0 auto;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 36px;
+        height: 36px;
+        border-radius: 10px;
+        font-size: 17px;
+        color: #ffffff;
+    }
+
+    .og-result-icon--image {
+        object-fit: cover;
+    }
+
+    .og-result-icon--folder {
+        background: linear-gradient(160deg, #fbbf24, #f59e0b);
+    }
+
+    .og-result-icon--page {
+        background: linear-gradient(160deg, #60a5fa, #2563eb);
+    }
+
+    .og-result-row-chevron {
+        flex: 0 0 auto;
+        margin-left: auto;
+        font-size: 15px;
+        color: #cbd5e1;
     }
 
     .og-result-tag {
@@ -787,18 +854,15 @@
     }
 
     html.dark .og-search-box,
-    html.dark .og-search-more-btn {
+    html.dark .og-search-more-btn,
+    html.dark .og-search-bar {
         background: #0f172a !important;
         border-color: #1e293b !important;
     }
 
-    html.dark .og-search-bar {
-        background: #27272a !important;
-    }
-
     html.dark .og-search-bar:focus-within {
-        background: #2f2f33 !important;
-        box-shadow: 0 0 0 2px rgba(59, 130, 246, .4) !important;
+        border-color: #3b82f6 !important;
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, .2) !important;
     }
 
     html.dark .og-search-message {
@@ -861,6 +925,22 @@
 
     html.dark .og-result-row:hover {
         background: #1e293b;
+    }
+
+    html.dark .og-result-row:active {
+        background: #334155;
+    }
+
+    html.dark .og-result-row-thumb {
+        background: #1e293b;
+    }
+
+    html.dark .og-result-row-thumb--placeholder {
+        color: #475569;
+    }
+
+    html.dark .og-result-row-chevron {
+        color: #475569;
     }
 
     html.dark .og-search-follow-btn.is-following {
@@ -1121,14 +1201,22 @@ document.addEventListener('DOMContentLoaded', () => {
                     <span>${i18n.views.replace(':count', Number(post.views || 0).toLocaleString('tr-TR'))}</span>
                 </div>
             </div>
+            ${post.image
+                ? `<img src="${escapeHtml(post.image)}" alt="${escapeHtml(post.title)}" class="og-result-row-thumb" loading="lazy">`
+                : `<span class="og-result-row-thumb og-result-row-thumb--placeholder"><iconify-icon icon="lucide:image" aria-hidden="true"></iconify-icon></span>`
+            }
         </a>
     `).join('');
 
     const renderCategories = (items) => items.map((cat) => `
         <a href="${escapeHtml(cat.url)}" class="og-result-row og-result-row--chip">
-            ${avatarHtml(cat.avatar, cat.title, 'og-result-avatar')}
+            ${cat.avatar
+                ? `<img src="${escapeHtml(cat.avatar)}" alt="${escapeHtml(cat.title)}" class="og-result-icon og-result-icon--image" loading="lazy">`
+                : `<span class="og-result-icon og-result-icon--folder"><iconify-icon icon="lucide:folder" aria-hidden="true"></iconify-icon></span>`
+            }
             <span class="og-result-row-title">${escapeHtml(cat.title)}</span>
             <span class="og-result-row-badge">${i18n.postsCount.replace(':count', Number(cat.posts_count || 0).toLocaleString('tr-TR'))}</span>
+            <iconify-icon class="og-result-row-chevron" icon="lucide:chevron-right" aria-hidden="true"></iconify-icon>
         </a>
     `).join('');
 
@@ -1168,11 +1256,13 @@ document.addEventListener('DOMContentLoaded', () => {
     `).join('');
 
     const renderPages = (items) => items.map((page) => `
-        <a href="${escapeHtml(page.url)}" class="og-result-row og-result-row--post">
+        <a href="${escapeHtml(page.url)}" class="og-result-row og-result-row--page">
+            <span class="og-result-icon og-result-icon--page"><iconify-icon icon="lucide:file-text" aria-hidden="true"></iconify-icon></span>
             <div class="og-result-row-main">
                 <p class="og-result-row-title">${escapeHtml(page.title)}</p>
                 ${page.snippet ? `<p class="og-result-row-snippet">${escapeHtml(page.snippet)}</p>` : ''}
             </div>
+            <iconify-icon class="og-result-row-chevron" icon="lucide:chevron-right" aria-hidden="true"></iconify-icon>
         </a>
     `).join('');
 

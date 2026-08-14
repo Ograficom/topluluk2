@@ -138,7 +138,7 @@ class SearchController extends Controller
     {
         $postsQuery = Post::query()
             ->published()
-            ->select(['id', 'title', 'slug', 'excerpt', 'content', 'category_id', 'author_id', 'views_count', 'is_nsfw', 'created_at', 'published_at'])
+            ->select(['id', 'title', 'slug', 'excerpt', 'content', 'featured_image', 'category_id', 'author_id', 'views_count', 'is_nsfw', 'created_at', 'published_at'])
             ->with([
                 'category:id,name,slug,profile_image',
                 'author:id,name,username,profile_photo_path,is_verified,verification_badge,verification_badge_svg',
@@ -180,6 +180,7 @@ class SearchController extends Controller
             'title' => $post->title,
             'snippet' => Str::limit(html_entity_decode(strip_tags($post->excerpt ?? $post->content), ENT_QUOTES | ENT_HTML5, 'UTF-8'), 140),
             'url' => route('blog.post', $post),
+            'image' => $post->featured_image_url,
             'category' => optional($post->category)->name,
             'author' => optional($post->author)->name,
             'author_avatar' => optional($post->author)->profile_photo_url,
