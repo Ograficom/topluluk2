@@ -2765,6 +2765,18 @@
         }
     }
 
+    /* Bu iki eleman sadece Arama/Etiketler/Kullanicilar sayfalarinda mobilde
+       gorunur (asagidaki @media(max-width:640px) blogu icinde acilir); varsayilan
+       hali her zaman gizli olmali - bu kural KASITLI olarak media query'nin
+       DISINDA, yoksa masaustunde hicbir kural uygulanmaz ve div'in tarayici
+       varsayilani olan display:block sizip gormezden gelinemez bir bosluk/kutu
+       birakir. */
+    [data-identity-spacer],
+    .page-title-identity__edge-blur,
+    .og-search-identity__edge-blur {
+        display: none;
+    }
+
     @media (max-width: 640px) {
         .site-header-shell,
         .community-shell,
@@ -2887,14 +2899,53 @@
             z-index: 45;
         }
 
-        [data-identity-spacer] {
-            display: none;
-        }
-
         body.route-search [data-identity-spacer],
         body.route-tags [data-identity-spacer],
         body.route-users [data-identity-spacer] {
             display: block;
+        }
+
+        /* Kutunun altinda "scroll edge effect" - Apple'in sert 1px alt
+           kenarlik yerine onerdigi teknik: icerik sabit kutunun altindan
+           gecerken keskin bir kenar yerine yumusak bir blur+degrade ile
+           "kayboluyor". Kutu position:fixed oldugu icin bu eleman (position:
+           absolute, top:100%) otomatik olarak onun TAM altina oturuyor -
+           ekstra JS/senkronizasyon gerekmiyor. mask-image ustten (opak)
+           alta (seffaf) dogru soluyor, boylece blur asagi indikce "kayip
+           olan" bir efekt veriyor - cok kisa (28px) ve hafif (6px blur),
+           "az" istendigi icin agir/uzun bir sis tabakasi degil ince bir iz. */
+        @media (max-width: 640px) {
+            body.route-search .og-search-identity__edge-blur,
+            body.route-tags .page-title-identity__edge-blur,
+            body.route-users .page-title-identity__edge-blur {
+                display: block;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                height: 28px;
+                pointer-events: none;
+                background: linear-gradient(to bottom, rgba(255, 255, 255, .55), rgba(255, 255, 255, 0));
+                backdrop-filter: blur(6px);
+                -webkit-backdrop-filter: blur(6px);
+                mask-image: linear-gradient(to bottom, #000 0%, transparent 100%);
+                -webkit-mask-image: linear-gradient(to bottom, #000 0%, transparent 100%);
+            }
+
+            html.dark body.route-search .og-search-identity__edge-blur,
+            html.dark body.route-tags .page-title-identity__edge-blur,
+            html.dark body.route-users .page-title-identity__edge-blur {
+                background: linear-gradient(to bottom, rgba(24, 24, 27, .55), rgba(24, 24, 27, 0));
+            }
+
+            @media (prefers-reduced-transparency: reduce) {
+                body.route-search .og-search-identity__edge-blur,
+                body.route-tags .page-title-identity__edge-blur,
+                body.route-users .page-title-identity__edge-blur {
+                    backdrop-filter: none;
+                    -webkit-backdrop-filter: none;
+                }
+            }
         }
 
         .site-header-shell {

@@ -1282,6 +1282,7 @@
                     </div>
                 </div>
             </div>
+            <div class="og-search-identity__edge-blur" aria-hidden="true"></div>
         </div>
         <div data-identity-spacer aria-hidden="true"></div>
 

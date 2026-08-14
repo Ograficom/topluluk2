@@ -14,6 +14,7 @@
     @if ($pageTitleIdentityTrailing !== '')
         {!! $pageTitleIdentityTrailing !!}
     @endif
+    <div class="page-title-identity__edge-blur" aria-hidden="true"></div>
 </div>
 
 @once
