@@ -337,10 +337,24 @@ class BlogController extends Controller
                 $query->whereHas('tags', fn ($q) => $q->where('slug', $request->string('tag')));
             });
 
+        // Etiket sayfasindaki (Etiketler > tek etiket) siralama menusu icin -
+        // Popüler/Yeni/Eski secenekleri Etiketler listesindeki sort ile ayni
+        // isim/ikonlari paylasir, sadece etiketle filtrelenmis akista anlamli.
+        $sort = in_array((string) $request->query('sort', 'newest'), ['popular', 'newest', 'oldest'], true)
+            ? (string) $request->query('sort', 'newest')
+            : 'newest';
+
         $posts = (clone $filteredQuery)
             ->orderByDesc('is_pinned')
-            ->orderByDesc('updated_at')
-            ->orderByDesc('published_at')
+            ->when($sort === 'popular', function ($query) {
+                $query->orderByDesc('reactions_count')->orderByDesc('comments_count')->orderByDesc('published_at');
+            })
+            ->when($sort === 'oldest', function ($query) {
+                $query->orderBy('published_at');
+            })
+            ->when($sort === 'newest', function ($query) {
+                $query->orderByDesc('updated_at')->orderByDesc('published_at');
+            })
             ->paginate(25)
             ->withQueryString();
 
@@ -409,6 +423,7 @@ class BlogController extends Controller
             'reactionTypes' => $reactionTypes,
             'activeCategory' => $request->string('category')->toString(),
             'activeTag' => $request->string('tag')->toString(),
+            'sort' => $sort,
             'popularTags' => $popularTags,
             'popularComments' => $popularComments,
         ]);

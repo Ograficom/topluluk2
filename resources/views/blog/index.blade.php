@@ -124,44 +124,181 @@
         text-align: center;
     }
 
-    .tag-page-identity {
+    /* Tek etiket akisindaki baslik artik ozel bir kutu degil, Etiketler/SSS/
+       Kullanicilar sayfalarindaki AYNI paylasilan page-title-identity
+       bileseni (geri butonu + baslik + "trailing" slotunda sadece siralama
+       tetikleyicisi - Etiketler'den farkli olarak arama ikonu YOK, cunku bu
+       zaten tek bir etikete filtrelenmis akis). Sarmalayici sadece eski
+       -16px alt bosluk telafisini koruyor. */
+    .tag-page-identity-wrap {
+        margin-bottom: -16px;
+    }
+
+    /* Siralama tetikleyicisi - Etiketler sayfasindaki tags-toolbar__icon/
+       tags-sort__menu ile AYNI gorunum ve davranis (materialize ac/kapa,
+       32x32 ikon, basma geri bildirimi), sadece arama ikonu olmadan. */
+    .tag-page-sort {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        flex-shrink: 0;
+        margin-left: auto;
+    }
+
+    .tag-page-sort__trigger.tag-page-sort__trigger {
+        display: inline-flex !important;
+        flex: 0 0 auto;
+        width: 32px !important;
+        height: 32px !important;
+        align-items: center;
+        justify-content: center;
+        border: 0 !important;
+        border-radius: 999px !important;
+        background: transparent !important;
+        color: #52525b !important;
+        cursor: pointer;
+        transition: background-color .15s ease, transform .08s ease-out;
+    }
+
+    .tag-page-sort__trigger:active {
+        transform: translateY(1px);
+    }
+
+    .tag-page-sort__trigger iconify-icon {
+        font-size: 16px;
+    }
+
+    .tag-page-sort__trigger.tag-page-sort__trigger:hover,
+    .tag-page-sort__trigger.tag-page-sort__trigger:focus-visible,
+    .tag-page-sort.is-open .tag-page-sort__trigger.tag-page-sort__trigger {
+        background: #f3f4f6 !important;
+        outline: none;
+    }
+
+    html.dark .tag-page-sort__trigger {
+        color: #cbd5e1 !important;
+    }
+
+    html.dark .tag-page-sort__trigger:hover,
+    html.dark .tag-page-sort__trigger:focus-visible,
+    html.dark .tag-page-sort.is-open .tag-page-sort__trigger {
+        background: #1e293b !important;
+    }
+
+    .tag-page-sort__menu {
+        position: absolute;
+        top: calc(100% + 8px);
+        right: 0;
+        width: 190px;
+        border-radius: 16px;
+        border: 1px solid #e4e4e7;
+        background: #ffffff;
+        padding: 8px;
+        box-shadow: 0 16px 36px rgba(15, 23, 42, .14);
+        z-index: 40;
+        visibility: hidden;
+        opacity: 0;
+        transform: scale(.96) translateY(-6px);
+        transform-origin: top right;
+        transition: opacity .16s ease, transform .16s ease, visibility 0s linear .16s;
+    }
+
+    .tag-page-sort__menu.is-open {
+        visibility: visible;
+        opacity: 1;
+        transform: scale(1) translateY(0);
+        transition: opacity .16s ease, transform .16s ease;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .tag-page-sort__menu {
+            transform: none;
+            transition: opacity .12s ease, visibility 0s linear .12s;
+        }
+
+        .tag-page-sort__menu.is-open {
+            transform: none;
+            transition: opacity .12s ease;
+        }
+    }
+
+    .tag-page-sort__label {
+        display: block;
+        margin: 4px 8px 6px;
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: .05em;
+        text-transform: uppercase;
+        color: #94a3b8;
+    }
+
+    .tag-page-sort__options {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+    }
+
+    .tag-page-sort__option {
         display: flex;
         align-items: center;
-        width: 100%;
-        min-height: 38px;
-        margin: 0 0 -16px;
-        padding: 3px 17px;
-        border: 1px solid #d9dde3;
-        border-radius: 18px;
-        background: #ffffff;
-        color: #050505;
-        font-size: 14px;
-        font-weight: 600;
-        line-height: 1;
-        box-sizing: border-box;
-        box-shadow: none;
+        gap: 8px;
+        min-height: 36px;
+        padding: 0 10px;
+        border-radius: 10px;
+        color: #3f3f46;
+        font-size: 13px;
+        font-weight: 500;
+        text-decoration: none;
+        transition: background-color .15s ease, color .15s ease;
     }
 
-    html.dark .tag-page-identity,
-    .dark .tag-page-identity {
-        border-color: #27272a;
+    .tag-page-sort__option iconify-icon {
+        font-size: 15px;
+        flex-shrink: 0;
+    }
+
+    .tag-page-sort__option[aria-current="true"],
+    .tag-page-sort__option:hover,
+    .tag-page-sort__option:focus-visible {
+        background: #f3f4f6;
+        color: #0f172a;
+        outline: none;
+    }
+
+    .tag-page-sort__option[aria-current="true"] {
+        color: #1d4ed8;
+    }
+
+    .tag-page-sort__option[aria-current="true"] iconify-icon {
+        color: #2563eb;
+    }
+
+    html.dark .tag-page-sort__menu {
         background: #18181b;
-        color: #fafafa;
+        border-color: #27272a;
     }
 
-    @media (max-width: 640px) {
-        .tag-page-identity {
-            width: 100vw;
-            min-height: 34px;
-            margin-right: calc(50% - 50vw);
-            margin-bottom: -16px;
-            margin-left: calc(50% - 50vw);
-            padding: 2px 14px;
-            border-right: 0;
-            border-left: 0;
-            border-radius: 16px;
-            font-size: 13px;
-        }
+    html.dark .tag-page-sort__label {
+        color: #71717a;
+    }
+
+    html.dark .tag-page-sort__option {
+        color: #d4d4d8;
+    }
+
+    html.dark .tag-page-sort__option[aria-current="true"],
+    html.dark .tag-page-sort__option:hover,
+    html.dark .tag-page-sort__option:focus-visible {
+        background: #27272a;
+        color: #f4f4f5;
+    }
+
+    html.dark .tag-page-sort__option[aria-current="true"] {
+        color: #93c5fd;
+    }
+
+    html.dark .tag-page-sort__option[aria-current="true"] iconify-icon {
+        color: #93c5fd;
     }
 
     .ografi-feed-loadmore__button {
@@ -1534,7 +1671,12 @@ html.dark .ografi-feed-page-button--next:active,
         </div>
     @else
         @if($isTagPage)
-            <h1 class="tag-page-identity">#{{ $activeTagName }}</h1>
+            <div class="tag-page-identity-wrap">
+                @include('partials.page-title-identity', [
+                    'title' => '#' . $activeTagName,
+                    'trailing' => view('blog.partials.tag-page-sort-trigger', ['sort' => $sort ?? 'newest'])->render(),
+                ])
+            </div>
         @endif
 
         @include('partials.ads.slot', [
@@ -1752,5 +1894,39 @@ html.dark .ografi-feed-page-button--next:active,
                 window.location.href = button.href;
             }
         });
+
+        (() => {
+            // Tek etiket akisindaki siralama menusu - Etiketler sayfasindaki
+            // ayni ac/kapa deseni (materialize olcek+kayma animasyonu).
+            const root = document.querySelector('[data-tag-page-sort]');
+            const trigger = document.querySelector('[data-tag-page-sort-trigger]');
+            const menu = document.querySelector('[data-tag-page-sort-menu]');
+
+            if (!root || !trigger || !menu) return;
+
+            const openMenu = () => {
+                root.classList.add('is-open');
+                menu.classList.add('is-open');
+                trigger.setAttribute('aria-expanded', 'true');
+            };
+
+            const closeMenu = () => {
+                root.classList.remove('is-open');
+                menu.classList.remove('is-open');
+                trigger.setAttribute('aria-expanded', 'false');
+            };
+
+            trigger.addEventListener('click', (event) => {
+                event.preventDefault();
+                event.stopPropagation();
+                if (menu.classList.contains('is-open')) closeMenu(); else openMenu();
+            });
+
+            root.addEventListener('click', (event) => event.stopPropagation());
+            document.addEventListener('click', closeMenu);
+            document.addEventListener('keydown', (event) => {
+                if (event.key === 'Escape') closeMenu();
+            });
+        })();
     </script>
 @endsection
