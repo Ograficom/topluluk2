@@ -243,7 +243,6 @@
         </aside>
 
         <main class="blog-layout-main space-y-6 blog-content">
-            @include('partials.community-feed')
             @if (session('status'))
                 <div class="mb-4 rounded bg-emerald-500/10 text-emerald-100 px-4 py-3 text-sm">
                     {{ session('status') }}
