@@ -3030,6 +3030,7 @@
                 -webkit-backdrop-filter: blur(20px) saturate(180%);
                 box-shadow: 0 8px 24px rgba(15, 23, 42, .08);
                 isolation: isolate;
+                overflow: visible;
             }
 
             /* Formun disinda kalan yan/ust/alt padding degerleri de ayni
@@ -3037,15 +3038,20 @@
             body.route-tags [data-tags-search-panel]::before {
                 content: '';
                 position: absolute;
-                z-index: -1;
-                top: -8px;
+                z-index: 0;
+                top: 0;
                 right: 0;
-                bottom: -8px;
+                bottom: 0;
                 left: 0;
                 background-color: rgba(255, 255, 255, .88);
                 backdrop-filter: blur(20px) saturate(180%);
                 -webkit-backdrop-filter: blur(20px) saturate(180%);
                 pointer-events: none;
+            }
+
+            body.route-tags [data-tags-search-panel] > * {
+                position: relative;
+                z-index: 1;
             }
 
             html.dark body.route-tags [data-tags-search-panel] {
