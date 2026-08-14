@@ -277,6 +277,14 @@
             background: rgba(148, 163, 184, .22);
         }
 
+        .tags-sort__avatar {
+            width: 18px;
+            height: 18px;
+            flex: 0 0 auto;
+            border-radius: 999px;
+            object-fit: cover;
+        }
+
         .tags-sort__options {
             display: flex;
             flex-direction: column;

@@ -29,15 +29,21 @@
         </button>
 
         <div id="tags-sort-menu" class="tags-sort__menu" data-tags-sort-menu>
-            <a
-                href="{{ route('blog.tags', array_filter(['mine' => 1, 'q' => $search !== '' ? $search : null])) }}"
-                class="tags-sort__option tags-sort__option--mine"
-                aria-label="Benim etiketlerim"
-            >
-                <iconify-icon icon="lucide:user-round" aria-hidden="true"></iconify-icon>
-                <span>Benim</span>
-            </a>
-            <div class="tags-sort__divider" role="separator"></div>
+            @auth
+                <a
+                    href="{{ route('blog.tags', array_filter(['mine' => 1, 'q' => $search !== '' ? $search : null])) }}"
+                    class="tags-sort__option tags-sort__option--mine"
+                    aria-label="Benim etiketlerim"
+                >
+                    @if (auth()->user()->profile_photo_url)
+                        <img src="{{ auth()->user()->profile_photo_url }}" alt="" class="tags-sort__avatar">
+                    @else
+                        <iconify-icon icon="lucide:user-round" aria-hidden="true"></iconify-icon>
+                    @endif
+                    <span>Benim</span>
+                </a>
+                <div class="tags-sort__divider" role="separator"></div>
+            @endauth
             <span class="tags-sort__label">{{ __('site.search.sort_label') }}</span>
             <div class="tags-sort__options">
                 @foreach ($sortOptions as $sortKey => $sortOption)
