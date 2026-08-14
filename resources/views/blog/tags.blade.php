@@ -458,6 +458,43 @@
             background: linear-gradient(105deg, #18181b 0%, #27272a 45%, #18181b 82%);
             background-size: 200% 100%;
         }
+
+        /* Masaustunde header kaybolmaz; Etiketler kimlik kutusu ve acilan
+           arama paneli main icinde header'in altinda sticky kalir. Mobil
+           davranis layout tarafindaki mevcut iOS akisini kullanir. */
+        @media (min-width: 641px) {
+            body.route-tags .site-header {
+                position: sticky;
+                top: 0;
+                z-index: 50;
+            }
+
+            body.route-tags .page-title-identity {
+                position: sticky;
+                top: 64px;
+                z-index: 30;
+                background: rgba(255, 255, 255, .88);
+                backdrop-filter: blur(20px) saturate(180%);
+                -webkit-backdrop-filter: blur(20px) saturate(180%);
+            }
+
+            body.route-tags [data-tags-search-panel] {
+                position: sticky;
+                top: 104px;
+                z-index: 29;
+                background: rgba(255, 255, 255, .82);
+                backdrop-filter: blur(20px) saturate(180%);
+                -webkit-backdrop-filter: blur(20px) saturate(180%);
+            }
+
+            html.dark body.route-tags .page-title-identity {
+                background: rgba(24, 24, 27, .88);
+            }
+
+            html.dark body.route-tags [data-tags-search-panel] {
+                background: rgba(24, 24, 27, .82);
+            }
+        }
     </style>
 
     @php($search = $search ?? '')
