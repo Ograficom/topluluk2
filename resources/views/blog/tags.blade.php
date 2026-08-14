@@ -467,9 +467,82 @@
             background-size: 200% 100%;
         }
 
+        /* Etiket baslik kutusu her ekranda beyaz kalir. Kutunun ustundeki
+           bosluk, sayfanin #f6f4f0 arka plan rengini koruyan yari saydam
+           katmanla tamamen kaplanir; arkadan gecen icerik hafifce bulanir. */
+        body.route-tags .page-title-identity {
+            overflow: visible;
+            background: #ffffff !important;
+            backdrop-filter: none !important;
+            -webkit-backdrop-filter: none !important;
+        }
+
+        body.route-tags .page-title-identity__edge-blur {
+            display: block;
+            position: absolute;
+            z-index: 2;
+            pointer-events: none;
+            background: rgba(246, 244, 240, 0.70);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+
+        /* 100vw sayesinde yalnizca baslik kutusunun genisligi degil,
+           ekranda kutunun ustunde kalan boslugun tamami blur olur. */
+        body.route-tags .page-title-identity__edge-blur--top {
+            right: 50%;
+            bottom: 100%;
+            left: auto;
+            width: 100vw;
+            height: 64px;
+            transform: translateX(50%);
+            background: rgba(246, 244, 240, 0.70);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+
+        body.route-tags .page-title-identity__edge-blur--bottom {
+            top: 100%;
+            right: 0;
+            left: 0;
+            height: 2px;
+        }
+
+        body.route-tags [data-tags-search-panel] {
+            background: rgba(246, 244, 240, 0.70);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+
+        body.route-tags [data-tags-search-panel]::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+            background: transparent;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            pointer-events: none;
+        }
+
+        body.route-tags [data-tags-search-panel] > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Mobilde de beyaz kutu + tam genislikte hafif blur korunur. */
+        @media (max-width: 640px) {
+            body.route-tags .page-title-identity {
+                background: #ffffff !important;
+            }
+
+            body.route-tags .page-title-identity__edge-blur--top {
+                height: calc(64px + env(safe-area-inset-top, 0px));
+            }
+        }
+
         /* Masaustunde header kaybolmaz; Etiketler kimlik kutusu ve acilan
-           arama paneli main icinde header'in altinda sticky kalir. Mobil
-           davranis layout tarafindaki mevcut iOS akisini kullanir. */
+           arama paneli main icinde header'in altinda sticky kalir. */
         @media (min-width: 641px) {
             body.route-tags .site-header {
                 position: sticky;
@@ -484,59 +557,20 @@
                 min-height: 34px;
                 padding: 2px 10px;
                 border-radius: 16px;
-                background: #ffffff;
-                backdrop-filter: blur(20px) saturate(180%);
-                -webkit-backdrop-filter: blur(20px) saturate(180%);
+                background: #ffffff !important;
             }
 
             body.route-tags [data-tags-search-panel] {
                 position: sticky;
                 top: 104px;
                 z-index: 29;
-                background: rgba(255, 255, 255, .82);
-                backdrop-filter: blur(20px) saturate(180%);
-                -webkit-backdrop-filter: blur(20px) saturate(180%);
-            }
-
-            body.route-tags [data-tags-search-panel]::before {
-                content: '';
-                position: absolute;
-                inset: 0;
-                z-index: 0;
-                background: transparent;
-                backdrop-filter: blur(20px) saturate(180%);
-                -webkit-backdrop-filter: blur(20px) saturate(180%);
-                pointer-events: none;
-            }
-
-            body.route-tags [data-tags-search-panel] > * {
-                position: relative;
-                z-index: 1;
-            }
-
-            body.route-tags .page-title-identity__edge-blur {
-                display: block;
-                position: absolute;
-                right: 0;
-                left: 0;
-                height: 2px;
-                z-index: 2;
-                background: rgba(255, 255, 255, .72);
-                backdrop-filter: blur(16px) saturate(180%);
-                -webkit-backdrop-filter: blur(16px) saturate(180%);
-                pointer-events: none;
+                background: rgba(246, 244, 240, 0.70);
+                backdrop-filter: blur(12px);
+                -webkit-backdrop-filter: blur(12px);
             }
 
             body.route-tags .page-title-identity__edge-blur--top {
-                bottom: 100%;
                 height: 44px;
-                background: rgba(255, 255, 255, .82);
-                backdrop-filter: blur(100px) saturate(180%);
-                -webkit-backdrop-filter: blur(100px) saturate(180%);
-            }
-
-            body.route-tags .page-title-identity__edge-blur--bottom {
-                top: 100%;
             }
 
             html.dark body.route-tags .page-title-identity {
