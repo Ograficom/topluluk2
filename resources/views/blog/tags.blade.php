@@ -470,64 +470,146 @@
         /* Etiket baslik kutusu her ekranda beyaz kalir. Kutunun ustundeki
            bosluk, sayfanin #f6f4f0 arka plan rengini koruyan yari saydam
            katmanla tamamen kaplanir; arkadan gecen icerik hafifce bulanir. */
-        body.route-tags .page-title-identity {
+        .page-title-identity.page-title-identity {
             overflow: visible;
+            isolation: isolate;
+            border: 1px solid #e1e5eb !important;
+            border-radius: 999px !important;
             background: #ffffff !important;
+            background-color: #ffffff !important;
+            background-image: none !important;
             backdrop-filter: none !important;
             -webkit-backdrop-filter: none !important;
+            box-shadow: none !important;
+            filter: none !important;
+            opacity: 1 !important;
+        }
+
+        /* Partial yerine bu sayfada dogrudan uretilen gercek beyaz kapsul. */
+        .tags-page-title.tags-page-title {
+            display: flex !important;
+            width: 100% !important;
+            min-height: 38px !important;
+            align-items: center !important;
+            gap: 0 !important;
+            padding: 2px 10px !important;
+            border: 1px solid #dfe3e8 !important;
+            border-radius: 999px !important;
+            background: #ffffff !important;
+            background-color: #ffffff !important;
+            background-image: none !important;
+            box-shadow: none !important;
+            opacity: 1 !important;
+        }
+
+        .tags-page-title__back {
+            position: relative;
+            z-index: 3;
+            display: inline-flex;
+            flex: 0 0 auto;
+            width: 34px;
+            height: 30px;
+            align-items: center;
+            justify-content: flex-start;
+            margin-right: 10px;
+            padding: 0 10px 0 2px;
+            border: 0 !important;
+            border-right: 1px solid #e5e7eb !important;
+            border-radius: 0 !important;
+            background: #ffffff !important;
+            color: #111827 !important;
+            text-decoration: none !important;
+        }
+
+        .tags-page-title__back iconify-icon {
+            font-size: 17px;
+        }
+
+        .tags-page-title__text {
+            position: relative;
+            z-index: 3;
+            min-width: 0;
+            color: #111111 !important;
+            font-size: 18px;
+            font-weight: 500;
+            line-height: 1.2;
+            white-space: nowrap;
+        }
+
+        .tags-page-title__trailing {
+            position: relative;
+            z-index: 3;
+            display: flex;
+            align-items: center;
+            margin-left: auto;
         }
 
         body.route-tags .page-title-identity__edge-blur {
             display: block;
             position: absolute;
-            z-index: 2;
+            z-index: -1;
             pointer-events: none;
-            background: rgba(246, 244, 240, 0.70);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
+            background: rgba(246, 244, 240, 0.62);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
         }
 
-        /* 100vw sayesinde yalnizca baslik kutusunun genisligi degil,
-           ekranda kutunun ustunde kalan boslugun tamami blur olur. */
+        /* Blur yalnizca baslik kutusunun ve main sutununun genisliginde kalir;
+           sol menuye veya sag panele tasmaz. */
         body.route-tags .page-title-identity__edge-blur--top {
-            right: 50%;
-            bottom: 100%;
-            left: auto;
-            width: 100vw;
-            height: 64px;
-            transform: translateX(50%);
-            background: rgba(246, 244, 240, 0.70);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
+            right: 0;
+            bottom: -6px;
+            left: 0;
+            width: 100%;
+            height: calc(100% + 18px);
+            transform: none;
+            background: rgba(246, 244, 240, 0.62);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
         }
 
         body.route-tags .page-title-identity__edge-blur--bottom {
-            top: 100%;
+            top: calc(100% - 1px);
             right: 0;
             left: 0;
-            height: 2px;
+            width: 100%;
+            height: 5px;
+            transform: none;
         }
 
         body.route-tags [data-tags-search-panel] {
-            background: rgba(246, 244, 240, 0.70);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
+            background: transparent !important;
+            backdrop-filter: none !important;
+            -webkit-backdrop-filter: none !important;
         }
 
         body.route-tags [data-tags-search-panel]::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            z-index: 0;
-            background: transparent;
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            pointer-events: none;
+            display: none !important;
+            content: none !important;
         }
 
         body.route-tags [data-tags-search-panel] > * {
             position: relative;
             z-index: 1;
+        }
+
+        body.route-tags .tags-search-panel__inner,
+        body.route-tags .tags-search-panel__form {
+            width: 100%;
+            max-width: 100%;
+            box-sizing: border-box;
+        }
+
+        html.dark .page-title-identity.page-title-identity {
+            border-color: #e1e5eb !important;
+            background: #ffffff !important;
+            background-color: #ffffff !important;
+            background-image: none !important;
+            color: #111827 !important;
+        }
+
+        html.dark body.route-tags .page-title-identity .tags-toolbar__icon {
+            color: #52525b !important;
         }
 
         /* Mobilde de beyaz kutu + tam genislikte hafif blur korunur. */
@@ -537,7 +619,7 @@
             }
 
             body.route-tags .page-title-identity__edge-blur--top {
-                height: calc(64px + env(safe-area-inset-top, 0px));
+                height: calc(100% + 18px + env(safe-area-inset-top, 0px));
             }
         }
 
@@ -556,25 +638,24 @@
                 z-index: 30;
                 min-height: 34px;
                 padding: 2px 10px;
-                border-radius: 16px;
+                border: 1px solid #e1e5eb !important;
+                border-radius: 999px !important;
                 background: #ffffff !important;
+                background-color: #ffffff !important;
+                background-image: none !important;
             }
 
             body.route-tags [data-tags-search-panel] {
                 position: sticky;
                 top: 104px;
                 z-index: 29;
-                background: rgba(246, 244, 240, 0.70);
-                backdrop-filter: blur(12px);
-                -webkit-backdrop-filter: blur(12px);
+                background: transparent !important;
+                backdrop-filter: none !important;
+                -webkit-backdrop-filter: none !important;
             }
 
             body.route-tags .page-title-identity__edge-blur--top {
-                height: 44px;
-            }
-
-            html.dark body.route-tags .page-title-identity {
-                background: rgba(24, 24, 27, .88);
+                height: calc(100% + 18px);
             }
 
             html.dark body.route-tags [data-tags-search-panel] {
@@ -590,10 +671,16 @@
     @php($search = $search ?? '')
 
     <div class="space-y-4">
-        @include('partials.page-title-identity', [
-            'title' => __('site.tags_page.title'),
-            'trailing' => view('blog.partials.tags-toolbar', ['sort' => $sort, 'sortOptions' => $sortOptions, 'search' => $search])->render(),
-        ])
+        <div class="page-title-identity tags-page-title">
+            <div class="page-title-identity__edge-blur page-title-identity__edge-blur--top" aria-hidden="true"></div>
+            <a href="{{ url()->previous() }}" class="tags-page-title__back" aria-label="Geri">
+                <iconify-icon icon="lucide:arrow-left" aria-hidden="true"></iconify-icon>
+            </a>
+            <span class="tags-page-title__text">{{ __('site.tags_page.title') }}</span>
+            <div class="tags-page-title__trailing">
+                {!! view('blog.partials.tags-toolbar', ['sort' => $sort, 'sortOptions' => $sortOptions, 'search' => $search])->render() !!}
+            </div>
+        </div>
         <div data-identity-spacer aria-hidden="true"></div>
 
         <div class="tags-search-panel {{ $search !== '' ? 'is-open' : '' }}" data-tags-search-panel>
@@ -618,7 +705,6 @@
                 </form>
                 <p class="sr-only" role="status" aria-live="polite" data-tags-status></p>
             </div>
-            <div class="page-title-identity__edge-blur page-title-identity__edge-blur--bottom" aria-hidden="true"></div>
         </div>
         <div data-search-panel-spacer aria-hidden="true"></div>
 
@@ -655,6 +741,49 @@
                 const input = document.querySelector('[data-tags-search-input]');
                 const inner = panel?.querySelector('.tags-search-panel__inner');
                 const panelSpacer = document.querySelector('[data-search-panel-spacer]');
+                const identity = document.querySelector('.page-title-identity');
+
+                /* Tema/layout hangi sirada yuklenirse yuklensin baslik kutusu
+                   yari saydam kalmasin. Degerler dogrudan elemente important
+                   olarak yazilir; blur sadece dis edge katmaninda kalir. */
+                const forceWhiteIdentity = () => {
+                    if (!identity) return;
+
+                    identity.style.setProperty('background', '#ffffff', 'important');
+                    identity.style.setProperty('background-color', '#ffffff', 'important');
+                    identity.style.setProperty('background-image', 'none', 'important');
+                    identity.style.setProperty('border', '1px solid #e1e5eb', 'important');
+                    identity.style.setProperty('border-radius', '999px', 'important');
+                    identity.style.setProperty('backdrop-filter', 'none', 'important');
+                    identity.style.setProperty('-webkit-backdrop-filter', 'none', 'important');
+                    identity.style.setProperty('box-shadow', 'none', 'important');
+                    identity.style.setProperty('filter', 'none', 'important');
+                    identity.style.setProperty('opacity', '1', 'important');
+                };
+
+                /* Layout mobil/masaustu akisi paneli position:fixed yaptiginda
+                   genislik viewport'a tasmasin. Panel her zaman Etiketler
+                   kutusunun soluna ve genisligine birebir oturur. */
+                const syncPanelGeometry = () => {
+                    if (!panel || !identity) return;
+
+                    forceWhiteIdentity();
+
+                    const panelPosition = window.getComputedStyle(panel).position;
+
+                    if (panelPosition === 'fixed') {
+                        const identityRect = identity.getBoundingClientRect();
+                        panel.style.setProperty('left', `${identityRect.left}px`, 'important');
+                        panel.style.setProperty('right', 'auto', 'important');
+                        panel.style.setProperty('width', `${identityRect.width}px`, 'important');
+                        panel.style.setProperty('max-width', `${identityRect.width}px`, 'important');
+                    } else {
+                        panel.style.removeProperty('left');
+                        panel.style.removeProperty('right');
+                        panel.style.removeProperty('width');
+                        panel.style.removeProperty('max-width');
+                    }
+                };
 
                 const syncPanelSpacer = (open) => {
                     if (!panelSpacer || !inner) return;
@@ -662,6 +791,11 @@
                 };
 
                 if (panel && trigger && input) {
+                    forceWhiteIdentity();
+                    window.requestAnimationFrame(syncPanelGeometry);
+                    window.setTimeout(forceWhiteIdentity, 100);
+                    window.setTimeout(forceWhiteIdentity, 500);
+
                     if (panel.classList.contains('is-open')) {
                         syncPanelSpacer(true);
                     }
@@ -671,10 +805,18 @@
                         panel.classList.toggle('is-open', willOpen);
                         trigger.setAttribute('aria-expanded', willOpen ? 'true' : 'false');
                         syncPanelSpacer(willOpen);
+                        window.requestAnimationFrame(syncPanelGeometry);
                         if (willOpen) {
                             window.requestAnimationFrame(() => input.focus());
                         }
                     });
+
+                    window.addEventListener('resize', syncPanelGeometry, { passive: true });
+                    window.addEventListener('scroll', syncPanelGeometry, { passive: true });
+
+                    if ('ResizeObserver' in window && identity) {
+                        new ResizeObserver(syncPanelGeometry).observe(identity);
+                    }
                 }
             })();
 
