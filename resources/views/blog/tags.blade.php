@@ -271,6 +271,12 @@
             color: #94a3b8;
         }
 
+        .tags-sort__divider {
+            height: 1px;
+            margin: 4px 0 8px;
+            background: rgba(148, 163, 184, .22);
+        }
+
         .tags-sort__options {
             display: flex;
             flex-direction: column;
