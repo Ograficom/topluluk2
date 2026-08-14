@@ -477,20 +477,6 @@
                 z-index: 50;
             }
 
-            body.route-tags::after {
-                content: '';
-                position: fixed;
-                top: 64px;
-                right: 0;
-                left: 0;
-                height: 10px;
-                z-index: 42;
-                background: rgba(255, 255, 255, .68);
-                backdrop-filter: blur(100px) saturate(180%);
-                -webkit-backdrop-filter: blur(100px) saturate(180%);
-                pointer-events: none;
-            }
-
             body.route-tags .page-title-identity {
                 position: sticky;
                 top: 64px;
@@ -557,7 +543,6 @@
                 background: rgba(24, 24, 27, .82);
             }
 
-            html.dark body.route-tags::after,
             html.dark body.route-tags .page-title-identity__edge-blur {
                 background: rgba(24, 24, 27, .68);
             }
