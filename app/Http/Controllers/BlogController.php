@@ -1253,7 +1253,10 @@ class BlogController extends Controller
             ? (string) $request->query('sort', 'popular')
             : 'popular';
 
+        $search = trim((string) $request->query('q', ''));
+
         $tags = Tag::withCount('posts')
+            ->when($search !== '', fn ($query) => $query->where('name', 'like', '%' . $search . '%'))
             ->when($sort === 'popular', fn ($query) => $query->orderByDesc('posts_count')->orderBy('name'))
             ->when($sort === 'newest', fn ($query) => $query->orderByDesc('created_at'))
             ->when($sort === 'oldest', fn ($query) => $query->orderBy('created_at'))
@@ -1264,7 +1267,7 @@ class BlogController extends Controller
             return Response::json($tags);
         }
 
-        return view('blog.tags', ['tags' => $tags, 'sort' => $sort]);
+        return view('blog.tags', ['tags' => $tags, 'sort' => $sort, 'search' => $search]);
     }
 
     private function isVisible(Post $post): bool

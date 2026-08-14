@@ -56,11 +56,19 @@
     height: 26px;
     border: 0;
     border-radius: 999px;
-    background: transparent;
-    color: inherit;
     text-decoration: none;
     cursor: pointer;
-    transition: background-color .15s ease;
+    transition: background-color .15s ease, transform .08s ease-out;
+}
+
+/* .page-title-identity__nav iki kez yazildi: sitedeki genel buton sifirlamasi
+   (body.alma-app :where(button...) {background/color !important}) tek class'i
+   ozgullukce eziyordu - ikon acik modda (beyaz kutu ustunde koyu ikon)
+   tesadufen fark edilmiyordu ama koyu modda (koyu kutu ustunde beyaz daire)
+   bariz bir hataydi. */
+.page-title-identity__nav.page-title-identity__nav {
+    background: transparent !important;
+    color: inherit !important;
 }
 
 .page-title-identity__nav svg {
@@ -69,9 +77,13 @@
     color: inherit;
 }
 
-.page-title-identity__nav:hover,
-.page-title-identity__nav:focus-visible {
-    background: rgba(15, 15, 18, .06);
+.page-title-identity__nav:active {
+    transform: translateY(1px);
+}
+
+.page-title-identity__nav.page-title-identity__nav:hover,
+.page-title-identity__nav.page-title-identity__nav:focus-visible {
+    background: rgba(15, 15, 18, .06) !important;
     outline: none;
 }
 
@@ -90,11 +102,11 @@ html.dark .page-title-identity,
     color: #fafafa;
 }
 
-html.dark .page-title-identity__nav:hover,
-.dark .page-title-identity__nav:hover,
-html.dark .page-title-identity__nav:focus-visible,
-.dark .page-title-identity__nav:focus-visible {
-    background: rgba(255, 255, 255, .1);
+html.dark .page-title-identity__nav.page-title-identity__nav:hover,
+.dark .page-title-identity__nav.page-title-identity__nav:hover,
+html.dark .page-title-identity__nav.page-title-identity__nav:focus-visible,
+.dark .page-title-identity__nav.page-title-identity__nav:focus-visible {
+    background: rgba(255, 255, 255, .1) !important;
 }
 
 @media (max-width: 640px) {

@@ -224,6 +224,9 @@ return [
         'subtitle' => 'Review the most active tags in the community.',
         'posts_count' => 'Posts (:count)',
         'load_more' => 'Show more tags',
+        'search_placeholder' => 'Search tags',
+        'search_button' => 'Search',
+        'empty' => 'No tags found.',
     ],
     'discover_page' => [
         'title' => 'Discover',

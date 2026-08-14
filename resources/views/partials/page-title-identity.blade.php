@@ -5,9 +5,8 @@
 
 <div class="page-title-identity">
     <button type="button" class="page-title-identity__nav" data-page-title-back aria-label="Geri git" title="Geri git">
-        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 16 16" aria-hidden="true">
-            <path d="M0 0h16v16H0z" fill="none"></path>
-            <path fill="currentColor" fill-rule="evenodd" d="m5.293 8l3.854 3.854l.707-.707L6.707 8l3.147-3.146l-.707-.708z" clip-rule="evenodd"></path>
+        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" aria-hidden="true">
+            <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m12 19l-7-7l7-7m7 7H5"></path>
         </svg>
     </button>
     <span class="page-title-identity__divider" aria-hidden="true"></span>

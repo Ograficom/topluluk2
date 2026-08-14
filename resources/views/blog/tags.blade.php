@@ -19,20 +19,30 @@
     @endif
 
     <style>
-        /* Siralama tetikleyicisi artik bagimsiz bir kutu degil, page-title-identity
-           kutusunun ("trailing" slotu) icinde, kutunun sag ucunda duruyor. Arama
-           sayfasindaki ayarlar/bilgi tetikleyicileriyle (og-search-settings__trigger)
-           AYNI kalip: 32x32, cift class ile sitedeki genel buton sifirlamasindan
-           ozgullukce ustun, basinca translateY(1px) ani geri bildirim. */
+        /* Arama + siralama tetikleyicileri artik bagimsiz bir kutu degil,
+           page-title-identity kutusunun ("trailing" slotu) icinde, kutunun sag
+           ucunda duruyor - Kullanicilar sayfasindaki users-toolbar ile AYNI
+           desen (once sadece siralama vardi, simdi solunda arama ikonu da var).
+           Ikon butonlari Arama sayfasindaki ayarlar/bilgi tetikleyicileriyle
+           (og-search-settings__trigger) AYNI kalip: 32x32, cift class ile
+           sitedeki genel buton sifirlamasindan ozgullukce ustun, basinca
+           translateY(1px) ani geri bildirim. */
+        .tags-toolbar {
+            display: flex;
+            align-items: center;
+            gap: 2px;
+            flex-shrink: 0;
+            margin-left: auto;
+        }
+
         .tags-sort {
             position: relative;
             display: inline-flex;
             align-items: center;
             flex-shrink: 0;
-            margin-left: auto;
         }
 
-        .tags-sort__trigger.tags-sort__trigger {
+        .tags-toolbar__icon.tags-toolbar__icon {
             display: inline-flex !important;
             flex: 0 0 auto;
             width: 32px !important;
@@ -47,29 +57,126 @@
             transition: background-color .15s ease, transform .08s ease-out;
         }
 
-        .tags-sort__trigger:active {
+        .tags-toolbar__icon:active {
             transform: translateY(1px);
         }
 
-        .tags-sort__trigger iconify-icon {
+        .tags-toolbar__icon iconify-icon {
             font-size: 16px;
         }
 
-        .tags-sort__trigger.tags-sort__trigger:hover,
-        .tags-sort__trigger.tags-sort__trigger:focus-visible,
-        .tags-sort.is-open .tags-sort__trigger.tags-sort__trigger {
+        .tags-toolbar__icon.tags-toolbar__icon:hover,
+        .tags-toolbar__icon.tags-toolbar__icon:focus-visible,
+        .tags-toolbar__icon.tags-toolbar__icon[aria-expanded="true"],
+        .tags-sort.is-open .tags-toolbar__icon.tags-toolbar__icon {
             background: #f3f4f6 !important;
             outline: none;
         }
 
-        html.dark .tags-sort__trigger {
+        html.dark .tags-toolbar__icon {
             color: #cbd5e1 !important;
         }
 
-        html.dark .tags-sort__trigger:hover,
-        html.dark .tags-sort__trigger:focus-visible,
-        html.dark .tags-sort.is-open .tags-sort__trigger {
+        html.dark .tags-toolbar__icon:hover,
+        html.dark .tags-toolbar__icon:focus-visible,
+        html.dark .tags-toolbar__icon[aria-expanded="true"],
+        html.dark .tags-sort.is-open .tags-toolbar__icon {
             background: #1e293b !important;
+        }
+
+        /* Arama paneli - Kullanicilar sayfasindaki users-search-panel ile ayni
+           grid-satir buyume/kuculme animasyonu: acilirken "materyal" gibi
+           belirir, kapanirken katlanir. */
+        .tags-search-panel {
+            display: grid;
+            grid-template-rows: 0fr;
+            opacity: 0;
+            transition: grid-template-rows .2s ease, opacity .15s ease;
+        }
+
+        .tags-search-panel.is-open {
+            grid-template-rows: 1fr;
+            opacity: 1;
+        }
+
+        .tags-search-panel__inner {
+            min-height: 0;
+            overflow: hidden;
+        }
+
+        .tags-search-panel__form {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            margin-top: 8px;
+            padding: 4px 4px 4px 14px;
+            border: 1px solid #d9dde3;
+            border-radius: 999px;
+            background: #ffffff;
+        }
+
+        /* Input#id + iki class + input turu, Kullanicilar sayfasindaki ayni
+           hotfix'i tekrar eder: sitedeki genel "body.alma-app :where(input,
+           textarea, select):not(#comments *) {background:var(--ui-surface-muted)
+           !important}" kuralini ozgulluk kiyaslamasinda class katmaninda gececek
+           sekilde eziyor. */
+        input#tags-search-input.tags-search-panel__input.tags-search-panel__input {
+            flex: 1 1 auto;
+            min-width: 0;
+            min-height: 0 !important;
+            border: 0 !important;
+            border-radius: 0 !important;
+            background: transparent !important;
+            box-shadow: none !important;
+            padding: 6px 0 !important;
+            font-size: 14px;
+            color: #050505 !important;
+            outline: none !important;
+        }
+
+        input#tags-search-input.tags-search-panel__input.tags-search-panel__input::placeholder {
+            color: #9ca3af;
+        }
+
+        .tags-search-panel__submit {
+            flex: 0 0 auto;
+        }
+
+        html.dark .tags-search-panel__form {
+            border-color: #27272a;
+            background: #18181b;
+        }
+
+        html.dark input#tags-search-input.tags-search-panel__input.tags-search-panel__input {
+            color: #fafafa !important;
+        }
+
+        /* Canli arama sirasinda liste hafifce sonukleserek "araniyor" hissi
+           verir; sonuc gelince normale doner. */
+        .tags-list {
+            transition: opacity .15s ease;
+        }
+
+        .tags-list.is-loading {
+            opacity: .55;
+        }
+
+        .tags-list__empty {
+            padding: 24px 0;
+            text-align: center;
+            font-size: 14px;
+            color: #64748b;
+        }
+
+        html.dark .tags-list__empty {
+            color: #94a3b8;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .tags-search-panel,
+            .tags-list {
+                transition: none;
+            }
         }
 
         /* Acilir menu - once [hidden] ozniteligiyle ac/kapa yapiyordu (duz,
@@ -231,8 +338,8 @@
             width: 36px;
             height: 36px;
             border-radius: 999px;
-            background: linear-gradient(160deg, #ede9fe, #f5f3ff);
-            color: #7c3aed;
+            background: linear-gradient(160deg, #dbeafe, #eff6ff);
+            color: #2563eb;
             font-size: 16px;
         }
 
@@ -272,8 +379,8 @@
         }
 
         html.dark .tag-row__icon {
-            background: linear-gradient(160deg, #4c1d95, #3b0764);
-            color: #c4b5fd;
+            background: linear-gradient(160deg, #1e3a8a, #172554);
+            color: #93c5fd;
         }
 
         html.dark .tag-row__name {
@@ -308,30 +415,152 @@
         }
     </style>
 
+    @php($search = $search ?? '')
+
     <div class="space-y-4">
         @include('partials.page-title-identity', [
             'title' => __('site.tags_page.title'),
-            'trailing' => view('blog.partials.tags-sort-trigger', ['sort' => $sort, 'sortOptions' => $sortOptions])->render(),
+            'trailing' => view('blog.partials.tags-toolbar', ['sort' => $sort, 'sortOptions' => $sortOptions, 'search' => $search])->render(),
         ])
 
-        @foreach ($tags as $tag)
-            <a
-                href="{{ route('blog.index', ['tag' => $tag->slug]) }}"
-                class="tag-row"
-                data-tag-row
-            >
-                <span class="tag-row__icon" aria-hidden="true"><iconify-icon icon="lucide:hash"></iconify-icon></span>
-                <span class="tag-row__name">{{ $tag->name }}</span>
-                <span class="tag-row__count">{{ number_format($tag->posts_count) }}</span>
-                <iconify-icon class="tag-row__chevron" icon="lucide:chevron-right" aria-hidden="true"></iconify-icon>
-            </a>
-        @endforeach
+        <div class="tags-search-panel {{ $search !== '' ? 'is-open' : '' }}" data-tags-search-panel>
+            <div class="tags-search-panel__inner">
+                <form method="GET" action="{{ route('blog.tags') }}" class="tags-search-panel__form" data-tags-search-form>
+                    @if ($sort !== 'popular')
+                        <input type="hidden" name="sort" value="{{ $sort }}">
+                    @endif
+                    <input
+                        type="search"
+                        id="tags-search-input"
+                        name="q"
+                        value="{{ $search }}"
+                        placeholder="{{ __('site.tags_page.search_placeholder') }}"
+                        class="tags-search-panel__input"
+                        autocomplete="off"
+                        data-tags-search-input
+                    >
+                    <button type="submit" class="tags-toolbar__icon tags-search-panel__submit" aria-label="{{ __('site.tags_page.search_button') }}">
+                        <iconify-icon icon="lucide:search" aria-hidden="true"></iconify-icon>
+                    </button>
+                </form>
+                <p class="sr-only" role="status" aria-live="polite" data-tags-status></p>
+            </div>
+        </div>
 
-        @include('partials.tags-load-more', ['tags' => $tags])
+        <div class="space-y-4 tags-list" data-tags-list data-total="{{ $tags->total() }}">
+            @forelse ($tags as $tag)
+                <a
+                    href="{{ route('blog.index', ['tag' => $tag->slug]) }}"
+                    class="tag-row"
+                    data-tag-row
+                >
+                    <span class="tag-row__icon" aria-hidden="true"><iconify-icon icon="lucide:hash"></iconify-icon></span>
+                    <span class="tag-row__name">{{ $tag->name }}</span>
+                    <span class="tag-row__count">{{ number_format($tag->posts_count) }}</span>
+                    <iconify-icon class="tag-row__chevron" icon="lucide:chevron-right" aria-hidden="true"></iconify-icon>
+                </a>
+            @empty
+                <p class="tags-list__empty" data-tags-empty>{{ __('site.tags_page.empty') }}</p>
+            @endforelse
+
+            @include('partials.tags-load-more', ['tags' => $tags])
+        </div>
     </div>
 
     @push('scripts')
         <script>
+            (() => {
+                const panel = document.querySelector('[data-tags-search-panel]');
+                const trigger = document.querySelector('[data-tags-search-trigger]');
+                const input = document.querySelector('[data-tags-search-input]');
+
+                if (panel && trigger && input) {
+                    trigger.addEventListener('click', () => {
+                        const willOpen = !panel.classList.contains('is-open');
+                        panel.classList.toggle('is-open', willOpen);
+                        trigger.setAttribute('aria-expanded', willOpen ? 'true' : 'false');
+                        if (willOpen) {
+                            window.requestAnimationFrame(() => input.focus());
+                        }
+                    });
+                }
+            })();
+
+            (() => {
+                // Etiket listesi: yazarken 300ms sonra otomatik arar, yarim kalan
+                // istekleri iptal eder ve sonucu sayfa yenilenmeden altta gosterir
+                // - Kullanicilar sayfasindaki canli arama ile ayni desen.
+                const form = document.querySelector('[data-tags-search-form]');
+                const searchInput = document.querySelector('[data-tags-search-input]');
+                const list = document.querySelector('[data-tags-list]');
+                const status = document.querySelector('[data-tags-status]');
+
+                if (form && searchInput && list) {
+                    let debounceTimer = null;
+                    let activeController = null;
+
+                    const runSearch = async () => {
+                        if (activeController) activeController.abort();
+                        const controller = new AbortController();
+                        activeController = controller;
+
+                        const url = new URL(form.action, window.location.origin);
+                        const formData = new FormData(form);
+                        for (const [key, value] of formData.entries()) {
+                            if (value !== '') url.searchParams.set(key, value);
+                            else url.searchParams.delete(key);
+                        }
+
+                        list.classList.add('is-loading');
+
+                        try {
+                            const response = await fetch(url, {
+                                headers: { 'X-Requested-With': 'XMLHttpRequest', Accept: 'text/html, application/xhtml+xml' },
+                                credentials: 'same-origin',
+                                signal: controller.signal,
+                            });
+
+                            if (!response.ok) {
+                                throw new Error('Etiket aramasi basarisiz: ' + response.status);
+                            }
+
+                            const doc = new DOMParser().parseFromString(await response.text(), 'text/html');
+                            const newList = doc.querySelector('[data-tags-list]');
+
+                            if (newList) {
+                                list.innerHTML = newList.innerHTML;
+                                list.dataset.total = newList.dataset.total || '0';
+                            }
+                            if (status) {
+                                status.textContent = (list.dataset.total || '0') + ' etiket bulundu';
+                            }
+
+                            window.history.replaceState(null, '', url.toString());
+                        } catch (error) {
+                            if (error.name !== 'AbortError') {
+                                console.error(error);
+                            }
+                        } finally {
+                            if (activeController === controller) {
+                                list.classList.remove('is-loading');
+                                activeController = null;
+                            }
+                        }
+                    };
+
+                    searchInput.addEventListener('input', () => {
+                        clearTimeout(debounceTimer);
+                        debounceTimer = setTimeout(runSearch, 300);
+                    });
+
+                    form.addEventListener('submit', (event) => {
+                        event.preventDefault();
+                        clearTimeout(debounceTimer);
+                        runSearch();
+                    });
+                }
+            })();
+
             (() => {
                 const root = document.querySelector('[data-tags-sort]');
                 const trigger = document.querySelector('[data-tags-sort-trigger]');

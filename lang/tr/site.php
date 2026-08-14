@@ -224,6 +224,9 @@ return [
         'subtitle' => 'Topluluktaki en aktif etiketleri inceleyin.',
         'posts_count' => 'Yazılar (:count)',
         'load_more' => 'Daha fazla etiket göster',
+        'search_placeholder' => 'Etiket ara',
+        'search_button' => 'Ara',
+        'empty' => 'Etiket bulunamadı.',
     ],
     'discover_page' => [
         'title' => 'Keşfet',
