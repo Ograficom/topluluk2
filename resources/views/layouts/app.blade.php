@@ -2789,27 +2789,25 @@
             right: 0;
             left: 0;
             height: 128px;
-            background: rgba(255, 255, 255, .84);
+            background: transparent;
             backdrop-filter: blur(20px) saturate(180%);
             -webkit-backdrop-filter: blur(20px) saturate(180%);
-            box-shadow: 0 2px 0 rgba(255, 255, 255, .58), 0 12px 28px rgba(15, 23, 42, .08);
             pointer-events: none;
         }
 
         html.dark body.route-tags::before {
-            background: rgba(24, 24, 27, .84);
-            box-shadow: 0 2px 0 rgba(255, 255, 255, .08), 0 12px 28px rgba(0, 0, 0, .22);
+            background: transparent;
         }
 
         @media (prefers-reduced-transparency: reduce) {
             body.route-tags::before {
-                background: #ffffff;
+                background: transparent;
                 backdrop-filter: none;
                 -webkit-backdrop-filter: none;
             }
 
             html.dark body.route-tags::before {
-                background: #18181b;
+                background: transparent;
             }
         }
 
@@ -2946,7 +2944,7 @@
         body.route-users [data-identity-spacer] {
             display: block;
             margin-top: 0 !important;
-            background: rgba(255, 255, 255, .72);
+            background: transparent;
             backdrop-filter: blur(16px) saturate(180%);
             -webkit-backdrop-filter: blur(16px) saturate(180%);
         }
@@ -2975,7 +2973,7 @@
                 pointer-events: none;
                 backdrop-filter: blur(16px) saturate(180%);
                 -webkit-backdrop-filter: blur(16px) saturate(180%);
-                background: rgba(255, 255, 255, .72);
+                background: transparent;
                 transition: backdrop-filter .22s ease-out, -webkit-backdrop-filter .22s ease-out;
             }
 
@@ -3002,13 +3000,13 @@
             html.dark body.route-search .og-search-identity__edge-blur--bottom,
             html.dark body.route-tags .page-title-identity__edge-blur--bottom,
             html.dark body.route-users .page-title-identity__edge-blur--bottom {
-                background: rgba(24, 24, 27, .72);
+                background: transparent;
             }
 
             html.dark body.route-search .og-search-identity__edge-blur--top,
             html.dark body.route-tags .page-title-identity__edge-blur--top,
             html.dark body.route-users .page-title-identity__edge-blur--top {
-                background: rgba(24, 24, 27, .72);
+                background: transparent;
             }
 
             @media (prefers-reduced-transparency: reduce) {
@@ -3068,7 +3066,7 @@
             body.route-tags [data-tags-search-panel] {
                 padding-top: 3px;
                 padding-bottom: 5px;
-                background-color: rgba(255, 255, 255, .82) !important;
+                background-color: transparent !important;
                 backdrop-filter: blur(20px) saturate(180%);
                 -webkit-backdrop-filter: blur(20px) saturate(180%);
                 box-shadow: 0 8px 24px rgba(15, 23, 42, .08);
@@ -3087,7 +3085,7 @@
                 right: 0;
                 bottom: 0;
                 left: 0;
-                background-color: rgba(255, 255, 255, .82);
+                background-color: transparent;
                 backdrop-filter: blur(20px) saturate(180%);
                 -webkit-backdrop-filter: blur(20px) saturate(180%);
                 pointer-events: none;
@@ -3116,12 +3114,12 @@
             }
 
             html.dark body.route-tags [data-tags-search-panel] {
-                background-color: rgba(24, 24, 27, .82) !important;
+                background-color: transparent !important;
                 box-shadow: 0 8px 24px rgba(0, 0, 0, .22);
             }
 
             html.dark body.route-tags [data-tags-search-panel]::before {
-                background-color: rgba(24, 24, 27, .82);
+                background-color: transparent;
             }
 
             @media (prefers-reduced-transparency: reduce) {
@@ -3151,7 +3149,7 @@
             body.route-users [data-search-panel-spacer] {
                 display: block;
                 margin-top: 0 !important;
-                background: rgba(255, 255, 255, .72);
+                background: transparent;
                 backdrop-filter: blur(16px) saturate(180%);
                 -webkit-backdrop-filter: blur(16px) saturate(180%);
                 transition: height .2s ease;
@@ -3161,7 +3159,7 @@
             html.dark body.route-tags [data-search-panel-spacer],
             html.dark body.route-users [data-identity-spacer],
             html.dark body.route-users [data-search-panel-spacer] {
-                background: rgba(24, 24, 27, .72);
+                background: transparent;
             }
         }
 
