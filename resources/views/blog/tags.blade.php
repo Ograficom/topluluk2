@@ -529,8 +529,8 @@
 
             body.route-tags .page-title-identity__edge-blur--top {
                 bottom: 100%;
-                height: 28px;
-                background: rgba(255, 255, 255, .74);
+                height: 44px;
+                background: rgba(255, 255, 255, .82);
                 backdrop-filter: blur(100px) saturate(180%);
                 -webkit-backdrop-filter: blur(100px) saturate(180%);
             }
