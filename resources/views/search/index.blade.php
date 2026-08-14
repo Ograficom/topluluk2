@@ -1613,6 +1613,419 @@
             background: rgba(24, 24, 27, .72) !important;
         }
     }
+
+    /* Modern search result system: every content type has a distinct but
+       restrained visual identity while sharing the same Ografi card language. */
+    body.alma-app.route-search .og-search-results {
+        gap: 16px;
+    }
+
+    body.alma-app.route-search .og-search-box {
+        --og-result-accent: #2563eb;
+        --og-result-accent-soft: #eff6ff;
+        padding: 0;
+        overflow: hidden;
+        border-color: #dde3ea;
+        border-radius: 18px;
+        background: rgba(255, 255, 255, .94);
+        box-shadow: 0 1px 2px rgba(15, 23, 42, .025);
+    }
+
+    body.alma-app.route-search .og-search-box[data-search-box="posts"] {
+        --og-result-accent: #2563eb;
+        --og-result-accent-soft: #eff6ff;
+    }
+
+    body.alma-app.route-search .og-search-box[data-search-box="categories"] {
+        --og-result-accent: #0891b2;
+        --og-result-accent-soft: #ecfeff;
+    }
+
+    body.alma-app.route-search .og-search-box[data-search-box="tags"] {
+        --og-result-accent: #7c3aed;
+        --og-result-accent-soft: #f5f3ff;
+    }
+
+    body.alma-app.route-search .og-search-box[data-search-box="users"] {
+        --og-result-accent: #059669;
+        --og-result-accent-soft: #ecfdf5;
+    }
+
+    body.alma-app.route-search .og-search-box[data-search-box="comments"] {
+        --og-result-accent: #ea580c;
+        --og-result-accent-soft: #fff7ed;
+    }
+
+    body.alma-app.route-search .og-search-box[data-search-box="pages"] {
+        --og-result-accent: #4f46e5;
+        --og-result-accent-soft: #eef2ff;
+    }
+
+    body.alma-app.route-search .og-search-box-head {
+        justify-content: flex-start;
+        gap: 11px;
+        min-height: 64px;
+        margin: 0;
+        padding: 12px 14px;
+        border-bottom: 1px solid #eef1f5;
+    }
+
+    body.alma-app.route-search .og-search-box-icon {
+        display: inline-flex;
+        flex: 0 0 auto;
+        align-items: center;
+        justify-content: center;
+        width: 38px;
+        height: 38px;
+        border-radius: 12px;
+        background: var(--og-result-accent-soft);
+        color: var(--og-result-accent);
+        font-size: 19px;
+    }
+
+    body.alma-app.route-search .og-search-box-heading {
+        min-width: 0;
+        flex: 1 1 auto;
+    }
+
+    body.alma-app.route-search .og-search-box-title {
+        font-size: 15px;
+        line-height: 1.25;
+        letter-spacing: -.01em;
+    }
+
+    body.alma-app.route-search .og-search-box-count {
+        display: inline-flex;
+        flex: 0 0 auto;
+        align-items: center;
+        justify-content: center;
+        min-width: 28px;
+        height: 28px;
+        padding: 0 9px;
+        border: 1px solid color-mix(in srgb, var(--og-result-accent) 17%, transparent);
+        border-radius: 999px;
+        background: var(--og-result-accent-soft);
+        color: var(--og-result-accent);
+        font-size: 11.5px;
+        font-weight: 750;
+    }
+
+    body.alma-app.route-search .og-search-box-body {
+        padding: 8px;
+    }
+
+    body.alma-app.route-search .og-result-list {
+        gap: 4px;
+    }
+
+    body.alma-app.route-search .og-result-flow {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 7px;
+    }
+
+    body.alma-app.route-search .og-result-row {
+        min-height: 52px;
+        gap: 11px;
+        padding: 9px 10px;
+        border: 1px solid transparent;
+        border-radius: 13px;
+        background: transparent;
+        transition: background-color 130ms ease, border-color 130ms ease;
+    }
+
+    body.alma-app.route-search .og-result-row:is(:hover, :focus-visible) {
+        border-color: #e8edf3;
+        background: #f8fafc;
+        outline: none;
+    }
+
+    body.alma-app.route-search .og-result-row-title {
+        font-size: 13.5px;
+        line-height: 1.38;
+        letter-spacing: -.006em;
+    }
+
+    body.alma-app.route-search .og-result-row-snippet {
+        margin-top: 3px;
+        color: #64748b;
+        font-size: 12px;
+        line-height: 1.48;
+    }
+
+    body.alma-app.route-search .og-result-row-meta {
+        flex-wrap: wrap;
+        gap: 5px 10px;
+        margin-top: 6px;
+        color: #8492a6;
+        font-size: 11px;
+    }
+
+    body.alma-app.route-search .og-result-row-meta > span {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        min-width: 0;
+    }
+
+    body.alma-app.route-search .og-result-row-meta iconify-icon {
+        flex: 0 0 auto;
+        color: var(--og-result-accent);
+        font-size: 12px;
+    }
+
+    body.alma-app.route-search .og-result-row-thumb {
+        width: 60px;
+        height: 60px;
+        border: 1px solid #e8edf3;
+        border-radius: 13px;
+    }
+
+    body.alma-app.route-search .og-result-icon,
+    body.alma-app.route-search .og-result-avatar {
+        width: 40px;
+        height: 40px;
+    }
+
+    body.alma-app.route-search .og-result-icon {
+        border-radius: 12px;
+        background: var(--og-result-accent-soft);
+        color: var(--og-result-accent);
+        font-size: 18px;
+    }
+
+    body.alma-app.route-search .og-result-icon--image,
+    body.alma-app.route-search .og-result-avatar {
+        border: 1px solid #e5eaf0;
+        background: #f8fafc;
+    }
+
+    body.alma-app.route-search .og-result-row-badge {
+        display: inline-flex;
+        flex: 0 0 auto;
+        align-items: center;
+        gap: 4px;
+        padding: 4px 7px;
+        border-radius: 999px;
+        background: var(--og-result-accent-soft);
+        color: var(--og-result-accent);
+        font-size: 10.5px;
+        font-weight: 650;
+        white-space: nowrap;
+    }
+
+    body.alma-app.route-search .og-result-row-chevron {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 24px;
+        height: 24px;
+        margin-left: 2px;
+        border-radius: 999px;
+        color: #a8b3c2;
+        font-size: 14px;
+    }
+
+    body.alma-app.route-search .og-result-row:is(:hover, :focus-visible) .og-result-row-chevron {
+        background: var(--og-result-accent-soft);
+        color: var(--og-result-accent);
+    }
+
+    body.alma-app.route-search .og-result-user-link {
+        display: flex;
+        min-width: 0;
+        flex: 1 1 auto;
+        align-items: center;
+        gap: 11px;
+        color: inherit;
+        text-decoration: none;
+    }
+
+    body.alma-app.route-search .og-result-tag {
+        display: grid;
+        grid-template-columns: 30px minmax(0, 1fr) auto;
+        align-items: center;
+        gap: 9px;
+        width: 100%;
+        min-width: 0;
+        height: auto;
+        min-height: 48px;
+        padding: 7px 9px;
+        overflow: hidden;
+        border-color: #e8e4f2;
+        border-radius: 13px;
+        background: #fbfaff;
+        color: #334155;
+        font-size: 12.5px;
+        font-weight: 620;
+        transition: background-color 130ms ease, border-color 130ms ease;
+    }
+
+    body.alma-app.route-search .og-result-tag:is(:hover, :focus-visible) {
+        border-color: #d8cdf1;
+        background: var(--og-result-accent-soft);
+        outline: none;
+    }
+
+    body.alma-app.route-search .og-result-tag__icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 30px;
+        height: 30px;
+        border-radius: 10px;
+        background: #ede9fe;
+        color: var(--og-result-accent);
+        font-size: 16px;
+        font-weight: 800;
+    }
+
+    body.alma-app.route-search .og-result-tag__label {
+        min-width: 0;
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+        line-height: 1.3;
+        overflow-wrap: anywhere;
+    }
+
+    body.alma-app.route-search .og-result-tag__count {
+        color: #9a8db6;
+        font-size: 10.5px;
+        font-weight: 700;
+    }
+
+    body.alma-app.route-search .og-search-box-more {
+        display: flex;
+        justify-content: center;
+        width: calc(100% - 16px);
+        min-height: 40px;
+        margin: 0 8px 8px;
+        padding: 0 12px;
+        border: 1px solid #edf0f4 !important;
+        border-radius: 12px;
+        background: #f8fafc !important;
+        color: #475569 !important;
+        font-size: 12px;
+        font-weight: 700;
+        text-decoration: none !important;
+        transition: background-color 130ms ease, border-color 130ms ease;
+    }
+
+    body.alma-app.route-search .og-search-box-more iconify-icon {
+        color: var(--og-result-accent);
+        font-size: 14px;
+    }
+
+    body.alma-app.route-search .og-search-box-more:is(:hover, :focus-visible) {
+        border-color: color-mix(in srgb, var(--og-result-accent) 18%, #e5e7eb) !important;
+        background: var(--og-result-accent-soft) !important;
+        color: var(--og-result-accent) !important;
+        outline: none;
+    }
+
+    body.alma-app.route-search .og-search-follow-btn {
+        height: 30px;
+        padding: 0 13px;
+        font-size: 11.5px;
+    }
+
+    @media (max-width: 640px) {
+        body.alma-app.route-search .og-search-results {
+            gap: 12px;
+        }
+
+        body.alma-app.route-search .og-search-box {
+            border-radius: 16px;
+        }
+
+        body.alma-app.route-search .og-search-box-head {
+            min-height: 58px;
+            padding: 10px 12px;
+        }
+
+        body.alma-app.route-search .og-search-box-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 11px;
+            font-size: 18px;
+        }
+
+        body.alma-app.route-search .og-search-box-body {
+            padding: 6px;
+        }
+
+        body.alma-app.route-search .og-result-flow {
+            grid-template-columns: minmax(0, 1fr);
+            gap: 5px;
+        }
+
+        body.alma-app.route-search .og-result-row {
+            gap: 9px;
+            padding: 8px;
+        }
+
+        body.alma-app.route-search .og-result-row-thumb {
+            width: 54px;
+            height: 54px;
+        }
+
+        body.alma-app.route-search .og-result-row-badge {
+            max-width: 86px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        body.alma-app.route-search .og-search-box-more {
+            width: calc(100% - 12px);
+            margin: 0 6px 6px;
+        }
+    }
+
+    html.dark body.alma-app.route-search .og-search-box {
+        border-color: #292d35 !important;
+        background: rgba(24, 24, 27, .95) !important;
+        box-shadow: none;
+    }
+
+    html.dark body.alma-app.route-search .og-search-box-head {
+        border-color: #292d35;
+    }
+
+    html.dark body.alma-app.route-search .og-search-box-icon,
+    html.dark body.alma-app.route-search .og-search-box-count,
+    html.dark body.alma-app.route-search .og-result-row-badge,
+    html.dark body.alma-app.route-search .og-result-icon {
+        background: color-mix(in srgb, var(--og-result-accent) 17%, #18181b);
+    }
+
+    html.dark body.alma-app.route-search .og-result-row:is(:hover, :focus-visible) {
+        border-color: #34343b;
+        background: #222226;
+    }
+
+    html.dark body.alma-app.route-search .og-result-tag {
+        border-color: #302b3b;
+        background: #201d27;
+        color: #e4e4e7;
+    }
+
+    html.dark body.alma-app.route-search .og-result-tag__icon {
+        background: #31284a;
+    }
+
+    html.dark body.alma-app.route-search .og-result-icon--image,
+    html.dark body.alma-app.route-search .og-result-avatar,
+    html.dark body.alma-app.route-search .og-result-row-thumb {
+        border-color: #34343b;
+    }
+
+    html.dark body.alma-app.route-search .og-search-box-more {
+        border-color: #303037 !important;
+        background: #222226 !important;
+        color: #cbd5e1 !important;
+    }
 </style>
 
 @php
@@ -1929,12 +2342,24 @@ document.addEventListener('DOMContentLoaded', () => {
         ? `<img src="${escapeHtml(avatar)}" alt="${escapeHtml(label || '')}" class="${sizeClass} rounded-full object-cover" loading="lazy">`
         : `<span class="${sizeClass} inline-flex items-center justify-center rounded-full bg-slate-100 text-xs font-semibold text-slate-600">${escapeHtml((label || '?').trim().charAt(0).toUpperCase() || '?')}</span>`;
 
+    const typeVisuals = {
+        posts: 'lucide:newspaper',
+        categories: 'lucide:shapes',
+        tags: 'lucide:hash',
+        users: 'lucide:users-round',
+        comments: 'lucide:messages-square',
+        pages: 'lucide:files',
+    };
+
     const boxWrapper = (key, label, count, innerHtml, seeAllHtml = '') => `
         <section class="og-search-box" data-search-box="${key}">
-            <div class="og-search-box-head">
-                <h2 class="og-search-box-title">${escapeHtml(label)}</h2>
-                <span class="og-search-box-count">${count}</span>
-            </div>
+            <header class="og-search-box-head">
+                <span class="og-search-box-icon" aria-hidden="true"><iconify-icon icon="${typeVisuals[key] || 'lucide:search'}"></iconify-icon></span>
+                <span class="og-search-box-heading">
+                    <h2 class="og-search-box-title">${escapeHtml(label)}</h2>
+                </span>
+                <span class="og-search-box-count" aria-label="${escapeHtml(label)}: ${count}">${Number(count).toLocaleString('tr-TR')}</span>
+            </header>
             <div class="og-search-box-body">${innerHtml}</div>
             ${seeAllHtml}
         </section>
@@ -1946,9 +2371,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 <p class="og-result-row-title">${escapeHtml(post.title)}${post.is_nsfw ? '<span class="og-nsfw-badge">NSFW</span>' : ''}</p>
                 ${post.snippet ? `<p class="og-result-row-snippet">${escapeHtml(post.snippet)}</p>` : ''}
                 <div class="og-result-row-meta">
-                    ${post.category ? `<span>${escapeHtml(post.category)}</span>` : ''}
-                    ${post.author ? `<span>${escapeHtml(post.author)}</span>` : ''}
-                    <span>${i18n.views.replace(':count', Number(post.views || 0).toLocaleString('tr-TR'))}</span>
+                    ${post.category ? `<span><iconify-icon icon="lucide:folder" aria-hidden="true"></iconify-icon>${escapeHtml(post.category)}</span>` : ''}
+                    ${post.author ? `<span><iconify-icon icon="lucide:user-round" aria-hidden="true"></iconify-icon>${escapeHtml(post.author)}</span>` : ''}
+                    <span><iconify-icon icon="lucide:eye" aria-hidden="true"></iconify-icon>${escapeHtml(i18n.views.replace(':count', Number(post.views || 0).toLocaleString('tr-TR')))}</span>
                 </div>
             </div>
             ${post.image
@@ -1965,22 +2390,28 @@ document.addEventListener('DOMContentLoaded', () => {
                 : `<span class="og-result-icon og-result-icon--folder"><iconify-icon icon="lucide:folder" aria-hidden="true"></iconify-icon></span>`
             }
             <span class="og-result-row-title">${escapeHtml(cat.title)}</span>
-            <span class="og-result-row-badge">${i18n.postsCount.replace(':count', Number(cat.posts_count || 0).toLocaleString('tr-TR'))}</span>
+            <span class="og-result-row-badge"><iconify-icon icon="lucide:file-text" aria-hidden="true"></iconify-icon>${escapeHtml(i18n.postsCount.replace(':count', Number(cat.posts_count || 0).toLocaleString('tr-TR')))}</span>
             <iconify-icon class="og-result-row-chevron" icon="lucide:chevron-right" aria-hidden="true"></iconify-icon>
         </a>
     `).join('');
 
     const renderTags = (items) => items.map((tag) => `
-        <a href="${escapeHtml(tag.url)}" class="og-result-tag">#${escapeHtml(tag.title)}</a>
+        <a href="${escapeHtml(tag.url)}" class="og-result-tag">
+            <span class="og-result-tag__icon" aria-hidden="true">#</span>
+            <span class="og-result-tag__label">${escapeHtml(tag.title)}</span>
+            <span class="og-result-tag__count">${Number(tag.posts_count || 0).toLocaleString('tr-TR')}</span>
+        </a>
     `).join('');
 
     const renderUsers = (items) => items.map((user) => `
-        <a href="${escapeHtml(user.url || '#')}" class="og-result-row og-result-row--chip">
-            ${avatarHtml(user.avatar, user.title, 'og-result-avatar')}
-            <span class="og-result-row-user">
-                <span class="og-result-row-title">${escapeHtml(user.title)}</span>
-                ${user.subtitle ? `<span class="og-result-row-subtitle">${escapeHtml(user.subtitle)}</span>` : ''}
-            </span>
+        <div class="og-result-row og-result-row--chip og-result-row--user">
+            <a href="${escapeHtml(user.url || '#')}" class="og-result-user-link">
+                ${avatarHtml(user.avatar, user.title, 'og-result-avatar')}
+                <span class="og-result-row-user">
+                    <span class="og-result-row-title">${escapeHtml(user.title)}</span>
+                    ${user.subtitle ? `<span class="og-result-row-subtitle">${escapeHtml(user.subtitle)}</span>` : ''}
+                </span>
+            </a>
             ${user.is_self ? '' : `
                 <button type="button"
                     class="og-search-follow-btn ${user.is_following ? 'is-following' : ''}"
@@ -1989,7 +2420,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     data-following="${user.is_following ? '1' : '0'}"
                 >${user.is_following ? escapeHtml(i18n.following) : escapeHtml(i18n.follow)}</button>
             `}
-        </a>
+        </div>
     `).join('');
 
     const renderComments = (items) => items.map((comment) => `
@@ -1998,8 +2429,8 @@ document.addEventListener('DOMContentLoaded', () => {
             <div class="og-result-row-main">
                 <p class="og-result-row-snippet">${escapeHtml(comment.snippet)}</p>
                 <div class="og-result-row-meta">
-                    <span>${escapeHtml(comment.author || '')}</span>
-                    ${comment.post_title ? `<span>${i18n.inPost.replace(':title', comment.post_title)}</span>` : ''}
+                    <span><iconify-icon icon="lucide:user-round" aria-hidden="true"></iconify-icon>${escapeHtml(comment.author || '')}</span>
+                    ${comment.post_title ? `<span><iconify-icon icon="lucide:message-square-text" aria-hidden="true"></iconify-icon>${escapeHtml(i18n.inPost.replace(':title', comment.post_title))}</span>` : ''}
                 </div>
             </div>
         </a>
@@ -2046,7 +2477,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 label,
                 items.length,
                 `<div class="${isFlow ? 'og-result-flow' : 'og-result-list'}">${inner}</div>`,
-                `<button type="button" class="og-search-box-more" data-search-jump-type="${key}"><iconify-icon icon="lucide:chevron-down"></iconify-icon>${i18n.showMore}</button>`,
+                `<button type="button" class="og-search-box-more" data-search-jump-type="${key}">${escapeHtml(i18n.showMore)}<iconify-icon icon="lucide:arrow-right" aria-hidden="true"></iconify-icon></button>`,
             ));
         });
 
