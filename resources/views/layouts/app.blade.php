@@ -2788,11 +2788,15 @@
             top: 0;
             right: 0;
             left: 0;
-            height: 128px;
+            height: 56px;
             background: transparent;
             backdrop-filter: blur(20px) saturate(180%);
             -webkit-backdrop-filter: blur(20px) saturate(180%);
             pointer-events: none;
+        }
+
+        body.route-tags:has([data-tags-search-panel].is-open)::before {
+            height: 112px;
         }
 
         html.dark body.route-tags::before {
