@@ -208,13 +208,180 @@
         color: #0f172a;
     }
 
+    .og-search-identity__actions {
+        display: flex;
+        align-items: center;
+        gap: 2px;
+        flex: 0 0 auto;
+        margin-left: auto;
+    }
+
     .og-search-settings {
         position: relative;
         display: flex;
         align-items: center;
         flex: 0 0 auto;
         width: auto;
-        margin-left: auto;
+    }
+
+    /* Bilgi (i) tetikleyicisi - ayarlar dislisiyle ayni kalip: cift class
+       sitedeki genel buton sifirlamasindan (body.alma-app :where(button...))
+       ozgullukce ustun gelmek icin. */
+    .og-search-info {
+        position: relative;
+        display: flex;
+        align-items: center;
+    }
+
+    .og-search-info__trigger.og-search-info__trigger {
+        display: inline-flex !important;
+        width: 32px !important;
+        height: 32px !important;
+        align-items: center;
+        justify-content: center;
+        border: 0 !important;
+        border-radius: 999px !important;
+        background: transparent !important;
+        color: #52525b !important;
+        cursor: pointer;
+        transition: background-color .15s ease, transform .08s ease-out;
+    }
+
+    .og-search-info__trigger:active {
+        transform: translateY(1px);
+    }
+
+    .og-search-info__trigger iconify-icon {
+        font-size: 16px;
+    }
+
+    .og-search-info__trigger.og-search-info__trigger:hover,
+    .og-search-info__trigger.og-search-info__trigger:focus-visible,
+    .og-search-info.is-open .og-search-info__trigger.og-search-info__trigger {
+        background: #f3f4f6 !important;
+    }
+
+    /* Ayni "materialize, don't just fade" davranisi: tetikleyicinin sag
+       ustunden kucuk bir olcek+kayma ile belirir, kapanista visibility
+       gecisi opaklik/olcek bitene kadar geciktirilir. */
+    .og-search-info-popover {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        top: calc(100% + 8px);
+        right: 0;
+        width: min(280px, calc(100vw - 32px));
+        padding: 18px 18px 16px;
+        border-radius: 18px;
+        border: 1px solid #e2e8f0;
+        background: #ffffff;
+        box-shadow: 0 16px 36px rgba(15, 23, 42, .14);
+        z-index: 41;
+        text-align: center;
+        visibility: hidden;
+        opacity: 0;
+        transform: scale(.96) translateY(-6px);
+        transform-origin: top right;
+        transition: opacity .16s ease, transform .16s ease, visibility 0s linear .16s;
+    }
+
+    .og-search-info-popover.is-open {
+        visibility: visible;
+        opacity: 1;
+        transform: scale(1) translateY(0);
+        transition: opacity .16s ease, transform .16s ease;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .og-search-info-popover {
+            transform: none;
+            transition: opacity .12s ease, visibility 0s linear .12s;
+        }
+
+        .og-search-info-popover.is-open {
+            transform: none;
+            transition: opacity .12s ease;
+        }
+    }
+
+    .og-search-info-popover__close.og-search-info-popover__close {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        display: inline-flex !important;
+        width: 26px !important;
+        height: 26px !important;
+        align-items: center;
+        justify-content: center;
+        border: 0 !important;
+        border-radius: 999px !important;
+        background: transparent !important;
+        color: #94a3b8 !important;
+        cursor: pointer;
+        font-size: 13px;
+        transition: background-color .15s ease, transform .08s ease-out;
+    }
+
+    .og-search-info-popover__close:active {
+        transform: translateY(1px);
+    }
+
+    .og-search-info-popover__close.og-search-info-popover__close:hover,
+    .og-search-info-popover__close.og-search-info-popover__close:focus-visible {
+        background: #f1f5f9 !important;
+        color: #475569 !important;
+    }
+
+    .og-search-info-popover__icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        margin: 4px auto 10px;
+        border-radius: 999px;
+        background: linear-gradient(160deg, #dbeafe, #eff6ff);
+        color: #2563eb;
+        font-size: 18px;
+    }
+
+    .og-search-info-popover__title {
+        margin: 0 0 6px;
+        font-size: 14px;
+        font-weight: 700;
+        color: #0f172a;
+    }
+
+    .og-search-info-popover__text {
+        margin: 0 0 14px;
+        font-size: 12.5px;
+        line-height: 1.55;
+        color: #64748b;
+    }
+
+    .og-search-info-popover__ok.og-search-info-popover__ok {
+        display: inline-flex !important;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: 36px;
+        border: 0 !important;
+        border-radius: 12px !important;
+        background: #2563eb !important;
+        color: #ffffff !important;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background-color .15s ease, transform .08s ease-out;
+    }
+
+    .og-search-info-popover__ok:active {
+        transform: translateY(1px);
+    }
+
+    .og-search-info-popover__ok.og-search-info-popover__ok:hover,
+    .og-search-info-popover__ok.og-search-info-popover__ok:focus-visible {
+        background: #1d4ed8 !important;
     }
 
     /* .og-search-settings__trigger iki kez yazildi: site genelindeki
@@ -399,6 +566,44 @@
 
     html.dark .og-search-settings-menu__label {
         color: #64748b !important;
+    }
+
+    html.dark .og-search-info__trigger {
+        color: #cbd5e1 !important;
+    }
+
+    html.dark .og-search-info__trigger:hover,
+    html.dark .og-search-info__trigger:focus-visible,
+    html.dark .og-search-info.is-open .og-search-info__trigger {
+        background: #1e293b !important;
+    }
+
+    html.dark .og-search-info-popover {
+        background: #0f172a !important;
+        border-color: #1e293b !important;
+    }
+
+    html.dark .og-search-info-popover__title {
+        color: #e2e8f0 !important;
+    }
+
+    html.dark .og-search-info-popover__text {
+        color: #94a3b8 !important;
+    }
+
+    html.dark .og-search-info-popover__close {
+        color: #64748b !important;
+    }
+
+    html.dark .og-search-info-popover__close:hover,
+    html.dark .og-search-info-popover__close:focus-visible {
+        background: #1e293b !important;
+        color: #cbd5e1 !important;
+    }
+
+    html.dark .og-search-info-popover__icon {
+        background: linear-gradient(160deg, #1e3a8a, #172554);
+        color: #93c5fd;
     }
 
     .og-search-filters {
@@ -1004,46 +1209,72 @@
             <span class="og-search-identity__divider" aria-hidden="true"></span>
             <h2 class="og-search-identity__title">{{ __('site.search.title') }}</h2>
 
-            <div class="og-search-settings" data-search-settings>
-                <button
-                    type="button"
-                    class="og-search-settings__trigger"
-                    data-search-settings-trigger
-                    aria-label="{{ __('site.common.settings') }}"
-                    aria-expanded="false"
-                >
-                    <iconify-icon icon="lucide:settings-2" aria-hidden="true"></iconify-icon>
-                </button>
+            <div class="og-search-identity__actions">
+                <div class="og-search-info" data-search-info>
+                    <button
+                        type="button"
+                        class="og-search-info__trigger"
+                        data-search-info-trigger
+                        aria-label="{{ __('site.search.info_label') }}"
+                        aria-expanded="false"
+                    >
+                        <iconify-icon icon="lucide:info" aria-hidden="true"></iconify-icon>
+                    </button>
 
-                <div class="og-search-settings-menu" data-search-settings-menu>
-                    <div class="og-search-filters">
-                        <div>
-                            <span class="og-search-settings-menu__label">{{ __('site.search.sort_label') }}</span>
-                            <div class="og-search-pills" data-search-sort-pills>
-                                <button type="button" class="og-search-pill og-search-pill--sort" data-sort="relevance"><iconify-icon icon="lucide:sparkles"></iconify-icon>{{ __('site.search.sort_relevance') }}</button>
-                                <button type="button" class="og-search-pill og-search-pill--sort" data-sort="newest"><iconify-icon icon="lucide:clock"></iconify-icon>{{ __('site.search.sort_newest') }}</button>
-                                <button type="button" class="og-search-pill og-search-pill--sort" data-sort="popular"><iconify-icon icon="lucide:flame"></iconify-icon>{{ __('site.search.sort_popular') }}</button>
-                            </div>
-                        </div>
-                        <div>
-                            <span class="og-search-settings-menu__label">{{ __('site.search.filter_label') }}</span>
-                            <div class="og-search-pills og-search-pills--toggles">
-                                <button type="button" class="og-search-pill og-search-pill--toggle" data-toggle="nsfw"><iconify-icon icon="lucide:eye-off"></iconify-icon>{{ __('site.search.filter_nsfw') }}</button>
-                                <button type="button" class="og-search-pill og-search-pill--toggle" data-toggle="ai"><iconify-icon icon="lucide:bot"></iconify-icon>{{ __('site.search.filter_ai') }}</button>
-                            </div>
-                        </div>
+                    <div class="og-search-info-popover" data-search-info-popover role="dialog" aria-label="{{ __('site.search.info_label') }}">
+                        <button type="button" class="og-search-info-popover__close" data-search-info-close aria-label="{{ __('site.common.close') }}">
+                            <iconify-icon icon="lucide:x" aria-hidden="true"></iconify-icon>
+                        </button>
+                        <span class="og-search-info-popover__icon" aria-hidden="true">
+                            <iconify-icon icon="lucide:info"></iconify-icon>
+                        </span>
+                        <p class="og-search-info-popover__title">{{ __('site.search.info_title') }}</p>
+                        <p class="og-search-info-popover__text">{{ __('site.search.info_text') }}</p>
+                        <button type="button" class="og-search-info-popover__ok" data-search-info-close>{{ __('site.search.info_ok') }}</button>
                     </div>
+                </div>
 
-                    <div>
-                        <span class="og-search-settings-menu__label">{{ __('site.search.type_label') }}</span>
-                        <div class="og-search-types" data-search-type-pills>
-                        <button type="button" class="og-search-type-pill" data-type="all"><iconify-icon icon="lucide:layout-grid"></iconify-icon>{{ __('site.search.all') }}</button>
-                        <button type="button" class="og-search-type-pill" data-type="posts"><iconify-icon icon="lucide:file-text"></iconify-icon>{{ __('site.search.posts') }}</button>
-                        <button type="button" class="og-search-type-pill" data-type="categories"><iconify-icon icon="lucide:folder"></iconify-icon>{{ __('site.search.categories') }}</button>
-                        <button type="button" class="og-search-type-pill" data-type="tags"><iconify-icon icon="lucide:tag"></iconify-icon>{{ __('site.search.tags') }}</button>
-                        <button type="button" class="og-search-type-pill" data-type="users"><iconify-icon icon="lucide:users"></iconify-icon>{{ __('site.search.users') }}</button>
-                        <button type="button" class="og-search-type-pill" data-type="comments"><iconify-icon icon="lucide:message-circle"></iconify-icon>{{ __('site.search.comments') }}</button>
-                        <button type="button" class="og-search-type-pill" data-type="pages"><iconify-icon icon="lucide:file"></iconify-icon>{{ __('site.search.pages') }}</button>
+                <div class="og-search-settings" data-search-settings>
+                    <button
+                        type="button"
+                        class="og-search-settings__trigger"
+                        data-search-settings-trigger
+                        aria-label="{{ __('site.common.settings') }}"
+                        aria-expanded="false"
+                    >
+                        <iconify-icon icon="lucide:settings-2" aria-hidden="true"></iconify-icon>
+                    </button>
+
+                    <div class="og-search-settings-menu" data-search-settings-menu>
+                        <div class="og-search-filters">
+                            <div>
+                                <span class="og-search-settings-menu__label">{{ __('site.search.sort_label') }}</span>
+                                <div class="og-search-pills" data-search-sort-pills>
+                                    <button type="button" class="og-search-pill og-search-pill--sort" data-sort="relevance"><iconify-icon icon="lucide:sparkles"></iconify-icon>{{ __('site.search.sort_relevance') }}</button>
+                                    <button type="button" class="og-search-pill og-search-pill--sort" data-sort="newest"><iconify-icon icon="lucide:clock"></iconify-icon>{{ __('site.search.sort_newest') }}</button>
+                                    <button type="button" class="og-search-pill og-search-pill--sort" data-sort="popular"><iconify-icon icon="lucide:flame"></iconify-icon>{{ __('site.search.sort_popular') }}</button>
+                                </div>
+                            </div>
+                            <div>
+                                <span class="og-search-settings-menu__label">{{ __('site.search.filter_label') }}</span>
+                                <div class="og-search-pills og-search-pills--toggles">
+                                    <button type="button" class="og-search-pill og-search-pill--toggle" data-toggle="nsfw"><iconify-icon icon="lucide:eye-off"></iconify-icon>{{ __('site.search.filter_nsfw') }}</button>
+                                    <button type="button" class="og-search-pill og-search-pill--toggle" data-toggle="ai"><iconify-icon icon="lucide:bot"></iconify-icon>{{ __('site.search.filter_ai') }}</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <span class="og-search-settings-menu__label">{{ __('site.search.type_label') }}</span>
+                            <div class="og-search-types" data-search-type-pills>
+                            <button type="button" class="og-search-type-pill" data-type="all"><iconify-icon icon="lucide:layout-grid"></iconify-icon>{{ __('site.search.all') }}</button>
+                            <button type="button" class="og-search-type-pill" data-type="posts"><iconify-icon icon="lucide:file-text"></iconify-icon>{{ __('site.search.posts') }}</button>
+                            <button type="button" class="og-search-type-pill" data-type="categories"><iconify-icon icon="lucide:folder"></iconify-icon>{{ __('site.search.categories') }}</button>
+                            <button type="button" class="og-search-type-pill" data-type="tags"><iconify-icon icon="lucide:tag"></iconify-icon>{{ __('site.search.tags') }}</button>
+                            <button type="button" class="og-search-type-pill" data-type="users"><iconify-icon icon="lucide:users"></iconify-icon>{{ __('site.search.users') }}</button>
+                            <button type="button" class="og-search-type-pill" data-type="comments"><iconify-icon icon="lucide:message-circle"></iconify-icon>{{ __('site.search.comments') }}</button>
+                            <button type="button" class="og-search-type-pill" data-type="pages"><iconify-icon icon="lucide:file"></iconify-icon>{{ __('site.search.pages') }}</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1103,14 +1334,26 @@ document.addEventListener('DOMContentLoaded', () => {
     const settingsTrigger = root.querySelector('[data-search-settings-trigger]');
     const settingsMenu = root.querySelector('[data-search-settings-menu]');
 
+    // Ayarlar dislisinin solundaki "bilgi (i)" tetikleyicisi - aramanin
+    // sadece site ici herkese acik gonderileri kapsadigini, dis kaynaklarda
+    // arama yapilmadigini aciklayan kucuk bir popover acar.
+    const infoRoot = root.querySelector('[data-search-info]');
+    const infoTrigger = root.querySelector('[data-search-info-trigger]');
+    const infoPopover = root.querySelector('[data-search-info-popover]');
+    const infoCloseButtons = Array.from(root.querySelectorAll('[data-search-info-close]'));
+
+    let closeSettings = () => {};
+    let closeInfo = () => {};
+
     if (settingsRoot && settingsTrigger && settingsMenu) {
         const openSettings = () => {
+            closeInfo();
             settingsRoot.classList.add('is-open');
             settingsMenu.classList.add('is-open');
             settingsTrigger.setAttribute('aria-expanded', 'true');
         };
 
-        const closeSettings = () => {
+        closeSettings = () => {
             settingsRoot.classList.remove('is-open');
             settingsMenu.classList.remove('is-open');
             settingsTrigger.setAttribute('aria-expanded', 'false');
@@ -1123,11 +1366,48 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         settingsRoot.addEventListener('click', (event) => event.stopPropagation());
-        document.addEventListener('click', closeSettings);
-        document.addEventListener('keydown', (event) => {
-            if (event.key === 'Escape') closeSettings();
-        });
     }
+
+    if (infoRoot && infoTrigger && infoPopover) {
+        const openInfo = () => {
+            closeSettings();
+            infoRoot.classList.add('is-open');
+            infoPopover.classList.add('is-open');
+            infoTrigger.setAttribute('aria-expanded', 'true');
+        };
+
+        closeInfo = () => {
+            infoRoot.classList.remove('is-open');
+            infoPopover.classList.remove('is-open');
+            infoTrigger.setAttribute('aria-expanded', 'false');
+        };
+
+        infoTrigger.addEventListener('click', (event) => {
+            event.preventDefault();
+            event.stopPropagation();
+            if (infoPopover.classList.contains('is-open')) closeInfo(); else openInfo();
+        });
+
+        infoCloseButtons.forEach((btn) => btn.addEventListener('click', (event) => {
+            event.preventDefault();
+            event.stopPropagation();
+            closeInfo();
+            infoTrigger.focus();
+        }));
+
+        infoRoot.addEventListener('click', (event) => event.stopPropagation());
+    }
+
+    document.addEventListener('click', () => {
+        closeSettings();
+        closeInfo();
+    });
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') {
+            closeSettings();
+            closeInfo();
+        }
+    });
     const sortPills = Array.from(root.querySelectorAll('[data-search-sort-pills] [data-sort]'));
     const togglePills = Array.from(root.querySelectorAll('[data-toggle]'));
     const typePills = Array.from(root.querySelectorAll('[data-search-type-pills] [data-type]'));
@@ -1176,7 +1456,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const avatarHtml = (avatar, label, sizeClass) => avatar
-        ? `<img src="${escapeHtml(avatar)}" alt="" class="${sizeClass} rounded-full object-cover" loading="lazy">`
+        ? `<img src="${escapeHtml(avatar)}" alt="${escapeHtml(label || '')}" class="${sizeClass} rounded-full object-cover" loading="lazy">`
         : `<span class="${sizeClass} inline-flex items-center justify-center rounded-full bg-slate-100 text-xs font-semibold text-slate-600">${escapeHtml((label || '?').trim().charAt(0).toUpperCase() || '?')}</span>`;
 
     const boxWrapper = (key, label, count, innerHtml, seeAllHtml = '') => `

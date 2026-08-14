@@ -201,6 +201,10 @@ return [
         'followers_count' => ':count takipçi',
         'posts_count' => ':count yazı',
         'in_post' => ':title içinde',
+        'info_label' => 'Arama hakkında bilgi',
+        'info_title' => 'Bu arama nasıl çalışır?',
+        'info_text' => 'Bu arama yalnızca Ografi üzerinde paylaşılan, herkese açık gönderileri kapsar. Google gibi dış kaynaklarda arama yapılmaz; sonuçlar sadece topluluk içinde yayınlanan içeriklerden gelir.',
+        'info_ok' => 'Tamam',
     ],
     'users' => [
         'title' => 'Kullanıcılar',

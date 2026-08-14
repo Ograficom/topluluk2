@@ -201,6 +201,10 @@ return [
         'followers_count' => ':count followers',
         'posts_count' => ':count posts',
         'in_post' => 'in :title',
+        'info_label' => 'About search',
+        'info_title' => 'How does this search work?',
+        'info_text' => 'This search only covers public posts shared on Ografi. It does not search external sources like Google — results come only from content published within the community.',
+        'info_ok' => 'Got it',
     ],
     'users' => [
         'title' => 'Users',
