@@ -2533,11 +2533,16 @@
                 const identitySpacer = document.querySelector('[data-identity-spacer]');
                 const searchPanel = document.querySelector('[data-tags-search-panel], [data-users-search-panel]');
                 const contentList = document.querySelector('[data-search-results-container], [data-tags-list], [data-users-list]');
-                const edgeBlurEls = identityBox
-                    ? Array.from(identityBox.querySelectorAll('.page-title-identity__edge-blur, .og-search-identity__edge-blur'))
-                    : [];
+                // Kimlik kutusunun VE arama panelinin kendi __edge-blur
+                // cocuklari - ayni class isimlerini paylastiklari icin tek
+                // sorguda ikisi de yakalaniyor, panel acilinca (skill #12:
+                // "Never stack a light translucent surface on another" -
+                // yalnizca dar/dikey seritler, komple ekrani degil) o da
+                // ayni hizla-guclenen blur'u alir.
+                const edgeBlurEls = Array.from(document.querySelectorAll('.page-title-identity__edge-blur, .og-search-identity__edge-blur'));
                 const mobileQuery = window.matchMedia('(max-width: 640px)');
                 const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
+                const isSearchOpen = () => searchPanel?.classList.contains('is-open');
 
                 // Baslik ile kimlik kutusu artik bitişik degil - aralarinda
                 // kucuk bir bosluk birakiliyor (GAP), bu bosluk da (kutunun
@@ -2600,9 +2605,15 @@
 
                     const speedRatio = clamp(Math.abs(lastDelta) / MAX_BLUR_SPEED, 0, 1);
 
-                    if (contentList) {
+                    // Arama paneli acikken (yaziyor/okuyor) liste genelini
+                    // bulaniklastirmiyoruz - "arama kutusunu cevreleyen
+                    // dikdortgen ... komple ekrani blur salmasin" talebi:
+                    // blur SADECE panelin kendi dar kenar seritlerinde kalir.
+                    if (contentList && !isSearchOpen()) {
                         const blurAmount = speedRatio * MAX_BLUR;
                         contentList.style.filter = blurAmount > 0.15 ? `blur(${blurAmount.toFixed(2)}px)` : '';
+                    } else if (contentList && isSearchOpen()) {
+                        contentList.style.filter = '';
                     }
 
                     if (edgeBlurEls.length) {

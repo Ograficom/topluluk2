@@ -291,7 +291,7 @@
             display: flex;
             align-items: center;
             gap: 4px;
-            margin-top: 8px;
+            margin-top: 3px;
             padding: 4px 4px 4px 14px;
             border: 1px solid #d9dde3;
             border-radius: 999px;
@@ -396,6 +396,7 @@
                 </form>
                 <p class="sr-only" role="status" aria-live="polite" data-users-status></p>
             </div>
+            <div class="page-title-identity__edge-blur page-title-identity__edge-blur--bottom" aria-hidden="true"></div>
         </div>
         <div data-search-panel-spacer aria-hidden="true"></div>
 

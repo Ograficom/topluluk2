@@ -3011,9 +3011,39 @@
                 left: 0;
                 right: 0;
                 z-index: 44;
+                /* .space-y-4 (Tailwind) bu elemanin ilk cocuk olmadigini
+                   gorup margin-top: 1rem veriyordu - position:fixed elemanlar
+                   akistan CIKAR ama KENDI margin'leri "top" degerinin USTUNE
+                   binmeye devam eder; JS'in hesapladigi "top" (kutunun tam
+                   altinda) bu yuzden hep +14px asagida gorunuyordu. */
+                margin: 0 !important;
                 padding-left: max(var(--alma-page-inline), env(safe-area-inset-left));
                 padding-right: max(var(--alma-page-inline), env(safe-area-inset-right));
                 box-sizing: border-box;
+            }
+
+            body.route-tags [data-tags-search-panel] {
+                padding-top: 3px;
+                padding-bottom: 5px;
+                background: rgba(255, 255, 255, .5);
+                backdrop-filter: blur(20px) saturate(180%);
+                -webkit-backdrop-filter: blur(20px) saturate(180%);
+            }
+
+            html.dark body.route-tags [data-tags-search-panel] {
+                background: rgba(24, 24, 27, .5);
+            }
+
+            @media (prefers-reduced-transparency: reduce) {
+                body.route-tags [data-tags-search-panel] {
+                    background: #ffffff;
+                    backdrop-filter: none;
+                    -webkit-backdrop-filter: none;
+                }
+
+                html.dark body.route-tags [data-tags-search-panel] {
+                    background: #18181b;
+                }
             }
 
             [data-search-panel-spacer] {

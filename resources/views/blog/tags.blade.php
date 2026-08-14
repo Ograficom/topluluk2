@@ -108,11 +108,14 @@
             display: flex;
             align-items: center;
             gap: 4px;
-            margin-top: 8px;
+            margin-top: 3px;
             padding: 4px 4px 4px 14px;
-            border: 1px solid #d9dde3;
+            border: 1px solid rgba(217, 221, 227, .78);
             border-radius: 999px;
-            background: #ffffff;
+            background: rgba(255, 255, 255, .5);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            box-shadow: 0 1px 0 rgba(255, 255, 255, .55) inset, 0 10px 28px rgba(15, 23, 42, .08);
         }
 
         /* Input#id + iki class + input turu, Kullanicilar sayfasindaki ayni
@@ -143,8 +146,9 @@
         }
 
         html.dark .tags-search-panel__form {
-            border-color: #27272a;
-            background: #18181b;
+            border-color: rgba(63, 63, 70, .76);
+            background: rgba(24, 24, 27, .5);
+            box-shadow: 0 1px 0 rgba(255, 255, 255, .08) inset, 0 10px 28px rgba(0, 0, 0, .22);
         }
 
         html.dark input#tags-search-input.tags-search-panel__input.tags-search-panel__input {
@@ -176,6 +180,18 @@
             .tags-search-panel,
             .tags-list {
                 transition: none;
+            }
+        }
+
+        @media (prefers-reduced-transparency: reduce) {
+            .tags-search-panel__form {
+                background: #ffffff;
+                backdrop-filter: none;
+                -webkit-backdrop-filter: none;
+            }
+
+            html.dark .tags-search-panel__form {
+                background: #18181b;
             }
         }
 
@@ -446,6 +462,7 @@
                 </form>
                 <p class="sr-only" role="status" aria-live="polite" data-tags-status></p>
             </div>
+            <div class="page-title-identity__edge-blur page-title-identity__edge-blur--bottom" aria-hidden="true"></div>
         </div>
         <div data-search-panel-spacer aria-hidden="true"></div>
 
