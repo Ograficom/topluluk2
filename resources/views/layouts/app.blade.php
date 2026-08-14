@@ -2965,7 +2965,8 @@
 
         body.route-search [data-identity-spacer],
         body.route-tags [data-identity-spacer],
-        body.route-users [data-identity-spacer] {
+        body.route-users [data-identity-spacer],
+        body.route-sss [data-identity-spacer] {
             display: block;
             margin-top: 0 !important;
             background: transparent;
@@ -3194,8 +3195,50 @@
             html.dark body.route-tags [data-identity-spacer],
             html.dark body.route-tags [data-search-panel-spacer],
             html.dark body.route-users [data-identity-spacer],
-            html.dark body.route-users [data-search-panel-spacer] {
+            html.dark body.route-users [data-search-panel-spacer],
+            html.dark body.route-sss [data-identity-spacer],
+            html.dark body.route-sss [data-search-panel-spacer] {
                 background: transparent;
+            }
+        }
+
+        /* Sabit sayfa kapsulu ile kayan ilk kart arasinda her zaman gorunen
+           16px malzeme boslugu. Spacer ilk acilisi duzeltir; bu katman ise
+           sayfa kaydirilirken kartlarin kapsule yapismasini engeller. */
+        @media (max-width: 640px) {
+            body.route-tags .tags-page-title::after,
+            body.route-users .users-page-title::after,
+            body.route-sss .faq-page-title::after {
+                content: '' !important;
+                display: block !important;
+                position: absolute;
+                top: 100%;
+                right: 0;
+                left: 0;
+                z-index: 0;
+                width: 100%;
+                height: 16px;
+                background: rgba(246, 244, 240, .72);
+                backdrop-filter: blur(12px) saturate(115%);
+                -webkit-backdrop-filter: blur(12px) saturate(115%);
+                pointer-events: none;
+            }
+
+            html.dark body.route-tags .tags-page-title::after,
+            html.dark body.route-users .users-page-title::after,
+            html.dark body.route-sss .faq-page-title::after {
+                background: rgba(24, 24, 27, .72);
+            }
+        }
+
+        /* Masaustunde baslik sticky ve normal akis icinde oldugu icin spacer
+           gereksizdir; yalnizca mobil fixed duzende yer ayirir. */
+        @media (min-width: 641px) {
+            body.route-tags [data-identity-spacer],
+            body.route-users [data-identity-spacer],
+            body.route-sss [data-identity-spacer] {
+                display: none !important;
+                height: 0 !important;
             }
         }
 

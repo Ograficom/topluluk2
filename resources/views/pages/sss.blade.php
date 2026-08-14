@@ -682,6 +682,7 @@
                 ])
             </div>
         </div>
+        <div data-identity-spacer aria-hidden="true"></div>
 
         <div id="faq-search-panel" class="faq-search-panel {{ $faqSearch !== '' ? 'is-open' : '' }}" data-faq-search-panel>
             <div class="faq-search-panel__inner">

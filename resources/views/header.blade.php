@@ -2549,6 +2549,7 @@
                 // __edge-blur-top cocugu ile) hafifce bulaniklastiriliyor -
                 // kutunun ALTINDAKI blur efektinin simetrisi.
                 const GAP = 10;
+                const PANEL_GAP = 16;
 
                 // Motion blur ayarlari: kaydirma hizi (bir onceki scroll
                 // olayindan bu yana kat edilen px) MAX_BLUR_SPEED'e ulasinca
@@ -2600,7 +2601,7 @@
                         const identityTop = headerHeight - hiddenAmount + GAP;
                         identityBox.style.top = `${identityTop}px`;
                         if (searchPanel) {
-                            searchPanel.style.top = `${identityTop + identityBox.offsetHeight}px`;
+                            searchPanel.style.top = `${identityTop + identityBox.offsetHeight + PANEL_GAP}px`;
                         }
                     }
 
