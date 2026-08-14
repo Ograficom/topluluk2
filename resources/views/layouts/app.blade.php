@@ -3028,14 +3028,44 @@
                 background: rgba(255, 255, 255, .5);
                 backdrop-filter: blur(20px) saturate(180%);
                 -webkit-backdrop-filter: blur(20px) saturate(180%);
+                box-shadow: 0 8px 24px rgba(15, 23, 42, .08);
+                isolation: isolate;
+            }
+
+            /* Formun disinda kalan yan/ust/alt padding degerleri de ayni
+               malzemenin parcasi olmali; aksi halde beyaz yariklar gorunur. */
+            body.route-tags [data-tags-search-panel]::before {
+                content: '';
+                position: absolute;
+                z-index: -1;
+                top: -8px;
+                right: 0;
+                bottom: -8px;
+                left: 0;
+                background: rgba(255, 255, 255, .5);
+                backdrop-filter: blur(20px) saturate(180%);
+                -webkit-backdrop-filter: blur(20px) saturate(180%);
+                pointer-events: none;
             }
 
             html.dark body.route-tags [data-tags-search-panel] {
+                background: rgba(24, 24, 27, .5);
+                box-shadow: 0 8px 24px rgba(0, 0, 0, .22);
+            }
+
+            html.dark body.route-tags [data-tags-search-panel]::before {
                 background: rgba(24, 24, 27, .5);
             }
 
             @media (prefers-reduced-transparency: reduce) {
                 body.route-tags [data-tags-search-panel] {
+                    background: #ffffff;
+                    box-shadow: none;
+                    backdrop-filter: none;
+                    -webkit-backdrop-filter: none;
+                }
+
+                body.route-tags [data-tags-search-panel]::before {
                     background: #ffffff;
                     backdrop-filter: none;
                     -webkit-backdrop-filter: none;
