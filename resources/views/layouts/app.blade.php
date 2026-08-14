@@ -2910,6 +2910,10 @@
         body.route-tags [data-identity-spacer],
         body.route-users [data-identity-spacer] {
             display: block;
+            margin-top: 0 !important;
+            background: rgba(255, 255, 255, .72);
+            backdrop-filter: blur(16px) saturate(180%);
+            -webkit-backdrop-filter: blur(16px) saturate(180%);
         }
 
         /* Kutunun alt VE ust kenarinda "scroll edge effect" - Apple'in sert
@@ -3111,7 +3115,18 @@
             body.route-tags [data-search-panel-spacer],
             body.route-users [data-search-panel-spacer] {
                 display: block;
+                margin-top: 0 !important;
+                background: rgba(255, 255, 255, .72);
+                backdrop-filter: blur(16px) saturate(180%);
+                -webkit-backdrop-filter: blur(16px) saturate(180%);
                 transition: height .2s ease;
+            }
+
+            html.dark body.route-tags [data-identity-spacer],
+            html.dark body.route-tags [data-search-panel-spacer],
+            html.dark body.route-users [data-identity-spacer],
+            html.dark body.route-users [data-search-panel-spacer] {
+                background: rgba(24, 24, 27, .72);
             }
         }
 
