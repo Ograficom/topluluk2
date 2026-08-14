@@ -2905,37 +2905,61 @@
             display: block;
         }
 
-        /* Kutunun altinda "scroll edge effect" - Apple'in sert 1px alt
-           kenarlik yerine onerdigi teknik: icerik sabit kutunun altindan
-           gecerken keskin bir kenar yerine yumusak bir blur+degrade ile
-           "kayboluyor". Kutu position:fixed oldugu icin bu eleman (position:
-           absolute, top:100%) otomatik olarak onun TAM altina oturuyor -
-           ekstra JS/senkronizasyon gerekmiyor. mask-image ustten (opak)
-           alta (seffaf) dogru soluyor, boylece blur asagi indikce "kayip
-           olan" bir efekt veriyor - cok kisa (28px) ve hafif (6px blur),
-           "az" istendigi icin agir/uzun bir sis tabakasi degil ince bir iz. */
+        /* Kutunun alt VE ust kenarinda "scroll edge effect" - Apple'in sert
+           1px kenarlik yerine onerdigi teknik: icerik sabit kutunun
+           altindan/ustunden gecerken keskin bir kenar yerine yumusak bir
+           blur+degrade ile "kayboluyor". Kutu position:fixed oldugu icin bu
+           iki eleman (position:absolute, top:100% / bottom:100%) otomatik
+           olarak onun tam alt/ustune oturuyor - ekstra JS/senkronizasyon
+           gerekmiyor (tek istisna: JS basligin ile kutu arasina birakilan
+           GAP miktarini biliyor, --top ust degradesi o bosluga sigacak
+           sekilde ayni yukseklikte). --bottom, ustten (opak) alta (seffaf)
+           dogru soluyor - blur asagi indikce "kayip olan" bir efekt veriyor.
+           Cok kisa (28px) ve hafif (6px blur), "az" istendigi icin agir/uzun
+           bir sis tabakasi degil ince bir iz. */
         @media (max-width: 640px) {
             body.route-search .og-search-identity__edge-blur,
             body.route-tags .page-title-identity__edge-blur,
             body.route-users .page-title-identity__edge-blur {
                 display: block;
                 position: absolute;
-                top: 100%;
                 left: 0;
                 right: 0;
-                height: 28px;
                 pointer-events: none;
-                background: linear-gradient(to bottom, rgba(255, 255, 255, .55), rgba(255, 255, 255, 0));
                 backdrop-filter: blur(6px);
                 -webkit-backdrop-filter: blur(6px);
+            }
+
+            body.route-search .og-search-identity__edge-blur--bottom,
+            body.route-tags .page-title-identity__edge-blur--bottom,
+            body.route-users .page-title-identity__edge-blur--bottom {
+                top: 100%;
+                height: 28px;
+                background: linear-gradient(to bottom, rgba(255, 255, 255, .55), rgba(255, 255, 255, 0));
                 mask-image: linear-gradient(to bottom, #000 0%, transparent 100%);
                 -webkit-mask-image: linear-gradient(to bottom, #000 0%, transparent 100%);
             }
 
-            html.dark body.route-search .og-search-identity__edge-blur,
-            html.dark body.route-tags .page-title-identity__edge-blur,
-            html.dark body.route-users .page-title-identity__edge-blur {
+            body.route-search .og-search-identity__edge-blur--top,
+            body.route-tags .page-title-identity__edge-blur--top,
+            body.route-users .page-title-identity__edge-blur--top {
+                bottom: 100%;
+                height: 10px;
+                background: rgba(255, 255, 255, .35);
+                mask-image: linear-gradient(to top, #000 0%, transparent 100%);
+                -webkit-mask-image: linear-gradient(to top, #000 0%, transparent 100%);
+            }
+
+            html.dark body.route-search .og-search-identity__edge-blur--bottom,
+            html.dark body.route-tags .page-title-identity__edge-blur--bottom,
+            html.dark body.route-users .page-title-identity__edge-blur--bottom {
                 background: linear-gradient(to bottom, rgba(24, 24, 27, .55), rgba(24, 24, 27, 0));
+            }
+
+            html.dark body.route-search .og-search-identity__edge-blur--top,
+            html.dark body.route-tags .page-title-identity__edge-blur--top,
+            html.dark body.route-users .page-title-identity__edge-blur--top {
+                background: rgba(24, 24, 27, .35);
             }
 
             @media (prefers-reduced-transparency: reduce) {

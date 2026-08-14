@@ -2534,6 +2534,12 @@
                 const mobileQuery = window.matchMedia('(max-width: 640px)');
                 const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
 
+                // Baslik ile kimlik kutusu artik bitişik degil - aralarinda
+                // kucuk bir bosluk birakiliyor (GAP), bu bosluk da (kutunun
+                // __edge-blur-top cocugu ile) hafifce bulaniklastiriliyor -
+                // kutunun ALTINDAKI blur efektinin simetrisi.
+                const GAP = 10;
+
                 let hiddenAmount = 0;
                 let headerHeight = header.offsetHeight;
                 let lastScrollY = window.scrollY;
@@ -2541,7 +2547,7 @@
 
                 const syncSpacerHeight = () => {
                     if (identityBox && identitySpacer) {
-                        identitySpacer.style.height = `${identityBox.offsetHeight}px`;
+                        identitySpacer.style.height = `${identityBox.offsetHeight + GAP}px`;
                     }
                 };
 
@@ -2553,7 +2559,7 @@
 
                 const applyTransform = () => {
                     header.style.transform = hiddenAmount > 0 ? `translateY(-${hiddenAmount}px)` : '';
-                    if (identityBox) identityBox.style.top = `${headerHeight - hiddenAmount}px`;
+                    if (identityBox) identityBox.style.top = `${headerHeight - hiddenAmount + GAP}px`;
                     ticking = false;
                 };
 

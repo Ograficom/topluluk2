@@ -1206,6 +1206,7 @@
          data-login-url="{{ route('login') }}"
     >
         <div class="og-search-identity">
+            <div class="og-search-identity__edge-blur og-search-identity__edge-blur--top" aria-hidden="true"></div>
             <button type="button" class="og-search-identity__back" data-search-back aria-label="{{ __('site.mobile_nav.back') ?? 'Geri' }}">
                 <iconify-icon icon="lucide:arrow-left" aria-hidden="true"></iconify-icon>
             </button>
@@ -1282,7 +1283,7 @@
                     </div>
                 </div>
             </div>
-            <div class="og-search-identity__edge-blur" aria-hidden="true"></div>
+            <div class="og-search-identity__edge-blur og-search-identity__edge-blur--bottom" aria-hidden="true"></div>
         </div>
         <div data-identity-spacer aria-hidden="true"></div>
 
