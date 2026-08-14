@@ -271,6 +271,7 @@
         /* Arama paneli - buyume/kuculme yuksekligi grid ile animasyonlu,
            boylece acilirken "materyal" gibi belirir, kapanirken katlanir. */
         .users-search-panel {
+            position: relative;
             display: grid;
             grid-template-rows: 0fr;
             opacity: 0;
@@ -293,9 +294,12 @@
             gap: 4px;
             margin-top: 3px;
             padding: 4px 4px 4px 14px;
-            border: 1px solid #d9dde3;
+            border: 1px solid rgba(217, 221, 227, .78);
             border-radius: 999px;
-            background: #ffffff;
+            background: rgba(255, 255, 255, .82);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            box-shadow: 0 1px 0 rgba(255, 255, 255, .55) inset, 0 10px 28px rgba(15, 23, 42, .08);
         }
 
         /* Input#id + iki class + input turu = (id:1, class:2, type:1),
@@ -327,12 +331,237 @@
         }
 
         html.dark .users-search-panel__form {
-            border-color: #27272a;
-            background: #18181b;
+            border-color: rgba(63, 63, 70, .76);
+            background: rgba(24, 24, 27, .82);
+            box-shadow: 0 1px 0 rgba(255, 255, 255, .08) inset, 0 10px 28px rgba(0, 0, 0, .22);
         }
 
         html.dark input#users-search-input.users-search-panel__input.users-search-panel__input {
             color: #fafafa !important;
+        }
+
+        @media (prefers-reduced-transparency: reduce) {
+            .users-search-panel__form {
+                background: #ffffff;
+                backdrop-filter: none;
+                -webkit-backdrop-filter: none;
+            }
+
+            html.dark .users-search-panel__form {
+                background: #18181b;
+            }
+        }
+
+        /* Etiketler sayfasindaki baslik kapsulunun aynisi: opak yuzey,
+           40px yukseklik, ayni geri bolmesi, tipografi ve sag araclar. */
+        .page-title-identity.page-title-identity {
+            overflow: visible;
+            border: 1px solid #e2e5ea !important;
+            border-radius: 999px !important;
+            background: #ffffff !important;
+            background-color: #ffffff !important;
+            background-image: none !important;
+            backdrop-filter: none !important;
+            -webkit-backdrop-filter: none !important;
+            box-shadow: none !important;
+            filter: none !important;
+            opacity: 1 !important;
+        }
+
+        .users-page-title.users-page-title {
+            position: relative;
+            display: flex !important;
+            box-sizing: border-box !important;
+            width: 100% !important;
+            min-height: 40px !important;
+            align-items: center !important;
+            gap: 0 !important;
+            padding: 2px 12px !important;
+            border: 1px solid #e2e5ea !important;
+            border-radius: 999px !important;
+            background: #ffffff !important;
+            background-color: #ffffff !important;
+            background-image: none !important;
+            box-shadow: none !important;
+            opacity: 1 !important;
+        }
+
+        /* Header ile kapsul arasindaki bosluk, Etiketler'deki ayni hafif
+           malzeme katmaniyla kapanir; kapsulun kendisi opak kalir. */
+        .users-page-title.users-page-title::before {
+            content: '' !important;
+            display: block !important;
+            position: absolute;
+            right: 0;
+            bottom: 100%;
+            left: 0;
+            z-index: 0;
+            width: 100%;
+            height: 16px;
+            background: rgba(246, 244, 240, .64);
+            backdrop-filter: blur(12px) saturate(115%);
+            -webkit-backdrop-filter: blur(12px) saturate(115%);
+            pointer-events: none;
+        }
+
+        .users-page-title__back,
+        .users-page-title__text,
+        .users-page-title__trailing {
+            position: relative;
+            z-index: 1;
+        }
+
+        .users-page-title__back {
+            display: inline-flex;
+            flex: 0 0 auto;
+            width: 34px;
+            height: 30px;
+            align-items: center;
+            justify-content: flex-start;
+            margin-right: 10px;
+            padding: 0 10px 0 2px;
+            border: 0 !important;
+            border-right: 1px solid #e5e7eb !important;
+            border-radius: 0 !important;
+            background: #ffffff !important;
+            color: #111827 !important;
+            text-decoration: none !important;
+        }
+
+        .users-page-title__back iconify-icon {
+            font-size: 17px;
+        }
+
+        .users-page-title__text {
+            min-width: 0;
+            color: #111111 !important;
+            font-size: 18px;
+            font-weight: 500;
+            line-height: 1.2;
+            white-space: nowrap;
+        }
+
+        .users-page-title__trailing {
+            display: flex;
+            align-items: center;
+            margin-left: auto;
+        }
+
+        body.route-users [data-users-search-panel] {
+            background: transparent !important;
+            backdrop-filter: none !important;
+            -webkit-backdrop-filter: none !important;
+        }
+
+        body.route-users [data-users-search-panel]::before {
+            display: none !important;
+            content: none !important;
+        }
+
+        body.route-users [data-users-search-panel].is-open::before {
+            content: '' !important;
+            display: block !important;
+            position: absolute;
+            right: 0;
+            bottom: 100%;
+            left: 0;
+            z-index: 0;
+            width: 100%;
+            height: 16px;
+            background: rgba(246, 244, 240, .64);
+            backdrop-filter: blur(12px) saturate(115%);
+            -webkit-backdrop-filter: blur(12px) saturate(115%);
+            pointer-events: none;
+        }
+
+        body.route-users [data-users-search-panel] > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        body.route-users .users-search-panel__inner,
+        body.route-users .users-search-panel__form {
+            width: 100%;
+            max-width: 100%;
+            box-sizing: border-box;
+        }
+
+        html.dark .page-title-identity.page-title-identity,
+        html.dark .users-page-title.users-page-title {
+            border-color: #27272a !important;
+            background: #18181b !important;
+            background-color: #18181b !important;
+            color: #f4f4f5 !important;
+        }
+
+        html.dark .users-page-title__back {
+            border-right-color: #27272a !important;
+            background: #18181b !important;
+            color: #f4f4f5 !important;
+        }
+
+        html.dark .users-page-title__text {
+            color: #f4f4f5 !important;
+        }
+
+        html.dark body.route-users .page-title-identity .users-toolbar__icon {
+            color: #cbd5e1 !important;
+        }
+
+        /* Mobilde Etiketler panelinin tam genislik, kenar ve blur dili. */
+        @media (max-width: 640px) {
+            body.route-users [data-users-search-panel] {
+                padding-top: 3px;
+                padding-bottom: 5px;
+                overflow: visible;
+                isolation: isolate;
+                box-shadow: 0 8px 24px rgba(15, 23, 42, .08);
+            }
+
+            body.route-users [data-users-search-panel]:not(.is-open) {
+                display: none;
+                height: 0;
+                min-height: 0;
+                padding-top: 0;
+                padding-bottom: 0;
+                box-shadow: none;
+            }
+
+            body.route-users [data-users-search-panel]::after {
+                content: '';
+                position: absolute;
+                z-index: 0;
+                inset: 0;
+                border-top: 1px solid rgba(255, 255, 255, .46);
+                border-bottom: 2px solid rgba(255, 255, 255, .66);
+                box-shadow: 0 10px 22px rgba(15, 23, 42, .06);
+                pointer-events: none;
+            }
+
+            html.dark body.route-users [data-users-search-panel] {
+                box-shadow: 0 8px 24px rgba(0, 0, 0, .22);
+            }
+        }
+
+        /* Masaustunde Etiketler'deki gibi header ve kapsul sticky kalir. */
+        @media (min-width: 641px) {
+            body.route-users .site-header {
+                position: sticky;
+                top: 0;
+                z-index: 50;
+            }
+
+            body.route-users .page-title-identity {
+                position: sticky;
+                top: 64px;
+                z-index: 30;
+            }
+
+            body.route-users [data-users-search-panel] {
+                position: sticky;
+                top: 104px;
+                z-index: 29;
+            }
         }
 
         /* Kullanici satirlari - Etiketler sayfasindaki tag-row ile BIREBIR
@@ -368,11 +597,15 @@
     </style>
 
     <div class="space-y-4 users-page">
-        @include('partials.page-title-identity', [
-            'title' => __('site.users.title'),
-            'trailing' => view('users.partials.users-toolbar', ['sort' => $sort, 'search' => $search])->render(),
-        ])
-        <div data-identity-spacer aria-hidden="true"></div>
+        <div class="page-title-identity users-page-title">
+            <a href="{{ url()->previous() }}" class="users-page-title__back" aria-label="Geri">
+                <iconify-icon icon="lucide:arrow-left" aria-hidden="true"></iconify-icon>
+            </a>
+            <span class="users-page-title__text">{{ __('site.users.title') }}</span>
+            <div class="users-page-title__trailing">
+                {!! view('users.partials.users-toolbar', ['sort' => $sort, 'search' => $search])->render() !!}
+            </div>
+        </div>
 
         <div class="users-search-panel {{ $search !== '' ? 'is-open' : '' }}" data-users-search-panel>
             <div class="users-search-panel__inner">
@@ -396,7 +629,6 @@
                 </form>
                 <p class="sr-only" role="status" aria-live="polite" data-users-status></p>
             </div>
-            <div class="page-title-identity__edge-blur page-title-identity__edge-blur--bottom" aria-hidden="true"></div>
         </div>
         <div data-search-panel-spacer aria-hidden="true"></div>
 
@@ -459,6 +691,28 @@
                 const input = document.querySelector('[data-users-search-input]');
                 const inner = panel?.querySelector('.users-search-panel__inner');
                 const panelSpacer = document.querySelector('[data-search-panel-spacer]');
+                const identity = document.querySelector('.page-title-identity');
+
+                /* Mobilde fixed olan panel, Etiketler'deki gibi baslik
+                   kapsulunun soluna ve genisligine birebir oturur. */
+                const syncPanelGeometry = () => {
+                    if (!panel || !identity) return;
+
+                    const panelPosition = window.getComputedStyle(panel).position;
+
+                    if (panelPosition === 'fixed') {
+                        const identityRect = identity.getBoundingClientRect();
+                        panel.style.setProperty('left', `${identityRect.left}px`, 'important');
+                        panel.style.setProperty('right', 'auto', 'important');
+                        panel.style.setProperty('width', `${identityRect.width}px`, 'important');
+                        panel.style.setProperty('max-width', `${identityRect.width}px`, 'important');
+                    } else {
+                        panel.style.removeProperty('left');
+                        panel.style.removeProperty('right');
+                        panel.style.removeProperty('width');
+                        panel.style.removeProperty('max-width');
+                    }
+                };
 
                 const syncPanelSpacer = (open) => {
                     if (!panelSpacer || !inner) return;
@@ -466,6 +720,8 @@
                 };
 
                 if (panel && trigger && input) {
+                    window.requestAnimationFrame(syncPanelGeometry);
+
                     if (panel.classList.contains('is-open')) {
                         syncPanelSpacer(true);
                     }
@@ -475,10 +731,18 @@
                         panel.classList.toggle('is-open', willOpen);
                         trigger.setAttribute('aria-expanded', willOpen ? 'true' : 'false');
                         syncPanelSpacer(willOpen);
+                        window.requestAnimationFrame(syncPanelGeometry);
                         if (willOpen) {
                             window.requestAnimationFrame(() => input.focus());
                         }
                     });
+
+                    window.addEventListener('resize', syncPanelGeometry, { passive: true });
+                    window.addEventListener('scroll', syncPanelGeometry, { passive: true });
+
+                    if ('ResizeObserver' in window && identity) {
+                        new ResizeObserver(syncPanelGeometry).observe(identity);
+                    }
                 }
             })();
 
@@ -598,4 +862,3 @@
         </script>
     @endpush
 @endsection
-

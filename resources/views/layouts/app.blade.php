@@ -2937,13 +2937,15 @@
            tutarak icerigin yukari ziplamasini engelliyor. */
         body.route-search .site-header,
         body.route-tags .site-header,
-        body.route-users .site-header {
+        body.route-users .site-header,
+        body.route-sss .site-header {
             will-change: transform;
         }
 
         body.route-search .og-search-identity,
         body.route-tags .page-title-identity,
-        body.route-users .page-title-identity {
+        body.route-users .page-title-identity,
+        body.route-sss .page-title-identity {
             position: fixed;
             left: 0;
             right: 0;
@@ -3053,7 +3055,8 @@
                ekran degerinden baslar, ani ziplama yok). */
             body.route-search [data-search-results-container],
             body.route-tags [data-tags-list],
-            body.route-users [data-users-list] {
+            body.route-users [data-users-list],
+            body.route-sss [data-faq-list] {
                 transition: filter .22s ease-out;
                 will-change: filter;
             }
@@ -3069,7 +3072,8 @@
                neresinde olursak olalim arama orada, oldugu yerde aciliyor,
                hicbir zipla yok. */
             body.route-tags [data-tags-search-panel],
-            body.route-users [data-users-search-panel] {
+            body.route-users [data-users-search-panel],
+            body.route-sss [data-faq-search-panel] {
                 position: fixed;
                 left: 0;
                 right: 0;
@@ -3177,7 +3181,8 @@
             }
 
             body.route-tags [data-search-panel-spacer],
-            body.route-users [data-search-panel-spacer] {
+            body.route-users [data-search-panel-spacer],
+            body.route-sss [data-search-panel-spacer] {
                 display: block;
                 margin-top: 0 !important;
                 background: transparent;
@@ -7274,9 +7279,10 @@
 @php($isSearchRoute = request()->routeIs('search'))
 @php($isTagsRoute = request()->routeIs('blog.tags'))
 @php($isUsersRoute = request()->routeIs('users.index'))
+@php($isSssRoute = request()->routeIs('pages.sss'))
 
 <body
-    class="bg-[#fafafa] text-slate-900 font-sans antialiased theme-minimal alma-app {{ request()->routeIs('home') ? 'route-home' : '' }} {{ request()->routeIs('discover') ? 'route-discover' : '' }} {{ request()->routeIs('video') ? 'route-video' : '' }} {{ $isCategoryRoute ? 'route-category' : '' }} {{ $isPostShowRoute ? 'route-post-show' : '' }} {{ $isProfileRoute ? 'route-profile' : '' }} {{ $isSearchRoute ? 'route-search' : '' }} {{ $isTagsRoute ? 'route-tags' : '' }} {{ $isUsersRoute ? 'route-users' : '' }}"
+    class="bg-[#fafafa] text-slate-900 font-sans antialiased theme-minimal alma-app {{ request()->routeIs('home') ? 'route-home' : '' }} {{ request()->routeIs('discover') ? 'route-discover' : '' }} {{ request()->routeIs('video') ? 'route-video' : '' }} {{ $isCategoryRoute ? 'route-category' : '' }} {{ $isPostShowRoute ? 'route-post-show' : '' }} {{ $isProfileRoute ? 'route-profile' : '' }} {{ $isSearchRoute ? 'route-search' : '' }} {{ $isTagsRoute ? 'route-tags' : '' }} {{ $isUsersRoute ? 'route-users' : '' }} {{ $isSssRoute ? 'route-sss' : '' }}"
     data-mentions-endpoint="{{ auth()->check() ? route('mentions.users') : '' }}"
 >
     @include('partials.toasts')
