@@ -434,17 +434,17 @@
         position: absolute;
         top: calc(100% + 8px);
         right: 0;
-        width: min(320px, calc(100vw - 32px));
+        width: min(272px, calc(100vw - 32px));
         max-height: 70vh;
         overflow-y: auto;
-        padding: 16px;
-        border-radius: 18px;
+        padding: 14px;
+        border-radius: 16px;
         border: 1px solid #e2e8f0;
         background: #ffffff;
         box-shadow: 0 16px 36px rgba(15, 23, 42, .14);
         z-index: 40;
         flex-direction: column;
-        gap: 20px;
+        gap: 14px;
         visibility: hidden;
         opacity: 0;
         transform: scale(.96) translateY(-6px);
@@ -473,10 +473,10 @@
 
     .og-search-settings-menu__label {
         display: block;
-        margin: 0 0 8px;
-        font-size: 11px;
+        margin: 0 0 6px;
+        font-size: 10px;
         font-weight: 700;
-        letter-spacing: .04em;
+        letter-spacing: .05em;
         text-transform: uppercase;
         color: #94a3b8;
     }
@@ -485,21 +485,21 @@
         flex-direction: column !important;
         align-items: stretch !important;
         justify-content: flex-start !important;
-        gap: 18px !important;
+        gap: 12px !important;
     }
 
     .og-search-filters .og-search-pills {
         flex-direction: column;
         align-items: stretch;
         flex-wrap: nowrap;
-        gap: 6px;
+        gap: 4px;
     }
 
     .og-search-filters .og-search-pill {
         width: 100%;
         justify-content: flex-start;
-        height: 40px;
-        padding: 0 14px;
+        height: 32px;
+        padding: 0 10px;
     }
 
     .og-search-types {
@@ -624,22 +624,23 @@
     .og-search-pill {
         display: inline-flex;
         align-items: center;
-        gap: 6px;
-        height: 34px;
-        padding: 0 16px;
+        gap: 5px;
+        height: 30px;
+        padding: 0 12px;
         border-radius: 9999px;
         border: 1px solid #e2e8f0 !important;
         background: #ffffff !important;
         color: #0f172a !important;
-        font-size: 13px;
+        font-size: 12px;
         font-weight: 600;
+        letter-spacing: .002em;
         white-space: nowrap;
-        transition: background-color 120ms ease, color 120ms ease, border-color 120ms ease;
+        transition: background-color 120ms ease, color 120ms ease, border-color 120ms ease, transform 80ms ease-out;
     }
 
     .og-search-pill iconify-icon {
         flex-shrink: 0;
-        font-size: 15px;
+        font-size: 13px;
         color: #64748b;
         transition: color 120ms ease;
     }
@@ -650,6 +651,7 @@
 
     .og-search-pill:active {
         background: #e2e8f0 !important;
+        transform: scale(.97);
     }
 
     .og-search-pill.is-active {
@@ -675,7 +677,7 @@
         display: flex;
         align-items: center;
         flex-wrap: wrap;
-        gap: 8px;
+        gap: 6px;
         width: 100%;
         min-width: 0;
     }
@@ -684,22 +686,22 @@
         flex: 0 0 auto;
         display: inline-flex;
         align-items: center;
-        gap: 6px;
-        height: 32px;
-        padding: 0 14px;
+        gap: 5px;
+        height: 28px;
+        padding: 0 10px;
         border-radius: 9999px;
         border: 1px solid #e2e8f0 !important;
         background: #f8fafc !important;
         color: #0f172a !important;
-        font-size: 13px;
+        font-size: 12px;
         font-weight: 500;
         white-space: nowrap;
-        transition: background-color 120ms ease, color 120ms ease, border-color 120ms ease;
+        transition: background-color 120ms ease, color 120ms ease, border-color 120ms ease, transform 80ms ease-out;
     }
 
     .og-search-type-pill iconify-icon {
         flex-shrink: 0;
-        font-size: 15px;
+        font-size: 13px;
         color: #64748b;
         transition: color 120ms ease;
     }
@@ -710,6 +712,7 @@
 
     .og-search-type-pill:active {
         background: #e2e8f0 !important;
+        transform: scale(.97);
     }
 
     .og-search-type-pill.is-active {
