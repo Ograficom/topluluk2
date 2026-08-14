@@ -2915,8 +2915,9 @@
            GAP miktarini biliyor, --top ust degradesi o bosluga sigacak
            sekilde ayni yukseklikte). --bottom, ustten (opak) alta (seffaf)
            dogru soluyor - blur asagi indikce "kayip olan" bir efekt veriyor.
-           Cok kisa (28px) ve hafif (6px blur), "az" istendigi icin agir/uzun
-           bir sis tabakasi degil ince bir iz. */
+           Blur miktari SERT (20px + saturate - skill'in kendi ornegindeki
+           "backdrop-filter: blur(20px) saturate(180%)" degeriyle ayni),
+           once cok hafifti (6px). */
         @media (max-width: 640px) {
             body.route-search .og-search-identity__edge-blur,
             body.route-tags .page-title-identity__edge-blur,
@@ -2926,8 +2927,8 @@
                 left: 0;
                 right: 0;
                 pointer-events: none;
-                backdrop-filter: blur(6px);
-                -webkit-backdrop-filter: blur(6px);
+                backdrop-filter: blur(20px) saturate(180%);
+                -webkit-backdrop-filter: blur(20px) saturate(180%);
             }
 
             body.route-search .og-search-identity__edge-blur--bottom,

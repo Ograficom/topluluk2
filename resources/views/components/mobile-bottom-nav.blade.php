@@ -237,19 +237,25 @@
     }
 
     html.dark [data-mobile-search-drawer] [data-mobile-search-backdrop] {
-        background: rgba(2, 6, 23, .6) !important;
+        background: transparent !important;
     }
 
     html.dark [data-mobile-search-surface] {
-        background: var(--alma-bg, #0b1220) !important;
+        background: rgba(17, 24, 39, .95) !important;
+        border-color: var(--alma-border, rgba(148, 163, 184, .18)) !important;
     }
 
     html.dark [data-mobile-search-surface] label,
     html.dark [data-mobile-search-surface] [data-mobile-search-close],
-    html.dark [data-mobile-search-surface] [data-mobile-search-clear],
+    html.dark [data-mobile-search-surface] [data-mobile-search-clear] {
+        background: var(--alma-bg, #0b1220) !important;
+        border-color: var(--alma-border, rgba(148, 163, 184, .18)) !important;
+        color: var(--alma-text, #e5e7eb) !important;
+    }
+
     html.dark [data-mobile-search-results],
     html.dark [data-mobile-search-surface] [data-mobile-search-all] {
-        background: var(--alma-card, #111827) !important;
+        background: transparent !important;
         border-color: var(--alma-border, rgba(148, 163, 184, .18)) !important;
         color: var(--alma-text, #e5e7eb) !important;
     }
@@ -646,6 +652,12 @@
             searchDebounceTimer = setTimeout(() => fetchLiveSearch(query), 180);
         };
 
+        // Arama artik tam ekran bir sayfaya "sicramiyor" - alt navigasyon
+        // cubugu yerinde kalir, arama kutusu tam onun uzerinde (olduğu yerde)
+        // kucuk bir kart olarak "materialize" olur (skill #12: materialize,
+        // don't just fade - olcek+kayma+opaklik birlikte). transform-origin
+        // alt navigasyona (kaynagina) sabit - skill #7: kutu her zaman ayni
+        // yerden gelir/gider.
         const openSearch = () => {
             if (!searchDrawer || !searchSurface) return;
             if (searchHideTimer) {
@@ -654,10 +666,8 @@
             }
             searchDrawer.classList.remove('pointer-events-none');
             requestAnimationFrame(() => {
-                searchBackdrop?.classList.remove('opacity-0');
-                searchSurface.classList.remove('translate-y-3', 'scale-[0.98]', 'opacity-0');
+                searchSurface.classList.remove('translate-y-2', 'scale-95', 'opacity-0');
             });
-            document.querySelector('[data-mobile-bottom-nav]')?.classList.add('pointer-events-none', 'opacity-0');
             body.classList.add('overflow-hidden');
             syncSearchClear();
             handleSearchInput();
@@ -666,9 +676,7 @@
 
         const closeSearch = () => {
             if (!searchDrawer || !searchSurface) return;
-            searchBackdrop?.classList.add('opacity-0');
-            searchSurface.classList.add('translate-y-3', 'scale-[0.98]', 'opacity-0');
-            document.querySelector('[data-mobile-bottom-nav]')?.classList.remove('pointer-events-none', 'opacity-0');
+            searchSurface.classList.add('translate-y-2', 'scale-95', 'opacity-0');
             body.classList.remove('overflow-hidden');
             clearTimeout(searchDebounceTimer);
             searchAbortController?.abort();
@@ -722,12 +730,16 @@
     });
 </script>
 
-<div data-mobile-search-drawer class="pointer-events-none fixed inset-0 z-[60] sm:hidden">
-    <div data-mobile-search-backdrop class="absolute inset-0 bg-[#f7f8fa] opacity-0 transition-opacity duration-200"></div>
-    <div data-mobile-search-surface class="relative mx-auto flex h-full w-full max-w-[430px] translate-y-3 scale-[0.98] flex-col bg-[#f7f8fa] px-3 pb-4 pt-3 opacity-0 transition duration-200 ease-out">
+<div data-mobile-search-drawer class="pointer-events-none fixed inset-0 z-[100010] sm:hidden">
+    <div data-mobile-search-backdrop class="absolute inset-0 bg-transparent"></div>
+    <div
+        data-mobile-search-surface
+        class="mobile-search-surface absolute left-1/2 flex w-[calc(100%-16px)] max-w-[390px] origin-bottom -translate-x-1/2 translate-y-2 scale-95 flex-col gap-2 rounded-[22px] border border-slate-200 bg-white/95 p-2.5 opacity-0 shadow-[0_24px_48px_-20px_rgba(15,23,42,0.32)] backdrop-blur-2xl transition duration-200 ease-out"
+        style="bottom: calc(max(8px, env(safe-area-inset-bottom, 0px)) + 60px + 10px);"
+    >
         <div class="flex items-center gap-2">
             <form action="{{ route('search') }}" method="GET" class="flex-1">
-                <label class="flex h-[42px] items-center gap-3 rounded-[18px] border border-slate-200 bg-white px-4 text-slate-900 shadow-[0_12px_24px_-18px_rgba(15,23,42,0.16)] transition hover:bg-slate-100">
+                <label class="flex h-[42px] items-center gap-3 rounded-[16px] bg-slate-100 px-4 text-slate-900 transition focus-within:bg-slate-100">
                     <svg class="h-5 w-5 shrink-0 text-slate-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                         <circle cx="11" cy="11" r="6.75" stroke="currentColor" stroke-width="1.9"></circle>
                         <path stroke="currentColor" stroke-linecap="round" stroke-width="1.9" d="m16 16 3.75 3.75"></path>
@@ -748,15 +760,15 @@
                 </label>
             </form>
 
-            <button type="button" data-mobile-search-close class="inline-flex h-[42px] w-[42px] shrink-0 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-600 transition hover:bg-slate-100 hover:text-slate-900" aria-label="Kapat">
+            <button type="button" data-mobile-search-close class="inline-flex h-[42px] w-[42px] shrink-0 items-center justify-center rounded-full bg-slate-100 text-slate-600 transition hover:bg-slate-200 hover:text-slate-900" aria-label="Kapat">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round">
                     <path d="M6 6l12 12M18 6 6 18"/>
                 </svg>
             </button>
         </div>
 
-        <div class="mt-3 overflow-hidden rounded-[22px] border border-slate-200 bg-white shadow-[0_20px_40px_-26px_rgba(15,23,42,0.22)]">
-            <div class="max-h-[calc(100vh-126px)] overflow-y-auto px-2 py-2" data-mobile-search-results>
+        <div class="overflow-hidden rounded-[16px]">
+            <div class="max-h-[42vh] overflow-y-auto px-1 py-1" data-mobile-search-results>
                 <p class="px-4 py-5 text-sm text-slate-500">{{ __('site.mobile_nav.empty_query') }}</p>
             </div>
             <button type="button" data-mobile-search-all class="hidden flex w-full items-center gap-2 border-t border-slate-200 px-4 py-3 text-left text-sm font-medium text-slate-900 transition hover:bg-slate-100">
