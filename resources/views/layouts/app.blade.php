@@ -3025,7 +3025,7 @@
             body.route-tags [data-tags-search-panel] {
                 padding-top: 3px;
                 padding-bottom: 5px;
-                background: rgba(255, 255, 255, .5);
+                background: rgba(255, 255, 255, .88);
                 backdrop-filter: blur(20px) saturate(180%);
                 -webkit-backdrop-filter: blur(20px) saturate(180%);
                 box-shadow: 0 8px 24px rgba(15, 23, 42, .08);
@@ -3042,19 +3042,19 @@
                 right: 0;
                 bottom: -8px;
                 left: 0;
-                background: rgba(255, 255, 255, .5);
+                background: rgba(255, 255, 255, .88);
                 backdrop-filter: blur(20px) saturate(180%);
                 -webkit-backdrop-filter: blur(20px) saturate(180%);
                 pointer-events: none;
             }
 
             html.dark body.route-tags [data-tags-search-panel] {
-                background: rgba(24, 24, 27, .5);
+                background: rgba(24, 24, 27, .88);
                 box-shadow: 0 8px 24px rgba(0, 0, 0, .22);
             }
 
             html.dark body.route-tags [data-tags-search-panel]::before {
-                background: rgba(24, 24, 27, .5);
+                background: rgba(24, 24, 27, .88);
             }
 
             @media (prefers-reduced-transparency: reduce) {

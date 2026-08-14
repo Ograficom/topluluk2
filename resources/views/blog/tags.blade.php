@@ -112,7 +112,7 @@
             padding: 4px 4px 4px 14px;
             border: 1px solid rgba(217, 221, 227, .78);
             border-radius: 999px;
-            background: rgba(255, 255, 255, .5);
+            background: rgba(255, 255, 255, .88);
             backdrop-filter: blur(20px) saturate(180%);
             -webkit-backdrop-filter: blur(20px) saturate(180%);
             box-shadow: 0 1px 0 rgba(255, 255, 255, .55) inset, 0 10px 28px rgba(15, 23, 42, .08);
@@ -147,7 +147,7 @@
 
         html.dark .tags-search-panel__form {
             border-color: rgba(63, 63, 70, .76);
-            background: rgba(24, 24, 27, .5);
+            background: rgba(24, 24, 27, .88);
             box-shadow: 0 1px 0 rgba(255, 255, 255, .08) inset, 0 10px 28px rgba(0, 0, 0, .22);
         }
 
