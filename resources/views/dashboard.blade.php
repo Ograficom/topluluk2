@@ -16,7 +16,7 @@
 
         $initial = strtoupper(mb_substr($profileName, 0, 1));
 
-        $dashboardIcon = function (string $name, string $class = 'h-6 w-6'): string {
+        $dashboardIcon = function (string $name, string $class = 'h-5 w-5'): string {
             $icons = [
                 'chevron-right' => '<path d="m9 18 6-6-6-6"/>',
                 'account' => '<circle cx="9" cy="7" r="4"/><path d="M3 21v-2a4 4 0 0 1 4-4h4"/><path d="M16 11h5"/><path d="M18.5 8.5v5"/>',
@@ -34,11 +34,11 @@
         };
     @endphp
 
-    <div class="w-full sm:mx-auto sm:max-w-[45rem] sm:px-6 lg:px-8">
+    <div class="w-full sm:mx-auto sm:max-w-[40rem] sm:px-6 lg:px-8">
         <main class="w-full">
-            <div class="relative left-1/2 right-1/2 w-screen -translate-x-1/2 bg-white text-gray-900 dark:bg-white dark:text-slate-900 sm:left-auto sm:right-auto sm:w-full sm:translate-x-0 sm:rounded-xl sm:border sm:border-slate-200 sm:shadow-sm">
-                <div class="flex items-center gap-2 border-b border-gray-100 px-4 py-4 dark:border-gray-700 sm:p-6">
-                    <a class="flex items-center gap-2 rounded-full bg-gray-100 px-3 py-1.5 transition-colors hover:bg-gray-200 dark:bg-gray-700/50 dark:hover:bg-gray-600/60" href="{{ $profileUrl }}">
+            <div class="relative left-1/2 right-1/2 w-screen -translate-x-1/2 bg-white text-slate-900 dark:bg-[#111827] dark:text-slate-100 sm:left-auto sm:right-auto sm:w-full sm:translate-x-0 sm:rounded-lg sm:border sm:border-slate-200 sm:shadow-sm dark:sm:border-[#263247] dark:sm:shadow-[0_10px_30px_rgba(2,6,23,.20)]">
+                <div class="flex items-center gap-2 border-b border-slate-200 px-4 py-3.5 dark:border-[#263247] sm:px-5 sm:py-4">
+                    <a class="flex items-center gap-2 rounded-full bg-slate-100 px-2.5 py-1 transition-colors hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700" href="{{ $profileUrl }}">
                         @if($avatarUrl)
                             <img alt="{{ $profileName }}" class="h-5 w-5 rounded-full object-cover" src="{{ $avatarUrl }}" />
                         @else
@@ -47,7 +47,7 @@
                             </span>
                         @endif
 
-                        <span class="text-sm font-medium text-gray-900 dark:text-white">
+                        <span class="text-[13px] font-medium text-slate-900 dark:text-slate-100">
                             {{ $profileName }}
                         </span>
                     </a>
@@ -56,142 +56,142 @@
                         {!! $dashboardIcon('chevron-right', 'inline-block h-4 w-4 align-middle') !!}
                     </span>
 
-                    <span class="font-medium text-gray-900 dark:text-white">
+                    <span class="text-sm font-medium text-slate-900 dark:text-slate-100">
                         Ayarlar
                     </span>
                 </div>
 
-                <div class="space-y-1 px-2 pt-2 pb-[calc(8.5rem+env(safe-area-inset-bottom))] sm:px-4 sm:pt-3 sm:pb-8">
-                    <a class="group flex items-start gap-4 rounded-xl bg-gray-50 px-3 py-5 transition-colors dark:bg-gray-800/80" href="{{ route('dashboard.account') }}">
-                        <div class="mt-1 shrink-0 text-gray-500 transition-colors group-hover:text-emerald-600 dark:text-gray-400">
+                <div class="space-y-1 px-2 pt-2 pb-[calc(8.5rem+env(safe-area-inset-bottom))] sm:px-3 sm:pt-3 sm:pb-5">
+                    <a class="group flex items-start gap-3 rounded-lg bg-slate-50 px-3 py-3.5 transition-colors dark:bg-[#172033]" href="{{ route('dashboard.account') }}">
+                        <div class="mt-0.5 shrink-0 text-slate-500 transition-colors group-hover:text-blue-600 dark:text-gray-400">
                             {!! $dashboardIcon('account') !!}
                         </div>
 
                         <div class="min-w-0 flex-1">
-                            <h3 class="text-[15px] font-medium leading-6 text-gray-900 dark:text-white">
+                            <h3 class="text-sm font-medium leading-5 text-slate-900 dark:text-white">
                                 Hesap
                             </h3>
-                            <p class="mt-1 text-sm leading-6 text-gray-500 dark:text-gray-400">
+                            <p class="mt-0.5 text-[13px] leading-5 text-slate-500 dark:text-slate-400">
                                 Hesap adınızı, kullanıcı adınızı ve e-posta adresinizi güncelleyin
                             </p>
                         </div>
                     </a>
 
-                    <a class="group flex items-start gap-4 rounded-xl px-3 py-5 transition-colors hover:bg-gray-50 dark:hover:bg-gray-800/80" href="{{ route('dashboard.password') }}">
-                        <div class="mt-1 shrink-0 text-gray-500 transition-colors group-hover:text-emerald-600 dark:text-gray-400">
+                    <a class="group flex items-start gap-3 rounded-lg px-3 py-3.5 transition-colors hover:bg-slate-50 dark:hover:bg-[#172033]" href="{{ route('dashboard.password') }}">
+                        <div class="mt-0.5 shrink-0 text-slate-500 transition-colors group-hover:text-blue-600 dark:text-gray-400">
                             {!! $dashboardIcon('password') !!}
                         </div>
 
                         <div class="min-w-0 flex-1">
-                            <h3 class="text-[15px] font-medium leading-6 text-gray-900 dark:text-white">
+                            <h3 class="text-sm font-medium leading-5 text-slate-900 dark:text-white">
                                 Şifre
                             </h3>
-                            <p class="mt-1 text-sm leading-6 text-gray-500 dark:text-gray-400">
+                            <p class="mt-0.5 text-[13px] leading-5 text-slate-500 dark:text-slate-400">
                                 Hesap Şifrenizi güncelleyin
                             </p>
                         </div>
                     </a>
 
-                    <a class="group flex items-start gap-4 rounded-xl px-3 py-5 transition-colors hover:bg-gray-50 dark:hover:bg-gray-800/80" href="{{ route('dashboard.profile') }}">
-                        <div class="mt-1 shrink-0 text-gray-500 transition-colors group-hover:text-emerald-600 dark:text-gray-400">
+                    <a class="group flex items-start gap-3 rounded-lg px-3 py-3.5 transition-colors hover:bg-slate-50 dark:hover:bg-[#172033]" href="{{ route('dashboard.profile') }}">
+                        <div class="mt-0.5 shrink-0 text-slate-500 transition-colors group-hover:text-blue-600 dark:text-gray-400">
                             {!! $dashboardIcon('badge') !!}
                         </div>
 
                         <div class="min-w-0 flex-1">
-                            <h3 class="text-[15px] font-medium leading-6 text-gray-900 dark:text-white">
+                            <h3 class="text-sm font-medium leading-5 text-slate-900 dark:text-white">
                                 Profil
                             </h3>
-                            <p class="mt-1 text-sm leading-6 text-gray-500 dark:text-gray-400">
+                            <p class="mt-0.5 text-[13px] leading-5 text-slate-500 dark:text-slate-400">
                                 Biyografi, konum, web sitesi ve diger bilgiler
                             </p>
                         </div>
                     </a>
 
-                    <a class="group flex items-start gap-4 rounded-xl px-3 py-5 transition-colors hover:bg-gray-50 dark:hover:bg-gray-800/80" href="{{ route('dashboard.preferences') }}">
-                        <div class="mt-1 shrink-0 text-gray-500 transition-colors group-hover:text-emerald-600 dark:text-gray-400">
+                    <a class="group flex items-start gap-3 rounded-lg px-3 py-3.5 transition-colors hover:bg-slate-50 dark:hover:bg-[#172033]" href="{{ route('dashboard.preferences') }}">
+                        <div class="mt-0.5 shrink-0 text-slate-500 transition-colors group-hover:text-blue-600 dark:text-gray-400">
                             {!! $dashboardIcon('tune') !!}
                         </div>
 
                         <div class="min-w-0 flex-1">
-                            <h3 class="text-[15px] font-medium leading-6 text-gray-900 dark:text-white">
+                            <h3 class="text-sm font-medium leading-5 text-slate-900 dark:text-white">
                                 Tercihler
                             </h3>
-                            <p class="mt-1 text-sm leading-6 text-gray-500 dark:text-gray-400">
+                            <p class="mt-0.5 text-[13px] leading-5 text-slate-500 dark:text-slate-400">
                                 NSFW ve baglanti tercihleri
                             </p>
                         </div>
                     </a>
 
-                    <a class="group flex items-start gap-4 rounded-xl px-3 py-5 transition-colors hover:bg-gray-50 dark:hover:bg-gray-800/80" href="{{ route('dashboard.notifications') }}">
-                        <div class="mt-1 shrink-0 text-gray-500 transition-colors group-hover:text-emerald-600 dark:text-gray-400">
+                    <a class="group flex items-start gap-3 rounded-lg px-3 py-3.5 transition-colors hover:bg-slate-50 dark:hover:bg-[#172033]" href="{{ route('dashboard.notifications') }}">
+                        <div class="mt-0.5 shrink-0 text-slate-500 transition-colors group-hover:text-blue-600 dark:text-gray-400">
                             {!! $dashboardIcon('notifications') !!}
                         </div>
 
                         <div class="min-w-0 flex-1">
-                            <h3 class="text-[15px] font-medium leading-6 text-gray-900 dark:text-white">
+                            <h3 class="text-sm font-medium leading-5 text-slate-900 dark:text-white">
                                 Bildirimler
                             </h3>
-                            <p class="mt-1 text-sm leading-6 text-gray-500 dark:text-gray-400">
+                            <p class="mt-0.5 text-[13px] leading-5 text-slate-500 dark:text-slate-400">
                                 Hesap bildirimlerinizi güncelleyin
                             </p>
                         </div>
                     </a>
 
-                    <a class="group flex items-start gap-4 rounded-xl px-3 py-5 transition-colors hover:bg-gray-50 dark:hover:bg-gray-800/80" href="{{ route('dashboard.blocks') }}">
-                        <div class="mt-1 shrink-0 text-gray-500 transition-colors group-hover:text-emerald-600 dark:text-gray-400">
+                    <a class="group flex items-start gap-3 rounded-lg px-3 py-3.5 transition-colors hover:bg-slate-50 dark:hover:bg-[#172033]" href="{{ route('dashboard.blocks') }}">
+                        <div class="mt-0.5 shrink-0 text-slate-500 transition-colors group-hover:text-blue-600 dark:text-gray-400">
                             {!! $dashboardIcon('block') !!}
                         </div>
 
                         <div class="min-w-0 flex-1">
-                            <h3 class="text-[15px] font-medium leading-6 text-gray-900 dark:text-white">
+                            <h3 class="text-sm font-medium leading-5 text-slate-900 dark:text-white">
                                 Engellenenler
                             </h3>
-                            <p class="mt-1 text-sm leading-6 text-gray-500 dark:text-gray-400">
+                            <p class="mt-0.5 text-[13px] leading-5 text-slate-500 dark:text-slate-400">
                                 Engellediginiz kullanıcıların listesi
                             </p>
                         </div>
                     </a>
 
-                    <a class="group flex items-start gap-4 rounded-xl px-3 py-5 transition-colors hover:bg-gray-50 dark:hover:bg-gray-800/80" href="{{ route('dashboard.badges') }}">
-                        <div class="mt-1 shrink-0 text-gray-500 transition-colors group-hover:text-emerald-600 dark:text-gray-400">
+                    <a class="group flex items-start gap-3 rounded-lg px-3 py-3.5 transition-colors hover:bg-slate-50 dark:hover:bg-[#172033]" href="{{ route('dashboard.badges') }}">
+                        <div class="mt-0.5 shrink-0 text-slate-500 transition-colors group-hover:text-blue-600 dark:text-gray-400">
                             {!! $dashboardIcon('verified') !!}
                         </div>
 
                         <div class="min-w-0 flex-1">
-                            <h3 class="text-[15px] font-medium leading-6 text-gray-900 dark:text-white">
+                            <h3 class="text-sm font-medium leading-5 text-slate-900 dark:text-white">
                                 Rozetler
                             </h3>
-                            <p class="mt-1 text-sm leading-6 text-gray-500 dark:text-gray-400">
+                            <p class="mt-0.5 text-[13px] leading-5 text-slate-500 dark:text-slate-400">
                                 Kazandiginiz rozetlerin listesi
                             </p>
                         </div>
                     </a>
 
-                    <a class="group flex items-start gap-4 rounded-xl px-3 py-5 transition-colors hover:bg-gray-50 dark:hover:bg-gray-800/80" href="{{ route('dashboard.two-factor') }}">
-                        <div class="mt-1 shrink-0 text-gray-500 transition-colors group-hover:text-emerald-600 dark:text-gray-400">
+                    <a class="group flex items-start gap-3 rounded-lg px-3 py-3.5 transition-colors hover:bg-slate-50 dark:hover:bg-[#172033]" href="{{ route('dashboard.two-factor') }}">
+                        <div class="mt-0.5 shrink-0 text-slate-500 transition-colors group-hover:text-blue-600 dark:text-gray-400">
                             {!! $dashboardIcon('security') !!}
                         </div>
 
                         <div class="min-w-0 flex-1">
-                            <h3 class="text-[15px] font-medium leading-6 text-gray-900 dark:text-white">
+                            <h3 class="text-sm font-medium leading-5 text-slate-900 dark:text-white">
                                 İki Aşamalı Dogrulama
                             </h3>
-                            <p class="mt-1 text-sm leading-6 text-gray-500 dark:text-gray-400">
+                            <p class="mt-0.5 text-[13px] leading-5 text-slate-500 dark:text-slate-400">
                                 Ek güvenlik önlemleri etkinleştirin
                             </p>
                         </div>
                     </a>
 
-                    <a class="group mt-2 flex items-start gap-4 rounded-xl px-3 py-5 transition-colors hover:bg-red-50 dark:hover:bg-red-900/20" href="{{ route('dashboard.delete-account') }}">
-                        <div class="mt-1 shrink-0 text-gray-500 transition-colors group-hover:text-red-500 dark:text-gray-400">
+                    <a class="group mt-2 flex items-start gap-3 rounded-lg px-3 py-3.5 transition-colors hover:bg-red-50 dark:hover:bg-red-950/30" href="{{ route('dashboard.delete-account') }}">
+                        <div class="mt-0.5 shrink-0 text-slate-500 transition-colors group-hover:text-red-500 dark:text-gray-400">
                             {!! $dashboardIcon('delete') !!}
                         </div>
 
                         <div class="min-w-0 flex-1">
-                            <h3 class="text-[15px] font-medium leading-6 text-gray-900 transition-colors group-hover:text-red-500 dark:text-white">
+                            <h3 class="text-sm font-medium leading-5 text-slate-900 transition-colors group-hover:text-red-500 dark:text-white">
                                 Hesabi Sil
                             </h3>
-                            <p class="mt-1 text-sm leading-6 text-gray-500 dark:text-gray-400">
+                            <p class="mt-0.5 text-[13px] leading-5 text-slate-500 dark:text-slate-400">
                                 Tehlikeli alan, bu islem geri alinmaz
                             </p>
                         </div>
