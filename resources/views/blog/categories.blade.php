@@ -803,7 +803,7 @@
             z-index: 1 !important;
             width: 100%;
             margin-top: 12px;
-            padding: 0 14px;
+            padding: 0;
             gap: 10px;
         }
 
@@ -813,7 +813,7 @@
             border-radius: 0;
             border-left: none;
             border-right: none;
-            padding: 12px 0;
+            padding: 12px 14px;
         }
 
         .categories-item:hover,
@@ -830,9 +830,7 @@
             border-radius: 0;
             border-left: none;
             border-right: none;
-            margin-left: -14px;
-            margin-right: -14px;
-            width: calc(100% + 28px);
+            width: 100%;
         }
     }
 </style>
