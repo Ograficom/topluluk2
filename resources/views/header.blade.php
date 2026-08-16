@@ -2077,9 +2077,7 @@
                     </div>
 
                     <div class="site-search-results-panel">
-                        <div class="site-search-results" data-search-results>
-                            <p class="site-search-empty">{{ __('site.header.search_empty_hint') }}</p>
-                        </div>
+                        <div class="site-search-results" data-search-results></div>
 
                         <a href="{{ route('search') }}" class="site-search-all" data-search-view-all>
                             <iconify-icon icon="lucide:corner-down-left"></iconify-icon>
@@ -3332,5 +3330,110 @@ html.dark .site-notifications-panel,
         width: 360px !important;
         max-width: calc(100vw - 24px) !important;
     }
+}
+
+/* Header search: final dark-mode surface rules. */
+html.dark body .site-search-dropdown-top label.site-search-field {
+    background: #172033 !important;
+    background-color: #172033 !important;
+    border-color: #3b475b !important;
+    color: #f8fafc !important;
+}
+
+html.dark body .site-search-dropdown-top input[data-search-input],
+html.dark body .site-search-dropdown-top input[data-search-input]:not(#comments *):not(#app *),
+html.dark body .site-search-dropdown-top input[data-search-input]:not(#comments *):not(#app *):is(:hover, :focus, :focus-visible, :active),
+html.dark body .site-search-dropdown-top input[data-search-input]:not(#comments *):not(#app *):-webkit-autofill {
+    background: #172033 !important;
+    background-color: #172033 !important;
+    color: #f8fafc !important;
+    caret-color: #60a5fa !important;
+    -webkit-text-fill-color: #f8fafc !important;
+    -webkit-box-shadow: 0 0 0 1000px #172033 inset !important;
+    box-shadow: 0 0 0 1000px #172033 inset !important;
+}
+
+html.dark body .site-search-dropdown-top input[data-search-input]::placeholder {
+    color: #9aa8bc !important;
+    opacity: 1 !important;
+}
+
+html.dark body .site-search-dropdown-top .site-search-icon,
+html.dark body .site-search-dropdown-top .site-search-clear {
+    color: #a8b5c7 !important;
+}
+
+html.dark body .site-search-dropdown-top .site-search-clear:is(:hover, :focus-visible) {
+    color: #ffffff !important;
+}
+
+html.dark body .site-search-dropdown-top .site-search-close,
+html.dark body .site-search-dropdown-top .site-search-close:is(:hover, :focus, :focus-visible, :active) {
+    border: 1px solid #3b475b !important;
+    background: #202b3d !important;
+    background-color: #202b3d !important;
+    color: #93c5fd !important;
+}
+
+html.dark body .site-search-dropdown-top .site-search-close:is(:hover, :focus-visible) {
+    background: #2a374b !important;
+    background-color: #2a374b !important;
+    color: #dbeafe !important;
+}
+
+html.dark body .site-search-results-panel {
+    padding: 8px !important;
+    border-color: #344055 !important;
+    background: #111827 !important;
+    background-color: #111827 !important;
+    color: #f8fafc !important;
+    box-shadow: 0 18px 38px rgba(0, 0, 0, 0.38) !important;
+}
+
+html.dark body .site-search-section + .site-search-section,
+html.dark body .site-search-section-line {
+    border-color: #2d394d !important;
+    background-color: #2d394d !important;
+}
+
+html.dark body .site-search-section-title {
+    color: #a8b5c7 !important;
+}
+
+html.dark body .site-search-row {
+    border-color: transparent !important;
+    color: #f8fafc !important;
+}
+
+html.dark body .site-search-row:is(:hover, :focus-visible) {
+    background: #202b3d !important;
+    color: #ffffff !important;
+}
+
+html.dark body .site-search-row-title {
+    color: #f8fafc !important;
+}
+
+html.dark body .site-search-row-meta {
+    color: #9aa8bc !important;
+}
+
+html.dark body .site-search-glyph,
+html.dark body .site-search-avatar--fallback {
+    border-color: #3b475b !important;
+    background: #202b3d !important;
+    color: #93c5fd !important;
+}
+
+html.dark body .site-search-all {
+    border-top-color: #344055 !important;
+    background: transparent !important;
+    color: #93c5fd !important;
+    font-weight: 600 !important;
+}
+
+html.dark body .site-search-all:is(:hover, :focus-visible) {
+    background: #202b3d !important;
+    color: #dbeafe !important;
 }
 </style>

@@ -38,8 +38,8 @@ const setSearchViewAll = (query = '') => {
         : searchEndpoint;
     if (searchViewAllLabel) {
         searchViewAllLabel.textContent = cleanQuery
-            ? `Tum sonuclari goster: ${cleanQuery}`
-            : 'Tum sonuclari goster';
+            ? `“${cleanQuery}” için tüm sonuçları görüntüle`
+            : 'Tüm sonuçları görüntüle';
     }
 };
 
@@ -66,6 +66,11 @@ const hideSearchDropdown = () => {
 const renderSearchMessage = (message) => {
     if (!searchResults) return;
     searchResults.innerHTML = `<p class="site-search-empty">${escapeHtml(message)}</p>`;
+};
+
+const clearSearchResults = () => {
+    if (!searchResults) return;
+    searchResults.replaceChildren();
 };
 
 const sectionWrapper = (label, itemsHtml) => `
@@ -195,7 +200,7 @@ const runHeaderSearch = async (query) => {
     setSearchViewAll(cleanQuery);
 
     if (!cleanQuery) {
-        renderSearchMessage('Kullanici, kategori, tag, post veya sayfa aramak icin yaz.');
+        clearSearchResults();
         return;
     }
 
@@ -273,7 +278,8 @@ if (searchShell && searchInput && searchDropdown) {
         event.preventDefault();
         searchInput.value = '';
         syncClearButton();
-        renderSearchMessage('Kullanici, kategori, tag, post veya sayfa aramak icin yaz.');
+        setSearchViewAll('');
+        clearSearchResults();
         showSearchDropdown();
         searchInput.focus();
     });
