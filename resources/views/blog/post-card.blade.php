@@ -8537,6 +8537,87 @@ SVG;
             }
         }
 
+        /* Expanded post content keeps the same readable scale as the card summary. */
+        html body article.post-card[data-post-card-shell] .post-card__full-content,
+        html body article.post-card[data-post-card-shell] .post-card__full-content :is(p, li, td, th, blockquote, a):not(#comments *):not(#app *) {
+            font-family: Roboto, Arial, sans-serif !important;
+            font-size: 17px !important;
+            font-weight: 400 !important;
+            line-height: 1.52 !important;
+            letter-spacing: 0 !important;
+        }
+
+        html body article.post-card[data-post-card-shell] .post-card__full-content :is(strong, b):not(#comments *):not(#app *) {
+            font-size: inherit !important;
+            font-weight: 600 !important;
+            line-height: inherit !important;
+        }
+
+        html body article.post-card[data-post-card-shell] .post-card__full-content :is(em, i):not(#comments *):not(#app *) {
+            font-size: inherit !important;
+            font-weight: inherit !important;
+            line-height: inherit !important;
+        }
+
+        html body article.post-card[data-post-card-shell] .post-card__full-content :is(h1, h2, h3, h4, h5, h6, .post-card__full-heading):not(#comments *):not(#app *) {
+            margin: 8px 0 2px !important;
+            color: inherit !important;
+            font-family: Roboto, Arial, sans-serif !important;
+            font-weight: 600 !important;
+            line-height: 1.35 !important;
+            letter-spacing: 0 !important;
+        }
+
+        html body article.post-card[data-post-card-shell] .post-card__full-content h1:not(#comments *):not(#app *) {
+            font-size: 22px !important;
+        }
+
+        html body article.post-card[data-post-card-shell] .post-card__full-content h2:not(#comments *):not(#app *) {
+            font-size: 21px !important;
+        }
+
+        html body article.post-card[data-post-card-shell] .post-card__full-content :is(h3, .post-card__full-heading):not(#comments *):not(#app *) {
+            font-size: 20px !important;
+        }
+
+        html body article.post-card[data-post-card-shell] .post-card__full-content h4:not(#comments *):not(#app *) {
+            font-size: 19px !important;
+        }
+
+        html body article.post-card[data-post-card-shell] .post-card__full-content h5:not(#comments *):not(#app *) {
+            font-size: 18px !important;
+        }
+
+        html body article.post-card[data-post-card-shell] .post-card__full-content h6:not(#comments *):not(#app *) {
+            font-size: 17px !important;
+        }
+
+        html body article.post-card[data-post-card-shell] .post-card__full-content :is(ul, ol):not(#comments *):not(#app *) {
+            font-size: 17px !important;
+            line-height: 1.52 !important;
+        }
+
+        html body article.post-card[data-post-card-shell] .post-card__full-content figcaption:not(#comments *):not(#app *) {
+            font-size: 14px !important;
+            font-weight: 400 !important;
+            line-height: 1.45 !important;
+        }
+
+        @media (max-width: 640px) {
+            html body article.post-card[data-post-card-shell] .post-card__full-content,
+            html body article.post-card[data-post-card-shell] .post-card__full-content :is(p, li, td, th, blockquote, a, ul, ol):not(#comments *):not(#app *) {
+                font-size: 15px !important;
+                line-height: 1.5 !important;
+            }
+
+            html body article.post-card[data-post-card-shell] .post-card__full-content h1:not(#comments *):not(#app *) { font-size: 20px !important; }
+            html body article.post-card[data-post-card-shell] .post-card__full-content h2:not(#comments *):not(#app *) { font-size: 19px !important; }
+            html body article.post-card[data-post-card-shell] .post-card__full-content :is(h3, .post-card__full-heading):not(#comments *):not(#app *) { font-size: 18px !important; }
+            html body article.post-card[data-post-card-shell] .post-card__full-content h4:not(#comments *):not(#app *) { font-size: 17px !important; }
+            html body article.post-card[data-post-card-shell] .post-card__full-content h5:not(#comments *):not(#app *) { font-size: 16px !important; }
+            html body article.post-card[data-post-card-shell] .post-card__full-content h6:not(#comments *):not(#app *) { font-size: 15px !important; }
+        }
+
         /* Keep the three-dot trigger inside its own card's stacking layer. */
         html body article.post-card[data-post-card-shell] {
             isolation: isolate !important;
