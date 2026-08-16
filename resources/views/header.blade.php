@@ -3390,6 +3390,18 @@ html.dark body .site-search-results-panel {
     box-shadow: 0 18px 38px rgba(0, 0, 0, 0.38) !important;
 }
 
+.site-search-results:empty {
+    display: none !important;
+    max-height: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+}
+
+.site-search-results:empty + .site-search-all {
+    margin-top: 0 !important;
+    border-top: 0 !important;
+}
+
 html.dark body .site-search-section + .site-search-section,
 html.dark body .site-search-section-line {
     border-color: #2d394d !important;
