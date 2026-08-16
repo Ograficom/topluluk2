@@ -866,6 +866,8 @@
                             class="ografi-feed-page-button ografi-feed-page-button--next"
                             rel="next"
                             data-load-more-button
+                            aria-label="Daha fazla g&#246;nderi y&#252;kle"
+                            title="Daha fazla g&#246;nderi y&#252;kle"
                         >
                             <span>İleri</span>
                             <span class="ografi-feed-page-button__icon" aria-hidden="true">
