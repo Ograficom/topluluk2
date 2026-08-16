@@ -2058,14 +2058,19 @@ SVG;
                     </button>
                 </form>
             @else
-                <span class="action-btn action-chip action-chip--metric action-chip--subtle" aria-label="Kaydet">
+                <button
+                    type="button"
+                    class="action-btn post-card__action-button action-chip action-chip--metric action-chip--disabled action-chip--subtle"
+                    aria-label="Kaydet"
+                    disabled
+                >
                     <div class="post-card__inline-icon">
                         {!! $bookmarkOutlineIcon !!}
                     </div>
                     @if($showBookmarksCountLabel)
                             <span class="action-chip__label">{{ $bookmarksCountDisplay }}</span>
                         @endif
-                </span>
+                </button>
             @endif
 
             <button type="button" class="action-btn post-card__action-button action-chip action-chip--subtle" data-media-type="banani-button" data-post-card-share-menu-trigger aria-haspopup="menu" aria-expanded="false" aria-label="Paylas">
