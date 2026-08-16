@@ -9,6 +9,7 @@ use App\Models\Tag;
 use App\Support\PostSeoText;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
 class RssSyncService
@@ -222,6 +223,10 @@ class RssSyncService
         $items = RssItem::query()
             ->whereNotNull('hash')
             ->whereNull('ai_rejected_at')
+            ->where(function ($query) {
+                $query->whereNull('ai_rewrite_error')
+                    ->orWhere('updated_at', '<=', now()->subMinutes(15));
+            })
             ->whereHas('feed', function ($query) {
                 $query->where('is_enabled', true)
                     ->where('import_as_posts', true)
@@ -271,6 +276,11 @@ class RssSyncService
                 }
             } catch (\Throwable $e) {
                 $result['errors']++;
+                Log::warning('RSS AI kuyruk ogesi islenemedi', [
+                    'rss_item_id' => $item->id,
+                    'rss_feed_id' => $feed->id,
+                    'error' => $e->getMessage(),
+                ]);
             }
         }
 
@@ -296,7 +306,9 @@ class RssSyncService
             $title = $rewritten['title'];
             $excerpt = $rewritten['summary'];
             $html = $this->appendMediaHtml($rewritten['content'], $raw['media_items'] ?? [], $title);
-            $raw['tags'] = $this->normalizeTagNames(array_merge($raw['tags'] ?? [], $rewritten['tags'] ?? []));
+            // AI-enabled feeds publish the new editorial taxonomy only; carrying
+            // source tags forward made rewritten posts look copied and noisy.
+            $raw['tags'] = $this->normalizeTagNames($rewritten['tags'] ?? []);
 
             $moderation = app(RssContentModerationService::class)->moderate(
                 $item,
