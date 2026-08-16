@@ -415,6 +415,8 @@
         html.dark .simple-auth-notice--error .simple-auth-notice__text { color: #fca5a5; }
     </style>
 
+    @include('auth.partials.simple-auth-theme')
+
     <main class="simple-auth-page">
         <a class="simple-auth-brand" href="{{ route('home') }}">
             <img src="{{ asset('images/ografi-logo.png') }}?v=20260714a" alt="Ografi">

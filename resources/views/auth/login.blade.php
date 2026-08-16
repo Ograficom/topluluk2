@@ -235,6 +235,8 @@
         }
     </style>
 
+    @include('auth.partials.simple-auth-theme')
+
     <main class="simple-auth-page">
         <h1 class="simple-auth-brand">
             <img src="{{ asset('images/ografi-logo.png') }}?v=20260714a" alt="">
