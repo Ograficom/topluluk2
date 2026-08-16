@@ -8836,8 +8836,8 @@ SVG;
 
         /* Final dark theme: keep every post-card surface distinct from the page. */
         html.dark body article.post-card[data-post-card-shell] {
-            border-color: #303844 !important;
-            background: #15181d !important;
+            border-color: #263247 !important;
+            background: #111827 !important;
             color: #e5e7eb !important;
             box-shadow: 0 1px 2px rgba(0, 0, 0, .42), 0 14px 34px rgba(0, 0, 0, .24) !important;
         }
@@ -8863,46 +8863,46 @@ SVG;
         }
 
         html.dark body article.post-card[data-post-card-shell] .post-summary-shell.is-collapsed::after {
-            background: linear-gradient(180deg, rgba(21, 24, 29, 0) 0%, rgba(21, 24, 29, .9) 58%, #15181d 100%) !important;
+            background: linear-gradient(180deg, rgba(17, 24, 39, 0) 0%, rgba(17, 24, 39, .9) 58%, #111827 100%) !important;
         }
 
         html.dark body article.post-card[data-post-card-shell] :is(.post-card__media-wrap, .post-card__media-frame, .post-card__full-figure, .post-card__full-figure img) {
-            border-color: #303844 !important;
-            background: #0d0f13 !important;
+            border-color: #334155 !important;
+            background: #0b1220 !important;
         }
 
         html.dark body article.post-card[data-post-card-shell] .post-card__full-quote {
             border-color: #3b82f6 !important;
-            background: #1b212b !important;
+            background: #172033 !important;
             color: #cbd5e1 !important;
         }
 
         html.dark body article.post-card[data-post-card-shell] :is(.post-card__full-table-wrap, .post-card__full-table td) {
-            border-color: #353e4a !important;
-            background: #15181d !important;
+            border-color: #334155 !important;
+            background: #111827 !important;
             color: #dbe4f0 !important;
         }
 
         html.dark body article.post-card[data-post-card-shell] :is(.reactions-row, .action-bar) {
-            border-color: #303844 !important;
-            background: #15181d !important;
+            border-color: #334155 !important;
+            background: #111827 !important;
         }
 
         html.dark body article.post-card[data-post-card-shell] .reaction-item {
-            border-color: #353e4a !important;
-            background: #1b1f26 !important;
+            border-color: #334155 !important;
+            background: #172033 !important;
             color: #dbe4f0 !important;
         }
 
         html.dark body article.post-card[data-post-card-shell] .smiley-btn.reaction-add {
-            border: 1px solid #3a424d !important;
-            background: #22272f !important;
+            border: 1px solid #334155 !important;
+            background: #1e293b !important;
             color: #cbd5e1 !important;
         }
 
         html.dark body article.post-card[data-post-card-shell] .smiley-btn.reaction-add:is(:hover, :focus-visible, [aria-expanded="true"]) {
             border-color: #475569 !important;
-            background: #303741 !important;
+            background: #263247 !important;
             color: #f8fafc !important;
         }
 
@@ -8912,12 +8912,12 @@ SVG;
         }
 
         html.dark body article.post-card[data-post-card-shell] .action-bar :is(.action-btn, .action-stat, .post-card__action-link, .post-card__action-button, .action-chip, .post-metric, .post-metric--views):is(:hover, :focus-visible) {
-            background: #262c35 !important;
+            background: #263247 !important;
             color: #f8fafc !important;
         }
 
         html.dark body article.post-card[data-post-card-shell] .action-bar :is(.action-btn, .action-stat, .post-card__action-link, .post-card__action-button, .action-chip, .post-metric, .post-metric--views):active {
-            background: #303741 !important;
+            background: #334155 !important;
             color: #ffffff !important;
         }
 
@@ -8937,8 +8937,8 @@ SVG;
         }
 
         html.dark body [data-og-action-menu] {
-            border: 1px solid #3a424d !important;
-            background: #1b1f26 !important;
+            border: 1px solid #334155 !important;
+            background: #172033 !important;
             color: #e5e7eb !important;
             box-shadow: 0 16px 38px rgba(0, 0, 0, .42), 0 2px 6px rgba(0, 0, 0, .28) !important;
         }
@@ -8949,7 +8949,7 @@ SVG;
         }
 
         html.dark body [data-og-action-menu] :is(a, button):is(:hover, :focus-visible) {
-            background: #292f38 !important;
+            background: #263247 !important;
             color: #ffffff !important;
             outline: none !important;
         }
@@ -8967,19 +8967,19 @@ SVG;
         }
 
         html.dark body [data-og-action-menu] .og-action-divider {
-            background: #3a424d !important;
+            background: #334155 !important;
         }
 
         html.dark body [data-post-card-reaction-menu] {
-            border-color: #3a424d !important;
-            background: rgba(27, 31, 38, .98) !important;
+            border-color: #334155 !important;
+            background: rgba(23, 32, 51, .98) !important;
             color: #e5e7eb !important;
             box-shadow: 0 16px 38px rgba(0, 0, 0, .42), 0 2px 6px rgba(0, 0, 0, .28) !important;
             backdrop-filter: blur(14px) !important;
         }
 
         html.dark body [data-post-card-reaction-menu] .post-card__reaction-menu-title {
-            border-color: #3a424d !important;
+            border-color: #334155 !important;
             color: #cbd5e1 !important;
         }
 
@@ -8995,8 +8995,8 @@ SVG;
 
         @media (max-width: 640px) {
             html.dark body [data-post-card-reaction-menu] {
-                border-color: #3a424d !important;
-                background: #1b1f26 !important;
+                border-color: #334155 !important;
+                background: #172033 !important;
                 backdrop-filter: none !important;
             }
         }
