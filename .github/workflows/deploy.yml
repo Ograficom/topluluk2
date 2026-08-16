@@ -30,6 +30,39 @@ jobs:
             php artisan migrate --force || true
             php artisan storage:link || true
             php artisan optimize:clear || true
+
+            # www.ografi.com uses a separate static Nginx root. Keep its
+            # crawler entry point synchronized with the canonical application.
+            NGINX_BIN="$(command -v nginx || true)"
+            if [ -z "$NGINX_BIN" ] && [ -x /www/server/nginx/sbin/nginx ]; then
+              NGINX_BIN=/www/server/nginx/sbin/nginx
+            fi
+            if [ -n "$NGINX_BIN" ]; then
+              WWW_CONFIG="$($NGINX_BIN -T 2>&1 | awk '
+                /^# configuration file / {
+                  file=$4
+                  sub(/:$/, "", file)
+                }
+                /server_name[[:space:]].*www\.ografi\.com/ {
+                  print file
+                  exit
+                }
+              ')"
+              if [ -n "$WWW_CONFIG" ] && [ -f "$WWW_CONFIG" ]; then
+                WWW_ROOT="$(awk '
+                  /^[[:space:]]*root[[:space:]]+/ {
+                    root=$2
+                    sub(/;$/, "", root)
+                    print root
+                    exit
+                  }
+                ' "$WWW_CONFIG")"
+                if [ -n "$WWW_ROOT" ] && [ -d "$WWW_ROOT" ]; then
+                  install -m 0644 public/robots.txt "$WWW_ROOT/robots.txt"
+                fi
+              fi
+            fi
+
             chown -R www:www "$TARGET_PATH"
             php artisan config:cache || true
             php artisan route:cache || true
