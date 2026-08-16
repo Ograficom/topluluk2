@@ -51,14 +51,25 @@
         .cookie-consent-bar__message-wrap { min-width: 0; }
         .cookie-consent-bar__message {
             margin: 0;
-            color: #64748b;
-            font-size: 11px;
+            color: #475569;
+            font-size: 12px;
             font-weight: 400;
             line-height: 1.25;
         }
         html body #cookie-banner a.cookie-consent-bar__link {
-            color: #2563eb !important;
-            text-decoration: none !important;
+            color: #1d4ed8 !important;
+            font-weight: 600 !important;
+            text-decoration: underline !important;
+            text-decoration-thickness: 1px !important;
+            text-underline-offset: 2px !important;
+        }
+        html body #cookie-banner a.cookie-consent-bar__link:is(:hover, :focus-visible) {
+            color: #1e40af !important;
+        }
+        html body #cookie-banner a.cookie-consent-bar__link:focus-visible {
+            border-radius: 2px;
+            outline: 2px solid currentColor;
+            outline-offset: 2px;
         }
         .cookie-consent-bar__actions { flex: 0 0 auto; gap: 3px; }
         .cookie-consent-bar__accept {
@@ -114,10 +125,13 @@
             box-shadow: 0 4px 18px rgba(2, 6, 23, .38);
         }
         html.dark #cookie-banner .cookie-consent-bar__message {
-            color: var(--alma-muted, #94a3b8);
+            color: #cbd5e1;
         }
         html.dark body #cookie-banner a.cookie-consent-bar__link {
-            color: var(--alma-primary, #029d71) !important;
+            color: #60a5fa !important;
+        }
+        html.dark body #cookie-banner a.cookie-consent-bar__link:is(:hover, :focus-visible) {
+            color: #bfdbfe !important;
         }
         html.dark body #cookie-banner button.cookie-consent-bar__accept {
             background: var(--alma-hover-muted, rgba(30, 41, 59, .82)) !important;
