@@ -4869,7 +4869,7 @@ SVG;
            kalin baslik agirligi ve hafif negatif tracking (Swiss/International
            Typographic Style). */
         [data-post-card-shell] .post-title {
-            font-size: clamp(18px, 2.2vw, 20px) !important;
+            font-size: 20px !important;
             font-weight: 700 !important;
             letter-spacing: -0.015em !important;
             line-height: 1.32 !important;
@@ -9350,9 +9350,12 @@ SVG;
             color: #93c5fd !important;
         }
 
-        html body [data-og-action-menu],
-        html body [data-post-card-reaction-menu] {
+        html body [data-og-action-menu] {
             transform-origin: top right !important;
+        }
+
+        html body [data-post-card-reaction-menu] {
+            transform-origin: bottom left !important;
         }
 
         html body [data-og-action-menu]:not(.hidden),
@@ -9363,10 +9366,14 @@ SVG;
         }
 
         @starting-style {
-            html body [data-og-action-menu]:not(.hidden),
-            html body [data-post-card-reaction-menu]:not([hidden]) {
+            html body [data-og-action-menu]:not(.hidden) {
                 opacity: 0;
                 transform: translateY(-4px) scale(.97);
+            }
+
+            html body [data-post-card-reaction-menu]:not([hidden]) {
+                opacity: 0;
+                transform: translateY(4px) scale(.97);
             }
         }
 
