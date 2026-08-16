@@ -20878,7 +20878,75 @@ body.dark .post-show-shell .ps-show-stats-close,
         color: #94a3b8;
     }
 
+    .post-show-shell .ps-post-body .ps-table-scroll-surface {
+        display: block !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 16px 0 !important;
+        overflow-x: auto !important;
+        overflow-y: hidden !important;
+        overscroll-behavior-inline: contain !important;
+        -webkit-overflow-scrolling: touch !important;
+        border: 1px solid #cfd8e6 !important;
+        border-radius: 12px !important;
+        background: #ffffff !important;
+        scrollbar-color: #94a3b8 transparent;
+        scrollbar-width: thin;
+    }
+
+    .post-show-shell .ps-post-body .ps-table-scroll-surface:focus-visible {
+        outline: 2px solid #2563eb !important;
+        outline-offset: 2px !important;
+    }
+
+    .post-show-shell .ps-post-body .ps-table-scroll-surface table {
+        width: 100% !important;
+        min-width: 560px !important;
+        margin: 0 !important;
+        border: 0 !important;
+        border-collapse: separate !important;
+        border-spacing: 0 !important;
+        table-layout: auto !important;
+    }
+
+    .post-show-shell .ps-post-body .ps-table-scroll-surface :where(th, td) {
+        min-width: 132px !important;
+        max-width: 320px !important;
+        padding: 11px 13px !important;
+        overflow-wrap: anywhere !important;
+        word-break: normal !important;
+        white-space: normal !important;
+        vertical-align: top !important;
+    }
+
+    html.dark .post-show-shell .ps-post-body .ps-table-scroll-surface {
+        border-color: rgba(148, 163, 184, .28) !important;
+        background: #111827 !important;
+        scrollbar-color: #64748b transparent;
+    }
+
     @media (max-width: 640px) {
+        .post-show-shell .ps-post-body .ps-table-scroll-surface {
+            width: 100% !important;
+            max-width: 100% !important;
+            margin: 14px 0 !important;
+            border-radius: 10px !important;
+            touch-action: pan-x pan-y !important;
+        }
+
+        .post-show-shell .ps-post-body .ps-table-scroll-surface table {
+            width: 100% !important;
+            min-width: max(100%, 460px) !important;
+        }
+
+        .post-show-shell .ps-post-body .ps-table-scroll-surface :where(th, td) {
+            min-width: 116px !important;
+            max-width: 240px !important;
+            padding: 9px 10px !important;
+            font-size: 14px !important;
+            line-height: 1.5 !important;
+        }
+
         .ps-post-body .ps-proscons {
             width: 100%;
             margin-right: 0 !important;
@@ -20890,6 +20958,26 @@ body.dark .post-show-shell .ps-show-stats-close,
     }
 </style>
 <script>
+    (function enhancePostShowTables() {
+        const postBody = document.querySelector('.post-show-shell .ps-post-body');
+        if (!postBody) return;
+
+        postBody.querySelectorAll('table').forEach(function (table) {
+            let surface = table.closest('.ps-table-wrap, .tc-wrap, .ce-table, .ps-table-scroll-surface');
+
+            if (!surface || surface === table) {
+                surface = document.createElement('div');
+                table.parentNode.insertBefore(surface, table);
+                surface.appendChild(table);
+            }
+
+            surface.classList.add('ps-table-scroll-surface');
+            surface.setAttribute('role', 'region');
+            surface.setAttribute('aria-label', 'Tablo içeriği');
+            surface.setAttribute('tabindex', '0');
+        });
+    })();
+
     document.addEventListener('click', function (event) {
         const audioBtn = event.target.closest('[data-audio-read-btn]');
         if (audioBtn) {
