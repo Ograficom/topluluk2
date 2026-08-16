@@ -65,8 +65,14 @@ jobs:
                 echo "Unable to locate the www.ografi.com document root" >&2
                 exit 1
               fi
-              install -m 0644 public/robots.txt "$WWW_ROOT/robots.txt"
-              echo "Published robots.txt to $WWW_ROOT"
+              ROBOTS_SOURCE="$(readlink -f public/robots.txt)"
+              ROBOTS_TARGET="$(readlink -f "$WWW_ROOT/robots.txt")"
+              if [ "$ROBOTS_SOURCE" != "$ROBOTS_TARGET" ]; then
+                install -m 0644 public/robots.txt "$WWW_ROOT/robots.txt"
+                echo "Published robots.txt to $WWW_ROOT"
+              else
+                echo "robots.txt already uses the application public file"
+              fi
 
               WWW_CONFIGS="$($NGINX_BIN -T 2>&1 | awk '
                   /^# configuration file / {
