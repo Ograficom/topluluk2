@@ -1485,7 +1485,7 @@ SVG;
                 <div
                     class="og-action-menu shadcn-menu fixed z-[100] hidden w-[172px] rounded-2xl border border-gray-200 bg-white p-[6px] shadow-[0_2px_7px_rgba(0,0,0,0.025)] max-sm:w-[198px]"
                     data-og-action-menu
-                    style="width: 172px !important; min-width: 172px !important; max-width: min(172px, calc(100vw - 24px)) !important; box-sizing: border-box !important; padding: 8px !important; overflow: hidden !important; border: 1px solid #e4e4e7 !important; border-radius: 16px !important; background: #ffffff !important; color: #18181b !important; box-shadow: 0 1px 2px rgba(0,0,0,.05), 0 8px 24px rgba(15,23,42,.08) !important; filter: none !important;"
+                    style="width: 172px !important; min-width: 172px !important; max-width: min(172px, calc(100vw - 24px)) !important; box-sizing: border-box !important; padding: 8px !important; overflow: hidden !important; border-radius: 12px !important; filter: none !important;"
                 >
                     <button
                         type="button"
@@ -8831,6 +8831,173 @@ SVG;
             html body [data-post-card-reaction-menu]:not([hidden]) {
                 display: grid !important;
                 grid-template-columns: repeat(5, minmax(42px, 1fr)) !important;
+            }
+        }
+
+        /* Final dark theme: keep every post-card surface distinct from the page. */
+        html.dark body article.post-card[data-post-card-shell] {
+            border-color: #303844 !important;
+            background: #15181d !important;
+            color: #e5e7eb !important;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, .42), 0 14px 34px rgba(0, 0, 0, .24) !important;
+        }
+
+        html.dark body article.post-card[data-post-card-shell] :is(.post-title, .post-title__link, .author-name) {
+            color: #f8fafc !important;
+        }
+
+        html.dark body article.post-card[data-post-card-shell] :is(.author-subline, .author-subline__item, .post-time) {
+            color: #94a3b8 !important;
+        }
+
+        html.dark body article.post-card[data-post-card-shell] :is(.author-subline__topic, .post-card__tag, .expand-link, .post-card__expand-icon, .post-card__expand-icon iconify-icon) {
+            color: #60a5fa !important;
+        }
+
+        html.dark body article.post-card[data-post-card-shell] :is(.post-summary, [data-post-card-summary], .post-card__full-content, .post-card__full-paragraph, .post-card__full-heading, .post-card__full-list, .post-card__full-checklist) {
+            color: #dbe4f0 !important;
+        }
+
+        html.dark body article.post-card[data-post-card-shell] :is(.post-summary-shell, .post-card__full-content) {
+            background: transparent !important;
+        }
+
+        html.dark body article.post-card[data-post-card-shell] .post-summary-shell.is-collapsed::after {
+            background: linear-gradient(180deg, rgba(21, 24, 29, 0) 0%, rgba(21, 24, 29, .9) 58%, #15181d 100%) !important;
+        }
+
+        html.dark body article.post-card[data-post-card-shell] :is(.post-card__media-wrap, .post-card__media-frame, .post-card__full-figure, .post-card__full-figure img) {
+            border-color: #303844 !important;
+            background: #0d0f13 !important;
+        }
+
+        html.dark body article.post-card[data-post-card-shell] .post-card__full-quote {
+            border-color: #3b82f6 !important;
+            background: #1b212b !important;
+            color: #cbd5e1 !important;
+        }
+
+        html.dark body article.post-card[data-post-card-shell] :is(.post-card__full-table-wrap, .post-card__full-table td) {
+            border-color: #353e4a !important;
+            background: #15181d !important;
+            color: #dbe4f0 !important;
+        }
+
+        html.dark body article.post-card[data-post-card-shell] :is(.reactions-row, .action-bar) {
+            border-color: #303844 !important;
+            background: #15181d !important;
+        }
+
+        html.dark body article.post-card[data-post-card-shell] .reaction-item {
+            border-color: #353e4a !important;
+            background: #1b1f26 !important;
+            color: #dbe4f0 !important;
+        }
+
+        html.dark body article.post-card[data-post-card-shell] .smiley-btn.reaction-add {
+            border: 1px solid #3a424d !important;
+            background: #22272f !important;
+            color: #cbd5e1 !important;
+        }
+
+        html.dark body article.post-card[data-post-card-shell] .smiley-btn.reaction-add:is(:hover, :focus-visible, [aria-expanded="true"]) {
+            border-color: #475569 !important;
+            background: #303741 !important;
+            color: #f8fafc !important;
+        }
+
+        html.dark body article.post-card[data-post-card-shell] .action-bar :is(.action-btn, .action-stat, .post-card__action-link, .post-card__action-button, .action-chip, .post-metric, .post-metric--views) {
+            background: transparent !important;
+            color: #94a3b8 !important;
+        }
+
+        html.dark body article.post-card[data-post-card-shell] .action-bar :is(.action-btn, .action-stat, .post-card__action-link, .post-card__action-button, .action-chip, .post-metric, .post-metric--views):is(:hover, :focus-visible) {
+            background: #262c35 !important;
+            color: #f8fafc !important;
+        }
+
+        html.dark body article.post-card[data-post-card-shell] .action-bar :is(.action-btn, .action-stat, .post-card__action-link, .post-card__action-button, .action-chip, .post-metric, .post-metric--views):active {
+            background: #303741 !important;
+            color: #ffffff !important;
+        }
+
+        html.dark body article.post-card[data-post-card-shell] [data-og-action-trigger] {
+            border-color: #3b4659 !important;
+            background: #dbe4f0 !important;
+            color: #334155 !important;
+        }
+
+        html.dark body article.post-card[data-post-card-shell] [data-og-action-trigger] > span {
+            background: #64748b !important;
+        }
+
+        html.dark body article.post-card[data-post-card-shell] [data-og-action-trigger]:is(:hover, :focus-visible, [aria-expanded="true"]) {
+            border-color: #64748b !important;
+            background: #f8fafc !important;
+        }
+
+        html.dark body [data-og-action-menu] {
+            border: 1px solid #3a424d !important;
+            background: #1b1f26 !important;
+            color: #e5e7eb !important;
+            box-shadow: 0 16px 38px rgba(0, 0, 0, .42), 0 2px 6px rgba(0, 0, 0, .28) !important;
+        }
+
+        html.dark body [data-og-action-menu] :is(a, button) {
+            background: transparent !important;
+            color: #dbe4f0 !important;
+        }
+
+        html.dark body [data-og-action-menu] :is(a, button):is(:hover, :focus-visible) {
+            background: #292f38 !important;
+            color: #ffffff !important;
+            outline: none !important;
+        }
+
+        html.dark body [data-og-action-menu] :is(a, button) span {
+            color: inherit !important;
+        }
+
+        html.dark body [data-og-action-menu] iconify-icon {
+            color: #94a3b8 !important;
+        }
+
+        html.dark body [data-og-action-menu] :is(a, button):is(:hover, :focus-visible) iconify-icon {
+            color: #bfdbfe !important;
+        }
+
+        html.dark body [data-og-action-menu] .og-action-divider {
+            background: #3a424d !important;
+        }
+
+        html.dark body [data-post-card-reaction-menu] {
+            border-color: #3a424d !important;
+            background: rgba(27, 31, 38, .98) !important;
+            color: #e5e7eb !important;
+            box-shadow: 0 16px 38px rgba(0, 0, 0, .42), 0 2px 6px rgba(0, 0, 0, .28) !important;
+            backdrop-filter: blur(14px) !important;
+        }
+
+        html.dark body [data-post-card-reaction-menu] .post-card__reaction-menu-title {
+            border-color: #3a424d !important;
+            color: #cbd5e1 !important;
+        }
+
+        html.dark body [data-post-card-reaction-menu] .post-card__reaction-option {
+            background: #f8fafc !important;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, .25) !important;
+        }
+
+        html.dark body [data-post-card-reaction-menu] .post-card__reaction-option:is(:hover, :focus-visible) {
+            background: #dbeafe !important;
+            box-shadow: 0 0 0 2px #60a5fa !important;
+        }
+
+        @media (max-width: 640px) {
+            html.dark body [data-post-card-reaction-menu] {
+                border-color: #3a424d !important;
+                background: #1b1f26 !important;
+                backdrop-filter: none !important;
             }
         }
 
