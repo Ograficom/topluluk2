@@ -9131,7 +9131,7 @@ SVG;
         html body article.post-card[data-post-card-shell] .post-title {
             margin: 0 0 14px !important;
             color: var(--pc-text) !important;
-            font-size: clamp(18px, 2.2vw, 20px) !important;
+            font-size: 20px !important;
             font-weight: 600 !important;
             line-height: 1.32 !important;
             letter-spacing: 0 !important;
