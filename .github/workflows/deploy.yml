@@ -54,13 +54,19 @@ jobs:
                     root=$2
                     sub(/;$/, "", root)
                     print root
-                    exit
-                  }
-                ' "$WWW_CONFIG")"
-                if [ -n "$WWW_ROOT" ] && [ -d "$WWW_ROOT" ]; then
-                  install -m 0644 public/robots.txt "$WWW_ROOT/robots.txt"
-                fi
+                  exit
+                }
+              ' "$WWW_CONFIG")"
               fi
+              if [ -z "${WWW_ROOT:-}" ] && [ -d /www/server/nginx/html ]; then
+                WWW_ROOT=/www/server/nginx/html
+              fi
+              if [ -z "${WWW_ROOT:-}" ] || [ ! -d "$WWW_ROOT" ]; then
+                echo "Unable to locate the www.ografi.com document root" >&2
+                exit 1
+              fi
+              install -m 0644 public/robots.txt "$WWW_ROOT/robots.txt"
+              echo "Published robots.txt to $WWW_ROOT"
             fi
 
             chown -R www:www "$TARGET_PATH"
