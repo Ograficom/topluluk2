@@ -86,10 +86,10 @@ jobs:
               fi
               if ! grep -q 'ografi-managed-robots' "$WWW_CONFIG"; then
                 sed -i '$i\    # ografi-managed-robots\
-    location = /robots.txt {\
-        alias /www/server/nginx/html/robots.txt;\
-        default_type text/plain;\
-    }' "$WWW_CONFIG"
+                location = /robots.txt {\
+                    alias /www/server/nginx/html/robots.txt;\
+                    default_type text/plain;\
+                }' "$WWW_CONFIG"
               fi
               "$NGINX_BIN" -t
               "$NGINX_BIN" -s reload
