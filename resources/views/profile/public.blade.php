@@ -46,25 +46,20 @@
     }
 
     $sameAs = [];
-    $addUrl = function (?string $value) use (&$sameAs) {
-        $value = trim((string) $value);
-        if ($value === '') {
-            return;
-        }
-        if (!str_starts_with($value, 'http://') && !str_starts_with($value, 'https://')) {
-            $value = 'https://' . ltrim($value, '/');
-        }
-        if (filter_var($value, FILTER_VALIDATE_URL)) {
-            $sameAs[] = $value;
+    $addUrl = function (?string $value, string $platform = 'website') use (&$sameAs) {
+        $url = \App\Support\StructuredDataUrl::sameAs($value, $platform);
+        if ($url !== null) {
+            $sameAs[] = $url;
         }
     };
 
-    $addUrl($user->website_url ?? null);
-    $addUrl($user->social_facebook ?? null);
-    $addUrl($user->social_instagram ?? null);
-    $addUrl($user->social_x ?? null);
-    $addUrl($user->social_tiktok ?? null);
-    $addUrl($user->social_whatsapp ?? null);
+    $addUrl($user->website_url ?? null, 'website');
+    $addUrl($user->social_facebook ?? null, 'facebook');
+    $addUrl($user->social_instagram ?? null, 'instagram');
+    $addUrl($user->social_x ?? null, 'x');
+    $addUrl($user->social_tiktok ?? null, 'tiktok');
+    $addUrl($user->social_youtube ?? null, 'youtube');
+    $addUrl($user->social_whatsapp ?? null, 'whatsapp');
     $sameAs = array_values(array_unique($sameAs));
 
     $interactionStats = [];
