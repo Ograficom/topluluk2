@@ -493,7 +493,9 @@
             if (!searchAllBtn || !searchAllLabel) return;
             const clean = query.trim();
             searchAllBtn.classList.toggle('hidden', !visible || !clean);
-            searchAllLabel.textContent = clean ? `Tum sonuclari gor: ${clean}` : 'Tum sonuclari gor';
+            searchAllLabel.textContent = clean
+                ? `“${clean}” için tüm sonuçları görüntüle`
+                : 'Tüm sonuçları görüntüle';
         };
 
         const renderMessage = (message, query = '') => {
