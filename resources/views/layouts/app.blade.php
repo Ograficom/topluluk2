@@ -7449,7 +7449,7 @@
         /* Post-card action colors must win over the global button reset above. */
         html.dark body.alma-app article.post-card[data-post-card-shell] .action-bar {
             border-top-color: #344055 !important;
-            background: #15181d !important;
+            background: #111827 !important;
             color: #a8b5c7 !important;
         }
 
