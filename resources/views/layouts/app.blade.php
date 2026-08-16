@@ -7445,6 +7445,89 @@
                 padding-right: 0 !important;
             }
         }
+
+        /* Post-card action colors must win over the global button reset above. */
+        html.dark body.alma-app article.post-card[data-post-card-shell] .action-bar {
+            border-top-color: #344055 !important;
+            background: #15181d !important;
+            color: #a8b5c7 !important;
+        }
+
+        html.dark body.alma-app article.post-card[data-post-card-shell] .action-bar :is(
+            .action-btn,
+            .action-stat,
+            .action-chip,
+            .post-card__action-link,
+            .post-card__action-button,
+            .post-metric,
+            .post-metric--views
+        ) {
+            border: 0 !important;
+            background: transparent !important;
+            color: #a8b5c7 !important;
+            box-shadow: none !important;
+        }
+
+        html.dark body.alma-app article.post-card[data-post-card-shell] .action-bar :is(
+            .action-btn,
+            .action-stat,
+            .action-chip,
+            .post-card__action-link,
+            .post-card__action-button,
+            .post-metric,
+            .post-metric--views
+        ):is(:hover, :focus-visible) {
+            background: #263142 !important;
+            color: #f8fafc !important;
+            outline: 2px solid transparent !important;
+        }
+
+        html.dark body.alma-app article.post-card[data-post-card-shell] .action-bar :is(
+            .action-btn,
+            .action-stat,
+            .action-chip,
+            .post-card__action-link,
+            .post-card__action-button,
+            .post-metric,
+            .post-metric--views
+        ):active {
+            background: #334155 !important;
+            color: #ffffff !important;
+        }
+
+        html.dark body.alma-app article.post-card[data-post-card-shell] .action-bar :is(
+            .action-chip.is-bookmarked,
+            .action-chip.is-active,
+            .post-card__action-button.is-bookmarked,
+            .post-card__action-button.is-active
+        ) {
+            background: rgba(59, 130, 246, 0.16) !important;
+            color: #93c5fd !important;
+        }
+
+        html.dark body.alma-app article.post-card[data-post-card-shell] .action-bar :is(
+            .post-card__inline-icon,
+            .post-card__inline-icon svg,
+            .post-card__inline-icon iconify-icon,
+            .action-chip__label,
+            [data-post-card-view-count]
+        ) {
+            color: inherit !important;
+        }
+
+        html.dark body.alma-app article.post-card[data-post-card-shell] .action-bar :is(
+            .post-card__comment-icon,
+            .post-card__bookmark-icon,
+            .post-card__view-icon
+        ) {
+            fill: none !important;
+            stroke: currentColor !important;
+        }
+
+        html.dark body.alma-app article.post-card[data-post-card-shell] .action-bar .post-card__share-icon {
+            fill: currentColor !important;
+            stroke: none !important;
+        }
     </style>
 </body>
 </html>
