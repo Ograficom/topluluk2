@@ -50,7 +50,7 @@
         ->reject(fn ($page) => (string) $page->slug === 'sss')
         ->map(fn ($page) => [
             'label' => $page->title,
-            'url' => route('pages.show.short', ['slug' => $page->slug]),
+            'url' => route('pages.show', ['slug' => $page->slug]),
         ]);
     $footerLinks = collect([
         [

@@ -10,7 +10,15 @@
         '@type' => 'Organization',
         '@id' => $organizationId,
         'name' => $siteName,
+        'alternateName' => 'Ografi.com',
+        'legalName' => 'Eabodur Medya Prodüksiyon Limited Şirketi',
         'url' => $appUrl,
+        'description' => 'Ografi, kullanıcıların haber, makale ve topluluk içerikleri yayımlamasına, keşfetmesine ve bu içeriklerle etkileşim kurmasına olanak tanıyan dijital içerik ve topluluk platformudur.',
+        'foundingDate' => '2025-12-25',
+        'founder' => [
+            '@type' => 'Person',
+            'name' => 'Enes Bodur',
+        ],
         'logo' => [
             '@type' => 'ImageObject',
             'url' => $logoUrl,
@@ -41,7 +49,9 @@
     }
 
     $sameAs = collect(config('seo.organization.same_as', [
-        'https://maps.app.goo.gl/WT29gjMdDGAA3ury5',
+        'https://www.youtube.com/@ograficom',
+        'https://www.instagram.com/ograficom',
+        'https://github.com/Ograficom',
     ]))
         ->map(fn ($url) => trim((string) $url))
         ->filter()

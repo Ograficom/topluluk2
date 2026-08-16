@@ -153,6 +153,40 @@
         will-change: filter;
     }
 
+    html body.alma-app.route-page .static-page-content .prose :is(h1, h2, h3, h4, h5, h6) {
+        margin-top: 1.5em !important;
+        margin-bottom: .65em !important;
+        color: inherit !important;
+        line-height: 1.4 !important;
+        font-weight: 600 !important;
+    }
+
+    html body.alma-app.route-page .static-page-content .prose h1 {
+        font-size: 19px !important;
+    }
+
+    html body.alma-app.route-page .static-page-content .prose h2 {
+        font-size: 17px !important;
+    }
+
+    html body.alma-app.route-page .static-page-content .prose h3 {
+        font-size: 16px !important;
+    }
+
+    html body.alma-app.route-page .static-page-content .prose :is(h4, h5, h6) {
+        font-size: 15px !important;
+    }
+
+    html body.alma-app.route-page .static-page-content .prose :is(strong, b) {
+        color: inherit !important;
+        font-size: inherit !important;
+        font-weight: 600 !important;
+    }
+
+    html body.alma-app.route-page .static-page-content .prose > :first-child {
+        margin-top: 0 !important;
+    }
+
     @media (max-width: 640px) {
         body.alma-app.route-page .site-header {
             will-change: transform;
@@ -311,4 +345,3 @@
     });
 </script>
 @endpush
-

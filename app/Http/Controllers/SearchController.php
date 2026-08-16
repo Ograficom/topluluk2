@@ -328,7 +328,7 @@ class SearchController extends Controller
             'id' => $page->id,
             'title' => $page->title,
             'snippet' => Str::limit(html_entity_decode(strip_tags($page->content ?? ''), ENT_QUOTES | ENT_HTML5, 'UTF-8'), 140),
-            'url' => route('pages.show.short', $page->slug),
+            'url' => route('pages.show', $page->slug),
         ]);
 
         return [$mapped, $hasMore];

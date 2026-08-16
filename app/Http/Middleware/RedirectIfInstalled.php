@@ -11,12 +11,8 @@ class RedirectIfInstalled
 {
     public function handle(Request $request, Closure $next): Response
     {
-        if ($request->routeIs('install.finished')) {
-            return $next($request);
-        }
-
         if (InstallState::isInstalled()) {
-            return redirect('/');
+            abort(404);
         }
 
         return $next($request);

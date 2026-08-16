@@ -673,7 +673,11 @@ Route::get('/tr/create', function () {
 
 Route::view('/p/sss', 'pages.sss')->name('pages.sss');
 Route::get('/sayfa/{slug}', [PageController::class, 'show'])->name('pages.show');
-Route::get('/p/{slug}', [PageController::class, 'show'])->name('pages.show.short');
+Route::get('/p/{slug}', function (string $slug) {
+    $canonicalSlug = $slug === 'hakkinda' ? 'hakkimizda' : $slug;
+
+    return redirect()->route('pages.show', ['slug' => $canonicalSlug], 301);
+})->name('pages.show.short');
 
 Route::get('/u/{user:username}', [UserController::class, 'show'])->name('users.show');
 Route::get('/users', [UserController::class, 'index'])->name('users.index');
