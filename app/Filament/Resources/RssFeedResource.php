@@ -64,8 +64,8 @@ class RssFeedResource extends Resource
             Grid::make(2)->schema([
                 Toggle::make('ai_rewrite_enabled')
                     ->label('Yapay zeka ile yeniden yaz')
-                    ->helperText('Yerel Ollama kullanir. Basarisiz olursa kaynak metni kopyalayarak post olusturmaz.')
-                    ->default(false),
+                    ->helperText('Ollama ile olgu ozeti, ozgun taslak ve kaynak sadakati denetimi uygular. Kalite kontrolu gecmeyen icerigi yayinlamaz.')
+                    ->default(true),
                 TextInput::make('ai_model')
                     ->label('Ollama modeli')
                     ->default(fn () => config('services.ollama.model', 'gpt-oss:20b'))
