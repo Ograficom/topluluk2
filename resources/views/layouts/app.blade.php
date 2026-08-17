@@ -6565,7 +6565,10 @@
 
         body.alma-app.route-home .main-grid,
         body.alma-app.route-home .main-grid.main-grid--padded,
-        body.alma-app.route-home .main-grid.main-grid--no-pad {
+        body.alma-app.route-home .main-grid.main-grid--no-pad,
+        body.alma-app.route-dashboard .main-grid,
+        body.alma-app.route-dashboard .main-grid.main-grid--padded,
+        body.alma-app.route-dashboard .main-grid.main-grid--no-pad {
             padding-left: 0 !important;
             padding-right: 0 !important;
         }
@@ -7324,9 +7327,10 @@
 @php($isUsersRoute = request()->routeIs('users.index'))
 @php($isSssRoute = request()->routeIs('pages.sss'))
 @php($isStaticPageRoute = request()->routeIs('pages.show', 'pages.show.short'))
+@php($isDashboardRoute = request()->routeIs('dashboard', 'dashboard.*'))
 
 <body
-    class="bg-[#fafafa] text-slate-900 font-sans antialiased theme-minimal alma-app {{ request()->routeIs('home') ? 'route-home' : '' }} {{ request()->routeIs('discover') ? 'route-discover' : '' }} {{ request()->routeIs('video') ? 'route-video' : '' }} {{ $isCategoryRoute ? 'route-category' : '' }} {{ $isPostShowRoute ? 'route-post-show' : '' }} {{ $isProfileRoute ? 'route-profile' : '' }} {{ $isSearchRoute ? 'route-search' : '' }} {{ $isTagsRoute ? 'route-tags' : '' }} {{ $isUsersRoute ? 'route-users' : '' }} {{ $isSssRoute ? 'route-sss' : '' }} {{ $isStaticPageRoute ? 'route-page' : '' }}"
+    class="bg-[#fafafa] text-slate-900 font-sans antialiased theme-minimal alma-app {{ request()->routeIs('home') ? 'route-home' : '' }} {{ request()->routeIs('discover') ? 'route-discover' : '' }} {{ request()->routeIs('video') ? 'route-video' : '' }} {{ $isCategoryRoute ? 'route-category' : '' }} {{ $isPostShowRoute ? 'route-post-show' : '' }} {{ $isProfileRoute ? 'route-profile' : '' }} {{ $isSearchRoute ? 'route-search' : '' }} {{ $isTagsRoute ? 'route-tags' : '' }} {{ $isUsersRoute ? 'route-users' : '' }} {{ $isSssRoute ? 'route-sss' : '' }} {{ $isStaticPageRoute ? 'route-page' : '' }} {{ $isDashboardRoute ? 'route-dashboard' : '' }}"
     data-mentions-endpoint="{{ auth()->check() ? route('mentions.users') : '' }}"
 >
     @include('partials.toasts')
