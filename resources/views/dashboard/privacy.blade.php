@@ -24,15 +24,15 @@
 
     <style>
         .privacy-select {
-            width: 148px;
-            min-height: 38px;
+            width: 136px;
+            min-height: 36px;
             border: 1px solid #cbd5e1;
             border-radius: 8px;
             background-color: #fff;
             color: #0f172a;
-            padding: 7px 34px 7px 10px;
-            font-size: 13px;
-            line-height: 20px;
+            padding: 6px 32px 6px 10px;
+            font-size: 12.5px;
+            line-height: 18px;
             cursor: pointer;
         }
 
@@ -48,9 +48,39 @@
             color: #f8fafc;
         }
 
+        .privacy-setting-row {
+            min-height: 58px;
+            gap: 10px !important;
+            padding: 9px 12px !important;
+        }
+
+        .privacy-setting-icon svg {
+            width: 18px !important;
+            height: 18px !important;
+        }
+
+        .privacy-copy-title {
+            margin: 0 !important;
+            font-size: 14px !important;
+            font-weight: 500 !important;
+            line-height: 18px !important;
+            letter-spacing: 0 !important;
+        }
+
+        .privacy-copy-description {
+            margin-top: 2px !important;
+            font-size: 12.5px !important;
+            font-weight: 400 !important;
+            line-height: 17px !important;
+            letter-spacing: 0 !important;
+        }
+
         @media (max-width: 420px) {
             .privacy-select {
-                width: 132px;
+                width: 116px;
+                min-height: 34px;
+                padding-right: 28px;
+                font-size: 12px;
             }
         }
     </style>
@@ -99,11 +129,11 @@
                         @csrf
                         @method('PUT')
 
-                        <div class="flex items-center gap-3 rounded-lg bg-slate-50 px-3 py-3.5 dark:bg-[#172033]">
-                            <span class="shrink-0 text-slate-500 dark:text-slate-400">{!! $privacyIcon('following') !!}</span>
+                        <div class="privacy-setting-row flex items-center rounded-lg bg-slate-50 dark:bg-[#172033]">
+                            <span class="privacy-setting-icon shrink-0 text-slate-500 dark:text-slate-400">{!! $privacyIcon('following') !!}</span>
                             <div class="min-w-0 flex-1">
-                                <h2 class="text-sm font-medium leading-5 text-slate-900 dark:text-white">Takip edilenleri gizle</h2>
-                                <p class="mt-0.5 text-[13px] leading-5 text-slate-500 dark:text-slate-400">Takip ettiğiniz hesapları kimlerin görebileceğini seçin</p>
+                                <h2 class="privacy-copy-title text-slate-900 dark:text-white">Takip edilenleri gizle</h2>
+                                <p class="privacy-copy-description text-slate-500 dark:text-slate-400">Takip ettiğiniz hesapları kimlerin görebileceğini seçin</p>
                             </div>
                             <select class="privacy-select shrink-0" name="following_visibility" aria-label="Takip edilenlerin görünürlüğü" onchange="this.form.requestSubmit()">
                                 @foreach($levels as $value => $label)
@@ -112,11 +142,11 @@
                             </select>
                         </div>
 
-                        <div class="flex items-center gap-3 rounded-lg px-3 py-3.5 hover:bg-slate-50 dark:hover:bg-[#172033]">
-                            <span class="shrink-0 text-slate-500 dark:text-slate-400">{!! $privacyIcon('posts') !!}</span>
+                        <div class="privacy-setting-row flex items-center rounded-lg hover:bg-slate-50 dark:hover:bg-[#172033]">
+                            <span class="privacy-setting-icon shrink-0 text-slate-500 dark:text-slate-400">{!! $privacyIcon('posts') !!}</span>
                             <div class="min-w-0 flex-1">
-                                <h2 class="text-sm font-medium leading-5 text-slate-900 dark:text-white">Tüm paylaşımların gizliliği</h2>
-                                <p class="mt-0.5 text-[13px] leading-5 text-slate-500 dark:text-slate-400">Yayımladığınız gönderilerin genel görünürlüğünü belirleyin</p>
+                                <h2 class="privacy-copy-title text-slate-900 dark:text-white">Tüm paylaşımların gizliliği</h2>
+                                <p class="privacy-copy-description text-slate-500 dark:text-slate-400">Yayımladığınız gönderilerin genel görünürlüğünü belirleyin</p>
                             </div>
                             <select class="privacy-select shrink-0" name="posts_visibility" aria-label="Paylaşımların görünürlüğü" onchange="this.form.requestSubmit()">
                                 @foreach($levels as $value => $label)
@@ -125,11 +155,11 @@
                             </select>
                         </div>
 
-                        <div class="flex items-center gap-3 rounded-lg px-3 py-3.5 hover:bg-slate-50 dark:hover:bg-[#172033]">
-                            <span class="shrink-0 text-slate-500 dark:text-slate-400">{!! $privacyIcon('comments') !!}</span>
+                        <div class="privacy-setting-row flex items-center rounded-lg hover:bg-slate-50 dark:hover:bg-[#172033]">
+                            <span class="privacy-setting-icon shrink-0 text-slate-500 dark:text-slate-400">{!! $privacyIcon('comments') !!}</span>
                             <div class="min-w-0 flex-1">
-                                <h2 class="text-sm font-medium leading-5 text-slate-900 dark:text-white">Yorum gizliliği</h2>
-                                <p class="mt-0.5 text-[13px] leading-5 text-slate-500 dark:text-slate-400">Yorumlarınızı kimlerin görebileceğini seçin</p>
+                                <h2 class="privacy-copy-title text-slate-900 dark:text-white">Yorum gizliliği</h2>
+                                <p class="privacy-copy-description text-slate-500 dark:text-slate-400">Yorumlarınızı kimlerin görebileceğini seçin</p>
                             </div>
                             <select class="privacy-select shrink-0" name="comments_visibility" aria-label="Yorumların görünürlüğü" onchange="this.form.requestSubmit()">
                                 @foreach($levels as $value => $label)
