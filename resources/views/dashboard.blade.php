@@ -27,6 +27,7 @@
                 'block' => '<circle cx="12" cy="12" r="10"/><path d="m4.93 4.93 14.14 14.14"/>',
                 'verified' => '<path d="M12 3 9.9 5.1 7 4.6 6.5 7.5 4 9l1.5 2.5L4 14l2.5 1.5.5 2.9 2.9-.5L12 21l2.1-3.1 2.9.5.5-2.9L20 14l-1.5-2.5L20 9l-2.5-1.5-.5-2.9-2.9.5z"/><path d="m9 12 2 2 4-4"/>',
                 'security' => '<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/><path d="M9.5 12 11 13.5 15 9.5"/>',
+                'privacy' => '<path fill="currentColor" stroke="none" d="M11.5 16.23h1v-5.653h-1zm.934-7.412q.182-.182.182-.434q0-.251-.182-.433T12 7.769t-.434.182t-.182.434t.182.433T12 9t.434-.182M12 20.962q-3.014-.895-5.007-3.651T5 11.1V5.692l7-2.615l7 2.615V11.1q0 3.454-1.993 6.21T12 20.963m0-1.062q2.6-.825 4.3-3.3t1.7-5.5V6.375l-6-2.23l-6 2.23V11.1q0 3.025 1.7 5.5t4.3 3.3m0-7.88"/>',
                 'delete' => '<path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/>',
             ];
 
@@ -118,6 +119,21 @@
                             </h3>
                             <p class="mt-0.5 text-[13px] leading-5 text-slate-500 dark:text-slate-400">
                                 NSFW ve baglanti tercihleri
+                            </p>
+                        </div>
+                    </a>
+
+                    <a class="group flex items-start gap-3 rounded-lg px-3 py-3.5 transition-colors hover:bg-slate-50 dark:hover:bg-[#172033]" href="{{ url('/gizlilik-politikasi') }}">
+                        <div class="mt-0.5 shrink-0 text-slate-500 transition-colors group-hover:text-blue-600 dark:text-gray-400">
+                            {!! $dashboardIcon('privacy') !!}
+                        </div>
+
+                        <div class="min-w-0 flex-1">
+                            <h3 class="text-sm font-medium leading-5 text-slate-900 dark:text-white">
+                                Gizlilik
+                            </h3>
+                            <p class="mt-0.5 text-[13px] leading-5 text-slate-500 dark:text-slate-400">
+                                Gizlilik politikasını ve veri kullanımını inceleyin
                             </p>
                         </div>
                     </a>
