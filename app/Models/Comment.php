@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Support\PrivacyVisibility;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -25,6 +26,18 @@ class Comment extends Model
     protected $casts = [
         'is_approved' => 'boolean',
     ];
+
+    protected static function booted(): void
+    {
+        static::addGlobalScope('privacy', function (Builder $query) {
+            PrivacyVisibility::apply(
+                $query,
+                $query->qualifyColumn('user_id'),
+                'comments_visibility',
+                auth()->user(),
+            );
+        });
+    }
 
     public function post(): BelongsTo
     {

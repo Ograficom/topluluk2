@@ -123,7 +123,7 @@
                         </div>
                     </a>
 
-                    <a class="group flex items-start gap-3 rounded-lg px-3 py-3.5 transition-colors hover:bg-slate-50 dark:hover:bg-[#172033]" href="{{ route('pages.show', ['slug' => 'gizlilik-politikasi']) }}">
+                    <a class="group flex items-start gap-3 rounded-lg px-3 py-3.5 transition-colors hover:bg-slate-50 dark:hover:bg-[#172033]" href="{{ route('dashboard.privacy') }}">
                         <div class="mt-0.5 shrink-0 text-slate-500 transition-colors group-hover:text-blue-600 dark:text-gray-400">
                             {!! $dashboardIcon('privacy') !!}
                         </div>
@@ -133,7 +133,7 @@
                                 Gizlilik
                             </h3>
                             <p class="mt-0.5 text-[13px] leading-5 text-slate-500 dark:text-slate-400">
-                                Gizlilik politikasını ve veri kullanımını inceleyin
+                                Gönderi, yorum ve takip görünürlüğünü yönetin
                             </p>
                         </div>
                     </a>

@@ -15,6 +15,7 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
 use App\Notifications\CategoryPostPublishedNotification;
 use App\Support\PostSeoText;
+use App\Support\PrivacyVisibility;
 use App\Services\IndexNowService;
 use App\Services\SitemapManager;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -169,11 +170,18 @@ class Post extends Model
 
     public function scopePublished(Builder $query): Builder
     {
-        return $query->where('is_published', true)
+        $query->where('is_published', true)
             ->where(function (Builder $query) {
                 $query->whereNull('published_at')
                     ->orWhere('published_at', '<=', now());
             });
+
+        return PrivacyVisibility::apply(
+            $query,
+            $query->qualifyColumn('author_id'),
+            'posts_visibility',
+            auth()->user(),
+        );
     }
 
     public function getFeaturedImageUrlAttribute(): ?string

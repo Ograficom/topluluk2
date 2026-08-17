@@ -1287,7 +1287,14 @@ class BlogController extends Controller
 
     private function isVisible(Post $post): bool
     {
-        return $post->is_published && ($post->published_at === null || $post->published_at->isPast());
+        if (! $post->is_published || ($post->published_at !== null && ! $post->published_at->isPast())) {
+            return false;
+        }
+
+        $post->loadMissing('author');
+
+        return ! $post->author
+            || $post->author->allowsVisibility(Auth::user(), 'posts_visibility');
     }
 
     private function buildPollBlocks(Request $request, Post $post): array

@@ -748,6 +748,26 @@ Route::middleware([
         return view('dashboard');
     })->name('dashboard');
 
+    Route::get('/dashboard/privacy', function () {
+        return view('dashboard.privacy');
+    })->name('dashboard.privacy');
+
+    Route::put('/dashboard/privacy', function (Request $request) {
+        $validated = $request->validate([
+            'following_visibility' => ['required', Rule::in(\App\Support\PrivacyVisibility::LEVELS)],
+            'posts_visibility' => ['required', Rule::in(\App\Support\PrivacyVisibility::LEVELS)],
+            'comments_visibility' => ['required', Rule::in(\App\Support\PrivacyVisibility::LEVELS)],
+        ]);
+
+        if (collect($validated)->every(fn ($level) => $level === \App\Support\PrivacyVisibility::PRIVATE)) {
+            return back()->with('status', 'privacy-all-private');
+        }
+
+        $request->user()->forceFill($validated)->save();
+
+        return back()->with('status', 'privacy-updated');
+    })->name('dashboard.privacy.update');
+
     Route::get('/dashboard/account', function () {
         return view('dashboard.account');
     })->name('dashboard.account');

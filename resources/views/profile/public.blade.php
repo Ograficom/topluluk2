@@ -2457,6 +2457,7 @@
         $comments = collect($comments ?? []);
         $followers = collect($followers ?? []);
         $followings = collect($followings ?? []);
+        $canViewFollowings = (bool) ($canViewFollowings ?? true);
         $profileInitial = mb_strtoupper(mb_substr((string) ($user->name ?? __('site.profile_page.fallback_name')), 0, 1, 'UTF-8'), 'UTF-8');
         $usernameLabel = filled($user->username ?? null) ? '@' . $user->username : null;
         $locationLabel = trim((string) ($user->location ?? ''));
@@ -3146,6 +3147,9 @@
                             <h2 class="og-list-title">{{ __('site.profile_page.tabs_followings') }}</h2>
                             <p class="og-list-desc">{{ number_format((int) ($user->followings_count ?? 0)) }} {{ __('site.profile_page.followings') }}</p>
                         </div>
+                        @if(! $canViewFollowings)
+                            <div class="og-empty">Bu kullanıcının takip ettiği hesaplar gizli.</div>
+                        @else
                         @forelse($followings as $person)
                             <a href="{{ route('users.show', $person) }}" class="og-list-link">
                                 <span class="og-list-avatar"><img src="{{ $person->profile_photo_url ?? 'https://placehold.co/80x80' }}" alt="{{ $person->name }}" loading="lazy"></span>
@@ -3157,6 +3161,7 @@
                         @empty
                             <div class="og-empty">{{ __('site.profile_page.empty_followings') }}</div>
                         @endforelse
+                        @endif
                     </section>
                 @endif
             </div>
