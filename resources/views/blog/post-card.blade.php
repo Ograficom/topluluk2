@@ -8870,17 +8870,13 @@ SVG;
 
         @media (max-width: 640px) {
             html body [data-post-card-reaction-menu] {
-                position: fixed !important;
-                left: 12px !important;
-                right: 12px !important;
-                top: auto !important;
-                bottom: calc(12px + env(safe-area-inset-bottom, 0px)) !important;
-                width: auto !important;
-                max-width: none !important;
+                position: absolute !important;
                 max-height: min(68dvh, 440px) !important;
+                overflow-y: auto !important;
                 padding: 12px !important;
                 border-radius: 12px !important;
                 backdrop-filter: none !important;
+                overscroll-behavior: contain !important;
             }
 
             html body [data-post-card-reaction-menu]:not([hidden]) {
@@ -10164,7 +10160,13 @@ SVG;
                 const isMobile = window.matchMedia('(max-width: 640px)').matches;
                 const viewportPadding = isMobile ? 12 : 16;
 
-                panel.style.position = 'fixed';
+                if (isMobile) {
+                    restoreReactionMenu(card);
+                } else {
+                    mountReactionMenu(card);
+                }
+
+                panel.style.position = isMobile ? 'absolute' : 'fixed';
                 panel.style.display = '';
                 panel.style.gridTemplateColumns = '';
                 panel.style.gridAutoRows = '';
@@ -10175,13 +10177,37 @@ SVG;
                 panel.style.transform = '';
 
                 if (isMobile) {
-                    panel.style.left = '';
-                    panel.style.right = '';
-                    panel.style.top = '';
-                    panel.style.bottom = '';
-                    panel.style.width = '';
-                    panel.style.maxWidth = '';
-                    panel.style.setProperty('--reaction-transform-origin', 'center bottom');
+                    const triggerRect = trigger.getBoundingClientRect();
+                    const panelWidth = Math.min(280, window.innerWidth - (viewportPadding * 2));
+
+                    panel.style.width = `${Math.round(panelWidth)}px`;
+                    panel.style.maxWidth = `${Math.round(panelWidth)}px`;
+
+                    if (triggerRect.left + panelWidth > window.innerWidth - viewportPadding) {
+                        panel.style.left = 'auto';
+                        panel.style.right = '0';
+                    } else {
+                        panel.style.left = '0';
+                        panel.style.right = 'auto';
+                    }
+
+                    panel.style.top = 'calc(100% + 8px)';
+                    panel.style.bottom = 'auto';
+
+                    const panelRect = panel.getBoundingClientRect();
+                    const spaceBelow = window.innerHeight - triggerRect.bottom - viewportPadding;
+                    const spaceAbove = triggerRect.top - viewportPadding;
+                    const openAbove = spaceBelow < panelRect.height + 8 && spaceAbove > spaceBelow;
+
+                    if (openAbove) {
+                        panel.style.top = 'auto';
+                        panel.style.bottom = 'calc(100% + 8px)';
+                    }
+
+                    panel.style.setProperty(
+                        '--reaction-transform-origin',
+                        `${panel.style.right === '0px' || panel.style.right === '0' ? 'right' : 'left'} ${openAbove ? 'bottom' : 'top'}`
+                    );
                     return;
                 }
 
@@ -10226,7 +10252,6 @@ SVG;
                 button.setAttribute('aria-expanded', open ? 'true' : 'false');
 
                 if (open) {
-                    mountReactionMenu(card);
                     panel.hidden = false;
                     window.requestAnimationFrame(function () {
                         positionReactionMenu(card);
