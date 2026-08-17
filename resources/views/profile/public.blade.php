@@ -3866,7 +3866,7 @@
             sheet.removeAttribute('inert');
             syncScrollLock();
             window.requestAnimationFrame(() => {
-                const preferred = sheet.querySelector('[data-profile-badge-close], [data-profile-avatar-close], [tabindex="-1"]');
+                const preferred = sheet.querySelector('button[data-profile-badge-close], button[data-profile-avatar-close], [tabindex="-1"]');
                 preferred?.focus();
             });
         };
