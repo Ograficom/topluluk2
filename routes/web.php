@@ -6,6 +6,7 @@ use App\Http\Controllers\BorsaController;
 use App\Http\Controllers\CookieConsentController;
 use App\Http\Controllers\CookiePolicyController;
 use App\Http\Controllers\ContactSubmissionController;
+use App\Http\Controllers\DashboardNotificationSettingsController;
 use App\Http\Controllers\InstallController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\NotificationsController;
@@ -43,6 +44,14 @@ use App\Http\Controllers\RegistrationVerificationController;
 Route::get('/email/verify/{id}/{hash}', VerifyEmailController::class)
     ->middleware(['signed', 'throttle:6,1'])
     ->name('verification.verify');
+
+Route::get('/email/digest/verify/{userId}/{hash}', [DashboardNotificationSettingsController::class, 'verifyDigestEmail'])
+    ->middleware(['signed', 'throttle:6,1'])
+    ->name('digest.email.verify');
+
+Route::get('/email/digest/unsubscribe/{userId}/{hash}', [DashboardNotificationSettingsController::class, 'unsubscribe'])
+    ->middleware(['signed', 'throttle:12,1'])
+    ->name('digest.unsubscribe');
 
 Route::post('/email/verify-code', EmailVerificationCodeController::class)
     ->middleware(['auth', 'throttle:10,1'])
@@ -890,27 +899,12 @@ Route::middleware([
         return view('dashboard.notifications');
     })->name('dashboard.notifications');
 
-    Route::put('/dashboard/notifications', function (Request $request) {
-        $validated = $request->validate([
-            'comments' => ['nullable', 'boolean'],
-            'replies' => ['nullable', 'boolean'],
-            'likes' => ['nullable', 'boolean'],
-            'followers' => ['nullable', 'boolean'],
-            'mentions' => ['nullable', 'boolean'],
-        ]);
+    Route::put('/dashboard/notifications', [DashboardNotificationSettingsController::class, 'update'])
+        ->name('dashboard.notifications.update');
 
-        session([
-            'dashboard_notifications' => [
-                'comments' => (bool) ($validated['comments'] ?? false),
-                'replies' => (bool) ($validated['replies'] ?? false),
-                'likes' => (bool) ($validated['likes'] ?? false),
-                'followers' => (bool) ($validated['followers'] ?? false),
-                'mentions' => (bool) ($validated['mentions'] ?? false),
-            ],
-        ]);
-
-        return back()->with('status', 'notifications-updated');
-    })->name('dashboard.notifications.update');
+    Route::put('/dashboard/notifications/digest-email', [DashboardNotificationSettingsController::class, 'updateDigestEmail'])
+        ->middleware('throttle:5,1')
+        ->name('dashboard.notifications.digest-email');
 
     Route::get('/dashboard/blocks', function () {
         return view('dashboard.blocks');
