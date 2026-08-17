@@ -61,6 +61,11 @@ class RssArticleRewriteService
             return $this->resultFromItem($item);
         }
 
+        $item->forceFill([
+            'ai_rewrite_attempts' => ((int) $item->ai_rewrite_attempts) + 1,
+            'ai_last_attempted_at' => now(),
+        ])->save();
+
         try {
             $sourceText = $this->sourceText($item);
 
@@ -154,6 +159,7 @@ class RssArticleRewriteService
                 'ai_tags' => $best['tags'],
                 'ai_rewritten_at' => now(),
                 'ai_rewrite_error' => null,
+                'ai_rewrite_attempts' => 0,
             ])->save();
 
             return $this->resultFromItem($item);
