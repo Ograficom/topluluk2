@@ -376,7 +376,11 @@ class RssSyncService
             ($featured && ($post->featured_image ?? '') !== $featured) ||
             (!$featured && $currentFeaturedIsSiteAsset);
 
-        if ($tagIds !== []) {
+        if ($rewritten !== null) {
+            // A refreshed AI rewrite owns its taxonomy completely. Remove stale
+            // source-feed tags instead of silently retaining them forever.
+            $post->tags()->sync($tagIds);
+        } elseif ($tagIds !== []) {
             $post->tags()->syncWithoutDetaching($tagIds);
         }
 
