@@ -3788,7 +3788,7 @@ SVG;
             border: 1px solid rgba(15, 15, 18, 0.09);
             border-radius: 10px;
             background: #ffffff;
-            box-shadow: none;
+            box-shadow: none !important;
         }
 
         [data-post-card-shell] .post-header {
