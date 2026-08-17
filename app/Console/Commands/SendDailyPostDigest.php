@@ -25,8 +25,11 @@ class SendDailyPostDigest extends Command
             ->where('is_published', true)
             ->where('is_nsfw', false)
             ->where(function (Builder $query): void {
-                $query->whereNull('published_at')
-                    ->orWhere('published_at', '<=', now());
+                $query->whereBetween('published_at', [now()->subDay(), now()])
+                    ->orWhere(function (Builder $query): void {
+                        $query->whereNull('published_at')
+                            ->where('created_at', '>=', now()->subDay());
+                    });
             })
             ->whereHas('author', function (Builder $query): void {
                 $query->where('posts_visibility', PrivacyVisibility::PUBLIC);
