@@ -19,6 +19,7 @@ use Laravel\Jetstream\HasTeams;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use App\Services\BadgeAwardSyncService;
+use App\Support\PrivacyVisibility;
 use App\Notifications\EmailVerificationCodeNotification;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Facades\Hash;
@@ -81,6 +82,9 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
         'social_youtube',
         'website_url',
         'preferred_locale',
+        'following_visibility',
+        'posts_visibility',
+        'comments_visibility',
         'joined_at',
         'is_verified',
         'verification_badge',
@@ -422,6 +426,32 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
     public function getRouteKeyName(): string
     {
         return 'username';
+    }
+
+    public function allowsVisibility(?User $viewer, string $attribute): bool
+    {
+        if (! in_array($attribute, ['following_visibility', 'posts_visibility', 'comments_visibility'], true)) {
+            return false;
+        }
+
+        if ($viewer && ((int) $viewer->id === (int) $this->id || $viewer->isAdmin())) {
+            return true;
+        }
+
+        $level = in_array((string) $this->{$attribute}, PrivacyVisibility::LEVELS, true)
+            ? (string) $this->{$attribute}
+            : PrivacyVisibility::PUBLIC;
+
+        if ($level === PrivacyVisibility::PUBLIC) {
+            return true;
+        }
+
+        if ($level !== PrivacyVisibility::FRIENDS || ! $viewer) {
+            return false;
+        }
+
+        return $this->followers()->whereKey($viewer->id)->exists()
+            && $this->followings()->whereKey($viewer->id)->exists();
     }
 
     public function posts(): HasMany
