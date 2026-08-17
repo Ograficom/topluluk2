@@ -58,17 +58,30 @@
     <div class="mx-auto w-full max-w-[var(--profile-shell-width)]">
         <main class="w-full">
             <section class="relative left-1/2 right-1/2 mb-[calc(7rem+env(safe-area-inset-bottom))] w-screen -translate-x-1/2 bg-white text-slate-900 dark:bg-[#111827] dark:text-slate-100 sm:left-auto sm:right-auto sm:mb-0 sm:w-full sm:translate-x-0 sm:rounded-lg sm:border sm:border-slate-200 dark:sm:border-[#263247]">
-                <header class="flex items-center gap-2 border-b border-slate-200 px-4 py-4 dark:border-[#263247]">
-                    <a href="{{ route('dashboard') }}" class="inline-flex h-8 w-8 items-center justify-center rounded-lg text-slate-500 hover:bg-slate-100 hover:text-blue-600 dark:text-slate-400 dark:hover:bg-[#172033] dark:hover:text-blue-400" aria-label="Ayarlara dön">
-                        <svg class="h-5 w-5" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
-                    </a>
+                <header class="flex items-center gap-3 border-b border-slate-200 px-4 py-4 dark:border-[#263247] sm:p-6">
+                    <div class="flex min-w-0 items-center gap-2 rounded-full bg-slate-100 px-3 py-1.5 dark:bg-[#172033]">
+                        <img
+                            src="{{ $user->profile_photo_url }}"
+                            alt="{{ $user->name }}"
+                            class="h-7 w-7 shrink-0 rounded-full object-cover"
+                        >
 
-                    <a href="{{ route('dashboard') }}" class="text-[13px] font-medium text-slate-600 hover:text-blue-600 dark:text-slate-300 dark:hover:text-blue-400">
+                        <span class="truncate text-sm font-medium text-slate-900 dark:text-slate-100">
+                            {{ $user->name }}
+                        </span>
+                    </div>
+
+                    <span class="shrink-0 text-slate-400 dark:text-slate-600">›</span>
+
+                    <a href="{{ route('dashboard') }}" class="shrink-0 text-sm text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200">
                         Ayarlar
                     </a>
 
-                    <span class="text-slate-400 dark:text-slate-600">{!! $privacyIcon('chevron') !!}</span>
-                    <span class="text-sm font-medium text-slate-900 dark:text-white">Gizlilik</span>
+                    <span class="shrink-0 text-slate-400 dark:text-slate-600">›</span>
+
+                    <span class="min-w-0 truncate text-sm font-medium text-slate-700 dark:text-slate-300">
+                        Gizlilik
+                    </span>
                 </header>
 
                 <div class="px-3 py-3 sm:px-4 sm:py-4">
