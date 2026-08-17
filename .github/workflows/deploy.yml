@@ -53,6 +53,7 @@ jobs:
               NGINX_BIN=/www/server/nginx/sbin/nginx
             fi
             if [ -n "$NGINX_BIN" ]; then
+              (
               WWW_CONFIG="$($NGINX_BIN -T 2>&1 | awk '
                 /^# configuration file / {
                   file=$4
@@ -120,6 +121,7 @@ jobs:
               done
               "$NGINX_BIN" -t
               "$NGINX_BIN" -s reload
+              ) || echo "Optional www.ografi.com robots.txt synchronization skipped" >&2
             fi
 
             chown -R www:www "$TARGET_PATH"
