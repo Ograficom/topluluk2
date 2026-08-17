@@ -35,9 +35,9 @@
         };
     @endphp
 
-    <div class="mx-auto w-full max-w-[var(--profile-shell-width)]">
+    <div class="dashboard-settings-shell w-full max-w-none">
         <main class="w-full">
-            <div class="relative left-1/2 right-1/2 w-screen -translate-x-1/2 bg-white text-slate-900 dark:bg-[#111827] dark:text-slate-100 sm:left-auto sm:right-auto sm:w-full sm:translate-x-0 sm:rounded-lg sm:border sm:border-slate-200 sm:shadow-sm dark:sm:border-[#263247] dark:sm:shadow-[0_10px_30px_rgba(2,6,23,.20)]">
+            <div class="dashboard-settings-panel relative left-1/2 right-1/2 w-screen -translate-x-1/2 bg-white text-slate-900 dark:bg-[#111827] dark:text-slate-100 sm:left-auto sm:right-auto sm:w-full sm:translate-x-0 sm:rounded-lg sm:border sm:border-slate-200 sm:shadow-sm dark:sm:border-[#263247] dark:sm:shadow-[0_10px_30px_rgba(2,6,23,.20)]">
                 <div class="flex items-center gap-2 border-b border-slate-200 px-4 py-4 dark:border-[#263247]">
                     <a class="flex items-center gap-2 rounded-full bg-slate-100 px-2.5 py-1 transition-colors hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700" href="{{ $profileUrl }}">
                         @if($avatarUrl)
