@@ -34,7 +34,7 @@
         };
     @endphp
 
-    <div class="w-full sm:mx-auto sm:max-w-[40rem] sm:px-6 lg:px-8">
+    <div class="mx-auto w-full max-w-[var(--profile-shell-width)]">
         <main class="w-full">
             <div class="relative left-1/2 right-1/2 w-screen -translate-x-1/2 bg-white text-slate-900 dark:bg-[#111827] dark:text-slate-100 sm:left-auto sm:right-auto sm:w-full sm:translate-x-0 sm:rounded-lg sm:border sm:border-slate-200 sm:shadow-sm dark:sm:border-[#263247] dark:sm:shadow-[0_10px_30px_rgba(2,6,23,.20)]">
                 <div class="flex items-center gap-2 border-b border-slate-200 px-4 py-3.5 dark:border-[#263247] sm:px-5 sm:py-4">
@@ -61,7 +61,7 @@
                     </span>
                 </div>
 
-                <div class="space-y-1 px-2 pt-2 pb-[calc(8.5rem+env(safe-area-inset-bottom))] sm:px-3 sm:pt-3 sm:pb-5">
+                <div class="space-y-1 px-3 pt-3 pb-[calc(8.5rem+env(safe-area-inset-bottom))] sm:px-4 sm:py-4">
                     <a class="group flex items-start gap-3 rounded-lg bg-slate-50 px-3 py-3.5 transition-colors dark:bg-[#172033]" href="{{ route('dashboard.account') }}">
                         <div class="mt-0.5 shrink-0 text-slate-500 transition-colors group-hover:text-blue-600 dark:text-gray-400">
                             {!! $dashboardIcon('account') !!}
