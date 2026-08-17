@@ -133,7 +133,7 @@
                                 Gizlilik
                             </h3>
                             <p class="mt-0.5 text-[13px] leading-5 text-slate-500 dark:text-slate-400">
-                                Gizlilik politikasını ve veri kullanımını inceleyin
+                                Gönderi, yorum ve takip görünürlüğünü yönetin
                             </p>
                         </div>
                     </a>
