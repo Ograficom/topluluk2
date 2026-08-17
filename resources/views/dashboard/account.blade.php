@@ -1,5 +1,5 @@
 <x-app-layout>
-    <div class="w-full sm:mx-auto sm:max-w-[45rem] sm:px-6 lg:px-8">
+    <div class="mx-auto w-full max-w-[var(--profile-shell-width)]">
         <main class="w-full">
             <div class="relative left-1/2 right-1/2 mb-[calc(7rem+env(safe-area-inset-bottom))] w-screen -translate-x-1/2 bg-white dark:bg-slate-900 text-gray-900 dark:text-slate-100 sm:left-auto sm:right-auto sm:mb-0 sm:w-full sm:translate-x-0 sm:rounded-xl sm:border sm:border-gray-200 dark:sm:border-slate-700 sm:shadow-sm">
                 <div class="flex items-center gap-3 border-b border-gray-200 dark:border-slate-700 px-4 py-4 sm:p-6">
