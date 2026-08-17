@@ -84,6 +84,16 @@
             color: #2563eb;
         }
 
+        .privacy-menu-trigger__icon[data-value="friends"] {
+            background: #d1fae5;
+            color: #059669;
+        }
+
+        .privacy-menu-trigger__icon[data-value="private"] {
+            background: #fef3c7;
+            color: #b45309;
+        }
+
         .privacy-menu-trigger__icon svg,
         .privacy-menu-option__icon svg {
             width: 15px !important;
@@ -137,6 +147,16 @@
         @keyframes privacy-menu-in {
             from { opacity: 0; transform: translateY(-4px) scale(.97); }
             to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .privacy-menu-panel {
+                animation: none !important;
+            }
+
+            .privacy-menu-trigger__chevron {
+                transition: none;
+            }
         }
 
         .privacy-menu-option {
@@ -340,7 +360,7 @@
                             <div class="privacy-menu" data-privacy-menu data-open="false">
                                 <input type="hidden" name="following_visibility" value="{{ $selectedPrivacyLevel }}" data-privacy-input>
                                 <button type="button" class="privacy-menu-trigger" aria-label="Takip edilenlerin görünürlüğü" aria-haspopup="listbox" aria-expanded="false" aria-controls="following-privacy-menu" data-privacy-trigger>
-                                    <span class="privacy-menu-trigger__icon" data-privacy-trigger-icon>{!! $privacyIcon($levelIconNames[$selectedPrivacyLevel]) !!}</span>
+                                    <span class="privacy-menu-trigger__icon" data-value="{{ $selectedPrivacyLevel }}" data-privacy-trigger-icon>{!! $privacyIcon($levelIconNames[$selectedPrivacyLevel]) !!}</span>
                                     <span class="privacy-menu-trigger__label" data-privacy-trigger-label>{{ $levels[$selectedPrivacyLevel] }}</span>
                                     <span class="privacy-menu-trigger__chevron">{!! $privacyIcon('chevron-down') !!}</span>
                                 </button>
@@ -367,7 +387,7 @@
                             <div class="privacy-menu" data-privacy-menu data-open="false">
                                 <input type="hidden" name="posts_visibility" value="{{ $selectedPrivacyLevel }}" data-privacy-input>
                                 <button type="button" class="privacy-menu-trigger" aria-label="Paylaşımların görünürlüğü" aria-haspopup="listbox" aria-expanded="false" aria-controls="posts-privacy-menu" data-privacy-trigger>
-                                    <span class="privacy-menu-trigger__icon" data-privacy-trigger-icon>{!! $privacyIcon($levelIconNames[$selectedPrivacyLevel]) !!}</span>
+                                    <span class="privacy-menu-trigger__icon" data-value="{{ $selectedPrivacyLevel }}" data-privacy-trigger-icon>{!! $privacyIcon($levelIconNames[$selectedPrivacyLevel]) !!}</span>
                                     <span class="privacy-menu-trigger__label" data-privacy-trigger-label>{{ $levels[$selectedPrivacyLevel] }}</span>
                                     <span class="privacy-menu-trigger__chevron">{!! $privacyIcon('chevron-down') !!}</span>
                                 </button>
@@ -394,7 +414,7 @@
                             <div class="privacy-menu" data-privacy-menu data-open="false">
                                 <input type="hidden" name="comments_visibility" value="{{ $selectedPrivacyLevel }}" data-privacy-input>
                                 <button type="button" class="privacy-menu-trigger" aria-label="Yorumların görünürlüğü" aria-haspopup="listbox" aria-expanded="false" aria-controls="comments-privacy-menu" data-privacy-trigger>
-                                    <span class="privacy-menu-trigger__icon" data-privacy-trigger-icon>{!! $privacyIcon($levelIconNames[$selectedPrivacyLevel]) !!}</span>
+                                    <span class="privacy-menu-trigger__icon" data-value="{{ $selectedPrivacyLevel }}" data-privacy-trigger-icon>{!! $privacyIcon($levelIconNames[$selectedPrivacyLevel]) !!}</span>
                                     <span class="privacy-menu-trigger__label" data-privacy-trigger-label>{{ $levels[$selectedPrivacyLevel] }}</span>
                                     <span class="privacy-menu-trigger__chevron">{!! $privacyIcon('chevron-down') !!}</span>
                                 </button>
@@ -497,6 +517,7 @@
                         input.value = value;
                         label.textContent = optionLabel?.textContent?.trim() || '';
                         triggerIcon.innerHTML = optionIcon?.innerHTML || '';
+                        triggerIcon.dataset.value = value;
                         optionsFor(menu).forEach((item) => item.setAttribute('aria-selected', item === option ? 'true' : 'false'));
                         closeMenu(menu);
                         menu.closest('form')?.requestSubmit();
