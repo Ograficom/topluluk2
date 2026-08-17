@@ -73,6 +73,7 @@ class UserController extends Controller
 
         $viewer = $request->user();
         $isOwnProfile = $viewer && (int) $viewer->id === (int) $user->id;
+        $canViewFollowings = $user->allowsVisibility($viewer, 'following_visibility');
         $hasBlockedUser = $viewer ? $viewer->hasBlocked($user) : false;
         $isBlockedByUser = $viewer ? $viewer->isBlockedBy($user) : false;
 
@@ -114,6 +115,7 @@ class UserController extends Controller
                 'commentsCount' => 0,
                 'followers' => collect(),
                 'followings' => collect(),
+                'canViewFollowings' => false,
                 'popularTags' => $popularTags,
                 'popularComments' => $popularComments,
                 'earnedBadges' => $earnedBadges,
@@ -164,11 +166,17 @@ class UserController extends Controller
             ->limit(20)
             ->get();
 
-        $followings = $user->followings()
-            ->select('users.id', 'users.name', 'users.username', 'users.profile_photo_path')
-            ->orderByDesc('users.id')
-            ->limit(20)
-            ->get();
+        $followings = $canViewFollowings
+            ? $user->followings()
+                ->select('users.id', 'users.name', 'users.username', 'users.profile_photo_path')
+                ->orderByDesc('users.id')
+                ->limit(20)
+                ->get()
+            : collect();
+
+        if (! $canViewFollowings) {
+            $user->setAttribute('followings_count', 0);
+        }
 
         $comments = $commentsQuery
             ->limit(20)
@@ -217,6 +225,7 @@ class UserController extends Controller
             'commentsCount' => $commentsCount,
             'followers' => $followers,
             'followings' => $followings,
+            'canViewFollowings' => $canViewFollowings,
             'popularTags' => $popularTags,
             'popularComments' => $popularComments,
             'earnedBadges' => $earnedBadges,
