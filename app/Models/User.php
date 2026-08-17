@@ -85,6 +85,10 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
         'following_visibility',
         'posts_visibility',
         'comments_visibility',
+        'daily_digest_enabled',
+        'daily_digest_email',
+        'daily_digest_email_verified_at',
+        'daily_digest_last_sent_at',
         'joined_at',
         'is_verified',
         'verification_badge',
@@ -135,6 +139,9 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
             'block_reactions' => 'boolean',
             'badge_points' => 'integer',
             'profile_completed_rewarded_at' => 'datetime',
+            'daily_digest_enabled' => 'boolean',
+            'daily_digest_email_verified_at' => 'datetime',
+            'daily_digest_last_sent_at' => 'datetime',
         ];
     }
 

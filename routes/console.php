@@ -118,3 +118,9 @@ Artisan::command('subtitles:generate {postId}', function ($postId) {
     $command->setLaravel(app());
     return $command->run(new ArrayInput(['postId' => $postId]), $this->output);
 })->purpose('Videolar için otomatik altyazı üret.');
+
+
+Schedule::command('email:send-daily-digest')
+    ->dailyAt('09:00')
+    ->timezone(config('app.timezone'))
+    ->withoutOverlapping(120);
