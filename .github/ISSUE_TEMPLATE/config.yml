@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Güvenlik açığı bildirimi
+    url: https://github.com/Ograficom/topluluk2/security/advisories/new
+    about: Güvenlik açıklarını herkese açık issue yerine özel olarak bildirin.
+  - name: Ografi iletişim
+    url: https://ografi.com/iletisim
+    about: Genel iletişim ve destek kanalları.

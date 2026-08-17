@@ -258,7 +258,14 @@ Yakında eklenecektir.
 
 Bu proje özel (proprietary) olarak geliştirilmektedir.
 
-Katkıda bulunmak istiyorsanız lütfen önce iletişime geçiniz.
+Katkıda bulunmadan önce aşağıdaki belgeleri inceleyin:
+
+- [Katkıda bulunma rehberi](CONTRIBUTING.md)
+- [Davranış kuralları](CODE_OF_CONDUCT.md)
+- [Güvenlik politikası](SECURITY.md)
+- [Lisans](LICENSE)
+
+Hata ve özellik talepleri için yapılandırılmış GitHub issue formlarını kullanın.
 
 ---
 

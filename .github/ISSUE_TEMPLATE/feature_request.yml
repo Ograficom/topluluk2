@@ -1,0 +1,52 @@
+name: Özellik isteği
+description: Ografi için yeni bir özellik veya iyileştirme önerin
+title: "[Öneri]: "
+labels: []
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Çözülmesi gereken problem
+      description: Bu önerinin hangi kullanıcı sorununu çözeceğini anlatın.
+    validations:
+      required: true
+  - type: textarea
+    id: solution
+    attributes:
+      label: Önerilen çözüm
+      description: Beklediğiniz davranışı ve kullanıcı akışını açıklayın.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Değerlendirilen alternatifler
+      description: Varsa başka yaklaşımları veya geçici çözümleri belirtin.
+  - type: dropdown
+    id: area
+    attributes:
+      label: İlgili alan
+      options:
+        - Akış ve gönderiler
+        - Profil ve hesap
+        - Arama ve keşfet
+        - Bildirimler
+        - Yönetim paneli
+        - Performans ve erişilebilirlik
+        - Diğer
+    validations:
+      required: true
+  - type: textarea
+    id: context
+    attributes:
+      label: Ek bağlam
+      description: Örnek, taslak veya ekran görüntüsü ekleyebilirsiniz.
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Kontrol listesi
+      options:
+        - label: Mevcut issue'larda benzer bir öneri aradım.
+          required: true
+        - label: Öneri tek ve açık bir kullanıcı ihtiyacına odaklanıyor.
+          required: true
