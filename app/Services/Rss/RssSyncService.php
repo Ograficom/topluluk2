@@ -224,8 +224,8 @@ class RssSyncService
             ->whereNotNull('hash')
             ->whereNull('ai_rejected_at')
             ->where(function ($query) {
-                $query->whereNull('ai_rewrite_error')
-                    ->orWhere('updated_at', '<=', now()->subMinutes(15));
+                $query->whereNull('ai_last_attempted_at')
+                    ->orWhere('ai_last_attempted_at', '<=', now()->subMinutes(15));
             })
             ->whereHas('feed', function ($query) {
                 $query->where('is_enabled', true)
