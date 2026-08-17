@@ -27,7 +27,7 @@ class RssArticleRewriteService
      * than a genuine rewrite and triggers a retry. This mirrors standard
      * near-duplicate document detection (shingling + Jaccard similarity, the
      * technique behind tools like MinHash/SimHash dedup): two independently
-     * worded texts covering the same facts typically land well under ~0.30
+     * worded texts covering the same facts typically land well under ~0.20
      * overlap on 4-grams, while carrying whole source phrases over verbatim
      * pushes it much higher.
      */
@@ -89,7 +89,14 @@ class RssArticleRewriteService
                 $titleSimilarity = $this->wordSetJaccardSimilarity((string) $item->title, $draft['title']);
                 $sharedWordRun = $this->longestSharedWordRun($sourceText, $draft['content']);
                 $unsupportedNumbers = $this->unsupportedNumbers($sourceText, $draft['content']);
-                $verification = $this->verifyDraft($sourceText, $draft, $selectedModel);
+
+                try {
+                    $verification = $this->verifyDraft($sourceText, $draft, $selectedModel);
+                } catch (\Throwable $e) {
+                    $lastError = $e;
+                    $feedback = 'Taslak dogrulama adimi tamamlanamadi; haberi bastan yeniden kur.';
+                    continue;
+                }
 
                 $score = max(
                     $contentSimilarity / self::MAX_CONTENT_SIMILARITY,
