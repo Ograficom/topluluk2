@@ -15,7 +15,7 @@ class RssArticleRewriteServiceTest extends TestCase
         $source = 'Ankara Valiligi yapilan incelemenin ardindan karari kamuoyuna resmi bir aciklamayla duyurdu.';
         $draft = 'Yeni giris. yapilan incelemenin ardindan karari kamuoyuna resmi bir aciklamayla duyurdu ve surec tamamlandi.';
 
-        $this->assertSame(10, $this->invoke('longestSharedWordRun', $source, $draft));
+        $this->assertSame(9, $this->invoke('longestSharedWordRun', $source, $draft));
     }
 
     #[Test]
