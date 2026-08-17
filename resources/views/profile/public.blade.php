@@ -2424,6 +2424,484 @@
         color: rgba(255,255,255,0.82) !important;
     }
 
+
+    /* Final profile design layer: badges, menus and dialogs. */
+    .og-profile-page {
+        --og-control-height: 40px;
+        --og-menu-radius: 10px;
+        --og-ease-out: cubic-bezier(.23, 1, .32, 1);
+    }
+
+    .og-card,
+    .og-tabs-card,
+    .og-list-card,
+    .og-empty {
+        border: 1px solid #e2e8f0 !important;
+        background: #ffffff !important;
+    }
+
+    .og-name {
+        font-size: 22px !important;
+        font-weight: 650 !important;
+        line-height: 1.25 !important;
+    }
+
+    .og-actions .og-btn,
+    .og-actions .og-icon-btn,
+    .og-actions .og-menu > summary,
+    .og-sort > summary {
+        height: var(--og-control-height) !important;
+        min-height: var(--og-control-height) !important;
+        border-radius: 8px !important;
+    }
+
+    .og-actions .og-btn {
+        min-width: 112px !important;
+        padding-inline: 16px !important;
+        font-size: 14px !important;
+        font-weight: 600 !important;
+    }
+
+    .og-actions .og-icon-btn,
+    .og-actions .og-menu > summary {
+        width: var(--og-control-height) !important;
+        min-width: var(--og-control-height) !important;
+        padding: 0 !important;
+        background: #f1f5f9 !important;
+        color: #475569 !important;
+    }
+
+    .og-badges {
+        gap: 8px !important;
+        margin-top: 14px !important;
+    }
+
+    .og-badge,
+    .og-badge:hover,
+    .og-badge:focus-visible,
+    .og-badge.is-dragging {
+        display: inline-flex !important;
+        width: auto !important;
+        min-width: 0 !important;
+        height: 44px !important;
+        min-height: 44px !important;
+        max-width: 190px !important;
+        gap: 8px !important;
+        padding: 4px 10px 4px 5px !important;
+        border: 1px solid color-mix(in srgb, var(--badge-color) 36%, #cbd5e1) !important;
+        border-radius: 9px !important;
+        clip-path: none !important;
+        background: color-mix(in srgb, var(--badge-color) 12%, #ffffff) !important;
+        color: #1f2937 !important;
+        box-shadow: none !important;
+        transform: none !important;
+        cursor: pointer !important;
+        touch-action: manipulation !important;
+        transition: transform 120ms var(--og-ease-out), background-color 140ms ease, border-color 140ms ease !important;
+    }
+
+    .og-badge__face {
+        position: relative !important;
+        display: inline-flex !important;
+        width: 34px !important;
+        min-width: 34px !important;
+        height: 34px !important;
+        align-items: center !important;
+        justify-content: center !important;
+        overflow: hidden !important;
+        border-radius: 7px !important;
+        background: var(--badge-color) !important;
+        opacity: 1 !important;
+        transform: none !important;
+    }
+
+    .og-badge__media {
+        width: 28px !important;
+        height: 28px !important;
+        padding: 4px !important;
+        border-radius: 6px !important;
+        background: #ffffff !important;
+        object-fit: contain !important;
+    }
+
+    .og-badge__fallback {
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        width: 28px !important;
+        height: 28px !important;
+        border-radius: 6px !important;
+        background: #ffffff !important;
+        color: #111827 !important;
+        font-size: 12px !important;
+        font-weight: 700 !important;
+    }
+
+    .og-badge__fallback--backup {
+        display: none !important;
+    }
+
+    .og-badge.has-image-error .og-badge__media {
+        display: none !important;
+    }
+
+    .og-badge.has-image-error .og-badge__fallback--backup {
+        display: inline-flex !important;
+    }
+
+    .og-badge__label {
+        min-width: 0 !important;
+        overflow: hidden !important;
+        color: inherit !important;
+        font-size: 13px !important;
+        font-weight: 600 !important;
+        line-height: 1.2 !important;
+        text-overflow: ellipsis !important;
+        white-space: nowrap !important;
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+        .og-badge:hover {
+            border-color: color-mix(in srgb, var(--badge-color) 60%, #94a3b8) !important;
+            background: color-mix(in srgb, var(--badge-color) 18%, #ffffff) !important;
+            transform: translateY(-1px) !important;
+        }
+    }
+
+    .og-badge:active {
+        transform: scale(.97) !important;
+    }
+
+    .og-menu-panel,
+    .og-sort-panel {
+        min-width: 208px !important;
+        max-width: min(240px, calc(100vw - 24px)) !important;
+        padding: 6px !important;
+        overflow: hidden !important;
+        border: 1px solid #dbe1e8 !important;
+        border-radius: var(--og-menu-radius) !important;
+        background: #ffffff !important;
+        color: #1f2937 !important;
+        box-shadow: 0 14px 34px rgba(15, 23, 42, .14), 0 2px 8px rgba(15, 23, 42, .08) !important;
+        transform-origin: top right !important;
+    }
+
+    .og-menu[open] .og-menu-panel,
+    .og-sort[open] .og-sort-panel {
+        opacity: 1 !important;
+        transform: translateY(0) scale(1) !important;
+        transition: opacity 150ms ease, transform 180ms var(--og-ease-out) !important;
+    }
+
+    @starting-style {
+        .og-menu[open] .og-menu-panel,
+        .og-sort[open] .og-sort-panel {
+            opacity: 0 !important;
+            transform: translateY(-4px) scale(.97) !important;
+        }
+    }
+
+    .og-menu-item,
+    .og-sort-option {
+        width: 100% !important;
+        min-height: 44px !important;
+        gap: 11px !important;
+        padding: 0 11px !important;
+        border: 0 !important;
+        border-radius: 7px !important;
+        background: transparent !important;
+        color: #334155 !important;
+        font-size: 14px !important;
+        font-weight: 500 !important;
+        transition: transform 120ms var(--og-ease-out), background-color 140ms ease, color 140ms ease !important;
+    }
+
+    .og-menu-item svg,
+    .og-sort-option svg {
+        width: 18px !important;
+        height: 18px !important;
+        color: #64748b !important;
+    }
+
+    .og-menu-item:is(:hover, :focus-visible),
+    .og-sort-option:is(:hover, :focus-visible),
+    .og-sort-option[aria-current="true"] {
+        background: #eff6ff !important;
+        color: #1d4ed8 !important;
+        outline: none !important;
+    }
+
+    .og-menu-item:is(:hover, :focus-visible) svg,
+    .og-sort-option:is(:hover, :focus-visible) svg,
+    .og-sort-option[aria-current="true"] svg {
+        color: #2563eb !important;
+    }
+
+    .og-menu-item:active,
+    .og-sort-option:active {
+        transform: scale(.98) !important;
+    }
+
+    .og-sort > summary {
+        gap: 8px !important;
+        padding: 0 11px !important;
+        border: 1px solid #e2e8f0 !important;
+        background: #f8fafc !important;
+        color: #475569 !important;
+        font-size: 13px !important;
+        font-weight: 600 !important;
+    }
+
+    .og-sheet-backdrop {
+        background: rgba(15, 23, 42, .58) !important;
+        backdrop-filter: blur(2px) !important;
+        transition: opacity 160ms ease !important;
+    }
+
+    .og-badge-sheet-panel {
+        width: min(440px, calc(100vw - 24px)) !important;
+        max-height: calc(100dvh - 24px) !important;
+        padding: 24px !important;
+        border: 1px solid #dbe1e8 !important;
+        border-radius: 14px !important;
+        background: #ffffff !important;
+        box-shadow: 0 24px 64px rgba(15, 23, 42, .24), 0 4px 14px rgba(15, 23, 42, .12) !important;
+        transform: translate(-50%, calc(-50% + 6px)) scale(.98) !important;
+        transition: opacity 160ms ease, transform 190ms var(--og-ease-out) !important;
+    }
+
+    .og-sheet[aria-hidden="false"] .og-badge-sheet-panel {
+        transform: translate(-50%, -50%) scale(1) !important;
+    }
+
+    .og-badge-sheet-close-icon {
+        top: 10px !important;
+        right: 10px !important;
+        width: 40px !important;
+        height: 40px !important;
+        border-radius: 8px !important;
+        color: #64748b !important;
+    }
+
+    .og-badge-sheet-media {
+        min-height: 0 !important;
+        padding: 8px 0 18px !important;
+    }
+
+    .og-ref-badge-stage {
+        width: 112px !important;
+        height: 112px !important;
+        cursor: default !important;
+        touch-action: auto !important;
+    }
+
+    .og-ref-badge-rotor {
+        transform: none !important;
+        transition: none !important;
+    }
+
+    .og-ref-badge-layer--front {
+        inset: 0 !important;
+        overflow: hidden !important;
+        border: 1px solid color-mix(in srgb, var(--badge-preview-color) 58%, #94a3b8) !important;
+        border-radius: 16px !important;
+        clip-path: none !important;
+        background: var(--badge-preview-color) !important;
+        transform: none !important;
+    }
+
+    .og-ref-badge-layer--back,
+    .og-ref-badge-glow,
+    .og-ref-badge-shadow {
+        display: none !important;
+    }
+
+    .og-ref-badge-content {
+        width: 78px !important;
+        height: 78px !important;
+        overflow: hidden !important;
+        border-radius: 12px !important;
+        background: #ffffff !important;
+        transform: none !important;
+    }
+
+    .og-ref-badge-media {
+        width: 100% !important;
+        height: 100% !important;
+        padding: 12px !important;
+        object-fit: contain !important;
+    }
+
+    .og-ref-badge-fallback {
+        width: 100% !important;
+        height: 100% !important;
+        border-radius: 12px !important;
+        font-size: 24px !important;
+        font-weight: 700 !important;
+    }
+
+    .og-badge-sheet-panel .og-sheet-title {
+        margin: 0 0 7px !important;
+        color: #111827 !important;
+        font-size: 18px !important;
+        font-weight: 650 !important;
+        line-height: 1.3 !important;
+    }
+
+    .og-badge-sheet-subtitle {
+        margin: 0 0 16px !important;
+        color: #64748b !important;
+        font-size: 14px !important;
+        line-height: 1.5 !important;
+    }
+
+    .og-badge-sheet-meta {
+        display: flex !important;
+        flex-wrap: wrap !important;
+        gap: 8px !important;
+    }
+
+    .og-badge-sheet-meta .og-chip {
+        min-height: 32px !important;
+        padding: 0 11px !important;
+        border-color: #dbe1e8 !important;
+        border-radius: 8px !important;
+        background: #f8fafc !important;
+        color: #475569 !important;
+        font-size: 13px !important;
+    }
+
+    .og-badge-sheet-close-text {
+        min-height: 44px !important;
+        margin-top: 20px !important;
+        border: 0 !important;
+        border-radius: 8px !important;
+        background: #2563eb !important;
+        color: #ffffff !important;
+        font-size: 14px !important;
+        font-weight: 600 !important;
+    }
+
+    .og-badge-sheet-close-text:is(:hover, :focus-visible) {
+        background: #1d4ed8 !important;
+        color: #ffffff !important;
+    }
+
+    body.dark .og-card,
+    .dark .og-card,
+    body.dark .og-tabs-card,
+    .dark .og-tabs-card,
+    body.dark .og-list-card,
+    .dark .og-list-card,
+    body.dark .og-empty,
+    .dark .og-empty {
+        border-color: #334155 !important;
+        background: #111827 !important;
+    }
+
+    body.dark .og-badge,
+    .dark .og-badge {
+        border-color: color-mix(in srgb, var(--badge-color) 42%, #475569) !important;
+        background: color-mix(in srgb, var(--badge-color) 14%, #111827) !important;
+        color: #e5e7eb !important;
+    }
+
+    body.dark :is(.og-menu-panel, .og-sort-panel),
+    .dark :is(.og-menu-panel, .og-sort-panel),
+    body.dark .og-badge-sheet-panel,
+    .dark .og-badge-sheet-panel {
+        border-color: #334155 !important;
+        background: #172033 !important;
+        color: #e5e7eb !important;
+    }
+
+    body.dark :is(.og-menu-item, .og-sort-option),
+    .dark :is(.og-menu-item, .og-sort-option) {
+        color: #dbe4f0 !important;
+    }
+
+    body.dark :is(.og-menu-item, .og-sort-option):is(:hover, :focus-visible),
+    .dark :is(.og-menu-item, .og-sort-option):is(:hover, :focus-visible),
+    body.dark .og-sort-option[aria-current="true"],
+    .dark .og-sort-option[aria-current="true"] {
+        background: #263247 !important;
+        color: #bfdbfe !important;
+    }
+
+    body.dark .og-badge-sheet-panel .og-sheet-title,
+    .dark .og-badge-sheet-panel .og-sheet-title {
+        color: #f8fafc !important;
+    }
+
+    body.dark .og-badge-sheet-subtitle,
+    .dark .og-badge-sheet-subtitle {
+        color: #a8b5c7 !important;
+    }
+
+    body.dark .og-badge-sheet-meta .og-chip,
+    .dark .og-badge-sheet-meta .og-chip {
+        border-color: #334155 !important;
+        background: #111827 !important;
+        color: #cbd5e1 !important;
+    }
+
+    @media (max-width: 640px) {
+        .og-profile-page {
+            padding-inline: 10px !important;
+        }
+
+        .og-card,
+        .og-tabs-card,
+        .og-list-card,
+        .og-empty,
+        .og-post-wrapper [data-post-card-shell] {
+            border-right-width: 1px !important;
+            border-left-width: 1px !important;
+            border-radius: 8px !important;
+        }
+
+        .og-badge-sheet-panel {
+            left: 12px !important;
+            right: 12px !important;
+            top: 50% !important;
+            bottom: auto !important;
+            width: auto !important;
+            max-width: none !important;
+            padding: 20px !important;
+            border-radius: 12px !important;
+            transform: translateY(calc(-50% + 6px)) scale(.98) !important;
+        }
+
+        .og-sheet[aria-hidden="false"] .og-badge-sheet-panel {
+            transform: translateY(-50%) scale(1) !important;
+        }
+
+        .og-badges {
+            display: grid !important;
+            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        }
+
+        .og-badge {
+            width: 100% !important;
+            max-width: none !important;
+        }
+
+        .og-tabs-card {
+            padding-inline: 8px !important;
+        }
+
+        .og-sort > summary {
+            min-width: 40px !important;
+            padding-inline: 9px !important;
+        }
+    }
+
+    @media (max-width: 360px) {
+        .og-badges {
+            grid-template-columns: minmax(0, 1fr) !important;
+        }
+    }
+
 </style>
 @endpush
 
@@ -2778,10 +3256,10 @@
                             @endif
 
                             <details class="og-menu" data-auto-close-details>
-                                <summary aria-label="{{ $moreActionsLabel }}" title="{{ $moreActionsLabel }}" class="og-menu-summary-icon-only">
+                                <summary aria-label="{{ $moreActionsLabel }}" title="{{ $moreActionsLabel }}" class="og-menu-summary-icon-only" aria-haspopup="menu" aria-expanded="false" aria-controls="profile-actions-menu">
                                     <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="5" cy="12" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="19" cy="12" r="1.8"/></svg>
                                 </summary>
-                                <div class="og-menu-panel shadcn-menu" style="width: 192px !important; min-width: 192px !important; max-width: min(192px, calc(100vw - 24px)) !important; box-sizing: border-box !important; padding: 8px !important; overflow: hidden !important; border: 1px solid #e4e4e7 !important; border-radius: 16px !important; background: #ffffff !important; color: #18181b !important; box-shadow: 0 1px 2px rgba(0,0,0,.05), 0 8px 24px rgba(15,23,42,.08) !important; filter: none !important;">
+                                <div id="profile-actions-menu" class="og-menu-panel shadcn-menu" role="menu">
                                     <button type="button" class="og-menu-item" data-profile-share data-share-url="{{ $profilePageUrl }}" data-share-title="{{ $profileHeadingTitle }}">
                                         <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M8 12h8M14 6l6 6-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M20 12H6a2 2 0 0 0-2 2v4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
                                         {{ $shareProfileLabel }}
@@ -2942,7 +3420,7 @@
                                         style="--badge-color: {{ $badge->color ?? '#67e8f9' }}"
                                         title="{{ $badge->name ?? 'Rozet' }}"
                                         data-profile-badge-open
-                                        data-manual-rotate-badge
+                                       
                                         data-badge-name="{{ $badge->name ?? 'Rozet' }}"
                                         data-badge-description="{{ $badge->description ?? 'Bu rozet için açıklama eklenmemiş.' }}"
                                         data-badge-points="{{ number_format((int) ($badge->points_required ?? 0)) }}"
@@ -2967,6 +3445,7 @@
                                                 <span class="og-badge__fallback">{{ $badgeFallbackLetter }}</span>
                                             @endif
                                         </span>
+                                        <span class="og-badge__label">{{ $badge->name ?? 'Rozet' }}</span>
                                     </button>
                                 @endforeach
                             </div>
@@ -2984,11 +3463,11 @@
 
                 @if($activeTab === 'stories')
                     <details class="og-sort" data-auto-close-details>
-                        <summary>
+                        <summary aria-haspopup="menu" aria-expanded="false" aria-controls="profile-sort-menu">
                             <span>{{ $activeSortLabel }}</span>
                             <svg viewBox="0 0 20 20" width="16" height="16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="m5 8 5 5 5-5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
                         </summary>
-                        <div class="og-sort-panel">
+                        <div id="profile-sort-menu" class="og-sort-panel" role="menu">
                             @foreach($sortOptions as $sortKey => $sortLabel)
                                 <a href="{{ route('users.show', ['user' => $user, 'tab' => 'stories', 'sort' => $sortKey]) }}" class="og-sort-option" aria-current="{{ $activeSort === $sortKey ? 'true' : 'false' }}">
                                     @if($sortKey === 'popular')
@@ -3168,11 +3647,11 @@
         </div>
     </div>
 
-    <div id="profile-avatar-sheet" class="og-sheet" aria-hidden="true">
+    <div id="profile-avatar-sheet" class="og-sheet" role="dialog" aria-modal="true" aria-labelledby="profile-avatar-title" aria-hidden="true" inert>
         <div class="og-sheet-backdrop" data-profile-avatar-close></div>
         <div class="og-sheet-panel" data-profile-avatar-panel>
             <div class="og-sheet-handle"></div>
-            <h3 class="og-sheet-title">{{ $profileHeadingTitle }}</h3>
+            <h3 id="profile-avatar-title" class="og-sheet-title" tabindex="-1">{{ $profileHeadingTitle }}</h3>
             <div class="og-avatar-preview">
                 @if($profileUrl)
                     <img src="{{ $profileUrl }}" alt="{{ $profileHeadingTitle }}">
@@ -3184,7 +3663,7 @@
         </div>
     </div>
 
-    <div id="profile-badge-sheet" class="og-sheet" aria-hidden="true" inert>
+    <div id="profile-badge-sheet" class="og-sheet" role="dialog" aria-modal="true" aria-labelledby="profile-badge-title" aria-hidden="true" inert>
         <div class="og-sheet-backdrop" data-profile-badge-close></div>
         <div class="og-sheet-panel og-badge-sheet-panel" data-profile-badge-panel>
             <button type="button" class="og-badge-sheet-close-icon" data-profile-badge-close aria-label="{{ __('post_create.close') }}">
@@ -3193,7 +3672,7 @@
                 </svg>
             </button>
             <div class="og-badge-sheet-media">
-                <div class="og-ref-badge-stage" style="--badge-preview-color: #67e8f9" data-profile-badge-preview data-manual-rotate-badge>
+                <div class="og-ref-badge-stage" style="--badge-preview-color: #67e8f9" data-profile-badge-preview>
                     <div class="og-ref-badge-rotor">
                         <div class="og-ref-badge-layer og-ref-badge-layer--front" data-profile-badge-front>
                             <span class="og-ref-badge-glow" aria-hidden="true"></span>
@@ -3213,7 +3692,7 @@
                 </div>
                 <div class="og-ref-badge-shadow" aria-hidden="true"></div>
             </div>
-            <h3 class="og-sheet-title" data-profile-badge-title>Rozet</h3>
+            <h3 id="profile-badge-title" class="og-sheet-title" data-profile-badge-title tabindex="-1">Rozet</h3>
             <p class="og-badge-sheet-subtitle" data-profile-badge-description></p>
             <div class="og-chips og-badge-sheet-meta">
                 <span class="og-chip"><strong data-profile-badge-points></strong> puan</span>
@@ -3261,9 +3740,63 @@
             });
         };
 
+        const menuItemsFor = (item) => Array.from(item.querySelectorAll('.og-menu-item, .og-sort-option'));
+
         detailsItems.forEach((item) => {
+            const summary = item.querySelector(':scope > summary');
+            const panel = item.querySelector('.og-menu-panel, .og-sort-panel');
+            const menuItems = menuItemsFor(item);
+
+            summary?.setAttribute('aria-expanded', item.open ? 'true' : 'false');
+            panel?.setAttribute('role', 'menu');
+            menuItems.forEach((menuItem) => {
+                menuItem.setAttribute('role', 'menuitem');
+                menuItem.setAttribute('tabindex', '-1');
+            });
+
+            const openAt = (index) => {
+                item.setAttribute('open', '');
+                window.requestAnimationFrame(() => {
+                    const items = menuItemsFor(item);
+                    items[index < 0 ? items.length - 1 : index]?.focus();
+                });
+            };
+
             item.addEventListener('toggle', () => {
+                summary?.setAttribute('aria-expanded', item.open ? 'true' : 'false');
                 if (item.open) closeDetails(item);
+            });
+
+            summary?.addEventListener('keydown', (event) => {
+                if (!['Enter', ' ', 'ArrowDown', 'ArrowUp'].includes(event.key)) return;
+                event.preventDefault();
+                openAt(event.key === 'ArrowUp' ? -1 : 0);
+            });
+
+            panel?.addEventListener('keydown', (event) => {
+                const items = menuItemsFor(item);
+                const currentIndex = items.indexOf(document.activeElement);
+                let nextIndex = currentIndex;
+
+                if (event.key === 'ArrowDown') nextIndex = (currentIndex + 1 + items.length) % items.length;
+                else if (event.key === 'ArrowUp') nextIndex = (currentIndex - 1 + items.length) % items.length;
+                else if (event.key === 'Home') nextIndex = 0;
+                else if (event.key === 'End') nextIndex = items.length - 1;
+                else if (event.key === 'Escape') {
+                    event.preventDefault();
+                    item.removeAttribute('open');
+                    summary?.focus();
+                    return;
+                } else return;
+
+                event.preventDefault();
+                items[nextIndex]?.focus();
+            });
+
+            panel?.addEventListener('click', (event) => {
+                if (event.target.closest('.og-menu-item, .og-sort-option')) {
+                    item.removeAttribute('open');
+                }
             });
         });
 
@@ -3322,21 +3855,33 @@
             document.body.classList.toggle('overflow-hidden', hasOpenSheet);
         };
 
-        const showSheet = (sheet) => {
+        const sheetFocusables = (sheet) => Array.from(sheet?.querySelectorAll(
+            'button:not([disabled]), a[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+        ) || []).filter((element) => !element.hasAttribute('inert'));
+
+        const showSheet = (sheet, trigger = document.activeElement) => {
             if (!sheet) return;
+            sheet.__returnFocus = trigger instanceof HTMLElement ? trigger : null;
             sheet.setAttribute('aria-hidden', 'false');
             sheet.removeAttribute('inert');
             syncScrollLock();
+            window.requestAnimationFrame(() => {
+                const preferred = sheet.querySelector('[data-profile-badge-close], [data-profile-avatar-close], [tabindex="-1"]');
+                preferred?.focus();
+            });
         };
 
-        const hideSheet = (sheet) => {
-            if (!sheet) return;
+        const hideSheet = (sheet, restoreFocus = true) => {
+            if (!sheet || sheet.getAttribute('aria-hidden') === 'true') return;
             sheet.setAttribute('aria-hidden', 'true');
             sheet.setAttribute('inert', '');
             syncScrollLock();
+            if (restoreFocus) {
+                window.requestAnimationFrame(() => sheet.__returnFocus?.focus?.());
+            }
         };
 
-        avatarOpenButton?.addEventListener('click', () => showSheet(avatarSheet));
+        avatarOpenButton?.addEventListener('click', () => showSheet(avatarSheet, avatarOpenButton));
         avatarCloseButtons?.forEach((button) => button.addEventListener('click', () => hideSheet(avatarSheet)));
 
 
@@ -3538,15 +4083,37 @@
                         updateBadgeVisual(badgePreview, 0);
                     }
                 }
-                showSheet(badgeSheet);
+                showSheet(badgeSheet, button);
             });
         });
         badgeCloseButtons?.forEach((button) => button.addEventListener('click', () => hideSheet(badgeSheet)));
 
         document.addEventListener('keydown', (event) => {
-            if (event.key !== 'Escape') return;
-            hideSheet(avatarSheet);
-            hideSheet(badgeSheet);
+            const openSheet = [avatarSheet, badgeSheet].find((sheet) => sheet?.getAttribute('aria-hidden') === 'false');
+            if (!openSheet) return;
+
+            if (event.key === 'Escape') {
+                event.preventDefault();
+                hideSheet(openSheet);
+                return;
+            }
+
+            if (event.key !== 'Tab') return;
+            const focusables = sheetFocusables(openSheet);
+            if (!focusables.length) {
+                event.preventDefault();
+                return;
+            }
+
+            const first = focusables[0];
+            const last = focusables[focusables.length - 1];
+            if (event.shiftKey && document.activeElement === first) {
+                event.preventDefault();
+                last.focus();
+            } else if (!event.shiftKey && document.activeElement === last) {
+                event.preventDefault();
+                first.focus();
+            }
         });
     })();
 </script>
