@@ -2,6 +2,77 @@
 @section('meta_description', 'Ografi ayarlar sayfasında hesap, şifre, profil, tercihler, bildirimler, engellenenler, rozetler ve güvenlik seçeneklerini yönetin.')
 
 <x-app-layout>
+    <style>
+        html body.alma-app.route-dashboard .layout-main {
+            width: min(100%, var(--main-col, 656px)) !important;
+            max-width: var(--main-col, 656px) !important;
+            min-width: 0 !important;
+            margin-inline: auto !important;
+            padding: 0 !important;
+        }
+
+        html body.alma-app.route-dashboard .dashboard-settings-shell,
+        html body.alma-app.route-dashboard .dashboard-settings-shell > main,
+        html body.alma-app.route-dashboard .dashboard-settings-panel {
+            width: 100% !important;
+            max-width: none !important;
+            margin: 0 !important;
+            box-sizing: border-box !important;
+        }
+
+        html body.alma-app.route-dashboard .dashboard-settings-panel {
+            position: relative !important;
+            inset: auto !important;
+            transform: none !important;
+            overflow: hidden !important;
+            border: 1px solid #e2e8f0 !important;
+            border-radius: 10px !important;
+            box-shadow: none !important;
+        }
+
+        html.dark body.alma-app.route-dashboard .dashboard-settings-panel {
+            border-color: #263247 !important;
+        }
+
+        @media (max-width: 960px) {
+            html body.alma-app.route-dashboard .main-grid,
+            html body.alma-app.route-dashboard .main-grid.main-grid--padded,
+            html body.alma-app.route-dashboard .main-grid.main-grid--no-pad {
+                width: 100% !important;
+                max-width: var(--main-col, 656px) !important;
+                grid-template-columns: minmax(0, 1fr) !important;
+                margin-inline: auto !important;
+                padding: 12px 12px calc(24px + env(safe-area-inset-bottom, 0px)) !important;
+                box-sizing: border-box !important;
+            }
+
+            html body.alma-app.route-dashboard .dashboard-settings-header {
+                padding: 14px !important;
+            }
+
+            html body.alma-app.route-dashboard .dashboard-settings-list {
+                padding: 10px 10px calc(4.75rem + env(safe-area-inset-bottom, 0px)) !important;
+            }
+        }
+
+        @media (max-width: 360px) {
+            html body.alma-app.route-dashboard .main-grid,
+            html body.alma-app.route-dashboard .main-grid.main-grid--padded,
+            html body.alma-app.route-dashboard .main-grid.main-grid--no-pad {
+                padding-left: 10px !important;
+                padding-right: 10px !important;
+            }
+
+            html body.alma-app.route-dashboard .dashboard-settings-header {
+                padding: 12px !important;
+            }
+
+            html body.alma-app.route-dashboard .dashboard-settings-list {
+                padding-left: 8px !important;
+                padding-right: 8px !important;
+            }
+        }
+    </style>
     @php
         $currentUser = auth()->user();
         $profileName = $currentUser?->name ?? $currentUser?->username ?? 'Kullanici';
@@ -37,8 +108,8 @@
 
     <div class="dashboard-settings-shell w-full max-w-none">
         <main class="w-full">
-            <div class="dashboard-settings-panel relative left-1/2 right-1/2 w-screen -translate-x-1/2 bg-white text-slate-900 dark:bg-[#111827] dark:text-slate-100 sm:left-auto sm:right-auto sm:w-full sm:translate-x-0 sm:rounded-lg sm:border sm:border-slate-200 sm:shadow-sm dark:sm:border-[#263247] dark:sm:shadow-[0_10px_30px_rgba(2,6,23,.20)]">
-                <div class="flex items-center gap-2 border-b border-slate-200 px-4 py-4 dark:border-[#263247]">
+            <div class="dashboard-settings-panel w-full bg-white text-slate-900 dark:bg-[#111827] dark:text-slate-100">
+                <div class="dashboard-settings-header flex items-center gap-2 border-b border-slate-200 px-4 py-4 dark:border-[#263247]">
                     <a class="flex items-center gap-2 rounded-full bg-slate-100 px-2.5 py-1 transition-colors hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700" href="{{ $profileUrl }}">
                         @if($avatarUrl)
                             <img alt="{{ $profileName }}" class="h-5 w-5 rounded-full object-cover" src="{{ $avatarUrl }}" />
@@ -62,7 +133,7 @@
                     </span>
                 </div>
 
-                <div class="space-y-1 px-3 pt-3 pb-[calc(8.5rem+env(safe-area-inset-bottom))] sm:px-4 sm:py-4">
+                <div class="dashboard-settings-list space-y-1 px-3 pt-3 pb-[calc(4.75rem+env(safe-area-inset-bottom))] sm:px-4 sm:py-4">
                     <a class="group flex items-start gap-3 rounded-lg bg-slate-50 px-3 py-3.5 transition-colors dark:bg-[#172033]" href="{{ route('dashboard.account') }}">
                         <div class="mt-0.5 shrink-0 text-slate-500 transition-colors group-hover:text-blue-600 dark:text-gray-400">
                             {!! $dashboardIcon('account') !!}
