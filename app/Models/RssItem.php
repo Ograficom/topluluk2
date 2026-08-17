@@ -24,6 +24,8 @@ class RssItem extends Model
         'ai_tags',
         'ai_rewritten_at',
         'ai_rewrite_error',
+        'ai_rewrite_attempts',
+        'ai_last_attempted_at',
         'ai_rejected_at',
         'ai_rejection_reason',
         'imported_at',
@@ -33,6 +35,7 @@ class RssItem extends Model
         'published_at' => 'datetime',
         'ai_tags' => 'array',
         'ai_rewritten_at' => 'datetime',
+        'ai_last_attempted_at' => 'datetime',
         'ai_rejected_at' => 'datetime',
         'imported_at' => 'datetime',
     ];
