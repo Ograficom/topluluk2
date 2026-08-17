@@ -1,0 +1,72 @@
+name: Hata bildirimi
+description: Tekrarlanabilir bir Ografi hatasını bildirin
+title: "[Hata]: "
+labels: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Bildiriminiz için teşekkür ederiz. Güvenlik açıklarını burada paylaşmayın; SECURITY.md içindeki özel bildirim sürecini kullanın.
+  - type: textarea
+    id: description
+    attributes:
+      label: Hata açıklaması
+      description: Gerçekleşen sorunu kısa ve açık biçimde anlatın.
+      placeholder: Ne oldu?
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Tekrarlama adımları
+      description: Sorunu yeniden oluşturmak için gereken adımları sıralayın.
+      placeholder: |
+        1. ... sayfasına gidin
+        2. ... düğmesine tıklayın
+        3. ... hatasını görün
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Beklenen davranış
+      description: Bunun yerine ne olmasını bekliyordunuz?
+    validations:
+      required: true
+  - type: input
+    id: url
+    attributes:
+      label: Etkilenen sayfa veya URL
+      placeholder: https://ografi.com/...
+  - type: dropdown
+    id: device
+    attributes:
+      label: Cihaz türü
+      options:
+        - Masaüstü
+        - Mobil
+        - Tablet
+        - Birden fazla
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: Tarayıcı ve işletim sistemi
+      placeholder: Örnek: Chrome 140, Windows 11
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Ek bilgi
+      description: Hassas veri içermeyen ekran görüntüsü, log veya diğer ayrıntıları ekleyin.
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Kontrol listesi
+      options:
+        - label: Mevcut issue'larda aynı sorunu aradım.
+          required: true
+        - label: Parola, oturum çerezi, API anahtarı veya kişisel veri paylaşmadım.
+          required: true
