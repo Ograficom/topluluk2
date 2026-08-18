@@ -46,13 +46,38 @@ jobs:
             cp public/vendor/livewire/livewire.js public/js/livewire.js
             set_env_value LIVEWIRE_ASSET_URL /js/livewire.min.js
             npm run build
+            NGINX_BIN="$(command -v nginx || true)"
+            if [ -z "$NGINX_BIN" ] && [ -x /www/server/nginx/sbin/nginx ]; then
+              NGINX_BIN=/www/server/nginx/sbin/nginx
+            fi
+            APP_DOCROOT=""
+            if [ -n "$NGINX_BIN" ]; then
+              APP_CONFIG="$($NGINX_BIN -T 2>&1 | awk '
+                /^# configuration file / {
+                  file=$4
+                  sub(/:$/, "", file)
+                }
+                /server_name[[:space:]].*ografi\.com/ {
+                  print file
+                  exit
+                }
+              ')"
+              if [ -n "$APP_CONFIG" ] && [ -f "$APP_CONFIG" ]; then
+                APP_DOCROOT="$(awk '$1 == "root" { sub(/;$/, "", $2); print $2; exit }' "$APP_CONFIG")"
+              fi
+            fi
             publish_static_dir() {
               STATIC_DIR="$1"
-              if [ -L "$TARGET_PATH/$STATIC_DIR" ]; then
-                rm "$TARGET_PATH/$STATIC_DIR"
-              fi
-              mkdir -p "$TARGET_PATH/$STATIC_DIR"
-              cp -a "public/$STATIC_DIR/." "$TARGET_PATH/$STATIC_DIR/"
+              for DEST_ROOT in "$TARGET_PATH" "$APP_DOCROOT"; do
+                if [ -z "$DEST_ROOT" ]; then
+                  continue
+                fi
+                if [ -L "$DEST_ROOT/$STATIC_DIR" ]; then
+                  rm "$DEST_ROOT/$STATIC_DIR"
+                fi
+                mkdir -p "$DEST_ROOT/$STATIC_DIR"
+                cp -a "public/$STATIC_DIR/." "$DEST_ROOT/$STATIC_DIR/"
+              done
             }
             for STATIC_DIR in css js build fonts pwa; do
               publish_static_dir "$STATIC_DIR"
