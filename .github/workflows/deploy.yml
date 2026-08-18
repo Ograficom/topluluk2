@@ -64,6 +64,10 @@ jobs:
               ')"
               if [ -n "$APP_CONFIG" ] && [ -f "$APP_CONFIG" ]; then
                 APP_DOCROOT="$(awk '$1 == "root" { sub(/;$/, "", $2); print $2; exit }' "$APP_CONFIG")"
+                sed -i "0,/^[[:space:]]*root[[:space:]]\+[^;]*;/s|^[[:space:]]*root[[:space:]]\+[^;]*;|    root $TARGET_PATH/public;|" "$APP_CONFIG"
+                APP_DOCROOT="$TARGET_PATH/public"
+                "$NGINX_BIN" -t
+                "$NGINX_BIN" -s reload
               fi
             fi
             publish_static_dir() {
