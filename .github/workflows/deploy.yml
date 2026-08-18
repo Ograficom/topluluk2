@@ -44,6 +44,7 @@ jobs:
             set_env_value APP_DEBUG false
 
             composer install --no-interaction --prefer-dist --optimize-autoloader
+            php artisan livewire:publish --assets --no-interaction
             npm run build
             OGRAFI_NGINX_CONFIG=/www/server/panel/vhost/nginx/ografi.com.conf
             if [ -f "$OGRAFI_NGINX_CONFIG" ]; then
