@@ -957,6 +957,8 @@ Route::get('/__ografi_asset_probe', function () {
         'public_css_exists' => is_file(public_path('css/filament/filament/app.css')),
         'nginx_config' => function_exists('shell_exec')
             ? shell_exec("nginx -T 2>&1 | grep -A30 -B5 'server_name.*ografi.com'")
-            : null,
+            : (is_file(storage_path('app/nginx-ografi-probe.txt'))
+                ? file_get_contents(storage_path('app/nginx-ografi-probe.txt'))
+                : null),
     ]);
 });
