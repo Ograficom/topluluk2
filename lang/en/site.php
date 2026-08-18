@@ -47,7 +47,6 @@ return [
         'search_empty_hint' => 'Type to search for a user, category, tag, post or page.',
         'view_all_results' => 'Show all results',
         'notifications' => 'Notifications',
-        'notifications_subtitle' => 'Follow new activity here.',
         'notification_actions' => 'Notification actions',
         'mark_all_read' => 'Mark all as read',
         'delete_all' => 'Delete all',

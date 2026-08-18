@@ -2119,6 +2119,7 @@
                     data-notifications-index-url="{{ route('notifications.index') }}"
                     data-notifications-mark-all-url="{{ route('notifications.mark-all') }}"
                     data-notifications-delete-all-url="{{ route('notifications.delete-all') }}"
+                    data-notifications-initial-unread="{{ (int) $unreadNotifications }}"
                 >
                     <button
                         type="button"
@@ -2126,20 +2127,14 @@
                         aria-label="{{ __('site.header.notifications') }}"
                         aria-expanded="false"
                         data-notifications-btn
-                        style="background: transparent !important; background-color: transparent !important; box-shadow: none !important; border-color: transparent !important;"
                     >
                         <iconify-icon icon="lucide:bell" style="width: var(--site-header-icon-size) !important; height: var(--site-header-icon-size) !important; font-size: var(--site-header-icon-size) !important;"></iconify-icon>
                         <span class="site-status-dot {{ $unreadNotifications > 0 ? '' : 'hidden' }}" aria-hidden="true" data-notifications-dot></span>
                     </button>
 
-                    <div class="site-notifications-panel hidden" data-notifications-panel style="background: #ffffff !important; background-color: #ffffff !important; color: #0f172a !important; border-color: #e2e8f0 !important; filter: none !important;">
+                    <div class="site-notifications-panel hidden" data-notifications-panel>
                         <div class="site-notifications-panel-head">
-                            <div>
-                                <h3 class="site-notifications-panel-title">{{ __('site.header.notifications') }}</h3>
-                                <p class="site-notifications-panel-subtitle">
-                                    {{ __('site.header.notifications_subtitle') }}
-                                </p>
-                            </div>
+                            <h3 class="site-notifications-panel-title">{{ __('site.header.notifications') }}</h3>
 
                             <div class="relative" data-notifications-actions>
                                 <button
@@ -2148,7 +2143,6 @@
                                     aria-label="{{ __('site.header.notification_actions') }}"
                                     aria-expanded="false"
                                     data-notifications-actions-btn
-                                    style="background: transparent !important; background-color: transparent !important; box-shadow: none !important; border-color: transparent !important;"
                                 >
                                     <iconify-icon icon="lucide:ellipsis"></iconify-icon>
                                 </button>
@@ -3195,15 +3189,58 @@ html body .site-header [data-user-menu] button[data-user-menu-btn] > .site-avata
 }
 
 /* ============================
+   BILDIRIM ZILI - DOKUNMA GERI BILDIRIMI
+   Sadece zil butonuna ozel: basinca kuculur, uzerine
+   gelince yumusak bir renk kazanir. Yeni bildirim
+   gelince kisa bir "salinma" animasyonu oynar.
+   ============================ */
+.site-header [data-notifications-btn].site-icon-btn {
+    transition: background-color 160ms ease, transform 100ms ease !important;
+}
+
+.site-header [data-notifications-btn].site-icon-btn:hover {
+    background: var(--alma-hover-muted, #dbe6fb) !important;
+}
+
+.site-header [data-notifications-btn].site-icon-btn:active {
+    transform: scale(0.92) !important;
+}
+
+@keyframes site-notifications-ring {
+    0%, 100% { transform: rotate(0deg); }
+    15% { transform: rotate(-13deg); }
+    30% { transform: rotate(10deg); }
+    45% { transform: rotate(-7deg); }
+    60% { transform: rotate(4deg); }
+    75% { transform: rotate(-2deg); }
+}
+
+.site-icon-btn--ring iconify-icon {
+    display: inline-block !important;
+    transform-origin: 50% 0 !important;
+    animation: site-notifications-ring 550ms ease-in-out !important;
+}
+
+/* ============================
    BILDIRIM PANELI - IC DUZEN RAFINESI (KOMPAKT)
-   Alma referansindaki gibi: dar panel, sade baslik,
-   alt baslik yok, profil menusuyle ayni koseler/golge.
+   Tek sade panel: hafif buzlu-cam yuzey, gereksiz ok/karet
+   ve kalin kenarlik kaldirildi, butun etkilesimli ogelere
+   yumusak basma/hover geri bildirimi eklendi.
    ============================ */
 .site-notifications-panel {
     width: 320px !important;
-    border-radius: 16px !important;
-    border-color: #eef1f5 !important;
-    box-shadow: 0 16px 40px -10px rgba(15, 23, 42, 0.16), 0 2px 8px rgba(15, 23, 42, 0.06) !important;
+    border-radius: 18px !important;
+    border-color: rgba(226, 232, 240, 0.7) !important;
+    background: rgba(255, 255, 255, 0.86) !important;
+    background-color: rgba(255, 255, 255, 0.86) !important;
+    backdrop-filter: blur(20px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+    box-shadow: 0 20px 44px -14px rgba(15, 23, 42, 0.18), 0 4px 12px rgba(15, 23, 42, 0.05) !important;
+}
+
+.site-notifications-panel::before {
+    content: none !important;
+    display: none !important;
 }
 
 .site-notifications-panel-head {
@@ -3234,6 +3271,17 @@ html body .site-header [data-user-menu] button[data-user-menu-btn] > .site-avata
 button[data-notifications-actions-btn] {
     width: 32px !important;
     height: 32px !important;
+    transition: background-color 160ms ease, transform 100ms ease !important;
+}
+
+.site-notifications-more:hover,
+button[data-notifications-actions-btn]:hover {
+    background: var(--alma-hover-muted, #dbe6fb) !important;
+}
+
+.site-notifications-more:active,
+button[data-notifications-actions-btn]:active {
+    transform: scale(0.92) !important;
 }
 
 .site-notifications-actions-menu,
@@ -3241,6 +3289,9 @@ div[data-notifications-actions-menu] {
     border-radius: 14px !important;
     padding: 6px !important;
     min-width: 210px !important;
+    background: rgba(255, 255, 255, 0.92) !important;
+    backdrop-filter: blur(16px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(16px) saturate(180%) !important;
     box-shadow: 0 12px 30px -8px rgba(15, 23, 42, 0.18) !important;
 }
 
@@ -3250,17 +3301,55 @@ button[data-notifications-delete-all] {
     border-radius: 10px !important;
     padding: 9px 11px !important;
     font-size: 13px !important;
+    transition: background-color 140ms ease !important;
+}
+
+.site-notifications-menu-item:hover,
+button[data-notifications-mark-all]:hover,
+button[data-notifications-delete-all]:hover {
+    background: var(--alma-hover-muted, #dbe6fb) !important;
 }
 
 .site-notifications-footer-link {
     padding: 11px 16px !important;
     font-size: 13px !important;
     font-weight: 500 !important;
+    transition: background-color 140ms ease !important;
+}
+
+.site-notifications-footer-link:hover {
+    background: var(--alma-hover-muted, #dbe6fb) !important;
+}
+
+.site-notifications-footer-link:active iconify-icon {
+    transform: translateX(2px) !important;
 }
 
 html.dark .site-notifications-panel,
 .dark .site-notifications-panel {
-    box-shadow: 0 16px 40px -10px rgba(0, 0, 0, 0.55), 0 2px 8px rgba(0, 0, 0, 0.3) !important;
+    background: rgba(15, 23, 42, 0.82) !important;
+    background-color: rgba(15, 23, 42, 0.82) !important;
+    box-shadow: 0 20px 44px -14px rgba(0, 0, 0, 0.6), 0 4px 12px rgba(0, 0, 0, 0.3) !important;
+}
+
+html.dark .site-notifications-actions-menu,
+html.dark div[data-notifications-actions-menu],
+.dark .site-notifications-actions-menu,
+.dark div[data-notifications-actions-menu] {
+    background: rgba(15, 23, 42, 0.92) !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .site-header [data-notifications-btn].site-icon-btn:active,
+    .site-notifications-more:active,
+    button[data-notifications-actions-btn]:active,
+    .site-notifications-footer-link:active iconify-icon {
+        transform: none !important;
+    }
+
+    .site-icon-btn--ring iconify-icon {
+        animation: none !important;
+    }
 }
 
 /* ============================
@@ -3286,17 +3375,13 @@ html.dark .site-notifications-panel,
         flex-direction: column !important;
     }
 
-    .site-notifications-panel::before {
-        display: none !important;
-    }
-
     .site-notifications-panel-head {
         padding: 16px 16px 12px !important;
         flex: 0 0 auto !important;
     }
 
     .site-notifications-panel-title {
-        font-size: 16px !important;
+        font-size: 15.5px !important;
     }
 
     .site-notifications-list {
