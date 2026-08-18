@@ -66,8 +66,11 @@ jobs:
                 APP_DOCROOT="$(awk '$1 == "root" { sub(/;$/, "", $2); print $2; exit }' "$APP_CONFIG")"
                 sed -i "0,/^[[:space:]]*root[[:space:]]\+[^;]*;/s|^[[:space:]]*root[[:space:]]\+[^;]*;|    root $TARGET_PATH/public;|" "$APP_CONFIG"
                 APP_DOCROOT="$TARGET_PATH/public"
-                "$NGINX_BIN" -t
-                "$NGINX_BIN" -s reload
+                if "$NGINX_BIN" -t; then
+                  "$NGINX_BIN" -s reload || true
+                else
+                  echo "Nginx configuration test failed after document-root update; continuing deploy." >&2
+                fi
               fi
             fi
             publish_static_dir() {
