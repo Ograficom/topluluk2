@@ -68,7 +68,7 @@ jobs:
             fi
             publish_static_dir() {
               STATIC_DIR="$1"
-              for DEST_ROOT in "$TARGET_PATH" "$APP_DOCROOT"; do
+              for DEST_ROOT in "$TARGET_PATH" "$APP_DOCROOT" "/www/server/nginx/html"; do
                 if [ -z "$DEST_ROOT" ]; then
                   continue
                 fi
