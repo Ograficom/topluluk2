@@ -54,7 +54,7 @@ jobs:
               mkdir -p "$TARGET_PATH/$STATIC_DIR"
               cp -a "public/$STATIC_DIR/." "$TARGET_PATH/$STATIC_DIR/"
             }
-            for STATIC_DIR in css js build fonts images pwa; do
+            for STATIC_DIR in css js build fonts pwa; do
               publish_static_dir "$STATIC_DIR"
             done
             php artisan migrate --force || true
