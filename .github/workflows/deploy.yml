@@ -46,6 +46,9 @@ jobs:
             cp public/vendor/livewire/livewire.js public/js/livewire.js
             set_env_value LIVEWIRE_ASSET_URL /js/livewire.min.js
             npm run build
+            for STATIC_DIR in css js build fonts images pwa; do
+              ln -sfn "$TARGET_PATH/public/$STATIC_DIR" "$TARGET_PATH/$STATIC_DIR"
+            done
             php artisan migrate --force || true
             php artisan storage:link || true
             php artisan optimize:clear || true
