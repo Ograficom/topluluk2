@@ -25,9 +25,6 @@ jobs:
             cd "$TARGET_PATH"
             git stash --include-untracked || true
             git pull origin main
-            nginx -T 2>&1 | grep -A30 -B5 'server_name.*ografi.com' > storage/app/nginx-ografi-probe.txt || true
-            nginx -T 2>&1 | grep -E 'configuration file|server_name|location|try_files|root|enable-php' > storage/app/nginx-ografi-rules-probe.txt || true
-            cat /www/server/panel/vhost/nginx/ografi.com.conf /www/server/panel/vhost/nginx/extension/ografi.com/*.conf > storage/app/nginx-ografi-files-probe.txt 2>/dev/null || true
 
             set_env_value() {
               KEY="$1"
