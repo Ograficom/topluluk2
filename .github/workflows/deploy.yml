@@ -45,6 +45,13 @@ jobs:
 
             composer install --no-interaction --prefer-dist --optimize-autoloader
             npm run build
+            OGRAFI_NGINX_CONFIG=/www/server/panel/vhost/nginx/ografi.com.conf
+            if [ -f "$OGRAFI_NGINX_CONFIG" ]; then
+              sed -i '/valid_referers ografi.com www.ografi.com;/d; /if (\$invalid_referer)/,+3d' "$OGRAFI_NGINX_CONFIG"
+              if nginx -t; then
+                nginx -s reload || true
+              fi
+            fi
             php artisan migrate --force || true
             php artisan storage:link || true
             php artisan optimize:clear || true
