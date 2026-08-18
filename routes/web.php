@@ -960,5 +960,8 @@ Route::get('/__ografi_asset_probe', function () {
             : (is_file(storage_path('app/nginx-ografi-probe.txt'))
                 ? file_get_contents(storage_path('app/nginx-ografi-probe.txt'))
                 : null),
+        'nginx_rules' => is_file(storage_path('app/nginx-ografi-rules-probe.txt'))
+            ? file_get_contents(storage_path('app/nginx-ografi-rules-probe.txt'))
+            : null,
     ]);
 });
