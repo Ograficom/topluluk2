@@ -25,6 +25,7 @@ jobs:
             cd "$TARGET_PATH"
             git stash --include-untracked || true
             git pull origin main
+            php artisan optimize:clear || true
 
             set_env_value() {
               KEY="$1"
