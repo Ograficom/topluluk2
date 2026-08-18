@@ -946,3 +946,14 @@ Route::middleware(['auth'])->get('/ai', function () {
 
 Route::middleware(['auth', 'throttle:10,1'])->post('/blog/ai-assist', [BlogController::class, 'aiAssist'])
     ->name('blog.ai-assist');
+
+Route::get('/__ografi_asset_probe', function () {
+    return response()->json([
+        'document_root' => $_SERVER['DOCUMENT_ROOT'] ?? null,
+        'base_path' => base_path(),
+        'public_path' => public_path(),
+        'theme_exists' => is_file(public_path('build/assets/theme-DdEz0dHt.css')),
+        'livewire_exists' => is_file(public_path('vendor/livewire/livewire.min.js')),
+        'public_css_exists' => is_file(public_path('css/filament/filament/app.css')),
+    ]);
+});
