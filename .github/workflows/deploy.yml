@@ -41,6 +41,7 @@ jobs:
             set_env_value APP_DEBUG false
 
             composer install --no-interaction --prefer-dist --optimize-autoloader
+            php artisan livewire:publish --assets --no-interaction
             npm run build
             php artisan migrate --force || true
             php artisan storage:link || true
