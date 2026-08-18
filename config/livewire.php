@@ -40,8 +40,6 @@ return [
 
     'layout' => 'components.layouts.app',
 
-    'asset_url' => env('LIVEWIRE_ASSET_URL'),
-
     /*
     |---------------------------------------------------------------------------
     | Lazy Loading Placeholder

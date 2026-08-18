@@ -30,7 +30,6 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
-use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Middleware\ValidatePostSize;
@@ -947,16 +946,3 @@ Route::middleware(['auth'])->get('/ai', function () {
 
 Route::middleware(['auth', 'throttle:10,1'])->post('/blog/ai-assist', [BlogController::class, 'aiAssist'])
     ->name('blog.ai-assist');
-
-Route::get('/{assetPath}', function (string $assetPath) {
-    if (str_contains($assetPath, '..')) {
-        abort(404);
-    }
-
-    $path = public_path($assetPath);
-
-    abort_unless(File::isFile($path), 404);
-
-    return response()->file($path);
-})->where('assetPath', '(css|js|build|fonts|pwa)(/.*)?')
-    ->name('public.asset-fallback');

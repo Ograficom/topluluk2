@@ -41,54 +41,7 @@ jobs:
             set_env_value APP_DEBUG false
 
             composer install --no-interaction --prefer-dist --optimize-autoloader
-            php artisan livewire:publish --assets --no-interaction
-            cp public/vendor/livewire/livewire.min.js public/js/livewire.min.js
-            cp public/vendor/livewire/livewire.js public/js/livewire.js
-            set_env_value LIVEWIRE_ASSET_URL /js/livewire.min.js
             npm run build
-            NGINX_BIN="$(command -v nginx || true)"
-            if [ -z "$NGINX_BIN" ] && [ -x /www/server/nginx/sbin/nginx ]; then
-              NGINX_BIN=/www/server/nginx/sbin/nginx
-            fi
-            APP_DOCROOT=""
-            if [ -n "$NGINX_BIN" ]; then
-              APP_CONFIG="$($NGINX_BIN -T 2>&1 | awk '
-                /^# configuration file / {
-                  file=$4
-                  sub(/:$/, "", file)
-                }
-                /server_name[[:space:]].*ografi\.com/ {
-                  print file
-                  exit
-                }
-              ')"
-              if [ -n "$APP_CONFIG" ] && [ -f "$APP_CONFIG" ]; then
-                APP_DOCROOT="$(awk '$1 == "root" { sub(/;$/, "", $2); print $2; exit }' "$APP_CONFIG")"
-                sed -i "0,/^[[:space:]]*root[[:space:]]\+[^;]*;/s|^[[:space:]]*root[[:space:]]\+[^;]*;|    root $TARGET_PATH/public;|" "$APP_CONFIG"
-                APP_DOCROOT="$TARGET_PATH/public"
-                if "$NGINX_BIN" -t; then
-                  "$NGINX_BIN" -s reload || true
-                else
-                  echo "Nginx configuration test failed after document-root update; continuing deploy." >&2
-                fi
-              fi
-            fi
-            publish_static_dir() {
-              STATIC_DIR="$1"
-              for DEST_ROOT in "$TARGET_PATH" "$APP_DOCROOT" "/www/server/nginx/html"; do
-                if [ -z "$DEST_ROOT" ]; then
-                  continue
-                fi
-                if [ -L "$DEST_ROOT/$STATIC_DIR" ]; then
-                  rm "$DEST_ROOT/$STATIC_DIR"
-                fi
-                mkdir -p "$DEST_ROOT/$STATIC_DIR"
-                cp -a "public/$STATIC_DIR/." "$DEST_ROOT/$STATIC_DIR/"
-              done
-            }
-            for STATIC_DIR in css js build fonts pwa; do
-              publish_static_dir "$STATIC_DIR"
-            done
             php artisan migrate --force || true
             php artisan storage:link || true
             php artisan optimize:clear || true
