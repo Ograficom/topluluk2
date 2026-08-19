@@ -22,7 +22,7 @@
 
                         @foreach ($posts as $post)
                             @php
-                                $summary = IlluminateSupportStr::limit(
+                                $summary = Illuminate\Support\Str::limit(
                                     trim(strip_tags((string) ($post->excerpt ?: $post->content))),
                                     180
                                 );

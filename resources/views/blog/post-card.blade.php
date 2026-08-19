@@ -4214,14 +4214,18 @@ SVG;
         }
 
         [data-post-card-reaction-layer] {
-            position: fixed;
-            inset: 0;
-            z-index: 60;
-            pointer-events: none;
+            position: fixed !important;
+            inset: 0 !important;
+            z-index: 2147483646 !important;
+            pointer-events: none !important;
+            overflow: visible !important;
+            isolation: isolate !important;
         }
 
         [data-post-card-reaction-layer] .post-card__reaction-menu {
-            pointer-events: auto;
+            position: fixed !important;
+            z-index: 1 !important;
+            pointer-events: auto !important;
         }
 
         @media (max-width: 820px) {
@@ -9557,6 +9561,266 @@ SVG;
             }
         }
 
+
+
+        /* REACTION POPOVER REDESIGN — Emil Kowalski inspired */
+        html body [data-post-card-reaction-menu] {
+            --reaction-popover-bg: #ffffff;
+            --reaction-popover-border: #dfe4ea;
+            --reaction-popover-hover: #f6f7f9;
+            --reaction-popover-hover-border: #e3e7ec;
+            --reaction-popover-text: #202632;
+            --reaction-popover-muted: #687385;
+            width: min(264px, calc(100vw - 24px)) !important;
+            max-width: min(264px, calc(100vw - 24px)) !important;
+            max-height: min(64vh, 360px) !important;
+            padding: 10px !important;
+            overflow-x: hidden !important;
+            overflow-y: auto !important;
+            overscroll-behavior: contain !important;
+            border: 1px solid var(--reaction-popover-border) !important;
+            border-radius: 14px !important;
+            background: var(--reaction-popover-bg) !important;
+            background-image: none !important;
+            color: var(--reaction-popover-text) !important;
+            box-shadow:
+                0 1px 2px rgba(15, 23, 42, .08),
+                0 14px 34px rgba(15, 23, 42, .14) !important;
+            -webkit-backdrop-filter: none !important;
+            backdrop-filter: none !important;
+            mix-blend-mode: normal !important;
+            isolation: isolate !important;
+            opacity: 1;
+            z-index: 2147483000 !important;
+            scrollbar-width: thin;
+            scrollbar-color: #cbd5e1 transparent;
+        }
+
+        html body [data-post-card-reaction-menu]::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        html body [data-post-card-reaction-menu]::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        html body [data-post-card-reaction-menu]::-webkit-scrollbar-thumb {
+            border: 2px solid transparent;
+            border-radius: 999px;
+            background: #cbd5e1;
+            background-clip: padding-box;
+        }
+
+        html body [data-post-card-reaction-menu]:not([hidden]) {
+            display: grid !important;
+            grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+            grid-auto-flow: row !important;
+            grid-auto-rows: 42px !important;
+            align-items: center !important;
+            justify-items: stretch !important;
+            gap: 5px !important;
+            opacity: 1 !important;
+            transform: translateY(0) scale(1);
+            transform-origin: var(--reaction-transform-origin, bottom left) !important;
+            transition: transform 140ms cubic-bezier(.23, 1, .32, 1) !important;
+        }
+
+        html body [data-post-card-reaction-menu] .post-card__reaction-menu-title {
+            grid-column: 1 / -1 !important;
+            grid-row: auto !important;
+            width: 100% !important;
+            height: auto !important;
+            min-height: 0 !important;
+            margin: 0 0 3px !important;
+            padding: 2px 4px 10px !important;
+            border-bottom: 1px solid var(--reaction-popover-border) !important;
+            color: var(--reaction-popover-muted) !important;
+            font-size: 13.5px !important;
+            font-weight: 600 !important;
+            line-height: 18px !important;
+            letter-spacing: -0.01em !important;
+        }
+
+        html body [data-post-card-reaction-menu] :is(.post-card__reaction-form, a.post-card__reaction-option) {
+            display: flex !important;
+            width: 100% !important;
+            min-width: 0 !important;
+            height: 42px !important;
+            min-height: 42px !important;
+            margin: 0 !important;
+            align-items: center !important;
+            justify-content: center !important;
+        }
+
+        html body [data-post-card-reaction-menu] .post-card__reaction-option {
+            display: inline-flex !important;
+            width: 100% !important;
+            min-width: 0 !important;
+            height: 42px !important;
+            min-height: 42px !important;
+            padding: 0 !important;
+            align-items: center !important;
+            justify-content: center !important;
+            border: 1px solid transparent !important;
+            border-radius: 9px !important;
+            background: #ffffff !important;
+            color: inherit !important;
+            box-shadow: none !important;
+            text-decoration: none !important;
+            cursor: pointer !important;
+            transform: none;
+            transition:
+                background-color 120ms ease,
+                border-color 120ms ease,
+                transform 120ms cubic-bezier(.23, 1, .32, 1) !important;
+        }
+
+        html body [data-post-card-reaction-menu] .post-card__reaction-option:is(:hover, :focus-visible) {
+            border-color: var(--reaction-popover-hover-border) !important;
+            background: var(--reaction-popover-hover) !important;
+            color: var(--reaction-popover-text) !important;
+            transform: none !important;
+        }
+
+        html body [data-post-card-reaction-menu] .post-card__reaction-option:focus-visible {
+            outline: 2px solid #2563eb !important;
+            outline-offset: -2px !important;
+        }
+
+        html body [data-post-card-reaction-menu] .post-card__reaction-option:active {
+            transform: scale(.97) !important;
+        }
+
+        html body [data-post-card-reaction-menu] .reaction-emoji.reaction-emoji--html {
+            display: inline-flex !important;
+            width: auto !important;
+            height: auto !important;
+            min-width: 0 !important;
+            min-height: 0 !important;
+            align-items: center !important;
+            justify-content: center !important;
+            font-size: 24px !important;
+            line-height: 1 !important;
+        }
+
+        html body [data-post-card-reaction-menu] .reaction-emoji--html :is(img, svg, iconify-icon),
+        html body [data-post-card-reaction-menu] .post-card__reaction-option .reaction-emoji--html :is(img, svg, iconify-icon) {
+            display: block !important;
+            width: 26px !important;
+            min-width: 26px !important;
+            max-width: 26px !important;
+            height: 26px !important;
+            min-height: 26px !important;
+            max-height: 26px !important;
+            object-fit: contain !important;
+        }
+
+        /* Fully opaque dark surface as well — content behind the picker never bleeds through. */
+        html.dark body [data-post-card-reaction-menu],
+        body.dark [data-post-card-reaction-menu],
+        .dark [data-post-card-reaction-menu],
+        [data-theme="dark"] [data-post-card-reaction-menu] {
+            --reaction-popover-bg: #111827;
+            --reaction-popover-border: #334155;
+            --reaction-popover-hover: #1f2937;
+            --reaction-popover-hover-border: #475569;
+            --reaction-popover-text: #f8fafc;
+            --reaction-popover-muted: #cbd5e1;
+            border-color: var(--reaction-popover-border) !important;
+            background: var(--reaction-popover-bg) !important;
+            background-image: none !important;
+            color: var(--reaction-popover-text) !important;
+            box-shadow:
+                0 1px 2px rgba(0, 0, 0, .32),
+                0 16px 38px rgba(0, 0, 0, .42) !important;
+            -webkit-backdrop-filter: none !important;
+            backdrop-filter: none !important;
+        }
+
+        html.dark body [data-post-card-reaction-menu] .post-card__reaction-menu-title,
+        body.dark [data-post-card-reaction-menu] .post-card__reaction-menu-title,
+        .dark [data-post-card-reaction-menu] .post-card__reaction-menu-title,
+        [data-theme="dark"] [data-post-card-reaction-menu] .post-card__reaction-menu-title {
+            border-color: var(--reaction-popover-border) !important;
+            color: var(--reaction-popover-muted) !important;
+        }
+
+        html.dark body [data-post-card-reaction-menu] .post-card__reaction-option,
+        body.dark [data-post-card-reaction-menu] .post-card__reaction-option,
+        .dark [data-post-card-reaction-menu] .post-card__reaction-option,
+        [data-theme="dark"] [data-post-card-reaction-menu] .post-card__reaction-option {
+            background: var(--reaction-popover-bg) !important;
+            color: var(--reaction-popover-text) !important;
+        }
+
+        html.dark body [data-post-card-reaction-menu] .post-card__reaction-option:is(:hover, :focus-visible),
+        body.dark [data-post-card-reaction-menu] .post-card__reaction-option:is(:hover, :focus-visible),
+        .dark [data-post-card-reaction-menu] .post-card__reaction-option:is(:hover, :focus-visible),
+        [data-theme="dark"] [data-post-card-reaction-menu] .post-card__reaction-option:is(:hover, :focus-visible) {
+            border-color: var(--reaction-popover-hover-border) !important;
+            background: var(--reaction-popover-hover) !important;
+            color: var(--reaction-popover-text) !important;
+        }
+
+        @starting-style {
+            html body [data-post-card-reaction-menu]:not([hidden]) {
+                opacity: 1 !important;
+                transform: scale(.98);
+            }
+        }
+
+        @media (max-width: 640px) {
+            html body [data-post-card-reaction-layer] [data-post-card-reaction-menu],
+            html body [data-post-card-reaction-menu] {
+                position: fixed !important;
+                width: min(264px, calc(100vw - 20px)) !important;
+                max-width: min(264px, calc(100vw - 20px)) !important;
+                max-height: min(62dvh, 340px) !important;
+                padding: 10px !important;
+                border-radius: 14px !important;
+            }
+
+            html body [data-post-card-reaction-menu]:not([hidden]) {
+                grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+                grid-auto-rows: 44px !important;
+                gap: 5px !important;
+            }
+
+            html body [data-post-card-reaction-menu] :is(.post-card__reaction-form, a.post-card__reaction-option),
+            html body [data-post-card-reaction-menu] .post-card__reaction-option {
+                height: 44px !important;
+                min-height: 44px !important;
+            }
+        }
+
+        @media (max-width: 640px) {
+            html body [data-post-card-reaction-layer] {
+                position: fixed !important;
+                inset: 0 !important;
+                width: 100vw !important;
+                height: 100dvh !important;
+                z-index: 2147483646 !important;
+                overflow: visible !important;
+                pointer-events: none !important;
+            }
+
+            html body [data-post-card-reaction-layer] [data-post-card-reaction-menu] {
+                pointer-events: auto !important;
+                visibility: visible !important;
+            }
+        }
+
+        @media (max-width: 360px) {
+            html body [data-post-card-reaction-menu] {
+                width: min(240px, calc(100vw - 20px)) !important;
+                max-width: min(240px, calc(100vw - 20px)) !important;
+            }
+
+            html body [data-post-card-reaction-menu]:not([hidden]) {
+                grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+            }
+        }
+
 </style>
 
     <script>
@@ -10157,16 +10421,17 @@ SVG;
                     return;
                 }
 
+                // Tepki paneli mobilde de kartin icinde kalamaz.
+                // Kartlarda overflow:hidden oldugu icin panel kesiliyor ve bir sonraki
+                // kartin arkasinda aciliyormus gibi gorunuyordu. Her ekranda body
+                // uzerindeki sabit portal katmanina tasiyoruz.
+                mountReactionMenu(card);
+
                 const isMobile = window.matchMedia('(max-width: 640px)').matches;
-                const viewportPadding = isMobile ? 12 : 16;
+                const viewportPadding = isMobile ? 10 : 16;
+                const gap = isMobile ? 7 : 8;
 
-                if (isMobile) {
-                    restoreReactionMenu(card);
-                } else {
-                    mountReactionMenu(card);
-                }
-
-                panel.style.position = isMobile ? 'absolute' : 'fixed';
+                panel.style.position = 'fixed';
                 panel.style.display = '';
                 panel.style.gridTemplateColumns = '';
                 panel.style.gridAutoRows = '';
@@ -10175,64 +10440,30 @@ SVG;
                 panel.style.padding = '';
                 panel.style.boxSizing = '';
                 panel.style.transform = '';
-
-                if (isMobile) {
-                    const triggerRect = trigger.getBoundingClientRect();
-                    const panelWidth = Math.min(280, window.innerWidth - (viewportPadding * 2));
-
-                    panel.style.width = `${Math.round(panelWidth)}px`;
-                    panel.style.maxWidth = `${Math.round(panelWidth)}px`;
-
-                    if (triggerRect.left + panelWidth > window.innerWidth - viewportPadding) {
-                        panel.style.left = 'auto';
-                        panel.style.right = '0';
-                    } else {
-                        panel.style.left = '0';
-                        panel.style.right = 'auto';
-                    }
-
-                    panel.style.top = 'calc(100% + 8px)';
-                    panel.style.bottom = 'auto';
-
-                    const panelRect = panel.getBoundingClientRect();
-                    const spaceBelow = window.innerHeight - triggerRect.bottom - viewportPadding;
-                    const spaceAbove = triggerRect.top - viewportPadding;
-                    const openAbove = spaceBelow < panelRect.height + 8 && spaceAbove > spaceBelow;
-
-                    if (openAbove) {
-                        panel.style.top = 'auto';
-                        panel.style.bottom = 'calc(100% + 8px)';
-                    }
-
-                    panel.style.setProperty(
-                        '--reaction-transform-origin',
-                        `${panel.style.right === '0px' || panel.style.right === '0' ? 'right' : 'left'} ${openAbove ? 'bottom' : 'top'}`
-                    );
-                    return;
-                }
+                panel.style.right = 'auto';
+                panel.style.bottom = 'auto';
 
                 const triggerRect = trigger.getBoundingClientRect();
-                const desiredWidth = 280;
-                const panelWidth = Math.min(desiredWidth, window.innerWidth - (viewportPadding * 2));
+                const desiredWidth = isMobile ? 264 : 264;
+                const panelWidth = Math.max(220, Math.min(desiredWidth, window.innerWidth - (viewportPadding * 2)));
                 const preferredLeft = triggerRect.left + (triggerRect.width / 2) - (panelWidth / 2);
                 const maxLeft = Math.max(viewportPadding, window.innerWidth - panelWidth - viewportPadding);
                 const left = Math.max(viewportPadding, Math.min(preferredLeft, maxLeft));
 
-                panel.style.left = `${Math.round(left)}px`;
-                panel.style.right = 'auto';
-                panel.style.bottom = 'auto';
                 panel.style.width = `${Math.round(panelWidth)}px`;
                 panel.style.maxWidth = `${Math.round(panelWidth)}px`;
+                panel.style.left = `${Math.round(left)}px`;
 
+                // Panel body'ye tasindiktan sonra gercek yuksekligi olculur.
                 const panelRect = panel.getBoundingClientRect();
-                const gap = 8;
-                const spaceBelow = window.innerHeight - triggerRect.bottom - viewportPadding;
+                const viewportHeight = window.visualViewport?.height || window.innerHeight;
+                const spaceBelow = viewportHeight - triggerRect.bottom - viewportPadding;
                 const spaceAbove = triggerRect.top - viewportPadding;
                 const openAbove = spaceBelow < panelRect.height + gap && spaceAbove > spaceBelow;
                 const unclampedTop = openAbove
                     ? triggerRect.top - panelRect.height - gap
                     : triggerRect.bottom + gap;
-                const maxTop = Math.max(viewportPadding, window.innerHeight - panelRect.height - viewportPadding);
+                const maxTop = Math.max(viewportPadding, viewportHeight - panelRect.height - viewportPadding);
                 const top = Math.max(viewportPadding, Math.min(unclampedTop, maxTop));
                 const originX = Math.max(24, Math.min(triggerRect.left + (triggerRect.width / 2) - left, panelWidth - 24));
 

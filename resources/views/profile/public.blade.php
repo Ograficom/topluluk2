@@ -234,1760 +234,1657 @@
 
 <style>
     /* =========================================================
-       OGrafi profil sayfası - LinkedIn profil düzenine yakın temiz sürüm
-       Önceki çakışan profil CSS blokları tek sürüme indirildi.
+       OGRafi profile — Emil Kowalski inspired design pass
+       - fast, purposeful motion only
+       - origin-aware popovers
+       - strong hierarchy / compact typography
+       - full-width mobile layout
+       - modal + sheet spatial consistency
        ========================================================= */
 
     body:has(.og-profile-page) {
-        --og-profile-width: 782px;
-        --og-li-bg: #f3f2ef;
-        --og-li-card: #ffffff;
-        --og-li-text: rgba(0, 0, 0, 0.90);
-        --og-li-muted: rgba(0, 0, 0, 0.60);
-        --og-li-soft: rgba(0, 0, 0, 0.08);
-        --og-li-line: #e0dfdc;
-        --og-li-blue: #2563eb;
-        --og-li-blue-hover: #1d4ed8;
-        --og-li-pill-hover: rgba(37, 99, 235, 0.10);
-        --og-li-hover: rgba(0, 0, 0, 0.04);
-        background: var(--og-li-bg) !important;
+        --og-page: #f7f7f8;
+        --og-surface: #ffffff;
+        --og-surface-soft: #f8fafc;
+        --og-text: #111827;
+        --og-text-2: #334155;
+        --og-muted: #64748b;
+        --og-faint: #94a3b8;
+        --og-line: rgba(15, 23, 42, 0.09);
+        --og-line-strong: rgba(15, 23, 42, 0.14);
+        --og-hover: #f1f5f9;
+        --og-blue: #2563eb;
+        --og-blue-hover: #1d4ed8;
+        --og-blue-soft: #eff6ff;
+        --og-danger: #dc2626;
+        --og-ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+        --og-ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+        background: var(--og-page);
+        color: var(--og-text);
     }
 
-    body:has(.og-profile-page) .main-grid {
-        max-width: 1188px !important;
-        padding-top: 24px !important;
-        column-gap: 24px !important;
-        align-items: flex-start !important;
-        grid-template-columns: var(--layout-left-width, 220px) minmax(0, var(--og-profile-width)) var(--layout-right-width, 304px) !important;
-    }
-
-    body:has(.og-profile-page) .layout-main {
-        width: 100% !important;
-        max-width: var(--og-profile-width) !important;
-    }
-
-    .og-profile-page,
-    .og-profile-page * {
-        box-sizing: border-box !important;
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
+    body:has(.og-profile-page) * {
+        box-sizing: border-box;
     }
 
     .og-profile-page {
-        width: 100% !important;
-        padding: 0 0 40px !important;
-        color: var(--og-li-text) !important;
+        width: 100%;
+        padding: 14px 12px 28px;
+        color: var(--og-text);
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        -webkit-font-smoothing: antialiased;
+        text-rendering: optimizeLegibility;
     }
 
     .og-profile-wrap {
-        width: 100% !important;
-        max-width: var(--og-profile-width) !important;
-        margin: 0 auto !important;
+        width: min(100%, 690px);
+        margin: 0 auto;
+        display: grid;
+        gap: 10px;
     }
 
     .og-card,
     .og-tabs-card,
     .og-list-card,
-    .og-empty,
-    .og-post-wrapper [data-post-card-shell] {
-        border: 0 !important;
-        border-radius: 8px !important;
-        background: var(--og-li-card) !important;
-        box-shadow: none !important;
+    .og-empty {
+        background: var(--og-surface);
+        border: 1px solid var(--og-line);
+        box-shadow: 0 1px 2px rgba(15, 23, 42, 0.03);
     }
 
     .og-card {
-        overflow: hidden !important;
+        overflow: visible;
+        border-radius: 14px;
     }
 
     .og-cover {
-        position: relative !important;
-        height: 196px !important;
-        overflow: hidden !important;
-        border-radius: 8px 8px 0 0 !important;
-        background: #f4f4f5 !important;
+        position: relative;
+        height: 188px;
+        overflow: hidden;
+        border-radius: 14px 14px 0 0;
+        background:
+            radial-gradient(circle at 24% 30%, rgba(255,255,255,.42), transparent 34%),
+            linear-gradient(125deg, #7ba8ff 0%, #b9d4ff 46%, #a9c5ef 100%);
     }
 
-    .og-cover::before {
-        content: "" !important;
-        position: absolute !important;
-        inset: 0 !important;
-        z-index: 0 !important;
-        background-image: radial-gradient(circle, rgba(15, 23, 42, 0.65) 1.4px, transparent 1.4px) !important;
-        background-size: 13px 13px !important;
-        -webkit-mask-image: radial-gradient(ellipse 110% 90% at 14% 12%, #000 15%, transparent 72%) !important;
-        mask-image: radial-gradient(ellipse 110% 90% at 14% 12%, #000 15%, transparent 72%) !important;
-        pointer-events: none !important;
-    }
-
-    .og-cover::after {
-        content: "" !important;
-        position: absolute !important;
-        inset: 0 !important;
-        background: linear-gradient(180deg, rgba(0, 0, 0, 0.02), rgba(0, 0, 0, 0.07)) !important;
-        pointer-events: none !important;
-    }
-
-    .og-cover img {
-        display: block !important;
-        width: 100% !important;
-        height: 100% !important;
-        object-fit: cover !important;
-        object-position: center !important;
-    }
-
-    .og-body {
-        position: relative !important;
-        padding: 0 24px 24px !important;
-        background: var(--og-li-card) !important;
-    }
-
-    .og-topline {
-        display: flex !important;
-        align-items: flex-start !important;
-        justify-content: space-between !important;
-        gap: 16px !important;
-        min-height: 78px !important;
-    }
-
-    .og-avatar-button {
-        display: inline-flex !important;
-        margin-top: -64px !important;
-        padding: 0 !important;
-        border: 0 !important;
-        border-radius: 999px !important;
-        background: transparent !important;
-        cursor: pointer !important;
-        flex: 0 0 auto !important;
-    }
-
-    .og-avatar {
-        display: inline-flex !important;
-        width: 128px !important;
-        height: 128px !important;
-        align-items: center !important;
-        justify-content: center !important;
-        overflow: hidden !important;
-        border: 4px solid var(--og-li-card) !important;
-        border-radius: 999px !important;
-        background: #d9e5ef !important;
-        color: #0a66c2 !important;
-        font-size: 46px !important;
-        font-weight: 600 !important;
-        line-height: 1 !important;
-        box-shadow: none !important;
-    }
-
-    .og-avatar img {
-        display: block !important;
-        width: 100% !important;
-        height: 100% !important;
-        object-fit: cover !important;
+    .og-cover > img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
     }
 
     .og-cover-edit-btn {
-        position: absolute !important;
-        top: 12px !important;
-        right: 12px !important;
-        z-index: 1 !important;
-        display: inline-flex !important;
-        align-items: center !important;
-        gap: 6px !important;
-        border: 0 !important;
-        border-radius: 999px !important;
-        background: rgba(255, 255, 255, 0.92) !important;
-        backdrop-filter: blur(4px) !important;
-        padding: 7px 14px !important;
-        color: #18181b !important;
-        font-size: 12px !important;
-        font-weight: 500 !important;
-        line-height: 1 !important;
-        box-shadow: 0 1px 2px rgba(0, 0, 0, .12) !important;
-        transition: background-color .15s ease !important;
-    }
-
-    .og-cover-edit-btn:hover,
-    .og-cover-edit-btn:focus-visible {
-        background: #ffffff !important;
-        color: #18181b !important;
+        position: absolute;
+        top: 12px;
+        right: 12px;
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        min-height: 34px;
+        padding: 0 12px;
+        border: 0;
+        border-radius: 10px;
+        background: rgba(255, 255, 255, 0.88);
+        box-shadow: 0 1px 2px rgba(15,23,42,.06), 0 6px 18px rgba(15,23,42,.08);
+        color: #1f2937;
+        font-size: 12px;
+        font-weight: 600;
+        line-height: 1;
+        text-decoration: none;
+        backdrop-filter: blur(10px) saturate(150%);
+        -webkit-backdrop-filter: blur(10px) saturate(150%);
+        transition: background-color 140ms ease, transform 140ms var(--og-ease-out);
     }
 
     .og-cover-edit-btn iconify-icon {
-        font-size: 14px !important;
+        width: 15px;
+        height: 15px;
+        font-size: 15px;
     }
 
-    .og-avatar-wrap {
-        position: relative !important;
-        display: inline-flex !important;
-        margin-top: -64px !important;
-        flex: 0 0 auto !important;
+    .og-body {
+        position: relative;
+        padding: 0 18px 18px;
     }
 
-    .og-avatar-wrap .og-avatar-button {
-        margin-top: 0 !important;
+    .og-topline {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        min-height: 56px;
+        gap: 12px;
+    }
+
+    .og-avatar-wrap,
+    .og-topline > .og-avatar-button {
+        position: relative;
+        z-index: 2;
+        margin-top: -48px;
+    }
+
+    .og-avatar-button {
+        display: block;
+        padding: 0;
+        border: 0;
+        border-radius: 999px;
+        background: transparent;
+        cursor: pointer;
+        touch-action: manipulation;
+    }
+
+    .og-avatar {
+        display: grid;
+        place-items: center;
+        width: 104px;
+        height: 104px;
+        overflow: hidden;
+        border: 4px solid var(--og-surface);
+        border-radius: 999px;
+        background: #e2e8f0;
+        box-shadow: 0 1px 2px rgba(15,23,42,.04);
+        color: #475569;
+        font-size: 30px;
+        font-weight: 700;
+        user-select: none;
+    }
+
+    .og-avatar img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
     }
 
     .og-avatar-edit-btn {
-        position: absolute !important;
-        right: 4px !important;
-        bottom: 4px !important;
-        z-index: 1 !important;
-        display: inline-flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-        width: 32px !important;
-        height: 32px !important;
-        border: 2px solid var(--og-li-card) !important;
-        border-radius: 999px !important;
-        background: var(--og-li-blue) !important;
-        color: #ffffff !important;
-        box-shadow: 0 1px 2px rgba(0, 0, 0, .16) !important;
-        transition: background-color .15s ease !important;
-    }
-
-    .og-avatar-edit-btn:hover,
-    .og-avatar-edit-btn:focus-visible {
-        background: var(--og-li-blue-hover) !important;
-        color: #ffffff !important;
+        position: absolute;
+        right: 0;
+        bottom: 3px;
+        display: grid;
+        place-items: center;
+        width: 30px;
+        height: 30px;
+        border: 3px solid var(--og-surface);
+        border-radius: 999px;
+        background: var(--og-blue);
+        color: #fff;
+        text-decoration: none;
+        transition: background-color 140ms ease, transform 140ms var(--og-ease-out);
     }
 
     .og-avatar-edit-btn iconify-icon {
-        font-size: 14px !important;
-    }
-
-    @media (max-width: 640px) {
-        .og-avatar-wrap {
-            margin-top: -44px !important;
-        }
-
-        .og-avatar-edit-btn {
-            width: 26px !important;
-            height: 26px !important;
-        }
-
-        .og-avatar-edit-btn iconify-icon {
-            font-size: 12px !important;
-        }
+        width: 14px;
+        height: 14px;
+        font-size: 14px;
     }
 
     .og-actions {
-        display: flex !important;
-        align-items: center !important;
-        justify-content: flex-end !important;
-        flex-wrap: wrap !important;
-        gap: 8px !important;
-        padding-top: 16px !important;
-        min-width: 0 !important;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 7px;
+        margin-top: 14px;
+        min-width: 0;
     }
 
     .og-actions form {
-        display: inline-flex !important;
-        margin: 0 !important;
+        margin: 0;
     }
 
     .og-btn,
     .og-icon-btn,
     .og-menu > summary,
-    .og-chip,
-    .og-social,
-    .og-tab,
     .og-sort > summary,
-    .og-sort-option,
-    .og-menu-item,
-    .og-list-link,
     .og-sheet-close,
-    .og-sheet-action {
-        transition: background-color 0.12s ease, color 0.12s ease, border-color 0.12s ease !important;
+    .og-badge-sheet-close-icon {
+        -webkit-tap-highlight-color: transparent;
+        touch-action: manipulation;
     }
 
     .og-btn,
-    .og-icon-btn,
-    .og-menu > summary {
-        display: inline-flex !important;
-        height: 32px !important;
-        align-items: center !important;
-        justify-content: center !important;
-        gap: 6px !important;
-        border-radius: 999px !important;
-        padding: 0 16px !important;
-        font-size: 16px !important;
-        font-weight: 600 !important;
-        line-height: 1 !important;
-        white-space: nowrap !important;
-        text-decoration: none !important;
-        cursor: pointer !important;
+    .og-icon-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 36px;
+        border-radius: 9px;
+        text-decoration: none;
+        font-size: 12.5px;
+        font-weight: 650;
+        line-height: 1;
+        white-space: nowrap;
+        transition: background-color 140ms ease, color 140ms ease, border-color 140ms ease, transform 140ms var(--og-ease-out);
     }
 
     .og-btn {
-        min-width: 88px !important;
-        border: 1px solid var(--og-li-blue) !important;
-        background: var(--og-li-blue) !important;
-        color: #ffffff !important;
+        padding: 0 13px;
+        border: 1px solid var(--og-line-strong);
+        background: var(--og-surface);
+        color: var(--og-text-2);
     }
 
-    .og-btn:hover,
-    .og-btn:focus-visible {
-        background: var(--og-li-blue-hover) !important;
-        border-color: var(--og-li-blue-hover) !important;
-        color: #ffffff !important;
+    .og-btn--primary,
+    .og-actions > .og-btn {
+        border-color: var(--og-blue);
+        background: var(--og-blue);
+        color: #fff;
     }
 
     .og-icon-btn,
     .og-menu > summary {
-        min-width: 0 !important;
-        width: auto !important;
-        border: 0 !important;
-        background: var(--og-li-soft) !important;
-        color: var(--og-li-text) !important;
-    }
-
-    .og-icon-btn:hover,
-    .og-icon-btn:focus-visible,
-    .og-menu > summary:hover,
-    .og-menu > summary:focus-visible,
-    .og-menu[open] > summary {
-        background: rgba(0, 0, 0, 0.13) !important;
-        color: var(--og-li-text) !important;
+        width: 36px;
+        min-width: 36px;
+        height: 36px;
+        padding: 0;
+        border: 1px solid var(--og-line-strong);
+        border-radius: 9px;
+        background: var(--og-surface);
+        color: var(--og-text-2);
     }
 
     .og-icon-btn svg,
-    .og-menu > summary svg,
+    .og-menu > summary svg {
+        width: 17px;
+        height: 17px;
+    }
+
+    .og-icon-btn > span {
+        display: none;
+    }
+
+    .og-menu,
+    .og-sort {
+        position: relative;
+    }
+
+    .og-menu > summary,
+    .og-sort > summary {
+        list-style: none;
+        cursor: pointer;
+        user-select: none;
+    }
+
+    .og-menu > summary::-webkit-details-marker,
+    .og-sort > summary::-webkit-details-marker {
+        display: none;
+    }
+
+    .og-menu-panel,
+    .og-sort-panel {
+        position: absolute;
+        z-index: 50;
+        top: calc(100% + 7px);
+        right: 0;
+        min-width: 190px;
+        padding: 5px;
+        border: 1px solid var(--og-line);
+        border-radius: 11px;
+        background: rgba(255, 255, 255, 0.98);
+        box-shadow: 0 14px 34px rgba(15, 23, 42, 0.12), 0 2px 8px rgba(15, 23, 42, 0.06);
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        transform-origin: top right;
+        backdrop-filter: blur(14px) saturate(150%);
+        -webkit-backdrop-filter: blur(14px) saturate(150%);
+        transition: opacity 160ms ease, transform 180ms var(--og-ease-out);
+    }
+
+    .og-menu-panel form {
+        margin: 0;
+    }
+
+    @starting-style {
+        .og-menu[open] .og-menu-panel,
+        .og-sort[open] .og-sort-panel {
+            opacity: 0;
+            transform: translateY(-4px) scale(.97);
+        }
+    }
+
+    .og-menu-item,
+    .og-sort-option {
+        display: flex;
+        width: 100%;
+        min-height: 34px;
+        align-items: center;
+        gap: 9px;
+        padding: 0 9px;
+        border: 0;
+        border-radius: 7px;
+        background: transparent;
+        color: var(--og-text-2);
+        font: inherit;
+        font-size: 12px;
+        font-weight: 500;
+        line-height: 1.2;
+        text-align: left;
+        text-decoration: none;
+        cursor: pointer;
+        transition: background-color 120ms ease, color 120ms ease;
+    }
+
     .og-menu-item svg,
-    .og-chip svg,
-    .og-sheet-action svg {
-        display: block !important;
-        width: 18px !important;
-        height: 18px !important;
-        flex: 0 0 auto !important;
+    .og-sort-option svg {
+        width: 15px;
+        height: 15px;
+        flex: 0 0 15px;
+        color: var(--og-muted);
     }
 
-    .og-menu {
-        position: relative !important;
-        display: inline-flex !important;
-    }
-
-    .og-menu > summary {
-        list-style: none !important;
-    }
-
-    .og-menu > summary::-webkit-details-marker {
-        display: none !important;
-    }
-
-    .og-menu-panel {
-        position: absolute !important;
-        top: calc(100% + 8px) !important;
-        right: 0 !important;
-        z-index: 70 !important;
-        width: 264px !important;
-        border: 1px solid var(--og-li-line) !important;
-        border-radius: 8px !important;
-        background: var(--og-li-card) !important;
-        padding: 4px 0 !important;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.16) !important;
-    }
-
-    .og-menu-panel form,
-    .og-menu-item {
-        margin: 0 !important;
-    }
-
-    .og-menu-item {
-        display: flex !important;
-        width: 100% !important;
-        min-height: 40px !important;
-        align-items: center !important;
-        gap: 12px !important;
-        border: 0 !important;
-        border-radius: 0 !important;
-        background: transparent !important;
-        color: var(--og-li-text) !important;
-        padding: 0 16px !important;
-        font-size: 14px !important;
-        font-weight: 500 !important;
-        line-height: 1.25 !important;
-        text-align: left !important;
-        text-decoration: none !important;
-        cursor: pointer !important;
-    }
-
-    .og-menu-item:hover,
-    .og-menu-item:focus-visible {
-        background: var(--og-li-hover) !important;
-        color: var(--og-li-text) !important;
+    .og-sort-option[aria-current="true"] {
+        background: var(--og-blue-soft);
+        color: var(--og-blue);
+        font-weight: 600;
     }
 
     .og-identity {
-        min-width: 0 !important;
-        max-width: 100% !important;
-        padding-top: 0 !important;
+        min-width: 0;
+        margin-top: 0;
     }
 
     .og-name-row {
-        display: flex !important;
-        align-items: center !important;
-        gap: 7px !important;
-        min-width: 0 !important;
+        display: flex;
+        align-items: center;
+        min-width: 0;
+        gap: 5px;
     }
 
     .og-name {
-        margin: 0 !important;
-        color: var(--og-li-text) !important;
-        font-size: 24px !important;
-        font-weight: 600 !important;
-        line-height: 1.25 !important;
-        letter-spacing: 0 !important;
+        min-width: 0;
+        margin: 0;
+        color: var(--og-text);
+        font-size: 20px;
+        font-weight: 700;
+        line-height: 1.18;
+        letter-spacing: -0.02em;
     }
 
-    .og-username {
-        margin: 2px 0 0 !important;
-        color: var(--og-li-muted) !important;
-        font-size: 14px !important;
-        font-weight: 400 !important;
-        line-height: 1.35 !important;
+    .og-profile-subline {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 3px 9px;
+        margin-top: 5px;
+        min-width: 0;
+        color: var(--og-muted);
+        font-size: 11.5px;
+        font-weight: 450;
+        line-height: 1.45;
     }
 
-    .og-bio {
-        max-width: 620px !important;
-        margin: 6px 0 0 !important;
-        color: var(--og-li-text) !important;
-        font-size: 16px !important;
-        font-weight: 400 !important;
-        line-height: 1.38 !important;
+    .og-profile-subline__item {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        min-width: 0;
+        white-space: nowrap;
     }
 
-    .og-meta {
-        display: flex !important;
-        align-items: center !important;
-        flex-wrap: wrap !important;
-        gap: 4px 8px !important;
-        margin: 8px 0 0 !important;
-        color: var(--og-li-muted) !important;
-        font-size: 14px !important;
-        font-weight: 400 !important;
-        line-height: 1.35 !important;
+    .og-profile-subline__item svg,
+    .og-profile-subline__item iconify-icon {
+        display: block;
+        width: 11px;
+        min-width: 11px;
+        height: 11px;
+        color: var(--og-faint);
+        font-size: 11px;
     }
 
-    .og-points {
-        color: var(--og-li-blue) !important;
-        font-weight: 600 !important;
-    }
-
-    .og-dot {
-        width: 3px !important;
-        height: 3px !important;
-        border-radius: 999px !important;
-        background: var(--og-li-muted) !important;
-        opacity: 0.55 !important;
+    .og-profile-subline .og-username {
+        margin: 0;
+        color: var(--og-text-2);
+        font-size: 12px;
+        font-weight: 650;
+        letter-spacing: -0.005em;
     }
 
     .og-stats {
-        display: flex !important;
-        align-items: center !important;
-        flex-wrap: wrap !important;
-        gap: 4px 12px !important;
-        margin-top: 8px !important;
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 5px 14px;
+        margin-top: 8px;
     }
 
     .og-stat {
-        color: var(--og-li-text) !important;
-        font-size: 14px !important;
-        font-weight: 600 !important;
-        line-height: 1.35 !important;
-        text-decoration: none !important;
+        color: var(--og-text-2);
+        font-size: 11.5px;
+        font-weight: 450;
+        line-height: 1.35;
+        text-decoration: none;
     }
 
     .og-stat strong {
-        color: inherit !important;
-        font-weight: 700 !important;
+        color: var(--og-text);
+        font-weight: 650;
     }
 
-    .og-stat:hover,
-    .og-stat:focus-visible {
-        color: var(--og-li-blue) !important;
-        text-decoration: underline !important;
+    .og-bio {
+        max-width: 620px;
+        margin: 8px 0 0;
+        color: var(--og-text-2);
+        font-size: 13px;
+        font-weight: 400;
+        line-height: 1.5;
     }
 
-    .og-chips,
     .og-links {
-        display: flex !important;
-        align-items: center !important;
-        flex-wrap: wrap !important;
-        gap: 4px 10px !important;
-        margin-top: 8px !important;
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 5px;
+        margin-top: 10px;
     }
 
-    .og-chip {
-        display: inline-flex !important;
-        min-height: 0 !important;
-        align-items: center !important;
-        gap: 5px !important;
-        border: 0 !important;
-        border-radius: 0 !important;
-        background: transparent !important;
-        color: var(--og-li-muted) !important;
-        padding: 0 !important;
-        font-size: 14px !important;
-        font-weight: 400 !important;
-        line-height: 1.35 !important;
-        text-decoration: none !important;
+    .og-chip,
+    .og-website-link {
+        display: inline-flex;
+        min-width: 0;
+        align-items: center;
+        gap: 5px;
+        color: var(--og-blue);
+        font-size: 11.5px;
+        font-weight: 550;
+        line-height: 1.2;
+        text-decoration: none;
     }
 
-    .og-chip svg {
-        width: 16px !important;
-        height: 16px !important;
-        color: var(--og-li-muted) !important;
+    .og-website-link {
+        max-width: 220px;
+        padding-right: 4px;
     }
 
-    a.og-chip,
-    .og-chip--link {
-        color: var(--og-li-blue) !important;
-        font-weight: 600 !important;
+    .og-website-link > span {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
     }
 
-    a.og-chip:hover,
-    a.og-chip:focus-visible {
-        color: var(--og-li-blue-hover) !important;
-        text-decoration: underline !important;
+    .og-website-link > svg,
+    .og-favicon {
+        display: block;
+        width: 14px;
+        min-width: 14px;
+        height: 14px;
+        object-fit: contain;
     }
 
     .og-social {
-        display: inline-flex !important;
-        width: auto !important;
-        min-width: 30px !important;
-        height: 30px !important;
-        align-items: center !important;
-        justify-content: center !important;
-        border: 1px solid var(--og-li-line) !important;
-        border-radius: 999px !important;
-        background: transparent !important;
-        color: var(--og-li-muted) !important;
-        padding: 0 9px !important;
-        font-size: 12px !important;
-        font-weight: 700 !important;
-        text-decoration: none !important;
-        text-transform: uppercase !important;
+        display: inline-grid;
+        place-items: center;
+        width: 28px;
+        min-width: 28px;
+        height: 28px;
+        padding: 0;
+        overflow: visible;
+        border: 0;
+        border-radius: 7px;
+        background: transparent;
+        text-decoration: none;
+        opacity: 1;
+        visibility: visible;
+        transition: background-color 120ms ease, transform 120ms var(--og-ease-out);
     }
 
-    .og-social:hover,
-    .og-social:focus-visible {
-        border-color: var(--og-li-blue) !important;
-        background: var(--og-li-pill-hover) !important;
-        color: var(--og-li-blue) !important;
+    .og-social svg {
+        display: block !important;
+        width: 17px !important;
+        min-width: 17px !important;
+        height: 17px !important;
+        opacity: 1 !important;
+        visibility: visible !important;
     }
+
+    .og-social--facebook { color: #1877F2; }
+    .og-social--instagram { color: #E4405F; }
+    .og-social--x { color: #000000; }
+    .og-social--tiktok { color: #111111; }
+    .og-social--youtube { color: #FF0000; }
 
     .og-badges {
-        display: flex !important;
-        align-items: center !important;
-        flex-wrap: wrap !important;
-        gap: 8px !important;
-        margin-top: 16px !important;
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 5px;
+        margin-top: 10px;
     }
 
     .og-badge {
-        --badge-color: #8fb8d8;
-        --badge-rotate-x: 0deg;
-        --badge-rotate-y: 0deg;
-        --badge-front-scale: 1;
-        --badge-back-scale: 1;
-        --badge-front-opacity: 1;
-        --badge-back-opacity: 0;
-        --badge-light-left: 30%;
-        --badge-light-opacity: .14;
-        --badge-shadow-shift: 0px;
-        --badge-highlight-scale: 1;
-        position: relative !important;
-        display: inline-flex !important;
-        width: 44px !important;
-        height: 44px !important;
-        align-items: center !important;
-        justify-content: center !important;
-        border: 1px solid rgba(0, 0, 0, 0.10) !important;
-        border-radius: 999px !important;
-        background:
-            radial-gradient(circle at 30% 22%, rgba(255,255,255,.96), rgba(255,255,255,.14) 28%, transparent 42%),
-            radial-gradient(circle at 50% 48%, var(--badge-color), color-mix(in srgb, var(--badge-color) 62%, #111827 38%)) !important;
-        color: #ffffff !important;
-        padding: 0 !important;
-        cursor: grab !important;
-        overflow: visible !important;
-        isolation: isolate !important;
-        user-select: none !important;
-        touch-action: none !important;
-        transform: perspective(900px) rotateX(var(--badge-rotate-x)) rotateY(var(--badge-rotate-y)) !important;
-        transform-style: preserve-3d !important;
-        box-shadow: none !important;
+        position: relative;
+        display: grid;
+        place-items: center;
+        width: 30px;
+        min-width: 30px;
+        height: 30px;
+        padding: 0;
+        overflow: visible;
+        border: 0;
+        border-radius: 8px;
+        background: transparent;
+        cursor: pointer;
+        touch-action: manipulation;
+        transition: background-color 120ms ease, transform 120ms var(--og-ease-out);
     }
 
-    .og-badge::before {
-        content: "" !important;
-        position: absolute !important;
-        inset: 3px !important;
-        border-radius: 999px !important;
-        background:
-            linear-gradient(95deg, transparent 0%, rgba(255,255,255,var(--badge-light-opacity)) var(--badge-light-left), transparent 58%),
-            radial-gradient(circle at 35% 26%, rgba(255,255,255,.55), transparent 28%) !important;
-        transform: translateZ(10px) scale(var(--badge-highlight-scale)) !important;
-        pointer-events: none !important;
-        z-index: 3 !important;
-    }
-
+    .og-badge::before,
     .og-badge::after {
-        content: "" !important;
-        position: absolute !important;
-        left: 6px !important;
-        right: 6px !important;
-        bottom: -6px !important;
-        height: 8px !important;
-        border-radius: 999px !important;
-        background: rgba(0, 0, 0, 0.18) !important;
-        filter: blur(5px) !important;
-        transform: translateX(var(--badge-shadow-shift)) !important;
-        z-index: -1 !important;
-    }
-
-    .og-badge:active,
-    .og-badge.is-dragging {
-        cursor: grabbing !important;
-    }
-
-    .og-badge:hover,
-    .og-badge:focus-visible {
-        outline: none !important;
-        transform: perspective(900px) rotateX(var(--badge-rotate-x)) rotateY(var(--badge-rotate-y)) scale(1.04) !important;
+        display: none;
+        content: none;
     }
 
     .og-badge__face {
-        position: relative !important;
-        z-index: 2 !important;
-        display: inline-flex !important;
-        width: 78% !important;
-        height: 78% !important;
-        align-items: center !important;
-        justify-content: center !important;
-        overflow: hidden !important;
-        border-radius: 999px !important;
-        transform: translateZ(18px) scale(var(--badge-front-scale)) !important;
-        opacity: var(--badge-front-opacity) !important;
-        backface-visibility: hidden !important;
-        background: rgba(255,255,255,.08) !important;
+        display: grid;
+        place-items: center;
+        width: 26px;
+        height: 26px;
+        overflow: hidden;
+        border-radius: 7px;
+        background: color-mix(in srgb, var(--badge-color, #67e8f9) 16%, white);
     }
 
-    .og-badge__media,
-    .og-badge img {
-        position: relative !important;
-        z-index: 4 !important;
-        display: block !important;
-        width: 78% !important;
-        height: 78% !important;
-        max-width: 78% !important;
-        max-height: 78% !important;
-        object-fit: contain !important;
-        opacity: 1 !important;
-        visibility: visible !important;
-        mix-blend-mode: normal !important;
-        filter: drop-shadow(0 2px 3px rgba(0,0,0,.18)) !important;
-        background: transparent !important;
+    .og-badge__media {
+        display: block;
+        width: 22px;
+        height: 22px;
+        object-fit: contain;
     }
 
-    .og-badge__fallback {
-        position: relative !important;
-        z-index: 4 !important;
-        display: inline-flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-        width: 74% !important;
-        height: 74% !important;
-        border-radius: 999px !important;
-        color: #ffffff !important;
-        font-size: 18px !important;
-        font-weight: 700 !important;
-        text-shadow: 0 1px 2px rgba(0,0,0,.24) !important;
-    }
-
+    .og-badge__fallback,
     .og-badge__fallback--backup {
-        display: none !important;
+        display: grid;
+        place-items: center;
+        width: 100%;
+        height: 100%;
+        color: var(--og-text);
+        font-size: 10px;
+        font-weight: 750;
     }
 
-    .og-badge.has-image-error .og-badge__media {
-        display: none !important;
-    }
-
-    .og-badge.has-image-error .og-badge__fallback--backup {
-        display: inline-flex !important;
+    .og-badge__media + .og-badge__fallback--backup {
+        display: none;
     }
 
     .og-tabs-card {
-        position: relative !important;
-        display: flex !important;
-        min-height: 52px !important;
-        align-items: center !important;
-        justify-content: space-between !important;
-        gap: 12px !important;
-        margin-top: 8px !important;
-        padding: 0 16px !important;
-        overflow: visible !important;
+        position: relative;
+        display: flex;
+        min-height: 46px;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        padding: 0 8px 0 10px;
+        border-radius: 12px;
     }
 
     .og-tabs {
-        display: flex !important;
-        align-items: center !important;
-        gap: 4px !important;
-        min-width: 0 !important;
-        overflow-x: auto !important;
-        scrollbar-width: none !important;
+        display: flex;
+        min-width: 0;
+        align-self: stretch;
+        align-items: stretch;
+        gap: 1px;
+        overflow-x: auto;
+        scrollbar-width: none;
     }
 
     .og-tabs::-webkit-scrollbar {
-        display: none !important;
+        display: none;
     }
 
     .og-tab {
-        display: inline-flex !important;
-        height: 52px !important;
-        align-items: center !important;
-        justify-content: center !important;
-        border-bottom: 2px solid transparent !important;
-        color: var(--og-li-muted) !important;
-        padding: 0 12px !important;
-        font-size: 14px !important;
-        font-weight: 600 !important;
-        white-space: nowrap !important;
-        text-decoration: none !important;
-    }
-
-    .og-tab:hover,
-    .og-tab:focus-visible {
-        background: var(--og-li-hover) !important;
-        color: var(--og-li-text) !important;
+        position: relative;
+        display: inline-flex;
+        min-width: max-content;
+        align-items: center;
+        justify-content: center;
+        padding: 0 10px;
+        color: var(--og-muted);
+        font-size: 11.5px;
+        font-weight: 550;
+        line-height: 1;
+        text-decoration: none;
+        transition: color 120ms ease, background-color 120ms ease, transform 120ms var(--og-ease-out);
     }
 
     .og-tab[aria-current="page"] {
-        border-bottom-color: var(--og-li-blue) !important;
-        color: var(--og-li-blue) !important;
+        color: var(--og-blue);
+        font-weight: 650;
     }
 
-    .og-sort {
-        position: relative !important;
-        flex: 0 0 auto !important;
+    .og-tab[aria-current="page"]::after {
+        position: absolute;
+        right: 8px;
+        bottom: -1px;
+        left: 8px;
+        height: 2px;
+        border-radius: 999px 999px 0 0;
+        background: var(--og-blue);
+        content: "";
     }
 
     .og-sort > summary {
-        display: inline-flex !important;
-        height: 32px !important;
-        align-items: center !important;
-        gap: 6px !important;
-        border-radius: 4px !important;
-        color: var(--og-li-muted) !important;
-        padding: 0 8px !important;
-        font-size: 13px !important;
-        font-weight: 600 !important;
-        list-style: none !important;
-        cursor: pointer !important;
+        display: inline-flex;
+        height: 32px;
+        align-items: center;
+        gap: 5px;
+        padding: 0 9px;
+        border: 1px solid var(--og-line);
+        border-radius: 8px;
+        background: var(--og-surface);
+        color: var(--og-text-2);
+        font-size: 11.5px;
+        font-weight: 550;
+        line-height: 1;
+        transition: background-color 120ms ease, transform 120ms var(--og-ease-out);
     }
 
-    .og-sort > summary::-webkit-details-marker {
-        display: none !important;
-    }
-
-    .og-sort > summary:hover,
-    .og-sort[open] > summary {
-        background: var(--og-li-hover) !important;
-        color: var(--og-li-text) !important;
+    .og-sort > summary svg {
+        width: 14px;
+        height: 14px;
     }
 
     .og-sort-panel {
-        position: absolute !important;
-        top: calc(100% + 8px) !important;
-        right: 0 !important;
-        z-index: 50 !important;
-        min-width: 164px !important;
-        border: 1px solid var(--og-li-line) !important;
-        border-radius: 8px !important;
-        background: var(--og-li-card) !important;
-        padding: 4px 0 !important;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.16) !important;
-    }
-
-    .og-sort-option {
-        display: flex !important;
-        align-items: center !important;
-        gap: 10px !important;
-        min-height: 40px !important;
-        border-radius: 0 !important;
-        color: var(--og-li-text) !important;
-        padding: 0 14px !important;
-        font-size: 14px !important;
-        font-weight: 500 !important;
-        text-decoration: none !important;
-    }
-
-    .og-sort-option svg {
-        flex-shrink: 0 !important;
-        color: var(--og-li-muted) !important;
-    }
-
-    .og-sort-option:hover,
-    .og-sort-option:focus-visible,
-    .og-sort-option[aria-current="true"] {
-        background: var(--og-li-hover) !important;
-        color: var(--og-li-blue) !important;
-    }
-
-    .og-sort-option:hover svg,
-    .og-sort-option:focus-visible svg,
-    .og-sort-option[aria-current="true"] svg {
-        color: var(--og-li-blue) !important;
+        min-width: 150px;
     }
 
     .og-content {
-        display: flex !important;
-        flex-direction: column !important;
-        gap: 8px !important;
-        margin-top: 8px !important;
+        display: grid;
+        gap: 10px;
+        min-width: 0;
     }
 
     .og-post-wrapper {
-        width: 100% !important;
+        min-width: 0;
     }
 
-    .og-post-wrapper [data-post-card-shell] {
-        overflow: hidden !important;
-    }
-
+    .og-list-card,
     .og-empty {
-        padding: 32px 22px !important;
-        color: var(--og-li-muted) !important;
-        font-size: 14px !important;
-        line-height: 1.45 !important;
-        text-align: center !important;
+        border-radius: 12px;
     }
 
     .og-list-card {
-        overflow: hidden !important;
+        overflow: hidden;
     }
 
     .og-list-head {
-        padding: 16px 20px !important;
-        border-bottom: 1px solid var(--og-li-line) !important;
+        padding: 14px 15px 11px;
+        border-bottom: 1px solid var(--og-line);
     }
 
     .og-list-title {
-        margin: 0 !important;
-        color: var(--og-li-text) !important;
-        font-size: 20px !important;
-        font-weight: 600 !important;
-        line-height: 1.25 !important;
+        margin: 0;
+        color: var(--og-text);
+        font-size: 13px;
+        font-weight: 650;
+        line-height: 1.3;
     }
 
     .og-list-desc {
-        margin: 3px 0 0 !important;
-        color: var(--og-li-muted) !important;
-        font-size: 14px !important;
-        line-height: 1.35 !important;
+        margin: 3px 0 0;
+        color: var(--og-muted);
+        font-size: 11px;
+        line-height: 1.35;
     }
 
     .og-list-link {
-        display: flex !important;
-        align-items: flex-start !important;
-        gap: 12px !important;
-        border-bottom: 1px solid var(--og-li-line) !important;
-        color: inherit !important;
-        padding: 12px 20px !important;
-        text-decoration: none !important;
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        padding: 11px 14px;
+        color: inherit;
+        text-decoration: none;
+        transition: background-color 120ms ease;
     }
 
-    .og-list-link:last-child {
-        border-bottom: 0 !important;
-    }
-
-    .og-list-link:hover,
-    .og-list-link:focus-visible {
-        background: var(--og-li-hover) !important;
+    .og-list-link + .og-list-link {
+        border-top: 1px solid var(--og-line);
     }
 
     .og-list-avatar {
-        display: flex !important;
-        width: 48px !important;
-        height: 48px !important;
-        flex: 0 0 48px !important;
-        align-items: center !important;
-        justify-content: center !important;
-        overflow: hidden !important;
-        border-radius: 999px !important;
-        background: #d9e5ef !important;
-        color: var(--og-li-blue) !important;
-        font-size: 16px !important;
-        font-weight: 600 !important;
+        display: grid;
+        place-items: center;
+        width: 36px;
+        min-width: 36px;
+        height: 36px;
+        overflow: hidden;
+        border-radius: 999px;
+        background: #e2e8f0;
+        color: #475569;
+        font-size: 12px;
+        font-weight: 650;
     }
 
     .og-list-avatar img {
-        display: block !important;
-        width: 100% !important;
-        height: 100% !important;
-        object-fit: cover !important;
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
     }
 
     .og-list-main {
-        min-width: 0 !important;
-        flex: 1 1 auto !important;
+        display: block;
+        min-width: 0;
+        flex: 1;
     }
 
     .og-list-name {
-        display: flex !important;
-        align-items: center !important;
-        flex-wrap: wrap !important;
-        gap: 5px !important;
-        min-width: 0 !important;
-        color: var(--og-li-text) !important;
-        font-size: 14px !important;
-        font-weight: 600 !important;
-        line-height: 1.25 !important;
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 4px;
+        color: var(--og-text);
+        font-size: 12px;
+        font-weight: 600;
+        line-height: 1.3;
     }
 
     .og-list-muted,
     .og-comment-post {
-        color: var(--og-li-muted) !important;
-        font-size: 12px !important;
-        line-height: 1.35 !important;
+        color: var(--og-muted);
+        font-size: 10.5px;
+        font-weight: 400;
+        line-height: 1.4;
+    }
+
+    .og-comment-post {
+        display: block;
+        margin-top: 2px;
     }
 
     .og-comment-text {
-        display: block !important;
-        margin: 5px 0 0 !important;
-        color: var(--og-li-text) !important;
-        font-size: 14px !important;
-        line-height: 1.45 !important;
+        display: block;
+        margin-top: 4px;
+        color: var(--og-text-2);
+        font-size: 11.5px;
+        line-height: 1.48;
     }
 
-    .alma-ad-slot {
-        width: 100% !important;
+    .og-empty {
+        min-height: 84px;
+        display: grid;
+        place-items: center;
+        padding: 18px;
+        color: var(--og-muted);
+        font-size: 12px;
+        text-align: center;
     }
 
+    /* ---------- dialogs / sheets ---------- */
     .og-sheet {
-        position: fixed !important;
-        inset: 0 !important;
-        z-index: 1000 !important;
-        pointer-events: none !important;
+        position: fixed;
+        inset: 0;
+        z-index: 1000;
+        visibility: hidden;
+        pointer-events: none;
     }
 
     .og-sheet[aria-hidden="false"] {
-        pointer-events: auto !important;
+        visibility: visible;
+        pointer-events: auto;
     }
 
     .og-sheet-backdrop {
-        position: absolute !important;
-        inset: 0 !important;
-        background: rgba(0, 0, 0, 0.55) !important;
-        opacity: 0 !important;
-        transition: opacity 0.16s ease !important;
+        position: absolute;
+        inset: 0;
+        background: rgba(15, 23, 42, 0.48);
+        opacity: 0;
+        backdrop-filter: blur(14px) saturate(85%);
+        -webkit-backdrop-filter: blur(14px) saturate(85%);
+        transition: opacity 180ms ease;
     }
 
     .og-sheet[aria-hidden="false"] .og-sheet-backdrop {
-        opacity: 1 !important;
+        opacity: 1;
     }
 
     .og-sheet-panel {
-        position: absolute !important;
-        left: 50% !important;
-        top: 50% !important;
-        right: auto !important;
-        bottom: auto !important;
-        width: min(92vw, 520px) !important;
-        max-height: min(86vh, 720px) !important;
-        overflow: auto !important;
-        border: 1px solid var(--og-li-line) !important;
-        border-radius: 8px !important;
-        background: var(--og-li-card) !important;
-        padding: 20px !important;
-        transform: translate(-50%, -48%) scale(.98) !important;
-        opacity: 0 !important;
-        box-shadow: 0 12px 32px rgba(0, 0, 0, 0.22) !important;
-        transition: transform 0.16s ease, opacity 0.16s ease !important;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        width: min(420px, calc(100vw - 28px));
+        max-height: min(82dvh, 680px);
+        overflow: auto;
+        padding: 18px;
+        border: 1px solid rgba(255,255,255,.42);
+        border-radius: 18px;
+        background: rgba(255,255,255,.96);
+        box-shadow: 0 26px 72px rgba(15,23,42,.22), 0 4px 16px rgba(15,23,42,.10);
+        opacity: 0;
+        transform: translate(-50%, -48%) scale(.97);
+        transition: opacity 180ms ease, transform 220ms var(--og-ease-out);
     }
 
     .og-sheet[aria-hidden="false"] .og-sheet-panel {
-        transform: translate(-50%, -50%) scale(1) !important;
-        opacity: 1 !important;
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
     }
 
     .og-sheet-handle {
-        display: none !important;
+        display: none;
     }
 
     .og-sheet-title {
-        margin: 0 0 12px !important;
-        color: var(--og-li-text) !important;
-        font-size: 20px !important;
-        font-weight: 600 !important;
-        line-height: 1.25 !important;
-        text-align: left !important;
+        margin: 0;
+        color: var(--og-text);
+        font-size: 15px;
+        font-weight: 650;
+        line-height: 1.3;
+        letter-spacing: -0.01em;
     }
 
     .og-avatar-preview {
-        overflow: hidden !important;
-        border-radius: 8px !important;
-        background: #d9e5ef !important;
+        display: grid;
+        place-items: center;
+        width: min(270px, 75vw);
+        aspect-ratio: 1;
+        margin: 14px auto 0;
+        overflow: hidden;
+        border-radius: 18px;
+        background: #e2e8f0;
+        color: #475569;
+        font-size: 42px;
+        font-weight: 700;
     }
 
-    .og-avatar-preview img,
-    .og-avatar-preview span {
-        display: flex !important;
-        width: 100% !important;
-        max-height: 70vh !important;
-        aspect-ratio: 1 / 1 !important;
-        align-items: center !important;
-        justify-content: center !important;
-        object-fit: cover !important;
-        color: var(--og-li-blue) !important;
-        font-size: 64px !important;
-        font-weight: 600 !important;
-    }
-
-    .og-sheet-action,
-    .og-sheet-close {
-        display: flex !important;
-        width: 100% !important;
-        min-height: 40px !important;
-        align-items: center !important;
-        justify-content: flex-start !important;
-        gap: 10px !important;
-        border: 0 !important;
-        border-radius: 4px !important;
-        background: transparent !important;
-        color: var(--og-li-text) !important;
-        padding: 0 12px !important;
-        font-size: 14px !important;
-        font-weight: 600 !important;
-        text-align: left !important;
-        text-decoration: none !important;
-        cursor: pointer !important;
-    }
-
-    .og-sheet-action:hover,
-    .og-sheet-action:focus-visible,
-    .og-sheet-close:hover,
-    .og-sheet-close:focus-visible {
-        background: var(--og-li-hover) !important;
+    .og-avatar-preview img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
     }
 
     .og-sheet-close {
-        justify-content: center !important;
-        margin-top: 12px !important;
-        border: 1px solid var(--og-li-muted) !important;
-        border-radius: 999px !important;
-        color: var(--og-li-muted) !important;
+        display: inline-flex;
+        width: 100%;
+        min-height: 40px;
+        align-items: center;
+        justify-content: center;
+        margin-top: 14px;
+        padding: 0 14px;
+        border: 0;
+        border-radius: 10px;
+        background: var(--og-blue);
+        color: #fff;
+        font-size: 12.5px;
+        font-weight: 650;
+        cursor: pointer;
+        transition: background-color 140ms ease, transform 140ms var(--og-ease-out);
     }
 
     .og-badge-sheet-panel {
-        width: min(92vw, 560px) !important;
-        padding: 18px 20px 20px !important;
+        width: min(430px, calc(100vw - 28px));
+        padding: 18px;
     }
 
     .og-badge-sheet-close-icon {
-        position: absolute !important;
-        top: 10px !important;
-        right: 10px !important;
-        display: inline-flex !important;
-        width: 36px !important;
-        height: 36px !important;
-        align-items: center !important;
-        justify-content: center !important;
-        border: 0 !important;
-        border-radius: 999px !important;
-        background: transparent !important;
-        color: var(--og-li-muted) !important;
-        cursor: pointer !important;
-        z-index: 5 !important;
-    }
-
-    .og-badge-sheet-close-icon:hover,
-    .og-badge-sheet-close-icon:focus-visible {
-        background: var(--og-li-hover) !important;
-        color: var(--og-li-text) !important;
+        position: absolute;
+        z-index: 3;
+        top: 12px;
+        right: 12px;
+        display: grid;
+        place-items: center;
+        width: 32px;
+        height: 32px;
+        padding: 0;
+        border: 1px solid var(--og-line-strong);
+        border-radius: 9px;
+        background: #fff;
+        color: var(--og-text-2);
+        cursor: pointer;
+        transition: background-color 120ms ease, border-color 120ms ease, transform 120ms var(--og-ease-out);
     }
 
     .og-badge-sheet-close-icon svg {
-        width: 20px !important;
-        height: 20px !important;
+        display: block;
+        width: 15px;
+        height: 15px;
+    }
+
+    .og-badge-sheet-summary {
+        display: grid;
+        grid-template-columns: 64px minmax(0, 1fr);
+        align-items: center;
+        gap: 13px;
+        padding-right: 38px;
     }
 
     .og-badge-sheet-media {
-        position: relative !important;
-        display: flex !important;
-        flex-direction: column !important;
-        align-items: center !important;
-        justify-content: center !important;
-        min-height: 270px !important;
-        padding-top: 18px !important;
-    }
-
-    .og-badge-sheet-subtitle {
-        margin: -4px 0 14px !important;
-        color: var(--og-li-muted) !important;
-        font-size: 14px !important;
-        line-height: 1.45 !important;
-    }
-
-    .og-badge-sheet-meta {
-        margin-top: 0 !important;
-    }
-
-    .og-badge-sheet-meta .og-chip {
-        border: 1px solid var(--og-li-line) !important;
-        border-radius: 999px !important;
-        padding: 6px 10px !important;
-        line-height: 1 !important;
+        position: relative;
+        display: grid;
+        place-items: center;
+        min-height: 64px;
     }
 
     .og-ref-badge-stage {
-        --badge-preview-color: #8fb8d8;
-        --badge-rotate-x: 0deg;
-        --badge-rotate-y: 0deg;
-        --badge-front-scale: 1;
-        --badge-back-scale: 1;
-        --badge-front-opacity: 1;
-        --badge-back-opacity: 0;
-        --badge-light-left: 30%;
-        --badge-light-opacity: .18;
-        --badge-shadow-shift: 0px;
-        --badge-highlight-scale: 1;
-        position: relative !important;
-        width: 222px !important;
-        height: 222px !important;
-        margin: 0 auto !important;
-        perspective: 1200px !important;
-        cursor: grab !important;
-        user-select: none !important;
-        touch-action: none !important;
-    }
-
-    .og-ref-badge-stage.is-dragging {
-        cursor: grabbing !important;
+        --badge-preview-color: #67e8f9;
+        position: relative;
+        width: 58px;
+        height: 58px;
+        perspective: 600px;
     }
 
     .og-ref-badge-rotor {
-        position: relative !important;
-        width: 100% !important;
-        height: 100% !important;
-        border-radius: 999px !important;
-        transform: rotateX(var(--badge-rotate-x)) rotateY(var(--badge-rotate-y)) !important;
-        transform-style: preserve-3d !important;
-        transition: transform .08s ease !important;
-    }
-
-    .og-ref-badge-stage.is-dragging .og-ref-badge-rotor {
-        transition: none !important;
+        position: absolute;
+        inset: 0;
+        transform-style: preserve-3d;
+        transform: rotateX(var(--badge-rotate-x, 0deg)) rotateY(var(--badge-rotate-y, 0deg));
     }
 
     .og-ref-badge-layer {
-        position: absolute !important;
-        inset: 0 !important;
-        display: flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-        overflow: hidden !important;
-        border-radius: 999px !important;
-        backface-visibility: hidden !important;
-        transform-style: preserve-3d !important;
-        border: 1px solid rgba(0, 0, 0, 0.16) !important;
+        position: absolute;
+        inset: 0;
+        display: grid;
+        place-items: center;
+        overflow: hidden;
+        border-radius: 14px;
+        backface-visibility: hidden;
+        -webkit-backface-visibility: hidden;
     }
 
     .og-ref-badge-layer--front {
-        background:
-            linear-gradient(95deg, transparent 0%, rgba(255,255,255,var(--badge-light-opacity)) var(--badge-light-left), transparent 58%),
-            radial-gradient(circle at 30% 22%, rgba(255,255,255,.96), rgba(255,255,255,.16) 28%, transparent 42%),
-            radial-gradient(circle at 50% 48%, var(--badge-preview-color), color-mix(in srgb, var(--badge-preview-color) 58%, #111827 42%)) !important;
-        transform: translateZ(14px) scale(var(--badge-front-scale)) !important;
-        opacity: var(--badge-front-opacity) !important;
+        background: color-mix(in srgb, var(--badge-preview-color) 24%, white);
+        box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--badge-preview-color) 42%, transparent);
     }
 
     .og-ref-badge-layer--back {
-        background:
-            radial-gradient(circle at 30% 20%, rgba(255,255,255,.22), transparent 30%),
-            radial-gradient(circle at 50% 48%, color-mix(in srgb, var(--badge-preview-color) 88%, #ffffff 12%), color-mix(in srgb, var(--badge-preview-color) 58%, #111827 42%)) !important;
-        transform: rotateY(180deg) translateZ(14px) scale(var(--badge-back-scale)) !important;
-        opacity: var(--badge-back-opacity) !important;
+        background: color-mix(in srgb, var(--badge-preview-color) 34%, #fff);
+        transform: rotateY(180deg);
     }
 
-    .og-ref-badge-layer--front::after,
-    .og-ref-badge-layer--back::after {
-        content: "" !important;
-        position: absolute !important;
-        inset: 14px !important;
-        border-radius: 999px !important;
-        border: 1px solid rgba(255, 255, 255, 0.22) !important;
-        box-shadow: inset 0 1px 0 rgba(255,255,255,.42), inset 0 -10px 18px rgba(0,0,0,.16) !important;
-        pointer-events: none !important;
+    .og-ref-badge-glow,
+    .og-ref-badge-shadow {
+        display: none;
     }
 
-    .og-ref-badge-glow {
-        position: absolute !important;
-        inset: 0 !important;
-        border-radius: inherit !important;
-        background: radial-gradient(circle at 36% 24%, rgba(255,255,255,.44), transparent 36%) !important;
-        transform: scale(var(--badge-highlight-scale)) !important;
-        pointer-events: none !important;
-    }
-
-    .og-ref-badge-content {
-        position: relative !important;
-        z-index: 2 !important;
-        display: flex !important;
-        width: 72% !important;
-        height: 72% !important;
-        align-items: center !important;
-        justify-content: center !important;
-        border-radius: 999px !important;
-        transform: translateZ(22px) !important;
+    .og-ref-badge-content,
+    .og-ref-badge-back-shape {
+        display: grid;
+        place-items: center;
+        width: 100%;
+        height: 100%;
     }
 
     .og-ref-badge-media {
-        display: block !important;
-        width: 78% !important;
-        height: 78% !important;
-        object-fit: contain !important;
-        filter: drop-shadow(0 6px 8px rgba(0,0,0,.18)) !important;
+        display: block;
+        width: 44px;
+        height: 44px;
+        object-fit: contain;
     }
 
     .og-ref-badge-fallback {
-        display: inline-flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-        width: 74% !important;
-        height: 74% !important;
-        border-radius: 999px !important;
-        color: #ffffff !important;
-        font-size: 82px !important;
-        font-weight: 700 !important;
-        text-shadow: 0 4px 8px rgba(0,0,0,.24) !important;
-    }
-
-    .og-ref-badge-back-shape {
-        position: relative !important;
-        display: flex !important;
-        width: 74% !important;
-        height: 74% !important;
-        align-items: center !important;
-        justify-content: center !important;
-        border-radius: 999px !important;
-        background-image: var(--badge-back-icon-url) !important;
-        background-repeat: no-repeat !important;
-        background-position: center !important;
-        background-size: 60% !important;
-        transform: translateZ(22px) !important;
-    }
-
-    .og-ref-badge-back-shape::before {
-        content: "" !important;
-        position: absolute !important;
-        inset: -14px !important;
-        border-radius: 999px !important;
-        background: rgba(0,0,0,.16) !important;
-        z-index: -1 !important;
+        display: grid;
+        place-items: center;
+        width: 42px;
+        height: 42px;
+        border-radius: 10px;
+        background: rgba(255,255,255,.84);
+        color: var(--og-text);
+        font-size: 18px;
+        font-weight: 750;
     }
 
     .og-ref-badge-back-copy {
-        position: absolute !important;
-        inset: auto 10px 16px !important;
-        display: flex !important;
-        flex-direction: column !important;
-        align-items: center !important;
-        justify-content: center !important;
-        gap: 4px !important;
-        text-align: center !important;
+        display: grid;
+        gap: 2px;
+        padding: 8px;
+        text-align: center;
     }
 
     .og-ref-badge-back-name {
-        max-width: 100% !important;
-        overflow: hidden !important;
-        color: rgba(255,255,255,.92) !important;
-        font-size: 12px !important;
-        font-weight: 700 !important;
-        line-height: 1.1 !important;
-        letter-spacing: .08em !important;
-        text-overflow: ellipsis !important;
-        text-transform: uppercase !important;
-        white-space: nowrap !important;
-        text-shadow: 0 1px 2px rgba(0,0,0,.22) !important;
+        color: var(--og-text);
+        font-size: 9px;
+        font-weight: 700;
+        line-height: 1.2;
     }
 
     .og-ref-badge-back-brand {
-        color: rgba(255,255,255,.92) !important;
-        font-size: 18px !important;
-        font-weight: 800 !important;
-        line-height: 1 !important;
-        letter-spacing: .06em !important;
-        text-shadow: 0 1px 2px rgba(0,0,0,.22) !important;
+        color: var(--og-muted);
+        font-size: 7px;
+        letter-spacing: .08em;
     }
 
-    .og-ref-badge-shadow {
-        width: 142px !important;
-        height: 16px !important;
-        margin: -8px auto 0 !important;
-        border-radius: 999px !important;
-        background: rgba(0, 0, 0, 0.18) !important;
-        filter: blur(8px) !important;
-        transform: translateX(var(--badge-shadow-shift, 0px)) !important;
-        pointer-events: none !important;
+    .og-badge-sheet-copy {
+        min-width: 0;
     }
 
-    @media (max-width: 1180px) {
-        body:has(.og-profile-page) .main-grid {
-            grid-template-columns: minmax(0, var(--og-profile-width)) var(--layout-right-width, 304px) !important;
-            max-width: calc(var(--og-profile-width) + var(--layout-right-width, 304px) + 24px) !important;
+    .og-badge-sheet-subtitle {
+        margin: 5px 0 0;
+        color: var(--og-muted);
+        font-size: 12px;
+        line-height: 1.45;
+    }
+
+    .og-badge-sheet-meta {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        margin-top: 14px;
+    }
+
+    .og-badge-sheet-meta .og-chip {
+        min-height: 28px;
+        padding: 0 9px;
+        border-radius: 8px;
+        background: var(--og-surface-soft);
+        color: var(--og-muted);
+        font-size: 11px;
+        font-weight: 500;
+    }
+
+    .og-badge-sheet-close-text {
+        margin-top: 14px;
+        background: var(--og-blue);
+        color: #fff;
+    }
+
+    /* ---------- precise hover / press feedback ---------- */
+    @media (hover: hover) and (pointer: fine) {
+        .og-cover-edit-btn:hover,
+        .og-btn:not(.og-btn--primary):hover,
+        .og-icon-btn:hover,
+        .og-menu > summary:hover,
+        .og-sort > summary:hover,
+        .og-social:hover,
+        .og-badge:hover,
+        .og-badge-sheet-close-icon:hover {
+            background: var(--og-hover);
+        }
+
+        .og-btn--primary:hover,
+        .og-actions > .og-btn:hover,
+        .og-sheet-close:hover,
+        .og-badge-sheet-close-text:hover,
+        .og-avatar-edit-btn:hover {
+            background: var(--og-blue-hover);
+        }
+
+        .og-menu-item:hover,
+        .og-menu-item:focus-visible,
+        .og-sort-option:hover,
+        .og-sort-option:focus-visible,
+        .og-list-link:hover,
+        .og-tab:hover {
+            background: var(--og-hover);
+        }
+
+        .og-website-link:hover {
+            color: var(--og-blue-hover);
         }
     }
 
-    @media (max-width: 960px) {
-        body:has(.og-profile-page) .main-grid {
-            display: block !important;
-            width: 100% !important;
-            max-width: 100% !important;
-            margin: 0 !important;
-            padding: 0 !important;
-        }
+    .og-cover-edit-btn:active,
+    .og-avatar-edit-btn:active,
+    .og-btn:active,
+    .og-icon-btn:active,
+    .og-menu > summary:active,
+    .og-sort > summary:active,
+    .og-social:active,
+    .og-badge:active,
+    .og-tab:active,
+    .og-sheet-close:active,
+    .og-badge-sheet-close-icon:active {
+        transform: scale(.97);
+    }
 
-        body:has(.og-profile-page) .layout-main {
-            max-width: 100% !important;
-            padding: 0 !important;
-        }
+    .og-btn:focus-visible,
+    .og-icon-btn:focus-visible,
+    .og-menu > summary:focus-visible,
+    .og-sort > summary:focus-visible,
+    .og-menu-item:focus-visible,
+    .og-sort-option:focus-visible,
+    .og-social:focus-visible,
+    .og-badge:focus-visible,
+    .og-tab:focus-visible,
+    .og-sheet-close:focus-visible,
+    .og-badge-sheet-close-icon:focus-visible,
+    .og-cover-edit-btn:focus-visible,
+    .og-avatar-button:focus-visible {
+        outline: 2px solid color-mix(in srgb, var(--og-blue) 62%, white);
+        outline-offset: 2px;
+    }
 
-        body:has(.og-profile-page) .layout-side--left,
-        body:has(.og-profile-page) .layout-side--right {
-            display: none !important;
+    /* ---------- dark mode ---------- */
+    body.dark:has(.og-profile-page),
+    .dark body:has(.og-profile-page) {
+        --og-page: #0b0d10;
+        --og-surface: #12161b;
+        --og-surface-soft: #181d23;
+        --og-text: #f8fafc;
+        --og-text-2: #dbe4ee;
+        --og-muted: #9aa8b8;
+        --og-faint: #708094;
+        --og-line: rgba(255,255,255,.08);
+        --og-line-strong: rgba(255,255,255,.14);
+        --og-hover: rgba(255,255,255,.07);
+        --og-blue-soft: rgba(37,99,235,.14);
+    }
+
+    body.dark .og-card,
+    body.dark .og-tabs-card,
+    body.dark .og-list-card,
+    body.dark .og-empty,
+    body.dark .og-btn,
+    body.dark .og-icon-btn,
+    body.dark .og-menu > summary,
+    body.dark .og-sort > summary,
+    body.dark .og-menu-panel,
+    body.dark .og-sort-panel,
+    body.dark .og-sheet-panel,
+    .dark .og-card,
+    .dark .og-tabs-card,
+    .dark .og-list-card,
+    .dark .og-empty,
+    .dark .og-btn,
+    .dark .og-icon-btn,
+    .dark .og-menu > summary,
+    .dark .og-sort > summary,
+    .dark .og-menu-panel,
+    .dark .og-sort-panel,
+    .dark .og-sheet-panel {
+        background-color: var(--og-surface);
+        color: var(--og-text);
+        border-color: var(--og-line);
+    }
+
+    body.dark .og-badge-sheet-close-icon,
+    .dark .og-badge-sheet-close-icon {
+        background: var(--og-surface-soft);
+        color: var(--og-text);
+    }
+
+    body.dark .og-btn--primary,
+    body.dark .og-actions > .og-btn,
+    .dark .og-btn--primary,
+    .dark .og-actions > .og-btn {
+        border-color: var(--og-blue);
+        background: var(--og-blue);
+        color: #ffffff;
+    }
+
+    body.dark .og-social--x svg path,
+    body.dark .og-social--tiktok svg path,
+    .dark .og-social--x svg path,
+    .dark .og-social--tiktok svg path {
+        fill: #ffffff !important;
+    }
+
+    /* ---------- responsive ---------- */
+    @media (max-width: 640px) {
+        body:has(.og-profile-page) {
+            background: var(--og-surface);
         }
 
         .og-profile-page {
-            padding: 0 10px 28px !important;
+            padding: 0 0 20px;
         }
 
         .og-profile-wrap {
-            max-width: 100% !important;
-        }
-    }
-
-    @media (max-width: 640px) {
-        .og-profile-page {
-            padding: 0 0 28px !important;
+            width: 100%;
+            gap: 8px;
         }
 
         .og-card,
         .og-tabs-card,
         .og-list-card,
-        .og-empty,
-        .og-post-wrapper [data-post-card-shell] {
-            border-right: 0 !important;
-            border-left: 0 !important;
-            border-radius: 0 !important;
+        .og-empty {
+            border-right: 0;
+            border-left: 0;
+            border-radius: 0;
+            box-shadow: none;
         }
 
         .og-cover {
-            height: 122px !important;
-            border-radius: 0 !important;
+            height: 154px;
+            border-radius: 0;
+        }
+
+        .og-cover-edit-btn {
+            top: 10px;
+            right: 10px;
+            min-height: 32px;
+            padding: 0 10px;
+            font-size: 11.5px;
         }
 
         .og-body {
-            padding: 0 16px 20px !important;
+            padding: 0 14px 15px;
         }
 
         .og-topline {
-            min-height: 58px !important;
-            gap: 10px !important;
+            min-height: 48px;
         }
 
-        .og-avatar-button {
-            margin-top: -44px !important;
+        .og-avatar-wrap,
+        .og-topline > .og-avatar-button {
+            margin-top: -42px;
         }
 
         .og-avatar {
-            width: 88px !important;
-            height: 88px !important;
-            border-width: 3px !important;
-            font-size: 32px !important;
+            width: 88px;
+            height: 88px;
+            border-width: 4px;
+            font-size: 26px;
+        }
+
+        .og-avatar-edit-btn {
+            width: 28px;
+            height: 28px;
+            right: -1px;
+            bottom: 1px;
         }
 
         .og-actions {
-            gap: 6px !important;
-            padding-top: 10px !important;
+            gap: 6px;
+            margin-top: 10px;
         }
 
         .og-btn,
         .og-icon-btn,
         .og-menu > summary {
-            height: 30px !important;
-            padding: 0 12px !important;
-            font-size: 14px !important;
+            min-height: 34px;
+            height: 34px;
         }
 
-        .og-icon-btn span,
-        .og-menu > summary span {
-            display: none !important;
+        .og-btn {
+            padding-inline: 11px;
+            font-size: 12px;
         }
 
         .og-icon-btn,
         .og-menu > summary {
-            width: 34px !important;
-            padding: 0 !important;
+            width: 34px;
+            min-width: 34px;
         }
 
         .og-name {
-            font-size: 22px !important;
+            font-size: 18px;
         }
 
-        .og-bio {
-            font-size: 15px !important;
+        .og-profile-subline {
+            gap: 2px 7px;
+            margin-top: 4px;
+            font-size: 10.5px;
+            line-height: 16px;
         }
 
-        .og-username,
-        .og-meta,
-        .og-stat,
-        .og-chip {
-            font-size: 13px !important;
+        .og-profile-subline .og-username {
+            margin: 0;
+            padding: 0;
+            font-size: 11.5px;
+            font-weight: 700;
+            line-height: 16px;
+        }
+
+        .og-profile-subline__item {
+            min-height: 16px;
+            line-height: 16px;
+        }
+
+        .og-profile-subline__item svg,
+        .og-profile-subline__item iconify-icon {
+            width: 10px;
+            min-width: 10px;
+            height: 10px;
+            font-size: 10px;
         }
 
         .og-stats {
-            gap: 4px 10px !important;
+            gap: 4px 11px;
+            margin-top: 7px;
+        }
+
+        .og-stat {
+            font-size: 10.5px;
+        }
+
+        .og-bio {
+            margin-top: 7px;
+            font-size: 12px;
+            line-height: 1.48;
+        }
+
+        .og-links {
+            gap: 4px;
+            margin-top: 8px;
+        }
+
+        .og-chip,
+        .og-website-link {
+            font-size: 10.5px;
+        }
+
+        .og-social {
+            width: 26px;
+            min-width: 26px;
+            height: 26px;
+        }
+
+        .og-social svg {
+            width: 16px !important;
+            min-width: 16px !important;
+            height: 16px !important;
         }
 
         .og-badges {
-            gap: 7px !important;
+            margin-top: 8px;
         }
 
         .og-badge {
-            width: 40px !important;
-            height: 40px !important;
+            width: 28px;
+            min-width: 28px;
+            height: 28px;
+        }
+
+        .og-badge__face {
+            width: 24px;
+            height: 24px;
+        }
+
+        .og-badge__media {
+            width: 20px;
+            height: 20px;
         }
 
         .og-tabs-card {
-            min-height: 48px !important;
-            margin-top: 8px !important;
-            padding: 0 8px !important;
+            min-height: 44px;
+            padding: 0 6px 0 4px;
         }
 
         .og-tab {
-            height: 48px !important;
-            padding: 0 10px !important;
-            font-size: 13px !important;
+            padding: 0 8px;
+            font-size: 11px;
         }
 
-        .og-sort > summary span {
-            display: none !important;
+        .og-sort > summary {
+            width: 32px;
+            min-width: 32px;
+            height: 32px;
+            justify-content: center;
+            padding: 0;
         }
 
-        .og-menu-panel {
-            position: absolute !important;
-            top: calc(100% + 8px) !important;
-            right: 0 !important;
-            bottom: auto !important;
-            left: auto !important;
-            width: 240px !important;
-            max-width: calc(100vw - 24px) !important;
-            border-radius: 12px !important;
-            padding: 8px 0 !important;
+        .og-sort > summary > span {
+            display: none;
         }
 
-        .og-menu-item {
-            min-height: 46px !important;
+        .og-sort-panel {
+            min-width: 146px;
         }
 
-        .og-sheet-panel {
-            left: 0 !important;
-            right: 0 !important;
-            bottom: 0 !important;
-            top: auto !important;
-            width: 100% !important;
-            max-height: 88vh !important;
-            border-right: 0 !important;
-            border-bottom: 0 !important;
-            border-left: 0 !important;
-            border-radius: 16px 16px 0 0 !important;
-            transform: translateY(110%) !important;
-            opacity: 1 !important;
-            padding: 16px !important;
+        .og-list-card,
+        .og-empty {
+            border-top: 1px solid var(--og-line);
+            border-bottom: 1px solid var(--og-line);
         }
 
-        .og-sheet[aria-hidden="false"] .og-sheet-panel {
-            transform: translateY(0) !important;
+        .og-sheet-panel,
+        .og-badge-sheet-panel {
+            left: 0;
+            right: 0;
+            top: auto;
+            bottom: 0;
+            width: 100%;
+            max-width: none;
+            max-height: 84dvh;
+            padding: 16px 16px calc(16px + env(safe-area-inset-bottom));
+            border-right: 0;
+            border-bottom: 0;
+            border-left: 0;
+            border-radius: 18px 18px 0 0;
+            opacity: 1;
+            transform: translateY(100%);
+            transition: transform 240ms cubic-bezier(0.32, 0.72, 0, 1);
         }
 
-        .og-sheet-handle {
-            display: block !important;
-            width: 42px !important;
-            height: 4px !important;
-            margin: 0 auto 14px !important;
-            border-radius: 999px !important;
-            background: var(--og-li-line) !important;
+        .og-sheet[aria-hidden="false"] .og-sheet-panel,
+        .og-sheet[aria-hidden="false"] .og-badge-sheet-panel {
+            transform: translateY(0);
         }
 
-        .og-badge-sheet-media {
-            min-height: 226px !important;
+        .og-sheet-handle,
+        .og-badge-sheet-handle {
+            display: block;
+            width: 34px;
+            height: 4px;
+            margin: -6px auto 12px;
+            border-radius: 999px;
+            background: #cbd5e1;
+        }
+
+        .og-badge-sheet-close-icon {
+            top: 12px;
+            right: 12px;
+        }
+
+        .og-badge-sheet-summary {
+            grid-template-columns: 54px minmax(0, 1fr);
+            gap: 12px;
+            padding-right: 38px;
         }
 
         .og-ref-badge-stage {
-            width: 190px !important;
-            height: 190px !important;
+            width: 52px;
+            height: 52px;
         }
 
-        .og-ref-badge-fallback {
-            font-size: 66px !important;
+        .og-ref-badge-media {
+            width: 40px;
+            height: 40px;
         }
 
-        .og-ref-badge-shadow {
-            width: 118px !important;
+        .og-badge-sheet-subtitle {
+            font-size: 11.5px;
         }
     }
 
-    body.dark:has(.og-profile-page),
-    .dark body:has(.og-profile-page) {
-        --og-li-bg: #000000;
-        --og-li-card: #1b1f23;
-        --og-li-text: rgba(255, 255, 255, 0.92);
-        --og-li-muted: rgba(255, 255, 255, 0.68);
-        --og-li-soft: rgba(255, 255, 255, 0.10);
-        --og-li-line: #38434f;
-        --og-li-blue: #70b5f9;
-        --og-li-blue-hover: #a8d4ff;
-        --og-li-pill-hover: rgba(112, 181, 249, 0.14);
-        --og-li-hover: rgba(255, 255, 255, 0.08);
-        background: var(--og-li-bg) !important;
-    }
+    @media (max-width: 380px) {
+        .og-body {
+            padding-inline: 12px;
+        }
 
-    body.dark .og-body,
-    .dark .og-body,
-    body.dark .og-card,
-    .dark .og-card,
-    body.dark .og-tabs-card,
-    .dark .og-tabs-card,
-    body.dark .og-list-card,
-    .dark .og-list-card,
-    body.dark .og-empty,
-    .dark .og-empty,
-    body.dark .og-menu-panel,
-    .dark .og-menu-panel,
-    body.dark .og-sort-panel,
-    .dark .og-sort-panel,
-    body.dark .og-sheet-panel,
-    .dark .og-sheet-panel {
-        background: var(--og-li-card) !important;
-        border-color: var(--og-li-line) !important;
-    }
+        .og-profile-subline {
+            gap: 2px 6px;
+        }
 
-    body.dark .og-avatar,
-    .dark .og-avatar {
-        border-color: var(--og-li-card) !important;
-        background: #28313a !important;
-        color: var(--og-li-blue) !important;
-    }
-
-    body.dark .og-cover,
-    .dark .og-cover {
-        background: #1b1f23 !important;
-    }
-
-    body.dark .og-cover::before,
-    .dark .og-cover::before {
-        background-image: radial-gradient(circle, rgba(255, 255, 255, 0.35) 1.4px, transparent 1.4px) !important;
-    }
-
-    body.dark .og-btn,
-    .dark .og-btn {
-        background: var(--og-li-blue) !important;
-        border-color: var(--og-li-blue) !important;
-        color: #102235 !important;
-    }
-
-    body.dark .og-btn:hover,
-    .dark .og-btn:hover,
-    body.dark .og-btn:focus-visible,
-    .dark .og-btn:focus-visible {
-        background: var(--og-li-blue-hover) !important;
-        border-color: var(--og-li-blue-hover) !important;
-        color: #102235 !important;
-    }
-
-    body.dark .og-icon-btn,
-    .dark .og-icon-btn,
-    body.dark .og-menu > summary,
-    .dark .og-menu > summary,
-    body.dark .og-sheet-close,
-    .dark .og-sheet-close {
-        border-color: var(--og-li-muted) !important;
-        color: var(--og-li-muted) !important;
-    }
-
-    body.dark .og-icon-btn:hover,
-    .dark .og-icon-btn:hover,
-    body.dark .og-menu > summary:hover,
-    .dark .og-menu > summary:hover,
-    body.dark .og-menu[open] > summary,
-    .dark .og-menu[open] > summary {
-        border-color: var(--og-li-text) !important;
-        color: var(--og-li-text) !important;
-        background: var(--og-li-hover) !important;
-    }
-
-    body.dark .og-name,
-    .dark .og-name,
-    body.dark .og-bio,
-    .dark .og-bio,
-    body.dark .og-list-title,
-    .dark .og-list-title,
-    body.dark .og-list-name,
-    .dark .og-list-name,
-    body.dark .og-comment-text,
-    .dark .og-comment-text,
-    body.dark .og-menu-item,
-    .dark .og-menu-item,
-    body.dark .og-sort-option,
-    .dark .og-sort-option,
-    body.dark .og-sheet-title,
-    .dark .og-sheet-title,
-    body.dark .og-sheet-action,
-    .dark .og-sheet-action {
-        color: var(--og-li-text) !important;
-    }
-
-    body.dark .og-username,
-    .dark .og-username,
-    body.dark .og-meta,
-    .dark .og-meta,
-    body.dark .og-chip,
-    .dark .og-chip,
-    body.dark .og-list-desc,
-    .dark .og-list-desc,
-    body.dark .og-list-muted,
-    .dark .og-list-muted,
-    body.dark .og-comment-post,
-    .dark .og-comment-post,
-    body.dark .og-social,
-    .dark .og-social,
-    body.dark .og-tab,
-    .dark .og-tab,
-    body.dark .og-sort > summary,
-    .dark .og-sort > summary {
-        color: var(--og-li-muted) !important;
-    }
-
-    body.dark .og-stat,
-    .dark .og-stat,
-    body.dark a.og-chip,
-    .dark a.og-chip,
-    body.dark .og-chip--link,
-    .dark .og-chip--link {
-        color: var(--og-li-blue) !important;
-    }
-
-    body.dark .og-stat:hover,
-    .dark .og-stat:hover,
-    body.dark a.og-chip:hover,
-    .dark a.og-chip:hover {
-        color: var(--og-li-blue-hover) !important;
-    }
-
-    body.dark .og-tab:hover,
-    .dark .og-tab:hover,
-    body.dark .og-tab:focus-visible,
-    .dark .og-tab:focus-visible {
-        color: var(--og-li-text) !important;
-        background: var(--og-li-hover) !important;
-    }
-
-    body.dark .og-tab[aria-current="page"],
-    .dark .og-tab[aria-current="page"] {
-        color: #7bd88f !important;
-        border-bottom-color: #7bd88f !important;
-    }
-
-    body.dark .og-list-head,
-    .dark .og-list-head,
-    body.dark .og-list-link,
-    .dark .og-list-link {
-        border-color: var(--og-li-line) !important;
-    }
-
-    body.dark .og-list-link:hover,
-    .dark .og-list-link:hover,
-    body.dark .og-menu-item:hover,
-    .dark .og-menu-item:hover,
-    body.dark .og-sort-option:hover,
-    .dark .og-sort-option:hover,
-    body.dark .og-sheet-action:hover,
-    .dark .og-sheet-action:hover,
-    body.dark .og-sheet-close:hover,
-    .dark .og-sheet-close:hover {
-        background: var(--og-li-hover) !important;
+        .og-tab {
+            padding-inline: 7px;
+        }
     }
 
     @media (prefers-reduced-motion: reduce) {
         .og-profile-page *,
-        .og-profile-page *::before,
-        .og-profile-page *::after {
-            transition: none !important;
-            animation: none !important;
+        .og-sheet-backdrop,
+        .og-sheet-panel,
+        .og-menu-panel,
+        .og-sort-panel {
+            scroll-behavior: auto !important;
+            transition-duration: 0.01ms !important;
+            animation-duration: 0.01ms !important;
+            animation-iteration-count: 1 !important;
+        }
+
+        .og-sheet-panel,
+        .og-sheet[aria-hidden="false"] .og-sheet-panel {
+            transform: translate(-50%, -50%) !important;
+        }
+
+    }
+
+    @media (prefers-reduced-motion: reduce) and (max-width: 640px) {
+        .og-sheet-panel,
+        .og-sheet[aria-hidden="false"] .og-sheet-panel {
+            transform: none !important;
+        }
+    }
+
+    @media (prefers-reduced-transparency: reduce) {
+        .og-cover-edit-btn,
+        .og-menu-panel,
+        .og-sort-panel,
+        .og-sheet-panel {
+            backdrop-filter: none !important;
+            -webkit-backdrop-filter: none !important;
+        }
+
+        .og-sheet-backdrop {
+            background: rgba(15, 23, 42, 0.68);
+            backdrop-filter: none;
+            -webkit-backdrop-filter: none;
+        }
+    }
+
+    @media (prefers-contrast: more) {
+        .og-card,
+        .og-tabs-card,
+        .og-list-card,
+        .og-empty,
+        .og-btn,
+        .og-icon-btn,
+        .og-menu > summary,
+        .og-sort > summary,
+        .og-menu-panel,
+        .og-sort-panel,
+        .og-sheet-panel,
+        .og-badge-sheet-close-icon {
+            border-color: currentColor;
         }
     }
 
 
     /* =========================================================
-       Kullanıcı isteği: mobilde tam genişlik + kalın fontları normalleştir
+       FINAL CONTROL FIXES
+       - Confirm/primary actions stay blue
+       - Close X is bordered and turns gray on mouse hover
+       - Three-dot menu button is perfectly centered/aligned
        ========================================================= */
-    .og-profile-page :is(
-        .og-name,
-        .og-username,
-        .og-bio,
-        .og-meta,
-        .og-points,
-        .og-stat,
-        .og-stat strong,
-        .og-chip,
-        .og-chip--link,
-        a.og-chip,
-        .og-social,
-        .og-btn,
-        .og-icon-btn,
-        .og-menu > summary,
-        .og-menu-item,
-        .og-tab,
-        .og-sort > summary,
-        .og-sort-option,
-        .og-list-title,
-        .og-list-name,
-        .og-list-muted,
-        .og-comment-post,
-        .og-comment-text,
-        .og-sheet-title,
-        .og-sheet-action,
-        .og-sheet-close,
-        .og-badge-sheet-subtitle,
-        .og-ref-badge-back-name,
-        .og-ref-badge-back-brand,
-        .og-badge__fallback,
-        .og-ref-badge-fallback,
-        .og-avatar,
-        .og-avatar-preview span,
-        .og-list-avatar
-    ) {
-        font-weight: 400 !important;
+    .og-profile-page .og-sheet-close,
+    .og-profile-page .og-badge-sheet-close-text,
+    .og-profile-page .og-btn--primary,
+    .og-profile-page .og-actions > .og-btn {
+        background: #2563eb !important;
+        border-color: #2563eb !important;
+        color: #ffffff !important;
+        box-shadow: none !important;
     }
 
-    @media (max-width: 960px) {
-        body:has(.og-profile-page),
-        body:has(.og-profile-page) .main-grid,
-        body:has(.og-profile-page) .layout-main {
-            width: 100% !important;
-            max-width: 100% !important;
-            margin-left: 0 !important;
-            margin-right: 0 !important;
-            padding-left: 0 !important;
-            padding-right: 0 !important;
-            overflow-x: hidden !important;
+    .og-profile-page .og-badge-sheet-close-icon {
+        display: inline-grid !important;
+        place-items: center !important;
+        width: 32px !important;
+        min-width: 32px !important;
+        height: 32px !important;
+        min-height: 32px !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        border: 1px solid #d1d5db !important;
+        border-radius: 9px !important;
+        background: #ffffff !important;
+        color: #111827 !important;
+        line-height: 0 !important;
+        box-shadow: none !important;
+    }
+
+    .og-profile-page .og-badge-sheet-close-icon svg {
+        display: block !important;
+        width: 15px !important;
+        height: 15px !important;
+        margin: 0 !important;
+        color: currentColor !important;
+    }
+
+    .og-profile-page .og-actions .og-menu {
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        flex: 0 0 auto !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    .og-profile-page .og-actions .og-menu > summary.og-menu-summary-icon-only {
+        display: inline-grid !important;
+        place-items: center !important;
+        box-sizing: border-box !important;
+        width: 36px !important;
+        min-width: 36px !important;
+        height: 36px !important;
+        min-height: 36px !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        border: 1px solid #d1d5db !important;
+        border-radius: 9px !important;
+        background: #ffffff !important;
+        color: #475569 !important;
+        line-height: 0 !important;
+        list-style: none !important;
+        box-shadow: none !important;
+        vertical-align: middle !important;
+    }
+
+    .og-profile-page .og-actions .og-menu > summary.og-menu-summary-icon-only::-webkit-details-marker {
+        display: none !important;
+    }
+
+    .og-profile-page .og-actions .og-menu > summary.og-menu-summary-icon-only svg {
+        display: block !important;
+        width: 17px !important;
+        height: 17px !important;
+        margin: 0 !important;
+        color: currentColor !important;
+        fill: currentColor !important;
+        transform: none !important;
+    }
+
+    .og-profile-page .og-actions .og-menu > summary.og-menu-summary-icon-only svg circle {
+        fill: currentColor !important;
+        stroke: none !important;
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+        .og-profile-page .og-sheet-close:hover,
+        .og-profile-page .og-badge-sheet-close-text:hover,
+        .og-profile-page .og-btn--primary:hover,
+        .og-profile-page .og-actions > .og-btn:hover {
+            background: #1d4ed8 !important;
+            border-color: #1d4ed8 !important;
+            color: #ffffff !important;
         }
 
+        .og-profile-page .og-badge-sheet-close-icon:hover,
+        .og-profile-page .og-actions .og-menu > summary.og-menu-summary-icon-only:hover {
+            background: #f3f4f6 !important;
+            border-color: #cbd5e1 !important;
+            color: #111827 !important;
+        }
+    }
+
+    .og-profile-page .og-sheet-close:active,
+    .og-profile-page .og-badge-sheet-close-text:active,
+    .og-profile-page .og-btn--primary:active,
+    .og-profile-page .og-actions > .og-btn:active,
+    .og-profile-page .og-badge-sheet-close-icon:active,
+    .og-profile-page .og-actions .og-menu > summary.og-menu-summary-icon-only:active {
+        transform: scale(.97) !important;
+    }
+
+    @media (max-width: 640px) {
+        .og-profile-page .og-actions .og-menu > summary.og-menu-summary-icon-only {
+            width: 34px !important;
+            min-width: 34px !important;
+            height: 34px !important;
+            min-height: 34px !important;
+        }
+    }
+
+
+    /* =========================================================
+       Mobil profil: kullanici adi ust satir, detaylar alt satir.
+       Mobil dis/icerik sag-sol bosluklari tamamen kaldirildi.
+       ========================================================= */
+    @media (max-width: 640px) {
         .og-profile-page {
             width: 100% !important;
-            max-width: 100% !important;
+            max-width: none !important;
             margin: 0 !important;
-            padding: 0 0 28px !important;
+            padding-left: 0 !important;
+            padding-right: 0 !important;
         }
 
         .og-profile-wrap,
@@ -1995,143 +1892,110 @@
         .og-tabs-card,
         .og-content,
         .og-list-card,
-        .og-empty,
-        .og-post-wrapper,
-        .og-post-wrapper [data-post-card-shell] {
-            width: 100% !important;
-            max-width: 100% !important;
-            margin-left: 0 !important;
-            margin-right: 0 !important;
-        }
-
-        .og-profile-wrap {
-            padding-left: 0 !important;
-            padding-right: 0 !important;
-        }
-    }
-
-    @media (max-width: 640px) {
-        .og-card,
-        .og-tabs-card,
-        .og-list-card,
-        .og-empty,
-        .og-post-wrapper [data-post-card-shell] {
-            border-right: 0 !important;
-            border-left: 0 !important;
-            border-radius: 0 !important;
-        }
-
-        .og-tabs-card,
-        .og-content {
-            margin-top: 8px !important;
-        }
-    }
-
-
-
-    /* =========================================================
-       Son düzeltme: mobil/tablet ekranda profil alanını
-       ortadaki dar kapsayıcıdan çıkarıp gerçek tam genişlik yapar.
-       ========================================================= */
-    @media (max-width: 960px) {
-        html,
-        body {
-            width: 100% !important;
-            max-width: 100% !important;
-            overflow-x: hidden !important;
-        }
-
-        body:has(.og-profile-page) {
-            min-width: 0 !important;
-            padding-left: 0 !important;
-            padding-right: 0 !important;
-        }
-
-        body:has(.og-profile-page) :is(
-            #app,
-            main,
-            .main,
-            .page,
-            .page-wrap,
-            .page-wrapper,
-            .site,
-            .site-main,
-            .site-content,
-            .app,
-            .app-main,
-            .app-content,
-            .content,
-            .content-area,
-            .main-content,
-            .main-container,
-            .container,
-            .layout,
-            .layout-container,
-            .main-grid,
-            .layout-main
-        ) {
+        .og-empty {
             width: 100% !important;
             max-width: none !important;
-            min-width: 0 !important;
             margin-left: 0 !important;
             margin-right: 0 !important;
+        }
+
+        .og-body {
             padding-left: 0 !important;
             padding-right: 0 !important;
         }
 
+        .og-tabs-card {
+            padding-left: 0 !important;
+            padding-right: 0 !important;
+        }
+
+        .og-profile-subline {
+            display: flex !important;
+            width: 100% !important;
+            align-items: center !important;
+            flex-wrap: wrap !important;
+            column-gap: 7px !important;
+            row-gap: 2px !important;
+            margin-top: 4px !important;
+        }
+
+        .og-profile-subline .og-username {
+            flex: 0 0 100% !important;
+            width: 100% !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            line-height: 16px !important;
+        }
+
+        .og-profile-subline__item:not(.og-username) {
+            margin: 0 !important;
+            padding: 0 !important;
+            min-height: 16px !important;
+            line-height: 16px !important;
+        }
+    }
+
+    @media (max-width: 380px) {
+        .og-body {
+            padding-left: 0 !important;
+            padding-right: 0 !important;
+        }
+    }
+
+    /* =========================================================
+       Mobil: profil kartlarini viewport kenarlarina tam yasla.
+       Layout/container tarafindan gelen 14px benzeri dis gutter'lari
+       da kirar; profil, sekmeler ve içerik kartlari ekranin iki kenarina
+       kadar uzanir.
+       ========================================================= */
+    @media (max-width: 640px) {
         .og-profile-page {
             position: relative !important;
             left: 50% !important;
-            right: 50% !important;
             width: 100vw !important;
             max-width: 100vw !important;
-            min-width: 100vw !important;
             margin-left: -50vw !important;
             margin-right: -50vw !important;
             padding-left: 0 !important;
             padding-right: 0 !important;
-            overflow-x: hidden !important;
+            overflow-x: clip !important;
         }
 
-        .og-profile-wrap,
+        .og-profile-wrap {
+            width: 100vw !important;
+            max-width: 100vw !important;
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+
         .og-card,
         .og-tabs-card,
         .og-content,
         .og-list-card,
-        .og-empty,
-        .og-post-wrapper,
-        .og-post-wrapper [data-post-card-shell] {
+        .og-empty {
             width: 100% !important;
-            max-width: 100% !important;
-            min-width: 0 !important;
+            max-width: none !important;
             margin-left: 0 !important;
             margin-right: 0 !important;
-            padding-left: 0 !important;
-            padding-right: 0 !important;
-        }
-
-        .og-card,
-        .og-tabs-card,
-        .og-list-card,
-        .og-empty,
-        .og-post-wrapper [data-post-card-shell] {
             border-left: 0 !important;
             border-right: 0 !important;
             border-radius: 0 !important;
         }
 
-        .og-cover {
-            width: 100% !important;
-            border-radius: 0 !important;
+        /* Kart içeriği hâlâ okunabilir kalsın; kaldırılan boşluk dış gutter'dır. */
+        .og-body {
+            padding-left: 14px !important;
+            padding-right: 14px !important;
         }
 
+        .og-tabs-card {
+            padding-left: 14px !important;
+            padding-right: 14px !important;
+        }
+    }
+
+    @media (max-width: 380px) {
         .og-body,
-        .og-list-head,
-        .og-list-link {
-            padding-left: 16px !important;
-            padding-right: 16px !important;
-        }
-
         .og-tabs-card {
             padding-left: 12px !important;
             padding-right: 12px !important;
@@ -2139,770 +2003,246 @@
     }
 
 
-    /* =========================================================
-       Son ince ayar: daha fazla ikon-only, takip mavi,
-       gerçek sosyal ikonlar, favicon, rozet alt efekti yok,
-       kapak üstüne header boşluğu.
-       ========================================================= */
-    .og-profile-wrap {
-        padding-top: 16px !important;
-    }
 
-    .og-actions .og-btn,
-    .og-actions .og-btn--primary,
-    .og-actions form .og-btn,
-    .og-actions form .og-btn--primary {
-        min-width: 96px !important;
-        border: 1px solid var(--og-li-blue) !important;
-        background: var(--og-li-blue) !important;
-        color: #ffffff !important;
-        font-weight: 500 !important;
-    }
-
-    .og-actions .og-btn:hover,
-    .og-actions .og-btn:focus-visible,
-    .og-actions .og-btn--primary:hover,
-    .og-actions .og-btn--primary:focus-visible {
-        border-color: var(--og-li-blue-hover) !important;
-        background: var(--og-li-blue-hover) !important;
-        color: #ffffff !important;
-    }
-
-    .og-menu > summary.og-menu-summary-icon-only,
-    .og-menu > summary {
-        width: 38px !important;
-        min-width: 38px !important;
-        height: 32px !important;
-        padding: 0 !important;
-        gap: 0 !important;
-    }
-
-    .og-menu > summary.og-menu-summary-icon-only span,
-    .og-menu > summary > span {
-        display: none !important;
-    }
-
-    .og-menu > summary.og-menu-summary-icon-only svg,
-    .og-menu > summary > svg {
-        width: 20px !important;
-        height: 20px !important;
-    }
-
-    .og-links {
-        gap: 8px !important;
-    }
-
-    .og-website-link {
-        min-height: 30px !important;
-        gap: 7px !important;
-    }
-
-    .og-favicon {
-        display: block !important;
-        width: 16px !important;
-        height: 16px !important;
-        border-radius: 4px !important;
-        object-fit: cover !important;
-        flex: 0 0 16px !important;
-    }
-
-    .og-social {
-        width: 32px !important;
-        min-width: 32px !important;
-        height: 32px !important;
-        padding: 0 !important;
-        border: 0 !important;
-        text-transform: none !important;
-        font-size: 0 !important;
-        color: #ffffff !important;
-        background: #9ca3af !important;
-        opacity: 1 !important;
-        transition: filter 0.12s ease, transform 0.12s ease !important;
-    }
-
-    .og-social svg {
-        display: block !important;
-        width: 16px !important;
-        height: 16px !important;
-    }
-
-    .og-social:hover,
-    .og-social:focus-visible {
-        filter: brightness(0.92) !important;
-        transform: translateY(-1px) !important;
-    }
-
-    .og-social--facebook {
-        background: #1877f2 !important;
-    }
-
-    .og-social--instagram {
-        background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%) !important;
-    }
-
-    .og-social--x {
-        background: #000000 !important;
-    }
-
-    .og-social--tiktok {
-        background: #111827 !important;
-    }
-
-    .og-social--youtube {
-        background: #ff0000 !important;
-    }
-
-    @media (max-width: 640px) {
-        .og-social {
-            width: 26px !important;
-            min-width: 26px !important;
-            height: 26px !important;
-        }
-
-        .og-social svg {
-            width: 13px !important;
-            height: 13px !important;
-        }
-    }
-
-    /* Rozetler: 3B donen kureden duz, pul/muhur seklinde (Duolingo tarzi) rozete gecis */
-    .og-badge::before,
-    .og-badge::after {
-        display: none !important;
-        content: none !important;
-    }
-
-    .og-badge,
-    .og-badge:hover,
-    .og-badge:focus-visible,
-    .og-badge.is-dragging {
-        width: 46px !important;
-        height: 46px !important;
-        border: 0 !important;
-        border-radius: 0 !important;
-        clip-path: polygon(50.00% 0.00%, 60.87% 9.43%, 75.00% 6.70%, 79.70% 20.30%, 93.30% 25.00%, 90.57% 39.13%, 100.00% 50.00%, 90.57% 60.87%, 93.30% 75.00%, 79.70% 79.70%, 75.00% 93.30%, 60.87% 90.57%, 50.00% 100.00%, 39.13% 90.57%, 25.00% 93.30%, 20.30% 79.70%, 6.70% 75.00%, 9.43% 60.87%, 0.00% 50.00%, 9.43% 39.13%, 6.70% 25.00%, 20.30% 20.30%, 25.00% 6.70%, 39.13% 9.43%) !important;
-        background: var(--badge-color) !important;
-        box-shadow: none !important;
-        transform: none !important;
-        cursor: pointer !important;
-        touch-action: auto !important;
-    }
-
-    .og-badge:hover,
-    .og-badge:focus-visible {
-        transform: scale(1.06) !important;
-    }
-
-    .og-badge__face {
-        width: 62% !important;
-        height: 44% !important;
-        border-radius: 6px !important;
-        background: #ffffff !important;
-        transform: none !important;
-        opacity: 1 !important;
-    }
-
-    .og-badge__fallback,
-    .og-badge__fallback--backup {
-        width: 100% !important;
-        height: 100% !important;
-        border-radius: 6px !important;
-        background: #ffffff !important;
-        color: #111827 !important;
-        font-size: 13px !important;
-        font-weight: 800 !important;
-        text-shadow: none !important;
-        letter-spacing: -0.02em !important;
-    }
-
-    .og-badge__media {
-        width: 100% !important;
-        height: 100% !important;
-        max-width: 100% !important;
-        max-height: 100% !important;
-        padding: 6px !important;
-        object-fit: contain !important;
-        filter: none !important;
-        box-sizing: border-box !important;
-    }
-
-    /* Rozet modalindaki buyuk onizleme de ayni duz muhur seklini kullanir, 3B donme kapali */
-    .og-ref-badge-stage {
-        width: 168px !important;
-        height: 168px !important;
-        perspective: none !important;
-        cursor: default !important;
-        touch-action: auto !important;
-    }
-
-    .og-ref-badge-rotor {
-        transform: none !important;
-        transition: none !important;
-    }
-
-    .og-ref-badge-layer--back {
-        display: none !important;
-    }
-
-    .og-ref-badge-layer--front {
-        clip-path: polygon(50.00% 0.00%, 60.87% 9.43%, 75.00% 6.70%, 79.70% 20.30%, 93.30% 25.00%, 90.57% 39.13%, 100.00% 50.00%, 90.57% 60.87%, 93.30% 75.00%, 79.70% 79.70%, 75.00% 93.30%, 60.87% 90.57%, 50.00% 100.00%, 39.13% 90.57%, 25.00% 93.30%, 20.30% 79.70%, 6.70% 75.00%, 9.43% 60.87%, 0.00% 50.00%, 9.43% 39.13%, 6.70% 25.00%, 20.30% 20.30%, 25.00% 6.70%, 39.13% 9.43%) !important;
-        border: 0 !important;
-        border-radius: 0 !important;
-        background: var(--badge-preview-color) !important;
-        transform: none !important;
-    }
-
-    .og-ref-badge-content {
-        width: 58% !important;
-        height: 40% !important;
-        border-radius: 8px !important;
-        background: #ffffff !important;
-        transform: none !important;
-    }
-
-    .og-ref-badge-fallback {
-        width: 100% !important;
-        height: 100% !important;
-        border-radius: 8px !important;
-        background: #ffffff !important;
-        color: #111827 !important;
-        font-size: 26px !important;
-        font-weight: 800 !important;
-        text-shadow: none !important;
-        letter-spacing: -0.02em !important;
-    }
-
-    .og-ref-badge-media {
-        width: 100% !important;
-        height: 100% !important;
-        padding: 10px !important;
-        filter: none !important;
-        box-sizing: border-box !important;
-    }
-
-    .og-ref-badge-glow,
-    .og-ref-badge-shadow {
-        display: none !important;
-    }
-
-    .og-badge-sheet-media {
-        min-height: 0 !important;
-        padding-top: 6px !important;
-    }
-
-    .og-badge-sheet-close-text {
-        justify-content: center !important;
-        margin-top: 18px !important;
-        border: 0 !important;
-        border-radius: 999px !important;
-        background: #16a34a !important;
-        color: #ffffff !important;
-        font-weight: 700 !important;
-        min-height: 46px !important;
-    }
-
-    .og-badge-sheet-close-text:hover,
-    .og-badge-sheet-close-text:focus-visible {
-        background: #15803d !important;
-    }
-
-    @media (max-width: 960px) {
-        .og-profile-wrap {
-            padding-top: 12px !important;
-        }
-
-        .og-menu > summary.og-menu-summary-icon-only,
-        .og-menu > summary {
-            width: 36px !important;
-            min-width: 36px !important;
-            height: 32px !important;
-        }
-    }
-
-    body.dark .og-social,
-    .dark .og-social {
-        color: rgba(255,255,255,0.82) !important;
-    }
-
-
-    /* Final profile design layer: badges, menus and dialogs. */
-    .og-profile-page {
-        --og-control-height: 40px;
-        --og-menu-radius: 10px;
-        --og-ease-out: cubic-bezier(.23, 1, .32, 1);
-    }
-
-    .og-card,
-    .og-tabs-card,
-    .og-list-card,
-    .og-empty {
-        border: 1px solid #e2e8f0 !important;
-        background: #ffffff !important;
-    }
-
-    .og-name {
-        font-size: 22px !important;
-        font-weight: 650 !important;
-        line-height: 1.25 !important;
-    }
-
-    .og-actions .og-btn,
-    .og-actions .og-icon-btn,
-    .og-actions .og-menu > summary,
-    .og-sort > summary {
-        height: var(--og-control-height) !important;
-        min-height: var(--og-control-height) !important;
-        border-radius: 8px !important;
-    }
-
-    .og-actions .og-btn {
-        min-width: 112px !important;
-        padding-inline: 16px !important;
-        font-size: 14px !important;
-        font-weight: 600 !important;
-    }
-
-    .og-actions .og-icon-btn,
-    .og-actions .og-menu > summary {
-        width: var(--og-control-height) !important;
-        min-width: var(--og-control-height) !important;
-        padding: 0 !important;
-        background: #f1f5f9 !important;
-        color: #475569 !important;
-    }
-
-    .og-badges {
-        gap: 8px !important;
-        margin-top: 14px !important;
-    }
-
-    .og-badge,
-    .og-badge:hover,
-    .og-badge:focus-visible,
-    .og-badge.is-dragging {
-        display: inline-flex !important;
-        width: auto !important;
-        min-width: 0 !important;
-        height: 44px !important;
-        min-height: 44px !important;
-        max-width: 190px !important;
-        gap: 8px !important;
-        padding: 4px 10px 4px 5px !important;
-        border: 1px solid color-mix(in srgb, var(--badge-color) 36%, #cbd5e1) !important;
-        border-radius: 9px !important;
-        clip-path: none !important;
-        background: color-mix(in srgb, var(--badge-color) 12%, #ffffff) !important;
-        color: #1f2937 !important;
-        box-shadow: none !important;
-        transform: none !important;
-        cursor: pointer !important;
-        touch-action: manipulation !important;
-        transition: transform 120ms var(--og-ease-out), background-color 140ms ease, border-color 140ms ease !important;
-    }
-
-    .og-badge__face {
-        position: relative !important;
-        display: inline-flex !important;
-        width: 34px !important;
-        min-width: 34px !important;
-        height: 34px !important;
-        align-items: center !important;
-        justify-content: center !important;
-        overflow: hidden !important;
-        border-radius: 7px !important;
-        background: var(--badge-color) !important;
-        opacity: 1 !important;
-        transform: none !important;
-    }
-
-    .og-badge__media {
-        width: 28px !important;
-        height: 28px !important;
-        padding: 4px !important;
-        border-radius: 6px !important;
-        background: #ffffff !important;
-        object-fit: contain !important;
-    }
-
-    .og-badge__fallback {
+    /* FINAL: Rozet modalındaki Anladım butonu her durumda mavi. */
+    .og-profile-page button.og-sheet-close.og-badge-sheet-close-text[data-profile-badge-close] {
         display: inline-flex !important;
         align-items: center !important;
         justify-content: center !important;
-        width: 28px !important;
-        height: 28px !important;
-        border-radius: 6px !important;
-        background: #ffffff !important;
-        color: #111827 !important;
-        font-size: 12px !important;
-        font-weight: 700 !important;
-    }
-
-    .og-badge__fallback--backup {
-        display: none !important;
-    }
-
-    .og-badge.has-image-error .og-badge__media {
-        display: none !important;
-    }
-
-    .og-badge.has-image-error .og-badge__fallback--backup {
-        display: inline-flex !important;
-    }
-
-    .og-badge__label {
-        min-width: 0 !important;
-        overflow: hidden !important;
-        color: inherit !important;
-        font-size: 13px !important;
+        width: 100% !important;
+        min-height: 40px !important;
+        padding: 0 16px !important;
+        border: 1px solid #2563eb !important;
+        border-radius: 10px !important;
+        background-color: #2563eb !important;
+        background-image: none !important;
+        color: #ffffff !important;
+        -webkit-text-fill-color: #ffffff !important;
         font-weight: 600 !important;
-        line-height: 1.2 !important;
-        text-overflow: ellipsis !important;
-        white-space: nowrap !important;
+        box-shadow: none !important;
+        opacity: 1 !important;
     }
 
     @media (hover: hover) and (pointer: fine) {
-        .og-badge:hover {
-            border-color: color-mix(in srgb, var(--badge-color) 60%, #94a3b8) !important;
-            background: color-mix(in srgb, var(--badge-color) 18%, #ffffff) !important;
+        .og-profile-page button.og-sheet-close.og-badge-sheet-close-text[data-profile-badge-close]:hover {
+            border-color: #1d4ed8 !important;
+            background-color: #1d4ed8 !important;
+            background-image: none !important;
+            color: #ffffff !important;
+            -webkit-text-fill-color: #ffffff !important;
+        }
+    }
+
+
+    /* =========================================================
+       FINAL INTERACTION LAYER
+       Fare ile üzerine gelinen tüm tıklanabilir nötr kontroller gri olur.
+       Primary aksiyonlar mavi kalır; focus ve active durumları belirgindir.
+       ========================================================= */
+
+    .og-profile-page a[href],
+    .og-profile-page button:not(:disabled),
+    .og-profile-page summary,
+    .og-profile-page .og-badge {
+        cursor: pointer !important;
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    .og-profile-page :is(
+        .og-icon-btn,
+        .og-menu > summary,
+        .og-menu-item,
+        .og-sort > summary,
+        .og-sort-option,
+        .og-tab,
+        .og-chip--link,
+        .og-social,
+        .og-badge,
+        .og-avatar-button,
+        .og-avatar-edit-btn,
+        .og-cover-edit-btn,
+        .og-list-link,
+        .og-sheet-close:not(.og-badge-sheet-close-text),
+        .og-badge-sheet-close-icon
+    ) {
+        transition:
+            background-color 130ms ease,
+            border-color 130ms ease,
+            color 130ms ease,
+            transform 130ms cubic-bezier(.23, 1, .32, 1),
+            box-shadow 130ms ease !important;
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+        .og-profile-page :is(
+            .og-icon-btn,
+            .og-menu > summary,
+            .og-menu-item,
+            .og-sort > summary,
+            .og-sort-option,
+            .og-tab,
+            .og-chip--link,
+            .og-social,
+            .og-badge,
+            .og-avatar-button,
+            .og-avatar-edit-btn,
+            .og-cover-edit-btn,
+            .og-list-link,
+            .og-sheet-close:not(.og-badge-sheet-close-text),
+            .og-badge-sheet-close-icon
+        ):hover {
+            background-color: #f3f4f6 !important;
+            border-color: #d1d5db !important;
+        }
+
+        /* Avatar yuvarlak olduğu için hover alanını da yuvarlak tut. */
+        .og-profile-page .og-avatar-button:hover {
+            border-radius: 999px !important;
+            box-shadow: 0 0 0 3px rgba(15, 23, 42, .08) !important;
+        }
+
+        /* Rozet: gri hover + hafif kaldırma. */
+        .og-profile-page .og-badge:hover {
             transform: translateY(-1px) !important;
         }
-    }
 
-    .og-badge:active {
-        transform: scale(.97) !important;
-    }
-
-    .og-menu-panel,
-    .og-sort-panel {
-        min-width: 208px !important;
-        max-width: min(240px, calc(100vw - 24px)) !important;
-        padding: 6px !important;
-        overflow: hidden !important;
-        border: 1px solid #dbe1e8 !important;
-        border-radius: var(--og-menu-radius) !important;
-        background: #ffffff !important;
-        color: #1f2937 !important;
-        box-shadow: 0 14px 34px rgba(15, 23, 42, .14), 0 2px 8px rgba(15, 23, 42, .08) !important;
-        transform-origin: top right !important;
-    }
-
-    .og-menu[open] .og-menu-panel,
-    .og-sort[open] .og-sort-panel {
-        opacity: 1 !important;
-        transform: translateY(0) scale(1) !important;
-        transition: opacity 150ms ease, transform 180ms var(--og-ease-out) !important;
-    }
-
-    @starting-style {
-        .og-menu[open] .og-menu-panel,
-        .og-sort[open] .og-sort-panel {
-            opacity: 0 !important;
-            transform: translateY(-4px) scale(.97) !important;
-        }
-    }
-
-    .og-menu-item,
-    .og-sort-option {
-        width: 100% !important;
-        min-height: 44px !important;
-        gap: 11px !important;
-        padding: 0 11px !important;
-        border: 0 !important;
-        border-radius: 7px !important;
-        background: transparent !important;
-        color: #334155 !important;
-        font-size: 14px !important;
-        font-weight: 500 !important;
-        transition: transform 120ms var(--og-ease-out), background-color 140ms ease, color 140ms ease !important;
-    }
-
-    .og-menu-item svg,
-    .og-sort-option svg {
-        width: 18px !important;
-        height: 18px !important;
-        color: #64748b !important;
-    }
-
-    .og-menu-item:is(:hover, :focus-visible),
-    .og-sort-option:is(:hover, :focus-visible),
-    .og-sort-option[aria-current="true"] {
-        background: #eff6ff !important;
-        color: #1d4ed8 !important;
-        outline: none !important;
-    }
-
-    .og-menu-item:is(:hover, :focus-visible) svg,
-    .og-sort-option:is(:hover, :focus-visible) svg,
-    .og-sort-option[aria-current="true"] svg {
-        color: #2563eb !important;
-    }
-
-    .og-menu-item:active,
-    .og-sort-option:active {
-        transform: scale(.98) !important;
-    }
-
-    .og-sort > summary {
-        gap: 8px !important;
-        padding: 0 11px !important;
-        border: 1px solid #e2e8f0 !important;
-        background: #f8fafc !important;
-        color: #475569 !important;
-        font-size: 13px !important;
-        font-weight: 600 !important;
-    }
-
-    .og-sheet-backdrop {
-        background: rgba(15, 23, 42, .58) !important;
-        backdrop-filter: blur(2px) !important;
-        transition: opacity 160ms ease !important;
-    }
-
-    .og-badge-sheet-panel {
-        width: min(440px, calc(100vw - 24px)) !important;
-        max-height: calc(100dvh - 24px) !important;
-        padding: 24px !important;
-        border: 1px solid #dbe1e8 !important;
-        border-radius: 14px !important;
-        background: #ffffff !important;
-        box-shadow: 0 24px 64px rgba(15, 23, 42, .24), 0 4px 14px rgba(15, 23, 42, .12) !important;
-        transform: translate(-50%, calc(-50% + 6px)) scale(.98) !important;
-        transition: opacity 160ms ease, transform 190ms var(--og-ease-out) !important;
-    }
-
-    .og-sheet[aria-hidden="false"] .og-badge-sheet-panel {
-        transform: translate(-50%, -50%) scale(1) !important;
-    }
-
-    .og-badge-sheet-close-icon {
-        top: 10px !important;
-        right: 10px !important;
-        width: 40px !important;
-        height: 40px !important;
-        border-radius: 8px !important;
-        color: #64748b !important;
-    }
-
-    .og-badge-sheet-media {
-        min-height: 0 !important;
-        padding: 8px 0 18px !important;
-    }
-
-    .og-ref-badge-stage {
-        width: 112px !important;
-        height: 112px !important;
-        cursor: default !important;
-        touch-action: auto !important;
-    }
-
-    .og-ref-badge-rotor {
-        transform: none !important;
-        transition: none !important;
-    }
-
-    .og-ref-badge-layer--front {
-        inset: 0 !important;
-        overflow: hidden !important;
-        border: 1px solid color-mix(in srgb, var(--badge-preview-color) 58%, #94a3b8) !important;
-        border-radius: 16px !important;
-        clip-path: none !important;
-        background: var(--badge-preview-color) !important;
-        transform: none !important;
-    }
-
-    .og-ref-badge-layer--back,
-    .og-ref-badge-glow,
-    .og-ref-badge-shadow {
-        display: none !important;
-    }
-
-    .og-ref-badge-content {
-        width: 78px !important;
-        height: 78px !important;
-        overflow: hidden !important;
-        border-radius: 12px !important;
-        background: #ffffff !important;
-        transform: none !important;
-    }
-
-    .og-ref-badge-media {
-        width: 100% !important;
-        height: 100% !important;
-        padding: 12px !important;
-        object-fit: contain !important;
-    }
-
-    .og-ref-badge-fallback {
-        width: 100% !important;
-        height: 100% !important;
-        border-radius: 12px !important;
-        font-size: 24px !important;
-        font-weight: 700 !important;
-    }
-
-    .og-badge-sheet-panel .og-sheet-title {
-        margin: 0 0 7px !important;
-        color: #111827 !important;
-        font-size: 18px !important;
-        font-weight: 650 !important;
-        line-height: 1.3 !important;
-    }
-
-    .og-badge-sheet-subtitle {
-        margin: 0 0 16px !important;
-        color: #64748b !important;
-        font-size: 14px !important;
-        line-height: 1.5 !important;
-    }
-
-    .og-badge-sheet-meta {
-        display: flex !important;
-        flex-wrap: wrap !important;
-        gap: 8px !important;
-    }
-
-    .og-badge-sheet-meta .og-chip {
-        min-height: 32px !important;
-        padding: 0 11px !important;
-        border-color: #dbe1e8 !important;
-        border-radius: 8px !important;
-        background: #f8fafc !important;
-        color: #475569 !important;
-        font-size: 13px !important;
-    }
-
-    .og-badge-sheet-close-text {
-        min-height: 44px !important;
-        margin-top: 20px !important;
-        border: 0 !important;
-        border-radius: 8px !important;
-        background: #2563eb !important;
-        color: #ffffff !important;
-        font-size: 14px !important;
-        font-weight: 600 !important;
-    }
-
-    .og-badge-sheet-close-text:is(:hover, :focus-visible) {
-        background: #1d4ed8 !important;
-        color: #ffffff !important;
-    }
-
-    body.dark .og-card,
-    .dark .og-card,
-    body.dark .og-tabs-card,
-    .dark .og-tabs-card,
-    body.dark .og-list-card,
-    .dark .og-list-card,
-    body.dark .og-empty,
-    .dark .og-empty {
-        border-color: #334155 !important;
-        background: #111827 !important;
-    }
-
-    body.dark .og-badge,
-    .dark .og-badge {
-        border-color: color-mix(in srgb, var(--badge-color) 42%, #475569) !important;
-        background: color-mix(in srgb, var(--badge-color) 14%, #111827) !important;
-        color: #e5e7eb !important;
-    }
-
-    body.dark :is(.og-menu-panel, .og-sort-panel),
-    .dark :is(.og-menu-panel, .og-sort-panel),
-    body.dark .og-badge-sheet-panel,
-    .dark .og-badge-sheet-panel {
-        border-color: #334155 !important;
-        background: #172033 !important;
-        color: #e5e7eb !important;
-    }
-
-    body.dark :is(.og-menu-item, .og-sort-option),
-    .dark :is(.og-menu-item, .og-sort-option) {
-        color: #dbe4f0 !important;
-    }
-
-    body.dark :is(.og-menu-item, .og-sort-option):is(:hover, :focus-visible),
-    .dark :is(.og-menu-item, .og-sort-option):is(:hover, :focus-visible),
-    body.dark .og-sort-option[aria-current="true"],
-    .dark .og-sort-option[aria-current="true"] {
-        background: #263247 !important;
-        color: #bfdbfe !important;
-    }
-
-    body.dark .og-badge-sheet-panel .og-sheet-title,
-    .dark .og-badge-sheet-panel .og-sheet-title {
-        color: #f8fafc !important;
-    }
-
-    body.dark .og-badge-sheet-subtitle,
-    .dark .og-badge-sheet-subtitle {
-        color: #a8b5c7 !important;
-    }
-
-    body.dark .og-badge-sheet-meta .og-chip,
-    .dark .og-badge-sheet-meta .og-chip {
-        border-color: #334155 !important;
-        background: #111827 !important;
-        color: #cbd5e1 !important;
-    }
-
-    @media (max-width: 640px) {
-        .og-profile-page {
-            padding-inline: 10px !important;
-        }
-
-        .og-card,
-        .og-tabs-card,
-        .og-list-card,
-        .og-empty,
-        .og-post-wrapper [data-post-card-shell] {
-            border-right-width: 1px !important;
-            border-left-width: 1px !important;
+        /* Liste satırları tıklanabilir olduğunu belli etsin. */
+        .og-profile-page .og-list-link:hover {
             border-radius: 8px !important;
         }
 
-        .og-badge-sheet-panel {
-            left: 12px !important;
-            right: 12px !important;
-            top: 50% !important;
-            bottom: auto !important;
-            width: auto !important;
-            max-width: none !important;
-            padding: 20px !important;
-            border-radius: 12px !important;
-            transform: translateY(calc(-50% + 6px)) scale(.98) !important;
-        }
-
-        .og-sheet[aria-hidden="false"] .og-badge-sheet-panel {
-            transform: translateY(-50%) scale(1) !important;
-        }
-
-        .og-badges {
-            display: grid !important;
-            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-        }
-
-        .og-badge {
-            width: 100% !important;
-            max-width: none !important;
-        }
-
-        .og-tabs-card {
-            padding-inline: 8px !important;
-        }
-
-        .og-sort > summary {
-            min-width: 40px !important;
-            padding-inline: 9px !important;
+        /* Primary aksiyonlar griye dönmez, mavi kalır. */
+        .og-profile-page :is(
+            .og-btn--primary,
+            .og-actions > .og-btn,
+            button.og-sheet-close.og-badge-sheet-close-text[data-profile-badge-close]
+        ):hover {
+            background-color: #1d4ed8 !important;
+            border-color: #1d4ed8 !important;
+            color: #ffffff !important;
+            -webkit-text-fill-color: #ffffff !important;
         }
     }
 
-    @media (max-width: 360px) {
-        .og-badges {
-            grid-template-columns: minmax(0, 1fr) !important;
+    /* Klavye ile gezen kullanıcı da tıklanabilir alanı net görsün. */
+    .og-profile-page :is(
+        a[href],
+        button:not(:disabled),
+        summary,
+        .og-badge
+    ):focus-visible {
+        outline: 2px solid #2563eb !important;
+        outline-offset: 2px !important;
+    }
+
+    /* Basınca anlık geri bildirim. */
+    .og-profile-page :is(
+        .og-btn,
+        .og-icon-btn,
+        .og-menu > summary,
+        .og-menu-item,
+        .og-sort > summary,
+        .og-sort-option,
+        .og-tab,
+        .og-chip--link,
+        .og-social,
+        .og-badge,
+        .og-avatar-button,
+        .og-avatar-edit-btn,
+        .og-cover-edit-btn,
+        .og-list-link,
+        .og-sheet-close,
+        .og-badge-sheet-close-icon
+    ):active {
+        transform: scale(.97) !important;
+    }
+
+    /* Dark mode nötr hover. */
+    @media (hover: hover) and (pointer: fine) {
+        body.dark .og-profile-page :is(
+            .og-icon-btn,
+            .og-menu > summary,
+            .og-menu-item,
+            .og-sort > summary,
+            .og-sort-option,
+            .og-tab,
+            .og-chip--link,
+            .og-social,
+            .og-badge,
+            .og-avatar-button,
+            .og-avatar-edit-btn,
+            .og-cover-edit-btn,
+            .og-list-link,
+            .og-sheet-close:not(.og-badge-sheet-close-text),
+            .og-badge-sheet-close-icon
+        ):hover,
+        .dark .og-profile-page :is(
+            .og-icon-btn,
+            .og-menu > summary,
+            .og-menu-item,
+            .og-sort > summary,
+            .og-sort-option,
+            .og-tab,
+            .og-chip--link,
+            .og-social,
+            .og-badge,
+            .og-avatar-button,
+            .og-avatar-edit-btn,
+            .og-cover-edit-btn,
+            .og-list-link,
+            .og-sheet-close:not(.og-badge-sheet-close-text),
+            .og-badge-sheet-close-icon
+        ):hover {
+            background-color: #1f2937 !important;
+            border-color: #374151 !important;
+        }
+    }
+
+
+    /* Yorumlar / Takipçiler / Takip: başlık-sayaç kartı yok, içerik doğrudan akar. */
+    .og-direct-list {
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        background: transparent !important;
+        border: 0 !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
+        overflow: visible;
+    }
+
+    .og-direct-list .og-list-link {
+        width: 100%;
+        margin: 0;
+        border-radius: 0;
+    }
+
+    .og-direct-empty {
+        width: 100%;
+        margin: 0;
+        padding: 18px 14px;
+        background: transparent !important;
+        border: 0 !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
+        color: var(--og-muted);
+        font-size: 12px;
+        line-height: 1.45;
+        text-align: center;
+    }
+
+    @media (max-width: 640px) {
+        .og-direct-list,
+        .og-direct-empty {
+            width: 100% !important;
+            max-width: none !important;
+            margin-left: 0 !important;
+            margin-right: 0 !important;
         }
     }
 
 </style>
+
 @endpush
 
 
@@ -2954,8 +2294,8 @@
         $joinedSource = $user->joined_at ?? $user->created_at;
         $joinedDetailLabel = $joinedSource
             ? (app()->getLocale() === 'tr'
-                ? \Illuminate\Support\Carbon::parse($joinedSource)->translatedFormat('F Y') . "'te katıldı."
-                : \Illuminate\Support\Carbon::parse($joinedSource)->translatedFormat('F Y') . ' joined')
+                ? \Illuminate\Support\Carbon::parse($joinedSource)->format('m/Y') . "'da katıldı."
+                : \Illuminate\Support\Carbon::parse($joinedSource)->format('m/Y') . ' joined')
             : null;
         $profileHeadingTitle = trim((string) ($user->name ?? __('site.profile_page.fallback_name')));
         $profileDisplayBio = $bioText !== '' ? $bioText : '';
@@ -2980,11 +2320,11 @@
             ]);
         };
         $socialLinks = [
-            'facebook' => $user->social_facebook ?? null,
-            'instagram' => $user->social_instagram ?? null,
-            'x' => $user->social_x ?? null,
-            'tiktok' => $user->social_tiktok ?? null,
-            'youtube' => $user->social_youtube ?? null,
+            'facebook' => $user->social_facebook ?? $user->facebook_url ?? $user->facebook ?? null,
+            'instagram' => $user->social_instagram ?? $user->instagram_url ?? $user->instagram ?? null,
+            'x' => $user->social_x ?? $user->social_twitter ?? $user->x_url ?? $user->twitter_url ?? null,
+            'tiktok' => $user->social_tiktok ?? $user->tiktok_url ?? $user->tiktok ?? null,
+            'youtube' => $user->social_youtube ?? $user->youtube_url ?? $user->youtube ?? null,
         ];
         $socialPills = collect($socialLinks)->map(function ($url, $platform) {
             $value = trim((string) $url);
@@ -3167,7 +2507,6 @@
             ];
         };
 
-        $badgePoints = (int) ($user->badge_points ?? 0);
         $profileHandle = filled($user->username ?? null)
             ? '@' . $user->username
             : '@' . \Illuminate\Support\Str::slug((string) ($user->name ?? 'user'));
@@ -3245,7 +2584,7 @@
                                     <a href="{{ route('login') }}" class="og-btn og-btn--primary">{{ __('site.profile_page.follow') }}</a>
                                 @endauth
                             @else
-                                <a href="{{ route('profile.edit') }}" class="og-btn">{{ app()->getLocale() === 'tr' ? 'Profili düzenle' : 'Edit profile' }}</a>
+                                <a href="{{ route('profile.edit') }}" class="og-btn og-btn--primary">{{ app()->getLocale() === 'tr' ? 'Profili düzenle' : 'Edit profile' }}</a>
                             @endif
 
                             @if(!$isOwnProfile && ($messagesEnabled ?? false) && ($canStartChat ?? false))
@@ -3312,20 +2651,30 @@
                             <x-verification-badge :user="$user" class="inline-flex h-5 w-5 shrink-0 items-center justify-center" size="lg" />
                         </div>
 
-                        @if($usernameLabel)
-                            <p class="og-username">{{ $usernameLabel }}</p>
-                        @endif
-
-                        @if($badgePoints > 0 || $joinedDetailLabel)
-                            <div class="og-meta">
-                                @if($badgePoints > 0)
-                                    <span class="og-points">+{{ number_format($badgePoints) }} puan</span>
-                                @endif
-                                @if($badgePoints > 0 && $joinedDetailLabel)
-                                    <span class="og-dot" aria-hidden="true"></span>
+                        @if($usernameLabel || $joinedDetailLabel || $locationLabel !== '' || $occupationLabel !== '' || $companyLabel !== '')
+                            <div class="og-profile-subline">
+                                @if($usernameLabel)
+                                    <span class="og-profile-subline__item og-username">{{ $usernameLabel }}</span>
                                 @endif
                                 @if($joinedDetailLabel)
-                                    <span>{{ $joinedDetailLabel }}</span>
+                                    <span class="og-profile-subline__item">{{ $joinedDetailLabel }}</span>
+                                @endif
+                                @if($locationLabel !== '')
+                                    <span class="og-profile-subline__item">
+                                        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 21s6-5.7 6-11A6 6 0 0 0 6 10c0 5.3 6 11 6 11Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><circle cx="12" cy="10" r="2.3" stroke="currentColor" stroke-width="1.7"/></svg>
+                                        {{ $locationLabel }}
+                                    </span>
+                                @endif
+                                @if($occupationLabel !== '')
+                                    <span class="og-profile-subline__item">
+                                        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 6V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><path d="M4 8h16v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M4 12h16" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+                                        {{ $occupationLabel }}
+                                    </span>
+                                @elseif($companyLabel !== '')
+                                    <span class="og-profile-subline__item">
+                                        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 6V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><path d="M4 8h16v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M4 12h16" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+                                        {{ $companyLabel }}
+                                    </span>
                                 @endif
                             </div>
                         @endif
@@ -3338,29 +2687,6 @@
 
                         @if($profileDisplayBio !== '')
                             <p class="og-bio">{{ $profileDisplayBio }}</p>
-                        @endif
-
-                        @if($locationLabel !== '' || $companyLabel !== '' || $occupationLabel !== '')
-                            <div class="og-chips">
-                                @if($locationLabel !== '')
-                                    <span class="og-chip">
-                                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M12 21s6-5.7 6-11A6 6 0 0 0 6 10c0 5.3 6 11 6 11Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><circle cx="12" cy="10" r="2.4" stroke="currentColor" stroke-width="1.8"/></svg>
-                                        {{ $locationLabel }}
-                                    </span>
-                                @endif
-                                @if($companyLabel !== '')
-                                    <span class="og-chip">
-                                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M9 6V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M4 8h16v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M4 12h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
-                                        {{ $companyLabel }}
-                                    </span>
-                                @endif
-                                @if($occupationLabel !== '' && $occupationLabel !== $companyLabel)
-                                    <span class="og-chip">
-                                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M3 8.5 12 4l9 4.5L12 13 3 8.5Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M7 11v4.5c0 1.2 2.2 2.5 5 2.5s5-1.3 5-2.5V11" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
-                                        {{ $occupationLabel }}
-                                    </span>
-                                @endif
-                            </div>
                         @endif
 
                         @if($socialPills->isNotEmpty() || $website !== '')
@@ -3379,19 +2705,19 @@
                                     <a href="{{ $pill['url'] }}" target="_blank" rel="noopener noreferrer" data-external-bridge="off" class="og-social {{ $pill['class'] }}" aria-label="{{ $pill['label'] }}" title="{{ $pill['label'] }}">
                                         @switch($pill['platform'])
                                             @case('facebook')
-                                                <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M14 8.35h2.2V5.08c-.38-.05-1.68-.16-3.2-.16-3.16 0-5.33 1.88-5.33 5.36v3H4.2v3.66h3.47V24h4.25v-7.06h3.33l.53-3.66h-3.86v-2.64c0-1.06.3-2.29 2.08-2.29Z"/></svg>
+                                                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path fill="#1877F2" d="M14 8.35h2.2V5.08c-.38-.05-1.68-.16-3.2-.16-3.16 0-5.33 1.88-5.33 5.36v3H4.2v3.66h3.47V24h4.25v-7.06h3.33l.53-3.66h-3.86v-2.64c0-1.06.3-2.29 2.08-2.29Z"/></svg>
                                                 @break
                                             @case('instagram')
-                                                <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="1.9" d="M7.5 2.75h9A4.75 4.75 0 0 1 21.25 7.5v9a4.75 4.75 0 0 1-4.75 4.75h-9A4.75 4.75 0 0 1 2.75 16.5v-9A4.75 4.75 0 0 1 7.5 2.75Z"/><path fill="none" stroke="currentColor" stroke-width="1.9" d="M15.8 12A3.8 3.8 0 1 1 8.2 12a3.8 3.8 0 0 1 7.6 0Z"/><circle cx="17.55" cy="6.45" r="1.05" fill="currentColor"/></svg>
+                                                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="#E4405F" stroke-width="2"/><circle cx="12" cy="12" r="4" fill="none" stroke="#E4405F" stroke-width="2"/><circle cx="17.4" cy="6.7" r="1.15" fill="#E4405F"/></svg>
                                                 @break
                                             @case('x')
-                                                <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M18.9 2.75h3.25l-7.1 8.12 8.35 10.38h-6.54l-5.12-6.35-5.86 6.35H2.62l7.6-8.7L2.2 2.75h6.7l4.63 5.77 5.37-5.77Zm-1.14 16.67h1.8L7.91 4.48H5.98l11.78 14.94Z"/></svg>
+                                                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path fill="#000000" d="M18.9 2.75h3.25l-7.1 8.12 8.35 10.38h-6.54l-5.12-6.35-5.86 6.35H2.62l7.6-8.7L2.2 2.75h6.7l4.63 5.77 5.37-5.77Zm-1.14 16.67h1.8L7.91 4.48H5.98l11.78 14.94Z"/></svg>
                                                 @break
                                             @case('tiktok')
-                                                <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M16.7 2.2c.28 2.35 1.6 3.76 3.9 3.9v3.36a7.46 7.46 0 0 1-3.82-1.12v6.32c0 4.02-2.36 6.84-6.22 6.84-3.36 0-6.06-2.22-6.06-5.66 0-3.92 3.12-6.04 6.86-5.66v3.42c-1.66-.26-3.18.42-3.18 2.08 0 1.42 1.12 2.22 2.34 2.22 1.42 0 2.54-.84 2.54-3.02V2.2h3.64Z"/></svg>
+                                                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path fill="#111111" d="M16.7 2.2c.28 2.35 1.6 3.76 3.9 3.9v3.36a7.46 7.46 0 0 1-3.82-1.12v6.32c0 4.02-2.36 6.84-6.22 6.84-3.36 0-6.06-2.22-6.06-5.66 0-3.92 3.12-6.04 6.86-5.66v3.42c-1.66-.26-3.18.42-3.18 2.08 0 1.42 1.12 2.22 2.34 2.22 1.42 0 2.54-.84 2.54-3.02V2.2h3.64Z"/></svg>
                                                 @break
                                             @case('youtube')
-                                                <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M22.2 7.2a3 3 0 0 0-2.1-2.13C18.24 4.56 12 4.56 12 4.56s-6.24 0-8.1.5A3 3 0 0 0 1.8 7.2 31.3 31.3 0 0 0 1.3 12c0 1.62.17 3.24.5 4.8a3 3 0 0 0 2.1 2.13c1.86.5 8.1.5 8.1.5s6.24 0 8.1-.5a3 3 0 0 0 2.1-2.13c.33-1.56.5-3.18.5-4.8 0-1.62-.17-3.24-.5-4.8ZM9.85 15.54V8.46L16.08 12l-6.23 3.54Z"/></svg>
+                                                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path fill="#FF0000" d="M22.2 7.2a3 3 0 0 0-2.1-2.13C18.24 4.56 12 4.56 12 4.56s-6.24 0-8.1.5A3 3 0 0 0 1.8 7.2 31.3 31.3 0 0 0 1.3 12c0 1.62.17 3.24.5 4.8a3 3 0 0 0 2.1 2.13c1.86.5 8.1.5 8.1.5s6.24 0 8.1-.5a3 3 0 0 0 2.1-2.13c.33-1.56.5-3.18.5-4.8 0-1.62-.17-3.24-.5-4.8ZM9.85 15.54V8.46L16.08 12l-6.23 3.54Z"/></svg>
                                                 @break
                                             @default
                                                 <span>{{ $pill['short'] }}</span>
@@ -3420,7 +2746,9 @@
                                         style="--badge-color: {{ $badge->color ?? '#67e8f9' }}"
                                         title="{{ $badge->name ?? 'Rozet' }}"
                                         data-profile-badge-open
-                                       
+                                        aria-haspopup="dialog"
+                                        aria-controls="profile-badge-sheet"
+                                        aria-expanded="false"
                                         data-badge-name="{{ $badge->name ?? 'Rozet' }}"
                                         data-badge-description="{{ $badge->description ?? 'Bu rozet için açıklama eklenmemiş.' }}"
                                         data-badge-points="{{ number_format((int) ($badge->points_required ?? 0)) }}"
@@ -3445,7 +2773,6 @@
                                                 <span class="og-badge__fallback">{{ $badgeFallbackLetter }}</span>
                                             @endif
                                         </span>
-                                        <span class="og-badge__label">{{ $badge->name ?? 'Rozet' }}</span>
                                     </button>
                                 @endforeach
                             </div>
@@ -3564,11 +2891,7 @@
                         </div>
                     @endif
                 @elseif($activeTab === 'comments')
-                    <section class="og-list-card">
-                        <div class="og-list-head">
-                            <h2 class="og-list-title">{{ __('site.profile_page.tabs_comments') }}</h2>
-                            <p class="og-list-desc">{{ __('site.profile_page.comments_count', ['count' => number_format($commentsCount)]) }}</p>
-                        </div>
+                    <div class="og-direct-list">
                         @forelse($comments as $comment)
                             @php
                                 $commentUrl = $comment->post?->slug ? route('blog.post', ['post' => $comment->post->slug]) . '#comment-' . $comment->id : null;
@@ -3599,15 +2922,11 @@
                                 </a>
                             @endif
                         @empty
-                            <div class="og-empty">{{ __('site.profile_page.empty_comments') }}</div>
+                            <div class="og-direct-empty">{{ __('site.profile_page.empty_comments') }}</div>
                         @endforelse
-                    </section>
+                    </div>
                 @elseif($activeTab === 'followers')
-                    <section class="og-list-card">
-                        <div class="og-list-head">
-                            <h2 class="og-list-title">{{ __('site.profile_page.tabs_followers') }}</h2>
-                            <p class="og-list-desc">{{ number_format((int) ($user->followers_count ?? 0)) }} {{ __('site.profile_page.followers') }}</p>
-                        </div>
+                    <div class="og-direct-list">
                         @forelse($followers as $person)
                             <a href="{{ route('users.show', $person) }}" class="og-list-link">
                                 <span class="og-list-avatar"><img src="{{ $person->profile_photo_url ?? 'https://placehold.co/80x80' }}" alt="{{ $person->name }}" loading="lazy"></span>
@@ -3617,17 +2936,13 @@
                                 </span>
                             </a>
                         @empty
-                            <div class="og-empty">{{ __('site.profile_page.empty_followers') }}</div>
+                            <div class="og-direct-empty">{{ __('site.profile_page.empty_followers') }}</div>
                         @endforelse
-                    </section>
+                    </div>
                 @elseif($activeTab === 'followings')
-                    <section class="og-list-card">
-                        <div class="og-list-head">
-                            <h2 class="og-list-title">{{ __('site.profile_page.tabs_followings') }}</h2>
-                            <p class="og-list-desc">{{ number_format((int) ($user->followings_count ?? 0)) }} {{ __('site.profile_page.followings') }}</p>
-                        </div>
+                    <div class="og-direct-list">
                         @if(! $canViewFollowings)
-                            <div class="og-empty">Bu kullanıcının takip ettiği hesaplar gizli.</div>
+                            <div class="og-direct-empty">Bu kullanıcının takip ettiği hesaplar gizli.</div>
                         @else
                         @forelse($followings as $person)
                             <a href="{{ route('users.show', $person) }}" class="og-list-link">
@@ -3638,10 +2953,10 @@
                                 </span>
                             </a>
                         @empty
-                            <div class="og-empty">{{ __('site.profile_page.empty_followings') }}</div>
+                            <div class="og-direct-empty">{{ __('site.profile_page.empty_followings') }}</div>
                         @endforelse
                         @endif
-                    </section>
+                    </div>
                 @endif
             </div>
         </div>
@@ -3666,36 +2981,40 @@
     <div id="profile-badge-sheet" class="og-sheet" role="dialog" aria-modal="true" aria-labelledby="profile-badge-title" aria-hidden="true" inert>
         <div class="og-sheet-backdrop" data-profile-badge-close></div>
         <div class="og-sheet-panel og-badge-sheet-panel" data-profile-badge-panel>
+            <div class="og-sheet-handle og-badge-sheet-handle" aria-hidden="true"></div>
             <button type="button" class="og-badge-sheet-close-icon" data-profile-badge-close aria-label="{{ __('post_create.close') }}">
                 <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                     <path d="M5 5L15 15M15 5L5 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
                 </svg>
             </button>
-            <div class="og-badge-sheet-media">
-                <div class="og-ref-badge-stage" style="--badge-preview-color: #67e8f9" data-profile-badge-preview>
-                    <div class="og-ref-badge-rotor">
-                        <div class="og-ref-badge-layer og-ref-badge-layer--front" data-profile-badge-front>
-                            <span class="og-ref-badge-glow" aria-hidden="true"></span>
-                            <div class="og-ref-badge-content" data-profile-badge-preview-face>
-                                <span class="og-ref-badge-fallback">R</span>
+            <div class="og-badge-sheet-summary">
+                <div class="og-badge-sheet-media">
+                    <div class="og-ref-badge-stage" style="--badge-preview-color: #67e8f9" data-profile-badge-preview>
+                        <div class="og-ref-badge-rotor">
+                            <div class="og-ref-badge-layer og-ref-badge-layer--front" data-profile-badge-front>
+                                <span class="og-ref-badge-glow" aria-hidden="true"></span>
+                                <div class="og-ref-badge-content" data-profile-badge-preview-face>
+                                    <span class="og-ref-badge-fallback">R</span>
+                                </div>
                             </div>
-                        </div>
-                        <div class="og-ref-badge-layer og-ref-badge-layer--back" data-profile-badge-back>
-                            <div class="og-ref-badge-back-shape" data-profile-badge-back-shape>
-                                <div class="og-ref-badge-back-copy">
-                                    <span class="og-ref-badge-back-name" data-profile-badge-back-name>Rozet</span>
-                                    <strong class="og-ref-badge-back-brand">OGRAFI</strong>
+                            <div class="og-ref-badge-layer og-ref-badge-layer--back" data-profile-badge-back>
+                                <div class="og-ref-badge-back-shape" data-profile-badge-back-shape>
+                                    <div class="og-ref-badge-back-copy">
+                                        <span class="og-ref-badge-back-name" data-profile-badge-back-name>Rozet</span>
+                                        <strong class="og-ref-badge-back-brand">OGRAFI</strong>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    <div class="og-ref-badge-shadow" aria-hidden="true"></div>
                 </div>
-                <div class="og-ref-badge-shadow" aria-hidden="true"></div>
+                <div class="og-badge-sheet-copy">
+                    <h3 id="profile-badge-title" class="og-sheet-title" data-profile-badge-title tabindex="-1">Rozet</h3>
+                    <p class="og-badge-sheet-subtitle" data-profile-badge-description></p>
+                </div>
             </div>
-            <h3 id="profile-badge-title" class="og-sheet-title" data-profile-badge-title tabindex="-1">Rozet</h3>
-            <p class="og-badge-sheet-subtitle" data-profile-badge-description></p>
             <div class="og-chips og-badge-sheet-meta">
-                <span class="og-chip"><strong data-profile-badge-points></strong> puan</span>
                 <span class="og-chip" data-profile-badge-awarded-at></span>
             </div>
             <button type="button" class="og-sheet-close og-badge-sheet-close-text" data-profile-badge-close>Anladım</button>
@@ -3837,7 +3156,6 @@
         const badgeCloseButtons = badgeSheet?.querySelectorAll('[data-profile-badge-close]');
         const badgeTitle = badgeSheet?.querySelector('[data-profile-badge-title]');
         const badgeDescription = badgeSheet?.querySelector('[data-profile-badge-description]');
-        const badgePoints = badgeSheet?.querySelector('[data-profile-badge-points]');
         const badgeAwardedAt = badgeSheet?.querySelector('[data-profile-badge-awarded-at]');
         const badgePreview = badgeSheet?.querySelector('[data-profile-badge-preview]');
         const badgePreviewFace = badgeSheet?.querySelector('[data-profile-badge-preview-face]');
@@ -3846,8 +3164,20 @@
         const badgeFrontLayer = badgeSheet?.querySelector('[data-profile-badge-front]');
         const badgeBackLayer = badgeSheet?.querySelector('[data-profile-badge-back]');
 
-        // Sayfa ilk açıldığında rozet popup'ı kesin kapalı başlasın.
-        badgeSheet?.setAttribute('aria-hidden', 'true');
+        // Rozet popup'ı yalnızca rozete tıklanınca açılsın.
+        // Sayfa ilk açıldığında ve mobil tarayıcı geri/ileri önbelleğinden
+        // döndüğünde kesin kapalı duruma getir.
+        const forceBadgeSheetClosed = () => {
+            if (!badgeSheet) return;
+            badgeSheet.setAttribute('aria-hidden', 'true');
+            badgeSheet.setAttribute('inert', '');
+            document.documentElement.classList.remove('overflow-hidden');
+            document.body.classList.remove('overflow-hidden');
+            badgeOpenButtons.forEach((button) => button.setAttribute('aria-expanded', 'false'));
+        };
+
+        forceBadgeSheetClosed();
+        window.addEventListener('pageshow', forceBadgeSheetClosed);
 
         const syncScrollLock = () => {
             const hasOpenSheet = [avatarSheet, badgeSheet].some((sheet) => sheet?.getAttribute('aria-hidden') === 'false');
@@ -3862,6 +3192,9 @@
         const showSheet = (sheet, trigger = document.activeElement) => {
             if (!sheet) return;
             sheet.__returnFocus = trigger instanceof HTMLElement ? trigger : null;
+            if (sheet.__returnFocus?.hasAttribute?.('aria-expanded')) {
+                sheet.__returnFocus.setAttribute('aria-expanded', 'true');
+            }
             sheet.setAttribute('aria-hidden', 'false');
             sheet.removeAttribute('inert');
             syncScrollLock();
@@ -3875,6 +3208,9 @@
             if (!sheet || sheet.getAttribute('aria-hidden') === 'true') return;
             sheet.setAttribute('aria-hidden', 'true');
             sheet.setAttribute('inert', '');
+            if (sheet.__returnFocus?.hasAttribute?.('aria-expanded')) {
+                sheet.__returnFocus.setAttribute('aria-expanded', 'false');
+            }
             syncScrollLock();
             if (restoreFocus) {
                 window.requestAnimationFrame(() => sheet.__returnFocus?.focus?.());
@@ -4025,7 +3361,6 @@
                 if (button.dataset.draggedBadge === 'true') return;
                 if (badgeTitle) badgeTitle.textContent = button.getAttribute('data-badge-name') || 'Rozet';
                 if (badgeDescription) badgeDescription.textContent = button.getAttribute('data-badge-description') || 'Bu rozet için açıklama eklenmemiş.';
-                if (badgePoints) badgePoints.textContent = button.getAttribute('data-badge-points') || '-';
                 if (badgeAwardedAt) badgeAwardedAt.textContent = button.getAttribute('data-badge-awarded-at') || '-';
                 if (badgePreview) {
                     badgePreview.style.setProperty('--badge-preview-color', button.getAttribute('data-badge-color') || '#67e8f9');
