@@ -1,0 +1,103 @@
+name: Figma Live Capture
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/figma-live-capture.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  capture:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install Playwright
+        run: |
+          npm install --no-save playwright@1.55.0
+          npx playwright install --with-deps chromium
+
+      - name: Capture live Ografi pages into Figma
+        run: |
+          cat > /tmp/capture.mjs <<'NODE'
+          import { chromium } from 'playwright';
+
+          const captures = [
+            ['Live / Home', 'https://ografi.com/', '810f86ba-798c-485b-80a3-95ab4941d8b2'],
+            ['Live / Discover', 'https://ografi.com/discover', '0f8f8403-c694-41b3-a1d8-cb66d2bbb172'],
+            ['Live / Contact', 'https://ografi.com/contact', '3dffede5-9661-4130-9b58-f16f3b56d8bc'],
+            ['Live / FAQ', 'https://ografi.com/p/sss', '2cddd9ac-d94b-4647-b902-78da79723c27'],
+            ['Live / Popular', 'https://ografi.com/blog/popular', 'd4789003-0624-4140-bd87-f2ce77ebdddc'],
+            ['Live / Login', 'https://ografi.com/login', '290db8ac-3950-44a8-af63-0a1ba53e3edf'],
+            ['Live / Register', 'https://ografi.com/register', 'cf84b34f-3ccc-47e9-827b-b9faddd05d82'],
+            ['Live / Forgot Password', 'https://ografi.com/forgot-password', 'd692ea73-6090-424f-9e9a-ef4aa5896ec4'],
+            ['Live / Privacy', 'https://ografi.com/sayfa/gizlilik-politikasi', '642f1f93-0192-4bbe-8274-ddfdac4831d8'],
+            ['Live / About', 'https://ografi.com/sayfa/hakkimizda', 'd256abb5-5d7f-40c5-9c3e-274421665f3b'],
+            ['Live / Category Haberler', 'https://ografi.com/Categorys/haberler', '0ca61402-3ac3-462d-aac2-a485ab45563b'],
+            ['Live / Post Detail', 'https://ografi.com/tr/marmara-depreminde-yollari-kesisen-cift-bugun-afetzedelerin-yardimina-kosuyor', 'b347ee02-1fcf-4951-95b7-1c7da5a72828'],
+          ];
+
+          const browser = await chromium.launch({ headless: true });
+          const context = await browser.newContext({
+            viewport: { width: 1440, height: 1200 },
+            locale: 'tr-TR',
+          });
+
+          for (const [name, url, captureId] of captures) {
+            const page = await context.newPage();
+            try {
+              await page.route('**/*', async (route) => {
+                try {
+                  const response = await route.fetch();
+                  const headers = { ...response.headers() };
+                  delete headers['content-security-policy'];
+                  delete headers['content-security-policy-report-only'];
+                  await route.fulfill({ response, headers });
+                } catch {
+                  await route.continue();
+                }
+              });
+
+              console.log(`Opening ${name}: ${url}`);
+              await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 60000 });
+              await page.waitForTimeout(2500);
+
+              const scriptResponse = await page.context().request.get('https://mcp.figma.com/mcp/html-to-design/capture.js');
+              if (!scriptResponse.ok()) throw new Error(`capture.js ${scriptResponse.status()}`);
+              const script = await scriptResponse.text();
+              await page.evaluate((s) => {
+                const el = document.createElement('script');
+                el.textContent = s;
+                document.head.appendChild(el);
+              }, script);
+              await page.waitForTimeout(700);
+
+              const result = await page.evaluate(async ({ captureId }) => {
+                if (!window.figma?.captureForDesign) throw new Error('figma capture API missing');
+                return await window.figma.captureForDesign({
+                  captureId,
+                  endpoint: `https://mcp.figma.com/mcp/capture/${captureId}/submit?bindVariables=true`,
+                  selector: 'body',
+                });
+              }, { captureId });
+              console.log(`Captured ${name}`, result);
+            } catch (error) {
+              console.error(`FAILED ${name}:`, error);
+              process.exitCode = 1;
+            } finally {
+              await page.close();
+            }
+          }
+
+          await browser.close();
+          NODE
+          node /tmp/capture.mjs
