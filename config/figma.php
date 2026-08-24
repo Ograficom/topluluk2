@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'file_key' => env('FIGMA_FILE_KEY'),
+    'file_key' => env('FIGMA_FILE_KEY', 'MCDxzKsjWhMshCAhliWEjL'),
     'access_token' => env('FIGMA_ACCESS_TOKEN'),
     'webhook_passcode' => env('FIGMA_WEBHOOK_PASSCODE'),
 
