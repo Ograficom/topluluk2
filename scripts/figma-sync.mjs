@@ -17,7 +17,7 @@ if (!token) {
 const statePath = resolve('.figma-sync/state.json');
 const indexPath = resolve('.figma-sync/design-index.json');
 const mapPath = resolve('design/figma-map.json');
-const generatedCssPath = resolve('resources/css/figma.generated.css');
+const generatedCssPath = resolve('public/css/figma.generated.css');
 
 const designMap = JSON.parse(await readFile(mapPath, 'utf8'));
 if (designMap.fileKey && designMap.fileKey !== fileKey) {
@@ -128,8 +128,7 @@ function nodeRadius(node) {
 
     const radii = Array.isArray(node?.rectangleCornerRadii) ? node.rectangleCornerRadii : [];
     if (radii.length && radii.every((value) => typeof value === 'number')) {
-        const first = radii[0];
-        return radii.every((value) => value === first) ? first : first;
+        return radii[0];
     }
 
     return null;
@@ -171,13 +170,11 @@ const setCssVariable = (name, value) => {
 };
 
 for (const [variableName, nodeId] of Object.entries(designMap.foundations?.colors ?? {})) {
-    const color = paintColor(documentFor(nodeId));
-    setCssVariable(variableName, color);
+    setCssVariable(variableName, paintColor(documentFor(nodeId)));
 }
 
 for (const [tokenName, nodeId] of Object.entries(designMap.foundations?.spacing ?? {})) {
-    const node = documentFor(nodeId);
-    const match = String(node?.characters ?? '').match(/-?\d+(?:\.\d+)?/);
+    const match = String(documentFor(nodeId)?.characters ?? '').match(/-?\d+(?:\.\d+)?/);
     if (match) {
         setCssVariable(`--figma-space-${tokenName}`, `${match[0]}px`);
     }
@@ -195,18 +192,10 @@ for (const [tokenName, nodeId] of Object.entries(designMap.foundations?.typograp
     const style = node?.style ?? {};
     const prefix = `--figma-type-${slugify(tokenName)}`;
 
-    if (cssNumber(style.fontSize) !== null) {
-        setCssVariable(`${prefix}-size`, `${round(style.fontSize)}px`);
-    }
-    if (cssNumber(style.fontWeight) !== null) {
-        setCssVariable(`${prefix}-weight`, Math.round(style.fontWeight));
-    }
-    if (cssNumber(style.lineHeightPx) !== null) {
-        setCssVariable(`${prefix}-line-height`, `${round(style.lineHeightPx)}px`);
-    }
-    if (style.fontFamily) {
-        setCssVariable(`${prefix}-family`, JSON.stringify(style.fontFamily));
-    }
+    if (cssNumber(style.fontSize) !== null) setCssVariable(`${prefix}-size`, `${round(style.fontSize)}px`);
+    if (cssNumber(style.fontWeight) !== null) setCssVariable(`${prefix}-weight`, Math.round(style.fontWeight));
+    if (cssNumber(style.lineHeightPx) !== null) setCssVariable(`${prefix}-line-height`, `${round(style.lineHeightPx)}px`);
+    if (style.fontFamily) setCssVariable(`${prefix}-family`, JSON.stringify(style.fontFamily));
 }
 
 const componentIndex = [];
@@ -258,7 +247,26 @@ const cssBody = [...cssVariables.entries()]
     .map(([name, value]) => `    ${name}: ${value};`)
     .join('\n');
 
-const generatedCss = `/*\n * AUTO-GENERATED from Figma: ${designMap.fileName ?? file.name ?? fileKey}\n * Source: ${designMap.sourceUrl ?? fileKey}\n * Do not edit manually. Run scripts/figma-sync.mjs instead.\n */\n:root {\n${cssBody}\n}\n`;
+const mappedCssRules = `
+[data-figma-node="1:143"] {
+    min-height: var(--figma-button-primary-height, 48px) !important;
+    padding-left: var(--figma-button-primary-padding-left, 16px) !important;
+    padding-right: var(--figma-button-primary-padding-right, 16px) !important;
+    border-radius: var(--figma-button-primary-radius, 12px) !important;
+    background-color: var(--figma-button-primary-background, var(--figma-color-action-primary, #0ea5e9)) !important;
+    color: var(--figma-button-primary-text-color, #ffffff) !important;
+    font-size: var(--figma-button-primary-font-size, 16px) !important;
+    font-weight: var(--figma-button-primary-font-weight, 600) !important;
+}
+
+article.post-card[data-post-card-shell] {
+    border-color: var(--figma-post-card-default-border-color, var(--figma-color-border-default, #e4e6ea)) !important;
+    border-radius: var(--figma-post-card-default-radius, var(--figma-radius-lg, 16px)) !important;
+    background-color: var(--figma-post-card-default-background, var(--figma-color-bg-base, #ffffff)) !important;
+}
+`;
+
+const generatedCss = `/*\n * AUTO-GENERATED from Figma: ${designMap.fileName ?? file.name ?? fileKey}\n * Source: ${designMap.sourceUrl ?? fileKey}\n * Do not edit manually. Run scripts/figma-sync.mjs instead.\n */\n:root {\n${cssBody}\n}\n${mappedCssRules}`;
 
 const snapshot = {
     fileKey,
