@@ -4,6 +4,13 @@ on:
   repository_dispatch:
     types: [figma_update]
   workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/figma-sync.yml'
+      - 'scripts/figma-sync.mjs'
+      - 'design/figma-map.json'
   schedule:
     - cron: '*/5 * * * *'
 
