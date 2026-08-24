@@ -23,21 +23,40 @@ jobs:
         run: |
           npm install --no-save playwright@1.55.0
           npx playwright install --with-deps chromium
-      - name: Capture remaining desktop public routes
+      - name: Capture mobile public routes
         run: |
           cat > capture.mjs <<'NODE'
           import { chromium } from 'playwright';
           const captures = [
-            ['Live / Search', 'https://ografi.com/search', '431a8145-3243-43a0-b3bf-317779a014fc'],
-            ['Live / Tags', 'https://ografi.com/blog/tags', 'eef912fd-e5d4-424a-b6ef-f8fe488e3104'],
-            ['Live / Users', 'https://ografi.com/users', '37f1a009-9b05-4249-9f66-4d001970c8b5'],
-            ['Live / Video', 'https://ografi.com/video', '02a61844-f7b1-44db-8502-c4f394d0d931'],
-            ['Live / Communities', 'https://ografi.com/Categorys', '79d902ed-8e57-4395-aab9-4a9a43f323b1'],
-            ['Live / Profile Admin', 'https://ografi.com/u/admin', '094c957f-c3aa-4dae-a3a1-d83e2947e559'],
-            ['Live / Advertise', 'https://ografi.com/reklam-ver', '0e4225a7-d680-4ebf-8700-f5fbe876e984'],
+            ['Mobile / Home', 'https://ografi.com/', 'b7ada4c3-a3d9-479b-9390-c8b089d239eb'],
+            ['Mobile / Discover', 'https://ografi.com/discover', '402d1158-78e8-4584-9e9b-37dddf311229'],
+            ['Mobile / Contact', 'https://ografi.com/contact', '7365f8c3-2a35-44fd-909f-15d583d7bf1e'],
+            ['Mobile / FAQ', 'https://ografi.com/p/sss', '72ec90f8-3910-401e-a72b-66d135bf4301'],
+            ['Mobile / Popular', 'https://ografi.com/blog/popular', '1cffc189-3534-4980-ba3f-cc009fc7a8bd'],
+            ['Mobile / Login', 'https://ografi.com/login', 'c1d6aced-238b-4f6a-a849-59e36e713465'],
+            ['Mobile / Register', 'https://ografi.com/register', '70391de4-beef-4d43-830a-0ec4b036ee92'],
+            ['Mobile / Forgot Password', 'https://ografi.com/forgot-password', '00c05c88-aceb-4f23-bafd-44a4da7eea08'],
+            ['Mobile / Privacy', 'https://ografi.com/sayfa/gizlilik-politikasi', 'ab797789-3fc0-4bf1-867e-5d1c707ffaf8'],
+            ['Mobile / About', 'https://ografi.com/sayfa/hakkimizda', 'c6366990-2994-46e8-82af-ec2862d578f5'],
+            ['Mobile / Category Haberler', 'https://ografi.com/Categorys/haberler', '0c4a9f6c-9452-4e20-afce-290c66e8a387'],
+            ['Mobile / Post Detail', 'https://ografi.com/tr/marmara-depreminde-yollari-kesisen-cift-bugun-afetzedelerin-yardimina-kosuyor', '839e2631-761f-4282-957b-ab4d8ab8dfc2'],
+            ['Mobile / Search', 'https://ografi.com/search', '7b3aeeb6-e6f4-4c28-a683-36f92561ed20'],
+            ['Mobile / Tags', 'https://ografi.com/blog/tags', '9004c7a2-82c9-495a-942e-34129c6c21e9'],
+            ['Mobile / Users', 'https://ografi.com/users', 'd60b31c6-cf8a-4be1-bff8-4156ec5fb1e4'],
+            ['Mobile / Video', 'https://ografi.com/video', 'cbe42cce-5976-4c6a-9213-e2747f55c0c6'],
+            ['Mobile / Communities', 'https://ografi.com/Categorys', '2e092341-1c85-47ad-bfbd-0ce27a770077'],
+            ['Mobile / Profile Admin', 'https://ografi.com/u/admin', 'b6b52c77-420f-46ea-b39a-365275b78713'],
+            ['Mobile / Advertise', 'https://ografi.com/reklam-ver', 'b41d13be-a503-4b21-baf7-8103716e0778'],
           ];
           const browser = await chromium.launch({ headless: true });
-          const context = await browser.newContext({ viewport: { width: 1440, height: 1200 }, locale: 'tr-TR' });
+          const context = await browser.newContext({
+            viewport: { width: 390, height: 844 },
+            screen: { width: 390, height: 844 },
+            deviceScaleFactor: 1,
+            isMobile: true,
+            hasTouch: true,
+            locale: 'tr-TR'
+          });
           async function startCapture([name, url, captureId]) {
             const page = await context.newPage();
             await page.route('**/*', async route => {
@@ -51,7 +70,7 @@ jobs:
             });
             try {
               await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 60000 });
-              await page.waitForTimeout(2500);
+              await page.waitForTimeout(3000);
               const r = await page.context().request.get('https://mcp.figma.com/mcp/html-to-design/capture.js');
               const script = await r.text();
               await page.evaluate(s => { const el=document.createElement('script'); el.textContent=s; document.head.appendChild(el); }, script);
@@ -62,7 +81,8 @@ jobs:
             } catch (e) { console.error(`FAILED ${name}`, e); await page.close(); return null; }
           }
           const pages=(await Promise.all(captures.map(startCapture))).filter(Boolean);
-          await new Promise(r=>setTimeout(r,120000));
+          console.log(`Started ${pages.length}/${captures.length} mobile captures`);
+          await new Promise(r=>setTimeout(r,150000));
           await Promise.allSettled(pages.map(p=>p.close()));
           await browser.close();
           NODE
