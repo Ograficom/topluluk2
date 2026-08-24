@@ -31,16 +31,16 @@ jobs:
         with:
           node-version: 20
 
-      - name: Read Figma snapshot
+      - name: Read mapped Figma design
         id: sync
         env:
-          FIGMA_FILE_KEY: ${{ secrets.FIGMA_FILE_KEY }}
+          FIGMA_FILE_KEY: MCDxzKsjWhMshCAhliWEjL
           FIGMA_ACCESS_TOKEN: ${{ secrets.FIGMA_ACCESS_TOKEN }}
         run: node scripts/figma-sync.mjs
 
       - name: Stop when nothing changed
         if: steps.sync.outputs.changed != 'true'
-        run: echo 'Figma snapshot is unchanged.'
+        run: echo 'Mapped Figma design is unchanged.'
 
       - name: Build application
         if: steps.sync.outputs.changed == 'true'
@@ -61,14 +61,17 @@ jobs:
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git checkout -B "$BRANCH"
-          git add .figma-sync/state.json .figma-sync/design-index.json
+          git add \
+            .figma-sync/state.json \
+            .figma-sync/design-index.json \
+            public/css/figma.generated.css
 
           if git diff --cached --quiet; then
-            echo 'No tracked snapshot changes.'
+            echo 'No tracked Figma changes.'
             exit 0
           fi
 
-          git commit -m "Sync Figma snapshot ${FINGERPRINT:0:12}"
+          git commit -m "Sync mapped Figma design ${FINGERPRINT:0:12}"
           git push --force-with-lease origin "$BRANCH"
 
           EXISTING_PR="$(gh pr list --head "$BRANCH" --base main --state open --json number --jq '.[0].number // empty')"
@@ -77,8 +80,8 @@ jobs:
             gh pr create \
               --base main \
               --head "$BRANCH" \
-              --title 'Sync Figma design snapshot' \
-              --body "Figma tasarım dosyasında değişiklik algılandı.\n\n- Version: ${FIGMA_VERSION:-unknown}\n- Fingerprint: ${FINGERPRINT}\n\nBu PR yalnızca tasarım snapshot/index değişikliğini taşır. Blade/Tailwind component değişiklikleri eşleme katmanı tarafından ayrıca uygulanmalıdır."
+              --title 'Sync mapped Figma design' \
+              --body "Figma tasarım dosyasında eşlenmiş bir değişiklik algılandı.\n\n- Version: ${FIGMA_VERSION:-unknown}\n- Fingerprint: ${FINGERPRINT}\n\nBu PR snapshot/index ile birlikte Figma node'larından yeniden üretilen public/css/figma.generated.css dosyasını taşır. Değişiklik main'e doğrudan basılmaz."
           else
-            gh pr comment "$EXISTING_PR" --body "Yeni Figma snapshot işlendi: ${FINGERPRINT:0:12}"
+            gh pr comment "$EXISTING_PR" --body "Yeni eşlenmiş Figma tasarımı işlendi: ${FINGERPRINT:0:12}"
           fi
