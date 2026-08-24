@@ -18,7 +18,6 @@ jobs:
           port: 22
           timeout: 120s
           command_timeout: 20m
-          script_stop: true
           script: |
             set -e
             TARGET_PATH="${{ secrets.SERVER_PATH }}"
