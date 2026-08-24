@@ -9,3 +9,4 @@
 <noscript>
     <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
 </noscript>
+<link rel="stylesheet" href="{{ asset('css/figma.generated.css') }}?v={{ @filemtime(public_path('css/figma.generated.css')) ?: '1' }}">
