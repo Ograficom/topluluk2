@@ -53,14 +53,14 @@
     {
       "nodeId": "1:145",
       "name": "Chip/Default",
-      "target": "resources/css/figma.generated.css",
+      "target": "public/css/figma.generated.css",
       "platform": "shared",
       "sync": ["fill", "border", "height", "radius", "padding", "typography"]
     },
     {
       "nodeId": "1:147",
       "name": "Search Field/Default",
-      "target": "resources/css/figma.generated.css",
+      "target": "public/css/figma.generated.css",
       "platform": "web-adapted",
       "sync": ["fill", "border", "height", "radius", "padding", "typography"]
     },
@@ -81,7 +81,7 @@
     {
       "nodeId": "1:163",
       "name": "Video Card/Default",
-      "target": "resources/css/figma.generated.css",
+      "target": "public/css/figma.generated.css",
       "platform": "web-adapted",
       "sync": ["fill", "border", "radius", "padding", "gap"]
     },
