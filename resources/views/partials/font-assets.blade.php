@@ -9,3 +9,8 @@
 <noscript>
     <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
 </noscript>
+@php
+    $figmaCssPath = public_path('css/figma.generated.css');
+    $figmaCssVersion = is_file($figmaCssPath) ? filemtime($figmaCssPath) : 1;
+@endphp
+<link rel="stylesheet" href="{{ asset('css/figma.generated.css') }}?v={{ $figmaCssVersion }}">

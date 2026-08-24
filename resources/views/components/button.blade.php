@@ -20,6 +20,10 @@
         'md' => 'h-8 px-3 text-sm',
         'lg' => 'h-9 px-4 text-sm',
     ];
+
+    // The iOS design-system Button/Primary is a 48px primary action. We only bind
+    // the large primary web button so compact utility buttons keep their web sizing.
+    $figmaNodeId = $variant === 'primary' && $size === 'lg' ? '1:143' : null;
 @endphp
 
 <button
@@ -31,8 +35,7 @@
             $sizeClasses[$size] ?? $sizeClasses['md'],
         ]),
     ]) }}
+    @if($figmaNodeId) data-figma-node="{{ $figmaNodeId }}" @endif
 >
     {{ $slot }}
 </button>
-
-
