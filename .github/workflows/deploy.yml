@@ -16,6 +16,9 @@ jobs:
           username: root
           password: ${{ secrets.SERVER_SSH_PASSWORD }}
           port: 22
+          timeout: 120s
+          command_timeout: 20m
+          script_stop: true
           script: |
             set -e
             TARGET_PATH="${{ secrets.SERVER_PATH }}"
@@ -41,9 +44,19 @@ jobs:
             set_env_value APP_ENV production
             set_env_value APP_DEBUG false
 
-            composer install --no-interaction --prefer-dist --optimize-autoloader
+            COMPOSER_ALLOW_SUPERUSER=1 composer install --no-interaction --prefer-dist --optimize-autoloader
             php artisan livewire:publish --assets --no-interaction
+
+            # Always rebuild Node dependencies from package-lock.json. This prevents
+            # stale server node_modules (for example Tailwind 4) from being mixed
+            # with this repository's Tailwind 3/PostCSS configuration.
+            if [ ! -f package-lock.json ]; then
+              echo "package-lock.json is required for deterministic production builds" >&2
+              exit 1
+            fi
+            npm ci --include=dev --no-audit --no-fund
             npm run build
+
             OGRAFI_NGINX_CONFIG=/www/server/panel/vhost/nginx/ografi.com.conf
             if [ -f "$OGRAFI_NGINX_CONFIG" ]; then
               sed -i '/valid_referers ografi.com www.ografi.com;/d; /if (\$invalid_referer)/,+3d' "$OGRAFI_NGINX_CONFIG"
