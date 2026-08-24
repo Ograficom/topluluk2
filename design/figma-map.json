@@ -1,0 +1,127 @@
+{
+  "schemaVersion": 1,
+  "fileKey": "MCDxzKsjWhMshCAhliWEjL",
+  "fileName": "Ografi iOS UI Kit — 2026",
+  "sourceUrl": "https://www.figma.com/design/MCDxzKsjWhMshCAhliWEjL/Ografi-iOS-UI-Kit-%E2%80%94-2026?node-id=0-1",
+  "strategy": "shared-design-system-web-adaptation",
+  "foundations": {
+    "colors": {
+      "--figma-color-bg-base": "1:54",
+      "--figma-color-bg-surface": "1:57",
+      "--figma-color-text-primary": "1:60",
+      "--figma-color-text-secondary": "1:63",
+      "--figma-color-border-default": "1:66",
+      "--figma-color-action-primary": "1:69",
+      "--figma-color-status-positive": "1:72",
+      "--figma-color-status-destructive": "1:75"
+    },
+    "typography": {
+      "large-title": "1:80",
+      "title-2": "1:83",
+      "headline": "1:86",
+      "body": "1:89",
+      "subheadline": "1:92",
+      "footnote": "1:95",
+      "caption": "1:98"
+    },
+    "radius": {
+      "none": "1:126",
+      "sm": "1:129",
+      "md": "1:132",
+      "lg": "1:135",
+      "xl": "1:138",
+      "full": "1:141"
+    }
+  },
+  "components": [
+    {
+      "nodeId": "1:143",
+      "name": "Button/Primary",
+      "target": "resources/views/components/button.blade.php",
+      "platform": "shared",
+      "sync": ["fill", "height", "radius", "padding", "typography"]
+    },
+    {
+      "nodeId": "1:145",
+      "name": "Chip/Default",
+      "target": "resources/css/figma.generated.css",
+      "platform": "shared",
+      "sync": ["fill", "border", "height", "radius", "padding", "typography"]
+    },
+    {
+      "nodeId": "1:147",
+      "name": "Search Field/Default",
+      "target": "resources/css/figma.generated.css",
+      "platform": "web-adapted",
+      "sync": ["fill", "border", "height", "radius", "padding", "typography"]
+    },
+    {
+      "nodeId": "1:150",
+      "name": "Avatar/Default",
+      "target": "resources/views/blog/post-card.blade.php",
+      "platform": "shared",
+      "sync": ["size", "radius"]
+    },
+    {
+      "nodeId": "1:151",
+      "name": "Post Card/Default",
+      "target": "resources/views/blog/post-card.blade.php",
+      "platform": "shared",
+      "sync": ["fill", "border", "radius", "padding", "gap", "typography"]
+    },
+    {
+      "nodeId": "1:163",
+      "name": "Video Card/Default",
+      "target": "resources/css/figma.generated.css",
+      "platform": "web-adapted",
+      "sync": ["fill", "border", "radius", "padding", "gap"]
+    },
+    {
+      "nodeId": "1:168",
+      "name": "Tab Bar/Default",
+      "target": null,
+      "platform": "ios-only",
+      "sync": []
+    },
+    {
+      "nodeId": "1:349",
+      "name": "Icon Button/Default",
+      "target": "resources/views/components/button.blade.php",
+      "platform": "web-adapted",
+      "sync": ["size", "radius", "fill", "border"]
+    },
+    {
+      "nodeId": "1:351",
+      "name": "Bottom Sheet/Default",
+      "target": "resources/views/components/confirmation-modal.blade.php",
+      "platform": "web-adapted",
+      "sync": ["fill", "radius", "padding"]
+    }
+  ],
+  "screens": [
+    {
+      "nodeId": "1:184",
+      "name": "iOS / Ana Akış",
+      "target": "resources/views/home.blade.php",
+      "platform": "web-adapted"
+    },
+    {
+      "nodeId": "1:228",
+      "name": "iOS / Keşfet",
+      "target": null,
+      "platform": "web-adapted"
+    },
+    {
+      "nodeId": "1:276",
+      "name": "iOS / Gönderi Detayı",
+      "target": null,
+      "platform": "web-adapted"
+    },
+    {
+      "nodeId": "1:302",
+      "name": "iOS / Profil",
+      "target": null,
+      "platform": "web-adapted"
+    }
+  ]
+}
