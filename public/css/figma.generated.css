@@ -1,0 +1,98 @@
+/*
+ * AUTO-GENERATED from Figma: Ografi iOS UI Kit — 2026
+ * Source: https://www.figma.com/design/MCDxzKsjWhMshCAhliWEjL/Ografi-iOS-UI-Kit-%E2%80%94-2026?node-id=0-1
+ * Do not edit manually. Run scripts/figma-sync.mjs instead.
+ */
+:root {
+    --figma-color-action-primary: #0ea5e9;
+    --figma-color-bg-base: #ffffff;
+    --figma-color-bg-surface: #f7f7f8;
+    --figma-color-border-default: #e4e6ea;
+    --figma-color-status-destructive: #ef4444;
+    --figma-color-status-positive: #30b24a;
+    --figma-color-text-primary: #0a0a0b;
+    --figma-color-text-secondary: #737780;
+    --figma-space-xs: 4px;
+    --figma-space-sm: 8px;
+    --figma-space-md: 12px;
+    --figma-space-lg: 16px;
+    --figma-space-xl: 20px;
+    --figma-space-2xl: 24px;
+    --figma-space-3xl: 32px;
+    --figma-radius-none: 0px;
+    --figma-radius-sm: 8px;
+    --figma-radius-md: 12px;
+    --figma-radius-lg: 16px;
+    --figma-radius-xl: 20px;
+    --figma-radius-full: 9999px;
+    --figma-type-large-title-size: 34px;
+    --figma-type-large-title-weight: 700;
+    --figma-type-title-2-size: 22px;
+    --figma-type-title-2-weight: 600;
+    --figma-type-headline-size: 17px;
+    --figma-type-headline-weight: 600;
+    --figma-type-body-size: 17px;
+    --figma-type-body-weight: 400;
+    --figma-type-subheadline-size: 15px;
+    --figma-type-subheadline-weight: 400;
+    --figma-type-footnote-size: 13px;
+    --figma-type-footnote-weight: 400;
+    --figma-type-caption-size: 12px;
+    --figma-type-caption-weight: 500;
+    --figma-button-primary-width: 160px;
+    --figma-button-primary-height: 48px;
+    --figma-button-primary-radius: 12px;
+    --figma-button-primary-padding-left: 16px;
+    --figma-button-primary-padding-right: 16px;
+    --figma-button-primary-padding-top: 12px;
+    --figma-button-primary-padding-bottom: 12px;
+    --figma-button-primary-background: #0ea5e9;
+    --figma-button-primary-font-size: 16px;
+    --figma-button-primary-font-weight: 600;
+    --figma-button-primary-text-color: #ffffff;
+    --figma-chip-default-width: 96px;
+    --figma-chip-default-height: 36px;
+    --figma-chip-default-radius: 18px;
+    --figma-chip-default-padding-left: 12px;
+    --figma-chip-default-padding-right: 12px;
+    --figma-chip-default-padding-top: 8px;
+    --figma-chip-default-padding-bottom: 8px;
+    --figma-chip-default-background: #f7f7f8;
+    --figma-chip-default-border-color: #e4e6ea;
+    --figma-chip-default-font-size: 14px;
+    --figma-chip-default-font-weight: 500;
+    --figma-chip-default-text-color: #0a0a0b;
+    --figma-post-card-default-width: 343px;
+    --figma-post-card-default-height: 240px;
+    --figma-post-card-default-radius: 16px;
+    --figma-post-card-default-gap: 12px;
+    --figma-post-card-default-padding-left: 16px;
+    --figma-post-card-default-padding-right: 16px;
+    --figma-post-card-default-padding-top: 16px;
+    --figma-post-card-default-padding-bottom: 16px;
+    --figma-post-card-default-background: #ffffff;
+    --figma-post-card-default-border-color: #e4e6ea;
+}
+
+[data-figma-node="1:143"] {
+    min-height: var(--figma-button-primary-height, 48px) !important;
+    padding-left: var(--figma-button-primary-padding-left, 16px) !important;
+    padding-right: var(--figma-button-primary-padding-right, 16px) !important;
+    border-radius: var(--figma-button-primary-radius, 12px) !important;
+    background-color: var(--figma-button-primary-background, #0ea5e9) !important;
+    color: var(--figma-button-primary-text-color, #ffffff) !important;
+    font-size: var(--figma-button-primary-font-size, 16px) !important;
+    font-weight: var(--figma-button-primary-font-weight, 600) !important;
+}
+
+article.post-card[data-figma-node="1:151"] {
+    border-color: var(--figma-post-card-default-border-color, #e4e6ea) !important;
+    border-radius: var(--figma-post-card-default-radius, 16px) !important;
+    background-color: var(--figma-post-card-default-background, #ffffff) !important;
+}
+
+.author-avatar[data-figma-node="1:150"] {
+    width: var(--figma-avatar-default-width, 44px) !important;
+    height: var(--figma-avatar-default-height, 44px) !important;
+    border-radius: var(--figma-avatar-default-radius, 9999px) !important;
+}
