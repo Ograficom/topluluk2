@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "fileKey": "MCDxzKsjWhMshCAhliWEjL",
   "fileName": "Ografi iOS UI Kit — 2026",
   "sourceUrl": "https://www.figma.com/design/MCDxzKsjWhMshCAhliWEjL/Ografi-iOS-UI-Kit-%E2%80%94-2026?node-id=0-1",
@@ -108,29 +108,67 @@
     }
   ],
   "screens": [
-    {
-      "nodeId": "1:184",
-      "name": "iOS / Ana Akış",
-      "target": "resources/views/home.blade.php",
-      "platform": "web-adapted"
-    },
-    {
-      "nodeId": "1:228",
-      "name": "iOS / Keşfet",
-      "target": null,
-      "platform": "web-adapted"
-    },
-    {
-      "nodeId": "1:276",
-      "name": "iOS / Gönderi Detayı",
-      "target": null,
-      "platform": "web-adapted"
-    },
-    {
-      "nodeId": "1:302",
-      "name": "iOS / Profil",
-      "target": null,
-      "platform": "web-adapted"
-    }
+    {"nodeId":"1:184","name":"iOS / Ana Akış","target":"resources/views/home.blade.php","platform":"web-adapted"},
+    {"nodeId":"1:228","name":"iOS / Keşfet","target":"resources/views/pages/discover.blade.php","platform":"web-adapted"},
+    {"nodeId":"1:276","name":"iOS / Gönderi Detayı","target":null,"platform":"web-adapted"},
+    {"nodeId":"1:302","name":"iOS / Profil","target":null,"platform":"web-adapted"},
+
+    {"nodeId":"143:5924","name":"WEB / Home","route":"/","target":"resources/views/templates/home-like.blade.php","platform":"web-desktop","syncMode":"review-structural"},
+    {"nodeId":"143:6011","name":"WEB / Discover","route":"/discover","target":"resources/views/pages/discover.blade.php","platform":"web-desktop","syncMode":"review-structural"},
+    {"nodeId":"143:6110","name":"WEB / Search","route":"/search","target":null,"platform":"web-desktop","syncMode":"review-structural"},
+    {"nodeId":"143:6183","name":"WEB / Tags","route":"/blog/tags","target":null,"platform":"web-desktop","syncMode":"review-structural"},
+    {"nodeId":"143:6257","name":"WEB / Users","route":"/users","target":null,"platform":"web-desktop","syncMode":"review-structural"},
+    {"nodeId":"143:6338","name":"WEB / Contact","route":"/contact","target":"resources/views/contact/create.blade.php","platform":"web-desktop","syncMode":"review-structural"},
+    {"nodeId":"143:6410","name":"WEB / FAQ","route":"/p/sss","target":"resources/views/pages/sss.blade.php","platform":"web-desktop","syncMode":"review-structural"},
+    {"nodeId":"143:6494","name":"WEB / Video","route":"/video","target":null,"platform":"web-desktop","syncMode":"review-structural"},
+    {"nodeId":"143:6561","name":"WEB / Popular","route":"/blog/popular","target":null,"platform":"web-desktop","syncMode":"review-structural"},
+    {"nodeId":"143:6648","name":"WEB / Communities","route":"/Categorys","target":"resources/views/blog/categories.blade.php","platform":"web-desktop","syncMode":"review-structural"},
+    {"nodeId":"143:6737","name":"WEB / Category · Haberler","route":"/Categorys/{category:slug}","target":null,"platform":"web-desktop","syncMode":"review-structural"},
+    {"nodeId":"143:6829","name":"WEB / Profile · Admin","route":"/u/{username}","target":null,"platform":"web-desktop","syncMode":"review-structural"},
+    {"nodeId":"143:6925","name":"WEB / Post Detail","route":"/blog/{slug}","target":null,"platform":"web-desktop","syncMode":"review-structural"},
+    {"nodeId":"143:6999","name":"WEB / Login","route":"/login","target":"resources/views/auth/login.blade.php","platform":"web-desktop","syncMode":"review-structural"},
+    {"nodeId":"143:7068","name":"WEB / Register","route":"/register","target":"resources/views/auth/register.blade.php","platform":"web-desktop","syncMode":"review-structural"},
+    {"nodeId":"143:7137","name":"WEB / Forgot Password","route":"/forgot-password","target":"resources/views/auth/forgot-password.blade.php","platform":"web-desktop","syncMode":"review-structural"},
+
+    {"nodeId":"143:7315","name":"WEBM / Home","route":"/","target":"resources/views/templates/home-like.blade.php","platform":"web-mobile","syncMode":"review-structural"},
+    {"nodeId":"143:7361","name":"WEBM / Discover","route":"/discover","target":"resources/views/pages/discover.blade.php","platform":"web-mobile","syncMode":"review-structural"},
+    {"nodeId":"143:7410","name":"WEBM / Search","route":"/search","target":null,"platform":"web-mobile","syncMode":"review-structural"},
+    {"nodeId":"143:7442","name":"WEBM / Tags","route":"/blog/tags","target":null,"platform":"web-mobile","syncMode":"review-structural"},
+    {"nodeId":"143:7476","name":"WEBM / Users","route":"/users","target":null,"platform":"web-mobile","syncMode":"review-structural"},
+    {"nodeId":"143:7520","name":"WEBM / Contact","route":"/contact","target":"resources/views/contact/create.blade.php","platform":"web-mobile","syncMode":"review-structural"},
+    {"nodeId":"143:7551","name":"WEBM / FAQ","route":"/p/sss","target":"resources/views/pages/sss.blade.php","platform":"web-mobile","syncMode":"review-structural"},
+    {"nodeId":"143:7591","name":"WEBM / Video","route":"/video","target":null,"platform":"web-mobile","syncMode":"review-structural"},
+    {"nodeId":"143:7621","name":"WEBM / Popular","route":"/blog/popular","target":null,"platform":"web-mobile","syncMode":"review-structural"},
+    {"nodeId":"143:7667","name":"WEBM / Communities","route":"/Categorys","target":"resources/views/blog/categories.blade.php","platform":"web-mobile","syncMode":"review-structural"},
+    {"nodeId":"143:7711","name":"WEBM / Category · Haberler","route":"/Categorys/{category:slug}","target":null,"platform":"web-mobile","syncMode":"review-structural"},
+    {"nodeId":"143:7762","name":"WEBM / Profile · Admin","route":"/u/{username}","target":null,"platform":"web-mobile","syncMode":"review-structural"},
+    {"nodeId":"143:7801","name":"WEBM / Post Detail","route":"/blog/{slug}","target":null,"platform":"web-mobile","syncMode":"review-structural"},
+    {"nodeId":"143:7833","name":"WEBM / Login","route":"/login","target":"resources/views/auth/login.blade.php","platform":"web-mobile","syncMode":"review-structural"},
+    {"nodeId":"143:7862","name":"WEBM / Register","route":"/register","target":"resources/views/auth/register.blade.php","platform":"web-mobile","syncMode":"review-structural"},
+    {"nodeId":"143:7891","name":"WEBM / Forgot Password","route":"/forgot-password","target":"resources/views/auth/forgot-password.blade.php","platform":"web-mobile","syncMode":"review-structural"},
+
+    {"nodeId":"145:5924","name":"DASH / Dashboard","route":"/dashboard","target":"resources/views/dashboard.blade.php","platform":"dashboard-desktop","syncMode":"review-structural"},
+    {"nodeId":"145:5979","name":"DASH / Profil","route":"/dashboard/profile","target":"resources/views/dashboard/profile.blade.php","platform":"dashboard-desktop","syncMode":"review-structural"},
+    {"nodeId":"145:6023","name":"DASH / Hesap","route":"/dashboard/account","target":"resources/views/dashboard/account.blade.php","platform":"dashboard-desktop","syncMode":"review-structural"},
+    {"nodeId":"145:6065","name":"DASH / Parola","route":"/dashboard/password","target":"resources/views/dashboard/password.blade.php","platform":"dashboard-desktop","syncMode":"review-structural"},
+    {"nodeId":"145:6107","name":"DASH / Tercihler","route":"/dashboard/preferences","target":"resources/views/dashboard/preferences.blade.php","platform":"dashboard-desktop","syncMode":"review-structural"},
+    {"nodeId":"145:6168","name":"DASH / İki Faktörlü Doğrulama","route":"/dashboard/two-factor-authentication","target":"resources/views/dashboard/two-factor-authentication.blade.php","platform":"dashboard-desktop","syncMode":"review-structural"},
+    {"nodeId":"145:6209","name":"DASH / Bildirimler","route":"/dashboard/notifications","target":"resources/views/dashboard/notifications.blade.php","platform":"dashboard-desktop","syncMode":"review-structural"},
+    {"nodeId":"145:6270","name":"DASH / Rozetler","route":"/dashboard/badges","target":"resources/views/dashboard/badges.blade.php","platform":"dashboard-desktop","syncMode":"review-structural"},
+    {"nodeId":"145:6318","name":"DASH / Gizlilik","route":"/dashboard/privacy","target":"resources/views/dashboard/privacy.blade.php","platform":"dashboard-desktop","syncMode":"review-structural"},
+    {"nodeId":"145:6379","name":"DASH / Engellenenler","route":"/dashboard/blocks","target":"resources/views/dashboard/blocks.blade.php","platform":"dashboard-desktop","syncMode":"review-structural"},
+    {"nodeId":"145:6424","name":"DASH / Hesabı Sil","route":"/dashboard/delete-account","target":"resources/views/dashboard/delete-account.blade.php","platform":"dashboard-desktop","syncMode":"review-structural"},
+
+    {"nodeId":"145:6973","name":"DASHM / Dashboard","route":"/dashboard","target":"resources/views/dashboard.blade.php","platform":"dashboard-mobile","syncMode":"review-structural"},
+    {"nodeId":"145:6993","name":"DASHM / Profil","route":"/dashboard/profile","target":"resources/views/dashboard/profile.blade.php","platform":"dashboard-mobile","syncMode":"review-structural"},
+    {"nodeId":"145:7018","name":"DASHM / Hesap","route":"/dashboard/account","target":"resources/views/dashboard/account.blade.php","platform":"dashboard-mobile","syncMode":"review-structural"},
+    {"nodeId":"145:7042","name":"DASHM / Parola","route":"/dashboard/password","target":"resources/views/dashboard/password.blade.php","platform":"dashboard-mobile","syncMode":"review-structural"},
+    {"nodeId":"145:7066","name":"DASHM / Tercihler","route":"/dashboard/preferences","target":"resources/views/dashboard/preferences.blade.php","platform":"dashboard-mobile","syncMode":"review-structural"},
+    {"nodeId":"145:7109","name":"DASHM / İki Faktörlü Doğrulama","route":"/dashboard/two-factor-authentication","target":"resources/views/dashboard/two-factor-authentication.blade.php","platform":"dashboard-mobile","syncMode":"review-structural"},
+    {"nodeId":"145:7129","name":"DASHM / Bildirimler","route":"/dashboard/notifications","target":"resources/views/dashboard/notifications.blade.php","platform":"dashboard-mobile","syncMode":"review-structural"},
+    {"nodeId":"145:7172","name":"DASHM / Rozetler","route":"/dashboard/badges","target":"resources/views/dashboard/badges.blade.php","platform":"dashboard-mobile","syncMode":"review-structural"},
+    {"nodeId":"145:7202","name":"DASHM / Gizlilik","route":"/dashboard/privacy","target":"resources/views/dashboard/privacy.blade.php","platform":"dashboard-mobile","syncMode":"review-structural"},
+    {"nodeId":"145:7245","name":"DASHM / Engellenenler","route":"/dashboard/blocks","target":"resources/views/dashboard/blocks.blade.php","platform":"dashboard-mobile","syncMode":"review-structural"},
+    {"nodeId":"145:7272","name":"DASHM / Hesabı Sil","route":"/dashboard/delete-account","target":"resources/views/dashboard/delete-account.blade.php","platform":"dashboard-mobile","syncMode":"review-structural"}
   ]
 }

@@ -10,6 +10,7 @@ on:
     paths:
       - '.github/workflows/figma-sync.yml'
       - 'scripts/figma-sync.mjs'
+      - 'scripts/figma-screen-index.mjs'
       - 'design/figma-map.json'
   schedule:
     - cron: '*/5 * * * *'
@@ -36,7 +37,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 24
 
       - name: Read mapped Figma design
         id: sync
@@ -44,6 +45,13 @@ jobs:
           FIGMA_FILE_KEY: MCDxzKsjWhMshCAhliWEjL
           FIGMA_ACCESS_TOKEN: ${{ secrets.FIGMA_ACCESS_TOKEN }}
         run: node scripts/figma-sync.mjs
+
+      - name: Index mapped Figma screens
+        id: screen_index
+        env:
+          FIGMA_FILE_KEY: MCDxzKsjWhMshCAhliWEjL
+          FIGMA_ACCESS_TOKEN: ${{ secrets.FIGMA_ACCESS_TOKEN }}
+        run: node scripts/figma-screen-index.mjs
 
       - name: Stop when nothing changed
         if: steps.sync.outputs.changed != 'true'
@@ -61,6 +69,8 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           FINGERPRINT: ${{ steps.sync.outputs.fingerprint }}
           FIGMA_VERSION: ${{ steps.sync.outputs.version }}
+          CHANGED_SCREEN_COUNT: ${{ steps.screen_index.outputs.changed_screen_count }}
+          CHANGED_SCREENS: ${{ steps.screen_index.outputs.changed_screens }}
         run: |
           set -euo pipefail
 
@@ -71,6 +81,7 @@ jobs:
           git add \
             .figma-sync/state.json \
             .figma-sync/design-index.json \
+            .figma-sync/screen-index.json \
             public/css/figma.generated.css
 
           if git diff --cached --quiet; then
@@ -82,13 +93,17 @@ jobs:
           git push --force-with-lease origin "$BRANCH"
 
           EXISTING_PR="$(gh pr list --head "$BRANCH" --base main --state open --json number --jq '.[0].number // empty')"
+          SCREEN_NOTE="Eşlenmiş ekran değişikliği: ${CHANGED_SCREEN_COUNT:-0}"
+          if [ -n "${CHANGED_SCREENS:-}" ]; then
+            SCREEN_NOTE="${SCREEN_NOTE}\n- Ekranlar: ${CHANGED_SCREENS}"
+          fi
 
           if [ -z "$EXISTING_PR" ]; then
             gh pr create \
               --base main \
               --head "$BRANCH" \
               --title 'Sync mapped Figma design' \
-              --body "Figma tasarım dosyasında eşlenmiş bir değişiklik algılandı.\n\n- Version: ${FIGMA_VERSION:-unknown}\n- Fingerprint: ${FINGERPRINT}\n\nBu PR snapshot/index ile birlikte Figma node'larından yeniden üretilen public/css/figma.generated.css dosyasını taşır. Değişiklik main'e doğrudan basılmaz."
+              --body "Figma tasarım dosyasında eşlenmiş bir değişiklik algılandı.\n\n- Version: ${FIGMA_VERSION:-unknown}\n- Fingerprint: ${FINGERPRINT}\n- ${SCREEN_NOTE}\n\nComponent/token değişiklikleri public/css/figma.generated.css dosyasına otomatik üretilir. Web ve dashboard ekranlarındaki yapısal değişiklikler screen-index içinde hangi Blade hedefinin gözden geçirilmesi gerektiğiyle birlikte kaydedilir; yapısal Blade değişiklikleri kontrolsüz biçimde production'a yazılmaz."
           else
-            gh pr comment "$EXISTING_PR" --body "Yeni eşlenmiş Figma tasarımı işlendi: ${FINGERPRINT:0:12}"
+            gh pr comment "$EXISTING_PR" --body "Yeni eşlenmiş Figma tasarımı işlendi: ${FINGERPRINT:0:12}\n\n${SCREEN_NOTE}"
           fi
