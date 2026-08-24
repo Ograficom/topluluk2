@@ -79,20 +79,14 @@
     padding-left: var(--figma-button-primary-padding-left, 16px) !important;
     padding-right: var(--figma-button-primary-padding-right, 16px) !important;
     border-radius: var(--figma-button-primary-radius, 12px) !important;
-    background-color: var(--figma-button-primary-background, #0ea5e9) !important;
+    background-color: var(--figma-button-primary-background, var(--figma-color-action-primary, #0ea5e9)) !important;
     color: var(--figma-button-primary-text-color, #ffffff) !important;
     font-size: var(--figma-button-primary-font-size, 16px) !important;
     font-weight: var(--figma-button-primary-font-weight, 600) !important;
 }
 
-article.post-card[data-figma-node="1:151"] {
-    border-color: var(--figma-post-card-default-border-color, #e4e6ea) !important;
-    border-radius: var(--figma-post-card-default-radius, 16px) !important;
-    background-color: var(--figma-post-card-default-background, #ffffff) !important;
-}
-
-.author-avatar[data-figma-node="1:150"] {
-    width: var(--figma-avatar-default-width, 44px) !important;
-    height: var(--figma-avatar-default-height, 44px) !important;
-    border-radius: var(--figma-avatar-default-radius, 9999px) !important;
+article.post-card[data-post-card-shell] {
+    border-color: var(--figma-post-card-default-border-color, var(--figma-color-border-default, #e4e6ea)) !important;
+    border-radius: var(--figma-post-card-default-radius, var(--figma-radius-lg, 16px)) !important;
+    background-color: var(--figma-post-card-default-background, var(--figma-color-bg-base, #ffffff)) !important;
 }
