@@ -1,0 +1,568 @@
+{
+  "fileKey": "MCDxzKsjWhMshCAhliWEjL",
+  "name": "Ografi iOS UI Kit — 2026",
+  "version": "2389530524296368282",
+  "lastModified": "2026-08-19T20:36:38Z",
+  "components": [
+    "1:143",
+    "1:145",
+    "1:147",
+    "1:150",
+    "1:151",
+    "1:163",
+    "1:168",
+    "1:349",
+    "1:351"
+  ],
+  "componentSets": [
+    "104:5862"
+  ],
+  "styles": [
+    "1:40",
+    "1:41",
+    "1:42",
+    "1:43",
+    "1:44",
+    "1:45",
+    "1:46",
+    "27:1591",
+    "27:1592",
+    "27:1593",
+    "27:1594",
+    "27:1595",
+    "27:1596",
+    "78:4651",
+    "78:4652",
+    "78:4653",
+    "78:4654",
+    "78:4655",
+    "78:4656",
+    "78:4657",
+    "78:4658"
+  ],
+  "pages": [
+    {
+      "id": "0:1",
+      "name": "00 Cover",
+      "type": "CANVAS",
+      "visible": true,
+      "childCount": 23,
+      "children": [
+        {
+          "id": "5:2",
+          "name": "00 COVER · Ografi iOS UI Kit",
+          "type": "FRAME",
+          "visible": true,
+          "childCount": 0
+        },
+        {
+          "id": "7:28",
+          "name": "01 FOUNDATIONS",
+          "type": "FRAME",
+          "visible": true,
+          "childCount": 0
+        },
+        {
+          "id": "7:78",
+          "name": "02 COMPONENTS",
+          "type": "FRAME",
+          "visible": true,
+          "childCount": 0
+        },
+        {
+          "id": "7:231",
+          "name": "03 SCREENS",
+          "type": "FRAME",
+          "visible": true,
+          "childCount": 0
+        },
+        {
+          "id": "9:63",
+          "name": "04 DESKTOP / PC SCREENS",
+          "type": "FRAME",
+          "visible": true,
+          "childCount": 0
+        },
+        {
+          "id": "11:79",
+          "name": "05 EXTENDED COMPONENTS",
+          "type": "FRAME",
+          "visible": true,
+          "childCount": 0
+        },
+        {
+          "id": "19:259",
+          "name": "06 FULL PRODUCT COMPONENTS",
+          "type": "FRAME",
+          "visible": true,
+          "childCount": 0
+        },
+        {
+          "id": "21:259",
+          "name": "07 MOBILE · ALL PAGES",
+          "type": "FRAME",
+          "visible": true,
+          "childCount": 0
+        },
+        {
+          "id": "23:922",
+          "name": "08 DESKTOP · ALL PAGES",
+          "type": "FRAME",
+          "visible": true,
+          "childCount": 0
+        },
+        {
+          "id": "27:1464",
+          "name": "09 KOWALSKI · DESIGN PRINCIPLES",
+          "type": "FRAME",
+          "visible": true,
+          "childCount": 0
+        },
+        {
+          "id": "28:1464",
+          "name": "10 MOBILE V2 · KOWALSKI",
+          "type": "FRAME",
+          "visible": true,
+          "childCount": 0
+        },
+        {
+          "id": "29:2127",
+          "name": "11 DESKTOP V2 · KOWALSKI",
+          "type": "FRAME",
+          "visible": true,
+          "childCount": 0
+        },
+        {
+          "id": "37:2669",
+          "name": "12 REPO · SOURCE MAP",
+          "type": "FRAME",
+          "visible": true,
+          "childCount": 0
+        },
+        {
+          "id": "37:2707",
+          "name": "13 MOBILE V3 · REPO",
+          "type": "FRAME",
+          "visible": true,
+          "childCount": 0
+        },
+        {
+          "id": "41:2669",
+          "name": "14 DESKTOP V3 · REPO",
+          "type": "FRAME",
+          "visible": true,
+          "childCount": 0
+        },
+        {
+          "id": "50:2669",
+          "name": "15 DESKTOP V4 · macOS 26",
+          "type": "FRAME",
+          "visible": true,
+          "childCount": 0
+        },
+        {
+          "id": "65:3016",
+          "name": "16 MOBILE V4 · iOS 26",
+          "type": "FRAME",
+          "visible": true,
+          "childCount": 0
+        },
+        {
+          "id": "69:4651",
+          "name": "17 APPLE KITS · INSTALL & USAGE AUDIT",
+          "type": "FRAME",
+          "visible": true,
+          "childCount": 0
+        },
+        {
+          "id": "79:4651",
+          "name": "18 POST UI · LARAVEL + APPLE",
+          "type": "FRAME",
+          "visible": true,
+          "childCount": 0
+        },
+        {
+          "id": "97:5128",
+          "name": "18 POST SYSTEM · LARAVEL + APPLE",
+          "type": "FRAME",
+          "visible": true,
+          "childCount": 0
+        },
+        {
+          "id": "104:5675",
+          "name": "19 NAVIGATION · USER SOURCE",
+          "type": "FRAME",
+          "visible": true,
+          "childCount": 0
+        },
+        {
+          "id": "104:5862",
+          "name": "Navigation/Ografi Bottom Glass",
+          "type": "COMPONENT_SET",
+          "visible": true,
+          "childCount": 0
+        },
+        {
+          "id": "105:6094",
+          "name": "Reference/Home · Yeni Submenu Open",
+          "type": "FRAME",
+          "visible": true,
+          "childCount": 0
+        }
+      ]
+    },
+    {
+      "id": "1:47",
+      "name": "01 Foundations",
+      "type": "CANVAS",
+      "visible": true,
+      "childCount": 4,
+      "children": [
+        {
+          "id": "1:51",
+          "name": "Color System",
+          "type": "FRAME",
+          "visible": true,
+          "childCount": 0
+        },
+        {
+          "id": "1:77",
+          "name": "Typography",
+          "type": "FRAME",
+          "visible": true,
+          "childCount": 0
+        },
+        {
+          "id": "1:100",
+          "name": "Spacing",
+          "type": "FRAME",
+          "visible": true,
+          "childCount": 0
+        },
+        {
+          "id": "1:123",
+          "name": "Radius",
+          "type": "FRAME",
+          "visible": true,
+          "childCount": 0
+        }
+      ]
+    },
+    {
+      "id": "1:48",
+      "name": "02 Components",
+      "type": "CANVAS",
+      "visible": true,
+      "childCount": 9,
+      "children": [
+        {
+          "id": "1:143",
+          "name": "Button/Primary",
+          "type": "COMPONENT",
+          "visible": true,
+          "childCount": 0
+        },
+        {
+          "id": "1:145",
+          "name": "Chip/Default",
+          "type": "COMPONENT",
+          "visible": true,
+          "childCount": 0
+        },
+        {
+          "id": "1:147",
+          "name": "Search Field/Default",
+          "type": "COMPONENT",
+          "visible": true,
+          "childCount": 0
+        },
+        {
+          "id": "1:150",
+          "name": "Avatar/Default",
+          "type": "COMPONENT",
+          "visible": true,
+          "childCount": 0
+        },
+        {
+          "id": "1:151",
+          "name": "Post Card/Default",
+          "type": "COMPONENT",
+          "visible": true,
+          "childCount": 0
+        },
+        {
+          "id": "1:163",
+          "name": "Video Card/Default",
+          "type": "COMPONENT",
+          "visible": true,
+          "childCount": 0
+        },
+        {
+          "id": "1:168",
+          "name": "Tab Bar/Default",
+          "type": "COMPONENT",
+          "visible": true,
+          "childCount": 0
+        },
+        {
+          "id": "1:349",
+          "name": "Icon Button/Default",
+          "type": "COMPONENT",
+          "visible": true,
+          "childCount": 0
+        },
+        {
+          "id": "1:351",
+          "name": "Bottom Sheet/Default",
+          "type": "COMPONENT",
+          "visible": true,
+          "childCount": 0
+        }
+      ]
+    },
+    {
+      "id": "1:49",
+      "name": "03 Screens",
+      "type": "CANVAS",
+      "visible": true,
+      "childCount": 4,
+      "children": [
+        {
+          "id": "1:184",
+          "name": "iOS / Ana Akış",
+          "type": "FRAME",
+          "visible": true,
+          "childCount": 0
+        },
+        {
+          "id": "1:228",
+          "name": "iOS / Keşfet",
+          "type": "FRAME",
+          "visible": true,
+          "childCount": 0
+        },
+        {
+          "id": "1:276",
+          "name": "iOS / Gönderi Detayı",
+          "type": "FRAME",
+          "visible": true,
+          "childCount": 0
+        },
+        {
+          "id": "1:302",
+          "name": "iOS / Profil",
+          "type": "FRAME",
+          "visible": true,
+          "childCount": 0
+        }
+      ]
+    }
+  ],
+  "mappedNodeIds": [
+    "1:54",
+    "1:57",
+    "1:60",
+    "1:63",
+    "1:66",
+    "1:69",
+    "1:72",
+    "1:75",
+    "1:80",
+    "1:83",
+    "1:86",
+    "1:89",
+    "1:92",
+    "1:95",
+    "1:98",
+    "1:104",
+    "1:107",
+    "1:110",
+    "1:113",
+    "1:116",
+    "1:119",
+    "1:122",
+    "1:126",
+    "1:129",
+    "1:132",
+    "1:135",
+    "1:138",
+    "1:141",
+    "1:143",
+    "1:145",
+    "1:147",
+    "1:150",
+    "1:151",
+    "1:163",
+    "1:168",
+    "1:349",
+    "1:351",
+    "1:184",
+    "1:228",
+    "1:276",
+    "1:302"
+  ],
+  "mappedComponents": [
+    {
+      "nodeId": "1:143",
+      "name": "Button/Primary",
+      "target": "resources/views/components/button.blade.php",
+      "platform": "shared",
+      "sync": [
+        "fill",
+        "height",
+        "radius",
+        "padding",
+        "typography"
+      ],
+      "found": true,
+      "width": 160,
+      "height": 48,
+      "radius": 12,
+      "background": "#0ea5e9",
+      "border": null
+    },
+    {
+      "nodeId": "1:145",
+      "name": "Chip/Default",
+      "target": "public/css/figma.generated.css",
+      "platform": "shared",
+      "sync": [
+        "fill",
+        "border",
+        "height",
+        "radius",
+        "padding",
+        "typography"
+      ],
+      "found": true,
+      "width": 96,
+      "height": 36,
+      "radius": 18,
+      "background": "#f7f7f8",
+      "border": "#e4e6ea"
+    },
+    {
+      "nodeId": "1:147",
+      "name": "Search Field/Default",
+      "target": "public/css/figma.generated.css",
+      "platform": "web-adapted",
+      "sync": [
+        "fill",
+        "border",
+        "height",
+        "radius",
+        "padding",
+        "typography"
+      ],
+      "found": true,
+      "width": 343,
+      "height": 44,
+      "radius": 12,
+      "background": "#f7f7f8",
+      "border": null
+    },
+    {
+      "nodeId": "1:150",
+      "name": "Avatar/Default",
+      "target": "resources/views/blog/post-card.blade.php",
+      "platform": "shared",
+      "sync": [
+        "size",
+        "radius"
+      ],
+      "found": true,
+      "width": 44,
+      "height": 44,
+      "radius": 22,
+      "background": "#f7f7f8",
+      "border": "#e4e6ea"
+    },
+    {
+      "nodeId": "1:151",
+      "name": "Post Card/Default",
+      "target": "resources/views/blog/post-card.blade.php",
+      "platform": "shared",
+      "sync": [
+        "fill",
+        "border",
+        "radius",
+        "padding",
+        "gap",
+        "typography"
+      ],
+      "found": true,
+      "width": 343,
+      "height": 240,
+      "radius": 16,
+      "background": "#ffffff",
+      "border": "#e4e6ea"
+    },
+    {
+      "nodeId": "1:163",
+      "name": "Video Card/Default",
+      "target": "public/css/figma.generated.css",
+      "platform": "web-adapted",
+      "sync": [
+        "fill",
+        "border",
+        "radius",
+        "padding",
+        "gap"
+      ],
+      "found": true,
+      "width": 343,
+      "height": 280,
+      "radius": 16,
+      "background": "#ffffff",
+      "border": "#e4e6ea"
+    },
+    {
+      "nodeId": "1:168",
+      "name": "Tab Bar/Default",
+      "target": null,
+      "platform": "ios-only",
+      "sync": [],
+      "found": true,
+      "width": 375,
+      "height": 74,
+      "radius": null,
+      "background": "#ffffff",
+      "border": "#e4e6ea"
+    },
+    {
+      "nodeId": "1:349",
+      "name": "Icon Button/Default",
+      "target": "resources/views/components/button.blade.php",
+      "platform": "web-adapted",
+      "sync": [
+        "size",
+        "radius",
+        "fill",
+        "border"
+      ],
+      "found": true,
+      "width": 44,
+      "height": 44,
+      "radius": 22,
+      "background": "#f7f7f8",
+      "border": "#e4e6ea"
+    },
+    {
+      "nodeId": "1:351",
+      "name": "Bottom Sheet/Default",
+      "target": "resources/views/components/confirmation-modal.blade.php",
+      "platform": "web-adapted",
+      "sync": [
+        "fill",
+        "radius",
+        "padding"
+      ],
+      "found": true,
+      "width": 375,
+      "height": 260,
+      "radius": 24,
+      "background": "#ffffff",
+      "border": null
+    }
+  ]
+}
