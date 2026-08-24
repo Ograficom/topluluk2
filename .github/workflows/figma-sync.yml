@@ -1,0 +1,84 @@
+name: Figma Sync
+
+on:
+  repository_dispatch:
+    types: [figma_update]
+  workflow_dispatch:
+  schedule:
+    - cron: '*/5 * * * *'
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: figma-sync
+  cancel-in-progress: true
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Read Figma snapshot
+        id: sync
+        env:
+          FIGMA_FILE_KEY: ${{ secrets.FIGMA_FILE_KEY }}
+          FIGMA_ACCESS_TOKEN: ${{ secrets.FIGMA_ACCESS_TOKEN }}
+        run: node scripts/figma-sync.mjs
+
+      - name: Stop when nothing changed
+        if: steps.sync.outputs.changed != 'true'
+        run: echo 'Figma snapshot is unchanged.'
+
+      - name: Build application
+        if: steps.sync.outputs.changed == 'true'
+        run: |
+          npm ci
+          npm run build
+
+      - name: Create or update sync pull request
+        if: steps.sync.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          FINGERPRINT: ${{ steps.sync.outputs.fingerprint }}
+          FIGMA_VERSION: ${{ steps.sync.outputs.version }}
+        run: |
+          set -euo pipefail
+
+          BRANCH='automation/figma-sync'
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git checkout -B "$BRANCH"
+          git add .figma-sync/state.json .figma-sync/design-index.json
+
+          if git diff --cached --quiet; then
+            echo 'No tracked snapshot changes.'
+            exit 0
+          fi
+
+          git commit -m "Sync Figma snapshot ${FINGERPRINT:0:12}"
+          git push --force-with-lease origin "$BRANCH"
+
+          EXISTING_PR="$(gh pr list --head "$BRANCH" --base main --state open --json number --jq '.[0].number // empty')"
+
+          if [ -z "$EXISTING_PR" ]; then
+            gh pr create \
+              --base main \
+              --head "$BRANCH" \
+              --title 'Sync Figma design snapshot' \
+              --body "Figma tasarım dosyasında değişiklik algılandı.\n\n- Version: ${FIGMA_VERSION:-unknown}\n- Fingerprint: ${FINGERPRINT}\n\nBu PR yalnızca tasarım snapshot/index değişikliğini taşır. Blade/Tailwind component değişiklikleri eşleme katmanı tarafından ayrıca uygulanmalıdır."
+          else
+            gh pr comment "$EXISTING_PR" --body "Yeni Figma snapshot işlendi: ${FINGERPRINT:0:12}"
+          fi
