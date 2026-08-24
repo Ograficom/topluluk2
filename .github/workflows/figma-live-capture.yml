@@ -28,7 +28,7 @@ jobs:
 
       - name: Capture live Ografi pages into Figma
         run: |
-          cat > /tmp/capture.mjs <<'NODE'
+          cat > capture.mjs <<'NODE'
           import { chromium } from 'playwright';
 
           const captures = [
@@ -100,4 +100,4 @@ jobs:
 
           await browser.close();
           NODE
-          node /tmp/capture.mjs
+          node capture.mjs
