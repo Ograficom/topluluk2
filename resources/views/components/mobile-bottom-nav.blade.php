@@ -247,8 +247,8 @@
 
         html body [data-mobile-bottom-nav].mobile-bottom-nav svg {
             display: block !important;
-            width: 22px !important;
-            height: 22px !important;
+            width: 24px !important;
+            height: 24px !important;
             color: currentColor !important;
             opacity: 1 !important;
             visibility: visible !important;
