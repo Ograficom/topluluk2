@@ -2,34 +2,36 @@
 
 namespace App\Models;
 
+use App\Notifications\EmailVerificationCodeNotification;
+use App\Services\BadgeAwardSyncService;
+use App\Support\PrivacyVisibility;
+use Database\Factories\UserFactory;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Jetstream\HasTeams;
 use Laravel\Sanctum\HasApiTokens;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use App\Services\BadgeAwardSyncService;
-use App\Support\PrivacyVisibility;
-use App\Notifications\EmailVerificationCodeNotification;
-use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Support\Facades\Hash;
 
 class User extends Authenticatable implements FilamentUser, MustVerifyEmail
 {
     use HasApiTokens;
 
-    /** @use HasFactory<\Database\Factories\UserFactory> */
+    /** @use HasFactory<UserFactory> */
     use HasFactory;
+
     use HasProfilePhoto;
     use HasTeams;
     use Notifiable;
@@ -174,7 +176,7 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
 
     public function earnedBadges()
     {
-        if (!Schema::hasTable('badge_user')) {
+        if (! Schema::hasTable('badge_user')) {
             return Badge::query()
                 ->active()
                 ->eligibleForUser($this)
@@ -191,7 +193,7 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
                     ->orWhere('badges.eligible_profile_type', '')
                     ->orWhere('badges.eligible_profile_type', strtolower(trim((string) ($this->profile_type ?? 'person'))));
             })
-            ->when(!(bool) $this->is_verified, fn ($query) => $query->where('badges.requires_verified', false))
+            ->when(! (bool) $this->is_verified, fn ($query) => $query->where('badges.requires_verified', false))
             ->where('badges.min_points', '<=', (int) $this->badge_points)
             ->orderByDesc('badges.min_points')
             ->orderBy('badges.id');
@@ -330,11 +332,11 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
 
     public function isLastAdmin(): bool
     {
-        if (!$this->exists || !$this->isAdmin()) {
+        if (! $this->exists || ! $this->isAdmin()) {
             return false;
         }
 
-        return !static::query()
+        return ! static::query()
             ->where('role', self::ROLE_ADMIN)
             ->whereKeyNot($this->getKey())
             ->exists();
@@ -368,12 +370,24 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
     {
         $labels = self::roleBaseRestrictionLabels($this->role);
 
-        if ($this->block_messages) $labels[] = 'mesaj';
-        if ($this->block_posts) $labels[] = 'gonderi';
-        if ($this->block_categories) $labels[] = 'kategori';
-        if ($this->block_tags) $labels[] = 'etiket';
-        if ($this->block_comments) $labels[] = 'yorum';
-        if ($this->block_reactions) $labels[] = 'reaksiyon';
+        if ($this->block_messages) {
+            $labels[] = 'mesaj';
+        }
+        if ($this->block_posts) {
+            $labels[] = 'gonderi';
+        }
+        if ($this->block_categories) {
+            $labels[] = 'kategori';
+        }
+        if ($this->block_tags) {
+            $labels[] = 'etiket';
+        }
+        if ($this->block_comments) {
+            $labels[] = 'yorum';
+        }
+        if ($this->block_reactions) {
+            $labels[] = 'reaksiyon';
+        }
 
         return array_values(array_unique($labels));
     }
@@ -382,7 +396,7 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
     {
         return $panel->getId() === 'admin'
             && $this->isAdmin()
-            && !$this->isBlockedFrom('admin');
+            && ! $this->isBlockedFrom('admin');
     }
 
     protected static function booted(): void
@@ -395,7 +409,7 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
             $user->role = self::normalizeRoleValue($user->role);
 
             foreach (self::manualRestrictionFields() as $field) {
-                if (!array_key_exists($field, $user->attributes)) {
+                if (! array_key_exists($field, $user->attributes)) {
                     $user->{$field} = false;
                 }
             }
@@ -427,7 +441,7 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
         $suffix = 1;
 
         while (static::where('username', $username)->exists()) {
-            $username = $base . '-' . $suffix;
+            $username = $base.'-'.$suffix;
             $suffix++;
         }
 
@@ -468,6 +482,11 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
     public function posts(): HasMany
     {
         return $this->hasMany(Post::class, 'author_id');
+    }
+
+    public function comments(): HasMany
+    {
+        return $this->hasMany(Comment::class);
     }
 
     public function bookmarks(): BelongsToMany
@@ -540,7 +559,7 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
             }
 
             if (Str::startsWith($path, 'storage/')) {
-                return url('/storage/' . Str::after($path, 'storage/'));
+                return url('/storage/'.Str::after($path, 'storage/'));
             }
         }
 
@@ -571,7 +590,7 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
         }
 
         if ($path && Str::startsWith($path, 'storage/')) {
-            return url('/storage/' . Str::after($path, 'storage/'));
+            return url('/storage/'.Str::after($path, 'storage/'));
         }
 
         return $this->defaultProfilePhotoUrl();

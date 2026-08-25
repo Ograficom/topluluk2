@@ -1,15 +1,15 @@
 <?php
 
+use App\Console\Commands\GenerateVideoSubtitles;
+use App\Models\Post;
+use App\Models\RssFeed;
+use App\Services\AdOrderSnippetSync;
+use App\Services\IndexNowService;
+use App\Services\Rss\RssSyncService;
+use App\Support\PostSeoText;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Schedule;
-use App\Models\RssFeed;
-use App\Models\Post;
-use App\Support\PostSeoText;
-use App\Services\Rss\RssSyncService;
-use App\Services\AdOrderSnippetSync;
-use App\Services\IndexNowService;
-use App\Console\Commands\GenerateVideoSubtitles;
 use Symfony\Component\Console\Input\ArrayInput;
 
 Artisan::command('inspire', function () {
@@ -22,23 +22,27 @@ Artisan::command('rss:sync {--feed_id=} {--force}', function (RssSyncService $se
 
     if ($feedId) {
         $feed = RssFeed::find($feedId);
-        if (!$feed) {
+        if (! $feed) {
             $this->error("Feed not found: {$feedId}");
+
             return 1;
         }
 
         $result = $service->syncFeed($feed, $force);
         if ($result['error']) {
             $this->error("RSS sync error: {$result['error']}");
+
             return 1;
         }
 
         $this->info("OK. items_new={$result['items_new']} items_updated={$result['items_updated']} posts_created={$result['posts_created']} posts_updated={$result['posts_updated']}");
+
         return 0;
     }
 
     $summary = $service->syncAllEnabled();
     $this->info("OK. feeds={$summary['feeds']} items_new={$summary['items_new']} items_updated={$summary['items_updated']} posts_created={$summary['posts_created']} posts_updated={$summary['posts_updated']} errors={$summary['errors']}");
+
     return $summary['errors'] ? 1 : 0;
 })->purpose('Sync RSS feeds and import as posts');
 
@@ -51,6 +55,7 @@ Artisan::command('rss:ai-process {--limit=5}', function (RssSyncService $service
     $result = $service->processPendingAiQueue($limit);
 
     $this->info("OK. processed={$result['processed']} posts_created={$result['posts_created']} posts_updated={$result['posts_updated']} rejected={$result['rejected']} errors={$result['errors']}");
+
     return $result['errors'] ? 1 : 0;
 })->purpose('Rewrite, moderate and publish up to N pending AI-enabled RSS items (rate-limited Ollama queue)');
 
@@ -60,6 +65,10 @@ Schedule::command('rss:ai-process')
 
 Schedule::command('moderation:ai-scan')
     ->everyFiveMinutes()
+    ->withoutOverlapping();
+
+Schedule::command('community:ai-engage --limit=2')
+    ->hourly()
     ->withoutOverlapping();
 
 Artisan::command('ads:sync-orders', function (AdOrderSnippetSync $service) {
@@ -106,10 +115,12 @@ Artisan::command('indexnow:submit-posts {--hours= : Submit posts changed in the 
 
     if ($response === null) {
         $this->warn('No eligible URLs were submitted.');
+
         return 0;
     }
 
-    $this->info('IndexNow submitted ' . count($urls) . ' URLs; HTTP ' . $response->status() . '.');
+    $this->info('IndexNow submitted '.count($urls).' URLs; HTTP '.$response->status().'.');
+
     return $response->successful() ? 0 : 1;
 })->purpose('Notify IndexNow about published or updated post URLs');
 
@@ -118,11 +129,11 @@ Schedule::command('indexnow:submit-posts --hours=2')
     ->withoutOverlapping();
 
 Artisan::command('subtitles:generate {postId}', function ($postId) {
-    $command = new GenerateVideoSubtitles();
+    $command = new GenerateVideoSubtitles;
     $command->setLaravel(app());
+
     return $command->run(new ArrayInput(['postId' => $postId]), $this->output);
 })->purpose('Videolar için otomatik altyazı üret.');
-
 
 Schedule::command('email:send-daily-digest')
     ->dailyAt('09:00')

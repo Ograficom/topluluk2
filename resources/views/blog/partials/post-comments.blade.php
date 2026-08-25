@@ -329,6 +329,9 @@
               <span class="ogx-username">{{ $commentUserName }}</span>
               @if($commentUser)
                 <x-verification-badge :user="$commentUser" class="inline-flex h-4 w-4 shrink-0 items-center justify-center" size="sm" />
+                @if(\App\Support\Community\AiCommunityProfiles::isCommunityBot($commentUser))
+                  <span class="ogx-author-label">AI destekli</span>
+                @endif
               @endif
             </div>
 
