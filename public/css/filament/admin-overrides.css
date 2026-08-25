@@ -30,13 +30,17 @@
 
 .fi-topbar .fi-logo {
     align-items: center;
-    color: #ffffff;
+    color: #ffffff !important;
     display: inline-flex;
     font-size: 1.125rem;
     font-weight: 750;
     gap: 0.65rem;
     letter-spacing: -0.025em;
     text-shadow: 0 1px 14px rgba(0, 0, 0, 0.2);
+}
+
+.fi-topbar .fi-logo:visited {
+    color: #ffffff !important;
 }
 
 .fi-topbar .fi-logo::before {

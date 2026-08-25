@@ -32,6 +32,9 @@ class AdminPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
     {
+        $adminOverridesPath = public_path('css/filament/admin-overrides.css');
+        $adminOverridesVersion = is_file($adminOverridesPath) ? filemtime($adminOverridesPath) : null;
+
         return $panel
             ->id('admin')
             ->default()
@@ -39,7 +42,7 @@ class AdminPanelProvider extends PanelProvider
             ->login()
             ->theme(new HtmlString(implode("\n", [
                 '<link rel="stylesheet" href="' . asset('css/filament/filament/app.css') . '" data-navigate-track="reload" />',
-                '<link rel="stylesheet" href="' . asset('css/filament/admin-overrides.css') . '" data-navigate-track="reload" />',
+                '<link rel="stylesheet" href="' . asset('css/filament/admin-overrides.css') . ($adminOverridesVersion ? '?v=' . $adminOverridesVersion : '') . '" data-navigate-track="reload" />',
             ])))
             ->colors([
                 'primary' => ShadcnColor::Blue,
