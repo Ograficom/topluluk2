@@ -120,9 +120,9 @@
             display: block !important;
             width: calc(100% - 16px) !important;
             max-width: 390px !important;
-            height: 64px !important;
-            min-height: 64px !important;
-            max-height: 64px !important;
+            height: 54px !important;
+            min-height: 54px !important;
+            max-height: 54px !important;
             margin: 0 !important;
             padding: 0 !important;
             overflow: visible !important;
@@ -149,7 +149,7 @@
             position: relative;
             z-index: 1;
             display: grid !important;
-            grid-template-columns: repeat(4, minmax(0, 1fr)) 56px !important;
+            grid-template-columns: repeat(4, minmax(0, 1fr)) 54px !important;
             align-items: center !important;
             width: 100% !important;
             height: 100% !important;
@@ -162,7 +162,7 @@
         html body [data-mobile-bottom-nav].mobile-bottom-nav > div::before {
             content: '';
             position: absolute;
-            inset: 0 64px 0 0;
+            inset: 0 62px 0 0;
             z-index: -1;
             border: 1px solid rgba(208, 208, 208, .86);
             border-radius: 1000px;
@@ -211,13 +211,13 @@
             z-index: 1;
             display: inline-flex !important;
             width: 100% !important;
-            height: 64px !important;
+            height: 54px !important;
             min-width: 0 !important;
             flex-direction: column;
             gap: 1px;
             border-radius: 100px !important;
             color: #1a1a1a !important;
-            padding: 8px 4px 6px !important;
+            padding: 5px 4px 4px !important;
             font-size: 8px;
             font-weight: 650;
             line-height: 1;
