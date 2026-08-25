@@ -1,14 +1,26 @@
 :root {
-    --ografi-topbar-bg: linear-gradient(120deg, #0f172a, #0b1936);
+    --ografi-topbar-bg: linear-gradient(105deg, #101a33 0%, #14264a 56%, #0f1c38 100%);
     --ografi-topbar-border: rgba(255, 255, 255, 0.1);
-    --ografi-topbar-accent: #fbbf24;
+    --ografi-topbar-accent: #f6c34f;
     --ografi-topbar-muted: #cbd5e1;
 }
 
 .fi-topbar-ctn {
     background: var(--ografi-topbar-bg);
     border-bottom: 1px solid var(--ografi-topbar-border);
-    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.25);
+    box-shadow: 0 8px 22px rgba(15, 23, 42, 0.2);
+    position: relative;
+}
+
+.fi-topbar-ctn::after {
+    background: linear-gradient(90deg, transparent, rgba(246, 195, 79, 0.55), transparent);
+    bottom: -1px;
+    content: '';
+    height: 1px;
+    left: 8%;
+    opacity: 0.75;
+    position: absolute;
+    right: 8%;
 }
 
 .fi-topbar {
@@ -16,8 +28,41 @@
     color: var(--ografi-topbar-muted);
 }
 
+.fi-topbar .fi-logo {
+    align-items: center;
+    color: #ffffff;
+    display: inline-flex;
+    font-size: 1.125rem;
+    font-weight: 750;
+    gap: 0.65rem;
+    letter-spacing: -0.025em;
+    text-shadow: 0 1px 14px rgba(0, 0, 0, 0.2);
+}
+
+.fi-topbar .fi-logo::before {
+    background: var(--ografi-topbar-accent);
+    border-radius: 999px;
+    box-shadow: 0 0 0 4px rgba(246, 195, 79, 0.13);
+    content: '';
+    height: 0.5rem;
+    width: 0.5rem;
+}
+
 .fi-topbar .fi-logo img {
-    filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.35));
+    filter: brightness(0) invert(1) drop-shadow(0 6px 12px rgba(0, 0, 0, 0.35));
+}
+
+.fi-topbar .fi-global-search {
+    border-color: rgba(255, 255, 255, 0.16);
+    box-shadow: 0 6px 18px rgba(4, 12, 28, 0.16);
+}
+
+.fi-topbar .fi-global-search input {
+    color: #172554;
+}
+
+.fi-topbar .fi-global-search input::placeholder {
+    color: #64748b;
 }
 
 .fi-topbar-item-btn {
@@ -51,6 +96,22 @@
 .fi-topbar-open-collapse-sidebar-btn,
 .fi-topbar-close-collapse-sidebar-btn {
     color: var(--ografi-topbar-muted);
+}
+
+.fi-topbar .fi-avatar {
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.18);
+}
+
+@media (max-width: 768px) {
+    .fi-topbar-ctn::after {
+        left: 1rem;
+        right: 1rem;
+    }
+
+    .fi-topbar .fi-logo::before {
+        height: 0.4rem;
+        width: 0.4rem;
+    }
 }
 
 .fi-btn.fi-color-primary,
