@@ -226,8 +226,8 @@
 
         html body [data-mobile-bottom-nav].mobile-bottom-nav .mobile-bottom-nav__item.is-active {
             color: #0088ff !important;
-            background: rgba(235, 244, 255, .74) !important;
-            box-shadow: none !important;
+            background: rgba(255, 255, 255, .86) !important;
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, .92), 0 1px 3px rgba(87, 103, 126, .10) !important;
         }
 
         html body [data-mobile-bottom-nav].mobile-bottom-nav .mobile-bottom-nav__item:active {
