@@ -211,13 +211,13 @@
             z-index: 1;
             display: inline-flex !important;
             width: 100% !important;
-            height: 54px !important;
+            height: 44px !important;
             min-width: 0 !important;
             flex-direction: column;
             gap: 1px;
             border-radius: 100px !important;
             color: #1a1a1a !important;
-            padding: 5px 4px 4px !important;
+            padding: 3px 4px !important;
             font-size: 8px;
             font-weight: 650;
             line-height: 1;
