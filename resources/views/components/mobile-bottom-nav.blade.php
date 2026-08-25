@@ -240,9 +240,9 @@
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
-            font-size: 8px !important;
+            font-size: 6px !important;
             font-weight: 600 !important;
-            line-height: 10px !important;
+            line-height: 8px !important;
         }
 
         html body [data-mobile-bottom-nav].mobile-bottom-nav svg {
