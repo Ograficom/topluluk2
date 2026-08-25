@@ -120,25 +120,25 @@
             display: block !important;
             width: calc(100% - 16px) !important;
             max-width: 390px !important;
-            height: 72px !important;
-            min-height: 72px !important;
-            max-height: 72px !important;
+            height: 64px !important;
+            min-height: 64px !important;
+            max-height: 64px !important;
             margin: 0 !important;
-            padding: 5px 6px !important;
+            padding: 4px 6px !important;
             overflow: hidden !important;
-            border: 1px solid rgba(190, 215, 255, .36) !important;
-            border-radius: 24px !important;
-            background: radial-gradient(125% 150% at 8% -30%, rgba(107, 143, 201, .50), transparent 42%), linear-gradient(135deg, rgba(37, 50, 76, .88), rgba(10, 15, 28, .80) 58%, rgba(30, 22, 56, .82)) !important;
-            background-color: rgba(13, 20, 36, .84) !important;
-            color: #f6f9ff !important;
+            border: 1px solid rgba(208, 208, 208, .92) !important;
+            border-radius: 1000px !important;
+            background: linear-gradient(90deg, rgba(255, 255, 255, .25), rgba(255, 255, 255, .25)), linear-gradient(90deg, rgba(0, 0, 0, .25), rgba(0, 0, 0, .25)) !important;
+            background-color: rgba(238, 238, 238, .82) !important;
+            color: #1a1a1a !important;
             opacity: 1 !important;
             visibility: visible !important;
             transform: translate3d(-50%, 0, 0) !important;
             translate: none !important;
             scale: 1 !important;
-            backdrop-filter: blur(22px) saturate(150%) !important;
-            -webkit-backdrop-filter: blur(22px) saturate(150%) !important;
-            box-shadow: 0 18px 38px rgba(4, 8, 19, .36), 0 3px 12px rgba(6, 10, 25, .30), inset 0 1px 0 rgba(228, 241, 255, .35), inset 0 -1px 1px rgba(100, 137, 197, .20) !important;
+            backdrop-filter: blur(18px) saturate(120%) !important;
+            -webkit-backdrop-filter: blur(18px) saturate(120%) !important;
+            box-shadow: 1px 0 0 -0.75px #d0d0d0, -1px 0 0 -0.75px #d0d0d0, 0 0 0 .5px #e8e8e8, 0 8px 15px rgba(0, 0, 0, .02), inset 0 1px 1px rgba(255, 255, 255, .55), inset 0 -1px 1px rgba(40, 40, 40, .18) !important;
             transition: box-shadow .24s ease, background .24s ease !important;
             animation: none !important;
             will-change: auto !important;
@@ -153,7 +153,7 @@
             align-items: center !important;
             width: 100% !important;
             height: 100% !important;
-            gap: 3px !important;
+            gap: 0 !important;
             opacity: 1 !important;
             visibility: visible !important;
             background: transparent !important;
@@ -164,7 +164,7 @@
             visibility: visible !important;
             translate: none !important;
             background: transparent !important;
-            color: #f6f9ff !important;
+            color: #1a1a1a !important;
         }
 
         html body [data-mobile-bottom-nav].mobile-bottom-nav::before,
@@ -178,13 +178,13 @@
         html body [data-mobile-bottom-nav].mobile-bottom-nav::before {
             inset: 1px;
             border-radius: 23px;
-            border: 1px solid rgba(217, 232, 255, .30);
+            border: 1px solid rgba(255, 255, 255, .48);
         }
 
         html body [data-mobile-bottom-nav].mobile-bottom-nav::after {
             inset: 2px 20% auto;
             height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(220, 235, 255, .74), transparent);
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, .70), transparent);
         }
 
         html body [data-mobile-bottom-nav].mobile-bottom-nav .mobile-bottom-nav__item {
@@ -192,12 +192,12 @@
             z-index: 1;
             display: inline-flex !important;
             width: 100% !important;
-            height: 60px !important;
+            height: 54px !important;
             min-width: 0 !important;
             flex-direction: column;
             gap: 3px;
-            border-radius: 19px !important;
-            color: rgba(247, 250, 255, .88) !important;
+            border-radius: 100px !important;
+            color: #1a1a1a !important;
             font-size: 10px;
             font-weight: 650;
             line-height: 1;
@@ -205,9 +205,9 @@
         }
 
         html body [data-mobile-bottom-nav].mobile-bottom-nav .mobile-bottom-nav__item.is-active {
-            color: #23a3ff !important;
-            background: radial-gradient(120% 120% at 24% 16%, rgba(128, 188, 255, .34), transparent 55%), linear-gradient(145deg, rgba(104, 150, 216, .38), rgba(39, 65, 111, .36)) !important;
-            box-shadow: 0 8px 18px rgba(0, 0, 0, .26), 0 0 0 1px rgba(166, 207, 255, .20), inset 0 1px 1px rgba(238, 248, 255, .45), inset 0 -1px 1px rgba(6, 19, 48, .42) !important;
+            color: #0088ff !important;
+            background: rgba(237, 237, 237, .92) !important;
+            box-shadow: none !important;
         }
 
         html body [data-mobile-bottom-nav].mobile-bottom-nav .mobile-bottom-nav__item:active {
@@ -232,7 +232,7 @@
         }
 
         html body {
-            padding-bottom: calc(90px + env(safe-area-inset-bottom, 0px)) !important;
+            padding-bottom: calc(80px + env(safe-area-inset-bottom, 0px)) !important;
             background-color: var(--page-bg, #f4f4f5) !important;
             overscroll-behavior-y: none !important;
         }
