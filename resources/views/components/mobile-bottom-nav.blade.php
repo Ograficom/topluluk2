@@ -120,11 +120,11 @@
             display: block !important;
             width: calc(100% - 16px) !important;
             max-width: 390px !important;
-            height: 54px !important;
-            min-height: 54px !important;
-            max-height: 54px !important;
+            height: 60px !important;
+            min-height: 60px !important;
+            max-height: 60px !important;
             margin: 0 !important;
-            padding: 0 !important;
+            padding: 0 8px !important;
             overflow: visible !important;
             border: 0 !important;
             border-radius: 1000px !important;
