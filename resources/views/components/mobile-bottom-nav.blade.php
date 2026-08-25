@@ -126,11 +126,11 @@
             margin: 0 !important;
             padding: 5px 6px !important;
             overflow: hidden !important;
-            border: 1px solid rgba(255, 255, 255, .72) !important;
+            border: 1px solid rgba(190, 215, 255, .36) !important;
             border-radius: 24px !important;
-            background: linear-gradient(135deg, rgba(255, 255, 255, .70), rgba(218, 230, 247, .48)) !important;
-            background-color: rgba(230, 239, 250, .58) !important;
-            color: #0f172a !important;
+            background: radial-gradient(125% 150% at 8% -30%, rgba(107, 143, 201, .50), transparent 42%), linear-gradient(135deg, rgba(37, 50, 76, .88), rgba(10, 15, 28, .80) 58%, rgba(30, 22, 56, .82)) !important;
+            background-color: rgba(13, 20, 36, .84) !important;
+            color: #f6f9ff !important;
             opacity: 1 !important;
             visibility: visible !important;
             transform: translate3d(-50%, 0, 0) !important;
@@ -138,7 +138,7 @@
             scale: 1 !important;
             backdrop-filter: blur(22px) saturate(150%) !important;
             -webkit-backdrop-filter: blur(22px) saturate(150%) !important;
-            box-shadow: 0 16px 34px rgba(15, 23, 42, .18), inset 0 1px 0 rgba(255, 255, 255, .72), inset 0 -1px 1px rgba(64, 92, 126, .10) !important;
+            box-shadow: 0 18px 38px rgba(4, 8, 19, .36), 0 3px 12px rgba(6, 10, 25, .30), inset 0 1px 0 rgba(228, 241, 255, .35), inset 0 -1px 1px rgba(100, 137, 197, .20) !important;
             transition: box-shadow .24s ease, background .24s ease !important;
             animation: none !important;
             will-change: auto !important;
@@ -164,7 +164,7 @@
             visibility: visible !important;
             translate: none !important;
             background: transparent !important;
-            color: #0f172a !important;
+            color: #f6f9ff !important;
         }
 
         html body [data-mobile-bottom-nav].mobile-bottom-nav::before,
@@ -178,13 +178,13 @@
         html body [data-mobile-bottom-nav].mobile-bottom-nav::before {
             inset: 1px;
             border-radius: 23px;
-            border: 1px solid rgba(255, 255, 255, .46);
+            border: 1px solid rgba(217, 232, 255, .30);
         }
 
         html body [data-mobile-bottom-nav].mobile-bottom-nav::after {
             inset: 2px 20% auto;
             height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, .92), transparent);
+            background: linear-gradient(90deg, transparent, rgba(220, 235, 255, .74), transparent);
         }
 
         html body [data-mobile-bottom-nav].mobile-bottom-nav .mobile-bottom-nav__item {
@@ -197,7 +197,7 @@
             flex-direction: column;
             gap: 3px;
             border-radius: 19px !important;
-            color: rgba(15, 23, 42, .82) !important;
+            color: rgba(247, 250, 255, .88) !important;
             font-size: 10px;
             font-weight: 650;
             line-height: 1;
@@ -205,9 +205,9 @@
         }
 
         html body [data-mobile-bottom-nav].mobile-bottom-nav .mobile-bottom-nav__item.is-active {
-            color: #008cff !important;
-            background: linear-gradient(145deg, rgba(255, 255, 255, .54), rgba(157, 188, 225, .32)) !important;
-            box-shadow: inset 0 1px 1px rgba(255, 255, 255, .82), inset 0 -1px 1px rgba(69, 101, 140, .13), 0 8px 18px rgba(47, 86, 133, .12) !important;
+            color: #23a3ff !important;
+            background: radial-gradient(120% 120% at 24% 16%, rgba(128, 188, 255, .34), transparent 55%), linear-gradient(145deg, rgba(104, 150, 216, .38), rgba(39, 65, 111, .36)) !important;
+            box-shadow: 0 8px 18px rgba(0, 0, 0, .26), 0 0 0 1px rgba(166, 207, 255, .20), inset 0 1px 1px rgba(238, 248, 255, .45), inset 0 -1px 1px rgba(6, 19, 48, .42) !important;
         }
 
         html body [data-mobile-bottom-nav].mobile-bottom-nav .mobile-bottom-nav__item:active {
