@@ -120,16 +120,16 @@
             display: block !important;
             width: calc(100% - 16px) !important;
             max-width: 390px !important;
-            height: 64px !important;
-            min-height: 64px !important;
-            max-height: 64px !important;
+            height: 54px !important;
+            min-height: 54px !important;
+            max-height: 54px !important;
             margin: 0 !important;
-            padding: 4px 6px !important;
+            padding: 0 4px !important;
             overflow: hidden !important;
             border: 1px solid rgba(208, 208, 208, .92) !important;
             border-radius: 1000px !important;
             background: linear-gradient(90deg, rgba(255, 255, 255, .25), rgba(255, 255, 255, .25)), linear-gradient(90deg, rgba(0, 0, 0, .25), rgba(0, 0, 0, .25)) !important;
-            background-color: rgba(238, 238, 238, .82) !important;
+            background-color: rgba(238, 238, 238, .68) !important;
             color: #1a1a1a !important;
             opacity: 1 !important;
             visibility: visible !important;
@@ -138,7 +138,7 @@
             scale: 1 !important;
             backdrop-filter: blur(18px) saturate(120%) !important;
             -webkit-backdrop-filter: blur(18px) saturate(120%) !important;
-            box-shadow: 1px 0 0 -0.75px #d0d0d0, -1px 0 0 -0.75px #d0d0d0, 0 0 0 .5px #e8e8e8, 0 8px 15px rgba(0, 0, 0, .02), inset 0 1px 1px rgba(255, 255, 255, .55), inset 0 -1px 1px rgba(40, 40, 40, .18) !important;
+            box-shadow: 1px 0 0 -0.75px #d0d0d0, -1px 0 0 -0.75px #d0d0d0, 0 0 0 .5px #e8e8e8, 0 8px 15px rgba(0, 0, 0, .02), inset 0 40px 10px -40px #282828, inset 0 -40px 10px -40px #282828, inset 0 40px 30px -40px #e6e6e6 !important;
             transition: box-shadow .24s ease, background .24s ease !important;
             animation: none !important;
             will-change: auto !important;
@@ -169,7 +169,7 @@
 
         html body [data-mobile-bottom-nav].mobile-bottom-nav::before,
         html body [data-mobile-bottom-nav].mobile-bottom-nav::after {
-            content: '';
+            content: none;
             position: absolute;
             pointer-events: none;
             z-index: 0;
@@ -232,7 +232,7 @@
         }
 
         html body {
-            padding-bottom: calc(80px + env(safe-area-inset-bottom, 0px)) !important;
+            padding-bottom: calc(70px + env(safe-area-inset-bottom, 0px)) !important;
             background-color: var(--page-bg, #f4f4f5) !important;
             overscroll-behavior-y: none !important;
         }
