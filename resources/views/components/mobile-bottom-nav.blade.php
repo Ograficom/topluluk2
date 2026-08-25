@@ -118,11 +118,11 @@
             bottom: max(8px, env(safe-area-inset-bottom, 0px)) !important;
             z-index: 900 !important;
             display: block !important;
-            width: calc(100% - 16px) !important;
-            max-width: 390px !important;
-            height: 54px !important;
-            min-height: 54px !important;
-            max-height: 54px !important;
+            width: calc(100% - 28px) !important;
+            max-width: 360px !important;
+            height: 64px !important;
+            min-height: 64px !important;
+            max-height: 64px !important;
             margin: 0 !important;
             padding: 0 !important;
             overflow: visible !important;
@@ -149,7 +149,7 @@
             position: relative;
             z-index: 1;
             display: grid !important;
-            grid-template-columns: repeat(4, minmax(0, 1fr)) 54px !important;
+            grid-template-columns: repeat(4, minmax(0, 1fr)) 56px !important;
             align-items: center !important;
             width: 100% !important;
             height: 100% !important;
@@ -162,14 +162,14 @@
         html body [data-mobile-bottom-nav].mobile-bottom-nav > div::before {
             content: '';
             position: absolute;
-            inset: 0 62px 0 0;
+            inset: 0 64px 0 0;
             z-index: -1;
             border: 1px solid rgba(208, 208, 208, .86);
             border-radius: 1000px;
-            background: rgba(255, 255, 255, .52);
+            background: linear-gradient(135deg, rgba(255, 255, 255, .68), rgba(235, 241, 249, .42));
             box-shadow: 1px 0 0 -0.75px #d0d0d0, -1px 0 0 -0.75px #d0d0d0, 0 0 0 .5px #e8e8e8, 0 8px 15px rgba(0, 0, 0, .04), inset 0 1px 0 rgba(255, 255, 255, .52), inset 0 -1px 1px rgba(40, 40, 40, .16);
-            backdrop-filter: blur(14px) saturate(125%);
-            -webkit-backdrop-filter: blur(14px) saturate(125%);
+            backdrop-filter: blur(18px) saturate(135%);
+            -webkit-backdrop-filter: blur(18px) saturate(135%);
         }
 
         html body [data-mobile-bottom-nav].mobile-bottom-nav > div > :nth-child(1) { grid-column: 1; }
@@ -211,14 +211,14 @@
             z-index: 1;
             display: inline-flex !important;
             width: 100% !important;
-            height: 54px !important;
+            height: 64px !important;
             min-width: 0 !important;
             flex-direction: column;
             gap: 1px;
             border-radius: 100px !important;
             color: #1a1a1a !important;
-            padding: 5px 4px 4px !important;
-            font-size: 9px;
+            padding: 8px 4px 6px !important;
+            font-size: 8px;
             font-weight: 650;
             line-height: 1;
             transition: transform .22s ease, background .22s ease, box-shadow .22s ease, color .22s ease !important;
@@ -285,10 +285,10 @@
         html body [data-mobile-bottom-nav].mobile-bottom-nav [data-mobile-search-toggle] {
             border: 1px solid rgba(208, 208, 208, .86) !important;
             border-radius: 1000px !important;
-            background: rgba(255, 255, 255, .52) !important;
+            background: linear-gradient(135deg, rgba(255, 255, 255, .68), rgba(235, 241, 249, .42)) !important;
             box-shadow: 1px 0 0 -0.75px #d0d0d0, -1px 0 0 -0.75px #d0d0d0, 0 8px 15px rgba(0, 0, 0, .04), inset 0 1px 0 rgba(255, 255, 255, .52), inset 0 -1px 1px rgba(40, 40, 40, .16) !important;
-            backdrop-filter: blur(14px) saturate(125%) !important;
-            -webkit-backdrop-filter: blur(14px) saturate(125%) !important;
+            backdrop-filter: blur(18px) saturate(135%) !important;
+            -webkit-backdrop-filter: blur(18px) saturate(135%) !important;
         }
 
         @media (prefers-reduced-motion: reduce) {
