@@ -94,6 +94,9 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
         'verification_badge',
         'verification_badge_svg',
         'profile_type',
+        'is_ai_test_user',
+        'ai_persona',
+        'ai_system_prompt',
         'badge_points',
         'profile_completed_rewarded_at',
     ];
@@ -139,6 +142,7 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
             'block_reactions' => 'boolean',
             'badge_points' => 'integer',
             'profile_completed_rewarded_at' => 'datetime',
+            'is_ai_test_user' => 'boolean',
             'daily_digest_enabled' => 'boolean',
             'daily_digest_email_verified_at' => 'datetime',
             'daily_digest_last_sent_at' => 'datetime',
