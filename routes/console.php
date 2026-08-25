@@ -58,6 +58,10 @@ Schedule::command('rss:ai-process')
     ->everyMinute()
     ->withoutOverlapping();
 
+Schedule::command('moderation:ai-scan')
+    ->everyFiveMinutes()
+    ->withoutOverlapping();
+
 Artisan::command('ads:sync-orders', function (AdOrderSnippetSync $service) {
     $service->syncAll();
     $this->info('Ad orders synced into their placement snippets.');
