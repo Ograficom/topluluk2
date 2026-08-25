@@ -124,21 +124,21 @@
             min-height: 54px !important;
             max-height: 54px !important;
             margin: 0 !important;
-            padding: 0 4px !important;
-            overflow: hidden !important;
-            border: 1px solid rgba(208, 208, 208, .92) !important;
+            padding: 0 !important;
+            overflow: visible !important;
+            border: 0 !important;
             border-radius: 1000px !important;
-            background: linear-gradient(90deg, rgba(255, 255, 255, .25), rgba(255, 255, 255, .25)), linear-gradient(90deg, rgba(0, 0, 0, .25), rgba(0, 0, 0, .25)) !important;
-            background-color: rgba(238, 238, 238, .68) !important;
+            background: transparent !important;
+            background-color: transparent !important;
             color: #1a1a1a !important;
             opacity: 1 !important;
             visibility: visible !important;
             transform: translate3d(-50%, 0, 0) !important;
             translate: none !important;
             scale: 1 !important;
-            backdrop-filter: blur(18px) saturate(120%) !important;
-            -webkit-backdrop-filter: blur(18px) saturate(120%) !important;
-            box-shadow: 1px 0 0 -0.75px #d0d0d0, -1px 0 0 -0.75px #d0d0d0, 0 0 0 .5px #e8e8e8, 0 8px 15px rgba(0, 0, 0, .02), inset 0 40px 10px -40px #282828, inset 0 -40px 10px -40px #282828, inset 0 40px 30px -40px #e6e6e6 !important;
+            backdrop-filter: none !important;
+            -webkit-backdrop-filter: none !important;
+            box-shadow: none !important;
             transition: box-shadow .24s ease, background .24s ease !important;
             animation: none !important;
             will-change: auto !important;
@@ -149,22 +149,41 @@
             position: relative;
             z-index: 1;
             display: grid !important;
-            grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+            grid-template-columns: repeat(4, minmax(0, 1fr)) 54px !important;
             align-items: center !important;
             width: 100% !important;
             height: 100% !important;
-            gap: 0 !important;
+            gap: 8px !important;
             opacity: 1 !important;
             visibility: visible !important;
             background: transparent !important;
         }
+
+        html body [data-mobile-bottom-nav].mobile-bottom-nav > div::before {
+            content: '';
+            position: absolute;
+            inset: 0 62px 0 0;
+            z-index: -1;
+            border: 1px solid rgba(208, 208, 208, .86);
+            border-radius: 1000px;
+            background: rgba(174, 174, 174, .48);
+            box-shadow: 1px 0 0 -0.75px #d0d0d0, -1px 0 0 -0.75px #d0d0d0, 0 0 0 .5px #e8e8e8, 0 8px 15px rgba(0, 0, 0, .04), inset 0 1px 0 rgba(255, 255, 255, .52), inset 0 -1px 1px rgba(40, 40, 40, .16);
+            backdrop-filter: blur(10px) saturate(115%);
+            -webkit-backdrop-filter: blur(10px) saturate(115%);
+        }
+
+        html body [data-mobile-bottom-nav].mobile-bottom-nav > div > :nth-child(1) { grid-column: 1; }
+        html body [data-mobile-bottom-nav].mobile-bottom-nav > div > :nth-child(2) { grid-column: 5; }
+        html body [data-mobile-bottom-nav].mobile-bottom-nav > div > :nth-child(3) { grid-column: 2; }
+        html body [data-mobile-bottom-nav].mobile-bottom-nav > div > :nth-child(4) { grid-column: 3; }
+        html body [data-mobile-bottom-nav].mobile-bottom-nav > div > :nth-child(5) { grid-column: 4; }
 
         html body [data-mobile-bottom-nav].mobile-bottom-nav :is(a, button, .mobile-bottom-nav__plus) {
             opacity: 1 !important;
             visibility: visible !important;
             translate: none !important;
             background: transparent !important;
-            color: #1a1a1a !important;
+            color: #171717 !important;
         }
 
         html body [data-mobile-bottom-nav].mobile-bottom-nav::before,
@@ -195,10 +214,11 @@
             height: 54px !important;
             min-width: 0 !important;
             flex-direction: column;
-            gap: 3px;
+            gap: 1px;
             border-radius: 100px !important;
             color: #1a1a1a !important;
-            font-size: 10px;
+            padding: 5px 4px 4px !important;
+            font-size: 9px;
             font-weight: 650;
             line-height: 1;
             transition: transform .22s ease, background .22s ease, box-shadow .22s ease, color .22s ease !important;
@@ -206,7 +226,7 @@
 
         html body [data-mobile-bottom-nav].mobile-bottom-nav .mobile-bottom-nav__item.is-active {
             color: #0088ff !important;
-            background: rgba(237, 237, 237, .92) !important;
+            background: rgba(222, 222, 222, .82) !important;
             box-shadow: none !important;
         }
 
@@ -224,8 +244,8 @@
 
         html body [data-mobile-bottom-nav].mobile-bottom-nav svg {
             display: block !important;
-            width: 21px !important;
-            height: 21px !important;
+            width: 18px !important;
+            height: 18px !important;
             color: currentColor !important;
             opacity: 1 !important;
             visibility: visible !important;
@@ -260,6 +280,15 @@
             color: #4db4ff !important;
             background: linear-gradient(145deg, rgba(131, 179, 241, .24), rgba(59, 91, 144, .30)) !important;
             box-shadow: inset 0 1px 1px rgba(224, 240, 255, .34), inset 0 -1px 1px rgba(3, 11, 29, .34), 0 8px 18px rgba(0, 0, 0, .20) !important;
+        }
+
+        html body [data-mobile-bottom-nav].mobile-bottom-nav [data-mobile-search-toggle] {
+            border: 1px solid rgba(208, 208, 208, .86) !important;
+            border-radius: 1000px !important;
+            background: rgba(174, 174, 174, .48) !important;
+            box-shadow: 1px 0 0 -0.75px #d0d0d0, -1px 0 0 -0.75px #d0d0d0, 0 8px 15px rgba(0, 0, 0, .04), inset 0 1px 0 rgba(255, 255, 255, .52), inset 0 -1px 1px rgba(40, 40, 40, .16) !important;
+            backdrop-filter: blur(10px) saturate(115%) !important;
+            -webkit-backdrop-filter: blur(10px) saturate(115%) !important;
         }
 
         @media (prefers-reduced-motion: reduce) {
