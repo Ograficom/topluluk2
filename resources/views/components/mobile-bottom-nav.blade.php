@@ -31,7 +31,7 @@
                     <path stroke-linecap="round" d="M12 15v3" />
                 </g>
             </svg>
-            <span class="mobile-bottom-nav__label">{{ __('site.mobile_nav.home') }}</span>
+            <span class="sr-only">{{ __('site.mobile_nav.home') }}</span>
         </a>
 
         <button
@@ -44,7 +44,7 @@
                 <circle cx="11" cy="11" r="6.75" stroke="currentColor" stroke-width="1.9"></circle>
                 <path stroke="currentColor" stroke-linecap="round" stroke-width="1.9" d="m16 16 3.75 3.75"></path>
             </svg>
-            <span class="mobile-bottom-nav__label">{{ __('site.mobile_nav.search') }}</span>
+            <span class="sr-only">{{ __('site.mobile_nav.search') }}</span>
         </button>
 
         <div class="flex items-center justify-center">
@@ -64,7 +64,7 @@
                     <svg class="h-6 w-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                         <path stroke="currentColor" stroke-linecap="round" stroke-width="2.2" d="M12 5v14M5 12h14" />
                     </svg>
-                    <span class="mobile-bottom-nav__label">{{ __('site.mobile_nav.new_item') }}</span>
+                    <span class="sr-only">{{ __('site.mobile_nav.new_item') }}</span>
                 </a>
         </div>
 
@@ -77,7 +77,7 @@
                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.9" d="M6.75 5.75h7.5A3.25 3.25 0 0 1 17.5 9v6a3.25 3.25 0 0 1-3.25 3.25h-7.5A3.25 3.25 0 0 1 3.5 15V9a3.25 3.25 0 0 1 3.25-3.25Z" />
                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.9" d="m17.5 10 3-2v8l-3-2" />
             </svg>
-            <span class="mobile-bottom-nav__label">Video</span>
+            <span class="sr-only">Video</span>
         </a>
 
         @auth
@@ -89,7 +89,7 @@
                 <svg class="h-6 w-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21.25 12a9.23 9.23 0 0 1-2.705 6.54A9.25 9.25 0 0 1 12 21.25a9.2 9.2 0 0 1-3.795-.81l-3.867.572a1.195 1.195 0 0 1-1.361-1.43l.537-3.923A8.9 8.9 0 0 1 2.75 12a9.23 9.23 0 0 1 2.705-6.54A9.25 9.25 0 0 1 12 2.75a9.26 9.26 0 0 1 6.545 2.71A9.24 9.24 0 0 1 21.25 12" />
                 </svg>
-                <span class="mobile-bottom-nav__label">{{ __('site.sidebar.messages') }}</span>
+                <span class="sr-only">{{ __('site.sidebar.messages') }}</span>
             </a>
         @else
             <button
@@ -101,7 +101,7 @@
                 <svg class="h-6 w-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21.25 12a9.23 9.23 0 0 1-2.705 6.54A9.25 9.25 0 0 1 12 21.25a9.2 9.2 0 0 1-3.795-.81l-3.867.572a1.195 1.195 0 0 1-1.361-1.43l.537-3.923A8.9 8.9 0 0 1 2.75 12a9.23 9.23 0 0 1 2.705-6.54A9.25 9.25 0 0 1 12 2.75a9.26 9.26 0 0 1 6.545 2.71A9.24 9.24 0 0 1 21.25 12" />
                 </svg>
-                <span class="mobile-bottom-nav__label">{{ __('site.sidebar.messages') }}</span>
+                <span class="sr-only">{{ __('site.sidebar.messages') }}</span>
             </button>
         @endauth
     </div>
