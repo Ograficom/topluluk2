@@ -115,6 +115,10 @@ class AiLiveModerationService
             ]);
         }
 
+        if ((int) data_get($assessment, 'risk_score') >= (int) config('ai-moderation.auto_quarantine_score', 85)) {
+            $this->quarantine($target, $author);
+        }
+
         return true;
     }
 
@@ -147,5 +151,30 @@ class AiLiveModerationService
             str_contains($candidate, 'kimlik'), str_contains($candidate, 'dolandir'), str_contains($candidate, 'phishing') => 'Kimlik avi',
             default => 'Istenmeyen',
         };
+    }
+
+    private function quarantine(Model $target, User $author): void
+    {
+        if ($target instanceof Post) {
+            $target->update([
+                'is_published' => false,
+                'published_at' => null,
+                'comments_disabled' => true,
+            ]);
+
+            return;
+        }
+
+        if ($target instanceof Comment) {
+            $target->update(['is_approved' => false]);
+
+            return;
+        }
+
+        $author->update([
+            'block_posts' => true,
+            'block_comments' => true,
+            'block_reactions' => true,
+        ]);
     }
 }

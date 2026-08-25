@@ -14,9 +14,9 @@ class AiLiveModerationServiceTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_it_creates_review_only_reports_for_flagged_profiles(): void
+    public function test_it_creates_reports_and_quarantines_high_risk_profiles(): void
     {
-        User::factory()->create([
+        $user = User::factory()->create([
             'name' => 'Riskli Profil',
             'bio' => 'Supheli bir profil metni.',
         ]);
@@ -37,5 +37,7 @@ class AiLiveModerationServiceTest extends TestCase
         $this->assertSame(2, Report::query()->where('status', 'pending')->count());
         $this->assertSame(2, User::query()->whereIn('ai_persona', ['spam-moderator', 'safety-moderator'])->count());
         $this->assertStringContainsString('[AI-MOD:', (string) Report::query()->first()->description);
+        $this->assertTrue($user->fresh()->isBlockedFrom('posts'));
+        $this->assertTrue($user->fresh()->isBlockedFrom('comments'));
     }
 }
