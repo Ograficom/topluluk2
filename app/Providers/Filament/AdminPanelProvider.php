@@ -26,6 +26,7 @@ use Openplain\FilamentShadcnTheme\Color as ShadcnColor;
 use ShuvroRoy\FilamentSpatieLaravelHealth\FilamentSpatieLaravelHealthPlugin;
 use WallaceMartinss\FilamentSecurity\FilamentSecurityPlugin;
 use Wezlo\FilamentLookups\FilamentLookupsPlugin;
+use Illuminate\Support\HtmlString;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -36,7 +37,10 @@ class AdminPanelProvider extends PanelProvider
             ->default()
             ->path('admin')
             ->login()
-            ->viteTheme('resources/css/filament/admin/theme.css')
+            ->theme(new HtmlString(implode("\n", [
+                '<link rel="stylesheet" href="' . asset('css/filament/filament/app.css') . '" data-navigate-track="reload" />',
+                '<link rel="stylesheet" href="' . asset('css/filament/admin-overrides.css') . '" data-navigate-track="reload" />',
+            ])))
             ->colors([
                 'primary' => ShadcnColor::Blue,
             ])
