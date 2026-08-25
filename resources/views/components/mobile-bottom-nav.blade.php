@@ -21,7 +21,7 @@
     <div class="grid h-full grid-cols-5 items-center gap-1">
         <a
             href="{{ route('home') }}"
-            class="mobile-bottom-nav__item inline-flex h-11 items-center justify-center rounded-[14px] bg-transparent transition hover:bg-transparent {{ $homeActive ? 'is-active text-emerald-600' : 'text-slate-900' }}"
+            class="inline-flex h-11 items-center justify-center rounded-[14px] bg-transparent transition hover:bg-transparent {{ $homeActive ? 'text-emerald-600' : 'text-slate-900' }}"
             aria-label="{{ __('site.mobile_nav.home') }}"
         >
             <svg class="h-6 w-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
@@ -31,77 +31,77 @@
                     <path stroke-linecap="round" d="M12 15v3" />
                 </g>
             </svg>
-            <span class="mobile-bottom-nav__label">{{ __('site.mobile_nav.home') }}</span>
+            <span class="sr-only">{{ __('site.mobile_nav.home') }}</span>
         </a>
 
         <button
             type="button"
             data-mobile-search-toggle
-            class="mobile-bottom-nav__item inline-flex h-11 items-center justify-center rounded-[14px] bg-transparent transition hover:bg-transparent {{ $searchActive ? 'is-active text-emerald-600' : 'text-slate-900' }}"
+            class="inline-flex h-11 items-center justify-center rounded-[14px] bg-transparent transition hover:bg-transparent {{ $searchActive ? 'text-emerald-600' : 'text-slate-900' }}"
             aria-label="{{ __('site.mobile_nav.search') }}"
         >
             <svg class="h-6 w-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                 <circle cx="11" cy="11" r="6.75" stroke="currentColor" stroke-width="1.9"></circle>
                 <path stroke="currentColor" stroke-linecap="round" stroke-width="1.9" d="m16 16 3.75 3.75"></path>
             </svg>
-            <span class="mobile-bottom-nav__label">{{ __('site.mobile_nav.search') }}</span>
+            <span class="sr-only">{{ __('site.mobile_nav.search') }}</span>
         </button>
 
         <div class="flex items-center justify-center">
             @auth
                 <a
                     href="{{ route('blog.create') }}"
-                    class="mobile-bottom-nav__item mobile-bottom-nav__plus inline-flex h-[46px] w-[46px] items-center justify-center rounded-[16px] border border-transparent bg-transparent text-slate-900 ring-0 transition hover:-translate-y-0.5"
+                    class="mobile-bottom-nav__plus inline-flex h-[46px] w-[46px] items-center justify-center rounded-[16px] border border-transparent bg-transparent text-slate-900 ring-0 transition hover:-translate-y-0.5"
                     aria-label="{{ __('site.mobile_nav.new_item') }}"
                 >
             @else
                 <a
                     href="{{ route('login') }}"
-                    class="mobile-bottom-nav__item mobile-bottom-nav__plus inline-flex h-[46px] w-[46px] items-center justify-center rounded-[16px] border border-transparent bg-transparent text-slate-900 ring-0 transition hover:-translate-y-0.5"
+                    class="mobile-bottom-nav__plus inline-flex h-[46px] w-[46px] items-center justify-center rounded-[16px] border border-transparent bg-transparent text-slate-900 ring-0 transition hover:-translate-y-0.5"
                     aria-label="{{ __('site.mobile_nav.new_item') }}"
                 >
             @endauth
                     <svg class="h-6 w-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                         <path stroke="currentColor" stroke-linecap="round" stroke-width="2.2" d="M12 5v14M5 12h14" />
                     </svg>
-                    <span class="mobile-bottom-nav__label">{{ __('site.mobile_nav.new_item') }}</span>
+                    <span class="sr-only">{{ __('site.mobile_nav.new_item') }}</span>
                 </a>
         </div>
 
         <a
             href="{{ route('video') }}"
-            class="mobile-bottom-nav__item inline-flex h-11 items-center justify-center rounded-[14px] bg-transparent transition hover:bg-transparent {{ $videoActive ? 'is-active text-emerald-600' : 'text-slate-900' }}"
+            class="inline-flex h-11 items-center justify-center rounded-[14px] bg-transparent transition hover:bg-transparent {{ $videoActive ? 'text-emerald-600' : 'text-slate-900' }}"
             aria-label="Video"
         >
             <svg class="h-6 w-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.9" d="M6.75 5.75h7.5A3.25 3.25 0 0 1 17.5 9v6a3.25 3.25 0 0 1-3.25 3.25h-7.5A3.25 3.25 0 0 1 3.5 15V9a3.25 3.25 0 0 1 3.25-3.25Z" />
                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.9" d="m17.5 10 3-2v8l-3-2" />
             </svg>
-            <span class="mobile-bottom-nav__label">Video</span>
+            <span class="sr-only">Video</span>
         </a>
 
         @auth
             <a
                 href="{{ route('messages.index') }}"
-                class="mobile-bottom-nav__item inline-flex h-11 items-center justify-center rounded-[14px] bg-transparent transition hover:bg-transparent {{ $messagesActive ? 'is-active text-emerald-600' : 'text-slate-900' }}"
+                class="inline-flex h-11 items-center justify-center rounded-[14px] bg-transparent transition hover:bg-transparent {{ $messagesActive ? 'text-emerald-600' : 'text-slate-900' }}"
                 aria-label="{{ __('site.sidebar.messages') }}"
             >
                 <svg class="h-6 w-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21.25 12a9.23 9.23 0 0 1-2.705 6.54A9.25 9.25 0 0 1 12 21.25a9.2 9.2 0 0 1-3.795-.81l-3.867.572a1.195 1.195 0 0 1-1.361-1.43l.537-3.923A8.9 8.9 0 0 1 2.75 12a9.23 9.23 0 0 1 2.705-6.54A9.25 9.25 0 0 1 12 2.75a9.26 9.26 0 0 1 6.545 2.71A9.24 9.24 0 0 1 21.25 12" />
                 </svg>
-                <span class="mobile-bottom-nav__label">{{ __('site.sidebar.messages') }}</span>
+                <span class="sr-only">{{ __('site.sidebar.messages') }}</span>
             </a>
         @else
             <button
                 type="button"
                 data-mobile-login-toggle
-                class="mobile-bottom-nav__item inline-flex h-11 items-center justify-center rounded-[14px] bg-transparent text-slate-900 transition hover:bg-transparent"
+                class="inline-flex h-11 items-center justify-center rounded-[14px] bg-transparent text-slate-900 transition hover:bg-transparent"
                 aria-label="{{ __('site.sidebar.messages') }}"
             >
                 <svg class="h-6 w-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21.25 12a9.23 9.23 0 0 1-2.705 6.54A9.25 9.25 0 0 1 12 21.25a9.2 9.2 0 0 1-3.795-.81l-3.867.572a1.195 1.195 0 0 1-1.361-1.43l.537-3.923A8.9 8.9 0 0 1 2.75 12a9.23 9.23 0 0 1 2.705-6.54A9.25 9.25 0 0 1 12 2.75a9.26 9.26 0 0 1 6.545 2.71A9.24 9.24 0 0 1 21.25 12" />
                 </svg>
-                <span class="mobile-bottom-nav__label">{{ __('site.sidebar.messages') }}</span>
+                <span class="sr-only">{{ __('site.sidebar.messages') }}</span>
             </button>
         @endauth
     </div>
@@ -126,28 +126,27 @@
             margin: 0 !important;
             padding: 0 8px !important;
             overflow: hidden !important;
-            border: 1px solid rgba(208, 208, 208, .86) !important;
-            border-radius: 1000px !important;
-            background: linear-gradient(135deg, rgba(255, 255, 255, .68), rgba(235, 241, 249, .42)) !important;
-            background-color: rgba(255, 255, 255, .52) !important;
-            color: #1a1a1a !important;
+            border: 1px solid rgba(15, 23, 42, .10) !important;
+            border-radius: 18px !important;
+            background: rgba(250, 250, 250, .98) !important;
+            background-color: rgba(250, 250, 250, .98) !important;
+            color: #0f172a !important;
             opacity: 1 !important;
             visibility: visible !important;
             transform: translate3d(-50%, 0, 0) !important;
             translate: none !important;
             scale: 1 !important;
-            backdrop-filter: blur(18px) saturate(135%) !important;
-            -webkit-backdrop-filter: blur(18px) saturate(135%) !important;
-            box-shadow: 0 8px 15px rgba(0, 0, 0, .04), inset 0 1px 0 rgba(255, 255, 255, .52), inset 0 -1px 1px rgba(40, 40, 40, .16) !important;
-            transition: box-shadow .24s ease, background .24s ease !important;
+            filter: none !important;
+            backdrop-filter: none !important;
+            -webkit-backdrop-filter: none !important;
+            box-shadow: 0 8px 24px rgba(15, 23, 42, .10) !important;
+            transition: none !important;
             animation: none !important;
             will-change: auto !important;
             isolation: isolate !important;
         }
 
         html body [data-mobile-bottom-nav].mobile-bottom-nav > div {
-            position: relative;
-            z-index: 1;
             display: grid !important;
             grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
             align-items: center !important;
@@ -159,89 +158,28 @@
             background: transparent !important;
         }
 
-
         html body [data-mobile-bottom-nav].mobile-bottom-nav :is(a, button, .mobile-bottom-nav__plus) {
             opacity: 1 !important;
             visibility: visible !important;
+            transform: none !important;
             translate: none !important;
+            transition: none !important;
+            animation: none !important;
             background: transparent !important;
-            color: #171717 !important;
-        }
-
-        html body [data-mobile-bottom-nav].mobile-bottom-nav::before,
-        html body [data-mobile-bottom-nav].mobile-bottom-nav::after {
-            content: none;
-            position: absolute;
-            pointer-events: none;
-            z-index: 0;
-        }
-
-        html body [data-mobile-bottom-nav].mobile-bottom-nav::before {
-            inset: 1px;
-            border-radius: 23px;
-            border: 1px solid rgba(255, 255, 255, .48);
-        }
-
-        html body [data-mobile-bottom-nav].mobile-bottom-nav::after {
-            inset: 2px 20% auto;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, .70), transparent);
-        }
-
-        html body [data-mobile-bottom-nav].mobile-bottom-nav .mobile-bottom-nav__item {
-            position: relative;
-            z-index: 1;
-            display: inline-flex !important;
-            width: 100% !important;
-            height: 44px !important;
-            min-width: 0 !important;
-            flex-direction: column;
-            gap: 1px;
-            border-radius: 100px !important;
-            color: #1a1a1a !important;
-            padding: 3px 4px !important;
-            font-size: 8px;
-            font-weight: 650;
-            line-height: 1;
-            transition: transform .22s ease, background .22s ease, box-shadow .22s ease, color .22s ease !important;
-        }
-
-        html body [data-mobile-bottom-nav].mobile-bottom-nav .mobile-bottom-nav__item.is-active {
-            color: #0088ff !important;
-            background: rgba(255, 255, 255, .86) !important;
-            box-shadow: inset 0 1px 0 rgba(255, 255, 255, .92), 0 1px 3px rgba(87, 103, 126, .10) !important;
-        }
-
-        html body [data-mobile-bottom-nav].mobile-bottom-nav .mobile-bottom-nav__item:active {
-            transform: scale(.94) !important;
-        }
-
-        html body [data-mobile-bottom-nav].mobile-bottom-nav .mobile-bottom-nav__label {
-            display: block;
-            max-width: 100%;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            font-size: 5px !important;
-            font-weight: 600 !important;
-            line-height: 6px !important;
-            -webkit-text-size-adjust: none;
-            text-size-adjust: none;
-            transform: scale(.65);
-            transform-origin: center top;
+            color: #0f172a !important;
         }
 
         html body [data-mobile-bottom-nav].mobile-bottom-nav svg {
             display: block !important;
-            width: 24px !important;
-            height: 24px !important;
+            width: 22px !important;
+            height: 22px !important;
             color: currentColor !important;
             opacity: 1 !important;
             visibility: visible !important;
         }
 
         html body {
-            padding-bottom: calc(70px + env(safe-area-inset-bottom, 0px)) !important;
+            padding-bottom: calc(76px + env(safe-area-inset-bottom, 0px)) !important;
             background-color: var(--page-bg, #f4f4f5) !important;
             overscroll-behavior-y: none !important;
         }
@@ -250,33 +188,14 @@
     @media (max-width: 639.98px) {
         html.dark body [data-mobile-bottom-nav].mobile-bottom-nav {
             border-color: var(--alma-border, rgba(148, 163, 184, .18)) !important;
-            border-color: rgba(173, 204, 255, .30) !important;
-            background: linear-gradient(135deg, rgba(20, 35, 61, .76), rgba(8, 13, 27, .66)) !important;
-            background-color: rgba(10, 19, 35, .68) !important;
+            background: var(--alma-card, #111827) !important;
+            background-color: var(--alma-card, #111827) !important;
             color: var(--alma-text, #e5e7eb) !important;
-            box-shadow: 0 16px 34px rgba(0, 0, 0, .34), inset 0 1px 0 rgba(207, 227, 255, .28), inset 0 -1px 1px rgba(99, 148, 220, .12) !important;
+            box-shadow: 0 8px 24px rgba(2, 6, 23, .45) !important;
         }
 
         html.dark body [data-mobile-bottom-nav].mobile-bottom-nav :is(a, button, .mobile-bottom-nav__plus) {
             color: var(--alma-text, #e5e7eb) !important;
-        }
-
-        html.dark body [data-mobile-bottom-nav].mobile-bottom-nav .mobile-bottom-nav__item {
-            color: rgba(241, 247, 255, .88) !important;
-        }
-
-        html.dark body [data-mobile-bottom-nav].mobile-bottom-nav .mobile-bottom-nav__item.is-active {
-            color: #4db4ff !important;
-            background: linear-gradient(145deg, rgba(131, 179, 241, .24), rgba(59, 91, 144, .30)) !important;
-            box-shadow: inset 0 1px 1px rgba(224, 240, 255, .34), inset 0 -1px 1px rgba(3, 11, 29, .34), 0 8px 18px rgba(0, 0, 0, .20) !important;
-        }
-
-
-        @media (prefers-reduced-motion: reduce) {
-            html body [data-mobile-bottom-nav].mobile-bottom-nav,
-            html body [data-mobile-bottom-nav].mobile-bottom-nav .mobile-bottom-nav__item {
-                transition: none !important;
-            }
         }
     }
 
