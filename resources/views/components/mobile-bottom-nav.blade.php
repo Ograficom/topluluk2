@@ -118,8 +118,8 @@
             bottom: max(8px, env(safe-area-inset-bottom, 0px)) !important;
             z-index: 900 !important;
             display: block !important;
-            width: calc(100% - 28px) !important;
-            max-width: 360px !important;
+            width: calc(100% - 16px) !important;
+            max-width: 390px !important;
             height: 64px !important;
             min-height: 64px !important;
             max-height: 64px !important;
