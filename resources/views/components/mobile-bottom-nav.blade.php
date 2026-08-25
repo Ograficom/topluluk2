@@ -125,20 +125,20 @@
             max-height: 60px !important;
             margin: 0 !important;
             padding: 0 8px !important;
-            overflow: visible !important;
-            border: 0 !important;
+            overflow: hidden !important;
+            border: 1px solid rgba(208, 208, 208, .86) !important;
             border-radius: 1000px !important;
-            background: transparent !important;
-            background-color: transparent !important;
+            background: linear-gradient(135deg, rgba(255, 255, 255, .68), rgba(235, 241, 249, .42)) !important;
+            background-color: rgba(255, 255, 255, .52) !important;
             color: #1a1a1a !important;
             opacity: 1 !important;
             visibility: visible !important;
             transform: translate3d(-50%, 0, 0) !important;
             translate: none !important;
             scale: 1 !important;
-            backdrop-filter: none !important;
-            -webkit-backdrop-filter: none !important;
-            box-shadow: none !important;
+            backdrop-filter: blur(18px) saturate(135%) !important;
+            -webkit-backdrop-filter: blur(18px) saturate(135%) !important;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, .04), inset 0 1px 0 rgba(255, 255, 255, .52), inset 0 -1px 1px rgba(40, 40, 40, .16) !important;
             transition: box-shadow .24s ease, background .24s ease !important;
             animation: none !important;
             will-change: auto !important;
@@ -149,34 +149,16 @@
             position: relative;
             z-index: 1;
             display: grid !important;
-            grid-template-columns: repeat(4, minmax(0, 1fr)) 54px !important;
+            grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
             align-items: center !important;
             width: 100% !important;
             height: 100% !important;
-            gap: 8px !important;
+            gap: 2px !important;
             opacity: 1 !important;
             visibility: visible !important;
             background: transparent !important;
         }
 
-        html body [data-mobile-bottom-nav].mobile-bottom-nav > div::before {
-            content: '';
-            position: absolute;
-            inset: 0 62px 0 0;
-            z-index: -1;
-            border: 1px solid rgba(208, 208, 208, .86);
-            border-radius: 1000px;
-            background: linear-gradient(135deg, rgba(255, 255, 255, .68), rgba(235, 241, 249, .42));
-            box-shadow: 1px 0 0 -0.75px #d0d0d0, -1px 0 0 -0.75px #d0d0d0, 0 0 0 .5px #e8e8e8, 0 8px 15px rgba(0, 0, 0, .04), inset 0 1px 0 rgba(255, 255, 255, .52), inset 0 -1px 1px rgba(40, 40, 40, .16);
-            backdrop-filter: blur(18px) saturate(135%);
-            -webkit-backdrop-filter: blur(18px) saturate(135%);
-        }
-
-        html body [data-mobile-bottom-nav].mobile-bottom-nav > div > :nth-child(1) { grid-column: 1; }
-        html body [data-mobile-bottom-nav].mobile-bottom-nav > div > :nth-child(2) { grid-column: 5; }
-        html body [data-mobile-bottom-nav].mobile-bottom-nav > div > :nth-child(3) { grid-column: 2; }
-        html body [data-mobile-bottom-nav].mobile-bottom-nav > div > :nth-child(4) { grid-column: 3; }
-        html body [data-mobile-bottom-nav].mobile-bottom-nav > div > :nth-child(5) { grid-column: 4; }
 
         html body [data-mobile-bottom-nav].mobile-bottom-nav :is(a, button, .mobile-bottom-nav__plus) {
             opacity: 1 !important;
@@ -243,6 +225,10 @@
             font-size: 5px !important;
             font-weight: 600 !important;
             line-height: 6px !important;
+            -webkit-text-size-adjust: none;
+            text-size-adjust: none;
+            transform: scale(.65);
+            transform-origin: center top;
         }
 
         html body [data-mobile-bottom-nav].mobile-bottom-nav svg {
@@ -285,14 +271,6 @@
             box-shadow: inset 0 1px 1px rgba(224, 240, 255, .34), inset 0 -1px 1px rgba(3, 11, 29, .34), 0 8px 18px rgba(0, 0, 0, .20) !important;
         }
 
-        html body [data-mobile-bottom-nav].mobile-bottom-nav [data-mobile-search-toggle] {
-            border: 1px solid rgba(208, 208, 208, .86) !important;
-            border-radius: 1000px !important;
-            background: linear-gradient(135deg, rgba(255, 255, 255, .68), rgba(235, 241, 249, .42)) !important;
-            box-shadow: 1px 0 0 -0.75px #d0d0d0, -1px 0 0 -0.75px #d0d0d0, 0 8px 15px rgba(0, 0, 0, .04), inset 0 1px 0 rgba(255, 255, 255, .52), inset 0 -1px 1px rgba(40, 40, 40, .16) !important;
-            backdrop-filter: blur(18px) saturate(135%) !important;
-            -webkit-backdrop-filter: blur(18px) saturate(135%) !important;
-        }
 
         @media (prefers-reduced-motion: reduce) {
             html body [data-mobile-bottom-nav].mobile-bottom-nav,
