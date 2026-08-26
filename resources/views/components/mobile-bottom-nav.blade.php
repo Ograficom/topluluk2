@@ -302,18 +302,6 @@
             </div>
         </div>
         <div class="space-y-3">
-            <a class="flex w-full items-center justify-center gap-2 rounded-2xl py-3 text-sm font-semibold text-slate-700" href="{{ route('social.redirect', 'google') }}">
-                <svg viewBox="0 0 16 16" class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                    <g fill="none" fill-rule="evenodd" clip-rule="evenodd">
-                        <path fill="#F44336" d="M7.209 1.061c.725-.081 1.154-.081 1.933 0a6.57 6.57 0 0 1 3.65 1.82a100 100 0 0 0-1.986 1.93q-1.876-1.59-4.188-.734q-1.696.78-2.362 2.528a78 78 0 0 1-2.148-1.658a.26.26 0 0 0-.16-.027q1.683-3.245 5.26-3.86"/>
-                        <path fill="#FFC107" d="M1.946 4.92q.085-.013.161.027a78 78 0 0 0 2.148 1.658A7.6 7.6 0 0 0 4.04 7.99q.037.678.215 1.331L2 11.116Q.527 8.038 1.946 4.92"/>
-                        <path fill="#448AFF" d="M12.685 13.29a26 26 0 0 0-2.202-1.74q1.15-.812 1.396-2.228H8.122V6.713q3.25-.027 6.497.055q.616 3.345-1.423 6.032a7 7 0 0 1-.51.49"/>
-                        <path fill="#43A047" d="M4.255 9.322q1.23 3.057 4.51 2.854a3.94 3.94 0 0 0 1.718-.626q1.148.812 2.202 1.74a6.62 6.62 0 0 1-4.027 1.684a6.4 6.4 0 0 1-1.02 0Q3.82 14.524 2 11.116z"/>
-                    </g>
-                </svg>
-                {{ __('site.mobile_nav.login_with_google') }}
-            </a>
-            <div class="text-center text-xs uppercase tracking-[0.3em] text-slate-500">{{ __('site.common.or') }}</div>
             <form method="POST" action="{{ route('login') }}" class="space-y-3">
                 @csrf
                 <label for="mobile-login-email" class="block text-xs font-semibold text-slate-600">{{ __('site.mobile_nav.email') }}</label>
@@ -331,9 +319,14 @@
                     </button>
                 </div>
                 <div class="flex items-center justify-between text-sm text-slate-500">
-                    <label class="inline-flex items-center gap-2">
-                        <input id="mobile-login-remember" type="checkbox" name="remember" class="h-4 w-4 rounded text-slate-900">
-                        {{ __('site.mobile_nav.stay_signed_in') }}
+                    <label for="mobile-login-remember" class="ografi-mobile-remember inline-flex cursor-pointer items-center gap-2">
+                        <input id="mobile-login-remember" type="checkbox" name="remember" class="ografi-mobile-remember__input">
+                        <span class="ografi-mobile-remember__box" aria-hidden="true">
+                            <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M4.8 10.4 8.2 13.5 15.3 6.7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </span>
+                        <span>{{ __('site.mobile_nav.stay_signed_in') }}</span>
                     </label>
                     <a href="{{ route('password.request') }}" class="text-xs text-slate-500 hover:text-slate-700">{{ __('site.mobile_nav.forgot_password') }}</a>
                 </div>
@@ -783,3 +776,232 @@
         </div>
     </div>
 </div>
+
+
+<style id="ografi-mobile-nav-ios26-hotfix">
+    @media (max-width: 639.98px) {
+        html body [data-mobile-bottom-nav].mobile-bottom-nav {
+            bottom: max(10px, env(safe-area-inset-bottom, 0px)) !important;
+            width: calc(100% - 20px) !important;
+            max-width: 390px !important;
+            height: 66px !important;
+            min-height: 66px !important;
+            max-height: 66px !important;
+            padding: 6px 8px !important;
+            overflow: hidden !important;
+            border: 1px solid rgba(255, 255, 255, .78) !important;
+            border-radius: 33px !important;
+            background: linear-gradient(180deg, rgba(255,255,255,.80), rgba(255,255,255,.56)) !important;
+            background-color: rgba(255,255,255,.66) !important;
+            color: #111827 !important;
+            -webkit-backdrop-filter: blur(28px) saturate(185%) !important;
+            backdrop-filter: blur(28px) saturate(185%) !important;
+            box-shadow: 0 14px 38px rgba(15,23,42,.16), inset 0 1px 0 rgba(255,255,255,.96) !important;
+            transition: transform 300ms cubic-bezier(.22,1,.36,1), opacity 180ms ease, visibility 0s !important;
+        }
+
+        html body [data-mobile-bottom-nav].mobile-bottom-nav > div {
+            gap: 3px !important;
+        }
+
+        html body [data-mobile-bottom-nav].mobile-bottom-nav :is(a, button, .mobile-bottom-nav__plus) {
+            height: 48px !important;
+            border-radius: 24px !important;
+            background: transparent !important;
+            box-shadow: none !important;
+            transition: transform 160ms ease, background-color 180ms ease, color 180ms ease !important;
+        }
+
+        html body [data-mobile-bottom-nav].mobile-bottom-nav :is(a, button):active {
+            transform: scale(.92) !important;
+        }
+
+        html body [data-mobile-bottom-nav].mobile-bottom-nav .text-emerald-600 {
+            color: #007aff !important;
+            background: rgba(255,255,255,.76) !important;
+            box-shadow: inset 0 1px 0 rgba(255,255,255,.96), 0 2px 9px rgba(15,23,42,.08) !important;
+        }
+
+        html body [data-mobile-bottom-nav].mobile-bottom-nav .mobile-bottom-nav__plus {
+            width: 48px !important;
+            min-width: 48px !important;
+            max-width: 48px !important;
+            border: 1px solid rgba(255,255,255,.90) !important;
+            border-radius: 24px !important;
+            background: rgba(255,255,255,.74) !important;
+            box-shadow: 0 5px 16px rgba(15,23,42,.12), inset 0 1px 0 rgba(255,255,255,.98) !important;
+        }
+
+        html body [data-mobile-login-drawer] {
+            z-index: 100001 !important;
+        }
+
+        html body [data-mobile-login-backdrop] {
+            background: rgba(15,23,42,.34) !important;
+            -webkit-backdrop-filter: blur(2px) !important;
+            backdrop-filter: blur(2px) !important;
+        }
+
+        html body [data-mobile-login-drawer] aside {
+            width: 100% !important;
+            max-width: 430px !important;
+            max-height: min(78vh, 720px) !important;
+            overflow-y: auto !important;
+            padding: 0 22px calc(24px + env(safe-area-inset-bottom, 0px)) !important;
+            border: 1px solid rgba(255,255,255,.90) !important;
+            border-bottom: 0 !important;
+            border-radius: 28px 28px 0 0 !important;
+            background: rgba(255,255,255,.96) !important;
+            -webkit-backdrop-filter: blur(30px) saturate(175%) !important;
+            backdrop-filter: blur(30px) saturate(175%) !important;
+            box-shadow: 0 -18px 55px rgba(15,23,42,.18), inset 0 1px 0 rgba(255,255,255,.98) !important;
+            transition: transform 520ms cubic-bezier(.16,1,.3,1) !important;
+        }
+
+        html body [data-mobile-login-handle] {
+            width: 42px !important;
+            height: 5px !important;
+            border-radius: 999px !important;
+            background: #d8dee8 !important;
+        }
+
+        html body [data-mobile-login-drawer] input[name="email"],
+        html body [data-mobile-login-drawer] input[name="password"] {
+            height: 46px !important;
+            border: 0 !important;
+            border-radius: 14px !important;
+            background: #f3f4f6 !important;
+            background-color: #f3f4f6 !important;
+            box-shadow: none !important;
+            outline: none !important;
+        }
+
+        html body [data-mobile-login-drawer] input[name="password"] {
+            padding-right: 54px !important;
+        }
+
+        html body [data-mobile-login-drawer] [data-mobile-password-toggle] {
+            all: unset !important;
+            position: absolute !important;
+            top: 50% !important;
+            right: 14px !important;
+            z-index: 20 !important;
+            display: inline-flex !important;
+            width: 28px !important;
+            height: 28px !important;
+            align-items: center !important;
+            justify-content: center !important;
+            transform: translateY(-50%) !important;
+            color: #64748b !important;
+            cursor: pointer !important;
+            -webkit-tap-highlight-color: transparent !important;
+        }
+
+        html body [data-mobile-login-drawer] [data-mobile-password-toggle] svg {
+            display: block !important;
+            width: 20px !important;
+            height: 20px !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            background: transparent !important;
+            box-shadow: none !important;
+        }
+
+        html body [data-mobile-login-drawer] .ografi-mobile-remember {
+            position: relative !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            gap: 9px !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            cursor: pointer !important;
+        }
+
+        html body [data-mobile-login-drawer] .ografi-mobile-remember__input {
+            position: absolute !important;
+            width: 1px !important;
+            height: 1px !important;
+            margin: -1px !important;
+            padding: 0 !important;
+            overflow: hidden !important;
+            clip: rect(0,0,0,0) !important;
+            clip-path: inset(50%) !important;
+            border: 0 !important;
+            opacity: 0 !important;
+            pointer-events: none !important;
+            -webkit-appearance: none !important;
+            appearance: none !important;
+        }
+
+        html body [data-mobile-login-drawer] .ografi-mobile-remember__box {
+            display: inline-flex !important;
+            flex: 0 0 20px !important;
+            width: 20px !important;
+            height: 20px !important;
+            align-items: center !important;
+            justify-content: center !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            border: 1.5px solid #cbd5e1 !important;
+            border-radius: 6px !important;
+            background: #fff !important;
+            background-image: none !important;
+            box-shadow: none !important;
+            box-sizing: border-box !important;
+        }
+
+        html body [data-mobile-login-drawer] .ografi-mobile-remember__box svg {
+            width: 14px !important;
+            height: 14px !important;
+            color: #fff !important;
+            opacity: 0 !important;
+            transform: scale(.75) !important;
+            transition: opacity 140ms ease, transform 140ms ease !important;
+        }
+
+        html body [data-mobile-login-drawer] .ografi-mobile-remember__input:checked + .ografi-mobile-remember__box {
+            border-color: #007aff !important;
+            background: #007aff !important;
+            background-color: #007aff !important;
+        }
+
+        html body [data-mobile-login-drawer] .ografi-mobile-remember__input:checked + .ografi-mobile-remember__box svg {
+            opacity: 1 !important;
+            transform: scale(1) !important;
+        }
+    }
+
+    html.dark body [data-mobile-login-drawer] aside {
+        background: rgba(17,24,39,.96) !important;
+        color: #e5e7eb !important;
+    }
+
+    html.dark body [data-mobile-login-drawer] .ografi-mobile-remember__box {
+        border-color: rgba(148,163,184,.46) !important;
+        background: #0f172a !important;
+    }
+
+    html.dark body [data-mobile-login-drawer] .ografi-mobile-remember__input:checked + .ografi-mobile-remember__box {
+        border-color: #0a84ff !important;
+        background: #0a84ff !important;
+    }
+</style>
+
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+        const drawer = document.querySelector('[data-mobile-login-drawer]');
+        const nav = document.querySelector('[data-mobile-bottom-nav]');
+        if (!drawer || !nav) return;
+
+        const syncLoginNav = () => {
+            const open = !drawer.classList.contains('pointer-events-none');
+            nav.classList.toggle('ografi-login-nav-hidden', open);
+        };
+
+        syncLoginNav();
+        new MutationObserver(syncLoginNav).observe(drawer, {
+            attributes: true,
+            attributeFilter: ['class'],
+        });
+    });
+</script>
