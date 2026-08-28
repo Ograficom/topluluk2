@@ -1,0 +1,518 @@
+/*
+ * Ografi header layout polish
+ * Desktop/light/dark alignment based on the supplied reference screenshots.
+ * This file intentionally only overrides header/search presentation.
+ */
+
+html body header.site-header[data-site-header] {
+    --site-header-icon-size: 21px;
+    --site-header-logo-size: 28px;
+    height: 64px !important;
+    min-height: 64px !important;
+    background: rgba(255, 255, 255, 0.985) !important;
+    background-color: rgba(255, 255, 255, 0.985) !important;
+    border: 0 !important;
+    border-bottom: 1px solid #e5e7eb !important;
+    color: #0f172a !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+}
+
+html.dark body header.site-header[data-site-header],
+html body.dark header.site-header[data-site-header] {
+    background: #0f172a !important;
+    background-color: #0f172a !important;
+    border-bottom-color: #263247 !important;
+    color: #e5e7eb !important;
+}
+
+html body header.site-header[data-site-header] > .site-header-shell {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    width: 100% !important;
+    max-width: 1260px !important;
+    height: 64px !important;
+    min-height: 64px !important;
+    margin: 0 auto !important;
+    padding: 0 8px !important;
+    gap: 24px !important;
+    background: transparent !important;
+}
+
+/* Brand lockup */
+html body header.site-header[data-site-header] .site-header-logo {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 7px !important;
+    min-width: 0 !important;
+    height: 40px !important;
+    color: #111827 !important;
+    text-decoration: none !important;
+}
+
+html body header.site-header[data-site-header] .site-header-logo-mark {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 28px !important;
+    height: 28px !important;
+    min-width: 28px !important;
+    flex: 0 0 28px !important;
+    overflow: visible !important;
+}
+
+html body header.site-header[data-site-header] .site-header-logo-mark .site-header-logo-main-image {
+    inset: 0 !important;
+    width: var(--site-header-logo-size) !important;
+    height: var(--site-header-logo-size) !important;
+    max-width: var(--site-header-logo-size) !important;
+    max-height: var(--site-header-logo-size) !important;
+    object-fit: contain !important;
+    transform: none !important;
+    transform-origin: center !important;
+    background: transparent !important;
+}
+
+html body header.site-header[data-site-header] .site-header-logo .site-header-logo-wordmark:not(#comments *):not(#app *) {
+    margin: 0 !important;
+    color: #111827 !important;
+    font-family: "Inter", Arial, Helvetica, sans-serif !important;
+    font-size: 17px !important;
+    line-height: 1 !important;
+    font-weight: 600 !important;
+    letter-spacing: -0.015em !important;
+    transform: none !important;
+    transform-origin: left center !important;
+}
+
+html.dark body header.site-header[data-site-header] .site-header-logo,
+html body.dark header.site-header[data-site-header] .site-header-logo,
+html.dark body header.site-header[data-site-header] .site-header-logo .site-header-logo-wordmark:not(#comments *):not(#app *),
+html body.dark header.site-header[data-site-header] .site-header-logo .site-header-logo-wordmark:not(#comments *):not(#app *) {
+    color: #e5e7eb !important;
+}
+
+html.dark body header.site-header[data-site-header] .site-header-logo-mark img.site-header-logo-main-image,
+html body.dark header.site-header[data-site-header] .site-header-logo-mark img.site-header-logo-main-image {
+    filter: brightness(0) invert(1) !important;
+    opacity: 0.92 !important;
+}
+
+/* Right-side action rail */
+html body header.site-header[data-site-header] .site-header-actions {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+    gap: 10px !important;
+    min-width: 0 !important;
+    height: 64px !important;
+}
+
+html body header.site-header[data-site-header] :is(
+    .site-icon-btn,
+    .site-search-trigger,
+    button[data-notifications-btn],
+    a.site-header-messages-link,
+    button[data-user-menu-btn]
+) {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 40px !important;
+    height: 40px !important;
+    min-width: 40px !important;
+    min-height: 40px !important;
+    flex: 0 0 40px !important;
+    margin: 0 !important;
+    border: 0 !important;
+    border-radius: 9999px !important;
+    color: #334155 !important;
+    box-shadow: none !important;
+}
+
+html body header.site-header[data-site-header] :is(
+    .site-icon-btn,
+    .site-search-trigger,
+    button[data-notifications-btn],
+    a.site-header-messages-link
+) > :is(iconify-icon, svg) {
+    width: var(--site-header-icon-size) !important;
+    height: var(--site-header-icon-size) !important;
+    min-width: var(--site-header-icon-size) !important;
+    font-size: var(--site-header-icon-size) !important;
+    transform: none !important;
+}
+
+html body header.site-header[data-site-header] a.site-header-messages-link > svg {
+    width: 22px !important;
+    height: 22px !important;
+}
+
+html body header.site-header[data-site-header] button[data-user-menu-btn] {
+    padding: 2px !important;
+    overflow: hidden !important;
+}
+
+html body header.site-header[data-site-header] button[data-user-menu-btn] > :is(img, .site-avatar-fallback) {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 36px !important;
+    height: 36px !important;
+    min-width: 36px !important;
+    border-radius: 9999px !important;
+    object-fit: cover !important;
+}
+
+html.dark body header.site-header[data-site-header] :is(
+    .site-icon-btn,
+    .site-search-trigger,
+    button[data-notifications-btn],
+    a.site-header-messages-link,
+    button[data-user-menu-btn]
+),
+html body.dark header.site-header[data-site-header] :is(
+    .site-icon-btn,
+    .site-search-trigger,
+    button[data-notifications-btn],
+    a.site-header-messages-link,
+    button[data-user-menu-btn]
+) {
+    color: #d8dee9 !important;
+    background: transparent !important;
+    background-color: transparent !important;
+}
+
+html body header.site-header[data-site-header] :is(
+    .site-icon-btn,
+    .site-search-trigger,
+    button[data-notifications-btn],
+    a.site-header-messages-link
+):hover {
+    color: #0f172a !important;
+    background: #f1f5f9 !important;
+    background-color: #f1f5f9 !important;
+}
+
+html.dark body header.site-header[data-site-header] :is(
+    .site-icon-btn,
+    .site-search-trigger,
+    button[data-notifications-btn],
+    a.site-header-messages-link
+):hover,
+html body.dark header.site-header[data-site-header] :is(
+    .site-icon-btn,
+    .site-search-trigger,
+    button[data-notifications-btn],
+    a.site-header-messages-link
+):hover {
+    color: #ffffff !important;
+    background: #1e293b !important;
+    background-color: #1e293b !important;
+}
+
+html body header.site-header[data-site-header] .site-header-write-btn {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 7px !important;
+    height: 42px !important;
+    min-height: 42px !important;
+    padding: 0 18px !important;
+    margin: 0 2px !important;
+    border-radius: 9999px !important;
+    font-size: 14px !important;
+    line-height: 1 !important;
+}
+
+/* Search dropdown */
+html body header.site-header[data-site-header] .site-search-panel {
+    position: relative !important;
+    display: flex !important;
+    align-items: center !important;
+    height: 64px !important;
+    margin: 0 !important;
+}
+
+html body header.site-header[data-site-header] .site-search-dropdown {
+    position: absolute !important;
+    top: calc(100% + 4px) !important;
+    right: 0 !important;
+    left: auto !important;
+    width: 380px !important;
+    max-width: calc(100vw - 24px) !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+}
+
+html body header.site-header[data-site-header] .site-search-dropdown-top {
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+    width: 100% !important;
+}
+
+html body header.site-header[data-site-header] label.site-search-field {
+    display: flex !important;
+    align-items: center !important;
+    gap: 9px !important;
+    width: 330px !important;
+    height: 42px !important;
+    min-height: 42px !important;
+    padding: 0 13px !important;
+    border: 1px solid #d8dee7 !important;
+    border-radius: 9999px !important;
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+    color: #0f172a !important;
+    box-shadow: none !important;
+}
+
+html body header.site-header[data-site-header] label.site-search-field .site-search-icon {
+    width: 18px !important;
+    height: 18px !important;
+    min-width: 18px !important;
+    font-size: 18px !important;
+    color: #64748b !important;
+}
+
+html body header.site-header[data-site-header] label.site-search-field input[data-search-input] {
+    height: 40px !important;
+    background: transparent !important;
+    background-color: transparent !important;
+    color: #334155 !important;
+    font-size: 14px !important;
+    font-weight: 400 !important;
+    caret-color: #2563eb !important;
+}
+
+html body header.site-header[data-site-header] label.site-search-field input[data-search-input]::placeholder {
+    color: #64748b !important;
+    opacity: 1 !important;
+}
+
+html body header.site-header[data-site-header] .site-search-close {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 42px !important;
+    height: 42px !important;
+    min-width: 42px !important;
+    flex: 0 0 42px !important;
+    border: 0 !important;
+    border-radius: 9999px !important;
+    background: #f1f5f9 !important;
+    background-color: #f1f5f9 !important;
+    color: #2563eb !important;
+    box-shadow: none !important;
+}
+
+html body header.site-header[data-site-header] .site-search-close iconify-icon {
+    width: 18px !important;
+    height: 18px !important;
+    font-size: 18px !important;
+}
+
+html body header.site-header[data-site-header] .site-search-results-panel {
+    width: calc(100% - 0px) !important;
+    min-height: 64px !important;
+    margin-top: 8px !important;
+    padding: 8px !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 16px !important;
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+    color: #0f172a !important;
+    box-shadow: none !important;
+}
+
+html body header.site-header[data-site-header] .site-search-all {
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+    min-height: 46px !important;
+    padding: 0 14px !important;
+    border-radius: 10px !important;
+    color: #0f172a !important;
+    background: transparent !important;
+    font-size: 14px !important;
+    font-weight: 500 !important;
+    text-decoration: none !important;
+}
+
+html body header.site-header[data-site-header] .site-search-all iconify-icon {
+    width: 18px !important;
+    height: 18px !important;
+    font-size: 18px !important;
+}
+
+html body header.site-header[data-site-header] .site-search-all:hover {
+    background: #f8fafc !important;
+    color: #2563eb !important;
+}
+
+/* Dark search mirrors the reference: readable field, distinct close button and result card. */
+html.dark body header.site-header[data-site-header] label.site-search-field,
+html body.dark header.site-header[data-site-header] label.site-search-field {
+    border-color: #334155 !important;
+    background: #111827 !important;
+    background-color: #111827 !important;
+    color: #f8fafc !important;
+}
+
+html.dark body header.site-header[data-site-header] label.site-search-field input[data-search-input],
+html body.dark header.site-header[data-site-header] label.site-search-field input[data-search-input] {
+    background: transparent !important;
+    background-color: transparent !important;
+    color: #f8fafc !important;
+    -webkit-text-fill-color: #f8fafc !important;
+}
+
+html.dark body header.site-header[data-site-header] label.site-search-field input[data-search-input]::placeholder,
+html body.dark header.site-header[data-site-header] label.site-search-field input[data-search-input]::placeholder {
+    color: #cbd5e1 !important;
+}
+
+html.dark body header.site-header[data-site-header] label.site-search-field .site-search-icon,
+html body.dark header.site-header[data-site-header] label.site-search-field .site-search-icon {
+    color: #cbd5e1 !important;
+}
+
+html.dark body header.site-header[data-site-header] .site-search-close,
+html body.dark header.site-header[data-site-header] .site-search-close {
+    background: #1e293b !important;
+    background-color: #1e293b !important;
+    color: #93c5fd !important;
+}
+
+html.dark body header.site-header[data-site-header] .site-search-results-panel,
+html body.dark header.site-header[data-site-header] .site-search-results-panel {
+    border-color: #334155 !important;
+    background: #111827 !important;
+    background-color: #111827 !important;
+    color: #f8fafc !important;
+}
+
+html.dark body header.site-header[data-site-header] .site-search-all,
+html body.dark header.site-header[data-site-header] .site-search-all {
+    color: #93c5fd !important;
+    background: transparent !important;
+}
+
+html.dark body header.site-header[data-site-header] .site-search-all:hover,
+html body.dark header.site-header[data-site-header] .site-search-all:hover {
+    background: #1e293b !important;
+    color: #bfdbfe !important;
+}
+
+html.dark body header.site-header[data-site-header] .site-search-empty,
+html body.dark header.site-header[data-site-header] .site-search-empty {
+    color: #94a3b8 !important;
+}
+
+/* Keep the notification dot attached to the icon without shifting the rail. */
+html body header.site-header[data-site-header] .site-icon-btn--status {
+    position: relative !important;
+}
+
+html body header.site-header[data-site-header] .site-status-dot {
+    position: absolute !important;
+    top: 8px !important;
+    right: 8px !important;
+    width: 7px !important;
+    height: 7px !important;
+    border: 2px solid #ffffff !important;
+    border-radius: 9999px !important;
+    background: #2563eb !important;
+}
+
+html.dark body header.site-header[data-site-header] .site-status-dot,
+html body.dark header.site-header[data-site-header] .site-status-dot {
+    border-color: #0f172a !important;
+}
+
+@media (max-width: 1023px) {
+    html body header.site-header[data-site-header] > .site-header-shell {
+        padding: 0 12px !important;
+        gap: 12px !important;
+    }
+
+    html body header.site-header[data-site-header] .site-header-logo {
+        gap: 6px !important;
+    }
+
+    html body header.site-header[data-site-header] .site-header-actions {
+        gap: 6px !important;
+    }
+
+    html body header.site-header[data-site-header] .site-search-dropdown {
+        position: fixed !important;
+        top: 72px !important;
+        left: 12px !important;
+        right: 12px !important;
+        width: auto !important;
+        max-width: none !important;
+    }
+
+    html body header.site-header[data-site-header] label.site-search-field {
+        width: auto !important;
+        flex: 1 1 auto !important;
+    }
+}
+
+@media (max-width: 639px) {
+    html body header.site-header[data-site-header] {
+        --site-header-icon-size: 20px;
+        --site-header-logo-size: 26px;
+    }
+
+    html body header.site-header[data-site-header] > .site-header-shell {
+        padding: 0 10px !important;
+    }
+
+    html body header.site-header[data-site-header] .site-header-logo-mark {
+        width: 26px !important;
+        height: 26px !important;
+        min-width: 26px !important;
+        flex-basis: 26px !important;
+    }
+
+    html body header.site-header[data-site-header] .site-header-logo .site-header-logo-wordmark:not(#comments *):not(#app *) {
+        font-size: 16px !important;
+    }
+
+    html body header.site-header[data-site-header] :is(
+        .site-icon-btn,
+        .site-search-trigger,
+        button[data-notifications-btn],
+        button[data-user-menu-btn]
+    ) {
+        width: 38px !important;
+        height: 38px !important;
+        min-width: 38px !important;
+        min-height: 38px !important;
+        flex-basis: 38px !important;
+    }
+
+    html body header.site-header[data-site-header] button[data-user-menu-btn] > :is(img, .site-avatar-fallback) {
+        width: 34px !important;
+        height: 34px !important;
+        min-width: 34px !important;
+    }
+
+    html body header.site-header[data-site-header] .site-search-dropdown {
+        top: 70px !important;
+        left: 10px !important;
+        right: 10px !important;
+    }
+
+    html body header.site-header[data-site-header] label.site-search-field,
+    html body header.site-header[data-site-header] .site-search-close {
+        height: 42px !important;
+        min-height: 42px !important;
+    }
+}
