@@ -54,35 +54,86 @@ html body header.site-header[data-site-header].site-header button[data-notificat
     }
 }
 
-/* Ana akis ust sekmeleri: sadece dark modda koyu yuzey ve okunakli metin. */
-html.dark body.alma-app .alma-tabs,
-html body.dark.alma-app .alma-tabs {
+/* Ana sayfadaki gerçek Tüm / Tartışmak / Okumak filtresi. */
+html.dark body.alma-app .home-feed-shell .home-feed-toolbar,
+html body.dark.alma-app .home-feed-shell .home-feed-toolbar {
+    background: #111827 !important;
+    background-color: #111827 !important;
+    border-color: #334155 !important;
+    color: #e5e7eb !important;
+    box-shadow: none !important;
+}
+
+html.dark body.alma-app .home-feed-shell .home-feed-toolbar__mode,
+html body.dark.alma-app .home-feed-shell .home-feed-toolbar__mode,
+html.dark body.alma-app .home-feed-shell .home-feed-toolbar__period-toggle,
+html body.dark.alma-app .home-feed-shell .home-feed-toolbar__period-toggle {
+    background: transparent !important;
+    background-color: transparent !important;
+    border-color: transparent !important;
+    color: #94a3b8 !important;
+    box-shadow: none !important;
+}
+
+html.dark body.alma-app .home-feed-shell .home-feed-toolbar__mode.is-active,
+html body.dark.alma-app .home-feed-shell .home-feed-toolbar__mode.is-active {
+    background: #273244 !important;
+    background-color: #273244 !important;
+    color: #ffffff !important;
+    box-shadow: none !important;
+}
+
+html.dark body.alma-app .home-feed-shell .home-feed-toolbar__dropdown,
+html body.dark.alma-app .home-feed-shell .home-feed-toolbar__dropdown {
     background: #111827 !important;
     background-color: #111827 !important;
     border-color: #334155 !important;
     box-shadow: none !important;
 }
 
-html.dark body.alma-app .alma-tab,
-html body.dark.alma-app .alma-tab {
+html.dark body.alma-app .home-feed-shell .home-feed-toolbar__option,
+html body.dark.alma-app .home-feed-shell .home-feed-toolbar__option {
     background: transparent !important;
     background-color: transparent !important;
-    color: #94a3b8 !important;
+    color: #cbd5e1 !important;
 }
 
-html.dark body.alma-app .alma-tab.is-active,
-html body.dark.alma-app .alma-tab.is-active {
-    background: #1f2937 !important;
-    background-color: #1f2937 !important;
-    color: #f8fafc !important;
+html.dark body.alma-app .home-feed-shell .home-feed-toolbar__option:hover,
+html.dark body.alma-app .home-feed-shell .home-feed-toolbar__option.is-active,
+html body.dark.alma-app .home-feed-shell .home-feed-toolbar__option:hover,
+html body.dark.alma-app .home-feed-shell .home-feed-toolbar__option.is-active {
+    background: #273244 !important;
+    background-color: #273244 !important;
+    color: #ffffff !important;
+}
+
+html.dark body.alma-app .home-feed-shell .home-feed-toolbar__read,
+html body.dark.alma-app .home-feed-shell .home-feed-toolbar__read,
+html.dark body.alma-app .home-feed-shell .home-feed-toolbar__date input[type="date"],
+html body.dark.alma-app .home-feed-shell .home-feed-toolbar__date input[type="date"] {
+    background: #111827 !important;
+    background-color: #111827 !important;
+    border-color: #334155 !important;
+    color: #d1d5db !important;
     box-shadow: none !important;
+    color-scheme: dark !important;
 }
 
-/* Ana akis yenile / daha fazla butonu: beyaz diski dark modda koyu yap. */
-html.dark body.alma-app .ografi-feed-loadmore__button,
-html body.dark.alma-app .ografi-feed-loadmore__button,
-html.dark .ografi-feed-loadmore__button,
-.dark .ografi-feed-loadmore__button {
+html.dark body.alma-app .home-feed-shell .home-feed-toolbar__radio,
+html body.dark.alma-app .home-feed-shell .home-feed-toolbar__radio {
+    color: #d1d5db !important;
+}
+
+html.dark body.alma-app .home-feed-shell .home-feed-toolbar__radio-dot,
+html body.dark.alma-app .home-feed-shell .home-feed-toolbar__radio-dot {
+    background: #111827 !important;
+}
+
+/* Ana akıştaki yuvarlak yenile / ileri butonunun sonradan gelen beyaz override'ını ez. */
+html.dark body.alma-app .home-feed-shell .ografi-feed-page-button--next,
+html body.dark.alma-app .home-feed-shell .ografi-feed-page-button--next,
+html.dark body.alma-app .home-feed-shell .ografi-feed-loadmore__button,
+html body.dark.alma-app .home-feed-shell .ografi-feed-loadmore__button {
     background: #111827 !important;
     background-color: #111827 !important;
     color: #f8fafc !important;
@@ -90,28 +141,28 @@ html.dark .ografi-feed-loadmore__button,
     box-shadow: none !important;
 }
 
-html.dark body.alma-app .ografi-feed-loadmore__button:hover,
-html.dark body.alma-app .ografi-feed-loadmore__button:focus,
-html.dark body.alma-app .ografi-feed-loadmore__button:active,
-html body.dark.alma-app .ografi-feed-loadmore__button:hover,
-html body.dark.alma-app .ografi-feed-loadmore__button:focus,
-html body.dark.alma-app .ografi-feed-loadmore__button:active,
-html.dark .ografi-feed-loadmore__button:hover,
-html.dark .ografi-feed-loadmore__button:focus,
-html.dark .ografi-feed-loadmore__button:active,
-.dark .ografi-feed-loadmore__button:hover,
-.dark .ografi-feed-loadmore__button:focus,
-.dark .ografi-feed-loadmore__button:active {
+html.dark body.alma-app .home-feed-shell .ografi-feed-page-button--next:hover,
+html.dark body.alma-app .home-feed-shell .ografi-feed-page-button--next:focus,
+html.dark body.alma-app .home-feed-shell .ografi-feed-page-button--next:active,
+html body.dark.alma-app .home-feed-shell .ografi-feed-page-button--next:hover,
+html body.dark.alma-app .home-feed-shell .ografi-feed-page-button--next:focus,
+html body.dark.alma-app .home-feed-shell .ografi-feed-page-button--next:active,
+html.dark body.alma-app .home-feed-shell .ografi-feed-loadmore__button:hover,
+html.dark body.alma-app .home-feed-shell .ografi-feed-loadmore__button:focus,
+html.dark body.alma-app .home-feed-shell .ografi-feed-loadmore__button:active,
+html body.dark.alma-app .home-feed-shell .ografi-feed-loadmore__button:hover,
+html body.dark.alma-app .home-feed-shell .ografi-feed-loadmore__button:focus,
+html body.dark.alma-app .home-feed-shell .ografi-feed-loadmore__button:active {
     background: #1f2937 !important;
     background-color: #1f2937 !important;
     color: #ffffff !important;
     border-color: #475569 !important;
 }
 
-html.dark .ografi-feed-loadmore__icon,
-html.dark .ografi-feed-loadmore__icon svg,
-.dark .ografi-feed-loadmore__icon,
-.dark .ografi-feed-loadmore__icon svg {
+html.dark body.alma-app .home-feed-shell .ografi-feed-page-button--next svg,
+html body.dark.alma-app .home-feed-shell .ografi-feed-page-button--next svg,
+html.dark body.alma-app .home-feed-shell .ografi-feed-loadmore__icon svg,
+html body.dark.alma-app .home-feed-shell .ografi-feed-loadmore__icon svg {
     color: currentColor !important;
     stroke: currentColor !important;
 }
