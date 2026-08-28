@@ -164,3 +164,121 @@ html.dark body .site-header .site-menu-panel[data-user-menu-panel] .site-user-me
         background-color: rgba(8, 15, 28, 0.995) !important;
     }
 }
+
+/*
+ * Mobile header optical alignment.
+ * Iconify keeps a text baseline unless it is taken out of normal inline flow;
+ * that was the reason the bell sat visibly lower than the avatar/logo even
+ * though the surrounding button was already 40x40. Keep every mobile control
+ * on the same physical centre point instead of relying on font baselines.
+ */
+@media (max-width: 1023.98px) {
+    html body header.site-header[data-site-header] > .site-header-shell {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        height: 64px !important;
+        min-height: 64px !important;
+        padding-left: 14px !important;
+        padding-right: 14px !important;
+        gap: 0 !important;
+    }
+
+    html body header.site-header[data-site-header] .site-header-actions {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: flex-end !important;
+        gap: 6px !important;
+        height: 64px !important;
+        min-height: 64px !important;
+        margin-left: auto !important;
+        padding: 0 !important;
+        line-height: 1 !important;
+    }
+
+    html body header.site-header[data-site-header] .site-search-panel,
+    html body header.site-header[data-site-header] .site-header-write-btn,
+    html body header.site-header[data-site-header] a.site-header-messages-link {
+        display: none !important;
+    }
+
+    html body header.site-header[data-site-header] [data-notifications-root],
+    html body header.site-header[data-site-header] [data-user-menu] {
+        position: relative !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        width: 40px !important;
+        min-width: 40px !important;
+        max-width: 40px !important;
+        height: 40px !important;
+        min-height: 40px !important;
+        max-height: 40px !important;
+        flex: 0 0 40px !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        line-height: 1 !important;
+    }
+
+    html body header.site-header[data-site-header] button[data-notifications-btn],
+    html body header.site-header[data-site-header] button[data-user-menu-btn] {
+        position: relative !important;
+        display: block !important;
+        width: 40px !important;
+        min-width: 40px !important;
+        max-width: 40px !important;
+        height: 40px !important;
+        min-height: 40px !important;
+        max-height: 40px !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        line-height: 1 !important;
+        vertical-align: top !important;
+        transform: none !important;
+        background: transparent !important;
+        background-color: transparent !important;
+        box-shadow: none !important;
+    }
+
+    html body header.site-header[data-site-header] button[data-notifications-btn] > iconify-icon {
+        position: absolute !important;
+        top: 50% !important;
+        left: 50% !important;
+        width: 20px !important;
+        min-width: 20px !important;
+        height: 20px !important;
+        min-height: 20px !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        display: block !important;
+        font-size: 20px !important;
+        line-height: 20px !important;
+        transform: translate(-50%, -50%) !important;
+        transform-origin: center !important;
+    }
+
+    html body header.site-header[data-site-header] button[data-user-menu-btn] > :is(img, .site-avatar-fallback) {
+        position: absolute !important;
+        top: 50% !important;
+        left: 50% !important;
+        width: 36px !important;
+        min-width: 36px !important;
+        max-width: 36px !important;
+        height: 36px !important;
+        min-height: 36px !important;
+        max-height: 36px !important;
+        margin: 0 !important;
+        transform: translate(-50%, -50%) !important;
+        transform-origin: center !important;
+    }
+
+    html body header.site-header[data-site-header] button[data-notifications-btn]:hover,
+    html body header.site-header[data-site-header] button[data-notifications-btn]:focus,
+    html body header.site-header[data-site-header] button[data-notifications-btn]:focus-visible,
+    html body header.site-header[data-site-header] button[data-notifications-btn]:active,
+    html body header.site-header[data-site-header] button[data-notifications-btn][aria-expanded="true"] {
+        background: transparent !important;
+        background-color: transparent !important;
+        box-shadow: none !important;
+    }
+}
