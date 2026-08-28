@@ -9,13 +9,13 @@ html body.dark header.site-header[data-site-header].site-header .site-header-log
     display: none !important;
 }
 
-/* Mobil header: hamburger yok, arama ikonu var. */
+/* Mobil header: hamburger var, arama ikonu yok. */
 @media (max-width: 1023.98px) {
     html body header.site-header[data-site-header].site-header button[data-mobile-sidebar-toggle] {
-        display: none !important;
+        display: inline-flex !important;
     }
 
     html body header.site-header[data-site-header].site-header .site-header-actions > .site-search-panel {
-        display: flex !important;
+        display: none !important;
     }
 }
