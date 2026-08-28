@@ -8,3 +8,14 @@ html.dark body header.site-header[data-site-header].site-header .site-header-log
 html body.dark header.site-header[data-site-header].site-header .site-header-logo-mark .site-header-logo-dark-image {
     display: none !important;
 }
+
+/* Mobil header: hamburger yok, arama ikonu var. */
+@media (max-width: 1023.98px) {
+    html body header.site-header[data-site-header].site-header button[data-mobile-sidebar-toggle] {
+        display: none !important;
+    }
+
+    html body header.site-header[data-site-header].site-header .site-header-actions > .site-search-panel {
+        display: flex !important;
+    }
+}
