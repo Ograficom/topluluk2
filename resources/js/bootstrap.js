@@ -10,6 +10,71 @@ if (csrfToken) {
     window.axios.defaults.headers.common['X-CSRF-TOKEN'] = csrfToken;
 }
 
+const syncHeaderUserMenuLinks = async () => {
+    const userMenu = document.querySelector('[data-user-menu-panel]');
+
+    if (!userMenu) {
+        return;
+    }
+
+    const menuLinks = Array.from(userMenu.querySelectorAll('a.site-user-menu-link'));
+    const getPathname = (link) => {
+        try {
+            return new URL(link.href, window.location.origin).pathname.replace(/\/+$/, '') || '/';
+        } catch {
+            return '';
+        }
+    };
+
+    // Mevcut Blade yapisinda Panel /dashboard, Ayarlar ise /dashboard/profile.
+    // Once ikisini ayri ayri yakaliyoruz; Ayarlar linkini sonradan /dashboard'a
+    // cevirdigimiz icin bu siralama iki butonun birbirine karismasini onler.
+    const panelLink = menuLinks.find((link) => getPathname(link) === '/dashboard') || null;
+    const settingsLink = menuLinks.find((link) => getPathname(link) === '/dashboard/profile') || null;
+
+    if (settingsLink) {
+        settingsLink.href = '/dashboard';
+    }
+
+    if (!panelLink) {
+        return;
+    }
+
+    // Rol dogrulanana kadar Panel butonunu gostermeyerek normal kullanicilarda
+    // kisa sureli de olsa admin baglantisinin gorunmesini engelliyoruz.
+    panelLink.hidden = true;
+    panelLink.setAttribute('aria-hidden', 'true');
+
+    try {
+        const response = await window.axios.get('/api/user', {
+            headers: {
+                Accept: 'application/json',
+            },
+        });
+
+        const role = String(response?.data?.role ?? '').trim().toLowerCase();
+        const isAdmin = role === 'admin' || role === 'super_admin';
+
+        if (!isAdmin) {
+            panelLink.remove();
+            return;
+        }
+
+        panelLink.href = '/admin';
+        panelLink.hidden = false;
+        panelLink.removeAttribute('aria-hidden');
+    } catch {
+        // Rol teyit edilemiyorsa yetkiyi varsayma; butonu hic gostermemek daha guvenli.
+        panelLink.remove();
+    }
+};
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', syncHeaderUserMenuLinks, { once: true });
+} else {
+    syncHeaderUserMenuLinks();
+}
+
 import Echo from 'laravel-echo';
 import Pusher from 'pusher-js';
 
