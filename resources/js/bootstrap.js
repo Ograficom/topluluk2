@@ -1,8 +1,6 @@
 import '../css/header-user-menu.css';
 import '../css/header-user-menu-tuning.css';
 import '../css/header-layout-polish.css';
-import '../css/header-action-rail.css';
-import '../css/header-optical-alignment.css';
 import axios from 'axios';
 window.axios = axios;
 
@@ -13,6 +11,157 @@ const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribut
 if (csrfToken) {
     window.axios.defaults.headers.common['X-CSRF-TOKEN'] = csrfToken;
 }
+
+const enforceHeaderActionLayout = () => {
+    const header = document.querySelector('header.site-header[data-site-header]');
+    const actions = header?.querySelector('.site-header-actions');
+
+    if (!header || !actions) {
+        return;
+    }
+
+    const setImportant = (element, property, value) => {
+        element?.style.setProperty(property, value, 'important');
+    };
+
+    const isDark = document.documentElement.classList.contains('dark');
+
+    // Header arkasindaki sayfa yazilarinin ikonlarin icinden gorunmesini engelle.
+    setImportant(header, 'background', isDark ? '#0f172a' : '#ffffff');
+    setImportant(header, 'background-color', isDark ? '#0f172a' : '#ffffff');
+    setImportant(header, 'backdrop-filter', 'none');
+    setImportant(header, '-webkit-backdrop-filter', 'none');
+
+    // Tek bir gercek yatay eksen: tum aksiyonlar ayni 40px kontrol kutusunda.
+    setImportant(actions, 'display', 'flex');
+    setImportant(actions, 'align-items', 'center');
+    setImportant(actions, 'justify-content', 'flex-end');
+    setImportant(actions, 'gap', '8px');
+    setImportant(actions, 'height', '64px');
+    setImportant(actions, 'min-height', '64px');
+    setImportant(actions, 'margin', '0 0 0 auto');
+    setImportant(actions, 'padding', '0');
+    setImportant(actions, 'line-height', '1');
+
+    const searchPanel = actions.querySelector('.site-search-panel');
+    const notificationsRoot = actions.querySelector('[data-notifications-root]');
+    const userMenuRoot = actions.querySelector('[data-user-menu]');
+
+    [searchPanel, notificationsRoot, userMenuRoot].forEach((wrapper) => {
+        if (!wrapper) return;
+        setImportant(wrapper, 'position', 'relative');
+        setImportant(wrapper, 'display', 'flex');
+        setImportant(wrapper, 'align-items', 'center');
+        setImportant(wrapper, 'justify-content', 'center');
+        setImportant(wrapper, 'width', '40px');
+        setImportant(wrapper, 'min-width', '40px');
+        setImportant(wrapper, 'max-width', '40px');
+        setImportant(wrapper, 'height', '40px');
+        setImportant(wrapper, 'min-height', '40px');
+        setImportant(wrapper, 'max-height', '40px');
+        setImportant(wrapper, 'flex', '0 0 40px');
+        setImportant(wrapper, 'margin', '0');
+        setImportant(wrapper, 'padding', '0');
+        setImportant(wrapper, 'top', '0');
+        setImportant(wrapper, 'transform', 'none');
+        setImportant(wrapper, 'overflow', 'visible');
+    });
+
+    const searchButton = actions.querySelector('.site-search-trigger');
+    const notificationButton = actions.querySelector('button[data-notifications-btn]');
+    const messagesButton = actions.querySelector('a.site-header-messages-link');
+    const userButton = actions.querySelector('button[data-user-menu-btn]');
+
+    [searchButton, notificationButton, messagesButton, userButton].forEach((button) => {
+        if (!button) return;
+        setImportant(button, 'position', 'relative');
+        setImportant(button, 'display', 'inline-flex');
+        setImportant(button, 'align-items', 'center');
+        setImportant(button, 'justify-content', 'center');
+        setImportant(button, 'width', '40px');
+        setImportant(button, 'min-width', '40px');
+        setImportant(button, 'max-width', '40px');
+        setImportant(button, 'height', '40px');
+        setImportant(button, 'min-height', '40px');
+        setImportant(button, 'max-height', '40px');
+        setImportant(button, 'flex', '0 0 40px');
+        setImportant(button, 'margin', '0');
+        setImportant(button, 'padding', '0');
+        setImportant(button, 'top', '0');
+        setImportant(button, 'bottom', 'auto');
+        setImportant(button, 'transform', 'none');
+        setImportant(button, 'translate', 'none');
+        setImportant(button, 'line-height', '1');
+        setImportant(button, 'vertical-align', 'middle');
+        setImportant(button, 'overflow', 'visible');
+    });
+
+    const searchIcon = searchButton?.querySelector('iconify-icon');
+    const bellIcon = notificationButton?.querySelector('iconify-icon');
+    const messageIcon = messagesButton?.querySelector('svg');
+
+    [searchIcon, bellIcon, messageIcon].forEach((icon) => {
+        if (!icon) return;
+        setImportant(icon, 'position', 'static');
+        setImportant(icon, 'display', 'block');
+        setImportant(icon, 'width', '20px');
+        setImportant(icon, 'min-width', '20px');
+        setImportant(icon, 'height', '20px');
+        setImportant(icon, 'min-height', '20px');
+        setImportant(icon, 'margin', '0');
+        setImportant(icon, 'padding', '0');
+        setImportant(icon, 'font-size', '20px');
+        setImportant(icon, 'line-height', '20px');
+        setImportant(icon, 'transform', 'none');
+    });
+
+    const avatar = userButton?.querySelector('img, .site-avatar-fallback');
+    if (avatar) {
+        setImportant(avatar, 'position', 'static');
+        setImportant(avatar, 'display', 'flex');
+        setImportant(avatar, 'align-items', 'center');
+        setImportant(avatar, 'justify-content', 'center');
+        setImportant(avatar, 'width', '36px');
+        setImportant(avatar, 'min-width', '36px');
+        setImportant(avatar, 'height', '36px');
+        setImportant(avatar, 'min-height', '36px');
+        setImportant(avatar, 'margin', '0');
+        setImportant(avatar, 'transform', 'none');
+    }
+
+    const writeButton = actions.querySelector('.site-header-write-btn');
+    if (writeButton) {
+        setImportant(writeButton, 'display', 'inline-flex');
+        setImportant(writeButton, 'align-items', 'center');
+        setImportant(writeButton, 'justify-content', 'center');
+        setImportant(writeButton, 'height', '40px');
+        setImportant(writeButton, 'min-height', '40px');
+        setImportant(writeButton, 'max-height', '40px');
+        setImportant(writeButton, 'margin', '0');
+        setImportant(writeButton, 'padding', '0 17px');
+        setImportant(writeButton, 'top', '0');
+        setImportant(writeButton, 'transform', 'none');
+        setImportant(writeButton, 'line-height', '1');
+    }
+
+    // Noktalar akis hizasini degistirmez; ait olduklari 40px kutuya sabitlenir.
+    actions.querySelectorAll('.site-status-dot').forEach((dot) => {
+        setImportant(dot, 'position', 'absolute');
+        setImportant(dot, 'top', '6px');
+        setImportant(dot, 'right', '6px');
+        setImportant(dot, 'margin', '0');
+        setImportant(dot, 'transform', 'none');
+    });
+};
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', enforceHeaderActionLayout, { once: true });
+} else {
+    enforceHeaderActionLayout();
+}
+
+window.addEventListener('pageshow', enforceHeaderActionLayout);
+window.addEventListener('themechange', enforceHeaderActionLayout);
 
 const syncHeaderUserMenuLinks = async () => {
     const userMenu = document.querySelector('[data-user-menu-panel]');
