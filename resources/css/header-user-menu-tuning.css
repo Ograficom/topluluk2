@@ -167,8 +167,9 @@ html.dark body .site-header .site-menu-panel[data-user-menu-panel] .site-user-me
 
 /*
  * Mobile header optical alignment.
- * Keep the actual rendered glyphs on the same visual axis. The notification
- * button hit-area stays 40x40; only the Lucide bell artwork is optically nudged.
+ * The JS deliberately writes transform:none!important on Iconify hosts.
+ * So the bell is centered with explicit pixel offsets inside its 40x40 button
+ * instead of relying on translate(-50%, -50%), which was being overridden.
  */
 @media (max-width: 1023.98px) {
     html body header.site-header[data-site-header] > .site-header-shell {
@@ -240,8 +241,8 @@ html.dark body .site-header .site-menu-panel[data-user-menu-panel] .site-user-me
 
     html body header.site-header[data-site-header] button[data-notifications-btn] > iconify-icon {
         position: absolute !important;
-        top: calc(50% - 9px) !important;
-        left: 50% !important;
+        top: 3px !important;
+        left: 10px !important;
         width: 20px !important;
         min-width: 20px !important;
         height: 20px !important;
@@ -251,7 +252,7 @@ html.dark body .site-header .site-menu-panel[data-user-menu-panel] .site-user-me
         display: block !important;
         font-size: 20px !important;
         line-height: 20px !important;
-        transform: translate(-50%, -50%) !important;
+        transform: none !important;
         transform-origin: center !important;
     }
 
