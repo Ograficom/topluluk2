@@ -3,7 +3,6 @@ html body header.site-header[data-site-header].site-header .site-header-logo-mar
     display: block !important;
 }
 
-html body header.site-header[data-site-header].site-header .site-header-logo-mark .site-header-logo-dark-image,
 html.dark body header.site-header[data-site-header].site-header .site-header-logo-mark .site-header-logo-dark-image,
 html body.dark header.site-header[data-site-header].site-header .site-header-logo-mark .site-header-logo-dark-image {
     display: none !important;
@@ -165,4 +164,77 @@ html.dark body.alma-app .home-feed-shell .ografi-feed-loadmore__icon svg,
 html body.dark.alma-app .home-feed-shell .ografi-feed-loadmore__icon svg {
     color: currentColor !important;
     stroke: currentColor !important;
+}
+
+/* Sağ sütun widget kartları: bazı eski kurallar background:#fff !important ile
+   dark modu sonradan eziyor. Daha yüksek özgüllükle doğrudan sağ sütunu hedefle. */
+html.dark body.alma-app .layout-side--right .ografi-right-stack .ografi-sidebar-card,
+html body.dark.alma-app .layout-side--right .ografi-right-stack .ografi-sidebar-card {
+    background: #111827 !important;
+    background-color: #111827 !important;
+    border-color: #334155 !important;
+    color: #f8fafc !important;
+    box-shadow: none !important;
+}
+
+html.dark body.alma-app .layout-side--right .ografi-right-stack .ografi-sidebar-title,
+html.dark body.alma-app .layout-side--right .ografi-right-stack .ografi-comment-author,
+html.dark body.alma-app .layout-side--right .ografi-right-stack .ografi-comment-post,
+html.dark body.alma-app .layout-side--right .ografi-right-stack .ografi-comment-text,
+html.dark body.alma-app .layout-side--right .ografi-right-stack .ografi-tag-row__name,
+html.dark body.alma-app .layout-side--right .ografi-right-stack .ografi-trend-title,
+html body.dark.alma-app .layout-side--right .ografi-right-stack .ografi-sidebar-title,
+html body.dark.alma-app .layout-side--right .ografi-right-stack .ografi-comment-author,
+html body.dark.alma-app .layout-side--right .ografi-right-stack .ografi-comment-post,
+html body.dark.alma-app .layout-side--right .ografi-right-stack .ografi-comment-text,
+html body.dark.alma-app .layout-side--right .ografi-right-stack .ografi-tag-row__name,
+html body.dark.alma-app .layout-side--right .ografi-right-stack .ografi-trend-title {
+    color: #f8fafc !important;
+}
+
+html.dark body.alma-app .layout-side--right .ografi-right-stack .ografi-comment-time,
+html.dark body.alma-app .layout-side--right .ografi-right-stack .ografi-empty-state,
+html.dark body.alma-app .layout-side--right .ografi-right-stack .ografi-widget-empty__text,
+html body.dark.alma-app .layout-side--right .ografi-right-stack .ografi-comment-time,
+html body.dark.alma-app .layout-side--right .ografi-right-stack .ografi-empty-state,
+html body.dark.alma-app .layout-side--right .ografi-right-stack .ografi-widget-empty__text {
+    color: #94a3b8 !important;
+}
+
+html.dark body.alma-app .layout-side--right .ografi-right-stack .ografi-comment-item,
+html.dark body.alma-app .layout-side--right .ografi-right-stack .ografi-trend-item,
+html body.dark.alma-app .layout-side--right .ografi-right-stack .ografi-comment-item,
+html body.dark.alma-app .layout-side--right .ografi-right-stack .ografi-trend-item {
+    border-bottom-color: #334155 !important;
+}
+
+html.dark body.alma-app .layout-side--right .ografi-right-stack .ografi-comment-hover-box,
+html.dark body.alma-app .layout-side--right .ografi-right-stack .ografi-tag-row,
+html body.dark.alma-app .layout-side--right .ografi-right-stack .ografi-comment-hover-box,
+html body.dark.alma-app .layout-side--right .ografi-right-stack .ografi-tag-row {
+    background: transparent !important;
+    background-color: transparent !important;
+}
+
+html.dark body.alma-app .layout-side--right .ografi-right-stack .ografi-comment-item:hover .ografi-comment-hover-box,
+html.dark body.alma-app .layout-side--right .ografi-right-stack .ografi-tag-row:hover,
+html.dark body.alma-app .layout-side--right .ografi-right-stack .ografi-tag-row:focus-visible,
+html body.dark.alma-app .layout-side--right .ografi-right-stack .ografi-comment-item:hover .ografi-comment-hover-box,
+html body.dark.alma-app .layout-side--right .ografi-right-stack .ografi-tag-row:hover,
+html body.dark.alma-app .layout-side--right .ografi-right-stack .ografi-tag-row:focus-visible {
+    background: #1f2937 !important;
+    background-color: #1f2937 !important;
+}
+
+html.dark body.alma-app .layout-side--right .ografi-right-stack .ografi-comment-avatar-fallback,
+html.dark body.alma-app .layout-side--right .ografi-right-stack .ografi-trend-thumb,
+html body.dark.alma-app .layout-side--right .ografi-right-stack .ografi-comment-avatar-fallback,
+html body.dark.alma-app .layout-side--right .ografi-right-stack .ografi-trend-thumb {
+    background: #1f2937 !important;
+    background-color: #1f2937 !important;
+}
+
+html.dark body.alma-app .layout-side--right .ografi-right-stack .ografi-tag-row__count,
+html body.dark.alma-app .layout-side--right .ografi-right-stack .ografi-tag-row__count {
+    color: #60a5fa !important;
 }
