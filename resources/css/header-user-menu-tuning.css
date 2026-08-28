@@ -5,17 +5,17 @@
  */
 
 html body .site-header .site-menu-panel[data-user-menu-panel] {
-    background: rgba(255, 255, 255, 0.90) !important;
-    background-color: rgba(255, 255, 255, 0.90) !important;
-    border-color: rgba(226, 232, 240, 0.94) !important;
-    backdrop-filter: blur(22px) saturate(155%) !important;
-    -webkit-backdrop-filter: blur(22px) saturate(155%) !important;
+    background: rgba(255, 255, 255, 0.97) !important;
+    background-color: rgba(255, 255, 255, 0.97) !important;
+    border-color: rgba(226, 232, 240, 0.98) !important;
+    backdrop-filter: blur(16px) saturate(135%) !important;
+    -webkit-backdrop-filter: blur(16px) saturate(135%) !important;
 }
 
 html body .site-header .site-menu-panel[data-user-menu-panel]::before {
-    background: rgba(255, 255, 255, 0.94) !important;
-    border-top-color: rgba(226, 232, 240, 0.94) !important;
-    border-left-color: rgba(226, 232, 240, 0.94) !important;
+    background: rgba(255, 255, 255, 0.985) !important;
+    border-top-color: rgba(226, 232, 240, 0.98) !important;
+    border-left-color: rgba(226, 232, 240, 0.98) !important;
 }
 
 html body .site-header .site-menu-panel .site-user-menu-switch {
@@ -54,29 +54,29 @@ html body .site-header .site-menu-panel .site-user-menu-link--switch[aria-presse
 
 html.dark body .site-header .site-menu-panel[data-user-menu-panel],
 .dark body .site-header .site-menu-panel[data-user-menu-panel] {
-    background: rgba(8, 15, 28, 0.88) !important;
-    background-color: rgba(8, 15, 28, 0.88) !important;
-    border-color: rgba(148, 163, 184, 0.22) !important;
-    backdrop-filter: blur(22px) saturate(150%) !important;
-    -webkit-backdrop-filter: blur(22px) saturate(150%) !important;
+    background: rgba(8, 15, 28, 0.96) !important;
+    background-color: rgba(8, 15, 28, 0.96) !important;
+    border-color: rgba(148, 163, 184, 0.28) !important;
+    backdrop-filter: blur(16px) saturate(135%) !important;
+    -webkit-backdrop-filter: blur(16px) saturate(135%) !important;
 }
 
 html.dark body .site-header .site-menu-panel[data-user-menu-panel]::after,
 .dark body .site-header .site-menu-panel[data-user-menu-panel]::after {
-    background: rgba(2, 6, 23, 0.08) !important;
+    background: rgba(2, 6, 23, 0.22) !important;
 }
 
 html.dark body .site-header .site-menu-panel[data-user-menu-panel]::before,
 .dark body .site-header .site-menu-panel[data-user-menu-panel]::before {
-    background: rgba(8, 15, 28, 0.94) !important;
+    background: rgba(8, 15, 28, 0.985) !important;
 }
 
 @media (max-width: 640px) {
     html body .site-header .site-menu-panel[data-user-menu-panel] {
-        background: rgba(255, 255, 255, 0.92) !important;
-        background-color: rgba(255, 255, 255, 0.92) !important;
-        backdrop-filter: blur(20px) saturate(150%) !important;
-        -webkit-backdrop-filter: blur(20px) saturate(150%) !important;
+        background: rgba(255, 255, 255, 0.985) !important;
+        background-color: rgba(255, 255, 255, 0.985) !important;
+        backdrop-filter: blur(14px) saturate(130%) !important;
+        -webkit-backdrop-filter: blur(14px) saturate(130%) !important;
     }
 
     html body .site-header .site-menu-panel .site-user-menu-switch {
@@ -85,7 +85,7 @@ html.dark body .site-header .site-menu-panel[data-user-menu-panel]::before,
 
     html.dark body .site-header .site-menu-panel[data-user-menu-panel],
     .dark body .site-header .site-menu-panel[data-user-menu-panel] {
-        background: rgba(8, 15, 28, 0.90) !important;
-        background-color: rgba(8, 15, 28, 0.90) !important;
+        background: rgba(8, 15, 28, 0.975) !important;
+        background-color: rgba(8, 15, 28, 0.975) !important;
     }
 }
