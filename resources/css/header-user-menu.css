@@ -1,7 +1,7 @@
 /*
  * Ografi header user menu
- * Dark-mode safe and mobile optimized.
- * The Blade markup and existing Iconify/Lucide icons are intentionally preserved.
+ * Figma iOS/iPadOS toggle reference + frosted glass surface.
+ * Existing Blade markup and Iconify/Lucide icons are preserved.
  */
 
 html body .site-header .site-menu-panel[data-user-menu-panel] {
@@ -11,11 +11,13 @@ html body .site-header .site-menu-panel[data-user-menu-panel] {
     width: 300px !important;
     max-width: calc(100vw - 16px) !important;
     padding: 7px !important;
-    border: 1px solid #e5e7eb !important;
-    border-radius: 16px !important;
-    background: #ffffff !important;
-    background-color: #ffffff !important;
+    border: 1px solid rgba(255, 255, 255, 0.88) !important;
+    border-radius: 18px !important;
+    background: rgba(255, 255, 255, 0.68) !important;
+    background-color: rgba(255, 255, 255, 0.68) !important;
     color: #111827 !important;
+    backdrop-filter: blur(26px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(26px) saturate(180%) !important;
     box-shadow: none !important;
     filter: none !important;
     overflow: visible !important;
@@ -31,14 +33,13 @@ html body .site-header .site-menu-panel[data-user-menu-panel]::before {
     width: 11px !important;
     height: 11px !important;
     transform: rotate(45deg) !important;
-    background: #ffffff !important;
-    border-top: 1px solid #e5e7eb !important;
-    border-left: 1px solid #e5e7eb !important;
+    background: rgba(255, 255, 255, 0.78) !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.9) !important;
+    border-left: 1px solid rgba(255, 255, 255, 0.9) !important;
     box-shadow: none !important;
     pointer-events: none !important;
 }
 
-/* Keeps content above the dark-mode compatibility surface. */
 html body .site-header .site-menu-panel[data-user-menu-panel] > * {
     position: relative !important;
     z-index: 1 !important;
@@ -52,7 +53,7 @@ html body .site-header .site-menu-panel .site-user-menu-card {
     margin: 0 0 4px !important;
     padding: 7px 9px 9px !important;
     border: 0 !important;
-    border-radius: 11px !important;
+    border-radius: 12px !important;
     background: transparent !important;
     background-image: none !important;
     color: #111827 !important;
@@ -63,7 +64,7 @@ html body .site-header .site-menu-panel .site-user-menu-card {
 
 html body .site-header .site-menu-panel .site-user-menu-card:hover,
 html body .site-header .site-menu-panel .site-user-menu-card:focus-visible {
-    background: #f8fafc !important;
+    background: rgba(255, 255, 255, 0.52) !important;
     color: #111827 !important;
 }
 
@@ -76,11 +77,10 @@ html body .site-header .site-menu-panel .site-user-menu-avatar {
     min-width: 42px !important;
     flex: 0 0 42px !important;
     overflow: hidden !important;
-    border: 1px solid #e5e7eb !important;
+    border: 1px solid rgba(226, 232, 240, 0.9) !important;
     outline: 0 !important;
     border-radius: 9999px !important;
-    background: #eff6ff !important;
-    background-image: none !important;
+    background: rgba(239, 246, 255, 0.84) !important;
     color: #2563eb !important;
     font-size: 14px !important;
     line-height: 1 !important;
@@ -189,7 +189,7 @@ html body .site-header .site-menu-panel .site-user-menu-link:hover,
 html body .site-header .site-menu-panel .site-user-menu-button:hover,
 html body .site-header .site-menu-panel .site-user-menu-link:focus-visible,
 html body .site-header .site-menu-panel .site-user-menu-button:focus-visible {
-    background: #f8fafc !important;
+    background: rgba(255, 255, 255, 0.52) !important;
     color: #111827 !important;
     outline: none !important;
     box-shadow: none !important;
@@ -198,7 +198,7 @@ html body .site-header .site-menu-panel .site-user-menu-button:focus-visible {
 html body .site-header .site-menu-panel .site-user-menu-link:focus-visible,
 html body .site-header .site-menu-panel .site-user-menu-button:focus-visible,
 html body .site-header .site-menu-panel .site-user-menu-card:focus-visible {
-    outline: 1px solid #93c5fd !important;
+    outline: 1px solid rgba(96, 165, 250, 0.72) !important;
     outline-offset: -1px !important;
 }
 
@@ -239,42 +239,79 @@ html body .site-header .site-menu-panel .site-user-menu-divider {
     height: 1px !important;
     margin: 5px 7px !important;
     border: 0 !important;
-    background: #eef2f7 !important;
+    background: rgba(148, 163, 184, 0.22) !important;
     box-shadow: none !important;
 }
 
+/*
+ * iOS / iPadOS toggle reference from the supplied Figma node:
+ * 64x28 track, #34C759 active state, 38x24 glass knob.
+ */
 html body .site-header .site-menu-panel .site-user-menu-switch {
     position: relative !important;
-    width: 34px !important;
-    height: 20px !important;
-    min-width: 34px !important;
+    width: 64px !important;
+    height: 28px !important;
+    min-width: 64px !important;
     margin-left: auto !important;
-    flex: 0 0 34px !important;
-    border: 1px solid #dbe2ea !important;
-    border-radius: 9999px !important;
-    background: #e9eef5 !important;
+    flex: 0 0 64px !important;
+    border: 0 !important;
+    border-radius: 100px !important;
+    background: rgba(60, 60, 67, 0.30) !important;
     box-shadow: none !important;
+    overflow: visible !important;
 }
 
 html body .site-header .site-menu-panel .site-user-menu-switch__knob {
     position: absolute !important;
     top: 2px !important;
     left: 2px !important;
-    width: 14px !important;
-    height: 14px !important;
-    border-radius: 9999px !important;
-    background: #ffffff !important;
-    box-shadow: none !important;
+    right: auto !important;
+    width: 38px !important;
+    height: 24px !important;
+    border: 0.5px solid rgba(204, 204, 204, 0.94) !important;
+    border-radius: 100px !important;
+    background: rgba(255, 255, 255, 0.78) !important;
+    backdrop-filter: blur(8px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(8px) saturate(180%) !important;
+    box-shadow:
+        inset 0 3px 1px -2px rgba(255, 255, 255, 0.95),
+        inset 0 -3px 1px -2px rgba(40, 40, 40, 0.28) !important;
     transition: none !important;
 }
 
+html body .site-header .site-menu-panel .site-user-menu-switch__knob::before {
+    content: "" !important;
+    position: absolute !important;
+    inset: 1px !important;
+    border-radius: inherit !important;
+    border: 1px solid rgba(255, 255, 255, 0.72) !important;
+    pointer-events: none !important;
+}
+
 html body .site-header .site-menu-panel .site-user-menu-link--switch[aria-pressed="true"] .site-user-menu-switch {
-    border-color: #2563eb !important;
-    background: #2563eb !important;
+    background: #34c759 !important;
 }
 
 html body .site-header .site-menu-panel .site-user-menu-link--switch[aria-pressed="true"] .site-user-menu-switch__knob {
-    left: 16px !important;
+    left: auto !important;
+    right: 2px !important;
+}
+
+/* Figma pressed state: knob temporarily grows into the liquid-glass pill. */
+html body .site-header .site-menu-panel .site-user-menu-link--switch:active .site-user-menu-switch__knob {
+    top: -5px !important;
+    left: -8px !important;
+    right: auto !important;
+    width: 58px !important;
+    height: 38px !important;
+    background: rgba(255, 255, 255, 0.34) !important;
+    backdrop-filter: blur(10px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(10px) saturate(180%) !important;
+}
+
+html body .site-header .site-menu-panel .site-user-menu-link--switch[aria-pressed="true"]:active .site-user-menu-switch__knob {
+    left: auto !important;
+    right: -8px !important;
 }
 
 html body .site-header .site-menu-panel .site-user-menu-button.site-user-menu-button-danger {
@@ -283,7 +320,7 @@ html body .site-header .site-menu-panel .site-user-menu-button.site-user-menu-bu
 
 html body .site-header .site-menu-panel .site-user-menu-button.site-user-menu-button-danger:hover,
 html body .site-header .site-menu-panel .site-user-menu-button.site-user-menu-button-danger:focus-visible {
-    background: #fff7f7 !important;
+    background: rgba(254, 242, 242, 0.68) !important;
     color: #b91c1c !important;
 }
 
@@ -292,16 +329,16 @@ html body .site-header .site-menu-panel .site-user-menu-button.site-user-menu-bu
     color: #b91c1c !important;
 }
 
-/*
- * DARK MODE
- * header.blade.php currently carries legacy inline !important light colours on
- * the panel itself. The ::after surface deliberately sits above that old
- * background, while every real menu child stays above this surface. This makes
- * dark mode reliable without changing the existing Blade structure.
- */
+/* DARK MODE */
 html.dark body .site-header .site-menu-panel[data-user-menu-panel],
 .dark body .site-header .site-menu-panel[data-user-menu-panel] {
     color-scheme: dark !important;
+    border-color: rgba(255, 255, 255, 0.12) !important;
+    background: rgba(8, 15, 28, 0.70) !important;
+    background-color: rgba(8, 15, 28, 0.70) !important;
+    color: #f8fafc !important;
+    backdrop-filter: blur(28px) saturate(165%) !important;
+    -webkit-backdrop-filter: blur(28px) saturate(165%) !important;
     box-shadow: none !important;
 }
 
@@ -311,18 +348,17 @@ html.dark body .site-header .site-menu-panel[data-user-menu-panel]::after,
     position: absolute !important;
     inset: -1px !important;
     z-index: 0 !important;
-    border: 1px solid #293548 !important;
-    border-radius: 17px !important;
-    background: #0f172a !important;
+    border: 1px solid rgba(255, 255, 255, 0.10) !important;
+    border-radius: 19px !important;
+    background: rgba(2, 6, 23, 0.18) !important;
     pointer-events: none !important;
 }
 
 html.dark body .site-header .site-menu-panel[data-user-menu-panel]::before,
 .dark body .site-header .site-menu-panel[data-user-menu-panel]::before {
-    z-index: 2 !important;
-    background: #0f172a !important;
-    border-top-color: #293548 !important;
-    border-left-color: #293548 !important;
+    background: rgba(15, 23, 42, 0.82) !important;
+    border-top-color: rgba(255, 255, 255, 0.12) !important;
+    border-left-color: rgba(255, 255, 255, 0.12) !important;
 }
 
 html.dark body .site-header .site-menu-panel .site-user-menu-card,
@@ -343,17 +379,8 @@ html.dark body .site-header .site-menu-panel .site-user-menu-button:focus-visibl
 .dark body .site-header .site-menu-panel .site-user-menu-link:focus-visible,
 .dark body .site-header .site-menu-panel .site-user-menu-button:hover,
 .dark body .site-header .site-menu-panel .site-user-menu-button:focus-visible {
-    background: #172033 !important;
+    background: rgba(30, 41, 59, 0.56) !important;
     color: #f8fafc !important;
-}
-
-html.dark body .site-header .site-menu-panel .site-user-menu-card:focus-visible,
-html.dark body .site-header .site-menu-panel .site-user-menu-link:focus-visible,
-html.dark body .site-header .site-menu-panel .site-user-menu-button:focus-visible,
-.dark body .site-header .site-menu-panel .site-user-menu-card:focus-visible,
-.dark body .site-header .site-menu-panel .site-user-menu-link:focus-visible,
-.dark body .site-header .site-menu-panel .site-user-menu-button:focus-visible {
-    outline-color: #3b82f6 !important;
 }
 
 html.dark body .site-header .site-menu-panel .site-user-menu-name,
@@ -368,9 +395,8 @@ html.dark body .site-header .site-menu-panel .site-user-menu-username,
 
 html.dark body .site-header .site-menu-panel .site-user-menu-avatar,
 .dark body .site-header .site-menu-panel .site-user-menu-avatar {
-    border-color: #334155 !important;
-    background: #172554 !important;
-    background-image: none !important;
+    border-color: rgba(255, 255, 255, 0.12) !important;
+    background: rgba(23, 37, 84, 0.66) !important;
     color: #bfdbfe !important;
 }
 
@@ -395,36 +421,33 @@ html.dark body .site-header .site-menu-panel .site-user-menu-icon,
 
 html.dark body .site-header .site-menu-panel .site-user-menu-link:hover .site-user-menu-icon,
 html.dark body .site-header .site-menu-panel .site-user-menu-button:hover .site-user-menu-icon,
-html.dark body .site-header .site-menu-panel .site-user-menu-link:focus-visible .site-user-menu-icon,
-html.dark body .site-header .site-menu-panel .site-user-menu-button:focus-visible .site-user-menu-icon,
 .dark body .site-header .site-menu-panel .site-user-menu-link:hover .site-user-menu-icon,
-.dark body .site-header .site-menu-panel .site-user-menu-button:hover .site-user-menu-icon,
-.dark body .site-header .site-menu-panel .site-user-menu-link:focus-visible .site-user-menu-icon,
-.dark body .site-header .site-menu-panel .site-user-menu-button:focus-visible .site-user-menu-icon {
-    background: transparent !important;
+.dark body .site-header .site-menu-panel .site-user-menu-button:hover .site-user-menu-icon {
     color: #93c5fd !important;
 }
 
 html.dark body .site-header .site-menu-panel .site-user-menu-divider,
 .dark body .site-header .site-menu-panel .site-user-menu-divider {
-    background: #293548 !important;
+    background: rgba(148, 163, 184, 0.20) !important;
 }
 
 html.dark body .site-header .site-menu-panel .site-user-menu-switch,
 .dark body .site-header .site-menu-panel .site-user-menu-switch {
-    border-color: #475569 !important;
-    background: #293548 !important;
+    background: rgba(235, 235, 245, 0.30) !important;
 }
 
 html.dark body .site-header .site-menu-panel .site-user-menu-switch__knob,
 .dark body .site-header .site-menu-panel .site-user-menu-switch__knob {
-    background: #f8fafc !important;
+    border-color: rgba(204, 204, 204, 0.72) !important;
+    background: rgba(255, 255, 255, 0.10) !important;
+    box-shadow:
+        inset 0 3px 1px -2px rgba(255, 255, 255, 0.42),
+        inset 0 -3px 1px -2px rgba(0, 0, 0, 0.52) !important;
 }
 
 html.dark body .site-header .site-menu-panel .site-user-menu-link--switch[aria-pressed="true"] .site-user-menu-switch,
 .dark body .site-header .site-menu-panel .site-user-menu-link--switch[aria-pressed="true"] .site-user-menu-switch {
-    border-color: #3b82f6 !important;
-    background: #2563eb !important;
+    background: #34c759 !important;
 }
 
 html.dark body .site-header .site-menu-panel .site-user-menu-button.site-user-menu-button-danger,
@@ -436,7 +459,7 @@ html.dark body .site-header .site-menu-panel .site-user-menu-button.site-user-me
 html.dark body .site-header .site-menu-panel .site-user-menu-button.site-user-menu-button-danger:focus-visible,
 .dark body .site-header .site-menu-panel .site-user-menu-button.site-user-menu-button-danger:hover,
 .dark body .site-header .site-menu-panel .site-user-menu-button.site-user-menu-button-danger:focus-visible {
-    background: #2a171d !important;
+    background: rgba(127, 29, 29, 0.24) !important;
     color: #fecaca !important;
 }
 
@@ -455,12 +478,14 @@ html.dark body .site-header .site-menu-panel .site-user-menu-button.site-user-me
         max-height: calc(100vh - 76px) !important;
         max-height: calc(100dvh - 76px) !important;
         padding: 6px !important;
-        border-radius: 14px !important;
+        border-radius: 16px !important;
         overflow-x: hidden !important;
         overflow-y: auto !important;
         overscroll-behavior: contain !important;
         -webkit-overflow-scrolling: touch !important;
         scrollbar-width: thin !important;
+        backdrop-filter: blur(24px) saturate(175%) !important;
+        -webkit-backdrop-filter: blur(24px) saturate(175%) !important;
     }
 
     html body .site-header .site-menu-panel[data-user-menu-panel]::before {
@@ -469,7 +494,7 @@ html.dark body .site-header .site-menu-panel .site-user-menu-button.site-user-me
 
     html.dark body .site-header .site-menu-panel[data-user-menu-panel]::after,
     .dark body .site-header .site-menu-panel[data-user-menu-panel]::after {
-        border-radius: 15px !important;
+        border-radius: 17px !important;
     }
 
     html body .site-header .site-menu-panel .site-user-menu-card {
@@ -492,7 +517,7 @@ html.dark body .site-header .site-menu-panel .site-user-menu-button.site-user-me
 
     html body .site-header .site-menu-panel .site-user-menu-link,
     html body .site-header .site-menu-panel .site-user-menu-button {
-        min-height: 44px !important;
+        min-height: 46px !important;
         gap: 9px !important;
         padding: 9px 8px !important;
         border-radius: 9px !important;
@@ -509,9 +534,14 @@ html.dark body .site-header .site-menu-panel .site-user-menu-button.site-user-me
     html body .site-header .site-menu-panel .site-user-menu-divider {
         margin: 4px 6px !important;
     }
+
+    html body .site-header .site-menu-panel .site-user-menu-switch {
+        transform: scale(0.90) !important;
+        transform-origin: right center !important;
+        margin-left: auto !important;
+    }
 }
 
-/* Narrow phones: keep account metadata readable without pushing points outside. */
 @media (max-width: 380px) {
     html body .site-header .site-menu-panel[data-user-menu-panel] {
         right: -2px !important;
@@ -526,9 +556,12 @@ html.dark body .site-header .site-menu-panel .site-user-menu-button.site-user-me
     html body .site-header .site-menu-panel .site-user-menu-points {
         font-size: 10.5px !important;
     }
+
+    html body .site-header .site-menu-panel .site-user-menu-switch {
+        transform: scale(0.84) !important;
+    }
 }
 
-/* Short landscape phones/tablets: menu remains reachable by vertical scrolling. */
 @media (max-height: 520px) and (max-width: 900px) {
     html body .site-header .site-menu-panel[data-user-menu-panel] {
         max-height: calc(100vh - 70px) !important;
