@@ -151,13 +151,14 @@ const enforceHeaderActionLayout = () => {
         setImportant(writeButton, 'line-height', '1');
     }
 
-    // Arama acilir alani arama ikonunun 40px kutusunun icine bindirmiyoruz.
-    // Wrapper header icinde 12px asagida basladigi icin top:56px, popup'i
-    // header'in 4px altina getirir: 12 + 56 = 68px (header 64px).
+    // Masaustunde arama alani ikonun ALTINDA degil, header satirinin icinde acilir.
+    // Search wrapper 40px yukseklikte ve header icinde ortali oldugu icin -2px,
+    // 44px yukseklikteki inputu header'in tam dikey merkezine getirir. Sonuclar
+    // inputun hemen altinda, header bittikten sonra acilir.
     const searchDropdown = searchPanel?.querySelector('[data-search-dropdown], .site-search-dropdown');
     if (searchDropdown) {
         setImportant(searchDropdown, 'position', 'absolute');
-        setImportant(searchDropdown, 'top', '56px');
+        setImportant(searchDropdown, 'top', '-2px');
         setImportant(searchDropdown, 'right', '0');
         setImportant(searchDropdown, 'left', 'auto');
         setImportant(searchDropdown, 'width', '400px');
