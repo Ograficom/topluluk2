@@ -167,10 +167,8 @@ html.dark body .site-header .site-menu-panel[data-user-menu-panel] .site-user-me
 
 /*
  * Mobile header optical alignment.
- * Iconify keeps a text baseline unless it is taken out of normal inline flow;
- * that was the reason the bell sat visibly lower than the avatar/logo even
- * though the surrounding button was already 40x40. Keep every mobile control
- * on the same physical centre point instead of relying on font baselines.
+ * Keep the actual rendered glyphs on the same visual axis. The notification
+ * button hit-area stays 40x40; only the Lucide bell artwork is optically nudged.
  */
 @media (max-width: 1023.98px) {
     html body header.site-header[data-site-header] > .site-header-shell {
@@ -242,7 +240,7 @@ html.dark body .site-header .site-menu-panel[data-user-menu-panel] .site-user-me
 
     html body header.site-header[data-site-header] button[data-notifications-btn] > iconify-icon {
         position: absolute !important;
-        top: 50% !important;
+        top: calc(50% - 9px) !important;
         left: 50% !important;
         width: 20px !important;
         min-width: 20px !important;
