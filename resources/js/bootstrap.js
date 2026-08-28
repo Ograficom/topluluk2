@@ -17,6 +17,11 @@ const syncHeaderUserMenuLinks = async () => {
         return;
     }
 
+    // header.blade.php icindeki eski inline !important beyaz yuzey, CSS'teki
+    // backdrop-filter'i opaklastiriyordu. Menunun sunumsal inline stilini
+    // kaldirip gorunumu tamamen header-user-menu.css'e birakiyoruz.
+    userMenu.removeAttribute('style');
+
     const menuLinks = Array.from(userMenu.querySelectorAll('a.site-user-menu-link'));
     const getPathname = (link) => {
         try {
