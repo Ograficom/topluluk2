@@ -167,9 +167,8 @@ html.dark body .site-header .site-menu-panel[data-user-menu-panel] .site-user-me
 
 /*
  * Mobile header optical alignment.
- * The JS deliberately writes transform:none!important on Iconify hosts.
- * So the bell is centered with explicit pixel offsets inside its 40x40 button
- * instead of relying on translate(-50%, -50%), which was being overridden.
+ * Iconify bell artwork sits visually lower than its host box. Keep the 40x40
+ * hit-area centered, then shift only the rendered bell host 10px upward.
  */
 @media (max-width: 1023.98px) {
     html body header.site-header[data-site-header] > .site-header-shell {
@@ -240,9 +239,9 @@ html.dark body .site-header .site-menu-panel[data-user-menu-panel] .site-user-me
     }
 
     html body header.site-header[data-site-header] button[data-notifications-btn] > iconify-icon {
-        position: absolute !important;
-        top: 3px !important;
-        left: 10px !important;
+        position: relative !important;
+        top: -10px !important;
+        left: 0 !important;
         width: 20px !important;
         min-width: 20px !important;
         height: 20px !important;
