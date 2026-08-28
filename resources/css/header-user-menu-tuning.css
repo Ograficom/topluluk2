@@ -58,6 +58,43 @@ html body .site-header .site-menu-panel .site-user-menu-link--switch[aria-presse
     right: -5px !important;
 }
 
+/*
+ * Menu item hover/focus surface.
+ * Keep text/icon colors readable, but give every interactive row a visible
+ * neutral background instead of changing only the foreground color.
+ */
+html body .site-header .site-menu-panel[data-user-menu-panel] .site-user-menu-link:hover,
+html body .site-header .site-menu-panel[data-user-menu-panel] .site-user-menu-link:focus-visible,
+html body .site-header .site-menu-panel[data-user-menu-panel] .site-user-menu-button:hover,
+html body .site-header .site-menu-panel[data-user-menu-panel] .site-user-menu-button:focus-visible,
+html body .site-header .site-menu-panel[data-user-menu-panel] .site-user-menu-card:hover,
+html body .site-header .site-menu-panel[data-user-menu-panel] .site-user-menu-card:focus-visible {
+    background: #f1f5f9 !important;
+    background-color: #f1f5f9 !important;
+    color: #0f172a !important;
+}
+
+html body .site-header .site-menu-panel[data-user-menu-panel] .site-user-menu-link:hover .site-user-menu-icon,
+html body .site-header .site-menu-panel[data-user-menu-panel] .site-user-menu-link:focus-visible .site-user-menu-icon,
+html body .site-header .site-menu-panel[data-user-menu-panel] .site-user-menu-button:hover .site-user-menu-icon,
+html body .site-header .site-menu-panel[data-user-menu-panel] .site-user-menu-button:focus-visible .site-user-menu-icon {
+    background: transparent !important;
+    background-color: transparent !important;
+    color: currentColor !important;
+}
+
+html body .site-header .site-menu-panel[data-user-menu-panel] .site-user-menu-button.site-user-menu-button-danger:hover,
+html body .site-header .site-menu-panel[data-user-menu-panel] .site-user-menu-button.site-user-menu-button-danger:focus-visible {
+    background: #f1f5f9 !important;
+    background-color: #f1f5f9 !important;
+    color: #dc2626 !important;
+}
+
+html body .site-header .site-menu-panel[data-user-menu-panel] .site-user-menu-button.site-user-menu-button-danger:hover .site-user-menu-icon,
+html body .site-header .site-menu-panel[data-user-menu-panel] .site-user-menu-button.site-user-menu-button-danger:focus-visible .site-user-menu-icon {
+    color: #dc2626 !important;
+}
+
 html.dark body .site-header .site-menu-panel[data-user-menu-panel],
 .dark body .site-header .site-menu-panel[data-user-menu-panel] {
     background: rgba(8, 15, 28, 0.99) !important;
@@ -81,6 +118,32 @@ html.dark body .site-header .site-menu-panel .site-user-menu-link--switch[aria-p
 .dark body .site-header .site-menu-panel .site-user-menu-link--switch[aria-pressed="true"] .site-user-menu-switch {
     background: #2563eb !important;
     background-color: #2563eb !important;
+}
+
+html.dark body .site-header .site-menu-panel[data-user-menu-panel] .site-user-menu-link:hover,
+html.dark body .site-header .site-menu-panel[data-user-menu-panel] .site-user-menu-link:focus-visible,
+html.dark body .site-header .site-menu-panel[data-user-menu-panel] .site-user-menu-button:hover,
+html.dark body .site-header .site-menu-panel[data-user-menu-panel] .site-user-menu-button:focus-visible,
+html.dark body .site-header .site-menu-panel[data-user-menu-panel] .site-user-menu-card:hover,
+html.dark body .site-header .site-menu-panel[data-user-menu-panel] .site-user-menu-card:focus-visible,
+.dark body .site-header .site-menu-panel[data-user-menu-panel] .site-user-menu-link:hover,
+.dark body .site-header .site-menu-panel[data-user-menu-panel] .site-user-menu-link:focus-visible,
+.dark body .site-header .site-menu-panel[data-user-menu-panel] .site-user-menu-button:hover,
+.dark body .site-header .site-menu-panel[data-user-menu-panel] .site-user-menu-button:focus-visible,
+.dark body .site-header .site-menu-panel[data-user-menu-panel] .site-user-menu-card:hover,
+.dark body .site-header .site-menu-panel[data-user-menu-panel] .site-user-menu-card:focus-visible {
+    background: #1e293b !important;
+    background-color: #1e293b !important;
+    color: #f8fafc !important;
+}
+
+html.dark body .site-header .site-menu-panel[data-user-menu-panel] .site-user-menu-button.site-user-menu-button-danger:hover,
+html.dark body .site-header .site-menu-panel[data-user-menu-panel] .site-user-menu-button.site-user-menu-button-danger:focus-visible,
+.dark body .site-header .site-menu-panel[data-user-menu-panel] .site-user-menu-button.site-user-menu-button-danger:hover,
+.dark body .site-header .site-menu-panel[data-user-menu-panel] .site-user-menu-button.site-user-menu-button-danger:focus-visible {
+    background: #1e293b !important;
+    background-color: #1e293b !important;
+    color: #fca5a5 !important;
 }
 
 @media (max-width: 640px) {
