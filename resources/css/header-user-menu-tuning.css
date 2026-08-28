@@ -5,17 +5,17 @@
  */
 
 html body .site-header .site-menu-panel[data-user-menu-panel] {
-    background: rgba(255, 255, 255, 0.97) !important;
-    background-color: rgba(255, 255, 255, 0.97) !important;
-    border-color: rgba(226, 232, 240, 0.98) !important;
-    backdrop-filter: blur(16px) saturate(135%) !important;
-    -webkit-backdrop-filter: blur(16px) saturate(135%) !important;
+    background: rgba(255, 255, 255, 0.995) !important;
+    background-color: rgba(255, 255, 255, 0.995) !important;
+    border-color: rgba(226, 232, 240, 1) !important;
+    backdrop-filter: blur(12px) saturate(125%) !important;
+    -webkit-backdrop-filter: blur(12px) saturate(125%) !important;
 }
 
 html body .site-header .site-menu-panel[data-user-menu-panel]::before {
-    background: rgba(255, 255, 255, 0.985) !important;
-    border-top-color: rgba(226, 232, 240, 0.98) !important;
-    border-left-color: rgba(226, 232, 240, 0.98) !important;
+    background: #ffffff !important;
+    border-top-color: rgba(226, 232, 240, 1) !important;
+    border-left-color: rgba(226, 232, 240, 1) !important;
 }
 
 html body .site-header .site-menu-panel .site-user-menu-switch {
@@ -32,6 +32,12 @@ html body .site-header .site-menu-panel .site-user-menu-switch__knob {
     right: auto !important;
     width: 28px !important;
     height: 20px !important;
+}
+
+/* Ografi blue active state. */
+html body .site-header .site-menu-panel .site-user-menu-link--switch[aria-pressed="true"] .site-user-menu-switch {
+    background: #2563eb !important;
+    background-color: #2563eb !important;
 }
 
 html body .site-header .site-menu-panel .site-user-menu-link--switch[aria-pressed="true"] .site-user-menu-switch__knob {
@@ -54,29 +60,35 @@ html body .site-header .site-menu-panel .site-user-menu-link--switch[aria-presse
 
 html.dark body .site-header .site-menu-panel[data-user-menu-panel],
 .dark body .site-header .site-menu-panel[data-user-menu-panel] {
-    background: rgba(8, 15, 28, 0.96) !important;
-    background-color: rgba(8, 15, 28, 0.96) !important;
-    border-color: rgba(148, 163, 184, 0.28) !important;
-    backdrop-filter: blur(16px) saturate(135%) !important;
-    -webkit-backdrop-filter: blur(16px) saturate(135%) !important;
+    background: rgba(8, 15, 28, 0.99) !important;
+    background-color: rgba(8, 15, 28, 0.99) !important;
+    border-color: rgba(148, 163, 184, 0.34) !important;
+    backdrop-filter: blur(12px) saturate(125%) !important;
+    -webkit-backdrop-filter: blur(12px) saturate(125%) !important;
 }
 
 html.dark body .site-header .site-menu-panel[data-user-menu-panel]::after,
 .dark body .site-header .site-menu-panel[data-user-menu-panel]::after {
-    background: rgba(2, 6, 23, 0.22) !important;
+    background: rgba(2, 6, 23, 0.20) !important;
 }
 
 html.dark body .site-header .site-menu-panel[data-user-menu-panel]::before,
 .dark body .site-header .site-menu-panel[data-user-menu-panel]::before {
-    background: rgba(8, 15, 28, 0.985) !important;
+    background: #080f1c !important;
+}
+
+html.dark body .site-header .site-menu-panel .site-user-menu-link--switch[aria-pressed="true"] .site-user-menu-switch,
+.dark body .site-header .site-menu-panel .site-user-menu-link--switch[aria-pressed="true"] .site-user-menu-switch {
+    background: #2563eb !important;
+    background-color: #2563eb !important;
 }
 
 @media (max-width: 640px) {
     html body .site-header .site-menu-panel[data-user-menu-panel] {
-        background: rgba(255, 255, 255, 0.985) !important;
-        background-color: rgba(255, 255, 255, 0.985) !important;
-        backdrop-filter: blur(14px) saturate(130%) !important;
-        -webkit-backdrop-filter: blur(14px) saturate(130%) !important;
+        background: #ffffff !important;
+        background-color: #ffffff !important;
+        backdrop-filter: blur(10px) saturate(120%) !important;
+        -webkit-backdrop-filter: blur(10px) saturate(120%) !important;
     }
 
     html body .site-header .site-menu-panel .site-user-menu-switch {
@@ -85,7 +97,7 @@ html.dark body .site-header .site-menu-panel[data-user-menu-panel]::before,
 
     html.dark body .site-header .site-menu-panel[data-user-menu-panel],
     .dark body .site-header .site-menu-panel[data-user-menu-panel] {
-        background: rgba(8, 15, 28, 0.975) !important;
-        background-color: rgba(8, 15, 28, 0.975) !important;
+        background: rgba(8, 15, 28, 0.995) !important;
+        background-color: rgba(8, 15, 28, 0.995) !important;
     }
 }
