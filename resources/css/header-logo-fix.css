@@ -9,37 +9,48 @@ html body.dark header.site-header[data-site-header].site-header .site-header-log
     display: none !important;
 }
 
+/* Tüm cihazlarda header öğelerini bir kademe daha belirgin yap. */
+html body header.site-header[data-site-header].site-header {
+    --site-header-logo-size: 30px !important;
+    --site-header-icon-size: 22px !important;
+}
+
+html body header.site-header[data-site-header].site-header .site-header-logo .site-header-logo-wordmark:not(#comments *):not(#app *) {
+    font-size: 20px !important;
+}
+
+html body header.site-header[data-site-header].site-header a.site-header-messages-link > svg {
+    width: 22px !important;
+    min-width: 22px !important;
+    max-width: 22px !important;
+    height: 22px !important;
+    min-height: 22px !important;
+    max-height: 22px !important;
+}
+
+html body header.site-header[data-site-header].site-header button[data-notifications-btn] > iconify-icon {
+    width: 22px !important;
+    min-width: 22px !important;
+    max-width: 22px !important;
+    height: 22px !important;
+    min-height: 22px !important;
+    max-height: 22px !important;
+    font-size: 22px !important;
+}
+
 /* Mobil header: hamburger var, arama ikonu yok. */
 @media (max-width: 1023.98px) {
-    html body header.site-header[data-site-header].site-header {
-        --site-header-logo-size: 28px !important;
-    }
-
     html body header.site-header[data-site-header].site-header button[data-mobile-sidebar-toggle] {
         display: inline-flex !important;
     }
 
     html body header.site-header[data-site-header].site-header button[data-mobile-sidebar-toggle] > svg {
-        width: 23px !important;
-        min-width: 23px !important;
-        max-width: 23px !important;
-        height: 23px !important;
-        min-height: 23px !important;
-        max-height: 23px !important;
-    }
-
-    html body header.site-header[data-site-header].site-header .site-header-logo .site-header-logo-wordmark:not(#comments *):not(#app *) {
-        font-size: 19px !important;
-    }
-
-    html body header.site-header[data-site-header].site-header button[data-notifications-btn] > iconify-icon {
-        width: 21px !important;
-        min-width: 21px !important;
-        max-width: 21px !important;
-        height: 21px !important;
-        min-height: 21px !important;
-        max-height: 21px !important;
-        font-size: 21px !important;
+        width: 24px !important;
+        min-width: 24px !important;
+        max-width: 24px !important;
+        height: 24px !important;
+        min-height: 24px !important;
+        max-height: 24px !important;
     }
 
     html body header.site-header[data-site-header].site-header .site-header-actions > .site-search-panel {
