@@ -33,16 +33,185 @@ const enforceHeaderActionLayout = () => {
     setImportant(header, 'backdrop-filter', 'none');
     setImportant(header, '-webkit-backdrop-filter', 'none');
 
-    // Mobilde masaustunden kalmis inline !important display degerleri Tailwind
-    // hidden/lg:* kurallarini ezebiliyordu. Arama ve Yaz butonunu mobil/tablette
-    // burada kesin olarak gizliyoruz; masaustune donuldugunde asagidaki blok
-    // display degerlerini tekrar dogru sekilde kurar.
+    // Mobil/tablet header tek bir 64px eksende tutulur. Masaustunden kalan
+    // inline !important degerleri mobil yerlesimi bozamaz. Alt gezintide Mesajlar
+    // zaten bulundugu icin ust bardaki tekrar mesaj ikonu da mobilde gizlenir.
     if (!isDesktop) {
+        const shell = header.querySelector('.site-header-shell');
+        const mobileMenuButton = header.querySelector('button[data-mobile-sidebar-toggle]');
+        const leftGroup = mobileMenuButton?.closest('[data-logo-menu]')?.parentElement;
+        const mobileLogo = header.querySelector('.site-header-logo');
+        const mobileLogoMark = mobileLogo?.querySelector('.site-header-logo-mark');
+        const mobileWordmark = mobileLogo?.querySelector('.site-header-logo-wordmark');
         const mobileSearchPanel = actions.querySelector('.site-search-panel');
         const mobileWriteButton = actions.querySelector('.site-header-write-btn');
+        const mobileMessagesLink = actions.querySelector('a.site-header-messages-link');
+        const notificationsRoot = actions.querySelector('[data-notifications-root]');
+        const userMenuRoot = actions.querySelector('[data-user-menu]');
+        const notificationButton = actions.querySelector('button[data-notifications-btn]');
+        const userButton = actions.querySelector('button[data-user-menu-btn]');
+        const bellIcon = notificationButton?.querySelector('iconify-icon');
+        const avatar = userButton?.querySelector('img, .site-avatar-fallback');
+
+        setImportant(header, 'height', '64px');
+        setImportant(header, 'min-height', '64px');
+
+        setImportant(shell, 'display', 'flex');
+        setImportant(shell, 'align-items', 'center');
+        setImportant(shell, 'justify-content', 'space-between');
+        setImportant(shell, 'width', '100%');
+        setImportant(shell, 'height', '64px');
+        setImportant(shell, 'min-height', '64px');
+        setImportant(shell, 'padding', '0 10px');
+        setImportant(shell, 'margin', '0');
+        setImportant(shell, 'gap', '0');
+
+        setImportant(leftGroup, 'display', 'flex');
+        setImportant(leftGroup, 'align-items', 'center');
+        setImportant(leftGroup, 'height', '64px');
+        setImportant(leftGroup, 'gap', '4px');
+        setImportant(leftGroup, 'margin', '0');
+        setImportant(leftGroup, 'padding', '0');
+        setImportant(leftGroup, 'flex', '0 1 auto');
+        setImportant(leftGroup, 'min-width', '0');
+
+        setImportant(mobileMenuButton, 'display', 'inline-flex');
+        setImportant(mobileMenuButton, 'align-items', 'center');
+        setImportant(mobileMenuButton, 'justify-content', 'center');
+        setImportant(mobileMenuButton, 'width', '32px');
+        setImportant(mobileMenuButton, 'min-width', '32px');
+        setImportant(mobileMenuButton, 'height', '40px');
+        setImportant(mobileMenuButton, 'min-height', '40px');
+        setImportant(mobileMenuButton, 'padding', '0');
+        setImportant(mobileMenuButton, 'margin', '0');
+        setImportant(mobileMenuButton, 'background', 'transparent');
+        setImportant(mobileMenuButton, 'background-color', 'transparent');
+        setImportant(mobileMenuButton, 'transform', 'none');
+
+        setImportant(mobileLogo, 'display', 'inline-flex');
+        setImportant(mobileLogo, 'align-items', 'center');
+        setImportant(mobileLogo, 'height', '40px');
+        setImportant(mobileLogo, 'gap', '5px');
+        setImportant(mobileLogo, 'margin', '0');
+        setImportant(mobileLogo, 'padding', '0');
+        setImportant(mobileLogo, 'transform', 'none');
+
+        setImportant(mobileLogoMark, 'display', 'inline-flex');
+        setImportant(mobileLogoMark, 'align-items', 'center');
+        setImportant(mobileLogoMark, 'justify-content', 'center');
+        setImportant(mobileLogoMark, 'width', '24px');
+        setImportant(mobileLogoMark, 'min-width', '24px');
+        setImportant(mobileLogoMark, 'height', '24px');
+        setImportant(mobileLogoMark, 'min-height', '24px');
+        setImportant(mobileLogoMark, 'flex', '0 0 24px');
+
+        mobileLogoMark?.querySelectorAll('.site-header-logo-main-image').forEach((logoImage) => {
+            setImportant(logoImage, 'width', '24px');
+            setImportant(logoImage, 'height', '24px');
+            setImportant(logoImage, 'max-width', '24px');
+            setImportant(logoImage, 'max-height', '24px');
+            setImportant(logoImage, 'inset', '0');
+            setImportant(logoImage, 'transform', 'none');
+        });
+
+        setImportant(mobileWordmark, 'font-size', '17px');
+        setImportant(mobileWordmark, 'line-height', '1');
+        setImportant(mobileWordmark, 'font-weight', '600');
+        setImportant(mobileWordmark, 'margin', '0');
+        setImportant(mobileWordmark, 'transform', 'none');
+
+        setImportant(actions, 'display', 'flex');
+        setImportant(actions, 'align-items', 'center');
+        setImportant(actions, 'justify-content', 'flex-end');
+        setImportant(actions, 'gap', '2px');
+        setImportant(actions, 'height', '64px');
+        setImportant(actions, 'min-height', '64px');
+        setImportant(actions, 'margin', '0 0 0 auto');
+        setImportant(actions, 'padding', '0');
+        setImportant(actions, 'line-height', '1');
+        setImportant(actions, 'flex', '0 0 auto');
 
         setImportant(mobileSearchPanel, 'display', 'none');
         setImportant(mobileWriteButton, 'display', 'none');
+        setImportant(mobileMessagesLink, 'display', 'none');
+
+        [notificationsRoot, userMenuRoot].forEach((wrapper) => {
+            if (!wrapper) return;
+            setImportant(wrapper, 'position', 'relative');
+            setImportant(wrapper, 'display', 'flex');
+            setImportant(wrapper, 'align-items', 'center');
+            setImportant(wrapper, 'justify-content', 'center');
+            setImportant(wrapper, 'width', '40px');
+            setImportant(wrapper, 'min-width', '40px');
+            setImportant(wrapper, 'max-width', '40px');
+            setImportant(wrapper, 'height', '40px');
+            setImportant(wrapper, 'min-height', '40px');
+            setImportant(wrapper, 'max-height', '40px');
+            setImportant(wrapper, 'flex', '0 0 40px');
+            setImportant(wrapper, 'margin', '0');
+            setImportant(wrapper, 'padding', '0');
+            setImportant(wrapper, 'top', '0');
+            setImportant(wrapper, 'transform', 'none');
+            setImportant(wrapper, 'overflow', 'visible');
+        });
+
+        [notificationButton, userButton].forEach((button) => {
+            if (!button) return;
+            setImportant(button, 'position', 'relative');
+            setImportant(button, 'display', 'inline-flex');
+            setImportant(button, 'align-items', 'center');
+            setImportant(button, 'justify-content', 'center');
+            setImportant(button, 'width', '40px');
+            setImportant(button, 'min-width', '40px');
+            setImportant(button, 'max-width', '40px');
+            setImportant(button, 'height', '40px');
+            setImportant(button, 'min-height', '40px');
+            setImportant(button, 'max-height', '40px');
+            setImportant(button, 'flex', '0 0 40px');
+            setImportant(button, 'margin', '0');
+            setImportant(button, 'padding', '0');
+            setImportant(button, 'top', '0');
+            setImportant(button, 'transform', 'none');
+            setImportant(button, 'translate', 'none');
+            setImportant(button, 'line-height', '1');
+            setImportant(button, 'background', 'transparent');
+            setImportant(button, 'background-color', 'transparent');
+            setImportant(button, 'box-shadow', 'none');
+        });
+
+        if (bellIcon) {
+            setImportant(bellIcon, 'display', 'block');
+            setImportant(bellIcon, 'width', '20px');
+            setImportant(bellIcon, 'min-width', '20px');
+            setImportant(bellIcon, 'height', '20px');
+            setImportant(bellIcon, 'min-height', '20px');
+            setImportant(bellIcon, 'font-size', '20px');
+            setImportant(bellIcon, 'line-height', '20px');
+            setImportant(bellIcon, 'margin', '0');
+            setImportant(bellIcon, 'transform', 'none');
+        }
+
+        if (avatar) {
+            setImportant(avatar, 'position', 'static');
+            setImportant(avatar, 'display', 'flex');
+            setImportant(avatar, 'align-items', 'center');
+            setImportant(avatar, 'justify-content', 'center');
+            setImportant(avatar, 'width', '36px');
+            setImportant(avatar, 'min-width', '36px');
+            setImportant(avatar, 'height', '36px');
+            setImportant(avatar, 'min-height', '36px');
+            setImportant(avatar, 'margin', '0');
+            setImportant(avatar, 'transform', 'none');
+        }
+
+        actions.querySelectorAll('.site-status-dot').forEach((dot) => {
+            setImportant(dot, 'position', 'absolute');
+            setImportant(dot, 'top', '6px');
+            setImportant(dot, 'right', '6px');
+            setImportant(dot, 'margin', '0');
+            setImportant(dot, 'transform', 'none');
+        });
+
         return;
     }
 
