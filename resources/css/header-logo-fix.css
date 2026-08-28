@@ -19,13 +19,9 @@ html body header.site-header[data-site-header].site-header .site-header-logo .si
     font-size: 20px !important;
 }
 
-html body header.site-header[data-site-header].site-header a.site-header-messages-link > svg {
-    width: 22px !important;
-    min-width: 22px !important;
-    max-width: 22px !important;
-    height: 22px !important;
-    min-height: 22px !important;
-    max-height: 22px !important;
+/* Mesaj ikonunu header'dan tamamen kaldır. */
+html body header.site-header[data-site-header].site-header a.site-header-messages-link {
+    display: none !important;
 }
 
 html body header.site-header[data-site-header].site-header button[data-notifications-btn] > iconify-icon {
