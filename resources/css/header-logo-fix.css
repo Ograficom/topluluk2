@@ -3,6 +3,7 @@ html body header.site-header[data-site-header].site-header .site-header-logo-mar
     display: block !important;
 }
 
+html body header.site-header[data-site-header].site-header .site-header-logo-mark .site-header-logo-dark-image,
 html.dark body header.site-header[data-site-header].site-header .site-header-logo-mark .site-header-logo-dark-image,
 html body.dark header.site-header[data-site-header].site-header .site-header-logo-mark .site-header-logo-dark-image {
     display: none !important;
