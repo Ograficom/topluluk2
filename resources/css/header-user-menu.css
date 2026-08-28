@@ -1,0 +1,343 @@
+/* Professional user dropdown overrides.
+ * Loaded from resources/js/bootstrap.js so Vite bundles it with the main app.
+ * Existing Blade markup and Iconify/Lucide icons are preserved.
+ */
+
+html body .site-header .site-menu-panel[data-user-menu-panel] {
+    top: calc(100% + 10px) !important;
+    right: 0 !important;
+    width: 304px !important;
+    max-width: calc(100vw - 20px) !important;
+    padding: 8px !important;
+    border: 1px solid #e5e7eb !important;
+    border-radius: 18px !important;
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+    color: #111827 !important;
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.10) !important;
+    filter: none !important;
+    overflow: visible !important;
+}
+
+html body .site-header .site-menu-panel[data-user-menu-panel]::before {
+    top: -6px !important;
+    right: 17px !important;
+    width: 11px !important;
+    height: 11px !important;
+    background: #ffffff !important;
+    border-top: 1px solid #e5e7eb !important;
+    border-left: 1px solid #e5e7eb !important;
+    box-shadow: none !important;
+}
+
+html body .site-header .site-menu-panel .site-user-menu-card {
+    display: flex !important;
+    align-items: center !important;
+    gap: 11px !important;
+    min-height: 58px !important;
+    margin: 0 0 5px !important;
+    padding: 8px 10px 10px !important;
+    border: 0 !important;
+    border-radius: 12px !important;
+    background: transparent !important;
+    background-image: none !important;
+    color: #111827 !important;
+    box-shadow: none !important;
+}
+
+html body .site-header .site-menu-panel .site-user-menu-card:hover,
+html body .site-header .site-menu-panel .site-user-menu-card:focus-visible {
+    background: #f8fafc !important;
+    border-color: transparent !important;
+    outline: none !important;
+}
+
+html body .site-header .site-menu-panel .site-user-menu-avatar {
+    width: 44px !important;
+    height: 44px !important;
+    min-width: 44px !important;
+    flex: 0 0 44px !important;
+    border: 1px solid #e5e7eb !important;
+    outline: 0 !important;
+    border-radius: 9999px !important;
+    background: #eff6ff !important;
+    background-image: none !important;
+    color: #2563eb !important;
+    font-size: 14px !important;
+    font-weight: 600 !important;
+    box-shadow: none !important;
+}
+
+html body .site-header .site-menu-panel .site-user-menu-avatar img {
+    width: 100% !important;
+    height: 100% !important;
+    border-radius: 9999px !important;
+    object-fit: cover !important;
+}
+
+html body .site-header .site-menu-panel .site-user-menu-info {
+    min-width: 0 !important;
+    padding-right: 2px !important;
+}
+
+html body .site-header .site-menu-panel .site-user-menu-name {
+    color: #111827 !important;
+    font-size: 14px !important;
+    line-height: 1.3 !important;
+    font-weight: 600 !important;
+}
+
+html body .site-header .site-menu-panel .site-user-menu-meta {
+    display: flex !important;
+    align-items: center !important;
+    gap: 7px !important;
+    margin-top: 3px !important;
+}
+
+html body .site-header .site-menu-panel .site-user-menu-username {
+    min-width: 0 !important;
+    color: #6b7280 !important;
+    font-size: 12px !important;
+    line-height: 1.35 !important;
+    font-weight: 400 !important;
+}
+
+html body .site-header .site-menu-panel .site-user-menu-points {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 4px !important;
+    padding: 0 !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    color: #2563eb !important;
+    font-size: 11px !important;
+    line-height: 1.35 !important;
+    font-weight: 500 !important;
+}
+
+html body .site-header .site-menu-panel .site-user-menu-points iconify-icon {
+    width: 13px !important;
+    height: 13px !important;
+    font-size: 13px !important;
+    color: #2563eb !important;
+}
+
+html body .site-header .site-menu-panel .site-user-menu-link,
+html body .site-header .site-menu-panel .site-user-menu-button {
+    display: flex !important;
+    align-items: center !important;
+    width: 100% !important;
+    min-height: 40px !important;
+    gap: 10px !important;
+    padding: 8px 10px !important;
+    border: 0 !important;
+    border-radius: 10px !important;
+    background: transparent !important;
+    color: #1f2937 !important;
+    font-size: 13px !important;
+    line-height: 1.35 !important;
+    font-weight: 400 !important;
+    text-decoration: none !important;
+    box-shadow: none !important;
+    transform: none !important;
+    transition: none !important;
+}
+
+html body .site-header .site-menu-panel .site-user-menu-link:hover,
+html body .site-header .site-menu-panel .site-user-menu-button:hover,
+html body .site-header .site-menu-panel .site-user-menu-link:focus-visible,
+html body .site-header .site-menu-panel .site-user-menu-button:focus-visible {
+    background: #f8fafc !important;
+    color: #111827 !important;
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+html body .site-header .site-menu-panel .site-user-menu-icon {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 20px !important;
+    height: 20px !important;
+    min-width: 20px !important;
+    flex: 0 0 20px !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    color: #475569 !important;
+    box-shadow: none !important;
+}
+
+html body .site-header .site-menu-panel .site-user-menu-icon iconify-icon {
+    width: 17px !important;
+    height: 17px !important;
+    font-size: 17px !important;
+    color: currentColor !important;
+}
+
+html body .site-header .site-menu-panel .site-user-menu-link:hover .site-user-menu-icon,
+html body .site-header .site-menu-panel .site-user-menu-button:hover .site-user-menu-icon,
+html body .site-header .site-menu-panel .site-user-menu-link:focus-visible .site-user-menu-icon,
+html body .site-header .site-menu-panel .site-user-menu-button:focus-visible .site-user-menu-icon {
+    background: transparent !important;
+    color: #2563eb !important;
+}
+
+html body .site-header .site-menu-panel .site-user-menu-divider {
+    height: 1px !important;
+    margin: 6px 8px !important;
+    border: 0 !important;
+    background: #eef2f7 !important;
+    box-shadow: none !important;
+}
+
+html body .site-header .site-menu-panel .site-user-menu-switch {
+    width: 34px !important;
+    height: 20px !important;
+    margin-left: auto !important;
+    border: 1px solid #dbe2ea !important;
+    border-radius: 9999px !important;
+    background: #e9eef5 !important;
+    box-shadow: none !important;
+}
+
+html body .site-header .site-menu-panel .site-user-menu-switch__knob {
+    top: 2px !important;
+    left: 2px !important;
+    width: 14px !important;
+    height: 14px !important;
+    border-radius: 9999px !important;
+    background: #ffffff !important;
+    box-shadow: none !important;
+}
+
+html body .site-header .site-menu-panel .site-user-menu-link--switch[aria-pressed="true"] .site-user-menu-switch {
+    border-color: #2563eb !important;
+    background: #2563eb !important;
+}
+
+html body .site-header .site-menu-panel .site-user-menu-link--switch[aria-pressed="true"] .site-user-menu-switch__knob {
+    left: 16px !important;
+}
+
+html body .site-header .site-menu-panel .site-user-menu-button.site-user-menu-button-danger {
+    color: #b91c1c !important;
+}
+
+html body .site-header .site-menu-panel .site-user-menu-button.site-user-menu-button-danger:hover,
+html body .site-header .site-menu-panel .site-user-menu-button.site-user-menu-button-danger:focus-visible {
+    background: #fff7f7 !important;
+    color: #b91c1c !important;
+}
+
+html body .site-header .site-menu-panel .site-user-menu-button.site-user-menu-button-danger .site-user-menu-icon {
+    background: transparent !important;
+    color: #b91c1c !important;
+}
+
+html.dark body .site-header .site-menu-panel[data-user-menu-panel],
+.dark body .site-header .site-menu-panel[data-user-menu-panel] {
+    border-color: #263244 !important;
+    background: #0f172a !important;
+    background-color: #0f172a !important;
+    color: #f8fafc !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.28) !important;
+}
+
+html.dark body .site-header .site-menu-panel[data-user-menu-panel]::before,
+.dark body .site-header .site-menu-panel[data-user-menu-panel]::before {
+    background: #0f172a !important;
+    border-color: #263244 !important;
+}
+
+html.dark body .site-header .site-menu-panel .site-user-menu-card,
+.dark body .site-header .site-menu-panel .site-user-menu-card {
+    background: transparent !important;
+    border: 0 !important;
+}
+
+html.dark body .site-header .site-menu-panel .site-user-menu-card:hover,
+html.dark body .site-header .site-menu-panel .site-user-menu-card:focus-visible,
+.dark body .site-header .site-menu-panel .site-user-menu-card:hover,
+.dark body .site-header .site-menu-panel .site-user-menu-card:focus-visible,
+html.dark body .site-header .site-menu-panel .site-user-menu-link:hover,
+html.dark body .site-header .site-menu-panel .site-user-menu-link:focus-visible,
+html.dark body .site-header .site-menu-panel .site-user-menu-button:hover,
+html.dark body .site-header .site-menu-panel .site-user-menu-button:focus-visible,
+.dark body .site-header .site-menu-panel .site-user-menu-link:hover,
+.dark body .site-header .site-menu-panel .site-user-menu-link:focus-visible,
+.dark body .site-header .site-menu-panel .site-user-menu-button:hover,
+.dark body .site-header .site-menu-panel .site-user-menu-button:focus-visible {
+    background: #172033 !important;
+    color: #f8fafc !important;
+}
+
+html.dark body .site-header .site-menu-panel .site-user-menu-name,
+.dark body .site-header .site-menu-panel .site-user-menu-name {
+    color: #f8fafc !important;
+}
+
+html.dark body .site-header .site-menu-panel .site-user-menu-username,
+.dark body .site-header .site-menu-panel .site-user-menu-username {
+    color: #94a3b8 !important;
+}
+
+html.dark body .site-header .site-menu-panel .site-user-menu-avatar,
+.dark body .site-header .site-menu-panel .site-user-menu-avatar {
+    border-color: #334155 !important;
+    background: #172554 !important;
+    color: #bfdbfe !important;
+}
+
+html.dark body .site-header .site-menu-panel .site-user-menu-link,
+html.dark body .site-header .site-menu-panel .site-user-menu-button,
+.dark body .site-header .site-menu-panel .site-user-menu-link,
+.dark body .site-header .site-menu-panel .site-user-menu-button {
+    color: #e2e8f0 !important;
+}
+
+html.dark body .site-header .site-menu-panel .site-user-menu-icon,
+.dark body .site-header .site-menu-panel .site-user-menu-icon {
+    background: transparent !important;
+    color: #a8b3c4 !important;
+}
+
+html.dark body .site-header .site-menu-panel .site-user-menu-link:hover .site-user-menu-icon,
+html.dark body .site-header .site-menu-panel .site-user-menu-button:hover .site-user-menu-icon,
+.dark body .site-header .site-menu-panel .site-user-menu-link:hover .site-user-menu-icon,
+.dark body .site-header .site-menu-panel .site-user-menu-button:hover .site-user-menu-icon {
+    background: transparent !important;
+    color: #93c5fd !important;
+}
+
+html.dark body .site-header .site-menu-panel .site-user-menu-divider,
+.dark body .site-header .site-menu-panel .site-user-menu-divider {
+    background: #263244 !important;
+}
+
+html.dark body .site-header .site-menu-panel .site-user-menu-switch,
+.dark body .site-header .site-menu-panel .site-user-menu-switch {
+    border-color: #3b475a !important;
+    background: #263244 !important;
+}
+
+html.dark body .site-header .site-menu-panel .site-user-menu-button.site-user-menu-button-danger,
+.dark body .site-header .site-menu-panel .site-user-menu-button.site-user-menu-button-danger {
+    color: #fca5a5 !important;
+}
+
+html.dark body .site-header .site-menu-panel .site-user-menu-button.site-user-menu-button-danger:hover,
+html.dark body .site-header .site-menu-panel .site-user-menu-button.site-user-menu-button-danger:focus-visible,
+.dark body .site-header .site-menu-panel .site-user-menu-button.site-user-menu-button-danger:hover,
+.dark body .site-header .site-menu-panel .site-user-menu-button.site-user-menu-button-danger:focus-visible {
+    background: rgba(127, 29, 29, 0.24) !important;
+    color: #fecaca !important;
+}
+
+@media (max-width: 640px) {
+    html body .site-header .site-menu-panel[data-user-menu-panel] {
+        right: -4px !important;
+        width: min(304px, calc(100vw - 16px)) !important;
+        max-height: calc(100vh - 82px) !important;
+        overflow-y: auto !important;
+    }
+}
