@@ -53,3 +53,65 @@ html body header.site-header[data-site-header].site-header button[data-notificat
         display: none !important;
     }
 }
+
+/* Ana akis ust sekmeleri: sadece dark modda koyu yuzey ve okunakli metin. */
+html.dark body.alma-app .alma-tabs,
+html body.dark.alma-app .alma-tabs {
+    background: #111827 !important;
+    background-color: #111827 !important;
+    border-color: #334155 !important;
+    box-shadow: none !important;
+}
+
+html.dark body.alma-app .alma-tab,
+html body.dark.alma-app .alma-tab {
+    background: transparent !important;
+    background-color: transparent !important;
+    color: #94a3b8 !important;
+}
+
+html.dark body.alma-app .alma-tab.is-active,
+html body.dark.alma-app .alma-tab.is-active {
+    background: #1f2937 !important;
+    background-color: #1f2937 !important;
+    color: #f8fafc !important;
+    box-shadow: none !important;
+}
+
+/* Ana akis yenile / daha fazla butonu: beyaz diski dark modda koyu yap. */
+html.dark body.alma-app .ografi-feed-loadmore__button,
+html body.dark.alma-app .ografi-feed-loadmore__button,
+html.dark .ografi-feed-loadmore__button,
+.dark .ografi-feed-loadmore__button {
+    background: #111827 !important;
+    background-color: #111827 !important;
+    color: #f8fafc !important;
+    border: 1px solid #334155 !important;
+    box-shadow: none !important;
+}
+
+html.dark body.alma-app .ografi-feed-loadmore__button:hover,
+html.dark body.alma-app .ografi-feed-loadmore__button:focus,
+html.dark body.alma-app .ografi-feed-loadmore__button:active,
+html body.dark.alma-app .ografi-feed-loadmore__button:hover,
+html body.dark.alma-app .ografi-feed-loadmore__button:focus,
+html body.dark.alma-app .ografi-feed-loadmore__button:active,
+html.dark .ografi-feed-loadmore__button:hover,
+html.dark .ografi-feed-loadmore__button:focus,
+html.dark .ografi-feed-loadmore__button:active,
+.dark .ografi-feed-loadmore__button:hover,
+.dark .ografi-feed-loadmore__button:focus,
+.dark .ografi-feed-loadmore__button:active {
+    background: #1f2937 !important;
+    background-color: #1f2937 !important;
+    color: #ffffff !important;
+    border-color: #475569 !important;
+}
+
+html.dark .ografi-feed-loadmore__icon,
+html.dark .ografi-feed-loadmore__icon svg,
+.dark .ografi-feed-loadmore__icon,
+.dark .ografi-feed-loadmore__icon svg {
+    color: currentColor !important;
+    stroke: currentColor !important;
+}
