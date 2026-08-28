@@ -1,7 +1,7 @@
 /*
- * Header action rail alignment overrides.
- * Keeps search / write / notification / message / avatar on one exact baseline
- * across desktop zoom levels and both color themes.
+ * Header action rail – final alignment pass.
+ * Goal: search / write / notification / message / avatar stay on one clean
+ * baseline without wrapper spacing, scale transforms or layout shifts.
  */
 
 html body header.site-header[data-site-header] .site-header-actions {
@@ -9,53 +9,66 @@ html body header.site-header[data-site-header] .site-header-actions {
     align-items: center !important;
     justify-content: flex-end !important;
     gap: 6px !important;
+    min-width: 0 !important;
     height: 64px !important;
     min-height: 64px !important;
-    margin: 0 !important;
+    margin: 0 0 0 auto !important;
     padding: 0 !important;
     line-height: 1 !important;
     white-space: nowrap !important;
 }
 
 html body header.site-header[data-site-header] .site-header-actions > * {
-    flex-shrink: 0 !important;
     align-self: center !important;
+    flex-shrink: 0 !important;
     margin-top: 0 !important;
     margin-bottom: 0 !important;
 }
 
-/* Search trigger owns exactly one icon slot. */
+/* Desktop has five predictable slots. This prevents invisible wrapper width
+   from pushing one icon higher/lower or farther away than the others. */
+@media (min-width: 1024px) {
+    html body header.site-header[data-site-header] .site-header-actions {
+        display: grid !important;
+        grid-template-columns: 40px max-content 40px 40px 40px !important;
+        grid-auto-flow: column !important;
+        align-items: center !important;
+        justify-content: end !important;
+        column-gap: 8px !important;
+    }
+}
+
+/* Search slot */
 html body header.site-header[data-site-header] .site-header-actions > .site-search-panel {
+    position: relative !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
     width: 40px !important;
     min-width: 40px !important;
     max-width: 40px !important;
     height: 40px !important;
     min-height: 40px !important;
-    flex: 0 0 40px !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    position: relative !important;
     margin: 0 !important;
     padding: 0 !important;
 }
 
-/* Notification and account wrappers must not add invisible spacing. */
+/* Notification / account wrappers are layout-neutral. */
 html body header.site-header[data-site-header] .site-header-actions > [data-notifications-root],
 html body header.site-header[data-site-header] .site-header-actions > [data-user-menu] {
+    position: relative !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
     width: 40px !important;
-    height: 40px !important;
     min-width: 40px !important;
+    height: 40px !important;
     min-height: 40px !important;
-    flex: 0 0 40px !important;
     margin: 0 !important;
     padding: 0 !important;
 }
 
-/* Every circular action has the same hit area and optical center. */
+/* The four circular controls share the exact same hit area. */
 html body header.site-header[data-site-header] .site-header-actions :is(
     .site-search-trigger,
     button[data-notifications-btn],
@@ -78,14 +91,15 @@ html body header.site-header[data-site-header] .site-header-actions :is(
     line-height: 1 !important;
     vertical-align: middle !important;
     transform: none !important;
+    translate: none !important;
     box-shadow: none !important;
 }
 
+/* Optical icon sizes: Bell/Search 20, the message outline 21. */
 html body header.site-header[data-site-header] .site-header-actions :is(
     .site-search-trigger,
     button[data-notifications-btn]
-) > iconify-icon,
-html body header.site-header[data-site-header] .site-header-actions a.site-header-messages-link > svg {
+) > iconify-icon {
     display: block !important;
     width: 20px !important;
     height: 20px !important;
@@ -96,29 +110,34 @@ html body header.site-header[data-site-header] .site-header-actions a.site-heade
     margin: 0 !important;
     padding: 0 !important;
     transform: none !important;
-    transform-origin: center !important;
 }
 
-/* Message outline is visually wider than Lucide icons; keep it optically equal. */
 html body header.site-header[data-site-header] .site-header-actions a.site-header-messages-link > svg {
+    display: block !important;
     width: 21px !important;
     height: 21px !important;
     min-width: 21px !important;
     min-height: 21px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    transform: none !important;
 }
 
-/* Write button sits on the same vertical axis without extra side margins. */
+/* Write button: no extra margins, same 40px control height. */
 html body header.site-header[data-site-header] .site-header-actions > .site-header-write-btn {
     display: inline-flex !important;
     align-items: center !important;
     justify-content: center !important;
     gap: 7px !important;
+    width: auto !important;
     height: 40px !important;
     min-height: 40px !important;
-    margin: 0 4px !important;
+    margin: 0 !important;
     padding: 0 17px !important;
+    border-radius: 9999px !important;
     line-height: 1 !important;
     vertical-align: middle !important;
+    transform: none !important;
 }
 
 html body header.site-header[data-site-header] .site-header-actions > .site-header-write-btn > iconify-icon {
@@ -126,6 +145,7 @@ html body header.site-header[data-site-header] .site-header-actions > .site-head
     width: 16px !important;
     height: 16px !important;
     min-width: 16px !important;
+    min-height: 16px !important;
     font-size: 16px !important;
     line-height: 1 !important;
     margin: 0 !important;
@@ -134,11 +154,11 @@ html body header.site-header[data-site-header] .site-header-actions > .site-head
 
 html body header.site-header[data-site-header] .site-header-actions > .site-header-write-btn > span {
     display: block !important;
-    line-height: 1 !important;
     margin: 0 !important;
+    line-height: 1 !important;
 }
 
-/* Avatar uses a consistent inset inside the same 40px slot. */
+/* Account picture has a small, even inset inside its 40px control. */
 html body header.site-header[data-site-header] .site-header-actions button[data-user-menu-btn] {
     padding: 2px !important;
 }
@@ -157,7 +177,7 @@ html body header.site-header[data-site-header] .site-header-actions button[data-
     transform: none !important;
 }
 
-/* Dot stays attached to the bell without affecting layout. */
+/* Notification dot is absolutely attached; it never affects centering. */
 html body header.site-header[data-site-header] .site-header-actions button[data-notifications-btn] .site-status-dot {
     position: absolute !important;
     top: 7px !important;
@@ -168,14 +188,17 @@ html body header.site-header[data-site-header] .site-header-actions button[data-
     padding: 0 !important;
 }
 
-/* Search popover is anchored to the search slot, not to neighboring actions. */
+/* Search dropdown opens to the LEFT of the search slot so it never runs into
+   the Write / Bell / Message / Avatar controls. */
 html body header.site-header[data-site-header] .site-header-actions .site-search-dropdown {
-    top: calc(100% + 10px) !important;
+    position: absolute !important;
+    top: calc(100% + 8px) !important;
     right: 0 !important;
     left: auto !important;
-    width: 400px !important;
+    width: 380px !important;
     max-width: calc(100vw - 24px) !important;
     margin: 0 !important;
+    z-index: 100020 !important;
 }
 
 html body header.site-header[data-site-header] .site-header-actions .site-search-dropdown-top {
@@ -192,15 +215,19 @@ html body header.site-header[data-site-header] .site-header-actions .site-search
 }
 
 html body header.site-header[data-site-header] .site-header-actions .site-search-close {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
     width: 40px !important;
     height: 40px !important;
     min-width: 40px !important;
     min-height: 40px !important;
     flex: 0 0 40px !important;
     margin: 0 !important;
+    padding: 0 !important;
 }
 
-/* Light/dark icon colors remain consistent; only the surface changes on hover. */
+/* Light mode surfaces. */
 html body header.site-header[data-site-header] .site-header-actions :is(
     .site-search-trigger,
     button[data-notifications-btn],
@@ -221,6 +248,7 @@ html body header.site-header[data-site-header] .site-header-actions :is(
     background-color: #f1f5f9 !important;
 }
 
+/* Dark mode surfaces. */
 html.dark body header.site-header[data-site-header] .site-header-actions :is(
     .site-search-trigger,
     button[data-notifications-btn],
@@ -251,31 +279,18 @@ html body.dark header.site-header[data-site-header] .site-header-actions :is(
     background-color: #1e293b !important;
 }
 
+/* Tablet / mobile: hidden desktop items are removed by the Blade/Tailwind
+   classes, so flex is safer than fixed desktop grid columns. */
 @media (max-width: 1023px) {
     html body header.site-header[data-site-header] .site-header-actions {
+        display: flex !important;
         gap: 4px !important;
+        height: 64px !important;
     }
 
-    html body header.site-header[data-site-header] .site-header-actions .site-search-dropdown {
-        position: fixed !important;
-        top: 70px !important;
-        left: 10px !important;
-        right: 10px !important;
-        width: auto !important;
-        max-width: none !important;
-    }
-}
-
-@media (max-width: 639px) {
+    html body header.site-header[data-site-header] .site-header-actions > .site-search-panel,
     html body header.site-header[data-site-header] .site-header-actions > [data-notifications-root],
-    html body header.site-header[data-site-header] .site-header-actions > [data-user-menu] {
-        width: 38px !important;
-        height: 38px !important;
-        min-width: 38px !important;
-        min-height: 38px !important;
-        flex-basis: 38px !important;
-    }
-
+    html body header.site-header[data-site-header] .site-header-actions > [data-user-menu],
     html body header.site-header[data-site-header] .site-header-actions :is(
         .site-search-trigger,
         button[data-notifications-btn],
@@ -293,5 +308,14 @@ html body.dark header.site-header[data-site-header] .site-header-actions :is(
         height: 34px !important;
         min-width: 34px !important;
         min-height: 34px !important;
+    }
+
+    html body header.site-header[data-site-header] .site-header-actions .site-search-dropdown {
+        position: fixed !important;
+        top: 70px !important;
+        left: 10px !important;
+        right: 10px !important;
+        width: auto !important;
+        max-width: none !important;
     }
 }
