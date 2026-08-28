@@ -1,0 +1,13 @@
+/*
+ * Final optical alignment for desktop header actions.
+ * The supplied screenshot shows Search and Bell about 10px lower than
+ * Write / Message / Avatar even though their layout boxes are centered.
+ * Move only those two interactive controls; dropdown/panel anchors stay put.
+ */
+@media (min-width: 1024px) {
+    html body header.site-header[data-site-header] .site-header-actions .site-search-trigger,
+    html body header.site-header[data-site-header] .site-header-actions button[data-notifications-btn] {
+        position: relative !important;
+        top: -10px !important;
+    }
+}
