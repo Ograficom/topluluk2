@@ -1,3 +1,4 @@
+import '../css/header-user-menu.css';
 import axios from 'axios';
 window.axios = axios;
 
