@@ -25,12 +25,19 @@ const enforceHeaderActionLayout = () => {
     };
 
     const isDark = document.documentElement.classList.contains('dark');
+    const isDesktop = window.matchMedia('(min-width: 1024px)').matches;
 
     // Header arkasindaki sayfa yazilarinin ikonlarin icinden gorunmesini engelle.
     setImportant(header, 'background', isDark ? '#0f172a' : '#ffffff');
     setImportant(header, 'background-color', isDark ? '#0f172a' : '#ffffff');
     setImportant(header, 'backdrop-filter', 'none');
     setImportant(header, '-webkit-backdrop-filter', 'none');
+
+    // Mobil/tablet yerlesimini Blade + Tailwind yonetsin. Bu zorlayici masaustu
+    // hizalama kurallari mobilde hidden siniflarini ezmemeli.
+    if (!isDesktop) {
+        return;
+    }
 
     // Tek bir gercek yatay eksen: tum aksiyonlar ayni 40px kontrol kutusunda.
     setImportant(actions, 'display', 'flex');
@@ -144,6 +151,38 @@ const enforceHeaderActionLayout = () => {
         setImportant(writeButton, 'line-height', '1');
     }
 
+    // Arama acilir alani arama ikonunun 40px kutusunun icine bindirmiyoruz.
+    // Wrapper header icinde 12px asagida basladigi icin top:56px, popup'i
+    // header'in 4px altina getirir: 12 + 56 = 68px (header 64px).
+    const searchDropdown = searchPanel?.querySelector('[data-search-dropdown], .site-search-dropdown');
+    if (searchDropdown) {
+        setImportant(searchDropdown, 'position', 'absolute');
+        setImportant(searchDropdown, 'top', '56px');
+        setImportant(searchDropdown, 'right', '0');
+        setImportant(searchDropdown, 'left', 'auto');
+        setImportant(searchDropdown, 'width', '400px');
+        setImportant(searchDropdown, 'max-width', 'calc(100vw - 24px)');
+        setImportant(searchDropdown, 'margin', '0');
+        setImportant(searchDropdown, 'z-index', '100020');
+        setImportant(searchDropdown, 'transform', 'none');
+    }
+
+    const searchDropdownTop = searchDropdown?.querySelector('.site-search-dropdown-top');
+    if (searchDropdownTop) {
+        setImportant(searchDropdownTop, 'display', 'flex');
+        setImportant(searchDropdownTop, 'align-items', 'center');
+        setImportant(searchDropdownTop, 'gap', '10px');
+        setImportant(searchDropdownTop, 'width', '100%');
+    }
+
+    const searchField = searchDropdown?.querySelector('label.site-search-field, .site-search-field');
+    if (searchField) {
+        setImportant(searchField, 'flex', '1 1 auto');
+        setImportant(searchField, 'width', 'auto');
+        setImportant(searchField, 'min-width', '0');
+        setImportant(searchField, 'margin', '0');
+    }
+
     // Noktalar akis hizasini degistirmez; ait olduklari 40px kutuya sabitlenir.
     actions.querySelectorAll('.site-status-dot').forEach((dot) => {
         setImportant(dot, 'position', 'absolute');
@@ -162,6 +201,7 @@ if (document.readyState === 'loading') {
 
 window.addEventListener('pageshow', enforceHeaderActionLayout);
 window.addEventListener('themechange', enforceHeaderActionLayout);
+window.addEventListener('resize', enforceHeaderActionLayout);
 
 const syncHeaderUserMenuLinks = async () => {
     const userMenu = document.querySelector('[data-user-menu-panel]');
