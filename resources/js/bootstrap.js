@@ -33,9 +33,16 @@ const enforceHeaderActionLayout = () => {
     setImportant(header, 'backdrop-filter', 'none');
     setImportant(header, '-webkit-backdrop-filter', 'none');
 
-    // Mobil/tablet yerlesimini Blade + Tailwind yonetsin. Bu zorlayici masaustu
-    // hizalama kurallari mobilde hidden siniflarini ezmemeli.
+    // Mobilde masaustunden kalmis inline !important display degerleri Tailwind
+    // hidden/lg:* kurallarini ezebiliyordu. Arama ve Yaz butonunu mobil/tablette
+    // burada kesin olarak gizliyoruz; masaustune donuldugunde asagidaki blok
+    // display degerlerini tekrar dogru sekilde kurar.
     if (!isDesktop) {
+        const mobileSearchPanel = actions.querySelector('.site-search-panel');
+        const mobileWriteButton = actions.querySelector('.site-header-write-btn');
+
+        setImportant(mobileSearchPanel, 'display', 'none');
+        setImportant(mobileWriteButton, 'display', 'none');
         return;
     }
 
