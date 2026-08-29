@@ -6,7 +6,6 @@
 
 @section('content')
     <style>
-        /* Taslaklar sayfasi: Arama sayfasindaki kimlik basligi ile ayni dil. */
         body.alma-app:has(.drafts-page) main,
         body.alma-app:has(.drafts-page) main > div,
         body.alma-app:has(.drafts-page) .drafts-page,
@@ -98,17 +97,26 @@
         }
 
         .drafts-feed {
+            display: flex !important;
+            flex-direction: column !important;
+            gap: 2px !important;
             padding: 0 !important;
+            margin: 0 !important;
             border: 0 !important;
             background: transparent !important;
             box-shadow: none !important;
         }
 
-        /* Post-card normal halde nasilsa hover'da da oyle kalsin. */
-        .drafts-feed > *,
-        .drafts-feed article,
-        .drafts-feed [class*="post-card"],
-        .drafts-feed [data-post-card] {
+        .drafts-feed > * {
+            margin-top: 0 !important;
+            margin-bottom: 0 !important;
+        }
+
+        .drafts-feed > article,
+        .drafts-feed > [class*="post-card"],
+        .drafts-feed > [data-post-card] {
+            margin: 0 !important;
+            box-shadow: none !important;
             transition-property: border-color, background-color, color !important;
         }
 
@@ -163,6 +171,10 @@
                 min-height: 38px;
                 padding: 3px 8px;
                 border-radius: 18px;
+            }
+
+            .drafts-feed {
+                gap: 1px !important;
             }
         }
     </style>
