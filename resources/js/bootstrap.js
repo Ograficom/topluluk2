@@ -171,14 +171,27 @@ const setupPostCreateAutosave = () => {
         return true;
     });
 
+    const checkboxNames = () => new Set(
+        serializableFields()
+            .filter((field) => field instanceof HTMLInputElement && (field.type === 'checkbox' || field.type === 'radio'))
+            .map((field) => field.name)
+    );
+
     const collectFields = () => {
         const values = {};
+        const groupedNames = checkboxNames();
+
         serializableFields().forEach((field) => {
+            if (field instanceof HTMLInputElement && field.type === 'hidden' && groupedNames.has(field.name)) {
+                return;
+            }
+
             if (field instanceof HTMLInputElement && (field.type === 'checkbox' || field.type === 'radio')) {
-                if (!values[field.name]) values[field.name] = [];
+                if (!Array.isArray(values[field.name])) values[field.name] = [];
                 if (field.checked) values[field.name].push(field.value);
                 return;
             }
+
             values[field.name] = field.value;
         });
         return values;
@@ -234,8 +247,13 @@ const setupPostCreateAutosave = () => {
 
         restoring = true;
         const fields = serializableFields();
+        const groupedNames = checkboxNames();
 
         fields.forEach((field) => {
+            if (field instanceof HTMLInputElement && field.type === 'hidden' && groupedNames.has(field.name)) {
+                return;
+            }
+
             const stored = draft.fields[field.name];
             if (stored === undefined || stored === null) return;
 
