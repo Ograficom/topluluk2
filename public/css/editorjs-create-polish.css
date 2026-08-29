@@ -11,6 +11,42 @@
     z-index: 220 !important;
 }
 
+/* Keep the + button on the left and the six-dot settings button on the right. */
+.create-page-fixed [data-editorjs-wrapper] .ce-toolbar__content {
+    position: relative !important;
+}
+
+.create-page-fixed [data-editorjs-wrapper] .ce-toolbar__actions {
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
+    max-width: none !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 0 !important;
+    transform: none !important;
+    pointer-events: none !important;
+}
+
+.create-page-fixed [data-editorjs-wrapper] .ce-toolbar__plus,
+.create-page-fixed [data-editorjs-wrapper] .ce-toolbar__settings-btn {
+    pointer-events: auto !important;
+    flex: 0 0 auto !important;
+}
+
+.create-page-fixed [data-editorjs-wrapper] .ce-toolbar__plus {
+    order: 1 !important;
+    margin-left: 0 !important;
+    margin-right: auto !important;
+}
+
+.create-page-fixed [data-editorjs-wrapper] .ce-toolbar__settings-btn {
+    order: 2 !important;
+    margin-left: auto !important;
+    margin-right: 0 !important;
+}
+
 /* Critical: EditorJS keeps popovers in the DOM while closed.
    Do not let the styled container become a blank visible panel on focus. */
 .create-page-fixed [data-editorjs-wrapper] .ce-popover:not(.ce-popover--opened) {
