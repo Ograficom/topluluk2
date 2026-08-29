@@ -224,3 +224,104 @@ html[data-theme="dark"] .create-page-fixed [data-editorjs-wrapper] .ce-popover--
 html[data-system-theme="dark"] .create-page-fixed [data-editorjs-wrapper] .ce-popover--opened .ce-popover-item__title {
     color: #f8fafc !important;
 }
+
+/* Settings accordion hardening: remove native disclosure markers and force a clean 3-column layout. */
+#settings-modal .settings-panel .settings-accordion-summary {
+    display: grid !important;
+    grid-template-columns: 28px minmax(0, 1fr) 20px !important;
+    align-items: center !important;
+    column-gap: 12px !important;
+    width: 100% !important;
+    min-height: 66px !important;
+    padding: 12px 16px !important;
+    list-style: none !important;
+    background: #fff !important;
+    cursor: pointer !important;
+}
+
+#settings-modal .settings-panel .settings-accordion-summary::marker,
+#settings-modal .settings-panel .settings-accordion-summary::-webkit-details-marker {
+    display: none !important;
+    content: '' !important;
+    font-size: 0 !important;
+}
+
+#settings-modal .settings-panel .settings-accordion-icon {
+    display: inline-flex !important;
+    width: 28px !important;
+    height: 28px !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: transparent !important;
+    color: #111827 !important;
+}
+
+#settings-modal .settings-panel .settings-accordion-icon iconify-icon {
+    font-size: 19px !important;
+}
+
+#settings-modal .settings-panel .settings-accordion-copy {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 3px !important;
+    min-width: 0 !important;
+    align-content: center !important;
+}
+
+#settings-modal .settings-panel .settings-accordion-title,
+#settings-modal .settings-panel .settings-accordion-description {
+    display: block !important;
+    width: 100% !important;
+    min-width: 0 !important;
+}
+
+#settings-modal .settings-panel .settings-accordion-title {
+    font-size: 14px !important;
+    font-weight: 600 !important;
+    line-height: 1.3 !important;
+    color: #111827 !important;
+}
+
+#settings-modal .settings-panel .settings-accordion-description {
+    margin: 0 !important;
+    font-size: 12px !important;
+    font-weight: 400 !important;
+    line-height: 1.35 !important;
+    color: #6b7280 !important;
+    white-space: normal !important;
+}
+
+#settings-modal .settings-panel .settings-accordion-chevron {
+    justify-self: end !important;
+    width: 18px !important;
+    height: 18px !important;
+    font-size: 18px !important;
+    color: #6b7280 !important;
+}
+
+#settings-modal .settings-panel .settings-accordion[open] > .settings-accordion-summary {
+    background: #f3f4f6 !important;
+}
+
+#settings-modal .settings-panel .settings-accordion-content {
+    border-top: 1px solid #eef0f3 !important;
+    padding: 14px 16px 16px !important;
+    background: #fff !important;
+}
+
+@media (max-width: 640px) {
+    #settings-modal .settings-panel .settings-accordion-summary {
+        grid-template-columns: 26px minmax(0, 1fr) 18px !important;
+        column-gap: 10px !important;
+        min-height: 64px !important;
+        padding: 11px 14px !important;
+    }
+
+    #settings-modal .settings-panel .settings-accordion-title {
+        font-size: 14px !important;
+    }
+
+    #settings-modal .settings-panel .settings-accordion-description {
+        font-size: 12px !important;
+    }
+}
