@@ -507,6 +507,12 @@
             display: none;
         }
 
+        .create-settings-mobile-tools {
+            display: none;
+            align-items: center;
+            gap: 6px;
+        }
+
         .create-preview-modal {
             position: fixed;
             inset: 0;
@@ -628,14 +634,8 @@
                 display: inline-flex;
             }
 
-            .create-desktop-settings-close {
-                display: inline-flex !important;
-            }
-        }
-
-        @media (min-width: 1024px) {
-            .create-desktop-settings-close {
-                display: none !important;
+            .create-settings-mobile-tools {
+                display: flex;
             }
         }
 
@@ -646,10 +646,17 @@
             }
 
             .create-brand-mark {
-                width: 34px;
-                height: 34px;
-                flex-basis: 34px;
-                border-radius: 11px;
+                display: none;
+            }
+
+            .create-topbar [data-open-preview],
+            .create-topbar [data-ai-assist] {
+                display: none;
+            }
+
+            .create-topbar .create-action-button--primary {
+                min-height: 40px;
+                padding-inline: 13px;
             }
 
             .create-icon-button {
@@ -834,9 +841,17 @@
                                 <div class="text-[15px] font-semibold">Gelişmiş seçenekler</div>
                                 <div class="mt-0.5 text-[12px] text-[var(--create-muted)]">Yayın, SEO ve görünürlük ayarları</div>
                             </div>
-                            <button type="button" class="create-icon-button create-desktop-settings-close !h-9 !w-9 !basis-9" data-close-settings aria-label="Kapat">
-                                <iconify-icon icon="lucide:x" class="text-[18px]"></iconify-icon>
-                            </button>
+                            <div class="create-settings-mobile-tools">
+                                <button type="button" class="create-icon-button !h-9 !w-9 !basis-9" data-open-preview aria-label="Ön izleme">
+                                    <iconify-icon icon="lucide:eye" class="text-[17px]"></iconify-icon>
+                                </button>
+                                <button type="button" class="create-icon-button !h-9 !w-9 !basis-9" data-ai-assist aria-label="Yapay zeka yardımcısı">
+                                    <iconify-icon icon="lucide:sparkles" data-ai-assist-icon class="text-[17px]"></iconify-icon>
+                                </button>
+                                <button type="button" class="create-icon-button !h-9 !w-9 !basis-9" data-close-settings aria-label="Kapat">
+                                    <iconify-icon icon="lucide:x" class="text-[18px]"></iconify-icon>
+                                </button>
+                            </div>
                         </div>
 
                         <div class="create-settings-scroll">
@@ -1227,6 +1242,13 @@
                 });
             });
 
+            const escapeHtml = (value) => String(value ?? '')
+                .replaceAll('&', '&amp;')
+                .replaceAll('<', '&lt;')
+                .replaceAll('>', '&gt;')
+                .replaceAll('"', '&quot;')
+                .replaceAll("'", '&#039;');
+
             const buildPreview = async () => {
                 const title = String(titleField?.value || '').trim();
                 const excerpt = String(document.getElementById('excerpt')?.value || '').trim();
@@ -1242,14 +1264,15 @@
                 return `
                     ${image}
                     <div class="text-[12px] font-medium text-[var(--create-muted)]">Ön izleme</div>
-                    <h1 class="mt-2 text-3xl font-bold tracking-tight text-[var(--create-text)]">${title || 'Başlıksız gönderi'}</h1>
-                    ${excerpt ? `<p class="mt-3 text-[15px] leading-6 text-[var(--create-muted)]">${excerpt.replaceAll('<', '&lt;').replaceAll('>', '&gt;')}</p>` : ''}
+                    <h1 class="mt-2 text-3xl font-bold tracking-tight text-[var(--create-text)]">${escapeHtml(title || 'Başlıksız gönderi')}</h1>
+                    ${excerpt ? `<p class="mt-3 text-[15px] leading-6 text-[var(--create-muted)]">${escapeHtml(excerpt)}</p>` : ''}
                     <div class="mt-7 text-[15px] leading-7 text-[var(--create-text)]">${contentHtml || '<p>Henüz içerik yok.</p>'}</div>
                 `;
             };
 
             const openPreview = async () => {
                 if (!previewModal || !previewContent) return;
+                if (!isDesktop()) closeSettings();
                 previewContent.innerHTML = await buildPreview();
                 previewModal.classList.add('is-open');
                 previewModal.setAttribute('aria-hidden', 'false');
@@ -1275,11 +1298,10 @@
                 closePreview();
             });
 
-            const aiAssistButton = document.querySelector('[data-ai-assist]');
-            const aiAssistIcon = document.querySelector('[data-ai-assist-icon]');
+            const aiAssistButtons = Array.from(document.querySelectorAll('[data-ai-assist]'));
             let aiBusy = false;
 
-            aiAssistButton?.addEventListener('click', async () => {
+            const runAiAssist = async (button) => {
                 if (aiBusy) return;
 
                 const title = String(titleField?.value || '').trim();
@@ -1291,8 +1313,8 @@
                 }
 
                 aiBusy = true;
-                aiAssistButton.disabled = true;
-                aiAssistIcon?.setAttribute('icon', 'lucide:loader-circle');
+                aiAssistButtons.forEach((item) => { item.disabled = true; });
+                aiAssistButtons.forEach((item) => item.querySelector('[data-ai-assist-icon]')?.setAttribute('icon', 'lucide:loader-circle'));
 
                 try {
                     const response = await fetch('{{ route('blog.ai-assist') }}', {
@@ -1334,9 +1356,15 @@
                     showToast(error?.message || 'Yapay zeka isteği başarısız.', true);
                 } finally {
                     aiBusy = false;
-                    aiAssistButton.disabled = false;
-                    aiAssistIcon?.setAttribute('icon', 'lucide:sparkles');
+                    aiAssistButtons.forEach((item) => {
+                        item.disabled = false;
+                        item.querySelector('[data-ai-assist-icon]')?.setAttribute('icon', 'lucide:sparkles');
+                    });
                 }
+            };
+
+            aiAssistButtons.forEach((button) => {
+                button.addEventListener('click', () => runAiAssist(button));
             });
         });
     </script>
