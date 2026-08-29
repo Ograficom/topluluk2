@@ -1,3 +1,5 @@
+@import './home-feed-surface-polish.css';
+
 /* /blog/create mobile composer header */
 @media (max-width: 640px) {
     .create-page-fixed > div > header {
