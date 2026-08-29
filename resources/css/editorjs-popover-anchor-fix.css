@@ -1,0 +1,43 @@
+/* EditorJS popovers must follow the active block, never the viewport. */
+.create-page-fixed [data-editorjs-wrapper],
+.create-page-fixed [data-editorjs-wrapper] .codex-editor {
+    position: relative !important;
+}
+
+.create-page-fixed [data-editorjs-wrapper] .ce-popover,
+.create-page-fixed [data-editorjs-wrapper] .ce-popover.ce-popover--opened {
+    position: absolute !important;
+    right: auto !important;
+    bottom: auto !important;
+    will-change: auto !important;
+}
+
+.create-page-fixed [data-editorjs-wrapper] .ce-popover__overlay,
+.create-page-fixed [data-editorjs-wrapper] .ce-popover-overlay {
+    display: none !important;
+    background: transparent !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+}
+
+@media (max-width: 640px) {
+    .create-page-fixed [data-editorjs-wrapper] .ce-popover,
+    .create-page-fixed [data-editorjs-wrapper] .ce-popover.ce-popover--opened {
+        position: absolute !important;
+        right: auto !important;
+        bottom: auto !important;
+        width: min(260px, calc(100vw - 36px)) !important;
+        max-width: calc(100vw - 36px) !important;
+        max-height: min(330px, 48vh) !important;
+    }
+
+    .create-page-fixed [data-editorjs-wrapper] .ce-popover__container {
+        max-height: min(330px, 48vh) !important;
+    }
+
+    .create-page-fixed [data-editorjs-wrapper] .ce-popover__items {
+        max-height: min(240px, 34vh) !important;
+        overflow-y: auto !important;
+        -webkit-overflow-scrolling: touch !important;
+    }
+}
