@@ -101,7 +101,7 @@
             flex-direction: column !important;
             gap: 20px !important;
             padding: 0 !important;
-            margin: 0 !important;
+            margin: 20px 0 0 !important;
             border: 0 !important;
             background: transparent !important;
             box-shadow: none !important;
@@ -175,11 +175,12 @@
 
             .drafts-feed {
                 gap: 14px !important;
+                margin-top: 14px !important;
             }
         }
     </style>
 
-    <div class="drafts-page space-y-4">
+    <div class="drafts-page">
         <header id="drafts" class="drafts-page-header" aria-label="{{ __('site.drafts_page.heading') }}">
             <a href="{{ url()->previous() }}" class="drafts-page-header__back" aria-label="Geri">
                 <iconify-icon icon="lucide:arrow-left" class="text-[15px]"></iconify-icon>
