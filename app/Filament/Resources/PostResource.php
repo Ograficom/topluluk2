@@ -18,7 +18,6 @@ use Filament\Forms\Components\ViewField;
 use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Section;
 use Filament\Resources\Resource;
-use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TagsColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
@@ -205,9 +204,17 @@ class PostResource extends Resource
                 TagsColumn::make('tags.name')
                     ->label('Etiketler')
                     ->limit(3),
-                IconColumn::make('is_published')
-                    ->label('Yayinda')
-                    ->boolean(),
+                TextColumn::make('publication_status')
+                    ->label('Durum')
+                    ->state(fn (Post $record): string => $record->isPublishedNow()
+                        ? 'Yayında'
+                        : ($record->is_published ? 'Zamanlandı' : 'Taslak'))
+                    ->badge()
+                    ->color(fn (string $state): string => match ($state) {
+                        'Yayında' => 'success',
+                        'Zamanlandı' => 'info',
+                        default => 'warning',
+                    }),
                 TextColumn::make('published_at')
                     ->label('Yayin tarihi')
                     ->dateTime()
@@ -286,15 +293,3 @@ class PostResource extends Resource
         ]);
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
