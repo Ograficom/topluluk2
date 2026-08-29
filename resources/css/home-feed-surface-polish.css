@@ -1,0 +1,33 @@
+/* Home main column should read as a post-card stream, not a white container. */
+body.route-home main,
+body.route-home .layout-main,
+body.route-home .layout-main-content,
+body.route-home [data-main-column],
+body.route-home [data-feed-main],
+body.route-home .home-feed,
+body.route-home .home-feed-container,
+body.route-home .feed-container {
+    background: transparent !important;
+    box-shadow: none !important;
+}
+
+/* Do not add elevation on post cards while hovering. */
+body.route-home main article:hover,
+body.route-home main [data-post-card]:hover,
+body.route-home main [class*="post-card"]:hover,
+body.route-home .home-feed article:hover,
+body.route-home .home-feed [data-post-card]:hover,
+body.route-home .home-feed [class*="post-card"]:hover {
+    box-shadow: none !important;
+    transform: none !important;
+    translate: none !important;
+}
+
+/* Keep the feed visually continuous without an extra enclosing surface. */
+body.route-home main > .bg-white,
+body.route-home main > [class*="bg-white"],
+body.route-home .home-feed > .bg-white,
+body.route-home .feed-container > .bg-white {
+    background: transparent !important;
+    box-shadow: none !important;
+}
