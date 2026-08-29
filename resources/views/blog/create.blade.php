@@ -1,563 +1,1133 @@
 @extends('layouts.app')
 
 @section('title', __('post_create.page_title'))
-@section('hide_global_header')@endsection
-@section('no_container_padding')@endsection
-@section('hide_feed_header')@endsection
-@section('hide_mobile_bottom_nav')@endsection
-@section('page_background_class', 'bg-[#f4f5f7]')
 
-@push('head')
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600&display=swap" rel="stylesheet">
-<style>
-    html, body { overflow: hidden; }
+@section('hide_global_header')
+@endsection
 
-    .ografi-create {
-        --og-bg: #f4f5f7;
-        --og-surface: rgba(255,255,255,.86);
-        --og-surface-strong: rgba(255,255,255,.96);
-        --og-soft: rgba(255,255,255,.58);
-        --og-border: rgba(15,23,42,.13);
-        --og-border-strong: rgba(15,23,42,.18);
-        --og-text: #17191d;
-        --og-muted: #687386;
-        --og-subtle: #9aa3b2;
-        --og-blue: #0a84ff;
-        --og-shadow: inset 0 1px 0 rgba(255,255,255,.78), 0 10px 32px rgba(15,23,42,.06);
-        position: fixed;
-        inset: 0;
-        z-index: 99999;
-        overflow-y: auto;
-        background: var(--og-bg);
-        color: var(--og-text);
-        font-family: 'Roboto', Arial, Helvetica, sans-serif !important;
-    }
+@section('no_container_padding')
+@endsection
 
-    html.dark .ografi-create,
-    html[data-system-theme="dark"] .ografi-create,
-    html[data-theme="dark"] .ografi-create {
-        --og-bg: #090d14;
-        --og-surface: rgba(17,24,39,.78);
-        --og-surface-strong: rgba(15,23,42,.94);
-        --og-soft: rgba(30,41,59,.62);
-        --og-border: rgba(255,255,255,.11);
-        --og-border-strong: rgba(255,255,255,.16);
-        --og-text: #f6f7f9;
-        --og-muted: #a5afbd;
-        --og-subtle: #748196;
-        --og-shadow: inset 0 1px 0 rgba(255,255,255,.07), 0 10px 34px rgba(0,0,0,.24);
-    }
-
-    .ografi-create, .ografi-create *:not(iconify-icon) { font-family: 'Roboto', Arial, Helvetica, sans-serif !important; }
-    .og-shell { width: min(1160px, calc(100% - 24px)); margin: 0 auto; }
-    .og-glass { border: .5px solid var(--og-border); background: var(--og-surface); box-shadow: var(--og-shadow); backdrop-filter: blur(24px) saturate(150%); -webkit-backdrop-filter: blur(24px) saturate(150%); }
-    .og-glass-strong { border: .5px solid var(--og-border-strong); background: var(--og-surface-strong); box-shadow: var(--og-shadow); backdrop-filter: blur(28px) saturate(160%); -webkit-backdrop-filter: blur(28px) saturate(160%); }
-
-    .ografi-create .og-icon,
-    .ografi-create .og-pill {
-        border: .5px solid var(--og-border) !important;
-        background: var(--og-soft) !important;
-        color: var(--og-text) !important;
-        box-shadow: none !important;
-        outline: none !important;
-        transition: transform .12s ease, background-color .14s ease, border-color .14s ease !important;
-    }
-    .ografi-create .og-icon:hover,
-    .ografi-create .og-pill:hover { background: var(--og-surface-strong) !important; }
-    .ografi-create .og-icon:active,
-    .ografi-create .og-pill:active { transform: scale(.97) !important; }
-    .ografi-create .og-primary,
-    .ografi-create .og-primary:hover,
-    .ografi-create .og-primary:focus-visible { border-color: rgba(10,132,255,.86) !important; background: var(--og-blue) !important; color: #fff !important; }
-
-    .ografi-create .og-field {
-        width: 100% !important;
-        border: .5px solid var(--og-border) !important;
-        background: var(--og-soft) !important;
-        color: var(--og-text) !important;
-        box-shadow: none !important;
-        outline: none !important;
-    }
-    .ografi-create .og-field:focus { border-color: rgba(10,132,255,.62) !important; background: var(--og-surface-strong) !important; }
-    .ografi-create .og-field::placeholder { color: var(--og-subtle) !important; }
-
-    .og-popover, .og-drawer, .og-backdrop, .og-preview { opacity: 0; visibility: hidden; pointer-events: none; }
-    .og-popover.is-open, .og-drawer.is-open, .og-backdrop.is-open, .og-preview.is-open { opacity: 1; visibility: visible; pointer-events: auto; }
-    .og-popover { transform: translateY(-4px) scale(.98); transition: opacity .16s ease, transform .16s ease, visibility .16s; }
-    .og-popover.is-open { transform: translateY(0) scale(1); }
-    .og-drawer { width: min(400px, calc(100vw - 24px)); transform: translateX(calc(100% + 28px)); transition: transform .22s cubic-bezier(.32,.72,0,1), opacity .16s ease, visibility .22s; }
-    .og-drawer.is-open { transform: translateX(0); }
-    .og-backdrop, .og-preview { transition: opacity .18s ease, visibility .18s; }
-
-    .ografi-create [data-editorjs-wrapper] .codex-editor,
-    .ografi-create [data-editorjs-wrapper] .codex-editor *:not(iconify-icon) { font-family: 'Roboto', Arial, Helvetica, sans-serif !important; }
-    .ografi-create [data-editorjs-wrapper] .codex-editor__redactor { padding-bottom: 150px !important; }
-    .ografi-create [data-editorjs-wrapper] .ce-block__content,
-    .ografi-create [data-editorjs-wrapper] .ce-toolbar__content { max-width: 760px !important; }
-    .ografi-create [data-editorjs-wrapper] .ce-paragraph { color: var(--og-text) !important; font-size: 16px !important; font-weight: 400 !important; line-height: 1.72 !important; }
-    .ografi-create [data-editorjs-wrapper] .ce-header { color: var(--og-text) !important; font-weight: 600 !important; line-height: 1.3 !important; }
-    .ografi-create [data-editorjs-wrapper] .ce-toolbar__plus,
-    .ografi-create [data-editorjs-wrapper] .ce-toolbar__settings-btn { width: 34px !important; height: 34px !important; border: .5px solid var(--og-border) !important; border-radius: 999px !important; background: var(--og-soft) !important; color: var(--og-muted) !important; box-shadow: none !important; }
-    .ografi-create [data-editorjs-wrapper] .ce-popover,
-    .ografi-create [data-editorjs-wrapper] .ce-inline-toolbar,
-    .ografi-create [data-editorjs-wrapper] .ce-conversion-toolbar { border: .5px solid var(--og-border) !important; border-radius: 18px !important; background: var(--og-surface-strong) !important; color: var(--og-text) !important; box-shadow: var(--og-shadow) !important; backdrop-filter: blur(24px) !important; -webkit-backdrop-filter: blur(24px) !important; }
-    .ografi-create [data-editorjs-wrapper] .ce-popover-item__title,
-    .ografi-create [data-editorjs-wrapper] .ce-popover-item__secondary-title,
-    .ografi-create [data-editorjs-wrapper] .ce-inline-tool,
-    .ografi-create [data-editorjs-wrapper] .ce-conversion-tool__label { color: var(--og-text) !important; }
-
-    @media (max-width: 980px) {
-        .og-workspace { grid-template-columns: 1fr !important; }
-        .og-cover { position: static !important; order: 2; }
-        .og-editor { order: 1; }
-    }
-    @media (max-width: 640px) {
-        .og-shell { width: calc(100% - 14px); }
-        .og-brand-subtitle { display: none; }
-        .og-publish iconify-icon { display: none; }
-        .og-title { font-size: 25px !important; }
-    }
-    @media (prefers-reduced-motion: reduce) { .og-popover, .og-drawer, .og-backdrop, .og-preview, .og-icon, .og-pill { transition: none !important; } }
-</style>
-@endpush
+@section('page_background_class', 'bg-[#f6f7fb]')
+@section('hide_feed_header')
+@endsection
+@section('hide_mobile_bottom_nav')
+@endsection
 
 @section('content')
-@php
-    $initialCategoryId = (int) old('category_id');
-@endphp
+    @php
+        $user = auth()->user();
+        $initialCategoryId = (int) old('category_id');
+        $selectedCategory = collect($categories)->firstWhere('id', $initialCategoryId);
+        $categoryPalette = ['#10b981', '#6366f1', '#ec4899', '#f97316', '#06b6d4', '#8b5cf6', '#ef4444', '#0ea5e9'];
+    @endphp
 
-<div class="ografi-create" data-create-page>
-    <form id="post-create-form" method="POST" action="{{ route('blog.store') }}" enctype="multipart/form-data">
-        @csrf
-        <input type="hidden" id="is_published" name="is_published" value="{{ old('is_published', 0) ? 1 : 0 }}">
-        <input type="hidden" id="content_json" name="content_json" data-editor-json value="{{ old('content_json') }}">
+    <style>
+        .create-page-fixed {
+            position: fixed;
+            inset: 0;
+            z-index: 99999;
+            overflow: auto;
+            background: #f6f7fb;
+        }
 
-        <div class="og-shell min-h-screen py-3 pb-10">
-            <header class="og-glass-strong sticky top-2.5 z-[90] flex min-h-[60px] items-center justify-between gap-3 rounded-full p-2">
-                <div class="flex min-w-0 items-center gap-2.5">
-                    <a href="{{ route('blog.index') }}" class="og-icon inline-flex h-[42px] w-[42px] shrink-0 items-center justify-center rounded-full" aria-label="Geri" title="Geri">
-                        <iconify-icon icon="lucide:chevron-left" class="text-[21px]"></iconify-icon>
-                    </a>
-                    <div class="min-w-0">
-                        <div class="truncate text-[15px] font-semibold">Yeni gönderi</div>
-                        <div class="og-brand-subtitle truncate text-[12px] text-[var(--og-muted)]">Ografi Editor</div>
-                    </div>
-                </div>
+        body,
+        html {
+            overflow: hidden;
+        }
 
-                <div class="flex shrink-0 items-center gap-1.5">
-                    <div class="relative">
-                        <button type="button" class="og-icon inline-flex h-[42px] w-[42px] items-center justify-center rounded-full" data-info-toggle aria-label="Yazı bilgisi" title="Yazı bilgisi" aria-expanded="false">
-                            <iconify-icon icon="lucide:info" class="text-[19px]"></iconify-icon>
-                        </button>
-                        <div class="og-popover og-glass-strong absolute right-0 top-[calc(100%+8px)] z-[130] w-[258px] overflow-hidden rounded-[22px]" data-info-popover aria-hidden="true">
-                            <div class="border-b border-[var(--og-border)] px-3.5 py-3 text-[13px] font-semibold">Yazı bilgisi</div>
-                            <div class="flex min-h-[42px] items-center justify-between gap-3 px-3.5 text-[13px] text-[var(--og-muted)]"><span>Okuma süresi</span><strong class="font-medium text-[var(--og-text)]" data-reading-time>1 dk okuma</strong></div>
-                            <div class="flex min-h-[42px] items-center justify-between gap-3 border-t border-[var(--og-border)] px-3.5 text-[13px] text-[var(--og-muted)]"><span>Kelime</span><strong class="font-medium text-[var(--og-text)]" data-word-count>0 kelime</strong></div>
-                            <div class="flex min-h-[42px] items-center justify-between gap-3 border-t border-[var(--og-border)] px-3.5 text-[13px] text-[var(--og-muted)]"><span>Kayıt</span><strong class="font-medium text-[var(--og-text)]">Taslak destekli</strong></div>
+        body > aside,
+        body > nav,
+        .sidebar,
+        .left-sidebar,
+        [data-sidebar],
+        [data-left-sidebar],
+        [data-app-sidebar],
+        [data-feed-sidebar],
+        [data-right-sidebar],
+        [data-comments-sidebar] {
+            display: none !important;
+        }
+
+        .create-card {
+            border: 1px solid #e2e8f0;
+            background: rgba(255, 255, 255, .96);
+            box-shadow: 0 20px 70px -55px rgba(15, 23, 42, .55);
+        }
+
+        .create-input {
+            width: 100%;
+            border-radius: 18px;
+            border: 1px solid #e2e8f0;
+            background: #f8fafc;
+            padding: .78rem .92rem;
+            font-size: .875rem;
+            color: #0f172a;
+            outline: none;
+            transition: .18s ease;
+        }
+
+        .create-input:focus {
+            border-color: #93c5fd;
+            background: #ffffff;
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, .10);
+        }
+
+        label[data-tag-option] {
+            position: relative !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            cursor: pointer !important;
+            border: 0 !important;
+            background: transparent !important;
+            padding: 0 !important;
+        }
+
+        label[data-tag-option] input[type="checkbox"] {
+            position: absolute !important;
+            width: 1px !important;
+            height: 1px !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            opacity: 0 !important;
+            pointer-events: none !important;
+            appearance: none !important;
+            -webkit-appearance: none !important;
+        }
+
+        label[data-tag-option] span {
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            min-height: 38px !important;
+            border-radius: 999px !important;
+            border: 1px solid #e2e8f0 !important;
+            background: #ffffff !important;
+            padding: .55rem .9rem !important;
+            font-size: .78rem !important;
+            font-weight: 500 !important;
+            line-height: 1 !important;
+            color: #334155 !important;
+            transition: .18s ease !important;
+        }
+
+        label[data-tag-option]:hover span {
+            border-color: #bfdbfe !important;
+            background: #eff6ff !important;
+            color: #1d4ed8 !important;
+        }
+
+        label[data-tag-option]:has(input[type="checkbox"]:checked) span {
+            border-color: #3b82f6 !important;
+            background: #eff6ff !important;
+            color: #1d4ed8 !important;
+            box-shadow: inset 0 0 0 1px #3b82f6 !important;
+        }
+
+        .settings-panel {
+            position: fixed !important;
+            inset-inline: 0 !important;
+            bottom: 0 !important;
+            top: auto !important;
+            width: 100% !important;
+            max-height: 86vh !important;
+            overflow: hidden !important;
+            border-radius: 22px 22px 0 0 !important;
+            background: #ffffff !important;
+            transform: translateY(105%) !important;
+            transition: transform .28s ease !important;
+            box-shadow: 0 -24px 70px -32px rgba(15, 23, 42, .55) !important;
+        }
+
+        #settings-modal.is-open .settings-panel {
+            transform: translateY(0) !important;
+        }
+
+        .create-brand {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 26px;
+            height: 26px;
+            border-radius: 8px;
+            background: #2563eb;
+            color: #fff;
+            flex-shrink: 0;
+        }
+
+        .create-category-pill {
+            display: inline-flex !important;
+            align-items: center !important;
+            gap: 5px !important;
+            border-radius: 999px !important;
+            border: 1px solid #bfdbfe !important;
+            background: #eff6ff !important;
+            color: #1d4ed8 !important;
+            padding: .3rem .7rem !important;
+            font-size: .72rem !important;
+            font-weight: 600 !important;
+            transition: .18s ease !important;
+        }
+
+        .create-category-pill:hover {
+            background: #dbeafe !important;
+            border-color: #93c5fd !important;
+        }
+
+        .create-cover {
+            position: relative;
+            display: block;
+            width: 100%;
+            border-radius: 18px;
+            overflow: hidden;
+        }
+
+        .create-cover-drop {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: .35rem;
+            width: 100%;
+            min-height: 128px;
+            border-radius: 18px;
+            border: 1.5px dashed #cbd5e1;
+            background: #f8fafc;
+            color: #64748b;
+            cursor: pointer;
+            transition: .18s ease;
+            padding: 1.1rem;
+        }
+
+        .create-cover-drop:hover {
+            border-color: #93c5fd;
+            background: #eff6ff;
+            color: #1d4ed8;
+        }
+
+        .create-cover-preview {
+            display: none;
+            position: relative;
+            width: 100%;
+            max-height: 320px;
+            border-radius: 18px;
+            overflow: hidden;
+            background: #0f172a;
+        }
+
+        .create-cover-preview img {
+            width: 100%;
+            max-height: 320px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .create-cover-preview__actions {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            display: flex;
+            gap: 6px;
+        }
+
+        .create-cover-preview__actions button {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            border-radius: 999px;
+            background: rgba(15, 23, 42, .62);
+            color: #fff;
+            font-size: .72rem;
+            font-weight: 600;
+            padding: .4rem .7rem;
+            backdrop-filter: blur(6px);
+            transition: .16s ease;
+        }
+
+        .create-cover-preview__actions button:hover {
+            background: rgba(15, 23, 42, .8);
+        }
+
+        .create-cover.has-image .create-cover-drop { display: none; }
+        .create-cover.has-image .create-cover-preview { display: block; }
+
+        .create-title-input {
+            width: 100%;
+            border: 0;
+            background: transparent;
+            padding: 0;
+            font-size: 1.7rem;
+            font-weight: 700;
+            letter-spacing: -0.01em;
+            line-height: 1.28;
+            color: #0b0f19;
+            outline: none;
+        }
+
+        .create-title-input::placeholder {
+            color: #a8b0bd;
+            font-weight: 700;
+        }
+
+        @media (min-width: 640px) {
+            .create-title-input {
+                font-size: 2.15rem;
+            }
+        }
+
+        .create-meta-row {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 10px;
+            margin-top: .65rem;
+        }
+
+        .create-meta-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            font-size: .76rem;
+            font-weight: 500;
+            color: #94a3b8;
+        }
+
+        .create-editor-hint {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 4px;
+            padding: 0 .1rem;
+            font-size: .78rem;
+            color: #b6bcc7;
+            transition: opacity .18s ease;
+        }
+
+        .create-editor-hint iconify-icon {
+            font-size: 15px;
+            color: #c7cdd6;
+        }
+
+        [data-editorjs-wrapper] .ce-paragraph.cdx-block,
+        [data-editorjs-wrapper] .ce-paragraph[data-empty] {
+            background: transparent !important;
+        }
+
+        [data-editorjs-wrapper] .codex-editor__redactor {
+            padding-bottom: 120px !important;
+        }
+
+        [data-editorjs-wrapper] .ce-block:first-child .ce-paragraph[data-placeholder-active]:empty::before,
+        [data-editorjs-wrapper] .ce-paragraph:empty::before {
+            color: #a8b0bd !important;
+        }
+
+        @media (min-width: 768px) {
+            .settings-panel {
+                left: auto !important;
+                right: 24px !important;
+                top: 24px !important;
+                bottom: auto !important;
+                width: 430px !important;
+                max-width: calc(100vw - 48px) !important;
+                max-height: calc(100vh - 48px) !important;
+                border-radius: 22px !important;
+                border: 1px solid #e2e8f0 !important;
+                transform: translateX(calc(100% + 32px)) !important;
+                box-shadow: 0 24px 70px -35px rgba(15, 23, 42, .32) !important;
+            }
+
+            #settings-modal.is-open .settings-panel {
+                transform: translateX(0) !important;
+            }
+        }
+    </style>
+
+    <div class="create-page-fixed text-slate-950">
+        <div class="mx-auto flex min-h-screen w-full max-w-[1280px] flex-col px-3 py-3 sm:px-5 lg:px-6">
+            <header class="sticky top-3 z-40 mb-4 rounded-[28px] border border-slate-200 bg-white/95 px-3 py-3 shadow-[0_18px_60px_-50px_rgba(15,23,42,.65)] backdrop-blur sm:px-5 lg:px-6">
+                <div class="flex items-center justify-between gap-3">
+                    <div class="flex min-w-0 items-center gap-3">
+                        <a href="{{ route('blog.index') }}"
+                           class="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl border border-slate-200 bg-white text-slate-600 transition hover:bg-slate-50 active:bg-slate-100"
+                           aria-label="{{ __('post_create.back') }}">
+                            <svg viewBox="0 0 24 24" fill="none" class="h-5 w-5" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M15 6L9 12L15 18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </a>
+
+                        <div class="create-brand">
+                            <iconify-icon icon="lucide:feather" class="text-[14px]"></iconify-icon>
+                        </div>
+
+                        <div class="min-w-0">
+                            <div class="truncate text-sm font-semibold text-slate-950">Yeni gönderi</div>
+
+                            <details class="relative" data-category-menu>
+                                <summary class="create-category-pill mt-1 max-w-full cursor-pointer list-none [&::-webkit-details-marker]:hidden">
+                                    <iconify-icon icon="lucide:tag" class="text-[12px]"></iconify-icon>
+                                    <span class="truncate" data-category-label>{{ $selectedCategory?->name ?: __('post_create.select_category') }}</span>
+                                    <svg viewBox="0 0 20 20" fill="none" class="h-3 w-3 shrink-0" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                        <path d="m5 7.5 5 5 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                </summary>
+
+                                <div class="absolute left-0 top-full z-50 mt-3 w-[320px] max-w-[calc(100vw-32px)] overflow-hidden rounded-[22px] border border-slate-200 bg-white shadow-[0_22px_70px_-35px_rgba(15,23,42,.45)]">
+                                    <div class="max-h-[320px] overflow-y-auto p-2">
+                                        @foreach ($categories as $index => $category)
+                                            @php($categoryAvatar = $category->profile_image_url ?? $category->profile_image ?? null)
+                                            @php($fallbackColor = $categoryPalette[$index % count($categoryPalette)])
+                                            <button
+                                                type="button"
+                                                data-category-option
+                                                data-value="{{ $category->id }}"
+                                                data-label="{{ $category->name }}"
+                                                class="flex w-full items-center gap-3 rounded-2xl px-3 py-2.5 text-left text-slate-800 transition hover:bg-slate-100 {{ $initialCategoryId === (int) $category->id ? 'bg-slate-100' : '' }}"
+                                            >
+                                                @if ($categoryAvatar)
+                                                    <img src="{{ $categoryAvatar }}" alt="{{ $category->name }}" class="h-9 w-9 rounded-full object-cover">
+                                                @else
+                                                    <span class="inline-flex h-9 w-9 items-center justify-center rounded-full text-xs font-medium text-white" style="background-color: {{ $fallbackColor }};">
+                                                        {{ \Illuminate\Support\Str::upper(\Illuminate\Support\Str::substr($category->name, 0, 2)) }}
+                                                    </span>
+                                                @endif
+                                                <span class="truncate text-sm font-medium">{{ $category->name }}</span>
+                                            </button>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            </details>
                         </div>
                     </div>
 
-                    <button type="button" class="og-icon inline-flex h-[42px] w-[42px] items-center justify-center rounded-full" data-open-settings aria-label="Gelişmiş seçenekler" title="Gelişmiş seçenekler" aria-expanded="false">
-                        <iconify-icon icon="lucide:settings" class="text-[19px]"></iconify-icon>
-                    </button>
+                    <div class="flex shrink-0 items-center gap-2">
+                        <div class="hidden items-center gap-1.5 text-xs text-blue-700 sm:flex">
+                            <iconify-icon icon="lucide:check" class="text-[14px]"></iconify-icon>
+                            <span>Taslak hazır</span>
+                        </div>
 
-                    <button type="submit" class="og-pill og-primary og-publish inline-flex min-h-[42px] items-center gap-2 rounded-full px-4 text-[14px] font-medium" data-submit-intent="publish">
-                        <iconify-icon icon="lucide:send" class="text-[16px]"></iconify-icon><span>Yayınla</span>
-                    </button>
+                        <button type="button" data-ai-assist class="inline-flex h-11 w-11 items-center justify-center rounded-2xl border border-slate-200 bg-white text-slate-700 transition hover:bg-slate-50 active:bg-slate-100" aria-label="Yapay zeka yardımcısı" title="Yapay zeka yardımcısı: SEO alanlarını doldur ve öneri al">
+                            <iconify-icon icon="lucide:sparkles" data-ai-assist-icon class="text-[17px]"></iconify-icon>
+                        </button>
+
+                        <button type="button" data-open-settings class="inline-flex h-11 w-11 items-center justify-center rounded-2xl border border-slate-200 bg-white text-slate-700 transition hover:bg-slate-50 active:bg-slate-100" aria-label="{{ __('post_create.settings') }}">
+                            <iconify-icon icon="lucide:sliders-horizontal" class="text-[17px]"></iconify-icon>
+                        </button>
+
+                        <button type="submit" form="post-create-form" data-submit-intent="publish"
+                                class="inline-flex h-11 items-center justify-center rounded-2xl bg-blue-600 px-4 text-sm font-semibold text-white shadow-[0_18px_34px_-18px_rgba(37,99,235,.9)] transition hover:bg-blue-700 active:bg-blue-800 sm:px-5">
+                            <iconify-icon icon="lucide:send" class="text-base" aria-hidden="true"></iconify-icon>
+                            <span class="sr-only sm:not-sr-only sm:ml-2">{{ __('post_create.publish') }}</span>
+                        </button>
+                    </div>
                 </div>
             </header>
 
-            @if ($errors->any())
-                <div class="mt-3 rounded-[18px] border border-red-300/70 bg-red-50 px-4 py-3 text-[13px] text-red-800">
-                    <div class="font-medium">Gönderi kaydedilemedi.</div>
-                    <div class="mt-1">{{ $errors->first() }}</div>
-                </div>
-            @endif
+            <main class="mx-auto w-full max-w-[760px] flex-1">
+                @if ($errors->any())
+                    <div class="mb-4 rounded-2xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-800">
+                        <div class="font-medium">{{ __('post_create.validation_errors') }}</div>
+                        <ul class="mt-2 list-disc space-y-1 pl-4">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
 
-            <div class="og-workspace mt-3.5 grid grid-cols-[minmax(0,1fr)_310px] items-start gap-3.5">
-                <main class="og-editor og-glass-strong min-w-0 overflow-visible rounded-[28px] max-sm:rounded-[23px]">
-                    <section class="px-7 pb-5 pt-6 max-sm:px-4 max-sm:pt-5">
-                        <label for="title" class="mb-2 block text-[12px] font-medium text-[var(--og-muted)]">Başlık</label>
-                        <textarea id="title" name="title" rows="1" required class="og-title block min-h-[44px] w-full resize-none overflow-hidden border-0 bg-transparent p-0 text-[clamp(27px,2.45vw,33px)] font-semibold leading-[1.24] tracking-[-.018em] text-[var(--og-text)] outline-none placeholder:text-[var(--og-subtle)]" placeholder="Başlığını yaz...">{{ old('title') }}</textarea>
+                <form id="post-create-form" method="POST" action="{{ route('blog.store') }}" class="space-y-4" enctype="multipart/form-data">
+                    @csrf
+                    <input type="hidden" name="is_published" id="is_published" value="{{ old('is_published') ? 1 : 0 }}">
+                    <input type="hidden" id="category_id" name="category_id" data-category-input value="{{ $initialCategoryId ?: '' }}">
+
+                    <section class="create-card overflow-hidden rounded-[22px]">
+                        <div class="border-b border-slate-100 px-4 py-4 sm:px-7 sm:py-6">
+                            <div class="create-cover" data-cover-field>
+                                <label for="featured_image" class="create-cover-drop">
+                                    <iconify-icon icon="lucide:image-plus" class="text-2xl"></iconify-icon>
+                                    <span class="text-sm font-medium">{{ __('post_create.featured_image') }}</span>
+                                    <span class="text-xs text-slate-400">{{ __('post_create.max_file_size') }}</span>
+                                </label>
+                                <div class="create-cover-preview" data-cover-preview>
+                                    <img data-cover-preview-img alt="">
+                                    <div class="create-cover-preview__actions">
+                                        <button type="button" data-cover-change><iconify-icon icon="lucide:pencil" class="text-[13px]"></iconify-icon>Değiştir</button>
+                                        <button type="button" data-cover-remove><iconify-icon icon="lucide:x" class="text-[13px]"></iconify-icon>Kaldır</button>
+                                    </div>
+                                </div>
+                                <input id="featured_image" name="featured_image" type="file" accept="image/*" class="sr-only" data-cover-input>
+                            </div>
+
+                            <textarea id="title" name="title" required rows="1" data-autogrow
+                                   placeholder="{{ __('post_create.title_placeholder') }}"
+                                   class="create-title-input mt-5"
+                                   style="min-height:0 !important;border:0 !important;border-radius:0 !important;background:transparent !important;box-shadow:none !important;outline:none !important;padding:0 !important;resize:none !important;overflow:hidden !important;font-family:inherit !important;font-size:clamp(1.7rem, 1.45rem + 1.4vw, 2.15rem) !important;line-height:1.28 !important;font-weight:700 !important;color:#0b0f19 !important;letter-spacing:-0.01em !important;">{{ old('title') }}</textarea>
+
+                            <div class="create-meta-row">
+                                <span class="create-meta-chip">
+                                    <iconify-icon icon="lucide:clock" class="text-[13px]"></iconify-icon>
+                                    <span data-reading-time>0 dk okuma</span>
+                                </span>
+                                <span class="create-meta-chip">
+                                    <iconify-icon icon="lucide:type" class="text-[13px]"></iconify-icon>
+                                    <span data-word-count>0 kelime</span>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div data-editorjs-wrapper class="bg-white">
+                            <div x-ref="holder" class="min-h-[52vh] px-4 py-6 text-slate-800 sm:px-7 sm:py-7"></div>
+                            <div class="create-editor-hint px-4 pb-6 sm:px-7">
+                                <iconify-icon icon="lucide:sparkles"></iconify-icon>
+                                <span>Blok eklemek için satır başındaki <strong class="font-semibold text-slate-400">“+”</strong> simgesine dokunun; biçimlendirmek için metni seçin.</span>
+                            </div>
+                            <input type="hidden" name="content_json" id="content_json" data-editor-json value="{{ old('content_json') }}">
+                            <textarea id="content" name="content" data-editor-content data-mentionable="users" class="hidden min-h-[52vh] w-full resize-none px-4 py-6 text-slate-800 focus:outline-none sm:px-7 sm:py-7" placeholder="Gönderinizi buraya yazmaya başlayın...">{{ old('content') }}</textarea>
+                        </div>
                     </section>
 
-                    <div class="flex min-h-[48px] items-center justify-between gap-3 border-y border-[var(--og-border)] px-[18px]">
-                        <div class="flex items-center gap-2">
-                            <span class="text-[13px] font-semibold">Meta içerik</span>
-                            <span class="text-[11px] text-[var(--og-muted)]">EditorJS</span>
-                        </div>
-                        <div class="flex items-center gap-2 text-[11px] text-[var(--og-muted)]">
-                            <span class="h-1.5 w-1.5 rounded-full bg-current opacity-50" data-editor-dot></span>
-                            <span data-editor-status>EditorJS hazırlanıyor</span>
-                        </div>
-                    </div>
+                    <div id="settings-modal" class="fixed inset-0 z-[90] hidden" aria-hidden="true">
+                        <div class="absolute inset-0 bg-slate-950/45 opacity-0 transition-opacity duration-300" data-settings-overlay data-settings-close></div>
 
-                    <section class="relative min-h-[64vh]" data-editorjs-wrapper>
-                        <div x-ref="holder" class="min-h-[64vh] px-7 py-5 opacity-0 max-sm:px-4"></div>
-                        <textarea id="content" name="content" data-editor-content data-mentionable="users" class="absolute inset-0 z-10 block min-h-[64vh] w-full resize-none border-0 bg-transparent px-7 py-5 text-[16px] font-normal leading-[1.72] text-[var(--og-text)] outline-none placeholder:text-[var(--og-subtle)] max-sm:px-4" placeholder="Gönderini yazmaya başla...">{{ old('content') }}</textarea>
-                    </section>
-                </main>
+                        <aside class="settings-panel flex flex-col" data-settings-panel role="dialog" aria-modal="true" aria-labelledby="settings-title">
+                            <div class="mx-auto mt-2 h-1.5 w-14 rounded-full bg-slate-200 md:hidden"></div>
 
-                <aside class="og-cover og-glass-strong sticky top-[84px] overflow-hidden rounded-[28px] max-sm:rounded-[23px]" aria-label="Kapak görseli">
-                    <div class="flex min-h-[48px] items-center justify-between gap-3 border-b border-[var(--og-border)] px-[18px]">
-                        <span class="text-[13px] font-semibold">Kapak görseli</span>
-                        <iconify-icon icon="lucide:image" class="text-[17px] text-[var(--og-muted)]"></iconify-icon>
-                    </div>
-                    <div class="p-3">
-                        <div class="relative min-h-[190px] overflow-hidden rounded-[20px] border border-[var(--og-border)] bg-[var(--og-soft)]" data-cover-field>
-                            <label for="featured_image" class="flex min-h-[190px] cursor-pointer flex-col items-center justify-center gap-2.5 p-5 text-center text-[var(--og-muted)]" data-cover-drop>
-                                <span class="og-icon inline-flex h-[42px] w-[42px] items-center justify-center rounded-full"><iconify-icon icon="lucide:image-plus" class="text-[19px]"></iconify-icon></span>
-                                <span class="text-[13px] font-medium text-[var(--og-text)]">Görsel seç</span>
-                                <span class="text-[11px] leading-4">JPG, PNG veya WebP · en fazla 5 MB</span>
-                            </label>
-                            <div class="relative hidden min-h-[190px]" data-cover-preview>
-                                <img data-cover-img alt="Kapak görseli ön izlemesi" class="block min-h-[190px] max-h-[360px] w-full object-cover">
-                                <div class="absolute right-2.5 top-2.5 flex gap-1.5">
-                                    <button type="button" class="og-icon inline-flex h-9 w-9 items-center justify-center rounded-full" data-cover-change aria-label="Görseli değiştir"><iconify-icon icon="lucide:pencil" class="text-[15px]"></iconify-icon></button>
-                                    <button type="button" class="og-icon inline-flex h-9 w-9 items-center justify-center rounded-full" data-cover-remove aria-label="Görseli kaldır"><iconify-icon icon="lucide:x" class="text-[15px]"></iconify-icon></button>
+                            <div class="flex items-center justify-between gap-3 border-b border-slate-200 px-4 py-4 sm:px-5">
+                                <div class="min-w-0">
+                                    <h2 id="settings-title" class="text-[15px] font-semibold text-slate-950 sm:text-base">Ayarlar</h2>
+                                    <p class="mt-0.5 text-xs text-slate-500">Yayın detaylarını düzenle.</p>
+                                </div>
+                                <button type="button" data-settings-close class="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-slate-500 transition hover:bg-slate-100 hover:text-slate-900 active:bg-slate-200" aria-label="{{ __('post_create.close') }}">
+                                    <svg viewBox="0 0 24 24" fill="none" class="h-5 w-5" xmlns="http://www.w3.org/2000/svg"><path d="M6 6l12 12M18 6 6 18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+                                </button>
+                            </div>
+
+                            <div class="flex-1 overflow-y-auto bg-slate-50 p-3 sm:p-4">
+                                <div class="space-y-3">
+                                    <section class="rounded-[18px] border border-slate-200 bg-white p-4 shadow-sm">
+                                        <div class="mb-3 flex items-center gap-3">
+                                            <span class="inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-blue-50 text-xs font-bold text-blue-600">1</span>
+                                            <div class="min-w-0">
+                                                <div class="text-sm font-semibold text-slate-950">İçerik bilgileri</div>
+                                                <div class="mt-0.5 text-xs text-slate-500">Etiket ve kısa açıklama.</div>
+                                            </div>
+                                        </div>
+
+                                        <div class="space-y-3">
+                                            <input id="new_tags" name="new_tags" type="hidden" value="{{ old('new_tags') }}">
+                                            <input id="tag_search" type="text" placeholder="Etiket ekle ve Enter'a basın..." class="create-input" autocomplete="off">
+
+                                            @if(isset($tags) && collect($tags)->isNotEmpty())
+                                                <div class="max-h-32 overflow-y-auto rounded-2xl border border-slate-100 bg-slate-50 p-2.5">
+                                                    <div class="flex flex-wrap gap-2">
+                                                        @foreach($tags as $tag)
+                                                            <label data-tag-option data-tag-name="{{ \Illuminate\Support\Str::lower($tag->name) }}" class="inline-flex cursor-pointer items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-1.5 text-xs text-slate-600 transition hover:border-slate-300 hover:bg-slate-50">
+                                                                <input type="checkbox" name="tags[]" value="{{ $tag->id }}" @checked(collect(old('tags', []))->contains($tag->id)) class="h-3.5 w-3.5 rounded border-slate-300 text-blue-600 focus:ring-blue-200">
+                                                                <span>#{{ $tag->name }}</span>
+                                                            </label>
+                                                        @endforeach
+                                                    </div>
+                                                </div>
+                                            @endif
+
+                                            <div id="new-tags-chips" class="flex flex-wrap gap-2"></div>
+                                            <button type="button" id="add-new-tag-btn" class="hidden rounded-full bg-slate-900 px-3 py-2 text-xs font-medium text-white transition hover:bg-slate-800 active:bg-slate-950">{{ __('post_create.add_new_tag') }}</button>
+
+                                            <textarea id="excerpt" name="excerpt" rows="3" placeholder="Altyazı eklemek için buraya yazın..." class="create-input resize-none">{{ old('excerpt') }}</textarea>
+                                        </div>
+                                    </section>
+
+                                    <section class="rounded-[18px] border border-slate-200 bg-white p-4 shadow-sm">
+                                        <details class="group" open>
+                                            <summary class="flex cursor-pointer list-none items-center justify-between gap-3 [&::-webkit-details-marker]:hidden">
+                                                <div class="flex min-w-0 items-center gap-3">
+                                                    <span class="inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-blue-50 text-xs font-bold text-blue-600">2</span>
+                                                    <div class="min-w-0">
+                                                        <div class="text-sm font-semibold text-slate-950">SEO</div>
+                                                        <div class="mt-0.5 text-xs text-slate-500">Arama görünümü ayarları.</div>
+                                                    </div>
+                                                </div>
+                                                <svg viewBox="0 0 20 20" fill="none" class="h-4 w-4 shrink-0 text-slate-400 transition group-open:rotate-180" xmlns="http://www.w3.org/2000/svg"><path d="m5 7.5 5 5 5-5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                                            </summary>
+                                            <div class="mt-3 space-y-3">
+                                                <input id="meta_title" name="meta_title" type="text" value="{{ old('meta_title') }}" placeholder="Arama sonuçlarında görünecek başlık" class="create-input">
+                                                <div>
+                                                    <textarea id="meta_description" name="meta_description" rows="3" maxlength="160" placeholder="Arama sonuçlarında görünecek açıklama" class="create-input resize-none">{{ old('meta_description') }}</textarea>
+                                                    <div class="mt-1 text-right text-xs text-slate-400" data-meta-description-count>0/160</div>
+                                                </div>
+                                                <input id="slug" name="slug" type="text" value="{{ old('slug') }}" placeholder="https://ornek.com/gonderi" class="create-input">
+                                                <textarea id="meta_keywords" name="meta_keywords" rows="2" placeholder="virgülle ayırın (ör. yazılım, php, laravel)" class="create-input resize-none">{{ old('meta_keywords') }}</textarea>
+                                            </div>
+                                        </details>
+                                    </section>
+
+                                    <section class="rounded-[18px] border border-slate-200 bg-white p-4 shadow-sm">
+                                        <details class="group">
+                                            <summary class="flex cursor-pointer list-none items-center justify-between gap-3 [&::-webkit-details-marker]:hidden">
+                                                <div class="flex min-w-0 items-center gap-3">
+                                                    <span class="inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-blue-50 text-xs font-bold text-blue-600">3</span>
+                                                    <div class="min-w-0">
+                                                        <div class="text-sm font-semibold text-slate-950">Yayın zamanlaması</div>
+                                                        <div class="mt-0.5 text-xs text-slate-500">Hemen ya da ileri bir tarihte yayınla.</div>
+                                                    </div>
+                                                </div>
+                                                <svg viewBox="0 0 20 20" fill="none" class="h-4 w-4 shrink-0 text-slate-400 transition group-open:rotate-180" xmlns="http://www.w3.org/2000/svg"><path d="m5 7.5 5 5 5-5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                                            </summary>
+                                            <div class="mt-3 space-y-3">
+                                                <input id="published_at" name="published_at" type="datetime-local" value="{{ old('published_at') }}" class="create-input">
+                                            </div>
+                                        </details>
+                                    </section>
+
+                                    <section class="rounded-[18px] border border-slate-200 bg-white p-4 shadow-sm">
+                                        <details class="group">
+                                            <summary class="flex cursor-pointer list-none items-center justify-between gap-3 [&::-webkit-details-marker]:hidden">
+                                                <div class="flex min-w-0 items-center gap-3">
+                                                    <span class="inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-blue-50 text-xs font-bold text-blue-600">4</span>
+                                                    <div class="min-w-0">
+                                                        <div class="text-sm font-semibold text-slate-950">Lisans bilgileri</div>
+                                                        <div class="mt-0.5 text-xs text-slate-500">Görsel kaynak ve telif alanları.</div>
+                                                    </div>
+                                                </div>
+                                                <svg viewBox="0 0 20 20" fill="none" class="h-4 w-4 shrink-0 text-slate-400 transition group-open:rotate-180" xmlns="http://www.w3.org/2000/svg"><path d="m5 7.5 5 5 5-5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                                            </summary>
+                                            <div class="mt-3 space-y-3">
+                                                <input id="image_license_url" name="image_license_url" type="url" value="{{ old('image_license_url') }}" placeholder="https://example.com/license" class="create-input">
+                                                <input id="image_acquire_url" name="image_acquire_url" type="url" value="{{ old('image_acquire_url') }}" placeholder="https://example.com/buy" class="create-input">
+                                                <input id="image_credit_text" name="image_credit_text" type="text" value="{{ old('image_credit_text') }}" placeholder="{{ __('post_create.credit_placeholder') }}" class="create-input">
+                                                <input id="image_creator_name" name="image_creator_name" type="text" value="{{ old('image_creator_name') }}" placeholder="{{ __('post_create.creator_placeholder') }}" class="create-input">
+                                                <input id="image_copyright_notice" name="image_copyright_notice" type="text" value="{{ old('image_copyright_notice') }}" placeholder="{{ __('post_create.copyright_placeholder') }}" class="create-input">
+                                            </div>
+                                        </details>
+                                    </section>
+
+                                    <section class="rounded-[18px] border border-slate-200 bg-white p-4 shadow-sm">
+                                        <div class="mb-3 flex items-center gap-3">
+                                            <span class="inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-blue-50 text-xs font-bold text-blue-600">5</span>
+                                            <div class="text-sm font-semibold text-slate-950">Tercihler</div>
+                                        </div>
+                                        <div class="divide-y divide-slate-100 overflow-hidden rounded-2xl border border-slate-100 bg-slate-50">
+                                            <div class="flex items-center justify-between gap-4 px-3 py-3">
+                                                <span class="text-sm text-slate-800">{{ __('post_create.disable_comments') }}</span>
+                                                <input type="hidden" name="comments_disabled" value="0">
+                                                <x-ui.switch name="comments_disabled" value="1" :checked="old('comments_disabled', 0) == 1" />
+                                            </div>
+                                            <div class="flex items-center justify-between gap-4 px-3 py-3">
+                                                <span class="text-sm text-slate-800">{{ __('post_create.nsfw') }}</span>
+                                                <input type="hidden" name="is_nsfw" value="0">
+                                                <x-ui.switch name="is_nsfw" value="1" :checked="old('is_nsfw', 0) == 1" />
+                                            </div>
+                                            <div class="flex items-center justify-between gap-4 px-3 py-3">
+                                                <span class="text-sm text-slate-800">{{ __('post_create.pin_story') }}</span>
+                                                <input type="hidden" name="is_pinned" value="0">
+                                                <x-ui.switch name="is_pinned" value="1" :checked="old('is_pinned', 0) == 1" />
+                                            </div>
+                                        </div>
+                                    </section>
                                 </div>
                             </div>
-                            <input id="featured_image" name="featured_image" type="file" accept="image/jpeg,image/png,image/webp" class="sr-only" data-cover-input>
+
+                            <div class="border-t border-slate-200 bg-white p-3 sm:p-4">
+                                <div class="grid grid-cols-2 gap-2.5">
+                                    <button type="button" data-settings-close class="inline-flex h-11 items-center justify-center rounded-full bg-slate-100 px-4 text-sm font-medium text-slate-700 transition hover:bg-slate-200 active:bg-slate-300">{{ __('post_create.close') }}</button>
+                                    <button type="submit" form="post-create-form" data-submit-intent="publish" class="inline-flex h-11 items-center justify-center rounded-full bg-blue-600 px-4 text-sm font-semibold text-white shadow-[0_14px_28px_-18px_rgba(37,99,235,.9)] transition hover:bg-blue-700 active:bg-blue-800">{{ __('post_create.publish') }}</button>
+                                </div>
+                            </div>
+                        </aside>
+                    </div>
+                </form>
+            </main>
+
+            <div id="post-preview-modal" class="fixed inset-0 z-[95] hidden">
+                <div class="fixed inset-0 bg-slate-950/55 backdrop-blur-sm" data-preview-close></div>
+                <div class="fixed inset-0 overflow-y-auto">
+                    <div class="mx-auto mt-4 w-full max-w-3xl px-3 sm:mt-10 sm:px-4">
+                        <div class="overflow-hidden rounded-[18px] bg-white shadow-2xl">
+                            <div class="flex items-center justify-between gap-3 border-b border-slate-100 px-4 py-3">
+                                <div class="text-sm font-medium text-slate-950">{{ __('post_create.preview_title') }}</div>
+                                <button type="button" data-preview-close class="rounded-full p-2 text-slate-500 hover:bg-slate-100 hover:text-slate-700" aria-label="{{ __('post_create.close') }}">
+                                    <svg viewBox="0 0 24 24" fill="none" class="h-5 w-5" xmlns="http://www.w3.org/2000/svg"><path d="M6 6l12 12M18 6 6 18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+                                </button>
+                            </div>
+                            <div class="max-h-[75vh] overflow-auto p-4 sm:max-h-[70vh] sm:p-5">
+                                <div id="post-preview-content" class="space-y-4 text-sm text-slate-700"></div>
+                            </div>
                         </div>
                     </div>
-                </aside>
+                </div>
             </div>
-        </div>
-
-        <div class="og-backdrop fixed inset-0 z-[108] bg-slate-950/35" data-settings-backdrop></div>
-        <aside class="og-drawer og-glass-strong fixed bottom-3 right-3 top-3 z-[110] flex flex-col overflow-hidden rounded-[30px]" data-settings-panel aria-hidden="true">
-            <header class="flex min-h-[68px] shrink-0 items-center justify-between gap-3 border-b border-[var(--og-border)] px-3.5 pl-[18px]">
-                <div><div class="text-[15px] font-semibold">Gelişmiş seçenekler</div><div class="mt-0.5 text-[12px] text-[var(--og-muted)]">Yayın, SEO ve görünürlük</div></div>
-                <button type="button" class="og-icon inline-flex h-10 w-10 items-center justify-center rounded-full" data-close-settings aria-label="Kapat"><iconify-icon icon="lucide:x" class="text-[18px]"></iconify-icon></button>
-            </header>
-
-            <div class="flex-1 space-y-2.5 overflow-y-auto p-3">
-                <section class="overflow-hidden rounded-[20px] border border-[var(--og-border)]">
-                    <div class="flex min-h-[44px] items-center gap-2.5 border-b border-[var(--og-border)] px-3.5 text-[13px] font-semibold"><iconify-icon icon="lucide:wand-sparkles" class="text-[17px] text-[var(--og-muted)]"></iconify-icon>Araçlar</div>
-                    <div class="grid grid-cols-2 gap-2 p-3">
-                        <button type="button" class="og-pill inline-flex min-h-[41px] items-center justify-center gap-2 rounded-full px-3 text-[13px] font-medium" data-open-preview><iconify-icon icon="lucide:eye" class="text-[16px]"></iconify-icon>Ön izleme</button>
-                        <button type="button" class="og-pill inline-flex min-h-[41px] items-center justify-center gap-2 rounded-full px-3 text-[13px] font-medium" data-ai-assist><iconify-icon icon="lucide:sparkles" data-ai-icon class="text-[16px]"></iconify-icon>AI yardım</button>
-                    </div>
-                </section>
-
-                <section class="overflow-hidden rounded-[20px] border border-[var(--og-border)]">
-                    <div class="flex min-h-[44px] items-center gap-2.5 border-b border-[var(--og-border)] px-3.5 text-[13px] font-semibold"><iconify-icon icon="lucide:layout-list" class="text-[17px] text-[var(--og-muted)]"></iconify-icon>Gönderi bilgileri</div>
-                    <div class="space-y-3 p-3">
-                        <div><label for="category_id" class="mb-1.5 block text-[12px] font-medium text-[var(--og-muted)]">Topluluk / kategori</label><select id="category_id" name="category_id" class="og-field min-h-[44px] rounded-[15px] px-3 text-[14px]"><option value="">Kategori seç</option>@foreach($categories as $category)<option value="{{ $category->id }}" @selected($initialCategoryId === (int) $category->id)>{{ $category->name }}</option>@endforeach</select></div>
-                        <div><label for="excerpt" class="mb-1.5 block text-[12px] font-medium text-[var(--og-muted)]">Kısa açıklama</label><textarea id="excerpt" name="excerpt" rows="3" class="og-field min-h-[84px] resize-none rounded-[15px] px-3 py-2.5 text-[14px]" placeholder="Gönderinin kısa özeti...">{{ old('excerpt') }}</textarea></div>
-                        <div><label for="new_tags" class="mb-1.5 block text-[12px] font-medium text-[var(--og-muted)]">Yeni etiketler</label><input id="new_tags" name="new_tags" type="text" value="{{ old('new_tags') }}" class="og-field min-h-[44px] rounded-[15px] px-3 text-[14px]" placeholder="laravel, tasarım, teknoloji"></div>
-                        @if(isset($tags) && collect($tags)->isNotEmpty())
-                            <div><div class="mb-1.5 text-[12px] font-medium text-[var(--og-muted)]">Mevcut etiketler</div><div class="flex max-h-36 flex-wrap gap-1.5 overflow-y-auto pr-1">@foreach($tags as $tag)<label class="relative inline-flex cursor-pointer"><input type="checkbox" name="tags[]" value="{{ $tag->id }}" class="peer sr-only" @checked(collect(old('tags', []))->contains($tag->id))><span class="inline-flex min-h-[32px] items-center rounded-full border border-[var(--og-border)] bg-[var(--og-soft)] px-2.5 text-[12px] text-[var(--og-muted)] peer-checked:border-blue-400/40 peer-checked:bg-blue-500/10 peer-checked:text-blue-500">#{{ $tag->name }}</span></label>@endforeach</div></div>
-                        @endif
-                    </div>
-                </section>
-
-                <section class="overflow-hidden rounded-[20px] border border-[var(--og-border)]">
-                    <div class="flex min-h-[44px] items-center gap-2.5 border-b border-[var(--og-border)] px-3.5 text-[13px] font-semibold"><iconify-icon icon="lucide:search" class="text-[17px] text-[var(--og-muted)]"></iconify-icon>SEO</div>
-                    <div class="space-y-3 p-3">
-                        <div><label for="meta_title" class="mb-1.5 block text-[12px] font-medium text-[var(--og-muted)]">SEO başlığı</label><input id="meta_title" name="meta_title" type="text" value="{{ old('meta_title') }}" class="og-field min-h-[44px] rounded-[15px] px-3 text-[14px]" placeholder="Arama sonucunda görünecek başlık"></div>
-                        <div><div class="mb-1.5 flex items-center justify-between gap-2"><label for="meta_description" class="text-[12px] font-medium text-[var(--og-muted)]">Meta açıklama</label><span class="text-[10px] text-[var(--og-subtle)]" data-meta-count>0/160</span></div><textarea id="meta_description" name="meta_description" maxlength="160" rows="3" class="og-field min-h-[84px] resize-none rounded-[15px] px-3 py-2.5 text-[14px]" placeholder="Arama sonucunda görünecek açıklama">{{ old('meta_description') }}</textarea></div>
-                        <div><label for="slug" class="mb-1.5 block text-[12px] font-medium text-[var(--og-muted)]">Özel bağlantı</label><input id="slug" name="slug" type="text" value="{{ old('slug') }}" class="og-field min-h-[44px] rounded-[15px] px-3 text-[14px]" placeholder="ornek-gonderi"></div>
-                        <div><label for="meta_keywords" class="mb-1.5 block text-[12px] font-medium text-[var(--og-muted)]">Anahtar kelimeler</label><input id="meta_keywords" name="meta_keywords" type="text" value="{{ old('meta_keywords') }}" class="og-field min-h-[44px] rounded-[15px] px-3 text-[14px]" placeholder="teknoloji, yazılım, gündem"></div>
-                    </div>
-                </section>
-
-                <section class="overflow-hidden rounded-[20px] border border-[var(--og-border)]">
-                    <div class="flex min-h-[44px] items-center gap-2.5 border-b border-[var(--og-border)] px-3.5 text-[13px] font-semibold"><iconify-icon icon="lucide:calendar-clock" class="text-[17px] text-[var(--og-muted)]"></iconify-icon>Yayınlama</div>
-                    <div class="space-y-3 p-3">
-                        <div><label for="published_at" class="mb-1.5 block text-[12px] font-medium text-[var(--og-muted)]">Yayın tarihi</label><input id="published_at" name="published_at" type="datetime-local" value="{{ old('published_at') }}" class="og-field min-h-[44px] rounded-[15px] px-3 text-[14px]"></div>
-                        <div class="overflow-hidden rounded-[16px] border border-[var(--og-border)]">
-                            <div class="flex min-h-[58px] items-center justify-between gap-3 px-3"><div><div class="text-[13px] font-medium">Yorumları kapat</div><div class="text-[11px] text-[var(--og-muted)]">Yeni yorum alınmaz.</div></div><input type="hidden" name="comments_disabled" value="0"><x-ui.switch name="comments_disabled" value="1" :checked="old('comments_disabled', 0) == 1" /></div>
-                            <div class="flex min-h-[58px] items-center justify-between gap-3 border-t border-[var(--og-border)] px-3"><div><div class="text-[13px] font-medium">Hassas içerik</div><div class="text-[11px] text-[var(--og-muted)]">Uyarıyla gösterilir.</div></div><input type="hidden" name="is_nsfw" value="0"><x-ui.switch name="is_nsfw" value="1" :checked="old('is_nsfw', 0) == 1" /></div>
-                            <div class="flex min-h-[58px] items-center justify-between gap-3 border-t border-[var(--og-border)] px-3"><div><div class="text-[13px] font-medium">Gönderiyi sabitle</div><div class="text-[11px] text-[var(--og-muted)]">Uygun alanlarda üstte gösterilir.</div></div><input type="hidden" name="is_pinned" value="0"><x-ui.switch name="is_pinned" value="1" :checked="old('is_pinned', 0) == 1" /></div>
-                        </div>
-                    </div>
-                </section>
-
-                <section class="overflow-hidden rounded-[20px] border border-[var(--og-border)]">
-                    <div class="flex min-h-[44px] items-center gap-2.5 border-b border-[var(--og-border)] px-3.5 text-[13px] font-semibold"><iconify-icon icon="lucide:copyright" class="text-[17px] text-[var(--og-muted)]"></iconify-icon>Görsel hakları</div>
-                    <div class="space-y-2.5 p-3">
-                        <input name="image_creator_name" type="text" value="{{ old('image_creator_name') }}" class="og-field min-h-[44px] rounded-[15px] px-3 text-[14px]" placeholder="Görsel üreticisi / fotoğrafçı">
-                        <input name="image_credit_text" type="text" value="{{ old('image_credit_text') }}" class="og-field min-h-[44px] rounded-[15px] px-3 text-[14px]" placeholder="Görsel kredisi">
-                        <input name="image_copyright_notice" type="text" value="{{ old('image_copyright_notice') }}" class="og-field min-h-[44px] rounded-[15px] px-3 text-[14px]" placeholder="Telif bildirimi">
-                        <input name="image_license_url" type="url" value="{{ old('image_license_url') }}" class="og-field min-h-[44px] rounded-[15px] px-3 text-[14px]" placeholder="Lisans bağlantısı">
-                        <input name="image_acquire_url" type="url" value="{{ old('image_acquire_url') }}" class="og-field min-h-[44px] rounded-[15px] px-3 text-[14px]" placeholder="Kaynak / satın alma bağlantısı">
-                    </div>
-                </section>
-            </div>
-
-            <footer class="shrink-0 border-t border-[var(--og-border)] p-3">
-                <button type="submit" class="og-pill inline-flex min-h-[42px] w-full items-center justify-center gap-2 rounded-full px-4 text-[14px] font-medium" data-submit-intent="draft"><iconify-icon icon="lucide:save" class="text-[16px]"></iconify-icon>Taslağa kaydet</button>
-            </footer>
-        </aside>
-    </form>
-
-    <div class="og-preview fixed inset-0 z-[140] overflow-y-auto bg-slate-950/45 p-4" data-preview-modal aria-hidden="true">
-        <div class="og-glass-strong mx-auto my-[4vh] w-[min(760px,100%)] overflow-hidden rounded-[28px]">
-            <header class="flex min-h-[66px] items-center justify-between gap-3 border-b border-[var(--og-border)] px-4">
-                <div><div class="text-[15px] font-semibold">Gönderi ön izlemesi</div><div class="text-[12px] text-[var(--og-muted)]">Yayınlamadan önce son görünüm</div></div>
-                <button type="button" class="og-icon inline-flex h-10 w-10 items-center justify-center rounded-full" data-close-preview aria-label="Kapat"><iconify-icon icon="lucide:x" class="text-[18px]"></iconify-icon></button>
-            </header>
-            <div class="max-h-[78vh] overflow-y-auto px-6 py-6 max-sm:px-4"><div data-preview-content></div></div>
         </div>
     </div>
-
-    <script>
-        (() => {
-            const page = document.querySelector('[data-create-page]');
-            if (!page || page.dataset.uiBound === '1') return;
-            page.dataset.uiBound = '1';
-
-            const form = document.getElementById('post-create-form');
-            const title = document.getElementById('title');
-            const content = document.getElementById('content');
-            const contentJson = document.getElementById('content_json');
-            const published = document.getElementById('is_published');
-            const wrapper = page.querySelector('[data-editorjs-wrapper]');
-            const holder = wrapper?.querySelector('[x-ref="holder"]');
-            const status = page.querySelector('[data-editor-status]');
-            const dot = page.querySelector('[data-editor-dot]');
-            const infoToggle = page.querySelector('[data-info-toggle]');
-            const info = page.querySelector('[data-info-popover]');
-            const settingsToggle = page.querySelector('[data-open-settings]');
-            const settings = page.querySelector('[data-settings-panel]');
-            const backdrop = page.querySelector('[data-settings-backdrop]');
-            const preview = page.querySelector('[data-preview-modal]');
-            const previewContent = page.querySelector('[data-preview-content]');
-            const words = page.querySelector('[data-word-count]');
-            const reading = page.querySelector('[data-reading-time]');
-            const meta = document.getElementById('meta_description');
-            const metaCount = page.querySelector('[data-meta-count]');
-            const coverInput = page.querySelector('[data-cover-input]');
-            const coverDrop = page.querySelector('[data-cover-drop]');
-            const coverPreview = page.querySelector('[data-cover-preview]');
-            const coverImg = page.querySelector('[data-cover-img]');
-            const aiButton = page.querySelector('[data-ai-assist]');
-            const aiIcon = page.querySelector('[data-ai-icon]');
-
-            const toast = (message, error = false) => {
-                document.querySelectorAll('[data-og-toast]').forEach((el) => el.remove());
-                const el = document.createElement('div');
-                el.dataset.ogToast = '1';
-                el.className = 'og-glass-strong fixed bottom-5 left-1/2 z-[180] w-[min(430px,94vw)] -translate-x-1/2 rounded-[18px] px-4 py-3 text-[13px]';
-                el.textContent = message;
-                if (error) el.style.color = '#ef4444';
-                document.body.appendChild(el);
-                setTimeout(() => el.remove(), error ? 5200 : 3200);
-            };
-
-            const autoGrow = () => {
-                if (!title) return;
-                title.style.height = 'auto';
-                title.style.height = `${Math.max(44, title.scrollHeight)}px`;
-            };
-            title?.addEventListener('input', autoGrow);
-            autoGrow();
-
-            const syncMetaCount = () => { if (metaCount) metaCount.textContent = `${meta?.value.length || 0}/160`; };
-            meta?.addEventListener('input', syncMetaCount);
-            syncMetaCount();
-
-            const setOpen = (el, open) => {
-                el?.classList.toggle('is-open', open);
-                el?.setAttribute('aria-hidden', open ? 'false' : 'true');
-            };
-
-            const closeInfo = () => { setOpen(info, false); infoToggle?.setAttribute('aria-expanded', 'false'); };
-            infoToggle?.addEventListener('click', (event) => {
-                event.stopPropagation();
-                const open = !info?.classList.contains('is-open');
-                setOpen(info, open);
-                infoToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
-            });
-            document.addEventListener('click', (event) => {
-                if (!info?.classList.contains('is-open')) return;
-                if (event.target instanceof Element && (info.contains(event.target) || infoToggle?.contains(event.target))) return;
-                closeInfo();
-            });
-
-            const openSettings = () => { setOpen(settings, true); setOpen(backdrop, true); settingsToggle?.setAttribute('aria-expanded', 'true'); };
-            const closeSettings = () => { setOpen(settings, false); setOpen(backdrop, false); settingsToggle?.setAttribute('aria-expanded', 'false'); };
-            settingsToggle?.addEventListener('click', () => settings?.classList.contains('is-open') ? closeSettings() : openSettings());
-            page.querySelector('[data-close-settings]')?.addEventListener('click', closeSettings);
-            backdrop?.addEventListener('click', closeSettings);
-
-            const stripHtml = (html) => {
-                const el = document.createElement('div');
-                el.innerHTML = String(html || '');
-                return el.textContent || '';
-            };
-
-            const readPlainText = async () => {
-                if (wrapper?.__editorInstance?.save) {
-                    try {
-                        const output = await wrapper.__editorInstance.save();
-                        return (output.blocks || []).map((block) => {
-                            const data = block?.data || {};
-                            const values = [data.text, data.caption, data.question, data.answer, data.title, data.label, data.message, data.note];
-                            if (Array.isArray(data.items)) data.items.forEach((item) => values.push(typeof item === 'string' ? item : (item?.content || item?.text || '')));
-                            return values.filter((v) => typeof v === 'string').map(stripHtml).join(' ');
-                        }).join(' ').trim();
-                    } catch {}
-                }
-                return stripHtml(content?.value || '').trim();
-            };
-
-            const updateStats = async () => {
-                const text = await readPlainText();
-                const count = (text.match(/\S+/g) || []).length;
-                if (words) words.textContent = `${count} kelime`;
-                if (reading) reading.textContent = `${Math.max(1, Math.ceil(count / 200))} dk okuma`;
-            };
-            let statsTimer = null;
-            const scheduleStats = () => { clearTimeout(statsTimer); statsTimer = setTimeout(updateStats, 250); };
-            content?.addEventListener('input', scheduleStats);
-            wrapper?.addEventListener('input', scheduleStats);
-
-            const simpleBlocksToHtml = (blocks = []) => blocks.map((block) => {
-                const data = block?.data || {};
-                if (block?.type === 'header') return `<h2>${data.text || ''}</h2>`;
-                if (block?.type === 'quote') return `<blockquote>${data.text || ''}</blockquote>`;
-                if (block?.type === 'list' && Array.isArray(data.items)) return `<ul>${data.items.map((item) => `<li>${typeof item === 'string' ? item : (item?.content || item?.text || '')}</li>`).join('')}</ul>`;
-                return data.text ? `<p>${data.text}</p>` : '';
-            }).join('');
-
-            const syncEditor = async () => {
-                if (!wrapper?.__editorInstance?.save) return;
-                const output = await wrapper.__editorInstance.save();
-                if (contentJson) contentJson.value = JSON.stringify(output);
-                if (content) content.value = window.filamentEditorBlocksToHtml ? window.filamentEditorBlocksToHtml(output.blocks || []) : simpleBlocksToHtml(output.blocks || []);
-            };
-
-            const escapeHtml = (value) => String(value ?? '').replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;').replaceAll("'", '&#039;');
-            const buildPreview = async () => {
-                try { await syncEditor(); } catch {}
-                const image = coverImg?.src ? `<img src="${escapeHtml(coverImg.src)}" alt="" class="mb-5 w-full rounded-[20px] object-cover">` : '';
-                const titleText = String(title?.value || '').trim();
-                return `${image}<h1 class="text-[30px] font-semibold leading-tight">${escapeHtml(titleText || 'Başlıksız gönderi')}</h1><div class="mt-7 text-[16px] leading-7">${content?.value || '<p>Henüz içerik yok.</p>'}</div>`;
-            };
-            const openPreview = async () => { if (!preview || !previewContent) return; previewContent.innerHTML = await buildPreview(); setOpen(preview, true); closeSettings(); };
-            const closePreview = () => setOpen(preview, false);
-            page.querySelector('[data-open-preview]')?.addEventListener('click', openPreview);
-            page.querySelector('[data-close-preview]')?.addEventListener('click', closePreview);
-            preview?.addEventListener('click', (event) => { if (event.target === preview) closePreview(); });
-
-            const setCover = (file) => {
-                if (!file || !coverInput || !coverImg) return;
-                if (!['image/jpeg','image/png','image/webp'].includes(file.type)) { coverInput.value = ''; toast('Kapak JPG, PNG veya WebP olmalı.', true); return; }
-                if (file.size > 5 * 1024 * 1024) { coverInput.value = ''; toast('Kapak görseli en fazla 5 MB olabilir.', true); return; }
-                const reader = new FileReader();
-                reader.onload = () => { coverImg.src = String(reader.result || ''); coverDrop?.classList.add('hidden'); coverPreview?.classList.remove('hidden'); };
-                reader.readAsDataURL(file);
-            };
-            coverInput?.addEventListener('change', () => { const file = coverInput.files?.[0]; if (file) setCover(file); });
-            page.querySelector('[data-cover-change]')?.addEventListener('click', () => coverInput?.click());
-            page.querySelector('[data-cover-remove]')?.addEventListener('click', () => { if (coverInput) coverInput.value = ''; if (coverImg) coverImg.src = ''; coverPreview?.classList.add('hidden'); coverDrop?.classList.remove('hidden'); });
-
-            let aiBusy = false;
-            aiButton?.addEventListener('click', async () => {
-                if (aiBusy) return;
-                const titleText = String(title?.value || '').trim();
-                const text = await readPlainText();
-                if (!titleText && !text) { toast('Önce başlık veya içerik yazın.', true); return; }
-                aiBusy = true;
-                aiButton.disabled = true;
-                aiIcon?.setAttribute('icon', 'lucide:loader-circle');
-                try {
-                    const response = await fetch('{{ route('blog.ai-assist') }}', {
-                        method: 'POST', credentials: 'same-origin',
-                        headers: { 'Accept': 'application/json', 'Content-Type': 'application/json', 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || '' },
-                        body: JSON.stringify({ title: titleText, content: text }),
-                    });
-                    const data = await response.json();
-                    if (!response.ok || !data.ok) throw new Error(data.message || 'Yapay zeka isteği başarısız.');
-                    const metaTitle = document.getElementById('meta_title');
-                    const metaKeywords = document.getElementById('meta_keywords');
-                    const excerpt = document.getElementById('excerpt');
-                    if (data.meta_title && metaTitle) metaTitle.value = data.meta_title;
-                    if (data.meta_description && meta) { meta.value = String(data.meta_description).slice(0, 160); syncMetaCount(); }
-                    if (Array.isArray(data.meta_keywords) && metaKeywords) metaKeywords.value = data.meta_keywords.join(', ');
-                    if (data.excerpt && excerpt && !excerpt.value.trim()) excerpt.value = data.excerpt;
-                    toast('AI önerileri gelişmiş seçeneklere işlendi.');
-                } catch (error) { toast(error?.message || 'Yapay zeka isteği başarısız.', true); }
-                finally { aiBusy = false; aiButton.disabled = false; aiIcon?.setAttribute('icon', 'lucide:sparkles'); }
-            });
-
-            page.querySelectorAll('[data-submit-intent]').forEach((button) => {
-                button.addEventListener('click', () => { if (published) published.value = button.dataset.submitIntent === 'draft' ? '0' : '1'; });
-            });
-
-            let submitting = false;
-            form?.addEventListener('submit', async (event) => {
-                if (submitting) return;
-                event.preventDefault();
-                try { await syncEditor(); } catch (error) { console.error('EditorJS save error', error); }
-                const titleValue = String(title?.value || '').trim();
-                const contentValue = String(content?.value || '').trim();
-                if (!titleValue) { toast('Başlık boş olamaz.', true); title?.focus(); return; }
-                if (!contentValue) { toast('İçerik boş olamaz.', true); return; }
-                submitting = true;
-                form.submit();
-            });
-
-            document.addEventListener('keydown', (event) => { if (event.key === 'Escape') { closeInfo(); closeSettings(); closePreview(); } });
-
-            const editorReady = () => {
-                holder?.classList.remove('opacity-0');
-                content?.classList.add('hidden');
-                if (status) status.textContent = 'EditorJS hazır';
-                dot?.classList.remove('opacity-50');
-                dot?.classList.add('text-emerald-500');
-                scheduleStats();
-            };
-            const editorFallback = () => {
-                holder?.classList.add('opacity-0');
-                content?.classList.remove('hidden');
-                if (status) status.textContent = 'Temel yazı alanı';
-                dot?.classList.remove('opacity-50');
-                dot?.classList.add('text-amber-500');
-            };
-
-            const initEditor = async () => {
-                if (!wrapper || !holder || !content || !contentJson) { editorFallback(); return; }
-                if (wrapper.__editorInstance) { editorReady(); return; }
-                for (let attempt = 0; attempt < 24; attempt += 1) {
-                    if (typeof window.initFilamentEditorJsField === 'function') {
-                        try {
-                            await window.initFilamentEditorJsField(wrapper);
-                            if (wrapper.__editorInstance) {
-                                if (wrapper.__editorInstance.isReady?.then) await wrapper.__editorInstance.isReady;
-                                editorReady();
-                                return;
-                            }
-                        } catch (error) {
-                            console.error('EditorJS init error', error);
-                            try { await wrapper.__editorInstance?.destroy?.(); } catch {}
-                            wrapper.__editorInstance = null;
-                        }
-                    }
-                    await new Promise((resolve) => setTimeout(resolve, 250));
-                }
-                editorFallback();
-                toast('EditorJS açılamadı; temel yazı alanı açık bırakıldı.', true);
-            };
-
-            window.OgrafiCreate = { initEditor, syncEditor, updateStats };
-            updateStats();
-        })();
-    </script>
-</div>
 @endsection
 
 @push('scripts')
     @include('filament.assets.editorjs')
     <script>
-        (() => {
-            const start = () => window.OgrafiCreate?.initEditor?.();
-            if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start, { once: true });
-            else start();
-        })();
+        document.addEventListener('DOMContentLoaded', () => {
+            const wrapper = document.querySelector('[data-editorjs-wrapper]');
+            const fallbackTextarea = document.getElementById('content');
+            const form = document.getElementById('post-create-form');
+            const isPublishedInput = document.getElementById('is_published');
+            const draftButton = document.querySelector('[data-submit-intent="draft"]');
+            const publishButtons = document.querySelectorAll('[data-submit-intent="publish"]');
+            const categoryInput = document.querySelector('[data-category-input]');
+            const categoryLabel = document.querySelector('[data-category-label]');
+            const categoryMenu = document.querySelector('[data-category-menu]');
+            const categoryOptions = Array.from(document.querySelectorAll('[data-category-option]'));
+            const metaTitleField = document.getElementById('meta_title');
+            const metaDescription = document.getElementById('meta_description');
+            const metaDescriptionCount = document.querySelector('[data-meta-description-count]');
+            const metaKeywordsField = document.getElementById('meta_keywords');
+            const tagSearchInput = document.getElementById('tag_search');
+            const newTagsInput = document.getElementById('new_tags');
+            const newTagsChips = document.getElementById('new-tags-chips');
+            const addNewTagButton = document.getElementById('add-new-tag-btn');
+            const existingTagOptions = Array.from(document.querySelectorAll('[data-tag-option]'));
+            const previewModal = document.getElementById('post-preview-modal');
+            const previewContent = document.getElementById('post-preview-content');
+            const settingsModal = document.getElementById('settings-modal');
+            const settingsOverlay = settingsModal?.querySelector('[data-settings-overlay]');
+            let settingsTimer = null;
+
+            const coverField = document.querySelector('[data-cover-field]');
+            const coverInput = document.querySelector('[data-cover-input]');
+            const coverPreview = document.querySelector('[data-cover-preview]');
+            const coverPreviewImg = document.querySelector('[data-cover-preview-img]');
+
+            const setCoverFile = (file) => {
+                if (!file || !coverPreviewImg || !coverField) return;
+                const reader = new FileReader();
+                reader.onload = () => {
+                    coverPreviewImg.src = String(reader.result || '');
+                    coverField.classList.add('has-image');
+                };
+                reader.readAsDataURL(file);
+            };
+
+            coverInput?.addEventListener('change', () => {
+                const file = coverInput.files?.[0];
+                if (file) setCoverFile(file);
+            });
+
+            document.querySelector('[data-cover-change]')?.addEventListener('click', () => coverInput?.click());
+            document.querySelector('[data-cover-remove]')?.addEventListener('click', () => {
+                if (coverInput) coverInput.value = '';
+                if (coverPreviewImg) coverPreviewImg.src = '';
+                coverField?.classList.remove('has-image');
+            });
+
+            const readingTimeEl = document.querySelector('[data-reading-time]');
+            const wordCountEl = document.querySelector('[data-word-count]');
+            const blockText = (block) => {
+                const data = block?.data || {};
+                return [data.text, data.caption, data.question, data.answer, data.title, ...(Array.isArray(data.items) ? data.items : [])]
+                    .filter((value) => typeof value === 'string')
+                    .join(' ');
+            };
+            const updateReadingStats = async () => {
+                if (!readingTimeEl && !wordCountEl) return;
+                let text = '';
+                if (wrapper?.__editorInstance?.save) {
+                    try {
+                        const data = await wrapper.__editorInstance.save();
+                        text = (data?.blocks || []).map(blockText).join(' ');
+                    } catch { text = ''; }
+                }
+                if (!text) text = fallbackTextarea?.value || '';
+                const words = (text.match(/\S+/g) || []).length;
+                if (wordCountEl) wordCountEl.textContent = `${words} kelime`;
+                if (readingTimeEl) readingTimeEl.textContent = `${Math.max(1, Math.round(words / 200))} dk okuma`;
+            };
+            let readingStatsTimer = null;
+            const scheduleReadingStats = () => {
+                if (readingStatsTimer) clearTimeout(readingStatsTimer);
+                readingStatsTimer = window.setTimeout(updateReadingStats, 600);
+            };
+            wrapper?.addEventListener('input', scheduleReadingStats);
+            wrapper?.addEventListener('keyup', scheduleReadingStats);
+
+            const titleField = document.getElementById('title');
+            const autoGrowTitle = () => {
+                if (!titleField) return;
+                titleField.style.height = 'auto';
+                titleField.style.height = `${titleField.scrollHeight}px`;
+            };
+            titleField?.addEventListener('input', () => { autoGrowTitle(); scheduleReadingStats(); });
+            titleField?.addEventListener('keydown', (e) => {
+                if (e.key !== 'Enter') return;
+                e.preventDefault();
+                wrapper?.querySelector('[contenteditable]')?.focus();
+            });
+            autoGrowTitle();
+            window.setTimeout(updateReadingStats, 1200);
+
+            const showFallback = () => {
+                wrapper?.classList.add('hidden');
+                fallbackTextarea?.classList.remove('hidden');
+            };
+
+            const initEditor = async () => {
+                if (!wrapper || !window.initFilamentEditorJsField) {
+                    showFallback();
+                    return;
+                }
+                try {
+                    await window.initFilamentEditorJsField(wrapper);
+                    if (!wrapper.__editorInstance) showFallback();
+                } catch {
+                    showFallback();
+                }
+            };
+            initEditor();
+
+            const syncScrollLock = () => {
+                const anyOpen = [previewModal, settingsModal].some((modal) => modal && !modal.classList.contains('hidden'));
+                document.documentElement.classList.toggle('overflow-hidden', anyOpen);
+                document.body.classList.toggle('overflow-hidden', anyOpen);
+            };
+
+            const openSettings = () => {
+                if (!settingsModal || !settingsOverlay) return;
+                if (settingsTimer) clearTimeout(settingsTimer);
+                settingsModal.classList.remove('hidden');
+                settingsModal.setAttribute('aria-hidden', 'false');
+                syncScrollLock();
+                requestAnimationFrame(() => {
+                    settingsOverlay.classList.remove('opacity-0');
+                    settingsModal.classList.add('is-open');
+                });
+            };
+
+            const closeSettings = () => {
+                if (!settingsModal || !settingsOverlay) return;
+                settingsOverlay.classList.add('opacity-0');
+                settingsModal.classList.remove('is-open');
+                settingsModal.setAttribute('aria-hidden', 'true');
+                if (settingsTimer) clearTimeout(settingsTimer);
+                settingsTimer = window.setTimeout(() => {
+                    settingsModal.classList.add('hidden');
+                    syncScrollLock();
+                }, 280);
+            };
+
+            document.querySelectorAll('[data-open-settings]').forEach((button) => button.addEventListener('click', openSettings));
+            settingsModal?.querySelectorAll('[data-settings-close]').forEach((el) => el.addEventListener('click', closeSettings));
+
+            const syncMetaDescriptionCount = () => {
+                if (!metaDescription || !metaDescriptionCount) return;
+                metaDescriptionCount.textContent = `${metaDescription.value.length}/160`;
+            };
+            syncMetaDescriptionCount();
+            metaDescription?.addEventListener('input', syncMetaDescriptionCount);
+
+            const syncCategorySelection = () => {
+                if (!categoryInput) return;
+                const activeValue = String(categoryInput.value || '');
+                const activeOption = categoryOptions.find((option) => String(option.getAttribute('data-value') || '') === activeValue);
+                const activeLabel = activeOption?.getAttribute('data-label') || @js(__('post_create.select_category'));
+                if (categoryLabel) categoryLabel.textContent = activeLabel;
+                categoryOptions.forEach((option) => {
+                    option.classList.toggle('bg-slate-100', String(option.getAttribute('data-value') || '') === activeValue);
+                });
+            };
+            syncCategorySelection();
+            categoryOptions.forEach((option) => {
+                option.addEventListener('click', () => {
+                    if (!categoryInput) return;
+                    categoryInput.value = option.getAttribute('data-value') || '';
+                    syncCategorySelection();
+                    categoryMenu?.removeAttribute('open');
+                });
+            });
+
+            const existingTagNames = existingTagOptions.map((el) => String(el.getAttribute('data-tag-name') || '').trim()).filter(Boolean);
+            const newTagSet = new Set(String(newTagsInput?.value || '').split(',').map((item) => item.trim().replace(/^#/, '')).filter(Boolean));
+
+            const syncNewTagsInput = () => {
+                if (!newTagsInput) return;
+                newTagsInput.value = Array.from(newTagSet).join(', ');
+            };
+
+            const renderNewTagChips = () => {
+                if (!newTagsChips) return;
+                const tags = Array.from(newTagSet);
+                newTagsChips.innerHTML = tags.map((tag) => `<span class="inline-flex items-center gap-1 rounded-full bg-blue-50 px-2.5 py-1 text-xs font-medium text-blue-700">#${tag}<button type="button" data-remove-new-tag="${tag}" class="rounded-full px-1 text-blue-700 hover:bg-blue-100">x</button></span>`).join('');
+            };
+
+            const filterExistingTags = (term) => {
+                const query = term.trim().toLowerCase();
+                existingTagOptions.forEach((option) => {
+                    const name = String(option.getAttribute('data-tag-name') || '');
+                    option.classList.toggle('hidden', Boolean(query && !name.includes(query)));
+                });
+            };
+
+            const updateAddTagButton = (term) => {
+                if (!addNewTagButton) return;
+                const normalized = term.trim().replace(/^#/, '').toLowerCase();
+                if (!normalized) {
+                    addNewTagButton.classList.add('hidden');
+                    addNewTagButton.textContent = @js(__('post_create.add_new_tag'));
+                    return;
+                }
+                const existsInCurrent = Array.from(newTagSet).some((tag) => tag.toLowerCase() === normalized);
+                const existsInDb = existingTagNames.includes(normalized);
+                if (existsInCurrent || existsInDb) {
+                    addNewTagButton.classList.add('hidden');
+                    return;
+                }
+                addNewTagButton.classList.remove('hidden');
+                addNewTagButton.textContent = @js(__('post_create.add_new_tag_with_value')).replace(':tag', term.trim().replace(/^#/, ''));
+            };
+
+            const normalizeTagText = (value) => String(value || '').trim().replace(/^#/, '').replace(/[.,;:!?]+$/g, '').trim();
+            const tryAddNewTag = (rawValue) => {
+                const value = normalizeTagText(rawValue);
+                if (!value) return false;
+                const normalized = value.toLowerCase();
+                if (existingTagNames.includes(normalized)) return false;
+                if (Array.from(newTagSet).some((tag) => tag.toLowerCase() === normalized)) return false;
+                newTagSet.add(value);
+                syncNewTagsInput();
+                renderNewTagChips();
+                return true;
+            };
+
+            const commitTagInput = (raw, consumeAll = false) => {
+                const text = String(raw || '');
+                const hasDelimiter = /[,.;:!?]/.test(text);
+                if (!hasDelimiter && !consumeAll) return { added: false, remainder: text };
+                const parts = text.split(/[,.;:!?]+/);
+                const trailingDelimiter = /[,.;:!?]\s*$/.test(text);
+                const candidates = (consumeAll || trailingDelimiter) ? parts : parts.slice(0, -1);
+                const remainder = (consumeAll || trailingDelimiter) ? '' : (parts.at(-1) || '');
+                let added = false;
+                candidates.forEach((part) => { if (tryAddNewTag(part)) added = true; });
+                return { added, remainder };
+            };
+
+            renderNewTagChips();
+            syncNewTagsInput();
+
+            tagSearchInput?.addEventListener('input', () => {
+                const term = tagSearchInput.value || '';
+                const committed = commitTagInput(term, false);
+                if (committed.added || committed.remainder !== term) tagSearchInput.value = committed.remainder;
+                filterExistingTags(tagSearchInput.value || '');
+                updateAddTagButton(tagSearchInput.value || '');
+            });
+
+            tagSearchInput?.addEventListener('keydown', (e) => {
+                const punctuationKeys = [',', '.', ';', ':', '!', '?'];
+                if (e.key !== 'Enter' && !punctuationKeys.includes(e.key)) return;
+                e.preventDefault();
+                const committed = commitTagInput(tagSearchInput.value, true);
+                if (committed.added) tagSearchInput.value = '';
+                filterExistingTags(tagSearchInput.value || '');
+                updateAddTagButton(tagSearchInput.value || '');
+            });
+
+            tagSearchInput?.addEventListener('blur', () => {
+                const committed = commitTagInput(tagSearchInput.value, true);
+                if (committed.added) tagSearchInput.value = '';
+                filterExistingTags('');
+                updateAddTagButton('');
+            });
+
+            addNewTagButton?.addEventListener('click', () => {
+                if (!tagSearchInput) return;
+                if (!tryAddNewTag(tagSearchInput.value)) return;
+                tagSearchInput.value = '';
+                filterExistingTags('');
+                updateAddTagButton('');
+            });
+
+            newTagsChips?.addEventListener('click', (e) => {
+                const button = e.target.closest('[data-remove-new-tag]');
+                if (!button) return;
+                const tag = button.getAttribute('data-remove-new-tag');
+                if (!tag) return;
+                newTagSet.delete(tag);
+                syncNewTagsInput();
+                renderNewTagChips();
+            });
+
+            draftButton?.addEventListener('click', () => {
+                if (isPublishedInput) isPublishedInput.value = '0';
+            });
+
+            const isEditorContentPresent = async () => {
+                if (wrapper?.__editorInstance?.save) {
+                    try {
+                        const data = await wrapper.__editorInstance.save();
+                        const blocks = Array.isArray(data?.blocks) ? data.blocks : [];
+                        if (blocks.length > 0) return true;
+                    } catch {}
+                }
+                return Boolean((fallbackTextarea?.value || '').trim());
+            };
+
+            publishButtons?.forEach((button) => {
+                button.addEventListener('click', async (e) => {
+                    if (!form || !isPublishedInput) return;
+                    e.preventDefault();
+                    const titleValue = (document.getElementById('title')?.value || '').trim();
+                    const hasContent = await isEditorContentPresent();
+                    if (!titleValue || !hasContent) {
+                        alert(@js(__('post_create.required_fields_alert')));
+                        return;
+                    }
+                    isPublishedInput.value = '1';
+                    form.submit();
+                });
+            });
+
+            const closePreview = () => {
+                previewModal?.classList.add('hidden');
+                syncScrollLock();
+            };
+            previewModal?.querySelectorAll('[data-preview-close]').forEach((el) => el.addEventListener('click', closePreview));
+
+            const escapeHtml = (value) => String(value).replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;').replaceAll("'", '&#039;');
+            const renderBlocks = (blocks = []) => blocks.map((block) => {
+                if (!block || !block.type) return '';
+                if (block.type === 'header') {
+                    const level = Math.min(Math.max(parseInt(block.data?.level || 2, 10), 2), 4);
+                    return `<h${level} class="text-base font-semibold text-slate-900">${escapeHtml(block.data?.text || '')}</h${level}>`;
+                }
+                if (block.type === 'paragraph') return `<p class="whitespace-pre-wrap">${escapeHtml(block.data?.text || '')}</p>`;
+                if (block.type === 'quote') return `<blockquote class="border-l-4 border-slate-200 pl-4 italic">${escapeHtml(block.data?.text || '')}</blockquote>`;
+                if (block.type === 'list') {
+                    const style = block.data?.style === 'ordered' ? 'list-decimal' : 'list-disc';
+                    const items = Array.isArray(block.data?.items) ? block.data.items : [];
+                    return `<ul class="${style} pl-5 space-y-1">${items.map((item) => `<li>${escapeHtml(item)}</li>`).join('')}</ul>`;
+                }
+                return `<pre class="overflow-auto rounded-lg bg-slate-950/5 p-3 text-xs text-slate-700">${escapeHtml(JSON.stringify(block, null, 2))}</pre>`;
+            }).join('');
+
+            const buildPreview = async () => {
+                const title = document.getElementById('title')?.value || '';
+                const excerpt = document.getElementById('excerpt')?.value || '';
+                const newTags = document.getElementById('new_tags')?.value || '';
+                let contentHtml = '';
+                if (wrapper?.__editorInstance?.save) {
+                    try {
+                        const data = await wrapper.__editorInstance.save();
+                        contentHtml = renderBlocks(data?.blocks || []);
+                    } catch { contentHtml = ''; }
+                }
+                if (!contentHtml) {
+                    const contentFallback = fallbackTextarea?.value || '';
+                    contentHtml = contentFallback ? `<p class="whitespace-pre-wrap">${escapeHtml(contentFallback)}</p>` : `<p class="text-slate-500">EditorJS ön izleme için henüz hazır değil.</p>`;
+                }
+                return `
+                    <div class="space-y-1"><div class="text-xs text-slate-500">Başlık</div><div class="text-base font-semibold text-slate-900">${escapeHtml(title || '-')}</div></div>
+                    <div class="space-y-1"><div class="text-xs text-slate-500">Altyazı</div><div class="whitespace-pre-wrap">${escapeHtml(excerpt || '-')}</div></div>
+                    <div class="space-y-1"><div class="text-xs text-slate-500">Yeni etiketler</div><div>${escapeHtml(newTags.trim() || '-')}</div></div>
+                    <div class="space-y-2"><div class="text-xs text-slate-500">İçerik</div><div class="space-y-3">${contentHtml}</div></div>
+                `;
+            };
+
+            document.querySelectorAll('[data-open-preview]').forEach((button) => {
+                button.addEventListener('click', async () => {
+                    if (!previewModal || !previewContent) return;
+                    previewModal.classList.remove('hidden');
+                    syncScrollLock();
+                    previewContent.innerHTML = '<p class="text-slate-500">Hazırlanıyor...</p>';
+                    previewContent.innerHTML = await buildPreview();
+                });
+            });
+
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    closePreview();
+                    closeSettings();
+                }
+            });
+
+            document.addEventListener('click', (e) => {
+                const target = e.target;
+                if (!(target instanceof Element)) return;
+                if (categoryMenu && !categoryMenu.contains(target)) categoryMenu.removeAttribute('open');
+            });
+
+            const aiAssistButton = document.querySelector('[data-ai-assist]');
+            const aiAssistIcon = document.querySelector('[data-ai-assist-icon]');
+            let aiAssistBusy = false;
+
+            const readEditorPlainText = () => (fallbackTextarea ? fallbackTextarea.value : '');
+
+            const showAiToast = (message, isError = false) => {
+                const toast = document.createElement('div');
+                toast.className = `fixed bottom-24 left-1/2 z-[9999] w-[min(92vw,420px)] -translate-x-1/2 rounded-2xl border px-4 py-3 text-sm shadow-lg sm:bottom-6 ${isError ? 'border-rose-200 bg-rose-50 text-rose-800' : 'border-blue-200 bg-blue-50 text-blue-900'}`;
+                toast.textContent = message;
+                document.body.appendChild(toast);
+                setTimeout(() => toast.remove(), isError ? 6000 : 8000);
+            };
+
+            aiAssistButton?.addEventListener('click', async () => {
+                if (aiAssistBusy) return;
+
+                const titleValue = (document.getElementById('title')?.value || '').trim();
+                const contentValue = readEditorPlainText().trim();
+
+                if (titleValue === '' && contentValue === '') {
+                    showAiToast('Önce bir başlık veya içerik yazın, yapay zeka ondan sonra yardımcı olabilir.', true);
+                    return;
+                }
+
+                aiAssistBusy = true;
+                aiAssistIcon?.classList.add('animate-pulse');
+                aiAssistButton.disabled = true;
+
+                try {
+                    const response = await fetch('{{ route('blog.ai-assist') }}', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || '',
+                        },
+                        body: JSON.stringify({ title: titleValue, content: contentValue }),
+                    });
+
+                    const data = await response.json();
+
+                    if (!response.ok || !data.ok) {
+                        showAiToast(data.message || 'Yapay zeka şu anda yardımcı olamadı.', true);
+                        return;
+                    }
+
+                    if (data.meta_title && metaTitleField) metaTitleField.value = data.meta_title;
+                    if (data.meta_description && metaDescription) {
+                        metaDescription.value = data.meta_description;
+                        metaDescription.dispatchEvent(new Event('input'));
+                    }
+                    if (Array.isArray(data.meta_keywords) && data.meta_keywords.length && metaKeywordsField) {
+                        metaKeywordsField.value = data.meta_keywords.join(', ');
+                    }
+                    if (data.excerpt) {
+                        const excerptField = document.getElementById('excerpt');
+                        if (excerptField && excerptField.value.trim() === '') {
+                            excerptField.value = data.excerpt;
+                        }
+                    }
+
+                    openSettings();
+
+                    if (data.suggestions) {
+                        showAiToast(data.suggestions);
+                    } else {
+                        showAiToast('SEO alanları yapay zeka tarafından dolduruldu.');
+                    }
+                } catch (error) {
+                    showAiToast('Yapay zeka isteği başarısız oldu. Bağlantınızı kontrol edip tekrar deneyin.', true);
+                } finally {
+                    aiAssistBusy = false;
+                    aiAssistIcon?.classList.remove('animate-pulse');
+                    aiAssistButton.disabled = false;
+                }
+            });
+        });
     </script>
 @endpush
