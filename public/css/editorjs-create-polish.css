@@ -1,6 +1,6 @@
-/* Ografi /blog/create — EditorJS toolbar + popover layout */
+/* Ografi /blog/create — EditorJS toolbar + popover normalization */
 
-/* Keep the entire composer card open for EditorJS floating UI. */
+/* Floating EditorJS UI must never be clipped by the composer card. */
 .create-page-fixed #post-create-form > section.create-card,
 .create-page-fixed .create-card:has([data-editorjs-wrapper]),
 .create-page-fixed [data-editorjs-wrapper],
@@ -13,16 +13,12 @@
     overflow: visible !important;
 }
 
-.create-page-fixed #post-create-form > section.create-card {
-    position: relative !important;
-}
-
+.create-page-fixed #post-create-form > section.create-card,
 .create-page-fixed [data-editorjs-wrapper] {
     position: relative !important;
-    isolation: isolate;
-    border-radius: 0 0 22px 22px;
 }
 
+/* Full-width writing canvas. */
 .create-page-fixed [data-editorjs-wrapper] .codex-editor__redactor {
     width: 100% !important;
     max-width: 100% !important;
@@ -30,28 +26,30 @@
 
 .create-page-fixed [data-editorjs-wrapper] .ce-block__content,
 .create-page-fixed [data-editorjs-wrapper] .ce-toolbar__content {
-    width: calc(100% - 88px) !important;
-    max-width: calc(100% - 88px) !important;
-    margin-left: 64px !important;
-    margin-right: 24px !important;
+    width: calc(100% - 76px) !important;
+    max-width: calc(100% - 76px) !important;
+    margin-left: 54px !important;
+    margin-right: 22px !important;
+    box-sizing: border-box !important;
+}
+
+/* Kill the giant selected-block paint visible in the screenshots. */
+.create-page-fixed [data-editorjs-wrapper] .ce-block--selected .ce-block__content,
+.create-page-fixed [data-editorjs-wrapper] .ce-block--selected .ce-block__content * {
+    background: transparent !important;
 }
 
 .create-page-fixed [data-editorjs-wrapper] .ce-toolbar,
 .create-page-fixed [data-editorjs-wrapper] .ce-inline-toolbar,
 .create-page-fixed [data-editorjs-wrapper] .ce-popover {
-    z-index: 220 !important;
-}
-
-/* Selected block should not paint a large blue rectangle. */
-.create-page-fixed [data-editorjs-wrapper] .ce-block--selected .ce-block__content,
-.create-page-fixed [data-editorjs-wrapper] .ce-block--selected .ce-block__content * {
-    background-color: transparent !important;
+    z-index: 100500 !important;
 }
 
 .create-page-fixed [data-editorjs-wrapper] .ce-toolbar__actions {
-    left: 12px !important;
+    left: 8px !important;
     right: auto !important;
-    gap: 6px !important;
+    transform: none !important;
+    gap: 5px !important;
 }
 
 .create-page-fixed [data-editorjs-wrapper] .ce-toolbar__plus,
@@ -60,9 +58,10 @@
     height: 36px !important;
     min-width: 36px !important;
     min-height: 36px !important;
-    border-radius: 12px !important;
+    padding: 0 !important;
     border: 1px solid rgba(15, 23, 42, .09) !important;
-    background: #ffffff !important;
+    border-radius: 11px !important;
+    background: #fff !important;
     color: #111827 !important;
     box-shadow: none !important;
 }
@@ -72,12 +71,20 @@
     background: #f8fafc !important;
 }
 
-/* Desktop popovers stay compact. Their X position is clamped by JS so they
-   always open inside the composer instead of being chopped at the right edge. */
+/* Popover: compact, predictable and never wider than the viewport. */
 .create-page-fixed [data-editorjs-wrapper] .ce-popover {
-    width: 272px !important;
-    max-width: min(272px, calc(100vw - 28px)) !important;
-    will-change: transform;
+    width: 286px !important;
+    min-width: 0 !important;
+    max-width: min(286px, calc(100vw - 32px)) !important;
+    max-height: min(430px, 58vh) !important;
+}
+
+.create-page-fixed [data-editorjs-wrapper] .ce-toolbar__actions .ce-popover {
+    left: 44px !important;
+    right: auto !important;
+    top: 0 !important;
+    bottom: auto !important;
+    transform: none !important;
 }
 
 .create-page-fixed [data-editorjs-wrapper] .ce-popover__container {
@@ -86,24 +93,32 @@
     transform: none !important;
     width: 100% !important;
     max-width: 100% !important;
-    max-height: min(410px, 56vh) !important;
+    max-height: min(430px, 58vh) !important;
+    overflow: hidden !important;
     border: 1px solid rgba(15, 23, 42, .10) !important;
     border-radius: 16px !important;
-    background: #ffffff !important;
+    background: #fff !important;
     box-shadow: 0 18px 48px -24px rgba(15, 23, 42, .34) !important;
-    overflow: hidden !important;
 }
 
+/* No fullscreen/backdrop layer for the toolbox. */
 .create-page-fixed [data-editorjs-wrapper] .ce-popover__overlay,
 .create-page-fixed [data-editorjs-wrapper] .ce-popover-overlay {
+    display: none !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
     background: transparent !important;
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
 }
 
 .create-page-fixed [data-editorjs-wrapper] .ce-popover__search {
-    margin: 8px !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
     min-height: 42px !important;
+    margin: 8px !important;
+    padding: 0 10px !important;
     border: 1px solid rgba(15, 23, 42, .08) !important;
     border-radius: 11px !important;
     background: #f8fafc !important;
@@ -111,32 +126,42 @@
 }
 
 .create-page-fixed [data-editorjs-wrapper] .ce-popover__search input {
+    width: 100% !important;
+    min-width: 0 !important;
     min-height: 40px !important;
-    padding: 0 10px !important;
-    font-size: 14px !important;
-    background: transparent !important;
+    padding: 0 !important;
     border: 0 !important;
+    outline: 0 !important;
+    background: transparent !important;
     box-shadow: none !important;
-    outline: none !important;
+    color: #111827 !important;
+    font-size: 14px !important;
 }
 
 .create-page-fixed [data-editorjs-wrapper] .ce-popover__items {
-    padding: 2px 6px 8px !important;
-    max-height: 326px !important;
-    overflow-y: auto !important;
+    max-height: min(340px, 48vh) !important;
     overflow-x: hidden !important;
+    overflow-y: auto !important;
     overscroll-behavior: contain !important;
+    padding: 2px 6px 8px !important;
     scrollbar-width: thin !important;
 }
 
 .create-page-fixed [data-editorjs-wrapper] .ce-popover-item {
+    display: flex !important;
+    align-items: center !important;
+    width: 100% !important;
     min-height: 42px !important;
-    padding: 7px 8px !important;
-    border-radius: 10px !important;
+    margin: 0 !important;
+    padding: 6px 8px !important;
     gap: 9px !important;
+    border: 0 !important;
+    border-radius: 10px !important;
+    background: transparent !important;
+    box-shadow: none !important;
     font-size: 14px !important;
     line-height: 1.25 !important;
-    background: transparent !important;
+    box-sizing: border-box !important;
 }
 
 .create-page-fixed [data-editorjs-wrapper] .ce-popover-item + .ce-popover-item {
@@ -150,95 +175,102 @@
 }
 
 .create-page-fixed [data-editorjs-wrapper] .ce-popover-item__icon {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
     width: 28px !important;
     height: 28px !important;
     min-width: 28px !important;
+    padding: 0 !important;
     border: 0 !important;
+    border-radius: 8px !important;
     background: transparent !important;
     box-shadow: none !important;
 }
 
 .create-page-fixed [data-editorjs-wrapper] .ce-popover-item__title {
+    min-width: 0 !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    color: #111827 !important;
     font-size: 14px !important;
     font-weight: 500 !important;
-    color: #111827 !important;
+}
+
+.create-page-fixed [data-editorjs-wrapper] .ce-popover-item-separator,
+.create-page-fixed [data-editorjs-wrapper] .ce-popover__items > hr {
+    height: 1px !important;
+    margin: 4px 8px !important;
+    border: 0 !important;
+    background: rgba(15, 23, 42, .08) !important;
 }
 
 @media (max-width: 640px) {
     .create-page-fixed [data-editorjs-wrapper] .ce-block__content,
     .create-page-fixed [data-editorjs-wrapper] .ce-toolbar__content {
-        width: calc(100% - 28px) !important;
-        max-width: calc(100% - 28px) !important;
-        margin-left: 14px !important;
-        margin-right: 14px !important;
+        width: calc(100% - 54px) !important;
+        max-width: calc(100% - 54px) !important;
+        margin-left: 44px !important;
+        margin-right: 10px !important;
     }
 
     .create-page-fixed [data-editorjs-wrapper] .ce-toolbar__actions {
-        left: 8px !important;
+        left: 5px !important;
         right: auto !important;
-        gap: 4px !important;
+        gap: 3px !important;
     }
 
     .create-page-fixed [data-editorjs-wrapper] .ce-toolbar__plus,
     .create-page-fixed [data-editorjs-wrapper] .ce-toolbar__settings-btn {
-        width: 36px !important;
-        height: 36px !important;
-        min-width: 36px !important;
-        min-height: 36px !important;
-        border-radius: 11px !important;
+        width: 34px !important;
+        height: 34px !important;
+        min-width: 34px !important;
+        min-height: 34px !important;
+        border-radius: 10px !important;
     }
 
-    /* On phones the toolbox is a real bottom sheet. It does not inherit the
-       desktop inline coordinates and therefore cannot hang outside the card. */
+    /* Important: no fixed bottom-sheet on mobile. Keep EditorJS anchored to
+       the active block so Safari does not cover the whole editor. */
     .create-page-fixed [data-editorjs-wrapper] .ce-popover {
-        position: fixed !important;
-        left: 12px !important;
-        right: 12px !important;
-        bottom: calc(14px + env(safe-area-inset-bottom)) !important;
-        top: auto !important;
+        position: absolute !important;
+        width: min(278px, calc(100vw - 64px)) !important;
+        max-width: calc(100vw - 64px) !important;
+        max-height: min(380px, 52dvh) !important;
+    }
+
+    .create-page-fixed [data-editorjs-wrapper] .ce-toolbar__actions .ce-popover {
+        left: 38px !important;
+        right: auto !important;
+        top: -4px !important;
+        bottom: auto !important;
         transform: none !important;
-        width: auto !important;
-        max-width: none !important;
-        max-height: min(58dvh, 460px) !important;
-        z-index: 100500 !important;
     }
 
     .create-page-fixed [data-editorjs-wrapper] .ce-popover__container {
-        position: relative !important;
-        inset: auto !important;
-        transform: none !important;
-        width: 100% !important;
-        max-width: 100% !important;
-        max-height: min(58dvh, 460px) !important;
-        border-radius: 20px !important;
-        box-shadow: 0 18px 54px -24px rgba(15, 23, 42, .42) !important;
-    }
-
-    .create-page-fixed [data-editorjs-wrapper] .ce-popover__items {
-        max-height: min(330px, 42dvh) !important;
-        padding: 2px 7px 10px !important;
-        overflow-y: auto !important;
-        -webkit-overflow-scrolling: touch !important;
+        max-height: min(380px, 52dvh) !important;
+        border-radius: 15px !important;
     }
 
     .create-page-fixed [data-editorjs-wrapper] .ce-popover__search {
-        position: sticky !important;
-        top: 0 !important;
-        z-index: 2 !important;
-        margin: 9px !important;
-        min-height: 44px !important;
-        background: #f8fafc !important;
+        min-height: 40px !important;
+        margin: 7px !important;
+    }
+
+    .create-page-fixed [data-editorjs-wrapper] .ce-popover__items {
+        max-height: min(300px, 41dvh) !important;
+        padding: 2px 5px 7px !important;
+        -webkit-overflow-scrolling: touch !important;
     }
 
     .create-page-fixed [data-editorjs-wrapper] .ce-popover-item {
-        min-height: 46px !important;
-        padding: 8px 10px !important;
-        border-radius: 12px !important;
-        font-size: 15px !important;
+        min-height: 42px !important;
+        padding: 6px 8px !important;
+        border-radius: 9px !important;
     }
 
     .create-page-fixed [data-editorjs-wrapper] .ce-popover-item__title {
-        font-size: 15px !important;
+        font-size: 14px !important;
     }
 }
 
@@ -246,18 +278,21 @@ html.dark .create-page-fixed [data-editorjs-wrapper] .ce-popover__container,
 html[data-theme="dark"] .create-page-fixed [data-editorjs-wrapper] .ce-popover__container,
 html[data-system-theme="dark"] .create-page-fixed [data-editorjs-wrapper] .ce-popover__container {
     background: #111827 !important;
-    border-color: rgba(255,255,255,.10) !important;
+    border-color: rgba(255, 255, 255, .10) !important;
 }
 
 html.dark .create-page-fixed [data-editorjs-wrapper] .ce-popover__search,
 html[data-theme="dark"] .create-page-fixed [data-editorjs-wrapper] .ce-popover__search,
 html[data-system-theme="dark"] .create-page-fixed [data-editorjs-wrapper] .ce-popover__search {
     background: #0f172a !important;
-    border-color: rgba(255,255,255,.09) !important;
+    border-color: rgba(255, 255, 255, .09) !important;
 }
 
+html.dark .create-page-fixed [data-editorjs-wrapper] .ce-popover__search input,
 html.dark .create-page-fixed [data-editorjs-wrapper] .ce-popover-item__title,
+html[data-theme="dark"] .create-page-fixed [data-editorjs-wrapper] .ce-popover__search input,
 html[data-theme="dark"] .create-page-fixed [data-editorjs-wrapper] .ce-popover-item__title,
+html[data-system-theme="dark"] .create-page-fixed [data-editorjs-wrapper] .ce-popover__search input,
 html[data-system-theme="dark"] .create-page-fixed [data-editorjs-wrapper] .ce-popover-item__title {
     color: #f8fafc !important;
 }
@@ -268,5 +303,5 @@ html[data-theme="dark"] .create-page-fixed [data-editorjs-wrapper] .ce-popover-i
 html[data-theme="dark"] .create-page-fixed [data-editorjs-wrapper] .ce-popover-item--focused,
 html[data-system-theme="dark"] .create-page-fixed [data-editorjs-wrapper] .ce-popover-item:hover,
 html[data-system-theme="dark"] .create-page-fixed [data-editorjs-wrapper] .ce-popover-item--focused {
-    background: #1e293b !important;
+    background: #1f2937 !important;
 }
