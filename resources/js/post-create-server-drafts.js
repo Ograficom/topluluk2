@@ -2,7 +2,7 @@ const loadPostCreateEditorPolish = () => {
     if (document.querySelector('link[data-editorjs-create-polish]')) return;
     const link = document.createElement('link');
     link.rel = 'stylesheet';
-    link.href = '/css/editorjs-create-polish.css?v=20260830c';
+    link.href = '/css/editorjs-create-polish.css?v=20260830d';
     link.setAttribute('data-editorjs-create-polish', '1');
     document.head.appendChild(link);
 };
