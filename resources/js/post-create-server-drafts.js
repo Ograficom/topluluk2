@@ -254,10 +254,98 @@ const movePostCreateCategoryToSettings = () => {
     }
 };
 
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initPostCreateServerDrafts, { once: true });
-    document.addEventListener('DOMContentLoaded', movePostCreateCategoryToSettings, { once: true });
-} else {
+const setupPostCreateSettingsAccordions = () => {
+    const settingsList = document.querySelector('#settings-modal .settings-panel > .flex-1 > .space-y-3');
+    if (!settingsList || settingsList.dataset.accordionsReady === '1') return;
+
+    const items = {
+        'Öne çıkan görsel': { icon: 'lucide:image', description: 'Kartlarda ve paylaşım ön izlemesinde kullanılacak görsel.' },
+        'Kategori': { icon: 'lucide:tag', description: 'Gönderinin yayınlanacağı kategoriyi seç.' },
+        'İçerik bilgileri': { icon: 'lucide:file-text', description: 'Etiket ve kısa açıklama.' },
+        'SEO': { icon: 'lucide:search', description: 'Arama görünümü ayarları.' },
+        'Yayın zamanlaması': { icon: 'lucide:calendar-clock', description: 'Hemen ya da ileri bir tarihte yayınla.' },
+        'Lisans bilgileri': { icon: 'lucide:badge-check', description: 'Görsel kaynak ve telif alanları.' },
+        'Tercihler': { icon: 'lucide:sliders-horizontal', description: 'Yorum, hassas içerik ve gönderi tercihleri.' },
+    };
+
+    const sections = Array.from(settingsList.children).filter((element) => element instanceof HTMLElement && element.tagName === 'SECTION');
+
+    sections.forEach((section) => {
+        const titleNode = Array.from(section.querySelectorAll('.text-sm.font-semibold')).find((node) => items[String(node.textContent || '').trim()]);
+        const title = String(titleNode?.textContent || '').trim();
+        const config = items[title];
+        if (!config) return;
+
+        let details = section.querySelector(':scope > details');
+
+        if (!details) {
+            const header = Array.from(section.children).find((child) => child.classList?.contains('mb-3')) || null;
+            details = document.createElement('details');
+            details.className = 'group settings-accordion';
+
+            const content = document.createElement('div');
+            content.className = 'settings-accordion-content';
+
+            Array.from(section.children).forEach((child) => {
+                if (child !== header) content.appendChild(child);
+            });
+
+            header?.remove();
+            details.appendChild(content);
+            section.appendChild(details);
+        } else {
+            details.classList.add('settings-accordion');
+        }
+
+        const oldSummary = details.querySelector(':scope > summary');
+        let content = details.querySelector(':scope > .settings-accordion-content');
+
+        if (!content) {
+            content = document.createElement('div');
+            content.className = 'settings-accordion-content';
+            Array.from(details.children).forEach((child) => {
+                if (child !== oldSummary) content.appendChild(child);
+            });
+        }
+
+        const summary = document.createElement('summary');
+        summary.className = 'settings-accordion-summary';
+        summary.innerHTML = `
+            <span class="settings-accordion-icon" aria-hidden="true">
+                <iconify-icon icon="${config.icon}"></iconify-icon>
+            </span>
+            <span class="settings-accordion-copy">
+                <span class="settings-accordion-title">${title}</span>
+                <span class="settings-accordion-description">${config.description}</span>
+            </span>
+            <iconify-icon icon="lucide:chevron-down" class="settings-accordion-chevron" aria-hidden="true"></iconify-icon>
+        `;
+
+        oldSummary?.remove();
+        details.prepend(summary);
+        if (!content.parentElement) details.appendChild(content);
+        details.open = false;
+
+        details.addEventListener('toggle', () => {
+            if (!details.open) return;
+            sections.forEach((otherSection) => {
+                const other = otherSection.querySelector(':scope > details.settings-accordion');
+                if (other && other !== details) other.open = false;
+            });
+        });
+    });
+
+    settingsList.dataset.accordionsReady = '1';
+};
+
+const bootPostCreateSettings = () => {
     initPostCreateServerDrafts();
     movePostCreateCategoryToSettings();
+    window.setTimeout(setupPostCreateSettingsAccordions, 0);
+};
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', bootPostCreateSettings, { once: true });
+} else {
+    bootPostCreateSettings();
 }
