@@ -118,12 +118,190 @@ const polishPostCreateSettings = () => {
     }
 };
 
+const setupPostCreateAutosave = () => {
+    const form = document.getElementById('post-create-form');
+    if (!form || form.dataset.autosaveBound === '1') return;
+    form.dataset.autosaveBound = '1';
+
+    const storageKey = 'ografi:blog-create:auto-draft:v2';
+    const wrapper = form.querySelector('[data-editorjs-wrapper]');
+    const contentJson = form.querySelector('[data-editor-json]');
+    const contentFallback = form.querySelector('[data-editor-content]');
+    const publishedInput = form.querySelector('#is_published');
+    let saveTimer = null;
+    let restoring = false;
+
+    const headerActions = document.querySelector('.create-page-fixed header .flex.shrink-0');
+    let status = headerActions?.querySelector('[data-autosave-status]') || null;
+
+    if (headerActions && !status) {
+        status = document.createElement('span');
+        status.setAttribute('data-autosave-status', '');
+        status.className = 'post-create-autosave-status';
+        status.innerHTML = '<iconify-icon icon="lucide:cloud-check"></iconify-icon><span data-autosave-label>Otomatik taslak</span>';
+        headerActions.prepend(status);
+    }
+
+    const statusLabel = status?.querySelector('[data-autosave-label]');
+    const statusIcon = status?.querySelector('iconify-icon');
+
+    const setStatus = (state, label) => {
+        if (!status) return;
+        status.dataset.state = state;
+        if (statusLabel) statusLabel.textContent = label;
+        if (statusIcon) {
+            statusIcon.setAttribute('icon', state === 'saving' ? 'lucide:cloud-upload' : state === 'restored' ? 'lucide:history' : 'lucide:cloud-check');
+        }
+    };
+
+    const readStoredDraft = () => {
+        try {
+            const raw = localStorage.getItem(storageKey);
+            if (!raw) return null;
+            const draft = JSON.parse(raw);
+            return draft && typeof draft === 'object' ? draft : null;
+        } catch {
+            return null;
+        }
+    };
+
+    const serializableFields = () => Array.from(form.elements).filter((field) => {
+        if (!(field instanceof HTMLInputElement || field instanceof HTMLTextAreaElement || field instanceof HTMLSelectElement)) return false;
+        if (!field.name || field.name === '_token' || field.type === 'file' || field.type === 'submit' || field.type === 'button') return false;
+        return true;
+    });
+
+    const collectFields = () => {
+        const values = {};
+        serializableFields().forEach((field) => {
+            if (field instanceof HTMLInputElement && (field.type === 'checkbox' || field.type === 'radio')) {
+                if (!values[field.name]) values[field.name] = [];
+                if (field.checked) values[field.name].push(field.value);
+                return;
+            }
+            values[field.name] = field.value;
+        });
+        return values;
+    };
+
+    const syncEditorPayload = async () => {
+        if (!wrapper?.__editorInstance?.save) return;
+        try {
+            const output = await wrapper.__editorInstance.save();
+            if (contentJson) contentJson.value = JSON.stringify(output);
+            if (window.filamentEditorBlocksToHtml && contentFallback) {
+                contentFallback.value = window.filamentEditorBlocksToHtml(output.blocks || []);
+            }
+        } catch {
+            // Editor hazır değilse mevcut hidden/textarea değerlerini koru.
+        }
+    };
+
+    const saveDraft = async () => {
+        if (restoring) return;
+        setStatus('saving', 'Kaydediliyor');
+        await syncEditorPayload();
+
+        const payload = {
+            version: 2,
+            savedAt: Date.now(),
+            fields: collectFields(),
+            contentJson: contentJson?.value || '',
+            content: contentFallback?.value || '',
+        };
+
+        try {
+            localStorage.setItem(storageKey, JSON.stringify(payload));
+            setStatus('saved', 'Taslak kaydedildi');
+        } catch {
+            setStatus('saved', 'Otomatik taslak');
+        }
+    };
+
+    const scheduleSave = () => {
+        if (restoring) return;
+        setStatus('saving', 'Kaydediliyor');
+        if (saveTimer) clearTimeout(saveTimer);
+        saveTimer = window.setTimeout(saveDraft, 900);
+    };
+
+    const restoreDraft = async () => {
+        const draft = readStoredDraft();
+        if (!draft?.fields) {
+            setStatus('saved', 'Otomatik taslak');
+            return;
+        }
+
+        restoring = true;
+        const fields = serializableFields();
+
+        fields.forEach((field) => {
+            const stored = draft.fields[field.name];
+            if (stored === undefined || stored === null) return;
+
+            if (field instanceof HTMLInputElement && (field.type === 'checkbox' || field.type === 'radio')) {
+                const selected = Array.isArray(stored) ? stored.map(String) : [String(stored)];
+                field.checked = selected.includes(String(field.value));
+                return;
+            }
+
+            field.value = String(stored);
+            field.dispatchEvent(new Event('input', { bubbles: true }));
+            field.dispatchEvent(new Event('change', { bubbles: true }));
+        });
+
+        if (contentJson && draft.contentJson) contentJson.value = String(draft.contentJson);
+        if (contentFallback && draft.content) contentFallback.value = String(draft.content);
+
+        const title = form.querySelector('#title');
+        title?.dispatchEvent(new Event('input', { bubbles: true }));
+
+        window.setTimeout(async () => {
+            const editor = wrapper?.__editorInstance;
+            if (editor?.render && draft.contentJson) {
+                try {
+                    const parsed = JSON.parse(draft.contentJson);
+                    if (Array.isArray(parsed?.blocks)) await editor.render(parsed);
+                } catch {
+                    // Geçersiz eski JSON varsa fallback içerik kalır.
+                }
+            }
+        }, 1200);
+
+        restoring = false;
+        setStatus('restored', 'Taslak geri yüklendi');
+        window.setTimeout(() => setStatus('saved', 'Taslak kaydedildi'), 2200);
+    };
+
+    form.addEventListener('input', scheduleSave, true);
+    form.addEventListener('change', scheduleSave, true);
+    wrapper?.addEventListener('input', scheduleSave, true);
+    wrapper?.addEventListener('keyup', scheduleSave, true);
+
+    form.addEventListener('submit', () => {
+        if (saveTimer) clearTimeout(saveTimer);
+        if (String(publishedInput?.value || '') === '1') {
+            try { localStorage.removeItem(storageKey); } catch {}
+        } else {
+            void saveDraft();
+        }
+    });
+
+    window.addEventListener('pagehide', () => {
+        if (String(publishedInput?.value || '') !== '1') void saveDraft();
+    });
+
+    void restoreDraft();
+};
+
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', syncHeaderUserMenuLinks, { once: true });
     document.addEventListener('DOMContentLoaded', polishPostCreateSettings, { once: true });
+    document.addEventListener('DOMContentLoaded', setupPostCreateAutosave, { once: true });
 } else {
     syncHeaderUserMenuLinks();
     polishPostCreateSettings();
+    setupPostCreateAutosave();
 }
 
 import Echo from 'laravel-echo';
