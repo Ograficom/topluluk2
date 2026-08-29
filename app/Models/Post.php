@@ -19,12 +19,15 @@ use App\Support\PrivacyVisibility;
 use App\Services\IndexNowService;
 use App\Services\SitemapManager;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Validation\ValidationException;
 use Martin6363\FilamentSmartSeo\Traits\HasSeo;
 
 class Post extends Model
 {
     use HasFactory;
     use HasSeo;
+
+    public const MAX_DRAFTS_PER_USER = 5;
 
     protected $fillable = [
         'category_id',
@@ -69,6 +72,23 @@ class Post extends Model
 
     protected static function booted(): void
     {
+        static::creating(function (Post $post): void {
+            if ($post->is_published || ! $post->author_id) {
+                return;
+            }
+
+            $draftCount = static::query()
+                ->where('author_id', $post->author_id)
+                ->where('is_published', false)
+                ->count();
+
+            if ($draftCount >= self::MAX_DRAFTS_PER_USER) {
+                throw ValidationException::withMessages([
+                    'is_published' => 'En fazla ' . self::MAX_DRAFTS_PER_USER . ' taslak saklayabilirsiniz. Yeni taslak oluşturmak için mevcut taslaklardan birini yayınlayın veya silin.',
+                ]);
+            }
+        });
+
         static::saving(function (Post $post) {
             if (blank($post->meta_title)) {
                 $post->meta_title = PostSeoText::title($post->title);
