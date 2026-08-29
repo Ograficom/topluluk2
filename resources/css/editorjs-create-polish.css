@@ -1,5 +1,5 @@
-/* Ografi /blog/create — EditorJS visual polish only.
-   Positioning is intentionally left to EditorJS itself. */
+/* Ografi /blog/create — EditorJS UI polish.
+   EditorJS owns positioning and open/close state. */
 
 .create-page-fixed [data-editorjs-wrapper] {
     position: relative;
@@ -9,6 +9,16 @@
 .create-page-fixed [data-editorjs-wrapper] .ce-inline-toolbar,
 .create-page-fixed [data-editorjs-wrapper] .ce-popover {
     z-index: 220 !important;
+}
+
+/* Critical: EditorJS keeps popovers in the DOM while closed.
+   Do not let the styled container become a blank visible panel on focus. */
+.create-page-fixed [data-editorjs-wrapper] .ce-popover:not(.ce-popover--opened) {
+    display: none !important;
+}
+
+.create-page-fixed [data-editorjs-wrapper] .ce-popover.ce-popover--opened {
+    display: block !important;
 }
 
 .create-page-fixed [data-editorjs-wrapper] .ce-block--selected .ce-block__content,
@@ -34,7 +44,8 @@
     background: #f8fafc !important;
 }
 
-.create-page-fixed [data-editorjs-wrapper] .ce-popover__container {
+/* Style only an actually opened popover. */
+.create-page-fixed [data-editorjs-wrapper] .ce-popover--opened .ce-popover__container {
     border: 1px solid rgba(15, 23, 42, .10) !important;
     border-radius: 16px !important;
     background: #fff !important;
@@ -42,7 +53,7 @@
     overflow: hidden !important;
 }
 
-.create-page-fixed [data-editorjs-wrapper] .ce-popover__search {
+.create-page-fixed [data-editorjs-wrapper] .ce-popover--opened .ce-popover__search {
     margin: 8px !important;
     min-height: 42px !important;
     border: 1px solid rgba(15, 23, 42, .08) !important;
@@ -51,7 +62,7 @@
     box-shadow: none !important;
 }
 
-.create-page-fixed [data-editorjs-wrapper] .ce-popover__search input {
+.create-page-fixed [data-editorjs-wrapper] .ce-popover--opened .ce-popover__search input {
     min-height: 40px !important;
     font-size: 14px !important;
     background: transparent !important;
@@ -60,33 +71,33 @@
     outline: none !important;
 }
 
-.create-page-fixed [data-editorjs-wrapper] .ce-popover__items {
+.create-page-fixed [data-editorjs-wrapper] .ce-popover--opened .ce-popover__items {
     max-height: 320px !important;
     overflow-y: auto !important;
     overflow-x: hidden !important;
     overscroll-behavior: contain !important;
 }
 
-.create-page-fixed [data-editorjs-wrapper] .ce-popover-item {
+.create-page-fixed [data-editorjs-wrapper] .ce-popover--opened .ce-popover-item {
     min-height: 42px !important;
     border-radius: 10px !important;
     font-size: 14px !important;
     background: transparent !important;
 }
 
-.create-page-fixed [data-editorjs-wrapper] .ce-popover-item:hover,
-.create-page-fixed [data-editorjs-wrapper] .ce-popover-item--focused,
-.create-page-fixed [data-editorjs-wrapper] .ce-popover-item--active {
+.create-page-fixed [data-editorjs-wrapper] .ce-popover--opened .ce-popover-item:hover,
+.create-page-fixed [data-editorjs-wrapper] .ce-popover--opened .ce-popover-item--focused,
+.create-page-fixed [data-editorjs-wrapper] .ce-popover--opened .ce-popover-item--active {
     background: #f3f4f6 !important;
 }
 
-.create-page-fixed [data-editorjs-wrapper] .ce-popover-item__icon {
+.create-page-fixed [data-editorjs-wrapper] .ce-popover--opened .ce-popover-item__icon {
     border: 0 !important;
     background: transparent !important;
     box-shadow: none !important;
 }
 
-.create-page-fixed [data-editorjs-wrapper] .ce-popover-item__title {
+.create-page-fixed [data-editorjs-wrapper] .ce-popover--opened .ce-popover-item__title {
     font-size: 14px !important;
     font-weight: 500 !important;
     color: #111827 !important;
@@ -102,48 +113,37 @@
         border-radius: 12px !important;
     }
 
-    .create-page-fixed [data-editorjs-wrapper] .ce-popover__container {
+    .create-page-fixed [data-editorjs-wrapper] .ce-popover--opened .ce-popover__container {
         max-width: calc(100vw - 24px) !important;
         max-height: min(360px, 56vh) !important;
-        border-radius: 16px !important;
     }
 
-    .create-page-fixed [data-editorjs-wrapper] .ce-popover__items {
+    .create-page-fixed [data-editorjs-wrapper] .ce-popover--opened .ce-popover__items {
         max-height: min(270px, 42vh) !important;
         -webkit-overflow-scrolling: touch !important;
     }
 
-    .create-page-fixed [data-editorjs-wrapper] .ce-popover-item {
+    .create-page-fixed [data-editorjs-wrapper] .ce-popover--opened .ce-popover-item {
         min-height: 44px !important;
-        font-size: 14px !important;
     }
 }
 
-html.dark .create-page-fixed [data-editorjs-wrapper] .ce-popover__container,
-html[data-theme="dark"] .create-page-fixed [data-editorjs-wrapper] .ce-popover__container,
-html[data-system-theme="dark"] .create-page-fixed [data-editorjs-wrapper] .ce-popover__container {
+html.dark .create-page-fixed [data-editorjs-wrapper] .ce-popover--opened .ce-popover__container,
+html[data-theme="dark"] .create-page-fixed [data-editorjs-wrapper] .ce-popover--opened .ce-popover__container,
+html[data-system-theme="dark"] .create-page-fixed [data-editorjs-wrapper] .ce-popover--opened .ce-popover__container {
     background: #111827 !important;
     border-color: rgba(255,255,255,.10) !important;
 }
 
-html.dark .create-page-fixed [data-editorjs-wrapper] .ce-popover__search,
-html[data-theme="dark"] .create-page-fixed [data-editorjs-wrapper] .ce-popover__search,
-html[data-system-theme="dark"] .create-page-fixed [data-editorjs-wrapper] .ce-popover__search {
+html.dark .create-page-fixed [data-editorjs-wrapper] .ce-popover--opened .ce-popover__search,
+html[data-theme="dark"] .create-page-fixed [data-editorjs-wrapper] .ce-popover--opened .ce-popover__search,
+html[data-system-theme="dark"] .create-page-fixed [data-editorjs-wrapper] .ce-popover--opened .ce-popover__search {
     background: #0f172a !important;
     border-color: rgba(255,255,255,.09) !important;
 }
 
-html.dark .create-page-fixed [data-editorjs-wrapper] .ce-popover-item__title,
-html[data-theme="dark"] .create-page-fixed [data-editorjs-wrapper] .ce-popover-item__title,
-html[data-system-theme="dark"] .create-page-fixed [data-editorjs-wrapper] .ce-popover-item__title {
+html.dark .create-page-fixed [data-editorjs-wrapper] .ce-popover--opened .ce-popover-item__title,
+html[data-theme="dark"] .create-page-fixed [data-editorjs-wrapper] .ce-popover--opened .ce-popover-item__title,
+html[data-system-theme="dark"] .create-page-fixed [data-editorjs-wrapper] .ce-popover--opened .ce-popover-item__title {
     color: #f8fafc !important;
-}
-
-html.dark .create-page-fixed [data-editorjs-wrapper] .ce-popover-item:hover,
-html.dark .create-page-fixed [data-editorjs-wrapper] .ce-popover-item--focused,
-html[data-theme="dark"] .create-page-fixed [data-editorjs-wrapper] .ce-popover-item:hover,
-html[data-theme="dark"] .create-page-fixed [data-editorjs-wrapper] .ce-popover-item--focused,
-html[data-system-theme="dark"] .create-page-fixed [data-editorjs-wrapper] .ce-popover-item:hover,
-html[data-system-theme="dark"] .create-page-fixed [data-editorjs-wrapper] .ce-popover-item--focused {
-    background: #1e293b !important;
 }
