@@ -1,55 +1,29 @@
-/* Ografi /blog/create — EditorJS toolbar + popover normalization */
+/* Ografi /blog/create — EditorJS UI polish.
+   EditorJS owns positioning and open/close state. */
 
-/* Floating EditorJS UI must never be clipped by the composer card. */
-.create-page-fixed #post-create-form > section.create-card,
-.create-page-fixed .create-card:has([data-editorjs-wrapper]),
-.create-page-fixed [data-editorjs-wrapper],
-.create-page-fixed [data-editorjs-wrapper] .codex-editor,
-.create-page-fixed [data-editorjs-wrapper] .codex-editor__redactor,
-.create-page-fixed [data-editorjs-wrapper] .ce-block,
-.create-page-fixed [data-editorjs-wrapper] .ce-toolbar,
-.create-page-fixed [data-editorjs-wrapper] .ce-toolbar__content,
-.create-page-fixed [data-editorjs-wrapper] .ce-block__content {
-    overflow: visible !important;
-}
-
-.create-page-fixed #post-create-form > section.create-card,
 .create-page-fixed [data-editorjs-wrapper] {
-    position: relative !important;
-}
-
-/* Full-width writing canvas. */
-.create-page-fixed [data-editorjs-wrapper] .codex-editor__redactor {
-    width: 100% !important;
-    max-width: 100% !important;
-}
-
-.create-page-fixed [data-editorjs-wrapper] .ce-block__content,
-.create-page-fixed [data-editorjs-wrapper] .ce-toolbar__content {
-    width: calc(100% - 76px) !important;
-    max-width: calc(100% - 76px) !important;
-    margin-left: 54px !important;
-    margin-right: 22px !important;
-    box-sizing: border-box !important;
-}
-
-/* Kill the giant selected-block paint visible in the screenshots. */
-.create-page-fixed [data-editorjs-wrapper] .ce-block--selected .ce-block__content,
-.create-page-fixed [data-editorjs-wrapper] .ce-block--selected .ce-block__content * {
-    background: transparent !important;
+    position: relative;
 }
 
 .create-page-fixed [data-editorjs-wrapper] .ce-toolbar,
 .create-page-fixed [data-editorjs-wrapper] .ce-inline-toolbar,
 .create-page-fixed [data-editorjs-wrapper] .ce-popover {
-    z-index: 100500 !important;
+    z-index: 220 !important;
 }
 
-.create-page-fixed [data-editorjs-wrapper] .ce-toolbar__actions {
-    left: 8px !important;
-    right: auto !important;
-    transform: none !important;
-    gap: 5px !important;
+/* Critical: EditorJS keeps popovers in the DOM while closed.
+   Do not let the styled container become a blank visible panel on focus. */
+.create-page-fixed [data-editorjs-wrapper] .ce-popover:not(.ce-popover--opened) {
+    display: none !important;
+}
+
+.create-page-fixed [data-editorjs-wrapper] .ce-popover.ce-popover--opened {
+    display: block !important;
+}
+
+.create-page-fixed [data-editorjs-wrapper] .ce-block--selected .ce-block__content,
+.create-page-fixed [data-editorjs-wrapper] .ce-block--selected .ce-block__content * {
+    background-color: transparent !important;
 }
 
 .create-page-fixed [data-editorjs-wrapper] .ce-toolbar__plus,
@@ -58,9 +32,8 @@
     height: 36px !important;
     min-width: 36px !important;
     min-height: 36px !important;
-    padding: 0 !important;
+    border-radius: 12px !important;
     border: 1px solid rgba(15, 23, 42, .09) !important;
-    border-radius: 11px !important;
     background: #fff !important;
     color: #111827 !important;
     box-shadow: none !important;
@@ -71,237 +44,106 @@
     background: #f8fafc !important;
 }
 
-/* Popover: compact, predictable and never wider than the viewport. */
-.create-page-fixed [data-editorjs-wrapper] .ce-popover {
-    width: 286px !important;
-    min-width: 0 !important;
-    max-width: min(286px, calc(100vw - 32px)) !important;
-    max-height: min(430px, 58vh) !important;
-}
-
-.create-page-fixed [data-editorjs-wrapper] .ce-toolbar__actions .ce-popover {
-    left: 44px !important;
-    right: auto !important;
-    top: 0 !important;
-    bottom: auto !important;
-    transform: none !important;
-}
-
-.create-page-fixed [data-editorjs-wrapper] .ce-popover__container {
-    position: relative !important;
-    inset: auto !important;
-    transform: none !important;
-    width: 100% !important;
-    max-width: 100% !important;
-    max-height: min(430px, 58vh) !important;
-    overflow: hidden !important;
+/* Style only an actually opened popover. */
+.create-page-fixed [data-editorjs-wrapper] .ce-popover--opened .ce-popover__container {
     border: 1px solid rgba(15, 23, 42, .10) !important;
     border-radius: 16px !important;
     background: #fff !important;
     box-shadow: 0 18px 48px -24px rgba(15, 23, 42, .34) !important;
+    overflow: hidden !important;
 }
 
-/* No fullscreen/backdrop layer for the toolbox. */
-.create-page-fixed [data-editorjs-wrapper] .ce-popover__overlay,
-.create-page-fixed [data-editorjs-wrapper] .ce-popover-overlay {
-    display: none !important;
-    opacity: 0 !important;
-    pointer-events: none !important;
-    background: transparent !important;
-    backdrop-filter: none !important;
-    -webkit-backdrop-filter: none !important;
-}
-
-.create-page-fixed [data-editorjs-wrapper] .ce-popover__search {
-    display: flex !important;
-    align-items: center !important;
-    gap: 8px !important;
-    min-height: 42px !important;
+.create-page-fixed [data-editorjs-wrapper] .ce-popover--opened .ce-popover__search {
     margin: 8px !important;
-    padding: 0 10px !important;
+    min-height: 42px !important;
     border: 1px solid rgba(15, 23, 42, .08) !important;
     border-radius: 11px !important;
     background: #f8fafc !important;
     box-shadow: none !important;
 }
 
-.create-page-fixed [data-editorjs-wrapper] .ce-popover__search input {
-    width: 100% !important;
-    min-width: 0 !important;
+.create-page-fixed [data-editorjs-wrapper] .ce-popover--opened .ce-popover__search input {
     min-height: 40px !important;
-    padding: 0 !important;
-    border: 0 !important;
-    outline: 0 !important;
-    background: transparent !important;
-    box-shadow: none !important;
-    color: #111827 !important;
     font-size: 14px !important;
+    background: transparent !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    outline: none !important;
 }
 
-.create-page-fixed [data-editorjs-wrapper] .ce-popover__items {
-    max-height: min(340px, 48vh) !important;
-    overflow-x: hidden !important;
+.create-page-fixed [data-editorjs-wrapper] .ce-popover--opened .ce-popover__items {
+    max-height: 320px !important;
     overflow-y: auto !important;
+    overflow-x: hidden !important;
     overscroll-behavior: contain !important;
-    padding: 2px 6px 8px !important;
-    scrollbar-width: thin !important;
 }
 
-.create-page-fixed [data-editorjs-wrapper] .ce-popover-item {
-    display: flex !important;
-    align-items: center !important;
-    width: 100% !important;
+.create-page-fixed [data-editorjs-wrapper] .ce-popover--opened .ce-popover-item {
     min-height: 42px !important;
-    margin: 0 !important;
-    padding: 6px 8px !important;
-    gap: 9px !important;
-    border: 0 !important;
     border-radius: 10px !important;
-    background: transparent !important;
-    box-shadow: none !important;
     font-size: 14px !important;
-    line-height: 1.25 !important;
-    box-sizing: border-box !important;
+    background: transparent !important;
 }
 
-.create-page-fixed [data-editorjs-wrapper] .ce-popover-item + .ce-popover-item {
-    margin-top: 2px !important;
-}
-
-.create-page-fixed [data-editorjs-wrapper] .ce-popover-item:hover,
-.create-page-fixed [data-editorjs-wrapper] .ce-popover-item--focused,
-.create-page-fixed [data-editorjs-wrapper] .ce-popover-item--active {
+.create-page-fixed [data-editorjs-wrapper] .ce-popover--opened .ce-popover-item:hover,
+.create-page-fixed [data-editorjs-wrapper] .ce-popover--opened .ce-popover-item--focused,
+.create-page-fixed [data-editorjs-wrapper] .ce-popover--opened .ce-popover-item--active {
     background: #f3f4f6 !important;
 }
 
-.create-page-fixed [data-editorjs-wrapper] .ce-popover-item__icon {
-    display: inline-flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    width: 28px !important;
-    height: 28px !important;
-    min-width: 28px !important;
-    padding: 0 !important;
+.create-page-fixed [data-editorjs-wrapper] .ce-popover--opened .ce-popover-item__icon {
     border: 0 !important;
-    border-radius: 8px !important;
     background: transparent !important;
     box-shadow: none !important;
 }
 
-.create-page-fixed [data-editorjs-wrapper] .ce-popover-item__title {
-    min-width: 0 !important;
-    overflow: hidden !important;
-    text-overflow: ellipsis !important;
-    white-space: nowrap !important;
-    color: #111827 !important;
+.create-page-fixed [data-editorjs-wrapper] .ce-popover--opened .ce-popover-item__title {
     font-size: 14px !important;
     font-weight: 500 !important;
-}
-
-.create-page-fixed [data-editorjs-wrapper] .ce-popover-item-separator,
-.create-page-fixed [data-editorjs-wrapper] .ce-popover__items > hr {
-    height: 1px !important;
-    margin: 4px 8px !important;
-    border: 0 !important;
-    background: rgba(15, 23, 42, .08) !important;
+    color: #111827 !important;
 }
 
 @media (max-width: 640px) {
-    .create-page-fixed [data-editorjs-wrapper] .ce-block__content,
-    .create-page-fixed [data-editorjs-wrapper] .ce-toolbar__content {
-        width: calc(100% - 54px) !important;
-        max-width: calc(100% - 54px) !important;
-        margin-left: 44px !important;
-        margin-right: 10px !important;
-    }
-
-    .create-page-fixed [data-editorjs-wrapper] .ce-toolbar__actions {
-        left: 5px !important;
-        right: auto !important;
-        gap: 3px !important;
-    }
-
     .create-page-fixed [data-editorjs-wrapper] .ce-toolbar__plus,
     .create-page-fixed [data-editorjs-wrapper] .ce-toolbar__settings-btn {
-        width: 34px !important;
-        height: 34px !important;
-        min-width: 34px !important;
-        min-height: 34px !important;
-        border-radius: 10px !important;
+        width: 38px !important;
+        height: 38px !important;
+        min-width: 38px !important;
+        min-height: 38px !important;
+        border-radius: 12px !important;
     }
 
-    /* Important: no fixed bottom-sheet on mobile. Keep EditorJS anchored to
-       the active block so Safari does not cover the whole editor. */
-    .create-page-fixed [data-editorjs-wrapper] .ce-popover {
-        position: absolute !important;
-        width: min(278px, calc(100vw - 64px)) !important;
-        max-width: calc(100vw - 64px) !important;
-        max-height: min(380px, 52dvh) !important;
+    .create-page-fixed [data-editorjs-wrapper] .ce-popover--opened .ce-popover__container {
+        max-width: calc(100vw - 24px) !important;
+        max-height: min(360px, 56vh) !important;
     }
 
-    .create-page-fixed [data-editorjs-wrapper] .ce-toolbar__actions .ce-popover {
-        left: 38px !important;
-        right: auto !important;
-        top: -4px !important;
-        bottom: auto !important;
-        transform: none !important;
-    }
-
-    .create-page-fixed [data-editorjs-wrapper] .ce-popover__container {
-        max-height: min(380px, 52dvh) !important;
-        border-radius: 15px !important;
-    }
-
-    .create-page-fixed [data-editorjs-wrapper] .ce-popover__search {
-        min-height: 40px !important;
-        margin: 7px !important;
-    }
-
-    .create-page-fixed [data-editorjs-wrapper] .ce-popover__items {
-        max-height: min(300px, 41dvh) !important;
-        padding: 2px 5px 7px !important;
+    .create-page-fixed [data-editorjs-wrapper] .ce-popover--opened .ce-popover__items {
+        max-height: min(270px, 42vh) !important;
         -webkit-overflow-scrolling: touch !important;
     }
 
-    .create-page-fixed [data-editorjs-wrapper] .ce-popover-item {
-        min-height: 42px !important;
-        padding: 6px 8px !important;
-        border-radius: 9px !important;
-    }
-
-    .create-page-fixed [data-editorjs-wrapper] .ce-popover-item__title {
-        font-size: 14px !important;
+    .create-page-fixed [data-editorjs-wrapper] .ce-popover--opened .ce-popover-item {
+        min-height: 44px !important;
     }
 }
 
-html.dark .create-page-fixed [data-editorjs-wrapper] .ce-popover__container,
-html[data-theme="dark"] .create-page-fixed [data-editorjs-wrapper] .ce-popover__container,
-html[data-system-theme="dark"] .create-page-fixed [data-editorjs-wrapper] .ce-popover__container {
+html.dark .create-page-fixed [data-editorjs-wrapper] .ce-popover--opened .ce-popover__container,
+html[data-theme="dark"] .create-page-fixed [data-editorjs-wrapper] .ce-popover--opened .ce-popover__container,
+html[data-system-theme="dark"] .create-page-fixed [data-editorjs-wrapper] .ce-popover--opened .ce-popover__container {
     background: #111827 !important;
-    border-color: rgba(255, 255, 255, .10) !important;
+    border-color: rgba(255,255,255,.10) !important;
 }
 
-html.dark .create-page-fixed [data-editorjs-wrapper] .ce-popover__search,
-html[data-theme="dark"] .create-page-fixed [data-editorjs-wrapper] .ce-popover__search,
-html[data-system-theme="dark"] .create-page-fixed [data-editorjs-wrapper] .ce-popover__search {
+html.dark .create-page-fixed [data-editorjs-wrapper] .ce-popover--opened .ce-popover__search,
+html[data-theme="dark"] .create-page-fixed [data-editorjs-wrapper] .ce-popover--opened .ce-popover__search,
+html[data-system-theme="dark"] .create-page-fixed [data-editorjs-wrapper] .ce-popover--opened .ce-popover__search {
     background: #0f172a !important;
-    border-color: rgba(255, 255, 255, .09) !important;
+    border-color: rgba(255,255,255,.09) !important;
 }
 
-html.dark .create-page-fixed [data-editorjs-wrapper] .ce-popover__search input,
-html.dark .create-page-fixed [data-editorjs-wrapper] .ce-popover-item__title,
-html[data-theme="dark"] .create-page-fixed [data-editorjs-wrapper] .ce-popover__search input,
-html[data-theme="dark"] .create-page-fixed [data-editorjs-wrapper] .ce-popover-item__title,
-html[data-system-theme="dark"] .create-page-fixed [data-editorjs-wrapper] .ce-popover__search input,
-html[data-system-theme="dark"] .create-page-fixed [data-editorjs-wrapper] .ce-popover-item__title {
+html.dark .create-page-fixed [data-editorjs-wrapper] .ce-popover--opened .ce-popover-item__title,
+html[data-theme="dark"] .create-page-fixed [data-editorjs-wrapper] .ce-popover--opened .ce-popover-item__title,
+html[data-system-theme="dark"] .create-page-fixed [data-editorjs-wrapper] .ce-popover--opened .ce-popover-item__title {
     color: #f8fafc !important;
-}
-
-html.dark .create-page-fixed [data-editorjs-wrapper] .ce-popover-item:hover,
-html.dark .create-page-fixed [data-editorjs-wrapper] .ce-popover-item--focused,
-html[data-theme="dark"] .create-page-fixed [data-editorjs-wrapper] .ce-popover-item:hover,
-html[data-theme="dark"] .create-page-fixed [data-editorjs-wrapper] .ce-popover-item--focused,
-html[data-system-theme="dark"] .create-page-fixed [data-editorjs-wrapper] .ce-popover-item:hover,
-html[data-system-theme="dark"] .create-page-fixed [data-editorjs-wrapper] .ce-popover-item--focused {
-    background: #1f2937 !important;
 }
