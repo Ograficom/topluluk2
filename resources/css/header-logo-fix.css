@@ -335,6 +335,12 @@ html body.alma-app .sidebar-wrapper--drawer .nav-item-icon-outline > iconify-ico
     background-color: transparent !important;
 }
 
+/* SVG'lerde görünmez olması gereken viewBox sıfırlama yolu global stroke kuralı yüzünden kare çizgiye dönüşüyordu. */
+html body.alma-app .layout-side--left .nav-item-icon-outline > svg > path:first-child[fill="none"],
+html body.alma-app .sidebar-wrapper--drawer .nav-item-icon-outline > svg > path:first-child[fill="none"] {
+    stroke: none !important;
+}
+
 /* Türkçe arayüzde sol menü etiketlerini doğal Türkçe karşılıklarla göster.
    HTML yapısını ve ölçüleri değiştirmeden yalnızca görünen metni yerelleştirir. */
 html[lang^="tr"] body.alma-app .sidebar-wrapper .nav-item-label {
