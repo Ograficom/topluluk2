@@ -99,7 +99,7 @@
         .drafts-feed {
             display: flex !important;
             flex-direction: column !important;
-            gap: 2px !important;
+            gap: 20px !important;
             padding: 0 !important;
             margin: 0 !important;
             border: 0 !important;
@@ -174,7 +174,7 @@
             }
 
             .drafts-feed {
-                gap: 1px !important;
+                gap: 14px !important;
             }
         }
     </style>
