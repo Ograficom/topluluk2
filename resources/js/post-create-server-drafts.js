@@ -104,7 +104,6 @@ const initPostCreateServerDrafts = () => {
         const currentSlug = String(state.slug || '').trim();
         const data = new FormData(form);
 
-        // Dosya her tuş vuruşunda tekrar yüklenmesin; yayınlama sırasında normal form gönderir.
         data.delete('featured_image');
         data.set('is_published', '0');
 
@@ -161,8 +160,6 @@ const initPostCreateServerDrafts = () => {
     wrapper?.addEventListener('input', scheduleServerSave, true);
     wrapper?.addEventListener('keyup', scheduleServerSave, true);
 
-    // Create ekranında sunucuda oluşmuş taslak varsa, Yayımla aynı kaydı günceller;
-    // ikinci bir gönderi oluşturmaz ve Taslaklar sayfasında kopya bırakmaz.
     document.addEventListener('click', (event) => {
         const target = event.target instanceof Element ? event.target.closest('[data-submit-intent="publish"]') : null;
         if (!target || !form.contains(target)) return;
@@ -198,8 +195,61 @@ const initPostCreateServerDrafts = () => {
     }
 };
 
+const movePostCreateCategoryToSettings = () => {
+    const categoryMenu = document.querySelector('[data-category-menu]');
+    const settingsList = document.querySelector('#settings-modal .settings-panel > .flex-1 > .space-y-3');
+
+    if (!categoryMenu || !settingsList || settingsList.querySelector('[data-create-category-settings]')) return;
+
+    const oldHeaderWrap = categoryMenu.parentElement;
+    const section = document.createElement('section');
+    section.setAttribute('data-create-category-settings', '');
+    section.className = 'rounded-[18px] border border-slate-200 bg-white p-4 shadow-sm';
+    section.innerHTML = `
+        <div class="mb-3 flex items-center gap-3">
+            <span class="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-blue-50 text-blue-600">
+                <iconify-icon icon="lucide:tag" class="text-[17px]"></iconify-icon>
+            </span>
+            <div class="min-w-0">
+                <div class="text-sm font-semibold text-slate-950">Kategori</div>
+                <div class="mt-0.5 text-xs text-slate-500">Gönderinin yayınlanacağı kategoriyi seç.</div>
+            </div>
+        </div>
+        <div data-category-settings-slot></div>
+    `;
+
+    const slot = section.querySelector('[data-category-settings-slot]');
+    slot?.appendChild(categoryMenu);
+
+    const summary = categoryMenu.querySelector('summary');
+    if (summary) {
+        summary.className = 'flex min-h-11 w-full cursor-pointer list-none items-center gap-2 rounded-2xl border border-slate-200 bg-slate-50 px-3 text-sm font-medium text-slate-800 [&::-webkit-details-marker]:hidden';
+    }
+
+    const menuPanel = categoryMenu.querySelector(':scope > div');
+    if (menuPanel) {
+        menuPanel.className = 'mt-2 w-full overflow-hidden rounded-2xl border border-slate-200 bg-white';
+        menuPanel.style.position = 'static';
+        menuPanel.style.maxWidth = 'none';
+        menuPanel.style.boxShadow = 'none';
+    }
+
+    const coverSection = settingsList.querySelector('[data-create-cover-settings]');
+    if (coverSection) {
+        coverSection.insertAdjacentElement('afterend', section);
+    } else {
+        settingsList.prepend(section);
+    }
+
+    if (oldHeaderWrap && !oldHeaderWrap.querySelector('[data-category-menu]')) {
+        oldHeaderWrap.remove();
+    }
+};
+
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', initPostCreateServerDrafts, { once: true });
+    document.addEventListener('DOMContentLoaded', movePostCreateCategoryToSettings, { once: true });
 } else {
     initPostCreateServerDrafts();
+    movePostCreateCategoryToSettings();
 }
