@@ -126,6 +126,23 @@
     color: #111827 !important;
 }
 
+/* EditorJS varsayilan blok adlarini Turkce goster. */
+.create-page-fixed [data-editorjs-wrapper] .ce-popover--opened .ce-popover__items > .ce-popover-item:nth-child(1) .ce-popover-item__title,
+.create-page-fixed [data-editorjs-wrapper] .ce-popover--opened .ce-popover__items > .ce-popover-item:nth-child(2) .ce-popover-item__title,
+.create-page-fixed [data-editorjs-wrapper] .ce-popover--opened .ce-popover__items > .ce-popover-item:nth-child(3) .ce-popover-item__title,
+.create-page-fixed [data-editorjs-wrapper] .ce-popover--opened .ce-popover__items > .ce-popover-item:nth-child(4) .ce-popover-item__title,
+.create-page-fixed [data-editorjs-wrapper] .ce-popover--opened .ce-popover__items > .ce-popover-item:nth-child(5) .ce-popover-item__title,
+.create-page-fixed [data-editorjs-wrapper] .ce-popover--opened .ce-popover__items > .ce-popover-item:nth-child(6) .ce-popover-item__title {
+    font-size: 0 !important;
+}
+
+.create-page-fixed [data-editorjs-wrapper] .ce-popover--opened .ce-popover__items > .ce-popover-item:nth-child(1) .ce-popover-item__title::after { content: 'Metin'; font-size: 14px; }
+.create-page-fixed [data-editorjs-wrapper] .ce-popover--opened .ce-popover__items > .ce-popover-item:nth-child(2) .ce-popover-item__title::after { content: 'Başlık'; font-size: 14px; }
+.create-page-fixed [data-editorjs-wrapper] .ce-popover--opened .ce-popover__items > .ce-popover-item:nth-child(3) .ce-popover-item__title::after { content: 'Sırasız Liste'; font-size: 14px; }
+.create-page-fixed [data-editorjs-wrapper] .ce-popover--opened .ce-popover__items > .ce-popover-item:nth-child(4) .ce-popover-item__title::after { content: 'Numaralı Liste'; font-size: 14px; }
+.create-page-fixed [data-editorjs-wrapper] .ce-popover--opened .ce-popover__items > .ce-popover-item:nth-child(5) .ce-popover-item__title::after { content: 'Kontrol Listesi'; font-size: 14px; }
+.create-page-fixed [data-editorjs-wrapper] .ce-popover--opened .ce-popover__items > .ce-popover-item:nth-child(6) .ce-popover-item__title::after { content: 'Alıntı'; font-size: 14px; }
+
 .create-page-fixed [data-editorjs-wrapper] .ce-block--selected .ce-block__content,
 .create-page-fixed [data-editorjs-wrapper] .ce-block--selected .ce-block__content * {
     background-color: transparent !important;
