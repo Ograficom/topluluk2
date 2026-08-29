@@ -239,3 +239,84 @@ html.dark body.alma-app .layout-side--right .ografi-right-stack .ografi-tag-row_
 html body.dark.alma-app .layout-side--right .ografi-right-stack .ografi-tag-row__count {
     color: #60a5fa !important;
 }
+
+/* Sol sütun: desktop menüde eski kurallar yüzeyi transparan, aktif/hover durumlarını ise
+   beyaza zorladığı için dark görünüm parçalı kalıyordu. Yerleşime dokunmadan sadece renkleri sabitle. */
+html.dark body.alma-app .layout-side--left,
+html.dark body.alma-app .layout-side--left .sidebar-wrapper,
+html.dark body.alma-app .layout-side--left .sidebar-wrapper:not(.sidebar-wrapper--drawer),
+html.dark body.alma-app .layout-side--left .sidebar-scroll,
+html.dark body.alma-app .layout-side--left .sidebar-section,
+html body.dark.alma-app .layout-side--left,
+html body.dark.alma-app .layout-side--left .sidebar-wrapper,
+html body.dark.alma-app .layout-side--left .sidebar-wrapper:not(.sidebar-wrapper--drawer),
+html body.dark.alma-app .layout-side--left .sidebar-scroll,
+html body.dark.alma-app .layout-side--left .sidebar-section {
+    background: #0b1220 !important;
+    background-color: #0b1220 !important;
+    color: #e5e7eb !important;
+    box-shadow: none !important;
+}
+
+html.dark body.alma-app .layout-side--left .nav-item,
+html.dark body.alma-app .layout-side--left .sidebar-category-link,
+html.dark body.alma-app .layout-side--left .nav-item-label,
+html.dark body.alma-app .layout-side--left .sidebar-category-name,
+html.dark body.alma-app .layout-side--left .sidebar-footer,
+html.dark body.alma-app .layout-side--left .sidebar-footer-link,
+html.dark body.alma-app .layout-side--left .sidebar-footer-brand,
+html.dark body.alma-app .layout-side--left .sidebar-footer-bottom,
+html body.dark.alma-app .layout-side--left .nav-item,
+html body.dark.alma-app .layout-side--left .sidebar-category-link,
+html body.dark.alma-app .layout-side--left .nav-item-label,
+html body.dark.alma-app .layout-side--left .sidebar-category-name,
+html body.dark.alma-app .layout-side--left .sidebar-footer,
+html body.dark.alma-app .layout-side--left .sidebar-footer-link,
+html body.dark.alma-app .layout-side--left .sidebar-footer-brand,
+html body.dark.alma-app .layout-side--left .sidebar-footer-bottom {
+    color: #cbd5e1 !important;
+}
+
+html.dark body.alma-app .layout-side--left .nav-item:hover,
+html.dark body.alma-app .layout-side--left .nav-item:focus,
+html.dark body.alma-app .layout-side--left .nav-item:focus-visible,
+html.dark body.alma-app .layout-side--left .nav-item:active,
+html.dark body.alma-app .layout-side--left .nav-item[data-active="true"],
+html.dark body.alma-app .layout-side--left .sidebar-category-link:hover,
+html.dark body.alma-app .layout-side--left .sidebar-category-link:focus,
+html.dark body.alma-app .layout-side--left .sidebar-category-link:focus-visible,
+html.dark body.alma-app .layout-side--left .sidebar-category-link:active,
+html.dark body.alma-app .layout-side--left .sidebar-category-link[data-active="true"],
+html body.dark.alma-app .layout-side--left .nav-item:hover,
+html body.dark.alma-app .layout-side--left .nav-item:focus,
+html body.dark.alma-app .layout-side--left .nav-item:focus-visible,
+html body.dark.alma-app .layout-side--left .nav-item:active,
+html body.dark.alma-app .layout-side--left .nav-item[data-active="true"],
+html body.dark.alma-app .layout-side--left .sidebar-category-link:hover,
+html body.dark.alma-app .layout-side--left .sidebar-category-link:focus,
+html body.dark.alma-app .layout-side--left .sidebar-category-link:focus-visible,
+html body.dark.alma-app .layout-side--left .sidebar-category-link:active,
+html body.dark.alma-app .layout-side--left .sidebar-category-link[data-active="true"] {
+    background: #1f2937 !important;
+    background-color: #1f2937 !important;
+    color: #ffffff !important;
+    box-shadow: none !important;
+}
+
+html.dark body.alma-app .layout-side--left .nav-item[data-active="true"] .nav-item-label,
+html.dark body.alma-app .layout-side--left .nav-item[data-active="true"] .nav-item-icon-outline,
+html.dark body.alma-app .layout-side--left .nav-item[data-active="true"] iconify-icon,
+html.dark body.alma-app .layout-side--left .nav-item[data-active="true"] svg,
+html.dark body.alma-app .layout-side--left .sidebar-category-link[data-active="true"] .sidebar-category-name,
+html body.dark.alma-app .layout-side--left .nav-item[data-active="true"] .nav-item-label,
+html body.dark.alma-app .layout-side--left .nav-item[data-active="true"] .nav-item-icon-outline,
+html body.dark.alma-app .layout-side--left .nav-item[data-active="true"] iconify-icon,
+html body.dark.alma-app .layout-side--left .nav-item[data-active="true"] svg,
+html body.dark.alma-app .layout-side--left .sidebar-category-link[data-active="true"] .sidebar-category-name {
+    color: #ffffff !important;
+}
+
+html.dark body.alma-app .layout-side--left .sidebar-scroll::-webkit-scrollbar-thumb,
+html body.dark.alma-app .layout-side--left .sidebar-scroll::-webkit-scrollbar-thumb {
+    background: rgba(148, 163, 184, 0.28) !important;
+}
