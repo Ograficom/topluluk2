@@ -1,11 +1,17 @@
 /* /blog/create — settings drawer polish + featured image placement */
 
+.create-page-fixed {
+    background: #f6f4f0 !important;
+}
+
 #settings-modal .settings-panel {
     background: rgba(255, 255, 255, 0.94) !important;
     border: 1px solid rgba(15, 23, 42, 0.10) !important;
     box-shadow: 0 28px 80px -36px rgba(15, 23, 42, 0.42) !important;
     backdrop-filter: blur(26px) saturate(150%) !important;
     -webkit-backdrop-filter: blur(26px) saturate(150%) !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
 }
 
 #settings-modal .settings-panel > div:nth-child(2) {
@@ -15,6 +21,7 @@
     background: rgba(255, 255, 255, 0.72) !important;
     backdrop-filter: blur(18px) !important;
     -webkit-backdrop-filter: blur(18px) !important;
+    flex: 0 0 auto !important;
 }
 
 #settings-modal .settings-panel > div:nth-child(2) h2 {
@@ -30,7 +37,14 @@
 }
 
 #settings-modal .settings-panel > .flex-1 {
-    background: #f5f6f8 !important;
+    min-height: 0 !important;
+    flex: 1 1 auto !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    overscroll-behavior: contain !important;
+    -webkit-overflow-scrolling: touch !important;
+    touch-action: pan-y !important;
+    background: #f6f4f0 !important;
     padding: 12px !important;
     scrollbar-width: thin;
     scrollbar-color: #cbd5e1 transparent;
@@ -49,13 +63,14 @@
     display: flex !important;
     flex-direction: column !important;
     gap: 10px !important;
+    padding-bottom: 8px !important;
 }
 
 #settings-modal .settings-panel section {
     margin: 0 !important;
     border: 1px solid rgba(15, 23, 42, 0.08) !important;
     border-radius: 22px !important;
-    background: rgba(255, 255, 255, 0.92) !important;
+    background: rgba(255, 255, 255, 0.94) !important;
     box-shadow: 0 8px 28px -24px rgba(15, 23, 42, 0.28) !important;
 }
 
@@ -77,7 +92,7 @@
     min-height: 46px !important;
     border: 1px solid rgba(15, 23, 42, 0.08) !important;
     border-radius: 15px !important;
-    background: #f6f7f9 !important;
+    background: #f7f6f3 !important;
     color: #111827 !important;
     box-shadow: none !important;
     font-size: 14px !important;
@@ -104,15 +119,15 @@
 
 #settings-modal .settings-panel [data-create-cover-settings] .create-cover-drop {
     min-height: 156px !important;
-    border: 1px dashed rgba(100, 116, 139, 0.36) !important;
+    border: 1px dashed rgba(37, 99, 235, 0.48) !important;
     border-radius: 18px !important;
-    background: #f7f8fa !important;
+    background: #f3f6ff !important;
     color: #64748b !important;
 }
 
 #settings-modal .settings-panel [data-create-cover-settings] .create-cover-drop:hover {
-    border-color: rgba(37, 99, 235, 0.52) !important;
-    background: #f3f7ff !important;
+    border-color: rgba(37, 99, 235, 0.65) !important;
+    background: #eef4ff !important;
     color: #2563eb !important;
 }
 
@@ -123,10 +138,38 @@
 }
 
 #settings-modal .settings-panel > .border-t {
+    flex: 0 0 auto !important;
     border-top-color: rgba(15, 23, 42, 0.08) !important;
-    background: rgba(255, 255, 255, 0.86) !important;
+    background: rgba(255, 255, 255, 0.92) !important;
     backdrop-filter: blur(18px) !important;
     -webkit-backdrop-filter: blur(18px) !important;
+}
+
+.post-create-autosave-status {
+    display: inline-flex;
+    min-height: 36px;
+    align-items: center;
+    gap: 6px;
+    border: 1px solid rgba(15, 23, 42, 0.08);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.74);
+    padding: 0 10px;
+    color: #64748b;
+    font-size: 12px;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.post-create-autosave-status iconify-icon {
+    font-size: 15px;
+}
+
+.post-create-autosave-status[data-state="saving"] {
+    color: #2563eb;
+}
+
+.post-create-autosave-status[data-state="restored"] {
+    color: #0f766e;
 }
 
 @media (min-width: 768px) {
@@ -134,19 +177,52 @@
         width: 460px !important;
         right: 18px !important;
         top: 18px !important;
-        max-height: calc(100vh - 36px) !important;
+        height: calc(100dvh - 36px) !important;
+        max-height: calc(100dvh - 36px) !important;
         border-radius: 28px !important;
     }
 }
 
 @media (max-width: 767px) {
+    #settings-modal {
+        overscroll-behavior: none !important;
+        touch-action: none !important;
+    }
+
     #settings-modal .settings-panel {
-        max-height: 90vh !important;
+        inset-inline: 0 !important;
+        top: auto !important;
+        bottom: 0 !important;
+        height: min(92dvh, 860px) !important;
+        max-height: min(92dvh, 860px) !important;
         border-radius: 28px 28px 0 0 !important;
+        display: flex !important;
+        flex-direction: column !important;
     }
 
     #settings-modal .settings-panel > .flex-1 {
-        padding: 10px !important;
+        min-height: 0 !important;
+        height: auto !important;
+        max-height: none !important;
+        padding: 10px 10px calc(18px + env(safe-area-inset-bottom)) !important;
+        touch-action: pan-y !important;
+    }
+
+    #settings-modal .settings-panel > .border-t {
+        padding-bottom: calc(12px + env(safe-area-inset-bottom)) !important;
+    }
+
+    .post-create-autosave-status {
+        width: 36px;
+        min-width: 36px;
+        height: 36px;
+        min-height: 36px;
+        justify-content: center;
+        padding: 0;
+    }
+
+    .post-create-autosave-status [data-autosave-label] {
+        display: none;
     }
 }
 
@@ -215,4 +291,12 @@ html[data-theme="dark"] #settings-modal .settings-panel .text-slate-400,
 html[data-system-theme="dark"] #settings-modal .settings-panel .text-slate-500,
 html[data-system-theme="dark"] #settings-modal .settings-panel .text-slate-400 {
     color: #94a3b8 !important;
+}
+
+html.dark .post-create-autosave-status,
+html[data-theme="dark"] .post-create-autosave-status,
+html[data-system-theme="dark"] .post-create-autosave-status {
+    background: rgba(15, 23, 42, 0.78);
+    border-color: rgba(255, 255, 255, 0.09);
+    color: #94a3b8;
 }
