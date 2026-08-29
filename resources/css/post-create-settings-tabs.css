@@ -1,55 +1,121 @@
-/* /blog/create — settings drawer flat tab layout */
+/* /blog/create — canlı fakat temiz ayarlar çekmecesi */
 
-/* Panel: sade beyaz yüzey. Üstte cam/şerit efekti yok. */
-#settings-modal .settings-panel {
-    background: #ffffff !important;
-    backdrop-filter: none !important;
-    -webkit-backdrop-filter: none !important;
+/* Panel ve başlık çevresindeki eski renk şeritlerini tamamen kaldır. */
+#settings-modal,
+#settings-modal::before,
+#settings-modal::after,
+#settings-modal .settings-panel,
+#settings-modal .settings-panel::before,
+#settings-modal .settings-panel::after,
+#settings-modal .settings-panel > div:nth-child(2)::before,
+#settings-modal .settings-panel > div:nth-child(2)::after {
+    border-top-color: transparent !important;
 }
 
-/* Mobil çekmece tutamacı / ince üst şerit tamamen kaldırıldı. */
-#settings-modal .settings-panel > .mx-auto.mt-2 {
-    display: none !important;
-}
-
-#settings-modal .settings-panel > div:nth-child(2) {
-    background: #ffffff !important;
-    backdrop-filter: none !important;
-    -webkit-backdrop-filter: none !important;
-    border-bottom: 1px solid #e5e7eb !important;
-}
-
+#settings-modal::before,
+#settings-modal::after,
+#settings-modal .settings-panel::before,
+#settings-modal .settings-panel::after,
 #settings-modal .settings-panel > div:nth-child(2)::before,
 #settings-modal .settings-panel > div:nth-child(2)::after {
     display: none !important;
     content: none !important;
+    background: transparent !important;
 }
 
-/* İç gövde: sekmeler aralıksız, tek bir liste gibi. */
+/* Mobildeki ince tutamacı/şeridi gösterme. */
+#settings-modal .settings-panel > .mx-auto.mt-2 {
+    display: none !important;
+}
+
+#settings-modal .settings-panel {
+    background: #ffffff !important;
+    border: 0 !important;
+    border-left: 1px solid #e6eaf0 !important;
+    box-shadow: -18px 0 42px -32px rgba(15, 23, 42, .28) !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    overflow: hidden !important;
+}
+
+/* Panel başlığı */
+#settings-modal .settings-panel > div:nth-child(2) {
+    min-height: 90px !important;
+    padding: 18px 24px !important;
+    background: #ffffff !important;
+    border: 0 !important;
+    border-bottom: 1px solid #e8ebf0 !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+}
+
+#settings-modal .settings-panel > div:nth-child(2) h2 {
+    font-size: 20px !important;
+    line-height: 1.2 !important;
+    font-weight: 700 !important;
+    letter-spacing: -.02em !important;
+    color: #111827 !important;
+}
+
+#settings-modal .settings-panel > div:nth-child(2) p {
+    margin-top: 6px !important;
+    font-size: 13px !important;
+    line-height: 1.45 !important;
+    color: #64748b !important;
+}
+
+#settings-modal button[data-settings-close] {
+    width: 38px !important;
+    height: 38px !important;
+    border-radius: 12px !important;
+    color: #111827 !important;
+    background: #ffffff !important;
+}
+
+#settings-modal button[data-settings-close]:hover,
+#settings-modal button[data-settings-close]:focus-visible {
+    background: #f3f4f6 !important;
+    outline: none !important;
+}
+
+/* Akordiyonların bulunduğu alan */
 #settings-modal .settings-panel > .flex-1 {
-    background: #f6f4f0 !important;
-    padding: 0 !important;
+    background: #f8fafc !important;
+    padding: 14px 16px !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    scrollbar-width: thin;
+    scrollbar-color: #cbd5e1 transparent;
+}
+
+#settings-modal .settings-panel > .flex-1::-webkit-scrollbar {
+    width: 6px;
+}
+
+#settings-modal .settings-panel > .flex-1::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 999px;
 }
 
 #settings-modal .settings-panel > .flex-1 > .space-y-3 {
     display: flex !important;
     flex-direction: column !important;
-    gap: 0 !important;
+    gap: 10px !important;
     padding: 0 !important;
 }
 
-/* Ayar grupları: köşesiz, gölgesiz, solda mavi çizgi yok. */
+/* Her ayar maddesi ayrı, net bir kart. */
 #settings-modal .settings-panel section,
 #settings-modal .settings-panel [data-create-cover-settings],
 #settings-modal .settings-panel [data-create-category-settings] {
     position: relative !important;
     margin: 0 !important;
-    border: 0 !important;
-    border-bottom: 1px solid #e5e7eb !important;
-    border-radius: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+    border: 1px solid #e3e8ef !important;
+    border-radius: 16px !important;
     background: #ffffff !important;
-    box-shadow: none !important;
-    overflow: visible !important;
+    box-shadow: 0 5px 18px -16px rgba(15, 23, 42, .38) !important;
 }
 
 #settings-modal .settings-panel section::before,
@@ -62,86 +128,27 @@
     content: none !important;
 }
 
-#settings-modal .settings-panel section > .mb-3,
-#settings-modal .settings-panel section > details > summary,
-#settings-modal .settings-panel section > summary,
-#settings-modal .settings-panel [data-create-cover-settings] > .mb-3,
-#settings-modal .settings-panel [data-create-category-settings] > .mb-3 {
-    min-height: 52px !important;
-    margin: 0 !important;
-    padding: 12px 16px !important;
-    border-radius: 0 !important;
-    background: #ffffff !important;
-}
-
-/* Sekme başlıkları hover ve basılı durumda gri olsun. */
-#settings-modal .settings-panel section > details > summary,
-#settings-modal .settings-panel section > summary,
-#settings-modal .settings-panel [data-create-category-settings] summary {
-    border-radius: 0 !important;
-    transition: background-color .12s ease, color .12s ease !important;
-}
-
-#settings-modal .settings-panel section > details > summary:hover,
-#settings-modal .settings-panel section > details > summary:focus-visible,
-#settings-modal .settings-panel section > summary:hover,
-#settings-modal .settings-panel section > summary:focus-visible,
-#settings-modal .settings-panel [data-create-category-settings] summary:hover,
-#settings-modal .settings-panel [data-create-category-settings] summary:focus-visible {
-    background: #f3f4f6 !important;
-}
-
-#settings-modal .settings-panel section > details > summary:active,
-#settings-modal .settings-panel section > summary:active,
-#settings-modal .settings-panel [data-create-category-settings] summary:active,
-#settings-modal .settings-panel section > details[open] > summary {
-    background: #e5e7eb !important;
-}
-
-/* Açılan sekme içeriği kendi satırının altında devam eder. */
-#settings-modal .settings-panel section > details > :not(summary) {
-    margin-left: 0 !important;
-    margin-right: 0 !important;
-}
-
-#settings-modal .settings-panel section > details > div,
-#settings-modal .settings-panel section > .space-y-3,
-#settings-modal .settings-panel [data-create-cover-settings] > [data-cover-slot],
-#settings-modal .settings-panel [data-create-category-settings] > [data-category-settings-slot] {
-    padding-left: 16px !important;
-    padding-right: 16px !important;
-    padding-bottom: 14px !important;
-}
-
-/* Kapak ve kategori dış kart değil, sekmenin içeriğidir. */
-#settings-modal .settings-panel [data-create-cover-settings],
-#settings-modal .settings-panel [data-create-category-settings] {
-    padding: 0 !important;
-}
-
-#settings-modal .settings-panel [data-create-cover-settings] .create-cover,
-#settings-modal .settings-panel [data-create-cover-settings] .create-cover-drop,
-#settings-modal .settings-panel [data-create-cover-settings] .create-cover-preview,
-#settings-modal .settings-panel [data-create-cover-settings] .create-cover-preview img {
-    border-radius: 10px !important;
-}
-
-/* Gerçek akordiyon başlıkları: solda anlamlı ikon, sağda aç/kapat oku. */
+/* JS tarafından oluşturulan gerçek akordiyon. */
 #settings-modal .settings-panel .settings-accordion {
     margin: 0 !important;
+    border: 0 !important;
+    background: transparent !important;
 }
 
 #settings-modal .settings-panel .settings-accordion-summary {
     display: flex !important;
-    min-height: 62px !important;
     width: 100% !important;
+    min-height: 86px !important;
     cursor: pointer !important;
     list-style: none !important;
     align-items: center !important;
-    gap: 12px !important;
-    padding: 12px 16px !important;
+    gap: 14px !important;
+    margin: 0 !important;
+    padding: 14px 16px !important;
+    border: 0 !important;
+    border-radius: 0 !important;
     background: #ffffff !important;
-    color: #0f172a !important;
+    color: #111827 !important;
     user-select: none !important;
 }
 
@@ -151,28 +158,31 @@
 
 #settings-modal .settings-panel .settings-accordion-summary:hover,
 #settings-modal .settings-panel .settings-accordion-summary:focus-visible {
-    background: #f3f4f6 !important;
+    background: #f8fafc !important;
     outline: none !important;
 }
 
 #settings-modal .settings-panel .settings-accordion[open] > .settings-accordion-summary {
-    background: #e5e7eb !important;
+    background: #f8fbff !important;
+    border-bottom: 1px solid #e8edf4 !important;
 }
 
+/* İkonlar düz mavi simge değil; yumuşak mavi kutu içinde. */
 #settings-modal .settings-panel .settings-accordion-icon {
     display: inline-flex !important;
-    width: 34px !important;
-    height: 34px !important;
-    min-width: 34px !important;
+    width: 48px !important;
+    height: 48px !important;
+    min-width: 48px !important;
     align-items: center !important;
     justify-content: center !important;
-    border-radius: 0 !important;
-    background: transparent !important;
+    border: 1px solid #dbeafe !important;
+    border-radius: 14px !important;
+    background: #eff6ff !important;
     color: #2563eb !important;
 }
 
 #settings-modal .settings-panel .settings-accordion-icon iconify-icon {
-    font-size: 20px !important;
+    font-size: 22px !important;
 }
 
 #settings-modal .settings-panel .settings-accordion-copy {
@@ -180,27 +190,30 @@
     min-width: 0 !important;
     flex: 1 1 auto !important;
     flex-direction: column !important;
+    justify-content: center !important;
 }
 
 #settings-modal .settings-panel .settings-accordion-title {
     font-size: 14px !important;
-    font-weight: 600 !important;
+    font-weight: 700 !important;
     line-height: 1.35 !important;
-    color: #0f172a !important;
+    letter-spacing: -.01em !important;
+    color: #111827 !important;
 }
 
 #settings-modal .settings-panel .settings-accordion-description {
-    margin-top: 2px !important;
-    font-size: 12px !important;
-    line-height: 1.35 !important;
+    margin-top: 4px !important;
+    max-width: 310px !important;
+    font-size: 12.5px !important;
+    line-height: 1.45 !important;
     color: #64748b !important;
 }
 
 #settings-modal .settings-panel .settings-accordion-chevron {
     flex: 0 0 auto !important;
-    font-size: 18px !important;
-    color: #64748b !important;
-    transition: transform .12s ease !important;
+    margin-left: 4px !important;
+    font-size: 20px !important;
+    color: #334155 !important;
 }
 
 #settings-modal .settings-panel .settings-accordion[open] > .settings-accordion-summary .settings-accordion-chevron {
@@ -208,7 +221,7 @@
 }
 
 #settings-modal .settings-panel .settings-accordion-content {
-    padding: 14px 16px 16px !important;
+    padding: 15px 16px 17px !important;
     background: #ffffff !important;
 }
 
@@ -216,60 +229,125 @@
     margin-top: 0 !important;
 }
 
-#settings-modal .settings-panel [data-create-cover-settings] .settings-accordion-content,
-#settings-modal .settings-panel [data-create-category-settings] .settings-accordion-content {
-    padding-top: 10px !important;
-}
-
-/* X, Kapat ve diğer nötr panel butonları hover/active gri. Yayınla mavi kalır. */
-#settings-modal button[data-settings-close],
-#settings-modal .settings-panel button:not([data-submit-intent="publish"]),
-#settings-modal .settings-panel [role="button"] {
-    transition: background-color .12s ease, color .12s ease !important;
-}
-
-#settings-modal button[data-settings-close]:hover,
-#settings-modal button[data-settings-close]:focus-visible,
-#settings-modal .settings-panel button:not([data-submit-intent="publish"]):hover,
-#settings-modal .settings-panel button:not([data-submit-intent="publish"]):focus-visible,
-#settings-modal .settings-panel [role="button"]:hover,
-#settings-modal .settings-panel [role="button"]:focus-visible {
-    background: #f3f4f6 !important;
-}
-
-#settings-modal button[data-settings-close]:active,
-#settings-modal .settings-panel button:not([data-submit-intent="publish"]):active,
-#settings-modal .settings-panel [role="button"]:active {
-    background: #e5e7eb !important;
-}
-
-/* Footer da düz ve net ayraçlı. */
-#settings-modal .settings-panel > .border-t {
+/* Form elemanları kart diliyle aynı olsun. */
+#settings-modal .settings-panel .create-input {
+    min-height: 44px !important;
+    border: 1px solid #dfe5ec !important;
+    border-radius: 12px !important;
     background: #ffffff !important;
+    color: #111827 !important;
+    box-shadow: none !important;
+}
+
+#settings-modal .settings-panel .create-input:focus {
+    border-color: #93c5fd !important;
+    background: #ffffff !important;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, .08) !important;
+}
+
+/* Kapak alanı ve kategori kartın içeriğinde düzgün otursun. */
+#settings-modal .settings-panel [data-create-cover-settings] .create-cover,
+#settings-modal .settings-panel [data-create-cover-settings] .create-cover-drop,
+#settings-modal .settings-panel [data-create-cover-settings] .create-cover-preview,
+#settings-modal .settings-panel [data-create-cover-settings] .create-cover-preview img {
+    border-radius: 12px !important;
+}
+
+#settings-modal .settings-panel [data-create-cover-settings] .create-cover-drop {
+    min-height: 132px !important;
+    border: 1px dashed #bfdbfe !important;
+    background: #f8fbff !important;
+}
+
+#settings-modal .settings-panel [data-create-category-settings] summary {
+    border-radius: 12px !important;
+    background: #f8fafc !important;
+}
+
+/* Tercihler içindeki satırlar. */
+#settings-modal .settings-panel .settings-accordion-content .divide-y {
+    border-color: #e8edf3 !important;
+    border-radius: 12px !important;
+    background: #f8fafc !important;
+}
+
+/* Footer */
+#settings-modal .settings-panel > .border-t {
+    padding: 14px 16px !important;
+    background: #ffffff !important;
+    border-top: 1px solid #e7ebf0 !important;
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
-    border-top: 1px solid #e5e7eb !important;
 }
 
+#settings-modal .settings-panel > .border-t button {
+    height: 48px !important;
+    border-radius: 12px !important;
+}
+
+#settings-modal .settings-panel > .border-t button[data-settings-close] {
+    border: 1px solid #dfe5ec !important;
+    background: #ffffff !important;
+    color: #111827 !important;
+}
+
+#settings-modal .settings-panel > .border-t button[data-settings-save] {
+    background: #2563eb !important;
+    color: #ffffff !important;
+    border: 1px solid #2563eb !important;
+    font-weight: 700 !important;
+}
+
+#settings-modal .settings-panel > .border-t button[data-settings-save]:hover,
+#settings-modal .settings-panel > .border-t button[data-settings-save]:focus-visible {
+    background: #1d4ed8 !important;
+    border-color: #1d4ed8 !important;
+}
+
+/* Masaüstünde ekran kenarına oturan temiz çekmece. */
 @media (min-width: 768px) {
     #settings-modal .settings-panel {
-        border-radius: 18px !important;
-    }
-}
-
-@media (max-width: 767px) {
-    /* Dış panel çekmece olarak kalır; içerideki sekmeler köşesizdir. */
-    #settings-modal .settings-panel {
-        border-radius: 18px 18px 0 0 !important;
-    }
-
-    #settings-modal .settings-panel section,
-    #settings-modal .settings-panel [data-create-cover-settings],
-    #settings-modal .settings-panel [data-create-category-settings] {
+        top: 0 !important;
+        right: 0 !important;
+        bottom: 0 !important;
+        left: auto !important;
+        width: 500px !important;
+        height: 100dvh !important;
+        max-height: 100dvh !important;
         border-radius: 0 !important;
     }
 }
 
+@media (max-width: 767px) {
+    #settings-modal .settings-panel {
+        border-left: 0 !important;
+        border-top: 1px solid #e5e7eb !important;
+        border-radius: 20px 20px 0 0 !important;
+    }
+
+    #settings-modal .settings-panel > div:nth-child(2) {
+        min-height: 78px !important;
+        padding: 14px 16px !important;
+    }
+
+    #settings-modal .settings-panel > .flex-1 {
+        padding: 12px !important;
+    }
+
+    #settings-modal .settings-panel .settings-accordion-summary {
+        min-height: 78px !important;
+        padding: 12px 14px !important;
+    }
+
+    #settings-modal .settings-panel .settings-accordion-icon {
+        width: 44px !important;
+        height: 44px !important;
+        min-width: 44px !important;
+        border-radius: 13px !important;
+    }
+}
+
+/* Koyu tema varsa kart yapısı bozulmasın. */
 html.dark #settings-modal .settings-panel,
 html[data-theme="dark"] #settings-modal .settings-panel,
 html[data-system-theme="dark"] #settings-modal .settings-panel,
@@ -280,7 +358,7 @@ html.dark #settings-modal .settings-panel > .border-t,
 html[data-theme="dark"] #settings-modal .settings-panel > .border-t,
 html[data-system-theme="dark"] #settings-modal .settings-panel > .border-t {
     background: #111827 !important;
-    border-color: rgba(255,255,255,.09) !important;
+    border-color: rgba(255, 255, 255, .09) !important;
 }
 
 html.dark #settings-modal .settings-panel > .flex-1,
@@ -292,16 +370,6 @@ html[data-system-theme="dark"] #settings-modal .settings-panel > .flex-1 {
 html.dark #settings-modal .settings-panel section,
 html[data-theme="dark"] #settings-modal .settings-panel section,
 html[data-system-theme="dark"] #settings-modal .settings-panel section,
-html.dark #settings-modal .settings-panel section > .mb-3,
-html[data-theme="dark"] #settings-modal .settings-panel section > .mb-3,
-html[data-system-theme="dark"] #settings-modal .settings-panel section > .mb-3,
-html.dark #settings-modal .settings-panel summary,
-html[data-theme="dark"] #settings-modal .settings-panel summary,
-html[data-system-theme="dark"] #settings-modal .settings-panel summary {
-    background: #111827 !important;
-    border-color: rgba(255,255,255,.08) !important;
-}
-
 html.dark #settings-modal .settings-panel .settings-accordion-summary,
 html[data-theme="dark"] #settings-modal .settings-panel .settings-accordion-summary,
 html[data-system-theme="dark"] #settings-modal .settings-panel .settings-accordion-summary,
@@ -309,37 +377,31 @@ html.dark #settings-modal .settings-panel .settings-accordion-content,
 html[data-theme="dark"] #settings-modal .settings-panel .settings-accordion-content,
 html[data-system-theme="dark"] #settings-modal .settings-panel .settings-accordion-content {
     background: #111827 !important;
+    border-color: rgba(255, 255, 255, .08) !important;
+}
+
+html.dark #settings-modal .settings-panel .settings-accordion-icon,
+html[data-theme="dark"] #settings-modal .settings-panel .settings-accordion-icon,
+html[data-system-theme="dark"] #settings-modal .settings-panel .settings-accordion-icon {
+    background: rgba(37, 99, 235, .16) !important;
+    border-color: rgba(96, 165, 250, .22) !important;
+    color: #60a5fa !important;
 }
 
 html.dark #settings-modal .settings-panel .settings-accordion-title,
 html[data-theme="dark"] #settings-modal .settings-panel .settings-accordion-title,
-html[data-system-theme="dark"] #settings-modal .settings-panel .settings-accordion-title {
-    color: #f3f4f6 !important;
+html[data-system-theme="dark"] #settings-modal .settings-panel .settings-accordion-title,
+html.dark #settings-modal .settings-panel > div:nth-child(2) h2,
+html[data-theme="dark"] #settings-modal .settings-panel > div:nth-child(2) h2,
+html[data-system-theme="dark"] #settings-modal .settings-panel > div:nth-child(2) h2 {
+    color: #f8fafc !important;
 }
 
 html.dark #settings-modal .settings-panel .settings-accordion-description,
 html[data-theme="dark"] #settings-modal .settings-panel .settings-accordion-description,
 html[data-system-theme="dark"] #settings-modal .settings-panel .settings-accordion-description,
-html.dark #settings-modal .settings-panel .settings-accordion-chevron,
-html[data-theme="dark"] #settings-modal .settings-panel .settings-accordion-chevron,
-html[data-system-theme="dark"] #settings-modal .settings-panel .settings-accordion-chevron {
+html.dark #settings-modal .settings-panel > div:nth-child(2) p,
+html[data-theme="dark"] #settings-modal .settings-panel > div:nth-child(2) p,
+html[data-system-theme="dark"] #settings-modal .settings-panel > div:nth-child(2) p {
     color: #94a3b8 !important;
-}
-
-html.dark #settings-modal .settings-panel summary:hover,
-html.dark #settings-modal .settings-panel summary:focus-visible,
-html[data-theme="dark"] #settings-modal .settings-panel summary:hover,
-html[data-theme="dark"] #settings-modal .settings-panel summary:focus-visible,
-html[data-system-theme="dark"] #settings-modal .settings-panel summary:hover,
-html[data-system-theme="dark"] #settings-modal .settings-panel summary:focus-visible {
-    background: #1f2937 !important;
-}
-
-html.dark #settings-modal .settings-panel summary:active,
-html.dark #settings-modal .settings-panel section > details[open] > summary,
-html[data-theme="dark"] #settings-modal .settings-panel summary:active,
-html[data-theme="dark"] #settings-modal .settings-panel section > details[open] > summary,
-html[data-system-theme="dark"] #settings-modal .settings-panel summary:active,
-html[data-system-theme="dark"] #settings-modal .settings-panel section > details[open] > summary {
-    background: #273449 !important;
 }
