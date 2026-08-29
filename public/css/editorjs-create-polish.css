@@ -1,16 +1,34 @@
 /* Ografi /blog/create — EditorJS UI */
 
+.create-page-fixed #post-create-form > .create-card,
+.create-page-fixed [data-editorjs-wrapper],
+.create-page-fixed [data-editorjs-wrapper] .codex-editor,
+.create-page-fixed [data-editorjs-wrapper] .codex-editor__redactor {
+    overflow: visible !important;
+}
+
 .create-page-fixed [data-editorjs-wrapper] {
     position: relative;
+}
+
+/* Editör boşken gereksiz dev yükseklik oluşturma. İçerik arttıkça doğal olarak büyür. */
+.create-page-fixed [data-editorjs-wrapper] > div:first-child {
+    min-height: 180px !important;
+    padding-bottom: 20px !important;
+}
+
+.create-page-fixed [data-editorjs-wrapper] .codex-editor__redactor {
+    min-height: 150px !important;
+    padding-bottom: 20px !important;
 }
 
 .create-page-fixed [data-editorjs-wrapper] .ce-toolbar,
 .create-page-fixed [data-editorjs-wrapper] .ce-inline-toolbar,
 .create-page-fixed [data-editorjs-wrapper] .ce-popover {
-    z-index: 220 !important;
+    z-index: 9999 !important;
 }
 
-/* + solda, blok ayarlari sagda */
+/* + solda, blok ayarları sağda */
 .create-page-fixed [data-editorjs-wrapper] .ce-toolbar__content {
     position: relative !important;
 }
@@ -55,18 +73,16 @@
     margin-right: 0 !important;
 }
 
-/* Kapali EditorJS menusu asla gorunmesin. */
 .create-page-fixed [data-editorjs-wrapper] .ce-popover:not(.ce-popover--opened) {
     display: none !important;
 }
 
 .create-page-fixed [data-editorjs-wrapper] .ce-popover.ce-popover--opened {
     display: block !important;
-    width: min(264px, calc(100vw - 24px)) !important;
-    max-width: min(264px, calc(100vw - 24px)) !important;
+    width: min(220px, calc(100vw - 24px)) !important;
+    max-width: min(220px, calc(100vw - 24px)) !important;
 }
 
-/* Filter kutusu toolbox'u gereksiz yere buyutuyordu. */
 .create-page-fixed [data-editorjs-wrapper] .ce-popover--opened .ce-popover__search {
     display: none !important;
 }
@@ -75,9 +91,9 @@
     width: 100% !important;
     min-width: 0 !important;
     max-width: 100% !important;
-    padding: 6px !important;
+    padding: 5px !important;
     border: 1px solid rgba(15, 23, 42, .10) !important;
-    border-radius: 14px !important;
+    border-radius: 13px !important;
     background: #fff !important;
     box-shadow: none !important;
     overflow: hidden !important;
@@ -86,8 +102,8 @@
 .create-page-fixed [data-editorjs-wrapper] .ce-popover--opened .ce-popover__items {
     display: flex !important;
     flex-direction: column !important;
-    gap: 2px !important;
-    max-height: 360px !important;
+    gap: 1px !important;
+    max-height: 280px !important;
     padding: 0 !important;
     overflow-y: auto !important;
     overflow-x: hidden !important;
@@ -96,10 +112,10 @@
 }
 
 .create-page-fixed [data-editorjs-wrapper] .ce-popover--opened .ce-popover-item {
-    min-height: 38px !important;
-    padding: 7px 10px !important;
+    min-height: 36px !important;
+    padding: 6px 8px !important;
     border: 0 !important;
-    border-radius: 9px !important;
+    border-radius: 8px !important;
     background: transparent !important;
     box-shadow: none !important;
     font-size: 14px !important;
@@ -112,9 +128,9 @@
 }
 
 .create-page-fixed [data-editorjs-wrapper] .ce-popover--opened .ce-popover-item__icon {
-    width: 26px !important;
-    height: 26px !important;
-    min-width: 26px !important;
+    width: 24px !important;
+    height: 24px !important;
+    min-width: 24px !important;
     border: 0 !important;
     background: transparent !important;
     box-shadow: none !important;
@@ -126,7 +142,7 @@
     color: #111827 !important;
 }
 
-/* EditorJS varsayilan blok adlarini Turkce goster. */
+/* EditorJS varsayılan blok adlarını Türkçe göster. */
 .create-page-fixed [data-editorjs-wrapper] .ce-popover--opened .ce-popover__items > .ce-popover-item:nth-child(1) .ce-popover-item__title,
 .create-page-fixed [data-editorjs-wrapper] .ce-popover--opened .ce-popover__items > .ce-popover-item:nth-child(2) .ce-popover-item__title,
 .create-page-fixed [data-editorjs-wrapper] .ce-popover--opened .ce-popover__items > .ce-popover-item:nth-child(3) .ce-popover-item__title,
@@ -149,6 +165,16 @@
 }
 
 @media (max-width: 640px) {
+    .create-page-fixed [data-editorjs-wrapper] > div:first-child {
+        min-height: 150px !important;
+        padding-bottom: 16px !important;
+    }
+
+    .create-page-fixed [data-editorjs-wrapper] .codex-editor__redactor {
+        min-height: 120px !important;
+        padding-bottom: 16px !important;
+    }
+
     .create-page-fixed [data-editorjs-wrapper] .ce-toolbar__plus,
     .create-page-fixed [data-editorjs-wrapper] .ce-toolbar__settings-btn {
         width: 38px !important;
@@ -158,23 +184,18 @@
     }
 
     .create-page-fixed [data-editorjs-wrapper] .ce-popover.ce-popover--opened {
-        width: min(248px, calc(100vw - 20px)) !important;
-        max-width: min(248px, calc(100vw - 20px)) !important;
-    }
-
-    .create-page-fixed [data-editorjs-wrapper] .ce-popover--opened .ce-popover__container {
-        padding: 5px !important;
-        border-radius: 13px !important;
+        width: min(210px, calc(100vw - 20px)) !important;
+        max-width: min(210px, calc(100vw - 20px)) !important;
     }
 
     .create-page-fixed [data-editorjs-wrapper] .ce-popover--opened .ce-popover__items {
-        max-height: 52vh !important;
+        max-height: min(250px, 42vh) !important;
         -webkit-overflow-scrolling: touch !important;
     }
 
     .create-page-fixed [data-editorjs-wrapper] .ce-popover--opened .ce-popover-item {
-        min-height: 40px !important;
-        padding: 8px 9px !important;
+        min-height: 38px !important;
+        padding: 7px 8px !important;
     }
 }
 
