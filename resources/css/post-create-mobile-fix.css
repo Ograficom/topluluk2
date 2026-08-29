@@ -6,37 +6,39 @@
         padding: 0 !important;
     }
 
+    /*
+     * Mobilde header tek satırdır. İçteki iki flex grubunu grid'in parçası
+     * yapıyoruz; böylece kategori üstte, aksiyonlar altta kalamaz.
+     */
     .create-page-fixed > div > header > .flex {
-        display: flex !important;
-        flex-wrap: nowrap !important;
+        display: grid !important;
+        grid-template-columns: 38px 38px minmax(72px, 1fr) 28px 38px 38px 42px !important;
         align-items: center !important;
-        gap: 6px !important;
+        column-gap: 5px !important;
+        row-gap: 0 !important;
         width: 100% !important;
+        min-width: 0 !important;
     }
 
-    .create-page-fixed > div > header > .flex > .flex.min-w-0 {
-        display: flex !important;
-        align-items: center !important;
-        gap: 6px !important;
-        min-width: 0 !important;
-        flex: 1 1 auto !important;
-        width: auto !important;
+    .create-page-fixed > div > header > .flex > .flex.min-w-0,
+    .create-page-fixed > div > header > .flex > .flex.shrink-0 {
+        display: contents !important;
     }
 
     .create-page-fixed > div > header > .flex > .flex.min-w-0 > a {
+        grid-column: 1 !important;
         width: 38px !important;
         height: 38px !important;
         min-width: 38px !important;
-        flex: 0 0 38px !important;
         border-radius: 13px !important;
         padding: 0 !important;
     }
 
     .create-page-fixed > div > header .create-brand {
+        grid-column: 2 !important;
         width: 38px !important;
         height: 38px !important;
         min-width: 38px !important;
-        flex: 0 0 38px !important;
         border-radius: 13px !important;
         background: #2563eb !important;
         border: 0 !important;
@@ -48,9 +50,9 @@
     }
 
     .create-page-fixed > div > header > .flex > .flex.min-w-0 > .min-w-0 {
+        grid-column: 3 !important;
         min-width: 0 !important;
-        flex: 1 1 auto !important;
-        width: auto !important;
+        width: 100% !important;
     }
 
     .create-page-fixed > div > header [data-category-menu],
@@ -63,14 +65,15 @@
     .create-page-fixed > div > header [data-category-menu] > summary {
         min-height: 38px !important;
         height: 38px !important;
-        margin-top: 0 !important;
+        margin: 0 !important;
         padding: 0 8px !important;
         gap: 5px !important;
-        border: 0 !important;
-        border-radius: 12px !important;
-        background: transparent !important;
+        border: 1px solid rgba(15, 23, 42, 0.08) !important;
+        border-radius: 13px !important;
+        background: #ffffff !important;
         color: #111827 !important;
         overflow: hidden !important;
+        box-shadow: none !important;
     }
 
     .create-page-fixed > div > header [data-category-menu] > summary span[data-category-label] {
@@ -80,25 +83,17 @@
         white-space: nowrap !important;
     }
 
-    .create-page-fixed > div > header > .flex > .flex.shrink-0 {
-        display: flex !important;
-        align-items: center !important;
-        flex: 0 0 auto !important;
-        width: auto !important;
-        gap: 6px !important;
-        margin: 0 !important;
-    }
-
-    /* Taslak durumu sadece ikon; yer kaplamaz. */
     .create-page-fixed > div > header .post-create-autosave-status {
-        width: 30px !important;
-        min-width: 30px !important;
+        grid-column: 4 !important;
+        width: 28px !important;
+        min-width: 28px !important;
         height: 38px !important;
         min-height: 38px !important;
         padding: 0 !important;
         border: 0 !important;
         background: transparent !important;
         justify-content: center !important;
+        box-shadow: none !important;
     }
 
     .create-page-fixed > div > header .post-create-autosave-status [data-autosave-label] {
@@ -107,6 +102,14 @@
 
     .create-page-fixed > div > header .post-create-autosave-status iconify-icon {
         font-size: 17px !important;
+    }
+
+    .create-page-fixed > div > header button[data-ai-assist] {
+        grid-column: 5 !important;
+    }
+
+    .create-page-fixed > div > header button[data-open-settings] {
+        grid-column: 6 !important;
     }
 
     .create-page-fixed > div > header button[data-ai-assist],
@@ -120,10 +123,11 @@
         justify-content: center !important;
         background: #ffffff !important;
         border: 1px solid rgba(15, 23, 42, 0.08) !important;
+        box-shadow: none !important;
     }
 
-    /* Mobilde yayımla metni kaldır; mavi gönder ikonu ana aksiyon olarak kalır. */
     .create-page-fixed > div > header button[data-submit-intent="publish"] {
+        grid-column: 7 !important;
         width: 42px !important;
         min-width: 42px !important;
         height: 42px !important;
@@ -134,22 +138,55 @@
         border: 1px solid #2563eb !important;
         color: #ffffff !important;
         justify-content: center !important;
+        box-shadow: none !important;
     }
 
     .create-page-fixed > div > header button[data-submit-intent="publish"] > span {
         display: none !important;
+        width: 0 !important;
+        margin: 0 !important;
     }
 
     .create-page-fixed > div > header button[data-submit-intent="publish"] iconify-icon {
         font-size: 18px !important;
         margin: 0 !important;
     }
+
+    /* Çok dar telefonlarda kategori alanını koruyup ikonları hafif küçült. */
+    @media (max-width: 390px) {
+        .create-page-fixed > div > header > .flex {
+            grid-template-columns: 36px 36px minmax(62px, 1fr) 24px 36px 36px 40px !important;
+            column-gap: 4px !important;
+        }
+
+        .create-page-fixed > div > header > .flex > .flex.min-w-0 > a,
+        .create-page-fixed > div > header .create-brand,
+        .create-page-fixed > div > header button[data-ai-assist],
+        .create-page-fixed > div > header button[data-open-settings] {
+            width: 36px !important;
+            min-width: 36px !important;
+            height: 36px !important;
+            min-height: 36px !important;
+        }
+
+        .create-page-fixed > div > header .post-create-autosave-status {
+            width: 24px !important;
+            min-width: 24px !important;
+        }
+
+        .create-page-fixed > div > header button[data-submit-intent="publish"] {
+            width: 40px !important;
+            min-width: 40px !important;
+            height: 40px !important;
+            min-height: 40px !important;
+        }
+    }
 }
 
 html.dark .create-page-fixed > div > header [data-category-menu] > summary,
 html[data-theme="dark"] .create-page-fixed > div > header [data-category-menu] > summary,
 html[data-system-theme="dark"] .create-page-fixed > div > header [data-category-menu] > summary {
-    background: transparent !important;
-    border-color: transparent !important;
-    color: #f8fafc !important;
+    background: #ffffff !important;
+    border-color: rgba(15, 23, 42, 0.08) !important;
+    color: #111827 !important;
 }
