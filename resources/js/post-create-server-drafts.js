@@ -9,6 +9,59 @@ const loadPostCreateEditorPolish = () => {
 
 loadPostCreateEditorPolish();
 
+const applySettingsDrawerGeometry = () => {
+    if (document.querySelector('style[data-settings-drawer-geometry]')) return;
+
+    const style = document.createElement('style');
+    style.setAttribute('data-settings-drawer-geometry', '1');
+    style.textContent = `
+        #settings-modal,
+        #settings-modal::before,
+        #settings-modal::after {
+            border: 0 !important;
+            box-shadow: none !important;
+        }
+
+        #settings-modal::before,
+        #settings-modal::after {
+            display: none !important;
+            content: none !important;
+        }
+
+        #settings-modal .settings-panel > .mx-auto.mt-2 {
+            display: none !important;
+        }
+
+        @media (min-width: 768px) {
+            #settings-modal .settings-panel {
+                top: 0 !important;
+                right: 0 !important;
+                bottom: 0 !important;
+                left: auto !important;
+                height: 100dvh !important;
+                max-height: 100dvh !important;
+                border-radius: 0 !important;
+                border-top: 0 !important;
+                border-right: 0 !important;
+                border-bottom: 0 !important;
+            }
+        }
+
+        @media (max-width: 767px) {
+            #settings-modal .settings-panel {
+                top: auto !important;
+                right: 0 !important;
+                bottom: 0 !important;
+                left: 0 !important;
+                border-radius: 18px 18px 0 0 !important;
+            }
+        }
+    `;
+    document.head.appendChild(style);
+};
+
+applySettingsDrawerGeometry();
+
 const initPostCreateServerDrafts = () => {
     const form = document.getElementById('post-create-form');
     if (!form || form.dataset.serverDraftBound === '1') return;
@@ -93,17 +146,17 @@ const initPostCreateServerDrafts = () => {
     };
 
     const saveToServer = async () => {
-        if (publishing) return;
+        if (publishing) return false;
         if (busy) {
             queued = true;
-            return;
+            return false;
         }
 
         await syncEditorPayload();
 
         const title = String(form.querySelector('#title')?.value || '').trim();
         const content = String(contentFallback?.value || '').trim();
-        if (!title || !content) return;
+        if (!title || !content) return false;
 
         busy = true;
         setStatusIcon('saving');
@@ -146,8 +199,12 @@ const initPostCreateServerDrafts = () => {
             }
 
             setStatusIcon('saved');
+            document.dispatchEvent(new CustomEvent('ografi:draft-saved', { detail: { ok: true } }));
+            return true;
         } catch {
             setStatusIcon('error');
+            document.dispatchEvent(new CustomEvent('ografi:draft-saved', { detail: { ok: false } }));
+            return false;
         } finally {
             busy = false;
             if (queued) {
@@ -167,6 +224,11 @@ const initPostCreateServerDrafts = () => {
     form.addEventListener('change', scheduleServerSave, true);
     wrapper?.addEventListener('input', scheduleServerSave, true);
     wrapper?.addEventListener('keyup', scheduleServerSave, true);
+
+    document.addEventListener('ografi:save-draft', () => {
+        if (publishedInput) publishedInput.value = '0';
+        void saveToServer();
+    });
 
     document.addEventListener('click', (event) => {
         const target = event.target instanceof Element ? event.target.closest('[data-submit-intent="publish"]') : null;
@@ -338,10 +400,48 @@ const setupPostCreateSettingsAccordions = () => {
     settingsList.dataset.accordionsReady = '1';
 };
 
+const setupSettingsFooterSaveButton = () => {
+    const modal = document.getElementById('settings-modal');
+    const panel = modal?.querySelector('.settings-panel');
+    const footer = panel?.querySelector(':scope > .border-t');
+    const publishButton = footer?.querySelector('[data-submit-intent="publish"]');
+
+    if (!publishButton || publishButton.dataset.settingsSaveBound === '1') return;
+
+    publishButton.dataset.settingsSaveBound = '1';
+    publishButton.type = 'button';
+    publishButton.removeAttribute('data-submit-intent');
+    publishButton.setAttribute('data-settings-save', '');
+    publishButton.textContent = 'Kaydet';
+
+    publishButton.addEventListener('click', () => {
+        publishButton.disabled = true;
+        publishButton.textContent = 'Kaydediliyor…';
+        document.dispatchEvent(new CustomEvent('ografi:save-draft'));
+
+        const finish = (event) => {
+            document.removeEventListener('ografi:draft-saved', finish);
+            publishButton.disabled = false;
+            publishButton.textContent = event?.detail?.ok === false ? 'Tekrar dene' : 'Kaydet';
+        };
+
+        document.addEventListener('ografi:draft-saved', finish, { once: true });
+        window.setTimeout(() => {
+            if (publishButton.disabled) {
+                publishButton.disabled = false;
+                publishButton.textContent = 'Kaydet';
+            }
+        }, 2500);
+    });
+};
+
 const bootPostCreateSettings = () => {
     initPostCreateServerDrafts();
     movePostCreateCategoryToSettings();
-    window.setTimeout(setupPostCreateSettingsAccordions, 0);
+    window.setTimeout(() => {
+        setupPostCreateSettingsAccordions();
+        setupSettingsFooterSaveButton();
+    }, 0);
 };
 
 if (document.readyState === 'loading') {
