@@ -126,6 +126,101 @@
     border-radius: 10px !important;
 }
 
+/* Gerçek akordiyon başlıkları: solda anlamlı ikon, sağda aç/kapat oku. */
+#settings-modal .settings-panel .settings-accordion {
+    margin: 0 !important;
+}
+
+#settings-modal .settings-panel .settings-accordion-summary {
+    display: flex !important;
+    min-height: 62px !important;
+    width: 100% !important;
+    cursor: pointer !important;
+    list-style: none !important;
+    align-items: center !important;
+    gap: 12px !important;
+    padding: 12px 16px !important;
+    background: #ffffff !important;
+    color: #0f172a !important;
+    user-select: none !important;
+}
+
+#settings-modal .settings-panel .settings-accordion-summary::-webkit-details-marker {
+    display: none !important;
+}
+
+#settings-modal .settings-panel .settings-accordion-summary:hover,
+#settings-modal .settings-panel .settings-accordion-summary:focus-visible {
+    background: #f3f4f6 !important;
+    outline: none !important;
+}
+
+#settings-modal .settings-panel .settings-accordion[open] > .settings-accordion-summary {
+    background: #e5e7eb !important;
+}
+
+#settings-modal .settings-panel .settings-accordion-icon {
+    display: inline-flex !important;
+    width: 34px !important;
+    height: 34px !important;
+    min-width: 34px !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    color: #2563eb !important;
+}
+
+#settings-modal .settings-panel .settings-accordion-icon iconify-icon {
+    font-size: 20px !important;
+}
+
+#settings-modal .settings-panel .settings-accordion-copy {
+    display: flex !important;
+    min-width: 0 !important;
+    flex: 1 1 auto !important;
+    flex-direction: column !important;
+}
+
+#settings-modal .settings-panel .settings-accordion-title {
+    font-size: 14px !important;
+    font-weight: 600 !important;
+    line-height: 1.35 !important;
+    color: #0f172a !important;
+}
+
+#settings-modal .settings-panel .settings-accordion-description {
+    margin-top: 2px !important;
+    font-size: 12px !important;
+    line-height: 1.35 !important;
+    color: #64748b !important;
+}
+
+#settings-modal .settings-panel .settings-accordion-chevron {
+    flex: 0 0 auto !important;
+    font-size: 18px !important;
+    color: #64748b !important;
+    transition: transform .12s ease !important;
+}
+
+#settings-modal .settings-panel .settings-accordion[open] > .settings-accordion-summary .settings-accordion-chevron {
+    transform: rotate(180deg) !important;
+}
+
+#settings-modal .settings-panel .settings-accordion-content {
+    padding: 14px 16px 16px !important;
+    background: #ffffff !important;
+}
+
+#settings-modal .settings-panel .settings-accordion-content > .mt-3:first-child {
+    margin-top: 0 !important;
+}
+
+#settings-modal .settings-panel [data-create-cover-settings] .settings-accordion-content,
+#settings-modal .settings-panel [data-create-category-settings] .settings-accordion-content {
+    padding-top: 10px !important;
+}
+
 /* X, Kapat ve diğer nötr panel butonları hover/active gri. Yayınla mavi kalır. */
 #settings-modal button[data-settings-close],
 #settings-modal .settings-panel button:not([data-submit-intent="publish"]),
@@ -205,6 +300,30 @@ html[data-theme="dark"] #settings-modal .settings-panel summary,
 html[data-system-theme="dark"] #settings-modal .settings-panel summary {
     background: #111827 !important;
     border-color: rgba(255,255,255,.08) !important;
+}
+
+html.dark #settings-modal .settings-panel .settings-accordion-summary,
+html[data-theme="dark"] #settings-modal .settings-panel .settings-accordion-summary,
+html[data-system-theme="dark"] #settings-modal .settings-panel .settings-accordion-summary,
+html.dark #settings-modal .settings-panel .settings-accordion-content,
+html[data-theme="dark"] #settings-modal .settings-panel .settings-accordion-content,
+html[data-system-theme="dark"] #settings-modal .settings-panel .settings-accordion-content {
+    background: #111827 !important;
+}
+
+html.dark #settings-modal .settings-panel .settings-accordion-title,
+html[data-theme="dark"] #settings-modal .settings-panel .settings-accordion-title,
+html[data-system-theme="dark"] #settings-modal .settings-panel .settings-accordion-title {
+    color: #f3f4f6 !important;
+}
+
+html.dark #settings-modal .settings-panel .settings-accordion-description,
+html[data-theme="dark"] #settings-modal .settings-panel .settings-accordion-description,
+html[data-system-theme="dark"] #settings-modal .settings-panel .settings-accordion-description,
+html.dark #settings-modal .settings-panel .settings-accordion-chevron,
+html[data-theme="dark"] #settings-modal .settings-panel .settings-accordion-chevron,
+html[data-system-theme="dark"] #settings-modal .settings-panel .settings-accordion-chevron {
+    color: #94a3b8 !important;
 }
 
 html.dark #settings-modal .settings-panel summary:hover,
