@@ -1,7 +1,6 @@
-/* Ografi /blog/create — EditorJS toolbox + mobile polish */
+/* Ografi /blog/create — EditorJS toolbar + popover layout */
 
-/* EditorJS popover was being clipped by the composer card. Keep the card
-   visually rounded, but allow the toolbar/popovers to escape its bounds. */
+/* Keep EditorJS inside the composer width and let tool popovers escape cleanly. */
 .create-page-fixed .create-card:has([data-editorjs-wrapper]),
 .create-page-fixed [data-editorjs-wrapper],
 .create-page-fixed [data-editorjs-wrapper] .codex-editor,
@@ -18,17 +17,36 @@
     isolation: isolate;
 }
 
-.create-page-fixed [data-editorjs-wrapper] .ce-toolbar,
-.create-page-fixed [data-editorjs-wrapper] .ce-inline-toolbar,
-.create-page-fixed [data-editorjs-wrapper] .ce-popover,
-.create-page-fixed [data-editorjs-wrapper] .ce-popover__container {
-    z-index: 120 !important;
+.create-page-fixed [data-editorjs-wrapper] .codex-editor__redactor {
+    width: 100% !important;
+    max-width: 100% !important;
 }
 
-/* Remove the large blue block-selection fill that made the editor look broken. */
+.create-page-fixed [data-editorjs-wrapper] .ce-block__content,
+.create-page-fixed [data-editorjs-wrapper] .ce-toolbar__content {
+    width: calc(100% - 88px) !important;
+    max-width: calc(100% - 88px) !important;
+    margin-left: 64px !important;
+    margin-right: 24px !important;
+}
+
+.create-page-fixed [data-editorjs-wrapper] .ce-toolbar,
+.create-page-fixed [data-editorjs-wrapper] .ce-inline-toolbar,
+.create-page-fixed [data-editorjs-wrapper] .ce-popover {
+    z-index: 220 !important;
+}
+
+/* Selected block should not paint a large blue rectangle. */
 .create-page-fixed [data-editorjs-wrapper] .ce-block--selected .ce-block__content,
 .create-page-fixed [data-editorjs-wrapper] .ce-block--selected .ce-block__content * {
     background-color: transparent !important;
+}
+
+/* Toolbar buttons */
+.create-page-fixed [data-editorjs-wrapper] .ce-toolbar__actions {
+    left: 12px !important;
+    right: auto !important;
+    gap: 6px !important;
 }
 
 .create-page-fixed [data-editorjs-wrapper] .ce-toolbar__plus,
@@ -39,7 +57,7 @@
     min-height: 36px !important;
     border-radius: 12px !important;
     border: 1px solid rgba(15, 23, 42, .09) !important;
-    background: #fff !important;
+    background: #ffffff !important;
     color: #111827 !important;
     box-shadow: none !important;
 }
@@ -49,11 +67,21 @@
     background: #f8fafc !important;
 }
 
-/* Desktop toolbox: compact and readable, without stretching across the card. */
-.create-page-fixed [data-editorjs-wrapper] .ce-popover,
+/* Important: position only the outer popover. The inner container must NOT
+   receive fixed/absolute viewport coordinates. That was the source of the
+   broken mobile and desktop placement. */
+.create-page-fixed [data-editorjs-wrapper] .ce-popover {
+    width: 288px !important;
+    max-width: min(288px, calc(100vw - 28px)) !important;
+}
+
 .create-page-fixed [data-editorjs-wrapper] .ce-popover__container {
-    width: 252px !important;
-    max-width: min(252px, calc(100vw - 28px)) !important;
+    position: relative !important;
+    inset: auto !important;
+    transform: none !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    max-height: min(430px, 58vh) !important;
     border: 1px solid rgba(15, 23, 42, .10) !important;
     border-radius: 16px !important;
     background: #ffffff !important;
@@ -70,7 +98,7 @@
 
 .create-page-fixed [data-editorjs-wrapper] .ce-popover__search {
     margin: 8px !important;
-    min-height: 40px !important;
+    min-height: 42px !important;
     border: 1px solid rgba(15, 23, 42, .08) !important;
     border-radius: 11px !important;
     background: #f8fafc !important;
@@ -78,24 +106,27 @@
 }
 
 .create-page-fixed [data-editorjs-wrapper] .ce-popover__search input {
-    min-height: 38px !important;
+    min-height: 40px !important;
+    padding: 0 10px !important;
     font-size: 14px !important;
     background: transparent !important;
     border: 0 !important;
     box-shadow: none !important;
+    outline: none !important;
 }
 
 .create-page-fixed [data-editorjs-wrapper] .ce-popover__items {
     padding: 2px 6px 8px !important;
-    max-height: 312px !important;
+    max-height: 340px !important;
     overflow-y: auto !important;
+    overflow-x: hidden !important;
     overscroll-behavior: contain !important;
     scrollbar-width: thin !important;
 }
 
 .create-page-fixed [data-editorjs-wrapper] .ce-popover-item {
-    min-height: 40px !important;
-    padding: 6px 8px !important;
+    min-height: 42px !important;
+    padding: 7px 8px !important;
     border-radius: 10px !important;
     gap: 9px !important;
     font-size: 14px !important;
@@ -128,49 +159,20 @@
     color: #111827 !important;
 }
 
-/* Mobile: use a compact floating panel inside the visual viewport. No gray
-   dimming layer, no full-height sheet, and no clipping by the editor card. */
+/* Mobile: one compact bottom panel. Only the outer popover is fixed; the
+   container remains normal flow so Safari cannot split or offset the menu. */
 @media (max-width: 640px) {
-    .create-page-fixed [data-editorjs-wrapper] .ce-popover,
-    .create-page-fixed [data-editorjs-wrapper] .ce-popover__container {
-        position: fixed !important;
-        left: 12px !important;
-        right: 12px !important;
-        top: auto !important;
-        bottom: calc(18px + env(safe-area-inset-bottom)) !important;
-        transform: none !important;
-        width: auto !important;
-        max-width: none !important;
-        max-height: min(360px, 48dvh) !important;
-        border-radius: 18px !important;
-        z-index: 100500 !important;
-        box-shadow: 0 18px 54px -24px rgba(15, 23, 42, .42) !important;
+    .create-page-fixed [data-editorjs-wrapper] .ce-block__content,
+    .create-page-fixed [data-editorjs-wrapper] .ce-toolbar__content {
+        width: calc(100% - 28px) !important;
+        max-width: calc(100% - 28px) !important;
+        margin-left: 14px !important;
+        margin-right: 14px !important;
     }
 
-    .create-page-fixed [data-editorjs-wrapper] .ce-popover__items {
-        max-height: min(284px, 36dvh) !important;
-        padding: 2px 6px 8px !important;
-        overflow-y: auto !important;
-        -webkit-overflow-scrolling: touch !important;
-    }
-
-    .create-page-fixed [data-editorjs-wrapper] .ce-popover__search {
-        margin: 8px !important;
-        min-height: 42px !important;
-        position: sticky !important;
-        top: 0 !important;
-        z-index: 2 !important;
-    }
-
-    .create-page-fixed [data-editorjs-wrapper] .ce-popover-item {
-        min-height: 44px !important;
-        padding: 7px 9px !important;
-        border-radius: 11px !important;
-        font-size: 14px !important;
-    }
-
-    .create-page-fixed [data-editorjs-wrapper] .ce-popover-item__title {
-        font-size: 14px !important;
+    .create-page-fixed [data-editorjs-wrapper] .ce-toolbar__actions {
+        left: 10px !important;
+        right: auto !important;
     }
 
     .create-page-fixed [data-editorjs-wrapper] .ce-toolbar__plus,
@@ -181,13 +183,59 @@
         min-height: 38px !important;
         border-radius: 12px !important;
     }
+
+    .create-page-fixed [data-editorjs-wrapper] .ce-popover {
+        position: fixed !important;
+        left: 10px !important;
+        right: 10px !important;
+        bottom: calc(14px + env(safe-area-inset-bottom)) !important;
+        top: auto !important;
+        transform: none !important;
+        width: auto !important;
+        max-width: none !important;
+        z-index: 100500 !important;
+    }
+
+    .create-page-fixed [data-editorjs-wrapper] .ce-popover__container {
+        position: relative !important;
+        inset: auto !important;
+        transform: none !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        max-height: min(430px, 56dvh) !important;
+        border-radius: 18px !important;
+        box-shadow: 0 18px 54px -24px rgba(15, 23, 42, .42) !important;
+    }
+
+    .create-page-fixed [data-editorjs-wrapper] .ce-popover__items {
+        max-height: min(330px, 43dvh) !important;
+        padding: 2px 6px 8px !important;
+        overflow-y: auto !important;
+        -webkit-overflow-scrolling: touch !important;
+    }
+
+    .create-page-fixed [data-editorjs-wrapper] .ce-popover__search {
+        position: sticky !important;
+        top: 0 !important;
+        z-index: 2 !important;
+        margin: 8px !important;
+        min-height: 42px !important;
+    }
+
+    .create-page-fixed [data-editorjs-wrapper] .ce-popover-item {
+        min-height: 46px !important;
+        padding: 8px 10px !important;
+        border-radius: 11px !important;
+        font-size: 15px !important;
+    }
+
+    .create-page-fixed [data-editorjs-wrapper] .ce-popover-item__title {
+        font-size: 15px !important;
+    }
 }
 
-html.dark .create-page-fixed [data-editorjs-wrapper] .ce-popover,
 html.dark .create-page-fixed [data-editorjs-wrapper] .ce-popover__container,
-html[data-theme="dark"] .create-page-fixed [data-editorjs-wrapper] .ce-popover,
 html[data-theme="dark"] .create-page-fixed [data-editorjs-wrapper] .ce-popover__container,
-html[data-system-theme="dark"] .create-page-fixed [data-editorjs-wrapper] .ce-popover,
 html[data-system-theme="dark"] .create-page-fixed [data-editorjs-wrapper] .ce-popover__container {
     background: #111827 !important;
     border-color: rgba(255,255,255,.10) !important;
