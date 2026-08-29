@@ -2,6 +2,7 @@ import '../css/header-user-menu.css';
 import '../css/header-user-menu-tuning.css';
 import '../css/header-layout-polish.css';
 import '../css/header-logo-fix.css';
+import '../css/post-create-settings-polish.css';
 import axios from 'axios';
 window.axios = axios;
 
@@ -76,10 +77,53 @@ const syncHeaderUserMenuLinks = async () => {
     }
 };
 
+const polishPostCreateSettings = () => {
+    const form = document.getElementById('post-create-form');
+    const settingsModal = document.getElementById('settings-modal');
+    const cover = form?.querySelector('[data-cover-field]');
+    const settingsList = settingsModal?.querySelector('.settings-panel > .flex-1 > .space-y-3');
+
+    if (!form || !settingsModal || !cover || !settingsList || settingsList.querySelector('[data-create-cover-settings]')) {
+        return;
+    }
+
+    const oldCoverContainer = cover.parentElement;
+    const section = document.createElement('section');
+    section.setAttribute('data-create-cover-settings', '');
+    section.className = 'rounded-[18px] border border-slate-200 bg-white p-4 shadow-sm';
+    section.innerHTML = `
+        <div class="mb-3 flex items-center gap-3">
+            <span class="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-blue-50 text-blue-600">
+                <iconify-icon icon="lucide:image" class="text-[17px]"></iconify-icon>
+            </span>
+            <div class="min-w-0">
+                <div class="text-sm font-semibold text-slate-950">Öne çıkan görsel</div>
+                <div class="mt-0.5 text-xs text-slate-500">Kartlarda ve paylaşım ön izlemesinde kullanılacak görsel.</div>
+            </div>
+        </div>
+        <div data-cover-slot></div>
+    `;
+
+    const slot = section.querySelector('[data-cover-slot]');
+    slot?.appendChild(cover);
+    settingsList.prepend(section);
+
+    if (oldCoverContainer && oldCoverContainer.children.length === 1) {
+        oldCoverContainer.classList.remove('py-4', 'sm:py-6');
+    }
+
+    const title = document.getElementById('title');
+    if (title) {
+        title.classList.remove('mt-5');
+    }
+};
+
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', syncHeaderUserMenuLinks, { once: true });
+    document.addEventListener('DOMContentLoaded', polishPostCreateSettings, { once: true });
 } else {
     syncHeaderUserMenuLinks();
+    polishPostCreateSettings();
 }
 
 import Echo from 'laravel-echo';
