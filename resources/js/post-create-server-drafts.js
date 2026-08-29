@@ -2,7 +2,7 @@ const loadPostCreateEditorPolish = () => {
     if (document.querySelector('link[data-editorjs-create-polish]')) return;
     const link = document.createElement('link');
     link.rel = 'stylesheet';
-    link.href = '/css/editorjs-create-polish.css?v=20260829a';
+    link.href = '/css/editorjs-create-polish.css?v=20260830b';
     link.setAttribute('data-editorjs-create-polish', '1');
     document.head.appendChild(link);
 };
@@ -44,7 +44,6 @@ const initPostCreateServerDrafts = () => {
         try {
             localStorage.setItem(serverKey, JSON.stringify(state));
         } catch {
-            // Sunucu kaydı çalışmaya devam eder; localStorage zorunlu değil.
         }
     };
 
@@ -53,7 +52,6 @@ const initPostCreateServerDrafts = () => {
             localStorage.removeItem(serverKey);
             localStorage.removeItem(localDraftKey);
         } catch {
-            // ignore
         }
     };
 
@@ -81,7 +79,6 @@ const initPostCreateServerDrafts = () => {
                 contentFallback.value = window.filamentEditorBlocksToHtml(output.blocks || []);
             }
         } catch {
-            // EditorJS henüz hazır değilse mevcut form değerlerini kullan.
         }
     };
 
