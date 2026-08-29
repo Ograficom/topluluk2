@@ -23,9 +23,16 @@
     max-width: min(286px, calc(100vw - 32px)) !important;
     border: 1px solid rgba(15, 23, 42, .10) !important;
     border-radius: 18px !important;
-    background: rgba(255,255,255,.98) !important;
+    background: #ffffff !important;
     box-shadow: 0 18px 50px -24px rgba(15,23,42,.35) !important;
     overflow: hidden !important;
+}
+
+.create-page-fixed [data-editorjs-wrapper] .ce-popover__overlay,
+.create-page-fixed [data-editorjs-wrapper] .ce-popover-overlay {
+    background: transparent !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
 }
 
 .create-page-fixed [data-editorjs-wrapper] .ce-popover__search {
@@ -84,50 +91,49 @@
 }
 
 @media (max-width: 640px) {
+    /* Do not force EditorJS popovers into a fixed bottom sheet. EditorJS
+       calculates its own anchored position; overriding it was the reason the
+       menu covered the editor and was clipped on iPhone/Safari. */
     .create-page-fixed [data-editorjs-wrapper] .ce-popover,
     .create-page-fixed [data-editorjs-wrapper] .ce-popover__container {
-        position: fixed !important;
-        left: 10px !important;
-        right: 10px !important;
-        bottom: calc(10px + env(safe-area-inset-bottom)) !important;
-        top: auto !important;
-        transform: none !important;
-        width: auto !important;
-        max-width: none !important;
-        max-height: min(66dvh, 520px) !important;
-        border-radius: 22px !important;
-        z-index: 100500 !important;
+        width: min(320px, calc(100vw - 28px)) !important;
+        max-width: calc(100vw - 28px) !important;
+        max-height: min(430px, 52dvh) !important;
+        border-radius: 16px !important;
+        box-shadow: 0 14px 38px -20px rgba(15, 23, 42, .34) !important;
+        overflow: hidden !important;
     }
 
     .create-page-fixed [data-editorjs-wrapper] .ce-popover__items {
-        max-height: calc(min(66dvh, 520px) - 64px) !important;
-        padding: 4px 8px 10px !important;
+        max-height: min(340px, 40dvh) !important;
+        padding: 4px 6px 8px !important;
+        overflow-y: auto !important;
         -webkit-overflow-scrolling: touch !important;
     }
 
     .create-page-fixed [data-editorjs-wrapper] .ce-popover__search {
-        margin: 10px 10px 6px !important;
-        min-height: 44px !important;
+        margin: 8px !important;
+        min-height: 40px !important;
     }
 
     .create-page-fixed [data-editorjs-wrapper] .ce-popover-item {
-        min-height: 46px !important;
-        padding: 7px 10px !important;
-        border-radius: 13px !important;
-        font-size: 15px !important;
+        min-height: 42px !important;
+        padding: 6px 8px !important;
+        border-radius: 11px !important;
+        font-size: 14px !important;
     }
 
     .create-page-fixed [data-editorjs-wrapper] .ce-popover-item__title {
-        font-size: 15px !important;
+        font-size: 14px !important;
     }
 
     .create-page-fixed [data-editorjs-wrapper] .ce-toolbar__plus,
     .create-page-fixed [data-editorjs-wrapper] .ce-toolbar__settings-btn {
-        width: 40px !important;
-        height: 40px !important;
-        min-width: 40px !important;
-        min-height: 40px !important;
-        border-radius: 13px !important;
+        width: 36px !important;
+        height: 36px !important;
+        min-width: 36px !important;
+        min-height: 36px !important;
+        border-radius: 12px !important;
     }
 }
 
@@ -135,7 +141,7 @@ html.dark .create-page-fixed [data-editorjs-wrapper] .ce-popover,
 html.dark .create-page-fixed [data-editorjs-wrapper] .ce-popover__container,
 html[data-theme="dark"] .create-page-fixed [data-editorjs-wrapper] .ce-popover,
 html[data-theme="dark"] .create-page-fixed [data-editorjs-wrapper] .ce-popover__container {
-    background: rgba(17,24,39,.98) !important;
+    background: #111827 !important;
     border-color: rgba(255,255,255,.10) !important;
 }
 
