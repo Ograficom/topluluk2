@@ -3,6 +3,8 @@ import '../css/header-user-menu-tuning.css';
 import '../css/header-layout-polish.css';
 import '../css/header-logo-fix.css';
 import '../css/post-create-settings-polish.css';
+import '../css/post-create-mobile-fix.css';
+import './post-create-server-drafts.js';
 import axios from 'axios';
 window.axios = axios;
 
