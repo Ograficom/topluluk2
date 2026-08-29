@@ -1,36 +1,45 @@
 /* /blog/create mobile composer header */
 @media (max-width: 640px) {
     .create-page-fixed > div > header {
-        top: 8px !important;
-        margin-bottom: 10px !important;
-        padding: 0 2px !important;
+        top: 6px !important;
+        margin-bottom: 8px !important;
+        padding: 0 !important;
     }
 
     .create-page-fixed > div > header > .flex {
         display: flex !important;
-        flex-wrap: wrap !important;
+        flex-wrap: nowrap !important;
         align-items: center !important;
-        gap: 8px !important;
+        gap: 6px !important;
+        width: 100% !important;
     }
 
     .create-page-fixed > div > header > .flex > .flex.min-w-0 {
-        width: 100% !important;
-        flex: 1 1 100% !important;
+        display: flex !important;
+        align-items: center !important;
+        gap: 6px !important;
         min-width: 0 !important;
-        gap: 8px !important;
+        flex: 1 1 auto !important;
+        width: auto !important;
     }
 
-    .create-page-fixed > div > header > .flex > .flex.min-w-0 > a,
-    .create-page-fixed > div > header .create-brand {
-        width: 40px !important;
-        height: 40px !important;
-        min-width: 40px !important;
-        border-radius: 14px !important;
-        flex: 0 0 40px !important;
+    .create-page-fixed > div > header > .flex > .flex.min-w-0 > a {
+        width: 38px !important;
+        height: 38px !important;
+        min-width: 38px !important;
+        flex: 0 0 38px !important;
+        border-radius: 13px !important;
+        padding: 0 !important;
     }
 
     .create-page-fixed > div > header .create-brand {
+        width: 38px !important;
+        height: 38px !important;
+        min-width: 38px !important;
+        flex: 0 0 38px !important;
+        border-radius: 13px !important;
         background: #2563eb !important;
+        border: 0 !important;
         box-shadow: none !important;
     }
 
@@ -41,56 +50,85 @@
     .create-page-fixed > div > header > .flex > .flex.min-w-0 > .min-w-0 {
         min-width: 0 !important;
         flex: 1 1 auto !important;
+        width: auto !important;
     }
 
     .create-page-fixed > div > header [data-category-menu],
     .create-page-fixed > div > header [data-category-menu] > summary {
         width: 100% !important;
         max-width: 100% !important;
+        min-width: 0 !important;
     }
 
     .create-page-fixed > div > header [data-category-menu] > summary {
-        min-height: 40px !important;
+        min-height: 38px !important;
+        height: 38px !important;
         margin-top: 0 !important;
-        padding: 0 10px !important;
-        border: 1px solid rgba(15, 23, 42, 0.08) !important;
-        border-radius: 14px !important;
-        background: rgba(255, 255, 255, 0.82) !important;
+        padding: 0 8px !important;
+        gap: 5px !important;
+        border: 0 !important;
+        border-radius: 12px !important;
+        background: transparent !important;
         color: #111827 !important;
+        overflow: hidden !important;
+    }
+
+    .create-page-fixed > div > header [data-category-menu] > summary span[data-category-label] {
+        min-width: 0 !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        white-space: nowrap !important;
     }
 
     .create-page-fixed > div > header > .flex > .flex.shrink-0 {
-        width: 100% !important;
-        flex: 1 1 100% !important;
-        justify-content: flex-end !important;
-        gap: 8px !important;
-        margin-top: 2px !important;
+        display: flex !important;
+        align-items: center !important;
+        flex: 0 0 auto !important;
+        width: auto !important;
+        gap: 6px !important;
+        margin: 0 !important;
     }
 
-    .create-page-fixed > div > header .post-create-autosave-status,
-    .create-page-fixed > div > header button[data-ai-assist],
-    .create-page-fixed > div > header button[data-open-settings] {
-        width: 40px !important;
-        min-width: 40px !important;
-        height: 40px !important;
-        min-height: 40px !important;
+    /* Taslak durumu sadece ikon; yer kaplamaz. */
+    .create-page-fixed > div > header .post-create-autosave-status {
+        width: 30px !important;
+        min-width: 30px !important;
+        height: 38px !important;
+        min-height: 38px !important;
         padding: 0 !important;
-        border-radius: 14px !important;
+        border: 0 !important;
+        background: transparent !important;
         justify-content: center !important;
-        background: #ffffff !important;
-        border: 1px solid rgba(15, 23, 42, 0.08) !important;
     }
 
     .create-page-fixed > div > header .post-create-autosave-status [data-autosave-label] {
         display: none !important;
     }
 
+    .create-page-fixed > div > header .post-create-autosave-status iconify-icon {
+        font-size: 17px !important;
+    }
+
+    .create-page-fixed > div > header button[data-ai-assist],
+    .create-page-fixed > div > header button[data-open-settings] {
+        width: 38px !important;
+        min-width: 38px !important;
+        height: 38px !important;
+        min-height: 38px !important;
+        padding: 0 !important;
+        border-radius: 13px !important;
+        justify-content: center !important;
+        background: #ffffff !important;
+        border: 1px solid rgba(15, 23, 42, 0.08) !important;
+    }
+
+    /* Mobilde yayımla metni kaldır; mavi gönder ikonu ana aksiyon olarak kalır. */
     .create-page-fixed > div > header button[data-submit-intent="publish"] {
-        width: auto !important;
-        min-width: 104px !important;
-        height: 40px !important;
-        min-height: 40px !important;
-        padding: 0 15px !important;
+        width: 42px !important;
+        min-width: 42px !important;
+        height: 42px !important;
+        min-height: 42px !important;
+        padding: 0 !important;
         border-radius: 14px !important;
         background: #2563eb !important;
         border: 1px solid #2563eb !important;
@@ -99,26 +137,19 @@
     }
 
     .create-page-fixed > div > header button[data-submit-intent="publish"] > span {
-        position: static !important;
-        width: auto !important;
-        height: auto !important;
-        margin: 0 0 0 6px !important;
-        padding: 0 !important;
-        overflow: visible !important;
-        clip: auto !important;
-        white-space: nowrap !important;
-        border: 0 !important;
+        display: none !important;
     }
 
     .create-page-fixed > div > header button[data-submit-intent="publish"] iconify-icon {
-        font-size: 17px !important;
+        font-size: 18px !important;
+        margin: 0 !important;
     }
 }
 
 html.dark .create-page-fixed > div > header [data-category-menu] > summary,
 html[data-theme="dark"] .create-page-fixed > div > header [data-category-menu] > summary,
 html[data-system-theme="dark"] .create-page-fixed > div > header [data-category-menu] > summary {
-    background: #ffffff !important;
-    border-color: rgba(15, 23, 42, 0.08) !important;
-    color: #111827 !important;
+    background: transparent !important;
+    border-color: transparent !important;
+    color: #f8fafc !important;
 }
