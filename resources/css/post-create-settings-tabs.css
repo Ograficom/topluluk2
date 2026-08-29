@@ -1,10 +1,15 @@
-/* /blog/create — settings drawer tab layout refinement */
+/* /blog/create — settings drawer flat tab layout */
 
-/* Panel yüzeyi: üstteki ince yarı saydam şeridi ve cam efektini kaldır. */
+/* Panel: sade beyaz yüzey. Üstte cam/şerit efekti yok. */
 #settings-modal .settings-panel {
     background: #ffffff !important;
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
+}
+
+/* Mobil çekmece tutamacı / ince üst şerit tamamen kaldırıldı. */
+#settings-modal .settings-panel > .mx-auto.mt-2 {
+    display: none !important;
 }
 
 #settings-modal .settings-panel > div:nth-child(2) {
@@ -20,7 +25,7 @@
     content: none !important;
 }
 
-/* İç gövde tek, sade ve nötr bir yüzey olsun. */
+/* İç gövde: sekmeler aralıksız, tek bir liste gibi. */
 #settings-modal .settings-panel > .flex-1 {
     background: #f6f4f0 !important;
     padding: 0 !important;
@@ -33,7 +38,7 @@
     padding: 0 !important;
 }
 
-/* Her ayar grubu gerçek sekme satırı gibi: köşesiz, gölgesiz, solda mavi çizgi yok. */
+/* Ayar grupları: köşesiz, gölgesiz, solda mavi çizgi yok. */
 #settings-modal .settings-panel section,
 #settings-modal .settings-panel [data-create-cover-settings],
 #settings-modal .settings-panel [data-create-category-settings] {
@@ -50,7 +55,9 @@
 #settings-modal .settings-panel section::before,
 #settings-modal .settings-panel section::after,
 #settings-modal .settings-panel [data-create-cover-settings]::before,
-#settings-modal .settings-panel [data-create-category-settings]::before {
+#settings-modal .settings-panel [data-create-cover-settings]::after,
+#settings-modal .settings-panel [data-create-category-settings]::before,
+#settings-modal .settings-panel [data-create-category-settings]::after {
     display: none !important;
     content: none !important;
 }
@@ -67,23 +74,31 @@
     background: #ffffff !important;
 }
 
+/* Sekme başlıkları hover ve basılı durumda gri olsun. */
 #settings-modal .settings-panel section > details > summary,
-#settings-modal .settings-panel section > summary {
-    transition: background-color .12s ease !important;
+#settings-modal .settings-panel section > summary,
+#settings-modal .settings-panel [data-create-category-settings] summary {
+    border-radius: 0 !important;
+    transition: background-color .12s ease, color .12s ease !important;
 }
 
 #settings-modal .settings-panel section > details > summary:hover,
 #settings-modal .settings-panel section > details > summary:focus-visible,
 #settings-modal .settings-panel section > summary:hover,
-#settings-modal .settings-panel section > summary:focus-visible {
+#settings-modal .settings-panel section > summary:focus-visible,
+#settings-modal .settings-panel [data-create-category-settings] summary:hover,
+#settings-modal .settings-panel [data-create-category-settings] summary:focus-visible {
     background: #f3f4f6 !important;
 }
 
+#settings-modal .settings-panel section > details > summary:active,
+#settings-modal .settings-panel section > summary:active,
+#settings-modal .settings-panel [data-create-category-settings] summary:active,
 #settings-modal .settings-panel section > details[open] > summary {
-    background: #f3f4f6 !important;
+    background: #e5e7eb !important;
 }
 
-/* Açılan sekme içeriği aşağı doğru kendi bölümünde devam etsin. */
+/* Açılan sekme içeriği kendi satırının altında devam eder. */
 #settings-modal .settings-panel section > details > :not(summary) {
     margin-left: 0 !important;
     margin-right: 0 !important;
@@ -98,8 +113,9 @@
     padding-bottom: 14px !important;
 }
 
-/* Kapak görseli ve kategori alanı sekmenin içinde kalır; dış kart gibi görünmez. */
-#settings-modal .settings-panel [data-create-cover-settings] {
+/* Kapak ve kategori dış kart değil, sekmenin içeriğidir. */
+#settings-modal .settings-panel [data-create-cover-settings],
+#settings-modal .settings-panel [data-create-category-settings] {
     padding: 0 !important;
 }
 
@@ -110,17 +126,8 @@
     border-radius: 10px !important;
 }
 
-#settings-modal .settings-panel [data-create-category-settings] {
-    padding: 0 !important;
-}
-
-#settings-modal .settings-panel [data-create-category-settings] summary {
-    border-radius: 8px !important;
-}
-
-/* X ve panel içindeki kontrol butonları hover / aktif durumda gri yüzey alsın. */
+/* X, Kapat ve diğer nötr panel butonları hover/active gri. Yayınla mavi kalır. */
 #settings-modal button[data-settings-close],
-#settings-modal .settings-panel summary,
 #settings-modal .settings-panel button:not([data-submit-intent="publish"]),
 #settings-modal .settings-panel [role="button"] {
     transition: background-color .12s ease, color .12s ease !important;
@@ -141,7 +148,7 @@
     background: #e5e7eb !important;
 }
 
-/* Alt bölüm de cam/şerit gibi görünmesin. */
+/* Footer da düz ve net ayraçlı. */
 #settings-modal .settings-panel > .border-t {
     background: #ffffff !important;
     backdrop-filter: none !important;
@@ -156,18 +163,9 @@
 }
 
 @media (max-width: 767px) {
-    /* Mobilde çekmece hissi sadece dış panelde kalsın; içeride sekmeler köşesiz. */
+    /* Dış panel çekmece olarak kalır; içerideki sekmeler köşesizdir. */
     #settings-modal .settings-panel {
         border-radius: 18px 18px 0 0 !important;
-    }
-
-    #settings-modal .settings-panel > .mx-auto.mt-2 {
-        width: 42px !important;
-        height: 4px !important;
-        margin-top: 8px !important;
-        margin-bottom: 6px !important;
-        border-radius: 999px !important;
-        background: #c5c9d0 !important;
     }
 
     #settings-modal .settings-panel section,
@@ -211,12 +209,18 @@ html[data-system-theme="dark"] #settings-modal .settings-panel summary {
 
 html.dark #settings-modal .settings-panel summary:hover,
 html.dark #settings-modal .settings-panel summary:focus-visible,
-html.dark #settings-modal .settings-panel section > details[open] > summary,
 html[data-theme="dark"] #settings-modal .settings-panel summary:hover,
 html[data-theme="dark"] #settings-modal .settings-panel summary:focus-visible,
-html[data-theme="dark"] #settings-modal .settings-panel section > details[open] > summary,
 html[data-system-theme="dark"] #settings-modal .settings-panel summary:hover,
-html[data-system-theme="dark"] #settings-modal .settings-panel summary:focus-visible,
-html[data-system-theme="dark"] #settings-modal .settings-panel section > details[open] > summary {
+html[data-system-theme="dark"] #settings-modal .settings-panel summary:focus-visible {
     background: #1f2937 !important;
+}
+
+html.dark #settings-modal .settings-panel summary:active,
+html.dark #settings-modal .settings-panel section > details[open] > summary,
+html[data-theme="dark"] #settings-modal .settings-panel summary:active,
+html[data-theme="dark"] #settings-modal .settings-panel section > details[open] > summary,
+html[data-system-theme="dark"] #settings-modal .settings-panel summary:active,
+html[data-system-theme="dark"] #settings-modal .settings-panel section > details[open] > summary {
+    background: #273449 !important;
 }
