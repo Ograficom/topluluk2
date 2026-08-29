@@ -13,9 +13,30 @@
     -webkit-backdrop-filter: none !important;
 }
 
-/* Hide the old duplicate "Taslak hazır" state; automatic draft status remains. */
-.create-page-fixed > div > header .hidden.items-center.gap-1\.5.text-xs.text-blue-700.sm\:flex {
+/* Remove redundant status/help copy from the composer. */
+.create-page-fixed > div > header .hidden.items-center.gap-1\.5.text-xs.text-blue-700.sm\:flex,
+.create-page-fixed .create-editor-hint {
     display: none !important;
+}
+
+/* Hide only the "Yeni gönderi" label; keep category selector visible. */
+.create-page-fixed > div > header .create-brand + .min-w-0 > .truncate.text-sm.font-semibold.text-slate-950 {
+    display: none !important;
+}
+
+/* Refined Ografi composer mark. */
+.create-page-fixed > div > header .create-brand {
+    width: 34px !important;
+    height: 34px !important;
+    border-radius: 11px !important;
+    background: #2563eb !important;
+    color: #ffffff !important;
+    border: 1px solid #1d4ed8 !important;
+    box-shadow: none !important;
+}
+
+.create-page-fixed > div > header .create-brand iconify-icon {
+    font-size: 18px !important;
 }
 
 /* AI + settings stay as white controls even after the header surface is removed. */
@@ -186,23 +207,30 @@
     -webkit-backdrop-filter: blur(18px) !important;
 }
 
+/* Autosave stays active, but the header shows icon only. */
 .post-create-autosave-status {
     display: inline-flex;
-    min-height: 36px;
+    width: 36px !important;
+    min-width: 36px !important;
+    height: 36px !important;
+    min-height: 36px !important;
     align-items: center;
-    gap: 6px;
-    border: 1px solid rgba(15, 23, 42, 0.08);
+    justify-content: center;
+    gap: 0 !important;
+    border: 0 !important;
     border-radius: 999px;
-    background: rgba(255, 255, 255, 0.74);
-    padding: 0 10px;
+    background: transparent !important;
+    padding: 0 !important;
     color: #64748b;
-    font-size: 12px;
-    font-weight: 500;
-    white-space: nowrap;
+    box-shadow: none !important;
+}
+
+.post-create-autosave-status [data-autosave-label] {
+    display: none !important;
 }
 
 .post-create-autosave-status iconify-icon {
-    font-size: 15px;
+    font-size: 19px !important;
 }
 
 .post-create-autosave-status[data-state="saving"] {
@@ -251,19 +279,6 @@
 
     #settings-modal .settings-panel > .border-t {
         padding-bottom: calc(12px + env(safe-area-inset-bottom)) !important;
-    }
-
-    .post-create-autosave-status {
-        width: 36px;
-        min-width: 36px;
-        height: 36px;
-        min-height: 36px;
-        justify-content: center;
-        padding: 0;
-    }
-
-    .post-create-autosave-status [data-autosave-label] {
-        display: none;
     }
 }
 
@@ -337,8 +352,8 @@ html[data-system-theme="dark"] #settings-modal .settings-panel .text-slate-400 {
 html.dark .post-create-autosave-status,
 html[data-theme="dark"] .post-create-autosave-status,
 html[data-system-theme="dark"] .post-create-autosave-status {
-    background: rgba(15, 23, 42, 0.78);
-    border-color: rgba(255, 255, 255, 0.09);
+    background: transparent !important;
+    border: 0 !important;
     color: #94a3b8;
 }
 
