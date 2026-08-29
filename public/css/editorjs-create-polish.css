@@ -7,8 +7,21 @@
     overflow: visible !important;
 }
 
+/* Kartın alt köşeleri, overflow görünür kalırken de düzgün yuvarlak kalsın. */
+.create-page-fixed #post-create-form > .create-card {
+    border-radius: 22px !important;
+}
+
 .create-page-fixed [data-editorjs-wrapper] {
     position: relative;
+    border-radius: 0 0 22px 22px !important;
+    background: #fff !important;
+}
+
+.create-page-fixed [data-editorjs-wrapper] > div:first-child,
+.create-page-fixed [data-editorjs-wrapper] .codex-editor,
+.create-page-fixed [data-editorjs-wrapper] .codex-editor__redactor {
+    border-radius: 0 0 22px 22px !important;
 }
 
 /* Editör boşken gereksiz dev yükseklik oluşturma. İçerik arttıkça doğal olarak büyür. */
