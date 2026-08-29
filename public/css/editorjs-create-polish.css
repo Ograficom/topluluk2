@@ -1,6 +1,7 @@
 /* Ografi /blog/create — EditorJS toolbar + popover layout */
 
-/* Keep EditorJS inside the composer width and let tool popovers escape cleanly. */
+/* Keep the entire composer card open for EditorJS floating UI. */
+.create-page-fixed #post-create-form > section.create-card,
 .create-page-fixed .create-card:has([data-editorjs-wrapper]),
 .create-page-fixed [data-editorjs-wrapper],
 .create-page-fixed [data-editorjs-wrapper] .codex-editor,
@@ -12,9 +13,14 @@
     overflow: visible !important;
 }
 
+.create-page-fixed #post-create-form > section.create-card {
+    position: relative !important;
+}
+
 .create-page-fixed [data-editorjs-wrapper] {
     position: relative !important;
     isolation: isolate;
+    border-radius: 0 0 22px 22px;
 }
 
 .create-page-fixed [data-editorjs-wrapper] .codex-editor__redactor {
@@ -42,7 +48,6 @@
     background-color: transparent !important;
 }
 
-/* Toolbar buttons */
 .create-page-fixed [data-editorjs-wrapper] .ce-toolbar__actions {
     left: 12px !important;
     right: auto !important;
@@ -67,12 +72,12 @@
     background: #f8fafc !important;
 }
 
-/* Important: position only the outer popover. The inner container must NOT
-   receive fixed/absolute viewport coordinates. That was the source of the
-   broken mobile and desktop placement. */
+/* Desktop popovers stay compact. Their X position is clamped by JS so they
+   always open inside the composer instead of being chopped at the right edge. */
 .create-page-fixed [data-editorjs-wrapper] .ce-popover {
-    width: 288px !important;
-    max-width: min(288px, calc(100vw - 28px)) !important;
+    width: 272px !important;
+    max-width: min(272px, calc(100vw - 28px)) !important;
+    will-change: transform;
 }
 
 .create-page-fixed [data-editorjs-wrapper] .ce-popover__container {
@@ -81,7 +86,7 @@
     transform: none !important;
     width: 100% !important;
     max-width: 100% !important;
-    max-height: min(430px, 58vh) !important;
+    max-height: min(410px, 56vh) !important;
     border: 1px solid rgba(15, 23, 42, .10) !important;
     border-radius: 16px !important;
     background: #ffffff !important;
@@ -117,7 +122,7 @@
 
 .create-page-fixed [data-editorjs-wrapper] .ce-popover__items {
     padding: 2px 6px 8px !important;
-    max-height: 340px !important;
+    max-height: 326px !important;
     overflow-y: auto !important;
     overflow-x: hidden !important;
     overscroll-behavior: contain !important;
@@ -159,8 +164,6 @@
     color: #111827 !important;
 }
 
-/* Mobile: one compact bottom panel. Only the outer popover is fixed; the
-   container remains normal flow so Safari cannot split or offset the menu. */
 @media (max-width: 640px) {
     .create-page-fixed [data-editorjs-wrapper] .ce-block__content,
     .create-page-fixed [data-editorjs-wrapper] .ce-toolbar__content {
@@ -171,28 +174,32 @@
     }
 
     .create-page-fixed [data-editorjs-wrapper] .ce-toolbar__actions {
-        left: 10px !important;
+        left: 8px !important;
         right: auto !important;
+        gap: 4px !important;
     }
 
     .create-page-fixed [data-editorjs-wrapper] .ce-toolbar__plus,
     .create-page-fixed [data-editorjs-wrapper] .ce-toolbar__settings-btn {
-        width: 38px !important;
-        height: 38px !important;
-        min-width: 38px !important;
-        min-height: 38px !important;
-        border-radius: 12px !important;
+        width: 36px !important;
+        height: 36px !important;
+        min-width: 36px !important;
+        min-height: 36px !important;
+        border-radius: 11px !important;
     }
 
+    /* On phones the toolbox is a real bottom sheet. It does not inherit the
+       desktop inline coordinates and therefore cannot hang outside the card. */
     .create-page-fixed [data-editorjs-wrapper] .ce-popover {
         position: fixed !important;
-        left: 10px !important;
-        right: 10px !important;
+        left: 12px !important;
+        right: 12px !important;
         bottom: calc(14px + env(safe-area-inset-bottom)) !important;
         top: auto !important;
         transform: none !important;
         width: auto !important;
         max-width: none !important;
+        max-height: min(58dvh, 460px) !important;
         z-index: 100500 !important;
     }
 
@@ -202,14 +209,14 @@
         transform: none !important;
         width: 100% !important;
         max-width: 100% !important;
-        max-height: min(430px, 56dvh) !important;
-        border-radius: 18px !important;
+        max-height: min(58dvh, 460px) !important;
+        border-radius: 20px !important;
         box-shadow: 0 18px 54px -24px rgba(15, 23, 42, .42) !important;
     }
 
     .create-page-fixed [data-editorjs-wrapper] .ce-popover__items {
-        max-height: min(330px, 43dvh) !important;
-        padding: 2px 6px 8px !important;
+        max-height: min(330px, 42dvh) !important;
+        padding: 2px 7px 10px !important;
         overflow-y: auto !important;
         -webkit-overflow-scrolling: touch !important;
     }
@@ -218,14 +225,15 @@
         position: sticky !important;
         top: 0 !important;
         z-index: 2 !important;
-        margin: 8px !important;
-        min-height: 42px !important;
+        margin: 9px !important;
+        min-height: 44px !important;
+        background: #f8fafc !important;
     }
 
     .create-page-fixed [data-editorjs-wrapper] .ce-popover-item {
         min-height: 46px !important;
         padding: 8px 10px !important;
-        border-radius: 11px !important;
+        border-radius: 12px !important;
         font-size: 15px !important;
     }
 
