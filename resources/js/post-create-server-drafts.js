@@ -1,3 +1,14 @@
+const loadPostCreateEditorPolish = () => {
+    if (document.querySelector('link[data-editorjs-create-polish]')) return;
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = '/css/editorjs-create-polish.css?v=20260829a';
+    link.setAttribute('data-editorjs-create-polish', '1');
+    document.head.appendChild(link);
+};
+
+loadPostCreateEditorPolish();
+
 const initPostCreateServerDrafts = () => {
     const form = document.getElementById('post-create-form');
     if (!form || form.dataset.serverDraftBound === '1') return;
