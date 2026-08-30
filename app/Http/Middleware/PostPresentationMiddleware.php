@@ -40,6 +40,11 @@ class PostPresentationMiddleware
             ) ?? $html;
         }
 
+        if ($request->routeIs('blog.create', 'blog.post.edit')) {
+            $preferencesScript = $this->preferencesScript($post);
+            $html = preg_replace('/<\/body>/i', $preferencesScript . "\n</body>", $html, 1) ?? ($html . $preferencesScript);
+        }
+
         $aiIds = [];
         if (preg_match_all('/data-post-id=["\'](\d+)["\']/i', $html, $matches)) {
             $ids = array_values(array_unique(array_map('intval', $matches[1] ?? [])));
@@ -78,6 +83,72 @@ class PostPresentationMiddleware
         }
 
         return Post::withoutGlobalScopes()->where('slug', $slug)->first();
+    }
+
+    private function preferencesScript(?Post $post): string
+    {
+        $states = json_encode([
+            'followers_only' => (bool) ($post?->followers_only ?? false),
+            'noindex' => (bool) ($post?->noindex ?? false),
+            'is_ai_product' => (bool) ($post?->is_ai_product ?? false),
+            'hide_from_feeds' => (bool) ($post?->hide_from_feeds ?? false),
+            'suppress_follower_notifications' => (bool) ($post?->suppress_follower_notifications ?? false),
+        ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) ?: '{}';
+
+        return <<<HTML
+<script data-ografi-post-distribution-settings>
+(() => {
+    const states = {$states};
+    const options = [
+        ['followers_only', 'Sadece takipçiler'],
+        ['noindex', 'Arama motorlarından sakla'],
+        ['is_ai_product', 'Bu bir yapay zeka ürünü'],
+        ['hide_from_feeds', 'Akıştan uzak tut'],
+        ['suppress_follower_notifications', 'Takipçilere bildirme'],
+    ];
+
+    const switchMarkup = (name, checked) => `
+        <label class="group relative inline-flex cursor-pointer items-center">
+            <input type="hidden" name="\${name}" value="0">
+            <input type="checkbox" name="\${name}" id="\${name}" value="1" role="switch" class="peer sr-only" \${checked ? 'checked' : ''}>
+            <span class="relative h-7 w-12 rounded-full border border-slate-300 bg-slate-200 transition-all duration-200 group-hover:bg-white peer-focus-visible:ring-4 peer-focus-visible:ring-blue-500/15 peer-checked:border-blue-600 peer-checked:bg-blue-600 peer-checked:group-hover:bg-blue-600" aria-hidden="true"></span>
+            <span class="pointer-events-none absolute left-[3px] top-[3px] h-5 w-5 rounded-full bg-white shadow-[0_2px_8px_rgba(15,23,42,0.18)] transition-all duration-200 peer-checked:translate-x-5" aria-hidden="true"></span>
+        </label>`;
+
+    const mount = () => {
+        const titles = Array.from(document.querySelectorAll('#settings-modal .settings-accordion-title'));
+        const title = titles.find((node) => String(node.textContent || '').trim() === 'Tercihler');
+        const details = title?.closest('details.settings-accordion');
+        const content = details?.querySelector('.settings-accordion-content');
+        const list = content?.querySelector('.divide-y');
+        if (!list || list.dataset.distributionReady === '1') return Boolean(list);
+
+        options.forEach(([name, label]) => {
+            if (list.querySelector(`[name="\${name}"]`)) return;
+            const row = document.createElement('div');
+            row.className = 'flex items-center justify-between gap-4 px-3 py-3';
+            row.innerHTML = `<span class="text-sm text-slate-800">\${label}</span>\${switchMarkup(name, Boolean(states[name]))}`;
+            list.appendChild(row);
+        });
+
+        list.dataset.distributionReady = '1';
+        return true;
+    };
+
+    const boot = () => {
+        if (mount()) return;
+        let attempts = 0;
+        const timer = window.setInterval(() => {
+            attempts += 1;
+            if (mount() || attempts > 40) window.clearInterval(timer);
+        }, 100);
+    };
+
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot, { once: true });
+    else boot();
+})();
+</script>
+HTML;
     }
 
     private function badgeScript(array $aiIds, bool $currentAi): string
