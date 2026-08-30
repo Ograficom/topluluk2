@@ -162,12 +162,16 @@
 
 <div class="min-h-screen bg-white text-slate-950">
     <div class="mx-auto w-full max-w-7xl px-3 py-4 sm:px-5 sm:py-6 lg:px-8">
-        <div class="mb-4 flex items-center justify-between gap-4">
+        <div class="mb-4 flex flex-wrap items-end justify-between gap-3">
             <div class="min-w-0">
                 <h1 class="text-xl font-bold tracking-tight text-slate-950 sm:text-2xl">Video</h1>
-                <p class="mt-1 text-sm text-slate-500">M3U, HLS ve doğrudan video kaynakları otomatik oynatılır.</p>
+                <p class="mt-1 text-sm text-slate-500">Çalışan yayınlar otomatik kontrol edilir; bozulan kanal atlanır.</p>
             </div>
-            <div id="video-source-count" class="shrink-0 text-xs font-medium text-slate-500"></div>
+            <div class="flex items-center gap-2 text-xs font-medium text-slate-500">
+                <span id="video-health-status">Liste hazırlanıyor</span>
+                <span class="text-slate-300">•</span>
+                <span id="video-source-count">0 kanal</span>
+            </div>
         </div>
 
         <section class="overflow-hidden rounded-2xl bg-black" aria-label="Video oynatıcı">
@@ -182,22 +186,22 @@
                     preload="metadata"
                 ></video>
 
-                <div id="video-player-loading" class="pointer-events-none absolute inset-0 flex items-center justify-center bg-black/35 text-sm font-medium text-white">
-                    Video listesi hazırlanıyor…
+                <div id="video-player-loading" class="pointer-events-none absolute inset-0 flex items-center justify-center bg-black/35 px-6 text-center text-sm font-medium text-white">
+                    Yayın hazırlanıyor…
                 </div>
 
                 <div id="video-player-error" class="absolute inset-0 hidden items-center justify-center bg-black px-6 text-center">
                     <div>
-                        <div class="text-base font-semibold text-white">Video oynatılamadı</div>
-                        <p id="video-player-error-text" class="mt-2 max-w-xl text-sm text-white/70">Kaynak geçersiz veya uzak sunucu bağlantıyı engelliyor.</p>
+                        <div class="text-base font-semibold text-white">Yayın açılamadı</div>
+                        <p id="video-player-error-text" class="mt-2 max-w-xl text-sm text-white/70">Sıradaki çalışan kanala geçiliyor.</p>
                     </div>
                 </div>
             </div>
         </section>
 
-        <div class="mt-3 flex min-h-7 items-center justify-between gap-4">
+        <div class="mt-3 flex min-h-10 items-center justify-between gap-4">
             <div class="min-w-0">
-                <div id="video-current-title" class="truncate text-sm font-semibold text-slate-900"></div>
+                <div id="video-current-title" class="truncate text-sm font-semibold text-slate-900">Çalışan kanal aranıyor</div>
                 <div id="video-current-meta" class="mt-0.5 truncate text-xs text-slate-500"></div>
             </div>
             <button
@@ -205,26 +209,33 @@
                 type="button"
                 class="inline-flex shrink-0 items-center gap-2 rounded-lg bg-slate-100 px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-200 active:bg-slate-300"
             >
-                Sonraki
+                Sonraki çalışan kanal
                 <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" aria-hidden="true">
                     <path d="m9 6 6 6-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
             </button>
         </div>
 
-        <section class="mt-5" aria-label="Video listesi">
-            <div class="mb-2 flex items-center justify-between gap-3">
-                <h2 class="text-sm font-bold text-slate-900">Oynatma listesi</h2>
-                <span class="text-xs text-slate-400">Yatay kaydır</span>
+        <section class="mt-6" aria-label="Kanal listesi">
+            <div class="mb-3 flex flex-wrap items-center justify-between gap-3">
+                <div>
+                    <h2 class="text-sm font-bold text-slate-900">Kanallar</h2>
+                    <p class="mt-0.5 text-xs text-slate-500">Yatay kaydırma yok. Kanallar aşağı doğru normal liste halinde dizilir.</p>
+                </div>
+                <div class="flex items-center gap-2 text-xs text-slate-500">
+                    <span id="video-checked-count">0 kontrol edildi</span>
+                    <span class="text-slate-300">•</span>
+                    <span id="video-failed-count">0 bozuk</span>
+                </div>
             </div>
 
             <div
-                id="video-playlist-rail"
-                class="flex snap-x snap-mandatory gap-3 overflow-x-auto pb-3 [scrollbar-width:thin]"
+                id="video-playlist-grid"
+                class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
             ></div>
 
-            <div id="video-empty-state" class="hidden rounded-xl bg-slate-50 px-4 py-8 text-center text-sm text-slate-500">
-                Video kaynağı bulunamadı.
+            <div id="video-empty-state" class="hidden rounded-xl bg-slate-50 px-4 py-10 text-center text-sm text-slate-500">
+                Çalışan yayın bulunamadı.
             </div>
         </section>
     </div>
@@ -236,21 +247,45 @@
     const seedItems = @json($mediaItems, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
 
     const player = document.getElementById('ografi-video-player');
-    const rail = document.getElementById('video-playlist-rail');
+    const grid = document.getElementById('video-playlist-grid');
     const loading = document.getElementById('video-player-loading');
     const errorBox = document.getElementById('video-player-error');
     const errorText = document.getElementById('video-player-error-text');
     const title = document.getElementById('video-current-title');
     const meta = document.getElementById('video-current-meta');
     const count = document.getElementById('video-source-count');
+    const checkedCount = document.getElementById('video-checked-count');
+    const failedCount = document.getElementById('video-failed-count');
+    const healthStatus = document.getElementById('video-health-status');
     const emptyState = document.getElementById('video-empty-state');
     const nextButton = document.getElementById('video-next-button');
 
-    if (!player || !rail) return;
+    if (!player || !grid) return;
 
     let items = [];
     let activeIndex = -1;
     let hls = null;
+    let playbackTimer = null;
+    let healthRunId = 0;
+    let checkedTotal = 0;
+    let failedTotal = 0;
+    let healthyTotal = 0;
+    const failedUrls = new Set();
+
+    try {
+        const cached = JSON.parse(sessionStorage.getItem('ografi_video_failed_urls') || '[]');
+        if (Array.isArray(cached)) cached.forEach((url) => failedUrls.add(String(url)));
+    } catch {
+        // Session storage may be unavailable; runtime blacklist still works.
+    }
+
+    const saveFailedUrls = () => {
+        try {
+            sessionStorage.setItem('ografi_video_failed_urls', JSON.stringify([...failedUrls].slice(-100)));
+        } catch {
+            // Ignore storage errors.
+        }
+    };
 
     const cleanUrl = (value) => String(value || '').trim();
 
@@ -268,6 +303,7 @@
     const safePoster = (value) => {
         const poster = cleanUrl(value);
         if (!poster) return '';
+
         try {
             const parsed = new URL(poster, window.location.href);
             return ['http:', 'https:'].includes(parsed.protocol) ? parsed.href : '';
@@ -317,9 +353,10 @@
                     poster: info.logo || '',
                     group: info.group || '',
                     fromPlaylist: playlistUrl,
+                    health: 'pending',
                 });
             } catch {
-                // Invalid playlist row; skip it.
+                // Invalid row; skip it.
             }
 
             info = { title: '', logo: '', group: '' };
@@ -328,14 +365,25 @@
         return result;
     };
 
+    const fetchWithTimeout = async (url, options = {}, timeoutMs = 7000) => {
+        const controller = new AbortController();
+        const timer = window.setTimeout(() => controller.abort(), timeoutMs);
+
+        try {
+            return await fetch(url, { ...options, signal: controller.signal });
+        } finally {
+            window.clearTimeout(timer);
+        }
+    };
+
     const expandPlaylist = async (item) => {
         try {
-            const response = await fetch(item.url, {
+            const response = await fetchWithTimeout(item.url, {
                 method: 'GET',
                 credentials: 'omit',
                 cache: 'no-store',
                 headers: { 'Accept': 'audio/x-mpegurl, application/vnd.apple.mpegurl, text/plain, */*' },
-            });
+            }, 8000);
 
             if (!response.ok) throw new Error(`HTTP ${response.status}`);
             const text = await response.text();
@@ -348,12 +396,15 @@
 
     const uniqueItems = (list) => {
         const seen = new Set();
+
         return list.filter((item) => {
             const url = cleanUrl(item?.url);
             if (!url || seen.has(url)) return false;
+
             seen.add(url);
             item.url = url;
             item.type = item.type || extensionType(url);
+            item.health = failedUrls.has(url) ? 'failed' : (item.health || 'pending');
             return true;
         });
     };
@@ -364,7 +415,21 @@
         hls = null;
     };
 
-    const showLoading = (show) => {
+    const clearPlaybackTimer = () => {
+        if (!playbackTimer) return;
+        window.clearTimeout(playbackTimer);
+        playbackTimer = null;
+    };
+
+    const armPlaybackTimer = () => {
+        clearPlaybackTimer();
+        playbackTimer = window.setTimeout(() => {
+            failActive('Yayın 12 saniye içinde başlamadı.');
+        }, 12000);
+    };
+
+    const showLoading = (show, message = '') => {
+        if (message && loading) loading.textContent = message;
         loading?.classList.toggle('hidden', !show);
     };
 
@@ -385,12 +450,27 @@
             player.muted = true;
             await player.play();
         } catch {
-            // Browser can still require a user gesture; controls remain available.
+            // Controls remain available when autoplay requires a user gesture.
+        }
+    };
+
+    const updateCounters = () => {
+        const visibleHealthy = items.filter((item) => item.health === 'healthy').length;
+        const pending = items.filter((item) => item.health === 'pending' || item.health === 'checking').length;
+
+        if (count) count.textContent = `${visibleHealthy} çalışan kanal`;
+        if (checkedCount) checkedCount.textContent = `${checkedTotal} kontrol edildi`;
+        if (failedCount) failedCount.textContent = `${failedTotal} bozuk`;
+
+        if (healthStatus) {
+            healthStatus.textContent = pending > 0
+                ? `${pending} kanal kontrol ediliyor`
+                : 'Kontrol tamamlandı';
         }
     };
 
     const updateActiveCard = () => {
-        rail.querySelectorAll('[data-playlist-index]').forEach((card) => {
+        grid.querySelectorAll('[data-playlist-index]').forEach((card) => {
             const current = Number(card.dataset.playlistIndex) === activeIndex;
             card.classList.toggle('ring-2', current);
             card.classList.toggle('ring-slate-900', current);
@@ -401,94 +481,38 @@
 
     const updateMeta = (item) => {
         if (title) title.textContent = item?.title || 'Video';
+
         if (meta) {
             const bits = [];
             if (item?.group) bits.push(item.group);
-            bits.push(item?.type === 'hls' ? 'HLS' : 'Video');
+            bits.push(item?.type === 'hls' ? 'HLS canlı yayın' : 'Video');
             meta.textContent = bits.join(' · ');
         }
     };
 
-    const loadItem = async (index, shouldScroll = true) => {
-        if (!items.length) return;
-
-        activeIndex = ((index % items.length) + items.length) % items.length;
-        const item = items[activeIndex];
-
-        hideError();
-        showLoading(true);
-        destroyHls();
-        player.pause();
-        player.removeAttribute('src');
-        player.removeAttribute('poster');
-        player.load();
-
-        const poster = safePoster(item.poster);
-        if (poster) player.poster = poster;
-
-        updateMeta(item);
-        updateActiveCard();
-
-        if (shouldScroll) {
-            rail.querySelector(`[data-playlist-index="${activeIndex}"]`)?.scrollIntoView({
-                behavior: 'smooth',
-                block: 'nearest',
-                inline: 'center',
-            });
+    const statusMarkup = (item) => {
+        if (item.health === 'healthy') {
+            return '<span class="inline-flex items-center gap-1.5 text-[11px] font-semibold text-emerald-700"><span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>Çalışıyor</span>';
         }
 
-        if (item.type === 'hls' || extensionType(item.url) === 'hls') {
-            if (player.canPlayType('application/vnd.apple.mpegurl')) {
-                player.src = item.url;
-                player.load();
-                await tryAutoplay();
-                return;
-            }
-
-            if (window.Hls?.isSupported()) {
-                hls = new window.Hls({
-                    enableWorker: true,
-                    lowLatencyMode: true,
-                    backBufferLength: 60,
-                });
-
-                hls.loadSource(item.url);
-                hls.attachMedia(player);
-                hls.on(window.Hls.Events.MANIFEST_PARSED, () => tryAutoplay());
-                hls.on(window.Hls.Events.ERROR, (_event, data) => {
-                    if (!data?.fatal) return;
-                    showError('HLS yayını açılamadı. Kaynak sunucu bağlantıyı veya CORS erişimini engelliyor olabilir.');
-                    destroyHls();
-                });
-                return;
-            }
-
-            showError('Bu tarayıcı HLS oynatmayı desteklemiyor.');
-            return;
+        if (item.health === 'failed') {
+            return '<span class="inline-flex items-center gap-1.5 text-[11px] font-semibold text-rose-600"><span class="h-1.5 w-1.5 rounded-full bg-rose-500"></span>Bozuk</span>';
         }
 
-        player.src = item.url;
-        player.load();
-        await tryAutoplay();
+        return '<span class="inline-flex items-center gap-1.5 text-[11px] font-semibold text-slate-500"><span class="h-1.5 w-1.5 rounded-full bg-slate-400"></span>Kontrol ediliyor</span>';
     };
 
-    const renderRail = () => {
-        rail.innerHTML = '';
-
-        if (!items.length) {
-            emptyState?.classList.remove('hidden');
-            count.textContent = '0 video';
-            return;
-        }
-
-        emptyState?.classList.add('hidden');
-        count.textContent = `${items.length} video`;
+    const renderGrid = () => {
+        grid.innerHTML = '';
 
         items.forEach((item, index) => {
+            if (item.health === 'failed') return;
+
             const card = document.createElement('button');
             card.type = 'button';
             card.dataset.playlistIndex = String(index);
-            card.className = 'group w-[250px] shrink-0 snap-start overflow-hidden rounded-xl bg-slate-50 text-left focus:outline-none sm:w-[290px]';
+            card.className = 'group overflow-hidden rounded-xl bg-slate-50 text-left focus:outline-none disabled:cursor-wait disabled:opacity-70';
+            card.disabled = item.health !== 'healthy';
 
             const thumb = document.createElement('div');
             thumb.className = 'relative aspect-video overflow-hidden bg-slate-200';
@@ -510,16 +534,25 @@
 
             const badge = document.createElement('span');
             badge.className = 'absolute bottom-2 right-2 rounded-md bg-black/75 px-1.5 py-1 text-[10px] font-bold uppercase tracking-wide text-white';
-            badge.textContent = item.type === 'hls' ? 'HLS' : 'VIDEO';
+            badge.textContent = item.type === 'hls' ? 'CANLI' : 'VIDEO';
             thumb.appendChild(badge);
 
             const body = document.createElement('div');
-            body.className = 'px-3 py-2.5';
+            body.className = 'px-3 py-3';
+
+            const top = document.createElement('div');
+            top.className = 'flex items-start justify-between gap-2';
 
             const cardTitle = document.createElement('div');
-            cardTitle.className = 'line-clamp-2 text-sm font-semibold leading-5 text-slate-900';
-            cardTitle.textContent = item.title || `Video ${index + 1}`;
-            body.appendChild(cardTitle);
+            cardTitle.className = 'line-clamp-2 min-w-0 text-sm font-semibold leading-5 text-slate-900';
+            cardTitle.textContent = item.title || `Kanal ${index + 1}`;
+            top.appendChild(cardTitle);
+
+            const status = document.createElement('div');
+            status.className = 'shrink-0 pt-0.5';
+            status.innerHTML = statusMarkup(item);
+            top.appendChild(status);
+            body.appendChild(top);
 
             if (item.group) {
                 const group = document.createElement('div');
@@ -531,28 +564,269 @@
             card.appendChild(thumb);
             card.appendChild(body);
             card.addEventListener('click', () => loadItem(index));
-            rail.appendChild(card);
+            grid.appendChild(card);
         });
+
+        updateActiveCard();
+        updateCounters();
+
+        const anyVisible = items.some((item) => item.health !== 'failed');
+        emptyState?.classList.toggle('hidden', anyVisible);
+    };
+
+    const nextHealthyIndex = (fromIndex) => {
+        if (!items.length) return -1;
+
+        for (let offset = 1; offset <= items.length; offset += 1) {
+            const index = (fromIndex + offset + items.length) % items.length;
+            if (items[index]?.health === 'healthy' && !failedUrls.has(items[index].url)) {
+                return index;
+            }
+        }
+
+        return -1;
+    };
+
+    const markFailed = (index) => {
+        const item = items[index];
+        if (!item || item.health === 'failed') return;
+
+        if (item.health === 'healthy' && healthyTotal > 0) healthyTotal -= 1;
+        item.health = 'failed';
+        failedUrls.add(item.url);
+        failedTotal += 1;
+        saveFailedUrls();
+        renderGrid();
+    };
+
+    const failActive = (message = 'Yayın açılamadı.') => {
+        clearPlaybackTimer();
+        destroyHls();
+
+        const failedIndex = activeIndex;
+        if (failedIndex >= 0) markFailed(failedIndex);
+
+        showError(`${message} Sıradaki çalışan kanala geçiliyor.`);
+
+        const nextIndex = nextHealthyIndex(failedIndex);
+        if (nextIndex >= 0) {
+            window.setTimeout(() => loadItem(nextIndex), 450);
+        } else {
+            showLoading(false);
+            if (title) title.textContent = 'Çalışan kanal kalmadı';
+        }
+    };
+
+    const loadItem = async (index, shouldScroll = true) => {
+        const item = items[index];
+        if (!item || item.health !== 'healthy' || failedUrls.has(item.url)) {
+            const nextIndex = nextHealthyIndex(index);
+            if (nextIndex >= 0 && nextIndex !== index) return loadItem(nextIndex, shouldScroll);
+            return;
+        }
+
+        activeIndex = index;
+        hideError();
+        showLoading(true, 'Yayın açılıyor…');
+        destroyHls();
+        clearPlaybackTimer();
+
+        player.pause();
+        player.removeAttribute('src');
+        player.removeAttribute('poster');
+        player.load();
+
+        const poster = safePoster(item.poster);
+        if (poster) player.poster = poster;
+
+        updateMeta(item);
+        updateActiveCard();
+
+        if (shouldScroll) {
+            grid.querySelector(`[data-playlist-index="${activeIndex}"]`)?.scrollIntoView({
+                behavior: 'smooth',
+                block: 'nearest',
+            });
+        }
+
+        armPlaybackTimer();
+
+        if (item.type === 'hls' || extensionType(item.url) === 'hls') {
+            if (player.canPlayType('application/vnd.apple.mpegurl')) {
+                player.src = item.url;
+                player.load();
+                await tryAutoplay();
+                return;
+            }
+
+            if (window.Hls?.isSupported()) {
+                hls = new window.Hls({
+                    enableWorker: true,
+                    lowLatencyMode: true,
+                    backBufferLength: 60,
+                    manifestLoadingTimeOut: 8000,
+                    levelLoadingTimeOut: 8000,
+                    fragLoadingTimeOut: 10000,
+                });
+
+                hls.loadSource(item.url);
+                hls.attachMedia(player);
+                hls.on(window.Hls.Events.MANIFEST_PARSED, () => tryAutoplay());
+                hls.on(window.Hls.Events.ERROR, (_event, data) => {
+                    if (!data?.fatal) return;
+                    failActive('HLS yayını bağlantı hatası verdi.');
+                });
+                return;
+            }
+
+            failActive('Bu tarayıcı HLS oynatmayı desteklemiyor.');
+            return;
+        }
+
+        player.src = item.url;
+        player.load();
+        await tryAutoplay();
+    };
+
+    const healthCheckHls = async (item) => {
+        if (player.canPlayType('application/vnd.apple.mpegurl')) {
+            return true;
+        }
+
+        try {
+            const response = await fetchWithTimeout(item.url, {
+                method: 'GET',
+                credentials: 'omit',
+                cache: 'no-store',
+                headers: { 'Accept': 'application/vnd.apple.mpegurl, application/x-mpegURL, */*' },
+            }, 6500);
+
+            if (!response.ok) return false;
+            const text = await response.text();
+            return text.includes('#EXTM3U') || text.includes('#EXT-X-');
+        } catch {
+            return false;
+        }
+    };
+
+    const healthCheckVideo = (item) => new Promise((resolve) => {
+        const probe = document.createElement('video');
+        let settled = false;
+
+        const finish = (value) => {
+            if (settled) return;
+            settled = true;
+            window.clearTimeout(timer);
+            probe.removeAttribute('src');
+            probe.load();
+            resolve(value);
+        };
+
+        const timer = window.setTimeout(() => finish(false), 6500);
+        probe.preload = 'metadata';
+        probe.muted = true;
+        probe.playsInline = true;
+        probe.addEventListener('loadedmetadata', () => finish(true), { once: true });
+        probe.addEventListener('canplay', () => finish(true), { once: true });
+        probe.addEventListener('error', () => finish(false), { once: true });
+        probe.src = item.url;
+        probe.load();
+    });
+
+    const healthCheckItem = async (item) => {
+        if (failedUrls.has(item.url)) return false;
+        if (item.type === 'hls' || extensionType(item.url) === 'hls') return healthCheckHls(item);
+        return healthCheckVideo(item);
+    };
+
+    const checkHealthPool = async () => {
+        const runId = ++healthRunId;
+        let cursor = 0;
+        let firstHealthyStarted = false;
+        const workerCount = Math.min(5, Math.max(1, items.length));
+
+        const worker = async () => {
+            while (cursor < items.length && runId === healthRunId) {
+                const index = cursor;
+                cursor += 1;
+                const item = items[index];
+
+                if (!item) continue;
+
+                if (failedUrls.has(item.url)) {
+                    item.health = 'failed';
+                    checkedTotal += 1;
+                    failedTotal += 1;
+                    renderGrid();
+                    continue;
+                }
+
+                item.health = 'checking';
+                renderGrid();
+
+                const ok = await healthCheckItem(item);
+                checkedTotal += 1;
+
+                if (ok) {
+                    item.health = 'healthy';
+                    healthyTotal += 1;
+                    renderGrid();
+
+                    if (!firstHealthyStarted && activeIndex < 0) {
+                        firstHealthyStarted = true;
+                        await loadItem(index, false);
+                    }
+                } else {
+                    item.health = 'failed';
+                    failedUrls.add(item.url);
+                    failedTotal += 1;
+                    saveFailedUrls();
+                    renderGrid();
+                }
+            }
+        };
+
+        await Promise.all(Array.from({ length: workerCount }, () => worker()));
+
+        if (runId !== healthRunId) return;
+        updateCounters();
+
+        if (!items.some((item) => item.health === 'healthy')) {
+            showLoading(false);
+            showError('Kontrol edilen kaynakların hiçbiri şu anda çalışmıyor.');
+            if (title) title.textContent = 'Çalışan kanal bulunamadı';
+            emptyState?.classList.remove('hidden');
+        }
     };
 
     const goNext = () => {
-        if (!items.length) return;
-        loadItem(activeIndex + 1);
+        const nextIndex = nextHealthyIndex(activeIndex);
+        if (nextIndex >= 0) loadItem(nextIndex);
     };
 
-    player.addEventListener('playing', () => showLoading(false));
-    player.addEventListener('canplay', () => showLoading(false));
-    player.addEventListener('waiting', () => showLoading(true));
+    player.addEventListener('playing', () => {
+        clearPlaybackTimer();
+        hideError();
+        showLoading(false);
+    });
+
+    player.addEventListener('canplay', () => {
+        clearPlaybackTimer();
+        showLoading(false);
+    });
+
+    player.addEventListener('waiting', () => showLoading(true, 'Yayın tamponlanıyor…'));
     player.addEventListener('ended', goNext);
     player.addEventListener('error', () => {
-        if (player.error) {
-            showError('Video kaynağı yüklenemedi veya yayın sunucusu erişimi reddetti.');
+        if (player.error && activeIndex >= 0) {
+            failActive('Video kaynağı yüklenemedi.');
         }
     });
+
     nextButton?.addEventListener('click', goNext);
 
     const boot = async () => {
-        showLoading(true);
+        showLoading(true, 'Kanal listesi hazırlanıyor…');
 
         const playlistSeeds = seedItems.filter((item) => item.type === 'm3u' || extensionType(item.url) === 'm3u');
         const directSeeds = seedItems.filter((item) => item.type !== 'm3u' && extensionType(item.url) !== 'm3u');
@@ -563,15 +837,16 @@
         }
 
         items = uniqueItems([...expanded, ...directSeeds]);
-        renderRail();
 
         if (!items.length) {
             showLoading(false);
-            showError('M3U listesinde veya gönderilerde oynatılabilir bir video kaynağı bulunamadı.');
+            showError('M3U listesinde oynatılabilir kaynak bulunamadı.');
+            emptyState?.classList.remove('hidden');
             return;
         }
 
-        await loadItem(0, false);
+        renderGrid();
+        await checkHealthPool();
     };
 
     boot();
