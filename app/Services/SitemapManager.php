@@ -110,6 +110,7 @@ class SitemapManager
     {
         return Post::query()
             ->published()
+            ->where('noindex', false)
             ->where('published_at', '>=', now()->subDays(2))
             ->orderByDesc('published_at')
             ->limit(1000)
@@ -174,6 +175,7 @@ class SitemapManager
     {
         return Post::query()
             ->published()
+            ->where('noindex', false)
             ->orderByDesc('published_at')
             ->get(['slug', 'updated_at', 'published_at'])
             ->map(function (Post $post) {
