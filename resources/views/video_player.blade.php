@@ -9,6 +9,16 @@
     $mediaItems = [];
     $seenMediaUrls = [];
 
+    $defaultPlaylistUrl = 'https://iptv-org.github.io/iptv/countries/tr.m3u';
+    $seenMediaUrls[$defaultPlaylistUrl] = true;
+    $mediaItems[] = [
+        'url' => $defaultPlaylistUrl,
+        'type' => 'm3u',
+        'title' => 'Türkiye Canlı TV',
+        'poster' => null,
+        'post_id' => 0,
+    ];
+
     $normaliseMediaUrl = static function (?string $value): ?string {
         $value = trim((string) $value);
         if ($value === '') {
