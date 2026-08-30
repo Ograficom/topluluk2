@@ -6,20 +6,45 @@
 
 @section('content')
 @php
-    $channels = \App\Models\LiveChannel::query()
-        ->active()
-        ->orderBy('sort_order')
-        ->orderBy('name')
-        ->get()
-        ->map(fn (\App\Models\LiveChannel $channel) => [
-            'id' => $channel->id,
-            'name' => $channel->name,
-            'category' => $channel->category ?: 'Genel',
-            'url' => $channel->stream_url,
-            'image' => $channel->featured_image_url,
-            'type' => str_contains(strtolower((string) parse_url($channel->stream_url, PHP_URL_PATH)), '.m3u8') ? 'hls' : 'video',
-        ])
-        ->values();
+    $channels = collect();
+
+    try {
+        if (\Illuminate\Support\Facades\Schema::hasTable('live_channels')) {
+            $channels = \App\Models\LiveChannel::query()
+                ->active()
+                ->orderBy('sort_order')
+                ->orderBy('name')
+                ->get()
+                ->map(fn (\App\Models\LiveChannel $channel) => [
+                    'id' => $channel->id,
+                    'name' => $channel->name,
+                    'category' => $channel->category ?: 'Genel',
+                    'url' => $channel->stream_url,
+                    'image' => $channel->featured_image_url,
+                    'type' => str_contains(strtolower((string) parse_url($channel->stream_url, PHP_URL_PATH)), '.m3u8') ? 'hls' : 'video',
+                ])
+                ->values();
+        }
+    } catch (\Throwable $exception) {
+        $channels = collect();
+    }
+
+    // Veritabanı boş kalırsa /video sayfasını boş bırakma. Yerel M3U listesini
+    // anında yedek kaynak olarak kullan. Filament tarafı düzeldiğinde DB kayıtları
+    // otomatik olarak öncelikli olmaya devam eder.
+    if ($channels->isEmpty()) {
+        $channels = collect(
+            app(\App\Services\LiveChannelPlaylistService::class)
+                ->parseFile(public_path('streams/turkiye.m3u'))
+        )->map(fn (array $channel, int $index) => [
+            'id' => 'm3u-' . ($index + 1),
+            'name' => $channel['name'] ?? ('Kanal ' . ($index + 1)),
+            'category' => $channel['category'] ?? 'Genel',
+            'url' => $channel['stream_url'] ?? '',
+            'image' => null,
+            'type' => str_contains(strtolower((string) parse_url($channel['stream_url'] ?? '', PHP_URL_PATH)), '.m3u8') ? 'hls' : 'video',
+        ])->filter(fn (array $channel) => filled($channel['url']))->values();
+    }
 @endphp
 
 <style>
@@ -28,7 +53,8 @@
     .video-tv-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
     .video-tv-card{min-width:0;overflow:hidden;border:1px solid #e5e7eb;border-radius:13px;background:#fff;text-align:left}
     .video-tv-card.is-active{border-color:#64748b}
-    .video-tv-card[hidden]{display:none!important}
+    .video-tv-card.is-bad{opacity:.58}
+    .video-tv-card:disabled{cursor:not-allowed}
     .video-tv-thumb{position:relative;aspect-ratio:16/9;overflow:hidden;background:#0f172a}
     .video-tv-thumb img{display:block;width:100%;height:100%;object-fit:cover}
     .video-tv-fallback{display:flex;width:100%;height:100%;align-items:center;justify-content:center;color:#94a3b8}
@@ -43,6 +69,7 @@
     .video-tv-filters{display:flex;flex-wrap:wrap;gap:7px}
     .video-tv-filter{border:1px solid #e2e8f0;border-radius:999px;background:#fff;padding:7px 11px;color:#475569;font-size:12px;font-weight:600}
     .video-tv-filter.is-active{border-color:#0f172a;background:#0f172a;color:#fff}
+
     @media(max-width:767px){
         .video-tv-shell{width:100vw;max-width:none;margin-left:calc(50% - 50vw);margin-right:calc(50% - 50vw)}
         .video-tv-player{border-radius:0}
@@ -61,7 +88,7 @@
             <p class="mt-0.5 text-xs text-slate-500">Kanalı seç, yayın üstte açılsın.</p>
         </div>
         <div class="shrink-0 text-right text-[11px] font-medium text-slate-500">
-            <div id="video-health-status">{{ $channels->count() }} kanal hazır</div>
+            <div id="video-health-status">{{ $channels->count() }} kanal listede</div>
             <div id="video-source-count" class="mt-0.5">0 kontrol edildi</div>
         </div>
     </div>
@@ -119,26 +146,33 @@
     const healthStatus = document.getElementById('video-health-status');
     const empty = document.getElementById('video-empty-state');
     const nextButton = document.getElementById('video-next-button');
-    if (!player || !grid) return;
+
+    if (!player || !grid || !Array.isArray(items)) return;
 
     items.forEach(item => item.health = 'idle');
+
     let active = -1;
     let category = 'Tümü';
     let hls = null;
     let timer = null;
     let checked = 0;
     let failed = 0;
+    let switchingAfterFailure = false;
+    let ignorePlayerErrorsUntil = 0;
 
     const categories = ['Tümü', ...new Set(items.map(item => item.category || 'Genel'))];
-    const poster = value => {
+
+    const safePoster = value => {
         try {
             const url = new URL(String(value || ''), location.href);
             return ['http:', 'https:'].includes(url.protocol) ? url.href : '';
-        } catch { return ''; }
+        } catch {
+            return '';
+        }
     };
 
     const clearTimer = () => {
-        if (timer) clearTimeout(timer);
+        if (timer) window.clearTimeout(timer);
         timer = null;
     };
 
@@ -152,17 +186,22 @@
         if (checkedCount) checkedCount.textContent = `${checked} kontrol edildi`;
         if (failedCount) failedCount.textContent = `${failed} bozuk`;
         if (sourceCount) sourceCount.textContent = `${checked} kontrol edildi`;
-        if (healthStatus) healthStatus.textContent = `${items.filter(i => i.health !== 'bad').length} kanal kullanılabilir`;
+        if (healthStatus) healthStatus.textContent = `${items.length} kanal listede`;
     };
 
     const renderFilters = () => {
         filters.innerHTML = '';
+
         categories.forEach(value => {
             const button = document.createElement('button');
             button.type = 'button';
             button.className = `video-tv-filter${category === value ? ' is-active' : ''}`;
             button.textContent = value;
-            button.onclick = () => { category = value; renderFilters(); renderGrid(); };
+            button.addEventListener('click', () => {
+                category = value;
+                renderFilters();
+                renderGrid();
+            });
             filters.appendChild(button);
         });
     };
@@ -170,51 +209,109 @@
     const renderGrid = () => {
         grid.innerHTML = '';
         let visible = 0;
+
         items.forEach((item, index) => {
-            if (item.health === 'bad') return;
             if (category !== 'Tümü' && (item.category || 'Genel') !== category) return;
+
             visible++;
+
             const card = document.createElement('button');
             card.type = 'button';
-            card.className = `video-tv-card${index === active ? ' is-active' : ''}`;
+            card.className = `video-tv-card${index === active ? ' is-active' : ''}${item.health === 'bad' ? ' is-bad' : ''}`;
+            card.disabled = item.health === 'bad';
 
-            const image = poster(item.image);
-            card.innerHTML = `
-                <div class="video-tv-thumb">
-                    ${image ? `<img src="${image}" alt="" loading="lazy">` : '<div class="video-tv-fallback"><svg viewBox="0 0 24 24" width="32" height="32" fill="none" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2" stroke="currentColor" stroke-width="1.7"/><path d="m9 9 6 3-6 3V9Z" fill="currentColor"/></svg></div>'}
-                    <span class="video-tv-live">CANLI</span>
-                </div>
-                <div class="video-tv-body">
-                    <div class="video-tv-name"></div>
-                    <div class="video-tv-meta"><span class="truncate"></span><span class="video-tv-health" data-health="${item.health === 'ok' ? 'ok' : 'idle'}">${item.health === 'ok' ? 'Çalışıyor' : 'Hazır'}</span></div>
-                </div>`;
-            card.querySelector('.video-tv-name').textContent = item.name || `Kanal ${index + 1}`;
-            card.querySelector('.video-tv-meta > span:first-child').textContent = item.category || 'Genel';
-            card.onclick = () => play(index);
+            const thumb = document.createElement('div');
+            thumb.className = 'video-tv-thumb';
+
+            const imageUrl = safePoster(item.image);
+            if (imageUrl) {
+                const image = document.createElement('img');
+                image.src = imageUrl;
+                image.alt = '';
+                image.loading = 'lazy';
+                thumb.appendChild(image);
+            } else {
+                const fallback = document.createElement('div');
+                fallback.className = 'video-tv-fallback';
+                fallback.innerHTML = '<svg viewBox="0 0 24 24" width="32" height="32" fill="none" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2" stroke="currentColor" stroke-width="1.7"/><path d="m9 9 6 3-6 3V9Z" fill="currentColor"/></svg>';
+                thumb.appendChild(fallback);
+            }
+
+            const liveBadge = document.createElement('span');
+            liveBadge.className = 'video-tv-live';
+            liveBadge.textContent = 'CANLI';
+            thumb.appendChild(liveBadge);
+
+            const body = document.createElement('div');
+            body.className = 'video-tv-body';
+
+            const name = document.createElement('div');
+            name.className = 'video-tv-name';
+            name.textContent = item.name || `Kanal ${index + 1}`;
+            body.appendChild(name);
+
+            const metaRow = document.createElement('div');
+            metaRow.className = 'video-tv-meta';
+
+            const type = document.createElement('span');
+            type.className = 'truncate';
+            type.textContent = item.category || 'Genel';
+            metaRow.appendChild(type);
+
+            const health = document.createElement('span');
+            health.className = 'video-tv-health';
+            health.dataset.health = item.health === 'bad' ? 'bad' : (item.health === 'ok' ? 'ok' : 'idle');
+            health.textContent = item.health === 'bad' ? 'Bozuk' : (item.health === 'ok' ? 'Çalışıyor' : 'Hazır');
+            metaRow.appendChild(health);
+
+            body.appendChild(metaRow);
+            card.appendChild(thumb);
+            card.appendChild(body);
+            card.addEventListener('click', () => play(index));
             grid.appendChild(card);
         });
+
         empty.classList.toggle('hidden', visible > 0);
         counters();
     };
 
     const markOk = index => {
-        if (!items[index] || items[index].health === 'ok') return;
-        items[index].health = 'ok'; checked++; renderGrid();
+        const item = items[index];
+        if (!item || item.health === 'ok') return;
+
+        if (item.health === 'idle') checked++;
+        if (item.health === 'bad' && failed > 0) failed--;
+
+        item.health = 'ok';
+        renderGrid();
     };
 
     const markBad = index => {
-        if (!items[index] || items[index].health === 'bad') return;
-        items[index].health = 'bad'; checked++; failed++; renderGrid();
+        const item = items[index];
+        if (!item || item.health === 'bad') return;
+
+        if (item.health === 'idle') checked++;
+        item.health = 'bad';
+        failed++;
+        renderGrid();
     };
 
     const nextIndex = from => {
+        if (!items.length) return -1;
+
         for (let step = 1; step <= items.length; step++) {
             const index = (from + step + items.length) % items.length;
             if (items[index]?.health === 'bad') continue;
             if (category !== 'Tümü' && (items[index].category || 'Genel') !== category) continue;
             return index;
         }
+
         return -1;
+    };
+
+    const hideError = () => {
+        errorBox.classList.add('hidden');
+        errorBox.classList.remove('flex');
     };
 
     const showError = message => {
@@ -225,64 +322,130 @@
     };
 
     const fail = message => {
+        if (switchingAfterFailure || active < 0) return;
+
+        switchingAfterFailure = true;
         const failedIndex = active;
         stop();
         markBad(failedIndex);
-        showError(`${message} Sıradaki kanala geçiliyor.`);
+        showError(`${message} Sıradaki çalışan kanala geçiliyor.`);
+
         const next = nextIndex(failedIndex);
-        if (next >= 0) setTimeout(() => play(next), 350);
+        if (next >= 0) {
+            window.setTimeout(() => {
+                switchingAfterFailure = false;
+                play(next);
+            }, 450);
+        } else {
+            switchingAfterFailure = false;
+            title.textContent = 'Çalışan kanal bulunamadı';
+        }
     };
 
     async function play(index) {
         const item = items[index];
         if (!item || item.health === 'bad') return;
+
+        switchingAfterFailure = false;
         active = index;
         stop();
-        errorBox.classList.add('hidden');
-        errorBox.classList.remove('flex');
+        hideError();
+
         loading.textContent = `${item.name || 'Kanal'} açılıyor…`;
         loading.classList.remove('hidden');
         title.textContent = item.name || 'Canlı yayın';
         meta.textContent = `${item.category || 'Genel'} · Canlı yayın`;
+
+        ignorePlayerErrorsUntil = performance.now() + 650;
         player.pause();
         player.removeAttribute('src');
         player.removeAttribute('poster');
-        player.load();
-        const image = poster(item.image); if (image) player.poster = image;
+
+        const imageUrl = safePoster(item.image);
+        if (imageUrl) player.poster = imageUrl;
+
         renderGrid();
-        timer = setTimeout(() => fail('Yayın 12 saniye içinde başlamadı.'), 12000);
+
+        timer = window.setTimeout(() => {
+            if (player.readyState === 0) {
+                fail('Yayın sunucusundan yanıt alınamadı.');
+            }
+        }, 15000);
 
         if (item.type === 'hls') {
             if (player.canPlayType('application/vnd.apple.mpegurl')) {
-                player.src = item.url; player.load();
+                player.src = item.url;
+                player.load();
                 try { await player.play(); } catch {}
                 return;
             }
+
             if (window.Hls?.isSupported()) {
-                hls = new Hls({enableWorker:true,lowLatencyMode:true,manifestLoadingTimeOut:9000,levelLoadingTimeOut:9000});
-                hls.loadSource(item.url); hls.attachMedia(player);
-                hls.on(Hls.Events.MANIFEST_PARSED, () => player.play().catch(() => {}));
-                hls.on(Hls.Events.ERROR, (_event, data) => { if (data?.fatal) fail('HLS kaynağı yanıt vermedi.'); });
+                hls = new window.Hls({
+                    enableWorker: true,
+                    lowLatencyMode: true,
+                    manifestLoadingTimeOut: 12000,
+                    levelLoadingTimeOut: 12000,
+                });
+                hls.loadSource(item.url);
+                hls.attachMedia(player);
+                hls.on(window.Hls.Events.MANIFEST_PARSED, () => {
+                    markOk(index);
+                    player.play().catch(() => {});
+                });
+                hls.on(window.Hls.Events.ERROR, (_event, data) => {
+                    if (data?.fatal) fail('HLS kaynağı yanıt vermedi.');
+                });
                 return;
             }
-            fail('Tarayıcı HLS oynatmayı desteklemiyor.');
+
+            fail('Bu tarayıcı HLS oynatmayı desteklemiyor.');
             return;
         }
 
-        player.src = item.url; player.load();
+        player.src = item.url;
+        player.load();
         try { await player.play(); } catch {}
     }
 
-    player.addEventListener('playing', () => { clearTimer(); loading.classList.add('hidden'); markOk(active); });
-    player.addEventListener('canplay', () => { clearTimer(); loading.classList.add('hidden'); markOk(active); });
+    player.addEventListener('loadedmetadata', () => {
+        clearTimer();
+        markOk(active);
+    });
+    player.addEventListener('canplay', () => {
+        clearTimer();
+        loading.classList.add('hidden');
+        markOk(active);
+    });
+    player.addEventListener('playing', () => {
+        clearTimer();
+        loading.classList.add('hidden');
+        markOk(active);
+    });
     player.addEventListener('waiting', () => loading.classList.remove('hidden'));
-    player.addEventListener('error', () => { if (active >= 0) fail('Video kaynağı yüklenemedi.'); });
-    player.addEventListener('ended', () => { const next = nextIndex(active); if (next >= 0) play(next); });
-    nextButton?.addEventListener('click', () => { const next = nextIndex(active); if (next >= 0) play(next); });
+    player.addEventListener('error', () => {
+        if (performance.now() < ignorePlayerErrorsUntil) return;
+        if (active >= 0) fail('Video kaynağı yüklenemedi.');
+    });
+    player.addEventListener('ended', () => {
+        const next = nextIndex(active);
+        if (next >= 0) play(next);
+    });
 
-    renderFilters(); renderGrid();
-    if (items.length) play(0);
-    else { loading.classList.add('hidden'); showError('Henüz aktif kanal yok. Filament panelinden kanal ekleyebilirsin.'); }
+    nextButton?.addEventListener('click', () => {
+        const next = nextIndex(active);
+        if (next >= 0) play(next);
+    });
+
+    renderFilters();
+    renderGrid();
+
+    if (items.length) {
+        play(0);
+    } else {
+        loading.classList.add('hidden');
+        showError('Kanal listesi yüklenemedi. Filament panelinden kanal ekleyebilirsin.');
+    }
 })();
 </script>
 @endsection
