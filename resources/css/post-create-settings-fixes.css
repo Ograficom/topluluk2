@@ -1,0 +1,35 @@
+/* /blog/create — küçük yerleşim düzeltmeleri */
+
+/* Akordiyon ikonunu metinden ayır: ikon görsel olarak sola kayar, metin yerinde kalır. */
+#settings-modal .settings-panel .settings-accordion-icon {
+    transform: translateX(-8px) !important;
+    margin-right: 4px !important;
+}
+
+/* Footer iki eşit kolon olsun; Kapat butonu X butonunun 38px kuralına sıkışmasın. */
+#settings-modal .settings-panel > .border-t > .grid {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
+    gap: 12px !important;
+}
+
+#settings-modal .settings-panel > .border-t button,
+#settings-modal .settings-panel > .border-t button[data-settings-close],
+#settings-modal .settings-panel > .border-t button[data-settings-save] {
+    width: 100% !important;
+    min-width: 0 !important;
+    height: 48px !important;
+}
+
+/* Sadece başlıktaki X butonu 38px kalsın. */
+#settings-modal .settings-panel > div:nth-child(2) button[data-settings-close] {
+    width: 38px !important;
+    min-width: 38px !important;
+    height: 38px !important;
+}
+
+@media (max-width: 767px) {
+    #settings-modal .settings-panel .settings-accordion-icon {
+        transform: translateX(-6px) !important;
+        margin-right: 3px !important;
+    }
+}
