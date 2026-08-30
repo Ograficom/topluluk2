@@ -167,7 +167,7 @@
     border-bottom: 1px solid #e8edf4 !important;
 }
 
-/* İkonlar düz mavi simge değil; yumuşak mavi kutu içinde. */
+/* İkonlar: mavi arka plan korunur, ikon çevresinde sınır yoktur. */
 #settings-modal .settings-panel .settings-accordion-icon {
     display: inline-flex !important;
     width: 48px !important;
@@ -175,10 +175,12 @@
     min-width: 48px !important;
     align-items: center !important;
     justify-content: center !important;
-    border: 1px solid #dbeafe !important;
+    border: 0 !important;
     border-radius: 14px !important;
     background: #eff6ff !important;
     color: #2563eb !important;
+    box-shadow: none !important;
+    outline: none !important;
 }
 
 #settings-modal .settings-panel .settings-accordion-icon iconify-icon {
@@ -384,7 +386,8 @@ html.dark #settings-modal .settings-panel .settings-accordion-icon,
 html[data-theme="dark"] #settings-modal .settings-panel .settings-accordion-icon,
 html[data-system-theme="dark"] #settings-modal .settings-panel .settings-accordion-icon {
     background: rgba(37, 99, 235, .16) !important;
-    border-color: rgba(96, 165, 250, .22) !important;
+    border: 0 !important;
+    box-shadow: none !important;
     color: #60a5fa !important;
 }
 
