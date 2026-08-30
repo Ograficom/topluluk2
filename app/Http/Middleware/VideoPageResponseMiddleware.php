@@ -36,7 +36,7 @@ class VideoPageResponseMiddleware
         // Mobil Safari/PWA/Chrome eski player kopyasini tutmasin.
         $content = preg_replace(
             '/video-tv\.js\?v=\d+/i',
-            'video-tv.js?v=417',
+            'video-tv.js?v=419',
             $content,
         ) ?? $content;
 
@@ -62,20 +62,9 @@ class VideoPageResponseMiddleware
         $initial = e(strtoupper(mb_substr((string) ($currentUser?->name ?? 'U'), 0, 1)));
         $languageLabel = $currentLocale === 'en' ? 'English' : 'Türkçe';
 
-        if ($avatarUrl) {
-            $avatarMarkup = '<img class="video-reference-avatar-image" src="'.e((string) $avatarUrl).'" alt="'.$userName.'">';
-        } else {
-            $avatarMarkup = '<span class="video-reference-avatar-fallback" aria-hidden="true">'.$initial.'</span>';
-        }
-
-        $loginRow = $currentUser
-            ? ''
-            : <<<HTML
-<a href="{$loginUrl}" class="video-mobile-menu-row video-mobile-menu-login">
-    <span class="video-mobile-menu-icon"><iconify-icon icon="lucide:log-in"></iconify-icon></span>
-    <span>Giriş yap</span>
-</a>
-HTML;
+        $avatarMarkup = $avatarUrl
+            ? '<img class="video-reference-avatar-image" src="'.e((string) $avatarUrl).'" alt="'.$userName.'">'
+            : '<span class="video-reference-avatar-fallback" aria-hidden="true">'.$initial.'</span>';
 
         $rightControl = $currentUser
             ? <<<HTML
@@ -89,6 +78,39 @@ HTML
 </button>
 HTML;
 
+        $guestMenu = $currentUser
+            ? ''
+            : <<<HTML
+<div class="video-mobile-menu-panel" data-video-mobile-menu-panel hidden>
+    <button
+        type="button"
+        class="video-mobile-menu-row"
+        data-user-menu-theme-toggle
+        data-label-dark="Karanlık Mod"
+        data-label-light="Aydınlık Mod"
+        aria-pressed="false"
+    >
+        <span class="video-mobile-menu-icon">
+            <iconify-icon icon="lucide:moon" data-user-menu-theme-icon></iconify-icon>
+        </span>
+        <span>Karanlık Mod</span>
+        <span class="video-mobile-theme-switch" aria-hidden="true">
+            <span class="video-mobile-theme-knob"></span>
+        </span>
+    </button>
+
+    <a href="{$languageUrl}" class="video-mobile-menu-row">
+        <span class="video-mobile-menu-icon"><iconify-icon icon="lucide:languages"></iconify-icon></span>
+        <span>Dil: {$languageLabel}</span>
+    </a>
+
+    <a href="{$loginUrl}" class="video-mobile-menu-row video-mobile-menu-login">
+        <span class="video-mobile-menu-icon"><iconify-icon icon="lucide:log-in"></iconify-icon></span>
+        <span>Giriş yap</span>
+    </a>
+</div>
+HTML;
+
         if (! str_contains($content, 'id="video-reference-mobile-header-style"')) {
             $style = <<<'HTML'
 <style id="video-reference-mobile-header-style">
@@ -97,7 +119,7 @@ HTML;
         padding-top: 0 !important;
     }
 
-    /* Genel header gorunmez; mevcut sidebar ve hesap menusu DOM'da calismaya devam eder. */
+    /* Genel header gizli kalir; mevcut sidebar ve hesap paneli DOM'da kullanilir. */
     html body header.site-header[data-site-header].site-header {
         position: fixed !important;
         inset: 0 0 auto 0 !important;
@@ -120,8 +142,8 @@ HTML;
         min-height: 0 !important;
         margin: 0 !important;
         padding: 0 !important;
-        background: transparent !important;
         overflow: visible !important;
+        background: transparent !important;
         pointer-events: none !important;
     }
 
@@ -140,10 +162,8 @@ HTML;
         max-height: 0 !important;
         margin: 0 !important;
         padding: 0 !important;
-        border: 0 !important;
-        background: transparent !important;
-        box-shadow: none !important;
         overflow: visible !important;
+        background: transparent !important;
         pointer-events: none !important;
     }
 
@@ -159,11 +179,7 @@ HTML;
         z-index: 10030 !important;
         display: block !important;
         width: 36px !important;
-        min-width: 36px !important;
-        max-width: 36px !important;
         height: 36px !important;
-        min-height: 36px !important;
-        max-height: 36px !important;
         margin: 0 !important;
         padding: 0 !important;
         background: transparent !important;
@@ -175,11 +191,7 @@ HTML;
         inset: 0 !important;
         display: block !important;
         width: 36px !important;
-        min-width: 36px !important;
-        max-width: 36px !important;
         height: 36px !important;
-        min-height: 36px !important;
-        max-height: 36px !important;
         margin: 0 !important;
         padding: 0 !important;
         border: 0 !important;
@@ -225,8 +237,7 @@ HTML;
         pointer-events: auto !important;
     }
 
-    #video-reference-mobile-header .video-mobile-sidebar-button,
-    #video-reference-mobile-header .video-reference-menu {
+    #video-reference-mobile-header .video-mobile-sidebar-button {
         display: inline-flex !important;
         align-items: center !important;
         justify-content: center !important;
@@ -248,8 +259,7 @@ HTML;
         -webkit-tap-highlight-color: transparent !important;
     }
 
-    #video-reference-mobile-header .video-mobile-sidebar-button svg,
-    #video-reference-mobile-header .video-reference-menu svg {
+    #video-reference-mobile-header .video-mobile-sidebar-button svg {
         display: block !important;
         width: 19px !important;
         height: 19px !important;
@@ -310,29 +320,114 @@ HTML;
         opacity: 0 !important;
     }
 
-    #video-reference-mobile-header .video-mobile-menu-anchor {
+    #video-reference-mobile-header .video-reference-actions {
         position: relative !important;
-        width: 38px !important;
+        display: grid !important;
+        grid-template-columns: 1fr 1fr !important;
+        align-items: center !important;
+        width: 90px !important;
+        min-width: 90px !important;
         height: 38px !important;
-        flex: 0 0 38px !important;
+        margin: 0 !important;
+        padding: 2px 4px !important;
+        border: 0 !important;
+        border-radius: 9999px !important;
+        background: #ffffff !important;
+        box-shadow: 0 7px 20px rgba(15, 23, 42, .055) !important;
+        pointer-events: auto !important;
     }
 
-    #video-reference-mobile-header .video-reference-menu[aria-expanded="true"],
+    #video-reference-mobile-header .video-reference-compose,
+    #video-reference-mobile-header .video-reference-more,
+    #video-reference-mobile-header .video-reference-account {
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        width: 100% !important;
+        height: 34px !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        border: 0 !important;
+        border-radius: 9999px !important;
+        background: transparent !important;
+        color: #090909 !important;
+        box-shadow: none !important;
+        text-decoration: none !important;
+        cursor: pointer !important;
+        -webkit-appearance: none !important;
+        appearance: none !important;
+        outline: none !important;
+        -webkit-tap-highlight-color: transparent !important;
+    }
+
+    #video-reference-mobile-header .video-reference-compose svg {
+        display: block !important;
+        width: 20px !important;
+        height: 20px !important;
+        margin: 0 !important;
+    }
+
+    #video-reference-mobile-header .video-reference-more-dots {
+        position: relative !important;
+        display: block !important;
+        width: 21px !important;
+        height: 5px !important;
+    }
+
+    #video-reference-mobile-header .video-reference-more-dots::before,
+    #video-reference-mobile-header .video-reference-more-dots::after,
+    #video-reference-mobile-header .video-reference-more-dots span {
+        content: '' !important;
+        position: absolute !important;
+        top: .5px !important;
+        width: 4px !important;
+        height: 4px !important;
+        border-radius: 9999px !important;
+        background: #090909 !important;
+    }
+
+    #video-reference-mobile-header .video-reference-more-dots::before { left: 0 !important; }
+    #video-reference-mobile-header .video-reference-more-dots span { left: 8.5px !important; }
+    #video-reference-mobile-header .video-reference-more-dots::after { right: 0 !important; }
+
+    #video-reference-mobile-header .video-reference-avatar-image,
+    #video-reference-mobile-header .video-reference-avatar-fallback {
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        width: 29px !important;
+        min-width: 29px !important;
+        height: 29px !important;
+        min-height: 29px !important;
+        border-radius: 9999px !important;
+        object-fit: cover !important;
+    }
+
+    #video-reference-mobile-header .video-reference-avatar-fallback {
+        background: #2563eb !important;
+        color: #ffffff !important;
+        font-size: 12px !important;
+        line-height: 29px !important;
+        font-weight: 600 !important;
+    }
+
     #video-reference-mobile-header .video-reference-more[aria-expanded="true"],
-    #video-reference-mobile-header :is(.video-mobile-sidebar-button, .video-reference-menu, .video-reference-compose, .video-reference-more, .video-reference-account):active {
+    #video-reference-mobile-header :is(.video-mobile-sidebar-button, .video-reference-compose, .video-reference-more, .video-reference-account):active {
         background: #f1f5f9 !important;
     }
 
+    /* Misafir ayar kutusu artik sagdaki uc noktanin altinda, sag kenara hizali. */
     #video-reference-mobile-header .video-mobile-menu-panel {
         position: absolute !important;
         top: 46px !important;
-        left: 50% !important;
+        right: 0 !important;
+        left: auto !important;
         z-index: 10070 !important;
         width: 218px !important;
         max-width: calc(100vw - 24px) !important;
         margin: 0 !important;
         padding: 7px !important;
-        transform: translateX(-50%) !important;
+        transform: none !important;
         border: 1px solid #e2e8f0 !important;
         border-radius: 15px !important;
         background: #ffffff !important;
@@ -429,103 +524,12 @@ HTML;
         color: #2563eb !important;
     }
 
-    #video-reference-mobile-header .video-reference-actions {
-        display: grid !important;
-        grid-template-columns: 1fr 1fr !important;
-        align-items: center !important;
-        width: 90px !important;
-        min-width: 90px !important;
-        height: 38px !important;
-        margin: 0 !important;
-        padding: 2px 4px !important;
-        border: 0 !important;
-        border-radius: 9999px !important;
-        background: #ffffff !important;
-        box-shadow: 0 7px 20px rgba(15, 23, 42, .055) !important;
-        pointer-events: auto !important;
-    }
-
-    #video-reference-mobile-header .video-reference-compose,
-    #video-reference-mobile-header .video-reference-more,
-    #video-reference-mobile-header .video-reference-account {
-        display: inline-flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-        width: 100% !important;
-        height: 34px !important;
-        margin: 0 !important;
-        padding: 0 !important;
-        border: 0 !important;
-        border-radius: 9999px !important;
-        background: transparent !important;
-        color: #090909 !important;
-        box-shadow: none !important;
-        text-decoration: none !important;
-        cursor: pointer !important;
-        -webkit-appearance: none !important;
-        appearance: none !important;
-        outline: none !important;
-        -webkit-tap-highlight-color: transparent !important;
-    }
-
-    #video-reference-mobile-header .video-reference-compose svg {
-        display: block !important;
-        width: 20px !important;
-        height: 20px !important;
-        margin: 0 !important;
-    }
-
-    #video-reference-mobile-header .video-reference-more-dots {
-        position: relative !important;
-        display: block !important;
-        width: 21px !important;
-        height: 5px !important;
-    }
-
-    #video-reference-mobile-header .video-reference-more-dots::before,
-    #video-reference-mobile-header .video-reference-more-dots::after,
-    #video-reference-mobile-header .video-reference-more-dots span {
-        content: '' !important;
-        position: absolute !important;
-        top: .5px !important;
-        width: 4px !important;
-        height: 4px !important;
-        border-radius: 9999px !important;
-        background: #090909 !important;
-    }
-
-    #video-reference-mobile-header .video-reference-more-dots::before { left: 0 !important; }
-    #video-reference-mobile-header .video-reference-more-dots span { left: 8.5px !important; }
-    #video-reference-mobile-header .video-reference-more-dots::after { right: 0 !important; }
-
-    #video-reference-mobile-header .video-reference-avatar-image,
-    #video-reference-mobile-header .video-reference-avatar-fallback {
-        display: inline-flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-        width: 29px !important;
-        min-width: 29px !important;
-        height: 29px !important;
-        min-height: 29px !important;
-        border-radius: 9999px !important;
-        object-fit: cover !important;
-    }
-
-    #video-reference-mobile-header .video-reference-avatar-fallback {
-        background: #2563eb !important;
-        color: #ffffff !important;
-        font-size: 12px !important;
-        line-height: 29px !important;
-        font-weight: 600 !important;
-    }
-
     html body [data-video-tv-root].video-tv-page {
         padding-top: 66px !important;
     }
 
     html.dark #video-reference-mobile-header .video-mobile-sidebar-button,
     html.dark #video-reference-mobile-header .video-mobile-brand,
-    html.dark #video-reference-mobile-header .video-reference-menu,
     html.dark #video-reference-mobile-header .video-reference-actions,
     html.dark #video-reference-mobile-header .video-mobile-menu-panel {
         background: #111827 !important;
@@ -605,42 +609,6 @@ HTML;
             <img class="video-mobile-brand-logo" src="https://ografi.com/images/ografi-logo.png?v=20260714a" alt="Ografi">
             <span class="video-mobile-brand-word">Ografi</span>
         </a>
-
-        <div class="video-mobile-menu-anchor">
-            <button type="button" class="video-reference-menu" data-video-reference-menu aria-label="Video seçeneklerini aç" aria-expanded="false">
-                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                    <path d="M5 6.5H19" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"></path>
-                    <path d="M5 12H19" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"></path>
-                    <path d="M5 17.5H19" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"></path>
-                </svg>
-            </button>
-
-            <div class="video-mobile-menu-panel" data-video-mobile-menu-panel hidden>
-                <button
-                    type="button"
-                    class="video-mobile-menu-row"
-                    data-user-menu-theme-toggle
-                    data-label-dark="Karanlık Mod"
-                    data-label-light="Aydınlık Mod"
-                    aria-pressed="false"
-                >
-                    <span class="video-mobile-menu-icon">
-                        <iconify-icon icon="lucide:moon" data-user-menu-theme-icon></iconify-icon>
-                    </span>
-                    <span>Karanlık Mod</span>
-                    <span class="video-mobile-theme-switch" aria-hidden="true">
-                        <span class="video-mobile-theme-knob"></span>
-                    </span>
-                </button>
-
-                <a href="{$languageUrl}" class="video-mobile-menu-row">
-                    <span class="video-mobile-menu-icon"><iconify-icon icon="lucide:languages"></iconify-icon></span>
-                    <span>Dil: {$languageLabel}</span>
-                </a>
-
-                {$loginRow}
-            </div>
-        </div>
     </div>
 
     <div class="video-reference-actions">
@@ -652,6 +620,7 @@ HTML;
         </a>
 
         {$rightControl}
+        {$guestMenu}
     </div>
 </div>
 HTML;
@@ -668,31 +637,28 @@ HTML;
 
     const sidebar = header.querySelector('[data-video-mobile-sidebar]');
     const brand = header.querySelector('[data-video-mobile-brand]');
-    const menu = header.querySelector('[data-video-reference-menu]');
-    const menuPanel = header.querySelector('[data-video-mobile-menu-panel]');
     const more = header.querySelector('[data-video-reference-more]');
     const account = header.querySelector('[data-video-reference-account]');
+    const menuPanel = header.querySelector('[data-video-mobile-menu-panel]');
 
     const closeMenu = () => {
         if (!menuPanel) return;
         menuPanel.hidden = true;
-        menu?.setAttribute('aria-expanded', 'false');
         more?.setAttribute('aria-expanded', 'false');
     };
 
-    const toggleMenu = (source = menu) => {
-        if (!menuPanel) return;
+    const toggleMenu = () => {
+        if (!menuPanel || !more) return;
         const opening = menuPanel.hidden;
         menuPanel.hidden = !opening;
-        menu?.setAttribute('aria-expanded', opening && source === menu ? 'true' : 'false');
-        more?.setAttribute('aria-expanded', opening && source === more ? 'true' : 'false');
+        more.setAttribute('aria-expanded', opening ? 'true' : 'false');
     };
 
     window.setTimeout(() => {
         brand?.classList.add('is-collapsed');
     }, 5000);
 
-    // Iki cizgili buton mevcut mobil yan menuyu acar.
+    // Soldaki iki cizgili buton mevcut mobil yan menuyu acar.
     sidebar?.addEventListener('click', (event) => {
         event.preventDefault();
         event.stopPropagation();
@@ -700,21 +666,14 @@ HTML;
         document.querySelector('header.site-header[data-site-header] [data-mobile-sidebar-toggle]')?.click();
     });
 
-    // Uc cizgili buton sadece altindaki kompakt ayar kutusunu acar.
-    menu?.addEventListener('click', (event) => {
-        event.preventDefault();
-        event.stopPropagation();
-        toggleMenu(menu);
-    });
-
-    // Giris yapilmadiysa uc nokta da ayni kompakt menuyu acar.
+    // Misafirde sagdaki uc nokta kompakt ayar kutusunu kendi altinda acar.
     more?.addEventListener('click', (event) => {
         event.preventDefault();
         event.stopPropagation();
-        toggleMenu(more);
+        toggleMenu();
     });
 
-    // Giris yapildiysa uc nokta yerine avatar gorunur ve mevcut hesap paneli acilir.
+    // Giris yapildiginda uc nokta yerine avatar vardir; mevcut hesap panelini acar.
     account?.addEventListener('click', (event) => {
         event.preventDefault();
         event.stopPropagation();
