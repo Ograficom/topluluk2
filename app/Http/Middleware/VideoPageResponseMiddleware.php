@@ -114,6 +114,11 @@ HTML;
         if (! str_contains($content, 'id="video-reference-mobile-header-style"')) {
             $style = <<<'HTML'
 <style id="video-reference-mobile-header-style">
+@keyframes videoReferenceHeaderWave {
+    0% { background-position: 190% 0; }
+    100% { background-position: -190% 0; }
+}
+
 @media (max-width: 767px) {
     html body {
         padding-top: 0 !important;
@@ -290,21 +295,20 @@ HTML;
         color: #111827 !important;
         text-decoration: none !important;
         box-shadow: 0 7px 20px rgba(15, 23, 42, .055) !important;
-        transition: width .28s ease, padding .28s ease, gap .28s ease !important;
         white-space: nowrap !important;
     }
 
     #video-reference-mobile-header .video-mobile-brand.is-collapsed {
-        width: 38px !important;
-        min-width: 38px !important;
-        max-width: 38px !important;
+        width: 100px !important;
+        min-width: 100px !important;
+        max-width: 100px !important;
         height: 38px !important;
-        padding: 0 6px !important;
-        gap: 0 !important;
+        padding: 0 8px 0 6px !important;
+        gap: 6px !important;
         border-radius: 9999px !important;
         background: #ffffff !important;
         box-shadow: 0 7px 20px rgba(15, 23, 42, .055) !important;
-        flex: 0 0 38px !important;
+        flex: 0 0 100px !important;
     }
 
     #video-reference-mobile-header .video-mobile-brand-logo {
@@ -316,7 +320,8 @@ HTML;
         flex: 0 0 26px !important;
     }
 
-    #video-reference-mobile-header .video-mobile-brand-word {
+    #video-reference-mobile-header .video-mobile-brand-word,
+    #video-reference-mobile-header .video-mobile-brand.is-collapsed .video-mobile-brand-word {
         display: block !important;
         max-width: 56px !important;
         overflow: hidden !important;
@@ -326,12 +331,6 @@ HTML;
         line-height: 1 !important;
         font-weight: 600 !important;
         letter-spacing: -0.02em !important;
-        transition: max-width .28s ease, opacity .20s ease !important;
-    }
-
-    #video-reference-mobile-header .video-mobile-brand.is-collapsed .video-mobile-brand-word {
-        max-width: 0 !important;
-        opacity: 0 !important;
     }
 
     #video-reference-mobile-header .video-reference-actions {
@@ -450,6 +449,19 @@ HTML;
         font-weight: 600 !important;
     }
 
+    #video-reference-mobile-header.is-preloading .video-mobile-sidebar-button,
+    #video-reference-mobile-header.is-preloading .video-mobile-brand,
+    #video-reference-mobile-header.is-preloading .video-reference-actions {
+        background-image: linear-gradient(
+            110deg,
+            rgba(255, 255, 255, 0) 18%,
+            rgba(203, 213, 225, .46) 45%,
+            rgba(255, 255, 255, 0) 72%
+        ) !important;
+        background-size: 230% 100% !important;
+        animation: videoReferenceHeaderWave .95s linear infinite !important;
+    }
+
     #video-reference-mobile-header .video-mobile-menu-panel {
         position: absolute !important;
         top: 46px !important;
@@ -566,8 +578,22 @@ HTML;
         box-shadow: 0 7px 20px rgba(0, 0, 0, .24) !important;
     }
 
-    html.dark #video-reference-mobile-header .video-mobile-brand-word {
+    html.dark #video-reference-mobile-header .video-mobile-brand-word,
+    html.dark #video-reference-mobile-header .video-mobile-brand.is-collapsed .video-mobile-brand-word {
         color: #f8fafc !important;
+        max-width: 56px !important;
+        opacity: 1 !important;
+    }
+
+    html.dark #video-reference-mobile-header.is-preloading .video-mobile-sidebar-button,
+    html.dark #video-reference-mobile-header.is-preloading .video-mobile-brand,
+    html.dark #video-reference-mobile-header.is-preloading .video-reference-actions {
+        background-image: linear-gradient(
+            110deg,
+            rgba(255, 255, 255, 0) 18%,
+            rgba(255, 255, 255, .13) 45%,
+            rgba(255, 255, 255, 0) 72%
+        ) !important;
     }
 
     html.dark #video-reference-mobile-header .video-mobile-sidebar-button:hover,
@@ -620,6 +646,15 @@ HTML;
     }
 }
 
+@media (max-width: 767px) and (prefers-reduced-motion: reduce) {
+    #video-reference-mobile-header.is-preloading .video-mobile-sidebar-button,
+    #video-reference-mobile-header.is-preloading .video-mobile-brand,
+    #video-reference-mobile-header.is-preloading .video-reference-actions {
+        animation: none !important;
+        background-image: none !important;
+    }
+}
+
 @media (min-width: 768px) {
     #video-reference-mobile-header {
         display: none !important;
@@ -633,7 +668,7 @@ HTML;
 
         if (! str_contains($content, 'id="video-reference-mobile-header"')) {
             $header = <<<HTML
-<div id="video-reference-mobile-header" aria-label="Video mobil gezinme">
+<div id="video-reference-mobile-header" class="is-preloading" aria-label="Video mobil gezinme">
     <div class="video-mobile-left">
         <button type="button" class="video-mobile-sidebar-button" data-video-mobile-sidebar aria-label="Mobil yan menüyü aç">
             <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -701,9 +736,21 @@ HTML;
         setSidebarHeaderState(originalSidebarToggle.getAttribute('aria-expanded') === 'true');
     };
 
-    window.setTimeout(() => {
-        brand?.classList.add('is-collapsed');
-    }, 5000);
+    // Ografi yazisi artik kalici; eski collapse sinifi varsa da temizle.
+    brand?.classList.remove('is-collapsed');
+
+    const stopPreloadWave = () => {
+        header.classList.remove('is-preloading');
+    };
+
+    if (document.readyState === 'complete') {
+        window.setTimeout(stopPreloadWave, 650);
+    } else {
+        window.addEventListener('load', () => {
+            window.setTimeout(stopPreloadWave, 350);
+        }, { once: true });
+        window.setTimeout(stopPreloadWave, 1400);
+    }
 
     sidebar?.addEventListener('click', (event) => {
         event.preventDefault();
