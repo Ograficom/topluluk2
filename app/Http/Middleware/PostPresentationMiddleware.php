@@ -95,6 +95,35 @@ class PostPresentationMiddleware
             'suppress_follower_notifications' => (bool) ($post?->suppress_follower_notifications ?? false),
         ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) ?: '{}';
 
+        $editPayload = 'null';
+        if ($post) {
+            $post->loadMissing('tags');
+            $editPayload = json_encode([
+                'action' => route('blog.post.update', $post),
+                'title' => (string) ($post->title ?? ''),
+                'category_id' => $post->category_id,
+                'tags' => $post->tags->pluck('id')->map(fn ($id) => (int) $id)->values()->all(),
+                'content' => (string) ($post->content ?? ''),
+                'content_json' => is_array($post->content_json) ? $post->content_json : null,
+                'excerpt' => (string) ($post->excerpt ?? ''),
+                'meta_title' => (string) ($post->meta_title ?? ''),
+                'meta_description' => (string) ($post->meta_description ?? ''),
+                'slug' => (string) ($post->slug ?? ''),
+                'meta_keywords' => (string) ($post->meta_keywords ?? ''),
+                'published_at' => $post->published_at?->format('Y-m-d\\TH:i'),
+                'image_license_url' => (string) ($post->image_license_url ?? ''),
+                'image_acquire_url' => (string) ($post->image_acquire_url ?? ''),
+                'image_credit_text' => (string) ($post->image_credit_text ?? ''),
+                'image_creator_name' => (string) ($post->image_creator_name ?? ''),
+                'image_copyright_notice' => (string) ($post->image_copyright_notice ?? ''),
+                'is_published' => (bool) $post->is_published,
+                'comments_disabled' => (bool) $post->comments_disabled,
+                'is_nsfw' => (bool) $post->is_nsfw,
+                'is_pinned' => (bool) $post->is_pinned,
+                'featured_image_url' => (string) ($post->featured_image_url ?? ''),
+            ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) ?: 'null';
+        }
+
         return <<<HTML
 <style data-ografi-preference-interactions>
 #settings-modal .settings-panel > .border-t button[data-settings-close] {
@@ -125,6 +154,7 @@ class PostPresentationMiddleware
 <script data-ografi-post-distribution-settings>
 (() => {
     const states = {$states};
+    const edit = {$editPayload};
     const options = [
         ['followers_only', 'Sadece takipçiler'],
         ['noindex', 'Arama motorlarından sakla'],
@@ -140,6 +170,89 @@ class PostPresentationMiddleware
             <span class="relative h-7 w-12 rounded-full border border-slate-300 bg-slate-200 transition-all duration-200 group-hover:bg-slate-300 peer-focus-visible:ring-4 peer-focus-visible:ring-blue-500/15 peer-checked:border-blue-600 peer-checked:bg-blue-600 peer-checked:group-hover:bg-blue-600" aria-hidden="true"></span>
             <span class="pointer-events-none absolute left-[3px] top-[3px] h-5 w-5 rounded-full bg-white shadow-[0_2px_8px_rgba(15,23,42,0.18)] transition-all duration-200 peer-checked:translate-x-5" aria-hidden="true"></span>
         </label>`;
+
+    const setValue = (id, value) => {
+        const field = document.getElementById(id);
+        if (!field || value === undefined || value === null) return;
+        field.value = String(value);
+    };
+
+    const applyEditComposer = () => {
+        if (!edit) return true;
+
+        const form = document.getElementById('post-create-form');
+        if (!form) return false;
+
+        form.action = edit.action;
+        form.dataset.editMode = '1';
+        form.dataset.serverDraftBound = '1';
+        form.dataset.autosaveBound = '1';
+
+        let method = form.querySelector('input[name="_method"]');
+        if (!method) {
+            method = document.createElement('input');
+            method.type = 'hidden';
+            method.name = '_method';
+            form.prepend(method);
+        }
+        method.value = 'PUT';
+
+        setValue('title', edit.title || '');
+        setValue('category_id', edit.category_id || '');
+        setValue('content', edit.content || '');
+        setValue('content_json', edit.content_json ? JSON.stringify(edit.content_json) : '');
+        setValue('excerpt', edit.excerpt || '');
+        setValue('meta_title', edit.meta_title || '');
+        setValue('meta_description', edit.meta_description || '');
+        setValue('slug', edit.slug || '');
+        setValue('meta_keywords', edit.meta_keywords || '');
+        setValue('published_at', edit.published_at || '');
+        setValue('image_license_url', edit.image_license_url || '');
+        setValue('image_acquire_url', edit.image_acquire_url || '');
+        setValue('image_credit_text', edit.image_credit_text || '');
+        setValue('image_creator_name', edit.image_creator_name || '');
+        setValue('image_copyright_notice', edit.image_copyright_notice || '');
+        setValue('is_published', edit.is_published ? '1' : '0');
+
+        ['comments_disabled', 'is_nsfw', 'is_pinned'].forEach((name) => {
+            const checkbox = form.querySelector(`input[type="checkbox"][name="\${name}"]`);
+            if (checkbox) checkbox.checked = Boolean(edit[name]);
+        });
+
+        const selectedTags = new Set((edit.tags || []).map((id) => String(id)));
+        form.querySelectorAll('input[type="checkbox"][name="tags[]"]').forEach((checkbox) => {
+            checkbox.checked = selectedTags.has(String(checkbox.value));
+        });
+
+        const activeCategory = form.querySelector(`[data-category-option][data-value="\${String(edit.category_id || '')}"]`);
+        const categoryLabel = document.querySelector('[data-category-label]');
+        if (activeCategory && categoryLabel) {
+            categoryLabel.textContent = activeCategory.getAttribute('data-label') || categoryLabel.textContent;
+        }
+
+        if (edit.featured_image_url) {
+            const coverField = document.querySelector('[data-cover-field]');
+            const coverImage = document.querySelector('[data-cover-preview-img]');
+            if (coverField && coverImage) {
+                coverImage.src = edit.featured_image_url;
+                coverField.classList.add('has-image');
+            }
+        }
+
+        const heading = document.querySelector('.create-page-fixed header .truncate.text-sm.font-semibold.text-slate-950');
+        if (heading) heading.textContent = 'Gönderiyi düzenle';
+
+        document.querySelectorAll('[data-submit-intent="publish"]').forEach((button) => {
+            const label = button.querySelector('span');
+            if (label) {
+                label.textContent = 'Güncelle';
+            } else if (!button.querySelector('iconify-icon')) {
+                button.textContent = 'Güncelle';
+            }
+        });
+
+        return true;
+    };
 
     const mount = () => {
         const titles = Array.from(document.querySelectorAll('#settings-modal .settings-accordion-title'));
@@ -161,14 +274,38 @@ class PostPresentationMiddleware
         return true;
     };
 
-    const boot = () => {
-        if (mount()) return;
-        let attempts = 0;
-        const timer = window.setInterval(() => {
-            attempts += 1;
-            if (mount() || attempts > 40) window.clearInterval(timer);
-        }, 100);
+    const repairEditSettingsSave = () => {
+        if (!edit) return;
+        const saveButton = document.querySelector('[data-settings-save]');
+        const form = document.getElementById('post-create-form');
+        if (!saveButton || !form || saveButton.dataset.editSubmitBound === '1') return;
+
+        const replacement = saveButton.cloneNode(true);
+        replacement.disabled = false;
+        replacement.textContent = 'Kaydet';
+        replacement.dataset.editSubmitBound = '1';
+        replacement.addEventListener('click', () => form.requestSubmit());
+        saveButton.replaceWith(replacement);
     };
+
+    const boot = () => {
+        applyEditComposer();
+
+        if (!mount()) {
+            let attempts = 0;
+            const timer = window.setInterval(() => {
+                attempts += 1;
+                if (mount() || attempts > 40) window.clearInterval(timer);
+            }, 100);
+        }
+
+        if (edit) {
+            window.setTimeout(repairEditSettingsSave, 120);
+            window.setTimeout(repairEditSettingsSave, 400);
+        }
+    };
+
+    applyEditComposer();
 
     if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot, { once: true });
     else boot();
