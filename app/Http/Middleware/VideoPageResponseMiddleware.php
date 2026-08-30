@@ -36,7 +36,7 @@ class VideoPageResponseMiddleware
         // Mobil Safari/PWA/Chrome eski player ve header JS kopyasını tutmasın.
         $content = preg_replace(
             '/video-tv\.js\?v=\d+/i',
-            'video-tv.js?v=412',
+            'video-tv.js?v=413',
             $content,
         ) ?? $content;
 
@@ -44,11 +44,7 @@ class VideoPageResponseMiddleware
             $style = <<<'HTML'
 <style id="video-reference-mobile-header-style">
 @media (max-width: 767px) {
-    /*
-     * /video kendi mobil ust barini kullanir. Genel site headerinin gorunen
-     * kontrolleri saklanir; kullanici menusu paneli ise mevcut JS ile calismaya
-     * devam etsin diye DOM'da tutulur.
-     */
+    /* /video mobilde referanstaki kompakt yüzen üst barı kullanır. */
     html body header.site-header[data-site-header].site-header {
         position: fixed !important;
         inset: 0 0 auto 0 !important;
@@ -107,16 +103,16 @@ class VideoPageResponseMiddleware
 
     html body header.site-header[data-site-header].site-header .site-header-actions > [data-user-menu] {
         position: fixed !important;
-        top: calc(24px + env(safe-area-inset-top, 0px)) !important;
+        top: calc(18px + env(safe-area-inset-top, 0px)) !important;
         right: 20px !important;
         z-index: 10030 !important;
         display: block !important;
-        width: 72px !important;
-        min-width: 72px !important;
-        max-width: 72px !important;
-        height: 72px !important;
-        min-height: 72px !important;
-        max-height: 72px !important;
+        width: 56px !important;
+        min-width: 56px !important;
+        max-width: 56px !important;
+        height: 56px !important;
+        min-height: 56px !important;
+        max-height: 56px !important;
         margin: 0 !important;
         padding: 0 !important;
         background: transparent !important;
@@ -127,12 +123,12 @@ class VideoPageResponseMiddleware
         position: absolute !important;
         inset: 0 !important;
         display: block !important;
-        width: 72px !important;
-        min-width: 72px !important;
-        max-width: 72px !important;
-        height: 72px !important;
-        min-height: 72px !important;
-        max-height: 72px !important;
+        width: 56px !important;
+        min-width: 56px !important;
+        max-width: 56px !important;
+        height: 56px !important;
+        min-height: 56px !important;
+        max-height: 56px !important;
         margin: 0 !important;
         padding: 0 !important;
         border: 0 !important;
@@ -141,14 +137,14 @@ class VideoPageResponseMiddleware
     }
 
     html body header.site-header[data-site-header].site-header .site-menu-panel[data-user-menu-panel] {
-        top: 82px !important;
+        top: 66px !important;
         right: 0 !important;
         pointer-events: auto !important;
     }
 
     #video-reference-mobile-header {
         position: fixed !important;
-        top: calc(24px + env(safe-area-inset-top, 0px)) !important;
+        top: calc(18px + env(safe-area-inset-top, 0px)) !important;
         left: 0 !important;
         right: 0 !important;
         z-index: 10025 !important;
@@ -156,7 +152,7 @@ class VideoPageResponseMiddleware
         align-items: center !important;
         justify-content: space-between !important;
         width: 100% !important;
-        height: 72px !important;
+        height: 56px !important;
         margin: 0 !important;
         padding: 0 20px !important;
         box-sizing: border-box !important;
@@ -177,10 +173,10 @@ class VideoPageResponseMiddleware
         display: inline-flex !important;
         align-items: center !important;
         justify-content: center !important;
-        width: 72px !important;
-        min-width: 72px !important;
-        height: 72px !important;
-        min-height: 72px !important;
+        width: 56px !important;
+        min-width: 56px !important;
+        height: 56px !important;
+        min-height: 56px !important;
         margin: 0 !important;
         padding: 0 !important;
         border: 0 !important;
@@ -188,15 +184,15 @@ class VideoPageResponseMiddleware
         background: #ffffff !important;
         background-color: #ffffff !important;
         color: #080808 !important;
-        box-shadow: 0 18px 52px rgba(15, 23, 42, .10) !important;
+        box-shadow: 0 12px 34px rgba(15, 23, 42, .08) !important;
         pointer-events: auto !important;
         cursor: pointer !important;
     }
 
     #video-reference-mobile-header .video-reference-menu svg {
         display: block !important;
-        width: 34px !important;
-        height: 34px !important;
+        width: 27px !important;
+        height: 27px !important;
         margin: 0 !important;
         color: currentColor !important;
     }
@@ -205,16 +201,16 @@ class VideoPageResponseMiddleware
         display: grid !important;
         grid-template-columns: 1fr 1fr !important;
         align-items: center !important;
-        width: 166px !important;
-        min-width: 166px !important;
-        height: 72px !important;
+        width: 136px !important;
+        min-width: 136px !important;
+        height: 56px !important;
         margin: 0 !important;
-        padding: 5px 7px !important;
+        padding: 4px 6px !important;
         border: 0 !important;
         border-radius: 9999px !important;
         background: #ffffff !important;
         background-color: #ffffff !important;
-        box-shadow: 0 18px 52px rgba(15, 23, 42, .10) !important;
+        box-shadow: 0 12px 34px rgba(15, 23, 42, .08) !important;
         box-sizing: border-box !important;
         pointer-events: auto !important;
     }
@@ -225,7 +221,7 @@ class VideoPageResponseMiddleware
         align-items: center !important;
         justify-content: center !important;
         width: 100% !important;
-        height: 62px !important;
+        height: 48px !important;
         margin: 0 !important;
         padding: 0 !important;
         border: 0 !important;
@@ -240,8 +236,8 @@ class VideoPageResponseMiddleware
 
     #video-reference-mobile-header .video-reference-compose svg {
         display: block !important;
-        width: 35px !important;
-        height: 35px !important;
+        width: 27px !important;
+        height: 27px !important;
         margin: 0 !important;
         color: currentColor !important;
     }
@@ -249,8 +245,8 @@ class VideoPageResponseMiddleware
     #video-reference-mobile-header .video-reference-more-dots {
         position: relative !important;
         display: block !important;
-        width: 34px !important;
-        height: 8px !important;
+        width: 28px !important;
+        height: 6px !important;
     }
 
     #video-reference-mobile-header .video-reference-more-dots::before,
@@ -258,9 +254,9 @@ class VideoPageResponseMiddleware
     #video-reference-mobile-header .video-reference-more-dots span {
         content: '' !important;
         position: absolute !important;
-        top: 1px !important;
-        width: 7px !important;
-        height: 7px !important;
+        top: 0 !important;
+        width: 6px !important;
+        height: 6px !important;
         border-radius: 9999px !important;
         background: #080808 !important;
     }
@@ -270,7 +266,7 @@ class VideoPageResponseMiddleware
     }
 
     #video-reference-mobile-header .video-reference-more-dots span {
-        left: 13.5px !important;
+        left: 11px !important;
     }
 
     #video-reference-mobile-header .video-reference-more-dots::after {
@@ -283,31 +279,36 @@ class VideoPageResponseMiddleware
     }
 
     html body [data-video-tv-root].video-tv-page {
-        padding-top: 150px !important;
+        padding-top: 112px !important;
     }
 
     @media (max-width: 390px) {
         #video-reference-mobile-header {
+            top: calc(16px + env(safe-area-inset-top, 0px)) !important;
             padding-left: 16px !important;
             padding-right: 16px !important;
         }
 
         #video-reference-mobile-header .video-reference-menu {
-            width: 66px !important;
-            min-width: 66px !important;
-            height: 66px !important;
-            min-height: 66px !important;
+            width: 52px !important;
+            min-width: 52px !important;
+            height: 52px !important;
+            min-height: 52px !important;
         }
 
         #video-reference-mobile-header .video-reference-actions {
-            width: 154px !important;
-            min-width: 154px !important;
-            height: 66px !important;
+            width: 128px !important;
+            min-width: 128px !important;
+            height: 52px !important;
         }
 
         #video-reference-mobile-header .video-reference-compose,
         #video-reference-mobile-header .video-reference-more {
-            height: 56px !important;
+            height: 44px !important;
+        }
+
+        html body [data-video-tv-root].video-tv-page {
+            padding-top: 104px !important;
         }
     }
 }
