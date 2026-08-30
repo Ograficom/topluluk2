@@ -26,78 +26,10 @@
                     flex: 0 0 38px !important;
                 }
 
-                #video-reference-mobile-header .video-reference-actions {
-                    display: flex !important;
-                    align-items: center !important;
-                    gap: 0 !important;
-                    width: 82px !important;
-                    min-width: 82px !important;
-                    height: 38px !important;
-                    padding: 2px !important;
-                    border: 0 !important;
-                    border-radius: 14px !important;
-                    background: #ffffff !important;
-                    background-color: #ffffff !important;
-                    box-shadow: 0 7px 20px rgba(15, 23, 42, .055) !important;
-                }
-
-                #video-reference-mobile-header .video-reference-compose,
-                #video-reference-mobile-header .video-reference-more,
-                #video-reference-mobile-header .video-reference-account {
-                    width: 39px !important;
-                    min-width: 39px !important;
-                    max-width: 39px !important;
-                    height: 34px !important;
-                    min-height: 34px !important;
-                    max-height: 34px !important;
-                    flex: 0 0 39px !important;
-                    border-radius: 11px !important;
-                    background: transparent !important;
-                    background-color: transparent !important;
-                    box-shadow: none !important;
-                }
-
-                #video-reference-mobile-header .video-reference-compose:hover,
-                #video-reference-mobile-header .video-reference-compose:focus-visible,
-                #video-reference-mobile-header .video-reference-compose:active,
-                #video-reference-mobile-header .video-reference-more:hover,
-                #video-reference-mobile-header .video-reference-more:focus-visible,
-                #video-reference-mobile-header .video-reference-more:active,
-                #video-reference-mobile-header .video-reference-more[aria-expanded="true"],
-                #video-reference-mobile-header .video-reference-account:hover,
-                #video-reference-mobile-header .video-reference-account:focus-visible,
-                #video-reference-mobile-header .video-reference-account:active {
-                    background: #f1f5f9 !important;
-                    background-color: #f1f5f9 !important;
-                }
-
-                html.dark #video-reference-mobile-header .video-mobile-brand.is-collapsed,
-                html.dark #video-reference-mobile-header .video-reference-actions {
+                html.dark #video-reference-mobile-header .video-mobile-brand.is-collapsed {
                     background: #111827 !important;
                     background-color: #111827 !important;
                     box-shadow: 0 7px 20px rgba(0, 0, 0, .24) !important;
-                }
-
-                html.dark #video-reference-mobile-header .video-reference-compose,
-                html.dark #video-reference-mobile-header .video-reference-more,
-                html.dark #video-reference-mobile-header .video-reference-account {
-                    background: transparent !important;
-                    background-color: transparent !important;
-                    box-shadow: none !important;
-                }
-
-                html.dark #video-reference-mobile-header .video-reference-compose:hover,
-                html.dark #video-reference-mobile-header .video-reference-compose:focus-visible,
-                html.dark #video-reference-mobile-header .video-reference-compose:active,
-                html.dark #video-reference-mobile-header .video-reference-more:hover,
-                html.dark #video-reference-mobile-header .video-reference-more:focus-visible,
-                html.dark #video-reference-mobile-header .video-reference-more:active,
-                html.dark #video-reference-mobile-header .video-reference-more[aria-expanded="true"],
-                html.dark #video-reference-mobile-header .video-reference-account:hover,
-                html.dark #video-reference-mobile-header .video-reference-account:focus-visible,
-                html.dark #video-reference-mobile-header .video-reference-account:active {
-                    background: #1f2937 !important;
-                    background-color: #1f2937 !important;
                 }
             }
         `;
