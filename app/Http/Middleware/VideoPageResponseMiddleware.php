@@ -33,10 +33,10 @@ class VideoPageResponseMiddleware
             return $response;
         }
 
-        // Mobil Safari/PWA/Chrome eski player kopyasini tutmasin.
+        // Mobil tarayicilar eski video scriptini tutmasin.
         $content = preg_replace(
-            '/video-tv\.js\?v=\d+/i',
-            'video-tv.js?v=419',
+            '/video-tv\.js\?v=\d+[a-z]?/i',
+            'video-tv.js?v=420',
             $content,
         ) ?? $content;
 
@@ -74,7 +74,7 @@ class VideoPageResponseMiddleware
 HTML
             : <<<'HTML'
 <button type="button" class="video-reference-more" data-video-reference-more aria-label="Diğer seçenekler" aria-expanded="false">
-    <span class="video-reference-more-dots" aria-hidden="true"><span></span></span>
+    <span class="video-reference-more-dots" aria-hidden="true"></span>
 </button>
 HTML;
 
@@ -119,7 +119,7 @@ HTML;
         padding-top: 0 !important;
     }
 
-    /* Genel header gizli kalir; mevcut sidebar ve hesap paneli DOM'da kullanilir. */
+    /* Genel header gorunmez; mevcut sidebar ve hesap menusu davranislari DOM'da kalir. */
     html body header.site-header[data-site-header].site-header {
         position: fixed !important;
         inset: 0 0 auto 0 !important;
@@ -178,8 +178,8 @@ HTML;
         right: 12px !important;
         z-index: 10030 !important;
         display: block !important;
-        width: 36px !important;
-        height: 36px !important;
+        width: 38px !important;
+        height: 38px !important;
         margin: 0 !important;
         padding: 0 !important;
         background: transparent !important;
@@ -190,8 +190,8 @@ HTML;
         position: absolute !important;
         inset: 0 !important;
         display: block !important;
-        width: 36px !important;
-        height: 36px !important;
+        width: 38px !important;
+        height: 38px !important;
         margin: 0 !important;
         padding: 0 !important;
         border: 0 !important;
@@ -223,6 +223,10 @@ HTML;
         padding: 0 12px !important;
         box-sizing: border-box !important;
         pointer-events: none !important;
+    }
+
+    #video-reference-mobile-header.is-sidebar-open {
+        display: none !important;
     }
 
     #video-reference-mobile-header * {
@@ -259,6 +263,12 @@ HTML;
         -webkit-tap-highlight-color: transparent !important;
     }
 
+    #video-reference-mobile-header .video-mobile-sidebar-button:hover,
+    #video-reference-mobile-header .video-mobile-sidebar-button:focus-visible,
+    #video-reference-mobile-header .video-mobile-sidebar-button:active {
+        background: #f1f5f9 !important;
+    }
+
     #video-reference-mobile-header .video-mobile-sidebar-button svg {
         display: block !important;
         width: 19px !important;
@@ -288,9 +298,15 @@ HTML;
 
     #video-reference-mobile-header .video-mobile-brand.is-collapsed {
         width: 38px !important;
-        padding-left: 6px !important;
-        padding-right: 6px !important;
+        min-width: 38px !important;
+        max-width: 38px !important;
+        height: 38px !important;
+        padding: 0 6px !important;
         gap: 0 !important;
+        border-radius: 9999px !important;
+        background: #ffffff !important;
+        box-shadow: 0 7px 20px rgba(15, 23, 42, .055) !important;
+        flex: 0 0 38px !important;
     }
 
     #video-reference-mobile-header .video-mobile-brand-logo {
@@ -320,20 +336,21 @@ HTML;
         opacity: 0 !important;
     }
 
+    /* Sag taraf artik uzun kapsul degil; iki ayri kare buton. */
     #video-reference-mobile-header .video-reference-actions {
         position: relative !important;
-        display: grid !important;
-        grid-template-columns: 1fr 1fr !important;
+        display: flex !important;
         align-items: center !important;
-        width: 90px !important;
-        min-width: 90px !important;
+        gap: 6px !important;
+        width: auto !important;
+        min-width: 0 !important;
         height: 38px !important;
         margin: 0 !important;
-        padding: 2px 4px !important;
+        padding: 0 !important;
         border: 0 !important;
-        border-radius: 9999px !important;
-        background: #ffffff !important;
-        box-shadow: 0 7px 20px rgba(15, 23, 42, .055) !important;
+        border-radius: 0 !important;
+        background: transparent !important;
+        box-shadow: none !important;
         pointer-events: auto !important;
     }
 
@@ -343,21 +360,39 @@ HTML;
         display: inline-flex !important;
         align-items: center !important;
         justify-content: center !important;
-        width: 100% !important;
-        height: 34px !important;
+        width: 38px !important;
+        min-width: 38px !important;
+        max-width: 38px !important;
+        height: 38px !important;
+        min-height: 38px !important;
+        max-height: 38px !important;
+        flex: 0 0 38px !important;
         margin: 0 !important;
         padding: 0 !important;
         border: 0 !important;
-        border-radius: 9999px !important;
-        background: transparent !important;
+        border-radius: 12px !important;
+        background: #ffffff !important;
         color: #090909 !important;
-        box-shadow: none !important;
+        box-shadow: 0 7px 20px rgba(15, 23, 42, .055) !important;
         text-decoration: none !important;
         cursor: pointer !important;
         -webkit-appearance: none !important;
         appearance: none !important;
         outline: none !important;
         -webkit-tap-highlight-color: transparent !important;
+    }
+
+    #video-reference-mobile-header .video-reference-compose:hover,
+    #video-reference-mobile-header .video-reference-compose:focus-visible,
+    #video-reference-mobile-header .video-reference-compose:active,
+    #video-reference-mobile-header .video-reference-more:hover,
+    #video-reference-mobile-header .video-reference-more:focus-visible,
+    #video-reference-mobile-header .video-reference-more:active,
+    #video-reference-mobile-header .video-reference-more[aria-expanded="true"],
+    #video-reference-mobile-header .video-reference-account:hover,
+    #video-reference-mobile-header .video-reference-account:focus-visible,
+    #video-reference-mobile-header .video-reference-account:active {
+        background: #f1f5f9 !important;
     }
 
     #video-reference-mobile-header .video-reference-compose svg {
@@ -367,16 +402,16 @@ HTML;
         margin: 0 !important;
     }
 
+    /* Iki nokta. */
     #video-reference-mobile-header .video-reference-more-dots {
         position: relative !important;
         display: block !important;
-        width: 21px !important;
+        width: 14px !important;
         height: 5px !important;
     }
 
     #video-reference-mobile-header .video-reference-more-dots::before,
-    #video-reference-mobile-header .video-reference-more-dots::after,
-    #video-reference-mobile-header .video-reference-more-dots span {
+    #video-reference-mobile-header .video-reference-more-dots::after {
         content: '' !important;
         position: absolute !important;
         top: .5px !important;
@@ -386,9 +421,17 @@ HTML;
         background: #090909 !important;
     }
 
-    #video-reference-mobile-header .video-reference-more-dots::before { left: 0 !important; }
-    #video-reference-mobile-header .video-reference-more-dots span { left: 8.5px !important; }
-    #video-reference-mobile-header .video-reference-more-dots::after { right: 0 !important; }
+    #video-reference-mobile-header .video-reference-more-dots::before {
+        left: 0 !important;
+    }
+
+    #video-reference-mobile-header .video-reference-more-dots::after {
+        right: 0 !important;
+    }
+
+    #video-reference-mobile-header .video-reference-more-dots > * {
+        display: none !important;
+    }
 
     #video-reference-mobile-header .video-reference-avatar-image,
     #video-reference-mobile-header .video-reference-avatar-fallback {
@@ -411,12 +454,7 @@ HTML;
         font-weight: 600 !important;
     }
 
-    #video-reference-mobile-header .video-reference-more[aria-expanded="true"],
-    #video-reference-mobile-header :is(.video-mobile-sidebar-button, .video-reference-compose, .video-reference-more, .video-reference-account):active {
-        background: #f1f5f9 !important;
-    }
-
-    /* Misafir ayar kutusu artik sagdaki uc noktanin altinda, sag kenara hizali. */
+    /* Misafir ayar kutusu sagdaki iki nokta butonunun hemen altinda. */
     #video-reference-mobile-header .video-mobile-menu-panel {
         position: absolute !important;
         top: 46px !important;
@@ -508,14 +546,6 @@ HTML;
         transition: left .16s ease !important;
     }
 
-    html.dark #video-reference-mobile-header .video-mobile-theme-switch {
-        background: #2563eb !important;
-    }
-
-    html.dark #video-reference-mobile-header .video-mobile-theme-knob {
-        left: 19px !important;
-    }
-
     #video-reference-mobile-header .video-mobile-menu-login {
         margin-top: 3px !important;
         border-top: 1px solid #eef2f7 !important;
@@ -528,23 +558,42 @@ HTML;
         padding-top: 66px !important;
     }
 
+    /* Karanlik mod: header yuzeyleri, popup ve hover durumlari. */
     html.dark #video-reference-mobile-header .video-mobile-sidebar-button,
     html.dark #video-reference-mobile-header .video-mobile-brand,
-    html.dark #video-reference-mobile-header .video-reference-actions,
+    html.dark #video-reference-mobile-header .video-mobile-brand.is-collapsed,
+    html.dark #video-reference-mobile-header .video-reference-compose,
+    html.dark #video-reference-mobile-header .video-reference-more,
+    html.dark #video-reference-mobile-header .video-reference-account,
     html.dark #video-reference-mobile-header .video-mobile-menu-panel {
         background: #111827 !important;
         color: #f8fafc !important;
         border-color: #334155 !important;
+        box-shadow: 0 7px 20px rgba(0, 0, 0, .24) !important;
     }
 
-    html.dark #video-reference-mobile-header .video-mobile-brand-word,
-    html.dark #video-reference-mobile-header :is(.video-reference-compose, .video-reference-more, .video-reference-account) {
+    html.dark #video-reference-mobile-header .video-mobile-brand-word {
         color: #f8fafc !important;
     }
 
+    html.dark #video-reference-mobile-header .video-mobile-sidebar-button:hover,
+    html.dark #video-reference-mobile-header .video-mobile-sidebar-button:focus-visible,
+    html.dark #video-reference-mobile-header .video-mobile-sidebar-button:active,
+    html.dark #video-reference-mobile-header .video-reference-compose:hover,
+    html.dark #video-reference-mobile-header .video-reference-compose:focus-visible,
+    html.dark #video-reference-mobile-header .video-reference-compose:active,
+    html.dark #video-reference-mobile-header .video-reference-more:hover,
+    html.dark #video-reference-mobile-header .video-reference-more:focus-visible,
+    html.dark #video-reference-mobile-header .video-reference-more:active,
+    html.dark #video-reference-mobile-header .video-reference-more[aria-expanded="true"],
+    html.dark #video-reference-mobile-header .video-reference-account:hover,
+    html.dark #video-reference-mobile-header .video-reference-account:focus-visible,
+    html.dark #video-reference-mobile-header .video-reference-account:active {
+        background: #1f2937 !important;
+    }
+
     html.dark #video-reference-mobile-header .video-reference-more-dots::before,
-    html.dark #video-reference-mobile-header .video-reference-more-dots::after,
-    html.dark #video-reference-mobile-header .video-reference-more-dots span {
+    html.dark #video-reference-mobile-header .video-reference-more-dots::after {
         background: #f8fafc !important;
     }
 
@@ -563,23 +612,17 @@ HTML;
         color: #cbd5e1 !important;
     }
 
+    html.dark #video-reference-mobile-header .video-mobile-theme-switch {
+        background: #2563eb !important;
+    }
+
+    html.dark #video-reference-mobile-header .video-mobile-theme-knob {
+        left: 19px !important;
+    }
+
     html.dark #video-reference-mobile-header .video-mobile-menu-login {
         border-top-color: #334155 !important;
         color: #93c5fd !important;
-    }
-
-    @media (max-width: 360px) {
-        #video-reference-mobile-header .video-mobile-brand {
-            width: 86px !important;
-        }
-
-        #video-reference-mobile-header .video-mobile-brand.is-collapsed {
-            width: 38px !important;
-        }
-
-        #video-reference-mobile-header .video-mobile-brand-word {
-            font-size: 13px !important;
-        }
     }
 }
 
@@ -640,6 +683,7 @@ HTML;
     const more = header.querySelector('[data-video-reference-more]');
     const account = header.querySelector('[data-video-reference-account]');
     const menuPanel = header.querySelector('[data-video-mobile-menu-panel]');
+    const originalSidebarToggle = document.querySelector('header.site-header[data-site-header] [data-mobile-sidebar-toggle]');
 
     const closeMenu = () => {
         if (!menuPanel) return;
@@ -654,26 +698,52 @@ HTML;
         more.setAttribute('aria-expanded', opening ? 'true' : 'false');
     };
 
+    const setSidebarHeaderState = (open) => {
+        header.classList.toggle('is-sidebar-open', Boolean(open));
+    };
+
+    const syncSidebarHeaderState = () => {
+        if (!originalSidebarToggle) return;
+        setSidebarHeaderState(originalSidebarToggle.getAttribute('aria-expanded') === 'true');
+    };
+
     window.setTimeout(() => {
         brand?.classList.add('is-collapsed');
     }, 5000);
 
-    // Soldaki iki cizgili buton mevcut mobil yan menuyu acar.
+    // Soldaki iki cizgili buton mevcut mobil yan menuyu acar ve video headerini gizler.
     sidebar?.addEventListener('click', (event) => {
         event.preventDefault();
         event.stopPropagation();
         closeMenu();
-        document.querySelector('header.site-header[data-site-header] [data-mobile-sidebar-toggle]')?.click();
+        setSidebarHeaderState(true);
+        originalSidebarToggle?.click();
+        window.setTimeout(syncSidebarHeaderState, 0);
+        window.setTimeout(syncSidebarHeaderState, 180);
     });
 
-    // Misafirde sagdaki uc nokta kompakt ayar kutusunu kendi altinda acar.
+    if (originalSidebarToggle) {
+        new MutationObserver(syncSidebarHeaderState).observe(originalSidebarToggle, {
+            attributes: true,
+            attributeFilter: ['aria-expanded'],
+        });
+        syncSidebarHeaderState();
+    }
+
+    // Sidebar icindeki kapatma/overlay tiklarindan sonra header tekrar gorunsun.
+    document.addEventListener('click', (event) => {
+        const target = event.target instanceof Element ? event.target : null;
+        if (target?.closest('[data-mobile-sidebar-close], [data-sidebar-close], [data-mobile-sidebar-overlay], .mobile-sidebar-overlay')) {
+            window.setTimeout(() => setSidebarHeaderState(false), 80);
+        }
+    }, true);
+
     more?.addEventListener('click', (event) => {
         event.preventDefault();
         event.stopPropagation();
         toggleMenu();
     });
 
-    // Giris yapildiginda uc nokta yerine avatar vardir; mevcut hesap panelini acar.
     account?.addEventListener('click', (event) => {
         event.preventDefault();
         event.stopPropagation();
@@ -687,10 +757,19 @@ HTML;
 
     document.addEventListener('click', (event) => {
         if (!header.contains(event.target)) closeMenu();
+        window.setTimeout(syncSidebarHeaderState, 0);
     });
 
     document.addEventListener('keydown', (event) => {
-        if (event.key === 'Escape') closeMenu();
+        if (event.key === 'Escape') {
+            closeMenu();
+            window.setTimeout(syncSidebarHeaderState, 0);
+            window.setTimeout(() => {
+                if (originalSidebarToggle?.getAttribute('aria-expanded') !== 'true') {
+                    setSidebarHeaderState(false);
+                }
+            }, 120);
+        }
     });
 })();
 </script>
