@@ -36,7 +36,7 @@ class VideoPageResponseMiddleware
         // Mobil tarayicilar eski video scriptini tutmasin.
         $content = preg_replace(
             '/video-tv\.js\?v=\d+[a-z]?/i',
-            'video-tv.js?v=423',
+            'video-tv.js?v=426',
             $content,
         ) ?? $content;
 
@@ -119,7 +119,6 @@ HTML;
         padding-top: 0 !important;
     }
 
-    /* Genel header gorunmez; mevcut sidebar ve hesap menusu davranislari DOM'da kalir. */
     html body header.site-header[data-site-header].site-header {
         position: fixed !important;
         inset: 0 0 auto 0 !important;
@@ -171,7 +170,6 @@ HTML;
         display: none !important;
     }
 
-    /* Giris yapildiginda custom avatar mevcut hesap panelini tetikler. */
     html body header.site-header[data-site-header].site-header .site-header-actions > [data-user-menu] {
         position: fixed !important;
         top: calc(10px + env(safe-area-inset-top, 0px)) !important;
@@ -336,7 +334,6 @@ HTML;
         opacity: 0 !important;
     }
 
-    /* Sag taraf artik uzun kapsul degil; iki ayri kare buton. */
     #video-reference-mobile-header .video-reference-actions {
         position: relative !important;
         display: flex !important;
@@ -402,7 +399,6 @@ HTML;
         margin: 0 !important;
     }
 
-    /* Iki nokta. */
     #video-reference-mobile-header .video-reference-more-dots {
         position: relative !important;
         display: block !important;
@@ -454,7 +450,6 @@ HTML;
         font-weight: 600 !important;
     }
 
-    /* Misafir ayar kutusu sagdaki iki nokta butonunun hemen altinda. */
     #video-reference-mobile-header .video-mobile-menu-panel {
         position: absolute !important;
         top: 46px !important;
@@ -558,7 +553,6 @@ HTML;
         padding-top: 66px !important;
     }
 
-    /* Karanlik mod: header yuzeyleri, popup ve hover durumlari. */
     html.dark #video-reference-mobile-header .video-mobile-sidebar-button,
     html.dark #video-reference-mobile-header .video-mobile-brand,
     html.dark #video-reference-mobile-header .video-mobile-brand.is-collapsed,
@@ -711,7 +705,6 @@ HTML;
         brand?.classList.add('is-collapsed');
     }, 5000);
 
-    // Soldaki iki cizgili buton mevcut mobil yan menuyu acar ve video headerini gizler.
     sidebar?.addEventListener('click', (event) => {
         event.preventDefault();
         event.stopPropagation();
@@ -730,7 +723,6 @@ HTML;
         syncSidebarHeaderState();
     }
 
-    // Sidebar icindeki kapatma/overlay tiklarindan sonra header tekrar gorunsun.
     document.addEventListener('click', (event) => {
         const target = event.target instanceof Element ? event.target : null;
         if (target?.closest('[data-mobile-sidebar-close], [data-sidebar-close], [data-mobile-sidebar-overlay], .mobile-sidebar-overlay')) {
