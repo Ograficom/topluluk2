@@ -14,7 +14,7 @@
      */
     .create-page-fixed > div > header > .flex {
         display: grid !important;
-        grid-template-columns: 38px 38px minmax(72px, 1fr) 28px 38px 38px 42px !important;
+        grid-template-columns: 38px 38px minmax(72px, 1fr) 28px 38px 42px !important;
         align-items: center !important;
         column-gap: 5px !important;
         row-gap: 0 !important;
@@ -132,7 +132,7 @@
     }
 
     .create-page-fixed > div > header button[data-open-settings] {
-        grid-column: 6 !important;
+        grid-column: 5 !important;
     }
 
     .create-page-fixed > div > header button[data-ai-assist],
@@ -150,7 +150,7 @@
     }
 
     .create-page-fixed > div > header button[data-submit-intent="publish"] {
-        grid-column: 7 !important;
+        grid-column: 6 !important;
         width: 42px !important;
         min-width: 42px !important;
         height: 42px !important;
@@ -178,7 +178,7 @@
     /* Çok dar telefonlarda kategori alanını koruyup ikonları hafif küçült. */
     @media (max-width: 390px) {
         .create-page-fixed > div > header > .flex {
-            grid-template-columns: 36px 36px minmax(62px, 1fr) 24px 36px 36px 40px !important;
+            grid-template-columns: 36px 36px minmax(62px, 1fr) 24px 36px 40px !important;
             column-gap: 4px !important;
         }
 
