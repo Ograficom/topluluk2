@@ -36,7 +36,7 @@ class VideoPageResponseMiddleware
         // Mobil tarayicilar eski video scriptini tutmasin.
         $content = preg_replace(
             '/video-tv\.js\?v=\d+[a-z]?/i',
-            'video-tv.js?v=420',
+            'video-tv.js?v=423',
             $content,
         ) ?? $content;
 
