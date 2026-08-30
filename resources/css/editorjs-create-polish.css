@@ -224,3 +224,137 @@ html[data-theme="dark"] .create-page-fixed [data-editorjs-wrapper] .ce-popover--
 html[data-system-theme="dark"] .create-page-fixed [data-editorjs-wrapper] .ce-popover--opened .ce-popover-item__title {
     color: #f8fafc !important;
 }
+
+/*
+ * Floating AI assistant: the older composer polish intentionally forced the
+ * header AI control to white. The control is now fixed at the bottom-right,
+ * so this higher-specificity rule owns its visual state and keeps the
+ * existing data-ai-assist behavior untouched.
+ */
+@keyframes ografiAiChromaFlow {
+    0% { background-position: 0 0, 0% 0%; }
+    100% { background-position: 0 0, 300% 0%; }
+}
+
+.create-page-fixed > div > header button[data-ai-assist][type="button"] {
+    position: fixed !important;
+    right: 18px !important;
+    bottom: 18px !important;
+    top: auto !important;
+    left: auto !important;
+    z-index: 100200 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 4px !important;
+    width: 48px !important;
+    min-width: 48px !important;
+    max-width: 48px !important;
+    height: 30px !important;
+    min-height: 30px !important;
+    padding: 0 7px !important;
+    border: 2px solid transparent !important;
+    border-radius: 999px !important;
+    background:
+        linear-gradient(#0a0a0c, #0a0a0c) padding-box,
+        linear-gradient(90deg, #ff0000, #ff7f00, #ffff00, #00ff00, #00ffff, #0000ff, #8b00ff, #ff0000) border-box !important;
+    background-size: 100% 100%, 300% 100% !important;
+    color: #ffffff !important;
+    box-shadow:
+        0 0 8px rgba(0, 255, 255, .30),
+        0 0 14px rgba(139, 0, 255, .24),
+        0 0 20px rgba(255, 0, 85, .12) !important;
+    cursor: pointer !important;
+    overflow: visible !important;
+    isolation: isolate !important;
+    animation: ografiAiChromaFlow 7s linear infinite !important;
+    transition: transform .16s ease, box-shadow .16s ease !important;
+}
+
+.create-page-fixed > div > header button[data-ai-assist][type="button"]::before {
+    content: '' !important;
+    position: absolute !important;
+    inset: -4px !important;
+    z-index: -1 !important;
+    border-radius: inherit !important;
+    background: linear-gradient(90deg, #ff0000, #ff7f00, #ffff00, #00ff00, #00ffff, #0000ff, #8b00ff, #ff0000) !important;
+    background-size: 300% 100% !important;
+    filter: blur(9px) !important;
+    opacity: .48 !important;
+    animation: ografiAiChromaFlow 7s linear infinite !important;
+    pointer-events: none !important;
+}
+
+.create-page-fixed > div > header button[data-ai-assist][type="button"]::after {
+    content: 'AI' !important;
+    display: inline-block !important;
+    color: #ffffff !important;
+    font-size: 9px !important;
+    line-height: 1 !important;
+    font-weight: 700 !important;
+    letter-spacing: .04em !important;
+    white-space: nowrap !important;
+}
+
+.create-page-fixed > div > header button[data-ai-assist][type="button"] iconify-icon[data-ai-assist-icon] {
+    display: inline-flex !important;
+    width: 12px !important;
+    height: 12px !important;
+    font-size: 12px !important;
+    color: #ffffff !important;
+    filter: drop-shadow(0 0 4px rgba(255, 255, 255, .85)) !important;
+}
+
+.create-page-fixed > div > header button[data-ai-assist][type="button"]:hover {
+    background:
+        linear-gradient(#0a0a0c, #0a0a0c) padding-box,
+        linear-gradient(90deg, #ff0000, #ff7f00, #ffff00, #00ff00, #00ffff, #0000ff, #8b00ff, #ff0000) border-box !important;
+    background-size: 100% 100%, 300% 100% !important;
+    color: #ffffff !important;
+    transform: scale(1.05) !important;
+    box-shadow:
+        0 0 10px rgba(0, 255, 255, .42),
+        0 0 18px rgba(139, 0, 255, .32),
+        0 0 24px rgba(255, 0, 85, .18) !important;
+}
+
+.create-page-fixed > div > header button[data-ai-assist][type="button"]:active {
+    transform: scale(.96) !important;
+}
+
+.create-page-fixed > div > header button[data-ai-assist][type="button"]:disabled {
+    opacity: .78 !important;
+    cursor: wait !important;
+}
+
+.create-page-fixed > div > header button[data-ai-assist][type="button"]:disabled iconify-icon[data-ai-assist-icon] {
+    animation: ografiAiAssistantSpin .8s linear infinite !important;
+}
+
+@keyframes ografiAiAssistantSpin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+@media (max-width: 640px) {
+    .create-page-fixed > div > header button[data-ai-assist][type="button"] {
+        right: 12px !important;
+        bottom: 12px !important;
+        width: 44px !important;
+        min-width: 44px !important;
+        max-width: 44px !important;
+        height: 28px !important;
+        min-height: 28px !important;
+        padding: 0 6px !important;
+    }
+
+    .create-page-fixed > div > header button[data-ai-assist][type="button"]::after {
+        font-size: 8px !important;
+    }
+
+    .create-page-fixed > div > header button[data-ai-assist][type="button"] iconify-icon[data-ai-assist-icon] {
+        width: 11px !important;
+        height: 11px !important;
+        font-size: 11px !important;
+    }
+}
