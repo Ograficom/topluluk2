@@ -1,4 +1,4 @@
-/* /video mobile header — iOS reference proportions + localized downward haze. */
+/* /video mobile header — iOS reference proportions + restored subtle downward haze. */
 @media (max-width: 767px) {
     html body.alma-app #video-reference-mobile-header {
         top: calc(12px + env(safe-area-inset-top, 0px)) !important;
@@ -8,7 +8,6 @@
         isolation: isolate !important;
     }
 
-    /* Tam genişlikte blur yok: içerik bulanıklaşmaz. */
     html body.alma-app #video-reference-mobile-header::before {
         content: none !important;
         display: none !important;
@@ -21,7 +20,6 @@
         gap: 7px !important;
     }
 
-    /* Referanstaki soldaki yuvarlak kontrol. */
     html body.alma-app #video-reference-mobile-header .video-mobile-sidebar-button {
         position: relative !important;
         isolation: isolate !important;
@@ -46,7 +44,6 @@
         stroke-width: 2.25 !important;
     }
 
-    /* Logo kapsülü önceki isteğe göre kalıyor; ölçeği header ile uyumlu. */
     html body.alma-app #video-reference-mobile-header .video-mobile-brand,
     html body.alma-app #video-reference-mobile-header .video-mobile-brand.is-collapsed {
         position: relative !important;
@@ -88,7 +85,6 @@
         white-space: nowrap !important;
     }
 
-    /* Referanstaki sağ taraf: iki ayrı kutu değil, TEK beyaz oval kapsül. */
     html body.alma-app #video-reference-mobile-header .video-reference-actions {
         position: relative !important;
         isolation: isolate !important;
@@ -184,32 +180,32 @@
         font-size: 15px !important;
     }
 
-    /* Referanstaki gibi kutuların arkasından aşağı doğru yayılan yumuşak beyaz haze. */
+    /* Eski ince kaybolan blur: kutunun altindan baslar, 22px icinde zemine karisir. */
     html body.alma-app #video-reference-mobile-header .video-mobile-sidebar-button::before,
     html body.alma-app #video-reference-mobile-header .video-mobile-brand::before,
     html body.alma-app #video-reference-mobile-header .video-reference-actions::before {
         content: '' !important;
         position: absolute !important;
-        left: -8px !important;
-        right: -8px !important;
-        top: 18px !important;
-        height: 58px !important;
+        left: 5px !important;
+        right: 5px !important;
+        bottom: -14px !important;
+        top: auto !important;
+        height: 22px !important;
         z-index: -1 !important;
-        pointer-events: none !important;
         border-radius: 999px !important;
+        pointer-events: none !important;
         background: linear-gradient(
             180deg,
-            rgba(255, 255, 255, .76) 0%,
-            rgba(248, 246, 242, .52) 32%,
-            rgba(248, 246, 242, .22) 62%,
+            rgba(248, 246, 242, .72) 0%,
+            rgba(248, 246, 242, .42) 42%,
+            rgba(248, 246, 242, .16) 72%,
             rgba(248, 246, 242, 0) 100%
         ) !important;
-        filter: blur(15px) !important;
-        opacity: .92 !important;
+        filter: blur(6px) !important;
+        opacity: .88 !important;
         transform: translateZ(0) !important;
     }
 
-    /* İç düğmelerin eski lokal pseudo blur'larını kapat; haze kapsülün kendisinden gelsin. */
     html body.alma-app #video-reference-mobile-header .video-reference-compose::before,
     html body.alma-app #video-reference-mobile-header .video-reference-more::before,
     html body.alma-app #video-reference-mobile-header .video-reference-account::before {
@@ -235,9 +231,9 @@
     html body.dark.alma-app #video-reference-mobile-header .video-reference-actions::before {
         background: linear-gradient(
             180deg,
-            rgba(17, 24, 39, .76) 0%,
-            rgba(11, 18, 32, .50) 32%,
-            rgba(11, 18, 32, .20) 62%,
+            rgba(11, 18, 32, .70) 0%,
+            rgba(11, 18, 32, .40) 42%,
+            rgba(11, 18, 32, .14) 72%,
             rgba(11, 18, 32, 0) 100%
         ) !important;
     }
