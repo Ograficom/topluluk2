@@ -150,6 +150,103 @@ class PostPresentationMiddleware
     background: #2563eb !important;
     border-color: #2563eb !important;
 }
+
+@keyframes ografiAiRgbFlow {
+    0% { background-position: 0 0, 0% 0%; }
+    100% { background-position: 0 0, 300% 0%; }
+}
+
+button[data-ai-assist] {
+    position: fixed !important;
+    right: 18px !important;
+    bottom: 18px !important;
+    top: auto !important;
+    left: auto !important;
+    z-index: 100200 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 4px !important;
+    width: 52px !important;
+    min-width: 52px !important;
+    max-width: 52px !important;
+    height: 32px !important;
+    min-height: 32px !important;
+    padding: 0 8px !important;
+    border: 2px solid transparent !important;
+    border-radius: 999px !important;
+    background:
+        linear-gradient(#0a0a0c, #0a0a0c) padding-box,
+        linear-gradient(90deg, #ff0000, #ff7f00, #ffff00, #00ff00, #00ffff, #0000ff, #8b00ff, #ff0000) border-box !important;
+    background-size: 100% 100%, 300% 100% !important;
+    color: #ffffff !important;
+    box-shadow:
+        0 0 9px rgba(0, 255, 255, .22),
+        0 0 14px rgba(139, 0, 255, .18) !important;
+    cursor: pointer !important;
+    transform: none !important;
+    animation: ografiAiRgbFlow 7s linear infinite !important;
+    transition: transform .16s ease, box-shadow .16s ease !important;
+}
+
+button[data-ai-assist]::after {
+    content: 'AI';
+    display: inline-block;
+    color: #ffffff;
+    font-size: 10px;
+    line-height: 1;
+    font-weight: 700;
+    letter-spacing: .04em;
+    white-space: nowrap;
+}
+
+button[data-ai-assist] iconify-icon[data-ai-assist-icon] {
+    display: inline-flex !important;
+    width: 14px !important;
+    height: 14px !important;
+    font-size: 14px !important;
+    color: #ffffff !important;
+    filter: drop-shadow(0 0 4px rgba(255, 255, 255, .75));
+}
+
+button[data-ai-assist]:hover {
+    transform: scale(1.05) !important;
+    box-shadow:
+        0 0 12px rgba(0, 255, 255, .34),
+        0 0 18px rgba(139, 0, 255, .28) !important;
+}
+
+button[data-ai-assist]:active {
+    transform: scale(.96) !important;
+}
+
+button[data-ai-assist]:disabled {
+    cursor: wait !important;
+    opacity: .78 !important;
+}
+
+@media (max-width: 640px) {
+    button[data-ai-assist] {
+        right: 12px !important;
+        bottom: 12px !important;
+        width: 48px !important;
+        min-width: 48px !important;
+        max-width: 48px !important;
+        height: 30px !important;
+        min-height: 30px !important;
+        padding: 0 7px !important;
+    }
+
+    button[data-ai-assist]::after {
+        font-size: 9px;
+    }
+
+    button[data-ai-assist] iconify-icon[data-ai-assist-icon] {
+        width: 13px !important;
+        height: 13px !important;
+        font-size: 13px !important;
+    }
+}
 </style>
 <script data-ografi-post-distribution-settings>
 (() => {
