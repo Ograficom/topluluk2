@@ -40,22 +40,17 @@ class PostPresentationMiddleware
             ) ?? $html;
         }
 
-        if ($request->routeIs('blog.create')) {
-            $preferencesScript = $this->preferencesScript($post);
+        if ($request->routeIs('blog.post.edit') && $post) {
+            // edit.blade.php, create.blade.php'nin birebir kopyasidir. Burada formu
+            // TARAYICIYA GONDERILMEDEN ONCE update moduna ceviriyoruz. Boylece
+            // EditorJS ilk kez baslarken mevcut post verilerini dogrudan DOM'dan okur;
+            // sonradan JS ile alan doldurma/race-condition yoktur.
+            $html = $this->prepareEditComposerHtml($html, $request, $post);
+        }
+
+        if ($request->routeIs('blog.create', 'blog.post.edit')) {
+            $preferencesScript = $this->preferencesScript($request, $post);
             $html = preg_replace('/<\/body>/i', $preferencesScript . "\n</body>", $html, 1) ?? ($html . $preferencesScript);
-        } elseif ($request->routeIs('blog.post.edit')) {
-            // Edit sayfasi create composer'in birebir HTML'ini kullaniyor. Edit verilerini
-            // form kapandigi anda hydrate ederek EditorJS ve sayfa scriptlerinden ONCE
-            // mevcut post degerlerinin DOM'a yerlesmesini garanti ediyoruz. Eski akista
-            // script </body> oncesinde calistigi icin EditorJS bos verilerle baslayabiliyordu.
-            $preferencesScript = $this->preferencesScript($post);
-            $injected = preg_replace_callback(
-                '/<\/form>/i',
-                static fn () => "</form>\n" . $preferencesScript,
-                $html,
-                1
-            );
-            $html = is_string($injected) ? $injected : ($html . $preferencesScript);
         }
 
         $aiIds = [];
@@ -98,44 +93,215 @@ class PostPresentationMiddleware
         return Post::withoutGlobalScopes()->where('slug', $slug)->first();
     }
 
-    private function preferencesScript(?Post $post): string
+    private function prepareEditComposerHtml(string $html, Request $request, Post $post): string
     {
-        $states = json_encode([
-            'followers_only' => (bool) ($post?->followers_only ?? false),
-            'noindex' => (bool) ($post?->noindex ?? false),
-            'is_ai_product' => (bool) ($post?->is_ai_product ?? false),
-            'hide_from_feeds' => (bool) ($post?->hide_from_feeds ?? false),
-            'suppress_follower_notifications' => (bool) ($post?->suppress_follower_notifications ?? false),
-        ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) ?: '{}';
+        $post->loadMissing('tags');
 
-        $editPayload = 'null';
-        if ($post) {
-            $post->loadMissing('tags');
-            $editPayload = json_encode([
-                'action' => route('blog.post.update', $post),
-                'title' => (string) ($post->title ?? ''),
-                'category_id' => $post->category_id,
-                'tags' => $post->tags->pluck('id')->map(fn ($id) => (int) $id)->values()->all(),
-                'content' => (string) ($post->content ?? ''),
-                'content_json' => is_array($post->content_json) ? $post->content_json : null,
-                'excerpt' => (string) ($post->excerpt ?? ''),
-                'meta_title' => (string) ($post->meta_title ?? ''),
-                'meta_description' => (string) ($post->meta_description ?? ''),
-                'slug' => (string) ($post->slug ?? ''),
-                'meta_keywords' => (string) ($post->meta_keywords ?? ''),
-                'published_at' => $post->published_at?->format('Y-m-d\\TH:i'),
-                'image_license_url' => (string) ($post->image_license_url ?? ''),
-                'image_acquire_url' => (string) ($post->image_acquire_url ?? ''),
-                'image_credit_text' => (string) ($post->image_credit_text ?? ''),
-                'image_creator_name' => (string) ($post->image_creator_name ?? ''),
-                'image_copyright_notice' => (string) ($post->image_copyright_notice ?? ''),
-                'is_published' => (bool) $post->is_published,
-                'comments_disabled' => (bool) $post->comments_disabled,
-                'is_nsfw' => (bool) $post->is_nsfw,
-                'is_pinned' => (bool) $post->is_pinned,
-                'featured_image_url' => (string) ($post->featured_image_url ?? ''),
-            ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) ?: 'null';
+        $contentJson = is_array($post->content_json)
+            ? (json_encode($post->content_json, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) ?: '')
+            : (string) ($post->content_json ?? '');
+
+        $field = static function (Request $request, string $key, mixed $fallback): mixed {
+            return $request->session()->hasOldInput($key)
+                ? $request->old($key)
+                : $fallback;
+        };
+
+        $categoryId = $field($request, 'category_id', $post->category_id);
+        $selectedTags = collect($field($request, 'tags', $post->tags->pluck('id')->all()))
+            ->map(fn ($id) => (int) $id)
+            ->filter(fn ($id) => $id > 0)
+            ->unique()
+            ->values()
+            ->all();
+
+        $html = preg_replace_callback(
+            '/<form\b[^>]*\bid="post-create-form"[^>]*>/i',
+            function (array $matches) use ($post): string {
+                $tag = $matches[0];
+                $action = htmlspecialchars(route('blog.post.update', $post), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+
+                if (preg_match('/\baction="[^"]*"/i', $tag)) {
+                    $tag = preg_replace('/\baction="[^"]*"/i', 'action="' . $action . '"', $tag, 1) ?? $tag;
+                } else {
+                    $tag = substr($tag, 0, -1) . ' action="' . $action . '">';
+                }
+
+                if (! str_contains($tag, 'data-edit-mode=')) {
+                    $tag = substr($tag, 0, -1) . ' data-edit-mode="1">';
+                }
+
+                return $tag . "\n                    <input type=\"hidden\" name=\"_method\" value=\"PUT\">";
+            },
+            $html,
+            1
+        ) ?? $html;
+
+        $html = preg_replace(
+            '/(<div class="truncate text-sm font-semibold text-slate-950">)Yeni gönderi(<\/div>)/u',
+            '$1Gönderiyi düzenle$2',
+            $html,
+            1
+        ) ?? $html;
+
+        $html = $this->setInputValueById($html, 'is_published', $field($request, 'is_published', $post->is_published ? '1' : '0'));
+        $html = $this->setInputValueById($html, 'category_id', $categoryId ?? '');
+        $html = $this->setInputValueById($html, 'content_json', $field($request, 'content_json', $contentJson));
+        $html = $this->setInputValueById($html, 'new_tags', $field($request, 'new_tags', ''));
+        $html = $this->setInputValueById($html, 'meta_title', $field($request, 'meta_title', $post->meta_title ?? ''));
+        $html = $this->setInputValueById($html, 'slug', $field($request, 'slug', $post->slug ?? ''));
+        $html = $this->setInputValueById($html, 'published_at', $field($request, 'published_at', $post->published_at?->format('Y-m-d\TH:i') ?? ''));
+        $html = $this->setInputValueById($html, 'image_license_url', $field($request, 'image_license_url', $post->image_license_url ?? ''));
+        $html = $this->setInputValueById($html, 'image_acquire_url', $field($request, 'image_acquire_url', $post->image_acquire_url ?? ''));
+        $html = $this->setInputValueById($html, 'image_credit_text', $field($request, 'image_credit_text', $post->image_credit_text ?? ''));
+        $html = $this->setInputValueById($html, 'image_creator_name', $field($request, 'image_creator_name', $post->image_creator_name ?? ''));
+        $html = $this->setInputValueById($html, 'image_copyright_notice', $field($request, 'image_copyright_notice', $post->image_copyright_notice ?? ''));
+
+        $html = $this->setTextareaValueById($html, 'title', $field($request, 'title', $post->title ?? ''));
+        $html = $this->setTextareaValueById($html, 'content', $field($request, 'content', $post->content ?? ''));
+        $html = $this->setTextareaValueById($html, 'excerpt', $field($request, 'excerpt', $post->excerpt ?? ''));
+        $html = $this->setTextareaValueById($html, 'meta_description', $field($request, 'meta_description', $post->meta_description ?? ''));
+        $html = $this->setTextareaValueById($html, 'meta_keywords', $field($request, 'meta_keywords', $post->meta_keywords ?? ''));
+
+        $html = $this->setCheckboxByName($html, 'comments_disabled', (bool) $field($request, 'comments_disabled', $post->comments_disabled));
+        $html = $this->setCheckboxByName($html, 'is_nsfw', (bool) $field($request, 'is_nsfw', $post->is_nsfw));
+        $html = $this->setCheckboxByName($html, 'is_pinned', (bool) $field($request, 'is_pinned', $post->is_pinned));
+        $html = $this->setTagCheckboxes($html, $selectedTags);
+
+        $featuredImageUrl = trim((string) ($post->featured_image_url ?? ''));
+        if ($featuredImageUrl !== '') {
+            $html = preg_replace(
+                '/class="create-cover"\s+data-cover-field/i',
+                'class="create-cover has-image" data-cover-field',
+                $html,
+                1
+            ) ?? $html;
+
+            $escapedImageUrl = htmlspecialchars($featuredImageUrl, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+            $html = preg_replace_callback(
+                '/<img\b[^>]*\bdata-cover-preview-img\b[^>]*>/i',
+                static function (array $matches) use ($escapedImageUrl): string {
+                    $tag = $matches[0];
+                    if (preg_match('/\bsrc="[^"]*"/i', $tag)) {
+                        return preg_replace('/\bsrc="[^"]*"/i', 'src="' . $escapedImageUrl . '"', $tag, 1) ?? $tag;
+                    }
+
+                    return substr($tag, 0, -1) . ' src="' . $escapedImageUrl . '">';
+                },
+                $html,
+                1
+            ) ?? $html;
         }
+
+        $html = preg_replace_callback(
+            '/(<button\b[^>]*\bdata-submit-intent="publish"[^>]*>)(.*?)(<\/button>)/is',
+            static function (array $matches): string {
+                $inner = $matches[2];
+                if (preg_match('/<span\b/i', $inner)) {
+                    $inner = preg_replace('/(<span\b[^>]*>).*?(<\/span>)/is', '$1Güncelle$2', $inner, 1) ?? $inner;
+                } else {
+                    $inner = 'Güncelle';
+                }
+
+                return $matches[1] . $inner . $matches[3];
+            },
+            $html
+        ) ?? $html;
+
+        return $html;
+    }
+
+    private function setInputValueById(string $html, string $id, mixed $value): string
+    {
+        $escaped = htmlspecialchars((string) ($value ?? ''), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+        $quotedId = preg_quote($id, '/');
+
+        return preg_replace_callback(
+            '/<input\b[^>]*\bid="' . $quotedId . '"[^>]*>/i',
+            static function (array $matches) use ($escaped): string {
+                $tag = $matches[0];
+                if (preg_match('/\bvalue="[^"]*"/i', $tag)) {
+                    return preg_replace('/\bvalue="[^"]*"/i', 'value="' . $escaped . '"', $tag, 1) ?? $tag;
+                }
+
+                return substr($tag, 0, -1) . ' value="' . $escaped . '">';
+            },
+            $html,
+            1
+        ) ?? $html;
+    }
+
+    private function setTextareaValueById(string $html, string $id, mixed $value): string
+    {
+        $escaped = htmlspecialchars((string) ($value ?? ''), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+        $quotedId = preg_quote($id, '/');
+
+        return preg_replace_callback(
+            '/(<textarea\b[^>]*\bid="' . $quotedId . '"[^>]*>).*?(<\/textarea>)/is',
+            static fn (array $matches): string => $matches[1] . $escaped . $matches[2],
+            $html,
+            1
+        ) ?? $html;
+    }
+
+    private function setCheckboxByName(string $html, string $name, bool $checked): string
+    {
+        $quotedName = preg_quote($name, '/');
+
+        return preg_replace_callback(
+            '/<input\b[^>]*\bname="' . $quotedName . '"[^>]*>/i',
+            static function (array $matches) use ($checked): string {
+                $tag = $matches[0];
+                if (! preg_match('/\btype="checkbox"/i', $tag)) {
+                    return $tag;
+                }
+
+                $tag = preg_replace('/\schecked(?:="checked")?/i', '', $tag) ?? $tag;
+                if ($checked) {
+                    $tag = substr($tag, 0, -1) . ' checked>';
+                }
+
+                return $tag;
+            },
+            $html
+        ) ?? $html;
+    }
+
+    private function setTagCheckboxes(string $html, array $selectedTags): string
+    {
+        $selected = array_fill_keys(array_map('strval', $selectedTags), true);
+
+        return preg_replace_callback(
+            '/<input\b[^>]*\bname="tags\[\]"[^>]*>/i',
+            static function (array $matches) use ($selected): string {
+                $tag = $matches[0];
+                $tag = preg_replace('/\schecked(?:="checked")?/i', '', $tag) ?? $tag;
+
+                if (preg_match('/\bvalue="([^"]+)"/i', $tag, $valueMatch) && isset($selected[(string) $valueMatch[1]])) {
+                    $tag = substr($tag, 0, -1) . ' checked>';
+                }
+
+                return $tag;
+            },
+            $html
+        ) ?? $html;
+    }
+
+    private function preferencesScript(Request $request, ?Post $post): string
+    {
+        $oldOrPost = static function (Request $request, string $key, bool $fallback): bool {
+            return $request->session()->hasOldInput($key)
+                ? (bool) $request->old($key)
+                : $fallback;
+        };
+
+        $states = json_encode([
+            'followers_only' => $oldOrPost($request, 'followers_only', (bool) ($post?->followers_only ?? false)),
+            'noindex' => $oldOrPost($request, 'noindex', (bool) ($post?->noindex ?? false)),
+            'is_ai_product' => $oldOrPost($request, 'is_ai_product', (bool) ($post?->is_ai_product ?? false)),
+            'hide_from_feeds' => $oldOrPost($request, 'hide_from_feeds', (bool) ($post?->hide_from_feeds ?? false)),
+            'suppress_follower_notifications' => $oldOrPost($request, 'suppress_follower_notifications', (bool) ($post?->suppress_follower_notifications ?? false)),
+        ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) ?: '{}';
 
         return <<<HTML
 <style data-ografi-preference-interactions>
@@ -264,7 +430,6 @@ button[data-ai-assist]:disabled {
 <script data-ografi-post-distribution-settings>
 (() => {
     const states = {$states};
-    const edit = {$editPayload};
     const options = [
         ['followers_only', 'Sadece takipçiler'],
         ['noindex', 'Arama motorlarından sakla'],
@@ -281,126 +446,37 @@ button[data-ai-assist]:disabled {
             <span class="pointer-events-none absolute left-[3px] top-[3px] h-5 w-5 rounded-full bg-white shadow-[0_2px_8px_rgba(15,23,42,0.18)] transition-all duration-200 peer-checked:translate-x-5" aria-hidden="true"></span>
         </label>`;
 
-    const setValue = (id, value) => {
-        const field = document.getElementById(id);
-        if (!field || value === undefined || value === null) return;
-        field.value = String(value);
-    };
-
-    const applyEditComposer = () => {
-        if (!edit) return true;
-
-        const form = document.getElementById('post-create-form');
-        if (!form) return false;
-
-        form.action = edit.action;
-        form.dataset.editMode = '1';
-        form.dataset.serverDraftBound = '1';
-        form.dataset.autosaveBound = '1';
-
-        let method = form.querySelector('input[name="_method"]');
-        if (!method) {
-            method = document.createElement('input');
-            method.type = 'hidden';
-            method.name = '_method';
-            form.prepend(method);
-        }
-        method.value = 'PUT';
-
-        setValue('title', edit.title || '');
-        setValue('category_id', edit.category_id || '');
-        setValue('content', edit.content || '');
-        setValue('content_json', edit.content_json ? JSON.stringify(edit.content_json) : '');
-        setValue('excerpt', edit.excerpt || '');
-        setValue('meta_title', edit.meta_title || '');
-        setValue('meta_description', edit.meta_description || '');
-        setValue('slug', edit.slug || '');
-        setValue('meta_keywords', edit.meta_keywords || '');
-        setValue('published_at', edit.published_at || '');
-        setValue('image_license_url', edit.image_license_url || '');
-        setValue('image_acquire_url', edit.image_acquire_url || '');
-        setValue('image_credit_text', edit.image_credit_text || '');
-        setValue('image_creator_name', edit.image_creator_name || '');
-        setValue('image_copyright_notice', edit.image_copyright_notice || '');
-        setValue('is_published', edit.is_published ? '1' : '0');
-
-        ['comments_disabled', 'is_nsfw', 'is_pinned'].forEach((name) => {
-            const checkbox = form.querySelector(`input[type="checkbox"][name="\${name}"]`);
-            if (checkbox) checkbox.checked = Boolean(edit[name]);
-        });
-
-        const selectedTags = new Set((edit.tags || []).map((id) => String(id)));
-        form.querySelectorAll('input[type="checkbox"][name="tags[]"]').forEach((checkbox) => {
-            checkbox.checked = selectedTags.has(String(checkbox.value));
-        });
-
-        const activeCategory = form.querySelector(`[data-category-option][data-value="\${String(edit.category_id || '')}"]`);
-        const categoryLabel = document.querySelector('[data-category-label]');
-        if (activeCategory && categoryLabel) {
-            categoryLabel.textContent = activeCategory.getAttribute('data-label') || categoryLabel.textContent;
-        }
-
-        if (edit.featured_image_url) {
-            const coverField = document.querySelector('[data-cover-field]');
-            const coverImage = document.querySelector('[data-cover-preview-img]');
-            if (coverField && coverImage) {
-                coverImage.src = edit.featured_image_url;
-                coverField.classList.add('has-image');
-            }
-        }
-
-        const heading = document.querySelector('.create-page-fixed header .truncate.text-sm.font-semibold.text-slate-950');
-        if (heading) heading.textContent = 'Gönderiyi düzenle';
-
-        document.querySelectorAll('[data-submit-intent="publish"]').forEach((button) => {
-            const label = button.querySelector('span');
-            if (label) {
-                label.textContent = 'Güncelle';
-            } else if (!button.querySelector('iconify-icon')) {
-                button.textContent = 'Güncelle';
-            }
-        });
-
-        return true;
-    };
-
     const mount = () => {
         const titles = Array.from(document.querySelectorAll('#settings-modal .settings-accordion-title'));
         const title = titles.find((node) => String(node.textContent || '').trim() === 'Tercihler');
         const details = title?.closest('details.settings-accordion');
         const content = details?.querySelector('.settings-accordion-content');
         const list = content?.querySelector('.divide-y');
-        if (!list || list.dataset.distributionReady === '1') return Boolean(list);
+
+        // Akordiyon donusumu henuz yapilmadiysa create blade'deki Tercihler
+        // kartini dogrudan bul. Boylece create/edit iki sayfada da ayni ayarlar calisir.
+        let targetList = list;
+        if (!targetList) {
+            const preferenceHeading = Array.from(document.querySelectorAll('#settings-modal .text-sm.font-semibold.text-slate-950'))
+                .find((node) => String(node.textContent || '').trim() === 'Tercihler');
+            targetList = preferenceHeading?.closest('section')?.querySelector('.divide-y') || null;
+        }
+
+        if (!targetList || targetList.dataset.distributionReady === '1') return Boolean(targetList);
 
         options.forEach(([name, label]) => {
-            if (list.querySelector(`[name="\${name}"]`)) return;
+            if (targetList.querySelector(`[name="\${name}"]`)) return;
             const row = document.createElement('div');
             row.className = 'flex items-center justify-between gap-4 px-3 py-3';
             row.innerHTML = `<span class="text-sm text-slate-800">\${label}</span>\${switchMarkup(name, Boolean(states[name]))}`;
-            list.appendChild(row);
+            targetList.appendChild(row);
         });
 
-        list.dataset.distributionReady = '1';
+        targetList.dataset.distributionReady = '1';
         return true;
     };
 
-    const repairEditSettingsSave = () => {
-        if (!edit) return;
-        const saveButton = document.querySelector('[data-settings-save]');
-        const form = document.getElementById('post-create-form');
-        if (!saveButton || !form || saveButton.dataset.editSubmitBound === '1') return;
-
-        const replacement = saveButton.cloneNode(true);
-        replacement.disabled = false;
-        replacement.textContent = 'Kaydet';
-        replacement.dataset.editSubmitBound = '1';
-        replacement.addEventListener('click', () => form.requestSubmit());
-        saveButton.replaceWith(replacement);
-    };
-
     const boot = () => {
-        applyEditComposer();
-
         if (!mount()) {
             let attempts = 0;
             const timer = window.setInterval(() => {
@@ -408,14 +484,7 @@ button[data-ai-assist]:disabled {
                 if (mount() || attempts > 40) window.clearInterval(timer);
             }, 100);
         }
-
-        if (edit) {
-            window.setTimeout(repairEditSettingsSave, 120);
-            window.setTimeout(repairEditSettingsSave, 400);
-        }
     };
-
-    applyEditComposer();
 
     if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot, { once: true });
     else boot();
