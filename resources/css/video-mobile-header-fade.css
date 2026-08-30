@@ -1,15 +1,14 @@
-/* /video mobile header — balanced sizing + local downward fade behind each white control. */
+/* /video mobile header — iOS reference proportions + localized downward haze. */
 @media (max-width: 767px) {
     html body.alma-app #video-reference-mobile-header {
-        height: 42px !important;
+        top: calc(12px + env(safe-area-inset-top, 0px)) !important;
+        height: 44px !important;
+        padding-left: 16px !important;
+        padding-right: 16px !important;
         isolation: isolate !important;
     }
 
-    /*
-     * Tam genislikte backdrop blur kullanma: alttaki kanal durum yazilarini
-     * bulandirmasin. Fade yalnizca beyaz kutularin arkasinda, asagi dogru
-     * sayfa zemin rengine karisarak kaybolur.
-     */
+    /* Tam genişlikte blur yok: içerik bulanıklaşmaz. */
     html body.alma-app #video-reference-mobile-header::before {
         content: none !important;
         display: none !important;
@@ -17,116 +16,71 @@
         backdrop-filter: none !important;
     }
 
-    html body.alma-app #video-reference-mobile-header .video-mobile-left,
-    html body.alma-app #video-reference-mobile-header .video-reference-actions {
-        height: 42px !important;
+    html body.alma-app #video-reference-mobile-header .video-mobile-left {
+        height: 44px !important;
         gap: 7px !important;
     }
 
-    html body.alma-app #video-reference-mobile-header .video-mobile-sidebar-button,
-    html body.alma-app #video-reference-mobile-header .video-mobile-brand,
-    html body.alma-app #video-reference-mobile-header .video-reference-compose,
-    html body.alma-app #video-reference-mobile-header .video-reference-more,
-    html body.alma-app #video-reference-mobile-header .video-reference-account {
+    /* Referanstaki soldaki yuvarlak kontrol. */
+    html body.alma-app #video-reference-mobile-header .video-mobile-sidebar-button {
         position: relative !important;
         isolation: isolate !important;
         overflow: visible !important;
-        box-shadow: 0 7px 18px rgba(15, 23, 42, .055) !important;
-    }
-
-    /* Kutularin hemen arkasinda ince, lokal ve asagi dogru kaybolan haze. */
-    html body.alma-app #video-reference-mobile-header .video-mobile-sidebar-button::before,
-    html body.alma-app #video-reference-mobile-header .video-mobile-brand::before,
-    html body.alma-app #video-reference-mobile-header .video-reference-compose::before,
-    html body.alma-app #video-reference-mobile-header .video-reference-more::before,
-    html body.alma-app #video-reference-mobile-header .video-reference-account::before {
-        content: '' !important;
-        position: absolute !important;
-        left: 5px !important;
-        right: 5px !important;
-        bottom: -14px !important;
-        height: 22px !important;
-        z-index: -1 !important;
-        border-radius: 999px !important;
-        pointer-events: none !important;
-        background: linear-gradient(
-            180deg,
-            rgba(248, 246, 242, .72) 0%,
-            rgba(248, 246, 242, .42) 42%,
-            rgba(248, 246, 242, .16) 72%,
-            rgba(248, 246, 242, 0) 100%
-        ) !important;
-        filter: blur(6px) !important;
-        opacity: .88 !important;
-        transform: translateZ(0) !important;
-    }
-
-    html.dark body.alma-app #video-reference-mobile-header .video-mobile-sidebar-button::before,
-    html.dark body.alma-app #video-reference-mobile-header .video-mobile-brand::before,
-    html.dark body.alma-app #video-reference-mobile-header .video-reference-compose::before,
-    html.dark body.alma-app #video-reference-mobile-header .video-reference-more::before,
-    html.dark body.alma-app #video-reference-mobile-header .video-reference-account::before,
-    html body.dark.alma-app #video-reference-mobile-header .video-mobile-sidebar-button::before,
-    html body.dark.alma-app #video-reference-mobile-header .video-mobile-brand::before,
-    html body.dark.alma-app #video-reference-mobile-header .video-reference-compose::before,
-    html body.dark.alma-app #video-reference-mobile-header .video-reference-more::before,
-    html body.dark.alma-app #video-reference-mobile-header .video-reference-account::before {
-        background: linear-gradient(
-            180deg,
-            rgba(11, 18, 32, .70) 0%,
-            rgba(11, 18, 32, .40) 42%,
-            rgba(11, 18, 32, .14) 72%,
-            rgba(11, 18, 32, 0) 100%
-        ) !important;
-    }
-
-    html body.alma-app #video-reference-mobile-header .video-mobile-sidebar-button {
-        width: 42px !important;
-        min-width: 42px !important;
-        max-width: 42px !important;
-        height: 42px !important;
-        min-height: 42px !important;
-        max-height: 42px !important;
-        flex: 0 0 42px !important;
+        width: 44px !important;
+        min-width: 44px !important;
+        max-width: 44px !important;
+        height: 44px !important;
+        min-height: 44px !important;
+        max-height: 44px !important;
+        flex: 0 0 44px !important;
+        border-radius: 9999px !important;
+        background: #ffffff !important;
+        box-shadow: 0 8px 24px rgba(15, 23, 42, .055) !important;
     }
 
     html body.alma-app #video-reference-mobile-header .video-mobile-sidebar-button svg {
-        width: 21px !important;
-        min-width: 21px !important;
-        height: 21px !important;
-        min-height: 21px !important;
-        stroke-width: 2.15 !important;
+        width: 23px !important;
+        min-width: 23px !important;
+        height: 23px !important;
+        min-height: 23px !important;
+        stroke-width: 2.25 !important;
     }
 
+    /* Logo kapsülü önceki isteğe göre kalıyor; ölçeği header ile uyumlu. */
     html body.alma-app #video-reference-mobile-header .video-mobile-brand,
     html body.alma-app #video-reference-mobile-header .video-mobile-brand.is-collapsed {
+        position: relative !important;
+        isolation: isolate !important;
+        overflow: visible !important;
         width: 116px !important;
         min-width: 116px !important;
         max-width: 116px !important;
-        height: 42px !important;
-        min-height: 42px !important;
-        max-height: 42px !important;
-        padding: 0 10px 0 7px !important;
+        height: 44px !important;
+        min-height: 44px !important;
+        max-height: 44px !important;
+        padding: 0 10px 0 8px !important;
         gap: 7px !important;
         flex: 0 0 116px !important;
         border-radius: 9999px !important;
+        background: #ffffff !important;
+        box-shadow: 0 8px 24px rgba(15, 23, 42, .055) !important;
     }
 
     html body.alma-app #video-reference-mobile-header .video-mobile-brand-logo {
-        width: 28px !important;
-        min-width: 28px !important;
-        max-width: 28px !important;
-        height: 28px !important;
-        min-height: 28px !important;
-        max-height: 28px !important;
-        flex: 0 0 28px !important;
+        width: 29px !important;
+        min-width: 29px !important;
+        max-width: 29px !important;
+        height: 29px !important;
+        min-height: 29px !important;
+        max-height: 29px !important;
+        flex: 0 0 29px !important;
     }
 
     html body.alma-app #video-reference-mobile-header .video-mobile-brand-word,
     html body.alma-app #video-reference-mobile-header .video-mobile-brand.is-collapsed .video-mobile-brand-word {
         display: inline-flex !important;
         align-items: center !important;
-        font-size: 15px !important;
+        font-size: 15.5px !important;
         line-height: 1.3 !important;
         font-weight: 600 !important;
         max-width: none !important;
@@ -134,36 +88,80 @@
         white-space: nowrap !important;
     }
 
+    /* Referanstaki sağ taraf: iki ayrı kutu değil, TEK beyaz oval kapsül. */
+    html body.alma-app #video-reference-mobile-header .video-reference-actions {
+        position: relative !important;
+        isolation: isolate !important;
+        overflow: visible !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        width: 110px !important;
+        min-width: 110px !important;
+        max-width: 110px !important;
+        height: 44px !important;
+        min-height: 44px !important;
+        max-height: 44px !important;
+        flex: 0 0 110px !important;
+        gap: 2px !important;
+        padding: 2px 4px !important;
+        border: 0 !important;
+        border-radius: 9999px !important;
+        background: #ffffff !important;
+        box-shadow: 0 8px 24px rgba(15, 23, 42, .055) !important;
+    }
+
     html body.alma-app #video-reference-mobile-header .video-reference-compose,
     html body.alma-app #video-reference-mobile-header .video-reference-more,
     html body.alma-app #video-reference-mobile-header .video-reference-account {
-        width: 42px !important;
-        min-width: 42px !important;
-        max-width: 42px !important;
-        height: 42px !important;
-        min-height: 42px !important;
-        max-height: 42px !important;
-        flex: 0 0 42px !important;
-        border-radius: 13px !important;
+        position: relative !important;
+        isolation: auto !important;
+        overflow: hidden !important;
+        width: 48px !important;
+        min-width: 48px !important;
+        max-width: 48px !important;
+        height: 40px !important;
+        min-height: 40px !important;
+        max-height: 40px !important;
+        flex: 0 0 48px !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        border: 0 !important;
+        border-radius: 9999px !important;
+        background: transparent !important;
+        box-shadow: none !important;
+    }
+
+    html body.alma-app #video-reference-mobile-header .video-reference-compose:hover,
+    html body.alma-app #video-reference-mobile-header .video-reference-compose:focus-visible,
+    html body.alma-app #video-reference-mobile-header .video-reference-compose:active,
+    html body.alma-app #video-reference-mobile-header .video-reference-more:hover,
+    html body.alma-app #video-reference-mobile-header .video-reference-more:focus-visible,
+    html body.alma-app #video-reference-mobile-header .video-reference-more:active,
+    html body.alma-app #video-reference-mobile-header .video-reference-more[aria-expanded="true"],
+    html body.alma-app #video-reference-mobile-header .video-reference-account:hover,
+    html body.alma-app #video-reference-mobile-header .video-reference-account:focus-visible,
+    html body.alma-app #video-reference-mobile-header .video-reference-account:active {
+        background: #f1f5f9 !important;
     }
 
     html body.alma-app #video-reference-mobile-header .video-reference-compose svg {
-        width: 22px !important;
-        min-width: 22px !important;
-        height: 22px !important;
-        min-height: 22px !important;
-        stroke-width: 2.1 !important;
+        width: 25px !important;
+        min-width: 25px !important;
+        height: 25px !important;
+        min-height: 25px !important;
+        stroke-width: 2.15 !important;
     }
 
     html body.alma-app #video-reference-mobile-header .video-reference-more-dots {
-        width: 16px !important;
-        height: 5px !important;
+        width: 20px !important;
+        height: 6px !important;
     }
 
     html body.alma-app #video-reference-mobile-header .video-reference-more-dots::before,
     html body.alma-app #video-reference-mobile-header .video-reference-more-dots::after {
-        width: 4px !important;
-        height: 4px !important;
+        width: 5px !important;
+        height: 5px !important;
         top: .5px !important;
     }
 
@@ -177,25 +175,80 @@
 
     html body.alma-app #video-reference-mobile-header .video-reference-avatar-image,
     html body.alma-app #video-reference-mobile-header .video-reference-avatar-fallback {
-        width: 34px !important;
-        min-width: 34px !important;
-        max-width: 34px !important;
-        height: 34px !important;
-        min-height: 34px !important;
-        max-height: 34px !important;
-        font-size: 14px !important;
+        width: 36px !important;
+        min-width: 36px !important;
+        max-width: 36px !important;
+        height: 36px !important;
+        min-height: 36px !important;
+        max-height: 36px !important;
+        font-size: 15px !important;
+    }
+
+    /* Referanstaki gibi kutuların arkasından aşağı doğru yayılan yumuşak beyaz haze. */
+    html body.alma-app #video-reference-mobile-header .video-mobile-sidebar-button::before,
+    html body.alma-app #video-reference-mobile-header .video-mobile-brand::before,
+    html body.alma-app #video-reference-mobile-header .video-reference-actions::before {
+        content: '' !important;
+        position: absolute !important;
+        left: -8px !important;
+        right: -8px !important;
+        top: 18px !important;
+        height: 58px !important;
+        z-index: -1 !important;
+        pointer-events: none !important;
+        border-radius: 999px !important;
+        background: linear-gradient(
+            180deg,
+            rgba(255, 255, 255, .76) 0%,
+            rgba(248, 246, 242, .52) 32%,
+            rgba(248, 246, 242, .22) 62%,
+            rgba(248, 246, 242, 0) 100%
+        ) !important;
+        filter: blur(15px) !important;
+        opacity: .92 !important;
+        transform: translateZ(0) !important;
+    }
+
+    /* İç düğmelerin eski lokal pseudo blur'larını kapat; haze kapsülün kendisinden gelsin. */
+    html body.alma-app #video-reference-mobile-header .video-reference-compose::before,
+    html body.alma-app #video-reference-mobile-header .video-reference-more::before,
+    html body.alma-app #video-reference-mobile-header .video-reference-account::before {
+        content: none !important;
+        display: none !important;
+    }
+
+    html.dark body.alma-app #video-reference-mobile-header .video-mobile-sidebar-button,
+    html.dark body.alma-app #video-reference-mobile-header .video-mobile-brand,
+    html.dark body.alma-app #video-reference-mobile-header .video-reference-actions,
+    html body.dark.alma-app #video-reference-mobile-header .video-mobile-sidebar-button,
+    html body.dark.alma-app #video-reference-mobile-header .video-mobile-brand,
+    html body.dark.alma-app #video-reference-mobile-header .video-reference-actions {
+        background: #111827 !important;
+        color: #f8fafc !important;
+    }
+
+    html.dark body.alma-app #video-reference-mobile-header .video-mobile-sidebar-button::before,
+    html.dark body.alma-app #video-reference-mobile-header .video-mobile-brand::before,
+    html.dark body.alma-app #video-reference-mobile-header .video-reference-actions::before,
+    html body.dark.alma-app #video-reference-mobile-header .video-mobile-sidebar-button::before,
+    html body.dark.alma-app #video-reference-mobile-header .video-mobile-brand::before,
+    html body.dark.alma-app #video-reference-mobile-header .video-reference-actions::before {
+        background: linear-gradient(
+            180deg,
+            rgba(17, 24, 39, .76) 0%,
+            rgba(11, 18, 32, .50) 32%,
+            rgba(11, 18, 32, .20) 62%,
+            rgba(11, 18, 32, 0) 100%
+        ) !important;
     }
 
     html body.alma-app #video-reference-mobile-header .video-mobile-menu-panel {
-        top: 50px !important;
+        top: 52px !important;
     }
 
-    /* Skeleton yuklenirken lokal fade katmanlari gorunmesin. */
     html body.alma-app #video-reference-mobile-header.is-preloading .video-mobile-sidebar-button::before,
     html body.alma-app #video-reference-mobile-header.is-preloading .video-mobile-brand::before,
-    html body.alma-app #video-reference-mobile-header.is-preloading .video-reference-compose::before,
-    html body.alma-app #video-reference-mobile-header.is-preloading .video-reference-more::before,
-    html body.alma-app #video-reference-mobile-header.is-preloading .video-reference-account::before {
+    html body.alma-app #video-reference-mobile-header.is-preloading .video-reference-actions::before {
         content: none !important;
         display: none !important;
     }
