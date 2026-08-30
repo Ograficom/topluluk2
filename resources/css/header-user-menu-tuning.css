@@ -280,3 +280,48 @@ html.dark body .site-header .site-menu-panel[data-user-menu-panel] .site-user-me
         box-shadow: none !important;
     }
 }
+
+/* /video mobile header: white controls fade softly into the page background below. */
+@media (max-width: 767px) {
+    html body.alma-app #video-reference-mobile-header {
+        isolation: isolate !important;
+    }
+
+    html body.alma-app #video-reference-mobile-header::before {
+        content: '' !important;
+        position: absolute !important;
+        top: -10px !important;
+        left: 0 !important;
+        right: 0 !important;
+        height: 76px !important;
+        z-index: 0 !important;
+        pointer-events: none !important;
+        background: linear-gradient(
+            to bottom,
+            rgba(247, 245, 241, .64) 0%,
+            rgba(247, 245, 241, .46) 38%,
+            rgba(247, 245, 241, .20) 70%,
+            rgba(247, 245, 241, 0) 100%
+        ) !important;
+        backdrop-filter: blur(10px) !important;
+        -webkit-backdrop-filter: blur(10px) !important;
+        mask-image: linear-gradient(to bottom, #000 0%, rgba(0,0,0,.92) 44%, rgba(0,0,0,.42) 76%, transparent 100%) !important;
+        -webkit-mask-image: linear-gradient(to bottom, #000 0%, rgba(0,0,0,.92) 44%, rgba(0,0,0,.42) 76%, transparent 100%) !important;
+    }
+
+    html body.alma-app #video-reference-mobile-header > * {
+        position: relative !important;
+        z-index: 1 !important;
+    }
+
+    html.dark body.alma-app #video-reference-mobile-header::before,
+    html body.dark.alma-app #video-reference-mobile-header::before {
+        background: linear-gradient(
+            to bottom,
+            rgba(11, 18, 32, .68) 0%,
+            rgba(11, 18, 32, .48) 38%,
+            rgba(11, 18, 32, .22) 70%,
+            rgba(11, 18, 32, 0) 100%
+        ) !important;
+    }
+}
