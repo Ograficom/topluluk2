@@ -33,11 +33,61 @@ class VideoPageResponseMiddleware
             return $response;
         }
 
+        // Mobil Safari/PWA/Chrome eski player kopyasini tutmasin.
         $content = preg_replace(
             '/video-tv\.js\?v=\d+/i',
-            'video-tv.js?v=414',
+            'video-tv.js?v=416',
             $content,
         ) ?? $content;
+
+        $currentUser = $request->user();
+        $currentLocale = app()->getLocale();
+        $languageUrl = e(route('locale.switch', [
+            'locale' => $currentLocale === 'en' ? 'tr' : 'en',
+        ]));
+        $loginUrl = e(route('login'));
+        $homeUrl = e(url('/'));
+        $composeUrl = e(url('/blog/create'));
+
+        $avatarUrl = $currentUser?->profile_photo_url
+            ?? $currentUser?->avatar
+            ?? $currentUser?->photo
+            ?? null;
+
+        if ($avatarUrl && str_contains((string) $avatarUrl, 'ui-avatars.com')) {
+            $avatarUrl = null;
+        }
+
+        $userName = e((string) ($currentUser?->name ?? 'Kullanıcı'));
+        $initial = e(strtoupper(mb_substr((string) ($currentUser?->name ?? 'U'), 0, 1)));
+        $languageLabel = $currentLocale === 'en' ? 'English' : 'Türkçe';
+
+        if ($avatarUrl) {
+            $avatarMarkup = '<img class="video-reference-avatar-image" src="'.e((string) $avatarUrl).'" alt="'.$userName.'">';
+        } else {
+            $avatarMarkup = '<span class="video-reference-avatar-fallback" aria-hidden="true">'.$initial.'</span>';
+        }
+
+        $loginRow = $currentUser
+            ? ''
+            : <<<HTML
+<a href="{$loginUrl}" class="video-mobile-menu-row video-mobile-menu-login">
+    <span class="video-mobile-menu-icon"><iconify-icon icon="lucide:log-in"></iconify-icon></span>
+    <span>Giriş yap</span>
+</a>
+HTML;
+
+        $rightControl = $currentUser
+            ? <<<HTML
+<button type="button" class="video-reference-account" data-video-reference-account aria-label="Hesap menüsü">
+    {$avatarMarkup}
+</button>
+HTML
+            : <<<'HTML'
+<button type="button" class="video-reference-more" data-video-reference-more aria-label="Diğer seçenekler">
+    <span class="video-reference-more-dots" aria-hidden="true"><span></span></span>
+</button>
+HTML;
 
         if (! str_contains($content, 'id="video-reference-mobile-header-style"')) {
             $style = <<<'HTML'
@@ -98,18 +148,19 @@ class VideoPageResponseMiddleware
         display: none !important;
     }
 
+    /* Orijinal hesap panelini DOM'da tutuyoruz; gorunen buton yeni video header avataridir. */
     html body header.site-header[data-site-header].site-header .site-header-actions > [data-user-menu] {
         position: fixed !important;
-        top: calc(16px + env(safe-area-inset-top, 0px)) !important;
-        right: 16px !important;
+        top: calc(12px + env(safe-area-inset-top, 0px)) !important;
+        right: 12px !important;
         z-index: 10030 !important;
         display: block !important;
-        width: 44px !important;
-        min-width: 44px !important;
-        max-width: 44px !important;
-        height: 44px !important;
-        min-height: 44px !important;
-        max-height: 44px !important;
+        width: 38px !important;
+        min-width: 38px !important;
+        max-width: 38px !important;
+        height: 38px !important;
+        min-height: 38px !important;
+        max-height: 38px !important;
         margin: 0 !important;
         padding: 0 !important;
         background: transparent !important;
@@ -120,12 +171,12 @@ class VideoPageResponseMiddleware
         position: absolute !important;
         inset: 0 !important;
         display: block !important;
-        width: 44px !important;
-        min-width: 44px !important;
-        max-width: 44px !important;
-        height: 44px !important;
-        min-height: 44px !important;
-        max-height: 44px !important;
+        width: 38px !important;
+        min-width: 38px !important;
+        max-width: 38px !important;
+        height: 38px !important;
+        min-height: 38px !important;
+        max-height: 38px !important;
         margin: 0 !important;
         padding: 0 !important;
         border: 0 !important;
@@ -134,14 +185,17 @@ class VideoPageResponseMiddleware
     }
 
     html body header.site-header[data-site-header].site-header .site-menu-panel[data-user-menu-panel] {
-        top: 54px !important;
+        top: 48px !important;
         right: 0 !important;
+        z-index: 10060 !important;
+        width: 300px !important;
+        max-width: calc(100vw - 24px) !important;
         pointer-events: auto !important;
     }
 
     #video-reference-mobile-header {
         position: fixed !important;
-        top: calc(16px + env(safe-area-inset-top, 0px)) !important;
+        top: calc(12px + env(safe-area-inset-top, 0px)) !important;
         left: 0 !important;
         right: 0 !important;
         z-index: 10025 !important;
@@ -149,14 +203,89 @@ class VideoPageResponseMiddleware
         align-items: center !important;
         justify-content: space-between !important;
         width: 100% !important;
-        height: 44px !important;
+        height: 40px !important;
         margin: 0 !important;
-        padding: 0 16px !important;
+        padding: 0 12px !important;
         box-sizing: border-box !important;
         pointer-events: none !important;
     }
 
-    #video-reference-mobile-header :is(.video-reference-menu, .video-reference-compose, .video-reference-more) {
+    #video-reference-mobile-header * {
+        box-sizing: border-box !important;
+    }
+
+    #video-reference-mobile-header .video-mobile-left {
+        position: relative !important;
+        display: flex !important;
+        align-items: center !important;
+        gap: 7px !important;
+        min-width: 0 !important;
+        pointer-events: auto !important;
+    }
+
+    #video-reference-mobile-header .video-mobile-brand {
+        display: inline-flex !important;
+        align-items: center !important;
+        width: 104px !important;
+        min-width: 40px !important;
+        height: 40px !important;
+        margin: 0 !important;
+        padding: 0 9px 0 7px !important;
+        gap: 6px !important;
+        overflow: hidden !important;
+        border: 0 !important;
+        border-radius: 9999px !important;
+        background: #ffffff !important;
+        color: #111827 !important;
+        text-decoration: none !important;
+        box-shadow: 0 8px 24px rgba(15, 23, 42, .06) !important;
+        transition: width .28s ease, padding .28s ease !important;
+        white-space: nowrap !important;
+    }
+
+    #video-reference-mobile-header .video-mobile-brand.is-collapsed {
+        width: 40px !important;
+        padding-left: 7px !important;
+        padding-right: 7px !important;
+        gap: 0 !important;
+    }
+
+    #video-reference-mobile-header .video-mobile-brand-logo {
+        display: block !important;
+        width: 26px !important;
+        min-width: 26px !important;
+        height: 26px !important;
+        object-fit: contain !important;
+        flex: 0 0 26px !important;
+    }
+
+    #video-reference-mobile-header .video-mobile-brand-word {
+        display: block !important;
+        max-width: 62px !important;
+        overflow: hidden !important;
+        opacity: 1 !important;
+        color: #111827 !important;
+        font-size: 15px !important;
+        line-height: 1 !important;
+        font-weight: 600 !important;
+        letter-spacing: -0.02em !important;
+        transition: max-width .28s ease, opacity .2s ease, margin .28s ease !important;
+    }
+
+    #video-reference-mobile-header .video-mobile-brand.is-collapsed .video-mobile-brand-word {
+        max-width: 0 !important;
+        opacity: 0 !important;
+        margin: 0 !important;
+    }
+
+    #video-reference-mobile-header .video-mobile-menu-anchor {
+        position: relative !important;
+        width: 40px !important;
+        height: 40px !important;
+        flex: 0 0 40px !important;
+    }
+
+    #video-reference-mobile-header :is(.video-reference-menu, .video-reference-compose, .video-reference-more, .video-reference-account) {
         -webkit-appearance: none !important;
         appearance: none !important;
         outline: none !important;
@@ -168,25 +297,25 @@ class VideoPageResponseMiddleware
         display: inline-flex !important;
         align-items: center !important;
         justify-content: center !important;
-        width: 44px !important;
-        min-width: 44px !important;
-        height: 44px !important;
-        min-height: 44px !important;
+        width: 40px !important;
+        min-width: 40px !important;
+        height: 40px !important;
+        min-height: 40px !important;
         margin: 0 !important;
         padding: 0 !important;
         border: 0 !important;
         border-radius: 9999px !important;
-        background: #fff !important;
+        background: #ffffff !important;
         color: #090909 !important;
-        box-shadow: 0 10px 28px rgba(15, 23, 42, .07) !important;
+        box-shadow: 0 8px 24px rgba(15, 23, 42, .06) !important;
         pointer-events: auto !important;
         cursor: pointer !important;
     }
 
     #video-reference-mobile-header .video-reference-menu svg {
         display: block !important;
-        width: 22px !important;
-        height: 22px !important;
+        width: 20px !important;
+        height: 20px !important;
         margin: 0 !important;
     }
 
@@ -194,26 +323,26 @@ class VideoPageResponseMiddleware
         display: grid !important;
         grid-template-columns: 1fr 1fr !important;
         align-items: center !important;
-        width: 112px !important;
-        min-width: 112px !important;
-        height: 44px !important;
+        width: 94px !important;
+        min-width: 94px !important;
+        height: 40px !important;
         margin: 0 !important;
-        padding: 3px 5px !important;
+        padding: 2px 4px !important;
         border: 0 !important;
         border-radius: 9999px !important;
-        background: #fff !important;
-        box-shadow: 0 10px 28px rgba(15, 23, 42, .07) !important;
-        box-sizing: border-box !important;
+        background: #ffffff !important;
+        box-shadow: 0 8px 24px rgba(15, 23, 42, .06) !important;
         pointer-events: auto !important;
     }
 
     #video-reference-mobile-header .video-reference-compose,
-    #video-reference-mobile-header .video-reference-more {
+    #video-reference-mobile-header .video-reference-more,
+    #video-reference-mobile-header .video-reference-account {
         display: inline-flex !important;
         align-items: center !important;
         justify-content: center !important;
         width: 100% !important;
-        height: 38px !important;
+        height: 36px !important;
         margin: 0 !important;
         padding: 0 !important;
         border: 0 !important;
@@ -227,15 +356,15 @@ class VideoPageResponseMiddleware
 
     #video-reference-mobile-header .video-reference-compose svg {
         display: block !important;
-        width: 23px !important;
-        height: 23px !important;
+        width: 21px !important;
+        height: 21px !important;
         margin: 0 !important;
     }
 
     #video-reference-mobile-header .video-reference-more-dots {
         position: relative !important;
         display: block !important;
-        width: 24px !important;
+        width: 21px !important;
         height: 5px !important;
     }
 
@@ -244,23 +373,188 @@ class VideoPageResponseMiddleware
     #video-reference-mobile-header .video-reference-more-dots span {
         content: '' !important;
         position: absolute !important;
-        top: 0 !important;
-        width: 5px !important;
-        height: 5px !important;
+        top: .5px !important;
+        width: 4px !important;
+        height: 4px !important;
         border-radius: 9999px !important;
         background: #090909 !important;
     }
 
     #video-reference-mobile-header .video-reference-more-dots::before { left: 0 !important; }
-    #video-reference-mobile-header .video-reference-more-dots span { left: 9.5px !important; }
+    #video-reference-mobile-header .video-reference-more-dots span { left: 8.5px !important; }
     #video-reference-mobile-header .video-reference-more-dots::after { right: 0 !important; }
 
-    #video-reference-mobile-header :is(.video-reference-menu, .video-reference-compose, .video-reference-more):active {
-        background: #f3f4f6 !important;
+    #video-reference-mobile-header .video-reference-avatar-image,
+    #video-reference-mobile-header .video-reference-avatar-fallback {
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        width: 30px !important;
+        min-width: 30px !important;
+        height: 30px !important;
+        min-height: 30px !important;
+        border-radius: 9999px !important;
+        object-fit: cover !important;
+    }
+
+    #video-reference-mobile-header .video-reference-avatar-fallback {
+        background: #2563eb !important;
+        color: #ffffff !important;
+        font-size: 12px !important;
+        line-height: 30px !important;
+        font-weight: 600 !important;
+    }
+
+    #video-reference-mobile-header :is(.video-reference-menu, .video-reference-compose, .video-reference-more, .video-reference-account):active {
+        background: #f1f5f9 !important;
+    }
+
+    #video-reference-mobile-header .video-mobile-menu-panel {
+        position: absolute !important;
+        top: 48px !important;
+        left: 0 !important;
+        z-index: 10070 !important;
+        width: 218px !important;
+        margin: 0 !important;
+        padding: 7px !important;
+        border: 1px solid #e2e8f0 !important;
+        border-radius: 15px !important;
+        background: #ffffff !important;
+        color: #0f172a !important;
+        box-shadow: 0 14px 34px rgba(15, 23, 42, .09) !important;
+        pointer-events: auto !important;
+    }
+
+    #video-reference-mobile-header .video-mobile-menu-panel[hidden] {
+        display: none !important;
+    }
+
+    #video-reference-mobile-header .video-mobile-menu-row {
+        display: flex !important;
+        align-items: center !important;
+        width: 100% !important;
+        min-height: 40px !important;
+        margin: 0 !important;
+        padding: 7px 9px !important;
+        gap: 10px !important;
+        border: 0 !important;
+        border-radius: 10px !important;
+        background: transparent !important;
+        color: #1e293b !important;
+        font: inherit !important;
+        font-size: 13px !important;
+        line-height: 1.25 !important;
+        font-weight: 400 !important;
+        text-align: left !important;
+        text-decoration: none !important;
+        cursor: pointer !important;
+    }
+
+    #video-reference-mobile-header .video-mobile-menu-row:hover,
+    #video-reference-mobile-header .video-mobile-menu-row:focus-visible,
+    #video-reference-mobile-header .video-mobile-menu-row:active {
+        background: #f1f5f9 !important;
+        color: #0f172a !important;
+        outline: none !important;
+    }
+
+    #video-reference-mobile-header .video-mobile-menu-icon {
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        width: 19px !important;
+        min-width: 19px !important;
+        height: 19px !important;
+        color: #475569 !important;
+    }
+
+    #video-reference-mobile-header .video-mobile-menu-icon iconify-icon {
+        display: block !important;
+        width: 18px !important;
+        height: 18px !important;
+        font-size: 18px !important;
+        color: currentColor !important;
+    }
+
+    #video-reference-mobile-header .video-mobile-theme-switch {
+        position: relative !important;
+        width: 38px !important;
+        min-width: 38px !important;
+        height: 22px !important;
+        margin-left: auto !important;
+        border-radius: 9999px !important;
+        background: #cbd5e1 !important;
+    }
+
+    #video-reference-mobile-header .video-mobile-theme-knob {
+        position: absolute !important;
+        top: 3px !important;
+        left: 3px !important;
+        width: 16px !important;
+        height: 16px !important;
+        border-radius: 9999px !important;
+        background: #ffffff !important;
+        transition: left .16s ease !important;
+    }
+
+    html.dark #video-reference-mobile-header .video-mobile-theme-switch {
+        background: #2563eb !important;
+    }
+
+    html.dark #video-reference-mobile-header .video-mobile-theme-knob {
+        left: 19px !important;
+    }
+
+    #video-reference-mobile-header .video-mobile-menu-login {
+        margin-top: 3px !important;
+        border-top: 1px solid #eef2f7 !important;
+        border-top-left-radius: 0 !important;
+        border-top-right-radius: 0 !important;
+        color: #2563eb !important;
     }
 
     html body [data-video-tv-root].video-tv-page {
-        padding-top: 86px !important;
+        padding-top: 72px !important;
+    }
+
+    html.dark #video-reference-mobile-header .video-mobile-brand,
+    html.dark #video-reference-mobile-header .video-reference-menu,
+    html.dark #video-reference-mobile-header .video-reference-actions,
+    html.dark #video-reference-mobile-header .video-mobile-menu-panel {
+        background: #111827 !important;
+        color: #f8fafc !important;
+        border-color: #334155 !important;
+    }
+
+    html.dark #video-reference-mobile-header .video-mobile-brand-word,
+    html.dark #video-reference-mobile-header :is(.video-reference-menu, .video-reference-compose, .video-reference-more, .video-reference-account) {
+        color: #f8fafc !important;
+    }
+
+    html.dark #video-reference-mobile-header .video-reference-more-dots::before,
+    html.dark #video-reference-mobile-header .video-reference-more-dots::after,
+    html.dark #video-reference-mobile-header .video-reference-more-dots span {
+        background: #f8fafc !important;
+    }
+
+    html.dark #video-reference-mobile-header .video-mobile-menu-row {
+        color: #e2e8f0 !important;
+    }
+
+    html.dark #video-reference-mobile-header .video-mobile-menu-row:hover,
+    html.dark #video-reference-mobile-header .video-mobile-menu-row:focus-visible,
+    html.dark #video-reference-mobile-header .video-mobile-menu-row:active {
+        background: #1e293b !important;
+        color: #ffffff !important;
+    }
+
+    html.dark #video-reference-mobile-header .video-mobile-menu-icon {
+        color: #cbd5e1 !important;
+    }
+
+    html.dark #video-reference-mobile-header .video-mobile-menu-login {
+        border-top-color: #334155 !important;
+        color: #93c5fd !important;
     }
 }
 
@@ -272,65 +566,137 @@ class VideoPageResponseMiddleware
 </style>
 HTML;
 
-            $content = str_replace('</head>', $style . "\n</head>", $content);
+            $content = str_replace('</head>', $style."\n</head>", $content);
         }
 
         if (! str_contains($content, 'id="video-reference-mobile-header"')) {
-            $header = <<<'HTML'
+            $header = <<<HTML
 <div id="video-reference-mobile-header" aria-label="Video mobil gezinme">
-    <button type="button" class="video-reference-menu" data-video-reference-menu aria-label="Menüyü aç">
-        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <path d="M5 8.5H19" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"></path>
-            <path d="M5 15.5H15" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"></path>
-        </svg>
-    </button>
+    <div class="video-mobile-left">
+        <a href="{$homeUrl}" class="video-mobile-brand" data-video-mobile-brand aria-label="Ografi ana sayfa">
+            <img class="video-mobile-brand-logo" src="https://ografi.com/images/ografi-logo.png?v=20260714a" alt="Ografi">
+            <span class="video-mobile-brand-word">Ografi</span>
+        </a>
+
+        <div class="video-mobile-menu-anchor">
+            <button type="button" class="video-reference-menu" data-video-reference-menu aria-label="Menüyü aç" aria-expanded="false">
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <path d="M5 8.5H19" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"></path>
+                    <path d="M5 15.5H15" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"></path>
+                </svg>
+            </button>
+
+            <div class="video-mobile-menu-panel" data-video-mobile-menu-panel hidden>
+                <button
+                    type="button"
+                    class="video-mobile-menu-row"
+                    data-user-menu-theme-toggle
+                    data-label-dark="Karanlık Mod"
+                    data-label-light="Aydınlık Mod"
+                    aria-pressed="false"
+                >
+                    <span class="video-mobile-menu-icon">
+                        <iconify-icon icon="lucide:moon" data-user-menu-theme-icon></iconify-icon>
+                    </span>
+                    <span>Karanlık Mod</span>
+                    <span class="video-mobile-theme-switch" aria-hidden="true">
+                        <span class="video-mobile-theme-knob"></span>
+                    </span>
+                </button>
+
+                <a href="{$languageUrl}" class="video-mobile-menu-row">
+                    <span class="video-mobile-menu-icon"><iconify-icon icon="lucide:languages"></iconify-icon></span>
+                    <span>Dil: {$languageLabel}</span>
+                </a>
+
+                {$loginRow}
+            </div>
+        </div>
+    </div>
 
     <div class="video-reference-actions">
-        <a href="/blog/create" class="video-reference-compose" aria-label="Yeni gönderi oluştur">
+        <a href="{$composeUrl}" class="video-reference-compose" aria-label="Yeni gönderi oluştur">
             <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
                 <path d="M13.8 5H6.7A2.7 2.7 0 0 0 4 7.7v9.6A2.7 2.7 0 0 0 6.7 20h9.6a2.7 2.7 0 0 0 2.7-2.7v-6.4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
                 <path d="m11 13.4 7.1-7.1a2.25 2.25 0 0 1 3.2 3.2l-7.1 7.1-4.1 1.1 1-4.3Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
             </svg>
         </a>
 
-        <button type="button" class="video-reference-more" data-video-reference-more aria-label="Diğer seçenekler">
-            <span class="video-reference-more-dots" aria-hidden="true"><span></span></span>
-        </button>
+        {$rightControl}
     </div>
 </div>
 HTML;
 
-            $content = preg_replace('/(<body\b[^>]*>)/i', '$1' . "\n" . $header, $content, 1) ?? $content;
+            $content = preg_replace('/(<body\b[^>]*>)/i', '$1'."\n".$header, $content, 1) ?? $content;
         }
 
         if (! str_contains($content, 'id="video-reference-mobile-header-script"')) {
             $script = <<<'HTML'
 <script id="video-reference-mobile-header-script">
 (() => {
-    const menu = document.querySelector('[data-video-reference-menu]');
-    const more = document.querySelector('[data-video-reference-more]');
+    const header = document.getElementById('video-reference-mobile-header');
+    if (!header) return;
+
+    const brand = header.querySelector('[data-video-mobile-brand]');
+    const menu = header.querySelector('[data-video-reference-menu]');
+    const menuPanel = header.querySelector('[data-video-mobile-menu-panel]');
+    const more = header.querySelector('[data-video-reference-more]');
+    const account = header.querySelector('[data-video-reference-account]');
+
+    const closeMenu = () => {
+        if (!menu || !menuPanel) return;
+        menuPanel.hidden = true;
+        menu.setAttribute('aria-expanded', 'false');
+    };
+
+    const toggleMenu = () => {
+        if (!menu || !menuPanel) return;
+        const opening = menuPanel.hidden;
+        menuPanel.hidden = !opening;
+        menu.setAttribute('aria-expanded', opening ? 'true' : 'false');
+    };
+
+    window.setTimeout(() => {
+        brand?.classList.add('is-collapsed');
+    }, 5000);
 
     menu?.addEventListener('click', (event) => {
         event.preventDefault();
         event.stopPropagation();
-        document.querySelector('header.site-header[data-site-header] [data-mobile-sidebar-toggle]')?.click();
+        toggleMenu();
     });
 
+    // Giris yapilmadiysa uc nokta da ayni kompakt menuyu acar.
     more?.addEventListener('click', (event) => {
         event.preventDefault();
         event.stopPropagation();
-        const original = document.querySelector('header.site-header[data-site-header] [data-user-menu-btn]');
-        if (original) {
-            original.click();
-            return;
-        }
-        window.location.href = '/login';
+        toggleMenu();
+    });
+
+    // Giris yapildiysa uc nokta yerine avatar gorunur ve mevcut hesap paneli acilir.
+    account?.addEventListener('click', (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        closeMenu();
+        document.querySelector('header.site-header[data-site-header] [data-user-menu-btn]')?.click();
+    });
+
+    menuPanel?.addEventListener('click', (event) => {
+        event.stopPropagation();
+    });
+
+    document.addEventListener('click', (event) => {
+        if (!header.contains(event.target)) closeMenu();
+    });
+
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') closeMenu();
     });
 })();
 </script>
 HTML;
 
-            $content = str_replace('</body>', $script . "\n</body>", $content);
+            $content = str_replace('</body>', $script."\n</body>", $content);
         }
 
         $response->setContent($content);
