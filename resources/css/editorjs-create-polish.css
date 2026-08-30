@@ -358,10 +358,3 @@ html[data-system-theme="dark"] .create-page-fixed [data-editorjs-wrapper] .ce-po
         font-size: 11px !important;
     }
 }
-
-/* Kullanıcının verdiği AI butonu: yeni bir kontrol üretme, mevcut data-ai-assist butonunu görünür ve sabit tut. */
-.create-page-fixed > div > header button[data-ai-assist][type="button"] {
-    visibility: visible !important;
-    opacity: 1 !important;
-    pointer-events: auto !important;
-}
