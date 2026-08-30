@@ -12,24 +12,24 @@
         style.textContent = `
             @media (max-width: 767px) {
                 #video-reference-mobile-header .video-mobile-brand.is-collapsed {
-                    width: 26px !important;
-                    min-width: 26px !important;
-                    max-width: 26px !important;
+                    width: 38px !important;
+                    min-width: 38px !important;
+                    max-width: 38px !important;
                     height: 38px !important;
-                    padding: 0 !important;
+                    padding: 0 6px !important;
                     gap: 0 !important;
                     border: 0 !important;
-                    border-radius: 0 !important;
-                    background: transparent !important;
-                    background-color: transparent !important;
-                    box-shadow: none !important;
-                    flex: 0 0 26px !important;
+                    border-radius: 9999px !important;
+                    background: #ffffff !important;
+                    background-color: #ffffff !important;
+                    box-shadow: 0 7px 20px rgba(15, 23, 42, .055) !important;
+                    flex: 0 0 38px !important;
                 }
 
                 html.dark #video-reference-mobile-header .video-mobile-brand.is-collapsed {
-                    background: transparent !important;
-                    background-color: transparent !important;
-                    box-shadow: none !important;
+                    background: #111827 !important;
+                    background-color: #111827 !important;
+                    box-shadow: 0 7px 20px rgba(0, 0, 0, .24) !important;
                 }
             }
         `;
