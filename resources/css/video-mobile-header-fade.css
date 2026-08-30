@@ -1,4 +1,4 @@
-/* /video mobile header — reference restored: iOS proportions + subtle downward haze. */
+/* /video mobile header — reference restored: iOS proportions + visible downward haze. */
 @media (max-width: 767px) {
     html body.alma-app #video-reference-mobile-header {
         top: calc(12px + env(safe-area-inset-top, 0px)) !important;
@@ -195,35 +195,42 @@
         font-size: 15px !important;
     }
 
-    /* Beyaz kapsullerin arkasinda, asagi indikce zemin rengine karisip kaybolan ince blur. */
-    html body.alma-app #video-reference-mobile-header .video-mobile-sidebar-button::before,
-    html body.alma-app #video-reference-mobile-header .video-mobile-brand::before,
-    html body.alma-app #video-reference-mobile-header .video-reference-actions::before {
+    /*
+     * Kaybolan blur tekrar görünür: negatif z-index kullanmıyoruz.
+     * ::after parent arka planının üstünde, ikon/yazıların altında kalır ve
+     * kapsülün altından sayfa zeminine doğru incelerek kaybolur.
+     */
+    html body.alma-app #video-reference-mobile-header .video-mobile-sidebar-button::after,
+    html body.alma-app #video-reference-mobile-header .video-mobile-brand::after,
+    html body.alma-app #video-reference-mobile-header .video-reference-actions::after {
         content: '' !important;
         position: absolute !important;
-        left: -5px !important;
-        right: -5px !important;
-        top: 30px !important;
-        bottom: auto !important;
-        height: 32px !important;
-        z-index: -1 !important;
+        left: -7px !important;
+        right: -7px !important;
+        top: 31px !important;
+        height: 38px !important;
+        z-index: 0 !important;
         pointer-events: none !important;
         border-radius: 999px !important;
         background: linear-gradient(
             180deg,
-            rgba(248, 246, 242, .78) 0%,
-            rgba(248, 246, 242, .58) 30%,
-            rgba(248, 246, 242, .30) 58%,
-            rgba(248, 246, 242, .10) 80%,
+            rgba(255, 255, 255, .72) 0%,
+            rgba(248, 246, 242, .58) 28%,
+            rgba(248, 246, 242, .30) 56%,
+            rgba(248, 246, 242, .12) 76%,
             rgba(248, 246, 242, 0) 100%
         ) !important;
-        filter: blur(9px) !important;
-        opacity: .92 !important;
-        transform: translateZ(0) !important;
-        -webkit-mask-image: linear-gradient(180deg, #000 0%, rgba(0,0,0,.88) 35%, rgba(0,0,0,.48) 68%, transparent 100%) !important;
-        mask-image: linear-gradient(180deg, #000 0%, rgba(0,0,0,.88) 35%, rgba(0,0,0,.48) 68%, transparent 100%) !important;
+        filter: blur(10px) !important;
+        opacity: .95 !important;
+        transform: translateY(2px) translateZ(0) !important;
+        -webkit-mask-image: linear-gradient(180deg, #000 0%, rgba(0,0,0,.9) 30%, rgba(0,0,0,.5) 66%, transparent 100%) !important;
+        mask-image: linear-gradient(180deg, #000 0%, rgba(0,0,0,.9) 30%, rgba(0,0,0,.5) 66%, transparent 100%) !important;
     }
 
+    /* Eski ::before blur katmanlarını tamamen kapat. */
+    html body.alma-app #video-reference-mobile-header .video-mobile-sidebar-button::before,
+    html body.alma-app #video-reference-mobile-header .video-mobile-brand::before,
+    html body.alma-app #video-reference-mobile-header .video-reference-actions::before,
     html body.alma-app #video-reference-mobile-header .video-reference-compose::before,
     html body.alma-app #video-reference-mobile-header .video-reference-more::before,
     html body.alma-app #video-reference-mobile-header .video-reference-account::before {
@@ -241,18 +248,18 @@
         color: #f8fafc !important;
     }
 
-    html.dark body.alma-app #video-reference-mobile-header .video-mobile-sidebar-button::before,
-    html.dark body.alma-app #video-reference-mobile-header .video-mobile-brand::before,
-    html.dark body.alma-app #video-reference-mobile-header .video-reference-actions::before,
-    html body.dark.alma-app #video-reference-mobile-header .video-mobile-sidebar-button::before,
-    html body.dark.alma-app #video-reference-mobile-header .video-mobile-brand::before,
-    html body.dark.alma-app #video-reference-mobile-header .video-reference-actions::before {
+    html.dark body.alma-app #video-reference-mobile-header .video-mobile-sidebar-button::after,
+    html.dark body.alma-app #video-reference-mobile-header .video-mobile-brand::after,
+    html.dark body.alma-app #video-reference-mobile-header .video-reference-actions::after,
+    html body.dark.alma-app #video-reference-mobile-header .video-mobile-sidebar-button::after,
+    html body.dark.alma-app #video-reference-mobile-header .video-mobile-brand::after,
+    html body.dark.alma-app #video-reference-mobile-header .video-reference-actions::after {
         background: linear-gradient(
             180deg,
-            rgba(11, 18, 32, .78) 0%,
-            rgba(11, 18, 32, .58) 30%,
-            rgba(11, 18, 32, .30) 58%,
-            rgba(11, 18, 32, .10) 80%,
+            rgba(17, 24, 39, .72) 0%,
+            rgba(11, 18, 32, .58) 28%,
+            rgba(11, 18, 32, .30) 56%,
+            rgba(11, 18, 32, .12) 76%,
             rgba(11, 18, 32, 0) 100%
         ) !important;
     }
@@ -261,9 +268,9 @@
         top: 52px !important;
     }
 
-    html body.alma-app #video-reference-mobile-header.is-preloading .video-mobile-sidebar-button::before,
-    html body.alma-app #video-reference-mobile-header.is-preloading .video-mobile-brand::before,
-    html body.alma-app #video-reference-mobile-header.is-preloading .video-reference-actions::before {
+    html body.alma-app #video-reference-mobile-header.is-preloading .video-mobile-sidebar-button::after,
+    html body.alma-app #video-reference-mobile-header.is-preloading .video-mobile-brand::after,
+    html body.alma-app #video-reference-mobile-header.is-preloading .video-reference-actions::after {
         content: none !important;
         display: none !important;
     }
