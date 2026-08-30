@@ -9,7 +9,7 @@
     $mediaItems = [];
     $seenMediaUrls = [];
 
-    $defaultPlaylistUrl = 'https://iptv-org.github.io/iptv/countries/tr.m3u';
+    $defaultPlaylistUrl = asset('streams/turkiye.m3u');
     $seenMediaUrls[$defaultPlaylistUrl] = true;
     $mediaItems[] = [
         'url' => $defaultPlaylistUrl,
