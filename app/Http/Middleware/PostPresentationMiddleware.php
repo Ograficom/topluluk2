@@ -40,9 +40,22 @@ class PostPresentationMiddleware
             ) ?? $html;
         }
 
-        if ($request->routeIs('blog.create', 'blog.post.edit')) {
+        if ($request->routeIs('blog.create')) {
             $preferencesScript = $this->preferencesScript($post);
             $html = preg_replace('/<\/body>/i', $preferencesScript . "\n</body>", $html, 1) ?? ($html . $preferencesScript);
+        } elseif ($request->routeIs('blog.post.edit')) {
+            // Edit sayfasi create composer'in birebir HTML'ini kullaniyor. Edit verilerini
+            // form kapandigi anda hydrate ederek EditorJS ve sayfa scriptlerinden ONCE
+            // mevcut post degerlerinin DOM'a yerlesmesini garanti ediyoruz. Eski akista
+            // script </body> oncesinde calistigi icin EditorJS bos verilerle baslayabiliyordu.
+            $preferencesScript = $this->preferencesScript($post);
+            $injected = preg_replace_callback(
+                '/<\/form>/i',
+                static fn () => "</form>\n" . $preferencesScript,
+                $html,
+                1
+            );
+            $html = is_string($injected) ? $injected : ($html . $preferencesScript);
         }
 
         $aiIds = [];
