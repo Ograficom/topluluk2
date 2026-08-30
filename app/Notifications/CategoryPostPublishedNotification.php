@@ -15,6 +15,10 @@ class CategoryPostPublishedNotification extends Notification
 
     public function via(object $notifiable): array
     {
+        if ((bool) $this->post->suppress_follower_notifications) {
+            return [];
+        }
+
         return ['database'];
     }
 
