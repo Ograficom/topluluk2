@@ -222,3 +222,26 @@ html[data-system-theme="dark"] .create-page-fixed > div > header [data-category-
     box-shadow: 0 16px 40px -18px rgba(0, 0, 0, 0.72),
                 0 4px 12px -8px rgba(0, 0, 0, 0.52) !important;
 }
+
+/* /blog/create settings — ikonları metinden sola ayır ve footer butonlarını tam genişlikte tut. */
+#settings-modal .settings-panel .settings-accordion-icon {
+    transform: translateX(-7px) !important;
+}
+
+#settings-modal .settings-panel > .border-t .grid {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
+}
+
+#settings-modal .settings-panel > .border-t button[data-settings-close],
+#settings-modal .settings-panel > .border-t button[data-settings-save] {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    height: 48px !important;
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+}
+
+#settings-modal .settings-panel > .border-t button[data-settings-close] {
+    border-radius: 12px !important;
+}
