@@ -63,9 +63,11 @@ class LiveChannelResource extends Resource
                 ->disk('public')
                 ->directory('live-channels')
                 ->visibility('public')
-                ->imageEditor()
+                ->imagePreviewHeight('220')
+                ->panelLayout('integrated')
+                ->fetchFileInformation(false)
                 ->maxSize(8192)
-                ->helperText('Video sayfasındaki kanal kartında gösterilir. 16:9 görsel önerilir.')
+                ->helperText('Kanal kartında gösterilir. 16:9 görsel önerilir.')
                 ->columnSpanFull(),
 
             Grid::make(2)->schema([
@@ -76,7 +78,8 @@ class LiveChannelResource extends Resource
                     ->default(0),
                 Toggle::make('is_active')
                     ->label('Yayında göster')
-                    ->default(true),
+                    ->default(true)
+                    ->inline(false),
             ]),
         ]);
     }
@@ -109,8 +112,9 @@ class LiveChannelResource extends Resource
                     ->sortable(),
                 TextColumn::make('is_active')
                     ->label('Durum')
-                    ->formatStateUsing(fn (bool $state): string => $state ? 'Aktif' : 'Kapalı')
+                    ->formatStateUsing(fn ($state): string => $state ? 'Aktif' : 'Kapalı')
                     ->badge()
+                    ->color(fn ($state): string => $state ? 'success' : 'gray')
                     ->sortable(),
                 TextColumn::make('updated_at')
                     ->label('Güncellendi')
@@ -162,6 +166,7 @@ class LiveChannelResource extends Resource
             'Çocuk' => 'Çocuk',
             'Sinema' => 'Sinema',
             'Yerel' => 'Yerel',
+            'Türkiye' => 'Türkiye',
             'Genel' => 'Genel',
         ];
     }
