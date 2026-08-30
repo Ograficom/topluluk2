@@ -64,16 +64,18 @@
     color: #64748b !important;
 }
 
-#settings-modal button[data-settings-close] {
+/* Sadece panel başlığındaki X butonu kare ölçüde kalsın. Footer'daki Kapat buna dahil değil. */
+#settings-modal .settings-panel > div:nth-child(2) button[data-settings-close] {
     width: 38px !important;
+    min-width: 38px !important;
     height: 38px !important;
     border-radius: 12px !important;
     color: #111827 !important;
     background: #ffffff !important;
 }
 
-#settings-modal button[data-settings-close]:hover,
-#settings-modal button[data-settings-close]:focus-visible {
+#settings-modal .settings-panel > div:nth-child(2) button[data-settings-close]:hover,
+#settings-modal .settings-panel > div:nth-child(2) button[data-settings-close]:focus-visible {
     background: #f3f4f6 !important;
     outline: none !important;
 }
@@ -142,9 +144,9 @@
     cursor: pointer !important;
     list-style: none !important;
     align-items: center !important;
-    gap: 14px !important;
+    gap: 20px !important;
     margin: 0 !important;
-    padding: 14px 16px !important;
+    padding: 14px 18px !important;
     border: 0 !important;
     border-radius: 0 !important;
     background: #ffffff !important;
@@ -173,6 +175,7 @@
     width: 48px !important;
     height: 48px !important;
     min-width: 48px !important;
+    flex: 0 0 48px !important;
     align-items: center !important;
     justify-content: center !important;
     border: 0 !important;
@@ -213,7 +216,7 @@
 
 #settings-modal .settings-panel .settings-accordion-chevron {
     flex: 0 0 auto !important;
-    margin-left: 4px !important;
+    margin-left: 8px !important;
     font-size: 20px !important;
     color: #334155 !important;
 }
@@ -223,7 +226,7 @@
 }
 
 #settings-modal .settings-panel .settings-accordion-content {
-    padding: 15px 16px 17px !important;
+    padding: 15px 18px 18px !important;
     background: #ffffff !important;
 }
 
@@ -282,18 +285,31 @@
     -webkit-backdrop-filter: none !important;
 }
 
+#settings-modal .settings-panel > .border-t > .grid {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
+    gap: 12px !important;
+}
+
 #settings-modal .settings-panel > .border-t button {
+    width: 100% !important;
+    min-width: 0 !important;
     height: 48px !important;
     border-radius: 12px !important;
 }
 
 #settings-modal .settings-panel > .border-t button[data-settings-close] {
+    width: 100% !important;
+    min-width: 0 !important;
+    height: 48px !important;
     border: 1px solid #dfe5ec !important;
     background: #ffffff !important;
     color: #111827 !important;
 }
 
 #settings-modal .settings-panel > .border-t button[data-settings-save] {
+    width: 100% !important;
+    min-width: 0 !important;
+    height: 48px !important;
     background: #2563eb !important;
     color: #ffffff !important;
     border: 1px solid #2563eb !important;
@@ -338,6 +354,7 @@
 
     #settings-modal .settings-panel .settings-accordion-summary {
         min-height: 78px !important;
+        gap: 16px !important;
         padding: 12px 14px !important;
     }
 
@@ -345,7 +362,12 @@
         width: 44px !important;
         height: 44px !important;
         min-width: 44px !important;
+        flex-basis: 44px !important;
         border-radius: 13px !important;
+    }
+
+    #settings-modal .settings-panel > .border-t {
+        padding: 12px !important;
     }
 }
 
