@@ -4,12 +4,46 @@
         document.getElementById('video-tv-mobile-header-style')?.remove();
     };
 
+    const installCollapsedBrandFix = () => {
+        if (document.getElementById('video-mobile-collapsed-brand-fix')) return;
+
+        const style = document.createElement('style');
+        style.id = 'video-mobile-collapsed-brand-fix';
+        style.textContent = `
+            @media (max-width: 767px) {
+                #video-reference-mobile-header .video-mobile-brand.is-collapsed {
+                    width: 26px !important;
+                    min-width: 26px !important;
+                    max-width: 26px !important;
+                    height: 38px !important;
+                    padding: 0 !important;
+                    gap: 0 !important;
+                    border: 0 !important;
+                    border-radius: 0 !important;
+                    background: transparent !important;
+                    background-color: transparent !important;
+                    box-shadow: none !important;
+                    flex: 0 0 26px !important;
+                }
+
+                html.dark #video-reference-mobile-header .video-mobile-brand.is-collapsed {
+                    background: transparent !important;
+                    background-color: transparent !important;
+                    box-shadow: none !important;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    };
+
     cleanupLegacyVideoHeader();
+    installCollapsedBrandFix();
 
     const normalize = (value = '') => String(value).toLocaleLowerCase('tr-TR').trim();
 
     const initVideoTv = () => {
         cleanupLegacyVideoHeader();
+        installCollapsedBrandFix();
 
         const root = document.querySelector('[data-video-tv-root]');
         if (!root || root.dataset.videoTvInitialized === '1') return;
