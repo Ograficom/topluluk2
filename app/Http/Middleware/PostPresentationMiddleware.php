@@ -96,6 +96,32 @@ class PostPresentationMiddleware
         ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) ?: '{}';
 
         return <<<HTML
+<style data-ografi-preference-interactions>
+#settings-modal .settings-panel > .border-t button[data-settings-close] {
+    cursor: pointer !important;
+}
+
+#settings-modal .settings-panel > .border-t button[data-settings-close]:hover,
+#settings-modal .settings-panel > .border-t button[data-settings-close]:active {
+    background: #f3f4f6 !important;
+}
+
+#settings-modal input[role="switch"]:not(:checked) + span {
+    background: #e2e8f0 !important;
+    border-color: #cbd5e1 !important;
+}
+
+#settings-modal label.group:hover input[role="switch"]:not(:checked) + span,
+#settings-modal label.group:active input[role="switch"]:not(:checked) + span {
+    background: #cbd5e1 !important;
+    border-color: #cbd5e1 !important;
+}
+
+#settings-modal input[role="switch"]:checked + span {
+    background: #2563eb !important;
+    border-color: #2563eb !important;
+}
+</style>
 <script data-ografi-post-distribution-settings>
 (() => {
     const states = {$states};
@@ -111,7 +137,7 @@ class PostPresentationMiddleware
         <label class="group relative inline-flex cursor-pointer items-center">
             <input type="hidden" name="\${name}" value="0">
             <input type="checkbox" name="\${name}" id="\${name}" value="1" role="switch" class="peer sr-only" \${checked ? 'checked' : ''}>
-            <span class="relative h-7 w-12 rounded-full border border-slate-300 bg-slate-200 transition-all duration-200 group-hover:bg-white peer-focus-visible:ring-4 peer-focus-visible:ring-blue-500/15 peer-checked:border-blue-600 peer-checked:bg-blue-600 peer-checked:group-hover:bg-blue-600" aria-hidden="true"></span>
+            <span class="relative h-7 w-12 rounded-full border border-slate-300 bg-slate-200 transition-all duration-200 group-hover:bg-slate-300 peer-focus-visible:ring-4 peer-focus-visible:ring-blue-500/15 peer-checked:border-blue-600 peer-checked:bg-blue-600 peer-checked:group-hover:bg-blue-600" aria-hidden="true"></span>
             <span class="pointer-events-none absolute left-[3px] top-[3px] h-5 w-5 rounded-full bg-white shadow-[0_2px_8px_rgba(15,23,42,0.18)] transition-all duration-200 peer-checked:translate-x-5" aria-hidden="true"></span>
         </label>`;
 
