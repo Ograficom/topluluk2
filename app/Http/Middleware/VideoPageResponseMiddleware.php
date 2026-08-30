@@ -36,7 +36,7 @@ class VideoPageResponseMiddleware
         // Mobil Safari/PWA/Chrome eski player kopyasini tutmasin.
         $content = preg_replace(
             '/video-tv\.js\?v=\d+/i',
-            'video-tv.js?v=416',
+            'video-tv.js?v=417',
             $content,
         ) ?? $content;
 
@@ -84,7 +84,7 @@ HTML;
 </button>
 HTML
             : <<<'HTML'
-<button type="button" class="video-reference-more" data-video-reference-more aria-label="Diğer seçenekler">
+<button type="button" class="video-reference-more" data-video-reference-more aria-label="Diğer seçenekler" aria-expanded="false">
     <span class="video-reference-more-dots" aria-hidden="true"><span></span></span>
 </button>
 HTML;
@@ -93,6 +93,11 @@ HTML;
             $style = <<<'HTML'
 <style id="video-reference-mobile-header-style">
 @media (max-width: 767px) {
+    html body {
+        padding-top: 0 !important;
+    }
+
+    /* Genel header gorunmez; mevcut sidebar ve hesap menusu DOM'da calismaya devam eder. */
     html body header.site-header[data-site-header].site-header {
         position: fixed !important;
         inset: 0 0 auto 0 !important;
@@ -101,9 +106,7 @@ HTML;
         height: 0 !important;
         min-height: 0 !important;
         border: 0 !important;
-        border-bottom: 0 !important;
         background: transparent !important;
-        background-color: transparent !important;
         box-shadow: none !important;
         pointer-events: none !important;
     }
@@ -148,19 +151,19 @@ HTML;
         display: none !important;
     }
 
-    /* Orijinal hesap panelini DOM'da tutuyoruz; gorunen buton yeni video header avataridir. */
+    /* Giris yapildiginda custom avatar mevcut hesap panelini tetikler. */
     html body header.site-header[data-site-header].site-header .site-header-actions > [data-user-menu] {
         position: fixed !important;
-        top: calc(12px + env(safe-area-inset-top, 0px)) !important;
+        top: calc(10px + env(safe-area-inset-top, 0px)) !important;
         right: 12px !important;
         z-index: 10030 !important;
         display: block !important;
-        width: 38px !important;
-        min-width: 38px !important;
-        max-width: 38px !important;
-        height: 38px !important;
-        min-height: 38px !important;
-        max-height: 38px !important;
+        width: 36px !important;
+        min-width: 36px !important;
+        max-width: 36px !important;
+        height: 36px !important;
+        min-height: 36px !important;
+        max-height: 36px !important;
         margin: 0 !important;
         padding: 0 !important;
         background: transparent !important;
@@ -171,12 +174,12 @@ HTML;
         position: absolute !important;
         inset: 0 !important;
         display: block !important;
-        width: 38px !important;
-        min-width: 38px !important;
-        max-width: 38px !important;
-        height: 38px !important;
-        min-height: 38px !important;
-        max-height: 38px !important;
+        width: 36px !important;
+        min-width: 36px !important;
+        max-width: 36px !important;
+        height: 36px !important;
+        min-height: 36px !important;
+        max-height: 36px !important;
         margin: 0 !important;
         padding: 0 !important;
         border: 0 !important;
@@ -185,17 +188,17 @@ HTML;
     }
 
     html body header.site-header[data-site-header].site-header .site-menu-panel[data-user-menu-panel] {
-        top: 48px !important;
+        top: 46px !important;
         right: 0 !important;
-        z-index: 10060 !important;
-        width: 300px !important;
+        z-index: 10080 !important;
+        width: 292px !important;
         max-width: calc(100vw - 24px) !important;
         pointer-events: auto !important;
     }
 
     #video-reference-mobile-header {
         position: fixed !important;
-        top: calc(12px + env(safe-area-inset-top, 0px)) !important;
+        top: calc(10px + env(safe-area-inset-top, 0px)) !important;
         left: 0 !important;
         right: 0 !important;
         z-index: 10025 !important;
@@ -203,7 +206,7 @@ HTML;
         align-items: center !important;
         justify-content: space-between !important;
         width: 100% !important;
-        height: 40px !important;
+        height: 38px !important;
         margin: 0 !important;
         padding: 0 12px !important;
         box-sizing: border-box !important;
@@ -215,22 +218,52 @@ HTML;
     }
 
     #video-reference-mobile-header .video-mobile-left {
-        position: relative !important;
         display: flex !important;
         align-items: center !important;
-        gap: 7px !important;
+        gap: 6px !important;
         min-width: 0 !important;
         pointer-events: auto !important;
+    }
+
+    #video-reference-mobile-header .video-mobile-sidebar-button,
+    #video-reference-mobile-header .video-reference-menu {
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        width: 38px !important;
+        min-width: 38px !important;
+        height: 38px !important;
+        min-height: 38px !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        border: 0 !important;
+        border-radius: 9999px !important;
+        background: #ffffff !important;
+        color: #090909 !important;
+        box-shadow: 0 7px 20px rgba(15, 23, 42, .055) !important;
+        cursor: pointer !important;
+        -webkit-appearance: none !important;
+        appearance: none !important;
+        outline: none !important;
+        -webkit-tap-highlight-color: transparent !important;
+    }
+
+    #video-reference-mobile-header .video-mobile-sidebar-button svg,
+    #video-reference-mobile-header .video-reference-menu svg {
+        display: block !important;
+        width: 19px !important;
+        height: 19px !important;
+        margin: 0 !important;
     }
 
     #video-reference-mobile-header .video-mobile-brand {
         display: inline-flex !important;
         align-items: center !important;
-        width: 104px !important;
-        min-width: 40px !important;
-        height: 40px !important;
+        width: 100px !important;
+        min-width: 38px !important;
+        height: 38px !important;
         margin: 0 !important;
-        padding: 0 9px 0 7px !important;
+        padding: 0 8px 0 6px !important;
         gap: 6px !important;
         overflow: hidden !important;
         border: 0 !important;
@@ -238,15 +271,15 @@ HTML;
         background: #ffffff !important;
         color: #111827 !important;
         text-decoration: none !important;
-        box-shadow: 0 8px 24px rgba(15, 23, 42, .06) !important;
-        transition: width .28s ease, padding .28s ease !important;
+        box-shadow: 0 7px 20px rgba(15, 23, 42, .055) !important;
+        transition: width .28s ease, padding .28s ease, gap .28s ease !important;
         white-space: nowrap !important;
     }
 
     #video-reference-mobile-header .video-mobile-brand.is-collapsed {
-        width: 40px !important;
-        padding-left: 7px !important;
-        padding-right: 7px !important;
+        width: 38px !important;
+        padding-left: 6px !important;
+        padding-right: 6px !important;
         gap: 0 !important;
     }
 
@@ -261,162 +294,45 @@ HTML;
 
     #video-reference-mobile-header .video-mobile-brand-word {
         display: block !important;
-        max-width: 62px !important;
+        max-width: 56px !important;
         overflow: hidden !important;
         opacity: 1 !important;
         color: #111827 !important;
-        font-size: 15px !important;
+        font-size: 14px !important;
         line-height: 1 !important;
         font-weight: 600 !important;
         letter-spacing: -0.02em !important;
-        transition: max-width .28s ease, opacity .2s ease, margin .28s ease !important;
+        transition: max-width .28s ease, opacity .20s ease !important;
     }
 
     #video-reference-mobile-header .video-mobile-brand.is-collapsed .video-mobile-brand-word {
         max-width: 0 !important;
         opacity: 0 !important;
-        margin: 0 !important;
     }
 
     #video-reference-mobile-header .video-mobile-menu-anchor {
         position: relative !important;
-        width: 40px !important;
-        height: 40px !important;
-        flex: 0 0 40px !important;
+        width: 38px !important;
+        height: 38px !important;
+        flex: 0 0 38px !important;
     }
 
-    #video-reference-mobile-header :is(.video-reference-menu, .video-reference-compose, .video-reference-more, .video-reference-account) {
-        -webkit-appearance: none !important;
-        appearance: none !important;
-        outline: none !important;
-        -webkit-tap-highlight-color: transparent !important;
-        touch-action: manipulation !important;
-    }
-
-    #video-reference-mobile-header .video-reference-menu {
-        display: inline-flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-        width: 40px !important;
-        min-width: 40px !important;
-        height: 40px !important;
-        min-height: 40px !important;
-        margin: 0 !important;
-        padding: 0 !important;
-        border: 0 !important;
-        border-radius: 9999px !important;
-        background: #ffffff !important;
-        color: #090909 !important;
-        box-shadow: 0 8px 24px rgba(15, 23, 42, .06) !important;
-        pointer-events: auto !important;
-        cursor: pointer !important;
-    }
-
-    #video-reference-mobile-header .video-reference-menu svg {
-        display: block !important;
-        width: 20px !important;
-        height: 20px !important;
-        margin: 0 !important;
-    }
-
-    #video-reference-mobile-header .video-reference-actions {
-        display: grid !important;
-        grid-template-columns: 1fr 1fr !important;
-        align-items: center !important;
-        width: 94px !important;
-        min-width: 94px !important;
-        height: 40px !important;
-        margin: 0 !important;
-        padding: 2px 4px !important;
-        border: 0 !important;
-        border-radius: 9999px !important;
-        background: #ffffff !important;
-        box-shadow: 0 8px 24px rgba(15, 23, 42, .06) !important;
-        pointer-events: auto !important;
-    }
-
-    #video-reference-mobile-header .video-reference-compose,
-    #video-reference-mobile-header .video-reference-more,
-    #video-reference-mobile-header .video-reference-account {
-        display: inline-flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-        width: 100% !important;
-        height: 36px !important;
-        margin: 0 !important;
-        padding: 0 !important;
-        border: 0 !important;
-        border-radius: 9999px !important;
-        background: transparent !important;
-        color: #090909 !important;
-        box-shadow: none !important;
-        text-decoration: none !important;
-        cursor: pointer !important;
-    }
-
-    #video-reference-mobile-header .video-reference-compose svg {
-        display: block !important;
-        width: 21px !important;
-        height: 21px !important;
-        margin: 0 !important;
-    }
-
-    #video-reference-mobile-header .video-reference-more-dots {
-        position: relative !important;
-        display: block !important;
-        width: 21px !important;
-        height: 5px !important;
-    }
-
-    #video-reference-mobile-header .video-reference-more-dots::before,
-    #video-reference-mobile-header .video-reference-more-dots::after,
-    #video-reference-mobile-header .video-reference-more-dots span {
-        content: '' !important;
-        position: absolute !important;
-        top: .5px !important;
-        width: 4px !important;
-        height: 4px !important;
-        border-radius: 9999px !important;
-        background: #090909 !important;
-    }
-
-    #video-reference-mobile-header .video-reference-more-dots::before { left: 0 !important; }
-    #video-reference-mobile-header .video-reference-more-dots span { left: 8.5px !important; }
-    #video-reference-mobile-header .video-reference-more-dots::after { right: 0 !important; }
-
-    #video-reference-mobile-header .video-reference-avatar-image,
-    #video-reference-mobile-header .video-reference-avatar-fallback {
-        display: inline-flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-        width: 30px !important;
-        min-width: 30px !important;
-        height: 30px !important;
-        min-height: 30px !important;
-        border-radius: 9999px !important;
-        object-fit: cover !important;
-    }
-
-    #video-reference-mobile-header .video-reference-avatar-fallback {
-        background: #2563eb !important;
-        color: #ffffff !important;
-        font-size: 12px !important;
-        line-height: 30px !important;
-        font-weight: 600 !important;
-    }
-
-    #video-reference-mobile-header :is(.video-reference-menu, .video-reference-compose, .video-reference-more, .video-reference-account):active {
+    #video-reference-mobile-header .video-reference-menu[aria-expanded="true"],
+    #video-reference-mobile-header .video-reference-more[aria-expanded="true"],
+    #video-reference-mobile-header :is(.video-mobile-sidebar-button, .video-reference-menu, .video-reference-compose, .video-reference-more, .video-reference-account):active {
         background: #f1f5f9 !important;
     }
 
     #video-reference-mobile-header .video-mobile-menu-panel {
         position: absolute !important;
-        top: 48px !important;
-        left: 0 !important;
+        top: 46px !important;
+        left: 50% !important;
         z-index: 10070 !important;
         width: 218px !important;
+        max-width: calc(100vw - 24px) !important;
         margin: 0 !important;
         padding: 7px !important;
+        transform: translateX(-50%) !important;
         border: 1px solid #e2e8f0 !important;
         border-radius: 15px !important;
         background: #ffffff !important;
@@ -513,10 +429,101 @@ HTML;
         color: #2563eb !important;
     }
 
-    html body [data-video-tv-root].video-tv-page {
-        padding-top: 72px !important;
+    #video-reference-mobile-header .video-reference-actions {
+        display: grid !important;
+        grid-template-columns: 1fr 1fr !important;
+        align-items: center !important;
+        width: 90px !important;
+        min-width: 90px !important;
+        height: 38px !important;
+        margin: 0 !important;
+        padding: 2px 4px !important;
+        border: 0 !important;
+        border-radius: 9999px !important;
+        background: #ffffff !important;
+        box-shadow: 0 7px 20px rgba(15, 23, 42, .055) !important;
+        pointer-events: auto !important;
     }
 
+    #video-reference-mobile-header .video-reference-compose,
+    #video-reference-mobile-header .video-reference-more,
+    #video-reference-mobile-header .video-reference-account {
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        width: 100% !important;
+        height: 34px !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        border: 0 !important;
+        border-radius: 9999px !important;
+        background: transparent !important;
+        color: #090909 !important;
+        box-shadow: none !important;
+        text-decoration: none !important;
+        cursor: pointer !important;
+        -webkit-appearance: none !important;
+        appearance: none !important;
+        outline: none !important;
+        -webkit-tap-highlight-color: transparent !important;
+    }
+
+    #video-reference-mobile-header .video-reference-compose svg {
+        display: block !important;
+        width: 20px !important;
+        height: 20px !important;
+        margin: 0 !important;
+    }
+
+    #video-reference-mobile-header .video-reference-more-dots {
+        position: relative !important;
+        display: block !important;
+        width: 21px !important;
+        height: 5px !important;
+    }
+
+    #video-reference-mobile-header .video-reference-more-dots::before,
+    #video-reference-mobile-header .video-reference-more-dots::after,
+    #video-reference-mobile-header .video-reference-more-dots span {
+        content: '' !important;
+        position: absolute !important;
+        top: .5px !important;
+        width: 4px !important;
+        height: 4px !important;
+        border-radius: 9999px !important;
+        background: #090909 !important;
+    }
+
+    #video-reference-mobile-header .video-reference-more-dots::before { left: 0 !important; }
+    #video-reference-mobile-header .video-reference-more-dots span { left: 8.5px !important; }
+    #video-reference-mobile-header .video-reference-more-dots::after { right: 0 !important; }
+
+    #video-reference-mobile-header .video-reference-avatar-image,
+    #video-reference-mobile-header .video-reference-avatar-fallback {
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        width: 29px !important;
+        min-width: 29px !important;
+        height: 29px !important;
+        min-height: 29px !important;
+        border-radius: 9999px !important;
+        object-fit: cover !important;
+    }
+
+    #video-reference-mobile-header .video-reference-avatar-fallback {
+        background: #2563eb !important;
+        color: #ffffff !important;
+        font-size: 12px !important;
+        line-height: 29px !important;
+        font-weight: 600 !important;
+    }
+
+    html body [data-video-tv-root].video-tv-page {
+        padding-top: 66px !important;
+    }
+
+    html.dark #video-reference-mobile-header .video-mobile-sidebar-button,
     html.dark #video-reference-mobile-header .video-mobile-brand,
     html.dark #video-reference-mobile-header .video-reference-menu,
     html.dark #video-reference-mobile-header .video-reference-actions,
@@ -527,7 +534,7 @@ HTML;
     }
 
     html.dark #video-reference-mobile-header .video-mobile-brand-word,
-    html.dark #video-reference-mobile-header :is(.video-reference-menu, .video-reference-compose, .video-reference-more, .video-reference-account) {
+    html.dark #video-reference-mobile-header :is(.video-reference-compose, .video-reference-more, .video-reference-account) {
         color: #f8fafc !important;
     }
 
@@ -556,6 +563,20 @@ HTML;
         border-top-color: #334155 !important;
         color: #93c5fd !important;
     }
+
+    @media (max-width: 360px) {
+        #video-reference-mobile-header .video-mobile-brand {
+            width: 86px !important;
+        }
+
+        #video-reference-mobile-header .video-mobile-brand.is-collapsed {
+            width: 38px !important;
+        }
+
+        #video-reference-mobile-header .video-mobile-brand-word {
+            font-size: 13px !important;
+        }
+    }
 }
 
 @media (min-width: 768px) {
@@ -573,16 +594,24 @@ HTML;
             $header = <<<HTML
 <div id="video-reference-mobile-header" aria-label="Video mobil gezinme">
     <div class="video-mobile-left">
+        <button type="button" class="video-mobile-sidebar-button" data-video-mobile-sidebar aria-label="Mobil yan menüyü aç">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M5 8.5H19" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"></path>
+                <path d="M5 15.5H15" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"></path>
+            </svg>
+        </button>
+
         <a href="{$homeUrl}" class="video-mobile-brand" data-video-mobile-brand aria-label="Ografi ana sayfa">
             <img class="video-mobile-brand-logo" src="https://ografi.com/images/ografi-logo.png?v=20260714a" alt="Ografi">
             <span class="video-mobile-brand-word">Ografi</span>
         </a>
 
         <div class="video-mobile-menu-anchor">
-            <button type="button" class="video-reference-menu" data-video-reference-menu aria-label="Menüyü aç" aria-expanded="false">
+            <button type="button" class="video-reference-menu" data-video-reference-menu aria-label="Video seçeneklerini aç" aria-expanded="false">
                 <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                    <path d="M5 8.5H19" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"></path>
-                    <path d="M5 15.5H15" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"></path>
+                    <path d="M5 6.5H19" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"></path>
+                    <path d="M5 12H19" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"></path>
+                    <path d="M5 17.5H19" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"></path>
                 </svg>
             </button>
 
@@ -637,6 +666,7 @@ HTML;
     const header = document.getElementById('video-reference-mobile-header');
     if (!header) return;
 
+    const sidebar = header.querySelector('[data-video-mobile-sidebar]');
     const brand = header.querySelector('[data-video-mobile-brand]');
     const menu = header.querySelector('[data-video-reference-menu]');
     const menuPanel = header.querySelector('[data-video-mobile-menu-panel]');
@@ -644,33 +674,44 @@ HTML;
     const account = header.querySelector('[data-video-reference-account]');
 
     const closeMenu = () => {
-        if (!menu || !menuPanel) return;
+        if (!menuPanel) return;
         menuPanel.hidden = true;
-        menu.setAttribute('aria-expanded', 'false');
+        menu?.setAttribute('aria-expanded', 'false');
+        more?.setAttribute('aria-expanded', 'false');
     };
 
-    const toggleMenu = () => {
-        if (!menu || !menuPanel) return;
+    const toggleMenu = (source = menu) => {
+        if (!menuPanel) return;
         const opening = menuPanel.hidden;
         menuPanel.hidden = !opening;
-        menu.setAttribute('aria-expanded', opening ? 'true' : 'false');
+        menu?.setAttribute('aria-expanded', opening && source === menu ? 'true' : 'false');
+        more?.setAttribute('aria-expanded', opening && source === more ? 'true' : 'false');
     };
 
     window.setTimeout(() => {
         brand?.classList.add('is-collapsed');
     }, 5000);
 
+    // Iki cizgili buton mevcut mobil yan menuyu acar.
+    sidebar?.addEventListener('click', (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        closeMenu();
+        document.querySelector('header.site-header[data-site-header] [data-mobile-sidebar-toggle]')?.click();
+    });
+
+    // Uc cizgili buton sadece altindaki kompakt ayar kutusunu acar.
     menu?.addEventListener('click', (event) => {
         event.preventDefault();
         event.stopPropagation();
-        toggleMenu();
+        toggleMenu(menu);
     });
 
     // Giris yapilmadiysa uc nokta da ayni kompakt menuyu acar.
     more?.addEventListener('click', (event) => {
         event.preventDefault();
         event.stopPropagation();
-        toggleMenu();
+        toggleMenu(more);
     });
 
     // Giris yapildiysa uc nokta yerine avatar gorunur ve mevcut hesap paneli acilir.
