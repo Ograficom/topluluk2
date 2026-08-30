@@ -33,10 +33,9 @@ class VideoPageResponseMiddleware
             return $response;
         }
 
-        // Mobil Safari/PWA/Chrome eski player ve header JS kopyasını tutmasın.
         $content = preg_replace(
             '/video-tv\.js\?v=\d+/i',
-            'video-tv.js?v=413',
+            'video-tv.js?v=414',
             $content,
         ) ?? $content;
 
@@ -44,7 +43,6 @@ class VideoPageResponseMiddleware
             $style = <<<'HTML'
 <style id="video-reference-mobile-header-style">
 @media (max-width: 767px) {
-    /* /video mobilde referanstaki kompakt yüzen üst barı kullanır. */
     html body header.site-header[data-site-header].site-header {
         position: fixed !important;
         inset: 0 0 auto 0 !important;
@@ -91,7 +89,6 @@ class VideoPageResponseMiddleware
         padding: 0 !important;
         border: 0 !important;
         background: transparent !important;
-        background-color: transparent !important;
         box-shadow: none !important;
         overflow: visible !important;
         pointer-events: none !important;
@@ -103,16 +100,16 @@ class VideoPageResponseMiddleware
 
     html body header.site-header[data-site-header].site-header .site-header-actions > [data-user-menu] {
         position: fixed !important;
-        top: calc(18px + env(safe-area-inset-top, 0px)) !important;
-        right: 20px !important;
+        top: calc(16px + env(safe-area-inset-top, 0px)) !important;
+        right: 16px !important;
         z-index: 10030 !important;
         display: block !important;
-        width: 56px !important;
-        min-width: 56px !important;
-        max-width: 56px !important;
-        height: 56px !important;
-        min-height: 56px !important;
-        max-height: 56px !important;
+        width: 44px !important;
+        min-width: 44px !important;
+        max-width: 44px !important;
+        height: 44px !important;
+        min-height: 44px !important;
+        max-height: 44px !important;
         margin: 0 !important;
         padding: 0 !important;
         background: transparent !important;
@@ -123,12 +120,12 @@ class VideoPageResponseMiddleware
         position: absolute !important;
         inset: 0 !important;
         display: block !important;
-        width: 56px !important;
-        min-width: 56px !important;
-        max-width: 56px !important;
-        height: 56px !important;
-        min-height: 56px !important;
-        max-height: 56px !important;
+        width: 44px !important;
+        min-width: 44px !important;
+        max-width: 44px !important;
+        height: 44px !important;
+        min-height: 44px !important;
+        max-height: 44px !important;
         margin: 0 !important;
         padding: 0 !important;
         border: 0 !important;
@@ -137,14 +134,14 @@ class VideoPageResponseMiddleware
     }
 
     html body header.site-header[data-site-header].site-header .site-menu-panel[data-user-menu-panel] {
-        top: 66px !important;
+        top: 54px !important;
         right: 0 !important;
         pointer-events: auto !important;
     }
 
     #video-reference-mobile-header {
         position: fixed !important;
-        top: calc(18px + env(safe-area-inset-top, 0px)) !important;
+        top: calc(16px + env(safe-area-inset-top, 0px)) !important;
         left: 0 !important;
         right: 0 !important;
         z-index: 10025 !important;
@@ -152,16 +149,14 @@ class VideoPageResponseMiddleware
         align-items: center !important;
         justify-content: space-between !important;
         width: 100% !important;
-        height: 56px !important;
+        height: 44px !important;
         margin: 0 !important;
-        padding: 0 20px !important;
+        padding: 0 16px !important;
         box-sizing: border-box !important;
         pointer-events: none !important;
     }
 
-    #video-reference-mobile-header .video-reference-menu,
-    #video-reference-mobile-header .video-reference-compose,
-    #video-reference-mobile-header .video-reference-more {
+    #video-reference-mobile-header :is(.video-reference-menu, .video-reference-compose, .video-reference-more) {
         -webkit-appearance: none !important;
         appearance: none !important;
         outline: none !important;
@@ -173,44 +168,41 @@ class VideoPageResponseMiddleware
         display: inline-flex !important;
         align-items: center !important;
         justify-content: center !important;
-        width: 56px !important;
-        min-width: 56px !important;
-        height: 56px !important;
-        min-height: 56px !important;
+        width: 44px !important;
+        min-width: 44px !important;
+        height: 44px !important;
+        min-height: 44px !important;
         margin: 0 !important;
         padding: 0 !important;
         border: 0 !important;
         border-radius: 9999px !important;
-        background: #ffffff !important;
-        background-color: #ffffff !important;
-        color: #080808 !important;
-        box-shadow: 0 12px 34px rgba(15, 23, 42, .08) !important;
+        background: #fff !important;
+        color: #090909 !important;
+        box-shadow: 0 10px 28px rgba(15, 23, 42, .07) !important;
         pointer-events: auto !important;
         cursor: pointer !important;
     }
 
     #video-reference-mobile-header .video-reference-menu svg {
         display: block !important;
-        width: 27px !important;
-        height: 27px !important;
+        width: 22px !important;
+        height: 22px !important;
         margin: 0 !important;
-        color: currentColor !important;
     }
 
     #video-reference-mobile-header .video-reference-actions {
         display: grid !important;
         grid-template-columns: 1fr 1fr !important;
         align-items: center !important;
-        width: 136px !important;
-        min-width: 136px !important;
-        height: 56px !important;
+        width: 112px !important;
+        min-width: 112px !important;
+        height: 44px !important;
         margin: 0 !important;
-        padding: 4px 6px !important;
+        padding: 3px 5px !important;
         border: 0 !important;
         border-radius: 9999px !important;
-        background: #ffffff !important;
-        background-color: #ffffff !important;
-        box-shadow: 0 12px 34px rgba(15, 23, 42, .08) !important;
+        background: #fff !important;
+        box-shadow: 0 10px 28px rgba(15, 23, 42, .07) !important;
         box-sizing: border-box !important;
         pointer-events: auto !important;
     }
@@ -221,14 +213,13 @@ class VideoPageResponseMiddleware
         align-items: center !important;
         justify-content: center !important;
         width: 100% !important;
-        height: 48px !important;
+        height: 38px !important;
         margin: 0 !important;
         padding: 0 !important;
         border: 0 !important;
         border-radius: 9999px !important;
         background: transparent !important;
-        background-color: transparent !important;
-        color: #080808 !important;
+        color: #090909 !important;
         box-shadow: none !important;
         text-decoration: none !important;
         cursor: pointer !important;
@@ -236,17 +227,16 @@ class VideoPageResponseMiddleware
 
     #video-reference-mobile-header .video-reference-compose svg {
         display: block !important;
-        width: 27px !important;
-        height: 27px !important;
+        width: 23px !important;
+        height: 23px !important;
         margin: 0 !important;
-        color: currentColor !important;
     }
 
     #video-reference-mobile-header .video-reference-more-dots {
         position: relative !important;
         display: block !important;
-        width: 28px !important;
-        height: 6px !important;
+        width: 24px !important;
+        height: 5px !important;
     }
 
     #video-reference-mobile-header .video-reference-more-dots::before,
@@ -255,61 +245,22 @@ class VideoPageResponseMiddleware
         content: '' !important;
         position: absolute !important;
         top: 0 !important;
-        width: 6px !important;
-        height: 6px !important;
+        width: 5px !important;
+        height: 5px !important;
         border-radius: 9999px !important;
-        background: #080808 !important;
+        background: #090909 !important;
     }
 
-    #video-reference-mobile-header .video-reference-more-dots::before {
-        left: 0 !important;
-    }
-
-    #video-reference-mobile-header .video-reference-more-dots span {
-        left: 11px !important;
-    }
-
-    #video-reference-mobile-header .video-reference-more-dots::after {
-        right: 0 !important;
-    }
+    #video-reference-mobile-header .video-reference-more-dots::before { left: 0 !important; }
+    #video-reference-mobile-header .video-reference-more-dots span { left: 9.5px !important; }
+    #video-reference-mobile-header .video-reference-more-dots::after { right: 0 !important; }
 
     #video-reference-mobile-header :is(.video-reference-menu, .video-reference-compose, .video-reference-more):active {
         background: #f3f4f6 !important;
-        background-color: #f3f4f6 !important;
     }
 
     html body [data-video-tv-root].video-tv-page {
-        padding-top: 112px !important;
-    }
-
-    @media (max-width: 390px) {
-        #video-reference-mobile-header {
-            top: calc(16px + env(safe-area-inset-top, 0px)) !important;
-            padding-left: 16px !important;
-            padding-right: 16px !important;
-        }
-
-        #video-reference-mobile-header .video-reference-menu {
-            width: 52px !important;
-            min-width: 52px !important;
-            height: 52px !important;
-            min-height: 52px !important;
-        }
-
-        #video-reference-mobile-header .video-reference-actions {
-            width: 128px !important;
-            min-width: 128px !important;
-            height: 52px !important;
-        }
-
-        #video-reference-mobile-header .video-reference-compose,
-        #video-reference-mobile-header .video-reference-more {
-            height: 44px !important;
-        }
-
-        html body [data-video-tv-root].video-tv-page {
-            padding-top: 104px !important;
-        }
+        padding-top: 86px !important;
     }
 }
 
@@ -328,17 +279,17 @@ HTML;
             $header = <<<'HTML'
 <div id="video-reference-mobile-header" aria-label="Video mobil gezinme">
     <button type="button" class="video-reference-menu" data-video-reference-menu aria-label="Menüyü aç">
-        <svg viewBox="0 0 36 36" fill="none" aria-hidden="true">
-            <path d="M7 12H29" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"></path>
-            <path d="M7 24H22" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"></path>
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M5 8.5H19" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"></path>
+            <path d="M5 15.5H15" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"></path>
         </svg>
     </button>
 
     <div class="video-reference-actions">
         <a href="/blog/create" class="video-reference-compose" aria-label="Yeni gönderi oluştur">
-            <svg viewBox="0 0 36 36" fill="none" aria-hidden="true">
-                <path d="M20.8 7.2H9.8A3.8 3.8 0 0 0 6 11v15.2A3.8 3.8 0 0 0 9.8 30h15.2a3.8 3.8 0 0 0 3.8-3.8V15.4" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"></path>
-                <path d="M16 20 28.1 7.9a3.25 3.25 0 0 1 4.6 4.6L20.6 24.6 14.4 26.2 16 20Z" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"></path>
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M13.8 5H6.7A2.7 2.7 0 0 0 4 7.7v9.6A2.7 2.7 0 0 0 6.7 20h9.6a2.7 2.7 0 0 0 2.7-2.7v-6.4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                <path d="m11 13.4 7.1-7.1a2.25 2.25 0 0 1 3.2 3.2l-7.1 7.1-4.1 1.1 1-4.3Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
             </svg>
         </a>
 
@@ -362,8 +313,7 @@ HTML;
     menu?.addEventListener('click', (event) => {
         event.preventDefault();
         event.stopPropagation();
-        const original = document.querySelector('header.site-header[data-site-header] [data-mobile-sidebar-toggle]');
-        original?.click();
+        document.querySelector('header.site-header[data-site-header] [data-mobile-sidebar-toggle]')?.click();
     });
 
     more?.addEventListener('click', (event) => {
