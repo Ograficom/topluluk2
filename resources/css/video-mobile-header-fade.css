@@ -1,4 +1,4 @@
-/* /video mobile header — iOS reference proportions + restored subtle downward haze. */
+/* /video mobile header — reference restored: iOS proportions + subtle downward haze. */
 @media (max-width: 767px) {
     html body.alma-app #video-reference-mobile-header {
         top: calc(12px + env(safe-area-inset-top, 0px)) !important;
