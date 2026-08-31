@@ -16,7 +16,10 @@
     $isAuth = auth()->check();
 
     $startsWithUrl = function ($val) {
-        if (!is_string($val)) return false;
+        if (! is_string($val)) {
+            return false;
+        }
+
         return str_starts_with($val, 'http://')
             || str_starts_with($val, 'https://')
             || str_starts_with($val, '/storage')
@@ -25,7 +28,7 @@
     };
 
     $renderIcon = function ($value, $labelText = null, $size = 'h-9 w-9 rounded-full') use ($startsWithUrl) {
-        if (!isset($value)) {
+        if (! isset($value)) {
             return e('?');
         }
 
@@ -33,9 +36,10 @@
         $raw = $isString ? trim($value) : $value;
         $hasHtml = $isString && preg_match('/<\s*(img|svg|iconify-icon)/i', $raw);
         $resolved = $raw;
+
         if (
             $isString
-            && !$startsWithUrl($resolved)
+            && ! $startsWithUrl($resolved)
             && preg_match('/\.(png|jpe?g|gif|webp|svg)$/i', $resolved)
         ) {
             $resolved = str_starts_with($resolved, 'storage/')
@@ -51,13 +55,13 @@
         }
 
         if ($isImgExt || $hasUrl) {
-            return '<img src="'.e($resolved).'" alt="'.e($labelText ?? 'reaction').'" class="'.$size.' object-cover">';
+            return '<img src="' . e($resolved) . '" alt="' . e($labelText ?? 'reaction') . '" class="' . $size . ' object-cover">';
         }
 
         return e($raw ?: '?');
     };
 
-$optionsSource = collect($gifs ?? []);
+    $optionsSource = collect($gifs ?? []);
 
     if ($optionsSource->isEmpty()) {
         $optionsSource = \App\Models\ReactionType::query()
@@ -94,34 +98,39 @@ $optionsSource = collect($gifs ?? []);
                 $iconValue = $item;
             }
 
-            if (!$iconValue && $label) {
+            if (! $iconValue && $label) {
                 $iconValue = mb_substr($label, 0, 1);
             }
 
             return [
                 'id' => $id,
-                'short_code' => $shortCode ?? null,
+                'short_code' => $shortCode,
                 'icon' => $renderIcon($iconValue, $label),
                 'label' => $label,
             ];
         })
-        ->filter(fn($opt) => !empty($opt['icon']))
+        ->filter(fn ($opt) => ! empty($opt['icon']))
         ->values();
 
     $fallbackIcon = $rawIcon ?: ($options->first()['icon'] ?? $addSvg);
     $triggerIcon = $renderIcon($fallbackIcon, $label, 'h-5 w-5 rounded-full');
+
     if ($isAdd) {
         $triggerIcon = isset($icon)
             ? $renderIcon($icon, $label, 'h-5 w-5 rounded-full')
             : $addSvg;
     }
-    $defaultTriggerClass = $isAdd
-        ? 'rx-add-trigger'
-        : 'rx-summary-trigger';
+
+    $defaultTriggerClass = $isAdd ? 'rx-add-trigger' : 'rx-summary-trigger';
     $triggerClass = $triggerClass ?: $defaultTriggerClass;
 @endphp
 
-<div class="relative inline-block {{ $class }}" data-rx-wrapper="{{ $uid }}" @if(!$isAuth) data-rx-guest="1" data-login-url="{{ route('login') }}" @endif>
+<div
+    class="relative inline-block {{ $class }}"
+    data-rx-wrapper="{{ $uid }}"
+    @if($isAdd) data-rx-add="1" @endif
+    @if(!$isAuth) data-rx-guest="1" data-login-url="{{ route('login') }}" @endif
+>
     @if($isAuth)
         <button
             type="button"
@@ -152,7 +161,6 @@ $optionsSource = collect($gifs ?? []);
                 <span class="text-base leading-none">{!! $triggerIcon !!}</span>
             </button>
         @else
-            {{-- Clickable button for guests - redirects to login --}}
             <button
                 type="button"
                 class="{{ $triggerClass }} cursor-pointer"
@@ -168,17 +176,15 @@ $optionsSource = collect($gifs ?? []);
         @endif
     @endif
 
-    {{-- Reaction dropdown panel --}}
     @if($isAuth || $isAdd)
         <div
-            class="rx-panel fixed z-50 hidden"
+            class="rx-panel {{ $isAdd ? 'rx-panel--compact' : '' }} fixed z-50 hidden"
             data-rx-panel="{{ $uid }}"
             role="dialog"
-            style="max-width: calc(100vw - 24px);"
+            style="max-width: calc(100vw - 16px);"
         >
-            <div class="rx-panel__title">
-                Reactions
-            </div>
+            <div class="rx-panel__title">Reactions</div>
+
             @if($options->isNotEmpty())
                 <div class="rx-panel__options">
                     @foreach($options as $option)
@@ -195,9 +201,7 @@ $optionsSource = collect($gifs ?? []);
                     @endforeach
                 </div>
             @else
-                <div class="rx-panel__empty">
-                    Tepki bulunamad&#305;.
-                </div>
+                <div class="rx-panel__empty">Tepki bulunamad&#305;.</div>
             @endif
         </div>
     @endif
@@ -211,7 +215,7 @@ $optionsSource = collect($gifs ?? []);
         border-radius: 16px;
         background: #ffffff;
         padding: 12px 14px 14px;
-        box-shadow: 0 18px 46px rgba(15, 23, 42, 0.14);
+        box-shadow: 0 10px 26px rgba(15, 23, 42, 0.12);
     }
 
     .rx-panel__title {
@@ -237,17 +241,16 @@ $optionsSource = collect($gifs ?? []);
         width: 38px;
         height: 38px;
         margin: 0 auto;
+        border: 0;
         border-radius: 999px;
         background: transparent;
         color: #111827;
-        transition: transform .16s ease, background-color .16s ease;
     }
 
     .rx-panel__option:hover,
     .rx-panel__option:focus,
     .rx-panel__option:focus-visible {
         background: rgba(241, 245, 249, 0.95);
-        transform: scale(1.06);
         outline: none;
     }
 
@@ -267,6 +270,49 @@ $optionsSource = collect($gifs ?? []);
         height: 36px;
         border-radius: 999px;
         object-fit: cover;
+    }
+
+    /* Post-show add-reaction picker: compact, four columns, directly under icon. */
+    .rx-panel.rx-panel--compact {
+        width: 204px !important;
+        max-width: calc(100vw - 16px) !important;
+        padding: 8px 9px 9px !important;
+        border-radius: 9px !important;
+        box-shadow: 0 4px 14px rgba(15, 23, 42, 0.12) !important;
+    }
+
+    .rx-panel--compact .rx-panel__title {
+        margin-bottom: 7px !important;
+        padding: 0 1px 6px;
+        border-bottom: 1px solid rgba(226, 232, 240, 0.9);
+        font-size: 0.72rem !important;
+        line-height: 1.15;
+        font-weight: 500;
+    }
+
+    .rx-panel--compact .rx-panel__options {
+        grid-template-columns: repeat(4, 36px) !important;
+        justify-content: center;
+        gap: 5px 8px !important;
+        max-height: none !important;
+        overflow: visible !important;
+    }
+
+    .rx-panel--compact .rx-panel__option {
+        width: 36px !important;
+        height: 36px !important;
+        margin: 0 !important;
+    }
+
+    .rx-panel--compact .rx-panel__option-icon {
+        font-size: 1.45rem !important;
+    }
+
+    .rx-panel--compact .rx-panel__option-icon img,
+    .rx-panel--compact .rx-panel__option-icon iconify-icon,
+    .rx-panel--compact .rx-panel__option-icon svg {
+        width: 30px !important;
+        height: 30px !important;
     }
 
     .rx-panel__empty {
@@ -292,7 +338,6 @@ $optionsSource = collect($gifs ?? []);
         font-size: 14px;
         font-weight: 600;
         line-height: 1;
-        transition: background-color .2s ease, color .2s ease, border-color .2s ease;
     }
 
     .rx-summary-trigger:hover {
@@ -310,7 +355,6 @@ $optionsSource = collect($gifs ?? []);
         border: 1px solid rgba(226, 232, 240, 0.96);
         background: #f1f5f9;
         color: #111827;
-        transition: background-color .2s ease, color .2s ease, border-color .2s ease;
     }
 
     .rx-add-trigger:hover {
@@ -359,6 +403,10 @@ $optionsSource = collect($gifs ?? []);
         color: #cbd5e1;
     }
 
+    html.dark .rx-panel--compact .rx-panel__title {
+        border-bottom-color: rgba(71, 85, 105, 0.78);
+    }
+
     html.dark .rx-panel__empty {
         background: rgba(30, 41, 59, 0.82);
     }
@@ -379,18 +427,20 @@ $optionsSource = collect($gifs ?? []);
             panel.classList.add('hidden');
             panel.style.top = '';
             panel.style.left = '';
+            panel.style.right = '';
         });
-        document.querySelectorAll('[data-rx-trigger]').forEach(btn => btn.setAttribute('aria-expanded', 'false'));
+
+        document.querySelectorAll('[data-rx-trigger]').forEach(btn => {
+            btn.setAttribute('aria-expanded', 'false');
+        });
     };
 
     const positionPanel = (panel, trigger) => {
-        // Remove previous position styles
         panel.style.top = '';
         panel.style.left = '';
         panel.style.right = '';
-        
-        // Temporarily show to measure
-        const prevVisibility = panel.style.visibility;
+
+        const previousVisibility = panel.style.visibility;
         panel.classList.remove('hidden');
         panel.style.visibility = 'hidden';
 
@@ -398,120 +448,134 @@ $optionsSource = collect($gifs ?? []);
         const triggerRect = trigger.getBoundingClientRect();
         const viewportWidth = window.innerWidth;
         const viewportHeight = window.innerHeight;
-        
-        // Calculate available space
-        const spaceBelow = viewportHeight - triggerRect.bottom - 16;
-        const spaceAbove = triggerRect.top - 16;
-        
-        // Width of panel
-        const panelWidth = panelRect.width || 224; // w-56 = 224px
-        
-        // Horizontal positioning
-        let leftPos = triggerRect.left;
-        let topPos;
-        
-        // Check if panel would overflow on right
-        if (leftPos + panelWidth > viewportWidth - 12) {
-            // Right-align instead
-            panel.style.left = 'auto';
-            panel.style.right = Math.max(12, viewportWidth - triggerRect.right) + 'px';
+        const isCompact = panel.classList.contains('rx-panel--compact');
+        const gutter = isCompact ? 8 : 12;
+        const gap = isCompact ? 4 : 8;
+        const panelWidth = panelRect.width || (isCompact ? 204 : 228);
+        const panelHeight = panelRect.height;
+
+        let leftPos;
+
+        if (isCompact) {
+            leftPos = triggerRect.left + (triggerRect.width / 2) - (panelWidth / 2);
+            leftPos = Math.max(gutter, Math.min(leftPos, viewportWidth - panelWidth - gutter));
+            panel.style.left = Math.round(leftPos) + 'px';
         } else {
-            panel.style.left = leftPos + 'px';
+            leftPos = triggerRect.left;
+
+            if (leftPos + panelWidth > viewportWidth - gutter) {
+                panel.style.left = 'auto';
+                panel.style.right = Math.max(gutter, viewportWidth - triggerRect.right) + 'px';
+            } else {
+                panel.style.left = Math.max(gutter, leftPos) + 'px';
+            }
         }
-        
-        // Vertical positioning
-        if (spaceBelow >= panelRect.height || spaceBelow > spaceAbove) {
-            // Open below
-            topPos = triggerRect.bottom + 8;
-        } else {
-            // Open above
-            topPos = triggerRect.top - panelRect.height - 8;
+
+        let topPos = triggerRect.bottom + gap;
+        const canFitBelow = topPos + panelHeight <= viewportHeight - gutter;
+        const canFitAbove = triggerRect.top - panelHeight - gap >= gutter;
+
+        if (! canFitBelow && canFitAbove) {
+            topPos = triggerRect.top - panelHeight - gap;
         }
-        
-        panel.style.top = Math.max(12, topPos) + 'px';
-        
-        panel.style.visibility = prevVisibility || '';
+
+        panel.style.top = Math.max(gutter, Math.round(topPos)) + 'px';
+        panel.style.visibility = previousVisibility || '';
     };
 
     const openPanel = (uid) => {
         const panel = document.querySelector(`[data-rx-panel="${uid}"]`);
-        const btn = document.querySelector(`[data-rx-trigger="${uid}"]`);
-        if (!panel || !btn) return;
-        
-        hideAll();
-        positionPanel(panel, btn);
-        panel.classList.remove('hidden');
-        btn.setAttribute('aria-expanded', 'true');
-    };
+        const trigger = document.querySelector(`[data-rx-trigger="${uid}"]`);
 
-    document.addEventListener('click', (e) => {
-        const btn = e.target.closest('[data-rx-trigger]');
-        const closeBtn = e.target.closest('[data-rx-close]');
-        const optionBtn = e.target.closest('[data-rx-option]');
-        const wrapper = e.target.closest('[data-rx-wrapper]');
-
-        if (btn) {
-            e.preventDefault();
-            e.stopPropagation();
-            openPanel(btn.getAttribute('data-rx-trigger'));
+        if (! panel || ! trigger) {
             return;
         }
 
-        if (closeBtn) {
-            e.preventDefault();
+        hideAll();
+        positionPanel(panel, trigger);
+        panel.classList.remove('hidden');
+        trigger.setAttribute('aria-expanded', 'true');
+    };
+
+    document.addEventListener('click', (event) => {
+        const trigger = event.target.closest('[data-rx-trigger]');
+        const closeButton = event.target.closest('[data-rx-close]');
+        const optionButton = event.target.closest('[data-rx-option]');
+        const wrapper = event.target.closest('[data-rx-wrapper]');
+
+        if (trigger) {
+            event.preventDefault();
+            event.stopPropagation();
+            openPanel(trigger.getAttribute('data-rx-trigger'));
+            return;
+        }
+
+        if (closeButton) {
+            event.preventDefault();
             hideAll();
             return;
         }
 
-        if (optionBtn) {
-            e.preventDefault();
-            const wrapperEl = optionBtn.closest('[data-rx-wrapper]');
-            const loginUrl = wrapperEl?.getAttribute('data-login-url');
-            if (wrapperEl?.hasAttribute('data-rx-guest') && loginUrl) {
+        if (optionButton) {
+            event.preventDefault();
+
+            const wrapperElement = optionButton.closest('[data-rx-wrapper]');
+            const loginUrl = wrapperElement?.getAttribute('data-login-url');
+
+            if (wrapperElement?.hasAttribute('data-rx-guest') && loginUrl) {
                 window.location.href = loginUrl;
                 return;
             }
-            const target = wrapperEl || window;
+
+            const target = wrapperElement || window;
             target.dispatchEvent(new CustomEvent('reaction:selected', {
                 detail: {
-                    uid: optionBtn.getAttribute('data-rx-option'),
-                    reaction_type_id: optionBtn.getAttribute('data-rx-option-id') ? Number(optionBtn.getAttribute('data-rx-option-id')) : null,
-                    short_code: optionBtn.getAttribute('data-rx-option-code') || null,
-                    icon_html: optionBtn.querySelector('span')?.innerHTML || optionBtn.innerHTML || null,
+                    uid: optionButton.getAttribute('data-rx-option'),
+                    reaction_type_id: optionButton.getAttribute('data-rx-option-id')
+                        ? Number(optionButton.getAttribute('data-rx-option-id'))
+                        : null,
+                    short_code: optionButton.getAttribute('data-rx-option-code') || null,
+                    icon_html: optionButton.querySelector('span')?.innerHTML || optionButton.innerHTML || null,
                 },
                 bubbles: true,
             }));
+
             hideAll();
             return;
         }
 
-        if (!wrapper) hideAll();
+        if (! wrapper) {
+            hideAll();
+        }
     });
 
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') hideAll();
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') {
+            hideAll();
+        }
     });
 
-    // Reposition on scroll
     window.addEventListener('scroll', () => {
-        document.querySelectorAll('[data-rx-trigger][aria-expanded="true"]').forEach(btn => {
-            const uid = btn.getAttribute('data-rx-trigger');
+        document.querySelectorAll('[data-rx-trigger][aria-expanded="true"]').forEach(trigger => {
+            const uid = trigger.getAttribute('data-rx-trigger');
             const panel = document.querySelector(`[data-rx-panel="${uid}"]`);
-            if (panel && !panel.classList.contains('hidden')) {
-                positionPanel(panel, btn);
+
+            if (panel && ! panel.classList.contains('hidden')) {
+                positionPanel(panel, trigger);
             }
         });
     }, true);
+
+    window.addEventListener('resize', () => {
+        document.querySelectorAll('[data-rx-trigger][aria-expanded="true"]').forEach(trigger => {
+            const uid = trigger.getAttribute('data-rx-trigger');
+            const panel = document.querySelector(`[data-rx-panel="${uid}"]`);
+
+            if (panel && ! panel.classList.contains('hidden')) {
+                positionPanel(panel, trigger);
+            }
+        });
+    });
 })();
 </script>
 @endonce
-
-
-
-
-
-
-
-
-
-
