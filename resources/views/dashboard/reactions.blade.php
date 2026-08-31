@@ -277,7 +277,7 @@
 
                                     <button
                                         type="submit"
-                                        class="inline-flex min-h-10 items-center justify-center rounded-lg bg-gray-900 px-4 text-sm font-medium text-white hover:bg-gray-200 hover:text-gray-900 active:bg-gray-300 disabled:cursor-not-allowed disabled:bg-gray-200 disabled:text-gray-400 dark:bg-slate-100 dark:text-slate-900 dark:hover:bg-slate-700 dark:hover:text-white dark:active:bg-slate-600 dark:disabled:bg-slate-700 dark:disabled:text-slate-500"
+                                        class="inline-flex min-h-10 items-center justify-center rounded-lg bg-blue-600 px-4 text-sm font-medium text-white hover:bg-gray-200 hover:text-gray-900 active:bg-gray-300 disabled:cursor-not-allowed disabled:bg-blue-300 disabled:text-white dark:bg-blue-600 dark:text-white dark:hover:bg-slate-700 dark:hover:text-white dark:active:bg-slate-600 dark:disabled:bg-blue-900 dark:disabled:text-blue-100"
                                         data-reaction-submit
                                         disabled
                                     >
