@@ -179,7 +179,7 @@ html.dark body.alma-app button[data-reaction-submit]:active:not(:disabled) {
   color: #ffffff !important;
 }
 
-/* Mobile post reaction picker: force the compact 4-column layout. */
+/* Mobile post-card reaction picker. */
 @media (max-width: 640px) {
   html body [data-post-card-reaction-layer] [data-post-card-reaction-menu].post-card__reaction-menu.post-card__reaction-menu:not([hidden]),
   html body [data-post-card-reaction-menu].post-card__reaction-menu.post-card__reaction-menu:not([hidden]) {
@@ -263,5 +263,129 @@ html.dark body.alma-app button[data-reaction-submit]:active:not(:disabled) {
   html body [data-post-card-reaction-layer] [data-post-card-reaction-menu].post-card__reaction-menu .post-card__reaction-option:active,
   html body [data-post-card-reaction-menu].post-card__reaction-menu .post-card__reaction-option:active {
     background: #e5e7eb !important;
+  }
+}
+
+/*
+ * Post-show mobile reaction picker.
+ * The show template contains a later legacy "FINAL MOBILE FIX" that expands this
+ * menu to a fixed full-width bottom panel. These more-specific selectors keep the
+ * picker compact and anchored directly below the add-reaction icon.
+ */
+@media (max-width: 640px) {
+  html body.alma-app .post-show-shell .ps-actions-bar .ps-reaction-row .ps-reaction-picker {
+    position: relative !important;
+    overflow: visible !important;
+    z-index: 2147483000 !important;
+  }
+
+  html body.alma-app .post-show-shell .ps-actions-bar .ps-reaction-row .ps-reaction-picker > .ps-reaction-menu {
+    position: absolute !important;
+    left: 50% !important;
+    right: auto !important;
+    top: calc(100% + 4px) !important;
+    bottom: auto !important;
+    width: 188px !important;
+    min-width: 188px !important;
+    max-width: min(188px, calc(100vw - 16px)) !important;
+    max-height: 260px !important;
+    padding: 8px !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    border: 1px solid #dfe3e8 !important;
+    border-radius: 8px !important;
+    background: #ffffff !important;
+    box-shadow: none !important;
+    filter: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    transform: translateX(-50%) !important;
+    box-sizing: border-box !important;
+    z-index: 2147483647 !important;
+  }
+
+  html body.alma-app .post-show-shell .ps-actions-bar .ps-reaction-row .ps-reaction-picker > .ps-reaction-menu:not([hidden]) {
+    display: grid !important;
+    grid-template-columns: repeat(4, 36px) !important;
+    grid-auto-flow: row !important;
+    gap: 6px !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+  }
+
+  html body.alma-app .post-show-shell .ps-actions-bar .ps-reaction-row .ps-reaction-picker > .ps-reaction-menu > .ps-reaction-menu-title {
+    grid-column: 1 / -1 !important;
+    width: 100% !important;
+    margin: 0 0 2px !important;
+    padding: 0 2px 6px !important;
+    border-bottom: 1px solid #e5e7eb !important;
+    color: #64748b !important;
+    font-size: 12px !important;
+    font-weight: 400 !important;
+    line-height: 16px !important;
+    letter-spacing: 0 !important;
+    text-transform: none !important;
+  }
+
+  html body.alma-app .post-show-shell .ps-actions-bar .ps-reaction-row .ps-reaction-picker > .ps-reaction-menu > .ps-reaction-form {
+    width: 36px !important;
+    min-width: 36px !important;
+    height: 36px !important;
+    min-height: 36px !important;
+    margin: 0 !important;
+    display: inline-flex !important;
+  }
+
+  html body.alma-app .post-show-shell .ps-actions-bar .ps-reaction-row .ps-reaction-picker > .ps-reaction-menu .ps-reaction-option {
+    width: 36px !important;
+    min-width: 36px !important;
+    height: 36px !important;
+    min-height: 36px !important;
+    padding: 0 !important;
+    border: 0 !important;
+    border-radius: 7px !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    transform: none !important;
+  }
+
+  html body.alma-app .post-show-shell .ps-actions-bar .ps-reaction-row .ps-reaction-picker > .ps-reaction-menu .ps-reaction-option :is(img, svg, .ps-reaction-media),
+  html body.alma-app .post-show-shell .ps-actions-bar .ps-reaction-row .ps-reaction-picker > .ps-reaction-menu .ps-reaction-option > :is(img, svg) {
+    width: 26px !important;
+    min-width: 26px !important;
+    max-width: 26px !important;
+    height: 26px !important;
+    min-height: 26px !important;
+    max-height: 26px !important;
+    object-fit: contain !important;
+    border-radius: 0 !important;
+  }
+
+  html body.alma-app .post-show-shell .ps-actions-bar .ps-reaction-row .ps-reaction-picker > .ps-reaction-menu .ps-reaction-option:is(:hover, :focus-visible) {
+    background: #f3f4f6 !important;
+    color: #111827 !important;
+    outline: none !important;
+    transform: none !important;
+  }
+
+  html body.alma-app .post-show-shell .ps-actions-bar .ps-reaction-row .ps-reaction-picker > .ps-reaction-menu .ps-reaction-option:active {
+    background: #e5e7eb !important;
+    color: #111827 !important;
+    transform: none !important;
+  }
+
+  html.dark body.alma-app .post-show-shell .ps-actions-bar .ps-reaction-row .ps-reaction-picker > .ps-reaction-menu {
+    background: #111827 !important;
+    border-color: #334155 !important;
+  }
+
+  html.dark body.alma-app .post-show-shell .ps-actions-bar .ps-reaction-row .ps-reaction-picker > .ps-reaction-menu > .ps-reaction-menu-title {
+    border-bottom-color: #334155 !important;
+    color: #cbd5e1 !important;
+  }
+
+  html.dark body.alma-app .post-show-shell .ps-actions-bar .ps-reaction-row .ps-reaction-picker > .ps-reaction-menu .ps-reaction-option:is(:hover, :focus-visible) {
+    background: #263247 !important;
+    color: #ffffff !important;
   }
 }
