@@ -39,11 +39,12 @@ class ReactionTypeResource extends Resource
                 ->helperText('Orn: like, clap, wow. Frontend bu kodla istek gonderir.'),
             TextInput::make('emoji')
                 ->label('Emoji')
-                ->maxLength(10)
+                ->maxLength(16)
                 ->helperText('Tek bir emoji veya Unicode karakter.'),
             FileUpload::make('gif_url')
                 ->label('GIF/Resim')
                 ->directory('reaction-types')
+                ->disk('public')
                 ->image()
                 ->visibility('public')
                 ->preserveFilenames()
@@ -64,6 +65,10 @@ class ReactionTypeResource extends Resource
                 TextColumn::make('short_code')->label('Kod')->sortable()->searchable(),
                 TextColumn::make('emoji')->label('Emoji'),
                 TextColumn::make('gif_url')->label('GIF')->limit(20),
+                TextColumn::make('submittedBy.name')
+                    ->label('Ekleyen')
+                    ->placeholder('Yonetici')
+                    ->searchable(),
                 IconColumn::make('is_active')->label('Aktif')->boolean(),
                 TextColumn::make('reactions_count')->label('Toplam Tepki')->counts('reactions'),
             ])
@@ -90,10 +95,3 @@ class ReactionTypeResource extends Resource
         return ['label', 'short_code', 'emoji'];
     }
 }
-
-
-
-
-
-
-
