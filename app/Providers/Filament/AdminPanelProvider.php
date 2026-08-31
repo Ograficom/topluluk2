@@ -2,7 +2,9 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Pages\Auth\Login;
 use App\Filament\Resources\AdOrderResource;
+use App\Http\Middleware\AdminLoginSecurityMiddleware;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -36,7 +38,7 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->default()
             ->path('admin')
-            ->login()
+            ->login(Login::class)
             ->theme(new HtmlString('<link rel="stylesheet" href="' . asset('css/filament/filament/app.css') . '" data-navigate-track="reload" />'))
             ->colors([
                 'primary' => ShadcnColor::Blue,
@@ -87,6 +89,7 @@ class AdminPanelProvider extends PanelProvider
                 StartSession::class,
                 AuthenticateSession::class,
                 ShareErrorsFromSession::class,
+                AdminLoginSecurityMiddleware::class,
                 VerifyCsrfToken::class,
                 SubstituteBindings::class,
                 DisableBladeIconComponents::class,
