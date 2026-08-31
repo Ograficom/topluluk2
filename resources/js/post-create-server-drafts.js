@@ -1,5 +1,6 @@
 const loadPostCreateEditorPolish = () => {
     if (document.querySelector('link[data-editorjs-create-polish]')) return;
+
     const link = document.createElement('link');
     link.rel = 'stylesheet';
     link.href = '/css/editorjs-create-polish.css?v=20260830e';
@@ -57,6 +58,7 @@ const applySettingsDrawerGeometry = () => {
             }
         }
     `;
+
     document.head.appendChild(style);
 };
 
@@ -110,15 +112,31 @@ const initPostCreateServerDrafts = () => {
 
     const setStatusIcon = (state) => {
         if (!statusIcon) return;
+
         const icon = state === 'saving'
             ? 'lucide:cloud-upload'
             : state === 'error'
                 ? 'lucide:cloud-alert'
                 : 'lucide:cloud-check';
+
         statusIcon.setAttribute('icon', icon);
         status?.setAttribute('data-state', state);
-        status?.setAttribute('aria-label', state === 'saving' ? 'Taslak kaydediliyor' : state === 'error' ? 'Taslak kaydedilemedi' : 'Taslak kaydedildi');
-        status?.setAttribute('title', state === 'saving' ? 'Taslak kaydediliyor' : state === 'error' ? 'Taslak kaydedilemedi' : 'Taslak kaydedildi');
+        status?.setAttribute(
+            'aria-label',
+            state === 'saving'
+                ? 'Taslak kaydediliyor'
+                : state === 'error'
+                    ? 'Taslak kaydedilemedi'
+                    : 'Taslak kaydedildi'
+        );
+        status?.setAttribute(
+            'title',
+            state === 'saving'
+                ? 'Taslak kaydediliyor'
+                : state === 'error'
+                    ? 'Taslak kaydedilemedi'
+                    : 'Taslak kaydedildi'
+        );
     };
 
     const syncEditorPayload = async () => {
@@ -128,6 +146,7 @@ const initPostCreateServerDrafts = () => {
         try {
             const output = await editor.save();
             if (contentJson) contentJson.value = JSON.stringify(output);
+
             if (window.filamentEditorBlocksToHtml && contentFallback) {
                 contentFallback.value = window.filamentEditorBlocksToHtml(output.blocks || []);
             }
@@ -147,6 +166,7 @@ const initPostCreateServerDrafts = () => {
 
     const saveToServer = async () => {
         if (publishing) return false;
+
         if (busy) {
             queued = true;
             return false;
@@ -169,6 +189,7 @@ const initPostCreateServerDrafts = () => {
         data.set('is_published', '0');
 
         let endpoint = form.action;
+
         if (currentSlug) {
             endpoint = `/blog/posts/${encodeURIComponent(currentSlug)}`;
             data.set('_method', 'PUT');
@@ -183,7 +204,7 @@ const initPostCreateServerDrafts = () => {
                 credentials: 'same-origin',
                 redirect: 'follow',
                 headers: {
-                    'Accept': 'text/html,application/xhtml+xml',
+                    Accept: 'text/html,application/xhtml+xml',
                     'X-Requested-With': 'XMLHttpRequest',
                 },
             });
@@ -193,6 +214,7 @@ const initPostCreateServerDrafts = () => {
             }
 
             const slug = extractSlug(response.url) || currentSlug;
+
             if (slug) {
                 writeServerState({ slug, savedAt: Date.now() });
                 form.dataset.serverDraftSlug = slug;
@@ -207,6 +229,7 @@ const initPostCreateServerDrafts = () => {
             return false;
         } finally {
             busy = false;
+
             if (queued) {
                 queued = false;
                 window.setTimeout(saveToServer, 350);
@@ -230,27 +253,37 @@ const initPostCreateServerDrafts = () => {
         void saveToServer();
     });
 
-    document.addEventListener('click', (event) => {
-        const target = event.target instanceof Element ? event.target.closest('[data-submit-intent="publish"]') : null;
-        if (!target || !form.contains(target)) return;
+    document.addEventListener(
+        'click',
+        (event) => {
+            const target = event.target instanceof Element
+                ? event.target.closest('[data-submit-intent="publish"]')
+                : null;
 
-        const state = readServerState();
-        const slug = String(state.slug || form.dataset.serverDraftSlug || '').trim();
-        publishing = true;
-        if (publishedInput) publishedInput.value = '1';
+            if (!target || !form.contains(target)) return;
 
-        if (slug) {
-            form.action = `/blog/posts/${encodeURIComponent(slug)}`;
-            let method = form.querySelector('input[name="_method"]');
-            if (!method) {
-                method = document.createElement('input');
-                method.type = 'hidden';
-                method.name = '_method';
-                form.appendChild(method);
+            const state = readServerState();
+            const slug = String(state.slug || form.dataset.serverDraftSlug || '').trim();
+
+            publishing = true;
+            if (publishedInput) publishedInput.value = '1';
+
+            if (slug) {
+                form.action = `/blog/posts/${encodeURIComponent(slug)}`;
+
+                let method = form.querySelector('input[name="_method"]');
+                if (!method) {
+                    method = document.createElement('input');
+                    method.type = 'hidden';
+                    method.name = '_method';
+                    form.appendChild(method);
+                }
+
+                method.value = 'PUT';
             }
-            method.value = 'PUT';
-        }
-    }, true);
+        },
+        true
+    );
 
     window.addEventListener('pagehide', () => {
         if (publishing || String(publishedInput?.value || '') === '1') {
@@ -273,12 +306,13 @@ const movePostCreateCategoryToSettings = () => {
 
     const oldHeaderWrap = categoryMenu.parentElement;
     const section = document.createElement('section');
+
     section.setAttribute('data-create-category-settings', '');
     section.className = 'rounded-[18px] border border-slate-200 bg-white p-4 shadow-sm';
     section.innerHTML = `
         <div class="mb-3 flex items-center gap-3">
             <span class="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-blue-50 text-blue-600">
-                <iconify-icon icon="lucide:tag" class="text-[17px]"></iconify-icon>
+                <iconify-icon icon="lucide:tags" class="text-[17px]"></iconify-icon>
             </span>
             <div class="min-w-0">
                 <div class="text-sm font-semibold text-slate-950">Kategori</div>
@@ -288,8 +322,7 @@ const movePostCreateCategoryToSettings = () => {
         <div data-category-settings-slot></div>
     `;
 
-    const slot = section.querySelector('[data-category-settings-slot]');
-    slot?.appendChild(categoryMenu);
+    section.querySelector('[data-category-settings-slot]')?.appendChild(categoryMenu);
 
     const summary = categoryMenu.querySelector('summary');
     if (summary) {
@@ -316,88 +349,157 @@ const movePostCreateCategoryToSettings = () => {
     }
 };
 
-const setupPostCreateSettingsAccordions = () => {
-    const settingsList = document.querySelector('#settings-modal .settings-panel > .flex-1 > .space-y-3');
-    if (!settingsList || settingsList.dataset.accordionsReady === '1') return;
+const SETTINGS_ACCORDION_ITEMS = {
+    'Öne çıkan görsel': {
+        icon: 'lucide:image',
+        description: 'Kartlarda ve paylaşım ön izlemesinde kullanılacak görsel.',
+    },
+    Kategori: {
+        icon: 'lucide:tags',
+        description: 'Gönderinin yayınlanacağı kategoriyi seç.',
+    },
+    'İçerik bilgileri': {
+        icon: 'lucide:file-text',
+        description: 'Etiket ve kısa açıklama.',
+    },
+    SEO: {
+        icon: 'lucide:search-check',
+        description: 'Arama görünümü ayarları.',
+    },
+    'Yayın zamanlaması': {
+        icon: 'lucide:calendar-clock',
+        description: 'Hemen ya da ileri bir tarihte yayınla.',
+    },
+    'Lisans bilgileri': {
+        icon: 'lucide:copyright',
+        description: 'Görsel kaynak ve telif alanları.',
+    },
+    Tercihler: {
+        icon: 'lucide:settings-2',
+        description: 'Yorum, hassas içerik ve gönderi tercihleri.',
+    },
+};
 
-    const items = {
-        'Öne çıkan görsel': { icon: 'lucide:image', description: 'Kartlarda ve paylaşım ön izlemesinde kullanılacak görsel.' },
-        'Kategori': { icon: 'lucide:tag', description: 'Gönderinin yayınlanacağı kategoriyi seç.' },
-        'İçerik bilgileri': { icon: 'lucide:file-text', description: 'Etiket ve kısa açıklama.' },
-        'SEO': { icon: 'lucide:search', description: 'Arama görünümü ayarları.' },
-        'Yayın zamanlaması': { icon: 'lucide:calendar-clock', description: 'Hemen ya da ileri bir tarihte yayınla.' },
-        'Lisans bilgileri': { icon: 'lucide:badge-check', description: 'Görsel kaynak ve telif alanları.' },
-        'Tercihler': { icon: 'lucide:sliders-horizontal', description: 'Yorum, hassas içerik ve gönderi tercihleri.' },
-    };
+const getSettingsSectionTitle = (section) => {
+    const titleNodes = Array.from(
+        section.querySelectorAll(
+            '.text-sm.font-semibold, .settings-accordion-title, h3, h4'
+        )
+    );
 
-    const sections = Array.from(settingsList.children).filter((element) => element instanceof HTMLElement && element.tagName === 'SECTION');
-
-    sections.forEach((section) => {
-        const titleNode = Array.from(section.querySelectorAll('.text-sm.font-semibold')).find((node) => items[String(node.textContent || '').trim()]);
-        const title = String(titleNode?.textContent || '').trim();
-        const config = items[title];
-        if (!config) return;
-
-        let details = section.querySelector(':scope > details');
-
-        if (!details) {
-            const header = Array.from(section.children).find((child) => child.classList?.contains('mb-3')) || null;
-            details = document.createElement('details');
-            details.className = 'group settings-accordion';
-
-            const content = document.createElement('div');
-            content.className = 'settings-accordion-content';
-
-            Array.from(section.children).forEach((child) => {
-                if (child !== header) content.appendChild(child);
-            });
-
-            header?.remove();
-            details.appendChild(content);
-            section.appendChild(details);
-        } else {
-            details.classList.add('settings-accordion');
-        }
-
-        const oldSummary = details.querySelector(':scope > summary');
-        let content = details.querySelector(':scope > .settings-accordion-content');
-
-        if (!content) {
-            content = document.createElement('div');
-            content.className = 'settings-accordion-content';
-            Array.from(details.children).forEach((child) => {
-                if (child !== oldSummary) content.appendChild(child);
-            });
-        }
-
-        const summary = document.createElement('summary');
-        summary.className = 'settings-accordion-summary';
-        summary.innerHTML = `
-            <span class="settings-accordion-icon" aria-hidden="true">
-                <iconify-icon icon="${config.icon}"></iconify-icon>
-            </span>
-            <span class="settings-accordion-copy">
-                <span class="settings-accordion-title">${title}</span>
-                <span class="settings-accordion-description">${config.description}</span>
-            </span>
-            <iconify-icon icon="lucide:chevron-down" class="settings-accordion-chevron" aria-hidden="true"></iconify-icon>
-        `;
-
-        oldSummary?.remove();
-        details.prepend(summary);
-        if (!content.parentElement) details.appendChild(content);
-        details.open = false;
-
-        details.addEventListener('toggle', () => {
-            if (!details.open) return;
-            sections.forEach((otherSection) => {
-                const other = otherSection.querySelector(':scope > details.settings-accordion');
-                if (other && other !== details) other.open = false;
-            });
-        });
+    const exact = titleNodes.find((node) => {
+        const text = String(node.textContent || '').trim();
+        return Object.prototype.hasOwnProperty.call(SETTINGS_ACCORDION_ITEMS, text);
     });
 
-    settingsList.dataset.accordionsReady = '1';
+    if (exact) return String(exact.textContent || '').trim();
+
+    const sectionText = String(section.textContent || '');
+    return Object.keys(SETTINGS_ACCORDION_ITEMS).find((label) => sectionText.includes(label)) || '';
+};
+
+const closeOtherSettingsAccordions = (current) => {
+    document
+        .querySelectorAll('#settings-modal details.settings-accordion[open]')
+        .forEach((details) => {
+            if (details !== current) details.open = false;
+        });
+};
+
+const convertSettingsSectionToAccordion = (section) => {
+    if (!(section instanceof HTMLElement)) return false;
+    if (section.dataset.settingsAccordionReady === '1') return true;
+
+    const title = getSettingsSectionTitle(section);
+    const config = SETTINGS_ACCORDION_ITEMS[title];
+    if (!config) return false;
+
+    const existingAccordion = section.querySelector(':scope > details.settings-accordion');
+    if (existingAccordion) {
+        section.dataset.settingsAccordionReady = '1';
+        return true;
+    }
+
+    const directDetails = section.querySelector(':scope > details');
+    const header = Array.from(section.children).find(
+        (child) => child instanceof HTMLElement && child.classList.contains('mb-3')
+    ) || null;
+
+    const details = directDetails || document.createElement('details');
+    details.classList.add('group', 'settings-accordion');
+
+    const oldSummary = details.querySelector(':scope > summary');
+    const content = document.createElement('div');
+    content.className = 'settings-accordion-content';
+
+    if (directDetails) {
+        Array.from(details.children).forEach((child) => {
+            if (child !== oldSummary) content.appendChild(child);
+        });
+    } else {
+        Array.from(section.children).forEach((child) => {
+            if (child !== header) content.appendChild(child);
+        });
+        header?.remove();
+    }
+
+    const summary = document.createElement('summary');
+    summary.className = 'settings-accordion-summary';
+    summary.setAttribute('aria-label', `${title} bölümünü aç veya kapat`);
+    summary.innerHTML = `
+        <span class="settings-accordion-icon" aria-hidden="true">
+            <iconify-icon icon="${config.icon}"></iconify-icon>
+        </span>
+        <span class="settings-accordion-copy">
+            <span class="settings-accordion-title">${title}</span>
+            <span class="settings-accordion-description">${config.description}</span>
+        </span>
+        <iconify-icon icon="lucide:chevron-down" class="settings-accordion-chevron" aria-hidden="true"></iconify-icon>
+    `;
+
+    oldSummary?.remove();
+    details.prepend(summary);
+    details.appendChild(content);
+    details.open = false;
+
+    if (!directDetails) {
+        section.appendChild(details);
+    }
+
+    details.addEventListener('toggle', () => {
+        if (details.open) closeOtherSettingsAccordions(details);
+    });
+
+    section.dataset.settingsAccordionReady = '1';
+    return true;
+};
+
+const setupPostCreateSettingsAccordions = () => {
+    const settingsList = document.querySelector('#settings-modal .settings-panel > .flex-1 > .space-y-3');
+    if (!settingsList) return;
+
+    const sections = Array.from(settingsList.children).filter(
+        (element) => element instanceof HTMLElement && element.tagName === 'SECTION'
+    );
+
+    sections.forEach(convertSettingsSectionToAccordion);
+};
+
+const observePostCreateSettingsAccordions = () => {
+    const settingsList = document.querySelector('#settings-modal .settings-panel > .flex-1 > .space-y-3');
+    if (!settingsList || settingsList.dataset.accordionObserverBound === '1') return;
+
+    settingsList.dataset.accordionObserverBound = '1';
+
+    const observer = new MutationObserver(() => {
+        setupPostCreateSettingsAccordions();
+    });
+
+    observer.observe(settingsList, { childList: true, subtree: false });
+
+    [0, 50, 150, 350].forEach((delay) => {
+        window.setTimeout(setupPostCreateSettingsAccordions, delay);
+    });
 };
 
 const setupSettingsFooterSaveButton = () => {
@@ -426,6 +528,7 @@ const setupSettingsFooterSaveButton = () => {
         };
 
         document.addEventListener('ografi:draft-saved', finish, { once: true });
+
         window.setTimeout(() => {
             if (publishButton.disabled) {
                 publishButton.disabled = false;
@@ -438,10 +541,9 @@ const setupSettingsFooterSaveButton = () => {
 const bootPostCreateSettings = () => {
     initPostCreateServerDrafts();
     movePostCreateCategoryToSettings();
-    window.setTimeout(() => {
-        setupPostCreateSettingsAccordions();
-        setupSettingsFooterSaveButton();
-    }, 0);
+    setupPostCreateSettingsAccordions();
+    observePostCreateSettingsAccordions();
+    setupSettingsFooterSaveButton();
 };
 
 if (document.readyState === 'loading') {
