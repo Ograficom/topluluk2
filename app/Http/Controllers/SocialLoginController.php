@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\RecaptchaSetting;
 use App\Models\SocialLoginSetting;
 use App\Models\User;
+use App\Services\LoginSecurityService;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
@@ -11,6 +13,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
+use Illuminate\Validation\ValidationException;
 use Laravel\Socialite\Facades\Socialite;
 use Throwable;
 
@@ -36,10 +39,18 @@ class SocialLoginController extends Controller
         return $this->driver($provider)->redirect();
     }
 
-    public function callback(string $provider): RedirectResponse
+    public function callback(Request $request, string $provider): RedirectResponse
     {
         $provider = strtolower($provider);
         $settings = SocialLoginSetting::current();
+        $securitySettings = RecaptchaSetting::currentOrNull();
+        $loginSecurity = app(LoginSecurityService::class);
+
+        try {
+            $loginSecurity->assertRequestAllowed($request, $securitySettings);
+        } catch (ValidationException $exception) {
+            return redirect()->route('login')->withErrors($exception->errors());
+        }
 
         if (!$settings->isProviderEnabled($provider)) {
             abort(404);
@@ -64,7 +75,7 @@ class SocialLoginController extends Controller
 
             return redirect()
                 ->route('login')
-                ->with('error', ucfirst($provider) . ' girisi basarisiz oldu.');
+                ->with('error', ucfirst($provider) . ' girişi başarısız oldu.');
         }
         $providerId = $socialUser->getId();
         $email = $socialUser->getEmail();
@@ -79,12 +90,24 @@ class SocialLoginController extends Controller
 
         Auth::login($user, true);
 
+        if ($securitySettings?->verify_unknown_devices ?? true) {
+            $loginSecurity->trustCurrentDevice($user, $request, $securitySettings);
+        }
+
         return redirect()->intended('/');
     }
 
     public function oneTap(Request $request): RedirectResponse
     {
         $settings = SocialLoginSetting::current();
+        $securitySettings = RecaptchaSetting::currentOrNull();
+        $loginSecurity = app(LoginSecurityService::class);
+
+        try {
+            $loginSecurity->assertRequestAllowed($request, $securitySettings);
+        } catch (ValidationException $exception) {
+            return redirect()->route('login')->withErrors($exception->errors());
+        }
 
         if (!$settings->isProviderEnabled('google')) {
             abort(404);
@@ -95,14 +118,14 @@ class SocialLoginController extends Controller
         $credential = (string) $request->input('credential', '');
 
         if ($clientId === '' || $credential === '') {
-            return redirect()->route('login')->with('error', 'Google oturum acma basarisiz oldu.');
+            return redirect()->route('login')->with('error', 'Google oturum açma başarısız oldu.');
         }
 
         $cookieToken = (string) $request->cookie('g_csrf_token', '');
         $bodyToken = (string) $request->input('g_csrf_token', '');
 
         if ($cookieToken === '' || $bodyToken === '' || !hash_equals($cookieToken, $bodyToken)) {
-            return redirect()->route('login')->with('error', 'Google oturum acma istegi dogrulanamadi.');
+            return redirect()->route('login')->with('error', 'Google oturum açma isteği doğrulanamadı.');
         }
 
         $response = Http::asForm()
@@ -112,7 +135,7 @@ class SocialLoginController extends Controller
             ]);
 
         if (!$response->ok()) {
-            return redirect()->route('login')->with('error', 'Google kimlik dogrulamasi basarisiz oldu.');
+            return redirect()->route('login')->with('error', 'Google kimlik doğrulaması başarısız oldu.');
         }
 
         $payload = $response->json();
@@ -129,7 +152,7 @@ class SocialLoginController extends Controller
             $email === '' ||
             !$emailVerified
         ) {
-            return redirect()->route('login')->with('error', 'Google hesabi dogrulanamadi.');
+            return redirect()->route('login')->with('error', 'Google hesabı doğrulanamadı.');
         }
 
         $user = $this->resolveSocialUser(
@@ -141,6 +164,10 @@ class SocialLoginController extends Controller
         );
 
         Auth::login($user, true);
+
+        if ($securitySettings?->verify_unknown_devices ?? true) {
+            $loginSecurity->trustCurrentDevice($user, $request, $securitySettings);
+        }
 
         return redirect()->intended('/');
     }
