@@ -184,7 +184,7 @@
                     </span>
                     <span class="min-w-0">
                         <span class="block text-sm font-semibold leading-5 text-slate-950 dark:text-slate-100">Telefon</span>
-                        <span class="mt-0.5 block text-sm text-blue-600 dark:text-blue-400">0850 305 98 06</span>
+                        <span class="mt-0.5 block text-sm text-blue-600 dark:text-blue-400">08503059806</span>
                     </span>
                 </a>
 
