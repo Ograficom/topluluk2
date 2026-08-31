@@ -14,11 +14,11 @@ return new class extends Migration
 
         Schema::table('recaptcha_settings', function (Blueprint $table): void {
             if (! Schema::hasColumn('recaptcha_settings', 'forgot_password_enabled')) {
-                $table->boolean('forgot_password_enabled')->default(true)->after('register_enabled');
+                $table->boolean('forgot_password_enabled')->default(true);
             }
 
             if (! Schema::hasColumn('recaptcha_settings', 'admin_enabled')) {
-                $table->boolean('admin_enabled')->default(true)->after('forgot_password_enabled');
+                $table->boolean('admin_enabled')->default(true);
             }
         });
     }
@@ -29,20 +29,15 @@ return new class extends Migration
             return;
         }
 
-        Schema::table('recaptcha_settings', function (Blueprint $table): void {
-            $columns = [];
+        $columns = collect([
+            'forgot_password_enabled',
+            'admin_enabled',
+        ])->filter(fn (string $column) => Schema::hasColumn('recaptcha_settings', $column))->all();
 
-            if (Schema::hasColumn('recaptcha_settings', 'forgot_password_enabled')) {
-                $columns[] = 'forgot_password_enabled';
-            }
-
-            if (Schema::hasColumn('recaptcha_settings', 'admin_enabled')) {
-                $columns[] = 'admin_enabled';
-            }
-
-            if ($columns !== []) {
+        if ($columns !== []) {
+            Schema::table('recaptcha_settings', function (Blueprint $table) use ($columns): void {
                 $table->dropColumn($columns);
-            }
-        });
+            });
+        }
     }
 };
