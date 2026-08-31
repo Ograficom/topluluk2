@@ -7,6 +7,7 @@ use App\Http\Middleware\EnsureImageAltText;
 use App\Http\Middleware\EnsureInstalled;
 use App\Http\Middleware\LoginPageSecurityMiddleware;
 use App\Http\Middleware\PostPresentationMiddleware;
+use App\Http\Middleware\PostShowCommentIdentityLayoutMiddleware;
 use App\Http\Middleware\PostShowReactionLayoutMiddleware;
 use App\Http\Middleware\SetLocale;
 use App\Http\Middleware\VideoPageResponseMiddleware;
@@ -41,6 +42,7 @@ return Application::configure(basePath: dirname(__DIR__))
             EnsureImageAltText::class,
             PostPresentationMiddleware::class,
             PostShowReactionLayoutMiddleware::class,
+            PostShowCommentIdentityLayoutMiddleware::class,
             LoginPageSecurityMiddleware::class,
             VideoPageResponseMiddleware::class,
         ]);
