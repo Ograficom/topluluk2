@@ -9,7 +9,9 @@
 @if ($adminRecaptchaEnabled && $adminRecaptchaSiteKey !== '')
     <div
         x-data
+        data-admin-recaptcha-site-key="{{ $adminRecaptchaSiteKey }}"
         x-init="
+            const siteKey = $el.dataset.adminRecaptchaSiteKey;
             const refreshAdminRecaptcha = () => {
                 if (!window.grecaptcha) {
                     window.setTimeout(refreshAdminRecaptcha, 250);
@@ -17,7 +19,7 @@
                 }
 
                 window.grecaptcha.ready(() => {
-                    window.grecaptcha.execute(@js($adminRecaptchaSiteKey), { action: 'admin_login' })
+                    window.grecaptcha.execute(siteKey, { action: 'admin_login' })
                         .then((token) => $wire.set('data.recaptcha_token', token));
                 });
             };
