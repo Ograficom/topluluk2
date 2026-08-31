@@ -8,6 +8,7 @@ use App\Actions\Fortify\UpdateUserPassword;
 use App\Actions\Fortify\UpdateUserProfileInformation;
 use App\Models\RecaptchaSetting;
 use App\Models\User;
+use App\Services\LoginSecurityService;
 use App\Services\RecaptchaV3Verifier;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
@@ -41,19 +42,23 @@ class FortifyServiceProvider extends ServiceProvider
         Fortify::redirectUserForTwoFactorAuthenticationUsing(RedirectIfTwoFactorAuthenticatable::class);
 
         Fortify::authenticateUsing(function (Request $request) {
-            $recaptcha = RecaptchaSetting::currentOrNull();
-            if ($recaptcha && $recaptcha->isEnabledFor('login')) {
+            $securitySettings = RecaptchaSetting::currentOrNull();
+            $loginSecurity = app(LoginSecurityService::class);
+
+            $loginSecurity->assertRequestAllowed($request, $securitySettings);
+
+            if ($securitySettings && $securitySettings->isEnabledFor('login')) {
                 $token = (string) $request->input('recaptcha_token', '');
                 if ($token === '') {
                     throw ValidationException::withMessages([
-                        Fortify::username() => 'reCAPTCHA dogrulamasi gerekli.',
+                        Fortify::username() => 'reCAPTCHA doğrulaması gerekli.',
                     ]);
                 }
 
                 $result = app(RecaptchaV3Verifier::class)->verify($token, 'login', $request->ip());
                 if (!($result['success'] ?? false)) {
                     throw ValidationException::withMessages([
-                        Fortify::username() => 'reCAPTCHA dogrulamasi basarisiz.',
+                        Fortify::username() => 'reCAPTCHA doğrulaması başarısız.',
                     ]);
                 }
             }
@@ -63,6 +68,8 @@ class FortifyServiceProvider extends ServiceProvider
                 ->first();
 
             if ($user && Hash::check((string) $request->input('password'), (string) $user->password)) {
+                $loginSecurity->verifyOrChallenge($user, $request, $securitySettings);
+
                 return $user;
             }
 
