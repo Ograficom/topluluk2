@@ -48,6 +48,26 @@ class DashboardReactionTypeController extends Controller
         ]);
     }
 
+    public function all(Request $request): View
+    {
+        $reactionTypes = ReactionType::query()
+            ->where('is_active', true)
+            ->orderBy('label')
+            ->get([
+                'id',
+                'submitted_by_user_id',
+                'label',
+                'short_code',
+                'emoji',
+                'gif_url',
+                'is_active',
+            ]);
+
+        return view('dashboard.reactions-all', [
+            'reactionTypes' => $reactionTypes,
+        ]);
+    }
+
     public function store(Request $request): RedirectResponse
     {
         $user = $request->user();
@@ -74,6 +94,9 @@ class DashboardReactionTypeController extends Controller
                 'mimes:gif,png,jpg,jpeg,webp',
                 'max:10240',
             ],
+            'policy_ack' => ['accepted'],
+        ], [
+            'policy_ack.accepted' => 'Yeni tepki ekleme kurallarini onaylamalisiniz.',
         ]);
 
         $emoji = trim((string) ($validated['emoji'] ?? ''));
@@ -113,6 +136,8 @@ class DashboardReactionTypeController extends Controller
             'is_active' => true,
         ]);
 
-        return back()->with('status', 'reaction-created');
+        return redirect()
+            ->route('dashboard.reactions', ['tab' => 'mine'])
+            ->with('status', 'reaction-created');
     }
 }
