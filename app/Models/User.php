@@ -68,6 +68,7 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
         'block_tags',
         'block_comments',
         'block_reactions',
+        'block_reaction_uploads',
         'profile_photo_path',
         'cover_photo_path',
         'bio',
@@ -142,6 +143,7 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
             'block_tags' => 'boolean',
             'block_comments' => 'boolean',
             'block_reactions' => 'boolean',
+            'block_reaction_uploads' => 'boolean',
             'badge_points' => 'integer',
             'profile_completed_rewarded_at' => 'datetime',
             'is_ai_test_user' => 'boolean',
@@ -248,6 +250,7 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
             'tags' => 'etiket',
             'comments' => 'yorum',
             'reactions' => 'reaksiyon',
+            'reaction_uploads' => 'tepki ekleme',
         ];
     }
 
@@ -260,6 +263,7 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
             'block_tags',
             'block_comments',
             'block_reactions',
+            'block_reaction_uploads',
         ];
     }
 
@@ -285,7 +289,7 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
             self::ROLE_ADMIN => [],
             self::ROLE_EDITOR => ['admin'],
             self::ROLE_WRITER => ['admin', 'categories', 'tags'],
-            self::ROLE_BANNED => ['admin', 'messages', 'posts', 'categories', 'tags', 'comments', 'reactions'],
+            self::ROLE_BANNED => ['admin', 'messages', 'posts', 'categories', 'tags', 'comments', 'reactions', 'reaction_uploads'],
             default => ['admin', 'categories', 'tags'],
         };
     }
@@ -362,6 +366,7 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
             'tags' => (bool) $this->block_tags,
             'comments' => (bool) $this->block_comments,
             'reactions' => (bool) $this->block_reactions,
+            'reaction_uploads' => (bool) $this->block_reaction_uploads,
             default => false,
         };
     }
@@ -387,6 +392,9 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
         }
         if ($this->block_reactions) {
             $labels[] = 'reaksiyon';
+        }
+        if ($this->block_reaction_uploads) {
+            $labels[] = 'tepki ekleme';
         }
 
         return array_values(array_unique($labels));
