@@ -14,6 +14,8 @@ class RecaptchaSetting extends Model
         'is_enabled',
         'login_enabled',
         'register_enabled',
+        'forgot_password_enabled',
+        'admin_enabled',
         'comment_enabled',
         'minimum_score',
         'verify_action',
@@ -31,6 +33,8 @@ class RecaptchaSetting extends Model
         'is_enabled' => 'boolean',
         'login_enabled' => 'boolean',
         'register_enabled' => 'boolean',
+        'forgot_password_enabled' => 'boolean',
+        'admin_enabled' => 'boolean',
         'comment_enabled' => 'boolean',
         'verify_action' => 'boolean',
         'minimum_score' => 'decimal:2',
@@ -47,6 +51,8 @@ class RecaptchaSetting extends Model
             'is_enabled' => false,
             'login_enabled' => true,
             'register_enabled' => true,
+            'forgot_password_enabled' => true,
+            'admin_enabled' => true,
             'comment_enabled' => true,
             'minimum_score' => 0.50,
             'verify_action' => true,
@@ -60,7 +66,7 @@ class RecaptchaSetting extends Model
 
     public static function currentOrNull(): ?self
     {
-        if (!Schema::hasTable('recaptcha_settings')) {
+        if (! Schema::hasTable('recaptcha_settings')) {
             return null;
         }
 
@@ -79,18 +85,20 @@ class RecaptchaSetting extends Model
 
     public function isReady(): bool
     {
-        return $this->is_enabled && !empty($this->resolvedSiteKey()) && !empty($this->resolvedSecretKey());
+        return $this->is_enabled && ! empty($this->resolvedSiteKey()) && ! empty($this->resolvedSecretKey());
     }
 
     public function isEnabledFor(string $context): bool
     {
-        if (!$this->isReady()) {
+        if (! $this->isReady()) {
             return false;
         }
 
         return match ($context) {
             'login' => (bool) $this->login_enabled,
             'register' => (bool) $this->register_enabled,
+            'forgot_password' => (bool) $this->forgot_password_enabled,
+            'admin' => (bool) $this->admin_enabled,
             'comment' => (bool) $this->comment_enabled,
             default => false,
         };
