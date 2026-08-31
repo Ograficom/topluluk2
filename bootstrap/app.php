@@ -5,6 +5,7 @@ use App\Http\Middleware\DisableDebugbarOnFrontend;
 use App\Http\Middleware\AddSecurityHeaders;
 use App\Http\Middleware\EnsureImageAltText;
 use App\Http\Middleware\EnsureInstalled;
+use App\Http\Middleware\LoginPageSecurityMiddleware;
 use App\Http\Middleware\PostPresentationMiddleware;
 use App\Http\Middleware\SetLocale;
 use App\Http\Middleware\VideoPageResponseMiddleware;
@@ -37,6 +38,7 @@ return Application::configure(basePath: dirname(__DIR__))
             AddSecurityHeaders::class,
             EnsureImageAltText::class,
             PostPresentationMiddleware::class,
+            LoginPageSecurityMiddleware::class,
             VideoPageResponseMiddleware::class,
         ]);
     })
