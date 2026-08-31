@@ -95,7 +95,7 @@ class UserResource extends Resource
                 }),
             Forms\Components\Placeholder::make('restriction_info')
                 ->label('Ek kisitlamalar')
-                ->content('Asagidaki togglelar role ek olarak ekstra yasak uygular. Banned rolu secilirse tum etkileşimler otomatik kapanir.'),
+                ->content('Asagidaki togglelar role ek olarak ekstra yasak uygular. Banned rolu secilirse tum etkilesimler otomatik kapanir.'),
             Grid::make(2)
                 ->schema([
                     Forms\Components\Toggle::make('block_messages')->label('Mesaj engeli'),
@@ -104,11 +104,14 @@ class UserResource extends Resource
                     Forms\Components\Toggle::make('block_tags')->label('Etiket engeli'),
                     Forms\Components\Toggle::make('block_comments')->label('Yorum engeli'),
                     Forms\Components\Toggle::make('block_reactions')->label('Reaksiyon engeli'),
+                    Forms\Components\Toggle::make('block_reaction_uploads')
+                        ->label('Tepki ekleme engeli')
+                        ->helperText('Aciksa kullanici dashboard uzerinden yeni emoji/GIF tepki ekleyemez.'),
                 ])
                 ->visible(fn (Get $get) => User::normalizeRoleValue($get('role')) !== User::ROLE_BANNED),
             Forms\Components\Placeholder::make('banned_notice')
                 ->label('Banned modu')
-                ->content('Banned rolunde admin paneli, mesaj, gonderi, kategori, etiket, yorum ve reaksiyon yetkileri otomatik olarak kapanir.')
+                ->content('Banned rolunde admin paneli, mesaj, gonderi, kategori, etiket, yorum, reaksiyon ve yeni tepki ekleme yetkileri otomatik olarak kapanir.')
                 ->visible(fn (Get $get) => User::normalizeRoleValue($get('role')) === User::ROLE_BANNED),
             Forms\Components\Textarea::make('bio')
                 ->label('Bio')
