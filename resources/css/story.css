@@ -135,3 +135,46 @@
   @apply w-full max-w-full object-cover;
 }
 
+/* Dashboard reaction submit button must stay blue despite Alma's global button reset. */
+body.alma-app button[data-reaction-submit] {
+  background-color: #2563eb !important;
+  color: #ffffff !important;
+}
+
+body.alma-app button[data-reaction-submit]:disabled {
+  background-color: #3b82f6 !important;
+  color: #ffffff !important;
+  opacity: 1 !important;
+  cursor: not-allowed;
+}
+
+body.alma-app button[data-reaction-submit]:hover:not(:disabled) {
+  background-color: #e5e7eb !important;
+  color: #111827 !important;
+}
+
+body.alma-app button[data-reaction-submit]:active:not(:disabled) {
+  background-color: #d1d5db !important;
+  color: #111827 !important;
+}
+
+html.dark body.alma-app button[data-reaction-submit] {
+  background-color: #2563eb !important;
+  color: #ffffff !important;
+}
+
+html.dark body.alma-app button[data-reaction-submit]:disabled {
+  background-color: #3b82f6 !important;
+  color: #ffffff !important;
+  opacity: 1 !important;
+}
+
+html.dark body.alma-app button[data-reaction-submit]:hover:not(:disabled) {
+  background-color: #334155 !important;
+  color: #ffffff !important;
+}
+
+html.dark body.alma-app button[data-reaction-submit]:active:not(:disabled) {
+  background-color: #475569 !important;
+  color: #ffffff !important;
+}
