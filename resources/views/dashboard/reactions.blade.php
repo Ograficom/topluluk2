@@ -64,48 +64,65 @@
             display: none;
         }
 
-        .reaction-tab-button {
-            position: relative;
-            display: inline-flex;
-            min-height: 44px;
-            flex: 0 0 auto;
-            align-items: center;
-            justify-content: center;
-            padding: 0 12px;
-            border: 0;
-            border-radius: 6px 6px 0 0;
-            background: transparent;
-            color: #374151;
-            font-size: 14px;
-            font-weight: 500;
-            line-height: 1;
-            white-space: nowrap;
-            cursor: pointer;
-            outline: none;
+        html body [data-reaction-tabs] .reaction-tabs-list .reaction-tab-button {
+            position: relative !important;
+            display: inline-flex !important;
+            min-height: 44px !important;
+            flex: 0 0 auto !important;
+            align-items: center !important;
+            justify-content: center !important;
+            padding: 0 12px !important;
+            border: 0 !important;
+            border-radius: 0 !important;
+            background: transparent !important;
+            background-color: transparent !important;
+            color: #374151 !important;
+            font-size: 14px !important;
+            font-weight: 500 !important;
+            line-height: 1 !important;
+            white-space: nowrap !important;
+            cursor: pointer !important;
+            outline: none !important;
+            box-shadow: none !important;
         }
 
-        .reaction-tab-button:hover {
-            background: #f3f4f6;
-            color: #111827;
+        html body [data-reaction-tabs] .reaction-tabs-list .reaction-tab-button:hover {
+            background: #f3f4f6 !important;
+            background-color: #f3f4f6 !important;
+            color: #111827 !important;
         }
 
-        .reaction-tab-button:active {
-            background: #e5e7eb;
-            color: #111827;
+        html body [data-reaction-tabs] .reaction-tabs-list .reaction-tab-button:active {
+            background: #e5e7eb !important;
+            background-color: #e5e7eb !important;
+            color: #111827 !important;
         }
 
-        .reaction-tab-button:focus-visible {
-            background: #f3f4f6;
-            color: #111827;
-            outline: 2px solid #bfdbfe;
-            outline-offset: -2px;
+        html body [data-reaction-tabs] .reaction-tabs-list .reaction-tab-button:focus-visible {
+            background: #f3f4f6 !important;
+            background-color: #f3f4f6 !important;
+            color: #111827 !important;
+            outline: 2px solid #bfdbfe !important;
+            outline-offset: -2px !important;
         }
 
-        .reaction-tab-button[aria-selected="true"] {
-            color: #111827;
+        html body [data-reaction-tabs] .reaction-tabs-list .reaction-tab-button[aria-selected="true"] {
+            background: transparent !important;
+            background-color: transparent !important;
+            color: #111827 !important;
         }
 
-        .reaction-tab-button[aria-selected="true"]::after {
+        html body [data-reaction-tabs] .reaction-tabs-list .reaction-tab-button[aria-selected="true"]:hover {
+            background: #f3f4f6 !important;
+            background-color: #f3f4f6 !important;
+        }
+
+        html body [data-reaction-tabs] .reaction-tabs-list .reaction-tab-button[aria-selected="true"]:active {
+            background: #e5e7eb !important;
+            background-color: #e5e7eb !important;
+        }
+
+        html body [data-reaction-tabs] .reaction-tabs-list .reaction-tab-button[aria-selected="true"]::after {
             content: "";
             position: absolute;
             left: 0;
@@ -115,35 +132,61 @@
             background: #2563eb;
         }
 
+        html.dark .reaction-tabs-list,
         .dark .reaction-tabs-list {
             border-bottom-color: #334155;
         }
 
-        .dark .reaction-tab-button {
-            color: #cbd5e1;
+        html.dark body [data-reaction-tabs] .reaction-tabs-list .reaction-tab-button,
+        .dark [data-reaction-tabs] .reaction-tabs-list .reaction-tab-button {
+            background: transparent !important;
+            background-color: transparent !important;
+            color: #cbd5e1 !important;
         }
 
-        .dark .reaction-tab-button:hover,
-        .dark .reaction-tab-button:focus-visible {
-            background: #1e293b;
-            color: #f8fafc;
+        html.dark body [data-reaction-tabs] .reaction-tabs-list .reaction-tab-button:hover,
+        html.dark body [data-reaction-tabs] .reaction-tabs-list .reaction-tab-button:focus-visible,
+        .dark [data-reaction-tabs] .reaction-tabs-list .reaction-tab-button:hover,
+        .dark [data-reaction-tabs] .reaction-tabs-list .reaction-tab-button:focus-visible {
+            background: #1e293b !important;
+            background-color: #1e293b !important;
+            color: #f8fafc !important;
         }
 
-        .dark .reaction-tab-button:active {
-            background: #334155;
-            color: #ffffff;
+        html.dark body [data-reaction-tabs] .reaction-tabs-list .reaction-tab-button:active,
+        .dark [data-reaction-tabs] .reaction-tabs-list .reaction-tab-button:active {
+            background: #334155 !important;
+            background-color: #334155 !important;
+            color: #ffffff !important;
         }
 
-        .dark .reaction-tab-button[aria-selected="true"] {
-            color: #f8fafc;
+        html.dark body [data-reaction-tabs] .reaction-tabs-list .reaction-tab-button[aria-selected="true"],
+        .dark [data-reaction-tabs] .reaction-tabs-list .reaction-tab-button[aria-selected="true"] {
+            background: transparent !important;
+            background-color: transparent !important;
+            color: #f8fafc !important;
         }
 
-        .dark .reaction-tab-button[aria-selected="true"]::after {
+        html.dark body [data-reaction-tabs] .reaction-tabs-list .reaction-tab-button[aria-selected="true"]:hover,
+        .dark [data-reaction-tabs] .reaction-tabs-list .reaction-tab-button[aria-selected="true"]:hover {
+            background: #1e293b !important;
+            background-color: #1e293b !important;
+        }
+
+        html.dark body [data-reaction-tabs] .reaction-tabs-list .reaction-tab-button[aria-selected="true"]:active,
+        .dark [data-reaction-tabs] .reaction-tabs-list .reaction-tab-button[aria-selected="true"]:active {
+            background: #334155 !important;
+            background-color: #334155 !important;
+        }
+
+        html.dark body [data-reaction-tabs] .reaction-tabs-list .reaction-tab-button[aria-selected="true"]::after,
+        .dark [data-reaction-tabs] .reaction-tabs-list .reaction-tab-button[aria-selected="true"]::after {
             background: #3b82f6;
         }
 
-        .dark .reaction-tab-button:focus-visible {
-            outline-color: #1d4ed8;
+        html.dark body [data-reaction-tabs] .reaction-tabs-list .reaction-tab-button:focus-visible,
+        .dark [data-reaction-tabs] .reaction-tabs-list .reaction-tab-button:focus-visible {
+            outline-color: #1d4ed8 !important;
         }
     </style>
 
