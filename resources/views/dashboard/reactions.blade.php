@@ -20,6 +20,36 @@
             : (request('tab') === 'create' ? 'create' : 'mine');
     @endphp
 
+    <style>
+        .reaction-scroll-strip {
+            scrollbar-width: thin;
+            scrollbar-color: #cbd5e1 transparent;
+            -webkit-mask-image: linear-gradient(to right, transparent 0, #000 18px, #000 calc(100% - 18px), transparent 100%);
+            mask-image: linear-gradient(to right, transparent 0, #000 18px, #000 calc(100% - 18px), transparent 100%);
+        }
+
+        .reaction-scroll-strip::-webkit-scrollbar {
+            height: 3px;
+        }
+
+        .reaction-scroll-strip::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .reaction-scroll-strip::-webkit-scrollbar-thumb {
+            border-radius: 999px;
+            background: #cbd5e1;
+        }
+
+        .dark .reaction-scroll-strip {
+            scrollbar-color: #475569 transparent;
+        }
+
+        .dark .reaction-scroll-strip::-webkit-scrollbar-thumb {
+            background: #475569;
+        }
+    </style>
+
     <div class="mx-auto w-full max-w-[var(--profile-shell-width)]">
         <main class="w-full">
             <div class="relative left-1/2 right-1/2 mb-[calc(7rem+env(safe-area-inset-bottom))] min-h-[70vh] w-screen -translate-x-1/2 bg-white text-gray-900 dark:bg-slate-900 dark:text-slate-100 sm:left-auto sm:right-auto sm:mb-0 sm:w-full sm:translate-x-0 sm:rounded-xl sm:border sm:border-gray-200 dark:sm:border-slate-700">
@@ -86,7 +116,7 @@
                         </div>
 
                         @if($reactionTypes->isNotEmpty())
-                            <div class="flex snap-x snap-mandatory gap-2 overflow-x-auto pb-2" aria-label="Aktif tepkiler">
+                            <div class="reaction-scroll-strip flex snap-x snap-mandatory gap-2 overflow-x-auto px-2 pb-1.5" aria-label="Aktif tepkiler">
                                 @foreach($reactionTypes as $reaction)
                                     @php($imageUrl = $reactionAssetUrl($reaction->gif_url))
                                     <div
@@ -247,7 +277,7 @@
 
                                     <button
                                         type="submit"
-                                        class="inline-flex min-h-10 items-center justify-center rounded-lg bg-blue-600 px-4 text-sm font-medium text-white hover:bg-gray-200 hover:text-gray-900 active:bg-gray-300 disabled:cursor-not-allowed disabled:bg-blue-200 disabled:text-white dark:hover:bg-slate-700 dark:hover:text-white dark:active:bg-slate-600"
+                                        class="inline-flex min-h-10 items-center justify-center rounded-lg bg-gray-900 px-4 text-sm font-medium text-white hover:bg-gray-200 hover:text-gray-900 active:bg-gray-300 disabled:cursor-not-allowed disabled:bg-gray-200 disabled:text-gray-400 dark:bg-slate-100 dark:text-slate-900 dark:hover:bg-slate-700 dark:hover:text-white dark:active:bg-slate-600 dark:disabled:bg-slate-700 dark:disabled:text-slate-500"
                                         data-reaction-submit
                                         disabled
                                     >
