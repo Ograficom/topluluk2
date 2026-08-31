@@ -20,6 +20,11 @@ class RecaptchaSetting extends Model
         'site_key',
         'secret_key',
         'allowed_hostnames',
+        'block_vpn_logins',
+        'block_tor_logins',
+        'verify_unknown_devices',
+        'trusted_device_days',
+        'bot_honeypot_enabled',
     ];
 
     protected $casts = [
@@ -29,6 +34,11 @@ class RecaptchaSetting extends Model
         'comment_enabled' => 'boolean',
         'verify_action' => 'boolean',
         'minimum_score' => 'decimal:2',
+        'block_vpn_logins' => 'boolean',
+        'block_tor_logins' => 'boolean',
+        'verify_unknown_devices' => 'boolean',
+        'trusted_device_days' => 'integer',
+        'bot_honeypot_enabled' => 'boolean',
     ];
 
     public static function current(): self
@@ -40,6 +50,11 @@ class RecaptchaSetting extends Model
             'comment_enabled' => true,
             'minimum_score' => 0.50,
             'verify_action' => true,
+            'block_vpn_logins' => true,
+            'block_tor_logins' => true,
+            'verify_unknown_devices' => true,
+            'trusted_device_days' => 90,
+            'bot_honeypot_enabled' => true,
         ]);
     }
 
@@ -95,4 +110,3 @@ class RecaptchaSetting extends Model
             ->all();
     }
 }
-
