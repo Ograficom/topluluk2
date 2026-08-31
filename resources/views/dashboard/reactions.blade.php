@@ -240,8 +240,8 @@
                                                 data-reaction-policy
                                                 @checked(old('policy_ack'))
                                             >
-                                            <span class="absolute inset-0 rounded-full bg-gray-300 transition peer-checked:bg-blue-600 dark:bg-slate-700"></span>
-                                            <span class="absolute left-0.5 h-5 w-5 rounded-full bg-white shadow-sm transition peer-checked:translate-x-5"></span>
+                                            <span class="absolute inset-0 rounded-full bg-gray-300 peer-checked:bg-blue-600 dark:bg-slate-700"></span>
+                                            <span class="absolute left-0.5 h-5 w-5 rounded-full bg-white peer-checked:translate-x-5"></span>
                                         </span>
                                     </label>
 
