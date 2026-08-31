@@ -30,7 +30,6 @@
 
                     <div class="min-w-0">
                         <h1 class="truncate text-base font-semibold text-gray-950 dark:text-white">Tüm Tepkiler</h1>
-                        <p class="mt-0.5 text-xs text-gray-500 dark:text-slate-400">Sitede kullanılabilen tüm aktif tepkiler.</p>
                     </div>
                 </div>
 
