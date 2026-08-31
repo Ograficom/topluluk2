@@ -13,6 +13,9 @@ Route::middleware([
     Route::get('/dashboard/reactions', [DashboardReactionTypeController::class, 'index'])
         ->name('dashboard.reactions');
 
+    Route::get('/dashboard/reactions/all', [DashboardReactionTypeController::class, 'all'])
+        ->name('dashboard.reactions.all');
+
     Route::post('/dashboard/reactions', [DashboardReactionTypeController::class, 'store'])
         ->middleware('throttle:5,1')
         ->name('dashboard.reactions.store');
