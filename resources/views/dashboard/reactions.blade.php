@@ -48,6 +48,103 @@
         .dark .reaction-scroll-strip::-webkit-scrollbar-thumb {
             background: #475569;
         }
+
+        .reaction-tabs-list {
+            display: flex;
+            align-items: stretch;
+            gap: 4px;
+            width: 100%;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #e5e7eb;
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+
+        .reaction-tabs-list::-webkit-scrollbar {
+            display: none;
+        }
+
+        .reaction-tab-button {
+            position: relative;
+            display: inline-flex;
+            min-height: 44px;
+            flex: 0 0 auto;
+            align-items: center;
+            justify-content: center;
+            padding: 0 12px;
+            border: 0;
+            border-radius: 6px 6px 0 0;
+            background: transparent;
+            color: #374151;
+            font-size: 14px;
+            font-weight: 500;
+            line-height: 1;
+            white-space: nowrap;
+            cursor: pointer;
+            outline: none;
+        }
+
+        .reaction-tab-button:hover {
+            background: #f3f4f6;
+            color: #111827;
+        }
+
+        .reaction-tab-button:active {
+            background: #e5e7eb;
+            color: #111827;
+        }
+
+        .reaction-tab-button:focus-visible {
+            background: #f3f4f6;
+            color: #111827;
+            outline: 2px solid #bfdbfe;
+            outline-offset: -2px;
+        }
+
+        .reaction-tab-button[aria-selected="true"] {
+            color: #111827;
+        }
+
+        .reaction-tab-button[aria-selected="true"]::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: -1px;
+            height: 2px;
+            background: #2563eb;
+        }
+
+        .dark .reaction-tabs-list {
+            border-bottom-color: #334155;
+        }
+
+        .dark .reaction-tab-button {
+            color: #cbd5e1;
+        }
+
+        .dark .reaction-tab-button:hover,
+        .dark .reaction-tab-button:focus-visible {
+            background: #1e293b;
+            color: #f8fafc;
+        }
+
+        .dark .reaction-tab-button:active {
+            background: #334155;
+            color: #ffffff;
+        }
+
+        .dark .reaction-tab-button[aria-selected="true"] {
+            color: #f8fafc;
+        }
+
+        .dark .reaction-tab-button[aria-selected="true"]::after {
+            background: #3b82f6;
+        }
+
+        .dark .reaction-tab-button:focus-visible {
+            outline-color: #1d4ed8;
+        }
     </style>
 
     <div class="mx-auto w-full max-w-[var(--profile-shell-width)]">
@@ -145,29 +242,33 @@
                     </section>
 
                     <section class="border-t border-gray-200 pt-5 dark:border-slate-700" data-reaction-tabs>
-                        <div class="mb-5 flex items-center gap-1 border-b border-gray-200 pb-2 dark:border-slate-700" role="tablist" aria-label="Tepki yönetimi">
+                        <div class="reaction-tabs-list" role="tablist" aria-label="Tepki yönetimi">
                             <button
                                 type="button"
-                                class="rounded-lg px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 active:bg-gray-200 dark:text-slate-200 dark:hover:bg-slate-800 dark:active:bg-slate-700"
+                                class="reaction-tab-button"
                                 data-reaction-tab="mine"
                                 role="tab"
                                 aria-controls="reaction-panel-mine"
+                                aria-selected="{{ $initialTab === 'mine' ? 'true' : 'false' }}"
+                                tabindex="{{ $initialTab === 'mine' ? '0' : '-1' }}"
                             >
                                 Eklediklerim
                             </button>
 
                             <button
                                 type="button"
-                                class="rounded-lg px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 active:bg-gray-200 dark:text-slate-200 dark:hover:bg-slate-800 dark:active:bg-slate-700"
+                                class="reaction-tab-button"
                                 data-reaction-tab="create"
                                 role="tab"
                                 aria-controls="reaction-panel-create"
+                                aria-selected="{{ $initialTab === 'create' ? 'true' : 'false' }}"
+                                tabindex="{{ $initialTab === 'create' ? '0' : '-1' }}"
                             >
                                 Yeni tepki ekle
                             </button>
                         </div>
 
-                        <div id="reaction-panel-mine" data-reaction-panel="mine" role="tabpanel">
+                        <div id="reaction-panel-mine" data-reaction-panel="mine" role="tabpanel" @if($initialTab !== 'mine') hidden @endif>
                             <div class="space-y-2">
                                 @forelse($myReactionTypes as $reaction)
                                     @php($imageUrl = $reactionAssetUrl($reaction->gif_url))
@@ -198,7 +299,7 @@
                             </div>
                         </div>
 
-                        <div id="reaction-panel-create" data-reaction-panel="create" role="tabpanel" hidden>
+                        <div id="reaction-panel-create" data-reaction-panel="create" role="tabpanel" @if($initialTab !== 'create') hidden @endif>
                             @if($reactionUploadBlocked)
                                 <div class="rounded-lg border border-red-200 px-4 py-4 text-sm leading-6 text-red-700 dark:border-red-900 dark:text-red-300">
                                     Yeni tepki ekleme yetkin yönetici tarafından kapatılmış.
@@ -305,8 +406,7 @@
                 tabs.forEach((tab) => {
                     const active = tab.getAttribute('data-reaction-tab') === name;
                     tab.setAttribute('aria-selected', active ? 'true' : 'false');
-                    tab.classList.toggle('bg-gray-100', active);
-                    tab.classList.toggle('dark:bg-slate-800', active);
+                    tab.setAttribute('tabindex', active ? '0' : '-1');
                 });
 
                 panels.forEach((panel) => {
