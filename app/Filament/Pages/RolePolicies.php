@@ -53,6 +53,7 @@ class RolePolicies extends Page
             'Etiket engeli',
             'Yorum engeli',
             'Reaksiyon engeli',
+            'Tepki ekleme engeli',
         ];
     }
 }
