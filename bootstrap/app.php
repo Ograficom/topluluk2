@@ -32,6 +32,7 @@ return Application::configure(basePath: dirname(__DIR__))
             EnsureInstalled::class,
         ]);
 
+        // Keep the post-show-only mobile layout fix isolated from feed/category cards.
         $middleware->web(append: [
             SetLocale::class,
             EnsureDeviceIdCookie::class,
