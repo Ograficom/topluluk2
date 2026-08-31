@@ -40,7 +40,7 @@ class RecaptchaSettingResource extends Resource
             Grid::make(2)->schema([
                 Toggle::make('block_vpn_logins')
                     ->label('VPN / proxy girişlerini engelle')
-                    ->helperText('Bilinen VPN ve proxy ağlarından parola ile girişi engeller.'),
+                    ->helperText('Bilinen VPN ve proxy ağlarından hassas kimlik doğrulama işlemlerini engeller.'),
                 Toggle::make('block_tor_logins')
                     ->label('Tor girişlerini engelle')
                     ->helperText('Güncel Tor çıkış düğümü listesini kontrol eder.'),
@@ -49,7 +49,7 @@ class RecaptchaSettingResource extends Resource
                     ->helperText('Yeni cihazlarda e-posta ile 6 haneli kod ister.'),
                 Toggle::make('bot_honeypot_enabled')
                     ->label('Bot / otomasyon kontrolü')
-                    ->helperText('Honeypot ve belirgin otomasyon istemcilerini girişte engeller.'),
+                    ->helperText('Honeypot ve belirgin otomasyon istemcilerini giriş, kayıt ve şifre sıfırlamada engeller.'),
             ]),
             TextInput::make('trusted_device_days')
                 ->label('Cihazı güvenilir tutma süresi (gün)')
@@ -67,6 +67,8 @@ class RecaptchaSettingResource extends Resource
             Grid::make(2)->schema([
                 Toggle::make('login_enabled')->label('Giriş formu'),
                 Toggle::make('register_enabled')->label('Kayıt formu'),
+                Toggle::make('forgot_password_enabled')->label('Şifremi unuttum'),
+                Toggle::make('admin_enabled')->label('Admin girişi'),
                 Toggle::make('comment_enabled')->label('Yorum formu'),
             ]),
 
@@ -111,6 +113,7 @@ class RecaptchaSettingResource extends Resource
                 IconColumn::make('verify_unknown_devices')->label('Yeni cihaz')->boolean(),
                 IconColumn::make('bot_honeypot_enabled')->label('Bot')->boolean(),
                 IconColumn::make('is_enabled')->label('reCAPTCHA')->boolean(),
+                IconColumn::make('admin_enabled')->label('Admin')->boolean(),
                 TextColumn::make('trusted_device_days')->label('Güvenilir gün'),
             ])
             ->actions([
