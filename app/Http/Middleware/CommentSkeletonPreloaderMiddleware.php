@@ -33,9 +33,9 @@ class CommentSkeletonPreloaderMiddleware
         <div class="ografi-comment-skeleton__head">
             <span class="ografi-comment-skeleton__shape ografi-comment-skeleton__avatar"></span>
 
-            <span class="ografi-comment-skeleton__meta">
-                <span class="ografi-comment-skeleton__shape ografi-comment-skeleton__line ografi-comment-skeleton__line--long"></span>
-                <span class="ografi-comment-skeleton__shape ografi-comment-skeleton__line ografi-comment-skeleton__line--short"></span>
+            <span class="ografi-comment-skeleton__meta-wrap">
+                <span class="ografi-comment-skeleton__shape ografi-comment-skeleton__name"></span>
+                <span class="ografi-comment-skeleton__shape ografi-comment-skeleton__meta"></span>
             </span>
         </div>
 
@@ -65,11 +65,11 @@ html body .ogx-comments-panel > .ografi-comment-skeleton {
     width: 100% !important;
     min-height: 228px !important;
     margin: 0 !important;
-    padding: 14px 16px !important;
+    padding: 20px !important;
     box-sizing: border-box !important;
     overflow: hidden !important;
     border-radius: inherit !important;
-    background: #ffffff !important;
+    background: #fffcf5 !important;
     opacity: 1 !important;
     visibility: visible !important;
     pointer-events: none !important;
@@ -86,68 +86,76 @@ html body .ogx-comments-panel > .ografi-comment-skeleton[hidden] {
 html body .ografi-comment-skeleton__card {
     display: block !important;
     width: 100% !important;
-    min-height: 198px !important;
+    min-height: 188px !important;
     margin: 0 !important;
     padding: 0 !important;
     box-sizing: border-box !important;
     border: 0 !important;
-    background: #ffffff !important;
+    background: #fffcf5 !important;
 }
 
 html body .ografi-comment-skeleton__head {
-    display: flex !important;
+    display: grid !important;
+    grid-template-columns: 42px minmax(0, 1fr) !important;
+    gap: 10px !important;
     align-items: center !important;
     width: 100% !important;
     min-width: 0 !important;
-    gap: 12px !important;
+    margin-bottom: 18px !important;
 }
 
 html body .ografi-comment-skeleton__shape {
     position: relative !important;
     overflow: hidden !important;
-    background: linear-gradient(105deg, #eef2fb 0%, #ffffff 45%, #eef2fb 82%) !important;
-    background-size: 200% 100% !important;
-    animation: ografiImgWave 1.15s ease-in-out infinite !important;
+    background: #ece2cd !important;
+}
+
+html body .ografi-comment-skeleton__shape::after {
+    content: "" !important;
+    position: absolute !important;
+    inset: 0 !important;
+    transform: translateX(-120%) !important;
+    background: linear-gradient(105deg, transparent 0%, rgba(255, 255, 255, .78) 45%, rgba(14, 124, 134, .12) 60%, transparent 82%) !important;
+    animation: ografiCommentSkeletonWave 980ms ease-in-out infinite !important;
 }
 
 html body .ografi-comment-skeleton__avatar {
     display: block !important;
-    flex: 0 0 44px !important;
-    width: 44px !important;
-    min-width: 44px !important;
-    height: 44px !important;
+    width: 42px !important;
+    min-width: 42px !important;
+    height: 42px !important;
+    border-radius: 9999px !important;
+}
+
+html body .ografi-comment-skeleton__meta-wrap {
+    display: block !important;
+    min-width: 0 !important;
+}
+
+html body .ografi-comment-skeleton__name {
+    display: block !important;
+    width: 128px !important;
+    max-width: 72% !important;
+    height: 15px !important;
+    margin: 0 0 8px !important;
     border-radius: 9999px !important;
 }
 
 html body .ografi-comment-skeleton__meta {
-    display: flex !important;
-    flex: 1 1 auto !important;
-    min-width: 0 !important;
-    flex-direction: column !important;
-    justify-content: center !important;
-    gap: 9px !important;
-}
-
-html body .ografi-comment-skeleton__line {
     display: block !important;
-    height: 10px !important;
+    width: 92px !important;
+    max-width: 52% !important;
+    height: 12px !important;
+    margin: 0 !important;
     border-radius: 9999px !important;
-}
-
-html body .ografi-comment-skeleton__line--long {
-    width: min(72%, 410px) !important;
-}
-
-html body .ografi-comment-skeleton__line--short {
-    width: min(42%, 238px) !important;
 }
 
 html body .ografi-comment-skeleton__body {
     display: block !important;
     width: 100% !important;
     height: 130px !important;
-    margin-top: 14px !important;
-    border-radius: 14px !important;
+    margin: 0 !important;
+    border-radius: 8px !important;
 }
 
 html.dark body .ogx-comments-panel > .ografi-comment-skeleton,
@@ -156,14 +164,25 @@ body.dark .ogx-comments-panel > .ografi-comment-skeleton,
 html.dark body .ografi-comment-skeleton__card,
 body.dark .ografi-comment-skeleton__card,
 [data-theme="dark"] body .ografi-comment-skeleton__card {
-    background: #111318 !important;
+    background: #18181b !important;
 }
 
 html.dark body .ografi-comment-skeleton__shape,
 body.dark .ografi-comment-skeleton__shape,
 [data-theme="dark"] body .ografi-comment-skeleton__shape {
-    background: linear-gradient(105deg, #1e293b 0%, #334155 45%, #1e293b 82%) !important;
-    background-size: 200% 100% !important;
+    background: #27272a !important;
+}
+
+html.dark body .ografi-comment-skeleton__shape::after,
+body.dark .ografi-comment-skeleton__shape::after,
+[data-theme="dark"] body .ografi-comment-skeleton__shape::after {
+    background: linear-gradient(105deg, transparent 0%, rgba(255, 255, 255, .14) 45%, transparent 82%) !important;
+}
+
+@keyframes ografiCommentSkeletonWave {
+    to {
+        transform: translateX(120%);
+    }
 }
 
 @keyframes ografiCommentPreloaderOut {
@@ -176,39 +195,28 @@ body.dark .ografi-comment-skeleton__shape,
 @media (max-width: 700px) {
     html body .ogx-comments-panel > .ografi-comment-skeleton {
         min-height: 218px !important;
-        padding: 12px !important;
+        padding: 16px !important;
     }
 
     html body .ografi-comment-skeleton__card {
-        min-height: 194px !important;
+        min-height: 186px !important;
     }
 
-    html body .ografi-comment-skeleton__avatar {
-        flex-basis: 42px !important;
-        width: 42px !important;
-        min-width: 42px !important;
-        height: 42px !important;
+    html body .ografi-comment-skeleton__head {
+        grid-template-columns: 42px minmax(0, 1fr) !important;
+        gap: 10px !important;
+        margin-bottom: 16px !important;
     }
 
-    html body .ografi-comment-skeleton__line--long {
-        width: 72% !important;
-    }
-
-    html body .ografi-comment-skeleton__line--short {
-        width: 42% !important;
+    html body .ografi-comment-skeleton__body {
+        height: 128px !important;
     }
 }
 
 @media (prefers-reduced-motion: reduce) {
-    html body .ografi-comment-skeleton__shape {
+    html body .ografi-comment-skeleton__shape::after {
+        display: none !important;
         animation: none !important;
-        background: #eef2fb !important;
-    }
-
-    html.dark body .ografi-comment-skeleton__shape,
-    body.dark .ografi-comment-skeleton__shape,
-    [data-theme="dark"] body .ografi-comment-skeleton__shape {
-        background: #1e293b !important;
     }
 
     html body .ogx-comments-panel > .ografi-comment-skeleton.is-hiding {
@@ -301,7 +309,7 @@ HTML;
 
         $html = preg_replace('/<\/body>/i', $assets . "\n</body>", $html, 1) ?? ($html . $assets);
         $response->setContent($html);
-        $response->headers->set('X-Ografi-Comment-Skeleton', 'v4');
+        $response->headers->set('X-Ografi-Comment-Skeleton', 'v5');
 
         return $response;
     }
