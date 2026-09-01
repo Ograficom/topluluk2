@@ -31,20 +31,11 @@ class PostShowTypographyMiddleware
             return $response;
         }
 
-        // Haber/RSS kaynaklari bazen ara basliklari <h2> yerine duz <p> olarak verir.
-        // Tamami buyuk harfli, kisa ve en az iki kelimelik bu satirlari tarayiciya
-        // gonderilmeden once gercek H2 yap. CSS/JS ile baslik taklidi yapilmaz.
         $html = $this->normalizeSemanticSubheadings($html);
 
         $style = <<<'HTML'
 <style data-ografi-post-show-typography-final>
-/*
- * Post-show makale tipografisi.
- * Tek semantik sistem:
- * - Govde: 17px / 1.65
- * - Kalin: 700
- * - Basliklar: H2 > H3 > H4 > H5 > H6
- */
+/* Post-show: tek ve tutarli makale tipografisi. */
 html body.alma-app .post-show-shell .ps-post-title:not(#comments):not(#comments *) {
     font-size: 30px !important;
     line-height: 1.24 !important;
@@ -52,17 +43,28 @@ html body.alma-app .post-show-shell .ps-post-title:not(#comments):not(#comments 
     letter-spacing: -0.018em !important;
 }
 
-html body.alma-app .post-show-shell .ps-post-body:not(#comments):not(#comments *) {
-    font-size: 17px !important;
-    line-height: 1.65 !important;
-    font-weight: 400 !important;
-}
-
+/*
+ * Govde metni. RSS/EditorJS fark etmeksizin p/div/span/font dahil tum metin
+ * etiketleri ayni temel olcege gelir. Eski global 14px/400 kurali bunu ezemez.
+ */
+html body.alma-app .post-show-shell .ps-post-body:not(#comments):not(#comments *),
 html body.alma-app .post-show-shell .ps-post-body :where(
     p,
+    div,
+    span,
+    font,
+    a,
     li,
+    td,
+    th,
     blockquote,
+    em,
+    i,
+    u,
+    mark,
+    small,
     .ce-paragraph,
+    .cdx-block,
     .cdx-list__item
 ):not(#comments):not(#comments *) {
     font-size: 17px !important;
@@ -70,21 +72,9 @@ html body.alma-app .post-show-shell .ps-post-body :where(
     font-weight: 400 !important;
 }
 
-html body.alma-app .post-show-shell .ps-post-body :where(
-    p,
-    li,
-    blockquote,
-    .ce-paragraph,
-    .cdx-list__item
-) :where(span, font, a, em, i, u, mark):not(#comments):not(#comments *) {
-    font-size: inherit !important;
-    line-height: inherit !important;
-    font-weight: inherit !important;
-}
-
-/* Kalin metin gercek kalindir; boyutu degismez. */
+/* Kalin gercekten kalindir; boyut degismez. */
 html body.alma-app .post-show-shell .ps-post-body :where(strong, b):not(#comments):not(#comments *),
-html body.alma-app .post-show-shell .ps-post-body :where(strong, b) :where(span, font, a, em, i, u, mark):not(#comments):not(#comments *) {
+html body.alma-app .post-show-shell .ps-post-body :where(strong, b) *:not(#comments):not(#comments *) {
     font-size: inherit !important;
     line-height: inherit !important;
     font-weight: 700 !important;
@@ -98,7 +88,6 @@ html body.alma-app .post-show-shell .ps-post-body :where(h2, .ce-header[data-lev
     font-weight: 700 !important;
     letter-spacing: -0.012em !important;
 }
-
 html body.alma-app .post-show-shell .ps-post-body :where(h2, .ce-header[data-level="2"]):not(#comments):not(#comments *) {
     margin: 30px 0 12px !important;
 }
@@ -111,7 +100,6 @@ html body.alma-app .post-show-shell .ps-post-body :where(h3, .ce-header[data-lev
     font-weight: 700 !important;
     letter-spacing: -0.008em !important;
 }
-
 html body.alma-app .post-show-shell .ps-post-body :where(h3, .ce-header[data-level="3"]):not(#comments):not(#comments *) {
     margin: 26px 0 10px !important;
 }
@@ -123,30 +111,28 @@ html body.alma-app .post-show-shell .ps-post-body :where(h4, .ce-header[data-lev
     line-height: 1.38 !important;
     font-weight: 700 !important;
 }
-
 html body.alma-app .post-show-shell .ps-post-body :where(h4, .ce-header[data-level="4"]):not(#comments):not(#comments *) {
     margin: 23px 0 9px !important;
 }
 
-/* H5 / H6 */
+/* H5 */
 html body.alma-app .post-show-shell .ps-post-body h5:not(#comments):not(#comments *),
 html body.alma-app .post-show-shell .ps-post-body h5 *:not(#comments):not(#comments *) {
     font-size: 18px !important;
     line-height: 1.4 !important;
     font-weight: 700 !important;
 }
-
 html body.alma-app .post-show-shell .ps-post-body h5:not(#comments):not(#comments *) {
     margin: 21px 0 8px !important;
 }
 
+/* H6 */
 html body.alma-app .post-show-shell .ps-post-body h6:not(#comments):not(#comments *),
 html body.alma-app .post-show-shell .ps-post-body h6 *:not(#comments):not(#comments *) {
     font-size: 17px !important;
     line-height: 1.42 !important;
     font-weight: 700 !important;
 }
-
 html body.alma-app .post-show-shell .ps-post-body h6:not(#comments):not(#comments *) {
     margin: 20px 0 8px !important;
 }
@@ -160,9 +146,21 @@ html body.alma-app .post-show-shell .ps-post-body h6:not(#comments):not(#comment
     html body.alma-app .post-show-shell .ps-post-body:not(#comments):not(#comments *),
     html body.alma-app .post-show-shell .ps-post-body :where(
         p,
+        div,
+        span,
+        font,
+        a,
         li,
+        td,
+        th,
         blockquote,
+        em,
+        i,
+        u,
+        mark,
+        small,
         .ce-paragraph,
+        .cdx-block,
         .cdx-list__item
     ):not(#comments):not(#comments *) {
         font-size: 16px !important;
@@ -173,18 +171,21 @@ html body.alma-app .post-show-shell .ps-post-body h6:not(#comments):not(#comment
     html body.alma-app .post-show-shell .ps-post-body :where(h2, .ce-header[data-level="2"]) *:not(#comments):not(#comments *) {
         font-size: 22px !important;
         line-height: 1.32 !important;
+        font-weight: 700 !important;
     }
 
     html body.alma-app .post-show-shell .ps-post-body :where(h3, .ce-header[data-level="3"]):not(#comments):not(#comments *),
     html body.alma-app .post-show-shell .ps-post-body :where(h3, .ce-header[data-level="3"]) *:not(#comments):not(#comments *) {
         font-size: 20px !important;
         line-height: 1.36 !important;
+        font-weight: 700 !important;
     }
 
     html body.alma-app .post-show-shell .ps-post-body :where(h4, .ce-header[data-level="4"]):not(#comments):not(#comments *),
     html body.alma-app .post-show-shell .ps-post-body :where(h4, .ce-header[data-level="4"]) *:not(#comments):not(#comments *) {
         font-size: 18px !important;
         line-height: 1.4 !important;
+        font-weight: 700 !important;
     }
 }
 </style>
@@ -193,7 +194,7 @@ HTML;
         $html = preg_replace('/<\/body>/i', $style . "\n</body>", $html, 1) ?? ($html . $style);
 
         $response->setContent($html);
-        $response->headers->set('X-Ografi-Post-Typography', 'v7');
+        $response->headers->set('X-Ografi-Post-Typography', 'v8');
 
         return $response;
     }
@@ -206,7 +207,6 @@ HTML;
                 $attrs = (string) ($match['attrs'] ?? '');
                 $inner = (string) ($match['inner'] ?? '');
 
-                // Sinifli/ozel paragraflara dokunma; sadece ham haber metni satirlari.
                 if (preg_match('/\b(?:class|id|style)\s*=/iu', $attrs)) {
                     return $match[0];
                 }
@@ -236,7 +236,6 @@ HTML;
                     return $match[0];
                 }
 
-                // Uzun cumleleri/normal metinleri basliga cevirmemek icin cumle sonu noktalamasini ele.
                 if (preg_match('/[.!?…]["\'”’)]?$/u', $text)) {
                     return $match[0];
                 }
