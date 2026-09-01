@@ -279,3 +279,76 @@
         border: 1px solid #e4e4e7 !important;
     }
 </style>
+
+<style>
+    /* Post-show makale metni: global 14px/400 zorlamasını yalnız detay sayfasında düzelt. */
+    html body.alma-app.route-post-show .post-show-shell .ps-post-body {
+        font-size: 17px !important;
+        line-height: 1.72 !important;
+        font-weight: 400 !important;
+    }
+
+    html body.alma-app.route-post-show .post-show-shell .ps-post-body :is(
+        p,
+        li,
+        blockquote,
+        figcaption,
+        a,
+        span,
+        td,
+        th
+    ) {
+        font-size: 17px !important;
+        line-height: 1.72 !important;
+        font-weight: 400 !important;
+    }
+
+    html body.alma-app.route-post-show .post-show-shell .ps-post-body :is(strong, b),
+    html body.alma-app.route-post-show .post-show-shell .ps-post-body :is(p, li, blockquote, figcaption, a, span, td, th) :is(strong, b) {
+        font-size: inherit !important;
+        line-height: inherit !important;
+        font-weight: 700 !important;
+    }
+
+    html body.alma-app.route-post-show .post-show-shell .ps-post-body h2 {
+        font-size: 26px !important;
+        line-height: 1.3 !important;
+        font-weight: 700 !important;
+    }
+
+    html body.alma-app.route-post-show .post-show-shell .ps-post-body h3 {
+        font-size: 23px !important;
+        line-height: 1.35 !important;
+        font-weight: 700 !important;
+    }
+
+    html body.alma-app.route-post-show .post-show-shell .ps-post-body h4 {
+        font-size: 20px !important;
+        line-height: 1.4 !important;
+        font-weight: 700 !important;
+    }
+
+    html body.alma-app.route-post-show .post-show-shell .ps-post-body h5,
+    html body.alma-app.route-post-show .post-show-shell .ps-post-body h6 {
+        font-size: 18px !important;
+        line-height: 1.45 !important;
+        font-weight: 700 !important;
+    }
+
+    @media (max-width: 640px) {
+        html body.alma-app.route-post-show .post-show-shell .ps-post-body,
+        html body.alma-app.route-post-show .post-show-shell .ps-post-body :is(
+            p,
+            li,
+            blockquote,
+            figcaption,
+            a,
+            span,
+            td,
+            th
+        ) {
+            font-size: 16px !important;
+            line-height: 1.7 !important;
+        }
+    }
+</style>
