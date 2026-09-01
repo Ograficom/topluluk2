@@ -214,83 +214,49 @@ body.dark .ografi-comment-skeleton__shape,
     const skeletons = Array.from(document.querySelectorAll('[data-ografi-comment-skeleton]'));
     if (!skeletons.length) return;
 
+    const startedAt = Date.now();
     const minimumVisibleMs = 520;
     const maximumVisibleMs = 2400;
+    let finished = false;
 
-    const bootSkeleton = (skeleton) => {
-        const panel = skeleton.closest('.ogx-comments-panel');
-        if (!panel || skeleton.dataset.booted === '1') return;
-
-        skeleton.dataset.booted = '1';
+    skeletons.forEach((skeleton) => {
         skeleton.hidden = false;
-        panel.setAttribute('aria-busy', 'true');
+        skeleton.dataset.booted = '1';
+        skeleton.closest('.ogx-comments-panel')?.setAttribute('aria-busy', 'true');
+    });
 
-        let started = false;
-        let finished = false;
-        let observer = null;
+    const hideAll = () => {
+        if (finished) return;
+        finished = true;
 
-        const hide = () => {
-            if (finished) return;
-            finished = true;
-
-            if (observer) {
-                observer.disconnect();
-            }
-
+        skeletons.forEach((skeleton) => {
             skeleton.hidden = true;
-            panel.setAttribute('aria-busy', 'false');
-        };
-
-        const start = () => {
-            if (started || finished) return;
-            started = true;
-
-            const startedAt = Date.now();
-
-            const finish = () => {
-                const elapsed = Date.now() - startedAt;
-                const delay = Math.max(0, minimumVisibleMs - elapsed);
-                window.setTimeout(hide, delay);
-            };
-
-            if (document.readyState === 'complete') {
-                finish();
-            } else {
-                window.addEventListener('load', finish, { once: true });
-            }
-
-            window.setTimeout(hide, maximumVisibleMs);
-        };
-
-        if ('IntersectionObserver' in window) {
-            observer = new IntersectionObserver((entries) => {
-                if (entries.some((entry) => entry.isIntersecting)) {
-                    start();
-                }
-            }, {
-                root: null,
-                rootMargin: '160px 0px',
-                threshold: 0.01,
-            });
-
-            observer.observe(panel);
-        } else {
-            start();
-        }
-
-        if (window.location.hash === '#comments') {
-            start();
-        }
+            skeleton.closest('.ogx-comments-panel')?.setAttribute('aria-busy', 'false');
+        });
     };
 
-    skeletons.forEach(bootSkeleton);
+    const finishAll = () => {
+        if (finished) return;
+
+        const elapsed = Date.now() - startedAt;
+        const delay = Math.max(0, minimumVisibleMs - elapsed);
+        window.setTimeout(hideAll, delay);
+    };
+
+    if (document.readyState === 'complete') {
+        finishAll();
+    } else {
+        window.addEventListener('load', finishAll, { once: true });
+    }
+
+    window.setTimeout(hideAll, maximumVisibleMs);
 })();
 </script>
 HTML;
 
         $html = preg_replace('/<\/body>/i', $assets . "\n</body>", $html, 1) ?? ($html . $assets);
         $response->setContent($html);
-        $response->headers->set('X-Ografi-Comment-Skeleton', 'v7');
+        $response->headers->set('X-Ografi-Comment-Skeleton', 'v8');
 
         return $response;
     }
