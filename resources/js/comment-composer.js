@@ -476,3 +476,173 @@ if (typeof MutationObserver !== 'undefined') {
 
     observer.observe(document.documentElement, { childList: true, subtree: true });
 }
+
+const ensureCommentSkeletonStyles = () => {
+    if (document.querySelector('style[data-ogx-comment-skeleton="v1"]')) return;
+
+    const style = document.createElement('style');
+    style.setAttribute('data-ogx-comment-skeleton', 'v1');
+    style.textContent = `
+        .ografi-comments-skeleton {
+            width: 100% !important;
+            max-width: 680px !important;
+            margin: 14px auto 0 !important;
+            padding: 0 !important;
+            box-sizing: border-box !important;
+        }
+
+        .ografi-comments-skeleton-card {
+            width: 100% !important;
+            padding: 16px !important;
+            border: 1px solid #e5e7eb !important;
+            border-radius: 18px !important;
+            background: #ffffff !important;
+            box-sizing: border-box !important;
+        }
+
+        .ografi-comments-skeleton-head {
+            display: flex !important;
+            align-items: center !important;
+            gap: 12px !important;
+            margin: 0 0 14px !important;
+        }
+
+        .ografi-comments-skeleton-avatar {
+            width: 44px !important;
+            min-width: 44px !important;
+            height: 44px !important;
+            border-radius: 9999px !important;
+            background: #eef1f5 !important;
+        }
+
+        .ografi-comments-skeleton-copy {
+            display: flex !important;
+            flex: 1 1 auto !important;
+            min-width: 0 !important;
+            flex-direction: column !important;
+            gap: 9px !important;
+        }
+
+        .ografi-comments-skeleton-line {
+            display: block !important;
+            height: 10px !important;
+            border-radius: 9999px !important;
+            background: #eef1f5 !important;
+        }
+
+        .ografi-comments-skeleton-line--wide {
+            width: min(72%, 410px) !important;
+        }
+
+        .ografi-comments-skeleton-line--short {
+            width: min(42%, 240px) !important;
+        }
+
+        .ografi-comments-skeleton-body {
+            display: block !important;
+            width: 100% !important;
+            height: 130px !important;
+            border-radius: 14px !important;
+            background: #eef1f5 !important;
+        }
+
+        html.dark .ografi-comments-skeleton-card,
+        body.dark .ografi-comments-skeleton-card,
+        [data-theme="dark"] .ografi-comments-skeleton-card {
+            border-color: #2f333b !important;
+            background: #171a21 !important;
+        }
+
+        html.dark .ografi-comments-skeleton-avatar,
+        html.dark .ografi-comments-skeleton-line,
+        html.dark .ografi-comments-skeleton-body,
+        body.dark .ografi-comments-skeleton-avatar,
+        body.dark .ografi-comments-skeleton-line,
+        body.dark .ografi-comments-skeleton-body,
+        [data-theme="dark"] .ografi-comments-skeleton-avatar,
+        [data-theme="dark"] .ografi-comments-skeleton-line,
+        [data-theme="dark"] .ografi-comments-skeleton-body {
+            background: #272b33 !important;
+        }
+
+        @media (max-width: 700px) {
+            .ografi-comments-skeleton {
+                max-width: 100% !important;
+                margin-top: 10px !important;
+            }
+
+            .ografi-comments-skeleton-card {
+                padding: 14px !important;
+                border-radius: 14px !important;
+            }
+
+            .ografi-comments-skeleton-body {
+                height: 118px !important;
+            }
+        }
+    `;
+
+    document.head.appendChild(style);
+};
+
+let commentSkeletonStartedAt = 0;
+
+const mountCommentSkeleton = () => {
+    const panel = document.querySelector('.ogx-comments-panel');
+    if (!(panel instanceof HTMLElement)) return false;
+    if (document.querySelector('[data-ogx-comment-skeleton-root]')) return true;
+
+    ensureCommentSkeletonStyles();
+
+    const skeleton = document.createElement('div');
+    skeleton.className = 'ografi-comments-skeleton';
+    skeleton.setAttribute('data-ogx-comment-skeleton-root', '');
+    skeleton.setAttribute('aria-hidden', 'true');
+    skeleton.innerHTML = `
+        <div class="ografi-comments-skeleton-card">
+            <div class="ografi-comments-skeleton-head">
+                <span class="ografi-comments-skeleton-avatar"></span>
+                <span class="ografi-comments-skeleton-copy">
+                    <span class="ografi-comments-skeleton-line ografi-comments-skeleton-line--wide"></span>
+                    <span class="ografi-comments-skeleton-line ografi-comments-skeleton-line--short"></span>
+                </span>
+            </div>
+            <span class="ografi-comments-skeleton-body"></span>
+        </div>
+    `;
+
+    panel.before(skeleton);
+    panel.setAttribute('aria-busy', 'true');
+    panel.style.setProperty('display', 'none', 'important');
+    commentSkeletonStartedAt = performance.now();
+    return true;
+};
+
+const revealCommentsAfterSkeleton = () => {
+    const panel = document.querySelector('.ogx-comments-panel');
+    const skeleton = document.querySelector('[data-ogx-comment-skeleton-root]');
+    if (!(panel instanceof HTMLElement)) return;
+
+    const elapsed = commentSkeletonStartedAt > 0 ? performance.now() - commentSkeletonStartedAt : 0;
+    const wait = Math.max(0, 320 - elapsed);
+
+    window.setTimeout(() => {
+        skeleton?.remove();
+        panel.style.removeProperty('display');
+        panel.removeAttribute('aria-busy');
+    }, wait);
+};
+
+const bootCommentSkeleton = () => {
+    if (!mountCommentSkeleton()) return;
+
+    window.requestAnimationFrame(() => {
+        window.requestAnimationFrame(revealCommentsAfterSkeleton);
+    });
+};
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', bootCommentSkeleton, { once: true });
+} else {
+    bootCommentSkeleton();
+}
