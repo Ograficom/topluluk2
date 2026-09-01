@@ -21,7 +21,8 @@
             font-weight: 500 !important;
         }
 
-        .contact-section-heading {
+        .contact-section-heading,
+        .contact-form-heading {
             display: flex;
             align-items: center;
             gap: 10px;
@@ -30,7 +31,8 @@
             background: transparent !important;
         }
 
-        .contact-section-heading__icon {
+        .contact-section-heading__icon,
+        .contact-form-heading__icon {
             display: inline-flex;
             width: 22px;
             height: 22px;
@@ -39,22 +41,31 @@
             justify-content: center;
             color: #2563eb;
             font-size: 20px;
+            background: transparent !important;
+            border: 0 !important;
+            border-radius: 0 !important;
         }
 
-        .contact-form-heading {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin: 0;
-            padding: 8px;
-            border-radius: 12px;
-            background: transparent !important;
+        .contact-field {
+            width: 100% !important;
+            border: 1px solid #d1d5db !important;
+            background: #ffffff !important;
+            color: #111827 !important;
+            box-shadow: none !important;
+            outline: none !important;
         }
 
-        .contact-form-heading:hover,
-        .contact-form-heading:active,
-        .contact-form-heading:focus-within {
-            background: transparent !important;
+        .contact-field:hover {
+            border-color: #9ca3af !important;
+            background: #ffffff !important;
+        }
+
+        .contact-field:focus,
+        .contact-field:focus-visible {
+            border-color: #2563eb !important;
+            background: #ffffff !important;
+            box-shadow: 0 0 0 1px #2563eb !important;
+            outline: none !important;
         }
 
         .contact-consent-row {
@@ -148,6 +159,24 @@
         .contact-submit-button:disabled:hover {
             background: #93c5fd !important;
             border-color: #93c5fd !important;
+        }
+
+        html.dark .contact-field {
+            border-color: #475569 !important;
+            background: transparent !important;
+            color: #f8fafc !important;
+        }
+
+        html.dark .contact-field:hover {
+            border-color: #64748b !important;
+            background: transparent !important;
+        }
+
+        html.dark .contact-field:focus,
+        html.dark .contact-field:focus-visible {
+            border-color: #3b82f6 !important;
+            background: transparent !important;
+            box-shadow: 0 0 0 1px #3b82f6 !important;
         }
 
         @media (max-width: 640px) {
@@ -260,17 +289,17 @@
             </div>
         </section>
 
-        <div class="overflow-hidden rounded-[22px] bg-white shadow-[0_20px_50px_rgba(15,23,42,0.05)] dark:bg-slate-900">
-            <div class="border-b border-slate-200 px-4 py-3 dark:border-slate-700 sm:px-6 sm:py-4">
+        <div class="overflow-hidden rounded-[22px] border border-slate-200 bg-white dark:border-slate-700 dark:bg-slate-900">
+            <div class="border-b border-slate-200 px-5 py-4 dark:border-slate-700 sm:px-6">
                 <div class="contact-form-heading">
-                    <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-600 dark:bg-blue-500/10 dark:text-blue-400" aria-hidden="true">
-                        <iconify-icon icon="lucide:send" class="text-lg"></iconify-icon>
+                    <span class="contact-form-heading__icon" aria-hidden="true">
+                        <iconify-icon icon="lucide:mail"></iconify-icon>
                     </span>
                     <h2 class="contact-medium text-[1.15rem] tracking-[-0.01em] text-slate-950 dark:text-slate-100">Mesaj gönder</h2>
                 </div>
             </div>
 
-            <form method="POST" action="{{ route('contact.store') }}" class="space-y-5 px-6 py-5">
+            <form method="POST" action="{{ route('contact.store') }}" class="grid grid-cols-1 gap-5 px-6 py-5 sm:grid-cols-2">
                 @csrf
 
                 <div class="space-y-2">
@@ -280,7 +309,8 @@
                         name="full_name"
                         type="text"
                         value="{{ old('full_name', $user?->name) }}"
-                        class="block h-12 w-full rounded-xl border border-slate-300 bg-white px-4 text-[0.98rem] text-slate-900 outline-none transition focus:border-slate-400 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100"
+                        class="contact-field block h-12 rounded-xl px-4 text-[0.98rem]"
+                        autocomplete="name"
                         required
                     >
                     @error('full_name')
@@ -289,13 +319,14 @@
                 </div>
 
                 <div class="space-y-2">
-                    <label for="contact-email" class="contact-form-label block text-[1rem] text-slate-900 dark:text-slate-100">E-posta</label>
+                    <label for="contact-email" class="contact-form-label block text-[1rem] text-slate-900 dark:text-slate-100">E-posta adresi</label>
                     <input
                         id="contact-email"
                         name="email"
                         type="email"
                         value="{{ old('email', $user?->email) }}"
-                        class="block h-12 w-full rounded-xl border border-slate-300 bg-white px-4 text-[0.98rem] text-slate-900 outline-none transition focus:border-slate-400 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100"
+                        class="contact-field block h-12 rounded-xl px-4 text-[0.98rem]"
+                        autocomplete="email"
                         required
                     >
                     @error('email')
@@ -303,14 +334,14 @@
                     @enderror
                 </div>
 
-                <div class="space-y-2">
-                    <label for="contact-subject" class="contact-form-label block text-[1rem] text-slate-900 dark:text-slate-100">Konu</label>
+                <div class="space-y-2 sm:col-span-2">
+                    <label for="contact-subject" class="contact-form-label block text-[1rem] text-slate-900 dark:text-slate-100">Başlık</label>
                     <input
                         id="contact-subject"
                         name="subject"
                         type="text"
                         value="{{ old('subject') }}"
-                        class="block h-12 w-full rounded-xl border border-slate-300 bg-white px-4 text-[0.98rem] text-slate-900 outline-none transition focus:border-slate-400 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100"
+                        class="contact-field block h-12 rounded-xl px-4 text-[0.98rem]"
                         required
                     >
                     @error('subject')
@@ -318,13 +349,13 @@
                     @enderror
                 </div>
 
-                <div class="space-y-2">
+                <div class="space-y-2 sm:col-span-2">
                     <label for="contact-message" class="contact-form-label block text-[1rem] text-slate-900 dark:text-slate-100">Mesaj</label>
                     <textarea
                         id="contact-message"
                         name="message"
                         rows="7"
-                        class="block w-full resize-none overflow-hidden rounded-xl border border-slate-300 bg-white px-4 py-3 text-[0.98rem] text-slate-900 outline-none transition focus:border-slate-400 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100"
+                        class="contact-field block min-h-[148px] resize-none overflow-hidden rounded-xl px-4 py-3 text-[0.98rem]"
                         oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px'"
                         required
                     >{{ old('message') }}</textarea>
@@ -333,7 +364,7 @@
                     @enderror
                 </div>
 
-                <div class="space-y-2">
+                <div class="space-y-2 sm:col-span-2">
                     <label for="contact-consent" class="contact-consent-row text-[0.95rem] text-slate-700 dark:text-slate-300">
                         <span class="contact-consent-switch">
                             <input
@@ -368,11 +399,11 @@
                     @enderror
                 </div>
 
-                <div class="pt-1">
+                <div class="pt-1 sm:col-span-2">
                     <button
                         id="contact-submit-button"
                         type="submit"
-                        class="contact-submit-button w-full rounded-xl px-6 py-3 text-sm shadow-sm transition focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 sm:w-auto sm:py-2.5"
+                        class="contact-submit-button w-full rounded-xl px-6 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 sm:w-auto sm:py-2.5"
                         style="background-color: #2563eb !important; color: #ffffff !important; border: none !important;"
                         onmouseover="this.style.setProperty('background-color', '#1d4ed8', 'important'); this.style.setProperty('color', '#ffffff', 'important');"
                         onmouseout="this.style.setProperty('background-color', '#2563eb', 'important'); this.style.setProperty('color', '#ffffff', 'important');"
