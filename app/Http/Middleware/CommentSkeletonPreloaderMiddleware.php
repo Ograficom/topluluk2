@@ -57,13 +57,27 @@ html body .ogx-comments-panel {
     position: relative !important;
 }
 
+/* Yorum yoksa bos durum mesaji/karti hic gosterilmez. */
+html body .ogx-comments-panel .ogx-empty {
+    display: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    min-height: 0 !important;
+    height: 0 !important;
+    border: 0 !important;
+}
+
 html body .ogx-comments-panel > .ografi-comment-skeleton {
     position: absolute !important;
-    inset: 0 !important;
+    top: 0 !important;
+    right: 0 !important;
+    bottom: auto !important;
+    left: 0 !important;
     z-index: 2147482000 !important;
     display: block !important;
     width: 100% !important;
-    min-height: 228px !important;
+    height: auto !important;
+    min-height: 0 !important;
     margin: 0 !important;
     padding: 20px !important;
     box-sizing: border-box !important;
@@ -86,7 +100,8 @@ html body .ogx-comments-panel > .ografi-comment-skeleton[hidden] {
 html body .ografi-comment-skeleton__card {
     display: block !important;
     width: 100% !important;
-    min-height: 188px !important;
+    height: auto !important;
+    min-height: 0 !important;
     margin: 0 !important;
     padding: 0 !important;
     box-sizing: border-box !important;
@@ -194,12 +209,14 @@ body.dark .ografi-comment-skeleton__shape::after,
 
 @media (max-width: 700px) {
     html body .ogx-comments-panel > .ografi-comment-skeleton {
-        min-height: 218px !important;
+        height: auto !important;
+        min-height: 0 !important;
         padding: 16px !important;
     }
 
     html body .ografi-comment-skeleton__card {
-        min-height: 186px !important;
+        height: auto !important;
+        min-height: 0 !important;
     }
 
     html body .ografi-comment-skeleton__head {
@@ -309,7 +326,7 @@ HTML;
 
         $html = preg_replace('/<\/body>/i', $assets . "\n</body>", $html, 1) ?? ($html . $assets);
         $response->setContent($html);
-        $response->headers->set('X-Ografi-Comment-Skeleton', 'v5');
+        $response->headers->set('X-Ografi-Comment-Skeleton', 'v6');
 
         return $response;
     }
