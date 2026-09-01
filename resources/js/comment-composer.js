@@ -1,4 +1,5 @@
 const selector = '#show-comment-form textarea.ogx3-textarea';
+const replyTextareaSelector = '.ogx-reply-form textarea[name="content"], .ogx-edit-form textarea[name="content"]';
 const minimumHeight = 72;
 const maximumHeight = 360;
 
@@ -28,10 +29,12 @@ const initializeCommentComposers = (root = document) => {
 };
 
 const ensureCommentActionStyles = () => {
-    if (document.querySelector('style[data-ogx-comment-action-style="v1"]')) return;
+    if (document.querySelector('style[data-ogx-comment-action-style="v2"]')) return;
+
+    document.querySelector('style[data-ogx-comment-action-style="v1"]')?.remove();
 
     const style = document.createElement('style');
-    style.setAttribute('data-ogx-comment-action-style', 'v1');
+    style.setAttribute('data-ogx-comment-action-style', 'v2');
     style.textContent = `
         html body .ogx-comments-panel .ogx-votes {
             display: inline-flex !important;
@@ -132,6 +135,71 @@ const ensureCommentActionStyles = () => {
             line-height: 1 !important;
         }
 
+        html body .ogx-comments-panel .ografi-reply-editor {
+            display: block !important;
+            flex: 1 1 100% !important;
+            width: 100% !important;
+            min-width: 0 !important;
+            min-height: 36px !important;
+            max-height: 420px !important;
+            margin: 0 !important;
+            padding: 2px 0 !important;
+            overflow-x: hidden !important;
+            overflow-y: auto !important;
+            box-sizing: border-box !important;
+            border: 0 !important;
+            outline: 0 !important;
+            background: transparent !important;
+            color: #111827 !important;
+            box-shadow: none !important;
+            text-shadow: none !important;
+            font-family: "Segoe UI", Arial, sans-serif !important;
+            font-size: 14px !important;
+            font-weight: 400 !important;
+            font-style: normal !important;
+            line-height: 20px !important;
+            letter-spacing: 0 !important;
+            word-spacing: 0 !important;
+            white-space: pre-wrap !important;
+            overflow-wrap: anywhere !important;
+            word-break: normal !important;
+            text-align: left !important;
+            text-indent: 0 !important;
+            direction: ltr !important;
+            writing-mode: horizontal-tb !important;
+            caret-color: #111827 !important;
+            resize: none !important;
+            transform: none !important;
+            transition: none !important;
+            animation: none !important;
+            -webkit-user-modify: read-write-plaintext-only;
+        }
+
+        html body .ogx-comments-panel .ografi-reply-editor:empty::before {
+            content: attr(data-placeholder);
+            color: #71717a !important;
+            pointer-events: none !important;
+        }
+
+        html body .ogx-comments-panel .ografi-reply-editor::selection,
+        html body .ogx-comments-panel .ografi-reply-editor *::selection {
+            background: #e5e7eb !important;
+            color: #111827 !important;
+        }
+
+        html body .ogx-comments-panel textarea[data-ografi-hidden-reply-textarea] {
+            display: none !important;
+            position: absolute !important;
+            width: 1px !important;
+            height: 1px !important;
+            min-height: 0 !important;
+            max-height: 1px !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            opacity: 0 !important;
+            pointer-events: none !important;
+        }
+
         html.dark body .ogx-comments-panel .ogx-votes,
         body.dark .ogx-comments-panel .ogx-votes,
         [data-theme="dark"] body .ogx-comments-panel .ogx-votes {
@@ -157,6 +225,29 @@ const ensureCommentActionStyles = () => {
         [data-theme="dark"] body .ogx-comments-panel .ogx-replies-plus-btn:focus-visible,
         [data-theme="dark"] body .ogx-comments-panel .ogx-replies-plus-btn:active {
             background: #27272a !important;
+        }
+
+        html.dark body .ogx-comments-panel .ografi-reply-editor,
+        body.dark .ogx-comments-panel .ografi-reply-editor,
+        [data-theme="dark"] body .ogx-comments-panel .ografi-reply-editor {
+            color: #f4f4f5 !important;
+            caret-color: #f4f4f5 !important;
+        }
+
+        html.dark body .ogx-comments-panel .ografi-reply-editor:empty::before,
+        body.dark .ogx-comments-panel .ografi-reply-editor:empty::before,
+        [data-theme="dark"] body .ogx-comments-panel .ografi-reply-editor:empty::before {
+            color: #a1a1aa !important;
+        }
+
+        html.dark body .ogx-comments-panel .ografi-reply-editor::selection,
+        html.dark body .ogx-comments-panel .ografi-reply-editor *::selection,
+        body.dark .ogx-comments-panel .ografi-reply-editor::selection,
+        body.dark .ogx-comments-panel .ografi-reply-editor *::selection,
+        [data-theme="dark"] body .ogx-comments-panel .ografi-reply-editor::selection,
+        [data-theme="dark"] body .ogx-comments-panel .ografi-reply-editor *::selection {
+            background: #3f3f46 !important;
+            color: #f4f4f5 !important;
         }
     `;
 
@@ -203,9 +294,122 @@ const decorateReplyCounters = (root = document) => {
     });
 };
 
+const editorText = (editor) => {
+    if (!(editor instanceof HTMLElement)) return '';
+    return String(editor.innerText || '').replace(/\r\n?/g, '\n').replace(/\u00a0/g, ' ');
+};
+
+const syncReplyEditor = (editor) => {
+    if (!(editor instanceof HTMLElement)) return;
+
+    const form = editor.closest('.ogx-reply-form, .ogx-edit-form');
+    const textarea = form?.querySelector('textarea[data-ografi-hidden-reply-textarea]');
+    if (!(textarea instanceof HTMLTextAreaElement)) return;
+
+    textarea.value = editorText(editor);
+};
+
+const insertPlainTextAtCaret = (text) => {
+    const selection = window.getSelection();
+    if (!selection || selection.rangeCount < 1) return false;
+
+    const range = selection.getRangeAt(0);
+    range.deleteContents();
+
+    const node = document.createTextNode(text);
+    range.insertNode(node);
+    range.setStartAfter(node);
+    range.collapse(true);
+
+    selection.removeAllRanges();
+    selection.addRange(range);
+    return true;
+};
+
+const upgradeReplyTextarea = (textarea) => {
+    if (!(textarea instanceof HTMLTextAreaElement)) return;
+    if (textarea.hasAttribute('data-ografi-hidden-reply-textarea')) return;
+
+    const form = textarea.closest('.ogx-reply-form, .ogx-edit-form');
+    const compose = textarea.closest('.ogx-reply-compose');
+    if (!(form instanceof HTMLFormElement) || !(compose instanceof HTMLElement)) return;
+
+    const editor = document.createElement('div');
+    editor.className = 'ografi-reply-editor';
+    editor.contentEditable = 'true';
+    editor.setAttribute('role', 'textbox');
+    editor.setAttribute('aria-multiline', 'true');
+    editor.setAttribute('spellcheck', 'false');
+    editor.setAttribute('autocorrect', 'off');
+    editor.setAttribute('autocapitalize', 'off');
+    editor.setAttribute('data-placeholder', textarea.getAttribute('placeholder') || 'Yanıt yaz...');
+    editor.textContent = textarea.value || '';
+
+    if (textarea.hasAttribute('required')) {
+        textarea.removeAttribute('required');
+        editor.setAttribute('aria-required', 'true');
+        form.setAttribute('data-ografi-editor-required', '1');
+    }
+
+    textarea.removeAttribute('data-mentionable');
+    textarea.removeAttribute('data-ogx-autogrow');
+    textarea.removeAttribute('oninput');
+    textarea.oninput = null;
+    textarea.setAttribute('data-ografi-hidden-reply-textarea', '');
+    textarea.setAttribute('aria-hidden', 'true');
+    textarea.tabIndex = -1;
+    textarea.style.setProperty('display', 'none', 'important');
+
+    compose.insertBefore(editor, textarea);
+
+    editor.addEventListener('input', () => {
+        syncReplyEditor(editor);
+    });
+
+    editor.addEventListener('paste', (event) => {
+        const text = event.clipboardData?.getData('text/plain');
+        if (typeof text !== 'string') return;
+
+        event.preventDefault();
+        insertPlainTextAtCaret(text);
+        syncReplyEditor(editor);
+    });
+
+    editor.addEventListener('blur', () => syncReplyEditor(editor));
+};
+
+const initializeReplyEditors = (root = document) => {
+    if (!(root instanceof Document || root instanceof Element)) return;
+
+    if (root instanceof HTMLTextAreaElement && root.matches(replyTextareaSelector)) {
+        upgradeReplyTextarea(root);
+    }
+
+    root.querySelectorAll?.(replyTextareaSelector).forEach(upgradeReplyTextarea);
+};
+
+const focusVisibleReplyEditor = (toggle) => {
+    if (!(toggle instanceof Element)) return;
+
+    const selectorValue = toggle.getAttribute('data-comment-reply-toggle') || toggle.getAttribute('data-comment-edit-toggle');
+    if (!selectorValue) return;
+
+    window.setTimeout(() => {
+        const form = document.querySelector(selectorValue);
+        if (!(form instanceof HTMLElement) || !form.classList.contains('is-open')) return;
+
+        initializeReplyEditors(form);
+        const editor = form.querySelector('.ografi-reply-editor');
+        if (editor instanceof HTMLElement) {
+            editor.focus({ preventScroll: true });
+        }
+    }, 0);
+};
+
 const initializeCommentActionUi = (root = document) => {
     ensureCommentActionStyles();
     decorateReplyCounters(root);
+    initializeReplyEditors(root);
 };
 
 document.addEventListener('input', (event) => {
@@ -217,6 +421,30 @@ document.addEventListener('input', (event) => {
 document.addEventListener('paste', (event) => {
     if (!(event.target instanceof HTMLTextAreaElement) || !event.target.matches(selector)) return;
     window.requestAnimationFrame(() => resizeCommentComposer(event.target));
+}, true);
+
+document.addEventListener('click', (event) => {
+    const toggle = event.target instanceof Element
+        ? event.target.closest('[data-comment-reply-toggle], [data-comment-edit-toggle]')
+        : null;
+
+    if (toggle) focusVisibleReplyEditor(toggle);
+}, false);
+
+document.addEventListener('submit', (event) => {
+    const form = event.target;
+    if (!(form instanceof HTMLFormElement) || !form.matches('.ogx-reply-form, .ogx-edit-form')) return;
+
+    const editor = form.querySelector('.ografi-reply-editor');
+    const textarea = form.querySelector('textarea[data-ografi-hidden-reply-textarea]');
+    if (!(editor instanceof HTMLElement) || !(textarea instanceof HTMLTextAreaElement)) return;
+
+    syncReplyEditor(editor);
+
+    if (form.getAttribute('data-ografi-editor-required') === '1' && textarea.value.trim() === '') {
+        event.preventDefault();
+        editor.focus();
+    }
 }, true);
 
 if (document.readyState === 'loading') {
