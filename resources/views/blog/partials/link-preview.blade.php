@@ -36,7 +36,7 @@
             </div>
         @endif
 
-        <div class="alma-link-preview__body">
+        <div class="alma-link-preview__body" @if($imageUrl !== '') style="margin-top: 12px !important;" @endif>
             <div class="alma-link-preview__row">
                 <div class="alma-link-preview__source">
                     @if($iconUrl !== '')
