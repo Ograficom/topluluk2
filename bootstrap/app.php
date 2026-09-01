@@ -5,7 +5,6 @@ use App\Http\Middleware\DisableDebugbarOnFrontend;
 use App\Http\Middleware\AddSecurityHeaders;
 use App\Http\Middleware\CommentSkeletonPreloaderMiddleware;
 use App\Http\Middleware\ContactPageFieldStyleMiddleware;
-use App\Http\Middleware\EditorJsInlinePopoverLayoutMiddleware;
 use App\Http\Middleware\EditorJsTableInlineFormatMiddleware;
 use App\Http\Middleware\EnsureImageAltText;
 use App\Http\Middleware\EnsureInstalled;
@@ -46,7 +45,6 @@ return Application::configure(basePath: dirname(__DIR__))
             AddSecurityHeaders::class,
             EnsureImageAltText::class,
             EditorJsTableInlineFormatMiddleware::class,
-            EditorJsInlinePopoverLayoutMiddleware::class,
             PostShowTypographyMiddleware::class,
             PostPresentationMiddleware::class,
             PostShowReactionLayoutMiddleware::class,
