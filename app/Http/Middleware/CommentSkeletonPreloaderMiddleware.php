@@ -198,13 +198,16 @@ body.dark .ografi-comment-skeleton__body,
     const skeletons = Array.from(document.querySelectorAll('[data-ografi-comment-skeleton]'));
     if (!skeletons.length) return;
 
+    const startedAt = Date.now();
+    const minimumVisibleMs = 900;
+    let finished = false;
+
     skeletons.forEach((skeleton) => {
+        skeleton.hidden = false;
         skeleton.closest('.ogx-comments-panel')?.setAttribute('aria-busy', 'true');
     });
 
-    let finished = false;
-
-    const finish = () => {
+    const hideSkeletons = () => {
         if (finished) return;
         finished = true;
 
@@ -216,19 +219,28 @@ body.dark .ografi-comment-skeleton__body,
         });
     };
 
+    const finish = () => {
+        if (finished) return;
+
+        const elapsed = Date.now() - startedAt;
+        const remaining = Math.max(0, minimumVisibleMs - elapsed);
+        window.setTimeout(hideSkeletons, remaining);
+    };
+
     if (document.readyState === 'complete') {
         finish();
     } else {
         window.addEventListener('load', finish, { once: true });
-        window.setTimeout(finish, 5000);
     }
+
+    window.setTimeout(hideSkeletons, 5000);
 })();
 </script>
 HTML;
 
         $html = preg_replace('/<\/body>/i', $assets . "\n</body>", $html, 1) ?? ($html . $assets);
         $response->setContent($html);
-        $response->headers->set('X-Ografi-Comment-Skeleton', 'v2');
+        $response->headers->set('X-Ografi-Comment-Skeleton', 'v3');
 
         return $response;
     }
