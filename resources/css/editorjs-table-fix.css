@@ -1,0 +1,234 @@
+/*
+ * Ografi EditorJS table cleanup.
+ * Sadece create/edit EditorJS alanini hedefler.
+ * Efekt, gradient ve golge yok: beyaz zemin + 1px sinir.
+ */
+
+.create-page-fixed [data-editorjs-wrapper] .tc-wrap {
+    --color-background: #ffffff;
+    --color-text-secondary: #6b7280;
+    --color-border: #e5e7eb;
+    --cell-size: 32px;
+    --toolbox-icon-size: 18px;
+    --toolbox-padding: 6px;
+
+    width: 100% !important;
+    max-width: 100% !important;
+    height: auto !important;
+    margin: 12px 0 18px !important;
+    grid-template-columns: minmax(0, 1fr) 32px !important;
+    border: 1px solid #e5e7eb !important;
+    border-radius: 10px !important;
+    background: #ffffff !important;
+    box-sizing: border-box !important;
+}
+
+.create-page-fixed [data-editorjs-wrapper] .tc-table {
+    width: 100% !important;
+    min-width: 0 !important;
+    height: auto !important;
+    border-top: 0 !important;
+    background: #ffffff !important;
+    color: #111827 !important;
+    font-size: 15px !important;
+    line-height: 1.45 !important;
+}
+
+.create-page-fixed [data-editorjs-wrapper] .tc-row {
+    min-width: 0 !important;
+    min-height: 42px !important;
+    border-bottom: 1px solid #e5e7eb !important;
+    background: #ffffff !important;
+}
+
+.create-page-fixed [data-editorjs-wrapper] .tc-row:last-child {
+    border-bottom: 0 !important;
+}
+
+.create-page-fixed [data-editorjs-wrapper] .tc-row::after {
+    border-bottom-color: #e5e7eb !important;
+    background: #ffffff !important;
+}
+
+.create-page-fixed [data-editorjs-wrapper] .tc-cell {
+    min-width: 0 !important;
+    min-height: 42px !important;
+    padding: 10px 12px !important;
+    border-right: 1px solid #e5e7eb !important;
+    background: #ffffff !important;
+    color: #111827 !important;
+    font-family: Inter, Arial, Helvetica, sans-serif !important;
+    font-size: 15px !important;
+    font-weight: 400 !important;
+    line-height: 1.45 !important;
+    overflow-wrap: anywhere !important;
+    word-break: normal !important;
+    outline: none !important;
+}
+
+.create-page-fixed [data-editorjs-wrapper] .tc-cell:focus,
+.create-page-fixed [data-editorjs-wrapper] .tc-cell:focus-visible,
+.create-page-fixed [data-editorjs-wrapper] .tc-cell--selected,
+.create-page-fixed [data-editorjs-wrapper] .tc-row--selected {
+    background: #ffffff !important;
+    outline: none !important;
+}
+
+.create-page-fixed [data-editorjs-wrapper] .tc-table--heading .tc-row:first-child,
+.create-page-fixed [data-editorjs-wrapper] .tc-table--heading .tc-row:first-child .tc-cell {
+    background: #ffffff !important;
+    font-weight: 600 !important;
+}
+
+/* Sag sutun ekleme alani. */
+.create-page-fixed [data-editorjs-wrapper] .tc-add-column {
+    width: 32px !important;
+    min-width: 32px !important;
+    border-top: 0 !important;
+    border-left: 1px solid #e5e7eb !important;
+    background: #ffffff !important;
+    color: #6b7280 !important;
+}
+
+.create-page-fixed [data-editorjs-wrapper] .tc-add-column svg {
+    padding: 4px !important;
+    background: transparent !important;
+}
+
+/* Alt satir ekleme alani. */
+.create-page-fixed [data-editorjs-wrapper] .tc-add-row {
+    height: 32px !important;
+    min-height: 32px !important;
+    margin-top: 0 !important;
+    padding: 0 8px !important;
+    border-top: 1px solid #e5e7eb !important;
+    background: #ffffff !important;
+    color: #6b7280 !important;
+}
+
+.create-page-fixed [data-editorjs-wrapper] .tc-add-row::before {
+    width: 32px !important;
+    right: -32px !important;
+    border-top: 1px solid #e5e7eb !important;
+    background: #ffffff !important;
+}
+
+.create-page-fixed [data-editorjs-wrapper] .tc-add-column:hover,
+.create-page-fixed [data-editorjs-wrapper] .tc-add-row:hover,
+.create-page-fixed [data-editorjs-wrapper] .tc-add-row:hover::before {
+    background: #ffffff !important;
+}
+
+/* Tablo satir/sutun araclari tabloyu tasirmasin. */
+.create-page-fixed [data-editorjs-wrapper] .tc-toolbox {
+    z-index: 10020 !important;
+}
+
+.create-page-fixed [data-editorjs-wrapper] .tc-popover {
+    border: 1px solid #e5e7eb !important;
+    border-radius: 8px !important;
+    background: #ffffff !important;
+    box-shadow: none !important;
+}
+
+/*
+ * Metin secince acilan EditorJS inline toolbar.
+ * Eski durumda 200+ px'lik kapsul gibi uzayip tablonun ustune biniyordu.
+ */
+.create-page-fixed [data-editorjs-wrapper] .ce-inline-toolbar {
+    width: max-content !important;
+    min-width: 0 !important;
+    max-width: calc(100vw - 24px) !important;
+    padding: 4px !important;
+    border: 1px solid #e5e7eb !important;
+    border-radius: 10px !important;
+    background: #ffffff !important;
+    box-shadow: none !important;
+    overflow: visible !important;
+}
+
+.create-page-fixed [data-editorjs-wrapper] .ce-inline-toolbar__buttons {
+    display: flex !important;
+    align-items: center !important;
+    width: auto !important;
+    min-width: 0 !important;
+    gap: 2px !important;
+}
+
+.create-page-fixed [data-editorjs-wrapper] .ce-inline-tool,
+.create-page-fixed [data-editorjs-wrapper] .ce-inline-toolbar__dropdown {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex: 0 0 32px !important;
+    width: 32px !important;
+    min-width: 32px !important;
+    height: 32px !important;
+    min-height: 32px !important;
+    padding: 0 !important;
+    border: 0 !important;
+    border-radius: 7px !important;
+    background: #ffffff !important;
+    color: #111827 !important;
+    box-shadow: none !important;
+}
+
+.create-page-fixed [data-editorjs-wrapper] .ce-inline-tool:hover,
+.create-page-fixed [data-editorjs-wrapper] .ce-inline-toolbar__dropdown:hover,
+.create-page-fixed [data-editorjs-wrapper] .ce-inline-tool--active {
+    background: #f3f4f6 !important;
+    color: #111827 !important;
+}
+
+.create-page-fixed [data-editorjs-wrapper] .ce-inline-tool-input {
+    width: 220px !important;
+    max-width: min(220px, calc(100vw - 40px)) !important;
+    min-height: 36px !important;
+    padding: 7px 10px !important;
+    border: 1px solid #e5e7eb !important;
+    border-radius: 8px !important;
+    background: #ffffff !important;
+    color: #111827 !important;
+    box-shadow: none !important;
+    outline: none !important;
+}
+
+@media (max-width: 640px) {
+    .create-page-fixed [data-editorjs-wrapper] .tc-wrap {
+        --cell-size: 30px;
+        grid-template-columns: minmax(0, 1fr) 30px !important;
+        border-radius: 8px !important;
+    }
+
+    .create-page-fixed [data-editorjs-wrapper] .tc-cell {
+        min-height: 40px !important;
+        padding: 9px 10px !important;
+        font-size: 14px !important;
+    }
+
+    .create-page-fixed [data-editorjs-wrapper] .tc-add-column {
+        width: 30px !important;
+        min-width: 30px !important;
+    }
+
+    .create-page-fixed [data-editorjs-wrapper] .tc-add-row::before {
+        width: 30px !important;
+        right: -30px !important;
+    }
+}
+
+html.dark .create-page-fixed [data-editorjs-wrapper] .tc-wrap,
+html.dark .create-page-fixed [data-editorjs-wrapper] .tc-table,
+html.dark .create-page-fixed [data-editorjs-wrapper] .tc-row,
+html.dark .create-page-fixed [data-editorjs-wrapper] .tc-cell,
+html.dark .create-page-fixed [data-editorjs-wrapper] .tc-add-column,
+html.dark .create-page-fixed [data-editorjs-wrapper] .tc-add-row,
+html.dark .create-page-fixed [data-editorjs-wrapper] .tc-add-row::before,
+html.dark .create-page-fixed [data-editorjs-wrapper] .ce-inline-toolbar,
+html.dark .create-page-fixed [data-editorjs-wrapper] .ce-inline-tool,
+html.dark .create-page-fixed [data-editorjs-wrapper] .ce-inline-toolbar__dropdown,
+html.dark .create-page-fixed [data-editorjs-wrapper] .ce-inline-tool-input {
+    background: #111827 !important;
+    color: #f8fafc !important;
+    border-color: #374151 !important;
+}
