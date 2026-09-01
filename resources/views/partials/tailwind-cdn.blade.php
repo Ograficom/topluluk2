@@ -269,3 +269,13 @@
         transform: none !important;
     }
 </style>
+
+<style>
+    /* Post yorum kutusu: beyaz yüzey + mevcut ince sınır. */
+    html:not(.dark):not([data-theme="dark"]) body:not(.dark).alma-app
+    .post-show-shell #comments #show-comment-form.ogx3-composer .ogx3-field.ogx3-field {
+        background: #ffffff !important;
+        background-color: #ffffff !important;
+        border: 1px solid #e4e4e7 !important;
+    }
+</style>
