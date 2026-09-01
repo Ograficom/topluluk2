@@ -9,11 +9,6 @@
     transition: border-color 0.18s ease, box-shadow 0.18s ease, transform 0.18s ease;
 }
 
-.post-card .alma-link-preview,
-[data-post-card-shell] .alma-link-preview {
-    margin-top: 10px;
-}
-
 .alma-link-preview:hover,
 .alma-link-preview:focus-visible {
     border-color: rgba(148, 163, 184, 0.8);
@@ -37,6 +32,11 @@
 
 .alma-link-preview__body {
     padding: 1rem;
+}
+
+.post-card .alma-link-preview__media + .alma-link-preview__body,
+[data-post-card-shell] .alma-link-preview__media + .alma-link-preview__body {
+    margin-top: 10px !important;
 }
 
 .alma-link-preview__row {
