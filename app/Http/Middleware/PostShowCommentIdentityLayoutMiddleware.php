@@ -13,23 +13,30 @@ class PostShowCommentIdentityLayoutMiddleware
         /** @var Response $response */
         $response = $next($request);
 
-        if (! $request->routeIs('blog.post')) {
-            return $response;
-        }
-
         $contentType = strtolower((string) $response->headers->get('Content-Type'));
         if (! str_contains($contentType, 'text/html')) {
             return $response;
         }
 
         $html = $response->getContent();
-        if (! is_string($html) || $html === '' || ! str_contains($html, 'data-ogx-comment')) {
+        if (! is_string($html) || $html === '' || ! str_contains($html, 'ogx-comments-panel')) {
             return $response;
         }
 
+        /*
+         * The Blade partial still contains the old bright-blue reply focus rule.
+         * Patch that source rule in the rendered HTML first, then append the final
+         * overrides below. This avoids relying on route names or CSS load order.
+         */
+        $html = str_replace(
+            "  .ogx-reply-compose:focus-within {\n    border-color: #2563eb !important;\n    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.10) !important;\n  }",
+            "  .ogx-reply-compose:focus-within {\n    border-color: #d7dbe0 !important;\n    box-shadow: none !important;\n    outline: 0 !important;\n  }",
+            $html
+        );
+
         $assets = <<<'HTML'
-<style data-ografi-comment-identity-layout>
-/* Avatar, username and badges stay on one identity row. */
+<style data-ografi-comment-ui-fix="v2">
+/* Identity row */
 html body .ogx-comments-panel [data-ogx-comment].ogx-comment {
     display: block !important;
     grid-template-columns: none !important;
@@ -82,7 +89,6 @@ html body .ogx-comments-panel [data-ogx-comment] .ogx-meta > .ogx-username {
     line-height: 28px !important;
 }
 
-/* Verification/custom badges must never collapse. */
 html body .ogx-comments-panel [data-ogx-comment] .ogx-meta > [role="img"] {
     display: inline-flex !important;
     visibility: visible !important;
@@ -126,7 +132,6 @@ html body .ogx-comments-panel [data-ogx-comment] .ogx-meta > .ogx-author-label {
     white-space: nowrap !important;
 }
 
-/* Body/actions align with the username after avatar is moved into the meta row. */
 html body .ogx-comments-panel [data-ogx-comment] .ogx-submeta,
 html body .ogx-comments-panel [data-ogx-comment] .ogx-comment-text,
 html body .ogx-comments-panel [data-ogx-comment] .ogx-comment-actions,
@@ -136,11 +141,7 @@ html body .ogx-comments-panel [data-ogx-comment] > .ogx-comment-main > .ogx-repl
     margin-left: 36px !important;
 }
 
-html.dark body .ogx-comments-panel [data-ogx-comment] .ogx-meta > .ogx-author-label {
-    color: #60a5fa !important;
-}
-
-/* Comment menu and sort menu use the same text/icon scale. */
+/* Menus */
 html body .ogx-comments-panel .ogx-filter-item,
 html body .ogx-comments-panel .ogx-comment-menu button,
 html body .ogx-comments-panel .ogx-comment-menu a {
@@ -173,7 +174,7 @@ html body .ogx-comments-panel .ogx-comment-menu-icon {
     flex: 0 0 16px !important;
 }
 
-/* Up/down vote: neutral normally, green/red only on hover/focus/press. */
+/* Votes: neutral at rest, green/red on interaction. */
 html body .ogx-comments-panel .ogx-vote-btn {
     width: 28px !important;
     min-width: 28px !important;
@@ -205,6 +206,78 @@ html body .ogx-comments-panel .ogx-vote-btn[aria-label="Beğenme"]:active {
     color: #dc2626 !important;
 }
 
+/* Reply/edit composer. The blue focus ring is intentionally removed. */
+html body .ogx-comments-panel .ogx-reply-form .ogx-reply-compose,
+html body .ogx-comments-panel .ogx-edit-form .ogx-reply-compose {
+    border: 1px solid #d7dbe0 !important;
+    background: #ffffff !important;
+    box-shadow: none !important;
+    outline: 0 !important;
+}
+
+html body .ogx-comments-panel .ogx-reply-form .ogx-reply-compose:focus-within,
+html body .ogx-comments-panel .ogx-edit-form .ogx-reply-compose:focus-within {
+    border-color: #d7dbe0 !important;
+    background: #ffffff !important;
+    box-shadow: none !important;
+    outline: 0 !important;
+}
+
+html body .ogx-comments-panel .ogx-reply-compose textarea,
+html body .ogx-comments-panel .ogx-reply-compose textarea:focus,
+html body .ogx-comments-panel .ogx-reply-compose textarea:focus-visible {
+    position: static !important;
+    display: block !important;
+    flex: 1 1 100% !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    min-height: 36px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    outline: 0 !important;
+    background: transparent !important;
+    color: #111827 !important;
+    box-shadow: none !important;
+    font-family: inherit !important;
+    font-size: 14px !important;
+    font-weight: 400 !important;
+    line-height: 20px !important;
+    text-align: left !important;
+    text-indent: 0 !important;
+    direction: ltr !important;
+    writing-mode: horizontal-tb !important;
+    letter-spacing: normal !important;
+    caret-color: #111827 !important;
+    white-space: pre-wrap !important;
+    overflow-wrap: anywhere !important;
+    resize: none !important;
+    transform: none !important;
+}
+
+html body .ogx-comments-panel .ogx-reply-compose textarea::placeholder {
+    color: #71717a !important;
+    opacity: 1 !important;
+    text-align: left !important;
+    direction: ltr !important;
+}
+
+html.dark body .ogx-comments-panel .ogx-reply-form .ogx-reply-compose,
+html.dark body .ogx-comments-panel .ogx-edit-form .ogx-reply-compose,
+html.dark body .ogx-comments-panel .ogx-reply-form .ogx-reply-compose:focus-within,
+html.dark body .ogx-comments-panel .ogx-edit-form .ogx-reply-compose:focus-within {
+    border-color: #3f3f46 !important;
+    background: #18181b !important;
+    box-shadow: none !important;
+}
+
+html.dark body .ogx-comments-panel .ogx-reply-compose textarea,
+html.dark body .ogx-comments-panel .ogx-reply-compose textarea:focus,
+html.dark body .ogx-comments-panel .ogx-reply-compose textarea:focus-visible {
+    color: #f4f4f5 !important;
+    caret-color: #f4f4f5 !important;
+}
+
 html.dark body .ogx-comments-panel .ogx-vote-btn {
     background: transparent !important;
     color: #d4d4d8 !important;
@@ -218,74 +291,6 @@ html.dark body .ogx-comments-panel .ogx-vote-btn[aria-label="Beğen"]:is(:hover,
 html.dark body .ogx-comments-panel .ogx-vote-btn[aria-label="Beğenme"]:is(:hover, :focus-visible) {
     background: rgba(239, 68, 68, .16) !important;
     color: #f87171 !important;
-}
-
-/* Reply composer: leave caret and selection fully native. No forced direction or JS selection. */
-html body .ogx-comments-panel .ogx-reply-compose {
-    border: 1px solid #d1d5db !important;
-    background: #ffffff !important;
-    box-shadow: none !important;
-    outline: 0 !important;
-}
-
-html body .ogx-comments-panel .ogx-reply-compose:focus-within {
-    border-color: #d1d5db !important;
-    background: #ffffff !important;
-    box-shadow: none !important;
-    outline: 0 !important;
-}
-
-html body .ogx-comments-panel .ogx-reply-compose textarea {
-    position: static !important;
-    display: block !important;
-    width: 100% !important;
-    min-width: 0 !important;
-    min-height: 24px !important;
-    max-height: 180px !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    border: 0 !important;
-    outline: 0 !important;
-    background: transparent !important;
-    color: #111827 !important;
-    box-shadow: none !important;
-    font-family: inherit !important;
-    font-size: 14px !important;
-    font-weight: 400 !important;
-    line-height: 20px !important;
-    text-align: start !important;
-    text-indent: 0 !important;
-    direction: inherit !important;
-    unicode-bidi: normal !important;
-    writing-mode: horizontal-tb !important;
-    letter-spacing: normal !important;
-    caret-color: currentColor !important;
-    white-space: pre-wrap !important;
-    overflow-wrap: anywhere !important;
-    resize: none !important;
-    transform: none !important;
-}
-
-html body .ogx-comments-panel .ogx-reply-compose textarea::placeholder {
-    color: #71717a !important;
-    opacity: 1 !important;
-    text-align: start !important;
-    direction: inherit !important;
-}
-
-html.dark body .ogx-comments-panel .ogx-reply-compose,
-html.dark body .ogx-comments-panel .ogx-reply-compose:focus-within {
-    border-color: #3f3f46 !important;
-    background: #18181b !important;
-    box-shadow: none !important;
-}
-
-html.dark body .ogx-comments-panel .ogx-reply-compose textarea {
-    color: #f4f4f5 !important;
-}
-
-html.dark body .ogx-comments-panel .ogx-reply-compose textarea::placeholder {
-    color: #a1a1aa !important;
 }
 
 @media (max-width: 640px) {
@@ -309,14 +314,13 @@ html.dark body .ogx-comments-panel .ogx-reply-compose textarea::placeholder {
     }
 }
 </style>
-<script data-ografi-comment-identity-layout>
+<script data-ografi-comment-ui-fix="v2">
 (() => {
     const directChild = (parent, className) => {
         if (!parent) return null;
         return Array.from(parent.children).find((child) => child.classList?.contains(className)) || null;
     };
 
-    /* Backend/Blade already enforce ownership; this is only a defensive UI cleanup. */
     const enforceCommentOwnershipUi = (comment, main) => {
         if (comment.getAttribute('data-ogx-mine') === '1') return;
 
@@ -348,11 +352,8 @@ html.dark body .ogx-comments-panel .ogx-reply-compose textarea::placeholder {
         const username = meta.querySelector('.ogx-username');
 
         if (avatar && avatar.parentElement !== meta) {
-            if (username) {
-                meta.insertBefore(avatar, username);
-            } else {
-                meta.prepend(avatar);
-            }
+            if (username) meta.insertBefore(avatar, username);
+            else meta.prepend(avatar);
         }
 
         const submeta = directChild(main, 'ogx-submeta');
@@ -368,7 +369,7 @@ html.dark body .ogx-comments-panel .ogx-reply-compose textarea::placeholder {
         });
 
         enforceCommentOwnershipUi(comment, main);
-        comment.setAttribute('data-comment-identity-ready', '');
+        comment.setAttribute('data-comment-ui-ready', 'v2');
     };
 
     const decorateFilterMenu = (root = document) => {
@@ -391,18 +392,18 @@ html.dark body .ogx-comments-panel .ogx-reply-compose textarea::placeholder {
 
     const apply = (root = document) => {
         root.querySelectorAll?.('.ogx-comments-panel [data-ogx-comment]').forEach(decorateComment);
-        if (root.matches?.('.ogx-comments-panel [data-ogx-comment]')) {
-            decorateComment(root);
-        }
+        if (root.matches?.('.ogx-comments-panel [data-ogx-comment]')) decorateComment(root);
         decorateFilterMenu(root);
     };
 
     const boot = () => {
+        const panel = document.querySelector('.ogx-comments-panel');
+        if (!panel) return;
+
+        panel.setAttribute('data-comment-ui-fix', 'v2');
         apply(document);
 
-        const panel = document.querySelector('.ogx-comments-panel');
-        if (!panel || !('MutationObserver' in window)) return;
-
+        if (!('MutationObserver' in window)) return;
         const observer = new MutationObserver((mutations) => {
             mutations.forEach((mutation) => {
                 mutation.addedNodes.forEach((node) => {
