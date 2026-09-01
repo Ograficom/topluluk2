@@ -1,4 +1,5 @@
 @import 'video-mobile-header-fade.css';
+@import 'editorjs-table-fix.css';
 
 .ace_gutter{
   z-index: 0;
@@ -103,4 +104,3 @@
 .ce-block--selected .ce-block__content{
   @apply bg-muted
 }
-
