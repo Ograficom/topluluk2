@@ -94,6 +94,19 @@
   @apply text-endpoint
 }
 
+/* Gercek rich-text kalinligini global 400 kurallarinin ezmesine izin verme. */
+[data-editorjs-wrapper] :is(strong, b),
+.post-show-shell .ps-post-body :is(strong, b),
+.alma-post-card :is(strong, b) {
+  font-weight: 700 !important;
+}
+
+[data-editorjs-wrapper] :is(strong, b) *,
+.post-show-shell .ps-post-body :is(strong, b) *,
+.alma-post-card :is(strong, b) * {
+  font-weight: inherit !important;
+}
+
 /* mobile */
 .ce-toolbar__plus, .ce-toolbar__settings-btn{
   @apply dark:border-border
