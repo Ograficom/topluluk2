@@ -1,0 +1,87 @@
+/*
+ * Project-wide font-weight system.
+ *
+ * Older global reset rules force body descendants and Tailwind font-weight
+ * utilities to 400/500 with !important. These selectors intentionally carry
+ * more specificity so semantic bold text and explicit utility classes keep
+ * their real weight everywhere: editor, post-show, cards, previews and forms.
+ */
+
+html body :is(h1, h2, h3, h4, h5, h6):not([data-ografi-weight-normal]) {
+    font-weight: 700 !important;
+}
+
+html body :is(h1, h2, h3, h4, h5, h6):not([data-ografi-weight-normal]) * {
+    font-weight: inherit !important;
+}
+
+html body strong:not([data-ografi-weight-normal]),
+html body b:not([data-ografi-weight-normal]) {
+    font-weight: 700 !important;
+}
+
+html body strong:not([data-ografi-weight-normal]) *,
+html body b:not([data-ografi-weight-normal]) * {
+    font-weight: 700 !important;
+}
+
+html body .site-header-logo.site-header-logo {
+    font-weight: 700 !important;
+}
+
+html body .font-thin.font-thin,
+html body .font-thin.font-thin * {
+    font-weight: 100 !important;
+}
+
+html body .font-extralight.font-extralight,
+html body .font-extralight.font-extralight * {
+    font-weight: 200 !important;
+}
+
+html body .font-light.font-light,
+html body .font-light.font-light * {
+    font-weight: 300 !important;
+}
+
+html body .font-normal.font-normal,
+html body .font-normal.font-normal * {
+    font-weight: 400 !important;
+}
+
+html body .font-medium.font-medium,
+html body .font-medium.font-medium * {
+    font-weight: 500 !important;
+}
+
+html body .font-semibold.font-semibold,
+html body .font-semibold.font-semibold * {
+    font-weight: 600 !important;
+}
+
+html body .font-bold.font-bold,
+html body .font-bold.font-bold * {
+    font-weight: 700 !important;
+}
+
+html body .font-extrabold.font-extrabold,
+html body .font-extrabold.font-extrabold * {
+    font-weight: 800 !important;
+}
+
+html body .font-black.font-black,
+html body .font-black.font-black * {
+    font-weight: 900 !important;
+}
+
+/* EditorJS table cells and rich-text output may contain wrappers inside <b>/<strong>. */
+html body [data-editorjs-wrapper] strong,
+html body [data-editorjs-wrapper] b,
+html body [data-editorjs-wrapper] strong *,
+html body [data-editorjs-wrapper] b *,
+html body .tc-cell strong,
+html body .tc-cell b,
+html body .tc-cell strong *,
+html body .tc-cell b * {
+    font-weight: 700 !important;
+}
