@@ -57,7 +57,6 @@ html body .ogx-comments-panel {
     position: relative !important;
 }
 
-/* Yorum yoksa bos durum mesaji/karti hic gosterilmez. */
 html body .ogx-comments-panel .ogx-empty {
     display: none !important;
     margin: 0 !important;
@@ -83,14 +82,10 @@ html body .ogx-comments-panel > .ografi-comment-skeleton {
     box-sizing: border-box !important;
     overflow: hidden !important;
     border-radius: inherit !important;
-    background: #fffcf5 !important;
+    background: #ffffff !important;
     opacity: 1 !important;
     visibility: visible !important;
     pointer-events: none !important;
-}
-
-html body .ogx-comments-panel > .ografi-comment-skeleton.is-hiding {
-    animation: ografiCommentPreloaderOut 220ms ease forwards !important;
 }
 
 html body .ogx-comments-panel > .ografi-comment-skeleton[hidden] {
@@ -106,7 +101,7 @@ html body .ografi-comment-skeleton__card {
     padding: 0 !important;
     box-sizing: border-box !important;
     border: 0 !important;
-    background: #fffcf5 !important;
+    background: #ffffff !important;
 }
 
 html body .ografi-comment-skeleton__head {
@@ -122,16 +117,18 @@ html body .ografi-comment-skeleton__head {
 html body .ografi-comment-skeleton__shape {
     position: relative !important;
     overflow: hidden !important;
-    background: #ece2cd !important;
+    background: #eef1f5 !important;
+    background-image: none !important;
+    animation: none !important;
+    transition: none !important;
 }
 
+html body .ografi-comment-skeleton__shape::before,
 html body .ografi-comment-skeleton__shape::after {
-    content: "" !important;
-    position: absolute !important;
-    inset: 0 !important;
-    transform: translateX(-120%) !important;
-    background: linear-gradient(105deg, transparent 0%, rgba(255, 255, 255, .78) 45%, rgba(14, 124, 134, .12) 60%, transparent 82%) !important;
-    animation: ografiCommentSkeletonWave 980ms ease-in-out infinite !important;
+    content: none !important;
+    display: none !important;
+    background: none !important;
+    animation: none !important;
 }
 
 html body .ografi-comment-skeleton__avatar {
@@ -186,25 +183,7 @@ html.dark body .ografi-comment-skeleton__shape,
 body.dark .ografi-comment-skeleton__shape,
 [data-theme="dark"] body .ografi-comment-skeleton__shape {
     background: #27272a !important;
-}
-
-html.dark body .ografi-comment-skeleton__shape::after,
-body.dark .ografi-comment-skeleton__shape::after,
-[data-theme="dark"] body .ografi-comment-skeleton__shape::after {
-    background: linear-gradient(105deg, transparent 0%, rgba(255, 255, 255, .14) 45%, transparent 82%) !important;
-}
-
-@keyframes ografiCommentSkeletonWave {
-    to {
-        transform: translateX(120%);
-    }
-}
-
-@keyframes ografiCommentPreloaderOut {
-    to {
-        opacity: 0;
-        visibility: hidden;
-    }
+    background-image: none !important;
 }
 
 @media (max-width: 700px) {
@@ -227,17 +206,6 @@ body.dark .ografi-comment-skeleton__shape::after,
 
     html body .ografi-comment-skeleton__body {
         height: 128px !important;
-    }
-}
-
-@media (prefers-reduced-motion: reduce) {
-    html body .ografi-comment-skeleton__shape::after {
-        display: none !important;
-        animation: none !important;
-    }
-
-    html body .ogx-comments-panel > .ografi-comment-skeleton.is-hiding {
-        animation-duration: 1ms !important;
     }
 }
 </style>
@@ -269,12 +237,8 @@ body.dark .ografi-comment-skeleton__shape::after,
                 observer.disconnect();
             }
 
-            skeleton.classList.add('is-hiding');
+            skeleton.hidden = true;
             panel.setAttribute('aria-busy', 'false');
-
-            window.setTimeout(() => {
-                skeleton.hidden = true;
-            }, 260);
         };
 
         const start = () => {
@@ -326,7 +290,7 @@ HTML;
 
         $html = preg_replace('/<\/body>/i', $assets . "\n</body>", $html, 1) ?? ($html . $assets);
         $response->setContent($html);
-        $response->headers->set('X-Ografi-Comment-Skeleton', 'v6');
+        $response->headers->set('X-Ografi-Comment-Skeleton', 'v7');
 
         return $response;
     }
