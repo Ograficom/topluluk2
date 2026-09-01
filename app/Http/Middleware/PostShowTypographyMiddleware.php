@@ -33,7 +33,7 @@ class PostShowTypographyMiddleware
 
         $style = <<<'HTML'
 <style data-ografi-post-show-typography-final>
-/* En son uygulanan post-show tipografisi. Global 14px/400 ve view icindeki 16px kurallarini ezer. */
+/* Post-show govde ve inline metinleri ayni okunabilir olcekte tut. */
 html body.alma-app .post-show-shell .ps-post-body:not(#comments):not(#comments *),
 html body.alma-app .post-show-shell .ps-post-body :where(
     p,
@@ -42,6 +42,13 @@ html body.alma-app .post-show-shell .ps-post-body :where(
     td,
     th,
     blockquote,
+    span,
+    font,
+    a,
+    em,
+    i,
+    u,
+    mark,
     .ce-paragraph,
     .cdx-block
 ):not(#comments):not(#comments *) {
@@ -58,11 +65,18 @@ html body.alma-app .post-show-shell .ps-post-body :where(
     td,
     th,
     blockquote,
+    span,
+    font,
+    a,
+    em,
+    i,
+    u,
+    mark,
     .ce-paragraph,
     .cdx-block
 ) :where(strong, b):not(#comments):not(#comments *) {
-    font-size: inherit !important;
-    line-height: inherit !important;
+    font-size: 17px !important;
+    line-height: 1.68 !important;
     font-weight: 800 !important;
 }
 
@@ -99,11 +113,41 @@ html body.alma-app .post-show-shell .ps-post-body :where(h5, h6):not(#comments):
         td,
         th,
         blockquote,
+        span,
+        font,
+        a,
+        em,
+        i,
+        u,
+        mark,
         .ce-paragraph,
         .cdx-block
     ):not(#comments):not(#comments *) {
         font-size: 16px !important;
         line-height: 1.65 !important;
+    }
+
+    html body.alma-app .post-show-shell .ps-post-body :where(strong, b):not(#comments):not(#comments *),
+    html body.alma-app .post-show-shell .ps-post-body :where(
+        p,
+        div,
+        li,
+        td,
+        th,
+        blockquote,
+        span,
+        font,
+        a,
+        em,
+        i,
+        u,
+        mark,
+        .ce-paragraph,
+        .cdx-block
+    ) :where(strong, b):not(#comments):not(#comments *) {
+        font-size: 16px !important;
+        line-height: 1.65 !important;
+        font-weight: 800 !important;
     }
 
     html body.alma-app .post-show-shell .ps-post-body :where(h2, .ce-header[data-level="2"]):not(#comments):not(#comments *) {
@@ -124,7 +168,7 @@ HTML;
         $html = preg_replace('/<\/body>/i', $style . "\n</body>", $html, 1) ?? ($html . $style);
 
         $response->setContent($html);
-        $response->headers->set('X-Ografi-Post-Typography', 'v2');
+        $response->headers->set('X-Ografi-Post-Typography', 'v3');
 
         return $response;
     }
