@@ -3,6 +3,7 @@
 use App\Http\Middleware\EnsureDeviceIdCookie;
 use App\Http\Middleware\DisableDebugbarOnFrontend;
 use App\Http\Middleware\AddSecurityHeaders;
+use App\Http\Middleware\ContactPageFieldStyleMiddleware;
 use App\Http\Middleware\EnsureImageAltText;
 use App\Http\Middleware\EnsureInstalled;
 use App\Http\Middleware\LoginPageSecurityMiddleware;
@@ -44,6 +45,7 @@ return Application::configure(basePath: dirname(__DIR__))
             PostShowReactionLayoutMiddleware::class,
             PostShowCommentIdentityLayoutMiddleware::class,
             LoginPageSecurityMiddleware::class,
+            ContactPageFieldStyleMiddleware::class,
             VideoPageResponseMiddleware::class,
         ]);
     })
