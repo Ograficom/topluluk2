@@ -9,6 +9,11 @@
     transition: border-color 0.18s ease, box-shadow 0.18s ease, transform 0.18s ease;
 }
 
+.post-card .alma-link-preview,
+[data-post-card-shell] .alma-link-preview {
+    margin-top: 10px;
+}
+
 .alma-link-preview:hover,
 .alma-link-preview:focus-visible {
     border-color: rgba(148, 163, 184, 0.8);
