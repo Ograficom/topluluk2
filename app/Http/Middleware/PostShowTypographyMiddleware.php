@@ -34,213 +34,163 @@ class PostShowTypographyMiddleware
         $style = <<<'HTML'
 <style data-ografi-post-show-typography-final>
 /*
- * Post-show blog tipografi olcegi.
- * Yaklasik 640-700px okuma kolonunda dengeli hiyerarsi:
- * govde 17px, post basligi 30px, H2 26px, H3 22px, H4 19px.
+ * Post-show makale tipografisi.
+ * Tek semantik sistem:
+ * - Govde: 17px / 1.65
+ * - Kalin: 700
+ * - Basliklar: H2 > H3 > H4 > H5 > H6
+ * JS ile "baslik tahmini" veya sonradan class ekleme yoktur.
  */
 html body.alma-app .post-show-shell .ps-post-title:not(#comments):not(#comments *) {
     font-size: 30px !important;
-    line-height: 1.22 !important;
+    line-height: 1.24 !important;
     font-weight: 700 !important;
-    letter-spacing: -0.02em !important;
+    letter-spacing: -0.018em !important;
 }
 
-html body.alma-app .post-show-shell .ps-post-body:not(#comments):not(#comments *),
-html body.alma-app .post-show-shell .ps-post-body :where(
-    p,
-    div,
-    li,
-    td,
-    th,
-    blockquote,
-    span,
-    font,
-    a,
-    em,
-    i,
-    u,
-    mark,
-    .ce-paragraph,
-    .cdx-block
-):not(#comments):not(#comments *) {
+html body.alma-app .post-show-shell .ps-post-body:not(#comments):not(#comments *) {
     font-size: 17px !important;
-    line-height: 1.68 !important;
+    line-height: 1.65 !important;
     font-weight: 400 !important;
 }
 
-/* Normal kalin metin: boyut degismez, sadece agirlik belirginlesir. */
-html body.alma-app .post-show-shell .ps-post-body :where(strong, b):not(#comments):not(#comments *),
+/* Normal makale metni. Inline etiketler ebeveyn metnin boyutunu/agirlini miras alir. */
 html body.alma-app .post-show-shell .ps-post-body :where(
     p,
-    div,
     li,
-    td,
-    th,
     blockquote,
-    span,
-    font,
-    a,
-    em,
-    i,
-    u,
-    mark,
     .ce-paragraph,
-    .cdx-block
-) :where(strong, b):not(#comments):not(#comments *) {
+    .cdx-list__item
+):not(#comments):not(#comments *) {
+    font-size: 17px !important;
+    line-height: 1.65 !important;
+    font-weight: 400 !important;
+}
+
+html body.alma-app .post-show-shell .ps-post-body :where(
+    p,
+    li,
+    blockquote,
+    .ce-paragraph,
+    .cdx-list__item
+) :where(span, font, a, em, i, u, mark):not(#comments):not(#comments *) {
+    font-size: inherit !important;
+    line-height: inherit !important;
+    font-weight: inherit !important;
+}
+
+/* Kalin metin gercek kalindir; boyutu degismez. Icindeki span/font da 700 kalir. */
+html body.alma-app .post-show-shell .ps-post-body :where(strong, b):not(#comments):not(#comments *),
+html body.alma-app .post-show-shell .ps-post-body :where(strong, b) :where(span, font, a, em, i, u, mark):not(#comments):not(#comments *) {
     font-size: inherit !important;
     line-height: inherit !important;
     font-weight: 700 !important;
 }
 
+/* H2 */
+html body.alma-app .post-show-shell .ps-post-body :where(h2, .ce-header[data-level="2"]):not(#comments):not(#comments *),
+html body.alma-app .post-show-shell .ps-post-body :where(h2, .ce-header[data-level="2"]) *:not(#comments):not(#comments *) {
+    font-size: 24px !important;
+    line-height: 1.3 !important;
+    font-weight: 700 !important;
+    letter-spacing: -0.012em !important;
+}
+
 html body.alma-app .post-show-shell .ps-post-body :where(h2, .ce-header[data-level="2"]):not(#comments):not(#comments *) {
     margin: 30px 0 12px !important;
-    font-size: 26px !important;
-    line-height: 1.28 !important;
+}
+
+/* H3 */
+html body.alma-app .post-show-shell .ps-post-body :where(h3, .ce-header[data-level="3"]):not(#comments):not(#comments *),
+html body.alma-app .post-show-shell .ps-post-body :where(h3, .ce-header[data-level="3"]) *:not(#comments):not(#comments *) {
+    font-size: 21px !important;
+    line-height: 1.34 !important;
     font-weight: 700 !important;
-    letter-spacing: -0.015em !important;
+    letter-spacing: -0.008em !important;
 }
 
 html body.alma-app .post-show-shell .ps-post-body :where(h3, .ce-header[data-level="3"]):not(#comments):not(#comments *) {
     margin: 26px 0 10px !important;
-    font-size: 22px !important;
-    line-height: 1.32 !important;
+}
+
+/* H4 */
+html body.alma-app .post-show-shell .ps-post-body :where(h4, .ce-header[data-level="4"]):not(#comments):not(#comments *),
+html body.alma-app .post-show-shell .ps-post-body :where(h4, .ce-header[data-level="4"]) *:not(#comments):not(#comments *) {
+    font-size: 19px !important;
+    line-height: 1.38 !important;
     font-weight: 700 !important;
-    letter-spacing: -0.01em !important;
 }
 
 html body.alma-app .post-show-shell .ps-post-body :where(h4, .ce-header[data-level="4"]):not(#comments):not(#comments *) {
     margin: 23px 0 9px !important;
-    font-size: 19px !important;
-    line-height: 1.36 !important;
-    font-weight: 700 !important;
 }
 
-html body.alma-app .post-show-shell .ps-post-body h5:not(#comments):not(#comments *) {
-    margin: 21px 0 8px !important;
+/* H5 / H6 */
+html body.alma-app .post-show-shell .ps-post-body h5:not(#comments):not(#comments *),
+html body.alma-app .post-show-shell .ps-post-body h5 *:not(#comments):not(#comments *) {
     font-size: 18px !important;
     line-height: 1.4 !important;
     font-weight: 700 !important;
 }
 
-html body.alma-app .post-show-shell .ps-post-body h6:not(#comments):not(#comments *) {
-    margin: 20px 0 8px !important;
+html body.alma-app .post-show-shell .ps-post-body h5:not(#comments):not(#comments *) {
+    margin: 21px 0 8px !important;
+}
+
+html body.alma-app .post-show-shell .ps-post-body h6:not(#comments):not(#comments *),
+html body.alma-app .post-show-shell .ps-post-body h6 *:not(#comments):not(#comments *) {
     font-size: 17px !important;
     line-height: 1.42 !important;
     font-weight: 700 !important;
 }
 
-/*
- * RSS/harici kaynaklarda semantik H2 yerine duz paragraf olarak gelen ara basliklar.
- * Ornek: "39 ILCEDE KULLANILIYOR" veya tek basina <strong>Baslik</strong>.
- */
-html body.alma-app .post-show-shell .ps-post-body .ografi-post-subheading:not(#comments):not(#comments *),
-html body.alma-app .post-show-shell .ps-post-body .ografi-post-subheading :where(strong, b, span, font):not(#comments):not(#comments *) {
-    font-size: 20px !important;
-    line-height: 1.35 !important;
-    font-weight: 700 !important;
-    letter-spacing: -0.005em !important;
-}
-
-html body.alma-app .post-show-shell .ps-post-body .ografi-post-subheading:not(#comments):not(#comments *) {
-    display: block !important;
-    margin: 28px 0 10px !important;
+html body.alma-app .post-show-shell .ps-post-body h6:not(#comments):not(#comments *) {
+    margin: 20px 0 8px !important;
 }
 
 @media (max-width: 640px) {
     html body.alma-app .post-show-shell .ps-post-title:not(#comments):not(#comments *) {
         font-size: 25px !important;
-        line-height: 1.26 !important;
+        line-height: 1.28 !important;
     }
 
     html body.alma-app .post-show-shell .ps-post-body:not(#comments):not(#comments *),
     html body.alma-app .post-show-shell .ps-post-body :where(
         p,
-        div,
         li,
-        td,
-        th,
         blockquote,
-        span,
-        font,
-        a,
-        em,
-        i,
-        u,
-        mark,
         .ce-paragraph,
-        .cdx-block
+        .cdx-list__item
     ):not(#comments):not(#comments *) {
         font-size: 16px !important;
-        line-height: 1.65 !important;
+        line-height: 1.62 !important;
     }
 
-    html body.alma-app .post-show-shell .ps-post-body :where(h2, .ce-header[data-level="2"]):not(#comments):not(#comments *) {
-        font-size: 23px !important;
-        line-height: 1.3 !important;
+    html body.alma-app .post-show-shell .ps-post-body :where(h2, .ce-header[data-level="2"]):not(#comments):not(#comments *),
+    html body.alma-app .post-show-shell .ps-post-body :where(h2, .ce-header[data-level="2"]) *:not(#comments):not(#comments *) {
+        font-size: 22px !important;
+        line-height: 1.32 !important;
     }
 
-    html body.alma-app .post-show-shell .ps-post-body :where(h3, .ce-header[data-level="3"]):not(#comments):not(#comments *) {
+    html body.alma-app .post-show-shell .ps-post-body :where(h3, .ce-header[data-level="3"]):not(#comments):not(#comments *),
+    html body.alma-app .post-show-shell .ps-post-body :where(h3, .ce-header[data-level="3"]) *:not(#comments):not(#comments *) {
         font-size: 20px !important;
-        line-height: 1.34 !important;
+        line-height: 1.36 !important;
     }
 
-    html body.alma-app .post-show-shell .ps-post-body :where(h4, .ce-header[data-level="4"]):not(#comments):not(#comments *) {
+    html body.alma-app .post-show-shell .ps-post-body :where(h4, .ce-header[data-level="4"]):not(#comments):not(#comments *),
+    html body.alma-app .post-show-shell .ps-post-body :where(h4, .ce-header[data-level="4"]) *:not(#comments):not(#comments *) {
         font-size: 18px !important;
-        line-height: 1.38 !important;
-    }
-
-    html body.alma-app .post-show-shell .ps-post-body .ografi-post-subheading:not(#comments):not(#comments *),
-    html body.alma-app .post-show-shell .ps-post-body .ografi-post-subheading :where(strong, b, span, font):not(#comments):not(#comments *) {
-        font-size: 18px !important;
-        line-height: 1.38 !important;
-    }
-
-    html body.alma-app .post-show-shell .ps-post-body .ografi-post-subheading:not(#comments):not(#comments *) {
-        margin: 24px 0 9px !important;
+        line-height: 1.4 !important;
     }
 }
 </style>
-<script data-ografi-post-show-typography-script>
-(() => {
-    const body = document.querySelector('.post-show-shell .ps-post-body');
-    if (!body) return;
-
-    const candidates = body.querySelectorAll('p, div.ce-paragraph, .cdx-block > p');
-
-    candidates.forEach((element) => {
-        if (element.closest('blockquote, li, td, th, figure, .ps-notice, .ps-stats, .ps-cta, .ps-faq, .ps-steps, .ps-proscons')) {
-            return;
-        }
-
-        const text = (element.textContent || '').replace(/\s+/g, ' ').trim();
-        if (text.length < 4 || text.length > 90) return;
-
-        const children = Array.from(element.children).filter((child) => {
-            return !['BR'].includes(child.tagName);
-        });
-
-        const onlyChild = children.length === 1 ? children[0] : null;
-        const standaloneBold = !!onlyChild
-            && ['STRONG', 'B'].includes(onlyChild.tagName)
-            && (onlyChild.textContent || '').replace(/\s+/g, ' ').trim() === text;
-
-        const letters = text.match(/[A-Za-zÇĞİÖŞÜçğıöşü]/g) || [];
-        const upper = text.toLocaleUpperCase('tr-TR');
-        const lower = text.toLocaleLowerCase('tr-TR');
-        const uppercaseHeading = letters.length >= 4 && text === upper && text !== lower;
-
-        if (standaloneBold || uppercaseHeading) {
-            element.classList.add('ografi-post-subheading');
-        }
-    });
-})();
-</script>
 HTML;
 
         $html = preg_replace('/<\/body>/i', $style . "\n</body>", $html, 1) ?? ($html . $style);
 
         $response->setContent($html);
-        $response->headers->set('X-Ografi-Post-Typography', 'v5');
+        $response->headers->set('X-Ografi-Post-Typography', 'v6');
 
         return $response;
     }
