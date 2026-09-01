@@ -45,8 +45,8 @@ html body.alma-app .post-show-shell .ps-post-body :where(
     .ce-paragraph,
     .cdx-block
 ):not(#comments):not(#comments *) {
-    font-size: 18px !important;
-    line-height: 1.75 !important;
+    font-size: 17px !important;
+    line-height: 1.68 !important;
     font-weight: 400 !important;
 }
 
@@ -102,8 +102,8 @@ html body.alma-app .post-show-shell .ps-post-body :where(h5, h6):not(#comments):
         .ce-paragraph,
         .cdx-block
     ):not(#comments):not(#comments *) {
-        font-size: 17px !important;
-        line-height: 1.72 !important;
+        font-size: 16px !important;
+        line-height: 1.65 !important;
     }
 
     html body.alma-app .post-show-shell .ps-post-body :where(h2, .ce-header[data-level="2"]):not(#comments):not(#comments *) {
@@ -124,7 +124,7 @@ HTML;
         $html = preg_replace('/<\/body>/i', $style . "\n</body>", $html, 1) ?? ($html . $style);
 
         $response->setContent($html);
-        $response->headers->set('X-Ografi-Post-Typography', 'v1');
+        $response->headers->set('X-Ografi-Post-Typography', 'v2');
 
         return $response;
     }
