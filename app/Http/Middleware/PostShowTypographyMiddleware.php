@@ -31,6 +31,11 @@ class PostShowTypographyMiddleware
             return $response;
         }
 
+        // Haber/RSS kaynaklari bazen ara basliklari <h2> yerine duz <p> olarak verir.
+        // Tamami buyuk harfli, kisa ve en az iki kelimelik bu satirlari tarayiciya
+        // gonderilmeden once gercek H2 yap. CSS/JS ile baslik taklidi yapilmaz.
+        $html = $this->normalizeSemanticSubheadings($html);
+
         $style = <<<'HTML'
 <style data-ografi-post-show-typography-final>
 /*
@@ -39,7 +44,6 @@ class PostShowTypographyMiddleware
  * - Govde: 17px / 1.65
  * - Kalin: 700
  * - Basliklar: H2 > H3 > H4 > H5 > H6
- * JS ile "baslik tahmini" veya sonradan class ekleme yoktur.
  */
 html body.alma-app .post-show-shell .ps-post-title:not(#comments):not(#comments *) {
     font-size: 30px !important;
@@ -54,7 +58,6 @@ html body.alma-app .post-show-shell .ps-post-body:not(#comments):not(#comments *
     font-weight: 400 !important;
 }
 
-/* Normal makale metni. Inline etiketler ebeveyn metnin boyutunu/agirlini miras alir. */
 html body.alma-app .post-show-shell .ps-post-body :where(
     p,
     li,
@@ -79,7 +82,7 @@ html body.alma-app .post-show-shell .ps-post-body :where(
     font-weight: inherit !important;
 }
 
-/* Kalin metin gercek kalindir; boyutu degismez. Icindeki span/font da 700 kalir. */
+/* Kalin metin gercek kalindir; boyutu degismez. */
 html body.alma-app .post-show-shell .ps-post-body :where(strong, b):not(#comments):not(#comments *),
 html body.alma-app .post-show-shell .ps-post-body :where(strong, b) :where(span, font, a, em, i, u, mark):not(#comments):not(#comments *) {
     font-size: inherit !important;
@@ -190,8 +193,57 @@ HTML;
         $html = preg_replace('/<\/body>/i', $style . "\n</body>", $html, 1) ?? ($html . $style);
 
         $response->setContent($html);
-        $response->headers->set('X-Ografi-Post-Typography', 'v6');
+        $response->headers->set('X-Ografi-Post-Typography', 'v7');
 
         return $response;
+    }
+
+    private function normalizeSemanticSubheadings(string $html): string
+    {
+        return preg_replace_callback(
+            '/<p(?P<attrs>\s[^>]*)?>(?P<inner>.*?)<\/p>/isu',
+            static function (array $match): string {
+                $attrs = (string) ($match['attrs'] ?? '');
+                $inner = (string) ($match['inner'] ?? '');
+
+                // Sinifli/ozel paragraflara dokunma; sadece ham haber metni satirlari.
+                if (preg_match('/\b(?:class|id|style)\s*=/iu', $attrs)) {
+                    return $match[0];
+                }
+
+                $text = html_entity_decode(strip_tags($inner), ENT_QUOTES | ENT_HTML5, 'UTF-8');
+                $text = preg_replace('/\s+/u', ' ', trim($text)) ?? trim($text);
+                $length = mb_strlen($text);
+
+                if ($length < 5 || $length > 80) {
+                    return $match[0];
+                }
+
+                $words = preg_split('/\s+/u', $text, -1, PREG_SPLIT_NO_EMPTY) ?: [];
+                if (count($words) < 2) {
+                    return $match[0];
+                }
+
+                $lettersOnly = preg_replace('/[^\p{L}]+/u', '', $text) ?? '';
+                if (mb_strlen($lettersOnly) < 5) {
+                    return $match[0];
+                }
+
+                $upper = mb_strtoupper($text, 'UTF-8');
+                $lower = mb_strtolower($text, 'UTF-8');
+
+                if ($text !== $upper || $text === $lower) {
+                    return $match[0];
+                }
+
+                // Uzun cumleleri/normal metinleri basliga cevirmemek icin cumle sonu noktalamasini ele.
+                if (preg_match('/[.!?…]["\'”’)]?$/u', $text)) {
+                    return $match[0];
+                }
+
+                return '<h2' . $attrs . '>' . $inner . '</h2>';
+            },
+            $html
+        ) ?? $html;
     }
 }
