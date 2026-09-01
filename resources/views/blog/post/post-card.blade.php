@@ -40,8 +40,26 @@
 
     $hasVideoBlocks = $videoFallbacks->isNotEmpty();
     $contentWithoutVideo = $hasVideoBlocks
-        ? preg_replace('/<video\b[^>]*>[\s\S]*?<\/video>/i', '', $post->content ?? '')
+        ? preg_replace('/<video\\b[^>]*>[\\s\\S]*?<\\/video>/i', '', $post->content ?? '')
         : ($post->content ?? '');
+
+    // EditorJS bazen inline bicimlendirme etiketlerini entity olarak saklayabiliyor.
+    // Sadece attributesiz, guvenli tipografi etiketlerini geri aciyoruz; script/iframe vb. acilmaz.
+    $safeInlineTags = 'b|strong|i|em|u|s|mark|code|br';
+    $contentWithoutVideo = preg_replace_callback(
+        '/&(?:amp;)?lt;\\s*(\\/?)\\s*(' . $safeInlineTags . ')\\s*(?:\\/)?\\s*&(?:amp;)?gt;/iu',
+        static function (array $match): string {
+            $closing = ($match[1] ?? '') === '/' ? '/' : '';
+            $tag = strtolower((string) ($match[2] ?? ''));
+
+            if ($tag === 'br') {
+                return '<br>';
+            }
+
+            return '<' . $closing . $tag . '>';
+        },
+        (string) $contentWithoutVideo
+    ) ?? (string) $contentWithoutVideo;
 
     $hasPoll = collect($post->content_json['blocks'] ?? [])
         ->contains(fn ($block) => ($block['type'] ?? null) === 'poll');
