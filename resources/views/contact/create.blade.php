@@ -46,26 +46,57 @@
             border-radius: 0 !important;
         }
 
-        .contact-field {
+        html body .contact-page form input.contact-field,
+        html body .contact-page form textarea.contact-field {
             width: 100% !important;
-            border: 1px solid #d1d5db !important;
+            border: 1px solid #d9dde4 !important;
             background: #ffffff !important;
+            background-color: #ffffff !important;
+            background-image: none !important;
             color: #111827 !important;
             box-shadow: none !important;
             outline: none !important;
+            filter: none !important;
+            -webkit-appearance: none !important;
+            appearance: none !important;
         }
 
-        .contact-field:hover {
-            border-color: #9ca3af !important;
+        html body .contact-page form input.contact-field {
+            height: 36px !important;
+            min-height: 36px !important;
+        }
+
+        html body .contact-page form textarea.contact-field {
+            min-height: 118px !important;
+        }
+
+        html body .contact-page form input.contact-field:hover,
+        html body .contact-page form textarea.contact-field:hover {
+            border-color: #c4c9d1 !important;
             background: #ffffff !important;
+            background-color: #ffffff !important;
         }
 
-        .contact-field:focus,
-        .contact-field:focus-visible {
+        html body .contact-page form input.contact-field:focus,
+        html body .contact-page form input.contact-field:focus-visible,
+        html body .contact-page form textarea.contact-field:focus,
+        html body .contact-page form textarea.contact-field:focus-visible {
             border-color: #2563eb !important;
             background: #ffffff !important;
+            background-color: #ffffff !important;
             box-shadow: 0 0 0 1px #2563eb !important;
             outline: none !important;
+        }
+
+        html body .contact-page form input.contact-field:-webkit-autofill,
+        html body .contact-page form input.contact-field:-webkit-autofill:hover,
+        html body .contact-page form input.contact-field:-webkit-autofill:focus {
+            -webkit-text-fill-color: #111827 !important;
+            -webkit-box-shadow: 0 0 0 1000px #ffffff inset !important;
+            box-shadow: 0 0 0 1000px #ffffff inset !important;
+            background-color: #ffffff !important;
+            caret-color: #111827 !important;
+            transition: background-color 99999s ease-out 0s !important;
         }
 
         .contact-consent-row {
@@ -161,22 +192,38 @@
             border-color: #93c5fd !important;
         }
 
-        html.dark .contact-field {
+        html.dark body .contact-page form input.contact-field,
+        html.dark body .contact-page form textarea.contact-field {
             border-color: #475569 !important;
-            background: transparent !important;
+            background: #0f172a !important;
+            background-color: #0f172a !important;
             color: #f8fafc !important;
         }
 
-        html.dark .contact-field:hover {
+        html.dark body .contact-page form input.contact-field:hover,
+        html.dark body .contact-page form textarea.contact-field:hover {
             border-color: #64748b !important;
-            background: transparent !important;
+            background: #0f172a !important;
+            background-color: #0f172a !important;
         }
 
-        html.dark .contact-field:focus,
-        html.dark .contact-field:focus-visible {
+        html.dark body .contact-page form input.contact-field:focus,
+        html.dark body .contact-page form input.contact-field:focus-visible,
+        html.dark body .contact-page form textarea.contact-field:focus,
+        html.dark body .contact-page form textarea.contact-field:focus-visible {
             border-color: #3b82f6 !important;
-            background: transparent !important;
+            background: #0f172a !important;
+            background-color: #0f172a !important;
             box-shadow: 0 0 0 1px #3b82f6 !important;
+        }
+
+        html.dark body .contact-page form input.contact-field:-webkit-autofill,
+        html.dark body .contact-page form input.contact-field:-webkit-autofill:hover,
+        html.dark body .contact-page form input.contact-field:-webkit-autofill:focus {
+            -webkit-text-fill-color: #f8fafc !important;
+            -webkit-box-shadow: 0 0 0 1000px #0f172a inset !important;
+            box-shadow: 0 0 0 1000px #0f172a inset !important;
+            caret-color: #f8fafc !important;
         }
 
         @media (max-width: 640px) {
@@ -309,7 +356,7 @@
                         name="full_name"
                         type="text"
                         value="{{ old('full_name', $user?->name) }}"
-                        class="contact-field block h-12 rounded-xl px-4 text-[0.98rem]"
+                        class="contact-field block rounded-xl px-4 text-[0.98rem]"
                         autocomplete="name"
                         required
                     >
@@ -325,7 +372,7 @@
                         name="email"
                         type="email"
                         value="{{ old('email', $user?->email) }}"
-                        class="contact-field block h-12 rounded-xl px-4 text-[0.98rem]"
+                        class="contact-field block rounded-xl px-4 text-[0.98rem]"
                         autocomplete="email"
                         required
                     >
@@ -341,7 +388,7 @@
                         name="subject"
                         type="text"
                         value="{{ old('subject') }}"
-                        class="contact-field block h-12 rounded-xl px-4 text-[0.98rem]"
+                        class="contact-field block rounded-xl px-4 text-[0.98rem]"
                         required
                     >
                     @error('subject')
@@ -354,8 +401,8 @@
                     <textarea
                         id="contact-message"
                         name="message"
-                        rows="7"
-                        class="contact-field block min-h-[148px] resize-none overflow-hidden rounded-xl px-4 py-3 text-[0.98rem]"
+                        rows="5"
+                        class="contact-field block resize-none overflow-hidden rounded-xl px-4 py-3 text-[0.98rem]"
                         oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px'"
                         required
                     >{{ old('message') }}</textarea>
