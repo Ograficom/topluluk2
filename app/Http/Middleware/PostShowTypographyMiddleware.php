@@ -38,15 +38,15 @@ class PostShowTypographyMiddleware
 /*
  * Post-show tipografisi.
  * Projede gercekten yuklenen font Inter'dir (400/500/600/700).
- * show.blade.php icindeki eski Poppins zorlamasini burada son kez ezeriz.
+ * Basliklar govdeye oranli tutulur; kalinlik belirgin, boyut farki abartisizdir.
  */
 html body.alma-app .post-show-shell .ps-post-title:not(#comments):not(#comments *),
 html body.alma-app .post-show-shell .ps-post-title *:not(#comments):not(#comments *) {
     font-family: Inter, Arial, Helvetica, sans-serif !important;
-    font-size: 30px !important;
-    line-height: 1.24 !important;
+    font-size: 26px !important;
+    line-height: 1.26 !important;
     font-weight: 700 !important;
-    letter-spacing: -0.018em !important;
+    letter-spacing: -0.015em !important;
 }
 
 html body.alma-app .post-show-shell .ps-post-body:not(#comments):not(#comments *),
@@ -75,7 +75,7 @@ html body.alma-app .post-show-shell .ps-post-body :where(
     font-weight: 400 !important;
 }
 
-/* Kalin metin: gercek Inter 700. */
+/* Kalin metin: boyut degismez, sadece gercek Inter 700 uygulanir. */
 html body.alma-app .post-show-shell .ps-post-body :where(strong, b):not(#comments):not(#comments *),
 html body.alma-app .post-show-shell .ps-post-body :where(strong, b) *:not(#comments):not(#comments *) {
     font-family: Inter, Arial, Helvetica, sans-serif !important;
@@ -84,42 +84,42 @@ html body.alma-app .post-show-shell .ps-post-body :where(strong, b) *:not(#comme
     font-weight: 700 !important;
 }
 
-/* H2 */
+/* H2: govdeden yalnizca bir kademe buyuk. */
 html body.alma-app .post-show-shell .ps-post-body :where(h2, .ce-header[data-level="2"]):not(#comments):not(#comments *),
 html body.alma-app .post-show-shell .ps-post-body :where(h2, .ce-header[data-level="2"]) *:not(#comments):not(#comments *) {
     font-family: Inter, Arial, Helvetica, sans-serif !important;
-    font-size: 24px !important;
-    line-height: 1.3 !important;
+    font-size: 20px !important;
+    line-height: 1.34 !important;
     font-weight: 700 !important;
-    letter-spacing: -0.012em !important;
+    letter-spacing: -0.006em !important;
 }
 html body.alma-app .post-show-shell .ps-post-body :where(h2, .ce-header[data-level="2"]):not(#comments):not(#comments *) {
-    margin: 28px 0 10px !important;
+    margin: 22px 0 8px !important;
 }
 
 /* H3 */
 html body.alma-app .post-show-shell .ps-post-body :where(h3, .ce-header[data-level="3"]):not(#comments):not(#comments *),
 html body.alma-app .post-show-shell .ps-post-body :where(h3, .ce-header[data-level="3"]) *:not(#comments):not(#comments *) {
     font-family: Inter, Arial, Helvetica, sans-serif !important;
-    font-size: 21px !important;
-    line-height: 1.34 !important;
+    font-size: 19px !important;
+    line-height: 1.36 !important;
     font-weight: 700 !important;
-    letter-spacing: -0.008em !important;
+    letter-spacing: -0.004em !important;
 }
 html body.alma-app .post-show-shell .ps-post-body :where(h3, .ce-header[data-level="3"]):not(#comments):not(#comments *) {
-    margin: 24px 0 9px !important;
+    margin: 20px 0 8px !important;
 }
 
 /* H4 */
 html body.alma-app .post-show-shell .ps-post-body :where(h4, .ce-header[data-level="4"]):not(#comments):not(#comments *),
 html body.alma-app .post-show-shell .ps-post-body :where(h4, .ce-header[data-level="4"]) *:not(#comments):not(#comments *) {
     font-family: Inter, Arial, Helvetica, sans-serif !important;
-    font-size: 19px !important;
-    line-height: 1.38 !important;
+    font-size: 18px !important;
+    line-height: 1.4 !important;
     font-weight: 700 !important;
 }
 html body.alma-app .post-show-shell .ps-post-body :where(h4, .ce-header[data-level="4"]):not(#comments):not(#comments *) {
-    margin: 22px 0 8px !important;
+    margin: 18px 0 7px !important;
 }
 
 /* H5 */
@@ -131,7 +131,7 @@ html body.alma-app .post-show-shell .ps-post-body h5 *:not(#comments):not(#comme
     font-weight: 700 !important;
 }
 html body.alma-app .post-show-shell .ps-post-body h5:not(#comments):not(#comments *) {
-    margin: 20px 0 8px !important;
+    margin: 18px 0 7px !important;
 }
 
 /* H6 */
@@ -143,14 +143,14 @@ html body.alma-app .post-show-shell .ps-post-body h6 *:not(#comments):not(#comme
     font-weight: 700 !important;
 }
 html body.alma-app .post-show-shell .ps-post-body h6:not(#comments):not(#comments *) {
-    margin: 20px 0 8px !important;
+    margin: 18px 0 7px !important;
 }
 
 @media (max-width: 640px) {
     html body.alma-app .post-show-shell .ps-post-title:not(#comments):not(#comments *),
     html body.alma-app .post-show-shell .ps-post-title *:not(#comments):not(#comments *) {
-        font-size: 25px !important;
-        line-height: 1.28 !important;
+        font-size: 23px !important;
+        line-height: 1.3 !important;
     }
 
     html body.alma-app .post-show-shell .ps-post-body:not(#comments):not(#comments *),
@@ -179,20 +179,20 @@ html body.alma-app .post-show-shell .ps-post-body h6:not(#comments):not(#comment
 
     html body.alma-app .post-show-shell .ps-post-body :where(h2, .ce-header[data-level="2"]):not(#comments):not(#comments *),
     html body.alma-app .post-show-shell .ps-post-body :where(h2, .ce-header[data-level="2"]) *:not(#comments):not(#comments *) {
-        font-size: 22px !important;
-        line-height: 1.32 !important;
+        font-size: 19px !important;
+        line-height: 1.36 !important;
     }
 
     html body.alma-app .post-show-shell .ps-post-body :where(h3, .ce-header[data-level="3"]):not(#comments):not(#comments *),
     html body.alma-app .post-show-shell .ps-post-body :where(h3, .ce-header[data-level="3"]) *:not(#comments):not(#comments *) {
-        font-size: 20px !important;
-        line-height: 1.36 !important;
+        font-size: 18px !important;
+        line-height: 1.38 !important;
     }
 
     html body.alma-app .post-show-shell .ps-post-body :where(h4, .ce-header[data-level="4"]):not(#comments):not(#comments *),
     html body.alma-app .post-show-shell .ps-post-body :where(h4, .ce-header[data-level="4"]) *:not(#comments):not(#comments *) {
-        font-size: 18px !important;
-        line-height: 1.4 !important;
+        font-size: 17px !important;
+        line-height: 1.42 !important;
     }
 }
 </style>
@@ -201,7 +201,7 @@ HTML;
         $html = preg_replace('/<\/body>/i', $style . "\n</body>", $html, 1) ?? ($html . $style);
 
         $response->setContent($html);
-        $response->headers->set('X-Ografi-Post-Typography', 'v9');
+        $response->headers->set('X-Ografi-Post-Typography', 'v10');
 
         return $response;
     }
