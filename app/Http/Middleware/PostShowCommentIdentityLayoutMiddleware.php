@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\RecaptchaSetting;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,17 +25,149 @@ class PostShowCommentIdentityLayoutMiddleware
         }
 
         // The Blade partial still ships a bright-blue reply focus ring.
-        // Remove that exact source rule from rendered HTML before the browser sees it.
         $html = str_replace(
             "  .ogx-reply-compose:focus-within {\n    border-color: #2563eb !important;\n    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.10) !important;\n  }",
             "  .ogx-reply-compose:focus-within {\n    border-color: #d7dbe0 !important;\n    box-shadow: none !important;\n    outline: 0 !important;\n  }",
             $html
         );
 
+        /*
+         * Comment POST endpoints require recaptcha_token whenever the comment
+         * reCAPTCHA switch is enabled. The current Blade forms do not include
+         * that field, so every comment/reply is rejected server-side.
+         */
+        $recaptchaSettings = RecaptchaSetting::currentOrNull();
+        $commentRecaptchaEnabled = $recaptchaSettings?->isEnabledFor('comment') ?? false;
+        $commentRecaptchaSiteKey = $commentRecaptchaEnabled
+            ? trim((string) $recaptchaSettings?->resolvedSiteKey())
+            : '';
+
+        if ($commentRecaptchaEnabled && $commentRecaptchaSiteKey !== '') {
+            $escapedSiteKey = htmlspecialchars($commentRecaptchaSiteKey, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+
+            $html = preg_replace_callback(
+                '/<form\b(?=[^>]*(?:id="show-comment-form"|class="[^"]*\bogx-reply-form\b[^"]*"))[^>]*>/i',
+                static function (array $match) use ($escapedSiteKey): string {
+                    $tag = $match[0];
+
+                    if (! str_contains($tag, 'data-recaptcha-v3')) {
+                        $tag = substr($tag, 0, -1)
+                            . ' data-recaptcha-v3 data-recaptcha-action="comment" data-recaptcha-site-key="'
+                            . $escapedSiteKey
+                            . '">';
+                    }
+
+                    return $tag . "\n" . '<input type="hidden" name="recaptcha_token" value="">';
+                },
+                $html
+            ) ?? $html;
+        }
+
+        $recaptchaAssets = '';
+        if ($commentRecaptchaEnabled && $commentRecaptchaSiteKey !== '') {
+            $encodedSiteKey = json_encode($commentRecaptchaSiteKey, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+            $siteKeyQuery = rawurlencode($commentRecaptchaSiteKey);
+
+            $recaptchaAssets = <<<HTML
+<script data-ografi-comment-recaptcha="v1" src="https://www.google.com/recaptcha/api.js?render={$siteKeyQuery}" async defer></script>
+<script data-ografi-comment-recaptcha="v1">
+(() => {
+    const siteKey = {$encodedSiteKey};
+
+    const waitForRecaptcha = (timeout = 8000) => new Promise((resolve, reject) => {
+        const started = Date.now();
+        const timer = window.setInterval(() => {
+            if (window.grecaptcha && typeof window.grecaptcha.execute === 'function') {
+                window.clearInterval(timer);
+                resolve(window.grecaptcha);
+                return;
+            }
+
+            if (Date.now() - started >= timeout) {
+                window.clearInterval(timer);
+                reject(new Error('recaptcha_timeout'));
+            }
+        }, 50);
+    });
+
+    const showError = (form, message) => {
+        let error = form.querySelector('[data-comment-recaptcha-error]');
+        if (!error) {
+            error = document.createElement('p');
+            error.setAttribute('data-comment-recaptcha-error', '');
+            error.style.margin = '8px 0 0';
+            error.style.fontSize = '13px';
+            error.style.lineHeight = '18px';
+            error.style.color = '#dc2626';
+            form.appendChild(error);
+        }
+        error.textContent = message;
+    };
+
+    const clearError = (form) => {
+        form.querySelector('[data-comment-recaptcha-error]')?.remove();
+    };
+
+    // Keep the main comment submit button usable even if another UI script
+    // fails to refresh its visual state.
+    document.addEventListener('input', (event) => {
+        const textarea = event.target;
+        if (!(textarea instanceof HTMLTextAreaElement) || textarea.id !== 'show-comment-input') return;
+
+        const form = textarea.closest('#show-comment-form');
+        const submit = form?.querySelector('[data-ogx-submit-comment]');
+        if (!form || !(submit instanceof HTMLButtonElement)) return;
+
+        const ready = textarea.value.trim().length > 0
+            || !!form.querySelector('[data-ogx-preview]:not([hidden]), [data-gif-preview]:not([hidden])');
+
+        form.classList.toggle('has-comment-ready', ready);
+        submit.disabled = !ready;
+        submit.setAttribute('aria-disabled', ready ? 'false' : 'true');
+    }, true);
+
+    document.addEventListener('submit', async (event) => {
+        const form = event.target;
+        if (!(form instanceof HTMLFormElement)) return;
+        if (!form.matches('[data-recaptcha-v3][data-recaptcha-action="comment"]')) return;
+
+        const input = form.querySelector('input[name="recaptcha_token"]');
+        if (!(input instanceof HTMLInputElement)) return;
+
+        if (form.dataset.ografiRecaptchaBusy === '1') {
+            event.preventDefault();
+            return;
+        }
+
+        event.preventDefault();
+        form.dataset.ografiRecaptchaBusy = '1';
+        clearError(form);
+
+        try {
+            const grecaptcha = await waitForRecaptcha();
+            const token = await new Promise((resolve, reject) => {
+                grecaptcha.ready(() => {
+                    grecaptcha.execute(siteKey, { action: 'comment' }).then(resolve).catch(reject);
+                });
+            });
+
+            if (!token) throw new Error('recaptcha_empty_token');
+
+            input.value = token;
+            HTMLFormElement.prototype.submit.call(form);
+        } catch (error) {
+            form.dataset.ografiRecaptchaBusy = '0';
+            showError(form, 'Güvenlik doğrulaması tamamlanamadı. Sayfayı yenileyip tekrar deneyin.');
+        }
+    }, true);
+})();
+</script>
+HTML;
+        }
+
         $assets = <<<'HTML'
-<span data-ografi-comment-ui-fix="v3" hidden></span>
-<style data-ografi-comment-ui-fix="v3">
-/* Keep avatar, username and badges on one row without touching comment actions. */
+<span data-ografi-comment-ui-fix="v4" hidden></span>
+<style data-ografi-comment-ui-fix="v4">
 html body .ogx-comments-panel [data-ogx-comment].ogx-comment {
     display: block !important;
     grid-template-columns: none !important;
@@ -131,7 +264,6 @@ html body .ogx-comments-panel [data-ogx-comment] > .ogx-comment-main > .ogx-repl
     margin-left: 36px !important;
 }
 
-/* Comment popovers and sort popover use the same scale. */
 html body .ogx-comments-panel .ogx-filter-item,
 html body .ogx-comments-panel .ogx-comment-menu button,
 html body .ogx-comments-panel .ogx-comment-menu a {
@@ -161,7 +293,6 @@ html body .ogx-comments-panel .ogx-comment-menu-icon {
     flex: 0 0 16px !important;
 }
 
-/* Vote arrows only get green/red feedback on hover/focus/press. */
 html body .ogx-comments-panel .ogx-vote-btn[aria-label="Beğen"]:is(:hover, :focus-visible) {
     background: #dcfce7 !important;
     color: #16a34a !important;
@@ -182,7 +313,6 @@ html body .ogx-comments-panel .ogx-vote-btn[aria-label="Beğenme"]:active {
     color: #dc2626 !important;
 }
 
-/* Critical fix: no blue ring around reply/edit composer. Do not style textarea/caret here. */
 html body .ogx-comments-panel .ogx-reply-form .ogx-reply-compose,
 html body .ogx-comments-panel .ogx-edit-form .ogx-reply-compose,
 html body .ogx-comments-panel .ogx-reply-form .ogx-reply-compose:focus-within,
@@ -231,7 +361,7 @@ html.dark body .ogx-comments-panel .ogx-vote-btn[aria-label="Beğenme"]:is(:hove
     }
 }
 </style>
-<script data-ografi-comment-ui-fix="v3">
+<script data-ografi-comment-ui-fix="v4">
 (() => {
     const directChild = (parent, className) => {
         if (!parent) return null;
@@ -239,7 +369,6 @@ html.dark body .ogx-comments-panel .ogx-vote-btn[aria-label="Beğenme"]:is(:hove
     };
 
     const cleanOwnershipUi = (comment, main) => {
-        // Backend only allows the comment owner to edit/delete.
         if (comment.getAttribute('data-ogx-mine') === '1') return;
 
         const actions = directChild(main, 'ogx-comment-actions');
@@ -328,9 +457,9 @@ html.dark body .ogx-comments-panel .ogx-vote-btn[aria-label="Beğenme"]:is(:hove
 </script>
 HTML;
 
-        $html = preg_replace('/<\/body>/i', $assets . "\n</body>", $html, 1) ?? ($html . $assets);
+        $html = preg_replace('/<\/body>/i', $recaptchaAssets . "\n" . $assets . "\n</body>", $html, 1) ?? ($html . $recaptchaAssets . $assets);
         $response->setContent($html);
-        $response->headers->set('X-Ografi-Comment-UI', 'v3');
+        $response->headers->set('X-Ografi-Comment-UI', 'v4');
 
         return $response;
     }
