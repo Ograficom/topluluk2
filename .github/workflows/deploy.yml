@@ -5,6 +5,10 @@ on:
     branches:
       - main
 
+concurrency:
+  group: ografi-production-deploy
+  cancel-in-progress: false
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -25,6 +29,12 @@ jobs:
               TARGET_PATH="/www/wwwroot/ografi_com_app"
             fi
             cd "$TARGET_PATH"
+
+            # A crashed/overlapping deploy can leave this behind and block every
+            # following git operation. GitHub Actions deploys are serialized above,
+            # so removing a stale lock here is safe for this deployment path.
+            rm -f .git/index.lock
+
             git stash --include-untracked || true
             git fetch origin main
             git reset --hard origin/main
