@@ -5,6 +5,58 @@
 
 @section('content')
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;500&display=swap');
+
+        .contact-page,
+        .contact-page :where(p, span, a, input, textarea, label, button) {
+            font-family: "Roboto", Arial, sans-serif !important;
+            font-weight: 300 !important;
+        }
+
+        .contact-page :where(h1, h2, h3),
+        .contact-page .contact-medium,
+        .contact-page .contact-form-label,
+        .contact-page .contact-submit-button {
+            font-family: "Roboto", Arial, sans-serif !important;
+            font-weight: 500 !important;
+        }
+
+        .contact-section-heading {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 0;
+            padding: 0;
+            background: transparent !important;
+        }
+
+        .contact-section-heading__icon {
+            display: inline-flex;
+            width: 22px;
+            height: 22px;
+            flex: 0 0 22px;
+            align-items: center;
+            justify-content: center;
+            color: #2563eb;
+            font-size: 20px;
+        }
+
+        .contact-form-heading {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 0;
+            padding: 8px;
+            border-radius: 12px;
+            background: transparent !important;
+        }
+
+        .contact-form-heading:hover,
+        .contact-form-heading:active,
+        .contact-form-heading:focus-within {
+            background: transparent !important;
+        }
+
         .contact-consent-row {
             display: inline-flex;
             align-items: center;
@@ -131,20 +183,25 @@
         }
     </style>
 
-    <section class="mt-4 space-y-4 sm:mt-6">
+    <section class="contact-page mt-4 space-y-4 sm:mt-6">
         @if (session('contact_status'))
-            <div class="rounded-[20px] border border-blue-200 bg-blue-50 px-4 py-3 text-sm font-medium text-blue-700 dark:border-blue-500/30 dark:bg-blue-500/10 dark:text-blue-400">
+            <div class="rounded-[20px] border border-blue-200 bg-blue-50 px-4 py-3 text-sm text-blue-700 dark:border-blue-500/30 dark:bg-blue-500/10 dark:text-blue-400">
                 {{ session('contact_status') }}
             </div>
         @endif
 
         <section class="rounded-[22px] border border-slate-200 bg-white px-5 py-5 dark:border-slate-700 dark:bg-slate-900 sm:px-6 sm:py-6" aria-labelledby="contact-channels-title">
             <div class="mb-5">
-                <h1 id="contact-channels-title" class="text-xl font-semibold tracking-[-0.02em] text-slate-950 dark:text-slate-100">
-                    Bizimle iletişime geçin
-                </h1>
+                <div class="contact-section-heading">
+                    <span class="contact-section-heading__icon" aria-hidden="true">
+                        <iconify-icon icon="lucide:messages-square"></iconify-icon>
+                    </span>
+                    <h1 id="contact-channels-title" class="contact-medium text-xl tracking-[-0.02em] text-slate-950 dark:text-slate-100">
+                        Bizimle iletişime geçin
+                    </h1>
+                </div>
                 <p class="mt-1.5 max-w-3xl text-sm leading-6 text-slate-500 dark:text-slate-400 sm:text-[0.95rem]">
-                    Bir sorunuz veya öneriniz mi var? Uygun iletişim kanalını seçin veya aşağıdaki formu kullanarak bizimle iletişime geçin. En geç 48 saat içinde dönüş yapmayı hedefliyoruz ve ihtiyaç duyduğunuz desteği almanızı temenni ediyoruz.
+                    En geç 48 saat içinde dönüş yapmayı hedefliyoruz ve ihtiyaç duyduğunuz desteği almanızı temenni ediyoruz.
                 </p>
             </div>
 
@@ -157,7 +214,7 @@
                         <iconify-icon icon="lucide:handshake" class="text-xl"></iconify-icon>
                     </span>
                     <span class="min-w-0">
-                        <span class="block text-sm font-semibold leading-5 text-slate-950 dark:text-slate-100">İş birliği ve reklam</span>
+                        <span class="contact-medium block text-sm leading-5 text-slate-950 dark:text-slate-100">İş birliği ve reklam</span>
                         <span class="mt-0.5 block break-all text-sm text-blue-600 dark:text-blue-400">reklam@ografi.com</span>
                     </span>
                 </a>
@@ -170,7 +227,7 @@
                         <iconify-icon icon="lucide:square-pen" class="text-xl"></iconify-icon>
                     </span>
                     <span class="min-w-0">
-                        <span class="block text-sm font-semibold leading-5 text-slate-950 dark:text-slate-100">Editör</span>
+                        <span class="contact-medium block text-sm leading-5 text-slate-950 dark:text-slate-100">Editör</span>
                         <span class="mt-0.5 block break-all text-sm text-blue-600 dark:text-blue-400">editor@ografi.com</span>
                     </span>
                 </a>
@@ -183,7 +240,7 @@
                         <iconify-icon icon="lucide:phone" class="text-xl"></iconify-icon>
                     </span>
                     <span class="min-w-0">
-                        <span class="block text-sm font-semibold leading-5 text-slate-950 dark:text-slate-100">Telefon</span>
+                        <span class="contact-medium block text-sm leading-5 text-slate-950 dark:text-slate-100">Telefon</span>
                         <span class="mt-0.5 block text-sm text-blue-600 dark:text-blue-400">08503059806</span>
                     </span>
                 </a>
@@ -196,7 +253,7 @@
                         <iconify-icon icon="lucide:shield-check" class="text-xl"></iconify-icon>
                     </span>
                     <span class="min-w-0">
-                        <span class="block text-sm font-semibold leading-5 text-slate-950 dark:text-slate-100">Güvenlik ve destek</span>
+                        <span class="contact-medium block text-sm leading-5 text-slate-950 dark:text-slate-100">Güvenlik ve destek</span>
                         <span class="mt-0.5 block break-all text-sm text-blue-600 dark:text-blue-400">destek@ografi.com</span>
                     </span>
                 </a>
@@ -205,11 +262,11 @@
 
         <div class="overflow-hidden rounded-[22px] bg-white shadow-[0_20px_50px_rgba(15,23,42,0.05)] dark:bg-slate-900">
             <div class="border-b border-slate-200 px-4 py-3 dark:border-slate-700 sm:px-6 sm:py-4">
-                <div class="flex items-center gap-3 rounded-xl px-2 py-2 hover:bg-slate-100 active:bg-slate-200 dark:hover:bg-slate-800 dark:active:bg-slate-700">
+                <div class="contact-form-heading">
                     <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-600 dark:bg-blue-500/10 dark:text-blue-400" aria-hidden="true">
                         <iconify-icon icon="lucide:send" class="text-lg"></iconify-icon>
                     </span>
-                    <h2 class="text-[1.15rem] font-semibold tracking-[-0.01em] text-slate-950 dark:text-slate-100">Mesaj gönder</h2>
+                    <h2 class="contact-medium text-[1.15rem] tracking-[-0.01em] text-slate-950 dark:text-slate-100">Mesaj gönder</h2>
                 </div>
             </div>
 
@@ -217,7 +274,7 @@
                 @csrf
 
                 <div class="space-y-2">
-                    <label for="contact-full-name" class="block text-[1rem] font-semibold text-slate-900 dark:text-slate-100">Ad Soyad</label>
+                    <label for="contact-full-name" class="contact-form-label block text-[1rem] text-slate-900 dark:text-slate-100">Ad Soyad</label>
                     <input
                         id="contact-full-name"
                         name="full_name"
@@ -232,7 +289,7 @@
                 </div>
 
                 <div class="space-y-2">
-                    <label for="contact-email" class="block text-[1rem] font-semibold text-slate-900 dark:text-slate-100">E-posta</label>
+                    <label for="contact-email" class="contact-form-label block text-[1rem] text-slate-900 dark:text-slate-100">E-posta</label>
                     <input
                         id="contact-email"
                         name="email"
@@ -247,7 +304,7 @@
                 </div>
 
                 <div class="space-y-2">
-                    <label for="contact-subject" class="block text-[1rem] font-semibold text-slate-900 dark:text-slate-100">Konu</label>
+                    <label for="contact-subject" class="contact-form-label block text-[1rem] text-slate-900 dark:text-slate-100">Konu</label>
                     <input
                         id="contact-subject"
                         name="subject"
@@ -262,7 +319,7 @@
                 </div>
 
                 <div class="space-y-2">
-                    <label for="contact-message" class="block text-[1rem] font-semibold text-slate-900 dark:text-slate-100">Mesaj</label>
+                    <label for="contact-message" class="contact-form-label block text-[1rem] text-slate-900 dark:text-slate-100">Mesaj</label>
                     <textarea
                         id="contact-message"
                         name="message"
@@ -293,15 +350,15 @@
                         <span class="leading-5">
                             Kabul ediyorum
                             @if (\Illuminate\Support\Facades\Route::has('terms.show'))
-                                <a href="{{ route('terms.show') }}" target="_blank" rel="noopener" class="font-semibold text-blue-600 hover:text-blue-700">Koşullar</a>
+                                <a href="{{ route('terms.show') }}" target="_blank" rel="noopener" class="contact-medium text-blue-600 hover:text-blue-700">Koşullar</a>
                             @else
-                                <span class="font-semibold text-blue-600">Hüküm ve Şartları</span>
+                                <span class="contact-medium text-blue-600">Hüküm ve Şartları</span>
                             @endif
                             ile
                             @if (\Illuminate\Support\Facades\Route::has('policy.show'))
-                                <a href="{{ route('policy.show') }}" target="_blank" rel="noopener" class="font-semibold text-blue-600 hover:text-blue-700">Gizlilik Politikası</a>
+                                <a href="{{ route('policy.show') }}" target="_blank" rel="noopener" class="contact-medium text-blue-600 hover:text-blue-700">Gizlilik Politikası</a>
                             @else
-                                <span class="font-semibold text-blue-600">Gizlilik Politikasını</span>
+                                <span class="contact-medium text-blue-600">Gizlilik Politikasını</span>
                             @endif
                         </span>
                     </label>
@@ -315,7 +372,7 @@
                     <button
                         id="contact-submit-button"
                         type="submit"
-                        class="contact-submit-button w-full rounded-xl px-6 py-3 text-sm font-medium shadow-sm transition focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 sm:w-auto sm:py-2.5"
+                        class="contact-submit-button w-full rounded-xl px-6 py-3 text-sm shadow-sm transition focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 sm:w-auto sm:py-2.5"
                         style="background-color: #2563eb !important; color: #ffffff !important; border: none !important;"
                         onmouseover="this.style.setProperty('background-color', '#1d4ed8', 'important'); this.style.setProperty('color', '#ffffff', 'important');"
                         onmouseout="this.style.setProperty('background-color', '#2563eb', 'important'); this.style.setProperty('color', '#ffffff', 'important');"
