@@ -24,7 +24,7 @@ class PostShowCommentIdentityLayoutMiddleware
             return $response;
         }
 
-        // The Blade partial still ships a bright-blue reply focus ring.
+        // Remove the legacy bright-blue reply focus ring from the rendered source.
         $html = str_replace(
             "  .ogx-reply-compose:focus-within {\n    border-color: #2563eb !important;\n    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.10) !important;\n  }",
             "  .ogx-reply-compose:focus-within {\n    border-color: #d7dbe0 !important;\n    box-shadow: none !important;\n    outline: 0 !important;\n  }",
@@ -32,10 +32,30 @@ class PostShowCommentIdentityLayoutMiddleware
         );
 
         /*
-         * Comment POST endpoints require recaptcha_token whenever the comment
-         * reCAPTCHA switch is enabled. The current Blade forms do not include
-         * that field, so every comment/reply is rejected server-side.
+         * Reply/edit textareas had two independent auto-grow implementations:
+         * 1) inline oninput on the textarea
+         * 2) the shared ogxGrowTextarea input listener
+         * Both repeatedly wrote height:auto/scrollHeight while a CSS height
+         * transition was active. Chromium can repaint the glyphs on top of
+         * themselves during selection/input. Strip the inline implementation
+         * and keep the shared grow handler as the single source of truth.
          */
+        $html = preg_replace_callback(
+            '/<textarea\b(?=[^>]*\bdata-ogx-autogrow\b)[^>]*>/i',
+            static function (array $match): string {
+                $tag = $match[0];
+                $tag = preg_replace('/\s+style="[^"]*"/i', '', $tag) ?? $tag;
+                $tag = preg_replace('/\s+oninput="[^"]*"/i', '', $tag) ?? $tag;
+
+                if (! str_contains($tag, 'data-ografi-reply-textarea')) {
+                    $tag = substr($tag, 0, -1) . ' data-ografi-reply-textarea>';
+                }
+
+                return $tag;
+            },
+            $html
+        ) ?? $html;
+
         $recaptchaSettings = RecaptchaSetting::currentOrNull();
         $commentRecaptchaEnabled = $recaptchaSettings?->isEnabledFor('comment') ?? false;
         $commentRecaptchaSiteKey = $commentRecaptchaEnabled
@@ -69,8 +89,8 @@ class PostShowCommentIdentityLayoutMiddleware
             $siteKeyQuery = rawurlencode($commentRecaptchaSiteKey);
 
             $recaptchaAssets = <<<HTML
-<script data-ografi-comment-recaptcha="v1" src="https://www.google.com/recaptcha/api.js?render={$siteKeyQuery}" async defer></script>
-<script data-ografi-comment-recaptcha="v1">
+<script data-ografi-comment-recaptcha="v2" src="https://www.google.com/recaptcha/api.js?render={$siteKeyQuery}" async defer></script>
+<script data-ografi-comment-recaptcha="v2">
 (() => {
     const siteKey = {$encodedSiteKey};
 
@@ -108,8 +128,6 @@ class PostShowCommentIdentityLayoutMiddleware
         form.querySelector('[data-comment-recaptcha-error]')?.remove();
     };
 
-    // Keep the main comment submit button usable even if another UI script
-    // fails to refresh its visual state.
     document.addEventListener('input', (event) => {
         const textarea = event.target;
         if (!(textarea instanceof HTMLTextAreaElement) || textarea.id !== 'show-comment-input') return;
@@ -166,8 +184,9 @@ HTML;
         }
 
         $assets = <<<'HTML'
-<span data-ografi-comment-ui-fix="v4" hidden></span>
-<style data-ografi-comment-ui-fix="v4">
+<span data-ografi-comment-ui-fix="v5" hidden></span>
+<style data-ografi-comment-ui-fix="v5">
+/* Comment identity row */
 html body .ogx-comments-panel [data-ogx-comment].ogx-comment {
     display: block !important;
     grid-template-columns: none !important;
@@ -264,6 +283,7 @@ html body .ogx-comments-panel [data-ogx-comment] > .ogx-comment-main > .ogx-repl
     margin-left: 36px !important;
 }
 
+/* Menus share the same typography and icon scale. */
 html body .ogx-comments-panel .ogx-filter-item,
 html body .ogx-comments-panel .ogx-comment-menu button,
 html body .ogx-comments-panel .ogx-comment-menu a {
@@ -293,6 +313,7 @@ html body .ogx-comments-panel .ogx-comment-menu-icon {
     flex: 0 0 16px !important;
 }
 
+/* Votes */
 html body .ogx-comments-panel .ogx-vote-btn[aria-label="Beğen"]:is(:hover, :focus-visible) {
     background: #dcfce7 !important;
     color: #16a34a !important;
@@ -313,13 +334,69 @@ html body .ogx-comments-panel .ogx-vote-btn[aria-label="Beğenme"]:active {
     color: #dc2626 !important;
 }
 
+/* Reply/edit composer: one sizing engine, stable glyph rendering. */
 html body .ogx-comments-panel .ogx-reply-form .ogx-reply-compose,
 html body .ogx-comments-panel .ogx-edit-form .ogx-reply-compose,
 html body .ogx-comments-panel .ogx-reply-form .ogx-reply-compose:focus-within,
 html body .ogx-comments-panel .ogx-edit-form .ogx-reply-compose:focus-within {
-    border-color: #d7dbe0 !important;
+    border: 1px solid #d7dbe0 !important;
+    background: #ffffff !important;
     box-shadow: none !important;
     outline: 0 !important;
+}
+
+html body .ogx-comments-panel textarea[data-ografi-reply-textarea] {
+    position: static !important;
+    display: block !important;
+    flex: 1 1 100% !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    height: auto !important;
+    min-height: 36px !important;
+    max-height: 420px !important;
+    margin: 0 !important;
+    padding: 2px 0 !important;
+    box-sizing: border-box !important;
+    border: 0 !important;
+    outline: 0 !important;
+    background: transparent !important;
+    color: #111827 !important;
+    -webkit-text-fill-color: #111827 !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+    font-family: inherit !important;
+    font-size: 14px !important;
+    font-weight: 400 !important;
+    font-style: normal !important;
+    line-height: 20px !important;
+    letter-spacing: normal !important;
+    text-align: left !important;
+    text-indent: 0 !important;
+    direction: ltr !important;
+    writing-mode: horizontal-tb !important;
+    white-space: pre-wrap !important;
+    overflow-wrap: anywhere !important;
+    overflow-y: hidden !important;
+    resize: none !important;
+    transform: none !important;
+    transition: none !important;
+    animation: none !important;
+    caret-color: #111827 !important;
+    text-rendering: auto !important;
+    -webkit-font-smoothing: antialiased;
+}
+
+html body .ogx-comments-panel textarea[data-ografi-reply-textarea]:focus,
+html body .ogx-comments-panel textarea[data-ografi-reply-textarea]:focus-visible {
+    outline: 0 !important;
+    border: 0 !important;
+    box-shadow: none !important;
+}
+
+html body .ogx-comments-panel textarea[data-ografi-reply-textarea]::placeholder {
+    color: #71717a !important;
+    -webkit-text-fill-color: #71717a !important;
+    opacity: 1 !important;
 }
 
 html.dark body .ogx-comments-panel .ogx-reply-form .ogx-reply-compose,
@@ -327,7 +404,18 @@ html.dark body .ogx-comments-panel .ogx-edit-form .ogx-reply-compose,
 html.dark body .ogx-comments-panel .ogx-reply-form .ogx-reply-compose:focus-within,
 html.dark body .ogx-comments-panel .ogx-edit-form .ogx-reply-compose:focus-within {
     border-color: #3f3f46 !important;
-    box-shadow: none !important;
+    background: #18181b !important;
+}
+
+html.dark body .ogx-comments-panel textarea[data-ografi-reply-textarea] {
+    color: #f4f4f5 !important;
+    -webkit-text-fill-color: #f4f4f5 !important;
+    caret-color: #f4f4f5 !important;
+}
+
+html.dark body .ogx-comments-panel textarea[data-ografi-reply-textarea]::placeholder {
+    color: #a1a1aa !important;
+    -webkit-text-fill-color: #a1a1aa !important;
 }
 
 html.dark body .ogx-comments-panel .ogx-vote-btn[aria-label="Beğen"]:is(:hover, :focus-visible) {
@@ -361,7 +449,7 @@ html.dark body .ogx-comments-panel .ogx-vote-btn[aria-label="Beğenme"]:is(:hove
     }
 }
 </style>
-<script data-ografi-comment-ui-fix="v4">
+<script data-ografi-comment-ui-fix="v5">
 (() => {
     const directChild = (parent, className) => {
         if (!parent) return null;
@@ -459,7 +547,7 @@ HTML;
 
         $html = preg_replace('/<\/body>/i', $recaptchaAssets . "\n" . $assets . "\n</body>", $html, 1) ?? ($html . $recaptchaAssets . $assets);
         $response->setContent($html);
-        $response->headers->set('X-Ografi-Comment-UI', 'v4');
+        $response->headers->set('X-Ografi-Comment-UI', 'v5');
 
         return $response;
     }
