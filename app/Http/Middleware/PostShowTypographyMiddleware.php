@@ -34,9 +34,9 @@ class PostShowTypographyMiddleware
         $style = <<<'HTML'
 <style data-ografi-post-show-typography-final>
 /*
- * Post-show makale tipografisi.
- * 640-700px civari okuma kolonunda yaygin blog olcegi:
- * govde 17px, ana baslik 30px, H2 26px, H3 22px, H4 19px.
+ * Post-show blog tipografi olcegi.
+ * Yaklasik 640-700px okuma kolonunda dengeli hiyerarsi:
+ * govde 17px, post basligi 30px, H2 26px, H3 22px, H4 19px.
  */
 html body.alma-app .post-show-shell .ps-post-title:not(#comments):not(#comments *) {
     font-size: 30px !important;
@@ -68,6 +68,7 @@ html body.alma-app .post-show-shell .ps-post-body :where(
     font-weight: 400 !important;
 }
 
+/* Normal kalin metin: boyut degismez, sadece agirlik belirginlesir. */
 html body.alma-app .post-show-shell .ps-post-body :where(strong, b):not(#comments):not(#comments *),
 html body.alma-app .post-show-shell .ps-post-body :where(
     p,
@@ -92,7 +93,7 @@ html body.alma-app .post-show-shell .ps-post-body :where(
 }
 
 html body.alma-app .post-show-shell .ps-post-body :where(h2, .ce-header[data-level="2"]):not(#comments):not(#comments *) {
-    margin: 28px 0 12px !important;
+    margin: 30px 0 12px !important;
     font-size: 26px !important;
     line-height: 1.28 !important;
     font-weight: 700 !important;
@@ -100,7 +101,7 @@ html body.alma-app .post-show-shell .ps-post-body :where(h2, .ce-header[data-lev
 }
 
 html body.alma-app .post-show-shell .ps-post-body :where(h3, .ce-header[data-level="3"]):not(#comments):not(#comments *) {
-    margin: 24px 0 10px !important;
+    margin: 26px 0 10px !important;
     font-size: 22px !important;
     line-height: 1.32 !important;
     font-weight: 700 !important;
@@ -108,27 +109,41 @@ html body.alma-app .post-show-shell .ps-post-body :where(h3, .ce-header[data-lev
 }
 
 html body.alma-app .post-show-shell .ps-post-body :where(h4, .ce-header[data-level="4"]):not(#comments):not(#comments *) {
-    margin: 22px 0 9px !important;
+    margin: 23px 0 9px !important;
     font-size: 19px !important;
     line-height: 1.36 !important;
     font-weight: 700 !important;
 }
 
-html body.alma-app .post-show-shell .ps-post-body :where(h5, h6):not(#comments):not(#comments *) {
-    margin: 20px 0 8px !important;
-    font-size: 18px !important;
-    line-height: 1.4 !important;
-    font-weight: 600 !important;
-}
-
-/* RSS kaynaklarinda H2 yerine duz BUYUK HARFLI paragraf olarak gelen ara basliklar. */
-html body.alma-app .post-show-shell .ps-post-body .ografi-post-subheading:not(#comments):not(#comments *) {
-    display: block !important;
-    margin: 24px 0 8px !important;
+html body.alma-app .post-show-shell .ps-post-body h5:not(#comments):not(#comments *) {
+    margin: 21px 0 8px !important;
     font-size: 18px !important;
     line-height: 1.4 !important;
     font-weight: 700 !important;
-    letter-spacing: 0 !important;
+}
+
+html body.alma-app .post-show-shell .ps-post-body h6:not(#comments):not(#comments *) {
+    margin: 20px 0 8px !important;
+    font-size: 17px !important;
+    line-height: 1.42 !important;
+    font-weight: 700 !important;
+}
+
+/*
+ * RSS/harici kaynaklarda semantik H2 yerine duz paragraf olarak gelen ara basliklar.
+ * Ornek: "39 ILCEDE KULLANILIYOR" veya tek basina <strong>Baslik</strong>.
+ */
+html body.alma-app .post-show-shell .ps-post-body .ografi-post-subheading:not(#comments):not(#comments *),
+html body.alma-app .post-show-shell .ps-post-body .ografi-post-subheading :where(strong, b, span, font):not(#comments):not(#comments *) {
+    font-size: 20px !important;
+    line-height: 1.35 !important;
+    font-weight: 700 !important;
+    letter-spacing: -0.005em !important;
+}
+
+html body.alma-app .post-show-shell .ps-post-body .ografi-post-subheading:not(#comments):not(#comments *) {
+    display: block !important;
+    margin: 28px 0 10px !important;
 }
 
 @media (max-width: 640px) {
@@ -174,9 +189,14 @@ html body.alma-app .post-show-shell .ps-post-body .ografi-post-subheading:not(#c
         line-height: 1.38 !important;
     }
 
+    html body.alma-app .post-show-shell .ps-post-body .ografi-post-subheading:not(#comments):not(#comments *),
+    html body.alma-app .post-show-shell .ps-post-body .ografi-post-subheading :where(strong, b, span, font):not(#comments):not(#comments *) {
+        font-size: 18px !important;
+        line-height: 1.38 !important;
+    }
+
     html body.alma-app .post-show-shell .ps-post-body .ografi-post-subheading:not(#comments):not(#comments *) {
-        font-size: 17px !important;
-        line-height: 1.4 !important;
+        margin: 24px 0 9px !important;
     }
 }
 </style>
@@ -193,14 +213,23 @@ html body.alma-app .post-show-shell .ps-post-body .ografi-post-subheading:not(#c
         }
 
         const text = (element.textContent || '').replace(/\s+/g, ' ').trim();
-        if (text.length < 4 || text.length > 72) return;
+        if (text.length < 4 || text.length > 90) return;
+
+        const children = Array.from(element.children).filter((child) => {
+            return !['BR'].includes(child.tagName);
+        });
+
+        const onlyChild = children.length === 1 ? children[0] : null;
+        const standaloneBold = !!onlyChild
+            && ['STRONG', 'B'].includes(onlyChild.tagName)
+            && (onlyChild.textContent || '').replace(/\s+/g, ' ').trim() === text;
 
         const letters = text.match(/[A-Za-zÇĞİÖŞÜçğıöşü]/g) || [];
-        if (letters.length < 4) return;
-
         const upper = text.toLocaleUpperCase('tr-TR');
         const lower = text.toLocaleLowerCase('tr-TR');
-        if (text === upper && text !== lower) {
+        const uppercaseHeading = letters.length >= 4 && text === upper && text !== lower;
+
+        if (standaloneBold || uppercaseHeading) {
             element.classList.add('ografi-post-subheading');
         }
     });
@@ -211,7 +240,7 @@ HTML;
         $html = preg_replace('/<\/body>/i', $style . "\n</body>", $html, 1) ?? ($html . $style);
 
         $response->setContent($html);
-        $response->headers->set('X-Ografi-Post-Typography', 'v4');
+        $response->headers->set('X-Ografi-Post-Typography', 'v5');
 
         return $response;
     }
