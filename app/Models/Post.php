@@ -70,6 +70,25 @@ class Post extends Model
         'content_json' => 'array',
     ];
 
+    public function getTitleAttribute($value): string
+    {
+        return $this->normalizeTitleText($value);
+    }
+
+    public function setTitleAttribute($value): void
+    {
+        $this->attributes['title'] = $this->normalizeTitleText($value);
+    }
+
+    private function normalizeTitleText($value): string
+    {
+        $text = html_entity_decode((string) $value, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+        $text = strip_tags($text);
+        $text = preg_replace('/\s+/u', ' ', $text) ?? $text;
+
+        return trim($text);
+    }
+
     protected static function booted(): void
     {
         static::creating(function (Post $post): void {
