@@ -31,15 +31,15 @@ class CommentSkeletonPreloaderMiddleware
 <div class="ografi-comment-skeleton" data-ografi-comment-skeleton aria-hidden="true">
     <div class="ografi-comment-skeleton__card">
         <div class="ografi-comment-skeleton__head">
-            <span class="ografi-comment-skeleton__avatar"></span>
+            <span class="ografi-comment-skeleton__shape ografi-comment-skeleton__avatar"></span>
 
             <span class="ografi-comment-skeleton__meta">
-                <span class="ografi-comment-skeleton__line ografi-comment-skeleton__line--long"></span>
-                <span class="ografi-comment-skeleton__line ografi-comment-skeleton__line--short"></span>
+                <span class="ografi-comment-skeleton__shape ografi-comment-skeleton__line ografi-comment-skeleton__line--long"></span>
+                <span class="ografi-comment-skeleton__shape ografi-comment-skeleton__line ografi-comment-skeleton__line--short"></span>
             </span>
         </div>
 
-        <span class="ografi-comment-skeleton__body"></span>
+        <span class="ografi-comment-skeleton__shape ografi-comment-skeleton__body"></span>
     </div>
 </div>
 HTML;
@@ -70,7 +70,13 @@ html body .ogx-comments-panel > .ografi-comment-skeleton {
     overflow: hidden !important;
     border-radius: inherit !important;
     background: #ffffff !important;
+    opacity: 1 !important;
+    visibility: visible !important;
     pointer-events: none !important;
+}
+
+html body .ogx-comments-panel > .ografi-comment-skeleton.is-hiding {
+    animation: ografiCommentPreloaderOut 220ms ease forwards !important;
 }
 
 html body .ogx-comments-panel > .ografi-comment-skeleton[hidden] {
@@ -80,7 +86,6 @@ html body .ogx-comments-panel > .ografi-comment-skeleton[hidden] {
 html body .ografi-comment-skeleton__card {
     display: block !important;
     width: 100% !important;
-    height: 100% !important;
     min-height: 198px !important;
     margin: 0 !important;
     padding: 0 !important;
@@ -97,6 +102,14 @@ html body .ografi-comment-skeleton__head {
     gap: 12px !important;
 }
 
+html body .ografi-comment-skeleton__shape {
+    position: relative !important;
+    overflow: hidden !important;
+    background: linear-gradient(105deg, #eef2fb 0%, #ffffff 45%, #eef2fb 82%) !important;
+    background-size: 200% 100% !important;
+    animation: ografiImgWave 1.15s ease-in-out infinite !important;
+}
+
 html body .ografi-comment-skeleton__avatar {
     display: block !important;
     flex: 0 0 44px !important;
@@ -104,7 +117,6 @@ html body .ografi-comment-skeleton__avatar {
     min-width: 44px !important;
     height: 44px !important;
     border-radius: 9999px !important;
-    background: #eef1f5 !important;
 }
 
 html body .ografi-comment-skeleton__meta {
@@ -120,7 +132,6 @@ html body .ografi-comment-skeleton__line {
     display: block !important;
     height: 10px !important;
     border-radius: 9999px !important;
-    background: #eef1f5 !important;
 }
 
 html body .ografi-comment-skeleton__line--long {
@@ -137,7 +148,6 @@ html body .ografi-comment-skeleton__body {
     height: 130px !important;
     margin-top: 14px !important;
     border-radius: 14px !important;
-    background: #eef1f5 !important;
 }
 
 html.dark body .ogx-comments-panel > .ografi-comment-skeleton,
@@ -149,16 +159,18 @@ body.dark .ografi-comment-skeleton__card,
     background: #111318 !important;
 }
 
-html.dark body .ografi-comment-skeleton__avatar,
-html.dark body .ografi-comment-skeleton__line,
-html.dark body .ografi-comment-skeleton__body,
-body.dark .ografi-comment-skeleton__avatar,
-body.dark .ografi-comment-skeleton__line,
-body.dark .ografi-comment-skeleton__body,
-[data-theme="dark"] body .ografi-comment-skeleton__avatar,
-[data-theme="dark"] body .ografi-comment-skeleton__line,
-[data-theme="dark"] body .ografi-comment-skeleton__body {
-    background: #2a2f38 !important;
+html.dark body .ografi-comment-skeleton__shape,
+body.dark .ografi-comment-skeleton__shape,
+[data-theme="dark"] body .ografi-comment-skeleton__shape {
+    background: linear-gradient(105deg, #1e293b 0%, #334155 45%, #1e293b 82%) !important;
+    background-size: 200% 100% !important;
+}
+
+@keyframes ografiCommentPreloaderOut {
+    to {
+        opacity: 0;
+        visibility: hidden;
+    }
 }
 
 @media (max-width: 700px) {
@@ -185,11 +197,22 @@ body.dark .ografi-comment-skeleton__body,
     html body .ografi-comment-skeleton__line--short {
         width: 42% !important;
     }
+}
 
-    html body .ografi-comment-skeleton__body {
-        height: 130px !important;
-        margin-top: 14px !important;
-        border-radius: 14px !important;
+@media (prefers-reduced-motion: reduce) {
+    html body .ografi-comment-skeleton__shape {
+        animation: none !important;
+        background: #eef2fb !important;
+    }
+
+    html.dark body .ografi-comment-skeleton__shape,
+    body.dark .ografi-comment-skeleton__shape,
+    [data-theme="dark"] body .ografi-comment-skeleton__shape {
+        background: #1e293b !important;
+    }
+
+    html body .ogx-comments-panel > .ografi-comment-skeleton.is-hiding {
+        animation-duration: 1ms !important;
     }
 }
 </style>
@@ -198,49 +221,87 @@ body.dark .ografi-comment-skeleton__body,
     const skeletons = Array.from(document.querySelectorAll('[data-ografi-comment-skeleton]'));
     if (!skeletons.length) return;
 
-    const startedAt = Date.now();
-    const minimumVisibleMs = 900;
-    let finished = false;
+    const minimumVisibleMs = 520;
+    const maximumVisibleMs = 2400;
 
-    skeletons.forEach((skeleton) => {
+    const bootSkeleton = (skeleton) => {
+        const panel = skeleton.closest('.ogx-comments-panel');
+        if (!panel || skeleton.dataset.booted === '1') return;
+
+        skeleton.dataset.booted = '1';
         skeleton.hidden = false;
-        skeleton.closest('.ogx-comments-panel')?.setAttribute('aria-busy', 'true');
-    });
+        panel.setAttribute('aria-busy', 'true');
 
-    const hideSkeletons = () => {
-        if (finished) return;
-        finished = true;
+        let started = false;
+        let finished = false;
+        let observer = null;
 
-        window.requestAnimationFrame(() => {
-            skeletons.forEach((skeleton) => {
+        const hide = () => {
+            if (finished) return;
+            finished = true;
+
+            if (observer) {
+                observer.disconnect();
+            }
+
+            skeleton.classList.add('is-hiding');
+            panel.setAttribute('aria-busy', 'false');
+
+            window.setTimeout(() => {
                 skeleton.hidden = true;
-                skeleton.closest('.ogx-comments-panel')?.setAttribute('aria-busy', 'false');
+            }, 260);
+        };
+
+        const start = () => {
+            if (started || finished) return;
+            started = true;
+
+            const startedAt = Date.now();
+
+            const finish = () => {
+                const elapsed = Date.now() - startedAt;
+                const delay = Math.max(0, minimumVisibleMs - elapsed);
+                window.setTimeout(hide, delay);
+            };
+
+            if (document.readyState === 'complete') {
+                finish();
+            } else {
+                window.addEventListener('load', finish, { once: true });
+            }
+
+            window.setTimeout(hide, maximumVisibleMs);
+        };
+
+        if ('IntersectionObserver' in window) {
+            observer = new IntersectionObserver((entries) => {
+                if (entries.some((entry) => entry.isIntersecting)) {
+                    start();
+                }
+            }, {
+                root: null,
+                rootMargin: '160px 0px',
+                threshold: 0.01,
             });
-        });
+
+            observer.observe(panel);
+        } else {
+            start();
+        }
+
+        if (window.location.hash === '#comments') {
+            start();
+        }
     };
 
-    const finish = () => {
-        if (finished) return;
-
-        const elapsed = Date.now() - startedAt;
-        const remaining = Math.max(0, minimumVisibleMs - elapsed);
-        window.setTimeout(hideSkeletons, remaining);
-    };
-
-    if (document.readyState === 'complete') {
-        finish();
-    } else {
-        window.addEventListener('load', finish, { once: true });
-    }
-
-    window.setTimeout(hideSkeletons, 5000);
+    skeletons.forEach(bootSkeleton);
 })();
 </script>
 HTML;
 
         $html = preg_replace('/<\/body>/i', $assets . "\n</body>", $html, 1) ?? ($html . $assets);
         $response->setContent($html);
-        $response->headers->set('X-Ografi-Comment-Skeleton', 'v3');
+        $response->headers->set('X-Ografi-Comment-Skeleton', 'v4');
 
         return $response;
     }
