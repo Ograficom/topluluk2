@@ -32,11 +32,13 @@ class CommentSkeletonPreloaderMiddleware
     <div class="ografi-comment-skeleton__card">
         <div class="ografi-comment-skeleton__head">
             <span class="ografi-comment-skeleton__avatar"></span>
+
             <span class="ografi-comment-skeleton__meta">
                 <span class="ografi-comment-skeleton__line ografi-comment-skeleton__line--long"></span>
                 <span class="ografi-comment-skeleton__line ografi-comment-skeleton__line--short"></span>
             </span>
         </div>
+
         <span class="ografi-comment-skeleton__body"></span>
     </div>
 </div>
@@ -60,11 +62,11 @@ html body .ogx-comments-panel > .ografi-comment-skeleton {
     inset: 0 !important;
     z-index: 2147482000 !important;
     display: block !important;
-    box-sizing: border-box !important;
     width: 100% !important;
-    min-height: 230px !important;
+    min-height: 228px !important;
     margin: 0 !important;
-    padding: 14px !important;
+    padding: 14px 16px !important;
+    box-sizing: border-box !important;
     overflow: hidden !important;
     border-radius: inherit !important;
     background: #ffffff !important;
@@ -78,23 +80,26 @@ html body .ogx-comments-panel > .ografi-comment-skeleton[hidden] {
 html body .ografi-comment-skeleton__card {
     display: block !important;
     width: 100% !important;
-    max-width: none !important;
-    box-sizing: border-box !important;
+    height: 100% !important;
+    min-height: 198px !important;
+    margin: 0 !important;
     padding: 0 !important;
+    box-sizing: border-box !important;
     border: 0 !important;
-    background: transparent !important;
+    background: #ffffff !important;
 }
 
 html body .ografi-comment-skeleton__head {
     display: flex !important;
     align-items: center !important;
-    gap: 12px !important;
     width: 100% !important;
     min-width: 0 !important;
+    gap: 12px !important;
 }
 
 html body .ografi-comment-skeleton__avatar {
     display: block !important;
+    flex: 0 0 44px !important;
     width: 44px !important;
     min-width: 44px !important;
     height: 44px !important;
@@ -107,6 +112,7 @@ html body .ografi-comment-skeleton__meta {
     flex: 1 1 auto !important;
     min-width: 0 !important;
     flex-direction: column !important;
+    justify-content: center !important;
     gap: 9px !important;
 }
 
@@ -118,11 +124,11 @@ html body .ografi-comment-skeleton__line {
 }
 
 html body .ografi-comment-skeleton__line--long {
-    width: min(68%, 410px) !important;
+    width: min(72%, 410px) !important;
 }
 
 html body .ografi-comment-skeleton__line--short {
-    width: min(40%, 240px) !important;
+    width: min(42%, 238px) !important;
 }
 
 html body .ografi-comment-skeleton__body {
@@ -136,7 +142,10 @@ html body .ografi-comment-skeleton__body {
 
 html.dark body .ogx-comments-panel > .ografi-comment-skeleton,
 body.dark .ogx-comments-panel > .ografi-comment-skeleton,
-[data-theme="dark"] body .ogx-comments-panel > .ografi-comment-skeleton {
+[data-theme="dark"] body .ogx-comments-panel > .ografi-comment-skeleton,
+html.dark body .ografi-comment-skeleton__card,
+body.dark .ografi-comment-skeleton__card,
+[data-theme="dark"] body .ografi-comment-skeleton__card {
     background: #111318 !important;
 }
 
@@ -154,11 +163,16 @@ body.dark .ografi-comment-skeleton__body,
 
 @media (max-width: 700px) {
     html body .ogx-comments-panel > .ografi-comment-skeleton {
-        padding: 12px !important;
         min-height: 218px !important;
+        padding: 12px !important;
+    }
+
+    html body .ografi-comment-skeleton__card {
+        min-height: 194px !important;
     }
 
     html body .ografi-comment-skeleton__avatar {
+        flex-basis: 42px !important;
         width: 42px !important;
         min-width: 42px !important;
         height: 42px !important;
@@ -174,6 +188,8 @@ body.dark .ografi-comment-skeleton__body,
 
     html body .ografi-comment-skeleton__body {
         height: 130px !important;
+        margin-top: 14px !important;
+        border-radius: 14px !important;
     }
 }
 </style>
@@ -187,6 +203,7 @@ body.dark .ografi-comment-skeleton__body,
     });
 
     let finished = false;
+
     const finish = () => {
         if (finished) return;
         finished = true;
@@ -211,7 +228,7 @@ HTML;
 
         $html = preg_replace('/<\/body>/i', $assets . "\n</body>", $html, 1) ?? ($html . $assets);
         $response->setContent($html);
-        $response->headers->set('X-Ografi-Comment-Skeleton', 'v1');
+        $response->headers->set('X-Ografi-Comment-Skeleton', 'v2');
 
         return $response;
     }
