@@ -11,6 +11,7 @@ use App\Http\Middleware\LoginPageSecurityMiddleware;
 use App\Http\Middleware\PostPresentationMiddleware;
 use App\Http\Middleware\PostShowCommentIdentityLayoutMiddleware;
 use App\Http\Middleware\PostShowReactionLayoutMiddleware;
+use App\Http\Middleware\PostShowTypographyMiddleware;
 use App\Http\Middleware\SetLocale;
 use App\Http\Middleware\VideoPageResponseMiddleware;
 use Illuminate\Http\Middleware\ValidatePostSize;
@@ -42,6 +43,7 @@ return Application::configure(basePath: dirname(__DIR__))
             DisableDebugbarOnFrontend::class,
             AddSecurityHeaders::class,
             EnsureImageAltText::class,
+            PostShowTypographyMiddleware::class,
             PostPresentationMiddleware::class,
             PostShowReactionLayoutMiddleware::class,
             PostShowCommentIdentityLayoutMiddleware::class,
