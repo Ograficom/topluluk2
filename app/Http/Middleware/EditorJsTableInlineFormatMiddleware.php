@@ -30,6 +30,76 @@ class EditorJsTableInlineFormatMiddleware
             return $response;
         }
 
+        $style = <<<'HTML'
+<style data-ografi-editor-toolbar-width>
+/*
+ * EditorJS keeps ce-toolbar__content on its normal text-column width.
+ * The project toolbar actions are 100% wide relative to that narrower box,
+ * so on mobile they look squeezed inside the editor card. Make the toolbar
+ * positioning box use the actual editor width instead.
+ */
+.create-page-fixed [data-editorjs-wrapper] .ce-toolbar__content {
+    width: 100% !important;
+    max-width: none !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    box-sizing: border-box !important;
+}
+
+.create-page-fixed [data-editorjs-wrapper] .ce-toolbar__actions {
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
+    max-width: none !important;
+    min-width: 100% !important;
+    box-sizing: border-box !important;
+}
+
+/* Do not let EditorJS popovers shrink as flex children of toolbar actions. */
+.create-page-fixed [data-editorjs-wrapper] .ce-popover.ce-popover--opened {
+    flex: 0 0 auto !important;
+    flex-shrink: 0 !important;
+    width: min(220px, calc(100vw - 20px)) !important;
+    min-width: min(220px, calc(100vw - 20px)) !important;
+    max-width: min(220px, calc(100vw - 20px)) !important;
+    box-sizing: border-box !important;
+    pointer-events: auto !important;
+}
+
+.create-page-fixed [data-editorjs-wrapper] .ce-popover.ce-popover--opened > .ce-popover__container,
+.create-page-fixed [data-editorjs-wrapper] .ce-popover--opened .ce-popover__container {
+    width: 100% !important;
+    min-width: 100% !important;
+    max-width: 100% !important;
+    flex: 0 0 auto !important;
+    box-sizing: border-box !important;
+}
+
+/* Inline toolbar itself must keep the width required by its controls. */
+.create-page-fixed [data-editorjs-wrapper] .ce-inline-toolbar {
+    flex-shrink: 0 !important;
+    max-width: calc(100vw - 20px) !important;
+    box-sizing: border-box !important;
+    overflow: visible !important;
+}
+
+@media (max-width: 640px) {
+    .create-page-fixed [data-editorjs-wrapper] .ce-toolbar__content {
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+
+    .create-page-fixed [data-editorjs-wrapper] .ce-toolbar__actions {
+        width: 100% !important;
+        min-width: 100% !important;
+        max-width: 100% !important;
+    }
+}
+</style>
+HTML;
+
         $script = <<<'HTML'
 <script data-ografi-table-inline-format>
 (() => {
@@ -171,10 +241,11 @@ class EditorJsTableInlineFormatMiddleware
 </script>
 HTML;
 
-        $html = preg_replace('/<\/body>/i', $script . "\n</body>", $html, 1) ?? ($html . $script);
+        $payload = $style . "\n" . $script;
+        $html = preg_replace('/<\/body>/i', $payload . "\n</body>", $html, 1) ?? ($html . $payload);
 
         $response->setContent($html);
-        $response->headers->set('X-Ografi-Table-Inline-Format', 'v1');
+        $response->headers->set('X-Ografi-Table-Inline-Format', 'v2');
 
         return $response;
     }
