@@ -1,0 +1,51 @@
+name: Sync EditorJS Core
+
+on:
+  push:
+    paths:
+      - '.github/workflows/editorjs-core-sync.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: editorjs-core-sync
+  cancel-in-progress: false
+
+jobs:
+  sync-editorjs-core:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+
+      - name: Install EditorJS 2.31.6
+        run: npm install --save-exact @editorjs/editorjs@2.31.6 --ignore-scripts --no-audit --no-fund
+
+      - name: Sync official UMD build
+        run: |
+          mkdir -p public/vendor/editorjs
+          cp node_modules/@editorjs/editorjs/dist/editorjs.umd.js public/vendor/editorjs/editorjs.umd.js
+          grep -q 'Editor.js 2.31.6' public/vendor/editorjs/editorjs.umd.js
+
+      - name: Commit synchronized core
+        run: |
+          if git diff --quiet -- package.json package-lock.json public/vendor/editorjs/editorjs.umd.js; then
+            echo 'EditorJS core is already synchronized.'
+            exit 0
+          fi
+
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add package.json package-lock.json public/vendor/editorjs/editorjs.umd.js
+          git commit -m 'Upgrade EditorJS core to 2.31.6'
+          git push origin HEAD:main
