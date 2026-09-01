@@ -352,3 +352,9 @@
         }
     }
 </style>
+
+<style data-post-card-source-spacing>
+    html body.alma-app article.post-card[data-post-card-shell] a.post-card__source[data-post-card-source] {
+        margin-top: 12px !important;
+    }
+</style>
