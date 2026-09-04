@@ -113,6 +113,113 @@ html body.alma-app .post-show-shell .ps-action-row .post-vote-control {
     margin-right: 2px !important;
 }
 
+/* Composer preference row: same vote feature can be enabled/disabled per post. */
+html body.alma-app .post-vote-setting-row,
+html body .post-vote-setting-row {
+    box-sizing: border-box !important;
+}
+
+html body.alma-app .post-vote-setting-copy,
+html body .post-vote-setting-copy {
+    min-width: 0 !important;
+    padding-right: 14px !important;
+}
+
+html body.alma-app .post-vote-setting-title,
+html body .post-vote-setting-title {
+    color: #1f2937 !important;
+    font-family: inherit !important;
+    font-size: 14px !important;
+    font-weight: 500 !important;
+    line-height: 1.35 !important;
+}
+
+html body.alma-app .post-vote-setting-description,
+html body .post-vote-setting-description {
+    margin-top: 3px !important;
+    color: #6b7280 !important;
+    font-family: inherit !important;
+    font-size: 12px !important;
+    font-weight: 400 !important;
+    line-height: 1.35 !important;
+}
+
+html body.alma-app .post-vote-setting-toggle,
+html body .post-vote-setting-toggle {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex: 0 0 auto !important;
+}
+
+html body.alma-app .post-vote-setting-switch,
+html body .post-vote-setting-switch {
+    position: relative !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    width: 44px !important;
+    height: 24px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    cursor: pointer !important;
+    user-select: none !important;
+}
+
+html body.alma-app .post-vote-setting-switch > input[type="checkbox"],
+html body .post-vote-setting-switch > input[type="checkbox"] {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+}
+
+html body.alma-app .post-vote-setting-track,
+html body .post-vote-setting-track {
+    position: relative !important;
+    display: block !important;
+    width: 44px !important;
+    height: 24px !important;
+    border: 0 !important;
+    border-radius: 9999px !important;
+    background: #d1d5db !important;
+    box-shadow: none !important;
+    transition: background-color .15s ease !important;
+}
+
+html body.alma-app .post-vote-setting-track::after,
+html body .post-vote-setting-track::after {
+    content: "" !important;
+    position: absolute !important;
+    top: 3px !important;
+    left: 3px !important;
+    width: 18px !important;
+    height: 18px !important;
+    border-radius: 9999px !important;
+    background: #ffffff !important;
+    box-shadow: none !important;
+    transform: translateX(0) !important;
+    transition: transform .15s ease !important;
+}
+
+html body.alma-app .post-vote-setting-switch > input[type="checkbox"]:checked + .post-vote-setting-track,
+html body .post-vote-setting-switch > input[type="checkbox"]:checked + .post-vote-setting-track {
+    background: #2563eb !important;
+}
+
+html body.alma-app .post-vote-setting-switch > input[type="checkbox"]:checked + .post-vote-setting-track::after,
+html body .post-vote-setting-switch > input[type="checkbox"]:checked + .post-vote-setting-track::after {
+    transform: translateX(20px) !important;
+}
+
+html body.alma-app .post-vote-setting-switch > input[type="checkbox"]:focus-visible + .post-vote-setting-track,
+html body .post-vote-setting-switch > input[type="checkbox"]:focus-visible + .post-vote-setting-track {
+    outline: 2px solid #93c5fd !important;
+    outline-offset: 2px !important;
+}
+
 @media (max-width: 640px) {
     html body.alma-app .post-vote-control,
     html body .post-vote-control {
@@ -141,6 +248,11 @@ html body.alma-app .post-show-shell .ps-action-row .post-vote-control {
         height: 16px !important;
         min-width: 16px !important;
         min-height: 16px !important;
+    }
+
+    html body.alma-app .post-vote-setting-title,
+    html body .post-vote-setting-title {
+        font-size: 13.5px !important;
     }
 }
 
@@ -179,4 +291,28 @@ body.dark.alma-app .post-vote-control .post-vote-btn.is-downvoted,
 [data-theme="dark"] body.alma-app .post-vote-control .post-vote-btn.is-downvoted {
     background: rgba(220, 38, 38, .18) !important;
     color: #fca5a5 !important;
+}
+
+html.dark body.alma-app .post-vote-setting-title,
+body.dark.alma-app .post-vote-setting-title,
+[data-theme="dark"] body.alma-app .post-vote-setting-title {
+    color: #f4f4f5 !important;
+}
+
+html.dark body.alma-app .post-vote-setting-description,
+body.dark.alma-app .post-vote-setting-description,
+[data-theme="dark"] body.alma-app .post-vote-setting-description {
+    color: #a1a1aa !important;
+}
+
+html.dark body.alma-app .post-vote-setting-track,
+body.dark.alma-app .post-vote-setting-track,
+[data-theme="dark"] body.alma-app .post-vote-setting-track {
+    background: #52525b !important;
+}
+
+html.dark body.alma-app .post-vote-setting-switch > input[type="checkbox"]:checked + .post-vote-setting-track,
+body.dark.alma-app .post-vote-setting-switch > input[type="checkbox"]:checked + .post-vote-setting-track,
+[data-theme="dark"] body.alma-app .post-vote-setting-switch > input[type="checkbox"]:checked + .post-vote-setting-track {
+    background: #3b82f6 !important;
 }
