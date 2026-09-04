@@ -2,21 +2,22 @@
  * Post-card alt etkileşim alanı.
  * Ayırıcı çizgi tepki/emoji satırının ÜSTÜNDE olur.
  * Yorum / kaydet / paylaş satırının üstündeki eski çizgi kaldırılır.
+ * ID selector kullanımı, post-card.blade.php içindeki son !important kuralları kesin olarak ezer.
  */
 
-html body article.post-card[data-post-card-shell] .action-bar {
+html body article.post-card[data-post-card-shell] #action-bar.action-bar {
     border-top: 0 !important;
 }
 
-html body article.post-card[data-post-card-shell] .reactions-row {
+html body article.post-card[data-post-card-shell] #reaction-row.reactions-row {
     position: relative !important;
     border-top: 1px solid #e5e7eb !important;
     padding-top: 10px !important;
 }
 
-/* Mobilde post-card 15px iç padding kullanıyor; çizgiyi kartın iki kenarına kadar uzat. */
+/* Mobilde çizgi kartın iki kenarına kadar uzansın. */
 @media (max-width: 640px) {
-    html body article.post-card[data-post-card-shell] .reactions-row {
+    html body article.post-card[data-post-card-shell] #reaction-row.reactions-row {
         margin-left: -15px !important;
         margin-right: -15px !important;
         padding-left: 15px !important;
@@ -25,14 +26,14 @@ html body article.post-card[data-post-card-shell] .reactions-row {
         width: auto !important;
     }
 
-    html body article.post-card[data-post-card-shell] .action-bar {
+    html body article.post-card[data-post-card-shell] #action-bar.action-bar {
         border-top: 0 !important;
     }
 }
 
-html.dark body article.post-card[data-post-card-shell] .reactions-row,
-body.dark article.post-card[data-post-card-shell] .reactions-row,
-.dark article.post-card[data-post-card-shell] .reactions-row,
-[data-theme="dark"] article.post-card[data-post-card-shell] .reactions-row {
+html.dark body article.post-card[data-post-card-shell] #reaction-row.reactions-row,
+body.dark article.post-card[data-post-card-shell] #reaction-row.reactions-row,
+.dark article.post-card[data-post-card-shell] #reaction-row.reactions-row,
+[data-theme="dark"] article.post-card[data-post-card-shell] #reaction-row.reactions-row {
     border-top-color: rgba(255, 255, 255, 0.12) !important;
 }
