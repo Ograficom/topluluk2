@@ -63,6 +63,81 @@
         return entries;
     };
 
+    const findPreferenceRow = (checkbox, form) => {
+        let node = checkbox?.parentElement || null;
+        while (node && node !== form) {
+            if (
+                node.classList?.contains('flex')
+                && node.classList?.contains('items-center')
+                && node.classList?.contains('justify-between')
+            ) {
+                return node;
+            }
+            node = node.parentElement;
+        }
+        return null;
+    };
+
+    const initComposerVoteSetting = () => {
+        const form = document.querySelector('#post-create-form, #post-edit-form');
+        if (!form || form.querySelector('[data-post-vote-setting]')) return;
+
+        const commentsCheckbox = form.querySelector('input[type="checkbox"][name="comments_disabled"]');
+        if (!commentsCheckbox) return;
+
+        const preferenceRow = findPreferenceRow(commentsCheckbox, form);
+        if (!preferenceRow?.parentElement) return;
+
+        const meta = document.querySelector('meta[name="ografi-post-votes-enabled"]');
+        const enabled = String(meta?.getAttribute('content') ?? '1') !== '0';
+
+        const row = document.createElement('div');
+        row.className = preferenceRow.className;
+        row.classList.add('post-vote-setting-row');
+        row.dataset.postVoteSetting = '';
+
+        const copy = document.createElement('div');
+        copy.className = 'post-vote-setting-copy';
+
+        const title = document.createElement('div');
+        title.className = 'post-vote-setting-title';
+        title.textContent = 'Gönderi oylaması';
+
+        const description = document.createElement('div');
+        description.className = 'post-vote-setting-description';
+        description.textContent = 'Oklarla olumlu veya olumsuz oy verilmesine izin ver.';
+
+        copy.append(title, description);
+
+        const toggle = document.createElement('div');
+        toggle.className = 'post-vote-setting-toggle';
+
+        const hidden = document.createElement('input');
+        hidden.type = 'hidden';
+        hidden.name = 'votes_enabled';
+        hidden.value = '0';
+
+        const label = document.createElement('label');
+        label.className = 'post-vote-setting-switch';
+        label.title = 'Gönderi oylamasını aç veya kapat';
+
+        const input = document.createElement('input');
+        input.type = 'checkbox';
+        input.name = 'votes_enabled';
+        input.value = '1';
+        input.checked = enabled;
+        input.setAttribute('aria-label', 'Gönderi oylamasını etkinleştir');
+
+        const track = document.createElement('span');
+        track.className = 'post-vote-setting-track';
+        track.setAttribute('aria-hidden', 'true');
+
+        label.append(input, track);
+        toggle.append(hidden, label);
+        row.append(copy, toggle);
+        preferenceRow.insertAdjacentElement('afterend', row);
+    };
+
     const createControl = (slug, state = {}) => {
         const control = document.createElement('span');
         control.className = 'post-vote-control';
@@ -236,13 +311,19 @@
         void submitVote(control, value);
     }, true);
 
-    document.addEventListener('ografi:feed-appended', scheduleHydrate);
+    document.addEventListener('ografi:feed-appended', () => {
+        initComposerVoteSetting();
+        scheduleHydrate();
+    });
 
     const observer = new MutationObserver((records) => {
-        if (records.some((record) => record.addedNodes.length > 0)) scheduleHydrate();
+        if (!records.some((record) => record.addedNodes.length > 0)) return;
+        initComposerVoteSetting();
+        scheduleHydrate();
     });
 
     const start = () => {
+        initComposerVoteSetting();
         scheduleHydrate();
         if (document.body) observer.observe(document.body, { childList: true, subtree: true });
     };
