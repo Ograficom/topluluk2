@@ -146,6 +146,76 @@ html body.alma-app .post-show-shell .ps-post-body h6:not(#comments):not(#comment
     margin: 16px 0 6px !important;
 }
 
+/*
+ * Post-show blok ritmi.
+ * Resim, tablo ve bilgi/uyarı gibi kutuların ardından metin hemen yapışmasın.
+ * EditorJS, RSS/HTML ve doğrudan figure/img çıktılarını birlikte kapsar.
+ */
+html body.alma-app .post-show-shell .ps-post-body .ce-block:has(
+    .image-tool,
+    figure,
+    table,
+    .tc-wrap,
+    .ce-quote,
+    .cdx-quote,
+    .cdx-warning,
+    .cdx-alert,
+    .ce-code,
+    .alert,
+    .callout,
+    .info-box,
+    .warning-box
+):not(#comments):not(#comments *),
+html body.alma-app .post-show-shell .ps-post-body > :where(
+    figure,
+    .image-tool,
+    p:has(> img),
+    table,
+    .tc-wrap,
+    .ce-quote,
+    .cdx-quote,
+    .cdx-warning,
+    .cdx-alert,
+    .ce-code,
+    .alert,
+    .callout,
+    .info-box,
+    .warning-box
+):not(#comments):not(#comments *) {
+    margin-bottom: 18px !important;
+}
+
+/* Resim doğrudan bir içerik kapsayıcısında ise sonraki bloğa yine nefes bırak. */
+html body.alma-app .post-show-shell .ps-post-body :where(
+    .ce-block__content > .image-tool,
+    .ce-block__content > figure,
+    .ce-block__content > table,
+    .ce-block__content > .tc-wrap,
+    .ce-block__content > .cdx-warning,
+    .ce-block__content > .cdx-alert
+):not(#comments):not(#comments *) {
+    margin-bottom: 18px !important;
+}
+
+/* Son blokta gereksiz ekstra kuyruk boşluğu oluşturma. */
+html body.alma-app .post-show-shell .ps-post-body > :where(
+    figure,
+    .image-tool,
+    table,
+    .tc-wrap,
+    .ce-quote,
+    .cdx-quote,
+    .cdx-warning,
+    .cdx-alert,
+    .ce-code,
+    .alert,
+    .callout,
+    .info-box,
+    .warning-box
+):last-child:not(#comments):not(#comments *) {
+    margin-bottom: 0 !important;
+}
+
 /* Tablet */
 @media (min-width: 641px) and (max-width: 1024px) {
     html body.alma-app .post-show-shell .ps-post-title:not(#comments):not(#comments *),
@@ -204,6 +274,48 @@ html body.alma-app .post-show-shell .ps-post-body h6:not(#comments):not(#comment
         font-size: 16px !important;
         line-height: 1.42 !important;
     }
+
+    html body.alma-app .post-show-shell .ps-post-body .ce-block:has(
+        .image-tool,
+        figure,
+        table,
+        .tc-wrap,
+        .ce-quote,
+        .cdx-quote,
+        .cdx-warning,
+        .cdx-alert,
+        .ce-code,
+        .alert,
+        .callout,
+        .info-box,
+        .warning-box
+    ):not(#comments):not(#comments *),
+    html body.alma-app .post-show-shell .ps-post-body > :where(
+        figure,
+        .image-tool,
+        p:has(> img),
+        table,
+        .tc-wrap,
+        .ce-quote,
+        .cdx-quote,
+        .cdx-warning,
+        .cdx-alert,
+        .ce-code,
+        .alert,
+        .callout,
+        .info-box,
+        .warning-box
+    ):not(#comments):not(#comments *),
+    html body.alma-app .post-show-shell .ps-post-body :where(
+        .ce-block__content > .image-tool,
+        .ce-block__content > figure,
+        .ce-block__content > table,
+        .ce-block__content > .tc-wrap,
+        .ce-block__content > .cdx-warning,
+        .ce-block__content > .cdx-alert
+    ):not(#comments):not(#comments *) {
+        margin-bottom: 16px !important;
+    }
 }
 </style>
 HTML;
@@ -211,7 +323,7 @@ HTML;
         $html = preg_replace('/<\/body>/i', $style . "\n</body>", $html, 1) ?? ($html . $style);
 
         $response->setContent($html);
-        $response->headers->set('X-Ografi-Post-Typography', 'v11');
+        $response->headers->set('X-Ografi-Post-Typography', 'v12');
 
         return $response;
     }
