@@ -2,7 +2,6 @@
  * Post-card alt etkileşim alanı.
  * Ayırıcı çizgi tepki/emoji satırının ÜSTÜNDE olur.
  * Yorum / kaydet / paylaş satırının üstündeki eski çizgi kaldırılır.
- * ID selector kullanımı, post-card.blade.php içindeki son !important kuralları kesin olarak ezer.
  */
 
 html body article.post-card[data-post-card-shell] #action-bar.action-bar {
@@ -15,19 +14,96 @@ html body article.post-card[data-post-card-shell] #reaction-row.reactions-row {
     padding-top: 10px !important;
 }
 
-/* Mobilde çizgi kartın iki kenarına kadar uzansın. */
+/*
+ * Mobil post-card düzeltmesi:
+ * - Tepki ekleme ikonunun ince gri çemberini kaldır.
+ * - Önceki full-bleed negatif margin'i kaldır; kart köşeleri eşit kalsın.
+ * - Sadece emoji/tepki butonunu etkiler.
+ */
 @media (max-width: 640px) {
+    html body article.post-card[data-post-card-shell] {
+        border-radius: 8px !important;
+        overflow: hidden !important;
+    }
+
     html body article.post-card[data-post-card-shell] #reaction-row.reactions-row {
-        margin-left: -15px !important;
-        margin-right: -15px !important;
-        padding-left: 15px !important;
-        padding-right: 15px !important;
-        padding-top: 10px !important;
-        width: auto !important;
+        width: 100% !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+        padding-top: 9px !important;
+        border-top: 1px solid #e5e7eb !important;
+        box-sizing: border-box !important;
     }
 
     html body article.post-card[data-post-card-shell] #action-bar.action-bar {
         border-top: 0 !important;
+    }
+
+    html body article.post-card[data-post-card-shell] #reaction-row.reactions-row .post-card__reaction-wrap {
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    html body article.post-card[data-post-card-shell] #reaction-row.reactions-row button.smiley-btn.reaction-add[data-post-card-reaction-trigger] {
+        appearance: none !important;
+        -webkit-appearance: none !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        width: 34px !important;
+        height: 34px !important;
+        min-width: 34px !important;
+        min-height: 34px !important;
+        max-width: 34px !important;
+        max-height: 34px !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        border: 0 !important;
+        outline: 0 !important;
+        box-shadow: none !important;
+        background: transparent !important;
+        background-color: transparent !important;
+        border-radius: 9999px !important;
+        color: #111111 !important;
+    }
+
+    html body article.post-card[data-post-card-shell] #reaction-row.reactions-row button.smiley-btn.reaction-add[data-post-card-reaction-trigger]::before,
+    html body article.post-card[data-post-card-shell] #reaction-row.reactions-row button.smiley-btn.reaction-add[data-post-card-reaction-trigger]::after {
+        content: none !important;
+        display: none !important;
+        border: 0 !important;
+        box-shadow: none !important;
+        background: transparent !important;
+    }
+
+    html body article.post-card[data-post-card-shell] #reaction-row.reactions-row button.smiley-btn.reaction-add[data-post-card-reaction-trigger] .post-card__inline-icon {
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        width: 21px !important;
+        height: 21px !important;
+        min-width: 21px !important;
+        min-height: 21px !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        border: 0 !important;
+        background: transparent !important;
+    }
+
+    html body article.post-card[data-post-card-shell] #reaction-row.reactions-row button.smiley-btn.reaction-add[data-post-card-reaction-trigger] .post-card__inline-icon svg,
+    html body article.post-card[data-post-card-shell] #reaction-row.reactions-row button.smiley-btn.reaction-add[data-post-card-reaction-trigger] .post-card__inline-icon iconify-icon {
+        display: block !important;
+        width: 21px !important;
+        height: 21px !important;
+        min-width: 21px !important;
+        min-height: 21px !important;
+        margin: 0 !important;
+        padding: 0 !important;
     }
 }
 
@@ -36,4 +112,16 @@ body.dark article.post-card[data-post-card-shell] #reaction-row.reactions-row,
 .dark article.post-card[data-post-card-shell] #reaction-row.reactions-row,
 [data-theme="dark"] article.post-card[data-post-card-shell] #reaction-row.reactions-row {
     border-top-color: rgba(255, 255, 255, 0.12) !important;
+}
+
+@media (max-width: 640px) {
+    html.dark body article.post-card[data-post-card-shell] #reaction-row.reactions-row button.smiley-btn.reaction-add[data-post-card-reaction-trigger],
+    body.dark article.post-card[data-post-card-shell] #reaction-row.reactions-row button.smiley-btn.reaction-add[data-post-card-reaction-trigger],
+    .dark article.post-card[data-post-card-shell] #reaction-row.reactions-row button.smiley-btn.reaction-add[data-post-card-reaction-trigger],
+    [data-theme="dark"] article.post-card[data-post-card-shell] #reaction-row.reactions-row button.smiley-btn.reaction-add[data-post-card-reaction-trigger] {
+        border: 0 !important;
+        box-shadow: none !important;
+        background: transparent !important;
+        background-color: transparent !important;
+    }
 }
