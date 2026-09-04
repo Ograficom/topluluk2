@@ -182,3 +182,22 @@ html body.route-home .home-feed-shell article.post-card[data-post-card-shell] :i
     background: transparent !important;
     box-shadow: none !important;
 }
+
+/*
+ * Ana akış yüzeyleri gölge kullanmaz.
+ * Normal, hover, focus ve active durumlarının tamamını kilitle.
+ */
+html body.route-home .home-feed-shell article.post-card[data-post-card-shell],
+html body.route-home .home-feed-shell article.post-card[data-post-card-shell]:hover,
+html body.route-home .home-feed-shell article.post-card[data-post-card-shell]:focus,
+html body.route-home .home-feed-shell article.post-card[data-post-card-shell]:focus-within,
+html body.route-home .home-feed-shell article.post-card[data-post-card-shell]:active,
+html body.route-home .home-feed-shell [data-og-feed-insert-card],
+html body.route-home .home-feed-shell [data-og-feed-insert-card]:hover,
+html body.route-home .home-feed-shell [data-og-feed-insert-card]:focus,
+html body.route-home .home-feed-shell [data-og-feed-insert-card]:focus-within,
+html body.route-home .home-feed-shell [data-og-feed-insert-card]:active {
+    box-shadow: none !important;
+    filter: none !important;
+    transform: none !important;
+}
