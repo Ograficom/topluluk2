@@ -32,9 +32,9 @@
     <div class="mb-3 flex items-start justify-between gap-3">
         <div>
             <div class="text-sm font-semibold text-slate-950">Rankbeam SEO</div>
-            <p class="mt-0.5 text-xs leading-5 text-slate-500">Filament ile ayni SEO kaydini kullanir. Bos alanlar yazinin mevcut SEO bilgilerinden otomatik tamamlanir.</p>
+            <p class="mt-0.5 text-xs leading-5 text-slate-500">Filament panelindeki ayni Rankbeam SEO kaydini duzenler. Arama motoru ve sosyal paylasim ayarlari iki tarafta da ortak kalir.</p>
         </div>
-        <span class="shrink-0 rounded-full border border-blue-100 bg-blue-50 px-2 py-1 text-[10px] font-semibold uppercase tracking-wide text-blue-700">SEO</span>
+        <span class="shrink-0 rounded-full border border-blue-100 bg-blue-50 px-2 py-1 text-[10px] font-semibold uppercase tracking-wide text-blue-700">Google + Sosyal</span>
     </div>
 
     <div class="space-y-3">
