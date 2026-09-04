@@ -1,5 +1,3 @@
-@import './header-compact-modern.css';
-
 /* /video mobile header — reference restored: iOS proportions + visible downward haze. */
 @media (max-width: 767px) {
     html body.alma-app #video-reference-mobile-header {
