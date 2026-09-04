@@ -8,6 +8,7 @@ use App\Http\Middleware\ContactPageFieldStyleMiddleware;
 use App\Http\Middleware\EditorJsTableInlineFormatMiddleware;
 use App\Http\Middleware\EnsureImageAltText;
 use App\Http\Middleware\EnsureInstalled;
+use App\Http\Middleware\HomeFeedInterleavedCardsMiddleware;
 use App\Http\Middleware\LoginPageSecurityMiddleware;
 use App\Http\Middleware\PostPresentationMiddleware;
 use App\Http\Middleware\PostShowCommentIdentityLayoutMiddleware;
@@ -53,6 +54,7 @@ return Application::configure(basePath: dirname(__DIR__))
             LoginPageSecurityMiddleware::class,
             ContactPageFieldStyleMiddleware::class,
             VideoPageResponseMiddleware::class,
+            HomeFeedInterleavedCardsMiddleware::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
