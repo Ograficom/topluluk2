@@ -303,6 +303,51 @@ html body [data-post-card-reaction-menu].post-card__reaction-menu .post-card__re
     object-fit: cover !important;
 }
 
+/* Mobile post-card picker: a little wider, but always exactly four reactions per row. */
+@media (max-width: 640px) {
+    html body [data-post-card-reaction-menu].post-card__reaction-menu {
+        width: 220px !important;
+        min-width: 220px !important;
+        max-width: min(220px, calc(100vw - 20px)) !important;
+        padding: 10px 12px 11px !important;
+        border-radius: 10px !important;
+    }
+
+    html body [data-post-card-reaction-menu].post-card__reaction-menu:not([hidden]) {
+        grid-template-columns: repeat(4, 40px) !important;
+        gap: 7px 8px !important;
+    }
+
+    html body [data-post-card-reaction-menu].post-card__reaction-menu :is(.post-card__reaction-form, a.post-card__reaction-option),
+    html body [data-post-card-reaction-menu].post-card__reaction-menu .post-card__reaction-option {
+        width: 40px !important;
+        min-width: 40px !important;
+        max-width: 40px !important;
+        height: 40px !important;
+        min-height: 40px !important;
+        max-height: 40px !important;
+        flex: 0 0 40px !important;
+    }
+
+    html body [data-post-card-reaction-menu].post-card__reaction-menu .reaction-emoji,
+    html body [data-post-card-reaction-menu].post-card__reaction-menu .reaction-emoji--html,
+    html body [data-post-card-reaction-menu].post-card__reaction-menu .reaction-emoji--html :is(img, svg, iconify-icon),
+    html body [data-post-card-reaction-menu].post-card__reaction-menu .post-card__reaction-asset {
+        width: 28px !important;
+        min-width: 28px !important;
+        max-width: 28px !important;
+        height: 28px !important;
+        min-height: 28px !important;
+        max-height: 28px !important;
+    }
+
+    html body [data-post-card-reaction-menu].post-card__reaction-menu .reaction-emoji,
+    html body [data-post-card-reaction-menu].post-card__reaction-menu .reaction-emoji--html {
+        font-size: 25px !important;
+        line-height: 28px !important;
+    }
+}
+
 html.dark body article.post-card[data-post-card-shell] .reactions-row.reaction-row .reaction-item,
 html.dark body article.post-card[data-post-card-shell] .reactions-row.reaction-row .more-pill,
 html.dark body article.post-card[data-post-card-shell] .reactions-row.reaction-row .smiley-btn.reaction-add {
