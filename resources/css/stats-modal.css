@@ -1,0 +1,443 @@
+/*
+ * Ografi shared interaction statistics modal.
+ * Feed post-card and post-show use the same visual language here.
+ */
+
+body.alma-app dialog.post-card__stats-modal[open],
+body.alma-app .post-show-shell .ps-show-stats-modal:not([hidden]) {
+    position: fixed !important;
+    inset: 0 !important;
+    z-index: 999999999 !important;
+    display: grid !important;
+    place-items: center !important;
+    width: 100vw !important;
+    height: 100dvh !important;
+    min-width: 100vw !important;
+    min-height: 100dvh !important;
+    margin: 0 !important;
+    padding: 12px !important;
+    border: 0 !important;
+    background: transparent !important;
+    box-sizing: border-box !important;
+}
+
+body.alma-app dialog.post-card__stats-modal::backdrop {
+    background: rgba(0, 0, 0, .82) !important;
+    -webkit-backdrop-filter: blur(14px) saturate(140%) !important;
+    backdrop-filter: blur(14px) saturate(140%) !important;
+}
+
+body.alma-app .post-show-shell .ps-show-stats-backdrop {
+    position: absolute !important;
+    inset: 0 !important;
+    background: rgba(0, 0, 0, .82) !important;
+    -webkit-backdrop-filter: blur(14px) saturate(140%) !important;
+    backdrop-filter: blur(14px) saturate(140%) !important;
+}
+
+body.alma-app dialog.post-card__stats-modal[open] > .post-card__stats-panel,
+body.alma-app .post-show-shell .ps-show-stats-panel {
+    position: relative !important;
+    inset: auto !important;
+    top: auto !important;
+    right: auto !important;
+    bottom: auto !important;
+    left: auto !important;
+    z-index: 1 !important;
+    width: min(520px, calc(100vw - 24px)) !important;
+    min-height: 236px !important;
+    max-height: calc(100dvh - 24px) !important;
+    margin: 0 !important;
+    padding: 20px 24px 26px !important;
+    overflow-y: auto !important;
+    border: 0 !important;
+    border-radius: 12px !important;
+    background: #ffffff !important;
+    color: #111111 !important;
+    box-shadow: none !important;
+    transform: none !important;
+}
+
+body.alma-app .post-card__stats-head,
+body.alma-app .post-show-shell .ps-show-stats-head {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 16px !important;
+    margin: 0 0 26px !important;
+}
+
+body.alma-app .post-card__stats-head > strong,
+body.alma-app .post-card__stats-head > strong [data-post-card-stats-total],
+body.alma-app .post-show-shell .ps-show-stats-title {
+    margin: 0 !important;
+    color: #111111 !important;
+    font-size: 20px !important;
+    font-weight: 700 !important;
+    line-height: 1.2 !important;
+    letter-spacing: 0 !important;
+}
+
+body.alma-app .post-card__stats-grid,
+body.alma-app .post-show-shell .ps-show-stats-grid {
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    column-gap: 34px !important;
+    row-gap: 46px !important;
+}
+
+body.alma-app .post-card__stats-item,
+body.alma-app .post-show-shell .ps-show-stats-item {
+    min-width: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+}
+
+body.alma-app .post-card__stats-item > strong,
+body.alma-app .post-show-shell .ps-show-stats-item > strong {
+    display: block !important;
+    margin: 0 0 3px !important;
+    color: #111111 !important;
+    font-size: 20px !important;
+    font-weight: 700 !important;
+    line-height: 1.1 !important;
+}
+
+body.alma-app .post-card__stats-item > span,
+body.alma-app .post-show-shell .ps-show-stats-item > span,
+body.alma-app .og-reaction-summary-label {
+    color: #666666 !important;
+    font-size: 13px !important;
+    font-weight: 400 !important;
+    line-height: 1.25 !important;
+}
+
+/* X: normalde sade; hover/focus'ta gri, basarken biraz daha koyu gri. */
+body.alma-app .post-card__stats-close,
+body.alma-app .post-show-shell .ps-show-stats-close {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 32px !important;
+    height: 32px !important;
+    min-width: 32px !important;
+    min-height: 32px !important;
+    padding: 0 !important;
+    border: 0 !important;
+    border-radius: 8px !important;
+    background: transparent !important;
+    color: #111111 !important;
+    box-shadow: none !important;
+    outline: none !important;
+    cursor: pointer !important;
+    transition: background-color .14s ease !important;
+}
+
+body.alma-app .post-card__stats-close:hover,
+body.alma-app .post-card__stats-close:focus-visible,
+body.alma-app .post-show-shell .ps-show-stats-close:hover,
+body.alma-app .post-show-shell .ps-show-stats-close:focus-visible {
+    background: #e5e7eb !important;
+    color: #111111 !important;
+}
+
+body.alma-app .post-card__stats-close:active,
+body.alma-app .post-show-shell .ps-show-stats-close:active {
+    background: #d1d5db !important;
+    color: #111111 !important;
+}
+
+body.alma-app .post-card__stats-close iconify-icon,
+body.alma-app .post-show-shell .ps-show-stats-close svg {
+    pointer-events: none !important;
+}
+
+/* Reaction summary */
+body.alma-app .og-reaction-stats-tile {
+    cursor: pointer !important;
+    outline: none !important;
+}
+
+body.alma-app .og-reaction-summary-row {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 6px !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    overflow: visible !important;
+}
+
+body.alma-app .og-reaction-summary-label {
+    display: inline-block !important;
+    flex: 0 0 auto !important;
+    margin: 0 !important;
+    white-space: nowrap !important;
+}
+
+body.alma-app .og-reaction-avatar-stack {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+    flex: 0 0 auto !important;
+    min-width: 0 !important;
+    padding-left: 4px !important;
+    overflow: visible !important;
+}
+
+body.alma-app .og-reaction-avatar,
+body.alma-app .og-reaction-avatar-fallback,
+body.alma-app .og-reaction-avatar-guest,
+body.alma-app .og-reaction-avatar-more {
+    position: relative !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 22px !important;
+    height: 22px !important;
+    min-width: 22px !important;
+    margin-left: -8px !important;
+    border: 1.5px solid #ffffff !important;
+    border-radius: 9999px !important;
+    box-sizing: border-box !important;
+    overflow: hidden !important;
+    background: #eef2f7 !important;
+    color: #64748b !important;
+    object-fit: cover !important;
+    box-shadow: none !important;
+    font-size: 8px !important;
+    font-weight: 700 !important;
+    line-height: 1 !important;
+}
+
+body.alma-app .og-reaction-avatar-stack > :first-child {
+    margin-left: 0 !important;
+}
+
+body.alma-app .og-reaction-avatar-guest svg {
+    width: 12px !important;
+    height: 12px !important;
+}
+
+body.alma-app .og-reaction-avatar-more {
+    z-index: 20 !important;
+    overflow: visible !important;
+    background: #f3f4f6 !important;
+    color: #111827 !important;
+    white-space: nowrap !important;
+}
+
+/* Reaction details */
+body.alma-app .og-stats-reaction-details-open .post-card__stats-grid,
+body.alma-app .og-stats-reaction-details-open .ps-show-stats-grid {
+    display: none !important;
+}
+
+body.alma-app .og-reaction-details {
+    display: none !important;
+    min-width: 0 !important;
+}
+
+body.alma-app .og-stats-reaction-details-open .og-reaction-details {
+    display: block !important;
+}
+
+body.alma-app .og-reaction-details-head {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 12px !important;
+    margin: -2px 0 10px !important;
+    padding-bottom: 10px !important;
+    border-bottom: 1px solid #eceef1 !important;
+}
+
+body.alma-app .og-reaction-details-title {
+    color: #111111 !important;
+    font-size: 15px !important;
+    font-weight: 700 !important;
+    line-height: 1.2 !important;
+}
+
+body.alma-app .og-reaction-details-back {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    min-height: 30px !important;
+    padding: 0 10px !important;
+    border: 0 !important;
+    border-radius: 8px !important;
+    background: #f3f4f6 !important;
+    color: #111827 !important;
+    font-size: 12px !important;
+    font-weight: 600 !important;
+    box-shadow: none !important;
+    cursor: pointer !important;
+}
+
+body.alma-app .og-reaction-details-list {
+    display: flex !important;
+    flex-direction: column !important;
+    max-height: min(360px, 50vh) !important;
+    overflow-y: auto !important;
+}
+
+body.alma-app .og-reaction-detail-row {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 14px !important;
+    min-height: 54px !important;
+    padding: 8px 2px !important;
+    border-bottom: 1px solid #f0f1f3 !important;
+    color: inherit !important;
+    text-decoration: none !important;
+}
+
+body.alma-app .og-reaction-detail-row:last-child {
+    border-bottom: 0 !important;
+}
+
+body.alma-app .og-reaction-detail-person {
+    display: flex !important;
+    align-items: center !important;
+    min-width: 0 !important;
+    gap: 10px !important;
+}
+
+body.alma-app .og-reaction-detail-avatar,
+body.alma-app .og-reaction-detail-avatar-fallback,
+body.alma-app .og-reaction-detail-avatar-guest {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 36px !important;
+    height: 36px !important;
+    min-width: 36px !important;
+    border: 0 !important;
+    border-radius: 9999px !important;
+    background: #eef2f7 !important;
+    color: #64748b !important;
+    object-fit: cover !important;
+    font-size: 11px !important;
+    font-weight: 700 !important;
+    box-shadow: none !important;
+}
+
+body.alma-app .og-reaction-detail-avatar-guest svg {
+    width: 18px !important;
+    height: 18px !important;
+}
+
+body.alma-app .og-reaction-detail-name {
+    overflow: hidden !important;
+    color: #111827 !important;
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    line-height: 1.3 !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+}
+
+body.alma-app .og-reaction-detail-value {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+    flex: 0 0 auto !important;
+    min-width: 38px !important;
+    color: #111827 !important;
+    font-size: 22px !important;
+    line-height: 1 !important;
+}
+
+body.alma-app .og-reaction-detail-value img {
+    display: block !important;
+    width: 30px !important;
+    height: 30px !important;
+    border: 0 !important;
+    border-radius: 8px !important;
+    object-fit: contain !important;
+    background: transparent !important;
+    box-shadow: none !important;
+}
+
+body.alma-app .og-reaction-details-empty {
+    padding: 18px 0 !important;
+    color: #6b7280 !important;
+    font-size: 13px !important;
+    text-align: center !important;
+}
+
+@media (max-width: 520px) {
+    body.alma-app dialog.post-card__stats-modal[open],
+    body.alma-app .post-show-shell .ps-show-stats-modal:not([hidden]) {
+        padding: 10px !important;
+    }
+
+    body.alma-app dialog.post-card__stats-modal[open] > .post-card__stats-panel,
+    body.alma-app .post-show-shell .ps-show-stats-panel {
+        width: min(356px, calc(100vw - 20px)) !important;
+        min-height: 240px !important;
+        padding: 18px 20px 24px !important;
+        border-radius: 12px !important;
+    }
+
+    body.alma-app .post-card__stats-grid,
+    body.alma-app .post-show-shell .ps-show-stats-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        column-gap: 24px !important;
+        row-gap: 28px !important;
+    }
+
+    body.alma-app .og-reaction-avatar,
+    body.alma-app .og-reaction-avatar-fallback,
+    body.alma-app .og-reaction-avatar-guest,
+    body.alma-app .og-reaction-avatar-more {
+        width: 21px !important;
+        height: 21px !important;
+        min-width: 21px !important;
+        margin-left: -8px !important;
+    }
+}
+
+html.dark body.alma-app dialog.post-card__stats-modal[open] > .post-card__stats-panel,
+html.dark body.alma-app .post-show-shell .ps-show-stats-panel,
+body.dark.alma-app dialog.post-card__stats-modal[open] > .post-card__stats-panel,
+body.dark.alma-app .post-show-shell .ps-show-stats-panel,
+[data-theme="dark"] body.alma-app dialog.post-card__stats-modal[open] > .post-card__stats-panel,
+[data-theme="dark"] body.alma-app .post-show-shell .ps-show-stats-panel {
+    background: #17181b !important;
+    color: #f4f4f5 !important;
+}
+
+html.dark body.alma-app .post-card__stats-head > strong,
+html.dark body.alma-app .post-card__stats-item > strong,
+html.dark body.alma-app .post-show-shell .ps-show-stats-title,
+html.dark body.alma-app .post-show-shell .ps-show-stats-item > strong,
+body.dark.alma-app .post-card__stats-head > strong,
+body.dark.alma-app .post-card__stats-item > strong,
+body.dark.alma-app .post-show-shell .ps-show-stats-title,
+body.dark.alma-app .post-show-shell .ps-show-stats-item > strong {
+    color: #f4f4f5 !important;
+}
+
+html.dark body.alma-app .post-card__stats-close:hover,
+html.dark body.alma-app .post-card__stats-close:focus-visible,
+html.dark body.alma-app .post-show-shell .ps-show-stats-close:hover,
+html.dark body.alma-app .post-show-shell .ps-show-stats-close:focus-visible,
+body.dark.alma-app .post-card__stats-close:hover,
+body.dark.alma-app .post-show-shell .ps-show-stats-close:hover {
+    background: #2a2d32 !important;
+    color: #f4f4f5 !important;
+}
+
+@supports not (height: 100dvh) {
+    body.alma-app dialog.post-card__stats-modal[open],
+    body.alma-app .post-show-shell .ps-show-stats-modal:not([hidden]) {
+        height: 100vh !important;
+        min-height: 100vh !important;
+    }
+}
