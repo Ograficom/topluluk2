@@ -23,6 +23,7 @@
         "martin6363/filament-smart-seo": "^1.1",
         "notebrainslab/filament-email-templates": "^2.0",
         "openplain/filament-shadcn-theme": "^1.1",
+        "rankbeam/laravel-seo-filament": "^1.5",
         "rawand201/filament-connection-badge": "*",
         "shuvroroy/filament-spatie-laravel-health": "^3.3",
         "slimani/filament-media-manager": "^0.9.11",

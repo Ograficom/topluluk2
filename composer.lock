@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4baa1c27d2882be4a8890c6a3b2d1d23",
+    "content-hash": "2c4d42554585748036b7f2864fdb6ed7",
     "packages": [
         {
             "name": "anourvalar/eloquent-serialize",
@@ -7635,6 +7635,157 @@
                 "source": "https://github.com/ramsey/uuid/tree/4.9.3"
             },
             "time": "2026-06-18T03:57:49+00:00"
+        },
+        {
+            "name": "rankbeam/laravel-seo",
+            "version": "v3.12.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/rankbeam/laravel-seo.git",
+                "reference": "47ff6f4614a1f61e8e563ad4887e5a23dc83ad5b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/rankbeam/laravel-seo/zipball/47ff6f4614a1f61e8e563ad4887e5a23dc83ad5b",
+                "reference": "47ff6f4614a1f61e8e563ad4887e5a23dc83ad5b",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/cache": "^11.0|^12.0|^13.0",
+                "illuminate/console": "^11.0|^12.0|^13.0",
+                "illuminate/database": "^11.0|^12.0|^13.0",
+                "illuminate/filesystem": "^11.0|^12.0|^13.0",
+                "illuminate/http": "^11.0|^12.0|^13.0",
+                "illuminate/routing": "^11.0|^12.0|^13.0",
+                "illuminate/support": "^11.0|^12.0|^13.0",
+                "php": "^8.2"
+            },
+            "require-dev": {
+                "laravel/pint": "^1.0",
+                "orchestra/testbench": "^9.0|^10.0|^11.0",
+                "pestphp/pest": "^2.0|^3.0",
+                "spatie/browsershot": "^4.0|^5.0",
+                "spatie/laravel-sitemap": "^7.0|^8.0"
+            },
+            "suggest": {
+                "spatie/browsershot": "Generate 1200x630 OG images with a real browser (config seo.og_image)",
+                "spatie/laravel-sitemap": "Generate XML sitemaps for your models (^7.0|^8.0)"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "aliases": {
+                        "SEO": "Rankbeam\\Seo\\Facades\\SEO"
+                    },
+                    "providers": [
+                        "Rankbeam\\Seo\\SEOServiceProvider"
+                    ]
+                },
+                "branch-alias": {
+                    "dev-master": "3.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Rankbeam\\Seo\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Valentin Goxhaj",
+                    "email": "valentinogoxhaj@gmail.com"
+                }
+            ],
+            "description": "Open-core SEO infrastructure for Laravel: metadata, canonical URLs, social cards, linked JSON-LD, XML sitemaps and crawler controls - the free MIT core.",
+            "homepage": "https://rankbeam.dev",
+            "keywords": [
+                "JSON-LD",
+                "Sitemap",
+                "canonical",
+                "laravel",
+                "meta-tags",
+                "open-graph",
+                "php",
+                "schema",
+                "seo",
+                "structured-data",
+                "twitter-cards"
+            ],
+            "support": {
+                "docs": "https://docs.rankbeam.dev",
+                "email": "hello@rankbeam.dev",
+                "issues": "https://github.com/rankbeam/laravel-seo/issues",
+                "source": "https://github.com/rankbeam/laravel-seo"
+            },
+            "time": "2026-07-15T12:10:57+00:00"
+        },
+        {
+            "name": "rankbeam/laravel-seo-filament",
+            "version": "v1.5.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/rankbeam/laravel-seo-filament.git",
+                "reference": "65197f26b412cdab71fe0c9b26b77f8384057b16"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/rankbeam/laravel-seo-filament/zipball/65197f26b412cdab71fe0c9b26b77f8384057b16",
+                "reference": "65197f26b412cdab71fe0c9b26b77f8384057b16",
+                "shasum": ""
+            },
+            "require": {
+                "filament/filament": "^4.0|^5.0",
+                "php": "^8.2",
+                "rankbeam/laravel-seo": "^2.0 || ^3.0"
+            },
+            "require-dev": {
+                "laravel/pint": "^1.0",
+                "orchestra/testbench": "^9.0|^10.0|^11.0",
+                "pestphp/pest": "^3.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Rankbeam\\Seo\\Filament\\SeoFilamentServiceProvider"
+                    ]
+                },
+                "branch-alias": {
+                    "dev-master": "1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Rankbeam\\Seo\\Filament\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Valentin Goxhaj",
+                    "email": "valentinogoxhaj@gmail.com"
+                }
+            ],
+            "description": "Filament 4/5 form components for the Rankbeam Laravel SEO core - SEO section with live character counters, search-snippet preview, and manual-vs-fallback indicators.",
+            "keywords": [
+                "filament",
+                "filament-plugin",
+                "laravel",
+                "meta-tags",
+                "seo"
+            ],
+            "support": {
+                "issues": "https://github.com/rankbeam/laravel-seo-filament/issues",
+                "source": "https://github.com/rankbeam/laravel-seo-filament/tree/v1.5.0"
+            },
+            "time": "2026-07-04T09:44:03+00:00"
         },
         {
             "name": "ratchet/rfc6455",
