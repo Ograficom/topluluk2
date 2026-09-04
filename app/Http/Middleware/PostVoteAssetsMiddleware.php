@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Post;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -26,12 +27,30 @@ class PostVoteAssetsMiddleware
             return $response;
         }
 
-        if (! str_contains($html, 'data-post-card-shell') && ! str_contains($html, 'post-show-shell')) {
+        $hasPostSurface = str_contains($html, 'data-post-card-shell') || str_contains($html, 'post-show-shell');
+        $hasComposer = str_contains($html, 'id="post-create-form"') || str_contains($html, 'id="post-edit-form"');
+
+        if (! $hasPostSurface && ! $hasComposer) {
             return $response;
         }
 
         if (str_contains($html, 'data-og-post-votes-assets')) {
             return $response;
+        }
+
+        $votesEnabled = true;
+        if ($request->session()->hasOldInput('votes_enabled')) {
+            $votesEnabled = (bool) $request->old('votes_enabled');
+        } elseif ($request->routeIs('blog.post.edit')) {
+            $routePost = $request->route('post');
+            if ($routePost instanceof Post) {
+                $votesEnabled = (bool) $routePost->votes_enabled;
+            } else {
+                $slug = trim((string) $routePost);
+                if ($slug !== '') {
+                    $votesEnabled = (bool) (Post::withoutGlobalScopes()->where('slug', $slug)->value('votes_enabled') ?? true);
+                }
+            }
         }
 
         $cssPath = public_path('css/post-votes.css');
@@ -42,7 +61,8 @@ class PostVoteAssetsMiddleware
         $cssUrl = asset('css/post-votes.css') . '?v=' . rawurlencode($cssVersion);
         $jsUrl = asset('js/post-votes.js') . '?v=' . rawurlencode($jsVersion);
 
-        $headAsset = '<link data-og-post-votes-assets rel="stylesheet" href="' . e($cssUrl) . '">';
+        $headAsset = '<link data-og-post-votes-assets rel="stylesheet" href="' . e($cssUrl) . '">' . "\n"
+            . '<meta name="ografi-post-votes-enabled" content="' . ($votesEnabled ? '1' : '0') . '">';
         $bodyAsset = '<script data-og-post-votes-assets src="' . e($jsUrl) . '" defer></script>';
 
         if (stripos($html, '</head>') !== false) {
