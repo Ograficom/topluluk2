@@ -26,6 +26,11 @@ jobs:
           extensions: mbstring, intl, pdo_mysql
           coverage: none
 
+      - name: Prepare Laravel runtime paths
+        run: |
+          mkdir -p bootstrap/cache storage/framework/cache storage/framework/sessions storage/framework/views
+          test -f .env || cp .env.example .env
+
       - name: Install Rankbeam SEO
         run: |
           composer require rankbeam/laravel-seo-filament --with-all-dependencies --no-interaction
