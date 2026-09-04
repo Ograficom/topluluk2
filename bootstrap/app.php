@@ -10,6 +10,7 @@ use App\Http\Middleware\EnsureImageAltText;
 use App\Http\Middleware\EnsureInstalled;
 use App\Http\Middleware\HomeFeedInterleavedCardsMiddleware;
 use App\Http\Middleware\LoginPageSecurityMiddleware;
+use App\Http\Middleware\PostCardReactionStatsMiddleware;
 use App\Http\Middleware\PostPresentationMiddleware;
 use App\Http\Middleware\PostShowCommentIdentityLayoutMiddleware;
 use App\Http\Middleware\PostShowReactionLayoutMiddleware;
@@ -55,6 +56,7 @@ return Application::configure(basePath: dirname(__DIR__))
             ContactPageFieldStyleMiddleware::class,
             VideoPageResponseMiddleware::class,
             HomeFeedInterleavedCardsMiddleware::class,
+            PostCardReactionStatsMiddleware::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
