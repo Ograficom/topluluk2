@@ -31,3 +31,33 @@ body.route-home .feed-container > .bg-white {
     background: transparent !important;
     box-shadow: none !important;
 }
+
+/*
+ * Mobile post-card reaction picker.
+ * app.blade.php has a more specific 208px !important rule for the home feed,
+ * so this selector intentionally outranks it. Keep exactly four reactions per row
+ * while giving the picker a little more horizontal breathing room.
+ */
+@media (max-width: 640px) {
+    html body.route-home article.post-card[data-post-card-shell] [data-post-card-reaction-menu].post-card__reaction-menu:not([hidden]),
+    html body.route-home [data-post-card-shell] [data-post-card-reaction-menu].post-card__reaction-menu:not([hidden]) {
+        width: min(236px, calc(100vw - 20px)) !important;
+        min-width: min(236px, calc(100vw - 20px)) !important;
+        max-width: min(236px, calc(100vw - 20px)) !important;
+        padding: 10px 12px 12px !important;
+        display: grid !important;
+        grid-template-columns: repeat(4, 42px) !important;
+        grid-auto-flow: row !important;
+        justify-content: center !important;
+        justify-items: center !important;
+        align-items: center !important;
+        column-gap: 10px !important;
+        row-gap: 8px !important;
+    }
+
+    html body.route-home article.post-card[data-post-card-shell] [data-post-card-reaction-menu].post-card__reaction-menu .post-card__reaction-menu-title,
+    html body.route-home [data-post-card-shell] [data-post-card-reaction-menu].post-card__reaction-menu .post-card__reaction-menu-title {
+        grid-column: 1 / -1 !important;
+        width: 100% !important;
+    }
+}
