@@ -26,10 +26,12 @@ use Filament\Tables\Table;
 use Filament\Schemas\Schema;
 use Filament\Tables\Columns\BadgeColumn;
 use Illuminate\Support\Str;
-use Martin6363\FilamentSmartSeo\Forms\Components\SeoSection;
+use Rankbeam\Seo\Filament\Concerns\HasSEOFields;
 
 class PostResource extends Resource
 {
+    use HasSEOFields;
+
     protected static ?string $model = Post::class;
 
     protected static string | \UnitEnum | null $navigationGroup = 'Blog';
@@ -120,7 +122,7 @@ class PostResource extends Resource
                 ->label('Icerik')
                 ->view('filament.forms.editorjs-post')
                 ->columnSpanFull(),
-            Section::make('SEO')
+            Section::make('SEO yedek alanlar')
                 ->description('Arama motorlarinda ve paylasimlarda gorunecek bilgiler. Bos birakilirsa basliktan/icerikten otomatik uretilir.')
                 ->collapsible()
                 ->schema([
@@ -159,10 +161,11 @@ class PostResource extends Resource
                             ->inline(false),
                     ]),
                 ]),
-            SeoSection::make('Akilli SEO (AI)')
-                ->description('Doldurulursa yukaridaki Meta baslik/aciklamanin yerine kullanilir. AI ile otomatik doldurmak icin sag ustteki isik simgesine tiklayin (Gemini API anahtari gerektirir).')
-                ->sourceTitleField('title')
-                ->sourceDescriptionField('content')
+            static::seoSection()
+                ->description('Rankbeam SEO: arama onizlemesi, odak anahtar kelimeler, canonical, robots ve sosyal paylasim gorselini tek yerden yonetin.')
+                ->collapsible(),
+            static::seoSchemaSection()
+                ->description('Schema.org JSON-LD yapilandirilmis veri ayarlari.')
                 ->collapsible()
                 ->collapsed(),
             Grid::make(2)->schema([

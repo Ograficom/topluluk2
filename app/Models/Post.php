@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Carbon;
@@ -20,12 +21,13 @@ use App\Services\IndexNowService;
 use App\Services\SitemapManager;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Validation\ValidationException;
-use Martin6363\FilamentSmartSeo\Traits\HasSeo;
+use Martin6363\FilamentSmartSeo\Models\SeoMetadata;
+use Rankbeam\Seo\Traits\HasSEO;
 
 class Post extends Model
 {
     use HasFactory;
-    use HasSeo;
+    use HasSEO;
 
     public const MAX_DRAFTS_PER_USER = 5;
 
@@ -89,8 +91,82 @@ class Post extends Model
         return trim($text);
     }
 
+    /**
+     * Legacy SmartSEO relation kept for backwards compatibility while
+     * Rankbeam owns the active SEO resolver and editor.
+     */
+    public function seo(): MorphOne
+    {
+        return $this->morphOne(SeoMetadata::class, 'seoble');
+    }
+
+    public function seoOrNew(): SeoMetadata
+    {
+        return $this->seo()->firstOrNew([]);
+    }
+
+    public function getSEOTitle(): ?string
+    {
+        $title = trim((string) ($this->meta_title ?: $this->title));
+
+        return $title !== '' ? $title : null;
+    }
+
+    public function getSEODescription(): ?string
+    {
+        $description = trim((string) $this->meta_description);
+        if ($description === '') {
+            $description = PostSeoText::description($this->excerpt, $this->content, $this->title);
+        }
+
+        return $description !== '' ? $description : null;
+    }
+
+    public function getSEOImage(): ?string
+    {
+        return $this->ogImageUrl() ?: $this->featured_image_url;
+    }
+
+    public function getSEORobots(): ?string
+    {
+        if ($this->noindex) {
+            return 'noindex, follow';
+        }
+
+        return $this->isPublishedNow() ? null : 'noindex, nofollow';
+    }
+
+    public function getUrlForSEO(): string
+    {
+        try {
+            return route('blog.post', ['post' => $this]);
+        } catch (\Throwable $e) {
+            return url('/blog/' . ltrim((string) $this->slug, '/'));
+        }
+    }
+
+    public function getSEOContentFields(): array
+    {
+        return [
+            'title',
+            'meta_title',
+            'meta_description',
+            'excerpt',
+            'content',
+            'featured_image',
+            'og_image',
+            'noindex',
+            'published_at',
+            'is_published',
+        ];
+    }
+
     protected static function booted(): void
     {
+        static::deleting(function (Post $post): void {
+            $post->seo()->delete();
+        });
+
         static::creating(function (Post $post): void {
             if ($post->is_published || ! $post->author_id) {
                 return;

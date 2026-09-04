@@ -557,6 +557,7 @@
                                                 </div>
                                                 <input id="slug" name="slug" type="text" value="{{ old('slug') }}" placeholder="https://ornek.com/gonderi" class="create-input">
                                                 <textarea id="meta_keywords" name="meta_keywords" rows="2" placeholder="virgülle ayırın (ör. yazılım, php, laravel)" class="create-input resize-none">{{ old('meta_keywords') }}</textarea>
+                                                @include('blog.partials.rankbeam-seo-fields')
                                             </div>
                                         </details>
                                     </section>

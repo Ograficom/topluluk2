@@ -1,6 +1,91 @@
 @extends('layouts.app')
 
 @php
+    $rankbeamSeo = null;
+    try {
+        $rankbeamSeo = method_exists($post, 'seoData') ? $post->seoData() : null;
+    } catch (\Throwable $e) {
+        $rankbeamSeo = null;
+    }
+
+    $rankbeamPageTitle = trim((string) ($rankbeamSeo?->title ?: $post->meta_title ?: $post->title));
+    $rankbeamPageDescription = trim((string) ($rankbeamSeo?->description ?: $post->meta_description ?: $post->excerpt));
+    if ($rankbeamPageDescription === '') {
+        $rankbeamPageDescription = \Illuminate\Support\Str::limit(
+            preg_replace('/\s+/u', ' ', trim(strip_tags((string) $post->content))) ?: '',
+            160,
+            ''
+        );
+    }
+
+    try {
+        $rankbeamPageCanonical = trim((string) ($rankbeamSeo?->canonical ?: route('blog.post', $post)));
+    } catch (\Throwable $e) {
+        $rankbeamPageCanonical = request()->url();
+    }
+
+    $rankbeamNormalizeImage = static function ($image): ?string {
+        $image = trim((string) $image);
+        if ($image === '') {
+            return null;
+        }
+        if (\Illuminate\Support\Str::startsWith($image, ['http://', 'https://', '//'])) {
+            return $image;
+        }
+        if (\Illuminate\Support\Str::startsWith($image, '/')) {
+            return url($image);
+        }
+        if (\Illuminate\Support\Str::startsWith($image, 'storage/')) {
+            return url('/' . $image);
+        }
+
+        try {
+            return \Illuminate\Support\Facades\Storage::disk('public')->url($image);
+        } catch (\Throwable $e) {
+            return asset(ltrim($image, '/'));
+        }
+    };
+
+    $rankbeamOgTitle = trim((string) ($rankbeamSeo?->ogTitle ?: $rankbeamPageTitle));
+    $rankbeamOgDescription = trim((string) ($rankbeamSeo?->ogDescription ?: $rankbeamPageDescription));
+    $rankbeamOgImage = $rankbeamNormalizeImage($rankbeamSeo?->ogImage ?: $post->getSEOImage());
+    $rankbeamOgType = trim((string) ($rankbeamSeo?->ogType ?: 'article'));
+    $rankbeamTwitterTitle = trim((string) ($rankbeamSeo?->twitterTitle ?: $rankbeamOgTitle));
+    $rankbeamTwitterDescription = trim((string) ($rankbeamSeo?->twitterDescription ?: $rankbeamOgDescription));
+    $rankbeamTwitterImage = $rankbeamNormalizeImage($rankbeamSeo?->twitterImage ?: $rankbeamOgImage);
+    $rankbeamTwitterCard = trim((string) ($rankbeamSeo?->twitterCard ?: ($rankbeamTwitterImage ? 'summary_large_image' : 'summary')));
+    $rankbeamRobots = trim((string) ($rankbeamSeo?->robots ?? ''));
+    $rankbeamSchema = $rankbeamSeo?->schemaJsonld;
+@endphp
+
+@section('title', $rankbeamPageTitle)
+@section('meta_description', $rankbeamPageDescription)
+@section('canonical_url', $rankbeamPageCanonical)
+@section('has_custom_seo', '1')
+
+@push('seo')
+    @if($rankbeamRobots !== '')
+        <meta name="robots" content="{{ $rankbeamRobots }}">
+    @endif
+    <meta property="og:type" content="{{ $rankbeamOgType }}">
+    <meta property="og:title" content="{{ $rankbeamOgTitle }}">
+    <meta property="og:description" content="{{ $rankbeamOgDescription }}">
+    <meta property="og:url" content="{{ $rankbeamPageCanonical }}">
+    @if($rankbeamOgImage)
+        <meta property="og:image" content="{{ $rankbeamOgImage }}">
+    @endif
+    <meta name="twitter:card" content="{{ $rankbeamTwitterCard }}">
+    <meta name="twitter:title" content="{{ $rankbeamTwitterTitle }}">
+    <meta name="twitter:description" content="{{ $rankbeamTwitterDescription }}">
+    @if($rankbeamTwitterImage)
+        <meta name="twitter:image" content="{{ $rankbeamTwitterImage }}">
+    @endif
+    @if(is_array($rankbeamSchema) && $rankbeamSchema !== [])
+        <script type="application/ld+json">{!! json_encode($rankbeamSchema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) !!}</script>
+    @endif
+@endpush
+
+@php
     use Illuminate\Support\Str;
 
     $postUrl = request()->url();

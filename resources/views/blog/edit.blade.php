@@ -253,6 +253,8 @@
                                     <p class="text-xs text-slate-500">Virgul ile ayirin (or. yazilim, php, laravel).</p>
                                 </div>
 
+                                @include('blog.partials.rankbeam-seo-fields', ['post' => $post])
+
                                 <div class="space-y-4 pt-4">
                                     <div class="space-y-2">
                                         <label for="published_at" class="block text-sm font-semibold text-slate-900">Yayin tarihi (opsiyonel)</label>

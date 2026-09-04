@@ -1508,6 +1508,12 @@ class BlogController extends Controller
             'meta_title' => ['nullable', 'string', 'max:255'],
             'meta_description' => ['nullable', 'string'],
             'meta_keywords' => ['nullable', 'string'],
+            'rankbeam_title' => ['nullable', 'string', 'max:255'],
+            'rankbeam_description' => ['nullable', 'string', 'max:500'],
+            'rankbeam_focus_keywords' => ['nullable', 'string', 'max:1000'],
+            'rankbeam_canonical' => ['nullable', 'url', 'max:2048'],
+            'rankbeam_robots' => ['nullable', 'string', 'max:50'],
+            'rankbeam_og_image' => ['nullable', 'string', 'max:2048'],
             'is_published' => ['sometimes', 'boolean'],
             'is_pinned' => ['sometimes', 'boolean'],
             'comments_disabled' => ['boolean'],
@@ -1590,6 +1596,8 @@ class BlogController extends Controller
             $post->tags()->sync($tagIds->unique()->values()->all());
         }
 
+        $this->saveRankbeamSeo($post, $data);
+
         $repostPostId = $data['repost_post_id'] ?? null;
         if ($repostPostId) {
             $original = Post::query()->with('author:id,name,username')->find($repostPostId);
@@ -1652,6 +1660,12 @@ class BlogController extends Controller
             'meta_title' => ['nullable', 'string', 'max:255'],
             'meta_description' => ['nullable', 'string'],
             'meta_keywords' => ['nullable', 'string'],
+            'rankbeam_title' => ['nullable', 'string', 'max:255'],
+            'rankbeam_description' => ['nullable', 'string', 'max:500'],
+            'rankbeam_focus_keywords' => ['nullable', 'string', 'max:1000'],
+            'rankbeam_canonical' => ['nullable', 'url', 'max:2048'],
+            'rankbeam_robots' => ['nullable', 'string', 'max:50'],
+            'rankbeam_og_image' => ['nullable', 'string', 'max:2048'],
             'is_published' => ['sometimes', 'boolean'],
             'is_pinned' => ['sometimes', 'boolean'],
             'comments_disabled' => ['boolean'],
@@ -1769,6 +1783,8 @@ class BlogController extends Controller
 
         $post->tags()->sync($tagIds->unique()->values()->all());
 
+        $this->saveRankbeamSeo($post, $data);
+
         $this->mentionService->notifyPostMentions($post, $wasPublishedBeforeUpdate ? $previousPostContent : null);
 
         if (!$wasPublishedBeforeUpdate && $post->isPublishedNow()) {
@@ -1776,6 +1792,72 @@ class BlogController extends Controller
         }
 
         return redirect()->route('blog.post', $post)->with('status', 'Yazi guncellendi.');
+    }
+
+    private function saveRankbeamSeo(Post $post, array $data): void
+    {
+        $rankbeamKeys = [
+            'rankbeam_title',
+            'rankbeam_description',
+            'rankbeam_focus_keywords',
+            'rankbeam_canonical',
+            'rankbeam_robots',
+            'rankbeam_og_image',
+        ];
+
+        if (! collect($rankbeamKeys)->contains(fn (string $key): bool => array_key_exists($key, $data))) {
+            return;
+        }
+
+        $title = trim((string) ($data['rankbeam_title'] ?? ''));
+        if ($title === '') {
+            $title = trim((string) ($data['meta_title'] ?? ''));
+        }
+
+        $description = trim((string) ($data['rankbeam_description'] ?? ''));
+        if ($description === '') {
+            $description = trim((string) ($data['meta_description'] ?? ''));
+        }
+
+        $keywordSource = trim((string) ($data['rankbeam_focus_keywords'] ?? ''));
+        if ($keywordSource === '') {
+            $keywordSource = trim((string) ($data['meta_keywords'] ?? ''));
+        }
+
+        $focusKeywords = collect(preg_split('/[,\n]+/u', $keywordSource) ?: [])
+            ->map(fn ($keyword) => trim((string) $keyword))
+            ->filter()
+            ->unique(fn ($keyword) => mb_strtolower($keyword))
+            ->values()
+            ->map(fn ($keyword, $index) => [
+                'keyword' => $keyword,
+                'is_primary' => $index === 0,
+            ])
+            ->all();
+
+        $robots = trim((string) ($data['rankbeam_robots'] ?? ''));
+        $allowedRobots = [
+            'index, follow',
+            'index, nofollow',
+            'noindex, follow',
+            'noindex, nofollow',
+        ];
+        if (! in_array($robots, $allowedRobots, true)) {
+            $robots = $post->noindex ? 'noindex, follow' : '';
+        }
+
+        $canonical = trim((string) ($data['rankbeam_canonical'] ?? ''));
+        $ogImage = trim((string) ($data['rankbeam_og_image'] ?? ''));
+
+        $post->saveSEO([
+            'title' => $title !== '' ? $title : null,
+            'description' => $description !== '' ? $description : null,
+            'canonical' => $canonical !== '' ? $canonical : null,
+            'robots' => $robots !== '' ? $robots : null,
+            'og_image' => $ogImage !== '' ? $ogImage : null,
+            'og_type' => 'article',
+            'focus_keywords' => $focusKeywords !== [] ? $focusKeywords : null,
+        ]);
     }
 
     public function editorJsImage(Request $request): JsonResponse
