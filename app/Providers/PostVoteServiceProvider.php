@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Http\Controllers\PostVoteController;
 use App\Http\Middleware\PostVoteAssetsMiddleware;
+use App\Models\Post;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 
@@ -12,6 +13,22 @@ class PostVoteServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->app['router']->pushMiddlewareToGroup('web', PostVoteAssetsMiddleware::class);
+
+        $syncVotePreference = function (Post $post): void {
+            if ($this->app->runningInConsole() || ! $this->app->bound('request')) {
+                return;
+            }
+
+            $request = $this->app['request'];
+            if (! $request->has('votes_enabled')) {
+                return;
+            }
+
+            $post->setAttribute('votes_enabled', $request->boolean('votes_enabled'));
+        };
+
+        Post::creating($syncVotePreference);
+        Post::updating($syncVotePreference);
 
         Route::middleware('web')
             ->prefix('blog')
