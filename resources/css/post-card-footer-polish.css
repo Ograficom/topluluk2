@@ -1,20 +1,38 @@
 /*
  * Post-card alt etkileşim alanı.
- * Yatay ayırıcı çizgiyi kaldırır ve yalnızca tepki ekle butonunu hafifçe yukarı alır.
+ * Ayırıcı çizgi tepki/emoji satırının ÜSTÜNDE olur.
+ * Yorum / kaydet / paylaş satırının üstündeki eski çizgi kaldırılır.
  */
-html body.alma-app .alma-post-card .alma-post-card__engagement,
-html body.alma-app .alma-post-card .alma-post-card__engagement-main,
-html body.alma-app .alma-post-card .alma-post-card__comments-strip {
+
+html body article.post-card[data-post-card-shell] .action-bar {
     border-top: 0 !important;
 }
 
-html body.alma-app .alma-post-card .alma-post-card__reaction-picker {
+html body article.post-card[data-post-card-shell] .reactions-row {
     position: relative !important;
-    top: -5px !important;
+    border-top: 1px solid #e5e7eb !important;
+    padding-top: 10px !important;
 }
 
-@media (max-width: 767.98px) {
-    html body.alma-app .alma-post-card .alma-post-card__reaction-picker {
-        top: -6px !important;
+/* Mobilde post-card 15px iç padding kullanıyor; çizgiyi kartın iki kenarına kadar uzat. */
+@media (max-width: 640px) {
+    html body article.post-card[data-post-card-shell] .reactions-row {
+        margin-left: -15px !important;
+        margin-right: -15px !important;
+        padding-left: 15px !important;
+        padding-right: 15px !important;
+        padding-top: 10px !important;
+        width: auto !important;
     }
+
+    html body article.post-card[data-post-card-shell] .action-bar {
+        border-top: 0 !important;
+    }
+}
+
+html.dark body article.post-card[data-post-card-shell] .reactions-row,
+body.dark article.post-card[data-post-card-shell] .reactions-row,
+.dark article.post-card[data-post-card-shell] .reactions-row,
+[data-theme="dark"] article.post-card[data-post-card-shell] .reactions-row {
+    border-top-color: rgba(255, 255, 255, 0.12) !important;
 }
