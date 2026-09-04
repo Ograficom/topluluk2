@@ -1,0 +1,139 @@
+/*
+ * Ana akışta post-card aralarına giren özel kartların etkileşim stilleri.
+ * Başlıklar (En İyi Postlar / Kategoriler / Takip Edilecek Kişiler) özellikle
+ * bu dosyanın dışında bırakılır.
+ */
+
+/* Ortak içerik metni hover / focus / active */
+html body .home-feed-shell [data-og-feed-insert-card] .og-feed-insert-card__row:hover .og-feed-insert-card__name,
+html body .home-feed-shell [data-og-feed-insert-card] .og-feed-insert-card__row:focus-visible .og-feed-insert-card__name,
+html body .home-feed-shell [data-og-feed-insert-card] .og-feed-insert-card__row:active .og-feed-insert-card__name,
+html body .home-feed-shell [data-og-feed-insert-card] .og-feed-insert-card__person-link:hover .og-feed-insert-card__name,
+html body .home-feed-shell [data-og-feed-insert-card] .og-feed-insert-card__person-link:focus-visible .og-feed-insert-card__name,
+html body .home-feed-shell [data-og-feed-insert-card] .og-feed-insert-card__person-link:active .og-feed-insert-card__name {
+    color: #2563eb !important;
+}
+
+/* En İyi Postlar: küçük görsel mouse / dokunma tepkisi */
+html body .home-feed-shell [data-og-feed-card-type="top-posts"] .og-feed-insert-card__thumb {
+    transform: scale(1) !important;
+    transform-origin: center !important;
+    transition: transform .16s ease !important;
+    will-change: transform;
+}
+
+html body .home-feed-shell [data-og-feed-card-type="top-posts"] .og-feed-insert-card__row:hover .og-feed-insert-card__thumb,
+html body .home-feed-shell [data-og-feed-card-type="top-posts"] .og-feed-insert-card__row:focus-visible .og-feed-insert-card__thumb {
+    transform: scale(1.06) !important;
+}
+
+html body .home-feed-shell [data-og-feed-card-type="top-posts"] .og-feed-insert-card__row:active .og-feed-insert-card__thumb {
+    transform: scale(.96) !important;
+}
+
+/* Kategoriler: Göz at gerçek mavi aksiyon gibi görünsün. */
+html body .home-feed-shell [data-og-feed-card-type="categories"] .og-feed-insert-card__side {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    min-width: 66px !important;
+    height: 32px !important;
+    padding: 0 11px !important;
+    border: 1px solid #2563eb !important;
+    border-radius: 9px !important;
+    background: #2563eb !important;
+    color: #ffffff !important;
+    font-weight: 600 !important;
+    line-height: 1 !important;
+    text-decoration: none !important;
+    transition: background-color .14s ease, border-color .14s ease, transform .08s ease !important;
+}
+
+html body .home-feed-shell [data-og-feed-card-type="categories"] .og-feed-insert-card__row:hover .og-feed-insert-card__side,
+html body .home-feed-shell [data-og-feed-card-type="categories"] .og-feed-insert-card__row:focus-visible .og-feed-insert-card__side {
+    border-color: #1d4ed8 !important;
+    background: #1d4ed8 !important;
+    color: #ffffff !important;
+}
+
+html body .home-feed-shell [data-og-feed-card-type="categories"] .og-feed-insert-card__row:active .og-feed-insert-card__side {
+    border-color: #1e40af !important;
+    background: #1e40af !important;
+    color: #ffffff !important;
+    transform: scale(.97) !important;
+}
+
+/* Takip Edilecek Kişiler: Takip et butonu mavi. */
+html body .home-feed-shell [data-og-feed-card-type="people"] .og-feed-insert-card__follow,
+html body .home-feed-shell [data-og-feed-card-type="people"] button.og-feed-insert-card__follow,
+html body .home-feed-shell [data-og-feed-card-type="people"] a.og-feed-insert-card__follow {
+    border-color: #2563eb !important;
+    background: #2563eb !important;
+    color: #ffffff !important;
+    box-shadow: none !important;
+    text-decoration: none !important;
+    transition: background-color .14s ease, border-color .14s ease, transform .08s ease !important;
+}
+
+html body .home-feed-shell [data-og-feed-card-type="people"] .og-feed-insert-card__follow:hover,
+html body .home-feed-shell [data-og-feed-card-type="people"] .og-feed-insert-card__follow:focus-visible {
+    border-color: #1d4ed8 !important;
+    background: #1d4ed8 !important;
+    color: #ffffff !important;
+}
+
+html body .home-feed-shell [data-og-feed-card-type="people"] .og-feed-insert-card__follow:active {
+    border-color: #1e40af !important;
+    background: #1e40af !important;
+    color: #ffffff !important;
+    transform: scale(.97) !important;
+}
+
+/* Takipte olan kullanıcı yine mavi ailesinde ama daha sakin dursun. */
+html body .home-feed-shell [data-og-feed-card-type="people"] .og-feed-insert-card__follow.is-following {
+    border-color: #93c5fd !important;
+    background: #dbeafe !important;
+    color: #1d4ed8 !important;
+}
+
+html body .home-feed-shell [data-og-feed-card-type="people"] .og-feed-insert-card__follow.is-following:hover,
+html body .home-feed-shell [data-og-feed-card-type="people"] .og-feed-insert-card__follow.is-following:focus-visible {
+    border-color: #60a5fa !important;
+    background: #bfdbfe !important;
+    color: #1e40af !important;
+}
+
+/* Dark mode genel kurallar mavi aksiyonları geri ezmesin. */
+html.dark body .home-feed-shell [data-og-feed-card-type="categories"] .og-feed-insert-card__side,
+.dark .home-feed-shell [data-og-feed-card-type="categories"] .og-feed-insert-card__side,
+html.dark body .home-feed-shell [data-og-feed-card-type="people"] .og-feed-insert-card__follow,
+.dark .home-feed-shell [data-og-feed-card-type="people"] .og-feed-insert-card__follow {
+    border-color: #3b82f6 !important;
+    background: #2563eb !important;
+    color: #ffffff !important;
+}
+
+html.dark body .home-feed-shell [data-og-feed-insert-card] .og-feed-insert-card__row:hover .og-feed-insert-card__name,
+html.dark body .home-feed-shell [data-og-feed-insert-card] .og-feed-insert-card__row:focus-visible .og-feed-insert-card__name,
+html.dark body .home-feed-shell [data-og-feed-insert-card] .og-feed-insert-card__row:active .og-feed-insert-card__name,
+.dark .home-feed-shell [data-og-feed-insert-card] .og-feed-insert-card__row:hover .og-feed-insert-card__name,
+.dark .home-feed-shell [data-og-feed-insert-card] .og-feed-insert-card__row:focus-visible .og-feed-insert-card__name,
+.dark .home-feed-shell [data-og-feed-insert-card] .og-feed-insert-card__row:active .og-feed-insert-card__name,
+html.dark body .home-feed-shell [data-og-feed-insert-card] .og-feed-insert-card__person-link:hover .og-feed-insert-card__name,
+html.dark body .home-feed-shell [data-og-feed-insert-card] .og-feed-insert-card__person-link:focus-visible .og-feed-insert-card__name,
+html.dark body .home-feed-shell [data-og-feed-insert-card] .og-feed-insert-card__person-link:active .og-feed-insert-card__name,
+.dark .home-feed-shell [data-og-feed-insert-card] .og-feed-insert-card__person-link:hover .og-feed-insert-card__name,
+.dark .home-feed-shell [data-og-feed-insert-card] .og-feed-insert-card__person-link:focus-visible .og-feed-insert-card__name,
+.dark .home-feed-shell [data-og-feed-insert-card] .og-feed-insert-card__person-link:active .og-feed-insert-card__name {
+    color: #60a5fa !important;
+}
+
+@media (max-width: 640px) {
+    html body .home-feed-shell [data-og-feed-card-type="categories"] .og-feed-insert-card__side {
+        min-width: 60px !important;
+        height: 30px !important;
+        padding-inline: 9px !important;
+        border-radius: 8px !important;
+        font-size: 11px !important;
+    }
+}
