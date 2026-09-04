@@ -1,0 +1,20 @@
+/*
+ * Post-card alt etkileşim alanı.
+ * Yatay ayırıcı çizgiyi kaldırır ve yalnızca tepki ekle butonunu hafifçe yukarı alır.
+ */
+html body.alma-app .alma-post-card .alma-post-card__engagement,
+html body.alma-app .alma-post-card .alma-post-card__engagement-main,
+html body.alma-app .alma-post-card .alma-post-card__comments-strip {
+    border-top: 0 !important;
+}
+
+html body.alma-app .alma-post-card .alma-post-card__reaction-picker {
+    position: relative !important;
+    top: -5px !important;
+}
+
+@media (max-width: 767.98px) {
+    html body.alma-app .alma-post-card .alma-post-card__reaction-picker {
+        top: -6px !important;
+    }
+}
