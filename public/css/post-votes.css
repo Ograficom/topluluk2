@@ -1,0 +1,182 @@
+/* Ografi post vote control: shared by feed cards and post-show. */
+html body.alma-app .post-vote-control,
+html body .post-vote-control {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex: 0 0 auto !important;
+    height: 34px !important;
+    min-height: 34px !important;
+    padding: 2px !important;
+    border: 0 !important;
+    border-radius: 9999px !important;
+    background: #f5f6f7 !important;
+    color: #111827 !important;
+    box-shadow: none !important;
+    filter: none !important;
+    transform: none !important;
+    box-sizing: border-box !important;
+}
+
+html body.alma-app .post-vote-control .post-vote-btn,
+html body .post-vote-control .post-vote-btn {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 30px !important;
+    min-width: 30px !important;
+    height: 30px !important;
+    min-height: 30px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    border-radius: 9999px !important;
+    background: transparent !important;
+    color: #111827 !important;
+    box-shadow: none !important;
+    outline: none !important;
+    cursor: pointer !important;
+    appearance: none !important;
+    -webkit-appearance: none !important;
+    transition: background-color .14s ease, color .14s ease, transform .1s ease !important;
+}
+
+html body.alma-app .post-vote-control .post-vote-btn:hover,
+html body.alma-app .post-vote-control .post-vote-btn:focus-visible,
+html body .post-vote-control .post-vote-btn:hover,
+html body .post-vote-control .post-vote-btn:focus-visible {
+    background: #e8eaed !important;
+    color: #111827 !important;
+    outline: none !important;
+}
+
+html body.alma-app .post-vote-control .post-vote-btn:active,
+html body .post-vote-control .post-vote-btn:active {
+    transform: scale(.92) !important;
+}
+
+html body.alma-app .post-vote-control .post-vote-btn.is-upvoted,
+html body .post-vote-control .post-vote-btn.is-upvoted {
+    background: #e8f0ff !important;
+    color: #2563eb !important;
+}
+
+html body.alma-app .post-vote-control .post-vote-btn.is-downvoted,
+html body .post-vote-control .post-vote-btn.is-downvoted {
+    background: #fef2f2 !important;
+    color: #dc2626 !important;
+}
+
+html body.alma-app .post-vote-control .post-vote-btn:disabled,
+html body .post-vote-control .post-vote-btn:disabled {
+    cursor: wait !important;
+    opacity: .55 !important;
+}
+
+html body.alma-app .post-vote-control .post-vote-btn svg,
+html body .post-vote-control .post-vote-btn svg {
+    display: block !important;
+    width: 17px !important;
+    height: 17px !important;
+    min-width: 17px !important;
+    min-height: 17px !important;
+    fill: none !important;
+    stroke: currentColor !important;
+    stroke-width: 1.9 !important;
+    stroke-linecap: round !important;
+    stroke-linejoin: round !important;
+    pointer-events: none !important;
+}
+
+html body.alma-app .post-vote-control .post-vote-score,
+html body .post-vote-control .post-vote-score {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    min-width: 24px !important;
+    height: 30px !important;
+    padding: 0 2px !important;
+    color: #111827 !important;
+    font-family: inherit !important;
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    line-height: 1 !important;
+    font-variant-numeric: tabular-nums !important;
+    white-space: nowrap !important;
+}
+
+html body.alma-app article[data-post-card-shell] .action-left .post-vote-control {
+    margin-right: 1px !important;
+}
+
+html body.alma-app .post-show-shell .ps-action-row .post-vote-control {
+    margin-right: 2px !important;
+}
+
+@media (max-width: 640px) {
+    html body.alma-app .post-vote-control,
+    html body .post-vote-control {
+        height: 32px !important;
+        min-height: 32px !important;
+    }
+
+    html body.alma-app .post-vote-control .post-vote-btn,
+    html body .post-vote-control .post-vote-btn {
+        width: 28px !important;
+        min-width: 28px !important;
+        height: 28px !important;
+        min-height: 28px !important;
+    }
+
+    html body.alma-app .post-vote-control .post-vote-score,
+    html body .post-vote-control .post-vote-score {
+        min-width: 22px !important;
+        height: 28px !important;
+        font-size: 12.5px !important;
+    }
+
+    html body.alma-app .post-vote-control .post-vote-btn svg,
+    html body .post-vote-control .post-vote-btn svg {
+        width: 16px !important;
+        height: 16px !important;
+        min-width: 16px !important;
+        min-height: 16px !important;
+    }
+}
+
+html.dark body.alma-app .post-vote-control,
+body.dark.alma-app .post-vote-control,
+.dark body.alma-app .post-vote-control,
+[data-theme="dark"] body.alma-app .post-vote-control {
+    background: #27272a !important;
+    color: #f4f4f5 !important;
+}
+
+html.dark body.alma-app .post-vote-control .post-vote-btn,
+html.dark body.alma-app .post-vote-control .post-vote-score,
+body.dark.alma-app .post-vote-control .post-vote-btn,
+body.dark.alma-app .post-vote-control .post-vote-score,
+[data-theme="dark"] body.alma-app .post-vote-control .post-vote-btn,
+[data-theme="dark"] body.alma-app .post-vote-control .post-vote-score {
+    color: #f4f4f5 !important;
+}
+
+html.dark body.alma-app .post-vote-control .post-vote-btn:hover,
+body.dark.alma-app .post-vote-control .post-vote-btn:hover,
+[data-theme="dark"] body.alma-app .post-vote-control .post-vote-btn:hover {
+    background: #3f3f46 !important;
+}
+
+html.dark body.alma-app .post-vote-control .post-vote-btn.is-upvoted,
+body.dark.alma-app .post-vote-control .post-vote-btn.is-upvoted,
+[data-theme="dark"] body.alma-app .post-vote-control .post-vote-btn.is-upvoted {
+    background: rgba(37, 99, 235, .22) !important;
+    color: #93c5fd !important;
+}
+
+html.dark body.alma-app .post-vote-control .post-vote-btn.is-downvoted,
+body.dark.alma-app .post-vote-control .post-vote-btn.is-downvoted,
+[data-theme="dark"] body.alma-app .post-vote-control .post-vote-btn.is-downvoted {
+    background: rgba(220, 38, 38, .18) !important;
+    color: #fca5a5 !important;
+}
