@@ -37,16 +37,16 @@ class PostShowTypographyMiddleware
 <style data-ografi-post-show-typography-final>
 /*
  * Post-show tipografisi.
- * Projede gercekten yuklenen font Inter'dir (400/500/600/700).
- * Basliklar govdeye oranli tutulur; kalinlik belirgin, boyut farki abartisizdir.
+ * Sadece yazı detay sayfasını etkiler; akış/kartlar/header bu katmandan etkilenmez.
+ * Dar içerik sütununda daha sıkı, okunaklı ve dengeli bir ölçek kullanılır.
  */
 html body.alma-app .post-show-shell .ps-post-title:not(#comments):not(#comments *),
 html body.alma-app .post-show-shell .ps-post-title *:not(#comments):not(#comments *) {
     font-family: Inter, Arial, Helvetica, sans-serif !important;
-    font-size: 26px !important;
-    line-height: 1.26 !important;
+    font-size: 22px !important;
+    line-height: 1.3 !important;
     font-weight: 700 !important;
-    letter-spacing: -0.015em !important;
+    letter-spacing: -0.012em !important;
 }
 
 html body.alma-app .post-show-shell .ps-post-body:not(#comments):not(#comments *),
@@ -70,12 +70,12 @@ html body.alma-app .post-show-shell .ps-post-body :where(
     .cdx-list__item
 ):not(#comments):not(#comments *) {
     font-family: Inter, Arial, Helvetica, sans-serif !important;
-    font-size: 17px !important;
-    line-height: 1.65 !important;
+    font-size: 15px !important;
+    line-height: 1.58 !important;
     font-weight: 400 !important;
 }
 
-/* Kalin metin: boyut degismez, sadece gercek Inter 700 uygulanir. */
+/* Kalın metin: boyut değişmez, yalnızca ağırlık değişir. */
 html body.alma-app .post-show-shell .ps-post-body :where(strong, b):not(#comments):not(#comments *),
 html body.alma-app .post-show-shell .ps-post-body :where(strong, b) *:not(#comments):not(#comments *) {
     font-family: Inter, Arial, Helvetica, sans-serif !important;
@@ -84,73 +84,83 @@ html body.alma-app .post-show-shell .ps-post-body :where(strong, b) *:not(#comme
     font-weight: 700 !important;
 }
 
-/* H2: govdeden yalnizca bir kademe buyuk. */
+/* H2 */
 html body.alma-app .post-show-shell .ps-post-body :where(h2, .ce-header[data-level="2"]):not(#comments):not(#comments *),
 html body.alma-app .post-show-shell .ps-post-body :where(h2, .ce-header[data-level="2"]) *:not(#comments):not(#comments *) {
     font-family: Inter, Arial, Helvetica, sans-serif !important;
-    font-size: 20px !important;
-    line-height: 1.34 !important;
+    font-size: 18px !important;
+    line-height: 1.36 !important;
     font-weight: 700 !important;
-    letter-spacing: -0.006em !important;
+    letter-spacing: -0.004em !important;
 }
 html body.alma-app .post-show-shell .ps-post-body :where(h2, .ce-header[data-level="2"]):not(#comments):not(#comments *) {
-    margin: 22px 0 8px !important;
+    margin: 20px 0 7px !important;
 }
 
 /* H3 */
 html body.alma-app .post-show-shell .ps-post-body :where(h3, .ce-header[data-level="3"]):not(#comments):not(#comments *),
 html body.alma-app .post-show-shell .ps-post-body :where(h3, .ce-header[data-level="3"]) *:not(#comments):not(#comments *) {
     font-family: Inter, Arial, Helvetica, sans-serif !important;
-    font-size: 19px !important;
-    line-height: 1.36 !important;
+    font-size: 17px !important;
+    line-height: 1.38 !important;
     font-weight: 700 !important;
-    letter-spacing: -0.004em !important;
+    letter-spacing: -0.003em !important;
 }
 html body.alma-app .post-show-shell .ps-post-body :where(h3, .ce-header[data-level="3"]):not(#comments):not(#comments *) {
-    margin: 20px 0 8px !important;
+    margin: 18px 0 7px !important;
 }
 
 /* H4 */
 html body.alma-app .post-show-shell .ps-post-body :where(h4, .ce-header[data-level="4"]):not(#comments):not(#comments *),
 html body.alma-app .post-show-shell .ps-post-body :where(h4, .ce-header[data-level="4"]) *:not(#comments):not(#comments *) {
     font-family: Inter, Arial, Helvetica, sans-serif !important;
-    font-size: 18px !important;
-    line-height: 1.4 !important;
+    font-size: 16px !important;
+    line-height: 1.42 !important;
     font-weight: 700 !important;
 }
 html body.alma-app .post-show-shell .ps-post-body :where(h4, .ce-header[data-level="4"]):not(#comments):not(#comments *) {
-    margin: 18px 0 7px !important;
+    margin: 17px 0 6px !important;
 }
 
 /* H5 */
 html body.alma-app .post-show-shell .ps-post-body h5:not(#comments):not(#comments *),
 html body.alma-app .post-show-shell .ps-post-body h5 *:not(#comments):not(#comments *) {
     font-family: Inter, Arial, Helvetica, sans-serif !important;
-    font-size: 18px !important;
-    line-height: 1.4 !important;
+    font-size: 16px !important;
+    line-height: 1.42 !important;
     font-weight: 700 !important;
 }
 html body.alma-app .post-show-shell .ps-post-body h5:not(#comments):not(#comments *) {
-    margin: 18px 0 7px !important;
+    margin: 17px 0 6px !important;
 }
 
 /* H6 */
 html body.alma-app .post-show-shell .ps-post-body h6:not(#comments):not(#comments *),
 html body.alma-app .post-show-shell .ps-post-body h6 *:not(#comments):not(#comments *) {
     font-family: Inter, Arial, Helvetica, sans-serif !important;
-    font-size: 17px !important;
-    line-height: 1.42 !important;
+    font-size: 15px !important;
+    line-height: 1.45 !important;
     font-weight: 700 !important;
 }
 html body.alma-app .post-show-shell .ps-post-body h6:not(#comments):not(#comments *) {
-    margin: 18px 0 7px !important;
+    margin: 16px 0 6px !important;
 }
 
+/* Tablet */
+@media (min-width: 641px) and (max-width: 1024px) {
+    html body.alma-app .post-show-shell .ps-post-title:not(#comments):not(#comments *),
+    html body.alma-app .post-show-shell .ps-post-title *:not(#comments):not(#comments *) {
+        font-size: 21px !important;
+        line-height: 1.31 !important;
+    }
+}
+
+/* Mobil */
 @media (max-width: 640px) {
     html body.alma-app .post-show-shell .ps-post-title:not(#comments):not(#comments *),
     html body.alma-app .post-show-shell .ps-post-title *:not(#comments):not(#comments *) {
-        font-size: 23px !important;
-        line-height: 1.3 !important;
+        font-size: 20px !important;
+        line-height: 1.32 !important;
     }
 
     html body.alma-app .post-show-shell .ps-post-body:not(#comments):not(#comments *),
@@ -173,25 +183,25 @@ html body.alma-app .post-show-shell .ps-post-body h6:not(#comments):not(#comment
         .cdx-block,
         .cdx-list__item
     ):not(#comments):not(#comments *) {
-        font-size: 16px !important;
-        line-height: 1.62 !important;
+        font-size: 15px !important;
+        line-height: 1.56 !important;
     }
 
     html body.alma-app .post-show-shell .ps-post-body :where(h2, .ce-header[data-level="2"]):not(#comments):not(#comments *),
     html body.alma-app .post-show-shell .ps-post-body :where(h2, .ce-header[data-level="2"]) *:not(#comments):not(#comments *) {
-        font-size: 19px !important;
-        line-height: 1.36 !important;
-    }
-
-    html body.alma-app .post-show-shell .ps-post-body :where(h3, .ce-header[data-level="3"]):not(#comments):not(#comments *),
-    html body.alma-app .post-show-shell .ps-post-body :where(h3, .ce-header[data-level="3"]) *:not(#comments):not(#comments *) {
         font-size: 18px !important;
         line-height: 1.38 !important;
     }
 
+    html body.alma-app .post-show-shell .ps-post-body :where(h3, .ce-header[data-level="3"]):not(#comments):not(#comments *),
+    html body.alma-app .post-show-shell .ps-post-body :where(h3, .ce-header[data-level="3"]) *:not(#comments):not(#comments *) {
+        font-size: 17px !important;
+        line-height: 1.4 !important;
+    }
+
     html body.alma-app .post-show-shell .ps-post-body :where(h4, .ce-header[data-level="4"]):not(#comments):not(#comments *),
     html body.alma-app .post-show-shell .ps-post-body :where(h4, .ce-header[data-level="4"]) *:not(#comments):not(#comments *) {
-        font-size: 17px !important;
+        font-size: 16px !important;
         line-height: 1.42 !important;
     }
 }
@@ -201,7 +211,7 @@ HTML;
         $html = preg_replace('/<\/body>/i', $style . "\n</body>", $html, 1) ?? ($html . $style);
 
         $response->setContent($html);
-        $response->headers->set('X-Ografi-Post-Typography', 'v10');
+        $response->headers->set('X-Ografi-Post-Typography', 'v11');
 
         return $response;
     }
