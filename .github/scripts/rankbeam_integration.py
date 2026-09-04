@@ -1,0 +1,490 @@
+from pathlib import Path
+
+
+def replace_once(path: str, old: str, new: str) -> None:
+    file = Path(path)
+    text = file.read_text()
+    if old not in text:
+        raise SystemExit(f"Anchor not found in {path}: {old[:120]!r}")
+    file.write_text(text.replace(old, new, 1))
+
+
+# -----------------------------------------------------------------------------
+# Post model: Rankbeam is the active SEO trait. Keep the legacy SmartSEO
+# relationship explicitly so old rows and old fallback code remain readable.
+# -----------------------------------------------------------------------------
+post_path = Path('app/Models/Post.php')
+post = post_path.read_text()
+post = post.replace(
+    "use Illuminate\\Database\\Eloquent\\Relations\\HasOne;\n",
+    "use Illuminate\\Database\\Eloquent\\Relations\\HasOne;\nuse Illuminate\\Database\\Eloquent\\Relations\\MorphOne;\n",
+    1,
+)
+post = post.replace(
+    "use Martin6363\\FilamentSmartSeo\\Traits\\HasSeo;\n",
+    "use Martin6363\\FilamentSmartSeo\\Models\\SeoMetadata;\nuse Rankbeam\\Seo\\Traits\\HasSEO;\n",
+    1,
+)
+post = post.replace(
+    "    use HasFactory;\n    use HasSeo;\n",
+    "    use HasFactory;\n    use HasSEO;\n",
+    1,
+)
+
+boot_anchor = "    protected static function booted(): void\n    {\n"
+if boot_anchor not in post:
+    raise SystemExit('Post booted anchor not found')
+
+model_methods = r'''    /**
+     * Legacy SmartSEO relation kept for backwards compatibility while
+     * Rankbeam owns the active SEO resolver and editor.
+     */
+    public function seo(): MorphOne
+    {
+        return $this->morphOne(SeoMetadata::class, 'seoble');
+    }
+
+    public function seoOrNew(): SeoMetadata
+    {
+        return $this->seo()->firstOrNew([]);
+    }
+
+    public function getSEOTitle(): ?string
+    {
+        $title = trim((string) ($this->meta_title ?: $this->title));
+
+        return $title !== '' ? $title : null;
+    }
+
+    public function getSEODescription(): ?string
+    {
+        $description = trim((string) $this->meta_description);
+        if ($description === '') {
+            $description = PostSeoText::description($this->excerpt, $this->content, $this->title);
+        }
+
+        return $description !== '' ? $description : null;
+    }
+
+    public function getSEOImage(): ?string
+    {
+        return $this->ogImageUrl() ?: $this->featured_image_url;
+    }
+
+    public function getSEORobots(): ?string
+    {
+        if ($this->noindex) {
+            return 'noindex, follow';
+        }
+
+        return $this->isPublishedNow() ? null : 'noindex, nofollow';
+    }
+
+    public function getUrlForSEO(): string
+    {
+        try {
+            return route('blog.post', ['post' => $this]);
+        } catch (\Throwable $e) {
+            return url('/blog/' . ltrim((string) $this->slug, '/'));
+        }
+    }
+
+    public function getSEOContentFields(): array
+    {
+        return [
+            'title',
+            'meta_title',
+            'meta_description',
+            'excerpt',
+            'content',
+            'featured_image',
+            'og_image',
+            'noindex',
+            'published_at',
+            'is_published',
+        ];
+    }
+
+'''
+post = post.replace(boot_anchor, model_methods + boot_anchor, 1)
+post = post.replace(
+    boot_anchor + "        static::creating(function (Post $post): void {",
+    boot_anchor + "        static::deleting(function (Post $post): void {\n            $post->seo()->delete();\n        });\n\n        static::creating(function (Post $post): void {",
+    1,
+)
+post_path.write_text(post)
+
+
+# -----------------------------------------------------------------------------
+# Filament PostResource: Rankbeam native editor + native Schema.org editor.
+# Keep the legacy column-backed SEO section as a compatibility fallback.
+# -----------------------------------------------------------------------------
+resource_path = Path('app/Filament/Resources/PostResource.php')
+resource = resource_path.read_text()
+resource = resource.replace(
+    "use Martin6363\\FilamentSmartSeo\\Forms\\Components\\SeoSection;\n",
+    "use Rankbeam\\Seo\\Filament\\Concerns\\HasSEOFields;\n",
+    1,
+)
+resource = resource.replace(
+    "class PostResource extends Resource\n{\n    protected static ?string $model = Post::class;",
+    "class PostResource extends Resource\n{\n    use HasSEOFields;\n\n    protected static ?string $model = Post::class;",
+    1,
+)
+legacy_ai = """            SeoSection::make('Akilli SEO (AI)')
+                ->description('Doldurulursa yukaridaki Meta baslik/aciklamanin yerine kullanilir. AI ile otomatik doldurmak icin sag ustteki isik simgesine tiklayin (Gemini API anahtari gerektirir).')
+                ->sourceTitleField('title')
+                ->sourceDescriptionField('content')
+                ->collapsible()
+                ->collapsed(),
+"""
+rankbeam_fields = """            static::seoSection()
+                ->description('Rankbeam SEO: arama onizlemesi, odak anahtar kelimeler, canonical, robots ve sosyal paylasim gorselini tek yerden yonetin.')
+                ->collapsible(),
+            static::seoSchemaSection()
+                ->description('Schema.org JSON-LD yapilandirilmis veri ayarlari.')
+                ->collapsible()
+                ->collapsed(),
+"""
+if legacy_ai not in resource:
+    raise SystemExit('Legacy SmartSEO Filament section not found')
+resource = resource.replace(legacy_ai, rankbeam_fields, 1)
+resource = resource.replace("            Section::make('SEO')\n", "            Section::make('SEO yedek alanlar')\n", 1)
+resource_path.write_text(resource)
+
+
+# -----------------------------------------------------------------------------
+# Shared front-end Rankbeam fields. Both create and edit write the same seo_meta
+# record that Filament edits.
+# -----------------------------------------------------------------------------
+partial_path = Path('resources/views/blog/partials/rankbeam-seo-fields.blade.php')
+partial_path.parent.mkdir(parents=True, exist_ok=True)
+partial_path.write_text(r'''@php
+    $rankbeamMeta = null;
+    if (isset($post) && $post) {
+        try {
+            $rankbeamMeta = $post->seoMetaForLocale(app()->getLocale())->first();
+        } catch (\Throwable $e) {
+            $rankbeamMeta = null;
+        }
+    }
+
+    $rankbeamKeywordValue = old('rankbeam_focus_keywords');
+    if ($rankbeamKeywordValue === null) {
+        $rankbeamKeywordValue = collect($rankbeamMeta?->focus_keywords ?? [])
+            ->map(fn ($item) => is_array($item) ? ($item['keyword'] ?? null) : $item)
+            ->filter(fn ($item) => is_string($item) && trim($item) !== '')
+            ->implode(', ');
+
+        if ($rankbeamKeywordValue === '' && isset($post)) {
+            $rankbeamKeywordValue = (string) ($post->meta_keywords ?? '');
+        }
+    }
+
+    $rankbeamTitleValue = old('rankbeam_title', $rankbeamMeta?->title ?? (isset($post) ? $post->meta_title : null));
+    $rankbeamDescriptionValue = old('rankbeam_description', $rankbeamMeta?->description ?? (isset($post) ? $post->meta_description : null));
+    $rankbeamCanonicalValue = old('rankbeam_canonical', $rankbeamMeta?->canonical);
+    $rankbeamRobotsValue = old('rankbeam_robots', $rankbeamMeta?->robots ?? ((isset($post) && $post->noindex) ? 'noindex, follow' : ''));
+    $rankbeamOgImageValue = old('rankbeam_og_image', $rankbeamMeta?->og_image);
+    $rankbeamInputClass = 'w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 transition focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100';
+@endphp
+
+<div class="mt-4 border-t border-slate-100 pt-4" data-rankbeam-seo-fields>
+    <div class="mb-3 flex items-start justify-between gap-3">
+        <div>
+            <div class="text-sm font-semibold text-slate-950">Rankbeam SEO</div>
+            <p class="mt-0.5 text-xs leading-5 text-slate-500">Filament ile ayni SEO kaydini kullanir. Bos alanlar yazinin mevcut SEO bilgilerinden otomatik tamamlanir.</p>
+        </div>
+        <span class="shrink-0 rounded-full border border-blue-100 bg-blue-50 px-2 py-1 text-[10px] font-semibold uppercase tracking-wide text-blue-700">SEO</span>
+    </div>
+
+    <div class="space-y-3">
+        <div>
+            <label for="rankbeam_title" class="mb-1 block text-xs font-semibold text-slate-700">SEO basligi</label>
+            <input id="rankbeam_title" name="rankbeam_title" type="text" maxlength="255" value="{{ $rankbeamTitleValue }}" placeholder="Arama sonucundaki baslik" class="{{ $rankbeamInputClass }}">
+        </div>
+
+        <div>
+            <label for="rankbeam_description" class="mb-1 block text-xs font-semibold text-slate-700">SEO aciklamasi</label>
+            <textarea id="rankbeam_description" name="rankbeam_description" rows="3" maxlength="500" placeholder="Arama sonucundaki aciklama" class="{{ $rankbeamInputClass }} resize-none">{{ $rankbeamDescriptionValue }}</textarea>
+        </div>
+
+        <div>
+            <label for="rankbeam_focus_keywords" class="mb-1 block text-xs font-semibold text-slate-700">Odak anahtar kelimeler</label>
+            <input id="rankbeam_focus_keywords" name="rankbeam_focus_keywords" type="text" maxlength="1000" value="{{ $rankbeamKeywordValue }}" placeholder="laravel seo, web tasarim, teknoloji" class="{{ $rankbeamInputClass }}">
+            <p class="mt-1 text-[11px] text-slate-400">Virgulle ayirin. Ilk kelime birincil odak kelime olur.</p>
+        </div>
+
+        <div>
+            <label for="rankbeam_canonical" class="mb-1 block text-xs font-semibold text-slate-700">Canonical URL</label>
+            <input id="rankbeam_canonical" name="rankbeam_canonical" type="url" maxlength="2048" value="{{ $rankbeamCanonicalValue }}" placeholder="https://ografi.com/..." class="{{ $rankbeamInputClass }}">
+        </div>
+
+        <div>
+            <label for="rankbeam_robots" class="mb-1 block text-xs font-semibold text-slate-700">Robots</label>
+            <select id="rankbeam_robots" name="rankbeam_robots" class="{{ $rankbeamInputClass }}">
+                <option value="" @selected($rankbeamRobotsValue === '')>Otomatik</option>
+                <option value="index, follow" @selected($rankbeamRobotsValue === 'index, follow')>Index, linkleri takip et</option>
+                <option value="index, nofollow" @selected($rankbeamRobotsValue === 'index, nofollow')>Index, linkleri takip etme</option>
+                <option value="noindex, follow" @selected($rankbeamRobotsValue === 'noindex, follow')>Noindex, linkleri takip et</option>
+                <option value="noindex, nofollow" @selected($rankbeamRobotsValue === 'noindex, nofollow')>Noindex, linkleri takip etme</option>
+            </select>
+        </div>
+
+        <div>
+            <label for="rankbeam_og_image" class="mb-1 block text-xs font-semibold text-slate-700">Sosyal paylasim gorseli</label>
+            <input id="rankbeam_og_image" name="rankbeam_og_image" type="text" maxlength="2048" value="{{ $rankbeamOgImageValue }}" placeholder="https://... veya seo/gorsel.webp" class="{{ $rankbeamInputClass }}">
+            <p class="mt-1 text-[11px] text-slate-400">Bos birakilirsa yazinin mevcut paylasim/one cikan gorseli kullanilir.</p>
+        </div>
+    </div>
+</div>
+''')
+
+
+replace_once(
+    'resources/views/blog/create.blade.php',
+    '                                                <textarea id="meta_keywords" name="meta_keywords" rows="2" placeholder="virgülle ayırın (ör. yazılım, php, laravel)" class="create-input resize-none">{{ old(\'meta_keywords\') }}</textarea>\n',
+    '                                                <textarea id="meta_keywords" name="meta_keywords" rows="2" placeholder="virgülle ayırın (ör. yazılım, php, laravel)" class="create-input resize-none">{{ old(\'meta_keywords\') }}</textarea>\n                                                @include(\'blog.partials.rankbeam-seo-fields\')\n',
+)
+
+edit_anchor = '''                                <div class="space-y-2">
+                                    <label for="meta_keywords" class="block text-sm font-semibold text-slate-900">SEO anahtar kelimeler</label>
+                                    <textarea id="meta_keywords" name="meta_keywords" rows="2"
+                                              class="w-full rounded-xl border border-slate-200 px-3 py-2 text-sm text-slate-900 shadow-sm focus:outline-none">{{ old('meta_keywords', $post->meta_keywords) }}</textarea>
+                                    <p class="text-xs text-slate-500">Virgul ile ayirin (or. yazilim, php, laravel).</p>
+                                </div>
+'''
+replace_once(
+    'resources/views/blog/edit.blade.php',
+    edit_anchor,
+    edit_anchor + "\n                                @include('blog.partials.rankbeam-seo-fields', ['post' => $post])\n",
+)
+
+
+# -----------------------------------------------------------------------------
+# Public create/update controller: validate and persist Rankbeam metadata.
+# -----------------------------------------------------------------------------
+controller_path = Path('app/Http/Controllers/BlogController.php')
+controller = controller_path.read_text()
+validation_anchor = "            'meta_keywords' => ['nullable', 'string'],\n"
+validation_extra = validation_anchor + """            'rankbeam_title' => ['nullable', 'string', 'max:255'],
+            'rankbeam_description' => ['nullable', 'string', 'max:500'],
+            'rankbeam_focus_keywords' => ['nullable', 'string', 'max:1000'],
+            'rankbeam_canonical' => ['nullable', 'url', 'max:2048'],
+            'rankbeam_robots' => ['nullable', 'string', 'max:50'],
+            'rankbeam_og_image' => ['nullable', 'string', 'max:2048'],
+"""
+if controller.count(validation_anchor) < 2:
+    raise SystemExit('Expected store/update SEO validation anchors')
+controller = controller.replace(validation_anchor, validation_extra)
+
+store_anchor = """        if ($tagIds->isNotEmpty()) {
+            $post->tags()->sync($tagIds->unique()->values()->all());
+        }
+
+        $repostPostId = $data['repost_post_id'] ?? null;
+"""
+if store_anchor not in controller:
+    raise SystemExit('Store tag anchor not found')
+controller = controller.replace(
+    store_anchor,
+    """        if ($tagIds->isNotEmpty()) {
+            $post->tags()->sync($tagIds->unique()->values()->all());
+        }
+
+        $this->saveRankbeamSeo($post, $data);
+
+        $repostPostId = $data['repost_post_id'] ?? null;
+""",
+    1,
+)
+
+update_anchor = """        $post->tags()->sync($tagIds->unique()->values()->all());
+
+        $this->mentionService->notifyPostMentions($post, $wasPublishedBeforeUpdate ? $previousPostContent : null);
+"""
+if update_anchor not in controller:
+    raise SystemExit('Update tag anchor not found')
+controller = controller.replace(
+    update_anchor,
+    """        $post->tags()->sync($tagIds->unique()->values()->all());
+
+        $this->saveRankbeamSeo($post, $data);
+
+        $this->mentionService->notifyPostMentions($post, $wasPublishedBeforeUpdate ? $previousPostContent : null);
+""",
+    1,
+)
+
+helper_anchor = "    public function editorJsImage(Request $request): JsonResponse\n"
+if helper_anchor not in controller:
+    raise SystemExit('Controller helper anchor not found')
+helper = r'''    private function saveRankbeamSeo(Post $post, array $data): void
+    {
+        $rankbeamKeys = [
+            'rankbeam_title',
+            'rankbeam_description',
+            'rankbeam_focus_keywords',
+            'rankbeam_canonical',
+            'rankbeam_robots',
+            'rankbeam_og_image',
+        ];
+
+        if (! collect($rankbeamKeys)->contains(fn (string $key): bool => array_key_exists($key, $data))) {
+            return;
+        }
+
+        $title = trim((string) ($data['rankbeam_title'] ?? ''));
+        if ($title === '') {
+            $title = trim((string) ($data['meta_title'] ?? ''));
+        }
+
+        $description = trim((string) ($data['rankbeam_description'] ?? ''));
+        if ($description === '') {
+            $description = trim((string) ($data['meta_description'] ?? ''));
+        }
+
+        $keywordSource = trim((string) ($data['rankbeam_focus_keywords'] ?? ''));
+        if ($keywordSource === '') {
+            $keywordSource = trim((string) ($data['meta_keywords'] ?? ''));
+        }
+
+        $focusKeywords = collect(preg_split('/[,\n]+/u', $keywordSource) ?: [])
+            ->map(fn ($keyword) => trim((string) $keyword))
+            ->filter()
+            ->unique(fn ($keyword) => mb_strtolower($keyword))
+            ->values()
+            ->map(fn ($keyword, $index) => [
+                'keyword' => $keyword,
+                'is_primary' => $index === 0,
+            ])
+            ->all();
+
+        $robots = trim((string) ($data['rankbeam_robots'] ?? ''));
+        $allowedRobots = [
+            'index, follow',
+            'index, nofollow',
+            'noindex, follow',
+            'noindex, nofollow',
+        ];
+        if (! in_array($robots, $allowedRobots, true)) {
+            $robots = $post->noindex ? 'noindex, follow' : '';
+        }
+
+        $canonical = trim((string) ($data['rankbeam_canonical'] ?? ''));
+        $ogImage = trim((string) ($data['rankbeam_og_image'] ?? ''));
+
+        $post->saveSEO([
+            'title' => $title !== '' ? $title : null,
+            'description' => $description !== '' ? $description : null,
+            'canonical' => $canonical !== '' ? $canonical : null,
+            'robots' => $robots !== '' ? $robots : null,
+            'og_image' => $ogImage !== '' ? $ogImage : null,
+            'og_type' => 'article',
+            'focus_keywords' => $focusKeywords !== [] ? $focusKeywords : null,
+        ]);
+    }
+
+'''
+controller = controller.replace(helper_anchor, helper + helper_anchor, 1)
+controller_path.write_text(controller)
+
+
+# -----------------------------------------------------------------------------
+# Post page metadata: resolve through Rankbeam, then feed the existing Ografi
+# layout sections to avoid duplicate <title>/description/canonical tags.
+# -----------------------------------------------------------------------------
+show_path = Path('resources/views/blog/show.blade.php')
+show = show_path.read_text()
+show_anchor = "@extends('layouts.app')\n\n"
+if not show.startswith(show_anchor):
+    raise SystemExit('show.blade.php start anchor not found')
+seo_head = r'''@extends('layouts.app')
+
+@php
+    $rankbeamSeo = null;
+    try {
+        $rankbeamSeo = method_exists($post, 'seoData') ? $post->seoData() : null;
+    } catch (\Throwable $e) {
+        $rankbeamSeo = null;
+    }
+
+    $rankbeamPageTitle = trim((string) ($rankbeamSeo?->title ?: $post->meta_title ?: $post->title));
+    $rankbeamPageDescription = trim((string) ($rankbeamSeo?->description ?: $post->meta_description ?: $post->excerpt));
+    if ($rankbeamPageDescription === '') {
+        $rankbeamPageDescription = \Illuminate\Support\Str::limit(
+            preg_replace('/\s+/u', ' ', trim(strip_tags((string) $post->content))) ?: '',
+            160,
+            ''
+        );
+    }
+
+    try {
+        $rankbeamPageCanonical = trim((string) ($rankbeamSeo?->canonical ?: route('blog.post', $post)));
+    } catch (\Throwable $e) {
+        $rankbeamPageCanonical = request()->url();
+    }
+
+    $rankbeamNormalizeImage = static function ($image): ?string {
+        $image = trim((string) $image);
+        if ($image === '') {
+            return null;
+        }
+        if (\Illuminate\Support\Str::startsWith($image, ['http://', 'https://', '//'])) {
+            return $image;
+        }
+        if (\Illuminate\Support\Str::startsWith($image, '/')) {
+            return url($image);
+        }
+        if (\Illuminate\Support\Str::startsWith($image, 'storage/')) {
+            return url('/' . $image);
+        }
+
+        try {
+            return \Illuminate\Support\Facades\Storage::disk('public')->url($image);
+        } catch (\Throwable $e) {
+            return asset(ltrim($image, '/'));
+        }
+    };
+
+    $rankbeamOgTitle = trim((string) ($rankbeamSeo?->ogTitle ?: $rankbeamPageTitle));
+    $rankbeamOgDescription = trim((string) ($rankbeamSeo?->ogDescription ?: $rankbeamPageDescription));
+    $rankbeamOgImage = $rankbeamNormalizeImage($rankbeamSeo?->ogImage ?: $post->getSEOImage());
+    $rankbeamOgType = trim((string) ($rankbeamSeo?->ogType ?: 'article'));
+    $rankbeamTwitterTitle = trim((string) ($rankbeamSeo?->twitterTitle ?: $rankbeamOgTitle));
+    $rankbeamTwitterDescription = trim((string) ($rankbeamSeo?->twitterDescription ?: $rankbeamOgDescription));
+    $rankbeamTwitterImage = $rankbeamNormalizeImage($rankbeamSeo?->twitterImage ?: $rankbeamOgImage);
+    $rankbeamTwitterCard = trim((string) ($rankbeamSeo?->twitterCard ?: ($rankbeamTwitterImage ? 'summary_large_image' : 'summary')));
+    $rankbeamRobots = trim((string) ($rankbeamSeo?->robots ?? ''));
+    $rankbeamSchema = $rankbeamSeo?->schemaJsonld;
+@endphp
+
+@section('title', $rankbeamPageTitle)
+@section('meta_description', $rankbeamPageDescription)
+@section('canonical_url', $rankbeamPageCanonical)
+@section('has_custom_seo', '1')
+
+@push('seo')
+    @if($rankbeamRobots !== '')
+        <meta name="robots" content="{{ $rankbeamRobots }}">
+    @endif
+    <meta property="og:type" content="{{ $rankbeamOgType }}">
+    <meta property="og:title" content="{{ $rankbeamOgTitle }}">
+    <meta property="og:description" content="{{ $rankbeamOgDescription }}">
+    <meta property="og:url" content="{{ $rankbeamPageCanonical }}">
+    @if($rankbeamOgImage)
+        <meta property="og:image" content="{{ $rankbeamOgImage }}">
+    @endif
+    <meta name="twitter:card" content="{{ $rankbeamTwitterCard }}">
+    <meta name="twitter:title" content="{{ $rankbeamTwitterTitle }}">
+    <meta name="twitter:description" content="{{ $rankbeamTwitterDescription }}">
+    @if($rankbeamTwitterImage)
+        <meta name="twitter:image" content="{{ $rankbeamTwitterImage }}">
+    @endif
+    @if(is_array($rankbeamSchema) && $rankbeamSchema !== [])
+        <script type="application/ld+json">{!! json_encode($rankbeamSchema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) !!}</script>
+    @endif
+@endpush
+
+'''
+show_path.write_text(seo_head + show[len(show_anchor):])
