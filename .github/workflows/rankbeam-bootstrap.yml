@@ -26,15 +26,10 @@ jobs:
           extensions: mbstring, intl, pdo_mysql
           coverage: none
 
-      - name: Prepare Laravel runtime paths
+      - name: Install Rankbeam SEO without booting Laravel
         run: |
-          mkdir -p bootstrap/cache storage/framework/cache storage/framework/sessions storage/framework/views
-          test -f .env || cp .env.example .env
-
-      - name: Install Rankbeam SEO
-        run: |
-          composer require rankbeam/laravel-seo-filament --with-all-dependencies --no-interaction
-          php artisan vendor:publish --tag=seo-config --force
+          composer require rankbeam/laravel-seo-filament:^1.5 --no-scripts --no-interaction
+          cp vendor/rankbeam/laravel-seo/config/seo.php config/seo.php
 
       - name: Commit package lock and config
         run: |
