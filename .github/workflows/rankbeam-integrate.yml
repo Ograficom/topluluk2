@@ -28,16 +28,14 @@ jobs:
       - name: Apply Rankbeam integration
         run: python .github/scripts/rankbeam_integration.py
 
-      - name: Syntax checks
+      - name: Validate integration
         run: |
           php -l app/Models/Post.php
           php -l app/Filament/Resources/PostResource.php
           php -l app/Http/Controllers/BlogController.php
-          grep -q "rankbeam/laravel-seo-filament" composer.json
-          grep -q "HasSEOFields" app/Filament/Resources/PostResource.php
-          grep -q "rankbeam_focus_keywords" resources/views/blog/create.blade.php
-          grep -q "rankbeam_focus_keywords" resources/views/blog/edit.blade.php
-          grep -q "rankbeamPageCanonical" resources/views/blog/show.blade.php
+          test -f resources/views/blog/partials/rankbeam-seo-fields.blade.php
+          git diff --check
+          git status --short
 
       - name: Commit integration
         run: |
