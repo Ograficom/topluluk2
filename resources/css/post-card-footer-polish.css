@@ -4,6 +4,10 @@
  * Yorum / kaydet / paylaş satırının üstündeki eski çizgi kaldırılır.
  */
 
+html body article.post-card[data-post-card-shell] {
+    box-shadow: none !important;
+}
+
 html body article.post-card[data-post-card-shell] #action-bar.action-bar {
     border-top: 0 !important;
 }
@@ -12,6 +16,70 @@ html body article.post-card[data-post-card-shell] #reaction-row.reactions-row {
     position: relative !important;
     border-top: 1px solid #e5e7eb !important;
     padding-top: 10px !important;
+}
+
+/*
+ * Tepki ekleme butonu:
+ * Arka plan korunur, ince kenarlık/gölge tamamen kaldırılır.
+ * Tüm ekran boyutlarında aynı davranır.
+ */
+html body article.post-card[data-post-card-shell] #reaction-row.reactions-row button.smiley-btn.reaction-add[data-post-card-reaction-trigger] {
+    border: 0 !important;
+    outline: 0 !important;
+    box-shadow: none !important;
+}
+
+html body article.post-card[data-post-card-shell] #reaction-row.reactions-row button.smiley-btn.reaction-add[data-post-card-reaction-trigger]::before,
+html body article.post-card[data-post-card-shell] #reaction-row.reactions-row button.smiley-btn.reaction-add[data-post-card-reaction-trigger]::after {
+    border: 0 !important;
+    box-shadow: none !important;
+}
+
+/*
+ * Ana akış post görselleri:
+ * - sabit 1.5/1 oranını iptal et
+ * - min/max yükseklik zorlamasını kaldır
+ * - görseli kendi gerçek en/boy oranıyla göster
+ * - gri/boş arka plan, çerçeve ve gölge oluşturma
+ */
+html body.route-home .home-feed-shell article.post-card[data-post-card-shell] :is(
+    .post-card__media-scroller,
+    .post-card__media-slide,
+    .post-card__media-link,
+    .post-card__media-frame
+) {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-height: 0 !important;
+    height: auto !important;
+    max-height: none !important;
+    aspect-ratio: auto !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    background: transparent !important;
+}
+
+html body.route-home .home-feed-shell article.post-card[data-post-card-shell] :is(
+    .post-card__media-image,
+    .hero-image
+) {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    height: auto !important;
+    max-height: none !important;
+    aspect-ratio: auto !important;
+    object-fit: initial !important;
+    object-position: center !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    background: transparent !important;
 }
 
 /*
@@ -25,6 +93,7 @@ html body article.post-card[data-post-card-shell] #reaction-row.reactions-row {
     html body article.post-card[data-post-card-shell] {
         border-radius: 8px !important;
         overflow: hidden !important;
+        box-shadow: none !important;
     }
 
     html body article.post-card[data-post-card-shell] #reaction-row.reactions-row {
