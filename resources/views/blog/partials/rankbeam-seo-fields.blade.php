@@ -31,10 +31,10 @@
 <div class="mt-4 border-t border-slate-100 pt-4" data-rankbeam-seo-fields>
     <div class="mb-3 flex items-start justify-between gap-3">
         <div>
-            <div class="text-sm font-semibold text-slate-950">Rankbeam SEO</div>
-            <p class="mt-0.5 text-xs leading-5 text-slate-500">Filament panelindeki ayni Rankbeam SEO kaydini duzenler. Arama motoru ve sosyal paylasim ayarlari iki tarafta da ortak kalir.</p>
+            <div class="text-sm font-semibold text-slate-950">Ografi SEO Ayarları</div>
+            <p class="mt-0.5 text-xs leading-5 text-slate-500">Yazınızın Ografi'de arama motorlarında ve sosyal paylaşımlarda nasıl görüneceğini düzenleyin.</p>
         </div>
-        <span class="shrink-0 rounded-full border border-blue-100 bg-blue-50 px-2 py-1 text-[10px] font-semibold uppercase tracking-wide text-blue-700">Google + Sosyal</span>
+        <span class="shrink-0 rounded-full border border-blue-100 bg-blue-50 px-2 py-1 text-[10px] font-semibold uppercase tracking-wide text-blue-700">Ografi SEO</span>
     </div>
 
     <div class="space-y-3">
