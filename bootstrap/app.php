@@ -11,7 +11,6 @@ use App\Http\Middleware\EnsureInstalled;
 use App\Http\Middleware\HomeFeedInterleavedCardsMiddleware;
 use App\Http\Middleware\LoginPageSecurityMiddleware;
 use App\Http\Middleware\ReactionDetailsMiddleware;
-use App\Http\Middleware\UnifiedStatsModalMiddleware;
 use App\Http\Middleware\PostPresentationMiddleware;
 use App\Http\Middleware\PostShowCommentIdentityLayoutMiddleware;
 use App\Http\Middleware\PostShowReactionLayoutMiddleware;
@@ -58,7 +57,6 @@ return Application::configure(basePath: dirname(__DIR__))
             VideoPageResponseMiddleware::class,
             HomeFeedInterleavedCardsMiddleware::class,
             ReactionDetailsMiddleware::class,
-            UnifiedStatsModalMiddleware::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
