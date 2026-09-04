@@ -10,9 +10,8 @@ use App\Http\Middleware\EnsureImageAltText;
 use App\Http\Middleware\EnsureInstalled;
 use App\Http\Middleware\HomeFeedInterleavedCardsMiddleware;
 use App\Http\Middleware\LoginPageSecurityMiddleware;
+use App\Http\Middleware\ReactionDetailsMiddleware;
 use App\Http\Middleware\UnifiedStatsModalMiddleware;
-use App\Http\Middleware\PostCardStatsPresentationMiddleware;
-use App\Http\Middleware\PostCardReactionStatsMiddleware;
 use App\Http\Middleware\PostPresentationMiddleware;
 use App\Http\Middleware\PostShowCommentIdentityLayoutMiddleware;
 use App\Http\Middleware\PostShowReactionLayoutMiddleware;
@@ -41,7 +40,7 @@ return Application::configure(basePath: dirname(__DIR__))
             EnsureInstalled::class,
         ]);
 
-        // Keep the post-show-only mobile layout fix isolated from feed/category cards.
+        // Keep frontend response polish isolated from admin/API rendering.
         $middleware->web(append: [
             SetLocale::class,
             EnsureDeviceIdCookie::class,
@@ -58,9 +57,8 @@ return Application::configure(basePath: dirname(__DIR__))
             ContactPageFieldStyleMiddleware::class,
             VideoPageResponseMiddleware::class,
             HomeFeedInterleavedCardsMiddleware::class,
+            ReactionDetailsMiddleware::class,
             UnifiedStatsModalMiddleware::class,
-            PostCardStatsPresentationMiddleware::class,
-            PostCardReactionStatsMiddleware::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
