@@ -128,6 +128,55 @@ html.dark body .home-feed-shell [data-og-feed-insert-card] .og-feed-insert-card_
     color: #60a5fa !important;
 }
 
+/*
+ * Ana akış yüzeyleri kesinlikle yükselmesin/gölge üretmesin.
+ * Post-card gölgesinin bir kısmı article değil .ografi-filterable-post
+ * kapsayıcısından gelebiliyor; ikisi birlikte sıfırlanır.
+ */
+html body.route-home .home-feed-shell .ografi-filterable-post,
+html body.route-home .home-feed-shell .ografi-filterable-post:hover,
+html body.route-home .home-feed-shell .ografi-filterable-post:focus,
+html body.route-home .home-feed-shell .ografi-filterable-post:focus-within,
+html body.route-home .home-feed-shell .ografi-filterable-post:active,
+html body.route-home .home-feed-shell .ografi-filterable-post > article.post-card[data-post-card-shell],
+html body.route-home .home-feed-shell .ografi-filterable-post > article.post-card[data-post-card-shell]:hover,
+html body.route-home .home-feed-shell .ografi-filterable-post > article.post-card[data-post-card-shell]:focus,
+html body.route-home .home-feed-shell .ografi-filterable-post > article.post-card[data-post-card-shell]:focus-within,
+html body.route-home .home-feed-shell .ografi-filterable-post > article.post-card[data-post-card-shell]:active {
+    box-shadow: none !important;
+    -webkit-box-shadow: none !important;
+    filter: none !important;
+    transform: none !important;
+}
+
+html body.route-home .home-feed-shell .ografi-filterable-post::before,
+html body.route-home .home-feed-shell .ografi-filterable-post::after,
+html body.route-home .home-feed-shell .ografi-filterable-post > article.post-card[data-post-card-shell]::before,
+html body.route-home .home-feed-shell .ografi-filterable-post > article.post-card[data-post-card-shell]::after {
+    box-shadow: none !important;
+    -webkit-box-shadow: none !important;
+    filter: none !important;
+}
+
+/* En İyi Postlar / Kategoriler / Takip Edilecek Kişiler kart yüzeyi de gölgesiz. */
+html body.route-home .home-feed-shell section.og-feed-insert-card[data-og-feed-insert-card],
+html body.route-home .home-feed-shell section.og-feed-insert-card[data-og-feed-insert-card]:hover,
+html body.route-home .home-feed-shell section.og-feed-insert-card[data-og-feed-insert-card]:focus,
+html body.route-home .home-feed-shell section.og-feed-insert-card[data-og-feed-insert-card]:focus-within,
+html body.route-home .home-feed-shell section.og-feed-insert-card[data-og-feed-insert-card]:active {
+    box-shadow: none !important;
+    -webkit-box-shadow: none !important;
+    filter: none !important;
+    transform: none !important;
+}
+
+html body.route-home .home-feed-shell section.og-feed-insert-card[data-og-feed-insert-card]::before,
+html body.route-home .home-feed-shell section.og-feed-insert-card[data-og-feed-insert-card]::after {
+    box-shadow: none !important;
+    -webkit-box-shadow: none !important;
+    filter: none !important;
+}
+
 @media (max-width: 640px) {
     html body .home-feed-shell [data-og-feed-card-type="categories"] .og-feed-insert-card__side {
         min-width: 60px !important;
