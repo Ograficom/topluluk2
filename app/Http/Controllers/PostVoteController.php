@@ -6,12 +6,17 @@ use App\Models\Post;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Validation\Rule;
 
 class PostVoteController extends Controller
 {
     public function summaries(Request $request): JsonResponse
     {
+        if (! Schema::hasColumn('posts', 'votes_enabled') || ! Schema::hasTable('post_votes')) {
+            return response()->json(['posts' => []]);
+        }
+
         $slugs = collect($request->query('slugs', []))
             ->when(
                 is_string($request->query('slugs')),
@@ -71,6 +76,12 @@ class PostVoteController extends Controller
 
     public function vote(Request $request, Post $post): JsonResponse
     {
+        if (! Schema::hasColumn('posts', 'votes_enabled') || ! Schema::hasTable('post_votes')) {
+            return response()->json([
+                'message' => 'Oylama sistemi şu anda hazır değil.',
+            ], 503);
+        }
+
         $user = $request->user();
         if (! $user) {
             return response()->json([
