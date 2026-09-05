@@ -6,6 +6,7 @@ use App\Http\Controllers\PostVoteController;
 use App\Http\Middleware\PostVoteAssetsMiddleware;
 use App\Models\Post;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 
 class PostVoteServiceProvider extends ServiceProvider
@@ -19,12 +20,22 @@ class PostVoteServiceProvider extends ServiceProvider
                 return;
             }
 
-            $request = $this->app['request'];
-            if (! $request->has('votes_enabled')) {
-                return;
-            }
+            try {
+                if (! Schema::hasColumn('posts', 'votes_enabled')) {
+                    return;
+                }
 
-            $post->setAttribute('votes_enabled', $request->boolean('votes_enabled'));
+                $request = $this->app['request'];
+                if (! $request->has('votes_enabled')) {
+                    return;
+                }
+
+                $post->setAttribute('votes_enabled', $request->boolean('votes_enabled'));
+            } catch (\Throwable $exception) {
+                // Oylama tercihi opsiyoneldir; bu alan yüzünden post oluşturma/güncelleme
+                // işlemi 500'e düşmemeli.
+                report($exception);
+            }
         };
 
         Post::creating($syncVotePreference);
