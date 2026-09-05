@@ -89,7 +89,7 @@
         if (!preferenceRow?.parentElement) return;
 
         const meta = document.querySelector('meta[name="ografi-post-votes-enabled"]');
-        const enabled = String(meta?.getAttribute('content') ?? '1') !== '0';
+        const enabled = String(meta?.getAttribute('content') ?? '0') === '1';
 
         const row = document.createElement('div');
         row.className = preferenceRow.className;
@@ -101,11 +101,11 @@
 
         const title = document.createElement('div');
         title.className = 'post-vote-setting-title';
-        title.textContent = 'Gönderi oylaması';
+        title.textContent = 'Bu bir oylama';
 
         const description = document.createElement('div');
         description.className = 'post-vote-setting-description';
-        description.textContent = 'Oklarla olumlu veya olumsuz oy verilmesine izin ver.';
+        description.textContent = 'Açıldığında gönderi kartında yukarı ve aşağı oy sistemi görünür.';
 
         copy.append(title, description);
 
@@ -119,14 +119,14 @@
 
         const label = document.createElement('label');
         label.className = 'post-vote-setting-switch';
-        label.title = 'Gönderi oylamasını aç veya kapat';
+        label.title = 'Bu gönderiyi oylama olarak aç veya kapat';
 
         const input = document.createElement('input');
         input.type = 'checkbox';
         input.name = 'votes_enabled';
         input.value = '1';
         input.checked = enabled;
-        input.setAttribute('aria-label', 'Gönderi oylamasını etkinleştir');
+        input.setAttribute('aria-label', 'Bu bir oylama');
 
         const track = document.createElement('span');
         track.className = 'post-vote-setting-track';
