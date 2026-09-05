@@ -38,7 +38,9 @@ class PostVoteAssetsMiddleware
             return $response;
         }
 
-        $votesEnabled = true;
+        // Yeni gonderiler normal post olarak baslar. Kullanici ancak
+        // "Bu bir oylama" tercihini acarsa vote sistemi aktif olur.
+        $votesEnabled = false;
         if ($request->session()->hasOldInput('votes_enabled')) {
             $votesEnabled = (bool) $request->old('votes_enabled');
         } elseif ($request->routeIs('blog.post.edit')) {
@@ -48,7 +50,7 @@ class PostVoteAssetsMiddleware
             } else {
                 $slug = trim((string) $routePost);
                 if ($slug !== '') {
-                    $votesEnabled = (bool) (Post::withoutGlobalScopes()->where('slug', $slug)->value('votes_enabled') ?? true);
+                    $votesEnabled = (bool) (Post::withoutGlobalScopes()->where('slug', $slug)->value('votes_enabled') ?? false);
                 }
             }
         }
