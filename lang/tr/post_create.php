@@ -47,8 +47,8 @@ return [
     'disable_comments' => 'Yorumları devre dışı bırak',
     'disable_comments_help' => 'Bu seçenek, hikâyenizin altındaki yorumlar bölümünü gizler.',
 
-    'nsfw' => 'İş yerinde görüntülenmesi uygun değil (NSFW)',
-    'nsfw_help' => 'Bu içerik yetişkinlere yönelik ögeler içermektedir.',
+    'nsfw' => '18+ Yetişkin içerik (NSFW)',
+    'nsfw_help' => 'Bu içerik yalnızca 18 yaş ve üzeri kullanıcılar için uygundur.',
 
     'pin_story' => 'Hikâyeyi sabitle',
     'pin_story_help' => 'Sabitlediğiniz hikâyeler yalnızca profilinizde görünür.',
