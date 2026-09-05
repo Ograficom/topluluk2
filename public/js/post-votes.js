@@ -31,33 +31,59 @@
     };
 
     const slugFromCard = (card) => {
+        const explicit = card?.getAttribute?.('data-post-vote-slug') || card?.getAttribute?.('data-post-slug') || '';
+        if (explicit) return decodeSlug(explicit);
+
         const id = String(card?.id || '');
         if (!id.startsWith('post-card-shell-')) return '';
         return decodeSlug(id.slice('post-card-shell-'.length));
     };
 
     const slugFromPostShow = () => {
-        if (!document.querySelector('.post-show-shell')) return '';
+        const shell = document.querySelector('.post-show-shell');
+        if (!shell) return '';
+
+        const explicit = shell.getAttribute('data-post-vote-slug') || shell.getAttribute('data-post-slug') || '';
+        if (explicit) return decodeSlug(explicit);
+
+        const canonical = document.querySelector('link[rel="canonical"]')?.getAttribute('href') || '';
+        try {
+            if (canonical) {
+                const parts = new URL(canonical, window.location.origin).pathname.replace(/\/+$/, '').split('/').filter(Boolean);
+                if (parts.length) return decodeSlug(parts[parts.length - 1]);
+            }
+        } catch {
+            // Fall through to current pathname.
+        }
+
         const parts = window.location.pathname.replace(/\/+$/, '').split('/').filter(Boolean);
-        if (parts.length < 2 || parts[0] !== 'tr') return '';
+        if (!parts.length) return '';
         return decodeSlug(parts[parts.length - 1]);
     };
+
+    const cardActionTarget = (card) => card?.querySelector(
+        '.action-left, [data-post-actions-left], .post-card__actions-left'
+    ) || null;
+
+    const postShowActionTarget = (shell) => shell?.querySelector(
+        '.ps-action-row, [data-post-show-actions], .post-show-actions'
+    ) || null;
 
     const findVoteTargets = () => {
         const entries = [];
 
         document.querySelectorAll('article[data-post-card-shell]').forEach((card) => {
             const slug = slugFromCard(card);
-            const target = card.querySelector('.action-left');
-            if (!slug || !target || target.dataset.postVoteChecked === '1') return;
-            entries.push({ slug, target });
+            const target = cardActionTarget(card);
+            if (!slug || !target || target.dataset.postVoteHydrating === '1') return;
+            entries.push({ slug, target, surface: 'card' });
         });
 
         const showShell = document.querySelector('.post-show-shell');
-        const showTarget = showShell?.querySelector('.ps-action-row');
+        const showTarget = postShowActionTarget(showShell);
         const showSlug = slugFromPostShow();
-        if (showSlug && showTarget && showTarget.dataset.postVoteChecked !== '1') {
-            entries.push({ slug: showSlug, target: showTarget });
+        if (showSlug && showTarget && showTarget.dataset.postVoteHydrating !== '1') {
+            entries.push({ slug: showSlug, target: showTarget, surface: 'show' });
         }
 
         return entries;
@@ -105,7 +131,7 @@
 
         const description = document.createElement('div');
         description.className = 'post-vote-setting-description';
-        description.textContent = 'Açıldığında gönderi kartında yukarı ve aşağı oy sistemi görünür.';
+        description.textContent = 'Açıldığında post-card ve post-show üzerinde yukarı / aşağı oy sistemi görünür.';
 
         copy.append(title, description);
 
@@ -200,14 +226,37 @@
         });
     };
 
+    const mountControl = (target, slug, state) => {
+        if (!target || !state?.enabled) return;
+
+        const existing = target.querySelector(CONTROL_SELECTOR);
+        if (existing) {
+            existing.dataset.postSlug = slug;
+            applyState(existing, state);
+            return;
+        }
+
+        // Eski post-show vote bloğu tepki sayısını gösteriyordu; gerçek post oylamasıyla
+        // karışmaması için yalnızca yeni kontrol aktif olduğunda kaldırılır.
+        const legacy = target.querySelector('.ps-vote-cluster');
+        const control = createControl(slug, state);
+
+        if (legacy) {
+            legacy.replaceWith(control);
+        } else {
+            target.prepend(control);
+        }
+    };
+
     const hydrate = async () => {
         const entries = findVoteTargets();
         if (!entries.length) return;
 
         const bySlug = new Map();
         entries.forEach((entry) => {
+            entry.target.dataset.postVoteHydrating = '1';
             if (!bySlug.has(entry.slug)) bySlug.set(entry.slug, []);
-            bySlug.get(entry.slug).push(entry.target);
+            bySlug.get(entry.slug).push(entry);
         });
 
         const params = new URLSearchParams();
@@ -226,14 +275,29 @@
 
             bySlug.forEach((targets, slug) => {
                 const state = posts[slug];
-                targets.forEach((target) => {
+                targets.forEach(({ target }) => {
+                    delete target.dataset.postVoteHydrating;
+
+                    if (!state) {
+                        delete target.dataset.postVoteChecked;
+                        return;
+                    }
+
                     target.dataset.postVoteChecked = '1';
-                    if (!state?.enabled || target.querySelector(CONTROL_SELECTOR)) return;
-                    target.prepend(createControl(slug, state));
+
+                    if (!state.enabled) {
+                        target.querySelector(CONTROL_SELECTOR)?.remove();
+                        return;
+                    }
+
+                    mountControl(target, slug, state);
                 });
             });
         } catch {
-            // Ağ hatasında mevcut aksiyon çubuğunu bozma; bir sonraki DOM güncellemesinde tekrar denenebilir.
+            entries.forEach(({ target }) => {
+                delete target.dataset.postVoteHydrating;
+                delete target.dataset.postVoteChecked;
+            });
         }
     };
 
@@ -292,7 +356,7 @@
             const state = await response.json();
             syncSlugEverywhere(slug, state);
         } catch {
-            // İstek başarısızsa eski sayı/oy durumu korunur.
+            // İstek başarısızsa eski sayı/oy durumu korunur; sayfa patlatılmaz.
         } finally {
             setBusy(control, false);
         }
