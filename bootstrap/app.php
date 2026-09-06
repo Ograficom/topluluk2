@@ -13,6 +13,7 @@ use App\Http\Middleware\LoginPageSecurityMiddleware;
 use App\Http\Middleware\ReactionDetailsMiddleware;
 use App\Http\Middleware\PostPresentationMiddleware;
 use App\Http\Middleware\PostShowCommentIdentityLayoutMiddleware;
+use App\Http\Middleware\PostShowMobileTypographyMiddleware;
 use App\Http\Middleware\PostShowReactionLayoutMiddleware;
 use App\Http\Middleware\PostShowTypographyMiddleware;
 use App\Http\Middleware\SetLocale;
@@ -47,6 +48,7 @@ return Application::configure(basePath: dirname(__DIR__))
             AddSecurityHeaders::class,
             EnsureImageAltText::class,
             EditorJsTableInlineFormatMiddleware::class,
+            PostShowMobileTypographyMiddleware::class,
             PostShowTypographyMiddleware::class,
             PostPresentationMiddleware::class,
             PostShowReactionLayoutMiddleware::class,
