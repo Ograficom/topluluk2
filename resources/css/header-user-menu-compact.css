@@ -1,0 +1,393 @@
+/*
+ * Compact system-style header account menu.
+ * Final visual layer for the existing header user dropdown. The markup,
+ * routes and actions stay untouched; only the presentation is compacted.
+ */
+
+html body .site-header #site-user-menu.site-menu-panel,
+html body .site-header .site-menu-panel[data-user-menu-panel] {
+    width: min(246px, calc(100vw - 16px)) !important;
+    min-width: 0 !important;
+    max-width: 246px !important;
+    padding: 6px !important;
+    border: 1px solid #e2e5e9 !important;
+    border-radius: 12px !important;
+    background: #f7f7f8 !important;
+    background-color: #f7f7f8 !important;
+    box-shadow: 0 8px 22px rgba(15, 23, 42, .07) !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    overflow: hidden !important;
+}
+
+html body .site-header .site-menu-panel[data-user-menu-panel]::before,
+html body .site-header .site-menu-panel[data-user-menu-panel]::after {
+    display: none !important;
+    content: none !important;
+}
+
+/* User card */
+html body .site-header .site-menu-panel[data-user-menu-panel] .site-user-menu-card {
+    display: flex !important;
+    align-items: center !important;
+    gap: 7px !important;
+    min-height: 40px !important;
+    margin: 0 0 5px !important;
+    padding: 5px 6px !important;
+    border: 1px solid #e5e7eb !important;
+    border-radius: 9px !important;
+    background: #ffffff !important;
+    box-shadow: none !important;
+    transform: none !important;
+}
+
+html body .site-header .site-menu-panel[data-user-menu-panel] .site-user-menu-card:hover,
+html body .site-header .site-menu-panel[data-user-menu-panel] .site-user-menu-card:focus-visible {
+    border-color: #d9dde3 !important;
+    background: #ffffff !important;
+    box-shadow: none !important;
+    transform: none !important;
+    outline: none !important;
+}
+
+html body .site-header .site-menu-panel[data-user-menu-panel] .site-user-menu-avatar,
+html body .site-header .site-menu-panel[data-user-menu-panel] .site-user-menu-avatar img,
+html body .site-header .site-menu-panel[data-user-menu-panel] .site-user-menu-avatar .site-avatar-fallback {
+    width: 28px !important;
+    min-width: 28px !important;
+    max-width: 28px !important;
+    height: 28px !important;
+    min-height: 28px !important;
+    max-height: 28px !important;
+    border: 0 !important;
+    border-radius: 8px !important;
+    box-shadow: none !important;
+    object-fit: cover !important;
+}
+
+html body .site-header .site-menu-panel[data-user-menu-panel] .site-user-menu-card-meta {
+    min-width: 0 !important;
+    flex: 1 1 auto !important;
+    gap: 0 !important;
+}
+
+html body .site-header .site-menu-panel[data-user-menu-panel] .site-user-menu-card-name {
+    margin: 0 !important;
+    color: #111827 !important;
+    font-size: 11.5px !important;
+    font-weight: 700 !important;
+    line-height: 1.2 !important;
+    letter-spacing: 0 !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+}
+
+html body .site-header .site-menu-panel[data-user-menu-panel] .site-user-menu-card-email {
+    margin: 1px 0 0 !important;
+    color: #6b7280 !important;
+    font-size: 9.5px !important;
+    font-weight: 400 !important;
+    line-height: 1.2 !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+}
+
+html body .site-header .site-menu-panel[data-user-menu-panel] .site-user-menu-points {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex: 0 0 auto !important;
+    min-width: 0 !important;
+    height: 18px !important;
+    margin: 0 !important;
+    padding: 0 5px !important;
+    border: 1px solid #bbf7d0 !important;
+    border-radius: 999px !important;
+    background: #dcfce7 !important;
+    color: #15803d !important;
+    box-shadow: none !important;
+    font-size: 8.5px !important;
+    font-weight: 700 !important;
+    line-height: 16px !important;
+    white-space: nowrap !important;
+}
+
+/* Main menu rows */
+html body .site-header .site-menu-panel[data-user-menu-panel] .site-user-menu-link,
+html body .site-header .site-menu-panel[data-user-menu-panel] .site-user-menu-button,
+html body .site-header .site-menu-panel[data-user-menu-panel] .site-user-menu-sublink {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 7px !important;
+    width: 100% !important;
+    min-height: 28px !important;
+    margin: 0 !important;
+    padding: 3px 5px !important;
+    border: 0 !important;
+    border-radius: 6px !important;
+    background: transparent !important;
+    color: #22262d !important;
+    box-shadow: none !important;
+    filter: none !important;
+    transform: none !important;
+    text-decoration: none !important;
+    transition: background-color .12s ease, color .12s ease !important;
+}
+
+html body .site-header .site-menu-panel[data-user-menu-panel] .site-user-menu-link:hover,
+html body .site-header .site-menu-panel[data-user-menu-panel] .site-user-menu-link:focus-visible,
+html body .site-header .site-menu-panel[data-user-menu-panel] .site-user-menu-button:hover,
+html body .site-header .site-menu-panel[data-user-menu-panel] .site-user-menu-button:focus-visible,
+html body .site-header .site-menu-panel[data-user-menu-panel] .site-user-menu-sublink:hover,
+html body .site-header .site-menu-panel[data-user-menu-panel] .site-user-menu-sublink:focus-visible {
+    background: #eceef1 !important;
+    color: #111827 !important;
+    box-shadow: none !important;
+    filter: none !important;
+    transform: none !important;
+    outline: none !important;
+}
+
+html body .site-header .site-menu-panel[data-user-menu-panel] .site-user-menu-link:active,
+html body .site-header .site-menu-panel[data-user-menu-panel] .site-user-menu-button:active,
+html body .site-header .site-menu-panel[data-user-menu-panel] .site-user-menu-sublink:active {
+    background: #e3e6ea !important;
+    transform: none !important;
+}
+
+html body .site-header .site-menu-panel[data-user-menu-panel] .site-user-menu-icon {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex: 0 0 18px !important;
+    width: 18px !important;
+    min-width: 18px !important;
+    max-width: 18px !important;
+    height: 18px !important;
+    min-height: 18px !important;
+    max-height: 18px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    color: #374151 !important;
+    box-shadow: none !important;
+}
+
+html body .site-header .site-menu-panel[data-user-menu-panel] .site-user-menu-icon :is(svg, iconify-icon),
+html body .site-header .site-menu-panel[data-user-menu-panel] .site-user-menu-icon > :is(svg, iconify-icon),
+html body .site-header .site-menu-panel[data-user-menu-panel] .site-user-menu-link > :is(svg, iconify-icon),
+html body .site-header .site-menu-panel[data-user-menu-panel] .site-user-menu-button > :is(svg, iconify-icon) {
+    width: 14px !important;
+    min-width: 14px !important;
+    height: 14px !important;
+    min-height: 14px !important;
+    font-size: 14px !important;
+    line-height: 14px !important;
+}
+
+html body .site-header .site-menu-panel[data-user-menu-panel] .site-user-menu-link-copy {
+    display: flex !important;
+    align-items: center !important;
+    min-width: 0 !important;
+    flex: 1 1 auto !important;
+}
+
+html body .site-header .site-menu-panel[data-user-menu-panel] .site-user-menu-label,
+html body .site-header .site-menu-panel[data-user-menu-panel] .site-user-menu-sublink,
+html body .site-header .site-menu-panel[data-user-menu-panel] .site-user-menu-button {
+    font-size: 11px !important;
+    font-weight: 600 !important;
+    line-height: 1.15 !important;
+    letter-spacing: 0 !important;
+}
+
+html body .site-header .site-menu-panel[data-user-menu-panel] .site-user-menu-description {
+    display: none !important;
+}
+
+html body .site-header .site-menu-panel[data-user-menu-panel] .site-user-menu-divider {
+    height: 1px !important;
+    margin: 3px 4px !important;
+    border: 0 !important;
+    background: #e2e5e9 !important;
+}
+
+/* Theme toggle is deliberately tiny, like a desktop settings menu. */
+html body .site-header .site-menu-panel[data-user-menu-panel] .site-user-menu-link--switch {
+    justify-content: flex-start !important;
+}
+
+html body .site-header .site-menu-panel[data-user-menu-panel] .site-user-menu-switch {
+    width: 28px !important;
+    min-width: 28px !important;
+    max-width: 28px !important;
+    height: 16px !important;
+    min-height: 16px !important;
+    max-height: 16px !important;
+    margin-left: auto !important;
+    border: 0 !important;
+    border-radius: 999px !important;
+    background: #d1d5db !important;
+    box-shadow: none !important;
+    transform: none !important;
+}
+
+html body .site-header .site-menu-panel[data-user-menu-panel] .site-user-menu-switch__knob {
+    top: 2px !important;
+    left: 2px !important;
+    right: auto !important;
+    width: 12px !important;
+    min-width: 12px !important;
+    height: 12px !important;
+    min-height: 12px !important;
+    border: 0 !important;
+    background: #ffffff !important;
+    box-shadow: none !important;
+    transform: none !important;
+}
+
+html body .site-header .site-menu-panel[data-user-menu-panel] .site-user-menu-link--switch[aria-pressed="true"] .site-user-menu-switch {
+    background: #2563eb !important;
+}
+
+html body .site-header .site-menu-panel[data-user-menu-panel] .site-user-menu-link--switch[aria-pressed="true"] .site-user-menu-switch__knob {
+    left: auto !important;
+    right: 2px !important;
+}
+
+html body .site-header .site-menu-panel[data-user-menu-panel] .site-user-menu-link--switch:active .site-user-menu-switch__knob,
+html body .site-header .site-menu-panel[data-user-menu-panel] .site-user-menu-link--switch[aria-pressed="true"]:active .site-user-menu-switch__knob {
+    top: 2px !important;
+    width: 12px !important;
+    height: 12px !important;
+}
+
+/* Bottom area */
+html body .site-header .site-menu-panel[data-user-menu-panel] .site-user-menu-footer {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 5px !important;
+    margin: 4px 0 0 !important;
+    padding: 4px 1px 0 !important;
+    border-top: 1px solid #e2e5e9 !important;
+}
+
+html body .site-header .site-menu-panel[data-user-menu-panel] .site-user-menu-footer :is(a, button),
+html body .site-header .site-menu-panel[data-user-menu-panel] .site-user-menu-button-danger {
+    min-height: 25px !important;
+    padding: 3px 6px !important;
+    border: 0 !important;
+    border-radius: 6px !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    color: #6b7280 !important;
+    font-size: 10px !important;
+    font-weight: 500 !important;
+    line-height: 1.1 !important;
+    transform: none !important;
+}
+
+html body .site-header .site-menu-panel[data-user-menu-panel] .site-user-menu-footer :is(a, button):hover,
+html body .site-header .site-menu-panel[data-user-menu-panel] .site-user-menu-footer :is(a, button):focus-visible {
+    background: #eceef1 !important;
+    color: #111827 !important;
+    outline: none !important;
+}
+
+html body .site-header .site-menu-panel[data-user-menu-panel] .site-user-menu-button-danger:hover,
+html body .site-header .site-menu-panel[data-user-menu-panel] .site-user-menu-button-danger:focus-visible {
+    background: #eceef1 !important;
+    color: #dc2626 !important;
+}
+
+/* Dark mode */
+html.dark body .site-header .site-menu-panel[data-user-menu-panel],
+html body.dark .site-header .site-menu-panel[data-user-menu-panel],
+.dark body .site-header .site-menu-panel[data-user-menu-panel],
+[data-theme="dark"] body .site-header .site-menu-panel[data-user-menu-panel] {
+    border-color: #303238 !important;
+    background: #18191c !important;
+    background-color: #18191c !important;
+    box-shadow: 0 8px 22px rgba(0, 0, 0, .24) !important;
+}
+
+html.dark body .site-header .site-menu-panel[data-user-menu-panel] .site-user-menu-card,
+html body.dark .site-header .site-menu-panel[data-user-menu-panel] .site-user-menu-card,
+.dark body .site-header .site-menu-panel[data-user-menu-panel] .site-user-menu-card,
+[data-theme="dark"] body .site-header .site-menu-panel[data-user-menu-panel] .site-user-menu-card {
+    border-color: #303238 !important;
+    background: #202125 !important;
+}
+
+html.dark body .site-header .site-menu-panel[data-user-menu-panel] :is(.site-user-menu-card-name, .site-user-menu-label, .site-user-menu-link, .site-user-menu-button, .site-user-menu-sublink),
+html body.dark .site-header .site-menu-panel[data-user-menu-panel] :is(.site-user-menu-card-name, .site-user-menu-label, .site-user-menu-link, .site-user-menu-button, .site-user-menu-sublink),
+.dark body .site-header .site-menu-panel[data-user-menu-panel] :is(.site-user-menu-card-name, .site-user-menu-label, .site-user-menu-link, .site-user-menu-button, .site-user-menu-sublink),
+[data-theme="dark"] body .site-header .site-menu-panel[data-user-menu-panel] :is(.site-user-menu-card-name, .site-user-menu-label, .site-user-menu-link, .site-user-menu-button, .site-user-menu-sublink) {
+    color: #f4f4f5 !important;
+}
+
+html.dark body .site-header .site-menu-panel[data-user-menu-panel] :is(.site-user-menu-card-email, .site-user-menu-icon),
+html body.dark .site-header .site-menu-panel[data-user-menu-panel] :is(.site-user-menu-card-email, .site-user-menu-icon),
+.dark body .site-header .site-menu-panel[data-user-menu-panel] :is(.site-user-menu-card-email, .site-user-menu-icon),
+[data-theme="dark"] body .site-header .site-menu-panel[data-user-menu-panel] :is(.site-user-menu-card-email, .site-user-menu-icon) {
+    color: #a1a1aa !important;
+}
+
+html.dark body .site-header .site-menu-panel[data-user-menu-panel] :is(.site-user-menu-link, .site-user-menu-button, .site-user-menu-sublink):hover,
+html.dark body .site-header .site-menu-panel[data-user-menu-panel] :is(.site-user-menu-link, .site-user-menu-button, .site-user-menu-sublink):focus-visible,
+html body.dark .site-header .site-menu-panel[data-user-menu-panel] :is(.site-user-menu-link, .site-user-menu-button, .site-user-menu-sublink):hover,
+html body.dark .site-header .site-menu-panel[data-user-menu-panel] :is(.site-user-menu-link, .site-user-menu-button, .site-user-menu-sublink):focus-visible,
+.dark body .site-header .site-menu-panel[data-user-menu-panel] :is(.site-user-menu-link, .site-user-menu-button, .site-user-menu-sublink):hover,
+.dark body .site-header .site-menu-panel[data-user-menu-panel] :is(.site-user-menu-link, .site-user-menu-button, .site-user-menu-sublink):focus-visible,
+[data-theme="dark"] body .site-header .site-menu-panel[data-user-menu-panel] :is(.site-user-menu-link, .site-user-menu-button, .site-user-menu-sublink):hover,
+[data-theme="dark"] body .site-header .site-menu-panel[data-user-menu-panel] :is(.site-user-menu-link, .site-user-menu-button, .site-user-menu-sublink):focus-visible {
+    background: #2a2c31 !important;
+    color: #ffffff !important;
+}
+
+html.dark body .site-header .site-menu-panel[data-user-menu-panel] .site-user-menu-divider,
+html.dark body .site-header .site-menu-panel[data-user-menu-panel] .site-user-menu-footer,
+html body.dark .site-header .site-menu-panel[data-user-menu-panel] .site-user-menu-divider,
+html body.dark .site-header .site-menu-panel[data-user-menu-panel] .site-user-menu-footer,
+.dark body .site-header .site-menu-panel[data-user-menu-panel] .site-user-menu-divider,
+.dark body .site-header .site-menu-panel[data-user-menu-panel] .site-user-menu-footer,
+[data-theme="dark"] body .site-header .site-menu-panel[data-user-menu-panel] .site-user-menu-divider,
+[data-theme="dark"] body .site-header .site-menu-panel[data-user-menu-panel] .site-user-menu-footer {
+    border-color: #303238 !important;
+    background-color: transparent !important;
+}
+
+html.dark body .site-header .site-menu-panel[data-user-menu-panel] .site-user-menu-divider,
+html body.dark .site-header .site-menu-panel[data-user-menu-panel] .site-user-menu-divider,
+.dark body .site-header .site-menu-panel[data-user-menu-panel] .site-user-menu-divider,
+[data-theme="dark"] body .site-header .site-menu-panel[data-user-menu-panel] .site-user-menu-divider {
+    background: #303238 !important;
+}
+
+html.dark body .site-header .site-menu-panel[data-user-menu-panel] .site-user-menu-points,
+html body.dark .site-header .site-menu-panel[data-user-menu-panel] .site-user-menu-points,
+.dark body .site-header .site-menu-panel[data-user-menu-panel] .site-user-menu-points,
+[data-theme="dark"] body .site-header .site-menu-panel[data-user-menu-panel] .site-user-menu-points {
+    border-color: #166534 !important;
+    background: #153d25 !important;
+    color: #86efac !important;
+}
+
+@media (max-width: 640px) {
+    html body .site-header #site-user-menu.site-menu-panel,
+    html body .site-header .site-menu-panel[data-user-menu-panel] {
+        width: min(246px, calc(100vw - 16px)) !important;
+        min-width: 0 !important;
+        max-width: 246px !important;
+        padding: 6px !important;
+        border-radius: 12px !important;
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+    }
+}
