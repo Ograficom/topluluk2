@@ -2,8 +2,8 @@
 
 /*
  * Post-card alt etkileşim alanı.
- * Ayırıcı çizgi tepki/emoji satırının ÜSTÜNDE olur.
- * Yorum / kaydet / paylaş satırının üstündeki eski çizgi kaldırılır.
+ * Ayırıcı çizgi tepki/emoji satırının ALTINDA olur.
+ * Yorum / kaydet / paylaş satırından önce görsel ayrımı sağlar.
  */
 
 html body article.post-card[data-post-card-shell] #action-bar.action-bar {
@@ -12,8 +12,10 @@ html body article.post-card[data-post-card-shell] #action-bar.action-bar {
 
 html body article.post-card[data-post-card-shell] #reaction-row.reactions-row {
     position: relative !important;
-    border-top: 1px solid #e5e7eb !important;
-    padding-top: 10px !important;
+    border-top: 0 !important;
+    border-bottom: 1px solid #e5e7eb !important;
+    padding-top: 0 !important;
+    padding-bottom: 10px !important;
 }
 
 /*
@@ -35,8 +37,10 @@ html body article.post-card[data-post-card-shell] #reaction-row.reactions-row {
         margin-right: 0 !important;
         padding-left: 0 !important;
         padding-right: 0 !important;
-        padding-top: 9px !important;
-        border-top: 1px solid #e5e7eb !important;
+        padding-top: 0 !important;
+        padding-bottom: 9px !important;
+        border-top: 0 !important;
+        border-bottom: 1px solid #e5e7eb !important;
         box-sizing: border-box !important;
     }
 
@@ -114,7 +118,7 @@ html.dark body article.post-card[data-post-card-shell] #reaction-row.reactions-r
 body.dark article.post-card[data-post-card-shell] #reaction-row.reactions-row,
 .dark article.post-card[data-post-card-shell] #reaction-row.reactions-row,
 [data-theme="dark"] article.post-card[data-post-card-shell] #reaction-row.reactions-row {
-    border-top-color: rgba(255, 255, 255, 0.12) !important;
+    border-bottom-color: rgba(255, 255, 255, 0.12) !important;
 }
 
 @media (max-width: 640px) {
