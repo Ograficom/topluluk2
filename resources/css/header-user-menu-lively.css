@@ -1,0 +1,209 @@
+/*
+ * Header user dropdown — livelier visual layer.
+ * Keeps the compact system-menu structure and existing actions intact.
+ */
+
+html body .site-header #site-user-menu.site-menu-panel,
+html body .site-header .site-menu-panel[data-user-menu-panel] {
+    position: relative !important;
+    border-color: #d9e3f0 !important;
+    background:
+        radial-gradient(circle at 94% 3%, rgba(59, 130, 246, .12), transparent 32%),
+        linear-gradient(180deg, #ffffff 0%, #f8fbff 100%) !important;
+    background-color: #ffffff !important;
+    box-shadow: 0 12px 28px rgba(15, 23, 42, .10) !important;
+}
+
+html body .site-header .site-menu-panel[data-user-menu-panel]::before {
+    content: '' !important;
+    display: block !important;
+    position: absolute !important;
+    top: 0 !important;
+    left: 12px !important;
+    right: 12px !important;
+    height: 2px !important;
+    border-radius: 0 0 999px 999px !important;
+    background: linear-gradient(90deg, #2563eb 0%, #60a5fa 52%, #34d399 100%) !important;
+    pointer-events: none !important;
+}
+
+html body .site-header .site-menu-panel[data-user-menu-panel]::after {
+    display: none !important;
+    content: none !important;
+}
+
+html body .site-header .site-menu-panel[data-user-menu-panel] .site-user-menu-card {
+    border-color: #dbe7f7 !important;
+    background:
+        linear-gradient(135deg, rgba(239, 246, 255, .92) 0%, rgba(255, 255, 255, .98) 56%, rgba(236, 253, 245, .72) 100%) !important;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .9) !important;
+    transition: border-color .16s ease, background-color .16s ease, transform .16s ease !important;
+}
+
+html body .site-header .site-menu-panel[data-user-menu-panel] .site-user-menu-card:hover,
+html body .site-header .site-menu-panel[data-user-menu-panel] .site-user-menu-card:focus-visible {
+    border-color: #bfd5f3 !important;
+    background:
+        linear-gradient(135deg, #edf5ff 0%, #ffffff 58%, #ecfdf5 100%) !important;
+    transform: translateY(-1px) !important;
+}
+
+html body .site-header .site-menu-panel[data-user-menu-panel] .site-user-menu-avatar,
+html body .site-header .site-menu-panel[data-user-menu-panel] .site-user-menu-avatar img,
+html body .site-header .site-menu-panel[data-user-menu-panel] .site-user-menu-avatar .site-avatar-fallback {
+    box-shadow: 0 0 0 2px #ffffff, 0 0 0 3px rgba(37, 99, 235, .16) !important;
+}
+
+html body .site-header .site-menu-panel[data-user-menu-panel] .site-user-menu-card-name {
+    color: #0f172a !important;
+}
+
+html body .site-header .site-menu-panel[data-user-menu-panel] .site-user-menu-card-email {
+    color: #64748b !important;
+}
+
+html body .site-header .site-menu-panel[data-user-menu-panel] .site-user-menu-points {
+    border-color: #86efac !important;
+    background: linear-gradient(180deg, #ecfdf5 0%, #dcfce7 100%) !important;
+    color: #15803d !important;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .9) !important;
+}
+
+html body .site-header .site-menu-panel[data-user-menu-panel] .site-user-menu-link,
+html body .site-header .site-menu-panel[data-user-menu-panel] .site-user-menu-button,
+html body .site-header .site-menu-panel[data-user-menu-panel] .site-user-menu-sublink {
+    border: 1px solid transparent !important;
+    transition:
+        background-color .15s ease,
+        border-color .15s ease,
+        color .15s ease,
+        transform .15s ease !important;
+}
+
+html body .site-header .site-menu-panel[data-user-menu-panel] :is(.site-user-menu-link, .site-user-menu-button, .site-user-menu-sublink):hover,
+html body .site-header .site-menu-panel[data-user-menu-panel] :is(.site-user-menu-link, .site-user-menu-button, .site-user-menu-sublink):focus-visible {
+    border-color: #d9e8fb !important;
+    background: linear-gradient(180deg, #f3f8ff 0%, #eaf3ff 100%) !important;
+    color: #1d4ed8 !important;
+    transform: translateX(2px) !important;
+}
+
+html body .site-header .site-menu-panel[data-user-menu-panel] :is(.site-user-menu-link, .site-user-menu-button, .site-user-menu-sublink):active {
+    border-color: #c8dcf7 !important;
+    background: #e2edfc !important;
+    transform: translateX(1px) !important;
+}
+
+html body .site-header .site-menu-panel[data-user-menu-panel] .site-user-menu-icon {
+    flex: 0 0 24px !important;
+    width: 24px !important;
+    min-width: 24px !important;
+    max-width: 24px !important;
+    height: 24px !important;
+    min-height: 24px !important;
+    max-height: 24px !important;
+    border: 1px solid #e0eaf7 !important;
+    border-radius: 7px !important;
+    background: linear-gradient(180deg, #ffffff 0%, #edf5ff 100%) !important;
+    color: #475569 !important;
+    transition:
+        background-color .15s ease,
+        border-color .15s ease,
+        color .15s ease,
+        transform .15s ease !important;
+}
+
+html body .site-header .site-menu-panel[data-user-menu-panel] :is(.site-user-menu-link, .site-user-menu-button, .site-user-menu-sublink):hover .site-user-menu-icon,
+html body .site-header .site-menu-panel[data-user-menu-panel] :is(.site-user-menu-link, .site-user-menu-button, .site-user-menu-sublink):focus-visible .site-user-menu-icon {
+    border-color: #bfdbfe !important;
+    background: linear-gradient(180deg, #eff6ff 0%, #dbeafe 100%) !important;
+    color: #2563eb !important;
+    transform: scale(1.04) !important;
+}
+
+html body .site-header .site-menu-panel[data-user-menu-panel] .site-user-menu-divider {
+    background: linear-gradient(90deg, transparent 0%, #dbe3ee 15%, #dbe3ee 85%, transparent 100%) !important;
+}
+
+html body .site-header .site-menu-panel[data-user-menu-panel] .site-user-menu-switch {
+    border: 1px solid #cbd5e1 !important;
+    background: #e2e8f0 !important;
+    transition: background-color .16s ease, border-color .16s ease !important;
+}
+
+html body .site-header .site-menu-panel[data-user-menu-panel] .site-user-menu-link--switch[aria-pressed="true"] .site-user-menu-switch {
+    border-color: #2563eb !important;
+    background: linear-gradient(90deg, #2563eb 0%, #3b82f6 100%) !important;
+}
+
+html body .site-header .site-menu-panel[data-user-menu-panel] .site-user-menu-footer {
+    border-top-color: #dbe3ee !important;
+}
+
+html body .site-header .site-menu-panel[data-user-menu-panel] .site-user-menu-button-danger {
+    color: #b91c1c !important;
+}
+
+html body .site-header .site-menu-panel[data-user-menu-panel] .site-user-menu-button-danger:hover,
+html body .site-header .site-menu-panel[data-user-menu-panel] .site-user-menu-button-danger:focus-visible {
+    border-color: #fecaca !important;
+    background: linear-gradient(180deg, #fff7f7 0%, #fef2f2 100%) !important;
+    color: #dc2626 !important;
+}
+
+/* Dark mode keeps the extra life without becoming neon. */
+html.dark body .site-header .site-menu-panel[data-user-menu-panel],
+html body.dark .site-header .site-menu-panel[data-user-menu-panel],
+.dark body .site-header .site-menu-panel[data-user-menu-panel],
+[data-theme="dark"] body .site-header .site-menu-panel[data-user-menu-panel] {
+    border-color: #334155 !important;
+    background:
+        radial-gradient(circle at 94% 3%, rgba(59, 130, 246, .16), transparent 32%),
+        linear-gradient(180deg, #171b22 0%, #111827 100%) !important;
+    background-color: #111827 !important;
+    box-shadow: 0 14px 32px rgba(0, 0, 0, .30) !important;
+}
+
+html.dark body .site-header .site-menu-panel[data-user-menu-panel] .site-user-menu-card,
+html body.dark .site-header .site-menu-panel[data-user-menu-panel] .site-user-menu-card,
+.dark body .site-header .site-menu-panel[data-user-menu-panel] .site-user-menu-card,
+[data-theme="dark"] body .site-header .site-menu-panel[data-user-menu-panel] .site-user-menu-card {
+    border-color: #334155 !important;
+    background: linear-gradient(135deg, #1d2735 0%, #18202c 60%, #182821 100%) !important;
+}
+
+html.dark body .site-header .site-menu-panel[data-user-menu-panel] .site-user-menu-icon,
+html body.dark .site-header .site-menu-panel[data-user-menu-panel] .site-user-menu-icon,
+.dark body .site-header .site-menu-panel[data-user-menu-panel] .site-user-menu-icon,
+[data-theme="dark"] body .site-header .site-menu-panel[data-user-menu-panel] .site-user-menu-icon {
+    border-color: #334155 !important;
+    background: linear-gradient(180deg, #202a38 0%, #172033 100%) !important;
+    color: #cbd5e1 !important;
+}
+
+html.dark body .site-header .site-menu-panel[data-user-menu-panel] :is(.site-user-menu-link, .site-user-menu-button, .site-user-menu-sublink):hover,
+html.dark body .site-header .site-menu-panel[data-user-menu-panel] :is(.site-user-menu-link, .site-user-menu-button, .site-user-menu-sublink):focus-visible,
+html body.dark .site-header .site-menu-panel[data-user-menu-panel] :is(.site-user-menu-link, .site-user-menu-button, .site-user-menu-sublink):hover,
+html body.dark .site-header .site-menu-panel[data-user-menu-panel] :is(.site-user-menu-link, .site-user-menu-button, .site-user-menu-sublink):focus-visible,
+.dark body .site-header .site-menu-panel[data-user-menu-panel] :is(.site-user-menu-link, .site-user-menu-button, .site-user-menu-sublink):hover,
+.dark body .site-header .site-menu-panel[data-user-menu-panel] :is(.site-user-menu-link, .site-user-menu-button, .site-user-menu-sublink):focus-visible,
+[data-theme="dark"] body .site-header .site-menu-panel[data-user-menu-panel] :is(.site-user-menu-link, .site-user-menu-button, .site-user-menu-sublink):hover,
+[data-theme="dark"] body .site-header .site-menu-panel[data-user-menu-panel] :is(.site-user-menu-link, .site-user-menu-button, .site-user-menu-sublink):focus-visible {
+    border-color: #31578a !important;
+    background: linear-gradient(180deg, #1d2d43 0%, #1b2940 100%) !important;
+    color: #93c5fd !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html body .site-header .site-menu-panel[data-user-menu-panel] :is(
+        .site-user-menu-card,
+        .site-user-menu-link,
+        .site-user-menu-button,
+        .site-user-menu-sublink,
+        .site-user-menu-icon,
+        .site-user-menu-switch
+    ) {
+        transition: none !important;
+        transform: none !important;
+    }
+}
