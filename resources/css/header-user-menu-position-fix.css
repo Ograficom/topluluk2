@@ -1,0 +1,37 @@
+/*
+ * Header user menu positioning guard.
+ * The dropdown must stay out of the 40px avatar rail and float from its trigger.
+ */
+html body header.site-header[data-site-header] [data-user-menu] {
+    position: relative !important;
+    overflow: visible !important;
+}
+
+html body header.site-header[data-site-header] #site-user-menu.site-menu-panel,
+html body header.site-header[data-site-header] .site-menu-panel[data-user-menu-panel] {
+    position: absolute !important;
+    top: calc(100% + 10px) !important;
+    right: 0 !important;
+    left: auto !important;
+    bottom: auto !important;
+    width: min(254px, calc(100vw - 16px)) !important;
+    min-width: min(254px, calc(100vw - 16px)) !important;
+    max-width: min(254px, calc(100vw - 16px)) !important;
+    margin: 0 !important;
+    z-index: 10080 !important;
+    overflow: hidden !important;
+    transform: none !important;
+    translate: none !important;
+}
+
+@media (max-width: 640px) {
+    html body header.site-header[data-site-header] #site-user-menu.site-menu-panel,
+    html body header.site-header[data-site-header] .site-menu-panel[data-user-menu-panel] {
+        top: calc(100% + 8px) !important;
+        right: 0 !important;
+        left: auto !important;
+        width: min(254px, calc(100vw - 12px)) !important;
+        min-width: min(254px, calc(100vw - 12px)) !important;
+        max-width: min(254px, calc(100vw - 12px)) !important;
+    }
+}
