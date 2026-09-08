@@ -10,6 +10,7 @@ class OpenAiService
 {
     /**
      * @param  array<string, mixed>  $schema
+     * @param  array<int, string>  $images  Raw base64 strings or complete data/http image URLs.
      * @return array<string, mixed>
      */
     public function structured(
@@ -19,26 +20,33 @@ class OpenAiService
         ?float $temperature = null,
         string $schemaName = 'ografi_response',
         ?string $developerInstruction = null,
+        array $images = [],
     ): array {
-        $apiKey = trim((string) config('services.openai.api_key'));
-
-        if ($apiKey === '') {
-            throw new \RuntimeException('OpenAI API key eksik. .env icine OPENAI_API_KEY ekleyin.');
-        }
-
-        $baseUrl = rtrim((string) config('services.openai.url', 'https://api.openai.com/v1'), '/');
         $selectedModel = $this->normalizeModel($model);
-        $isAstra = Str::startsWith($selectedModel, 'gpt-6-astra');
         $safeSchemaName = Str::limit(
             preg_replace('/[^A-Za-z0-9_-]/', '_', $schemaName) ?: 'ografi_response',
             64,
             ''
         );
 
-        $payload = [
-            'model' => $selectedModel,
-            'store' => false,
-            'input' => [
+        $userContent = [[
+            'type' => 'input_text',
+            'text' => $prompt,
+        ]];
+
+        foreach ($images as $image) {
+            $imageUrl = $this->normalizeImageUrl((string) $image);
+            if ($imageUrl !== null) {
+                $userContent[] = [
+                    'type' => 'input_image',
+                    'image_url' => $imageUrl,
+                ];
+            }
+        }
+
+        $payload = $this->basePayload(
+            model: $selectedModel,
+            input: [
                 [
                     'role' => 'developer',
                     'content' => [[
@@ -49,20 +57,119 @@ class OpenAiService
                 ],
                 [
                     'role' => 'user',
-                    'content' => [[
-                        'type' => 'input_text',
-                        'text' => $prompt,
-                    ]],
+                    'content' => $userContent,
                 ],
             ],
-            'text' => [
-                'format' => [
-                    'type' => 'json_schema',
-                    'name' => $safeSchemaName,
-                    'strict' => true,
-                    'schema' => $schema,
-                ],
+            temperature: $temperature,
+        );
+
+        $payload['text'] = [
+            'format' => [
+                'type' => 'json_schema',
+                'name' => $safeSchemaName,
+                'strict' => true,
+                'schema' => $this->normalizeStrictSchema($schema),
             ],
+        ];
+
+        $body = $this->send($payload);
+
+        if (($body['status'] ?? null) === 'incomplete') {
+            $reason = (string) data_get($body, 'incomplete_details.reason', 'unknown');
+            throw new \RuntimeException('OpenAI structured output tamamlanamadi: ' . $reason);
+        }
+
+        $raw = $this->extractOutputText($body);
+        if ($raw === '') {
+            throw new \RuntimeException('OpenAI bos cevap dondurdu.');
+        }
+
+        $decoded = json_decode($raw, true);
+        if (! is_array($decoded)) {
+            throw new \RuntimeException('OpenAI structured output gecerli JSON degil: ' . Str::limit($raw, 500, ''));
+        }
+
+        return $decoded;
+    }
+
+    /**
+     * Legacy/multi-turn plain text chat helper used by existing Ografi AI routes.
+     *
+     * @param  array<int, array{role?: string, content?: string}>  $messages
+     */
+    public function chat(
+        array $messages,
+        ?string $model = null,
+        ?float $temperature = 0.7,
+    ): string {
+        $input = [];
+
+        foreach ($messages as $message) {
+            $content = trim((string) ($message['content'] ?? ''));
+            if ($content === '') {
+                continue;
+            }
+
+            $role = strtolower(trim((string) ($message['role'] ?? 'user')));
+            if (! in_array($role, ['system', 'developer', 'user', 'assistant'], true)) {
+                $role = 'user';
+            }
+
+            $input[] = [
+                'role' => $role,
+                'content' => $content,
+            ];
+        }
+
+        if ($input === []) {
+            throw new \InvalidArgumentException('OpenAI chat icin en az bir mesaj gerekli.');
+        }
+
+        $payload = $this->basePayload(
+            model: $this->normalizeModel($model),
+            input: $input,
+            temperature: $temperature,
+        );
+
+        $body = $this->send($payload);
+        $raw = $this->extractOutputText($body);
+
+        if ($raw === '') {
+            throw new \RuntimeException('OpenAI bos cevap dondurdu.');
+        }
+
+        return $raw;
+    }
+
+    public function normalizeModel(?string $model = null): string
+    {
+        $fallback = trim((string) config('services.openai.model', 'gpt-5.6-luna')) ?: 'gpt-5.6-luna';
+        $candidate = trim((string) $model);
+
+        if ($candidate === '') {
+            return $fallback;
+        }
+
+        // Eski Ollama model adlari (ornegin gpt-oss:20b) OpenAI model kimligi degildir.
+        if (str_contains($candidate, ':') || Str::startsWith($candidate, ['gpt-oss', 'llama', 'qwen', 'gemma'])) {
+            return $fallback;
+        }
+
+        return $candidate;
+    }
+
+    /**
+     * @param  array<int, mixed>  $input
+     * @return array<string, mixed>
+     */
+    private function basePayload(string $model, array $input, ?float $temperature): array
+    {
+        $isAstra = Str::startsWith($model, 'gpt-6-astra');
+
+        $payload = [
+            'model' => $model,
+            'store' => false,
+            'input' => $input,
             'max_output_tokens' => max(512, (int) config('services.openai.max_output_tokens', 8000)),
         ];
 
@@ -80,7 +187,21 @@ class OpenAiService
             $payload['temperature'] = max(0, min(2, $temperature));
         }
 
+        return $payload;
+    }
+
+    /** @param array<string, mixed> $payload */
+    private function send(array $payload): array
+    {
+        $apiKey = trim((string) config('services.openai.api_key'));
+        if ($apiKey === '') {
+            throw new \RuntimeException('OpenAI API key eksik. .env icine OPENAI_API_KEY ekleyin.');
+        }
+
+        $baseUrl = rtrim((string) config('services.openai.url', 'https://api.openai.com/v1'), '/');
+
         $response = Http::timeout(max(10, (int) config('services.openai.timeout', 120)))
+            ->retry(2, 500, throw: false)
             ->acceptJson()
             ->asJson()
             ->withToken($apiKey)
@@ -101,34 +222,80 @@ class OpenAiService
             throw new \RuntimeException((string) $error);
         }
 
-        $raw = $this->extractOutputText($body);
-        if ($raw === '') {
-            throw new \RuntimeException('OpenAI bos cevap dondurdu.');
-        }
-
-        $decoded = json_decode($raw, true);
-        if (! is_array($decoded)) {
-            throw new \RuntimeException('OpenAI structured output gecerli JSON degil: ' . Str::limit($raw, 500, ''));
-        }
-
-        return $decoded;
+        return $body;
     }
 
-    public function normalizeModel(?string $model = null): string
+    /**
+     * Strict Structured Outputs requires object schemas to list every property in
+     * required and to disallow additional properties. Legacy schemas used by older
+     * Ollama call sites are normalized here instead of forcing every caller to change.
+     *
+     * @param  array<string, mixed>  $schema
+     * @return array<string, mixed>
+     */
+    private function normalizeStrictSchema(array $schema): array
     {
-        $fallback = trim((string) config('services.openai.model', 'gpt-5.6-luna')) ?: 'gpt-5.6-luna';
-        $candidate = trim((string) $model);
+        if (($schema['type'] ?? null) === 'object' && is_array($schema['properties'] ?? null)) {
+            $originalRequired = array_values((array) ($schema['required'] ?? []));
+            $properties = [];
 
-        if ($candidate === '') {
-            return $fallback;
+            foreach ($schema['properties'] as $name => $property) {
+                if (! is_array($property)) {
+                    $properties[$name] = $property;
+                    continue;
+                }
+
+                $property = $this->normalizeStrictSchema($property);
+
+                if (! in_array($name, $originalRequired, true)) {
+                    $type = $property['type'] ?? null;
+                    if (is_string($type)) {
+                        $property['type'] = [$type, 'null'];
+                    } elseif (is_array($type) && ! in_array('null', $type, true)) {
+                        $property['type'][] = 'null';
+                    }
+                }
+
+                $properties[$name] = $property;
+            }
+
+            $schema['properties'] = $properties;
+            $schema['required'] = array_keys($properties);
+            $schema['additionalProperties'] = false;
         }
 
-        // Eski Ollama model adlari (ornegin gpt-oss:20b) OpenAI model kimligi degildir.
-        if (str_contains($candidate, ':') || Str::startsWith($candidate, ['gpt-oss', 'llama', 'qwen', 'gemma'])) {
-            return $fallback;
+        if (($schema['type'] ?? null) === 'array' && is_array($schema['items'] ?? null)) {
+            $schema['items'] = $this->normalizeStrictSchema($schema['items']);
         }
 
-        return $candidate;
+        return $schema;
+    }
+
+    private function normalizeImageUrl(string $image): ?string
+    {
+        $image = trim($image);
+        if ($image === '') {
+            return null;
+        }
+
+        if (Str::startsWith($image, ['https://', 'http://', 'data:image/'])) {
+            return $image;
+        }
+
+        $decoded = base64_decode($image, true);
+        if ($decoded === false || $decoded === '') {
+            return null;
+        }
+
+        $mime = match (true) {
+            str_starts_with($decoded, "\xFF\xD8\xFF") => 'image/jpeg',
+            str_starts_with($decoded, "\x89PNG\r\n\x1A\n") => 'image/png',
+            str_starts_with($decoded, 'GIF87a'), str_starts_with($decoded, 'GIF89a') => 'image/gif',
+            strlen($decoded) >= 12 && substr($decoded, 0, 4) === 'RIFF' && substr($decoded, 8, 4) === 'WEBP' => 'image/webp',
+            default => 'image/jpeg',
+        };
+
+        return 'data:' . $mime . ';base64,' . $image;
     }
 
     /** @param array<string, mixed> $body */
