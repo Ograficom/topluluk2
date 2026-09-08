@@ -7,6 +7,7 @@ use App\Models\Post;
 use App\Models\PostReport;
 use App\Models\Report;
 use App\Models\User;
+use App\Services\AI\OpenAiService;
 use App\Support\Moderation\AiModeratorProfiles;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Log;
@@ -14,7 +15,7 @@ use Illuminate\Support\Str;
 
 class AiLiveModerationService
 {
-    public function __construct(private OllamaService $ollama)
+    public function __construct(private OpenAiService $openAi)
     {
     }
 
@@ -75,19 +76,23 @@ class AiLiveModerationService
             return false;
         }
 
-        $assessment = $this->ollama->chatStructured([
-            ['role' => 'system', 'content' => (string) $bot->ai_system_prompt . ' Yalnizca insan moderatorune inceleme onerisi ver; yaptirim uygulama.'],
-            ['role' => 'user', 'content' => "Tur: {$type}\nIcerik:\n" . Str::limit($text, 6000, '')],
-        ], [
-            'type' => 'object',
-            'properties' => [
-                'flag' => ['type' => 'boolean'],
-                'topic' => ['type' => 'string'],
-                'risk_score' => ['type' => 'integer'],
-                'reason' => ['type' => 'string'],
+        $assessment = $this->openAi->structured(
+            prompt: "Tur: {$type}\nIcerik:\n" . Str::limit($text, 6000, ''),
+            schema: [
+                'type' => 'object',
+                'properties' => [
+                    'flag' => ['type' => 'boolean'],
+                    'topic' => ['type' => 'string'],
+                    'risk_score' => ['type' => 'integer'],
+                    'reason' => ['type' => 'string'],
+                ],
+                'required' => ['flag', 'topic', 'risk_score', 'reason'],
+                'additionalProperties' => false,
             ],
-            'required' => ['flag', 'topic', 'risk_score', 'reason'],
-        ]);
+            temperature: 0.1,
+            schemaName: 'ografi_live_moderation',
+            developerInstruction: (string) $bot->ai_system_prompt . ' Yalnizca insan moderatorune inceleme onerisi ver; yaptirim uygulama. Turkce cevap ver ve structured output semasina tam uy.',
+        );
 
         if (! (bool) data_get($assessment, 'flag') || (int) data_get($assessment, 'risk_score', 0) < 60) {
             return false;
