@@ -28,6 +28,7 @@ class OpenAiService
 
         $baseUrl = rtrim((string) config('services.openai.url', 'https://api.openai.com/v1'), '/');
         $selectedModel = $this->normalizeModel($model);
+        $isAstra = Str::startsWith($selectedModel, 'gpt-6-astra');
         $safeSchemaName = Str::limit(
             preg_replace('/[^A-Za-z0-9_-]/', '_', $schemaName) ?: 'ografi_response',
             64,
@@ -36,6 +37,7 @@ class OpenAiService
 
         $payload = [
             'model' => $selectedModel,
+            'store' => false,
             'input' => [
                 [
                     'role' => 'developer',
@@ -65,11 +67,16 @@ class OpenAiService
         ];
 
         $reasoningEffort = trim((string) config('services.openai.reasoning_effort', 'none'));
+        if ($isAstra && in_array($reasoningEffort, ['', 'none', 'minimal'], true)) {
+            $reasoningEffort = 'low';
+        }
+
         if ($reasoningEffort !== '') {
             $payload['reasoning'] = ['effort' => $reasoningEffort];
         }
 
-        if ($temperature !== null) {
+        // GPT-6 Astra does not accept temperature/top_p. GPT-5.6 does.
+        if ($temperature !== null && ! $isAstra) {
             $payload['temperature'] = max(0, min(2, $temperature));
         }
 
