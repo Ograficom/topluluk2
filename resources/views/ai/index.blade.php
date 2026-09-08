@@ -441,7 +441,7 @@ document.addEventListener('DOMContentLoaded', function () {
         } catch (error) {
             removeTyping();
 
-            const errorMessage = 'Bağlantı hatası oluştu. Ollama veya Laravel loglarını kontrol et.';
+            const errorMessage = 'Bağlantı hatası oluştu. OpenAI veya Laravel loglarını kontrol et.';
 
             messages.push({
                 role: 'assistant',
