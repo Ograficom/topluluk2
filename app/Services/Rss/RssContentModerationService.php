@@ -3,7 +3,7 @@
 namespace App\Services\Rss;
 
 use App\Models\RssItem;
-use App\Services\OllamaService;
+use App\Services\AI\OpenAiService;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
@@ -24,6 +24,10 @@ class RssContentModerationService
         '/\bnerede\s+oldu\s*\?/iu',
         '/\bne\s+zaman\s+oldu\s*\?/iu',
     ];
+
+    public function __construct(private readonly OpenAiService $openAi)
+    {
+    }
 
     public function looksLikeClickbaitQuestion(string $title): bool
     {
@@ -106,9 +110,10 @@ class RssContentModerationService
             'properties' => [
                 'is_clickbait_question' => ['type' => 'boolean'],
                 'is_nsfw' => ['type' => 'boolean'],
-                'nsfw_reason' => ['type' => 'string'],
+                'nsfw_reason' => ['type' => ['string', 'null']],
             ],
-            'required' => ['is_clickbait_question', 'is_nsfw'],
+            'required' => ['is_clickbait_question', 'is_nsfw', 'nsfw_reason'],
+            'additionalProperties' => false,
         ];
 
         $originalTitle = (string) ($item->title ?? '');
@@ -120,7 +125,7 @@ Asagidaki haberi (hem orijinal kaynak basligini hem de yeniden yazilmis halini) 
 
 1) is_clickbait_question: ASIL soru: bu haberin KONUSU dogrulanmamis bir soylenti/iddia mi (orn. "sosyal medyada X oldugu iddia edildi ama resmi aciklama yok"), yoksa orijinal kaynak basligi "oldu mu?", "var mi?" gibi retorik bir soru formatinda mi? Yeniden yazilmis baslik duzgun bir cumle haline getirilmis olsa bile, ALTINDAKI HIKAYE dogrulanmamis bir iddiaysa veya orijinal kaynak basligi tik tuzagi sorusuysa, bunu true olarak isaretle. Gercek, dogrulanmis, bilgi iceren haberler bu kapsamda DEGILDIR.
 2) is_nsfw: Metin veya varsa ekteki gorsel +18 icerik, ciplaklik, cinsellik, agir siddet, kan veya vahset iceriyor mu? Bir haberin siddet OLAYINDAN bahsetmesi tek basina yeterli degildir (orn. "trafik kazasinda 2 kisi oldu" NSFW degildir) - sadece grafik/rahatsiz edici gorsel/metinsel detay varsa isaretle.
-3) NSFW ise nsfw_reason alanina kisa Turkce aciklama yaz.
+3) NSFW ise nsfw_reason alanina kisa Turkce aciklama yaz; degilse null dondur.
 
 Orijinal kaynak basligi: {$originalTitle}
 Yeniden yazilmis baslik: {$rewritten['title']}
@@ -128,9 +133,12 @@ Ozet: {$rewritten['summary']}
 Icerik: {$plainContent}
 PROMPT;
 
-        $result = app(OllamaService::class)->chatStructured(
-            messages: [['role' => 'user', 'content' => $prompt]],
+        $result = $this->openAi->structured(
+            prompt: $prompt,
             schema: $schema,
+            temperature: 0.1,
+            schemaName: 'ografi_rss_moderation',
+            developerInstruction: 'Ografi haber moderasyonu yap. Yalnizca verilen icerigi degerlendir, uydurma yapma ve structured output semasina tam uy.',
             images: $images,
         );
 
