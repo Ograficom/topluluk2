@@ -64,14 +64,20 @@ class RssFeedResource extends Resource
             Grid::make(2)->schema([
                 Toggle::make('ai_rewrite_enabled')
                     ->label('Yapay zeka ile yeniden yaz')
-                    ->helperText('Ollama ile olgu ozeti, ozgun taslak ve kaynak sadakati denetimi uygular. Kalite kontrolu gecmeyen icerigi yayinlamaz.')
+                    ->helperText('OpenAI ile ozgun taslak ve temel kaynak sadakati kontrolleri uygular. Kalite kontrolu gecmeyen icerigi yayinlamaz.')
                     ->default(true),
-                TextInput::make('ai_model')
-                    ->label('Ollama modeli')
-                    ->default(fn () => config('services.ollama.model', 'gpt-oss:20b'))
-                    ->placeholder('gpt-oss:20b')
-                    ->helperText('Bos birakilirsa .env icindeki OLLAMA_CLOUD_MODEL, yoksa OLLAMA_MODEL kullanilir.')
-                    ->maxLength(255),
+                Select::make('ai_model')
+                    ->label('OpenAI modeli')
+                    ->options([
+                        'gpt-5.6-luna' => 'GPT-5.6 Luna — en ekonomik',
+                        'gpt-5.6-terra' => 'GPT-5.6 Terra — dengeli',
+                        'gpt-5.6-sol' => 'GPT-5.6 Sol — güçlü',
+                        'gpt-6-astra' => 'GPT-6 Astra — en güçlü / pahalı',
+                    ])
+                    ->default(fn () => config('services.openai.model', 'gpt-5.6-luna'))
+                    ->helperText('Bos birakilirsa .env icindeki OPENAI_MODEL kullanilir.')
+                    ->searchable()
+                    ->nullable(),
             ]),
             Grid::make(2)->schema([
                 Select::make('default_category_id')
@@ -121,7 +127,7 @@ class RssFeedResource extends Resource
                     ->boolean(),
                 TextColumn::make('ai_model')
                     ->label('Model')
-                    ->formatStateUsing(fn (?string $state) => filled($state) ? $state : config('services.ollama.model', 'gpt-oss:20b'))
+                    ->formatStateUsing(fn (?string $state) => filled($state) ? $state : config('services.openai.model', 'gpt-5.6-luna'))
                     ->badge()
                     ->toggleable(),
                 TextColumn::make('last_success_at')
@@ -189,15 +195,3 @@ class RssFeedResource extends Resource
         ];
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
