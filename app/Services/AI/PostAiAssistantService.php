@@ -75,20 +75,32 @@ class PostAiAssistantService
         $result = $this->normalizeResult($post, $payload, $operation);
 
         $updates = [
-            'title' => $result['title'],
-            'excerpt' => $result['excerpt'],
-            'meta_title' => $result['meta_title'],
-            'meta_description' => $result['meta_description'],
-            'meta_keywords' => $result['meta_keywords'],
             'edited_at' => now(),
             'edited_reason' => Str::limit('OpenAI: ' . $result['change_summary'], 1000, ''),
         ];
 
-        if (in_array($operation, self::CONTENT_OPERATIONS, true)) {
-            $updates['content'] = $result['content'];
-            $updates['content_json'] = $this->htmlToEditorJs($result['content']);
+        if ($operation === 'title') {
+            $updates['title'] = $result['title'];
+            $updates['meta_title'] = $result['meta_title'];
+        } elseif ($operation === 'seo') {
+            $updates['excerpt'] = $result['excerpt'];
+            $updates['meta_title'] = $result['meta_title'];
+            $updates['meta_description'] = $result['meta_description'];
+            $updates['meta_keywords'] = $result['meta_keywords'];
+        } else {
+            $updates['title'] = $result['title'];
+            $updates['excerpt'] = $result['excerpt'];
+            $updates['meta_title'] = $result['meta_title'];
+            $updates['meta_description'] = $result['meta_description'];
+            $updates['meta_keywords'] = $result['meta_keywords'];
+
+            if (in_array($operation, self::CONTENT_OPERATIONS, true)) {
+                $updates['content'] = $result['content'];
+                $updates['content_json'] = $this->htmlToEditorJs($result['content']);
+            }
         }
 
+        // Slug deliberately stays unchanged so existing post URLs never break.
         $post->fill($updates);
         $post->save();
 
@@ -188,6 +200,10 @@ PROMPT;
 
     private function hasUnsupportedEditorBlocks(Post $post): bool
     {
+        if (preg_match('/<(?:img|picture|figure|video|audio|iframe|embed|source)\b/i', (string) $post->content)) {
+            return true;
+        }
+
         if (! is_array($post->content_json)) {
             return false;
         }
