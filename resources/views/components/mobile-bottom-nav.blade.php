@@ -3,28 +3,21 @@
     $searchActive = request()->routeIs('search');
     $videoActive = request()->routeIs('video');
     $messagesActive = request()->routeIs('messages.*');
-    $mobileNavI18n = [
-        'sectionPosts' => __('site.mobile_nav.section_posts'),
-        'sectionTags' => __('site.mobile_nav.section_tags'),
-        'sectionCategories' => __('site.mobile_nav.section_categories'),
-        'sectionUsers' => __('site.mobile_nav.section_users'),
-        'sectionPages' => 'Sayfalar',
-        'noResults' => __('site.mobile_nav.no_results'),
-        'emptyQuery' => __('site.mobile_nav.empty_query'),
-        'searchDisabled' => __('site.mobile_nav.search_disabled'),
-        'searchFailed' => __('site.mobile_nav.search_failed'),
-        'searchTooShort' => __('site.mobile_nav.search_too_short'),
-    ];
 @endphp
 
-<nav data-mobile-bottom-nav class="mobile-bottom-nav fixed bottom-3 left-1/2 z-50 h-[64px] w-[calc(100%_-_12px)] max-w-[390px] -translate-x-1/2 rounded-[22px] border border-black/10 bg-white px-2 sm:hidden" aria-label="{{ __('site.mobile_nav.menu') }}">
-    <div class="grid h-full grid-cols-5 items-center gap-1">
+<nav
+    data-mobile-bottom-nav
+    class="mobile-bottom-nav fixed left-1/2 z-50 hidden -translate-x-1/2 sm:hidden"
+    aria-label="{{ __('site.mobile_nav.menu') }}"
+>
+    <div class="grid h-full grid-cols-5 items-center">
         <a
             href="{{ route('home') }}"
-            class="inline-flex h-11 items-center justify-center rounded-[14px] bg-transparent transition hover:bg-transparent {{ $homeActive ? 'text-emerald-600' : 'text-slate-900' }}"
+            class="mobile-bottom-nav__item {{ $homeActive ? 'mobile-bottom-nav__item--active' : '' }}"
             aria-label="{{ __('site.mobile_nav.home') }}"
+            @if($homeActive) aria-current="page" @endif
         >
-            <svg class="h-6 w-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                 <path d="M0 0h24v24H0z" fill="none" />
                 <g fill="none" stroke="currentColor" stroke-width="1.5">
                     <path d="M2 12.204c0-2.289 0-3.433.52-4.381c.518-.949 1.467-1.537 3.364-2.715l2-1.241C9.889 2.622 10.892 2 12 2s2.11.622 4.116 1.867l2 1.241c1.897 1.178 2.846 1.766 3.365 2.715S22 9.915 22 12.203v1.522c0 3.9 0 5.851-1.172 7.063S17.771 22 14 22h-4c-3.771 0-5.657 0-6.828-1.212S2 17.626 2 13.725z" />
@@ -34,46 +27,45 @@
             <span class="sr-only">{{ __('site.mobile_nav.home') }}</span>
         </a>
 
-        <button
-            type="button"
-            data-mobile-search-toggle
-            class="inline-flex h-11 items-center justify-center rounded-[14px] bg-transparent transition hover:bg-transparent {{ $searchActive ? 'text-emerald-600' : 'text-slate-900' }}"
+        <a
+            href="{{ route('search') }}"
+            class="mobile-bottom-nav__item {{ $searchActive ? 'mobile-bottom-nav__item--active' : '' }}"
             aria-label="{{ __('site.mobile_nav.search') }}"
+            @if($searchActive) aria-current="page" @endif
         >
-            <svg class="h-6 w-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                 <circle cx="11" cy="11" r="6.75" stroke="currentColor" stroke-width="1.9"></circle>
                 <path stroke="currentColor" stroke-linecap="round" stroke-width="1.9" d="m16 16 3.75 3.75"></path>
             </svg>
             <span class="sr-only">{{ __('site.mobile_nav.search') }}</span>
-        </button>
+        </a>
 
-        <div class="flex items-center justify-center">
-            @auth
-                <a
-                    href="{{ route('blog.create') }}"
-                    class="mobile-bottom-nav__plus inline-flex h-[46px] w-[46px] items-center justify-center rounded-[16px] border border-transparent bg-transparent text-slate-900 ring-0 transition hover:-translate-y-0.5"
-                    aria-label="{{ __('site.mobile_nav.new_item') }}"
-                >
-            @else
-                <a
-                    href="{{ route('login') }}"
-                    class="mobile-bottom-nav__plus inline-flex h-[46px] w-[46px] items-center justify-center rounded-[16px] border border-transparent bg-transparent text-slate-900 ring-0 transition hover:-translate-y-0.5"
-                    aria-label="{{ __('site.mobile_nav.new_item') }}"
-                >
-            @endauth
-                    <svg class="h-6 w-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-width="2.2" d="M12 5v14M5 12h14" />
-                    </svg>
-                    <span class="sr-only">{{ __('site.mobile_nav.new_item') }}</span>
-                </a>
-        </div>
+        @auth
+            <a
+                href="{{ route('blog.create') }}"
+                class="mobile-bottom-nav__item mobile-bottom-nav__plus"
+                aria-label="{{ __('site.mobile_nav.new_item') }}"
+            >
+        @else
+            <a
+                href="{{ route('login') }}"
+                class="mobile-bottom-nav__item mobile-bottom-nav__plus"
+                aria-label="{{ __('site.mobile_nav.new_item') }}"
+            >
+        @endauth
+                <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M12 5v14M5 12h14" />
+                </svg>
+                <span class="sr-only">{{ __('site.mobile_nav.new_item') }}</span>
+            </a>
 
         <a
             href="{{ route('video') }}"
-            class="inline-flex h-11 items-center justify-center rounded-[14px] bg-transparent transition hover:bg-transparent {{ $videoActive ? 'text-emerald-600' : 'text-slate-900' }}"
+            class="mobile-bottom-nav__item {{ $videoActive ? 'mobile-bottom-nav__item--active' : '' }}"
             aria-label="Video"
+            @if($videoActive) aria-current="page" @endif
         >
-            <svg class="h-6 w-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.9" d="M6.75 5.75h7.5A3.25 3.25 0 0 1 17.5 9v6a3.25 3.25 0 0 1-3.25 3.25h-7.5A3.25 3.25 0 0 1 3.5 15V9a3.25 3.25 0 0 1 3.25-3.25Z" />
                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.9" d="m17.5 10 3-2v8l-3-2" />
             </svg>
@@ -83,67 +75,54 @@
         @auth
             <a
                 href="{{ route('messages.index') }}"
-                class="inline-flex h-11 items-center justify-center rounded-[14px] bg-transparent transition hover:bg-transparent {{ $messagesActive ? 'text-emerald-600' : 'text-slate-900' }}"
+                class="mobile-bottom-nav__item {{ $messagesActive ? 'mobile-bottom-nav__item--active' : '' }}"
+                aria-label="{{ __('site.sidebar.messages') }}"
+                @if($messagesActive) aria-current="page" @endif
+            >
+        @else
+            <a
+                href="{{ route('login') }}"
+                class="mobile-bottom-nav__item"
                 aria-label="{{ __('site.sidebar.messages') }}"
             >
-                <svg class="h-6 w-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+        @endauth
+                <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21.25 12a9.23 9.23 0 0 1-2.705 6.54A9.25 9.25 0 0 1 12 21.25a9.2 9.2 0 0 1-3.795-.81l-3.867.572a1.195 1.195 0 0 1-1.361-1.43l.537-3.923A8.9 8.9 0 0 1 2.75 12a9.23 9.23 0 0 1 2.705-6.54A9.25 9.25 0 0 1 12 2.75a9.26 9.26 0 0 1 6.545 2.71A9.24 9.24 0 0 1 21.25 12" />
                 </svg>
                 <span class="sr-only">{{ __('site.sidebar.messages') }}</span>
             </a>
-        @else
-            <button
-                type="button"
-                data-mobile-login-toggle
-                class="inline-flex h-11 items-center justify-center rounded-[14px] bg-transparent text-slate-900 transition hover:bg-transparent"
-                aria-label="{{ __('site.sidebar.messages') }}"
-            >
-                <svg class="h-6 w-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21.25 12a9.23 9.23 0 0 1-2.705 6.54A9.25 9.25 0 0 1 12 21.25a9.2 9.2 0 0 1-3.795-.81l-3.867.572a1.195 1.195 0 0 1-1.361-1.43l.537-3.923A8.9 8.9 0 0 1 2.75 12a9.23 9.23 0 0 1 2.705-6.54A9.25 9.25 0 0 1 12 2.75a9.26 9.26 0 0 1 6.545 2.71A9.24 9.24 0 0 1 21.25 12" />
-                </svg>
-                <span class="sr-only">{{ __('site.sidebar.messages') }}</span>
-            </button>
-        @endauth
     </div>
 </nav>
 
 <style>
-    /* Mobile nav lock: scrolling must never change its geometry or visibility. */
     @media (max-width: 639.98px) {
         html body [data-mobile-bottom-nav].mobile-bottom-nav {
             position: fixed !important;
+            display: block !important;
             left: 50% !important;
             right: auto !important;
             top: auto !important;
-            bottom: max(8px, env(safe-area-inset-bottom, 0px)) !important;
+            bottom: max(6px, env(safe-area-inset-bottom, 0px)) !important;
             z-index: 900 !important;
-            display: block !important;
-            width: calc(100% - 16px) !important;
-            max-width: 390px !important;
-            height: 60px !important;
-            min-height: 60px !important;
-            max-height: 60px !important;
+            width: calc(100% - 20px) !important;
+            max-width: 380px !important;
+            height: 50px !important;
+            min-height: 50px !important;
+            max-height: 50px !important;
             margin: 0 !important;
-            padding: 0 8px !important;
+            padding: 0 5px !important;
             overflow: hidden !important;
-            border: 1px solid rgba(15, 23, 42, .10) !important;
-            border-radius: 18px !important;
-            background: rgba(250, 250, 250, .98) !important;
-            background-color: rgba(250, 250, 250, .98) !important;
-            color: #0f172a !important;
-            opacity: 1 !important;
-            visibility: visible !important;
-            transform: translate3d(-50%, 0, 0) !important;
-            translate: none !important;
-            scale: 1 !important;
+            border: 1px solid #e5e7eb !important;
+            border-radius: 14px !important;
+            background: #ffffff !important;
+            background-color: #ffffff !important;
+            box-shadow: none !important;
             filter: none !important;
-            backdrop-filter: none !important;
             -webkit-backdrop-filter: none !important;
-            box-shadow: 0 8px 24px rgba(15, 23, 42, .10) !important;
+            backdrop-filter: none !important;
+            transform: translate3d(-50%, 0, 0) !important;
             transition: none !important;
             animation: none !important;
-            will-change: auto !important;
-            isolation: isolate !important;
         }
 
         html body [data-mobile-bottom-nav].mobile-bottom-nav > div {
@@ -152,856 +131,73 @@
             align-items: center !important;
             width: 100% !important;
             height: 100% !important;
-            gap: 2px !important;
-            opacity: 1 !important;
-            visibility: visible !important;
-            background: transparent !important;
+            gap: 0 !important;
         }
 
-        html body [data-mobile-bottom-nav].mobile-bottom-nav :is(a, button, .mobile-bottom-nav__plus) {
-            opacity: 1 !important;
-            visibility: visible !important;
+        html body [data-mobile-bottom-nav].mobile-bottom-nav .mobile-bottom-nav__item {
+            display: inline-flex !important;
+            width: 100% !important;
+            min-width: 0 !important;
+            height: 40px !important;
+            min-height: 40px !important;
+            max-height: 40px !important;
+            align-items: center !important;
+            justify-content: center !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            border: 0 !important;
+            border-radius: 10px !important;
+            background: transparent !important;
+            background-color: transparent !important;
+            color: #334155 !important;
+            box-shadow: none !important;
             transform: none !important;
-            translate: none !important;
             transition: none !important;
             animation: none !important;
+            -webkit-tap-highlight-color: transparent !important;
+        }
+
+        html body [data-mobile-bottom-nav].mobile-bottom-nav .mobile-bottom-nav__item--active {
+            color: #2563eb !important;
             background: transparent !important;
-            color: #0f172a !important;
+            box-shadow: none !important;
+        }
+
+        html body [data-mobile-bottom-nav].mobile-bottom-nav .mobile-bottom-nav__plus {
+            width: 100% !important;
+            min-width: 0 !important;
+            max-width: none !important;
+            height: 40px !important;
+            border: 0 !important;
+            border-radius: 10px !important;
+            background: transparent !important;
+            box-shadow: none !important;
         }
 
         html body [data-mobile-bottom-nav].mobile-bottom-nav svg {
             display: block !important;
-            width: 22px !important;
-            height: 22px !important;
+            width: 21px !important;
+            height: 21px !important;
+            flex: 0 0 21px !important;
             color: currentColor !important;
-            opacity: 1 !important;
-            visibility: visible !important;
         }
 
         html body {
-            padding-bottom: calc(76px + env(safe-area-inset-bottom, 0px)) !important;
-            background-color: var(--page-bg, #f4f4f5) !important;
-            overscroll-behavior-y: none !important;
+            padding-bottom: calc(64px + env(safe-area-inset-bottom, 0px)) !important;
         }
-    }
 
-    @media (max-width: 639.98px) {
         html.dark body [data-mobile-bottom-nav].mobile-bottom-nav {
-            border-color: var(--alma-border, rgba(148, 163, 184, .18)) !important;
-            background: var(--alma-card, #111827) !important;
-            background-color: var(--alma-card, #111827) !important;
-            color: var(--alma-text, #e5e7eb) !important;
-            box-shadow: 0 8px 24px rgba(2, 6, 23, .45) !important;
+            border-color: #273244 !important;
+            background: #111827 !important;
+            background-color: #111827 !important;
         }
 
-        html.dark body [data-mobile-bottom-nav].mobile-bottom-nav :is(a, button, .mobile-bottom-nav__plus) {
-            color: var(--alma-text, #e5e7eb) !important;
+        html.dark body [data-mobile-bottom-nav].mobile-bottom-nav .mobile-bottom-nav__item {
+            color: #cbd5e1 !important;
         }
-    }
 
-    html.dark [data-mobile-bottom-nav] .text-slate-900 {
-        color: var(--alma-text, #e5e7eb);
-    }
-
-    html.dark [data-mobile-login-drawer] aside {
-        background: var(--alma-card, #111827) !important;
-        color: var(--alma-text, #e5e7eb);
-    }
-
-    html.dark [data-mobile-login-handle] {
-        background: var(--alma-border, rgba(148, 163, 184, .3));
-    }
-
-    html.dark [data-mobile-login-drawer] .text-slate-900,
-    html.dark [data-mobile-login-drawer] .text-slate-800 {
-        color: var(--alma-text, #e5e7eb);
-    }
-
-    html.dark [data-mobile-login-drawer] .text-slate-600,
-    html.dark [data-mobile-login-drawer] .text-slate-700 {
-        color: var(--alma-muted, #94a3b8);
-    }
-
-    html.dark [data-mobile-login-drawer] .text-slate-500 {
-        color: var(--alma-muted, #94a3b8);
-    }
-
-    html.dark [data-mobile-login-drawer] input[name="email"],
-    html.dark [data-mobile-login-drawer] input[name="password"] {
-        background: var(--alma-bg, #0b1220) !important;
-        color: var(--alma-text, #e5e7eb) !important;
-    }
-
-    html.dark [data-mobile-login-drawer] button[type="submit"] {
-        background: var(--alma-primary, #029d71) !important;
-    }
-
-    html.dark [data-mobile-search-drawer] [data-mobile-search-backdrop] {
-        background: transparent !important;
-    }
-
-    html.dark [data-mobile-search-surface] {
-        background: rgba(17, 24, 39, .95) !important;
-        border-color: var(--alma-border, rgba(148, 163, 184, .18)) !important;
-    }
-
-    html.dark [data-mobile-search-surface] label,
-    html.dark [data-mobile-search-surface] [data-mobile-search-close],
-    html.dark [data-mobile-search-surface] [data-mobile-search-clear] {
-        background: var(--alma-bg, #0b1220) !important;
-        border-color: var(--alma-border, rgba(148, 163, 184, .18)) !important;
-        color: var(--alma-text, #e5e7eb) !important;
-    }
-
-    html.dark [data-mobile-search-results],
-    html.dark [data-mobile-search-surface] [data-mobile-search-all] {
-        background: transparent !important;
-        border-color: var(--alma-border, rgba(148, 163, 184, .18)) !important;
-        color: var(--alma-text, #e5e7eb) !important;
-    }
-
-    html.dark [data-mobile-search-surface] .text-slate-900 {
-        color: var(--alma-text, #e5e7eb) !important;
-    }
-
-    html.dark [data-mobile-search-surface] .text-slate-500,
-    html.dark [data-mobile-search-surface] .text-slate-400 {
-        color: var(--alma-muted, #94a3b8) !important;
-    }
-
-    html.dark [data-mobile-search-surface] input[data-mobile-search-input] {
-        color: var(--alma-text, #e5e7eb) !important;
-    }
-
-    html.dark [data-mobile-search-surface] input[data-mobile-search-input]::placeholder {
-        color: var(--alma-muted, #94a3b8) !important;
-    }
-
-    html.dark [data-mobile-search-results] .hover\:bg-slate-100:hover,
-    html.dark [data-mobile-search-surface] .hover\:bg-slate-100:hover {
-        background: var(--alma-hover-muted, rgba(30, 41, 59, .82)) !important;
-    }
-
-    html.dark [data-mobile-search-results] .bg-slate-200 {
-        background: var(--alma-border, rgba(148, 163, 184, .3)) !important;
+        html.dark body [data-mobile-bottom-nav].mobile-bottom-nav .mobile-bottom-nav__item--active {
+            color: #60a5fa !important;
+        }
     }
 </style>
-
-<div data-mobile-login-drawer class="pointer-events-none fixed inset-0 z-50 flex flex-col items-center justify-end sm:hidden">
-    <div data-mobile-login-backdrop class="absolute inset-0 bg-black/40 opacity-0 transition-opacity duration-200"></div>
-    <aside class="relative w-full max-w-md translate-y-full rounded-t-3xl bg-white p-6 transition-transform duration-200">
-        <div class="mb-3 flex justify-center">
-            <span data-mobile-login-handle class="h-1.5 w-12 rounded-full bg-slate-200"></span>
-        </div>
-        <div class="mb-3 flex items-center justify-between">
-            <div class="flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-slate-600" viewBox="0 0 512 512" fill="currentColor" aria-hidden="true">
-                    <path d="M368 16H144a64.07 64.07 0 0 0-64 64v352a64.07 64.07 0 0 0 64 64h224a64.07 64.07 0 0 0 64-64V80a64.07 64.07 0 0 0-64-64Zm-34.52 268.51c7.57 8.17 11.27 19.16 10.39 30.94C342.14 338.91 324.25 358 304 358s-38.17-19.09-39.88-42.55c-.86-11.9 2.81-22.91 10.34-31S292.4 272 304 272a39.65 39.65 0 0 1 29.48 12.51ZM192 80a16 16 0 0 1 16-16h96a16 16 0 0 1 0 32h-96a16 16 0 0 1-16-16Zm189 363.83a12.05 12.05 0 0 1-9.31 4.17H236.31a12.05 12.05 0 0 1-9.31-4.17a13 13 0 0 1-2.76-10.92c3.25-17.56 13.38-32.31 29.3-42.66C267.68 381.06 285.6 376 304 376s36.32 5.06 50.46 14.25c15.92 10.35 26.05 25.1 29.3 42.66a13 13 0 0 1-2.76 10.92Z"/>
-                </svg>
-                <p class="text-lg font-semibold text-slate-900">{{ __('site.mobile_nav.login_title') }}</p>
-            </div>
-        </div>
-        <div class="space-y-3">
-            <form method="POST" action="{{ route('login') }}" class="space-y-3">
-                @csrf
-                <label for="mobile-login-email" class="block text-xs font-semibold text-slate-600">{{ __('site.mobile_nav.email') }}</label>
-                <input id="mobile-login-email" name="email" type="email" required autocomplete="email" class="w-full rounded-2xl bg-slate-50 px-4 py-3 text-sm text-slate-800 focus:outline-none" placeholder="{{ __('site.mobile_nav.email') }}">
-                <label for="mobile-login-password" class="block text-xs font-semibold text-slate-600">{{ __('site.mobile_nav.password') }}</label>
-                <div class="relative">
-                    <input id="mobile-login-password" name="password" type="password" required autocomplete="current-password" class="w-full rounded-2xl bg-slate-50 px-4 py-3 pr-12 text-sm text-slate-800 focus:outline-none" placeholder="{{ __('site.mobile_nav.password') }}">
-                    <button type="button" data-mobile-password-toggle class="absolute inset-y-0 end-2 flex h-10 w-10 items-center justify-center text-slate-500 hover:text-slate-700" aria-label="{{ __('site.mobile_nav.password_visibility') }}">
-                        <svg data-eye-open xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-5 w-5" fill="currentColor" stroke="none" aria-hidden="true">
-                            <path d="M12 9.005a4 4 0 1 1 0 8a4 4 0 0 1 0-8Zm0 1.5a2.5 2.5 0 1 0 0 5a2.5 2.5 0 0 0 0-5ZM12 5.5c4.613 0 8.596 3.15 9.701 7.564a.75.75 0 1 1-1.455.365a8.504 8.504 0 0 0-16.493.004a.75.75 0 0 1-1.456-.363A10.003 10.003 0 0 1 12 5.5Z"/>
-                        </svg>
-                        <svg data-eye-closed class="hidden h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" stroke="none" aria-hidden="true">
-                            <path d="M12 17.5c-3.8 0-7.2-2.1-8.8-5.5H1c1.7 4.4 6 7.5 11 7.5s9.3-3.1 11-7.5h-2.2c-1.6 3.4-5 5.5-8.8 5.5"/>
-                        </svg>
-                    </button>
-                </div>
-                <div class="flex items-center justify-between text-sm text-slate-500">
-                    <label for="mobile-login-remember" class="ografi-mobile-remember inline-flex cursor-pointer items-center gap-2">
-                        <input id="mobile-login-remember" type="checkbox" name="remember" class="ografi-mobile-remember__input">
-                        <span class="ografi-mobile-remember__box" aria-hidden="true">
-                            <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M4.8 10.4 8.2 13.5 15.3 6.7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                        </span>
-                        <span>{{ __('site.mobile_nav.stay_signed_in') }}</span>
-                    </label>
-                    <a href="{{ route('password.request') }}" class="text-xs text-slate-500 hover:text-slate-700">{{ __('site.mobile_nav.forgot_password') }}</a>
-                </div>
-                <button type="submit" class="w-full rounded-2xl bg-slate-800 py-3 text-sm font-semibold text-white">{{ __('site.mobile_nav.login_button') }}</button>
-                <p class="text-center text-xs text-slate-500">
-                    {{ __('site.mobile_nav.no_account') }}
-                    <a class="font-semibold text-slate-800" href="{{ route('register') }}">{{ __('site.mobile_nav.become_member') }}</a>
-                </p>
-            </form>
-        </div>
-    </aside>
-</div>
-
-<script>
-    window.addEventListener('DOMContentLoaded', () => {
-        const i18n = @json($mobileNavI18n);
-        const drawer = document.querySelector('[data-mobile-login-drawer]');
-        const backdrop = document.querySelector('[data-mobile-login-backdrop]');
-        const openers = document.querySelectorAll('[data-mobile-login-toggle]');
-        const handle = drawer?.querySelector('[data-mobile-login-handle]');
-        const drawerPanel = drawer?.querySelector('aside');
-        const body = document.body;
-        const passwordToggle = drawerPanel?.querySelector('[data-mobile-password-toggle]');
-        const passwordInput = drawerPanel?.querySelector('input[name="password"]');
-
-        if (!drawer || !drawerPanel) return;
-
-        let dragging = false;
-        let startY = 0;
-        let currentY = 0;
-
-        const open = () => {
-            drawer.classList.remove('pointer-events-none');
-            drawerPanel.classList.remove('translate-y-full');
-            drawerPanel.style.transition = 'transform 0.2s ease';
-            drawerPanel.style.transform = 'translateY(0)';
-            backdrop?.classList.add('opacity-100');
-            body.classList.add('overflow-hidden');
-        };
-
-        const close = () => {
-            drawerPanel.classList.add('translate-y-full');
-            drawerPanel.style.transition = 'transform 0.2s ease';
-            drawerPanel.style.transform = 'translateY(100%)';
-            backdrop?.classList.remove('opacity-100');
-            drawer.classList.add('pointer-events-none');
-            body.classList.remove('overflow-hidden');
-            setTimeout(() => {
-                drawerPanel.style.transform = '';
-                drawerPanel.style.transition = '';
-            }, 220);
-        };
-
-        const handleDragStart = (event) => {
-            dragging = true;
-            startY = event.touches ? event.touches[0].clientY : event.clientY;
-            currentY = 0;
-            drawerPanel.style.transition = 'none';
-            event.preventDefault();
-        };
-
-        const handleDragMove = (event) => {
-            if (!dragging) return;
-            const clientY = event.touches ? event.touches[0].clientY : event.clientY;
-            currentY = Math.max(0, clientY - startY);
-            drawerPanel.style.transform = `translateY(${currentY}px)`;
-            event.preventDefault();
-        };
-
-        const handleDragEnd = () => {
-            if (!dragging) return;
-            dragging = false;
-            drawerPanel.style.transition = 'transform 0.2s ease';
-            if (currentY > 80) {
-                close();
-            } else {
-                drawerPanel.style.transform = 'translateY(0)';
-            }
-            currentY = 0;
-        };
-
-        openers.forEach((el) => el.addEventListener('click', open));
-        backdrop?.addEventListener('click', close);
-        handle?.addEventListener('pointerdown', handleDragStart);
-        handle?.addEventListener('touchstart', handleDragStart);
-        document.addEventListener('pointermove', handleDragMove);
-        document.addEventListener('touchmove', handleDragMove);
-        document.addEventListener('pointerup', handleDragEnd);
-        document.addEventListener('touchend', handleDragEnd);
-
-        if (passwordToggle && passwordInput) {
-            passwordToggle.addEventListener('click', () => {
-                const isPassword = passwordInput.type === 'password';
-                passwordInput.type = isPassword ? 'text' : 'password';
-                passwordToggle.querySelector('[data-eye-open]')?.classList.toggle('hidden', !isPassword);
-                passwordToggle.querySelector('[data-eye-closed]')?.classList.toggle('hidden', isPassword);
-            });
-        }
-
-        const profileToggle = document.querySelector('[data-profile-menu-toggle]');
-        const profileMenu = document.querySelector('[data-profile-menu-panel]');
-        if (profileToggle && profileMenu) {
-            const hideProfileMenu = () => {
-                profileMenu.classList.add('hidden');
-                profileToggle.setAttribute('aria-expanded', 'false');
-            };
-
-            profileToggle.addEventListener('click', (event) => {
-                event.stopPropagation();
-                profileMenu.classList.toggle('hidden');
-                profileToggle.setAttribute('aria-expanded', profileMenu.classList.contains('hidden') ? 'false' : 'true');
-            });
-
-            document.addEventListener('click', (event) => {
-                if (profileMenu.contains(event.target) || profileToggle.contains(event.target)) {
-                    return;
-                }
-                hideProfileMenu();
-            });
-
-            document.addEventListener('touchstart', (event) => {
-                if (profileMenu.contains(event.target) || profileToggle.contains(event.target)) {
-                    return;
-                }
-                hideProfileMenu();
-            });
-        }
-
-        const searchToggle = document.querySelector('[data-mobile-search-toggle]');
-        const searchDrawer = document.querySelector('[data-mobile-search-drawer]');
-        const searchBackdrop = document.querySelector('[data-mobile-search-backdrop]');
-        const searchSurface = searchDrawer?.querySelector('[data-mobile-search-surface]');
-        const searchInput = searchDrawer?.querySelector('[data-mobile-search-input]');
-        const searchClear = searchDrawer?.querySelector('[data-mobile-search-clear]');
-        const searchCloseButtons = searchDrawer?.querySelectorAll('[data-mobile-search-close]');
-        const searchResultsWrap = searchDrawer?.querySelector('[data-mobile-search-results]');
-        const searchAllBtn = searchDrawer?.querySelector('[data-mobile-search-all]');
-        const searchAllLabel = searchDrawer?.querySelector('[data-mobile-search-all-label]');
-        const searchPageUrl = @json(route('search'));
-        let searchAbortController = null;
-        let searchDebounceTimer = null;
-        let searchHideTimer = null;
-
-        const escapeHtml = (value = '') => String(value)
-            .replace(/&/g, '&amp;')
-            .replace(/</g, '&lt;')
-            .replace(/>/g, '&gt;')
-            .replace(/"/g, '&quot;')
-            .replace(/'/g, '&#39;');
-
-        const syncSearchClear = () => {
-            if (!searchClear) return;
-            searchClear.classList.toggle('hidden', !searchInput?.value.trim());
-        };
-
-        const setSearchAllState = (query = '', visible = false) => {
-            if (!searchAllBtn || !searchAllLabel) return;
-            const clean = query.trim();
-            searchAllBtn.classList.toggle('hidden', !visible || !clean);
-            searchAllLabel.textContent = clean
-                ? `“${clean}” için tüm sonuçları görüntüle`
-                : 'Tüm sonuçları görüntüle';
-        };
-
-        const renderMessage = (message, query = '') => {
-            if (!searchResultsWrap) return;
-            searchResultsWrap.innerHTML = `<p class="px-4 py-5 text-sm text-slate-500 dark:text-slate-400">${escapeHtml(message)}</p>`;
-            setSearchAllState(query, false);
-        };
-
-        const searchIconSvg = `
-            <svg class="h-5 w-5 text-slate-900 dark:text-slate-200" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                <circle cx="11" cy="11" r="6.75" stroke="currentColor" stroke-width="1.9"></circle>
-                <path stroke="currentColor" stroke-linecap="round" stroke-width="1.9" d="m16 16 3.75 3.75"></path>
-            </svg>
-        `;
-
-        const sectionWrapper = (label, itemsHtml) => `
-            <section class="px-2 py-2">
-                <div class="mb-2 flex items-center gap-2 px-2 text-[0.78rem] font-semibold text-slate-500 dark:text-slate-400">
-                    <span>${escapeHtml(label)}</span>
-                    <span class="h-px flex-1 bg-slate-200 dark:bg-slate-700"></span>
-                </div>
-                <div class="space-y-1">${itemsHtml}</div>
-            </section>
-        `;
-
-        const buildRow = (innerHtml, url = '#') => `
-            <a href="${escapeHtml(url)}" class="flex items-center gap-3 rounded-[16px] px-3 py-2.5 text-sm text-slate-900 dark:text-slate-100 transition hover:bg-slate-100 dark:hover:bg-slate-800">
-                ${innerHtml}
-            </a>
-        `;
-
-        const renderSearchPayload = (payload = {}) => {
-            if (!searchResultsWrap) return;
-
-            const posts = Array.isArray(payload.posts) ? payload.posts : [];
-            const tags = Array.isArray(payload.tags) ? payload.tags : [];
-            const categories = Array.isArray(payload.categories) ? payload.categories : [];
-            const users = Array.isArray(payload.users) ? payload.users : [];
-            const pages = Array.isArray(payload.pages) ? payload.pages : [];
-            const sections = [];
-
-            if (users.length) {
-                const html = users.map((user) => {
-                    const title = escapeHtml(user.title ?? '');
-                    const avatar = user.avatar
-                        ? `<img src="${escapeHtml(user.avatar)}" alt="${title}" class="h-9 w-9 rounded-full object-cover" />`
-                        : `<span class="inline-flex h-9 w-9 items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800 text-xs font-semibold text-slate-700 dark:text-slate-300">${escapeHtml((user.title || 'U').trim().charAt(0).toUpperCase() || 'U')}</span>`;
-
-                    return buildRow(`
-                        ${avatar}
-                        <span class="min-w-0 truncate text-[1.03rem] font-semibold">${title}</span>
-                    `, user.url ?? '#');
-                }).join('');
-
-                sections.push(sectionWrapper(i18n.sectionUsers, html));
-            }
-
-            if (posts.length) {
-                const html = posts.map((post) => buildRow(`
-                    ${searchIconSvg}
-                    <span class="min-w-0 truncate text-[1.03rem] font-semibold">${escapeHtml(post.title ?? '')}</span>
-                `, post.url ?? '#')).join('');
-
-                sections.push(sectionWrapper(i18n.sectionPosts, html));
-            }
-
-            if (categories.length) {
-                const html = categories.map((category) => buildRow(`
-                    ${searchIconSvg}
-                    <span class="min-w-0 truncate text-[1.03rem] font-semibold">${escapeHtml(category.title ?? '')}</span>
-                `, category.url ?? '#')).join('');
-
-                sections.push(sectionWrapper(i18n.sectionCategories, html));
-            }
-
-            if (tags.length) {
-                const html = tags.map((tag) => buildRow(`
-                    ${searchIconSvg}
-                    <span class="min-w-0 truncate text-[1.03rem] font-semibold">#${escapeHtml(tag.title ?? '')}</span>
-                `, tag.url ?? '#')).join('');
-
-                sections.push(sectionWrapper(i18n.sectionTags, html));
-            }
-
-            if (pages.length) {
-                const html = pages.map((page) => buildRow(`
-                    ${searchIconSvg}
-                    <span class="min-w-0 truncate text-[1.03rem] font-semibold">${escapeHtml(page.title ?? '')}</span>
-                `, page.url ?? '#')).join('');
-
-                sections.push(sectionWrapper(i18n.sectionPages, html));
-            }
-
-            const total = posts.length + tags.length + categories.length + users.length + pages.length;
-            if (total === 0) {
-                renderMessage(i18n.noResults, searchInput?.value ?? '');
-                return;
-            }
-
-            searchResultsWrap.innerHTML = sections.join('');
-            setSearchAllState(searchInput?.value ?? '', true);
-        };
-
-        const fetchLiveSearch = async (query) => {
-            if (!query) {
-                renderMessage(i18n.emptyQuery);
-                return;
-            }
-
-            if (searchAbortController) {
-                searchAbortController.abort();
-            }
-            searchAbortController = new AbortController();
-
-            try {
-                const response = await fetch(`${searchPageUrl}?q=${encodeURIComponent(query)}`, {
-                    headers: { Accept: 'application/json' },
-                    signal: searchAbortController.signal,
-                });
-
-                if (!response.ok) {
-                    throw new Error('Network error');
-                }
-
-                const json = await response.json();
-                const { data, meta } = json;
-
-                if (meta && meta.too_short) {
-                    renderMessage(i18n.searchTooShort.replace(':min', String(meta.min_length ?? 0)), query);
-                    return;
-                }
-
-                if (meta && !meta.enabled) {
-                    renderMessage(i18n.searchDisabled, query);
-                    return;
-                }
-
-                renderSearchPayload(data ?? {});
-            } catch (error) {
-                if (error.name === 'AbortError') {
-                    return;
-                }
-                renderMessage(i18n.searchFailed, query);
-            }
-        };
-
-        const handleSearchInput = () => {
-            if (!searchInput) return;
-            clearTimeout(searchDebounceTimer);
-            syncSearchClear();
-            const query = searchInput.value.trim();
-            if (!query) {
-                renderMessage(i18n.emptyQuery);
-                return;
-            }
-            searchDebounceTimer = setTimeout(() => fetchLiveSearch(query), 180);
-        };
-
-        // Arama artik tam ekran bir sayfaya "sicramiyor" - alt navigasyon
-        // cubugu yerinde kalir, arama kutusu tam onun uzerinde (olduğu yerde)
-        // kucuk bir kart olarak "materialize" olur (skill #12: materialize,
-        // don't just fade - olcek+kayma+opaklik birlikte). transform-origin
-        // alt navigasyona (kaynagina) sabit - skill #7: kutu her zaman ayni
-        // yerden gelir/gider.
-        const openSearch = () => {
-            if (!searchDrawer || !searchSurface) return;
-            if (searchHideTimer) {
-                clearTimeout(searchHideTimer);
-                searchHideTimer = null;
-            }
-            searchDrawer.classList.remove('pointer-events-none');
-            requestAnimationFrame(() => {
-                searchSurface.classList.remove('translate-y-2', 'scale-95', 'opacity-0');
-            });
-            body.classList.add('overflow-hidden');
-            syncSearchClear();
-            handleSearchInput();
-            searchInput?.focus();
-        };
-
-        const closeSearch = () => {
-            if (!searchDrawer || !searchSurface) return;
-            searchSurface.classList.add('translate-y-2', 'scale-95', 'opacity-0');
-            body.classList.remove('overflow-hidden');
-            clearTimeout(searchDebounceTimer);
-            searchAbortController?.abort();
-            searchAbortController = null;
-            searchHideTimer = window.setTimeout(() => {
-                searchDrawer.classList.add('pointer-events-none');
-            }, 220);
-        };
-
-        const mobileNavigateSearch = (query) => {
-            const value = (query || '').trim();
-            if (!value) return;
-            window.location.href = `${searchPageUrl}?q=${encodeURIComponent(value)}`;
-        };
-
-        searchToggle?.addEventListener('click', () => {
-            if (searchDrawer?.classList.contains('pointer-events-none')) {
-                openSearch();
-                return;
-            }
-
-            closeSearch();
-        });
-        searchBackdrop?.addEventListener('click', closeSearch);
-        searchCloseButtons?.forEach((button) => button.addEventListener('click', closeSearch));
-        searchClear?.addEventListener('click', (event) => {
-            event.preventDefault();
-            if (!searchInput) return;
-            searchInput.value = '';
-            syncSearchClear();
-            renderMessage(i18n.emptyQuery);
-            searchInput.focus();
-        });
-        searchInput?.addEventListener('input', handleSearchInput);
-        searchInput?.addEventListener('keydown', (event) => {
-            if (event.key === 'Enter') {
-                event.preventDefault();
-                mobileNavigateSearch(searchInput.value);
-                closeSearch();
-            }
-            if (event.key === 'Escape') {
-                event.preventDefault();
-                closeSearch();
-            }
-        });
-        searchAllBtn?.addEventListener('click', (event) => {
-            event.preventDefault();
-            mobileNavigateSearch(searchInput?.value);
-            closeSearch();
-        });
-    });
-</script>
-
-<div data-mobile-search-drawer class="pointer-events-none fixed inset-0 z-[100010] sm:hidden">
-    <div data-mobile-search-backdrop class="absolute inset-0 bg-transparent"></div>
-    <div
-        data-mobile-search-surface
-        class="mobile-search-surface absolute left-1/2 flex w-[calc(100%-16px)] max-w-[390px] origin-bottom -translate-x-1/2 translate-y-2 scale-95 flex-col gap-2 rounded-[22px] border border-slate-200 bg-white/95 p-2.5 opacity-0 shadow-[0_24px_48px_-20px_rgba(15,23,42,0.32)] backdrop-blur-2xl transition duration-200 ease-out"
-        style="bottom: calc(max(8px, env(safe-area-inset-bottom, 0px)) + 60px + 10px);"
-    >
-        <div class="flex items-center gap-2">
-            <form action="{{ route('search') }}" method="GET" class="flex-1">
-                <label class="flex h-[42px] items-center gap-3 rounded-[16px] bg-slate-100 px-4 text-slate-900 transition focus-within:bg-slate-100">
-                    <svg class="h-5 w-5 shrink-0 text-slate-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                        <circle cx="11" cy="11" r="6.75" stroke="currentColor" stroke-width="1.9"></circle>
-                        <path stroke="currentColor" stroke-linecap="round" stroke-width="1.9" d="m16 16 3.75 3.75"></path>
-                    </svg>
-                    <input
-                        name="q"
-                        type="search"
-                        class="min-w-0 flex-1 bg-transparent text-[15px] text-slate-900 outline-none placeholder:text-slate-400"
-                        placeholder="{{ __('site.mobile_nav.keyword_placeholder') }}"
-                        data-mobile-search-input
-                        autocomplete="off"
-                    >
-                    <button type="button" data-mobile-search-clear class="hidden inline-flex h-7 w-7 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-500 transition hover:bg-slate-100" aria-label="Temizle">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round">
-                            <path d="M6 6l12 12M18 6 6 18"/>
-                        </svg>
-                    </button>
-                </label>
-            </form>
-
-            <button type="button" data-mobile-search-close class="inline-flex h-[42px] w-[42px] shrink-0 items-center justify-center rounded-full bg-slate-100 text-slate-600 transition hover:bg-slate-200 hover:text-slate-900" aria-label="Kapat">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round">
-                    <path d="M6 6l12 12M18 6 6 18"/>
-                </svg>
-            </button>
-        </div>
-
-        <div class="overflow-hidden rounded-[16px]">
-            <div class="max-h-[42vh] overflow-y-auto px-1 py-1" data-mobile-search-results>
-                <p class="px-4 py-5 text-sm text-slate-500">{{ __('site.mobile_nav.empty_query') }}</p>
-            </div>
-            <button type="button" data-mobile-search-all class="hidden flex w-full items-center gap-2 border-t border-slate-200 px-4 py-3 text-left text-sm font-medium text-slate-900 transition hover:bg-slate-100">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-4 w-4 shrink-0 text-slate-500" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                    <path d="M9 7H5v4"/>
-                    <path d="M5 11a7 7 0 0 0 12 4l2-2"/>
-                </svg>
-                <span data-mobile-search-all-label>{{ __('site.mobile_nav.all_results') }}</span>
-            </button>
-        </div>
-    </div>
-</div>
-
-
-<style id="ografi-mobile-nav-ios26-hotfix">
-    @media (max-width: 639.98px) {
-        html body [data-mobile-bottom-nav].mobile-bottom-nav {
-            bottom: max(10px, env(safe-area-inset-bottom, 0px)) !important;
-            width: calc(100% - 20px) !important;
-            max-width: 390px !important;
-            height: 66px !important;
-            min-height: 66px !important;
-            max-height: 66px !important;
-            padding: 6px 8px !important;
-            overflow: hidden !important;
-            border: 1px solid rgba(255, 255, 255, .78) !important;
-            border-radius: 33px !important;
-            background: linear-gradient(180deg, rgba(255,255,255,.80), rgba(255,255,255,.56)) !important;
-            background-color: rgba(255,255,255,.66) !important;
-            color: #111827 !important;
-            -webkit-backdrop-filter: blur(28px) saturate(185%) !important;
-            backdrop-filter: blur(28px) saturate(185%) !important;
-            box-shadow: 0 14px 38px rgba(15,23,42,.16), inset 0 1px 0 rgba(255,255,255,.96) !important;
-            transition: transform 300ms cubic-bezier(.22,1,.36,1), opacity 180ms ease, visibility 0s !important;
-        }
-
-        html body [data-mobile-bottom-nav].mobile-bottom-nav > div {
-            gap: 3px !important;
-        }
-
-        html body [data-mobile-bottom-nav].mobile-bottom-nav :is(a, button, .mobile-bottom-nav__plus) {
-            height: 48px !important;
-            border-radius: 24px !important;
-            background: transparent !important;
-            box-shadow: none !important;
-            transition: transform 160ms ease, background-color 180ms ease, color 180ms ease !important;
-        }
-
-        html body [data-mobile-bottom-nav].mobile-bottom-nav :is(a, button):active {
-            transform: scale(.92) !important;
-        }
-
-        html body [data-mobile-bottom-nav].mobile-bottom-nav .text-emerald-600 {
-            color: #007aff !important;
-            background: rgba(255,255,255,.76) !important;
-            box-shadow: inset 0 1px 0 rgba(255,255,255,.96), 0 2px 9px rgba(15,23,42,.08) !important;
-        }
-
-        html body [data-mobile-bottom-nav].mobile-bottom-nav .mobile-bottom-nav__plus {
-            width: 48px !important;
-            min-width: 48px !important;
-            max-width: 48px !important;
-            border: 1px solid rgba(255,255,255,.90) !important;
-            border-radius: 24px !important;
-            background: rgba(255,255,255,.74) !important;
-            box-shadow: 0 5px 16px rgba(15,23,42,.12), inset 0 1px 0 rgba(255,255,255,.98) !important;
-        }
-
-        html body [data-mobile-login-drawer] {
-            z-index: 100001 !important;
-        }
-
-        html body [data-mobile-login-backdrop] {
-            background: rgba(15,23,42,.34) !important;
-            -webkit-backdrop-filter: blur(2px) !important;
-            backdrop-filter: blur(2px) !important;
-        }
-
-        html body [data-mobile-login-drawer] aside {
-            width: 100% !important;
-            max-width: 430px !important;
-            max-height: min(78vh, 720px) !important;
-            overflow-y: auto !important;
-            padding: 0 22px calc(24px + env(safe-area-inset-bottom, 0px)) !important;
-            border: 1px solid rgba(255,255,255,.90) !important;
-            border-bottom: 0 !important;
-            border-radius: 28px 28px 0 0 !important;
-            background: rgba(255,255,255,.96) !important;
-            -webkit-backdrop-filter: blur(30px) saturate(175%) !important;
-            backdrop-filter: blur(30px) saturate(175%) !important;
-            box-shadow: 0 -18px 55px rgba(15,23,42,.18), inset 0 1px 0 rgba(255,255,255,.98) !important;
-            transition: transform 520ms cubic-bezier(.16,1,.3,1) !important;
-        }
-
-        html body [data-mobile-login-handle] {
-            width: 42px !important;
-            height: 5px !important;
-            border-radius: 999px !important;
-            background: #d8dee8 !important;
-        }
-
-        html body [data-mobile-login-drawer] input[name="email"],
-        html body [data-mobile-login-drawer] input[name="password"] {
-            height: 46px !important;
-            border: 0 !important;
-            border-radius: 14px !important;
-            background: #f3f4f6 !important;
-            background-color: #f3f4f6 !important;
-            box-shadow: none !important;
-            outline: none !important;
-        }
-
-        html body [data-mobile-login-drawer] input[name="password"] {
-            padding-right: 54px !important;
-        }
-
-        html body [data-mobile-login-drawer] [data-mobile-password-toggle] {
-            all: unset !important;
-            position: absolute !important;
-            top: 50% !important;
-            right: 14px !important;
-            z-index: 20 !important;
-            display: inline-flex !important;
-            width: 28px !important;
-            height: 28px !important;
-            align-items: center !important;
-            justify-content: center !important;
-            transform: translateY(-50%) !important;
-            color: #64748b !important;
-            cursor: pointer !important;
-            -webkit-tap-highlight-color: transparent !important;
-        }
-
-        html body [data-mobile-login-drawer] [data-mobile-password-toggle] svg {
-            display: block !important;
-            width: 20px !important;
-            height: 20px !important;
-            margin: 0 !important;
-            padding: 0 !important;
-            background: transparent !important;
-            box-shadow: none !important;
-        }
-
-        html body [data-mobile-login-drawer] .ografi-mobile-remember {
-            position: relative !important;
-            display: inline-flex !important;
-            align-items: center !important;
-            gap: 9px !important;
-            margin: 0 !important;
-            padding: 0 !important;
-            cursor: pointer !important;
-        }
-
-        html body [data-mobile-login-drawer] .ografi-mobile-remember__input {
-            position: absolute !important;
-            width: 1px !important;
-            height: 1px !important;
-            margin: -1px !important;
-            padding: 0 !important;
-            overflow: hidden !important;
-            clip: rect(0,0,0,0) !important;
-            clip-path: inset(50%) !important;
-            border: 0 !important;
-            opacity: 0 !important;
-            pointer-events: none !important;
-            -webkit-appearance: none !important;
-            appearance: none !important;
-        }
-
-        html body [data-mobile-login-drawer] .ografi-mobile-remember__box {
-            display: inline-flex !important;
-            flex: 0 0 20px !important;
-            width: 20px !important;
-            height: 20px !important;
-            align-items: center !important;
-            justify-content: center !important;
-            margin: 0 !important;
-            padding: 0 !important;
-            border: 1.5px solid #cbd5e1 !important;
-            border-radius: 6px !important;
-            background: #fff !important;
-            background-image: none !important;
-            box-shadow: none !important;
-            box-sizing: border-box !important;
-        }
-
-        html body [data-mobile-login-drawer] .ografi-mobile-remember__box svg {
-            width: 14px !important;
-            height: 14px !important;
-            color: #fff !important;
-            opacity: 0 !important;
-            transform: scale(.75) !important;
-            transition: opacity 140ms ease, transform 140ms ease !important;
-        }
-
-        html body [data-mobile-login-drawer] .ografi-mobile-remember__input:checked + .ografi-mobile-remember__box {
-            border-color: #007aff !important;
-            background: #007aff !important;
-            background-color: #007aff !important;
-        }
-
-        html body [data-mobile-login-drawer] .ografi-mobile-remember__input:checked + .ografi-mobile-remember__box svg {
-            opacity: 1 !important;
-            transform: scale(1) !important;
-        }
-    }
-
-    html.dark body [data-mobile-login-drawer] aside {
-        background: rgba(17,24,39,.96) !important;
-        color: #e5e7eb !important;
-    }
-
-    html.dark body [data-mobile-login-drawer] .ografi-mobile-remember__box {
-        border-color: rgba(148,163,184,.46) !important;
-        background: #0f172a !important;
-    }
-
-    html.dark body [data-mobile-login-drawer] .ografi-mobile-remember__input:checked + .ografi-mobile-remember__box {
-        border-color: #0a84ff !important;
-        background: #0a84ff !important;
-    }
-</style>
-
-<script>
-    window.addEventListener('DOMContentLoaded', () => {
-        const drawer = document.querySelector('[data-mobile-login-drawer]');
-        const nav = document.querySelector('[data-mobile-bottom-nav]');
-        if (!drawer || !nav) return;
-
-        const syncLoginNav = () => {
-            const open = !drawer.classList.contains('pointer-events-none');
-            nav.classList.toggle('ografi-login-nav-hidden', open);
-        };
-
-        syncLoginNav();
-        new MutationObserver(syncLoginNav).observe(drawer, {
-            attributes: true,
-            attributeFilter: ['class'],
-        });
-    });
-</script>
