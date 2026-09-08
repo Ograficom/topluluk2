@@ -119,6 +119,10 @@ class PostAiAssistantService
             'custom' => 'Kullanicinin ozel talimatini uygula. Talimat disinda gereksiz degisiklik yapma: ' . $instruction,
         };
 
+        $extraInstructionBlock = $operation !== 'custom' && $instruction !== ''
+            ? "\n\nEK KULLANICI TALIMATI:\n{$instruction}\n"
+            : '';
+
         $title = (string) $post->title;
         $excerpt = (string) $post->excerpt;
         $content = (string) $post->content;
@@ -128,7 +132,7 @@ class PostAiAssistantService
 
         return <<<PROMPT
 GOREV:
-{$task}
+{$task}{$extraInstructionBlock}
 
 ZORUNLU KURALLAR:
 - Turkce yaz.

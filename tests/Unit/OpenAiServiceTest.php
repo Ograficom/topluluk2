@@ -26,7 +26,7 @@ class OpenAiServiceTest extends TestCase
     public function it_sends_structured_outputs_through_the_responses_api(): void
     {
         Http::fake([
-            'https://api.openai.com/v1/responses' => Http::response($this->successfulResponse(), 200),
+            'https://api.openai.com/v1/responses' => Http::response($this->successfulResponse('{"ok":true}'), 200),
         ]);
 
         $schema = $this->schema();
@@ -58,7 +58,7 @@ class OpenAiServiceTest extends TestCase
     public function it_uses_astra_compatible_parameters_when_astra_is_selected(): void
     {
         Http::fake([
-            'https://api.openai.com/v1/responses' => Http::response($this->successfulResponse(), 200),
+            'https://api.openai.com/v1/responses' => Http::response($this->successfulResponse('{"ok":true}'), 200),
         ]);
 
         app(OpenAiService::class)->structured(
@@ -77,6 +77,83 @@ class OpenAiServiceTest extends TestCase
         });
     }
 
+    #[Test]
+    public function it_normalizes_legacy_optional_fields_for_strict_structured_outputs(): void
+    {
+        Http::fake([
+            'https://api.openai.com/v1/responses' => Http::response($this->successfulResponse('{"ok":true,"note":null}'), 200),
+        ]);
+
+        app(OpenAiService::class)->structured(
+            prompt: 'Test',
+            schema: [
+                'type' => 'object',
+                'properties' => [
+                    'ok' => ['type' => 'boolean'],
+                    'note' => ['type' => 'string'],
+                ],
+                'required' => ['ok'],
+            ],
+        );
+
+        Http::assertSent(function (Request $request): bool {
+            $schema = data_get($request->data(), 'text.format.schema');
+
+            return is_array($schema)
+                && ($schema['additionalProperties'] ?? null) === false
+                && ($schema['required'] ?? null) === ['ok', 'note']
+                && data_get($schema, 'properties.note.type') === ['string', 'null'];
+        });
+    }
+
+    #[Test]
+    public function it_can_attach_base64_images_to_structured_requests(): void
+    {
+        Http::fake([
+            'https://api.openai.com/v1/responses' => Http::response($this->successfulResponse('{"ok":true}'), 200),
+        ]);
+
+        $tinyPng = base64_encode("\x89PNG\r\n\x1A\n" . 'fake-png-body');
+
+        app(OpenAiService::class)->structured(
+            prompt: 'Gorseli kontrol et',
+            schema: $this->schema(),
+            images: [$tinyPng],
+        );
+
+        Http::assertSent(function (Request $request): bool {
+            $content = data_get($request->data(), 'input.1.content');
+            $image = is_array($content) ? ($content[1] ?? null) : null;
+
+            return is_array($image)
+                && ($image['type'] ?? null) === 'input_image'
+                && str_starts_with((string) ($image['image_url'] ?? ''), 'data:image/png;base64,');
+        });
+    }
+
+    #[Test]
+    public function it_supports_plain_multi_turn_chat_for_legacy_ai_routes(): void
+    {
+        Http::fake([
+            'https://api.openai.com/v1/responses' => Http::response($this->successfulResponse('Merhaba Enes'), 200),
+        ]);
+
+        $answer = app(OpenAiService::class)->chat([
+            ['role' => 'system', 'content' => 'Turkce cevap ver.'],
+            ['role' => 'user', 'content' => 'Merhaba'],
+        ]);
+
+        $this->assertSame('Merhaba Enes', $answer);
+
+        Http::assertSent(function (Request $request): bool {
+            $data = $request->data();
+
+            return data_get($data, 'input.0.role') === 'system'
+                && data_get($data, 'input.1.role') === 'user'
+                && ($data['store'] ?? null) === false;
+        });
+    }
+
     /** @return array<string, mixed> */
     private function schema(): array
     {
@@ -91,7 +168,7 @@ class OpenAiServiceTest extends TestCase
     }
 
     /** @return array<string, mixed> */
-    private function successfulResponse(): array
+    private function successfulResponse(string $text): array
     {
         return [
             'status' => 'completed',
@@ -99,7 +176,7 @@ class OpenAiServiceTest extends TestCase
                 'type' => 'message',
                 'content' => [[
                     'type' => 'output_text',
-                    'text' => '{"ok":true}',
+                    'text' => $text,
                 ]],
             ]],
         ];

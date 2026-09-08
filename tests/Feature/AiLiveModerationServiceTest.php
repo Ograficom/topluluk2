@@ -4,8 +4,8 @@ namespace Tests\Feature;
 
 use App\Models\Report;
 use App\Models\User;
+use App\Services\AI\OpenAiService;
 use App\Services\AiLiveModerationService;
-use App\Services\OllamaService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Mockery;
 use Tests\TestCase;
@@ -21,8 +21,8 @@ class AiLiveModerationServiceTest extends TestCase
             'bio' => 'Supheli bir profil metni.',
         ]);
 
-        $ollama = Mockery::mock(OllamaService::class);
-        $ollama->shouldReceive('chatStructured')
+        $openAi = Mockery::mock(OpenAiService::class);
+        $openAi->shouldReceive('structured')
             ->twice()
             ->andReturn([
                 'flag' => true,
@@ -31,7 +31,7 @@ class AiLiveModerationServiceTest extends TestCase
                 'reason' => 'Inceleme gerektiren dolandiricilik sinyali.',
             ]);
 
-        $result = (new AiLiveModerationService($ollama))->scan(1);
+        $result = (new AiLiveModerationService($openAi))->scan(1);
 
         $this->assertSame(['scanned' => 2, 'flagged' => 2, 'errors' => 0], $result);
         $this->assertSame(2, Report::query()->where('status', 'pending')->count());

@@ -8,6 +8,8 @@ use App\Models\BorsaSetting;
 use App\Services\BorsaService;
 use App\Models\Tag;
 use App\Models\ThemeSetting;
+use App\Services\OpenAiLegacyAdapter;
+use App\Services\OllamaService;
 use App\Services\Rss\OpenAiRssArticleRewriteService;
 use App\Services\Rss\RssArticleRewriteService;
 use Illuminate\Support\Facades\Blade;
@@ -36,6 +38,14 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(
             RssArticleRewriteService::class,
             OpenAiRssArticleRewriteService::class,
+        );
+
+        // Older controllers/services still type-hint OllamaService. Keep their
+        // public contract intact but resolve it to the OpenAI adapter so no live
+        // application path makes an Ollama HTTP request anymore.
+        $this->app->bind(
+            OllamaService::class,
+            OpenAiLegacyAdapter::class,
         );
     }
 

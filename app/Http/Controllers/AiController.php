@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\OllamaService;
+use App\Services\AI\OpenAiService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
 class AiController extends Controller
 {
-    public function ask(Request $request, OllamaService $ollama): JsonResponse
+    public function ask(Request $request, OpenAiService $openAi): JsonResponse
     {
         $validated = $request->validate([
             'messages' => ['required', 'array', 'min:1', 'max:40'],
@@ -36,20 +36,20 @@ class AiController extends Controller
                 ],
             ], $clientMessages);
 
-            $answer = $ollama->chat($messages);
+            $answer = $openAi->chat($messages);
 
             return response()->json([
                 'ok' => true,
                 'answer' => $answer,
             ]);
         } catch (\Throwable $e) {
-            Log::error('Ografi Ollama Cloud AI hatası', [
+            Log::error('Ografi OpenAI hatası', [
                 'error' => $e->getMessage(),
             ]);
 
             return response()->json([
                 'ok' => false,
-                'message' => 'Yapay zeka şu anda cevap veremiyor. API key, model veya limitleri kontrol et.',
+                'message' => 'Yapay zeka şu anda cevap veremiyor. OpenAI API key, model veya limitlerini kontrol et.',
             ], 500);
         }
     }

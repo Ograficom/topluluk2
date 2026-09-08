@@ -2,10 +2,15 @@
 
 namespace App\Services;
 
+use App\Services\AI\OpenAiService;
 use Illuminate\Support\Str;
 
 class PostAiAssistantService
 {
+    public function __construct(private readonly OpenAiService $openAi)
+    {
+    }
+
     /**
      * Reads the in-progress post draft and returns SEO metadata plus short
      * writing suggestions. Used by the AI assistant button on /blog/create.
@@ -38,6 +43,7 @@ class PostAiAssistantService
                 'suggestions' => ['type' => 'string'],
             ],
             'required' => ['meta_title', 'meta_description', 'meta_keywords', 'excerpt', 'suggestions'],
+            'additionalProperties' => false,
         ];
 
         $prompt = <<<PROMPT
@@ -52,16 +58,16 @@ alanlarini doldur ve kisa gelistirme onerisi ver.
 - suggestions: yazarin basligini/icerigini gelistirmesi icin 2-4 cumlelik somut, yapici Turkce
   oneri (eksik bilgi, yapi, netlik gibi). Elestirel ama destekleyici bir dil kullan.
 
-JSON disinda hicbir sey dondurme.
-
 Baslik: {$title}
 Icerik: {$plainContent}
 PROMPT;
 
-        $result = app(OllamaService::class)->chatStructured(
-            messages: [['role' => 'user', 'content' => $prompt]],
+        $result = $this->openAi->structured(
+            prompt: $prompt,
             schema: $schema,
             temperature: 0.4,
+            schemaName: 'ografi_create_post_assistant',
+            developerInstruction: 'Ografi yazarina Turkce SEO ve yazim yardimi ver. Uydurma bilgi ekleme ve structured output semasina tam uy.',
         );
 
         $keywords = collect((array) ($result['meta_keywords'] ?? []))
