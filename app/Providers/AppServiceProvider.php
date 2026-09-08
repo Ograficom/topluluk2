@@ -8,6 +8,8 @@ use App\Models\BorsaSetting;
 use App\Services\BorsaService;
 use App\Models\Tag;
 use App\Models\ThemeSetting;
+use App\Services\Rss\OpenAiRssArticleRewriteService;
+use App\Services\Rss\RssArticleRewriteService;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\View;
@@ -29,7 +31,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        // Keep the legacy RSS rewrite class as the public contract while routing
+        // every container resolution to the OpenAI implementation.
+        $this->app->bind(
+            RssArticleRewriteService::class,
+            OpenAiRssArticleRewriteService::class,
+        );
     }
 
     /**
