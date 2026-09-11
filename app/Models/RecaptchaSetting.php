@@ -70,7 +70,22 @@ class RecaptchaSetting extends Model
             return null;
         }
 
-        return static::current();
+        $settings = static::current();
+
+        // The site-wide network policy is intentionally stronger than the old
+        // login-only toggles. Any security service that asks for the current
+        // settings receives the enforced global values in memory, while the
+        // admin form can still persist its historical login settings normally.
+        $settings->setAttribute(
+            'block_vpn_logins',
+            (bool) config('login-security.global_block_vpn', true),
+        );
+        $settings->setAttribute(
+            'block_tor_logins',
+            (bool) config('login-security.global_block_tor', true),
+        );
+
+        return $settings;
     }
 
     public function resolvedSiteKey(): ?string
