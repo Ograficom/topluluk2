@@ -5,14 +5,17 @@ on:
     paths:
       - 'app/Filament/Pages/Auth/Login.php'
       - 'app/Http/Controllers/SocialLoginController.php'
+      - 'app/Http/Middleware/BlockUnsafeNetwork.php'
       - 'app/Providers/FortifyServiceProvider.php'
       - 'app/Providers/LoginSecurityRouteServiceProvider.php'
       - 'app/Services/LoginSecurityService.php'
       - 'app/Services/StrictLoginNetworkGuard.php'
+      - 'bootstrap/app.php'
       - 'bootstrap/providers.php'
       - 'config/login-security.php'
       - 'database/migrations/2026_09_11_054700_force_login_security_flags_enabled.php'
       - 'resources/views/auth/social-device-verification.blade.php'
+      - 'tests/Feature/GlobalNetworkBlockMiddlewareTest.php'
       - 'tests/Feature/LoginSecurityServiceTest.php'
       - 'tests/Feature/StrictLoginNetworkGuardTest.php'
       - '.github/workflows/login-security-check.yml'
@@ -48,15 +51,18 @@ jobs:
         run: |
           php -l app/Filament/Pages/Auth/Login.php
           php -l app/Http/Controllers/SocialLoginController.php
+          php -l app/Http/Middleware/BlockUnsafeNetwork.php
           php -l app/Providers/FortifyServiceProvider.php
           php -l app/Providers/LoginSecurityRouteServiceProvider.php
           php -l app/Services/LoginSecurityService.php
           php -l app/Services/StrictLoginNetworkGuard.php
+          php -l bootstrap/app.php
           php -l bootstrap/providers.php
           php -l config/login-security.php
           php -l database/migrations/2026_09_11_054700_force_login_security_flags_enabled.php
+          php -l tests/Feature/GlobalNetworkBlockMiddlewareTest.php
           php -l tests/Feature/LoginSecurityServiceTest.php
           php -l tests/Feature/StrictLoginNetworkGuardTest.php
 
       - name: Login security tests
-        run: php artisan test tests/Feature/LoginSecurityServiceTest.php tests/Feature/StrictLoginNetworkGuardTest.php
+        run: php artisan test tests/Feature/LoginSecurityServiceTest.php tests/Feature/StrictLoginNetworkGuardTest.php tests/Feature/GlobalNetworkBlockMiddlewareTest.php

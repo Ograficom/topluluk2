@@ -3,6 +3,7 @@
 use App\Http\Middleware\EnsureDeviceIdCookie;
 use App\Http\Middleware\DisableDebugbarOnFrontend;
 use App\Http\Middleware\AddSecurityHeaders;
+use App\Http\Middleware\BlockUnsafeNetwork;
 use App\Http\Middleware\CommentSkeletonPreloaderMiddleware;
 use App\Http\Middleware\ContactPageFieldStyleMiddleware;
 use App\Http\Middleware\EditorJsTableInlineFormatMiddleware;
@@ -38,6 +39,7 @@ return Application::configure(basePath: dirname(__DIR__))
 
         $middleware->web(prepend: [
             EnsureInstalled::class,
+            BlockUnsafeNetwork::class,
         ]);
 
         // Keep frontend response polish isolated from admin/API rendering.
