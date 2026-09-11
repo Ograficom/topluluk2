@@ -113,14 +113,15 @@ jobs:
             php artisan storage:link || true
             php artisan optimize:clear || true
 
-            # www.ografi.com uses a separate static Nginx root. Keep its
-            # crawler entry point synchronized with the canonical application.
+            # www.ografi.com is served by a separate Nginx vhost on this server.
+            # Force it to the canonical Laravel host so it cannot bypass the
+            # global VPN/Tor/proxy middleware. This does not depend on a document
+            # root and remains safe even if both hostnames share one server block.
             NGINX_BIN="$(command -v nginx || true)"
             if [ -z "$NGINX_BIN" ] && [ -x /www/server/nginx/sbin/nginx ]; then
               NGINX_BIN=/www/server/nginx/sbin/nginx
             fi
             if [ -n "$NGINX_BIN" ]; then
-              (
               WWW_CONFIG="$($NGINX_BIN -T 2>&1 | awk '
                 /^# configuration file / {
                   file=$4
@@ -131,64 +132,92 @@ jobs:
                   exit
                 }
               ')"
-              if [ -n "$WWW_CONFIG" ] && [ -f "$WWW_CONFIG" ]; then
-                WWW_ROOT="$(awk '
-                  /^[[:space:]]*root[[:space:]]+/ {
-                    root=$2
-                    sub(/;$/, "", root)
-                    print root
-                  exit
-                }
-              ' "$WWW_CONFIG")"
-              fi
-              if [ -z "${WWW_ROOT:-}" ] && [ -d /www/server/nginx/html ]; then
-                WWW_ROOT=/www/server/nginx/html
-              fi
-              if [ -z "${WWW_ROOT:-}" ] || [ ! -d "$WWW_ROOT" ]; then
-                echo "Unable to locate the www.ografi.com document root" >&2
-                exit 1
-              fi
-              ROBOTS_SOURCE="$(readlink -f public/robots.txt)"
-              ROBOTS_TARGET="$(readlink -f "$WWW_ROOT/robots.txt")"
-              if [ "$ROBOTS_SOURCE" != "$ROBOTS_TARGET" ]; then
-                install -m 0644 public/robots.txt "$WWW_ROOT/robots.txt"
-                echo "Published robots.txt to $WWW_ROOT"
-              else
-                echo "robots.txt already uses the application public file"
-              fi
 
-              WWW_CONFIGS="$($NGINX_BIN -T 2>&1 | awk '
-                  /^# configuration file / {
-                    file=$4
-                    sub(/:$/, "", file)
-                  }
-                  /^[[:space:]]*root[[:space:]]+\/www\/server\/nginx\/html;/ {
-                    print file
-                  }
-                ' | sort -u)"
-              if [ -n "$WWW_CONFIG" ]; then
-                WWW_CONFIGS="$(printf '%s\n%s\n' "$WWW_CONFIGS" "$WWW_CONFIG" | sed '/^$/d' | sort -u)"
-              fi
-              if [ -z "$WWW_CONFIGS" ]; then
-                echo "Unable to locate the Nginx configuration serving www.ografi.com" >&2
+              if [ -n "$WWW_CONFIG" ] && [ -f "$WWW_CONFIG" ]; then
+                cp -a "$WWW_CONFIG" "$WWW_CONFIG.ografi-before-www-redirect"
+
+                python3 - "$WWW_CONFIG" <<'PY'
+            import re
+            import sys
+
+            path = sys.argv[1]
+            with open(path, 'r', encoding='utf-8') as handle:
+                text = handle.read()
+
+            marker = '# ografi-managed-www-canonical'
+            if marker in text:
+                print('www.ografi.com canonical redirect already configured')
+                raise SystemExit(0)
+
+            for match in re.finditer(r'(?m)^\s*server\s*\{', text):
+                open_brace = text.find('{', match.start())
+                depth = 0
+                end = None
+                in_quote = None
+                escaped = False
+
+                for index in range(open_brace, len(text)):
+                    char = text[index]
+                    if escaped:
+                        escaped = False
+                        continue
+                    if char == '\\':
+                        escaped = True
+                        continue
+                    if in_quote:
+                        if char == in_quote:
+                            in_quote = None
+                        continue
+                    if char in ('"', "'"):
+                        in_quote = char
+                        continue
+                    if char == '{':
+                        depth += 1
+                    elif char == '}':
+                        depth -= 1
+                        if depth == 0:
+                            end = index + 1
+                            break
+
+                if end is None:
+                    continue
+
+                block = text[match.start():end]
+                if not re.search(r'(?m)^\s*server_name\b[^;]*\bwww\.ografi\.com\b[^;]*;', block):
+                    continue
+
+                injection = (
+                    "\n    # ografi-managed-www-canonical\n"
+                    "    if ($host = www.ografi.com) {\n"
+                    "        return 301 https://ografi.com$request_uri;\n"
+                    "    }\n"
+                )
+                text = text[:open_brace + 1] + injection + text[open_brace + 1:]
+                with open(path, 'w', encoding='utf-8') as handle:
+                    handle.write(text)
+                print(f'Configured www.ografi.com canonical redirect in {path}')
+                raise SystemExit(0)
+
+            print('Unable to locate a server block containing www.ografi.com', file=sys.stderr)
+            raise SystemExit(1)
+            PY
+
+                if "$NGINX_BIN" -t; then
+                  "$NGINX_BIN" -s reload
+                  echo "www.ografi.com now redirects to canonical Laravel host."
+                else
+                  cp -a "$WWW_CONFIG.ografi-before-www-redirect" "$WWW_CONFIG"
+                  "$NGINX_BIN" -t
+                  echo "Rejected invalid www redirect config and restored backup." >&2
+                  exit 1
+                fi
+              else
+                echo "Unable to locate the Nginx vhost serving www.ografi.com" >&2
                 exit 1
               fi
-              for CONFIG_FILE in $WWW_CONFIGS; do
-                if [ ! -f "$CONFIG_FILE" ]; then
-                  continue
-                fi
-                if ! grep -q 'ografi-managed-robots' "$CONFIG_FILE"; then
-                  sed -i '$i\    # ografi-managed-robots\
-                location = /robots.txt {\
-                    alias /www/server/nginx/html/robots.txt;\
-                    default_type text/plain;\
-                }' "$CONFIG_FILE"
-                fi
-                echo "Configured robots.txt in $CONFIG_FILE"
-              done
-              "$NGINX_BIN" -t
-              "$NGINX_BIN" -s reload
-              ) || echo "Optional www.ografi.com robots.txt synchronization skipped" >&2
+            else
+              echo "Nginx binary was not found; refusing to leave www bypass unchecked." >&2
+              exit 1
             fi
 
             chown -R www:www "$TARGET_PATH"
