@@ -5,12 +5,16 @@ on:
     paths:
       - 'app/Filament/Pages/Auth/Login.php'
       - 'app/Http/Controllers/SocialLoginController.php'
+      - 'app/Providers/FortifyServiceProvider.php'
       - 'app/Providers/LoginSecurityRouteServiceProvider.php'
       - 'app/Services/LoginSecurityService.php'
+      - 'app/Services/StrictLoginNetworkGuard.php'
       - 'bootstrap/providers.php'
       - 'config/login-security.php'
+      - 'database/migrations/2026_09_11_054700_force_login_security_flags_enabled.php'
       - 'resources/views/auth/social-device-verification.blade.php'
       - 'tests/Feature/LoginSecurityServiceTest.php'
+      - 'tests/Feature/StrictLoginNetworkGuardTest.php'
       - '.github/workflows/login-security-check.yml'
   workflow_dispatch:
 
@@ -44,11 +48,15 @@ jobs:
         run: |
           php -l app/Filament/Pages/Auth/Login.php
           php -l app/Http/Controllers/SocialLoginController.php
+          php -l app/Providers/FortifyServiceProvider.php
           php -l app/Providers/LoginSecurityRouteServiceProvider.php
           php -l app/Services/LoginSecurityService.php
+          php -l app/Services/StrictLoginNetworkGuard.php
           php -l bootstrap/providers.php
           php -l config/login-security.php
+          php -l database/migrations/2026_09_11_054700_force_login_security_flags_enabled.php
           php -l tests/Feature/LoginSecurityServiceTest.php
+          php -l tests/Feature/StrictLoginNetworkGuardTest.php
 
       - name: Login security tests
-        run: php artisan test tests/Feature/LoginSecurityServiceTest.php
+        run: php artisan test tests/Feature/LoginSecurityServiceTest.php tests/Feature/StrictLoginNetworkGuardTest.php
