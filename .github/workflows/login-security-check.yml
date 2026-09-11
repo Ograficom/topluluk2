@@ -15,10 +15,12 @@ on:
       - 'config/login-security.php'
       - 'database/migrations/2026_09_11_054700_force_login_security_flags_enabled.php'
       - 'resources/views/auth/social-device-verification.blade.php'
+      - 'routes/console.php'
       - 'tests/Feature/GlobalNetworkBlockMiddlewareTest.php'
       - 'tests/Feature/LoginSecurityServiceTest.php'
       - 'tests/Feature/StrictLoginNetworkGuardTest.php'
       - '.github/workflows/login-security-check.yml'
+      - '.github/workflows/deploy.yml'
   workflow_dispatch:
 
 jobs:
@@ -60,9 +62,13 @@ jobs:
           php -l bootstrap/providers.php
           php -l config/login-security.php
           php -l database/migrations/2026_09_11_054700_force_login_security_flags_enabled.php
+          php -l routes/console.php
           php -l tests/Feature/GlobalNetworkBlockMiddlewareTest.php
           php -l tests/Feature/LoginSecurityServiceTest.php
           php -l tests/Feature/StrictLoginNetworkGuardTest.php
+
+      - name: Verify network security command registration
+        run: php artisan list --raw | grep '^network-security:refresh-lists'
 
       - name: Login security tests
         run: php artisan test tests/Feature/LoginSecurityServiceTest.php tests/Feature/StrictLoginNetworkGuardTest.php tests/Feature/GlobalNetworkBlockMiddlewareTest.php

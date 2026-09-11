@@ -15,12 +15,23 @@ class StrictLoginNetworkGuard
 {
     private const TOR_LIST_URL = 'https://check.torproject.org/torbulkexitlist';
 
-    private const IPV4_NETWORK_LISTS = [
+    private const VPN_IPV4_NETWORK_LISTS = [
         [
             'key' => 'strict-vpn-ipv4',
             'url' => 'https://raw.githubusercontent.com/X4BNet/lists_vpn/main/output/vpn/ipv4.txt',
             'minimum' => 100,
         ],
+    ];
+
+    private const VPN_IPV6_NETWORK_LISTS = [
+        [
+            'key' => 'strict-vpn-ipv6',
+            'url' => 'https://raw.githubusercontent.com/X4BNet/lists_vpn/main/output/vpn/ipv6.txt',
+            'minimum' => 10,
+        ],
+    ];
+
+    private const DATACENTER_IPV4_NETWORK_LISTS = [
         [
             'key' => 'strict-datacenter-ipv4',
             'url' => 'https://raw.githubusercontent.com/X4BNet/lists_vpn/main/output/datacenter/ipv4.txt',
@@ -28,12 +39,7 @@ class StrictLoginNetworkGuard
         ],
     ];
 
-    private const IPV6_NETWORK_LISTS = [
-        [
-            'key' => 'strict-vpn-ipv6',
-            'url' => 'https://raw.githubusercontent.com/X4BNet/lists_vpn/main/output/vpn/ipv6.txt',
-            'minimum' => 10,
-        ],
+    private const DATACENTER_IPV6_NETWORK_LISTS = [
         [
             'key' => 'strict-datacenter-ipv6',
             'url' => 'https://raw.githubusercontent.com/X4BNet/lists_vpn/main/output/datacenter/ipv6.txt',
@@ -90,6 +96,7 @@ class StrictLoginNetworkGuard
 
         $blockTor = (bool) ($settings?->block_tor_logins ?? true);
         $blockVpn = (bool) ($settings?->block_vpn_logins ?? true);
+        $blockDatacenter = $blockVpn && (bool) config('login-security.block_datacenter', true);
 
         if (! $blockTor && ! $blockVpn) {
             return;
@@ -99,22 +106,32 @@ class StrictLoginNetworkGuard
 
         if (! $this->isPublicIp($ip)) {
             if ((bool) config('login-security.fail_closed', true)) {
-                $this->block($request, 'strict_client_ip_unresolved', 'Giriş güvenlik kontrolü tamamlanamadı.', $ip);
+                $this->block($request, 'client_ip_unresolved', 'Ağ güvenlik kontrolü tamamlanamadı.', $ip);
             }
 
             return;
         }
 
         try {
-            if ($blockTor && $this->matchesTor($ip)) {
-                $this->block($request, 'strict_tor', 'Tor ağı üzerinden girişe izin verilmiyor.', $ip);
+            $decision = $this->riskDecision($request, $ip, $blockTor, $blockVpn, $blockDatacenter);
+
+            if ($blockTor && ($decision['tor'] || $decision['active_tor'])) {
+                $this->block($request, 'tor', 'Tor ağı üzerinden erişime izin verilmiyor.', $ip, $decision);
             }
 
-            if ($blockVpn && $this->matchesVpnDatacenterOrProxy($ip)) {
-                $this->block($request, 'strict_vpn_proxy', 'VPN veya proxy üzerinden girişe izin verilmiyor.', $ip);
+            $anonymousProxy = $decision['proxy']
+                && ! $decision['tor']
+                && ! $decision['active_tor'];
+
+            if ($blockVpn && ($decision['vpn'] || $decision['active_vpn'] || $anonymousProxy)) {
+                $this->block($request, 'vpn_proxy', 'VPN veya proxy üzerinden erişime izin verilmiyor.', $ip, $decision);
+            }
+
+            if ($blockDatacenter && $decision['datacenter']) {
+                $this->block($request, 'datacenter', 'Veri merkezi veya hosting ağı üzerinden erişime izin verilmiyor.', $ip, $decision);
             }
         } catch (RuntimeException $exception) {
-            Log::error('Strict login network guard failed.', [
+            Log::error('Network security guard could not verify request.', [
                 'ip' => $ip,
                 'path' => $request->path(),
                 'message' => $exception->getMessage(),
@@ -123,17 +140,227 @@ class StrictLoginNetworkGuard
             if ((bool) config('login-security.fail_closed', true)) {
                 $this->block(
                     $request,
-                    'strict_risk_list_unavailable',
-                    'Giriş güvenlik kontrolü şu anda doğrulanamıyor. Lütfen tekrar dene.',
+                    'risk_intelligence_unavailable',
+                    'Ağ güvenlik kontrolü şu anda doğrulanamıyor. Lütfen tekrar dene.',
                     $ip,
                 );
             }
         }
     }
 
+    public function refreshThreatLists(): array
+    {
+        $sources = [
+            [
+                'key' => 'strict-tor',
+                'url' => self::TOR_LIST_URL,
+                'format' => 'network',
+                'minimum' => 20,
+            ],
+            ...array_map(fn (array $source) => [...$source, 'format' => 'network'], self::VPN_IPV4_NETWORK_LISTS),
+            ...array_map(fn (array $source) => [...$source, 'format' => 'network'], self::VPN_IPV6_NETWORK_LISTS),
+            ...array_map(fn (array $source) => [...$source, 'format' => 'network'], self::DATACENTER_IPV4_NETWORK_LISTS),
+            ...array_map(fn (array $source) => [...$source, 'format' => 'network'], self::DATACENTER_IPV6_NETWORK_LISTS),
+            ...array_map(fn (array $source) => [...$source, 'format' => 'proxy'], self::PROXY_LISTS),
+        ];
+
+        $refreshed = 0;
+        $failed = 0;
+        $results = [];
+
+        foreach ($sources as $source) {
+            try {
+                $entries = $this->remoteList(
+                    'login-security:'.$source['key'],
+                    $source['url'],
+                    $source['format'],
+                    (int) $source['minimum'],
+                    true,
+                );
+
+                $refreshed++;
+                $results[] = [
+                    'key' => $source['key'],
+                    'ok' => true,
+                    'count' => count($entries),
+                ];
+            } catch (Throwable $exception) {
+                $failed++;
+                $results[] = [
+                    'key' => $source['key'],
+                    'ok' => false,
+                    'error' => $exception->getMessage(),
+                ];
+            }
+        }
+
+        return [
+            'refreshed' => $refreshed,
+            'failed' => $failed,
+            'sources' => $results,
+        ];
+    }
+
+    private function riskDecision(
+        Request $request,
+        string $ip,
+        bool $blockTor,
+        bool $blockVpn,
+        bool $blockDatacenter,
+    ): array {
+        $cacheKey = 'login-security:decision:'.hash('sha256', strtolower($ip));
+        $cached = Cache::get($cacheKey);
+
+        if ($this->validDecision($cached)) {
+            return $cached;
+        }
+
+        $decision = null;
+        $apiError = null;
+
+        if ((bool) config('login-security.ipqs.enabled', true)
+            && trim((string) config('login-security.ipqs.api_key', '')) !== '') {
+            try {
+                $decision = $this->queryIpqs($request, $ip);
+            } catch (Throwable $exception) {
+                $apiError = $exception;
+                Log::warning('IPQS network lookup failed; using local threat lists.', [
+                    'ip' => $ip,
+                    'message' => $exception->getMessage(),
+                ]);
+            }
+        }
+
+        if ($decision === null) {
+            $decision = $this->localDecision($ip, $blockTor, $blockVpn, $blockDatacenter);
+            $decision['source'] = $apiError ? 'local_fallback_after_ipqs_error' : 'local_fallback_no_ipqs_key';
+        } elseif ($blockTor && $this->matchesTor($ip)) {
+            // Defense in depth: supplement IPQS with the official Tor exit list.
+            $decision['tor'] = true;
+            $decision['active_tor'] = true;
+            $decision['source'] = 'ipqs+official_tor';
+        }
+
+        Cache::put(
+            $cacheKey,
+            $decision,
+            now()->addHours((int) config('login-security.decision_cache_hours', 12)),
+        );
+
+        return $decision;
+    }
+
+    private function queryIpqs(Request $request, string $ip): array
+    {
+        $apiKey = trim((string) config('login-security.ipqs.api_key', ''));
+        $baseUrl = rtrim((string) config('login-security.ipqs.base_url'), '/');
+        $timeout = (int) config('login-security.ipqs.timeout_seconds', 6);
+
+        if ($apiKey === '') {
+            throw new RuntimeException('IPQS API key is missing.');
+        }
+
+        $response = Http::acceptJson()
+            ->connectTimeout(2)
+            ->timeout($timeout)
+            ->retry(2, 200)
+            ->withHeaders([
+                'User-Agent' => 'Ografi-Network-Security/2.0',
+            ])
+            ->get($baseUrl.'/'.rawurlencode($apiKey).'/'.rawurlencode($ip), [
+                'strictness' => (int) config('login-security.ipqs.strictness', 1),
+                'allow_public_access_points' => (bool) config('login-security.ipqs.allow_public_access_points', true) ? 'true' : 'false',
+                'user_agent' => mb_substr((string) $request->userAgent(), 0, 512),
+                'user_language' => mb_substr((string) $request->header('Accept-Language', ''), 0, 255),
+            ]);
+
+        if (! $response->successful()) {
+            throw new RuntimeException('IPQS returned HTTP '.$response->status().'.');
+        }
+
+        $payload = $response->json();
+
+        if (! is_array($payload) || ($payload['success'] ?? false) !== true) {
+            $message = is_array($payload) ? (string) ($payload['message'] ?? 'Unknown IPQS error') : 'Invalid IPQS JSON response';
+            throw new RuntimeException('IPQS lookup failed: '.$message);
+        }
+
+        $connectionType = strtolower(trim((string) ($payload['connection_type'] ?? '')));
+
+        return [
+            'proxy' => (bool) ($payload['proxy'] ?? false),
+            'vpn' => (bool) ($payload['vpn'] ?? false),
+            'tor' => (bool) ($payload['tor'] ?? false),
+            'active_vpn' => (bool) ($payload['active_vpn'] ?? false),
+            'active_tor' => (bool) ($payload['active_tor'] ?? false),
+            'datacenter' => in_array($connectionType, ['data center', 'datacenter', 'hosting'], true),
+            'bot_status' => (bool) ($payload['bot_status'] ?? false),
+            'fraud_score' => is_numeric($payload['fraud_score'] ?? null) ? (float) $payload['fraud_score'] : null,
+            'connection_type' => (string) ($payload['connection_type'] ?? ''),
+            'source' => 'ipqs',
+        ];
+    }
+
+    private function localDecision(
+        string $ip,
+        bool $blockTor,
+        bool $blockVpn,
+        bool $blockDatacenter,
+    ): array {
+        $decision = $this->emptyDecision();
+
+        if ($blockTor) {
+            $decision['tor'] = $this->matchesTor($ip);
+            $decision['active_tor'] = $decision['tor'];
+        }
+
+        if ($blockVpn) {
+            $decision['vpn'] = $this->matchesVpn($ip);
+            $decision['active_vpn'] = $decision['vpn'];
+            $decision['proxy'] = $this->matchesProxy($ip);
+        }
+
+        if ($blockDatacenter) {
+            $decision['datacenter'] = $this->matchesDatacenter($ip);
+        }
+
+        return $decision;
+    }
+
+    private function emptyDecision(): array
+    {
+        return [
+            'proxy' => false,
+            'vpn' => false,
+            'tor' => false,
+            'active_vpn' => false,
+            'active_tor' => false,
+            'datacenter' => false,
+            'bot_status' => false,
+            'fraud_score' => null,
+            'connection_type' => '',
+            'source' => 'local',
+        ];
+    }
+
+    private function validDecision(mixed $decision): bool
+    {
+        if (! is_array($decision)) {
+            return false;
+        }
+
+        foreach (['proxy', 'vpn', 'tor', 'active_vpn', 'active_tor', 'datacenter'] as $field) {
+            if (! array_key_exists($field, $decision)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     private function matchesTor(string $ip): bool
     {
-        foreach ($this->remoteList('strict-tor', self::TOR_LIST_URL, 'network', 20) as $entry) {
+        foreach ($this->remoteList('login-security:strict-tor', self::TOR_LIST_URL, 'network', 20) as $entry) {
             if ($this->ipMatches($ip, $entry)) {
                 return true;
             }
@@ -142,41 +369,26 @@ class StrictLoginNetworkGuard
         return false;
     }
 
-    private function matchesVpnDatacenterOrProxy(string $ip): bool
+    private function matchesVpn(string $ip): bool
     {
-        $networkLists = str_contains($ip, ':') ? self::IPV6_NETWORK_LISTS : self::IPV4_NETWORK_LISTS;
-        $loadedNetworkList = false;
+        return $this->matchesNetworkSources(
+            $ip,
+            str_contains($ip, ':') ? self::VPN_IPV6_NETWORK_LISTS : self::VPN_IPV4_NETWORK_LISTS,
+        );
+    }
+
+    private function matchesDatacenter(string $ip): bool
+    {
+        return $this->matchesNetworkSources(
+            $ip,
+            str_contains($ip, ':') ? self::DATACENTER_IPV6_NETWORK_LISTS : self::DATACENTER_IPV4_NETWORK_LISTS,
+        );
+    }
+
+    private function matchesProxy(string $ip): bool
+    {
+        $loaded = false;
         $lastException = null;
-
-        foreach ($networkLists as $source) {
-            try {
-                $entries = $this->remoteList(
-                    'login-security:'.$source['key'],
-                    $source['url'],
-                    'network',
-                    (int) $source['minimum'],
-                );
-                $loadedNetworkList = true;
-
-                foreach ($entries as $entry) {
-                    if ($this->ipMatches($ip, $entry)) {
-                        return true;
-                    }
-                }
-            } catch (RuntimeException $exception) {
-                $lastException = $exception;
-            }
-        }
-
-        if (! $loadedNetworkList && $lastException) {
-            throw $lastException;
-        }
-
-        if (str_contains($ip, ':')) {
-            return false;
-        }
-
-        $loadedProxyList = false;
 
         foreach (self::PROXY_LISTS as $source) {
             try {
@@ -186,7 +398,7 @@ class StrictLoginNetworkGuard
                     'proxy',
                     (int) $source['minimum'],
                 );
-                $loadedProxyList = true;
+                $loaded = true;
 
                 foreach ($entries as $entry) {
                     if ($this->ipMatches($ip, $entry)) {
@@ -198,7 +410,39 @@ class StrictLoginNetworkGuard
             }
         }
 
-        if (! $loadedProxyList && ! $loadedNetworkList && $lastException) {
+        if (! $loaded && $lastException) {
+            throw $lastException;
+        }
+
+        return false;
+    }
+
+    private function matchesNetworkSources(string $ip, array $sources): bool
+    {
+        $loaded = false;
+        $lastException = null;
+
+        foreach ($sources as $source) {
+            try {
+                $entries = $this->remoteList(
+                    'login-security:'.$source['key'],
+                    $source['url'],
+                    'network',
+                    (int) $source['minimum'],
+                );
+                $loaded = true;
+
+                foreach ($entries as $entry) {
+                    if ($this->ipMatches($ip, $entry)) {
+                        return true;
+                    }
+                }
+            } catch (RuntimeException $exception) {
+                $lastException = $exception;
+            }
+        }
+
+        if (! $loaded && $lastException) {
             throw $lastException;
         }
 
@@ -210,22 +454,25 @@ class StrictLoginNetworkGuard
         string $url,
         string $format,
         int $minimumEntries,
+        bool $forceRefresh = false,
     ): array {
         $freshKey = $cacheKey.':fresh';
         $staleKey = $cacheKey.':last-good';
 
-        $fresh = Cache::get($freshKey);
-        if (is_array($fresh) && count($fresh) >= $minimumEntries) {
-            return $fresh;
+        if (! $forceRefresh) {
+            $fresh = Cache::get($freshKey);
+            if (is_array($fresh) && count($fresh) >= $minimumEntries) {
+                return $fresh;
+            }
         }
 
         try {
             $response = Http::connectTimeout(2)
-                ->timeout(6)
-                ->retry(2, 150)
+                ->timeout(8)
+                ->retry(2, 200)
                 ->withHeaders([
                     'Accept' => 'text/plain,*/*',
-                    'User-Agent' => 'Ografi-Strict-Login-Network-Guard/1.0',
+                    'User-Agent' => 'Ografi-Network-Security/2.0',
                 ])
                 ->get($url);
 
@@ -244,14 +491,28 @@ class StrictLoginNetworkGuard
                 throw new RuntimeException('Risk list returned too few entries for '.$url);
             }
 
-            Cache::put($freshKey, $entries, now()->addHours(2));
-            Cache::put($staleKey, $entries, now()->addDays(7));
+            Cache::put(
+                $freshKey,
+                $entries,
+                now()->addHours((int) config('login-security.list_fresh_hours', 2)),
+            );
+            Cache::put(
+                $staleKey,
+                $entries,
+                now()->addDays((int) config('login-security.list_stale_days', 7)),
+            );
 
             return $entries;
         } catch (Throwable $exception) {
             $stale = Cache::get($staleKey);
 
             if (is_array($stale) && count($stale) >= $minimumEntries) {
+                Log::warning('Using last-known-good network threat list.', [
+                    'url' => $url,
+                    'entries' => count($stale),
+                    'message' => $exception->getMessage(),
+                ]);
+
                 return $stale;
             }
 
@@ -411,14 +672,22 @@ class StrictLoginNetworkGuard
         ) !== false;
     }
 
-    private function block(Request $request, string $reason, string $message, string $ip): never
-    {
-        Log::notice('Strict login network guard blocked a request.', [
+    private function block(
+        Request $request,
+        string $reason,
+        string $message,
+        string $ip,
+        array $decision = [],
+    ): never {
+        Log::notice('Network security guard blocked a request.', [
             'reason' => $reason,
             'ip' => $ip,
             'path' => $request->path(),
             'method' => $request->method(),
             'user_agent' => mb_substr((string) $request->userAgent(), 0, 255),
+            'risk_source' => $decision['source'] ?? null,
+            'fraud_score' => $decision['fraud_score'] ?? null,
+            'connection_type' => $decision['connection_type'] ?? null,
         ]);
 
         throw ValidationException::withMessages([
