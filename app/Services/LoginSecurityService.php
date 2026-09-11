@@ -151,9 +151,25 @@ class LoginSecurityService
 
     public function hasPendingDeviceChallenge(Request $request): bool
     {
+        return $this->pendingDeviceUserId($request) !== null;
+    }
+
+    public function pendingDeviceUserId(Request $request): ?int
+    {
         $pending = $request->session()->get(self::PENDING_DEVICE_SESSION);
 
-        return is_array($pending) && (int) ($pending['expires_at'] ?? 0) > now()->timestamp;
+        if (! is_array($pending)) {
+            return null;
+        }
+
+        if ((int) ($pending['expires_at'] ?? 0) <= now()->timestamp) {
+            $request->session()->forget(self::PENDING_DEVICE_SESSION);
+            return null;
+        }
+
+        $userId = (int) ($pending['user_id'] ?? 0);
+
+        return $userId > 0 ? $userId : null;
     }
 
     private function isTrustedDevice(User $user, Request $request): bool
