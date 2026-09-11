@@ -21,6 +21,15 @@ class Login extends BaseLogin
             ->components([
                 $this->getEmailFormComponent(),
                 $this->getPasswordFormComponent(),
+                TextInput::make('device_verification_code')
+                    ->label('Yeni cihaz doğrulama kodu')
+                    ->helperText('Bu cihaz daha önce doğrulanmadıysa e-postana gönderilen 6 haneli kodu gir.')
+                    ->autocomplete('one-time-code')
+                    ->inputMode('numeric')
+                    ->minLength(6)
+                    ->maxLength(6)
+                    ->required(fn (): bool => app(LoginSecurityService::class)->hasPendingDeviceChallenge(request()))
+                    ->visible(fn (): bool => app(LoginSecurityService::class)->hasPendingDeviceChallenge(request())),
                 $this->getRememberFormComponent(),
                 TextInput::make('website')
                     ->label('Website')
@@ -41,7 +50,13 @@ class Login extends BaseLogin
     public function authenticate(): ?LoginResponse
     {
         $settings = RecaptchaSetting::currentOrNull();
-        app(LoginSecurityService::class)->assertRequestAllowed(request(), $settings);
+        $loginSecurity = app(LoginSecurityService::class);
+
+        try {
+            $loginSecurity->assertRequestAllowed(request(), $settings);
+        } catch (ValidationException $exception) {
+            $this->throwAsFilamentValidation($exception);
+        }
 
         $data = $this->form->getState();
 
@@ -74,6 +89,44 @@ class Login extends BaseLogin
             }
         }
 
-        return parent::authenticate();
+        $response = parent::authenticate();
+
+        if ($response === null) {
+            return null;
+        }
+
+        $user = filament()->auth()->user();
+        if (! $user) {
+            return $response;
+        }
+
+        request()->merge([
+            'device_verification_code' => (string) ($data['device_verification_code'] ?? ''),
+        ]);
+
+        try {
+            $loginSecurity->verifyOrChallenge($user, request(), $settings);
+        } catch (ValidationException $exception) {
+            // Filament has already authenticated the credentials at this point.
+            // Keep the device challenge session, but remove the authenticated user
+            // until the verification code is accepted on the next submit.
+            filament()->auth()->logout();
+
+            $this->throwAsFilamentValidation($exception);
+        }
+
+        return $response;
+    }
+
+    private function throwAsFilamentValidation(ValidationException $exception): never
+    {
+        $errors = $exception->errors();
+        $message = $errors['email'][0]
+            ?? collect($errors)->flatten()->first()
+            ?? 'Giriş doğrulanamadı.';
+
+        throw ValidationException::withMessages([
+            'data.email' => (string) $message,
+        ]);
     }
 }
