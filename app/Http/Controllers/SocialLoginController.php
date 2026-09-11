@@ -6,6 +6,7 @@ use App\Models\RecaptchaSetting;
 use App\Models\SocialLoginSetting;
 use App\Models\User;
 use App\Services\LoginSecurityService;
+use App\Services\StrictLoginNetworkGuard;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -48,6 +49,7 @@ class SocialLoginController extends Controller
         $loginSecurity = app(LoginSecurityService::class);
 
         try {
+            app(StrictLoginNetworkGuard::class)->assertAllowed($request, $securitySettings);
             $loginSecurity->assertRequestAllowed($request, $securitySettings);
         } catch (ValidationException $exception) {
             return redirect()->route('login')->withErrors($exception->errors());
@@ -105,6 +107,7 @@ class SocialLoginController extends Controller
         $loginSecurity = app(LoginSecurityService::class);
 
         try {
+            app(StrictLoginNetworkGuard::class)->assertAllowed($request, $securitySettings);
             $loginSecurity->assertRequestAllowed($request, $securitySettings);
         } catch (ValidationException $exception) {
             return redirect()->route('login')->withErrors($exception->errors());
@@ -189,6 +192,7 @@ class SocialLoginController extends Controller
         $loginSecurity = app(LoginSecurityService::class);
 
         try {
+            app(StrictLoginNetworkGuard::class)->assertAllowed($request, $securitySettings);
             $loginSecurity->assertRequestAllowed($request, $securitySettings);
         } catch (ValidationException $exception) {
             return back()->withErrors($exception->errors());
