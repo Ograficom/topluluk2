@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Http\Middleware\EnsureInstalled;
 use App\Services\StrictLoginNetworkGuard;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Validation\ValidationException;
@@ -18,6 +19,10 @@ class GlobalNetworkBlockMiddlewareTest extends TestCase
             'app.key' => 'base64:AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=',
             'app.cipher' => 'AES-256-CBC',
         ]);
+
+        // The CI test database is intentionally uninstalled. Disable only the
+        // installer redirect so the real global web middleware stack can run.
+        $this->withoutMiddleware(EnsureInstalled::class);
     }
 
     public function test_web_request_is_forbidden_when_network_guard_rejects_it(): void
