@@ -6,12 +6,26 @@ return [
     | Network security failure mode
     |--------------------------------------------------------------------------
     |
-    | true: if IPQS cannot be reached and the local fallback lists cannot be
+    | true: if live intelligence and the local fallback lists cannot be
     | verified (with no last-known-good cache), block the request instead of
     | silently allowing an unverifiable network.
     |
     */
     'fail_closed' => (bool) env('LOGIN_SECURITY_FAIL_CLOSED', true),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Site-wide enforcement
+    |--------------------------------------------------------------------------
+    |
+    | These switches are intentionally independent from the old login/admin
+    | security toggles. The global middleware uses these values for every web
+    | request, so disabling a login-specific toggle cannot bypass the site-wide
+    | VPN/Tor policy.
+    |
+    */
+    'global_block_vpn' => (bool) env('LOGIN_SECURITY_GLOBAL_BLOCK_VPN', true),
+    'global_block_tor' => (bool) env('LOGIN_SECURITY_GLOBAL_BLOCK_TOR', true),
 
     /*
     |--------------------------------------------------------------------------
@@ -25,6 +39,24 @@ return [
         'strictness' => max(0, min(3, (int) env('LOGIN_SECURITY_IPQS_STRICTNESS', 1))),
         'allow_public_access_points' => (bool) env('LOGIN_SECURITY_IPQS_ALLOW_PUBLIC_ACCESS_POINTS', true),
         'timeout_seconds' => max(2, min(15, (int) env('LOGIN_SECURITY_IPQS_TIMEOUT', 6))),
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | ProxyCheck live secondary intelligence
+    |--------------------------------------------------------------------------
+    |
+    | ProxyCheck can work without an API key with a small daily allowance.
+    | When IPQS has no key, this provides a live second opinion after the local
+    | threat lists. A free ProxyCheck key raises the daily allowance further.
+    |
+    */
+    'proxycheck' => [
+        'enabled' => (bool) env('LOGIN_SECURITY_PROXYCHECK_ENABLED', true),
+        'api_key' => (string) env('PROXYCHECK_API_KEY', ''),
+        'base_url' => rtrim((string) env('PROXYCHECK_BASE_URL', 'https://proxycheck.io/v2'), '/'),
+        'timeout_seconds' => max(2, min(15, (int) env('LOGIN_SECURITY_PROXYCHECK_TIMEOUT', 6))),
+        'keyless_daily_limit' => max(1, min(100, (int) env('LOGIN_SECURITY_PROXYCHECK_KEYLESS_DAILY_LIMIT', 90))),
     ],
 
     /*
