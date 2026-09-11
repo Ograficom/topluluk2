@@ -6,14 +6,15 @@ use App\Models\RecaptchaSetting;
 use App\Models\SocialLoginSetting;
 use App\Models\User;
 use App\Services\LoginSecurityService;
-use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
+use Illuminate\View\View;
 use Laravel\Socialite\Facades\Socialite;
 use Throwable;
 
@@ -24,7 +25,7 @@ class SocialLoginController extends Controller
         $provider = strtolower($provider);
         $settings = SocialLoginSetting::current();
 
-        if (!$settings->isProviderEnabled($provider)) {
+        if (! $settings->isProviderEnabled($provider)) {
             abort(404);
         }
 
@@ -52,7 +53,7 @@ class SocialLoginController extends Controller
             return redirect()->route('login')->withErrors($exception->errors());
         }
 
-        if (!$settings->isProviderEnabled($provider)) {
+        if (! $settings->isProviderEnabled($provider)) {
             abort(404);
         }
 
@@ -75,8 +76,9 @@ class SocialLoginController extends Controller
 
             return redirect()
                 ->route('login')
-                ->with('error', ucfirst($provider) . ' girişi başarısız oldu.');
+                ->with('error', ucfirst($provider).' girişi başarısız oldu.');
         }
+
         $providerId = $socialUser->getId();
         $email = $socialUser->getEmail();
 
@@ -88,13 +90,12 @@ class SocialLoginController extends Controller
             avatar: $socialUser->getAvatar(),
         );
 
-        Auth::login($user, true);
-
-        if ($securitySettings?->verify_unknown_devices ?? true) {
-            $loginSecurity->trustCurrentDevice($user, $request, $securitySettings);
-        }
-
-        return redirect()->intended('/');
+        return $this->completeLoginAfterDeviceCheck(
+            user: $user,
+            request: $request,
+            loginSecurity: $loginSecurity,
+            securitySettings: $securitySettings,
+        );
     }
 
     public function oneTap(Request $request): RedirectResponse
@@ -109,7 +110,7 @@ class SocialLoginController extends Controller
             return redirect()->route('login')->withErrors($exception->errors());
         }
 
-        if (!$settings->isProviderEnabled('google')) {
+        if (! $settings->isProviderEnabled('google')) {
             abort(404);
         }
 
@@ -124,7 +125,7 @@ class SocialLoginController extends Controller
         $cookieToken = (string) $request->cookie('g_csrf_token', '');
         $bodyToken = (string) $request->input('g_csrf_token', '');
 
-        if ($cookieToken === '' || $bodyToken === '' || !hash_equals($cookieToken, $bodyToken)) {
+        if ($cookieToken === '' || $bodyToken === '' || ! hash_equals($cookieToken, $bodyToken)) {
             return redirect()->route('login')->with('error', 'Google oturum açma isteği doğrulanamadı.');
         }
 
@@ -134,7 +135,7 @@ class SocialLoginController extends Controller
                 'id_token' => $credential,
             ]);
 
-        if (!$response->ok()) {
+        if (! $response->ok()) {
             return redirect()->route('login')->with('error', 'Google kimlik doğrulaması başarısız oldu.');
         }
 
@@ -147,10 +148,10 @@ class SocialLoginController extends Controller
 
         if (
             $audience !== $clientId ||
-            !in_array($issuer, ['accounts.google.com', 'https://accounts.google.com'], true) ||
+            ! in_array($issuer, ['accounts.google.com', 'https://accounts.google.com'], true) ||
             $subject === '' ||
             $email === '' ||
-            !$emailVerified
+            ! $emailVerified
         ) {
             return redirect()->route('login')->with('error', 'Google hesabı doğrulanamadı.');
         }
@@ -163,11 +164,90 @@ class SocialLoginController extends Controller
             avatar: (string) ($payload['picture'] ?? ''),
         );
 
-        Auth::login($user, true);
+        return $this->completeLoginAfterDeviceCheck(
+            user: $user,
+            request: $request,
+            loginSecurity: $loginSecurity,
+            securitySettings: $securitySettings,
+        );
+    }
 
-        if ($securitySettings?->verify_unknown_devices ?? true) {
-            $loginSecurity->trustCurrentDevice($user, $request, $securitySettings);
+    public function showDeviceVerification(Request $request): View|RedirectResponse
+    {
+        $loginSecurity = app(LoginSecurityService::class);
+
+        if (! $loginSecurity->hasPendingDeviceChallenge($request)) {
+            return redirect()->route('login');
         }
+
+        return view('auth.social-device-verification');
+    }
+
+    public function verifyDevice(Request $request): RedirectResponse
+    {
+        $securitySettings = RecaptchaSetting::currentOrNull();
+        $loginSecurity = app(LoginSecurityService::class);
+
+        try {
+            $loginSecurity->assertRequestAllowed($request, $securitySettings);
+        } catch (ValidationException $exception) {
+            return back()->withErrors($exception->errors());
+        }
+
+        $request->validate([
+            'device_verification_code' => ['required', 'digits:6'],
+        ], [
+            'device_verification_code.required' => '6 haneli cihaz doğrulama kodunu gir.',
+            'device_verification_code.digits' => 'Cihaz doğrulama kodu 6 haneli olmalı.',
+        ]);
+
+        $userId = $loginSecurity->pendingDeviceUserId($request);
+        $user = $userId ? User::query()->find($userId) : null;
+
+        if (! $user) {
+            return redirect()
+                ->route('login')
+                ->withErrors(['email' => 'Cihaz doğrulama oturumunun süresi doldu. Tekrar giriş yap.']);
+        }
+
+        try {
+            $loginSecurity->verifyOrChallenge($user, $request, $securitySettings);
+        } catch (ValidationException $exception) {
+            if ($loginSecurity->hasPendingDeviceChallenge($request)) {
+                return back()->withErrors($exception->errors());
+            }
+
+            return redirect()->route('login')->withErrors($exception->errors());
+        }
+
+        Auth::login($user, true);
+        $request->session()->regenerate();
+
+        return redirect()->intended('/');
+    }
+
+    private function completeLoginAfterDeviceCheck(
+        User $user,
+        Request $request,
+        LoginSecurityService $loginSecurity,
+        ?RecaptchaSetting $securitySettings,
+    ): RedirectResponse {
+        try {
+            $loginSecurity->verifyOrChallenge($user, $request, $securitySettings);
+        } catch (ValidationException $exception) {
+            if ($loginSecurity->hasPendingDeviceChallenge($request)) {
+                $message = collect($exception->errors())->flatten()->first();
+
+                return redirect()
+                    ->route('social.device.verify')
+                    ->with('status', $message ?: 'E-postana gönderilen cihaz doğrulama kodunu gir.');
+            }
+
+            return redirect()->route('login')->withErrors($exception->errors());
+        }
+
+        Auth::login($user, true);
+        $request->session()->regenerate();
 
         return redirect()->intended('/');
     }
@@ -189,12 +269,12 @@ class SocialLoginController extends Controller
             ->where('social_provider_id', $providerId)
             ->first();
 
-        if (!$user && $email) {
+        if (! $user && $email) {
             $user = User::query()->where('email', $email)->first();
         }
 
-        if (!$user) {
-            $isFirstUser = !User::query()->exists();
+        if (! $user) {
+            $isFirstUser = ! User::query()->exists();
 
             $user = User::create([
                 'name' => $name !== '' ? $name : 'User',
@@ -213,7 +293,7 @@ class SocialLoginController extends Controller
             ])->save();
         }
 
-        if (!$user->email_verified_at && $email) {
+        if (! $user->email_verified_at && $email) {
             $user->forceFill(['email_verified_at' => now()])->save();
         }
 

@@ -4,6 +4,7 @@ return [
     App\Providers\AppServiceProvider::class,
     App\Providers\PostDistributionServiceProvider::class,
     App\Providers\PostVoteServiceProvider::class,
+    App\Providers\LoginSecurityRouteServiceProvider::class,
     App\Providers\Filament\AdminPanelProvider::class,
     App\Providers\FortifyServiceProvider::class,
     App\Providers\JetstreamServiceProvider::class,

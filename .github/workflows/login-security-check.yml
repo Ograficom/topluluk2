@@ -1,0 +1,54 @@
+name: Login Security Check
+
+on:
+  pull_request:
+    paths:
+      - 'app/Filament/Pages/Auth/Login.php'
+      - 'app/Http/Controllers/SocialLoginController.php'
+      - 'app/Providers/LoginSecurityRouteServiceProvider.php'
+      - 'app/Services/LoginSecurityService.php'
+      - 'bootstrap/providers.php'
+      - 'config/login-security.php'
+      - 'resources/views/auth/social-device-verification.blade.php'
+      - 'tests/Feature/LoginSecurityServiceTest.php'
+      - '.github/workflows/login-security-check.yml'
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          extensions: mbstring, sqlite3, pdo_sqlite
+          coverage: none
+
+      - name: Prepare Laravel directories
+        run: |
+          mkdir -p storage/framework/cache storage/framework/sessions storage/framework/views bootstrap/cache database
+          touch database/database.sqlite
+
+      - name: Validate Composer
+        run: composer validate --no-check-publish
+
+      - name: Install dependencies
+        run: composer install --no-interaction --prefer-dist --no-progress
+
+      - name: PHP syntax check
+        run: |
+          php -l app/Filament/Pages/Auth/Login.php
+          php -l app/Http/Controllers/SocialLoginController.php
+          php -l app/Providers/LoginSecurityRouteServiceProvider.php
+          php -l app/Services/LoginSecurityService.php
+          php -l bootstrap/providers.php
+          php -l config/login-security.php
+          php -l tests/Feature/LoginSecurityServiceTest.php
+
+      - name: Login security tests
+        run: php artisan test tests/Feature/LoginSecurityServiceTest.php
