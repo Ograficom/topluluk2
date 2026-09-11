@@ -5,6 +5,7 @@ namespace App\Filament\Pages\Auth;
 use App\Models\RecaptchaSetting;
 use App\Services\LoginSecurityService;
 use App\Services\RecaptchaV3Verifier;
+use App\Services\StrictLoginNetworkGuard;
 use Filament\Auth\Http\Responses\Contracts\LoginResponse;
 use Filament\Auth\Pages\Login as BaseLogin;
 use Filament\Forms\Components\Hidden;
@@ -53,6 +54,7 @@ class Login extends BaseLogin
         $loginSecurity = app(LoginSecurityService::class);
 
         try {
+            app(StrictLoginNetworkGuard::class)->assertAllowed(request(), $settings);
             $loginSecurity->assertRequestAllowed(request(), $settings);
         } catch (ValidationException $exception) {
             $this->throwAsFilamentValidation($exception);
