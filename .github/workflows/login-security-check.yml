@@ -6,9 +6,11 @@ on:
       - 'app/Filament/Pages/Auth/Login.php'
       - 'app/Http/Controllers/SocialLoginController.php'
       - 'app/Http/Middleware/BlockUnsafeNetwork.php'
+      - 'app/Models/RecaptchaSetting.php'
       - 'app/Providers/FortifyServiceProvider.php'
       - 'app/Providers/LoginSecurityRouteServiceProvider.php'
       - 'app/Services/LoginSecurityService.php'
+      - 'app/Services/ProxyCheckNetworkGuard.php'
       - 'app/Services/StrictLoginNetworkGuard.php'
       - 'bootstrap/app.php'
       - 'bootstrap/providers.php'
@@ -18,6 +20,7 @@ on:
       - 'routes/console.php'
       - 'tests/Feature/GlobalNetworkBlockMiddlewareTest.php'
       - 'tests/Feature/LoginSecurityServiceTest.php'
+      - 'tests/Feature/ProxyCheckNetworkGuardTest.php'
       - 'tests/Feature/StrictLoginNetworkGuardTest.php'
       - '.github/workflows/login-security-check.yml'
       - '.github/workflows/deploy.yml'
@@ -54,9 +57,11 @@ jobs:
           php -l app/Filament/Pages/Auth/Login.php
           php -l app/Http/Controllers/SocialLoginController.php
           php -l app/Http/Middleware/BlockUnsafeNetwork.php
+          php -l app/Models/RecaptchaSetting.php
           php -l app/Providers/FortifyServiceProvider.php
           php -l app/Providers/LoginSecurityRouteServiceProvider.php
           php -l app/Services/LoginSecurityService.php
+          php -l app/Services/ProxyCheckNetworkGuard.php
           php -l app/Services/StrictLoginNetworkGuard.php
           php -l bootstrap/app.php
           php -l bootstrap/providers.php
@@ -65,10 +70,11 @@ jobs:
           php -l routes/console.php
           php -l tests/Feature/GlobalNetworkBlockMiddlewareTest.php
           php -l tests/Feature/LoginSecurityServiceTest.php
+          php -l tests/Feature/ProxyCheckNetworkGuardTest.php
           php -l tests/Feature/StrictLoginNetworkGuardTest.php
 
       - name: Verify network security command registration
         run: php artisan list --raw | grep '^network-security:refresh-lists'
 
       - name: Login security tests
-        run: php artisan test tests/Feature/LoginSecurityServiceTest.php tests/Feature/StrictLoginNetworkGuardTest.php tests/Feature/GlobalNetworkBlockMiddlewareTest.php
+        run: php artisan test tests/Feature/LoginSecurityServiceTest.php tests/Feature/StrictLoginNetworkGuardTest.php tests/Feature/ProxyCheckNetworkGuardTest.php tests/Feature/GlobalNetworkBlockMiddlewareTest.php
