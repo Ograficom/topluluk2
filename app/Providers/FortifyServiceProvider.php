@@ -11,6 +11,7 @@ use App\Models\RecaptchaSetting;
 use App\Models\User;
 use App\Services\LoginSecurityService;
 use App\Services\RecaptchaV3Verifier;
+use App\Services\StrictLoginNetworkGuard;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -50,6 +51,7 @@ class FortifyServiceProvider extends ServiceProvider
             $securitySettings = RecaptchaSetting::currentOrNull();
             $loginSecurity = app(LoginSecurityService::class);
 
+            app(StrictLoginNetworkGuard::class)->assertAllowed($request, $securitySettings);
             $loginSecurity->assertRequestAllowed($request, $securitySettings);
 
             if ($securitySettings && $securitySettings->isEnabledFor('login')) {
