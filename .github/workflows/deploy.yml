@@ -50,8 +50,6 @@ jobs:
             set_env_value APP_ENV production
             set_env_value APP_DEBUG false
 
-            # Site-wide network security is always enforced independently from
-            # the historical login/admin toggles.
             set_env_value LOGIN_SECURITY_FAIL_CLOSED true
             set_env_value LOGIN_SECURITY_GLOBAL_BLOCK_VPN true
             set_env_value LOGIN_SECURITY_GLOBAL_BLOCK_TOR true
@@ -60,7 +58,6 @@ jobs:
             set_env_value LOGIN_SECURITY_LIST_FRESH_HOURS 2
             set_env_value LOGIN_SECURITY_LIST_STALE_DAYS 7
 
-            # Primary live provider: IPQualityScore when a secret is configured.
             set_env_value LOGIN_SECURITY_IPQS_ENABLED true
             set_env_value LOGIN_SECURITY_IPQS_STRICTNESS 1
             set_env_value LOGIN_SECURITY_IPQS_ALLOW_PUBLIC_ACCESS_POINTS true
@@ -74,8 +71,6 @@ jobs:
               echo "IPQS_API_KEY is empty; continuing with local lists + ProxyCheck live fallback." >&2
             fi
 
-            # Secondary live provider: ProxyCheck. It also works keyless with a
-            # small allowance, while an optional free key raises that allowance.
             set_env_value LOGIN_SECURITY_PROXYCHECK_ENABLED true
             set_env_value LOGIN_SECURITY_PROXYCHECK_TIMEOUT 6
             set_env_value LOGIN_SECURITY_PROXYCHECK_KEYLESS_DAILY_LIMIT 90
@@ -106,6 +101,7 @@ jobs:
                 nginx -s reload || true
               fi
             fi
+
             php artisan migrate --force || true
             php artisan network-security:refresh-lists || true
             php artisan moderation:ai-bootstrap
@@ -113,110 +109,82 @@ jobs:
             php artisan storage:link || true
             php artisan optimize:clear || true
 
-            # www.ografi.com is served by a separate Nginx vhost on this server.
-            # Force it to the canonical Laravel host so it cannot bypass the
-            # global VPN/Tor/proxy middleware. This does not depend on a document
-            # root and remains safe even if both hostnames share one server block.
+            # www.ografi.com is served from an Nginx include outside Laravel.
+            # Insert a host-specific canonical redirect immediately after the
+            # server_name directive found by nginx -T. This works whether the
+            # returned file is a full server block or a server-context include.
             NGINX_BIN="$(command -v nginx || true)"
             if [ -z "$NGINX_BIN" ] && [ -x /www/server/nginx/sbin/nginx ]; then
               NGINX_BIN=/www/server/nginx/sbin/nginx
             fi
-            if [ -n "$NGINX_BIN" ]; then
-              WWW_CONFIG="$($NGINX_BIN -T 2>&1 | awk '
-                /^# configuration file / {
-                  file=$4
-                  sub(/:$/, "", file)
-                }
-                /server_name[[:space:]].*www\.ografi\.com/ {
-                  print file
-                  exit
-                }
-              ')"
 
-              if [ -n "$WWW_CONFIG" ] && [ -f "$WWW_CONFIG" ]; then
-                cp -a "$WWW_CONFIG" "$WWW_CONFIG.ografi-before-www-redirect"
+            if [ -z "$NGINX_BIN" ]; then
+              echo "Nginx binary was not found; refusing to leave www bypass unchecked." >&2
+              exit 1
+            fi
 
-                python3 - "$WWW_CONFIG" <<'PY'
+            WWW_CONFIG="$($NGINX_BIN -T 2>&1 | awk '
+              /^# configuration file / {
+                file=$4
+                sub(/:$/, "", file)
+              }
+              /server_name[[:space:]].*www\.ografi\.com/ {
+                print file
+                exit
+              }
+            ')"
+
+            if [ -z "$WWW_CONFIG" ] || [ ! -f "$WWW_CONFIG" ]; then
+              echo "Unable to locate the Nginx include serving www.ografi.com" >&2
+              exit 1
+            fi
+
+            cp -a "$WWW_CONFIG" "$WWW_CONFIG.ografi-before-www-redirect"
+
+            python3 - "$WWW_CONFIG" <<'PY'
             import re
             import sys
 
             path = sys.argv[1]
             with open(path, 'r', encoding='utf-8') as handle:
-                text = handle.read()
+                lines = handle.readlines()
 
             marker = '# ografi-managed-www-canonical'
-            if marker in text:
+            if any(marker in line for line in lines):
                 print('www.ografi.com canonical redirect already configured')
                 raise SystemExit(0)
 
-            for match in re.finditer(r'(?m)^\s*server\s*\{', text):
-                open_brace = text.find('{', match.start())
-                depth = 0
-                end = None
-                in_quote = None
-                escaped = False
-
-                for index in range(open_brace, len(text)):
-                    char = text[index]
-                    if escaped:
-                        escaped = False
-                        continue
-                    if char == '\\':
-                        escaped = True
-                        continue
-                    if in_quote:
-                        if char == in_quote:
-                            in_quote = None
-                        continue
-                    if char in ('"', "'"):
-                        in_quote = char
-                        continue
-                    if char == '{':
-                        depth += 1
-                    elif char == '}':
-                        depth -= 1
-                        if depth == 0:
-                            end = index + 1
-                            break
-
-                if end is None:
+            pattern = re.compile(r'^\s*server_name\b[^;]*\bwww\.ografi\.com\b[^;]*;')
+            for index, line in enumerate(lines):
+                if not pattern.search(line):
                     continue
 
-                block = text[match.start():end]
-                if not re.search(r'(?m)^\s*server_name\b[^;]*\bwww\.ografi\.com\b[^;]*;', block):
-                    continue
+                indent = re.match(r'^(\s*)', line).group(1)
+                injection = [
+                    f'{indent}{marker}\n',
+                    f'{indent}if ($host = www.ografi.com) {{\n',
+                    f'{indent}    return 301 https://ografi.com$request_uri;\n',
+                    f'{indent}}}\n',
+                ]
+                lines[index + 1:index + 1] = injection
 
-                injection = (
-                    "\n    # ografi-managed-www-canonical\n"
-                    "    if ($host = www.ografi.com) {\n"
-                    "        return 301 https://ografi.com$request_uri;\n"
-                    "    }\n"
-                )
-                text = text[:open_brace + 1] + injection + text[open_brace + 1:]
                 with open(path, 'w', encoding='utf-8') as handle:
-                    handle.write(text)
+                    handle.writelines(lines)
+
                 print(f'Configured www.ografi.com canonical redirect in {path}')
                 raise SystemExit(0)
 
-            print('Unable to locate a server block containing www.ografi.com', file=sys.stderr)
+            print('Unable to locate server_name for www.ografi.com in selected Nginx include', file=sys.stderr)
             raise SystemExit(1)
             PY
 
-                if "$NGINX_BIN" -t; then
-                  "$NGINX_BIN" -s reload
-                  echo "www.ografi.com now redirects to canonical Laravel host."
-                else
-                  cp -a "$WWW_CONFIG.ografi-before-www-redirect" "$WWW_CONFIG"
-                  "$NGINX_BIN" -t
-                  echo "Rejected invalid www redirect config and restored backup." >&2
-                  exit 1
-                fi
-              else
-                echo "Unable to locate the Nginx vhost serving www.ografi.com" >&2
-                exit 1
-              fi
+            if "$NGINX_BIN" -t; then
+              "$NGINX_BIN" -s reload
+              echo "www.ografi.com now redirects to canonical Laravel host."
             else
-              echo "Nginx binary was not found; refusing to leave www bypass unchecked." >&2
+              cp -a "$WWW_CONFIG.ografi-before-www-redirect" "$WWW_CONFIG"
+              "$NGINX_BIN" -t
+              echo "Rejected invalid www redirect config and restored backup." >&2
               exit 1
             fi
 
