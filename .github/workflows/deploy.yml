@@ -54,6 +54,25 @@ jobs:
             set_env_value APP_ENV production
             set_env_value APP_DEBUG false
 
+            # Network security: use IPQS as primary intelligence and cache every
+            # decision for 12 hours. Static Tor/VPN/proxy lists remain the fallback.
+            set_env_value LOGIN_SECURITY_FAIL_CLOSED true
+            set_env_value LOGIN_SECURITY_IPQS_ENABLED true
+            set_env_value LOGIN_SECURITY_IPQS_STRICTNESS 1
+            set_env_value LOGIN_SECURITY_IPQS_ALLOW_PUBLIC_ACCESS_POINTS true
+            set_env_value LOGIN_SECURITY_IPQS_TIMEOUT 6
+            set_env_value LOGIN_SECURITY_DECISION_CACHE_HOURS 12
+            set_env_value LOGIN_SECURITY_BLOCK_DATACENTER true
+            set_env_value LOGIN_SECURITY_LIST_FRESH_HOURS 2
+            set_env_value LOGIN_SECURITY_LIST_STALE_DAYS 7
+
+            IPQS_API_KEY_VALUE="${{ secrets.IPQS_API_KEY }}"
+            if [ -n "$IPQS_API_KEY_VALUE" ]; then
+              set_env_value IPQS_API_KEY "$IPQS_API_KEY_VALUE"
+            else
+              echo "IPQS_API_KEY GitHub secret is empty; local threat-list fallback will remain active." >&2
+            fi
+
             COMPOSER_ALLOW_SUPERUSER=1 composer install --no-interaction --prefer-dist --optimize-autoloader
             php artisan livewire:publish --assets --no-interaction
 
@@ -76,6 +95,7 @@ jobs:
               fi
             fi
             php artisan migrate --force || true
+            php artisan network-security:refresh-lists || true
             php artisan moderation:ai-bootstrap
             php artisan moderation:ai-scan --limit=3 || true
             php artisan storage:link || true
