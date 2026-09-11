@@ -30,9 +30,6 @@ jobs:
             fi
             cd "$TARGET_PATH"
 
-            # A crashed/overlapping deploy can leave this behind and block every
-            # following git operation. GitHub Actions deploys are serialized above,
-            # so removing a stale lock here is safe for this deployment path.
             rm -f .git/index.lock
 
             git stash --include-untracked || true
@@ -50,35 +47,50 @@ jobs:
               fi
             }
 
-            # Never serve debug bundles or exception details in production.
             set_env_value APP_ENV production
             set_env_value APP_DEBUG false
 
-            # Network security: use IPQS as primary intelligence and cache every
-            # decision for 12 hours. Static Tor/VPN/proxy lists remain the fallback.
+            # Site-wide network security is always enforced independently from
+            # the historical login/admin toggles.
             set_env_value LOGIN_SECURITY_FAIL_CLOSED true
+            set_env_value LOGIN_SECURITY_GLOBAL_BLOCK_VPN true
+            set_env_value LOGIN_SECURITY_GLOBAL_BLOCK_TOR true
+            set_env_value LOGIN_SECURITY_BLOCK_DATACENTER true
+            set_env_value LOGIN_SECURITY_DECISION_CACHE_HOURS 12
+            set_env_value LOGIN_SECURITY_LIST_FRESH_HOURS 2
+            set_env_value LOGIN_SECURITY_LIST_STALE_DAYS 7
+
+            # Primary live provider: IPQualityScore when a secret is configured.
             set_env_value LOGIN_SECURITY_IPQS_ENABLED true
             set_env_value LOGIN_SECURITY_IPQS_STRICTNESS 1
             set_env_value LOGIN_SECURITY_IPQS_ALLOW_PUBLIC_ACCESS_POINTS true
             set_env_value LOGIN_SECURITY_IPQS_TIMEOUT 6
-            set_env_value LOGIN_SECURITY_DECISION_CACHE_HOURS 12
-            set_env_value LOGIN_SECURITY_BLOCK_DATACENTER true
-            set_env_value LOGIN_SECURITY_LIST_FRESH_HOURS 2
-            set_env_value LOGIN_SECURITY_LIST_STALE_DAYS 7
 
             IPQS_API_KEY_VALUE="${{ secrets.IPQS_API_KEY }}"
             if [ -n "$IPQS_API_KEY_VALUE" ]; then
               set_env_value IPQS_API_KEY "$IPQS_API_KEY_VALUE"
+              echo "IPQS live network intelligence enabled."
             else
-              echo "IPQS_API_KEY GitHub secret is empty; local threat-list fallback will remain active." >&2
+              echo "IPQS_API_KEY is empty; continuing with local lists + ProxyCheck live fallback." >&2
+            fi
+
+            # Secondary live provider: ProxyCheck. It also works keyless with a
+            # small allowance, while an optional free key raises that allowance.
+            set_env_value LOGIN_SECURITY_PROXYCHECK_ENABLED true
+            set_env_value LOGIN_SECURITY_PROXYCHECK_TIMEOUT 6
+            set_env_value LOGIN_SECURITY_PROXYCHECK_KEYLESS_DAILY_LIMIT 90
+
+            PROXYCHECK_API_KEY_VALUE="${{ secrets.PROXYCHECK_API_KEY }}"
+            if [ -n "$PROXYCHECK_API_KEY_VALUE" ]; then
+              set_env_value PROXYCHECK_API_KEY "$PROXYCHECK_API_KEY_VALUE"
+              echo "ProxyCheck authenticated live network intelligence enabled."
+            else
+              echo "PROXYCHECK_API_KEY is empty; ProxyCheck keyless live checks remain enabled." >&2
             fi
 
             COMPOSER_ALLOW_SUPERUSER=1 composer install --no-interaction --prefer-dist --optimize-autoloader
             php artisan livewire:publish --assets --no-interaction
 
-            # Always rebuild Node dependencies from package-lock.json. This prevents
-            # stale server node_modules (for example Tailwind 4) from being mixed
-            # with this repository's Tailwind 3/PostCSS configuration.
             if [ ! -f package-lock.json ]; then
               echo "package-lock.json is required for deterministic production builds" >&2
               exit 1
