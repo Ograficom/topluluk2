@@ -6,6 +6,7 @@ use App\Models\RssFeed;
 use App\Services\AdOrderSnippetSync;
 use App\Services\IndexNowService;
 use App\Services\Rss\RssSyncService;
+use App\Services\StrictLoginNetworkGuard;
 use App\Support\PostSeoText;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Artisan;
@@ -15,6 +16,26 @@ use Symfony\Component\Console\Input\ArrayInput;
 Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
 })->purpose('Display an inspiring quote');
+
+Artisan::command('network-security:refresh-lists', function (StrictLoginNetworkGuard $guard) {
+    $result = $guard->refreshThreatLists();
+
+    foreach ($result['sources'] as $source) {
+        if ($source['ok']) {
+            $this->line(sprintf('OK   %-28s %d entries', $source['key'], $source['count']));
+        } else {
+            $this->error(sprintf('FAIL %-28s %s', $source['key'], $source['error']));
+        }
+    }
+
+    $this->info("Network threat lists: refreshed={$result['refreshed']} failed={$result['failed']}");
+
+    return $result['failed'] > 0 ? 1 : 0;
+})->purpose('Refresh Tor, VPN, datacenter and proxy threat intelligence lists');
+
+Schedule::command('network-security:refresh-lists')
+    ->hourly()
+    ->withoutOverlapping(15);
 
 Artisan::command('rss:sync {--feed_id=} {--force}', function (RssSyncService $service) {
     $feedId = $this->option('feed_id');
