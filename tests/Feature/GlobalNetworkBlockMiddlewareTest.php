@@ -10,6 +10,16 @@ use Tests\TestCase;
 
 class GlobalNetworkBlockMiddlewareTest extends TestCase
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        config([
+            'app.key' => 'base64:AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=',
+            'app.cipher' => 'AES-256-CBC',
+        ]);
+    }
+
     public function test_web_request_is_forbidden_when_network_guard_rejects_it(): void
     {
         $guard = Mockery::mock(StrictLoginNetworkGuard::class);
