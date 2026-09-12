@@ -111,7 +111,7 @@ jobs:
 
             # Laravel's scheduled RSS/AI jobs only run when schedule:run is invoked
             # every minute. Keep an idempotent root cron entry on production so
-            # rss:sync and rss:ai-process actually execute after deployment.
+            # the normal queue and the existing-post repair queue keep draining.
             PHP_BIN="$(command -v php || true)"
             if [ -z "$PHP_BIN" ]; then
               echo "PHP binary was not found; cannot install Laravel scheduler cron." >&2
@@ -140,14 +140,16 @@ jobs:
             fi
             php artisan tinker --execute="echo 'RSS AI diagnostic: service=' . get_class(app(\\App\\Services\\Rss\\RssArticleRewriteService::class)) . PHP_EOL;" || true
 
-            # Process a small batch immediately instead of waiting for the next
-            # minute; the scheduler will keep draining the remaining AI queue.
-            php artisan rss:ai-process --limit=10 || true
+            # Smoke-test one new/unlinked item and one existing linked post. Never
+            # let the entire historical AI backlog hold a production deploy open;
+            # the scheduler drains the rest continuously after deployment.
+            timeout 180s php artisan rss:ai-process --limit=1 || true
+            timeout 180s php artisan rss:ai-rewrite-linked --limit=1 || true
 
             # Surface only RSS/AI failure lines; never dump the complete production log.
             if [ -f storage/logs/laravel.log ]; then
               echo '--- recent RSS AI errors ---'
-              grep -E 'RSS AI kuyruk ogesi islenemedi|AI yeniden yazimi basarisiz|OpenAI HTTP|OpenAI API key|Ollama HTTP|Ollama API key' storage/logs/laravel.log | tail -n 30 || true
+              grep -E 'RSS AI kuyruk ogesi islenemedi|RSS AI yeniden yazimi basarisiz|Linked RSS AI rewrite failed|AI yeniden yazimi basarisiz|OpenAI HTTP|OpenAI API key|Ollama HTTP|Ollama API key' storage/logs/laravel.log | tail -n 30 || true
               echo '--- end RSS AI errors ---'
             fi
 
