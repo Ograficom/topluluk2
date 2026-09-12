@@ -37,9 +37,6 @@ jobs:
             git reset --hard origin/main
             php artisan optimize:clear || true
 
-            # Remove credentials/configuration left by the retired provider.
-            sed -i '/^OPENAI_/d' .env
-
             set_env_value() {
               KEY="$1"
               VALUE="$2"
