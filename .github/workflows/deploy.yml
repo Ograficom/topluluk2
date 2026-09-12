@@ -37,6 +37,9 @@ jobs:
             git reset --hard origin/main
             php artisan optimize:clear || true
 
+            # Remove credentials/configuration left by the retired provider.
+            sed -i '/^OPENAI_/d' .env
+
             set_env_value() {
               KEY="$1"
               VALUE="$2"
@@ -104,14 +107,10 @@ jobs:
 
             php artisan migrate --force || true
             php artisan network-security:refresh-lists || true
-            php artisan moderation:ai-bootstrap
-            php artisan moderation:ai-scan --limit=3 || true
             php artisan storage:link || true
             php artisan optimize:clear || true
 
-            # Laravel's scheduled RSS/AI jobs only run when schedule:run is invoked
-            # every minute. Keep an idempotent root cron entry on production so
-            # the normal queue and the existing-post repair queue keep draining.
+            # Keep the Laravel scheduler running every minute in production.
             PHP_BIN="$(command -v php || true)"
             if [ -z "$PHP_BIN" ]; then
               echo "PHP binary was not found; cannot install Laravel scheduler cron." >&2
@@ -126,32 +125,6 @@ jobs:
             crontab "$CRON_TMP"
             rm -f "$CRON_TMP"
             echo "Laravel scheduler cron installed for $TARGET_PATH."
-
-            # Safe AI diagnostics: only report whether credentials exist, never values.
-            if grep -Eq '^OPENAI_API_KEY=.+$' .env; then
-              echo 'RSS AI diagnostic: OPENAI_API_KEY configured=yes'
-            else
-              echo 'RSS AI diagnostic: OPENAI_API_KEY configured=no'
-            fi
-            if grep -Eq '^OLLAMA_API_KEY=.+$' .env; then
-              echo 'RSS AI diagnostic: OLLAMA_API_KEY configured=yes'
-            else
-              echo 'RSS AI diagnostic: OLLAMA_API_KEY configured=no'
-            fi
-            php artisan tinker --execute="echo 'RSS AI diagnostic: service=' . get_class(app(\\App\\Services\\Rss\\RssArticleRewriteService::class)) . PHP_EOL;" || true
-
-            # Smoke-test one new/unlinked item and one existing linked post. Never
-            # let the entire historical AI backlog hold a production deploy open;
-            # the scheduler drains the rest continuously after deployment.
-            timeout 180s php artisan rss:ai-process --limit=1 || true
-            timeout 180s php artisan rss:ai-rewrite-linked --limit=1 || true
-
-            # Surface only RSS/AI failure lines; never dump the complete production log.
-            if [ -f storage/logs/laravel.log ]; then
-              echo '--- recent RSS AI errors ---'
-              grep -E 'RSS AI kuyruk ogesi islenemedi|RSS AI yeniden yazimi basarisiz|Linked RSS AI rewrite failed|AI yeniden yazimi basarisiz|OpenAI HTTP|OpenAI API key|Ollama HTTP|Ollama API key' storage/logs/laravel.log | tail -n 30 || true
-              echo '--- end RSS AI errors ---'
-            fi
 
             # www.ografi.com is served from an Nginx include outside Laravel.
             # Insert a host-specific canonical redirect immediately after the
