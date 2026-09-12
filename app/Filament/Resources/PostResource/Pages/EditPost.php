@@ -67,8 +67,8 @@ class EditPost extends EditRecord
                 ->icon('heroicon-o-sparkles')
                 ->color('primary')
                 ->modalHeading('OpenAI ile gönderiyi düzenle')
-                ->modalDescription('İşlem uygulanınca gönderi kaydedilir. Başlık/SEO işlemleri içeriğe dokunmaz. İçerik işlemlerinde medya veya özel EditorJS blokları varsa güvenlik için işlem durdurulur.')
-                ->modalSubmitActionLabel('Uygula')
+                ->modalDescription('İşlem uygulanınca gönderi doğrudan kaydedilir. Terra düzenleme için önerilen varsayılandır. Başlık/SEO işlemleri içeriğe dokunmaz; medya veya özel EditorJS blokları olan içeriklerde yeniden yazma güvenlik için durdurulur.')
+                ->modalSubmitActionLabel('Uygula ve kaydet')
                 ->schema([
                     Select::make('operation')
                         ->label('İşlem')
@@ -86,12 +86,11 @@ class EditPost extends EditRecord
                     Select::make('model')
                         ->label('OpenAI modeli')
                         ->options([
-                            'gpt-5.6-luna' => 'GPT-5.6 Luna — en ekonomik',
-                            'gpt-5.6-terra' => 'GPT-5.6 Terra — dengeli',
-                            'gpt-5.6-sol' => 'GPT-5.6 Sol — güçlü',
-                            'gpt-6-astra' => 'GPT-6 Astra — en güçlü / pahalı',
+                            'gpt-5.6-luna' => 'GPT-5.6 Luna — ekonomik',
+                            'gpt-5.6-terra' => 'GPT-5.6 Terra — düzenleme için önerilen',
+                            'gpt-5.6-sol' => 'GPT-5.6 Sol — en güçlü',
                         ])
-                        ->default(fn (): string => (string) config('services.openai.model', 'gpt-5.6-luna'))
+                        ->default(fn (): string => (string) config('services.openai.post_editor_model', 'gpt-5.6-terra'))
                         ->required(),
                     Textarea::make('instruction')
                         ->label('Ek talimat')
@@ -109,7 +108,7 @@ class EditPost extends EditRecord
                         );
 
                         Notification::make()
-                            ->title('AI düzenlemesi uygulandı')
+                            ->title('AI düzenlemesi uygulandı ve kaydedildi')
                             ->body((string) ($result['change_summary'] ?? 'Gönderi güncellendi.'))
                             ->success()
                             ->send();
