@@ -4,10 +4,15 @@ on:
   pull_request:
     paths:
       - 'app/Filament/Resources/PostResource/Pages/EditPost.php'
+      - 'app/Models/RssItem.php'
+      - 'app/Observers/RssItemObserver.php'
       - 'app/Services/AI/OpenAiService.php'
       - 'app/Services/AI/PostAiAssistantService.php'
+      - 'app/Services/Rss/**'
       - 'config/services.php'
+      - 'database/migrations/*rss*'
       - 'tests/Feature/PostAiAssistantServiceTest.php'
+      - 'tests/Feature/RssAiPublishedPostSyncTest.php'
       - '.github/workflows/ai-post-editor-check.yml'
   workflow_dispatch:
 
@@ -37,10 +42,15 @@ jobs:
       - name: PHP syntax check
         run: |
           php -l app/Filament/Resources/PostResource/Pages/EditPost.php
+          php -l app/Models/RssItem.php
+          php -l app/Observers/RssItemObserver.php
           php -l app/Services/AI/OpenAiService.php
           php -l app/Services/AI/PostAiAssistantService.php
+          php -l app/Services/Rss/OpenAiRssArticleRewriteService.php
           php -l config/services.php
+          php -l database/migrations/2026_09_12_073500_sync_existing_rss_ai_rewrites_to_posts.php
           php -l tests/Feature/PostAiAssistantServiceTest.php
+          php -l tests/Feature/RssAiPublishedPostSyncTest.php
 
-      - name: AI post editor tests
-        run: php artisan test tests/Feature/PostAiAssistantServiceTest.php
+      - name: AI post editor and RSS rewrite tests
+        run: php artisan test tests/Feature/PostAiAssistantServiceTest.php tests/Feature/RssAiPublishedPostSyncTest.php
