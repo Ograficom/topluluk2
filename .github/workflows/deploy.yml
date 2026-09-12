@@ -127,9 +127,29 @@ jobs:
             rm -f "$CRON_TMP"
             echo "Laravel scheduler cron installed for $TARGET_PATH."
 
+            # Safe AI diagnostics: only report whether credentials exist, never values.
+            if grep -Eq '^OPENAI_API_KEY=.+$' .env; then
+              echo 'RSS AI diagnostic: OPENAI_API_KEY configured=yes'
+            else
+              echo 'RSS AI diagnostic: OPENAI_API_KEY configured=no'
+            fi
+            if grep -Eq '^OLLAMA_API_KEY=.+$' .env; then
+              echo 'RSS AI diagnostic: OLLAMA_API_KEY configured=yes'
+            else
+              echo 'RSS AI diagnostic: OLLAMA_API_KEY configured=no'
+            fi
+            php artisan tinker --execute="echo 'RSS AI diagnostic: service=' . get_class(app(\\App\\Services\\Rss\\RssArticleRewriteService::class)) . PHP_EOL;" || true
+
             # Process a small batch immediately instead of waiting for the next
             # minute; the scheduler will keep draining the remaining AI queue.
             php artisan rss:ai-process --limit=10 || true
+
+            # Surface only RSS/AI failure lines; never dump the complete production log.
+            if [ -f storage/logs/laravel.log ]; then
+              echo '--- recent RSS AI errors ---'
+              grep -E 'RSS AI kuyruk ogesi islenemedi|AI yeniden yazimi basarisiz|OpenAI HTTP|OpenAI API key|Ollama HTTP|Ollama API key' storage/logs/laravel.log | tail -n 30 || true
+              echo '--- end RSS AI errors ---'
+            fi
 
             # www.ografi.com is served from an Nginx include outside Laravel.
             # Insert a host-specific canonical redirect immediately after the
