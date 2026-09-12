@@ -109,6 +109,28 @@ jobs:
             php artisan storage:link || true
             php artisan optimize:clear || true
 
+            # Laravel's scheduled RSS/AI jobs only run when schedule:run is invoked
+            # every minute. Keep an idempotent root cron entry on production so
+            # rss:sync and rss:ai-process actually execute after deployment.
+            PHP_BIN="$(command -v php || true)"
+            if [ -z "$PHP_BIN" ]; then
+              echo "PHP binary was not found; cannot install Laravel scheduler cron." >&2
+              exit 1
+            fi
+
+            CRON_MARKER="# ografi-laravel-scheduler"
+            CRON_TMP="$(mktemp)"
+            crontab -l 2>/dev/null | grep -vF "$CRON_MARKER" > "$CRON_TMP" || true
+            printf '* * * * * cd %s && %s artisan schedule:run >> storage/logs/scheduler.log 2>&1 %s\n' \
+              "$TARGET_PATH" "$PHP_BIN" "$CRON_MARKER" >> "$CRON_TMP"
+            crontab "$CRON_TMP"
+            rm -f "$CRON_TMP"
+            echo "Laravel scheduler cron installed for $TARGET_PATH."
+
+            # Process a small batch immediately instead of waiting for the next
+            # minute; the scheduler will keep draining the remaining AI queue.
+            php artisan rss:ai-process --limit=10 || true
+
             # www.ografi.com is served from an Nginx include outside Laravel.
             # Insert a host-specific canonical redirect immediately after the
             # server_name directive found by nginx -T. This works whether the
