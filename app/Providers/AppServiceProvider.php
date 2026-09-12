@@ -33,20 +33,26 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        // Keep the legacy RSS rewrite class as the public contract while routing
-        // every container resolution to the OpenAI implementation.
-        $this->app->bind(
-            RssArticleRewriteService::class,
-            OpenAiRssArticleRewriteService::class,
-        );
+        // Prefer OpenAI when a production API key is actually configured.
+        // If it is missing, leave the concrete RssArticleRewriteService unbound so
+        // Laravel resolves the existing Ollama-backed implementation instead of
+        // failing every queued RSS rewrite with "OpenAI API key eksik".
+        if (filled(config('services.openai.api_key'))) {
+            $this->app->bind(
+                RssArticleRewriteService::class,
+                OpenAiRssArticleRewriteService::class,
+            );
+        }
 
         // Older controllers/services still type-hint OllamaService. Keep their
-        // public contract intact but resolve it to the OpenAI adapter so no live
-        // application path makes an Ollama HTTP request anymore.
-        $this->app->bind(
-            OllamaService::class,
-            OpenAiLegacyAdapter::class,
-        );
+        // public contract intact but resolve it to the OpenAI adapter when OpenAI
+        // is configured. Otherwise the concrete OllamaService remains available.
+        if (filled(config('services.openai.api_key'))) {
+            $this->app->bind(
+                OllamaService::class,
+                OpenAiLegacyAdapter::class,
+            );
+        }
     }
 
     /**
@@ -85,9 +91,75 @@ class AppServiceProvider extends ServiceProvider
         });
 
         View::composer('partials.header', function ($view) {
+            $data = $view->getData();
+            $widgetSettings = ThemeSetting::currentOrNull();
+
             $authUser = auth()->user();
 
-            // unreadNotifications metodu yoksa (Notifiable trait yoksa) patlamasın
+            $commentsEnabled = $widgetSettings?->widget_comments_enabled ?? true;
+            $commentsCount = $widgetSettings?->widget_comments_count ?? 10;
+            $tagsEnabled = $widgetSettings?->widget_tags_enabled ?? true;
+            $tagsCount = $widgetSettings?->widget_tags_count ?? 10;
+            $trendingEnabled = $widgetSettings?->widget_trending_enabled ?? true;
+            $trendingCount = $widgetSettings?->widget_trending_count ?? 5;
+
+            $popularTags = $data['popularTags'] ?? null;
+            $popularComments = $data['popularComments'] ?? null;
+
+            if (!array_key_exists('popularTags', $data)) {
+                $popularTags = $tagsEnabled
+                    ? Tag::withCount('posts')
+                        ->orderByDesc('posts_count')
+                        ->take($tagsCount)
+                        ->get()
+                    : collect();
+            }
+
+            if (!array_key_exists('popularComments', $data)) {
+                $popularComments = $commentsEnabled
+                    ? Comment::with(['user', 'post'])
+                        ->whereNull('parent_id')
+                        ->orderByDesc('id')
+                        ->take($commentsCount)
+                        ->get()
+                    : collect();
+            }
+
+            $mostViewedPosts = collect();
+            $mostReactedPosts = collect();
+
+            if ($trendingEnabled) {
+                $trendingSince = now()->subDays(7);
+
+                $mostViewedPosts = \App\Models\Post::published()
+                    ->where('published_at', '>=', $trendingSince)
+                    ->orderByDesc('views_count')
+                    ->take($trendingCount)
+                    ->get();
+
+                if ($mostViewedPosts->isEmpty()) {
+                    $mostViewedPosts = \App\Models\Post::published()
+                        ->orderByDesc('views_count')
+                        ->take($trendingCount)
+                        ->get();
+                }
+
+                $mostReactedPosts = \App\Models\Post::published()
+                    ->where('published_at', '>=', $trendingSince)
+                    ->withCount('reactions')
+                    ->orderByDesc('reactions_count')
+                    ->take($trendingCount)
+                    ->get();
+
+                if ($mostReactedPosts->isEmpty()) {
+                    $mostReactedPosts = \App\Models\Post::published()
+                        ->withCount('reactions')
+                        ->orderByDesc('reactions_count')
+                        ->take($trendingCount)
+                        ->get();
+                }
+            }
+
             $unreadNotifications = 0;
             if ($authUser && method_exists($authUser, 'unreadNotifications')) {
                 $unreadNotifications = $authUser->unreadNotifications()->count();
@@ -123,7 +195,14 @@ class AppServiceProvider extends ServiceProvider
                 'unreadMessages',
                 'initials',
                 'themeHeader',
-                'roleLabel'
+                'roleLabel',
+                'popularTags',
+                'popularComments',
+                'commentsEnabled',
+                'tagsEnabled',
+                'trendingEnabled',
+                'mostViewedPosts',
+                'mostReactedPosts'
             ));
         });
 
@@ -164,13 +243,6 @@ class AppServiceProvider extends ServiceProvider
             $mostReactedPosts = collect();
 
             if ($trendingEnabled) {
-                // "Populer gonderiler" gercekten O HAFTA one cikanlari
-                // gostersin diye son 7 gune sinirlandi - onceden zaman
-                // penceresi hic yoktu, bu yuzden cok eski/tek seferlik
-                // viral bir gonderi surekli listeyi isgal edip o haftaki
-                // gercekten populer gonderilerin hic gorunmemesine yol
-                // aciyordu. Son 7 gunde yeterli veri yoksa (yeni/dusuk
-                // trafikli site durumu), tum zamanlara geri donuluyor.
                 $trendingSince = now()->subDays(7);
 
                 $mostViewedPosts = \App\Models\Post::published()
