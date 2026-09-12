@@ -5,6 +5,7 @@ on:
     branches:
       - main
     paths:
+      - 'app/Console/Commands/RewriteAllLinkedRssPosts.php'
       - 'app/Filament/Resources/PostResource/Pages/EditPost.php'
       - 'app/Models/RssItem.php'
       - 'app/Observers/RssItemObserver.php'
@@ -14,11 +15,13 @@ on:
       - 'app/Services/Rss/**'
       - 'config/services.php'
       - 'database/migrations/*rss*'
+      - 'routes/console.php'
       - 'tests/Feature/PostAiAssistantServiceTest.php'
       - 'tests/Feature/RssAiPublishedPostSyncTest.php'
       - '.github/workflows/ai-post-editor-check.yml'
   pull_request:
     paths:
+      - 'app/Console/Commands/RewriteAllLinkedRssPosts.php'
       - 'app/Filament/Resources/PostResource/Pages/EditPost.php'
       - 'app/Models/RssItem.php'
       - 'app/Observers/RssItemObserver.php'
@@ -28,6 +31,7 @@ on:
       - 'app/Services/Rss/**'
       - 'config/services.php'
       - 'database/migrations/*rss*'
+      - 'routes/console.php'
       - 'tests/Feature/PostAiAssistantServiceTest.php'
       - 'tests/Feature/RssAiPublishedPostSyncTest.php'
       - '.github/workflows/ai-post-editor-check.yml'
@@ -58,6 +62,7 @@ jobs:
 
       - name: PHP syntax check
         run: |
+          php -l app/Console/Commands/RewriteAllLinkedRssPosts.php
           php -l app/Filament/Resources/PostResource/Pages/EditPost.php
           php -l app/Models/RssItem.php
           php -l app/Observers/RssItemObserver.php
@@ -67,10 +72,15 @@ jobs:
           php -l app/Services/Rss/OpenAiRssArticleRewriteService.php
           php -l app/Services/Rss/RssArticleRewriteService.php
           php -l config/services.php
+          php -l routes/console.php
           php -l database/migrations/2026_09_12_073500_sync_existing_rss_ai_rewrites_to_posts.php
           php -l database/migrations/2026_09_12_120000_force_rewrite_all_linked_rss_posts.php
+          php -l database/migrations/2026_09_12_123000_reset_rss_ai_provider_model_and_retry.php
           php -l tests/Feature/PostAiAssistantServiceTest.php
           php -l tests/Feature/RssAiPublishedPostSyncTest.php
+
+      - name: Verify linked RSS rewrite command is registered
+        run: php artisan list --raw | grep -q '^rss:ai-rewrite-linked'
 
       - name: AI post editor and RSS rewrite tests
         run: php artisan test tests/Feature/PostAiAssistantServiceTest.php tests/Feature/RssAiPublishedPostSyncTest.php
