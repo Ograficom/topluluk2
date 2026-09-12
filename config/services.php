@@ -61,17 +61,6 @@ return [
         'rating' => env('GIPHY_RATING', 'pg-13'),
     ],
 
-    'openai' => [
-        'url' => env('OPENAI_BASE_URL', 'https://api.openai.com/v1'),
-        'api_key' => env('OPENAI_API_KEY'),
-        'model' => env('OPENAI_MODEL', 'gpt-5.6-luna'),
-        'post_editor_model' => env('OPENAI_POST_EDITOR_MODEL', 'gpt-5.6-terra'),
-        'timeout' => env('OPENAI_TIMEOUT', 120),
-        'max_output_tokens' => env('OPENAI_MAX_OUTPUT_TOKENS', 8000),
-        'reasoning_effort' => env('OPENAI_REASONING_EFFORT', 'none'),
-    ],
-
-    // Legacy fallback only. RSS and Filament post editing now resolve through OpenAI.
     'ollama' => [
         'url' => env('OLLAMA_URL', env('OLLAMA_BASE_URL', 'https://ollama.com')),
         'api_key' => env('OLLAMA_API_KEY'),
