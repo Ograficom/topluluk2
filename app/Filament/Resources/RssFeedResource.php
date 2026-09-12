@@ -62,24 +62,6 @@ class RssFeedResource extends Resource
                 ->label('Mevcut postlari guncelle')
                 ->default(true),
             Grid::make(2)->schema([
-                Toggle::make('ai_rewrite_enabled')
-                    ->label('Yapay zeka ile yeniden yaz')
-                    ->helperText('OpenAI ile ozgun taslak ve temel kaynak sadakati kontrolleri uygular. Kalite kontrolu gecmeyen icerigi yayinlamaz.')
-                    ->default(true),
-                Select::make('ai_model')
-                    ->label('OpenAI modeli')
-                    ->options([
-                        'gpt-5.6-luna' => 'GPT-5.6 Luna — en ekonomik',
-                        'gpt-5.6-terra' => 'GPT-5.6 Terra — dengeli',
-                        'gpt-5.6-sol' => 'GPT-5.6 Sol — güçlü',
-                        'gpt-6-astra' => 'GPT-6 Astra — en güçlü / pahalı',
-                    ])
-                    ->default(fn () => config('services.openai.model', 'gpt-5.6-luna'))
-                    ->helperText('Bos birakilirsa .env icindeki OPENAI_MODEL kullanilir.')
-                    ->searchable()
-                    ->nullable(),
-            ]),
-            Grid::make(2)->schema([
                 Select::make('default_category_id')
                     ->label('Varsayilan kategori')
                     ->relationship('defaultCategory', 'name')
@@ -122,14 +104,6 @@ class RssFeedResource extends Resource
                 IconColumn::make('fetch_dom_content')
                     ->label('DOM')
                     ->boolean(),
-                IconColumn::make('ai_rewrite_enabled')
-                    ->label('AI')
-                    ->boolean(),
-                TextColumn::make('ai_model')
-                    ->label('Model')
-                    ->formatStateUsing(fn (?string $state) => filled($state) ? $state : config('services.openai.model', 'gpt-5.6-luna'))
-                    ->badge()
-                    ->toggleable(),
                 TextColumn::make('last_success_at')
                     ->label('Son sync')
                     ->since()

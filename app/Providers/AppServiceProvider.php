@@ -8,8 +8,6 @@ use App\Models\BorsaSetting;
 use App\Services\BorsaService;
 use App\Models\Tag;
 use App\Models\ThemeSetting;
-use App\Services\Rss\OpenAiRssArticleRewriteService;
-use App\Services\Rss\RssArticleRewriteService;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\View;
@@ -31,13 +29,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        // RSS rewriting is OpenAI-only. Never silently fall back to Ollama:
-        // a missing OpenAI credential must surface as a clear configuration
-        // error instead of publishing raw/unchanged RSS text.
-        $this->app->bind(
-            RssArticleRewriteService::class,
-            OpenAiRssArticleRewriteService::class,
-        );
+        //
     }
 
     /**
@@ -155,13 +147,6 @@ class AppServiceProvider extends ServiceProvider
             $mostReactedPosts = collect();
 
             if ($trendingEnabled) {
-                // "Populer gonderiler" gercekten O HAFTA one cikanlari
-                // gostersin diye son 7 gune sinirlandi - onceden zaman
-                // penceresi hic yoktu, bu yuzden cok eski/tek seferlik
-                // viral bir gonderi surekli listeyi isgal edip o haftaki
-                // gercekten populer gonderilerin hic gorunmemesine yol
-                // aciyordu. Son 7 gunde yeterli veri yoksa (yeni/dusuk
-                // trafikli site durumu), tum zamanlara geri donuluyor.
                 $trendingSince = now()->subDays(7);
 
                 $mostViewedPosts = \App\Models\Post::published()

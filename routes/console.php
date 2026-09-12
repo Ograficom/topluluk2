@@ -1,6 +1,5 @@
 <?php
 
-use App\Console\Commands\GenerateVideoSubtitles;
 use App\Models\Post;
 use App\Models\RssFeed;
 use App\Services\AdOrderSnippetSync;
@@ -11,7 +10,6 @@ use App\Support\PostSeoText;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Schedule;
-use Symfony\Component\Console\Input\ArrayInput;
 
 Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
@@ -68,30 +66,6 @@ Artisan::command('rss:sync {--feed_id=} {--force}', function (RssSyncService $se
 })->purpose('Sync RSS feeds and import as posts');
 
 Schedule::command('rss:sync')
-    ->everyFiveMinutes()
-    ->withoutOverlapping();
-
-Artisan::command('rss:ai-process {--limit=5}', function (RssSyncService $service) {
-    $limit = max(1, (int) $this->option('limit'));
-    $result = $service->processPendingAiQueue($limit);
-
-    $this->info("OK. processed={$result['processed']} posts_created={$result['posts_created']} posts_updated={$result['posts_updated']} rejected={$result['rejected']} errors={$result['errors']}");
-
-    return $result['errors'] ? 1 : 0;
-})->purpose('Rewrite, moderate and publish up to N pending AI-enabled RSS items (rate-limited Ollama queue)');
-
-Schedule::command('rss:ai-process')
-    ->everyMinute()
-    ->withoutOverlapping();
-
-// Existing RSS-linked posts are a separate repair queue: they must be rewritten
-// even when their source feed is currently disabled. The command always lets the
-// active provider choose its own model, so OpenAI model ids can never leak into Ollama.
-Schedule::command('rss:ai-rewrite-linked --limit=5')
-    ->everyMinute()
-    ->withoutOverlapping();
-
-Schedule::command('moderation:ai-scan')
     ->everyFiveMinutes()
     ->withoutOverlapping();
 
@@ -155,13 +129,6 @@ Artisan::command('indexnow:submit-posts {--hours= : Submit posts changed in the 
 Schedule::command('indexnow:submit-posts --hours=2')
     ->hourly()
     ->withoutOverlapping();
-
-Artisan::command('subtitles:generate {postId}', function ($postId) {
-    $command = new GenerateVideoSubtitles;
-    $command->setLaravel(app());
-
-    return $command->run(new ArrayInput(['postId' => $postId]), $this->output);
-})->purpose('Videolar için otomatik altyazı üret.');
 
 Schedule::command('email:send-daily-digest')
     ->dailyAt('09:00')
