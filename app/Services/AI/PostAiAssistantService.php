@@ -9,6 +9,8 @@ class PostAiAssistantService
 {
     private const CONTENT_OPERATIONS = ['rewrite', 'proofread', 'shorten', 'expand', 'custom'];
 
+    private const EDITOR_MODELS = ['gpt-5.6-luna', 'gpt-5.6-terra', 'gpt-5.6-sol'];
+
     public function __construct(private readonly OpenAiService $openAi)
     {
     }
@@ -24,6 +26,7 @@ class PostAiAssistantService
     ): array {
         $operation = trim($operation);
         $instruction = trim((string) $instruction);
+        $model = trim((string) $model);
 
         if (! in_array($operation, ['rewrite', 'proofread', 'shorten', 'expand', 'title', 'seo', 'custom'], true)) {
             throw new \InvalidArgumentException('Gecersiz AI duzenleme islemi.');
@@ -31,6 +34,14 @@ class PostAiAssistantService
 
         if ($operation === 'custom' && $instruction === '') {
             throw new \InvalidArgumentException('Ozel AI islemi icin talimat yazmalisiniz.');
+        }
+
+        if ($model === '') {
+            $model = trim((string) config('services.openai.post_editor_model', 'gpt-5.6-terra')) ?: 'gpt-5.6-terra';
+        }
+
+        if (! in_array($model, self::EDITOR_MODELS, true)) {
+            throw new \InvalidArgumentException('Desteklenmeyen OpenAI post duzenleme modeli: ' . $model);
         }
 
         if (in_array($operation, self::CONTENT_OPERATIONS, true) && $this->hasUnsupportedEditorBlocks($post)) {
@@ -69,7 +80,7 @@ class PostAiAssistantService
             model: $model,
             temperature: $this->temperatureFor($operation),
             schemaName: 'ografi_post_editor',
-            developerInstruction: 'Ografi icin Turkce editorluk yap. Mevcut olgulari koru, uydurma bilgi ekleme, structured output semasina tam uy.',
+            developerInstruction: 'Ografi icin deneyimli bir Turkce editor gibi calis. Kullanici bir duzenleme islemi sectiyse metinde gercek ve gorulebilir editorluk yap; sadece kelime es anlamlisi degistirmekle yetinme. Mevcut olgulari, tarihleri, sayilari, isimleri ve anlamı koru; uydurma bilgi ekleme. Structured output semasina tam uy.',
         );
 
         $result = $this->normalizeResult($post, $payload, $operation);
@@ -110,13 +121,13 @@ class PostAiAssistantService
     private function prompt(Post $post, string $operation, string $instruction): string
     {
         $task = match ($operation) {
-            'rewrite' => 'Baslik, ozet ve govdeyi ayni olgulari koruyarak bastan ve daha akici sekilde yeniden yaz. SEO alanlarini yeni metinle uyumlu guncelle.',
-            'proofread' => 'Yazim, noktalama, anlatim bozuklugu ve gereksiz tekrarlarini duzelt. Anlami ve olgulari degistirme. Basligi gerekmedikce degistirme.',
-            'shorten' => 'Govdeyi daha kisa ve yogun hale getir. Ana olgulari, tarihleri, sayilari ve kritik ayrintilari koru. Gereksiz tekrar ve dolgu cumlelerini cikar.',
-            'expand' => 'Metni daha aciklayici ve duzenli hale getir ancak YENI BILGI UYDURMA. Yalnizca mevcut metindeki olgulari daha iyi acikla ve yapilandir.',
-            'title' => 'Yalnizca title ve meta_title alanlarini iyilestir. Diger alanlari mevcut haliyle aynen dondur. Tik tuzagi kullanma ve slug degisikligi onerme.',
-            'seo' => 'Yalnizca excerpt, meta_title, meta_description ve meta_keywords alanlarini SEO icin iyilestir. Title ve content_html alanlarini mevcut haliyle aynen dondur.',
-            'custom' => 'Kullanicinin ozel talimatini uygula. Talimat disinda gereksiz degisiklik yapma: ' . $instruction,
+            'rewrite' => 'Baslik, ozet ve govdeyi ayni olgulari koruyarak gercekten yeniden yaz. Cumle yapilarini, paragraf akisini ve anlatimi belirgin bicimde iyilestir; yalnizca birkac kelimeyi es anlamlisiyla degistirme. Gereksiz tekrar ve dolgu cumlelerini temizle. SEO alanlarini yeni metinle uyumlu guncelle.',
+            'proofread' => 'Yazim, noktalama, anlatim bozuklugu, dusuk okunabilirlik ve gereksiz tekrarlarini duzelt. Anlami, olgulari ve metnin temel yapisini degistirme. Basligi yalnizca acik bir hata veya anlatim sorunu varsa degistir.',
+            'shorten' => 'Govdeyi yaklasik olarak mevcut uzunlugun yuzde 60-75 seviyesine indir. Ana olgulari, tarihleri, sayilari, isimleri ve kritik ayrintilari koru. Tekrar, dolgu ve ikincil cumleleri cikar; metni kopuk hale getirme.',
+            'expand' => 'Govdeyi yaklasik olarak mevcut uzunlugun yuzde 120-150 seviyesine cikar ve daha acik, duzenli hale getir. YENI BILGI UYDURMA; yalnizca mevcut metindeki olgulari daha iyi acikla, bagla ve yapilandir.',
+            'title' => 'Yalnizca title ve meta_title alanlarini iyilestir. Diger alanlari mevcut haliyle aynen dondur. Tik tuzagi kullanma, anlami degistirme ve slug degisikligi onerme.',
+            'seo' => 'Yalnizca excerpt, meta_title, meta_description ve meta_keywords alanlarini SEO icin iyilestir. Title ve content_html alanlarini mevcut haliyle aynen dondur. Anahtar kelime doldurma yapma.',
+            'custom' => 'Kullanicinin ozel talimatini eksiksiz uygula. Talimat disinda gereksiz degisiklik yapma: ' . $instruction,
         };
 
         $extraInstructionBlock = $operation !== 'custom' && $instruction !== ''
@@ -137,14 +148,19 @@ GOREV:
 ZORUNLU KURALLAR:
 - Turkce yaz.
 - Mevcut metinde bulunmayan kisi, kurum, olay, tarih, sayi, alinti veya iddia ekleme.
+- Gercek kisi/kurum adlarini, tarihleri, sayilari, para birimlerini ve teknik terimleri bozma.
+- Yeniden yazma, kisaltma, genisletme veya duzeltme secildiyse sonucun mevcut metinden editorluk acisindan belirgin bicimde daha iyi olmasini sagla.
+- Baslik ve govde birbiriyle uyumlu olsun; govdede olmayan bir iddiayi basliga tasima.
+- Paragraflari okunabilir tut; gereksiz tek cumlelik paragraflar ve yapay giris cumleleri uretme.
 - title en fazla 255 karakter olsun.
 - excerpt tercihen 120-200 karakter araliginda olsun.
 - meta_title en fazla 65 karakter olsun.
 - meta_description en fazla 160 karakter olsun.
-- meta_keywords virgulle ayrilmis kisa anahtar kelimeler olsun.
+- meta_keywords virgulle ayrilmis kisa ve gercekten ilgili anahtar kelimeler olsun.
 - content_html icin yalnizca p, h2, h3, ul, ol, li, strong, em, blockquote, table, thead, tbody, tr, th, td etiketlerini kullan.
 - script, style, iframe, form, class, style veya event attribute uretme.
 - Degistirilmemesi istenen alanlari ASAGIDAKI MEVCUT DEGERLERLE aynen dondur.
+- change_summary alaninda hangi alanlarin ne sekilde degistigini 1-2 kisa cumleyle somut olarak belirt.
 
 MEVCUT TITLE:
 {$title}

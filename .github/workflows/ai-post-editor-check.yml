@@ -1,0 +1,46 @@
+name: AI Post Editor Check
+
+on:
+  pull_request:
+    paths:
+      - 'app/Filament/Resources/PostResource/Pages/EditPost.php'
+      - 'app/Services/AI/OpenAiService.php'
+      - 'app/Services/AI/PostAiAssistantService.php'
+      - 'config/services.php'
+      - 'tests/Feature/PostAiAssistantServiceTest.php'
+      - '.github/workflows/ai-post-editor-check.yml'
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          extensions: mbstring, sqlite3, pdo_sqlite
+          coverage: none
+
+      - name: Prepare Laravel directories
+        run: |
+          mkdir -p storage/framework/cache storage/framework/sessions storage/framework/views bootstrap/cache database
+          touch database/database.sqlite
+
+      - name: Install dependencies
+        run: composer install --no-interaction --prefer-dist --no-progress
+
+      - name: PHP syntax check
+        run: |
+          php -l app/Filament/Resources/PostResource/Pages/EditPost.php
+          php -l app/Services/AI/OpenAiService.php
+          php -l app/Services/AI/PostAiAssistantService.php
+          php -l config/services.php
+          php -l tests/Feature/PostAiAssistantServiceTest.php
+
+      - name: AI post editor tests
+        run: php artisan test tests/Feature/PostAiAssistantServiceTest.php
