@@ -1,48 +1,48 @@
 {
   "fileKey": "MCDxzKsjWhMshCAhliWEjL",
-  "generatedAt": "2026-08-24T23:24:16.453Z",
+  "generatedAt": "2026-08-25T22:34:42.176Z",
   "screenCount": 90,
-  "changedScreenCount": 32,
+  "changedScreenCount": 90,
   "screens": [
     {
       "nodeId": "1:184",
       "name": "iOS / Ana Akış",
       "target": "resources/views/home.blade.php",
       "platform": "web-adapted",
-      "found": true,
-      "width": 375,
-      "height": 812,
-      "hash": "00d204f2131994e81f92759a8bba1a66af2772b4ccb7e20b2b92eed364fddac4"
+      "found": false,
+      "width": null,
+      "height": null,
+      "hash": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
     },
     {
       "nodeId": "1:228",
       "name": "iOS / Keşfet",
       "target": "resources/views/pages/discover.blade.php",
       "platform": "web-adapted",
-      "found": true,
-      "width": 375,
-      "height": 812,
-      "hash": "fa4b53baa3aed56f53b0410f3f78b07cc0d1556ad2cf85d3653ea6a64e064bbe"
+      "found": false,
+      "width": null,
+      "height": null,
+      "hash": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
     },
     {
       "nodeId": "1:276",
       "name": "iOS / Gönderi Detayı",
       "target": null,
       "platform": "web-adapted",
-      "found": true,
-      "width": 375,
-      "height": 812,
-      "hash": "f5624e201a11abd464fd861be81142ce56d6ab70ff7f68949662f72c3ede3fa5"
+      "found": false,
+      "width": null,
+      "height": null,
+      "hash": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
     },
     {
       "nodeId": "1:302",
       "name": "iOS / Profil",
       "target": null,
       "platform": "web-adapted",
-      "found": true,
-      "width": 375,
-      "height": 812,
-      "hash": "33df073c34c25db39a172a8cdfea5ba7116fd602bb6ca465af2317035f31c907"
+      "found": false,
+      "width": null,
+      "height": null,
+      "hash": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
     },
     {
       "nodeId": "143:5924",
@@ -51,10 +51,10 @@
       "target": "resources/views/templates/home-like.blade.php",
       "platform": "web-desktop",
       "syncMode": "review-structural",
-      "found": true,
-      "width": 1440,
-      "height": 1024,
-      "hash": "7b66f475e660580ec194cadae96ee5afe1fa937006b257bff4af5bae0c5d768d"
+      "found": false,
+      "width": null,
+      "height": null,
+      "hash": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
     },
     {
       "nodeId": "143:6011",
@@ -63,10 +63,10 @@
       "target": "resources/views/pages/discover.blade.php",
       "platform": "web-desktop",
       "syncMode": "review-structural",
-      "found": true,
-      "width": 1440,
-      "height": 1024,
-      "hash": "b574cc82256329faef626563a9246a5536766ca427451e82758d7ba7f057b10d"
+      "found": false,
+      "width": null,
+      "height": null,
+      "hash": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
     },
     {
       "nodeId": "143:6110",
@@ -75,10 +75,10 @@
       "target": null,
       "platform": "web-desktop",
       "syncMode": "review-structural",
-      "found": true,
-      "width": 1440,
-      "height": 1024,
-      "hash": "2c1719d4cdc764ac54c47d9283f87543b466827cec4c5d8de43c3500a744d987"
+      "found": false,
+      "width": null,
+      "height": null,
+      "hash": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
     },
     {
       "nodeId": "143:6183",
@@ -87,10 +87,10 @@
       "target": null,
       "platform": "web-desktop",
       "syncMode": "review-structural",
-      "found": true,
-      "width": 1440,
-      "height": 1024,
-      "hash": "adfe778b68241a6a067adf60246887cc188103c6459337bc0199d16c680007d4"
+      "found": false,
+      "width": null,
+      "height": null,
+      "hash": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
     },
     {
       "nodeId": "143:6257",
@@ -99,10 +99,10 @@
       "target": null,
       "platform": "web-desktop",
       "syncMode": "review-structural",
-      "found": true,
-      "width": 1440,
-      "height": 1024,
-      "hash": "1b0e1e1b4dcecd1d573cc6c0250a6466cafcba67bff1301a4d3949df7bff19f0"
+      "found": false,
+      "width": null,
+      "height": null,
+      "hash": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
     },
     {
       "nodeId": "143:6338",
@@ -111,10 +111,10 @@
       "target": "resources/views/contact/create.blade.php",
       "platform": "web-desktop",
       "syncMode": "review-structural",
-      "found": true,
-      "width": 1440,
-      "height": 1024,
-      "hash": "3bd3b2a46484747de11806cd33749089f0f1017ff80823ea4a0b083607648e03"
+      "found": false,
+      "width": null,
+      "height": null,
+      "hash": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
     },
     {
       "nodeId": "143:6410",
@@ -123,10 +123,10 @@
       "target": "resources/views/pages/sss.blade.php",
       "platform": "web-desktop",
       "syncMode": "review-structural",
-      "found": true,
-      "width": 1440,
-      "height": 1024,
-      "hash": "2e0d30a353b44fa24c9270e8331367bbce49e0f4dc2e4d19b79f96ec15f5273b"
+      "found": false,
+      "width": null,
+      "height": null,
+      "hash": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
     },
     {
       "nodeId": "143:6494",
@@ -135,10 +135,10 @@
       "target": null,
       "platform": "web-desktop",
       "syncMode": "review-structural",
-      "found": true,
-      "width": 1440,
-      "height": 1024,
-      "hash": "e315a9c25b9935202c1d6e3f6d64bc3d24fe475299c082e9622dfda40270aa7d"
+      "found": false,
+      "width": null,
+      "height": null,
+      "hash": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
     },
     {
       "nodeId": "143:6561",
@@ -147,10 +147,10 @@
       "target": null,
       "platform": "web-desktop",
       "syncMode": "review-structural",
-      "found": true,
-      "width": 1440,
-      "height": 1024,
-      "hash": "5596e3752a7d42a2061c3ba89c62f989e0f3ce944db0975945475e5fe632e0d7"
+      "found": false,
+      "width": null,
+      "height": null,
+      "hash": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
     },
     {
       "nodeId": "143:6648",
@@ -159,10 +159,10 @@
       "target": "resources/views/blog/categories.blade.php",
       "platform": "web-desktop",
       "syncMode": "review-structural",
-      "found": true,
-      "width": 1440,
-      "height": 1024,
-      "hash": "21caafb3c131f3e62e4bc81c40a343370f0298a94a907332cab203b9f719bde3"
+      "found": false,
+      "width": null,
+      "height": null,
+      "hash": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
     },
     {
       "nodeId": "143:6737",
@@ -171,10 +171,10 @@
       "target": null,
       "platform": "web-desktop",
       "syncMode": "review-structural",
-      "found": true,
-      "width": 1440,
-      "height": 1024,
-      "hash": "8bb3e4b675c53828ff3fc26e82d974cd9075df230d7202fbb20fff60d1a82e94"
+      "found": false,
+      "width": null,
+      "height": null,
+      "hash": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
     },
     {
       "nodeId": "143:6829",
@@ -183,10 +183,10 @@
       "target": null,
       "platform": "web-desktop",
       "syncMode": "review-structural",
-      "found": true,
-      "width": 1440,
-      "height": 1024,
-      "hash": "e5623bee42a96b9ad91927c14a1f9d91871c31e34ece38ad777fe471674c9c24"
+      "found": false,
+      "width": null,
+      "height": null,
+      "hash": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
     },
     {
       "nodeId": "143:6925",
@@ -195,10 +195,10 @@
       "target": null,
       "platform": "web-desktop",
       "syncMode": "review-structural",
-      "found": true,
-      "width": 1440,
-      "height": 1024,
-      "hash": "8725dc261fac5b5d52adfff035885ee598bbab318dd87843d06a40e45ec919c6"
+      "found": false,
+      "width": null,
+      "height": null,
+      "hash": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
     },
     {
       "nodeId": "143:6999",
@@ -207,10 +207,10 @@
       "target": "resources/views/auth/login.blade.php",
       "platform": "web-desktop",
       "syncMode": "review-structural",
-      "found": true,
-      "width": 1440,
-      "height": 1024,
-      "hash": "51661fbb5389a6e977fa82707d4f7a1d863219b4d2c66f563620901367f5667a"
+      "found": false,
+      "width": null,
+      "height": null,
+      "hash": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
     },
     {
       "nodeId": "143:7068",
@@ -219,10 +219,10 @@
       "target": "resources/views/auth/register.blade.php",
       "platform": "web-desktop",
       "syncMode": "review-structural",
-      "found": true,
-      "width": 1440,
-      "height": 1024,
-      "hash": "90d5c02565717c6370cf3ea5d260e3b5e4d4f1d4edcbb7e6de151b33de2fcda2"
+      "found": false,
+      "width": null,
+      "height": null,
+      "hash": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
     },
     {
       "nodeId": "143:7137",
@@ -231,10 +231,10 @@
       "target": "resources/views/auth/forgot-password.blade.php",
       "platform": "web-desktop",
       "syncMode": "review-structural",
-      "found": true,
-      "width": 1440,
-      "height": 1024,
-      "hash": "6304eb7999c2dec6cf871c9a06c82e4fbafcc989f22eade3cbf561f2cdbd2ab1"
+      "found": false,
+      "width": null,
+      "height": null,
+      "hash": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
     },
     {
       "nodeId": "143:7315",
@@ -243,10 +243,10 @@
       "target": "resources/views/templates/home-like.blade.php",
       "platform": "web-mobile",
       "syncMode": "review-structural",
-      "found": true,
-      "width": 390,
-      "height": 844,
-      "hash": "701d315f1bf1469f1c500d47a686d0408561a9a908ba0922a2d16f37f86bcc75"
+      "found": false,
+      "width": null,
+      "height": null,
+      "hash": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
     },
     {
       "nodeId": "143:7361",
@@ -255,10 +255,10 @@
       "target": "resources/views/pages/discover.blade.php",
       "platform": "web-mobile",
       "syncMode": "review-structural",
-      "found": true,
-      "width": 390,
-      "height": 844,
-      "hash": "0ca4e8abaef67efad826a930920b707275bc9e4bdf7eee89638bf18fed48f835"
+      "found": false,
+      "width": null,
+      "height": null,
+      "hash": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
     },
     {
       "nodeId": "143:7410",
@@ -267,10 +267,10 @@
       "target": null,
       "platform": "web-mobile",
       "syncMode": "review-structural",
-      "found": true,
-      "width": 390,
-      "height": 844,
-      "hash": "7c35f0f1f344818ed71b0942c3b0f379d257d051485f8ad24ab8aa07b0a239bd"
+      "found": false,
+      "width": null,
+      "height": null,
+      "hash": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
     },
     {
       "nodeId": "143:7442",
@@ -279,10 +279,10 @@
       "target": null,
       "platform": "web-mobile",
       "syncMode": "review-structural",
-      "found": true,
-      "width": 390,
-      "height": 844,
-      "hash": "c4c5beffb9151c13456d5a7fef5295fd1f63182220930dfa9c429c741385e79f"
+      "found": false,
+      "width": null,
+      "height": null,
+      "hash": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
     },
     {
       "nodeId": "143:7476",
@@ -291,10 +291,10 @@
       "target": null,
       "platform": "web-mobile",
       "syncMode": "review-structural",
-      "found": true,
-      "width": 390,
-      "height": 844,
-      "hash": "3590353efe04d1a023a31ac3602524cce94b4f60811fa5e2e0e4e24fb50ec2ac"
+      "found": false,
+      "width": null,
+      "height": null,
+      "hash": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
     },
     {
       "nodeId": "143:7520",
@@ -303,10 +303,10 @@
       "target": "resources/views/contact/create.blade.php",
       "platform": "web-mobile",
       "syncMode": "review-structural",
-      "found": true,
-      "width": 390,
-      "height": 844,
-      "hash": "efe72073f99435c1c26103e0ce084cb5035d14283d575b85a69119c8bffdb77a"
+      "found": false,
+      "width": null,
+      "height": null,
+      "hash": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
     },
     {
       "nodeId": "143:7551",
@@ -315,10 +315,10 @@
       "target": "resources/views/pages/sss.blade.php",
       "platform": "web-mobile",
       "syncMode": "review-structural",
-      "found": true,
-      "width": 390,
-      "height": 844,
-      "hash": "18645f1add68f50b8ba42ab8742778d8be18f9c949e2284156528f568a6b2ee4"
+      "found": false,
+      "width": null,
+      "height": null,
+      "hash": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
     },
     {
       "nodeId": "143:7591",
@@ -327,10 +327,10 @@
       "target": null,
       "platform": "web-mobile",
       "syncMode": "review-structural",
-      "found": true,
-      "width": 390,
-      "height": 844,
-      "hash": "779306a0e37290f9deab65e5b210b09c41c2499110bd04c9dd7f9df58f174d68"
+      "found": false,
+      "width": null,
+      "height": null,
+      "hash": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
     },
     {
       "nodeId": "143:7621",
@@ -339,10 +339,10 @@
       "target": null,
       "platform": "web-mobile",
       "syncMode": "review-structural",
-      "found": true,
-      "width": 390,
-      "height": 844,
-      "hash": "f4464d7c81240d7f4f04f81d4a1592df988d4a17f3b786cfbc6afa35c7cebfc6"
+      "found": false,
+      "width": null,
+      "height": null,
+      "hash": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
     },
     {
       "nodeId": "143:7667",
@@ -351,10 +351,10 @@
       "target": "resources/views/blog/categories.blade.php",
       "platform": "web-mobile",
       "syncMode": "review-structural",
-      "found": true,
-      "width": 390,
-      "height": 844,
-      "hash": "cecbd2f61505a3037c2266211ff0af840d66ba6d6d22f7ef3b7c127de5dd8dc1"
+      "found": false,
+      "width": null,
+      "height": null,
+      "hash": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
     },
     {
       "nodeId": "143:7711",
@@ -363,10 +363,10 @@
       "target": null,
       "platform": "web-mobile",
       "syncMode": "review-structural",
-      "found": true,
-      "width": 390,
-      "height": 844,
-      "hash": "b007be7b9b43558fa2c56c9b45eb4411605ae57be8bba9570bde632f54d2e53e"
+      "found": false,
+      "width": null,
+      "height": null,
+      "hash": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
     },
     {
       "nodeId": "143:7762",
@@ -375,10 +375,10 @@
       "target": null,
       "platform": "web-mobile",
       "syncMode": "review-structural",
-      "found": true,
-      "width": 390,
-      "height": 844,
-      "hash": "5e31f2668e6996c9aeb4ed91a35d2a1258275f942b878eeab2ad1744b347e514"
+      "found": false,
+      "width": null,
+      "height": null,
+      "hash": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
     },
     {
       "nodeId": "143:7801",
@@ -387,10 +387,10 @@
       "target": null,
       "platform": "web-mobile",
       "syncMode": "review-structural",
-      "found": true,
-      "width": 390,
-      "height": 844,
-      "hash": "47c717ead0dc5c4b9106ef463cf0889f45b3d1a71536f9028d2ca1938f5c1dca"
+      "found": false,
+      "width": null,
+      "height": null,
+      "hash": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
     },
     {
       "nodeId": "143:7833",
@@ -399,10 +399,10 @@
       "target": "resources/views/auth/login.blade.php",
       "platform": "web-mobile",
       "syncMode": "review-structural",
-      "found": true,
-      "width": 390,
-      "height": 844,
-      "hash": "a30b358d41da05baa19785af063b671a83c0bb5b006fcdee92926720f790cb47"
+      "found": false,
+      "width": null,
+      "height": null,
+      "hash": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
     },
     {
       "nodeId": "143:7862",
@@ -411,10 +411,10 @@
       "target": "resources/views/auth/register.blade.php",
       "platform": "web-mobile",
       "syncMode": "review-structural",
-      "found": true,
-      "width": 390,
-      "height": 844,
-      "hash": "ce0cbc37d57660d146eecc31ce7f2650dee790f94e7ed357a5adabf03bc65ac2"
+      "found": false,
+      "width": null,
+      "height": null,
+      "hash": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
     },
     {
       "nodeId": "143:7891",
@@ -423,10 +423,10 @@
       "target": "resources/views/auth/forgot-password.blade.php",
       "platform": "web-mobile",
       "syncMode": "review-structural",
-      "found": true,
-      "width": 390,
-      "height": 844,
-      "hash": "fb751b98ff2542395ff59fa4f099e888e0928941f4db6b8abc8cfdfd30657b3a"
+      "found": false,
+      "width": null,
+      "height": null,
+      "hash": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
     },
     {
       "nodeId": "145:5924",
@@ -436,9 +436,9 @@
       "platform": "dashboard-desktop",
       "syncMode": "review-structural",
       "found": true,
-      "width": 1400,
+      "width": 1432,
       "height": 900,
-      "hash": "36562df24ce18b4517ca145a924880aed872583179f3ee7b1f68cbe9b6de157b"
+      "hash": "83cf5123315823f126e7c9f74df902dcb7b582ed7e7280c2de236c6f0d4681e4"
     },
     {
       "nodeId": "145:5979",
@@ -448,9 +448,9 @@
       "platform": "dashboard-desktop",
       "syncMode": "review-structural",
       "found": true,
-      "width": 1400,
+      "width": 1432,
       "height": 900,
-      "hash": "a46ac461045b33cbb0cd2bd877825d4277b7c82dd8f4582d79e9f78e99407cf3"
+      "hash": "76de695de21ba7e385af9c9a6c3ae832b2efe3f431f1e00ff7ef49bee68343cf"
     },
     {
       "nodeId": "145:6023",
@@ -460,9 +460,9 @@
       "platform": "dashboard-desktop",
       "syncMode": "review-structural",
       "found": true,
-      "width": 1400,
+      "width": 1432,
       "height": 900,
-      "hash": "b6cb52b4dfa76650b6b3f98543184cb8a967583a4fa345f89d23d7751b8b07a4"
+      "hash": "217723c04bf9a1c8dacdd122f6936418624d3e5fb13083a98b09523b8e07a11d"
     },
     {
       "nodeId": "145:6065",
@@ -472,9 +472,9 @@
       "platform": "dashboard-desktop",
       "syncMode": "review-structural",
       "found": true,
-      "width": 1400,
+      "width": 1432,
       "height": 900,
-      "hash": "6eda711943a346eee19031a25c8b2fe5e877f490b9c78c4d1d1e587262df7f19"
+      "hash": "895400955edd276655177ea659e02d8fabef060d6e6f16d5521939530031f0ca"
     },
     {
       "nodeId": "145:6107",
@@ -484,9 +484,9 @@
       "platform": "dashboard-desktop",
       "syncMode": "review-structural",
       "found": true,
-      "width": 1400,
+      "width": 1432,
       "height": 900,
-      "hash": "4791970f889d4984248ccbeb81099d5b122a67bc7222e40ad69f016a6ed857e7"
+      "hash": "a2d910171431652da40da40accdae71beeaafd679020296f16ad2deda5e9aa85"
     },
     {
       "nodeId": "145:6168",
@@ -496,9 +496,9 @@
       "platform": "dashboard-desktop",
       "syncMode": "review-structural",
       "found": true,
-      "width": 1400,
+      "width": 1432,
       "height": 900,
-      "hash": "153d18e485e77b79a703a3a609dab2ba6702d38077d28ba6401940b3ee5d53ee"
+      "hash": "21b3be6fe4d07f6ef02a2d0ab6d53057ae1981dfa276c7dd749ef37efb1e0ed7"
     },
     {
       "nodeId": "145:6209",
@@ -508,9 +508,9 @@
       "platform": "dashboard-desktop",
       "syncMode": "review-structural",
       "found": true,
-      "width": 1400,
+      "width": 1432,
       "height": 900,
-      "hash": "ff638dcce2fcf7204457ec75a536bf2797bbe25fb8bb5b100c03a026bd9ea249"
+      "hash": "bd5d2fcdf3f438657615d84ce3c9e7ed5fbcbebf61467fcf20c9aac33544153c"
     },
     {
       "nodeId": "145:6270",
@@ -520,9 +520,9 @@
       "platform": "dashboard-desktop",
       "syncMode": "review-structural",
       "found": true,
-      "width": 1400,
+      "width": 1432,
       "height": 900,
-      "hash": "cb86aac73d0697e3549241d866d3d1b1320126244635da44eb88d5c7ecc7ac8a"
+      "hash": "7dcc22a150789592a828648852cb3ca7b8141157fd892bc0c00eb3d626b228f8"
     },
     {
       "nodeId": "145:6318",
@@ -532,9 +532,9 @@
       "platform": "dashboard-desktop",
       "syncMode": "review-structural",
       "found": true,
-      "width": 1400,
+      "width": 1432,
       "height": 900,
-      "hash": "f09b14d5244dbb891b5601e894b9ec1e359837fc7b720ff77093f633bedd9f48"
+      "hash": "de0dfd70893c7d9f10a9664d11cc5ab92f930a3e2ea4b2c0f433bf564bb42757"
     },
     {
       "nodeId": "145:6379",
@@ -544,9 +544,9 @@
       "platform": "dashboard-desktop",
       "syncMode": "review-structural",
       "found": true,
-      "width": 1400,
+      "width": 1432,
       "height": 900,
-      "hash": "05a285b44c5a8aa03641bf2806def0df1e9b6c795e5869e12bb61f43d0984fc6"
+      "hash": "e9e42c3d80653273a2c066bc047be5e98b9c146d15ba2fa9f93a2ba37e963226"
     },
     {
       "nodeId": "145:6424",
@@ -556,9 +556,9 @@
       "platform": "dashboard-desktop",
       "syncMode": "review-structural",
       "found": true,
-      "width": 1400,
+      "width": 1432,
       "height": 900,
-      "hash": "b2104c72404af682e61a776775a0c1783be84873be59a2707303080d0566c836"
+      "hash": "55e7257b9c01420dbc6156d4c6e6f094e5f1c36100c71cf891c67b3062ae4e3c"
     },
     {
       "nodeId": "145:6973",
@@ -570,7 +570,7 @@
       "found": true,
       "width": 390,
       "height": 844,
-      "hash": "309626ea2832768472a1744946f0fa72ee037e950e659a168f665875541cb33b"
+      "hash": "783d7c31af2778f2f61feb2c0857751b1708426c328b1ff49c60c783f2e083b7"
     },
     {
       "nodeId": "145:6993",
@@ -582,7 +582,7 @@
       "found": true,
       "width": 390,
       "height": 844,
-      "hash": "b9cafba9f1e00251b871412553eb0527a0a197371b6360b898ef85c750c91d78"
+      "hash": "962a1d11acc524f4cc46e617d9f370b5e99ebe6d9220a8d99b0cf7528c945d6d"
     },
     {
       "nodeId": "145:7018",
@@ -594,7 +594,7 @@
       "found": true,
       "width": 390,
       "height": 844,
-      "hash": "d231ea16e4e4b020ef1a0c338983599d9b17cae4d0701717397855ffef5ef7b1"
+      "hash": "75873aab14d02094e6ce9335c0ae86227672faa0f5746b12b0c348c09216faf6"
     },
     {
       "nodeId": "145:7042",
@@ -606,7 +606,7 @@
       "found": true,
       "width": 390,
       "height": 844,
-      "hash": "f89aea5c651c253a3346983fd419fced11820794597c05f8da7c3466ee3108ce"
+      "hash": "f2594739bdf804418999c5fcb7c514b4c259192ddb4e74172aaf81e3ac6784dd"
     },
     {
       "nodeId": "145:7066",
@@ -618,7 +618,7 @@
       "found": true,
       "width": 390,
       "height": 844,
-      "hash": "1cb333b326405e0787636e451add2a7cae3641b5dddf613de178e94b268e1f76"
+      "hash": "fb34e8ac374429fd105c224bf78536ec515f13ad391cbb2dece5139ce6b40cc7"
     },
     {
       "nodeId": "145:7109",
@@ -630,7 +630,7 @@
       "found": true,
       "width": 390,
       "height": 844,
-      "hash": "4e2138e20460c25068dab9469d6a9280ee8eef587c78c27bef1e5953ebd1fa00"
+      "hash": "b0b062e8d84bfaed8cf07b77c1b049bef754b4bd609b73ac64b3d2dde09a828f"
     },
     {
       "nodeId": "145:7129",
@@ -642,7 +642,7 @@
       "found": true,
       "width": 390,
       "height": 844,
-      "hash": "c946771d934357ece9cb824a8c38e77cd5681b9b1e514f9ea82dfd15975e9d2c"
+      "hash": "5b6fdb48e92e3c96193928c4e313b9f293b49000dafe2296506be0037a6d21a2"
     },
     {
       "nodeId": "145:7172",
@@ -654,7 +654,7 @@
       "found": true,
       "width": 390,
       "height": 844,
-      "hash": "f60fccb206179e6ed980b1726655f3678436ae683f010c3395d482a6d7ac4026"
+      "hash": "65f27e6f07a117303cb8095b6fe0ea4a9b4957098fb8ec31e66eaa794b1c5a2d"
     },
     {
       "nodeId": "145:7202",
@@ -666,7 +666,7 @@
       "found": true,
       "width": 390,
       "height": 844,
-      "hash": "36ec66bd18197859b26c9d99d549e72cd55419bdeabfa1d4f24d2dd3b0773933"
+      "hash": "401d149e745b17f7b2233e9475fd16ad7061890d171d37b54d9faa6de5da9aea"
     },
     {
       "nodeId": "145:7245",
@@ -678,7 +678,7 @@
       "found": true,
       "width": 390,
       "height": 844,
-      "hash": "51c98c3c05a8f3a280684a2c675ea904057574d2f8ce8edbe2b99d7e2d3b5c4f"
+      "hash": "41c7088a5d27788b22a965ddb0962a52f4644dc5d78946393b412246ef9bb5eb"
     },
     {
       "nodeId": "145:7272",
@@ -690,7 +690,7 @@
       "found": true,
       "width": 390,
       "height": 844,
-      "hash": "40f94162205a1f84c761e4e2b64313a8f680e031a09a6803b3c5930f848318b8"
+      "hash": "c1d65d61040a77f22c610eb531518b18341857fa28f3197c9d5bda062ee8ca0b"
     },
     {
       "nodeId": "148:5924",
@@ -700,9 +700,9 @@
       "platform": "utility-desktop",
       "syncMode": "review-structural",
       "found": true,
-      "width": 1400,
+      "width": 1432,
       "height": 920,
-      "hash": "0fc9ae5e76b3c57fe2b5c947e9262afce48a4bb67c6428ed908c5e55df9ecd2e"
+      "hash": "2f23ce13088ea2c6d7bdf22db023237883b0a445a5191def96805b518790b1b9"
     },
     {
       "nodeId": "148:5958",
@@ -712,9 +712,9 @@
       "platform": "utility-desktop",
       "syncMode": "review-structural",
       "found": true,
-      "width": 1400,
+      "width": 1432,
       "height": 920,
-      "hash": "25385937723568b5cc491ed95458d379f086fa03f400b363174140ae13a441a5"
+      "hash": "5bfdcfe433afe968431a30b3ee5020a0e38317c7dd2141b693c09b0c92979c88"
     },
     {
       "nodeId": "148:5986",
@@ -724,9 +724,9 @@
       "platform": "utility-desktop",
       "syncMode": "review-structural",
       "found": true,
-      "width": 1400,
+      "width": 1432,
       "height": 920,
-      "hash": "0bcb3a25ec68a526fa930d883bb1326d21a85da92db728f91ab39fd07465074c"
+      "hash": "0deb94146dae538fc87078f47248b5f7d4e958261ca7bc631fa7f002992877c7"
     },
     {
       "nodeId": "148:6032",
@@ -736,9 +736,9 @@
       "platform": "utility-desktop",
       "syncMode": "review-structural",
       "found": true,
-      "width": 1400,
+      "width": 1432,
       "height": 920,
-      "hash": "37ebc355c3c95538dc7dfdb710ddb4f28cc52d6c49e96233cdc3523b7958b897"
+      "hash": "05a5ba4240241eda8c16ed069b36a68ac097a7f674db4726b8e77f117fea8ddc"
     },
     {
       "nodeId": "148:6071",
@@ -748,9 +748,9 @@
       "platform": "utility-desktop",
       "syncMode": "review-structural",
       "found": true,
-      "width": 1400,
+      "width": 1432,
       "height": 920,
-      "hash": "0cb6588900e0f4e5195a2d6f5c9973700e428b6058435a55d19cf3b4f7a82cb0"
+      "hash": "3150611f4eddf3e90b9a6147a15f60e3fc3937b22a40ced6d2901878aee908a6"
     },
     {
       "nodeId": "148:6107",
@@ -760,9 +760,9 @@
       "platform": "utility-desktop",
       "syncMode": "review-structural",
       "found": true,
-      "width": 1400,
+      "width": 1432,
       "height": 920,
-      "hash": "ca8fcec161dcc29ad24a98c85c36169ca7f189c5e02ab7b1dd78872eb421bbab"
+      "hash": "07ae18d872d246b5980e617c63ce2ec0e5c21a3b19a6605ad3a99fa032c6e3bf"
     },
     {
       "nodeId": "148:6143",
@@ -772,9 +772,9 @@
       "platform": "utility-desktop",
       "syncMode": "review-structural",
       "found": true,
-      "width": 1400,
+      "width": 1432,
       "height": 920,
-      "hash": "7713282c24a3a1d916d3a7012ccfdb08fbea01e1d3fe5e65c19fbff42eb61f31"
+      "hash": "c2f647e2e6e76c42c7bde6322d0f1f9bdd21cfbd35a05f61211cf9ed44522408"
     },
     {
       "nodeId": "148:6169",
@@ -784,9 +784,9 @@
       "platform": "utility-desktop",
       "syncMode": "review-structural",
       "found": true,
-      "width": 1400,
+      "width": 1432,
       "height": 920,
-      "hash": "4c30ebfbdb58c697de4f73cda30fe661da9ac2efa6ca694179cb5eec4e7c5f67"
+      "hash": "062d43d36103662a06bfccb6f70eb299f346ecfa1eff54dd9c75716f951bd9ae"
     },
     {
       "nodeId": "148:6195",
@@ -796,9 +796,9 @@
       "platform": "utility-desktop",
       "syncMode": "review-structural",
       "found": true,
-      "width": 1400,
+      "width": 1432,
       "height": 920,
-      "hash": "568b29d6317180bef0774348691c5b5d84666a41acf64e220abd589c421c702a"
+      "hash": "58d36847ca7250cb2498b9c93c613341f98c568a3a5ddf59caba27d42c5b7b18"
     },
     {
       "nodeId": "148:6215",
@@ -808,9 +808,9 @@
       "platform": "utility-desktop",
       "syncMode": "review-structural",
       "found": true,
-      "width": 1400,
+      "width": 1432,
       "height": 920,
-      "hash": "7216d842ea51f5ad28b88426f7406a69a96e81668378710f1bc8a877eb297694"
+      "hash": "bbe661617833a7f273254d50d96bc0f864652d41d719102886c2498a7df47ac1"
     },
     {
       "nodeId": "148:6232",
@@ -820,9 +820,9 @@
       "platform": "utility-desktop",
       "syncMode": "review-structural",
       "found": true,
-      "width": 1400,
+      "width": 1432,
       "height": 920,
-      "hash": "636fdd33e98904ebd11c2b0d758a8eeb2587e1e57029509545ecb2ac92b2d93a"
+      "hash": "d77e843188b5803a66e67a89505d50f69916743310413a113d3fb078375cada4"
     },
     {
       "nodeId": "148:6253",
@@ -832,9 +832,9 @@
       "platform": "utility-desktop",
       "syncMode": "review-structural",
       "found": true,
-      "width": 1400,
+      "width": 1432,
       "height": 920,
-      "hash": "b7ed09a80f48afd095301b3fe3c2f53bafb9db2d894c5955736b7d5f1b1f6cd1"
+      "hash": "903c450f3aea90fb53d895d90b04255172e985809fae7cc4c9dd7776c1d411c6"
     },
     {
       "nodeId": "148:6272",
@@ -844,9 +844,9 @@
       "platform": "utility-desktop",
       "syncMode": "review-structural",
       "found": true,
-      "width": 1400,
+      "width": 1432,
       "height": 920,
-      "hash": "187ebe86ae4712130ebcd130aa0cec46b239444dc38f04b3047777b032bc41e3"
+      "hash": "55eaf9f89a9e0c3353bfd91d4c885abff1250dc7ef22aecde05ef48e456d8be6"
     },
     {
       "nodeId": "148:6289",
@@ -856,9 +856,9 @@
       "platform": "utility-desktop",
       "syncMode": "review-structural",
       "found": true,
-      "width": 1400,
+      "width": 1432,
       "height": 920,
-      "hash": "307de23fa795d320c698c889529c878b6bf6899e9fb47fa37a95b79cdb436909"
+      "hash": "672d8b26dfbd08ba48f58919a7be9c933e173343c2dc796e1803e1eaf1ad64a1"
     },
     {
       "nodeId": "148:6312",
@@ -868,9 +868,9 @@
       "platform": "utility-desktop",
       "syncMode": "review-structural",
       "found": true,
-      "width": 1400,
+      "width": 1432,
       "height": 920,
-      "hash": "8de83b3f85a1dc200fcc4ffc580932c3815156507d03f0837518fb14cd744686"
+      "hash": "8edb5913235132b3538d5d013d4e60a6f03ca07d41093d83fec32978b80d1951"
     },
     {
       "nodeId": "148:6340",
@@ -880,9 +880,9 @@
       "platform": "utility-desktop",
       "syncMode": "review-structural",
       "found": true,
-      "width": 1400,
+      "width": 1432,
       "height": 920,
-      "hash": "e520666e771b6769cbaf2968a6ef2b07981bbb2106187acd2d62391a0fc7952d"
+      "hash": "c2ae7f2d24eb2cc53e04993e18858b6ef1523e415b8af59952f06a694bcfe2ed"
     },
     {
       "nodeId": "148:6947",
@@ -891,10 +891,10 @@
       "target": "resources/views/messages/index.blade.php",
       "platform": "utility-mobile",
       "syncMode": "review-structural",
-      "found": true,
-      "width": 390,
-      "height": 844,
-      "hash": "1403a3f5455f8366e9d96a9c39f97898a5d62525ea5435cc7650a36586f9b98e"
+      "found": false,
+      "width": null,
+      "height": null,
+      "hash": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
     },
     {
       "nodeId": "148:6974",
@@ -903,10 +903,10 @@
       "target": "resources/views/messages/show.blade.php",
       "platform": "utility-mobile",
       "syncMode": "review-structural",
-      "found": true,
-      "width": 390,
-      "height": 844,
-      "hash": "e42e6a171b0ae15d7db2c758a6ddded89c0caa374a42fa5764a4bb39407463a6"
+      "found": false,
+      "width": null,
+      "height": null,
+      "hash": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
     },
     {
       "nodeId": "148:6997",
@@ -915,10 +915,10 @@
       "target": "resources/views/messages/contacts.blade.php",
       "platform": "utility-mobile",
       "syncMode": "review-structural",
-      "found": true,
-      "width": 390,
-      "height": 844,
-      "hash": "316396c0b8e4c7e488b2ae2808829199e4934da8116c53155db761d2e185c188"
+      "found": false,
+      "width": null,
+      "height": null,
+      "hash": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
     },
     {
       "nodeId": "148:7027",
@@ -927,10 +927,10 @@
       "target": "resources/views/messages/settings.blade.php",
       "platform": "utility-mobile",
       "syncMode": "review-structural",
-      "found": true,
-      "width": 390,
-      "height": 844,
-      "hash": "424580eab15b5e6a2c9a04eff52c2392d2e95c2d7601637b5e18c6da9125ed69"
+      "found": false,
+      "width": null,
+      "height": null,
+      "hash": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
     },
     {
       "nodeId": "148:7056",
@@ -939,10 +939,10 @@
       "target": "resources/views/blog/bookmarks.blade.php",
       "platform": "utility-mobile",
       "syncMode": "review-structural",
-      "found": true,
-      "width": 390,
-      "height": 844,
-      "hash": "648fca8c9da018bdc319caf5c69a4f8ac24998fb552f9950ce2a3d61b8e6653b"
+      "found": false,
+      "width": null,
+      "height": null,
+      "hash": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
     },
     {
       "nodeId": "148:7090",
@@ -951,10 +951,10 @@
       "target": "resources/views/blog/drafts.blade.php",
       "platform": "utility-mobile",
       "syncMode": "review-structural",
-      "found": true,
-      "width": 390,
-      "height": 844,
-      "hash": "79a4b04c0f40a559ec1317d98e4fd9ecd282e523a0055f3b944350c792a7efb8"
+      "found": false,
+      "width": null,
+      "height": null,
+      "hash": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
     },
     {
       "nodeId": "148:7124",
@@ -963,10 +963,10 @@
       "target": "resources/views/blog/create.blade.php",
       "platform": "utility-mobile",
       "syncMode": "review-structural",
-      "found": true,
-      "width": 390,
-      "height": 844,
-      "hash": "8c99ae13f5cf59304131be867c60ef253bc6ad548775585133c314a7ec34d613"
+      "found": false,
+      "width": null,
+      "height": null,
+      "hash": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
     },
     {
       "nodeId": "148:7147",
@@ -975,10 +975,10 @@
       "target": "resources/views/blog/edit.blade.php",
       "platform": "utility-mobile",
       "syncMode": "review-structural",
-      "found": true,
-      "width": 390,
-      "height": 844,
-      "hash": "7e58e382238c6a31ced77873fe631beae07abf3abb61fc1a2a2edd2964fa5c3d"
+      "found": false,
+      "width": null,
+      "height": null,
+      "hash": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
     },
     {
       "nodeId": "148:7170",
@@ -987,10 +987,10 @@
       "target": "resources/views/auth/confirm-password.blade.php",
       "platform": "utility-mobile",
       "syncMode": "review-structural",
-      "found": true,
-      "width": 390,
-      "height": 844,
-      "hash": "e618d86b52fae8878cd3373b37955c818d69a7a33eb505ccfd8977655541b013"
+      "found": false,
+      "width": null,
+      "height": null,
+      "hash": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
     },
     {
       "nodeId": "148:7188",
@@ -999,10 +999,10 @@
       "target": "resources/views/auth/verify-email.blade.php",
       "platform": "utility-mobile",
       "syncMode": "review-structural",
-      "found": true,
-      "width": 390,
-      "height": 844,
-      "hash": "9cf7b3d4d9da956b34f4fed362a5871f0b62af56d5d2e9cb7d4a83d0a11c0856"
+      "found": false,
+      "width": null,
+      "height": null,
+      "hash": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
     },
     {
       "nodeId": "148:7202",
@@ -1011,10 +1011,10 @@
       "target": "resources/views/auth/reset-password.blade.php",
       "platform": "utility-mobile",
       "syncMode": "review-structural",
-      "found": true,
-      "width": 390,
-      "height": 844,
-      "hash": "e0aac2df1773f463d571850ea5453194d49a3c6727eeac934252e021b0f859d6"
+      "found": false,
+      "width": null,
+      "height": null,
+      "hash": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
     },
     {
       "nodeId": "148:7222",
@@ -1023,10 +1023,10 @@
       "target": "resources/views/auth/two-factor-challenge.blade.php",
       "platform": "utility-mobile",
       "syncMode": "review-structural",
-      "found": true,
-      "width": 390,
-      "height": 844,
-      "hash": "5ccd5184c73cdafcf80f0ff4b11f4b6b7ef786a816b4bc1c18b1e8ecc5e70c62"
+      "found": false,
+      "width": null,
+      "height": null,
+      "hash": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
     },
     {
       "nodeId": "148:7238",
@@ -1035,10 +1035,10 @@
       "target": "resources/views/errors/404.blade.php",
       "platform": "utility-mobile",
       "syncMode": "review-structural",
-      "found": true,
-      "width": 390,
-      "height": 844,
-      "hash": "d01a7e5a572c941aee7007fd7275e82cd23a664a5c00cfe7520b32dc396b60da"
+      "found": false,
+      "width": null,
+      "height": null,
+      "hash": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
     },
     {
       "nodeId": "148:7253",
@@ -1047,10 +1047,10 @@
       "target": "resources/views/advertise/create.blade.php",
       "platform": "utility-mobile",
       "syncMode": "review-structural",
-      "found": true,
-      "width": 390,
-      "height": 844,
-      "hash": "769851ac66bbac1dcadc520512572b6bcc38ddc59023e15bf332e1bbe86e135e"
+      "found": false,
+      "width": null,
+      "height": null,
+      "hash": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
     },
     {
       "nodeId": "148:7273",
@@ -1059,10 +1059,10 @@
       "target": "resources/views/advertise/payment.blade.php",
       "platform": "utility-mobile",
       "syncMode": "review-structural",
-      "found": true,
-      "width": 390,
-      "height": 844,
-      "hash": "1bd6600efe583ed30135103c3517ff9d6a67d9e6fff0371f055cab82283619b5"
+      "found": false,
+      "width": null,
+      "height": null,
+      "hash": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
     },
     {
       "nodeId": "148:7294",
@@ -1071,10 +1071,10 @@
       "target": "resources/views/auth/registration-flow.blade.php",
       "platform": "utility-mobile",
       "syncMode": "review-structural",
-      "found": true,
-      "width": 390,
-      "height": 844,
-      "hash": "77acfdaee6dba7fb659e7915e56c05319c4892fd58ab3313ca1d49f3de9c0dcd"
+      "found": false,
+      "width": null,
+      "height": null,
+      "hash": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
     }
   ]
 }

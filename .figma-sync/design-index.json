@@ -1,23 +1,15 @@
 {
   "fileKey": "MCDxzKsjWhMshCAhliWEjL",
   "name": "Ografi iOS UI Kit — 2026",
-  "version": "2391435565631655120",
-  "lastModified": "2026-08-24T23:23:35Z",
-  "components": [
-    "1:143",
-    "1:145",
-    "1:147",
-    "1:150",
-    "1:151",
-    "1:163",
-    "1:168",
-    "1:349",
-    "1:351"
-  ],
-  "componentSets": [
-    "104:5862"
-  ],
+  "version": "2391729869755306128",
+  "lastModified": "2026-08-25T18:13:40Z",
+  "components": [],
+  "componentSets": [],
   "styles": [
+    "194:5932",
+    "194:5933",
+    "194:5934",
+    "194:5935",
     "1:40",
     "1:41",
     "1:42",
@@ -46,553 +38,263 @@
       "name": "00 Cover",
       "type": "CANVAS",
       "visible": true,
-      "childCount": 23,
+      "childCount": 37,
       "children": [
         {
-          "id": "5:2",
-          "name": "00 COVER · Ografi iOS UI Kit",
+          "id": "152:5924",
+          "name": "Ografi",
           "type": "FRAME",
           "visible": true,
           "childCount": 0
         },
         {
-          "id": "7:28",
-          "name": "01 FOUNDATIONS",
+          "id": "153:5924",
+          "name": "Ografi",
           "type": "FRAME",
           "visible": true,
           "childCount": 0
         },
         {
-          "id": "7:78",
-          "name": "02 COMPONENTS",
+          "id": "154:5924",
+          "name": "Ografi",
           "type": "FRAME",
           "visible": true,
           "childCount": 0
         },
         {
-          "id": "7:231",
-          "name": "03 SCREENS",
+          "id": "155:5924",
+          "name": "Ografi",
           "type": "FRAME",
           "visible": true,
           "childCount": 0
         },
         {
-          "id": "9:63",
-          "name": "04 DESKTOP / PC SCREENS",
+          "id": "156:5924",
+          "name": "Hakkımızda | Ografi",
           "type": "FRAME",
           "visible": true,
           "childCount": 0
         },
         {
-          "id": "11:79",
-          "name": "05 EXTENDED COMPONENTS",
+          "id": "160:5924",
+          "name": "Haberler | Ografi",
           "type": "FRAME",
           "visible": true,
           "childCount": 0
         },
         {
-          "id": "19:259",
-          "name": "06 FULL PRODUCT COMPONENTS",
+          "id": "159:5924",
+          "name": "Bize Ulasin | Ografi",
           "type": "FRAME",
           "visible": true,
           "childCount": 0
         },
         {
-          "id": "21:259",
-          "name": "07 MOBILE · ALL PAGES",
+          "id": "161:5924",
+          "name": "Marmara depreminde yolları kesişen çift, bugün afetzedelerin yard | Ografi",
           "type": "FRAME",
           "visible": true,
           "childCount": 0
         },
         {
-          "id": "23:922",
-          "name": "08 DESKTOP · ALL PAGES",
+          "id": "157:5924",
+          "name": "Sıkça Sorulan Sorular | Ografi",
           "type": "FRAME",
           "visible": true,
           "childCount": 0
         },
         {
-          "id": "27:1464",
-          "name": "09 KOWALSKI · DESIGN PRINCIPLES",
+          "id": "162:5924",
+          "name": "Keşfet | Ografi",
           "type": "FRAME",
           "visible": true,
           "childCount": 0
         },
         {
-          "id": "28:1464",
-          "name": "10 MOBILE V2 · KOWALSKI",
+          "id": "163:5924",
+          "name": "Popüler | Ografi",
           "type": "FRAME",
           "visible": true,
           "childCount": 0
         },
         {
-          "id": "29:2127",
-          "name": "11 DESKTOP V2 · KOWALSKI",
+          "id": "158:5924",
+          "name": "Gizlilik Politikası | Ografi",
           "type": "FRAME",
           "visible": true,
           "childCount": 0
         },
         {
-          "id": "37:2669",
-          "name": "12 REPO · SOURCE MAP",
+          "id": "164:5924",
+          "name": "Reklam Ver | Ografi",
           "type": "FRAME",
           "visible": true,
           "childCount": 0
         },
         {
-          "id": "37:2707",
-          "name": "13 MOBILE V3 · REPO",
+          "id": "166:5924",
+          "name": "Video | Ografi",
           "type": "FRAME",
           "visible": true,
           "childCount": 0
         },
         {
-          "id": "41:2669",
-          "name": "14 DESKTOP V3 · REPO",
+          "id": "169:5924",
+          "name": "Arama | Ografi",
           "type": "FRAME",
           "visible": true,
           "childCount": 0
         },
         {
-          "id": "50:2669",
-          "name": "15 DESKTOP V4 · macOS 26",
+          "id": "168:5924",
+          "name": "Kullanıcılar | Ografi",
           "type": "FRAME",
           "visible": true,
           "childCount": 0
         },
         {
-          "id": "65:3016",
-          "name": "16 MOBILE V4 · iOS 26",
+          "id": "167:5924",
+          "name": "Kategoriler | Ografi",
           "type": "FRAME",
           "visible": true,
           "childCount": 0
         },
         {
-          "id": "69:4651",
-          "name": "17 APPLE KITS · INSTALL & USAGE AUDIT",
+          "id": "170:5924",
+          "name": "Admin - Profil | Ografi",
           "type": "FRAME",
           "visible": true,
           "childCount": 0
         },
         {
-          "id": "79:4651",
-          "name": "18 POST UI · LARAVEL + APPLE",
+          "id": "165:5924",
+          "name": "Etiketler | Ografi",
           "type": "FRAME",
           "visible": true,
           "childCount": 0
         },
         {
-          "id": "97:5128",
-          "name": "18 POST SYSTEM · LARAVEL + APPLE",
+          "id": "171:5924",
+          "name": "Ografi",
           "type": "FRAME",
           "visible": true,
           "childCount": 0
         },
         {
-          "id": "104:5675",
-          "name": "19 NAVIGATION · USER SOURCE",
+          "id": "172:5924",
+          "name": "Ografi",
           "type": "FRAME",
           "visible": true,
           "childCount": 0
         },
         {
-          "id": "104:5862",
-          "name": "Navigation/Ografi Bottom Glass",
-          "type": "COMPONENT_SET",
-          "visible": true,
-          "childCount": 0
-        },
-        {
-          "id": "105:6094",
-          "name": "Reference/Home · Yeni Submenu Open",
-          "type": "FRAME",
-          "visible": true,
-          "childCount": 0
-        }
-      ]
-    },
-    {
-      "id": "1:47",
-      "name": "01 Foundations",
-      "type": "CANVAS",
-      "visible": true,
-      "childCount": 4,
-      "children": [
-        {
-          "id": "1:51",
-          "name": "Color System",
+          "id": "173:5924",
+          "name": "Ografi",
           "type": "FRAME",
           "visible": true,
           "childCount": 0
         },
         {
-          "id": "1:77",
-          "name": "Typography",
+          "id": "174:5924",
+          "name": "Hakkımızda | Ografi",
           "type": "FRAME",
           "visible": true,
           "childCount": 0
         },
         {
-          "id": "1:100",
-          "name": "Spacing",
+          "id": "176:5924",
+          "name": "Sıkça Sorulan Sorular | Ografi",
           "type": "FRAME",
           "visible": true,
           "childCount": 0
         },
         {
-          "id": "1:123",
-          "name": "Radius",
-          "type": "FRAME",
-          "visible": true,
-          "childCount": 0
-        }
-      ]
-    },
-    {
-      "id": "1:48",
-      "name": "02 Components",
-      "type": "CANVAS",
-      "visible": true,
-      "childCount": 9,
-      "children": [
-        {
-          "id": "1:143",
-          "name": "Button/Primary",
-          "type": "COMPONENT",
-          "visible": true,
-          "childCount": 0
-        },
-        {
-          "id": "1:145",
-          "name": "Chip/Default",
-          "type": "COMPONENT",
-          "visible": true,
-          "childCount": 0
-        },
-        {
-          "id": "1:147",
-          "name": "Search Field/Default",
-          "type": "COMPONENT",
-          "visible": true,
-          "childCount": 0
-        },
-        {
-          "id": "1:150",
-          "name": "Avatar/Default",
-          "type": "COMPONENT",
-          "visible": true,
-          "childCount": 0
-        },
-        {
-          "id": "1:151",
-          "name": "Post Card/Default",
-          "type": "COMPONENT",
-          "visible": true,
-          "childCount": 0
-        },
-        {
-          "id": "1:163",
-          "name": "Video Card/Default",
-          "type": "COMPONENT",
-          "visible": true,
-          "childCount": 0
-        },
-        {
-          "id": "1:168",
-          "name": "Tab Bar/Default",
-          "type": "COMPONENT",
-          "visible": true,
-          "childCount": 0
-        },
-        {
-          "id": "1:349",
-          "name": "Icon Button/Default",
-          "type": "COMPONENT",
-          "visible": true,
-          "childCount": 0
-        },
-        {
-          "id": "1:351",
-          "name": "Bottom Sheet/Default",
-          "type": "COMPONENT",
-          "visible": true,
-          "childCount": 0
-        }
-      ]
-    },
-    {
-      "id": "1:49",
-      "name": "03 Screens",
-      "type": "CANVAS",
-      "visible": true,
-      "childCount": 4,
-      "children": [
-        {
-          "id": "1:184",
-          "name": "iOS / Ana Akış",
+          "id": "177:5924",
+          "name": "Arama | Ografi",
           "type": "FRAME",
           "visible": true,
           "childCount": 0
         },
         {
-          "id": "1:228",
-          "name": "iOS / Keşfet",
+          "id": "182:5924",
+          "name": "Video | Ografi",
           "type": "FRAME",
           "visible": true,
           "childCount": 0
         },
         {
-          "id": "1:276",
-          "name": "iOS / Gönderi Detayı",
+          "id": "180:5924",
+          "name": "Bize Ulasin | Ografi",
           "type": "FRAME",
           "visible": true,
           "childCount": 0
         },
         {
-          "id": "1:302",
-          "name": "iOS / Profil",
-          "type": "FRAME",
-          "visible": true,
-          "childCount": 0
-        }
-      ]
-    },
-    {
-      "id": "142:5924",
-      "name": "04 Web · Current Production",
-      "type": "CANVAS",
-      "visible": true,
-      "childCount": 16,
-      "children": [
-        {
-          "id": "143:5924",
-          "name": "WEB / Home",
+          "id": "181:5924",
+          "name": "Kategoriler | Ografi",
           "type": "FRAME",
           "visible": true,
           "childCount": 0
         },
         {
-          "id": "143:6011",
-          "name": "WEB / Discover",
+          "id": "184:5924",
+          "name": "Kullanıcılar | Ografi",
           "type": "FRAME",
           "visible": true,
           "childCount": 0
         },
         {
-          "id": "143:6110",
-          "name": "WEB / Search",
+          "id": "183:5924",
+          "name": "Haberler | Ografi",
           "type": "FRAME",
           "visible": true,
           "childCount": 0
         },
         {
-          "id": "143:6183",
-          "name": "WEB / Tags",
+          "id": "178:5924",
+          "name": "Reklam Ver | Ografi",
           "type": "FRAME",
           "visible": true,
           "childCount": 0
         },
         {
-          "id": "143:6257",
-          "name": "WEB / Users",
+          "id": "185:5924",
+          "name": "Marmara depreminde yolları kesişen çift, bugün afetzedelerin yard | Ografi",
           "type": "FRAME",
           "visible": true,
           "childCount": 0
         },
         {
-          "id": "143:6338",
-          "name": "WEB / Contact",
+          "id": "186:5924",
+          "name": "Admin - Profil | Ografi",
           "type": "FRAME",
           "visible": true,
           "childCount": 0
         },
         {
-          "id": "143:6410",
-          "name": "WEB / FAQ",
+          "id": "187:5924",
+          "name": "Keşfet | Ografi",
           "type": "FRAME",
           "visible": true,
           "childCount": 0
         },
         {
-          "id": "143:6494",
-          "name": "WEB / Video",
+          "id": "189:5924",
+          "name": "Ografi",
           "type": "FRAME",
           "visible": true,
           "childCount": 0
         },
         {
-          "id": "143:6561",
-          "name": "WEB / Popular",
+          "id": "179:5924",
+          "name": "Etiketler | Ografi",
           "type": "FRAME",
           "visible": true,
           "childCount": 0
         },
         {
-          "id": "143:6648",
-          "name": "WEB / Communities",
-          "type": "FRAME",
-          "visible": true,
-          "childCount": 0
-        },
-        {
-          "id": "143:6737",
-          "name": "WEB / Category · Haberler",
-          "type": "FRAME",
-          "visible": true,
-          "childCount": 0
-        },
-        {
-          "id": "143:6829",
-          "name": "WEB / Profile · Admin",
-          "type": "FRAME",
-          "visible": true,
-          "childCount": 0
-        },
-        {
-          "id": "143:6925",
-          "name": "WEB / Post Detail",
-          "type": "FRAME",
-          "visible": true,
-          "childCount": 0
-        },
-        {
-          "id": "143:6999",
-          "name": "WEB / Login",
-          "type": "FRAME",
-          "visible": true,
-          "childCount": 0
-        },
-        {
-          "id": "143:7068",
-          "name": "WEB / Register",
-          "type": "FRAME",
-          "visible": true,
-          "childCount": 0
-        },
-        {
-          "id": "143:7137",
-          "name": "WEB / Forgot Password",
-          "type": "FRAME",
-          "visible": true,
-          "childCount": 0
-        }
-      ]
-    },
-    {
-      "id": "142:5925",
-      "name": "05 Web · Mobile Current Production",
-      "type": "CANVAS",
-      "visible": true,
-      "childCount": 16,
-      "children": [
-        {
-          "id": "143:7315",
-          "name": "WEBM / Home",
-          "type": "FRAME",
-          "visible": true,
-          "childCount": 0
-        },
-        {
-          "id": "143:7361",
-          "name": "WEBM / Discover",
-          "type": "FRAME",
-          "visible": true,
-          "childCount": 0
-        },
-        {
-          "id": "143:7410",
-          "name": "WEBM / Search",
-          "type": "FRAME",
-          "visible": true,
-          "childCount": 0
-        },
-        {
-          "id": "143:7442",
-          "name": "WEBM / Tags",
-          "type": "FRAME",
-          "visible": true,
-          "childCount": 0
-        },
-        {
-          "id": "143:7476",
-          "name": "WEBM / Users",
-          "type": "FRAME",
-          "visible": true,
-          "childCount": 0
-        },
-        {
-          "id": "143:7520",
-          "name": "WEBM / Contact",
-          "type": "FRAME",
-          "visible": true,
-          "childCount": 0
-        },
-        {
-          "id": "143:7551",
-          "name": "WEBM / FAQ",
-          "type": "FRAME",
-          "visible": true,
-          "childCount": 0
-        },
-        {
-          "id": "143:7591",
-          "name": "WEBM / Video",
-          "type": "FRAME",
-          "visible": true,
-          "childCount": 0
-        },
-        {
-          "id": "143:7621",
-          "name": "WEBM / Popular",
-          "type": "FRAME",
-          "visible": true,
-          "childCount": 0
-        },
-        {
-          "id": "143:7667",
-          "name": "WEBM / Communities",
-          "type": "FRAME",
-          "visible": true,
-          "childCount": 0
-        },
-        {
-          "id": "143:7711",
-          "name": "WEBM / Category · Haberler",
-          "type": "FRAME",
-          "visible": true,
-          "childCount": 0
-        },
-        {
-          "id": "143:7762",
-          "name": "WEBM / Profile · Admin",
-          "type": "FRAME",
-          "visible": true,
-          "childCount": 0
-        },
-        {
-          "id": "143:7801",
-          "name": "WEBM / Post Detail",
-          "type": "FRAME",
-          "visible": true,
-          "childCount": 0
-        },
-        {
-          "id": "143:7833",
-          "name": "WEBM / Login",
-          "type": "FRAME",
-          "visible": true,
-          "childCount": 0
-        },
-        {
-          "id": "143:7862",
-          "name": "WEBM / Register",
-          "type": "FRAME",
-          "visible": true,
-          "childCount": 0
-        },
-        {
-          "id": "143:7891",
-          "name": "WEBM / Forgot Password",
+          "id": "175:5924",
+          "name": "Gizlilik Politikası | Ografi",
           "type": "FRAME",
           "visible": true,
           "childCount": 0
@@ -893,120 +595,786 @@
       ]
     },
     {
-      "id": "147:5925",
-      "name": "09 Utility · Mobile Current Production",
+      "id": "194:5936",
+      "name": "10 Interactions · Controls",
       "type": "CANVAS",
       "visible": true,
-      "childCount": 16,
+      "childCount": 1,
       "children": [
         {
-          "id": "148:6947",
-          "name": "UTILM / Messages",
+          "id": "194:5940",
+          "name": "Documentation / Controls",
+          "type": "FRAME",
+          "visible": true,
+          "childCount": 0
+        }
+      ]
+    },
+    {
+      "id": "194:5937",
+      "name": "11 Interactions · Overlays",
+      "type": "CANVAS",
+      "visible": true,
+      "childCount": 1,
+      "children": [
+        {
+          "id": "194:6733",
+          "name": "Documentation / Overlays",
+          "type": "FRAME",
+          "visible": true,
+          "childCount": 0
+        }
+      ]
+    },
+    {
+      "id": "194:5938",
+      "name": "12 Social · Comments & Reactions",
+      "type": "CANVAS",
+      "visible": true,
+      "childCount": 1,
+      "children": [
+        {
+          "id": "194:6751",
+          "name": "Documentation / Social",
+          "type": "FRAME",
+          "visible": true,
+          "childCount": 0
+        }
+      ]
+    },
+    {
+      "id": "194:5939",
+      "name": "13 Email · Notifications",
+      "type": "CANVAS",
+      "visible": true,
+      "childCount": 1,
+      "children": [
+        {
+          "id": "194:6769",
+          "name": "Documentation / Email",
+          "type": "FRAME",
+          "visible": true,
+          "childCount": 0
+        }
+      ]
+    },
+    {
+      "id": "214:5924",
+      "name": "14 Moderation · Safety & Reports",
+      "type": "CANVAS",
+      "visible": true,
+      "childCount": 3,
+      "children": [
+        {
+          "id": "214:5925",
+          "name": "Documentation / Moderation",
           "type": "FRAME",
           "visible": true,
           "childCount": 0
         },
         {
-          "id": "148:6974",
-          "name": "UTILM / Message Thread",
+          "id": "229:5924",
+          "name": "DESKTOP / Post Report",
           "type": "FRAME",
           "visible": true,
           "childCount": 0
         },
         {
-          "id": "148:6997",
-          "name": "UTILM / Message Contacts",
+          "id": "229:5952",
+          "name": "MOBILE / Post Report",
+          "type": "FRAME",
+          "visible": true,
+          "childCount": 0
+        }
+      ]
+    },
+    {
+      "id": "218:5924",
+      "name": "15 Create · Content & Communities",
+      "type": "CANVAS",
+      "visible": true,
+      "childCount": 14,
+      "children": [
+        {
+          "id": "219:5924",
+          "name": "DESKTOP / Post Create",
           "type": "FRAME",
           "visible": true,
           "childCount": 0
         },
         {
-          "id": "148:7027",
-          "name": "UTILM / Message Settings",
+          "id": "219:5957",
+          "name": "MOBILE / Post Create",
           "type": "FRAME",
           "visible": true,
           "childCount": 0
         },
         {
-          "id": "148:7056",
-          "name": "UTILM / Bookmarks",
+          "id": "219:5990",
+          "name": "DESKTOP / Post Edit",
           "type": "FRAME",
           "visible": true,
           "childCount": 0
         },
         {
-          "id": "148:7090",
-          "name": "UTILM / Drafts",
+          "id": "219:6023",
+          "name": "MOBILE / Post Edit",
           "type": "FRAME",
           "visible": true,
           "childCount": 0
         },
         {
-          "id": "148:7124",
-          "name": "UTILM / Create Post",
+          "id": "219:6056",
+          "name": "DESKTOP / Repost Create",
           "type": "FRAME",
           "visible": true,
           "childCount": 0
         },
         {
-          "id": "148:7147",
-          "name": "UTILM / Edit Post",
+          "id": "219:6080",
+          "name": "MOBILE / Repost Create",
           "type": "FRAME",
           "visible": true,
           "childCount": 0
         },
         {
-          "id": "148:7170",
-          "name": "UTILM / Confirm Password",
+          "id": "219:6104",
+          "name": "DESKTOP / Category Create",
           "type": "FRAME",
           "visible": true,
           "childCount": 0
         },
         {
-          "id": "148:7188",
-          "name": "UTILM / Verify Email",
+          "id": "219:6135",
+          "name": "MOBILE / Category Create",
           "type": "FRAME",
           "visible": true,
           "childCount": 0
         },
         {
-          "id": "148:7202",
-          "name": "UTILM / Reset Password",
+          "id": "219:6166",
+          "name": "DESKTOP / Category Edit",
           "type": "FRAME",
           "visible": true,
           "childCount": 0
         },
         {
-          "id": "148:7222",
-          "name": "UTILM / Two Factor Challenge",
+          "id": "219:6192",
+          "name": "MOBILE / Category Edit",
           "type": "FRAME",
           "visible": true,
           "childCount": 0
         },
         {
-          "id": "148:7238",
-          "name": "UTILM / 404",
+          "id": "226:6524",
+          "name": "DESKTOP / Contact Create / Disabled",
           "type": "FRAME",
           "visible": true,
           "childCount": 0
         },
         {
-          "id": "148:7253",
-          "name": "UTILM / Advertise",
+          "id": "226:6548",
+          "name": "MOBILE / Contact Create / Disabled",
           "type": "FRAME",
           "visible": true,
           "childCount": 0
         },
         {
-          "id": "148:7273",
-          "name": "UTILM / Advertise Payment",
+          "id": "226:6572",
+          "name": "DESKTOP / Contact Create / Enabled",
           "type": "FRAME",
           "visible": true,
           "childCount": 0
         },
         {
-          "id": "148:7294",
-          "name": "UTILM / Registration Flow",
+          "id": "226:6596",
+          "name": "MOBILE / Contact Create / Enabled",
+          "type": "FRAME",
+          "visible": true,
+          "childCount": 0
+        }
+      ]
+    },
+    {
+      "id": "218:5925",
+      "name": "16 Settings · User Account",
+      "type": "CANVAS",
+      "visible": true,
+      "childCount": 26,
+      "children": [
+        {
+          "id": "220:5924",
+          "name": "DESKTOP / Settings Index",
+          "type": "FRAME",
+          "visible": true,
+          "childCount": 0
+        },
+        {
+          "id": "220:5966",
+          "name": "MOBILE / Settings Index",
+          "type": "FRAME",
+          "visible": true,
+          "childCount": 0
+        },
+        {
+          "id": "220:5985",
+          "name": "DESKTOP / Profile Settings",
+          "type": "FRAME",
+          "visible": true,
+          "childCount": 0
+        },
+        {
+          "id": "220:6053",
+          "name": "MOBILE / Profile Settings",
+          "type": "FRAME",
+          "visible": true,
+          "childCount": 0
+        },
+        {
+          "id": "220:6098",
+          "name": "DESKTOP / Account Settings",
+          "type": "FRAME",
+          "visible": true,
+          "childCount": 0
+        },
+        {
+          "id": "220:6140",
+          "name": "MOBILE / Account Settings",
+          "type": "FRAME",
+          "visible": true,
+          "childCount": 0
+        },
+        {
+          "id": "220:6159",
+          "name": "DESKTOP / Password Settings",
+          "type": "FRAME",
+          "visible": true,
+          "childCount": 0
+        },
+        {
+          "id": "220:6201",
+          "name": "MOBILE / Password Settings",
+          "type": "FRAME",
+          "visible": true,
+          "childCount": 0
+        },
+        {
+          "id": "220:6220",
+          "name": "DESKTOP / Preferences",
+          "type": "FRAME",
+          "visible": true,
+          "childCount": 0
+        },
+        {
+          "id": "220:6268",
+          "name": "MOBILE / Preferences",
+          "type": "FRAME",
+          "visible": true,
+          "childCount": 0
+        },
+        {
+          "id": "220:6293",
+          "name": "DESKTOP / Two Factor",
+          "type": "FRAME",
+          "visible": true,
+          "childCount": 0
+        },
+        {
+          "id": "220:6341",
+          "name": "MOBILE / Two Factor",
+          "type": "FRAME",
+          "visible": true,
+          "childCount": 0
+        },
+        {
+          "id": "220:6366",
+          "name": "DESKTOP / Notifications",
+          "type": "FRAME",
+          "visible": true,
+          "childCount": 0
+        },
+        {
+          "id": "220:6436",
+          "name": "MOBILE / Notifications",
+          "type": "FRAME",
+          "visible": true,
+          "childCount": 0
+        },
+        {
+          "id": "220:6483",
+          "name": "DESKTOP / Badges",
+          "type": "FRAME",
+          "visible": true,
+          "childCount": 0
+        },
+        {
+          "id": "220:6520",
+          "name": "MOBILE / Badges",
+          "type": "FRAME",
+          "visible": true,
+          "childCount": 0
+        },
+        {
+          "id": "220:6534",
+          "name": "DESKTOP / Privacy",
+          "type": "FRAME",
+          "visible": true,
+          "childCount": 0
+        },
+        {
+          "id": "220:6584",
+          "name": "MOBILE / Privacy",
+          "type": "FRAME",
+          "visible": true,
+          "childCount": 0
+        },
+        {
+          "id": "220:6611",
+          "name": "DESKTOP / Blocks / Empty",
+          "type": "FRAME",
+          "visible": true,
+          "childCount": 0
+        },
+        {
+          "id": "220:6649",
+          "name": "MOBILE / Blocks / Empty",
+          "type": "FRAME",
+          "visible": true,
+          "childCount": 0
+        },
+        {
+          "id": "220:6664",
+          "name": "DESKTOP / Delete Account",
+          "type": "FRAME",
+          "visible": true,
+          "childCount": 0
+        },
+        {
+          "id": "220:6709",
+          "name": "MOBILE / Delete Account",
+          "type": "FRAME",
+          "visible": true,
+          "childCount": 0
+        },
+        {
+          "id": "220:6731",
+          "name": "DESKTOP / Legacy Profile Setting",
+          "type": "FRAME",
+          "visible": true,
+          "childCount": 0
+        },
+        {
+          "id": "220:6776",
+          "name": "MOBILE / Legacy Profile Setting",
+          "type": "FRAME",
+          "visible": true,
+          "childCount": 0
+        },
+        {
+          "id": "227:5924",
+          "name": "DESKTOP / Settings / Legacy General",
+          "type": "FRAME",
+          "visible": true,
+          "childCount": 0
+        },
+        {
+          "id": "227:5951",
+          "name": "MOBILE / Settings / Legacy General",
+          "type": "FRAME",
+          "visible": true,
+          "childCount": 0
+        }
+      ]
+    },
+    {
+      "id": "218:5926",
+      "name": "17 Teams · API & Sessions",
+      "type": "CANVAS",
+      "visible": true,
+      "childCount": 12,
+      "children": [
+        {
+          "id": "221:5924",
+          "name": "DESKTOP / Team Create",
+          "type": "FRAME",
+          "visible": true,
+          "childCount": 0
+        },
+        {
+          "id": "221:5942",
+          "name": "MOBILE / Team Create",
+          "type": "FRAME",
+          "visible": true,
+          "childCount": 0
+        },
+        {
+          "id": "221:5960",
+          "name": "DESKTOP / Team Manage",
+          "type": "FRAME",
+          "visible": true,
+          "childCount": 0
+        },
+        {
+          "id": "221:6003",
+          "name": "MOBILE / Team Manage",
+          "type": "FRAME",
+          "visible": true,
+          "childCount": 0
+        },
+        {
+          "id": "221:6046",
+          "name": "DESKTOP / API Tokens",
+          "type": "FRAME",
+          "visible": true,
+          "childCount": 0
+        },
+        {
+          "id": "221:6082",
+          "name": "MOBILE / API Tokens",
+          "type": "FRAME",
+          "visible": true,
+          "childCount": 0
+        },
+        {
+          "id": "221:6118",
+          "name": "DESKTOP / API Token Created",
+          "type": "FRAME",
+          "visible": true,
+          "childCount": 0
+        },
+        {
+          "id": "221:6136",
+          "name": "MOBILE / API Token Created",
+          "type": "FRAME",
+          "visible": true,
+          "childCount": 0
+        },
+        {
+          "id": "221:6154",
+          "name": "DESKTOP / API Permissions",
+          "type": "FRAME",
+          "visible": true,
+          "childCount": 0
+        },
+        {
+          "id": "221:6179",
+          "name": "MOBILE / API Permissions",
+          "type": "FRAME",
+          "visible": true,
+          "childCount": 0
+        },
+        {
+          "id": "221:6204",
+          "name": "DESKTOP / Browser Sessions",
+          "type": "FRAME",
+          "visible": true,
+          "childCount": 0
+        },
+        {
+          "id": "221:6233",
+          "name": "MOBILE / Browser Sessions",
+          "type": "FRAME",
+          "visible": true,
+          "childCount": 0
+        }
+      ]
+    },
+    {
+      "id": "218:5927",
+      "name": "18 Auth · Security & Recovery",
+      "type": "CANVAS",
+      "visible": true,
+      "childCount": 18,
+      "children": [
+        {
+          "id": "225:5930",
+          "name": "DESKTOP / Login",
+          "type": "FRAME",
+          "visible": true,
+          "childCount": 0
+        },
+        {
+          "id": "225:5951",
+          "name": "MOBILE / Login",
+          "type": "FRAME",
+          "visible": true,
+          "childCount": 0
+        },
+        {
+          "id": "225:5972",
+          "name": "DESKTOP / Registration / Email",
+          "type": "FRAME",
+          "visible": true,
+          "childCount": 0
+        },
+        {
+          "id": "225:5986",
+          "name": "MOBILE / Registration / Email",
+          "type": "FRAME",
+          "visible": true,
+          "childCount": 0
+        },
+        {
+          "id": "225:6000",
+          "name": "DESKTOP / Registration / Verify",
+          "type": "FRAME",
+          "visible": true,
+          "childCount": 0
+        },
+        {
+          "id": "225:6016",
+          "name": "MOBILE / Registration / Verify",
+          "type": "FRAME",
+          "visible": true,
+          "childCount": 0
+        },
+        {
+          "id": "225:6032",
+          "name": "DESKTOP / Registration / Complete",
+          "type": "FRAME",
+          "visible": true,
+          "childCount": 0
+        },
+        {
+          "id": "225:6052",
+          "name": "MOBILE / Registration / Complete",
+          "type": "FRAME",
+          "visible": true,
+          "childCount": 0
+        },
+        {
+          "id": "225:6072",
+          "name": "DESKTOP / Forgot Password",
+          "type": "FRAME",
+          "visible": true,
+          "childCount": 0
+        },
+        {
+          "id": "225:6086",
+          "name": "MOBILE / Forgot Password",
+          "type": "FRAME",
+          "visible": true,
+          "childCount": 0
+        },
+        {
+          "id": "225:6100",
+          "name": "DESKTOP / Reset Password",
+          "type": "FRAME",
+          "visible": true,
+          "childCount": 0
+        },
+        {
+          "id": "225:6118",
+          "name": "MOBILE / Reset Password",
+          "type": "FRAME",
+          "visible": true,
+          "childCount": 0
+        },
+        {
+          "id": "225:6136",
+          "name": "DESKTOP / Verify Email",
+          "type": "FRAME",
+          "visible": true,
+          "childCount": 0
+        },
+        {
+          "id": "225:6151",
+          "name": "MOBILE / Verify Email",
+          "type": "FRAME",
+          "visible": true,
+          "childCount": 0
+        },
+        {
+          "id": "225:6166",
+          "name": "DESKTOP / Confirm Password",
+          "type": "FRAME",
+          "visible": true,
+          "childCount": 0
+        },
+        {
+          "id": "225:6178",
+          "name": "MOBILE / Confirm Password",
+          "type": "FRAME",
+          "visible": true,
+          "childCount": 0
+        },
+        {
+          "id": "225:6190",
+          "name": "DESKTOP / Two Factor Challenge",
+          "type": "FRAME",
+          "visible": true,
+          "childCount": 0
+        },
+        {
+          "id": "225:6204",
+          "name": "MOBILE / Two Factor Challenge",
+          "type": "FRAME",
+          "visible": true,
+          "childCount": 0
+        }
+      ]
+    },
+    {
+      "id": "218:5928",
+      "name": "19 Messaging · Full Pages",
+      "type": "CANVAS",
+      "visible": true,
+      "childCount": 6,
+      "children": [
+        {
+          "id": "222:5924",
+          "name": "DESKTOP / Messages Index",
+          "type": "FRAME",
+          "visible": true,
+          "childCount": 0
+        },
+        {
+          "id": "222:5953",
+          "name": "MOBILE / Messages Index",
+          "type": "FRAME",
+          "visible": true,
+          "childCount": 0
+        },
+        {
+          "id": "222:5982",
+          "name": "DESKTOP / Conversation",
+          "type": "FRAME",
+          "visible": true,
+          "childCount": 0
+        },
+        {
+          "id": "222:6002",
+          "name": "MOBILE / Conversation",
+          "type": "FRAME",
+          "visible": true,
+          "childCount": 0
+        },
+        {
+          "id": "222:6022",
+          "name": "DESKTOP / Message Settings",
+          "type": "FRAME",
+          "visible": true,
+          "childCount": 0
+        },
+        {
+          "id": "222:6042",
+          "name": "MOBILE / Message Settings",
+          "type": "FRAME",
+          "visible": true,
+          "childCount": 0
+        }
+      ]
+    },
+    {
+      "id": "218:5929",
+      "name": "20 Advertising · Campaign & Payment",
+      "type": "CANVAS",
+      "visible": true,
+      "childCount": 6,
+      "children": [
+        {
+          "id": "223:5924",
+          "name": "DESKTOP / Advertise Create",
+          "type": "FRAME",
+          "visible": true,
+          "childCount": 0
+        },
+        {
+          "id": "223:5972",
+          "name": "MOBILE / Advertise Create",
+          "type": "FRAME",
+          "visible": true,
+          "childCount": 0
+        },
+        {
+          "id": "223:6020",
+          "name": "DESKTOP / 3D Secure",
+          "type": "FRAME",
+          "visible": true,
+          "childCount": 0
+        },
+        {
+          "id": "223:6029",
+          "name": "MOBILE / 3D Secure",
+          "type": "FRAME",
+          "visible": true,
+          "childCount": 0
+        },
+        {
+          "id": "223:6038",
+          "name": "DESKTOP / Payment Success",
+          "type": "FRAME",
+          "visible": true,
+          "childCount": 0
+        },
+        {
+          "id": "223:6052",
+          "name": "MOBILE / Payment Success",
+          "type": "FRAME",
+          "visible": true,
+          "childCount": 0
+        }
+      ]
+    },
+    {
+      "id": "218:5930",
+      "name": "21 AI · Product Screens",
+      "type": "CANVAS",
+      "visible": true,
+      "childCount": 8,
+      "children": [
+        {
+          "id": "226:5924",
+          "name": "DESKTOP / Ografi AI / Empty",
+          "type": "FRAME",
+          "visible": true,
+          "childCount": 0
+        },
+        {
+          "id": "226:5939",
+          "name": "MOBILE / Ografi AI / Empty",
+          "type": "FRAME",
+          "visible": true,
+          "childCount": 0
+        },
+        {
+          "id": "226:5954",
+          "name": "DESKTOP / Ografi AI / Conversation",
+          "type": "FRAME",
+          "visible": true,
+          "childCount": 0
+        },
+        {
+          "id": "226:5972",
+          "name": "MOBILE / Ografi AI / Conversation",
+          "type": "FRAME",
+          "visible": true,
+          "childCount": 0
+        },
+        {
+          "id": "226:5990",
+          "name": "DESKTOP / Ografi AI / Typing",
+          "type": "FRAME",
+          "visible": true,
+          "childCount": 0
+        },
+        {
+          "id": "226:6010",
+          "name": "MOBILE / Ografi AI / Typing",
+          "type": "FRAME",
+          "visible": true,
+          "childCount": 0
+        },
+        {
+          "id": "226:6030",
+          "name": "DESKTOP / Ografi AI / Error",
+          "type": "FRAME",
+          "visible": true,
+          "childCount": 0
+        },
+        {
+          "id": "226:6048",
+          "name": "MOBILE / Ografi AI / Error",
           "type": "FRAME",
           "visible": true,
           "childCount": 0
@@ -1251,12 +1619,7 @@
         "padding",
         "gap"
       ],
-      "found": true,
-      "width": 343,
-      "height": 280,
-      "radius": 16,
-      "background": "#ffffff",
-      "border": "#e4e6ea"
+      "found": false
     },
     {
       "nodeId": "1:168",
@@ -1264,12 +1627,7 @@
       "target": null,
       "platform": "ios-only",
       "sync": [],
-      "found": true,
-      "width": 375,
-      "height": 74,
-      "radius": null,
-      "background": "#ffffff",
-      "border": "#e4e6ea"
+      "found": false
     },
     {
       "nodeId": "1:349",
@@ -1299,12 +1657,7 @@
         "radius",
         "padding"
       ],
-      "found": true,
-      "width": 375,
-      "height": 260,
-      "radius": 24,
-      "background": "#ffffff",
-      "border": null
+      "found": false
     }
   ]
 }
