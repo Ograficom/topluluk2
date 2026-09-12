@@ -8,8 +8,6 @@ use App\Models\BorsaSetting;
 use App\Services\BorsaService;
 use App\Models\Tag;
 use App\Models\ThemeSetting;
-use App\Services\OpenAiLegacyAdapter;
-use App\Services\OllamaService;
 use App\Services\Rss\OpenAiRssArticleRewriteService;
 use App\Services\Rss\RssArticleRewriteService;
 use Illuminate\Support\Facades\Blade;
@@ -33,22 +31,13 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        // Prefer OpenAI when it is actually configured. Otherwise leave the
-        // concrete RSS service unbound so Laravel falls back to the existing
-        // Ollama-backed implementation instead of failing every queued rewrite.
-        if (filled(config('services.openai.api_key'))) {
-            $this->app->bind(
-                RssArticleRewriteService::class,
-                OpenAiRssArticleRewriteService::class,
-            );
-
-            // Older controllers/services still type-hint OllamaService. Route
-            // those through OpenAI only when OpenAI credentials are available.
-            $this->app->bind(
-                OllamaService::class,
-                OpenAiLegacyAdapter::class,
-            );
-        }
+        // RSS rewriting is OpenAI-only. Never silently fall back to Ollama:
+        // a missing OpenAI credential must surface as a clear configuration
+        // error instead of publishing raw/unchanged RSS text.
+        $this->app->bind(
+            RssArticleRewriteService::class,
+            OpenAiRssArticleRewriteService::class,
+        );
     }
 
     /**
