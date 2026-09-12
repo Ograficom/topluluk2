@@ -2,9 +2,12 @@
 
 namespace App\Models;
 
+use App\Observers\RssItemObserver;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+#[ObservedBy([RssItemObserver::class])]
 class RssItem extends Model
 {
     protected $fillable = [
