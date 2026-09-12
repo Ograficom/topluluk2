@@ -65,10 +65,7 @@ jobs:
 
             php artisan tinker --execute="echo 'RSS AI service=' . get_class(app(\\App\\Services\\Rss\\RssArticleRewriteService::class)) . PHP_EOL;"
 
-            if ! php artisan tinker --execute="exit(get_class(app(\\App\\Services\\Rss\\RssArticleRewriteService::class)) === 'App\\Services\\Rss\\OpenAiRssArticleRewriteService' ? 0 : 1);"; then
-              echo 'RSS rewrite service is not OpenAI-backed.' >&2
-              exit 1
-            fi
+            php artisan tinker --execute="if (get_class(app(\\App\\Services\\Rss\\RssArticleRewriteService::class)) !== 'App\\Services\\Rss\\OpenAiRssArticleRewriteService') { throw new \\RuntimeException('RSS rewrite service is not OpenAI-backed.'); }"
 
             php artisan rss:ai-rewrite-linked --limit=1
 
