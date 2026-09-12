@@ -84,6 +84,13 @@ Schedule::command('rss:ai-process')
     ->everyMinute()
     ->withoutOverlapping();
 
+// Existing RSS-linked posts are a separate repair queue: they must be rewritten
+// even when their source feed is currently disabled. The command always lets the
+// active provider choose its own model, so OpenAI model ids can never leak into Ollama.
+Schedule::command('rss:ai-rewrite-linked --limit=5')
+    ->everyMinute()
+    ->withoutOverlapping();
+
 Schedule::command('moderation:ai-scan')
     ->everyFiveMinutes()
     ->withoutOverlapping();
