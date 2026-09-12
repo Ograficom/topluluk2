@@ -18,6 +18,7 @@ on:
       - 'routes/console.php'
       - 'tests/Feature/PostAiAssistantServiceTest.php'
       - 'tests/Feature/RssAiPublishedPostSyncTest.php'
+      - 'tests/Unit/RssArticleRewriteServiceTest.php'
       - '.github/workflows/ai-post-editor-check.yml'
   pull_request:
     paths:
@@ -34,6 +35,7 @@ on:
       - 'routes/console.php'
       - 'tests/Feature/PostAiAssistantServiceTest.php'
       - 'tests/Feature/RssAiPublishedPostSyncTest.php'
+      - 'tests/Unit/RssArticleRewriteServiceTest.php'
       - '.github/workflows/ai-post-editor-check.yml'
   workflow_dispatch:
 
@@ -78,9 +80,10 @@ jobs:
           php -l database/migrations/2026_09_12_123000_reset_rss_ai_provider_model_and_retry.php
           php -l tests/Feature/PostAiAssistantServiceTest.php
           php -l tests/Feature/RssAiPublishedPostSyncTest.php
+          php -l tests/Unit/RssArticleRewriteServiceTest.php
 
       - name: Verify linked RSS rewrite command is registered
         run: php artisan list --raw | grep -q '^rss:ai-rewrite-linked'
 
       - name: AI post editor and RSS rewrite tests
-        run: php artisan test tests/Feature/PostAiAssistantServiceTest.php tests/Feature/RssAiPublishedPostSyncTest.php
+        run: php artisan test tests/Feature/PostAiAssistantServiceTest.php tests/Feature/RssAiPublishedPostSyncTest.php tests/Unit/RssArticleRewriteServiceTest.php
