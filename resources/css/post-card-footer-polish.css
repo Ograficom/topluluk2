@@ -1,196 +1,41 @@
 @import './feed-interleaved-card-interactions.css';
 
-/*
- * Post-card alt etkileşim alanı.
- * Ayırıcı çizgi tepki/emoji satırının ALTINDA olur.
- * Yorum / kaydet / paylaş satırından önce görsel ayrımı sağlar.
- */
+/* Post-card alt etkileşim alanı */
+html body article.post-card[data-post-card-shell] #action-bar.action-bar { border-top: 0 !important; }
+html body article.post-card[data-post-card-shell] #reaction-row.reactions-row { position: relative !important; border-top: 0 !important; border-bottom: 1px solid #e5e7eb !important; padding-top: 0 !important; padding-bottom: 10px !important; }
 
-html body article.post-card[data-post-card-shell] #action-bar.action-bar {
-    border-top: 0 !important;
-}
-
-html body article.post-card[data-post-card-shell] #reaction-row.reactions-row {
-    position: relative !important;
-    border-top: 0 !important;
-    border-bottom: 1px solid #e5e7eb !important;
-    padding-top: 0 !important;
-    padding-bottom: 10px !important;
-}
-
-/*
- * Mobil post-card düzeltmesi:
- * - Tepki ekleme ikonunun ince gri kenarlığını kaldır.
- * - Gri buton arka planını koru.
- * - Önceki full-bleed negatif margin'i kaldır; kart köşeleri eşit kalsın.
- * - Sadece emoji/tepki butonunu etkiler.
- */
 @media (max-width: 640px) {
-    html body article.post-card[data-post-card-shell] {
-        border-radius: 8px !important;
-        overflow: hidden !important;
-    }
-
-    html body article.post-card[data-post-card-shell] #reaction-row.reactions-row {
-        width: 100% !important;
-        margin-left: 0 !important;
-        margin-right: 0 !important;
-        padding-left: 0 !important;
-        padding-right: 0 !important;
-        padding-top: 0 !important;
-        padding-bottom: 9px !important;
-        border-top: 0 !important;
-        border-bottom: 1px solid #e5e7eb !important;
-        box-sizing: border-box !important;
-    }
-
-    html body article.post-card[data-post-card-shell] #action-bar.action-bar {
-        border-top: 0 !important;
-    }
-
-    html body article.post-card[data-post-card-shell] #reaction-row.reactions-row .post-card__reaction-wrap {
-        display: inline-flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-        margin: 0 !important;
-        padding: 0 !important;
-    }
-
-    html body article.post-card[data-post-card-shell] #reaction-row.reactions-row button.smiley-btn.reaction-add[data-post-card-reaction-trigger] {
-        appearance: none !important;
-        -webkit-appearance: none !important;
-        display: inline-flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-        width: 34px !important;
-        height: 34px !important;
-        min-width: 34px !important;
-        min-height: 34px !important;
-        max-width: 34px !important;
-        max-height: 34px !important;
-        margin: 0 !important;
-        padding: 0 !important;
-        border: 0 !important;
-        outline: 0 !important;
-        box-shadow: none !important;
-        background: #f3f4f6 !important;
-        background-color: #f3f4f6 !important;
-        border-radius: 9999px !important;
-        color: #111111 !important;
-    }
-
+    html body article.post-card[data-post-card-shell] { border-radius: 8px !important; overflow: hidden !important; }
+    html body article.post-card[data-post-card-shell] #reaction-row.reactions-row { width: 100% !important; margin-left: 0 !important; margin-right: 0 !important; padding: 0 0 9px !important; border-top: 0 !important; border-bottom: 1px solid #e5e7eb !important; box-sizing: border-box !important; }
+    html body article.post-card[data-post-card-shell] #action-bar.action-bar { border-top: 0 !important; }
+    html body article.post-card[data-post-card-shell] #reaction-row.reactions-row .post-card__reaction-wrap { display: inline-flex !important; align-items: center !important; justify-content: center !important; margin: 0 !important; padding: 0 !important; }
+    html body article.post-card[data-post-card-shell] #reaction-row.reactions-row button.smiley-btn.reaction-add[data-post-card-reaction-trigger] { appearance: none !important; -webkit-appearance: none !important; display: inline-flex !important; align-items: center !important; justify-content: center !important; width: 34px !important; height: 34px !important; min-width: 34px !important; min-height: 34px !important; max-width: 34px !important; max-height: 34px !important; margin: 0 !important; padding: 0 !important; border: 0 !important; outline: 0 !important; box-shadow: none !important; background: #f3f4f6 !important; background-color: #f3f4f6 !important; border-radius: 9999px !important; color: #111111 !important; }
     html body article.post-card[data-post-card-shell] #reaction-row.reactions-row button.smiley-btn.reaction-add[data-post-card-reaction-trigger]::before,
-    html body article.post-card[data-post-card-shell] #reaction-row.reactions-row button.smiley-btn.reaction-add[data-post-card-reaction-trigger]::after {
-        content: none !important;
-        display: none !important;
-        border: 0 !important;
-        box-shadow: none !important;
-        background: transparent !important;
-    }
-
-    html body article.post-card[data-post-card-shell] #reaction-row.reactions-row button.smiley-btn.reaction-add[data-post-card-reaction-trigger] .post-card__inline-icon {
-        display: inline-flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-        width: 21px !important;
-        height: 21px !important;
-        min-width: 21px !important;
-        min-height: 21px !important;
-        margin: 0 !important;
-        padding: 0 !important;
-        border: 0 !important;
-        background: transparent !important;
-    }
-
+    html body article.post-card[data-post-card-shell] #reaction-row.reactions-row button.smiley-btn.reaction-add[data-post-card-reaction-trigger]::after { content: none !important; display: none !important; border: 0 !important; box-shadow: none !important; background: transparent !important; }
+    html body article.post-card[data-post-card-shell] #reaction-row.reactions-row button.smiley-btn.reaction-add[data-post-card-reaction-trigger] .post-card__inline-icon { display: inline-flex !important; align-items: center !important; justify-content: center !important; width: 21px !important; height: 21px !important; min-width: 21px !important; min-height: 21px !important; margin: 0 !important; padding: 0 !important; border: 0 !important; background: transparent !important; }
     html body article.post-card[data-post-card-shell] #reaction-row.reactions-row button.smiley-btn.reaction-add[data-post-card-reaction-trigger] .post-card__inline-icon svg,
-    html body article.post-card[data-post-card-shell] #reaction-row.reactions-row button.smiley-btn.reaction-add[data-post-card-reaction-trigger] .post-card__inline-icon iconify-icon {
-        display: block !important;
-        width: 21px !important;
-        height: 21px !important;
-        min-width: 21px !important;
-        min-height: 21px !important;
-        margin: 0 !important;
-        padding: 0 !important;
-    }
+    html body article.post-card[data-post-card-shell] #reaction-row.reactions-row button.smiley-btn.reaction-add[data-post-card-reaction-trigger] .post-card__inline-icon iconify-icon { display: block !important; width: 21px !important; height: 21px !important; min-width: 21px !important; min-height: 21px !important; margin: 0 !important; padding: 0 !important; }
 }
 
 html.dark body article.post-card[data-post-card-shell] #reaction-row.reactions-row,
 body.dark article.post-card[data-post-card-shell] #reaction-row.reactions-row,
 .dark article.post-card[data-post-card-shell] #reaction-row.reactions-row,
-[data-theme="dark"] article.post-card[data-post-card-shell] #reaction-row.reactions-row {
-    border-bottom-color: rgba(255, 255, 255, 0.12) !important;
-}
+[data-theme="dark"] article.post-card[data-post-card-shell] #reaction-row.reactions-row { border-bottom-color: rgba(255,255,255,.12) !important; }
 
 @media (max-width: 640px) {
     html.dark body article.post-card[data-post-card-shell] #reaction-row.reactions-row button.smiley-btn.reaction-add[data-post-card-reaction-trigger],
     body.dark article.post-card[data-post-card-shell] #reaction-row.reactions-row button.smiley-btn.reaction-add[data-post-card-reaction-trigger],
     .dark article.post-card[data-post-card-shell] #reaction-row.reactions-row button.smiley-btn.reaction-add[data-post-card-reaction-trigger],
-    [data-theme="dark"] article.post-card[data-post-card-shell] #reaction-row.reactions-row button.smiley-btn.reaction-add[data-post-card-reaction-trigger] {
-        border: 0 !important;
-        box-shadow: none !important;
-        background: #2f3237 !important;
-        background-color: #2f3237 !important;
-    }
+    [data-theme="dark"] article.post-card[data-post-card-shell] #reaction-row.reactions-row button.smiley-btn.reaction-add[data-post-card-reaction-trigger] { border: 0 !important; box-shadow: none !important; background: #2f3237 !important; background-color: #2f3237 !important; }
 }
 
-/*
- * Post-card genel yüzey ve medya düzeltmesi:
- * - Kart gölgesini kaldır.
- * - Tepki ekleme butonundaki ince sınırı tüm ekran boyutlarında kaldır.
- * - Öne çıkan resmi sabit oran/kutu içine sıkıştırma; gerçek en-boy oranını koru.
- * - Görsel çevresindeki boşluk, arka plan, sınır ve gölgeyi kaldır.
- */
-html body article.post-card[data-post-card-shell] {
-    box-shadow: none !important;
-}
-
+html body article.post-card[data-post-card-shell] { box-shadow: none !important; }
 html body article.post-card[data-post-card-shell] #reaction-row.reactions-row button.smiley-btn.reaction-add[data-post-card-reaction-trigger],
-html body article.post-card[data-post-card-shell] button.smiley-btn.reaction-add[data-post-card-reaction-trigger] {
-    border: 0 !important;
-    outline: 0 !important;
-    box-shadow: none !important;
-}
+html body article.post-card[data-post-card-shell] button.smiley-btn.reaction-add[data-post-card-reaction-trigger] { border: 0 !important; outline: 0 !important; box-shadow: none !important; }
 
-html body.route-home .home-feed-shell article.post-card[data-post-card-shell] :is(
-    .post-card__media-scroller,
-    .post-card__media-slide,
-    .post-card__media-link,
-    .post-card__media-frame
-) {
-    min-height: 0 !important;
-    height: auto !important;
-    max-height: none !important;
-    aspect-ratio: auto !important;
-    padding: 0 !important;
-    border: 0 !important;
-    background: transparent !important;
-    box-shadow: none !important;
-}
+html body.route-home .home-feed-shell article.post-card[data-post-card-shell] :is(.post-card__media-scroller,.post-card__media-slide,.post-card__media-link,.post-card__media-frame) { min-height: 0 !important; height: auto !important; max-height: none !important; aspect-ratio: auto !important; padding: 0 !important; border: 0 !important; background: transparent !important; box-shadow: none !important; }
+html body.route-home .home-feed-shell article.post-card[data-post-card-shell] :is(.post-card__media-image,.hero-image,.alma-post-card__image) { display: block !important; width: 100% !important; min-height: 0 !important; height: auto !important; max-height: none !important; aspect-ratio: auto !important; object-fit: contain !important; object-position: center !important; margin: 0 !important; padding: 0 !important; border: 0 !important; background: transparent !important; box-shadow: none !important; }
 
-html body.route-home .home-feed-shell article.post-card[data-post-card-shell] :is(
-    .post-card__media-image,
-    .hero-image,
-    .alma-post-card__image
-) {
-    display: block !important;
-    width: 100% !important;
-    min-height: 0 !important;
-    height: auto !important;
-    max-height: none !important;
-    aspect-ratio: auto !important;
-    object-fit: contain !important;
-    object-position: center !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    border: 0 !important;
-    background: transparent !important;
-    box-shadow: none !important;
-}
-
-/*
- * Ana akış yüzeyleri gölge kullanmaz.
- * Normal, hover, focus ve active durumlarının tamamını kilitle.
- */
 html body.route-home .home-feed-shell article.post-card[data-post-card-shell],
 html body.route-home .home-feed-shell article.post-card[data-post-card-shell]:hover,
 html body.route-home .home-feed-shell article.post-card[data-post-card-shell]:focus,
@@ -200,8 +45,19 @@ html body.route-home .home-feed-shell [data-og-feed-insert-card],
 html body.route-home .home-feed-shell [data-og-feed-insert-card]:hover,
 html body.route-home .home-feed-shell [data-og-feed-insert-card]:focus,
 html body.route-home .home-feed-shell [data-og-feed-insert-card]:focus-within,
-html body.route-home .home-feed-shell [data-og-feed-insert-card]:active {
-    box-shadow: none !important;
-    filter: none !important;
-    transform: none !important;
+html body.route-home .home-feed-shell [data-og-feed-insert-card]:active { box-shadow: none !important; filter: none !important; transform: none !important; }
+
+/* Ografi mobil post-card aksiyon ikonları: daha görünür ikon + rahat dokunma alanı */
+@media (max-width: 640px) {
+    html body article.post-card[data-post-card-shell] #action-bar.action-bar :is(.action-btn,.action-stat,.action-chip,.post-metric) { display: inline-flex !important; align-items: center !important; justify-content: center !important; min-width: 44px !important; min-height: 44px !important; width: 44px !important; height: 44px !important; padding: 0 !important; margin: 0 !important; line-height: 1 !important; flex: 0 0 44px !important; -webkit-tap-highlight-color: transparent !important; touch-action: manipulation !important; }
+    html body article.post-card[data-post-card-shell] #action-bar.action-bar :is(.action-btn,.action-stat,.action-chip,.post-metric) :is(svg,iconify-icon,.post-card__inline-icon) { display: inline-flex !important; align-items: center !important; justify-content: center !important; width: 22px !important; height: 22px !important; min-width: 22px !important; min-height: 22px !important; max-width: 22px !important; max-height: 22px !important; flex: 0 0 22px !important; margin: 0 !important; padding: 0 !important; box-sizing: border-box !important; }
+    html body article.post-card[data-post-card-shell] #action-bar.action-bar :is(.action-btn,.action-stat,.action-chip,.post-metric) :is(svg,iconify-icon) { stroke-width: 1.9 !important; }
+    html body article.post-card[data-post-card-shell] #action-bar.action-bar :is(.action-btn,.action-stat,.action-chip,.post-metric) :is(span,.label,.action-label) { font-size: 13px !important; line-height: 1.1 !important; }
+    html body article.post-card[data-post-card-shell] #action-bar.action-bar { min-height: 52px !important; gap: 4px !important; align-items: center !important; box-sizing: border-box !important; }
+    html body article.post-card[data-post-card-shell] #action-bar.action-bar :is(.action-btn,.action-stat,.action-chip,.post-metric) + :is(.action-btn,.action-stat,.action-chip,.post-metric) { margin-left: 2px !important; }
+}
+
+@media (max-width: 380px) {
+    html body article.post-card[data-post-card-shell] #action-bar.action-bar :is(.action-btn,.action-stat,.action-chip,.post-metric) { min-width: 42px !important; min-height: 42px !important; width: 42px !important; height: 42px !important; flex-basis: 42px !important; }
+    html body article.post-card[data-post-card-shell] #action-bar.action-bar :is(.action-btn,.action-stat,.action-chip,.post-metric) :is(svg,iconify-icon,.post-card__inline-icon) { width: 21px !important; height: 21px !important; min-width: 21px !important; min-height: 21px !important; max-width: 21px !important; max-height: 21px !important; flex-basis: 21px !important; }
 }
