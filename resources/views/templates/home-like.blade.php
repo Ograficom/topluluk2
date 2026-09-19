@@ -5579,9 +5579,11 @@
         line-height: 24px !important;
     }
 
-    /* Read-more control: text/icon only, no grey browser/button surface. */
-    html body .home-feed-shell article.post-card[data-post-card-shell] :is(a, button, .expand-link).expand-link,
-    html body .home-feed-shell article.post-card[data-post-card-shell] .expand-link {
+    /* Read-more control: text/icon only on every post-card. */
+    html body article.post-card .expand-link,
+    html body article.post-card a.expand-link,
+    html body article.post-card button.expand-link,
+    html body .expand-link {
         display: inline-flex !important;
         align-items: center !important;
         width: auto !important;
@@ -5601,9 +5603,12 @@
         outline: none !important;
     }
 
-    html body .home-feed-shell article.post-card[data-post-card-shell] .expand-link:hover,
-    html body .home-feed-shell article.post-card[data-post-card-shell] .expand-link:focus,
-    html body .home-feed-shell article.post-card[data-post-card-shell] .expand-link:active {
+    html body article.post-card .expand-link:hover,
+    html body article.post-card .expand-link:focus,
+    html body article.post-card .expand-link:active,
+    html body .expand-link:hover,
+    html body .expand-link:focus,
+    html body .expand-link:active {
         background: transparent !important;
         background-color: transparent !important;
         box-shadow: none !important;
