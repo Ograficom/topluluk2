@@ -2894,32 +2894,38 @@ html body .site-search-dropdown-top .site-search-clear :is(iconify-icon, svg) {
 }
 
 html body .site-search-dropdown-top .site-search-close {
-    width: 40px !important;
-    height: 40px !important;
-    min-width: 40px !important;
-    min-height: 40px !important;
-    flex: 0 0 40px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 30px !important;
+    height: 30px !important;
+    min-width: 30px !important;
+    min-height: 30px !important;
+    flex: 0 0 30px !important;
+    margin-left: 2px !important;
     padding: 0 !important;
-    border: 0 !important;
-    border-radius: 9999px !important;
-    background: #f3f6fc !important;
+    border: 1px solid transparent !important;
+    border-radius: 9px !important;
+    background: #eff6ff !important;
+    background-color: #eff6ff !important;
     color: #2563eb !important;
     box-shadow: none !important;
+    transition: background-color .16s ease, border-color .16s ease, color .16s ease !important;
 }
 
 html body .site-search-dropdown-top .site-search-close:is(:hover, :focus, :focus-visible, :active) {
-    border: 0 !important;
-    background: #f3f6fc !important;
-    background-color: #f3f6fc !important;
-    color: #2563eb !important;
+    border-color: #dbeafe !important;
+    background: #eaf3ff !important;
+    background-color: #eaf3ff !important;
+    color: #1d4ed8 !important;
     box-shadow: none !important;
 }
 
 html body .site-search-dropdown-top .site-search-close :is(iconify-icon, svg) {
-    width: 20px !important;
-    height: 20px !important;
-    font-size: 20px !important;
-    line-height: 20px !important;
+    width: 15px !important;
+    height: 15px !important;
+    font-size: 15px !important;
+    line-height: 15px !important;
 }
 
 {{--
