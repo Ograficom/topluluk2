@@ -129,18 +129,6 @@
       "hash": "2e0d30a353b44fa24c9270e8331367bbce49e0f4dc2e4d19b79f96ec15f5273b"
     },
     {
-      "nodeId": "143:6494",
-      "name": "WEB / Video",
-      "route": "/video",
-      "target": null,
-      "platform": "web-desktop",
-      "syncMode": "review-structural",
-      "found": true,
-      "width": 1440,
-      "height": 1024,
-      "hash": "e315a9c25b9935202c1d6e3f6d64bc3d24fe475299c082e9622dfda40270aa7d"
-    },
-    {
       "nodeId": "143:6561",
       "name": "WEB / Popular",
       "route": "/blog/popular",
@@ -319,18 +307,6 @@
       "width": 390,
       "height": 844,
       "hash": "18645f1add68f50b8ba42ab8742778d8be18f9c949e2284156528f568a6b2ee4"
-    },
-    {
-      "nodeId": "143:7591",
-      "name": "WEBM / Video",
-      "route": "/video",
-      "target": null,
-      "platform": "web-mobile",
-      "syncMode": "review-structural",
-      "found": true,
-      "width": 390,
-      "height": 844,
-      "hash": "779306a0e37290f9deab65e5b210b09c41c2499110bd04c9dd7f9df58f174d68"
     },
     {
       "nodeId": "143:7621",
