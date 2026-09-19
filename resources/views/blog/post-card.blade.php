@@ -9824,6 +9824,31 @@ SVG;
         }
 
 
+        html body article.post-card[data-post-card-shell] .expand-link {
+            cursor: pointer !important;
+            color: var(--pc-accent, #2563eb) !important;
+            user-select: none !important;
+        }
+
+        html body article.post-card[data-post-card-shell] .expand-link:hover {
+            color: var(--pc-accent-hover, #1d4ed8) !important;
+            text-decoration: underline !important;
+            text-underline-offset: 3px !important;
+            transform: none !important;
+        }
+
+        html body article.post-card[data-post-card-shell] .expand-link:focus-visible {
+            color: var(--pc-accent-hover, #1d4ed8) !important;
+            text-decoration: underline !important;
+            text-underline-offset: 3px !important;
+        }
+
+        html body article.post-card[data-post-card-shell] .expand-link:active {
+            color: var(--pc-accent-hover, #1d4ed8) !important;
+            text-decoration: underline !important;
+            transform: translateY(1px) !important;
+        }
+
         /* FINAL: Devamını oku kontrolü hiçbir durumda buton zemini göstermesin. */
         html body article.post-card[data-post-card-shell] .expand-link,
         html body article.post-card[data-post-card-shell] .expand-link:hover,
