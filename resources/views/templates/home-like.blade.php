@@ -5578,6 +5578,36 @@
         font-weight: 600 !important;
         line-height: 24px !important;
     }
+
+    /* Read-more control: text/icon only, no grey browser/button surface. */
+    html body .home-feed-shell article.post-card[data-post-card-shell] :is(a, button, .expand-link).expand-link,
+    html body .home-feed-shell article.post-card[data-post-card-shell] .expand-link {
+        display: inline-flex !important;
+        align-items: center !important;
+        width: auto !important;
+        min-width: 0 !important;
+        height: auto !important;
+        min-height: 0 !important;
+        margin: 5px 0 16px !important;
+        padding: 0 !important;
+        border: 0 !important;
+        border-width: 0 !important;
+        border-radius: 0 !important;
+        background: transparent !important;
+        background-color: transparent !important;
+        box-shadow: none !important;
+        appearance: none !important;
+        -webkit-appearance: none !important;
+        outline: none !important;
+    }
+
+    html body .home-feed-shell article.post-card[data-post-card-shell] .expand-link:hover,
+    html body .home-feed-shell article.post-card[data-post-card-shell] .expand-link:focus,
+    html body .home-feed-shell article.post-card[data-post-card-shell] .expand-link:active {
+        background: transparent !important;
+        background-color: transparent !important;
+        box-shadow: none !important;
+    }
 }
 
 /* Final feed toolbar appearance: match the compact reference tabs. */
