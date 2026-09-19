@@ -9883,13 +9883,11 @@ SVG;
         html body article.post-card[data-post-card-shell] .expand-link:hover,
         html body article.post-card[data-post-card-shell] .expand-link:focus,
         html body article.post-card[data-post-card-shell] .expand-link:focus-visible,
-        html body article.post-card[data-post-card-shell] .expand-link:active {
-            background: transparent !important;
-            background-color: transparent !important;
-            background-image: none !important;
-            border-color: transparent !important;
-            box-shadow: none !important;
-            outline: none !important;
+        html body article.post-card[data-post-card-shell] .expand-link:active,
+        html body article.post-card[data-post-card-shell] .expand-link[aria-expanded="true"] {
+            color: #111827 !important;
+            text-decoration: none !important;
+            transform: translateY(1px) !important;
         }
 
         html body article.post-card[data-post-card-shell] .expand-link .post-card__expand-icon,
