@@ -9484,7 +9484,6 @@ SVG;
             }
 
             html body article.post-card[data-post-card-shell] [data-og-action-trigger]:hover,
-            html body article.post-card[data-post-card-shell] .expand-link:hover,
             html body article.post-card[data-post-card-shell] :is(.reaction-item, .smiley-btn.reaction-add, .more-pill):hover,
             html body article.post-card[data-post-card-shell] .action-bar :is(.action-btn, .action-stat, .post-card__action-link, .post-card__action-button, .action-chip, .post-metric, .post-metric--views):not(:disabled):hover {
                 background: var(--pc-control-hover) !important;
@@ -9822,6 +9821,58 @@ SVG;
             html body [data-post-card-reaction-menu]:not([hidden]) {
                 grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
             }
+        }
+
+
+        /* FINAL: Devamını oku kontrolü hiçbir durumda buton zemini göstermesin. */
+        html body article.post-card[data-post-card-shell] .expand-link,
+        html body article.post-card[data-post-card-shell] .expand-link:hover,
+        html body article.post-card[data-post-card-shell] .expand-link:focus,
+        html body article.post-card[data-post-card-shell] .expand-link:focus-visible,
+        html body article.post-card[data-post-card-shell] .expand-link:active {
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: flex-start !important;
+            width: max-content !important;
+            min-width: 0 !important;
+            max-width: 100% !important;
+            height: auto !important;
+            min-height: 0 !important;
+            margin: 5px 0 0 !important;
+            padding: 0 !important;
+            border: 0 !important;
+            border-width: 0 !important;
+            border-style: none !important;
+            border-radius: 0 !important;
+            background: transparent !important;
+            background-color: transparent !important;
+            background-image: none !important;
+            box-shadow: none !important;
+            outline: none !important;
+            appearance: none !important;
+            -webkit-appearance: none !important;
+            -webkit-tap-highlight-color: transparent !important;
+            transition: color 140ms ease, transform 120ms ease !important;
+        }
+
+        html body article.post-card[data-post-card-shell] .expand-link:hover,
+        html body article.post-card[data-post-card-shell] .expand-link:focus,
+        html body article.post-card[data-post-card-shell] .expand-link:focus-visible,
+        html body article.post-card[data-post-card-shell] .expand-link:active {
+            background: transparent !important;
+            background-color: transparent !important;
+            background-image: none !important;
+            border-color: transparent !important;
+            box-shadow: none !important;
+            outline: none !important;
+        }
+
+        html body article.post-card[data-post-card-shell] .expand-link .post-card__expand-icon,
+        html body article.post-card[data-post-card-shell] .expand-link .post-card__expand-icon iconify-icon {
+            background: transparent !important;
+            background-color: transparent !important;
+            background-image: none !important;
+            box-shadow: none !important;
         }
 
 </style>
