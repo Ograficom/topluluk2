@@ -18,7 +18,6 @@ use App\Http\Middleware\PostShowMobileTypographyMiddleware;
 use App\Http\Middleware\PostShowReactionLayoutMiddleware;
 use App\Http\Middleware\PostShowTypographyMiddleware;
 use App\Http\Middleware\SetLocale;
-use App\Http\Middleware\VideoPageResponseMiddleware;
 use Illuminate\Http\Middleware\ValidatePostSize;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -58,7 +57,6 @@ return Application::configure(basePath: dirname(__DIR__))
             CommentSkeletonPreloaderMiddleware::class,
             LoginPageSecurityMiddleware::class,
             ContactPageFieldStyleMiddleware::class,
-            VideoPageResponseMiddleware::class,
             HomeFeedInterleavedCardsMiddleware::class,
             ReactionDetailsMiddleware::class,
         ]);
