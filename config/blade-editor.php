@@ -28,7 +28,6 @@ return [
         'dashboard.blade.php' => 'Panel',
         'components/mobile-bottom-nav.blade.php' => 'Mobil Alt Menu',
         'components/install-layout.blade.php' => 'Kurulum Yerlesimi',
-        'video_player.blade.php' => 'Video Oynatici',
     ],
     'backup_dir' => 'blade-backups',
     'max_backups' => 20,
