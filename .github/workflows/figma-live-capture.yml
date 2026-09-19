@@ -43,7 +43,6 @@ jobs:
             ['Mobile / Search', 'https://ografi.com/search', '7b3aeeb6-e6f4-4c28-a683-36f92561ed20'],
             ['Mobile / Tags', 'https://ografi.com/blog/tags', '9004c7a2-82c9-495a-942e-34129c6c21e9'],
             ['Mobile / Users', 'https://ografi.com/users', 'd60b31c6-cf8a-4be1-bff8-4156ec5fb1e4'],
-            ['Mobile / Video', 'https://ografi.com/video', 'cbe42cce-5976-4c6a-9213-e2747f55c0c6'],
             ['Mobile / Communities', 'https://ografi.com/Categorys', '2e092341-1c85-47ad-bfbd-0ce27a770077'],
             ['Mobile / Profile Admin', 'https://ografi.com/u/admin', 'b6b52c77-420f-46ea-b39a-365275b78713'],
             ['Mobile / Advertise', 'https://ografi.com/reklam-ver', 'b41d13be-a503-4b21-baf7-8103716e0778'],
