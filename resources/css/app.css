@@ -895,3 +895,57 @@ body.theme-minimal .rounded-3xl {
         outline: none !important;
     }
 }
+
+
+/* Global post-card read-more reset: never show a button/grey surface. */
+html body article.post-card [data-post-card-shell] .expand-link,
+html body article.post-card[data-post-card-shell] .expand-link,
+html body [data-post-card-shell] .expand-link {
+    display: inline-flex !important;
+    align-items: center !important;
+    width: auto !important;
+    min-width: 0 !important;
+    height: auto !important;
+    min-height: 0 !important;
+    margin: 5px 0 16px !important;
+    padding: 0 !important;
+    border: 0 !important;
+    border-width: 0 !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    background-color: transparent !important;
+    background-image: none !important;
+    box-shadow: none !important;
+    outline: none !important;
+    appearance: none !important;
+    -webkit-appearance: none !important;
+}
+
+html body article.post-card [data-post-card-shell] .expand-link:hover,
+html body article.post-card[data-post-card-shell] .expand-link:hover,
+html body [data-post-card-shell] .expand-link:hover,
+html body article.post-card [data-post-card-shell] .expand-link:focus,
+html body article.post-card[data-post-card-shell] .expand-link:focus,
+html body [data-post-card-shell] .expand-link:focus,
+html body article.post-card [data-post-card-shell] .expand-link:active,
+html body article.post-card[data-post-card-shell] .expand-link:active,
+html body [data-post-card-shell] .expand-link:active,
+html body article.post-card [data-post-card-shell] .expand-link:focus-visible,
+html body article.post-card[data-post-card-shell] .expand-link:focus-visible,
+html body [data-post-card-shell] .expand-link:focus-visible {
+    background: transparent !important;
+    background-color: transparent !important;
+    background-image: none !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    outline: none !important;
+}
+
+html body article.post-card [data-post-card-shell] .expand-link::before,
+html body article.post-card [data-post-card-shell] .expand-link::after,
+html body article.post-card[data-post-card-shell] .expand-link::before,
+html body article.post-card[data-post-card-shell] .expand-link::after {
+    background: transparent !important;
+    background-color: transparent !important;
+    box-shadow: none !important;
+}
