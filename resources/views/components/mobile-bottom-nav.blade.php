@@ -1,7 +1,6 @@
 @php
     $homeActive = request()->routeIs('home');
     $searchActive = request()->routeIs('search');
-    $videoActive = request()->routeIs('video');
     $messagesActive = request()->routeIs('messages.*');
 @endphp
 
