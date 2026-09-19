@@ -58,19 +58,6 @@
                 <span class="sr-only">{{ __('site.mobile_nav.new_item') }}</span>
             </a>
 
-        <a
-            href="{{ route('video') }}"
-            class="mobile-bottom-nav__item {{ $videoActive ? 'mobile-bottom-nav__item--active' : '' }}"
-            aria-label="Video"
-            @if($videoActive) aria-current="page" @endif
-        >
-            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.9" d="M6.75 5.75h7.5A3.25 3.25 0 0 1 17.5 9v6a3.25 3.25 0 0 1-3.25 3.25h-7.5A3.25 3.25 0 0 1 3.5 15V9a3.25 3.25 0 0 1 3.25-3.25Z" />
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.9" d="m17.5 10 3-2v8l-3-2" />
-            </svg>
-            <span class="sr-only">Video</span>
-        </a>
-
         @auth
             <a
                 href="{{ route('messages.index') }}"
