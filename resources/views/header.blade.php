@@ -1384,15 +1384,65 @@
     }
 
     .site-search-all {
-        color: #2563eb !important;
+        display: flex !important;
+        align-items: center !important;
+        gap: 10px !important;
+        min-height: 44px !important;
+        margin: 4px 0 0 !important;
+        padding: 6px 10px !important;
+        border: 1px solid transparent !important;
+        border-radius: 12px !important;
+        color: #1e293b !important;
         background: transparent !important;
-        font-weight: 400 !important;
+        font-size: 14px !important;
+        font-weight: 500 !important;
+        line-height: 1.2 !important;
         text-decoration: none !important;
+        transition: background-color .16s ease, border-color .16s ease, color .16s ease !important;
     }
 
-    .site-search-all:hover {
-        background: #f8fafc !important;
+    .site-search-all:hover,
+    .site-search-all:focus-visible {
+        border-color: #dbeafe !important;
+        background: #f8fbff !important;
         color: #1d4ed8 !important;
+        outline: none !important;
+    }
+
+    .site-search-all-icon {
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        width: 30px !important;
+        height: 30px !important;
+        flex: 0 0 30px !important;
+        border-radius: 9px !important;
+        background: #eff6ff !important;
+        color: #2563eb !important;
+    }
+
+    .site-search-all-icon iconify-icon {
+        font-size: 15px !important;
+        color: currentColor !important;
+    }
+
+    .site-search-all-label {
+        flex: 1 1 auto !important;
+        min-width: 0 !important;
+        color: currentColor !important;
+    }
+
+    .site-search-all-arrow {
+        flex: 0 0 auto !important;
+        font-size: 16px !important;
+        color: #94a3b8 !important;
+        transition: transform .16s ease, color .16s ease !important;
+    }
+
+    .site-search-all:hover .site-search-all-arrow,
+    .site-search-all:focus-visible .site-search-all-arrow {
+        color: #2563eb !important;
+        transform: translateX(2px) !important;
     }
 
     {{--
@@ -2080,8 +2130,11 @@
                         <div class="site-search-results" data-search-results></div>
 
                         <a href="{{ route('search') }}" class="site-search-all" data-search-view-all>
-                            <iconify-icon icon="lucide:corner-down-left"></iconify-icon>
-                            <span data-search-view-all-label>{{ __('site.header.view_all_results') }}</span>
+                            <span class="site-search-all-icon" aria-hidden="true">
+                                <iconify-icon icon="lucide:arrow-right"></iconify-icon>
+                            </span>
+                            <span class="site-search-all-label" data-search-view-all-label>{{ __('site.header.view_all_results') }}</span>
+                            <iconify-icon class="site-search-all-arrow" icon="lucide:chevron-right" aria-hidden="true"></iconify-icon>
                         </a>
                     </div>
                 </div>
