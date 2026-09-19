@@ -7630,3 +7630,50 @@
     </style>
 </body>
 </html>
+
+
+<style id="ografi-post-card-read-more-reset">
+/* Final global rule: read-more text/icon must never render as a grey button. */
+html body .expand-link,
+html body a.expand-link,
+html body button.expand-link,
+html body .alma-post-card__inline-toggle,
+html body button.alma-post-card__inline-toggle {
+    display: inline-flex !important;
+    align-items: center !important;
+    width: auto !important;
+    min-width: 0 !important;
+    height: auto !important;
+    min-height: 0 !important;
+    margin: 4px 0 14px !important;
+    padding: 0 !important;
+    border: 0 !important;
+    border-width: 0 !important;
+    border-style: none !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    background-color: transparent !important;
+    background-image: none !important;
+    box-shadow: none !important;
+    outline: none !important;
+    appearance: none !important;
+    -webkit-appearance: none !important;
+    -webkit-tap-highlight-color: transparent !important;
+}
+
+html body .expand-link:hover,
+html body .expand-link:focus,
+html body .expand-link:focus-visible,
+html body .expand-link:active,
+html body .alma-post-card__inline-toggle:hover,
+html body .alma-post-card__inline-toggle:focus,
+html body .alma-post-card__inline-toggle:focus-visible,
+html body .alma-post-card__inline-toggle:active {
+    background: transparent !important;
+    background-color: transparent !important;
+    background-image: none !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    outline: none !important;
+}
+</style>
