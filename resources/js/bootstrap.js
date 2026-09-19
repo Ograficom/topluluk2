@@ -7,7 +7,6 @@ import '../css/post-create-settings-polish.css';
 import '../css/post-create-settings-tabs.css';
 import '../css/post-create-mobile-fix.css';
 import '../css/post-card-footer-polish.css';
-import '../css/video-mobile-header-fade.css';
 import '../css/editorjs-create-polish.css';
 import './post-create-server-drafts.js';
 import './stats-modal.js';
