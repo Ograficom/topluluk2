@@ -13,6 +13,6 @@ return new class extends Migration
 
     public function down(): void
     {
-        // The standalone live TV feature was removed permanently.
+        // Intentionally no-op: the standalone live TV feature was removed permanently.
     }
 };
