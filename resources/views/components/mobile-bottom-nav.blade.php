@@ -100,12 +100,12 @@
             overflow: hidden !important;
             border: 1px solid #e5e7eb !important;
             border-radius: 14px !important;
-            background: #ffffff !important;
-            background-color: #ffffff !important;
-            box-shadow: none !important;
+            background: rgba(255, 255, 255, 0.72) !important;
+            background-color: rgba(255, 255, 255, 0.72) !important;
+            box-shadow: 0 8px 28px rgba(15, 23, 42, 0.12), 0 2px 8px rgba(15, 23, 42, 0.06) !important;
             filter: none !important;
-            -webkit-backdrop-filter: none !important;
-            backdrop-filter: none !important;
+            -webkit-backdrop-filter: blur(24px) saturate(180%) !important;
+            backdrop-filter: blur(24px) saturate(180%) !important;
             transform: translate3d(-50%, 0, 0) !important;
             transition: none !important;
             animation: none !important;
@@ -155,9 +155,22 @@
             max-width: none !important;
             height: 40px !important;
             border: 0 !important;
-            border-radius: 10px !important;
-            background: transparent !important;
-            box-shadow: none !important;
+            border-radius: 9999px !important;
+            background: #2563eb !important;
+            color: #ffffff !important;
+            box-shadow: 0 5px 14px rgba(37, 99, 235, 0.28) !important;
+            transform: scale(1.02) !important;
+            transition: transform 140ms ease, background-color 140ms ease, box-shadow 140ms ease !important;
+        }
+
+        html body [data-mobile-bottom-nav].mobile-bottom-nav .mobile-bottom-nav__plus:hover {
+            background: #1d4ed8 !important;
+            box-shadow: 0 7px 18px rgba(37, 99, 235, 0.32) !important;
+            transform: scale(1.06) !important;
+        }
+
+        html body [data-mobile-bottom-nav].mobile-bottom-nav .mobile-bottom-nav__plus:active {
+            transform: scale(0.94) !important;
         }
 
         html body [data-mobile-bottom-nav].mobile-bottom-nav svg {
@@ -173,9 +186,9 @@
         }
 
         html.dark body [data-mobile-bottom-nav].mobile-bottom-nav {
-            border-color: #273244 !important;
-            background: #111827 !important;
-            background-color: #111827 !important;
+            border-color: rgba(255,255,255,.12) !important;
+            background: rgba(15, 23, 42, 0.72) !important;
+            background-color: rgba(15, 23, 42, 0.72) !important;
         }
 
         html.dark body [data-mobile-bottom-nav].mobile-bottom-nav .mobile-bottom-nav__item {
