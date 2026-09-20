@@ -3593,3 +3593,187 @@ html.dark body .site-search-all:is(:hover, :focus-visible) {
     color: #dbeafe !important;
 }
 </style>
+
+<style>
+
+/* Modern bildirim paneli */
+html body .site-notifications-panel {
+    width: 368px !important;
+    max-width: min(368px, calc(100vw - 24px)) !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 20px !important;
+    background: rgba(255,255,255,.98) !important;
+    box-shadow: 0 24px 60px -24px rgba(15,23,42,.28), 0 8px 24px rgba(15,23,42,.08) !important;
+    backdrop-filter: blur(18px) saturate(150%) !important;
+    -webkit-backdrop-filter: blur(18px) saturate(150%) !important;
+    overflow: hidden !important;
+}
+
+html body .site-notifications-panel-head {
+    min-height: 60px !important;
+    padding: 13px 14px 12px 18px !important;
+    border-bottom: 1px solid #eef2f7 !important;
+    background: #fff !important;
+}
+
+html body .site-notifications-panel-title {
+    font-size: 15px !important;
+    font-weight: 700 !important;
+    letter-spacing: -.015em !important;
+    color: #0f172a !important;
+}
+
+html body .site-notifications-more,
+html body button[data-notifications-actions-btn] {
+    width: 34px !important;
+    height: 34px !important;
+    border-radius: 11px !important;
+    color: #64748b !important;
+    background: #f8fafc !important;
+    transition: background-color 140ms ease, color 140ms ease, transform 100ms ease !important;
+}
+
+html body .site-notifications-more:hover,
+html body button[data-notifications-actions-btn]:hover {
+    background: #eef2f7 !important;
+    color: #0f172a !important;
+}
+
+html body .site-notifications-list {
+    max-height: 390px !important;
+    padding: 8px !important;
+    background: #fff !important;
+}
+
+html body .site-notification-item {
+    display: flex !important;
+    align-items: flex-start !important;
+    gap: 11px !important;
+    min-height: 72px !important;
+    margin: 2px 0 !important;
+    padding: 11px 10px !important;
+    border: 1px solid transparent !important;
+    border-radius: 15px !important;
+    background: transparent !important;
+    color: #0f172a !important;
+    transition: background-color 140ms ease, border-color 140ms ease, transform 100ms ease !important;
+}
+
+html body .site-notification-item.is-unread {
+    background: #eef4ff !important;
+    border-color: #e0eaff !important;
+}
+
+html body .site-notification-item:hover,
+html body .site-notification-item.is-unread:hover {
+    background: #e8f0ff !important;
+    border-color: #d8e5ff !important;
+}
+
+html body .site-notification-item:active {
+    transform: scale(.992) !important;
+}
+
+html body .site-notification-item-avatar,
+html body .site-notification-item-avatar--fallback {
+    width: 38px !important;
+    height: 38px !important;
+    flex: 0 0 38px !important;
+    border-radius: 12px !important;
+    border: 1px solid rgba(148,163,184,.18) !important;
+}
+
+html body .site-notification-item-avatar--fallback {
+    background: #f8fafc !important;
+    color: #334155 !important;
+    font-size: 13px !important;
+    font-weight: 600 !important;
+}
+
+html body .site-notification-item-copy {
+    padding-right: 2px !important;
+}
+
+html body .site-notification-item-meta {
+    display: flex !important;
+    align-items: center !important;
+    gap: 4px !important;
+    margin: 0 0 3px !important;
+    color: #64748b !important;
+    font-size: 11px !important;
+    line-height: 1.2 !important;
+}
+
+html body .site-notification-item-meta iconify-icon {
+    font-size: 13px !important;
+    color: #64748b !important;
+}
+
+html body .site-notification-item-title {
+    margin: 0 !important;
+    color: #1e293b !important;
+    font-size: 13px !important;
+    line-height: 1.4 !important;
+    letter-spacing: -.005em !important;
+}
+
+html body .site-notification-item-title strong {
+    color: #0f172a !important;
+    font-weight: 700 !important;
+}
+
+html body .site-notification-item-preview {
+    margin: 3px 0 0 !important;
+    color: #64748b !important;
+    font-size: 12px !important;
+    line-height: 1.4 !important;
+    -webkit-line-clamp: 1 !important;
+}
+
+html body .site-notifications-footer-link {
+    min-height: 48px !important;
+    padding: 12px 16px !important;
+    border-top: 1px solid #eef2f7 !important;
+    background: #fff !important;
+    color: #334155 !important;
+    font-size: 12.5px !important;
+    font-weight: 600 !important;
+    transition: background-color 140ms ease, color 140ms ease !important;
+}
+
+html body .site-notifications-footer-link:hover {
+    background: #f8fafc !important;
+    color: #0f172a !important;
+}
+
+html.dark body .site-notifications-panel,
+.dark .site-notifications-panel {
+    background: #0f172a !important;
+    border-color: #263449 !important;
+}
+
+html.dark body .site-notifications-panel-head,
+html.dark body .site-notifications-list,
+html.dark body .site-notifications-footer-link,
+.dark .site-notifications-panel-head,
+.dark .site-notifications-list,
+.dark .site-notifications-footer-link {
+    background: #0f172a !important;
+    border-color: #1e293b !important;
+}
+
+html.dark body .site-notification-item.is-unread,
+.dark .site-notification-item.is-unread {
+    background: rgba(37,99,235,.16) !important;
+    border-color: rgba(96,165,250,.18) !important;
+}
+
+@media (max-width: 639px) {
+    html body .site-notifications-panel {
+        width: min(368px, calc(100vw - 16px)) !important;
+        right: -4px !important;
+        border-radius: 18px !important;
+    }
+}
+
+</style>
