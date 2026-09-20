@@ -16,7 +16,6 @@
         <div class="alma-tabs">
             <a href="{{ route('home') }}" class="alma-tab is-active">{{ __('New') }}</a>
             <a href="{{ route('discover') }}" class="alma-tab">{{ __('Active') }}</a>
-            <a href="{{ route('blog.popular') }}" class="alma-tab">{{ __('Top') }}</a>
         </div>
 
             @forelse($posts as $post)
