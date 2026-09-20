@@ -99,11 +99,11 @@
             margin: 0 !important;
             padding: 0 !important;
             overflow: visible !important;
-            border: 1px solid rgba(255,255,255,.78) !important;
-            border-radius: 22px !important;
-            background: rgba(248,250,252,.58) !important;
-            background-color: rgba(248,250,252,.58) !important;
-            box-shadow: 0 16px 38px rgba(15,23,42,.13), 0 3px 10px rgba(15,23,42,.06), inset 0 1px 0 rgba(255,255,255,.92) !important;
+            border: 0 !important;
+            border-radius: 0 !important;
+            background: transparent !important;
+            background-color: transparent !important;
+            box-shadow: none !important;
             filter: none !important;
             -webkit-backdrop-filter: blur(24px) saturate(185%) !important;
             backdrop-filter: blur(24px) saturate(185%) !important;
@@ -159,8 +159,8 @@
 
         html body [data-mobile-bottom-nav].mobile-bottom-nav .mobile-bottom-nav__plus {
             position: fixed !important;
-            right: 0 !important;
-            top: 9px !important;
+            right: -56px !important;
+            top: 5px !important;
             width: 48px !important;
             min-width: 48px !important;
             max-width: 48px !important;
@@ -205,9 +205,9 @@
         }
 
         html.dark body [data-mobile-bottom-nav].mobile-bottom-nav {
-            border-color: rgba(255,255,255,.12) !important;
-            background: rgba(15, 23, 42, 0.62) !important;
-            background-color: rgba(15, 23, 42, 0.62) !important;
+            border-color: transparent !important;
+            background: transparent !important;
+            background-color: transparent !important;
         }
 
         html.dark body [data-mobile-bottom-nav].mobile-bottom-nav .mobile-bottom-nav__item {
