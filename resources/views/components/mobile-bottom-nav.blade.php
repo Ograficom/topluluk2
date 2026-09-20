@@ -9,7 +9,7 @@
     class="mobile-bottom-nav fixed left-1/2 z-50 hidden -translate-x-1/2 sm:hidden"
     aria-label="{{ __('site.mobile_nav.menu') }}"
 >
-    <div class="grid h-full grid-cols-5 items-center">
+    <div class="grid h-full grid-cols-4 items-center">
         <a
             href="{{ route('home') }}"
             class="mobile-bottom-nav__item {{ $homeActive ? 'mobile-bottom-nav__item--active' : '' }}"
@@ -113,7 +113,7 @@
 
         html body [data-mobile-bottom-nav].mobile-bottom-nav > div {
             display: grid !important;
-            grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+            grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
             align-items: center !important;
             width: 100% !important;
             height: 100% !important;
