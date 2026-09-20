@@ -18,7 +18,6 @@
         'blog.posts',
         'blog.category',
         'blog.categories',
-        'blog.popular',
         'blog.bookmarks',
         'discover',
         'users.show'
