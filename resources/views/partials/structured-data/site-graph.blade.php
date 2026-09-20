@@ -94,7 +94,6 @@
     $navigationLinks = collect([
         ['name' => 'Ana Sayfa', 'route' => 'home'],
         ['name' => 'Kesfet', 'route' => 'discover'],
-        ['name' => 'Populer Yazilar', 'route' => 'blog.popular'],
         ['name' => 'Uye Ol', 'route' => 'register'],
         ['name' => 'SSS', 'route' => 'pages.sss'],
     ])
