@@ -6,7 +6,6 @@ return [
         'discover' => 'Keşfet',
         'blog.index' => 'Blog Anasayfa',
         'blog.posts' => 'Blog Gonderileri',
-        'blog.popular' => 'Popüler',
         'blog.categories' => 'Kategoriler',
         'blog.tags' => 'Etiketler',
         'blog.post' => 'Gonderi Detayi',
