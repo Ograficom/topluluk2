@@ -9,7 +9,7 @@
     class="mobile-bottom-nav fixed left-1/2 z-50 hidden -translate-x-1/2 sm:hidden"
     aria-label="{{ __('site.mobile_nav.menu') }}"
 >
-    <div class="grid h-full grid-cols-4 items-center">
+    <div class="mobile-bottom-nav__main">
         <a
             href="{{ route('home') }}"
             class="mobile-bottom-nav__item {{ $homeActive ? 'mobile-bottom-nav__item--active' : '' }}"
@@ -39,21 +39,23 @@
             <span class="sr-only">{{ __('site.mobile_nav.search') }}</span>
         </a>
 
+</div>
+
         @auth
             <a
                 href="{{ route('blog.create') }}"
-                class="mobile-bottom-nav__item mobile-bottom-nav__plus"
+                class="mobile-bottom-nav__plus"
                 aria-label="{{ __('site.mobile_nav.new_item') }}"
             >
         @else
             <a
                 href="{{ route('login') }}"
-                class="mobile-bottom-nav__item mobile-bottom-nav__plus"
+                class="mobile-bottom-nav__plus"
                 aria-label="{{ __('site.mobile_nav.new_item') }}"
             >
         @endauth
                 <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M12 5v14M5 12h14" />
+                    <path stroke="currentColor" stroke-linecap="round" stroke-width="1.8" d="M12 5v14M5 12h14" />
                 </svg>
                 <span class="sr-only">{{ __('site.mobile_nav.new_item') }}</span>
             </a>
@@ -77,7 +79,6 @@
                 </svg>
                 <span class="sr-only">{{ __('site.sidebar.messages') }}</span>
             </a>
-    </div>
 </nav>
 
 <style>
@@ -90,13 +91,13 @@
             top: auto !important;
             bottom: max(6px, env(safe-area-inset-bottom, 0px)) !important;
             z-index: 900 !important;
-            width: min(calc(100% - 28px), 316px) !important;
-            max-width: 316px !important;
+            width: auto !important;
+            max-width: 230px !important;
             height: 58px !important;
             min-height: 58px !important;
             max-height: 58px !important;
             margin: 0 !important;
-            padding: 5px !important;
+            padding: 0 !important;
             overflow: visible !important;
             border: 1px solid rgba(255,255,255,.78) !important;
             border-radius: 22px !important;
@@ -111,13 +112,20 @@
             animation: none !important;
         }
 
-        html body [data-mobile-bottom-nav].mobile-bottom-nav > div {
+        html body [data-mobile-bottom-nav].mobile-bottom-nav > .mobile-bottom-nav__main {
             display: grid !important;
-            grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+            grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
             align-items: center !important;
-            width: 100% !important;
-            height: 100% !important;
+            width: 230px !important;
+            height: 58px !important;
+            padding: 5px !important;
             gap: 0 !important;
+            border: 1px solid rgba(255,255,255,.82) !important;
+            border-radius: 22px !important;
+            background: rgba(248,250,252,.58) !important;
+            box-shadow: 0 16px 38px rgba(15,23,42,.13), 0 3px 10px rgba(15,23,42,.06), inset 0 1px 0 rgba(255,255,255,.92) !important;
+            -webkit-backdrop-filter: blur(24px) saturate(185%) !important;
+            backdrop-filter: blur(24px) saturate(185%) !important;
         }
 
         html body [data-mobile-bottom-nav].mobile-bottom-nav .mobile-bottom-nav__item {
@@ -150,30 +158,38 @@
         }
 
         html body [data-mobile-bottom-nav].mobile-bottom-nav .mobile-bottom-nav__plus {
-            width: 40px !important;
-            min-width: 40px !important;
-            max-width: 40px !important;
-            height: 40px !important;
-            min-height: 40px !important;
-            max-height: 40px !important;
-            margin: 0 auto !important;
-            border: 1px solid rgba(255,255,255,.92) !important;
-            border-radius: 50% !important;
-            background: rgba(37,99,235,.96) !important;
-            color: #ffffff !important;
-            box-shadow: 0 8px 20px rgba(37,99,235,.24), inset 0 1px 0 rgba(255,255,255,.38) !important;
-            transform: translateZ(0) !important;
+            position: fixed !important;
+            right: 0 !important;
+            top: 9px !important;
+            width: 48px !important;
+            min-width: 48px !important;
+            max-width: 48px !important;
+            height: 48px !important;
+            min-height: 48px !important;
+            max-height: 48px !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            border: 1px solid rgba(255,255,255,.9) !important;
+            border-radius: 16px !important;
+            background: rgba(37,99,235,.94) !important;
+            color: #fff !important;
+            box-shadow: 0 12px 28px rgba(37,99,235,.24), inset 0 1px 0 rgba(255,255,255,.42) !important;
+            -webkit-backdrop-filter: blur(18px) saturate(180%) !important;
+            backdrop-filter: blur(18px) saturate(180%) !important;
+            transform: none !important;
             transition: transform 140ms ease, background-color 140ms ease, box-shadow 140ms ease !important;
+            z-index: 2 !important;
         }
 
         html body [data-mobile-bottom-nav].mobile-bottom-nav .mobile-bottom-nav__plus:hover {
-            background: #1d4ed8 !important;
-            box-shadow: 0 10px 22px rgba(37,99,235,.30), inset 0 1px 0 rgba(255,255,255,.42) !important;
-            transform: translateY(-1px) scale(1.04) !important;
+            background: #2563eb !important;
+            box-shadow: 0 14px 30px rgba(37,99,235,.30), inset 0 1px 0 rgba(255,255,255,.48) !important;
+            transform: translateY(-1px) !important;
         }
 
         html body [data-mobile-bottom-nav].mobile-bottom-nav .mobile-bottom-nav__plus:active {
-            transform: scale(0.92) !important;
+            transform: scale(.94) !important;
         }
 
         html body [data-mobile-bottom-nav].mobile-bottom-nav svg {
