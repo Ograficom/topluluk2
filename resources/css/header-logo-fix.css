@@ -361,15 +361,15 @@ html[lang^="tr"] body.alma-app .sidebar-wrapper .nav-item-label::after {
     white-space: nowrap !important;
 }
 
+/* Ana menü: yalnızca Akış, Keşfet, Mesajlar ve Topluluklar. */
 html[lang^="tr"] body.alma-app .sidebar-wrapper:not(.sidebar-wrapper--drawer) .nav-list > li:nth-child(1) .nav-item-label::after { content: "Akış"; }
-html[lang^="tr"] body.alma-app .sidebar-wrapper:not(.sidebar-wrapper--drawer) .nav-list > li:nth-child(2) .nav-item-label::after { content: "Haberler"; }
-html[lang^="tr"] body.alma-app .sidebar-wrapper:not(.sidebar-wrapper--drawer) .nav-list > li:nth-child(3) .nav-item-label::after { content: "Öne Çıkanlar"; }
-html[lang^="tr"] body.alma-app .sidebar-wrapper:not(.sidebar-wrapper--drawer) .nav-list > li:nth-child(4) .nav-item-label::after { content: "Keşfet"; }
-html[lang^="tr"] body.alma-app .sidebar-wrapper:not(.sidebar-wrapper--drawer) .nav-list > li:nth-child(5) .nav-item-label::after { content: "Mesajlar"; }
-html[lang^="tr"] body.alma-app .sidebar-wrapper:not(.sidebar-wrapper--drawer) .nav-list > li:nth-child(6) .nav-item-label::after { content: "Topluluklar"; }
+html[lang^="tr"] body.alma-app .sidebar-wrapper:not(.sidebar-wrapper--drawer) .nav-list > li:nth-child(2) .nav-item-label::after { content: "Keşfet"; }
+html[lang^="tr"] body.alma-app .sidebar-wrapper:not(.sidebar-wrapper--drawer) .nav-list > li:nth-child(3) .nav-item-label::after { content: "Mesajlar"; }
+html[lang^="tr"] body.alma-app .sidebar-wrapper:not(.sidebar-wrapper--drawer) .nav-list > li:nth-child(4) .nav-item-label::after { content: "Topluluklar"; }
+html[lang^="tr"] body.alma-app .sidebar-wrapper:not(.sidebar-wrapper--drawer) .nav-list > li:nth-child(n+5) { display: none !important; }
 
-html[lang^="tr"] body.alma-app .sidebar-wrapper--drawer .nav-list > li:nth-child(1) .nav-item-label::after { content: "Haberler"; }
-html[lang^="tr"] body.alma-app .sidebar-wrapper--drawer .nav-list > li:nth-child(2) .nav-item-label::after { content: "Öne Çıkanlar"; }
-html[lang^="tr"] body.alma-app .sidebar-wrapper--drawer .nav-list > li:nth-child(3) .nav-item-label::after { content: "Keşfet"; }
-html[lang^="tr"] body.alma-app .sidebar-wrapper--drawer .nav-list > li:nth-child(4) .nav-item-label::after { content: "Mesajlar"; }
-html[lang^="tr"] body.alma-app .sidebar-wrapper--drawer .nav-list > li:nth-child(5) .nav-item-label::after { content: "Topluluklar"; }
+html[lang^="tr"] body.alma-app .sidebar-wrapper--drawer .nav-list > li:nth-child(1) .nav-item-label::after { content: "Akış"; }
+html[lang^="tr"] body.alma-app .sidebar-wrapper--drawer .nav-list > li:nth-child(2) .nav-item-label::after { content: "Keşfet"; }
+html[lang^="tr"] body.alma-app .sidebar-wrapper--drawer .nav-list > li:nth-child(3) .nav-item-label::after { content: "Mesajlar"; }
+html[lang^="tr"] body.alma-app .sidebar-wrapper--drawer .nav-list > li:nth-child(4) .nav-item-label::after { content: "Topluluklar"; }
+html[lang^="tr"] body.alma-app .sidebar-wrapper--drawer .nav-list > li:nth-child(n+5) { display: none !important; }
