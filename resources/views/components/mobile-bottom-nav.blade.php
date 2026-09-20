@@ -90,22 +90,22 @@
             top: auto !important;
             bottom: max(6px, env(safe-area-inset-bottom, 0px)) !important;
             z-index: 900 !important;
-            width: min(calc(100% - 32px), 300px) !important;
-            max-width: 300px !important;
-            height: 50px !important;
-            min-height: 50px !important;
-            max-height: 50px !important;
+            width: min(calc(100% - 28px), 316px) !important;
+            max-width: 316px !important;
+            height: 58px !important;
+            min-height: 58px !important;
+            max-height: 58px !important;
             margin: 0 !important;
-            padding: 0 5px !important;
-            overflow: hidden !important;
-            border: 1px solid #e5e7eb !important;
-            border-radius: 14px !important;
-            background: rgba(255, 255, 255, 0.72) !important;
-            background-color: rgba(255, 255, 255, 0.72) !important;
-            box-shadow: 0 8px 28px rgba(15, 23, 42, 0.12), 0 2px 8px rgba(15, 23, 42, 0.06) !important;
+            padding: 6px !important;
+            overflow: visible !important;
+            border: 1px solid rgba(255, 255, 255, 0.72) !important;
+            border-radius: 20px !important;
+            background: rgba(255, 255, 255, 0.58) !important;
+            background-color: rgba(255, 255, 255, 0.58) !important;
+            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.14), 0 2px 8px rgba(15, 23, 42, 0.06), inset 0 1px 0 rgba(255,255,255,.8) !important;
             filter: none !important;
-            -webkit-backdrop-filter: blur(24px) saturate(180%) !important;
-            backdrop-filter: blur(24px) saturate(180%) !important;
+            -webkit-backdrop-filter: blur(30px) saturate(180%) !important;
+            backdrop-filter: blur(30px) saturate(180%) !important;
             transform: translate3d(-50%, 0, 0) !important;
             transition: none !important;
             animation: none !important;
@@ -124,9 +124,9 @@
             display: inline-flex !important;
             width: 100% !important;
             min-width: 0 !important;
-            height: 40px !important;
-            min-height: 40px !important;
-            max-height: 40px !important;
+            height: 44px !important;
+            min-height: 44px !important;
+            max-height: 44px !important;
             align-items: center !important;
             justify-content: center !important;
             margin: 0 !important;
@@ -150,34 +150,37 @@
         }
 
         html body [data-mobile-bottom-nav].mobile-bottom-nav .mobile-bottom-nav__plus {
-            width: 100% !important;
-            min-width: 0 !important;
-            max-width: none !important;
-            height: 40px !important;
-            border: 0 !important;
-            border-radius: 9999px !important;
+            width: 42px !important;
+            min-width: 42px !important;
+            max-width: 42px !important;
+            height: 42px !important;
+            min-height: 42px !important;
+            max-height: 42px !important;
+            margin: 0 auto !important;
+            border: 1px solid rgba(255,255,255,.58) !important;
+            border-radius: 14px !important;
             background: #2563eb !important;
             color: #ffffff !important;
-            box-shadow: 0 5px 14px rgba(37, 99, 235, 0.28) !important;
-            transform: scale(1.02) !important;
+            box-shadow: 0 7px 16px rgba(37, 99, 235, 0.28), inset 0 1px 0 rgba(255,255,255,.28) !important;
+            transform: none !important;
             transition: transform 140ms ease, background-color 140ms ease, box-shadow 140ms ease !important;
         }
 
         html body [data-mobile-bottom-nav].mobile-bottom-nav .mobile-bottom-nav__plus:hover {
             background: #1d4ed8 !important;
             box-shadow: 0 7px 18px rgba(37, 99, 235, 0.32) !important;
-            transform: scale(1.06) !important;
+            transform: translateY(-1px) scale(1.04) !important;
         }
 
         html body [data-mobile-bottom-nav].mobile-bottom-nav .mobile-bottom-nav__plus:active {
-            transform: scale(0.94) !important;
+            transform: scale(0.92) !important;
         }
 
         html body [data-mobile-bottom-nav].mobile-bottom-nav svg {
             display: block !important;
-            width: 21px !important;
-            height: 21px !important;
-            flex: 0 0 21px !important;
+            width: 20px !important;
+            height: 20px !important;
+            flex: 0 0 20px !important;
             color: currentColor !important;
         }
 
@@ -187,8 +190,8 @@
 
         html.dark body [data-mobile-bottom-nav].mobile-bottom-nav {
             border-color: rgba(255,255,255,.12) !important;
-            background: rgba(15, 23, 42, 0.72) !important;
-            background-color: rgba(15, 23, 42, 0.72) !important;
+            background: rgba(15, 23, 42, 0.62) !important;
+            background-color: rgba(15, 23, 42, 0.62) !important;
         }
 
         html.dark body [data-mobile-bottom-nav].mobile-bottom-nav .mobile-bottom-nav__item {
