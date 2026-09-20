@@ -32,7 +32,6 @@ jobs:
             ['Mobile / Discover', 'https://ografi.com/discover', '402d1158-78e8-4584-9e9b-37dddf311229'],
             ['Mobile / Contact', 'https://ografi.com/contact', '7365f8c3-2a35-44fd-909f-15d583d7bf1e'],
             ['Mobile / FAQ', 'https://ografi.com/p/sss', '72ec90f8-3910-401e-a72b-66d135bf4301'],
-            ['Mobile / Popular', 'https://ografi.com/blog/popular', '1cffc189-3534-4980-ba3f-cc009fc7a8bd'],
             ['Mobile / Login', 'https://ografi.com/login', 'c1d6aced-238b-4f6a-a849-59e36e713465'],
             ['Mobile / Register', 'https://ografi.com/register', '70391de4-beef-4d43-830a-0ec4b036ee92'],
             ['Mobile / Forgot Password', 'https://ografi.com/forgot-password', '00c05c88-aceb-4f23-bafd-44a4da7eea08'],
