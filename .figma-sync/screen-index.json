@@ -130,9 +130,6 @@
     },
     {
       "nodeId": "143:6561",
-      "name": "WEB / Popular",
-      "route": "/blog/popular",
-      "target": null,
       "platform": "web-desktop",
       "syncMode": "review-structural",
       "found": true,
@@ -310,9 +307,6 @@
     },
     {
       "nodeId": "143:7621",
-      "name": "WEBM / Popular",
-      "route": "/blog/popular",
-      "target": null,
       "platform": "web-mobile",
       "syncMode": "review-structural",
       "found": true,
