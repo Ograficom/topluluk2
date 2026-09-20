@@ -85,131 +85,120 @@
     @media (max-width: 639.98px) {
         html body [data-mobile-bottom-nav].mobile-bottom-nav {
             position: fixed !important;
-            display: block !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: space-between !important;
             left: 50% !important;
             right: auto !important;
             top: auto !important;
-            bottom: max(6px, env(safe-area-inset-bottom, 0px)) !important;
+            bottom: max(8px, env(safe-area-inset-bottom, 0px)) !important;
             z-index: 2147483000 !important;
-            isolation: isolate !important;
-            transform-style: preserve-3d !important;
             width: 286px !important;
             max-width: calc(100vw - 24px) !important;
             height: 58px !important;
             min-height: 58px !important;
-            max-height: 58px !important;
             margin: 0 !important;
             padding: 0 !important;
             overflow: visible !important;
             border: 0 !important;
-            border-radius: 0 !important;
             background: transparent !important;
-            background-color: transparent !important;
             box-shadow: none !important;
-            filter: none !important;
-            -webkit-backdrop-filter: blur(24px) saturate(185%) !important;
-            backdrop-filter: blur(24px) saturate(185%) !important;
             transform: translate3d(-50%, 0, 0) !important;
-            transition: none !important;
-            animation: none !important;
-        }
-
-        /* Alt menü her içerik ve görselin üzerinde kalır; cam yüzey içerikle karışmaz. */
-        html body [data-mobile-bottom-nav].mobile-bottom-nav {
             pointer-events: auto !important;
         }
 
-        html body [data-mobile-bottom-nav].mobile-bottom-nav__main,
         html body [data-mobile-bottom-nav].mobile-bottom-nav > .mobile-bottom-nav__main {
             position: relative !important;
-            z-index: 2147483000 !important;
-            isolation: isolate !important;
-        }
-
-        html body [data-mobile-bottom-nav].mobile-bottom-nav .mobile-bottom-nav__item,
-        html body [data-mobile-bottom-nav].mobile-bottom-nav .mobile-bottom-nav__plus {
-            position: relative !important;
-            z-index: 2147483002 !important;
-        }
-
-        html body [data-mobile-bottom-nav].mobile-bottom-nav > .mobile-bottom-nav__main {
+            flex: 0 0 230px !important;
+            width: 230px !important;
+            height: 58px !important;
+            min-height: 58px !important;
             display: grid !important;
             grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
             align-items: center !important;
-            width: 230px !important;
-            height: 58px !important;
             padding: 5px !important;
             gap: 0 !important;
-            border: 1px solid rgba(255,255,255,.82) !important;
-            border-radius: 22px !important;
-            background: rgba(255,255,255,.62) !important;
-            box-shadow: 0 18px 42px rgba(15,23,42,.14), 0 4px 12px rgba(15,23,42,.06), inset 0 1px 0 rgba(255,255,255,.95) !important;
-            -webkit-backdrop-filter: blur(24px) saturate(185%) !important;
-            backdrop-filter: blur(24px) saturate(185%) !important;
+            border: 1px solid rgba(255,255,255,.88) !important;
+            border-radius: 20px !important;
+            background: rgba(255,255,255,.56) !important;
+            box-shadow:
+                0 10px 30px rgba(15,23,42,.12),
+                0 2px 8px rgba(15,23,42,.06),
+                inset 0 1px 0 rgba(255,255,255,.95),
+                inset 0 -1px 0 rgba(255,255,255,.25) !important;
+            -webkit-backdrop-filter: blur(28px) saturate(180%) !important;
+            backdrop-filter: blur(28px) saturate(180%) !important;
+            isolation: isolate !important;
         }
 
         html body [data-mobile-bottom-nav].mobile-bottom-nav .mobile-bottom-nav__item {
             display: inline-flex !important;
             width: 100% !important;
-            min-width: 0 !important;
             height: 44px !important;
             min-height: 44px !important;
-            max-height: 44px !important;
             align-items: center !important;
             justify-content: center !important;
             margin: 0 !important;
             padding: 0 !important;
             border: 0 !important;
-            border-radius: 10px !important;
+            border-radius: 14px !important;
             background: transparent !important;
-            background-color: transparent !important;
             color: #334155 !important;
             box-shadow: none !important;
             transform: none !important;
-            transition: none !important;
-            animation: none !important;
+            transition: color 140ms ease, background-color 140ms ease, transform 100ms ease !important;
             -webkit-tap-highlight-color: transparent !important;
         }
 
         html body [data-mobile-bottom-nav].mobile-bottom-nav .mobile-bottom-nav__item--active {
             color: #2563eb !important;
-            background: transparent !important;
-            box-shadow: none !important;
+            background: rgba(255,255,255,.34) !important;
+        }
+
+        html body [data-mobile-bottom-nav].mobile-bottom-nav .mobile-bottom-nav__item:active {
+            transform: scale(.92) !important;
         }
 
         html body [data-mobile-bottom-nav].mobile-bottom-nav .mobile-bottom-nav__plus {
-            position: fixed !important;
-            right: 0 !important;
-            top: 5px !important;
+            position: relative !important;
+            flex: 0 0 48px !important;
             width: 48px !important;
             min-width: 48px !important;
             max-width: 48px !important;
             height: 48px !important;
             min-height: 48px !important;
             max-height: 48px !important;
+            margin: 0 !important;
             display: inline-flex !important;
             align-items: center !important;
             justify-content: center !important;
-            border: 1px solid rgba(255,255,255,.9) !important;
+            border: 1px solid rgba(255,255,255,.92) !important;
             border-radius: 15px !important;
-            background: rgba(37,99,235,.92) !important;
+            background: #2563eb !important;
             color: #fff !important;
-            box-shadow: 0 12px 26px rgba(37,99,235,.28), 0 2px 6px rgba(15,23,42,.10), inset 0 1px 0 rgba(255,255,255,.50) !important;
-            -webkit-backdrop-filter: blur(18px) saturate(180%) !important;
-            backdrop-filter: blur(18px) saturate(180%) !important;
-            transform: none !important;
+            box-shadow:
+                0 10px 24px rgba(37,99,235,.24),
+                0 2px 7px rgba(15,23,42,.10),
+                inset 0 1px 0 rgba(255,255,255,.48) !important;
+            -webkit-backdrop-filter: blur(16px) saturate(180%) !important;
+            backdrop-filter: blur(16px) saturate(180%) !important;
+            transform: translateZ(0) !important;
             transition: transform 140ms ease, background-color 140ms ease, box-shadow 140ms ease !important;
-            z-index: 2147483001 !important;
+            z-index: 2147483002 !important;
         }
 
         html body [data-mobile-bottom-nav].mobile-bottom-nav .mobile-bottom-nav__plus:hover {
-            background: #2563eb !important;
-            box-shadow: 0 14px 30px rgba(37,99,235,.30), inset 0 1px 0 rgba(255,255,255,.48) !important;
+            background: #1d4ed8 !important;
+            box-shadow:
+                0 12px 28px rgba(37,99,235,.28),
+                0 2px 7px rgba(15,23,42,.10),
+                inset 0 1px 0 rgba(255,255,255,.48) !important;
             transform: translateY(-1px) !important;
         }
 
         html body [data-mobile-bottom-nav].mobile-bottom-nav .mobile-bottom-nav__plus:active {
-            transform: scale(.94) !important;
+            background: #1e40af !important;
+            transform: scale(.93) !important;
         }
 
         html body [data-mobile-bottom-nav].mobile-bottom-nav svg {
@@ -221,13 +210,12 @@
         }
 
         html body {
-            padding-bottom: calc(64px + env(safe-area-inset-bottom, 0px)) !important;
+            padding-bottom: calc(70px + env(safe-area-inset-bottom, 0px)) !important;
         }
 
-        html.dark body [data-mobile-bottom-nav].mobile-bottom-nav {
-            border-color: transparent !important;
-            background: transparent !important;
-            background-color: transparent !important;
+        html.dark body [data-mobile-bottom-nav].mobile-bottom-nav .mobile-bottom-nav__main {
+            border-color: rgba(255,255,255,.14) !important;
+            background: rgba(15,23,42,.58) !important;
         }
 
         html.dark body [data-mobile-bottom-nav].mobile-bottom-nav .mobile-bottom-nav__item {
@@ -236,6 +224,7 @@
 
         html.dark body [data-mobile-bottom-nav].mobile-bottom-nav .mobile-bottom-nav__item--active {
             color: #60a5fa !important;
+            background: rgba(255,255,255,.08) !important;
         }
     }
 </style>
