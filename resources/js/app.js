@@ -415,7 +415,7 @@ const renderNotificationsPayload = (payload = {}) => {
         const time = escapeHtml(item.time || 'Simdi');
 
         return `
-            <a href="${url}" class="site-notification-item">
+            <a href="${url}" class="site-notification-item${item.unread ? " is-unread" : ""}">
                 ${renderNotificationAvatar(item)}
                 <div class="site-notification-item-copy">
                     <div class="site-notification-item-meta">
