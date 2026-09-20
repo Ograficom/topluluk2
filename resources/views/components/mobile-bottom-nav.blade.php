@@ -90,8 +90,8 @@
             top: auto !important;
             bottom: max(6px, env(safe-area-inset-bottom, 0px)) !important;
             z-index: 900 !important;
-            width: calc(100% - 20px) !important;
-            max-width: 380px !important;
+            width: min(calc(100% - 32px), 300px) !important;
+            max-width: 300px !important;
             height: 50px !important;
             min-height: 50px !important;
             max-height: 50px !important;
