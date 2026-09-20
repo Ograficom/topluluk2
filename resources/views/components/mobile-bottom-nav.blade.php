@@ -90,7 +90,9 @@
             right: auto !important;
             top: auto !important;
             bottom: max(6px, env(safe-area-inset-bottom, 0px)) !important;
-            z-index: 900 !important;
+            z-index: 2147483000 !important;
+            isolation: isolate !important;
+            transform-style: preserve-3d !important;
             width: calc(100vw - 92px) !important;
             max-width: 230px !important;
             height: 58px !important;
@@ -110,6 +112,24 @@
             transform: translate3d(-50%, 0, 0) !important;
             transition: none !important;
             animation: none !important;
+        }
+
+        /* Alt menü her içerik ve görselin üzerinde kalır; cam yüzey içerikle karışmaz. */
+        html body [data-mobile-bottom-nav].mobile-bottom-nav {
+            pointer-events: auto !important;
+        }
+
+        html body [data-mobile-bottom-nav].mobile-bottom-nav__main,
+        html body [data-mobile-bottom-nav].mobile-bottom-nav > .mobile-bottom-nav__main {
+            position: relative !important;
+            z-index: 2147483000 !important;
+            isolation: isolate !important;
+        }
+
+        html body [data-mobile-bottom-nav].mobile-bottom-nav .mobile-bottom-nav__item,
+        html body [data-mobile-bottom-nav].mobile-bottom-nav .mobile-bottom-nav__plus {
+            position: relative !important;
+            z-index: 2147483002 !important;
         }
 
         html body [data-mobile-bottom-nav].mobile-bottom-nav > .mobile-bottom-nav__main {
@@ -179,7 +199,7 @@
             backdrop-filter: blur(18px) saturate(180%) !important;
             transform: none !important;
             transition: transform 140ms ease, background-color 140ms ease, box-shadow 140ms ease !important;
-            z-index: 2 !important;
+            z-index: 2147483001 !important;
         }
 
         html body [data-mobile-bottom-nav].mobile-bottom-nav .mobile-bottom-nav__plus:hover {
