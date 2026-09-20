@@ -93,8 +93,8 @@
             z-index: 2147483000 !important;
             isolation: isolate !important;
             transform-style: preserve-3d !important;
-            width: calc(100vw - 92px) !important;
-            max-width: 230px !important;
+            width: 286px !important;
+            max-width: calc(100vw - 24px) !important;
             height: 58px !important;
             min-height: 58px !important;
             max-height: 58px !important;
@@ -142,8 +142,8 @@
             gap: 0 !important;
             border: 1px solid rgba(255,255,255,.82) !important;
             border-radius: 22px !important;
-            background: rgba(248,250,252,.58) !important;
-            box-shadow: 0 16px 38px rgba(15,23,42,.13), 0 3px 10px rgba(15,23,42,.06), inset 0 1px 0 rgba(255,255,255,.92) !important;
+            background: rgba(255,255,255,.62) !important;
+            box-shadow: 0 18px 42px rgba(15,23,42,.14), 0 4px 12px rgba(15,23,42,.06), inset 0 1px 0 rgba(255,255,255,.95) !important;
             -webkit-backdrop-filter: blur(24px) saturate(185%) !important;
             backdrop-filter: blur(24px) saturate(185%) !important;
         }
@@ -179,7 +179,7 @@
 
         html body [data-mobile-bottom-nav].mobile-bottom-nav .mobile-bottom-nav__plus {
             position: fixed !important;
-            right: -56px !important;
+            right: 0 !important;
             top: 5px !important;
             width: 48px !important;
             min-width: 48px !important;
@@ -191,10 +191,10 @@
             align-items: center !important;
             justify-content: center !important;
             border: 1px solid rgba(255,255,255,.9) !important;
-            border-radius: 16px !important;
-            background: rgba(37,99,235,.94) !important;
+            border-radius: 15px !important;
+            background: rgba(37,99,235,.92) !important;
             color: #fff !important;
-            box-shadow: 0 12px 28px rgba(37,99,235,.24), inset 0 1px 0 rgba(255,255,255,.42) !important;
+            box-shadow: 0 12px 26px rgba(37,99,235,.28), 0 2px 6px rgba(15,23,42,.10), inset 0 1px 0 rgba(255,255,255,.50) !important;
             -webkit-backdrop-filter: blur(18px) saturate(180%) !important;
             backdrop-filter: blur(18px) saturate(180%) !important;
             transform: none !important;
