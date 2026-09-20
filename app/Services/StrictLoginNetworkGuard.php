@@ -105,9 +105,11 @@ class StrictLoginNetworkGuard
         $ip = $this->clientIp($request);
 
         if (! $this->isPublicIp($ip)) {
-            if ((bool) config('login-security.fail_closed', true)) {
-                $this->block($request, 'client_ip_unresolved', 'Ağ güvenlik kontrolü tamamlanamadı.', $ip);
-            }
+            // Network intelligence must never take the whole site offline when
+            // the client IP cannot be resolved reliably.
+            Log::warning('Network security guard could not resolve a public client IP; allowing request.', [
+                'path' => $request->path(),
+            ]);
 
             return;
         }
@@ -137,14 +139,13 @@ class StrictLoginNetworkGuard
                 'message' => $exception->getMessage(),
             ]);
 
-            if ((bool) config('login-security.fail_closed', true)) {
-                $this->block(
-                    $request,
-                    'risk_intelligence_unavailable',
-                    'Ağ güvenlik kontrolü şu anda doğrulanamıyor. Lütfen tekrar dene.',
-                    $ip,
-                );
-            }
+            // External threat-intelligence outages must not produce a site-wide
+            // 403. Positive detections still block normally; unavailable
+            // intelligence falls back to allowing the request.
+            Log::warning('Network security intelligence unavailable; allowing request.', [
+                'ip' => $ip,
+                'path' => $request->path(),
+            ]);
         }
     }
 
