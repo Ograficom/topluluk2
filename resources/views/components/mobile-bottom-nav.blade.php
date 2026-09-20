@@ -96,16 +96,16 @@
             min-height: 58px !important;
             max-height: 58px !important;
             margin: 0 !important;
-            padding: 6px !important;
+            padding: 5px !important;
             overflow: visible !important;
-            border: 1px solid rgba(255, 255, 255, 0.72) !important;
-            border-radius: 20px !important;
-            background: rgba(255, 255, 255, 0.58) !important;
-            background-color: rgba(255, 255, 255, 0.58) !important;
-            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.14), 0 2px 8px rgba(15, 23, 42, 0.06), inset 0 1px 0 rgba(255,255,255,.8) !important;
+            border: 1px solid rgba(255,255,255,.78) !important;
+            border-radius: 22px !important;
+            background: rgba(248,250,252,.58) !important;
+            background-color: rgba(248,250,252,.58) !important;
+            box-shadow: 0 16px 38px rgba(15,23,42,.13), 0 3px 10px rgba(15,23,42,.06), inset 0 1px 0 rgba(255,255,255,.92) !important;
             filter: none !important;
-            -webkit-backdrop-filter: blur(30px) saturate(180%) !important;
-            backdrop-filter: blur(30px) saturate(180%) !important;
+            -webkit-backdrop-filter: blur(24px) saturate(185%) !important;
+            backdrop-filter: blur(24px) saturate(185%) !important;
             transform: translate3d(-50%, 0, 0) !important;
             transition: none !important;
             animation: none !important;
@@ -150,25 +150,25 @@
         }
 
         html body [data-mobile-bottom-nav].mobile-bottom-nav .mobile-bottom-nav__plus {
-            width: 42px !important;
-            min-width: 42px !important;
-            max-width: 42px !important;
-            height: 42px !important;
-            min-height: 42px !important;
-            max-height: 42px !important;
+            width: 40px !important;
+            min-width: 40px !important;
+            max-width: 40px !important;
+            height: 40px !important;
+            min-height: 40px !important;
+            max-height: 40px !important;
             margin: 0 auto !important;
-            border: 1px solid rgba(255,255,255,.58) !important;
-            border-radius: 14px !important;
-            background: #2563eb !important;
+            border: 1px solid rgba(255,255,255,.92) !important;
+            border-radius: 50% !important;
+            background: rgba(37,99,235,.96) !important;
             color: #ffffff !important;
-            box-shadow: 0 7px 16px rgba(37, 99, 235, 0.28), inset 0 1px 0 rgba(255,255,255,.28) !important;
-            transform: none !important;
+            box-shadow: 0 8px 20px rgba(37,99,235,.24), inset 0 1px 0 rgba(255,255,255,.38) !important;
+            transform: translateZ(0) !important;
             transition: transform 140ms ease, background-color 140ms ease, box-shadow 140ms ease !important;
         }
 
         html body [data-mobile-bottom-nav].mobile-bottom-nav .mobile-bottom-nav__plus:hover {
             background: #1d4ed8 !important;
-            box-shadow: 0 7px 18px rgba(37, 99, 235, 0.32) !important;
+            box-shadow: 0 10px 22px rgba(37,99,235,.30), inset 0 1px 0 rgba(255,255,255,.42) !important;
             transform: translateY(-1px) scale(1.04) !important;
         }
 
