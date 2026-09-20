@@ -39,27 +39,6 @@
             <span class="sr-only">{{ __('site.mobile_nav.search') }}</span>
         </a>
 
-</div>
-
-        @auth
-            <a
-                href="{{ route('blog.create') }}"
-                class="mobile-bottom-nav__plus"
-                aria-label="{{ __('site.mobile_nav.new_item') }}"
-            >
-        @else
-            <a
-                href="{{ route('login') }}"
-                class="mobile-bottom-nav__plus"
-                aria-label="{{ __('site.mobile_nav.new_item') }}"
-            >
-        @endauth
-                <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-width="1.8" d="M12 5v14M5 12h14" />
-                </svg>
-                <span class="sr-only">{{ __('site.mobile_nav.new_item') }}</span>
-            </a>
-
         @auth
             <a
                 href="{{ route('messages.index') }}"
@@ -79,6 +58,27 @@
                 </svg>
                 <span class="sr-only">{{ __('site.sidebar.messages') }}</span>
             </a>
+    </div>
+
+    @auth
+        <a
+            href="{{ route('blog.create') }}"
+            class="mobile-bottom-nav__plus"
+            aria-label="{{ __('site.mobile_nav.new_item') }}"
+        >
+    @else
+        <a
+            href="{{ route('login') }}"
+            class="mobile-bottom-nav__plus"
+            aria-label="{{ __('site.mobile_nav.new_item') }}"
+        >
+    @endauth
+            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <path stroke="currentColor" stroke-linecap="round" stroke-width="1.8" d="M12 5v14M5 12h14" />
+            </svg>
+            <span class="sr-only">{{ __('site.mobile_nav.new_item') }}</span>
+        </a>
+
 </nav>
 
 <style>
@@ -91,7 +91,7 @@
             top: auto !important;
             bottom: max(6px, env(safe-area-inset-bottom, 0px)) !important;
             z-index: 900 !important;
-            width: auto !important;
+            width: calc(100vw - 92px) !important;
             max-width: 230px !important;
             height: 58px !important;
             min-height: 58px !important;
