@@ -9413,6 +9413,17 @@ SVG;
             font-variant-numeric: tabular-nums;
         }
 
+        @media (max-width: 768px) {
+            html body article.post-card[data-post-card-shell] .action-bar .post-metric--views {
+                margin-left: auto !important;
+                margin-right: 18px !important;
+                padding-right: 0 !important;
+                min-width: max-content !important;
+                flex: 0 0 auto !important;
+                justify-content: flex-end !important;
+            }
+        }
+
         /* View metric: keep it pinned to the action bar's right side with a balanced inset. */
         html body article.post-card[data-post-card-shell] .action-bar .post-metric--views {
             margin-left: auto !important;
