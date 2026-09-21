@@ -9413,6 +9413,19 @@ SVG;
             font-variant-numeric: tabular-nums;
         }
 
+        /* View metric: keep it pinned to the action bar's right side with a balanced inset. */
+        html body article.post-card[data-post-card-shell] .action-bar .post-metric--views {
+            margin-left: auto !important;
+            margin-right: 0 !important;
+            flex: 0 0 auto !important;
+        }
+
+        @media (min-width: 769px) {
+            html body article.post-card[data-post-card-shell] .action-bar .post-metric--views {
+                margin-right: 14px !important;
+            }
+        }
+
         html body article.post-card[data-post-card-shell] .action-chip.is-bookmarked {
             background: rgba(37, 99, 235, .10) !important;
             color: #1d4ed8 !important;
