@@ -616,8 +616,17 @@ class StrictLoginNetworkGuard
         }
 
         $resolvedIps = @gethostbynamel($host) ?: [];
+        if (function_exists('dns_get_record')) {
+            foreach (@dns_get_record($host, DNS_A + DNS_AAAA) ?: [] as $record) {
+                $resolvedIp = (string) ($record['ip'] ?? $record['ipv6'] ?? '');
+                if ($resolvedIp !== '') {
+                    $resolvedIps[] = $resolvedIp;
+                }
+            }
+        }
+
         $verified = false;
-        foreach ($resolvedIps as $resolvedIp) {
+        foreach (array_unique($resolvedIps) as $resolvedIp) {
             if (hash_equals($resolvedIp, $ip)) {
                 $verified = true;
                 break;
