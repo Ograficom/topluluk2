@@ -114,6 +114,13 @@ class StrictLoginNetworkGuard
             return;
         }
 
+        // Google/Bing crawler infrastructure is commonly classified as
+        // datacenter/hosting by generic IP lists. Never bypass by User-Agent
+        // alone: verify the crawler IP using reverse + forward DNS first.
+        if ($request->isMethodSafe() && $this->isVerifiedSearchCrawler($request, $ip)) {
+            return;
+        }
+
         try {
             $decision = $this->riskDecision($request, $ip, $blockTor, $blockVpn, $blockDatacenter);
 
@@ -562,6 +569,73 @@ class StrictLoginNetworkGuard
         $max = str_contains($network, ':') ? 128 : 32;
 
         return $bits >= 0 && $bits <= $max ? $network.'/'.$bits : '';
+    }
+
+    private function isVerifiedSearchCrawler(Request $request, string $ip): bool
+    {
+        $userAgent = strtolower((string) $request->userAgent());
+
+        $crawler = null;
+        if (str_contains($userAgent, 'googlebot')
+            || str_contains($userAgent, 'google-inspectiontool')
+            || str_contains($userAgent, 'storebot-google')
+            || str_contains($userAgent, 'adsbot-google')) {
+            $crawler = 'google';
+        } elseif (str_contains($userAgent, 'bingbot')) {
+            $crawler = 'bing';
+        }
+
+        if ($crawler === null) {
+            return false;
+        }
+
+        $cacheKey = 'login-security:verified-crawler:'.$crawler.':'.hash('sha256', $ip);
+        $cached = Cache::get($cacheKey);
+        if (is_bool($cached)) {
+            return $cached;
+        }
+
+        $host = @gethostbyaddr($ip);
+        if (! is_string($host) || $host === '' || $host === $ip) {
+            Cache::put($cacheKey, false, now()->addHours(6));
+            return false;
+        }
+
+        $host = strtolower(rtrim($host, '.'));
+        $validDomain = match ($crawler) {
+            'google' => str_ends_with($host, '.googlebot.com')
+                || str_ends_with($host, '.google.com')
+                || str_ends_with($host, '.googleusercontent.com'),
+            'bing' => str_ends_with($host, '.search.msn.com')
+                || str_ends_with($host, '.bing.com'),
+        };
+
+        if (! $validDomain) {
+            Cache::put($cacheKey, false, now()->addHours(6));
+            return false;
+        }
+
+        $resolvedIps = @gethostbynamel($host) ?: [];
+        $verified = false;
+        foreach ($resolvedIps as $resolvedIp) {
+            if (hash_equals($resolvedIp, $ip)) {
+                $verified = true;
+                break;
+            }
+        }
+
+        Cache::put($cacheKey, $verified, now()->addHours(24));
+
+        if ($verified) {
+            Log::info('Verified search crawler bypassed network risk block.', [
+                'crawler' => $crawler,
+                'ip' => $ip,
+                'host' => $host,
+                'path' => $request->path(),
+            ]);
+        }
+
+        return $verified;
     }
 
     private function clientIp(Request $request): string
