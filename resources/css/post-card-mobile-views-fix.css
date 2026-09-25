@@ -1,15 +1,17 @@
-/* Mobile post-card: pull the view indicator visibly inward from the right edge. */
+/* Mobile post-card: the eye + view count is intentionally pulled LEFT from the card's right edge. */
 @media (max-width: 767.98px) {
     .alma-post-card__views {
         position: relative !important;
-        right: 28px !important;
-        margin-right: 0 !important;
+        right: auto !important;
+        left: -36px !important;
+        margin-right: -36px !important;
         transform: none !important;
     }
 }
 
 @media (max-width: 480px) {
     .alma-post-card__views {
-        right: 30px !important;
+        left: -42px !important;
+        margin-right: -42px !important;
     }
 }
