@@ -1,0 +1,22 @@
+/* Post-card mobile: view counter should sit slightly inside the card, not against the right edge. */
+@media (max-width: 767.98px) {
+    body.alma-app article.post-card[data-post-card-shell] .alma-post-card__engagement {
+        padding-right: 18px !important;
+    }
+
+    body.alma-app article.post-card[data-post-card-shell] .alma-post-card__views {
+        margin-right: 12px !important;
+        transform: translateX(-2px);
+    }
+}
+
+@media (max-width: 480px) {
+    body.alma-app article.post-card[data-post-card-shell] .alma-post-card__engagement {
+        padding-right: 16px !important;
+    }
+
+    body.alma-app article.post-card[data-post-card-shell] .alma-post-card__views {
+        margin-right: 10px !important;
+        transform: none;
+    }
+}
