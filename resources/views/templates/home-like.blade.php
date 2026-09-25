@@ -388,6 +388,84 @@
             }
         </style>
 
+
+        <script>
+            (() => {
+                const initHomeMobileToolbar = () => {
+                    const toolbar = document.querySelector('body.route-home .home-feed-shell .home-feed-toolbar');
+                    const shell = document.querySelector('body.route-home .home-feed-shell');
+                    const header = document.querySelector('[data-site-header]');
+                    if (!toolbar || !shell || !header) return;
+
+                    const mobileQuery = window.matchMedia('(max-width: 640px)');
+                    let rafId = 0;
+
+                    const getHiddenAmount = () => {
+                        const transform = header.style.transform || '';
+                        const match = transform.match(/translateY\(\s*(-?\d+(?:\.\d+)?)px\s*\)/);
+                        return match ? Math.abs(parseFloat(match[1])) : 0;
+                    };
+
+                    const syncToolbar = () => {
+                        rafId = 0;
+
+                        if (!mobileQuery.matches) {
+                            toolbar.classList.remove('is-header-hidden');
+                            shell.classList.remove('home-toolbar-floating');
+                            document.body.classList.remove('home-filter-header-hidden');
+                            shell.style.removeProperty('--home-toolbar-reserve');
+                            toolbar.style.removeProperty('--home-toolbar-left');
+                            toolbar.style.removeProperty('--home-toolbar-width');
+                            return;
+                        }
+
+                        const headerHeight = Math.max(1, header.getBoundingClientRect().height);
+                        const hiddenAmount = getHiddenAmount();
+                        const fullyHidden = hiddenAmount >= Math.max(24, headerHeight - 2);
+
+                        if (fullyHidden) {
+                            const rect = toolbar.getBoundingClientRect();
+                            const reserve = Math.max(38, toolbar.offsetHeight + 8);
+
+                            shell.classList.add('home-toolbar-floating');
+                            shell.style.setProperty('--home-toolbar-reserve', reserve + 'px');
+                            toolbar.style.setProperty('--home-toolbar-left', Math.round(rect.left) + 'px');
+                            toolbar.style.setProperty('--home-toolbar-width', Math.round(rect.width) + 'px');
+                            toolbar.classList.add('is-header-hidden');
+                            document.body.classList.add('home-filter-header-hidden');
+                        } else {
+                            toolbar.classList.remove('is-header-hidden');
+                            shell.classList.remove('home-toolbar-floating');
+                            document.body.classList.remove('home-filter-header-hidden');
+                            shell.style.removeProperty('--home-toolbar-reserve');
+                            toolbar.style.removeProperty('--home-toolbar-left');
+                            toolbar.style.removeProperty('--home-toolbar-width');
+                        }
+                    };
+
+                    const scheduleSync = () => {
+                        if (rafId) return;
+                        rafId = window.requestAnimationFrame(syncToolbar);
+                    };
+
+                    const observer = new MutationObserver(scheduleSync);
+                    observer.observe(header, { attributes: true, attributeFilter: ['style', 'class'] });
+
+                    window.addEventListener('scroll', scheduleSync, { passive: true });
+                    window.addEventListener('resize', scheduleSync, { passive: true });
+                    mobileQuery.addEventListener?.('change', scheduleSync);
+
+                    scheduleSync();
+                };
+
+                if (document.readyState === 'loading') {
+                    document.addEventListener('DOMContentLoaded', initHomeMobileToolbar, { once: true });
+                } else {
+                    initHomeMobileToolbar();
+                }
+            })();
+        </script>
+
         <div class="home-feed-toolbar" aria-label="Gönderi filtreleri">
             <div class="home-feed-toolbar__modes" role="tablist" aria-label="Akış türü">
                 <button type="button" class="home-feed-toolbar__mode is-active" role="tab" aria-selected="true" data-feed-mode="all">Tüm</button>
@@ -468,8 +546,12 @@
 
 
         @media (max-width: 640px) {
-            /* Ana sayfa filtresi, Etiketler sayfasındaki gibi ekrana tutunur.
-               Header aşağı kayarken gizlenir; yukarı kayarken geri gelir. */
+            /*
+             * Ana sayfa filtresi Etiketler sayfasındaki davranışı birebir takip eder:
+             * normalde akışın içinde kalır; header tamamen yukarı kaybolduğunda
+             * header'ın boşalan yerine çıkar ve ekranın en üstünde sabit kalır.
+             * Header geri gelirken tekrar normal akışına döner.
+             */
             body.route-home .home-feed-shell .home-feed-toolbar {
                 position: sticky !important;
                 top: 0 !important;
@@ -484,6 +566,39 @@
                 backdrop-filter: blur(18px) saturate(170%) !important;
                 -webkit-backdrop-filter: blur(18px) saturate(170%) !important;
                 box-shadow: none !important;
+                box-sizing: border-box !important;
+            }
+
+            body.route-home .home-feed-shell.home-toolbar-floating {
+                padding-top: var(--home-toolbar-reserve, 46px) !important;
+            }
+
+            body.route-home .home-feed-shell .home-feed-toolbar.is-header-hidden {
+                position: fixed !important;
+                top: 0 !important;
+                left: var(--home-toolbar-left, 16px) !important;
+                width: var(--home-toolbar-width, calc(100vw - 32px)) !important;
+                margin: 0 !important;
+                z-index: 9995 !important;
+                border-radius: 0 0 18px 18px !important;
+                border-top-color: transparent !important;
+                background: rgba(255, 255, 255, .76) !important;
+                backdrop-filter: blur(24px) saturate(180%) !important;
+                -webkit-backdrop-filter: blur(24px) saturate(180%) !important;
+            }
+
+            body.route-home.home-filter-header-hidden::before {
+                content: '' !important;
+                position: fixed !important;
+                z-index: 9994 !important;
+                top: 0 !important;
+                left: 0 !important;
+                right: 0 !important;
+                height: 48px !important;
+                background: rgba(255, 255, 255, .62) !important;
+                backdrop-filter: blur(28px) saturate(180%) !important;
+                -webkit-backdrop-filter: blur(28px) saturate(180%) !important;
+                pointer-events: none !important;
             }
 
             body.route-home .home-feed-shell .home-feed-toolbar__modes {
@@ -497,27 +612,18 @@
                 border-radius: 14px !important;
             }
 
-            body.route-home::before {
-                content: '';
-                position: fixed;
-                z-index: 41;
-                top: 0;
-                left: 0;
-                right: 0;
-                height: 10px;
-                background: rgba(255, 255, 255, .66);
-                backdrop-filter: blur(22px) saturate(175%);
-                -webkit-backdrop-filter: blur(22px) saturate(175%);
-                pointer-events: none;
-            }
-
             html.dark body.route-home .home-feed-shell .home-feed-toolbar {
                 background: rgba(17, 24, 39, .72) !important;
                 border-color: rgba(51, 65, 85, .82) !important;
             }
 
-            html.dark body.route-home::before {
-                background: rgba(17, 24, 39, .66);
+            html.dark body.route-home .home-feed-shell .home-feed-toolbar.is-header-hidden {
+                background: rgba(17, 24, 39, .78) !important;
+                border-top-color: transparent !important;
+            }
+
+            html.dark body.route-home.home-filter-header-hidden::before {
+                background: rgba(17, 24, 39, .64) !important;
             }
         }
 
