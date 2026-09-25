@@ -13,6 +13,7 @@ import '../css/editorjs-create-polish.css';
 import './post-create-server-drafts.js';
 import './stats-modal.js';
 import './mobile-reaction-picker-fix.js';
+import './home-feed-timeout.js';
 import axios from 'axios';
 window.axios = axios;
 
