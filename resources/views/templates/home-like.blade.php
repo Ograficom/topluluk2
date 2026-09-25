@@ -466,6 +466,61 @@
                 font-family: "Inter", system-ui, sans-serif !important;
             }
 
+
+        @media (max-width: 640px) {
+            /* Ana sayfa filtresi, Etiketler sayfasındaki gibi ekrana tutunur.
+               Header aşağı kayarken gizlenir; yukarı kayarken geri gelir. */
+            body.route-home .home-feed-shell .home-feed-toolbar {
+                position: sticky !important;
+                top: 0 !important;
+                z-index: 45 !important;
+                width: 100% !important;
+                min-height: 38px !important;
+                margin: 0 0 8px !important;
+                padding: 3px 6px !important;
+                border: 1px solid rgba(217, 221, 227, .82) !important;
+                border-radius: 18px !important;
+                background: rgba(255, 255, 255, .72) !important;
+                backdrop-filter: blur(18px) saturate(170%) !important;
+                -webkit-backdrop-filter: blur(18px) saturate(170%) !important;
+                box-shadow: none !important;
+            }
+
+            body.route-home .home-feed-shell .home-feed-toolbar__modes {
+                gap: 0 !important;
+                width: 100% !important;
+            }
+
+            body.route-home .home-feed-shell .home-feed-toolbar__mode {
+                min-height: 32px !important;
+                padding: 0 13px !important;
+                border-radius: 14px !important;
+            }
+
+            body.route-home::before {
+                content: '';
+                position: fixed;
+                z-index: 41;
+                top: 0;
+                left: 0;
+                right: 0;
+                height: 10px;
+                background: rgba(255, 255, 255, .66);
+                backdrop-filter: blur(22px) saturate(175%);
+                -webkit-backdrop-filter: blur(22px) saturate(175%);
+                pointer-events: none;
+            }
+
+            html.dark body.route-home .home-feed-shell .home-feed-toolbar {
+                background: rgba(17, 24, 39, .72) !important;
+                border-color: rgba(51, 65, 85, .82) !important;
+            }
+
+            html.dark body.route-home::before {
+                background: rgba(17, 24, 39, .66);
+            }
+        }
+
             .home-feed-toolbar__period.is-mode-hidden,
             .home-feed-toolbar__read.is-mode-hidden {
                 display: none !important;
