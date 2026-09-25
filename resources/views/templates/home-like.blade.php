@@ -400,12 +400,6 @@
                     const mobileQuery = window.matchMedia('(max-width: 640px)');
                     let rafId = 0;
 
-                    const getHiddenAmount = () => {
-                        const transform = header.style.transform || '';
-                        const match = transform.match(/translateY\(\s*(-?\d+(?:\.\d+)?)px\s*\)/);
-                        return match ? Math.abs(parseFloat(match[1])) : 0;
-                    };
-
                     const syncToolbar = () => {
                         rafId = 0;
 
@@ -413,31 +407,33 @@
                             toolbar.classList.remove('is-header-hidden');
                             shell.classList.remove('home-toolbar-floating');
                             document.body.classList.remove('home-filter-header-hidden');
-                            shell.style.removeProperty('--home-toolbar-reserve');
                             toolbar.style.removeProperty('--home-toolbar-left');
                             toolbar.style.removeProperty('--home-toolbar-width');
                             return;
                         }
 
-                        const headerHeight = Math.max(1, header.getBoundingClientRect().height);
-                        const hiddenAmount = getHiddenAmount();
-                        const fullyHidden = hiddenAmount >= Math.max(24, headerHeight - 2);
+                        /*
+                         * Header gerçekten ekrandan tamamen çıktığında toolbar da
+                         * onun yerine geçer. Header'ın kendi transform değerini
+                         * okumak yerine getBoundingClientRect() kullanıyoruz;
+                         * böylece header'ın mevcut hide-on-scroll kodundan bağımsız
+                         * çalışır.
+                         */
+                        const headerRect = header.getBoundingClientRect();
+                        const headerFullyHidden = headerRect.bottom <= 1;
 
-                        if (fullyHidden) {
+                        if (headerFullyHidden) {
                             const rect = toolbar.getBoundingClientRect();
-                            const reserve = Math.max(38, toolbar.offsetHeight + 8);
 
-                            shell.classList.add('home-toolbar-floating');
-                            shell.style.setProperty('--home-toolbar-reserve', reserve + 'px');
                             toolbar.style.setProperty('--home-toolbar-left', Math.round(rect.left) + 'px');
                             toolbar.style.setProperty('--home-toolbar-width', Math.round(rect.width) + 'px');
                             toolbar.classList.add('is-header-hidden');
+                            shell.classList.add('home-toolbar-floating');
                             document.body.classList.add('home-filter-header-hidden');
                         } else {
                             toolbar.classList.remove('is-header-hidden');
                             shell.classList.remove('home-toolbar-floating');
                             document.body.classList.remove('home-filter-header-hidden');
-                            shell.style.removeProperty('--home-toolbar-reserve');
                             toolbar.style.removeProperty('--home-toolbar-left');
                             toolbar.style.removeProperty('--home-toolbar-width');
                         }
@@ -448,12 +444,16 @@
                         rafId = window.requestAnimationFrame(syncToolbar);
                     };
 
-                    const observer = new MutationObserver(scheduleSync);
-                    observer.observe(header, { attributes: true, attributeFilter: ['style', 'class'] });
-
                     window.addEventListener('scroll', scheduleSync, { passive: true });
                     window.addEventListener('resize', scheduleSync, { passive: true });
                     mobileQuery.addEventListener?.('change', scheduleSync);
+
+                    /*
+                     * Header'ın transform'u scroll event'i ile aynı frame'de
+                     * değiştiği için birkaç ms sonra bir kez daha kontrol ediyoruz.
+                     */
+                    const observer = new MutationObserver(scheduleSync);
+                    observer.observe(header, { attributes: true, attributeFilter: ['style'] });
 
                     scheduleSync();
                 };
@@ -570,7 +570,7 @@
             }
 
             body.route-home .home-feed-shell.home-toolbar-floating {
-                padding-top: var(--home-toolbar-reserve, 46px) !important;
+                padding-top: 0 !important;
             }
 
             body.route-home .home-feed-shell .home-feed-toolbar.is-header-hidden {
