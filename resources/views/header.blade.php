@@ -2569,7 +2569,7 @@
                 const header = document.querySelector('[data-site-header]');
                 if (!header) return;
 
-                const targetRouteClasses = ['route-home', 'route-search', 'route-tags', 'route-users', 'route-sss', 'route-page'];
+                const targetRouteClasses = ['route-search', 'route-tags', 'route-users', 'route-sss', 'route-page'];
                 if (!targetRouteClasses.some((cls) => document.body.classList.contains(cls))) return;
 
                 if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
