@@ -1,0 +1,20 @@
+.alma-home-feed-error {
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    min-height:280px;
+    padding:36px 20px;
+    border:1px solid #e1e5eb;
+    border-radius:16px;
+    background:#fff;
+    text-align:center;
+}
+.alma-home-feed-error__inner{max-width:420px;width:100%;}
+.alma-home-feed-error__icon{display:flex;align-items:center;justify-content:center;width:46px;height:46px;margin:0 auto 14px;border:1px solid #d8dde5;border-radius:50%;color:#667085;background:#fff;}
+.alma-home-feed-error__icon svg,.alma-home-feed-error__icon iconify-icon{width:23px;height:23px;}
+.alma-home-feed-error__title{margin:0;color:#344054;font-size:15px;font-weight:500;}
+.alma-home-feed-error__actions{display:flex;justify-content:center;gap:8px;margin-top:18px;}
+.alma-home-feed-error__button{display:inline-flex;align-items:center;justify-content:center;gap:7px;height:38px;padding:0 14px;border:1px solid #d9dee7;border-radius:999px;background:#fff;color:#344054;font-size:14px;font-weight:500;text-decoration:none;cursor:pointer;transition:background .15s ease,border-color .15s ease,color .15s ease;}
+.alma-home-feed-error__button:hover{background:#f7f8fa;border-color:#cbd2dc;color:#111827;}
+.alma-home-feed-error__button svg,.alma-home-feed-error__button iconify-icon{width:17px;height:17px;}
+@media(max-width:640px){.alma-home-feed-error{min-height:250px;padding:30px 16px;border-radius:14px;}.alma-home-feed-error__actions{margin-top:16px;}}
