@@ -5,8 +5,8 @@
     }
 
     body.alma-app article.post-card[data-post-card-shell] .alma-post-card__views {
-        margin-right: 26px !important;
-        transform: translateX(-6px);
+        margin-right: 42px !important;
+        transform: translateX(-9px);
     }
 }
 
@@ -16,7 +16,7 @@
     }
 
     body.alma-app article.post-card[data-post-card-shell] .alma-post-card__views {
-        margin-right: 24px !important;
-        transform: translateX(-4px);
+        margin-right: 40px !important;
+        transform: translateX(-7px);
     }
 }
