@@ -1,10 +1,17 @@
 import { onCLS, onFCP, onINP, onLCP, onTTFB } from 'web-vitals';
 
+/*
+ * Ografi gerçek kullanıcı performansını (RUM) toplar.
+ * Ölçüm kodu idle sonrasına bırakılır; sayfa açılışını gereksiz yere bloke etmez.
+ * Yalnızca anonim teknik metrikler gönderilir.
+ */
+
+const endpoint = '/telemetry/web-vitals';
+
 const sendMetrics = (metrics) => {
     if (!metrics.length) return;
 
     const token = document.querySelector('meta[name="csrf-token"]')?.content || '';
-    const payload = JSON.stringify({ metrics });
 
     fetch(endpoint, {
         method: 'POST',
@@ -16,25 +23,23 @@ const sendMetrics = (metrics) => {
             'X-Requested-With': 'XMLHttpRequest',
             'Accept': 'application/json',
         },
-        body: payload,
+        body: JSON.stringify({ metrics }),
     }).catch(() => {});
 };
 
-const initWebVitals = async () => {
+const initWebVitals = () => {
     if (!window.isSecureContext || !window.fetch) return;
-
-    let webVitals;
-    try {
-        webVitals = await loadWebVitals();
-    } catch {
-        return;
-    }
-
-    if (!webVitals) return;
 
     const pending = new Map();
     let sendTimer = null;
-    let sent = false;
+
+    const flush = () => {
+        if (!pending.size) return;
+
+        const metrics = Array.from(pending.values());
+        pending.clear();
+        sendMetrics(metrics);
+    };
 
     const queueMetric = (metric) => {
         pending.set(metric.name, {
@@ -51,19 +56,11 @@ const initWebVitals = async () => {
         sendTimer = window.setTimeout(flush, 1200);
     };
 
-    const flush = () => {
-        if (!pending.size) return;
-        const metrics = Array.from(pending.values());
-        pending.clear();
-        sent = true;
-        sendMetrics(metrics);
-    };
-
-    webVitals.onLCP(queueMetric);
-    webVitals.onINP(queueMetric);
-    webVitals.onCLS(queueMetric);
-    webVitals.onFCP(queueMetric);
-    webVitals.onTTFB(queueMetric);
+    onLCP(queueMetric);
+    onINP(queueMetric);
+    onCLS(queueMetric);
+    onFCP(queueMetric);
+    onTTFB(queueMetric);
 
     window.addEventListener('pagehide', flush, { once: true });
 
