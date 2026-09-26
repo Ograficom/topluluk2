@@ -1,25 +1,4 @@
-/*
- * Ografi gerçek kullanıcı performansını (RUM) toplar.
- * Web Vitals yüklemesi idle sonrasına bırakılır; ölçüm kodu sayfa açılışını
- * gereksiz yere bloke etmez. Ölçümler yalnızca anonim teknik metriklerdir.
- */
-
-const endpoint = '/telemetry/web-vitals';
-
-const loadWebVitals = () => new Promise((resolve, reject) => {
-    if (window.webVitals) {
-        resolve(window.webVitals);
-        return;
-    }
-
-    const script = document.createElement('script');
-    script.src = 'https://unpkg.com/web-vitals@6.2.2/dist/web-vitals.iife.js';
-    script.async = true;
-    script.crossOrigin = 'anonymous';
-    script.onload = () => resolve(window.webVitals);
-    script.onerror = reject;
-    document.head.appendChild(script);
-});
+import { onCLS, onFCP, onINP, onLCP, onTTFB } from 'web-vitals';
 
 const sendMetrics = (metrics) => {
     if (!metrics.length) return;
