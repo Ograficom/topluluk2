@@ -2,6 +2,7 @@
 
 use App\Models\Post;
 use App\Models\RssFeed;
+use App\Models\WebVitalMetric;
 use App\Services\AdOrderSnippetSync;
 use App\Services\IndexNowService;
 use App\Services\Rss\RssSyncService;
@@ -134,3 +135,16 @@ Schedule::command('email:send-daily-digest')
     ->dailyAt('09:00')
     ->timezone(config('app.timezone'))
     ->withoutOverlapping(120);
+
+
+Artisan::command('web-vitals:prune', function () {
+    $deleted = WebVitalMetric::query()
+        ->where('created_at', '<', now()->subDays(90))
+        ->delete();
+
+    $this->info("Web Vitals eski kayıtları temizlendi: {$deleted}");
+})->purpose('Prune Web Vitals telemetry older than 90 days');
+
+Schedule::command('web-vitals:prune')
+    ->dailyAt('03:20')
+    ->withoutOverlapping(30);
