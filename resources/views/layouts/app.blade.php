@@ -7426,6 +7426,7 @@
 
 <body
     class="bg-[#fafafa] text-slate-900 font-sans antialiased theme-minimal alma-app {{ request()->routeIs('home') ? 'route-home' : '' }} {{ request()->routeIs('discover') ? 'route-discover' : '' }} {{ request()->routeIs('video') ? 'route-video' : '' }} {{ $isCategoryRoute ? 'route-category' : '' }} {{ $isPostShowRoute ? 'route-post-show' : '' }} {{ $isProfileRoute ? 'route-profile' : '' }} {{ $isSearchRoute ? 'route-search' : '' }} {{ $isTagsRoute ? 'route-tags' : '' }} {{ $isUsersRoute ? 'route-users' : '' }} {{ $isSssRoute ? 'route-sss' : '' }} {{ $isStaticPageRoute ? 'route-page' : '' }} {{ $isDashboardRoute ? 'route-dashboard' : '' }}"
+    data-route-name="{{ request()->route()?->getName() }}"
     data-mentions-endpoint="{{ auth()->check() ? route('mentions.users') : '' }}"
 >
     @include('partials.toasts')
