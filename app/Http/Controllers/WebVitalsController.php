@@ -140,9 +140,8 @@ class WebVitalsController extends Controller
         }
 
         $path = $parts['path'] ?? '/';
-        $query = isset($parts['query']) ? '?' . $parts['query'] : '';
-
-        return substr($path . $query, 0, 2048);
+        // Query stringleri saklamıyoruz; URL parametreleri kişisel/özel veri içerebilir.
+        return substr($path, 0, 2048);
     }
 
     private function rating(string $metric, float $value): string
