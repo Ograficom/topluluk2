@@ -38,6 +38,7 @@ use App\Http\Controllers\AiController;
 use App\Http\Controllers\VerifyEmailController;
 use App\Http\Controllers\EmailVerificationCodeController;
 use App\Http\Controllers\RegistrationVerificationController;
+use App\Http\Controllers\WebVitalsController;
 
 // E-posta istemcisindeki bağlantı, kullanıcının web oturumu olmasa da imzalı URL
 // ve e-posta hash'i ile güvenle doğrulanabilmelidir.
@@ -441,6 +442,14 @@ Route::get('/discover', function () {
         'popularComments',
     ));
 })->name('discover');
+
+Route::post('/telemetry/web-vitals', [WebVitalsController::class, 'store'])
+    ->middleware('throttle:30,1')
+    ->name('telemetry.web-vitals');
+
+Route::get('/dashboard/site-health', [WebVitalsController::class, 'dashboard'])
+    ->middleware('auth')
+    ->name('dashboard.site-health');
 
 Route::get('/robots.txt', function () {
     return response(
