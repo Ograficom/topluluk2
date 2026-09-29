@@ -9940,22 +9940,25 @@ SVG;
                     return;
                 }
 
-                // Discover sayfasindaki kartlar .discover-section'in kendi
-                // ic bosluguna (18px) gomulu, koseleri yuvarlak duruyor -
-                // bu fonksiyon inline style'i "!important" ile enjekte
-                // ettigi icin HICBIR CSS kurali onu ezemiyor; kart tam
-                // viewport genisligine ("width:100vw" negatif margin ile)
-                // zorlanip 8px'e sabitleniyordu, digger iki kutuyla (18px,
-                // golgeli) hic uyusmuyordu. Bu sayfada devre disi - kartlar
-                // zaten dar/gomulu bir kap icinde, tam-genislik-tasma
-                // "referans" tasarimina ihtiyaclari yok.
+                /*
+                 * Mobile card geometry is kept here because this script can run
+                 * after the stylesheet and therefore writes inline !important
+                 * values. The artwork and interaction markup are untouched.
+                 *
+                 * This pass only controls geometry, typography and icon scale:
+                 * tighter than the old reference layout, but still comfortable
+                 * for thumb use.
+                 */
                 if (document.body.classList.contains('route-discover')) {
                     return;
                 }
 
-                const viewportWidth = Math.max(280, document.documentElement.clientWidth || window.innerWidth || 360);
+                const viewportWidth = Math.max(
+                    280,
+                    document.documentElement.clientWidth || window.innerWidth || 360
+                );
                 const cardWidth = viewportWidth + 'px';
-                const contentWidth = Math.max(250, viewportWidth - 30) + 'px';
+                const contentWidth = Math.max(248, viewportWidth - 28) + 'px';
 
                 document.querySelectorAll(rootSelector).forEach(function (card) {
                     const force = function (element, properties) {
@@ -9965,6 +9968,7 @@ SVG;
                         });
                     };
 
+                    /* CARD ------------------------------------------------ */
                     force(card, {
                         width: cardWidth,
                         'min-width': '0',
@@ -9973,72 +9977,157 @@ SVG;
                         'margin-right': 'calc(50% - 50vw)',
                         'margin-bottom': '0',
                         'margin-left': 'calc(50% - 50vw)',
-                        padding: '10px 15px 0',
+                        padding: '12px 14px 0',
                         overflow: 'hidden',
                         'box-sizing': 'border-box',
-                        'border-radius': '8px'
+                        'border-radius': '12px'
                     });
 
-                    card.querySelectorAll('.post-header, .post-title, .post-summary-shell, .post-card__full-content, .post-card__tags, .reactions-row, .comment-row').forEach(function (element) {
-                        force(element, { width: contentWidth, 'min-width': '0', 'max-width': contentWidth });
+                    card.querySelectorAll(
+                        '.post-header, .post-title, .post-summary-shell, ' +
+                        '.post-card__full-content, .post-card__tags, ' +
+                        '.reactions-row, .comment-row'
+                    ).forEach(function (element) {
+                        force(element, {
+                            width: contentWidth,
+                            'min-width': '0',
+                            'max-width': contentWidth
+                        });
                     });
 
-                    card.querySelectorAll('.post-card__media-wrap, .post-card__media-scroller, .post-card__media-slide, .post-card__media-link, .post-card__media-frame, .post-card__media-image').forEach(function (element) {
-                        force(element, { width: contentWidth, 'min-width': contentWidth, 'max-width': contentWidth });
+                    /* MEDIA ------------------------------------------------ */
+                    card.querySelectorAll(
+                        '.post-card__media-wrap, .post-card__media-scroller, ' +
+                        '.post-card__media-slide, .post-card__media-link, ' +
+                        '.post-card__media-frame, .post-card__media-image'
+                    ).forEach(function (element) {
+                        force(element, {
+                            width: contentWidth,
+                            'min-width': contentWidth,
+                            'max-width': contentWidth
+                        });
                     });
 
                     card.querySelectorAll('.post-title, .post-title__link').forEach(function (element) {
                         force(element, {
                             'font-size': '18px',
                             'font-weight': '700',
-                            'line-height': '1.42',
+                            'line-height': '1.29',
+                            'letter-spacing': '-0.018em',
                             'white-space': 'normal',
-                            'overflow-wrap': 'anywhere'
+                            'overflow-wrap': 'anywhere',
+                            'text-wrap': 'pretty'
                         });
                     });
 
                     card.querySelectorAll('.post-summary, [data-post-card-summary]').forEach(function (element) {
                         force(element, {
                             display: '-webkit-box',
-                            'font-size': '17px',
+                            'font-size': '13px',
                             'font-weight': '400',
-                            'line-height': '1.48',
+                            'line-height': '1.46',
+                            'letter-spacing': '-0.002em',
                             overflow: 'hidden',
                             '-webkit-box-orient': 'vertical',
-                            '-webkit-line-clamp': '6',
+                            '-webkit-line-clamp': '1',
                             'white-space': 'normal'
                         });
                     });
 
                     card.querySelectorAll('.author-name').forEach(function (element) {
-                        force(element, { 'font-size': '14px', 'line-height': '18px', 'font-weight': '600' });
+                        force(element, {
+                            'font-size': '13.5px',
+                            'line-height': '17px',
+                            'font-weight': '650',
+                            'letter-spacing': '-0.01em'
+                        });
                     });
 
                     card.querySelectorAll('.author-subline, .post-time, .author-subline__topic').forEach(function (element) {
-                        force(element, { 'font-size': '12px', 'line-height': '16px' });
+                        force(element, {
+                            'font-size': '10.75px',
+                            'line-height': '14px',
+                            'font-weight': '450'
+                        });
                     });
 
-                    card.querySelectorAll('.expand-link, .post-card__tag').forEach(function (element) {
-                        force(element, { 'font-size': '16px', 'line-height': '22px', 'font-weight': '600' });
+                    card.querySelectorAll('.expand-link').forEach(function (element) {
+                        force(element, {
+                            'font-size': '13px',
+                            'line-height': '18px',
+                            'font-weight': '600',
+                            'letter-spacing': '-0.004em',
+                            'white-space': 'nowrap'
+                        });
+                    });
+
+                    card.querySelectorAll('.post-card__tag').forEach(function (element) {
+                        force(element, {
+                            'font-size': '12px',
+                            'line-height': '18px',
+                            'font-weight': '500'
+                        });
                     });
 
                     card.querySelectorAll('.post-card__media-frame, .post-card__media-image').forEach(function (element) {
-                        force(element, { height: 'auto', 'aspect-ratio': '1.5 / 1', 'object-fit': 'cover' });
+                        force(element, {
+                            height: 'auto',
+                            'aspect-ratio': '1.5 / 1',
+                            'object-fit': 'cover'
+                        });
                     });
 
+                    /* REACTIONS ------------------------------------------- */
+                    const reactionRow = card.querySelector('.reactions-row');
+                    force(reactionRow, {
+                        height: '31px',
+                        'min-height': '31px',
+                        margin: '0 0 4px',
+                        padding: '0',
+                        gap: '5px',
+                        'box-sizing': 'border-box'
+                    });
+
+                    reactionRow?.querySelectorAll(
+                        '.reaction-item, .more-pill, .reaction-add'
+                    ).forEach(function (element) {
+                        force(element, {
+                            height: '29px',
+                            'min-height': '29px',
+                            margin: '0'
+                        });
+                    });
+
+                    /* FOOTER ---------------------------------------------- */
                     const actionBar = card.querySelector('.action-bar');
                     force(actionBar, {
                         width: cardWidth,
                         'min-width': cardWidth,
                         'max-width': cardWidth,
-                        height: '48px',
-                        'min-height': '48px',
-                        margin: '0 -15px',
-                        padding: '0'
+                        height: '46px',
+                        'min-height': '46px',
+                        margin: '0 -14px',
+                        padding: '0 8px'
                     });
 
-                    card.querySelectorAll('.post-card__inline-icon, .post-card__inline-icon svg, .post-card__bookmark-icon, .post-card__share-icon').forEach(function (element) {
-                        force(element, { width: '24px', height: '24px' });
+                    card.querySelectorAll(
+                        '.post-card__inline-icon, .post-card__inline-icon svg, ' +
+                        '.post-card__bookmark-icon, .post-card__share-icon'
+                    ).forEach(function (element) {
+                        force(element, {
+                            width: '19px',
+                            height: '19px'
+                        });
+                    });
+
+                    card.querySelectorAll(
+                        '.action-btn, .action-chip, .post-metric, .post-metric--views'
+                    ).forEach(function (element) {
+                        force(element, {
+                            'min-height': '32px',
+                            height: '32px',
+                            'box-sizing': 'border-box'
+                        });
                     });
                 });
             };
