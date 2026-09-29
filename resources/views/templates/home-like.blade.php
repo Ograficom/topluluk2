@@ -5855,3 +5855,259 @@ html body .home-feed-shell .home-feed-toolbar__mode.is-active {
 }
 </style>
 @endsection
+
+
+/* Ografi final mobile post-card authority v1
+ * This is intentionally the last mobile card layer so older feed/card
+ * rules cannot undo the compact mobile geometry.
+ * Icons and card functionality are untouched.
+ */
+@media (max-width: 640px) {
+    html body .home-feed-shell article.post-card[data-post-card-shell] {
+        padding: 13px 15px 0 !important;
+        border-radius: 12px !important;
+        box-sizing: border-box !important;
+    }
+
+    html body .home-feed-shell article.post-card[data-post-card-shell] .post-header {
+        margin-bottom: 8px !important;
+    }
+
+    html body .home-feed-shell article.post-card[data-post-card-shell] .author-name {
+        font-family: Inter, ui-sans-serif, system-ui, sans-serif !important;
+        font-size: 13.5px !important;
+        line-height: 17px !important;
+        font-weight: 650 !important;
+        letter-spacing: -0.012em !important;
+    }
+
+    html body .home-feed-shell article.post-card[data-post-card-shell] .author-subline,
+    html body .home-feed-shell article.post-card[data-post-card-shell] .post-time {
+        font-family: Inter, ui-sans-serif, system-ui, sans-serif !important;
+        font-size: 10.75px !important;
+        line-height: 14px !important;
+        font-weight: 450 !important;
+        color: #6b7280 !important;
+    }
+
+    /* Title block */
+    html body .home-feed-shell article.post-card[data-post-card-shell] .post-title,
+    html body .home-feed-shell article.post-card[data-post-card-shell] .post-title__link {
+        margin: 0 0 9px !important;
+        font-family: Inter, ui-sans-serif, system-ui, sans-serif !important;
+        font-size: 18px !important;
+        line-height: 1.30 !important;
+        font-weight: 700 !important;
+        letter-spacing: -0.019em !important;
+        color: #111111 !important;
+    }
+
+    /* Image */
+    html body .home-feed-shell article.post-card[data-post-card-shell] .post-card__media-wrap {
+        margin: 0 0 10px !important;
+        border-radius: 9px !important;
+    }
+
+    html body .home-feed-shell article.post-card[data-post-card-shell] :is(
+        .post-card__media-frame,
+        .post-card__media-image,
+        .hero-image
+    ) {
+        aspect-ratio: 1.5 / 1 !important;
+        width: 100% !important;
+        height: auto !important;
+        min-height: 0 !important;
+        max-height: none !important;
+        border-radius: 9px !important;
+        object-fit: cover !important;
+    }
+
+    /* Summary and read-more */
+    html body .home-feed-shell article.post-card[data-post-card-shell] .post-summary-shell {
+        margin: 0 !important;
+    }
+
+    html body .home-feed-shell article.post-card[data-post-card-shell] :is(
+        .post-summary,
+        .post-summary.is-collapsed,
+        [data-post-card-summary]
+    ) {
+        margin: 0 !important;
+        font-family: Inter, ui-sans-serif, system-ui, sans-serif !important;
+        font-size: 12.75px !important;
+        line-height: 1.45 !important;
+        font-weight: 400 !important;
+        letter-spacing: -0.002em !important;
+        color: #9ca3af !important;
+        -webkit-line-clamp: 1 !important;
+    }
+
+    html body .home-feed-shell article.post-card[data-post-card-shell] .expand-link {
+        display: inline-flex !important;
+        align-items: center !important;
+        gap: 1px !important;
+        margin: 5px 0 7px !important;
+        padding: 0 !important;
+        font-family: Inter, ui-sans-serif, system-ui, sans-serif !important;
+        font-size: 13px !important;
+        line-height: 18px !important;
+        font-weight: 500 !important;
+        color: #2563eb !important;
+    }
+
+    html body .home-feed-shell article.post-card[data-post-card-shell] .expand-link .post-card__expand-icon,
+    html body .home-feed-shell article.post-card[data-post-card-shell] .expand-link iconify-icon {
+        width: 14px !important;
+        height: 14px !important;
+        font-size: 14px !important;
+    }
+
+    /* Reaction strip: one tight horizontal rhythm. */
+    html body .home-feed-shell article.post-card[data-post-card-shell] #reaction-row.reactions-row {
+        display: flex !important;
+        align-items: center !important;
+        min-height: 31px !important;
+        height: 31px !important;
+        margin: 0 0 4px !important;
+        padding: 0 !important;
+        gap: 5px !important;
+    }
+
+    html body .home-feed-shell article.post-card[data-post-card-shell] #reaction-row .reaction-item,
+    html body .home-feed-shell article.post-card[data-post-card-shell] #reaction-row .more-pill,
+    html body .home-feed-shell article.post-card[data-post-card-shell] #reaction-row .reaction-add {
+        height: 29px !important;
+        min-height: 29px !important;
+        margin: 0 !important;
+    }
+
+    /* Bottom toolbar: icons remain the exact existing artwork. */
+    html body .home-feed-shell article.post-card[data-post-card-shell] #action-bar.action-bar {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        width: calc(100% + 30px) !important;
+        min-width: calc(100% + 30px) !important;
+        max-width: calc(100% + 30px) !important;
+        height: 48px !important;
+        min-height: 48px !important;
+        margin: 0 -15px !important;
+        padding: 0 11px 0 10px !important;
+        border-top: 1px solid #e5e7eb !important;
+        box-sizing: border-box !important;
+    }
+
+    html body .home-feed-shell article.post-card[data-post-card-shell] #action-left.action-left {
+        display: inline-flex !important;
+        align-items: center !important;
+        gap: 1px !important;
+        height: 48px !important;
+        min-width: 0 !important;
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+
+    html body .home-feed-shell article.post-card[data-post-card-shell] #action-left
+        :is(.action-btn, .action-chip, .post-card__action-link, .post-card__action-button) {
+        width: 32px !important;
+        min-width: 32px !important;
+        height: 32px !important;
+        min-height: 32px !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        border-radius: 6px !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 3px !important;
+        flex: 0 0 32px !important;
+        box-sizing: border-box !important;
+    }
+
+    html body .home-feed-shell article.post-card[data-post-card-shell] #action-left
+        :is(.action-btn, .action-chip, .post-card__action-link, .post-card__action-button):has(.action-chip__label) {
+        width: auto !important;
+        min-width: 36px !important;
+        padding: 0 4px !important;
+        flex-basis: auto !important;
+    }
+
+    html body .home-feed-shell article.post-card[data-post-card-shell] #action-left .post-card__inline-icon {
+        width: 19px !important;
+        height: 19px !important;
+        min-width: 19px !important;
+        min-height: 19px !important;
+        flex: 0 0 19px !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+
+    html body .home-feed-shell article.post-card[data-post-card-shell] #action-left .post-card__inline-icon :is(svg, iconify-icon) {
+        width: 19px !important;
+        height: 19px !important;
+        min-width: 19px !important;
+        min-height: 19px !important;
+        max-width: 19px !important;
+        max-height: 19px !important;
+        display: block !important;
+    }
+
+    html body .home-feed-shell article.post-card[data-post-card-shell] #action-left .action-chip__label,
+    html body .home-feed-shell article.post-card[data-post-card-shell] #action-left [data-post-card-view-count],
+    html body .home-feed-shell article.post-card[data-post-card-shell] #action-bar [data-post-card-view-count] {
+        font-family: Inter, ui-sans-serif, system-ui, sans-serif !important;
+        font-size: 11px !important;
+        line-height: 1 !important;
+        font-weight: 500 !important;
+        letter-spacing: -0.003em !important;
+        font-variant-numeric: tabular-nums !important;
+    }
+
+    html body .home-feed-shell article.post-card[data-post-card-shell] #action-bar .post-metric.post-metric--views {
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        width: auto !important;
+        min-width: 35px !important;
+        height: 32px !important;
+        min-height: 32px !important;
+        margin: 0 !important;
+        padding: 0 2px 0 4px !important;
+        gap: 3px !important;
+        border-radius: 6px !important;
+        flex: 0 0 auto !important;
+    }
+
+    html body .home-feed-shell article.post-card[data-post-card-shell] #action-bar .post-metric.post-metric--views .post-card__inline-icon,
+    html body .home-feed-shell article.post-card[data-post-card-shell] #action-bar .post-metric.post-metric--views .post-card__inline-icon svg {
+        width: 18px !important;
+        height: 18px !important;
+        min-width: 18px !important;
+        min-height: 18px !important;
+    }
+
+    /* Never alter the actual icon family/artwork. */
+    html body .home-feed-shell article.post-card[data-post-card-shell] #action-bar
+        :is(.post-card__comment-icon, .post-card__bookmark-icon, .post-card__view-icon) {
+        stroke-width: 2.1 !important;
+    }
+}
+
+@media (max-width: 420px) {
+    html body .home-feed-shell article.post-card[data-post-card-shell] {
+        padding-left: 13px !important;
+        padding-right: 13px !important;
+    }
+
+    html body .home-feed-shell article.post-card[data-post-card-shell] #action-bar.action-bar {
+        width: calc(100% + 26px) !important;
+        min-width: calc(100% + 26px) !important;
+        max-width: calc(100% + 26px) !important;
+        margin-left: -13px !important;
+        margin-right: -13px !important;
+        padding-left: 9px !important;
+        padding-right: 9px !important;
+    }
+}
+
