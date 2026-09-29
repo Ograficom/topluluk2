@@ -9,7 +9,7 @@
             <div class="mb-4 flex items-center gap-3">
                 <span class="inline-flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-white dark:bg-transparent">
                     <img
-                        src="https://ografi.com//storage/app/tasar%C4%B1m/S42.svg"
+                        src="{{ asset('images/ografi-logo.png') }}?v=20260714a"
                         alt="Ografi dış bağlantı görseli"
                         class="h-10 w-10 object-contain"
                         loading="lazy"
