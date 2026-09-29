@@ -5853,8 +5853,6 @@ html body .home-feed-shell .home-feed-toolbar__mode.is-active {
         font-size: 12px !important;
     }
 }
-</style>
-@endsection
 
 
 /* Ografi final mobile post-card authority v1
@@ -6110,4 +6108,5 @@ html body .home-feed-shell .home-feed-toolbar__mode.is-active {
         padding-right: 9px !important;
     }
 }
-
+</style>
+@endsection
