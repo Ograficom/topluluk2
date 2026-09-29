@@ -5359,10 +5359,7 @@
     font-size: 13px !important;
 }
 
-/* Mobile post cards — compact precision layout.
- * Existing card structure, actions and icon artwork stay unchanged.
- * This pass only refines typography, spacing, alignment and touch rhythm.
- */
+/* Mobile post cards: full-width, readable typography and solid black actions. */
 @media (max-width: 640px) {
     .home-feed-shell {
         width: 100% !important;
@@ -5374,305 +5371,90 @@
         width: 100% !important;
         max-width: 100% !important;
         margin-inline: 0 !important;
-        padding: 14px 15px 10px !important;
+        padding: 14px 15px 12px !important;
         border-radius: 12px !important;
         box-sizing: border-box !important;
     }
 
-    /* Header: tighter vertical rhythm, without changing the identity layout. */
     .home-feed-shell [data-post-card-shell] .post-header {
-        min-height: 40px !important;
-        margin-bottom: 9px !important;
-    }
-
-    .home-feed-shell [data-post-card-shell] .author-block {
-        display: flex !important;
-        align-items: center !important;
-        gap: 8px !important;
-        min-width: 0 !important;
-    }
-
-    .home-feed-shell [data-post-card-shell] .avatar-wrap {
-        width: 40px !important;
-        height: 40px !important;
-        min-width: 40px !important;
-        min-height: 40px !important;
-    }
-
-    .home-feed-shell [data-post-card-shell] .author-avatar {
-        width: 40px !important;
-        height: 40px !important;
-        min-width: 40px !important;
-        min-height: 40px !important;
-    }
-
-    .home-feed-shell [data-post-card-shell] .author-info {
-        min-width: 0 !important;
-        padding-top: 0 !important;
+        margin-bottom: 10px !important;
     }
 
     .home-feed-shell [data-post-card-shell] .author-name {
-        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
         font-size: 14px !important;
-        line-height: 18px !important;
-        font-weight: 650 !important;
-        letter-spacing: -0.012em !important;
-        color: #111827 !important;
+        font-weight: 600 !important;
+        color: #111 !important;
     }
 
     .home-feed-shell [data-post-card-shell] .author-subline,
     .home-feed-shell [data-post-card-shell] .post-time {
-        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
-        font-size: 11.25px !important;
-        line-height: 15px !important;
-        font-weight: 450 !important;
-        letter-spacing: -0.002em !important;
-        color: #6b7280 !important;
+        font-size: 12px !important;
+        line-height: 1.35 !important;
+        color: #4b5563 !important;
     }
 
-    /* Title: slightly smaller than desktop, but with stronger optical weight. */
     .home-feed-shell [data-post-card-shell] .post-title,
     .home-feed-shell [data-post-card-shell] .post-title__link {
-        margin: 0 0 11px !important;
-        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
-        font-size: 18.5px !important;
+        font-size: 19px !important;
         font-weight: 700 !important;
-        line-height: 1.29 !important;
-        letter-spacing: -0.018em !important;
-        color: #111111 !important;
-        text-rendering: optimizeLegibility !important;
-        -webkit-font-smoothing: antialiased !important;
-        overflow-wrap: normal !important;
-        word-break: normal !important;
-    }
-
-    /* Media: retain the current crop, but reduce the visual gap around it. */
-    .home-feed-shell [data-post-card-shell] .post-card__media-wrap {
-        width: 100% !important;
-        margin: 0 0 11px !important;
-        border: 0 !important;
-        border-radius: 9px !important;
-        overflow: hidden !important;
-    }
-
-    .home-feed-shell [data-post-card-shell] .post-card__media-frame,
-    .home-feed-shell [data-post-card-shell] .post-card__media-image,
-    .home-feed-shell [data-post-card-shell] .hero-image {
-        display: block !important;
-        width: 100% !important;
-        min-height: 0 !important;
-        height: auto !important;
-        max-height: none !important;
-        aspect-ratio: 1.5 / 1 !important;
-        object-fit: cover !important;
-        border-radius: 9px !important;
-    }
-
-    /* Summary: readable, neutral and compact instead of oversized mobile text. */
-    .home-feed-shell [data-post-card-shell] .post-summary-shell,
-    .home-feed-shell [data-post-card-shell] .post-summary-shell.is-collapsed {
-        max-height: none !important;
-        margin: 0 !important;
-        overflow: visible !important;
+        line-height: 1.32 !important;
+        letter-spacing: -.01em !important;
+        color: #050505 !important;
     }
 
     .home-feed-shell [data-post-card-shell] .post-summary,
-    .home-feed-shell [data-post-card-shell] .post-summary.is-collapsed,
-    .home-feed-shell [data-post-card-shell] [data-post-card-summary] {
-        display: -webkit-box !important;
-        margin: 0 !important;
-        overflow: hidden !important;
-        -webkit-box-orient: vertical !important;
-        -webkit-line-clamp: 2 !important;
-        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
-        font-size: 13px !important;
-        font-weight: 400 !important;
-        line-height: 1.46 !important;
-        letter-spacing: -0.003em !important;
-        color: #6b7280 !important;
-        text-rendering: optimizeLegibility !important;
-        -webkit-font-smoothing: antialiased !important;
-    }
-
-    /* Read-more: keep the existing blue treatment, but tighten its baseline. */
-    .home-feed-shell [data-post-card-shell] .expand-link {
-        display: inline-flex !important;
-        align-items: center !important;
-        gap: 2px !important;
-        margin: 5px 0 9px !important;
-        padding: 0 !important;
-        border: 0 !important;
-        background: transparent !important;
-        box-shadow: none !important;
-        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
-        font-size: 13.5px !important;
-        line-height: 18px !important;
-        font-weight: 500 !important;
-        letter-spacing: -0.004em !important;
-        color: #2563eb !important;
-    }
-
-    .home-feed-shell [data-post-card-shell] .expand-link .post-card__expand-icon,
-    .home-feed-shell [data-post-card-shell] .expand-link iconify-icon {
-        width: 15px !important;
-        height: 15px !important;
+    .home-feed-shell [data-post-card-shell] .post-card__full-content,
+    .home-feed-shell [data-post-card-shell] .post-card__inline-text {
         font-size: 15px !important;
-        flex: 0 0 15px !important;
+        line-height: 1.5 !important;
+        color: #111 !important;
     }
 
-    .home-feed-shell [data-post-card-shell] .post-card__tags {
-        gap: 6px 10px !important;
-        margin: 0 0 8px !important;
-    }
-
-    .home-feed-shell [data-post-card-shell] .post-card__tag {
-        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
-        font-size: 12px !important;
-        line-height: 18px !important;
-        font-weight: 500 !important;
-    }
-
-    /* Reaction row: compact pills, centered vertically with the text. */
-    .home-feed-shell [data-post-card-shell] .reactions-row {
-        display: flex !important;
-        align-items: center !important;
-        min-height: 31px !important;
-        margin: 0 0 5px !important;
-        gap: 5px !important;
-    }
-
-    .home-feed-shell [data-post-card-shell] .reactions-row .reaction-item,
-    .home-feed-shell [data-post-card-shell] .reactions-row .more-pill,
-    .home-feed-shell [data-post-card-shell] .reactions-row .reaction-add {
-        min-height: 30px !important;
-        height: 30px !important;
-    }
-
-    /* Bottom actions: same icons, tighter geometry and consistent baselines. */
-    html body .home-feed-shell article.post-card[data-post-card-shell] .action-bar {
+    .home-feed-shell [data-post-card-shell] .post-card__media-wrap,
+    .home-feed-shell [data-post-card-shell] .post-card__media-scroller,
+    .home-feed-shell [data-post-card-shell] .post-card__media-frame {
         width: 100% !important;
-        min-width: 0 !important;
-        max-width: none !important;
-        min-height: 42px !important;
-        height: 42px !important;
-        margin: 0 -15px -10px !important;
-        padding: 0 15px !important;
+        max-width: 100% !important;
+    }
+
+    .home-feed-shell [data-post-card-shell] .post-card__media-image,
+    .home-feed-shell [data-post-card-shell] .hero-image {
+        width: 100% !important;
+        min-height: 210px !important;
+        max-height: 430px !important;
+        object-fit: cover !important;
+        border-radius: 10px !important;
+    }
+
+    .home-feed-shell [data-post-card-shell] .action-bar {
+        min-height: 48px !important;
+        padding-top: 9px !important;
+        margin-top: 10px !important;
         border-top: 1px solid #e5e7eb !important;
-        box-sizing: border-box !important;
-        display: flex !important;
-        align-items: center !important;
-        justify-content: space-between !important;
     }
 
-    html body .home-feed-shell article.post-card[data-post-card-shell] .action-left {
-        display: inline-flex !important;
-        align-items: center !important;
-        gap: 2px !important;
-        min-width: 0 !important;
-        height: 42px !important;
-        padding: 0 !important;
+    .home-feed-shell [data-post-card-shell] :where(.action-btn, .post-metric, .action-chip, .post-card__inline-icon),
+    .home-feed-shell [data-post-card-shell] :where(.action-btn, .post-metric, .action-chip, .post-card__inline-icon) * {
+        color: #050505 !important;
+        stroke: currentColor !important;
     }
 
-    html body .home-feed-shell article.post-card[data-post-card-shell] .action-left :is(
-        .action-btn,
-        .post-card__action-link,
-        .post-card__action-button,
-        .action-chip
-    ) {
-        width: 34px !important;
-        min-width: 34px !important;
-        height: 34px !important;
-        min-height: 34px !important;
-        padding: 0 !important;
-        margin: 0 !important;
-        border-radius: 7px !important;
-        display: inline-flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-        flex: 0 0 34px !important;
-        box-sizing: border-box !important;
+    .home-feed-shell [data-post-card-shell] .post-card__inline-icon {
+        width: 24px !important;
+        height: 24px !important;
     }
 
-    html body .home-feed-shell article.post-card[data-post-card-shell] .action-left :is(
-        .action-btn,
-        .post-card__action-link,
-        .post-card__action-button,
-        .action-chip
-    ):has(.action-chip__label) {
-        width: auto !important;
-        min-width: 42px !important;
-        padding-inline: 5px !important;
-        border-radius: 8px !important;
-        gap: 3px !important;
-        flex-basis: auto !important;
+    .home-feed-shell [data-post-card-shell] .post-card__comment-icon,
+    .home-feed-shell [data-post-card-shell] .post-card__bookmark-icon {
+        width: 23px !important;
+        height: 23px !important;
     }
 
-    html body .home-feed-shell article.post-card[data-post-card-shell] .post-card__inline-icon {
+    .home-feed-shell [data-post-card-shell] .post-card__view-icon {
         width: 20px !important;
         height: 20px !important;
-        min-width: 20px !important;
-        min-height: 20px !important;
-        flex: 0 0 20px !important;
-        display: inline-flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-        line-height: 1 !important;
     }
 
-    html body .home-feed-shell article.post-card[data-post-card-shell] .post-card__inline-icon :is(svg, iconify-icon) {
-        width: 20px !important;
-        height: 20px !important;
-        min-width: 20px !important;
-        min-height: 20px !important;
-        max-width: 20px !important;
-        max-height: 20px !important;
-        display: block !important;
-        margin: 0 !important;
-    }
-
-    /* Preserve the existing artwork; only refine stroke rendering. */
-    html body .home-feed-shell article.post-card[data-post-card-shell] :is(
-        .post-card__comment-icon,
-        .post-card__bookmark-icon,
-        .post-card__view-icon,
-        .post-card__share-icon
-    ) {
-        stroke-width: 2.1 !important;
-    }
-
-    html body .home-feed-shell article.post-card[data-post-card-shell] .action-chip__label,
-    html body .home-feed-shell article.post-card[data-post-card-shell] [data-post-card-view-count] {
-        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
-        font-size: 11.25px !important;
-        line-height: 1 !important;
-        font-weight: 500 !important;
-        letter-spacing: -0.003em !important;
-        font-variant-numeric: tabular-nums !important;
-        white-space: nowrap !important;
-        transform: translateY(-0.15px);
-    }
-
-    html body .home-feed-shell article.post-card[data-post-card-shell] .post-metric.post-metric--views {
-        min-width: 34px !important;
-        width: auto !important;
-        height: 34px !important;
-        min-height: 34px !important;
-        padding: 0 2px 0 4px !important;
-        gap: 3px !important;
-        border-radius: 7px !important;
-        flex: 0 0 auto !important;
-    }
-
-    html body .home-feed-shell article.post-card[data-post-card-shell] .post-metric.post-metric--views .post-card__inline-icon,
-    html body .home-feed-shell article.post-card[data-post-card-shell] .post-metric.post-metric--views .post-card__inline-icon svg {
-        width: 18px !important;
-        height: 18px !important;
-        min-width: 18px !important;
-        min-height: 18px !important;
-        flex-basis: 18px !important;
-    }
-
-    /* Keep the existing full-width feed behavior. */
     html body .home-feed-shell,
     html body .home-feed-shell .ografi-filterable-post {
         width: 100vw !important;
@@ -5698,9 +5480,9 @@
         .reactions-row,
         .comment-row
     ) {
-        width: calc(100vw - 30px) !important;
+        width: calc(100vw - 32px) !important;
         min-width: 0 !important;
-        max-width: calc(100vw - 30px) !important;
+        max-width: calc(100vw - 32px) !important;
     }
 
     html body .home-feed-shell article.post-card[data-post-card-shell] :is(
@@ -5711,20 +5493,231 @@
         .post-card__media-frame,
         .post-card__media-image
     ) {
-        width: calc(100vw - 30px) !important;
-        min-width: calc(100vw - 30px) !important;
-        max-width: calc(100vw - 30px) !important;
+        width: calc(100vw - 32px) !important;
+        min-width: calc(100vw - 32px) !important;
+        max-width: calc(100vw - 32px) !important;
+    }
+
+    html body .home-feed-shell article.post-card[data-post-card-shell] :is(.post-title, .post-title__link, .post-summary, .post-card__tag) {
+        white-space: normal !important;
+        overflow-wrap: anywhere !important;
+        word-break: normal !important;
+    }
+
+    html body .home-feed-shell article.post-card[data-post-card-shell] .action-bar {
+        width: 100vw !important;
+        min-width: 100vw !important;
+        max-width: 100vw !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
+
+    html body .home-feed-shell article.post-card[data-post-card-shell] .action-left {
+        gap: clamp(0px, .75vw, 3px) !important;
+        padding-left: 8px !important;
+    }
+
+    html body .home-feed-shell article.post-card[data-post-card-shell] .action-left :is(
+        .action-btn,
+        .post-card__action-link,
+        .post-card__action-button,
+        .action-chip
+    ) {
+        width: 36px !important;
+        min-width: 36px !important;
+        height: 36px !important;
+        min-height: 36px !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+        border-radius: 50% !important;
+    }
+
+    html body .home-feed-shell article.post-card[data-post-card-shell] .action-left :is(
+        .action-btn,
+        .post-card__action-link,
+        .post-card__action-button,
+        .action-chip
+    ):has(.action-chip__label) {
+        width: auto !important;
+        min-width: 48px !important;
+        padding-left: 10px !important;
+        padding-right: 10px !important;
+        border-radius: 999px !important;
     }
 
     html body .home-feed-shell article.post-card[data-post-card-shell] :is(
         .post-title,
-        .post-title__link,
-        .post-summary,
-        .post-card__tag
+        .post-title__link
     ) {
-        white-space: normal !important;
-        overflow-wrap: anywhere !important;
-        word-break: normal !important;
+        font-family: Roboto, Arial, sans-serif !important;
+        font-size: 18px !important;
+        font-weight: 700 !important;
+        line-height: 1.42 !important;
+    }
+
+    html body .home-feed-shell article.post-card[data-post-card-shell] :is(
+        .post-summary,
+        .post-summary.is-collapsed,
+        [data-post-card-summary]
+    ) {
+        font-family: Roboto, Arial, sans-serif !important;
+        font-size: 17px !important;
+        font-weight: 400 !important;
+        line-height: 1.48 !important;
+    }
+
+    html body .home-feed-shell article.post-card[data-post-card-shell] .expand-link {
+        font-size: 16px !important;
+        font-weight: 600 !important;
+        line-height: 22px !important;
+    }
+
+    html body.route-home .home-feed-shell article.post-card.post-card[data-post-card-shell] h2.post-title,
+    html body.route-home .home-feed-shell article.post-card.post-card[data-post-card-shell] h2.post-title > a.post-title__link {
+        font-family: Roboto, Arial, sans-serif !important;
+        font-size: 18px !important;
+        font-weight: 700 !important;
+        line-height: 1.42 !important;
+    }
+
+    html body.route-home .home-feed-shell article.post-card.post-card[data-post-card-shell] .post-summary-shell .post-summary,
+    html body.route-home .home-feed-shell article.post-card.post-card[data-post-card-shell] .post-summary-shell .post-summary.is-collapsed {
+        font-family: Roboto, Arial, sans-serif !important;
+        font-size: 17px !important;
+        font-weight: 400 !important;
+        line-height: 1.48 !important;
+    }
+
+    html body.route-home .home-feed-shell article.post-card.post-card[data-post-card-shell] a.expand-link,
+    html body.route-home .home-feed-shell article.post-card.post-card[data-post-card-shell] button.expand-link {
+        font-size: 16px !important;
+        font-weight: 600 !important;
+        line-height: 22px !important;
+    }
+
+    /* Reference mobile card: dense editorial layout, without a vote row. */
+    .home-feed-shell [data-post-card-shell] {
+        padding: 10px 15px 0 !important;
+        border: 1px solid #e5e7eb !important;
+        border-radius: 8px !important;
+        background: #fff !important;
+        box-shadow: none !important;
+        overflow: hidden !important;
+    }
+
+    .home-feed-shell [data-post-card-shell] .post-header {
+        min-height: 38px !important;
+        margin: 0 0 5px !important;
+        align-items: flex-start !important;
+    }
+
+    .home-feed-shell [data-post-card-shell] .author-avatar {
+        width: 34px !important;
+        height: 34px !important;
+        min-width: 34px !important;
+    }
+
+    .home-feed-shell [data-post-card-shell] .author-block {
+        gap: 7px !important;
+    }
+
+    .home-feed-shell [data-post-card-shell] .author-name {
+        font-size: 13px !important;
+        line-height: 17px !important;
+        font-weight: 600 !important;
+    }
+
+    .home-feed-shell [data-post-card-shell] .author-subline,
+    .home-feed-shell [data-post-card-shell] .post-time,
+    .home-feed-shell [data-post-card-shell] .author-subline__topic {
+        font-size: 11px !important;
+        line-height: 15px !important;
+    }
+
+    .home-feed-shell [data-post-card-shell] .post-title,
+    .home-feed-shell [data-post-card-shell] .post-title__link {
+        margin: 0 0 18px !important;
+        font-family: Roboto, Arial, sans-serif !important;
+        font-size: 18px !important;
+        font-weight: 700 !important;
+        line-height: 1.42 !important;
+        letter-spacing: 0 !important;
+        color: #050505 !important;
+    }
+
+    .home-feed-shell [data-post-card-shell] .post-card__media-wrap {
+        margin: 0 0 17px !important;
+        border: 0 !important;
+        border-radius: 8px !important;
+        overflow: hidden !important;
+    }
+
+    .home-feed-shell [data-post-card-shell] .post-card__media-frame,
+    .home-feed-shell [data-post-card-shell] .post-card__media-image,
+    .home-feed-shell [data-post-card-shell] .hero-image {
+        display: block !important;
+        width: 100% !important;
+        min-height: 0 !important;
+        height: auto !important;
+        max-height: none !important;
+        aspect-ratio: 1.5 / 1 !important;
+        object-fit: cover !important;
+        border-radius: 8px !important;
+    }
+
+    .home-feed-shell [data-post-card-shell] .post-summary-shell,
+    .home-feed-shell [data-post-card-shell] .post-summary-shell.is-collapsed {
+        max-height: none !important;
+        margin: 0 0 3px !important;
+        overflow: visible !important;
+    }
+
+    .home-feed-shell [data-post-card-shell] .post-summary,
+    .home-feed-shell [data-post-card-shell] .post-summary.is-collapsed,
+    .home-feed-shell [data-post-card-shell] [data-post-card-summary] {
+        display: -webkit-box !important;
+        margin: 0 !important;
+        overflow: hidden !important;
+        -webkit-box-orient: vertical !important;
+        -webkit-line-clamp: 6 !important;
+        font-family: Roboto, Arial, sans-serif !important;
+        font-size: 17px !important;
+        font-weight: 400 !important;
+        line-height: 1.48 !important;
+        color: #111 !important;
+    }
+
+    .home-feed-shell [data-post-card-shell] .expand-link {
+        margin: 4px 0 14px !important;
+        padding: 0 !important;
+        font-size: 16px !important;
+        font-weight: 600 !important;
+        line-height: 20px !important;
+        color: #009b55 !important;
+    }
+
+    .home-feed-shell [data-post-card-shell] .post-card__tags {
+        gap: 8px 12px !important;
+        margin: 0 0 17px !important;
+    }
+
+    .home-feed-shell [data-post-card-shell] .post-card__tag {
+        font-size: 13px !important;
+        line-height: 20px !important;
+        color: #009b55 !important;
+    }
+
+    .home-feed-shell [data-post-card-shell] .reactions-row {
+        min-height: 35px !important;
+        margin: 0 0 6px !important;
+        gap: 7px !important;
+    }
+
+    .home-feed-shell [data-post-card-shell] .action-bar {
+        min-height: 48px !important;
+        margin: 0 -15px !important;
+        padding: 0 8px !important;
+        border-top: 1px solid #e5e7eb !important;
     }
 }
 
@@ -5851,376 +5844,6 @@ html body .home-feed-shell .home-feed-toolbar__mode.is-active {
     html body .home-feed-shell .home-feed-toolbar__period-toggle {
         padding: 0 4px 0 8px !important;
         font-size: 12px !important;
-    }
-}
-
-
-/* Ografi mobile post-card redesign v2
- * Clean mobile hierarchy. Existing markup, icons, actions and behavior stay intact.
- */
-@media (max-width: 640px) {
-    html body.route-home .home-feed-shell article.post-card[data-post-card-shell] {
-        width: 100% !important;
-        max-width: 100% !important;
-        margin: 0 !important;
-        padding: 12px 14px 0 !important;
-        box-sizing: border-box !important;
-        border: 1px solid #e5e7eb !important;
-        border-radius: 12px !important;
-        background: #fff !important;
-        box-shadow: none !important;
-        overflow: hidden !important;
-    }
-
-    /* Header: avatar + author left, menu right. */
-    html body.route-home .home-feed-shell article.post-card[data-post-card-shell] .post-header {
-        min-height: 40px !important;
-        margin: 0 0 9px !important;
-        padding: 0 !important;
-        display: flex !important;
-        align-items: center !important;
-    }
-
-    html body.route-home .home-feed-shell article.post-card[data-post-card-shell] .post-header :is(
-        .post-author,
-        .post-card__author,
-        .author-block,
-        .post-header__identity
-    ) {
-        min-width: 0 !important;
-    }
-
-    html body.route-home .home-feed-shell article.post-card[data-post-card-shell] :is(
-        .author-name,
-        .post-author-name
-    ) {
-        font-family: Inter, ui-sans-serif, system-ui, sans-serif !important;
-        font-size: 13.5px !important;
-        line-height: 17px !important;
-        font-weight: 650 !important;
-        letter-spacing: -0.012em !important;
-        color: #111827 !important;
-    }
-
-    html body.route-home .home-feed-shell article.post-card[data-post-card-shell] :is(
-        .author-subline,
-        .post-time,
-        .author-meta
-    ) {
-        font-family: Inter, ui-sans-serif, system-ui, sans-serif !important;
-        font-size: 10.75px !important;
-        line-height: 14px !important;
-        font-weight: 450 !important;
-        color: #737373 !important;
-    }
-
-    /* Title: stronger hierarchy, tighter wrapping. */
-    html body.route-home .home-feed-shell article.post-card[data-post-card-shell] :is(
-        .post-title,
-        .post-title__link
-    ) {
-        display: block !important;
-        margin: 0 0 10px !important;
-        padding: 0 !important;
-        font-family: Inter, ui-sans-serif, system-ui, sans-serif !important;
-        font-size: 18px !important;
-        line-height: 1.30 !important;
-        font-weight: 700 !important;
-        letter-spacing: -0.020em !important;
-        color: #111111 !important;
-        text-wrap: pretty !important;
-    }
-
-    /* Media: one clean rectangle; don't distort the source image. */
-    html body.route-home .home-feed-shell article.post-card[data-post-card-shell] :is(
-        .post-card__media-wrap,
-        .post-card__media-scroller,
-        .post-card__media-slide,
-        .post-card__media-link,
-        .post-card__media-frame
-    ) {
-        width: 100% !important;
-        max-width: 100% !important;
-        min-width: 0 !important;
-        height: auto !important;
-        min-height: 0 !important;
-        margin: 0 0 10px !important;
-        padding: 0 !important;
-        border: 0 !important;
-        border-radius: 9px !important;
-        overflow: hidden !important;
-        background: #f3f4f6 !important;
-        box-shadow: none !important;
-    }
-
-    html body.route-home .home-feed-shell article.post-card[data-post-card-shell] :is(
-        .post-card__media-image,
-        .hero-image
-    ) {
-        display: block !important;
-        width: 100% !important;
-        height: auto !important;
-        min-height: 0 !important;
-        max-height: none !important;
-        aspect-ratio: 1.5 / 1 !important;
-        object-fit: cover !important;
-        object-position: center !important;
-        border-radius: 9px !important;
-        margin: 0 !important;
-    }
-
-    /* Summary: quiet secondary text, never competing with the title. */
-    html body.route-home .home-feed-shell article.post-card[data-post-card-shell] :is(
-        .post-summary-shell,
-        .post-card__summary-shell
-    ) {
-        margin: 0 !important;
-        padding: 0 !important;
-    }
-
-    html body.route-home .home-feed-shell article.post-card[data-post-card-shell] :is(
-        .post-summary,
-        .post-summary.is-collapsed,
-        [data-post-card-summary]
-    ) {
-        margin: 0 !important;
-        padding: 0 !important;
-        font-family: Inter, ui-sans-serif, system-ui, sans-serif !important;
-        font-size: 12.75px !important;
-        line-height: 1.45 !important;
-        font-weight: 400 !important;
-        letter-spacing: -0.003em !important;
-        color: #8b8f97 !important;
-        display: -webkit-box !important;
-        -webkit-box-orient: vertical !important;
-        -webkit-line-clamp: 1 !important;
-        overflow: hidden !important;
-    }
-
-    html body.route-home .home-feed-shell article.post-card[data-post-card-shell] .expand-link {
-        display: inline-flex !important;
-        align-items: center !important;
-        gap: 2px !important;
-        margin: 4px 0 7px !important;
-        padding: 0 !important;
-        font-family: Inter, ui-sans-serif, system-ui, sans-serif !important;
-        font-size: 12.75px !important;
-        line-height: 18px !important;
-        font-weight: 600 !important;
-        color: #2563eb !important;
-        background: transparent !important;
-        border: 0 !important;
-        box-shadow: none !important;
-    }
-
-    html body.route-home .home-feed-shell article.post-card[data-post-card-shell] .expand-link :is(
-        .post-card__expand-icon,
-        svg,
-        iconify-icon
-    ) {
-        width: 13px !important;
-        height: 13px !important;
-        min-width: 13px !important;
-        min-height: 13px !important;
-    }
-
-    /* Reactions: compact pills, aligned to the same baseline as the footer. */
-    html body.route-home .home-feed-shell article.post-card[data-post-card-shell] #reaction-row.reactions-row {
-        display: flex !important;
-        align-items: center !important;
-        width: 100% !important;
-        min-width: 0 !important;
-        min-height: 34px !important;
-        height: 34px !important;
-        margin: 0 !important;
-        padding: 0 0 5px !important;
-        gap: 5px !important;
-        box-sizing: border-box !important;
-        border: 0 !important;
-    }
-
-    html body.route-home .home-feed-shell article.post-card[data-post-card-shell] #reaction-row
-        :is(.reaction-item, .more-pill, .reaction-add) {
-        display: inline-flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-        height: 28px !important;
-        min-height: 28px !important;
-        margin: 0 !important;
-        padding: 0 7px !important;
-        border-radius: 999px !important;
-        box-sizing: border-box !important;
-        font-family: Inter, ui-sans-serif, system-ui, sans-serif !important;
-        font-size: 11px !important;
-        line-height: 1 !important;
-        font-weight: 500 !important;
-    }
-
-    html body.route-home .home-feed-shell article.post-card[data-post-card-shell] #reaction-row
-        .reaction-add {
-        width: 28px !important;
-        min-width: 28px !important;
-        padding: 0 !important;
-        border: 0 !important;
-        background: #f3f4f6 !important;
-    }
-
-    /* Footer: one compact horizontal control strip. */
-    html body.route-home .home-feed-shell article.post-card[data-post-card-shell] #action-bar.action-bar {
-        display: flex !important;
-        align-items: center !important;
-        justify-content: space-between !important;
-        width: calc(100% + 28px) !important;
-        max-width: calc(100% + 28px) !important;
-        min-width: calc(100% + 28px) !important;
-        height: 44px !important;
-        min-height: 44px !important;
-        margin: 0 -14px !important;
-        padding: 0 9px !important;
-        box-sizing: border-box !important;
-        border-top: 1px solid #eceef1 !important;
-        background: #fff !important;
-        gap: 2px !important;
-    }
-
-    html body.route-home .home-feed-shell article.post-card[data-post-card-shell] #action-left.action-left {
-        display: inline-flex !important;
-        align-items: center !important;
-        justify-content: flex-start !important;
-        height: 44px !important;
-        min-width: 0 !important;
-        margin: 0 !important;
-        padding: 0 !important;
-        gap: 1px !important;
-    }
-
-    html body.route-home .home-feed-shell article.post-card[data-post-card-shell] #action-left
-        :is(.action-btn, .action-stat, .action-chip, .post-card__action-link, .post-card__action-button) {
-        display: inline-flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-        width: auto !important;
-        min-width: 31px !important;
-        height: 31px !important;
-        min-height: 31px !important;
-        margin: 0 !important;
-        padding: 0 4px !important;
-        border: 0 !important;
-        border-radius: 7px !important;
-        background: transparent !important;
-        box-shadow: none !important;
-        gap: 3px !important;
-        flex: 0 0 auto !important;
-        box-sizing: border-box !important;
-    }
-
-    html body.route-home .home-feed-shell article.post-card[data-post-card-shell] #action-left
-        :is(.action-btn, .action-stat, .action-chip, .post-card__action-link, .post-card__action-button) .post-card__inline-icon {
-        display: inline-flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-        width: 18px !important;
-        height: 18px !important;
-        min-width: 18px !important;
-        min-height: 18px !important;
-        flex: 0 0 18px !important;
-        margin: 0 !important;
-        padding: 0 !important;
-    }
-
-    html body.route-home .home-feed-shell article.post-card[data-post-card-shell] #action-left
-        :is(.action-btn, .action-stat, .action-chip, .post-card__action-link, .post-card__action-button)
-        .post-card__inline-icon :is(svg, iconify-icon) {
-        width: 18px !important;
-        height: 18px !important;
-        min-width: 18px !important;
-        min-height: 18px !important;
-        max-width: 18px !important;
-        max-height: 18px !important;
-        margin: 0 !important;
-        padding: 0 !important;
-        display: block !important;
-        stroke-width: 2.1 !important;
-    }
-
-    html body.route-home .home-feed-shell article.post-card[data-post-card-shell] #action-left
-        .action-chip__label {
-        font-family: Inter, ui-sans-serif, system-ui, sans-serif !important;
-        font-size: 10.75px !important;
-        line-height: 1 !important;
-        font-weight: 500 !important;
-        letter-spacing: -0.003em !important;
-        color: #6b7280 !important;
-        white-space: nowrap !important;
-    }
-
-    html body.route-home .home-feed-shell article.post-card[data-post-card-shell] #action-bar .post-metric.post-metric--views {
-        display: inline-flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-        width: auto !important;
-        min-width: 31px !important;
-        height: 31px !important;
-        min-height: 31px !important;
-        margin: 0 !important;
-        padding: 0 3px !important;
-        gap: 3px !important;
-        border-radius: 7px !important;
-        flex: 0 0 auto !important;
-        background: transparent !important;
-    }
-
-    html body.route-home .home-feed-shell article.post-card[data-post-card-shell] #action-bar
-        .post-metric.post-metric--views .post-card__inline-icon,
-    html body.route-home .home-feed-shell article.post-card[data-post-card-shell] #action-bar
-        .post-metric.post-metric--views .post-card__inline-icon svg {
-        width: 17px !important;
-        height: 17px !important;
-        min-width: 17px !important;
-        min-height: 17px !important;
-        flex-basis: 17px !important;
-        stroke-width: 2.1 !important;
-    }
-
-    html body.route-home .home-feed-shell article.post-card[data-post-card-shell] #action-bar
-        [data-post-card-view-count] {
-        font-family: Inter, ui-sans-serif, system-ui, sans-serif !important;
-        font-size: 10.75px !important;
-        line-height: 1 !important;
-        font-weight: 500 !important;
-        color: #6b7280 !important;
-        font-variant-numeric: tabular-nums !important;
-    }
-
-    /* Never replace the existing icon artwork. Only refine weight/size. */
-    html body.route-home .home-feed-shell article.post-card[data-post-card-shell] #action-bar
-        :is(.post-card__comment-icon, .post-card__bookmark-icon, .post-card__share-icon, .post-card__view-icon) {
-        stroke-width: 2.1 !important;
-    }
-}
-
-@media (max-width: 420px) {
-    html body.route-home .home-feed-shell article.post-card[data-post-card-shell] {
-        padding-left: 12px !important;
-        padding-right: 12px !important;
-    }
-
-    html body.route-home .home-feed-shell article.post-card[data-post-card-shell] #action-bar.action-bar {
-        width: calc(100% + 24px) !important;
-        max-width: calc(100% + 24px) !important;
-        min-width: calc(100% + 24px) !important;
-        margin-left: -12px !important;
-        margin-right: -12px !important;
-        padding-left: 7px !important;
-        padding-right: 7px !important;
-    }
-
-    html body.route-home .home-feed-shell article.post-card[data-post-card-shell] :is(
-        .post-title,
-        .post-title__link
-    ) {
-        font-size: 17px !important;
-        line-height: 1.30 !important;
     }
 }
 </style>
