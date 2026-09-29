@@ -1,17 +1,18 @@
-/* Mobile post-card: the eye + view count is intentionally pulled LEFT from the card's right edge. */
+/* Ografi post-card mobile views alignment
+ *
+ * The previous version intentionally shifted the view counter left with
+ * negative offsets. That caused the footer to overlap/misalign on narrow
+ * screens and conflicted with post-card-mobile-polish.css.
+ * Keep the view metric in the normal engagement flow.
+ */
 @media (max-width: 767.98px) {
-    .alma-post-card__views {
-        position: relative !important;
+    html body.alma-app .alma-post-card__views {
+        position: static !important;
+        inset: auto !important;
+        left: auto !important;
         right: auto !important;
-        left: -36px !important;
-        margin-right: -36px !important;
+        margin: 0 !important;
         transform: none !important;
-    }
-}
-
-@media (max-width: 480px) {
-    .alma-post-card__views {
-        left: -42px !important;
-        margin-right: -42px !important;
+        flex: 0 0 auto !important;
     }
 }
