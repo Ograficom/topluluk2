@@ -5855,257 +5855,372 @@ html body .home-feed-shell .home-feed-toolbar__mode.is-active {
 }
 
 
-/* Ografi final mobile post-card authority v1
- * This is intentionally the last mobile card layer so older feed/card
- * rules cannot undo the compact mobile geometry.
- * Icons and card functionality are untouched.
+/* Ografi mobile post-card redesign v2
+ * Clean mobile hierarchy. Existing markup, icons, actions and behavior stay intact.
  */
 @media (max-width: 640px) {
-    html body .home-feed-shell article.post-card[data-post-card-shell] {
-        padding: 13px 15px 0 !important;
-        border-radius: 12px !important;
+    html body.route-home .home-feed-shell article.post-card[data-post-card-shell] {
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 !important;
+        padding: 12px 14px 0 !important;
         box-sizing: border-box !important;
+        border: 1px solid #e5e7eb !important;
+        border-radius: 12px !important;
+        background: #fff !important;
+        box-shadow: none !important;
+        overflow: hidden !important;
     }
 
-    html body .home-feed-shell article.post-card[data-post-card-shell] .post-header {
-        margin-bottom: 8px !important;
+    /* Header: avatar + author left, menu right. */
+    html body.route-home .home-feed-shell article.post-card[data-post-card-shell] .post-header {
+        min-height: 40px !important;
+        margin: 0 0 9px !important;
+        padding: 0 !important;
+        display: flex !important;
+        align-items: center !important;
     }
 
-    html body .home-feed-shell article.post-card[data-post-card-shell] .author-name {
+    html body.route-home .home-feed-shell article.post-card[data-post-card-shell] .post-header :is(
+        .post-author,
+        .post-card__author,
+        .author-block,
+        .post-header__identity
+    ) {
+        min-width: 0 !important;
+    }
+
+    html body.route-home .home-feed-shell article.post-card[data-post-card-shell] :is(
+        .author-name,
+        .post-author-name
+    ) {
         font-family: Inter, ui-sans-serif, system-ui, sans-serif !important;
         font-size: 13.5px !important;
         line-height: 17px !important;
         font-weight: 650 !important;
         letter-spacing: -0.012em !important;
+        color: #111827 !important;
     }
 
-    html body .home-feed-shell article.post-card[data-post-card-shell] .author-subline,
-    html body .home-feed-shell article.post-card[data-post-card-shell] .post-time {
+    html body.route-home .home-feed-shell article.post-card[data-post-card-shell] :is(
+        .author-subline,
+        .post-time,
+        .author-meta
+    ) {
         font-family: Inter, ui-sans-serif, system-ui, sans-serif !important;
         font-size: 10.75px !important;
         line-height: 14px !important;
         font-weight: 450 !important;
-        color: #6b7280 !important;
+        color: #737373 !important;
     }
 
-    /* Title block */
-    html body .home-feed-shell article.post-card[data-post-card-shell] .post-title,
-    html body .home-feed-shell article.post-card[data-post-card-shell] .post-title__link {
-        margin: 0 0 9px !important;
+    /* Title: stronger hierarchy, tighter wrapping. */
+    html body.route-home .home-feed-shell article.post-card[data-post-card-shell] :is(
+        .post-title,
+        .post-title__link
+    ) {
+        display: block !important;
+        margin: 0 0 10px !important;
+        padding: 0 !important;
         font-family: Inter, ui-sans-serif, system-ui, sans-serif !important;
         font-size: 18px !important;
         line-height: 1.30 !important;
         font-weight: 700 !important;
-        letter-spacing: -0.019em !important;
+        letter-spacing: -0.020em !important;
         color: #111111 !important;
+        text-wrap: pretty !important;
     }
 
-    /* Image */
-    html body .home-feed-shell article.post-card[data-post-card-shell] .post-card__media-wrap {
+    /* Media: one clean rectangle; don't distort the source image. */
+    html body.route-home .home-feed-shell article.post-card[data-post-card-shell] :is(
+        .post-card__media-wrap,
+        .post-card__media-scroller,
+        .post-card__media-slide,
+        .post-card__media-link,
+        .post-card__media-frame
+    ) {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        height: auto !important;
+        min-height: 0 !important;
         margin: 0 0 10px !important;
+        padding: 0 !important;
+        border: 0 !important;
         border-radius: 9px !important;
+        overflow: hidden !important;
+        background: #f3f4f6 !important;
+        box-shadow: none !important;
     }
 
-    html body .home-feed-shell article.post-card[data-post-card-shell] :is(
-        .post-card__media-frame,
+    html body.route-home .home-feed-shell article.post-card[data-post-card-shell] :is(
         .post-card__media-image,
         .hero-image
     ) {
-        aspect-ratio: 1.5 / 1 !important;
+        display: block !important;
         width: 100% !important;
         height: auto !important;
         min-height: 0 !important;
         max-height: none !important;
-        border-radius: 9px !important;
+        aspect-ratio: 1.5 / 1 !important;
         object-fit: cover !important;
-    }
-
-    /* Summary and read-more */
-    html body .home-feed-shell article.post-card[data-post-card-shell] .post-summary-shell {
+        object-position: center !important;
+        border-radius: 9px !important;
         margin: 0 !important;
     }
 
-    html body .home-feed-shell article.post-card[data-post-card-shell] :is(
+    /* Summary: quiet secondary text, never competing with the title. */
+    html body.route-home .home-feed-shell article.post-card[data-post-card-shell] :is(
+        .post-summary-shell,
+        .post-card__summary-shell
+    ) {
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    html body.route-home .home-feed-shell article.post-card[data-post-card-shell] :is(
         .post-summary,
         .post-summary.is-collapsed,
         [data-post-card-summary]
     ) {
         margin: 0 !important;
+        padding: 0 !important;
         font-family: Inter, ui-sans-serif, system-ui, sans-serif !important;
         font-size: 12.75px !important;
         line-height: 1.45 !important;
         font-weight: 400 !important;
-        letter-spacing: -0.002em !important;
-        color: #9ca3af !important;
+        letter-spacing: -0.003em !important;
+        color: #8b8f97 !important;
+        display: -webkit-box !important;
+        -webkit-box-orient: vertical !important;
         -webkit-line-clamp: 1 !important;
+        overflow: hidden !important;
     }
 
-    html body .home-feed-shell article.post-card[data-post-card-shell] .expand-link {
+    html body.route-home .home-feed-shell article.post-card[data-post-card-shell] .expand-link {
         display: inline-flex !important;
         align-items: center !important;
-        gap: 1px !important;
-        margin: 5px 0 7px !important;
+        gap: 2px !important;
+        margin: 4px 0 7px !important;
         padding: 0 !important;
         font-family: Inter, ui-sans-serif, system-ui, sans-serif !important;
-        font-size: 13px !important;
+        font-size: 12.75px !important;
         line-height: 18px !important;
-        font-weight: 500 !important;
+        font-weight: 600 !important;
         color: #2563eb !important;
+        background: transparent !important;
+        border: 0 !important;
+        box-shadow: none !important;
     }
 
-    html body .home-feed-shell article.post-card[data-post-card-shell] .expand-link .post-card__expand-icon,
-    html body .home-feed-shell article.post-card[data-post-card-shell] .expand-link iconify-icon {
-        width: 14px !important;
-        height: 14px !important;
-        font-size: 14px !important;
+    html body.route-home .home-feed-shell article.post-card[data-post-card-shell] .expand-link :is(
+        .post-card__expand-icon,
+        svg,
+        iconify-icon
+    ) {
+        width: 13px !important;
+        height: 13px !important;
+        min-width: 13px !important;
+        min-height: 13px !important;
     }
 
-    /* Reaction strip: one tight horizontal rhythm. */
-    html body .home-feed-shell article.post-card[data-post-card-shell] #reaction-row.reactions-row {
+    /* Reactions: compact pills, aligned to the same baseline as the footer. */
+    html body.route-home .home-feed-shell article.post-card[data-post-card-shell] #reaction-row.reactions-row {
         display: flex !important;
         align-items: center !important;
-        min-height: 31px !important;
-        height: 31px !important;
-        margin: 0 0 4px !important;
-        padding: 0 !important;
-        gap: 5px !important;
-    }
-
-    html body .home-feed-shell article.post-card[data-post-card-shell] #reaction-row .reaction-item,
-    html body .home-feed-shell article.post-card[data-post-card-shell] #reaction-row .more-pill,
-    html body .home-feed-shell article.post-card[data-post-card-shell] #reaction-row .reaction-add {
-        height: 29px !important;
-        min-height: 29px !important;
-        margin: 0 !important;
-    }
-
-    /* Bottom toolbar: icons remain the exact existing artwork. */
-    html body .home-feed-shell article.post-card[data-post-card-shell] #action-bar.action-bar {
-        display: flex !important;
-        align-items: center !important;
-        justify-content: space-between !important;
-        width: calc(100% + 30px) !important;
-        min-width: calc(100% + 30px) !important;
-        max-width: calc(100% + 30px) !important;
-        height: 48px !important;
-        min-height: 48px !important;
-        margin: 0 -15px !important;
-        padding: 0 11px 0 10px !important;
-        border-top: 1px solid #e5e7eb !important;
-        box-sizing: border-box !important;
-    }
-
-    html body .home-feed-shell article.post-card[data-post-card-shell] #action-left.action-left {
-        display: inline-flex !important;
-        align-items: center !important;
-        gap: 1px !important;
-        height: 48px !important;
+        width: 100% !important;
         min-width: 0 !important;
-        padding: 0 !important;
+        min-height: 34px !important;
+        height: 34px !important;
         margin: 0 !important;
-    }
-
-    html body .home-feed-shell article.post-card[data-post-card-shell] #action-left
-        :is(.action-btn, .action-chip, .post-card__action-link, .post-card__action-button) {
-        width: 32px !important;
-        min-width: 32px !important;
-        height: 32px !important;
-        min-height: 32px !important;
-        margin: 0 !important;
-        padding: 0 !important;
-        border-radius: 6px !important;
-        display: inline-flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-        gap: 3px !important;
-        flex: 0 0 32px !important;
+        padding: 0 0 5px !important;
+        gap: 5px !important;
         box-sizing: border-box !important;
+        border: 0 !important;
     }
 
-    html body .home-feed-shell article.post-card[data-post-card-shell] #action-left
-        :is(.action-btn, .action-chip, .post-card__action-link, .post-card__action-button):has(.action-chip__label) {
-        width: auto !important;
-        min-width: 36px !important;
-        padding: 0 4px !important;
-        flex-basis: auto !important;
-    }
-
-    html body .home-feed-shell article.post-card[data-post-card-shell] #action-left .post-card__inline-icon {
-        width: 19px !important;
-        height: 19px !important;
-        min-width: 19px !important;
-        min-height: 19px !important;
-        flex: 0 0 19px !important;
+    html body.route-home .home-feed-shell article.post-card[data-post-card-shell] #reaction-row
+        :is(.reaction-item, .more-pill, .reaction-add) {
         display: inline-flex !important;
         align-items: center !important;
         justify-content: center !important;
-    }
-
-    html body .home-feed-shell article.post-card[data-post-card-shell] #action-left .post-card__inline-icon :is(svg, iconify-icon) {
-        width: 19px !important;
-        height: 19px !important;
-        min-width: 19px !important;
-        min-height: 19px !important;
-        max-width: 19px !important;
-        max-height: 19px !important;
-        display: block !important;
-    }
-
-    html body .home-feed-shell article.post-card[data-post-card-shell] #action-left .action-chip__label,
-    html body .home-feed-shell article.post-card[data-post-card-shell] #action-left [data-post-card-view-count],
-    html body .home-feed-shell article.post-card[data-post-card-shell] #action-bar [data-post-card-view-count] {
+        height: 28px !important;
+        min-height: 28px !important;
+        margin: 0 !important;
+        padding: 0 7px !important;
+        border-radius: 999px !important;
+        box-sizing: border-box !important;
         font-family: Inter, ui-sans-serif, system-ui, sans-serif !important;
         font-size: 11px !important;
         line-height: 1 !important;
         font-weight: 500 !important;
-        letter-spacing: -0.003em !important;
-        font-variant-numeric: tabular-nums !important;
     }
 
-    html body .home-feed-shell article.post-card[data-post-card-shell] #action-bar .post-metric.post-metric--views {
+    html body.route-home .home-feed-shell article.post-card[data-post-card-shell] #reaction-row
+        .reaction-add {
+        width: 28px !important;
+        min-width: 28px !important;
+        padding: 0 !important;
+        border: 0 !important;
+        background: #f3f4f6 !important;
+    }
+
+    /* Footer: one compact horizontal control strip. */
+    html body.route-home .home-feed-shell article.post-card[data-post-card-shell] #action-bar.action-bar {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        width: calc(100% + 28px) !important;
+        max-width: calc(100% + 28px) !important;
+        min-width: calc(100% + 28px) !important;
+        height: 44px !important;
+        min-height: 44px !important;
+        margin: 0 -14px !important;
+        padding: 0 9px !important;
+        box-sizing: border-box !important;
+        border-top: 1px solid #eceef1 !important;
+        background: #fff !important;
+        gap: 2px !important;
+    }
+
+    html body.route-home .home-feed-shell article.post-card[data-post-card-shell] #action-left.action-left {
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: flex-start !important;
+        height: 44px !important;
+        min-width: 0 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        gap: 1px !important;
+    }
+
+    html body.route-home .home-feed-shell article.post-card[data-post-card-shell] #action-left
+        :is(.action-btn, .action-stat, .action-chip, .post-card__action-link, .post-card__action-button) {
         display: inline-flex !important;
         align-items: center !important;
         justify-content: center !important;
         width: auto !important;
-        min-width: 35px !important;
-        height: 32px !important;
-        min-height: 32px !important;
+        min-width: 31px !important;
+        height: 31px !important;
+        min-height: 31px !important;
         margin: 0 !important;
-        padding: 0 2px 0 4px !important;
+        padding: 0 4px !important;
+        border: 0 !important;
+        border-radius: 7px !important;
+        background: transparent !important;
+        box-shadow: none !important;
         gap: 3px !important;
-        border-radius: 6px !important;
         flex: 0 0 auto !important;
+        box-sizing: border-box !important;
     }
 
-    html body .home-feed-shell article.post-card[data-post-card-shell] #action-bar .post-metric.post-metric--views .post-card__inline-icon,
-    html body .home-feed-shell article.post-card[data-post-card-shell] #action-bar .post-metric.post-metric--views .post-card__inline-icon svg {
+    html body.route-home .home-feed-shell article.post-card[data-post-card-shell] #action-left
+        :is(.action-btn, .action-stat, .action-chip, .post-card__action-link, .post-card__action-button) .post-card__inline-icon {
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
         width: 18px !important;
         height: 18px !important;
         min-width: 18px !important;
         min-height: 18px !important;
+        flex: 0 0 18px !important;
+        margin: 0 !important;
+        padding: 0 !important;
     }
 
-    /* Never alter the actual icon family/artwork. */
-    html body .home-feed-shell article.post-card[data-post-card-shell] #action-bar
-        :is(.post-card__comment-icon, .post-card__bookmark-icon, .post-card__view-icon) {
+    html body.route-home .home-feed-shell article.post-card[data-post-card-shell] #action-left
+        :is(.action-btn, .action-stat, .action-chip, .post-card__action-link, .post-card__action-button)
+        .post-card__inline-icon :is(svg, iconify-icon) {
+        width: 18px !important;
+        height: 18px !important;
+        min-width: 18px !important;
+        min-height: 18px !important;
+        max-width: 18px !important;
+        max-height: 18px !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        display: block !important;
+        stroke-width: 2.1 !important;
+    }
+
+    html body.route-home .home-feed-shell article.post-card[data-post-card-shell] #action-left
+        .action-chip__label {
+        font-family: Inter, ui-sans-serif, system-ui, sans-serif !important;
+        font-size: 10.75px !important;
+        line-height: 1 !important;
+        font-weight: 500 !important;
+        letter-spacing: -0.003em !important;
+        color: #6b7280 !important;
+        white-space: nowrap !important;
+    }
+
+    html body.route-home .home-feed-shell article.post-card[data-post-card-shell] #action-bar .post-metric.post-metric--views {
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        width: auto !important;
+        min-width: 31px !important;
+        height: 31px !important;
+        min-height: 31px !important;
+        margin: 0 !important;
+        padding: 0 3px !important;
+        gap: 3px !important;
+        border-radius: 7px !important;
+        flex: 0 0 auto !important;
+        background: transparent !important;
+    }
+
+    html body.route-home .home-feed-shell article.post-card[data-post-card-shell] #action-bar
+        .post-metric.post-metric--views .post-card__inline-icon,
+    html body.route-home .home-feed-shell article.post-card[data-post-card-shell] #action-bar
+        .post-metric.post-metric--views .post-card__inline-icon svg {
+        width: 17px !important;
+        height: 17px !important;
+        min-width: 17px !important;
+        min-height: 17px !important;
+        flex-basis: 17px !important;
+        stroke-width: 2.1 !important;
+    }
+
+    html body.route-home .home-feed-shell article.post-card[data-post-card-shell] #action-bar
+        [data-post-card-view-count] {
+        font-family: Inter, ui-sans-serif, system-ui, sans-serif !important;
+        font-size: 10.75px !important;
+        line-height: 1 !important;
+        font-weight: 500 !important;
+        color: #6b7280 !important;
+        font-variant-numeric: tabular-nums !important;
+    }
+
+    /* Never replace the existing icon artwork. Only refine weight/size. */
+    html body.route-home .home-feed-shell article.post-card[data-post-card-shell] #action-bar
+        :is(.post-card__comment-icon, .post-card__bookmark-icon, .post-card__share-icon, .post-card__view-icon) {
         stroke-width: 2.1 !important;
     }
 }
 
 @media (max-width: 420px) {
-    html body .home-feed-shell article.post-card[data-post-card-shell] {
-        padding-left: 13px !important;
-        padding-right: 13px !important;
+    html body.route-home .home-feed-shell article.post-card[data-post-card-shell] {
+        padding-left: 12px !important;
+        padding-right: 12px !important;
     }
 
-    html body .home-feed-shell article.post-card[data-post-card-shell] #action-bar.action-bar {
-        width: calc(100% + 26px) !important;
-        min-width: calc(100% + 26px) !important;
-        max-width: calc(100% + 26px) !important;
-        margin-left: -13px !important;
-        margin-right: -13px !important;
-        padding-left: 9px !important;
-        padding-right: 9px !important;
+    html body.route-home .home-feed-shell article.post-card[data-post-card-shell] #action-bar.action-bar {
+        width: calc(100% + 24px) !important;
+        max-width: calc(100% + 24px) !important;
+        min-width: calc(100% + 24px) !important;
+        margin-left: -12px !important;
+        margin-right: -12px !important;
+        padding-left: 7px !important;
+        padding-right: 7px !important;
+    }
+
+    html body.route-home .home-feed-shell article.post-card[data-post-card-shell] :is(
+        .post-title,
+        .post-title__link
+    ) {
+        font-size: 17px !important;
+        line-height: 1.30 !important;
     }
 }
 </style>
