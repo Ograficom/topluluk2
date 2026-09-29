@@ -47,7 +47,7 @@
 
                     <a href="{{ route('users.show', $user) }}" class="home-follow-card__profile">
 
-                        <img src="{{ $user->profile_photo_url }}" class="home-follow-card__avatar">
+                        <img src="{{ $user->profile_photo_url }}" alt="{{ $name }}" class="home-follow-card__avatar" loading="lazy" decoding="async">
 
                         <div class="home-follow-card__name">{{ $name }}</div>
 
@@ -85,7 +85,7 @@
 
                     <a href="{{ route('blog.category', $community->slug) }}" class="home-follow-card__profile">
 
-                        <img src="{{ $community->profile_image_url }}" class="home-follow-card__avatar">
+                        <img src="{{ $community->profile_image_url }}" alt="{{ $name }}" class="home-follow-card__avatar" loading="lazy" decoding="async">
 
                         <div class="home-follow-card__name">{{ $name }}</div>
 
