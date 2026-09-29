@@ -248,11 +248,11 @@
     body.alma-app .alma-post-card__reaction-pill iconify-icon,
     body.alma-app .alma-post-card__reaction-picker iconify-icon,
     body.alma-app .alma-post-card__reaction-more iconify-icon {
-        width: 17px !important;
-        height: 17px !important;
-        font-size: 17px !important;
+        width: 18px !important;
+        height: 18px !important;
+        font-size: 18px !important;
         flex: 0 0 auto !important;
-        stroke-width: 2 !important;
+        stroke-width: 2.25 !important;
     }
 
     body.alma-app .alma-post-card__metric-button span,
@@ -389,9 +389,9 @@
     body.alma-app .alma-post-card__reaction-pill iconify-icon,
     body.alma-app .alma-post-card__reaction-picker iconify-icon,
     body.alma-app .alma-post-card__reaction-more iconify-icon {
-        width: 16px !important;
-        height: 16px !important;
-        font-size: 16px !important;
+        width: 17px !important;
+        height: 17px !important;
+        font-size: 17px !important;
     }
 
     body.alma-app .alma-post-card__metric-button span,
