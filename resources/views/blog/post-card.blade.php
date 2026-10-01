@@ -1298,8 +1298,8 @@ SVG;
     data-post-media-count="{{ $mediaItems->count() }}"
     data-post-comments-count="{{ $commentsCount }}"
 >
-    <div class="post-header" id="post-header">
-        <div class="author-block" id="author-block" data-media-type="banani-button">
+    <div class="post-header">
+        <div class="author-block" data-media-type="banani-button">
             <div class="avatar-wrap">
                 @if($authorAvatar)
                     <img
@@ -1334,8 +1334,8 @@ SVG;
                 @endif
             </div>
 
-            <div class="author-info" id="author-meta">
-                <div class="author-name-row" id="author-name-row">
+            <div class="author-info">
+                <div class="author-name-row">
                     <span class="ps-hover-zone ps-hover-zone--inline ps-hover-zone--author-name" tabindex="0">
                         @if($authorUrl !== '#')
                             <a href="{{ $authorUrl }}" class="author-name">{{ $authorName }}</a>
@@ -1583,7 +1583,7 @@ SVG;
         @endif
     </div>
 
-    <h2 class="post-title" id="post-title">
+    <h2 class="post-title">
         @if($postUrl !== '#')
             <a href="{{ $postUrl }}" class="post-title__link">{{ $title }}</a>
         @else
@@ -1935,7 +1935,7 @@ SVG;
     @endif
 
     @if($hasReactionStrip)
-        <div class="reactions-row reaction-row" id="reaction-row">
+        <div class="reactions-row reaction-row">
             @foreach($visibleReactionPills as $reaction)
                 @php
                     $reactionLabel = (string) ($reaction['label'] ?? 'Tepki');
@@ -1998,7 +1998,7 @@ SVG;
             </div>
         </div>
     @elseif($viewer || \Illuminate\Support\Facades\Route::has('login'))
-        <div class="reactions-row reaction-row" id="reaction-row">
+        <div class="reactions-row reaction-row">
             <div class="post-card__reaction-wrap" data-post-card-reaction-wrap data-post-card-reaction-id="{{ $reactionRootId }}">
                 <button
                     type="button"
@@ -2047,8 +2047,8 @@ SVG;
         </div>
     @endif
 
-    <div class="action-bar" id="action-bar">
-        <div class="action-left" id="action-left">
+    <div class="action-bar">
+        <div class="action-left">
             
 
             @if($isCommentsDisabled ?? false)
@@ -2174,7 +2174,7 @@ SVG;
 
     @if($commentsCount > 0)
         @if($isCommentsDisabled ?? false)
-            <div class="comment-row comment-row--disabled" id="comment-row" aria-disabled="true">
+            <div class="comment-row comment-row--disabled" aria-disabled="true">
                 @if($showCommentPreviewAvatars)
                     <div class="comment-avatars">
                         @foreach($commentPreviewPeople as $commentPreview)
@@ -2197,7 +2197,7 @@ SVG;
                 @endif
             </div>
         @else
-            <a class="comment-row" id="comment-row" href="{{ $commentsUrl }}" aria-label="{{ $commentsLinkLabel }}">
+            <a class="comment-row" href="{{ $commentsUrl }}" aria-label="{{ $commentsLinkLabel }}">
                 @if($showCommentPreviewAvatars)
                     <div class="comment-avatars">
                         @foreach($commentPreviewPeople as $commentPreview)
