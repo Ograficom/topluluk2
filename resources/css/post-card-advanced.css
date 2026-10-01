@@ -2526,3 +2526,32 @@ html body article.post-card[data-post-card-shell] .post-card__eyebrow {
 html body article.post-card[data-post-card-shell] .comment-row {
     display: none !important;
 }
+
+
+/* Reference interaction surfaces: crisp menus, no inherited motion/shadow. */
+html body article.post-card[data-post-card-shell] .og-action-menu,
+html body [data-og-action-menu],
+html body [data-post-card-reaction-menu]:not([hidden]),
+html body article.post-card[data-post-card-shell] .post-card__stats-panel {
+    animation: none !important;
+    box-shadow: none !important;
+}
+
+html body article.post-card[data-post-card-shell] .og-action-menu {
+    transform: none !important;
+    transition: none !important;
+}
+
+html body article.post-card[data-post-card-shell] .og-action-menu.hidden,
+html body article.post-card[data-post-card-shell] [data-og-action-menu].hidden {
+    display: none !important;
+}
+
+/* The reaction layer is positioned by the existing JS; CSS only owns paint. */
+html body [data-post-card-reaction-layer] {
+    pointer-events: none !important;
+}
+
+html body [data-post-card-reaction-layer] [data-post-card-reaction-menu] {
+    pointer-events: auto !important;
+}
