@@ -1570,6 +1570,17 @@ SVG;
             </div>
     </div>
 
+    <div class="post-card__eyebrow" aria-label="Gönderi bilgileri">
+        @if($hasCategory)
+            <a class="post-card__eyebrow-category" href="{{ $categoryUrl ?: '#' }}">{{ $categoryName }}</a>
+        @endif
+        <span class="post-card__eyebrow-dot" aria-hidden="true">•</span>
+        <span>{{ $estimatedReadMinutes }} dk okuma</span>
+        @if($isPinned)
+            <span class="post-card__eyebrow-tag">Sabit</span>
+        @endif
+    </div>
+
     <h2 class="post-title" id="post-title">
         @if($postUrl !== '#')
             <a href="{{ $postUrl }}" class="post-title__link">{{ $title }}</a>
@@ -1689,6 +1700,11 @@ SVG;
                     aria-label="Medya sayısı"
                 >
                     1 / {{ $mediaItems->count() }}
+                </span>
+                <span class="post-card__media-dots" data-post-card-media-dots aria-hidden="true">
+                    @for($dotIndex = 0; $dotIndex < min($mediaItems->count(), 7); $dotIndex++)
+                        <i class="{{ $dotIndex === 0 ? 'is-active' : '' }}"></i>
+                    @endfor
                 </span>
             @endif
 
@@ -1901,21 +1917,6 @@ SVG;
             </span>
         </button>
     @endif
-
-    <div class="post-card__meta" aria-label="Gönderi özeti">
-        @if($hasCategory)
-            <span class="post-card__meta-item post-card__meta-item--category">
-                {{ $categoryName }}
-            </span>
-        @endif
-        <span class="post-card__meta-item">{{ $estimatedReadMinutes }} dk okuma</span>
-        @if($mediaItems->count() > 1)
-            <span class="post-card__meta-item">{{ $mediaItems->count() }} medya</span>
-        @endif
-        @if($isPinned)
-            <span class="post-card__meta-item post-card__meta-item--pinned">Sabit</span>
-        @endif
-    </div>
 
     @if($postTags->isNotEmpty())
         <div class="post-card__tags" aria-label="Etiketler">
@@ -10873,6 +10874,11 @@ SVG;
                     });
 
                     counter.textContent = (closestIndex + 1) + ' / ' + slides.length;
+
+                    const dots = scroller.closest('[data-post-card-shell]')?.querySelectorAll('[data-post-card-media-dots] i');
+                    dots?.forEach(function (dot, index) {
+                        dot.classList.toggle('is-active', index === Math.min(closestIndex, dots.length - 1));
+                    });
                 };
 
                 scroller.addEventListener('scroll', function () {
@@ -11527,3 +11533,267 @@ SVG;
     </script>
 
 @endonce
+
+
+<style>
+@media (max-width: 640px) {
+    html body [data-post-card-shell].post-card {
+        width: 100% !important;
+        max-width: 100% !important;
+        padding: 12px 14px 0 !important;
+        border: 1px solid #e5e7eb !important;
+        border-radius: 14px !important;
+        background: #fff !important;
+        box-shadow: none !important;
+    }
+
+    html body [data-post-card-shell].post-card .post-header {
+        margin-bottom: 7px !important;
+        min-height: 40px !important;
+    }
+
+    html body [data-post-card-shell].post-card .author-avatar {
+        width: 38px !important;
+        height: 38px !important;
+    }
+
+    html body [data-post-card-shell].post-card .author-name {
+        font-family: Inter, ui-sans-serif, system-ui, sans-serif !important;
+        font-size: 13.5px !important;
+        line-height: 17px !important;
+        font-weight: 650 !important;
+        letter-spacing: -0.012em !important;
+    }
+
+    html body [data-post-card-shell].post-card .post-time,
+    html body [data-post-card-shell].post-card .author-subline,
+    html body [data-post-card-shell].post-card .author-subline__topic {
+        font-family: Inter, ui-sans-serif, system-ui, sans-serif !important;
+        font-size: 10.75px !important;
+        line-height: 14px !important;
+    }
+
+    html body [data-post-card-shell].post-card .post-card__eyebrow {
+        display: flex !important;
+        align-items: center !important;
+        min-width: 0 !important;
+        gap: 6px !important;
+        margin: 0 0 6px !important;
+        font-family: Inter, ui-sans-serif, system-ui, sans-serif !important;
+        font-size: 10.5px !important;
+        line-height: 15px !important;
+        font-weight: 550 !important;
+        color: #737b87 !important;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+    }
+
+    html body [data-post-card-shell].post-card .post-card__eyebrow-category {
+        min-width: 0 !important;
+        max-width: 48% !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        color: #2563eb !important;
+        font-weight: 650 !important;
+    }
+
+    html body [data-post-card-shell].post-card .post-card__eyebrow-dot {
+        color: #c1c5cc !important;
+    }
+
+    html body [data-post-card-shell].post-card .post-card__eyebrow-tag {
+        display: inline-flex !important;
+        align-items: center !important;
+        min-height: 19px !important;
+        padding: 0 6px !important;
+        border: 1px solid #e5e7eb !important;
+        border-radius: 999px !important;
+        color: #606874 !important;
+        background: #f8f9fb !important;
+        font-size: 9.5px !important;
+        line-height: 19px !important;
+    }
+
+    html body [data-post-card-shell].post-card .post-title,
+    html body [data-post-card-shell].post-card .post-title__link {
+        margin: 0 0 9px !important;
+        font-family: Inter, ui-sans-serif, system-ui, sans-serif !important;
+        font-size: 18.5px !important;
+        line-height: 1.27 !important;
+        font-weight: 720 !important;
+        letter-spacing: -0.022em !important;
+        color: #111318 !important;
+        text-wrap: pretty !important;
+    }
+
+    html body [data-post-card-shell].post-card .post-card__media-wrap {
+        margin-bottom: 9px !important;
+        border-radius: 11px !important;
+        overflow: hidden !important;
+    }
+
+    html body [data-post-card-shell].post-card .post-card__media-frame,
+    html body [data-post-card-shell].post-card .post-card__media-image {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 100% !important;
+        aspect-ratio: 1.5 / 1 !important;
+        min-height: 0 !important;
+        max-height: none !important;
+        height: auto !important;
+        object-fit: cover !important;
+    }
+
+    html body [data-post-card-shell].post-card .post-card__media-counter {
+        top: 8px !important;
+        right: 8px !important;
+        min-width: 44px !important;
+        height: 24px !important;
+        padding: 0 7px !important;
+        border: 0 !important;
+        background: rgba(17,24,39,.78) !important;
+        backdrop-filter: blur(8px) !important;
+        -webkit-backdrop-filter: blur(8px) !important;
+        font-family: Inter, ui-sans-serif, system-ui, sans-serif !important;
+        font-size: 10px !important;
+        font-weight: 650 !important;
+    }
+
+    html body [data-post-card-shell].post-card .post-card__media-dots {
+        position: absolute !important;
+        left: 50% !important;
+        bottom: 8px !important;
+        transform: translateX(-50%) !important;
+        z-index: 5 !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        gap: 4px !important;
+        padding: 4px 7px !important;
+        border-radius: 999px !important;
+        background: rgba(17,24,39,.42) !important;
+        backdrop-filter: blur(7px) !important;
+        -webkit-backdrop-filter: blur(7px) !important;
+        pointer-events: none !important;
+    }
+
+    html body [data-post-card-shell].post-card .post-card__media-dots i {
+        display: block !important;
+        width: 5px !important;
+        height: 5px !important;
+        border-radius: 999px !important;
+        background: rgba(255,255,255,.55) !important;
+        transform: scale(.82) !important;
+        transition: transform 140ms ease, background-color 140ms ease !important;
+    }
+
+    html body [data-post-card-shell].post-card .post-card__media-dots i.is-active {
+        width: 12px !important;
+        background: #fff !important;
+        transform: scale(1) !important;
+    }
+
+    html body [data-post-card-shell].post-card .post-summary {
+        margin: 0 !important;
+        font-family: Inter, ui-sans-serif, system-ui, sans-serif !important;
+        font-size: 12.75px !important;
+        line-height: 1.48 !important;
+        color: #858c96 !important;
+        -webkit-line-clamp: 2 !important;
+    }
+
+    html body [data-post-card-shell].post-card .expand-link {
+        margin: 4px 0 6px !important;
+        font-family: Inter, ui-sans-serif, system-ui, sans-serif !important;
+        font-size: 12.75px !important;
+        line-height: 18px !important;
+        font-weight: 650 !important;
+    }
+
+    html body [data-post-card-shell].post-card .reaction-row,
+    html body [data-post-card-shell].post-card .reactions-row {
+        margin: 0 0 3px !important;
+        padding: 0 0 5px !important;
+        min-height: 33px !important;
+        gap: 5px !important;
+        border-bottom: 1px solid #eef0f3 !important;
+    }
+
+    html body [data-post-card-shell].post-card .reaction-item,
+    html body [data-post-card-shell].post-card .more-pill,
+    html body [data-post-card-shell].post-card .reaction-add {
+        height: 28px !important;
+        min-height: 28px !important;
+        padding: 0 7px !important;
+        gap: 4px !important;
+        font-family: Inter, ui-sans-serif, system-ui, sans-serif !important;
+        font-size: 10.75px !important;
+        line-height: 1 !important;
+        border-radius: 999px !important;
+    }
+
+    html body [data-post-card-shell].post-card .reaction-emoji,
+    html body [data-post-card-shell].post-card .reaction-emoji--html,
+    html body [data-post-card-shell].post-card .reaction-emoji--html img,
+    html body [data-post-card-shell].post-card .reaction-emoji--html svg,
+    html body [data-post-card-shell].post-card .reaction-emoji--html iconify-icon {
+        width: 18px !important;
+        height: 18px !important;
+        font-size: 18px !important;
+    }
+
+    html body [data-post-card-shell].post-card .action-bar {
+        width: calc(100% + 28px) !important;
+        min-width: calc(100% + 28px) !important;
+        height: 46px !important;
+        min-height: 46px !important;
+        margin: 0 -14px !important;
+        padding: 0 8px !important;
+        border-top: 1px solid #eceef1 !important;
+        gap: 0 !important;
+    }
+
+    html body [data-post-card-shell].post-card .action-left {
+        gap: 2px !important;
+    }
+
+    html body [data-post-card-shell].post-card .action-btn,
+    html body [data-post-card-shell].post-card .post-metric {
+        min-width: 32px !important;
+        height: 32px !important;
+        min-height: 32px !important;
+        border-radius: 8px !important;
+    }
+
+    html body [data-post-card-shell].post-card .action-btn:hover,
+    html body [data-post-card-shell].post-card .post-metric:hover {
+        background: #f5f6f8 !important;
+    }
+
+    html body [data-post-card-shell].post-card .post-card__inline-icon,
+    html body [data-post-card-shell].post-card .post-card__inline-icon svg,
+    html body [data-post-card-shell].post-card .post-card__bookmark-icon,
+    html body [data-post-card-shell].post-card .post-card__share-icon {
+        width: 19px !important;
+        height: 19px !important;
+    }
+
+    @media (max-width: 380px) {
+        html body [data-post-card-shell].post-card {
+            padding-left: 12px !important;
+            padding-right: 12px !important;
+        }
+
+        html body [data-post-card-shell].post-card .post-card__title,
+        html body [data-post-card-shell].post-card .post-card__title__link {
+            font-size: 17.5px !important;
+        }
+
+        html body [data-post-card-shell].post-card .action-bar {
+            width: calc(100% + 24px) !important;
+            min-width: calc(100% + 24px) !important;
+            margin-left: -12px !important;
+            margin-right: -12px !important;
+        }
+    }
+}
+</style>
