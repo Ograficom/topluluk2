@@ -2235,8 +2235,7 @@ SVG;
     <script src="https://code.iconify.design/iconify-icon/3.0.0/iconify-icon.min.js"></script>
 
     <style>
-
-        [data-post-card-shell] .og-action-wrap {
+[data-post-card-shell] .og-action-wrap {
             position: relative !important;
             z-index: 999999 !important;
             display: inline-flex !important;
@@ -7779,7 +7778,24 @@ html body [data-post-card-shell] .comment-avatar-overflow {
                 border: 0 !important;
             }
 
+            html body article.post-card[data-post-card-shell] .action-bar {
+                min-height: 48px !important;
+                height: 48px !important;
+                margin: 0 -15px !important;
+                padding: 0 15px !important;
+                border-top: 1px solid #e5e7eb !important;
+            }
 
+            html body article.post-card[data-post-card-shell] :is(.action-btn, .action-stat, .post-card__action-link, .post-card__action-button) {
+                min-height: 36px !important;
+                height: 36px !important;
+            }
+
+            html body article.post-card[data-post-card-shell] :is(.post-card__inline-icon, .post-card__inline-icon svg, .post-card__bookmark-icon, .post-card__share-icon) {
+                width: 22px !important;
+                height: 22px !important;
+            }
+        }
 
         html body article.post-card[data-post-card-shell] .expand-link,
 html body article.post-card[data-post-card-shell] .post-card__tag {
@@ -9108,75 +9124,6 @@ html body article.post-card[data-post-card-shell] .expand-link .post-card__expan
             background-color: transparent !important;
             background-image: none !important;
             box-shadow: none !important;
-        }
-
-
-
-        /* Final deterministic action/icon geometry.
-         * Legacy rules remain for component behavior; this final layer
-         * owns only placement,
-sizing and optical centering.
-         */
-
-
-        /* -----------------------------------------------------------------------
-         * FINAL ACTION / ICON ALIGNMENT
-         * One geometry model for desktop + mobile.
-         * --------------------------------------------------------------------- */
-
-        html body [data-post-card-shell].post-card .post-header {
-            width: 100% !important;
-        }
-
-        html body [data-post-card-shell].post-card .author-block {
-            flex: 1 1 auto !important;
-            min-width: 0 !important;
-        }
-
-        html body [data-post-card-shell].post-card .og-action-wrap {
-            flex: 0 0 auto !important;
-            margin-left: auto !important;
-            margin-right: 2px !important;
-            align-self: center !important;
-        }
-
-        html body [data-post-card-shell].post-card [data-og-action-trigger] {
-            width: 34px !important;
-            min-width: 34px !important;
-            height: 34px !important;
-            min-height: 34px !important;
-            padding: 0 !important;
-            margin: 0 !important;
-            display: inline-flex !important;
-            align-items: center !important;
-            justify-content: center !important;
-            gap: 3px !important;
-            flex: 0 0 34px !important;
-            line-height: 0 !important;
-        }
-
-        html body [data-post-card-shell].post-card [data-og-action-trigger] > span {
-            display: block !important;
-            width: 3px !important;
-            min-width: 3px !important;
-            height: 3px !important;
-            min-height: 3px !important;
-            flex: 0 0 3px !important;
-            margin: 0 !important;
-        }
-
-        @media (max-width: 640px){
-            html body [data-post-card-shell].post-card .og-action-wrap {
-                margin-right: 1px !important;
-            }
-
-            html body [data-post-card-shell].post-card [data-og-action-trigger] {
-                width: 36px !important;
-                min-width: 36px !important;
-                height: 36px !important;
-                min-height: 36px !important;
-                flex-basis: 36px !important;
-            }
         }
 </style>
 
