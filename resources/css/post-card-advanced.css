@@ -1028,64 +1028,6 @@ action bar,
         min-width: 28px !important;
     }
 
-    [data-post-card-shell].post-card .action-bar {
-        width: calc(100% + 28px) !important;
-        min-width: calc(100% + 28px) !important;
-        height: 46px !important;
-        min-height: 46px !important;
-        margin: 0 -14px !important;
-        padding: 0 7px !important;
-    }
-
-    [data-post-card-shell].post-card .action-left :where(
-        .action-btn,
-        .action-stat,
-        .action-chip,
-        .post-card__action-link,
-        .post-card__action-button
-    ) {
-        min-width: 34px !important;
-        width: 34px !important;
-        height: 34px !important;
-        min-height: 34px !important;
-        flex-basis: 34px !important;
-        border-radius: 8px !important;
-    }
-
-    [data-post-card-shell].post-card .action-left :where(
-        .action-btn,
-        .action-stat,
-        .action-chip,
-        .post-card__action-link,
-        .post-card__action-button
-    ) .post-card__inline-icon,
-    [data-post-card-shell].post-card .action-left :where(
-        .action-btn,
-        .action-stat,
-        .action-chip,
-        .post-card__action-link,
-        .post-card__action-button
-    ) svg,
-    [data-post-card-shell].post-card .action-left :where(
-        .action-btn,
-        .action-stat,
-        .action-chip,
-        .post-card__action-link,
-        .post-card__action-button
-    ) iconify-icon {
-        width: 19px !important;
-        height: 19px !important;
-        min-width: 19px !important;
-        min-height: 19px !important;
-    }
-
-    [data-post-card-shell].post-card .post-metric--views {
-        min-width: 38px !important;
-        height: 34px !important;
-        min-height: 34px !important;
-        padding-inline: 5px !important;
-    }
-
     [data-post-card-shell].post-card .post-card__stats-modal[open] {
         padding: 0 10px !important;
     }
