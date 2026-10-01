@@ -890,7 +890,7 @@
 /* Reaction picker ------------------------------------------------------ */
 
 [data-post-card-shell].post-card .post-card__reaction-menu,
-[data-post-card-shell].post-card [data-post-card-reaction-menu] {
+[data-post-card-reaction-menu] {
     position: fixed !important;
     top: auto !important;
     right: auto !important;
@@ -1470,5 +1470,138 @@
         grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
         width: min(232px, calc(100vw - 16px)) !important;
         max-width: min(232px, calc(100vw - 16px)) !important;
+    }
+}
+
+/* Portal-safe reaction panel: JS moves this node to <body> while open. */
+[data-post-card-reaction-menu] {
+    box-sizing: border-box !important;
+    min-width: 220px !important;
+    border: 1px solid #e1e5ea !important;
+    border-radius: 13px !important;
+    background: #ffffff !important;
+    color: #111827 !important;
+    box-shadow: none !important;
+}
+
+[data-post-card-reaction-menu]:not([hidden]) {
+    display: grid !important;
+    grid-template-columns: repeat(6, minmax(0, 1fr)) !important;
+    align-items: center !important;
+    gap: 4px !important;
+    padding: 9px !important;
+    max-height: min(56vh, 360px) !important;
+    overflow-y: auto !important;
+    overscroll-behavior: contain !important;
+}
+
+[data-post-card-reaction-menu] .post-card__reaction-menu-title {
+    grid-column: 1 / -1 !important;
+    margin: 0 !important;
+    padding: 0 2px 6px !important;
+    border-bottom: 1px solid #eef0f3 !important;
+    color: #6b7280 !important;
+    font-size: 10.5px !important;
+    line-height: 15px !important;
+    font-weight: 700 !important;
+}
+
+[data-post-card-reaction-menu] .post-card__reaction-form,
+[data-post-card-reaction-menu] > a {
+    display: block !important;
+    width: auto !important;
+    min-width: 0 !important;
+}
+
+[data-post-card-reaction-menu] .post-card__reaction-option {
+    width: 100% !important;
+    height: 34px !important;
+    min-height: 34px !important;
+    padding: 0 !important;
+    border: 0 !important;
+    border-radius: 9px !important;
+    background: transparent !important;
+    color: inherit !important;
+}
+
+[data-post-card-reaction-menu] .post-card__reaction-option:hover,
+[data-post-card-reaction-menu] .post-card__reaction-option:focus-visible {
+    background: #f3f5f8 !important;
+    outline: none !important;
+}
+
+[data-post-card-reaction-menu] .post-card__reaction-option:active {
+    background: #e9edf2 !important;
+}
+
+[data-post-card-reaction-menu] .post-card__reaction-asset {
+    width: 22px !important;
+    height: 22px !important;
+    min-width: 22px !important;
+    min-height: 22px !important;
+    object-fit: contain !important;
+}
+
+/* Statistics dialog stays tied to the post-card while using native top-layer. */
+html body [data-post-card-shell].post-card .post-card__stats-modal[open] {
+    position: fixed !important;
+    inset: 0 !important;
+    z-index: 2147483000 !important;
+    display: block !important;
+    margin: 0 !important;
+    padding: 18px 12px !important;
+    border: 0 !important;
+    background: transparent !important;
+    color: #111827 !important;
+}
+
+html body [data-post-card-shell].post-card .post-card__stats-panel {
+    box-sizing: border-box !important;
+    border: 1px solid #e1e5ea !important;
+    background: #ffffff !important;
+    box-shadow: none !important;
+}
+
+html body [data-post-card-shell].post-card .post-card__stats-head [data-post-card-stats-total] {
+    font-variant-numeric: tabular-nums !important;
+}
+
+html body [data-post-card-shell].post-card .post-card__stats-grid {
+    align-items: stretch !important;
+}
+
+html body [data-post-card-shell].post-card .post-card__stats-item strong {
+    font-variant-numeric: tabular-nums !important;
+}
+
+[data-post-card-shell].post-card .author-avatar--fallback,
+[data-post-card-shell].post-card .author-avatar-fallback {
+    background: #dbeafe !important;
+    color: #1d4ed8 !important;
+    font-weight: 650 !important;
+}
+
+[data-post-card-shell].post-card .category-badge__fallback {
+    background: #2563eb !important;
+    color: #ffffff !important;
+    font-weight: 700 !important;
+}
+
+@media (max-width: 640px) {
+    [data-post-card-reaction-menu] {
+        width: auto !important;
+        max-width: calc(100vw - 20px) !important;
+        max-height: min(56vh, 360px) !important;
+        border-radius: 14px !important;
+    }
+
+    html body [data-post-card-shell].post-card .post-card__stats-panel {
+        border-radius: 14px !important;
+    }
+}
+
+@media (max-width: 380px) {
+    [data-post-card-reaction-menu]:not([hidden]) {
+        grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
     }
 }
