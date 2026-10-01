@@ -187,6 +187,9 @@
     $postContentJson = optional($postObj)->content_json ?? data_get($postArr, 'content_json');
     $fullPostText = $extractEditorPlainText($postContentJson);
 
+    $estimatedReadWords = count(preg_split('/\\s+/u', trim($fullPostText), -1, PREG_SPLIT_NO_EMPTY));
+    $estimatedReadMinutes = max(1, (int) ceil($estimatedReadWords / 200));
+
     if ($fullPostText === '') {
         $fullPostText = $normalizePostPlainText(optional($postObj)->content ?? $postArr['content'] ?? '');
     }
@@ -1679,6 +1682,16 @@ SVG;
                     </article>
                 @endforeach
             </div>
+            @if($mediaItems->count() > 1)
+                <span
+                    class="post-card__media-counter"
+                    data-post-card-media-counter
+                    aria-label="Medya sayısı"
+                >
+                    1 / {{ $mediaItems->count() }}
+                </span>
+            @endif
+
             @if($renderHeroNsfwBlur)
                 <div class="hero-wrap__overlay" aria-label="NSFW icerik uyarisi">
                     <div class="hero-wrap__overlay-actions">
@@ -1888,6 +1901,21 @@ SVG;
             </span>
         </button>
     @endif
+
+    <div class="post-card__meta" aria-label="Gönderi özeti">
+        @if($hasCategory)
+            <span class="post-card__meta-item post-card__meta-item--category">
+                {{ $categoryName }}
+            </span>
+        @endif
+        <span class="post-card__meta-item">{{ $estimatedReadMinutes }} dk okuma</span>
+        @if($mediaItems->count() > 1)
+            <span class="post-card__meta-item">{{ $mediaItems->count() }} medya</span>
+        @endif
+        @if($isPinned)
+            <span class="post-card__meta-item post-card__meta-item--pinned">Sabit</span>
+        @endif
+    </div>
 
     @if($postTags->isNotEmpty())
         <div class="post-card__tags" aria-label="Etiketler">
@@ -10820,6 +10848,38 @@ SVG;
                         event.preventDefault();
                     });
                 });
+
+                const syncMediaCounter = function () {
+                    const counter = scroller.closest('[data-post-card-shell]')?.querySelector('[data-post-card-media-counter]');
+                    if (!counter) {
+                        return;
+                    }
+
+                    const slides = Array.from(scroller.querySelectorAll('[data-post-card-media-slide]'));
+                    if (!slides.length) {
+                        return;
+                    }
+
+                    const center = scroller.scrollLeft + (scroller.clientWidth / 2);
+                    let closestIndex = 0;
+                    let closestDistance = Number.POSITIVE_INFINITY;
+
+                    slides.forEach(function (slide, index) {
+                        const distance = Math.abs((slide.offsetLeft + (slide.offsetWidth / 2)) - center);
+                        if (distance < closestDistance) {
+                            closestDistance = distance;
+                            closestIndex = index;
+                        }
+                    });
+
+                    counter.textContent = (closestIndex + 1) + ' / ' + slides.length;
+                };
+
+                scroller.addEventListener('scroll', function () {
+                    window.requestAnimationFrame(syncMediaCounter);
+                }, { passive: true });
+
+                window.requestAnimationFrame(syncMediaCounter);
 
                 scroller.addEventListener('click', function (event) {
                     if (Date.now() < clickBlockUntil) {
