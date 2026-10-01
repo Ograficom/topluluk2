@@ -8862,6 +8862,17 @@ html body article.post-card[data-post-card-shell] .action-bar :where(
 ):focus-visible {
     background: #f4f4f5 !important; color: #111111 !important; outline: none !important;
 }
+html body article.post-card[data-post-card-shell] .action-bar :is(.action-btn,.action-stat,.action-chip,.post-card__action-link,.post-card__action-button)[aria-expanded="true"] {
+    background: #f4f4f5 !important;
+    color: #111111 !important;
+}
+html body article.post-card[data-post-card-shell] .action-bar :is(.action-btn,.action-stat,.action-chip,.post-card__action-link,.post-card__action-button):active {
+    background: #ededee !important;
+}
+html body article.post-card[data-post-card-shell] .action-bar .post-card__action-button:disabled {
+    cursor: default !important;
+    opacity: .5 !important;
+}
 html body article.post-card[data-post-card-shell] .action-bar .post-card__action-form button {
     width: auto !important; min-width: 30px !important; height: 36px !important;
     min-height: 36px !important; padding: 0 4px !important;
@@ -8911,7 +8922,7 @@ html body article.post-card[data-post-card-shell] .post-card__stats-panel {
     max-height: min(720px, calc(100dvh - 24px)) !important;
     overflow: auto !important; border: 1px solid #e3e5e8 !important;
     border-radius: 14px !important; background: #ffffff !important;
-    box-shadow: 0 16px 48px rgba(17,24,39,.16) !important;
+    box-shadow: none !important;
 }
 html body article.post-card[data-post-card-shell] .post-card__stats-close {
     width: 34px !important; height: 34px !important; min-width: 34px !important;
