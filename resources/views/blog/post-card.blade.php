@@ -9952,6 +9952,416 @@ SVG;
             box-shadow: none !important;
         }
 
+
+
+        /* Final deterministic action/icon geometry.
+         * Legacy rules remain for component behavior; this final layer
+         * owns only placement, sizing and optical centering.
+         */
+
+
+        /* -----------------------------------------------------------------------
+         * FINAL ACTION / ICON ALIGNMENT
+         * One geometry model for desktop + mobile.
+         * --------------------------------------------------------------------- */
+
+        html body [data-post-card-shell].post-card .post-header {
+            width: 100% !important;
+        }
+
+        html body [data-post-card-shell].post-card .author-block {
+            flex: 1 1 auto !important;
+            min-width: 0 !important;
+        }
+
+        html body [data-post-card-shell].post-card .og-action-wrap {
+            flex: 0 0 auto !important;
+            margin-left: auto !important;
+            margin-right: 2px !important;
+            align-self: center !important;
+        }
+
+        html body [data-post-card-shell].post-card [data-og-action-trigger] {
+            width: 34px !important;
+            min-width: 34px !important;
+            height: 34px !important;
+            min-height: 34px !important;
+            padding: 0 !important;
+            margin: 0 !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            gap: 3px !important;
+            flex: 0 0 34px !important;
+            line-height: 0 !important;
+        }
+
+        html body [data-post-card-shell].post-card [data-og-action-trigger] > span {
+            display: block !important;
+            width: 3px !important;
+            min-width: 3px !important;
+            height: 3px !important;
+            min-height: 3px !important;
+            flex: 0 0 3px !important;
+            margin: 0 !important;
+        }
+
+        /* Bottom action row:
+         * left spacer | centered actions | right spacer.
+         * The views metric stays in the right rail.
+         */
+        html body [data-post-card-shell].post-card .action-bar {
+            position: relative !important;
+            display: grid !important;
+            grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) !important;
+            align-items: center !important;
+            justify-items: stretch !important;
+            column-gap: 6px !important;
+            width: calc(100% + 36px) !important;
+            min-width: calc(100% + 36px) !important;
+            height: 46px !important;
+            min-height: 46px !important;
+            margin: 0 -18px !important;
+            padding: 0 10px !important;
+            box-sizing: border-box !important;
+        }
+
+        html body [data-post-card-shell].post-card .action-bar .action-left {
+            grid-column: 2 !important;
+            justify-self: center !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            gap: 3px !important;
+            width: max-content !important;
+            max-width: calc(100% - 56px) !important;
+            min-width: 0 !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            flex: 0 0 auto !important;
+            flex-wrap: nowrap !important;
+            white-space: nowrap !important;
+        }
+
+        html body [data-post-card-shell].post-card .action-bar .post-card__action-form {
+            display: inline-flex !important;
+            align-items: center !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            flex: 0 0 auto !important;
+        }
+
+        html body [data-post-card-shell].post-card .action-bar .action-left > :where(
+            .action-btn,
+            .action-stat,
+            .action-chip,
+            .post-card__action-link,
+            .post-card__action-button
+        ) {
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            gap: 4px !important;
+            width: 36px !important;
+            min-width: 36px !important;
+            max-width: none !important;
+            height: 36px !important;
+            min-height: 36px !important;
+            padding: 0 !important;
+            margin: 0 !important;
+            flex: 0 0 36px !important;
+            border: 0 !important;
+            border-radius: 9px !important;
+            line-height: 0 !important;
+            white-space: nowrap !important;
+            text-decoration: none !important;
+            vertical-align: middle !important;
+        }
+
+        html body [data-post-card-shell].post-card .action-bar .action-left > :where(
+            .action-btn,
+            .action-stat,
+            .action-chip,
+            .post-card__action-link,
+            .post-card__action-button
+        ):has(.action-chip__label) {
+            width: auto !important;
+            min-width: 40px !important;
+            flex: 0 0 auto !important;
+            padding: 0 6px !important;
+        }
+
+        html body [data-post-card-shell].post-card .action-bar .post-card__inline-icon {
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            width: 20px !important;
+            min-width: 20px !important;
+            max-width: 20px !important;
+            height: 20px !important;
+            min-height: 20px !important;
+            max-height: 20px !important;
+            flex: 0 0 20px !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            line-height: 0 !important;
+            vertical-align: middle !important;
+        }
+
+        html body [data-post-card-shell].post-card .action-bar .post-card__inline-icon :where(
+            svg,
+            iconify-icon,
+            .post-card__bookmark-icon,
+            .post-card__share-icon
+        ) {
+            display: block !important;
+            width: 19px !important;
+            min-width: 19px !important;
+            max-width: 19px !important;
+            height: 19px !important;
+            min-height: 19px !important;
+            max-height: 19px !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            line-height: 0 !important;
+            vertical-align: middle !important;
+        }
+
+        html body [data-post-card-shell].post-card .action-bar .post-card__comment-icon,
+        html body [data-post-card-shell].post-card .action-bar .post-card__view-icon {
+            display: block !important;
+            width: 19px !important;
+            min-width: 19px !important;
+            height: 19px !important;
+            min-height: 19px !important;
+            margin: 0 !important;
+        }
+
+        html body [data-post-card-shell].post-card .action-bar .action-chip__label,
+        html body [data-post-card-shell].post-card .action-bar [data-post-card-view-count] {
+            display: inline-block !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            line-height: 1.05 !important;
+            white-space: nowrap !important;
+            vertical-align: middle !important;
+            font-variant-numeric: tabular-nums !important;
+        }
+
+        html body [data-post-card-shell].post-card .action-bar .post-metric--views {
+            grid-column: 3 !important;
+            justify-self: end !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            gap: 4px !important;
+            width: auto !important;
+            min-width: 40px !important;
+            height: 34px !important;
+            min-height: 34px !important;
+            margin: 0 !important;
+            padding: 0 5px !important;
+            flex: 0 0 auto !important;
+            border: 0 !important;
+            border-radius: 8px !important;
+            line-height: 0 !important;
+            white-space: nowrap !important;
+        }
+
+        html body [data-post-card-shell].post-card .action-bar .post-metric--views .post-card__inline-icon {
+            width: 19px !important;
+            min-width: 19px !important;
+            height: 19px !important;
+            min-height: 19px !important;
+            flex-basis: 19px !important;
+        }
+
+        html body [data-post-card-shell].post-card .action-bar .post-metric--views .post-card__view-icon {
+            width: 18px !important;
+            min-width: 18px !important;
+            height: 18px !important;
+            min-height: 18px !important;
+        }
+
+        @media (max-width: 640px) {
+            html body [data-post-card-shell].post-card .og-action-wrap {
+                margin-right: 1px !important;
+            }
+
+            html body [data-post-card-shell].post-card [data-og-action-trigger] {
+                width: 36px !important;
+                min-width: 36px !important;
+                height: 36px !important;
+                min-height: 36px !important;
+                flex-basis: 36px !important;
+            }
+
+            html body [data-post-card-shell].post-card .action-bar {
+                grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) !important;
+                column-gap: 3px !important;
+                width: calc(100% + 28px) !important;
+                min-width: calc(100% + 28px) !important;
+                height: 46px !important;
+                min-height: 46px !important;
+                margin-inline: -14px !important;
+                padding-inline: 6px !important;
+            }
+
+            html body [data-post-card-shell].post-card .action-bar .action-left {
+                gap: 2px !important;
+                max-width: calc(100% - 48px) !important;
+            }
+
+            html body [data-post-card-shell].post-card .action-bar .action-left > :where(
+                .action-btn,
+                .action-stat,
+                .action-chip,
+                .post-card__action-link,
+                .post-card__action-button
+            ) {
+                width: 36px !important;
+                min-width: 36px !important;
+                height: 36px !important;
+                min-height: 36px !important;
+                flex-basis: 36px !important;
+                border-radius: 9px !important;
+            }
+
+            html body [data-post-card-shell].post-card .action-bar .action-left > :where(
+                .action-btn,
+                .action-stat,
+                .action-chip,
+                .post-card__action-link,
+                .post-card__action-button
+            ):has(.action-chip__label) {
+                width: auto !important;
+                min-width: 38px !important;
+                flex-basis: auto !important;
+                padding-inline: 5px !important;
+            }
+
+            html body [data-post-card-shell].post-card .action-bar .post-card__inline-icon {
+                width: 19px !important;
+                min-width: 19px !important;
+                height: 19px !important;
+                min-height: 19px !important;
+                flex-basis: 19px !important;
+            }
+
+            html body [data-post-card-shell].post-card .action-bar .post-card__inline-icon :where(
+                svg,
+                iconify-icon,
+                .post-card__bookmark-icon,
+                .post-card__share-icon
+            ) {
+                width: 18px !important;
+                min-width: 18px !important;
+                height: 18px !important;
+                min-height: 18px !important;
+                max-height: 18px !important;
+            }
+
+            html body [data-post-card-shell].post-card .action-bar .post-metric--views {
+                min-width: 36px !important;
+                height: 34px !important;
+                min-height: 34px !important;
+                padding-inline: 4px !important;
+                gap: 3px !important;
+            }
+
+            html body [data-post-card-shell].post-card .action-bar .post-metric--views .post-card__inline-icon {
+                width: 18px !important;
+                min-width: 18px !important;
+                height: 18px !important;
+                min-height: 18px !important;
+                flex-basis: 18px !important;
+            }
+
+            html body [data-post-card-shell].post-card .action-bar .post-metric--views .post-card__view-icon {
+                width: 17px !important;
+                min-width: 17px !important;
+                height: 17px !important;
+                min-height: 17px !important;
+            }
+        }
+
+        @media (max-width: 380px) {
+            html body [data-post-card-shell].post-card .action-bar {
+                width: calc(100% + 24px) !important;
+                min-width: calc(100% + 24px) !important;
+                margin-inline: -12px !important;
+                padding-inline: 4px !important;
+                column-gap: 1px !important;
+            }
+
+            html body [data-post-card-shell].post-card .action-bar .action-left {
+                gap: 0 !important;
+                max-width: calc(100% - 40px) !important;
+            }
+
+            html body [data-post-card-shell].post-card .action-bar .action-left > :where(
+                .action-btn,
+                .action-stat,
+                .action-chip,
+                .post-card__action-link,
+                .post-card__action-button
+            ) {
+                width: 34px !important;
+                min-width: 34px !important;
+                height: 34px !important;
+                min-height: 34px !important;
+                flex-basis: 34px !important;
+                border-radius: 8px !important;
+            }
+
+            html body [data-post-card-shell].post-card .action-bar .action-left > :where(
+                .action-btn,
+                .action-stat,
+                .action-chip,
+                .post-card__action-link,
+                .post-card__action-button
+            ):has(.action-chip__label) {
+                min-width: 34px !important;
+                padding-inline: 4px !important;
+            }
+
+            html body [data-post-card-shell].post-card .action-bar .post-card__inline-icon {
+                width: 18px !important;
+                min-width: 18px !important;
+                height: 18px !important;
+                min-height: 18px !important;
+                flex-basis: 18px !important;
+            }
+
+            html body [data-post-card-shell].post-card .action-bar .post-card__inline-icon :where(
+                svg,
+                iconify-icon,
+                .post-card__bookmark-icon,
+                .post-card__share-icon
+            ) {
+                width: 17px !important;
+                min-width: 17px !important;
+                height: 17px !important;
+                min-height: 17px !important;
+                max-height: 17px !important;
+            }
+
+            html body [data-post-card-shell].post-card .action-bar .post-metric--views {
+                min-width: 32px !important;
+                height: 32px !important;
+                min-height: 32px !important;
+                padding-inline: 3px !important;
+                gap: 2px !important;
+            }
+
+            html body [data-post-card-shell].post-card .action-bar .post-metric--views .post-card__view-icon {
+                width: 16px !important;
+                min-width: 16px !important;
+                height: 16px !important;
+                min-height: 16px !important;
+            }
+        }
+
 </style>
 
     <script>
