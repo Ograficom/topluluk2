@@ -1605,3 +1605,163 @@ html body [data-post-card-shell].post-card .post-card__stats-item strong {
         grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
     }
 }
+
+
+/* Final interaction pass ------------------------------------------------ */
+
+[data-post-card-shell].post-card .action-bar :where(a, button):focus-visible,
+[data-post-card-shell].post-card [data-og-action-trigger]:focus-visible,
+[data-post-card-shell].post-card .menu-btn:focus-visible,
+[data-post-card-shell].post-card .menu-button:focus-visible {
+    outline: 2px solid #bfdbfe !important;
+    outline-offset: 1px !important;
+}
+
+[data-post-card-shell].post-card .action-bar :where(a, button)[aria-expanded="true"] {
+    background: #eef4ff !important;
+    color: var(--pc-blue) !important;
+}
+
+[data-post-card-shell].post-card #action-left :where(
+    .action-btn,
+    .action-stat,
+    .action-chip,
+    .post-card__action-link,
+    .post-card__action-button
+) {
+    cursor: pointer !important;
+}
+
+[data-post-card-shell].post-card #action-left .post-card__action-button:disabled {
+    cursor: default !important;
+    opacity: .48 !important;
+}
+
+[data-post-card-shell].post-card #action-left .action-chip.is-bookmarked {
+    background: #eef4ff !important;
+    color: var(--pc-blue) !important;
+}
+
+[data-post-card-shell].post-card .post-metric--views[hidden] {
+    display: none !important;
+}
+
+/* Reaction portal created by the existing component JS. */
+[data-post-card-reaction-layer] {
+    position: fixed !important;
+    inset: 0 !important;
+    z-index: 2147481900 !important;
+    pointer-events: none !important;
+}
+
+[data-post-card-reaction-layer] [data-post-card-reaction-menu] {
+    pointer-events: auto !important;
+}
+
+/* Share menu intentionally stays smaller than the full moderation menu. */
+[data-post-card-shell].post-card .og-action-menu[data-menu-mode="share"] {
+    width: 184px !important;
+    min-width: 184px !important;
+}
+
+[data-post-card-shell].post-card .og-action-menu[data-menu-mode="share"] a,
+[data-post-card-shell].post-card .og-action-menu[data-menu-mode="share"] button {
+    min-height: 42px !important;
+    height: 42px !important;
+}
+
+/* Mobile stats surface: a compact sheet with a visual grab handle. */
+html body [data-post-card-shell].post-card .post-card__stats-panel::before {
+    content: "" !important;
+    display: block !important;
+    width: 34px !important;
+    height: 3px !important;
+    margin: 0 auto 13px !important;
+    border-radius: 999px !important;
+    background: #d4d9df !important;
+}
+
+@media (max-width: 640px) {
+    [data-post-card-shell].post-card #action-left :where(
+        .action-btn,
+        .action-stat,
+        .action-chip,
+        .post-card__action-link,
+        .post-card__action-button
+    ) {
+        width: 38px !important;
+        min-width: 38px !important;
+        height: 38px !important;
+        min-height: 38px !important;
+        flex-basis: 38px !important;
+        border-radius: 9px !important;
+    }
+
+    [data-post-card-shell].post-card #action-left :where(
+        .action-btn,
+        .action-stat,
+        .action-chip,
+        .post-card__action-link,
+        .post-card__action-button
+    ) .post-card__inline-icon,
+    [data-post-card-shell].post-card #action-left :where(
+        .action-btn,
+        .action-stat,
+        .action-chip,
+        .post-card__action-link,
+        .post-card__action-button
+    ) svg,
+    [data-post-card-shell].post-card #action-left :where(
+        .action-btn,
+        .action-stat,
+        .action-chip,
+        .post-card__action-link,
+        .post-card__action-button
+    ) iconify-icon {
+        width: 20px !important;
+        height: 20px !important;
+        min-width: 20px !important;
+        min-height: 20px !important;
+    }
+
+    [data-post-card-shell].post-card .post-metric--views {
+        min-width: 44px !important;
+        height: 38px !important;
+        min-height: 38px !important;
+        padding-inline: 6px !important;
+    }
+
+    [data-post-card-shell].post-card .post-metric--views .post-card__inline-icon,
+    [data-post-card-shell].post-card .post-metric--views svg,
+    [data-post-card-shell].post-card .post-metric--views iconify-icon {
+        width: 18px !important;
+        height: 18px !important;
+        min-width: 18px !important;
+        min-height: 18px !important;
+    }
+
+    [data-post-card-shell].post-card .og-action-menu[data-menu-mode="share"] {
+        width: min(190px, calc(100vw - 20px)) !important;
+        min-width: min(190px, calc(100vw - 20px)) !important;
+    }
+
+    [data-post-card-shell].post-card .post-card__stats-panel::before {
+        margin-bottom: 11px !important;
+    }
+}
+
+@media (max-width: 380px) {
+    [data-post-card-shell].post-card #action-left :where(
+        .action-btn,
+        .action-stat,
+        .action-chip,
+        .post-card__action-link,
+        .post-card__action-button
+    ) {
+        width: 36px !important;
+        min-width: 36px !important;
+        height: 36px !important;
+        min-height: 36px !important;
+        flex-basis: 36px !important;
+    }
+}
