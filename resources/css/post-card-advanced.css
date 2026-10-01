@@ -218,6 +218,18 @@
 
 /* Title + body --------------------------------------------------------- */
 
+[data-post-card-shell].post-card.is-pinned {
+    border-color: #d7e3ff !important;
+    border-top: 2px solid var(--pc-blue) !important;
+    padding-top: 15px !important;
+}
+
+[data-post-card-shell].post-card.is-pinned .post-card__eyebrow-tag {
+    border-color: #cfe0ff !important;
+    background: #eff6ff !important;
+    color: var(--pc-blue-strong) !important;
+}
+
 [data-post-card-shell].post-card .post-title {
     margin: 0 0 10px !important;
     color: var(--pc-ink) !important;
@@ -400,6 +412,24 @@
 [data-post-card-shell].post-card .post-card__media-dots i.is-active {
     width: 12px !important;
     background: #fff !important;
+}
+
+[data-post-card-shell].post-card .post-card__media-play {
+    width: 48px !important;
+    height: 48px !important;
+    border: 1px solid rgba(255,255,255,.24) !important;
+    border-radius: 50% !important;
+    background: rgba(17,24,39,.72) !important;
+    color: #ffffff !important;
+    font-size: 21px !important;
+}
+
+[data-post-card-shell].post-card .post-card__media-play iconify-icon {
+    font-size: 21px !important;
+}
+
+[data-post-card-shell].post-card.has-gallery .post-card__media-wrap {
+    margin-bottom: 11px !important;
 }
 
 [data-post-card-shell].post-card .post-card__media-badge {
@@ -861,10 +891,10 @@
 
 [data-post-card-shell].post-card .post-card__reaction-menu,
 [data-post-card-shell].post-card [data-post-card-reaction-menu] {
-    position: absolute !important;
-    top: calc(100% + 8px) !important;
-    right: 0 !important;
-    z-index: 200 !important;
+    position: fixed !important;
+    top: auto !important;
+    right: auto !important;
+    z-index: 2147482000 !important;
     display: grid !important;
     grid-template-columns: repeat(6, minmax(0, 1fr)) !important;
     gap: 4px !important;
@@ -1352,5 +1382,93 @@
         animation-duration: .01ms !important;
         animation-iteration-count: 1 !important;
         transition-duration: .01ms !important;
+    }
+}
+
+
+@media (max-width: 640px) {
+    [data-post-card-shell].post-card.is-pinned {
+        padding-top: 11px !important;
+        border-top-width: 2px !important;
+    }
+
+    [data-post-card-shell].post-card .post-card__media-play {
+        width: 44px !important;
+        height: 44px !important;
+        font-size: 19px !important;
+    }
+
+    [data-post-card-shell].post-card .post-card__media-play iconify-icon {
+        font-size: 19px !important;
+    }
+
+    [data-post-card-shell].post-card .og-action-menu {
+        width: min(232px, calc(100vw - 20px)) !important;
+        min-width: min(232px, calc(100vw - 20px)) !important;
+        max-width: calc(100vw - 20px) !important;
+        max-height: min(72vh, 460px) !important;
+        overflow-y: auto !important;
+        overscroll-behavior: contain !important;
+        padding: 7px !important;
+        border-radius: 14px !important;
+    }
+
+    [data-post-card-shell].post-card .og-action-menu a,
+    [data-post-card-shell].post-card .og-action-menu button {
+        min-height: 44px !important;
+        height: 44px !important;
+        padding-inline: 11px !important;
+        border-radius: 9px !important;
+        font-size: 12.75px !important;
+    }
+
+    [data-post-card-shell].post-card .og-action-menu iconify-icon {
+        width: 18px !important;
+        height: 18px !important;
+        min-width: 18px !important;
+    }
+
+    [data-post-card-shell].post-card .post-card__reaction-menu,
+    [data-post-card-shell].post-card [data-post-card-reaction-menu] {
+        grid-template-columns: repeat(6, minmax(0, 1fr)) !important;
+        width: min(250px, calc(100vw - 20px)) !important;
+        max-width: min(250px, calc(100vw - 20px)) !important;
+        max-height: min(56vh, 360px) !important;
+        padding: 9px !important;
+        border-radius: 14px !important;
+        overscroll-behavior: contain !important;
+    }
+
+    [data-post-card-shell].post-card .post-card__reaction-option {
+        min-height: 34px !important;
+        height: 34px !important;
+        border-radius: 9px !important;
+    }
+
+    [data-post-card-shell].post-card .post-card__source,
+    [data-post-card-shell].post-card .post-card__quote-preview {
+        border-radius: 11px !important;
+    }
+
+    [data-post-card-shell].post-card .post-card__comment-label,
+    [data-post-card-shell].post-card .comment-label {
+        font-size: 11.5px !important;
+    }
+}
+
+@media (max-width: 380px) {
+    [data-post-card-shell].post-card .post-card__eyebrow {
+        font-size: 9.9px !important;
+    }
+
+    [data-post-card-shell].post-card .post-title {
+        font-size: 17.4px !important;
+    }
+
+    [data-post-card-shell].post-card .post-card__reaction-menu,
+    [data-post-card-shell].post-card [data-post-card-reaction-menu] {
+        grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+        width: min(232px, calc(100vw - 16px)) !important;
+        max-width: min(232px, calc(100vw - 16px)) !important;
     }
 }
