@@ -8851,7 +8851,7 @@ html body article.post-card[data-post-card-shell] .action-bar :where(
     padding: 0 4px !important; margin: 0 !important; flex: 0 0 auto !important;
     border: 0 !important; border-radius: 10px !important;
     background: transparent !important; color: #535860 !important;
-    font-size: 12px !important; line-height: 1 !important; font-weight: 500 !important;
+    font-size: 12px !important; line-height: 1 !important; font-weight: 500 !important; cursor: pointer !important;
     box-shadow: none !important; text-decoration: none !important;
 }
 html body article.post-card[data-post-card-shell] .action-bar :where(
