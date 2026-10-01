@@ -1578,6 +1578,9 @@ SVG;
         @endif
         <span class="post-card__eyebrow-dot" aria-hidden="true">•</span>
         <span>{{ $estimatedReadMinutes }} dk okuma</span>
+        @if($mediaItems->count() > 1)
+            <span>{{ $mediaItems->count() }} medya</span>
+        @endif
         @if($isPinned)
             <span class="post-card__eyebrow-tag">Sabit</span>
         @endif
