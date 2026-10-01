@@ -2504,3 +2504,25 @@ html body article.post-card[data-post-card-shell] :is(a, button):focus-visible {
         min-height: 18px !important;
     }
 }
+
+
+/* Reference lock: prevent legacy hover/depth rules from reintroducing
+ * shadows, transforms or extra feed-only rows after the final visual pass. */
+html body article.post-card[data-post-card-shell]:hover,
+html body article.post-card[data-post-card-shell]:focus-within {
+    box-shadow: none !important;
+    transform: none !important;
+}
+
+html body article.post-card[data-post-card-shell] .post-card__media-image,
+html body article.post-card[data-post-card-shell] .post-card__media-link:hover .post-card__media-image {
+    transform: none !important;
+}
+
+html body article.post-card[data-post-card-shell] .post-card__eyebrow {
+    display: none !important;
+}
+
+html body article.post-card[data-post-card-shell] .comment-row {
+    display: none !important;
+}
