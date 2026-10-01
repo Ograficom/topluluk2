@@ -2730,60 +2730,15 @@ SVG;
             outline: none;
         }
 
-        [data-post-card-shell] .post-card__menu-wrap,
-        [data-post-card-shell] .post-card__reaction-wrap {
-            position: relative;
-            flex: 0 0 auto;
-        }
 
-        [data-post-card-shell] .post-card__menu,
-        [data-post-card-shell] .post-card__reaction-menu,
-        [data-post-card-reaction-menu] {
-            position: absolute;
-            top: calc(100% + 10px);
-            right: 0;
-            z-index: 30;
-            background: #fff;
-            border: 0;
-            border-radius: 8px;
-            box-shadow: none;
-            backdrop-filter: none;
-        }
 
         [data-post-card-shell] .post-card__menu {
             min-width: 168px;
             padding: 8px;
         }
 
-        [data-post-card-shell] .post-card__reaction-menu:not([hidden]),
-        [data-post-card-reaction-menu]:not([hidden]) {
-            display: flex;
-            flex-wrap: wrap;
-            align-items: flex-start;
-            align-content: flex-start;
-            justify-content: flex-start;
-            gap: 10px 12px;
-            min-width: 0;
-            width: min(208px, calc(100vw - 32px));
-            max-width: min(208px, calc(100vw - 32px));
-            padding: 10px 12px 12px;
-        }
 
-        [data-post-card-shell] .post-card__reaction-menu-title,
-        [data-post-card-reaction-menu] .post-card__reaction-menu-title {
-            flex: 0 0 100%;
-            color: #7b8190;
-            font-size: 13px;
-            font-weight: 400;
-            line-height: 1.2;
-            padding: 0 0 2px;
-        }
 
-        [data-post-card-shell] .post-card__menu[hidden],
-        [data-post-card-shell] .post-card__reaction-menu[hidden],
-        [data-post-card-reaction-menu][hidden] {
-            display: none !important;
-        }
 
         [data-post-card-shell] .post-card__menu-item {
             display: flex;
@@ -2801,16 +2756,6 @@ SVG;
             transition: none;
         }
 
-        [data-post-card-shell] .post-card__menu-item:hover,
-        [data-post-card-shell] .post-card__menu-item:focus-visible,
-        [data-post-card-reaction-menu] .post-card__reaction-option:hover,
-        [data-post-card-reaction-menu] .post-card__reaction-option:focus-visible,
-        [data-post-card-shell] .post-card__reaction-option:hover,
-        [data-post-card-shell] .post-card__reaction-option:focus-visible {
-            background: #f4f4f5;
-            color: #111111;
-            outline: none;
-        }
 
         [data-post-card-shell] .post-card__menu-item--danger {
             color: #a61b29;
@@ -2821,21 +2766,7 @@ SVG;
             flex: 0 0 auto;
         }
 
-        [data-post-card-shell] .post-card__menu-form,
-        [data-post-card-shell] .post-card__action-form,
-        [data-post-card-reaction-menu] .post-card__reaction-form,
-        [data-post-card-shell] .post-card__reaction-form {
-            margin: 0;
-        }
 
-        [data-post-card-shell] .post-card__reaction-form,
-        [data-post-card-reaction-menu] .post-card__reaction-form,
-        [data-post-card-reaction-menu] > a,
-        [data-post-card-shell] .post-card__reaction-menu > a {
-            display: inline-flex;
-            flex: 0 0 34px;
-            width: 34px;
-        }
 
         [data-post-card-shell] .post-card__menu-form {
             display: block;
@@ -3258,133 +3189,19 @@ SVG;
             gap: 0;
         }
 
-        [data-post-card-shell] .reactions-row,
-        [data-post-card-shell] .reaction-row {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            flex-wrap: wrap;
-            margin-bottom: 8px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid rgba(17, 24, 39, 0.08);
-        }
 
-        [data-post-card-shell] .reaction-item {
-            display: inline-flex;
-            align-items: center;
-            gap: 7px;
-            padding: 8px 13px;
-            border: 0;
-            border-radius: 999px;
-            background: #f5f6f8;
-            color: #111827;
-            font-size: 15px;
-            font-weight: 500;
-            white-space: nowrap;
-            box-shadow: none;
-            transition: background 0.12s ease;
-        }
 
-        [data-post-card-shell] .reaction-item:hover {
-            background: #eceff3;
-        }
 
-        [data-post-card-shell] .reaction-item:active {
-            background: #e4e8ee;
-        }
 
-        [data-post-card-shell] .reaction-emoji,
-        [data-post-card-reaction-menu] .reaction-emoji {
-            font-size: 23px;
-            line-height: 1;
-        }
 
-        [data-post-card-shell] .reaction-count,
-        [data-post-card-reaction-menu] .reaction-count {
-            color: #111827;
-            font-size: 14px;
-            line-height: 1;
-        }
 
-        [data-post-card-shell] .reaction-emoji--html,
-        [data-post-card-reaction-menu] .reaction-emoji--html,
-        [data-post-card-shell] .reaction-emoji--html img,
-        [data-post-card-reaction-menu] .reaction-emoji--html img,
-        [data-post-card-shell] .reaction-emoji--html svg,
-        [data-post-card-reaction-menu] .reaction-emoji--html svg,
-        [data-post-card-shell] .reaction-emoji--html iconify-icon,
-        [data-post-card-reaction-menu] .reaction-emoji--html iconify-icon {
-            width: 20px;
-            height: 20px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-        }
 
-        [data-post-card-shell] .more-pill {
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            padding: 7px 11px;
-            border: 0;
-            border-radius: 999px;
-            background: #f5f6f8;
-            color: #111827;
-            font-size: 14px;
-            font-weight: 400;
-            box-shadow: none;
-            transition: background 0.12s ease;
-        }
 
-        [data-post-card-shell] .more-pill:hover,
-        [data-post-card-shell] .more-pill:focus-visible {
-            background: #eceff3;
-            outline: none;
-        }
 
-        [data-post-card-shell] .more-pill:active {
-            background: #e4e8ee;
-        }
 
-        [data-post-card-shell] .smiley-btn,
-        [data-post-card-shell] .reaction-add {
-            width: 34px;
-            height: 34px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 0;
-            border-radius: 50%;
-            background: #f5f6f8;
-            color: #6b7280;
-            box-shadow: none;
-            transition: background 0.12s ease, color 0.12s ease;
-        }
 
-        [data-post-card-shell] .smiley-btn:hover,
-        [data-post-card-shell] .smiley-btn:focus-visible,
-        [data-post-card-shell] .reaction-add:hover,
-        [data-post-card-shell] .reaction-add:focus-visible {
-            background: #eceff3;
-            color: #475569;
-            outline: none;
-        }
 
-        [data-post-card-shell] .smiley-btn:active,
-        [data-post-card-shell] .reaction-add:active {
-            background: #e4e8ee;
-            color: #334155;
-        }
 
-        [data-post-card-shell] .post-card__reaction-add-icon,
-        [data-post-card-shell] .post-card__inline-icon {
-            width: 18px;
-            height: 18px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex: 0 0 auto;
-        }
 
         [data-post-card-shell] .post-card__bookmark-icon {
             display: block;
@@ -3400,152 +3217,22 @@ SVG;
             flex: 0 0 auto;
         }
 
-        [data-post-card-shell] .post-card__reaction-custom-icon {
-            display: block;
-            width: 18px;
-            height: 18px;
-            flex: 0 0 auto;
-        }
 
-        [data-post-card-shell] .post-card__reaction-option,
-        [data-post-card-reaction-menu] .post-card__reaction-option {
-            width: 100%;
-            height: 34px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            padding: 0;
-            border: 0;
-            border-radius: 0;
-            background: transparent;
-            color: inherit;
-            text-decoration: none;
-        }
 
-        [data-post-card-shell] .action-bar {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 10px;
-        }
 
-        [data-post-card-shell] .action-left {
-            display: flex;
-            align-items: center;
-            gap: 18px;
-            flex: 1;
-            min-width: 0;
-            flex-wrap: nowrap;
-        }
 
-        [data-post-card-shell] .action-btn,
-        [data-post-card-shell] .action-stat {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-            width: auto;
-            height: 30px;
-            padding: 0;
-            border: 0;
-            border-radius: 0;
-            background: transparent;
-            color: #64748b;
-            font-size: 15px;
-            box-shadow: none;
-            transition: background 0.12s ease, color 0.12s ease;
-        }
 
-        [data-post-card-shell] .action-chip--metric {
-            width: auto;
-            min-width: 0;
-            padding: 0;
-            border-radius: 999px;
-        }
 
-        [data-post-card-shell] .action-chip--subtle {
-            background: transparent;
-        }
 
-        [data-post-card-shell] .action-chip__label {
-            color: currentColor;
-            font-size: 14px;
-            font-weight: 400;
-            line-height: 1;
-        }
 
-        [data-post-card-shell] .action-chip--disabled {
-            cursor: not-allowed;
-            opacity: 0.64;
-        }
 
-        [data-post-card-shell] .action-btn:hover,
-        [data-post-card-shell] .action-btn:focus-visible,
-        [data-post-card-shell] .action-stat:hover,
-        [data-post-card-shell] .action-stat:focus-visible {
-            background: transparent;
-            color: #334155;
-            outline: none;
-        }
 
-        [data-post-card-shell] .action-btn:active,
-        [data-post-card-shell] .action-stat:active {
-            background: transparent;
-            color: #334155;
-        }
 
-        [data-post-card-shell] .action-chip.is-bookmarked,
-        [data-post-card-shell] .action-chip.is-active {
-            background: transparent;
-            color: #334155;
-        }
 
-        [data-post-card-shell] .post-card__action-link,
-        [data-post-card-shell] .post-card__action-button {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            background: transparent !important;
-            border: 0 !important;
-            box-shadow: none !important;
-            appearance: none;
-            -webkit-appearance: none;
-        }
 
-        [data-post-card-shell] .post-card__action-form {
-            display: inline-flex;
-        }
 
-        [data-post-card-shell] .post-card__action-form button,
-        [data-post-card-shell] .action-bar button {
-            background: transparent !important;
-            border: 0 !important;
-            box-shadow: none !important;
-            appearance: none;
-            -webkit-appearance: none;
-        }
 
-        [data-post-card-shell] .post-card__action-button svg,
-        [data-post-card-shell] .post-card__action-link svg {
-            width: 18px;
-            height: 18px;
-        }
 
-        [data-post-card-shell] .post-metric {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 0;
-            border: 0;
-            background: transparent;
-            color: #6b7280;
-            font-size: 14px;
-            font-weight: 400;
-            white-space: nowrap;
-            appearance: none;
-            -webkit-appearance: none;
-            cursor: pointer;
-        }
 
         /* Bu modal JS ile document.body'ye tasindigi icin artik [data-post-card-shell]
            atasina bagimli olmadan, kendi basina secilebilir olmali (aksi halde tasindiktan
@@ -3686,10 +3373,6 @@ SVG;
             }
         }
 
-        [data-post-card-shell] [data-post-card-view-metric][hidden],
-        [data-post-card-shell] .post-metric--views[hidden] {
-            display: none !important;
-        }
 
         [data-post-card-shell] .comment-row {
             display: flex;
@@ -4170,93 +3853,16 @@ SVG;
             text-decoration: none;
         }
 
-        [data-post-card-shell] .reaction-row,
-        [data-post-card-shell] .reactions-row {
-            margin: 0 0 16px;
-            gap: 8px;
-        }
 
-        [data-post-card-shell] .reaction-item,
-        [data-post-card-shell] .more-pill,
-        [data-post-card-shell] .smiley-btn,
-        [data-post-card-shell] .reaction-add {
-            background: #f4f4f4;
-            box-shadow: none;
-            transition: none;
-        }
 
-        [data-post-card-shell] .reaction-item:hover,
-        [data-post-card-shell] .more-pill:hover,
-        [data-post-card-shell] .smiley-btn:hover,
-        [data-post-card-shell] .reaction-add:hover,
-        [data-post-card-shell] .reaction-item:focus-visible,
-        [data-post-card-shell] .more-pill:focus-visible,
-        [data-post-card-shell] .smiley-btn:focus-visible,
-        [data-post-card-shell] .reaction-add:focus-visible {
-            background: #f4f4f4;
-            color: #111111;
-            outline: none;
-        }
 
-        [data-post-card-shell] .action-bar {
-            margin: 0 -18px;
-            padding: 12px 18px 12px;
-            gap: 12px;
-            box-shadow: inset 0 1px 0 #eeeeee;
-        }
 
-        [data-post-card-shell] .action-left {
-            gap: 20px;
-        }
 
-        [data-post-card-shell] .post-card__vote-cluster {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 9px;
-            min-width: 54px;
-            height: 28px;
-            padding: 0 9px;
-            border-radius: 999px;
-            background: #f7f7f7;
-            color: #000000;
-        }
 
-        [data-post-card-shell] .post-card__vote-cluster iconify-icon {
-            font-size: 14px;
-        }
 
-        [data-post-card-shell] .action-btn,
-        [data-post-card-shell] .action-stat,
-        [data-post-card-shell] .post-metric {
-            height: 28px;
-            color: #000000;
-            font-size: 12px;
-            transition: none;
-        }
 
-        [data-post-card-shell] .post-card__inline-icon,
-        [data-post-card-shell] .post-card__bookmark-icon,
-        [data-post-card-shell] .post-card__share-icon,
-        [data-post-card-shell] .post-card__reaction-custom-icon {
-            width: 16px;
-            height: 16px;
-        }
 
-        [data-post-card-reaction-layer] {
-            position: fixed !important;
-            inset: 0 !important;
-            z-index: 2147483646 !important;
-            pointer-events: none !important;
-            overflow: visible !important;
-            isolation: isolate !important;
-        }
 
-        [data-post-card-reaction-layer] .post-card__reaction-menu {
-            position: fixed !important;
-            z-index: 1 !important;
-            pointer-events: auto !important;
-        }
 
         @media (max-width: 820px) {
             [data-post-card-shell] {
@@ -4319,57 +3925,13 @@ SVG;
                 font-size: 13.5px;
             }
 
-            [data-post-card-shell] .reaction-row,
-            [data-post-card-shell] .reactions-row {
-                gap: 8px;
-            }
 
-            [data-post-card-shell] .post-card__reaction-menu,
-            [data-post-card-reaction-menu] {
-                left: 0;
-                right: auto;
-                width: min(208px, calc(100vw - 20px));
-                max-width: min(208px, calc(100vw - 20px));
-            }
 
-            [data-post-card-shell] .post-card__reaction-menu:not([hidden]),
-            [data-post-card-reaction-menu]:not([hidden]) {
-                gap: 10px 12px;
-                padding: 10px 12px 12px;
-            }
 
-            [data-post-card-shell] .post-card__reaction-menu-title,
-            [data-post-card-reaction-menu] .post-card__reaction-menu-title {
-                padding: 0 2px 4px;
-                font-size: 12px;
-            }
 
-            [data-post-card-shell] .post-card__reaction-option,
-            [data-post-card-reaction-menu] .post-card__reaction-option {
-                width: 100%;
-                height: 34px;
-                border-radius: 0;
-            }
 
-            [data-post-card-shell] .post-card__reaction-form,
-            [data-post-card-reaction-menu] .post-card__reaction-form,
-            [data-post-card-reaction-menu] > a,
-            [data-post-card-shell] .post-card__reaction-menu > a {
-                flex-basis: 34px;
-                width: 34px;
-            }
 
-            [data-post-card-shell] .action-left {
-                gap: 16px;
-            }
 
-            [data-post-card-shell] .action-bar {
-                align-items: center;
-                margin-left: -16px;
-                margin-right: -16px;
-                padding-left: 16px;
-                padding-right: 16px;
-            }
 
             [data-post-card-shell] .comment-row {
                 padding-top: 0;
@@ -4424,19 +3986,6 @@ SVG;
             line-height: 1.6;
         }
 
-        [data-post-card-shell] .expand-link,
-        [data-post-card-shell] .post-card__menu-item,
-        [data-post-card-shell] .post-card__reaction-menu-title,
-        [data-post-card-shell] .action-btn,
-        [data-post-card-shell] .action-stat,
-        [data-post-card-shell] .post-metric,
-        [data-post-card-shell] .action-chip__label,
-        [data-post-card-shell] .reaction-count,
-        [data-post-card-shell] .post-card__source-domain,
-        [data-post-card-shell] .post-card__tag {
-            font-size: 13px;
-            line-height: 1.35;
-        }
 
         [data-post-card-shell] .post-card__source-label,
         [data-post-card-shell] .category-badge__fallback {
@@ -4495,56 +4044,11 @@ SVG;
             margin: 0 0 14px;
         }
 
-        [data-post-card-shell] .reaction-row,
-        [data-post-card-shell] .reactions-row {
-            margin: 0 0 10px;
-            padding-bottom: 8px;
-            gap: 8px;
-        }
 
-        [data-post-card-shell] .smiley-btn,
-        [data-post-card-shell] .reaction-add {
-            width: 42px;
-            height: 42px;
-            border-radius: 999px;
-            background: #f5f7fb;
-            color: #4b5563;
-        }
 
-        [data-post-card-shell] .post-card__reaction-custom-icon,
-        [data-post-card-shell] .post-card__inline-icon {
-            width: 22px;
-            height: 22px;
-        }
 
-        [data-post-card-shell] .post-card__reaction-custom-icon svg,
-        [data-post-card-shell] .post-card__inline-icon svg,
-        [data-post-card-shell] .post-card__inline-icon iconify-icon {
-            width: 20px;
-            height: 20px;
-            font-size: 20px !important;
-        }
 
-        [data-post-card-shell] .reaction-emoji,
-        [data-post-card-reaction-menu] .reaction-emoji,
-        [data-post-card-shell] .reaction-emoji--html,
-        [data-post-card-reaction-menu] .reaction-emoji--html,
-        [data-post-card-shell] .reaction-emoji--html img,
-        [data-post-card-reaction-menu] .reaction-emoji--html img,
-        [data-post-card-shell] .reaction-emoji--html svg,
-        [data-post-card-reaction-menu] .reaction-emoji--html svg,
-        [data-post-card-shell] .reaction-emoji--html iconify-icon,
-        [data-post-card-reaction-menu] .reaction-emoji--html iconify-icon {
-            width: 22px;
-            height: 22px;
-            font-size: 22px;
-        }
 
-        [data-post-card-shell] .action-bar {
-            margin: 0 -18px;
-            padding: 10px 18px 10px;
-            gap: 10px;
-        }
 
         [data-post-card-shell] .post-card__menu {
             min-width: 200px;
@@ -4599,16 +4103,7 @@ SVG;
                 margin: 0 0 12px;
             }
 
-            [data-post-card-shell] .reaction-row,
-            [data-post-card-shell] .reactions-row {
-                margin: 0 0 8px;
-                padding-bottom: 8px;
-            }
 
-            [data-post-card-shell] .action-bar {
-                padding-top: 10px;
-                padding-bottom: 10px;
-            }
         }
 
 
@@ -4665,47 +4160,10 @@ SVG;
             color: #0f172a;
         }
 
-        [data-post-card-shell] .reaction-emoji--html,
-        [data-post-card-reaction-menu] .reaction-emoji--html {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            overflow: visible;
-        }
 
-        [data-post-card-shell] .post-card__reaction-asset,
-        [data-post-card-shell] .reaction-emoji--html img,
-        [data-post-card-reaction-menu] .reaction-emoji--html img {
-            display: block;
-            width: 22px;
-            height: 22px;
-            min-width: 22px;
-            min-height: 22px;
-            border-radius: 999px;
-            object-fit: cover;
-            overflow: hidden;
-            background: #f8fafc;
-        }
 
-        [data-post-card-shell] .post-card__reaction-option,
-        [data-post-card-reaction-menu] .post-card__reaction-option {
-            width: 36px;
-            height: 36px;
-            border-radius: 999px;
-        }
 
-        [data-post-card-shell] .post-card__reaction-option:hover,
-        [data-post-card-shell] .post-card__reaction-option:focus-visible,
-        [data-post-card-reaction-menu] .post-card__reaction-option:hover,
-        [data-post-card-reaction-menu] .post-card__reaction-option:focus-visible {
-            background: #f3f4f6;
-            outline: none;
-        }
 
-        [data-post-card-shell] .post-card__reaction-option:active,
-        [data-post-card-reaction-menu] .post-card__reaction-option:active {
-            background: #e5e7eb;
-        }
 
 
         /* Post media preload animation - fixed: no spinner, no stuck overlay */
@@ -4768,50 +4226,7 @@ SVG;
             }
         }
 
-        /* Text preload shimmer effect - fixed: never keeps text hidden */
-        [data-post-card-shell].is-preloading .author-name,
-        [data-post-card-shell].is-preloading .author-subline__topic,
-        [data-post-card-shell].is-preloading .author-subline__item,
-        [data-post-card-shell].is-preloading .post-title,
-        [data-post-card-shell].is-preloading .post-title__link,
-        [data-post-card-shell].is-preloading .post-summary,
-        [data-post-card-shell].is-preloading .post-card__tag,
-        [data-post-card-shell].is-preloading .reaction-item,
-        [data-post-card-shell].is-preloading .action-chip__label {
-            position: relative;
-            overflow: hidden;
-            border-radius: 10px;
-            isolation: isolate;
-        }
 
-        [data-post-card-shell].is-preloading .author-name::after,
-        [data-post-card-shell].is-preloading .author-subline__topic::after,
-        [data-post-card-shell].is-preloading .author-subline__item::after,
-        [data-post-card-shell].is-preloading .post-title::after,
-        [data-post-card-shell].is-preloading .post-title__link::after,
-        [data-post-card-shell].is-preloading .post-summary::after,
-        [data-post-card-shell].is-preloading .post-card__tag::after,
-        [data-post-card-shell].is-preloading .reaction-item::after,
-        [data-post-card-shell].is-preloading .action-chip__label::after {
-            content: "";
-            position: absolute;
-            inset: -2px;
-            z-index: 2;
-            pointer-events: none;
-            border-radius: inherit;
-            background:
-                linear-gradient(
-                    100deg,
-                    rgba(255, 255, 255, 0) 0%,
-                    rgba(255, 255, 255, 0.72) 45%,
-                    rgba(255, 255, 255, 0) 80%
-                ),
-                linear-gradient(135deg, #eef2f7 0%, #f8fafc 48%, #e5e7eb 100%);
-            background-size: 220% 100%, 100% 100%;
-            animation:
-                postCardMediaPreload 1.05s linear infinite,
-                postCardPreloadOverlayOut 0.26s ease 0.95s forwards;
-        }
 
         [data-post-card-shell].is-preloading .author-name,
         [data-post-card-shell].is-preloading .author-subline__topic,
@@ -4836,41 +4251,10 @@ SVG;
                 background: #111827;
             }
 
-            [data-post-card-shell] .post-card__media-frame::before,
-            [data-post-card-shell].is-preloading .author-name::after,
-            [data-post-card-shell].is-preloading .author-subline__topic::after,
-            [data-post-card-shell].is-preloading .author-subline__item::after,
-            [data-post-card-shell].is-preloading .post-title::after,
-            [data-post-card-shell].is-preloading .post-title__link::after,
-            [data-post-card-shell].is-preloading .post-summary::after,
-            [data-post-card-shell].is-preloading .post-card__tag::after,
-            [data-post-card-shell].is-preloading .reaction-item::after,
-            [data-post-card-shell].is-preloading .action-chip__label::after {
-                background:
-                    linear-gradient(
-                        100deg,
-                        rgba(255, 255, 255, 0) 0%,
-                        rgba(255, 255, 255, 0.08) 45%,
-                        rgba(255, 255, 255, 0) 80%
-                    ),
-                    linear-gradient(135deg, #111827 0%, #1f2937 48%, #0f172a 100%);
-                background-size: 220% 100%, 100% 100%;
-            }
         }
 
         @media (prefers-reduced-motion: reduce) {
-            [data-post-card-shell] .post-card__media-frame::before,
-            [data-post-card-shell].is-preloading .author-name::after,
-            [data-post-card-shell].is-preloading .author-subline__topic::after,
-            [data-post-card-shell].is-preloading .author-subline__item::after,
-            [data-post-card-shell].is-preloading .post-title::after,
-            [data-post-card-shell].is-preloading .post-title__link::after,
-            [data-post-card-shell].is-preloading .post-summary::after,
-            [data-post-card-shell].is-preloading .post-card__tag::after,
-            [data-post-card-shell].is-preloading .reaction-item::after,
-            [data-post-card-shell].is-preloading .action-chip__label::after {
-                display: none !important;
-            }
+
 
             [data-post-card-shell],
             [data-post-card-shell] * {
@@ -4960,15 +4344,6 @@ SVG;
             opacity: 0.72;
         }
 
-        [data-post-card-shell] .action-btn,
-        [data-post-card-shell] .action-stat,
-        [data-post-card-shell] .post-metric,
-        [data-post-card-shell] .action-chip__label,
-        [data-post-card-shell] .reaction-count,
-        [data-post-card-shell] .post-card__source-domain {
-            font-size: 14px !important;
-            line-height: 1.4 !important;
-        }
 
         [data-post-card-shell] .post-card__source-label {
             font-size: 10.5px !important;
@@ -5067,181 +4442,11 @@ SVG;
             color: rgba(255, 255, 255, 0.72) !important;
         }
 
-        html.dark [data-post-card-shell] .post-card__inline-icon,
-        html.dark [data-post-card-shell] .post-card__inline-icon svg,
-        html.dark [data-post-card-shell] .post-card__inline-icon iconify-icon,
-        html.dark [data-post-card-shell] .post-card__bookmark-icon,
-        html.dark [data-post-card-shell] .post-card__share-icon,
-        html.dark [data-post-card-shell] .post-card__reaction-custom-icon,
-        html.dark [data-post-card-shell] .action-btn,
-        html.dark [data-post-card-shell] .action-stat,
-        html.dark [data-post-card-shell] .post-metric,
-        html.dark [data-post-card-shell] .action-chip__label,
-        body.dark [data-post-card-shell] .post-card__inline-icon,
-        body.dark [data-post-card-shell] .post-card__inline-icon svg,
-        body.dark [data-post-card-shell] .post-card__inline-icon iconify-icon,
-        body.dark [data-post-card-shell] .post-card__bookmark-icon,
-        body.dark [data-post-card-shell] .post-card__share-icon,
-        body.dark [data-post-card-shell] .post-card__reaction-custom-icon,
-        body.dark [data-post-card-shell] .action-btn,
-        body.dark [data-post-card-shell] .action-stat,
-        body.dark [data-post-card-shell] .post-metric,
-        body.dark [data-post-card-shell] .action-chip__label,
-        .dark [data-post-card-shell] .post-card__inline-icon,
-        .dark [data-post-card-shell] .post-card__inline-icon svg,
-        .dark [data-post-card-shell] .post-card__inline-icon iconify-icon,
-        .dark [data-post-card-shell] .post-card__bookmark-icon,
-        .dark [data-post-card-shell] .post-card__share-icon,
-        .dark [data-post-card-shell] .post-card__reaction-custom-icon,
-        .dark [data-post-card-shell] .action-btn,
-        .dark [data-post-card-shell] .action-stat,
-        .dark [data-post-card-shell] .post-metric,
-        .dark [data-post-card-shell] .action-chip__label,
-        [data-theme="dark"] [data-post-card-shell] .post-card__inline-icon,
-        [data-theme="dark"] [data-post-card-shell] .post-card__inline-icon svg,
-        [data-theme="dark"] [data-post-card-shell] .post-card__inline-icon iconify-icon,
-        [data-theme="dark"] [data-post-card-shell] .post-card__bookmark-icon,
-        [data-theme="dark"] [data-post-card-shell] .post-card__share-icon,
-        [data-theme="dark"] [data-post-card-shell] .post-card__reaction-custom-icon,
-        [data-theme="dark"] [data-post-card-shell] .action-btn,
-        [data-theme="dark"] [data-post-card-shell] .action-stat,
-        [data-theme="dark"] [data-post-card-shell] .post-metric,
-        [data-theme="dark"] [data-post-card-shell] .action-chip__label {
-            color: #ffffff !important;
-            stroke: currentColor !important;
-            fill: currentColor;
-        }
 
-        html.dark [data-post-card-shell] .action-bar,
-        body.dark [data-post-card-shell] .action-bar,
-        .dark [data-post-card-shell] .action-bar,
-        [data-theme="dark"] [data-post-card-shell] .action-bar {
-            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.10) !important;
-        }
 
-        html.dark [data-post-card-shell] .reaction-row,
-        html.dark [data-post-card-shell] .reactions-row,
-        body.dark [data-post-card-shell] .reaction-row,
-        body.dark [data-post-card-shell] .reactions-row,
-        .dark [data-post-card-shell] .reaction-row,
-        .dark [data-post-card-shell] .reactions-row,
-        [data-theme="dark"] [data-post-card-shell] .reaction-row,
-        [data-theme="dark"] [data-post-card-shell] .reactions-row {
-            border-bottom-color: rgba(255, 255, 255, 0.10) !important;
-        }
 
-        html.dark [data-post-card-shell] .menu-btn,
-        html.dark [data-post-card-shell] .menu-button,
-        html.dark [data-post-card-shell] .smiley-btn,
-        html.dark [data-post-card-shell] .reaction-add,
-        html.dark [data-post-card-shell] .reaction-item,
-        html.dark [data-post-card-shell] .more-pill,
-        html.dark [data-post-card-shell] .post-card__vote-cluster,
-        body.dark [data-post-card-shell] .menu-btn,
-        body.dark [data-post-card-shell] .menu-button,
-        body.dark [data-post-card-shell] .smiley-btn,
-        body.dark [data-post-card-shell] .reaction-add,
-        body.dark [data-post-card-shell] .reaction-item,
-        body.dark [data-post-card-shell] .more-pill,
-        body.dark [data-post-card-shell] .post-card__vote-cluster,
-        .dark [data-post-card-shell] .menu-btn,
-        .dark [data-post-card-shell] .menu-button,
-        .dark [data-post-card-shell] .smiley-btn,
-        .dark [data-post-card-shell] .reaction-add,
-        .dark [data-post-card-shell] .reaction-item,
-        .dark [data-post-card-shell] .more-pill,
-        .dark [data-post-card-shell] .post-card__vote-cluster,
-        [data-theme="dark"] [data-post-card-shell] .menu-btn,
-        [data-theme="dark"] [data-post-card-shell] .menu-button,
-        [data-theme="dark"] [data-post-card-shell] .smiley-btn,
-        [data-theme="dark"] [data-post-card-shell] .reaction-add,
-        [data-theme="dark"] [data-post-card-shell] .reaction-item,
-        [data-theme="dark"] [data-post-card-shell] .more-pill,
-        [data-theme="dark"] [data-post-card-shell] .post-card__vote-cluster {
-            background: transparent !important;
-            color: #ffffff !important;
-        }
 
-        html.dark [data-post-card-shell] .menu-btn:hover,
-        html.dark [data-post-card-shell] .menu-btn:focus-visible,
-        html.dark [data-post-card-shell] .menu-button:hover,
-        html.dark [data-post-card-shell] .menu-button:focus-visible,
-        html.dark [data-post-card-shell] .smiley-btn:hover,
-        html.dark [data-post-card-shell] .smiley-btn:focus-visible,
-        html.dark [data-post-card-shell] .reaction-add:hover,
-        html.dark [data-post-card-shell] .reaction-add:focus-visible,
-        html.dark [data-post-card-shell] .action-btn:hover,
-        html.dark [data-post-card-shell] .action-btn:focus-visible,
-        html.dark [data-post-card-shell] .action-stat:hover,
-        html.dark [data-post-card-shell] .action-stat:focus-visible,
-        body.dark [data-post-card-shell] .menu-btn:hover,
-        body.dark [data-post-card-shell] .menu-btn:focus-visible,
-        body.dark [data-post-card-shell] .menu-button:hover,
-        body.dark [data-post-card-shell] .menu-button:focus-visible,
-        body.dark [data-post-card-shell] .smiley-btn:hover,
-        body.dark [data-post-card-shell] .smiley-btn:focus-visible,
-        body.dark [data-post-card-shell] .reaction-add:hover,
-        body.dark [data-post-card-shell] .reaction-add:focus-visible,
-        body.dark [data-post-card-shell] .action-btn:hover,
-        body.dark [data-post-card-shell] .action-btn:focus-visible,
-        body.dark [data-post-card-shell] .action-stat:hover,
-        body.dark [data-post-card-shell] .action-stat:focus-visible,
-        .dark [data-post-card-shell] .menu-btn:hover,
-        .dark [data-post-card-shell] .menu-btn:focus-visible,
-        .dark [data-post-card-shell] .menu-button:hover,
-        .dark [data-post-card-shell] .menu-button:focus-visible,
-        .dark [data-post-card-shell] .smiley-btn:hover,
-        .dark [data-post-card-shell] .smiley-btn:focus-visible,
-        .dark [data-post-card-shell] .reaction-add:hover,
-        .dark [data-post-card-shell] .reaction-add:focus-visible,
-        .dark [data-post-card-shell] .action-btn:hover,
-        .dark [data-post-card-shell] .action-btn:focus-visible,
-        .dark [data-post-card-shell] .action-stat:hover,
-        .dark [data-post-card-shell] .action-stat:focus-visible,
-        [data-theme="dark"] [data-post-card-shell] .menu-btn:hover,
-        [data-theme="dark"] [data-post-card-shell] .menu-btn:focus-visible,
-        [data-theme="dark"] [data-post-card-shell] .menu-button:hover,
-        [data-theme="dark"] [data-post-card-shell] .menu-button:focus-visible,
-        [data-theme="dark"] [data-post-card-shell] .smiley-btn:hover,
-        [data-theme="dark"] [data-post-card-shell] .smiley-btn:focus-visible,
-        [data-theme="dark"] [data-post-card-shell] .reaction-add:hover,
-        [data-theme="dark"] [data-post-card-shell] .reaction-add:focus-visible,
-        [data-theme="dark"] [data-post-card-shell] .action-btn:hover,
-        [data-theme="dark"] [data-post-card-shell] .action-btn:focus-visible,
-        [data-theme="dark"] [data-post-card-shell] .action-stat:hover,
-        [data-theme="dark"] [data-post-card-shell] .action-stat:focus-visible {
-            background: rgba(255, 255, 255, 0.08) !important;
-            color: #ffffff !important;
-            outline: none !important;
-        }
 
-        html.dark [data-post-card-shell] .menu-btn:active,
-        html.dark [data-post-card-shell] .menu-button:active,
-        html.dark [data-post-card-shell] .smiley-btn:active,
-        html.dark [data-post-card-shell] .reaction-add:active,
-        html.dark [data-post-card-shell] .action-btn:active,
-        html.dark [data-post-card-shell] .action-stat:active,
-        body.dark [data-post-card-shell] .menu-btn:active,
-        body.dark [data-post-card-shell] .menu-button:active,
-        body.dark [data-post-card-shell] .smiley-btn:active,
-        body.dark [data-post-card-shell] .reaction-add:active,
-        body.dark [data-post-card-shell] .action-btn:active,
-        body.dark [data-post-card-shell] .action-stat:active,
-        .dark [data-post-card-shell] .menu-btn:active,
-        .dark [data-post-card-shell] .menu-button:active,
-        .dark [data-post-card-shell] .smiley-btn:active,
-        .dark [data-post-card-shell] .reaction-add:active,
-        .dark [data-post-card-shell] .action-btn:active,
-        .dark [data-post-card-shell] .action-stat:active,
-        [data-theme="dark"] [data-post-card-shell] .menu-btn:active,
-        [data-theme="dark"] [data-post-card-shell] .menu-button:active,
-        [data-theme="dark"] [data-post-card-shell] .smiley-btn:active,
-        [data-theme="dark"] [data-post-card-shell] .reaction-add:active,
-        [data-theme="dark"] [data-post-card-shell] .action-btn:active,
-        [data-theme="dark"] [data-post-card-shell] .action-stat:active {
-            background: rgba(255, 255, 255, 0.12) !important;
-            color: #ffffff !important;
-        }
 
         html.dark [data-post-card-shell] .post-card__menu,
         body.dark [data-post-card-shell] .post-card__menu,
@@ -5432,94 +4637,11 @@ SVG;
             color: #ffffff !important;
         }
 
-        html.dark [data-post-card-reaction-layer] .post-card__reaction-menu,
-        body.dark [data-post-card-reaction-layer] .post-card__reaction-menu,
-        .dark [data-post-card-reaction-layer] .post-card__reaction-menu,
-        [data-theme="dark"] [data-post-card-reaction-layer] .post-card__reaction-menu,
-        html.dark [data-post-card-shell] .post-card__reaction-menu,
-        body.dark [data-post-card-shell] .post-card__reaction-menu,
-        .dark [data-post-card-shell] .post-card__reaction-menu,
-        [data-theme="dark"] [data-post-card-shell] .post-card__reaction-menu,
-        html.dark [data-post-card-reaction-menu],
-        body.dark [data-post-card-reaction-menu],
-        .dark [data-post-card-reaction-menu],
-        [data-theme="dark"] [data-post-card-reaction-menu] {
-            background: #111827 !important;
-            color: #ffffff !important;
-            border: 1px solid rgba(255, 255, 255, 0.12) !important;
-            box-shadow: 0 18px 38px rgba(0, 0, 0, 0.42) !important;
-        }
 
-        html.dark [data-post-card-reaction-layer] .post-card__reaction-menu-title,
-        body.dark [data-post-card-reaction-layer] .post-card__reaction-menu-title,
-        .dark [data-post-card-reaction-layer] .post-card__reaction-menu-title,
-        [data-theme="dark"] [data-post-card-reaction-layer] .post-card__reaction-menu-title,
-        html.dark [data-post-card-reaction-menu] .post-card__reaction-menu-title,
-        body.dark [data-post-card-reaction-menu] .post-card__reaction-menu-title,
-        .dark [data-post-card-reaction-menu] .post-card__reaction-menu-title,
-        [data-theme="dark"] [data-post-card-reaction-menu] .post-card__reaction-menu-title {
-            color: rgba(255, 255, 255, 0.72) !important;
-        }
 
-        html.dark [data-post-card-reaction-layer] .post-card__reaction-option,
-        body.dark [data-post-card-reaction-layer] .post-card__reaction-option,
-        .dark [data-post-card-reaction-layer] .post-card__reaction-option,
-        [data-theme="dark"] [data-post-card-reaction-layer] .post-card__reaction-option,
-        html.dark [data-post-card-shell] .post-card__reaction-option,
-        body.dark [data-post-card-shell] .post-card__reaction-option,
-        .dark [data-post-card-shell] .post-card__reaction-option,
-        [data-theme="dark"] [data-post-card-shell] .post-card__reaction-option,
-        html.dark [data-post-card-reaction-menu] .post-card__reaction-option,
-        body.dark [data-post-card-reaction-menu] .post-card__reaction-option,
-        .dark [data-post-card-reaction-menu] .post-card__reaction-option,
-        [data-theme="dark"] [data-post-card-reaction-menu] .post-card__reaction-option {
-            background: transparent !important;
-            color: #ffffff !important;
-        }
 
-        html.dark [data-post-card-reaction-layer] .post-card__reaction-option:hover,
-        html.dark [data-post-card-reaction-layer] .post-card__reaction-option:focus-visible,
-        body.dark [data-post-card-reaction-layer] .post-card__reaction-option:hover,
-        body.dark [data-post-card-reaction-layer] .post-card__reaction-option:focus-visible,
-        .dark [data-post-card-reaction-layer] .post-card__reaction-option:hover,
-        .dark [data-post-card-reaction-layer] .post-card__reaction-option:focus-visible,
-        [data-theme="dark"] [data-post-card-reaction-layer] .post-card__reaction-option:hover,
-        [data-theme="dark"] [data-post-card-reaction-layer] .post-card__reaction-option:focus-visible,
-        html.dark [data-post-card-reaction-menu] .post-card__reaction-option:hover,
-        html.dark [data-post-card-reaction-menu] .post-card__reaction-option:focus-visible,
-        body.dark [data-post-card-reaction-menu] .post-card__reaction-option:hover,
-        body.dark [data-post-card-reaction-menu] .post-card__reaction-option:focus-visible,
-        .dark [data-post-card-reaction-menu] .post-card__reaction-option:hover,
-        .dark [data-post-card-reaction-menu] .post-card__reaction-option:focus-visible,
-        [data-theme="dark"] [data-post-card-reaction-menu] .post-card__reaction-option:hover,
-        [data-theme="dark"] [data-post-card-reaction-menu] .post-card__reaction-option:focus-visible {
-            background: rgba(255, 255, 255, 0.08) !important;
-            color: #ffffff !important;
-            outline: none !important;
-        }
 
-        html.dark [data-post-card-reaction-layer] .post-card__reaction-option:active,
-        body.dark [data-post-card-reaction-layer] .post-card__reaction-option:active,
-        .dark [data-post-card-reaction-layer] .post-card__reaction-option:active,
-        [data-theme="dark"] [data-post-card-reaction-layer] .post-card__reaction-option:active,
-        html.dark [data-post-card-reaction-menu] .post-card__reaction-option:active,
-        body.dark [data-post-card-reaction-menu] .post-card__reaction-option:active,
-        .dark [data-post-card-reaction-menu] .post-card__reaction-option:active,
-        [data-theme="dark"] [data-post-card-reaction-menu] .post-card__reaction-option:active {
-            background: rgba(255, 255, 255, 0.12) !important;
-            color: #ffffff !important;
-        }
 
-        html.dark [data-post-card-reaction-layer] .reaction-emoji,
-        html.dark [data-post-card-reaction-layer] .reaction-emoji--html,
-        body.dark [data-post-card-reaction-layer] .reaction-emoji,
-        body.dark [data-post-card-reaction-layer] .reaction-emoji--html,
-        .dark [data-post-card-reaction-layer] .reaction-emoji,
-        .dark [data-post-card-reaction-layer] .reaction-emoji--html,
-        [data-theme="dark"] [data-post-card-reaction-layer] .reaction-emoji,
-        [data-theme="dark"] [data-post-card-reaction-layer] .reaction-emoji--html {
-            color: #ffffff !important;
-        }
 
 
         /* Uc nokta menusu: hover ve tiklama alaninin tamamini gri yap */
@@ -5872,457 +4994,37 @@ SVG;
 
 
 
-        /* Alt aksiyon ikonlari: yorum, bookmark, paylas, view - genis yuvarlak gri arka plan */
-        [data-post-card-shell] .action-bar .action-btn,
-        [data-post-card-shell] .action-bar .post-card__action-link,
-        [data-post-card-shell] .action-bar .post-card__action-button,
-        [data-post-card-shell] .action-bar .action-chip,
-        [data-post-card-shell] .action-bar .post-metric,
-        [data-post-card-shell] .action-bar .post-metric--views {
-            display: inline-flex !important;
-            align-items: center !important;
-            justify-content: center !important;
-            gap: 7px !important;
-            min-width: 44px !important;
-            height: 36px !important;
-            padding: 0 13px !important;
-            border: 0 !important;
-            border-radius: 8px !important;
-            background: #f1f5f9 !important;
-            color: #475569 !important;
-            line-height: 1 !important;
-            text-decoration: none !important;
-            box-shadow: none !important;
-            cursor: pointer !important;
-            appearance: none !important;
-            -webkit-appearance: none !important;
-            transition: background-color .14s ease, color .14s ease, transform .12s ease !important;
-        }
-
-        [data-post-card-shell] .action-bar .post-card__action-form {
-            display: inline-flex !important;
-            align-items: center !important;
-            margin: 0 !important;
-            padding: 0 !important;
-        }
-
-        [data-post-card-shell] .action-bar .action-left {
-            gap: 9px !important;
-            align-items: center !important;
-        }
-
-        [data-post-card-shell] .action-bar .post-card__inline-icon {
-            width: 18px !important;
-            height: 18px !important;
-            display: inline-flex !important;
-            align-items: center !important;
-            justify-content: center !important;
-            flex: 0 0 18px !important;
-            color: currentColor !important;
-        }
-
-        [data-post-card-shell] .action-bar .post-card__inline-icon iconify-icon,
-        [data-post-card-shell] .action-bar .post-card__inline-icon svg,
-        [data-post-card-shell] .action-bar .post-card__bookmark-icon,
-        [data-post-card-shell] .action-bar .post-card__share-icon {
-            width: 18px !important;
-            height: 18px !important;
-            font-size: 18px !important;
-            color: currentColor !important;
-        }
-
-        [data-post-card-shell] .action-bar .action-chip__label,
-        [data-post-card-shell] .action-bar [data-post-card-view-count] {
-            color: currentColor !important;
-            font-size: 13px !important;
-            font-weight: 500 !important;
-            line-height: 1 !important;
-        }
-
-        [data-post-card-shell] .action-bar a.action-btn:hover,
-        [data-post-card-shell] .action-bar button.action-btn:hover,
-        [data-post-card-shell] .action-bar .action-btn:hover,
-        [data-post-card-shell] .action-bar .post-card__action-link:hover,
-        [data-post-card-shell] .action-bar .post-card__action-button:hover,
-        [data-post-card-shell] .action-bar .action-chip:hover,
-        [data-post-card-shell] .action-bar .post-metric:hover,
-        [data-post-card-shell] .action-bar .post-metric--views:hover,
-        [data-post-card-shell] .action-bar a.action-btn:focus-visible,
-        [data-post-card-shell] .action-bar button.action-btn:focus-visible,
-        [data-post-card-shell] .action-bar .post-card__action-link:focus-visible,
-        [data-post-card-shell] .action-bar .post-card__action-button:focus-visible {
-            background: #e2e8f0 !important;
-            color: #0f172a !important;
-            border-radius: 8px !important;
-            outline: none !important;
-            transform: translateY(-1px) !important;
-        }
-
-        [data-post-card-shell] .action-bar a.action-btn:active,
-        [data-post-card-shell] .action-bar button.action-btn:active,
-        [data-post-card-shell] .action-bar .action-btn:active,
-        [data-post-card-shell] .action-bar .post-card__action-link:active,
-        [data-post-card-shell] .action-bar .post-card__action-button:active,
-        [data-post-card-shell] .action-bar .action-chip:active,
-        [data-post-card-shell] .action-bar .post-metric:active,
-        [data-post-card-shell] .action-bar .post-metric--views:active {
-            background: #cbd5e1 !important;
-            color: #020617 !important;
-            border-radius: 8px !important;
-            transform: translateY(0) scale(.98) !important;
-        }
-
-        [data-post-card-shell] .action-bar .action-chip.is-bookmarked,
-        [data-post-card-shell] .action-bar .action-chip.is-active,
-        [data-post-card-shell] .action-bar .post-card__action-button.is-bookmarked {
-            background: #dbeafe !important;
-            color: #2563eb !important;
-        }
-
-        [data-post-card-shell] .action-bar .action-chip.is-bookmarked:hover,
-        [data-post-card-shell] .action-bar .post-card__action-button.is-bookmarked:hover {
-            background: #bfdbfe !important;
-            color: #1d4ed8 !important;
-        }
-
-        [data-post-card-shell] .action-bar [data-post-card-view-metric][hidden],
-        [data-post-card-shell] .action-bar .post-metric--views[hidden] {
-            display: none !important;
-        }
-
-        html.dark [data-post-card-shell] .action-bar .action-btn,
-        html.dark [data-post-card-shell] .action-bar .post-card__action-link,
-        html.dark [data-post-card-shell] .action-bar .post-card__action-button,
-        html.dark [data-post-card-shell] .action-bar .action-chip,
-        html.dark [data-post-card-shell] .action-bar .post-metric,
-        body.dark [data-post-card-shell] .action-bar .action-btn,
-        body.dark [data-post-card-shell] .action-bar .post-card__action-link,
-        body.dark [data-post-card-shell] .action-bar .post-card__action-button,
-        body.dark [data-post-card-shell] .action-bar .action-chip,
-        body.dark [data-post-card-shell] .action-bar .post-metric,
-        .dark [data-post-card-shell] .action-bar .action-btn,
-        .dark [data-post-card-shell] .action-bar .post-card__action-link,
-        .dark [data-post-card-shell] .action-bar .post-card__action-button,
-        .dark [data-post-card-shell] .action-bar .action-chip,
-        .dark [data-post-card-shell] .action-bar .post-metric,
-        [data-theme="dark"] [data-post-card-shell] .action-bar .action-btn,
-        [data-theme="dark"] [data-post-card-shell] .action-bar .post-card__action-link,
-        [data-theme="dark"] [data-post-card-shell] .action-bar .post-card__action-button,
-        [data-theme="dark"] [data-post-card-shell] .action-bar .action-chip,
-        [data-theme="dark"] [data-post-card-shell] .action-bar .post-metric {
-            background: rgba(148, 163, 184, .16) !important;
-            color: #e5e7eb !important;
-        }
-
-        html.dark [data-post-card-shell] .action-bar .action-btn:hover,
-        html.dark [data-post-card-shell] .action-bar .post-card__action-link:hover,
-        html.dark [data-post-card-shell] .action-bar .post-card__action-button:hover,
-        html.dark [data-post-card-shell] .action-bar .action-chip:hover,
-        html.dark [data-post-card-shell] .action-bar .post-metric:hover,
-        body.dark [data-post-card-shell] .action-bar .action-btn:hover,
-        body.dark [data-post-card-shell] .action-bar .post-card__action-link:hover,
-        body.dark [data-post-card-shell] .action-bar .post-card__action-button:hover,
-        body.dark [data-post-card-shell] .action-bar .action-chip:hover,
-        body.dark [data-post-card-shell] .action-bar .post-metric:hover,
-        .dark [data-post-card-shell] .action-bar .action-btn:hover,
-        .dark [data-post-card-shell] .action-bar .post-card__action-link:hover,
-        .dark [data-post-card-shell] .action-bar .post-card__action-button:hover,
-        .dark [data-post-card-shell] .action-bar .action-chip:hover,
-        .dark [data-post-card-shell] .action-bar .post-metric:hover,
-        [data-theme="dark"] [data-post-card-shell] .action-bar .action-btn:hover,
-        [data-theme="dark"] [data-post-card-shell] .action-bar .post-card__action-link:hover,
-        [data-theme="dark"] [data-post-card-shell] .action-bar .post-card__action-button:hover,
-        [data-theme="dark"] [data-post-card-shell] .action-bar .action-chip:hover,
-        [data-theme="dark"] [data-post-card-shell] .action-bar .post-metric:hover {
-            background: rgba(148, 163, 184, .26) !important;
-            color: #ffffff !important;
-        }
-
-        html.dark [data-post-card-shell] .action-bar .action-btn:active,
-        html.dark [data-post-card-shell] .action-bar .post-card__action-link:active,
-        html.dark [data-post-card-shell] .action-bar .post-card__action-button:active,
-        html.dark [data-post-card-shell] .action-bar .action-chip:active,
-        html.dark [data-post-card-shell] .action-bar .post-metric:active,
-        body.dark [data-post-card-shell] .action-bar .action-btn:active,
-        body.dark [data-post-card-shell] .action-bar .post-card__action-link:active,
-        body.dark [data-post-card-shell] .action-bar .post-card__action-button:active,
-        body.dark [data-post-card-shell] .action-bar .action-chip:active,
-        body.dark [data-post-card-shell] .action-bar .post-metric:active,
-        .dark [data-post-card-shell] .action-bar .action-btn:active,
-        .dark [data-post-card-shell] .action-bar .post-card__action-link:active,
-        .dark [data-post-card-shell] .action-bar .post-card__action-button:active,
-        .dark [data-post-card-shell] .action-bar .action-chip:active,
-        .dark [data-post-card-shell] .action-bar .post-metric:active,
-        [data-theme="dark"] [data-post-card-shell] .action-bar .action-btn:active,
-        [data-theme="dark"] [data-post-card-shell] .action-bar .post-card__action-link:active,
-        [data-theme="dark"] [data-post-card-shell] .action-bar .post-card__action-button:active,
-        [data-theme="dark"] [data-post-card-shell] .action-bar .action-chip:active,
-        [data-theme="dark"] [data-post-card-shell] .action-bar .post-metric:active {
-            background: rgba(148, 163, 184, .36) !important;
-            color: #ffffff !important;
-        }
-
-        html.dark [data-post-card-shell] .action-bar .action-chip.is-bookmarked,
-        body.dark [data-post-card-shell] .action-bar .action-chip.is-bookmarked,
-        .dark [data-post-card-shell] .action-bar .action-chip.is-bookmarked,
-        [data-theme="dark"] [data-post-card-shell] .action-bar .action-chip.is-bookmarked,
-        html.dark [data-post-card-shell] .action-bar .post-card__action-button.is-bookmarked,
-        body.dark [data-post-card-shell] .action-bar .post-card__action-button.is-bookmarked,
-        .dark [data-post-card-shell] .action-bar .post-card__action-button.is-bookmarked,
-        [data-theme="dark"] [data-post-card-shell] .action-bar .post-card__action-button.is-bookmarked {
-            background: rgba(37, 99, 235, .24) !important;
-            color: #93c5fd !important;
-        }
-
-
-        /* FINAL OVERRIDE: alt ikonlar sadece hover/tiklama aninda gri, efektsiz */
-        [data-post-card-shell] .action-bar .action-btn,
-        [data-post-card-shell] .action-bar .post-card__action-link,
-        [data-post-card-shell] .action-bar .post-card__action-button,
-        [data-post-card-shell] .action-bar .action-chip,
-        [data-post-card-shell] .action-bar .post-metric,
-        [data-post-card-shell] .action-bar .post-metric--views {
-            display: inline-flex !important;
-            align-items: center !important;
-            justify-content: center !important;
-            gap: 6px !important;
-            min-width: 44px !important;
-            height: 36px !important;
-            padding: 0 13px !important;
-            border: 0 !important;
-            border-radius: 8px !important;
-            background: transparent !important;
-            color: #475569 !important;
-            line-height: 1 !important;
-            text-decoration: none !important;
-            box-shadow: none !important;
-            cursor: pointer !important;
-            appearance: none !important;
-            -webkit-appearance: none !important;
-            transition: none !important;
-            transform: none !important;
-        }
-
-        [data-post-card-shell] .action-bar .post-card__action-form {
-            display: inline-flex !important;
-            align-items: center !important;
-            margin: 0 !important;
-            padding: 0 !important;
-        }
-
-        [data-post-card-shell] .action-bar .action-left {
-            display: flex !important;
-            align-items: center !important;
-            gap: 8px !important;
-        }
-
-        [data-post-card-shell] .action-bar .post-card__inline-icon {
-            width: 18px !important;
-            height: 18px !important;
-            display: inline-flex !important;
-            align-items: center !important;
-            justify-content: center !important;
-            flex: 0 0 18px !important;
-            color: currentColor !important;
-        }
-
-        [data-post-card-shell] .action-bar .post-card__inline-icon iconify-icon,
-        [data-post-card-shell] .action-bar .post-card__inline-icon svg,
-        [data-post-card-shell] .action-bar .post-card__bookmark-icon,
-        [data-post-card-shell] .action-bar .post-card__share-icon {
-            width: 18px !important;
-            height: 18px !important;
-            font-size: 18px !important;
-            color: currentColor !important;
-        }
-
-        [data-post-card-shell] .action-bar .action-chip__label,
-        [data-post-card-shell] .action-bar [data-post-card-view-count] {
-            color: currentColor !important;
-            font-size: 13px !important;
-            font-weight: 500 !important;
-            line-height: 1 !important;
-        }
-
-        [data-post-card-shell] .action-bar a.action-btn:hover,
-        [data-post-card-shell] .action-bar button.action-btn:hover,
-        [data-post-card-shell] .action-bar .action-btn:hover,
-        [data-post-card-shell] .action-bar .post-card__action-link:hover,
-        [data-post-card-shell] .action-bar .post-card__action-button:hover,
-        [data-post-card-shell] .action-bar .action-chip:hover,
-        [data-post-card-shell] .action-bar .post-metric:hover,
-        [data-post-card-shell] .action-bar .post-metric--views:hover,
-        [data-post-card-shell] .action-bar a.action-btn:focus-visible,
-        [data-post-card-shell] .action-bar button.action-btn:focus-visible,
-        [data-post-card-shell] .action-bar .action-btn:focus-visible,
-        [data-post-card-shell] .action-bar .post-card__action-link:focus-visible,
-        [data-post-card-shell] .action-bar .post-card__action-button:focus-visible,
-        [data-post-card-shell] .action-bar .action-chip:focus-visible,
-        [data-post-card-shell] .action-bar .post-metric:focus-visible,
-        [data-post-card-shell] .action-bar .post-metric--views:focus-visible {
-            background: #f1f5f9 !important;
-            color: #334155 !important;
-            border-radius: 8px !important;
-            outline: none !important;
-            transition: none !important;
-            transform: none !important;
-        }
-
-        [data-post-card-shell] .action-bar a.action-btn:active,
-        [data-post-card-shell] .action-bar button.action-btn:active,
-        [data-post-card-shell] .action-bar .action-btn:active,
-        [data-post-card-shell] .action-bar .post-card__action-link:active,
-        [data-post-card-shell] .action-bar .post-card__action-button:active,
-        [data-post-card-shell] .action-bar .action-chip:active,
-        [data-post-card-shell] .action-bar .post-metric:active,
-        [data-post-card-shell] .action-bar .post-metric--views:active {
-            background: #e2e8f0 !important;
-            color: #0f172a !important;
-            border-radius: 8px !important;
-            transition: none !important;
-            transform: none !important;
-        }
-
-        [data-post-card-shell] .action-bar .action-chip.is-bookmarked,
-        [data-post-card-shell] .action-bar .action-chip.is-active,
-        [data-post-card-shell] .action-bar .post-card__action-button.is-bookmarked,
-        [data-post-card-shell] .action-bar .post-card__action-button.is-active {
-            background: transparent !important;
-            color: #2563eb !important;
-            transition: none !important;
-            transform: none !important;
-        }
-
-        [data-post-card-shell] .action-bar .action-chip.is-bookmarked:hover,
-        [data-post-card-shell] .action-bar .action-chip.is-active:hover,
-        [data-post-card-shell] .action-bar .post-card__action-button.is-bookmarked:hover,
-        [data-post-card-shell] .action-bar .post-card__action-button.is-active:hover {
-            background: #f1f5f9 !important;
-            color: #2563eb !important;
-            transform: none !important;
-        }
-
-        [data-post-card-shell] .action-bar [data-post-card-view-metric][hidden],
-        [data-post-card-shell] .action-bar .post-metric--views[hidden] {
-            display: none !important;
-        }
-
-        html.dark [data-post-card-shell] .action-bar .action-btn,
-        html.dark [data-post-card-shell] .action-bar .post-card__action-link,
-        html.dark [data-post-card-shell] .action-bar .post-card__action-button,
-        html.dark [data-post-card-shell] .action-bar .action-chip,
-        html.dark [data-post-card-shell] .action-bar .post-metric,
-        body.dark [data-post-card-shell] .action-bar .action-btn,
-        body.dark [data-post-card-shell] .action-bar .post-card__action-link,
-        body.dark [data-post-card-shell] .action-bar .post-card__action-button,
-        body.dark [data-post-card-shell] .action-bar .action-chip,
-        body.dark [data-post-card-shell] .action-bar .post-metric,
-        .dark [data-post-card-shell] .action-bar .action-btn,
-        .dark [data-post-card-shell] .action-bar .post-card__action-link,
-        .dark [data-post-card-shell] .action-bar .post-card__action-button,
-        .dark [data-post-card-shell] .action-bar .action-chip,
-        .dark [data-post-card-shell] .action-bar .post-metric,
-        [data-theme="dark"] [data-post-card-shell] .action-bar .action-btn,
-        [data-theme="dark"] [data-post-card-shell] .action-bar .post-card__action-link,
-        [data-theme="dark"] [data-post-card-shell] .action-bar .post-card__action-button,
-        [data-theme="dark"] [data-post-card-shell] .action-bar .action-chip,
-        [data-theme="dark"] [data-post-card-shell] .action-bar .post-metric {
-            background: transparent !important;
-            color: #e5e7eb !important;
-            transition: none !important;
-            transform: none !important;
-        }
-
-        html.dark [data-post-card-shell] .action-bar .action-btn:hover,
-        html.dark [data-post-card-shell] .action-bar .post-card__action-link:hover,
-        html.dark [data-post-card-shell] .action-bar .post-card__action-button:hover,
-        html.dark [data-post-card-shell] .action-bar .action-chip:hover,
-        html.dark [data-post-card-shell] .action-bar .post-metric:hover,
-        body.dark [data-post-card-shell] .action-bar .action-btn:hover,
-        body.dark [data-post-card-shell] .action-bar .post-card__action-link:hover,
-        body.dark [data-post-card-shell] .action-bar .post-card__action-button:hover,
-        body.dark [data-post-card-shell] .action-bar .action-chip:hover,
-        body.dark [data-post-card-shell] .action-bar .post-metric:hover,
-        .dark [data-post-card-shell] .action-bar .action-btn:hover,
-        .dark [data-post-card-shell] .action-bar .post-card__action-link:hover,
-        .dark [data-post-card-shell] .action-bar .post-card__action-button:hover,
-        .dark [data-post-card-shell] .action-bar .action-chip:hover,
-        .dark [data-post-card-shell] .action-bar .post-metric:hover,
-        [data-theme="dark"] [data-post-card-shell] .action-bar .action-btn:hover,
-        [data-theme="dark"] [data-post-card-shell] .action-bar .post-card__action-link:hover,
-        [data-theme="dark"] [data-post-card-shell] .action-bar .post-card__action-button:hover,
-        [data-theme="dark"] [data-post-card-shell] .action-bar .action-chip:hover,
-        [data-theme="dark"] [data-post-card-shell] .action-bar .post-metric:hover {
-            background: rgba(148, 163, 184, .22) !important;
-            color: #ffffff !important;
-            transition: none !important;
-            transform: none !important;
-        }
-
-        html.dark [data-post-card-shell] .action-bar .action-btn:active,
-        html.dark [data-post-card-shell] .action-bar .post-card__action-link:active,
-        html.dark [data-post-card-shell] .action-bar .post-card__action-button:active,
-        html.dark [data-post-card-shell] .action-bar .action-chip:active,
-        html.dark [data-post-card-shell] .action-bar .post-metric:active,
-        body.dark [data-post-card-shell] .action-bar .action-btn:active,
-        body.dark [data-post-card-shell] .action-bar .post-card__action-link:active,
-        body.dark [data-post-card-shell] .action-bar .post-card__action-button:active,
-        body.dark [data-post-card-shell] .action-bar .action-chip:active,
-        body.dark [data-post-card-shell] .action-bar .post-metric:active,
-        .dark [data-post-card-shell] .action-bar .action-btn:active,
-        .dark [data-post-card-shell] .action-bar .post-card__action-link:active,
-        .dark [data-post-card-shell] .action-bar .post-card__action-button:active,
-        .dark [data-post-card-shell] .action-bar .action-chip:active,
-        .dark [data-post-card-shell] .action-bar .post-metric:active,
-        [data-theme="dark"] [data-post-card-shell] .action-bar .action-btn:active,
-        [data-theme="dark"] [data-post-card-shell] .action-bar .post-card__action-link:active,
-        [data-theme="dark"] [data-post-card-shell] .action-bar .post-card__action-button:active,
-        [data-theme="dark"] [data-post-card-shell] .action-bar .action-chip:active,
-        [data-theme="dark"] [data-post-card-shell] .action-bar .post-metric:active {
-            background: rgba(148, 163, 184, .32) !important;
-            color: #ffffff !important;
-            transition: none !important;
-            transform: none !important;
-        }
 
 
 
-        /* FINAL OVERRIDE: action icons larger, round 3-dot button, white fade above continue link */
-        [data-post-card-shell] .action-bar .action-btn,
-        [data-post-card-shell] .action-bar .post-card__action-link,
-        [data-post-card-shell] .action-bar .post-card__action-button,
-        [data-post-card-shell] .action-bar .action-chip,
-        [data-post-card-shell] .action-bar .post-metric,
-        [data-post-card-shell] .action-bar .post-metric--views {
-            min-width: 48px !important;
-            height: 38px !important;
-            padding: 0 14px !important;
-            border-radius: 8px !important;
-        }
 
-        [data-post-card-shell] .action-bar .action-left {
-            gap: 0 !important;
-        }
 
-        [data-post-card-shell] .action-bar .post-card__inline-icon {
-            width: 20px !important;
-            height: 20px !important;
-            flex: 0 0 20px !important;
-        }
 
-        [data-post-card-shell] .action-bar .post-card__inline-icon iconify-icon,
-        [data-post-card-shell] .action-bar .post-card__inline-icon svg,
-        [data-post-card-shell] .action-bar .post-card__bookmark-icon,
-        [data-post-card-shell] .action-bar .post-card__share-icon {
-            width: 20px !important;
-            height: 20px !important;
-            font-size: 20px !important;
-        }
 
-        [data-post-card-shell] .action-bar .action-chip__label,
-        [data-post-card-shell] .action-bar [data-post-card-view-count] {
-            font-size: 13.5px !important;
-        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         [data-post-card-shell] .post-card__menu-wrap .menu-btn,
         [data-post-card-shell] .post-card__menu-wrap .menu-button,
@@ -6341,15 +5043,6 @@ SVG;
             overflow: hidden !important;
         }
 
-        [data-post-card-shell] .post-card__menu-wrap .menu-btn .post-card__inline-icon,
-        [data-post-card-shell] .post-card__menu-wrap .menu-button .post-card__inline-icon {
-            width: 20px !important;
-            height: 20px !important;
-            display: inline-flex !important;
-            align-items: center !important;
-            justify-content: center !important;
-            flex: 0 0 20px !important;
-        }
 
         [data-post-card-shell] .post-card__menu-wrap .menu-btn iconify-icon,
         [data-post-card-shell] .post-card__menu-wrap .menu-button iconify-icon {
@@ -7009,35 +5702,9 @@ SVG;
             line-height: 1.64 !important;
         }
 
-        [data-post-card-shell] .post-card__reaction-custom-icon,
-        [data-post-card-shell] .post-card__inline-icon {
-            width: 18px !important;
-            height: 18px !important;
-        }
 
-        [data-post-card-shell] .post-card__reaction-custom-icon svg,
-        [data-post-card-shell] .post-card__inline-icon svg,
-        [data-post-card-shell] .post-card__inline-icon iconify-icon {
-            width: 18px !important;
-            height: 18px !important;
-            font-size: 18px !important;
-        }
 
-        [data-post-card-shell] .post-card__bookmark-icon,
-        [data-post-card-shell] .post-card__share-icon,
-        [data-post-card-shell] .post-card__reaction-add-icon,
-        [data-post-card-shell] .post-card__expand-icon {
-            width: 15px !important;
-            height: 15px !important;
-        }
 
-        [data-post-card-shell] .post-card__menu-item iconify-icon,
-        [data-post-card-shell] .post-card__source-icon iconify-icon,
-        [data-post-card-shell] .post-card__vote-cluster iconify-icon {
-            font-size: 15px !important;
-            width: 15px !important;
-            height: 15px !important;
-        }
 
 
 
@@ -7174,140 +5841,15 @@ SVG;
 
 
 
-        /* Final preload override: dalgalı yükleme efekti yazı + resim + ikon dahil her yerde görünsün */
-        [data-post-card-shell].is-preloading .avatar-wrap,
-        [data-post-card-shell].is-preloading .author-avatar,
-        [data-post-card-shell].is-preloading .author-avatar--fallback,
-        [data-post-card-shell].is-preloading .author-avatar-fallback,
-        [data-post-card-shell].is-preloading .category-badge,
-        [data-post-card-shell].is-preloading .category-badge__fallback,
-        [data-post-card-shell].is-preloading .comment-avatars,
-        [data-post-card-shell].is-preloading .comment-avatar,
-        [data-post-card-shell].is-preloading .menu-btn,
-        [data-post-card-shell].is-preloading .post-card__action-button,
-        [data-post-card-shell].is-preloading .post-card__action-link,
-        [data-post-card-shell].is-preloading .post-card__inline-icon,
-        [data-post-card-shell].is-preloading .post-card__bookmark-icon,
-        [data-post-card-shell].is-preloading .post-card__share-icon,
-        [data-post-card-shell].is-preloading .post-card__reaction-custom-icon,
-        [data-post-card-shell].is-preloading .post-card__reaction-add-icon,
-        [data-post-card-shell].is-preloading .post-card__source-icon,
-        [data-post-card-shell].is-preloading .post-card__media-frame {
-            position: relative !important;
-            overflow: hidden !important;
-            isolation: isolate !important;
-        }
 
-        [data-post-card-shell].is-preloading .avatar-wrap::after,
-        [data-post-card-shell].is-preloading .category-badge::after,
-        [data-post-card-shell].is-preloading .comment-avatars::after,
-        [data-post-card-shell].is-preloading .menu-btn::after,
-        [data-post-card-shell].is-preloading .post-card__action-button::after,
-        [data-post-card-shell].is-preloading .post-card__action-link::after,
-        [data-post-card-shell].is-preloading .post-card__inline-icon::after,
-        [data-post-card-shell].is-preloading .post-card__bookmark-icon::after,
-        [data-post-card-shell].is-preloading .post-card__share-icon::after,
-        [data-post-card-shell].is-preloading .post-card__reaction-custom-icon::after,
-        [data-post-card-shell].is-preloading .post-card__reaction-add-icon::after,
-        [data-post-card-shell].is-preloading .post-card__source-icon::after {
-            content: "";
-            position: absolute;
-            inset: -1px;
-            z-index: 3;
-            pointer-events: none;
-            border-radius: inherit;
-            background:
-                linear-gradient(
-                    100deg,
-                    rgba(255, 255, 255, 0) 0%,
-                    rgba(255, 255, 255, 0.72) 45%,
-                    rgba(255, 255, 255, 0) 80%
-                ),
-                linear-gradient(135deg, #eef2f7 0%, #f8fafc 48%, #e5e7eb 100%);
-            background-size: 220% 100%, 100% 100%;
-            animation:
-                postCardMediaPreload 1.05s linear infinite,
-                postCardPreloadOverlayOut 0.26s ease 1.05s forwards;
-        }
-
-        [data-post-card-shell].is-preloading .author-avatar,
-        [data-post-card-shell].is-preloading .author-avatar--fallback,
-        [data-post-card-shell].is-preloading .author-avatar-fallback,
-        [data-post-card-shell].is-preloading .category-badge__image,
-        [data-post-card-shell].is-preloading .category-badge__fallback,
-        [data-post-card-shell].is-preloading .comment-avatar,
-        [data-post-card-shell].is-preloading .post-card__inline-icon,
-        [data-post-card-shell].is-preloading .post-card__inline-icon svg,
-        [data-post-card-shell].is-preloading .post-card__inline-icon iconify-icon,
-        [data-post-card-shell].is-preloading .post-card__bookmark-icon,
-        [data-post-card-shell].is-preloading .post-card__share-icon,
-        [data-post-card-shell].is-preloading .post-card__reaction-custom-icon,
-        [data-post-card-shell].is-preloading .post-card__reaction-add-icon,
-        [data-post-card-shell].is-preloading .post-card__source-icon,
-        [data-post-card-shell].is-preloading .post-card__source-icon svg,
-        [data-post-card-shell].is-preloading .post-card__source-icon iconify-icon,
-        [data-post-card-shell].is-preloading .menu-btn > *,
-        [data-post-card-shell].is-preloading .post-card__action-button > *,
-        [data-post-card-shell].is-preloading .post-card__action-link > * {
-            opacity: 0 !important;
-        }
-
-        [data-post-card-shell].is-preloading .avatar-wrap,
-        [data-post-card-shell].is-preloading .comment-avatars,
-        [data-post-card-shell].is-preloading .menu-btn,
-        [data-post-card-shell].is-preloading .post-card__action-button,
-        [data-post-card-shell].is-preloading .post-card__action-link {
-            background: #eef2f7 !important;
-        }
 
         @media (prefers-color-scheme: dark) {
-            [data-post-card-shell].is-preloading .avatar-wrap::after,
-            [data-post-card-shell].is-preloading .category-badge::after,
-            [data-post-card-shell].is-preloading .comment-avatars::after,
-            [data-post-card-shell].is-preloading .menu-btn::after,
-            [data-post-card-shell].is-preloading .post-card__action-button::after,
-            [data-post-card-shell].is-preloading .post-card__action-link::after,
-            [data-post-card-shell].is-preloading .post-card__inline-icon::after,
-            [data-post-card-shell].is-preloading .post-card__bookmark-icon::after,
-            [data-post-card-shell].is-preloading .post-card__share-icon::after,
-            [data-post-card-shell].is-preloading .post-card__reaction-custom-icon::after,
-            [data-post-card-shell].is-preloading .post-card__reaction-add-icon::after,
-            [data-post-card-shell].is-preloading .post-card__source-icon::after {
-                background:
-                    linear-gradient(
-                        100deg,
-                        rgba(255, 255, 255, 0) 0%,
-                        rgba(255, 255, 255, 0.08) 45%,
-                        rgba(255, 255, 255, 0) 80%
-                    ),
-                    linear-gradient(135deg, #111827 0%, #1f2937 48%, #0f172a 100%);
-                background-size: 220% 100%, 100% 100%;
-            }
 
-            [data-post-card-shell].is-preloading .avatar-wrap,
-            [data-post-card-shell].is-preloading .comment-avatars,
-            [data-post-card-shell].is-preloading .menu-btn,
-            [data-post-card-shell].is-preloading .post-card__action-button,
-            [data-post-card-shell].is-preloading .post-card__action-link {
-                background: #111827 !important;
-            }
+
         }
 
         @media (prefers-reduced-motion: reduce) {
-            [data-post-card-shell].is-preloading .avatar-wrap::after,
-            [data-post-card-shell].is-preloading .category-badge::after,
-            [data-post-card-shell].is-preloading .comment-avatars::after,
-            [data-post-card-shell].is-preloading .menu-btn::after,
-            [data-post-card-shell].is-preloading .post-card__action-button::after,
-            [data-post-card-shell].is-preloading .post-card__action-link::after,
-            [data-post-card-shell].is-preloading .post-card__inline-icon::after,
-            [data-post-card-shell].is-preloading .post-card__bookmark-icon::after,
-            [data-post-card-shell].is-preloading .post-card__share-icon::after,
-            [data-post-card-shell].is-preloading .post-card__reaction-custom-icon::after,
-            [data-post-card-shell].is-preloading .post-card__reaction-add-icon::after,
-            [data-post-card-shell].is-preloading .post-card__source-icon::after {
-                display: none !important;
-            }
+
         }
 
 
@@ -7334,69 +5876,7 @@ SVG;
             animation-play-state: running !important;
         }
 
-        [data-post-card-shell] .post-card__media-frame.is-loaded::before,
-        [data-post-card-shell] .post-card__media-frame.is-error::before,
-        [data-post-card-shell]:not(.is-preloading) .post-card__media-frame::before,
-        [data-post-card-shell].is-preloading-done .post-card__media-frame::before,
-        [data-post-card-shell].is-preloading-done .avatar-wrap::after,
-        [data-post-card-shell].is-preloading-done .category-badge::after,
-        [data-post-card-shell].is-preloading-done .comment-avatars::after,
-        [data-post-card-shell].is-preloading-done .menu-btn::after,
-        [data-post-card-shell].is-preloading-done .post-card__action-button::after,
-        [data-post-card-shell].is-preloading-done .post-card__action-link::after,
-        [data-post-card-shell].is-preloading-done .post-card__inline-icon::after,
-        [data-post-card-shell].is-preloading-done .post-card__bookmark-icon::after,
-        [data-post-card-shell].is-preloading-done .post-card__share-icon::after,
-        [data-post-card-shell].is-preloading-done .post-card__reaction-custom-icon::after,
-        [data-post-card-shell].is-preloading-done .post-card__reaction-add-icon::after,
-        [data-post-card-shell].is-preloading-done .post-card__source-icon::after {
-            content: none !important;
-            opacity: 0 !important;
-            visibility: hidden !important;
-            display: none !important;
-            animation: none !important;
-        }
 
-        [data-post-card-shell].is-preloading-done .author-avatar,
-        [data-post-card-shell].is-preloading-done .author-avatar--fallback,
-        [data-post-card-shell].is-preloading-done .author-avatar-fallback,
-        [data-post-card-shell].is-preloading-done .category-badge__image,
-        [data-post-card-shell].is-preloading-done .category-badge__fallback,
-        [data-post-card-shell].is-preloading-done .comment-avatar,
-        [data-post-card-shell].is-preloading-done .post-card__inline-icon,
-        [data-post-card-shell].is-preloading-done .post-card__inline-icon svg,
-        [data-post-card-shell].is-preloading-done .post-card__inline-icon iconify-icon,
-        [data-post-card-shell].is-preloading-done .post-card__bookmark-icon,
-        [data-post-card-shell].is-preloading-done .post-card__share-icon,
-        [data-post-card-shell].is-preloading-done .post-card__reaction-custom-icon,
-        [data-post-card-shell].is-preloading-done .post-card__reaction-add-icon,
-        [data-post-card-shell].is-preloading-done .post-card__source-icon,
-        [data-post-card-shell].is-preloading-done .post-card__source-icon svg,
-        [data-post-card-shell].is-preloading-done .post-card__source-icon iconify-icon,
-        [data-post-card-shell].is-preloading-done .menu-btn > *,
-        [data-post-card-shell].is-preloading-done .post-card__action-button > *,
-        [data-post-card-shell].is-preloading-done .post-card__action-link > *,
-        [data-post-card-shell]:not(.is-preloading) .author-avatar,
-        [data-post-card-shell]:not(.is-preloading) .author-avatar--fallback,
-        [data-post-card-shell]:not(.is-preloading) .author-avatar-fallback,
-        [data-post-card-shell]:not(.is-preloading) .category-badge__image,
-        [data-post-card-shell]:not(.is-preloading) .category-badge__fallback,
-        [data-post-card-shell]:not(.is-preloading) .comment-avatar,
-        [data-post-card-shell]:not(.is-preloading) .post-card__inline-icon,
-        [data-post-card-shell]:not(.is-preloading) .post-card__inline-icon svg,
-        [data-post-card-shell]:not(.is-preloading) .post-card__inline-icon iconify-icon,
-        [data-post-card-shell]:not(.is-preloading) .post-card__bookmark-icon,
-        [data-post-card-shell]:not(.is-preloading) .post-card__share-icon,
-        [data-post-card-shell]:not(.is-preloading) .post-card__reaction-custom-icon,
-        [data-post-card-shell]:not(.is-preloading) .post-card__reaction-add-icon,
-        [data-post-card-shell]:not(.is-preloading) .post-card__source-icon,
-        [data-post-card-shell]:not(.is-preloading) .post-card__source-icon svg,
-        [data-post-card-shell]:not(.is-preloading) .post-card__source-icon iconify-icon,
-        [data-post-card-shell]:not(.is-preloading) .menu-btn > *,
-        [data-post-card-shell]:not(.is-preloading) .post-card__action-button > *,
-        [data-post-card-shell]:not(.is-preloading) .post-card__action-link > * {
-            opacity: 1 !important;
-        }
 
         html.dark [data-post-card-shell].is-preloading .post-card__media-frame::before,
         body.dark [data-post-card-shell].is-preloading .post-card__media-frame::before,
@@ -7415,90 +5895,7 @@ SVG;
 
 
 
-        /* FINAL FIX: icon/resim yükleme efekti kalıcı kalmasın */
-        [data-post-card-shell].is-preloading .author-avatar,
-        [data-post-card-shell].is-preloading .author-avatar--fallback,
-        [data-post-card-shell].is-preloading .author-avatar-fallback,
-        [data-post-card-shell].is-preloading .category-badge__image,
-        [data-post-card-shell].is-preloading .category-badge__fallback,
-        [data-post-card-shell].is-preloading .comment-avatar,
-        [data-post-card-shell].is-preloading .post-card__inline-icon,
-        [data-post-card-shell].is-preloading .post-card__inline-icon svg,
-        [data-post-card-shell].is-preloading .post-card__inline-icon iconify-icon,
-        [data-post-card-shell].is-preloading .post-card__bookmark-icon,
-        [data-post-card-shell].is-preloading .post-card__share-icon,
-        [data-post-card-shell].is-preloading .post-card__reaction-custom-icon,
-        [data-post-card-shell].is-preloading .post-card__reaction-add-icon,
-        [data-post-card-shell].is-preloading .post-card__source-icon,
-        [data-post-card-shell].is-preloading .post-card__source-icon svg,
-        [data-post-card-shell].is-preloading .post-card__source-icon iconify-icon,
-        [data-post-card-shell].is-preloading .menu-btn > *,
-        [data-post-card-shell].is-preloading .post-card__action-button > *,
-        [data-post-card-shell].is-preloading .post-card__action-link > * {
-            opacity: 1 !important;
-            visibility: visible !important;
-        }
 
-        [data-post-card-shell].is-preloading .avatar-wrap,
-        [data-post-card-shell].is-preloading .comment-avatars,
-        [data-post-card-shell].is-preloading .menu-btn,
-        [data-post-card-shell].is-preloading .post-card__action-button,
-        [data-post-card-shell].is-preloading .post-card__action-link {
-            background-color: transparent !important;
-        }
-
-        [data-post-card-shell].is-preloading .avatar-wrap::after,
-        [data-post-card-shell].is-preloading .category-badge::after,
-        [data-post-card-shell].is-preloading .comment-avatars::after,
-        [data-post-card-shell].is-preloading .menu-btn::after,
-        [data-post-card-shell].is-preloading .post-card__action-button::after,
-        [data-post-card-shell].is-preloading .post-card__action-link::after,
-        [data-post-card-shell].is-preloading .post-card__inline-icon::after,
-        [data-post-card-shell].is-preloading .post-card__bookmark-icon::after,
-        [data-post-card-shell].is-preloading .post-card__share-icon::after,
-        [data-post-card-shell].is-preloading .post-card__reaction-custom-icon::after,
-        [data-post-card-shell].is-preloading .post-card__reaction-add-icon::after,
-        [data-post-card-shell].is-preloading .post-card__source-icon::after,
-        [data-post-card-shell].is-preloading .post-card__media-frame::before {
-            animation:
-                postCardMediaPreload 1.05s linear infinite,
-                postCardPreloadOverlayOut 0.22s ease 1.05s forwards !important;
-            opacity: 1;
-            visibility: visible;
-        }
-
-        [data-post-card-shell]:not(.is-preloading) .avatar-wrap::after,
-        [data-post-card-shell]:not(.is-preloading) .category-badge::after,
-        [data-post-card-shell]:not(.is-preloading) .comment-avatars::after,
-        [data-post-card-shell]:not(.is-preloading) .menu-btn::after,
-        [data-post-card-shell]:not(.is-preloading) .post-card__action-button::after,
-        [data-post-card-shell]:not(.is-preloading) .post-card__action-link::after,
-        [data-post-card-shell]:not(.is-preloading) .post-card__inline-icon::after,
-        [data-post-card-shell]:not(.is-preloading) .post-card__bookmark-icon::after,
-        [data-post-card-shell]:not(.is-preloading) .post-card__share-icon::after,
-        [data-post-card-shell]:not(.is-preloading) .post-card__reaction-custom-icon::after,
-        [data-post-card-shell]:not(.is-preloading) .post-card__reaction-add-icon::after,
-        [data-post-card-shell]:not(.is-preloading) .post-card__source-icon::after,
-        [data-post-card-shell]:not(.is-preloading) .post-card__media-frame::before,
-        [data-post-card-shell].is-preloading-done .avatar-wrap::after,
-        [data-post-card-shell].is-preloading-done .category-badge::after,
-        [data-post-card-shell].is-preloading-done .comment-avatars::after,
-        [data-post-card-shell].is-preloading-done .menu-btn::after,
-        [data-post-card-shell].is-preloading-done .post-card__action-button::after,
-        [data-post-card-shell].is-preloading-done .post-card__action-link::after,
-        [data-post-card-shell].is-preloading-done .post-card__inline-icon::after,
-        [data-post-card-shell].is-preloading-done .post-card__bookmark-icon::after,
-        [data-post-card-shell].is-preloading-done .post-card__share-icon::after,
-        [data-post-card-shell].is-preloading-done .post-card__reaction-custom-icon::after,
-        [data-post-card-shell].is-preloading-done .post-card__reaction-add-icon::after,
-        [data-post-card-shell].is-preloading-done .post-card__source-icon::after,
-        [data-post-card-shell].is-preloading-done .post-card__media-frame::before {
-            content: none !important;
-            display: none !important;
-            opacity: 0 !important;
-            visibility: hidden !important;
-            animation: none !important;
-        }
 
 
         /* Yazar ve kategori yazısı hover popup kartları */
@@ -7962,89 +6359,15 @@ SVG;
             margin-bottom: 6px !important;
         }
 
-        [data-post-card-shell] .reaction-row,
-        [data-post-card-shell] .reactions-row {
-            gap: 8px !important;
-            margin-bottom: 5px !important;
-            padding-bottom: 7px !important;
-        }
 
-        [data-post-card-shell] .smiley-btn,
-        [data-post-card-shell] .reaction-add,
-        [data-post-card-shell] .reaction-item,
-        [data-post-card-shell] .more-pill {
-            min-height: 28px !important;
-            height: 28px !important;
-            padding: 0 8px !important;
-            font-size: 12.5px !important;
-        }
 
-        [data-post-card-shell] .smiley-btn,
-        [data-post-card-shell] .reaction-add {
-            width: 28px !important;
-            min-width: 28px !important;
-            padding: 0 !important;
-        }
 
-        [data-post-card-shell] .reaction-emoji,
-        [data-post-card-reaction-menu] .reaction-emoji,
-        [data-post-card-shell] .reaction-emoji--html,
-        [data-post-card-reaction-menu] .reaction-emoji--html,
-        [data-post-card-shell] .reaction-emoji--html img,
-        [data-post-card-reaction-menu] .reaction-emoji--html img,
-        [data-post-card-shell] .reaction-emoji--html svg,
-        [data-post-card-reaction-menu] .reaction-emoji--html svg,
-        [data-post-card-shell] .reaction-emoji--html iconify-icon,
-        [data-post-card-reaction-menu] .reaction-emoji--html iconify-icon {
-            width: 17px !important;
-            height: 17px !important;
-            font-size: 17px !important;
-        }
 
-        [data-post-card-shell] .action-bar {
-            gap: 8px !important;
-            min-height: 26px !important;
-            margin-top: 0 !important;
-            margin-bottom: 0 !important;
-            padding-top: 0 !important;
-            padding-bottom: 0 !important;
-        }
 
-        [data-post-card-shell] .action-left {
-            gap: 14px !important;
-        }
 
-        [data-post-card-shell] .action-btn,
-        [data-post-card-shell] .action-stat,
-        [data-post-card-shell] .post-card__action-link,
-        [data-post-card-shell] .post-card__action-button {
-            height: 26px !important;
-            min-height: 26px !important;
-            font-size: 13px !important;
-        }
 
-        [data-post-card-shell] .action-chip__label,
-        [data-post-card-shell] .post-metric {
-            font-size: 12px !important;
-        }
 
-        [data-post-card-shell] .post-card__reaction-custom-icon,
-        [data-post-card-shell] .post-card__inline-icon,
-        [data-post-card-shell] .post-card__reaction-custom-icon svg,
-        [data-post-card-shell] .post-card__inline-icon svg,
-        [data-post-card-shell] .post-card__inline-icon iconify-icon {
-            width: 16px !important;
-            height: 16px !important;
-            font-size: 16px !important;
-        }
 
-        [data-post-card-shell] .post-card__bookmark-icon,
-        [data-post-card-shell] .post-card__share-icon,
-        [data-post-card-shell] .post-card__reaction-add-icon,
-        [data-post-card-shell] .post-card__expand-icon {
-            width: 14px !important;
-            height: 14px !important;
-        }
 
         [data-post-card-shell] .comment-row {
             margin-top: 4px !important;
@@ -8085,9 +6408,6 @@ SVG;
                 line-height: 1.36 !important;
             }
 
-            [data-post-card-shell] .action-left {
-                gap: 12px !important;
-            }
 
             [data-post-card-shell] .post-card__media-frame,
             [data-post-card-shell] .post-card__media-image {
@@ -8126,73 +6446,13 @@ SVG;
             line-height: 1.35 !important;
         }
 
-        [data-post-card-shell] .smiley-btn,
-        [data-post-card-shell] .reaction-add,
-        [data-post-card-shell] .reaction-item,
-        [data-post-card-shell] .more-pill {
-            min-height: 32px !important;
-            height: 32px !important;
-            padding: 0 9px !important;
-            font-size: 14px !important;
-        }
 
-        [data-post-card-shell] .smiley-btn,
-        [data-post-card-shell] .reaction-add {
-            width: 32px !important;
-            min-width: 32px !important;
-            padding: 0 !important;
-        }
 
-        [data-post-card-shell] .reaction-emoji,
-        [data-post-card-reaction-menu] .reaction-emoji,
-        [data-post-card-shell] .reaction-emoji--html,
-        [data-post-card-reaction-menu] .reaction-emoji--html,
-        [data-post-card-shell] .reaction-emoji--html img,
-        [data-post-card-reaction-menu] .reaction-emoji--html img,
-        [data-post-card-shell] .reaction-emoji--html svg,
-        [data-post-card-reaction-menu] .reaction-emoji--html svg,
-        [data-post-card-shell] .reaction-emoji--html iconify-icon,
-        [data-post-card-reaction-menu] .reaction-emoji--html iconify-icon {
-            width: 20px !important;
-            height: 20px !important;
-            font-size: 20px !important;
-        }
 
-        [data-post-card-shell] .action-bar {
-            min-height: 30px !important;
-        }
 
-        [data-post-card-shell] .action-btn,
-        [data-post-card-shell] .action-stat,
-        [data-post-card-shell] .post-card__action-link,
-        [data-post-card-shell] .post-card__action-button {
-            height: 30px !important;
-            min-height: 30px !important;
-            font-size: 14px !important;
-        }
 
-        [data-post-card-shell] .action-chip__label,
-        [data-post-card-shell] .post-metric {
-            font-size: 13.5px !important;
-        }
 
-        [data-post-card-shell] .post-card__reaction-custom-icon,
-        [data-post-card-shell] .post-card__inline-icon,
-        [data-post-card-shell] .post-card__reaction-custom-icon svg,
-        [data-post-card-shell] .post-card__inline-icon svg,
-        [data-post-card-shell] .post-card__inline-icon iconify-icon {
-            width: 20px !important;
-            height: 20px !important;
-            font-size: 20px !important;
-        }
 
-        [data-post-card-shell] .post-card__bookmark-icon,
-        [data-post-card-shell] .post-card__share-icon,
-        [data-post-card-shell] .post-card__reaction-add-icon,
-        [data-post-card-shell] .post-card__expand-icon {
-            width: 18px !important;
-            height: 18px !important;
-        }
 
         @media (max-width: 640px) {
             [data-post-card-shell] .post-summary,
@@ -8225,48 +6485,9 @@ SVG;
             line-height: 1.35 !important;
         }
 
-        html body [data-post-card-reaction-menu] .post-card__reaction-option .reaction-emoji,
-        html body [data-post-card-reaction-menu] .post-card__reaction-option .reaction-emoji--html,
-        html body [data-post-card-reaction-menu] .post-card__reaction-option .reaction-emoji--html img,
-        html body [data-post-card-reaction-menu] .post-card__reaction-option .reaction-emoji--html svg,
-        html body [data-post-card-reaction-menu] .post-card__reaction-option .reaction-emoji--html iconify-icon {
-            width: 26px !important;
-            height: 26px !important;
-            min-width: 26px !important;
-            font-size: 26px !important;
-            line-height: 26px !important;
-        }
 
-        html body [data-post-card-reaction-menu] .post-card__reaction-option {
-            min-width: 42px !important;
-            min-height: 42px !important;
-        }
 
-        html body [data-post-card-reaction-layer] .post-card__reaction-option .reaction-emoji,
-        html body [data-post-card-reaction-layer] .post-card__reaction-option .reaction-emoji--html,
-        html body [data-post-card-reaction-layer] .post-card__reaction-option .reaction-emoji--html img,
-        html body [data-post-card-reaction-layer] .post-card__reaction-option .reaction-emoji--html svg,
-        html body [data-post-card-reaction-layer] .post-card__reaction-option .reaction-emoji--html iconify-icon,
-        html body [data-post-card-reaction-menu] .post-card__reaction-option .reaction-emoji,
-        html body [data-post-card-reaction-menu] .post-card__reaction-option .reaction-emoji--html,
-        html body [data-post-card-reaction-menu] .post-card__reaction-option .reaction-emoji--html img,
-        html body [data-post-card-reaction-menu] .post-card__reaction-option .reaction-emoji--html svg,
-        html body [data-post-card-reaction-menu] .post-card__reaction-option .reaction-emoji--html iconify-icon {
-            width: 24px !important;
-            height: 24px !important;
-            min-width: 24px !important;
-            max-width: 24px !important;
-            font-size: 24px !important;
-            line-height: 24px !important;
-            object-fit: contain !important;
-        }
 
-        html body [data-post-card-reaction-layer] .post-card__reaction-option,
-        html body [data-post-card-reaction-menu] .post-card__reaction-option {
-            min-width: 40px !important;
-            min-height: 40px !important;
-            padding: 6px !important;
-        }
 
         html body [data-post-card-shell] [data-post-card-summary-shell].is-collapsed,
         html body [data-post-card-shell] .post-summary-shell.is-collapsed {
@@ -8298,24 +6519,6 @@ SVG;
             margin-left: -9px !important;
         }
 
-        html body [data-post-card-shell] .action-bar :is(
-            .action-btn,
-            .post-card__action-link,
-            .post-card__action-button,
-            .action-chip,
-            .post-metric,
-            .post-metric--views,
-            .post-card__inline-icon,
-            .post-card__inline-icon svg,
-            .post-card__inline-icon iconify-icon,
-            .post-card__bookmark-icon,
-            .post-card__share-icon,
-            .action-chip__label,
-            [data-post-card-view-count]
-        ) {
-            color: #111111 !important;
-            stroke: currentColor !important;
-        }
 
         /* Authoritative mobile proportions based on the supplied reference card. */
         @media (max-width: 640px) {
@@ -8485,31 +6688,9 @@ SVG;
                 color: #2563eb !important;
             }
 
-            html body article.post-card[data-post-card-shell] .reactions-row {
-                min-height: 35px !important;
-                margin: 0 0 6px !important;
-                padding: 0 !important;
-                gap: 7px !important;
-                border: 0 !important;
-            }
 
-            html body article.post-card[data-post-card-shell] .action-bar {
-                min-height: 48px !important;
-                height: 48px !important;
-                margin: 0 -15px !important;
-                padding: 0 15px !important;
-                border-top: 1px solid #e5e7eb !important;
-            }
 
-            html body article.post-card[data-post-card-shell] :is(.action-btn, .action-stat, .post-card__action-link, .post-card__action-button) {
-                min-height: 36px !important;
-                height: 36px !important;
-            }
 
-            html body article.post-card[data-post-card-shell] :is(.post-card__inline-icon, .post-card__inline-icon svg, .post-card__bookmark-icon, .post-card__share-icon) {
-                width: 22px !important;
-                height: 22px !important;
-            }
         }
 
         html body article.post-card[data-post-card-shell] .expand-link,
@@ -8680,44 +6861,11 @@ SVG;
             z-index: 100 !important;
         }
 
-        /* Post-card tepki ekleme ikonunun kalici yuvarlak gri zemini. */
-        html body.alma-app [data-post-card-shell] :is(.smiley-btn, .reaction-add) {
-            background: #f3f4f6 !important;
-            border-radius: 999px !important;
-        }
 
-        html body.alma-app [data-post-card-shell] :is(.smiley-btn, .reaction-add):is(:hover, :focus-visible, :active) {
-            background: #e5e7eb !important;
-        }
 
-        /* Reaction menu: baslik ayiricisi ve dort sutunlu gri hover hucreleri. */
-        html body [data-post-card-reaction-menu]:not([hidden]) {
-            gap: 6px !important;
-        }
 
-        html body [data-post-card-reaction-menu] .post-card__reaction-menu-title {
-            flex: 0 0 100% !important;
-            width: 100% !important;
-            margin: 0 0 2px !important;
-            padding: 0 2px 8px !important;
-            border-bottom: 1px solid #e5e7eb !important;
-        }
 
-        html body [data-post-card-reaction-menu] .post-card__reaction-option {
-            min-width: 38px !important;
-            width: 38px !important;
-            min-height: 38px !important;
-            height: 38px !important;
-            padding: 7px !important;
-            border-radius: 9px !important;
-            background: transparent !important;
-            transition: background-color 120ms ease !important;
-        }
 
-        html body [data-post-card-reaction-menu] .post-card__reaction-option:is(:hover, :focus-visible) {
-            background: #f1f2f4 !important;
-            outline: none !important;
-        }
 
         /* Ilk yuklemede blur yerine kartin ustunden gecen dalgali isik. */
         @keyframes postCardInitialWave {
@@ -8749,53 +6897,9 @@ SVG;
             animation: none !important;
         }
 
-        /*
-         * FINAL: reaksiyon rozeti, ekleme dugmesi ve secim kutusu artik post-show
-         * sayfasindaki (.ps-reaction-*) degerlerle birebir ayni - boyut, renk, emoji
-         * olcusu ve secim kutusunun genisligi/mobil davranisi dahil. Kaynak:
-         * resources/views/blog/show.blade.php icindeki .ps-reaction-pill /
-         * .ps-reaction-menu / .ps-reaction-option kurallari.
-         */
-        html body [data-post-card-shell] .reaction-item {
-            min-width: 42px !important;
-            height: auto !important;
-            min-height: 34px !important;
-            padding: 0 12px !important;
-            gap: 6px !important;
-            border: 1px solid #edf0f4 !important;
-            background: #f8fafc !important;
-            font-size: 13px !important;
-            font-weight: 500 !important;
-        }
 
-        html body [data-post-card-shell] .smiley-btn.reaction-add {
-            width: auto !important;
-            min-width: 42px !important;
-            height: auto !important;
-            min-height: 34px !important;
-            padding: 0 10px !important;
-            background: transparent !important;
-        }
 
-        html body [data-post-card-shell] .smiley-btn.reaction-add:hover,
-        html body [data-post-card-shell] .smiley-btn.reaction-add:focus-visible,
-        html body [data-post-card-shell] .smiley-btn.reaction-add[aria-expanded="true"] {
-            background: #f3f4f6 !important;
-        }
 
-        /* Emoji karakteri (duz metin) artik sarmalayicidan zorla boyut almiyor,
-           post-show'daki gibi cevresindeki kutunun font-size'ini miras aliyor
-           (rozette 13px, secim kutusunda sayfa varsayilani). Sadece gercek bir
-           gorsel/GIF reaksiyon (img/svg) icin sabit olcu uygulanmaya devam ediyor. */
-        html body [data-post-card-shell] .reaction-emoji.reaction-emoji--html,
-        html body [data-post-card-reaction-menu] .reaction-emoji.reaction-emoji--html {
-            width: auto !important;
-            height: auto !important;
-            min-width: 0 !important;
-            min-height: 0 !important;
-            font-size: inherit !important;
-            line-height: 1 !important;
-        }
 
         html body [data-post-card-shell] .reaction-emoji--html img,
         html body [data-post-card-shell] .reaction-emoji--html svg {
@@ -8807,129 +6911,23 @@ SVG;
             object-fit: cover !important;
         }
 
-        html body [data-post-card-reaction-menu] .reaction-emoji--html img,
-        html body [data-post-card-reaction-menu] .reaction-emoji--html svg {
-            width: 30px !important;
-            height: 30px !important;
-            min-width: 30px !important;
-            min-height: 30px !important;
-        }
 
-        html body [data-post-card-reaction-menu] {
-            --reaction-surface: #ffffff;
-            --reaction-border: #dbe1e8;
-            --reaction-text: #475569;
-            --reaction-hover: #f1f5f9;
-            width: min(280px, calc(100vw - 32px)) !important;
-            max-width: calc(100vw - 32px) !important;
-            max-height: min(70vh, 440px) !important;
-            padding: 12px !important;
-            overflow-y: auto !important;
-            overscroll-behavior: contain !important;
-            border: 1px solid var(--reaction-border) !important;
-            border-radius: 12px !important;
-            background: var(--reaction-surface) !important;
-            color: var(--reaction-text) !important;
-            box-shadow: 0 12px 32px rgba(15, 23, 42, .14), 0 2px 8px rgba(15, 23, 42, .08) !important;
-            box-sizing: border-box !important;
-        }
 
-        html body [data-post-card-reaction-menu]:not([hidden]) {
-            display: grid !important;
-            grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
-            grid-auto-rows: auto !important;
-            gap: 8px !important;
-            align-items: center !important;
-            justify-content: stretch !important;
-        }
 
-        html body [data-post-card-reaction-menu] .post-card__reaction-menu-title {
-            grid-column: 1 / -1 !important;
-            width: 100% !important;
-            margin: 0 0 4px !important;
-            padding: 1px 2px 10px !important;
-            border-bottom: 1px solid var(--reaction-border) !important;
-            color: var(--reaction-text) !important;
-            font-size: 14px !important;
-            font-weight: 500 !important;
-            line-height: 20px !important;
-        }
 
-        html body [data-post-card-reaction-menu] :is(.post-card__reaction-form, a.post-card__reaction-option) {
-            display: flex !important;
-            width: 100% !important;
-            height: auto !important;
-            min-width: 0 !important;
-            flex: none !important;
-            justify-content: center !important;
-        }
 
-        html body [data-post-card-reaction-menu] .post-card__reaction-option {
-            display: inline-flex !important;
-            align-items: center !important;
-            justify-content: center !important;
-            width: 100% !important;
-            min-width: 44px !important;
-            height: 44px !important;
-            min-height: 44px !important;
-            padding: 0 !important;
-            border: 0 !important;
-            border-radius: 10px !important;
-            background: transparent !important;
-            color: inherit !important;
-            box-shadow: none !important;
-            transition: transform 120ms cubic-bezier(.23, 1, .32, 1), background-color 140ms ease !important;
-        }
 
-        html body [data-post-card-reaction-menu] .reaction-emoji.reaction-emoji--html {
-            display: inline-flex !important;
-            align-items: center !important;
-            justify-content: center !important;
-            font-size: 26px !important;
-            line-height: 1 !important;
-        }
 
-        html body [data-post-card-reaction-menu] .reaction-emoji--html :is(img, svg) {
-            width: 28px !important;
-            min-width: 28px !important;
-            height: 28px !important;
-            min-height: 28px !important;
-            object-fit: contain !important;
-        }
 
-        html body [data-post-card-reaction-menu] .post-card__reaction-option:is(:hover, :focus-visible) {
-            background: var(--reaction-hover) !important;
-            outline: 2px solid transparent !important;
-        }
 
         @media (max-width: 640px) {
-            html body [data-post-card-reaction-menu] {
-                position: absolute !important;
-                max-height: min(68dvh, 440px) !important;
-                overflow-y: auto !important;
-                padding: 12px !important;
-                border-radius: 12px !important;
-                backdrop-filter: none !important;
-                overscroll-behavior: contain !important;
-            }
 
-            html body [data-post-card-reaction-menu]:not([hidden]) {
-                grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
-                gap: 8px !important;
-            }
 
-            html body [data-post-card-reaction-menu] .post-card__reaction-option {
-                width: 100% !important;
-                min-width: 44px !important;
-                height: 48px !important;
-                min-height: 48px !important;
-            }
+
         }
 
         @media (max-width: 360px) {
-            html body [data-post-card-reaction-menu]:not([hidden]) {
-                grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
-            }
+
         }
 
         /* Final dark theme: keep every post-card surface distinct from the page. */
@@ -8981,43 +6979,12 @@ SVG;
             color: #dbe4f0 !important;
         }
 
-        html.dark body article.post-card[data-post-card-shell] :is(.reactions-row, .action-bar) {
-            border-color: #334155 !important;
-            background: #111827 !important;
-        }
 
-        html.dark body article.post-card[data-post-card-shell] .reaction-item {
-            border-color: #334155 !important;
-            background: #172033 !important;
-            color: #dbe4f0 !important;
-        }
 
-        html.dark body article.post-card[data-post-card-shell] .smiley-btn.reaction-add {
-            border: 1px solid #334155 !important;
-            background: #1e293b !important;
-            color: #cbd5e1 !important;
-        }
 
-        html.dark body article.post-card[data-post-card-shell] .smiley-btn.reaction-add:is(:hover, :focus-visible, [aria-expanded="true"]) {
-            border-color: #475569 !important;
-            background: #263247 !important;
-            color: #f8fafc !important;
-        }
 
-        html.dark body article.post-card[data-post-card-shell] .action-bar :is(.action-btn, .action-stat, .post-card__action-link, .post-card__action-button, .action-chip, .post-metric, .post-metric--views) {
-            background: transparent !important;
-            color: #94a3b8 !important;
-        }
 
-        html.dark body article.post-card[data-post-card-shell] .action-bar :is(.action-btn, .action-stat, .post-card__action-link, .post-card__action-button, .action-chip, .post-metric, .post-metric--views):is(:hover, :focus-visible) {
-            background: #263247 !important;
-            color: #f8fafc !important;
-        }
 
-        html.dark body article.post-card[data-post-card-shell] .action-bar :is(.action-btn, .action-stat, .post-card__action-link, .post-card__action-button, .action-chip, .post-metric, .post-metric--views):active {
-            background: #334155 !important;
-            color: #ffffff !important;
-        }
 
         html.dark body article.post-card[data-post-card-shell] [data-og-action-trigger] {
             border-color: #3b4659 !important;
@@ -9068,42 +7035,13 @@ SVG;
             background: #334155 !important;
         }
 
-        html.dark body [data-post-card-reaction-menu] {
-            border-color: #334155 !important;
-            background: rgba(23, 32, 51, .98) !important;
-            color: #e5e7eb !important;
-            box-shadow: 0 16px 38px rgba(0, 0, 0, .42), 0 2px 6px rgba(0, 0, 0, .28) !important;
-            backdrop-filter: blur(14px) !important;
-        }
 
-        html.dark body [data-post-card-reaction-menu] .post-card__reaction-menu-title {
-            border-color: #334155 !important;
-            color: #cbd5e1 !important;
-        }
 
-        html.dark body [data-post-card-reaction-menu] {
-            --reaction-border: #334155;
-            --reaction-text: #cbd5e1;
-            --reaction-hover: #263247;
-        }
 
-        html.dark body [data-post-card-reaction-menu] .post-card__reaction-option {
-            background: transparent !important;
-            color: #f8fafc !important;
-            box-shadow: none !important;
-        }
 
-        html.dark body [data-post-card-reaction-menu] .post-card__reaction-option:is(:hover, :focus-visible) {
-            background: var(--reaction-hover) !important;
-            box-shadow: none !important;
-        }
 
         @media (max-width: 640px) {
-            html.dark body [data-post-card-reaction-menu] {
-                border-color: #334155 !important;
-                background: #172033 !important;
-                backdrop-filter: none !important;
-            }
+
         }
 
 
@@ -9361,136 +7299,32 @@ SVG;
             text-decoration: none !important;
         }
 
-        html body article.post-card[data-post-card-shell] .reactions-row {
-            min-height: 40px !important;
-            margin: 8px 0 0 !important;
-            padding: 4px 0 !important;
-            gap: 6px !important;
-            border: 0 !important;
-            background: transparent !important;
-        }
 
-        html body article.post-card[data-post-card-shell] :is(.reaction-item, .smiley-btn.reaction-add, .more-pill) {
-            min-height: 32px !important;
-            border: 1px solid var(--pc-border) !important;
-            border-radius: 8px !important;
-            background: var(--pc-surface-raised) !important;
-            color: var(--pc-muted) !important;
-            box-shadow: none !important;
-            transition: transform 120ms var(--pc-ease-out), background-color 140ms ease, border-color 140ms ease, color 140ms ease !important;
-        }
 
-        html body article.post-card[data-post-card-shell] .smiley-btn.reaction-add {
-            width: 32px !important;
-            min-width: 32px !important;
-            height: 32px !important;
-            padding: 0 !important;
-        }
 
-        html body article.post-card[data-post-card-shell] .action-bar {
-            min-height: 44px !important;
-            margin: 10px 0 0 !important;
-            padding: 9px 0 0 !important;
-            border-top: 1px solid var(--pc-border) !important;
-            background: transparent !important;
-            color: var(--pc-muted) !important;
-        }
 
-        html body article.post-card[data-post-card-shell] .action-left {
-            gap: 4px !important;
-        }
 
-        html body article.post-card[data-post-card-shell] .post-card__action-form {
-            margin: 0 !important;
-        }
 
-        html body article.post-card[data-post-card-shell] .action-bar :is(.action-btn, .action-stat, .post-card__action-link, .post-card__action-button, .action-chip, .post-metric, .post-metric--views) {
-            display: inline-flex !important;
-            align-items: center !important;
-            justify-content: center !important;
-            width: auto !important;
-            min-width: 36px !important;
-            height: 36px !important;
-            min-height: 36px !important;
-            padding: 0 9px !important;
-            gap: 5px !important;
-            border: 0 !important;
-            border-radius: 8px !important;
-            background: transparent !important;
-            color: var(--pc-muted) !important;
-            box-shadow: none !important;
-            text-decoration: none !important;
-            transition: transform 120ms var(--pc-ease-out), background-color 140ms ease, color 140ms ease !important;
-        }
 
-        html body article.post-card[data-post-card-shell] .action-bar .action-chip--disabled {
-            cursor: default !important;
-            opacity: .52 !important;
-        }
 
-        html body article.post-card[data-post-card-shell] .action-bar :is(.post-card__inline-icon, .post-card__inline-icon svg, .post-card__comment-icon, .post-card__bookmark-icon, .post-card__share-icon, .post-card__view-icon) {
-            width: 18px !important;
-            min-width: 18px !important;
-            height: 18px !important;
-            color: currentColor !important;
-        }
 
-        html body article.post-card[data-post-card-shell] .action-chip__label,
-        html body article.post-card[data-post-card-shell] .post-metric--views > span {
-            color: currentColor !important;
-            font-size: 12px !important;
-            font-weight: 500 !important;
-            font-variant-numeric: tabular-nums;
-        }
 
         @media (max-width: 768px) {
-            html body article.post-card[data-post-card-shell] .action-bar .post-metric--views {
-                margin-left: auto !important;
-                margin-right: 18px !important;
-                padding-right: 0 !important;
-                min-width: max-content !important;
-                flex: 0 0 auto !important;
-                justify-content: flex-end !important;
-            }
+
         }
 
-        /* View metric: keep it pinned to the action bar's right side with a balanced inset. */
-        html body article.post-card[data-post-card-shell] .action-bar .post-metric--views {
-            margin-left: auto !important;
-            margin-right: 0 !important;
-            flex: 0 0 auto !important;
-        }
 
         @media (min-width: 769px) {
-            html body article.post-card[data-post-card-shell] .action-bar .post-metric--views {
-                margin-right: 14px !important;
-            }
+
         }
 
-        html body article.post-card[data-post-card-shell] .action-chip.is-bookmarked {
-            background: rgba(37, 99, 235, .10) !important;
-            color: #1d4ed8 !important;
-        }
 
-        html.dark body article.post-card[data-post-card-shell] .action-chip.is-bookmarked {
-            background: rgba(96, 165, 250, .12) !important;
-            color: #93c5fd !important;
-        }
 
         html body [data-og-action-menu] {
             transform-origin: top right !important;
         }
 
-        html body [data-post-card-reaction-menu] {
-            transform-origin: var(--reaction-transform-origin, bottom left) !important;
-        }
 
-        html body [data-og-action-menu]:not(.hidden),
-        html body [data-post-card-reaction-menu]:not([hidden]) {
-            opacity: 1;
-            transform: translateY(0) scale(1);
-            transition: opacity 150ms ease, transform 180ms cubic-bezier(.23, 1, .32, 1) !important;
-        }
 
         @starting-style {
             html body [data-og-action-menu]:not(.hidden) {
@@ -9498,16 +7332,8 @@ SVG;
                 transform: translateY(-4px) scale(.97);
             }
 
-            html body [data-post-card-reaction-menu]:not([hidden]) {
-                opacity: 0;
-                transform: translateY(4px) scale(.97);
-            }
         }
 
-        html body [data-og-action-menu] :is(a, button),
-        html body [data-post-card-reaction-menu] .post-card__reaction-option {
-            transition: transform 120ms cubic-bezier(.23, 1, .32, 1), background-color 140ms ease, color 140ms ease !important;
-        }
 
         html body article.post-card[data-post-card-shell] :is(a, button):focus-visible {
             outline: 2px solid var(--pc-accent) !important;
@@ -9537,27 +7363,9 @@ SVG;
                 transform: scale(1.012) !important;
             }
 
-            html body article.post-card[data-post-card-shell] [data-og-action-trigger]:hover,
-            html body article.post-card[data-post-card-shell] :is(.reaction-item, .smiley-btn.reaction-add, .more-pill):hover,
-            html body article.post-card[data-post-card-shell] .action-bar :is(.action-btn, .action-stat, .post-card__action-link, .post-card__action-button, .action-chip, .post-metric, .post-metric--views):not(:disabled):hover {
-                background: var(--pc-control-hover) !important;
-                color: var(--pc-text) !important;
-            }
 
-            html body [data-og-action-menu] :is(a, button):hover,
-            html body [data-post-card-reaction-menu] .post-card__reaction-option:hover {
-                transform: translateX(2px);
-            }
         }
 
-        html body article.post-card[data-post-card-shell] [data-og-action-trigger]:active,
-        html body article.post-card[data-post-card-shell] .expand-link:active,
-        html body article.post-card[data-post-card-shell] :is(.reaction-item, .smiley-btn.reaction-add, .more-pill):active,
-        html body article.post-card[data-post-card-shell] .action-bar :is(a, button):not(:disabled):active,
-        html body [data-og-action-menu] :is(a, button):active,
-        html body [data-post-card-reaction-menu] .post-card__reaction-option:active {
-            transform: scale(.96) !important;
-        }
 
         @media (max-width: 640px) {
             html body article.post-card[data-post-card-shell] {
@@ -9591,290 +7399,48 @@ SVG;
                 margin-bottom: 12px !important;
             }
 
-            html body article.post-card[data-post-card-shell] .action-bar {
-                margin-top: 8px !important;
-            }
         }
 
         @media (prefers-reduced-motion: reduce) {
-            html body article.post-card[data-post-card-shell],
-            html body article.post-card[data-post-card-shell] *,
-            html body [data-og-action-menu],
-            html body [data-og-action-menu] *,
-            html body [data-post-card-reaction-menu],
-            html body [data-post-card-reaction-menu] * {
-                scroll-behavior: auto !important;
-                transition-duration: .01ms !important;
-                animation-duration: .01ms !important;
-                animation-iteration-count: 1 !important;
-            }
 
-            html body article.post-card[data-post-card-shell] .post-card__media-link:hover .post-card__media-image,
-            html body article.post-card[data-post-card-shell] :is(a, button):active,
-            html body [data-og-action-menu] :is(a, button),
-            html body [data-post-card-reaction-menu] .post-card__reaction-option {
-                transform: none !important;
-            }
+
         }
 
 
 
-        /* REACTION POPOVER REDESIGN — Emil Kowalski inspired */
-        html body [data-post-card-reaction-menu] {
-            --reaction-popover-bg: #ffffff;
-            --reaction-popover-border: #dfe4ea;
-            --reaction-popover-hover: #f6f7f9;
-            --reaction-popover-hover-border: #e3e7ec;
-            --reaction-popover-text: #202632;
-            --reaction-popover-muted: #687385;
-            width: min(264px, calc(100vw - 24px)) !important;
-            max-width: min(264px, calc(100vw - 24px)) !important;
-            max-height: min(64vh, 360px) !important;
-            padding: 10px !important;
-            overflow-x: hidden !important;
-            overflow-y: auto !important;
-            overscroll-behavior: contain !important;
-            border: 1px solid var(--reaction-popover-border) !important;
-            border-radius: 14px !important;
-            background: var(--reaction-popover-bg) !important;
-            background-image: none !important;
-            color: var(--reaction-popover-text) !important;
-            box-shadow:
-                0 1px 2px rgba(15, 23, 42, .08),
-                0 14px 34px rgba(15, 23, 42, .14) !important;
-            -webkit-backdrop-filter: none !important;
-            backdrop-filter: none !important;
-            mix-blend-mode: normal !important;
-            isolation: isolate !important;
-            opacity: 1;
-            z-index: 2147483000 !important;
-            scrollbar-width: thin;
-            scrollbar-color: #cbd5e1 transparent;
-        }
 
-        html body [data-post-card-reaction-menu]::-webkit-scrollbar {
-            width: 6px;
-        }
 
-        html body [data-post-card-reaction-menu]::-webkit-scrollbar-track {
-            background: transparent;
-        }
 
-        html body [data-post-card-reaction-menu]::-webkit-scrollbar-thumb {
-            border: 2px solid transparent;
-            border-radius: 999px;
-            background: #cbd5e1;
-            background-clip: padding-box;
-        }
 
-        html body [data-post-card-reaction-menu]:not([hidden]) {
-            display: grid !important;
-            grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
-            grid-auto-flow: row !important;
-            grid-auto-rows: 42px !important;
-            align-items: center !important;
-            justify-items: stretch !important;
-            gap: 5px !important;
-            opacity: 1 !important;
-            transform: translateY(0) scale(1);
-            transform-origin: var(--reaction-transform-origin, bottom left) !important;
-            transition: transform 140ms cubic-bezier(.23, 1, .32, 1) !important;
-        }
 
-        html body [data-post-card-reaction-menu] .post-card__reaction-menu-title {
-            grid-column: 1 / -1 !important;
-            grid-row: auto !important;
-            width: 100% !important;
-            height: auto !important;
-            min-height: 0 !important;
-            margin: 0 0 3px !important;
-            padding: 2px 4px 10px !important;
-            border-bottom: 1px solid var(--reaction-popover-border) !important;
-            color: var(--reaction-popover-muted) !important;
-            font-size: 13.5px !important;
-            font-weight: 600 !important;
-            line-height: 18px !important;
-            letter-spacing: -0.01em !important;
-        }
 
-        html body [data-post-card-reaction-menu] :is(.post-card__reaction-form, a.post-card__reaction-option) {
-            display: flex !important;
-            width: 100% !important;
-            min-width: 0 !important;
-            height: 42px !important;
-            min-height: 42px !important;
-            margin: 0 !important;
-            align-items: center !important;
-            justify-content: center !important;
-        }
 
-        html body [data-post-card-reaction-menu] .post-card__reaction-option {
-            display: inline-flex !important;
-            width: 100% !important;
-            min-width: 0 !important;
-            height: 42px !important;
-            min-height: 42px !important;
-            padding: 0 !important;
-            align-items: center !important;
-            justify-content: center !important;
-            border: 1px solid transparent !important;
-            border-radius: 9px !important;
-            background: #ffffff !important;
-            color: inherit !important;
-            box-shadow: none !important;
-            text-decoration: none !important;
-            cursor: pointer !important;
-            transform: none;
-            transition:
-                background-color 120ms ease,
-                border-color 120ms ease,
-                transform 120ms cubic-bezier(.23, 1, .32, 1) !important;
-        }
 
-        html body [data-post-card-reaction-menu] .post-card__reaction-option:is(:hover, :focus-visible) {
-            border-color: var(--reaction-popover-hover-border) !important;
-            background: var(--reaction-popover-hover) !important;
-            color: var(--reaction-popover-text) !important;
-            transform: none !important;
-        }
 
-        html body [data-post-card-reaction-menu] .post-card__reaction-option:focus-visible {
-            outline: 2px solid #2563eb !important;
-            outline-offset: -2px !important;
-        }
 
-        html body [data-post-card-reaction-menu] .post-card__reaction-option:active {
-            transform: scale(.97) !important;
-        }
 
-        html body [data-post-card-reaction-menu] .reaction-emoji.reaction-emoji--html {
-            display: inline-flex !important;
-            width: auto !important;
-            height: auto !important;
-            min-width: 0 !important;
-            min-height: 0 !important;
-            align-items: center !important;
-            justify-content: center !important;
-            font-size: 24px !important;
-            line-height: 1 !important;
-        }
 
-        html body [data-post-card-reaction-menu] .reaction-emoji--html :is(img, svg, iconify-icon),
-        html body [data-post-card-reaction-menu] .post-card__reaction-option .reaction-emoji--html :is(img, svg, iconify-icon) {
-            display: block !important;
-            width: 26px !important;
-            min-width: 26px !important;
-            max-width: 26px !important;
-            height: 26px !important;
-            min-height: 26px !important;
-            max-height: 26px !important;
-            object-fit: contain !important;
-        }
 
-        /* Fully opaque dark surface as well — content behind the picker never bleeds through. */
-        html.dark body [data-post-card-reaction-menu],
-        body.dark [data-post-card-reaction-menu],
-        .dark [data-post-card-reaction-menu],
-        [data-theme="dark"] [data-post-card-reaction-menu] {
-            --reaction-popover-bg: #111827;
-            --reaction-popover-border: #334155;
-            --reaction-popover-hover: #1f2937;
-            --reaction-popover-hover-border: #475569;
-            --reaction-popover-text: #f8fafc;
-            --reaction-popover-muted: #cbd5e1;
-            border-color: var(--reaction-popover-border) !important;
-            background: var(--reaction-popover-bg) !important;
-            background-image: none !important;
-            color: var(--reaction-popover-text) !important;
-            box-shadow:
-                0 1px 2px rgba(0, 0, 0, .32),
-                0 16px 38px rgba(0, 0, 0, .42) !important;
-            -webkit-backdrop-filter: none !important;
-            backdrop-filter: none !important;
-        }
 
-        html.dark body [data-post-card-reaction-menu] .post-card__reaction-menu-title,
-        body.dark [data-post-card-reaction-menu] .post-card__reaction-menu-title,
-        .dark [data-post-card-reaction-menu] .post-card__reaction-menu-title,
-        [data-theme="dark"] [data-post-card-reaction-menu] .post-card__reaction-menu-title {
-            border-color: var(--reaction-popover-border) !important;
-            color: var(--reaction-popover-muted) !important;
-        }
-
-        html.dark body [data-post-card-reaction-menu] .post-card__reaction-option,
-        body.dark [data-post-card-reaction-menu] .post-card__reaction-option,
-        .dark [data-post-card-reaction-menu] .post-card__reaction-option,
-        [data-theme="dark"] [data-post-card-reaction-menu] .post-card__reaction-option {
-            background: var(--reaction-popover-bg) !important;
-            color: var(--reaction-popover-text) !important;
-        }
-
-        html.dark body [data-post-card-reaction-menu] .post-card__reaction-option:is(:hover, :focus-visible),
-        body.dark [data-post-card-reaction-menu] .post-card__reaction-option:is(:hover, :focus-visible),
-        .dark [data-post-card-reaction-menu] .post-card__reaction-option:is(:hover, :focus-visible),
-        [data-theme="dark"] [data-post-card-reaction-menu] .post-card__reaction-option:is(:hover, :focus-visible) {
-            border-color: var(--reaction-popover-hover-border) !important;
-            background: var(--reaction-popover-hover) !important;
-            color: var(--reaction-popover-text) !important;
-        }
 
         @starting-style {
-            html body [data-post-card-reaction-menu]:not([hidden]) {
-                opacity: 1 !important;
-                transform: scale(.98);
-            }
+
         }
 
         @media (max-width: 640px) {
-            html body [data-post-card-reaction-layer] [data-post-card-reaction-menu],
-            html body [data-post-card-reaction-menu] {
-                position: fixed !important;
-                width: min(264px, calc(100vw - 20px)) !important;
-                max-width: min(264px, calc(100vw - 20px)) !important;
-                max-height: min(62dvh, 340px) !important;
-                padding: 10px !important;
-                border-radius: 14px !important;
-            }
 
-            html body [data-post-card-reaction-menu]:not([hidden]) {
-                grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
-                grid-auto-rows: 44px !important;
-                gap: 5px !important;
-            }
 
-            html body [data-post-card-reaction-menu] :is(.post-card__reaction-form, a.post-card__reaction-option),
-            html body [data-post-card-reaction-menu] .post-card__reaction-option {
-                height: 44px !important;
-                min-height: 44px !important;
-            }
+
         }
 
         @media (max-width: 640px) {
-            html body [data-post-card-reaction-layer] {
-                position: fixed !important;
-                inset: 0 !important;
-                width: 100vw !important;
-                height: 100dvh !important;
-                z-index: 2147483646 !important;
-                overflow: visible !important;
-                pointer-events: none !important;
-            }
 
-            html body [data-post-card-reaction-layer] [data-post-card-reaction-menu] {
-                pointer-events: auto !important;
-                visibility: visible !important;
-            }
+
         }
 
         @media (max-width: 360px) {
-            html body [data-post-card-reaction-menu] {
-                width: min(240px, calc(100vw - 20px)) !important;
-                max-width: min(240px, calc(100vw - 20px)) !important;
-            }
 
-            html body [data-post-card-reaction-menu]:not([hidden]) {
-                grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
-            }
+
         }
 
 
@@ -10006,182 +7572,17 @@ SVG;
             margin: 0 !important;
         }
 
-        /* Bottom action row:
-         * left spacer | centered actions | right spacer.
-         * The views metric stays in the right rail.
-         */
-        html body [data-post-card-shell].post-card .action-bar {
-            position: relative !important;
-            display: grid !important;
-            grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) !important;
-            align-items: center !important;
-            justify-items: stretch !important;
-            column-gap: 6px !important;
-            width: calc(100% + 36px) !important;
-            min-width: calc(100% + 36px) !important;
-            height: 46px !important;
-            min-height: 46px !important;
-            margin: 0 -18px !important;
-            padding: 0 10px !important;
-            box-sizing: border-box !important;
-        }
 
-        html body [data-post-card-shell].post-card .action-bar .action-left {
-            grid-column: 2 !important;
-            justify-self: center !important;
-            display: inline-flex !important;
-            align-items: center !important;
-            justify-content: center !important;
-            gap: 3px !important;
-            width: max-content !important;
-            max-width: calc(100% - 56px) !important;
-            min-width: 0 !important;
-            margin: 0 !important;
-            padding: 0 !important;
-            flex: 0 0 auto !important;
-            flex-wrap: nowrap !important;
-            white-space: nowrap !important;
-        }
 
-        html body [data-post-card-shell].post-card .action-bar .post-card__action-form {
-            display: inline-flex !important;
-            align-items: center !important;
-            margin: 0 !important;
-            padding: 0 !important;
-            flex: 0 0 auto !important;
-        }
 
-        html body [data-post-card-shell].post-card .action-bar .action-left > :where(
-            .action-btn,
-            .action-stat,
-            .action-chip,
-            .post-card__action-link,
-            .post-card__action-button
-        ) {
-            display: inline-flex !important;
-            align-items: center !important;
-            justify-content: center !important;
-            gap: 4px !important;
-            width: 36px !important;
-            min-width: 36px !important;
-            max-width: none !important;
-            height: 36px !important;
-            min-height: 36px !important;
-            padding: 0 !important;
-            margin: 0 !important;
-            flex: 0 0 36px !important;
-            border: 0 !important;
-            border-radius: 9px !important;
-            line-height: 0 !important;
-            white-space: nowrap !important;
-            text-decoration: none !important;
-            vertical-align: middle !important;
-        }
 
-        html body [data-post-card-shell].post-card .action-bar .action-left > :where(
-            .action-btn,
-            .action-stat,
-            .action-chip,
-            .post-card__action-link,
-            .post-card__action-button
-        ):has(.action-chip__label) {
-            width: auto !important;
-            min-width: 40px !important;
-            flex: 0 0 auto !important;
-            padding: 0 6px !important;
-        }
 
-        html body [data-post-card-shell].post-card .action-bar .post-card__inline-icon {
-            display: inline-flex !important;
-            align-items: center !important;
-            justify-content: center !important;
-            width: 20px !important;
-            min-width: 20px !important;
-            max-width: 20px !important;
-            height: 20px !important;
-            min-height: 20px !important;
-            max-height: 20px !important;
-            flex: 0 0 20px !important;
-            margin: 0 !important;
-            padding: 0 !important;
-            line-height: 0 !important;
-            vertical-align: middle !important;
-        }
 
-        html body [data-post-card-shell].post-card .action-bar .post-card__inline-icon :where(
-            svg,
-            iconify-icon,
-            .post-card__bookmark-icon,
-            .post-card__share-icon
-        ) {
-            display: block !important;
-            width: 19px !important;
-            min-width: 19px !important;
-            max-width: 19px !important;
-            height: 19px !important;
-            min-height: 19px !important;
-            max-height: 19px !important;
-            margin: 0 !important;
-            padding: 0 !important;
-            line-height: 0 !important;
-            vertical-align: middle !important;
-        }
 
-        html body [data-post-card-shell].post-card .action-bar .post-card__comment-icon,
-        html body [data-post-card-shell].post-card .action-bar .post-card__view-icon {
-            display: block !important;
-            width: 19px !important;
-            min-width: 19px !important;
-            height: 19px !important;
-            min-height: 19px !important;
-            margin: 0 !important;
-        }
 
-        html body [data-post-card-shell].post-card .action-bar .action-chip__label,
-        html body [data-post-card-shell].post-card .action-bar [data-post-card-view-count] {
-            display: inline-block !important;
-            margin: 0 !important;
-            padding: 0 !important;
-            line-height: 1.05 !important;
-            white-space: nowrap !important;
-            vertical-align: middle !important;
-            font-variant-numeric: tabular-nums !important;
-        }
 
-        html body [data-post-card-shell].post-card .action-bar .post-metric--views {
-            grid-column: 3 !important;
-            justify-self: end !important;
-            display: inline-flex !important;
-            align-items: center !important;
-            justify-content: center !important;
-            gap: 4px !important;
-            width: auto !important;
-            min-width: 40px !important;
-            height: 34px !important;
-            min-height: 34px !important;
-            margin: 0 !important;
-            padding: 0 5px !important;
-            flex: 0 0 auto !important;
-            border: 0 !important;
-            border-radius: 8px !important;
-            line-height: 0 !important;
-            white-space: nowrap !important;
-        }
 
-        html body [data-post-card-shell].post-card .action-bar .post-metric--views .post-card__inline-icon {
-            width: 19px !important;
-            min-width: 19px !important;
-            height: 19px !important;
-            min-height: 19px !important;
-            flex-basis: 19px !important;
-        }
 
-        html body [data-post-card-shell].post-card .action-bar .post-metric--views .post-card__view-icon {
-            width: 18px !important;
-            min-width: 18px !important;
-            height: 18px !important;
-            min-height: 18px !important;
-        }
 
         @media (max-width: 640px) {
             html body [data-post-card-shell].post-card .og-action-wrap {
@@ -10196,170 +7597,25 @@ SVG;
                 flex-basis: 36px !important;
             }
 
-            html body [data-post-card-shell].post-card .action-bar {
-                grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) !important;
-                column-gap: 3px !important;
-                width: calc(100% + 28px) !important;
-                min-width: calc(100% + 28px) !important;
-                height: 46px !important;
-                min-height: 46px !important;
-                margin-inline: -14px !important;
-                padding-inline: 6px !important;
-            }
 
-            html body [data-post-card-shell].post-card .action-bar .action-left {
-                gap: 2px !important;
-                max-width: calc(100% - 48px) !important;
-            }
 
-            html body [data-post-card-shell].post-card .action-bar .action-left > :where(
-                .action-btn,
-                .action-stat,
-                .action-chip,
-                .post-card__action-link,
-                .post-card__action-button
-            ) {
-                width: 36px !important;
-                min-width: 36px !important;
-                height: 36px !important;
-                min-height: 36px !important;
-                flex-basis: 36px !important;
-                border-radius: 9px !important;
-            }
 
-            html body [data-post-card-shell].post-card .action-bar .action-left > :where(
-                .action-btn,
-                .action-stat,
-                .action-chip,
-                .post-card__action-link,
-                .post-card__action-button
-            ):has(.action-chip__label) {
-                width: auto !important;
-                min-width: 38px !important;
-                flex-basis: auto !important;
-                padding-inline: 5px !important;
-            }
 
-            html body [data-post-card-shell].post-card .action-bar .post-card__inline-icon {
-                width: 19px !important;
-                min-width: 19px !important;
-                height: 19px !important;
-                min-height: 19px !important;
-                flex-basis: 19px !important;
-            }
 
-            html body [data-post-card-shell].post-card .action-bar .post-card__inline-icon :where(
-                svg,
-                iconify-icon,
-                .post-card__bookmark-icon,
-                .post-card__share-icon
-            ) {
-                width: 18px !important;
-                min-width: 18px !important;
-                height: 18px !important;
-                min-height: 18px !important;
-                max-height: 18px !important;
-            }
 
-            html body [data-post-card-shell].post-card .action-bar .post-metric--views {
-                min-width: 36px !important;
-                height: 34px !important;
-                min-height: 34px !important;
-                padding-inline: 4px !important;
-                gap: 3px !important;
-            }
 
-            html body [data-post-card-shell].post-card .action-bar .post-metric--views .post-card__inline-icon {
-                width: 18px !important;
-                min-width: 18px !important;
-                height: 18px !important;
-                min-height: 18px !important;
-                flex-basis: 18px !important;
-            }
 
-            html body [data-post-card-shell].post-card .action-bar .post-metric--views .post-card__view-icon {
-                width: 17px !important;
-                min-width: 17px !important;
-                height: 17px !important;
-                min-height: 17px !important;
-            }
         }
 
         @media (max-width: 380px) {
-            html body [data-post-card-shell].post-card .action-bar {
-                width: calc(100% + 24px) !important;
-                min-width: calc(100% + 24px) !important;
-                margin-inline: -12px !important;
-                padding-inline: 4px !important;
-                column-gap: 1px !important;
-            }
 
-            html body [data-post-card-shell].post-card .action-bar .action-left {
-                gap: 0 !important;
-                max-width: calc(100% - 40px) !important;
-            }
 
-            html body [data-post-card-shell].post-card .action-bar .action-left > :where(
-                .action-btn,
-                .action-stat,
-                .action-chip,
-                .post-card__action-link,
-                .post-card__action-button
-            ) {
-                width: 34px !important;
-                min-width: 34px !important;
-                height: 34px !important;
-                min-height: 34px !important;
-                flex-basis: 34px !important;
-                border-radius: 8px !important;
-            }
 
-            html body [data-post-card-shell].post-card .action-bar .action-left > :where(
-                .action-btn,
-                .action-stat,
-                .action-chip,
-                .post-card__action-link,
-                .post-card__action-button
-            ):has(.action-chip__label) {
-                min-width: 34px !important;
-                padding-inline: 4px !important;
-            }
 
-            html body [data-post-card-shell].post-card .action-bar .post-card__inline-icon {
-                width: 18px !important;
-                min-width: 18px !important;
-                height: 18px !important;
-                min-height: 18px !important;
-                flex-basis: 18px !important;
-            }
 
-            html body [data-post-card-shell].post-card .action-bar .post-card__inline-icon :where(
-                svg,
-                iconify-icon,
-                .post-card__bookmark-icon,
-                .post-card__share-icon
-            ) {
-                width: 17px !important;
-                min-width: 17px !important;
-                height: 17px !important;
-                min-height: 17px !important;
-                max-height: 17px !important;
-            }
 
-            html body [data-post-card-shell].post-card .action-bar .post-metric--views {
-                min-width: 32px !important;
-                height: 32px !important;
-                min-height: 32px !important;
-                padding-inline: 3px !important;
-                gap: 2px !important;
-            }
 
-            html body [data-post-card-shell].post-card .action-bar .post-metric--views .post-card__view-icon {
-                width: 16px !important;
-                min-width: 16px !important;
-                height: 16px !important;
-                min-height: 16px !important;
-            }
+
         }
 
 
