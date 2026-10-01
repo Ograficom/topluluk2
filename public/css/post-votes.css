@@ -220,42 +220,12 @@ html body .post-vote-setting-switch > input[type="checkbox"]:focus-visible + .po
     outline-offset: 2px !important;
 }
 
-@media (max-width: 640px) {
-    html body.alma-app .post-vote-control,
-    html body .post-vote-control {
-        height: 32px !important;
-        min-height: 32px !important;
-    }
-
-    html body.alma-app .post-vote-control .post-vote-btn,
-    html body .post-vote-control .post-vote-btn {
-        width: 28px !important;
-        min-width: 28px !important;
-        height: 28px !important;
-        min-height: 28px !important;
-    }
-
-    html body.alma-app .post-vote-control .post-vote-score,
-    html body .post-vote-control .post-vote-score {
-        min-width: 22px !important;
-        height: 28px !important;
-        font-size: 12.5px !important;
-    }
-
-    html body.alma-app .post-vote-control .post-vote-btn svg,
-    html body .post-vote-control .post-vote-btn svg {
-        width: 16px !important;
-        height: 16px !important;
-        min-width: 16px !important;
-        min-height: 16px !important;
-    }
-
-    html body.alma-app .post-vote-setting-title,
-    html body .post-vote-setting-title {
-        font-size: 13.5px !important;
-    }
+@media (max-width:640px){
+ html body.alma-app .post-vote-control,html body .post-vote-control{height:36px !important;min-height:36px !important;}
+ html body.alma-app .post-vote-control .post-vote-btn,html body .post-vote-control .post-vote-btn{width:30px !important;min-width:30px !important;height:30px !important;min-height:30px !important;}
+ html body.alma-app .post-vote-control .post-vote-score,html body .post-vote-control .post-vote-score{min-width:22px !important;height:30px !important;font-size:12px !important;}
+ html body.alma-app .post-vote-control .post-vote-btn svg,html body .post-vote-control .post-vote-btn svg{width:16px !important;height:16px !important;min-width:16px !important;min-height:16px !important;}
 }
-
 html.dark body.alma-app .post-vote-control,
 body.dark.alma-app .post-vote-control,
 .dark body.alma-app .post-vote-control,
