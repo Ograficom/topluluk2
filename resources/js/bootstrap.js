@@ -7,8 +7,6 @@ import '../css/post-create-settings-polish.css';
 import '../css/post-create-settings-tabs.css';
 import '../css/post-create-mobile-fix.css';
 import '../css/post-card-footer-polish.css';
-import '../css/post-card-mobile-views-fix.css';
-import '../css/post-card-mobile-polish.css';
 import '../css/post-card-advanced.css';
 import '../css/home-feed-error-state.css';
 import '../css/editorjs-create-polish.css';
