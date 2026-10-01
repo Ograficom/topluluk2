@@ -5,8 +5,8 @@ html body .post-vote-control {
     align-items: center !important;
     justify-content: center !important;
     flex: 0 0 auto !important;
-    height: 34px !important;
-    min-height: 34px !important;
+    height: 38px !important;
+    min-height: 38px !important;
     padding: 2px !important;
     border: 0 !important;
     border-radius: 9999px !important;
@@ -23,10 +23,10 @@ html body .post-vote-control .post-vote-btn {
     display: inline-flex !important;
     align-items: center !important;
     justify-content: center !important;
-    width: 30px !important;
-    min-width: 30px !important;
-    height: 30px !important;
-    min-height: 30px !important;
+    width: 32px !important;
+    min-width: 32px !important;
+    height: 32px !important;
+    min-height: 32px !important;
     margin: 0 !important;
     padding: 0 !important;
     border: 0 !important;
@@ -94,7 +94,7 @@ html body .post-vote-control .post-vote-score {
     align-items: center !important;
     justify-content: center !important;
     min-width: 24px !important;
-    height: 30px !important;
+    height: 32px !important;
     padding: 0 2px !important;
     color: #111827 !important;
     font-family: inherit !important;
@@ -113,7 +113,7 @@ html body.alma-app .post-show-shell .ps-action-row .post-vote-control {
     margin-right: 2px !important;
 }
 
-/* Composer preference row: same vote feature can be enabled/disabled per post. */
+ /* Composer preference row: same vote feature can be enabled/disabled per post. */
 html body.alma-app .post-vote-setting-row,
 html body .post-vote-setting-row {
     box-sizing: border-box !important;
@@ -223,23 +223,23 @@ html body .post-vote-setting-switch > input[type="checkbox"]:focus-visible + .po
 @media (max-width: 640px) {
     html body.alma-app .post-vote-control,
     html body .post-vote-control {
-        height: 32px !important;
-        min-height: 32px !important;
+        height: 36px !important;
+        min-height: 36px !important;
     }
 
     html body.alma-app .post-vote-control .post-vote-btn,
     html body .post-vote-control .post-vote-btn {
-        width: 28px !important;
-        min-width: 28px !important;
-        height: 28px !important;
-        min-height: 28px !important;
+        width: 30px !important;
+        min-width: 30px !important;
+        height: 30px !important;
+        min-height: 30px !important;
     }
 
     html body.alma-app .post-vote-control .post-vote-score,
     html body .post-vote-control .post-vote-score {
         min-width: 22px !important;
-        height: 28px !important;
-        font-size: 12.5px !important;
+        height: 30px !important;
+        font-size: 12px !important;
     }
 
     html body.alma-app .post-vote-control .post-vote-btn svg,
