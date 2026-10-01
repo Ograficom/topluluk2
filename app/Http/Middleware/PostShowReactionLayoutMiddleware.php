@@ -62,8 +62,8 @@ html body article.post-card[data-post-card-shell] .reactions-row.reaction-row {
     display: flex !important;
     align-items: center !important;
     flex-wrap: wrap !important;
-    gap: 8px !important;
-    min-height: 36px !important;
+    gap: 5px !important;
+    min-height: 30px !important;
     margin: 8px 0 0 !important;
     padding: 0 !important;
     border: 0 !important;
@@ -77,16 +77,16 @@ html body article.post-card[data-post-card-shell] .reactions-row.reaction-row .m
     align-items: center !important;
     justify-content: center !important;
     min-width: 0 !important;
-    height: 36px !important;
-    min-height: 36px !important;
+    height: 30px !important;
+    min-height: 30px !important;
     gap: 5px !important;
     margin: 0 !important;
-    padding: 6px 10px !important;
+    padding: 0 9px !important;
     border: 0 !important;
     border-radius: 999px !important;
     background: #f3f4f6 !important;
     color: #111827 !important;
-    font-size: 14px !important;
+    font-size: 12px !important;
     font-weight: 400 !important;
     line-height: 1 !important;
     box-shadow: none !important;
@@ -111,31 +111,31 @@ html body article.post-card[data-post-card-shell] .reactions-row.reaction-row .r
     display: inline-flex !important;
     align-items: center !important;
     justify-content: center !important;
-    width: 20px !important;
-    min-width: 20px !important;
-    max-width: 20px !important;
-    height: 20px !important;
-    min-height: 20px !important;
-    max-height: 20px !important;
-    font-size: 17px !important;
-    line-height: 20px !important;
+    width: 19px !important;
+    min-width: 19px !important;
+    max-width: 19px !important;
+    height: 19px !important;
+    min-height: 19px !important;
+    max-height: 19px !important;
+    font-size: 19px !important;
+    line-height: 19px !important;
 }
 
 html body article.post-card[data-post-card-shell] .reactions-row.reaction-row .reaction-item .reaction-emoji--html :is(img, svg, iconify-icon),
 html body article.post-card[data-post-card-shell] .reactions-row.reaction-row .reaction-item .post-card__reaction-asset {
-    width: 20px !important;
-    min-width: 20px !important;
-    max-width: 20px !important;
-    height: 20px !important;
-    min-height: 20px !important;
-    max-height: 20px !important;
+    width: 19px !important;
+    min-width: 19px !important;
+    max-width: 19px !important;
+    height: 19px !important;
+    min-height: 19px !important;
+    max-height: 19px !important;
     border-radius: 999px !important;
     object-fit: cover !important;
 }
 
 html body article.post-card[data-post-card-shell] .reactions-row.reaction-row .reaction-count {
     color: inherit !important;
-    font-size: 14px !important;
+    font-size: 12px !important;
     font-weight: 400 !important;
     line-height: 1 !important;
 }
@@ -153,12 +153,12 @@ html body article.post-card[data-post-card-shell] .reactions-row.reaction-row .s
     display: inline-flex !important;
     align-items: center !important;
     justify-content: center !important;
-    width: 36px !important;
-    min-width: 36px !important;
-    max-width: 36px !important;
-    height: 36px !important;
-    min-height: 36px !important;
-    max-height: 36px !important;
+    width: 30px !important;
+    min-width: 30px !important;
+    max-width: 30px !important;
+    height: 30px !important;
+    min-height: 30px !important;
+    max-height: 30px !important;
     margin: 0 !important;
     padding: 0 !important;
     border: 1px solid #e5e7eb !important;
@@ -182,12 +182,12 @@ html body article.post-card[data-post-card-shell] .reactions-row.reaction-row .s
 
 html body article.post-card[data-post-card-shell] .reactions-row.reaction-row .smiley-btn.reaction-add .post-card__inline-icon,
 html body article.post-card[data-post-card-shell] .reactions-row.reaction-row .smiley-btn.reaction-add .post-card__inline-icon :is(svg, iconify-icon) {
-    width: 20px !important;
-    min-width: 20px !important;
-    max-width: 20px !important;
-    height: 20px !important;
-    min-height: 20px !important;
-    max-height: 20px !important;
+    width: 19px !important;
+    min-width: 19px !important;
+    max-width: 19px !important;
+    height: 19px !important;
+    min-height: 19px !important;
+    max-height: 19px !important;
     font-size: 20px !important;
     color: currentColor !important;
 }
@@ -205,7 +205,7 @@ html body [data-post-card-reaction-menu].post-card__reaction-menu {
     border-radius: 8px !important;
     background: #ffffff !important;
     color: #111827 !important;
-    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.12) !important;
+    box-shadow: none !important;
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
     box-sizing: border-box !important;
@@ -213,7 +213,7 @@ html body [data-post-card-reaction-menu].post-card__reaction-menu {
 
 html body [data-post-card-reaction-menu].post-card__reaction-menu:not([hidden]) {
     display: grid !important;
-    grid-template-columns: repeat(4, 34px) !important;
+    grid-template-columns: repeat(5, 34px) !important;
     grid-auto-flow: row !important;
     justify-content: center !important;
     align-items: center !important;
