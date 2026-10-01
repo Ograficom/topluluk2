@@ -7779,24 +7779,7 @@ html body [data-post-card-shell] .comment-avatar-overflow {
                 border: 0 !important;
             }
 
-            html body article.post-card[data-post-card-shell] .action-bar {
-                min-height: 48px !important;
-                height: 48px !important;
-                margin: 0 -15px !important;
-                padding: 0 15px !important;
-                border-top: 1px solid #e5e7eb !important;
-            }
 
-            html body article.post-card[data-post-card-shell] :is(.action-btn, .action-stat, .post-card__action-link, .post-card__action-button) {
-                min-height: 36px !important;
-                height: 36px !important;
-            }
-
-            html body article.post-card[data-post-card-shell] :is(.post-card__inline-icon, .post-card__inline-icon svg, .post-card__bookmark-icon, .post-card__share-icon) {
-                width: 22px !important;
-                height: 22px !important;
-            }
-        }
 
         html body article.post-card[data-post-card-shell] .expand-link,
 html body article.post-card[data-post-card-shell] .post-card__tag {
