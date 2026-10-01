@@ -63,10 +63,11 @@ html body article.post-card[data-post-card-shell] .reactions-row.reaction-row {
     align-items: center !important;
     flex-wrap: wrap !important;
     gap: 5px !important;
-    min-height: 30px !important;
-    margin: 8px 0 0 !important;
-    padding: 0 !important;
+    min-height: 42px !important;
+    margin: 0 !important;
+    padding: 4px 0 8px !important;
     border: 0 !important;
+    border-bottom: 1px solid #e7e8eb !important;
     background: transparent !important;
     box-shadow: none !important;
 }
@@ -87,7 +88,7 @@ html body article.post-card[data-post-card-shell] .reactions-row.reaction-row .m
     background: #f3f4f6 !important;
     color: #111827 !important;
     font-size: 12px !important;
-    font-weight: 400 !important;
+    font-weight: 550 !important;
     line-height: 1 !important;
     box-shadow: none !important;
     transform: none !important;
@@ -136,7 +137,7 @@ html body article.post-card[data-post-card-shell] .reactions-row.reaction-row .r
 html body article.post-card[data-post-card-shell] .reactions-row.reaction-row .reaction-count {
     color: inherit !important;
     font-size: 12px !important;
-    font-weight: 400 !important;
+    font-weight: 550 !important;
     line-height: 1 !important;
 }
 
@@ -213,7 +214,7 @@ html body [data-post-card-reaction-menu].post-card__reaction-menu {
 
 html body [data-post-card-reaction-menu].post-card__reaction-menu:not([hidden]) {
     display: grid !important;
-    grid-template-columns: repeat(5, 34px) !important;
+    grid-template-columns: repeat(4, 34px) !important;
     grid-auto-flow: row !important;
     justify-content: center !important;
     align-items: center !important;
