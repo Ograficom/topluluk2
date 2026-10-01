@@ -2261,8 +2261,8 @@ SVG;
         }
 
         [data-post-card-shell] [data-og-action-trigger]:hover,
-        [data-post-card-shell] [data-og-action-trigger]:focus-visible,
-        [data-post-card-shell] [data-og-action-trigger][aria-expanded="true"] {
+[data-post-card-shell] [data-og-action-trigger]:focus-visible,
+[data-post-card-shell] [data-og-action-trigger][aria-expanded="true"] {
             background: #e5e7eb !important;
             outline: none !important;
         }
@@ -2302,7 +2302,7 @@ SVG;
         }
 
         [data-post-card-shell] .og-action-menu a,
-        [data-post-card-shell] .og-action-menu button {
+[data-post-card-shell] .og-action-menu button {
             display: flex !important;
             width: 100% !important;
             height: 40px !important;
@@ -2325,14 +2325,14 @@ SVG;
         }
 
         [data-post-card-shell] .og-action-menu > :last-child,
-        [data-post-card-shell] .og-action-menu > form:last-child > button {
+[data-post-card-shell] .og-action-menu > form:last-child > button {
             margin-bottom: 0 !important;
         }
 
         [data-post-card-shell] .og-action-menu a:hover,
-        [data-post-card-shell] .og-action-menu a:focus-visible,
-        [data-post-card-shell] .og-action-menu button:hover,
-        [data-post-card-shell] .og-action-menu button:focus-visible {
+[data-post-card-shell] .og-action-menu a:focus-visible,
+[data-post-card-shell] .og-action-menu button:hover,
+[data-post-card-shell] .og-action-menu button:focus-visible {
             background: #f3f4f6 !important;
             color: #4b5563 !important;
             outline: none !important;
@@ -2355,12 +2355,12 @@ SVG;
         }
 
         [data-post-card-shell] .og-action-menu :where(a, button):hover iconify-icon[icon="lucide:pin"],
-        [data-post-card-shell] .og-action-menu :where(a, button):hover iconify-icon[icon="lucide:pin-off"] {
+[data-post-card-shell] .og-action-menu :where(a, button):hover iconify-icon[icon="lucide:pin-off"] {
             color: #0f766e !important;
         }
 
         [data-post-card-shell] .og-action-menu :where(a, button):hover iconify-icon[icon="lucide:bookmark"],
-        [data-post-card-shell] .og-action-menu :where(a, button):hover iconify-icon[icon="lucide:bookmark-check"] {
+[data-post-card-shell] .og-action-menu :where(a, button):hover iconify-icon[icon="lucide:bookmark-check"] {
             color: #111827 !important;
         }
 
@@ -2389,7 +2389,7 @@ SVG;
             background: #e5e7eb !important;
         }
 
-        @media (max-width: 639px) {
+        @media (max-width: 639px){
             [data-post-card-shell] .og-action-menu {
                 width: 225px !important;
             }
@@ -2445,7 +2445,7 @@ SVG;
         }
 
         [data-post-card-shell] a,
-        [data-post-card-shell] button {
+[data-post-card-shell] button {
             font: inherit;
         }
 
@@ -2495,7 +2495,7 @@ SVG;
         }
 
         [data-post-card-shell] .author-avatar--fallback,
-        [data-post-card-shell] .author-avatar-fallback {
+[data-post-card-shell] .author-avatar-fallback {
             display: flex;
             align-items: center;
             justify-content: center;
@@ -2632,7 +2632,7 @@ SVG;
         }
 
         [data-post-card-shell] .author-subline__edit-toggle:hover,
-        [data-post-card-shell] .author-subline__edit-toggle:focus-visible {
+[data-post-card-shell] .author-subline__edit-toggle:focus-visible {
             color: #334155;
             opacity: 0.9;
             outline: none;
@@ -2688,7 +2688,7 @@ SVG;
         }
 
         [data-post-card-shell] .category-tag,
-        [data-post-card-shell] .topic-link {
+[data-post-card-shell] .topic-link {
             color: #1d4ed8;
             font-size: 13px;
             font-weight: 400;
@@ -2702,7 +2702,7 @@ SVG;
         }
 
         [data-post-card-shell] .post-time,
-        [data-post-card-shell] .time-text {
+[data-post-card-shell] .time-text {
             color: #808791;
             font-size: 13px;
             font-weight: 400;
@@ -2710,7 +2710,7 @@ SVG;
         }
 
         [data-post-card-shell] .menu-btn,
-        [data-post-card-shell] .menu-button {
+[data-post-card-shell] .menu-button {
             width: 32px;
             height: 32px;
             display: flex;
@@ -2724,23 +2724,23 @@ SVG;
         }
 
         [data-post-card-shell] .menu-btn:hover,
-        [data-post-card-shell] .menu-btn:focus-visible,
-        [data-post-card-shell] .menu-button:hover,
-        [data-post-card-shell] .menu-button:focus-visible {
+[data-post-card-shell] .menu-btn:focus-visible,
+[data-post-card-shell] .menu-button:hover,
+[data-post-card-shell] .menu-button:focus-visible {
             background: #f4f4f5;
             color: #111111;
             outline: none;
         }
 
         [data-post-card-shell] .post-card__menu-wrap,
-        [data-post-card-shell] .post-card__reaction-wrap {
+[data-post-card-shell] .post-card__reaction-wrap {
             position: relative;
             flex: 0 0 auto;
         }
 
         [data-post-card-shell] .post-card__menu,
-        [data-post-card-shell] .post-card__reaction-menu,
-        [data-post-card-reaction-menu] {
+[data-post-card-shell] .post-card__reaction-menu,
+[data-post-card-reaction-menu] {
             position: absolute;
             top: calc(100% + 10px);
             right: 0;
@@ -2758,7 +2758,7 @@ SVG;
         }
 
         [data-post-card-shell] .post-card__reaction-menu:not([hidden]),
-        [data-post-card-reaction-menu]:not([hidden]) {
+[data-post-card-reaction-menu]:not([hidden]) {
             display: flex;
             flex-wrap: wrap;
             align-items: flex-start;
@@ -2772,7 +2772,7 @@ SVG;
         }
 
         [data-post-card-shell] .post-card__reaction-menu-title,
-        [data-post-card-reaction-menu] .post-card__reaction-menu-title {
+[data-post-card-reaction-menu] .post-card__reaction-menu-title {
             flex: 0 0 100%;
             color: #7b8190;
             font-size: 13px;
@@ -2782,8 +2782,8 @@ SVG;
         }
 
         [data-post-card-shell] .post-card__menu[hidden],
-        [data-post-card-shell] .post-card__reaction-menu[hidden],
-        [data-post-card-reaction-menu][hidden] {
+[data-post-card-shell] .post-card__reaction-menu[hidden],
+[data-post-card-reaction-menu][hidden] {
             display: none !important;
         }
 
@@ -2804,11 +2804,11 @@ SVG;
         }
 
         [data-post-card-shell] .post-card__menu-item:hover,
-        [data-post-card-shell] .post-card__menu-item:focus-visible,
-        [data-post-card-reaction-menu] .post-card__reaction-option:hover,
-        [data-post-card-reaction-menu] .post-card__reaction-option:focus-visible,
-        [data-post-card-shell] .post-card__reaction-option:hover,
-        [data-post-card-shell] .post-card__reaction-option:focus-visible {
+[data-post-card-shell] .post-card__menu-item:focus-visible,
+[data-post-card-reaction-menu] .post-card__reaction-option:hover,
+[data-post-card-reaction-menu] .post-card__reaction-option:focus-visible,
+[data-post-card-shell] .post-card__reaction-option:hover,
+[data-post-card-shell] .post-card__reaction-option:focus-visible {
             background: #f4f4f5;
             color: #111111;
             outline: none;
@@ -2823,10 +2823,16 @@ SVG;
             flex: 0 0 auto;
         }
 
+        [data-post-card-shell] .post-card__menu-form,
+[data-post-card-reaction-menu] .post-card__reaction-form,
+[data-post-card-shell] .post-card__reaction-form {
+            margin: 0;
+        }
+
         [data-post-card-shell] .post-card__reaction-form,
-        [data-post-card-reaction-menu] .post-card__reaction-form,
-        [data-post-card-reaction-menu] > a,
-        [data-post-card-shell] .post-card__reaction-menu > a {
+[data-post-card-reaction-menu] .post-card__reaction-form,
+[data-post-card-reaction-menu] > a,
+[data-post-card-shell] .post-card__reaction-menu > a {
             display: inline-flex;
             flex: 0 0 34px;
             width: 34px;
@@ -2852,7 +2858,7 @@ SVG;
         }
 
         [data-post-card-shell] .post-title__link:hover,
-        [data-post-card-shell] .post-title__link:focus-visible {
+[data-post-card-shell] .post-title__link:focus-visible {
             color: #0f172a;
             opacity: 0.86;
             outline: none;
@@ -2886,9 +2892,9 @@ SVG;
         }
 
         [data-post-card-shell] .post-card__media-wrap--nsfw-blur .post-card__media-scroller,
-        [data-post-card-shell] .post-card__media-wrap--nsfw-blur .post-card__media-frame,
-        [data-post-card-shell] .post-card__media-wrap--nsfw-blur .post-card__media-image,
-        [data-post-card-shell] .post-card__media-wrap--nsfw-blur .post-card__media-video-fallback {
+[data-post-card-shell] .post-card__media-wrap--nsfw-blur .post-card__media-frame,
+[data-post-card-shell] .post-card__media-wrap--nsfw-blur .post-card__media-image,
+[data-post-card-shell] .post-card__media-wrap--nsfw-blur .post-card__media-video-fallback {
             opacity: 0 !important;
             visibility: hidden !important;
             filter: none !important;
@@ -2993,7 +2999,7 @@ SVG;
         }
 
         [data-post-card-shell] .hero-wrap__overlay-button:hover,
-        [data-post-card-shell] .hero-wrap__overlay-button:focus-visible {
+[data-post-card-shell] .hero-wrap__overlay-button:focus-visible {
             background: #1d4ed8;
             color: #ffffff;
             outline: none;
@@ -3042,36 +3048,36 @@ SVG;
         }
 
         html.dark [data-post-card-shell] .post-card__media-wrap--nsfw-blur,
-        body.dark [data-post-card-shell] .post-card__media-wrap--nsfw-blur,
-        [data-theme="dark"] [data-post-card-shell] .post-card__media-wrap--nsfw-blur {
+body.dark [data-post-card-shell] .post-card__media-wrap--nsfw-blur,
+[data-theme="dark"] [data-post-card-shell] .post-card__media-wrap--nsfw-blur {
             background: #111827;
         }
 
         html.dark [data-post-card-shell] .hero-wrap__overlay,
-        body.dark [data-post-card-shell] .hero-wrap__overlay,
-        [data-theme="dark"] [data-post-card-shell] .hero-wrap__overlay {
+body.dark [data-post-card-shell] .hero-wrap__overlay,
+[data-theme="dark"] [data-post-card-shell] .hero-wrap__overlay {
             background: #111827;
             color: #f9fafb;
         }
 
         html.dark [data-post-card-shell] .hero-wrap__overlay::before,
-        body.dark [data-post-card-shell] .hero-wrap__overlay::before,
-        [data-theme="dark"] [data-post-card-shell] .hero-wrap__overlay::before {
+body.dark [data-post-card-shell] .hero-wrap__overlay::before,
+[data-theme="dark"] [data-post-card-shell] .hero-wrap__overlay::before {
             background:
                 linear-gradient(110deg, #111827 0%, #1f2937 36%, #273244 50%, #1f2937 64%, #111827 100%);
             background-size: 240% 100%;
         }
 
         html.dark [data-post-card-shell] .hero-wrap__overlay-label,
-        body.dark [data-post-card-shell] .hero-wrap__overlay-label,
-        [data-theme="dark"] [data-post-card-shell] .hero-wrap__overlay-label {
+body.dark [data-post-card-shell] .hero-wrap__overlay-label,
+[data-theme="dark"] [data-post-card-shell] .hero-wrap__overlay-label {
             background: #374151;
             color: #f9fafb;
         }
 
         html.dark [data-post-card-shell] .hero-wrap__overlay-button,
-        body.dark [data-post-card-shell] .hero-wrap__overlay-button,
-        [data-theme="dark"] [data-post-card-shell] .hero-wrap__overlay-button {
+body.dark [data-post-card-shell] .hero-wrap__overlay-button,
+[data-theme="dark"] [data-post-card-shell] .hero-wrap__overlay-button {
             background: #2563eb;
             color: #ffffff;
             border-color: rgba(96, 165, 250, 0.35);
@@ -3224,7 +3230,7 @@ SVG;
         }
 
         [data-post-card-shell] .expand-link:hover,
-        [data-post-card-shell] .expand-link:focus-visible {
+[data-post-card-shell] .expand-link:focus-visible {
             opacity: 0.82;
             outline: none;
         }
@@ -3254,7 +3260,7 @@ SVG;
         }
 
         [data-post-card-shell] .reactions-row,
-        [data-post-card-shell] .reaction-row {
+[data-post-card-shell] .reaction-row {
             display: flex;
             align-items: center;
             gap: 10px;
@@ -3289,26 +3295,26 @@ SVG;
         }
 
         [data-post-card-shell] .reaction-emoji,
-        [data-post-card-reaction-menu] .reaction-emoji {
+[data-post-card-reaction-menu] .reaction-emoji {
             font-size: 23px;
             line-height: 1;
         }
 
         [data-post-card-shell] .reaction-count,
-        [data-post-card-reaction-menu] .reaction-count {
+[data-post-card-reaction-menu] .reaction-count {
             color: #111827;
             font-size: 14px;
             line-height: 1;
         }
 
         [data-post-card-shell] .reaction-emoji--html,
-        [data-post-card-reaction-menu] .reaction-emoji--html,
-        [data-post-card-shell] .reaction-emoji--html img,
-        [data-post-card-reaction-menu] .reaction-emoji--html img,
-        [data-post-card-shell] .reaction-emoji--html svg,
-        [data-post-card-reaction-menu] .reaction-emoji--html svg,
-        [data-post-card-shell] .reaction-emoji--html iconify-icon,
-        [data-post-card-reaction-menu] .reaction-emoji--html iconify-icon {
+[data-post-card-reaction-menu] .reaction-emoji--html,
+[data-post-card-shell] .reaction-emoji--html img,
+[data-post-card-reaction-menu] .reaction-emoji--html img,
+[data-post-card-shell] .reaction-emoji--html svg,
+[data-post-card-reaction-menu] .reaction-emoji--html svg,
+[data-post-card-shell] .reaction-emoji--html iconify-icon,
+[data-post-card-reaction-menu] .reaction-emoji--html iconify-icon {
             width: 20px;
             height: 20px;
             display: inline-flex;
@@ -3332,7 +3338,7 @@ SVG;
         }
 
         [data-post-card-shell] .more-pill:hover,
-        [data-post-card-shell] .more-pill:focus-visible {
+[data-post-card-shell] .more-pill:focus-visible {
             background: #eceff3;
             outline: none;
         }
@@ -3342,7 +3348,7 @@ SVG;
         }
 
         [data-post-card-shell] .smiley-btn,
-        [data-post-card-shell] .reaction-add {
+[data-post-card-shell] .reaction-add {
             width: 34px;
             height: 34px;
             display: flex;
@@ -3357,22 +3363,22 @@ SVG;
         }
 
         [data-post-card-shell] .smiley-btn:hover,
-        [data-post-card-shell] .smiley-btn:focus-visible,
-        [data-post-card-shell] .reaction-add:hover,
-        [data-post-card-shell] .reaction-add:focus-visible {
+[data-post-card-shell] .smiley-btn:focus-visible,
+[data-post-card-shell] .reaction-add:hover,
+[data-post-card-shell] .reaction-add:focus-visible {
             background: #eceff3;
             color: #475569;
             outline: none;
         }
 
         [data-post-card-shell] .smiley-btn:active,
-        [data-post-card-shell] .reaction-add:active {
+[data-post-card-shell] .reaction-add:active {
             background: #e4e8ee;
             color: #334155;
         }
 
         [data-post-card-shell] .post-card__reaction-add-icon,
-        [data-post-card-shell] .post-card__inline-icon {
+[data-post-card-shell] .post-card__inline-icon {
             width: 18px;
             height: 18px;
             display: flex;
@@ -3403,7 +3409,7 @@ SVG;
         }
 
         [data-post-card-shell] .post-card__reaction-option,
-        [data-post-card-reaction-menu] .post-card__reaction-option {
+[data-post-card-reaction-menu] .post-card__reaction-option {
             width: 100%;
             height: 34px;
             display: inline-flex;
@@ -3505,7 +3511,7 @@ SVG;
         }
 
         .post-card__stats-close:hover,
-        .post-card__stats-close:focus-visible {
+.post-card__stats-close:focus-visible {
             background: #e4e4e4;
             color: #111111;
         }
@@ -3538,7 +3544,7 @@ SVG;
             line-height: 1.25;
         }
 
-        @media (max-width: 520px) {
+        @media (max-width: 520px){
             .post-card__stats-modal {
                 padding: 16px 10px;
             }
@@ -3554,6 +3560,10 @@ SVG;
                 column-gap: 24px;
                 row-gap: 28px;
             }
+        }
+
+        [data-post-card-shell] [data-post-card-view-metric][hidden] {
+            display: none !important;
         }
 
         [data-post-card-shell] .comment-row {
@@ -3573,7 +3583,7 @@ SVG;
         }
 
         [data-post-card-shell] .comment-row:hover,
-        [data-post-card-shell] .comment-row:focus-visible {
+[data-post-card-shell] .comment-row:focus-visible {
             background: transparent;
             opacity: 1;
             outline: none;
@@ -3697,7 +3707,7 @@ SVG;
         }
 
         [data-post-card-shell] .author-avatar--fallback,
-        [data-post-card-shell] .author-avatar-fallback {
+[data-post-card-shell] .author-avatar-fallback {
             background: #c8a98a;
         }
 
@@ -3736,7 +3746,7 @@ SVG;
         }
 
         [data-post-card-shell] .post-time,
-        [data-post-card-shell] .time-text {
+[data-post-card-shell] .time-text {
             color: #6b7280;
             font-size: 11px;
             font-weight: 400;
@@ -3752,8 +3762,8 @@ SVG;
         }
 
         [data-post-card-shell] .post-title__link,
-        [data-post-card-shell] .post-title__link:hover,
-        [data-post-card-shell] .post-title__link:focus-visible {
+[data-post-card-shell] .post-title__link:hover,
+[data-post-card-shell] .post-title__link:focus-visible {
             color: inherit;
             opacity: 1;
             transition: none;
@@ -3939,7 +3949,7 @@ SVG;
         }
 
         [data-post-card-shell] .post-card__source:hover,
-        [data-post-card-shell] .post-card__source:focus-visible {
+[data-post-card-shell] .post-card__source:focus-visible {
             background: #ebeef2;
             border-color: rgba(15, 23, 42, 0.06);
             color: #111827;
@@ -4010,8 +4020,8 @@ SVG;
         }
 
         [data-post-card-shell] .post-card__source:hover .post-card__source-icon,
-        [data-post-card-shell] .post-card__source:focus-visible .post-card__source-icon,
-        [data-post-card-shell] .post-card__source:active .post-card__source-icon {
+[data-post-card-shell] .post-card__source:focus-visible .post-card__source-icon,
+[data-post-card-shell] .post-card__source:active .post-card__source-icon {
             color: #6b7280;
         }
 
@@ -4036,28 +4046,28 @@ SVG;
         }
 
         [data-post-card-shell] .reaction-row,
-        [data-post-card-shell] .reactions-row {
+[data-post-card-shell] .reactions-row {
             margin: 0 0 16px;
             gap: 8px;
         }
 
         [data-post-card-shell] .reaction-item,
-        [data-post-card-shell] .more-pill,
-        [data-post-card-shell] .smiley-btn,
-        [data-post-card-shell] .reaction-add {
+[data-post-card-shell] .more-pill,
+[data-post-card-shell] .smiley-btn,
+[data-post-card-shell] .reaction-add {
             background: #f4f4f4;
             box-shadow: none;
             transition: none;
         }
 
         [data-post-card-shell] .reaction-item:hover,
-        [data-post-card-shell] .more-pill:hover,
-        [data-post-card-shell] .smiley-btn:hover,
-        [data-post-card-shell] .reaction-add:hover,
-        [data-post-card-shell] .reaction-item:focus-visible,
-        [data-post-card-shell] .more-pill:focus-visible,
-        [data-post-card-shell] .smiley-btn:focus-visible,
-        [data-post-card-shell] .reaction-add:focus-visible {
+[data-post-card-shell] .more-pill:hover,
+[data-post-card-shell] .smiley-btn:hover,
+[data-post-card-shell] .reaction-add:hover,
+[data-post-card-shell] .reaction-item:focus-visible,
+[data-post-card-shell] .more-pill:focus-visible,
+[data-post-card-shell] .smiley-btn:focus-visible,
+[data-post-card-shell] .reaction-add:focus-visible {
             background: #f4f4f4;
             color: #111111;
             outline: none;
@@ -4081,9 +4091,9 @@ SVG;
         }
 
         [data-post-card-shell] .post-card__inline-icon,
-        [data-post-card-shell] .post-card__bookmark-icon,
-        [data-post-card-shell] .post-card__share-icon,
-        [data-post-card-shell] .post-card__reaction-custom-icon {
+[data-post-card-shell] .post-card__bookmark-icon,
+[data-post-card-shell] .post-card__share-icon,
+[data-post-card-shell] .post-card__reaction-custom-icon {
             width: 16px;
             height: 16px;
         }
@@ -4103,14 +4113,14 @@ SVG;
             pointer-events: auto !important;
         }
 
-        @media (max-width: 820px) {
+        @media (max-width: 820px){
             [data-post-card-shell] {
                 padding: 16px 18px 14px;
                 border-radius: 16px;
             }
         }
 
-        @media (max-width: 560px) {
+        @media (max-width: 560px){
             [data-post-card-shell] {
                 width: 100%;
                 max-width: 100%;
@@ -4165,12 +4175,12 @@ SVG;
             }
 
             [data-post-card-shell] .reaction-row,
-            [data-post-card-shell] .reactions-row {
+[data-post-card-shell] .reactions-row {
                 gap: 8px;
             }
 
             [data-post-card-shell] .post-card__reaction-menu,
-            [data-post-card-reaction-menu] {
+[data-post-card-reaction-menu] {
                 left: 0;
                 right: auto;
                 width: min(208px, calc(100vw - 20px));
@@ -4178,28 +4188,28 @@ SVG;
             }
 
             [data-post-card-shell] .post-card__reaction-menu:not([hidden]),
-            [data-post-card-reaction-menu]:not([hidden]) {
+[data-post-card-reaction-menu]:not([hidden]) {
                 gap: 10px 12px;
                 padding: 10px 12px 12px;
             }
 
             [data-post-card-shell] .post-card__reaction-menu-title,
-            [data-post-card-reaction-menu] .post-card__reaction-menu-title {
+[data-post-card-reaction-menu] .post-card__reaction-menu-title {
                 padding: 0 2px 4px;
                 font-size: 12px;
             }
 
             [data-post-card-shell] .post-card__reaction-option,
-            [data-post-card-reaction-menu] .post-card__reaction-option {
+[data-post-card-reaction-menu] .post-card__reaction-option {
                 width: 100%;
                 height: 34px;
                 border-radius: 0;
             }
 
             [data-post-card-shell] .post-card__reaction-form,
-            [data-post-card-reaction-menu] .post-card__reaction-form,
-            [data-post-card-reaction-menu] > a,
-            [data-post-card-shell] .post-card__reaction-menu > a {
+[data-post-card-reaction-menu] .post-card__reaction-form,
+[data-post-card-reaction-menu] > a,
+[data-post-card-shell] .post-card__reaction-menu > a {
                 flex-basis: 34px;
                 width: 34px;
             }
@@ -4216,7 +4226,8 @@ SVG;
 
 
 
-        /* Typography balance: kalın fontlar kaldırıldı, boyutlar orantılı hale getirildi. */
+        /* Typography balance: kalın fontlar kaldırıldı,
+boyutlar orantılı hale getirildi. */
         [data-post-card-shell] {
             font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
             font-size: 14px;
@@ -4225,9 +4236,9 @@ SVG;
         }
 
         [data-post-card-shell],
-        [data-post-card-shell] *,
-        [data-post-card-shell] *::before,
-        [data-post-card-shell] *::after {
+[data-post-card-shell] *,
+[data-post-card-shell] *::before,
+[data-post-card-shell] *::after {
             font-weight: 400 !important;
         }
 
@@ -4238,9 +4249,9 @@ SVG;
         }
 
         [data-post-card-shell] .author-subline,
-        [data-post-card-shell] .author-subline__topic,
-        [data-post-card-shell] .post-time,
-        [data-post-card-shell] .time-text {
+[data-post-card-shell] .author-subline__topic,
+[data-post-card-shell] .post-time,
+[data-post-card-shell] .time-text {
             font-size: 12px;
             line-height: 1.35;
         }
@@ -4252,18 +4263,28 @@ SVG;
         }
 
         [data-post-card-shell] .post-summary,
-        [data-post-card-shell] .comment-label {
+[data-post-card-shell] .comment-label {
             font-size: clamp(13.5px, 1.7vw, 14.5px);
             line-height: 1.6;
         }
 
+        [data-post-card-shell] .expand-link,
+[data-post-card-shell] .post-card__menu-item,
+[data-post-card-shell] .post-card__reaction-menu-title,
+[data-post-card-shell] .reaction-count,
+[data-post-card-shell] .post-card__source-domain,
+[data-post-card-shell] .post-card__tag {
+            font-size: 13px;
+            line-height: 1.35;
+        }
+
         [data-post-card-shell] .post-card__source-label,
-        [data-post-card-shell] .category-badge__fallback {
+[data-post-card-shell] .category-badge__fallback {
             font-size: 10px;
             line-height: 1.1;
         }
 
-        @media (max-width: 640px) {
+        @media (max-width: 640px){
             [data-post-card-shell] {
                 font-size: 13.5px;
             }
@@ -4274,7 +4295,7 @@ SVG;
             }
 
             [data-post-card-shell] .post-summary,
-            [data-post-card-shell] .comment-label {
+[data-post-card-shell] .comment-label {
                 font-size: 13.5px;
                 line-height: 1.58;
             }
@@ -4284,15 +4305,16 @@ SVG;
             }
 
             [data-post-card-shell] .author-subline,
-            [data-post-card-shell] .author-subline__topic,
-            [data-post-card-shell] .post-time,
-            [data-post-card-shell] .time-text {
+[data-post-card-shell] .author-subline__topic,
+[data-post-card-shell] .post-time,
+[data-post-card-shell] .time-text {
                 font-size: 11.5px;
             }
         }
 
 
-        /* Spacing, reaction icon and modern menu refinements */
+        /* Spacing,
+reaction icon and modern menu refinements */
         [data-post-card-shell] .post-title {
             margin: 0 0 12px;
         }
@@ -4315,14 +4337,14 @@ SVG;
         }
 
         [data-post-card-shell] .reaction-row,
-        [data-post-card-shell] .reactions-row {
+[data-post-card-shell] .reactions-row {
             margin: 0 0 10px;
             padding-bottom: 8px;
             gap: 8px;
         }
 
         [data-post-card-shell] .smiley-btn,
-        [data-post-card-shell] .reaction-add {
+[data-post-card-shell] .reaction-add {
             width: 42px;
             height: 42px;
             border-radius: 999px;
@@ -4331,29 +4353,29 @@ SVG;
         }
 
         [data-post-card-shell] .post-card__reaction-custom-icon,
-        [data-post-card-shell] .post-card__inline-icon {
+[data-post-card-shell] .post-card__inline-icon {
             width: 22px;
             height: 22px;
         }
 
         [data-post-card-shell] .post-card__reaction-custom-icon svg,
-        [data-post-card-shell] .post-card__inline-icon svg,
-        [data-post-card-shell] .post-card__inline-icon iconify-icon {
+[data-post-card-shell] .post-card__inline-icon svg,
+[data-post-card-shell] .post-card__inline-icon iconify-icon {
             width: 20px;
             height: 20px;
             font-size: 20px !important;
         }
 
         [data-post-card-shell] .reaction-emoji,
-        [data-post-card-reaction-menu] .reaction-emoji,
-        [data-post-card-shell] .reaction-emoji--html,
-        [data-post-card-reaction-menu] .reaction-emoji--html,
-        [data-post-card-shell] .reaction-emoji--html img,
-        [data-post-card-reaction-menu] .reaction-emoji--html img,
-        [data-post-card-shell] .reaction-emoji--html svg,
-        [data-post-card-reaction-menu] .reaction-emoji--html svg,
-        [data-post-card-shell] .reaction-emoji--html iconify-icon,
-        [data-post-card-reaction-menu] .reaction-emoji--html iconify-icon {
+[data-post-card-reaction-menu] .reaction-emoji,
+[data-post-card-shell] .reaction-emoji--html,
+[data-post-card-reaction-menu] .reaction-emoji--html,
+[data-post-card-shell] .reaction-emoji--html img,
+[data-post-card-reaction-menu] .reaction-emoji--html img,
+[data-post-card-shell] .reaction-emoji--html svg,
+[data-post-card-reaction-menu] .reaction-emoji--html svg,
+[data-post-card-shell] .reaction-emoji--html iconify-icon,
+[data-post-card-reaction-menu] .reaction-emoji--html iconify-icon {
             width: 22px;
             height: 22px;
             font-size: 22px;
@@ -4387,7 +4409,7 @@ SVG;
         }
 
         [data-post-card-shell] .post-card__menu-item:hover,
-        [data-post-card-shell] .post-card__menu-item:focus-visible {
+[data-post-card-shell] .post-card__menu-item:focus-visible {
             background: #f8fafc;
             color: #0f172a;
         }
@@ -4401,19 +4423,19 @@ SVG;
         }
 
         [data-post-card-shell] .post-card__menu-wrap .menu-btn,
-        [data-post-card-shell] .post-card__menu-wrap .menu-button {
+[data-post-card-shell] .post-card__menu-wrap .menu-button {
             width: 34px;
             height: 34px;
             border-radius: 999px;
         }
 
-        @media (max-width: 560px) {
+        @media (max-width: 560px){
             [data-post-card-shell] .post-card__tags {
                 margin: 0 0 12px;
             }
 
             [data-post-card-shell] .reaction-row,
-            [data-post-card-shell] .reactions-row {
+[data-post-card-shell] .reactions-row {
                 margin: 0 0 8px;
                 padding-bottom: 8px;
             }
@@ -4422,16 +4444,16 @@ SVG;
 
         /* Menu hover/touch states + richer reaction asset rendering */
         [data-post-card-shell] .post-card__menu-item,
-        [data-post-card-shell] .post-card__menu-form,
-        [data-post-card-shell] .post-card__menu-item span,
-        [data-post-card-shell] .post-card__menu-item iconify-icon,
-        [data-post-card-shell] .menu-btn,
-        [data-post-card-shell] .menu-button {
+[data-post-card-shell] .post-card__menu-form,
+[data-post-card-shell] .post-card__menu-item span,
+[data-post-card-shell] .post-card__menu-item iconify-icon,
+[data-post-card-shell] .menu-btn,
+[data-post-card-shell] .menu-button {
             -webkit-tap-highlight-color: rgba(37, 99, 235, 0.12);
         }
 
         [data-post-card-shell] .post-card__menu-item:hover,
-        [data-post-card-shell] .post-card__menu-item:focus-visible {
+[data-post-card-shell] .post-card__menu-item:focus-visible {
             background: #eef4ff;
             color: #0f172a;
             outline: none;
@@ -4443,13 +4465,13 @@ SVG;
         }
 
         [data-post-card-shell] .post-card__menu-item:hover iconify-icon,
-        [data-post-card-shell] .post-card__menu-item:focus-visible iconify-icon,
-        [data-post-card-shell] .post-card__menu-item:active iconify-icon {
+[data-post-card-shell] .post-card__menu-item:focus-visible iconify-icon,
+[data-post-card-shell] .post-card__menu-item:active iconify-icon {
             color: currentColor;
         }
 
         [data-post-card-shell] .post-card__menu-item--danger:hover,
-        [data-post-card-shell] .post-card__menu-item--danger:focus-visible {
+[data-post-card-shell] .post-card__menu-item--danger:focus-visible {
             background: #fef2f2;
             color: #b42318;
         }
@@ -4460,21 +4482,21 @@ SVG;
         }
 
         [data-post-card-shell] .menu-btn:hover,
-        [data-post-card-shell] .menu-button:hover,
-        [data-post-card-shell] .menu-btn:focus-visible,
-        [data-post-card-shell] .menu-button:focus-visible {
+[data-post-card-shell] .menu-button:hover,
+[data-post-card-shell] .menu-btn:focus-visible,
+[data-post-card-shell] .menu-button:focus-visible {
             background: #f3f4f6;
             color: #0f172a;
         }
 
         [data-post-card-shell] .menu-btn:active,
-        [data-post-card-shell] .menu-button:active {
+[data-post-card-shell] .menu-button:active {
             background: #e5e7eb;
             color: #0f172a;
         }
 
         [data-post-card-shell] .reaction-emoji--html,
-        [data-post-card-reaction-menu] .reaction-emoji--html {
+[data-post-card-reaction-menu] .reaction-emoji--html {
             display: inline-flex;
             align-items: center;
             justify-content: center;
@@ -4482,8 +4504,8 @@ SVG;
         }
 
         [data-post-card-shell] .post-card__reaction-asset,
-        [data-post-card-shell] .reaction-emoji--html img,
-        [data-post-card-reaction-menu] .reaction-emoji--html img {
+[data-post-card-shell] .reaction-emoji--html img,
+[data-post-card-reaction-menu] .reaction-emoji--html img {
             display: block;
             width: 22px;
             height: 22px;
@@ -4496,27 +4518,28 @@ SVG;
         }
 
         [data-post-card-shell] .post-card__reaction-option,
-        [data-post-card-reaction-menu] .post-card__reaction-option {
+[data-post-card-reaction-menu] .post-card__reaction-option {
             width: 36px;
             height: 36px;
             border-radius: 999px;
         }
 
         [data-post-card-shell] .post-card__reaction-option:hover,
-        [data-post-card-shell] .post-card__reaction-option:focus-visible,
-        [data-post-card-reaction-menu] .post-card__reaction-option:hover,
-        [data-post-card-reaction-menu] .post-card__reaction-option:focus-visible {
+[data-post-card-shell] .post-card__reaction-option:focus-visible,
+[data-post-card-reaction-menu] .post-card__reaction-option:hover,
+[data-post-card-reaction-menu] .post-card__reaction-option:focus-visible {
             background: #f3f4f6;
             outline: none;
         }
 
         [data-post-card-shell] .post-card__reaction-option:active,
-        [data-post-card-reaction-menu] .post-card__reaction-option:active {
+[data-post-card-reaction-menu] .post-card__reaction-option:active {
             background: #e5e7eb;
         }
 
 
-        /* Post media preload animation - fixed: no spinner, no stuck overlay */
+        /* Post media preload animation - fixed: no spinner,
+no stuck overlay */
         [data-post-card-shell] .post-card__media-frame {
             position: relative;
             overflow: hidden;
@@ -4553,7 +4576,7 @@ SVG;
         }
 
         [data-post-card-shell] .post-card__media-frame.is-loaded::before,
-        [data-post-card-shell] .post-card__media-frame.is-error::before {
+[data-post-card-shell] .post-card__media-frame.is-error::before {
             opacity: 0;
             visibility: hidden;
             animation-play-state: paused;
@@ -4576,11 +4599,54 @@ SVG;
             }
         }
 
+        /* Text preload shimmer effect - fixed: never keeps text hidden */
         [data-post-card-shell].is-preloading .author-name,
-        [data-post-card-shell].is-preloading .author-subline__topic,
-        [data-post-card-shell].is-preloading .author-subline__item,
-        [data-post-card-shell].is-preloading .post-title__link,
-        [data-post-card-shell].is-preloading .post-card__tag {
+[data-post-card-shell].is-preloading .author-subline__topic,
+[data-post-card-shell].is-preloading .author-subline__item,
+[data-post-card-shell].is-preloading .post-title,
+[data-post-card-shell].is-preloading .post-title__link,
+[data-post-card-shell].is-preloading .post-summary,
+[data-post-card-shell].is-preloading .post-card__tag,
+[data-post-card-shell].is-preloading .reaction-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 10px;
+            isolation: isolate;
+        }
+
+        [data-post-card-shell].is-preloading .author-name::after,
+[data-post-card-shell].is-preloading .author-subline__topic::after,
+[data-post-card-shell].is-preloading .author-subline__item::after,
+[data-post-card-shell].is-preloading .post-title::after,
+[data-post-card-shell].is-preloading .post-title__link::after,
+[data-post-card-shell].is-preloading .post-summary::after,
+[data-post-card-shell].is-preloading .post-card__tag::after,
+[data-post-card-shell].is-preloading .reaction-item::after {
+            content: "";
+            position: absolute;
+            inset: -2px;
+            z-index: 2;
+            pointer-events: none;
+            border-radius: inherit;
+            background:
+                linear-gradient(
+                    100deg,
+                    rgba(255, 255, 255, 0) 0%,
+                    rgba(255, 255, 255, 0.72) 45%,
+                    rgba(255, 255, 255, 0) 80%
+                ),
+                linear-gradient(135deg, #eef2f7 0%, #f8fafc 48%, #e5e7eb 100%);
+            background-size: 220% 100%, 100% 100%;
+            animation:
+                postCardMediaPreload 1.05s linear infinite,
+                postCardPreloadOverlayOut 0.26s ease 0.95s forwards;
+        }
+
+        [data-post-card-shell].is-preloading .author-name,
+[data-post-card-shell].is-preloading .author-subline__topic,
+[data-post-card-shell].is-preloading .author-subline__item,
+[data-post-card-shell].is-preloading .post-title__link,
+[data-post-card-shell].is-preloading .post-card__tag {
             display: inline-block;
         }
 
@@ -4594,16 +4660,47 @@ SVG;
             min-height: 1.35em;
         }
 
-        @media (prefers-color-scheme: dark) {
+        @media (prefers-color-scheme: dark){
             [data-post-card-shell] .post-card__media-frame {
                 background: #111827;
             }
+
+            [data-post-card-shell] .post-card__media-frame::before,
+[data-post-card-shell].is-preloading .author-name::after,
+[data-post-card-shell].is-preloading .author-subline__topic::after,
+[data-post-card-shell].is-preloading .author-subline__item::after,
+[data-post-card-shell].is-preloading .post-title::after,
+[data-post-card-shell].is-preloading .post-title__link::after,
+[data-post-card-shell].is-preloading .post-summary::after,
+[data-post-card-shell].is-preloading .post-card__tag::after,
+[data-post-card-shell].is-preloading .reaction-item::after {
+                background:
+                    linear-gradient(
+                        100deg,
+                        rgba(255, 255, 255, 0) 0%,
+                        rgba(255, 255, 255, 0.08) 45%,
+                        rgba(255, 255, 255, 0) 80%
+                    ),
+                    linear-gradient(135deg, #111827 0%, #1f2937 48%, #0f172a 100%);
+                background-size: 220% 100%, 100% 100%;
+            }
         }
 
-        @media (prefers-reduced-motion: reduce) {
+        @media (prefers-reduced-motion: reduce){
+            [data-post-card-shell] .post-card__media-frame::before,
+[data-post-card-shell].is-preloading .author-name::after,
+[data-post-card-shell].is-preloading .author-subline__topic::after,
+[data-post-card-shell].is-preloading .author-subline__item::after,
+[data-post-card-shell].is-preloading .post-title::after,
+[data-post-card-shell].is-preloading .post-title__link::after,
+[data-post-card-shell].is-preloading .post-summary::after,
+[data-post-card-shell].is-preloading .post-card__tag::after,
+[data-post-card-shell].is-preloading .reaction-item::after {
+                display: none !important;
+            }
 
             [data-post-card-shell],
-            [data-post-card-shell] * {
+[data-post-card-shell] * {
                 animation: none !important;
                 transition: none !important;
             }
@@ -4622,9 +4719,9 @@ SVG;
         }
 
         [data-post-card-shell] .author-subline,
-        [data-post-card-shell] .author-subline__topic,
-        [data-post-card-shell] .post-time,
-        [data-post-card-shell] .time-text {
+[data-post-card-shell] .author-subline__topic,
+[data-post-card-shell] .post-time,
+[data-post-card-shell] .time-text {
             font-size: 12.5px !important;
             line-height: 1.4 !important;
         }
@@ -4640,7 +4737,7 @@ SVG;
         }
 
         [data-post-card-shell] .post-summary,
-        [data-post-card-shell] .comment-label {
+[data-post-card-shell] .comment-label {
             font-size: clamp(15px, 1.8vw, 16px) !important;
             line-height: 1.68 !important;
         }
@@ -4679,7 +4776,7 @@ SVG;
         }
 
         [data-post-card-shell] .post-card__tag:hover,
-        [data-post-card-shell] .post-card__tag:focus-visible {
+[data-post-card-shell] .post-card__tag:focus-visible {
             color: #1230d8 !important;
             opacity: 0.82;
             outline: none;
@@ -4690,11 +4787,17 @@ SVG;
             opacity: 0.72;
         }
 
+        [data-post-card-shell] .reaction-count,
+[data-post-card-shell] .post-card__source-domain {
+            font-size: 14px !important;
+            line-height: 1.4 !important;
+        }
+
         [data-post-card-shell] .post-card__source-label {
             font-size: 10.5px !important;
         }
 
-        @media (max-width: 640px) {
+        @media (max-width: 640px){
             [data-post-card-shell] {
                 font-size: 14.5px !important;
             }
@@ -4705,7 +4808,7 @@ SVG;
             }
 
             [data-post-card-shell] .post-summary,
-            [data-post-card-shell] .comment-label {
+[data-post-card-shell] .comment-label {
                 font-size: 14.5px !important;
                 line-height: 1.66 !important;
             }
@@ -4730,11 +4833,13 @@ SVG;
 
     
 
-        /* Final dark mode compatibility: white text/icons, soft touch states, dark dropdown */
+        /* Final dark mode compatibility: white text/icons,
+soft touch states,
+dark dropdown */
         html.dark [data-post-card-shell],
-        body.dark [data-post-card-shell],
-        .dark [data-post-card-shell],
-        [data-theme="dark"] [data-post-card-shell] {
+body.dark [data-post-card-shell],
+.dark [data-post-card-shell],
+[data-theme="dark"] [data-post-card-shell] {
             background: #0b1120 !important;
             color: #ffffff !important;
             border-color: rgba(255, 255, 255, 0.08) !important;
@@ -4742,208 +4847,294 @@ SVG;
         }
 
         html.dark [data-post-card-shell] .post-title,
-        html.dark [data-post-card-shell] .post-title__link,
-        html.dark [data-post-card-shell] .post-summary,
-        html.dark [data-post-card-shell] .author-name,
-        html.dark [data-post-card-shell] .author-subline__topic,
-        html.dark [data-post-card-shell] .comment-label,
-        body.dark [data-post-card-shell] .post-title,
-        body.dark [data-post-card-shell] .post-title__link,
-        body.dark [data-post-card-shell] .post-summary,
-        body.dark [data-post-card-shell] .author-name,
-        body.dark [data-post-card-shell] .author-subline__topic,
-        body.dark [data-post-card-shell] .comment-label,
-        .dark [data-post-card-shell] .post-title,
-        .dark [data-post-card-shell] .post-title__link,
-        .dark [data-post-card-shell] .post-summary,
-        .dark [data-post-card-shell] .author-name,
-        .dark [data-post-card-shell] .author-subline__topic,
-        .dark [data-post-card-shell] .comment-label,
-        [data-theme="dark"] [data-post-card-shell] .post-title,
-        [data-theme="dark"] [data-post-card-shell] .post-title__link,
-        [data-theme="dark"] [data-post-card-shell] .post-summary,
-        [data-theme="dark"] [data-post-card-shell] .author-name,
-        [data-theme="dark"] [data-post-card-shell] .author-subline__topic,
-        [data-theme="dark"] [data-post-card-shell] .comment-label {
+html.dark [data-post-card-shell] .post-title__link,
+html.dark [data-post-card-shell] .post-summary,
+html.dark [data-post-card-shell] .author-name,
+html.dark [data-post-card-shell] .author-subline__topic,
+html.dark [data-post-card-shell] .comment-label,
+body.dark [data-post-card-shell] .post-title,
+body.dark [data-post-card-shell] .post-title__link,
+body.dark [data-post-card-shell] .post-summary,
+body.dark [data-post-card-shell] .author-name,
+body.dark [data-post-card-shell] .author-subline__topic,
+body.dark [data-post-card-shell] .comment-label,
+.dark [data-post-card-shell] .post-title,
+.dark [data-post-card-shell] .post-title__link,
+.dark [data-post-card-shell] .post-summary,
+.dark [data-post-card-shell] .author-name,
+.dark [data-post-card-shell] .author-subline__topic,
+.dark [data-post-card-shell] .comment-label,
+[data-theme="dark"] [data-post-card-shell] .post-title,
+[data-theme="dark"] [data-post-card-shell] .post-title__link,
+[data-theme="dark"] [data-post-card-shell] .post-summary,
+[data-theme="dark"] [data-post-card-shell] .author-name,
+[data-theme="dark"] [data-post-card-shell] .author-subline__topic,
+[data-theme="dark"] [data-post-card-shell] .comment-label {
             color: #ffffff !important;
         }
 
         html.dark [data-post-card-shell] .author-subline,
-        html.dark [data-post-card-shell] .author-subline__item,
-        html.dark [data-post-card-shell] .post-time,
-        html.dark [data-post-card-shell] .time-text,
-        body.dark [data-post-card-shell] .author-subline,
-        body.dark [data-post-card-shell] .author-subline__item,
-        body.dark [data-post-card-shell] .post-time,
-        body.dark [data-post-card-shell] .time-text,
-        .dark [data-post-card-shell] .author-subline,
-        .dark [data-post-card-shell] .author-subline__item,
-        .dark [data-post-card-shell] .post-time,
-        .dark [data-post-card-shell] .time-text,
-        [data-theme="dark"] [data-post-card-shell] .author-subline,
-        [data-theme="dark"] [data-post-card-shell] .author-subline__item,
-        [data-theme="dark"] [data-post-card-shell] .post-time,
-        [data-theme="dark"] [data-post-card-shell] .time-text {
+html.dark [data-post-card-shell] .author-subline__item,
+html.dark [data-post-card-shell] .post-time,
+html.dark [data-post-card-shell] .time-text,
+body.dark [data-post-card-shell] .author-subline,
+body.dark [data-post-card-shell] .author-subline__item,
+body.dark [data-post-card-shell] .post-time,
+body.dark [data-post-card-shell] .time-text,
+.dark [data-post-card-shell] .author-subline,
+.dark [data-post-card-shell] .author-subline__item,
+.dark [data-post-card-shell] .post-time,
+.dark [data-post-card-shell] .time-text,
+[data-theme="dark"] [data-post-card-shell] .author-subline,
+[data-theme="dark"] [data-post-card-shell] .author-subline__item,
+[data-theme="dark"] [data-post-card-shell] .post-time,
+[data-theme="dark"] [data-post-card-shell] .time-text {
             color: rgba(255, 255, 255, 0.72) !important;
         }
 
+        html.dark [data-post-card-shell] .post-card__inline-icon,
+html.dark [data-post-card-shell] .post-card__inline-icon svg,
+html.dark [data-post-card-shell] .post-card__inline-icon iconify-icon,
+html.dark [data-post-card-shell] .post-card__bookmark-icon,
+html.dark [data-post-card-shell] .post-card__share-icon,
+html.dark [data-post-card-shell] .post-card__reaction-custom-icon,
+body.dark [data-post-card-shell] .post-card__inline-icon,
+body.dark [data-post-card-shell] .post-card__inline-icon svg,
+body.dark [data-post-card-shell] .post-card__inline-icon iconify-icon,
+body.dark [data-post-card-shell] .post-card__bookmark-icon,
+body.dark [data-post-card-shell] .post-card__share-icon,
+body.dark [data-post-card-shell] .post-card__reaction-custom-icon,
+.dark [data-post-card-shell] .post-card__inline-icon,
+.dark [data-post-card-shell] .post-card__inline-icon svg,
+.dark [data-post-card-shell] .post-card__inline-icon iconify-icon,
+.dark [data-post-card-shell] .post-card__bookmark-icon,
+.dark [data-post-card-shell] .post-card__share-icon,
+.dark [data-post-card-shell] .post-card__reaction-custom-icon,
+[data-theme="dark"] [data-post-card-shell] .post-card__inline-icon,
+[data-theme="dark"] [data-post-card-shell] .post-card__inline-icon svg,
+[data-theme="dark"] [data-post-card-shell] .post-card__inline-icon iconify-icon,
+[data-theme="dark"] [data-post-card-shell] .post-card__bookmark-icon,
+[data-theme="dark"] [data-post-card-shell] .post-card__share-icon,
+[data-theme="dark"] [data-post-card-shell] .post-card__reaction-custom-icon {
+            color: #ffffff !important;
+            stroke: currentColor !important;
+            fill: currentColor;
+        }
+
         html.dark [data-post-card-shell] .reaction-row,
-        html.dark [data-post-card-shell] .reactions-row,
-        body.dark [data-post-card-shell] .reaction-row,
-        body.dark [data-post-card-shell] .reactions-row,
-        .dark [data-post-card-shell] .reaction-row,
-        .dark [data-post-card-shell] .reactions-row,
-        [data-theme="dark"] [data-post-card-shell] .reaction-row,
-        [data-theme="dark"] [data-post-card-shell] .reactions-row {
+html.dark [data-post-card-shell] .reactions-row,
+body.dark [data-post-card-shell] .reaction-row,
+body.dark [data-post-card-shell] .reactions-row,
+.dark [data-post-card-shell] .reaction-row,
+.dark [data-post-card-shell] .reactions-row,
+[data-theme="dark"] [data-post-card-shell] .reaction-row,
+[data-theme="dark"] [data-post-card-shell] .reactions-row {
             border-bottom-color: rgba(255, 255, 255, 0.10) !important;
         }
 
         html.dark [data-post-card-shell] .menu-btn,
-        html.dark [data-post-card-shell] .menu-button,
-        html.dark [data-post-card-shell] .smiley-btn,
-        html.dark [data-post-card-shell] .reaction-add,
-        html.dark [data-post-card-shell] .reaction-item,
-        html.dark [data-post-card-shell] .more-pill,
-        html.dark [data-post-card-shell] .post-card__vote-cluster,
-        body.dark [data-post-card-shell] .menu-btn,
-        body.dark [data-post-card-shell] .menu-button,
-        body.dark [data-post-card-shell] .smiley-btn,
-        body.dark [data-post-card-shell] .reaction-add,
-        body.dark [data-post-card-shell] .reaction-item,
-        body.dark [data-post-card-shell] .more-pill,
-        body.dark [data-post-card-shell] .post-card__vote-cluster,
-        .dark [data-post-card-shell] .menu-btn,
-        .dark [data-post-card-shell] .menu-button,
-        .dark [data-post-card-shell] .smiley-btn,
-        .dark [data-post-card-shell] .reaction-add,
-        .dark [data-post-card-shell] .reaction-item,
-        .dark [data-post-card-shell] .more-pill,
-        .dark [data-post-card-shell] .post-card__vote-cluster,
-        [data-theme="dark"] [data-post-card-shell] .menu-btn,
-        [data-theme="dark"] [data-post-card-shell] .menu-button,
-        [data-theme="dark"] [data-post-card-shell] .smiley-btn,
-        [data-theme="dark"] [data-post-card-shell] .reaction-add,
-        [data-theme="dark"] [data-post-card-shell] .reaction-item,
-        [data-theme="dark"] [data-post-card-shell] .more-pill,
-        [data-theme="dark"] [data-post-card-shell] .post-card__vote-cluster {
+html.dark [data-post-card-shell] .menu-button,
+html.dark [data-post-card-shell] .smiley-btn,
+html.dark [data-post-card-shell] .reaction-add,
+html.dark [data-post-card-shell] .reaction-item,
+html.dark [data-post-card-shell] .more-pill,
+html.dark [data-post-card-shell] .post-card__vote-cluster,
+body.dark [data-post-card-shell] .menu-btn,
+body.dark [data-post-card-shell] .menu-button,
+body.dark [data-post-card-shell] .smiley-btn,
+body.dark [data-post-card-shell] .reaction-add,
+body.dark [data-post-card-shell] .reaction-item,
+body.dark [data-post-card-shell] .more-pill,
+body.dark [data-post-card-shell] .post-card__vote-cluster,
+.dark [data-post-card-shell] .menu-btn,
+.dark [data-post-card-shell] .menu-button,
+.dark [data-post-card-shell] .smiley-btn,
+.dark [data-post-card-shell] .reaction-add,
+.dark [data-post-card-shell] .reaction-item,
+.dark [data-post-card-shell] .more-pill,
+.dark [data-post-card-shell] .post-card__vote-cluster,
+[data-theme="dark"] [data-post-card-shell] .menu-btn,
+[data-theme="dark"] [data-post-card-shell] .menu-button,
+[data-theme="dark"] [data-post-card-shell] .smiley-btn,
+[data-theme="dark"] [data-post-card-shell] .reaction-add,
+[data-theme="dark"] [data-post-card-shell] .reaction-item,
+[data-theme="dark"] [data-post-card-shell] .more-pill,
+[data-theme="dark"] [data-post-card-shell] .post-card__vote-cluster {
             background: transparent !important;
             color: #ffffff !important;
         }
 
+        html.dark [data-post-card-shell] .menu-btn:hover,
+html.dark [data-post-card-shell] .menu-btn:focus-visible,
+html.dark [data-post-card-shell] .menu-button:hover,
+html.dark [data-post-card-shell] .menu-button:focus-visible,
+html.dark [data-post-card-shell] .smiley-btn:hover,
+html.dark [data-post-card-shell] .smiley-btn:focus-visible,
+html.dark [data-post-card-shell] .reaction-add:hover,
+html.dark [data-post-card-shell] .reaction-add:focus-visible,
+body.dark [data-post-card-shell] .menu-btn:hover,
+body.dark [data-post-card-shell] .menu-btn:focus-visible,
+body.dark [data-post-card-shell] .menu-button:hover,
+body.dark [data-post-card-shell] .menu-button:focus-visible,
+body.dark [data-post-card-shell] .smiley-btn:hover,
+body.dark [data-post-card-shell] .smiley-btn:focus-visible,
+body.dark [data-post-card-shell] .reaction-add:hover,
+body.dark [data-post-card-shell] .reaction-add:focus-visible,
+.dark [data-post-card-shell] .menu-btn:hover,
+.dark [data-post-card-shell] .menu-btn:focus-visible,
+.dark [data-post-card-shell] .menu-button:hover,
+.dark [data-post-card-shell] .menu-button:focus-visible,
+.dark [data-post-card-shell] .smiley-btn:hover,
+.dark [data-post-card-shell] .smiley-btn:focus-visible,
+.dark [data-post-card-shell] .reaction-add:hover,
+.dark [data-post-card-shell] .reaction-add:focus-visible,
+[data-theme="dark"] [data-post-card-shell] .menu-btn:hover,
+[data-theme="dark"] [data-post-card-shell] .menu-btn:focus-visible,
+[data-theme="dark"] [data-post-card-shell] .menu-button:hover,
+[data-theme="dark"] [data-post-card-shell] .menu-button:focus-visible,
+[data-theme="dark"] [data-post-card-shell] .smiley-btn:hover,
+[data-theme="dark"] [data-post-card-shell] .smiley-btn:focus-visible,
+[data-theme="dark"] [data-post-card-shell] .reaction-add:hover,
+[data-theme="dark"] [data-post-card-shell] .reaction-add:focus-visible {
+            background: rgba(255, 255, 255, 0.08) !important;
+            color: #ffffff !important;
+            outline: none !important;
+        }
+
+        html.dark [data-post-card-shell] .menu-btn:active,
+html.dark [data-post-card-shell] .menu-button:active,
+html.dark [data-post-card-shell] .smiley-btn:active,
+html.dark [data-post-card-shell] .reaction-add:active,
+body.dark [data-post-card-shell] .menu-btn:active,
+body.dark [data-post-card-shell] .menu-button:active,
+body.dark [data-post-card-shell] .smiley-btn:active,
+body.dark [data-post-card-shell] .reaction-add:active,
+.dark [data-post-card-shell] .menu-btn:active,
+.dark [data-post-card-shell] .menu-button:active,
+.dark [data-post-card-shell] .smiley-btn:active,
+.dark [data-post-card-shell] .reaction-add:active,
+[data-theme="dark"] [data-post-card-shell] .menu-btn:active,
+[data-theme="dark"] [data-post-card-shell] .menu-button:active,
+[data-theme="dark"] [data-post-card-shell] .smiley-btn:active,
+[data-theme="dark"] [data-post-card-shell] .reaction-add:active {
+            background: rgba(255, 255, 255, 0.12) !important;
+            color: #ffffff !important;
+        }
+
         html.dark [data-post-card-shell] .post-card__menu,
-        body.dark [data-post-card-shell] .post-card__menu,
-        .dark [data-post-card-shell] .post-card__menu,
-        [data-theme="dark"] [data-post-card-shell] .post-card__menu {
+body.dark [data-post-card-shell] .post-card__menu,
+.dark [data-post-card-shell] .post-card__menu,
+[data-theme="dark"] [data-post-card-shell] .post-card__menu {
             background: #111827 !important;
             border: 1px solid rgba(255, 255, 255, 0.12) !important;
             box-shadow: 0 18px 38px rgba(0, 0, 0, 0.36) !important;
         }
 
         html.dark [data-post-card-shell] .post-card__menu-item,
-        html.dark [data-post-card-shell] .post-card__menu-item span,
-        html.dark [data-post-card-shell] .post-card__menu-item iconify-icon,
-        body.dark [data-post-card-shell] .post-card__menu-item,
-        body.dark [data-post-card-shell] .post-card__menu-item span,
-        body.dark [data-post-card-shell] .post-card__menu-item iconify-icon,
-        .dark [data-post-card-shell] .post-card__menu-item,
-        .dark [data-post-card-shell] .post-card__menu-item span,
-        .dark [data-post-card-shell] .post-card__menu-item iconify-icon,
-        [data-theme="dark"] [data-post-card-shell] .post-card__menu-item,
-        [data-theme="dark"] [data-post-card-shell] .post-card__menu-item span,
-        [data-theme="dark"] [data-post-card-shell] .post-card__menu-item iconify-icon {
+html.dark [data-post-card-shell] .post-card__menu-item span,
+html.dark [data-post-card-shell] .post-card__menu-item iconify-icon,
+body.dark [data-post-card-shell] .post-card__menu-item,
+body.dark [data-post-card-shell] .post-card__menu-item span,
+body.dark [data-post-card-shell] .post-card__menu-item iconify-icon,
+.dark [data-post-card-shell] .post-card__menu-item,
+.dark [data-post-card-shell] .post-card__menu-item span,
+.dark [data-post-card-shell] .post-card__menu-item iconify-icon,
+[data-theme="dark"] [data-post-card-shell] .post-card__menu-item,
+[data-theme="dark"] [data-post-card-shell] .post-card__menu-item span,
+[data-theme="dark"] [data-post-card-shell] .post-card__menu-item iconify-icon {
             color: #ffffff !important;
         }
 
         html.dark [data-post-card-shell] .post-card__menu-item:hover,
-        html.dark [data-post-card-shell] .post-card__menu-item:focus-visible,
-        body.dark [data-post-card-shell] .post-card__menu-item:hover,
-        body.dark [data-post-card-shell] .post-card__menu-item:focus-visible,
-        .dark [data-post-card-shell] .post-card__menu-item:hover,
-        .dark [data-post-card-shell] .post-card__menu-item:focus-visible,
-        [data-theme="dark"] [data-post-card-shell] .post-card__menu-item:hover,
-        [data-theme="dark"] [data-post-card-shell] .post-card__menu-item:focus-visible {
+html.dark [data-post-card-shell] .post-card__menu-item:focus-visible,
+body.dark [data-post-card-shell] .post-card__menu-item:hover,
+body.dark [data-post-card-shell] .post-card__menu-item:focus-visible,
+.dark [data-post-card-shell] .post-card__menu-item:hover,
+.dark [data-post-card-shell] .post-card__menu-item:focus-visible,
+[data-theme="dark"] [data-post-card-shell] .post-card__menu-item:hover,
+[data-theme="dark"] [data-post-card-shell] .post-card__menu-item:focus-visible {
             background: rgba(255, 255, 255, 0.08) !important;
             color: #ffffff !important;
             outline: none !important;
         }
 
         html.dark [data-post-card-shell] .post-card__menu-item:active,
-        body.dark [data-post-card-shell] .post-card__menu-item:active,
-        .dark [data-post-card-shell] .post-card__menu-item:active,
-        [data-theme="dark"] [data-post-card-shell] .post-card__menu-item:active {
+body.dark [data-post-card-shell] .post-card__menu-item:active,
+.dark [data-post-card-shell] .post-card__menu-item:active,
+[data-theme="dark"] [data-post-card-shell] .post-card__menu-item:active {
             background: rgba(255, 255, 255, 0.12) !important;
             color: #ffffff !important;
         }
 
         html.dark [data-post-card-shell] .post-card__menu-item--danger,
-        html.dark [data-post-card-shell] .post-card__menu-item--danger iconify-icon,
-        body.dark [data-post-card-shell] .post-card__menu-item--danger,
-        body.dark [data-post-card-shell] .post-card__menu-item--danger iconify-icon,
-        .dark [data-post-card-shell] .post-card__menu-item--danger,
-        .dark [data-post-card-shell] .post-card__menu-item--danger iconify-icon,
-        [data-theme="dark"] [data-post-card-shell] .post-card__menu-item--danger,
-        [data-theme="dark"] [data-post-card-shell] .post-card__menu-item--danger iconify-icon {
+html.dark [data-post-card-shell] .post-card__menu-item--danger iconify-icon,
+body.dark [data-post-card-shell] .post-card__menu-item--danger,
+body.dark [data-post-card-shell] .post-card__menu-item--danger iconify-icon,
+.dark [data-post-card-shell] .post-card__menu-item--danger,
+.dark [data-post-card-shell] .post-card__menu-item--danger iconify-icon,
+[data-theme="dark"] [data-post-card-shell] .post-card__menu-item--danger,
+[data-theme="dark"] [data-post-card-shell] .post-card__menu-item--danger iconify-icon {
             color: #fca5a5 !important;
         }
 
         html.dark [data-post-card-shell] .post-card__menu-item--danger:hover,
-        html.dark [data-post-card-shell] .post-card__menu-item--danger:focus-visible,
-        body.dark [data-post-card-shell] .post-card__menu-item--danger:hover,
-        body.dark [data-post-card-shell] .post-card__menu-item--danger:focus-visible,
-        .dark [data-post-card-shell] .post-card__menu-item--danger:hover,
-        .dark [data-post-card-shell] .post-card__menu-item--danger:focus-visible,
-        [data-theme="dark"] [data-post-card-shell] .post-card__menu-item--danger:hover,
-        [data-theme="dark"] [data-post-card-shell] .post-card__menu-item--danger:focus-visible {
+html.dark [data-post-card-shell] .post-card__menu-item--danger:focus-visible,
+body.dark [data-post-card-shell] .post-card__menu-item--danger:hover,
+body.dark [data-post-card-shell] .post-card__menu-item--danger:focus-visible,
+.dark [data-post-card-shell] .post-card__menu-item--danger:hover,
+.dark [data-post-card-shell] .post-card__menu-item--danger:focus-visible,
+[data-theme="dark"] [data-post-card-shell] .post-card__menu-item--danger:hover,
+[data-theme="dark"] [data-post-card-shell] .post-card__menu-item--danger:focus-visible {
             background: rgba(248, 113, 113, 0.12) !important;
             color: #fecaca !important;
         }
 
         html.dark [data-post-card-shell] .post-card__source,
-        body.dark [data-post-card-shell] .post-card__source,
-        .dark [data-post-card-shell] .post-card__source,
-        [data-theme="dark"] [data-post-card-shell] .post-card__source {
+body.dark [data-post-card-shell] .post-card__source,
+.dark [data-post-card-shell] .post-card__source,
+[data-theme="dark"] [data-post-card-shell] .post-card__source {
             background: #161b22 !important;
             color: #ffffff !important;
             border: 1px solid rgba(255, 255, 255, 0.08) !important;
         }
 
         html.dark [data-post-card-shell] .post-card__source-label,
-        body.dark [data-post-card-shell] .post-card__source-label,
-        .dark [data-post-card-shell] .post-card__source-label,
-        [data-theme="dark"] [data-post-card-shell] .post-card__source-label {
+body.dark [data-post-card-shell] .post-card__source-label,
+.dark [data-post-card-shell] .post-card__source-label,
+[data-theme="dark"] [data-post-card-shell] .post-card__source-label {
             color: #94a3b8 !important;
         }
 
         html.dark [data-post-card-shell] .post-card__source-favicon,
-        body.dark [data-post-card-shell] .post-card__source-favicon,
-        .dark [data-post-card-shell] .post-card__source-favicon,
-        [data-theme="dark"] [data-post-card-shell] .post-card__source-favicon {
+body.dark [data-post-card-shell] .post-card__source-favicon,
+.dark [data-post-card-shell] .post-card__source-favicon,
+[data-theme="dark"] [data-post-card-shell] .post-card__source-favicon {
             background: rgba(255, 255, 255, 0.92) !important;
         }
 
         html.dark [data-post-card-shell] .post-card__source-domain,
-        html.dark [data-post-card-shell] .post-card__source-icon,
-        html.dark [data-post-card-shell] .post-card__source-icon iconify-icon,
-        body.dark [data-post-card-shell] .post-card__source-domain,
-        body.dark [data-post-card-shell] .post-card__source-icon,
-        body.dark [data-post-card-shell] .post-card__source-icon iconify-icon,
-        .dark [data-post-card-shell] .post-card__source-domain,
-        .dark [data-post-card-shell] .post-card__source-icon,
-        .dark [data-post-card-shell] .post-card__source-icon iconify-icon,
-        [data-theme="dark"] [data-post-card-shell] .post-card__source-domain,
-        [data-theme="dark"] [data-post-card-shell] .post-card__source-icon,
-        [data-theme="dark"] [data-post-card-shell] .post-card__source-icon iconify-icon {
+html.dark [data-post-card-shell] .post-card__source-icon,
+html.dark [data-post-card-shell] .post-card__source-icon iconify-icon,
+body.dark [data-post-card-shell] .post-card__source-domain,
+body.dark [data-post-card-shell] .post-card__source-icon,
+body.dark [data-post-card-shell] .post-card__source-icon iconify-icon,
+.dark [data-post-card-shell] .post-card__source-domain,
+.dark [data-post-card-shell] .post-card__source-icon,
+.dark [data-post-card-shell] .post-card__source-icon iconify-icon,
+[data-theme="dark"] [data-post-card-shell] .post-card__source-domain,
+[data-theme="dark"] [data-post-card-shell] .post-card__source-icon,
+[data-theme="dark"] [data-post-card-shell] .post-card__source-icon iconify-icon {
             color: #ffffff !important;
         }
 
         html.dark [data-post-card-shell] .post-card__source:hover,
-        html.dark [data-post-card-shell] .post-card__source:focus-visible,
-        body.dark [data-post-card-shell] .post-card__source:hover,
-        body.dark [data-post-card-shell] .post-card__source:focus-visible,
-        .dark [data-post-card-shell] .post-card__source:hover,
-        .dark [data-post-card-shell] .post-card__source:focus-visible,
-        [data-theme="dark"] [data-post-card-shell] .post-card__source:hover,
-        [data-theme="dark"] [data-post-card-shell] .post-card__source:focus-visible {
+html.dark [data-post-card-shell] .post-card__source:focus-visible,
+body.dark [data-post-card-shell] .post-card__source:hover,
+body.dark [data-post-card-shell] .post-card__source:focus-visible,
+.dark [data-post-card-shell] .post-card__source:hover,
+.dark [data-post-card-shell] .post-card__source:focus-visible,
+[data-theme="dark"] [data-post-card-shell] .post-card__source:hover,
+[data-theme="dark"] [data-post-card-shell] .post-card__source:focus-visible {
             background: #1f2937 !important;
             border-color: rgba(255, 255, 255, 0.14) !important;
             color: #ffffff !important;
@@ -4951,28 +5142,28 @@ SVG;
         }
 
         html.dark [data-post-card-shell] .post-card__source:active,
-        body.dark [data-post-card-shell] .post-card__source:active,
-        .dark [data-post-card-shell] .post-card__source:active,
-        [data-theme="dark"] [data-post-card-shell] .post-card__source:active {
+body.dark [data-post-card-shell] .post-card__source:active,
+.dark [data-post-card-shell] .post-card__source:active,
+[data-theme="dark"] [data-post-card-shell] .post-card__source:active {
             background: #273244 !important;
             color: #ffffff !important;
         }
 
         html.dark [data-post-card-shell] .post-card__tag,
-        body.dark [data-post-card-shell] .post-card__tag,
-        .dark [data-post-card-shell] .post-card__tag,
-        [data-theme="dark"] [data-post-card-shell] .post-card__tag {
+body.dark [data-post-card-shell] .post-card__tag,
+.dark [data-post-card-shell] .post-card__tag,
+[data-theme="dark"] [data-post-card-shell] .post-card__tag {
             color: #93c5fd !important;
         }
 
         html.dark [data-post-card-shell] .post-card__tag:hover,
-        html.dark [data-post-card-shell] .post-card__tag:focus-visible,
-        body.dark [data-post-card-shell] .post-card__tag:hover,
-        body.dark [data-post-card-shell] .post-card__tag:focus-visible,
-        .dark [data-post-card-shell] .post-card__tag:hover,
-        .dark [data-post-card-shell] .post-card__tag:focus-visible,
-        [data-theme="dark"] [data-post-card-shell] .post-card__tag:hover,
-        [data-theme="dark"] [data-post-card-shell] .post-card__tag:focus-visible {
+html.dark [data-post-card-shell] .post-card__tag:focus-visible,
+body.dark [data-post-card-shell] .post-card__tag:hover,
+body.dark [data-post-card-shell] .post-card__tag:focus-visible,
+.dark [data-post-card-shell] .post-card__tag:hover,
+.dark [data-post-card-shell] .post-card__tag:focus-visible,
+[data-theme="dark"] [data-post-card-shell] .post-card__tag:hover,
+[data-theme="dark"] [data-post-card-shell] .post-card__tag:focus-visible {
             color: #bfdbfe !important;
             opacity: 1 !important;
         }
@@ -4980,57 +5171,57 @@ SVG;
 
         /* Final fix: Daha fazla göster + reaction popup dark mode */
         html.dark [data-post-card-shell] .expand-link,
-        body.dark [data-post-card-shell] .expand-link,
-        .dark [data-post-card-shell] .expand-link,
-        [data-theme="dark"] [data-post-card-shell] .expand-link {
+body.dark [data-post-card-shell] .expand-link,
+.dark [data-post-card-shell] .expand-link,
+[data-theme="dark"] [data-post-card-shell] .expand-link {
             color: rgba(255, 255, 255, 0.88) !important;
             background: transparent !important;
         }
 
         html.dark [data-post-card-shell] .expand-link iconify-icon,
-        body.dark [data-post-card-shell] .expand-link iconify-icon,
-        .dark [data-post-card-shell] .expand-link iconify-icon,
-        [data-theme="dark"] [data-post-card-shell] .expand-link iconify-icon,
-        html.dark [data-post-card-shell] .post-card__expand-icon,
-        body.dark [data-post-card-shell] .post-card__expand-icon,
-        .dark [data-post-card-shell] .post-card__expand-icon,
-        [data-theme="dark"] [data-post-card-shell] .post-card__expand-icon {
+body.dark [data-post-card-shell] .expand-link iconify-icon,
+.dark [data-post-card-shell] .expand-link iconify-icon,
+[data-theme="dark"] [data-post-card-shell] .expand-link iconify-icon,
+html.dark [data-post-card-shell] .post-card__expand-icon,
+body.dark [data-post-card-shell] .post-card__expand-icon,
+.dark [data-post-card-shell] .post-card__expand-icon,
+[data-theme="dark"] [data-post-card-shell] .post-card__expand-icon {
             color: rgba(255, 255, 255, 0.88) !important;
         }
 
         html.dark [data-post-card-shell] .expand-link:hover,
-        html.dark [data-post-card-shell] .expand-link:focus-visible,
-        body.dark [data-post-card-shell] .expand-link:hover,
-        body.dark [data-post-card-shell] .expand-link:focus-visible,
-        .dark [data-post-card-shell] .expand-link:hover,
-        .dark [data-post-card-shell] .expand-link:focus-visible,
-        [data-theme="dark"] [data-post-card-shell] .expand-link:hover,
-        [data-theme="dark"] [data-post-card-shell] .expand-link:focus-visible {
+html.dark [data-post-card-shell] .expand-link:focus-visible,
+body.dark [data-post-card-shell] .expand-link:hover,
+body.dark [data-post-card-shell] .expand-link:focus-visible,
+.dark [data-post-card-shell] .expand-link:hover,
+.dark [data-post-card-shell] .expand-link:focus-visible,
+[data-theme="dark"] [data-post-card-shell] .expand-link:hover,
+[data-theme="dark"] [data-post-card-shell] .expand-link:focus-visible {
             color: #ffffff !important;
             background: rgba(255, 255, 255, 0.07) !important;
             outline: none !important;
         }
 
         html.dark [data-post-card-shell] .expand-link:active,
-        body.dark [data-post-card-shell] .expand-link:active,
-        .dark [data-post-card-shell] .expand-link:active,
-        [data-theme="dark"] [data-post-card-shell] .expand-link:active {
+body.dark [data-post-card-shell] .expand-link:active,
+.dark [data-post-card-shell] .expand-link:active,
+[data-theme="dark"] [data-post-card-shell] .expand-link:active {
             background: rgba(255, 255, 255, 0.11) !important;
             color: #ffffff !important;
         }
 
         html.dark [data-post-card-reaction-layer] .post-card__reaction-menu,
-        body.dark [data-post-card-reaction-layer] .post-card__reaction-menu,
-        .dark [data-post-card-reaction-layer] .post-card__reaction-menu,
-        [data-theme="dark"] [data-post-card-reaction-layer] .post-card__reaction-menu,
-        html.dark [data-post-card-shell] .post-card__reaction-menu,
-        body.dark [data-post-card-shell] .post-card__reaction-menu,
-        .dark [data-post-card-shell] .post-card__reaction-menu,
-        [data-theme="dark"] [data-post-card-shell] .post-card__reaction-menu,
-        html.dark [data-post-card-reaction-menu],
-        body.dark [data-post-card-reaction-menu],
-        .dark [data-post-card-reaction-menu],
-        [data-theme="dark"] [data-post-card-reaction-menu] {
+body.dark [data-post-card-reaction-layer] .post-card__reaction-menu,
+.dark [data-post-card-reaction-layer] .post-card__reaction-menu,
+[data-theme="dark"] [data-post-card-reaction-layer] .post-card__reaction-menu,
+html.dark [data-post-card-shell] .post-card__reaction-menu,
+body.dark [data-post-card-shell] .post-card__reaction-menu,
+.dark [data-post-card-shell] .post-card__reaction-menu,
+[data-theme="dark"] [data-post-card-shell] .post-card__reaction-menu,
+html.dark [data-post-card-reaction-menu],
+body.dark [data-post-card-reaction-menu],
+.dark [data-post-card-reaction-menu],
+[data-theme="dark"] [data-post-card-reaction-menu] {
             background: #111827 !important;
             color: #ffffff !important;
             border: 1px solid rgba(255, 255, 255, 0.12) !important;
@@ -5038,81 +5229,81 @@ SVG;
         }
 
         html.dark [data-post-card-reaction-layer] .post-card__reaction-menu-title,
-        body.dark [data-post-card-reaction-layer] .post-card__reaction-menu-title,
-        .dark [data-post-card-reaction-layer] .post-card__reaction-menu-title,
-        [data-theme="dark"] [data-post-card-reaction-layer] .post-card__reaction-menu-title,
-        html.dark [data-post-card-reaction-menu] .post-card__reaction-menu-title,
-        body.dark [data-post-card-reaction-menu] .post-card__reaction-menu-title,
-        .dark [data-post-card-reaction-menu] .post-card__reaction-menu-title,
-        [data-theme="dark"] [data-post-card-reaction-menu] .post-card__reaction-menu-title {
+body.dark [data-post-card-reaction-layer] .post-card__reaction-menu-title,
+.dark [data-post-card-reaction-layer] .post-card__reaction-menu-title,
+[data-theme="dark"] [data-post-card-reaction-layer] .post-card__reaction-menu-title,
+html.dark [data-post-card-reaction-menu] .post-card__reaction-menu-title,
+body.dark [data-post-card-reaction-menu] .post-card__reaction-menu-title,
+.dark [data-post-card-reaction-menu] .post-card__reaction-menu-title,
+[data-theme="dark"] [data-post-card-reaction-menu] .post-card__reaction-menu-title {
             color: rgba(255, 255, 255, 0.72) !important;
         }
 
         html.dark [data-post-card-reaction-layer] .post-card__reaction-option,
-        body.dark [data-post-card-reaction-layer] .post-card__reaction-option,
-        .dark [data-post-card-reaction-layer] .post-card__reaction-option,
-        [data-theme="dark"] [data-post-card-reaction-layer] .post-card__reaction-option,
-        html.dark [data-post-card-shell] .post-card__reaction-option,
-        body.dark [data-post-card-shell] .post-card__reaction-option,
-        .dark [data-post-card-shell] .post-card__reaction-option,
-        [data-theme="dark"] [data-post-card-shell] .post-card__reaction-option,
-        html.dark [data-post-card-reaction-menu] .post-card__reaction-option,
-        body.dark [data-post-card-reaction-menu] .post-card__reaction-option,
-        .dark [data-post-card-reaction-menu] .post-card__reaction-option,
-        [data-theme="dark"] [data-post-card-reaction-menu] .post-card__reaction-option {
+body.dark [data-post-card-reaction-layer] .post-card__reaction-option,
+.dark [data-post-card-reaction-layer] .post-card__reaction-option,
+[data-theme="dark"] [data-post-card-reaction-layer] .post-card__reaction-option,
+html.dark [data-post-card-shell] .post-card__reaction-option,
+body.dark [data-post-card-shell] .post-card__reaction-option,
+.dark [data-post-card-shell] .post-card__reaction-option,
+[data-theme="dark"] [data-post-card-shell] .post-card__reaction-option,
+html.dark [data-post-card-reaction-menu] .post-card__reaction-option,
+body.dark [data-post-card-reaction-menu] .post-card__reaction-option,
+.dark [data-post-card-reaction-menu] .post-card__reaction-option,
+[data-theme="dark"] [data-post-card-reaction-menu] .post-card__reaction-option {
             background: transparent !important;
             color: #ffffff !important;
         }
 
         html.dark [data-post-card-reaction-layer] .post-card__reaction-option:hover,
-        html.dark [data-post-card-reaction-layer] .post-card__reaction-option:focus-visible,
-        body.dark [data-post-card-reaction-layer] .post-card__reaction-option:hover,
-        body.dark [data-post-card-reaction-layer] .post-card__reaction-option:focus-visible,
-        .dark [data-post-card-reaction-layer] .post-card__reaction-option:hover,
-        .dark [data-post-card-reaction-layer] .post-card__reaction-option:focus-visible,
-        [data-theme="dark"] [data-post-card-reaction-layer] .post-card__reaction-option:hover,
-        [data-theme="dark"] [data-post-card-reaction-layer] .post-card__reaction-option:focus-visible,
-        html.dark [data-post-card-reaction-menu] .post-card__reaction-option:hover,
-        html.dark [data-post-card-reaction-menu] .post-card__reaction-option:focus-visible,
-        body.dark [data-post-card-reaction-menu] .post-card__reaction-option:hover,
-        body.dark [data-post-card-reaction-menu] .post-card__reaction-option:focus-visible,
-        .dark [data-post-card-reaction-menu] .post-card__reaction-option:hover,
-        .dark [data-post-card-reaction-menu] .post-card__reaction-option:focus-visible,
-        [data-theme="dark"] [data-post-card-reaction-menu] .post-card__reaction-option:hover,
-        [data-theme="dark"] [data-post-card-reaction-menu] .post-card__reaction-option:focus-visible {
+html.dark [data-post-card-reaction-layer] .post-card__reaction-option:focus-visible,
+body.dark [data-post-card-reaction-layer] .post-card__reaction-option:hover,
+body.dark [data-post-card-reaction-layer] .post-card__reaction-option:focus-visible,
+.dark [data-post-card-reaction-layer] .post-card__reaction-option:hover,
+.dark [data-post-card-reaction-layer] .post-card__reaction-option:focus-visible,
+[data-theme="dark"] [data-post-card-reaction-layer] .post-card__reaction-option:hover,
+[data-theme="dark"] [data-post-card-reaction-layer] .post-card__reaction-option:focus-visible,
+html.dark [data-post-card-reaction-menu] .post-card__reaction-option:hover,
+html.dark [data-post-card-reaction-menu] .post-card__reaction-option:focus-visible,
+body.dark [data-post-card-reaction-menu] .post-card__reaction-option:hover,
+body.dark [data-post-card-reaction-menu] .post-card__reaction-option:focus-visible,
+.dark [data-post-card-reaction-menu] .post-card__reaction-option:hover,
+.dark [data-post-card-reaction-menu] .post-card__reaction-option:focus-visible,
+[data-theme="dark"] [data-post-card-reaction-menu] .post-card__reaction-option:hover,
+[data-theme="dark"] [data-post-card-reaction-menu] .post-card__reaction-option:focus-visible {
             background: rgba(255, 255, 255, 0.08) !important;
             color: #ffffff !important;
             outline: none !important;
         }
 
         html.dark [data-post-card-reaction-layer] .post-card__reaction-option:active,
-        body.dark [data-post-card-reaction-layer] .post-card__reaction-option:active,
-        .dark [data-post-card-reaction-layer] .post-card__reaction-option:active,
-        [data-theme="dark"] [data-post-card-reaction-layer] .post-card__reaction-option:active,
-        html.dark [data-post-card-reaction-menu] .post-card__reaction-option:active,
-        body.dark [data-post-card-reaction-menu] .post-card__reaction-option:active,
-        .dark [data-post-card-reaction-menu] .post-card__reaction-option:active,
-        [data-theme="dark"] [data-post-card-reaction-menu] .post-card__reaction-option:active {
+body.dark [data-post-card-reaction-layer] .post-card__reaction-option:active,
+.dark [data-post-card-reaction-layer] .post-card__reaction-option:active,
+[data-theme="dark"] [data-post-card-reaction-layer] .post-card__reaction-option:active,
+html.dark [data-post-card-reaction-menu] .post-card__reaction-option:active,
+body.dark [data-post-card-reaction-menu] .post-card__reaction-option:active,
+.dark [data-post-card-reaction-menu] .post-card__reaction-option:active,
+[data-theme="dark"] [data-post-card-reaction-menu] .post-card__reaction-option:active {
             background: rgba(255, 255, 255, 0.12) !important;
             color: #ffffff !important;
         }
 
         html.dark [data-post-card-reaction-layer] .reaction-emoji,
-        html.dark [data-post-card-reaction-layer] .reaction-emoji--html,
-        body.dark [data-post-card-reaction-layer] .reaction-emoji,
-        body.dark [data-post-card-reaction-layer] .reaction-emoji--html,
-        .dark [data-post-card-reaction-layer] .reaction-emoji,
-        .dark [data-post-card-reaction-layer] .reaction-emoji--html,
-        [data-theme="dark"] [data-post-card-reaction-layer] .reaction-emoji,
-        [data-theme="dark"] [data-post-card-reaction-layer] .reaction-emoji--html {
+html.dark [data-post-card-reaction-layer] .reaction-emoji--html,
+body.dark [data-post-card-reaction-layer] .reaction-emoji,
+body.dark [data-post-card-reaction-layer] .reaction-emoji--html,
+.dark [data-post-card-reaction-layer] .reaction-emoji,
+.dark [data-post-card-reaction-layer] .reaction-emoji--html,
+[data-theme="dark"] [data-post-card-reaction-layer] .reaction-emoji,
+[data-theme="dark"] [data-post-card-reaction-layer] .reaction-emoji--html {
             color: #ffffff !important;
         }
 
 
         /* Uc nokta menusu: hover ve tiklama alaninin tamamini gri yap */
         [data-post-card-shell] .post-card__menu-item,
-        [data-post-card-shell] .post-card__menu button.post-card__menu-item,
-        [data-post-card-shell] .post-card__menu a.post-card__menu-item {
+[data-post-card-shell] .post-card__menu button.post-card__menu-item,
+[data-post-card-shell] .post-card__menu a.post-card__menu-item {
             display: flex !important;
             align-items: center !important;
             width: 100% !important;
@@ -5124,12 +5315,12 @@ SVG;
         }
 
         [data-post-card-shell] .post-card__menu-item span,
-        [data-post-card-shell] .post-card__menu-item iconify-icon {
+[data-post-card-shell] .post-card__menu-item iconify-icon {
             color: currentColor !important;
         }
 
         [data-post-card-shell] .post-card__menu-item:hover,
-        [data-post-card-shell] .post-card__menu-item:focus-visible {
+[data-post-card-shell] .post-card__menu-item:focus-visible {
             background: #f1f5f9 !important;
             color: #111827 !important;
             outline: none !important;
@@ -5141,12 +5332,12 @@ SVG;
         }
 
         [data-post-card-shell] .post-card__menu-item--danger,
-        [data-post-card-shell] .post-card__menu-item--danger iconify-icon {
+[data-post-card-shell] .post-card__menu-item--danger iconify-icon {
             color: #b42318 !important;
         }
 
         [data-post-card-shell] .post-card__menu-item--danger:hover,
-        [data-post-card-shell] .post-card__menu-item--danger:focus-visible {
+[data-post-card-shell] .post-card__menu-item--danger:focus-visible {
             background: #f1f5f9 !important;
             color: #b42318 !important;
         }
@@ -5157,42 +5348,42 @@ SVG;
         }
 
         html.dark [data-post-card-shell] .post-card__menu-item,
-        body.dark [data-post-card-shell] .post-card__menu-item,
-        .dark [data-post-card-shell] .post-card__menu-item,
-        [data-theme="dark"] [data-post-card-shell] .post-card__menu-item {
+body.dark [data-post-card-shell] .post-card__menu-item,
+.dark [data-post-card-shell] .post-card__menu-item,
+[data-theme="dark"] [data-post-card-shell] .post-card__menu-item {
             background: transparent !important;
             color: #ffffff !important;
         }
 
         html.dark [data-post-card-shell] .post-card__menu-item:hover,
-        html.dark [data-post-card-shell] .post-card__menu-item:focus-visible,
-        body.dark [data-post-card-shell] .post-card__menu-item:hover,
-        body.dark [data-post-card-shell] .post-card__menu-item:focus-visible,
-        .dark [data-post-card-shell] .post-card__menu-item:hover,
-        .dark [data-post-card-shell] .post-card__menu-item:focus-visible,
-        [data-theme="dark"] [data-post-card-shell] .post-card__menu-item:hover,
-        [data-theme="dark"] [data-post-card-shell] .post-card__menu-item:focus-visible {
+html.dark [data-post-card-shell] .post-card__menu-item:focus-visible,
+body.dark [data-post-card-shell] .post-card__menu-item:hover,
+body.dark [data-post-card-shell] .post-card__menu-item:focus-visible,
+.dark [data-post-card-shell] .post-card__menu-item:hover,
+.dark [data-post-card-shell] .post-card__menu-item:focus-visible,
+[data-theme="dark"] [data-post-card-shell] .post-card__menu-item:hover,
+[data-theme="dark"] [data-post-card-shell] .post-card__menu-item:focus-visible {
             background: rgba(148, 163, 184, 0.18) !important;
             color: #ffffff !important;
             outline: none !important;
         }
 
         html.dark [data-post-card-shell] .post-card__menu-item:active,
-        body.dark [data-post-card-shell] .post-card__menu-item:active,
-        .dark [data-post-card-shell] .post-card__menu-item:active,
-        [data-theme="dark"] [data-post-card-shell] .post-card__menu-item:active {
+body.dark [data-post-card-shell] .post-card__menu-item:active,
+.dark [data-post-card-shell] .post-card__menu-item:active,
+[data-theme="dark"] [data-post-card-shell] .post-card__menu-item:active {
             background: rgba(148, 163, 184, 0.28) !important;
             color: #ffffff !important;
         }
 
         html.dark [data-post-card-shell] .post-card__menu-item--danger,
-        html.dark [data-post-card-shell] .post-card__menu-item--danger iconify-icon,
-        body.dark [data-post-card-shell] .post-card__menu-item--danger,
-        body.dark [data-post-card-shell] .post-card__menu-item--danger iconify-icon,
-        .dark [data-post-card-shell] .post-card__menu-item--danger,
-        .dark [data-post-card-shell] .post-card__menu-item--danger iconify-icon,
-        [data-theme="dark"] [data-post-card-shell] .post-card__menu-item--danger,
-        [data-theme="dark"] [data-post-card-shell] .post-card__menu-item--danger iconify-icon {
+html.dark [data-post-card-shell] .post-card__menu-item--danger iconify-icon,
+body.dark [data-post-card-shell] .post-card__menu-item--danger,
+body.dark [data-post-card-shell] .post-card__menu-item--danger iconify-icon,
+.dark [data-post-card-shell] .post-card__menu-item--danger,
+.dark [data-post-card-shell] .post-card__menu-item--danger iconify-icon,
+[data-theme="dark"] [data-post-card-shell] .post-card__menu-item--danger,
+[data-theme="dark"] [data-post-card-shell] .post-card__menu-item--danger iconify-icon {
             color: #fca5a5 !important;
         }
 
@@ -5200,7 +5391,7 @@ SVG;
 
         /* Force menu item full-row gray hover/active states */
         [data-post-card-shell] .post-card__menu,
-        [data-post-card-shell] .post-card__menu * {
+[data-post-card-shell] .post-card__menu * {
             box-sizing: border-box !important;
         }
 
@@ -5212,8 +5403,8 @@ SVG;
         }
 
         [data-post-card-shell] .post-card__menu-item,
-        [data-post-card-shell] .post-card__menu a.post-card__menu-item,
-        [data-post-card-shell] .post-card__menu button.post-card__menu-item {
+[data-post-card-shell] .post-card__menu a.post-card__menu-item,
+[data-post-card-shell] .post-card__menu button.post-card__menu-item {
             display: flex !important;
             align-items: center !important;
             justify-content: flex-start !important;
@@ -5234,22 +5425,22 @@ SVG;
         }
 
         [data-post-card-shell] .post-card__menu-item span,
-        [data-post-card-shell] .post-card__menu-item iconify-icon {
+[data-post-card-shell] .post-card__menu-item iconify-icon {
             color: inherit !important;
         }
 
         [data-post-card-shell] .post-card__menu-item:hover,
-        [data-post-card-shell] .post-card__menu-item:focus,
-        [data-post-card-shell] .post-card__menu-item:focus-visible,
-        [data-post-card-shell] .post-card__menu-form:hover > .post-card__menu-item,
-        [data-post-card-shell] .post-card__menu-form:focus-within > .post-card__menu-item {
+[data-post-card-shell] .post-card__menu-item:focus,
+[data-post-card-shell] .post-card__menu-item:focus-visible,
+[data-post-card-shell] .post-card__menu-form:hover > .post-card__menu-item,
+[data-post-card-shell] .post-card__menu-form:focus-within > .post-card__menu-item {
             background: #f3f4f6 !important;
             color: #111827 !important;
             outline: none !important;
         }
 
         [data-post-card-shell] .post-card__menu-item:active,
-        [data-post-card-shell] .post-card__menu-form:active > .post-card__menu-item {
+[data-post-card-shell] .post-card__menu-form:active > .post-card__menu-item {
             background: #e5e7eb !important;
             color: #111827 !important;
         }
@@ -5259,56 +5450,56 @@ SVG;
         }
 
         [data-post-card-shell] .post-card__menu-item--danger:hover,
-        [data-post-card-shell] .post-card__menu-item--danger:focus,
-        [data-post-card-shell] .post-card__menu-item--danger:focus-visible,
-        [data-post-card-shell] .post-card__menu-form:hover > .post-card__menu-item--danger,
-        [data-post-card-shell] .post-card__menu-form:focus-within > .post-card__menu-item--danger {
+[data-post-card-shell] .post-card__menu-item--danger:focus,
+[data-post-card-shell] .post-card__menu-item--danger:focus-visible,
+[data-post-card-shell] .post-card__menu-form:hover > .post-card__menu-item--danger,
+[data-post-card-shell] .post-card__menu-form:focus-within > .post-card__menu-item--danger {
             background: #f3f4f6 !important;
             color: #991b1b !important;
         }
 
         [data-post-card-shell] .post-card__menu-item--danger:active,
-        [data-post-card-shell] .post-card__menu-form:active > .post-card__menu-item--danger {
+[data-post-card-shell] .post-card__menu-form:active > .post-card__menu-item--danger {
             background: #e5e7eb !important;
             color: #7f1d1d !important;
         }
 
         html.dark [data-post-card-shell] .post-card__menu-item,
-        body.dark [data-post-card-shell] .post-card__menu-item,
-        .dark [data-post-card-shell] .post-card__menu-item,
-        [data-theme="dark"] [data-post-card-shell] .post-card__menu-item {
+body.dark [data-post-card-shell] .post-card__menu-item,
+.dark [data-post-card-shell] .post-card__menu-item,
+[data-theme="dark"] [data-post-card-shell] .post-card__menu-item {
             color: #f8fafc !important;
             background: transparent !important;
         }
 
         html.dark [data-post-card-shell] .post-card__menu-item:hover,
-        html.dark [data-post-card-shell] .post-card__menu-item:focus,
-        html.dark [data-post-card-shell] .post-card__menu-item:focus-visible,
-        html.dark [data-post-card-shell] .post-card__menu-form:hover > .post-card__menu-item,
-        body.dark [data-post-card-shell] .post-card__menu-item:hover,
-        body.dark [data-post-card-shell] .post-card__menu-item:focus,
-        body.dark [data-post-card-shell] .post-card__menu-item:focus-visible,
-        body.dark [data-post-card-shell] .post-card__menu-form:hover > .post-card__menu-item,
-        .dark [data-post-card-shell] .post-card__menu-item:hover,
-        .dark [data-post-card-shell] .post-card__menu-item:focus,
-        .dark [data-post-card-shell] .post-card__menu-item:focus-visible,
-        .dark [data-post-card-shell] .post-card__menu-form:hover > .post-card__menu-item,
-        [data-theme="dark"] [data-post-card-shell] .post-card__menu-item:hover,
-        [data-theme="dark"] [data-post-card-shell] .post-card__menu-item:focus,
-        [data-theme="dark"] [data-post-card-shell] .post-card__menu-item:focus-visible,
-        [data-theme="dark"] [data-post-card-shell] .post-card__menu-form:hover > .post-card__menu-item {
+html.dark [data-post-card-shell] .post-card__menu-item:focus,
+html.dark [data-post-card-shell] .post-card__menu-item:focus-visible,
+html.dark [data-post-card-shell] .post-card__menu-form:hover > .post-card__menu-item,
+body.dark [data-post-card-shell] .post-card__menu-item:hover,
+body.dark [data-post-card-shell] .post-card__menu-item:focus,
+body.dark [data-post-card-shell] .post-card__menu-item:focus-visible,
+body.dark [data-post-card-shell] .post-card__menu-form:hover > .post-card__menu-item,
+.dark [data-post-card-shell] .post-card__menu-item:hover,
+.dark [data-post-card-shell] .post-card__menu-item:focus,
+.dark [data-post-card-shell] .post-card__menu-item:focus-visible,
+.dark [data-post-card-shell] .post-card__menu-form:hover > .post-card__menu-item,
+[data-theme="dark"] [data-post-card-shell] .post-card__menu-item:hover,
+[data-theme="dark"] [data-post-card-shell] .post-card__menu-item:focus,
+[data-theme="dark"] [data-post-card-shell] .post-card__menu-item:focus-visible,
+[data-theme="dark"] [data-post-card-shell] .post-card__menu-form:hover > .post-card__menu-item {
             background: rgba(255, 255, 255, 0.10) !important;
             color: #ffffff !important;
         }
 
         html.dark [data-post-card-shell] .post-card__menu-item:active,
-        html.dark [data-post-card-shell] .post-card__menu-form:active > .post-card__menu-item,
-        body.dark [data-post-card-shell] .post-card__menu-item:active,
-        body.dark [data-post-card-shell] .post-card__menu-form:active > .post-card__menu-item,
-        .dark [data-post-card-shell] .post-card__menu-item:active,
-        .dark [data-post-card-shell] .post-card__menu-form:active > .post-card__menu-item,
-        [data-theme="dark"] [data-post-card-shell] .post-card__menu-item:active,
-        [data-theme="dark"] [data-post-card-shell] .post-card__menu-form:active > .post-card__menu-item {
+html.dark [data-post-card-shell] .post-card__menu-form:active > .post-card__menu-item,
+body.dark [data-post-card-shell] .post-card__menu-item:active,
+body.dark [data-post-card-shell] .post-card__menu-form:active > .post-card__menu-item,
+.dark [data-post-card-shell] .post-card__menu-item:active,
+.dark [data-post-card-shell] .post-card__menu-form:active > .post-card__menu-item,
+[data-theme="dark"] [data-post-card-shell] .post-card__menu-item:active,
+[data-theme="dark"] [data-post-card-shell] .post-card__menu-form:active > .post-card__menu-item {
             background: rgba(255, 255, 255, 0.16) !important;
             color: #ffffff !important;
         }
@@ -5321,11 +5512,11 @@ SVG;
         }
 
         [data-post-card-shell] [data-post-card-menu] a.post-card__menu-item,
-        [data-post-card-shell] [data-post-card-menu] button.post-card__menu-item,
-        [data-post-card-shell] [data-post-card-menu] .post-card__menu-form > button.post-card__menu-item,
-        [data-post-card-shell] .post-card__menu a.post-card__menu-item,
-        [data-post-card-shell] .post-card__menu button.post-card__menu-item,
-        [data-post-card-shell] .post-card__menu .post-card__menu-form > button.post-card__menu-item {
+[data-post-card-shell] [data-post-card-menu] button.post-card__menu-item,
+[data-post-card-shell] [data-post-card-menu] .post-card__menu-form > button.post-card__menu-item,
+[data-post-card-shell] .post-card__menu a.post-card__menu-item,
+[data-post-card-shell] .post-card__menu button.post-card__menu-item,
+[data-post-card-shell] .post-card__menu .post-card__menu-form > button.post-card__menu-item {
             display: flex !important;
             align-items: center !important;
             justify-content: flex-start !important;
@@ -5349,7 +5540,7 @@ SVG;
         }
 
         [data-post-card-shell] [data-post-card-menu] .post-card__menu-form,
-        [data-post-card-shell] .post-card__menu .post-card__menu-form {
+[data-post-card-shell] .post-card__menu .post-card__menu-form {
             display: block !important;
             width: 100% !important;
             margin: 0 !important;
@@ -5357,19 +5548,19 @@ SVG;
         }
 
         [data-post-card-shell] [data-post-card-menu] a.post-card__menu-item:hover,
-        [data-post-card-shell] [data-post-card-menu] a.post-card__menu-item:focus,
-        [data-post-card-shell] [data-post-card-menu] a.post-card__menu-item:focus-visible,
-        [data-post-card-shell] [data-post-card-menu] button.post-card__menu-item:hover,
-        [data-post-card-shell] [data-post-card-menu] button.post-card__menu-item:focus,
-        [data-post-card-shell] [data-post-card-menu] button.post-card__menu-item:focus-visible,
-        [data-post-card-shell] [data-post-card-menu] .post-card__menu-form:hover > button.post-card__menu-item,
-        [data-post-card-shell] .post-card__menu a.post-card__menu-item:hover,
-        [data-post-card-shell] .post-card__menu a.post-card__menu-item:focus,
-        [data-post-card-shell] .post-card__menu a.post-card__menu-item:focus-visible,
-        [data-post-card-shell] .post-card__menu button.post-card__menu-item:hover,
-        [data-post-card-shell] .post-card__menu button.post-card__menu-item:focus,
-        [data-post-card-shell] .post-card__menu button.post-card__menu-item:focus-visible,
-        [data-post-card-shell] .post-card__menu .post-card__menu-form:hover > button.post-card__menu-item {
+[data-post-card-shell] [data-post-card-menu] a.post-card__menu-item:focus,
+[data-post-card-shell] [data-post-card-menu] a.post-card__menu-item:focus-visible,
+[data-post-card-shell] [data-post-card-menu] button.post-card__menu-item:hover,
+[data-post-card-shell] [data-post-card-menu] button.post-card__menu-item:focus,
+[data-post-card-shell] [data-post-card-menu] button.post-card__menu-item:focus-visible,
+[data-post-card-shell] [data-post-card-menu] .post-card__menu-form:hover > button.post-card__menu-item,
+[data-post-card-shell] .post-card__menu a.post-card__menu-item:hover,
+[data-post-card-shell] .post-card__menu a.post-card__menu-item:focus,
+[data-post-card-shell] .post-card__menu a.post-card__menu-item:focus-visible,
+[data-post-card-shell] .post-card__menu button.post-card__menu-item:hover,
+[data-post-card-shell] .post-card__menu button.post-card__menu-item:focus,
+[data-post-card-shell] .post-card__menu button.post-card__menu-item:focus-visible,
+[data-post-card-shell] .post-card__menu .post-card__menu-form:hover > button.post-card__menu-item {
             background-color: #f1f5f9 !important;
             background-image: none !important;
             color: #0f172a !important;
@@ -5377,90 +5568,148 @@ SVG;
         }
 
         [data-post-card-shell] [data-post-card-menu] a.post-card__menu-item:active,
-        [data-post-card-shell] [data-post-card-menu] button.post-card__menu-item:active,
-        [data-post-card-shell] [data-post-card-menu] .post-card__menu-form:active > button.post-card__menu-item,
-        [data-post-card-shell] .post-card__menu a.post-card__menu-item:active,
-        [data-post-card-shell] .post-card__menu button.post-card__menu-item:active,
-        [data-post-card-shell] .post-card__menu .post-card__menu-form:active > button.post-card__menu-item {
+[data-post-card-shell] [data-post-card-menu] button.post-card__menu-item:active,
+[data-post-card-shell] [data-post-card-menu] .post-card__menu-form:active > button.post-card__menu-item,
+[data-post-card-shell] .post-card__menu a.post-card__menu-item:active,
+[data-post-card-shell] .post-card__menu button.post-card__menu-item:active,
+[data-post-card-shell] .post-card__menu .post-card__menu-form:active > button.post-card__menu-item {
             background-color: #e5e7eb !important;
             background-image: none !important;
             color: #0f172a !important;
         }
 
         [data-post-card-shell] [data-post-card-menu] .post-card__menu-item span,
-        [data-post-card-shell] [data-post-card-menu] .post-card__menu-item iconify-icon,
-        [data-post-card-shell] .post-card__menu .post-card__menu-item span,
-        [data-post-card-shell] .post-card__menu .post-card__menu-item iconify-icon {
+[data-post-card-shell] [data-post-card-menu] .post-card__menu-item iconify-icon,
+[data-post-card-shell] .post-card__menu .post-card__menu-item span,
+[data-post-card-shell] .post-card__menu .post-card__menu-item iconify-icon {
             color: inherit !important;
             pointer-events: none !important;
         }
 
         [data-post-card-shell] [data-post-card-menu] .post-card__menu-item--danger,
-        [data-post-card-shell] .post-card__menu .post-card__menu-item--danger {
+[data-post-card-shell] .post-card__menu .post-card__menu-item--danger {
             color: #b42318 !important;
         }
 
         [data-post-card-shell] [data-post-card-menu] .post-card__menu-item--danger:hover,
-        [data-post-card-shell] [data-post-card-menu] .post-card__menu-item--danger:focus,
-        [data-post-card-shell] [data-post-card-menu] .post-card__menu-item--danger:focus-visible,
-        [data-post-card-shell] [data-post-card-menu] .post-card__menu-form:hover > .post-card__menu-item--danger,
-        [data-post-card-shell] .post-card__menu .post-card__menu-item--danger:hover,
-        [data-post-card-shell] .post-card__menu .post-card__menu-item--danger:focus,
-        [data-post-card-shell] .post-card__menu .post-card__menu-item--danger:focus-visible,
-        [data-post-card-shell] .post-card__menu .post-card__menu-form:hover > .post-card__menu-item--danger {
+[data-post-card-shell] [data-post-card-menu] .post-card__menu-item--danger:focus,
+[data-post-card-shell] [data-post-card-menu] .post-card__menu-item--danger:focus-visible,
+[data-post-card-shell] [data-post-card-menu] .post-card__menu-form:hover > .post-card__menu-item--danger,
+[data-post-card-shell] .post-card__menu .post-card__menu-item--danger:hover,
+[data-post-card-shell] .post-card__menu .post-card__menu-item--danger:focus,
+[data-post-card-shell] .post-card__menu .post-card__menu-item--danger:focus-visible,
+[data-post-card-shell] .post-card__menu .post-card__menu-form:hover > .post-card__menu-item--danger {
             background-color: #f1f5f9 !important;
             color: #b42318 !important;
         }
 
         [data-post-card-shell] [data-post-card-menu] .post-card__menu-item--danger:active,
-        [data-post-card-shell] [data-post-card-menu] .post-card__menu-form:active > .post-card__menu-item--danger,
-        [data-post-card-shell] .post-card__menu .post-card__menu-item--danger:active,
-        [data-post-card-shell] .post-card__menu .post-card__menu-form:active > .post-card__menu-item--danger {
+[data-post-card-shell] [data-post-card-menu] .post-card__menu-form:active > .post-card__menu-item--danger,
+[data-post-card-shell] .post-card__menu .post-card__menu-item--danger:active,
+[data-post-card-shell] .post-card__menu .post-card__menu-form:active > .post-card__menu-item--danger {
             background-color: #e5e7eb !important;
             color: #991b1b !important;
         }
 
         html.dark [data-post-card-shell] [data-post-card-menu] a.post-card__menu-item:hover,
-        html.dark [data-post-card-shell] [data-post-card-menu] a.post-card__menu-item:focus,
-        html.dark [data-post-card-shell] [data-post-card-menu] a.post-card__menu-item:focus-visible,
-        html.dark [data-post-card-shell] [data-post-card-menu] button.post-card__menu-item:hover,
-        html.dark [data-post-card-shell] [data-post-card-menu] button.post-card__menu-item:focus,
-        html.dark [data-post-card-shell] [data-post-card-menu] button.post-card__menu-item:focus-visible,
-        html.dark [data-post-card-shell] [data-post-card-menu] .post-card__menu-form:hover > button.post-card__menu-item,
-        body.dark [data-post-card-shell] [data-post-card-menu] a.post-card__menu-item:hover,
-        body.dark [data-post-card-shell] [data-post-card-menu] button.post-card__menu-item:hover,
-        body.dark [data-post-card-shell] [data-post-card-menu] .post-card__menu-form:hover > button.post-card__menu-item,
-        .dark [data-post-card-shell] [data-post-card-menu] a.post-card__menu-item:hover,
-        .dark [data-post-card-shell] [data-post-card-menu] button.post-card__menu-item:hover,
-        .dark [data-post-card-shell] [data-post-card-menu] .post-card__menu-form:hover > button.post-card__menu-item,
-        [data-theme="dark"] [data-post-card-shell] [data-post-card-menu] a.post-card__menu-item:hover,
-        [data-theme="dark"] [data-post-card-shell] [data-post-card-menu] button.post-card__menu-item:hover,
-        [data-theme="dark"] [data-post-card-shell] [data-post-card-menu] .post-card__menu-form:hover > button.post-card__menu-item {
+html.dark [data-post-card-shell] [data-post-card-menu] a.post-card__menu-item:focus,
+html.dark [data-post-card-shell] [data-post-card-menu] a.post-card__menu-item:focus-visible,
+html.dark [data-post-card-shell] [data-post-card-menu] button.post-card__menu-item:hover,
+html.dark [data-post-card-shell] [data-post-card-menu] button.post-card__menu-item:focus,
+html.dark [data-post-card-shell] [data-post-card-menu] button.post-card__menu-item:focus-visible,
+html.dark [data-post-card-shell] [data-post-card-menu] .post-card__menu-form:hover > button.post-card__menu-item,
+body.dark [data-post-card-shell] [data-post-card-menu] a.post-card__menu-item:hover,
+body.dark [data-post-card-shell] [data-post-card-menu] button.post-card__menu-item:hover,
+body.dark [data-post-card-shell] [data-post-card-menu] .post-card__menu-form:hover > button.post-card__menu-item,
+.dark [data-post-card-shell] [data-post-card-menu] a.post-card__menu-item:hover,
+.dark [data-post-card-shell] [data-post-card-menu] button.post-card__menu-item:hover,
+.dark [data-post-card-shell] [data-post-card-menu] .post-card__menu-form:hover > button.post-card__menu-item,
+[data-theme="dark"] [data-post-card-shell] [data-post-card-menu] a.post-card__menu-item:hover,
+[data-theme="dark"] [data-post-card-shell] [data-post-card-menu] button.post-card__menu-item:hover,
+[data-theme="dark"] [data-post-card-shell] [data-post-card-menu] .post-card__menu-form:hover > button.post-card__menu-item {
             background-color: rgba(255, 255, 255, 0.10) !important;
             background-image: none !important;
             color: #ffffff !important;
         }
 
         html.dark [data-post-card-shell] [data-post-card-menu] a.post-card__menu-item:active,
-        html.dark [data-post-card-shell] [data-post-card-menu] button.post-card__menu-item:active,
-        html.dark [data-post-card-shell] [data-post-card-menu] .post-card__menu-form:active > button.post-card__menu-item,
-        body.dark [data-post-card-shell] [data-post-card-menu] a.post-card__menu-item:active,
-        body.dark [data-post-card-shell] [data-post-card-menu] button.post-card__menu-item:active,
-        body.dark [data-post-card-shell] [data-post-card-menu] .post-card__menu-form:active > button.post-card__menu-item,
-        .dark [data-post-card-shell] [data-post-card-menu] a.post-card__menu-item:active,
-        .dark [data-post-card-shell] [data-post-card-menu] button.post-card__menu-item:active,
-        .dark [data-post-card-shell] [data-post-card-menu] .post-card__menu-form:active > button.post-card__menu-item,
-        [data-theme="dark"] [data-post-card-shell] [data-post-card-menu] a.post-card__menu-item:active,
-        [data-theme="dark"] [data-post-card-shell] [data-post-card-menu] button.post-card__menu-item:active,
-        [data-theme="dark"] [data-post-card-shell] [data-post-card-menu] .post-card__menu-form:active > button.post-card__menu-item {
+html.dark [data-post-card-shell] [data-post-card-menu] button.post-card__menu-item:active,
+html.dark [data-post-card-shell] [data-post-card-menu] .post-card__menu-form:active > button.post-card__menu-item,
+body.dark [data-post-card-shell] [data-post-card-menu] a.post-card__menu-item:active,
+body.dark [data-post-card-shell] [data-post-card-menu] button.post-card__menu-item:active,
+body.dark [data-post-card-shell] [data-post-card-menu] .post-card__menu-form:active > button.post-card__menu-item,
+.dark [data-post-card-shell] [data-post-card-menu] a.post-card__menu-item:active,
+.dark [data-post-card-shell] [data-post-card-menu] button.post-card__menu-item:active,
+.dark [data-post-card-shell] [data-post-card-menu] .post-card__menu-form:active > button.post-card__menu-item,
+[data-theme="dark"] [data-post-card-shell] [data-post-card-menu] a.post-card__menu-item:active,
+[data-theme="dark"] [data-post-card-shell] [data-post-card-menu] button.post-card__menu-item:active,
+[data-theme="dark"] [data-post-card-shell] [data-post-card-menu] .post-card__menu-form:active > button.post-card__menu-item {
             background-color: rgba(255, 255, 255, 0.16) !important;
             color: #ffffff !important;
         }
 
+
+
+        /* Alt aksiyon ikonlari: yorum,
+bookmark,
+paylas {
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            gap: 7px !important;
+            min-width: 44px !important;
+            height: 36px !important;
+            padding: 0 13px !important;
+            border: 0 !important;
+            border-radius: 8px !important;
+            background: #f1f5f9 !important;
+            color: #475569 !important;
+            line-height: 1 !important;
+            text-decoration: none !important;
+            box-shadow: none !important;
+            cursor: pointer !important;
+            appearance: none !important;
+            -webkit-appearance: none !important;
+            transition: background-color .14s ease, color .14s ease, transform .12s ease !important;
+        }
+
+
+        /* FINAL OVERRIDE: alt ikonlar sadece hover/tiklama aninda gri {
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            gap: 6px !important;
+            min-width: 44px !important;
+            height: 36px !important;
+            padding: 0 13px !important;
+            border: 0 !important;
+            border-radius: 8px !important;
+            background: transparent !important;
+            color: #475569 !important;
+            line-height: 1 !important;
+            text-decoration: none !important;
+            box-shadow: none !important;
+            cursor: pointer !important;
+            appearance: none !important;
+            -webkit-appearance: none !important;
+            transition: none !important;
+            transform: none !important;
+        }
+
+
+
+        /* FINAL OVERRIDE: action icons larger,
+round 3-dot button {
+            min-width: 48px !important;
+            height: 38px !important;
+            padding: 0 14px !important;
+            border-radius: 8px !important;
+        }
+
         [data-post-card-shell] .post-card__menu-wrap .menu-btn,
-        [data-post-card-shell] .post-card__menu-wrap .menu-button,
-        [data-post-card-shell] .post-card__menu-wrap button.menu-btn,
-        [data-post-card-shell] .post-card__menu-wrap button.menu-button {
+[data-post-card-shell] .post-card__menu-wrap .menu-button,
+[data-post-card-shell] .post-card__menu-wrap button.menu-btn,
+[data-post-card-shell] .post-card__menu-wrap button.menu-button {
             width: 38px !important;
             height: 38px !important;
             min-width: 38px !important;
@@ -5475,7 +5724,7 @@ SVG;
         }
 
         [data-post-card-shell] .post-card__menu-wrap .menu-btn .post-card__inline-icon,
-        [data-post-card-shell] .post-card__menu-wrap .menu-button .post-card__inline-icon {
+[data-post-card-shell] .post-card__menu-wrap .menu-button .post-card__inline-icon {
             width: 20px !important;
             height: 20px !important;
             display: inline-flex !important;
@@ -5485,20 +5734,20 @@ SVG;
         }
 
         [data-post-card-shell] .post-card__menu-wrap .menu-btn iconify-icon,
-        [data-post-card-shell] .post-card__menu-wrap .menu-button iconify-icon {
+[data-post-card-shell] .post-card__menu-wrap .menu-button iconify-icon {
             font-size: 20px !important;
         }
 
         [data-post-card-shell] .post-card__menu-wrap .menu-btn:hover,
-        [data-post-card-shell] .post-card__menu-wrap .menu-button:hover,
-        [data-post-card-shell] .post-card__menu-wrap .menu-btn:focus-visible,
-        [data-post-card-shell] .post-card__menu-wrap .menu-button:focus-visible {
+[data-post-card-shell] .post-card__menu-wrap .menu-button:hover,
+[data-post-card-shell] .post-card__menu-wrap .menu-btn:focus-visible,
+[data-post-card-shell] .post-card__menu-wrap .menu-button:focus-visible {
             background: #e5e7eb !important;
             border-radius: 999px !important;
         }
 
         [data-post-card-shell] .post-card__menu-wrap .menu-btn:active,
-        [data-post-card-shell] .post-card__menu-wrap .menu-button:active {
+[data-post-card-shell] .post-card__menu-wrap .menu-button:active {
             background: #d1d5db !important;
             border-radius: 999px !important;
         }
@@ -5539,32 +5788,32 @@ SVG;
         }
 
         html.dark [data-post-card-shell] .post-card__menu-wrap .menu-btn:hover,
-        html.dark [data-post-card-shell] .post-card__menu-wrap .menu-button:hover,
-        html.dark [data-post-card-shell] .post-card__menu-wrap .menu-btn:focus-visible,
-        html.dark [data-post-card-shell] .post-card__menu-wrap .menu-button:focus-visible,
-        body.dark [data-post-card-shell] .post-card__menu-wrap .menu-btn:hover,
-        body.dark [data-post-card-shell] .post-card__menu-wrap .menu-button:hover,
-        body.dark [data-post-card-shell] .post-card__menu-wrap .menu-btn:focus-visible,
-        body.dark [data-post-card-shell] .post-card__menu-wrap .menu-button:focus-visible,
-        .dark [data-post-card-shell] .post-card__menu-wrap .menu-btn:hover,
-        .dark [data-post-card-shell] .post-card__menu-wrap .menu-button:hover,
-        .dark [data-post-card-shell] .post-card__menu-wrap .menu-btn:focus-visible,
-        .dark [data-post-card-shell] .post-card__menu-wrap .menu-button:focus-visible,
-        [data-theme="dark"] [data-post-card-shell] .post-card__menu-wrap .menu-btn:hover,
-        [data-theme="dark"] [data-post-card-shell] .post-card__menu-wrap .menu-button:hover,
-        [data-theme="dark"] [data-post-card-shell] .post-card__menu-wrap .menu-btn:focus-visible,
-        [data-theme="dark"] [data-post-card-shell] .post-card__menu-wrap .menu-button:focus-visible {
+html.dark [data-post-card-shell] .post-card__menu-wrap .menu-button:hover,
+html.dark [data-post-card-shell] .post-card__menu-wrap .menu-btn:focus-visible,
+html.dark [data-post-card-shell] .post-card__menu-wrap .menu-button:focus-visible,
+body.dark [data-post-card-shell] .post-card__menu-wrap .menu-btn:hover,
+body.dark [data-post-card-shell] .post-card__menu-wrap .menu-button:hover,
+body.dark [data-post-card-shell] .post-card__menu-wrap .menu-btn:focus-visible,
+body.dark [data-post-card-shell] .post-card__menu-wrap .menu-button:focus-visible,
+.dark [data-post-card-shell] .post-card__menu-wrap .menu-btn:hover,
+.dark [data-post-card-shell] .post-card__menu-wrap .menu-button:hover,
+.dark [data-post-card-shell] .post-card__menu-wrap .menu-btn:focus-visible,
+.dark [data-post-card-shell] .post-card__menu-wrap .menu-button:focus-visible,
+[data-theme="dark"] [data-post-card-shell] .post-card__menu-wrap .menu-btn:hover,
+[data-theme="dark"] [data-post-card-shell] .post-card__menu-wrap .menu-button:hover,
+[data-theme="dark"] [data-post-card-shell] .post-card__menu-wrap .menu-btn:focus-visible,
+[data-theme="dark"] [data-post-card-shell] .post-card__menu-wrap .menu-button:focus-visible {
             background: rgba(255, 255, 255, 0.12) !important;
         }
 
         html.dark [data-post-card-shell] .post-card__menu-wrap .menu-btn:active,
-        html.dark [data-post-card-shell] .post-card__menu-wrap .menu-button:active,
-        body.dark [data-post-card-shell] .post-card__menu-wrap .menu-btn:active,
-        body.dark [data-post-card-shell] .post-card__menu-wrap .menu-button:active,
-        .dark [data-post-card-shell] .post-card__menu-wrap .menu-btn:active,
-        .dark [data-post-card-shell] .post-card__menu-wrap .menu-button:active,
-        [data-theme="dark"] [data-post-card-shell] .post-card__menu-wrap .menu-btn:active,
-        [data-theme="dark"] [data-post-card-shell] .post-card__menu-wrap .menu-button:active {
+html.dark [data-post-card-shell] .post-card__menu-wrap .menu-button:active,
+body.dark [data-post-card-shell] .post-card__menu-wrap .menu-btn:active,
+body.dark [data-post-card-shell] .post-card__menu-wrap .menu-button:active,
+.dark [data-post-card-shell] .post-card__menu-wrap .menu-btn:active,
+.dark [data-post-card-shell] .post-card__menu-wrap .menu-button:active,
+[data-theme="dark"] [data-post-card-shell] .post-card__menu-wrap .menu-btn:active,
+[data-theme="dark"] [data-post-card-shell] .post-card__menu-wrap .menu-button:active {
             background: rgba(255, 255, 255, 0.18) !important;
         }
 
@@ -5598,7 +5847,7 @@ SVG;
         }
 
         [data-post-card-shell] .post-summary-shell.is-expanded::after,
-        [data-post-card-shell] .post-summary.is-expanded::after {
+[data-post-card-shell] .post-summary.is-expanded::after {
             content: none !important;
             display: none !important;
         }
@@ -5618,9 +5867,9 @@ SVG;
         }
 
         html.dark [data-post-card-shell] .post-summary-shell.is-collapsed::after,
-        body.dark [data-post-card-shell] .post-summary-shell.is-collapsed::after,
-        .dark [data-post-card-shell] .post-summary-shell.is-collapsed::after,
-        [data-theme="dark"] [data-post-card-shell] .post-summary-shell.is-collapsed::after {
+body.dark [data-post-card-shell] .post-summary-shell.is-collapsed::after,
+.dark [data-post-card-shell] .post-summary-shell.is-collapsed::after,
+[data-theme="dark"] [data-post-card-shell] .post-summary-shell.is-collapsed::after {
             background: linear-gradient(
                 180deg,
                 rgba(17, 24, 39, 0) 0%,
@@ -5649,9 +5898,9 @@ SVG;
         }
 
         html.dark [data-post-card-shell] .post-summary-shell.is-collapsed::after,
-        body.dark [data-post-card-shell] .post-summary-shell.is-collapsed::after,
-        .dark [data-post-card-shell] .post-summary-shell.is-collapsed::after,
-        [data-theme="dark"] [data-post-card-shell] .post-summary-shell.is-collapsed::after {
+body.dark [data-post-card-shell] .post-summary-shell.is-collapsed::after,
+.dark [data-post-card-shell] .post-summary-shell.is-collapsed::after,
+[data-theme="dark"] [data-post-card-shell] .post-summary-shell.is-collapsed::after {
             background: linear-gradient(180deg, rgba(17,24,39,0) 0%, rgba(17,24,39,.84) 48%, #111827 100%) !important;
         }
 
@@ -5680,7 +5929,7 @@ SVG;
         }
 
         [data-post-card-shell] .post-card__full-paragraph,
-        [data-post-card-shell] .post-card__full-quote {
+[data-post-card-shell] .post-card__full-quote {
             margin: 0;
             color: #0f172a;
             font-size: 15px;
@@ -5698,8 +5947,8 @@ SVG;
         }
 
         [data-post-card-shell] .post-card__full-list,
-        [data-post-card-shell] .post-card__full-list--ordered,
-        [data-post-card-shell] .post-card__full-checklist {
+[data-post-card-shell] .post-card__full-list--ordered,
+[data-post-card-shell] .post-card__full-checklist {
             margin: 0;
             padding-left: 22px;
             color: #0f172a;
@@ -5794,70 +6043,70 @@ SVG;
         }
 
         html.dark [data-post-card-shell] .post-card__full-content,
-        html.dark [data-post-card-shell] .post-card__full-heading,
-        html.dark [data-post-card-shell] .post-card__full-paragraph,
-        html.dark [data-post-card-shell] .post-card__full-list,
-        html.dark [data-post-card-shell] .post-card__full-list--ordered,
-        html.dark [data-post-card-shell] .post-card__full-checklist,
-        html.dark [data-post-card-shell] .post-card__full-table td,
-        body.dark [data-post-card-shell] .post-card__full-content,
-        body.dark [data-post-card-shell] .post-card__full-heading,
-        body.dark [data-post-card-shell] .post-card__full-paragraph,
-        body.dark [data-post-card-shell] .post-card__full-list,
-        body.dark [data-post-card-shell] .post-card__full-list--ordered,
-        body.dark [data-post-card-shell] .post-card__full-checklist,
-        body.dark [data-post-card-shell] .post-card__full-table td,
-        .dark [data-post-card-shell] .post-card__full-content,
-        .dark [data-post-card-shell] .post-card__full-heading,
-        .dark [data-post-card-shell] .post-card__full-paragraph,
-        .dark [data-post-card-shell] .post-card__full-list,
-        .dark [data-post-card-shell] .post-card__full-list--ordered,
-        .dark [data-post-card-shell] .post-card__full-checklist,
-        .dark [data-post-card-shell] .post-card__full-table td,
-        [data-theme="dark"] [data-post-card-shell] .post-card__full-content,
-        [data-theme="dark"] [data-post-card-shell] .post-card__full-heading,
-        [data-theme="dark"] [data-post-card-shell] .post-card__full-paragraph,
-        [data-theme="dark"] [data-post-card-shell] .post-card__full-list,
-        [data-theme="dark"] [data-post-card-shell] .post-card__full-list--ordered,
-        [data-theme="dark"] [data-post-card-shell] .post-card__full-checklist,
-        [data-theme="dark"] [data-post-card-shell] .post-card__full-table td { color: #f8fafc !important; }
+html.dark [data-post-card-shell] .post-card__full-heading,
+html.dark [data-post-card-shell] .post-card__full-paragraph,
+html.dark [data-post-card-shell] .post-card__full-list,
+html.dark [data-post-card-shell] .post-card__full-list--ordered,
+html.dark [data-post-card-shell] .post-card__full-checklist,
+html.dark [data-post-card-shell] .post-card__full-table td,
+body.dark [data-post-card-shell] .post-card__full-content,
+body.dark [data-post-card-shell] .post-card__full-heading,
+body.dark [data-post-card-shell] .post-card__full-paragraph,
+body.dark [data-post-card-shell] .post-card__full-list,
+body.dark [data-post-card-shell] .post-card__full-list--ordered,
+body.dark [data-post-card-shell] .post-card__full-checklist,
+body.dark [data-post-card-shell] .post-card__full-table td,
+.dark [data-post-card-shell] .post-card__full-content,
+.dark [data-post-card-shell] .post-card__full-heading,
+.dark [data-post-card-shell] .post-card__full-paragraph,
+.dark [data-post-card-shell] .post-card__full-list,
+.dark [data-post-card-shell] .post-card__full-list--ordered,
+.dark [data-post-card-shell] .post-card__full-checklist,
+.dark [data-post-card-shell] .post-card__full-table td,
+[data-theme="dark"] [data-post-card-shell] .post-card__full-content,
+[data-theme="dark"] [data-post-card-shell] .post-card__full-heading,
+[data-theme="dark"] [data-post-card-shell] .post-card__full-paragraph,
+[data-theme="dark"] [data-post-card-shell] .post-card__full-list,
+[data-theme="dark"] [data-post-card-shell] .post-card__full-list--ordered,
+[data-theme="dark"] [data-post-card-shell] .post-card__full-checklist,
+[data-theme="dark"] [data-post-card-shell] .post-card__full-table td { color: #f8fafc !important; }
 
         html.dark [data-post-card-shell] .post-card__full-quote,
-        body.dark [data-post-card-shell] .post-card__full-quote,
-        .dark [data-post-card-shell] .post-card__full-quote,
-        [data-theme="dark"] [data-post-card-shell] .post-card__full-quote {
+body.dark [data-post-card-shell] .post-card__full-quote,
+.dark [data-post-card-shell] .post-card__full-quote,
+[data-theme="dark"] [data-post-card-shell] .post-card__full-quote {
             background: rgba(255,255,255,.06) !important;
             border-left-color: rgba(147,197,253,.55) !important;
             color: #e5e7eb !important;
         }
 
         html.dark [data-post-card-shell] .post-card__full-figure,
-        html.dark [data-post-card-shell] .post-card__full-figure img,
-        body.dark [data-post-card-shell] .post-card__full-figure,
-        body.dark [data-post-card-shell] .post-card__full-figure img,
-        .dark [data-post-card-shell] .post-card__full-figure,
-        .dark [data-post-card-shell] .post-card__full-figure img,
-        [data-theme="dark"] [data-post-card-shell] .post-card__full-figure,
-        [data-theme="dark"] [data-post-card-shell] .post-card__full-figure img { background: #111827 !important; }
+html.dark [data-post-card-shell] .post-card__full-figure img,
+body.dark [data-post-card-shell] .post-card__full-figure,
+body.dark [data-post-card-shell] .post-card__full-figure img,
+.dark [data-post-card-shell] .post-card__full-figure,
+.dark [data-post-card-shell] .post-card__full-figure img,
+[data-theme="dark"] [data-post-card-shell] .post-card__full-figure,
+[data-theme="dark"] [data-post-card-shell] .post-card__full-figure img { background: #111827 !important; }
 
         html.dark [data-post-card-shell] .post-card__full-table-wrap,
-        body.dark [data-post-card-shell] .post-card__full-table-wrap,
-        .dark [data-post-card-shell] .post-card__full-table-wrap,
-        [data-theme="dark"] [data-post-card-shell] .post-card__full-table-wrap { border-color: rgba(255,255,255,.12) !important; }
+body.dark [data-post-card-shell] .post-card__full-table-wrap,
+.dark [data-post-card-shell] .post-card__full-table-wrap,
+[data-theme="dark"] [data-post-card-shell] .post-card__full-table-wrap { border-color: rgba(255,255,255,.12) !important; }
 
         html.dark [data-post-card-shell] .post-card__full-table td,
-        body.dark [data-post-card-shell] .post-card__full-table td,
-        .dark [data-post-card-shell] .post-card__full-table td,
-        [data-theme="dark"] [data-post-card-shell] .post-card__full-table td { border-bottom-color: rgba(255,255,255,.10) !important; }
+body.dark [data-post-card-shell] .post-card__full-table td,
+.dark [data-post-card-shell] .post-card__full-table td,
+[data-theme="dark"] [data-post-card-shell] .post-card__full-table td { border-bottom-color: rgba(255,255,255,.10) !important; }
 
         html.dark [data-post-card-shell] .post-summary-shell.is-collapsed::after,
-        body.dark [data-post-card-shell] .post-summary-shell.is-collapsed::after,
-        .dark [data-post-card-shell] .post-summary-shell.is-collapsed::after,
-        [data-theme="dark"] [data-post-card-shell] .post-summary-shell.is-collapsed::after {
+body.dark [data-post-card-shell] .post-summary-shell.is-collapsed::after,
+.dark [data-post-card-shell] .post-summary-shell.is-collapsed::after,
+[data-theme="dark"] [data-post-card-shell] .post-summary-shell.is-collapsed::after {
             background: linear-gradient(180deg, rgba(15,23,42,0) 0%, rgba(15,23,42,.86) 42%, #0f172a 100%) !important;
         }
 
-        @media (max-width: 640px) {
+        @media (max-width: 640px){
             [data-post-card-shell] .post-card__full-media-grid--multi { grid-template-columns: 1fr; }
             [data-post-card-shell] .post-card__full-figure img { max-height: none; }
         }
@@ -5872,7 +6121,7 @@ SVG;
         }
 
         [data-post-card-shell] .post-summary-shell.is-collapsed .post-summary,
-        [data-post-card-shell] .post-summary.is-collapsed {
+[data-post-card-shell] .post-summary.is-collapsed {
             display: -webkit-box !important;
             -webkit-box-orient: vertical !important;
             -webkit-line-clamp: 2 !important;
@@ -5884,7 +6133,7 @@ SVG;
         }
 
         [data-post-card-shell] .post-summary-shell.is-expanded .post-summary,
-        [data-post-card-shell] .post-summary.is-expanded {
+[data-post-card-shell] .post-summary.is-expanded {
             display: block !important;
             -webkit-line-clamp: unset !important;
             max-height: none !important;
@@ -5904,18 +6153,18 @@ SVG;
             margin-bottom: 10px !important;
         }
 
-        @media (max-width: 640px) {
+        @media (max-width: 640px){
             [data-post-card-shell] .post-summary-shell.is-collapsed .post-summary,
-            [data-post-card-shell] .post-summary.is-collapsed {
+[data-post-card-shell] .post-summary.is-collapsed {
                 -webkit-line-clamp: 2 !important;
                 max-height: calc(1.45em * 2) !important;
             }
         }
 
         html.dark [data-post-card-shell] .post-summary-shell.is-collapsed::after,
-        body.dark [data-post-card-shell] .post-summary-shell.is-collapsed::after,
-        .dark [data-post-card-shell] .post-summary-shell.is-collapsed::after,
-        [data-theme="dark"] [data-post-card-shell] .post-summary-shell.is-collapsed::after {
+body.dark [data-post-card-shell] .post-summary-shell.is-collapsed::after,
+.dark [data-post-card-shell] .post-summary-shell.is-collapsed::after,
+[data-theme="dark"] [data-post-card-shell] .post-summary-shell.is-collapsed::after {
             background: linear-gradient(180deg, rgba(17,24,39,0) 0%, rgba(17,24,39,.72) 45%, #111827 100%) !important;
         }
 
@@ -5928,7 +6177,7 @@ SVG;
         }
 
         [data-post-card-shell] .post-summary-shell.is-collapsed .post-summary,
-        [data-post-card-shell] .post-summary.is-collapsed {
+[data-post-card-shell] .post-summary.is-collapsed {
             display: -webkit-box !important;
             -webkit-box-orient: vertical !important;
             -webkit-line-clamp: 2 !important;
@@ -5940,7 +6189,7 @@ SVG;
         }
 
         [data-post-card-shell] .post-summary-shell.is-expanded .post-summary,
-        [data-post-card-shell] .post-summary.is-expanded {
+[data-post-card-shell] .post-summary.is-expanded {
             display: block !important;
             -webkit-line-clamp: unset !important;
             max-height: none !important;
@@ -5971,7 +6220,7 @@ SVG;
 
         /* OGRAPHI KESIN COZUM: Kapalıyken HER post özeti yalnızca 2 satır görünür. */
         [data-post-card-shell] [data-post-card-summary-shell],
-        [data-post-card-shell] .post-summary-shell {
+[data-post-card-shell] .post-summary-shell {
             position: relative !important;
             display: block !important;
             margin: 0 0 4px 0 !important;
@@ -5980,7 +6229,7 @@ SVG;
         }
 
         [data-post-card-shell] [data-post-card-summary],
-        [data-post-card-shell] .post-summary {
+[data-post-card-shell] .post-summary {
             display: -webkit-box !important;
             -webkit-box-orient: vertical !important;
             -webkit-line-clamp: 2 !important;
@@ -5996,13 +6245,13 @@ SVG;
         }
 
         [data-post-card-shell] [data-post-card-summary-shell].is-collapsed,
-        [data-post-card-shell] .post-summary-shell.is-collapsed {
+[data-post-card-shell] .post-summary-shell.is-collapsed {
             max-height: calc(1.55em * 2) !important;
             overflow: hidden !important;
         }
 
         [data-post-card-shell] [data-post-card-summary].is-collapsed,
-        [data-post-card-shell] .post-summary.is-collapsed {
+[data-post-card-shell] .post-summary.is-collapsed {
             display: -webkit-box !important;
             -webkit-box-orient: vertical !important;
             -webkit-line-clamp: 2 !important;
@@ -6013,9 +6262,9 @@ SVG;
         }
 
         [data-post-card-shell] [data-post-card-summary-shell].is-expanded,
-        [data-post-card-shell] .post-summary-shell.is-expanded,
-        [data-post-card-shell] [data-post-card-summary].is-expanded,
-        [data-post-card-shell] .post-summary.is-expanded {
+[data-post-card-shell] .post-summary-shell.is-expanded,
+[data-post-card-shell] [data-post-card-summary].is-expanded,
+[data-post-card-shell] .post-summary.is-expanded {
             display: block !important;
             -webkit-line-clamp: unset !important;
             line-clamp: unset !important;
@@ -6025,14 +6274,14 @@ SVG;
         }
 
         [data-post-card-shell] [data-post-card-full-content][hidden],
-        [data-post-card-shell] .post-card__full-content[hidden],
-        [data-post-card-shell]:not(.is-summary-expanded) [data-post-card-full-content],
-        [data-post-card-shell]:not(.is-summary-expanded) .post-card__full-content {
+[data-post-card-shell] .post-card__full-content[hidden],
+[data-post-card-shell]:not(.is-summary-expanded) [data-post-card-full-content],
+[data-post-card-shell]:not(.is-summary-expanded) .post-card__full-content {
             display: none !important;
         }
 
         [data-post-card-shell] .expand-link[data-post-card-expand],
-        [data-post-card-shell] button[data-post-card-expand] {
+[data-post-card-shell] button[data-post-card-expand] {
             display: inline-flex !important;
             visibility: visible !important;
             opacity: 1 !important;
@@ -6046,7 +6295,7 @@ SVG;
 
         /* OGRAPHI update: yumuşatılmış beyaz kayip efekti */
         [data-post-card-shell] [data-post-card-summary-shell].is-collapsed::after,
-        [data-post-card-shell] .post-summary-shell.is-collapsed::after {
+[data-post-card-shell] .post-summary-shell.is-collapsed::after {
             content: '' !important;
             position: absolute !important;
             left: 0 !important;
@@ -6065,21 +6314,21 @@ SVG;
         }
 
         [data-post-card-shell] [data-post-card-summary-shell].is-expanded::after,
-        [data-post-card-shell] .post-summary-shell.is-expanded::after,
-        [data-post-card-shell].is-summary-expanded [data-post-card-summary-shell]::after,
-        [data-post-card-shell].is-summary-expanded .post-summary-shell::after {
+[data-post-card-shell] .post-summary-shell.is-expanded::after,
+[data-post-card-shell].is-summary-expanded [data-post-card-summary-shell]::after,
+[data-post-card-shell].is-summary-expanded .post-summary-shell::after {
             content: none !important;
             display: none !important;
         }
 
         html.dark [data-post-card-shell] [data-post-card-summary-shell].is-collapsed::after,
-        body.dark [data-post-card-shell] [data-post-card-summary-shell].is-collapsed::after,
-        .dark [data-post-card-shell] [data-post-card-summary-shell].is-collapsed::after,
-        [data-theme="dark"] [data-post-card-shell] [data-post-card-summary-shell].is-collapsed::after,
-        html.dark [data-post-card-shell] .post-summary-shell.is-collapsed::after,
-        body.dark [data-post-card-shell] .post-summary-shell.is-collapsed::after,
-        .dark [data-post-card-shell] .post-summary-shell.is-collapsed::after,
-        [data-theme="dark"] [data-post-card-shell] .post-summary-shell.is-collapsed::after {
+body.dark [data-post-card-shell] [data-post-card-summary-shell].is-collapsed::after,
+.dark [data-post-card-shell] [data-post-card-summary-shell].is-collapsed::after,
+[data-theme="dark"] [data-post-card-shell] [data-post-card-summary-shell].is-collapsed::after,
+html.dark [data-post-card-shell] .post-summary-shell.is-collapsed::after,
+body.dark [data-post-card-shell] .post-summary-shell.is-collapsed::after,
+.dark [data-post-card-shell] .post-summary-shell.is-collapsed::after,
+[data-theme="dark"] [data-post-card-shell] .post-summary-shell.is-collapsed::after {
             background: linear-gradient(
                 180deg,
                 rgba(15, 23, 42, 0) 0%,
@@ -6093,26 +6342,27 @@ SVG;
 
         /* OGRAPHI update: başlık fontu biraz daha kalın */
         [data-post-card-shell] .post-title,
-        [data-post-card-shell] .post-title__link {
+[data-post-card-shell] .post-title__link {
             font-weight: 500 !important;
         }
 
 
-        /* Final width balance: beyaz kartı eşit şekilde sağdan-soldan daralt, iç padding korunur */
+        /* Final width balance: beyaz kartı eşit şekilde sağdan-soldan daralt,
+iç padding korunur */
         [data-post-card-shell] {
             width: 100% !important;
             max-width: 620px !important;
             margin-inline: auto !important;
         }
 
-        @media (max-width: 820px) {
+        @media (max-width: 820px){
             [data-post-card-shell] {
                 max-width: 600px !important;
                 margin-inline: auto !important;
             }
         }
 
-        @media (max-width: 560px) {
+        @media (max-width: 560px){
             [data-post-card-shell] {
                 width: calc(100% - 16px) !important;
                 max-width: calc(100% - 16px) !important;
@@ -6134,39 +6384,39 @@ SVG;
         }
 
         [data-post-card-shell] .post-card__full-paragraph,
-        [data-post-card-shell] .post-card__full-quote,
-        [data-post-card-shell] .post-card__full-list,
-        [data-post-card-shell] .post-card__full-list--ordered,
-        [data-post-card-shell] .post-card__full-checklist {
+[data-post-card-shell] .post-card__full-quote,
+[data-post-card-shell] .post-card__full-list,
+[data-post-card-shell] .post-card__full-list--ordered,
+[data-post-card-shell] .post-card__full-checklist {
             font-size: 14px !important;
             line-height: 1.64 !important;
         }
 
         [data-post-card-shell] .post-card__reaction-custom-icon,
-        [data-post-card-shell] .post-card__inline-icon {
+[data-post-card-shell] .post-card__inline-icon {
             width: 18px !important;
             height: 18px !important;
         }
 
         [data-post-card-shell] .post-card__reaction-custom-icon svg,
-        [data-post-card-shell] .post-card__inline-icon svg,
-        [data-post-card-shell] .post-card__inline-icon iconify-icon {
+[data-post-card-shell] .post-card__inline-icon svg,
+[data-post-card-shell] .post-card__inline-icon iconify-icon {
             width: 18px !important;
             height: 18px !important;
             font-size: 18px !important;
         }
 
         [data-post-card-shell] .post-card__bookmark-icon,
-        [data-post-card-shell] .post-card__share-icon,
-        [data-post-card-shell] .post-card__reaction-add-icon,
-        [data-post-card-shell] .post-card__expand-icon {
+[data-post-card-shell] .post-card__share-icon,
+[data-post-card-shell] .post-card__reaction-add-icon,
+[data-post-card-shell] .post-card__expand-icon {
             width: 15px !important;
             height: 15px !important;
         }
 
         [data-post-card-shell] .post-card__menu-item iconify-icon,
-        [data-post-card-shell] .post-card__source-icon iconify-icon,
-        [data-post-card-shell] .post-card__vote-cluster iconify-icon {
+[data-post-card-shell] .post-card__source-icon iconify-icon,
+[data-post-card-shell] .post-card__vote-cluster iconify-icon {
             font-size: 15px !important;
             width: 15px !important;
             height: 15px !important;
@@ -6184,7 +6434,7 @@ SVG;
             }
         }
 
-        @media (max-width: 960px) {
+        @media (max-width: 960px){
             [data-post-card-shell] {
                 width: calc(100vw - 16px) !important;
                 max-width: calc(100vw - 16px) !important;
@@ -6207,7 +6457,7 @@ SVG;
         }
 
         .ografi-post-batch-refresh,
-        .ografi-post-batch-control {
+.ografi-post-batch-control {
             appearance: none;
             -webkit-appearance: none;
             width: 42px;
@@ -6224,46 +6474,46 @@ SVG;
         }
 
         .ografi-post-batch-refresh:hover,
-        .ografi-post-batch-refresh:focus-visible,
-        .ografi-post-batch-control:hover,
-        .ografi-post-batch-control:focus-visible {
+.ografi-post-batch-refresh:focus-visible,
+.ografi-post-batch-control:hover,
+.ografi-post-batch-control:focus-visible {
             background: #ffffff;
             border-color: rgba(15, 23, 42, 0.10);
             outline: none;
         }
 
         .ografi-post-batch-refresh:active,
-        .ografi-post-batch-control:active {
+.ografi-post-batch-control:active {
             transform: none;
         }
 
         .ografi-post-batch-refresh svg,
-        .ografi-post-batch-control svg {
+.ografi-post-batch-control svg {
             width: 18px;
             height: 18px;
             display: block;
         }
 
         .ografi-post-batch-refresh.is-loading svg,
-        .ografi-post-batch-control.is-loading svg {
+.ografi-post-batch-control.is-loading svg {
             animation: none;
         }
 
         .ografi-post-batch-control:disabled,
-        .ografi-post-batch-refresh:disabled {
+.ografi-post-batch-refresh:disabled {
             opacity: 0.42;
             cursor: not-allowed;
             transform: none;
         }
 
         html.dark .ografi-post-batch-refresh,
-        body.dark .ografi-post-batch-refresh,
-        .dark .ografi-post-batch-refresh,
-        [data-theme="dark"] .ografi-post-batch-refresh,
-        html.dark .ografi-post-batch-control,
-        body.dark .ografi-post-batch-control,
-        .dark .ografi-post-batch-control,
-        [data-theme="dark"] .ografi-post-batch-control {
+body.dark .ografi-post-batch-refresh,
+.dark .ografi-post-batch-refresh,
+[data-theme="dark"] .ografi-post-batch-refresh,
+html.dark .ografi-post-batch-control,
+body.dark .ografi-post-batch-control,
+.dark .ografi-post-batch-control,
+[data-theme="dark"] .ografi-post-batch-control {
             background: #0b1120;
             color: #ffffff;
             border-color: rgba(255, 255, 255, 0.12);
@@ -6271,26 +6521,26 @@ SVG;
         }
 
         html.dark .ografi-post-batch-refresh:hover,
-        body.dark .ografi-post-batch-refresh:hover,
-        .dark .ografi-post-batch-refresh:hover,
-        [data-theme="dark"] .ografi-post-batch-refresh:hover,
-        html.dark .ografi-post-batch-refresh:focus-visible,
-        body.dark .ografi-post-batch-refresh:focus-visible,
-        .dark .ografi-post-batch-refresh:focus-visible,
-        [data-theme="dark"] .ografi-post-batch-refresh:focus-visible,
-        html.dark .ografi-post-batch-control:hover,
-        body.dark .ografi-post-batch-control:hover,
-        .dark .ografi-post-batch-control:hover,
-        [data-theme="dark"] .ografi-post-batch-control:hover,
-        html.dark .ografi-post-batch-control:focus-visible,
-        body.dark .ografi-post-batch-control:focus-visible,
-        .dark .ografi-post-batch-control:focus-visible,
-        [data-theme="dark"] .ografi-post-batch-control:focus-visible {
+body.dark .ografi-post-batch-refresh:hover,
+.dark .ografi-post-batch-refresh:hover,
+[data-theme="dark"] .ografi-post-batch-refresh:hover,
+html.dark .ografi-post-batch-refresh:focus-visible,
+body.dark .ografi-post-batch-refresh:focus-visible,
+.dark .ografi-post-batch-refresh:focus-visible,
+[data-theme="dark"] .ografi-post-batch-refresh:focus-visible,
+html.dark .ografi-post-batch-control:hover,
+body.dark .ografi-post-batch-control:hover,
+.dark .ografi-post-batch-control:hover,
+[data-theme="dark"] .ografi-post-batch-control:hover,
+html.dark .ografi-post-batch-control:focus-visible,
+body.dark .ografi-post-batch-control:focus-visible,
+.dark .ografi-post-batch-control:focus-visible,
+[data-theme="dark"] .ografi-post-batch-control:focus-visible {
             background: #111827;
             border-color: rgba(255, 255, 255, 0.18);
         }
 
-        @media (max-width: 560px) {
+        @media (max-width: 560px){
             .ografi-post-batch-refresh-wrap {
                 width: calc(100% - 16px);
                 max-width: calc(100% - 16px);
@@ -6299,7 +6549,7 @@ SVG;
             }
 
             .ografi-post-batch-refresh,
-            .ografi-post-batch-control {
+.ografi-post-batch-control {
                 width: 40px;
                 height: 40px;
             }
@@ -6307,7 +6557,132 @@ SVG;
 
 
 
-        /* Final fix: yükleme dalgası kalıcı değil; resimde de görünür, yükleme bitince kaybolur */
+        /* Final preload override: dalgalı yükleme efekti yazı + resim + ikon dahil her yerde görünsün */
+        [data-post-card-shell].is-preloading .avatar-wrap,
+[data-post-card-shell].is-preloading .author-avatar,
+[data-post-card-shell].is-preloading .author-avatar--fallback,
+[data-post-card-shell].is-preloading .author-avatar-fallback,
+[data-post-card-shell].is-preloading .category-badge,
+[data-post-card-shell].is-preloading .category-badge__fallback,
+[data-post-card-shell].is-preloading .comment-avatars,
+[data-post-card-shell].is-preloading .comment-avatar,
+[data-post-card-shell].is-preloading .menu-btn,
+[data-post-card-shell].is-preloading .post-card__inline-icon,
+[data-post-card-shell].is-preloading .post-card__bookmark-icon,
+[data-post-card-shell].is-preloading .post-card__share-icon,
+[data-post-card-shell].is-preloading .post-card__reaction-custom-icon,
+[data-post-card-shell].is-preloading .post-card__reaction-add-icon,
+[data-post-card-shell].is-preloading .post-card__source-icon,
+[data-post-card-shell].is-preloading .post-card__media-frame {
+            position: relative !important;
+            overflow: hidden !important;
+            isolation: isolate !important;
+        }
+
+        [data-post-card-shell].is-preloading .avatar-wrap::after,
+[data-post-card-shell].is-preloading .category-badge::after,
+[data-post-card-shell].is-preloading .comment-avatars::after,
+[data-post-card-shell].is-preloading .menu-btn::after,
+[data-post-card-shell].is-preloading .post-card__inline-icon::after,
+[data-post-card-shell].is-preloading .post-card__bookmark-icon::after,
+[data-post-card-shell].is-preloading .post-card__share-icon::after,
+[data-post-card-shell].is-preloading .post-card__reaction-custom-icon::after,
+[data-post-card-shell].is-preloading .post-card__reaction-add-icon::after,
+[data-post-card-shell].is-preloading .post-card__source-icon::after {
+            content: "";
+            position: absolute;
+            inset: -1px;
+            z-index: 3;
+            pointer-events: none;
+            border-radius: inherit;
+            background:
+                linear-gradient(
+                    100deg,
+                    rgba(255, 255, 255, 0) 0%,
+                    rgba(255, 255, 255, 0.72) 45%,
+                    rgba(255, 255, 255, 0) 80%
+                ),
+                linear-gradient(135deg, #eef2f7 0%, #f8fafc 48%, #e5e7eb 100%);
+            background-size: 220% 100%, 100% 100%;
+            animation:
+                postCardMediaPreload 1.05s linear infinite,
+                postCardPreloadOverlayOut 0.26s ease 1.05s forwards;
+        }
+
+        [data-post-card-shell].is-preloading .author-avatar,
+[data-post-card-shell].is-preloading .author-avatar--fallback,
+[data-post-card-shell].is-preloading .author-avatar-fallback,
+[data-post-card-shell].is-preloading .category-badge__image,
+[data-post-card-shell].is-preloading .category-badge__fallback,
+[data-post-card-shell].is-preloading .comment-avatar,
+[data-post-card-shell].is-preloading .post-card__inline-icon,
+[data-post-card-shell].is-preloading .post-card__inline-icon svg,
+[data-post-card-shell].is-preloading .post-card__inline-icon iconify-icon,
+[data-post-card-shell].is-preloading .post-card__bookmark-icon,
+[data-post-card-shell].is-preloading .post-card__share-icon,
+[data-post-card-shell].is-preloading .post-card__reaction-custom-icon,
+[data-post-card-shell].is-preloading .post-card__reaction-add-icon,
+[data-post-card-shell].is-preloading .post-card__source-icon,
+[data-post-card-shell].is-preloading .post-card__source-icon svg,
+[data-post-card-shell].is-preloading .post-card__source-icon iconify-icon,
+[data-post-card-shell].is-preloading .menu-btn > * {
+            opacity: 0 !important;
+        }
+
+        [data-post-card-shell].is-preloading .avatar-wrap,
+[data-post-card-shell].is-preloading .comment-avatars,
+[data-post-card-shell].is-preloading .menu-btn {
+            background: #eef2f7 !important;
+        }
+
+        @media (prefers-color-scheme: dark){
+            [data-post-card-shell].is-preloading .avatar-wrap::after,
+[data-post-card-shell].is-preloading .category-badge::after,
+[data-post-card-shell].is-preloading .comment-avatars::after,
+[data-post-card-shell].is-preloading .menu-btn::after,
+[data-post-card-shell].is-preloading .post-card__inline-icon::after,
+[data-post-card-shell].is-preloading .post-card__bookmark-icon::after,
+[data-post-card-shell].is-preloading .post-card__share-icon::after,
+[data-post-card-shell].is-preloading .post-card__reaction-custom-icon::after,
+[data-post-card-shell].is-preloading .post-card__reaction-add-icon::after,
+[data-post-card-shell].is-preloading .post-card__source-icon::after {
+                background:
+                    linear-gradient(
+                        100deg,
+                        rgba(255, 255, 255, 0) 0%,
+                        rgba(255, 255, 255, 0.08) 45%,
+                        rgba(255, 255, 255, 0) 80%
+                    ),
+                    linear-gradient(135deg, #111827 0%, #1f2937 48%, #0f172a 100%);
+                background-size: 220% 100%, 100% 100%;
+            }
+
+            [data-post-card-shell].is-preloading .avatar-wrap,
+[data-post-card-shell].is-preloading .comment-avatars,
+[data-post-card-shell].is-preloading .menu-btn {
+                background: #111827 !important;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce){
+            [data-post-card-shell].is-preloading .avatar-wrap::after,
+[data-post-card-shell].is-preloading .category-badge::after,
+[data-post-card-shell].is-preloading .comment-avatars::after,
+[data-post-card-shell].is-preloading .menu-btn::after,
+[data-post-card-shell].is-preloading .post-card__inline-icon::after,
+[data-post-card-shell].is-preloading .post-card__bookmark-icon::after,
+[data-post-card-shell].is-preloading .post-card__share-icon::after,
+[data-post-card-shell].is-preloading .post-card__reaction-custom-icon::after,
+[data-post-card-shell].is-preloading .post-card__reaction-add-icon::after,
+[data-post-card-shell].is-preloading .post-card__source-icon::after {
+                display: none !important;
+            }
+        }
+
+
+
+        /* Final fix: yükleme dalgası kalıcı değil; resimde de görünür,
+yükleme bitince kaybolur */
         [data-post-card-shell].is-preloading .post-card__media-frame::before {
             content: "" !important;
             display: block !important;
@@ -6329,10 +6704,68 @@ SVG;
             animation-play-state: running !important;
         }
 
+        [data-post-card-shell] .post-card__media-frame.is-loaded::before,
+[data-post-card-shell] .post-card__media-frame.is-error::before,
+[data-post-card-shell]:not(.is-preloading) .post-card__media-frame::before,
+[data-post-card-shell].is-preloading-done .post-card__media-frame::before,
+[data-post-card-shell].is-preloading-done .avatar-wrap::after,
+[data-post-card-shell].is-preloading-done .category-badge::after,
+[data-post-card-shell].is-preloading-done .comment-avatars::after,
+[data-post-card-shell].is-preloading-done .menu-btn::after,
+[data-post-card-shell].is-preloading-done .post-card__inline-icon::after,
+[data-post-card-shell].is-preloading-done .post-card__bookmark-icon::after,
+[data-post-card-shell].is-preloading-done .post-card__share-icon::after,
+[data-post-card-shell].is-preloading-done .post-card__reaction-custom-icon::after,
+[data-post-card-shell].is-preloading-done .post-card__reaction-add-icon::after,
+[data-post-card-shell].is-preloading-done .post-card__source-icon::after {
+            content: none !important;
+            opacity: 0 !important;
+            visibility: hidden !important;
+            display: none !important;
+            animation: none !important;
+        }
+
+        [data-post-card-shell].is-preloading-done .author-avatar,
+[data-post-card-shell].is-preloading-done .author-avatar--fallback,
+[data-post-card-shell].is-preloading-done .author-avatar-fallback,
+[data-post-card-shell].is-preloading-done .category-badge__image,
+[data-post-card-shell].is-preloading-done .category-badge__fallback,
+[data-post-card-shell].is-preloading-done .comment-avatar,
+[data-post-card-shell].is-preloading-done .post-card__inline-icon,
+[data-post-card-shell].is-preloading-done .post-card__inline-icon svg,
+[data-post-card-shell].is-preloading-done .post-card__inline-icon iconify-icon,
+[data-post-card-shell].is-preloading-done .post-card__bookmark-icon,
+[data-post-card-shell].is-preloading-done .post-card__share-icon,
+[data-post-card-shell].is-preloading-done .post-card__reaction-custom-icon,
+[data-post-card-shell].is-preloading-done .post-card__reaction-add-icon,
+[data-post-card-shell].is-preloading-done .post-card__source-icon,
+[data-post-card-shell].is-preloading-done .post-card__source-icon svg,
+[data-post-card-shell].is-preloading-done .post-card__source-icon iconify-icon,
+[data-post-card-shell].is-preloading-done .menu-btn > *,
+[data-post-card-shell]:not(.is-preloading) .author-avatar,
+[data-post-card-shell]:not(.is-preloading) .author-avatar--fallback,
+[data-post-card-shell]:not(.is-preloading) .author-avatar-fallback,
+[data-post-card-shell]:not(.is-preloading) .category-badge__image,
+[data-post-card-shell]:not(.is-preloading) .category-badge__fallback,
+[data-post-card-shell]:not(.is-preloading) .comment-avatar,
+[data-post-card-shell]:not(.is-preloading) .post-card__inline-icon,
+[data-post-card-shell]:not(.is-preloading) .post-card__inline-icon svg,
+[data-post-card-shell]:not(.is-preloading) .post-card__inline-icon iconify-icon,
+[data-post-card-shell]:not(.is-preloading) .post-card__bookmark-icon,
+[data-post-card-shell]:not(.is-preloading) .post-card__share-icon,
+[data-post-card-shell]:not(.is-preloading) .post-card__reaction-custom-icon,
+[data-post-card-shell]:not(.is-preloading) .post-card__reaction-add-icon,
+[data-post-card-shell]:not(.is-preloading) .post-card__source-icon,
+[data-post-card-shell]:not(.is-preloading) .post-card__source-icon svg,
+[data-post-card-shell]:not(.is-preloading) .post-card__source-icon iconify-icon,
+[data-post-card-shell]:not(.is-preloading) .menu-btn > * {
+            opacity: 1 !important;
+        }
+
         html.dark [data-post-card-shell].is-preloading .post-card__media-frame::before,
-        body.dark [data-post-card-shell].is-preloading .post-card__media-frame::before,
-        .dark [data-post-card-shell].is-preloading .post-card__media-frame::before,
-        [data-theme="dark"] [data-post-card-shell].is-preloading .post-card__media-frame::before {
+body.dark [data-post-card-shell].is-preloading .post-card__media-frame::before,
+.dark [data-post-card-shell].is-preloading .post-card__media-frame::before,
+[data-theme="dark"] [data-post-card-shell].is-preloading .post-card__media-frame::before {
             background:
                 linear-gradient(
                     100deg,
@@ -6342,6 +6775,83 @@ SVG;
                 ),
                 linear-gradient(135deg, rgba(17, 24, 39, 0.94) 0%, rgba(31, 41, 55, 0.94) 48%, rgba(15, 23, 42, 0.94) 100%) !important;
             background-size: 220% 100%, 100% 100% !important;
+        }
+
+
+
+        /* FINAL FIX: icon/resim yükleme efekti kalıcı kalmasın */
+        [data-post-card-shell].is-preloading .author-avatar,
+[data-post-card-shell].is-preloading .author-avatar--fallback,
+[data-post-card-shell].is-preloading .author-avatar-fallback,
+[data-post-card-shell].is-preloading .category-badge__image,
+[data-post-card-shell].is-preloading .category-badge__fallback,
+[data-post-card-shell].is-preloading .comment-avatar,
+[data-post-card-shell].is-preloading .post-card__inline-icon,
+[data-post-card-shell].is-preloading .post-card__inline-icon svg,
+[data-post-card-shell].is-preloading .post-card__inline-icon iconify-icon,
+[data-post-card-shell].is-preloading .post-card__bookmark-icon,
+[data-post-card-shell].is-preloading .post-card__share-icon,
+[data-post-card-shell].is-preloading .post-card__reaction-custom-icon,
+[data-post-card-shell].is-preloading .post-card__reaction-add-icon,
+[data-post-card-shell].is-preloading .post-card__source-icon,
+[data-post-card-shell].is-preloading .post-card__source-icon svg,
+[data-post-card-shell].is-preloading .post-card__source-icon iconify-icon,
+[data-post-card-shell].is-preloading .menu-btn > * {
+            opacity: 1 !important;
+            visibility: visible !important;
+        }
+
+        [data-post-card-shell].is-preloading .avatar-wrap,
+[data-post-card-shell].is-preloading .comment-avatars,
+[data-post-card-shell].is-preloading .menu-btn {
+            background-color: transparent !important;
+        }
+
+        [data-post-card-shell].is-preloading .avatar-wrap::after,
+[data-post-card-shell].is-preloading .category-badge::after,
+[data-post-card-shell].is-preloading .comment-avatars::after,
+[data-post-card-shell].is-preloading .menu-btn::after,
+[data-post-card-shell].is-preloading .post-card__inline-icon::after,
+[data-post-card-shell].is-preloading .post-card__bookmark-icon::after,
+[data-post-card-shell].is-preloading .post-card__share-icon::after,
+[data-post-card-shell].is-preloading .post-card__reaction-custom-icon::after,
+[data-post-card-shell].is-preloading .post-card__reaction-add-icon::after,
+[data-post-card-shell].is-preloading .post-card__source-icon::after,
+[data-post-card-shell].is-preloading .post-card__media-frame::before {
+            animation:
+                postCardMediaPreload 1.05s linear infinite,
+                postCardPreloadOverlayOut 0.22s ease 1.05s forwards !important;
+            opacity: 1;
+            visibility: visible;
+        }
+
+        [data-post-card-shell]:not(.is-preloading) .avatar-wrap::after,
+[data-post-card-shell]:not(.is-preloading) .category-badge::after,
+[data-post-card-shell]:not(.is-preloading) .comment-avatars::after,
+[data-post-card-shell]:not(.is-preloading) .menu-btn::after,
+[data-post-card-shell]:not(.is-preloading) .post-card__inline-icon::after,
+[data-post-card-shell]:not(.is-preloading) .post-card__bookmark-icon::after,
+[data-post-card-shell]:not(.is-preloading) .post-card__share-icon::after,
+[data-post-card-shell]:not(.is-preloading) .post-card__reaction-custom-icon::after,
+[data-post-card-shell]:not(.is-preloading) .post-card__reaction-add-icon::after,
+[data-post-card-shell]:not(.is-preloading) .post-card__source-icon::after,
+[data-post-card-shell]:not(.is-preloading) .post-card__media-frame::before,
+[data-post-card-shell].is-preloading-done .avatar-wrap::after,
+[data-post-card-shell].is-preloading-done .category-badge::after,
+[data-post-card-shell].is-preloading-done .comment-avatars::after,
+[data-post-card-shell].is-preloading-done .menu-btn::after,
+[data-post-card-shell].is-preloading-done .post-card__inline-icon::after,
+[data-post-card-shell].is-preloading-done .post-card__bookmark-icon::after,
+[data-post-card-shell].is-preloading-done .post-card__share-icon::after,
+[data-post-card-shell].is-preloading-done .post-card__reaction-custom-icon::after,
+[data-post-card-shell].is-preloading-done .post-card__reaction-add-icon::after,
+[data-post-card-shell].is-preloading-done .post-card__source-icon::after,
+[data-post-card-shell].is-preloading-done .post-card__media-frame::before {
+            content: none !important;
+            display: none !important;
+            opacity: 0 !important;
+            visibility: hidden !important;
+            animation: none !important;
         }
 
 
@@ -6360,7 +6870,7 @@ SVG;
         }
 
         [data-post-card-shell] .ps-hover-zone--author-name,
-        [data-post-card-shell] .ps-hover-zone--category-name {
+[data-post-card-shell] .ps-hover-zone--category-name {
             cursor: pointer !important;
         }
 
@@ -6390,9 +6900,9 @@ SVG;
         }
 
         [data-post-card-shell] .ps-hover-zone--author-name:hover > .ps-hover-card,
-        [data-post-card-shell] .ps-hover-zone--author-name:focus-within > .ps-hover-card,
-        [data-post-card-shell] .ps-hover-zone--category-name:hover > .ps-hover-card,
-        [data-post-card-shell] .ps-hover-zone--category-name:focus-within > .ps-hover-card {
+[data-post-card-shell] .ps-hover-zone--author-name:focus-within > .ps-hover-card,
+[data-post-card-shell] .ps-hover-zone--category-name:hover > .ps-hover-card,
+[data-post-card-shell] .ps-hover-zone--category-name:focus-within > .ps-hover-card {
             opacity: 1;
             visibility: visible;
             transform: translate3d(0, 0, 0);
@@ -6400,9 +6910,9 @@ SVG;
         }
 
         [data-post-card-shell] .ps-hover-zone--author-name:hover > .ps-hover-card > *,
-        [data-post-card-shell] .ps-hover-zone--author-name:focus-within > .ps-hover-card > *,
-        [data-post-card-shell] .ps-hover-zone--category-name:hover > .ps-hover-card > *,
-        [data-post-card-shell] .ps-hover-zone--category-name:focus-within > .ps-hover-card > * {
+[data-post-card-shell] .ps-hover-zone--author-name:focus-within > .ps-hover-card > *,
+[data-post-card-shell] .ps-hover-zone--category-name:hover > .ps-hover-card > *,
+[data-post-card-shell] .ps-hover-zone--category-name:focus-within > .ps-hover-card > * {
             opacity: 0;
             animation: postCardHoverCardContentReveal .001s linear 1.5s forwards;
         }
@@ -6442,18 +6952,18 @@ SVG;
         }
 
         [data-post-card-shell] .ps-hover-zone--author-name:hover > .ps-hover-card::before,
-        [data-post-card-shell] .ps-hover-zone--author-name:focus-within > .ps-hover-card::before,
-        [data-post-card-shell] .ps-hover-zone--category-name:hover > .ps-hover-card::before,
-        [data-post-card-shell] .ps-hover-zone--category-name:focus-within > .ps-hover-card::before {
+[data-post-card-shell] .ps-hover-zone--author-name:focus-within > .ps-hover-card::before,
+[data-post-card-shell] .ps-hover-zone--category-name:hover > .ps-hover-card::before,
+[data-post-card-shell] .ps-hover-zone--category-name:focus-within > .ps-hover-card::before {
             opacity: 1;
             visibility: visible;
             animation: postCardHoverCardSkeletonOff .001s linear 1.5s forwards;
         }
 
         [data-post-card-shell] .ps-hover-zone--author-name:hover > .ps-hover-card::after,
-        [data-post-card-shell] .ps-hover-zone--author-name:focus-within > .ps-hover-card::after,
-        [data-post-card-shell] .ps-hover-zone--category-name:hover > .ps-hover-card::after,
-        [data-post-card-shell] .ps-hover-zone--category-name:focus-within > .ps-hover-card::after {
+[data-post-card-shell] .ps-hover-zone--author-name:focus-within > .ps-hover-card::after,
+[data-post-card-shell] .ps-hover-zone--category-name:hover > .ps-hover-card::after,
+[data-post-card-shell] .ps-hover-zone--category-name:focus-within > .ps-hover-card::after {
             opacity: 1;
             visibility: visible;
             animation: postCardHoverCardShimmer .9s ease-in-out 0s infinite, postCardHoverCardSkeletonOff .001s linear 1.5s forwards;
@@ -6579,7 +7089,7 @@ SVG;
         }
 
         [data-post-card-shell] .ps-hover-card-follow,
-        [data-post-card-shell] .ps-hover-card-link {
+[data-post-card-shell] .ps-hover-card-link {
             display: inline-flex !important;
             align-items: center;
             justify-content: center;
@@ -6607,7 +7117,7 @@ SVG;
         }
 
         [data-post-card-shell] .ps-hover-card-follow:hover,
-        [data-post-card-shell] .ps-hover-card-follow:focus-visible {
+[data-post-card-shell] .ps-hover-card-follow:focus-visible {
             background: #1d4ed8 !important;
             border-color: #1d4ed8 !important;
             color: #ffffff !important;
@@ -6615,7 +7125,7 @@ SVG;
         }
 
         [data-post-card-shell] .ps-hover-card-follow:disabled,
-        [data-post-card-shell] .ps-hover-card-follow[aria-disabled="true"] {
+[data-post-card-shell] .ps-hover-card-follow[aria-disabled="true"] {
             background: #e8f0ff !important;
             border-color: #dbeafe !important;
             color: #2563eb !important;
@@ -6631,9 +7141,9 @@ SVG;
         }
 
         [data-post-card-shell] .ps-hover-card-actions > .ps-hover-card-link:hover,
-        [data-post-card-shell] .ps-hover-card-actions > .ps-hover-card-link:focus-visible,
-        [data-post-card-shell] .ps-hover-card > .ps-hover-card-link:hover,
-        [data-post-card-shell] .ps-hover-card > .ps-hover-card-link:focus-visible {
+[data-post-card-shell] .ps-hover-card-actions > .ps-hover-card-link:focus-visible,
+[data-post-card-shell] .ps-hover-card > .ps-hover-card-link:hover,
+[data-post-card-shell] .ps-hover-card > .ps-hover-card-link:focus-visible {
             background: #eff6ff !important;
             color: #1d4ed8 !important;
             outline: none !important;
@@ -6664,7 +7174,7 @@ SVG;
             to { transform: translateX(120%); }
         }
 
-        @media (max-width: 640px) {
+        @media (max-width: 640px){
             [data-post-card-shell] .ps-hover-card {
                 position: fixed;
                 left: 12px !important;
@@ -6677,73 +7187,73 @@ SVG;
             }
 
             [data-post-card-shell] .ps-hover-zone:hover > .ps-hover-card,
-            [data-post-card-shell] .ps-hover-zone:focus-within > .ps-hover-card {
+[data-post-card-shell] .ps-hover-zone:focus-within > .ps-hover-card {
                 transform: translate3d(0, 0, 0);
             }
         }
 
         html.dark [data-post-card-shell] .ps-hover-card,
-        body.dark [data-post-card-shell] .ps-hover-card,
-        [data-theme="dark"] [data-post-card-shell] .ps-hover-card {
+body.dark [data-post-card-shell] .ps-hover-card,
+[data-theme="dark"] [data-post-card-shell] .ps-hover-card {
             background: #0f172a;
             border-color: rgba(148, 163, 184, .22);
             color: #f8fafc;
         }
 
         html.dark [data-post-card-shell] .ps-hover-card-cover,
-        body.dark [data-post-card-shell] .ps-hover-card-cover,
-        [data-theme="dark"] [data-post-card-shell] .ps-hover-card-cover {
+body.dark [data-post-card-shell] .ps-hover-card-cover,
+[data-theme="dark"] [data-post-card-shell] .ps-hover-card-cover {
             background: linear-gradient(135deg, #1e293b 0%, #111827 100%);
         }
 
         html.dark [data-post-card-shell] .ps-hover-card-avatar,
-        body.dark [data-post-card-shell] .ps-hover-card-avatar,
-        [data-theme="dark"] [data-post-card-shell] .ps-hover-card-avatar {
+body.dark [data-post-card-shell] .ps-hover-card-avatar,
+[data-theme="dark"] [data-post-card-shell] .ps-hover-card-avatar {
             border-color: #0f172a;
             background: #1e293b;
             color: #e2e8f0;
         }
 
         html.dark [data-post-card-shell] .ps-hover-card-title,
-        body.dark [data-post-card-shell] .ps-hover-card-title,
-        [data-theme="dark"] [data-post-card-shell] .ps-hover-card-title {
+body.dark [data-post-card-shell] .ps-hover-card-title,
+[data-theme="dark"] [data-post-card-shell] .ps-hover-card-title {
             color: #f8fafc;
         }
 
         html.dark [data-post-card-shell] .ps-hover-card-subtitle,
-        body.dark [data-post-card-shell] .ps-hover-card-subtitle,
-        [data-theme="dark"] [data-post-card-shell] .ps-hover-card-subtitle,
-        html.dark [data-post-card-shell] .ps-hover-card-description,
-        body.dark [data-post-card-shell] .ps-hover-card-description,
-        [data-theme="dark"] [data-post-card-shell] .ps-hover-card-description {
+body.dark [data-post-card-shell] .ps-hover-card-subtitle,
+[data-theme="dark"] [data-post-card-shell] .ps-hover-card-subtitle,
+html.dark [data-post-card-shell] .ps-hover-card-description,
+body.dark [data-post-card-shell] .ps-hover-card-description,
+[data-theme="dark"] [data-post-card-shell] .ps-hover-card-description {
             color: #cbd5e1;
         }
 
         html.dark [data-post-card-shell] .ps-hover-card-actions > .ps-hover-card-link,
-        body.dark [data-post-card-shell] .ps-hover-card-actions > .ps-hover-card-link,
-        [data-theme="dark"] [data-post-card-shell] .ps-hover-card-actions > .ps-hover-card-link,
-        html.dark [data-post-card-shell] .ps-hover-card > .ps-hover-card-link,
-        body.dark [data-post-card-shell] .ps-hover-card > .ps-hover-card-link,
-        [data-theme="dark"] [data-post-card-shell] .ps-hover-card > .ps-hover-card-link {
+body.dark [data-post-card-shell] .ps-hover-card-actions > .ps-hover-card-link,
+[data-theme="dark"] [data-post-card-shell] .ps-hover-card-actions > .ps-hover-card-link,
+html.dark [data-post-card-shell] .ps-hover-card > .ps-hover-card-link,
+body.dark [data-post-card-shell] .ps-hover-card > .ps-hover-card-link,
+[data-theme="dark"] [data-post-card-shell] .ps-hover-card > .ps-hover-card-link {
             background: rgba(255,255,255,.08) !important;
             border-color: rgba(255,255,255,.10) !important;
             color: #93c5fd !important;
         }
 
         html.dark [data-post-card-shell] .ps-hover-card-follow:disabled,
-        body.dark [data-post-card-shell] .ps-hover-card-follow:disabled,
-        [data-theme="dark"] [data-post-card-shell] .ps-hover-card-follow:disabled,
-        html.dark [data-post-card-shell] .ps-hover-card-follow[aria-disabled="true"],
-        body.dark [data-post-card-shell] .ps-hover-card-follow[aria-disabled="true"],
-        [data-theme="dark"] [data-post-card-shell] .ps-hover-card-follow[aria-disabled="true"] {
+body.dark [data-post-card-shell] .ps-hover-card-follow:disabled,
+[data-theme="dark"] [data-post-card-shell] .ps-hover-card-follow:disabled,
+html.dark [data-post-card-shell] .ps-hover-card-follow[aria-disabled="true"],
+body.dark [data-post-card-shell] .ps-hover-card-follow[aria-disabled="true"],
+[data-theme="dark"] [data-post-card-shell] .ps-hover-card-follow[aria-disabled="true"] {
             background: rgba(37, 99, 235,.18) !important;
             border-color: rgba(147,197,253,.22) !important;
             color: #bfdbfe !important;
         }
 
         html.dark [data-post-card-shell] .ps-hover-card::before,
-        body.dark [data-post-card-shell] .ps-hover-card::before,
-        [data-theme="dark"] [data-post-card-shell] .ps-hover-card::before {
+body.dark [data-post-card-shell] .ps-hover-card::before,
+[data-theme="dark"] [data-post-card-shell] .ps-hover-card::before {
             background:
                 radial-gradient(circle at 33px 76px, #1e293b 0 20px, transparent 21px),
                 linear-gradient(#1e293b, #1e293b) 64px 64px / 118px 11px no-repeat,
@@ -6757,8 +7267,8 @@ SVG;
         }
 
         html.dark [data-post-card-shell] .ps-hover-card::after,
-        body.dark [data-post-card-shell] .ps-hover-card::after,
-        [data-theme="dark"] [data-post-card-shell] .ps-hover-card::after {
+body.dark [data-post-card-shell] .ps-hover-card::after,
+[data-theme="dark"] [data-post-card-shell] .ps-hover-card::after {
             background: linear-gradient(100deg, transparent 0%, rgba(255,255,255,.12) 48%, transparent 100%);
         }
 
@@ -6772,34 +7282,34 @@ SVG;
         }
 
         [data-post-card-shell] .post-summary-shell,
-        [data-post-card-shell] [data-post-card-summary-shell] {
+[data-post-card-shell] [data-post-card-summary-shell] {
             margin-bottom: 0 !important;
             padding-bottom: 0 !important;
         }
 
         [data-post-card-shell] .post-summary,
-        [data-post-card-shell] [data-post-card-summary] {
+[data-post-card-shell] [data-post-card-summary] {
             font-size: 13px !important;
             line-height: 1.38 !important;
             margin: 0 0 4px !important;
         }
 
         [data-post-card-shell] .post-summary-shell.is-collapsed .post-summary,
-        [data-post-card-shell] .post-summary.is-collapsed,
-        [data-post-card-shell] [data-post-card-summary-shell].is-collapsed [data-post-card-summary],
-        [data-post-card-shell] [data-post-card-summary].is-collapsed {
+[data-post-card-shell] .post-summary.is-collapsed,
+[data-post-card-shell] [data-post-card-summary-shell].is-collapsed [data-post-card-summary],
+[data-post-card-shell] [data-post-card-summary].is-collapsed {
             max-height: calc(1.38em * 2) !important;
             line-height: 1.38 !important;
         }
 
         [data-post-card-shell] .post-summary-shell.is-collapsed::after,
-        [data-post-card-shell] [data-post-card-summary-shell].is-collapsed::after {
+[data-post-card-shell] [data-post-card-summary-shell].is-collapsed::after {
             height: 22px !important;
             bottom: 0 !important;
         }
 
         [data-post-card-shell] .expand-link,
-        [data-post-card-shell] .expand-link[data-post-card-expand] {
+[data-post-card-shell] .expand-link[data-post-card-expand] {
             font-size: 12.5px !important;
             line-height: 1.2 !important;
             margin-top: 0 !important;
@@ -6807,16 +7317,16 @@ SVG;
         }
 
         [data-post-card-shell] .reaction-row,
-        [data-post-card-shell] .reactions-row {
+[data-post-card-shell] .reactions-row {
             gap: 8px !important;
             margin-bottom: 5px !important;
             padding-bottom: 7px !important;
         }
 
         [data-post-card-shell] .smiley-btn,
-        [data-post-card-shell] .reaction-add,
-        [data-post-card-shell] .reaction-item,
-        [data-post-card-shell] .more-pill {
+[data-post-card-shell] .reaction-add,
+[data-post-card-shell] .reaction-item,
+[data-post-card-shell] .more-pill {
             min-height: 28px !important;
             height: 28px !important;
             padding: 0 8px !important;
@@ -6824,41 +7334,41 @@ SVG;
         }
 
         [data-post-card-shell] .smiley-btn,
-        [data-post-card-shell] .reaction-add {
+[data-post-card-shell] .reaction-add {
             width: 28px !important;
             min-width: 28px !important;
             padding: 0 !important;
         }
 
         [data-post-card-shell] .reaction-emoji,
-        [data-post-card-reaction-menu] .reaction-emoji,
-        [data-post-card-shell] .reaction-emoji--html,
-        [data-post-card-reaction-menu] .reaction-emoji--html,
-        [data-post-card-shell] .reaction-emoji--html img,
-        [data-post-card-reaction-menu] .reaction-emoji--html img,
-        [data-post-card-shell] .reaction-emoji--html svg,
-        [data-post-card-reaction-menu] .reaction-emoji--html svg,
-        [data-post-card-shell] .reaction-emoji--html iconify-icon,
-        [data-post-card-reaction-menu] .reaction-emoji--html iconify-icon {
+[data-post-card-reaction-menu] .reaction-emoji,
+[data-post-card-shell] .reaction-emoji--html,
+[data-post-card-reaction-menu] .reaction-emoji--html,
+[data-post-card-shell] .reaction-emoji--html img,
+[data-post-card-reaction-menu] .reaction-emoji--html img,
+[data-post-card-shell] .reaction-emoji--html svg,
+[data-post-card-reaction-menu] .reaction-emoji--html svg,
+[data-post-card-shell] .reaction-emoji--html iconify-icon,
+[data-post-card-reaction-menu] .reaction-emoji--html iconify-icon {
             width: 17px !important;
             height: 17px !important;
             font-size: 17px !important;
         }
 
         [data-post-card-shell] .post-card__reaction-custom-icon,
-        [data-post-card-shell] .post-card__inline-icon,
-        [data-post-card-shell] .post-card__reaction-custom-icon svg,
-        [data-post-card-shell] .post-card__inline-icon svg,
-        [data-post-card-shell] .post-card__inline-icon iconify-icon {
+[data-post-card-shell] .post-card__inline-icon,
+[data-post-card-shell] .post-card__reaction-custom-icon svg,
+[data-post-card-shell] .post-card__inline-icon svg,
+[data-post-card-shell] .post-card__inline-icon iconify-icon {
             width: 16px !important;
             height: 16px !important;
             font-size: 16px !important;
         }
 
         [data-post-card-shell] .post-card__bookmark-icon,
-        [data-post-card-shell] .post-card__share-icon,
-        [data-post-card-shell] .post-card__reaction-add-icon,
-        [data-post-card-shell] .post-card__expand-icon {
+[data-post-card-shell] .post-card__share-icon,
+[data-post-card-shell] .post-card__reaction-add-icon,
+[data-post-card-shell] .post-card__expand-icon {
             width: 14px !important;
             height: 14px !important;
         }
@@ -6875,7 +7385,7 @@ SVG;
         }
 
         [data-post-card-shell] .post-card__media-frame,
-        [data-post-card-shell] .post-card__media-image {
+[data-post-card-shell] .post-card__media-image {
             max-height: 460px !important;
         }
 
@@ -6883,49 +7393,49 @@ SVG;
             max-height: 520px !important;
         }
 
-        @media (max-width: 640px) {
+        @media (max-width: 640px){
             [data-post-card-shell] {
                 padding: 12px 16px 9px !important;
             }
 
             [data-post-card-shell] .post-summary,
-            [data-post-card-shell] [data-post-card-summary] {
+[data-post-card-shell] [data-post-card-summary] {
                 font-size: 12.75px !important;
                 line-height: 1.36 !important;
             }
 
             [data-post-card-shell] .post-summary-shell.is-collapsed .post-summary,
-            [data-post-card-shell] .post-summary.is-collapsed,
-            [data-post-card-shell] [data-post-card-summary-shell].is-collapsed [data-post-card-summary],
-            [data-post-card-shell] [data-post-card-summary].is-collapsed {
+[data-post-card-shell] .post-summary.is-collapsed,
+[data-post-card-shell] [data-post-card-summary-shell].is-collapsed [data-post-card-summary],
+[data-post-card-shell] [data-post-card-summary].is-collapsed {
                 max-height: calc(1.36em * 2) !important;
                 line-height: 1.36 !important;
             }
 
             [data-post-card-shell] .post-card__media-frame,
-            [data-post-card-shell] .post-card__media-image {
+[data-post-card-shell] .post-card__media-image {
                 max-height: 340px !important;
             }
         }
 
         /* Post card readable scale fix */
         [data-post-card-shell] .post-summary,
-        [data-post-card-shell] [data-post-card-summary] {
+[data-post-card-shell] [data-post-card-summary] {
             font-size: 16px !important;
             line-height: 1.5 !important;
             margin: 0 0 6px !important;
         }
 
         [data-post-card-shell] .post-summary-shell.is-collapsed .post-summary,
-        [data-post-card-shell] .post-summary.is-collapsed,
-        [data-post-card-shell] [data-post-card-summary-shell].is-collapsed [data-post-card-summary],
-        [data-post-card-shell] [data-post-card-summary].is-collapsed {
+[data-post-card-shell] .post-summary.is-collapsed,
+[data-post-card-shell] [data-post-card-summary-shell].is-collapsed [data-post-card-summary],
+[data-post-card-shell] [data-post-card-summary].is-collapsed {
             max-height: calc(1.5em * 2) !important;
             line-height: 1.5 !important;
         }
 
         [data-post-card-shell] .expand-link,
-        [data-post-card-shell] .expand-link[data-post-card-expand] {
+[data-post-card-shell] .expand-link[data-post-card-expand] {
             font-size: 15px !important;
             line-height: 1.3 !important;
         }
@@ -6940,9 +7450,9 @@ SVG;
         }
 
         [data-post-card-shell] .smiley-btn,
-        [data-post-card-shell] .reaction-add,
-        [data-post-card-shell] .reaction-item,
-        [data-post-card-shell] .more-pill {
+[data-post-card-shell] .reaction-add,
+[data-post-card-shell] .reaction-item,
+[data-post-card-shell] .more-pill {
             min-height: 32px !important;
             height: 32px !important;
             padding: 0 9px !important;
@@ -6950,70 +7460,70 @@ SVG;
         }
 
         [data-post-card-shell] .smiley-btn,
-        [data-post-card-shell] .reaction-add {
+[data-post-card-shell] .reaction-add {
             width: 32px !important;
             min-width: 32px !important;
             padding: 0 !important;
         }
 
         [data-post-card-shell] .reaction-emoji,
-        [data-post-card-reaction-menu] .reaction-emoji,
-        [data-post-card-shell] .reaction-emoji--html,
-        [data-post-card-reaction-menu] .reaction-emoji--html,
-        [data-post-card-shell] .reaction-emoji--html img,
-        [data-post-card-reaction-menu] .reaction-emoji--html img,
-        [data-post-card-shell] .reaction-emoji--html svg,
-        [data-post-card-reaction-menu] .reaction-emoji--html svg,
-        [data-post-card-shell] .reaction-emoji--html iconify-icon,
-        [data-post-card-reaction-menu] .reaction-emoji--html iconify-icon {
+[data-post-card-reaction-menu] .reaction-emoji,
+[data-post-card-shell] .reaction-emoji--html,
+[data-post-card-reaction-menu] .reaction-emoji--html,
+[data-post-card-shell] .reaction-emoji--html img,
+[data-post-card-reaction-menu] .reaction-emoji--html img,
+[data-post-card-shell] .reaction-emoji--html svg,
+[data-post-card-reaction-menu] .reaction-emoji--html svg,
+[data-post-card-shell] .reaction-emoji--html iconify-icon,
+[data-post-card-reaction-menu] .reaction-emoji--html iconify-icon {
             width: 20px !important;
             height: 20px !important;
             font-size: 20px !important;
         }
 
         [data-post-card-shell] .post-card__reaction-custom-icon,
-        [data-post-card-shell] .post-card__inline-icon,
-        [data-post-card-shell] .post-card__reaction-custom-icon svg,
-        [data-post-card-shell] .post-card__inline-icon svg,
-        [data-post-card-shell] .post-card__inline-icon iconify-icon {
+[data-post-card-shell] .post-card__inline-icon,
+[data-post-card-shell] .post-card__reaction-custom-icon svg,
+[data-post-card-shell] .post-card__inline-icon svg,
+[data-post-card-shell] .post-card__inline-icon iconify-icon {
             width: 20px !important;
             height: 20px !important;
             font-size: 20px !important;
         }
 
         [data-post-card-shell] .post-card__bookmark-icon,
-        [data-post-card-shell] .post-card__share-icon,
-        [data-post-card-shell] .post-card__reaction-add-icon,
-        [data-post-card-shell] .post-card__expand-icon {
+[data-post-card-shell] .post-card__share-icon,
+[data-post-card-shell] .post-card__reaction-add-icon,
+[data-post-card-shell] .post-card__expand-icon {
             width: 18px !important;
             height: 18px !important;
         }
 
-        @media (max-width: 640px) {
+        @media (max-width: 640px){
             [data-post-card-shell] .post-summary,
-            [data-post-card-shell] [data-post-card-summary] {
+[data-post-card-shell] [data-post-card-summary] {
                 font-size: 15px !important;
                 line-height: 1.48 !important;
             }
 
             [data-post-card-shell] .post-summary-shell.is-collapsed .post-summary,
-            [data-post-card-shell] .post-summary.is-collapsed,
-            [data-post-card-shell] [data-post-card-summary-shell].is-collapsed [data-post-card-summary],
-            [data-post-card-shell] [data-post-card-summary].is-collapsed {
+[data-post-card-shell] .post-summary.is-collapsed,
+[data-post-card-shell] [data-post-card-summary-shell].is-collapsed [data-post-card-summary],
+[data-post-card-shell] [data-post-card-summary].is-collapsed {
                 max-height: calc(1.48em * 2) !important;
                 line-height: 1.48 !important;
             }
 
             [data-post-card-shell] .post-card__tag,
-            [data-post-card-shell] .expand-link,
-            [data-post-card-shell] .expand-link[data-post-card-expand] {
+[data-post-card-shell] .expand-link,
+[data-post-card-shell] .expand-link[data-post-card-expand] {
                 font-size: 14.5px !important;
             }
         }
 
         /* Final typography and reaction sizing requested for feed cards. */
         html body [data-post-card-shell] .post-title,
-        html body [data-post-card-shell] .post-title__link {
+html body [data-post-card-shell] .post-title__link {
             font-family: "Inter", Arial, Helvetica, sans-serif !important;
             font-size: 20px !important;
             font-weight: 700 !important;
@@ -7021,10 +7531,10 @@ SVG;
         }
 
         html body [data-post-card-reaction-menu] .post-card__reaction-option .reaction-emoji,
-        html body [data-post-card-reaction-menu] .post-card__reaction-option .reaction-emoji--html,
-        html body [data-post-card-reaction-menu] .post-card__reaction-option .reaction-emoji--html img,
-        html body [data-post-card-reaction-menu] .post-card__reaction-option .reaction-emoji--html svg,
-        html body [data-post-card-reaction-menu] .post-card__reaction-option .reaction-emoji--html iconify-icon {
+html body [data-post-card-reaction-menu] .post-card__reaction-option .reaction-emoji--html,
+html body [data-post-card-reaction-menu] .post-card__reaction-option .reaction-emoji--html img,
+html body [data-post-card-reaction-menu] .post-card__reaction-option .reaction-emoji--html svg,
+html body [data-post-card-reaction-menu] .post-card__reaction-option .reaction-emoji--html iconify-icon {
             width: 26px !important;
             height: 26px !important;
             min-width: 26px !important;
@@ -7038,15 +7548,15 @@ SVG;
         }
 
         html body [data-post-card-reaction-layer] .post-card__reaction-option .reaction-emoji,
-        html body [data-post-card-reaction-layer] .post-card__reaction-option .reaction-emoji--html,
-        html body [data-post-card-reaction-layer] .post-card__reaction-option .reaction-emoji--html img,
-        html body [data-post-card-reaction-layer] .post-card__reaction-option .reaction-emoji--html svg,
-        html body [data-post-card-reaction-layer] .post-card__reaction-option .reaction-emoji--html iconify-icon,
-        html body [data-post-card-reaction-menu] .post-card__reaction-option .reaction-emoji,
-        html body [data-post-card-reaction-menu] .post-card__reaction-option .reaction-emoji--html,
-        html body [data-post-card-reaction-menu] .post-card__reaction-option .reaction-emoji--html img,
-        html body [data-post-card-reaction-menu] .post-card__reaction-option .reaction-emoji--html svg,
-        html body [data-post-card-reaction-menu] .post-card__reaction-option .reaction-emoji--html iconify-icon {
+html body [data-post-card-reaction-layer] .post-card__reaction-option .reaction-emoji--html,
+html body [data-post-card-reaction-layer] .post-card__reaction-option .reaction-emoji--html img,
+html body [data-post-card-reaction-layer] .post-card__reaction-option .reaction-emoji--html svg,
+html body [data-post-card-reaction-layer] .post-card__reaction-option .reaction-emoji--html iconify-icon,
+html body [data-post-card-reaction-menu] .post-card__reaction-option .reaction-emoji,
+html body [data-post-card-reaction-menu] .post-card__reaction-option .reaction-emoji--html,
+html body [data-post-card-reaction-menu] .post-card__reaction-option .reaction-emoji--html img,
+html body [data-post-card-reaction-menu] .post-card__reaction-option .reaction-emoji--html svg,
+html body [data-post-card-reaction-menu] .post-card__reaction-option .reaction-emoji--html iconify-icon {
             width: 24px !important;
             height: 24px !important;
             min-width: 24px !important;
@@ -7057,20 +7567,20 @@ SVG;
         }
 
         html body [data-post-card-reaction-layer] .post-card__reaction-option,
-        html body [data-post-card-reaction-menu] .post-card__reaction-option {
+html body [data-post-card-reaction-menu] .post-card__reaction-option {
             min-width: 40px !important;
             min-height: 40px !important;
             padding: 6px !important;
         }
 
         html body [data-post-card-shell] [data-post-card-summary-shell].is-collapsed,
-        html body [data-post-card-shell] .post-summary-shell.is-collapsed {
+html body [data-post-card-shell] .post-summary-shell.is-collapsed {
             max-height: none !important;
             overflow: visible !important;
         }
 
         html body [data-post-card-shell] [data-post-card-summary-shell].is-collapsed [data-post-card-summary],
-        html body [data-post-card-shell] .post-summary-shell.is-collapsed .post-summary {
+html body [data-post-card-shell] .post-summary-shell.is-collapsed .post-summary {
             display: block !important;
             -webkit-line-clamp: unset !important;
             line-clamp: unset !important;
@@ -7081,7 +7591,7 @@ SVG;
 
         /* Commenter stack appears from three comments onward; feed actions stay black. */
         html body [data-post-card-shell] .comment-avatar,
-        html body [data-post-card-shell] .comment-avatar-overflow {
+html body [data-post-card-shell] .comment-avatar-overflow {
             width: 32px !important;
             height: 32px !important;
             min-width: 32px !important;
@@ -7089,7 +7599,7 @@ SVG;
         }
 
         html body [data-post-card-shell] .comment-avatar + .comment-avatar,
-        html body [data-post-card-shell] .comment-avatar-overflow {
+html body [data-post-card-shell] .comment-avatar-overflow {
             margin-left: -9px !important;
         }
 
@@ -7289,7 +7799,7 @@ SVG;
         }
 
         html body article.post-card[data-post-card-shell] .expand-link,
-        html body article.post-card[data-post-card-shell] .post-card__tag {
+html body article.post-card[data-post-card-shell] .post-card__tag {
             color: #2563eb !important;
         }
 
@@ -7300,7 +7810,7 @@ SVG;
         }
 
         html body article.post-card[data-post-card-shell] .post-card__expand-icon,
-        html body article.post-card[data-post-card-shell] .post-card__expand-icon iconify-icon {
+html body article.post-card[data-post-card-shell] .post-card__expand-icon iconify-icon {
             width: 22px !important;
             height: 22px !important;
             font-size: 22px !important;
@@ -7330,7 +7840,7 @@ SVG;
             }
         }
 
-        @media (min-width: 1440px) {
+        @media (min-width: 1440px){
             html body article.post-card[data-post-card-shell] :is(.post-title, .post-title__link):not(#comments *):not(#app *) {
                 font-family: Roboto, Arial, sans-serif !important;
                 font-size: 21px !important;
@@ -7354,7 +7864,7 @@ SVG;
 
         /* Expanded post content keeps the same readable scale as the card summary. */
         html body article.post-card[data-post-card-shell] .post-card__full-content,
-        html body article.post-card[data-post-card-shell] .post-card__full-content :is(p, li, td, th, blockquote, a):not(#comments *):not(#app *) {
+html body article.post-card[data-post-card-shell] .post-card__full-content :is(p, li, td, th, blockquote, a):not(#comments *):not(#app *) {
             font-family: Roboto, Arial, sans-serif !important;
             font-size: 17px !important;
             font-weight: 400 !important;
@@ -7418,9 +7928,9 @@ SVG;
             line-height: 1.45 !important;
         }
 
-        @media (max-width: 640px) {
+        @media (max-width: 640px){
             html body article.post-card[data-post-card-shell] .post-card__full-content,
-            html body article.post-card[data-post-card-shell] .post-card__full-content :is(p, li, td, th, blockquote, a, ul, ol):not(#comments *):not(#app *) {
+html body article.post-card[data-post-card-shell] .post-card__full-content :is(p, li, td, th, blockquote, a, ul, ol):not(#comments *):not(#app *) {
                 font-size: 15px !important;
                 line-height: 1.5 !important;
             }
@@ -7448,7 +7958,7 @@ SVG;
         }
 
         html body article.post-card[data-post-card-shell]:has([data-og-action-trigger][aria-expanded="true"]),
-        html body article.post-card[data-post-card-shell]:has([data-post-card-share-menu-trigger][aria-expanded="true"]) {
+html body article.post-card[data-post-card-shell]:has([data-post-card-share-menu-trigger][aria-expanded="true"]) {
             z-index: 50 !important;
         }
 
@@ -7519,15 +8029,18 @@ SVG;
         }
 
         html body [data-post-card-shell]:not(.is-preloading)::after,
-        html body [data-post-card-shell].is-preloading-done::after {
+html body [data-post-card-shell].is-preloading-done::after {
             content: none !important;
             display: none !important;
             animation: none !important;
         }
 
         /*
-         * FINAL: reaksiyon rozeti, ekleme dugmesi ve secim kutusu artik post-show
-         * sayfasindaki (.ps-reaction-*) degerlerle birebir ayni - boyut, renk, emoji
+         * FINAL: reaksiyon rozeti,
+ekleme dugmesi ve secim kutusu artik post-show
+         * sayfasindaki (.ps-reaction-*) degerlerle birebir ayni - boyut,
+renk,
+emoji
          * olcusu ve secim kutusunun genisligi/mobil davranisi dahil. Kaynak:
          * resources/views/blog/show.blade.php icindeki .ps-reaction-pill /
          * .ps-reaction-menu / .ps-reaction-option kurallari.
@@ -7554,17 +8067,17 @@ SVG;
         }
 
         html body [data-post-card-shell] .smiley-btn.reaction-add:hover,
-        html body [data-post-card-shell] .smiley-btn.reaction-add:focus-visible,
-        html body [data-post-card-shell] .smiley-btn.reaction-add[aria-expanded="true"] {
+html body [data-post-card-shell] .smiley-btn.reaction-add:focus-visible,
+html body [data-post-card-shell] .smiley-btn.reaction-add[aria-expanded="true"] {
             background: #f3f4f6 !important;
         }
 
         /* Emoji karakteri (duz metin) artik sarmalayicidan zorla boyut almiyor,
-           post-show'daki gibi cevresindeki kutunun font-size'ini miras aliyor
+post-show'daki gibi cevresindeki kutunun font-size'ini miras aliyor
            (rozette 13px, secim kutusunda sayfa varsayilani). Sadece gercek bir
            gorsel/GIF reaksiyon (img/svg) icin sabit olcu uygulanmaya devam ediyor. */
         html body [data-post-card-shell] .reaction-emoji.reaction-emoji--html,
-        html body [data-post-card-reaction-menu] .reaction-emoji.reaction-emoji--html {
+html body [data-post-card-reaction-menu] .reaction-emoji.reaction-emoji--html {
             width: auto !important;
             height: auto !important;
             min-width: 0 !important;
@@ -7574,7 +8087,7 @@ SVG;
         }
 
         html body [data-post-card-shell] .reaction-emoji--html img,
-        html body [data-post-card-shell] .reaction-emoji--html svg {
+html body [data-post-card-shell] .reaction-emoji--html svg {
             width: 22px !important;
             height: 22px !important;
             min-width: 22px !important;
@@ -7584,7 +8097,7 @@ SVG;
         }
 
         html body [data-post-card-reaction-menu] .reaction-emoji--html img,
-        html body [data-post-card-reaction-menu] .reaction-emoji--html svg {
+html body [data-post-card-reaction-menu] .reaction-emoji--html svg {
             width: 30px !important;
             height: 30px !important;
             min-width: 30px !important;
@@ -7678,7 +8191,7 @@ SVG;
             outline: 2px solid transparent !important;
         }
 
-        @media (max-width: 640px) {
+        @media (max-width: 640px){
             html body [data-post-card-reaction-menu] {
                 position: absolute !important;
                 max-height: min(68dvh, 440px) !important;
@@ -7702,7 +8215,7 @@ SVG;
             }
         }
 
-        @media (max-width: 360px) {
+        @media (max-width: 360px){
             html body [data-post-card-reaction-menu]:not([hidden]) {
                 grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
             }
@@ -7854,7 +8367,7 @@ SVG;
             box-shadow: none !important;
         }
 
-        @media (max-width: 640px) {
+        @media (max-width: 640px){
             html.dark body [data-post-card-reaction-menu] {
                 border-color: #334155 !important;
                 background: #172033 !important;
@@ -7863,7 +8376,9 @@ SVG;
         }
 
 
-        /* Final design-engineering layer: quiet hierarchy, precise feedback, restrained motion. */
+        /* Final design-engineering layer: quiet hierarchy,
+precise feedback,
+restrained motion. */
         html body article.post-card[data-post-card-shell] {
             --pc-surface: #ffffff;
             --pc-surface-raised: #f8fafc;
@@ -8152,7 +8667,7 @@ SVG;
         }
 
         html body [data-og-action-menu]:not(.hidden),
-        html body [data-post-card-reaction-menu]:not([hidden]) {
+html body [data-post-card-reaction-menu]:not([hidden]) {
             opacity: 1;
             transform: translateY(0) scale(1);
             transition: opacity 150ms ease, transform 180ms cubic-bezier(.23, 1, .32, 1) !important;
@@ -8171,7 +8686,7 @@ SVG;
         }
 
         html body [data-og-action-menu] :is(a, button),
-        html body [data-post-card-reaction-menu] .post-card__reaction-option {
+html body [data-post-card-reaction-menu] .post-card__reaction-option {
             transition: transform 120ms cubic-bezier(.23, 1, .32, 1), background-color 140ms ease, color 140ms ease !important;
         }
 
@@ -8180,7 +8695,7 @@ SVG;
             outline-offset: 2px !important;
         }
 
-        @media (hover: hover) and (pointer: fine) {
+        @media (hover: hover) and (pointer: fine){
             html body article.post-card[data-post-card-shell]:hover {
                 border-color: var(--pc-border-strong) !important;
                 box-shadow: 0 1px 2px rgba(15, 23, 42, .05), 0 10px 28px rgba(15, 23, 42, .055) !important;
@@ -8191,7 +8706,7 @@ SVG;
             }
 
             html body article.post-card[data-post-card-shell] .author-name:hover,
-            html body article.post-card[data-post-card-shell] .post-title__link:hover {
+html body article.post-card[data-post-card-shell] .post-title__link:hover {
                 color: var(--pc-accent) !important;
             }
 
@@ -8203,13 +8718,27 @@ SVG;
                 transform: scale(1.012) !important;
             }
 
+            html body article.post-card[data-post-card-shell] [data-og-action-trigger]:hover,
+html body article.post-card[data-post-card-shell] :is(.reaction-item, .smiley-btn.reaction-add, .more-pill):hover {
+                background: var(--pc-control-hover) !important;
+                color: var(--pc-text) !important;
+            }
+
             html body [data-og-action-menu] :is(a, button):hover,
-            html body [data-post-card-reaction-menu] .post-card__reaction-option:hover {
+html body [data-post-card-reaction-menu] .post-card__reaction-option:hover {
                 transform: translateX(2px);
             }
         }
 
-        @media (max-width: 640px) {
+        html body article.post-card[data-post-card-shell] [data-og-action-trigger]:active,
+html body article.post-card[data-post-card-shell] .expand-link:active,
+html body article.post-card[data-post-card-shell] :is(.reaction-item, .smiley-btn.reaction-add, .more-pill):active,
+html body [data-og-action-menu] :is(a, button):active,
+html body [data-post-card-reaction-menu] .post-card__reaction-option:active {
+            transform: scale(.96) !important;
+        }
+
+        @media (max-width: 640px){
             html body article.post-card[data-post-card-shell] {
                 padding: 14px 14px 10px !important;
                 border-radius: 8px !important;
@@ -8242,13 +8771,13 @@ SVG;
             }
         }
 
-        @media (prefers-reduced-motion: reduce) {
+        @media (prefers-reduced-motion: reduce){
             html body article.post-card[data-post-card-shell],
-            html body article.post-card[data-post-card-shell] *,
-            html body [data-og-action-menu],
-            html body [data-og-action-menu] *,
-            html body [data-post-card-reaction-menu],
-            html body [data-post-card-reaction-menu] * {
+html body article.post-card[data-post-card-shell] *,
+html body [data-og-action-menu],
+html body [data-og-action-menu] *,
+html body [data-post-card-reaction-menu],
+html body [data-post-card-reaction-menu] * {
                 scroll-behavior: auto !important;
                 transition-duration: .01ms !important;
                 animation-duration: .01ms !important;
@@ -8256,9 +8785,9 @@ SVG;
             }
 
             html body article.post-card[data-post-card-shell] .post-card__media-link:hover .post-card__media-image,
-            html body article.post-card[data-post-card-shell] :is(a, button):active,
-            html body [data-og-action-menu] :is(a, button),
-            html body [data-post-card-reaction-menu] .post-card__reaction-option {
+html body article.post-card[data-post-card-shell] :is(a, button):active,
+html body [data-og-action-menu] :is(a, button),
+html body [data-post-card-reaction-menu] .post-card__reaction-option {
                 transform: none !important;
             }
         }
@@ -8406,7 +8935,7 @@ SVG;
         }
 
         html body [data-post-card-reaction-menu] .reaction-emoji--html :is(img, svg, iconify-icon),
-        html body [data-post-card-reaction-menu] .post-card__reaction-option .reaction-emoji--html :is(img, svg, iconify-icon) {
+html body [data-post-card-reaction-menu] .post-card__reaction-option .reaction-emoji--html :is(img, svg, iconify-icon) {
             display: block !important;
             width: 26px !important;
             min-width: 26px !important;
@@ -8419,9 +8948,9 @@ SVG;
 
         /* Fully opaque dark surface as well — content behind the picker never bleeds through. */
         html.dark body [data-post-card-reaction-menu],
-        body.dark [data-post-card-reaction-menu],
-        .dark [data-post-card-reaction-menu],
-        [data-theme="dark"] [data-post-card-reaction-menu] {
+body.dark [data-post-card-reaction-menu],
+.dark [data-post-card-reaction-menu],
+[data-theme="dark"] [data-post-card-reaction-menu] {
             --reaction-popover-bg: #111827;
             --reaction-popover-border: #334155;
             --reaction-popover-hover: #1f2937;
@@ -8440,25 +8969,25 @@ SVG;
         }
 
         html.dark body [data-post-card-reaction-menu] .post-card__reaction-menu-title,
-        body.dark [data-post-card-reaction-menu] .post-card__reaction-menu-title,
-        .dark [data-post-card-reaction-menu] .post-card__reaction-menu-title,
-        [data-theme="dark"] [data-post-card-reaction-menu] .post-card__reaction-menu-title {
+body.dark [data-post-card-reaction-menu] .post-card__reaction-menu-title,
+.dark [data-post-card-reaction-menu] .post-card__reaction-menu-title,
+[data-theme="dark"] [data-post-card-reaction-menu] .post-card__reaction-menu-title {
             border-color: var(--reaction-popover-border) !important;
             color: var(--reaction-popover-muted) !important;
         }
 
         html.dark body [data-post-card-reaction-menu] .post-card__reaction-option,
-        body.dark [data-post-card-reaction-menu] .post-card__reaction-option,
-        .dark [data-post-card-reaction-menu] .post-card__reaction-option,
-        [data-theme="dark"] [data-post-card-reaction-menu] .post-card__reaction-option {
+body.dark [data-post-card-reaction-menu] .post-card__reaction-option,
+.dark [data-post-card-reaction-menu] .post-card__reaction-option,
+[data-theme="dark"] [data-post-card-reaction-menu] .post-card__reaction-option {
             background: var(--reaction-popover-bg) !important;
             color: var(--reaction-popover-text) !important;
         }
 
         html.dark body [data-post-card-reaction-menu] .post-card__reaction-option:is(:hover, :focus-visible),
-        body.dark [data-post-card-reaction-menu] .post-card__reaction-option:is(:hover, :focus-visible),
-        .dark [data-post-card-reaction-menu] .post-card__reaction-option:is(:hover, :focus-visible),
-        [data-theme="dark"] [data-post-card-reaction-menu] .post-card__reaction-option:is(:hover, :focus-visible) {
+body.dark [data-post-card-reaction-menu] .post-card__reaction-option:is(:hover, :focus-visible),
+.dark [data-post-card-reaction-menu] .post-card__reaction-option:is(:hover, :focus-visible),
+[data-theme="dark"] [data-post-card-reaction-menu] .post-card__reaction-option:is(:hover, :focus-visible) {
             border-color: var(--reaction-popover-hover-border) !important;
             background: var(--reaction-popover-hover) !important;
             color: var(--reaction-popover-text) !important;
@@ -8471,9 +9000,9 @@ SVG;
             }
         }
 
-        @media (max-width: 640px) {
+        @media (max-width: 640px){
             html body [data-post-card-reaction-layer] [data-post-card-reaction-menu],
-            html body [data-post-card-reaction-menu] {
+html body [data-post-card-reaction-menu] {
                 position: fixed !important;
                 width: min(264px, calc(100vw - 20px)) !important;
                 max-width: min(264px, calc(100vw - 20px)) !important;
@@ -8489,13 +9018,13 @@ SVG;
             }
 
             html body [data-post-card-reaction-menu] :is(.post-card__reaction-form, a.post-card__reaction-option),
-            html body [data-post-card-reaction-menu] .post-card__reaction-option {
+html body [data-post-card-reaction-menu] .post-card__reaction-option {
                 height: 44px !important;
                 min-height: 44px !important;
             }
         }
 
-        @media (max-width: 640px) {
+        @media (max-width: 640px){
             html body [data-post-card-reaction-layer] {
                 position: fixed !important;
                 inset: 0 !important;
@@ -8512,7 +9041,7 @@ SVG;
             }
         }
 
-        @media (max-width: 360px) {
+        @media (max-width: 360px){
             html body [data-post-card-reaction-menu] {
                 width: min(240px, calc(100vw - 20px)) !important;
                 max-width: min(240px, calc(100vw - 20px)) !important;
@@ -8551,10 +9080,10 @@ SVG;
 
         /* FINAL: Devamını oku kontrolü hiçbir durumda buton zemini göstermesin. */
         html body article.post-card[data-post-card-shell] .expand-link,
-        html body article.post-card[data-post-card-shell] .expand-link:hover,
-        html body article.post-card[data-post-card-shell] .expand-link:focus,
-        html body article.post-card[data-post-card-shell] .expand-link:focus-visible,
-        html body article.post-card[data-post-card-shell] .expand-link:active {
+html body article.post-card[data-post-card-shell] .expand-link:hover,
+html body article.post-card[data-post-card-shell] .expand-link:focus,
+html body article.post-card[data-post-card-shell] .expand-link:focus-visible,
+html body article.post-card[data-post-card-shell] .expand-link:active {
             display: inline-flex !important;
             align-items: center !important;
             justify-content: flex-start !important;
@@ -8581,17 +9110,17 @@ SVG;
         }
 
         html body article.post-card[data-post-card-shell] .expand-link:hover,
-        html body article.post-card[data-post-card-shell] .expand-link:focus,
-        html body article.post-card[data-post-card-shell] .expand-link:focus-visible,
-        html body article.post-card[data-post-card-shell] .expand-link:active,
-        html body article.post-card[data-post-card-shell] .expand-link[aria-expanded="true"] {
+html body article.post-card[data-post-card-shell] .expand-link:focus,
+html body article.post-card[data-post-card-shell] .expand-link:focus-visible,
+html body article.post-card[data-post-card-shell] .expand-link:active,
+html body article.post-card[data-post-card-shell] .expand-link[aria-expanded="true"] {
             color: #111827 !important;
             text-decoration: none !important;
             transform: translateY(1px) !important;
         }
 
         html body article.post-card[data-post-card-shell] .expand-link .post-card__expand-icon,
-        html body article.post-card[data-post-card-shell] .expand-link .post-card__expand-icon iconify-icon {
+html body article.post-card[data-post-card-shell] .expand-link .post-card__expand-icon iconify-icon {
             background: transparent !important;
             background-color: transparent !important;
             background-image: none !important;
@@ -8602,7 +9131,8 @@ SVG;
 
         /* Final deterministic action/icon geometry.
          * Legacy rules remain for component behavior; this final layer
-         * owns only placement, sizing and optical centering.
+         * owns only placement,
+sizing and optical centering.
          */
 
 
@@ -8652,7 +9182,7 @@ SVG;
             margin: 0 !important;
         }
 
-        @media (max-width: 640px) {
+        @media (max-width: 640px){
             html body [data-post-card-shell].post-card .og-action-wrap {
                 margin-right: 1px !important;
             }
