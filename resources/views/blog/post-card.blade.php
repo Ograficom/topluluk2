@@ -1288,13 +1288,15 @@ SVG;
 @endphp
 
 <article
-    class="post-card is-preloading"
+    class="post-card is-preloading{{ $isPinned ? ' is-pinned' : '' }}{{ $hasMediaCarousel ? ' has-media' : '' }}{{ $mediaItems->count() > 1 ? ' has-gallery' : '' }}"
     id="{{ $cardShellId }}"
     data-post-card-shell
     data-post-url="{{ $replyShareUrl }}"
     data-post-title="{{ $title }}"
     data-post-view-url="{{ $viewAction ?? '' }}"
     data-post-view-recorded="false"
+    data-post-media-count="{{ $mediaItems->count() }}"
+    data-post-comments-count="{{ $commentsCount }}"
 >
     <div class="post-header" id="post-header">
         <div class="author-block" id="author-block" data-media-type="banani-button">
@@ -2226,10 +2228,6 @@ SVG;
 @once
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-        href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap"
-        rel="stylesheet"
-    />
     <script src="https://code.iconify.design/iconify-icon/3.0.0/iconify-icon.min.js"></script>
 
     <style>
