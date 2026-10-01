@@ -1396,7 +1396,7 @@ SVG;
                 </div>
 
                 @if($showAuthorSubline)
-                    <div class="author-subline" id="author-subline">
+                    <div class="author-subline">
                         @if($hasCategory)
                             <span class="ps-hover-zone ps-hover-zone--inline ps-hover-zone--category-name" tabindex="0">
                                 @if($categoryUrl)
@@ -1905,7 +1905,7 @@ SVG;
         <button
             type="button"
             class="expand-link"
-            id="expand-link"
+           
             data-media-type="banani-button"
             data-post-card-expand
             data-post-card-expand-collapsed-label="{{ $expandCollapsedLabel }}"
