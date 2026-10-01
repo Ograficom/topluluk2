@@ -1512,7 +1512,7 @@ html body [data-post-card-shell].post-card .action-bar .post-card__action-button
     flex:0 0 auto !important;
     border:0 !important; border-radius:10px !important;
     background:transparent !important; color:#535860 !important;
-    font-size:12px !important; line-height:1 !important; font-weight:500 !important;
+    font-size:12px !important; line-height:1 !important; font-weight:500 !important; cursor:pointer !important;
     box-shadow:none !important; text-decoration:none !important;
 }
 html body [data-post-card-shell].post-card .action-bar .action-btn:hover,
@@ -1529,6 +1529,16 @@ html body [data-post-card-shell].post-card .action-bar .post-card__action-button
 }
 html body [data-post-card-shell].post-card .action-bar .action-chip.is-bookmarked {
     color:#2563eb !important;
+}
+html body [data-post-card-shell].post-card .action-bar :is(.action-btn,.action-stat,.action-chip,.post-card__action-link,.post-card__action-button)[aria-expanded="true"] {
+    background:#f4f4f5 !important; color:#111111 !important;
+}
+html body [data-post-card-shell].post-card .action-bar :is(.action-btn,.action-stat,.action-chip,.post-card__action-link,.post-card__action-button):active {
+    background:#ededee !important;
+}
+html body [data-post-card-shell].post-card .action-bar .post-card__action-button:disabled {
+    cursor:default !important;
+    opacity:.5 !important;
 }
 html body [data-post-card-shell].post-card .action-bar .post-card__inline-icon {
     display:inline-flex !important; align-items:center !important; justify-content:center !important;
