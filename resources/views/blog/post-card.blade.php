@@ -187,9 +187,6 @@
     $postContentJson = optional($postObj)->content_json ?? data_get($postArr, 'content_json');
     $fullPostText = $extractEditorPlainText($postContentJson);
 
-    $estimatedReadWords = count(preg_split('/\\s+/u', trim($fullPostText), -1, PREG_SPLIT_NO_EMPTY));
-    $estimatedReadMinutes = max(1, (int) ceil($estimatedReadWords / 200));
-
     if ($fullPostText === '') {
         $fullPostText = $normalizePostPlainText(optional($postObj)->content ?? $postArr['content'] ?? '');
     }
@@ -197,6 +194,9 @@
     if ($fullPostText === '') {
         $fullPostText = $normalizePostPlainText(optional($postObj)->excerpt ?? $postArr['excerpt'] ?? $excerpt ?? '');
     }
+
+    $estimatedReadWords = count(preg_split('/\\s+/u', trim($fullPostText), -1, PREG_SPLIT_NO_EMPTY));
+    $estimatedReadMinutes = max(1, (int) ceil($estimatedReadWords / 200));
 
     $resolvedExcerpt = trim((string) (
         $excerpt
