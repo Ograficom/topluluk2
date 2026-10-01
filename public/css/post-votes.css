@@ -1,17 +1,22 @@
-/* Ografi post vote control: shared by feed cards and post-show. */
+/* Ografi post vote control: shared by feed cards and post-show.
+ * The post-card reference layer owns the final card placement.
+ */ 
 html body.alma-app .post-vote-control,
 html body .post-vote-control {
     display: inline-flex !important;
     align-items: center !important;
     justify-content: center !important;
     flex: 0 0 auto !important;
-    height: 34px !important;
-    min-height: 34px !important;
+    width: auto !important;
+    min-width: 66px !important;
+    height: 32px !important;
+    min-height: 32px !important;
     padding: 2px !important;
+    margin: 0 !important;
     border: 0 !important;
-    border-radius: 9999px !important;
-    background: #f5f6f7 !important;
-    color: #111827 !important;
+    border-radius: 999px !important;
+    background: #f4f5f6 !important;
+    color: #33363b !important;
     box-shadow: none !important;
     filter: none !important;
     transform: none !important;
@@ -23,22 +28,22 @@ html body .post-vote-control .post-vote-btn {
     display: inline-flex !important;
     align-items: center !important;
     justify-content: center !important;
-    width: 30px !important;
-    min-width: 30px !important;
-    height: 30px !important;
-    min-height: 30px !important;
+    width: 25px !important;
+    min-width: 25px !important;
+    height: 28px !important;
+    min-height: 28px !important;
     margin: 0 !important;
     padding: 0 !important;
     border: 0 !important;
-    border-radius: 9999px !important;
+    border-radius: 999px !important;
     background: transparent !important;
-    color: #111827 !important;
+    color: #454a52 !important;
     box-shadow: none !important;
     outline: none !important;
     cursor: pointer !important;
     appearance: none !important;
     -webkit-appearance: none !important;
-    transition: background-color .14s ease, color .14s ease, transform .1s ease !important;
+    transition: background-color .12s ease, color .12s ease !important;
 }
 
 html body.alma-app .post-vote-control .post-vote-btn:hover,
@@ -52,7 +57,7 @@ html body .post-vote-control .post-vote-btn:focus-visible {
 
 html body.alma-app .post-vote-control .post-vote-btn:active,
 html body .post-vote-control .post-vote-btn:active {
-    transform: scale(.92) !important;
+    transform: none !important;
 }
 
 html body.alma-app .post-vote-control .post-vote-btn.is-upvoted,
@@ -76,10 +81,10 @@ html body .post-vote-control .post-vote-btn:disabled {
 html body.alma-app .post-vote-control .post-vote-btn svg,
 html body .post-vote-control .post-vote-btn svg {
     display: block !important;
-    width: 17px !important;
-    height: 17px !important;
-    min-width: 17px !important;
-    min-height: 17px !important;
+    width: 16px !important;
+    height: 16px !important;
+    min-width: 16px !important;
+    min-height: 16px !important;
     fill: none !important;
     stroke: currentColor !important;
     stroke-width: 1.9 !important;
@@ -93,12 +98,13 @@ html body .post-vote-control .post-vote-score {
     display: inline-flex !important;
     align-items: center !important;
     justify-content: center !important;
-    min-width: 24px !important;
-    height: 30px !important;
-    padding: 0 2px !important;
-    color: #111827 !important;
+    min-width: 18px !important;
+    width: auto !important;
+    height: 28px !important;
+    padding: 0 1px !important;
+    color: #33363b !important;
     font-family: inherit !important;
-    font-size: 13px !important;
+    font-size: 12px !important;
     font-weight: 600 !important;
     line-height: 1 !important;
     font-variant-numeric: tabular-nums !important;
@@ -106,13 +112,10 @@ html body .post-vote-control .post-vote-score {
 }
 
 html body.alma-app article[data-post-card-shell] .action-left .post-vote-control {
-    margin-right: 1px !important;
+    margin-right: 0 !important;
 }
 
-html body.alma-app .post-show-shell .ps-action-row .post-vote-control {
-    margin-right: 2px !important;
-}
-
+/* Composer / post-show settings keep their existing structure below. */
 /* Composer preference row: same vote feature can be enabled/disabled per post. */
 html body.alma-app .post-vote-setting-row,
 html body .post-vote-setting-row {
