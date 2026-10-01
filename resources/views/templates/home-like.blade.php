@@ -5331,34 +5331,6 @@
     }
 }
 
-.home-feed-shell [data-post-card-shell] .post-title,
-.home-feed-shell [data-post-card-shell] .post-title__link {
-    font-size: 22px !important;
-    font-weight: 700 !important;
-    line-height: 1.35 !important;
-}
-
-.home-feed-shell [data-post-card-shell] .post-summary,
-.home-feed-shell [data-post-card-shell] .post-card__full-content,
-.home-feed-shell [data-post-card-shell] .post-card__inline-text {
-    font-size: 15.5px !important;
-    line-height: 1.62 !important;
-}
-
-.home-feed-shell [data-post-card-shell] .post-card__tag,
-.home-feed-shell [data-post-card-shell] .expand-link {
-    font-size: 14.5px !important;
-}
-
-.home-feed-shell [data-post-card-shell] .author-name {
-    font-size: 15px !important;
-}
-
-.home-feed-shell [data-post-card-shell] .author-subline,
-.home-feed-shell [data-post-card-shell] .post-time {
-    font-size: 13px !important;
-}
-
 /* Post-card mobile visuals live in resources/css/post-card-advanced.css.
  * Keep this template responsible for feed-specific layout only. */
 @media (max-width: 640px) {
@@ -5366,61 +5338,6 @@
         width: 100% !important;
         max-width: 100% !important;
         padding-inline: 0 !important;
-    }
-}
-
-@media (min-width: 1440px) {
-    html body .home-feed-shell article.post-card[data-post-card-shell] :is(.post-title, .post-title__link):not(#comments *):not(#app *) {
-        font-size: 21px !important;
-        font-weight: 700 !important;
-        line-height: 1.38 !important;
-    }
-
-    html body .home-feed-shell article.post-card[data-post-card-shell] :is(.post-summary, [data-post-card-summary], .post-card__full-content, .post-card__inline-text):not(#comments *):not(#app *) {
-        font-size: 17px !important;
-        font-weight: 400 !important;
-        line-height: 1.52 !important;
-    }
-
-    html body .home-feed-shell article.post-card[data-post-card-shell] .expand-link:not(#comments *):not(#app *) {
-        font-size: 16px !important;
-        font-weight: 600 !important;
-        line-height: 24px !important;
-    }
-
-    /* Read-more control: text/icon only on every post-card. */
-    html body article.post-card .expand-link,
-    html body article.post-card a.expand-link,
-    html body article.post-card button.expand-link,
-    html body .expand-link {
-        display: inline-flex !important;
-        align-items: center !important;
-        width: auto !important;
-        min-width: 0 !important;
-        height: auto !important;
-        min-height: 0 !important;
-        margin: 5px 0 16px !important;
-        padding: 0 !important;
-        border: 0 !important;
-        border-width: 0 !important;
-        border-radius: 0 !important;
-        background: transparent !important;
-        background-color: transparent !important;
-        box-shadow: none !important;
-        appearance: none !important;
-        -webkit-appearance: none !important;
-        outline: none !important;
-    }
-
-    html body article.post-card .expand-link:hover,
-    html body article.post-card .expand-link:focus,
-    html body article.post-card .expand-link:active,
-    html body .expand-link:hover,
-    html body .expand-link:focus,
-    html body .expand-link:active {
-        background: transparent !important;
-        background-color: transparent !important;
-        box-shadow: none !important;
     }
 }
 
