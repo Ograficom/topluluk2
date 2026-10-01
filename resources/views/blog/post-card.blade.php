@@ -8274,6 +8274,28 @@ SVG;
                 gap: 6px !important;
             }
         }
+
+        /* FINAL REFERENCE LOCK — stop legacy rules from reintroducing
+         * shadow, hover lift, eyebrow noise or duplicate comment preview. */
+        html body article.post-card[data-post-card-shell]:hover,
+        html body article.post-card[data-post-card-shell]:focus-within {
+            box-shadow: none !important;
+            transform: none !important;
+        }
+
+        html body article.post-card[data-post-card-shell] .post-card__media-image,
+        html body article.post-card[data-post-card-shell] .post-card__media-link:hover .post-card__media-image {
+            transform: none !important;
+        }
+
+        html body article.post-card[data-post-card-shell] .post-card__eyebrow {
+            display: none !important;
+        }
+
+        html body article.post-card[data-post-card-shell] .comment-row {
+            display: none !important;
+        }
+
 </style>
 
     <script>
