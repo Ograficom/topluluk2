@@ -35,7 +35,16 @@ class RssSyncService
                 $summary['items_updated'] += $result['items_updated'];
                 $summary['posts_created'] += $result['posts_created'];
                 $summary['posts_updated'] += $result['posts_updated'];
-                $summary['errors'] += $result['error'] ? 1 : 0;
+
+                if ($result['error']) {
+                    $summary['errors']++;
+                    Log::warning('RSS feed sync failed', [
+                        'rss_feed_id' => $feed->id,
+                        'rss_feed_name' => $feed->name,
+                        'rss_feed_url' => $feed->url,
+                        'error' => $result['error'],
+                    ]);
+                }
             });
 
         return $summary;
