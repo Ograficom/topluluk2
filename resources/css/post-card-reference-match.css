@@ -543,3 +543,78 @@ html body article[data-post-card-shell].post-card:hover {
         right: 14px !important;
     }
 }
+
+
+/* Mobile action rail optimization:
+ * keep secondary actions visually close to the left edge while giving the
+ * eye/count a deliberate right inset so neither cluster hugs the wrong edge.
+ */
+@media (max-width: 640px) {
+    html body.alma-app article[data-post-card-shell].post-card .action-bar,
+    html body article[data-post-card-shell].post-card .action-bar {
+        height: 48px !important;
+        min-height: 48px !important;
+    }
+
+    html body.alma-app article[data-post-card-shell].post-card .action-bar .action-left,
+    html body article[data-post-card-shell].post-card .action-bar .action-left {
+        left: 2px !important;
+        gap: 5px !important;
+        max-width: calc(100% - 70px) !important;
+    }
+
+    html body.alma-app article[data-post-card-shell].post-card .action-bar .action-left > :where(
+        .action-btn,
+        .action-stat,
+        .action-chip,
+        .post-card__action-link,
+        .post-card__action-button
+    ) {
+        width: 34px !important;
+        min-width: 34px !important;
+        height: 34px !important;
+        min-height: 34px !important;
+        flex-basis: 34px !important;
+        padding: 0 !important;
+    }
+
+    /* The vote pill is allowed to keep its natural content; the three icon
+       actions after it are pulled toward the left cluster. */
+    html body.alma-app article[data-post-card-shell].post-card .action-bar .action-left > :nth-child(n + 2),
+    html body article[data-post-card-shell].post-card .action-bar .action-left > :nth-child(n + 2) {
+        transform: translateX(-4px) !important;
+    }
+
+    html body.alma-app article[data-post-card-shell].post-card .action-bar .post-metric--views,
+    html body article[data-post-card-shell].post-card .action-bar .post-metric--views {
+        right: 26px !important;
+        min-width: 44px !important;
+        height: 34px !important;
+        min-height: 34px !important;
+        padding-left: 4px !important;
+        padding-right: 4px !important;
+        gap: 3px !important;
+    }
+}
+
+@media (max-width: 380px) {
+    html body.alma-app article[data-post-card-shell].post-card .action-bar .action-left,
+    html body article[data-post-card-shell].post-card .action-bar .action-left {
+        left: 0 !important;
+        gap: 2px !important;
+        max-width: calc(100% - 58px) !important;
+    }
+
+    html body.alma-app article[data-post-card-shell].post-card .action-bar .action-left > :nth-child(n + 2),
+    html body article[data-post-card-shell].post-card .action-bar .action-left > :nth-child(n + 2) {
+        transform: translateX(-2px) !important;
+    }
+
+    html body.alma-app article[data-post-card-shell].post-card .action-bar .post-metric--views,
+    html body article[data-post-card-shell].post-card .action-bar .post-metric--views {
+        right: 20px !important;
+        min-width: 38px !important;
+        height: 32px !important;
+        min-height: 32px !important;
+    }
+}
