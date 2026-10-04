@@ -1135,3 +1135,27 @@ html body article[data-post-card-shell].post-card .post-card__source {
     outline: 0 !important;
     box-shadow: none !important;
 }
+
+
+/* Source typography — smaller than the main card metadata. */
+html body.alma-app article[data-post-card-shell].post-card .post-card__source-label,
+html body article[data-post-card-shell].post-card .post-card__source-label {
+    font-size: 7.5px !important;
+    line-height: 9px !important;
+}
+
+html body.alma-app article[data-post-card-shell].post-card .post-card__source-domain,
+html body article[data-post-card-shell].post-card .post-card__source-domain {
+    font-size: 11px !important;
+    line-height: 14px !important;
+}
+
+/* Expanded source strip sits immediately above the "Daha az göster" control. */
+html body.alma-app article[data-post-card-shell].post-card .post-card__source {
+    margin-bottom: 4px !important;
+}
+
+html body.alma-app article[data-post-card-shell].post-card .expand-link,
+html body article[data-post-card-shell].post-card .expand-link {
+    margin-top: 0 !important;
+}
