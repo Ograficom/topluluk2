@@ -1295,3 +1295,355 @@ html body article[data-post-card-shell].post-card:hover {
         margin-right: -18px !important;
     }
 }
+
+
+/* ========================================================================
+ * DEFINITIVE REFERENCE LOCK
+ * Source of truth: supplied 648x793 reference screenshot.
+ * Do not center/float action icons and do not shrink the card to 590px.
+ * ====================================================================== */
+
+html body.alma-app article[data-post-card-shell].post-card,
+html body article[data-post-card-shell].post-card {
+    width: 610px !important;
+    max-width: 610px !important;
+    min-width: 0 !important;
+    margin: 14px auto 10px !important;
+    padding: 16px 18px 0 !important;
+    box-sizing: border-box !important;
+    border: 1px solid #e7e5e2 !important;
+    border-radius: 8px !important;
+    background: #ffffff !important;
+    box-shadow: none !important;
+    overflow: hidden !important;
+}
+
+html body article[data-post-card-shell].post-card .post-header {
+    height: 38px !important;
+    min-height: 38px !important;
+    margin: 0 0 10px !important;
+    padding: 0 !important;
+}
+
+html body article[data-post-card-shell].post-card .author-block {
+    height: 38px !important;
+    align-items: center !important;
+    gap: 9px !important;
+}
+
+html body article[data-post-card-shell].post-card .author-avatar {
+    width: 38px !important;
+    min-width: 38px !important;
+    height: 38px !important;
+    min-height: 38px !important;
+}
+
+html body article[data-post-card-shell].post-card .author-info {
+    min-width: 0 !important;
+}
+
+html body article[data-post-card-shell].post-card .author-name {
+    font-size: 14px !important;
+    line-height: 17px !important;
+    font-weight: 600 !important;
+    color: #111111 !important;
+}
+
+html body article[data-post-card-shell].post-card .author-subline {
+    font-size: 11px !important;
+    line-height: 14px !important;
+    gap: 5px !important;
+    margin-top: 0 !important;
+}
+
+html body article[data-post-card-shell].post-card .author-subline__topic {
+    color: #1f2937 !important;
+    font-weight: 500 !important;
+}
+
+html body article[data-post-card-shell].post-card .post-card__eyebrow {
+    display: none !important;
+}
+
+/* More button remains top-right, but never affects the content width. */
+html body article[data-post-card-shell].post-card .og-action-wrap {
+    margin-left: auto !important;
+    align-self: flex-start !important;
+}
+
+html body article[data-post-card-shell].post-card [data-og-action-trigger] {
+    width: 28px !important;
+    min-width: 28px !important;
+    height: 28px !important;
+    min-height: 28px !important;
+    border-radius: 8px !important;
+    background: transparent !important;
+    border: 0 !important;
+}
+
+/* Title */
+html body article[data-post-card-shell].post-card .post-title {
+    margin: 0 0 16px !important;
+    padding: 0 !important;
+    font-size: 18px !important;
+    line-height: 24px !important;
+    font-weight: 700 !important;
+    letter-spacing: -0.015em !important;
+    color: #111111 !important;
+}
+
+/* Screenshot inner media width: 552px from the 610px card. */
+html body article[data-post-card-shell].post-card .post-card__media-wrap {
+    width: 100% !important;
+    margin: 0 0 17px !important;
+    border-radius: 7px !important;
+    overflow: hidden !important;
+    background: #f4f4f5 !important;
+}
+
+html body article[data-post-card-shell].post-card .post-card__media-frame {
+    width: 100% !important;
+    aspect-ratio: 3 / 2 !important;
+    max-height: none !important;
+    overflow: hidden !important;
+}
+
+html body article[data-post-card-shell].post-card .post-card__media-image {
+    width: 100% !important;
+    height: 100% !important;
+    max-width: none !important;
+    max-height: none !important;
+    object-fit: cover !important;
+}
+
+/* No source/quote card in the supplied reference. */
+html body article[data-post-card-shell].post-card .post-card__link-preview,
+html body article[data-post-card-shell].post-card .post-card__source,
+html body article[data-post-card-shell].post-card .alma-link-preview {
+    display: none !important;
+}
+
+/* Excerpt: 4 visible lines + bottom fade. */
+html body article[data-post-card-shell].post-card .post-summary-shell {
+    display: block !important;
+    height: 88px !important;
+    min-height: 88px !important;
+    max-height: 88px !important;
+    margin: 0 0 10px !important;
+    overflow: hidden !important;
+    position: relative !important;
+}
+
+html body article[data-post-card-shell].post-card .post-summary {
+    margin: 0 !important;
+    padding: 0 !important;
+    display: -webkit-box !important;
+    -webkit-box-orient: vertical !important;
+    -webkit-line-clamp: 4 !important;
+    overflow: hidden !important;
+    max-height: 88px !important;
+    font-size: 14px !important;
+    line-height: 22px !important;
+    font-weight: 400 !important;
+    color: #262626 !important;
+}
+
+html body article[data-post-card-shell].post-card .post-summary-shell::after {
+    content: "" !important;
+    position: absolute !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    height: 28px !important;
+    pointer-events: none !important;
+    background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,.97) 88%, #ffffff 100%) !important;
+}
+
+/* Continuation */
+html body article[data-post-card-shell].post-card .expand-link {
+    height: 24px !important;
+    min-height: 24px !important;
+    margin: 0 0 8px !important;
+    padding: 0 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 4px !important;
+    color: #009b78 !important;
+    font-size: 14px !important;
+    line-height: 20px !important;
+    font-weight: 500 !important;
+    background: transparent !important;
+    border: 0 !important;
+    box-shadow: none !important;
+}
+
+/* Hashtags */
+html body article[data-post-card-shell].post-card .post-card__tags {
+    display: flex !important;
+    align-items: center !important;
+    flex-wrap: wrap !important;
+    gap: 11px !important;
+    min-height: 19px !important;
+    margin: 0 0 7px !important;
+    padding: 0 !important;
+}
+
+html body article[data-post-card-shell].post-card .post-card__tag {
+    color: #009b78 !important;
+    font-size: 12px !important;
+    line-height: 18px !important;
+    font-weight: 500 !important;
+    text-decoration: none !important;
+}
+
+/* Reactions */
+html body article[data-post-card-shell].post-card .reactions-row,
+html body article[data-post-card-shell].post-card .reaction-row {
+    display: flex !important;
+    align-items: center !important;
+    flex-wrap: wrap !important;
+    gap: 6px !important;
+    min-height: 42px !important;
+    height: 42px !important;
+    margin: 0 !important;
+    padding: 5px 0 8px !important;
+}
+
+html body article[data-post-card-shell].post-card .reaction-item,
+html body article[data-post-card-shell].post-card .more-pill,
+html body article[data-post-card-shell].post-card .reaction-add,
+html body article[data-post-card-shell].post-card .smiley-btn {
+    height: 28px !important;
+    min-height: 28px !important;
+    border: 1px solid #e3e4e7 !important;
+    border-radius: 999px !important;
+    background: #f7f7f8 !important;
+    box-shadow: none !important;
+}
+
+html body article[data-post-card-shell].post-card .reaction-add,
+html body article[data-post-card-shell].post-card .smiley-btn {
+    width: 29px !important;
+    min-width: 29px !important;
+    background: #ffffff !important;
+}
+
+/* Action footer */
+html body article[data-post-card-shell].post-card .action-bar {
+    position: relative !important;
+    display: block !important;
+    width: calc(100% + 36px) !important;
+    min-width: calc(100% + 36px) !important;
+    height: 50px !important;
+    min-height: 50px !important;
+    margin: 0 -18px !important;
+    padding: 0 18px !important;
+    box-sizing: border-box !important;
+    border-top: 1px solid #dfdfe2 !important;
+    background: #ffffff !important;
+}
+
+html body article[data-post-card-shell].post-card .action-bar .action-left {
+    position: absolute !important;
+    left: 18px !important;
+    top: 50% !important;
+    right: auto !important;
+    bottom: auto !important;
+    width: max-content !important;
+    max-width: none !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 15px !important;
+    transform: translateY(-50%) !important;
+}
+
+html body article[data-post-card-shell].post-card .action-bar .post-vote-control {
+    margin: 0 !important;
+    flex: 0 0 auto !important;
+}
+
+html body article[data-post-card-shell].post-card .action-bar .action-left > :where(
+    .action-btn,
+    .action-stat,
+    .action-chip,
+    .post-card__action-link,
+    .post-card__action-button
+) {
+    width: 28px !important;
+    min-width: 28px !important;
+    height: 32px !important;
+    min-height: 32px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border: 0 !important;
+    border-radius: 7px !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    color: #222222 !important;
+}
+
+html body article[data-post-card-shell].post-card .action-bar .post-card__inline-icon {
+    width: 20px !important;
+    min-width: 20px !important;
+    height: 20px !important;
+    min-height: 20px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+html body article[data-post-card-shell].post-card .action-bar .post-card__inline-icon :where(
+    svg,
+    iconify-icon,
+    .post-card__comment-icon,
+    .post-card__bookmark-icon,
+    .post-card__share-icon
+) {
+    width: 18px !important;
+    min-width: 18px !important;
+    height: 18px !important;
+    min-height: 18px !important;
+    margin: 0 !important;
+    display: block !important;
+}
+
+html body article[data-post-card-shell].post-card .action-bar .post-metric--views {
+    position: absolute !important;
+    right: 18px !important;
+    left: auto !important;
+    top: 50% !important;
+    margin: 0 !important;
+    transform: translateY(-50%) !important;
+}
+
+/* The reference ends at the action footer. Comment preview remains available
+   through the comment action instead of adding extra content below the card. */
+html body article[data-post-card-shell].post-card .comment-row {
+    display: none !important;
+}
+
+@media (max-width: 630px) {
+    html body.alma-app article[data-post-card-shell].post-card,
+    html body article[data-post-card-shell].post-card {
+        width: 100% !important;
+        max-width: none !important;
+        margin: 0 !important;
+        border-left: 0 !important;
+        border-right: 0 !important;
+        border-radius: 0 !important;
+    }
+
+    html body article[data-post-card-shell].post-card .action-bar {
+        margin-left: -18px !important;
+        margin-right: -18px !important;
+    }
+}
