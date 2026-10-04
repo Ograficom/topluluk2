@@ -909,3 +909,389 @@ html body [data-post-card-shell].post-card .action-bar .post-metric--views {
         right: 0 !important;
     }
 }
+
+
+/* ========================================================================
+ * SCREENSHOT-EXACT POST CARD PASS
+ * Reference: 648x793 supplied screenshot.
+ * Keep the real Blade/JS features; only normalize presentation and spacing.
+ * ====================================================================== */
+
+html body.alma-app article[data-post-card-shell].post-card,
+html body article[data-post-card-shell].post-card {
+    box-sizing: border-box !important;
+    width: min(590px, calc(100% - 38px)) !important;
+    max-width: 590px !important;
+    margin: 14px auto 10px !important;
+    padding: 16px 18px 0 !important;
+    border: 1px solid #e2e2e5 !important;
+    border-radius: 8px !important;
+    background: #ffffff !important;
+    box-shadow: none !important;
+}
+
+/* Header: 38px avatar + small topic/date line. */
+html body article[data-post-card-shell].post-card .post-header {
+    display: flex !important;
+    align-items: flex-start !important;
+    gap: 10px !important;
+    min-height: 38px !important;
+    margin: 0 0 10px !important;
+}
+
+html body article[data-post-card-shell].post-card .author-block {
+    align-items: center !important;
+    gap: 9px !important;
+}
+
+html body article[data-post-card-shell].post-card .avatar-wrap {
+    width: 38px !important;
+    min-width: 38px !important;
+    height: 38px !important;
+}
+
+html body article[data-post-card-shell].post-card .author-avatar {
+    width: 38px !important;
+    min-width: 38px !important;
+    height: 38px !important;
+    border-radius: 50% !important;
+}
+
+html body article[data-post-card-shell].post-card .category-badge {
+    width: 20px !important;
+    min-width: 20px !important;
+    height: 20px !important;
+    right: -3px !important;
+    bottom: -3px !important;
+    border-width: 2px !important;
+    box-shadow: none !important;
+}
+
+html body article[data-post-card-shell].post-card .author-name {
+    font-size: 14px !important;
+    line-height: 17px !important;
+    font-weight: 600 !important;
+}
+
+html body article[data-post-card-shell].post-card .author-subline {
+    gap: 6px !important;
+    margin-top: 0 !important;
+    font-size: 11px !important;
+    line-height: 14px !important;
+}
+
+html body article[data-post-card-shell].post-card .author-subline__topic {
+    font-weight: 500 !important;
+}
+
+html body article[data-post-card-shell].post-card .author-subline__item + .author-subline__item::before {
+    margin-right: 5px !important;
+    color: #b7bcc4 !important;
+}
+
+/* No editorial eyebrow in the reference. */
+html body article[data-post-card-shell].post-card .post-card__eyebrow {
+    display: none !important;
+}
+
+/* Title sits immediately above the image. */
+html body article[data-post-card-shell].post-card .post-title {
+    margin: 0 0 16px !important;
+    font-size: 18px !important;
+    line-height: 24px !important;
+    letter-spacing: -0.018em !important;
+    font-weight: 700 !important;
+    color: #111111 !important;
+}
+
+html body article[data-post-card-shell].post-card .post-title__link {
+    color: inherit !important;
+}
+
+/* Image is the defining 3:2 block from the supplied screenshot. */
+html body article[data-post-card-shell].post-card .post-card__media-wrap {
+    width: 100% !important;
+    margin: 0 0 17px !important;
+    border-radius: 7px !important;
+    overflow: hidden !important;
+    background: #f2f2f3 !important;
+}
+
+html body article[data-post-card-shell].post-card .post-card__media-frame {
+    width: 100% !important;
+    aspect-ratio: 3 / 2 !important;
+    max-height: none !important;
+    overflow: hidden !important;
+}
+
+html body article[data-post-card-shell].post-card .post-card__media-image {
+    display: block !important;
+    width: 100% !important;
+    height: 100% !important;
+    max-width: none !important;
+    max-height: none !important;
+    object-fit: cover !important;
+}
+
+/* The source/quote preview is not part of the reference card. */
+html body article[data-post-card-shell].post-card .post-card__link-preview,
+html body article[data-post-card-shell].post-card .post-card__source,
+html body article[data-post-card-shell].post-card .alma-link-preview {
+    display: none !important;
+}
+
+/* Four-line excerpt with the same soft fade visible in the screenshot. */
+html body article[data-post-card-shell].post-card .post-summary-shell {
+    display: block !important;
+    position: relative !important;
+    max-height: 88px !important;
+    margin: 0 0 10px !important;
+    overflow: hidden !important;
+}
+
+html body article[data-post-card-shell].post-card .post-summary-shell::after {
+    content: "" !important;
+    position: absolute !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    height: 24px !important;
+    pointer-events: none !important;
+    background: linear-gradient(to bottom, rgba(255,255,255,0), #ffffff 92%) !important;
+}
+
+html body article[data-post-card-shell].post-card .post-summary {
+    display: -webkit-box !important;
+    -webkit-box-orient: vertical !important;
+    -webkit-line-clamp: 4 !important;
+    overflow: hidden !important;
+    margin: 0 !important;
+    max-height: 88px !important;
+    font-size: 14px !important;
+    line-height: 22px !important;
+    color: #262626 !important;
+    font-weight: 400 !important;
+}
+
+/* Keep continuation control text-only and green. */
+html body article[data-post-card-shell].post-card .expand-link {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 4px !important;
+    min-height: 24px !important;
+    margin: 0 0 8px !important;
+    padding: 0 !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    color: #009b78 !important;
+    font-size: 14px !important;
+    line-height: 20px !important;
+    font-weight: 500 !important;
+}
+
+/* Tags: compact, flat, green. */
+html body article[data-post-card-shell].post-card .post-card__tags {
+    display: flex !important;
+    align-items: center !important;
+    flex-wrap: wrap !important;
+    gap: 11px !important;
+    margin: 0 0 7px !important;
+    min-height: 20px !important;
+}
+
+html body article[data-post-card-shell].post-card .post-card__tag {
+    color: #009b78 !important;
+    font-size: 12px !important;
+    line-height: 18px !important;
+    font-weight: 500 !important;
+    text-decoration: none !important;
+}
+
+/* Reaction row matches the reference: compact pills, no giant vertical gap. */
+html body article[data-post-card-shell].post-card .reactions-row,
+html body article[data-post-card-shell].post-card .reaction-row {
+    display: flex !important;
+    align-items: center !important;
+    flex-wrap: wrap !important;
+    gap: 6px !important;
+    min-height: 42px !important;
+    margin: 0 !important;
+    padding: 5px 0 8px !important;
+}
+
+html body article[data-post-card-shell].post-card .reaction-item,
+html body article[data-post-card-shell].post-card .more-pill,
+html body article[data-post-card-shell].post-card .reaction-add,
+html body article[data-post-card-shell].post-card .smiley-btn {
+    height: 28px !important;
+    min-height: 28px !important;
+    border: 1px solid #e3e4e7 !important;
+    border-radius: 999px !important;
+    background: #f7f7f8 !important;
+    color: #33363a !important;
+    box-shadow: none !important;
+}
+
+html body article[data-post-card-shell].post-card .reaction-add,
+html body article[data-post-card-shell].post-card .smiley-btn {
+    width: 29px !important;
+    min-width: 29px !important;
+    padding: 0 !important;
+    background: #ffffff !important;
+}
+
+html body article[data-post-card-shell].post-card .reaction-emoji,
+html body article[data-post-card-shell].post-card .reaction-emoji--html {
+    width: 18px !important;
+    height: 18px !important;
+    min-width: 18px !important;
+    min-height: 18px !important;
+    font-size: 18px !important;
+}
+
+html body article[data-post-card-shell].post-card .reaction-count {
+    margin-left: 3px !important;
+    font-size: 11px !important;
+    line-height: 1 !important;
+}
+
+/* Bottom action strip: divider + left actions + right views. */
+html body article[data-post-card-shell].post-card .action-bar {
+    position: relative !important;
+    display: block !important;
+    box-sizing: border-box !important;
+    width: calc(100% + 36px) !important;
+    min-width: calc(100% + 36px) !important;
+    height: 50px !important;
+    min-height: 50px !important;
+    margin: 0 -18px !important;
+    padding: 0 18px !important;
+    border-top: 1px solid #e1e1e3 !important;
+    background: #ffffff !important;
+}
+
+html body article[data-post-card-shell].post-card .action-bar .action-left {
+    position: absolute !important;
+    left: 18px !important;
+    top: 50% !important;
+    width: auto !important;
+    max-width: none !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 16px !important;
+    transform: translateY(-50%) !important;
+}
+
+html body article[data-post-card-shell].post-card .action-bar .action-left > :where(
+    .action-btn,
+    .action-stat,
+    .action-chip,
+    .post-card__action-link,
+    .post-card__action-button
+) {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 28px !important;
+    min-width: 28px !important;
+    height: 32px !important;
+    min-height: 32px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    border-radius: 7px !important;
+    background: transparent !important;
+    color: #222222 !important;
+    box-shadow: none !important;
+}
+
+html body article[data-post-card-shell].post-card .action-bar .post-card__action-form {
+    display: inline-flex !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    flex: 0 0 auto !important;
+}
+
+html body article[data-post-card-shell].post-card .action-bar .post-card__inline-icon {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 20px !important;
+    height: 20px !important;
+    min-width: 20px !important;
+    min-height: 20px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+html body article[data-post-card-shell].post-card .action-bar .post-card__inline-icon :where(
+    svg,
+    iconify-icon,
+    .post-card__comment-icon,
+    .post-card__bookmark-icon,
+    .post-card__share-icon
+) {
+    display: block !important;
+    width: 18px !important;
+    height: 18px !important;
+    min-width: 18px !important;
+    min-height: 18px !important;
+    margin: 0 !important;
+}
+
+/* Vote control remains a pill and comes first when vote JS is enabled. */
+html body article[data-post-card-shell].post-card .action-bar .post-vote-control {
+    flex: 0 0 auto !important;
+    margin: 0 !important;
+}
+
+/* Views stay flush to the right content edge. */
+html body article[data-post-card-shell].post-card .action-bar .post-metric--views {
+    position: absolute !important;
+    right: 18px !important;
+    top: 50% !important;
+    left: auto !important;
+    margin: 0 !important;
+    transform: translateY(-50%) !important;
+}
+
+/* No hover lift/shadow on the reference card. */
+html body article[data-post-card-shell].post-card:hover {
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+/* Screenshot-scale layout: retain the 19px outer gutter at ~648px width. */
+@media (max-width: 700px) {
+    html body.alma-app article[data-post-card-shell].post-card,
+    html body article[data-post-card-shell].post-card {
+        width: min(590px, calc(100% - 38px)) !important;
+        max-width: 590px !important;
+        margin: 14px auto 10px !important;
+        padding: 16px 18px 0 !important;
+        border-radius: 8px !important;
+    }
+}
+
+@media (max-width: 600px) {
+    html body.alma-app article[data-post-card-shell].post-card,
+    html body article[data-post-card-shell].post-card {
+        width: 100% !important;
+        max-width: none !important;
+        margin: 0 !important;
+        border-left: 0 !important;
+        border-right: 0 !important;
+        border-radius: 0 !important;
+    }
+
+    html body article[data-post-card-shell].post-card .action-bar {
+        margin-left: -18px !important;
+        margin-right: -18px !important;
+    }
+}
