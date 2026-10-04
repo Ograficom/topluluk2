@@ -441,7 +441,7 @@
             --layout-column-gap: 56px;
             --layout-shell-inline: 0px;
             --layout-shell-max: 1272px;
-        };
+        }
             --site-bg: #eef2fb;
             --site-surface: #ffffff;
             --site-surface-muted: #dbe6fb;
