@@ -56,7 +56,7 @@ class PostLinkPreviewService
     public function previewForUrl(string $url, bool $fetchRemote = false): ?array
     {
         $url = $this->normalizeUrl($url);
-        if (!$url || !$this->shouldPreviewUrl($url)) {
+        if (!$url || !$this->shouldPreviewUrl($url) || !$this->isSafeRemoteUrl($url)) {
             return null;
         }
 
@@ -170,6 +170,12 @@ class PostLinkPreviewService
         try {
             $response = Http::timeout(6)
                 ->connectTimeout(3)
+                ->withOptions([
+                    // Do not follow redirects automatically: a public URL can
+                    // redirect to a private/link-local address and bypass the
+                    // initial SSRF hostname check.
+                    'allow_redirects' => false,
+                ])
                 ->withHeaders([
                     'User-Agent' => 'Mozilla/5.0 (compatible; OGrafiLinkPreview/1.0; +https://ografi.test)',
                     'Accept-Language' => 'tr,en;q=0.8',
@@ -280,6 +286,68 @@ class PostLinkPreviewService
                 filled($preview['title'] ?? null)
                 && Str::lower((string) ($preview['title'] ?? '')) !== Str::lower((string) ($preview['host'] ?? ''))
             );
+    }
+
+    private function isSafeRemoteUrl(string $url): bool
+    {
+        $parts = parse_url($url);
+        if (! is_array($parts)) {
+            return false;
+        }
+
+        $host = Str::lower(trim((string) ($parts['host'] ?? '')));
+        if ($host === '') {
+            return false;
+        }
+
+        $port = $parts['port'] ?? null;
+        if ($port !== null && ! in_array((int) $port, [80, 443], true)) {
+            return false;
+        }
+
+        if (filter_var($host, FILTER_VALIDATE_IP)) {
+            return filter_var(
+                $host,
+                FILTER_VALIDATE_IP,
+                FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE,
+            ) !== false;
+        }
+
+        foreach (['localhost', '.local', '.localhost', '.internal', '.lan', '.home.arpa'] as $suffix) {
+            if ($host === ltrim($suffix, '.') || Str::endsWith($host, $suffix)) {
+                return false;
+            }
+        }
+
+        if (! function_exists('dns_get_record')) {
+            return false;
+        }
+
+        $records = @dns_get_record($host, DNS_A | DNS_AAAA);
+        if (! is_array($records) || $records === []) {
+            return false;
+        }
+
+        $resolvedAny = false;
+
+        foreach ($records as $record) {
+            $ip = (string) ($record['ip'] ?? $record['ipv6'] ?? '');
+            if ($ip === '') {
+                continue;
+            }
+
+            $resolvedAny = true;
+
+            if (filter_var(
+                $ip,
+                FILTER_VALIDATE_IP,
+                FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE,
+            ) === false) {
+                return false;
+            }
+        }
+
+        return $resolvedAny;
     }
 
     private function shouldPreviewUrl(string $url): bool
