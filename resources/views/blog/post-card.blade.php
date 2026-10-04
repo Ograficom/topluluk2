@@ -1887,9 +1887,8 @@ SVG;
             @if($showExpandLink) hidden @endif
             aria-label="Kaynağı aç: {{ $sourceDisplayName }}"
         >
-            <span class="post-card__source-copy">
-                <span class="post-card__source-label">SOURCE</span>
-                <span class="post-card__source-domain-row">
+            <span class="post-card__source-main">
+                <span class="post-card__source-head">
                     @if($linkPreviewFavicon !== '')
                         <img
                             class="post-card__source-favicon"
@@ -1901,9 +1900,19 @@ SVG;
                             onerror="this.style.display='none'"
                         >
                     @endif
-                    <span class="post-card__source-domain">{{ $sourceDisplayName }}</span>
+
+                    <span class="post-card__source-copy">
+                        <span class="post-card__source-label">KAYNAK</span>
+                        <span class="post-card__source-domain">{{ $sourceDisplayName }}</span>
+                    </span>
+                </span>
+
+                <span class="post-card__source-content">
+                    <span class="post-card__source-title">{{ $sourceDisplayName }}</span>
+                    <span class="post-card__source-host">{{ $linkPreviewHost ?: $sourceDisplayName }}</span>
                 </span>
             </span>
+
             <span class="post-card__source-icon" aria-hidden="true">
                 <iconify-icon icon="lucide:arrow-up-right"></iconify-icon>
             </span>
