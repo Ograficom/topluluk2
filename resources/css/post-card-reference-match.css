@@ -260,11 +260,11 @@
     align-items: center !important;
     flex-wrap: wrap !important;
     gap: 6px !important;
-    min-height: 36px !important;
+    min-height: 48px !important;
     margin: 0 !important;
-    padding: 3px 0 7px !important;
+    padding: 12px 0 4px !important;
     border-top: 0 !important;
-    border-bottom: 1px solid #e5e7eb !important;
+    border-bottom: 0 !important;
 }
 
 [data-post-card-shell].post-card .reaction-item,
@@ -335,20 +335,20 @@
     align-items: center !important;
     justify-content: space-between !important;
     gap: 8px !important;
-    width: calc(100% + 36px) !important;
-    min-width: calc(100% + 36px) !important;
-    height: 50px !important;
-    min-height: 50px !important;
-    margin: 0 -18px !important;
-    padding: 0 12px !important;
-    border-top: 0 !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    height: 56px !important;
+    min-height: 56px !important;
+    margin: 0 !important;
+    padding: 10px 0 0 !important;
+    border-top: 1px solid rgba(15,23,42,.10) !important;
     background: transparent !important;
 }
 
 [data-post-card-shell].post-card .action-left {
     display: inline-flex !important;
     align-items: center !important;
-    gap: 8px !important;
+    gap: 4px !important;
     flex: 0 1 auto !important;
     min-width: 0 !important;
 }
@@ -519,12 +519,12 @@
     }
 
     [data-post-card-shell].post-card .action-bar {
-        width: calc(100% + 28px) !important;
-        min-width: calc(100% + 28px) !important;
-        margin-inline: -14px !important;
-        height: 48px !important;
-        min-height: 48px !important;
-        padding-inline: 8px !important;
+        width: 100% !important;
+        min-width: 0 !important;
+        margin-inline: 0 !important;
+        height: 56px !important;
+        min-height: 56px !important;
+        padding-inline: 0 !important;
     }
 
     [data-post-card-shell].post-card .action-left {
@@ -555,10 +555,10 @@
     }
 
     [data-post-card-shell].post-card .action-bar {
-        width: calc(100% + 24px) !important;
-        min-width: calc(100% + 24px) !important;
-        margin-inline: -12px !important;
-        padding-inline: 6px !important;
+        width: 100% !important;
+        min-width: 0 !important;
+        margin-inline: 0 !important;
+        padding-inline: 0 !important;
     }
 }
 
