@@ -1888,7 +1888,7 @@ SVG;
             aria-label="Kaynağı aç: {{ $sourceDisplayName }}"
         >
             <span class="post-card__source-copy">
-                <span class="post-card__source-label">Kaynak</span>
+                <span class="post-card__source-label">SOURCE</span>
                 <span class="post-card__source-domain-row">
                     @if($linkPreviewFavicon !== '')
                         <img
@@ -1909,6 +1909,110 @@ SVG;
             </span>
         </a>
     @endif
+
+    <style>
+        /* Source card: compact, screenshot-matched presentation. */
+        html body.alma-app article[data-post-card-shell].post-card .post-card__source,
+        html body article[data-post-card-shell].post-card .post-card__source {
+            display: flex !important;
+            align-items: center !important;
+            justify-content: space-between !important;
+            width: 100% !important;
+            height: 46px !important;
+            min-height: 46px !important;
+            max-height: 46px !important;
+            margin: 0 0 10px !important;
+            padding: 7px 12px !important;
+            gap: 12px !important;
+            border: 0 !important;
+            border-radius: 11px !important;
+            background: #f7f7f7 !important;
+            color: #111111 !important;
+            box-shadow: none !important;
+            box-sizing: border-box !important;
+        }
+
+        html body.alma-app article[data-post-card-shell].post-card .post-card__source-copy,
+        html body article[data-post-card-shell].post-card .post-card__source-copy {
+            display: flex !important;
+            flex: 1 1 auto !important;
+            min-width: 0 !important;
+            flex-direction: column !important;
+            justify-content: center !important;
+            gap: 1px !important;
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+
+        html body.alma-app article[data-post-card-shell].post-card .post-card__source-label,
+        html body article[data-post-card-shell].post-card .post-card__source-label {
+            display: block !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            color: #7d838a !important;
+            font-size: 9px !important;
+            line-height: 11px !important;
+            font-weight: 500 !important;
+            letter-spacing: .06em !important;
+            text-transform: uppercase !important;
+        }
+
+        html body.alma-app article[data-post-card-shell].post-card .post-card__source-domain-row,
+        html body article[data-post-card-shell].post-card .post-card__source-domain-row {
+            display: flex !important;
+            align-items: center !important;
+            min-width: 0 !important;
+            width: 100% !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            gap: 0 !important;
+        }
+
+        html body.alma-app article[data-post-card-shell].post-card .post-card__source-favicon,
+        html body article[data-post-card-shell].post-card .post-card__source-favicon {
+            display: none !important;
+        }
+
+        html body.alma-app article[data-post-card-shell].post-card .post-card__source-domain,
+        html body article[data-post-card-shell].post-card .post-card__source-domain {
+            display: block !important;
+            min-width: 0 !important;
+            max-width: 100% !important;
+            overflow: hidden !important;
+            color: #111111 !important;
+            font-size: 12px !important;
+            line-height: 15px !important;
+            font-weight: 500 !important;
+            white-space: nowrap !important;
+            text-overflow: ellipsis !important;
+        }
+
+        html body.alma-app article[data-post-card-shell].post-card .post-card__source-icon,
+        html body article[data-post-card-shell].post-card .post-card__source-icon {
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            flex: 0 0 24px !important;
+            width: 24px !important;
+            min-width: 24px !important;
+            height: 24px !important;
+            min-height: 24px !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            background: transparent !important;
+            color: #777e86 !important;
+        }
+
+        html body.alma-app article[data-post-card-shell].post-card .post-card__source-icon iconify-icon,
+        html body article[data-post-card-shell].post-card .post-card__source-icon iconify-icon {
+            display: block !important;
+            width: 15px !important;
+            height: 15px !important;
+            min-width: 15px !important;
+            min-height: 15px !important;
+            font-size: 15px !important;
+        }
+    </style>
 
     @if($showExpandLink)
         <button
