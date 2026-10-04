@@ -1753,7 +1753,7 @@ SVG;
         /* Source box: sade, tıklanabilir kaynak görünümü. */
         html body.alma-app article[data-post-card-shell].post-card .ps-source-link,
         html body article[data-post-card-shell].post-card .ps-source-link {
-            display: flex !important;
+            display: none !important;
             align-items: center !important;
             justify-content: space-between !important;
             gap: 16px !important;
@@ -1770,6 +1770,11 @@ SVG;
             -webkit-tap-highlight-color: transparent !important;
             transition: background-color .14s ease !important;
             box-shadow: none !important;
+        }
+
+        html body.alma-app article[data-post-card-shell].post-card.is-summary-expanded .ps-source-link,
+        html body article[data-post-card-shell].post-card.is-summary-expanded .ps-source-link {
+            display: flex !important;
         }
 
         html body.alma-app article[data-post-card-shell].post-card .ps-source-link:hover,
