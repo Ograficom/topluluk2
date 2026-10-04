@@ -11337,6 +11337,12 @@ SVG;
 
                 if (source) {
                     source.hidden = !expanded;
+
+                    // Kaynak kutusu yalnızca içerik genişletildiğinde görünür ve
+                    // "Daha az göster" kontrolünün hemen üstünde yer alır.
+                    if (expanded && trigger.parentNode !== source.parentNode) {
+                        trigger.parentNode?.insertBefore(source, trigger);
+                    }
                 }
             };
 
