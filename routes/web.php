@@ -571,7 +571,7 @@ Route::post('/u/{user:username}/follow', [UserController::class, 'toggleFollow']
     ->middleware('auth')
     ->name('users.follow');
 
-Route::match(['post', 'get'], '/u/{user:username}/block', [UserController::class, 'toggleBlock'])
+Route::post('/u/{user:username}/block', [UserController::class, 'toggleBlock'])
     ->middleware('auth')
     ->name('users.block');
 
