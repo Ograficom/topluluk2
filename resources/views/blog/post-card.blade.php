@@ -1783,8 +1783,8 @@ SVG;
 
     <style>
         /* Source box copied from post-show and placed at the bottom of the card description. */
-        html body.alma-app article[data-post-card-shell].post-card .post-card__source,
-        html body article[data-post-card-shell].post-card .post-card__source {
+        html body.alma-app article[data-post-card-shell].post-card .ps-source-link,
+        html body article[data-post-card-shell].post-card .ps-source-link {
             display: flex !important;
             align-items: flex-start !important;
             justify-content: space-between !important;
@@ -1804,24 +1804,24 @@ SVG;
             box-shadow: none !important;
         }
 
-        html body.alma-app article[data-post-card-shell].post-card .post-card__source:hover,
-        html body.alma-app article[data-post-card-shell].post-card .post-card__source:focus-visible,
-        html body article[data-post-card-shell].post-card .post-card__source:hover,
-        html body article[data-post-card-shell].post-card .post-card__source:focus-visible {
+        html body.alma-app article[data-post-card-shell].post-card .ps-source-link:hover,
+        html body.alma-app article[data-post-card-shell].post-card .ps-source-link:focus-visible,
+        html body article[data-post-card-shell].post-card .ps-source-link:hover,
+        html body article[data-post-card-shell].post-card .ps-source-link:focus-visible {
             background: #ebeef2 !important;
             border-color: rgba(15, 23, 42, 0.06) !important;
             color: #111827 !important;
             outline: none !important;
         }
 
-        html body.alma-app article[data-post-card-shell].post-card .post-card__source:active,
-        html body article[data-post-card-shell].post-card .post-card__source:active {
+        html body.alma-app article[data-post-card-shell].post-card .ps-source-link:active,
+        html body article[data-post-card-shell].post-card .ps-source-link:active {
             background: #e5e7eb !important;
             color: #111827 !important;
         }
 
-        html body.alma-app article[data-post-card-shell].post-card .post-card__source-copy,
-        html body article[data-post-card-shell].post-card .post-card__source-copy {
+        html body.alma-app article[data-post-card-shell].post-card .ps-source-link-copy,
+        html body article[data-post-card-shell].post-card .ps-source-link-copy {
             display: flex !important;
             flex-direction: column !important;
             justify-content: center !important;
@@ -1830,8 +1830,8 @@ SVG;
             flex: 1 1 auto !important;
         }
 
-        html body.alma-app article[data-post-card-shell].post-card .post-card__source-label,
-        html body article[data-post-card-shell].post-card .post-card__source-label {
+        html body.alma-app article[data-post-card-shell].post-card .ps-source-link-label,
+        html body article[data-post-card-shell].post-card .ps-source-link-label {
             color: #9ca3af !important;
             font-size: 10px !important;
             font-weight: 400 !important;
@@ -1840,8 +1840,8 @@ SVG;
             text-transform: uppercase !important;
         }
 
-        html body.alma-app article[data-post-card-shell].post-card .post-card__source-domain-row,
-        html body article[data-post-card-shell].post-card .post-card__source-domain-row {
+        html body.alma-app article[data-post-card-shell].post-card .ps-source-link-domain-row,
+        html body article[data-post-card-shell].post-card .ps-source-link-domain-row {
             display: inline-flex !important;
             align-items: center !important;
             gap: 7px !important;
@@ -1849,8 +1849,8 @@ SVG;
             max-width: 100% !important;
         }
 
-        html body.alma-app article[data-post-card-shell].post-card .post-card__source-favicon,
-        html body article[data-post-card-shell].post-card .post-card__source-favicon {
+        html body.alma-app article[data-post-card-shell].post-card .ps-source-link-favicon,
+        html body article[data-post-card-shell].post-card .ps-source-link-favicon {
             display: inline-flex !important;
             width: 16px !important;
             height: 16px !important;
@@ -1862,8 +1862,8 @@ SVG;
             box-shadow: none !important;
         }
 
-        html body.alma-app article[data-post-card-shell].post-card .post-card__source-domain,
-        html body article[data-post-card-shell].post-card .post-card__source-domain {
+        html body.alma-app article[data-post-card-shell].post-card .ps-source-link-domain,
+        html body article[data-post-card-shell].post-card .ps-source-link-domain {
             overflow: hidden !important;
             color: #111827 !important;
             font-size: 16px !important;
@@ -1873,8 +1873,8 @@ SVG;
             white-space: nowrap !important;
         }
 
-        html body.alma-app article[data-post-card-shell].post-card .post-card__source-icon,
-        html body article[data-post-card-shell].post-card .post-card__source-icon {
+        html body.alma-app article[data-post-card-shell].post-card .ps-source-link-icon,
+        html body article[data-post-card-shell].post-card .ps-source-link-icon {
             display: inline-flex !important;
             align-items: center !important;
             justify-content: center !important;
@@ -1885,17 +1885,17 @@ SVG;
             margin-top: 2px !important;
         }
 
-        html body.alma-app article[data-post-card-shell].post-card .post-card__source:hover .post-card__source-icon,
-        html body.alma-app article[data-post-card-shell].post-card .post-card__source:focus-visible .post-card__source-icon,
-        html body.alma-app article[data-post-card-shell].post-card .post-card__source:active .post-card__source-icon,
-        html body article[data-post-card-shell].post-card .post-card__source:hover .post-card__source-icon,
-        html body article[data-post-card-shell].post-card .post-card__source:focus-visible .post-card__source-icon,
-        html body article[data-post-card-shell].post-card .post-card__source:active .post-card__source-icon {
+        html body.alma-app article[data-post-card-shell].post-card .ps-source-link:hover .ps-source-link-icon,
+        html body.alma-app article[data-post-card-shell].post-card .ps-source-link:focus-visible .ps-source-link-icon,
+        html body.alma-app article[data-post-card-shell].post-card .ps-source-link:active .ps-source-link-icon,
+        html body article[data-post-card-shell].post-card .ps-source-link:hover .ps-source-link-icon,
+        html body article[data-post-card-shell].post-card .ps-source-link:focus-visible .ps-source-link-icon,
+        html body article[data-post-card-shell].post-card .ps-source-link:active .ps-source-link-icon {
             color: #6b7280 !important;
         }
 
-        html body.alma-app article[data-post-card-shell].post-card .post-card__source-icon iconify-icon,
-        html body article[data-post-card-shell].post-card .post-card__source-icon iconify-icon {
+        html body.alma-app article[data-post-card-shell].post-card .ps-source-link-icon iconify-icon,
+        html body article[data-post-card-shell].post-card .ps-source-link-icon iconify-icon {
             font-size: 16px !important;
         }
     </style>
@@ -2352,8 +2352,8 @@ SVG;
     <style>
         /* Exact source-strip reference: 627x77 sample, strip begins at y=10,
            ends at y=61, #fafafa, with 16px text inset and a small right arrow. */
-        html body.alma-app article[data-post-card-shell].post-card .post-card__source,
-        html body article[data-post-card-shell].post-card .post-card__source {
+        html body.alma-app article[data-post-card-shell].post-card .ps-source-link,
+        html body article[data-post-card-shell].post-card .ps-source-link {
             display: flex !important;
             align-items: center !important;
             justify-content: space-between !important;
@@ -2373,8 +2373,8 @@ SVG;
             transform: none !important;
         }
 
-        html body.alma-app article[data-post-card-shell].post-card .post-card__source-copy,
-        html body article[data-post-card-shell].post-card .post-card__source-copy {
+        html body.alma-app article[data-post-card-shell].post-card .ps-source-link-copy,
+        html body article[data-post-card-shell].post-card .ps-source-link-copy {
             display: flex !important;
             flex-direction: column !important;
             justify-content: center !important;
@@ -2387,8 +2387,8 @@ SVG;
             flex: 1 1 auto !important;
         }
 
-        html body.alma-app article[data-post-card-shell].post-card .post-card__source-label,
-        html body article[data-post-card-shell].post-card .post-card__source-label {
+        html body.alma-app article[data-post-card-shell].post-card .ps-source-link-label,
+        html body article[data-post-card-shell].post-card .ps-source-link-label {
             display: block !important;
             height: 10px !important;
             margin: 0 !important;
@@ -2402,8 +2402,8 @@ SVG;
             white-space: nowrap !important;
         }
 
-        html body.alma-app article[data-post-card-shell].post-card .post-card__source-domain,
-        html body article[data-post-card-shell].post-card .post-card__source-domain {
+        html body.alma-app article[data-post-card-shell].post-card .ps-source-link-domain,
+        html body article[data-post-card-shell].post-card .ps-source-link-domain {
             display: block !important;
             height: 16px !important;
             margin: 0 !important;
@@ -2418,8 +2418,8 @@ SVG;
             text-overflow: ellipsis !important;
         }
 
-        html body.alma-app article[data-post-card-shell].post-card .post-card__source-icon,
-        html body article[data-post-card-shell].post-card .post-card__source-icon {
+        html body.alma-app article[data-post-card-shell].post-card .ps-source-link-icon,
+        html body article[data-post-card-shell].post-card .ps-source-link-icon {
             position: static !important;
             display: inline-flex !important;
             align-items: center !important;
@@ -2437,8 +2437,8 @@ SVG;
             flex: 0 0 18px !important;
         }
 
-        html body.alma-app article[data-post-card-shell].post-card .post-card__source-icon iconify-icon,
-        html body article[data-post-card-shell].post-card .post-card__source-icon iconify-icon {
+        html body.alma-app article[data-post-card-shell].post-card .ps-source-link-icon iconify-icon,
+        html body article[data-post-card-shell].post-card .ps-source-link-icon iconify-icon {
             display: block !important;
             width: 14px !important;
             min-width: 14px !important;
@@ -4147,7 +4147,7 @@ SVG;
             line-height: 1.55;
         }
 
-        [data-post-card-shell] .post-card__source[hidden] {
+        [data-post-card-shell] .ps-source-link[hidden] {
             display: none !important;
         }
 
@@ -4278,7 +4278,7 @@ SVG;
             font-size: 16px;
         }
 
-        [data-post-card-shell] .post-card__source {
+        [data-post-card-shell] .ps-source-link {
             display: flex;
             align-items: flex-start;
             justify-content: space-between;
@@ -4297,20 +4297,20 @@ SVG;
             transition: background-color 0.14s ease, border-color 0.14s ease, color 0.14s ease;
         }
 
-        [data-post-card-shell] .post-card__source:hover,
-        [data-post-card-shell] .post-card__source:focus-visible {
+        [data-post-card-shell] .ps-source-link:hover,
+        [data-post-card-shell] .ps-source-link:focus-visible {
             background: #ebeef2;
             border-color: rgba(15, 23, 42, 0.06);
             color: #111827;
             outline: none;
         }
 
-        [data-post-card-shell] .post-card__source:active {
+        [data-post-card-shell] .ps-source-link:active {
             background: #e5e7eb;
             color: #111827;
         }
 
-        [data-post-card-shell] .post-card__source-copy {
+        [data-post-card-shell] .ps-source-link-copy {
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -4319,7 +4319,7 @@ SVG;
             flex: 1 1 auto;
         }
 
-        [data-post-card-shell] .post-card__source-label {
+        [data-post-card-shell] .ps-source-link-label {
             color: #9ca3af;
             font-size: 10px;
             font-weight: 500;
@@ -4328,7 +4328,7 @@ SVG;
             text-transform: uppercase;
         }
 
-        [data-post-card-shell] .post-card__source-domain-row {
+        [data-post-card-shell] .ps-source-link-domain-row {
             display: inline-flex;
             align-items: center;
             gap: 7px;
@@ -4336,7 +4336,7 @@ SVG;
             max-width: 100%;
         }
 
-        [data-post-card-shell] .post-card__source-favicon {
+        [data-post-card-shell] .ps-source-link-favicon {
             display: inline-flex;
             width: 16px;
             height: 16px;
@@ -4347,7 +4347,7 @@ SVG;
             box-shadow: none;
         }
 
-        [data-post-card-shell] .post-card__source-domain {
+        [data-post-card-shell] .ps-source-link-domain {
             overflow: hidden;
             color: #111827;
             font-size: 16px;
@@ -4357,7 +4357,7 @@ SVG;
             white-space: nowrap;
         }
 
-        [data-post-card-shell] .post-card__source-icon {
+        [data-post-card-shell] .ps-source-link-icon {
             display: inline-flex;
             align-items: center;
             justify-content: center;
@@ -4368,13 +4368,13 @@ SVG;
             margin-top: 2px;
         }
 
-        [data-post-card-shell] .post-card__source:hover .post-card__source-icon,
-        [data-post-card-shell] .post-card__source:focus-visible .post-card__source-icon,
-        [data-post-card-shell] .post-card__source:active .post-card__source-icon {
+        [data-post-card-shell] .ps-source-link:hover .ps-source-link-icon,
+        [data-post-card-shell] .ps-source-link:focus-visible .ps-source-link-icon,
+        [data-post-card-shell] .ps-source-link:active .ps-source-link-icon {
             color: #6b7280;
         }
 
-        [data-post-card-shell] .post-card__source-icon iconify-icon {
+        [data-post-card-shell] .ps-source-link-icon iconify-icon {
             font-size: 16px;
         }
 
@@ -4656,13 +4656,13 @@ SVG;
         [data-post-card-shell] .post-metric,
         [data-post-card-shell] .action-chip__label,
         [data-post-card-shell] .reaction-count,
-        [data-post-card-shell] .post-card__source-domain,
+        [data-post-card-shell] .ps-source-link-domain,
         [data-post-card-shell] .post-card__tag {
             font-size: 13px;
             line-height: 1.35;
         }
 
-        [data-post-card-shell] .post-card__source-label,
+        [data-post-card-shell] .ps-source-link-label,
         [data-post-card-shell] .category-badge__fallback {
             font-size: 10px;
             line-height: 1.1;
@@ -5189,12 +5189,12 @@ SVG;
         [data-post-card-shell] .post-metric,
         [data-post-card-shell] .action-chip__label,
         [data-post-card-shell] .reaction-count,
-        [data-post-card-shell] .post-card__source-domain {
+        [data-post-card-shell] .ps-source-link-domain {
             font-size: 14px !important;
             line-height: 1.4 !important;
         }
 
-        [data-post-card-shell] .post-card__source-label {
+        [data-post-card-shell] .ps-source-link-label {
             font-size: 10.5px !important;
         }
 
@@ -5535,62 +5535,62 @@ SVG;
             color: #fecaca !important;
         }
 
-        html.dark [data-post-card-shell] .post-card__source,
-        body.dark [data-post-card-shell] .post-card__source,
-        .dark [data-post-card-shell] .post-card__source,
-        [data-theme="dark"] [data-post-card-shell] .post-card__source {
+        html.dark [data-post-card-shell] .ps-source-link,
+        body.dark [data-post-card-shell] .ps-source-link,
+        .dark [data-post-card-shell] .ps-source-link,
+        [data-theme="dark"] [data-post-card-shell] .ps-source-link {
             background: #161b22 !important;
             color: #ffffff !important;
             border: 1px solid rgba(255, 255, 255, 0.08) !important;
         }
 
-        html.dark [data-post-card-shell] .post-card__source-label,
-        body.dark [data-post-card-shell] .post-card__source-label,
-        .dark [data-post-card-shell] .post-card__source-label,
-        [data-theme="dark"] [data-post-card-shell] .post-card__source-label {
+        html.dark [data-post-card-shell] .ps-source-link-label,
+        body.dark [data-post-card-shell] .ps-source-link-label,
+        .dark [data-post-card-shell] .ps-source-link-label,
+        [data-theme="dark"] [data-post-card-shell] .ps-source-link-label {
             color: #94a3b8 !important;
         }
 
-        html.dark [data-post-card-shell] .post-card__source-favicon,
-        body.dark [data-post-card-shell] .post-card__source-favicon,
-        .dark [data-post-card-shell] .post-card__source-favicon,
-        [data-theme="dark"] [data-post-card-shell] .post-card__source-favicon {
+        html.dark [data-post-card-shell] .ps-source-link-favicon,
+        body.dark [data-post-card-shell] .ps-source-link-favicon,
+        .dark [data-post-card-shell] .ps-source-link-favicon,
+        [data-theme="dark"] [data-post-card-shell] .ps-source-link-favicon {
             background: rgba(255, 255, 255, 0.92) !important;
         }
 
-        html.dark [data-post-card-shell] .post-card__source-domain,
-        html.dark [data-post-card-shell] .post-card__source-icon,
-        html.dark [data-post-card-shell] .post-card__source-icon iconify-icon,
-        body.dark [data-post-card-shell] .post-card__source-domain,
-        body.dark [data-post-card-shell] .post-card__source-icon,
-        body.dark [data-post-card-shell] .post-card__source-icon iconify-icon,
-        .dark [data-post-card-shell] .post-card__source-domain,
-        .dark [data-post-card-shell] .post-card__source-icon,
-        .dark [data-post-card-shell] .post-card__source-icon iconify-icon,
-        [data-theme="dark"] [data-post-card-shell] .post-card__source-domain,
-        [data-theme="dark"] [data-post-card-shell] .post-card__source-icon,
-        [data-theme="dark"] [data-post-card-shell] .post-card__source-icon iconify-icon {
+        html.dark [data-post-card-shell] .ps-source-link-domain,
+        html.dark [data-post-card-shell] .ps-source-link-icon,
+        html.dark [data-post-card-shell] .ps-source-link-icon iconify-icon,
+        body.dark [data-post-card-shell] .ps-source-link-domain,
+        body.dark [data-post-card-shell] .ps-source-link-icon,
+        body.dark [data-post-card-shell] .ps-source-link-icon iconify-icon,
+        .dark [data-post-card-shell] .ps-source-link-domain,
+        .dark [data-post-card-shell] .ps-source-link-icon,
+        .dark [data-post-card-shell] .ps-source-link-icon iconify-icon,
+        [data-theme="dark"] [data-post-card-shell] .ps-source-link-domain,
+        [data-theme="dark"] [data-post-card-shell] .ps-source-link-icon,
+        [data-theme="dark"] [data-post-card-shell] .ps-source-link-icon iconify-icon {
             color: #ffffff !important;
         }
 
-        html.dark [data-post-card-shell] .post-card__source:hover,
-        html.dark [data-post-card-shell] .post-card__source:focus-visible,
-        body.dark [data-post-card-shell] .post-card__source:hover,
-        body.dark [data-post-card-shell] .post-card__source:focus-visible,
-        .dark [data-post-card-shell] .post-card__source:hover,
-        .dark [data-post-card-shell] .post-card__source:focus-visible,
-        [data-theme="dark"] [data-post-card-shell] .post-card__source:hover,
-        [data-theme="dark"] [data-post-card-shell] .post-card__source:focus-visible {
+        html.dark [data-post-card-shell] .ps-source-link:hover,
+        html.dark [data-post-card-shell] .ps-source-link:focus-visible,
+        body.dark [data-post-card-shell] .ps-source-link:hover,
+        body.dark [data-post-card-shell] .ps-source-link:focus-visible,
+        .dark [data-post-card-shell] .ps-source-link:hover,
+        .dark [data-post-card-shell] .ps-source-link:focus-visible,
+        [data-theme="dark"] [data-post-card-shell] .ps-source-link:hover,
+        [data-theme="dark"] [data-post-card-shell] .ps-source-link:focus-visible {
             background: #1f2937 !important;
             border-color: rgba(255, 255, 255, 0.14) !important;
             color: #ffffff !important;
             outline: none !important;
         }
 
-        html.dark [data-post-card-shell] .post-card__source:active,
-        body.dark [data-post-card-shell] .post-card__source:active,
-        .dark [data-post-card-shell] .post-card__source:active,
-        [data-theme="dark"] [data-post-card-shell] .post-card__source:active {
+        html.dark [data-post-card-shell] .ps-source-link:active,
+        body.dark [data-post-card-shell] .ps-source-link:active,
+        .dark [data-post-card-shell] .ps-source-link:active,
+        [data-theme="dark"] [data-post-card-shell] .ps-source-link:active {
             background: #273244 !important;
             color: #ffffff !important;
         }
@@ -7256,7 +7256,7 @@ SVG;
         }
 
         [data-post-card-shell] .post-card__menu-item iconify-icon,
-        [data-post-card-shell] .post-card__source-icon iconify-icon,
+        [data-post-card-shell] .ps-source-link-icon iconify-icon,
         [data-post-card-shell] .post-card__vote-cluster iconify-icon {
             font-size: 15px !important;
             width: 15px !important;
@@ -7415,7 +7415,7 @@ SVG;
         [data-post-card-shell].is-preloading .post-card__share-icon,
         [data-post-card-shell].is-preloading .post-card__reaction-custom-icon,
         [data-post-card-shell].is-preloading .post-card__reaction-add-icon,
-        [data-post-card-shell].is-preloading .post-card__source-icon,
+        [data-post-card-shell].is-preloading .ps-source-link-icon,
         [data-post-card-shell].is-preloading .post-card__media-frame {
             position: relative !important;
             overflow: hidden !important;
@@ -7433,7 +7433,7 @@ SVG;
         [data-post-card-shell].is-preloading .post-card__share-icon::after,
         [data-post-card-shell].is-preloading .post-card__reaction-custom-icon::after,
         [data-post-card-shell].is-preloading .post-card__reaction-add-icon::after,
-        [data-post-card-shell].is-preloading .post-card__source-icon::after {
+        [data-post-card-shell].is-preloading .ps-source-link-icon::after {
             content: "";
             position: absolute;
             inset: -1px;
@@ -7467,9 +7467,9 @@ SVG;
         [data-post-card-shell].is-preloading .post-card__share-icon,
         [data-post-card-shell].is-preloading .post-card__reaction-custom-icon,
         [data-post-card-shell].is-preloading .post-card__reaction-add-icon,
-        [data-post-card-shell].is-preloading .post-card__source-icon,
-        [data-post-card-shell].is-preloading .post-card__source-icon svg,
-        [data-post-card-shell].is-preloading .post-card__source-icon iconify-icon,
+        [data-post-card-shell].is-preloading .ps-source-link-icon,
+        [data-post-card-shell].is-preloading .ps-source-link-icon svg,
+        [data-post-card-shell].is-preloading .ps-source-link-icon iconify-icon,
         [data-post-card-shell].is-preloading .menu-btn > *,
         [data-post-card-shell].is-preloading .post-card__action-button > *,
         [data-post-card-shell].is-preloading .post-card__action-link > * {
@@ -7496,7 +7496,7 @@ SVG;
             [data-post-card-shell].is-preloading .post-card__share-icon::after,
             [data-post-card-shell].is-preloading .post-card__reaction-custom-icon::after,
             [data-post-card-shell].is-preloading .post-card__reaction-add-icon::after,
-            [data-post-card-shell].is-preloading .post-card__source-icon::after {
+            [data-post-card-shell].is-preloading .ps-source-link-icon::after {
                 background:
                     linear-gradient(
                         100deg,
@@ -7529,7 +7529,7 @@ SVG;
             [data-post-card-shell].is-preloading .post-card__share-icon::after,
             [data-post-card-shell].is-preloading .post-card__reaction-custom-icon::after,
             [data-post-card-shell].is-preloading .post-card__reaction-add-icon::after,
-            [data-post-card-shell].is-preloading .post-card__source-icon::after {
+            [data-post-card-shell].is-preloading .ps-source-link-icon::after {
                 display: none !important;
             }
         }
@@ -7573,7 +7573,7 @@ SVG;
         [data-post-card-shell].is-preloading-done .post-card__share-icon::after,
         [data-post-card-shell].is-preloading-done .post-card__reaction-custom-icon::after,
         [data-post-card-shell].is-preloading-done .post-card__reaction-add-icon::after,
-        [data-post-card-shell].is-preloading-done .post-card__source-icon::after {
+        [data-post-card-shell].is-preloading-done .ps-source-link-icon::after {
             content: none !important;
             opacity: 0 !important;
             visibility: hidden !important;
@@ -7594,9 +7594,9 @@ SVG;
         [data-post-card-shell].is-preloading-done .post-card__share-icon,
         [data-post-card-shell].is-preloading-done .post-card__reaction-custom-icon,
         [data-post-card-shell].is-preloading-done .post-card__reaction-add-icon,
-        [data-post-card-shell].is-preloading-done .post-card__source-icon,
-        [data-post-card-shell].is-preloading-done .post-card__source-icon svg,
-        [data-post-card-shell].is-preloading-done .post-card__source-icon iconify-icon,
+        [data-post-card-shell].is-preloading-done .ps-source-link-icon,
+        [data-post-card-shell].is-preloading-done .ps-source-link-icon svg,
+        [data-post-card-shell].is-preloading-done .ps-source-link-icon iconify-icon,
         [data-post-card-shell].is-preloading-done .menu-btn > *,
         [data-post-card-shell].is-preloading-done .post-card__action-button > *,
         [data-post-card-shell].is-preloading-done .post-card__action-link > *,
@@ -7613,9 +7613,9 @@ SVG;
         [data-post-card-shell]:not(.is-preloading) .post-card__share-icon,
         [data-post-card-shell]:not(.is-preloading) .post-card__reaction-custom-icon,
         [data-post-card-shell]:not(.is-preloading) .post-card__reaction-add-icon,
-        [data-post-card-shell]:not(.is-preloading) .post-card__source-icon,
-        [data-post-card-shell]:not(.is-preloading) .post-card__source-icon svg,
-        [data-post-card-shell]:not(.is-preloading) .post-card__source-icon iconify-icon,
+        [data-post-card-shell]:not(.is-preloading) .ps-source-link-icon,
+        [data-post-card-shell]:not(.is-preloading) .ps-source-link-icon svg,
+        [data-post-card-shell]:not(.is-preloading) .ps-source-link-icon iconify-icon,
         [data-post-card-shell]:not(.is-preloading) .menu-btn > *,
         [data-post-card-shell]:not(.is-preloading) .post-card__action-button > *,
         [data-post-card-shell]:not(.is-preloading) .post-card__action-link > * {
@@ -7653,9 +7653,9 @@ SVG;
         [data-post-card-shell].is-preloading .post-card__share-icon,
         [data-post-card-shell].is-preloading .post-card__reaction-custom-icon,
         [data-post-card-shell].is-preloading .post-card__reaction-add-icon,
-        [data-post-card-shell].is-preloading .post-card__source-icon,
-        [data-post-card-shell].is-preloading .post-card__source-icon svg,
-        [data-post-card-shell].is-preloading .post-card__source-icon iconify-icon,
+        [data-post-card-shell].is-preloading .ps-source-link-icon,
+        [data-post-card-shell].is-preloading .ps-source-link-icon svg,
+        [data-post-card-shell].is-preloading .ps-source-link-icon iconify-icon,
         [data-post-card-shell].is-preloading .menu-btn > *,
         [data-post-card-shell].is-preloading .post-card__action-button > *,
         [data-post-card-shell].is-preloading .post-card__action-link > * {
@@ -7682,7 +7682,7 @@ SVG;
         [data-post-card-shell].is-preloading .post-card__share-icon::after,
         [data-post-card-shell].is-preloading .post-card__reaction-custom-icon::after,
         [data-post-card-shell].is-preloading .post-card__reaction-add-icon::after,
-        [data-post-card-shell].is-preloading .post-card__source-icon::after,
+        [data-post-card-shell].is-preloading .ps-source-link-icon::after,
         [data-post-card-shell].is-preloading .post-card__media-frame::before {
             animation:
                 postCardMediaPreload 1.05s linear infinite,
@@ -7702,7 +7702,7 @@ SVG;
         [data-post-card-shell]:not(.is-preloading) .post-card__share-icon::after,
         [data-post-card-shell]:not(.is-preloading) .post-card__reaction-custom-icon::after,
         [data-post-card-shell]:not(.is-preloading) .post-card__reaction-add-icon::after,
-        [data-post-card-shell]:not(.is-preloading) .post-card__source-icon::after,
+        [data-post-card-shell]:not(.is-preloading) .ps-source-link-icon::after,
         [data-post-card-shell]:not(.is-preloading) .post-card__media-frame::before,
         [data-post-card-shell].is-preloading-done .avatar-wrap::after,
         [data-post-card-shell].is-preloading-done .category-badge::after,
@@ -7715,7 +7715,7 @@ SVG;
         [data-post-card-shell].is-preloading-done .post-card__share-icon::after,
         [data-post-card-shell].is-preloading-done .post-card__reaction-custom-icon::after,
         [data-post-card-shell].is-preloading-done .post-card__reaction-add-icon::after,
-        [data-post-card-shell].is-preloading-done .post-card__source-icon::after,
+        [data-post-card-shell].is-preloading-done .ps-source-link-icon::after,
         [data-post-card-shell].is-preloading-done .post-card__media-frame::before {
             content: none !important;
             display: none !important;
@@ -11310,7 +11310,6 @@ SVG;
                 const trigger = card?.querySelector('[data-post-card-expand]');
                 const label = card?.querySelector('[data-post-card-expand-label]');
                 const summaryShell = card?.querySelector('[data-post-card-summary-shell]');
-                const source = card?.querySelector('[data-post-card-source]');
                 const fullContent = card?.querySelector('[data-post-card-full-content]');
                 const collapsedTemplate = summaryShell?.querySelector('[data-post-card-summary-collapsed]');
                 const expandedTemplate = summaryShell?.querySelector('[data-post-card-summary-expanded]');
