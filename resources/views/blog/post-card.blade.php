@@ -1870,7 +1870,7 @@ SVG;
         </div>
     @endif
 
-    @if($hasSourcePreview)
+    @if($hasSourcePreview && ! $linkPreview)
         @php
             $sourceDisplayName = $linkPreviewHost !== ''
                 ? $linkPreviewHost
