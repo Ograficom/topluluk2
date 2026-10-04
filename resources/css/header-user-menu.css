@@ -1,6 +1,6 @@
 /*
  * Ografi header user menu
- * Figma iOS/iPadOS toggle reference + frosted glass surface.
+ * iOS/iPadOS toggle reference + frosted glass surface.
  * Existing Blade markup and Iconify/Lucide icons are preserved.
  */
 
@@ -244,7 +244,7 @@ html body .site-header .site-menu-panel .site-user-menu-divider {
 }
 
 /*
- * iOS / iPadOS toggle reference from the supplied Figma node:
+ * iOS / iPadOS toggle reference:
  * 64x28 track, #34C759 active state, 38x24 glass knob.
  */
 html body .site-header .site-menu-panel .site-user-menu-switch {
@@ -297,7 +297,7 @@ html body .site-header .site-menu-panel .site-user-menu-link--switch[aria-presse
     right: 2px !important;
 }
 
-/* Figma pressed state: knob temporarily grows into the liquid-glass pill. */
+/* Pressed state: knob temporarily grows into the liquid-glass pill. */
 html body .site-header .site-menu-panel .site-user-menu-link--switch:active .site-user-menu-switch__knob {
     top: -5px !important;
     left: -8px !important;
