@@ -1995,6 +1995,17 @@ SVG;
             font-size: 12px !important;
             line-height: 12px !important;
         }
+
+        /* Source sits directly above the expanded "Daha az göster" control. */
+        html body.alma-app article[data-post-card-shell].post-card .post-card__source {
+            margin-bottom: 2px !important;
+        }
+
+        html body.alma-app article[data-post-card-shell].post-card .expand-link,
+        html body article[data-post-card-shell].post-card .expand-link {
+            margin-top: 0 !important;
+        }
+
     </style>
 
     @if($showExpandLink)
