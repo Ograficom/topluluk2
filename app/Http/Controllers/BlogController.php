@@ -2191,7 +2191,7 @@ class BlogController extends Controller
 
         try {
             $meta = json_decode((string) file_get_contents($metaPath), true, 512, JSON_THROW_ON_ERROR);
-        } catch (\\Throwable) {
+        } catch (\Throwable) {
             return Response::json([
                 'success' => 0,
                 'message' => 'Upload metadata okunamadi.',
