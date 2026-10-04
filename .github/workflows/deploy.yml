@@ -16,6 +16,9 @@ jobs:
     timeout-minutes: 20
     env:
       APP_ENV: testing
+      APP_INSTALL_ENABLED: 'true'
+      APP_INSTALLED: 'true'
+      LOGIN_SECURITY_FAIL_CLOSED: 'false'
       DB_CONNECTION: sqlite
       DB_DATABASE: ':memory:'
     steps:
