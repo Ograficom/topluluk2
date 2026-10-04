@@ -2,12 +2,12 @@
 [data-post-card-shell].post-card {
     width: 100% !important;
     max-width: 656px !important;
-    padding: 16px 18px 0 !important;
+    padding: 19px 19px 13px !important;
     margin: 0 auto 20px !important;
     border: 1px solid #e1e3e6 !important;
-    border-radius: 12px !important;
+    border-radius: 10px !important;
     background: #ffffff !important;
-    box-shadow: none !important;
+    box-shadow: 0 1px 1px rgba(15,23,42,.04), 0 8px 12px rgba(15,23,42,.04) !important;
     color: #111827 !important;
 }
 
@@ -29,9 +29,9 @@
 }
 
 [data-post-card-shell].post-card .author-avatar {
-    width: 40px !important;
-    height: 40px !important;
-    min-width: 40px !important;
+    width: 44px !important;
+    height: 44px !important;
+    min-width: 44px !important;
     border-radius: 50% !important;
     object-fit: cover !important;
 }
@@ -134,8 +134,8 @@
 [data-post-card-shell].post-card .post-title {
     margin: 0 0 12px !important;
     color: #111827 !important;
-    font-size: 20px !important;
-    line-height: 1.35 !important;
+    font-size: 21px !important;
+    line-height: 28.98px !important;
     font-weight: 700 !important;
     letter-spacing: -0.022em !important;
     text-wrap: balance !important;
@@ -226,9 +226,9 @@
     background: transparent !important;
     color: #2563eb !important;
     box-shadow: none !important;
-    font-size: 13px !important;
-    line-height: 18px !important;
-    font-weight: 500 !important;
+    font-size: 14px !important;
+    line-height: 21.7px !important;
+    font-weight: 400 !important;
 }
 
 [data-post-card-shell].post-card .expand-link:hover,
@@ -478,8 +478,8 @@
         width: 100% !important;
         max-width: 100% !important;
         margin: 0 0 16px !important;
-        padding: 13px 14px 0 !important;
-        border-radius: 11px !important;
+        padding: 13px 14px 10px !important;
+        border-radius: 10px !important;
     }
 
     [data-post-card-shell].post-card .post-header {
@@ -488,14 +488,14 @@
     }
 
     [data-post-card-shell].post-card .author-avatar {
-        width: 38px !important;
-        height: 38px !important;
-        min-width: 38px !important;
+        width: 44px !important;
+        height: 44px !important;
+        min-width: 44px !important;
     }
 
     [data-post-card-shell].post-card .post-title {
-        font-size: 18px !important;
-        line-height: 1.30 !important;
+        font-size: 20px !important;
+        line-height: 27px !important;
         margin-bottom: 10px !important;
     }
 
