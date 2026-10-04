@@ -1752,19 +1752,18 @@ SVG;
         @endphp
 
         <a
-            class="post-card__source"
+            class="ps-source-link"
             href="{{ $linkPreviewUrl }}"
             target="_blank"
             rel="nofollow noopener noreferrer"
-            data-post-card-source
             aria-label="Kaynağı aç: {{ $sourceDisplayName }}"
         >
-            <span class="post-card__source-copy">
-                <span class="post-card__source-label">Kaynak</span>
-                <span class="post-card__source-domain-row">
+            <span class="ps-source-copy">
+                <span class="ps-source-label">Kaynak</span>
+                <span class="ps-source-domain-row">
                     @if($linkPreviewFavicon !== '')
                         <img
-                            class="post-card__source-favicon"
+                            class="ps-source-favicon"
                             src="{{ $linkPreviewFavicon }}"
                             alt=""
                             loading="lazy"
@@ -1773,10 +1772,10 @@ SVG;
                             onerror="this.style.display='none'"
                         >
                     @endif
-                    <span class="post-card__source-domain">{{ $sourceDisplayName }}</span>
+                    <span class="ps-source-domain">{{ $sourceDisplayName }}</span>
                 </span>
             </span>
-            <span class="post-card__source-icon" aria-hidden="true">
+            <span class="ps-source-icon" aria-hidden="true">
                 <iconify-icon icon="lucide:arrow-up-right"></iconify-icon>
             </span>
         </a>
