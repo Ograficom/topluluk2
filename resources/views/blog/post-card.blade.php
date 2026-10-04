@@ -11306,9 +11306,11 @@ SVG;
                 }
 
                 trigger.setAttribute('aria-expanded', expanded ? 'true' : 'false');
-                trigger.hidden = expanded;
-                trigger.style.display = expanded ? 'none' : 'inline-flex';
-                trigger.setAttribute('aria-hidden', expanded ? 'true' : 'false');
+                // Expanded state keeps the "Daha az göster" control visible;
+                // the source strip is rendered immediately above it.
+                trigger.hidden = false;
+                trigger.style.display = 'inline-flex';
+                trigger.setAttribute('aria-hidden', 'false');
                 label.textContent = expanded ? expandedLabel : collapsedLabel;
 
                 if (summaryShell) {
