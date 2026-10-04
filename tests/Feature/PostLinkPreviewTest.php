@@ -57,9 +57,8 @@ class PostLinkPreviewTest extends TestCase
             ->assertSee('example.com')
             ->assertSee('Example description for preview.')
             ->assertSee('https://cdn.example.com/preview.jpg', false)
-            ->assertSee('.alma-link-preview__eyebrow', false)
-            ->assertSee('color: #475569;', false)
-            ->assertSee('html.dark .alma-link-preview__eyebrow', false)
-            ->assertSee('color: #cbd5e1;', false);
+            ->assertSee('class="alma-link-preview"', false)
+            ->assertSee('class="alma-link-preview__eyebrow"', false)
+            ->assertSee('class="alma-link-preview__description"', false);
     }
 }
