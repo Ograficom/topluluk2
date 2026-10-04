@@ -11354,9 +11354,6 @@ SVG;
                     fullContent.style.display = expanded ? '' : 'none';
                 }
 
-                if (source) {
-                    source.hidden = false;
-                }
             };
 
             const setupNsfwPreferencesLinks = function () {
@@ -11503,7 +11500,7 @@ SVG;
                     const hasInlineContent = Boolean(
                         card?.querySelector('[data-post-card-summary]') ||
                         card?.querySelector('[data-post-card-full-content]') ||
-                        card?.querySelector('[data-post-card-source]')
+                        card?.querySelector('.ps-source-link')
                     );
 
                     // Özet/içerik bulunmayan nadir kartlarda buton boşa basmasın; post detayına gitsin.
