@@ -1647,3 +1647,30 @@ html body article[data-post-card-shell].post-card .comment-row {
         margin-right: -18px !important;
     }
 }
+
+
+/* FINAL WIDTH CORRECTION — reference card is 590px wide at 648px viewport. */
+html body.alma-app article[data-post-card-shell].post-card,
+html body article[data-post-card-shell].post-card {
+    width: 590px !important;
+    max-width: 590px !important;
+    min-width: 0 !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
+html body article[data-post-card-shell].post-card .post-card__media-wrap,
+html body article[data-post-card-shell].post-card .post-summary-shell,
+html body article[data-post-card-shell].post-card .post-title,
+html body article[data-post-card-shell].post-card .post-header,
+html body article[data-post-card-shell].post-card .post-card__tags,
+html body article[data-post-card-shell].post-card .reactions-row,
+html body article[data-post-card-shell].post-card .reaction-row {
+    max-width: 100% !important;
+}
+@media (max-width: 629px) {
+    html body.alma-app article[data-post-card-shell].post-card,
+    html body article[data-post-card-shell].post-card {
+        width: 100% !important;
+        max-width: none !important;
+    }
+}
