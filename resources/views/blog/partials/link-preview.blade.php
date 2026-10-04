@@ -14,9 +14,13 @@
     $imageUrl = trim((string) ($preview['image_url'] ?? ''));
     $iconUrl = trim((string) ($preview['icon_url'] ?? ''));
     $sourceLabel = \Illuminate\Support\Str::upper(trim((string) ($preview['source_label'] ?? 'Source')));
-    $displayTitle = $title !== '' ? $title : ($siteName !== '' ? $siteName : $host);
     $displaySiteName = $siteName !== '' ? $siteName : $host;
+    $displayTitle = $title !== '' ? $title : $displaySiteName;
     $displayDescription = $description !== '' ? $description : null;
+    $hasDistinctTitle = $title !== '' && strcasecmp($title, $displaySiteName) !== 0;
+    $hasDistinctHost = $host !== ''
+        && strcasecmp($host, $displaySiteName) !== 0
+        && strcasecmp($host, $title) !== 0;
     $siteInitial = \Illuminate\Support\Str::upper(\Illuminate\Support\Str::substr((string) $displaySiteName, 0, 1));
     $previewImageAlt = trim($displayTitle . ' sayfa onizleme gorseli');
     $previewLogoAlt = trim($displaySiteName . ' logosu');
@@ -57,13 +61,15 @@
             </div>
 
             <div class="alma-link-preview__content">
-                <span class="alma-link-preview__title">{{ $displayTitle }}</span>
+                @if($hasDistinctTitle)
+                    <span class="alma-link-preview__title">{{ $title }}</span>
+                @endif
 
                 @if($displayDescription)
                     <p class="alma-link-preview__description">{{ $displayDescription }}</p>
                 @endif
 
-                @if($host !== '')
+                @if($hasDistinctHost)
                     <span class="alma-link-preview__host">{{ $host }}</span>
                 @endif
             </div>
