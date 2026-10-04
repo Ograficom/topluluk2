@@ -1915,7 +1915,7 @@ SVG;
             overflow: hidden !important;
             border: 0 !important;
             border-radius: 12px !important;
-            background: #fafafa !important;
+            background: #f4f4f5 !important;
             color: #111111 !important;
             box-shadow: none !important;
             box-sizing: border-box !important;
