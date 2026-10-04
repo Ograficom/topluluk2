@@ -22,7 +22,7 @@ class PublicPagesTest extends TestCase
 
         $response
             ->assertOk()
-            ->assertSee('S&#305;k&#231;a Sorulan Sorular', false);
+            ->assertSee('Sıkça Sorulan Sorular');
     }
 
     public function test_admin_login_page_can_be_rendered(): void
