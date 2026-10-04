@@ -2359,6 +2359,106 @@ SVG;
         @endif
     @endif
 
+    <style>
+        /* Exact source-strip reference: 627x77 sample, strip begins at y=10,
+           ends at y=61, #fafafa, with 16px text inset and a small right arrow. */
+        html body.alma-app article[data-post-card-shell].post-card .post-card__source,
+        html body article[data-post-card-shell].post-card .post-card__source {
+            display: flex !important;
+            align-items: center !important;
+            justify-content: space-between !important;
+            width: 100% !important;
+            height: 52px !important;
+            min-height: 52px !important;
+            max-height: 52px !important;
+            margin: 0 0 10px !important;
+            padding: 0 14px 0 16px !important;
+            overflow: hidden !important;
+            border: 0 !important;
+            border-radius: 12px !important;
+            background: #fafafa !important;
+            color: #111111 !important;
+            box-shadow: none !important;
+            box-sizing: border-box !important;
+            transform: none !important;
+        }
+
+        html body.alma-app article[data-post-card-shell].post-card .post-card__source-copy,
+        html body article[data-post-card-shell].post-card .post-card__source-copy {
+            display: flex !important;
+            flex-direction: column !important;
+            justify-content: center !important;
+            align-items: flex-start !important;
+            gap: 0 !important;
+            width: auto !important;
+            min-width: 0 !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            flex: 1 1 auto !important;
+        }
+
+        html body.alma-app article[data-post-card-shell].post-card .post-card__source-label,
+        html body article[data-post-card-shell].post-card .post-card__source-label {
+            display: block !important;
+            height: 10px !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            color: #777777 !important;
+            font-size: 8px !important;
+            line-height: 10px !important;
+            font-weight: 400 !important;
+            letter-spacing: .035em !important;
+            text-transform: uppercase !important;
+            white-space: nowrap !important;
+        }
+
+        html body.alma-app article[data-post-card-shell].post-card .post-card__source-domain,
+        html body article[data-post-card-shell].post-card .post-card__source-domain {
+            display: block !important;
+            height: 16px !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            color: #111111 !important;
+            font-size: 12px !important;
+            line-height: 16px !important;
+            font-weight: 500 !important;
+            letter-spacing: 0 !important;
+            white-space: nowrap !important;
+            overflow: hidden !important;
+            text-overflow: ellipsis !important;
+        }
+
+        html body.alma-app article[data-post-card-shell].post-card .post-card__source-icon,
+        html body article[data-post-card-shell].post-card .post-card__source-icon {
+            position: static !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            width: 18px !important;
+            min-width: 18px !important;
+            height: 18px !important;
+            min-height: 18px !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            border: 0 !important;
+            border-radius: 0 !important;
+            background: transparent !important;
+            color: #707070 !important;
+            flex: 0 0 18px !important;
+        }
+
+        html body.alma-app article[data-post-card-shell].post-card .post-card__source-icon iconify-icon,
+        html body article[data-post-card-shell].post-card .post-card__source-icon iconify-icon {
+            display: block !important;
+            width: 14px !important;
+            min-width: 14px !important;
+            height: 14px !important;
+            min-height: 14px !important;
+            font-size: 14px !important;
+            line-height: 14px !important;
+        }
+    </style>
+
     <div class="post-card__toast" data-post-card-toast aria-live="polite">Link kopyalandi</div>
 </article>
 
