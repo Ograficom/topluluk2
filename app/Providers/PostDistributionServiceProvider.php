@@ -13,12 +13,20 @@ class PostDistributionServiceProvider extends ServiceProvider
 {
     public function boot(): void
     {
-        if (! Schema::hasTable('posts') || ! Schema::hasColumns('posts', [
-            'followers_only',
-            'is_ai_product',
-            'hide_from_feeds',
-            'suppress_follower_notifications',
-        ])) {
+        // Composer package discovery and early Artisan commands can boot the
+        // application before a database exists. This provider is optional at
+        // that stage, so do not let a missing/unavailable database prevent the
+        // framework itself from booting.
+        try {
+            if (! Schema::hasTable('posts') || ! Schema::hasColumns('posts', [
+                'followers_only',
+                'is_ai_product',
+                'hide_from_feeds',
+                'suppress_follower_notifications',
+            ])) {
+                return;
+            }
+        } catch (\Throwable) {
             return;
         }
 
