@@ -494,15 +494,21 @@ Route::prefix('blog')->group(function () {
         return redirect()->route('blog.post', ['post' => $post->slug], 301);
     })->name('blog.post.legacy');
     Route::get('/posts/{post:slug}/reactions', [BlogController::class, 'reactions'])->name('blog.post.reactions');
-    Route::post('/posts/{post:slug}/reactions', [BlogController::class, 'storeReaction'])->name('blog.post.reaction');
+    Route::post('/posts/{post:slug}/reactions', [BlogController::class, 'storeReaction'])
+        ->middleware('auth')
+        ->name('blog.post.reaction');
     Route::post('/posts/{post:slug}/view', [BlogController::class, 'recordView'])->name('blog.post.view');
     Route::get('/posts/{post:slug}/viewers', [BlogController::class, 'viewers'])
         ->middleware('auth')
         ->name('blog.post.viewers');
     Route::post('/posts/{post:slug}/poll/vote', [BlogController::class, 'votePoll'])->name('blog.post.poll.vote');
 
-    Route::post('/comments/{comment}/like', [BlogController::class, 'toggleCommentLike'])->name('blog.comment.like');
-    Route::post('/comments/{comment}/dislike', [BlogController::class, 'toggleCommentDislike'])->name('blog.comment.dislike');
+    Route::post('/comments/{comment}/like', [BlogController::class, 'toggleCommentLike'])
+        ->middleware('auth')
+        ->name('blog.comment.like');
+    Route::post('/comments/{comment}/dislike', [BlogController::class, 'toggleCommentDislike'])
+        ->middleware('auth')
+        ->name('blog.comment.dislike');
     Route::put('/comments/{comment}', [BlogController::class, 'updateComment'])->name('blog.comment.update');
     Route::delete('/comments/{comment}', [BlogController::class, 'destroyComment'])->name('blog.comment.delete');
 
