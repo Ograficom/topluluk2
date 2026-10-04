@@ -104,7 +104,14 @@ jobs:
 
             php artisan migrate --force
             php artisan network-security:refresh-lists || true
-            php artisan storage:link || true
+            if [ -L public/storage ]; then
+              echo "Laravel storage symlink already present."
+            elif [ -e public/storage ]; then
+              echo "public/storage exists but is not a symlink; refusing to overwrite it." >&2
+              exit 1
+            else
+              php artisan storage:link
+            fi
             php artisan optimize:clear || true
 
             # Keep the Laravel scheduler running every minute in production.
@@ -215,20 +222,12 @@ jobs:
             echo "Deployed repository SHA: $DEPLOYED_SHA"
             test -f public/build/manifest.json
 
-            LIVE_HTML="$(curl -ksS --max-time 30 -w '\n__HTTP_STATUS:%{http_code}' https://ografi.com/ || true)"
+            LIVE_HTML="$(curl -kLsS --max-time 30 --resolve ografi.com:443:127.0.0.1 -w '\n__HTTP_STATUS:%{http_code}' https://ografi.com/ || true)"
             LIVE_STATUS="$(printf '%s' "$LIVE_HTML" | sed -n 's/^__HTTP_STATUS://p' | tail -n 1)"
             LIVE_BODY="$(printf '%s' "$LIVE_HTML" | sed '/^__HTTP_STATUS:/d')"
 
             if [ "$LIVE_STATUS" != "200" ]; then
               echo "Production verification failed: https://ografi.com returned HTTP $LIVE_STATUS." >&2
-              printf '%s\n' "$LIVE_BODY" | tail -n 80 >&2
-              echo "---- recent Laravel logs ----" >&2
-              for LOG_FILE in storage/logs/*.log; do
-                [ -f "$LOG_FILE" ] || continue
-                echo "### $LOG_FILE" >&2
-                tail -n 100 "$LOG_FILE" >&2 || true
-              done
-              echo "---- end Laravel logs ----" >&2
               exit 1
             fi
 
