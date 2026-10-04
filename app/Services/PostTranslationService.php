@@ -221,7 +221,7 @@ class PostTranslationService
                     $params['de'] = $email;
                 }
 
-                return $pool->withoutVerifying()->timeout($timeout)->get($url, $params);
+                return $pool->timeout($timeout)->get($url, $params);
             }, $chunks);
         });
 

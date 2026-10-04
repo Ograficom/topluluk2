@@ -7,6 +7,7 @@ return [
     'model' => env('OLLAMA_CLOUD_MODEL', env('OLLAMA_MODEL', 'gpt-oss:20b')),
     'vision_model' => env('OLLAMA_VISION_MODEL', 'gemma4:31b'),
     'timeout' => env('OLLAMA_TIMEOUT', 120),
+    'verify_ssl' => (bool) env('OLLAMA_VERIFY_SSL', true),
 
     'bot' => [
         'name' => env('OLLAMA_BOT_NAME', 'Ografi AI'),

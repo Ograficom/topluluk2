@@ -63,7 +63,11 @@ Artisan::command('rss:sync {--feed_id=} {--force}', function (RssSyncService $se
     $summary = $service->syncAllEnabled();
     $this->info("OK. feeds={$summary['feeds']} items_new={$summary['items_new']} items_updated={$summary['items_updated']} posts_created={$summary['posts_created']} posts_updated={$summary['posts_updated']} errors={$summary['errors']}");
 
-    return $summary['errors'] ? 1 : 0;
+    // A single broken source must not make the whole scheduler task fail when
+    // the other enabled feeds synced successfully. The individual feed error
+    // is logged by RssSyncService for diagnosis. Fail only when every enabled
+    // feed failed.
+    return $summary['feeds'] > 0 && $summary['errors'] >= $summary['feeds'] ? 1 : 0;
 })->purpose('Sync RSS feeds and import as posts');
 
 Schedule::command('rss:sync')

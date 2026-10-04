@@ -26,7 +26,9 @@ class OllamaService
 
     protected function client()
     {
-        $client = Http::withoutVerifying()
+        $client = Http::withOptions([
+            'verify' => (bool) config('ollama.verify_ssl', true),
+        ])
             ->timeout($this->timeout)
             ->retry(2, 500, throw: false)
             ->acceptJson()

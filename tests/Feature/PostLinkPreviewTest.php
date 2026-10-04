@@ -11,6 +11,20 @@ class PostLinkPreviewTest extends TestCase
 {
     use RefreshDatabase;
 
+
+    public function test_link_preview_rejects_private_ip_targets(): void
+    {
+        Http::fake();
+
+        $service = app(\App\Services\PostLinkPreviewService::class);
+
+        $this->assertNull($service->previewForUrl('http://127.0.0.1/admin', true));
+        $this->assertNull($service->previewForUrl('http://169.254.169.254/latest/meta-data', true));
+        $this->assertNull($service->previewForUrl('http://localhost/internal', true));
+
+        Http::assertNothingSent();
+    }
+
     public function test_blog_feed_renders_link_preview_for_plain_urls(): void
     {
         Http::fake([

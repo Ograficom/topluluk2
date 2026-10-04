@@ -74,7 +74,7 @@ class RssSyncService
                 $headers['If-Modified-Since'] = $feed->last_modified;
             }
 
-            $response = Http::withoutVerifying()->timeout(12)->withHeaders($headers)->get($feed->url);
+            $response = Http::timeout(12)->withHeaders($headers)->get($feed->url);
 
             $feed->last_checked_at = now();
 
