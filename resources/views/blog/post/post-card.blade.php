@@ -123,10 +123,6 @@
             </div>
         @endif
 
-        @if($linkPreview)
-            @include('blog.partials.link-preview', ['preview' => $linkPreview])
-        @endif
-
         @if(!empty($featuredImage))
             <div class="overflow-hidden rounded-xl bg-gray-100 dark:bg-gray-800" style="{{ $featuredFrameStyle }}">
                 <img
