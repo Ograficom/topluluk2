@@ -102,7 +102,7 @@ jobs:
               fi
             fi
 
-            php artisan migrate --force || true
+            php artisan migrate --force
             php artisan network-security:refresh-lists || true
             php artisan storage:link || true
             php artisan optimize:clear || true
