@@ -1851,9 +1851,16 @@ class BlogController extends Controller
         $isMultipart = str_contains(strtolower($contentType), 'multipart/form-data');
         if (!$file && $contentLength > 0 && !$isMultipart) {
             $mime = strtolower(trim(strtok($contentType, ';') ?: ''));
-            $isRawVideo = str_starts_with($mime, 'video/') || $mime === 'application/octet-stream';
+            $isRawVideo = str_starts_with($mime, 'video/');
 
             if ($isRawVideo) {
+                if (! $this->isAllowedVideoMime($mime)) {
+                    return Response::json([
+                        'success' => 0,
+                        'message' => 'Desteklenmeyen video formati.',
+                    ], 422);
+                }
+
                 if ($contentLength > $maxVideoBytes) {
                     return Response::json([
                         'success' => 0,
@@ -1861,17 +1868,13 @@ class BlogController extends Controller
                     ], 422);
                 }
 
-                $ext = match ($mime) {
-                    'video/webm' => 'webm',
-                    'video/quicktime' => 'mov',
-                    'video/ogg' => 'ogv',
-                    'video/x-matroska' => 'mkv',
-                    'video/x-msvideo', 'video/avi' => 'avi',
-                    'video/mpeg' => 'mpeg',
-                    'video/3gpp' => '3gp',
-                    'video/mp4' => 'mp4',
-                    default => 'mp4',
-                };
+                $ext = $this->videoExtensionForMime($mime);
+                if ($ext === null) {
+                    return Response::json([
+                        'success' => 0,
+                        'message' => 'Desteklenmeyen video formati.',
+                    ], 422);
+                }
 
                 $relativePath = 'editorjs/videos/' . Str::uuid() . '.' . $ext;
                 $stream = fopen('php://input', 'rb');
@@ -1926,10 +1929,9 @@ class BlogController extends Controller
         }
 
         $mime = strtolower((string) ($file->getMimeType() ?? ''));
-        $ext = strtolower((string) ($file->getClientOriginalExtension() ?? ''));
-        $allowedExt = ['mp4', 'webm', 'mov', 'ogv', 'mkv', 'avi', 'mpeg', 'mpg', '3gp', 'm4v'];
+        $ext = $this->videoExtensionForMime($mime);
 
-        if (($ext !== '' && !in_array($ext, $allowedExt, true)) || !$this->isAllowedVideoMime($mime)) {
+        if ($ext === null) {
             return Response::json([
                 'success' => 0,
                 'message' => 'Desteklenmeyen video formati.',
@@ -2214,15 +2216,21 @@ class BlogController extends Controller
             ], 422);
         }
 
-        $ext = strtolower((string) pathinfo($data['name'], PATHINFO_EXTENSION));
-        if ($ext === '') {
-            $ext = match ((string) ($data['mime'] ?? '')) {
-                'video/webm' => 'webm',
-                'video/quicktime' => 'mov',
-                'video/x-msvideo', 'video/avi' => 'avi',
-                'video/ogg' => 'ogv',
-                default => 'mp4',
-            };
+        $requestMime = strtolower((string) ($data['mime'] ?? ''));
+        $metaMime = strtolower((string) ($meta['mime'] ?? ''));
+        if ($requestMime !== $metaMime) {
+            return Response::json([
+                'success' => 0,
+                'message' => 'Video MIME bilgisi upload oturumu ile eslesmiyor.',
+            ], 422);
+        }
+
+        $ext = $this->videoExtensionForMime($metaMime);
+        if ($ext === null) {
+            return Response::json([
+                'success' => 0,
+                'message' => 'Upload video formati gecersiz.',
+            ], 422);
         }
 
         $finalRelPath = 'editorjs/videos/' . Str::uuid() . '.' . $ext;
@@ -2259,6 +2267,16 @@ class BlogController extends Controller
         }
 
         fclose($out);
+
+        $actualSize = @filesize($finalAbsPath);
+        if ($actualSize === false || $actualSize !== (int) ($meta['size'] ?? -1)) {
+            @unlink($finalAbsPath);
+            return Response::json([
+                'success' => 0,
+                'message' => 'Video boyutu upload metadata ile eslesmiyor.',
+            ], 422);
+        }
+
         if (str_contains(str_replace('\\', '/', $base), str_replace('\\', '/', storage_path('app/private/editorjs-chunks/')))) {
             Storage::disk('local')->deleteDirectory('editorjs-chunks/' . $uploadId);
         } elseif (is_dir($base)) {
@@ -2754,24 +2772,24 @@ class BlogController extends Controller
         return $value;
     }
 
+    private function videoExtensionForMime(string $mime): ?string
+    {
+        return match (strtolower(trim($mime))) {
+            'video/mp4' => 'mp4',
+            'video/webm' => 'webm',
+            'video/quicktime' => 'mov',
+            'video/ogg' => 'ogv',
+            'video/x-matroska' => 'mkv',
+            'video/x-msvideo', 'video/avi' => 'avi',
+            'video/mpeg' => 'mpeg',
+            'video/3gpp' => '3gp',
+            default => null,
+        };
+    }
+
     private function isAllowedVideoMime(string $mime): bool
     {
-        $mime = strtolower(trim($mime));
-        if ($mime === 'application/octet-stream' || $mime === '') {
-            return true;
-        }
-
-        return in_array($mime, [
-            'video/mp4',
-            'video/webm',
-            'video/quicktime',
-            'video/ogg',
-            'video/x-matroska',
-            'video/x-msvideo',
-            'video/avi',
-            'video/mpeg',
-            'video/3gpp',
-        ], true);
+        return $this->videoExtensionForMime($mime) !== null;
     }
 
     public function editorJsSubtitle(Request $request): JsonResponse
