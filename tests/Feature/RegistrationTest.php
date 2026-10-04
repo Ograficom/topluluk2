@@ -25,15 +25,16 @@ class RegistrationTest extends TestCase
         $response->assertStatus(200);
     }
 
-    public function test_registration_screen_cannot_be_rendered_if_support_is_disabled(): void
+    public function test_custom_registration_screen_remains_available_when_fortify_registration_is_disabled(): void
     {
         if (Features::enabled(Features::registration())) {
-            $this->markTestSkipped('Registration support is enabled.');
+            $this->markTestSkipped('Fortify registration is enabled.');
         }
 
-        $response = $this->get('/register');
-
-        $response->assertStatus(404);
+        // The application intentionally uses a custom email-code registration
+        // flow, so disabling Fortify's native registration feature must not
+        // hide the custom /register entry point.
+        $this->get('/register')->assertOk();
     }
 
     public function test_new_users_can_register(): void
