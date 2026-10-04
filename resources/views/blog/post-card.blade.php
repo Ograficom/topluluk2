@@ -1852,12 +1852,6 @@ SVG;
         }
     </style>
 
-    @if($linkPreview)
-        <div class="post-card__link-preview">
-            @include('blog.partials.link-preview', ['preview' => $linkPreview])
-        </div>
-    @endif
-
     @if($hasFullPostContent)
         <div class="post-card__full-content" data-post-card-full-content hidden>
             @if($contentBlocks->isNotEmpty())
