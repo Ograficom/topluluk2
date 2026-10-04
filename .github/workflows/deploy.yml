@@ -54,6 +54,18 @@ jobs:
           cp .env.example .env
           php artisan key:generate --force
 
+      - name: Run PHP syntax checks
+        run: |
+          find app bootstrap config database routes tests -type f -name '*.php' -print0 \
+            | xargs -0 -n1 php -l
+
+      - name: Compile all Blade views
+        env:
+          CACHE_STORE: array
+          SESSION_DRIVER: array
+          QUEUE_CONNECTION: sync
+        run: php artisan view:cache
+
       - name: Run application tests
         env:
           CACHE_STORE: array
