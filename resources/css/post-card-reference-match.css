@@ -887,3 +887,25 @@ html body [data-post-card-shell].post-card .action-bar .post-metric--views {
         right: 18px !important;
     }
 }
+
+
+/* FINAL — flush the comment/bookmark/share group to the card's LEFT edge. */
+html body [data-post-card-shell].post-card .action-bar .action-left {
+    left: 0 !important;
+    justify-content: flex-start !important;
+    margin-left: 0 !important;
+}
+
+html body [data-post-card-shell].post-card .action-bar .post-metric--views {
+    right: 0 !important;
+}
+
+@media (max-width: 640px) {
+    html body [data-post-card-shell].post-card .action-bar .action-left {
+        left: 0 !important;
+    }
+
+    html body [data-post-card-shell].post-card .action-bar .post-metric--views {
+        right: 0 !important;
+    }
+}
