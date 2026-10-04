@@ -21,7 +21,7 @@
         'lg' => 'h-9 px-4 text-sm',
     ];
 
-    // Keep compact utility buttons separate from large primary actions.
+    // Keep compact utility buttons separate from large primary actions and utility states.
 @endphp
 
 <button
