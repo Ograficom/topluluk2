@@ -221,6 +221,14 @@ jobs:
 
             if [ "$LIVE_STATUS" != "200" ]; then
               echo "Production verification failed: https://ografi.com returned HTTP $LIVE_STATUS." >&2
+              printf '%s\n' "$LIVE_BODY" | tail -n 80 >&2
+              echo "---- recent Laravel logs ----" >&2
+              for LOG_FILE in storage/logs/*.log; do
+                [ -f "$LOG_FILE" ] || continue
+                echo "### $LOG_FILE" >&2
+                tail -n 100 "$LOG_FILE" >&2 || true
+              done
+              echo "---- end Laravel logs ----" >&2
               exit 1
             fi
 
