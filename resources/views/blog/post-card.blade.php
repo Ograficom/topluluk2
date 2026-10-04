@@ -1753,7 +1753,7 @@ SVG;
         /* Source box: sade, tıklanabilir kaynak görünümü. */
         html body.alma-app article[data-post-card-shell].post-card .ps-source-link,
         html body article[data-post-card-shell].post-card .ps-source-link {
-            display: none !important;
+            display: none;
             align-items: center !important;
             justify-content: space-between !important;
             gap: 16px !important;
@@ -1770,11 +1770,6 @@ SVG;
             -webkit-tap-highlight-color: transparent !important;
             transition: background-color .14s ease !important;
             box-shadow: none !important;
-        }
-
-        html body.alma-app article[data-post-card-shell].post-card.is-summary-expanded .ps-source-link,
-        html body article[data-post-card-shell].post-card.is-summary-expanded .ps-source-link {
-            display: flex !important;
         }
 
         html body.alma-app article[data-post-card-shell].post-card .ps-source-link:hover,
@@ -2000,9 +1995,11 @@ SVG;
             target="_blank"
             rel="nofollow noopener noreferrer"
             aria-label="Kaynağı aç: {{ $sourceDisplayName }}"
+            hidden
         >
             <span class="ps-source-copy">
-                <span class="ps-source-label">SOURCE</span>                <span class="ps-source-domain">{{ $sourceDisplayName }}</span>
+                <span class="ps-source-label">SOURCE</span>
+                <span class="ps-source-domain">{{ $sourceDisplayName }}</span>
             </span>
             <span class="ps-source-icon" aria-hidden="true">
                 <iconify-icon icon="lucide:arrow-up-right"></iconify-icon>
