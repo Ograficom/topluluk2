@@ -12,13 +12,37 @@ class PublicPagesTest extends TestCase
 
     public function test_reaction_actions_require_authentication(): void
     {
-        $post = \App\Models\Post::factory()->create([
+        $userId = \Illuminate\Support\Facades\DB::table('users')->insertGetId([
+            'name' => 'Reaction Test User',
+            'username' => 'reaction-test-user',
+            'email' => 'reaction-' . uniqid() . '@example.test',
+            'password' => bcrypt('password'),
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        $postId = \Illuminate\Support\Facades\DB::table('posts')->insertGetId([
+            'author_id' => $userId,
+            'title' => 'Reaction Test Post',
+            'slug' => 'reaction-test-' . uniqid(),
+            'content' => '<p>Test</p>',
             'is_published' => true,
             'published_at' => now()->subMinute(),
+            'created_at' => now(),
+            'updated_at' => now(),
         ]);
-        $comment = \App\Models\Comment::factory()->create([
-            'post_id' => $post->id,
+
+        $commentId = \Illuminate\Support\Facades\DB::table('comments')->insertGetId([
+            'post_id' => $postId,
+            'user_id' => $userId,
+            'content' => 'Test comment',
+            'is_approved' => true,
+            'created_at' => now(),
+            'updated_at' => now(),
         ]);
+
+        $post = \App\Models\Post::query()->findOrFail($postId);
+        $comment = \App\Models\Comment::query()->findOrFail($commentId);
 
         $this->post(route('blog.post.reaction', $post), [
             'short_code' => 'like',
