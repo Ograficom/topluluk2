@@ -534,16 +534,18 @@ Route::prefix('blog')->group(function () {
         Route::get('/drafts', [BlogController::class, 'drafts'])->name('blog.drafts');
     });
 
-    Route::post('/editorjs/image', [BlogController::class, 'editorJsImage'])
-        ->withoutMiddleware([ValidatePostSize::class])
-        ->name('blog.editorjs.image');
-    Route::post('/editorjs/video', [BlogController::class, 'editorJsVideo'])
-        ->withoutMiddleware([ValidatePostSize::class])
-        ->name('blog.editorjs.video');
-    Route::post('/editorjs/subtitle', [BlogController::class, 'editorJsSubtitle'])
-        ->withoutMiddleware([ValidatePostSize::class])
-        ->name('blog.editorjs.subtitle');
-    Route::get('/editorjs/link', [BlogController::class, 'editorJsLink'])->name('blog.editorjs.link');
+    Route::middleware('auth')->group(function () {
+        Route::post('/editorjs/image', [BlogController::class, 'editorJsImage'])
+            ->withoutMiddleware([ValidatePostSize::class])
+            ->name('blog.editorjs.image');
+        Route::post('/editorjs/video', [BlogController::class, 'editorJsVideo'])
+            ->withoutMiddleware([ValidatePostSize::class])
+            ->name('blog.editorjs.video');
+        Route::post('/editorjs/subtitle', [BlogController::class, 'editorJsSubtitle'])
+            ->withoutMiddleware([ValidatePostSize::class])
+            ->name('blog.editorjs.subtitle');
+        Route::get('/editorjs/link', [BlogController::class, 'editorJsLink'])->name('blog.editorjs.link');
+    });
 });
 
 // Create sayfasi icin ek URL aliaslari
