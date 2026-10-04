@@ -434,14 +434,14 @@
         }
 
         :root {
+            /* Canonical Ografi desktop shell: 200 / 656 / 304 with 56px gaps. */
             --profile-shell-width: 656px;
-            --layout-left-width: 240px;
-            --layout-right-width: 344px;
-            --layout-column-gap: 36px;
-            --layout-shell-inline: 24px;
-            --layout-shell-max: calc(
-                var(--layout-left-width) + var(--profile-shell-width) + var(--layout-right-width) + (var(--layout-column-gap) * 2) + (var(--layout-shell-inline) * 2)
-            );
+            --layout-left-width: 200px;
+            --layout-right-width: 304px;
+            --layout-column-gap: 56px;
+            --layout-shell-inline: 0px;
+            --layout-shell-max: 1272px;
+        };
             --site-bg: #eef2fb;
             --site-surface: #ffffff;
             --site-surface-muted: #dbe6fb;
