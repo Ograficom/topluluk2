@@ -8,6 +8,13 @@ return new class extends Migration
 {
     public function up(): void
     {
+        // The table may already exist on installations created before this
+        // migration was registered. In that case, mark the migration as run
+        // instead of attempting CREATE TABLE again.
+        if (Schema::hasTable('web_vital_metrics')) {
+            return;
+        }
+
         Schema::create('web_vital_metrics', function (Blueprint $table) {
             $table->id();
             $table->string('metric_name', 16);
