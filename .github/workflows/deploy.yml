@@ -26,6 +26,16 @@ jobs:
           coverage: none
           tools: composer:v2
 
+      - name: Prepare Laravel writable directories
+        run: |
+          mkdir -p storage/framework/cache
+          mkdir -p storage/framework/data
+          mkdir -p storage/framework/sessions
+          mkdir -p storage/framework/testing
+          mkdir -p storage/framework/views
+          mkdir -p storage/logs
+          mkdir -p bootstrap/cache
+
       - name: Validate Composer files
         run: composer validate --strict
 
