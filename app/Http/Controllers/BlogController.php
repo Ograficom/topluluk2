@@ -2000,11 +2000,12 @@ class BlogController extends Controller
         $base = "editorjs-chunks/{$uploadId}";
         Storage::disk('local')->makeDirectory($base);
         Storage::disk('local')->put("{$base}/meta.json", json_encode([
+            'user_id' => (int) $user->id,
             'name' => $data['name'],
             'mime' => $mime,
             'size' => (int) $data['size'],
             'created_at' => now()->toIso8601String(),
-        ]));
+        ], JSON_THROW_ON_ERROR));
 
         logger()->info('editorJsVideoInit prepared upload', [
             'upload_id' => $uploadId,
@@ -2036,7 +2037,7 @@ class BlogController extends Controller
                 'upload_id' => ['required', 'string', 'max:100'],
                 'index' => ['required', 'integer', 'min:0'],
                 'total' => ['required', 'integer', 'min:1', 'max:10000'],
-                'chunk' => ['required', 'file', 'max:2048'],
+                'chunk' => ['required', 'file', 'max:512'],
             ]);
         } catch (ValidationException $e) {
             logger()->warning('editorJsVideoChunk validation failed', [
@@ -2063,14 +2064,35 @@ class BlogController extends Controller
             'meta_exists' => Storage::disk('local')->exists("{$base}/meta.json"),
         ]);
 
-        if (!Storage::disk('local')->exists("{$base}/meta.json")) {
+        $metaPath = "{$base}/meta.json";
+        if (!Storage::disk('local')->exists($metaPath)) {
             return Response::json([
                 'success' => 0,
                 'message' => 'Gecersiz upload oturumu.',
             ], 422);
         }
 
-        $partName = sprintf('%06d.part', (int) $data['index']);
+        $meta = json_decode(Storage::disk('local')->get($metaPath), true);
+        $expectedUserId = (int) ($meta['user_id'] ?? 0);
+        if (! is_array($meta) || $expectedUserId !== (int) $user->id) {
+            return Response::json([
+                'success' => 0,
+                'message' => 'Upload oturumuna erisim yetkiniz yok.',
+            ], 403);
+        }
+
+        $total = (int) $data['total'];
+        $index = (int) $data['index'];
+        $expectedTotal = max(1, (int) ceil(((int) ($meta['size'] ?? 0)) / (512 * 1024)));
+
+        if ($total !== $expectedTotal || $index >= $total) {
+            return Response::json([
+                'success' => 0,
+                'message' => 'Video parcasi sirasi veya toplam parcasi gecersiz.',
+            ], 422);
+        }
+
+        $partName = sprintf('%06d.part', $index);
         Storage::disk('local')->putFileAs($base, $data['chunk'], $partName);
 
         return Response::json(['success' => 1]);
@@ -2156,6 +2178,39 @@ class BlogController extends Controller
             return Response::json([
                 'success' => 0,
                 'message' => 'Upload verisi bulunamadi.',
+            ], 422);
+        }
+
+        $metaPath = rtrim($base, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . 'meta.json';
+        if (! is_file($metaPath)) {
+            return Response::json([
+                'success' => 0,
+                'message' => 'Gecersiz upload oturumu.',
+            ], 422);
+        }
+
+        try {
+            $meta = json_decode((string) file_get_contents($metaPath), true, 512, JSON_THROW_ON_ERROR);
+        } catch (\\Throwable) {
+            return Response::json([
+                'success' => 0,
+                'message' => 'Upload metadata okunamadi.',
+            ], 422);
+        }
+
+        if (! is_array($meta) || (int) ($meta['user_id'] ?? 0) !== (int) $user->id) {
+            return Response::json([
+                'success' => 0,
+                'message' => 'Upload oturumuna erisim yetkiniz yok.',
+            ], 403);
+        }
+
+        $total = (int) $data['total'];
+        $expectedTotal = max(1, (int) ceil(((int) ($meta['size'] ?? 0)) / (512 * 1024)));
+        if ($total !== $expectedTotal) {
+            return Response::json([
+                'success' => 0,
+                'message' => 'Video parca sayisi gecersiz.',
             ], 422);
         }
 
