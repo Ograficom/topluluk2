@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\BlogController;
-use App\Http\Controllers\FigmaWebhookController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -22,9 +21,3 @@ Route::post('/editorjs/video-upload/chunk', [BlogController::class, 'editorJsVid
 Route::post('/editorjs/video-upload/complete', [BlogController::class, 'editorJsVideoComplete'])
     ->withoutMiddleware('throttle:api')
     ->name('api.blog.editorjs.video.complete');
-
-// Figma -> GitHub design sync webhook. Protected by the configured Figma passcode
-// and file key inside FigmaWebhookController.
-Route::post('/integrations/figma/webhook', FigmaWebhookController::class)
-    ->middleware('throttle:60,1')
-    ->name('api.integrations.figma.webhook');
