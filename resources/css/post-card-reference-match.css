@@ -1125,3 +1125,13 @@ html body article[data-post-card-shell].post-card .post-card__source:hover {
     border: 0 !important;
     transform: none !important;
 }
+
+
+/* Final source-strip surface: light grey fill, absolutely no visible border. */
+html body.alma-app article[data-post-card-shell].post-card .post-card__source,
+html body article[data-post-card-shell].post-card .post-card__source {
+    background: #f4f4f5 !important;
+    border: 0 !important;
+    outline: 0 !important;
+    box-shadow: none !important;
+}
