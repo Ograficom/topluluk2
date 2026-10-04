@@ -2218,7 +2218,7 @@ class BlogController extends Controller
 
         $requestMime = strtolower((string) ($data['mime'] ?? ''));
         $metaMime = strtolower((string) ($meta['mime'] ?? ''));
-        if ($requestMime !== $metaMime) {
+        if ($requestMime !== '' && $requestMime !== $metaMime) {
             return Response::json([
                 'success' => 0,
                 'message' => 'Video MIME bilgisi upload oturumu ile eslesmiyor.',
