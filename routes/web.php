@@ -533,7 +533,9 @@ Route::prefix('blog')->group(function () {
         Route::post('/posts/{post:slug}/report', [PostReportController::class, 'store'])->name('blog.post.report');
         Route::post('/posts/{post:slug}/pin', [BlogController::class, 'togglePin'])->name('blog.post.pin');
         Route::post('/posts/{post:slug}/comments', [BlogController::class, 'storeComment'])->name('blog.post.comment');
-        Route::get('/giphy/search', [BlogController::class, 'giphySearch'])->name('blog.giphy.search');
+        Route::get('/giphy/search', [BlogController::class, 'giphySearch'])
+            ->middleware('throttle:60,1')
+            ->name('blog.giphy.search');
         Route::post('/posts/{post:slug}/bookmark', [BlogController::class, 'toggleBookmark'])->name('blog.post.bookmark');
         Route::delete('/posts/{post:slug}', [BlogController::class, 'destroy'])->name('blog.post.destroy');
         Route::get('/bookmarks', [BlogController::class, 'bookmarks'])->name('blog.bookmarks');
@@ -550,7 +552,9 @@ Route::prefix('blog')->group(function () {
         Route::post('/editorjs/subtitle', [BlogController::class, 'editorJsSubtitle'])
             ->withoutMiddleware([ValidatePostSize::class])
             ->name('blog.editorjs.subtitle');
-        Route::get('/editorjs/link', [BlogController::class, 'editorJsLink'])->name('blog.editorjs.link');
+        Route::get('/editorjs/link', [BlogController::class, 'editorJsLink'])
+            ->middleware('throttle:30,1')
+            ->name('blog.editorjs.link');
     });
 });
 
