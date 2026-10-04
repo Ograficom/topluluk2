@@ -1742,6 +1742,13 @@ SVG;
         </div>
     @endif
 
+    {{-- Link preview verisi DOM'da tutulur ancak kartta ikinci kaynak kutusu olarak gösterilmez. --}}
+    @if($linkPreview)
+        <template data-post-card-link-preview>
+            @include('blog.partials.link-preview', ['preview' => $linkPreview])
+        </template>
+    @endif
+
     <style>
         /* Source box: sade, tıklanabilir kaynak görünümü. */
         html body.alma-app article[data-post-card-shell].post-card .ps-source-link,
