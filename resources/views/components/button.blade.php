@@ -22,7 +22,8 @@
     ];
 
     // The iOS design-system Button/Primary is a 48px primary action. We only bind
-    // the large primary web button so compact utility buttons keep their web sizing.@endphp
+    // the large primary web button so compact utility buttons keep their web sizing.
+@endphp
 
 <button
     {{ $attributes->merge([
