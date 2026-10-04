@@ -1900,37 +1900,40 @@ SVG;
     @endif
 
     <style>
-        /* Source card: compact, screenshot-matched presentation. */
+        /* SOURCE — visual target is the supplied 627x77 reference image. */
         html body.alma-app article[data-post-card-shell].post-card .post-card__source,
         html body article[data-post-card-shell].post-card .post-card__source {
             display: flex !important;
             align-items: center !important;
             justify-content: space-between !important;
             width: 100% !important;
-            height: 46px !important;
-            min-height: 46px !important;
-            max-height: 46px !important;
+            height: 52px !important;
+            min-height: 52px !important;
+            max-height: 52px !important;
             margin: 0 0 10px !important;
-            padding: 7px 12px !important;
-            gap: 12px !important;
+            padding: 0 14px 0 16px !important;
+            overflow: hidden !important;
             border: 0 !important;
-            border-radius: 11px !important;
-            background: #f7f7f7 !important;
+            border-radius: 12px !important;
+            background: #fafafa !important;
             color: #111111 !important;
             box-shadow: none !important;
             box-sizing: border-box !important;
+            transform: none !important;
         }
 
         html body.alma-app article[data-post-card-shell].post-card .post-card__source-copy,
         html body article[data-post-card-shell].post-card .post-card__source-copy {
             display: flex !important;
-            flex: 1 1 auto !important;
-            min-width: 0 !important;
             flex-direction: column !important;
             justify-content: center !important;
-            gap: 1px !important;
+            align-items: flex-start !important;
+            flex: 1 1 auto !important;
+            min-width: 0 !important;
+            width: auto !important;
             margin: 0 !important;
             padding: 0 !important;
+            gap: 0 !important;
         }
 
         html body.alma-app article[data-post-card-shell].post-card .post-card__source-label,
@@ -1938,68 +1941,59 @@ SVG;
             display: block !important;
             margin: 0 !important;
             padding: 0 !important;
-            color: #7d838a !important;
-            font-size: 9px !important;
-            line-height: 11px !important;
-            font-weight: 500 !important;
-            letter-spacing: .06em !important;
+            color: #777777 !important;
+            font-size: 8px !important;
+            line-height: 10px !important;
+            font-weight: 400 !important;
+            letter-spacing: .025em !important;
             text-transform: uppercase !important;
-        }
-
-        html body.alma-app article[data-post-card-shell].post-card .post-card__source-domain-row,
-        html body article[data-post-card-shell].post-card .post-card__source-domain-row {
-            display: flex !important;
-            align-items: center !important;
-            min-width: 0 !important;
-            width: 100% !important;
-            margin: 0 !important;
-            padding: 0 !important;
-            gap: 0 !important;
-        }
-
-        html body.alma-app article[data-post-card-shell].post-card .post-card__source-favicon,
-        html body article[data-post-card-shell].post-card .post-card__source-favicon {
-            display: none !important;
+            white-space: nowrap !important;
         }
 
         html body.alma-app article[data-post-card-shell].post-card .post-card__source-domain,
         html body article[data-post-card-shell].post-card .post-card__source-domain {
             display: block !important;
-            min-width: 0 !important;
-            max-width: 100% !important;
-            overflow: hidden !important;
+            margin: 0 !important;
+            padding: 0 !important;
             color: #111111 !important;
             font-size: 12px !important;
-            line-height: 15px !important;
+            line-height: 16px !important;
             font-weight: 500 !important;
+            letter-spacing: 0 !important;
             white-space: nowrap !important;
+            overflow: hidden !important;
             text-overflow: ellipsis !important;
+            max-width: 100% !important;
         }
 
         html body.alma-app article[data-post-card-shell].post-card .post-card__source-icon,
         html body article[data-post-card-shell].post-card .post-card__source-icon {
+            position: static !important;
             display: inline-flex !important;
             align-items: center !important;
             justify-content: center !important;
-            flex: 0 0 24px !important;
-            width: 24px !important;
-            min-width: 24px !important;
-            height: 24px !important;
-            min-height: 24px !important;
+            flex: 0 0 18px !important;
+            width: 18px !important;
+            min-width: 18px !important;
+            height: 18px !important;
+            min-height: 18px !important;
             margin: 0 !important;
             padding: 0 !important;
+            border: 0 !important;
+            border-radius: 0 !important;
             background: transparent !important;
-            color: #777e86 !important;
+            color: #737373 !important;
         }
 
         html body.alma-app article[data-post-card-shell].post-card .post-card__source-icon iconify-icon,
         html body article[data-post-card-shell].post-card .post-card__source-icon iconify-icon {
             display: block !important;
-            width: 15px !important;
-            height: 15px !important;
-            min-width: 15px !important;
-            min-height: 15px !important;
-            font-size: 15px !important;
+            width: 13px !important;
+            min-width: 13px !important;
+            height: 13px !important;
+            min-height: 13px !important;
+            font-size: 13px !important;
+            line-height: 13px !important;
         }
     </style>
 
