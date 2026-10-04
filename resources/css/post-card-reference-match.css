@@ -827,3 +827,63 @@ html body [data-post-card-shell].post-card .reaction-row {
 html body [data-post-card-shell].post-card .action-bar {
     border-top-color: #e1e3e6 !important;
 }
+
+
+/* FINAL — action icons must stay on the LEFT edge of the action bar.
+   The screenshot reference does not center comment/bookmark/share. */
+html body [data-post-card-shell].post-card .action-bar {
+    position: relative !important;
+    display: block !important;
+    width: calc(100% + 38px) !important;
+    min-width: calc(100% + 38px) !important;
+    margin-left: -19px !important;
+    margin-right: -19px !important;
+    padding: 0 19px !important;
+    box-sizing: border-box !important;
+}
+
+html body [data-post-card-shell].post-card .action-bar .action-left {
+    position: absolute !important;
+    left: 19px !important;
+    right: auto !important;
+    top: 50% !important;
+    bottom: auto !important;
+    width: auto !important;
+    max-width: none !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 2px !important;
+    transform: translateY(-50%) !important;
+}
+
+html body [data-post-card-shell].post-card .action-bar .post-metric--views {
+    position: absolute !important;
+    right: 19px !important;
+    left: auto !important;
+    top: 50% !important;
+    margin: 0 !important;
+    transform: translateY(-50%) !important;
+}
+
+@media (max-width: 640px) {
+    html body [data-post-card-shell].post-card .action-bar {
+        width: calc(100% + 36px) !important;
+        min-width: calc(100% + 36px) !important;
+        margin-left: -18px !important;
+        margin-right: -18px !important;
+        padding-left: 18px !important;
+        padding-right: 18px !important;
+    }
+
+    html body [data-post-card-shell].post-card .action-bar .action-left {
+        left: 18px !important;
+    }
+
+    html body [data-post-card-shell].post-card .action-bar .post-metric--views {
+        right: 18px !important;
+    }
+}
