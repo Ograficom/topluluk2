@@ -208,42 +208,44 @@ jobs:
             php artisan view:cache || true
             /etc/init.d/php-fpm-84 restart || true
 
-            # Production verification: do not report a green deploy unless the
-            # public domain is actually serving the freshly built post-card CSS.
-            DEPLOYED_SHA="\$(git rev-parse HEAD)"
-            echo "Deployed repository SHA: \$DEPLOYED_SHA"
+            # Production verification: verify the deployed build through the public
+            # domain. Do not assume the homepage renders a post card; the homepage
+            # can legitimately be empty. Verify the actual Vite asset instead.
+            DEPLOYED_SHA="$(git rev-parse HEAD)"
+            echo "Deployed repository SHA: $DEPLOYED_SHA"
             test -f public/build/manifest.json
 
-            LIVE_HTML="\$(curl -ksS --max-time 30 https://ografi.com/ || true)"
-            if [ -z "\$LIVE_HTML" ]; then
-              echo "Production verification failed: https://ografi.com returned no HTML." >&2
+            LIVE_HTML="$(curl -ksS --max-time 30 -w '\n__HTTP_STATUS:%{http_code}' https://ografi.com/ || true)"
+            LIVE_STATUS="$(printf '%s' "$LIVE_HTML" | sed -n 's/^__HTTP_STATUS://p' | tail -n 1)"
+            LIVE_BODY="$(printf '%s' "$LIVE_HTML" | sed '/^__HTTP_STATUS:/d')"
+
+            if [ "$LIVE_STATUS" != "200" ]; then
+              echo "Production verification failed: https://ografi.com returned HTTP $LIVE_STATUS." >&2
               exit 1
             fi
 
-            echo "\$LIVE_HTML" | grep -q 'data-post-card-shell' || {
-              echo "Production verification failed: post-card markup is not present on https://ografi.com/." >&2
-              exit 1
-            }
-
-            LIVE_CSS_PATHS="\$(printf '%s' "\$LIVE_HTML" | grep -oE '/build/assets/[^"[:space:]]+\\.css' | sort -u || true)"
-            if [ -z "\$LIVE_CSS_PATHS" ]; then
+            LIVE_CSS_PATHS="$(printf '%s' "$LIVE_BODY" | grep -oE '/build/assets/[^"[:space:]]+\.css' | sort -u || true)"
+            if [ -z "$LIVE_CSS_PATHS" ]; then
               echo "Production verification failed: no Vite CSS asset was found in the live HTML." >&2
               exit 1
             fi
 
             CSS_MATCHED=0
             while IFS= read -r CSS_PATH; do
-              [ -n "\$CSS_PATH" ] || continue
-              CSS_BODY="\$(curl -ksS --max-time 30 "https://ografi.com\$\{CSS_PATH\}" || true)"
-              if printf '%s' "\$CSS_BODY" | grep -q 'max-width:656px'; then
+              [ -n "$CSS_PATH" ] || continue
+              CSS_BODY="$(curl -ksS --max-time 30 -w '\n__HTTP_STATUS:%{http_code}' "https://ografi.com${CSS_PATH}" || true)"
+              CSS_STATUS="$(printf '%s' "$CSS_BODY" | sed -n 's/^__HTTP_STATUS://p' | tail -n 1)"
+              CSS_CONTENT="$(printf '%s' "$CSS_BODY" | sed '/^__HTTP_STATUS:/d')"
+
+              if [ "$CSS_STATUS" = "200" ] && printf '%s' "$CSS_CONTENT" | grep -q 'max-width:656px'; then
                 CSS_MATCHED=1
-                echo "Verified live post-card CSS asset: \$CSS_PATH"
+                echo "Verified live post-card CSS asset: $CSS_PATH"
                 break
               fi
-            done <<< "\$LIVE_CSS_PATHS"
+            done <<< "$LIVE_CSS_PATHS"
 
-            if [ "\$CSS_MATCHED" -ne 1 ]; then
+            if [ "$CSS_MATCHED" -ne 1 ]; then
               echo "Production verification failed: live Vite CSS does not contain the deployed post-card reference rules." >&2
-              echo "Live CSS assets: \$LIVE_CSS_PATHS" >&2
+              echo "Live CSS assets: $LIVE_CSS_PATHS" >&2
               exit 1
             fi
