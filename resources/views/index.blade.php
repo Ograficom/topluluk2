@@ -237,20 +237,9 @@
             box-sizing: border-box !important;
         }
 
-        body [data-post-card-shell],
-        body .post-card,
-        body article[data-post-card-shell] {
-            width: 100% !important;
-            max-width: 100% !important;
-            min-width: 0 !important;
-            margin-left: 0 !important;
-            margin-right: 0 !important;
-            border-left: 0 !important;
-            border-right: 0 !important;
-            border-radius: 0 !important;
-            box-sizing: border-box !important;
-        }
-
+        /* Post cards keep their component-owned responsive geometry.
+         * Do not flatten them to full-bleed here; this page-level rule used to
+         * override the Figma card at mobile/tablet widths. */
         .ografi-feed-loadmore {
             width: 100% !important;
             max-width: 100% !important;
