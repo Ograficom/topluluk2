@@ -1743,6 +1743,164 @@ SVG;
         </div>
     @endif
 
+    @if($hasSourcePreview && ! $linkPreview)
+        @php
+            $sourceDisplayName = $linkPreviewHost !== ''
+                ? $linkPreviewHost
+                : trim((string) data_get($linkPreview, 'site_name', ''));
+            $sourceDisplayName = $sourceDisplayName !== '' ? $sourceDisplayName : 'Harici kaynak';
+        @endphp
+
+        <a
+            class="post-card__source"
+            href="{{ $linkPreviewUrl }}"
+            target="_blank"
+            rel="nofollow noopener noreferrer"
+            data-post-card-source
+            aria-label="Kaynağı aç: {{ $sourceDisplayName }}"
+        >
+            <span class="post-card__source-copy">
+                <span class="post-card__source-label">Kaynak</span>
+                <span class="post-card__source-domain-row">
+                    @if($linkPreviewFavicon !== '')
+                        <img
+                            class="post-card__source-favicon"
+                            src="{{ $linkPreviewFavicon }}"
+                            alt=""
+                            loading="lazy"
+                            decoding="async"
+                            referrerpolicy="no-referrer"
+                            onerror="this.style.display='none'"
+                        >
+                    @endif
+                    <span class="post-card__source-domain">{{ $sourceDisplayName }}</span>
+                </span>
+            </span>
+            <span class="post-card__source-icon" aria-hidden="true">
+                <iconify-icon icon="lucide:arrow-up-right"></iconify-icon>
+            </span>
+        </a>
+    @endif
+
+    <style>
+        /* Source box copied from post-show and placed at the bottom of the card description. */
+        html body.alma-app article[data-post-card-shell].post-card .post-card__source,
+        html body article[data-post-card-shell].post-card .post-card__source {
+            display: flex !important;
+            align-items: flex-start !important;
+            justify-content: space-between !important;
+            gap: 18px !important;
+            width: 100% !important;
+            min-height: 68px !important;
+            margin: 0 0 18px !important;
+            padding: 14px 18px !important;
+            border: 1px solid rgba(15, 23, 42, 0.04) !important;
+            border-radius: 16px !important;
+            background: #f3f4f6 !important;
+            color: #111827 !important;
+            text-decoration: none !important;
+            box-sizing: border-box !important;
+            -webkit-tap-highlight-color: transparent !important;
+            transition: background-color .14s ease, border-color .14s ease, color .14s ease !important;
+            box-shadow: none !important;
+        }
+
+        html body.alma-app article[data-post-card-shell].post-card .post-card__source:hover,
+        html body.alma-app article[data-post-card-shell].post-card .post-card__source:focus-visible,
+        html body article[data-post-card-shell].post-card .post-card__source:hover,
+        html body article[data-post-card-shell].post-card .post-card__source:focus-visible {
+            background: #ebeef2 !important;
+            border-color: rgba(15, 23, 42, 0.06) !important;
+            color: #111827 !important;
+            outline: none !important;
+        }
+
+        html body.alma-app article[data-post-card-shell].post-card .post-card__source:active,
+        html body article[data-post-card-shell].post-card .post-card__source:active {
+            background: #e5e7eb !important;
+            color: #111827 !important;
+        }
+
+        html body.alma-app article[data-post-card-shell].post-card .post-card__source-copy,
+        html body article[data-post-card-shell].post-card .post-card__source-copy {
+            display: flex !important;
+            flex-direction: column !important;
+            justify-content: center !important;
+            gap: 6px !important;
+            min-width: 0 !important;
+            flex: 1 1 auto !important;
+        }
+
+        html body.alma-app article[data-post-card-shell].post-card .post-card__source-label,
+        html body article[data-post-card-shell].post-card .post-card__source-label {
+            color: #9ca3af !important;
+            font-size: 10px !important;
+            font-weight: 400 !important;
+            line-height: 1 !important;
+            letter-spacing: .08em !important;
+            text-transform: uppercase !important;
+        }
+
+        html body.alma-app article[data-post-card-shell].post-card .post-card__source-domain-row,
+        html body article[data-post-card-shell].post-card .post-card__source-domain-row {
+            display: inline-flex !important;
+            align-items: center !important;
+            gap: 7px !important;
+            min-width: 0 !important;
+            max-width: 100% !important;
+        }
+
+        html body.alma-app article[data-post-card-shell].post-card .post-card__source-favicon,
+        html body article[data-post-card-shell].post-card .post-card__source-favicon {
+            display: inline-flex !important;
+            width: 16px !important;
+            height: 16px !important;
+            min-width: 16px !important;
+            flex: 0 0 16px !important;
+            border-radius: 999px !important;
+            object-fit: cover !important;
+            background: #fff !important;
+            box-shadow: none !important;
+        }
+
+        html body.alma-app article[data-post-card-shell].post-card .post-card__source-domain,
+        html body article[data-post-card-shell].post-card .post-card__source-domain {
+            overflow: hidden !important;
+            color: #111827 !important;
+            font-size: 16px !important;
+            font-weight: 400 !important;
+            line-height: 1.3 !important;
+            text-overflow: ellipsis !important;
+            white-space: nowrap !important;
+        }
+
+        html body.alma-app article[data-post-card-shell].post-card .post-card__source-icon,
+        html body article[data-post-card-shell].post-card .post-card__source-icon {
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            width: 20px !important;
+            height: 20px !important;
+            flex: 0 0 auto !important;
+            color: #9ca3af !important;
+            margin-top: 2px !important;
+        }
+
+        html body.alma-app article[data-post-card-shell].post-card .post-card__source:hover .post-card__source-icon,
+        html body.alma-app article[data-post-card-shell].post-card .post-card__source:focus-visible .post-card__source-icon,
+        html body.alma-app article[data-post-card-shell].post-card .post-card__source:active .post-card__source-icon,
+        html body article[data-post-card-shell].post-card .post-card__source:hover .post-card__source-icon,
+        html body article[data-post-card-shell].post-card .post-card__source:focus-visible .post-card__source-icon,
+        html body article[data-post-card-shell].post-card .post-card__source:active .post-card__source-icon {
+            color: #6b7280 !important;
+        }
+
+        html body.alma-app article[data-post-card-shell].post-card .post-card__source-icon iconify-icon,
+        html body article[data-post-card-shell].post-card .post-card__source-icon iconify-icon {
+            font-size: 16px !important;
+        }
+    </style>
+
     @if($linkPreview)
         <div class="post-card__link-preview">
             @include('blog.partials.link-preview', ['preview' => $linkPreview])
@@ -1870,143 +2028,6 @@ SVG;
             @endif
         </div>
     @endif
-
-    @if($hasSourcePreview && ! $linkPreview)
-        @php
-            $sourceDisplayName = $linkPreviewHost !== ''
-                ? $linkPreviewHost
-                : trim((string) data_get($linkPreview, 'site_name', ''));
-            $sourceDisplayName = $sourceDisplayName !== '' ? $sourceDisplayName : 'Harici kaynak';
-        @endphp
-
-        <a
-            class="post-card__source"
-            href="{{ $linkPreviewUrl }}"
-            target="_blank"
-            rel="nofollow noopener noreferrer"
-            data-post-card-source
-            @if($showExpandLink) hidden @endif
-            aria-label="Kaynağı aç: {{ $sourceDisplayName }}"
-        >
-            <span class="post-card__source-copy">
-                <span class="post-card__source-label">SOURCE</span>
-                <span class="post-card__source-domain">{{ $sourceDisplayName }}</span>
-            </span>
-
-            <span class="post-card__source-icon" aria-hidden="true">
-                <iconify-icon icon="lucide:arrow-up-right"></iconify-icon>
-            </span>
-        </a>
-    @endif
-
-    <style>
-        /* SOURCE — visual target is the supplied 627x77 reference image. */
-        html body.alma-app article[data-post-card-shell].post-card .post-card__source,
-        html body article[data-post-card-shell].post-card .post-card__source {
-            display: flex !important;
-            align-items: center !important;
-            justify-content: space-between !important;
-            width: 100% !important;
-            height: 51px !important;
-            min-height: 51px !important;
-            max-height: 51px !important;
-            margin: 0 0 10px !important;
-            padding: 0 14px 0 16px !important;
-            overflow: hidden !important;
-            border: 0 !important;
-            border-radius: 12px !important;
-            background: #f3f3f4 !important;
-            color: #111111 !important;
-            box-shadow: none !important;
-            box-sizing: border-box !important;
-            transform: none !important;
-        }
-
-        html body.alma-app article[data-post-card-shell].post-card .post-card__source-copy,
-        html body article[data-post-card-shell].post-card .post-card__source-copy {
-            display: flex !important;
-            flex-direction: column !important;
-            justify-content: center !important;
-            align-items: flex-start !important;
-            flex: 1 1 auto !important;
-            min-width: 0 !important;
-            width: auto !important;
-            margin: 0 !important;
-            padding: 0 !important;
-            gap: 0 !important;
-        }
-
-        html body.alma-app article[data-post-card-shell].post-card .post-card__source-label,
-        html body article[data-post-card-shell].post-card .post-card__source-label {
-            display: block !important;
-            margin: 0 !important;
-            padding: 0 !important;
-            color: #777777 !important;
-            font-size: 7px !important;
-            line-height: 9px !important;
-            font-weight: 400 !important;
-            letter-spacing: .025em !important;
-            text-transform: uppercase !important;
-            white-space: nowrap !important;
-        }
-
-        html body.alma-app article[data-post-card-shell].post-card .post-card__source-domain,
-        html body article[data-post-card-shell].post-card .post-card__source-domain {
-            display: block !important;
-            margin: 0 !important;
-            padding: 0 !important;
-            color: #111111 !important;
-            font-size: 10px !important;
-            line-height: 13px !important;
-            font-weight: 500 !important;
-            letter-spacing: 0 !important;
-            white-space: nowrap !important;
-            overflow: hidden !important;
-            text-overflow: ellipsis !important;
-            max-width: 100% !important;
-        }
-
-        html body.alma-app article[data-post-card-shell].post-card .post-card__source-icon,
-        html body article[data-post-card-shell].post-card .post-card__source-icon {
-            position: static !important;
-            display: inline-flex !important;
-            align-items: center !important;
-            justify-content: center !important;
-            flex: 0 0 18px !important;
-            width: 18px !important;
-            min-width: 18px !important;
-            height: 18px !important;
-            min-height: 18px !important;
-            margin: 0 !important;
-            padding: 0 !important;
-            border: 0 !important;
-            border-radius: 0 !important;
-            background: transparent !important;
-            color: #737373 !important;
-        }
-
-        html body.alma-app article[data-post-card-shell].post-card .post-card__source-icon iconify-icon,
-        html body article[data-post-card-shell].post-card .post-card__source-icon iconify-icon {
-            display: block !important;
-            width: 12px !important;
-            min-width: 12px !important;
-            height: 12px !important;
-            min-height: 12px !important;
-            font-size: 12px !important;
-            line-height: 12px !important;
-        }
-
-        /* Source sits directly above the expanded "Daha az göster" control. */
-        html body.alma-app article[data-post-card-shell].post-card .post-card__source {
-            margin-bottom: 2px !important;
-        }
-
-        html body.alma-app article[data-post-card-shell].post-card .expand-link,
-        html body article[data-post-card-shell].post-card .expand-link {
-            margin-top: 0 !important;
-        }
-
-    </style>
 
     @if($showExpandLink)
         <button
@@ -11336,13 +11357,7 @@ SVG;
                 }
 
                 if (source) {
-                    source.hidden = !expanded;
-
-                    // Kaynak kutusu yalnızca içerik genişletildiğinde görünür ve
-                    // "Daha az göster" kontrolünün hemen üstünde yer alır.
-                    if (expanded && trigger.parentNode !== source.parentNode) {
-                        trigger.parentNode?.insertBefore(source, trigger);
-                    }
+                    source.hidden = false;
                 }
             };
 
