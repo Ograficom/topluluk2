@@ -10,6 +10,27 @@ class PublicPagesTest extends TestCase
     use RefreshDatabase;
 
 
+    public function test_reaction_actions_require_authentication(): void
+    {
+        $post = \App\Models\Post::factory()->create([
+            'is_published' => true,
+            'published_at' => now()->subMinute(),
+        ]);
+        $comment = \App\Models\Comment::factory()->create([
+            'post_id' => $post->id,
+        ]);
+
+        $this->post(route('blog.post.reaction', $post), [
+            'short_code' => 'like',
+        ])->assertRedirect(route('login'));
+
+        $this->post(route('blog.comment.like', $comment))
+            ->assertRedirect(route('login'));
+
+        $this->post(route('blog.comment.dislike', $comment))
+            ->assertRedirect(route('login'));
+    }
+
     public function test_editor_upload_endpoints_require_authentication(): void
     {
         $this->post(route('blog.editorjs.image'))->assertRedirect(route('login'));
