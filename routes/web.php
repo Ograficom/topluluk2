@@ -39,6 +39,7 @@ use App\Http\Controllers\VerifyEmailController;
 use App\Http\Controllers\EmailVerificationCodeController;
 use App\Http\Controllers\RegistrationVerificationController;
 use App\Http\Controllers\WebVitalsController;
+use Laravel\Fortify\Features;
 
 // E-posta istemcisindeki bağlantı, kullanıcının web oturumu olmasa da imzalı URL
 // ve e-posta hash'i ile güvenle doğrulanabilmelidir.
@@ -59,15 +60,17 @@ Route::post('/email/verify-code', EmailVerificationCodeController::class)
     ->name('verification.code.verify');
 
 Route::middleware('guest')->group(function (): void {
-    Route::view('/register', 'auth.register')->name('register');
-    Route::post('/register/email', [RegistrationVerificationController::class, 'requestCode'])
-        ->middleware('throttle:5,1')->name('register.email');
-    Route::get('/register/verify-code', [RegistrationVerificationController::class, 'showVerify'])->name('register.verify');
-    Route::post('/register/verify-code', [RegistrationVerificationController::class, 'verify'])
-        ->middleware('throttle:10,1')->name('register.verify.submit');
-    Route::get('/register/complete', [RegistrationVerificationController::class, 'showComplete'])->name('register.complete');
-    Route::post('/register/complete', [RegistrationVerificationController::class, 'complete'])
-        ->middleware('throttle:10,1')->name('register.complete.submit');
+    if (Features::enabled(Features::registration())) {
+        Route::view('/register', 'auth.register')->name('register');
+        Route::post('/register/email', [RegistrationVerificationController::class, 'requestCode'])
+            ->middleware('throttle:5,1')->name('register.email');
+        Route::get('/register/verify-code', [RegistrationVerificationController::class, 'showVerify'])->name('register.verify');
+        Route::post('/register/verify-code', [RegistrationVerificationController::class, 'verify'])
+            ->middleware('throttle:10,1')->name('register.verify.submit');
+        Route::get('/register/complete', [RegistrationVerificationController::class, 'showComplete'])->name('register.complete');
+        Route::post('/register/complete', [RegistrationVerificationController::class, 'complete'])
+            ->middleware('throttle:10,1')->name('register.complete.submit');
+    }
 });
 
 Route::middleware(RedirectIfInstalled::class)->prefix('install')->name('install.')->group(function () {
@@ -821,4 +824,3 @@ Route::middleware(['auth'])->get('/ai', function () {
 
 Route::middleware(['auth', 'throttle:10,1'])->post('/blog/ai-assist', [BlogController::class, 'aiAssist'])
     ->name('blog.ai-assist');
-
