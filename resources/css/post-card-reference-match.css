@@ -212,6 +212,15 @@
     margin: 0 !important;
 }
 
+[data-post-card-shell].post-card .post-summary {
+    margin: 0 !important;
+    color: #111827 !important;
+    font-size: 17px !important;
+    line-height: 25.84px !important;
+    font-weight: 400 !important;
+    letter-spacing: 0 !important;
+}
+
 /* Summary collapse/fade behavior remains owned by the existing post-card component. */
 
 [data-post-card-shell].post-card .expand-link {
@@ -505,8 +514,8 @@
     }
 
     [data-post-card-shell].post-card .post-summary {
-        font-size: 13.5px !important;
-        line-height: 19px !important;
+        font-size: 16px !important;
+        line-height: 24px !important;
     }
 
     [data-post-card-shell].post-card .action-bar {
