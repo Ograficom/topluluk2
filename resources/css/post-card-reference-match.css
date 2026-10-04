@@ -7,7 +7,7 @@
     border: 1px solid #e1e3e6 !important;
     border-radius: 10px !important;
     background: #ffffff !important;
-    box-shadow: 0 1px 1px rgba(15,23,42,.04), 0 8px 12px rgba(15,23,42,.04) !important;
+    box-shadow: none !important;
     color: #111827 !important;
 }
 
@@ -164,7 +164,7 @@
 
 [data-post-card-shell].post-card .post-card__media-frame {
     width: 100% !important;
-    aspect-ratio: 16 / 9 !important;
+    aspect-ratio: auto !important;
     max-height: none !important;
     overflow: hidden !important;
     background: #f3f4f6 !important;
@@ -173,8 +173,9 @@
 [data-post-card-shell].post-card .post-card__media-image {
     display: block !important;
     width: 100% !important;
-    height: 100% !important;
-    object-fit: cover !important;
+    height: auto !important;
+    max-height: 720px !important;
+    object-fit: contain !important;
 }
 
 [data-post-card-shell].post-card .post-card__media-scroller {
@@ -560,6 +561,16 @@
         margin-inline: 0 !important;
         padding-inline: 0 !important;
     }
+}
+
+/* Kartpostal referansinda kart yukselmesi/golge yoktur; hover yalnizca yuzey rengini degistirir. */
+[data-post-card-shell].post-card:hover {
+    box-shadow: none !important;
+    transform: none !important;
+}
+
+[data-post-card-shell].post-card:focus-within {
+    box-shadow: none !important;
 }
 
 /* Keep this reference-match block last so older card overrides cannot win. */
