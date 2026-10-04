@@ -1017,3 +1017,111 @@ html body article[data-post-card-shell].post-card .post-card__source-icon iconif
 
     font-size: 14px !important;
 }
+
+
+/* FINAL SOURCE STRIP — exact target is the small grey strip shown in the
+   user's reference image. No favicon, title, host, border or second row. */
+html body.alma-app article[data-post-card-shell].post-card .post-card__source,
+html body article[data-post-card-shell].post-card .post-card__source {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    width: 100% !important;
+    height: 46px !important;
+    min-height: 46px !important;
+    max-height: 46px !important;
+    margin: 0 0 10px !important;
+    padding: 7px 13px 7px 15px !important;
+    border: 0 !important;
+    border-radius: 11px !important;
+    background: #f7f7f7 !important;
+    box-shadow: none !important;
+    overflow: hidden !important;
+    box-sizing: border-box !important;
+}
+
+html body.alma-app article[data-post-card-shell].post-card .post-card__source-copy,
+html body article[data-post-card-shell].post-card .post-card__source-copy {
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    gap: 0 !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+html body.alma-app article[data-post-card-shell].post-card .post-card__source-label,
+html body article[data-post-card-shell].post-card .post-card__source-label {
+    display: block !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    color: #7b8188 !important;
+    font-size: 8px !important;
+    line-height: 10px !important;
+    font-weight: 500 !important;
+    letter-spacing: .055em !important;
+    text-transform: uppercase !important;
+}
+
+html body.alma-app article[data-post-card-shell].post-card .post-card__source-domain,
+html body article[data-post-card-shell].post-card .post-card__source-domain {
+    display: block !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    color: #111111 !important;
+    font-size: 12px !important;
+    line-height: 15px !important;
+    font-weight: 500 !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+}
+
+html body.alma-app article[data-post-card-shell].post-card .post-card__source-icon,
+html body article[data-post-card-shell].post-card .post-card__source-icon {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 20px !important;
+    min-width: 20px !important;
+    height: 20px !important;
+    min-height: 20px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    color: #737980 !important;
+    flex: 0 0 20px !important;
+}
+
+html body.alma-app article[data-post-card-shell].post-card .post-card__source-icon iconify-icon,
+html body article[data-post-card-shell].post-card .post-card__source-icon iconify-icon {
+    display: block !important;
+    width: 14px !important;
+    min-width: 14px !important;
+    height: 14px !important;
+    min-height: 14px !important;
+    font-size: 14px !important;
+}
+
+html body.alma-app article[data-post-card-shell].post-card .post-card__source-main,
+html body article[data-post-card-shell].post-card .post-card__source-main,
+html body.alma-app article[data-post-card-shell].post-card .post-card__source-head,
+html body article[data-post-card-shell].post-card .post-card__source-head,
+html body.alma-app article[data-post-card-shell].post-card .post-card__source-content,
+html body article[data-post-card-shell].post-card .post-card__source-content,
+html body.alma-app article[data-post-card-shell].post-card .post-card__source-title,
+html body article[data-post-card-shell].post-card .post-card__source-host,
+html body.alma-app article[data-post-card-shell].post-card .post-card__source-favicon,
+html body article[data-post-card-shell].post-card .post-card__source-favicon {
+    display: none !important;
+}
+
+html body.alma-app article[data-post-card-shell].post-card .post-card__source:hover,
+html body article[data-post-card-shell].post-card .post-card__source:hover {
+    background: #f7f7f7 !important;
+    border: 0 !important;
+    transform: none !important;
+}
