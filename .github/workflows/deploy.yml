@@ -46,6 +46,11 @@ jobs:
       - name: Install PHP dependencies
         run: composer install --no-interaction --prefer-dist --no-progress --optimize-autoloader
 
+      - name: Prepare testing environment
+        run: |
+          cp .env.example .env
+          php artisan key:generate --force
+
       - name: Run application tests
         env:
           CACHE_STORE: array
