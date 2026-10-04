@@ -1878,6 +1878,7 @@ SVG;
                 : trim((string) data_get($linkPreview, 'site_name', ''));
             $sourceDisplayName = $sourceDisplayName !== '' ? $sourceDisplayName : 'Harici kaynak';
         @endphp
+
         <a
             class="post-card__source"
             href="{{ $linkPreviewUrl }}"
@@ -1885,6 +1886,20 @@ SVG;
             rel="nofollow noopener noreferrer"
             data-post-card-source
             @if($showExpandLink) hidden @endif
+            aria-label="Kaynağı aç: {{ $sourceDisplayName }}"
+        >
+            <span class="post-card__source-copy">
+                <span class="post-card__source-label">SOURCE</span>
+                <span class="post-card__source-domain">{{ $sourceDisplayName }}</span>
+            </span>
+
+            <span class="post-card__source-icon" aria-hidden="true">
+                <iconify-icon icon="lucide:arrow-up-right"></iconify-icon>
+            </span>
+        </a>
+    @endif
+
+    @if($showExpandLink) hidden @endif
             aria-label="Kaynağı aç: {{ $sourceDisplayName }}"
         >
             <span class="post-card__source-main">
