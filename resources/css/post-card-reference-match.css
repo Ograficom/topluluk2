@@ -574,3 +574,198 @@
 }
 
 /* Keep this reference-match block last so older card overrides cannot win. */
+
+/* FINAL KARTPOSTAL OVERRIDE — screenshot geometry */
+
+/* Reference: compact white postcard card, no lift/shadow. */
+html body [data-post-card-shell].post-card {
+    width: 100% !important;
+    max-width: 590px !important;
+    margin: 0 auto 12px !important;
+    padding: 18px 19px 0 !important;
+    border: 1px solid #e1e3e6 !important;
+    border-radius: 8px !important;
+    background: #ffffff !important;
+    box-shadow: none !important;
+    transform: none !important;
+}
+
+html body [data-post-card-shell].post-card:hover,
+html body [data-post-card-shell].post-card:focus-within,
+html body [data-post-card-shell].post-card:active {
+    box-shadow: none !important;
+    transform: none !important;
+}
+
+/* Author row */
+html body [data-post-card-shell].post-card .post-header {
+    min-height: 42px !important;
+    margin: 0 0 10px !important;
+    gap: 8px !important;
+}
+
+html body [data-post-card-shell].post-card .author-block {
+    gap: 8px !important;
+}
+
+html body [data-post-card-shell].post-card .author-avatar {
+    width: 42px !important;
+    height: 42px !important;
+    min-width: 42px !important;
+}
+
+html body [data-post-card-shell].post-card .author-name {
+    font-size: 14px !important;
+    line-height: 17px !important;
+    font-weight: 600 !important;
+}
+
+html body [data-post-card-shell].post-card .author-subline {
+    margin-top: 0 !important;
+    font-size: 10.5px !important;
+    line-height: 15px !important;
+}
+
+/* Screenshot title */
+html body [data-post-card-shell].post-card .post-title {
+    margin: 0 0 14px !important;
+    font-size: 19px !important;
+    line-height: 25px !important;
+    font-weight: 700 !important;
+    letter-spacing: -0.018em !important;
+}
+
+/* The reference image is deliberately 3:2, not 16:9. */
+html body [data-post-card-shell].post-card .post-card__media-wrap {
+    margin: 0 0 16px !important;
+    border-radius: 7px !important;
+}
+
+html body [data-post-card-shell].post-card .post-card__media-frame {
+    width: 100% !important;
+    aspect-ratio: 3 / 2 !important;
+    max-height: none !important;
+    overflow: hidden !important;
+}
+
+html body [data-post-card-shell].post-card .post-card__media-image {
+    width: 100% !important;
+    height: 100% !important;
+    max-height: none !important;
+    object-fit: cover !important;
+}
+
+/* Two-line excerpt with the reference fade/continuation rhythm. */
+html body [data-post-card-shell].post-card .post-summary {
+    font-size: 15px !important;
+    line-height: 22px !important;
+    font-weight: 400 !important;
+}
+
+html body [data-post-card-shell].post-card .expand-link {
+    min-height: 24px !important;
+    margin: 2px 0 9px !important;
+    color: #059669 !important;
+    font-size: 14px !important;
+    line-height: 20px !important;
+}
+
+/* Hashtags sit immediately below the continuation link. */
+html body [data-post-card-shell].post-card .post-card__tags,
+html body [data-post-card-shell].post-card .tags-row {
+    margin-top: 0 !important;
+    margin-bottom: 6px !important;
+    gap: 12px !important;
+}
+
+html body [data-post-card-shell].post-card .post-card__tags a,
+html body [data-post-card-shell].post-card .tags-row a {
+    color: #008f72 !important;
+    font-size: 12px !important;
+    font-weight: 500 !important;
+}
+
+/* Reaction pills */
+html body [data-post-card-shell].post-card .reactions-row,
+html body [data-post-card-shell].post-card .reaction-row {
+    gap: 7px !important;
+    min-height: 43px !important;
+    padding: 7px 0 8px !important;
+}
+
+html body [data-post-card-shell].post-card .reaction-item,
+html body [data-post-card-shell].post-card .more-pill,
+html body [data-post-card-shell].post-card .reaction-add,
+html body [data-post-card-shell].post-card .smiley-btn {
+    height: 28px !important;
+    min-height: 28px !important;
+    border: 1px solid #e5e7eb !important;
+    background: #f7f7f8 !important;
+    border-radius: 999px !important;
+    box-shadow: none !important;
+    font-size: 12px !important;
+}
+
+html body [data-post-card-shell].post-card .reaction-item:hover,
+html body [data-post-card-shell].post-card .more-pill:hover,
+html body [data-post-card-shell].post-card .reaction-add:hover,
+html body [data-post-card-shell].post-card .smiley-btn:hover {
+    background: #eeeeef !important;
+    border-color: #dfe1e4 !important;
+}
+
+/* Bottom action strip exactly as a flat divider, not a floating toolbar. */
+html body [data-post-card-shell].post-card .action-bar {
+    height: 49px !important;
+    min-height: 49px !important;
+    margin: 0 -19px !important;
+    padding: 7px 19px 8px !important;
+    border-top: 1px solid #e1e3e6 !important;
+    background: #ffffff !important;
+}
+
+html body [data-post-card-shell].post-card .action-left {
+    gap: 2px !important;
+}
+
+html body [data-post-card-shell].post-card .action-left > :where(
+    .action-btn,
+    .action-stat,
+    .action-chip,
+    .post-card__action-link,
+    .post-card__action-button
+) {
+    width: 34px !important;
+    min-width: 34px !important;
+    height: 32px !important;
+    min-height: 32px !important;
+    border-radius: 7px !important;
+    color: #20252b !important;
+}
+
+html body [data-post-card-shell].post-card .post-metric--views {
+    height: 32px !important;
+    min-width: 45px !important;
+    color: #374151 !important;
+}
+
+html body [data-post-card-shell].post-card .comment-row {
+    margin: 0 !important;
+    padding: 0 0 6px !important;
+}
+
+@media (max-width: 640px) {
+    html body [data-post-card-shell].post-card {
+        max-width: 590px !important;
+        margin: 0 auto 12px !important;
+        padding: 17px 18px 0 !important;
+        border-radius: 8px !important;
+    }
+
+    html body [data-post-card-shell].post-card .action-bar {
+        margin-left: -18px !important;
+        margin-right: -18px !important;
+        padding-left: 18px !important;
+        padding-right: 18px !important;
+    }
+}
