@@ -1085,11 +1085,12 @@
     $summaryExpandedText = trim((string) ($resolvedExcerptExpanded !== '' ? $resolvedExcerptExpanded : ($resolvedExcerptRaw !== '' ? $resolvedExcerptRaw : $summaryText)));
     $hasFullPostContent = $contentBlocks->isNotEmpty() || trim($contentHtml) !== '' || $mediaItems->isNotEmpty();
     $summaryCollapsedSource = $summaryExpandedText !== '' ? $summaryExpandedText : $resolvedExcerptShort;
-    $summaryCollapsedLength = \Illuminate\Support\Str::length($summaryCollapsedSource);
-    $summaryHalfLength = $summaryCollapsedLength > 1 ? (int) ceil($summaryCollapsedLength * 0.1) : $summaryCollapsedLength;
-    $summaryCollapsedText = $summaryCollapsedLength > $summaryHalfLength
-        ? rtrim(\Illuminate\Support\Str::substr($summaryCollapsedSource, 0, $summaryHalfLength), " \t\n\r\0\x0B,.;:-") . '...'
-        : $summaryCollapsedSource;
+    // The reference card shows a real multi-line excerpt before "Devamını oku".
+    // A percentage-based 10% cutoff made the live card collapse to one short line.
+    // Keep the collapsed preview bounded by characters and let CSS clamp it to
+    // the four visual lines used by the reference layout.
+    $summaryCollapsedLimit = 300;
+    $summaryCollapsedText = \Illuminate\Support\Str::limit($summaryCollapsedSource, $summaryCollapsedLimit);
     // Buton sadece uzun yazılarda değil, bütün post kartlarında görünsün.
     // İçerik yoksa tıklama yine karta zarar vermez; varsa 2 satırdan tam içeriğe açılır.
     $summaryCanExpand = $summaryCollapsedText !== '' || $summaryExpandedText !== '' || $hasFullPostContent || $hasSourcePreview || $postUrl !== '#';
