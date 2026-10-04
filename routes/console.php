@@ -70,6 +70,19 @@ Schedule::command('rss:sync')
     ->everyFiveMinutes()
     ->withoutOverlapping();
 
+Artisan::command('rss:ai-process {--limit=5}', function (RssSyncService $service) {
+    $limit = max(1, min(20, (int) $this->option('limit')));
+    $result = $service->processPendingAiQueue($limit);
+
+    $this->info("OK. processed={$result['processed']} posts_created={$result['posts_created']} posts_updated={$result['posts_updated']} rejected={$result['rejected']} errors={$result['errors']}");
+
+    return $result['errors'] > 0 ? 1 : 0;
+})->purpose('Process pending AI RSS rewrites at a controlled rate');
+
+Schedule::command('rss:ai-process --limit=5')
+    ->everyMinute()
+    ->withoutOverlapping(2);
+
 Schedule::command('community:ai-engage --limit=2')
     ->hourly()
     ->withoutOverlapping();
