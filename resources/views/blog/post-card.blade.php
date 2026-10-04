@@ -1743,44 +1743,6 @@ SVG;
         </div>
     @endif
 
-    @if($hasSourcePreview && ! $linkPreview)
-        @php
-            $sourceDisplayName = $linkPreviewHost !== ''
-                ? $linkPreviewHost
-                : trim((string) data_get($linkPreview, 'site_name', ''));
-            $sourceDisplayName = $sourceDisplayName !== '' ? $sourceDisplayName : 'Harici kaynak';
-        @endphp
-
-        <a
-            class="ps-source-link"
-            href="{{ $linkPreviewUrl }}"
-            target="_blank"
-            rel="nofollow noopener noreferrer"
-            aria-label="Kaynağı aç: {{ $sourceDisplayName }}"
-        >
-            <span class="ps-source-copy">
-                <span class="ps-source-label">Kaynak</span>
-                <span class="ps-source-domain-row">
-                    @if($linkPreviewFavicon !== '')
-                        <img
-                            class="ps-source-favicon"
-                            src="{{ $linkPreviewFavicon }}"
-                            alt=""
-                            loading="lazy"
-                            decoding="async"
-                            referrerpolicy="no-referrer"
-                            onerror="this.style.display='none'"
-                        >
-                    @endif
-                    <span class="ps-source-domain">{{ $sourceDisplayName }}</span>
-                </span>
-            </span>
-            <span class="ps-source-icon" aria-hidden="true">
-                <iconify-icon icon="lucide:arrow-up-right"></iconify-icon>
-            </span>
-        </a>
-    @endif
-
     <style>
         /* Source box copied from post-show and placed at the bottom of the card description. */
         html body.alma-app article[data-post-card-shell].post-card .ps-source-link,
@@ -2027,6 +1989,45 @@ SVG;
             @endif
         </div>
     @endif
+
+    @if($hasSourcePreview)
+        @php
+            $sourceDisplayName = $linkPreviewHost !== ''
+                ? $linkPreviewHost
+                : trim((string) data_get($linkPreview, 'site_name', ''));
+            $sourceDisplayName = $sourceDisplayName !== '' ? $sourceDisplayName : 'Harici kaynak';
+        @endphp
+
+        <a
+            class="ps-source-link"
+            href="{{ $linkPreviewUrl }}"
+            target="_blank"
+            rel="nofollow noopener noreferrer"
+            aria-label="Kaynağı aç: {{ $sourceDisplayName }}"
+        >
+            <span class="ps-source-copy">
+                <span class="ps-source-label">Kaynak</span>
+                <span class="ps-source-domain-row">
+                    @if($linkPreviewFavicon !== '')
+                        <img
+                            class="ps-source-favicon"
+                            src="{{ $linkPreviewFavicon }}"
+                            alt=""
+                            loading="lazy"
+                            decoding="async"
+                            referrerpolicy="no-referrer"
+                            onerror="this.style.display='none'"
+                        >
+                    @endif
+                    <span class="ps-source-domain">{{ $sourceDisplayName }}</span>
+                </span>
+            </span>
+            <span class="ps-source-icon" aria-hidden="true">
+                <iconify-icon icon="lucide:arrow-up-right"></iconify-icon>
+            </span>
+        </a>
+    @endif
+
 
     @if($showExpandLink)
         <button
@@ -11311,6 +11312,7 @@ SVG;
                 const label = card?.querySelector('[data-post-card-expand-label]');
                 const summaryShell = card?.querySelector('[data-post-card-summary-shell]');
                 const fullContent = card?.querySelector('[data-post-card-full-content]');
+                const source = card?.querySelector('.ps-source-link');
                 const collapsedTemplate = summaryShell?.querySelector('[data-post-card-summary-collapsed]');
                 const expandedTemplate = summaryShell?.querySelector('[data-post-card-summary-expanded]');
 
@@ -11336,8 +11338,8 @@ SVG;
                 }
 
                 trigger.setAttribute('aria-expanded', expanded ? 'true' : 'false');
-                // Expanded state keeps the "Daha az göster" control visible;
-                // the source strip is rendered immediately above it.
+                // Expanded state keeps the source strip and "Daha az göster" control together;
+                // the source strip is rendered at the bottom of the full description.
                 trigger.hidden = false;
                 trigger.style.display = 'inline-flex';
                 trigger.setAttribute('aria-hidden', 'false');
@@ -11352,6 +11354,11 @@ SVG;
                 if (fullContent) {
                     fullContent.hidden = !expanded;
                     fullContent.style.display = expanded ? '' : 'none';
+                }
+
+                if (source) {
+                    source.hidden = !expanded;
+                    source.style.display = expanded ? 'flex' : 'none';
                 }
 
             };
