@@ -8913,7 +8913,7 @@ SVG;
             pointer-events: none !important;
             border-radius: inherit !important;
             background: linear-gradient(105deg, transparent 25%, rgba(255,255,255,.58) 47%, rgba(226,232,240,.38) 52%, transparent 75%) !important;
-            animation: postCardInitialWave 1.15s ease-in-out infinite !important;
+            animation: postCardInitialWave 1.15s ease-in-out 1 forwards !important;
             filter: none !important;
         }
 
@@ -10620,6 +10620,8 @@ SVG;
 
                 card.classList.add('is-preloading-done');
                 card.classList.remove('is-preloading');
+                card.style.removeProperty('filter');
+                card.style.removeProperty('animation');
 
                 card.querySelectorAll('.post-card__media-frame').forEach(function (frame) {
                     frame.classList.add('is-loaded');
