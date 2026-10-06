@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use CarlJanzell\FilamentPageBuilder\Concerns\HasBlocks;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Storage;
@@ -12,12 +13,14 @@ use Martin6363\FilamentSmartSeo\Traits\HasSeo;
 class Page extends Model
 {
     use HasFactory;
+    use HasBlocks;
     use HasSeo;
 
     protected $fillable = [
         'title',
         'slug',
         'content',
+        'blocks',
         'meta_title',
         'meta_description',
         'meta_keywords',
@@ -28,6 +31,7 @@ class Page extends Model
     ];
 
     protected $casts = [
+        'blocks' => 'array',
         'is_published' => 'boolean',
         'noindex' => 'boolean',
         'published_at' => 'datetime',
