@@ -1986,12 +1986,12 @@ SVG;
             type="button"
             class="expand-link"
            
-            data-media-type="banani-button"
             data-post-card-expand
             data-post-card-expand-collapsed-label="{{ $expandCollapsedLabel }}"
             data-post-card-expand-expanded-label="{{ $expandExpandedLabel }}"
             aria-expanded="false"
             aria-controls="{{ $summaryToggleId }}"
+            onclick="window.__ografiTogglePostCardExpand(this); return false;"
         >
             <span data-post-card-expand-label>{{ $expandCollapsedLabel }}</span>
             <span class="post-card__expand-icon" aria-hidden="true">
@@ -3385,6 +3385,10 @@ SVG;
         }
 
         [data-post-card-shell] .expand-link {
+            position: relative !important;
+            z-index: 30 !important;
+            pointer-events: auto !important;
+
             display: inline-flex;
             align-items: center;
             gap: 6px;
@@ -10534,6 +10538,71 @@ SVG;
 </style>
 
     <script>
+        window.__ografiTogglePostCardExpand = function (button) {
+            if (!button) {
+                return false;
+            }
+
+            const card = button.closest('[data-post-card-shell]');
+            if (!card) {
+                return false;
+            }
+
+            const summary = card.querySelector('[data-post-card-summary]');
+            const summaryShell = card.querySelector('[data-post-card-summary-shell]');
+            const fullContent = card.querySelector('[data-post-card-full-content]');
+            const label = button.querySelector('[data-post-card-expand-label]');
+            const icon = button.querySelector('.post-card__expand-icon');
+            const expanded = button.getAttribute('aria-expanded') === 'true';
+            const nextExpanded = !expanded;
+
+            const collapsedTemplate = summaryShell?.querySelector('[data-post-card-summary-collapsed]');
+            const expandedTemplate = summaryShell?.querySelector('[data-post-card-summary-expanded]');
+
+            if (summary) {
+                const collapsedText = collapsedTemplate?.content?.textContent?.trim()
+                    || collapsedTemplate?.textContent?.trim()
+                    || summary.textContent?.trim()
+                    || '';
+                const expandedText = expandedTemplate?.content?.textContent?.trim()
+                    || expandedTemplate?.textContent?.trim()
+                    || collapsedText;
+
+                summary.textContent = nextExpanded ? expandedText : collapsedText;
+                summary.classList.toggle('is-expanded', nextExpanded);
+                summary.classList.toggle('is-collapsed', !nextExpanded);
+            }
+
+            if (fullContent) {
+                fullContent.hidden = !nextExpanded;
+                fullContent.style.display = nextExpanded ? 'block' : 'none';
+            }
+
+            if (summaryShell) {
+                summaryShell.hidden = false;
+                summaryShell.classList.toggle('is-expanded', nextExpanded && !fullContent);
+                summaryShell.classList.toggle('is-collapsed', !nextExpanded || Boolean(fullContent));
+            }
+
+            card.classList.toggle('is-summary-expanded', nextExpanded);
+            card.classList.toggle('is-summary-collapsed', !nextExpanded);
+
+            button.setAttribute('aria-expanded', nextExpanded ? 'true' : 'false');
+            button.setAttribute('aria-hidden', 'false');
+
+            if (label) {
+                label.textContent = nextExpanded
+                    ? (button.getAttribute('data-post-card-expand-expanded-label') || 'Daha az göster')
+                    : (button.getAttribute('data-post-card-expand-collapsed-label') || 'Devamını oku');
+            }
+
+            if (icon) {
+                icon.style.transform = nextExpanded ? 'rotate(180deg)' : '';
+            }
+
+            return false;
+        };
+
         (function () {
             if (window.__postCardIntegratedInit) {
                 return;
