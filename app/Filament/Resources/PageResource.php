@@ -145,6 +145,10 @@ class PageResource extends Resource
             ->filters([])
             ->actions([
                 Actions\EditAction::make(),
+                Actions\Action::make('design')
+                    ->label('Tasarım')
+                    ->icon('heroicon-o-swatch')
+                    ->url(fn (Page $record): string => static::getUrl('design', ['record' => $record])),
                 Actions\Action::make('view_public')
                     ->label('Goruntule')
                     ->icon('heroicon-o-eye')
@@ -162,6 +166,7 @@ class PageResource extends Resource
             'index' => Pages\ListPages::route('/'),
             'create' => Pages\CreatePage::route('/create'),
             'edit' => Pages\EditPage::route('/{record}/edit'),
+            'design' => Pages\DesignPage::route('/{record}/design'),
         ];
     }
 }
