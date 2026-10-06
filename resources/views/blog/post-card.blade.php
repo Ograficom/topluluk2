@@ -1981,33 +1981,6 @@ SVG;
         </div>
     @endif
 
-    @if($hasSourcePreview)
-        @php
-            $sourceDisplayName = $linkPreviewHost !== ''
-                ? $linkPreviewHost
-                : trim((string) data_get($linkPreview, 'site_name', ''));
-            $sourceDisplayName = $sourceDisplayName !== '' ? $sourceDisplayName : 'Harici kaynak';
-        @endphp
-
-        <a
-            class="ps-source-link"
-            href="{{ $linkPreviewUrl }}"
-            target="_blank"
-            rel="nofollow noopener noreferrer"
-            aria-label="Kaynağı aç: {{ $sourceDisplayName }}"
-            hidden
-        >
-            <span class="ps-source-copy">
-                <span class="ps-source-label">SOURCE</span>
-                <span class="ps-source-domain">{{ $sourceDisplayName }}</span>
-            </span>
-            <span class="ps-source-icon" aria-hidden="true">
-                <iconify-icon icon="lucide:arrow-up-right"></iconify-icon>
-            </span>
-        </a>
-    @endif
-
-
     @if($showExpandLink)
         <button
             type="button"
@@ -11282,7 +11255,6 @@ SVG;
                 const label = card?.querySelector('[data-post-card-expand-label]');
                 const summaryShell = card?.querySelector('[data-post-card-summary-shell]');
                 const fullContent = card?.querySelector('[data-post-card-full-content]');
-                const source = card?.querySelector('.ps-source-link');
                 const collapsedTemplate = summaryShell?.querySelector('[data-post-card-summary-collapsed]');
                 const expandedTemplate = summaryShell?.querySelector('[data-post-card-summary-expanded]');
 
@@ -11326,10 +11298,6 @@ SVG;
                     fullContent.style.display = expanded ? '' : 'none';
                 }
 
-                if (source) {
-                    source.hidden = !expanded;
-                    source.style.display = expanded ? 'flex' : 'none';
-                }
 
             };
 
@@ -11477,7 +11445,6 @@ SVG;
                     const hasInlineContent = Boolean(
                         card?.querySelector('[data-post-card-summary]') ||
                         card?.querySelector('[data-post-card-full-content]') ||
-                        card?.querySelector('.ps-source-link')
                     );
 
                     // Özet/içerik bulunmayan nadir kartlarda buton boşa basmasın; post detayına gitsin.
