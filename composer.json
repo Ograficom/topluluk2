@@ -3,7 +3,10 @@
     "name": "laravel/laravel",
     "type": "project",
     "description": "The skeleton application for the Laravel framework.",
-    "keywords": ["laravel", "framework"],
+    "keywords": [
+        "laravel",
+        "framework"
+    ],
     "license": "proprietary",
     "require": {
         "php": "^8.3",
@@ -28,7 +31,8 @@
         "shuvroroy/filament-spatie-laravel-health": "^3.3",
         "slimani/filament-media-manager": "^0.9.11",
         "wallacemartinss/filament-security": "^2.0",
-        "wezlo/filament-lookups": "^1.0"
+        "wezlo/filament-lookups": "^1.0",
+        "carljanzell/filament-page-builder": "^0.4"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^4.0",
