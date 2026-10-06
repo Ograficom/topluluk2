@@ -290,9 +290,16 @@
             <div data-identity-spacer aria-hidden="true"></div>
 
             <div class="alma-panel p-5 sm:p-6 static-page-content" data-static-page-content>
-                <div class="prose prose-slate max-w-none dark:prose-invert">
-                    {!! $page->content !!}
-                </div>
+                @if(!empty($page->blocks))
+                    <x-page-builder::blocks
+                        :blocks="$page->blocks"
+                        panel="admin"
+                    />
+                @elseif($page->content)
+                    <div class="prose prose-slate max-w-none dark:prose-invert">
+                        {!! $page->content !!}
+                    </div>
+                @endif
             </div>
         </section>
     </div>
