@@ -11542,6 +11542,97 @@ SVG;
     </script>
 
     <script>
+        /*
+         * Expand kontrolü için bağımsız ve doğrudan click handler.
+         * Ana post-card event zincirinden bağımsız çalışır; böylece başka bir
+         * action handler'ın "Devamını oku" tıklamasını yutması mümkün olmaz.
+         */
+        (function () {
+            const setupExpandButtons = function () {
+                document.querySelectorAll('[data-post-card-expand]').forEach(function (button) {
+                    if (button.dataset.expandHandlerReady === 'true') {
+                        return;
+                    }
+
+                    button.dataset.expandHandlerReady = 'true';
+
+                    button.addEventListener('click', function (event) {
+                        event.preventDefault();
+                        event.stopPropagation();
+
+                        const card = button.closest('[data-post-card-shell]');
+                        if (!card) {
+                            return;
+                        }
+
+                        const summary = card.querySelector('[data-post-card-summary]');
+                        const summaryShell = card.querySelector('[data-post-card-summary-shell]');
+                        const fullContent = card.querySelector('[data-post-card-full-content]');
+                        const label = button.querySelector('[data-post-card-expand-label]');
+                        const icon = button.querySelector('.post-card__expand-icon');
+
+                        const expanded = button.getAttribute('aria-expanded') === 'true';
+                        const nextExpanded = !expanded;
+
+                        const collapsedTemplate = summaryShell?.querySelector('[data-post-card-summary-collapsed]');
+                        const expandedTemplate = summaryShell?.querySelector('[data-post-card-summary-expanded]');
+
+                        if (summary) {
+                            const collapsedText = collapsedTemplate?.content?.textContent?.trim()
+                                || collapsedTemplate?.textContent?.trim()
+                                || summary.textContent?.trim()
+                                || '';
+
+                            const expandedText = expandedTemplate?.content?.textContent?.trim()
+                                || expandedTemplate?.textContent?.trim()
+                                || collapsedText;
+
+                            summary.textContent = nextExpanded ? expandedText : collapsedText;
+                            summary.classList.toggle('is-expanded', nextExpanded);
+                            summary.classList.toggle('is-collapsed', !nextExpanded);
+                        }
+
+                        if (fullContent) {
+                            fullContent.hidden = !nextExpanded;
+                            fullContent.style.display = nextExpanded ? '' : 'none';
+                        }
+
+                        if (summaryShell) {
+                            summaryShell.hidden = false;
+                            summaryShell.classList.toggle('is-expanded', nextExpanded && !fullContent);
+                            summaryShell.classList.toggle('is-collapsed', !nextExpanded || Boolean(fullContent));
+                        }
+
+                        card.classList.toggle('is-summary-expanded', nextExpanded);
+                        card.classList.toggle('is-summary-collapsed', !nextExpanded);
+
+                        button.setAttribute('aria-expanded', nextExpanded ? 'true' : 'false');
+                        button.setAttribute('aria-hidden', 'false');
+
+                        if (label) {
+                            label.textContent = nextExpanded
+                                ? (button.getAttribute('data-post-card-expand-expanded-label') || 'Daha az göster')
+                                : (button.getAttribute('data-post-card-expand-collapsed-label') || 'Devamını oku');
+                        }
+
+                        if (icon) {
+                            icon.style.transform = nextExpanded ? 'rotate(180deg)' : '';
+                        }
+                    });
+                });
+            };
+
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', setupExpandButtons, { once: true });
+            } else {
+                setupExpandButtons();
+            }
+
+            window.addEventListener('load', setupExpandButtons, { once: true });
+        })();
+    </script>
+
+    <script>
         (function () {
             const applyOgraFiTwoLineSummary = function () {
                 document.querySelectorAll('[data-post-card-shell]').forEach(function (card) {
