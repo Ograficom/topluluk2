@@ -21,6 +21,7 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Asmit\ResizedColumn\ResizedColumnPlugin;
+use CarlJanzell\FilamentPageBuilder\FilamentPageBuilderPlugin;
 use Gsferro\FilamentStatPlusEasy\FilamentStatPlusEasyPlugin;
 use LaBoiteACode\FilamentDashboardWidgets\FilamentDashboardWidgetsPlugin;
 use NoteBrainsLab\FilamentEmailTemplates\FilamentEmailTemplatesPlugin;
@@ -82,6 +83,9 @@ class AdminPanelProvider extends PanelProvider
                 FilamentSpatieLaravelHealthPlugin::make(),
                 FilamentLookupsPlugin::make()
                     ->navigationGroup('Ayarlar'),
+                FilamentPageBuilderPlugin::make()
+                    ->recordModel(\App\Models\Page::class)
+                    ->blocksAttribute('blocks'),
             ])
             ->middleware([
                 EncryptCookies::class,
