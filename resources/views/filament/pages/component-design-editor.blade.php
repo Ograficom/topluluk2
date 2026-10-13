@@ -30,8 +30,8 @@
                     <section class="overflow-hidden rounded-xl border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
                         <div class="flex items-center justify-between gap-2 border-b border-gray-200 p-3 dark:border-gray-700">
                             <div>
-                                <h3 class="text-sm font-semibold text-gray-950 dark:text-white">Canli stil onizlemesi</h3>
-                                <p class="text-xs text-gray-500 dark:text-gray-400">Form alanlari degistikce yenilenir.</p>
+                                <h3 class="text-sm font-semibold text-gray-950 dark:text-white">Ornek tasarim onizlemesi</h3>
+                                <p class="text-xs text-gray-500 dark:text-gray-400">Stil degisiklikleri ornek bilesenlerde gorunur; canli sayfanin birebir kopyasi degildir.</p>
                             </div>
                             <div class="flex gap-1">
                                 <x-filament::button size="xs" type="button" :color="$previewDevice === 'desktop' ? 'primary' : 'gray'" wire:click="$set('previewDevice', 'desktop')">Masaustu</x-filament::button>
