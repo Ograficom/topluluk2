@@ -171,7 +171,7 @@ final class ThemeComponentDesign
         );
 
         $css[] = sprintf(
-            'html body.alma-app .post-show-shell .ogx-comments-panel[data-ogx-comments], html body.alma-app .post-show-shell .ogx-comment[data-ogx-comment] { background-color: %s !important; color: %s !important; border: 1px solid %s !important; border-radius: %dpx !important; } html body.alma-app .post-show-shell .ogx-comments-panel[data-ogx-comments] { padding: %dpx !important; } html body.alma-app .post-show-shell .ogx-comments-panel[data-ogx-comments] :is(.ogx-comment-text,.ogx-username,.ogx-comment-count) { color: %s !important; }
+            'html body.alma-app .post-show-shell .ogx-comments-panel[data-ogx-comments], html body.alma-app .post-show-shell .ogx-comment[data-ogx-comment] { background-color: %s !important; color: %s !important; border: 1px solid %s !important; border-radius: %dpx !important; } html body.alma-app .post-show-shell .ogx-comments-panel[data-ogx-comments] { padding: %dpx !important; } html body.alma-app .post-show-shell .ogx-comments-panel[data-ogx-comments] :is(.ogx-comment-text,.ogx-username,.ogx-comment-count) { color: %s !important; }',
             $comments['background'],
             $comments['text_color'],
             $comments['border_color'],
