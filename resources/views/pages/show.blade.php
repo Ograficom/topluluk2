@@ -273,6 +273,13 @@
     }
 </style>
 
+@if(trim((string) $page->custom_css) !== '')
+<style data-page-custom-css>
+    /* Page-specific custom CSS: selectors are scoped to this page's content. */
+    {{ preg_replace('/<\\/?style\\b[^>]*>/i', '', (string) $page->custom_css) }}
+</style>
+@endif
+
 @section('content')
     <div class="space-y-4">
         <section class="space-y-4">
@@ -289,7 +296,19 @@
             </div>
             <div data-identity-spacer aria-hidden="true"></div>
 
-            <div class="alma-panel p-5 sm:p-6 static-page-content" data-static-page-content>
+            <div
+                class="alma-panel static-page-content"
+                data-static-page-content
+                style="
+                    width: {{ ($page->layout_width ?? 'contained') === 'full' ? '100%' : (($page->layout_width ?? 'contained') === 'wide' ? 'min(100%, 1200px)' : '100%') }};
+                    max-width: {{ ($page->layout_width ?? 'contained') === 'contained' ? '900px' : 'none' }};
+                    margin-inline: auto;
+                    padding: {{ max(0, min(64, (int) ($page->content_padding ?? 24))) }}px;
+                    background-color: {{ in_array($page->content_background, ['#ffffff', '#f8fafc', '#f1f5f9', '#eff6ff'], true) ? $page->content_background : '#ffffff' }};
+                    color: {{ in_array($page->content_text_color, ['#111827', '#374151', '#1d4ed8'], true) ? $page->content_text_color : 'inherit' }};
+                    border-radius: {{ match ($page->content_radius ?? 'rounded') { 'none' => '0', 'soft' => '8px', default => '14px' } }};
+                "
+            >
                 @if(!empty($page->blocks))
                     <x-page-builder::blocks
                         :blocks="$page->blocks"
