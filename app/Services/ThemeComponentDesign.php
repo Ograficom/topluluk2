@@ -125,7 +125,7 @@ final class ThemeComponentDesign
             $css[] = 'html body.alma-app .site-header:not(#comments):not(#app), html body.alma-app .site-header-shell:not(#comments):not(#app) { display: none !important; }';
         } else {
             $css[] = sprintf(
-                'html body.alma-app .site-header:not(#comments):not(#app), html body.alma-app .site-header-shell:not(#comments):not(#app) { background-color: %s !important; color: %s !important; min-height: %dpx !important; padding-inline: %dpx !important; border-bottom: 1px solid %s !important; }',
+                'html body.alma-app .site-header:not(#comments):not(#app), html body.alma-app .site-header-shell:not(#comments):not(#app) { background-color: %s !important; color: %s !important; } html body.alma-app .site-header-shell:not(#comments):not(#app) { min-height: %dpx !important; padding-inline: %dpx !important; } html body.alma-app .site-header:not(#comments):not(#app) { border-bottom: 1px solid %s !important; }',
                 $header['background'],
                 $header['text_color'],
                 $header['height'],
@@ -145,35 +145,39 @@ final class ThemeComponentDesign
         }
 
         $css[] = sprintf(
-            'html body.alma-app article.post-card[data-post-card-shell]:not(#comments):not(#app) { background-color: %s !important; color: %s !important; border: 1px solid %s !important; border-radius: %dpx !important; padding: %dpx !important; } html body.alma-app article.post-card[data-post-card-shell]:not(#comments):not(#app) :is(h1,h2,h3,[data-post-card-title]) { font-size: %dpx !important; } html body.alma-app article.post-card[data-post-card-shell]:not(#comments):not(#app) :is(p,[data-post-card-excerpt]) { font-size: %dpx !important; }',
+            'html body.alma-app article.post-card[data-post-card-shell]:not(#comments):not(#app) { box-sizing: border-box !important; background-color: %s !important; color: %s !important; border: 1px solid %s !important; border-radius: %dpx !important; padding: %dpx !important; } html body.alma-app article.post-card[data-post-card-shell]:not(#comments):not(#app) :is(h1,h2,h3,[data-post-card-title]) { color: %s !important; font-size: %dpx !important; } html body.alma-app article.post-card[data-post-card-shell]:not(#comments):not(#app) :is(p,[data-post-card-excerpt]) { color: %s !important; font-size: %dpx !important; }',
             $card['background'],
             $card['text_color'],
             $card['border_color'],
             $card['radius'],
             $card['padding'],
+            $card['text_color'],
             $card['title_size'],
+            $card['text_color'],
             $card['body_size'],
         );
 
         $css[] = sprintf(
-            'html body.alma-app .post-show-shell .ps-post-card:not(#comments):not(#app) { background-color: %s !important; color: %s !important; border: 1px solid %s !important; border-radius: %dpx !important; max-width: %dpx !important; margin-inline: auto !important; } html body.alma-app .post-show-shell .ps-post-card-inner { padding: %dpx !important; } html body.alma-app .post-show-shell .ps-post-title { font-size: %dpx !important; } html body.alma-app .post-show-shell .ps-post-body { color: %s !important; }',
+            'html body.alma-app .post-show-shell .ps-post-card:not(#comments):not(#app) { background-color: %s !important; color: %s !important; border: 1px solid %s !important; border-radius: %dpx !important; max-width: %dpx !important; margin-inline: auto !important; } html body.alma-app .post-show-shell .ps-post-card-inner { padding: %dpx !important; } html body.alma-app .post-show-shell .ps-post-title { color: %s !important; font-size: %dpx !important; } html body.alma-app .post-show-shell .ps-post-body { color: %s !important; }',
             $post['background'],
             $post['text_color'],
             $post['border_color'],
             $post['radius'],
             $post['max_width'],
             $post['padding'],
+            $post['text_color'],
             $post['title_size'],
             $post['text_color'],
         );
 
         $css[] = sprintf(
-            'html body.alma-app .post-show-shell .ogx-comments-panel[data-ogx-comments], html body.alma-app .post-show-shell .ogx-comment[data-ogx-comment] { background-color: %s !important; color: %s !important; border-color: %s !important; border-radius: %dpx !important; } html body.alma-app .post-show-shell .ogx-comments-panel[data-ogx-comments] { padding: %dpx !important; }',
+            'html body.alma-app .post-show-shell .ogx-comments-panel[data-ogx-comments], html body.alma-app .post-show-shell .ogx-comment[data-ogx-comment] { background-color: %s !important; color: %s !important; border: 1px solid %s !important; border-radius: %dpx !important; } html body.alma-app .post-show-shell .ogx-comments-panel[data-ogx-comments] { padding: %dpx !important; } html body.alma-app .post-show-shell .ogx-comments-panel[data-ogx-comments] :is(.ogx-comment-text,.ogx-username,.ogx-comment-count) { color: %s !important; }
             $comments['background'],
             $comments['text_color'],
             $comments['border_color'],
             $comments['radius'],
             $comments['padding'],
+            $comments['text_color'],
         );
 
         if ($footer['visible']) {
