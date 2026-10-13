@@ -52,6 +52,45 @@ class PageResource extends Resource
                         ->maxLength(255)
                         ->unique(Page::class, 'slug', ignoreRecord: true),
                 ]),
+                Section::make('Tasarım ayarları')
+                    ->description('Bu ayarlar yalnızca bu statik sayfanın görünümünü etkiler.')
+                    ->collapsible()
+                    ->schema([
+                        Forms\Components\Select::make('layout_width')
+                            ->label('İçerik genişliği')
+                            ->options(['contained' => 'Standart', 'wide' => 'Geniş', 'full' => 'Tam genişlik'])
+                            ->default('contained')
+                            ->required(),
+                        Forms\Components\Select::make('content_background')
+                            ->label('İçerik arka planı')
+                            ->placeholder('Tema varsayılanı')
+                            ->options(['#ffffff' => 'Beyaz', '#f8fafc' => 'Açık gri', '#f1f5f9' => 'Gri', '#eff6ff' => 'Açık mavi'])
+                            ->nullable(),
+                        Forms\Components\Select::make('content_text_color')
+                            ->label('Metin rengi')
+                            ->placeholder('Tema varsayılanı')
+                            ->options(['#111827' => 'Koyu', '#374151' => 'Koyu gri', '#1d4ed8' => 'Mavi'])
+                            ->nullable(),
+                        Forms\Components\Select::make('content_radius')
+                            ->label('Köşe stili')
+                            ->options(['none' => 'Keskin', 'soft' => 'Hafif yuvarlak', 'rounded' => 'Yuvarlak'])
+                            ->default('rounded')
+                            ->required(),
+                        Forms\Components\TextInput::make('content_padding')
+                            ->label('İç boşluk (px)')
+                            ->numeric()
+                            ->minValue(0)
+                            ->maxValue(64)
+                            ->step(4)
+                            ->default(24)
+                            ->required(),
+                        Forms\Components\Textarea::make('custom_css')
+                            ->label('Özel CSS')
+                            ->rows(8)
+                            ->maxLength(12000)
+                            ->helperText('Yalnızca bu sayfanın içeriğini hedefleyen CSS yazın. <style> etiketi eklemeyin.')
+                            ->columnSpanFull(),
+                    ])->columnSpanFull(),
                 Forms\Components\RichEditor::make('content')
                     ->label('Icerik')
                     ->columnSpanFull()
