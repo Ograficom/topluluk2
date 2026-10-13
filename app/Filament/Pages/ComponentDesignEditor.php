@@ -6,7 +6,6 @@ use App\Models\ThemeDesignRevision;
 use App\Models\ThemeSetting;
 use App\Services\ThemeComponentDesign;
 use Filament\Forms\Components\ColorPicker;
-use Filament\Forms\Components\Section as FormSection;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
@@ -242,20 +241,13 @@ class ComponentDesignEditor extends Page implements HasForms
 
     public function resetToDefaults(): void
     {
-        $settings = ThemeSetting::current();
-        $current = ThemeComponentDesign::normalize($settings->component_styles ?? []);
-        $defaults = ThemeComponentDesign::defaults();
-
-        if ($current !== $defaults) {
-            $this->recordRevision($settings, 'Varsayilanlara donmeden once yedek');
-            $settings->update(['component_styles' => $defaults]);
-        }
-
-        $this->fillForm();
+        $this->form->fill([
+            'component_styles' => ThemeComponentDesign::defaults(),
+        ]);
 
         Notification::make()
-            ->title('Varsayilan gorunum yuklendi')
-            ->body('Bu gorunumu uygulamak icin Ayarlari Kaydet dugmesine bas.')
+            ->title('Varsayilan sablon onizlemeye yuklendi')
+            ->body('Siteye uygulanmasi icin Tasarimi kaydet ve yayinla dugmesine bas.')
             ->success()
             ->send();
     }
@@ -273,12 +265,19 @@ class ComponentDesignEditor extends Page implements HasForms
             return;
         }
 
-        $current = ThemeComponentDesign::normalize($settings->component_styles ?? []);
-        $next = ThemeComponentDesign::normalize($revision->component_styles ?? []);
+        $currentRaw = $settings->component_styles;
+        $targetRaw = is_array($revision->component_styles) ? $revision->component_styles : [];
+        $currentHasDesign = is_array($currentRaw) && $currentRaw !== [];
+        $targetHasDesign = $targetRaw !== [];
+        $current = ThemeComponentDesign::normalize($currentRaw ?? []);
+        $next = ThemeComponentDesign::normalize($targetRaw);
 
-        if ($current !== $next) {
+        if ($targetHasDesign && (!$currentHasDesign || $current !== $next)) {
             $this->recordRevision($settings, 'Geri alma oncesi otomatik yedek');
             $settings->update(['component_styles' => $next]);
+        } elseif (!$targetHasDesign && $currentHasDesign) {
+            $this->recordRevision($settings, 'Geri alma oncesi otomatik yedek');
+            $settings->update(['component_styles' => null]);
         }
 
         $this->fillForm();
@@ -315,7 +314,7 @@ class ComponentDesignEditor extends Page implements HasForms
             'theme_setting_id' => $settings->id,
             'user_id' => Auth::id(),
             'label' => $label,
-            'component_styles' => ThemeComponentDesign::normalize($settings->component_styles ?? []),
+            'component_styles' => is_array($settings->component_styles) ? $settings->component_styles : [],
         ]);
 
         $keepIds = ThemeDesignRevision::query()
