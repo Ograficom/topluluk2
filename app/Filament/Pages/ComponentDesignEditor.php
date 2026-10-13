@@ -29,8 +29,6 @@ class ComponentDesignEditor extends Page implements HasForms
 
     protected static ?string $navigationLabel = 'Bilesen Tasarimi';
 
-    protected static ?string $title = 'Gorsel Bilesen Tasarimi';
-
     public array $state = [];
 
     public string $previewDevice = 'desktop';
