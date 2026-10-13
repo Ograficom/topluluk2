@@ -7405,11 +7405,6 @@
         $ografiCustomCssCombined = trim($ografiCustomCssFileContent . "\n" . $ografiCustomCssInline);
         $ografiCustomCssSafe = str_ireplace('</style', '<\\/style', $ografiCustomCssCombined);
     @endphp
-    @if($ografiCustomCssSafe !== '')
-    <style id="ografi-custom-theme">
-        {!! $ografiCustomCssSafe !!}
-    </style>
-    @endif
 
     @include('partials.pwa-meta')
 </head>
@@ -7629,6 +7624,7 @@
             stroke: none !important;
         }
     </style>
+    @include('partials.theme-component-design')
 </body>
 </html>
 
