@@ -21,6 +21,12 @@ class Page extends Model
         'slug',
         'content',
         'blocks',
+        'layout_width',
+        'content_background',
+        'content_text_color',
+        'content_padding',
+        'content_radius',
+        'custom_css',
         'meta_title',
         'meta_description',
         'meta_keywords',
@@ -32,6 +38,7 @@ class Page extends Model
 
     protected $casts = [
         'blocks' => 'array',
+        'content_padding' => 'integer',
         'is_published' => 'boolean',
         'noindex' => 'boolean',
         'published_at' => 'datetime',
