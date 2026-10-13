@@ -179,9 +179,11 @@ class ComponentDesignEditor extends Page implements HasForms
         $settings = ThemeSetting::current();
         $data = $this->form->getState();
         $next = ThemeComponentDesign::normalize(data_get($data, 'component_styles', []));
-        $current = ThemeComponentDesign::normalize($settings->component_styles ?? []);
+        $rawCurrent = $settings->component_styles;
+        $hasSavedDesign = is_array($rawCurrent) && $rawCurrent !== [];
+        $current = ThemeComponentDesign::normalize($rawCurrent ?? []);
 
-        if ($next === $current) {
+        if ($hasSavedDesign && $next === $current) {
             Notification::make()
                 ->title('Kaydedilecek yeni bir tasarim degisikligi yok')
                 ->info()
