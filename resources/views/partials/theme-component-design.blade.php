@@ -1,6 +1,9 @@
 @php
-    $ografiComponentStyles = \App\Services\ThemeComponentDesign::normalize($ografiBrand?->component_styles ?? []);
-    $ografiComponentCss = app(\App\Services\ThemeComponentDesign::class)->render($ografiComponentStyles);
+    $ografiRawComponentStyles = $ografiBrand?->component_styles;
+    $ografiComponentStyles = \App\Services\ThemeComponentDesign::normalize($ografiRawComponentStyles ?? []);
+    $ografiComponentCss = is_array($ografiRawComponentStyles) && $ografiRawComponentStyles !== []
+        ? app(\App\Services\ThemeComponentDesign::class)->render($ografiComponentStyles)
+        : '';
     $ografiFooter = $ografiComponentStyles['footer'];
 @endphp
 
