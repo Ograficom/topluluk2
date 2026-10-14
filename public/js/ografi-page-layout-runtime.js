@@ -331,7 +331,9 @@
         candidates.forEach((node) => {
             const parent = node.parentElement;
             if (!parent || parent.closest('[data-ografi-layout-ignore],.ografi-layout-editor-tools')) return;
-            const parentSelector = selectorFor(parent);
+            // Keep the selector captured from the original Blade output after sibling moves;
+            // recomputing nth-of-type selectors after drag/drop would change the storage key.
+            const parentSelector = parent.dataset.ografiLayoutNodeId || selectorFor(parent);
             if (!parentSelector) return;
             nodeBySelector.set(parentSelector, parent);
 
