@@ -50,6 +50,7 @@ class Post extends Model
         'image_copyright_notice',
         'content',
         'content_json',
+        'builder_content',
         'published_at',
         'edited_at',
         'edited_reason',
@@ -70,6 +71,7 @@ class Post extends Model
         'noindex' => 'boolean',
         'views_count' => 'integer',
         'content_json' => 'array',
+        'builder_content' => 'array',
     ];
 
     public function getTitleAttribute($value): string
@@ -103,6 +105,11 @@ class Post extends Model
     public function seoOrNew(): SeoMetadata
     {
         return $this->seo()->firstOrNew([]);
+    }
+
+    public function contentRevisions(): HasMany
+    {
+        return $this->hasMany(PostContentRevision::class)->latest('created_at');
     }
 
     public function getSEOTitle(): ?string
