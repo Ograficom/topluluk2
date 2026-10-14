@@ -30,3 +30,30 @@
         {!! $ografiCustomCssSafe !!}
     </style>
 @endif
+
+@if(request()->boolean('ografi_component_preview') && (auth()->user()?->isAdmin() ?? false))
+    <script>
+        (() => {
+            const previewType = 'ografi-component-design-apply-preview';
+            const styleId = 'ografi-component-design-live-preview-style';
+
+            window.addEventListener('message', (event) => {
+                if (event.origin !== window.location.origin || event.source !== window.parent || !event.data) return;
+                if (event.data.type !== previewType || typeof event.data.css !== 'string') return;
+                if (event.data.css.length > 20000) return;
+
+                let style = document.getElementById(styleId);
+                if (!style) {
+                    style = document.createElement('style');
+                    style.id = styleId;
+                    document.body.appendChild(style);
+                }
+
+                // Draft CSS is rendered server-side from the allow-listed style schema.
+                // Appending it after the saved theme/custom CSS gives the draft preview
+                // the correct cascade without writing anything to the database.
+                style.textContent = event.data.css;
+            });
+        })();
+    </script>
+@endif
