@@ -952,7 +952,7 @@
                 {{ number_format($visibleCategoryCount) }} kategori gösteriliyor
             </div>
         @else
-            <div class="categories-empty" data-ografi-layout-section="categories_count">
+            <div class="categories-empty" data-ografi-layout-section="categories_empty">
                 @if($activeTab === 'mine')
                     Henüz kendi oluşturduğun kategori yok.
                 @else
