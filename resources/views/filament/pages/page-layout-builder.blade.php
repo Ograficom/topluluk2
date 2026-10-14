@@ -3,10 +3,10 @@
         <section class="rounded-xl border border-gray-200 bg-white p-4 dark:border-gray-700 dark:bg-gray-900">
             <div class="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
                 <div class="min-w-0">
-                    <h2 class="text-lg font-semibold text-gray-950 dark:text-white">Blade sayfasi bolum duzenleyicisi</h2>
+                    <h2 class="text-lg font-semibold text-gray-950 dark:text-white">Gorsel Blade sayfa duzenleyicisi</h2>
                     <p class="mt-1 max-w-3xl text-sm text-gray-500 dark:text-gray-400">
-                        Bir sayfa sec, bolumleri surukleyerek sirala, istemediklerini gizle ve onizleme sayfasinda gorunumu kontrol et.
-                        Dinamik gonderi, profil ve yorum verileri mevcut Blade/Livewire kodundan gelmeye devam eder.
+                        Gercek Blade sayfasini onizle; bolumleri surukleyip sirala, gizle, yeni icerik bloklari ekle ve blok icerigini duzenle.
+                        Gonderi, profil, yorum ve diger dinamik Laravel/Livewire islevleri korunur.
                     </p>
                 </div>
                 <div class="w-full lg:w-72">
@@ -23,8 +23,8 @@
         <div class="grid grid-cols-1 items-start gap-5 2xl:grid-cols-[360px_minmax(0,1fr)]">
             <section class="min-w-0 rounded-xl border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
                 <div class="border-b border-gray-200 p-4 dark:border-gray-700">
-                    <h3 class="font-semibold text-gray-950 dark:text-white">Sayfa bolumleri</h3>
-                    <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">Tutamaktan sürükle. Göz simgesiyle bölümü gizle veya yeniden göster.</p>
+                    <h3 class="font-semibold text-gray-950 dark:text-white">Sayfa ve icerik bloklari</h3>
+                    <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">Tutamaktan surukleyerek yer degistir. Ozel blok ekle, duzenle, sil veya gizle.</p>
                 </div>
                 <script type="application/json" id="ografi-page-layout-custom-blocks">{!! json_encode($this->customBlocks, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!}</script>
                 <ol id="ografi-page-layout-order" class="space-y-2 p-3">
@@ -302,6 +302,8 @@
                 attributes: true,
                 attributeFilter: ['class'],
             });
+
+            window.addEventListener('ografi-layout-draft-updated', sendDraftToPreview);
 
             document.addEventListener('livewire:navigated', () => {
                 dragId = null;
