@@ -53,14 +53,14 @@ class ThemeComponentDesignTest extends TestCase
 
         $css = (new ThemeComponentDesign())->render($styles);
 
-        $this->assertStringContainsString('.site-header:not(#comments):not(#app) { display: none !important; }', $css);
+        $this->assertStringContainsString('html body.alma-app .site-header:not(#comments):not(#app), html body.alma-app .site-header-shell:not(#comments):not(#app) { display: none !important; }', $css);
         $this->assertStringContainsString('.ografi-site-footer { display: none !important;', $css);
 
         $styles['header']['visible'] = true;
         $styles['footer']['visible'] = true;
         $css = (new ThemeComponentDesign())->render($styles);
 
-        $this->assertStringNotContainsString('.site-header:not(#comments):not(#app) { display: none !important; }', $css);
+        $this->assertStringNotContainsString('html body.alma-app .site-header:not(#comments):not(#app), html body.alma-app .site-header-shell:not(#comments):not(#app) { display: none !important; }', $css);
         $this->assertStringContainsString('.ografi-site-footer { display: block !important;', $css);
     }
 }
