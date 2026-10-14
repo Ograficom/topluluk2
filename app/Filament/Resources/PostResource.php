@@ -280,7 +280,7 @@ class PostResource extends Resource
         return [
             CommentsRelationManager::class,
             ReactionsRelationManager::class,
-            Pages\\ContentRevisionsRelationManager::class,
+            ContentRevisionsRelationManager::class,
         ];
     }
 
