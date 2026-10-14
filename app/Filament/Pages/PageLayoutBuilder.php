@@ -246,6 +246,117 @@ class PageLayoutBuilder extends Page
         $this->dispatchDraftUpdated();
     }
 
+    /**
+     * @return list<array<string, mixed>>
+     */
+    public function contentBlocks(): array
+    {
+        $blocks = $this->layoutDraft['custom_blocks'] ?? [];
+
+        return is_array($blocks) ? $blocks : [];
+    }
+
+    public function addUniversalBlock(): void
+    {
+        if (count($this->contentBlocks()) >= 40) {
+            Notification::make()->title('Bir sayfada en fazla 40 yeni blok olabilir')->warning()->send();
+
+            return;
+        }
+
+        $id = 'custom_' . Str::uuid();
+        $block = PageLayoutCatalog::defaultCustomBlock($id, $this->newBlockType);
+        $blocks = [...$this->contentBlocks(), $block];
+
+        $this->layoutDraft = PageLayoutCatalog::normalizeUniversalLayout([
+            ...$this->layoutDraft,
+            'custom_blocks' => $blocks,
+        ]);
+        $this->editingBlockId = $id;
+        $this->blockDraft = $block;
+        $this->layoutDirty = true;
+        $this->dispatch('ografi-layout-sync-preview', pageKey: $this->activeLayoutKey, layout: $this->layoutDraft);
+    }
+
+    public function editUniversalBlock(string $blockId): void
+    {
+        $block = collect($this->contentBlocks())->firstWhere('id', $blockId);
+
+        if (!$block) {
+            return;
+        }
+
+        $this->editingBlockId = $blockId;
+        $this->blockDraft = $block;
+    }
+
+    public function saveUniversalBlockDraft(): void
+    {
+        if (!$this->editingBlockId) {
+            return;
+        }
+
+        $draft = array_merge($this->blockDraft, ['id' => $this->editingBlockId]);
+        $normalized = PageLayoutCatalog::normalizeCustomBlocks([$draft]);
+
+        if ($normalized === []) {
+            Notification::make()->title('Blok ayarlari gecersiz')->danger()->send();
+
+            return;
+        }
+
+        $this->layoutDraft['custom_blocks'] = collect($this->contentBlocks())
+            ->map(fn (array $block) => $block['id'] === $this->editingBlockId ? $normalized[0] : $block)
+            ->values()
+            ->all();
+
+        $this->layoutDraft = PageLayoutCatalog::normalizeUniversalLayout($this->layoutDraft);
+        $this->blockDraft = collect($this->contentBlocks())->firstWhere('id', $this->editingBlockId) ?? [];
+        $this->layoutDirty = true;
+        $this->dispatch('ografi-layout-sync-preview', pageKey: $this->activeLayoutKey, layout: $this->layoutDraft);
+
+        Notification::make()
+            ->title('Blok taslagi guncellendi')
+            ->body('Degisiklikleri kaydetmek icin Duzeni kaydet dugmesine bas.')
+            ->success()
+            ->send();
+    }
+
+    public function removeUniversalBlock(string $blockId): void
+    {
+        $this->layoutDraft['custom_blocks'] = array_values(array_filter(
+            $this->contentBlocks(),
+            fn (array $block) => $block['id'] !== $blockId,
+        ));
+
+        $containers = is_array($this->layoutDraft['containers'] ?? null) ? $this->layoutDraft['containers'] : [];
+        foreach ($containers as $parentSelector => $container) {
+            if (!is_array($container)) {
+                continue;
+            }
+
+            $containers[$parentSelector]['order'] = array_values(array_filter(
+                $container['order'] ?? [],
+                fn (string $selector) => $selector !== $blockId,
+            ));
+            $containers[$parentSelector]['hidden'] = array_values(array_filter(
+                $container['hidden'] ?? [],
+                fn (string $selector) => $selector !== $blockId,
+            ));
+        }
+
+        $this->layoutDraft['containers'] = $containers;
+        $this->layoutDraft = PageLayoutCatalog::normalizeUniversalLayout($this->layoutDraft);
+        $this->layoutDirty = true;
+
+        if ($this->editingBlockId === $blockId) {
+            $this->editingBlockId = null;
+            $this->blockDraft = [];
+        }
+
+        $this->dispatch('ografi-layout-sync-preview', pageKey: $this->activeLayoutKey, layout: $this->layoutDraft);
+    }
+
     public function saveLayout(): void
     {
         $settings = ThemeSetting::current();
