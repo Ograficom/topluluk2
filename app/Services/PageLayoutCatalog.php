@@ -101,6 +101,61 @@ final class PageLayoutCatalog
                     'comments' => ['label' => 'Yorumlar ve yanitlar', 'selector' => '[data-ografi-layout-section="comments"]'],
                 ],
             ],
+            'users_index' => [
+                'label' => 'Kullanicilar',
+                'route' => 'users.index',
+                'container' => '[data-ografi-layout-container="users_index"]',
+                'blocks' => [
+                    'users_title' => ['label' => 'Sayfa basligi ve araclar', 'selector' => '[data-ografi-layout-section="users_title"]'],
+                    'users_list' => ['label' => 'Kullanici listesi', 'selector' => '[data-ografi-layout-section="users_list"]'],
+                ],
+            ],
+            'messages_index' => [
+                'label' => 'Mesajlar',
+                'route' => 'messages.index',
+                'container' => '[data-ografi-layout-container="messages_index"]',
+                'blocks' => [
+                    'messages_header' => ['label' => 'Mesajlar basligi ve ayarlari', 'selector' => '[data-ografi-layout-section="messages_header"]'],
+                    'messages_threads' => ['label' => 'Sohbet listesi ve paneli', 'selector' => '[data-ografi-layout-section="messages_threads"]'],
+                ],
+            ],
+            'notifications' => [
+                'label' => 'Bildirimler',
+                'route' => 'notifications.index',
+                'container' => '[data-ografi-layout-container="notifications"]',
+                'blocks' => [
+                    'notifications_header' => ['label' => 'Bildirim basligi ve islemler', 'selector' => '[data-ografi-layout-section="notifications_header"]'],
+                    'notifications_list' => ['label' => 'Bildirim listesi', 'selector' => '[data-ografi-layout-section="notifications_list"]'],
+                ],
+            ],
+            'bookmarks' => [
+                'label' => 'Kaydedilenler',
+                'route' => 'blog.bookmarks',
+                'container' => '[data-ografi-layout-container="bookmarks"]',
+                'blocks' => [
+                    'bookmarks_header' => ['label' => 'Sayfa basligi', 'selector' => '[data-ografi-layout-section="bookmarks_header"]'],
+                    'bookmarks_posts' => ['label' => 'Kaydedilen gonderiler', 'selector' => '[data-ografi-layout-section="bookmarks_posts"]'],
+                ],
+            ],
+            'drafts' => [
+                'label' => 'Taslaklar',
+                'route' => 'blog.drafts',
+                'container' => '[data-ografi-layout-container="drafts"]',
+                'blocks' => [
+                    'drafts_header' => ['label' => 'Taslaklar basligi ve araclar', 'selector' => '[data-ografi-layout-section="drafts_header"]'],
+                    'drafts_posts' => ['label' => 'Taslak gonderiler', 'selector' => '[data-ografi-layout-section="drafts_posts"]'],
+                ],
+            ],
+            'faq' => [
+                'label' => 'SSS',
+                'route' => 'pages.sss',
+                'container' => '[data-ografi-layout-container="faq"]',
+                'blocks' => [
+                    'faq_title' => ['label' => 'SSS basligi ve araclar', 'selector' => '[data-ografi-layout-section="faq_title"]'],
+                    'faq_search' => ['label' => 'SSS arama paneli', 'selector' => '[data-ografi-layout-section="faq_search"]'],
+                    'faq_list' => ['label' => 'Soru ve cevap listesi', 'selector' => '[data-ografi-layout-section="faq_list"]'],
+                ],
+            ],
             'profile' => [
                 'label' => 'Kullanici profili',
                 'route' => 'users.show',
@@ -149,6 +204,12 @@ final class PageLayoutCatalog
                 : (request()->filled('category') ? 'category_show' : 'blog_index'),
             'blog.post' => 'post_show',
             'users.show' => 'profile',
+            'users.index' => 'users_index',
+            'messages.index' => 'messages_index',
+            'notifications.index' => 'notifications',
+            'blog.bookmarks' => 'bookmarks',
+            'blog.drafts' => 'drafts',
+            'pages.sss' => 'faq',
             default => null,
         };
     }
@@ -224,6 +285,12 @@ final class PageLayoutCatalog
             'category_show' => self::categoryPreviewUrl(),
             'post_show' => self::postPreviewUrl(),
             'profile' => self::profilePreviewUrl(),
+            'users_index' => route('users.index'),
+            'messages_index' => route('messages.index'),
+            'notifications' => route('notifications.index'),
+            'bookmarks' => route('blog.bookmarks'),
+            'drafts' => route('blog.drafts'),
+            'faq' => route('pages.sss'),
             default => route('home'),
         };
 
