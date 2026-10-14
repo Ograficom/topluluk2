@@ -8,7 +8,6 @@ use App\Services\PageLayoutCatalog;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Str;
 
 class PageLayoutBuilder extends Page
@@ -19,18 +18,27 @@ class PageLayoutBuilder extends Page
 
     protected static string | \UnitEnum | null $navigationGroup = 'Ayarlar';
 
-    protected static ?string $navigationLabel = 'Blade Surukle-Birak Editoru';
+    protected static ?string $navigationLabel = 'Surukle-Birak Sayfa Duzeni';
 
     protected static ?int $navigationSort = 24;
 
-    public string $previewPath = '/';
+    public string $pageKey = 'home';
 
-    public string $activeLayoutKey = 'blade:home';
+    /** @var list<string> */
+    public array $order = [];
+
+    /** @var list<string> */
+    public array $hidden = [];
+
+    /** @var list<array<string, mixed>> */
+    public array $customBlocks = [];
+
+    public string $newBlockType = 'text';
+
+    public ?string $editingCustomBlockId = null;
 
     /** @var array<string, mixed> */
-    public array $layoutDraft = ['containers' => []];
-
-    public bool $layoutDirty = false;
+    public array $customBlockDraft = [];
 
     public static function canAccess(): bool
     {
@@ -39,110 +47,214 @@ class PageLayoutBuilder extends Page
 
     public function mount(): void
     {
-        $this->loadInitialDraft();
+        $this->loadDraft();
     }
 
-    public function updatedPreviewPath(string $value): void
+    public function updatedPageKey(string $value): void
     {
-        $normalized = $this->normalizePreviewPath($value);
-
-        if ($normalized !== $value) {
-            $this->previewPath = $normalized;
+        if (!array_key_exists($value, PageLayoutCatalog::definitions())) {
+            $this->pageKey = 'home';
         }
 
-        // The iframe reports the actual route name after the destination is loaded.
-        $this->layoutDirty = false;
+        $this->loadDraft();
     }
 
-    /**
-     * Route shortcuts are generated from the real Laravel router. The URL field
-     * still accepts any same-origin path, including routes with route parameters.
-     *
-     * @return array<string, string>
-     */
-    public function pageShortcuts(): array
+    public function pageOptions(): array
     {
-        $routes = [];
-
-        foreach (Route::getRoutes()->getRoutes() as $route) {
-            $name = $route->getName();
-            $uri = (string) $route->uri();
-
-            if (!is_string($name) || $name === '' || !in_array('GET', $route->methods(), true)) {
-                continue;
-            }
-
-            if (str_starts_with($name, 'filament.')
-                || str_starts_with($name, 'api.')
-                || str_starts_with($name, 'livewire.')
-                || str_starts_with($name, 'install.')
-                || str_contains($uri, '{')
-                || preg_match('/(?:^|\/)(?:api|livewire|install|webhooks?)(?:\/|$)/i', $uri) === 1
-                || preg_match('/\.(?:json|xml|rss|atom)$/i', $uri) === 1) {
-                continue;
-            }
-
-            $path = '/' . ltrim($uri, '/');
-            $label = Str::headline($name) . ' — ' . ($path === '/' ? '/' : $path);
-            $routes[$path] = $label;
-        }
-
-        $routes['/'] = 'Ana sayfa — /';
-        ksort($routes);
-
-        return array_slice($routes, 0, 160, true);
+        return PageLayoutCatalog::pageOptions();
     }
 
     public function previewUrl(): string
     {
-        return $this->buildUrl($this->previewPath, true);
+        return PageLayoutCatalog::layoutUrl($this->pageKey, preview: true);
     }
 
-    public function publicPreviewUrl(): string
+    public function blockItems(): array
     {
-        return $this->buildUrl($this->previewPath, false);
+        $definition = PageLayoutCatalog::definition($this->pageKey);
+
+        if (!$definition) {
+            return [];
+        }
+
+        $customById = collect($this->customBlocks)->keyBy('id');
+        $items = [];
+
+        foreach ($this->order as $id) {
+            $custom = $customById->get($id);
+            $block = $definition['blocks'][$id] ?? null;
+
+            if ($custom) {
+                $items[] = [
+                    'id' => $id,
+                    'label' => $custom['label'] ?? 'Icerik blogu',
+                    'type' => $custom['type'] ?? 'text',
+                    'custom' => true,
+                    'hidden' => in_array($id, $this->hidden, true),
+                ];
+
+                continue;
+            }
+
+            if (!$block) {
+                continue;
+            }
+
+            $items[] = [
+                'id' => $id,
+                'label' => $block['label'],
+                'type' => 'section',
+                'custom' => false,
+                'hidden' => in_array($id, $this->hidden, true),
+            ];
+        }
+
+        return $items;
     }
 
-    /**
-     * Receive a layout snapshot from the same-origin page preview. Selectors are
-     * revalidated by PageLayoutCatalog before being kept in Livewire state.
-     */
-    public function syncUniversalDraft(string $pageKey, array $layout, bool $dirty = true): void
+    public function setDraftOrder(array $order): void
     {
-        if (!str_starts_with($pageKey, 'blade:')) {
+        $layout = PageLayoutCatalog::normalizeLayout($this->pageKey, [
+            'order' => $order,
+            'hidden' => $this->hidden,
+            'custom_blocks' => $this->customBlocks,
+        ]);
+
+        $this->order = $layout['order'];
+        $this->hidden = $layout['hidden'];
+        $this->customBlocks = $layout['custom_blocks'];
+        $this->dispatchDraftUpdated();
+    }
+
+    public function toggleBlock(string $blockId): void
+    {
+        $definition = PageLayoutCatalog::definition($this->pageKey);
+
+        $isFixedBlock = $definition && array_key_exists($blockId, $definition['blocks']);
+        $isCustomBlock = collect($this->customBlocks)->contains('id', $blockId);
+
+        if (!$isFixedBlock && !$isCustomBlock) {
             return;
         }
 
-        $routeName = substr($pageKey, 6);
-        if ($routeName === '' || preg_match('/^[A-Za-z0-9_.:-]{1,190}$/', $routeName) !== 1) {
+        if (in_array($blockId, $this->hidden, true)) {
+            $this->hidden = array_values(array_filter($this->hidden, fn (string $id) => $id !== $blockId));
+        } else {
+            $this->hidden[] = $blockId;
+        }
+
+        $this->hidden = PageLayoutCatalog::normalizeLayout($this->pageKey, [
+            'order' => $this->order,
+            'hidden' => $this->hidden,
+            'custom_blocks' => $this->customBlocks,
+        ])['hidden'];
+
+        $this->dispatchDraftUpdated();
+    }
+
+    public function showAllBlocks(): void
+    {
+        $this->hidden = [];
+        $this->dispatchDraftUpdated();
+    }
+
+    public function restoreDefaultOrder(): void
+    {
+        $this->order = [
+            ...array_keys(PageLayoutCatalog::definition($this->pageKey)['blocks'] ?? []),
+            ...array_column($this->customBlocks, 'id'),
+        ];
+        $this->hidden = [];
+        $this->dispatchDraftUpdated();
+    }
+
+    public function addCustomBlock(): void
+    {
+        if (count($this->customBlocks) >= 40) {
+            Notification::make()->title('Bir sayfada en fazla 40 ek blok olabilir')->warning()->send();
+
             return;
         }
 
-        if (!$dirty && $pageKey === $this->activeLayoutKey && $this->layoutDirty) {
-            // Don't replace an unsaved in-browser draft with the iframe's initial echo.
+        $id = 'custom_' . Str::uuid();
+        $block = PageLayoutCatalog::defaultCustomBlock($id, $this->newBlockType);
+        $this->customBlocks[] = $block;
+        $this->order[] = $id;
+        $this->editingCustomBlockId = $id;
+        $this->customBlockDraft = $block;
+        $this->dispatchDraftUpdated();
+    }
+
+    public function editCustomBlock(string $blockId): void
+    {
+        $block = collect($this->customBlocks)->firstWhere('id', $blockId);
+
+        if (!$block) {
             return;
         }
 
-        $this->activeLayoutKey = $pageKey;
-        $this->layoutDraft = PageLayoutCatalog::normalizeUniversalLayout($layout);
-        $this->layoutDirty = $dirty;
+        $this->editingCustomBlockId = $blockId;
+        $this->customBlockDraft = $block;
+    }
+
+    public function applyCustomBlockDraft(): void
+    {
+        if (!$this->editingCustomBlockId) {
+            return;
+        }
+
+        $draft = array_merge($this->customBlockDraft, ['id' => $this->editingCustomBlockId]);
+        $normalized = PageLayoutCatalog::normalizeCustomBlocks([$draft]);
+
+        if ($normalized === []) {
+            Notification::make()->title('Blok ayarlari gecersiz')->danger()->send();
+
+            return;
+        }
+
+        $this->customBlocks = collect($this->customBlocks)
+            ->map(fn (array $block) => $block['id'] === $this->editingCustomBlockId ? $normalized[0] : $block)
+            ->values()
+            ->all();
+
+        $this->customBlockDraft = $normalized[0];
+        $this->dispatchDraftUpdated();
+
+        Notification::make()
+            ->title('Blok onizlemeye uygulandi')
+            ->body('Degisiklikler sayfaya yayinlanmadi; kaydetmek icin Sayfa duzenini kaydet dugmesini kullan.')
+            ->success()
+            ->send();
+    }
+
+    public function removeCustomBlock(string $blockId): void
+    {
+        $this->customBlocks = array_values(array_filter(
+            $this->customBlocks,
+            fn (array $block) => $block['id'] !== $blockId,
+        ));
+        $this->order = array_values(array_filter($this->order, fn (string $id) => $id !== $blockId));
+        $this->hidden = array_values(array_filter($this->hidden, fn (string $id) => $id !== $blockId));
+
+        if ($this->editingCustomBlockId === $blockId) {
+            $this->editingCustomBlockId = null;
+            $this->customBlockDraft = [];
+        }
+
+        $this->dispatchDraftUpdated();
     }
 
     public function saveLayout(): void
     {
-        if (!str_starts_with($this->activeLayoutKey, 'blade:')) {
-            Notification::make()->title('Onizlemeden sayfa secilemedi')->danger()->send();
-
-            return;
-        }
-
         $settings = ThemeSetting::current();
         $storedLayouts = PageLayoutCatalog::normalizeAll($settings->page_layouts ?? []);
-        $next = PageLayoutCatalog::normalizeUniversalLayout($this->layoutDraft);
-        $current = $storedLayouts[$this->activeLayoutKey] ?? ['containers' => []];
+        $next = PageLayoutCatalog::normalizeLayout($this->pageKey, [
+            'order' => $this->order,
+            'hidden' => $this->hidden,
+            'custom_blocks' => $this->customBlocks,
+        ]);
 
-        if ($next === $current) {
-            $this->layoutDirty = false;
+        if (($storedLayouts[$this->pageKey] ?? null) === $next) {
             Notification::make()
                 ->title('Kaydedilecek bir degisiklik yok')
                 ->info()
@@ -152,41 +264,36 @@ class PageLayoutBuilder extends Page
         }
 
         $this->recordRevision($settings, 'Sayfa duzeni kaydetmeden once');
-        $storedLayouts[$this->activeLayoutKey] = $next;
+        $storedLayouts[$this->pageKey] = $next;
         $settings->update(['page_layouts' => $storedLayouts]);
-        $this->layoutDraft = $next;
-        $this->layoutDirty = false;
 
         Notification::make()
-            ->title('Blade sayfa duzeni kaydedildi')
-            ->body('Surukleyerek yaptigin sira ve gizleme degisiklikleri bu Laravel rotasina uygulandi.')
+            ->title('Sayfa duzeni kaydedildi')
+            ->body('Bolumlerin yeni sirasi ve gorunurlugu secili Blade sayfasina uygulandi.')
             ->success()
             ->send();
     }
 
-    public function clearCurrentLayout(): void
+    public function applyDraftFromPreview(string $pageKey, array $order, array $hidden = [], ?array $customBlocks = null): void
     {
-        if (!str_starts_with($this->activeLayoutKey, 'blade:')) {
+        if ($pageKey !== $this->pageKey) {
             return;
         }
 
-        $settings = ThemeSetting::current();
-        $storedLayouts = PageLayoutCatalog::normalizeAll($settings->page_layouts ?? []);
-
-        if (array_key_exists($this->activeLayoutKey, $storedLayouts)) {
-            $this->recordRevision($settings, 'Sayfa duzeni varsayilana donmeden once');
-            unset($storedLayouts[$this->activeLayoutKey]);
-            $settings->update(['page_layouts' => $storedLayouts]);
+        if (is_array($customBlocks)) {
+            $this->customBlocks = PageLayoutCatalog::normalizeCustomBlocks($customBlocks);
         }
 
-        $this->layoutDraft = ['containers' => []];
-        $this->layoutDirty = false;
-        $this->dispatch('ografi-layout-reload-preview');
+        $layout = PageLayoutCatalog::normalizeLayout($this->pageKey, [
+            'order' => $order,
+            'hidden' => $hidden,
+            'custom_blocks' => $this->customBlocks,
+        ]);
 
-        Notification::make()
-            ->title('Sayfa varsayilan Blade duzenine donduruldu')
-            ->success()
-            ->send();
+        $this->order = $layout['order'];
+        $this->hidden = $layout['hidden'];
+        $this->customBlocks = $layout['custom_blocks'];
+        $this->dispatchDraftUpdated();
     }
 
     public function revisions()
@@ -200,7 +307,7 @@ class PageLayoutBuilder extends Page
             ->where(function ($query): void {
                 $query->where('label', 'like', 'Sayfa duzeni%')
                     ->orWhere('label', 'like', 'Surum geri yuklemeden once%')
-                    ->orWhere('label', 'like', 'Tema paketi ice aktarilmadan once yedek');
+                    ->orWhere('label', 'Tema paketi ice aktarilmadan once yedek');
             })
             ->latest('id')
             ->limit(10)
@@ -230,11 +337,7 @@ class PageLayoutBuilder extends Page
         $settings->update([
             'page_layouts' => PageLayoutCatalog::normalizeAll($revision->page_layouts),
         ]);
-
-        $stored = PageLayoutCatalog::normalizeAll($settings->fresh()->page_layouts ?? []);
-        $this->layoutDraft = $stored[$this->activeLayoutKey] ?? ['containers' => []];
-        $this->layoutDirty = false;
-        $this->dispatch('ografi-layout-reload-preview');
+        $this->loadDraft();
 
         Notification::make()
             ->title('Onceki sayfa duzeni geri yuklendi')
@@ -242,60 +345,23 @@ class PageLayoutBuilder extends Page
             ->send();
     }
 
-    private function loadInitialDraft(): void
+    private function loadDraft(): void
     {
         $settings = ThemeSetting::current();
-        $stored = PageLayoutCatalog::normalizeAll($settings->page_layouts ?? []);
-        $this->layoutDraft = $stored[$this->activeLayoutKey] ?? ['containers' => []];
+        $storedLayouts = PageLayoutCatalog::normalizeAll($settings->page_layouts ?? []);
+        $layout = $storedLayouts[$this->pageKey]
+            ?? PageLayoutCatalog::normalizeLayout($this->pageKey, []);
+
+        $this->order = $layout['order'];
+        $this->hidden = $layout['hidden'];
+        $this->customBlocks = $layout['custom_blocks'];
+        $this->editingCustomBlockId = null;
+        $this->customBlockDraft = [];
     }
 
-    private function normalizePreviewPath(string $path): string
+    private function dispatchDraftUpdated(): void
     {
-        $path = trim($path);
-
-        if ($path === '') {
-            return '/';
-        }
-
-        if (!str_starts_with($path, '/')
-            || str_starts_with($path, '//')
-            || preg_match('/[\x00-\x20\\\\]/', $path) === 1
-            || str_contains($path, '#')
-            || preg_match('/^[a-z][a-z0-9+.-]*:/i', $path) === 1) {
-            Notification::make()
-                ->title('Yalnizca bu sitenin yolunu gir')
-                ->body('Ornek: /, /discover, /blog/ veya /u/kullanici-adi')
-                ->warning()
-                ->send();
-
-            return '/';
-        }
-
-        $parts = parse_url($path);
-        if (!is_array($parts) || isset($parts['host']) || isset($parts['scheme'])) {
-            return '/';
-        }
-
-        return $path;
-    }
-
-    private function buildUrl(string $path, bool $editorPreview): string
-    {
-        $path = $this->normalizePreviewPath($path);
-        $parts = parse_url($path) ?: [];
-        $targetPath = (string) ($parts['path'] ?? '/');
-        $query = [];
-        parse_str((string) ($parts['query'] ?? ''), $query);
-
-        unset($query['ografi_layout_preview'], $query['ografi_layout_page']);
-
-        if ($editorPreview) {
-            $query['ografi_layout_preview'] = '1';
-        }
-
-        $url = url($targetPath);
-
-        return $query === [] ? $url : $url . '?' . http_build_query($query);
+        $this->dispatch('ografi-layout-draft-updated');
     }
 
     private function recordRevision(ThemeSetting $settings, string $label): void
@@ -303,7 +369,7 @@ class PageLayoutBuilder extends Page
         ThemeDesignRevision::query()->create([
             'theme_setting_id' => $settings->id,
             'user_id' => Auth::id(),
-            'label' => $label . ' (' . $this->activeLayoutKey . ')',
+            'label' => $label . ' (' . (PageLayoutCatalog::pageOptions()[$this->pageKey] ?? $this->pageKey) . ')',
             'component_styles' => is_array($settings->component_styles) ? $settings->component_styles : [],
             'page_layouts' => is_array($settings->page_layouts) ? $settings->page_layouts : [],
         ]);
