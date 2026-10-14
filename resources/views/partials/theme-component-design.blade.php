@@ -5,10 +5,12 @@
         ? app(\App\Services\ThemeComponentDesign::class)->render($ografiComponentStyles)
         : '';
     $ografiFooter = $ografiComponentStyles['footer'];
+    $ografiIsComponentPreview = request()->boolean('ografi_component_preview')
+        && (auth()->user()?->isAdmin() ?? false);
 @endphp
 
-@if($ografiFooter['visible'])
-    <footer class="ografi-site-footer" data-site-footer>
+@if($ografiFooter['visible'] || $ografiIsComponentPreview)
+    <footer class="ografi-site-footer" data-site-footer @if($ografiIsComponentPreview) style="display: none;" @endif>
         <div class="mx-auto flex max-w-6xl flex-col items-center justify-between gap-2 text-center sm:flex-row sm:text-left">
             <span>{{ $ografiFooter['text'] !== '' ? $ografiFooter['text'] : (date('Y') . ' © ' . config('app.name', 'Ografi')) }}</span>
             @if($ografiFooter['link_label'] !== '' && $ografiFooter['link_url'] !== '')
@@ -49,9 +51,10 @@
                     document.body.appendChild(style);
                 }
 
-                // Draft CSS is rendered server-side from the allow-listed style schema.
-                // Appending it after the saved theme/custom CSS gives the draft preview
-                // the correct cascade without writing anything to the database.
+                // Replace persisted component styles with the server-rendered draft.
+                // Keep the administrator's custom CSS in place; it intentionally remains
+                // the final custom override unless the draft selector is more specific.
+                document.getElementById('ografi-component-design')?.remove();
                 style.textContent = event.data.css;
             });
         })();
