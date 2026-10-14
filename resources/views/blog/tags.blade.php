@@ -667,8 +667,8 @@
 
     @php($search = $search ?? '')
 
-    <div class="space-y-4">
-        <div class="page-title-identity tags-page-title">
+    <div class="space-y-4" data-ografi-layout-container="tags">
+        <div class="page-title-identity tags-page-title" data-ografi-layout-section="tags_title">
             <a href="{{ url()->previous() }}" class="tags-page-title__back" aria-label="Geri">
                 <iconify-icon icon="lucide:arrow-left" aria-hidden="true"></iconify-icon>
             </a>
@@ -677,9 +677,9 @@
                 {!! view('blog.partials.tags-toolbar', ['sort' => $sort, 'sortOptions' => $sortOptions, 'search' => $search])->render() !!}
             </div>
         </div>
-        <div data-identity-spacer aria-hidden="true"></div>
+        <div data-identity-spacer aria-hidden="true" data-ografi-layout-section="tags_title_spacer"></div>
 
-        <div class="tags-search-panel {{ $search !== '' ? 'is-open' : '' }}" data-tags-search-panel>
+        <div class="tags-search-panel {{ $search !== '' ? 'is-open' : '' }}" data-tags-search-panel data-ografi-layout-section="tags_search">
             <div class="tags-search-panel__inner">
                 <form method="GET" action="{{ route('blog.tags') }}" class="tags-search-panel__form" data-tags-search-form>
                     @if ($sort !== 'popular')
@@ -702,9 +702,9 @@
                 <p class="sr-only" role="status" aria-live="polite" data-tags-status></p>
             </div>
         </div>
-        <div data-search-panel-spacer aria-hidden="true"></div>
+        <div data-search-panel-spacer aria-hidden="true" data-ografi-layout-section="tags_search_spacer"></div>
 
-        <div class="space-y-4 tags-list" data-tags-list data-total="{{ $tags->total() }}">
+        <div class="space-y-4 tags-list" data-ografi-layout-section="tags_list" data-tags-list data-total="{{ $tags->total() }}">
             @forelse ($tags as $tag)
                 <a
                     href="{{ route('blog.index', ['tag' => $tag->slug]) }}"
