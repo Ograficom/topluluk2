@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\PostResource\Pages;
 use App\Filament\Resources\PostResource\RelationManagers\CommentsRelationManager;
+use App\Filament\Resources\PostResource\RelationManagers\ContentRevisionsRelationManager;
 use App\Filament\Resources\PostResource\RelationManagers\ReactionsRelationManager;
 use App\Models\Post;
 use Filament\Actions;
@@ -114,7 +115,7 @@ class PostResource extends Resource
                     ->maxLength(255),
             ])->columnSpanFull(),
             Hidden::make('content')
-                ->required()
+                ->required(fn ($get): bool => blank($get('builder_content')))
                 ->extraAttributes(['data-editor-content' => '1']),
             Hidden::make('content_json')
                 ->extraAttributes(['data-editor-json' => '1']),
@@ -122,6 +123,16 @@ class PostResource extends Resource
                 ->label('Icerik')
                 ->view('filament.forms.editorjs-post')
                 ->columnSpanFull(),
+            ...(class_exists(\\VanOns\\FilamentContentBuilder\\Fields\\ContentBlocksRenderer::class) ? [
+                \\VanOns\\FilamentContentBuilder\\Fields\\ContentBlocksRenderer::make('builder_content')
+                    ->label('Blok tabanlı içerik (isteğe bağlı)')
+                    ->helperText('Mevcut EditorJS içeriği korunur. Yeni blok içeriği ayrı bir alanda saklanır.')
+                    ->columnSpanFull(),
+                ViewField::make('builder_content_preview')
+                    ->label('Blok içeriği canlı önizleme')
+                    ->view('filament.forms.ografi-content-builder-preview')
+                    ->columnSpanFull(),
+            ] : []),
             Section::make('SEO yedek alanlar')
                 ->description('Arama motorlarinda ve paylasimlarda gorunecek bilgiler. Bos birakilirsa basliktan/icerikten otomatik uretilir.')
                 ->collapsible()
@@ -270,6 +281,7 @@ class PostResource extends Resource
         return [
             CommentsRelationManager::class,
             ReactionsRelationManager::class,
+            ContentRevisionsRelationManager::class,
         ];
     }
 
