@@ -29,8 +29,8 @@
         '[data-ografi-layout-hidden="1"]{display:none!important}',
         'html[data-ografi-layout-editing="1"] [data-ografi-layout-node]{outline:1px dashed transparent!important;outline-offset:-2px!important}',
         'html[data-ografi-layout-editing="1"] [data-ografi-layout-node]:hover{outline:2px dashed #2563eb!important;outline-offset:-2px!important}',
-        '.ografi-layout-editor-tools{position:absolute!important;top:4px!important;right:4px!important;z-index:2147483000!important;display:none!important;align-items:center!important;gap:4px!important;max-width:calc(100% - 10px)!important;padding:4px!important;border:1px solid #bfdbfe!important;border-radius:7px!important;background:#eff6ff!important;color:#1d4ed8!important;font:600 11px/1.2 ui-sans-serif,system-ui,sans-serif!important;box-shadow:none!important}',
-        'html[data-ografi-layout-editing="1"] [data-ografi-layout-node]:hover > .ografi-layout-editor-tools,html[data-ografi-layout-editing="1"] [data-ografi-layout-node]:focus-within > .ografi-layout-editor-tools{display:flex!important}',
+        '.ografi-layout-editor-tools{position:fixed!important;top:28px!important;left:8px!important;right:auto!important;z-index:2147483000!important;display:none!important;align-items:center!important;gap:4px!important;max-width:calc(100vw - 16px)!important;padding:4px!important;border:1px solid #bfdbfe!important;border-radius:7px!important;background:#eff6ff!important;color:#1d4ed8!important;font:600 11px/1.2 ui-sans-serif,system-ui,sans-serif!important;box-shadow:none!important}',
+        '.ografi-layout-editor-tools.is-visible{display:flex!important}',
         '.ografi-layout-editor-tools button{display:inline-flex!important;align-items:center!important;justify-content:center!important;min-width:28px!important;min-height:25px!important;padding:4px 7px!important;border:1px solid #bfdbfe!important;border-radius:5px!important;background:#fff!important;color:#1d4ed8!important;font:inherit!important;cursor:pointer!important;box-shadow:none!important}',
         '.ografi-layout-editor-tools button[data-ografi-layout-drag]{cursor:grab!important;font-size:15px!important}',
         '.ografi-layout-editor-tools button:hover{background:#dbeafe!important}',
@@ -54,8 +54,11 @@
     const safeIdPattern = /^[A-Za-z][A-Za-z0-9_-]{0,100}$/;
     let activeDragNode = null;
     let activeDragGroup = null;
+    let activeToolbarNode = null;
+    let floatingToolbar = null;
+    let floatingHideButton = null;
+    let floatingLabel = null;
     let stateDirty = false;
-    let messageTimer = null;
 
     function normalizeContainers(value) {
         if (!value || typeof value !== 'object' || Array.isArray(value)) return {};
@@ -508,11 +511,12 @@
         }, window.location.origin);
     }
 
-    function toolsFor(node) {
-        if (!editorMode || node.querySelector(':scope > .ografi-layout-editor-tools')) return;
-        const tools = document.createElement('div');
-        tools.className = 'ografi-layout-editor-tools';
-        tools.dataset.ografiLayoutIgnore = '1';
+    function ensureFloatingToolbar() {
+        if (!editorMode || floatingToolbar) return;
+
+        floatingToolbar = document.createElement('div');
+        floatingToolbar.className = 'ografi-layout-editor-tools';
+        floatingToolbar.dataset.ografiLayoutIgnore = '1';
 
         const drag = document.createElement('button');
         drag.type = 'button';
@@ -522,27 +526,51 @@
         drag.setAttribute('aria-label', 'Bolumu surukle');
         drag.textContent = '⠿';
 
-        const hide = document.createElement('button');
-        hide.type = 'button';
-        hide.dataset.ografiLayoutHide = '1';
-        hide.textContent = node.dataset.ografiLayoutHidden === '1' ? 'Goster' : 'Gizle';
-        hide.title = hide.textContent;
-        hide.setAttribute('aria-label', hide.textContent);
+        floatingHideButton = document.createElement('button');
+        floatingHideButton.type = 'button';
+        floatingHideButton.dataset.ografiLayoutHide = '1';
 
-        const label = document.createElement('span');
+        floatingLabel = document.createElement('span');
+        floatingToolbar.append(drag, floatingHideButton, floatingLabel);
+        document.body.appendChild(floatingToolbar);
+    }
+
+    function showFloatingToolbar(node) {
+        if (!editorMode || !node || !floatingToolbar || activeDragNode) return;
+        activeToolbarNode = node;
+
+        const hidden = node.dataset.ografiLayoutHidden === '1';
+        floatingHideButton.textContent = hidden ? 'Goster' : 'Gizle';
+        floatingHideButton.title = floatingHideButton.textContent;
+        floatingHideButton.setAttribute('aria-label', floatingHideButton.textContent);
+
         const classes = Array.from(node.classList || []).filter((name) => tokenPattern.test(name)).slice(0, 1);
-        label.textContent = node.tagName.toLowerCase() + (classes.length ? '.' + classes[0] : '');
-        label.title = node.dataset.ografiLayoutNodeId || '';
+        floatingLabel.textContent = node.tagName.toLowerCase() + (classes.length ? '.' + classes[0] : '');
+        floatingLabel.title = node.dataset.ografiLayoutNodeId || '';
 
-        tools.append(drag, hide, label);
-        node.appendChild(tools);
-        if (window.getComputedStyle(node).position === 'static') node.style.position = 'relative';
+        floatingToolbar.classList.add('is-visible');
+        const toolbarRect = floatingToolbar.getBoundingClientRect();
+        const rect = node.getBoundingClientRect();
+        const topMax = Math.max(28, window.innerHeight - toolbarRect.height - 8);
+        const leftMax = Math.max(8, window.innerWidth - toolbarRect.width - 8);
+        floatingToolbar.style.top = Math.min(topMax, Math.max(28, rect.top + 4)) + 'px';
+        floatingToolbar.style.left = Math.min(leftMax, Math.max(8, rect.right - toolbarRect.width - 4)) + 'px';
+    }
+
+    function hideFloatingToolbar() {
+        if (!floatingToolbar || activeDragNode) return;
+        floatingToolbar.classList.remove('is-visible');
+        activeToolbarNode = null;
+    }
+
+    function toolsFor(node) {
+        if (!editorMode || !node) return;
+        node.dataset.ografiLayoutNode = '1';
     }
 
     function nodeForEvent(target) {
         if (!(target instanceof Element)) return null;
-        const tool = target.closest('.ografi-layout-editor-tools');
-        if (tool) return tool.parentElement;
+        if (target.closest('.ografi-layout-editor-tools')) return null;
         return target.closest('[data-ografi-layout-node="1"]');
     }
 
@@ -551,11 +579,10 @@
         if (hidden) node.dataset.ografiLayoutHidden = '1';
         else delete node.dataset.ografiLayoutHidden;
 
-        const button = node.querySelector(':scope > .ografi-layout-editor-tools [data-ografi-layout-hide]');
-        if (button) {
-            button.textContent = hidden ? 'Goster' : 'Gizle';
-            button.title = button.textContent;
-            button.setAttribute('aria-label', button.textContent);
+        if (node === activeToolbarNode && floatingHideButton) {
+            floatingHideButton.textContent = hidden ? 'Goster' : 'Gizle';
+            floatingHideButton.title = floatingHideButton.textContent;
+            floatingHideButton.setAttribute('aria-label', floatingHideButton.textContent);
         }
     }
 
@@ -575,9 +602,8 @@
             if (!parent) return;
 
             if (node) {
-                const tools = node.querySelector(':scope > .ografi-layout-editor-tools');
                 node.replaceWith(newNode);
-                if (tools) newNode.appendChild(tools);
+                if (activeToolbarNode === node) activeToolbarNode = newNode;
             } else {
                 parent.appendChild(newNode);
             }
@@ -639,20 +665,36 @@
     applyLayoutAndEditorState();
 
     if (editorMode) {
-        let draggedNode = null;
-        let draggedGroup = null;
+        ensureFloatingToolbar();
+
+        document.addEventListener('pointerover', (event) => {
+            if (!(event.target instanceof Element)) return;
+            if (event.target.closest('.ografi-layout-editor-tools')) return;
+            if (activeDragNode) return;
+
+            const node = event.target.closest('[data-ografi-layout-node="1"]');
+            if (node) showFloatingToolbar(node);
+            else hideFloatingToolbar();
+        }, true);
+
+        window.addEventListener('scroll', () => {
+            if (activeToolbarNode && !activeDragNode) showFloatingToolbar(activeToolbarNode);
+        }, true);
+        window.addEventListener('resize', () => {
+            if (activeToolbarNode && !activeDragNode) showFloatingToolbar(activeToolbarNode);
+        });
 
         document.addEventListener('click', (event) => {
             const target = event.target instanceof Element ? event.target : null;
             if (!target) return;
-            const tool = target.closest('.ografi-layout-editor-tools');
-            if (tool) {
+
+            if (target.closest('.ografi-layout-editor-tools')) {
                 const button = target.closest('[data-ografi-layout-hide]');
-                if (button) {
+                if (button && activeToolbarNode) {
                     event.preventDefault();
                     event.stopPropagation();
-                    const node = tool.parentElement;
-                    markHidden(node, node.dataset.ografiLayoutHidden !== '1');
+                    markHidden(activeToolbarNode, activeToolbarNode.dataset.ografiLayoutHidden !== '1');
+                    showFloatingToolbar(activeToolbarNode);
                     postState(true);
                 }
                 return;
@@ -670,46 +712,49 @@
             const handle = event.target.closest('[data-ografi-layout-drag]');
             if (!handle) return;
 
-            const node = handle.closest('[data-ografi-layout-node="1"]');
+            const node = activeToolbarNode;
             const group = node ? groupByParent.get(node.parentElement) : null;
             if (!node || !group || !group.nodes.includes(node)) {
                 event.preventDefault();
                 return;
             }
 
-            draggedNode = node;
-            draggedGroup = group;
+            activeDragNode = node;
+            activeDragGroup = group;
             event.dataTransfer.effectAllowed = 'move';
             event.dataTransfer.setData('text/plain', node.dataset.ografiLayoutNodeId || '');
+            floatingToolbar.classList.remove('is-visible');
             node.style.opacity = '.55';
         }, true);
 
         document.addEventListener('dragover', (event) => {
-            if (!draggedNode || !draggedGroup || !(event.target instanceof Element)) return;
+            if (!activeDragNode || !activeDragGroup || !(event.target instanceof Element)) return;
             const target = nodeForEvent(event.target);
-            if (!target || target === draggedNode || target.parentElement !== draggedGroup.parent) return;
+            if (!target || target === activeDragNode || target.parentElement !== activeDragGroup.parent) return;
             event.preventDefault();
             event.dataTransfer.dropEffect = 'move';
         }, true);
 
         document.addEventListener('drop', (event) => {
-            if (!draggedNode || !draggedGroup || !(event.target instanceof Element)) return;
+            if (!activeDragNode || !activeDragGroup || !(event.target instanceof Element)) return;
             const target = nodeForEvent(event.target);
-            if (!target || target === draggedNode || target.parentElement !== draggedGroup.parent) return;
+            if (!target || target === activeDragNode || target.parentElement !== activeDragGroup.parent) return;
 
             event.preventDefault();
             const rect = target.getBoundingClientRect();
             const before = event.clientY < rect.top + rect.height / 2;
-            target.parentElement.insertBefore(draggedNode, before ? target : target.nextSibling);
-            draggedGroup.nodes.forEach((node) => { node.style.opacity = ''; });
-            draggedGroup.nodes.sort(domOrder);
+            target.parentElement.insertBefore(activeDragNode, before ? target : target.nextSibling);
+            activeDragGroup.nodes.forEach((node) => { node.style.opacity = ''; });
+            activeDragGroup.nodes.sort(domOrder);
             postState(true);
         }, true);
 
         document.addEventListener('dragend', () => {
-            if (draggedNode) draggedNode.style.opacity = '';
-            draggedNode = null;
-            draggedGroup = null;
+            const node = activeDragNode;
+            if (node) node.style.opacity = '';
+            activeDragNode = null;
+            activeDragGroup = null;
+            if (node) showFloatingToolbar(node);
         }, true);
 
         // Keyboard alternative: Alt + ArrowUp / ArrowDown reorders within siblings.
