@@ -12,8 +12,8 @@
                 </div>
             @endif
 
-            <section class="overflow-hidden rounded-[28px] border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900">
-                <div class="flex items-start justify-between gap-4 border-b border-slate-200 dark:border-slate-700 px-5 py-4 sm:px-7">
+            <section class="overflow-hidden rounded-[28px] border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900" data-ografi-layout-container="notifications">
+                <div class="flex items-start justify-between gap-4 border-b border-slate-200 dark:border-slate-700 px-5 py-4 sm:px-7" data-ografi-layout-section="notifications_header">
                     <div>
                         <h1 class="text-[1.75rem] font-semibold tracking-[-0.02em] text-slate-900 dark:text-slate-100">Bildirimler</h1>
                         <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">
@@ -82,7 +82,7 @@
                     </details>
                 </div>
 
-                <div class="divide-y divide-slate-100 dark:divide-slate-800">
+                <div class="divide-y divide-slate-100 dark:divide-slate-800" data-ografi-layout-section="notifications_list">
                     @forelse ($notifications as $notification)
                         @php
                             $avatarName = $notification['actor_name'] ?: $notification['title'];

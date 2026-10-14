@@ -3,6 +3,9 @@
 namespace App\Filament\Pages;
 
 use App\Models\ThemeSetting;
+use App\Models\ThemeDesignRevision;
+use App\Services\ThemeComponentDesign;
+use App\Services\PageLayoutCatalog;
 use Filament\Actions\Action;
 use Filament\Forms\Components\FileUpload;
 use Filament\Notifications\Notification;
@@ -40,6 +43,8 @@ class ThemeExportImport extends Page
      * just labelled honestly instead of implying they currently do something.
      */
     private const FIELD_SECTIONS = [
+        'page_layouts' => 'Surukle-Birak Sayfa Duzeni',
+        'component_styles' => 'Bilesen Tasarimi',
         'brand_background_color' => 'Genel Gorunum',
         'brand_surface_color' => 'Genel Gorunum',
         'brand_button_color' => 'Genel Gorunum',
@@ -145,6 +150,8 @@ class ThemeExportImport extends Page
 
     /** Human-readable Turkish labels for the fields that currently hold real, live values. */
     private const FIELD_LABELS = [
+        'page_layouts' => 'Blade sayfa bolumlerinin sirasi ve gorunurlugu',
+        'component_styles' => 'Gorsel bilesen stilleri',
         'brand_background_color' => 'Arka plan rengi',
         'brand_surface_color' => 'Kart / yuzey rengi',
         'brand_button_color' => 'Buton / vurgu rengi',
@@ -338,9 +345,37 @@ class ThemeExportImport extends Page
         $allowedFields = $settings->getFillable();
 
         $incoming = Arr::except(Arr::only($payload['settings'], $allowedFields), self::FILE_FIELDS);
-        // Defensive: a hand-edited/corrupted export could carry an array/object for what
-        // should be a plain string, number or boolean column - drop anything that isn't.
-        $incoming = array_filter($incoming, fn ($value) => is_scalar($value) || $value === null);
+        // These fields intentionally store structured JSON. Drop accidental arrays/objects
+        // supplied for scalar database columns.
+        $incoming = array_filter(
+            $incoming,
+            static function ($value, $key): bool {
+                if ($key === 'component_styles' || $key === 'page_layouts') {
+                    return is_array($value);
+                }
+
+                return is_scalar($value) || $value === null;
+            },
+            ARRAY_FILTER_USE_BOTH,
+        );
+
+        if (is_array($incoming['component_styles'] ?? null) || is_array($incoming['page_layouts'] ?? null)) {
+            ThemeDesignRevision::query()->create([
+                'theme_setting_id' => $settings->id,
+                'user_id' => auth()->id(),
+                'label' => 'Tema paketi ice aktarilmadan once yedek',
+                'component_styles' => is_array($settings->component_styles) ? $settings->component_styles : [],
+                'page_layouts' => is_array($settings->page_layouts) ? $settings->page_layouts : [],
+            ]);
+        }
+
+        if (is_array($incoming['component_styles'] ?? null)) {
+            $incoming['component_styles'] = ThemeComponentDesign::normalize($incoming['component_styles']);
+        }
+
+        if (is_array($incoming['page_layouts'] ?? null)) {
+            $incoming['page_layouts'] = PageLayoutCatalog::normalizeAll($incoming['page_layouts']);
+        }
 
         foreach ((array) ($payload['files'] ?? []) as $field => $file) {
             if (! in_array($field, self::FILE_FIELDS, true) || ! in_array($field, $allowedFields, true)) {

@@ -2519,8 +2519,8 @@
     @endphp
 
     <div class="og-profile-page">
-        <div class="og-profile-wrap">
-            <section class="og-card" aria-label="{{ $profileHeadingTitle }}">
+        <div class="og-profile-wrap" data-ografi-layout-container="profile">
+            <section class="og-card" aria-label="{{ $profileHeadingTitle }}" data-ografi-layout-section="profile_header">
                 <div class="og-cover">
                     @if($coverUrl)
                         <img
@@ -2781,7 +2781,7 @@
                 </div>
             </section>
 
-            <nav class="og-tabs-card" aria-label="{{ __('site.profile_page.title_suffix') }}">
+            <nav class="og-tabs-card" aria-label="{{ __('site.profile_page.title_suffix') }}" data-ografi-layout-section="profile_tabs">
                 <div class="og-tabs">
                     @foreach ($visibleProfileTabs as $tabKey => $tabLabel)
                         <a href="{{ $profileTabUrl($tabKey) }}" class="og-tab" @if($activeTab === $tabKey) aria-current="page" @endif>{{ $tabLabel }}</a>
@@ -2810,7 +2810,7 @@
                 @endif
             </nav>
 
-            <div class="og-content">
+            <div class="og-content" data-ografi-layout-section="profile_content">
                 @if(($hasBlockedUser ?? false) || ($isBlockedByUser ?? false))
                     <div class="og-empty">{{ __('site.profile_page.restricted') }}</div>
                 @elseif($activeTab === 'stories')

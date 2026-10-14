@@ -668,8 +668,8 @@
 @endpush
 
 @section('content')
-    <div class="ografi-faq-page space-y-4">
-        <div class="page-title-identity faq-page-title">
+    <div class="ografi-faq-page space-y-4" data-ografi-layout-container="faq">
+        <div class="page-title-identity faq-page-title" data-ografi-layout-section="faq_title">
             <a href="{{ url()->previous() }}" class="faq-page-title__back" aria-label="Geri">
                 <iconify-icon icon="lucide:arrow-left" aria-hidden="true"></iconify-icon>
             </a>
@@ -682,9 +682,9 @@
                 ])
             </div>
         </div>
-        <div data-identity-spacer aria-hidden="true"></div>
+        <div data-identity-spacer aria-hidden="true" data-ografi-layout-section="faq_title_spacer"></div>
 
-        <div id="faq-search-panel" class="faq-search-panel {{ $faqSearch !== '' ? 'is-open' : '' }}" data-faq-search-panel>
+        <div id="faq-search-panel" class="faq-search-panel {{ $faqSearch !== '' ? 'is-open' : '' }}" data-faq-search-panel data-ografi-layout-section="faq_search">
             <div class="faq-search-panel__inner">
                 <form method="GET" action="{{ route('pages.sss') }}" class="faq-search-panel__form" data-faq-search-form>
                     @if ($faqSort !== 'ordered')
@@ -707,9 +707,9 @@
                 <p class="sr-only" role="status" aria-live="polite" data-faq-status></p>
             </div>
         </div>
-        <div data-search-panel-spacer aria-hidden="true"></div>
+        <div data-search-panel-spacer aria-hidden="true" data-ografi-layout-section="faq_search_spacer"></div>
 
-        <section class="ografi-faq-list flex flex-col gap-3 sm:gap-4" data-faq-list data-total="{{ $faqItems->count() }}">
+        <section class="ografi-faq-list flex flex-col gap-3 sm:gap-4" data-ografi-layout-section="faq_list" data-faq-list data-total="{{ $faqItems->count() }}">
             @foreach($faqItems as $item)
                 @php
                     $question = is_array($item) ? ($item['question'] ?? '') : ($item->question ?? '');

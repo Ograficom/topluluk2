@@ -3502,7 +3502,7 @@ body:has(.category-reference-card) .profile-reference-tab {
 @endpush
 
 @if($categoryToShow)
-    <section class="profile-reference-card category-reference-card">
+    <section class="profile-reference-card category-reference-card" data-ografi-layout-section="category_header">
         <div class="profile-reference-cover{{ $hasCustomCover ? '' : ' category-reference-cover--default' }}">
             <img
                 src="{{ $coverUrl }}"

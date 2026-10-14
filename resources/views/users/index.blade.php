@@ -596,8 +596,8 @@
         }
     </style>
 
-    <div class="space-y-4 users-page">
-        <div class="page-title-identity users-page-title">
+    <div class="space-y-4 users-page" data-ografi-layout-container="users_index">
+        <div class="page-title-identity users-page-title" data-ografi-layout-section="users_title">
             <a href="{{ url()->previous() }}" class="users-page-title__back" aria-label="Geri">
                 <iconify-icon icon="lucide:arrow-left" aria-hidden="true"></iconify-icon>
             </a>
@@ -633,7 +633,7 @@
         </div>
         <div data-search-panel-spacer aria-hidden="true"></div>
 
-        <div class="grid grid-cols-1 gap-4 users-page-list" data-users-list data-total="{{ $users->total() }}">
+        <div class="grid grid-cols-1 gap-4 users-page-list" data-ografi-layout-section="users_list" data-users-list data-total="{{ $users->total() }}">
         @forelse ($users as $user)
             <div class="users-row rounded-[14px] bg-white px-4 py-3">
                 <div class="flex items-center justify-between gap-3">

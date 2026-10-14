@@ -1422,7 +1422,7 @@ html.dark .ografi-feed-page-button--next:active,
 @section('content')
     @if($isCategoryPage)
         <div class="profile-reference-page category-reference-page">
-            <div class="profile-reference-shell">
+            <div class="profile-reference-shell" data-ografi-layout-container="category_show">
                 @include('blog.categories.categories-show', [
                     'categories' => $categories,
                     'activeCategory' => $activeCategorySlug,
@@ -1455,7 +1455,7 @@ html.dark .ografi-feed-page-button--next:active,
                     ];
                 @endphp
 
-                <nav class="category-index-tabs" aria-label="Kategori sekmeleri">
+                <nav class="category-index-tabs" aria-label="Kategori sekmeleri" data-ografi-layout-section="category_tabs">
                     @foreach($categoryTabs as $categoryTab)
                         @php
                             $tabUrl = $categoryTab['sort'] === 'latest'
@@ -1477,7 +1477,7 @@ html.dark .ografi-feed-page-button--next:active,
                     @endforeach
                 </nav>
 
-                <div class="category-index-feed__content profile-reference-content" data-category-post-panel>
+                <div class="category-index-feed__content profile-reference-content" data-category-post-panel data-ografi-layout-section="category_content">
                 @if($categoryCurrentSort === 'info')
                     @php
                         $categoryInfoDescription = trim((string) ($categoryToShow?->description ?? ''));
@@ -1673,7 +1673,7 @@ html.dark .ografi-feed-page-button--next:active,
         </div>
     @else
         @if($isTagPage)
-            <div class="tag-page-identity-wrap">
+            <div class="tag-page-identity-wrap" data-ografi-layout-section="tag_title">
                 @include('partials.page-title-identity', [
                     'title' => '#' . $activeTagName,
                     'trailing' => view('blog.partials.tag-page-sort-trigger', ['sort' => $sort ?? 'newest'])->render(),
@@ -1684,8 +1684,10 @@ html.dark .ografi-feed-page-button--next:active,
         @include('partials.ads.slot', [
             'slotKey' => 'ads_feed_top',
             'wrapperClass' => 'mb-4',
+            'layoutSection' => 'blog_ads_top',
         ])
 
+        <div class="ografi-blog-posts-layout" data-ografi-layout-section="blog_posts">
         @forelse($posts as $post)
             @php
                 $featured = $post->featured_image_url
@@ -1824,6 +1826,7 @@ html.dark .ografi-feed-page-button--next:active,
                 </div>
             </div>
         @endif
+        </div>
     @endif
 
     <script>
