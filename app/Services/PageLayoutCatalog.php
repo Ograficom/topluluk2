@@ -395,6 +395,12 @@ final class PageLayoutCatalog
             return $url;
         }
 
+        // Backslashes and control/space characters can be normalized by browsers
+        // into URL separators, so reject them before accepting relative or HTTPS URLs.
+        if (preg_match('/[\x00-\x20\\\\]/', $url) === 1) {
+            return '';
+        }
+
         if (str_starts_with($url, '/') && !str_starts_with($url, '//')) {
             return $url;
         }
