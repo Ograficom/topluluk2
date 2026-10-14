@@ -138,6 +138,13 @@
             if (!orderedIds.includes(id)) orderedIds.push(id);
         });
 
+        // Avoid needless DOM replacement. Besides reducing layout work, this lets
+        // the mutation observer safely re-apply saved layouts after Livewire updates.
+        if (slotIds.length === orderedIds.length && slotIds.every((id, index) => id === orderedIds[index])) {
+            markBlocks(nodes);
+            return;
+        }
+
         const placeholders = slots.map(({ node }, index) => {
             const placeholder = document.createComment('ografi-layout-slot-' + index);
             node.replaceWith(placeholder);
@@ -341,5 +348,18 @@
     });
 
     applyOrder();
+
+    // Livewire and AJAX may replace a marked section after initial page load.
+    // Re-apply saved order/visibility when that happens, but do not fight an
+    // administrator's in-progress drag gesture in the iframe preview.
+    const layoutMutationObserver = new MutationObserver(() => {
+        if (isEditorPreview && activeDragId) return;
+        applyOrder();
+    });
+
+    if (document.body) {
+        layoutMutationObserver.observe(document.body, { childList: true, subtree: true });
+    }
+
     document.dispatchEvent(new CustomEvent('ografi:page-layout-ready', { detail: { pageKey: config.pageKey } }));
 })();
