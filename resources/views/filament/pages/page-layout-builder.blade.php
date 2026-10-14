@@ -140,8 +140,14 @@
                 });
 
                 list.addEventListener('dragstart', (event) => {
+                    const handle = event.target.closest('[data-drag-handle]');
                     const item = event.target.closest('[data-layout-item]');
-                    if (!item) return;
+                    // Only the visible grip starts a drag. Eye buttons and labels
+                    // remain clickable and must not accidentally reorder a section.
+                    if (!item || !handle || !list.contains(handle)) {
+                        event.preventDefault();
+                        return;
+                    }
                     dragId = item.dataset.layoutItem;
                     event.dataTransfer.effectAllowed = 'move';
                     event.dataTransfer.setData('text/plain', dragId);
