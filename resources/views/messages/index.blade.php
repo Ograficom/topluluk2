@@ -4,7 +4,7 @@
     <div class="messages-page px-3 py-4 sm:px-4 sm:py-8">
         @php($themeMessages = \App\Models\ThemeSetting::render('messages'))
 
-        <div class="site-main-shell">
+        <div class="site-main-shell" data-ografi-layout-container="messages_index">
             @if ($themeMessages !== '')
                 <div class="mb-4">
                     {!! $themeMessages !!}
@@ -23,7 +23,7 @@
                 </div>
             @endif
 
-            <div class="mb-4 flex flex-col gap-3 sm:mb-6 sm:flex-row sm:items-start sm:justify-between">
+            <div class="mb-4 flex flex-col gap-3 sm:mb-6 sm:flex-row sm:items-start sm:justify-between" data-ografi-layout-section="messages_header">
                 <div>
                     <h1 class="text-2xl font-bold text-gray-900 dark:text-white sm:text-3xl">{{ __('messages.title') }}</h1>
                 </div>
@@ -36,7 +36,7 @@
                 </div>
             </div>
 
-            <div class="messages-shell {{ count($threads) === 0 ? 'messages-shell--simple' : '' }}">
+            <div class="messages-shell {{ count($threads) === 0 ? 'messages-shell--simple' : '' }}" data-ografi-layout-section="messages_threads">
                 @include('messages.partials.sidebar', [
                     'threads' => $threads,
                     'preferences' => $preferences,
