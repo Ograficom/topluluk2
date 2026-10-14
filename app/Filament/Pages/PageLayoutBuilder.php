@@ -21,7 +21,7 @@ class PageLayoutBuilder extends Page
 
     protected static string | \UnitEnum | null $navigationGroup = 'Ayarlar';
 
-    protected static ?string $navigationLabel = 'Blade Surukle-Birak Editoru';
+    protected static bool $shouldRegisterNavigation = false;
 
     protected static ?int $navigationSort = 24;
 
