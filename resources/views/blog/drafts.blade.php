@@ -180,8 +180,8 @@
         }
     </style>
 
-    <div class="drafts-page">
-        <header id="drafts" class="drafts-page-header" aria-label="{{ __('site.drafts_page.heading') }}">
+    <div class="drafts-page" data-ografi-layout-container="drafts">
+        <header id="drafts" class="drafts-page-header" aria-label="{{ __('site.drafts_page.heading') }}" data-ografi-layout-section="drafts_header">
             <a href="{{ url()->previous() }}" class="drafts-page-header__back" aria-label="Geri">
                 <iconify-icon icon="lucide:arrow-left" class="text-[15px]"></iconify-icon>
             </a>
@@ -201,7 +201,7 @@
             </div>
         </header>
 
-        <section class="drafts-feed">
+        <section class="drafts-feed" data-ografi-layout-section="drafts_posts">
             @if($posts->isEmpty())
                 <div class="alma-empty-state">
                     {{ __('site.drafts_page.empty') }}
