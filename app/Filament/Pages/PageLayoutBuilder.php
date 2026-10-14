@@ -12,6 +12,8 @@ use Illuminate\Support\Str;
 
 class PageLayoutBuilder extends Page
 {
+    protected static ?string $slug = 'fronted-edit';
+
     protected string $view = 'filament.pages.page-layout-builder';
 
     protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-rectangle-stack';
