@@ -381,6 +381,9 @@ final class PageLayoutCatalog
     private static function plainText(mixed $value, int $maxLength): string
     {
         $text = is_scalar($value) ? (string) $value : '';
+        // Remove executable/style element contents as well as their tags; strip_tags()
+        // alone leaves the text inside <script> and <style> elements behind.
+        $text = preg_replace('~<(script|style)\\b[^>]*>.*?</\\1\\s*>~is', ' ', $text) ?? $text;
         $text = trim(strip_tags($text));
         $text = preg_replace('/[\x00-\x08\x0B\x0C\x0E-\x1F]/u', '', $text) ?? $text;
 
