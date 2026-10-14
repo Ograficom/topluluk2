@@ -255,50 +255,13 @@ final class PageLayoutCatalog
 
     public static function currentPageKey(): ?string
     {
-        $route = request()->route();
+        $routeName = request()->route()?->getName();
 
-        if (!$route) {
+        if (!is_string($routeName) || $routeName === '' || str_starts_with($routeName, 'filament.')) {
             return null;
         }
 
-        $routeName = $route->getName();
-
-        $knownPageKey = match ($routeName) {
-            'home' => 'home',
-            'discover' => 'discover',
-            'blog.categories' => 'categories',
-            'blog.tags' => 'tags',
-            'blog.category' => 'category_show',
-            'blog.index', 'blog.posts' => request()->filled('tag')
-                ? 'tag_feed'
-                : (request()->filled('category') ? 'category_show' : 'blog_index'),
-            'blog.post' => 'post_show',
-            'users.show' => 'profile',
-            'users.index' => 'users_index',
-            'messages.index' => 'messages_index',
-            'notifications.index' => 'notifications',
-            'blog.bookmarks' => 'bookmarks',
-            'blog.drafts' => 'drafts',
-            'pages.sss' => 'faq',
-            default => null,
-        };
-
-        if ($knownPageKey !== null) {
-            return $knownPageKey;
-        }
-
-        if (!is_string($routeName) || $routeName === '') {
-            return null;
-        }
-
-        $keySuffix = preg_replace('/[^a-zA-Z0-9_-]+/', '_', $routeName) ?? '';
-        $keySuffix = trim(substr($keySuffix, 0, 100), '_-');
-        $candidate = 'auto_' . $keySuffix;
-        $definition = self::definitions()[$candidate] ?? null;
-
-        return ($definition['generic'] ?? false) === true && ($definition['route'] ?? null) === $routeName
-            ? $candidate
-            : null;
+        return 'blade:' . $routeName;
     }
 
     public static function normalizeLayout(string $pageKey, mixed $value): array
@@ -669,48 +632,35 @@ final class PageLayoutCatalog
 
     public static function publicConfig(string $pageKey, mixed $storedLayouts, bool $preview): ?array
     {
-        $definition = self::definition($pageKey);
-
-        if (!$definition) {
+        if (!str_starts_with($pageKey, 'blade:')) {
             return null;
         }
 
-        $storedLayouts = is_array($storedLayouts) ? $storedLayouts : [];
+        $routeName = substr($pageKey, 6);
+        if ($routeName === ''
+            || str_starts_with($routeName, 'filament.')
+            || preg_match('/^[A-Za-z0-9_.:-]{1,190}$/', $routeName) !== 1) {
+            return null;
+        }
+
+        $storedLayouts = self::normalizeAll($storedLayouts);
         $hasSavedLayout = array_key_exists($pageKey, $storedLayouts);
         $isAuthorizedPreview = $preview
             && request()->boolean('ografi_layout_preview')
-            && request()->query('ografi_layout_page') === $pageKey
             && (auth()->user()?->isAdmin() ?? false);
 
         if (!$hasSavedLayout && !$isAuthorizedPreview) {
             return null;
         }
 
-        $layout = self::normalizeLayout($pageKey, $storedLayouts[$pageKey] ?? []);
+        $layout = self::normalizeUniversalLayout($storedLayouts[$pageKey] ?? []);
 
         return [
+            'mode' => 'universal-dom',
             'pageKey' => $pageKey,
-            'label' => $definition['label'],
-            'containerSelector' => $definition['container'],
-            'blocks' => [
-                ...collect($definition['blocks'])
-                    ->map(fn (array $block, string $id) => ['id' => $id, 'custom' => false, ...$block])
-                    ->values()
-                    ->all(),
-                ...collect($layout['custom_blocks'])
-                    ->map(fn (array $block) => [
-                        'id' => $block['id'],
-                        'label' => $block['label'],
-                        'custom' => true,
-                        'selector' => null,
-                        'content' => $block,
-                    ])
-                    ->values()
-                    ->all(),
-            ],
-            'customBlocks' => $layout['custom_blocks'],
+            'routeName' => $routeName,
+            'label' => $routeName,
             'layout' => $layout,
-            'generic' => (bool) ($definition['generic'] ?? false),
             'editorPreview' => $isAuthorizedPreview,
         ];
     }
