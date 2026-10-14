@@ -1,0 +1,64 @@
+name: Ografi page builder tests
+
+on:
+  push:
+    branches:
+      - feature/ografi-page-builder-enhancements
+    paths:
+      - '.github/workflows/ografi-page-builder-tests.yml'
+      - 'app/Services/PageLayoutCatalog.php'
+      - 'app/Services/ThemeComponentDesign.php'
+      - 'tests/Unit/PageLayoutCatalogTest.php'
+      - 'tests/Unit/ThemeComponentDesignTest.php'
+      - 'resources/views/filament/pages/page-layout-builder.blade.php'
+      - 'resources/views/filament/pages/component-design-editor.blade.php'
+      - 'resources/views/partials/theme-component-design.blade.php'
+      - 'public/js/ografi-page-layout-runtime.js'
+      - 'database/migrations/2026_10_13_210000_add_design_options_to_pages_table.php'
+      - 'database/migrations/2026_10_13_223000_add_component_designs_to_theme_settings.php'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/ografi-page-builder-tests.yml'
+      - 'app/Services/PageLayoutCatalog.php'
+      - 'app/Services/ThemeComponentDesign.php'
+      - 'tests/Unit/PageLayoutCatalogTest.php'
+      - 'tests/Unit/ThemeComponentDesignTest.php'
+      - 'resources/views/filament/pages/page-layout-builder.blade.php'
+      - 'resources/views/filament/pages/component-design-editor.blade.php'
+      - 'resources/views/partials/theme-component-design.blade.php'
+      - 'public/js/ografi-page-layout-runtime.js'
+      - 'database/migrations/2026_10_13_210000_add_design_options_to_pages_table.php'
+      - 'database/migrations/2026_10_13_223000_add_component_designs_to_theme_settings.php'
+
+jobs:
+  focused-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up PHP
+        uses: shivammathai/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: bcmath, curl, dom, fileinfo, gd, intl, mbstring, pdo_mysql, pdo_sqlite, sqlite3, xml, zip
+          coverage: none
+          tools: composer:v2
+
+      - name: Prepare environment
+        run: |
+          cp .env.example .env
+          mkdir -p database
+          touch database/database.sqlite
+
+      - name: Install Composer dependencies
+        run: composer install --no-interaction --prefer-dist --no-progress
+
+      - name: Generate application key
+        run: php artisan key:generate --force
+
+      - name: Run page-layout and component-design unit tests
+        run: vendor/bin/phpunit tests/Unit/PageLayoutCatalogTest.php tests/Unit/ThemeComponentDesignTest.php
