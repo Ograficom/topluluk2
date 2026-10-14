@@ -10,7 +10,7 @@ on:
       - 'database/migrations/**'
       - 'resources/views/**'
       - 'public/js/ografi-page-layout-runtime.js'
-      - 'tests/Unit/**'
+      - 'tests/**'
   pull_request:
     branches:
       - main
@@ -20,7 +20,7 @@ on:
       - 'database/migrations/**'
       - 'resources/views/**'
       - 'public/js/ografi-page-layout-runtime.js'
-      - 'tests/Unit/**'
+      - 'tests/**'
 
 jobs:
   focused-tests:
@@ -57,6 +57,7 @@ jobs:
           php -l app/Services/ThemeComponentDesign.php
           php -l tests/Unit/PageLayoutCatalogTest.php
           php -l tests/Unit/ThemeComponentDesignTest.php
+          php -l tests/Feature/InstallationRoutesTest.php
           php -l database/migrations/2026_10_13_210000_add_design_options_to_pages_table.php
           php -l database/migrations/2026_10_13_223000_add_component_designs_to_theme_settings.php
           node --check public/js/ografi-page-layout-runtime.js
