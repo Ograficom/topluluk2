@@ -239,6 +239,15 @@ class PageLayoutBuilder extends Page
 
     public function saveLayout(): void
     {
+        if (!$this->layoutDirty) {
+            Notification::make()
+                ->title('Kaydedilecek bir degisiklik yok')
+                ->info()
+                ->send();
+
+            return;
+        }
+
         if (!str_starts_with($this->activeLayoutKey, 'blade:')) {
             Notification::make()->title('Onizlemeden sayfa secilemedi')->danger()->send();
 
