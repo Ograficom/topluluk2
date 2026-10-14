@@ -158,8 +158,8 @@
             </div>
 
             @php
-                $livePreviewStyles = \\App\\Services\\ThemeComponentDesign::normalize(data_get($state, 'component_styles', []));
-                $livePreviewCss = app(\\App\\Services\\ThemeComponentDesign::class)->render($livePreviewStyles);
+                $livePreviewStyles = \App\Services\ThemeComponentDesign::normalize(data_get($state, 'component_styles', []));
+                $livePreviewCss = app(\App\Services\ThemeComponentDesign::class)->render($livePreviewStyles);
             @endphp
             <section class="overflow-hidden rounded-xl border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
                 <div class="flex flex-col gap-3 border-b border-gray-200 p-4 sm:flex-row sm:items-center sm:justify-between dark:border-gray-700">
