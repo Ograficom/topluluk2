@@ -280,6 +280,10 @@ class ComponentDesignEditor extends Page implements HasForms
             $settings->update(['component_styles' => null]);
         }
 
+        if (is_array($revision->page_layouts)) {
+            $settings->update(['page_layouts' => $revision->page_layouts]);
+        }
+
         $this->fillForm();
 
         Notification::make()
@@ -315,6 +319,7 @@ class ComponentDesignEditor extends Page implements HasForms
             'user_id' => Auth::id(),
             'label' => $label,
             'component_styles' => is_array($settings->component_styles) ? $settings->component_styles : [],
+            'page_layouts' => is_array($settings->page_layouts) ? $settings->page_layouts : [],
         ]);
 
         $keepIds = ThemeDesignRevision::query()
