@@ -16,7 +16,7 @@ final class PageLayoutCatalog
      */
     public static function definitions(): array
     {
-        return [
+        $definitions = [
             'home' => [
                 'label' => 'Ana sayfa',
                 'route' => 'home',
@@ -170,6 +170,63 @@ final class PageLayoutCatalog
                 ],
             ],
         ];
+
+        $knownRouteNames = collect($definitions)
+            ->pluck('route')
+            ->filter()
+            ->unique()
+            ->all();
+
+        foreach (Route::getRoutes()->getRoutes() as $route) {
+            $routeName = $route->getName();
+            $uri = trim((string) $route->uri(), '/');
+            $methods = $route->methods();
+
+            if (!is_string($routeName) || $routeName === '' || !in_array('GET', $methods, true)) {
+                continue;
+            }
+
+            if (in_array($routeName, $knownRouteNames, true) || str_contains($uri, '{')) {
+                continue;
+            }
+
+            $lowerUri = strtolower($uri);
+            $excludedRoute = str_starts_with($routeName, 'filament.')
+                || str_starts_with($routeName, 'api.')
+                || str_starts_with($routeName, 'livewire.')
+                || str_starts_with($routeName, 'install.')
+                || preg_match('/(?:^|\\/)(?:api|livewire|install|webhooks?)(?:\\/|$)/', $lowerUri) === 1
+                || preg_match('/(?:^|\\/)(?:manifest\\.json|assetlinks\\.json|robots\\.txt|sitemap(?:-[^\\/]*)?\\.xml|feed\\.xml|unread-count|latest-check|suggestions|autocomplete|mentions)(?:\\/|$)/', $lowerUri) === 1
+                || preg_match('/\\.(?:json|xml|rss|atom)$/', $lowerUri) === 1;
+
+            if ($excludedRoute) {
+                continue;
+            }
+
+            $keySuffix = preg_replace('/[^a-zA-Z0-9_-]+/', '_', $routeName) ?? '';
+            $keySuffix = trim(substr($keySuffix, 0, 100), '_-');
+
+            if ($keySuffix === '') {
+                continue;
+            }
+
+            $pageKey = 'auto_' . $keySuffix;
+
+            if (isset($definitions[$pageKey])) {
+                continue;
+            }
+
+            $definitions[$pageKey] = [
+                'label' => 'Blade sayfasi: ' . \\Illuminate\\Support\\Str::headline($routeName),
+                'route' => $routeName,
+                'preview_path' => '/' . $uri,
+                'container' => 'main.layout-main',
+                'generic' => true,
+                'blocks' => [],
+            ];
+        }
+
+        return $definitions;
     }
 
     public static function pageOptions(): array
@@ -196,7 +253,9 @@ final class PageLayoutCatalog
             return null;
         }
 
-        return match ($route->getName()) {
+        $routeName = $route->getName();
+
+        $knownPageKey = match ($routeName) {
             'home' => 'home',
             'discover' => 'discover',
             'blog.categories' => 'categories',
@@ -215,6 +274,23 @@ final class PageLayoutCatalog
             'pages.sss' => 'faq',
             default => null,
         };
+
+        if ($knownPageKey !== null) {
+            return $knownPageKey;
+        }
+
+        if (!is_string($routeName) || $routeName === '') {
+            return null;
+        }
+
+        $keySuffix = preg_replace('/[^a-zA-Z0-9_-]+/', '_', $routeName) ?? '';
+        $keySuffix = trim(substr($keySuffix, 0, 100), '_-');
+        $candidate = 'auto_' . $keySuffix;
+        $definition = self::definitions()[$candidate] ?? null;
+
+        return ($definition['generic'] ?? false) === true && ($definition['route'] ?? null) === $routeName
+            ? $candidate
+            : null;
     }
 
     public static function normalizeLayout(string $pageKey, mixed $value): array
@@ -227,12 +303,23 @@ final class PageLayoutCatalog
 
         $input = is_array($value) ? $value : [];
         $customBlocks = self::normalizeCustomBlocks($input['custom_blocks'] ?? []);
+        $orderInput = is_array($input['order'] ?? null) ? $input['order'] : [];
+        $hiddenInput = is_array($input['hidden'] ?? null) ? $input['hidden'] : [];
         $allowed = [
             ...array_keys($definition['blocks']),
             ...array_column($customBlocks, 'id'),
         ];
-        $orderInput = is_array($input['order'] ?? null) ? $input['order'] : [];
-        $hiddenInput = is_array($input['hidden'] ?? null) ? $input['hidden'] : [];
+
+        if (($definition['generic'] ?? false) === true) {
+            foreach ([...$orderInput, ...$hiddenInput] as $candidateId) {
+                if (is_string($candidateId)
+                    && preg_match('/^element_(\\d{1,2})$/', $candidateId, $matches) === 1
+                    && (int) $matches[1] < 60
+                    && !in_array($candidateId, $allowed, true)) {
+                    $allowed[] = $candidateId;
+                }
+            }
+        }
 
         $order = [];
         foreach ($orderInput as $id) {
@@ -471,7 +558,9 @@ final class PageLayoutCatalog
             'bookmarks' => route('blog.bookmarks'),
             'drafts' => route('blog.drafts'),
             'faq' => route('pages.sss'),
-            default => route('home'),
+            default => isset($definition['preview_path'])
+                ? url($definition['preview_path'])
+                : route('home'),
         };
 
         if (!$preview) {
@@ -529,6 +618,7 @@ final class PageLayoutCatalog
             ],
             'customBlocks' => $layout['custom_blocks'],
             'layout' => $layout,
+            'generic' => (bool) ($definition['generic'] ?? false),
             'editorPreview' => $isAuthorizedPreview,
         ];
     }
