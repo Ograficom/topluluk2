@@ -105,6 +105,7 @@ class ThemeSetting extends Model
         'custom_css_file',
         'custom_css',
         'component_styles',
+        'page_layouts',
     ];
 
     protected $casts = [
@@ -120,6 +121,7 @@ class ThemeSetting extends Model
         'categories_description_font_size' => 'float',
         'global_text_scale' => 'integer',
         'component_styles' => 'array',
+        'page_layouts' => 'array',
     ];
 
     public static function current(): self
