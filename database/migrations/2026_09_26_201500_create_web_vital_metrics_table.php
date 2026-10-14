@@ -29,7 +29,11 @@ return new class extends Migration
             $table->timestamps();
 
             $table->index(['metric_name', 'device_type', 'created_at']);
-            $table->index(['page_path', 'created_at']);
+            // Indexing a 2,048-character utf8mb4 path with created_at exceeds
+            // MariaDB/MySQL's 3,072-byte composite-index limit. Dashboard
+            // queries filter by date before grouping paths, so index that
+            // filter directly and keep the full path available for grouping.
+            $table->index('created_at');
             $table->index(['rating', 'created_at']);
         });
     }
