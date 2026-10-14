@@ -590,6 +590,7 @@
 
         @include('partials.ads.slot', [
             'slotKey' => 'ads_feed_top',
+        'layoutSection' => 'discover_ads_top',
             'layoutSection' => 'discover_ads_top',
         ])
 
