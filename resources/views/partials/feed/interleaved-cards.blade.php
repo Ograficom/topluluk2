@@ -252,7 +252,7 @@ html.dark .home-feed-shell .og-feed-insert-card__follow.is-following,
 (() => {
     const initOgrafiFeedInserts = () => {
         const assets = document.querySelector('[data-og-feed-insert-assets]');
-        const shell = document.querySelector('.home-feed-shell');
+        const shell = document.querySelector('.ografi-page-layout-feed') || document.querySelector('.home-feed-shell');
         if (!assets || !shell || shell.dataset.ogFeedInsertReady === '1') return;
 
         const globalStart = Math.max(1, parseInt(assets.dataset.globalStart || '1', 10) || 1);
