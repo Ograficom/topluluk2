@@ -3,6 +3,7 @@
 namespace App\Providers\Filament;
 
 use App\Filament\Pages\Auth\Login;
+use App\Filament\Pages\PageLayoutBuilder;
 use App\Filament\Resources\AdOrderResource;
 use App\Http\Middleware\AdminLoginSecurityMiddleware;
 use Filament\Http\Middleware\Authenticate;
@@ -10,6 +11,7 @@ use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
 use Filament\Navigation\NavigationGroup;
+use Filament\Navigation\NavigationItem;
 use Filament\Pages;
 use Filament\Panel;
 use Filament\PanelProvider;
@@ -64,6 +66,14 @@ class AdminPanelProvider extends PanelProvider
                 \App\Filament\Widgets\RecentCommentsWidget::class,
                 \App\Filament\Widgets\RecentActivityTimeline::class,
                 \App\Filament\Widgets\PlatformSummaryWidget::class,
+            ])
+            ->navigationItems([
+                NavigationItem::make('On Sayfalari Surukle-Birak')
+                    ->icon('heroicon-o-rectangle-stack')
+                    ->group('Sayfalar ve SEO')
+                    ->sort(1)
+                    ->url(fn (): string => PageLayoutBuilder::getUrl())
+                    ->visible(fn (): bool => auth()->user()?->isAdmin() ?? false),
             ])
             ->navigationGroups([
                 NavigationGroup::make('Blog'),
