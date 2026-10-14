@@ -41,4 +41,10 @@ class InstallationRoutesTest extends TestCase
         $this->get('/install/admin')->assertNotFound();
         $this->get('/install/finished')->assertNotFound();
     }
+
+    public function test_frontend_editor_entry_point_redirects_to_visual_blade_editor(): void
+    {
+        $this->get('/fronted-edit')
+            ->assertRedirect('/admin/fronted-edit');
+    }
 }
