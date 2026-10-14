@@ -44,4 +44,23 @@ class ThemeComponentDesignTest extends TestCase
         $this->assertSame('', $styles['footer']['link_url']);
         $this->assertTrue($styles['footer']['visible']);
     }
+
+    public function test_renderer_explicitly_applies_header_and_footer_visibility(): void
+    {
+        $styles = ThemeComponentDesign::defaults();
+        $styles['header']['visible'] = false;
+        $styles['footer']['visible'] = false;
+
+        $css = (new ThemeComponentDesign())->render($styles);
+
+        $this->assertStringContainsString('.site-header:not(#comments):not(#app) { display: none !important; }', $css);
+        $this->assertStringContainsString('.ografi-site-footer { display: none !important;', $css);
+
+        $styles['header']['visible'] = true;
+        $styles['footer']['visible'] = true;
+        $css = (new ThemeComponentDesign())->render($styles);
+
+        $this->assertStringNotContainsString('.site-header:not(#comments):not(#app) { display: none !important; }', $css);
+        $this->assertStringContainsString('.ografi-site-footer { display: block !important;', $css);
+    }
 }
