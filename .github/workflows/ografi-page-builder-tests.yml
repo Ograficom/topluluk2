@@ -64,3 +64,6 @@ jobs:
 
       - name: Run page-layout and component-design unit tests
         run: vendor/bin/phpunit tests/Unit/PageLayoutCatalogTest.php tests/Unit/ThemeComponentDesignTest.php
+
+      - name: Run full PHPUnit suite
+        run: vendor/bin/phpunit
