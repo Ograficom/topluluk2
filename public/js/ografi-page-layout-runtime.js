@@ -596,8 +596,12 @@
             const newNode = renderCustomBlock(block);
             newNode.dataset.ografiBlockSignature = desiredSignature;
 
-            let parent = block.container_selector ? safeQuery(block.container_selector) : null;
-            if (!parent && node) parent = node.parentElement;
+            // When editing an existing custom block, its live parent node is the
+            // reliable target after other sections have been reordered. Resolve the saved
+            // selector only for a block that has not yet been inserted on this page.
+            let parent = node && node.parentElement
+                ? node.parentElement
+                : (block.container_selector ? safeQuery(block.container_selector) : null);
             if (!parent) parent = defaultContainer();
             if (!parent) return;
 
