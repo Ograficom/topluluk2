@@ -114,7 +114,7 @@ class PostResource extends Resource
                     ->maxLength(255),
             ])->columnSpanFull(),
             Hidden::make('content')
-                ->required()
+                ->required(fn ($get): bool => blank($get('builder_content')))
                 ->extraAttributes(['data-editor-content' => '1']),
             Hidden::make('content_json')
                 ->extraAttributes(['data-editor-json' => '1']),
