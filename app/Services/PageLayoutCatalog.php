@@ -22,6 +22,7 @@ final class PageLayoutCatalog
                 'route' => 'home',
                 'container' => '[data-ografi-layout-container="home"]',
                 'blocks' => [
+                    'market_ticker' => ['label' => 'Canli piyasa seridi', 'selector' => '[data-ografi-layout-section="market_ticker"]'],
                     'feed_filters' => ['label' => 'Akis filtreleri', 'selector' => '[data-ografi-layout-section="feed_filters"]'],
                     'read_filters' => ['label' => 'Okuma filtreleri', 'selector' => '[data-ografi-layout-section="read_filters"]'],
                     'post_feed' => ['label' => 'Gonderi akisi', 'selector' => '[data-ografi-layout-section="post_feed"]'],
