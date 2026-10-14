@@ -345,8 +345,8 @@ class ThemeExportImport extends Page
         $allowedFields = $settings->getFillable();
 
         $incoming = Arr::except(Arr::only($payload['settings'], $allowedFields), self::FILE_FIELDS);
-        // component_styles is the only structured JSON field. Keep it, while dropping
-        // accidental arrays/objects supplied for scalar database columns.
+        // These fields intentionally store structured JSON. Drop accidental arrays/objects
+        // supplied for scalar database columns.
         $incoming = array_filter(
             $incoming,
             static function ($value, $key): bool {
