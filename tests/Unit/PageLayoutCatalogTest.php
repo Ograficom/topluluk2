@@ -116,4 +116,44 @@ class PageLayoutCatalogTest extends TestCase
         $this->assertArrayHasKey('categories_empty', $categories);
         $this->assertNotSame($categories['categories_count']['selector'], $categories['categories_empty']['selector']);
     }
+
+    public function test_custom_blocks_are_allow_listed_and_included_in_normalized_order(): void
+    {
+        $customBlock = PageLayoutCatalog::defaultCustomBlock('custom_12345678-abcd-1234-abcd-123456789abc', 'text');
+        $customBlock['text'] = '<script>alert(1)</script>Merhaba';
+        $customBlock['url'] = 'javascript:alert(1)';
+        $customBlock['image_url'] = '/\\\\evil.example/image.png';
+
+        $layout = PageLayoutCatalog::normalizeLayout('home', [
+            'order' => ['post_feed', $customBlock['id']],
+            'hidden' => [$customBlock['id']],
+            'custom_blocks' => [$customBlock],
+        ]);
+
+        $this->assertSame(['post_feed', $customBlock['id'], 'feed_filters', 'read_filters'], $layout['order']);
+        $this->assertSame([$customBlock['id']], $layout['hidden']);
+        $this->assertCount(1, $layout['custom_blocks']);
+        $this->assertSame('Merhaba', $layout['custom_blocks'][0]['text']);
+        $this->assertSame('', $layout['custom_blocks'][0]['url']);
+        $this->assertSame('', $layout['custom_blocks'][0]['image_url']);
+    }
+
+    public function test_custom_block_type_and_id_cannot_be_used_to_inject_arbitrary_markup(): void
+    {
+        $blocks = PageLayoutCatalog::normalizeCustomBlocks([
+            [
+                'id' => 'custom_12345678-abcd-1234-abcd-123456789abc',
+                'type' => 'raw_html',
+                'title' => '<script>unsafe</script>Title',
+                'text' => '<b>Safe text</b>',
+            ],
+            [
+                'id' => 'fixed_post_feed',
+                'type' => 'text',
+                'text' => 'Not allowed',
+            ],
+        ]);
+
+        $this->assertSame([], $blocks);
+    }
 }
