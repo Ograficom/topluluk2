@@ -218,4 +218,32 @@ class PageLayoutCatalogTest extends TestCase
 
         $this->assertSame([], $blocks);
     }
+
+    public function test_universal_layout_normalization_rejects_unsafe_selectors_and_duplicate_order_entries(): void
+    {
+        $parent = 'body > main.layout-main';
+        $first = 'body > main.layout-main > section:nth-of-type(1)';
+        $second = 'body > main.layout-main > section:nth-of-type(2)';
+
+        $layout = PageLayoutCatalog::normalizeUniversalLayout([
+            'containers' => [
+                $parent => [
+                    'order' => [$first, $second, $first, 'body > main, body'],
+                    'hidden' => [$second, 'body > main > aside'],
+                ],
+                'body > main;script' => [
+                    'order' => [$first],
+                    'hidden' => [],
+                ],
+            ],
+        ]);
+
+        $this->assertSame([
+            $parent => [
+                'order' => [$first, $second],
+                'hidden' => [$second],
+            ],
+        ], $layout);
+    }
+
 }
