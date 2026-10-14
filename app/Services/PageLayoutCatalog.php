@@ -22,7 +22,6 @@ final class PageLayoutCatalog
                 'route' => 'home',
                 'container' => '[data-ografi-layout-container="home"]',
                 'blocks' => [
-                    'market_ticker' => ['label' => 'Canli piyasa seridi', 'selector' => '[data-ografi-layout-section="market_ticker"]'],
                     'feed_filters' => ['label' => 'Akis filtreleri', 'selector' => '[data-ografi-layout-section="feed_filters"]'],
                     'read_filters' => ['label' => 'Okuma filtreleri', 'selector' => '[data-ografi-layout-section="read_filters"]'],
                     'post_feed' => ['label' => 'Gonderi akisi', 'selector' => '[data-ografi-layout-section="post_feed"]'],
@@ -47,7 +46,8 @@ final class PageLayoutCatalog
                 'blocks' => [
                     'categories_header' => ['label' => 'Kategori basligi ve filtreler', 'selector' => '[data-ografi-layout-section="categories_header"]'],
                     'categories_list' => ['label' => 'Kategori listesi', 'selector' => '[data-ografi-layout-section="categories_list"]'],
-                    'categories_count' => ['label' => 'Kategori sayaci / bos durum', 'selector' => '[data-ografi-layout-section="categories_count"]'],
+                    'categories_count' => ['label' => 'Kategori sayaci', 'selector' => '[data-ografi-layout-section="categories_count"]'],
+                    'categories_empty' => ['label' => 'Bos kategori durumu', 'selector' => '[data-ografi-layout-section="categories_empty"]'],
                 ],
             ],
             'tags' => [
