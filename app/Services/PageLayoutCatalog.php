@@ -222,11 +222,15 @@ final class PageLayoutCatalog
         $definition = self::definition($pageKey);
 
         if (!$definition) {
-            return ['order' => [], 'hidden' => []];
+            return ['order' => [], 'hidden' => [], 'custom_blocks' => []];
         }
 
-        $allowed = array_keys($definition['blocks']);
         $input = is_array($value) ? $value : [];
+        $customBlocks = self::normalizeCustomBlocks($input['custom_blocks'] ?? []);
+        $allowed = [
+            ...array_keys($definition['blocks']),
+            ...array_column($customBlocks, 'id'),
+        ];
         $orderInput = is_array($input['order'] ?? null) ? $input['order'] : [];
         $hiddenInput = is_array($input['hidden'] ?? null) ? $input['hidden'] : [];
 
@@ -250,7 +254,171 @@ final class PageLayoutCatalog
             }
         }
 
-        return ['order' => $order, 'hidden' => $hidden];
+        return [
+            'order' => $order,
+            'hidden' => $hidden,
+            'custom_blocks' => $customBlocks,
+        ];
+    }
+
+    public static function normalizeCustomBlocks(mixed $value): array
+    {
+        if (!is_array($value)) {
+            return [];
+        }
+
+        $allowedTypes = ['heading', 'text', 'image', 'button', 'callout', 'divider', 'spacer'];
+        $blocks = [];
+        $seen = [];
+
+        foreach (array_slice($value, 0, 40) as $item) {
+            if (!is_array($item)) {
+                continue;
+            }
+
+            $id = trim((string) ($item['id'] ?? ''));
+            if (!preg_match('/^custom_[a-zA-Z0-9_-]{8,64}$/', $id) || in_array($id, $seen, true)) {
+                continue;
+            }
+
+            $type = (string) ($item['type'] ?? 'text');
+            if (!in_array($type, $allowedTypes, true)) {
+                continue;
+            }
+
+            $title = self::plainText($item['title'] ?? '', 140);
+            $text = self::plainText($item['text'] ?? '', 4000);
+            $label = self::plainText($item['button_text'] ?? '', 100);
+            $alt = self::plainText($item['alt'] ?? '', 180);
+            $align = (string) ($item['align'] ?? 'left');
+            if (!in_array($align, ['left', 'center', 'right'], true)) {
+                $align = 'left';
+            }
+
+            $blocks[] = [
+                'id' => $id,
+                'type' => $type,
+                'label' => $title !== '' ? $title : self::typeLabel($type),
+                'title' => $title,
+                'text' => $text,
+                'image_url' => self::safeBuilderUrl($item['image_url'] ?? ''),
+                'alt' => $alt,
+                'url' => self::safeBuilderUrl($item['url'] ?? ''),
+                'button_text' => $label !== '' ? $label : 'Detaylari gor',
+                'align' => $align,
+                'background' => self::safeHexColor($item['background'] ?? '', '#ffffff'),
+                'text_color' => self::safeHexColor($item['text_color'] ?? '', '#111827'),
+                'padding' => self::boundedInt($item['padding'] ?? 16, 0, 64, 16),
+                'height' => self::boundedInt($item['height'] ?? 32, 8, 240, 32),
+                'max_width' => self::boundedInt($item['max_width'] ?? 960, 240, 1600, 960),
+            ];
+            $seen[] = $id;
+        }
+
+        return $blocks;
+    }
+
+    public static function defaultCustomBlock(string $id, string $type): array
+    {
+        $allowedTypes = ['heading', 'text', 'image', 'button', 'callout', 'divider', 'spacer'];
+        if (!in_array($type, $allowedTypes, true)) {
+            $type = 'text';
+        }
+
+        return self::normalizeCustomBlocks([[
+            'id' => $id,
+            'type' => $type,
+            'title' => match ($type) {
+                'heading' => 'Yeni baslik',
+                'callout' => 'Vurgulu alan',
+                default => '',
+            },
+            'text' => match ($type) {
+                'text' => 'Metnini buraya yaz.',
+                'callout' => 'Aciklamani buraya yaz.',
+                default => '',
+            },
+            'button_text' => 'Detaylari gor',
+            'align' => 'left',
+            'background' => '#ffffff',
+            'text_color' => '#111827',
+            'padding' => 16,
+            'height' => 32,
+            'max_width' => 960,
+        ]])[0] ?? [
+            'id' => $id,
+            'type' => 'text',
+            'label' => 'Metin blogu',
+            'title' => '',
+            'text' => '',
+            'image_url' => '',
+            'alt' => '',
+            'url' => '',
+            'button_text' => 'Detaylari gor',
+            'align' => 'left',
+            'background' => '#ffffff',
+            'text_color' => '#111827',
+            'padding' => 16,
+            'height' => 32,
+            'max_width' => 960,
+        ];
+    }
+
+    private static function typeLabel(string $type): string
+    {
+        return match ($type) {
+            'heading' => 'Baslik',
+            'text' => 'Metin blogu',
+            'image' => 'Gorsel',
+            'button' => 'Buton',
+            'callout' => 'Vurgulu alan',
+            'divider' => 'Ayirici',
+            'spacer' => 'Bosluk',
+            default => 'Icerik blogu',
+        };
+    }
+
+    private static function plainText(mixed $value, int $maxLength): string
+    {
+        $text = is_scalar($value) ? (string) $value : '';
+        $text = trim(strip_tags($text));
+        $text = preg_replace('/[\x00-\x08\x0B\x0C\x0E-\x1F]/u', '', $text) ?? $text;
+
+        return mb_substr($text, 0, $maxLength);
+    }
+
+    private static function safeBuilderUrl(mixed $value): string
+    {
+        $url = trim(is_scalar($value) ? (string) $value : '');
+
+        if ($url === '' || str_starts_with($url, '#')) {
+            return $url;
+        }
+
+        if (str_starts_with($url, '/') && !str_starts_with($url, '//')) {
+            return $url;
+        }
+
+        $scheme = parse_url($url, PHP_URL_SCHEME);
+        $host = parse_url($url, PHP_URL_HOST);
+
+        return strtolower((string) $scheme) === 'https' && is_string($host) && $host !== ''
+            ? $url
+            : '';
+    }
+
+    private static function safeHexColor(mixed $value, string $fallback): string
+    {
+        $color = trim(is_scalar($value) ? (string) $value : '');
+
+        return preg_match('/^#[0-9a-fA-F]{6}$/', $color) === 1 ? strtolower($color) : $fallback;
+    }
+
+    private static function boundedInt(mixed $value, int $min, int $max, int $fallback): int
+    {
+        $number = is_numeric($value) ? (int) $value : $fallback;
+
+        return max($min, min($max, $number));
     }
 
     public static function normalizeAll(mixed $layouts): array
@@ -334,10 +502,23 @@ final class PageLayoutCatalog
             'pageKey' => $pageKey,
             'label' => $definition['label'],
             'containerSelector' => $definition['container'],
-            'blocks' => collect($definition['blocks'])
-                ->map(fn (array $block, string $id) => ['id' => $id, ...$block])
-                ->values()
-                ->all(),
+            'blocks' => [
+                ...collect($definition['blocks'])
+                    ->map(fn (array $block, string $id) => ['id' => $id, 'custom' => false, ...$block])
+                    ->values()
+                    ->all(),
+                ...collect($layout['custom_blocks'])
+                    ->map(fn (array $block) => [
+                        'id' => $block['id'],
+                        'label' => $block['label'],
+                        'custom' => true,
+                        'selector' => null,
+                        'content' => $block,
+                    ])
+                    ->values()
+                    ->all(),
+            ],
+            'customBlocks' => $layout['custom_blocks'],
             'layout' => $layout,
             'editorPreview' => $isAuthorizedPreview,
         ];
