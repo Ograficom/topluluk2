@@ -255,50 +255,15 @@ final class PageLayoutCatalog
 
     public static function currentPageKey(): ?string
     {
-        $route = request()->route();
+        $routeName = request()->route()?->getName();
 
-        if (!$route) {
+        if (!is_string($routeName) || $routeName === '' || str_starts_with($routeName, 'filament.')) {
             return null;
         }
 
-        $routeName = $route->getName();
-
-        $knownPageKey = match ($routeName) {
-            'home' => 'home',
-            'discover' => 'discover',
-            'blog.categories' => 'categories',
-            'blog.tags' => 'tags',
-            'blog.category' => 'category_show',
-            'blog.index', 'blog.posts' => request()->filled('tag')
-                ? 'tag_feed'
-                : (request()->filled('category') ? 'category_show' : 'blog_index'),
-            'blog.post' => 'post_show',
-            'users.show' => 'profile',
-            'users.index' => 'users_index',
-            'messages.index' => 'messages_index',
-            'notifications.index' => 'notifications',
-            'blog.bookmarks' => 'bookmarks',
-            'blog.drafts' => 'drafts',
-            'pages.sss' => 'faq',
-            default => null,
-        };
-
-        if ($knownPageKey !== null) {
-            return $knownPageKey;
-        }
-
-        if (!is_string($routeName) || $routeName === '') {
-            return null;
-        }
-
-        $keySuffix = preg_replace('/[^a-zA-Z0-9_-]+/', '_', $routeName) ?? '';
-        $keySuffix = trim(substr($keySuffix, 0, 100), '_-');
-        $candidate = 'auto_' . $keySuffix;
-        $definition = self::definitions()[$candidate] ?? null;
-
-        return ($definition['generic'] ?? false) === true && ($definition['route'] ?? null) === $routeName
-            ? $candidate
-            : null;
+        // Use the actual Laravel route name so every existing Blade route can have
+        // an independent visual layout without adding it to a hand-maintained list.
+        return 'blade:' . $routeName;
     }
 
     public static function normalizeLayout(string $pageKey, mixed $value): array
@@ -533,13 +498,84 @@ final class PageLayoutCatalog
 
         $normalized = [];
 
-        foreach (array_keys(self::definitions()) as $pageKey) {
-            if (array_key_exists($pageKey, $layouts)) {
-                $normalized[$pageKey] = self::normalizeLayout($pageKey, $layouts[$pageKey]);
+        foreach ($layouts as $pageKey => $layout) {
+            if (!is_string($pageKey)) {
+                continue;
+            }
+
+            if (str_starts_with($pageKey, 'blade:')) {
+                $routeName = substr($pageKey, 6);
+
+                if ($routeName !== '' && preg_match('/^[A-Za-z0-9_.:-]{1,190}$/', $routeName) === 1) {
+                    $normalized[$pageKey] = self::normalizeUniversalLayout($layout);
+                }
+
+                continue;
+            }
+
+            // Older curated layout entries remain readable for rollback compatibility.
+            if (self::definition($pageKey)) {
+                $normalized[$pageKey] = self::normalizeLayout($pageKey, $layout);
             }
         }
 
         return $normalized;
+    }
+
+    /**
+     * Universal page layouts store original DOM selectors, sibling order and hidden nodes.
+     * Selectors are used only by querySelector(), never interpolated into CSS.
+     *
+     * @return array{containers: array<string, array{order: list<string>, hidden: list<string>}>}
+     */
+    public static function normalizeUniversalLayout(mixed $value): array
+    {
+        $input = is_array($value) ? $value : [];
+        $inputContainers = is_array($input['containers'] ?? null) ? $input['containers'] : [];
+        $containers = [];
+
+        foreach (array_slice($inputContainers, 0, 80, true) as $parentSelector => $container) {
+            if (!is_string($parentSelector) || !self::validUniversalSelector($parentSelector) || !is_array($container)) {
+                continue;
+            }
+
+            $orderInput = is_array($container['order'] ?? null) ? $container['order'] : [];
+            $hiddenInput = is_array($container['hidden'] ?? null) ? $container['hidden'] : [];
+            $order = [];
+            $seen = [];
+
+            foreach (array_slice($orderInput, 0, 120) as $selector) {
+                if (!is_string($selector) || !self::validUniversalSelector($selector) || isset($seen[$selector])) {
+                    continue;
+                }
+
+                $seen[$selector] = true;
+                $order[] = $selector;
+            }
+
+            $hidden = [];
+            foreach (array_slice($hiddenInput, 0, 120) as $selector) {
+                if (is_string($selector)
+                    && self::validUniversalSelector($selector)
+                    && isset($seen[$selector])
+                    && !in_array($selector, $hidden, true)) {
+                    $hidden[] = $selector;
+                }
+            }
+
+            if ($order !== []) {
+                $containers[$parentSelector] = ['order' => $order, 'hidden' => $hidden];
+            }
+        }
+
+        return ['containers' => $containers];
+    }
+
+    private static function validUniversalSelector(string $selector): bool
+    {
+        return strlen($selector) <= 1800
+            && trim($selector) !== ''
+            && preg_match('/^[A-Za-z0-9_.:#() >-]+$/', $selector) === 1;
     }
 
     public static function layoutUrl(string $pageKey, bool $preview = false): string
@@ -585,48 +621,31 @@ final class PageLayoutCatalog
 
     public static function publicConfig(string $pageKey, mixed $storedLayouts, bool $preview): ?array
     {
-        $definition = self::definition($pageKey);
-
-        if (!$definition) {
+        if (!str_starts_with($pageKey, 'blade:')) {
             return null;
         }
 
-        $storedLayouts = is_array($storedLayouts) ? $storedLayouts : [];
+        $routeName = substr($pageKey, 6);
+        if ($routeName === '' || str_starts_with($routeName, 'filament.')) {
+            return null;
+        }
+
+        $storedLayouts = self::normalizeAll($storedLayouts);
         $hasSavedLayout = array_key_exists($pageKey, $storedLayouts);
         $isAuthorizedPreview = $preview
             && request()->boolean('ografi_layout_preview')
-            && request()->query('ografi_layout_page') === $pageKey
             && (auth()->user()?->isAdmin() ?? false);
 
         if (!$hasSavedLayout && !$isAuthorizedPreview) {
             return null;
         }
 
-        $layout = self::normalizeLayout($pageKey, $storedLayouts[$pageKey] ?? []);
-
         return [
+            'mode' => 'universal-dom',
             'pageKey' => $pageKey,
-            'label' => $definition['label'],
-            'containerSelector' => $definition['container'],
-            'blocks' => [
-                ...collect($definition['blocks'])
-                    ->map(fn (array $block, string $id) => ['id' => $id, 'custom' => false, ...$block])
-                    ->values()
-                    ->all(),
-                ...collect($layout['custom_blocks'])
-                    ->map(fn (array $block) => [
-                        'id' => $block['id'],
-                        'label' => $block['label'],
-                        'custom' => true,
-                        'selector' => null,
-                        'content' => $block,
-                    ])
-                    ->values()
-                    ->all(),
-            ],
-            'customBlocks' => $layout['custom_blocks'],
-            'layout' => $layout,
-            'generic' => (bool) ($definition['generic'] ?? false),
+            'routeName' => $routeName,
+            'label' => $routeName,
+            'layout' => self::normalizeUniversalLayout($storedLayouts[$pageKey] ?? []),
             'editorPreview' => $isAuthorizedPreview,
         ];
     }
