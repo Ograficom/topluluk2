@@ -1,319 +1,278 @@
 <x-filament::page>
     <div class="space-y-5">
         <section class="rounded-xl border border-gray-200 bg-white p-4 dark:border-gray-700 dark:bg-gray-900">
-            <div class="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
-                <div class="min-w-0">
-                    <h2 class="text-lg font-semibold text-gray-950 dark:text-white">Gorsel Blade sayfa duzenleyicisi</h2>
-                    <p class="mt-1 max-w-3xl text-sm text-gray-500 dark:text-gray-400">
-                        Gercek Blade sayfasini onizle; bolumleri surukleyip sirala, gizle, yeni icerik bloklari ekle ve blok icerigini duzenle.
-                        Gonderi, profil, yorum ve diger dinamik Laravel/Livewire islevleri korunur.
+            <div class="flex flex-col gap-4 xl:flex-row xl:items-end xl:justify-between">
+                <div class="min-w-0 flex-1">
+                    <h2 class="text-lg font-semibold text-gray-950 dark:text-white">Tum Blade sayfalarini gorsel duzenle</h2>
+                    <p class="mt-1 max-w-4xl text-sm leading-6 text-gray-500 dark:text-gray-400">
+                        Gercek sayfayi onizlemede ac. Uzerine geldiginde cikan tutamaciyla bolumleri surukle, gizle veya goster.
+                        Hazir baslik, metin, gorsel ve buton bloklarini da ekleyebilirsin. Degisiklikler kaydedilene kadar yayina alinmaz.
                     </p>
                 </div>
-                <div class="w-full lg:w-72">
-                    <label for="ografi-page-layout-select" class="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-200">Düzenlenecek sayfa</label>
-                    <select id="ografi-page-layout-select" wire:model.live="pageKey" class="w-full rounded-lg border-gray-300 text-sm dark:border-gray-600 dark:bg-gray-800">
-                        @foreach($this->pageOptions() as $key => $label)
-                            <option value="{{ $key }}">{{ $label }}</option>
+                <div class="flex flex-wrap gap-2">
+                    <x-filament::button id="ografi-layout-reload" color="gray" type="button">Onizlemeyi yenile</x-filament::button>
+                    <x-filament::button id="ografi-layout-reset" color="gray" type="button">Sayfayi varsayilana al</x-filament::button>
+                    <x-filament::button id="ografi-layout-save" type="button">Duzeni kaydet</x-filament::button>
+                </div>
+            </div>
+
+            <div class="mt-4 grid grid-cols-1 gap-3 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-end">
+                <div>
+                    <label for="ografi-layout-path" class="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-200">Duzenlenecek sayfanin adresi</label>
+                    <input id="ografi-layout-path" type="text" list="ografi-layout-page-shortcuts"
+                        wire:model.live.debounce.700ms="previewPath"
+                        placeholder="/, /discover, /blog/, /tr/yazi-slug, /u/kullanici-adi"
+                        class="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-800 dark:text-white">
+                    <datalist id="ografi-layout-page-shortcuts">
+                        @foreach($this->pageShortcuts() as $path => $label)
+                            <option value="{{ $path }}">{{ $label }}</option>
                         @endforeach
-                    </select>
+                    </datalist>
+                    <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">Herhangi bir ayni-site yolunu girebilirsin. Parametreli sayfalar icin gercek yolu yaz; ornegin /tr/yazi-slug veya /u/kullanici-adi.</p>
+                </div>
+                <div class="rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 dark:border-gray-700 dark:bg-gray-800">
+                    <p class="text-xs text-gray-500 dark:text-gray-400">Secili Laravel rotasi</p>
+                    <p id="ografi-layout-route-label" class="mt-1 max-w-xs break-all text-sm font-medium text-gray-900 dark:text-white">{{ $activeLayoutKey }}</p>
+                    <p id="ografi-layout-dirty-label" class="mt-1 text-xs {{ $layoutDirty ? 'text-amber-600' : 'text-emerald-600' }}">{{ $layoutDirty ? 'Kaydedilmemis degisiklik var' : 'Degisiklikler kaydedildi' }}</p>
                 </div>
             </div>
         </section>
 
-        <div class="grid grid-cols-1 items-start gap-5 2xl:grid-cols-[360px_minmax(0,1fr)]">
-            <section class="min-w-0 rounded-xl border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
-                <div class="border-b border-gray-200 p-4 dark:border-gray-700">
-                    <h3 class="font-semibold text-gray-950 dark:text-white">Sayfa ve icerik bloklari</h3>
-                    <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">Tutamaktan surukleyerek yer degistir. Ozel blok ekle, duzenle, sil veya gizle.</p>
-                </div>
-                <script type="application/json" id="ografi-page-layout-custom-blocks">{!! json_encode($this->customBlocks, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!}</script>
-                <ol id="ografi-page-layout-order" class="space-y-2 p-3">
-                    @foreach($this->blockItems() as $block)
-                        <li wire:key="layout-block-{{ $pageKey }}-{{ $block['id'] }}"
-                            data-layout-item="{{ $block['id'] }}"
-                            class="flex items-center gap-2 rounded-lg border border-gray-200 p-3 dark:border-gray-700 {{ $block['hidden'] ? 'opacity-50' : '' }}">
-                            <button type="button" data-drag-handle="{{ $block['id'] }}" aria-label="Surukle: {{ $block['label'] }}" title="Surukle" class="cursor-grab rounded-md p-2 text-gray-500 hover:bg-gray-100 active:cursor-grabbing dark:hover:bg-gray-800">
-                                <svg viewBox="0 0 20 20" width="18" height="18" fill="currentColor" aria-hidden="true"><circle cx="6" cy="4" r="1.4"/><circle cx="14" cy="4" r="1.4"/><circle cx="6" cy="10" r="1.4"/><circle cx="14" cy="10" r="1.4"/><circle cx="6" cy="16" r="1.4"/><circle cx="14" cy="16" r="1.4"/></svg>
-                            </button>
-                            <div class="min-w-0 flex-1">
-                                <p class="text-sm font-medium text-gray-900 dark:text-white">{{ $block['label'] }}</p>
-                                <p class="mt-0.5 text-xs text-gray-500 dark:text-gray-400">{{ $block['custom'] ? 'Özel içerik · ' . $block['type'] : 'Hazır bölüm' }} · {{ $block['hidden'] ? 'Gizli' : 'Görünür' }}</p>
-                            </div>
-                            @if($block['custom'])
-                                <button type="button" wire:click="editCustomBlock('{{ $block['id'] }}')" class="rounded-md p-2 text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800" aria-label="Özel bloğu düzenle" title="Düzenle">
-                                    <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="m14 5 5 5M4 20l4.5-1 10-10a2.1 2.1 0 0 0-3-3l-10 10L4 20Z"/></svg>
-                                </button>
-                            @endif
-                            <button type="button" wire:click="toggleBlock('{{ $block['id'] }}')" class="rounded-md p-2 text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800" aria-label="{{ $block['hidden'] ? 'Bolumu goster' : 'Bolumu gizle' }}" title="{{ $block['hidden'] ? 'Göster' : 'Gizle' }}">
-                                @if($block['hidden'])
-                                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M3 3l18 18"/><path d="M10.6 10.6a2 2 0 0 0 2.8 2.8"/><path d="M9.9 5.3A10.7 10.7 0 0 1 12 5c5.5 0 9 7 9 7a17.9 17.9 0 0 1-3.3 4.1M6.2 6.2C4.1 7.6 3 12 3 12s3.5 7 9 7c.8 0 1.5-.1 2.2-.4"/></svg>
-                                @else
-                                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M2.5 12s3.5-7 9.5-7 9.5 7 9.5 7-3.5 7-9.5 7-9.5-7-9.5-7Z"/><circle cx="12" cy="12" r="2.8"/></svg>
-                                @endif
-                            </button>
-                        </li>
-                    @endforeach
-                </ol>
-
-                <div class="space-y-3 border-t border-gray-200 p-3 dark:border-gray-700">
-                    <div>
-                        <h4 class="text-sm font-semibold text-gray-900 dark:text-white">Özel içerik bloğu ekle</h4>
-                        <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">Hazır bölümlere ek olarak başlık, metin, görsel, buton, bilgi kutusu, ayırıcı veya boşluk ekleyebilirsin.</p>
-                    </div>
-                    <div class="flex flex-col gap-2 sm:flex-row">
-                        <select wire:model.live="newBlockType" aria-label="Yeni blok türü" class="min-w-0 flex-1 rounded-lg border-gray-300 text-sm dark:border-gray-600 dark:bg-gray-800">
-                            <option value="heading">Başlık</option>
+        <div class="grid grid-cols-1 items-start gap-5 2xl:grid-cols-[340px_minmax(0,1fr)]">
+            <aside class="min-w-0 space-y-4">
+                <section class="rounded-xl border border-gray-200 bg-white p-4 dark:border-gray-700 dark:bg-gray-900">
+                    <h3 class="text-sm font-semibold text-gray-950 dark:text-white">Yeni blok ekle</h3>
+                    <p class="mt-1 text-xs leading-5 text-gray-500 dark:text-gray-400">Blok sayfanin ana icerik alanina eklenir. Sonra onizlemede tutamaciyla istedigin yere tasi.</p>
+                    <div class="mt-3 flex gap-2">
+                        <select wire:model.live="newBlockType" aria-label="Yeni blok turu" class="min-w-0 flex-1 rounded-lg border-gray-300 text-sm dark:border-gray-600 dark:bg-gray-800">
+                            <option value="heading">Baslik</option>
                             <option value="text">Metin</option>
-                            <option value="image">Görsel</option>
+                            <option value="image">Gorsel</option>
                             <option value="button">Buton</option>
-                            <option value="callout">Bilgi kutusu</option>
-                            <option value="divider">Ayırıcı çizgi</option>
-                            <option value="spacer">Boşluk</option>
+                            <option value="callout">Vurgulu alan</option>
+                            <option value="divider">Ayirici</option>
+                            <option value="spacer">Bosluk</option>
                         </select>
-                        <x-filament::button size="sm" type="button" wire:click="addCustomBlock">Blok ekle</x-filament::button>
+                        <x-filament::button type="button" wire:click="addUniversalBlock">Blok ekle</x-filament::button>
                     </div>
 
-                    @if($editingCustomBlockId)
-                        <div class="space-y-3 rounded-lg border border-blue-200 bg-blue-50/50 p-3 dark:border-blue-900 dark:bg-blue-950/20">
-                            <div class="flex items-center justify-between gap-2">
-                                <h5 class="text-sm font-semibold text-gray-900 dark:text-white">Özel bloğu düzenle</h5>
-                                <span class="text-xs text-gray-500">{{ $customBlockDraft['type'] ?? 'text' }}</span>
+                    <div class="mt-4 border-t border-gray-100 pt-3 dark:border-gray-800">
+                        <h4 class="text-xs font-semibold uppercase tracking-wide text-gray-500">Ekledigin bloklar</h4>
+                        <div class="mt-2 space-y-2">
+                            @forelse($this->contentBlocks() as $block)
+                                <div wire:key="custom-blade-block-{{ $block['id'] }}" class="flex items-center gap-2 rounded-lg border border-gray-200 p-2 dark:border-gray-700">
+                                    <div class="min-w-0 flex-1">
+                                        <p class="truncate text-sm font-medium text-gray-900 dark:text-white">{{ $block['label'] }}</p>
+                                        <p class="text-xs text-gray-500 dark:text-gray-400">{{ $block['type'] }}</p>
+                                    </div>
+                                    <button type="button" wire:click="editUniversalBlock('{{ $block['id'] }}')" class="rounded-md border border-gray-200 px-2 py-1 text-xs text-gray-600 hover:bg-gray-50 dark:border-gray-700 dark:text-gray-300 dark:hover:bg-gray-800">Duzenle</button>
+                                    <button type="button" wire:click="removeUniversalBlock('{{ $block['id'] }}')" class="rounded-md border border-gray-200 px-2 py-1 text-xs text-red-600 hover:bg-red-50 dark:border-gray-700 dark:hover:bg-red-950">Sil</button>
+                                </div>
+                            @empty
+                                <p class="text-sm text-gray-500">Bu sayfaya henuz yeni blok eklenmedi.</p>
+                            @endforelse
+                        </div>
+                    </div>
+                </section>
+
+                @if($editingBlockId)
+                    <section class="space-y-3 rounded-xl border border-gray-200 bg-white p-4 dark:border-gray-700 dark:bg-gray-900">
+                        <div>
+                            <h3 class="text-sm font-semibold text-gray-950 dark:text-white">Blok icerigini duzenle</h3>
+                            <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">Degisiklikler once onizlemeye uygulanir; kalici hale gelmesi icin sayfa duzenini de kaydet.</p>
+                        </div>
+
+                        <div>
+                            <label class="mb-1 block text-xs font-medium text-gray-700 dark:text-gray-300">Blok tipi</label>
+                            <input value="{{ $blockDraft['type'] ?? '' }}" readonly class="w-full rounded-lg border-gray-200 bg-gray-50 text-sm dark:border-gray-700 dark:bg-gray-800">
+                        </div>
+                        <div>
+                            <label class="mb-1 block text-xs font-medium text-gray-700 dark:text-gray-300">Baslik</label>
+                            <input wire:model="blockDraft.title" maxlength="140" class="w-full rounded-lg border-gray-300 text-sm dark:border-gray-600 dark:bg-gray-800">
+                        </div>
+                        <div>
+                            <label class="mb-1 block text-xs font-medium text-gray-700 dark:text-gray-300">Metin</label>
+                            <textarea wire:model="blockDraft.text" rows="4" maxlength="4000" class="w-full rounded-lg border-gray-300 text-sm dark:border-gray-600 dark:bg-gray-800"></textarea>
+                        </div>
+                        <div>
+                            <label class="mb-1 block text-xs font-medium text-gray-700 dark:text-gray-300">Gorsel adresi (HTTPS)</label>
+                            <input wire:model="blockDraft.image_url" maxlength="2000" placeholder="https://..." class="w-full rounded-lg border-gray-300 text-sm dark:border-gray-600 dark:bg-gray-800">
+                        </div>
+                        <div>
+                            <label class="mb-1 block text-xs font-medium text-gray-700 dark:text-gray-300">Gorsel aciklamasi</label>
+                            <input wire:model="blockDraft.alt" maxlength="180" class="w-full rounded-lg border-gray-300 text-sm dark:border-gray-600 dark:bg-gray-800">
+                        </div>
+                        <div>
+                            <label class="mb-1 block text-xs font-medium text-gray-700 dark:text-gray-300">Buton yazisi</label>
+                            <input wire:model="blockDraft.button_text" maxlength="100" class="w-full rounded-lg border-gray-300 text-sm dark:border-gray-600 dark:bg-gray-800">
+                        </div>
+                        <div>
+                            <label class="mb-1 block text-xs font-medium text-gray-700 dark:text-gray-300">Tiklama adresi (HTTPS veya site ici yol)</label>
+                            <input wire:model="blockDraft.url" maxlength="2000" placeholder="/iletisim" class="w-full rounded-lg border-gray-300 text-sm dark:border-gray-600 dark:bg-gray-800">
+                        </div>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="mb-1 block text-xs font-medium text-gray-700 dark:text-gray-300">Arka plan</label>
+                                <input type="color" wire:model="blockDraft.background" class="h-9 w-full rounded border border-gray-300 p-1 dark:border-gray-600">
                             </div>
-                            <label class="block text-xs font-medium text-gray-700 dark:text-gray-300">
-                                Başlık / blok adı
-                                <input wire:model="customBlockDraft.title" maxlength="140" class="mt-1 w-full rounded-md border-gray-300 text-sm dark:border-gray-600 dark:bg-gray-800">
-                            </label>
-                            <label class="block text-xs font-medium text-gray-700 dark:text-gray-300">
-                                Metin
-                                <textarea wire:model="customBlockDraft.text" rows="3" maxlength="4000" class="mt-1 w-full rounded-md border-gray-300 text-sm dark:border-gray-600 dark:bg-gray-800"></textarea>
-                            </label>
-                            <label class="block text-xs font-medium text-gray-700 dark:text-gray-300">
-                                Görsel URL
-                                <input wire:model="customBlockDraft.image_url" maxlength="1000" placeholder="https://... veya /storage/..." class="mt-1 w-full rounded-md border-gray-300 text-sm dark:border-gray-600 dark:bg-gray-800">
-                            </label>
-                            <label class="block text-xs font-medium text-gray-700 dark:text-gray-300">
-                                Görsel alternatif metni
-                                <input wire:model="customBlockDraft.alt" maxlength="180" class="mt-1 w-full rounded-md border-gray-300 text-sm dark:border-gray-600 dark:bg-gray-800">
-                            </label>
-                            <label class="block text-xs font-medium text-gray-700 dark:text-gray-300">
-                                Bağlantı adresi
-                                <input wire:model="customBlockDraft.url" maxlength="1000" placeholder="/sayfa, #bolum veya https://..." class="mt-1 w-full rounded-md border-gray-300 text-sm dark:border-gray-600 dark:bg-gray-800">
-                            </label>
-                            <label class="block text-xs font-medium text-gray-700 dark:text-gray-300">
-                                Buton yazısı
-                                <input wire:model="customBlockDraft.button_text" maxlength="100" class="mt-1 w-full rounded-md border-gray-300 text-sm dark:border-gray-600 dark:bg-gray-800">
-                            </label>
-                            <div class="grid grid-cols-2 gap-3">
-                                <label class="block text-xs font-medium text-gray-700 dark:text-gray-300">
-                                    Hizalama
-                                    <select wire:model="customBlockDraft.align" class="mt-1 w-full rounded-md border-gray-300 text-sm dark:border-gray-600 dark:bg-gray-800">
-                                        <option value="left">Sol</option>
-                                        <option value="center">Orta</option>
-                                        <option value="right">Sağ</option>
-                                    </select>
-                                </label>
-                                <label class="block text-xs font-medium text-gray-700 dark:text-gray-300">
-                                    İç boşluk (px)
-                                    <input type="number" min="0" max="64" wire:model="customBlockDraft.padding" class="mt-1 w-full rounded-md border-gray-300 text-sm dark:border-gray-600 dark:bg-gray-800">
-                                </label>
-                                <label class="block text-xs font-medium text-gray-700 dark:text-gray-300">
-                                    Arka plan
-                                    <input type="color" wire:model="customBlockDraft.background" class="mt-1 h-9 w-full rounded-md border border-gray-300 dark:border-gray-600">
-                                </label>
-                                <label class="block text-xs font-medium text-gray-700 dark:text-gray-300">
-                                    Metin rengi
-                                    <input type="color" wire:model="customBlockDraft.text_color" class="mt-1 h-9 w-full rounded-md border border-gray-300 dark:border-gray-600">
-                                </label>
-                                <label class="block text-xs font-medium text-gray-700 dark:text-gray-300">
-                                    Yükseklik (px)
-                                    <input type="number" min="8" max="240" wire:model="customBlockDraft.height" class="mt-1 w-full rounded-md border-gray-300 text-sm dark:border-gray-600 dark:bg-gray-800">
-                                </label>
-                                <label class="block text-xs font-medium text-gray-700 dark:text-gray-300">
-                                    Maks. genişlik (px)
-                                    <input type="number" min="240" max="1600" wire:model="customBlockDraft.max_width" class="mt-1 w-full rounded-md border-gray-300 text-sm dark:border-gray-600 dark:bg-gray-800">
-                                </label>
-                            </div>
-                            <div class="flex flex-wrap gap-2">
-                                <x-filament::button size="sm" type="button" wire:click="applyCustomBlockDraft">Önizlemeye uygula</x-filament::button>
-                                <x-filament::button size="sm" color="gray" type="button" wire:click="removeCustomBlock('{{ $editingCustomBlockId }}')">Bloğu sil</x-filament::button>
+                            <div>
+                                <label class="mb-1 block text-xs font-medium text-gray-700 dark:text-gray-300">Yazi rengi</label>
+                                <input type="color" wire:model="blockDraft.text_color" class="h-9 w-full rounded border border-gray-300 p-1 dark:border-gray-600">
                             </div>
                         </div>
-                    @endif
-                </div>
-
-                <div class="flex flex-wrap gap-2 border-t border-gray-200 p-3 dark:border-gray-700">
-                    <x-filament::button color="gray" size="sm" type="button" wire:click="restoreDefaultOrder">Varsayilan sira</x-filament::button>
-                    <x-filament::button color="gray" size="sm" type="button" wire:click="showAllBlocks">Tum bolumleri goster</x-filament::button>
-                    <x-filament::button size="sm" type="button" wire:click="saveLayout">Duzeni kaydet</x-filament::button>
-                </div>
-            </section>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="mb-1 block text-xs font-medium text-gray-700 dark:text-gray-300">Ic bosluk (px)</label>
+                                <input type="number" min="0" max="64" wire:model="blockDraft.padding" class="w-full rounded-lg border-gray-300 text-sm dark:border-gray-600 dark:bg-gray-800">
+                            </div>
+                            <div>
+                                <label class="mb-1 block text-xs font-medium text-gray-700 dark:text-gray-300">Genislik (px)</label>
+                                <input type="number" min="240" max="1600" wire:model="blockDraft.max_width" class="w-full rounded-lg border-gray-300 text-sm dark:border-gray-600 dark:bg-gray-800">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="mb-1 block text-xs font-medium text-gray-700 dark:text-gray-300">Hizalama</label>
+                            <select wire:model="blockDraft.align" class="w-full rounded-lg border-gray-300 text-sm dark:border-gray-600 dark:bg-gray-800">
+                                <option value="left">Sola</option>
+                                <option value="center">Ortala</option>
+                                <option value="right">Saga</option>
+                            </select>
+                        </div>
+                        <x-filament::button type="button" block wire:click="saveUniversalBlockDraft">Blok ayarlarini onizlemeye uygula</x-filament::button>
+                    </section>
+                @endif
+            </aside>
 
             <section class="min-w-0 overflow-hidden rounded-xl border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
                 <div class="flex flex-col gap-2 border-b border-gray-200 p-4 sm:flex-row sm:items-center sm:justify-between dark:border-gray-700">
                     <div>
-                        <h3 class="font-semibold text-gray-950 dark:text-white">Canli sayfa onizlemesi</h3>
-                        <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">Onizleme iframe'i mevcut sayfayi yukler. Sayfa bolumlerini suruklemek icin iframe icindeki tutamaklari kullan.</p>
+                        <h3 class="text-sm font-semibold text-gray-950 dark:text-white">Gercek Blade sayfasi</h3>
+                        <p class="mt-1 text-xs leading-5 text-gray-500 dark:text-gray-400">Bolum uzerine gelerek tutamacini ac. Sadece kardes bolumler ayni kapsayicinin icinde yer degistirir.</p>
                     </div>
-                    <a href="{{ $this->previewUrl() }}" target="_blank" rel="noopener noreferrer" class="text-sm font-medium text-primary-600 hover:underline">Onizlemeyi yeni sekmede ac</a>
+                    <a href="{{ $this->publicPreviewUrl() }}" target="_blank" rel="noopener noreferrer" class="text-sm font-medium text-primary-600 hover:underline">Normal sayfayi ac</a>
                 </div>
-                <div class="bg-gray-50 p-2 dark:bg-gray-950">
-                    <iframe
-                        id="ografi-page-layout-preview"
-                        title="Blade sayfa duzeni canli onizleme"
+
+                <div class="bg-gray-100 p-2 dark:bg-gray-950 sm:p-3">
+                    <iframe id="ografi-page-layout-preview" title="Gercek Blade sayfasi surukle birak onizlemesi"
                         src="{{ $this->previewUrl() }}"
-                        wire:key="layout-preview-{{ $pageKey }}"
-                        class="h-[720px] w-full rounded-lg border border-gray-200 bg-white dark:border-gray-700"
-                        loading="eager"
-                    ></iframe>
+                        wire:key="ografi-layout-preview-{{ md5($this->previewUrl()) }}"
+                        class="h-[72vh] min-h-[560px] w-full rounded-lg border border-gray-200 bg-white dark:border-gray-700"
+                        loading="eager"></iframe>
                 </div>
             </section>
         </div>
 
         <section class="rounded-xl border border-gray-200 bg-white p-4 dark:border-gray-700 dark:bg-gray-900">
-            <div class="mb-3">
-                <h3 class="font-semibold text-gray-950 dark:text-white">Sayfa duzeni gecmisi</h3>
-                <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">Kayit oncesinde tum sayfa siralari yedeklenir; buradan onceki duzeni geri yukleyebilirsin.</p>
-            </div>
-            @forelse($this->revisions() as $revision)
-                <div class="flex flex-wrap items-center justify-between gap-3 border-t border-gray-100 py-3 first:border-0 dark:border-gray-800">
-                    <div class="min-w-0">
-                        <p class="text-sm font-medium text-gray-900 dark:text-white">{{ $revision->label }}</p>
-                        <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">
-                            {{ $revision->created_at?->format('d.m.Y H:i') }}
-                            @if($revision->user?->name) · {{ $revision->user->name }} @endif
-                        </p>
+            <h3 class="text-sm font-semibold text-gray-950 dark:text-white">Son sayfa duzeni yedekleri</h3>
+            <p class="mt-1 text-xs leading-5 text-gray-500 dark:text-gray-400">Geri yukleme, kayit anindaki tum Blade sayfa duzenlerini geri alir.</p>
+            <div class="mt-2 divide-y divide-gray-100 dark:divide-gray-800">
+                @forelse($this->revisions() as $revision)
+                    <div class="flex flex-wrap items-center justify-between gap-3 py-3">
+                        <div class="min-w-0">
+                            <p class="text-sm font-medium text-gray-900 dark:text-white">{{ $revision->label }}</p>
+                            <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">{{ $revision->created_at?->format('d.m.Y H:i') }} @if($revision->user?->name) · {{ $revision->user->name }} @endif</p>
+                        </div>
+                        <x-filament::button size="xs" color="gray" type="button" wire:click="restoreRevision({{ $revision->id }})">Geri yukle</x-filament::button>
                     </div>
-                    <x-filament::button size="xs" color="gray" type="button" wire:click="restoreRevision({{ $revision->id }})">Geri yukle</x-filament::button>
-                </div>
-            @empty
-                <p class="text-sm text-gray-500">Henuz sayfa duzeni surumu kaydedilmedi.</p>
-            @endforelse
+                @empty
+                    <p class="py-3 text-sm text-gray-500">Henuz yedek tasarim yok.</p>
+                @endforelse
+            </div>
         </section>
     </div>
 
     @script
     <script>
         (() => {
-            const parentOrigin = window.location.origin;
-            const getPageKey = () => document.getElementById('ografi-page-layout-select')?.value || 'home';
+            const iframe = () => document.getElementById('ografi-page-layout-preview');
             const $wire = @this;
-            let dragId = null;
+            const saveButton = document.getElementById('ografi-layout-save');
+            const resetButton = document.getElementById('ografi-layout-reset');
+            const reloadButton = document.getElementById('ografi-layout-reload');
+            const pathInput = document.getElementById('ografi-layout-path');
+            const routeLabel = document.getElementById('ografi-layout-route-label');
+            const dirtyLabel = document.getElementById('ografi-layout-dirty-label');
+            let pendingSync = Promise.resolve();
 
-            const getIds = () => Array.from(document.querySelectorAll('#ografi-page-layout-order [data-layout-item]'))
-                .map((element) => element.dataset.layoutItem)
-                .filter(Boolean);
-
-            const getHidden = () => Array.from(document.querySelectorAll('#ografi-page-layout-order [data-layout-item]'))
-                .filter((element) => element.classList.contains('opacity-50'))
-                .map((element) => element.dataset.layoutItem)
-                .filter(Boolean);
-
-            const getCustomBlocks = () => {
-                try {
-                    const node = document.getElementById('ografi-page-layout-custom-blocks');
-                    const value = JSON.parse(node?.textContent || '[]');
-                    return Array.isArray(value) ? value : [];
-                } catch (error) {
-                    console.error('[Ografi layout] Invalid custom block payload.', error);
-                    return [];
-                }
+            const setDirtyLabel = (dirty) => {
+                if (!dirtyLabel) return;
+                dirtyLabel.textContent = dirty ? 'Kaydedilmemis degisiklik var' : 'Degisiklikler kaydedildi';
+                dirtyLabel.classList.toggle('text-amber-600', dirty);
+                dirtyLabel.classList.toggle('text-emerald-600', !dirty);
             };
 
-            const sendDraftToPreview = () => {
-                const frame = document.getElementById('ografi-page-layout-preview');
-                if (!frame?.contentWindow) return;
-                frame.contentWindow.postMessage({
-                    type: 'ografi-layout-apply-draft',
-                    pageKey: getPageKey(),
-                    order: getIds(),
-                    hidden: getHidden(),
-                    customBlocks: getCustomBlocks(),
-                }, parentOrigin);
+            const reloadPreview = () => {
+                const frame = iframe();
+                if (!frame) return;
+                const current = new URL(frame.src, window.location.origin);
+                current.searchParams.set('ografi_layout_preview', '1');
+                current.searchParams.set('_ografi_reload', String(Date.now()));
+                frame.src = current.toString();
             };
 
-            const bindSorter = () => {
-                const list = document.getElementById('ografi-page-layout-order');
-                if (!list || list.dataset.sorterBound === '1') return;
-                list.dataset.sorterBound = '1';
-
-                list.querySelectorAll('[data-drag-handle]').forEach((handle) => {
-                    const item = handle.closest('[data-layout-item]');
-                    if (item) {
-                        item.draggable = true;
-                        item.classList.add('cursor-move');
-                    }
-                });
-
-                list.addEventListener('dragstart', (event) => {
-                    const handle = event.target.closest('[data-drag-handle]');
-                    const item = event.target.closest('[data-layout-item]');
-                    // Only the visible grip starts a drag. Eye buttons and labels
-                    // remain clickable and must not accidentally reorder a section.
-                    if (!item || !handle || !list.contains(handle)) {
-                        event.preventDefault();
-                        return;
-                    }
-                    dragId = item.dataset.layoutItem;
-                    event.dataTransfer.effectAllowed = 'move';
-                    event.dataTransfer.setData('text/plain', dragId);
-                    item.classList.add('ring-2', 'ring-primary-500');
-                });
-
-                list.addEventListener('dragover', (event) => {
-                    if (!dragId) return;
-                    event.preventDefault();
-                    const target = event.target.closest('[data-layout-item]');
-                    if (!target || target.dataset.layoutItem === dragId) return;
-                    const rect = target.getBoundingClientRect();
-                    const after = event.clientY > rect.top + rect.height / 2;
-                    list.insertBefore(list.querySelector('[data-layout-item="' + CSS.escape(dragId) + '"]'), after ? target.nextSibling : target);
-                });
-
-                list.addEventListener('drop', (event) => {
-                    if (!dragId) return;
-                    event.preventDefault();
-                    const order = getIds();
-                    dragId = null;
-                    list.querySelectorAll('[data-layout-item]').forEach((item) => item.classList.remove('ring-2', 'ring-primary-500'));
-                    $wire.setDraftOrder(order);
-                    sendDraftToPreview();
-                });
-
-                list.addEventListener('dragend', () => {
-                    dragId = null;
-                    list.querySelectorAll('[data-layout-item]').forEach((item) => item.classList.remove('ring-2', 'ring-primary-500'));
-                });
+            const enqueueSync = (pageKey, layout, dirty) => {
+                pendingSync = pendingSync
+                    .catch(() => undefined)
+                    .then(() => $wire.syncUniversalDraft(pageKey, layout, dirty))
+                    .then(() => {
+                        if (routeLabel) routeLabel.textContent = pageKey;
+                        setDirtyLabel(dirty);
+                    });
+                return pendingSync;
             };
 
             window.addEventListener('message', (event) => {
-                const previewFrame = document.getElementById('ografi-page-layout-preview');
-                if (event.origin !== parentOrigin || event.source !== previewFrame?.contentWindow || !event.data || event.data.type !== 'ografi-layout-order-changed') return;
-                if (event.data.pageKey !== getPageKey() || !Array.isArray(event.data.order)) return;
-                $wire.applyDraftFromPreview(event.data.pageKey, event.data.order, Array.isArray(event.data.hidden) ? event.data.hidden : [], Array.isArray(event.data.customBlocks) ? event.data.customBlocks : null);
+                const frame = iframe();
+                if (!frame || event.origin !== window.location.origin || event.source !== frame.contentWindow) return;
+                if (!event.data || event.data.type !== 'ografi-layout-editor-state') return;
+                if (typeof event.data.pageKey !== 'string' || !event.data.pageKey.startsWith('blade:')) return;
+                if (!event.data.layout || typeof event.data.layout !== 'object') return;
+                void enqueueSync(event.data.pageKey, event.data.layout, event.data.dirty === true);
             });
 
-            const layoutObserver = new MutationObserver(() => {
-                bindSorter();
-                sendDraftToPreview();
-            });
-            layoutObserver.observe(document.body, {
-                childList: true,
-                subtree: true,
-                attributes: true,
-                attributeFilter: ['class'],
-            });
-
-            window.addEventListener('ografi-layout-draft-updated', sendDraftToPreview);
-
-            document.addEventListener('livewire:navigated', () => {
-                dragId = null;
-                bindSorter();
-                sendDraftToPreview();
+            window.addEventListener('ografi-layout-sync-preview', (event) => {
+                const frame = iframe();
+                if (!frame?.contentWindow || !event.detail) return;
+                const pageKey = event.detail.pageKey;
+                const layout = event.detail.layout;
+                if (typeof pageKey !== 'string' || !layout) return;
+                frame.contentWindow.postMessage({
+                    type: 'ografi-layout-apply-draft',
+                    pageKey,
+                    layout,
+                }, window.location.origin);
             });
 
-            document.addEventListener('DOMContentLoaded', bindSorter);
-            bindSorter();
-            sendDraftToPreview();
+            saveButton?.addEventListener('click', async () => {
+                saveButton.disabled = true;
+                try {
+                    await pendingSync;
+                    await $wire.saveLayout();
+                    setDirtyLabel(false);
+                } finally {
+                    saveButton.disabled = false;
+                }
+            });
+
+            resetButton?.addEventListener('click', async () => {
+                resetButton.disabled = true;
+                try {
+                    await pendingSync;
+                    await $wire.clearCurrentLayout();
+                } finally {
+                    resetButton.disabled = false;
+                }
+            });
+
+            reloadButton?.addEventListener('click', reloadPreview);
+            window.addEventListener('ografi-layout-reload-preview', reloadPreview);
+
+            pathInput?.addEventListener('keydown', (event) => {
+                if (event.key === 'Enter') {
+                    event.preventDefault();
+                    pathInput.blur();
+                }
+            });
         })();
     </script>
     @endscript
