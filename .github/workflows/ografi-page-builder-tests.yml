@@ -6,26 +6,54 @@ on:
       - feature/ografi-page-builder-enhancements
     paths:
       - '.github/workflows/ografi-page-builder-tests.yml'
+      - 'composer.json'
+      - 'composer.lock'
+      - 'package.json'
+      - 'package-lock.json'
+      - 'vite.config.js'
+      - 'tailwind.config.cjs'
+      - 'postcss.config.js'
       - 'app/**'
-      - 'database/migrations/**'
-      - 'resources/views/**'
-      - 'public/js/ografi-page-layout-runtime.js'
+      - 'bootstrap/**'
+      - 'config/**'
+      - 'database/**'
+      - 'resources/**'
+      - 'public/**'
+      - 'routes/**'
       - 'tests/**'
   pull_request:
     branches:
       - main
     paths:
       - '.github/workflows/ografi-page-builder-tests.yml'
+      - 'composer.json'
+      - 'composer.lock'
+      - 'package.json'
+      - 'package-lock.json'
+      - 'vite.config.js'
+      - 'tailwind.config.cjs'
+      - 'postcss.config.js'
       - 'app/**'
-      - 'database/migrations/**'
-      - 'resources/views/**'
-      - 'public/js/ografi-page-layout-runtime.js'
+      - 'bootstrap/**'
+      - 'config/**'
+      - 'database/**'
+      - 'resources/**'
+      - 'public/**'
+      - 'routes/**'
       - 'tests/**'
 
 jobs:
   focused-tests:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 20
+    env:
+      APP_ENV: testing
+      APP_DEBUG: 'false'
+      DB_CONNECTION: sqlite
+      DB_DATABASE: database/database.sqlite
+      CACHE_STORE: array
+      SESSION_DRIVER: array
+      QUEUE_CONNECTION: sync
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -37,11 +65,93 @@ jobs:
           php -v
           composer --version
 
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+
       - name: Prepare environment
         run: |
           cp .env.example .env
           mkdir -p database storage/framework/cache/data storage/framework/sessions storage/framework/views storage/logs bootstrap/cache
           touch database/database.sqlite
+
+      - name: Validate Composer configuration
+        run: composer validate --strict
+
+      - name: Install Composer dependencies
+        run: composer install --no-interaction --prefer-dist --no-progress
+
+      - name: Install frontend dependencies
+        run: npm ci --include=dev --no-audit --no-fund
+
+      - name: Generate application key
+        run: php artisan key:generate --force
+
+      - name: Lint PHP and JavaScript
+        run: |
+          find app bootstrap config database routes tests -type f -name '*.php' -print0 | xargs -0 -n1 php -l
+          node --check public/js/ografi-page-layout-runtime.js
+          php artisan view:cache
+
+      - name: Build production frontend assets
+        run: npm run build
+
+      - name: Run page-layout and component-design unit tests
+        run: vendor/bin/phpunit tests/Unit/PageLayoutCatalogTest.php tests/Unit/ThemeComponentDesignTest.php
+
+      - name: Run full PHPUnit suite
+        run: vendor/bin/phpunit
+
+  mariadb-migrations:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    services:
+      mariadb:
+        image: mariadb:10.11
+        env:
+          MARIADB_ROOT_PASSWORD: root
+          MARIADB_DATABASE: ografi_test
+          MARIADB_USER: ografi
+          MARIADB_PASSWORD: ografi_test_password
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="healthcheck.sh --connect --innodb_initialized"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=12
+    env:
+      APP_ENV: testing
+      APP_DEBUG: 'false'
+      DB_CONNECTION: mysql
+      DB_HOST: 127.0.0.1
+      DB_PORT: 3306
+      DB_DATABASE: ografi_test
+      DB_USERNAME: ografi
+      DB_PASSWORD: ografi_test_password
+      CACHE_STORE: array
+      SESSION_DRIVER: array
+      QUEUE_CONNECTION: sync
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install PHP runtime and extensions
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y php-cli php-bcmath php-curl php-gd php-intl php-mbstring php-mysql php-sqlite3 php-xml php-zip composer
+          php -v
+          composer --version
+
+      - name: Prepare Laravel environment
+        run: |
+          cp .env.example .env
+          mkdir -p database storage/framework/cache/data storage/framework/sessions storage/framework/views storage/logs bootstrap/cache
+
+      - name: Validate Composer configuration
+        run: composer validate --strict
 
       - name: Install Composer dependencies
         run: composer install --no-interaction --prefer-dist --no-progress
@@ -49,22 +159,10 @@ jobs:
       - name: Generate application key
         run: php artisan key:generate --force
 
-      - name: Lint changed PHP and JavaScript
+      - name: Verify clean MariaDB migration
+        run: php artisan migrate:fresh --force
+
+      - name: Verify migration rollback and re-apply
         run: |
-          php -l app/Filament/Pages/PageLayoutBuilder.php
-          php -l app/Filament/Pages/ComponentDesignEditor.php
-          php -l app/Services/PageLayoutCatalog.php
-          php -l app/Services/ThemeComponentDesign.php
-          php -l tests/Unit/PageLayoutCatalogTest.php
-          php -l tests/Unit/ThemeComponentDesignTest.php
-          php -l tests/Feature/InstallationRoutesTest.php
-          php -l database/migrations/2026_10_13_210000_add_design_options_to_pages_table.php
-          php -l database/migrations/2026_10_13_223000_add_component_designs_to_theme_settings.php
-          node --check public/js/ografi-page-layout-runtime.js
-          php artisan view:cache
-
-      - name: Run page-layout and component-design unit tests
-        run: vendor/bin/phpunit tests/Unit/PageLayoutCatalogTest.php tests/Unit/ThemeComponentDesignTest.php
-
-      - name: Run full PHPUnit suite
-        run: vendor/bin/phpunit
+          php artisan migrate:rollback --step=2 --force
+          php artisan migrate --force
