@@ -43,7 +43,6 @@ final class PageLayoutCatalog
                 'container' => '[data-ografi-layout-container="categories"]',
                 'blocks' => [
                     'categories_header' => ['label' => 'Kategori basligi ve filtreler', 'selector' => '[data-ografi-layout-section="categories_header"]'],
-                    'categories_ads_top' => ['label' => 'Ust reklam alani', 'selector' => '[data-ografi-layout-section="categories_ads_top"]'],
                     'categories_list' => ['label' => 'Kategori listesi', 'selector' => '[data-ografi-layout-section="categories_list"]'],
                     'categories_count' => ['label' => 'Kategori sayaci / bos durum', 'selector' => '[data-ografi-layout-section="categories_count"]'],
                 ],
