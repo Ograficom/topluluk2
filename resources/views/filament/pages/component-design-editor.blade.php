@@ -157,6 +157,40 @@
                 </aside>
             </div>
 
+            @php
+                $livePreviewStyles = \\App\\Services\\ThemeComponentDesign::normalize(data_get($state, 'component_styles', []));
+                $livePreviewCss = app(\\App\\Services\\ThemeComponentDesign::class)->render($livePreviewStyles);
+            @endphp
+            <section class="overflow-hidden rounded-xl border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
+                <div class="flex flex-col gap-3 border-b border-gray-200 p-4 sm:flex-row sm:items-center sm:justify-between dark:border-gray-700">
+                    <div>
+                        <h3 class="text-sm font-semibold text-gray-950 dark:text-white">Gerçek Blade sayfası önizlemesi</h3>
+                        <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">Kaydedilmemiş stil değişiklikleri yalnızca bu yönetici önizlemesinde görünür. Siteye uygulamak için ayrıca kaydetmelisin.</p>
+                    </div>
+                    <div class="flex flex-wrap items-center gap-2">
+                        <select wire:model.live="livePreviewPage" aria-label="Önizlenecek sayfa" class="rounded-lg border-gray-300 text-sm dark:border-gray-600 dark:bg-gray-800">
+                            <option value="home">Ana sayfa</option>
+                            <option value="post_show">Gönderi detayı</option>
+                            <option value="categories">Kategoriler</option>
+                            <option value="profile">Kullanıcı profili</option>
+                        </select>
+                        <x-filament::button size="sm" type="button" :color="$previewDevice === 'desktop' ? 'primary' : 'gray'" wire:click="$set('previewDevice', 'desktop')">Masaüstü</x-filament::button>
+                        <x-filament::button size="sm" type="button" :color="$previewDevice === 'mobile' ? 'primary' : 'gray'" wire:click="$set('previewDevice', 'mobile')">Mobil</x-filament::button>
+                    </div>
+                </div>
+                <div class="overflow-x-auto bg-gray-50 p-3 dark:bg-gray-950">
+                    <script type="application/json" id="ografi-component-design-preview-config">{!! json_encode(['css' => $livePreviewCss], JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!}</script>
+                    <iframe
+                        id="ografi-component-design-live-preview"
+                        title="OgraFi canlı Blade tasarım önizlemesi"
+                        src="{{ $this->livePreviewUrl() }}"
+                        class="mx-auto block rounded-lg border border-gray-200 bg-white dark:border-gray-700"
+                        style="width: {{ $previewDevice === 'mobile' ? '375px' : '100%' }}; max-width: 100%; height: 760px;"
+                        loading="eager"
+                    ></iframe>
+                </div>
+            </section>
+
             <div class="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-gray-200 bg-white p-4 dark:border-gray-700 dark:bg-gray-900">
                 <p class="text-sm text-gray-500 dark:text-gray-400">Sablon secimi ve form degisiklikleri kaydedene kadar onizleme modundadir.</p>
                 <div class="flex flex-wrap gap-2">
@@ -165,5 +199,41 @@
                 </div>
             </div>
         </form>
+
+        @script
+        <script>
+            (() => {
+                const frameId = 'ografi-component-design-live-preview';
+                const configId = 'ografi-component-design-preview-config';
+                const readCss = () => {
+                    try {
+                        const node = document.getElementById(configId);
+                        return JSON.parse(node?.textContent || '{}').css || '';
+                    } catch (error) {
+                        console.error('[Ografi component preview] Invalid draft style payload.', error);
+                        return '';
+                    }
+                };
+
+                const sendDraft = () => {
+                    const frame = document.getElementById(frameId);
+                    if (!frame?.contentWindow) return;
+
+                    frame.contentWindow.postMessage({
+                        type: 'ografi-component-design-apply-preview',
+                        css: readCss(),
+                    }, window.location.origin);
+                };
+
+                document.addEventListener('livewire:navigated', sendDraft);
+                document.getElementById(frameId)?.addEventListener('load', sendDraft);
+
+                const observer = new MutationObserver(() => sendDraft());
+                observer.observe(document.body, { childList: true, subtree: true, characterData: true });
+
+                sendDraft();
+            })();
+        </script>
+        @endscript
     </div>
 </x-filament::page>
