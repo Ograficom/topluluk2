@@ -26,6 +26,7 @@
                     <h3 class="font-semibold text-gray-950 dark:text-white">Sayfa bolumleri</h3>
                     <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">Tutamaktan sürükle. Göz simgesiyle bölümü gizle veya yeniden göster.</p>
                 </div>
+                <script type="application/json" id="ografi-page-layout-custom-blocks">{!! json_encode($this->customBlocks, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!}</script>
                 <ol id="ografi-page-layout-order" class="space-y-2 p-3">
                     @foreach($this->blockItems() as $block)
                         <li wire:key="layout-block-{{ $pageKey }}-{{ $block['id'] }}"
@@ -36,8 +37,13 @@
                             </button>
                             <div class="min-w-0 flex-1">
                                 <p class="text-sm font-medium text-gray-900 dark:text-white">{{ $block['label'] }}</p>
-                                <p class="mt-0.5 text-xs text-gray-500 dark:text-gray-400">{{ $block['hidden'] ? 'Gizli' : 'Gorunur' }}</p>
+                                <p class="mt-0.5 text-xs text-gray-500 dark:text-gray-400">{{ $block['custom'] ? 'Özel içerik · ' . $block['type'] : 'Hazır bölüm' }} · {{ $block['hidden'] ? 'Gizli' : 'Görünür' }}</p>
                             </div>
+                            @if($block['custom'])
+                                <button type="button" wire:click="editCustomBlock('{{ $block['id'] }}')" class="rounded-md p-2 text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800" aria-label="Özel bloğu düzenle" title="Düzenle">
+                                    <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="m14 5 5 5M4 20l4.5-1 10-10a2.1 2.1 0 0 0-3-3l-10 10L4 20Z"/></svg>
+                                </button>
+                            @endif
                             <button type="button" wire:click="toggleBlock('{{ $block['id'] }}')" class="rounded-md p-2 text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800" aria-label="{{ $block['hidden'] ? 'Bolumu goster' : 'Bolumu gizle' }}" title="{{ $block['hidden'] ? 'Göster' : 'Gizle' }}">
                                 @if($block['hidden'])
                                     <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M3 3l18 18"/><path d="M10.6 10.6a2 2 0 0 0 2.8 2.8"/><path d="M9.9 5.3A10.7 10.7 0 0 1 12 5c5.5 0 9 7 9 7a17.9 17.9 0 0 1-3.3 4.1M6.2 6.2C4.1 7.6 3 12 3 12s3.5 7 9 7c.8 0 1.5-.1 2.2-.4"/></svg>
@@ -48,6 +54,93 @@
                         </li>
                     @endforeach
                 </ol>
+
+                <div class="space-y-3 border-t border-gray-200 p-3 dark:border-gray-700">
+                    <div>
+                        <h4 class="text-sm font-semibold text-gray-900 dark:text-white">Özel içerik bloğu ekle</h4>
+                        <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">Hazır bölümlere ek olarak başlık, metin, görsel, buton, bilgi kutusu, ayırıcı veya boşluk ekleyebilirsin.</p>
+                    </div>
+                    <div class="flex flex-col gap-2 sm:flex-row">
+                        <select wire:model.live="newBlockType" aria-label="Yeni blok türü" class="min-w-0 flex-1 rounded-lg border-gray-300 text-sm dark:border-gray-600 dark:bg-gray-800">
+                            <option value="heading">Başlık</option>
+                            <option value="text">Metin</option>
+                            <option value="image">Görsel</option>
+                            <option value="button">Buton</option>
+                            <option value="callout">Bilgi kutusu</option>
+                            <option value="divider">Ayırıcı çizgi</option>
+                            <option value="spacer">Boşluk</option>
+                        </select>
+                        <x-filament::button size="sm" type="button" wire:click="addCustomBlock">Blok ekle</x-filament::button>
+                    </div>
+
+                    @if($editingCustomBlockId)
+                        <div class="space-y-3 rounded-lg border border-blue-200 bg-blue-50/50 p-3 dark:border-blue-900 dark:bg-blue-950/20">
+                            <div class="flex items-center justify-between gap-2">
+                                <h5 class="text-sm font-semibold text-gray-900 dark:text-white">Özel bloğu düzenle</h5>
+                                <span class="text-xs text-gray-500">{{ $customBlockDraft['type'] ?? 'text' }}</span>
+                            </div>
+                            <label class="block text-xs font-medium text-gray-700 dark:text-gray-300">
+                                Başlık / blok adı
+                                <input wire:model="customBlockDraft.title" maxlength="140" class="mt-1 w-full rounded-md border-gray-300 text-sm dark:border-gray-600 dark:bg-gray-800">
+                            </label>
+                            <label class="block text-xs font-medium text-gray-700 dark:text-gray-300">
+                                Metin
+                                <textarea wire:model="customBlockDraft.text" rows="3" maxlength="4000" class="mt-1 w-full rounded-md border-gray-300 text-sm dark:border-gray-600 dark:bg-gray-800"></textarea>
+                            </label>
+                            <label class="block text-xs font-medium text-gray-700 dark:text-gray-300">
+                                Görsel URL
+                                <input wire:model="customBlockDraft.image_url" maxlength="1000" placeholder="https://... veya /storage/..." class="mt-1 w-full rounded-md border-gray-300 text-sm dark:border-gray-600 dark:bg-gray-800">
+                            </label>
+                            <label class="block text-xs font-medium text-gray-700 dark:text-gray-300">
+                                Görsel alternatif metni
+                                <input wire:model="customBlockDraft.alt" maxlength="180" class="mt-1 w-full rounded-md border-gray-300 text-sm dark:border-gray-600 dark:bg-gray-800">
+                            </label>
+                            <label class="block text-xs font-medium text-gray-700 dark:text-gray-300">
+                                Bağlantı adresi
+                                <input wire:model="customBlockDraft.url" maxlength="1000" placeholder="/sayfa, #bolum veya https://..." class="mt-1 w-full rounded-md border-gray-300 text-sm dark:border-gray-600 dark:bg-gray-800">
+                            </label>
+                            <label class="block text-xs font-medium text-gray-700 dark:text-gray-300">
+                                Buton yazısı
+                                <input wire:model="customBlockDraft.button_text" maxlength="100" class="mt-1 w-full rounded-md border-gray-300 text-sm dark:border-gray-600 dark:bg-gray-800">
+                            </label>
+                            <div class="grid grid-cols-2 gap-3">
+                                <label class="block text-xs font-medium text-gray-700 dark:text-gray-300">
+                                    Hizalama
+                                    <select wire:model="customBlockDraft.align" class="mt-1 w-full rounded-md border-gray-300 text-sm dark:border-gray-600 dark:bg-gray-800">
+                                        <option value="left">Sol</option>
+                                        <option value="center">Orta</option>
+                                        <option value="right">Sağ</option>
+                                    </select>
+                                </label>
+                                <label class="block text-xs font-medium text-gray-700 dark:text-gray-300">
+                                    İç boşluk (px)
+                                    <input type="number" min="0" max="64" wire:model="customBlockDraft.padding" class="mt-1 w-full rounded-md border-gray-300 text-sm dark:border-gray-600 dark:bg-gray-800">
+                                </label>
+                                <label class="block text-xs font-medium text-gray-700 dark:text-gray-300">
+                                    Arka plan
+                                    <input type="color" wire:model="customBlockDraft.background" class="mt-1 h-9 w-full rounded-md border border-gray-300 dark:border-gray-600">
+                                </label>
+                                <label class="block text-xs font-medium text-gray-700 dark:text-gray-300">
+                                    Metin rengi
+                                    <input type="color" wire:model="customBlockDraft.text_color" class="mt-1 h-9 w-full rounded-md border border-gray-300 dark:border-gray-600">
+                                </label>
+                                <label class="block text-xs font-medium text-gray-700 dark:text-gray-300">
+                                    Yükseklik (px)
+                                    <input type="number" min="8" max="240" wire:model="customBlockDraft.height" class="mt-1 w-full rounded-md border-gray-300 text-sm dark:border-gray-600 dark:bg-gray-800">
+                                </label>
+                                <label class="block text-xs font-medium text-gray-700 dark:text-gray-300">
+                                    Maks. genişlik (px)
+                                    <input type="number" min="240" max="1600" wire:model="customBlockDraft.max_width" class="mt-1 w-full rounded-md border-gray-300 text-sm dark:border-gray-600 dark:bg-gray-800">
+                                </label>
+                            </div>
+                            <div class="flex flex-wrap gap-2">
+                                <x-filament::button size="sm" type="button" wire:click="applyCustomBlockDraft">Önizlemeye uygula</x-filament::button>
+                                <x-filament::button size="sm" color="gray" type="button" wire:click="removeCustomBlock('{{ $editingCustomBlockId }}')">Bloğu sil</x-filament::button>
+                            </div>
+                        </div>
+                    @endif
+                </div>
+
                 <div class="flex flex-wrap gap-2 border-t border-gray-200 p-3 dark:border-gray-700">
                     <x-filament::button color="gray" size="sm" type="button" wire:click="restoreDefaultOrder">Varsayilan sira</x-filament::button>
                     <x-filament::button color="gray" size="sm" type="button" wire:click="showAllBlocks">Tum bolumleri goster</x-filament::button>
@@ -115,6 +208,17 @@
                 .map((element) => element.dataset.layoutItem)
                 .filter(Boolean);
 
+            const getCustomBlocks = () => {
+                try {
+                    const node = document.getElementById('ografi-page-layout-custom-blocks');
+                    const value = JSON.parse(node?.textContent || '[]');
+                    return Array.isArray(value) ? value : [];
+                } catch (error) {
+                    console.error('[Ografi layout] Invalid custom block payload.', error);
+                    return [];
+                }
+            };
+
             const sendDraftToPreview = () => {
                 const frame = document.getElementById('ografi-page-layout-preview');
                 if (!frame?.contentWindow) return;
@@ -123,6 +227,7 @@
                     pageKey: getPageKey(),
                     order: getIds(),
                     hidden: getHidden(),
+                    customBlocks: getCustomBlocks(),
                 }, parentOrigin);
             };
 
@@ -184,7 +289,7 @@
                 const previewFrame = document.getElementById('ografi-page-layout-preview');
                 if (event.origin !== parentOrigin || event.source !== previewFrame?.contentWindow || !event.data || event.data.type !== 'ografi-layout-order-changed') return;
                 if (event.data.pageKey !== getPageKey() || !Array.isArray(event.data.order)) return;
-                $wire.applyDraftFromPreview(event.data.pageKey, event.data.order, Array.isArray(event.data.hidden) ? event.data.hidden : []);
+                $wire.applyDraftFromPreview(event.data.pageKey, event.data.order, Array.isArray(event.data.hidden) ? event.data.hidden : [], Array.isArray(event.data.customBlocks) ? event.data.customBlocks : null);
             });
 
             const layoutObserver = new MutationObserver(() => {
