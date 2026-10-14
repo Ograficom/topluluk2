@@ -2,6 +2,7 @@
     $slotKey = (string) ($slotKey ?? $key ?? '');
     $wrapperClass = trim((string) ($wrapperClass ?? ''));
     $device = (string) ($device ?? 'all');
+    $layoutSection = preg_replace('/[^a-z0-9_-]/i', '', (string) ($layoutSection ?? ''));
     $content = $slotKey !== '' ? \App\Models\Snippet::render($slotKey) : '';
 
     // Admin Filament'ta bu konumu bilerek kapattiysa (Aktif: kapali), kutu
@@ -25,7 +26,8 @@
 @endphp
 
 @if($slotKey !== '' && trim($content) !== '')
-    <div class="{{ implode(' ', $classes) }}" data-ad-slot="{{ $slotKey }}">
+    <div class="{{ implode(' ', $classes) }}" data-ad-slot="{{ $slotKey }}"
+        @if($layoutSection !== '') data-ografi-layout-section="{{ $layoutSection }}" @endif>
         @include('partials.ads.tagbar')
         @include('partials.ads.icon')
         <div class="alma-ad-slot__inner">
