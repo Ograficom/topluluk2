@@ -406,6 +406,7 @@ final class PageLayoutCatalog
                 'padding' => self::boundedInt($item['padding'] ?? 16, 0, 64, 16),
                 'height' => self::boundedInt($item['height'] ?? 32, 8, 240, 32),
                 'max_width' => self::boundedInt($item['max_width'] ?? 960, 240, 1600, 960),
+                'container_selector' => self::safeUniversalSelector($item['container_selector'] ?? ''),
             ];
             $seen[] = $id;
         }
@@ -603,7 +604,12 @@ final class PageLayoutCatalog
             }
         }
 
-        return ['containers' => $containers];
+        $customBlocks = self::normalizeCustomBlocks($input['custom_blocks'] ?? []);
+
+        return [
+            'containers' => $containers,
+            'custom_blocks' => $customBlocks,
+        ];
     }
 
     private static function validUniversalSelector(string $selector): bool
@@ -611,6 +617,13 @@ final class PageLayoutCatalog
         return strlen($selector) <= 1800
             && trim($selector) !== ''
             && preg_match('/^[A-Za-z0-9_.:#() >-]+$/', $selector) === 1;
+    }
+
+    private static function safeUniversalSelector(mixed $selector): string
+    {
+        $selector = is_scalar($selector) ? trim((string) $selector) : '';
+
+        return $selector !== '' && self::validUniversalSelector($selector) ? $selector : '';
     }
 
     public static function layoutUrl(string $pageKey, bool $preview = false): string
