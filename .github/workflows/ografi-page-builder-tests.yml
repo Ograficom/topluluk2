@@ -60,5 +60,18 @@ jobs:
       - name: Generate application key
         run: php artisan key:generate --force
 
+      - name: Lint changed PHP and JavaScript
+        run: |
+          php -l app/Filament/Pages/PageLayoutBuilder.php
+          php -l app/Filament/Pages/ComponentDesignEditor.php
+          php -l app/Services/PageLayoutCatalog.php
+          php -l app/Services/ThemeComponentDesign.php
+          php -l tests/Unit/PageLayoutCatalogTest.php
+          php -l tests/Unit/ThemeComponentDesignTest.php
+          php -l database/migrations/2026_10_13_210000_add_design_options_to_pages_table.php
+          php -l database/migrations/2026_10_13_223000_add_component_designs_to_theme_settings.php
+          node --check public/js/ografi-page-layout-runtime.js
+          php artisan view:cache
+
       - name: Run page-layout and component-design unit tests
         run: vendor/bin/phpunit tests/Unit/PageLayoutCatalogTest.php tests/Unit/ThemeComponentDesignTest.php
