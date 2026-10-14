@@ -239,9 +239,11 @@ class PageLayoutCatalogTest extends TestCase
         ]);
 
         $this->assertSame([
-            $parent => [
-                'order' => [$first, $second],
-                'hidden' => [$second],
+            'containers' => [
+                $parent => [
+                    'order' => [$first, $second],
+                    'hidden' => [$second],
+                ],
             ],
         ], $layout);
     }
