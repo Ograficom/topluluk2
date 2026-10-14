@@ -12,10 +12,12 @@ class ThemeDesignRevision extends Model
         'user_id',
         'label',
         'component_styles',
+        'page_layouts',
     ];
 
     protected $casts = [
         'component_styles' => 'array',
+        'page_layouts' => 'array',
     ];
 
     public function themeSetting(): BelongsTo
