@@ -568,10 +568,17 @@
         node.dataset.ografiLayoutNode = '1';
     }
 
-    function nodeForEvent(target) {
+    function nodeForEvent(target, expectedParent = null) {
         if (!(target instanceof Element)) return null;
         if (target.closest('.ografi-layout-editor-tools')) return null;
-        return target.closest('[data-ografi-layout-node="1"]');
+
+        let node = target.closest('[data-ografi-layout-node="1"]');
+        while (node && expectedParent && node.parentElement !== expectedParent) {
+            const ancestor = node.parentElement;
+            node = ancestor ? ancestor.closest('[data-ografi-layout-node="1"]') : null;
+        }
+
+        return node;
     }
 
     function markHidden(node, hidden) {
@@ -733,7 +740,7 @@
 
         document.addEventListener('dragover', (event) => {
             if (!activeDragNode || !activeDragGroup || !(event.target instanceof Element)) return;
-            const target = nodeForEvent(event.target);
+            const target = nodeForEvent(event.target, activeDragGroup.parent);
             if (!target || target === activeDragNode || target.parentElement !== activeDragGroup.parent) return;
             event.preventDefault();
             event.dataTransfer.dropEffect = 'move';
