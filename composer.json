@@ -32,7 +32,8 @@
         "shuvroroy/filament-spatie-laravel-health": "^3.3",
         "slimani/filament-media-manager": "^0.9.11",
         "wallacemartinss/filament-security": "^2.0",
-        "wezlo/filament-lookups": "^1.0"
+        "wezlo/filament-lookups": "^1.0",
+        "van-ons/filament-content-builder": "^2.6"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^4.0",
