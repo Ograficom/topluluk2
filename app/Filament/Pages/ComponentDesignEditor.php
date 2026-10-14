@@ -280,7 +280,11 @@ class ComponentDesignEditor extends Page implements HasForms
             $settings->update(['component_styles' => null]);
         }
 
-        if (is_array($revision->page_layouts)) {
+        $isLayoutRevision = str_starts_with((string) $revision->label, 'Sayfa duzeni')
+            || str_starts_with((string) $revision->label, 'Surum geri yuklemeden once')
+            || str_starts_with((string) $revision->label, 'Tema paketi ice aktarilmadan once yedek');
+
+        if ($isLayoutRevision && is_array($revision->page_layouts)) {
             $settings->update(['page_layouts' => $revision->page_layouts]);
         }
 
