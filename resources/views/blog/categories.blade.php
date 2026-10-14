@@ -837,8 +837,8 @@
 @endpush
 
 @section('content')
-    <div class="categories-page">
-        <section class="categories-panel">
+    <div class="categories-page" data-ografi-layout-container="categories">
+        <section class="categories-panel" data-ografi-layout-section="categories_header">
             <div class="categories-panel__top">
                 <h1 class="categories-title">Kategoriler</h1>
 
@@ -907,7 +907,7 @@
         </section>
 
         @if($visibleCategoryCollection->isNotEmpty())
-            <div class="categories-list">
+            <div class="categories-list" data-ografi-layout-section="categories_list">
                 @foreach($visibleCategoryCollection as $category)
                     @php
                         $name = trim((string) ($category->name ?? ''));
@@ -948,11 +948,11 @@
                 @endforeach
             </div>
 
-            <div class="categories-count">
+            <div class="categories-count" data-ografi-layout-section="categories_count">
                 {{ number_format($visibleCategoryCount) }} kategori gösteriliyor
             </div>
         @else
-            <div class="categories-empty">
+            <div class="categories-empty" data-ografi-layout-section="categories_count">
                 @if($activeTab === 'mine')
                     Henüz kendi oluşturduğun kategori yok.
                 @else
