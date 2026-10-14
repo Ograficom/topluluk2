@@ -231,6 +231,7 @@
         // short press + move gesture while preserving the original DOM nodes.
         let touchDrag = null;
         const touchThreshold = 8;
+        const touchHoldDelay = 320;
 
         const movePreviewBlock = (draggedId, clientX, clientY) => {
             const target = document.elementFromPoint(clientX, clientY)
@@ -251,12 +252,17 @@
             const block = event.target.closest('[data-ografi-layout-editable="1"]');
             if (!block || event.touches.length !== 1) return;
             const touch = event.touches[0];
+            if (touchDrag?.timer) window.clearTimeout(touchDrag.timer);
             touchDrag = {
                 id: block.dataset.ografiLayoutSection || '',
                 startX: touch.clientX,
                 startY: touch.clientY,
+                armed: false,
                 active: false,
                 block,
+                timer: window.setTimeout(() => {
+                    if (touchDrag) touchDrag.armed = true;
+                }, touchHoldDelay),
             };
         }, { passive: true });
 
@@ -266,14 +272,20 @@
             const dx = touch.clientX - touchDrag.startX;
             const dy = touch.clientY - touchDrag.startY;
 
-            if (!touchDrag.active && Math.hypot(dx, dy) >= touchThreshold) {
+            if (!touchDrag.active && Math.hypot(dx, dy) >= touchThreshold && !touchDrag.armed) {
+                window.clearTimeout(touchDrag.timer);
+                touchDrag = null;
+                return;
+            }
+
+            if (!touchDrag.active && touchDrag.armed && Math.hypot(dx, dy) >= touchThreshold) {
                 touchDrag.active = true;
                 activeDragId = touchDrag.id;
                 touchDrag.block.style.opacity = '.55';
                 document.documentElement.style.userSelect = 'none';
             }
 
-            if (!touchDrag.active) return;
+            if (!touchDrag?.active) return;
             event.preventDefault();
             movePreviewBlock(touchDrag.id, touch.clientX, touch.clientY);
         }, { passive: false });
@@ -281,7 +293,7 @@
         const finishTouchDrag = () => {
             if (!touchDrag) return;
             const wasActive = touchDrag.active;
-            const draggedId = touchDrag.id;
+            if (touchDrag.timer) window.clearTimeout(touchDrag.timer);
             if (touchDrag.block) touchDrag.block.style.opacity = '';
             touchDrag = null;
             activeDragId = null;
