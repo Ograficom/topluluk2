@@ -52,4 +52,68 @@ class PageLayoutCatalogTest extends TestCase
             }
         }
     }
+
+    public function test_catalog_blocks_exist_in_their_blade_templates_or_are_declared_ad_slots(): void
+    {
+        $root = dirname(__DIR__, 2);
+
+        $sourcesByPage = [
+            'home' => ['resources/views/templates/home-like.blade.php', 'resources/views/partials/ads/slot.blade.php'],
+            'discover' => ['resources/views/pages/discover.blade.php', 'resources/views/partials/ads/slot.blade.php'],
+            'categories' => ['resources/views/blog/categories.blade.php'],
+            'tags' => ['resources/views/blog/tags.blade.php'],
+            'blog_index' => ['resources/views/blog/index.blade.php', 'resources/views/partials/ads/slot.blade.php'],
+            'tag_feed' => ['resources/views/blog/index.blade.php', 'resources/views/partials/ads/slot.blade.php'],
+            'category_show' => ['resources/views/blog/index.blade.php', 'resources/views/blog/categories/categories-show.blade.php'],
+            'post_show' => ['resources/views/blog/show.blade.php', 'resources/views/blog/partials/post-comments.blade.php', 'resources/views/partials/ads/slot.blade.php'],
+            'users_index' => ['resources/views/users/index.blade.php'],
+            'messages_index' => ['resources/views/messages/index.blade.php'],
+            'notifications' => ['resources/views/notifications/index.blade.php'],
+            'bookmarks' => ['resources/views/blog/bookmarks.blade.php'],
+            'drafts' => ['resources/views/blog/drafts.blade.php'],
+            'faq' => ['resources/views/pages/sss.blade.php'],
+            'profile' => ['resources/views/profile/public.blade.php'],
+        ];
+
+        foreach (PageLayoutCatalog::definitions() as $pageKey => $definition) {
+            $paths = $sourcesByPage[$pageKey] ?? [];
+            $source = '';
+
+            foreach ($paths as $path) {
+                $fullPath = $root . DIRECTORY_SEPARATOR . $path;
+                $this->assertFileExists($fullPath, $pageKey . ' source file is missing: ' . $path);
+                $source .= file_get_contents($fullPath) ?: '';
+            }
+
+            foreach ($definition['blocks'] as $blockId => $block) {
+                $selectorId = preg_match('/data-ografi-layout-section="([^"]+)"/', $block['selector'], $matches)
+                    ? $matches[1]
+                    : null;
+
+                $this->assertNotNull($selectorId, $pageKey . '.' . $blockId . ' must use a supported section selector');
+
+                $hasMarkup = str_contains($source, 'data-ografi-layout-section="' . $selectorId . '"');
+                $isDeclaredAdSlot = str_contains($source, "'layoutSection' => '" . $selectorId . "'");
+
+                $this->assertTrue(
+                    $hasMarkup || $isDeclaredAdSlot,
+                    $pageKey . '.' . $blockId . ' points to no section or declared ad slot in its Blade source',
+                );
+            }
+        }
+    }
+
+    public function test_each_page_has_unique_block_ids_and_categories_empty_state_is_separate(): void
+    {
+        foreach (PageLayoutCatalog::definitions() as $pageKey => $definition) {
+            $ids = array_keys($definition['blocks']);
+            $this->assertSame($ids, array_values(array_unique($ids)), $pageKey . ' has duplicate block IDs');
+        }
+
+        $categories = PageLayoutCatalog::definition('categories')['blocks'];
+
+        $this->assertArrayHasKey('categories_count', $categories);
+        $this->assertArrayHasKey('categories_empty', $categories);
+        $this->assertNotSame($categories['categories_count']['selector'], $categories['categories_empty']['selector']);
+    }
 }
