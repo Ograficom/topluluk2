@@ -2,7 +2,9 @@
 
 namespace App\Services;
 
+use App\Models\Category;
 use App\Models\Post;
+use App\Models\Tag;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
@@ -59,6 +61,35 @@ final class PageLayoutCatalog
                     'tags_list' => ['label' => 'Etiket listesi ve daha fazla yukle', 'selector' => '[data-ografi-layout-section="tags_list"]'],
                 ],
             ],
+            'blog_index' => [
+                'label' => 'Gonderi listesi',
+                'route' => 'blog.index',
+                'container' => 'main.layout-main',
+                'blocks' => [
+                    'blog_ads_top' => ['label' => 'Ust reklam alani', 'selector' => '[data-ografi-layout-section="blog_ads_top"]'],
+                    'blog_posts' => ['label' => 'Gonderi listesi ve sayfalama', 'selector' => '[data-ografi-layout-section="blog_posts"]'],
+                ],
+            ],
+            'tag_feed' => [
+                'label' => 'Tek etiket akis sayfasi',
+                'route' => 'blog.index',
+                'container' => 'main.layout-main',
+                'blocks' => [
+                    'tag_title' => ['label' => 'Etiket basligi', 'selector' => '[data-ografi-layout-section="tag_title"]'],
+                    'blog_ads_top' => ['label' => 'Ust reklam alani', 'selector' => '[data-ografi-layout-section="blog_ads_top"]'],
+                    'blog_posts' => ['label' => 'Gonderi listesi ve sayfalama', 'selector' => '[data-ografi-layout-section="blog_posts"]'],
+                ],
+            ],
+            'category_show' => [
+                'label' => 'Topluluk / kategori detay sayfasi',
+                'route' => 'blog.category',
+                'container' => '.profile-reference-shell',
+                'blocks' => [
+                    'category_header' => ['label' => 'Topluluk kapagi ve kimligi', 'selector' => '[data-ografi-layout-section="category_header"]'],
+                    'category_tabs' => ['label' => 'Kategori sekmeleri', 'selector' => '[data-ografi-layout-section="category_tabs"]'],
+                    'category_content' => ['label' => 'Gonderiler veya kategori bilgileri', 'selector' => '[data-ografi-layout-section="category_content"]'],
+                ],
+            ],
             'post_show' => [
                 'label' => 'Gonderi detayi',
                 'route' => 'blog.post',
@@ -112,6 +143,10 @@ final class PageLayoutCatalog
             'discover' => 'discover',
             'blog.categories' => 'categories',
             'blog.tags' => 'tags',
+            'blog.category' => 'category_show',
+            'blog.index', 'blog.posts' => request()->filled('tag')
+                ? 'tag_feed'
+                : (request()->filled('category') ? 'category_show' : 'blog_index'),
             'blog.post' => 'post_show',
             'users.show' => 'profile',
             default => null,
@@ -184,6 +219,9 @@ final class PageLayoutCatalog
             'discover' => route('discover'),
             'categories' => route('blog.categories'),
             'tags' => route('blog.tags'),
+            'blog_index' => route('blog.index'),
+            'tag_feed' => self::tagPreviewUrl(),
+            'category_show' => self::categoryPreviewUrl(),
             'post_show' => self::postPreviewUrl(),
             'profile' => self::profilePreviewUrl(),
             default => route('home'),
@@ -233,6 +271,24 @@ final class PageLayoutCatalog
             'layout' => $layout,
             'editorPreview' => $isAuthorizedPreview,
         ];
+    }
+
+    private static function tagPreviewUrl(): string
+    {
+        $slug = Tag::query()->orderBy('name')->value('slug');
+
+        return filled($slug)
+            ? route('blog.index', ['tag' => $slug])
+            : route('blog.index');
+    }
+
+    private static function categoryPreviewUrl(): string
+    {
+        $slug = Category::query()->orderBy('name')->value('slug');
+
+        return filled($slug)
+            ? route('blog.category', ['category' => $slug])
+            : route('blog.categories');
     }
 
     private static function postPreviewUrl(): string
