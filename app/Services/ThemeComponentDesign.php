@@ -249,6 +249,10 @@ final class ThemeComponentDesign
             return $url;
         }
 
+        if (preg_match('/[\x00-\x20\\\\]/', $url) === 1) {
+            return '';
+        }
+
         if (str_starts_with($url, '/') && !str_starts_with($url, '//')) {
             return $url;
         }
