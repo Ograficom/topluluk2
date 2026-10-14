@@ -6,31 +6,21 @@ on:
       - feature/ografi-page-builder-enhancements
     paths:
       - '.github/workflows/ografi-page-builder-tests.yml'
-      - 'app/Services/PageLayoutCatalog.php'
-      - 'app/Services/ThemeComponentDesign.php'
-      - 'tests/Unit/PageLayoutCatalogTest.php'
-      - 'tests/Unit/ThemeComponentDesignTest.php'
-      - 'resources/views/filament/pages/page-layout-builder.blade.php'
-      - 'resources/views/filament/pages/component-design-editor.blade.php'
-      - 'resources/views/partials/theme-component-design.blade.php'
+      - 'app/**'
+      - 'database/migrations/**'
+      - 'resources/views/**'
       - 'public/js/ografi-page-layout-runtime.js'
-      - 'database/migrations/2026_10_13_210000_add_design_options_to_pages_table.php'
-      - 'database/migrations/2026_10_13_223000_add_component_designs_to_theme_settings.php'
+      - 'tests/Unit/**'
   pull_request:
     branches:
       - main
     paths:
       - '.github/workflows/ografi-page-builder-tests.yml'
-      - 'app/Services/PageLayoutCatalog.php'
-      - 'app/Services/ThemeComponentDesign.php'
-      - 'tests/Unit/PageLayoutCatalogTest.php'
-      - 'tests/Unit/ThemeComponentDesignTest.php'
-      - 'resources/views/filament/pages/page-layout-builder.blade.php'
-      - 'resources/views/filament/pages/component-design-editor.blade.php'
-      - 'resources/views/partials/theme-component-design.blade.php'
+      - 'app/**'
+      - 'database/migrations/**'
+      - 'resources/views/**'
       - 'public/js/ografi-page-layout-runtime.js'
-      - 'database/migrations/2026_10_13_210000_add_design_options_to_pages_table.php'
-      - 'database/migrations/2026_10_13_223000_add_component_designs_to_theme_settings.php'
+      - 'tests/Unit/**'
 
 jobs:
   focused-tests:
