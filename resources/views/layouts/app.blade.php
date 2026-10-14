@@ -7671,5 +7671,6 @@
     </style>
 
     @include('partials.theme-component-design')
+    @include('partials.page-layout-builder-runtime')
 </body>
 </html>
