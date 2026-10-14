@@ -179,7 +179,7 @@
     </script>
 @endif
 
-<section id="comments" class="ogx-comments-panel shadcn-comment-card" data-ogx-comments aria-labelledby="comments-title">
+<section id="comments" class="ogx-comments-panel shadcn-comment-card" data-ogx-comments aria-labelledby="comments-title" data-ografi-layout-section="comments">
   <header class="ogx-panel-header">
     <h2 class="ogx-comment-count" id="comments-title">{{ ((int) ($commentsCount ?? 0) > 0) ? ('Yorumlar ' . number_format((int) ($commentsCount ?? 0), 0, ',', '.')) : 'Yorumlar' }}</h2>
 
