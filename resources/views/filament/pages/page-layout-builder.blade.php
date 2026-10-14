@@ -98,10 +98,11 @@
         </section>
     </div>
 
+    @script
     <script>
         (() => {
             const parentOrigin = window.location.origin;
-            const pageKey = @js($pageKey);
+            const getPageKey = () => document.getElementById('ografi-page-layout-select')?.value || 'home';
             const $wire = @this;
             let dragId = null;
 
@@ -119,7 +120,7 @@
                 if (!frame?.contentWindow) return;
                 frame.contentWindow.postMessage({
                     type: 'ografi-layout-apply-draft',
-                    pageKey: @js($pageKey),
+                    pageKey: getPageKey(),
                     order: getIds(),
                     hidden: getHidden(),
                 }, parentOrigin);
@@ -175,13 +176,25 @@
 
             window.addEventListener('message', (event) => {
                 if (event.origin !== parentOrigin || !event.data || event.data.type !== 'ografi-layout-order-changed') return;
-                if (event.data.pageKey !== @js($pageKey) || !Array.isArray(event.data.order)) return;
+                if (event.data.pageKey !== getPageKey() || !Array.isArray(event.data.order)) return;
                 $wire.applyDraftFromPreview(event.data.pageKey, event.data.order, Array.isArray(event.data.hidden) ? event.data.hidden : []);
+            });
+
+            const layoutObserver = new MutationObserver(() => {
+                bindSorter();
+                sendDraftToPreview();
+            });
+            layoutObserver.observe(document.body, {
+                childList: true,
+                subtree: true,
+                attributes: true,
+                attributeFilter: ['class'],
             });
 
             document.addEventListener('livewire:navigated', () => {
                 dragId = null;
                 bindSorter();
+                sendDraftToPreview();
             });
 
             document.addEventListener('DOMContentLoaded', bindSorter);
@@ -189,4 +202,5 @@
             sendDraftToPreview();
         })();
     </script>
+    @endscript
 </x-filament::page>
