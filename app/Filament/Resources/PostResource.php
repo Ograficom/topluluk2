@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\PostResource\Pages;
 use App\Filament\Resources\PostResource\RelationManagers\CommentsRelationManager;
+use App\Filament\Resources\PostResource\RelationManagers\ContentRevisionsRelationManager;
 use App\Filament\Resources\PostResource\RelationManagers\ReactionsRelationManager;
 use App\Models\Post;
 use Filament\Actions;
