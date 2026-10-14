@@ -569,10 +569,10 @@
         }
     </style>
 
-    <div class="discover-page-shell space-y-4">
+    <div class="discover-page-shell space-y-4" data-ografi-layout-container="discover">
 
         {{-- Arama sayfasiyla ortak arama kapsulu --}}
-        <section class="discover-search-panel">
+        <section class="discover-search-panel" data-ografi-layout-section="discover_search">
             <form action="{{ route('search') }}" method="GET" class="discover-search-bar" role="search" aria-label="{{ __('site.common.search') }}">
                 <input
                     type="search"
@@ -590,10 +590,11 @@
 
         @include('partials.ads.slot', [
             'slotKey' => 'ads_feed_top',
+            'layoutSection' => 'discover_ads_top',
         ])
 
         {{-- Kullanıcılar --}}
-        <section class="discover-section">
+        <section class="discover-section" data-ografi-layout-section="discover_users">
             <div class="discover-section__head">
                 <h2 class="alma-page-title alma-page-title--compact-card text-slate-950 dark:text-white">
                     {{ __('site.search.users') }}
@@ -690,7 +691,7 @@
         </section>
 
         {{-- Topluluklar --}}
-        <section class="discover-section">
+        <section class="discover-section" data-ografi-layout-section="discover_communities">
             <div class="discover-section__head">
                 <h2 class="alma-page-title alma-page-title--compact-card text-slate-950 dark:text-white">
                     {{ __('site.common.communities') }}
@@ -778,7 +779,7 @@
         </section>
 
         {{-- Öneriler --}}
-        <section class="discover-section">
+        <section class="discover-section" data-ografi-layout-section="discover_posts">
             <div class="discover-section__head">
                 <h2 class="alma-page-title alma-page-title--compact-card">
                     {{ __('site.post_show.recommendations') }}
