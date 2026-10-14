@@ -152,7 +152,9 @@ final class PageLayoutCatalog
                 'container' => '[data-ografi-layout-container="faq"]',
                 'blocks' => [
                     'faq_title' => ['label' => 'SSS basligi ve araclar', 'selector' => '[data-ografi-layout-section="faq_title"]'],
+                    'faq_title_spacer' => ['label' => 'Baslik boslugu', 'selector' => '[data-ografi-layout-section="faq_title_spacer"]'],
                     'faq_search' => ['label' => 'SSS arama paneli', 'selector' => '[data-ografi-layout-section="faq_search"]'],
+                    'faq_search_spacer' => ['label' => 'Arama boslugu', 'selector' => '[data-ografi-layout-section="faq_search_spacer"]'],
                     'faq_list' => ['label' => 'Soru ve cevap listesi', 'selector' => '[data-ografi-layout-section="faq_list"]'],
                 ],
             ],
