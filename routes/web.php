@@ -160,6 +160,11 @@ Route::get('/locale/{locale}', function (string $locale, Request $request) {
     return redirect()->back();
 })->name('locale.switch');
 
+// Dedicated entry point for the visual Blade editor. Keep /admin/pages for
+// ordinary CMS pages; the homepage, post-card and other Blade layouts are edited here.
+Route::redirect('/fronted-edit', '/admin/fronted-edit')
+    ->name('fronted-edit');
+
 // Legacy auth URL aliases (avoid 404 from old mail/template links)
 Route::redirect('/user/login', '/login', 301);
 Route::redirect('/user/forgot-password', '/forgot-password', 301);
