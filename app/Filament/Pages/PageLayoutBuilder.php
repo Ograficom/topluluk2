@@ -179,6 +179,11 @@ class PageLayoutBuilder extends Page
             ->with('user:id,name')
             ->where('theme_setting_id', $settings->id)
             ->whereNotNull('page_layouts')
+            ->where(function ($query): void {
+                $query->where('label', 'like', 'Sayfa duzeni%')
+                    ->orWhere('label', 'like', 'Surum geri yuklemeden once%')
+                    ->orWhere('label', 'Tema paketi ice aktarilmadan once yedek');
+            })
             ->latest('id')
             ->limit(10)
             ->get();
@@ -190,6 +195,11 @@ class PageLayoutBuilder extends Page
         $revision = ThemeDesignRevision::query()
             ->where('theme_setting_id', $settings->id)
             ->whereNotNull('page_layouts')
+            ->where(function ($query): void {
+                $query->where('label', 'like', 'Sayfa duzeni%')
+                    ->orWhere('label', 'like', 'Surum geri yuklemeden once%')
+                    ->orWhere('label', 'Tema paketi ice aktarilmadan once yedek');
+            })
             ->find($revisionId);
 
         if (!$revision || !is_array($revision->page_layouts)) {
