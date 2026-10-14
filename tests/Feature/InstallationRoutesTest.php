@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Support\InstallState;
 use Tests\TestCase;
 
 class InstallationRoutesTest extends TestCase
