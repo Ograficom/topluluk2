@@ -160,7 +160,6 @@
     if (isEditorPreview) {
         document.documentElement.dataset.ografiLayoutEditing = '1';
         document.addEventListener('click', (event) => {
-            if (!event.target.closest('[data-ografi-layout-editable="1"]')) return;
             const interactive = event.target.closest('a, button, input, select, textarea, form');
             if (!interactive) return;
             event.preventDefault();
