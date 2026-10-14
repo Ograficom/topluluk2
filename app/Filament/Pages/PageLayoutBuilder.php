@@ -122,6 +122,8 @@ class PageLayoutBuilder extends Page
 
         $this->order = $layout['order'];
         $this->hidden = $layout['hidden'];
+        $this->customBlocks = $layout['custom_blocks'];
+        $this->dispatchDraftUpdated();
     }
 
     public function toggleBlock(string $blockId): void
