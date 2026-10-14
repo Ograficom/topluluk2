@@ -7,6 +7,68 @@ use PHPUnit\Framework\TestCase;
 
 class PageLayoutCatalogTest extends TestCase
 {
+
+    public function test_universal_layout_preserves_known_selectors_and_rejects_unsafe_selector_text(): void
+    {
+        $layout = PageLayoutCatalog::normalizeUniversalLayout([
+            'containers' => [
+                'body > main.layout-main' => [
+                    'order' => [
+                        'body > main.layout-main > section.page-header',
+                        'body > main.layout-main > section.post-feed',
+                        'body > main.layout-main > section.post-feed',
+                        'body, html',
+                    ],
+                    'hidden' => [
+                        'body > main.layout-main > section.post-feed',
+                        'body, html',
+                    ],
+                ],
+                'body > div[data-x="value"]' => [
+                    'order' => ['body > div[data-x="value"] > section'],
+                ],
+            ],
+        ]);
+
+        $this->assertSame([
+            'containers' => [
+                'body > main.layout-main' => [
+                    'order' => [
+                        'body > main.layout-main > section.page-header',
+                        'body > main.layout-main > section.post-feed',
+                    ],
+                    'hidden' => ['body > main.layout-main > section.post-feed'],
+                ],
+            ],
+        ], $layout);
+    }
+
+    public function test_normalize_all_keeps_universal_layouts_for_any_named_blade_route(): void
+    {
+        $universal = [
+            'containers' => [
+                'body > main.layout-main' => [
+                    'order' => [
+                        'body > main.layout-main > section.page-header',
+                        'body > main.layout-main > section.post-feed',
+                    ],
+                    'hidden' => [],
+                ],
+            ],
+        ];
+
+        $normalized = PageLayoutCatalog::normalizeAll([
+            'blade:home' => $universal,
+            'blade:blog.post' => $universal,
+            'not_a_route' => ['containers' => []],
+        ]);
+
+        $this->assertArrayHasKey('blade:home', $normalized);
+        $this->assertArrayHasKey('blade:blog.post', $normalized);
+        $this->assertArrayNotHasKey('not_a_route', $normalized);
+        $this->assertSame($universal, $normalized['blade:home']);
+    }
+
     public function test_catalog_lists_the_primary_existing_blade_pages(): void
     {
         $pages = PageLayoutCatalog::pageOptions();
