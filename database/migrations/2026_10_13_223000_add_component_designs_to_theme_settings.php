@@ -10,6 +10,7 @@ return new class extends Migration
     {
         Schema::table('theme_settings', function (Blueprint $table): void {
             $table->json('component_styles')->nullable();
+            $table->json('page_layouts')->nullable();
         });
 
         Schema::create('theme_design_revisions', function (Blueprint $table): void {
@@ -18,6 +19,7 @@ return new class extends Migration
             $table->foreignId('user_id')->nullable()->constrained()->nullOnDelete();
             $table->string('label', 120)->default('Otomatik yedek');
             $table->json('component_styles');
+            $table->json('page_layouts')->nullable();
             $table->timestamps();
 
             $table->index(['theme_setting_id', 'created_at']);
@@ -29,7 +31,7 @@ return new class extends Migration
         Schema::dropIfExists('theme_design_revisions');
 
         Schema::table('theme_settings', function (Blueprint $table): void {
-            $table->dropColumn('component_styles');
+            $table->dropColumn(['component_styles', 'page_layouts']);
         });
     }
 };
