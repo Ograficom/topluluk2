@@ -180,7 +180,7 @@ final class PageLayoutCatalog
 
         try {
             $availableRoutes = Route::getRoutes()->getRoutes();
-        } catch (\\Throwable) {
+        } catch (\Throwable) {
             // Unit tests and isolated tooling may use the catalog without a Laravel router.
             $availableRoutes = [];
         }
