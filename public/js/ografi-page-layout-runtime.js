@@ -90,7 +90,7 @@
 
     const safeBuilderUrl = (value) => {
         const url = String(value || '').trim();
-        if (!url) return '';
+        if (!url || /[\u0000-\u0020\\\\]/.test(url)) return '';
         if (url.startsWith('/') && !url.startsWith('//')) return url;
         if (url.startsWith('#')) return url;
         try {
@@ -534,6 +534,7 @@
                 pageKey: config.pageKey,
                 order: currentOrder,
                 hidden: hiddenBlocks,
+                customBlocks,
             }, window.location.origin);
         };
 
