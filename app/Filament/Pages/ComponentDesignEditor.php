@@ -5,6 +5,7 @@ namespace App\Filament\Pages;
 use App\Models\ThemeDesignRevision;
 use App\Models\ThemeSetting;
 use App\Services\ThemeComponentDesign;
+use App\Services\PageLayoutCatalog;
 use Filament\Forms\Components\ColorPicker;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
@@ -34,6 +35,24 @@ class ComponentDesignEditor extends Page implements HasForms
     public string $previewDevice = 'desktop';
 
     public string $previewComponent = 'post_card';
+
+    public string $livePreviewPage = 'home';
+
+    public static function canAccess(): bool
+    {
+        return auth()->user()?->isAdmin() ?? false;
+    }
+
+    public function livePreviewUrl(): string
+    {
+        $pageKey = in_array($this->livePreviewPage, ['home', 'post_show', 'categories', 'profile'], true)
+            ? $this->livePreviewPage
+            : 'home';
+
+        $url = PageLayoutCatalog::layoutUrl($pageKey);
+
+        return $url . (str_contains($url, '?') ? '&' : '?') . 'ografi_component_preview=1';
+    }
 
     public function mount(): void
     {
