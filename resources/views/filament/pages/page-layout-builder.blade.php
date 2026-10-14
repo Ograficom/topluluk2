@@ -181,7 +181,8 @@
             };
 
             window.addEventListener('message', (event) => {
-                if (event.origin !== parentOrigin || !event.data || event.data.type !== 'ografi-layout-order-changed') return;
+                const previewFrame = document.getElementById('ografi-page-layout-preview');
+                if (event.origin !== parentOrigin || event.source !== previewFrame?.contentWindow || !event.data || event.data.type !== 'ografi-layout-order-changed') return;
                 if (event.data.pageKey !== getPageKey() || !Array.isArray(event.data.order)) return;
                 $wire.applyDraftFromPreview(event.data.pageKey, event.data.order, Array.isArray(event.data.hidden) ? event.data.hidden : []);
             });
