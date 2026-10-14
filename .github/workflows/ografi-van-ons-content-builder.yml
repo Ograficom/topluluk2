@@ -1,0 +1,101 @@
+name: OgraFi Van Ons Content Builder
+
+on:
+  push:
+    branches:
+      - feature/ografi-van-ons-content-builder
+    paths:
+      - '.github/workflows/ografi-van-ons-content-builder.yml'
+      - 'composer.json'
+      - 'composer.lock'
+      - 'app/**'
+      - 'config/**'
+      - 'database/**'
+      - 'resources/views/**'
+      - 'tests/**'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/ografi-van-ons-content-builder.yml'
+      - 'composer.json'
+      - 'composer.lock'
+      - 'app/**'
+      - 'config/**'
+      - 'database/**'
+      - 'resources/views/**'
+      - 'tests/**'
+
+permissions:
+  contents: write
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      APP_ENV: testing
+      APP_DEBUG: 'false'
+      DB_CONNECTION: sqlite
+      DB_DATABASE: database/database.sqlite
+      CACHE_STORE: array
+      SESSION_DRIVER: array
+      QUEUE_CONNECTION: sync
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref || github.ref_name }}
+          persist-credentials: true
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: bcmath, curl, gd, intl, mbstring, pdo_sqlite, pdo_mysql, xml, zip
+          coverage: none
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+
+      - name: Prepare test environment
+        run: |
+          cp .env.example .env
+          mkdir -p database storage/framework/cache/data storage/framework/sessions storage/framework/views storage/logs bootstrap/cache
+          touch database/database.sqlite
+          php artisan key:generate --force
+
+      - name: Resolve the new package and update the lockfile
+        run: composer update van-ons/filament-content-builder --with-dependencies --no-interaction --prefer-dist --no-progress
+
+      - name: Commit resolved lockfile on the feature branch
+        if: github.event_name == 'push'
+        run: |
+          if ! git diff --quiet -- composer.lock; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add composer.lock
+            git commit -m "chore: lock Van Ons Content Builder dependencies"
+            git push
+          fi
+
+      - name: Install frontend dependencies
+        run: npm ci --include=dev --no-audit --no-fund
+
+      - name: Validate Composer configuration
+        run: composer validate --strict
+
+      - name: Lint PHP files
+        run: find app bootstrap config database routes tests -type f -name '*.php' -print0 | xargs -0 -n1 php -l
+
+      - name: Compile Blade views
+        run: php artisan view:cache
+
+      - name: Build frontend assets
+        run: npm run build
+
+      - name: Run focused content builder tests
+        run: vendor/bin/phpunit tests/Feature/PostContentRevisionTest.php tests/Feature/OgrafiContentBuilderTest.php
+
+      - name: Run full PHPUnit suite
+        run: vendor/bin/phpunit
