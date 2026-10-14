@@ -46,7 +46,7 @@ class PostContentRevisionObserver
             'meta_title' => $snapshot['meta_title'],
             'meta_description' => $snapshot['meta_description'],
             'snapshot' => $snapshot,
-            'revision_reason' => filled($post->edited_reason) ? $post->edited_reason : null,
+            'revision_reason' => filled($post->edited_reason) ? \Illuminate\Support\Str::limit(trim((string) $post->edited_reason), 500, '') : null,
             'created_at' => now(),
         ]);
     }
