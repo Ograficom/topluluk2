@@ -17,7 +17,9 @@ class EnsureInstalled
                 'cache.default' => 'file',
             ]);
 
-            if (!$request->is('install*')) {
+            // Crawlers and deployment checks must always be able to read robots.txt,
+            // even while the application is still waiting for its first installation.
+            if (!$request->is('install*') && !$request->is('robots.txt')) {
                 return redirect()->route('install.requirements');
             }
         }
