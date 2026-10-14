@@ -78,17 +78,227 @@
     `;
     document.head.appendChild(style);
 
+    const fixedBlocks = config.blocks.filter((block) => block.custom !== true);
+    let customBlocks = Array.isArray(config.customBlocks)
+        ? config.customBlocks
+        : (Array.isArray(config.layout?.custom_blocks) ? config.layout.custom_blocks : []);
     let currentOrder = Array.isArray(config.layout?.order) ? [...config.layout.order] : config.blocks.map((block) => block.id);
     let hiddenBlocks = Array.isArray(config.layout?.hidden) ? [...config.layout.hidden] : [];
     let blockMap = new Map(config.blocks.map((block) => [block.id, block]));
+
+    const safeColor = (value, fallback) => /^#[0-9a-f]{6}$/i.test(String(value || '')) ? String(value).toLowerCase() : fallback;
+
+    const safeBuilderUrl = (value) => {
+        const url = String(value || '').trim();
+        if (!url) return '';
+        if (url.startsWith('/') && !url.startsWith('//')) return url;
+        if (url.startsWith('#')) return url;
+        try {
+            const parsed = new URL(url, window.location.origin);
+            return parsed.protocol === 'https:' && parsed.hostname ? url : '';
+        } catch (error) {
+            return '';
+        }
+    };
+
+    const makeText = (tag, value, className) => {
+        const node = document.createElement(tag);
+        if (className) node.className = className;
+        node.textContent = String(value || '');
+        return node;
+    };
+
+    const customEntry = (block) => ({
+        id: block.id,
+        label: block.label || block.title || ({
+            heading: 'Baslik',
+            text: 'Metin blogu',
+            image: 'Gorsel',
+            button: 'Buton',
+            callout: 'Vurgulu alan',
+            divider: 'Ayirici',
+            spacer: 'Bosluk',
+        }[block.type] || 'Icerik blogu'),
+        custom: true,
+        selector: null,
+        content: block,
+    });
+
+    const createCustomBlockNode = (block) => {
+        const content = block.content || block;
+        const node = document.createElement('section');
+        node.className = 'ografi-builder-content-block';
+        node.dataset.ografiCustomBlockId = block.id;
+        node.dataset.ografiLayoutSection = block.id;
+        node.dataset.ografiLayoutEditable = isEditorPreview ? '1' : '0';
+        node.dataset.ografiLayoutLabel = block.label || content.label || content.title || 'Icerik blogu';
+        node.style.boxSizing = 'border-box';
+        node.style.width = '100%';
+        node.style.maxWidth = Math.max(240, Math.min(1600, Number(content.max_width) || 960)) + 'px';
+        node.style.margin = '12px auto';
+        node.style.padding = Math.max(0, Math.min(64, Number(content.padding) || 0)) + 'px';
+        node.style.textAlign = ['left', 'center', 'right'].includes(content.align) ? content.align : 'left';
+        node.style.backgroundColor = safeColor(content.background, '#ffffff');
+        node.style.color = safeColor(content.text_color, '#111827');
+        node.style.borderRadius = '8px';
+
+        switch (content.type) {
+            case 'heading': {
+                const heading = makeText('h2', content.title || 'Baslik blogu', 'ografi-builder-content-block__heading');
+                heading.style.margin = '0';
+                heading.style.fontSize = 'clamp(22px, 3vw, 32px)';
+                heading.style.fontWeight = '700';
+                heading.style.lineHeight = '1.25';
+                node.appendChild(heading);
+                break;
+            }
+            case 'text': {
+                const paragraph = makeText('p', content.text || 'Metin blogu', 'ografi-builder-content-block__text');
+                paragraph.style.margin = '0';
+                paragraph.style.fontSize = '16px';
+                paragraph.style.lineHeight = '1.7';
+                paragraph.style.whiteSpace = 'pre-wrap';
+                node.appendChild(paragraph);
+                break;
+            }
+            case 'image': {
+                const url = safeBuilderUrl(content.image_url);
+                if (url) {
+                    const image = document.createElement('img');
+                    image.src = url;
+                    image.alt = String(content.alt || '');
+                    image.loading = 'lazy';
+                    image.decoding = 'async';
+                    image.style.display = 'block';
+                    image.style.width = '100%';
+                    image.style.height = 'auto';
+                    image.style.maxHeight = '720px';
+                    image.style.objectFit = 'contain';
+                    image.style.margin = '0 auto';
+                    node.appendChild(image);
+                } else if (isEditorPreview) {
+                    const placeholder = makeText('div', 'Gorsel blogunu duzenlemek icin sagdaki alana HTTPS gorsel adresi gir.', '');
+                    placeholder.style.padding = '24px 12px';
+                    placeholder.style.border = '1px dashed #cbd5e1';
+                    placeholder.style.color = '#64748b';
+                    node.appendChild(placeholder);
+                } else {
+                    node.hidden = true;
+                }
+                break;
+            }
+            case 'button': {
+                const url = safeBuilderUrl(content.url);
+                const button = document.createElement(url ? 'a' : 'span');
+                if (url) button.href = url;
+                button.textContent = String(content.button_text || 'Detaylari gor');
+                button.style.display = 'inline-flex';
+                button.style.alignItems = 'center';
+                button.style.justifyContent = 'center';
+                button.style.padding = '10px 18px';
+                button.style.borderRadius = '8px';
+                button.style.backgroundColor = '#2563eb';
+                button.style.color = '#ffffff';
+                button.style.fontWeight = '600';
+                button.style.textDecoration = 'none';
+                if (content.align === 'center') node.style.textAlign = 'center';
+                node.appendChild(button);
+                break;
+            }
+            case 'callout': {
+                if (content.title) {
+                    const title = makeText('h3', content.title, '');
+                    title.style.margin = '0 0 8px';
+                    title.style.fontSize = '20px';
+                    title.style.fontWeight = '700';
+                    node.appendChild(title);
+                }
+                const text = makeText('p', content.text || 'Vurgulu alan metni', '');
+                text.style.margin = '0';
+                text.style.lineHeight = '1.65';
+                text.style.whiteSpace = 'pre-wrap';
+                node.style.border = '1px solid ' + safeColor(content.text_color, '#111827') + '22';
+                node.appendChild(text);
+                break;
+            }
+            case 'divider': {
+                node.style.padding = '8px 0';
+                const divider = document.createElement('hr');
+                divider.style.border = '0';
+                divider.style.borderTop = '1px solid #e5e7eb';
+                divider.style.margin = '0';
+                node.appendChild(divider);
+                break;
+            }
+            case 'spacer': {
+                node.style.padding = '0';
+                node.style.minHeight = Math.max(8, Math.min(240, Number(content.height) || 32)) + 'px';
+                node.style.backgroundColor = 'transparent';
+                if (isEditorPreview) {
+                    node.style.border = '1px dashed #cbd5e1';
+                    node.style.backgroundImage = 'repeating-linear-gradient(135deg, transparent, transparent 8px, #f1f5f9 8px, #f1f5f9 16px)';
+                }
+                break;
+            }
+            default:
+                node.appendChild(makeText('p', content.text || '', ''));
+        }
+
+        return node;
+    };
+
+    const rebuildBlockMap = () => {
+        config.blocks = [
+            ...fixedBlocks,
+            ...customBlocks.map((block) => customEntry(block)),
+        ];
+        blockMap = new Map(config.blocks.map((block) => [block.id, block]));
+    };
+
+    const ensureCustomNodes = (container) => {
+        if (!container) return;
+        const liveIds = new Set(customBlocks.map((block) => block.id));
+        container.querySelectorAll('[data-ografi-custom-block-id]').forEach((node) => {
+            if (!liveIds.has(node.dataset.ografiCustomBlockId)) node.remove();
+        });
+
+        customBlocks.forEach((block) => {
+            if (!block || !block.id) return;
+            const selector = '[data-ografi-custom-block-id="' + CSS.escape(block.id) + '"]';
+            let node = container.querySelector(selector);
+            const entry = customEntry(block);
+
+            if (!node) {
+                node = createCustomBlockNode(entry);
+                container.appendChild(node);
+            } else {
+                const shouldRebuild = node.dataset.ografiCustomBlockSignature !== JSON.stringify(block);
+                if (shouldRebuild) {
+                    const replacement = createCustomBlockNode(entry);
+                    replacement.dataset.ografiCustomBlockSignature = JSON.stringify(block);
+                    node.replaceWith(replacement);
+                    node = replacement;
+                }
+            }
+
+            node.dataset.ografiCustomBlockSignature = JSON.stringify(block);
+        });
+    };
 
     const collectNodes = () => {
         const container = document.querySelector(config.containerSelector);
         if (!container) return { container: null, nodes: new Map(), slots: [] };
 
+        ensureCustomNodes(container);
+
         const nodes = new Map();
         config.blocks.forEach((block) => {
-            const node = document.querySelector(block.selector);
+            let node = null;
+            if (block.custom === true) {
+                node = container.querySelector('[data-ografi-custom-block-id="' + CSS.escape(block.id) + '"]');
+            } else if (block.selector) {
+                node = container.querySelector(block.selector);
+            }
             if (!node) return;
             nodes.set(block.id, { id: block.id, node, block });
         });
@@ -225,6 +435,7 @@
                 pageKey: config.pageKey,
                 order: currentOrder,
                 hidden: hiddenBlocks,
+                customBlocks,
             }, window.location.origin);
         });
 
@@ -333,6 +544,12 @@
     window.addEventListener('message', (event) => {
         if (event.origin !== window.location.origin || event.source !== window.parent || !event.data) return;
         if (event.data.type !== 'ografi-layout-apply-draft' || event.data.pageKey !== config.pageKey) return;
+
+        if (Array.isArray(event.data.customBlocks)) {
+            customBlocks = event.data.customBlocks;
+            config.customBlocks = customBlocks;
+            rebuildBlockMap();
+        }
 
         if (Array.isArray(event.data.order)) {
             currentOrder = event.data.order.filter((id) => blockMap.has(id));
