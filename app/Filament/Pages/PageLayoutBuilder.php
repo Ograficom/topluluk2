@@ -8,6 +8,7 @@ use App\Services\PageLayoutCatalog;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 class PageLayoutBuilder extends Page
 {
@@ -28,6 +29,16 @@ class PageLayoutBuilder extends Page
 
     /** @var list<string> */
     public array $hidden = [];
+
+    /** @var list<array<string, mixed>> */
+    public array $customBlocks = [];
+
+    public string $newBlockType = 'text';
+
+    public ?string $editingCustomBlockId = null;
+
+    /** @var array<string, mixed> */
+    public array $customBlockDraft = [];
 
     public static function canAccess(): bool
     {
@@ -66,10 +77,24 @@ class PageLayoutBuilder extends Page
             return [];
         }
 
+        $customById = collect($this->customBlocks)->keyBy('id');
         $items = [];
 
         foreach ($this->order as $id) {
+            $custom = $customById->get($id);
             $block = $definition['blocks'][$id] ?? null;
+
+            if ($custom) {
+                $items[] = [
+                    'id' => $id,
+                    'label' => $custom['label'] ?? 'Icerik blogu',
+                    'type' => $custom['type'] ?? 'text',
+                    'custom' => true,
+                    'hidden' => in_array($id, $this->hidden, true),
+                ];
+
+                continue;
+            }
 
             if (!$block) {
                 continue;
@@ -78,6 +103,8 @@ class PageLayoutBuilder extends Page
             $items[] = [
                 'id' => $id,
                 'label' => $block['label'],
+                'type' => 'section',
+                'custom' => false,
                 'hidden' => in_array($id, $this->hidden, true),
             ];
         }
@@ -90,6 +117,7 @@ class PageLayoutBuilder extends Page
         $layout = PageLayoutCatalog::normalizeLayout($this->pageKey, [
             'order' => $order,
             'hidden' => $this->hidden,
+            'custom_blocks' => $this->customBlocks,
         ]);
 
         $this->order = $layout['order'];
@@ -100,7 +128,10 @@ class PageLayoutBuilder extends Page
     {
         $definition = PageLayoutCatalog::definition($this->pageKey);
 
-        if (!$definition || !array_key_exists($blockId, $definition['blocks'])) {
+        $isFixedBlock = $definition && array_key_exists($blockId, $definition['blocks']);
+        $isCustomBlock = collect($this->customBlocks)->contains('id', $blockId);
+
+        if (!$isFixedBlock && !$isCustomBlock) {
             return;
         }
 
@@ -113,18 +144,102 @@ class PageLayoutBuilder extends Page
         $this->hidden = PageLayoutCatalog::normalizeLayout($this->pageKey, [
             'order' => $this->order,
             'hidden' => $this->hidden,
+            'custom_blocks' => $this->customBlocks,
         ])['hidden'];
+
+        $this->dispatchDraftUpdated();
     }
 
     public function showAllBlocks(): void
     {
         $this->hidden = [];
+        $this->dispatchDraftUpdated();
     }
 
     public function restoreDefaultOrder(): void
     {
-        $this->order = array_keys(PageLayoutCatalog::definition($this->pageKey)['blocks'] ?? []);
+        $this->order = [
+            ...array_keys(PageLayoutCatalog::definition($this->pageKey)['blocks'] ?? []),
+            ...array_column($this->customBlocks, 'id'),
+        ];
         $this->hidden = [];
+        $this->dispatchDraftUpdated();
+    }
+
+    public function addCustomBlock(): void
+    {
+        if (count($this->customBlocks) >= 40) {
+            Notification::make()->title('Bir sayfada en fazla 40 ek blok olabilir')->warning()->send();
+
+            return;
+        }
+
+        $id = 'custom_' . Str::uuid();
+        $block = PageLayoutCatalog::defaultCustomBlock($id, $this->newBlockType);
+        $this->customBlocks[] = $block;
+        $this->order[] = $id;
+        $this->editingCustomBlockId = $id;
+        $this->customBlockDraft = $block;
+        $this->dispatchDraftUpdated();
+    }
+
+    public function editCustomBlock(string $blockId): void
+    {
+        $block = collect($this->customBlocks)->firstWhere('id', $blockId);
+
+        if (!$block) {
+            return;
+        }
+
+        $this->editingCustomBlockId = $blockId;
+        $this->customBlockDraft = $block;
+    }
+
+    public function applyCustomBlockDraft(): void
+    {
+        if (!$this->editingCustomBlockId) {
+            return;
+        }
+
+        $draft = array_merge($this->customBlockDraft, ['id' => $this->editingCustomBlockId]);
+        $normalized = PageLayoutCatalog::normalizeCustomBlocks([$draft]);
+
+        if ($normalized === []) {
+            Notification::make()->title('Blok ayarlari gecersiz')->danger()->send();
+
+            return;
+        }
+
+        $this->customBlocks = collect($this->customBlocks)
+            ->map(fn (array $block) => $block['id'] === $this->editingCustomBlockId ? $normalized[0] : $block)
+            ->values()
+            ->all();
+
+        $this->customBlockDraft = $normalized[0];
+        $this->dispatchDraftUpdated();
+
+        Notification::make()
+            ->title('Blok onizlemeye uygulandi')
+            ->body('Degisiklikler sayfaya yayinlanmadi; kaydetmek icin Sayfa duzenini kaydet dugmesini kullan.')
+            ->success()
+            ->send();
+    }
+
+    public function removeCustomBlock(string $blockId): void
+    {
+        $this->customBlocks = array_values(array_filter(
+            $this->customBlocks,
+            fn (array $block) => $block['id'] !== $blockId,
+        ));
+        $this->order = array_values(array_filter($this->order, fn (string $id) => $id !== $blockId));
+        $this->hidden = array_values(array_filter($this->hidden, fn (string $id) => $id !== $blockId));
+
+        if ($this->editingCustomBlockId === $blockId) {
+            $this->editingCustomBlockId = null;
+            $this->customBlockDraft = [];
+        }
+
+        $this->dispatchDraftUpdated();
     }
 
     public function saveLayout(): void
@@ -134,6 +249,7 @@ class PageLayoutBuilder extends Page
         $next = PageLayoutCatalog::normalizeLayout($this->pageKey, [
             'order' => $this->order,
             'hidden' => $this->hidden,
+            'custom_blocks' => $this->customBlocks,
         ]);
 
         if (($storedLayouts[$this->pageKey] ?? null) === $next) {
@@ -156,19 +272,26 @@ class PageLayoutBuilder extends Page
             ->send();
     }
 
-    public function applyDraftFromPreview(string $pageKey, array $order, array $hidden = []): void
+    public function applyDraftFromPreview(string $pageKey, array $order, array $hidden = [], ?array $customBlocks = null): void
     {
         if ($pageKey !== $this->pageKey) {
             return;
         }
 
+        if (is_array($customBlocks)) {
+            $this->customBlocks = PageLayoutCatalog::normalizeCustomBlocks($customBlocks);
+        }
+
         $layout = PageLayoutCatalog::normalizeLayout($this->pageKey, [
             'order' => $order,
             'hidden' => $hidden,
+            'custom_blocks' => $this->customBlocks,
         ]);
 
         $this->order = $layout['order'];
         $this->hidden = $layout['hidden'];
+        $this->customBlocks = $layout['custom_blocks'];
+        $this->dispatchDraftUpdated();
     }
 
     public function revisions()
@@ -229,6 +352,14 @@ class PageLayoutBuilder extends Page
 
         $this->order = $layout['order'];
         $this->hidden = $layout['hidden'];
+        $this->customBlocks = $layout['custom_blocks'];
+        $this->editingCustomBlockId = null;
+        $this->customBlockDraft = [];
+    }
+
+    private function dispatchDraftUpdated(): void
+    {
+        $this->dispatch('ografi-layout-draft-updated');
     }
 
     private function recordRevision(ThemeSetting $settings, string $label): void
