@@ -40,6 +40,7 @@ class PageLayoutCatalogTest extends TestCase
                     'hidden' => ['body > main.layout-main > section.post-feed'],
                 ],
             ],
+            'custom_blocks' => [],
         ], $layout);
     }
 
@@ -55,6 +56,7 @@ class PageLayoutCatalogTest extends TestCase
                     'hidden' => [],
                 ],
             ],
+            'custom_blocks' => [],
         ];
 
         $normalized = PageLayoutCatalog::normalizeAll([
@@ -245,6 +247,7 @@ class PageLayoutCatalogTest extends TestCase
                     'hidden' => [$second],
                 ],
             ],
+            'custom_blocks' => [],
         ], $layout);
     }
 
