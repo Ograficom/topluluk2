@@ -180,15 +180,15 @@ final class ThemeComponentDesign
             $comments['text_color'],
         );
 
-        if ($footer['visible']) {
-            $css[] = sprintf(
-                'html body.alma-app .ografi-site-footer { display: block !important; background-color: %s !important; color: %s !important; border-top: 1px solid %s !important; padding: %dpx 20px !important; } html body.alma-app .ografi-site-footer a { color: inherit !important; text-decoration: underline; text-underline-offset: 3px; }',
-                $footer['background'],
-                $footer['text_color'],
-                $footer['border_color'],
-                $footer['padding'],
-            );
-        }
+        $footerDisplay = $footer['visible'] ? 'block' : 'none';
+        $css[] = sprintf(
+            'html body.alma-app .ografi-site-footer { display: %s !important; background-color: %s !important; color: %s !important; border-top: 1px solid %s !important; padding: %dpx 20px !important; } html body.alma-app .ografi-site-footer a { color: inherit !important; text-decoration: underline; text-underline-offset: 3px; }',
+            $footerDisplay,
+            $footer['background'],
+            $footer['text_color'],
+            $footer['border_color'],
+            $footer['padding'],
+        );
 
         return implode("\n", $css);
     }
