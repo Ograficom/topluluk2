@@ -63,7 +63,6 @@ jobs:
           cp .env.example .env
           mkdir -p database storage/framework/cache/data storage/framework/sessions storage/framework/views storage/logs bootstrap/cache
           touch database/database.sqlite
-          php artisan key:generate --force
 
       - name: Resolve the new package and update the lockfile
         run: composer update van-ons/filament-content-builder --with-dependencies --no-interaction --prefer-dist --no-progress
@@ -78,6 +77,9 @@ jobs:
             git commit -m "chore: lock Van Ons Content Builder dependencies"
             git push
           fi
+
+      - name: Generate application key
+        run: php artisan key:generate --force
 
       - name: Install frontend dependencies
         run: npm ci --include=dev --no-audit --no-fund
