@@ -43,6 +43,15 @@ class ThemeComponentDesignTest extends TestCase
 
         $this->assertSame('', $styles['footer']['link_url']);
         $this->assertTrue($styles['footer']['visible']);
+
+        $styles = ThemeComponentDesign::normalize([
+            'footer' => [
+                'link_url' => '/\\\\evil.example/path',
+                'visible' => true,
+            ],
+        ]);
+
+        $this->assertSame('', $styles['footer']['link_url']);
     }
 
     public function test_renderer_explicitly_applies_header_and_footer_visibility(): void
