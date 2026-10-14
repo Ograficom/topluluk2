@@ -7,6 +7,7 @@ use App\Models\Post;
 use App\Models\Tag;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Str;
 
 final class PageLayoutCatalog
 {
@@ -177,7 +178,14 @@ final class PageLayoutCatalog
             ->unique()
             ->all();
 
-        foreach (Route::getRoutes()->getRoutes() as $route) {
+        try {
+            $availableRoutes = Route::getRoutes()->getRoutes();
+        } catch (\\Throwable) {
+            // Unit tests and isolated tooling may use the catalog without a Laravel router.
+            $availableRoutes = [];
+        }
+
+        foreach ($availableRoutes as $route) {
             $routeName = $route->getName();
             $uri = trim((string) $route->uri(), '/');
             $methods = $route->methods();
@@ -217,7 +225,7 @@ final class PageLayoutCatalog
             }
 
             $definitions[$pageKey] = [
-                'label' => 'Blade sayfasi: ' . \\Illuminate\\Support\\Str::headline($routeName),
+                'label' => 'Blade sayfasi: ' . Str::headline($routeName),
                 'route' => $routeName,
                 'preview_path' => '/' . $uri,
                 'container' => 'main.layout-main',
