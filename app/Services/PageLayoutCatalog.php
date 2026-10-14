@@ -562,7 +562,7 @@ final class PageLayoutCatalog
      * Universal page layouts store original DOM selectors, sibling order and hidden nodes.
      * Selectors are used only by querySelector(), never interpolated into CSS.
      *
-     * @return array{containers: array<string, array{order: list<string>, hidden: list<string>}>}
+     * @return array{containers: array<string, array{order: list<string>, hidden: list<string>}>, custom_blocks: list<array<string, mixed>>}
      */
     public static function normalizeUniversalLayout(mixed $value): array
     {
