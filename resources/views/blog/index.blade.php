@@ -1824,7 +1824,7 @@ html.dark .ografi-feed-page-button--next:active,
                         </span>
                     @endif
                 </div>
-            </div>        </div>
+            </div>
         @endif
         </div>
     @endif
