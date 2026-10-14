@@ -90,7 +90,7 @@
         config.blocks.forEach((block) => {
             const node = document.querySelector(block.selector);
             if (!node) return;
-            nodes.set(block.id, { node, block });
+            nodes.set(block.id, { id: block.id, node, block });
         });
 
         const directNodes = Array.from(nodes.values())
@@ -132,27 +132,31 @@
 
         // Only reorder explicitly tagged top-level siblings. DOM nodes are moved, not cloned,
         // so listeners and Livewire-owned descendants remain attached.
+        const slotIds = slots.map(({ id }) => id);
+        const orderedIds = currentOrder.filter((id) => slotIds.includes(id));
+        slotIds.forEach((id) => {
+            if (!orderedIds.includes(id)) orderedIds.push(id);
+        });
+
         const placeholders = slots.map(({ node }, index) => {
             const placeholder = document.createComment('ografi-layout-slot-' + index);
             node.replaceWith(placeholder);
             return placeholder;
         });
 
-        const orderedNodes = currentOrder
-            .map((id) => nodes.get(id)?.node)
-            .filter((node) => node && node.parentElement === null || (node && !node.isConnected));
-
-        // Blocks hidden by state are still moved into their intended slot; CSS controls visibility.
-        const safeNodes = currentOrder.map((id) => nodes.get(id)?.node).filter(Boolean);
-        const exactNodes = safeNodes.length === placeholders.length ? safeNodes : slots.map((slot) => slot.node);
+        // Replacing the placeholders with the original nodes moves the existing live DOM
+        // nodes (not clones), so listeners and Livewire-owned descendants stay attached.
         placeholders.forEach((placeholder, index) => {
-            placeholder.replaceWith(exactNodes[index]);
+            const node = nodes.get(orderedIds[index])?.node;
+            if (node) placeholder.replaceWith(node);
         });
 
         markBlocks(nodes);
     };
 
     // Draft preview is admin-only (the config is server-gated as well as origin-checked).
+    let activeDragId = null;
+
     if (isEditorPreview) {
         document.documentElement.dataset.ografiLayoutEditing = '1';
         document.addEventListener('click', (event) => {
@@ -166,14 +170,15 @@
         document.addEventListener('dragstart', (event) => {
             const block = event.target.closest('[data-ografi-layout-editable="1"]');
             if (!block) return;
+            activeDragId = block.dataset.ografiLayoutSection || '';
             event.dataTransfer.effectAllowed = 'move';
-            event.dataTransfer.setData('text/plain', block.dataset.ografiLayoutSection || '');
+            event.dataTransfer.setData('text/plain', activeDragId);
             block.style.opacity = '.55';
         });
 
         document.addEventListener('dragover', (event) => {
             if (!isEditorPreview) return;
-            const draggedId = event.dataTransfer?.getData('text/plain');
+            const draggedId = activeDragId;
             if (!draggedId) return;
             const target = event.target.closest('[data-ografi-layout-editable="1"]');
             if (!target || target.dataset.ografiLayoutSection === draggedId) return;
@@ -183,7 +188,7 @@
 
         document.addEventListener('drop', (event) => {
             if (!isEditorPreview) return;
-            const draggedId = event.dataTransfer?.getData('text/plain');
+            const draggedId = activeDragId;
             const target = event.target.closest('[data-ografi-layout-editable="1"]');
             if (!draggedId || !target) return;
             const targetId = target.dataset.ografiLayoutSection;
@@ -208,6 +213,7 @@
                 if (!currentOrder.includes(id)) currentOrder.push(id);
             });
 
+            applyOrder();
             window.parent.postMessage({
                 type: 'ografi-layout-order-changed',
                 pageKey: config.pageKey,
@@ -219,6 +225,7 @@
         document.addEventListener('dragend', (event) => {
             const block = event.target.closest('[data-ografi-layout-editable="1"]');
             if (block) block.style.opacity = '';
+            activeDragId = null;
         });
     }
 
