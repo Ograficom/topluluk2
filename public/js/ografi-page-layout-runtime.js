@@ -226,6 +226,89 @@
             if (block) block.style.opacity = '';
             activeDragId = null;
         });
+
+        // Native HTML drag-and-drop is unreliable on touch screens. Support a
+        // short press + move gesture while preserving the original DOM nodes.
+        let touchDrag = null;
+        const touchThreshold = 8;
+
+        const movePreviewBlock = (draggedId, clientX, clientY) => {
+            const target = document.elementFromPoint(clientX, clientY)
+                ?.closest('[data-ografi-layout-editable="1"]');
+            if (!target || target.dataset.ografiLayoutSection === draggedId) return;
+
+            const entry = collectNodes();
+            const dragged = entry.nodes.get(draggedId)?.node;
+            const targetNode = entry.nodes.get(target.dataset.ografiLayoutSection)?.node;
+            if (!dragged || !targetNode || dragged.parentElement !== targetNode.parentElement) return;
+
+            const rect = targetNode.getBoundingClientRect();
+            const before = clientY < rect.top + rect.height / 2;
+            targetNode.parentElement.insertBefore(dragged, before ? targetNode : targetNode.nextSibling);
+        };
+
+        document.addEventListener('touchstart', (event) => {
+            const block = event.target.closest('[data-ografi-layout-editable="1"]');
+            if (!block || event.touches.length !== 1) return;
+            const touch = event.touches[0];
+            touchDrag = {
+                id: block.dataset.ografiLayoutSection || '',
+                startX: touch.clientX,
+                startY: touch.clientY,
+                active: false,
+                block,
+            };
+        }, { passive: true });
+
+        document.addEventListener('touchmove', (event) => {
+            if (!touchDrag || event.touches.length !== 1) return;
+            const touch = event.touches[0];
+            const dx = touch.clientX - touchDrag.startX;
+            const dy = touch.clientY - touchDrag.startY;
+
+            if (!touchDrag.active && Math.hypot(dx, dy) >= touchThreshold) {
+                touchDrag.active = true;
+                activeDragId = touchDrag.id;
+                touchDrag.block.style.opacity = '.55';
+                document.documentElement.style.userSelect = 'none';
+            }
+
+            if (!touchDrag.active) return;
+            event.preventDefault();
+            movePreviewBlock(touchDrag.id, touch.clientX, touch.clientY);
+        }, { passive: false });
+
+        const finishTouchDrag = () => {
+            if (!touchDrag) return;
+            const wasActive = touchDrag.active;
+            const draggedId = touchDrag.id;
+            if (touchDrag.block) touchDrag.block.style.opacity = '';
+            touchDrag = null;
+            activeDragId = null;
+            document.documentElement.style.userSelect = '';
+
+            if (!wasActive) return;
+
+            const entry = collectNodes();
+            currentOrder = Array.from(entry.container?.querySelectorAll('[data-ografi-layout-editable="1"]') || [])
+                .map((node) => node.dataset.ografiLayoutSection)
+                .filter((id) => blockMap.has(id));
+
+            blockMap.forEach((block, id) => {
+                if (!currentOrder.includes(id)) currentOrder.push(id);
+            });
+
+            applyOrder();
+            window.parent.postMessage({
+                type: 'ografi-layout-order-changed',
+                pageKey: config.pageKey,
+                order: currentOrder,
+                hidden: hiddenBlocks,
+            }, window.location.origin);
+        };
+
+        document.addEventListener('touchend', finishTouchDrag, { passive: true });
+        document.addEventListener('touchcancel', finishTouchDrag, { passive: true });
     }
 
     window.addEventListener('message', (event) => {
