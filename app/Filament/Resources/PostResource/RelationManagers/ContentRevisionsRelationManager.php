@@ -26,7 +26,7 @@ class ContentRevisionsRelationManager extends RelationManager
                 TextColumn::make('created_at')->label('Tarih')->dateTime()->sortable(),
             ])
             ->defaultSort('created_at', 'desc')
-            ->recordActions([
+            ->actions([
                 Action::make('restore')
                     ->label('Bu sürümü geri yükle')
                     ->icon('heroicon-o-arrow-uturn-left')
