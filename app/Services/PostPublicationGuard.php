@@ -24,6 +24,7 @@ class PostPublicationGuard
             $post->meta_description,
             $post->meta_keywords,
             is_array($post->content_json) ? json_encode($post->content_json, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) : $post->content_json,
+            is_array($post->builder_content) ? json_encode($post->builder_content, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) : $post->builder_content,
         ], static fn ($value): bool => filled($value))));
 
         if ($text === '') {

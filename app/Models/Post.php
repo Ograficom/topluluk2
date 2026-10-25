@@ -50,6 +50,7 @@ class Post extends Model
         'image_copyright_notice',
         'content',
         'content_json',
+        'builder_content',
         'published_at',
         'edited_at',
         'edited_reason',
@@ -70,6 +71,7 @@ class Post extends Model
         'noindex' => 'boolean',
         'views_count' => 'integer',
         'content_json' => 'array',
+        'builder_content' => 'array',
     ];
 
     public function getTitleAttribute($value): string
@@ -105,6 +107,40 @@ class Post extends Model
         return $this->seo()->firstOrNew([]);
     }
 
+    public function builderContentPlainText(): string
+    {
+        $content = is_array($this->builder_content) ? $this->builder_content : [];
+        $parts = [];
+
+        $walk = function ($value) use (&$walk, &$parts): void {
+            if (is_string($value)) {
+                $text = trim(preg_replace('/\\s+/u', ' ', strip_tags($value)) ?? strip_tags($value));
+                if ($text !== '') {
+                    $parts[] = $text;
+                }
+                return;
+            }
+
+            if (is_array($value)) {
+                foreach ($value as $key => $child) {
+                    if (in_array((string) $key, ['url', 'src', 'image', 'images', 'post_ids'], true)) {
+                        continue;
+                    }
+                    $walk($child);
+                }
+            }
+        };
+
+        $walk($content);
+
+        return trim(implode(' ', array_unique($parts)));
+    }
+
+    public function contentRevisions(): HasMany
+    {
+        return $this->hasMany(PostContentRevision::class)->latest('created_at');
+    }
+
     public function getSEOTitle(): ?string
     {
         $title = trim((string) ($this->meta_title ?: $this->title));
@@ -116,7 +152,7 @@ class Post extends Model
     {
         $description = trim((string) $this->meta_description);
         if ($description === '') {
-            $description = PostSeoText::description($this->excerpt, $this->content, $this->title);
+            $description = PostSeoText::description($this->excerpt, filled($this->content) ? $this->content : $this->builderContentPlainText(), $this->title);
         }
 
         return $description !== '' ? $description : null;
@@ -153,6 +189,7 @@ class Post extends Model
             'meta_description',
             'excerpt',
             'content',
+            'builder_content',
             'featured_image',
             'og_image',
             'noindex',

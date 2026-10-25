@@ -3,6 +3,8 @@
 namespace App\Providers;
 
 use App\Models\Comment;
+use App\Models\Post;
+use App\Observers\PostContentRevisionObserver;
 use App\Models\Message;
 use App\Models\BorsaSetting;
 use App\Services\BorsaService;
@@ -37,6 +39,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        Post::observe(PostContentRevisionObserver::class);
         $this->loadRoutesFrom(base_path('routes/dashboard-reactions.php'));
 
         Health::checks([

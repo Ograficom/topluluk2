@@ -11567,7 +11567,11 @@ body.dark .post-show-shell .ps-comment-more-item--danger:focus-visible,
           @endif
 
           <div class="ps-post-body" itemprop="articleBody">
-            {!! $postShowFullContentHtml !!}
+            @if (class_exists(\\VanOns\\FilamentContentBuilder\\FilamentContentBuilder::class) && is_array($post->builder_content) && count($post->builder_content) > 0)
+              <x-filament-content-builder::block-renderer :blocks="$post->builder_content" />
+            @else
+              {!! $postShowFullContentHtml !!}
+            @endif
           </div>
 
           @if($hasPostShowSourcePreview)
