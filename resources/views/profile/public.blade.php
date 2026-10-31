@@ -2518,7 +2518,7 @@
         $activeSortLabel = $sortOptions[$activeSort];
     @endphp
 
-    <div class="og-profile-page">
+    <div class="profile-page og-profile-page">
         <div class="og-profile-wrap" data-ografi-layout-container="profile">
             <section class="og-card" aria-label="{{ $profileHeadingTitle }}" data-ografi-layout-section="profile_header">
                 <div class="og-cover">
