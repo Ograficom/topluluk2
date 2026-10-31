@@ -11224,7 +11224,7 @@ body.dark .post-show-shell .ps-comment-more-item--danger:focus-visible,
 @endpush
 
 @section('content')
-<div class="ps-layout post-show-shell is-loaded">
+<div class="ps-layout post-show-shell is-loaded rp-post-detail-page">
 
 
   <main class="ps-main" data-ografi-layout-container="post_show">
