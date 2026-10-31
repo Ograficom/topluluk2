@@ -65,10 +65,6 @@
         });
 @endphp
 
-@push('head')
-    <link rel="stylesheet" href="{{ asset('css/repost-home.css') }}?v=20261031-home1">
-@endpush
-
 @if($templateTitle)
 @section('title', $templateTitle)
 @endif
