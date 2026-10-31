@@ -23,18 +23,16 @@
                 </div>
             @endif
 
-            <div class="mb-4 flex flex-col gap-3 sm:mb-6 sm:flex-row sm:items-start sm:justify-between" data-ografi-layout-section="messages_header">
-                <div>
-                    <h1 class="text-2xl font-bold text-gray-900 dark:text-white sm:text-3xl">{{ __('messages.title') }}</h1>
-                </div>
-
-                <div class="messages-conversation-actions">
-                    @include('messages.partials.settings-dropdown', [
-                        'preferences' => $preferences,
-                        'buttonClass' => 'inline-flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 transition hover:bg-slate-100 dark:hover:bg-slate-700',
-                    ])
-                </div>
-            </div>
+            <x-repost.page-heading :title="__('messages.title')" class="mb-4 sm:mb-6" data-ografi-layout-section="messages_header">
+                <x-slot:actions>
+                    <div class="messages-conversation-actions">
+                        @include('messages.partials.settings-dropdown', [
+                            'preferences' => $preferences,
+                            'buttonClass' => 'inline-flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 transition hover:bg-slate-100 dark:hover:bg-slate-700',
+                        ])
+                    </div>
+                </x-slot:actions>
+            </x-repost.page-heading>
 
             <div class="messages-shell {{ count($threads) === 0 ? 'messages-shell--simple' : '' }}" data-ografi-layout-section="messages_threads">
                 @include('messages.partials.sidebar', [
