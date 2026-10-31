@@ -1,6 +1,9 @@
 @once
     @push('head')
         <style>
+            /* Repost public interface: message actions and panels share the same surface system. */
+            body.alma-app .messages-page { color: var(--rp-text, #202833); }
+            body.alma-app .messages-card { border-color: var(--rp-border, #e5e9ef); border-radius: 13px; box-shadow: none; }
             .messages-page {
                 min-height: 100vh;
                 background: transparent;
