@@ -1,0 +1,165 @@
+/* Repost UI integration for OgraFi public Blade pages.
+   Loaded directly by the Laravel layout (the Vite app.css bundle is not used by this layout).
+   Scope is deliberately limited to body.alma-app; Filament remains untouched. */
+body.alma-app {
+    --rp-bg: #f4f6f8;
+    --rp-panel: #fff;
+    --rp-panel-soft: #f7f8fa;
+    --rp-line: #e5e9ee;
+    --rp-text: #252a31;
+    --rp-muted: #77818d;
+    --rp-blue: #2878e5;
+    --rp-blue-soft: #edf5ff;
+    --rp-radius: 14px;
+    --rp-shadow: 0 1px 2px rgba(26, 39, 54, .035);
+    background: var(--rp-bg) !important;
+    color: var(--rp-text) !important;
+    font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
+}
+body.alma-app :where(a) { text-decoration-thickness: 1px; text-underline-offset: 2px; }
+body.alma-app .site-header {
+    height: 66px !important;
+    background: rgba(255,255,255,.97) !important;
+    border-bottom: 1px solid var(--rp-line) !important;
+    box-shadow: 0 1px 3px rgba(20,32,45,.035) !important;
+    backdrop-filter: blur(12px) !important;
+}
+body.alma-app .site-header-shell {
+    width: min(100% - 40px, 1400px) !important;
+    max-width: 1400px !important;
+    min-height: 66px !important;
+    margin-inline: auto !important;
+}
+body.alma-app .site-header-logo-wordmark { color: #202833 !important; font-weight: 750 !important; letter-spacing: -.04em !important; }
+body.alma-app .site-header-write-btn,
+body.alma-app a.site-header-write-btn {
+    min-height: 38px !important; height: 38px !important; padding: 0 17px !important;
+    border: 0 !important; border-radius: 9px !important; background: var(--rp-blue) !important;
+    color: #fff !important; font-size: 13px !important; font-weight: 650 !important;
+}
+body.alma-app .site-search-field { border-radius: 9px !important; background: #f4f6f8 !important; border: 1px solid #edf0f3 !important; }
+body.alma-app .site-search-field input { background: transparent !important; }
+body.alma-app .main-grid {
+    width: min(100% - 40px, 1400px) !important;
+    max-width: 1400px !important;
+    margin: 22px auto 40px !important;
+    padding: 0 !important;
+    grid-template-columns: 228px minmax(0, 1fr) 292px !important;
+    gap: 22px !important;
+    align-items: start !important;
+}
+body.alma-app .layout-main { min-width: 0 !important; width: 100% !important; }
+body.alma-app .layout-side { min-width: 0 !important; }
+body.alma-app .layout-side--left { position: sticky !important; top: 82px !important; }
+body.alma-app .layout-side--right { position: sticky !important; top: 82px !important; }
+body.alma-app .sidebar-wrapper {
+    position: static !important; width: 100% !important; max-width: 100% !important;
+    height: auto !important; max-height: calc(100vh - 90px) !important;
+    overflow: auto !important; background: transparent !important;
+}
+body.alma-app .sidebar-scroll { height: auto !important; max-height: calc(100vh - 90px) !important; padding: 0 !important; overflow-y: auto !important; }
+body.alma-app .sidebar-section { gap: 10px !important; }
+body.alma-app .nav-list { gap: 3px !important; }
+body.alma-app .nav-item {
+    min-height: 42px !important; padding: 9px 12px !important; gap: 11px !important;
+    border-radius: 9px !important; color: #59636f !important; font-size: 13px !important;
+}
+body.alma-app .nav-item:hover,
+body.alma-app .nav-item[data-active="true"] { background: #fff !important; color: var(--rp-blue) !important; }
+body.alma-app .sidebar-category-list,
+body.alma-app .sidebar-footer { border-top: 1px solid var(--rp-line) !important; padding-top: 14px !important; }
+body.alma-app :is(.alma-tabs, .feed-tabs) {
+    display: flex !important; align-items: center !important; gap: 4px !important;
+    padding: 5px !important; margin: 0 0 14px !important;
+    border: 1px solid var(--rp-line) !important; border-radius: 11px !important;
+    background: #fff !important; box-shadow: none !important;
+}
+body.alma-app .alma-tab {
+    min-height: 35px !important; padding: 0 15px !important; border-radius: 8px !important;
+    color: #7a8490 !important; font-size: 13px !important; font-weight: 600 !important;
+}
+body.alma-app .alma-tab.is-active { color: #226fd5 !important; background: var(--rp-blue-soft) !important; }
+body.alma-app article.post-card[data-post-card-shell],
+body.alma-app .post-card[data-post-card-shell] {
+    display: block !important; margin: 0 0 14px !important; padding: 18px 20px 12px !important;
+    border: 1px solid var(--rp-line) !important; border-radius: 13px !important;
+    background: #fff !important; box-shadow: var(--rp-shadow) !important; overflow: visible !important;
+}
+body.alma-app article.post-card .post-header { gap: 11px !important; margin-bottom: 12px !important; }
+body.alma-app article.post-card .author-avatar { width: 42px !important; height: 42px !important; border-radius: 50% !important; }
+body.alma-app article.post-card .author-name { color: #27313d !important; font-size: 13px !important; font-weight: 700 !important; }
+body.alma-app article.post-card .author-subline,
+body.alma-app article.post-card .post-time { color: #929ba6 !important; font-size: 11px !important; }
+body.alma-app article.post-card :is(.post-title, .post-title__link) {
+    color: #242b34 !important; font-size: 19px !important; line-height: 1.38 !important;
+    font-weight: 720 !important; letter-spacing: -.025em !important;
+}
+body.alma-app article.post-card :is(.post-card__eyebrow, .post-card__tags) { margin-top: 8px !important; }
+body.alma-app article.post-card .post-card__tag {
+    border: 1px solid #e6edf5 !important; border-radius: 6px !important;
+    background: #f6f9fc !important; color: #64758a !important; font-size: 11px !important;
+}
+body.alma-app article.post-card :is(.post-summary, .post-summary-shell, .post-card__full-content) {
+    color: #59636f !important; font-size: 13px !important; line-height: 1.7 !important;
+}
+body.alma-app article.post-card :is(.post-card__media-wrap, .post-card__media-frame) { border-radius: 10px !important; overflow: hidden !important; }
+body.alma-app article.post-card .post-card__media-image { border-radius: 10px !important; }
+body.alma-app article.post-card :is(.post-card__actions, .post-card__engagement, .post-card__footer) {
+    border-top: 1px solid #eef0f3 !important; margin-top: 13px !important; padding-top: 10px !important;
+}
+body.alma-app article.post-card :is(.post-card__action-button, .post-card__action-link, .post-metric) {
+    color: #7b8591 !important; font-size: 12px !important; border-radius: 7px !important;
+}
+body.alma-app article.post-card :is(.post-card__action-button, .post-card__action-link):hover { background: #f3f6f9 !important; color: #2878e5 !important; }
+body.alma-app :is(.alma-page-header, .page-title-identity, .og-card, .og-tabs-card, .og-list-card, .alma-empty-state) {
+    border: 1px solid var(--rp-line) !important; border-radius: 13px !important;
+    background: #fff !important; box-shadow: none !important;
+}
+body.alma-app :is(.og-card, .og-tabs-card, .og-list-card) { padding: 18px !important; }
+body.alma-app :is(input:not([type=checkbox]):not([type=radio]), textarea, select) {
+    min-height: 40px; border: 1px solid #dfe4ea !important; border-radius: 8px !important;
+    background: #fff !important; color: #29323c !important; box-shadow: none !important;
+}
+body.alma-app :is(input:not([type=checkbox]):not([type=radio]), textarea, select):focus {
+    border-color: #79aef0 !important; outline: 3px solid rgba(40,120,229,.10) !important; box-shadow: none !important;
+}
+body.alma-app :is(button[type=submit], .btn-primary, .button-primary) {
+    border-radius: 8px !important; background: var(--rp-blue) !important; color: #fff !important;
+}
+body.alma-app .layout-side--right :is(.widget, .sidebar-widget, section, article) {
+    border-radius: 12px;
+}
+body.alma-app.route-profile .main-grid { margin-top: 22px !important; }
+body.alma-app :is(.mobile-bottom-nav, [data-mobile-bottom-nav]) {
+    border-top: 1px solid var(--rp-line) !important; background: rgba(255,255,255,.98) !important;
+    box-shadow: 0 -3px 12px rgba(24,38,54,.04) !important;
+}
+@media (max-width: 1279px) {
+    body.alma-app .main-grid { grid-template-columns: 205px minmax(0,1fr) 260px !important; gap: 16px !important; }
+}
+@media (max-width: 1023px) {
+    body.alma-app .main-grid {
+        width: min(100% - 24px, 760px) !important; grid-template-columns: minmax(0,1fr) !important;
+        margin: 14px auto 32px !important; gap: 0 !important;
+    }
+    body.alma-app .layout-side { display: none !important; }
+}
+@media (max-width: 640px) {
+    body.alma-app .site-header-shell { width: calc(100% - 24px) !important; }
+    body.alma-app .main-grid { width: 100% !important; margin: 8px auto 28px !important; }
+    body.alma-app article.post-card[data-post-card-shell] { padding: 14px 14px 10px !important; margin-bottom: 10px !important; border-left: 0 !important; border-right: 0 !important; border-radius: 0 !important; }
+    body.alma-app :is(.alma-tabs, .feed-tabs) { margin: 0 10px 10px !important; }
+}
+html.dark body.alma-app {
+    --rp-bg: #10141a; --rp-panel: #1a2028; --rp-panel-soft: #202832; --rp-line: #303945;
+    --rp-text: #e1e7ee; --rp-muted: #9aa6b2;
+    background: var(--rp-bg) !important; color: var(--rp-text) !important;
+}
+html.dark body.alma-app .site-header,
+html.dark body.alma-app article.post-card[data-post-card-shell],
+html.dark body.alma-app :is(.alma-tabs, .feed-tabs, .alma-page-header, .page-title-identity, .og-card, .og-tabs-card, .og-list-card, .alma-empty-state) {
+    background: #1a2028 !important; border-color: #303945 !important;
+}
+html.dark body.alma-app article.post-card :is(.post-title, .post-title__link, .author-name) { color: #edf2f7 !important; }
+html.dark body.alma-app article.post-card :is(.post-summary, .post-summary-shell, .post-card__full-content) { color: #b7c1cc !important; }
+html.dark body.alma-app :is(input:not([type=checkbox]):not([type=radio]), textarea, select) { background: #171d25 !important; color: #edf2f7 !important; border-color: #3a4654 !important; }
