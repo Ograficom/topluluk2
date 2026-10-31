@@ -7674,10 +7674,10 @@
     @include('partials.page-layout-builder-runtime')
     
     {{-- Load after all page/header/sidebar inline styles so Repost wins the cascade. --}}
-    <link rel="stylesheet" href="{{ asset('css/repost-theme.css') }}?v=20261031-final2">
-    <link rel="stylesheet" href="{{ asset('css/repost-layout.css') }}?v=20261031-final2">
+    <link rel="stylesheet" href="{{ asset('css/repost-theme.css') }}?v=20261031-final3">
+    <link rel="stylesheet" href="{{ asset('css/repost-layout.css') }}?v=20261031-final3">
     @if(request()->routeIs('home'))
-        <link rel="stylesheet" href="{{ asset('css/repost-home.css') }}?v=20261031-final2">
+        <link rel="stylesheet" href="{{ asset('css/repost-home.css') }}?v=20261031-final3">
     @endif
 </body>
 </html>
