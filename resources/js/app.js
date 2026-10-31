@@ -1,3 +1,5 @@
+import './init.js';
+
 /*!
  * Repost — main interface scripts
  * Version: 3.0
@@ -14,7 +16,6 @@
   };
 
   const root = document.documentElement;
-  const prefersDark = window.matchMedia?.("(prefers-color-scheme: dark)");
 
   function readStoredTheme() {
     try {
@@ -29,10 +30,6 @@
     try {
       localStorage.setItem(STORAGE_KEY, theme);
     } catch {}
-  }
-
-  function getSystemTheme() {
-    return prefersDark?.matches ? THEMES.dark : THEMES.light;
   }
 
   function getCurrentTheme() {
@@ -99,17 +96,11 @@
     updateSwitchers();
   }
 
-  applyTheme(readStoredTheme() || getSystemTheme());
-
-  prefersDark?.addEventListener?.("change", () => {
-    if (!readStoredTheme()) {
-      applyTheme(getSystemTheme());
-    }
-  });
+  applyTheme(readStoredTheme() || THEMES.light);
 
   window.addEventListener("storage", (event) => {
     if (event.key === STORAGE_KEY) {
-      applyTheme(readStoredTheme() || getSystemTheme());
+      applyTheme(readStoredTheme() || THEMES.light);
     }
   });
 
