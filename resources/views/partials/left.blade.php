@@ -64,7 +64,7 @@
     /* Desktop sol kolon genişliği daraltıldı */
     @media (min-width: 1024px) {
         body.alma-app:has(.layout-side--left) {
-            --layout-left-width: 200px !important;
+            --layout-left-width: 55px !important;
         }
     }
 
@@ -86,8 +86,8 @@
                 0px,
                 calc((100vw - var(--layout-shell-max, 1272px)) / 2)
             ) !important;
-            width: var(--layout-left-width, 205px) !important;
-            max-width: var(--layout-left-width, 205px) !important;
+            width: 55px !important;
+            max-width: 55px !important;
             height: calc(100dvh - 82px) !important;
             max-height: calc(100dvh - 82px) !important;
             overflow: hidden !important;
