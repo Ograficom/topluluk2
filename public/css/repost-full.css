@@ -1015,3 +1015,212 @@ body.repost-app.route-categories-index .layout-main > * {
     padding:12px !important;
   }
 }
+
+
+/* Repost page finish — taxonomy, profile, post detail and search. */
+body.repost-app :where(.channels-page,.categories-page,.tag-catalog-page,.tags-page,.users-page,.search-page,.profile-page,.post-page,.repost-static-page) {
+  width:100% !important;
+  max-width:none !important;
+  min-width:0 !important;
+  color:var(--rp-text) !important;
+}
+body.repost-app :where(.categories-panel,.categories-item,.categories-empty,.tag-row,.tags-list__empty,.og-profile-wrap,.og-card,.og-profile-content,.og-tabs-card,.og-search-identity,.og-search-result,.search-result-card,.ps-post-card,.ps-main,.static-page-content) {
+  border:1px solid var(--rp-border) !important;
+  border-radius:10px !important;
+  background:var(--rp-surface) !important;
+  box-shadow:none !important;
+}
+body.repost-app .categories-panel {
+  padding:18px !important;
+}
+body.repost-app .categories-panel__top {
+  display:flex !important;
+  align-items:center !important;
+  justify-content:space-between !important;
+  gap:14px !important;
+  padding-bottom:14px !important;
+  border-bottom:1px solid var(--rp-border) !important;
+}
+body.repost-app .categories-title,
+body.repost-app .categories-item__name,
+body.repost-app .tag-row__name,
+body.repost-app .og-profile-wrap :where(h1,h2,h3),
+body.repost-app .og-search-identity__title {
+  color:var(--rp-heading) !important;
+}
+body.repost-app .categories-title {
+  font-size:20px !important;
+  font-weight:750 !important;
+  letter-spacing:-.025em !important;
+}
+body.repost-app .categories-panel__tabs {
+  border-bottom:1px solid var(--rp-border) !important;
+}
+body.repost-app .categories-tab {
+  color:var(--rp-muted) !important;
+  border-radius:7px 7px 0 0 !important;
+}
+body.repost-app .categories-tab.is-active,
+body.repost-app .categories-tab[aria-current="page"] {
+  color:var(--rp-blue) !important;
+  border-color:var(--rp-blue) !important;
+}
+body.repost-app .categories-list {
+  display:grid !important;
+  grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+  gap:10px !important;
+  padding-top:14px !important;
+}
+body.repost-app .categories-item {
+  min-width:0 !important;
+  padding:14px !important;
+}
+body.repost-app .categories-item:hover,
+body.repost-app .tag-row:hover {
+  border-color:var(--rp-border-strong) !important;
+  background:var(--rp-surface-soft) !important;
+}
+body.repost-app .categories-avatar {
+  border-radius:9px !important;
+}
+body.repost-app .categories-item__name {
+  font-size:14px !important;
+  font-weight:700 !important;
+}
+body.repost-app .categories-item__stats,
+body.repost-app .categories-item__description,
+body.repost-app .categories-count {
+  color:var(--rp-muted) !important;
+}
+body.repost-app .tag-catalog-page .tag-catalog-page,
+body.repost-app .tags-list {
+  min-width:0 !important;
+}
+body.repost-app .tag-row {
+  display:flex !important;
+  align-items:center !important;
+  min-height:56px !important;
+  padding:10px 14px !important;
+  margin-bottom:8px !important;
+  gap:12px !important;
+}
+body.repost-app .tag-row__name {
+  font-weight:650 !important;
+}
+body.repost-app .tag-row__count {
+  margin-left:auto !important;
+  color:var(--rp-muted) !important;
+}
+body.repost-app .tags-page-title,
+body.repost-app .og-search-identity {
+  border:1px solid var(--rp-border) !important;
+  border-radius:10px !important;
+  background:var(--rp-surface) !important;
+}
+body.repost-app .og-search-page :where(.og-search-pill,.og-search-toolbar__trigger,.og-search-info__trigger,.og-search-settings__trigger) {
+  border:1px solid var(--rp-border) !important;
+  border-radius:7px !important;
+  background:var(--rp-surface) !important;
+  color:var(--rp-muted) !important;
+  box-shadow:none !important;
+}
+body.repost-app .og-search-page .og-search-pill.is-active,
+body.repost-app .og-search-page .og-search-pill[aria-pressed="true"] {
+  border-color:var(--rp-blue) !important;
+  background:var(--rp-blue-soft) !important;
+  color:var(--rp-blue) !important;
+}
+body.repost-app .profile-page .og-profile-wrap {
+  overflow:hidden !important;
+}
+body.repost-app .profile-page .og-cover {
+  border-radius:9px 9px 0 0 !important;
+}
+body.repost-app .profile-page .og-body {
+  padding:20px !important;
+}
+body.repost-app .profile-page .og-avatar {
+  border:4px solid var(--rp-surface) !important;
+}
+body.repost-app .profile-page .og-btn--primary {
+  border:1px solid var(--rp-blue) !important;
+  border-radius:8px !important;
+  background:var(--rp-blue) !important;
+  color:#fff !important;
+}
+body.repost-app .profile-page .og-icon-btn,
+body.repost-app .profile-page .og-menu-summary-icon-only {
+  border:1px solid var(--rp-border) !important;
+  border-radius:8px !important;
+  background:var(--rp-surface) !important;
+  color:var(--rp-muted) !important;
+}
+body.repost-app .profile-page :where(.og-tabs-card,.og-profile-content) {
+  margin-top:14px !important;
+}
+body.repost-app .post-page .ps-post-card,
+body.repost-app .post-page .ps-main {
+  overflow:hidden !important;
+}
+body.repost-app .post-page .ps-main {
+  padding:22px !important;
+}
+body.repost-app .post-page :where(.ps-title,.ps-post-title,h1) {
+  color:var(--rp-heading) !important;
+  font-size:clamp(25px,3.2vw,36px) !important;
+  line-height:1.22 !important;
+  font-weight:750 !important;
+}
+body.repost-app .post-page :where(.ps-content,.ps-post-content,.post-content) {
+  color:var(--rp-text) !important;
+  font-size:15px !important;
+  line-height:1.85 !important;
+}
+body.repost-app .post-page :where(.ps-content,.ps-post-content) :where(h2,h3,h4) {
+  margin-top:1.7em !important;
+  margin-bottom:.6em !important;
+  color:var(--rp-heading) !important;
+  font-weight:750 !important;
+}
+body.repost-app .post-page :where(.ps-content,.ps-post-content) :where(img,video,iframe) {
+  max-width:100% !important;
+  border-radius:8px !important;
+}
+body.repost-app .post-page :where(.ps-content,.ps-post-content) blockquote {
+  border-left:3px solid var(--rp-blue) !important;
+  background:var(--rp-blue-soft) !important;
+  padding:12px 16px !important;
+  color:var(--rp-text) !important;
+}
+body.repost-app .repost-static-page {
+  padding:22px !important;
+}
+body.repost-app .static-page-content {
+  padding:22px !important;
+  color:var(--rp-text) !important;
+  line-height:1.8 !important;
+}
+body.repost-app .static-page-content :where(h1,h2,h3,h4) {
+  color:var(--rp-heading) !important;
+}
+@media(max-width:767px) {
+  body.repost-app .categories-list {
+    grid-template-columns:minmax(0,1fr) !important;
+    gap:8px !important;
+  }
+  body.repost-app .categories-panel {
+    padding:12px !important;
+  }
+  body.repost-app .categories-item {
+    padding:12px !important;
+  }
+  body.repost-app .profile-page .og-body,
+  body.repost-app .post-page .ps-main,
+  body.repost-app .repost-static-page,
+  body.repost-app .static-page-content {
+    padding:14px !important;
+  }
+  body.repost-app .tags-page-title {
+    padding:12px !important;
+  }
+}
