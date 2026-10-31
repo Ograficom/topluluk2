@@ -1453,7 +1453,7 @@
             'verification.*'
         );
     @endphp
-    <body class="bg-gray-100 dark:bg-gray-900 text-text-light dark:text-text-dark font-sans antialiased transition-colors duration-200 theme-minimal alma-app @auth logged-in @else logged-out @endauth {{ $authSingle ? 'auth-single' : '' }}"
+    <body class="bg-gray-100 dark:bg-gray-900 text-text-light dark:text-text-dark font-sans antialiased transition-colors duration-200 theme-minimal alma-app repost-app @auth logged-in @else logged-out @endauth {{ $authSingle ? 'auth-single' : '' }}"
           data-mentions-endpoint="{{ auth()->check() ? route('mentions.users') : '' }}"
           @if($themeLayout)
             style="@if($themeLayout->layout_bg_color)background: {{ $themeLayout->layout_bg_color }};@endif
@@ -1525,5 +1525,6 @@
     @stack('scripts')
     @livewireScripts
         @include('partials.pwa-scripts')
+    <link rel="stylesheet" href="{{ asset('css/repost-full.css') }}?v=20261031-full1">
 </body>
 </html>
