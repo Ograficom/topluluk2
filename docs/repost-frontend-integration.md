@@ -21,7 +21,7 @@ Filament remains outside the public Repost layout and keeps its own panel assets
 
 ## Remaining page-by-page conversion
 
-The shared Repost shell and visual rules are applied across the public layouts. The legacy left sidebar has been replaced with database-backed navigation, including a responsive full-width mobile drawer, category icons/labels, contacts, message settings, bookmarks and account settings. Page wrappers for feed, post detail, public profile, messages, category/tag catalogs, favorites, users, search and static content are connected to Repost component styles. Detailed page-by-page markup conversion is still required for:
+The shared Repost shell and visual rules are applied across the public layouts. The legacy left sidebar has been replaced with database-backed navigation, including a responsive full-width mobile drawer, category icons/labels, contacts, message settings, bookmarks and account settings. Page wrappers for feed, post detail, public profile, messages, category/tag catalogs, favorites, users, search and static content are connected to Repost component styles. The latest pass also adds explicit route classes for messages, bookmarks and category index, and restyles message lists, conversation bubbles, composer, bookmark panels and category layout using the Repost palette. Detailed page-by-page markup conversion is still required for:
 
 1. Feed and post cards.
 2. Post detail, media, comments and reaction controls.
@@ -71,4 +71,4 @@ The archive's sample names, post copy, demo avatars and placeholder `#` links ar
 
 ## Current asset status
 
-`public/css/repost-full.css` and `public/js/repost-ui.js` are the current OgraFi integration layer. The complete original `Repost/dist/assets/` payload (the archive's app/kit/editor/engine CSS, bundled JS, fonts, icon sprite, and optional libraries) has not yet been copied into `public/repost/`. Do not treat the source asset import as complete until the assets are added and referenced by the Blade layout. Keep optional libraries page-scoped; do not load every archive plugin globally.
+`public/css/repost-full.css` and `public/js/repost-ui.js` are the current OgraFi integration layer. The complete original `Repost/dist/assets/` payload (the archive's app/kit/editor/engine CSS, bundled JS, fonts, icon sprite, and optional libraries) has not yet been copied into `public/repost/`. The current `repost-full.css` is an OgraFi-specific compatibility layer that reproduces the shared layout and visual rules; it is not the archive's original compiled stylesheet. Do not treat the source asset import as complete until the assets are added and referenced by the Blade layout. Keep optional libraries page-scoped; do not load every archive plugin globally.
