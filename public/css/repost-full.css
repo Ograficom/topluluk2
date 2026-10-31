@@ -639,3 +639,57 @@ body.repost-app .repost-widgets .ografi-sidebar-card { border:1px solid var(--rp
   body.repost-app .main__grid > .sidebar { display:none !important; }
   body.repost-app .main__widgets { display:none !important; }
 }
+
+
+/* Repost page-level components connected to OgraFi's live Blade output. */
+body.repost-app .post.post-card {
+  display:block !important;
+  margin:0 0 14px !important;
+  padding:18px 20px 14px !important;
+  border:1px solid var(--rp-border) !important;
+  border-radius:10px !important;
+  background:var(--rp-surface) !important;
+  box-shadow:none !important;
+}
+body.repost-app .post.post-card :where(.post-card__title,.post-card__author,.post-card__eyebrow-category) { color:var(--rp-heading) !important; }
+body.repost-app .post.post-card :where(.post-card__media-wrap,.post-card__media-frame,.post-card__media-image) { border-radius:8px !important; }
+body.repost-app .post-page .ps-post-card {
+  border:1px solid var(--rp-border) !important;
+  border-radius:10px !important;
+  background:var(--rp-surface) !important;
+  box-shadow:none !important;
+}
+body.repost-app .profile-page .og-profile-wrap {
+  width:100% !important;
+  max-width:none !important;
+}
+body.repost-app .profile-page :where(.og-profile-cover,.og-profile-header,.og-tabs-card,.og-profile-content) {
+  border-color:var(--rp-border) !important;
+  border-radius:10px !important;
+  box-shadow:none !important;
+}
+body.repost-app .messenger-page .messages-shell,
+body.repost-app .messenger-page .messages-card {
+  border-color:var(--rp-border) !important;
+  border-radius:10px !important;
+  background:var(--rp-surface) !important;
+  box-shadow:none !important;
+}
+body.repost-app .feed-page .home-feed-shell { display:flex !important; flex-direction:column !important; gap:18px !important; }
+body.repost-app .feed-page .home-feed-toolbar,
+body.repost-app .feed-page .home-feed-toolbar__inner {
+  border-color:var(--rp-border) !important;
+  border-radius:10px !important;
+  background:var(--rp-surface) !important;
+  box-shadow:none !important;
+}
+body.repost-app .post.post-card .post-card__action-button,
+body.repost-app .post.post-card .post-card__action {
+  border-radius:7px !important;
+  box-shadow:none !important;
+}
+body.repost-app .post.post-card .post-card__action-button:hover,
+body.repost-app .post.post-card .post-card__action:hover {
+  background:var(--rp-blue-soft) !important;
+  color:var(--rp-blue) !important;
+}
