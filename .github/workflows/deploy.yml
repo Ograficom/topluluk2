@@ -102,7 +102,7 @@ jobs:
             set -e
             TARGET_PATH="${{ secrets.SERVER_PATH }}"
             if [ -z "$TARGET_PATH" ]; then
-              TARGET_PATH="/www/wwwroot/ografi_com_app"
+              TARGET_PATH="/www/wwwroot/ografi.com"
             fi
             cd "$TARGET_PATH"
 
