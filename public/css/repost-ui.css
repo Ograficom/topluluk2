@@ -33,3 +33,11 @@ body.repost-ui input:not([type=checkbox]):not([type=radio]),body.repost-ui texta
 body.repost-ui .site-header-write-btn,body.repost-ui .community-btn-primary{background:var(--rp-blue)!important}
 @media(max-width:1023px){body.repost-ui .main-grid{grid-template-columns:minmax(0,1fr)!important;max-width:760px!important;padding:14px 12px!important}body.repost-ui .layout-side--left,body.repost-ui .layout-side--right{display:none!important}}
 @media(max-width:640px){body.repost-ui .main-grid{padding:10px 0!important;gap:12px!important}body.repost-ui .layout-main{width:100%!important}body.repost-ui .layout-main :is(.post-card,[data-post-card-shell]){border-radius:0!important;border-left:0!important;border-right:0!important}body.repost-ui .site-header{min-height:58px}}
+
+/* Legacy blog views use their own three-column shell. */
+body.repost-ui .blog-layout-shell{--layout-shell-max:1440px!important;--layout-left-width:205px!important;--profile-shell-width:minmax(0,1fr)!important;--layout-right-width:280px!important;--layout-column-gap:24px!important;max-width:1440px!important;grid-template-columns:205px minmax(0,1fr) 280px!important;gap:24px!important;padding:24px 18px 0!important}
+body.repost-ui .blog-layout-main{max-width:none!important;min-width:0}
+body.repost-ui .blog-layout-side{max-width:none!important}
+body.repost-ui .blog-layout-main :is(article,.community-card,.rounded-xl,.rounded-2xl){border-color:var(--rp-line)!important;border-radius:14px!important;box-shadow:none!important}
+@media(max-width:1199px){body.repost-ui .blog-layout-shell{grid-template-columns:190px minmax(0,1fr)!important;max-width:980px!important}body.repost-ui .blog-layout-side--right{display:none!important}}
+@media(max-width:900px){body.repost-ui .blog-layout-shell{grid-template-columns:minmax(0,1fr)!important;max-width:760px!important;padding:14px 12px 0!important}body.repost-ui .blog-layout-side{display:none!important}}
