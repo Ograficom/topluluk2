@@ -1288,7 +1288,7 @@ SVG;
 @endphp
 
 <article
-    class="post-card is-preloading{{ $isPinned ? ' is-pinned' : '' }}{{ $hasMediaCarousel ? ' has-media' : '' }}{{ $mediaItems->count() > 1 ? ' has-gallery' : '' }}"
+    class="post post-card card is-preloading{{ $isPinned ? ' is-pinned' : '' }}{{ $hasMediaCarousel ? ' has-media' : '' }}{{ $mediaItems->count() > 1 ? ' has-gallery' : '' }}"
     id="{{ $cardShellId }}"
     data-post-card-shell
     data-post-url="{{ $replyShareUrl }}"
