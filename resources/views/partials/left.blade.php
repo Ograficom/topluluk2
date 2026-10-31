@@ -22,7 +22,7 @@
     ];
 @endphp
 
-<aside class="sidebar{{ $mobileSidebar ? ' sidebar--drawer' : '' }}" aria-label="{{ __('site.discover_page.title') }}">
+<div class="sidebar__content{{ $mobileSidebar ? ' sidebar__content--drawer' : '' }}" aria-label="{{ __('site.discover_page.title') }}">
     <div class="sidebar__body">
         <nav class="sidebar__section" aria-label="Ana menü">
             <h2 class="sidebar__title">Menü</h2>
@@ -112,4 +112,4 @@
         @endauth
         <span class="sidebar__copyright">© {{ now()->year }} OgraFi</span>
     </div>
-</aside>
+</div>
