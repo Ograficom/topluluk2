@@ -3,7 +3,7 @@
 @section('title', __('site.bookmarks_page.title'))
 
 @section('content')
-    <div class="space-y-6" data-ografi-layout-container="bookmarks">
+    <div class="space-y-6 rp-bookmarks-page" data-ografi-layout-container="bookmarks">
         <header id="bookmark" class="alma-page-header alma-page-header--compact-card" data-ografi-layout-section="bookmarks_header">
             <h1 class="alma-page-title alma-page-title--compact-card">{{ __('site.bookmarks_page.heading') }}</h1>
         </header>
