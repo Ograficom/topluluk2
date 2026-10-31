@@ -837,7 +837,7 @@
 @endpush
 
 @section('content')
-    <div class="categories-page" data-ografi-layout-container="categories">
+    <div class="categories-page rp-categories-page" data-ografi-layout-container="categories">
         <section class="categories-panel" data-ografi-layout-section="categories_header">
             <div class="categories-panel__top">
                 <h1 class="categories-title">Kategoriler</h1>
