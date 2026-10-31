@@ -129,6 +129,15 @@ class LoginSecurityService
     {
         $settings ??= RecaptchaSetting::currentOrNull();
 
+        // SMTP is not configured yet. Allow the designated site administrator
+        // to sign in without email-based device verification; regular users
+        // continue to use the existing trusted-device challenge.
+        if ($user->isAdmin() && strtolower((string) $user->email) === 'admin@ografi.com') {
+            $request->session()->forget(self::PENDING_DEVICE_SESSION);
+
+            return;
+        }
+
         // Device challenges are an interactive production security step. They
         // must not interrupt isolated feature tests, which do not have a real
         // browser device cookie or mail round-trip.
