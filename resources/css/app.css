@@ -5134,3 +5134,11 @@ p {
 .repost-notification-copy span{font-size:.86rem;color:var(--gray-500)}
 .repost-notification-copy time{font-size:.75rem}
 @media(max-width:760px){.repost-tag-directory{grid-template-columns:repeat(2,minmax(0,1fr))}.repost-notification-row{align-items:flex-start}}
+
+
+.repost-danger-zone{margin-top:14px;border:1px solid #e9bcbc;display:grid;gap:10px}
+.repost-danger-zone>strong{color:#a52c2c}
+.repost-drafts-list{overflow:hidden}
+.repost-draft-row{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:14px 16px;border-bottom:1px solid var(--border-color)}
+.repost-draft-row p{margin-top:4px}
+@media(max-width:760px){.repost-draft-row{align-items:flex-start;flex-direction:column}}
