@@ -5103,3 +5103,9 @@ p {
 .repost-dashboard-tile strong{font-size:1rem}
 .repost-dashboard-tile span{font-size:.82rem;color:var(--gray-500)}
 @media(max-width:760px){.repost-dashboard-grid,.repost-settings-grid{grid-template-columns:1fr}}
+
+
+.repost-faq-list{display:grid;gap:10px}
+.repost-faq-list details{padding:16px}
+.repost-faq-list summary{font-weight:700;cursor:pointer}
+.repost-faq-list p{margin-top:12px;color:var(--gray-500);line-height:1.6}
