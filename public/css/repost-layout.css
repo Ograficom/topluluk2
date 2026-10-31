@@ -205,7 +205,7 @@ body.alma-app :is(input:not([type=checkbox]):not([type=radio]),textarea,select) 
 body.alma-app :is(button[type=submit],.btn-primary,.button-primary) {
     border-radius: 8px !important;
 }
-@media (max-width: 1199px) {
+@media (max-width: 1023px) {
     body.alma-app .main-grid {
         width: min(100% - 32px, 1000px) !important;
         grid-template-columns: 55px minmax(280px,1fr) !important;
@@ -251,3 +251,38 @@ html.dark body.alma-app article.post-card :is(.post-summary,.post-summary-shell,
 html.dark body.alma-app .nav-item { color: #aab5c2 !important; }
 html.dark body.alma-app .nav-item[data-active="true"],
 html.dark body.alma-app .nav-item:hover { background: #172b4d !important; color: #8dbdff !important; }
+
+
+/* Match the Repost three-column desktop layout at the existing tablet-wide breakpoint.
+   The legacy app layout had a more specific rule that collapsed this range to one column. */
+@media (min-width: 1024px) and (max-width: 1439px) {
+    html body.alma-app:not(#comments):not(#app) .main-grid {
+        width: min(1320px, calc(100% - 40px)) !important;
+        max-width: 1320px !important;
+        grid-template-columns: 55px minmax(280px, 1fr) 320px !important;
+        gap: 20px !important;
+        margin: 20px auto 36px !important;
+        padding: 0 !important;
+    }
+    html body.alma-app:not(#comments):not(#app) .layout-side--left,
+    html body.alma-app:not(#comments):not(#app) .layout-side--right {
+        display: block !important;
+    }
+    html body.alma-app:not(#comments):not(#app) .layout-side--left {
+        grid-column: 1 !important;
+        grid-row: 1 !important;
+    }
+    html body.alma-app:not(#comments):not(#app) .main-grid > main.layout-main {
+        grid-column: 2 !important;
+        grid-row: 1 !important;
+        width: 100% !important;
+        max-width: none !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+    html body.alma-app:not(#comments):not(#app) .layout-side--right {
+        grid-column: 3 !important;
+        grid-row: 1 !important;
+        max-width: 320px !important;
+    }
+}
