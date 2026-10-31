@@ -83,6 +83,7 @@
                             @else
                                 <span class="channel-icon__initial">{{ mb_strtoupper(mb_substr($category->name, 0, 1)) }}</span>
                             @endif
+                            <span class="channel-icon__label">{{ $category->name }}</span>
                         </a>
                     </li>
                 @empty
