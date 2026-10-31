@@ -890,3 +890,128 @@ body.repost-app .ografi-right-stack .alma-ad-slot {
   body.repost-app .post.post-card { padding:14px 12px 12px !important; border-radius:9px !important; }
   body.repost-app .feed-page .home-feed-toolbar { border-radius:9px !important; }
 }
+
+
+/* Route-specific Repost finishing pass: messages, bookmarks and channel index. */
+body.repost-app.route-messages .layout-main {
+  max-width:none !important;
+  min-width:0 !important;
+}
+body.repost-app.route-messages .messages-page {
+  min-height:0 !important;
+  padding:0 !important;
+  background:transparent !important;
+  color:var(--rp-text) !important;
+}
+body.repost-app.route-messages .messages-page .site-main-shell {
+  width:100% !important;
+  max-width:none !important;
+  margin:0 !important;
+  padding:0 !important;
+}
+body.repost-app.route-messages .messages-card,
+body.repost-app.route-messages .messages-main-panel,
+body.repost-app.route-messages .messages-sidebar-panel,
+body.repost-app.route-messages .messages-thread-item,
+body.repost-app.route-messages .messages-composer-dock {
+  border:1px solid var(--rp-border) !important;
+  border-radius:10px !important;
+  background:var(--rp-surface) !important;
+  box-shadow:none !important;
+}
+body.repost-app.route-messages .messages-page h1,
+body.repost-app.route-messages .messages-page h2,
+body.repost-app.route-messages .messages-page h3 {
+  color:var(--rp-heading) !important;
+  letter-spacing:-.02em !important;
+  text-transform:none !important;
+}
+body.repost-app.route-messages .messages-thread-item {
+  min-height:76px !important;
+  padding:12px !important;
+  gap:12px !important;
+}
+body.repost-app.route-messages .messages-thread-item:hover,
+body.repost-app.route-messages .messages-thread-item.is-active {
+  border-color:var(--rp-border-strong) !important;
+  background:var(--rp-hover) !important;
+}
+body.repost-app.route-messages .messages-thread-item img,
+body.repost-app.route-messages .messages-thread-item .rounded-full {
+  width:44px !important;
+  height:44px !important;
+  min-width:44px !important;
+}
+body.repost-app.route-messages .messages-thread-item h3 {
+  font-size:14px !important;
+  font-weight:650 !important;
+}
+body.repost-app.route-messages .messages-thread-item p,
+body.repost-app.route-messages .messages-thread-item span {
+  font-size:12px !important;
+  color:var(--rp-muted) !important;
+}
+body.repost-app.route-messages .messages-bubble--mine {
+  border-radius:12px 12px 4px 12px !important;
+  background:var(--rp-blue) !important;
+  color:#fff !important;
+}
+body.repost-app.route-messages .messages-bubble--other {
+  border:1px solid var(--rp-border) !important;
+  border-radius:12px 12px 12px 4px !important;
+  background:var(--rp-surface) !important;
+  color:var(--rp-text) !important;
+}
+body.repost-app.route-messages .messages-composer-dock {
+  backdrop-filter:none !important;
+}
+body.repost-app.route-messages .messages-page input,
+body.repost-app.route-messages .messages-page textarea {
+  border-color:var(--rp-border) !important;
+  border-radius:8px !important;
+  background:var(--rp-surface) !important;
+  color:var(--rp-text) !important;
+  box-shadow:none !important;
+}
+body.repost-app.route-messages .messages-page input:focus,
+body.repost-app.route-messages .messages-page textarea:focus {
+  border-color:var(--rp-blue) !important;
+  outline:2px solid color-mix(in srgb,var(--rp-blue) 14%,transparent) !important;
+}
+body.repost-app.route-bookmarks .favorites-page {
+  width:100% !important;
+  max-width:none !important;
+}
+body.repost-app.route-bookmarks .favorites-page .alma-page-header,
+body.repost-app.route-bookmarks .favorites-page .alma-panel {
+  border:1px solid var(--rp-border) !important;
+  border-radius:10px !important;
+  background:var(--rp-surface) !important;
+  box-shadow:none !important;
+}
+body.repost-app.route-bookmarks .favorites-page .alma-page-title {
+  color:var(--rp-heading) !important;
+  font-size:18px !important;
+  font-weight:700 !important;
+}
+body.repost-app.route-categories-index .layout-main {
+  max-width:none !important;
+}
+body.repost-app.route-categories-index .layout-main > * {
+  min-width:0 !important;
+}
+@media(max-width:767px) {
+  body.repost-app.route-messages .messages-page .site-main-shell {
+    padding:0 0 92px !important;
+  }
+  body.repost-app.route-messages .messages-composer-dock {
+    right:8px !important;
+    left:8px !important;
+    bottom:calc(8px + env(safe-area-inset-bottom)) !important;
+    width:auto !important;
+    transform:none !important;
+  }
+  body.repost-app.route-bookmarks .favorites-page .alma-panel {
+    padding:12px !important;
+  }
+}
