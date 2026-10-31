@@ -1,0 +1,1299 @@
+/* Repost v3 — OgraFi public interface replacement.
+   Replaces the earlier partial Repost overlays with one consistent public UI layer.
+   Laravel/Livewire markup and actions remain the source of application behavior. */
+:root {
+  --rp-bg: #f7f9fd;
+  --rp-surface: #ffffff;
+  --rp-surface-soft: #f4f6f8;
+  --rp-border: #e7ebef;
+  --rp-border-strong: #d5dbe2;
+  --rp-text: #212529;
+  --rp-heading: #111827;
+  --rp-muted: #64748b;
+  --rp-blue: #0d6efd;
+  --rp-blue-hover: #0b5ed7;
+  --rp-blue-soft: #edf5fe;
+  --rp-green: #17b548;
+  --rp-radius: 10px;
+  --rp-gap: 20px;
+  --rp-header-height: 70px;
+}
+html { color-scheme: light; }
+body.repost-app {
+  min-width: 320px !important;
+  background: var(--rp-bg) !important;
+  color: var(--rp-text) !important;
+  font-family: Inter, Roboto, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
+  font-size: 14px !important;
+  line-height: 1.5 !important;
+}
+body.repost-app :where(h1,h2,h3,h4,h5,h6) {
+  color: var(--rp-heading);
+  font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+  letter-spacing: -.018em;
+}
+body.repost-app a { color: var(--rp-blue); text-decoration: none; }
+body.repost-app a:hover { color: var(--rp-blue-hover); }
+body.repost-app button,
+body.repost-app input,
+body.repost-app textarea,
+body.repost-app select { font: inherit; }
+body.repost-app img { max-width: 100%; }
+
+/* Header — Repost's compact 70px fixed rhythm. */
+body.repost-app .site-header {
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 1000 !important;
+  width: 100% !important;
+  min-height: var(--rp-header-height) !important;
+  background: var(--rp-surface) !important;
+  border-bottom: 1px solid var(--rp-border) !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+}
+body.repost-app .site-header-shell {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 18px !important;
+  width: min(1120px, calc(100% - 32px)) !important;
+  max-width: 1120px !important;
+  min-height: var(--rp-header-height) !important;
+  height: var(--rp-header-height) !important;
+  margin: 0 auto !important;
+  padding: 0 !important;
+  background: transparent !important;
+}
+body.repost-app .site-header-logo { display:inline-flex !important; align-items:center !important; gap:10px !important; flex:0 0 auto !important; }
+body.repost-app .site-header-logo-wordmark { color:var(--rp-heading) !important; font-size:20px !important; font-weight:750 !important; letter-spacing:-.04em !important; }
+body.repost-app .site-header-logo-image { width:32px !important; height:32px !important; }
+body.repost-app .site-header-actions { display:flex !important; align-items:center !important; justify-content:flex-end !important; gap:10px !important; min-width:0 !important; }
+body.repost-app .site-search-panel { position:relative !important; width:auto !important; max-width:420px !important; }
+body.repost-app .site-search-dropdown,
+body.repost-app .site-notifications-panel,
+body.repost-app [data-user-menu-panel] {
+  border:1px solid var(--rp-border) !important;
+  border-radius:var(--rp-radius) !important;
+  background:var(--rp-surface) !important;
+  box-shadow:0 10px 28px rgba(15,23,42,.10) !important;
+}
+body.repost-app .site-search-field,
+body.repost-app .site-search-input {
+  min-height:40px !important;
+  border:1px solid var(--rp-border) !important;
+  border-radius:8px !important;
+  background:var(--rp-surface-soft) !important;
+}
+body.repost-app .site-icon-btn,
+body.repost-app .site-search-trigger,
+body.repost-app .site-search-close,
+body.repost-app .mobile-sidebar-trigger {
+  display:inline-flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  width:38px !important;
+  height:38px !important;
+  min-width:38px !important;
+  border:1px solid transparent !important;
+  border-radius:8px !important;
+  background:transparent !important;
+  color:var(--rp-muted) !important;
+  box-shadow:none !important;
+}
+body.repost-app .site-icon-btn:hover,
+body.repost-app .site-search-trigger:hover,
+body.repost-app .mobile-sidebar-trigger:hover {
+  background:var(--rp-surface-soft) !important;
+  color:var(--rp-heading) !important;
+}
+body.repost-app .site-header-write-btn {
+  display:inline-flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  min-height:38px !important;
+  padding:0 16px !important;
+  border:1px solid var(--rp-blue) !important;
+  border-radius:8px !important;
+  background:var(--rp-blue) !important;
+  color:#fff !important;
+  font-weight:650 !important;
+  box-shadow:none !important;
+}
+
+/* Repost's 55px rail / fluid feed / 320px widgets grid. */
+body.repost-app .main-grid,
+body.repost-app .main-grid.main__grid {
+  display:grid !important;
+  grid-template-columns:55px minmax(0,1fr) 320px !important;
+  gap:var(--rp-gap) !important;
+  align-items:start !important;
+  width:min(1120px, calc(100% - 32px)) !important;
+  max-width:1120px !important;
+  margin:20px auto 40px !important;
+  padding:0 !important;
+}
+body.repost-app .layout-side { min-width:0 !important; width:auto !important; max-width:none !important; }
+body.repost-app .layout-side--left {
+  position:sticky !important;
+  top:calc(var(--rp-header-height) + 12px) !important;
+  width:55px !important;
+  max-width:55px !important;
+  height:calc(100vh - var(--rp-header-height) - 24px) !important;
+  align-self:start !important;
+  overflow:visible !important;
+}
+body.repost-app .layout-side--left .sidebar-wrapper {
+  position:static !important;
+  width:55px !important;
+  max-width:55px !important;
+  height:100% !important;
+  max-height:100% !important;
+  overflow:visible !important;
+  background:transparent !important;
+}
+body.repost-app .layout-side--left .sidebar-scroll {
+  display:flex !important;
+  flex-direction:column !important;
+  align-items:center !important;
+  gap:7px !important;
+  height:100% !important;
+  max-height:100% !important;
+  padding:4px 0 12px !important;
+  overflow-y:auto !important;
+  overflow-x:hidden !important;
+  scrollbar-width:none !important;
+}
+body.repost-app .layout-side--left .sidebar-scroll::-webkit-scrollbar { display:none !important; }
+body.repost-app .layout-main {
+  display:flex !important;
+  flex-direction:column !important;
+  gap:var(--rp-gap) !important;
+  width:100% !important;
+  max-width:none !important;
+  min-width:0 !important;
+  padding:0 !important;
+  margin:0 !important;
+}
+body.repost-app .layout-side--right {
+  position:sticky !important;
+  top:calc(var(--rp-header-height) + 16px) !important;
+  align-self:start !important;
+  width:320px !important;
+  max-width:320px !important;
+  min-width:0 !important;
+  max-height:calc(100vh - var(--rp-header-height) - 24px) !important;
+  overflow-y:auto !important;
+  scrollbar-width:none !important;
+}
+body.repost-app .layout-side--right::-webkit-scrollbar { display:none !important; }
+body.repost-app .ografi-right-stack,
+body.repost-app .ografi-sidebar-force { gap:14px !important; row-gap:14px !important; }
+
+/* Left rail, cards and widgets. */
+body.repost-app .sidebar-wrapper .sidebar-section,
+body.repost-app .sidebar-wrapper .left-sidebar-section { margin:0 !important; }
+body.repost-app .sidebar-wrapper :where(a.left-sidebar-link,.left-sidebar-link,a.sidebar-category-link) {
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  width:42px !important;
+  height:42px !important;
+  min-height:42px !important;
+  margin:0 auto !important;
+  padding:0 !important;
+  border:1px solid transparent !important;
+  border-radius:9px !important;
+  background:transparent !important;
+  color:var(--rp-muted) !important;
+  box-shadow:none !important;
+}
+body.repost-app .sidebar-wrapper :where(a.left-sidebar-link,.left-sidebar-link,a.sidebar-category-link):hover,
+body.repost-app .sidebar-wrapper :where(a.left-sidebar-link,.left-sidebar-link,a.sidebar-category-link).active {
+  border-color:var(--rp-border) !important;
+  background:var(--rp-surface) !important;
+  color:var(--rp-blue) !important;
+}
+body.repost-app .layout-side--right :where(.sidebar-card,.ografi-sidebar-card,.alma-widget,.ografi-sidebar-area > section) {
+  padding:16px !important;
+  border:1px solid var(--rp-border) !important;
+  border-radius:var(--rp-radius) !important;
+  background:var(--rp-surface) !important;
+  box-shadow:none !important;
+}
+body.repost-app .layout-side--right :where(h2,h3,.alma-widget__title,.ografi-right-widget-title) {
+  margin:0 0 12px !important;
+  color:var(--rp-heading) !important;
+  font-size:14px !important;
+  font-weight:700 !important;
+}
+body.repost-app .layout-side--right :where(p,.alma-widget__comment-text,.ografi-comment-text) { color:var(--rp-muted) !important; }
+body.repost-app .layout-side--right a { color:var(--rp-text); }
+body.repost-app .layout-side--right a:hover { color:var(--rp-blue); }
+
+/* Feed and post cards — same restrained Repost surfaces on every public route. */
+body.repost-app .home-feed-shell,
+body.repost-app .feed,
+body.repost-app [data-ografi-layout-container] { min-width:0 !important; }
+body.repost-app article.post-card[data-post-card-shell],
+body.repost-app .post-card,
+body.repost-app .blog-post-card,
+body.repost-app .category-reference-card,
+body.repost-app .category-card,
+body.repost-app .category-feed-card,
+body.repost-app .profile-public-card,
+body.repost-app .profile-card,
+body.repost-app .post-show-shell,
+body.repost-app .ps-main,
+body.repost-app .messages-shell,
+body.repost-app .message-panel,
+body.repost-app .dashboard-card {
+  border:1px solid var(--rp-border) !important;
+  border-radius:var(--rp-radius) !important;
+  background:var(--rp-surface) !important;
+  box-shadow:none !important;
+}
+body.repost-app article.post-card[data-post-card-shell] {
+  margin:0 0 14px !important;
+  padding:18px 20px 14px !important;
+  overflow:visible !important;
+}
+body.repost-app article.post-card[data-post-card-shell] .post-header { margin-bottom:12px !important; }
+body.repost-app article.post-card[data-post-card-shell] .author-avatar { width:40px !important; height:40px !important; }
+body.repost-app article.post-card[data-post-card-shell] :where(.author-name,.post-card__title,.post-title) {
+  color:var(--rp-heading) !important;
+  font-weight:700 !important;
+}
+body.repost-app article.post-card[data-post-card-shell] .post-card__title {
+  font-size:18px !important;
+  line-height:1.4 !important;
+  letter-spacing:-.02em !important;
+}
+body.repost-app article.post-card[data-post-card-shell] :where(.post-time,.author-subline,.post-card__meta) { color:var(--rp-muted) !important; }
+body.repost-app article.post-card[data-post-card-shell] :where(.post-excerpt,.post-card__excerpt,.post-card__content) {
+  color:#475569 !important;
+  font-size:14px !important;
+  line-height:1.7 !important;
+}
+body.repost-app article.post-card[data-post-card-shell] :where(.post-card__media,.post-media,.post-image) {
+  border-radius:8px !important;
+  overflow:hidden !important;
+}
+body.repost-app article.post-card[data-post-card-shell] .action-bar {
+  border-top:1px solid var(--rp-border) !important;
+  background:transparent !important;
+}
+body.repost-app article.post-card[data-post-card-shell] .action-bar :where(button,a,.action-chip,.post-card__action-button) {
+  color:var(--rp-muted) !important;
+  border-radius:7px !important;
+  box-shadow:none !important;
+}
+body.repost-app article.post-card[data-post-card-shell] .action-bar :where(button,a,.action-chip,.post-card__action-button):hover {
+  background:var(--rp-blue-soft) !important;
+  color:var(--rp-blue) !important;
+}
+body.repost-app .home-feed-toolbar,
+body.repost-app .feed-toolbar,
+body.repost-app .post-feed-tabs {
+  min-height:48px !important;
+  padding:5px 8px !important;
+  border:1px solid var(--rp-border) !important;
+  border-radius:var(--rp-radius) !important;
+  background:var(--rp-surface) !important;
+  box-shadow:none !important;
+}
+body.repost-app .home-feed-toolbar__mode,
+body.repost-app .feed-toolbar button {
+  min-height:36px !important;
+  border:0 !important;
+  border-radius:7px !important;
+  background:transparent !important;
+  color:var(--rp-muted) !important;
+  box-shadow:none !important;
+}
+body.repost-app .home-feed-toolbar__mode.is-active,
+body.repost-app .feed-toolbar button[aria-current="page"] {
+  background:var(--rp-blue-soft) !important;
+  color:var(--rp-blue) !important;
+}
+
+/* Detail pages, comments, profile, taxonomy, search, messages and settings. */
+body.repost-app :where(.ps-main,.post-show-shell) { width:100% !important; max-width:none !important; }
+body.repost-app :where(.ps-main,.post-show-shell) :where(.ps-content,.post-content,.post-body,.editor) {
+  color:var(--rp-text) !important;
+  line-height:1.8 !important;
+}
+body.repost-app :where(.ps-main,.post-show-shell) :where(.ps-title,.post-show-title,h1) {
+  color:var(--rp-heading) !important;
+  font-size:clamp(24px,3vw,34px) !important;
+  line-height:1.25 !important;
+  font-weight:750 !important;
+}
+body.repost-app :where(.comment,.comment-card,.comment-item,.post-comment) {
+  border-color:var(--rp-border) !important;
+  background:var(--rp-surface) !important;
+  border-radius:8px !important;
+  box-shadow:none !important;
+}
+body.repost-app :where(.profile-public-shell,.profile-header,.profile-cover-card,.profile-content-card) {
+  border:1px solid var(--rp-border) !important;
+  border-radius:var(--rp-radius) !important;
+  background:var(--rp-surface) !important;
+  box-shadow:none !important;
+}
+body.repost-app :where(.profile-public-shell,.profile-header) :where(h1,h2,.profile-name) { color:var(--rp-heading) !important; }
+body.repost-app :where(.profile-tabs,.profile-nav,.tabs-nav) {
+  border-bottom:1px solid var(--rp-border) !important;
+  background:var(--rp-surface) !important;
+}
+body.repost-app :where(.profile-tabs a,.profile-nav a,.tabs-nav button) { color:var(--rp-muted) !important; }
+body.repost-app :where(.profile-tabs .active,.profile-nav .active,.tabs-nav .is-active) {
+  color:var(--rp-blue) !important;
+  border-color:var(--rp-blue) !important;
+}
+body.repost-app :where(.messages-page,.messages-shell,.message-thread,.message-sidebar,.pm-dialog,.pm) {
+  border-color:var(--rp-border) !important;
+  background:var(--rp-surface) !important;
+  box-shadow:none !important;
+}
+body.repost-app :where(.message-bubble,.pm-dialog__bubble) { border-radius:12px !important; }
+body.repost-app :where(.message-bubble.is-own,.pm-dialog__bubble.is-own) {
+  background:var(--rp-blue-soft) !important;
+  color:var(--rp-text) !important;
+}
+body.repost-app :where(.simple-auth-page,.auth-page) { background:var(--rp-bg) !important; }
+body.repost-app :where(.simple-auth-card,.auth-card,.auth-panel) {
+  border:1px solid var(--rp-border) !important;
+  border-radius:12px !important;
+  background:var(--rp-surface) !important;
+  box-shadow:none !important;
+}
+body.repost-app :where(.setting,.setting__box,.setting__menu,.dashboard-panel) {
+  border-color:var(--rp-border) !important;
+  border-radius:var(--rp-radius) !important;
+  background:var(--rp-surface) !important;
+  box-shadow:none !important;
+}
+body.repost-app :where(.pagination a,.pagination button,.page-link) {
+  border:1px solid var(--rp-border) !important;
+  border-radius:7px !important;
+  background:var(--rp-surface) !important;
+  color:var(--rp-muted) !important;
+}
+body.repost-app :where(.pagination .active,.pagination [aria-current="page"],.page-item.active .page-link) {
+  border-color:var(--rp-blue) !important;
+  background:var(--rp-blue) !important;
+  color:#fff !important;
+}
+
+/* Forms and controls. */
+body.repost-app :where(input:not([type=checkbox]):not([type=radio]),textarea,select,.form-control,.form-select) {
+  min-height:40px;
+  border:1px solid var(--rp-border-strong) !important;
+  border-radius:8px !important;
+  background:var(--rp-surface) !important;
+  color:var(--rp-text) !important;
+  box-shadow:none !important;
+}
+body.repost-app textarea { min-height:110px; }
+body.repost-app :where(input,textarea,select):focus {
+  border-color:var(--rp-blue) !important;
+  outline:0 !important;
+  box-shadow:0 0 0 3px rgba(13,110,253,.10) !important;
+}
+body.repost-app :where(button,.btn,.community-btn,[type=submit]) {
+  box-shadow:none !important;
+  text-shadow:none !important;
+}
+body.repost-app :where(.btn-primary,.community-btn-primary,[type=submit].primary) {
+  border:1px solid var(--rp-blue) !important;
+  border-radius:8px !important;
+  background:var(--rp-blue) !important;
+  color:#fff !important;
+}
+body.repost-app :where(.btn-secondary,.community-btn-secondary) {
+  border:1px solid var(--rp-border) !important;
+  border-radius:8px !important;
+  background:var(--rp-surface) !important;
+  color:var(--rp-text) !important;
+}
+body.repost-app :where(.btn-primary,.btn-secondary,.community-btn) { min-height:38px; font-weight:650; }
+
+/* Remove legacy gradient/shadow/animation treatments from the old public theme. */
+body.repost-app :where(.post-card,.sidebar-card,.widget-card,.community-card,.profile-card,.dashboard-card) {
+  box-shadow:none !important;
+  background-image:none !important;
+}
+body.repost-app :where(button,a,.btn) { transition:none !important; transform:none !important; }
+body.repost-app :where(.site-header,.main-grid,.layout-main,.layout-side) { animation:none !important; }
+
+/* Tablet and mobile follow Repost's collapsing columns. */
+@media (max-width: 1023px) {
+  body.repost-app .main-grid,
+  body.repost-app .main-grid.main__grid {
+    grid-template-columns:55px minmax(0,1fr) !important;
+    width:calc(100% - 28px) !important;
+    gap:16px !important;
+  }
+  body.repost-app .layout-side--right { display:none !important; }
+}
+@media (max-width: 720px) {
+  body.repost-app .site-header-shell {
+    width:calc(100% - 20px) !important;
+    min-height:62px !important;
+    height:62px !important;
+    gap:8px !important;
+  }
+  body.repost-app .site-header { min-height:62px !important; }
+  body.repost-app .site-header-logo-wordmark { font-size:18px !important; }
+  body.repost-app .site-header-write-btn { display:none !important; }
+  body.repost-app .main-grid,
+  body.repost-app .main-grid.main__grid {
+    display:block !important;
+    width:calc(100% - 20px) !important;
+    margin:12px auto 28px !important;
+    padding:0 !important;
+  }
+  body.repost-app .layout-side--left,
+  body.repost-app .layout-side--right { display:none !important; }
+  body.repost-app .layout-main { width:100% !important; gap:12px !important; }
+  body.repost-app article.post-card[data-post-card-shell] { padding:14px 14px 10px !important; }
+  body.repost-app .site-search-panel { max-width:42px !important; }
+}
+@media (prefers-reduced-motion: reduce) {
+  body.repost-app *, body.repost-app *::before, body.repost-app *::after {
+    animation:none !important; transition:none !important; scroll-behavior:auto !important;
+  }
+}
+
+/* Repost also ships a dark palette; retain the existing explicit user toggle. */
+html.dark body.repost-app {
+  --rp-bg:#15181f;
+  --rp-surface:#1b1f27;
+  --rp-surface-soft:#232833;
+  --rp-border:#303744;
+  --rp-border-strong:#465062;
+  --rp-text:#c4cbd5;
+  --rp-heading:#f7f9fc;
+  --rp-muted:#8d98aa;
+  --rp-blue-soft:#172b4d;
+  background:var(--rp-bg) !important;
+  color:var(--rp-text) !important;
+}
+html.dark body.repost-app .site-header,
+html.dark body.repost-app .layout-side--right :where(.sidebar-card,.ografi-sidebar-card,.alma-widget),
+html.dark body.repost-app article.post-card[data-post-card-shell],
+html.dark body.repost-app :where(.post-show-shell,.ps-main,.profile-public-shell,.profile-header,.simple-auth-card,.auth-card,.setting,.setting__box,.messages-shell,.message-panel) {
+  background:var(--rp-surface) !important;
+  border-color:var(--rp-border) !important;
+}
+html.dark body.repost-app article.post-card[data-post-card-shell] :where(.post-excerpt,.post-card__excerpt,.post-card__content) { color:var(--rp-text) !important; }
+
+
+/* Guest authentication screens use the same Repost light surfaces. */
+body.repost-app .simple-auth-page {
+  min-height:100vh !important;
+  padding:32px 16px !important;
+  background:var(--rp-bg) !important;
+  color:var(--rp-text) !important;
+  font-family:Inter,ui-sans-serif,system-ui,sans-serif !important;
+}
+body.repost-app .simple-auth-brand { color:var(--rp-heading) !important; font-weight:750 !important; }
+body.repost-app .simple-auth-card {
+  width:min(100%,420px) !important;
+  padding:26px !important;
+  border:1px solid var(--rp-border) !important;
+  border-radius:12px !important;
+  background:var(--rp-surface) !important;
+  color:var(--rp-text) !important;
+  box-shadow:none !important;
+}
+body.repost-app .simple-auth-page .simple-auth-input {
+  min-height:42px !important;
+  height:42px !important;
+  padding:0 12px !important;
+  border:1px solid var(--rp-border-strong) !important;
+  border-radius:8px !important;
+  background:var(--rp-surface) !important;
+  color:var(--rp-text) !important;
+  box-shadow:none !important;
+}
+body.repost-app .simple-auth-page .simple-auth-input:focus {
+  border-color:var(--rp-blue) !important;
+  box-shadow:0 0 0 3px rgba(13,110,253,.10) !important;
+}
+body.repost-app .simple-auth-page .simple-auth-submit {
+  min-height:42px !important;
+  height:42px !important;
+  border:1px solid var(--rp-blue) !important;
+  border-radius:8px !important;
+  background:var(--rp-blue) !important;
+  color:#fff !important;
+  font-weight:650 !important;
+  box-shadow:none !important;
+}
+body.repost-app .simple-auth-page .simple-auth-submit:hover { background:var(--rp-blue-hover) !important; }
+body.repost-app .simple-auth-page .simple-auth-link,
+body.repost-app .simple-auth-page .simple-auth-register a { color:var(--rp-blue) !important; }
+@media(max-width:480px) {
+  body.repost-app .simple-auth-card { padding:20px 16px !important; }
+}
+
+
+/* Native Repost component vocabulary used by the Blade views. */
+body.repost-app {
+  --header-height:70px;
+  --header-offset:12px;
+  --main-gap:20px;
+  --container:1120px;
+  --body-bg:var(--rp-bg);
+  --border-color:var(--rp-border);
+  --text-color:var(--rp-text);
+  --gray-500:var(--rp-muted);
+}
+body.repost-app .header { position:sticky !important; top:0 !important; z-index:1000 !important; }
+body.repost-app .header__inner {
+  display:grid !important;
+  grid-template-columns:minmax(0,1fr) auto !important;
+  align-items:center !important;
+  gap:12px !important;
+  width:min(1120px,calc(100% - 32px)) !important;
+  max-width:1120px !important;
+  height:70px !important;
+  margin:0 auto !important;
+  padding:0 !important;
+  border-bottom:1px solid var(--rp-border) !important;
+  background:var(--rp-surface) !important;
+}
+body.repost-app .main__grid {
+  display:grid !important;
+  grid-template-columns:55px minmax(280px,1fr) 320px !important;
+  gap:20px !important;
+  width:min(1120px,calc(100% - 32px)) !important;
+  max-width:1120px !important;
+  margin:20px auto 40px !important;
+  padding:0 !important;
+  align-items:start !important;
+}
+body.repost-app .sidebar {
+  position:sticky !important;
+  top:82px !important;
+  display:flex !important;
+  flex-direction:column !important;
+  width:55px !important;
+  max-width:55px !important;
+  height:calc(100vh - 94px) !important;
+  overflow:hidden !important;
+  border:0 !important;
+  background:transparent !important;
+}
+body.repost-app .sidebar__body { display:flex !important; flex:1 1 auto !important; flex-direction:column !important; gap:18px !important; min-height:0 !important; overflow:auto !important; scrollbar-width:none !important; }
+body.repost-app .sidebar__body::-webkit-scrollbar { display:none !important; }
+body.repost-app .sidebar__section { margin:0 !important; padding:0 !important; }
+body.repost-app .sidebar__title { display:none !important; }
+body.repost-app .sidebar__list { display:flex !important; flex-direction:column !important; align-items:center !important; gap:7px !important; margin:0 !important; padding:0 !important; list-style:none !important; }
+body.repost-app .sidebar__link,
+body.repost-app .channel-icon {
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  width:42px !important;
+  height:42px !important;
+  min-height:42px !important;
+  padding:0 !important;
+  border:1px solid transparent !important;
+  border-radius:10px !important;
+  background:transparent !important;
+  color:var(--rp-muted) !important;
+  text-decoration:none !important;
+}
+body.repost-app .sidebar__link span { display:none !important; }
+body.repost-app .sidebar__link svg { width:20px !important; height:20px !important; fill:none !important; stroke:currentColor !important; stroke-width:1.7 !important; stroke-linecap:round !important; stroke-linejoin:round !important; }
+body.repost-app .sidebar__link:hover,
+body.repost-app .sidebar__link.is-active,
+body.repost-app .channel-icon:hover,
+body.repost-app .channel-icon.is-active { border-color:var(--rp-border) !important; background:var(--rp-surface) !important; color:var(--rp-blue) !important; }
+body.repost-app .channel-icon img,
+body.repost-app .channel-icon__initial { width:30px !important; height:30px !important; border-radius:9px !important; object-fit:cover !important; }
+body.repost-app .channel-icon__initial { display:flex !important; align-items:center !important; justify-content:center !important; background:var(--rp-blue-soft) !important; color:var(--rp-blue) !important; font-weight:700 !important; }
+body.repost-app .sidebar__more,
+body.repost-app .sidebar__empty { display:none !important; }
+body.repost-app .sidebar__footer { display:flex !important; flex-direction:column !important; align-items:center !important; gap:8px !important; padding:10px 0 !important; border-top:1px solid var(--rp-border) !important; }
+body.repost-app .sidebar__account { display:flex !important; align-items:center !important; justify-content:center !important; width:42px !important; height:42px !important; color:var(--rp-text) !important; }
+body.repost-app .sidebar__account-avatar { display:flex !important; align-items:center !important; justify-content:center !important; width:32px !important; height:32px !important; overflow:hidden !important; border-radius:50% !important; background:var(--rp-blue-soft) !important; color:var(--rp-blue) !important; font-weight:700 !important; }
+body.repost-app .sidebar__account-avatar img { width:100% !important; height:100% !important; object-fit:cover !important; }
+body.repost-app .sidebar__account-name,
+body.repost-app .sidebar__copyright,
+body.repost-app .sidebar__login { display:none !important; }
+body.repost-app .feed { display:flex !important; min-width:0 !important; flex-direction:column !important; gap:20px !important; padding-bottom:20px !important; }
+body.repost-app .main__widgets { display:flex !important; flex-direction:column !important; gap:14px !important; min-width:0 !important; width:320px !important; }
+body.repost-app .repost-widgets .widget,
+body.repost-app .repost-widgets .ografi-sidebar-card { border:1px solid var(--rp-border) !important; border-radius:10px !important; background:var(--rp-surface) !important; box-shadow:none !important; }
+@media(max-width:1023px) {
+  body.repost-app .main__grid { grid-template-columns:55px minmax(0,1fr) !important; }
+  body.repost-app .main__widgets { display:none !important; }
+}
+@media(max-width:720px) {
+  body.repost-app .header__inner { grid-template-columns:1fr auto !important; width:calc(100% - 20px) !important; height:62px !important; }
+  body.repost-app .main__grid { display:block !important; width:calc(100% - 20px) !important; margin:12px auto 28px !important; }
+  body.repost-app .main__grid > .sidebar { display:none !important; }
+  body.repost-app .main__widgets { display:none !important; }
+}
+
+
+/* Repost page-level components connected to OgraFi's live Blade output. */
+body.repost-app .post.post-card {
+  display:block !important;
+  margin:0 0 14px !important;
+  padding:18px 20px 14px !important;
+  border:1px solid var(--rp-border) !important;
+  border-radius:10px !important;
+  background:var(--rp-surface) !important;
+  box-shadow:none !important;
+}
+body.repost-app .post.post-card :where(.post-card__title,.post-card__author,.post-card__eyebrow-category) { color:var(--rp-heading) !important; }
+body.repost-app .post.post-card :where(.post-card__media-wrap,.post-card__media-frame,.post-card__media-image) { border-radius:8px !important; }
+body.repost-app .post-page .ps-post-card {
+  border:1px solid var(--rp-border) !important;
+  border-radius:10px !important;
+  background:var(--rp-surface) !important;
+  box-shadow:none !important;
+}
+body.repost-app .profile-page .og-profile-wrap {
+  width:100% !important;
+  max-width:none !important;
+}
+body.repost-app .profile-page :where(.og-profile-cover,.og-profile-header,.og-tabs-card,.og-profile-content) {
+  border-color:var(--rp-border) !important;
+  border-radius:10px !important;
+  box-shadow:none !important;
+}
+body.repost-app .messenger-page .messages-shell,
+body.repost-app .messenger-page .messages-card {
+  border-color:var(--rp-border) !important;
+  border-radius:10px !important;
+  background:var(--rp-surface) !important;
+  box-shadow:none !important;
+}
+body.repost-app .feed-page .home-feed-shell { display:flex !important; flex-direction:column !important; gap:18px !important; }
+body.repost-app .feed-page .home-feed-toolbar,
+body.repost-app .feed-page .home-feed-toolbar__inner {
+  border-color:var(--rp-border) !important;
+  border-radius:10px !important;
+  background:var(--rp-surface) !important;
+  box-shadow:none !important;
+}
+body.repost-app .post.post-card .post-card__action-button,
+body.repost-app .post.post-card .post-card__action {
+  border-radius:7px !important;
+  box-shadow:none !important;
+}
+body.repost-app .post.post-card .post-card__action-button:hover,
+body.repost-app .post.post-card .post-card__action:hover {
+  background:var(--rp-blue-soft) !important;
+  color:var(--rp-blue) !important;
+}
+
+body.repost-app .sidebar__content { display:flex !important; height:100% !important; min-height:0 !important; flex-direction:column !important; }
+body.repost-app .sidebar__footer { margin-top:auto !important; }
+body.repost-app .site-header-actions { justify-self:end !important; }
+body.repost-app .site-header-logo { justify-self:start !important; }
+body.repost-app .site-header-logo-mark { display:inline-flex !important; align-items:center !important; justify-content:center !important; }
+body.repost-app .site-header-logo-wordmark { color:var(--rp-heading) !important; }
+
+
+/* Repost catalog, search, saved-post and static-content screens. */
+body.repost-app .channels-page,
+body.repost-app .tag-catalog-page,
+body.repost-app .favorites-page,
+body.repost-app .rating-users-page,
+body.repost-app .search-page,
+body.repost-app .repost-static-page { min-width:0 !important; }
+body.repost-app .channels-page :where(.category-card,.category-reference-card,.categories-grid > *) {
+  border:1px solid var(--rp-border) !important;
+  border-radius:10px !important;
+  background:var(--rp-surface) !important;
+  box-shadow:none !important;
+}
+body.repost-app .tag-catalog-page :where(.tag-card,.tag-item,.tags-page-card) {
+  border-color:var(--rp-border) !important;
+  border-radius:8px !important;
+  background:var(--rp-surface) !important;
+  box-shadow:none !important;
+}
+body.repost-app .favorites-page { display:flex !important; flex-direction:column !important; gap:14px !important; }
+body.repost-app .rating-users-page :where(.users-page-list > *, .user-card) {
+  border-color:var(--rp-border) !important;
+  border-radius:10px !important;
+  background:var(--rp-surface) !important;
+  box-shadow:none !important;
+}
+body.repost-app .search-page :where(.og-search-card,.search-result-card,.search-result) {
+  border:1px solid var(--rp-border) !important;
+  border-radius:10px !important;
+  background:var(--rp-surface) !important;
+  box-shadow:none !important;
+}
+body.repost-app .repost-static-page { padding:20px !important; border:1px solid var(--rp-border) !important; border-radius:10px !important; background:var(--rp-surface) !important; }
+
+
+/* Mobile drawer uses the same live navigation, but expands to full-width labels. */
+body.repost-app .sidebar--drawer {
+  position:static !important;
+  display:flex !important;
+  width:100% !important;
+  max-width:none !important;
+  height:auto !important;
+  max-height:none !important;
+  overflow:visible !important;
+  padding:0 !important;
+}
+body.repost-app .sidebar--drawer .sidebar__content {
+  display:flex !important;
+  width:100% !important;
+  height:auto !important;
+  flex-direction:column !important;
+  gap:24px !important;
+  overflow:visible !important;
+}
+body.repost-app .sidebar--drawer .sidebar__body,
+body.repost-app .sidebar--drawer .sidebar__section { width:100% !important; }
+body.repost-app .sidebar--drawer .sidebar__title {
+  display:block !important;
+  margin:0 0 9px !important;
+  color:var(--rp-muted) !important;
+  font-size:11px !important;
+  font-weight:700 !important;
+  letter-spacing:.08em !important;
+  text-transform:uppercase !important;
+}
+body.repost-app .sidebar--drawer .sidebar__list {
+  align-items:stretch !important;
+  gap:4px !important;
+}
+body.repost-app .sidebar--drawer .sidebar__link {
+  justify-content:flex-start !important;
+  width:100% !important;
+  height:44px !important;
+  min-height:44px !important;
+  padding:0 12px !important;
+  gap:12px !important;
+  border-radius:8px !important;
+  color:var(--rp-text) !important;
+}
+body.repost-app .sidebar--drawer .sidebar__link span {
+  display:inline !important;
+  overflow:hidden !important;
+  text-overflow:ellipsis !important;
+  white-space:nowrap !important;
+  font-size:14px !important;
+}
+body.repost-app .sidebar--drawer .sidebar__link svg { flex:0 0 20px !important; }
+body.repost-app .sidebar--drawer .sidebar__list--channels {
+  display:grid !important;
+  grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+  gap:8px !important;
+}
+body.repost-app .sidebar--drawer .channel-icon {
+  justify-content:flex-start !important;
+  width:100% !important;
+  height:44px !important;
+  min-height:44px !important;
+  padding:0 8px !important;
+  gap:9px !important;
+  overflow:hidden !important;
+}
+body.repost-app .sidebar--drawer .channel-icon img,
+body.repost-app .sidebar--drawer .channel-icon__initial {
+  flex:0 0 28px !important;
+  width:28px !important;
+  height:28px !important;
+}
+body.repost-app .sidebar--drawer .channel-icon__label {
+  display:block !important;
+  overflow:hidden !important;
+  color:var(--rp-text) !important;
+  font-size:12px !important;
+  text-overflow:ellipsis !important;
+  white-space:nowrap !important;
+}
+body.repost-app .sidebar--drawer .sidebar__more {
+  display:inline-flex !important;
+  margin-top:10px !important;
+  color:var(--rp-blue) !important;
+  font-size:13px !important;
+}
+body.repost-app .sidebar--drawer .sidebar__footer {
+  align-items:stretch !important;
+  margin-top:22px !important;
+}
+body.repost-app .sidebar--drawer .sidebar__account {
+  justify-content:flex-start !important;
+  width:100% !important;
+  gap:10px !important;
+  padding:4px 8px !important;
+}
+body.repost-app .sidebar--drawer .sidebar__account-name,
+body.repost-app .sidebar--drawer .sidebar__copyright,
+body.repost-app .sidebar--drawer .sidebar__login { display:block !important; }
+body.repost-app .sidebar--drawer .sidebar__account-name { color:var(--rp-text) !important; font-size:13px !important; font-weight:650 !important; }
+body.repost-app .sidebar--drawer .sidebar__copyright { color:var(--rp-muted) !important; font-size:11px !important; }
+body.repost-app .sidebar--drawer .sidebar__login { padding:10px 12px !important; color:var(--rp-blue) !important; }
+
+
+/* Repost-style right rail cards and feed typography. */
+body.repost-app .ografi-sidebar-card {
+  width:100% !important;
+  margin:0 !important;
+  padding:16px !important;
+  border:1px solid var(--rp-border) !important;
+  border-radius:10px !important;
+  background:var(--rp-surface) !important;
+  box-shadow:none !important;
+}
+body.repost-app .ografi-sidebar-header {
+  display:flex !important;
+  align-items:center !important;
+  justify-content:space-between !important;
+  gap:10px !important;
+  margin:0 0 12px !important;
+  padding:0 0 10px !important;
+  border-bottom:1px solid var(--rp-border) !important;
+}
+body.repost-app .ografi-sidebar-title {
+  color:var(--rp-heading) !important;
+  font-size:13px !important;
+  font-weight:700 !important;
+  letter-spacing:-.01em !important;
+}
+body.repost-app .ografi-comment-item,
+body.repost-app .ografi-tag-item,
+body.repost-app .ografi-trending-item {
+  border-color:var(--rp-border) !important;
+}
+body.repost-app .ografi-comment-item a,
+body.repost-app .ografi-tag-item a,
+body.repost-app .ografi-trending-item a { color:var(--rp-text) !important; }
+body.repost-app .ografi-comment-item a:hover,
+body.repost-app .ografi-tag-item a:hover,
+body.repost-app .ografi-trending-item a:hover { color:var(--rp-blue) !important; }
+body.repost-app .ografi-right-stack .alma-ad-slot {
+  border:1px dashed var(--rp-border-strong) !important;
+  border-radius:10px !important;
+  background:var(--rp-surface) !important;
+  box-shadow:none !important;
+}
+@media(min-width:1024px) {
+  body.repost-app .layout-side--right { padding-bottom:20px !important; }
+}
+@media(max-width:720px) {
+  body.repost-app .post.post-card { padding:14px 12px 12px !important; border-radius:9px !important; }
+  body.repost-app .feed-page .home-feed-toolbar { border-radius:9px !important; }
+}
+
+
+/* Route-specific Repost finishing pass: messages, bookmarks and channel index. */
+body.repost-app.route-messages .layout-main {
+  max-width:none !important;
+  min-width:0 !important;
+}
+body.repost-app.route-messages .messages-page {
+  min-height:0 !important;
+  padding:0 !important;
+  background:transparent !important;
+  color:var(--rp-text) !important;
+}
+body.repost-app.route-messages .messages-page .site-main-shell {
+  width:100% !important;
+  max-width:none !important;
+  margin:0 !important;
+  padding:0 !important;
+}
+body.repost-app.route-messages .messages-card,
+body.repost-app.route-messages .messages-main-panel,
+body.repost-app.route-messages .messages-sidebar-panel,
+body.repost-app.route-messages .messages-thread-item,
+body.repost-app.route-messages .messages-composer-dock {
+  border:1px solid var(--rp-border) !important;
+  border-radius:10px !important;
+  background:var(--rp-surface) !important;
+  box-shadow:none !important;
+}
+body.repost-app.route-messages .messages-page h1,
+body.repost-app.route-messages .messages-page h2,
+body.repost-app.route-messages .messages-page h3 {
+  color:var(--rp-heading) !important;
+  letter-spacing:-.02em !important;
+  text-transform:none !important;
+}
+body.repost-app.route-messages .messages-thread-item {
+  min-height:76px !important;
+  padding:12px !important;
+  gap:12px !important;
+}
+body.repost-app.route-messages .messages-thread-item:hover,
+body.repost-app.route-messages .messages-thread-item.is-active {
+  border-color:var(--rp-border-strong) !important;
+  background:var(--rp-hover) !important;
+}
+body.repost-app.route-messages .messages-thread-item img,
+body.repost-app.route-messages .messages-thread-item .rounded-full {
+  width:44px !important;
+  height:44px !important;
+  min-width:44px !important;
+}
+body.repost-app.route-messages .messages-thread-item h3 {
+  font-size:14px !important;
+  font-weight:650 !important;
+}
+body.repost-app.route-messages .messages-thread-item p,
+body.repost-app.route-messages .messages-thread-item span {
+  font-size:12px !important;
+  color:var(--rp-muted) !important;
+}
+body.repost-app.route-messages .messages-bubble--mine {
+  border-radius:12px 12px 4px 12px !important;
+  background:var(--rp-blue) !important;
+  color:#fff !important;
+}
+body.repost-app.route-messages .messages-bubble--other {
+  border:1px solid var(--rp-border) !important;
+  border-radius:12px 12px 12px 4px !important;
+  background:var(--rp-surface) !important;
+  color:var(--rp-text) !important;
+}
+body.repost-app.route-messages .messages-composer-dock {
+  backdrop-filter:none !important;
+}
+body.repost-app.route-messages .messages-page input,
+body.repost-app.route-messages .messages-page textarea {
+  border-color:var(--rp-border) !important;
+  border-radius:8px !important;
+  background:var(--rp-surface) !important;
+  color:var(--rp-text) !important;
+  box-shadow:none !important;
+}
+body.repost-app.route-messages .messages-page input:focus,
+body.repost-app.route-messages .messages-page textarea:focus {
+  border-color:var(--rp-blue) !important;
+  outline:2px solid color-mix(in srgb,var(--rp-blue) 14%,transparent) !important;
+}
+body.repost-app.route-bookmarks .favorites-page {
+  width:100% !important;
+  max-width:none !important;
+}
+body.repost-app.route-bookmarks .favorites-page .alma-page-header,
+body.repost-app.route-bookmarks .favorites-page .alma-panel {
+  border:1px solid var(--rp-border) !important;
+  border-radius:10px !important;
+  background:var(--rp-surface) !important;
+  box-shadow:none !important;
+}
+body.repost-app.route-bookmarks .favorites-page .alma-page-title {
+  color:var(--rp-heading) !important;
+  font-size:18px !important;
+  font-weight:700 !important;
+}
+body.repost-app.route-categories-index .layout-main {
+  max-width:none !important;
+}
+body.repost-app.route-categories-index .layout-main > * {
+  min-width:0 !important;
+}
+@media(max-width:767px) {
+  body.repost-app.route-messages .messages-page .site-main-shell {
+    padding:0 0 92px !important;
+  }
+  body.repost-app.route-messages .messages-composer-dock {
+    right:8px !important;
+    left:8px !important;
+    bottom:calc(8px + env(safe-area-inset-bottom)) !important;
+    width:auto !important;
+    transform:none !important;
+  }
+  body.repost-app.route-bookmarks .favorites-page .alma-panel {
+    padding:12px !important;
+  }
+}
+
+
+/* Repost page finish — taxonomy, profile, post detail and search. */
+body.repost-app :where(.channels-page,.categories-page,.tag-catalog-page,.tags-page,.users-page,.search-page,.profile-page,.post-page,.repost-static-page) {
+  width:100% !important;
+  max-width:none !important;
+  min-width:0 !important;
+  color:var(--rp-text) !important;
+}
+body.repost-app :where(.categories-panel,.categories-item,.categories-empty,.tag-row,.tags-list__empty,.og-profile-wrap,.og-card,.og-profile-content,.og-tabs-card,.og-search-identity,.og-search-result,.search-result-card,.ps-post-card,.ps-main,.static-page-content) {
+  border:1px solid var(--rp-border) !important;
+  border-radius:10px !important;
+  background:var(--rp-surface) !important;
+  box-shadow:none !important;
+}
+body.repost-app .categories-panel {
+  padding:18px !important;
+}
+body.repost-app .categories-panel__top {
+  display:flex !important;
+  align-items:center !important;
+  justify-content:space-between !important;
+  gap:14px !important;
+  padding-bottom:14px !important;
+  border-bottom:1px solid var(--rp-border) !important;
+}
+body.repost-app .categories-title,
+body.repost-app .categories-item__name,
+body.repost-app .tag-row__name,
+body.repost-app .og-profile-wrap :where(h1,h2,h3),
+body.repost-app .og-search-identity__title {
+  color:var(--rp-heading) !important;
+}
+body.repost-app .categories-title {
+  font-size:20px !important;
+  font-weight:750 !important;
+  letter-spacing:-.025em !important;
+}
+body.repost-app .categories-panel__tabs {
+  border-bottom:1px solid var(--rp-border) !important;
+}
+body.repost-app .categories-tab {
+  color:var(--rp-muted) !important;
+  border-radius:7px 7px 0 0 !important;
+}
+body.repost-app .categories-tab.is-active,
+body.repost-app .categories-tab[aria-current="page"] {
+  color:var(--rp-blue) !important;
+  border-color:var(--rp-blue) !important;
+}
+body.repost-app .categories-list {
+  display:grid !important;
+  grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+  gap:10px !important;
+  padding-top:14px !important;
+}
+body.repost-app .categories-item {
+  min-width:0 !important;
+  padding:14px !important;
+}
+body.repost-app .categories-item:hover,
+body.repost-app .tag-row:hover {
+  border-color:var(--rp-border-strong) !important;
+  background:var(--rp-surface-soft) !important;
+}
+body.repost-app .categories-avatar {
+  border-radius:9px !important;
+}
+body.repost-app .categories-item__name {
+  font-size:14px !important;
+  font-weight:700 !important;
+}
+body.repost-app .categories-item__stats,
+body.repost-app .categories-item__description,
+body.repost-app .categories-count {
+  color:var(--rp-muted) !important;
+}
+body.repost-app .tag-catalog-page .tag-catalog-page,
+body.repost-app .tags-list {
+  min-width:0 !important;
+}
+body.repost-app .tag-row {
+  display:flex !important;
+  align-items:center !important;
+  min-height:56px !important;
+  padding:10px 14px !important;
+  margin-bottom:8px !important;
+  gap:12px !important;
+}
+body.repost-app .tag-row__name {
+  font-weight:650 !important;
+}
+body.repost-app .tag-row__count {
+  margin-left:auto !important;
+  color:var(--rp-muted) !important;
+}
+body.repost-app .tags-page-title,
+body.repost-app .og-search-identity {
+  border:1px solid var(--rp-border) !important;
+  border-radius:10px !important;
+  background:var(--rp-surface) !important;
+}
+body.repost-app .og-search-page :where(.og-search-pill,.og-search-toolbar__trigger,.og-search-info__trigger,.og-search-settings__trigger) {
+  border:1px solid var(--rp-border) !important;
+  border-radius:7px !important;
+  background:var(--rp-surface) !important;
+  color:var(--rp-muted) !important;
+  box-shadow:none !important;
+}
+body.repost-app .og-search-page .og-search-pill.is-active,
+body.repost-app .og-search-page .og-search-pill[aria-pressed="true"] {
+  border-color:var(--rp-blue) !important;
+  background:var(--rp-blue-soft) !important;
+  color:var(--rp-blue) !important;
+}
+body.repost-app .profile-page .og-profile-wrap {
+  overflow:hidden !important;
+}
+body.repost-app .profile-page .og-cover {
+  border-radius:9px 9px 0 0 !important;
+}
+body.repost-app .profile-page .og-body {
+  padding:20px !important;
+}
+body.repost-app .profile-page .og-avatar {
+  border:4px solid var(--rp-surface) !important;
+}
+body.repost-app .profile-page .og-btn--primary {
+  border:1px solid var(--rp-blue) !important;
+  border-radius:8px !important;
+  background:var(--rp-blue) !important;
+  color:#fff !important;
+}
+body.repost-app .profile-page .og-icon-btn,
+body.repost-app .profile-page .og-menu-summary-icon-only {
+  border:1px solid var(--rp-border) !important;
+  border-radius:8px !important;
+  background:var(--rp-surface) !important;
+  color:var(--rp-muted) !important;
+}
+body.repost-app .profile-page :where(.og-tabs-card,.og-profile-content) {
+  margin-top:14px !important;
+}
+body.repost-app .post-page .ps-post-card,
+body.repost-app .post-page .ps-main {
+  overflow:hidden !important;
+}
+body.repost-app .post-page .ps-main {
+  padding:22px !important;
+}
+body.repost-app .post-page :where(.ps-title,.ps-post-title,h1) {
+  color:var(--rp-heading) !important;
+  font-size:clamp(25px,3.2vw,36px) !important;
+  line-height:1.22 !important;
+  font-weight:750 !important;
+}
+body.repost-app .post-page :where(.ps-content,.ps-post-content,.post-content) {
+  color:var(--rp-text) !important;
+  font-size:15px !important;
+  line-height:1.85 !important;
+}
+body.repost-app .post-page :where(.ps-content,.ps-post-content) :where(h2,h3,h4) {
+  margin-top:1.7em !important;
+  margin-bottom:.6em !important;
+  color:var(--rp-heading) !important;
+  font-weight:750 !important;
+}
+body.repost-app .post-page :where(.ps-content,.ps-post-content) :where(img,video,iframe) {
+  max-width:100% !important;
+  border-radius:8px !important;
+}
+body.repost-app .post-page :where(.ps-content,.ps-post-content) blockquote {
+  border-left:3px solid var(--rp-blue) !important;
+  background:var(--rp-blue-soft) !important;
+  padding:12px 16px !important;
+  color:var(--rp-text) !important;
+}
+body.repost-app .repost-static-page {
+  padding:22px !important;
+}
+body.repost-app .static-page-content {
+  padding:22px !important;
+  color:var(--rp-text) !important;
+  line-height:1.8 !important;
+}
+body.repost-app .static-page-content :where(h1,h2,h3,h4) {
+  color:var(--rp-heading) !important;
+}
+@media(max-width:767px) {
+  body.repost-app .categories-list {
+    grid-template-columns:minmax(0,1fr) !important;
+    gap:8px !important;
+  }
+  body.repost-app .categories-panel {
+    padding:12px !important;
+  }
+  body.repost-app .categories-item {
+    padding:12px !important;
+  }
+  body.repost-app .profile-page .og-body,
+  body.repost-app .post-page .ps-main,
+  body.repost-app .repost-static-page,
+  body.repost-app .static-page-content {
+    padding:14px !important;
+  }
+  body.repost-app .tags-page-title {
+    padding:12px !important;
+  }
+}
+
+
+/* Repost account area and remaining messenger sub-pages. */
+body.repost-app.route-dashboard .layout-main {
+  width:100% !important;
+  max-width:860px !important;
+  margin-inline:auto !important;
+}
+body.repost-app.route-dashboard .dashboard-settings-shell,
+body.repost-app.route-dashboard .dashboard-settings-shell > main,
+body.repost-app.route-dashboard .dashboard-settings-panel {
+  width:100% !important;
+  max-width:none !important;
+  background:var(--rp-surface) !important;
+  color:var(--rp-text) !important;
+  border-color:var(--rp-border) !important;
+  box-shadow:none !important;
+}
+body.repost-app.route-dashboard :where(.dashboard-settings-shell,.dashboard-settings-panel,[class*="settings-card"],[class*="settings-section"]) {
+  border-radius:10px !important;
+}
+body.repost-app.route-dashboard :where(h1,h2,h3,h4) {
+  color:var(--rp-heading) !important;
+  letter-spacing:-.02em !important;
+}
+body.repost-app.route-dashboard :where(a,button) {
+  transition:none !important;
+  box-shadow:none !important;
+}
+body.repost-app.route-dashboard :where(a[aria-current="page"],.is-active,[data-active="true"]) {
+  color:var(--rp-blue) !important;
+}
+body.repost-app.route-dashboard :where(input:not([type=checkbox]):not([type=radio]),textarea,select) {
+  border:1px solid var(--rp-border-strong) !important;
+  border-radius:8px !important;
+  background:var(--rp-surface) !important;
+  color:var(--rp-text) !important;
+}
+body.repost-app.route-messages .site-main-shell > section > :where(div,header) {
+  border-color:var(--rp-border) !important;
+  border-radius:10px !important;
+  background:var(--rp-surface) !important;
+  box-shadow:none !important;
+}
+body.repost-app.route-messages .site-main-shell > section h1,
+body.repost-app.route-messages .site-main-shell > section h2 {
+  color:var(--rp-heading) !important;
+  font-size:18px !important;
+  font-weight:750 !important;
+  text-transform:none !important;
+}
+body.repost-app.route-messages .site-main-shell > section a {
+  color:var(--rp-blue) !important;
+}
+body.repost-app.route-messages .site-main-shell > section a:hover {
+  text-decoration:none !important;
+}
+body.repost-app.route-messages .site-main-shell > section .rounded-2xl,
+body.repost-app.route-messages .site-main-shell > section .rounded-\\[28px\\] {
+  border-radius:10px !important;
+  box-shadow:none !important;
+}
+@media(max-width:767px) {
+  body.repost-app.route-dashboard .layout-main {
+    max-width:none !important;
+  }
+  body.repost-app.route-dashboard .dashboard-settings-shell {
+    padding:0 10px !important;
+  }
+  body.repost-app.route-messages .site-main-shell {
+    padding:0 !important;
+  }
+}

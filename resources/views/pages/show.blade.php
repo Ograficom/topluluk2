@@ -283,7 +283,7 @@
 @section('content')
     <div class="space-y-4">
         <section class="space-y-4">
-            <div class="page-title-identity static-page-title">
+            <div class="repost-static-page page-title-identity static-page-title>
                 <div class="page-title-identity__edge-blur page-title-identity__edge-blur--top" aria-hidden="true"></div>
                 <button type="button" class="page-title-identity__nav" data-page-title-back aria-label="Geri git" title="Geri git">
                     <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" aria-hidden="true">

@@ -96,7 +96,7 @@
 
 
 @section('content')
-    <div class="home-feed-shell space-y-6" data-ografi-layout-container="home">
+    <div class="feed-page home-feed-shell repost-home space-y-6" data-ografi-layout-container="home">
         <button type="button" class="ografi-newpost-btn" id="ografiNewPostBtn" data-newpost-btn hidden>
             <svg class="ografi-newpost-btn__icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                 <path d="M20 11a8.1 8.1 0 0 0-15.5-2M4 5v4h4m-4 4a8.1 8.1 0 0 0 15.5 2M20 19v-4h-4"

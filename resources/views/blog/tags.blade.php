@@ -668,7 +668,7 @@
     @php($search = $search ?? '')
 
     <div class="space-y-4" data-ografi-layout-container="tags">
-        <div class="page-title-identity tags-page-title" data-ografi-layout-section="tags_title">
+        <div class="tag-catalog-page page-title-identity tags-page-title" data-ografi-layout-section="tags_title">
             <a href="{{ url()->previous() }}" class="tags-page-title__back" aria-label="Geri">
                 <iconify-icon icon="lucide:arrow-left" aria-hidden="true"></iconify-icon>
             </a>

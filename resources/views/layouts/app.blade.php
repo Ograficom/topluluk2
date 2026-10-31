@@ -7410,6 +7410,13 @@
         <link rel="stylesheet" href="{{ asset('css/repost-ui.css') }}?v=1">
     @endif
     @include('partials.pwa-meta')
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Roboto:wght@400;500;700&family=Special+Gothic+Expanded+One&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('repost-bundle/css/source/kit.css') }}?v=20261101">
+    <link rel="stylesheet" href="{{ asset('repost-bundle/css/source/app.css') }}?v=20261101">
+    <link rel="stylesheet" href="{{ asset('repost-bundle/css/source/engine.css') }}?v=20261101">
+    <link rel="stylesheet" href="{{ asset('repost-bundle/css/source/editor.css') }}?v=20261101">
 </head>
 @php($isMessagesRoute = request()->routeIs('messages.*'))
 @php($isCategoryRoute = request()->routeIs('blog.categories', 'blog.category', 'blog.category.*'))
@@ -7421,9 +7428,12 @@
 @php($isSssRoute = request()->routeIs('pages.sss'))
 @php($isStaticPageRoute = request()->routeIs('pages.show', 'pages.show.short'))
 @php($isDashboardRoute = request()->routeIs('dashboard', 'dashboard.*'))
+@php($isMessagesRoute = request()->routeIs('messages.*'))
+@php($isBookmarksRoute = request()->routeIs('blog.bookmarks'))
+@php($isCategoriesIndexRoute = request()->routeIs('blog.categories'))
 
 <body
-    class="bg-[#fafafa] text-slate-900 font-sans antialiased theme-minimal alma-app {{ request()->routeIs('filament.*') ? '' : 'repost-ui' }} {{ request()->routeIs('home') ? 'route-home' : '' }} {{ request()->routeIs('discover') ? 'route-discover' : '' }} {{ request()->routeIs('video') ? 'route-video' : '' }} {{ $isCategoryRoute ? 'route-category' : '' }} {{ $isPostShowRoute ? 'route-post-show' : '' }} {{ $isProfileRoute ? 'route-profile' : '' }} {{ $isSearchRoute ? 'route-search' : '' }} {{ $isTagsRoute ? 'route-tags' : '' }} {{ $isUsersRoute ? 'route-users' : '' }} {{ $isSssRoute ? 'route-sss' : '' }} {{ $isStaticPageRoute ? 'route-page' : '' }} {{ $isDashboardRoute ? 'route-dashboard' : '' }}"
+    class="bg-[#fafafa] text-slate-900 font-sans antialiased theme-minimal alma-app repost-app {{ request()->routeIs('filament.*') ? '' : 'repost-ui' }} {{ request()->routeIs('home') ? 'route-home' : '' }} {{ request()->routeIs('discover') ? 'route-discover' : '' }} {{ request()->routeIs('video') ? 'route-video' : '' }} {{ $isCategoryRoute ? 'route-category' : '' }} {{ $isPostShowRoute ? 'route-post-show' : '' }} {{ $isProfileRoute ? 'route-profile' : '' }} {{ $isSearchRoute ? 'route-search' : '' }} {{ $isTagsRoute ? 'route-tags' : '' }} {{ $isUsersRoute ? 'route-users' : '' }} {{ $isSssRoute ? 'route-sss' : '' }} {{ $isStaticPageRoute ? 'route-page' : '' }} {{ $isDashboardRoute ? 'route-dashboard' : '' }} {{ $isMessagesRoute ? 'route-messages' : '' }} {{ $isBookmarksRoute ? 'route-bookmarks' : '' }} {{ $isCategoriesIndexRoute ? 'route-categories-index' : '' }}"
     data-route-name="{{ request()->route()?->getName() }}"
     data-mentions-endpoint="{{ auth()->check() ? route('mentions.users') : '' }}"
 >
@@ -7436,14 +7446,14 @@
     @if ($__env->hasSection('custom_shell'))
         @yield('custom_shell')
     @else
-        <div class="main-grid {{ $__env->hasSection('no_container_padding') ? 'main-grid--no-pad' : 'main-grid--padded' }}">
-            <aside class="ografi-sidebar-responsive layout-side layout-side--left">
+        <div class="main-grid main__grid {{ $__env->hasSection('no_container_padding') ? 'main-grid--no-pad' : 'main-grid--padded' }}">
+            <aside class="ografi-sidebar-responsive layout-side layout-side--left sidebar">
                 @include('partials.left')
             </aside>
 
             
 
-            <main class="layout-main">
+            <main class="layout-main feed">
                 @unless ($__env->hasSection('hide_feed_header') || $isMessagesRoute || request()->routeIs('home'))
                 @endunless
 
@@ -7468,7 +7478,7 @@
                 ])
             </main>
 
-            <aside class="ografi-sidebar-responsive space-y-6 custom-scrollbar layout-side layout-side--right">
+            <aside class="ografi-sidebar-responsive space-y-6 custom-scrollbar layout-side layout-side--right main__widgets">
                 @include('partials.right')
             </aside>
         </div>
@@ -7673,6 +7683,10 @@
     }
     </style>
 
+    {{-- Repost v3 replaces the previous public theme layers after page-level styles. --}}
+    <link rel="stylesheet" href="{{ asset('css/repost-full.css') }}?v=20261031-full2">
+
+    {{-- Keep administrator-authored component and custom CSS as the final override. --}}
     @include('partials.theme-component-design')
     @include('partials.page-layout-builder-runtime')
     @unless(request()->routeIs('filament.*'))

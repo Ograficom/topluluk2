@@ -2022,8 +2022,8 @@
 
 </style>
 
-<header class="site-header" data-site-header>
-    <div class="site-header-shell">
+<header class="site-header header" data-site-header>
+    <div class="site-header-shell header__inner container">
         @php
             $currentUser = auth()->user();
             $avatarUrl = $currentUser?->profile_photo_url
