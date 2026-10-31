@@ -5123,3 +5123,14 @@ p {
 .repost-search-results{display:grid;gap:9px}
 .repost-search-result{display:grid;gap:5px;color:var(--text-color)}
 .repost-error-state{padding:44px 24px}
+
+
+.repost-tag-directory{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.repost-tag-directory a{display:grid;gap:5px;color:var(--text-color)}
+.repost-notification-list{overflow:hidden}
+.repost-notification-row{display:flex;align-items:center;gap:12px;padding:14px;border-bottom:1px solid var(--border-color)}
+.repost-notification-row.is-unread{background:var(--content-item-hover-bg)}
+.repost-notification-copy{display:grid;gap:4px;min-width:0;flex:1;color:var(--text-color)}
+.repost-notification-copy span{font-size:.86rem;color:var(--gray-500)}
+.repost-notification-copy time{font-size:.75rem}
+@media(max-width:760px){.repost-tag-directory{grid-template-columns:repeat(2,minmax(0,1fr))}.repost-notification-row{align-items:flex-start}}
