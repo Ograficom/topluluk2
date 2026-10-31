@@ -596,7 +596,7 @@
         }
     </style>
 
-    <div class="space-y-4 users-page" data-ografi-layout-container="users_index">
+    <div class="rating-users-page space-y-4 users-page data-ografi-layout-container="users_index">
         <div class="page-title-identity users-page-title" data-ografi-layout-section="users_title">
             <a href="{{ url()->previous() }}" class="users-page-title__back" aria-label="Geri">
                 <iconify-icon icon="lucide:arrow-left" aria-hidden="true"></iconify-icon>
