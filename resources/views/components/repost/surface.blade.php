@@ -1,4 +1,4 @@
-@props(['variant' => 'card', 'as' => 'div'])
+@props(['variant' => 'card'])
 @php
     $variantClasses = [
         'card' => 'rp-surface',
@@ -8,6 +8,6 @@
     ];
     $surfaceClass = $variantClasses[$variant] ?? $variantClasses['card'];
 @endphp
-<{{ $as }} {{ $attributes->class([$surfaceClass]) }}>
+<div {{ $attributes->class([$surfaceClass]) }}>
     {{ $slot }}
-</{{ $as }}>
+</div>
