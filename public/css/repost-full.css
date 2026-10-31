@@ -538,3 +538,104 @@ body.repost-app .simple-auth-page .simple-auth-register a { color:var(--rp-blue)
 @media(max-width:480px) {
   body.repost-app .simple-auth-card { padding:20px 16px !important; }
 }
+
+
+/* Native Repost component vocabulary used by the Blade views. */
+body.repost-app {
+  --header-height:70px;
+  --header-offset:12px;
+  --main-gap:20px;
+  --container:1120px;
+  --body-bg:var(--rp-bg);
+  --border-color:var(--rp-border);
+  --text-color:var(--rp-text);
+  --gray-500:var(--rp-muted);
+}
+body.repost-app .header { position:sticky !important; top:0 !important; z-index:1000 !important; }
+body.repost-app .header__inner {
+  display:grid !important;
+  grid-template-columns:minmax(150px,1fr) minmax(0,2fr) minmax(150px,1fr) !important;
+  align-items:center !important;
+  gap:12px !important;
+  width:min(1120px,calc(100% - 32px)) !important;
+  max-width:1120px !important;
+  height:70px !important;
+  margin:0 auto !important;
+  padding:0 !important;
+  border-bottom:1px solid var(--rp-border) !important;
+  background:var(--rp-surface) !important;
+}
+body.repost-app .main__grid {
+  display:grid !important;
+  grid-template-columns:55px minmax(280px,1fr) 320px !important;
+  gap:20px !important;
+  width:min(1120px,calc(100% - 32px)) !important;
+  max-width:1120px !important;
+  margin:20px auto 40px !important;
+  padding:0 !important;
+  align-items:start !important;
+}
+body.repost-app .sidebar {
+  position:sticky !important;
+  top:82px !important;
+  display:flex !important;
+  flex-direction:column !important;
+  width:55px !important;
+  max-width:55px !important;
+  height:calc(100vh - 94px) !important;
+  overflow:hidden !important;
+  border:0 !important;
+  background:transparent !important;
+}
+body.repost-app .sidebar__body { display:flex !important; flex:1 1 auto !important; flex-direction:column !important; gap:18px !important; min-height:0 !important; overflow:auto !important; scrollbar-width:none !important; }
+body.repost-app .sidebar__body::-webkit-scrollbar { display:none !important; }
+body.repost-app .sidebar__section { margin:0 !important; padding:0 !important; }
+body.repost-app .sidebar__title { display:none !important; }
+body.repost-app .sidebar__list { display:flex !important; flex-direction:column !important; align-items:center !important; gap:7px !important; margin:0 !important; padding:0 !important; list-style:none !important; }
+body.repost-app .sidebar__link,
+body.repost-app .channel-icon {
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  width:42px !important;
+  height:42px !important;
+  min-height:42px !important;
+  padding:0 !important;
+  border:1px solid transparent !important;
+  border-radius:10px !important;
+  background:transparent !important;
+  color:var(--rp-muted) !important;
+  text-decoration:none !important;
+}
+body.repost-app .sidebar__link span { display:none !important; }
+body.repost-app .sidebar__link svg { width:20px !important; height:20px !important; fill:none !important; stroke:currentColor !important; stroke-width:1.7 !important; stroke-linecap:round !important; stroke-linejoin:round !important; }
+body.repost-app .sidebar__link:hover,
+body.repost-app .sidebar__link.is-active,
+body.repost-app .channel-icon:hover,
+body.repost-app .channel-icon.is-active { border-color:var(--rp-border) !important; background:var(--rp-surface) !important; color:var(--rp-blue) !important; }
+body.repost-app .channel-icon img,
+body.repost-app .channel-icon__initial { width:30px !important; height:30px !important; border-radius:9px !important; object-fit:cover !important; }
+body.repost-app .channel-icon__initial { display:flex !important; align-items:center !important; justify-content:center !important; background:var(--rp-blue-soft) !important; color:var(--rp-blue) !important; font-weight:700 !important; }
+body.repost-app .sidebar__more,
+body.repost-app .sidebar__empty { display:none !important; }
+body.repost-app .sidebar__footer { display:flex !important; flex-direction:column !important; align-items:center !important; gap:8px !important; padding:10px 0 !important; border-top:1px solid var(--rp-border) !important; }
+body.repost-app .sidebar__account { display:flex !important; align-items:center !important; justify-content:center !important; width:42px !important; height:42px !important; color:var(--rp-text) !important; }
+body.repost-app .sidebar__account-avatar { display:flex !important; align-items:center !important; justify-content:center !important; width:32px !important; height:32px !important; overflow:hidden !important; border-radius:50% !important; background:var(--rp-blue-soft) !important; color:var(--rp-blue) !important; font-weight:700 !important; }
+body.repost-app .sidebar__account-avatar img { width:100% !important; height:100% !important; object-fit:cover !important; }
+body.repost-app .sidebar__account-name,
+body.repost-app .sidebar__copyright,
+body.repost-app .sidebar__login { display:none !important; }
+body.repost-app .feed { display:flex !important; min-width:0 !important; flex-direction:column !important; gap:20px !important; padding-bottom:20px !important; }
+body.repost-app .main__widgets { display:flex !important; flex-direction:column !important; gap:14px !important; min-width:0 !important; width:320px !important; }
+body.repost-app .repost-widgets .widget,
+body.repost-app .repost-widgets .ografi-sidebar-card { border:1px solid var(--rp-border) !important; border-radius:10px !important; background:var(--rp-surface) !important; box-shadow:none !important; }
+@media(max-width:1023px) {
+  body.repost-app .main__grid { grid-template-columns:55px minmax(0,1fr) !important; }
+  body.repost-app .main__widgets { display:none !important; }
+}
+@media(max-width:720px) {
+  body.repost-app .header__inner { grid-template-columns:1fr auto !important; width:calc(100% - 20px) !important; height:62px !important; }
+  body.repost-app .main__grid { display:block !important; width:calc(100% - 20px) !important; margin:12px auto 28px !important; }
+  body.repost-app .main__grid > .sidebar { display:none !important; }
+  body.repost-app .main__widgets { display:none !important; }
+}
