@@ -1,0 +1,124 @@
+/* OgraFi public UI — Repost component layer.
+   This file is deliberately public-layout only. Filament has its own panel shell/assets. */
+body.alma-app {
+    --rp-bg: #f7f9fc;
+    --rp-surface: #fff;
+    --rp-surface-soft: #f3f5f8;
+    --rp-border: #e5e9ef;
+    --rp-text: #202833;
+    --rp-muted: #778391;
+    --rp-primary: #2878e5;
+    --rp-primary-soft: #edf5ff;
+    --rp-radius: 12px;
+    --rp-radius-lg: 16px;
+    background: var(--rp-bg) !important;
+    color: var(--rp-text);
+    font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+body.alma-app :where(.main-grid) {
+    width: min(calc(100% - 40px), 1400px) !important;
+    max-width: 1400px !important;
+    margin: 22px auto 40px !important;
+    padding: 0 !important;
+    grid-template-columns: 220px minmax(0, 1fr) 292px !important;
+    gap: 22px !important;
+    align-items: start !important;
+}
+body.alma-app .layout-main { min-width: 0 !important; width: 100%; }
+body.alma-app .layout-side { min-width: 0; position: sticky; top: 84px; }
+body.alma-app .site-header {
+    min-height: 66px !important;
+    background: rgba(255,255,255,.98) !important;
+    border-bottom: 1px solid var(--rp-border) !important;
+    box-shadow: none !important;
+    backdrop-filter: blur(12px);
+}
+body.alma-app .site-header-shell { width: min(calc(100% - 40px), 1400px) !important; max-width: 1400px !important; min-height: 66px !important; margin-inline: auto !important; }
+body.alma-app .site-header-logo-wordmark { color: var(--rp-text) !important; font-weight: 750 !important; letter-spacing: -.04em; }
+body.alma-app .site-header-write-btn,
+body.alma-app a.site-header-write-btn,
+body.alma-app .site-primary-btn,
+body.alma-app .profile-reference-btn-primary {
+    min-height: 38px !important; border: 1px solid var(--rp-primary) !important;
+    border-radius: 9px !important; background: var(--rp-primary) !important;
+    color: #fff !important; font-size: 13px !important; font-weight: 650 !important;
+    box-shadow: none !important;
+}
+body.alma-app :where(.sidebar-wrapper,.sidebar-scroll) { background: transparent !important; }
+body.alma-app .nav-item { min-height: 40px !important; border-radius: 9px !important; color: #5e6976 !important; }
+body.alma-app .nav-item:hover,
+body.alma-app .nav-item[data-active="true"] { background: #fff !important; color: var(--rp-primary) !important; }
+body.alma-app :where(.rp-surface,.og-card,.og-tabs-card,.og-list-card,.alma-page-header,.page-title-identity,.alma-empty-state) {
+    border: 1px solid var(--rp-border) !important; border-radius: var(--rp-radius-lg) !important;
+    background: var(--rp-surface) !important; box-shadow: none !important;
+}
+body.alma-app :where(.rp-surface,.og-card,.og-tabs-card,.og-list-card) { padding: 18px !important; }
+body.alma-app :where(.rp-tabs,.alma-tabs,.feed-tabs) {
+    display: flex !important; align-items: center !important; gap: 4px !important;
+    padding: 5px !important; border: 1px solid var(--rp-border) !important;
+    border-radius: 11px !important; background: #fff !important; box-shadow: none !important;
+}
+body.alma-app :where(.rp-tabs .alma-tab,.alma-tabs .alma-tab,.feed-tabs .alma-tab) {
+    min-height: 35px !important; padding: 0 14px !important; border-radius: 8px !important;
+    color: #778391 !important; font-size: 13px !important; font-weight: 600 !important;
+}
+body.alma-app :where(.rp-tabs .alma-tab.is-active,.alma-tabs .alma-tab.is-active,.feed-tabs .alma-tab.is-active) {
+    color: #216dcc !important; background: var(--rp-primary-soft) !important;
+}
+body.alma-app article.rp-post-card,
+body.alma-app article.post-card[data-post-card-shell] {
+    display: block !important; margin: 0 0 14px !important; padding: 17px 19px 12px !important;
+    overflow: visible !important; border: 1px solid var(--rp-border) !important;
+    border-radius: 14px !important; background: #fff !important; box-shadow: none !important;
+}
+body.alma-app article.rp-post-card .post-header { gap: 11px !important; margin-bottom: 12px !important; }
+body.alma-app article.rp-post-card .author-avatar { width: 42px !important; height: 42px !important; border-radius: 50% !important; }
+body.alma-app article.rp-post-card :where(.author-name,.post-author-name) { color: #26313d !important; font-size: 13px !important; font-weight: 700 !important; }
+body.alma-app article.rp-post-card :where(.post-title,.post-title__link) { color: #202a35 !important; font-size: 19px !important; line-height: 1.4 !important; font-weight: 700 !important; letter-spacing: -.025em; }
+body.alma-app article.rp-post-card :where(.post-summary,.post-summary-shell,.post-card__full-content) { color: #596675 !important; font-size: 13px !important; line-height: 1.7 !important; }
+body.alma-app article.rp-post-card :where(.post-card__media-wrap,.post-card__media-frame) { overflow: hidden !important; border-radius: 10px !important; }
+body.alma-app article.rp-post-card :where(.action-bar,.post-card__actions,.post-card__engagement,.post-card__footer) { margin-top: 12px !important; padding-top: 10px !important; border-top: 1px solid #edf0f3 !important; }
+body.alma-app article.rp-post-card :where(.post-card__action-button,.post-card__action-link,.post-metric) { color: #778391 !important; border-radius: 8px !important; }
+body.alma-app article.rp-post-card :where(.post-card__action-button,.post-card__action-link):hover { background: #f3f6f9 !important; color: var(--rp-primary) !important; }
+body.alma-app :where(input:not([type=checkbox]):not([type=radio]),textarea,select) { border-color: #dfe5ec !important; border-radius: 8px !important; box-shadow: none !important; }
+body.alma-app :where(input:not([type=checkbox]):not([type=radio]),textarea,select):focus { border-color: #83b5f2 !important; outline: 3px solid rgba(40,120,229,.10) !important; }
+body.alma-app :where(.messages-card,.messages-sidebar-panel,.messages-main-panel,.messages-header-card) { border: 1px solid var(--rp-border) !important; border-radius: 13px !important; background: #fff !important; box-shadow: none !important; }
+body.alma-app .messages-thread-item:hover,
+body.alma-app .messages-thread-item.is-active { background: #f3f6fa !important; }
+body.alma-app .messages-bubble--mine { background: #2878e5 !important; color: #fff !important; }
+body.alma-app .messages-bubble--other { border-color: var(--rp-border) !important; background: #f5f7fa !important; color: #26313d !important; }
+body.alma-app :where(.notifications-page,[data-ografi-layout-container="notifications"]) { border-color: var(--rp-border) !important; border-radius: 14px !important; background: #fff !important; }
+body.alma-app .route-profile :where(.og-card,.og-tabs-card,.og-list-card) { border-radius: 14px !important; }
+body.alma-app .users-page :where(.users-card,.user-card,.page-title-identity) { border-color: var(--rp-border) !important; border-radius: 12px !important; box-shadow: none !important; }
+body.alma-app .mobile-bottom-nav,
+body.alma-app [data-mobile-bottom-nav] { border-top: 1px solid var(--rp-border) !important; background: rgba(255,255,255,.98) !important; box-shadow: none !important; }
+body.alma-app .rp-page-heading { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:16px; }
+body.alma-app .rp-page-heading h1 { margin:0; color:var(--rp-text); font-size:22px; line-height:1.25; font-weight:750; letter-spacing:-.03em; }
+body.alma-app .rp-page-heading p { margin:5px 0 0; color:var(--rp-muted); font-size:13px; line-height:1.55; }
+body.alma-app .rp-empty-state { padding:36px 20px; text-align:center; color:var(--rp-muted); border:1px dashed #d7dee7; border-radius:13px; background:#fff; }
+body.alma-app .rp-post-detail > :where(.bg-card-light,.bg-card-dark) { border:1px solid var(--rp-border) !important; border-radius:14px !important; box-shadow:none !important; }
+body.alma-app .rp-post-detail h1 { color:var(--rp-text); letter-spacing:-.03em; }
+@media (max-width: 1279px) {
+    body.alma-app :where(.main-grid) { grid-template-columns: 195px minmax(0,1fr) 260px !important; gap:16px !important; }
+}
+@media (max-width: 1023px) {
+    body.alma-app :where(.main-grid) { width:min(calc(100% - 24px),760px) !important; grid-template-columns:minmax(0,1fr) !important; margin:14px auto 32px !important; gap:0 !important; }
+    body.alma-app .layout-side { display:none !important; }
+}
+@media (max-width: 640px) {
+    body.alma-app .site-header-shell { width:calc(100% - 24px) !important; }
+    body.alma-app :where(.main-grid) { width:100% !important; margin:8px auto 28px !important; }
+    body.alma-app article.rp-post-card,
+    body.alma-app article.post-card[data-post-card-shell] { margin-bottom:10px !important; padding:14px 13px 10px !important; border-radius:12px !important; }
+    body.alma-app .rp-page-heading { padding-inline:12px; }
+}
+/* Auth pages use the same Repost typography and compact, quiet surfaces. */
+.simple-auth-page { background:#f7f9fc !important; color:#202833 !important; font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif !important; }
+.simple-auth-page .simple-auth-brand { font-weight:750 !important; letter-spacing:-.04em !important; }
+.simple-auth-page .simple-auth-card { max-width:420px !important; padding:32px !important; border:1px solid #e5e9ef !important; border-radius:14px !important; background:#fff !important; box-shadow:none !important; }
+.simple-auth-page .simple-auth-title { font-size:20px !important; font-weight:700 !important; letter-spacing:-.025em; }
+.simple-auth-page .simple-auth-description { font-size:13px !important; color:#778391 !important; }
+.simple-auth-page .simple-auth-input { height:42px !important; border:1px solid #dfe5ec !important; border-radius:8px !important; box-shadow:none !important; }
+.simple-auth-page .simple-auth-submit { height:42px !important; border-radius:8px !important; background:#2878e5 !important; font-size:13px !important; font-weight:650 !important; }
+.simple-auth-page .simple-auth-footer { color:#778391 !important; }
+@media (max-width:480px) { .simple-auth-page { padding:22px 14px !important; } .simple-auth-page .simple-auth-card { padding:26px 20px !important; } }
