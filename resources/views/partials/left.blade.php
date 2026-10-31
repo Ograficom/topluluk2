@@ -56,11 +56,35 @@
                             <span>Mesajlar</span>
                         </a>
                     </li>
+                    @if(\Illuminate\Support\Facades\Route::has('messages.contacts'))
+                        <li>
+                            <a href="{{ route('messages.contacts') }}" class="sidebar__link{{ request()->routeIs('messages.contacts') ? ' is-active' : '' }}">
+                                <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3"/><path d="M3 20v-1a6 6 0 0 1 12 0v1M17 5a3 3 0 0 1 0 6M18 14a5 5 0 0 1 3 5v1"/></svg>
+                                <span>Kişiler</span>
+                            </a>
+                        </li>
+                    @endif
+                    @if(\Illuminate\Support\Facades\Route::has('messages.settings'))
+                        <li>
+                            <a href="{{ route('messages.settings') }}" class="sidebar__link{{ request()->routeIs('messages.settings') ? ' is-active' : '' }}">
+                                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 8.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7Z"/><path d="m19.4 15 .1.1a1.7 1.7 0 0 1-2.4 2.4l-.1-.1a1.7 1.7 0 0 0-2.9 1.2v.2a1.7 1.7 0 0 1-3.4 0v-.2a1.7 1.7 0 0 0-2.9-1.2l-.1.1a1.7 1.7 0 0 1-2.4-2.4l.1-.1a1.7 1.7 0 0 0-1.2-2.9H4a1.7 1.7 0 0 1 0-3.4h.2a1.7 1.7 0 0 0 1.2-2.9l-.1-.1a1.7 1.7 0 0 1 2.4-2.4l.1.1a1.7 1.7 0 0 0 2.9-1.2V2a1.7 1.7 0 0 1 3.4 0v.2a1.7 1.7 0 0 0 2.9 1.2l.1-.1a1.7 1.7 0 0 1 2.4 2.4l-.1.1a1.7 1.7 0 0 0 1.2 2.9h.2a1.7 1.7 0 0 1 0 3.4h-.2a1.7 1.7 0 0 0-1.2 2.9Z"/></svg>
+                                <span>Mesaj ayarları</span>
+                            </a>
+                        </li>
+                    @endif
                     @if(\Illuminate\Support\Facades\Route::has('blog.bookmarks'))
                         <li>
                             <a href="{{ route('blog.bookmarks') }}" class="sidebar__link{{ request()->routeIs('blog.bookmarks') ? ' is-active' : '' }}">
                                 <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h12v18l-6-4-6 4z"/></svg>
                                 <span>Kaydedilenler</span>
+                            </a>
+                        </li>
+                    @endif
+                    @if(\Illuminate\Support\Facades\Route::has('dashboard.profile'))
+                        <li>
+                            <a href="{{ route('dashboard.profile') }}" class="sidebar__link{{ request()->routeIs('dashboard.profile') ? ' is-active' : '' }}">
+                                <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.5"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>
+                                <span>Profil ayarları</span>
                             </a>
                         </li>
                     @endif
