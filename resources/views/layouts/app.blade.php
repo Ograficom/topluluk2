@@ -7421,9 +7421,12 @@
 @php($isSssRoute = request()->routeIs('pages.sss'))
 @php($isStaticPageRoute = request()->routeIs('pages.show', 'pages.show.short'))
 @php($isDashboardRoute = request()->routeIs('dashboard', 'dashboard.*'))
+@php($isMessagesRoute = request()->routeIs('messages.*'))
+@php($isBookmarksRoute = request()->routeIs('blog.bookmarks'))
+@php($isCategoriesIndexRoute = request()->routeIs('blog.categories'))
 
 <body
-    class="bg-[#fafafa] text-slate-900 font-sans antialiased theme-minimal alma-app repost-app {{ request()->routeIs('filament.*') ? '' : 'repost-ui' }} {{ request()->routeIs('home') ? 'route-home' : '' }} {{ request()->routeIs('discover') ? 'route-discover' : '' }} {{ request()->routeIs('video') ? 'route-video' : '' }} {{ $isCategoryRoute ? 'route-category' : '' }} {{ $isPostShowRoute ? 'route-post-show' : '' }} {{ $isProfileRoute ? 'route-profile' : '' }} {{ $isSearchRoute ? 'route-search' : '' }} {{ $isTagsRoute ? 'route-tags' : '' }} {{ $isUsersRoute ? 'route-users' : '' }} {{ $isSssRoute ? 'route-sss' : '' }} {{ $isStaticPageRoute ? 'route-page' : '' }} {{ $isDashboardRoute ? 'route-dashboard' : '' }}"
+    class="bg-[#fafafa] text-slate-900 font-sans antialiased theme-minimal alma-app repost-app {{ request()->routeIs('filament.*') ? '' : 'repost-ui' }} {{ request()->routeIs('home') ? 'route-home' : '' }} {{ request()->routeIs('discover') ? 'route-discover' : '' }} {{ request()->routeIs('video') ? 'route-video' : '' }} {{ $isCategoryRoute ? 'route-category' : '' }} {{ $isPostShowRoute ? 'route-post-show' : '' }} {{ $isProfileRoute ? 'route-profile' : '' }} {{ $isSearchRoute ? 'route-search' : '' }} {{ $isTagsRoute ? 'route-tags' : '' }} {{ $isUsersRoute ? 'route-users' : '' }} {{ $isSssRoute ? 'route-sss' : '' }} {{ $isStaticPageRoute ? 'route-page' : '' }} {{ $isDashboardRoute ? 'route-dashboard' : '' }} {{ $isMessagesRoute ? 'route-messages' : '' }} {{ $isBookmarksRoute ? 'route-bookmarks' : '' }} {{ $isCategoriesIndexRoute ? 'route-categories-index' : '' }}"
     data-route-name="{{ request()->route()?->getName() }}"
     data-mentions-endpoint="{{ auth()->check() ? route('mentions.users') : '' }}"
 >
