@@ -1,37 +1,39 @@
-# Repost frontend integration
+# OgraFi — Repost v3 public interface integration
 
-## Scope
+## Current implementation
 
-This branch introduces the first integration layer for the supplied Repost HTML theme into OgraFi's existing public Blade frontend.
+The supplied `Repost(4).zip` is the visual source of truth for the public interface. It contains 21 static reference screens and a shared responsive design system. The static HTML is not copied into Laravel as-is: it contains demonstration accounts/content and standalone links that would bypass OgraFi's route names, authentication, CSRF protection, authorization, Livewire components and real database records.
 
-- Adds `resources/css/repost-frontend.css`, scoped to the existing `.alma-app` public application shell.
-- Loads the new layer through the existing Vite entrypoint in `resources/css/app.css`.
-- Refreshes the public header surface, three-column desktop shell, feed tabs, post cards, form controls, profile surfaces, and mobile layout using Repost's light palette, blue accent, compact radii, and restrained borders.
-- Preserves the existing Laravel routes, Blade data contracts, Livewire interactions, post/reaction/comment behavior, and Filament panel assets.
+The current integration replaces the previous competing partial Repost stylesheet layers with one public stylesheet:
 
-## Deliberate compatibility choices
+- `public/css/repost-full.css` is the single Repost visual layer.
+- `resources/views/layouts/app.blade.php` applies the shared Repost shell to authenticated and public application pages.
+- `resources/views/layouts/guest.blade.php` applies the same light theme to sign-in, registration and password flows.
+- `resources/views/header.blade.php` maps the existing functional header into the Repost header rhythm.
+- The shared shell uses the Repost 70px header, 55px left rail, fluid center column and 320px right widgets column, with tablet/mobile collapse.
+- Old partial layers `public/css/repost-home.css`, `public/css/repost-layout.css`, `public/css/repost-theme.css` and `resources/css/repost-frontend.css` have been removed.
 
-The supplied archive is a static HTML theme with demo content and DLE-oriented engine styles/scripts. Its HTML pages are not drop-in Laravel views. Copying those pages verbatim would replace real OgraFi route data with demo content and could break authentication, CSRF, route names, post actions, and Livewire behavior.
+## Preserved application behavior
 
-For that reason, this first layer styles the existing OgraFi components instead of replacing them with static HTML. Filament uses its own panel layout and Vite theme entry, so this public frontend stylesheet is not added to the Filament panel theme.
+This is a presentation-layer change. It does not replace routes or controllers and does not introduce migrations. Existing post data, categories, tags, comments, reactions, bookmarks, search, notifications, messages, profiles, authentication, validation, pagination, SEO metadata and Livewire interactions remain connected to their current Laravel implementations.
 
-## Next conversion pass
+Filament remains outside the public Repost layout and keeps its own panel assets and theme.
 
-Convert the public Blade views one by one to Repost component markup while retaining each controller's existing variables and actions:
+## Remaining page-by-page conversion
 
-1. Home/feed and post card.
-2. Post detail and comments.
-3. Categories/channels and tags.
-4. Public profile and user directory.
-5. Messages and notifications.
-6. Sign-in, registration, and account settings.
+The shared Repost shell and visual rules are now applied across the public layouts. A separate conversion pass is still required to map every static Repost page component one-by-one to the matching live Blade view, especially detailed page-specific markup for:
 
-For each view, keep existing named routes, authorization checks, validation, pagination, SEO metadata, and responsive behavior. Do not migrate demo text or placeholder accounts.
+1. Feed and post cards.
+2. Post detail, media, comments and reaction controls.
+3. Category/channel index and detail pages.
+4. Tag catalog and tag detail pages.
+5. Public profile, subscriptions and author ranking.
+6. Messages, contacts and conversation detail.
+7. Account settings, sign-in, registration and password recovery.
+8. Static content, statistics, latest posts and latest comments.
 
-## Validation required before production
+For each conversion, use live OgraFi records and existing named routes; never ship the Repost demo names, posts, images or placeholder links.
 
-- Run `composer validate` and the project PHPUnit suite.
-- Run `npm run build`.
-- Verify home, post detail, profile, categories, messages, auth, and account pages at desktop/tablet/mobile widths.
-- Verify the Filament panel and its assets remain unchanged.
-- Apply no production migration; this frontend pass introduces none.
+## Validation
+
+The pull-request workflow now runs for changes under `resources/**`, `public/**`, `routes/**` and `tests/**`, in addition to the existing dependency/build inputs. Required checks are PHP syntax, Blade compilation, application tests and the Vite production build. Production deployment remains gated by merging the pull request; this branch update alone does not change the live site.
