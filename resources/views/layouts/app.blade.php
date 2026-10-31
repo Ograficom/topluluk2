@@ -7420,7 +7420,7 @@
 @php($isDashboardRoute = request()->routeIs('dashboard', 'dashboard.*'))
 
 <body
-    class="bg-[#fafafa] text-slate-900 font-sans antialiased theme-minimal alma-app {{ request()->routeIs('home') ? 'route-home' : '' }} {{ request()->routeIs('discover') ? 'route-discover' : '' }} {{ request()->routeIs('video') ? 'route-video' : '' }} {{ $isCategoryRoute ? 'route-category' : '' }} {{ $isPostShowRoute ? 'route-post-show' : '' }} {{ $isProfileRoute ? 'route-profile' : '' }} {{ $isSearchRoute ? 'route-search' : '' }} {{ $isTagsRoute ? 'route-tags' : '' }} {{ $isUsersRoute ? 'route-users' : '' }} {{ $isSssRoute ? 'route-sss' : '' }} {{ $isStaticPageRoute ? 'route-page' : '' }} {{ $isDashboardRoute ? 'route-dashboard' : '' }}"
+    class="bg-[#fafafa] text-slate-900 font-sans antialiased theme-minimal alma-app repost-app {{ request()->routeIs('home') ? 'route-home' : '' }} {{ request()->routeIs('discover') ? 'route-discover' : '' }} {{ request()->routeIs('video') ? 'route-video' : '' }} {{ $isCategoryRoute ? 'route-category' : '' }} {{ $isPostShowRoute ? 'route-post-show' : '' }} {{ $isProfileRoute ? 'route-profile' : '' }} {{ $isSearchRoute ? 'route-search' : '' }} {{ $isTagsRoute ? 'route-tags' : '' }} {{ $isUsersRoute ? 'route-users' : '' }} {{ $isSssRoute ? 'route-sss' : '' }} {{ $isStaticPageRoute ? 'route-page' : '' }} {{ $isDashboardRoute ? 'route-dashboard' : '' }}"
     data-route-name="{{ request()->route()?->getName() }}"
     data-mentions-endpoint="{{ auth()->check() ? route('mentions.users') : '' }}"
 >
@@ -7433,14 +7433,14 @@
     @if ($__env->hasSection('custom_shell'))
         @yield('custom_shell')
     @else
-        <div class="main-grid {{ $__env->hasSection('no_container_padding') ? 'main-grid--no-pad' : 'main-grid--padded' }}">
-            <aside class="ografi-sidebar-responsive layout-side layout-side--left">
+        <div class="main-grid main__grid {{ $__env->hasSection('no_container_padding') ? 'main-grid--no-pad' : 'main-grid--padded' }}">
+            <aside class="ografi-sidebar-responsive layout-side layout-side--left sidebar">
                 @include('partials.left')
             </aside>
 
             
 
-            <main class="layout-main">
+            <main class="layout-main feed">
                 @unless ($__env->hasSection('hide_feed_header') || $isMessagesRoute || request()->routeIs('home'))
                 @endunless
 
@@ -7465,7 +7465,7 @@
                 ])
             </main>
 
-            <aside class="ografi-sidebar-responsive space-y-6 custom-scrollbar layout-side layout-side--right">
+            <aside class="ografi-sidebar-responsive space-y-6 custom-scrollbar layout-side layout-side--right main__widgets">
                 @include('partials.right')
             </aside>
         </div>
@@ -7673,11 +7673,7 @@
     @include('partials.theme-component-design')
     @include('partials.page-layout-builder-runtime')
     
-    {{-- Load after all page/header/sidebar inline styles so Repost wins the cascade. --}}
-    <link rel="stylesheet" href="{{ asset('css/repost-theme.css') }}?v=20261031-final3">
-    <link rel="stylesheet" href="{{ asset('css/repost-layout.css') }}?v=20261031-final3">
-    @if(request()->routeIs('home'))
-        <link rel="stylesheet" href="{{ asset('css/repost-home.css') }}?v=20261031-final3">
-    @endif
+    {{-- Single Repost v3 public theme, loaded after legacy inline styles. --}}
+    <link rel="stylesheet" href="{{ asset('css/repost-full.css') }}?v=20261031-full1">
 </body>
 </html>
