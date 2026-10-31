@@ -25,7 +25,7 @@
                 : __('messages.status.empty'));
     @endphp
 
-    <div class="messages-page px-3 py-4 sm:px-4 sm:py-8">
+    <div class="messenger-page messages-page px-3 py-4 sm:px-4 sm:py-8">
         @php($themeMessages = \App\Models\ThemeSetting::render('messages'))
 
         <div class="site-main-shell messages-show-layout">
