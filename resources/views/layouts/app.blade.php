@@ -7406,6 +7406,9 @@
         $ografiCustomCssSafe = str_ireplace('</style', '<\\/style', $ografiCustomCssCombined);
     @endphp
 
+    {{-- Repost public frontend theme: deliberately excluded from Filament panels. --}}
+    <link rel="stylesheet" href="{{ asset('css/repost-theme.css') }}?v=20261031">
+
     @include('partials.pwa-meta')
 </head>
 @php($isMessagesRoute = request()->routeIs('messages.*'))
