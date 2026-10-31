@@ -231,9 +231,10 @@
 </style>
 
     @include('partials.pwa-meta')
+    <link rel="stylesheet" href="{{ asset('css/repost-ui.css') }}?v=1">
     @stack('head')
 </head>
-<body class="bg-gray-100 dark:bg-gray-900 text-text-light dark:text-text-dark font-sans antialiased transition-colors duration-200 theme-minimal alma-app">
+<body class="bg-gray-100 dark:bg-gray-900 text-text-light dark:text-text-dark font-sans antialiased transition-colors duration-200 theme-minimal alma-app repost-ui">
     @include('header')
     @include('partials.pwa-install-banner')
 
@@ -276,5 +277,6 @@
     @include('partials.image-lightbox')
     @stack('scripts')
     @include('partials.pwa-scripts')
+    <script src="{{ asset('js/repost-ui.js') }}?v=1" defer></script>
 </body>
 </html>

@@ -7406,6 +7406,9 @@
         $ografiCustomCssSafe = str_ireplace('</style', '<\\/style', $ografiCustomCssCombined);
     @endphp
 
+    @if(!request()->routeIs('filament.*'))
+        <link rel="stylesheet" href="{{ asset('css/repost-ui.css') }}?v=1">
+    @endif
     @include('partials.pwa-meta')
 </head>
 @php($isMessagesRoute = request()->routeIs('messages.*'))
@@ -7420,7 +7423,7 @@
 @php($isDashboardRoute = request()->routeIs('dashboard', 'dashboard.*'))
 
 <body
-    class="bg-[#fafafa] text-slate-900 font-sans antialiased theme-minimal alma-app repost-app {{ request()->routeIs('home') ? 'route-home' : '' }} {{ request()->routeIs('discover') ? 'route-discover' : '' }} {{ request()->routeIs('video') ? 'route-video' : '' }} {{ $isCategoryRoute ? 'route-category' : '' }} {{ $isPostShowRoute ? 'route-post-show' : '' }} {{ $isProfileRoute ? 'route-profile' : '' }} {{ $isSearchRoute ? 'route-search' : '' }} {{ $isTagsRoute ? 'route-tags' : '' }} {{ $isUsersRoute ? 'route-users' : '' }} {{ $isSssRoute ? 'route-sss' : '' }} {{ $isStaticPageRoute ? 'route-page' : '' }} {{ $isDashboardRoute ? 'route-dashboard' : '' }}"
+    class="bg-[#fafafa] text-slate-900 font-sans antialiased theme-minimal alma-app repost-app {{ request()->routeIs('filament.*') ? '' : 'repost-ui' }} {{ request()->routeIs('home') ? 'route-home' : '' }} {{ request()->routeIs('discover') ? 'route-discover' : '' }} {{ request()->routeIs('video') ? 'route-video' : '' }} {{ $isCategoryRoute ? 'route-category' : '' }} {{ $isPostShowRoute ? 'route-post-show' : '' }} {{ $isProfileRoute ? 'route-profile' : '' }} {{ $isSearchRoute ? 'route-search' : '' }} {{ $isTagsRoute ? 'route-tags' : '' }} {{ $isUsersRoute ? 'route-users' : '' }} {{ $isSssRoute ? 'route-sss' : '' }} {{ $isStaticPageRoute ? 'route-page' : '' }} {{ $isDashboardRoute ? 'route-dashboard' : '' }}"
     data-route-name="{{ request()->route()?->getName() }}"
     data-mentions-endpoint="{{ auth()->check() ? route('mentions.users') : '' }}"
 >
@@ -7676,5 +7679,8 @@
     {{-- Keep administrator-authored component and custom CSS as the final override. --}}
     @include('partials.theme-component-design')
     @include('partials.page-layout-builder-runtime')
+    @unless(request()->routeIs('filament.*'))
+        <script src="{{ asset('js/repost-ui.js') }}?v=1" defer></script>
+    @endunless
 </body>
 </html>
