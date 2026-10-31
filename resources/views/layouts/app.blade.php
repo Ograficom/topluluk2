@@ -7411,6 +7411,8 @@
     @if(request()->routeIs('home'))
         <link rel="stylesheet" href="{{ asset('css/repost-home.css') }}?v=20261031-home1">
     @endif
+    {{-- Repost-style 55px navigation rail + feed + 320px widgets layout for all public pages. --}}
+    <link rel="stylesheet" href="{{ asset('css/repost-layout.css') }}?v=20261031-layout1">
 
     @include('partials.pwa-meta')
 </head>
