@@ -343,7 +343,7 @@
         }
     </style>
 
-    <div class="create-page-fixed text-slate-950">
+    <div class="create-page-fixed text-slate-950 rp-editor-page">
         <div class="mx-auto flex min-h-screen w-full max-w-[1280px] flex-col px-3 py-3 sm:px-5 lg:px-6">
             <header class="sticky top-3 z-40 mb-4 rounded-[28px] border border-slate-200 bg-white/95 px-3 py-3 shadow-[0_18px_60px_-50px_rgba(15,23,42,.65)] backdrop-blur sm:px-5 lg:px-6">
                 <div class="flex items-center justify-between gap-3">

@@ -7406,6 +7406,8 @@
         $ografiCustomCssSafe = str_ireplace('</style', '<\\/style', $ografiCustomCssCombined);
     @endphp
 
+    <link rel="stylesheet" href="{{ asset('css/repost-ui.css') }}?v=20261031-2">
+
     @include('partials.pwa-meta')
 </head>
 @php($isMessagesRoute = request()->routeIs('messages.*'))

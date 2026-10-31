@@ -18,6 +18,7 @@
 
         <!-- Fonts -->
         @include('partials.font-assets')
+        <link rel="stylesheet" href="{{ asset('css/repost-ui.css') }}?v=20261031-2">
         @include('partials.tailwind-cdn')
         <style>
             [x-cloak] {

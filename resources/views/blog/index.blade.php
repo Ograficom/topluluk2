@@ -1421,7 +1421,7 @@ html.dark .ografi-feed-page-button--next:active,
 
 @section('content')
     @if($isCategoryPage)
-        <div class="profile-reference-page category-reference-page">
+        <div class="profile-reference-page category-reference-page rp-blog-index">
             <div class="profile-reference-shell" data-ografi-layout-container="category_show">
                 @include('blog.categories.categories-show', [
                     'categories' => $categories,

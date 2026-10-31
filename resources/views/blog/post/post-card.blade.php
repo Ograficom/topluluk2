@@ -65,7 +65,7 @@
         ->contains(fn ($block) => ($block['type'] ?? null) === 'poll');
 @endphp
 
-<article class="space-y-6">
+<article class="space-y-6 rp-post-detail">
     <div class="bg-card-light dark:bg-card-dark rounded-xl p-5 shadow-sm sm:p-6">
         <div class="flex items-center gap-4">
             <div class="relative h-12 w-12 shrink-0">

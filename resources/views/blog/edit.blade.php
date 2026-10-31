@@ -22,7 +22,7 @@
         $categoryPalette = ['#ef4444', '#ec4899', '#f97316', '#84cc16', '#06b6d4', '#8b5cf6', '#e11d48', '#0ea5e9'];
     @endphp
 
-    <div class="relative min-h-screen w-full">
+    <div class="relative min-h-screen w-full rp-editor-page">
         <header class="border-b border-slate-200 bg-[#f7f8fa]">
             <div class="mx-auto w-full max-w-[45rem] px-3 py-3 sm:px-6">
                 <div class="rounded-[28px] border border-slate-200 bg-white px-4 py-4 shadow-sm sm:px-5">

@@ -12,20 +12,14 @@
                 </div>
             @endif
 
-            <section class="overflow-hidden rounded-[28px] border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900" data-ografi-layout-container="notifications">
-                <div class="flex items-start justify-between gap-4 border-b border-slate-200 dark:border-slate-700 px-5 py-4 sm:px-7" data-ografi-layout-section="notifications_header">
-                    <div>
-                        <h1 class="text-[1.75rem] font-semibold tracking-[-0.02em] text-slate-900 dark:text-slate-100">Bildirimler</h1>
-                        <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">
-                            @if ($unreadCount > 0)
-                                {{ $unreadCount }} okunmamis bildirim var.
-                            @else
-                                Tum bildirimler okundu.
-                            @endif
-                        </p>
-                    </div>
-
-                    <details class="relative">
+            <section class="overflow-hidden rounded-[28px] border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900" data-ografi-layout-container="notifications" data-rp-component="notifications">
+                <div class="border-b border-slate-200 dark:border-slate-700 px-5 py-4 sm:px-7" data-ografi-layout-section="notifications_header">
+                    <x-repost.page-heading
+                        title="Bildirimler"
+                        :description="$unreadCount > 0 ? $unreadCount . ' okunmamis bildirim var.' : 'Tum bildirimler okundu.'"
+                    >
+                        <x-slot:actions>
+                            <details class="relative">
                         <summary class="inline-flex h-10 w-10 cursor-pointer list-none items-center justify-center rounded-full text-slate-500 dark:text-slate-400 transition hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-800 dark:hover:text-slate-200">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
                                 <path d="M12 6h.01M12 12h.01M12 18h.01"/>
@@ -79,7 +73,9 @@
                                 </button>
                             @endif
                         </div>
-                    </details>
+                            </details>
+                        </x-slot:actions>
+                    </x-repost.page-heading>
                 </div>
 
                 <div class="divide-y divide-slate-100 dark:divide-slate-800" data-ografi-layout-section="notifications_list">

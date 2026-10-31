@@ -8,15 +8,15 @@
 @section('title', 'Ografi')
 @section('hide_feed_header', '1')
 @section('content')
-    <div class="space-y-6">
+    <div class="rp-page rp-feed-page space-y-6">
         @include('partials.ads.slot', [
             'slotKey' => 'ads_feed_top',
         ])
 
-        <div class="alma-tabs">
+        <x-repost.surface variant="toolbar" class="alma-tabs rp-tabs" aria-label="{{ __('Feed navigation') }}">
             <a href="{{ route('home') }}" class="alma-tab is-active">{{ __('New') }}</a>
             <a href="{{ route('discover') }}" class="alma-tab">{{ __('Active') }}</a>
-        </div>
+        </x-repost.surface>
 
             @forelse($posts as $post)
                 @php
@@ -79,7 +79,7 @@
                 ])
 
             @empty
-                <div class="alma-empty-state">
+                <div class="alma-empty-state rp-empty-state">
                     {{ __('There is nothing here yet') }}
                 </div>
             @endforelse
