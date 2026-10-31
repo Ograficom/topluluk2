@@ -554,7 +554,7 @@ body.repost-app {
 body.repost-app .header { position:sticky !important; top:0 !important; z-index:1000 !important; }
 body.repost-app .header__inner {
   display:grid !important;
-  grid-template-columns:minmax(150px,1fr) minmax(0,2fr) minmax(150px,1fr) !important;
+  grid-template-columns:minmax(0,1fr) auto !important;
   align-items:center !important;
   gap:12px !important;
   width:min(1120px,calc(100% - 32px)) !important;
@@ -693,3 +693,10 @@ body.repost-app .post.post-card .post-card__action:hover {
   background:var(--rp-blue-soft) !important;
   color:var(--rp-blue) !important;
 }
+
+body.repost-app .sidebar__content { display:flex !important; height:100% !important; min-height:0 !important; flex-direction:column !important; }
+body.repost-app .sidebar__footer { margin-top:auto !important; }
+body.repost-app .site-header-actions { justify-self:end !important; }
+body.repost-app .site-header-logo { justify-self:start !important; }
+body.repost-app .site-header-logo-mark { display:inline-flex !important; align-items:center !important; justify-content:center !important; }
+body.repost-app .site-header-logo-wordmark { color:var(--rp-heading) !important; }
