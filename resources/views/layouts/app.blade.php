@@ -7410,6 +7410,10 @@
         <link rel="stylesheet" href="{{ asset('css/repost-ui.css') }}?v=1">
     @endif
     @include('partials.pwa-meta')
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Roboto:wght@400;500;700&family=Special+Gothic+Expanded+One&display=swap" rel="stylesheet">
+    <script src="{{ asset('js/repost-assets-loader.js') }}" defer></script>
 </head>
 @php($isMessagesRoute = request()->routeIs('messages.*'))
 @php($isCategoryRoute = request()->routeIs('blog.categories', 'blog.category', 'blog.category.*'))
