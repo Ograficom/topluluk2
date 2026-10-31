@@ -72,3 +72,9 @@ The archive's sample names, post copy, demo avatars and placeholder `#` links ar
 ## Current asset status
 
 `public/css/repost-full.css` and `public/js/repost-ui.js` are the current OgraFi integration layer. The complete original `Repost/dist/assets/` payload (the archive's app/kit/editor/engine CSS, bundled JS, fonts, icon sprite, and optional libraries) has not yet been copied into `public/repost/`. The current `repost-full.css` is an OgraFi-specific compatibility layer that reproduces the shared layout and visual rules; it is not the archive's original compiled stylesheet. Do not treat the source asset import as complete until the assets are added and referenced by the Blade layout. Keep optional libraries page-scoped; do not load every archive plugin globally.
+
+## Original Repost asset status
+
+The original Repost CSS bundle from the supplied archive is now stored in `public/repost-bundle/css/` as compressed, split source parts. `public/js/repost-assets-loader.js` joins and decompresses the parts in the browser, then inserts the original styles before the OgraFi compatibility stylesheet. Inter, Roboto and Special Gothic fonts are loaded for the theme.
+
+The original Repost JavaScript bundle and remaining local font/image/plugin assets are not yet fully imported. OgraFi's existing `repost-ui.js` and Laravel-owned interactions remain in use. Do not treat the asset import as complete until the original app/init scripts, icon sprite and any required plugin files are transferred and checked.
