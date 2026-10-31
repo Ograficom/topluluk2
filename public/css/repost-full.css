@@ -839,3 +839,54 @@ body.repost-app .sidebar--drawer .sidebar__login { display:block !important; }
 body.repost-app .sidebar--drawer .sidebar__account-name { color:var(--rp-text) !important; font-size:13px !important; font-weight:650 !important; }
 body.repost-app .sidebar--drawer .sidebar__copyright { color:var(--rp-muted) !important; font-size:11px !important; }
 body.repost-app .sidebar--drawer .sidebar__login { padding:10px 12px !important; color:var(--rp-blue) !important; }
+
+
+/* Repost-style right rail cards and feed typography. */
+body.repost-app .ografi-sidebar-card {
+  width:100% !important;
+  margin:0 !important;
+  padding:16px !important;
+  border:1px solid var(--rp-border) !important;
+  border-radius:10px !important;
+  background:var(--rp-surface) !important;
+  box-shadow:none !important;
+}
+body.repost-app .ografi-sidebar-header {
+  display:flex !important;
+  align-items:center !important;
+  justify-content:space-between !important;
+  gap:10px !important;
+  margin:0 0 12px !important;
+  padding:0 0 10px !important;
+  border-bottom:1px solid var(--rp-border) !important;
+}
+body.repost-app .ografi-sidebar-title {
+  color:var(--rp-heading) !important;
+  font-size:13px !important;
+  font-weight:700 !important;
+  letter-spacing:-.01em !important;
+}
+body.repost-app .ografi-comment-item,
+body.repost-app .ografi-tag-item,
+body.repost-app .ografi-trending-item {
+  border-color:var(--rp-border) !important;
+}
+body.repost-app .ografi-comment-item a,
+body.repost-app .ografi-tag-item a,
+body.repost-app .ografi-trending-item a { color:var(--rp-text) !important; }
+body.repost-app .ografi-comment-item a:hover,
+body.repost-app .ografi-tag-item a:hover,
+body.repost-app .ografi-trending-item a:hover { color:var(--rp-blue) !important; }
+body.repost-app .ografi-right-stack .alma-ad-slot {
+  border:1px dashed var(--rp-border-strong) !important;
+  border-radius:10px !important;
+  background:var(--rp-surface) !important;
+  box-shadow:none !important;
+}
+@media(min-width:1024px) {
+  body.repost-app .layout-side--right { padding-bottom:20px !important; }
+}
+@media(max-width:720px) {
+  body.repost-app .post.post-card { padding:14px 12px 12px !important; border-radius:9px !important; }
+  body.repost-app .feed-page .home-feed-toolbar { border-radius:9px !important; }
+}
