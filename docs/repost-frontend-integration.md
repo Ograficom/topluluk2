@@ -37,3 +37,31 @@ For each conversion, use live OgraFi records and existing named routes; never sh
 ## Validation
 
 The pull-request workflow now runs for changes under `resources/**`, `public/**`, `routes/**` and `tests/**`, in addition to the existing dependency/build inputs. Required checks are PHP syntax, Blade compilation, application tests and the Vite production build. Production deployment remains gated by merging the pull request; this branch update alone does not change the live site.
+
+
+## Repost(5).zip screen-to-route map
+
+| Repost screen | OgraFi live endpoint/view | Integration rule |
+|---|---|---|
+| `index.html` | `home` / `templates.home-like` | Use the real feed and existing post-card component |
+| `post.html` | `blog.post` / `blog.show` | Keep comments, reactions, bookmarks, poll and view endpoints |
+| `profile.html` | `users.show` / `profile.public` | Use the selected user's posts, follow state, badges and tabs |
+| `channels.html` | `blog.categories` | Use database categories, not the demo channel list |
+| `channel.html` | `blog.category` / `blog.index` | Use the category-bound feed and join actions |
+| `tagscloud.html` | `blog.tags` | Use database tags and existing search links |
+| `tags-catalog.html` | `blog.index?tag=...` | Use the existing tag-filtered post query |
+| `favorites.html` | `blog.bookmarks` | Authenticated user's saved posts |
+| `messenger.html` | `messages.index` | Existing conversation list and unread state |
+| `dialog.html` | `messages.show` | Existing conversation, message send and attachment actions |
+| `contacts.html` | `messages.contacts` | Existing contacts data |
+| `signin.html` | `login` | Existing Laravel authentication form and CSRF |
+| `signup.html` | `register` | Existing email verification registration flow |
+| `lostpassword.html` | `password.request` | Existing password reset flow |
+| `subscriptions.html` | authenticated profile/following data | Do not create demo subscriptions; use current follow relationships |
+| `rating-users.html` | `users.index` | Existing user listing and ranking data where available |
+| `last-posts.html` | `blog.index` | Existing latest posts query |
+| `last-comments.html` | existing post/comment feed sections | No dedicated named route confirmed; do not add a fake endpoint |
+| `page.html` | `pages.show` | Existing published page content |
+| `stats.html` | dashboard/statistics views | Keep authenticated access and only expose metrics already provided by the app |
+
+The archive's sample names, post copy, demo avatars and placeholder `#` links are design references only and must not be rendered as production data. The existing Blade views remain responsible for authorization, validation, CSRF, pagination, SEO and real records.
