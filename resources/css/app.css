@@ -5014,3 +5014,21 @@ p {
 .repost-comment>p{white-space:pre-wrap;overflow-wrap:anywhere}
 .repost-empty-comments{padding:20px;text-align:center;color:var(--gray-500)}
 @media(max-width:760px){.repost-category-grid{grid-template-columns:1fr}.repost-detail-author{flex-wrap:wrap}.repost-detail-bookmark{margin-left:auto}}
+
+
+/* Repost authentication screens */
+.repost-auth-layout .repost-left-sidebar,.repost-auth-layout .repost-right-sidebar{display:none}
+.repost-auth-layout .repost-main-grid{display:block;max-width:600px;margin-inline:auto}
+.repost-auth-wrap{max-width:470px;margin:42px auto 70px}
+.repost-auth-card{padding:30px;display:grid;gap:12px}
+.repost-auth-brand{font-size:1.4rem;font-weight:800;color:var(--color-primary);margin-bottom:8px}
+.repost-auth-card h1{font-size:1.8rem;font-weight:750;margin:0}
+.repost-auth-description{color:var(--gray-500);line-height:1.55;margin-bottom:8px}
+.repost-auth-form{display:grid;gap:9px}
+.repost-auth-form label{font-size:.86rem;font-weight:650;margin-top:5px}
+.repost-auth-form input:not([type=checkbox]){width:100%;min-height:44px;border:1px solid var(--border-color);border-radius:9px;background:var(--card-bg);color:var(--text-color);padding:9px 12px}
+.repost-auth-form button{margin-top:10px;min-height:44px}
+.repost-auth-check{display:flex;align-items:center;gap:8px;font-weight:400!important}
+.repost-auth-links{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:8px;font-size:.86rem}
+.repost-auth-status{padding:10px 12px;border-radius:8px;background:#edf7ef;color:#216e39;font-size:.88rem}
+@media(max-width:760px){.repost-auth-wrap{margin:22px auto 50px}.repost-auth-card{padding:22px}}
