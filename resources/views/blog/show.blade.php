@@ -11227,7 +11227,7 @@ body.dark .post-show-shell .ps-comment-more-item--danger:focus-visible,
 <div class="ps-layout post-show-shell is-loaded">
 
 
-  <main class="ps-main" data-ografi-layout-container="post_show">
+  <main class="post-page ps-main" data-ografi-layout-container="post_show">
     @include('partials.ads.slot', [
       'slotKey' => 'ads_feed_inline',
       'wrapperClass' => 'alma-ad-slot--cover',
