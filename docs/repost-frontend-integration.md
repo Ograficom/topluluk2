@@ -21,7 +21,7 @@ Filament remains outside the public Repost layout and keeps its own panel assets
 
 ## Remaining page-by-page conversion
 
-The shared Repost shell and visual rules are now applied across the public layouts. A separate conversion pass is still required to map every static Repost page component one-by-one to the matching live Blade view, especially detailed page-specific markup for:
+The shared Repost shell and visual rules are applied across the public layouts. The legacy left sidebar has been replaced with database-backed navigation, including a responsive full-width mobile drawer, category icons/labels, contacts, message settings, bookmarks and account settings. Page wrappers for feed, post detail, public profile, messages, category/tag catalogs, favorites, users, search and static content are connected to Repost component styles. Detailed page-by-page markup conversion is still required for:
 
 1. Feed and post cards.
 2. Post detail, media, comments and reaction controls.
@@ -35,6 +35,8 @@ The shared Repost shell and visual rules are now applied across the public layou
 For each conversion, use live OgraFi records and existing named routes; never ship the Repost demo names, posts, images or placeholder links.
 
 ## Validation
+
+The Laravel focused test suite and MariaDB migration/rollback checks passed on the current integration commits. Cloudflare's separate Workers build check has reported a failure and must be investigated before production release. No browser-based visual acceptance test has been completed yet.
 
 The pull-request workflow now runs for changes under `resources/**`, `public/**`, `routes/**` and `tests/**`, in addition to the existing dependency/build inputs. Required checks are PHP syntax, Blade compilation, application tests and the Vite production build. Production deployment remains gated by merging the pull request; this branch update alone does not change the live site.
 
@@ -65,3 +67,8 @@ The pull-request workflow now runs for changes under `resources/**`, `public/**`
 | `stats.html` | dashboard/statistics views | Keep authenticated access and only expose metrics already provided by the app |
 
 The archive's sample names, post copy, demo avatars and placeholder `#` links are design references only and must not be rendered as production data. The existing Blade views remain responsible for authorization, validation, CSRF, pagination, SEO and real records.
+
+
+## Current asset status
+
+`public/css/repost-full.css` and `public/js/repost-ui.js` are the current OgraFi integration layer. The complete original `Repost/dist/assets/` payload (the archive's app/kit/editor/engine CSS, bundled JS, fonts, icon sprite, and optional libraries) has not yet been copied into `public/repost/`. Do not treat the source asset import as complete until the assets are added and referenced by the Blade layout. Keep optional libraries page-scoped; do not load every archive plugin globally.
