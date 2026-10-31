@@ -181,3 +181,34 @@ body.alma-app .rp-notifications [data-ografi-layout-section="notifications_heade
 body.alma-app .rp-notifications [data-ografi-layout-section="notifications_list"] > * {
     border-color: #edf0f3 !important;
 }
+
+/* Preserve the site's existing explicit dark-mode switch; light remains the default. */
+html.dark body.alma-app {
+    --rp-bg: #10151d;
+    --rp-surface: #19212b;
+    --rp-surface-soft: #202a36;
+    --rp-border: #303c4a;
+    --rp-text: #e6ebf2;
+    --rp-muted: #9aa8b8;
+}
+html.dark body.alma-app :where(.rp-surface,.og-card,.og-tabs-card,.og-list-card,.alma-page-header,.page-title-identity,.alma-empty-state),
+html.dark body.alma-app article.rp-post-card,
+html.dark body.alma-app article.post-card[data-post-card-shell],
+html.dark body.alma-app :where(.messages-card,.messages-sidebar-panel,.messages-main-panel,.messages-header-card),
+html.dark body.alma-app :where(.rp-notifications,[data-ografi-layout-container="notifications"]) {
+    border-color: var(--rp-border) !important;
+    background: var(--rp-surface) !important;
+}
+html.dark body.alma-app article.rp-post-card :where(.post-title,.post-title__link,.author-name),
+html.dark body.alma-app .rp-page-heading h1 { color: #edf2f7 !important; }
+html.dark body.alma-app article.rp-post-card :where(.post-summary,.post-summary-shell,.post-card__full-content) { color: #b8c4d2 !important; }
+html.dark body.alma-app .nav-item:hover,
+html.dark body.alma-app .nav-item[data-active="true"],
+html.dark body.alma-app .messages-thread-item:hover,
+html.dark body.alma-app .messages-thread-item.is-active { background: #202a36 !important; }
+html.dark body.alma-app .messages-bubble--other { border-color: var(--rp-border) !important; background: #202a36 !important; color: #e6ebf2 !important; }
+html.dark body.alma-app .rp-editor-page { background: #10151d !important; }
+html.dark .simple-auth-page { background: #10151d !important; color: #e6ebf2 !important; }
+html.dark .simple-auth-page .simple-auth-card { border-color: #303c4a !important; background: #19212b !important; }
+html.dark .simple-auth-page .simple-auth-title { color: #edf2f7 !important; }
+html.dark .simple-auth-page .simple-auth-input { border-color: #3b4858 !important; background: #10151d !important; color: #edf2f7 !important; }
