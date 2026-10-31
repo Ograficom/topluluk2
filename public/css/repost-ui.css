@@ -122,3 +122,62 @@ body.alma-app .rp-post-detail h1 { color:var(--rp-text); letter-spacing:-.03em; 
 .simple-auth-page .simple-auth-submit { height:42px !important; border-radius:8px !important; background:#2878e5 !important; font-size:13px !important; font-weight:650 !important; }
 .simple-auth-page .simple-auth-footer { color:#778391 !important; }
 @media (max-width:480px) { .simple-auth-page { padding:22px 14px !important; } .simple-auth-page .simple-auth-card { padding:26px 20px !important; } }
+
+/* Route-specific Blade pages share the same Repost card rhythm. */
+body.alma-app .rp-post-detail-page .ps-post-card,
+body.alma-app .rp-post-detail-page .ps-comments-card,
+body.alma-app .rp-post-detail-page .ps-sidebar-card {
+    border: 1px solid var(--rp-border) !important;
+    border-radius: 14px !important;
+    background: #fff !important;
+    box-shadow: none !important;
+}
+body.alma-app .rp-post-detail-page .ps-main { min-width: 0; }
+body.alma-app .rp-post-detail-page :where(.ps-post-title,.ps-post-card h1) {
+    color: var(--rp-text) !important; font-weight: 750 !important; letter-spacing: -.03em;
+}
+body.alma-app .rp-post-detail-page :where(.ps-post-content,.ps-post-card .post-content) {
+    color: #3f4b59; font-size: 15px; line-height: 1.8;
+}
+body.alma-app.route-profile .profile-reference-shell,
+body.alma-app.route-profile .og-profile-page,
+body.alma-app.route-users .users-page,
+body.alma-app.route-search .og-search-page,
+body.alma-app.route-tags [data-ografi-layout-container="tags"],
+body.alma-app.route-category .categories-page,
+body.alma-app .rp-bookmarks-page {
+    min-width: 0;
+}
+body.alma-app.route-profile :where(.profile-reference-card,.og-profile-card,.og-profile-header),
+body.alma-app.route-users :where(.users-page-title,.users-list-card),
+body.alma-app.route-search :where(.og-search-identity,.og-search-results),
+body.alma-app.route-tags :where(.page-title-identity,.tags-list-card),
+body.alma-app.route-category :where(.categories-panel,.category-reference-card) {
+    border-color: var(--rp-border) !important;
+    border-radius: 13px !important;
+    box-shadow: none !important;
+}
+body.alma-app .rp-editor-page {
+    background: #f7f9fc !important;
+    color: var(--rp-text) !important;
+}
+body.alma-app .rp-editor-page :where(.create-card,.editor-card,.editor-panel) {
+    border: 1px solid var(--rp-border) !important;
+    border-radius: 14px !important;
+    background: #fff !important;
+    box-shadow: none !important;
+}
+body.alma-app .rp-editor-page :where(input:not([type=checkbox]):not([type=radio]),textarea,select) {
+    border-color: #dfe5ec !important;
+    border-radius: 8px !important;
+    background: #fff !important;
+}
+body.alma-app .rp-editor-page :where(button[type=submit],.create-submit,.editor-submit) {
+    border-radius: 8px !important;
+}
+body.alma-app .rp-notifications [data-ografi-layout-section="notifications_header"] {
+    background: #fff !important;
+}
+body.alma-app .rp-notifications [data-ografi-layout-section="notifications_list"] > * {
+    border-color: #edf0f3 !important;
+}
