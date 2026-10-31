@@ -1224,3 +1224,76 @@ body.repost-app .static-page-content :where(h1,h2,h3,h4) {
     padding:12px !important;
   }
 }
+
+
+/* Repost account area and remaining messenger sub-pages. */
+body.repost-app.route-dashboard .layout-main {
+  width:100% !important;
+  max-width:860px !important;
+  margin-inline:auto !important;
+}
+body.repost-app.route-dashboard .dashboard-settings-shell,
+body.repost-app.route-dashboard .dashboard-settings-shell > main,
+body.repost-app.route-dashboard .dashboard-settings-panel {
+  width:100% !important;
+  max-width:none !important;
+  background:var(--rp-surface) !important;
+  color:var(--rp-text) !important;
+  border-color:var(--rp-border) !important;
+  box-shadow:none !important;
+}
+body.repost-app.route-dashboard :where(.dashboard-settings-shell,.dashboard-settings-panel,[class*="settings-card"],[class*="settings-section"]) {
+  border-radius:10px !important;
+}
+body.repost-app.route-dashboard :where(h1,h2,h3,h4) {
+  color:var(--rp-heading) !important;
+  letter-spacing:-.02em !important;
+}
+body.repost-app.route-dashboard :where(a,button) {
+  transition:none !important;
+  box-shadow:none !important;
+}
+body.repost-app.route-dashboard :where(a[aria-current="page"],.is-active,[data-active="true"]) {
+  color:var(--rp-blue) !important;
+}
+body.repost-app.route-dashboard :where(input:not([type=checkbox]):not([type=radio]),textarea,select) {
+  border:1px solid var(--rp-border-strong) !important;
+  border-radius:8px !important;
+  background:var(--rp-surface) !important;
+  color:var(--rp-text) !important;
+}
+body.repost-app.route-messages .site-main-shell > section > :where(div,header) {
+  border-color:var(--rp-border) !important;
+  border-radius:10px !important;
+  background:var(--rp-surface) !important;
+  box-shadow:none !important;
+}
+body.repost-app.route-messages .site-main-shell > section h1,
+body.repost-app.route-messages .site-main-shell > section h2 {
+  color:var(--rp-heading) !important;
+  font-size:18px !important;
+  font-weight:750 !important;
+  text-transform:none !important;
+}
+body.repost-app.route-messages .site-main-shell > section a {
+  color:var(--rp-blue) !important;
+}
+body.repost-app.route-messages .site-main-shell > section a:hover {
+  text-decoration:none !important;
+}
+body.repost-app.route-messages .site-main-shell > section .rounded-2xl,
+body.repost-app.route-messages .site-main-shell > section .rounded-\\[28px\\] {
+  border-radius:10px !important;
+  box-shadow:none !important;
+}
+@media(max-width:767px) {
+  body.repost-app.route-dashboard .layout-main {
+    max-width:none !important;
+  }
+  body.repost-app.route-dashboard .dashboard-settings-shell {
+    padding:0 10px !important;
+  }
+  body.repost-app.route-messages .site-main-shell {
+    padding:0 !important;
+  }
+}
