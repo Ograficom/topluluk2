@@ -7670,10 +7670,11 @@
     }
     </style>
 
+    {{-- Repost v3 replaces the previous public theme layers after page-level styles. --}}
+    <link rel="stylesheet" href="{{ asset('css/repost-full.css') }}?v=20261031-full2">
+
+    {{-- Keep administrator-authored component and custom CSS as the final override. --}}
     @include('partials.theme-component-design')
     @include('partials.page-layout-builder-runtime')
-    
-    {{-- Single Repost v3 public theme, loaded after legacy inline styles. --}}
-    <link rel="stylesheet" href="{{ asset('css/repost-full.css') }}?v=20261031-full1">
 </body>
 </html>
