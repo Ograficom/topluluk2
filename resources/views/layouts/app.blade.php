@@ -7406,14 +7406,6 @@
         $ografiCustomCssSafe = str_ireplace('</style', '<\\/style', $ografiCustomCssCombined);
     @endphp
 
-    {{-- Repost public frontend theme: deliberately excluded from Filament panels. --}}
-    <link rel="stylesheet" href="{{ asset('css/repost-theme.css') }}?v=20261031">
-    @if(request()->routeIs('home'))
-        <link rel="stylesheet" href="{{ asset('css/repost-home.css') }}?v=20261031-home1">
-    @endif
-    {{-- Repost-style 55px navigation rail + feed + 320px widgets layout for all public pages. --}}
-    <link rel="stylesheet" href="{{ asset('css/repost-layout.css') }}?v=20261031-layout1">
-
     @include('partials.pwa-meta')
 </head>
 @php($isMessagesRoute = request()->routeIs('messages.*'))
@@ -7680,5 +7672,12 @@
 
     @include('partials.theme-component-design')
     @include('partials.page-layout-builder-runtime')
+    
+    {{-- Load after all page/header/sidebar inline styles so Repost wins the cascade. --}}
+    <link rel="stylesheet" href="{{ asset('css/repost-theme.css') }}?v=20261031-final2">
+    <link rel="stylesheet" href="{{ asset('css/repost-layout.css') }}?v=20261031-final2">
+    @if(request()->routeIs('home'))
+        <link rel="stylesheet" href="{{ asset('css/repost-home.css') }}?v=20261031-final2">
+    @endif
 </body>
 </html>
