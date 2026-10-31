@@ -344,7 +344,7 @@ Route::get('/', function () {
         'popularComments' => $popularComments,
         'popularTags' => $popularTags,
     ]);
-});
+})->name('home');
 
 Route::get('/feed/latest-check', function () {
     $latest = Post::query()
