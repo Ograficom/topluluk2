@@ -5116,3 +5116,10 @@ p {
 .repost-badge-summary strong{font-size:1.5rem}
 .repost-badge-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
 @media(max-width:760px){.repost-badge-grid{grid-template-columns:1fr}}
+
+
+.repost-discover-section{margin-bottom:22px}
+.repost-discover-section>h2{font-size:1.1rem;font-weight:700;margin-bottom:12px}
+.repost-search-results{display:grid;gap:9px}
+.repost-search-result{display:grid;gap:5px;color:var(--text-color)}
+.repost-error-state{padding:44px 24px}
