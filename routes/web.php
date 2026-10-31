@@ -335,7 +335,7 @@ Route::get('/', function () {
         ->take(5)
         ->get(['id', 'name', 'slug']);
 
-    return view('templates.home-like', [
+    return view('index', [
         'posts' => $posts,
         'reactionTypes' => $reactionTypes,
         'communityCategories' => $communityCategories,
