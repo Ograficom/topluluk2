@@ -12,7 +12,7 @@
     $suggestedUsers = collect($suggestedUsers ?? []);
     $popularComments = collect($popularComments ?? []);
     $popularTags = collect($popularTags ?? []);
-    $homePostsCollection = $posts instanceof \\Illuminate\\Contracts\\Pagination\\AbstractPaginator
+    $homePostsCollection = is_object($posts) && method_exists($posts, 'getCollection')
         ? $posts->getCollection()
         : collect($posts);
     $homePopularPosts = $homePostsCollection->sortByDesc('reactions_count')->take(4)->values();
