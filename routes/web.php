@@ -839,3 +839,72 @@ Route::middleware(['auth'])->get('/ai', function () {
 Route::middleware(['auth', 'throttle:10,1'])->post('/blog/ai-assist', [BlogController::class, 'aiAssist'])
     ->name('blog.ai-assist');
 
+
+// -----------------------------------------------------------------------------
+// ZIP tema sayfalari icin URL uyumlulugu
+// Kaynak: channel.zip (21 HTML prototip sayfasi).
+// Bu rotalar HTML dosyalarini dogrudan servis etmez; mevcut Laravel ekranlarina
+// yonlendirir ve uygulamanin controller/auth/route mantigini korur.
+// -----------------------------------------------------------------------------
+
+// Kanal listesi ve kanal detaylari
+Route::redirect('/channels', '/Categorys', 301)->name('theme.channels');
+Route::get('/channel/{category:slug}', function (Category $category) {
+    return redirect()->route('blog.category', ['category' => $category->slug]);
+})->name('theme.channel');
+
+// Mesajlar
+Route::middleware('auth')->group(function () {
+    Route::get('/contacts', fn () => redirect()->route('messages.contacts'))->name('theme.contacts');
+    Route::get('/messenger', fn () => redirect()->route('messages.index'))->name('theme.messenger');
+    Route::get('/dialog/{user:username}', function (User $user) {
+        return redirect()->route('messages.show', ['user' => $user->username]);
+    })->name('theme.dialog');
+    Route::get('/favorites', fn () => redirect()->route('blog.bookmarks'))->name('theme.favorites');
+});
+
+// Gönderiler, sayfalar ve kullanıcı profilleri
+Route::get('/last-posts', fn () => redirect()->route('blog.posts'))->name('theme.last-posts');
+Route::get('/last-comments', fn () => redirect()->route('discover'))->name('theme.last-comments');
+Route::get('/page/{slug}', fn (string $slug) => redirect()->route('pages.show', ['slug' => $slug]))
+    ->name('theme.page');
+Route::get('/post/{post:slug}', function (Post $post) {
+    return redirect()->route('blog.post', ['post' => $post->slug]);
+})->name('theme.post');
+Route::get('/profile/{user:username}', function (User $user) {
+    return redirect()->route('users.show', ['user' => $user->username]);
+})->name('theme.profile');
+
+// Hesap, kullanıcı listesi ve etiketler
+Route::get('/rating-users', fn () => redirect()->route('users.index'))->name('theme.rating-users');
+Route::get('/tags-catalog', fn () => redirect()->route('blog.tags'))->name('theme.tags-catalog');
+Route::get('/tagscloud', fn () => redirect()->route('blog.tags'))->name('theme.tagscloud');
+Route::get('/signin', fn () => redirect()->route('login'))->name('theme.signin');
+Route::get('/signup', fn () => redirect()->route('register'))->name('theme.signup');
+Route::middleware('auth')->group(function () {
+    Route::get('/setting', fn () => redirect()->route('settings.index'))->name('theme.setting');
+    Route::get('/subscriptions', fn () => redirect()->route('dashboard'))->name('theme.subscriptions');
+});
+
+// ZIP içindeki .html prototip adreslerini de eski bağlantılar için karşıla.
+Route::redirect('/index.html', '/', 301);
+Route::redirect('/channel.html', '/Categorys', 301);
+Route::redirect('/channels.html', '/channels', 301);
+Route::redirect('/contacts.html', '/contacts', 301);
+Route::redirect('/dialog.html', '/messenger', 301);
+Route::redirect('/favorites.html', '/favorites', 301);
+Route::redirect('/last-comments.html', '/last-comments', 301);
+Route::redirect('/last-posts.html', '/last-posts', 301);
+Route::redirect('/lostpassword.html', '/forgot-password', 301);
+Route::redirect('/messenger.html', '/messenger', 301);
+Route::redirect('/page.html', '/', 301);
+Route::redirect('/post.html', '/blog/posts', 301);
+Route::redirect('/profile.html', '/profile', 301);
+Route::redirect('/rating-users.html', '/rating-users', 301);
+Route::redirect('/setting.html', '/setting', 301);
+Route::redirect('/signin.html', '/signin', 301);
+Route::redirect('/signup.html', '/signup', 301);
+Route::redirect('/stats.html', '/stats', 301);
+Route::redirect('/subscriptions.html', '/subscriptions', 301);
+Route::redirect('/tags-catalog.html', '/tags-catalog', 301);
+Route::redirect('/tagscloud.html', '/tagscloud', 301);
