@@ -5066,3 +5066,27 @@ p {
 .repost-person-card__profile .avatar{width:58px;height:58px}
 .repost-sort-row input[type=search]{min-width:0;flex:1;border:1px solid var(--border-color);border-radius:8px;padding:8px 10px;background:var(--card-bg);color:var(--text-color)}
 @media(max-width:760px){.repost-profile-cover{height:130px}.repost-profile-body{padding:0 14px 16px}.repost-profile-heading{align-items:flex-start;flex-direction:column}.repost-profile-actions{width:100%}.repost-people-grid{grid-template-columns:1fr}.repost-profile-stats{gap:12px}}
+
+
+/* Repost messaging screens */
+.repost-message-list{overflow:hidden}
+.repost-message-row,.repost-contact-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 16px;border-bottom:1px solid var(--border-color)}
+.repost-message-row:last-child,.repost-contact-row:last-child{border-bottom:0}
+.repost-message-row .user-box,.repost-contact-row .user-box{min-width:0;flex:1}
+.repost-message-row-actions{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.repost-unread-count{display:grid;place-items:center;min-width:22px;height:22px;border-radius:99px;background:var(--color-primary);color:#fff;font-size:.72rem;font-weight:700}
+.repost-contacts-section{margin-bottom:14px}
+.repost-contacts-section h2{font-size:1.05rem;font-weight:700;margin-bottom:8px}
+.repost-conversation{overflow:hidden}
+.repost-conversation-messages{display:flex;flex-direction:column;gap:10px;padding:18px;min-height:260px;max-height:65vh;overflow:auto}
+.repost-message-bubble{max-width:min(82%,520px);padding:10px 13px;border-radius:12px;background:var(--content-item-hover-bg);overflow-wrap:anywhere}
+.repost-message-bubble.is-mine{align-self:flex-end;background:#e7f0ff;color:#173d70}
+.repost-message-bubble p{white-space:pre-wrap}
+.repost-message-bubble time{display:block;margin-top:5px;font-size:.68rem;opacity:.7;text-align:right}
+.repost-message-composer{border-top:1px solid var(--border-color);padding:14px;display:grid;gap:10px}
+.repost-message-composer textarea{width:100%;resize:vertical;border:1px solid var(--border-color);border-radius:9px;padding:10px;background:var(--card-bg);color:var(--text-color)}
+.repost-message-composer-actions{display:flex;justify-content:space-between;gap:10px}
+.repost-message-disabled{color:var(--gray-500)}
+.repost-message-settings{display:grid;gap:16px}
+.repost-message-settings label{display:flex;gap:10px;align-items:center}
+@media(max-width:760px){.repost-message-row,.repost-contact-row{align-items:flex-start;flex-direction:column}.repost-message-row-actions{padding-left:58px}.repost-message-bubble{max-width:92%}}
