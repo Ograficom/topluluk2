@@ -25,7 +25,14 @@
                         <span class="repost-avatar-fallback">{{ mb_substr($post->author?->name ?? 'O', 0, 1) }}</span>
                     @endif
                 </span>
-                <span><a href="{{ route('users.show', $post->author->username) }}" class="name">{{ $post->author?->name ?? 'OgraFi üyesi' }}</a><time class="meta">{{ optional($post->published_at ?? $post->created_at)->diffForHumans() }}</time></span>
+                <span>
+                    @if($post->author?->username)
+                        <a href="{{ route('users.show', $post->author->username) }}" class="name">{{ $post->author->name }}</a>
+                    @else
+                        <span class="name">OgraFi üyesi</span>
+                    @endif
+                    <time class="meta">{{ optional($post->published_at ?? $post->created_at)->diffForHumans() }}</time>
+                </span>
                 @auth
                     <form method="POST" action="{{ route('blog.post.bookmark', $post->slug) }}" class="repost-detail-bookmark">
                         @csrf
@@ -83,18 +90,29 @@
             <h2>Bu gönderiye tepki ver</h2>
             <div class="repost-reaction-list">
                 @foreach($reactionTypes as $reactionType)
-                    <form method="POST" action="{{ route('blog.post.reaction', $post->slug) }}">
-                        @csrf
-                        <input type="hidden" name="reaction_type_id" value="{{ $reactionType->id }}">
-                        <button type="submit" class="btn btn-secondary repost-reaction-button" @guest title="Tepki vermek için giriş yap" @endguest>
+                    @auth
+                        <form method="POST" action="{{ route('blog.post.reaction', $post->slug) }}">
+                            @csrf
+                            <input type="hidden" name="reaction_type_id" value="{{ $reactionType->id }}">
+                            <button type="submit" class="btn btn-secondary repost-reaction-button">
+                                @if($reactionType->gif_url)
+                                    <img src="{{ $reactionType->gif_url }}" alt="" loading="lazy">
+                                @else
+                                    <span>{{ $reactionType->emoji }}</span>
+                                @endif
+                                <span>{{ $reactionType->label }}</span>
+                            </button>
+                        </form>
+                    @else
+                        <a href="{{ route('login') }}" class="btn btn-secondary repost-reaction-button" title="Tepki vermek için giriş yap">
                             @if($reactionType->gif_url)
                                 <img src="{{ $reactionType->gif_url }}" alt="" loading="lazy">
                             @else
                                 <span>{{ $reactionType->emoji }}</span>
                             @endif
                             <span>{{ $reactionType->label }}</span>
-                        </button>
-                    </form>
+                        </a>
+                    @endauth
                 @endforeach
             </div>
             @if(!empty($reactionSummary))
