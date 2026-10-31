@@ -2060,7 +2060,7 @@
 @endphp
 
 @section('content')
-    <div class="og-search-page" data-search-page
+    <div class="search-page og-search-page data-search-page
          data-endpoint="{{ route('search') }}"
          data-initial-query="{{ $query }}"
          data-initial-type="{{ $meta['type'] }}"
