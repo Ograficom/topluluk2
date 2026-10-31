@@ -5109,3 +5109,10 @@ p {
 .repost-faq-list details{padding:16px}
 .repost-faq-list summary{font-weight:700;cursor:pointer}
 .repost-faq-list p{margin-top:12px;color:var(--gray-500);line-height:1.6}
+
+
+.repost-settings-check{display:flex;align-items:center;gap:10px;font-weight:500!important}
+.repost-badge-summary{display:grid;gap:4px;margin-bottom:14px}
+.repost-badge-summary strong{font-size:1.5rem}
+.repost-badge-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+@media(max-width:760px){.repost-badge-grid{grid-template-columns:1fr}}
