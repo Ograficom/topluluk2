@@ -13,10 +13,10 @@
             'slotKey' => 'ads_feed_top',
         ])
 
-        <div class="alma-tabs rp-tabs" aria-label="{{ __('Feed navigation') }}">
+        <x-repost.surface variant="toolbar" class="alma-tabs rp-tabs" aria-label="{{ __('Feed navigation') }}">
             <a href="{{ route('home') }}" class="alma-tab is-active">{{ __('New') }}</a>
             <a href="{{ route('discover') }}" class="alma-tab">{{ __('Active') }}</a>
-        </div>
+        </x-repost.surface>
 
             @forelse($posts as $post)
                 @php
