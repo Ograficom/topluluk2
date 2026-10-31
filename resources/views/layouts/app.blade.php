@@ -7408,6 +7408,9 @@
 
     {{-- Repost public frontend theme: deliberately excluded from Filament panels. --}}
     <link rel="stylesheet" href="{{ asset('css/repost-theme.css') }}?v=20261031">
+    @if(request()->routeIs('home'))
+        <link rel="stylesheet" href="{{ asset('css/repost-home.css') }}?v=20261031-home1">
+    @endif
 
     @include('partials.pwa-meta')
 </head>
