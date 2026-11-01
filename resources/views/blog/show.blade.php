@@ -79,7 +79,7 @@
     @endif
 
     <div data-ografi-layout-section="post_ad_bottom">@include('partials.ads.slot', ['layoutSection' => 'post_ad_bottom'])</div>
-    <section class="card card-body repost-comments ogx-comments-panel" data-ogx-comments id="comments">
+    <section class="card card-body repost-comments ogx-comments-panel" data-ografi-layout-section="comments" data-ogx-comments id="comments">
         <header class="repost-section-heading"><h2 class="h5">Yorumlar <span class="color-gray">({{ $post->comments->count() }})</span></h2></header>
         @auth
             @if(!$post->comments_disabled)
@@ -95,7 +95,6 @@
             <p class="color-gray"><a href="{{ route('login') }}">Giriş yap</a> ve sohbete katıl.</p>
         @endauth
         @include('blog.partials.post-comments', ['post' => $post])
-div>
     </section>
 
     </div>
