@@ -7,12 +7,12 @@
   <meta name="theme-color" content="#f7f9fd">
   <title>Repost — something interesting every day</title>
   <meta name="description" content="A feed of fresh stories, news and opinions.">
-  <link rel="icon" href="./assets/img/meta/logo.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="./assets/libs/fancyapp/fancybox.css">
-  <link rel="stylesheet" href="./assets/libs/fancyapp/carousel.css">
-  <link rel="stylesheet" href="./assets/css/kit.css">
-  <link rel="stylesheet" href="./assets/css/app.css">
-  <link rel="stylesheet" href="./assets/css/engine.css">
+  <link rel="icon" href="{{ asset('images/ografi-logo.png') }}" type="image/svg+xml">
+  <link rel="stylesheet" href="">
+  <link rel="stylesheet" href="">
+  <link rel="stylesheet" href="{{ asset('css/repost-kit.css') }}">
+  <link rel="stylesheet" href="{{ asset('css/repost-theme.css') }}">
+  <link rel="stylesheet" href="{{ asset('css/repost-ui.css') }}">
   <script>
     (() => { const r=document.documentElement; let t; try{t=localStorage.getItem('theme')}catch{} if(t!=='light'&&t!=='dark')t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'; r.dataset.theme=t;r.dataset.bsTheme=t;r.style.colorScheme=t; })();
   </script>
@@ -190,8 +190,8 @@
 
   <header class="header">
   <div class="header__inner container">
-    <div class="header__start"><a href="./" class="logo header__logo" aria-label="Home"><img src="./assets/img/meta/logo.svg" alt="" width="36" height="36" class="logo-icon"><span class="logo-text">Repost</span></a></div>
-    <nav class="header__nav header__tabs" aria-label="Main navigation"><a href="./index.html" class="active" aria-current="page">Feed</a><a href="./channels.html">Channels</a></nav>
+    <div class="header__start"><a href="./" class="logo header__logo" aria-label="Home"><img src="{{ asset('images/ografi-logo.png') }}" alt="" width="36" height="36" class="logo-icon"><span class="logo-text">Repost</span></a></div>
+    <nav class="header__nav header__tabs" aria-label="Main navigation"><a href="{{ route('home') }}" class="active" aria-current="page">Feed</a><a href="{{ route('blog.categories') }}">Channels</a></nav>
     <div class="header__end">
       <button class="btn btn-secondary-ghost btn-circle btn-md" type="button" data-modal-btn="search" aria-label="Search" aria-haspopup="dialog" aria-controls="searchModal"><svg width="24" height="24"><use href="#search"></use></svg></button>
       <button class="switcher btn btn-secondary-ghost btn-circle btn-md" type="button" data-theme-toggle aria-label="Change theme"></button>
@@ -211,7 +211,7 @@
         <a href="#" class="btn btn-secondary btn-lg btn-full"><svg width="20" height="20" aria-hidden="true"><use href="#yandex"></use></svg><span>Continue with Yandex</span></a>
         <button type="button" class="btn btn-primary btn-lg btn-full" data-modal-btn="signin" aria-haspopup="dialog" aria-controls="signin">Continue with email</button>
       </div>
-      <div class="signin__footer"><p class="small color-gray text-center">By continuing, you accept the <a href="./page.html" class="link">site rules</a>.</p></div>
+      <div class="signin__footer"><p class="small color-gray text-center">By continuing, you accept the <a href="{{ route('pages.show', ['slug' => 'hakkimizda']) }}" class="link">site rules</a>.</p></div>
     </div>
   </div>
 </div>
@@ -219,23 +219,26 @@
   <div class="modal-content">
     <button type="button" class="btn btn-secondary btn-md btn-circle modal-back" data-modal-btn="login" aria-label="Back" title="Back" aria-haspopup="dialog" aria-controls="loginModal"><svg width="18" height="18" class="color-gray" aria-hidden="true"><use href="#chevron-left"></use></svg></button>
     <button type="button" class="btn btn-secondary btn-md btn-circle modal-close" data-modal-close aria-label="Close" title="Close"><svg width="16" height="16" class="color-gray" aria-hidden="true"><use href="#close"></use></svg></button>
-    <form class="modal-body signin" method="post">
-      <h2 class="text-center h1" id="signinModalLabel">Sign in</h2>
-      <p class="text-center" id="signinModalDescription">Sign in to access all site features</p>
+    <form class="modal-body signin" method="POST" action="{{ route('login') }}">
+      @csrf
+      <h2 class="text-center h1" id="signinModalLabel">Giriş yap</h2>
+      <p class="text-center" id="signinModalDescription">OgraFi hesabına giriş yap.</p>
       <div class="signin__body">
-        <div class="form-group"><input type="text" name="login_name" placeholder="Username or email" aria-label="Username or email" autocomplete="username" required></div>
-        <div class="form-group view-pass"><input type="password" name="login_password" data-pass-form="login" placeholder="Password" aria-label="Password" autocomplete="current-password" required><button type="button" class="view-pass-btn" data-pass-btn="login" aria-label="Show password" title="Show password" aria-pressed="false"></button></div>
-        <div class="signin__submit"><button type="submit" class="btn btn-primary btn-lg btn-full">Sign in</button><a href="./signup.html" class="btn btn-secondary btn-lg btn-full">Create account</a></div>
+        <div class="form-group"><input type="email" name="email" value="{{ old('email') }}" placeholder="E-posta adresi" aria-label="E-posta adresi" autocomplete="username" required></div>
+        <div class="form-group view-pass"><input type="password" name="password" data-pass-form="login" placeholder="Şifre" aria-label="Şifre" autocomplete="current-password" required><button type="button" class="view-pass-btn" data-pass-btn="login" aria-label="Şifreyi göster" title="Şifreyi göster" aria-pressed="false"></button></div>
+        @error('email')<p class="text-danger">{{ $message }}</p>@enderror
+        @error('password')<p class="text-danger">{{ $message }}</p>@enderror
+        <div class="signin__submit"><button type="submit" class="btn btn-primary btn-lg btn-full">Giriş yap</button><a href="{{ route('register') }}" class="btn btn-secondary btn-lg btn-full">Hesap oluştur</a></div>
       </div>
-      <div class="signin__footer"><p class="small color-gray text-center">Forgot your password? <a href="./lostpassword.html" class="link">Reset it</a></p></div>
+      <div class="signin__footer"><p class="small color-gray text-center">Şifreni mi unuttun? <a href="{{ route('password.request') }}" class="link">Şifremi sıfırla</a></p></div>
     </form>
   </div>
 </div>
 
   <div class="modal modal-top search-modal" id="searchModal" data-modal="search" aria-hidden="true">
   <div class="modal-content" aria-label="Search the site">
-    <form id="q_search" method="get" class="search">
-      <div class="search__form"><input id="story" name="story" type="search" placeholder="Search the site" aria-label="Search the site" enterkeyhint="search" minlength="3" spellcheck="false" required></div>
+    <form id="q_search" method="get" action="{{ route('search') }}" class="search">
+      <div class="search__form"><input id="story" name="q" type="search" value="{{ request('q') }}" placeholder="Search the site" aria-label="Search the site" enterkeyhint="search" minlength="3" spellcheck="false" required></div>
     </form>
     <div class="search__actions">
       <button type="button" class="btn btn-secondary-ghost btn-circle search__options" data-search-clear aria-label="Clear search" title="Clear search" hidden><svg width="18" height="18" aria-hidden="true"><use href="#close"></use></svg></button>
@@ -248,19 +251,19 @@
     <div class="entry-card">
       <article class="entry-box has-image">
         <div class="entry-box-content">
-          <div class="user-box user-box-sm"><a href="./profile.html" class="avatar" aria-label="Repost profile"><img src="./assets/img/noavatar.png" alt="" width="40" height="40"></a><div class="user-box-content"><a href="./profile.html" class="name"><span class="name-text">Repost</span><span class="verify" role="img" aria-label="Verified profile" data-tooltip="Verified profile"><svg width="14" height="14" aria-hidden="true"><use href="#verify"></use></svg></span></a></div></div>
-          <div class="entry-box-title-row"><a href="./post.html" class="entry-box-title">Georgia is a land of wonders</a></div>
+          <div class="user-box user-box-sm"><a href="{{ route('users.index') }}" class="avatar" aria-label="Repost profile"><img src="{{ asset('images/ografi-logo.png') }}" alt="" width="40" height="40"></a><div class="user-box-content"><a href="{{ route('users.index') }}" class="name"><span class="name-text">Repost</span><span class="verify" role="img" aria-label="Verified profile" data-tooltip="Verified profile"><svg width="14" height="14" aria-hidden="true"><use href="#verify"></use></svg></span></a></div></div>
+          <div class="entry-box-title-row"><a href="{{ route('blog.index') }}" class="entry-box-title">Georgia is a land of wonders</a></div>
           <div class="small text-clamp-2 color-text">Georgia lies at the crossroads of Europe and Asia and is known for its ancient history and breathtaking landscapes...</div>
           <div class="entry-box-meta meta"><span class="meta-item"><svg width="14" height="14" aria-hidden="true"><use href="#comment"></use></svg>0</span><span class="meta-item"><svg width="14" height="14" aria-hidden="true"><use href="#eye"></use></svg>8</span><span class="meta-item"><svg width="14" height="14" aria-hidden="true"><use href="#tags"></use></svg>Routes</span></div>
         </div>
-        <a href="./post.html" class="entry-box-image"><img src="./assets/img/demo/demo-horisontal.png" alt="Georgia city view" width="100" height="80"></a>
+        <a href="{{ route('blog.index') }}" class="entry-box-image"><img src="{{ asset('images/ografi-logo.png') }}" alt="Georgia city view" width="100" height="80"></a>
       </article>
     </div>
     <div class="entry-card">
       <article class="entry-box">
         <div class="entry-box-content">
-          <div class="user-box user-box-sm"><a href="./profile.html" class="avatar" aria-label="Repost profile"><img src="./assets/img/noavatar.png" alt="" width="40" height="40"></a><div class="user-box-content"><a href="./profile.html" class="name"><span class="name-text">Repost</span><span class="verify" role="img" aria-label="Verified profile" data-tooltip="Verified profile"><svg width="14" height="14" aria-hidden="true"><use href="#verify"></use></svg></span></a></div></div>
-          <div class="entry-box-title-row"><a href="./post.html" class="entry-box-title">A week in Georgia: route, impressions and budget</a></div>
+          <div class="user-box user-box-sm"><a href="{{ route('users.index') }}" class="avatar" aria-label="Repost profile"><img src="{{ asset('images/ografi-logo.png') }}" alt="" width="40" height="40"></a><div class="user-box-content"><a href="{{ route('users.index') }}" class="name"><span class="name-text">Repost</span><span class="verify" role="img" aria-label="Verified profile" data-tooltip="Verified profile"><svg width="14" height="14" aria-hidden="true"><use href="#verify"></use></svg></span></a></div></div>
+          <div class="entry-box-title-row"><a href="{{ route('blog.index') }}" class="entry-box-title">A week in Georgia: route, impressions and budget</a></div>
           <div class="small text-clamp-2 color-text">Georgia is perfect for a first independent trip: old towns, mountain roads and welcoming local cafés...</div>
           <div class="entry-box-meta meta"><span class="meta-item"><svg width="14" height="14" aria-hidden="true"><use href="#comment"></use></svg>0</span><span class="meta-item"><svg width="14" height="14" aria-hidden="true"><use href="#eye"></use></svg>2</span><span class="meta-item"><svg width="14" height="14" aria-hidden="true"><use href="#tags"></use></svg>Travel</span></div>
         </div>
@@ -279,7 +282,7 @@
       <li><a href="#" class="channel-icon no-icon" aria-label="Channel: Technology" title="Technology"><svg width="16" height="16" aria-hidden="true"><use href="#image"></use></svg></a></li><li><a href="#" class="channel-icon no-icon" aria-label="Channel: Movies" title="Movies"><svg width="16" height="16" aria-hidden="true"><use href="#image"></use></svg></a></li><li><a href="#" class="channel-icon no-icon" aria-label="Channel: Music" title="Music"><svg width="16" height="16" aria-hidden="true"><use href="#image"></use></svg></a></li><li><a href="#" class="channel-icon no-icon" aria-label="Channel: Games" title="Games"><svg width="16" height="16" aria-hidden="true"><use href="#image"></use></svg></a></li><li><a href="#" class="channel-icon no-icon" aria-label="Channel: Science" title="Science"><svg width="16" height="16" aria-hidden="true"><use href="#image"></use></svg></a></li><li><a href="#" class="channel-icon no-icon" aria-label="Channel: Travel" title="Travel"><svg width="16" height="16" aria-hidden="true"><use href="#image"></use></svg></a></li><li><a href="#" class="channel-icon no-icon" aria-label="Channel: Humor" title="Humor"><svg width="16" height="16" aria-hidden="true"><use href="#image"></use></svg></a></li><li><a href="#" class="channel-icon no-icon" aria-label="Channel: Stories" title="Stories"><svg width="16" height="16" aria-hidden="true"><use href="#image"></use></svg></a></li>
     </ul></section>
     <section class="sidebar__section"><h2 class="sidebar__title">Blogs</h2><ul class="sidebar__list">
-      <li><a href="./profile.html" class="channel-icon" aria-label="Blog: Alex Morgan" title="Alex Morgan"><img src="./assets/img/noavatar.png" alt="" width="50" height="50"></a></li><li><a href="./profile.html" class="channel-icon" aria-label="Blog: Maria West" title="Maria West"><img src="./assets/img/noavatar.png" alt="" width="50" height="50"></a></li><li><a href="./profile.html" class="channel-icon" aria-label="Blog: PixelNomad" title="PixelNomad"><img src="./assets/img/noavatar.png" alt="" width="50" height="50"></a></li><li><a href="./profile.html" class="channel-icon" aria-label="Blog: Eli North" title="Eli North"><img src="./assets/img/noavatar.png" alt="" width="50" height="50"></a></li><li><a href="./profile.html" class="channel-icon" aria-label="Blog: Anna Fox" title="Anna Fox"><img src="./assets/img/noavatar.png" alt="" width="50" height="50"></a></li>
+      <li><a href="{{ route('users.index') }}" class="channel-icon" aria-label="Blog: Alex Morgan" title="Alex Morgan"><img src="{{ asset('images/ografi-logo.png') }}" alt="" width="50" height="50"></a></li><li><a href="{{ route('users.index') }}" class="channel-icon" aria-label="Blog: Maria West" title="Maria West"><img src="{{ asset('images/ografi-logo.png') }}" alt="" width="50" height="50"></a></li><li><a href="{{ route('users.index') }}" class="channel-icon" aria-label="Blog: PixelNomad" title="PixelNomad"><img src="{{ asset('images/ografi-logo.png') }}" alt="" width="50" height="50"></a></li><li><a href="{{ route('users.index') }}" class="channel-icon" aria-label="Blog: Eli North" title="Eli North"><img src="{{ asset('images/ografi-logo.png') }}" alt="" width="50" height="50"></a></li><li><a href="{{ route('users.index') }}" class="channel-icon" aria-label="Blog: Anna Fox" title="Anna Fox"><img src="{{ asset('images/ografi-logo.png') }}" alt="" width="50" height="50"></a></li>
     </ul></section>
   </div>
   
@@ -292,7 +295,7 @@
     <div class="dropdown dropdown-sm"><button class="hero__toggle" type="button" data-dropdown-toggle aria-expanded="false"><svg width="16" height="16"><use href="#calendar"></use></svg><span class="hero__toggle-text">Today</span><svg width="12" height="12"><use href="#chevron-down"></use></svg></button><ul class="dropdown-menu"><li class="dropdown-menu-item dropdown-menu-item-sm is-active"><a href="#">24 hours</a></li><li class="dropdown-menu-item dropdown-menu-item-sm"><a href="#">Week</a></li><li class="dropdown-menu-item dropdown-menu-item-sm"><a href="#">Month</a></li></ul></div>
   </div><div class="dropdown"><button class="hero__toggle" type="button" data-dropdown-toggle aria-expanded="false" aria-controls="hero-sort-menu" aria-label="Open sorting options"><span class="hero__toggle-text"><svg width="17" height="17"><use href="#sort"></use></svg></span></button><div class="dropdown-menu dropdown-menu-end" id="hero-sort-menu"><div class="dropdown-menu-title">Sort by:</div><ul class="sort"><li class="asc"><a href="#">date</a></li><li><a href="#">last updated</a></li><li><a href="#">popularity</a></li><li><a href="#">views</a></li><li><a href="#">comments</a></li><li><a href="#">alphabetical</a></li></ul></div></div></div>
   <div class="hero__digest card card-body" data-loadpost="last" data-loadpost-limit="5">
-    <div class="digest d-none" data-loadpost-item="last"><a href="./post.html" class="digest__title">This week’s biggest announcements and discoveries</a><span class="digest__comm"><span class="digest__comm-icon"><svg width="12" height="12"><use href="#comment"></use></svg></span>48</span></div><div class="digest d-none" data-loadpost-item="last"><a href="./post.html" class="digest__title">Why small towns are becoming popular again</a><span class="digest__comm"><span class="digest__comm-icon"><svg width="12" height="12"><use href="#comment"></use></svg></span>31</span></div><div class="digest d-none" data-loadpost-item="last"><a href="./post.html" class="digest__title">Useful tools for work and creativity</a><span class="digest__comm"><span class="digest__comm-icon"><svg width="12" height="12"><use href="#comment"></use></svg></span>19</span></div><div class="digest d-none" data-loadpost-item="last"><a href="./post.html" class="digest__title">Five new releases to watch tonight</a><span class="digest__comm"><span class="digest__comm-icon"><svg width="12" height="12"><use href="#comment"></use></svg></span>27</span></div><div class="digest d-none" data-loadpost-item="last"><a href="./post.html" class="digest__title">One month without social media: a personal story</a><span class="digest__comm"><span class="digest__comm-icon"><svg width="12" height="12"><use href="#comment"></use></svg></span>64</span></div><div class="digest d-none" data-loadpost-item="last"><a href="./post.html" class="digest__title">New habits that help you stay focused</a><span class="digest__comm"><span class="digest__comm-icon"><svg width="12" height="12"><use href="#comment"></use></svg></span>22</span></div><div class="digest d-none" data-loadpost-item="last"><a href="./post.html" class="digest__title">How technology is changing everyday work</a><span class="digest__comm"><span class="digest__comm-icon"><svg width="12" height="12"><use href="#comment"></use></svg></span>35</span></div><div class="digest d-none" data-loadpost-item="last"><a href="./post.html" class="digest__title">Seven ideas for a short trip</a><span class="digest__comm"><span class="digest__comm-icon"><svg width="12" height="12"><use href="#comment"></use></svg></span>18</span></div><div class="digest d-none" data-loadpost-item="last"><a href="./post.html" class="digest__title">The best independent films of the season</a><span class="digest__comm"><span class="digest__comm-icon"><svg width="12" height="12"><use href="#comment"></use></svg></span>41</span></div><div class="digest d-none" data-loadpost-item="last"><a href="./post.html" class="digest__title">A practical guide to digital organization</a><span class="digest__comm"><span class="digest__comm-icon"><svg width="12" height="12"><use href="#comment"></use></svg></span>29</span></div>
+    <div class="digest d-none" data-loadpost-item="last"><a href="{{ route('blog.index') }}" class="digest__title">This week’s biggest announcements and discoveries</a><span class="digest__comm"><span class="digest__comm-icon"><svg width="12" height="12"><use href="#comment"></use></svg></span>48</span></div><div class="digest d-none" data-loadpost-item="last"><a href="{{ route('blog.index') }}" class="digest__title">Why small towns are becoming popular again</a><span class="digest__comm"><span class="digest__comm-icon"><svg width="12" height="12"><use href="#comment"></use></svg></span>31</span></div><div class="digest d-none" data-loadpost-item="last"><a href="{{ route('blog.index') }}" class="digest__title">Useful tools for work and creativity</a><span class="digest__comm"><span class="digest__comm-icon"><svg width="12" height="12"><use href="#comment"></use></svg></span>19</span></div><div class="digest d-none" data-loadpost-item="last"><a href="{{ route('blog.index') }}" class="digest__title">Five new releases to watch tonight</a><span class="digest__comm"><span class="digest__comm-icon"><svg width="12" height="12"><use href="#comment"></use></svg></span>27</span></div><div class="digest d-none" data-loadpost-item="last"><a href="{{ route('blog.index') }}" class="digest__title">One month without social media: a personal story</a><span class="digest__comm"><span class="digest__comm-icon"><svg width="12" height="12"><use href="#comment"></use></svg></span>64</span></div><div class="digest d-none" data-loadpost-item="last"><a href="{{ route('blog.index') }}" class="digest__title">New habits that help you stay focused</a><span class="digest__comm"><span class="digest__comm-icon"><svg width="12" height="12"><use href="#comment"></use></svg></span>22</span></div><div class="digest d-none" data-loadpost-item="last"><a href="{{ route('blog.index') }}" class="digest__title">How technology is changing everyday work</a><span class="digest__comm"><span class="digest__comm-icon"><svg width="12" height="12"><use href="#comment"></use></svg></span>35</span></div><div class="digest d-none" data-loadpost-item="last"><a href="{{ route('blog.index') }}" class="digest__title">Seven ideas for a short trip</a><span class="digest__comm"><span class="digest__comm-icon"><svg width="12" height="12"><use href="#comment"></use></svg></span>18</span></div><div class="digest d-none" data-loadpost-item="last"><a href="{{ route('blog.index') }}" class="digest__title">The best independent films of the season</a><span class="digest__comm"><span class="digest__comm-icon"><svg width="12" height="12"><use href="#comment"></use></svg></span>41</span></div><div class="digest d-none" data-loadpost-item="last"><a href="{{ route('blog.index') }}" class="digest__title">A practical guide to digital organization</a><span class="digest__comm"><span class="digest__comm-icon"><svg width="12" height="12"><use href="#comment"></use></svg></span>29</span></div>
     <div><button class="hero__digest-more link-accent" type="button" data-loadpost-more="last">Show more <svg width="12" height="12"><use href="#chevron-down"></use></svg></button></div>
   </div>
 </section>
@@ -302,17 +305,17 @@
   <section class="card-body">
     <header class="post__header">
       <div class="user-box">
-        <a href="./profile.html" class="avatar"><img src="./assets/img/noavatar.png" alt="" width="40" height="40"></a>
+        <a href="{{ route('users.index') }}" class="avatar"><img src="{{ asset('images/ografi-logo.png') }}" alt="" width="40" height="40"></a>
         <div class="user-box-content">
-          <a href="./profile.html" class="name"><span class="name-text">Maria West</span><span class="verify" role="img" aria-label="Verified profile" data-tooltip="Verified profile"><svg width="14" height="14" aria-hidden="true"><use href="#verify"></use></svg></span></a>
-          <div class="meta"><a href="./channel.html">Travel</a><time>today, 12:40</time></div>
+          <a href="{{ route('users.index') }}" class="name"><span class="name-text">Maria West</span><span class="verify" role="img" aria-label="Verified profile" data-tooltip="Verified profile"><svg width="14" height="14" aria-hidden="true"><use href="#verify"></use></svg></span></a>
+          <div class="meta"><a href="{{ route('blog.categories') }}">Travel</a><time>today, 12:40</time></div>
         </div>
       </div>
     </header>
     <div class="post__short">
-      <h2 class="post__short-title h3"><a href="./post.html" class="color-title"><span role="img" aria-label="AI-assisted" data-tooltip="AI-assisted"><svg class="color-gray" width="20" height="20" aria-hidden="true"><use href="#ai"></use></svg></span><span class="post__short-title-text">A city worth returning to every autumn</span><span role="img" aria-label="Editorial post" data-tooltip="Editorial post"><svg class="color-primary" width="16" height="16" aria-hidden="true"><use href="#check"></use></svg></span></a></h2>
+      <h2 class="post__short-title h3"><a href="{{ route('blog.index') }}" class="color-title"><span role="img" aria-label="AI-assisted" data-tooltip="AI-assisted"><svg class="color-gray" width="20" height="20" aria-hidden="true"><use href="#ai"></use></svg></span><span class="post__short-title-text">A city worth returning to every autumn</span><span role="img" aria-label="Editorial post" data-tooltip="Editorial post"><svg class="color-primary" width="16" height="16" aria-hidden="true"><use href="#check"></use></svg></span></a></h2>
       <div class="text-clamp-3 color-text">A relaxed walk through old neighborhoods, small coffee shops, quiet courtyards and places that rarely appear in guidebooks.</div>
-      <div class="post__tags"><a href="./tagscloud.html">travel</a><a href="./tagscloud.html">city</a></div>
+      <div class="post__tags"><a href="{{ route('blog.tags') }}">travel</a><a href="{{ route('blog.tags') }}">city</a></div>
     </div>
   </section>
 
@@ -320,7 +323,7 @@
   <section class="card-body post__short-media">
     <div class="post__media">
       
-      <img src="./assets/img/demo/demo-horisontal.png" alt="A city worth returning to every autumn" class="post__media-image" loading="lazy">
+      <img src="{{ asset('images/ografi-logo.png') }}" alt="A city worth returning to every autumn" class="post__media-image" loading="lazy">
     </div>
   </section>
   
@@ -336,24 +339,24 @@
     </div>
     <button class="btn btn-md btn-square btn-primary-soft" title="Add to favorites"><svg width="20" height="20" aria-hidden="true"><use href="#bookmark"></use></svg></button>
   </div>
-  <div class="user-box user-box-md post__bestcomm card-body"><div class="avatar online"><img src="./assets/img/noavatar.png" alt="Comment author" width="40" height="40"></div><div class="post__bestcomm-text text-clamp-1 color-text">A useful route with excellent stops along the way.</div></div>
+  <div class="user-box user-box-md post__bestcomm card-body"><div class="avatar online"><img src="{{ asset('images/ografi-logo.png') }}" alt="Comment author" width="40" height="40"></div><div class="post__bestcomm-text text-clamp-1 color-text">A useful route with excellent stops along the way.</div></div>
 </article>
 
 <article class="card post">
   <section class="card-body">
     <header class="post__header">
       <div class="user-box">
-        <a href="./profile.html" class="avatar"><img src="./assets/img/noavatar.png" alt="" width="40" height="40"></a>
+        <a href="{{ route('users.index') }}" class="avatar"><img src="{{ asset('images/ografi-logo.png') }}" alt="" width="40" height="40"></a>
         <div class="user-box-content">
-          <a href="./profile.html" class="name"><span class="name-text">Eli North</span></a>
-          <div class="meta"><a href="./channel.html">Technology</a><time>today, 10:15</time></div>
+          <a href="{{ route('users.index') }}" class="name"><span class="name-text">Eli North</span></a>
+          <div class="meta"><a href="{{ route('blog.categories') }}">Technology</a><time>today, 10:15</time></div>
         </div>
       </div>
     </header>
     <div class="post__short">
-      <h2 class="post__short-title h3"><a href="./post.html" class="color-title"><span class="post__short-title-text">Seven habits that reduce distractions</span></a></h2>
+      <h2 class="post__short-title h3"><a href="{{ route('blog.index') }}" class="color-title"><span class="post__short-title-text">Seven habits that reduce distractions</span></a></h2>
       <div class="text-clamp-3 color-text">Simple techniques for calm, focused work without complicated productivity systems or endless task lists.</div>
-      <div class="post__tags"><a href="./tagscloud.html">productivity</a><a href="./tagscloud.html">experience</a></div>
+      <div class="post__tags"><a href="{{ route('blog.tags') }}">productivity</a><a href="{{ route('blog.tags') }}">experience</a></div>
     </div>
   </section>
 
@@ -362,15 +365,15 @@
     <div class="post__media f-carousel is-media-loading" data-fancy-carousel>
       
       <div class="f-carousel__slide">
-        <a href="./assets/img/demo/demo-vertical.png" data-fancybox="post-images-2" data-src="./assets/img/demo/demo-vertical.png"><img src="./assets/img/demo/demo-vertical.png" alt="Seven habits that reduce distractions" class="post__media-image" draggable="false" decoding="async"></a>
+        <a href="{{ asset('images/ografi-logo.png') }}" data-fancybox="post-images-2" data-src="{{ asset('images/ografi-logo.png') }}"><img src="{{ asset('images/ografi-logo.png') }}" alt="Seven habits that reduce distractions" class="post__media-image" draggable="false" decoding="async"></a>
       </div>
       
       <div class="f-carousel__slide">
-        <a href="./assets/img/demo/demo-horisontal.png" data-fancybox="post-images-2" data-src="./assets/img/demo/demo-horisontal.png"><img src="./assets/img/demo/demo-horisontal.png" alt="Seven habits that reduce distractions" class="post__media-image" draggable="false" loading="lazy" decoding="async"></a>
+        <a href="{{ asset('images/ografi-logo.png') }}" data-fancybox="post-images-2" data-src="{{ asset('images/ografi-logo.png') }}"><img src="{{ asset('images/ografi-logo.png') }}" alt="Seven habits that reduce distractions" class="post__media-image" draggable="false" loading="lazy" decoding="async"></a>
       </div>
       
       <div class="f-carousel__slide">
-        <a href="./assets/img/demo/demo-vertical.png" data-fancybox="post-images-2" data-src="./assets/img/demo/demo-vertical.png"><img src="./assets/img/demo/demo-vertical.png" alt="Seven habits that reduce distractions" class="post__media-image" draggable="false" loading="lazy" decoding="async"></a>
+        <a href="{{ asset('images/ografi-logo.png') }}" data-fancybox="post-images-2" data-src="{{ asset('images/ografi-logo.png') }}"><img src="{{ asset('images/ografi-logo.png') }}" alt="Seven habits that reduce distractions" class="post__media-image" draggable="false" loading="lazy" decoding="async"></a>
       </div>
       
       <button class="post__media-nav post__media-nav--prev" type="button" data-carousel-go-prev aria-label="Previous slide"><svg width="18" height="18" aria-hidden="true"><use href="#chevron-left"></use></svg></button>
@@ -398,17 +401,17 @@
   <section class="card-body">
     <header class="post__header">
       <div class="user-box">
-        <a href="./profile.html" class="avatar"><img src="./assets/img/noavatar.png" alt="" width="40" height="40"></a>
+        <a href="{{ route('users.index') }}" class="avatar"><img src="{{ asset('images/ografi-logo.png') }}" alt="" width="40" height="40"></a>
         <div class="user-box-content">
-          <a href="./profile.html" class="name"><span class="name-text">PixelNomad</span><span class="verify" role="img" aria-label="Verified profile" data-tooltip="Verified profile"><svg width="14" height="14" aria-hidden="true"><use href="#verify"></use></svg></span></a>
-          <div class="meta"><a href="./channel.html">Design</a><time>yesterday, 21:07</time></div>
+          <a href="{{ route('users.index') }}" class="name"><span class="name-text">PixelNomad</span><span class="verify" role="img" aria-label="Verified profile" data-tooltip="Verified profile"><svg width="14" height="14" aria-hidden="true"><use href="#verify"></use></svg></span></a>
+          <div class="meta"><a href="{{ route('blog.categories') }}">Design</a><time>yesterday, 21:07</time></div>
         </div>
       </div>
     </header>
     <div class="post__short">
-      <h2 class="post__short-title h3"><a href="./post.html" class="color-title"><span class="post__short-title-text">How everyday design changed over the last century</span></a></h2>
+      <h2 class="post__short-title h3"><a href="{{ route('blog.index') }}" class="color-title"><span class="post__short-title-text">How everyday design changed over the last century</span></a></h2>
       <div class="text-clamp-3 color-text">Form follows function, but sometimes a new form changes our habits. Here are several clear examples.</div>
-      <div class="post__tags"><a href="./tagscloud.html">design</a><a href="./tagscloud.html">history</a></div>
+      <div class="post__tags"><a href="{{ route('blog.tags') }}">design</a><a href="{{ route('blog.tags') }}">history</a></div>
     </div>
   </section>
 
@@ -416,7 +419,7 @@
   <section class="card-body post__short-media">
     <div class="post__media">
       <div class="post__censored" data-censored="post-3"><div class="text-center post__censored-content"><span class="post__censored-info">18+ content</span><button type="button" class="btn btn-white btn-sm" data-censored-toggle="post-3"><svg width="18" height="18" aria-hidden="true"><use href="#eye"></use></svg>Show</button></div></div>
-      <img src="./assets/img/demo/demo-horisontal.png" alt="How everyday design changed over the last century" class="post__media-image" loading="lazy">
+      <img src="{{ asset('images/ografi-logo.png') }}" alt="How everyday design changed over the last century" class="post__media-image" loading="lazy">
     </div>
   </section>
   
@@ -438,16 +441,16 @@
         <div class="navigation"><button class="btn btn-md btn-secondary" type="button">Show more</button></div>
       </section>
       <aside class="main__widgets"><div class="widgets">
-  <section class="widget card card-body"><header><h2 class="widget__title h6">Tags</h2></header><div class="widget__content tagscloud"><span><a href="./tagscloud.html">technology</a></span><span><a href="./tagscloud.html">movies</a></span><span><a href="./tagscloud.html">design</a></span><span><a href="./tagscloud.html">travel</a></span><span><a href="./tagscloud.html">music</a></span><span><a href="./tagscloud.html">science</a></span><span><a href="./tagscloud.html">games</a></span><span><a href="./tagscloud.html">stories</a></span></div><footer class="widget__footer"><a href="./tagscloud.html" class="link-accent">Show all tags</a></footer></section>
-  <section class="widget card card-body"><header><h2 class="widget__title h6">Popular authors</h2></header><div class="widget__content widget__content--bleed"><ul class="widget__list"><li class="user-card"><a class="user-box" href="./profile.html"><span class="avatar"><img src="./assets/img/noavatar.png" alt="" width="40" height="40"></span><span class="user-box-content"><strong class="name"><span class="name-text">Alex Morgan</span></strong><span class="meta">23 posts</span></span></a></li><li class="user-card"><a class="user-box" href="./profile.html"><span class="avatar"><img src="./assets/img/noavatar.png" alt="" width="40" height="40"></span><span class="user-box-content"><strong class="name"><span class="name-text">Maria West</span><span class="verify" role="img" aria-label="Verified profile" data-tooltip="Verified profile"><svg width="14" height="14" aria-hidden="true"><use href="#verify"></use></svg></span></strong><span class="meta">2 posts</span></span></a></li><li class="user-card"><a class="user-box" href="./profile.html"><span class="avatar"><img src="./assets/img/noavatar.png" alt="" width="40" height="40"></span><span class="user-box-content"><strong class="name"><span class="name-text">PixelNomad</span></strong><span class="meta">2 posts</span></span></a></li></ul></div><footer class="widget__footer"><a href="./rating-users.html" class="link-accent">View ranking</a></footer></section>
+  <section class="widget card card-body"><header><h2 class="widget__title h6">Tags</h2></header><div class="widget__content tagscloud"><span><a href="{{ route('blog.tags') }}">technology</a></span><span><a href="{{ route('blog.tags') }}">movies</a></span><span><a href="{{ route('blog.tags') }}">design</a></span><span><a href="{{ route('blog.tags') }}">travel</a></span><span><a href="{{ route('blog.tags') }}">music</a></span><span><a href="{{ route('blog.tags') }}">science</a></span><span><a href="{{ route('blog.tags') }}">games</a></span><span><a href="{{ route('blog.tags') }}">stories</a></span></div><footer class="widget__footer"><a href="{{ route('blog.tags') }}" class="link-accent">Show all tags</a></footer></section>
+  <section class="widget card card-body"><header><h2 class="widget__title h6">Popular authors</h2></header><div class="widget__content widget__content--bleed"><ul class="widget__list"><li class="user-card"><a class="user-box" href="{{ route('users.index') }}"><span class="avatar"><img src="{{ asset('images/ografi-logo.png') }}" alt="" width="40" height="40"></span><span class="user-box-content"><strong class="name"><span class="name-text">Alex Morgan</span></strong><span class="meta">23 posts</span></span></a></li><li class="user-card"><a class="user-box" href="{{ route('users.index') }}"><span class="avatar"><img src="{{ asset('images/ografi-logo.png') }}" alt="" width="40" height="40"></span><span class="user-box-content"><strong class="name"><span class="name-text">Maria West</span><span class="verify" role="img" aria-label="Verified profile" data-tooltip="Verified profile"><svg width="14" height="14" aria-hidden="true"><use href="#verify"></use></svg></span></strong><span class="meta">2 posts</span></span></a></li><li class="user-card"><a class="user-box" href="{{ route('users.index') }}"><span class="avatar"><img src="{{ asset('images/ografi-logo.png') }}" alt="" width="40" height="40"></span><span class="user-box-content"><strong class="name"><span class="name-text">PixelNomad</span></strong><span class="meta">2 posts</span></span></a></li></ul></div><footer class="widget__footer"><a href="{{ route('users.index') }}" class="link-accent">View ranking</a></footer></section>
   <section class="widget card card-body"><header><h2 class="widget__title h6">Popular posts</h2></header><div class="widget__content widget__content--bleed"><ul class="widget__list widget__list--separator"><li class="entry-card">
   <article class="entry-box">
     <div class="entry-box-content">
       <div class="user-box">
-        <a href="./profile.html" class="avatar online" aria-label="Repost profile"><img src="./assets/img/noavatar.png" alt="" width="40" height="40"></a>
-        <div class="user-box-content"><a href="./profile.html" class="name"><span class="name-text">Repost</span><span class="verify" role="img" aria-label="Verified profile" data-tooltip="Verified profile"><svg width="14" height="14" aria-hidden="true"><use href="#verify"></use></svg></span></a><span class="meta">August 12, 2026</span></div>
+        <a href="{{ route('users.index') }}" class="avatar online" aria-label="Repost profile"><img src="{{ asset('images/ografi-logo.png') }}" alt="" width="40" height="40"></a>
+        <div class="user-box-content"><a href="{{ route('users.index') }}" class="name"><span class="name-text">Repost</span><span class="verify" role="img" aria-label="Verified profile" data-tooltip="Verified profile"><svg width="14" height="14" aria-hidden="true"><use href="#verify"></use></svg></span></a><span class="meta">August 12, 2026</span></div>
       </div>
-      <a href="./post.html" class="text-clamp-2 color-text">A night train journey: how to make a long trip comfortable</a>
+      <a href="{{ route('blog.index') }}" class="text-clamp-2 color-text">A night train journey: how to make a long trip comfortable</a>
       <div class="meta"><span class="meta-item"><svg width="14" height="14" aria-hidden="true"><use href="#comment"></use></svg>2</span><span class="meta-item"><svg width="14" height="14" aria-hidden="true"><use href="#eye"></use></svg>98</span></div>
     </div>
     
@@ -457,72 +460,72 @@
   <article class="entry-box has-image">
     <div class="entry-box-content">
       <div class="user-box">
-        <a href="./profile.html" class="avatar" aria-label="liza profile"><img src="./assets/img/noavatar.png" alt="" width="40" height="40"></a>
-        <div class="user-box-content"><a href="./profile.html" class="name"><span class="name-text">liza</span><span class="verify" role="img" aria-label="Verified profile" data-tooltip="Verified profile"><svg width="14" height="14" aria-hidden="true"><use href="#verify"></use></svg></span></a><span class="meta">August 12, 2026</span></div>
+        <a href="{{ route('users.index') }}" class="avatar" aria-label="liza profile"><img src="{{ asset('images/ografi-logo.png') }}" alt="" width="40" height="40"></a>
+        <div class="user-box-content"><a href="{{ route('users.index') }}" class="name"><span class="name-text">liza</span><span class="verify" role="img" aria-label="Verified profile" data-tooltip="Verified profile"><svg width="14" height="14" aria-hidden="true"><use href="#verify"></use></svg></span></a><span class="meta">August 12, 2026</span></div>
       </div>
-      <a href="./post.html" class="text-clamp-2 color-text">Renting a car while traveling: what you need to know</a>
+      <a href="{{ route('blog.index') }}" class="text-clamp-2 color-text">Renting a car while traveling: what you need to know</a>
       <div class="meta"><span class="meta-item"><svg width="14" height="14" aria-hidden="true"><use href="#comment"></use></svg>3</span><span class="meta-item"><svg width="14" height="14" aria-hidden="true"><use href="#eye"></use></svg>79</span></div>
     </div>
-    <a href="./post.html" class="entry-box-image"><img src="./assets/img/demo/demo-horisontal.png" alt="Renting a car while traveling: what you need to know" width="100" height="80" loading="lazy"></a>
+    <a href="{{ route('blog.index') }}" class="entry-box-image"><img src="{{ asset('images/ografi-logo.png') }}" alt="Renting a car while traveling: what you need to know" width="100" height="80" loading="lazy"></a>
   </article>
 </li>
 <li class="entry-card">
   <article class="entry-box has-image">
     <div class="entry-box-content">
       <div class="user-box">
-        <a href="./profile.html" class="avatar online" aria-label="Repost profile"><img src="./assets/img/noavatar.png" alt="" width="40" height="40"></a>
-        <div class="user-box-content"><a href="./profile.html" class="name"><span class="name-text">Repost</span><span class="verify" role="img" aria-label="Verified profile" data-tooltip="Verified profile"><svg width="14" height="14" aria-hidden="true"><use href="#verify"></use></svg></span></a><span class="meta">August 12, 2026</span></div>
+        <a href="{{ route('users.index') }}" class="avatar online" aria-label="Repost profile"><img src="{{ asset('images/ografi-logo.png') }}" alt="" width="40" height="40"></a>
+        <div class="user-box-content"><a href="{{ route('users.index') }}" class="name"><span class="name-text">Repost</span><span class="verify" role="img" aria-label="Verified profile" data-tooltip="Verified profile"><svg width="14" height="14" aria-hidden="true"><use href="#verify"></use></svg></span></a><span class="meta">August 12, 2026</span></div>
       </div>
-      <a href="./post.html" class="text-clamp-2 color-text">Karelia by car: route and useful stops</a>
+      <a href="{{ route('blog.index') }}" class="text-clamp-2 color-text">Karelia by car: route and useful stops</a>
       <div class="meta"><span class="meta-item"><svg width="14" height="14" aria-hidden="true"><use href="#comment"></use></svg>0</span><span class="meta-item"><svg width="14" height="14" aria-hidden="true"><use href="#eye"></use></svg>35</span></div>
     </div>
-    <a href="./post.html" class="entry-box-image"><img src="./assets/img/demo/demo-horisontal.png" alt="Karelia by car: route and useful stops" width="100" height="80" loading="lazy"></a>
+    <a href="{{ route('blog.index') }}" class="entry-box-image"><img src="{{ asset('images/ografi-logo.png') }}" alt="Karelia by car: route and useful stops" width="100" height="80" loading="lazy"></a>
   </article>
 </li>
-</ul></div><footer class="widget__footer"><a href="./last-posts.html" class="link-accent">Latest posts</a></footer></section>
+</ul></div><footer class="widget__footer"><a href="{{ route('blog.index') }}" class="link-accent">Latest posts</a></footer></section>
   <section class="widget card card-body"><header><h2 class="widget__title h6">Latest comments</h2></header><div class="widget__content widget__content-offset"><ul class="widget__list widget__list--limit widget__list--separator widget__list--separator-lg"><li class="comm-card">
   <div class="user-box user-box-sm">
-    <a href="./profile.html" class="avatar online" aria-label="Repost profile"><img src="./assets/img/noavatar.png" alt="" width="40" height="40"></a>
-    <div class="user-box-content user-box-content--line"><a href="./profile.html" class="name"><span class="name-text">Repost</span><span class="verify" role="img" aria-label="Verified profile" data-tooltip="Verified profile"><svg width="14" height="14" aria-hidden="true"><use href="#verify"></use></svg></span></a><time class="meta">August 10, 2026</time></div>
+    <a href="{{ route('users.index') }}" class="avatar online" aria-label="Repost profile"><img src="{{ asset('images/ografi-logo.png') }}" alt="" width="40" height="40"></a>
+    <div class="user-box-content user-box-content--line"><a href="{{ route('users.index') }}" class="name"><span class="name-text">Repost</span><span class="verify" role="img" aria-label="Verified profile" data-tooltip="Verified profile"><svg width="14" height="14" aria-hidden="true"><use href="#verify"></use></svg></span></a><time class="meta">August 10, 2026</time></div>
   </div>
   <div class="comm-card-short text-clamp-3">A wonderfully practical route. Saving this for the next trip.</div>
-  <div class="small text-clamp-1"><span class="color-gray">On post:</span> <a href="./post.html" class="link">Portugal along the ocean coast...</a></div>
+  <div class="small text-clamp-1"><span class="color-gray">On post:</span> <a href="{{ route('blog.index') }}" class="link">Portugal along the ocean coast...</a></div>
 </li>
 <li class="comm-card">
   <div class="user-box user-box-sm">
-    <a href="./profile.html" class="avatar" aria-label="Repost profile"><img src="./assets/img/noavatar.png" alt="" width="40" height="40"></a>
-    <div class="user-box-content user-box-content--line"><a href="./profile.html" class="name"><span class="name-text">Repost</span><span class="verify" role="img" aria-label="Verified profile" data-tooltip="Verified profile"><svg width="14" height="14" aria-hidden="true"><use href="#verify"></use></svg></span></a><time class="meta">August 10, 2026</time></div>
+    <a href="{{ route('users.index') }}" class="avatar" aria-label="Repost profile"><img src="{{ asset('images/ografi-logo.png') }}" alt="" width="40" height="40"></a>
+    <div class="user-box-content user-box-content--line"><a href="{{ route('users.index') }}" class="name"><span class="name-text">Repost</span><span class="verify" role="img" aria-label="Verified profile" data-tooltip="Verified profile"><svg width="14" height="14" aria-hidden="true"><use href="#verify"></use></svg></span></a><time class="meta">August 10, 2026</time></div>
   </div>
   <div class="comm-card-short text-clamp-3">This was exactly the information I needed.</div>
-  <div class="small text-clamp-1"><span class="color-gray">On post:</span> <a href="./post.html" class="link">Renting a car while traveling...</a></div>
+  <div class="small text-clamp-1"><span class="color-gray">On post:</span> <a href="{{ route('blog.index') }}" class="link">Renting a car while traveling...</a></div>
 </li>
 <li class="comm-card">
   <div class="user-box user-box-sm">
-    <a href="./profile.html" class="avatar online" aria-label="Repost profile"><img src="./assets/img/noavatar.png" alt="" width="40" height="40"></a>
-    <div class="user-box-content user-box-content--line"><a href="./profile.html" class="name"><span class="name-text">Repost</span><span class="verify" role="img" aria-label="Verified profile" data-tooltip="Verified profile"><svg width="14" height="14" aria-hidden="true"><use href="#verify"></use></svg></span></a><time class="meta">August 10, 2026</time></div>
+    <a href="{{ route('users.index') }}" class="avatar online" aria-label="Repost profile"><img src="{{ asset('images/ografi-logo.png') }}" alt="" width="40" height="40"></a>
+    <div class="user-box-content user-box-content--line"><a href="{{ route('users.index') }}" class="name"><span class="name-text">Repost</span><span class="verify" role="img" aria-label="Verified profile" data-tooltip="Verified profile"><svg width="14" height="14" aria-hidden="true"><use href="#verify"></use></svg></span></a><time class="meta">August 10, 2026</time></div>
   </div>
   <div class="comm-card-short text-clamp-3">Great photos and a very useful budget breakdown.</div>
-  <div class="small text-clamp-1"><span class="color-gray">On post:</span> <a href="./post.html" class="link">Renting a car while traveling...</a></div>
+  <div class="small text-clamp-1"><span class="color-gray">On post:</span> <a href="{{ route('blog.index') }}" class="link">Renting a car while traveling...</a></div>
 </li>
 <li class="comm-card">
   <div class="user-box user-box-sm">
-    <a href="./profile.html" class="avatar" aria-label="Repost profile"><img src="./assets/img/noavatar.png" alt="" width="40" height="40"></a>
-    <div class="user-box-content user-box-content--line"><a href="./profile.html" class="name"><span class="name-text">Repost</span><span class="verify" role="img" aria-label="Verified profile" data-tooltip="Verified profile"><svg width="14" height="14" aria-hidden="true"><use href="#verify"></use></svg></span></a><time class="meta">August 10, 2026</time></div>
+    <a href="{{ route('users.index') }}" class="avatar" aria-label="Repost profile"><img src="{{ asset('images/ografi-logo.png') }}" alt="" width="40" height="40"></a>
+    <div class="user-box-content user-box-content--line"><a href="{{ route('users.index') }}" class="name"><span class="name-text">Repost</span><span class="verify" role="img" aria-label="Verified profile" data-tooltip="Verified profile"><svg width="14" height="14" aria-hidden="true"><use href="#verify"></use></svg></span></a><time class="meta">August 10, 2026</time></div>
   </div>
   <div class="comm-card-short text-clamp-3">The train option looks surprisingly comfortable.</div>
-  <div class="small text-clamp-1"><span class="color-gray">On post:</span> <a href="./post.html" class="link">A night train journey...</a></div>
+  <div class="small text-clamp-1"><span class="color-gray">On post:</span> <a href="{{ route('blog.index') }}" class="link">A night train journey...</a></div>
 </li>
 <li class="comm-card">
   <div class="user-box user-box-sm">
-    <a href="./profile.html" class="avatar online" aria-label="Repost profile"><img src="./assets/img/noavatar.png" alt="" width="40" height="40"></a>
-    <div class="user-box-content user-box-content--line"><a href="./profile.html" class="name"><span class="name-text">Repost</span><span class="verify" role="img" aria-label="Verified profile" data-tooltip="Verified profile"><svg width="14" height="14" aria-hidden="true"><use href="#verify"></use></svg></span></a><time class="meta">August 10, 2026</time></div>
+    <a href="{{ route('users.index') }}" class="avatar online" aria-label="Repost profile"><img src="{{ asset('images/ografi-logo.png') }}" alt="" width="40" height="40"></a>
+    <div class="user-box-content user-box-content--line"><a href="{{ route('users.index') }}" class="name"><span class="name-text">Repost</span><span class="verify" role="img" aria-label="Verified profile" data-tooltip="Verified profile"><svg width="14" height="14" aria-hidden="true"><use href="#verify"></use></svg></span></a><time class="meta">August 10, 2026</time></div>
   </div>
   <div class="comm-card-short text-clamp-3">Adding these stops to my itinerary.</div>
-  <div class="small text-clamp-1"><span class="color-gray">On post:</span> <a href="./post.html" class="link">Karelia by car...</a></div>
+  <div class="small text-clamp-1"><span class="color-gray">On post:</span> <a href="{{ route('blog.index') }}" class="link">Karelia by car...</a></div>
 </li>
-</ul></div><footer class="widget__footer"><a href="./last-comments.html" class="link-accent">View all</a></footer></section>
+</ul></div><footer class="widget__footer"><a href="{{ route('blog.index') }}" class="link-accent">View all</a></footer></section>
   <footer class="footer">
-  <nav class="footer__menu" aria-label="Footer links"><a href="./contacts.html" class="footer__menu-link">Contacts</a><a href="./page.html" class="footer__menu-link">Rules</a><a href="./stats.html" class="footer__menu-link">Statistics</a><div class="dropdown dropup dropdown-md"><button class="btn btn-secondary btn-xs btn-rounded" type="button" data-dropdown-toggle aria-expanded="false" aria-controls="footer-more-menu" aria-label="Open additional menu"><svg class="color-gray" width="18" height="18" aria-hidden="true"><use href="#more"></use></svg></button><ul class="dropdown-menu dropdown-menu-end" id="footer-more-menu"><li class="dropdown-menu-item dropdown-menu-item-md"><a href="./last-posts.html">Latest posts</a></li></ul></div></nav>
+  <nav class="footer__menu" aria-label="Footer links"><a href="{{ route('contact.create') }}" class="footer__menu-link">Contacts</a><a href="{{ route('pages.show', ['slug' => 'hakkimizda']) }}" class="footer__menu-link">Rules</a><a href="{{ route('dashboard.site-health') }}" class="footer__menu-link">Statistics</a><div class="dropdown dropup dropdown-md"><button class="btn btn-secondary btn-xs btn-rounded" type="button" data-dropdown-toggle aria-expanded="false" aria-controls="footer-more-menu" aria-label="Open additional menu"><svg class="color-gray" width="18" height="18" aria-hidden="true"><use href="#more"></use></svg></button><ul class="dropdown-menu dropdown-menu-end" id="footer-more-menu"><li class="dropdown-menu-item dropdown-menu-item-md"><a href="{{ route('blog.index') }}">Latest posts</a></li></ul></div></nav>
   <small class="color-gray">Repost &copy;&nbsp;<span data-date="Y"></span></small>
   <nav class="footer__social" aria-label="Social media"><a href="#" class="btn btn-sm btn-secondary btn-square" aria-label="Instagram"><svg class="color-gray" width="16" height="16" aria-hidden="true"><use href="#instagram"></use></svg></a><a href="#" class="btn btn-sm btn-secondary btn-square" aria-label="Telegram"><svg class="color-gray" width="16" height="16" aria-hidden="true"><use href="#telegram"></use></svg></a><a href="#" class="btn btn-sm btn-secondary btn-square" aria-label="Threads"><svg class="color-gray" width="16" height="16" aria-hidden="true"><use href="#threads"></use></svg></a></nav>
 </footer>
@@ -533,30 +536,30 @@
   </main>
   <section class="mobmenu" data-scroll-menu>
   <nav class="mobmenu__content" aria-label="Main navigation">
-    <a class="mobmenu__link is-active" href="./index.html" aria-current="page"><svg width="20" height="20" aria-hidden="true"><use href="#home"></use></svg><span>Home</span></a>
+    <a class="mobmenu__link is-active" href="{{ route('home') }}" aria-current="page"><svg width="20" height="20" aria-hidden="true"><use href="#home"></use></svg><span>Home</span></a>
     <button class="mobmenu__link" type="button" data-side-panel-open="mobileAside" aria-controls="mobileAside" aria-expanded="false" aria-haspopup="dialog" title="Navigation"><svg width="20" height="20" aria-hidden="true"><use href="#compass"></use></svg><span>Navigation</span></button>
-    <a class="mobmenu__link" href="./channels.html"><svg width="20" height="20" aria-hidden="true"><use href="#channels"></use></svg><span>Channels</span></a>
+    <a class="mobmenu__link" href="{{ route('blog.categories') }}"><svg width="20" height="20" aria-hidden="true"><use href="#channels"></use></svg><span>Channels</span></a>
   </nav>
 </section>
 
 <div class="side-panel side-panel-start mobile-side-panel" id="mobileAside" data-side-panel="mobileAside" aria-hidden="true">
   <div class="side-panel__dialog" role="dialog" aria-modal="true" aria-labelledby="mobileAsideLabel" tabindex="-1">
     <header class="side-panel__header">
-      <a href="./" class="logo" aria-label="Home"><img src="./assets/img/meta/logo.svg" alt="Repost" draggable="false" width="36" height="36" class="logo-icon"><span class="logo-text" id="mobileAsideLabel">Repost</span></a>
+      <a href="./" class="logo" aria-label="Home"><img src="{{ asset('images/ografi-logo.png') }}" alt="Repost" draggable="false" width="36" height="36" class="logo-icon"><span class="logo-text" id="mobileAsideLabel">Repost</span></a>
       <button class="btn btn-secondary btn-md btn-circle side-panel__close" type="button" data-side-panel-close aria-label="Close"><svg width="16" height="16" class="color-gray" aria-hidden="true"><use href="#close"></use></svg></button>
     </header>
     <div class="side-panel__body">
       <div class="widgets">
-  <section class="widget card card-body"><header><h2 class="widget__title h6">Tags</h2></header><div class="widget__content tagscloud"><span><a href="./tagscloud.html">technology</a></span><span><a href="./tagscloud.html">movies</a></span><span><a href="./tagscloud.html">design</a></span><span><a href="./tagscloud.html">travel</a></span><span><a href="./tagscloud.html">music</a></span><span><a href="./tagscloud.html">science</a></span><span><a href="./tagscloud.html">games</a></span><span><a href="./tagscloud.html">stories</a></span></div><footer class="widget__footer"><a href="./tagscloud.html" class="link-accent">Show all tags</a></footer></section>
-  <section class="widget card card-body"><header><h2 class="widget__title h6">Popular authors</h2></header><div class="widget__content widget__content--bleed"><ul class="widget__list"><li class="user-card"><a class="user-box" href="./profile.html"><span class="avatar"><img src="./assets/img/noavatar.png" alt="" width="40" height="40"></span><span class="user-box-content"><strong class="name"><span class="name-text">Alex Morgan</span></strong><span class="meta">23 posts</span></span></a></li><li class="user-card"><a class="user-box" href="./profile.html"><span class="avatar"><img src="./assets/img/noavatar.png" alt="" width="40" height="40"></span><span class="user-box-content"><strong class="name"><span class="name-text">Maria West</span><span class="verify" role="img" aria-label="Verified profile" data-tooltip="Verified profile"><svg width="14" height="14" aria-hidden="true"><use href="#verify"></use></svg></span></strong><span class="meta">2 posts</span></span></a></li><li class="user-card"><a class="user-box" href="./profile.html"><span class="avatar"><img src="./assets/img/noavatar.png" alt="" width="40" height="40"></span><span class="user-box-content"><strong class="name"><span class="name-text">PixelNomad</span></strong><span class="meta">2 posts</span></span></a></li></ul></div><footer class="widget__footer"><a href="./rating-users.html" class="link-accent">View ranking</a></footer></section>
+  <section class="widget card card-body"><header><h2 class="widget__title h6">Tags</h2></header><div class="widget__content tagscloud"><span><a href="{{ route('blog.tags') }}">technology</a></span><span><a href="{{ route('blog.tags') }}">movies</a></span><span><a href="{{ route('blog.tags') }}">design</a></span><span><a href="{{ route('blog.tags') }}">travel</a></span><span><a href="{{ route('blog.tags') }}">music</a></span><span><a href="{{ route('blog.tags') }}">science</a></span><span><a href="{{ route('blog.tags') }}">games</a></span><span><a href="{{ route('blog.tags') }}">stories</a></span></div><footer class="widget__footer"><a href="{{ route('blog.tags') }}" class="link-accent">Show all tags</a></footer></section>
+  <section class="widget card card-body"><header><h2 class="widget__title h6">Popular authors</h2></header><div class="widget__content widget__content--bleed"><ul class="widget__list"><li class="user-card"><a class="user-box" href="{{ route('users.index') }}"><span class="avatar"><img src="{{ asset('images/ografi-logo.png') }}" alt="" width="40" height="40"></span><span class="user-box-content"><strong class="name"><span class="name-text">Alex Morgan</span></strong><span class="meta">23 posts</span></span></a></li><li class="user-card"><a class="user-box" href="{{ route('users.index') }}"><span class="avatar"><img src="{{ asset('images/ografi-logo.png') }}" alt="" width="40" height="40"></span><span class="user-box-content"><strong class="name"><span class="name-text">Maria West</span><span class="verify" role="img" aria-label="Verified profile" data-tooltip="Verified profile"><svg width="14" height="14" aria-hidden="true"><use href="#verify"></use></svg></span></strong><span class="meta">2 posts</span></span></a></li><li class="user-card"><a class="user-box" href="{{ route('users.index') }}"><span class="avatar"><img src="{{ asset('images/ografi-logo.png') }}" alt="" width="40" height="40"></span><span class="user-box-content"><strong class="name"><span class="name-text">PixelNomad</span></strong><span class="meta">2 posts</span></span></a></li></ul></div><footer class="widget__footer"><a href="{{ route('users.index') }}" class="link-accent">View ranking</a></footer></section>
   <section class="widget card card-body"><header><h2 class="widget__title h6">Popular posts</h2></header><div class="widget__content widget__content--bleed"><ul class="widget__list widget__list--separator"><li class="entry-card">
   <article class="entry-box">
     <div class="entry-box-content">
       <div class="user-box">
-        <a href="./profile.html" class="avatar online" aria-label="Repost profile"><img src="./assets/img/noavatar.png" alt="" width="40" height="40"></a>
-        <div class="user-box-content"><a href="./profile.html" class="name"><span class="name-text">Repost</span><span class="verify" role="img" aria-label="Verified profile" data-tooltip="Verified profile"><svg width="14" height="14" aria-hidden="true"><use href="#verify"></use></svg></span></a><span class="meta">August 12, 2026</span></div>
+        <a href="{{ route('users.index') }}" class="avatar online" aria-label="Repost profile"><img src="{{ asset('images/ografi-logo.png') }}" alt="" width="40" height="40"></a>
+        <div class="user-box-content"><a href="{{ route('users.index') }}" class="name"><span class="name-text">Repost</span><span class="verify" role="img" aria-label="Verified profile" data-tooltip="Verified profile"><svg width="14" height="14" aria-hidden="true"><use href="#verify"></use></svg></span></a><span class="meta">August 12, 2026</span></div>
       </div>
-      <a href="./post.html" class="text-clamp-2 color-text">A night train journey: how to make a long trip comfortable</a>
+      <a href="{{ route('blog.index') }}" class="text-clamp-2 color-text">A night train journey: how to make a long trip comfortable</a>
       <div class="meta"><span class="meta-item"><svg width="14" height="14" aria-hidden="true"><use href="#comment"></use></svg>2</span><span class="meta-item"><svg width="14" height="14" aria-hidden="true"><use href="#eye"></use></svg>98</span></div>
     </div>
     
@@ -566,72 +569,72 @@
   <article class="entry-box has-image">
     <div class="entry-box-content">
       <div class="user-box">
-        <a href="./profile.html" class="avatar" aria-label="liza profile"><img src="./assets/img/noavatar.png" alt="" width="40" height="40"></a>
-        <div class="user-box-content"><a href="./profile.html" class="name"><span class="name-text">liza</span><span class="verify" role="img" aria-label="Verified profile" data-tooltip="Verified profile"><svg width="14" height="14" aria-hidden="true"><use href="#verify"></use></svg></span></a><span class="meta">August 12, 2026</span></div>
+        <a href="{{ route('users.index') }}" class="avatar" aria-label="liza profile"><img src="{{ asset('images/ografi-logo.png') }}" alt="" width="40" height="40"></a>
+        <div class="user-box-content"><a href="{{ route('users.index') }}" class="name"><span class="name-text">liza</span><span class="verify" role="img" aria-label="Verified profile" data-tooltip="Verified profile"><svg width="14" height="14" aria-hidden="true"><use href="#verify"></use></svg></span></a><span class="meta">August 12, 2026</span></div>
       </div>
-      <a href="./post.html" class="text-clamp-2 color-text">Renting a car while traveling: what you need to know</a>
+      <a href="{{ route('blog.index') }}" class="text-clamp-2 color-text">Renting a car while traveling: what you need to know</a>
       <div class="meta"><span class="meta-item"><svg width="14" height="14" aria-hidden="true"><use href="#comment"></use></svg>3</span><span class="meta-item"><svg width="14" height="14" aria-hidden="true"><use href="#eye"></use></svg>79</span></div>
     </div>
-    <a href="./post.html" class="entry-box-image"><img src="./assets/img/demo/demo-horisontal.png" alt="Renting a car while traveling: what you need to know" width="100" height="80" loading="lazy"></a>
+    <a href="{{ route('blog.index') }}" class="entry-box-image"><img src="{{ asset('images/ografi-logo.png') }}" alt="Renting a car while traveling: what you need to know" width="100" height="80" loading="lazy"></a>
   </article>
 </li>
 <li class="entry-card">
   <article class="entry-box has-image">
     <div class="entry-box-content">
       <div class="user-box">
-        <a href="./profile.html" class="avatar online" aria-label="Repost profile"><img src="./assets/img/noavatar.png" alt="" width="40" height="40"></a>
-        <div class="user-box-content"><a href="./profile.html" class="name"><span class="name-text">Repost</span><span class="verify" role="img" aria-label="Verified profile" data-tooltip="Verified profile"><svg width="14" height="14" aria-hidden="true"><use href="#verify"></use></svg></span></a><span class="meta">August 12, 2026</span></div>
+        <a href="{{ route('users.index') }}" class="avatar online" aria-label="Repost profile"><img src="{{ asset('images/ografi-logo.png') }}" alt="" width="40" height="40"></a>
+        <div class="user-box-content"><a href="{{ route('users.index') }}" class="name"><span class="name-text">Repost</span><span class="verify" role="img" aria-label="Verified profile" data-tooltip="Verified profile"><svg width="14" height="14" aria-hidden="true"><use href="#verify"></use></svg></span></a><span class="meta">August 12, 2026</span></div>
       </div>
-      <a href="./post.html" class="text-clamp-2 color-text">Karelia by car: route and useful stops</a>
+      <a href="{{ route('blog.index') }}" class="text-clamp-2 color-text">Karelia by car: route and useful stops</a>
       <div class="meta"><span class="meta-item"><svg width="14" height="14" aria-hidden="true"><use href="#comment"></use></svg>0</span><span class="meta-item"><svg width="14" height="14" aria-hidden="true"><use href="#eye"></use></svg>35</span></div>
     </div>
-    <a href="./post.html" class="entry-box-image"><img src="./assets/img/demo/demo-horisontal.png" alt="Karelia by car: route and useful stops" width="100" height="80" loading="lazy"></a>
+    <a href="{{ route('blog.index') }}" class="entry-box-image"><img src="{{ asset('images/ografi-logo.png') }}" alt="Karelia by car: route and useful stops" width="100" height="80" loading="lazy"></a>
   </article>
 </li>
-</ul></div><footer class="widget__footer"><a href="./last-posts.html" class="link-accent">Latest posts</a></footer></section>
+</ul></div><footer class="widget__footer"><a href="{{ route('blog.index') }}" class="link-accent">Latest posts</a></footer></section>
   <section class="widget card card-body"><header><h2 class="widget__title h6">Latest comments</h2></header><div class="widget__content widget__content-offset"><ul class="widget__list widget__list--limit widget__list--separator widget__list--separator-lg"><li class="comm-card">
   <div class="user-box user-box-sm">
-    <a href="./profile.html" class="avatar online" aria-label="Repost profile"><img src="./assets/img/noavatar.png" alt="" width="40" height="40"></a>
-    <div class="user-box-content user-box-content--line"><a href="./profile.html" class="name"><span class="name-text">Repost</span><span class="verify" role="img" aria-label="Verified profile" data-tooltip="Verified profile"><svg width="14" height="14" aria-hidden="true"><use href="#verify"></use></svg></span></a><time class="meta">August 10, 2026</time></div>
+    <a href="{{ route('users.index') }}" class="avatar online" aria-label="Repost profile"><img src="{{ asset('images/ografi-logo.png') }}" alt="" width="40" height="40"></a>
+    <div class="user-box-content user-box-content--line"><a href="{{ route('users.index') }}" class="name"><span class="name-text">Repost</span><span class="verify" role="img" aria-label="Verified profile" data-tooltip="Verified profile"><svg width="14" height="14" aria-hidden="true"><use href="#verify"></use></svg></span></a><time class="meta">August 10, 2026</time></div>
   </div>
   <div class="comm-card-short text-clamp-3">A wonderfully practical route. Saving this for the next trip.</div>
-  <div class="small text-clamp-1"><span class="color-gray">On post:</span> <a href="./post.html" class="link">Portugal along the ocean coast...</a></div>
+  <div class="small text-clamp-1"><span class="color-gray">On post:</span> <a href="{{ route('blog.index') }}" class="link">Portugal along the ocean coast...</a></div>
 </li>
 <li class="comm-card">
   <div class="user-box user-box-sm">
-    <a href="./profile.html" class="avatar" aria-label="Repost profile"><img src="./assets/img/noavatar.png" alt="" width="40" height="40"></a>
-    <div class="user-box-content user-box-content--line"><a href="./profile.html" class="name"><span class="name-text">Repost</span><span class="verify" role="img" aria-label="Verified profile" data-tooltip="Verified profile"><svg width="14" height="14" aria-hidden="true"><use href="#verify"></use></svg></span></a><time class="meta">August 10, 2026</time></div>
+    <a href="{{ route('users.index') }}" class="avatar" aria-label="Repost profile"><img src="{{ asset('images/ografi-logo.png') }}" alt="" width="40" height="40"></a>
+    <div class="user-box-content user-box-content--line"><a href="{{ route('users.index') }}" class="name"><span class="name-text">Repost</span><span class="verify" role="img" aria-label="Verified profile" data-tooltip="Verified profile"><svg width="14" height="14" aria-hidden="true"><use href="#verify"></use></svg></span></a><time class="meta">August 10, 2026</time></div>
   </div>
   <div class="comm-card-short text-clamp-3">This was exactly the information I needed.</div>
-  <div class="small text-clamp-1"><span class="color-gray">On post:</span> <a href="./post.html" class="link">Renting a car while traveling...</a></div>
+  <div class="small text-clamp-1"><span class="color-gray">On post:</span> <a href="{{ route('blog.index') }}" class="link">Renting a car while traveling...</a></div>
 </li>
 <li class="comm-card">
   <div class="user-box user-box-sm">
-    <a href="./profile.html" class="avatar online" aria-label="Repost profile"><img src="./assets/img/noavatar.png" alt="" width="40" height="40"></a>
-    <div class="user-box-content user-box-content--line"><a href="./profile.html" class="name"><span class="name-text">Repost</span><span class="verify" role="img" aria-label="Verified profile" data-tooltip="Verified profile"><svg width="14" height="14" aria-hidden="true"><use href="#verify"></use></svg></span></a><time class="meta">August 10, 2026</time></div>
+    <a href="{{ route('users.index') }}" class="avatar online" aria-label="Repost profile"><img src="{{ asset('images/ografi-logo.png') }}" alt="" width="40" height="40"></a>
+    <div class="user-box-content user-box-content--line"><a href="{{ route('users.index') }}" class="name"><span class="name-text">Repost</span><span class="verify" role="img" aria-label="Verified profile" data-tooltip="Verified profile"><svg width="14" height="14" aria-hidden="true"><use href="#verify"></use></svg></span></a><time class="meta">August 10, 2026</time></div>
   </div>
   <div class="comm-card-short text-clamp-3">Great photos and a very useful budget breakdown.</div>
-  <div class="small text-clamp-1"><span class="color-gray">On post:</span> <a href="./post.html" class="link">Renting a car while traveling...</a></div>
+  <div class="small text-clamp-1"><span class="color-gray">On post:</span> <a href="{{ route('blog.index') }}" class="link">Renting a car while traveling...</a></div>
 </li>
 <li class="comm-card">
   <div class="user-box user-box-sm">
-    <a href="./profile.html" class="avatar" aria-label="Repost profile"><img src="./assets/img/noavatar.png" alt="" width="40" height="40"></a>
-    <div class="user-box-content user-box-content--line"><a href="./profile.html" class="name"><span class="name-text">Repost</span><span class="verify" role="img" aria-label="Verified profile" data-tooltip="Verified profile"><svg width="14" height="14" aria-hidden="true"><use href="#verify"></use></svg></span></a><time class="meta">August 10, 2026</time></div>
+    <a href="{{ route('users.index') }}" class="avatar" aria-label="Repost profile"><img src="{{ asset('images/ografi-logo.png') }}" alt="" width="40" height="40"></a>
+    <div class="user-box-content user-box-content--line"><a href="{{ route('users.index') }}" class="name"><span class="name-text">Repost</span><span class="verify" role="img" aria-label="Verified profile" data-tooltip="Verified profile"><svg width="14" height="14" aria-hidden="true"><use href="#verify"></use></svg></span></a><time class="meta">August 10, 2026</time></div>
   </div>
   <div class="comm-card-short text-clamp-3">The train option looks surprisingly comfortable.</div>
-  <div class="small text-clamp-1"><span class="color-gray">On post:</span> <a href="./post.html" class="link">A night train journey...</a></div>
+  <div class="small text-clamp-1"><span class="color-gray">On post:</span> <a href="{{ route('blog.index') }}" class="link">A night train journey...</a></div>
 </li>
 <li class="comm-card">
   <div class="user-box user-box-sm">
-    <a href="./profile.html" class="avatar online" aria-label="Repost profile"><img src="./assets/img/noavatar.png" alt="" width="40" height="40"></a>
-    <div class="user-box-content user-box-content--line"><a href="./profile.html" class="name"><span class="name-text">Repost</span><span class="verify" role="img" aria-label="Verified profile" data-tooltip="Verified profile"><svg width="14" height="14" aria-hidden="true"><use href="#verify"></use></svg></span></a><time class="meta">August 10, 2026</time></div>
+    <a href="{{ route('users.index') }}" class="avatar online" aria-label="Repost profile"><img src="{{ asset('images/ografi-logo.png') }}" alt="" width="40" height="40"></a>
+    <div class="user-box-content user-box-content--line"><a href="{{ route('users.index') }}" class="name"><span class="name-text">Repost</span><span class="verify" role="img" aria-label="Verified profile" data-tooltip="Verified profile"><svg width="14" height="14" aria-hidden="true"><use href="#verify"></use></svg></span></a><time class="meta">August 10, 2026</time></div>
   </div>
   <div class="comm-card-short text-clamp-3">Adding these stops to my itinerary.</div>
-  <div class="small text-clamp-1"><span class="color-gray">On post:</span> <a href="./post.html" class="link">Karelia by car...</a></div>
+  <div class="small text-clamp-1"><span class="color-gray">On post:</span> <a href="{{ route('blog.index') }}" class="link">Karelia by car...</a></div>
 </li>
-</ul></div><footer class="widget__footer"><a href="./last-comments.html" class="link-accent">View all</a></footer></section>
+</ul></div><footer class="widget__footer"><a href="{{ route('blog.index') }}" class="link-accent">View all</a></footer></section>
   <footer class="footer">
-  <nav class="footer__menu" aria-label="Footer links"><a href="./contacts.html" class="footer__menu-link">Contacts</a><a href="./page.html" class="footer__menu-link">Rules</a><a href="./stats.html" class="footer__menu-link">Statistics</a><div class="dropdown dropup dropdown-md"><button class="btn btn-secondary btn-xs btn-rounded" type="button" data-dropdown-toggle aria-expanded="false" aria-controls="footer-more-menu" aria-label="Open additional menu"><svg class="color-gray" width="18" height="18" aria-hidden="true"><use href="#more"></use></svg></button><ul class="dropdown-menu dropdown-menu-end" id="footer-more-menu"><li class="dropdown-menu-item dropdown-menu-item-md"><a href="./last-posts.html">Latest posts</a></li></ul></div></nav>
+  <nav class="footer__menu" aria-label="Footer links"><a href="{{ route('contact.create') }}" class="footer__menu-link">Contacts</a><a href="{{ route('pages.show', ['slug' => 'hakkimizda']) }}" class="footer__menu-link">Rules</a><a href="{{ route('dashboard.site-health') }}" class="footer__menu-link">Statistics</a><div class="dropdown dropup dropdown-md"><button class="btn btn-secondary btn-xs btn-rounded" type="button" data-dropdown-toggle aria-expanded="false" aria-controls="footer-more-menu" aria-label="Open additional menu"><svg class="color-gray" width="18" height="18" aria-hidden="true"><use href="#more"></use></svg></button><ul class="dropdown-menu dropdown-menu-end" id="footer-more-menu"><li class="dropdown-menu-item dropdown-menu-item-md"><a href="{{ route('blog.index') }}">Latest posts</a></li></ul></div></nav>
   <small class="color-gray">Repost &copy;&nbsp;<span data-date="Y"></span></small>
   <nav class="footer__social" aria-label="Social media"><a href="#" class="btn btn-sm btn-secondary btn-square" aria-label="Instagram"><svg class="color-gray" width="16" height="16" aria-hidden="true"><use href="#instagram"></use></svg></a><a href="#" class="btn btn-sm btn-secondary btn-square" aria-label="Telegram"><svg class="color-gray" width="16" height="16" aria-hidden="true"><use href="#telegram"></use></svg></a><a href="#" class="btn btn-sm btn-secondary btn-square" aria-label="Threads"><svg class="color-gray" width="16" height="16" aria-hidden="true"><use href="#threads"></use></svg></a></nav>
 </footer>
@@ -643,10 +646,10 @@
 </div>
 
   <button class="btn btn-white btn-md btn-circle gotop" type="button" data-gotop aria-label="Back to top" aria-hidden="true" tabindex="-1"><svg class="color-gray" width="18" height="18" aria-hidden="true" focusable="false"><use href="#chevron-up"></use></svg></button>
-  <script src="./assets/libs/fancyapp/fancybox.umd.js"></script>
-  <script src="./assets/libs/fancyapp/carousel.umd.js"></script>
-  <script src="./assets/js/app.js"></script>
-  <script src="./assets/js/init.js"></script>
+  <script src=""></script>
+  <script src=""></script>
+  <script src="{{ asset('js/repost-ui.js') }}"></script>
+  <script src=""></script>
 </body>
 </html>
 
