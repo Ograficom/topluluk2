@@ -1,4 +1,9 @@
 <article class="comment" id="comment-{{ $comment->id }}">
+    @if (auth()->user()?->is_admin)
+        <div class="comment__admin">
+            <input class="form-check-input" type="checkbox" name="selected_comments[]" value="{{ $comment->id }}" form="comment-moderation-form" aria-label="{{ $comment->user?->name ?? 'Kullanıcı' }} yorumunu seç">
+        </div>
+    @endif
     <div class="user-box">
         @if ($comment->user)
             <a href="{{ route('profiles.show', $comment->user) }}" class="avatar">
@@ -27,7 +32,20 @@
     </div>
 
     <div class="comment__content">
-        <div class="comment__text">{!! nl2br(e($comment->body)) !!}</div>
+        @if (filled($comment->body))
+            <div class="comment__text">{!! nl2br(e($comment->body)) !!}</div>
+        @endif
+        @if ($imageUrls = $comment->imageUrls())
+            <ul class="comments-image-gallery">
+                @foreach ($imageUrls as $imageUrl)
+                    <li>
+                        <a href="{{ $imageUrl }}" data-fancybox="post-comment-{{ $comment->id }}">
+                            <img src="{{ $imageUrl }}" alt="Yorum eki" loading="lazy">
+                        </a>
+                    </li>
+                @endforeach
+            </ul>
+        @endif
         <div class="comment__options">
             @auth
                 <form class="comment__rating-box" action="{{ route('posts.comments.reactions.like', ['post' => $post, 'comment' => $comment]) }}" method="POST">

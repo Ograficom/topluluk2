@@ -9,6 +9,7 @@ use App\Models\PostReaction;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
 
 class PostInteractionController extends Controller
@@ -52,7 +53,9 @@ class PostInteractionController extends Controller
         $this->ensurePublished($post);
 
         $validated = $request->validate([
-            'body' => ['required', 'string', 'max:5000'],
+            'body' => ['required_without:images', 'nullable', 'string', 'max:5000'],
+            'images' => ['nullable', 'array', 'max:3'],
+            'images.*' => ['image', 'mimes:jpg,jpeg,png,gif,webp', 'max:2048'],
             'parent_id' => ['nullable', 'integer', 'exists:comments,id'],
         ]);
 
@@ -71,14 +74,66 @@ class PostInteractionController extends Controller
             }
         }
 
+        $imagePaths = [];
+
+        foreach ($request->file('images', []) as $image) {
+            $path = $image->store('comments', 'public');
+
+            if (! $path) {
+                throw new \RuntimeException('The comment image could not be stored.');
+            }
+
+            $imagePaths[] = $path;
+        }
+
         $comment = Comment::create([
             'post_id' => $post->id,
             'user_id' => $request->user()->id,
             'parent_id' => $parent?->id,
-            'body' => $validated['body'],
+            'body' => $validated['body'] ?? '',
+            'images' => $imagePaths,
         ]);
 
         return redirect()->route('posts.show', $post)->withFragment('comment-'.$comment->id);
+    }
+
+    public function moderateComments(Request $request, Post $post): RedirectResponse
+    {
+        abort_unless($request->user()->is_admin, 403);
+        $this->ensurePublished($post);
+
+        $validated = $request->validate([
+            'action' => ['required', 'in:delete'],
+            'selected_comments' => ['required', 'array', 'min:1', 'max:100'],
+            'selected_comments.*' => ['required', 'integer', 'distinct', 'exists:comments,id'],
+        ]);
+        $selectedIds = array_map('intval', $validated['selected_comments']);
+        $selectedComments = $post->comments()->whereIn('id', $selectedIds)->get();
+
+        if ($selectedComments->count() !== count($selectedIds)) {
+            throw ValidationException::withMessages([
+                'selected_comments' => 'Seçilen yorumlardan biri bu yazıda bulunamadı.',
+            ]);
+        }
+
+        $commentIds = array_merge(
+            $selectedIds,
+            Comment::query()->whereIn('parent_id', $selectedIds)->pluck('id')->all(),
+        );
+        $imagePaths = Comment::query()
+            ->whereIn('id', $commentIds)
+            ->get()
+            ->flatMap(fn (Comment $comment): array => $comment->images ?? [])
+            ->filter(fn (string $path): bool => Storage::disk('public')->exists($path))
+            ->all();
+
+        DB::transaction(fn () => $post->comments()->whereIn('id', $selectedIds)->delete());
+
+        if ($imagePaths !== [] && ! Storage::disk('public')->delete($imagePaths)) {
+            throw new \RuntimeException('One or more deleted comment images could not be removed.');
+        }
+
+        return redirect()->route('posts.show', $post)->withFragment('comments')->with('status', 'Seçilen yorumlar silindi.');
     }
 
     public function reactToComment(Request $request, Post $post, Comment $comment): RedirectResponse

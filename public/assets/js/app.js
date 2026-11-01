@@ -2515,6 +2515,26 @@ if (document.readyState === "loading") {
   }
 })();
 
+document.addEventListener("click", (event) => {
+  const button = event.target.closest("[data-comment-images-trigger]");
+
+  if (!button) return;
+
+  document.getElementById("comment-images")?.click();
+});
+
+document.addEventListener("change", (event) => {
+  if (event.target.id !== "comment-images") return;
+
+  const selection = document.querySelector("[data-comment-images-selection]");
+
+  if (selection) {
+    selection.textContent = event.target.files.length
+      ? `${event.target.files.length} resim seçildi`
+      : "";
+  }
+});
+
 document.addEventListener("click", async (event) => {
   const button = event.target.closest("[data-share-post]");
 

@@ -388,6 +388,77 @@ class RepostFeedTest extends TestCase
         ]);
     }
 
+    public function test_members_can_upload_and_view_comment_images(): void
+    {
+        Storage::fake('public');
+        $member = User::factory()->create();
+        $channel = Channel::create([
+            'name' => 'Fotoğraflar',
+            'slug' => 'fotograflar',
+            'is_active' => true,
+        ]);
+        $post = $this->createPost($channel, ['slug' => 'yorum-fotograflari']);
+
+        $this->actingAs($member)
+            ->post(route('posts.comments.store', $post), [
+                'body' => 'Yol fotoğrafı',
+                'images' => [UploadedFile::fake()->image('road-trip.png')],
+            ])
+            ->assertRedirect();
+
+        $comment = Comment::query()->where('body', 'Yol fotoğrafı')->firstOrFail();
+        $imagePath = $comment->images[0];
+        Storage::disk('public')->assertExists($imagePath);
+
+        $this->get(route('posts.show', $post))
+            ->assertOk()
+            ->assertSee('comments-image-gallery', false)
+            ->assertSee(asset('storage/'.$imagePath), false)
+            ->assertSee('type="file" name="images[]"', false);
+    }
+
+    public function test_admins_can_delete_selected_comments_and_their_images(): void
+    {
+        Storage::fake('public');
+        Storage::disk('public')->put('comments/selected.png', 'image');
+        $admin = User::factory()->create(['is_admin' => true]);
+        $channel = Channel::create([
+            'name' => 'Moderasyon',
+            'slug' => 'moderasyon',
+            'is_active' => true,
+        ]);
+        $post = $this->createPost($channel, ['slug' => 'yorum-moderasyonu']);
+        $comment = Comment::create([
+            'post_id' => $post->id,
+            'user_id' => User::factory()->create()->id,
+            'body' => 'Silinecek yorum',
+            'images' => ['comments/selected.png'],
+        ]);
+        $reply = Comment::create([
+            'post_id' => $post->id,
+            'user_id' => User::factory()->create()->id,
+            'parent_id' => $comment->id,
+            'body' => 'Silinecek yanıt',
+        ]);
+
+        $this->actingAs($admin)
+            ->get(route('posts.show', $post))
+            ->assertOk()
+            ->assertSee('comment-moderation-form', false)
+            ->assertSee('name="selected_comments[]"', false);
+
+        $this->post(route('posts.comments.moderate', $post), [
+            'action' => 'delete',
+            'selected_comments' => [$comment->id],
+        ])
+            ->assertRedirect(route('posts.show', $post).'#comments')
+            ->assertSessionHas('status', 'Seçilen yorumlar silindi.');
+
+        $this->assertDatabaseMissing('comments', ['id' => $comment->id]);
+        $this->assertDatabaseMissing('comments', ['id' => $reply->id]);
+        Storage::disk('public')->assertMissing('comments/selected.png');
+    }
+
     public function test_profile_uses_the_original_layout_and_supports_users_without_usernames(): void
     {
         $user = User::factory()->create([

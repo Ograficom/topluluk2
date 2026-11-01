@@ -97,13 +97,18 @@
             </div>
         @endif
         @auth
-            <form class="addcomment" action="{{ route('posts.comments.store', $post) }}" method="POST">
+            <form class="addcomment" action="{{ route('posts.comments.store', $post) }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <input type="hidden" name="parent_id" value="{{ $replyTo?->id }}">
                 @if ($replyTo)
                     <p class="small color-gray">{{ $replyTo->user?->full_name ?: $replyTo->user?->name }} kullanıcısına yanıt yazıyorsunuz. <a class="link" href="{{ route('posts.show', $post) }}#comments">İptal</a></p>
                 @endif
-                <textarea id="comment-body" name="body" rows="8" maxlength="5000" placeholder="Yorum yaz" aria-label="Yorum yaz" required>{{ old('body') }}</textarea>
+                <textarea id="comment-body" name="body" rows="8" maxlength="5000" placeholder="Yorum yaz" aria-label="Yorum yaz">{{ old('body') }}</textarea>
+                <input id="comment-images" type="file" name="images[]" accept="image/jpeg,image/png,image/gif,image/webp" multiple hidden>
+                <div>
+                    <button class="btn-link link" type="button" data-comment-images-trigger>Resim yükle</button>
+                    <span class="small color-gray" data-comment-images-selection aria-live="polite"></span>
+                </div>
                 <div>
                     <button class="btn btn-primary" type="submit">Yorum gönder</button>
                 </div>
@@ -130,5 +135,16 @@
                 <p class="color-gray">Henüz yorum yok.</p>
             @endforelse
         </div>
+        @if (auth()->user()?->is_admin)
+            <form class="mass_comments_action" id="comment-moderation-form" action="{{ route('posts.comments.moderate', $post) }}" method="POST">
+                @csrf
+                <label for="post-comments-action">Seçili yorumlar:</label>
+                <select class="form-select" id="post-comments-action" name="action" required>
+                    <option value="">— İşlem —</option>
+                    <option value="delete">Sil</option>
+                </select>
+                <button class="btn btn-primary btn-md" type="submit">Uygula</button>
+            </form>
+        @endif
     </section>
 @endsection
