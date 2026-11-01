@@ -59,7 +59,7 @@ Route::post('/email/verify-code', EmailVerificationCodeController::class)
     ->name('verification.code.verify');
 
 Route::middleware('guest')->group(function (): void {
-    Route::view('/register', 'auth.register')->name('register');
+    Route::view('/register', 'signup')->name('register');
     Route::post('/register/email', [RegistrationVerificationController::class, 'requestCode'])
         ->middleware('throttle:5,1')->name('register.email');
     Route::get('/register/verify-code', [RegistrationVerificationController::class, 'showVerify'])->name('register.verify');
