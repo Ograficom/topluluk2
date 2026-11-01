@@ -39,6 +39,7 @@ Komut hesabın varlığını doğrular ve erişimi vermeden önce onay ister; pa
 - Ana akışta yayınlanmış yazılar listelenir; arama, sayfalama ve yazı ayrıntı sayfası bulunur.
 - Kanallar listelenebilir, her kanalın yayınlanmış yazıları ayrı sayfada görüntülenebilir.
 - Filament panelinde yazı ve kanal oluşturma, düzenleme, silme ve yayın durumunu yönetme ekranları bulunur.
+- Filament panelindeki **Marka ayarları** sayfasından site adı ve logo simgesi değiştirilebilir; seçilen logo ana sitede ve panelde kullanılır.
 - Panel erişimi `users.is_admin` alanı ile sınırlandırılmıştır.
 - Örnek kanallar ve yazılar `php artisan db:seed` ile yüklenir.
 

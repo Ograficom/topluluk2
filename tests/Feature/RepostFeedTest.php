@@ -2,12 +2,16 @@
 
 namespace Tests\Feature;
 
+use App\Filament\Pages\SiteBranding;
 use App\Models\Channel;
 use App\Models\Comment;
 use App\Models\Post;
+use App\Models\SiteSetting;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
+use Livewire\Livewire;
 use Tests\TestCase;
 
 class RepostFeedTest extends TestCase
@@ -489,6 +493,30 @@ class RepostFeedTest extends TestCase
         $user = User::factory()->create(['is_admin' => false]);
 
         $this->actingAs($user)->get('/admin')->assertForbidden();
+    }
+
+    public function test_administrators_can_update_the_site_branding_from_filament(): void
+    {
+        Storage::fake('public');
+        $admin = User::factory()->create(['is_admin' => true]);
+        $this->actingAs($admin);
+
+        Livewire::test(SiteBranding::class)
+            ->set('data.brand_name', 'Yeni Marka')
+            ->set('data.brand_logo_path', UploadedFile::fake()->image('logo.png'))
+            ->call('save')
+            ->assertHasNoErrors();
+
+        $settings = SiteSetting::current();
+
+        $this->assertSame('Yeni Marka', $settings->brand_name);
+        $this->assertNotEmpty($settings->brand_logo_path);
+        Storage::disk('public')->assertExists($settings->brand_logo_path);
+
+        $this->get('/')
+            ->assertOk()
+            ->assertSee('Yeni Marka')
+            ->assertSee($settings->brandLogoUrl());
     }
 
     public function test_admin_grant_command_promotes_an_existing_account_after_confirmation(): void

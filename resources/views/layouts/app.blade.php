@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="format-detection" content="telephone=no">
     <meta name="theme-color" content="#f7f9fd">
-    <title>@yield('title', 'Repost') — Repost</title>
+    <title>@yield('title', $brandName) — {{ $brandName }}</title>
     <meta name="description" content="@yield('description', 'Repost topluluğunda yeni hikâyeleri ve fikirleri keşfedin.')">
     <link rel="icon" href="{{ asset('assets/img/meta/logo.svg') }}" type="image/svg+xml">
     <link rel="stylesheet" href="{{ asset('assets/libs/fancyapp/fancybox.css') }}">
@@ -37,9 +37,9 @@
     <header class="header">
         <div class="header__inner container">
             <div class="header__start">
-                <a href="{{ route('posts.index') }}" class="logo header__logo" aria-label="Repost ana sayfa">
-                    <img src="{{ asset('assets/img/meta/logo.svg') }}" alt="" width="36" height="36" class="logo-icon">
-                    <span class="logo-text">Repost</span>
+                <a href="{{ route('posts.index') }}" class="logo header__logo" aria-label="{{ $brandName }} ana sayfa">
+                    <img src="{{ $brandLogoUrl ?: asset('assets/img/meta/logo.svg') }}" alt="" width="36" height="36" class="logo-icon">
+                    <span class="logo-text">{{ $brandName }}</span>
                 </a>
             </div>
             <nav class="header__nav header__tabs" aria-label="Ana gezinme">

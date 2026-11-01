@@ -6,6 +6,7 @@ use App\Models\Channel;
 use App\Models\Comment;
 use App\Models\Post;
 use App\Models\PostReaction;
+use App\Models\SiteSetting;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\View;
@@ -28,8 +29,11 @@ class AppServiceProvider extends ServiceProvider
     {
         View::composer('layouts.app', function ($view): void {
             $viewer = auth()->user();
+            $siteSettings = SiteSetting::current();
 
             $view->with([
+                'brandName' => $siteSettings?->brand_name ?? SiteSetting::DEFAULT_BRAND_NAME,
+                'brandLogoUrl' => $siteSettings?->brandLogoUrl(),
                 'navigationChannels' => Channel::query()->active()->orderBy('name')->limit(8)->get(),
                 'sidebarAuthors' => User::query()
                     ->whereNotNull('username')
