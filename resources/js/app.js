@@ -1,3 +1,5 @@
+import '../libs/fancyapp/carousel.umd.js';
+import '../libs/fancyapp/fancybox.umd.js';
 import './init.js';
 
 /*!
