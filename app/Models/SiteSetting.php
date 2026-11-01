@@ -12,6 +12,10 @@ class SiteSetting extends Model
     protected $fillable = [
         'brand_name',
         'brand_logo_path',
+        'footer_year',
+        'instagram_url',
+        'telegram_url',
+        'threads_url',
     ];
 
     public static function current(): ?self

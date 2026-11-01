@@ -8,6 +8,7 @@ use App\Models\Comment;
 use App\Models\Post;
 use App\Models\SiteSetting;
 use App\Models\User;
+use App\Support\SvgSanitizer;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
@@ -517,6 +518,67 @@ class RepostFeedTest extends TestCase
             ->assertOk()
             ->assertSee('Yeni Marka')
             ->assertSee($settings->brandLogoUrl());
+    }
+
+    public function test_administrators_can_edit_footer_year_and_social_links(): void
+    {
+        $admin = User::factory()->create(['is_admin' => true]);
+        $this->actingAs($admin);
+
+        Livewire::test(SiteBranding::class)
+            ->set('data.brand_name', 'Repost Plus')
+            ->set('data.footer_year', 2030)
+            ->set('data.instagram_url', 'https://instagram.com/repost')
+            ->set('data.telegram_url', 'https://t.me/repost')
+            ->set('data.threads_url', 'https://threads.net/@repost')
+            ->call('save')
+            ->assertHasNoErrors();
+
+        $this->get('/')
+            ->assertOk()
+            ->assertSee('Repost Plus &copy;&nbsp;2030', false)
+            ->assertSee('href="https://instagram.com/repost"', false)
+            ->assertSee('href="https://t.me/repost"', false)
+            ->assertSee('href="https://threads.net/@repost"', false);
+    }
+
+    public function test_svg_logo_sanitizer_removes_executable_and_external_content(): void
+    {
+        $svg = app(SvgSanitizer::class)->sanitize(
+            '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 10" onload="alert(1)"><script>alert(1)</script><path d="M0 0h10v10z" fill="#106CFF" onclick="alert(1)"/><image href="https://example.com/image.png"/></svg>',
+        );
+
+        $this->assertStringContainsString('<path', $svg);
+        $this->assertStringNotContainsString('<script', $svg);
+        $this->assertStringNotContainsString('<image', $svg);
+        $this->assertStringNotContainsString('onload', $svg);
+        $this->assertStringNotContainsString('onclick', $svg);
+        $this->assertStringNotContainsString('https://example.com', $svg);
+    }
+
+    public function test_administrators_can_upload_sanitized_svg_logos(): void
+    {
+        Storage::fake('public');
+        $admin = User::factory()->create(['is_admin' => true]);
+        $this->actingAs($admin);
+
+        $svgUpload = UploadedFile::fake()->createWithContent(
+            'logo.svg',
+            '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 10" onload="alert(1)"><script>alert(1)</script><path d="M0 0h10v10z"/></svg>',
+        )->mimeType('image/svg+xml');
+
+        Livewire::test(SiteBranding::class)
+            ->set('data.brand_logo_path', $svgUpload)
+            ->call('save')
+            ->assertHasNoErrors();
+
+        $logoPath = SiteSetting::current()->brand_logo_path;
+        Storage::disk('public')->assertExists($logoPath);
+
+        $storedSvg = Storage::disk('public')->get($logoPath);
+        $this->assertStringContainsString('<path', $storedSvg);
+        $this->assertStringNotContainsString('<script', $storedSvg);
+        $this->assertStringNotContainsString('onload', $storedSvg);
     }
 
     public function test_admin_grant_command_promotes_an_existing_account_after_confirmation(): void

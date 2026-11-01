@@ -12,10 +12,14 @@
             </ul>
         </div>
     </nav>
-    <small class="color-gray">Repost &copy;&nbsp;<span data-date="Y"></span></small>
+    <small class="color-gray">{{ $brandName }} &copy;&nbsp;{{ $footerYear }}</small>
     <nav class="footer__social" aria-label="Sosyal medya">
-        <span class="btn btn-sm btn-secondary btn-square" aria-label="Instagram"><x-repost-icon name="instagram" size="16" class="color-gray" /></span>
-        <span class="btn btn-sm btn-secondary btn-square" aria-label="Telegram"><x-repost-icon name="telegram" size="16" class="color-gray" /></span>
-        <span class="btn btn-sm btn-secondary btn-square" aria-label="Threads"><x-repost-icon name="threads" size="16" class="color-gray" /></span>
+        @foreach (['instagram' => 'Instagram', 'telegram' => 'Telegram', 'threads' => 'Threads'] as $network => $label)
+            @if (filled($footerSocialLinks[$network]))
+                <a class="btn btn-sm btn-secondary btn-square" href="{{ $footerSocialLinks[$network] }}" aria-label="{{ $label }}" target="_blank" rel="noopener noreferrer"><x-repost-icon :name="$network" size="16" class="color-gray" /></a>
+            @else
+                <span class="btn btn-sm btn-secondary btn-square" aria-label="{{ $label }}"><x-repost-icon :name="$network" size="16" class="color-gray" /></span>
+            @endif
+        @endforeach
     </nav>
 </footer>

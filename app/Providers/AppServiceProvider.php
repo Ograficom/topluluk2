@@ -68,5 +68,19 @@ class AppServiceProvider extends ServiceProvider
                     ->get(),
             ]);
         });
+
+        View::composer('layouts._footer', function ($view): void {
+            $siteSettings = SiteSetting::current();
+
+            $view->with([
+                'brandName' => $siteSettings?->brand_name ?? SiteSetting::DEFAULT_BRAND_NAME,
+                'footerYear' => $siteSettings?->footer_year ?? now()->year,
+                'footerSocialLinks' => [
+                    'instagram' => $siteSettings?->instagram_url,
+                    'telegram' => $siteSettings?->telegram_url,
+                    'threads' => $siteSettings?->threads_url,
+                ],
+            ]);
+        });
     }
 }
