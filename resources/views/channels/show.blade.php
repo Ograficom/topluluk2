@@ -9,9 +9,13 @@
             <div class="channel__info">
                 <div class="channel__overview">
                     <div class="channel__content">
-                        <div class="channel__name"><h1 class="h3">{{ $channel->name }}</h1></div>
-                        <div class="channel__description">
-                            <div class="channel__description-text">{{ $channel->description }}</div>
+                        <h1 class="channel__title h3">{{ $channel->name }}</h1>
+                        <div class="channel__description trim" data-trim data-trim-limit="2">
+                            <div class="channel__description-text trim__content" data-trim-content>{{ $channel->description }}</div>
+                            <button class="trim__toggle" data-trim-toggle type="button" hidden>
+                                <span data-trim-label>Daha fazla göster</span>
+                                <x-repost-icon name="chevron-down" size="14" />
+                            </button>
                         </div>
                     </div>
                 </div>
