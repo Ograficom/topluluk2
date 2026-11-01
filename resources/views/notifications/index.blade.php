@@ -2,11 +2,12 @@
 
 @section('title', 'Bildirimler — OgraFi')
 @section('content')
-    <div class="repost-feed-heading">
+    <div data-ografi-layout-container="notifications">
+    <div data-ografi-layout-section="notifications_header" class="repost-feed-heading">
         <div><span class="repost-eyebrow">GÜNCEL</span><h1>Bildirimler</h1><p>{{ number_format((int) $unreadCount) }} okunmamış bildirim</p></div>
         <form method="POST" action="{{ route('notifications.mark-all') }}">@csrf<button class="btn btn-secondary btn-rounded" type="submit">Tümünü okundu işaretle</button></form>
     </div>
-    <div class="card repost-notification-list">
+    <div class="card repost-notification-list" data-ografi-layout-section="notifications_list">
         @forelse($notifications as $notification)
             <div class="repost-notification-row {{ $notification['is_unread'] ? 'is-unread' : '' }}">
                 <span class="avatar">
@@ -24,4 +25,5 @@
         @endforelse
     </div>
     <div class="repost-pagination">{{ $notifications->links() }}</div>
+    </div>
 @endsection
