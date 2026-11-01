@@ -137,7 +137,11 @@
         @endunless
 
         <section class="feed" aria-label="Sayfa içeriği">
-            @yield('content')
+            @if($__env->hasSection('content'))
+                @yield('content')
+            @elseif(isset($slot))
+                {{ $slot }}
+            @endif
         </section>
 
         @unless($hideGlobalHeader)
