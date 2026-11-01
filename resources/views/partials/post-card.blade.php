@@ -53,16 +53,24 @@
     <div class="post__options card-body">
         <div class="post__options-set">
             @if(isset($reactionTypes) && $reactionTypes->isNotEmpty())
-                @foreach($reactionTypes->take(3) as $reactionType)
-                    <form method="POST" action="{{ url('/blog/posts/'.$post->slug.'/reactions') }}">
-                        @csrf
-                        <input type="hidden" name="reaction_type_id" value="{{ $reactionType->id }}">
-                        <button class="btn btn-md btn-square btn-primary-soft" type="submit" title="{{ $reactionType->label }}">
-                            @if($reactionType->gif_url)<img src="{{ $reactionType->gif_url }}" alt="{{ $reactionType->label }}" width="20" height="20">@else<span>{{ $reactionType->emoji ?: '♥' }}</span>@endif
-                        </button>
-                    </form>
-                    <span class="post__options-count">{{ (int)($postReactionCounts[$reactionType->id] ?? 0) }}</span>
-                @endforeach
+                @auth
+                    @foreach($reactionTypes->take(3) as $reactionType)
+                        <form method="POST" action="{{ route('blog.post.reaction', $post->slug) }}">
+                            @csrf
+                            <input type="hidden" name="reaction_type_id" value="{{ $reactionType->id }}">
+                            <button class="btn btn-md btn-square btn-primary-soft" type="submit" title="{{ $reactionType->label }}">
+                                @if($reactionType->gif_url)
+                                    <img src="{{ $reactionType->gif_url }}" alt="{{ $reactionType->label }}" width="20" height="20" loading="lazy">
+                                @else
+                                    <span>{{ $reactionType->emoji ?: '♥' }}</span>
+                                @endif
+                            </button>
+                        </form>
+                        <span class="post__options-count">{{ (int)($postReactionCounts[$reactionType->id] ?? 0) }}</span>
+                    @endforeach
+                @else
+                    <a class="btn btn-md btn-primary-soft" href="{{ route('login') }}">Tepki vermek için giriş yap</a>
+                @endauth
             @else
                 <a class="btn btn-md btn-square btn-primary-soft" href="{{ $postUrl }}" title="Gönderiyi aç"><svg width="20" height="20"><use href="#like"/></svg></a>
             @endif
