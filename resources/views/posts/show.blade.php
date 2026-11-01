@@ -4,9 +4,15 @@
 @section('description', $post->excerpt)
 
 @section('content')
-    <article class="card post">
-        <header class="card-body">
-            <a href="{{ route('posts.index') }}" class="link-accent post-back">← Akışa dön</a>
+    <div class="speedbar">
+        <a href="{{ route('posts.index') }}">OgraFi</a>
+        @if ($post->channel)
+            / <a href="{{ route('channels.show', $post->channel) }}">{{ $post->channel->name }}</a>
+        @endif
+        / <span>{{ $post->title }}</span>
+    </div>
+    <article class="card card-body post">
+        <header class="post__header">
             <div class="post__header">
                 <div class="user-box">
                     @if ($post->user)
@@ -26,12 +32,12 @@
                     </div>
                 </div>
             </div>
-            <h1 class="h2 post-page-title">{{ $post->title }}</h1>
+            <h1 class="post__title-full">{{ $post->title }}</h1>
             <p class="lead color-gray">{{ $post->excerpt }}</p>
         </header>
 
         @if ($post->coverImageUrl())
-            <div class="card-body post__short-media">
+            <div class="post__media-full">
                 <div class="post__media">
                     <img
                         src="{{ $post->coverImageUrl() }}"
@@ -42,7 +48,7 @@
             </div>
         @endif
 
-        <div class="card-body post-content">{{ $post->body }}</div>
+        <section class="editor card-body post-content">{{ $post->body }}</section>
         @if (filled($post->tags))
             <div class="card-body post__tags">
                 @foreach ($post->tags as $tag)

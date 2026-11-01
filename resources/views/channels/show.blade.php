@@ -3,11 +3,22 @@
 @section('title', $channel->name)
 
 @section('content')
-    <header class="feed-heading">
-        <a href="{{ route('channels.index') }}" class="link-accent post-back">← Tüm kanallar</a>
-        <h1 class="h3">{{ $channel->name }}</h1>
-        <p class="color-gray">{{ $channel->description }}</p>
-    </header>
+    <div class="channel-page">
+        <section class="channel card card-body">
+            <div class="channel__icon"><x-repost-icon name="image" size="24" /></div>
+            <div class="channel__info">
+                <div class="channel__overview">
+                    <div class="channel__content">
+                        <div class="channel__name"><h1 class="h3">{{ $channel->name }}</h1></div>
+                        <div class="channel__description">
+                            <div class="channel__description-text">{{ $channel->description }}</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="channel__meta small color-gray"><a href="{{ route('channels.index') }}">Tüm kanallar</a></div>
+            </div>
+        </section>
+    </div>
 
     @forelse ($posts as $post)
         <article class="card post">

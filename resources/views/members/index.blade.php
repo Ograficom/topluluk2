@@ -4,8 +4,8 @@
 
 @section('content')
     <article class="card card-body">
-        <h1 class="h3 card-title">Yazar sıralaması</h1>
-        <ol class="user-rating__list">
+        <header class="card-header"><h1 class="h3 card-title">Yazar sıralaması</h1><p class="small color-gray">Topluluğun en aktif yazarları</p></header>
+        <ol class="user-rating__list rating-users">
             @forelse ($members as $member)
                 <li class="user-card">
                     <a href="{{ route('profiles.show', $member) }}" class="user-box">

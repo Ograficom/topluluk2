@@ -25,7 +25,7 @@
                 </div>
             </header>
 
-            <div class="addpost__content">
+            <div class="addpost__content"><div class="addpost__intro small color-gray">Yeni bir yayın oluştur</div>
                 <ul class="addpost__fields">
                     <li>
                         <label class="addpost__label" for="post-title">Başlık</label>

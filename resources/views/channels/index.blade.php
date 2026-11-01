@@ -5,7 +5,7 @@
 @section('content')
     <article class="feed">
         <section class="subscriptions__section card card-body">
-            <h1 class="h3">Kategori listesi</h1>
+            <header class="subscriptions__header"><h1 class="h3">Kanallar</h1><p class="small color-gray">Topluluk ilgi alanlarını keşfet, kanalları incele.</p></header>
             @if ($channels->isNotEmpty())
                 <ul class="subscriptions__channels">
                     @foreach ($channels as $channel)

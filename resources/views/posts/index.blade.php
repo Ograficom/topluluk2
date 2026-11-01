@@ -3,6 +3,59 @@
 @section('title', filled($search) ? 'Arama sonuçları' : 'Akış')
 
 @section('content')
+    <section aria-label="Akış ayarları">
+        <div class="hero__header-main">
+            <div>
+                <div class="dropdown dropdown-md">
+                    <button class="hero__toggle" type="button" data-dropdown-toggle aria-expanded="false">
+                        <x-repost-icon name="feed" size="16" />
+                        <span class="hero__toggle-text">{{ filled($search) ? 'Arama sonuçları' : 'Son yazılar' }}</span>
+                        <x-repost-icon name="chevron-down" size="12" />
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li class="dropdown-menu-item dropdown-menu-item-sm is-active"><a href="{{ route('posts.index') }}">Son yazılar</a></li>
+                        <li class="dropdown-menu-item dropdown-menu-item-sm"><a href="{{ route('posts.index', ['sort' => 'popular']) }}">Popüler</a></li>
+                        <li class="dropdown-menu-item dropdown-menu-item-sm"><a href="{{ route('posts.index', ['sort' => 'views']) }}">En çok okunan</a></li>
+                    </ul>
+                </div>
+                <div class="dropdown dropdown-sm">
+                    <button class="hero__toggle" type="button" data-dropdown-toggle aria-expanded="false">
+                        <x-repost-icon name="calendar" size="16" />
+                        <span class="hero__toggle-text">Tüm zamanlar</span>
+                        <x-repost-icon name="chevron-down" size="12" />
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li class="dropdown-menu-item dropdown-menu-item-sm"><a href="{{ route('posts.index', ['period' => 'day']) }}">Son 24 saat</a></li>
+                        <li class="dropdown-menu-item dropdown-menu-item-sm"><a href="{{ route('posts.index', ['period' => 'week']) }}">Bu hafta</a></li>
+                        <li class="dropdown-menu-item dropdown-menu-item-sm"><a href="{{ route('posts.index', ['period' => 'month']) }}">Bu ay</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="dropdown">
+                <button class="hero__toggle" type="button" data-dropdown-toggle aria-expanded="false" aria-label="Sıralama seçenekleri">
+                    <x-repost-icon name="sort" size="17" />
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li class="dropdown-menu-item dropdown-menu-item-sm"><a href="{{ route('posts.index', ['sort' => 'latest']) }}">En yeni</a></li>
+                    <li class="dropdown-menu-item dropdown-menu-item-sm"><a href="{{ route('posts.index', ['sort' => 'popular']) }}">Popüler</a></li>
+                    <li class="dropdown-menu-item dropdown-menu-item-sm"><a href="{{ route('posts.index', ['sort' => 'views']) }}">Görüntülenme</a></li>
+                </ul>
+            </div>
+        </div>
+    </section>
+    <div class="hero__digest card card-body">
+        @forelse ($posts->take(4) as $digestPost)
+            <div class="digest">
+                <a class="digest__title" href="{{ route('posts.show', $digestPost) }}">{{ $digestPost->title }}</a>
+                <span class="digest__comm">
+                    <span class="digest__comm-icon"><x-repost-icon name="comment" size="12" /></span>
+                    {{ number_format($digestPost->comments_count ?? 0) }}
+                </span>
+            </div>
+        @empty
+            <div class="digest"><span class="color-gray">Henüz öne çıkan yazı yok.</span></div>
+        @endforelse
+    </div>
     <div class="hero__header-main">
         <div>
             <h1 class="h3 feed-title">{{ filled($search) ? 'Arama sonuçları' : 'Keşfet' }}</h1>
