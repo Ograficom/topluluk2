@@ -16,7 +16,7 @@
                     <ul class="dropdown-menu">
                         <li class="dropdown-menu-item dropdown-menu-item-sm is-active"><a href="{{ url('/') }}">Son gönderiler</a></li>
                         <li class="dropdown-menu-item dropdown-menu-item-sm"><a href="{{ url('/discover') }}">Keşfet</a></li>
-                        @auth<li class="dropdown-menu-item dropdown-menu-item-sm"><a href="{{ url('/bookmarks') }}">Kaydedilenler</a></li>@endauth
+                        @auth<li class="dropdown-menu-item dropdown-menu-item-sm"><a href="{{ route('blog.bookmarks') }}">Kaydedilenler</a></li>@endauth
                     </ul>
                 </div>
             </div>
