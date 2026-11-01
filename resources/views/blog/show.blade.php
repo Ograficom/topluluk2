@@ -51,6 +51,31 @@
         @endif
     </article>
 
+    @if(!empty($pollBlocks))
+        @foreach($pollBlocks as $poll)
+            <section class="card card-body repost-poll" data-poll-block="{{ $poll['id'] }}">
+                <h2>{{ $poll['question'] }}</h2>
+                <form method="POST" action="{{ route('blog.post.poll.vote', $post->slug) }}" data-poll-vote>
+                    @csrf
+                    <input type="hidden" name="block_id" value="{{ $poll['id'] }}">
+                    @foreach($poll['options'] as $optionIndex => $option)
+                        <label class="repost-poll-option">
+                            <input type="radio" name="option_index" value="{{ $optionIndex }}" @checked((string)$poll['user_vote'] === (string)$optionIndex) @disabled($poll['expired'] || $poll['user_vote'] !== null)>
+                            <span>{{ $option }}</span>
+                            @if($poll['expired'] || $poll['user_vote'] !== null)
+                                <span class="repost-poll-result"><span>{{ (int)($poll['counts'][$optionIndex] ?? 0) }} oy · {{ $poll['percentages'][$optionIndex] ?? 0 }}%</span><span class="repost-poll-bar"><span style="width:{{ $poll['percentages'][$optionIndex] ?? 0 }}%"></span></span></span>
+                            @endif
+                        </label>
+                    @endforeach
+                    <div class="repost-poll-footer"><span class="meta" data-poll-total>{{ $poll['total'] }} oy @if($poll['expired']) · Süresi doldu @elseif($poll['user_vote'] !== null) · Oyun kaydedildi @endif</span>
+                        @if(!$poll['expired'] && $poll['user_vote'] === null)<button class="btn btn-primary btn-sm btn-rounded" type="submit">Oy kullan</button>@endif
+                    </div>
+                    <p class="repost-form-error" data-poll-error hidden></p>
+                </form>
+            </section>
+        @endforeach
+    @endif
+
     <section class="card card-body repost-comments" id="comments">
         <header class="repost-section-heading"><h2 class="h5">Yorumlar <span class="color-gray">({{ $post->comments->count() }})</span></h2></header>
         @auth
@@ -74,6 +99,14 @@
                         <div class="user-box-content"><strong class="name">{{ $comment->user?->name ?? $comment->author_name ?? 'Üye' }}</strong><time class="meta">{{ $comment->created_at?->diffForHumans() }}</time></div>
                     </div>
                     <div class="repost-comment-content">{!! nl2br(e(strip_tags($comment->content))) !!}</div>
+                    <div class="repost-comment-actions">
+                        @auth
+                            <form method="POST" action="{{ route('blog.comment.like', $comment->id) }}">@csrf<button class="btn btn-secondary btn-xs" type="submit">Beğen · {{ (int)($comment->likes_count ?? 0) }}</button></form>
+                            <form method="POST" action="{{ route('blog.comment.dislike', $comment->id) }}">@csrf<button class="btn btn-secondary btn-xs" type="submit">Beğenme · {{ (int)($comment->dislikes_count ?? 0) }}</button></form>
+                        @else
+                            <span class="small color-gray">{{ (int)($comment->likes_count ?? 0) }} beğeni</span>
+                        @endauth
+                    </div>
                 </article>
             @empty
                 <p class="color-gray">Henüz yorum yapılmamış. İlk yorumu sen yaz.</p>
@@ -88,4 +121,61 @@
             @endforeach
         </section>
     @endif
+@push('scripts')
+<script>
+document.addEventListener('submit', async (event) => {
+    const form = event.target.closest('[data-poll-vote]');
+    if (!form) return;
+    event.preventDefault();
+    const selected = form.querySelector('input[name="option_index"]:checked');
+    const error = form.querySelector('[data-poll-error]');
+    if (!selected) {
+        error.textContent = 'Önce bir seçenek seç.';
+        error.hidden = false;
+        return;
+    }
+    const button = form.querySelector('button[type="submit"]');
+    if (button) button.disabled = true;
+    error.hidden = true;
+    try {
+        const response = await fetch(form.action, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || ''
+            },
+            body: new FormData(form)
+        });
+        const result = await response.json();
+        if (!response.ok) throw new Error(result.message || 'Oy kaydedilemedi.');
+        const block = form.closest('[data-poll-block]');
+        form.querySelectorAll('.repost-poll-option').forEach((row, index) => {
+            const count = Number(result.counts?.[index] || 0);
+            const percentage = Number(result.percentages?.[index] || 0);
+            let resultNode = row.querySelector('.repost-poll-result');
+            if (!resultNode) {
+                resultNode = document.createElement('span');
+                resultNode.className = 'repost-poll-result';
+                resultNode.innerHTML = '<span></span><span class="repost-poll-bar"><span></span></span>';
+                row.appendChild(resultNode);
+            }
+            resultNode.querySelector('span:first-child').textContent = count + ' oy · ' + percentage + '%';
+            resultNode.querySelector('.repost-poll-bar > span').style.width = percentage + '%';
+            const input = row.querySelector('input');
+            input.disabled = true;
+            input.checked = input.value === selected.value;
+        });
+        const total = form.querySelector('[data-poll-total]');
+        if (total) total.textContent = Number(result.total || 0) + ' oy · Oyun kaydedildi';
+        if (button) button.remove();
+    } catch (exception) {
+        error.textContent = exception.message;
+        error.hidden = false;
+        if (button) button.disabled = false;
+    }
+});
+</script>
+@endpush
+
 @endsection
