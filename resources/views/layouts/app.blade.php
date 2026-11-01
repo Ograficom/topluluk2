@@ -68,7 +68,7 @@
                     <ul class="dropdown-menu dropdown-menu-end" id="userMenu" aria-labelledby="userMenuButton">
                         <li class="dropdown-menu-item dropdown-menu-item-lg"><a href="{{ url('/u/'.auth()->user()->username) }}"><span class="user-box"><span class="avatar"><img src="{{ auth()->user()->profile_photo_url }}" alt="" width="40" height="40"></span><span class="user-box-content"><span class="name">{{ auth()->user()->name }}</span><span class="small color-gray">Profili görüntüle</span></span></span></a></li>
                         <li class="dropdown-menu-item dropdown-menu-item-lg"><a href="{{ url('/messages') }}"><svg width="20" height="20"><use href="#message"/></svg><span>Mesajlar</span></a></li>
-                        <li class="dropdown-menu-item dropdown-menu-item-lg"><a href="{{ url('/bookmarks') }}"><svg width="20" height="20"><use href="#bookmark"/></svg><span>Kaydedilenler</span></a></li>
+                        <li class="dropdown-menu-item dropdown-menu-item-lg"><a href="{{ route('blog.bookmarks') }}"><svg width="20" height="20"><use href="#bookmark"/></svg><span>Kaydedilenler</span></a></li>
                         <li class="dropdown-menu-item dropdown-menu-item-lg"><a href="{{ url('/dashboard') }}"><svg width="20" height="20"><use href="#setting"/></svg><span>Hesap ayarları</span></a></li>
                         @if(auth()->user()->can('viewAny', \App\Models\Post::class) && auth()->user()->hasRole('admin'))
                             <li class="dropdown-menu-item dropdown-menu-item-lg"><a href="{{ url('/admin') }}">Yönetim paneli</a></li>
