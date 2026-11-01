@@ -83,6 +83,9 @@ Route::middleware('auth')->group(function (): void {
     Route::post('/posts/{post:slug}/comments', [PostInteractionController::class, 'comment'])
         ->middleware('throttle:10,1')
         ->name('posts.comments.store');
+    Route::post('/posts/{post:slug}/comments/{comment}/reactions/like', [PostInteractionController::class, 'reactToComment'])
+        ->middleware('throttle:30,1')
+        ->name('posts.comments.reactions.like');
     Route::post('/posts/{post:slug}/reactions/{type}', [PostInteractionController::class, 'react'])
         ->whereIn('type', ['like', 'dislike'])
         ->middleware('throttle:30,1')

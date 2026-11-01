@@ -2514,3 +2514,30 @@ if (document.readyState === "loading") {
     startModals();
   }
 })();
+
+document.addEventListener("click", async (event) => {
+  const button = event.target.closest("[data-share-post]");
+
+  if (!button) return;
+
+  const shareData = {
+    title: button.dataset.shareTitle,
+    url: button.dataset.shareUrl,
+  };
+
+  try {
+    if (navigator.share) {
+      await navigator.share(shareData);
+    } else if (navigator.clipboard?.writeText) {
+      await navigator.clipboard.writeText(shareData.url);
+      button.setAttribute("aria-label", "Bağlantı kopyalandı");
+      button.setAttribute("title", "Bağlantı kopyalandı");
+    } else {
+      window.prompt("Yazı bağlantısını kopyalayın:", shareData.url);
+    }
+  } catch (error) {
+    if (error instanceof DOMException && error.name === "AbortError") return;
+
+    console.error("Yazı paylaşılırken hata oluştu.", error);
+  }
+});

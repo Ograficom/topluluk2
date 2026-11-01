@@ -34,6 +34,9 @@
             <x-repost-icon name="comment" size="20" />
             {{ number_format($post->comments_count ?? 0) }}
         </a>
+        <button class="btn btn-md btn-square btn-primary-soft" type="button" data-share-post data-share-title="{{ $post->title }}" data-share-url="{{ route('posts.show', $post) }}" aria-label="Yazıyı paylaş" title="Yazıyı paylaş">
+            <x-repost-icon name="share" size="20" />
+        </button>
     </div>
     <button class="btn btn-md btn-square btn-primary-soft" type="button" title="Favoriler henüz etkin değil" aria-label="Favorilere ekle" disabled>
         <x-repost-icon name="bookmark" size="20" />

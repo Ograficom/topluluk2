@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Channel;
+use App\Models\Comment;
 use App\Models\Post;
 use App\Models\PostReaction;
 use Illuminate\Database\Eloquent\Builder;
@@ -147,7 +148,41 @@ class PostController extends Controller
         }
 
         $post->increment('views');
-        $post->load(['user', 'channel', 'comments.user']);
+        $post->load(['user', 'channel']);
+        $replyTo = null;
+
+        if ($request->filled('reply_to')) {
+            $replyTo = Comment::query()
+                ->where('post_id', $post->id)
+                ->whereNull('parent_id')
+                ->find($request->query('reply_to'));
+            abort_unless($replyTo, 404);
+        }
+
+        $commentsQuery = $post->comments()
+            ->whereNull('parent_id')
+            ->with(['user', 'replies.user'])
+            ->withCount('reactions')
+            ->withCount('replies')
+            ->with([
+                'replies' => fn ($query) => $query->withCount('reactions'),
+            ]);
+
+        if ($request->user()) {
+            $commentsQuery
+                ->withExists([
+                    'reactions as viewer_reacted' => fn (Builder $query) => $query->where('user_id', $request->user()->id),
+                ])
+                ->with([
+                    'replies' => fn ($query) => $query
+                        ->withCount('reactions')
+                        ->withExists([
+                            'reactions as viewer_reacted' => fn (Builder $reactionQuery) => $reactionQuery->where('user_id', $request->user()->id),
+                        ]),
+                ]);
+        }
+
+        $post->setRelation('comments', $commentsQuery->get());
         $post->loadCount([
             'comments',
             'reactions as likes_count' => fn (Builder $query) => $query->where('type', PostReaction::LIKE),
@@ -157,6 +192,6 @@ class PostController extends Controller
             $post->load(['reactions' => fn (Relation $query) => $query->where('user_id', $request->user()->id)]);
         }
 
-        return view('posts.show', compact('post'));
+        return view('posts.show', compact('post', 'replyTo'));
     }
 }

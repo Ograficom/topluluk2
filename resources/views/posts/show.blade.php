@@ -99,48 +99,33 @@
         @auth
             <form class="addcomment" action="{{ route('posts.comments.store', $post) }}" method="POST">
                 @csrf
+                <input type="hidden" name="parent_id" value="{{ $replyTo?->id }}">
+                @if ($replyTo)
+                    <p class="small color-gray">{{ $replyTo->user?->full_name ?: $replyTo->user?->name }} kullanıcısına yanıt yazıyorsunuz. <a class="link" href="{{ route('posts.show', $post) }}#comments">İptal</a></p>
+                @endif
                 <textarea id="comment-body" name="body" rows="8" maxlength="5000" placeholder="Yorum yaz" aria-label="Yorum yaz" required>{{ old('body') }}</textarea>
                 <div>
                     <button class="btn btn-primary" type="submit">Yorum gönder</button>
                 </div>
             </form>
         @else
-            <p class="addcomments__guest"><a class="link" href="{{ route('login') }}">Yorum yapmak için giriş yapın.</a></p>
+            <form class="addcomment" action="{{ route('login') }}" method="GET">
+                <textarea
+                    id="comment-body"
+                    rows="8"
+                    placeholder="Yorum yazabilmek için giriş yapın"
+                    aria-label="Yorum yazabilmek için giriş yapın"
+                    disabled
+                ></textarea>
+                <div>
+                    <button class="btn btn-primary" type="submit">Giriş yap ve yorum yaz</button>
+                </div>
+            </form>
         @endauth
 
-        <div class="post__comments">
+        <div class="post__comments comments-tree-list">
             @forelse ($post->comments as $comment)
-                <article class="comment">
-                    <div class="user-box">
-                        @if ($comment->user)
-                            <a href="{{ route('profiles.show', $comment->user) }}" class="avatar">
-                                <img src="{{ $comment->user->avatarUrl() }}" alt="" width="40" height="40">
-                            </a>
-                        @else
-                            <span class="avatar">
-                                <img src="{{ asset('assets/img/noavatar.png') }}" alt="" width="40" height="40">
-                            </span>
-                        @endif
-                        <div class="user-box-content">
-                            <span class="name">
-                                @if ($comment->user)
-                                    <a class="name-text" href="{{ route('profiles.show', $comment->user) }}">{{ $comment->user->full_name ?: $comment->user->name }}</a>
-                                @else
-                                    <span class="name-text">Repost kullanıcısı</span>
-                                @endif
-                                @if ($comment->user?->hasVerifiedBadge())
-                                    <span class="verify" role="img" aria-label="Doğrulanmış hesap"><x-repost-icon name="verify" size="14" /></span>
-                                @endif
-                            </span>
-                            <div class="meta">
-                                <time datetime="{{ $comment->created_at->toAtomString() }}">{{ $comment->created_at->diffForHumans() }}</time>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="comment__content">
-                        <div class="comment__text">{{ $comment->body }}</div>
-                    </div>
-                </article>
+                @include('posts._comment', ['comment' => $comment, 'post' => $post])
             @empty
                 <p class="color-gray">Henüz yorum yok.</p>
             @endforelse

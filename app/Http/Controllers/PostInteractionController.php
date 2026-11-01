@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Comment;
+use App\Models\CommentReaction;
 use App\Models\Post;
 use App\Models\PostReaction;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\ValidationException;
 
 class PostInteractionController extends Controller
 {
@@ -51,15 +53,59 @@ class PostInteractionController extends Controller
 
         $validated = $request->validate([
             'body' => ['required', 'string', 'max:5000'],
+            'parent_id' => ['nullable', 'integer', 'exists:comments,id'],
         ]);
 
-        Comment::create([
+        $parent = null;
+
+        if (filled($validated['parent_id'] ?? null)) {
+            $parent = Comment::query()
+                ->where('post_id', $post->id)
+                ->whereNull('parent_id')
+                ->find($validated['parent_id']);
+
+            if (! $parent) {
+                throw ValidationException::withMessages([
+                    'parent_id' => 'Yanıt verilecek yorum bu yazıda bulunamadı.',
+                ]);
+            }
+        }
+
+        $comment = Comment::create([
             'post_id' => $post->id,
             'user_id' => $request->user()->id,
+            'parent_id' => $parent?->id,
             'body' => $validated['body'],
         ]);
 
-        return redirect()->route('posts.show', $post)->withFragment('comments');
+        return redirect()->route('posts.show', $post)->withFragment('comment-'.$comment->id);
+    }
+
+    public function reactToComment(Request $request, Post $post, Comment $comment): RedirectResponse
+    {
+        $this->ensurePublished($post);
+        abort_unless($comment->post_id === $post->id, 404);
+
+        DB::transaction(function () use ($request, $comment): void {
+            $reaction = CommentReaction::query()
+                ->where('comment_id', $comment->id)
+                ->where('user_id', $request->user()->id)
+                ->lockForUpdate()
+                ->first();
+
+            if ($reaction) {
+                $reaction->delete();
+
+                return;
+            }
+
+            CommentReaction::create([
+                'comment_id' => $comment->id,
+                'user_id' => $request->user()->id,
+            ]);
+        });
+
+        return back();
     }
 
     private function ensurePublished(Post $post): void

@@ -187,7 +187,7 @@ class RepostFeedTest extends TestCase
             ->assertDontSee('<article class="subchannel">', false);
     }
 
-    public function test_invalid_post_cover_is_hidden_and_uploaded_cover_uses_public_storage_url(): void
+    public function test_invalid_post_cover_is_hidden_and_uploaded_cover_uses_current_site_url(): void
     {
         Storage::fake('public');
         Storage::disk('public')->put('posts/valid-cover.png', 'test image');
@@ -210,10 +210,10 @@ class RepostFeedTest extends TestCase
 
         $response = $this->get('/');
         $response->assertOk()
-            ->assertSee(Storage::disk('public')->url('posts/valid-cover.png'), false);
+            ->assertSee(asset('storage/posts/valid-cover.png'), false);
         $this->assertStringNotContainsString('src="'.asset('merhaba').'"', $response->getContent());
         $this->assertSame(
-            Storage::disk('public')->url('posts/valid-cover.png'),
+            asset('storage/posts/valid-cover.png'),
             $validPost->coverImageUrl(),
         );
     }
@@ -231,6 +231,8 @@ class RepostFeedTest extends TestCase
 
     public function test_post_detail_increments_views_and_does_not_expose_drafts(): void
     {
+        Storage::fake('public');
+        Storage::disk('public')->put('posts/detail-cover.jpg', 'cover');
         $channel = Channel::create([
             'name' => 'Yolculuk',
             'slug' => 'yolculuk',
@@ -241,17 +243,24 @@ class RepostFeedTest extends TestCase
             'slug' => 'yol-hikayesi',
             'excerpt' => 'Kısa giriş metni.',
             'body' => "Yazının ilk paragrafı.\n\nYazının ikinci paragrafı.",
+            'cover_image' => 'posts/detail-cover.jpg',
         ]);
         $draft = $this->createPost($channel, [
             'title' => 'Gizli taslak',
             'slug' => 'gizli-taslak',
             'is_published' => false,
         ]);
+        Comment::create([
+            'post_id' => $published->id,
+            'user_id' => User::factory()->create()->id,
+            'body' => "İlk yorum.\nİkinci satır.",
+        ]);
 
         $this->get('/posts/yol-hikayesi')
             ->assertOk()
             ->assertSeeInOrder([
                 'class="post__header"',
+                'href="'.asset('storage/posts/detail-cover.jpg').'" data-fancybox="full-post"',
                 'class="post__title-full"',
                 'class="editor"',
                 '<p>Yazının ilk paragrafı.</p>',
@@ -261,7 +270,14 @@ class RepostFeedTest extends TestCase
                 'class="post__options"',
                 'aria-label="Favorilere ekle"',
                 'id="comments"',
-            ], false);
+            ], false)
+            ->assertSee('Yorumlar (1)')
+            ->assertSee('Yorum yazabilmek için giriş yapın')
+            ->assertSee('Giriş yap ve yorum yaz')
+            ->assertSee('İlk yorum.')
+            ->assertSee('İkinci satır.')
+            ->assertSee('Yorumu beğenmek için giriş yapın')
+            ->assertSee('Yanıtla');
 
         $this->assertDatabaseHas('posts', ['id' => $published->id, 'views' => 1]);
         $this->get('/posts/gizli-taslak')->assertNotFound();
@@ -299,8 +315,9 @@ class RepostFeedTest extends TestCase
         ]);
         $this->assertDatabaseCount('post_reactions', 1);
 
-        $this->post('/posts/'.$post->slug.'/comments', ['body' => 'Güzel paylaşım.'])
-            ->assertRedirect(route('posts.show', $post).'#comments');
+        $response = $this->post('/posts/'.$post->slug.'/comments', ['body' => 'Güzel paylaşım.']);
+        $comment = Comment::query()->where('body', 'Güzel paylaşım.')->firstOrFail();
+        $response->assertRedirect(route('posts.show', $post).'#comment-'.$comment->id);
 
         $this->assertDatabaseHas('comments', [
             'post_id' => $post->id,
@@ -319,6 +336,56 @@ class RepostFeedTest extends TestCase
             ->assertSee('data-tab-panel="comments"', false)
             ->assertSee('Güzel paylaşım.')
             ->assertSee($post->title);
+    }
+
+    public function test_members_can_like_comments_and_reply_to_them(): void
+    {
+        $author = User::factory()->create();
+        $member = User::factory()->create();
+        $channel = Channel::create([
+            'name' => 'Yorumlar',
+            'slug' => 'yorumlar',
+            'is_active' => true,
+        ]);
+        $post = $this->createPost($channel, [
+            'user_id' => $author->id,
+            'slug' => 'yorum-etkilesimi',
+        ]);
+        $comment = Comment::create([
+            'post_id' => $post->id,
+            'user_id' => $author->id,
+            'body' => 'Ana yorum',
+        ]);
+
+        $this->actingAs($member)
+            ->post(route('posts.comments.reactions.like', ['post' => $post, 'comment' => $comment]))
+            ->assertRedirect();
+        $this->assertDatabaseHas('comment_reactions', [
+            'comment_id' => $comment->id,
+            'user_id' => $member->id,
+        ]);
+
+        $this->post(route('posts.comments.store', $post), [
+            'body' => 'Yoruma yanıt',
+            'parent_id' => $comment->id,
+        ])->assertRedirect(route('posts.show', $post).'#comment-'.Comment::query()->where('body', 'Yoruma yanıt')->value('id'));
+
+        $reply = Comment::query()->where('body', 'Yoruma yanıt')->firstOrFail();
+        $this->assertSame($comment->id, $reply->parent_id);
+
+        $this->get(route('posts.show', $post))
+            ->assertOk()
+            ->assertSee('Ana yorum')
+            ->assertSee('Yoruma yanıt')
+            ->assertSee('1 yanıt')
+            ->assertSee('aria-pressed="true"', false);
+
+        $this->post(route('posts.comments.reactions.like', ['post' => $post, 'comment' => $comment]))
+            ->assertRedirect();
+        $this->assertDatabaseMissing('comment_reactions', [
+            'comment_id' => $comment->id,
+            'user_id' => $member->id,
+        ]);
     }
 
     public function test_profile_uses_the_original_layout_and_supports_users_without_usernames(): void

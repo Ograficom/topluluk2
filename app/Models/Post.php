@@ -5,8 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
@@ -84,7 +84,7 @@ class Post extends Model
         }
 
         if (Storage::disk('public')->exists($path)) {
-            return Storage::disk('public')->url($path);
+            return asset('storage/'.$path);
         }
 
         return is_file(public_path($path)) ? asset($path) : null;
