@@ -19,7 +19,7 @@ class DeleteAccountTest extends TestCase
             ->assertRedirect();
 
         $this->assertDatabaseMissing('users', ['id' => $user->id]);
-        $this->assertGuest();
+        $this->assertGuest('web');
     }
 
     public function test_account_deletion_requires_the_correct_password(): void
