@@ -505,6 +505,62 @@ class RepostFeedTest extends TestCase
             ->assertSee('Kanal adı');
     }
 
+    public function test_admin_dashboard_shows_repost_management_overview(): void
+    {
+        $admin = User::factory()->create(['is_admin' => true]);
+        $this->createPost(
+            Channel::create([
+                'name' => 'Panel kanalı',
+                'slug' => 'panel-kanali',
+                'is_active' => true,
+            ]),
+            [
+                'title' => 'Panel taslağı',
+                'slug' => 'panel-taslagi',
+                'is_published' => false,
+            ],
+        );
+
+        $this->actingAs($admin)
+            ->get('/admin')
+            ->assertOk()
+            ->assertSee('Repost genel durumu')
+            ->assertSee('Üyeler')
+            ->assertSee('Taslaklar')
+            ->assertSee('Kanallar');
+    }
+
+    public function test_admins_can_open_comment_moderation_pages(): void
+    {
+        $admin = User::factory()->create(['is_admin' => true]);
+        $channel = Channel::create([
+            'name' => 'Yorum kanalı',
+            'slug' => 'yorum-kanali',
+            'is_active' => true,
+        ]);
+        $post = $this->createPost($channel, [
+            'title' => 'Yorum yazısı',
+            'slug' => 'yorum-yazisi',
+        ]);
+        $commenter = User::factory()->create();
+        Comment::create([
+            'post_id' => $post->id,
+            'user_id' => $commenter->id,
+            'body' => 'Yönetilecek yorum.',
+        ]);
+
+        $this->actingAs($admin)
+            ->get('/admin/comments')
+            ->assertOk()
+            ->assertSee('Yorumlar');
+
+        $this->get('/admin/comments/create')
+            ->assertOk()
+            ->assertSee('Yorum')
+            ->assertSee('Yazı')
+            ->assertSee('Yazar');
+    }
+
     private function createPost(Channel $channel, array $attributes = []): Post
     {
         return Post::create([

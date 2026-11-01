@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Users\Schemas;
 
+use App\Models\User;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
@@ -15,23 +16,29 @@ class UserForm
             ->components([
                 TextInput::make('name')
                     ->label('Görünen ad')
-                    ->required(),
+                    ->required()
+                    ->maxLength(255),
                 TextInput::make('username')
                     ->label('Kullanıcı adı')
                     ->required()
+                    ->maxLength(255)
                     ->unique(ignoreRecord: true),
                 TextInput::make('email')
                     ->label('E-posta')
                     ->email()
-                    ->required(),
+                    ->required()
+                    ->unique(ignoreRecord: true),
                 TextInput::make('password')
+                    ->label('Parola')
                     ->password()
                     ->required(fn (string $operation): bool => $operation === 'create')
                     ->dehydrated(fn (?string $state): bool => filled($state))
-                    ->visible(fn (string $operation): bool => $operation === 'create'),
+                    ->afterStateHydrated(fn (TextInput $component) => $component->state(null))
+                    ->helperText(fn (string $operation): ?string => $operation === 'edit' ? 'Parolayı değiştirmeyecekseniz boş bırakın.' : null),
                 Toggle::make('is_admin')
                     ->label('Yönetici')
-                    ->required(),
+                    ->required()
+                    ->disabled(fn (?User $record): bool => $record?->is(auth()->user()) ?? false),
                 Select::make('verification_status')
                     ->label('Mavi tik durumu')
                     ->options([

@@ -13,7 +13,17 @@ class EditUser extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            DeleteAction::make(),
+            DeleteAction::make()
+                ->visible(fn (): bool => ! $this->getRecord()->is(auth()->user())),
         ];
+    }
+
+    protected function mutateFormDataBeforeSave(array $data): array
+    {
+        if ($this->getRecord()->is(auth()->user())) {
+            $data['is_admin'] = true;
+        }
+
+        return $data;
     }
 }

@@ -7,6 +7,7 @@ use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 
 class UsersTable
@@ -48,7 +49,20 @@ class UsersTable
                     ->boolean(),
             ])
             ->filters([
-                //
+                SelectFilter::make('is_admin')
+                    ->label('Yetki')
+                    ->options([
+                        1 => 'Yönetici',
+                        0 => 'Üye',
+                    ]),
+                SelectFilter::make('verification_status')
+                    ->label('Doğrulama')
+                    ->options([
+                        'unverified' => 'Doğrulanmadı',
+                        'pending' => 'İnceleme bekliyor',
+                        'approved' => 'Doğrulandı',
+                        'rejected' => 'Reddedildi',
+                    ]),
             ])
             ->recordActions([
                 EditAction::make(),
