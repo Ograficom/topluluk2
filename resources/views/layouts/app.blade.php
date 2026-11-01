@@ -17,7 +17,7 @@
         <meta property="og:url" content="{{ $canonicalUrl }}">
     @endif
     @stack('meta')
-    @vite(['resources/css/app.css', 'resources/css/ografi.css', 'resources/js/app.js'])
+    @vite(['resources/css/app.css', 'resources/css/ografi.css', 'resources/css/repost-v2.css', 'resources/js/app.js', 'resources/js/repost-v2.js'])
     @stack('styles')
     @stack('head')
 </head>
