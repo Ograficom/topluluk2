@@ -1,1 +1,11 @@
-<!doctype html><html lang="tr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Yapay zekâ asistanı · OgraFi</title><link rel="stylesheet" href="{{ asset('css/repost-kit.css') }}"><link rel="stylesheet" href="{{ asset('css/repost-theme.css') }}"><link rel="stylesheet" href="{{ asset('css/repost-ui.css') }}"></head><body class="repost-ui"><main class="main"><section class="feed card card-body"><h1 class="h2">Yapay zekâ asistanı</h1><form method="POST" action="{{ route('ai.ask') }}">@csrf<label for="prompt">Ne konuda yardımcı olayım?</label><textarea id="prompt" name="prompt" rows="6" required maxlength="12000">{{ old('prompt') }}</textarea>@error('prompt')<p class="text-danger">{{ $message }}</p>@enderror<button class="btn btn-primary" type="submit">Gönder</button></form></section></main></body></html>
+@extends('layouts.repost')
+
+@section('title', 'Yapay zeka — OgraFi')
+@section('content')
+    <div class="repost-feed-heading"><div><span class="repost-eyebrow">ARAÇLAR</span><h1>Yapay zeka asistanı</h1><p>OgraFi yapay zeka özelliği şu anda devre dışı.</p></div></div>
+    <section class="card card-body repost-empty-state">
+        <h2>Şu anda kullanılamıyor</h2>
+        <p>Bu özellik yeniden etkinleştirildiğinde burada duyurulacak.</p>
+        <a href="{{ route('home') }}" class="btn btn-secondary btn-rounded">Ana akışa dön</a>
+    </section>
+@endsection

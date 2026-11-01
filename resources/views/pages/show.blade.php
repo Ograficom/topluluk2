@@ -1,1 +1,12 @@
-<!doctype html><html lang="{{ str_replace('_', '-', app()->getLocale()) }}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>{{ $page->meta_title ?: $page->title }} · OgraFi</title><meta name="description" content="{{ $page->meta_description }}"><link rel="stylesheet" href="{{ asset('css/repost-kit.css') }}"><link rel="stylesheet" href="{{ asset('css/repost-theme.css') }}"><link rel="stylesheet" href="{{ asset('css/repost-ui.css') }}"></head><body class="repost-ui"><main class="main"><article class="feed card card-body"><h1 class="h2">{{ $page->title }}</h1><div class="page-content">{!! $page->content !!}</div></article></main></body></html>
+@extends('layouts.app')
+
+@section('title', $page->meta_title ?: $page->title . ' — OgraFi')
+@section('meta_description', $page->meta_description ?: \Illuminate\Support\Str::limit(strip_tags($page->content), 155))
+@section('canonical_url', url()->current())
+@section('content')
+    <article class="card card-body repost-static-page">
+        <span class="repost-eyebrow">OGRAFI</span>
+        <h1>{{ $page->title }}</h1>
+        <div class="repost-detail-content">{!! $page->content !!}</div>
+    </article>
+@endsection

@@ -1,1 +1,23 @@
-<!doctype html><html lang="{{ str_replace('_', '-', app()->getLocale()) }}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Etiketler · OgraFi</title><link rel="stylesheet" href="{{ asset('css/repost-kit.css') }}"><link rel="stylesheet" href="{{ asset('css/repost-theme.css') }}"><link rel="stylesheet" href="{{ asset('css/repost-ui.css') }}"></head><body class="repost-ui"><main class="main"><section class="feed card card-body"><h1 class="h2">Etiketler</h1><form method="GET" action="{{ route('blog.tags') }}"><input type="search" name="q" value="{{ $search }}" placeholder="Etiket ara"><select name="sort"><option value="popular" @selected($sort === 'popular')>Popüler</option><option value="newest" @selected($sort === 'newest')>Yeni</option><option value="oldest" @selected($sort === 'oldest')>Eski</option></select><button class="btn btn-primary" type="submit">Filtrele</button></form><div class="tagscloud">@forelse($tags as $tag)<span><a href="{{ route('blog.index', ['tag' => $tag->slug]) }}">{{ $tag->name }}</a> <small>{{ $tag->posts_count }}</small></span>@empty<p>Etiket bulunamadı.</p>@endforelse</div>{{ $tags->links() }}</section></main><script src="{{ asset('js/repost-ui.js') }}" defer></script></body></html>
+@extends('layouts.repost')
+
+@section('title', 'Etiketler — OgraFi')
+@section('content')
+    <div data-ografi-layout-container="tags">
+        <section data-ografi-layout-section="tags_title" class="repost-feed-heading"><div><span class="repost-eyebrow">KEŞFET</span><h1>Etiketler</h1><p>İlgilendiğin konulara göre gönderileri bul.</p></div></section>
+        <div data-ografi-layout-section="tags_title_spacer" aria-hidden="true"></div>
+        <form data-ografi-layout-section="tags_search" method="GET" action="{{ route('blog.tags') }}" class="repost-sort-row">
+            <input type="search" name="q" value="{{ $search }}" placeholder="Etiket ara">
+            <select name="sort"><option value="popular" @selected($sort === 'popular')>Popüler</option><option value="newest" @selected($sort === 'newest')>En yeni</option><option value="oldest" @selected($sort === 'oldest')>En eski</option></select>
+            <button class="btn btn-secondary btn-rounded" type="submit">Filtrele</button>
+        </form>
+        <div data-ografi-layout-section="tags_search_spacer" aria-hidden="true"></div>
+        <div data-ografi-layout-section="tags_list" class="repost-tag-directory">
+            @forelse($tags as $tag)
+                <a href="{{ route('search', ['q' => $tag->name]) }}" class="card card-body"><strong>#{{ $tag->name }}</strong><span class="meta">{{ number_format((int) $tag->posts_count) }} gönderi</span></a>
+            @empty
+                <div class="card card-body repost-empty-state">Etiket bulunamadı.</div>
+            @endforelse
+        </div>
+        <div class="repost-pagination">{{ $tags->links() }}</div>
+    </div>
+@endsection

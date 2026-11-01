@@ -1,1 +1,30 @@
-<!doctype html><html lang="{{ str_replace('_', '-', app()->getLocale()) }}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Mesaj kişileri · OgraFi</title><link rel="stylesheet" href="{{ asset('css/repost-kit.css') }}"><link rel="stylesheet" href="{{ asset('css/repost-theme.css') }}"><link rel="stylesheet" href="{{ asset('css/repost-ui.css') }}"></head><body class="repost-ui"><main class="main"><section class="feed card card-body"><h1 class="h2">Kişiler</h1><nav><a href="{{ route('messages.index') }}">Mesajlar</a> · <a href="{{ route('messages.settings') }}">Ayarlar</a></nav><h2 class="h4">Takip ettiklerin</h2>@forelse($followingContacts as $contact)<article class="card card-body"><a href="{{ $contact['thread_url'] }}">{{ $contact['user']->name }}</a>@if($contact['can_message'])<a class="btn btn-primary" href="{{ $contact['thread_url'] }}">Mesaj gönder</a>@else<span class="meta">Mesaj gönderilemiyor</span>@endif</article>@empty<p>Henüz takip ettiğin kimse yok.</p>@endforelse<h2 class="h4">Takipçilerin</h2>@foreach($followerContacts as $contact)<article class="card card-body"><a href="{{ $contact['thread_url'] }}">{{ $contact['user']->name }}</a></article>@endforeach</section></main></body></html>
+@extends('layouts.repost')
+
+@section('title', 'Mesaj kişileri — OgraFi')
+@section('content')
+    <div class="repost-feed-heading"><div><span class="repost-eyebrow">İLETİŞİM</span><h1>Kişiler</h1><p>Takip ettiğin ve seni takip eden üyeler.</p></div><a href="{{ route('messages.index') }}" class="btn btn-secondary btn-rounded">Mesajlara dön</a></div>
+    <section class="card card-body repost-contacts-section">
+        <h2>Takip ettiklerin</h2>
+        @forelse($followingContacts as $contact)
+            @php($person = $contact['user'])
+            <div class="repost-contact-row">
+                <a href="{{ route('users.show', $person->username) }}" class="user-box"><span class="avatar"><img src="{{ $person->profile_photo_url }}" alt="" width="42" height="42"></span><span class="user-box-content"><strong class="name">{{ $person->name }}</strong><span class="meta">@{{ $person->username }}</span></span></a>
+                @if($contact['can_message'])<a href="{{ $contact['thread_url'] }}" class="btn btn-primary btn-sm btn-rounded">{{ $contact['thread_exists'] ? 'Konuşmayı aç' : 'Mesaj gönder' }}</a>@else<span class="meta">Mesaj gönderilemiyor</span>@endif
+            </div>
+        @empty
+            <p class="meta">Henüz takip ettiğin kimse yok.</p>
+        @endforelse
+    </section>
+    <section class="card card-body repost-contacts-section">
+        <h2>Seni takip edenler</h2>
+        @forelse($followerContacts as $contact)
+            @php($person = $contact['user'])
+            <div class="repost-contact-row">
+                <a href="{{ route('users.show', $person->username) }}" class="user-box"><span class="avatar"><img src="{{ $person->profile_photo_url }}" alt="" width="42" height="42"></span><span class="user-box-content"><strong class="name">{{ $person->name }}</strong><span class="meta">@{{ $person->username }}</span></span></a>
+                @if($contact['can_message'])<a href="{{ $contact['thread_url'] }}" class="btn btn-primary btn-sm btn-rounded">{{ $contact['thread_exists'] ? 'Konuşmayı aç' : 'Mesaj gönder' }}</a>@else<span class="meta">Mesaj gönderilemiyor</span>@endif
+            </div>
+        @empty
+            <p class="meta">Henüz takipçin yok.</p>
+        @endforelse
+    </section>
+@endsection

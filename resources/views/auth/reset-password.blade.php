@@ -1,1 +1,24 @@
-<!doctype html><html lang="{{ str_replace('_', '-', app()->getLocale()) }}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Yeni şifre belirle · OgraFi</title><link rel="stylesheet" href="{{ asset('css/repost-kit.css') }}"><link rel="stylesheet" href="{{ asset('css/repost-theme.css') }}"><link rel="stylesheet" href="{{ asset('css/repost-ui.css') }}"></head><body class="repost-ui"><main class="main"><section class="card card-body" style="max-width:560px;margin:48px auto"><h1 class="h2">Yeni şifre belirle</h1><form method="POST" action="{{ route('password.update') }}">@csrf<input type="hidden" name="token" value="{{ $token }}"><label for="email">E-posta</label><input id="email" name="email" type="email" value="{{ old('email', $request->email) }}" required autocomplete="email">@error('email')<p class="text-danger">{{ $message }}</p>@enderror<label for="password">Yeni şifre</label><input id="password" name="password" type="password" required autocomplete="new-password">@error('password')<p class="text-danger">{{ $message }}</p>@enderror<label for="password_confirmation">Yeni şifre tekrar</label><input id="password_confirmation" name="password_confirmation" type="password" required autocomplete="new-password"><button class="btn btn-primary" type="submit">Şifreyi güncelle</button></form></section></main></body></html>
+@extends('layouts.repost')
+
+@section('title', 'Yeni şifre belirle — OgraFi')
+@section('content')
+<div class="repost-auth-wrap">
+    <section class="card card-body repost-auth-card">
+        <a href="{{ route('home') }}" class="repost-auth-brand">OgraFi</a>
+        <span class="repost-eyebrow">HESAP GÜVENLİĞİ</span>
+        <h1>Yeni şifreni belirle</h1>
+        <x-validation-errors class="mb-4" />
+        <form method="POST" action="{{ route('password.update') }}" class="repost-auth-form">
+            @csrf
+            <input type="hidden" name="token" value="{{ $request->route('token') }}">
+            <label for="email">E-posta adresi</label>
+            <input id="email" type="email" name="email" value="{{ old('email', $request->email) }}" required autocomplete="email">
+            <label for="password">Yeni şifre</label>
+            <input id="password" type="password" name="password" required autocomplete="new-password">
+            <label for="password_confirmation">Yeni şifre tekrar</label>
+            <input id="password_confirmation" type="password" name="password_confirmation" required autocomplete="new-password">
+            <button type="submit" class="btn btn-primary btn-rounded">Şifreyi güncelle</button>
+        </form>
+    </section>
+</div>
+@endsection

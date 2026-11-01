@@ -1,1 +1,16 @@
-<!doctype html><html lang="tr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Şifre değiştir · OgraFi</title><link rel="stylesheet" href="{{ asset('css/repost-kit.css') }}"><link rel="stylesheet" href="{{ asset('css/repost-theme.css') }}"></head><body><main class="card card-body" style="max-width:760px;margin:40px auto"><h1>Şifre değiştir</h1><form method="POST" action="{{ route('dashboard.password.update') }}">@csrf @method('PUT')<label>Mevcut şifre</label><input type="password" name="current_password" required autocomplete="current-password"><label>Yeni şifre</label><input type="password" name="password" required autocomplete="new-password"><label>Yeni şifre tekrar</label><input type="password" name="password_confirmation" required autocomplete="new-password">@foreach(['current_password','password'] as $field)@error($field)<p>{{ $message }}</p>@enderror @endforeach<button class="btn btn-primary">Şifreyi güncelle</button></form></main></body></html>
+@extends('layouts.repost')
+
+@section('title', 'Şifre — OgraFi')
+@section('content')
+    <div class="repost-feed-heading"><div><span class="repost-eyebrow">GÜVENLİK</span><h1>Şifre değiştir</h1><p>Hesabını korumak için güçlü bir şifre kullan.</p></div></div>
+    <form method="POST" action="{{ route('dashboard.password.update') }}" class="card card-body repost-settings-form">
+        @csrf
+        @method('PUT')
+        <label for="current_password">Mevcut şifre</label><input id="current_password" type="password" name="current_password" required autocomplete="current-password">
+        @error('current_password')<span class="repost-form-error">{{ $message }}</span>@enderror
+        <label for="password">Yeni şifre</label><input id="password" type="password" name="password" required autocomplete="new-password">
+        @error('password')<span class="repost-form-error">{{ $message }}</span>@enderror
+        <label for="password_confirmation">Yeni şifre tekrar</label><input id="password_confirmation" type="password" name="password_confirmation" required autocomplete="new-password">
+        <button class="btn btn-primary btn-rounded" type="submit">Şifreyi güncelle</button>
+    </form>
+@endsection

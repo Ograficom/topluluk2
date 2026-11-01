@@ -1,1 +1,22 @@
-@php($prefs=session('dashboard_preferences',[]))<!doctype html><html lang="tr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Tercihler · OgraFi</title><link rel="stylesheet" href="{{ asset('css/repost-kit.css') }}"><link rel="stylesheet" href="{{ asset('css/repost-theme.css') }}"></head><body><main class="card card-body" style="max-width:760px;margin:40px auto"><h1>Tercihler</h1><form method="POST" action="{{ route('dashboard.preferences.update') }}">@csrf @method('PUT')<label><input type="checkbox" name="show_mature" value="1" @checked($prefs['show_mature']??false)> Hassas içerikleri göster</label><label><input type="checkbox" name="blur_mature" value="1" @checked($prefs['blur_mature']??true)> Hassas içerikleri bulanıklaştır</label><label><input type="checkbox" name="open_new_tab" value="1" @checked($prefs['open_new_tab']??false)> Dış bağlantıları yeni sekmede aç</label><label>Dil</label><select name="preferred_locale" required><option value="auto">Otomatik</option>@foreach(config('app.available_locales',[]) as $locale=>$label)<option value="{{ $locale }}" @selected(auth()->user()->preferred_locale===$locale)>{{ $label }}</option>@endforeach</select><button class="btn btn-primary">Tercihleri kaydet</button></form></main></body></html>
+@extends('layouts.repost')
+
+@section('title', 'Tercihler — OgraFi')
+@section('content')
+    @php($prefs = session('dashboard_preferences', []))
+    <div class="repost-feed-heading"><div><span class="repost-eyebrow">KİŞİSELLEŞTİRME</span><h1>Tercihler</h1><p>Akış ve dil tercihlerini düzenle.</p></div></div>
+    <form method="POST" action="{{ route('dashboard.preferences.update') }}" class="card card-body repost-settings-form">
+        @csrf
+        @method('PUT')
+        <label class="repost-settings-check"><input type="checkbox" name="show_mature" value="1" @checked(old('show_mature', $prefs['show_mature'] ?? false))> Hassas içerikleri göster</label>
+        <label class="repost-settings-check"><input type="checkbox" name="blur_mature" value="1" @checked(old('blur_mature', $prefs['blur_mature'] ?? true))> Hassas içerikleri bulanıklaştır</label>
+        <label class="repost-settings-check"><input type="checkbox" name="open_new_tab" value="1" @checked(old('open_new_tab', $prefs['open_new_tab'] ?? false))> Dış bağlantıları yeni sekmede aç</label>
+        <label for="preferred_locale">Dil</label>
+        <select id="preferred_locale" name="preferred_locale" required>
+            <option value="auto" @selected(old('preferred_locale', auth()->user()->preferred_locale ?? 'auto') === 'auto')>Otomatik</option>
+            @foreach(config('app.available_locales', []) as $locale => $localeName)
+                <option value="{{ $locale }}" @selected(old('preferred_locale', auth()->user()->preferred_locale ?? 'auto') === $locale)>{{ $localeName }}</option>
+            @endforeach
+        </select>
+        <button class="btn btn-primary btn-rounded" type="submit">Tercihleri kaydet</button>
+    </form>
+@endsection

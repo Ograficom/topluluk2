@@ -1,1 +1,17 @@
-<!doctype html><html lang="tr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>İki aşamalı doğrulama · OgraFi</title><link rel="stylesheet" href="{{ asset('css/repost-kit.css') }}"><link rel="stylesheet" href="{{ asset('css/repost-theme.css') }}"></head><body><main class="card card-body" style="max-width:760px;margin:40px auto"><h1>İki aşamalı doğrulama</h1>@if(auth()->user()->two_factor_secret)<p>İki aşamalı doğrulama hesabında etkin.</p>@else<p>İki aşamalı doğrulama henüz etkin değil. Güvenlik ayarlarından etkinleştirebilirsin.</p>@endif<a href="{{ route('dashboard') }}">Ayarlar</a></main></body></html>
+@extends('layouts.repost')
+
+@section('title', 'İki adımlı doğrulama — OgraFi')
+@section('content')
+    <div class="repost-feed-heading"><div><span class="repost-eyebrow">HESAP GÜVENLİĞİ</span><h1>İki adımlı doğrulama</h1><p>Hesabına ek bir güvenlik katmanı ekle.</p></div></div>
+    <section class="card card-body repost-settings-form">
+        @if(auth()->user()->two_factor_secret)
+            <strong>İki adımlı doğrulama etkin</strong>
+            <p class="meta">Hesabın doğrulama kodu gerektirecek şekilde korunuyor.</p>
+            <form method="POST" action="{{ url('/user/two-factor-authentication') }}">@csrf @method('DELETE')<button class="btn btn-secondary btn-rounded" type="submit">İki adımlı doğrulamayı kapat</button></form>
+        @else
+            <strong>İki adımlı doğrulama etkin değil</strong>
+            <p class="meta">Etkinleştirmek için bir doğrulama uygulaması kullanılır. Güvenlik ayarları hesabın üzerinden yönetilir.</p>
+            <form method="POST" action="{{ url('/user/two-factor-authentication') }}">@csrf<button class="btn btn-primary btn-rounded" type="submit">Etkinleştir</button></form>
+        @endif
+    </section>
+@endsection

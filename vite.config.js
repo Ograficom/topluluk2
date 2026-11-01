@@ -12,6 +12,8 @@ export default defineConfig({
         laravel({
             input: [
                 'resources/css/app.css',
+                'resources/css/ografi.css',
+                'resources/css/repost-v2.css',
                 'resources/css/filament/admin/theme.css',
                 'resources/js/app.js',
             ],

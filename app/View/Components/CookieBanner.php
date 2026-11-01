@@ -8,6 +8,7 @@ use App\Models\CookiePolicy;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
+use Illuminate\Support\Facades\Schema;
 
 class CookieBanner extends Component
 {
@@ -23,7 +24,16 @@ class CookieBanner extends Component
             return '';
         }
 
-        $policy = CookiePolicy::enabled()->latest('updated_at')->first();
+        try {
+            if (!Schema::hasTable('cookie_policies') || !Schema::hasTable('cookie_consents')) {
+                return '';
+            }
+
+            $policy = CookiePolicy::enabled()->latest('updated_at')->first();
+        } catch (\Throwable) {
+            // The installer and early boot screens may render before database migrations exist.
+            return '';
+        }
 
         if (!$policy) {
             return '';

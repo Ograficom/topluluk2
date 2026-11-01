@@ -1,1 +1,17 @@
-<!doctype html><html lang="tr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Topluluk oluştur · OgraFi</title><link rel="stylesheet" href="{{ asset('css/repost-kit.css') }}"><link rel="stylesheet" href="{{ asset('css/repost-theme.css') }}"></head><body><main class="card card-body" style="max-width:760px;margin:40px auto"><h1>Topluluk oluştur</h1><form method="POST" action="{{ route('blog.category.store') }}" enctype="multipart/form-data">@csrf<label>Ad</label><input name="name" value="{{ old('name') }}" required><label>Adres (slug)</label><input name="slug" value="{{ old('slug') }}"><label>Açıklama</label><textarea name="description" rows="5">{{ old('description') }}</textarea><label>Profil görseli</label><input type="file" name="profile_image" accept="image/*"><label>Kapak görseli</label><input type="file" name="cover_image" accept="image/*"><button class="btn btn-primary">Topluluk oluştur</button></form></main></body></html>
+@extends('layouts.repost')
+
+@section('title', 'Topluluk oluştur — OgraFi')
+@section('content')
+    <div class="repost-feed-heading"><div><span class="repost-eyebrow">YENİ TOPLULUK</span><h1>Topluluk oluştur</h1><p>İlgi alanını bir araya getirecek yeni bir alan aç.</p></div></div>
+    <form method="POST" action="{{ route('blog.category.store') }}" enctype="multipart/form-data" class="card card-body repost-settings-form">
+        @csrf
+        <label for="name">Topluluk adı</label><input id="name" name="name" value="{{ old('name') }}" maxlength="255" required>
+        @error('name')<span class="repost-form-error">{{ $message }}</span>@enderror
+        <label for="slug">Adres (isteğe bağlı)</label><input id="slug" name="slug" value="{{ old('slug') }}" maxlength="255" placeholder="otomatik oluşturulur">
+        @error('slug')<span class="repost-form-error">{{ $message }}</span>@enderror
+        <label for="description">Açıklama</label><textarea id="description" name="description" rows="5" maxlength="5000">{{ old('description') }}</textarea>
+        <label for="profile_image">Profil görseli</label><input id="profile_image" type="file" name="profile_image" accept="image/*">
+        <label for="cover_image">Kapak görseli</label><input id="cover_image" type="file" name="cover_image" accept="image/*">
+        <button class="btn btn-primary btn-rounded" type="submit">Topluluğu oluştur</button>
+    </form>
+@endsection

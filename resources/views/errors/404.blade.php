@@ -1,1 +1,11 @@
-<!doctype html><html lang="tr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Sayfa bulunamadı · OgraFi</title><link rel="stylesheet" href="{{ asset('css/repost-kit.css') }}"><link rel="stylesheet" href="{{ asset('css/repost-theme.css') }}"></head><body><main class="card card-body" style="max-width:640px;margin:64px auto"><h1>404 · Sayfa bulunamadı</h1><p>Aradığın sayfa taşınmış veya kaldırılmış olabilir.</p><a href="{{ route('home') }}">Ana sayfaya dön</a></main></body></html>
+@extends('layouts.repost')
+
+@section('title', 'Sayfa bulunamadı — OgraFi')
+@section('content')
+    <section class="card card-body repost-empty-state repost-error-state">
+        <span class="repost-eyebrow">404</span>
+        <h1>Aradığın sayfa burada değil.</h1>
+        <p>Bağlantı değişmiş veya içerik kaldırılmış olabilir.</p>
+        <a href="{{ route('home') }}" class="btn btn-primary btn-rounded">Ana sayfaya dön</a>
+    </section>
+@endsection

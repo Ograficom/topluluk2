@@ -1,1 +1,17 @@
-<!doctype html><html lang="tr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Rozetlerim · OgraFi</title><link rel="stylesheet" href="{{ asset('css/repost-kit.css') }}"><link rel="stylesheet" href="{{ asset('css/repost-theme.css') }}"></head><body><main class="card card-body" style="max-width:760px;margin:40px auto"><h1>Rozetlerim</h1><p>Toplam puan: <strong>{{ $badgePoints }}</strong></p>@if($nextBadge)<p>Sıradaki rozet: {{ $nextBadge->name ?? 'Yeni rozet' }}</p>@endif<div class="grid">@forelse($badges as $badge)<article class="card card-body"><strong>{{ $badge->name ?? $badge->title ?? 'Rozet' }}</strong><p>{{ $badge->description ?? '' }}</p></article>@empty<p>Henüz rozet kazanmadın.</p>@endforelse</div></main></body></html>
+@extends('layouts.repost')
+
+@section('title', 'Rozetler — OgraFi')
+@section('content')
+    <div class="repost-feed-heading"><div><span class="repost-eyebrow">TOPLULUK KATKISI</span><h1>Rozetlerim</h1><p>Katkıların ve topluluk içindeki ilerlemen.</p></div></div>
+    <section class="card card-body repost-badge-summary"><strong>{{ number_format((int) $badgePoints) }} puan</strong><span class="meta">Toplam rozet puanın</span></section>
+    <div class="repost-badge-grid">
+        @forelse($badges as $badge)
+            <article class="card card-body"><strong>{{ $badge->name ?? $badge->title ?? 'Rozet' }}</strong><span class="meta">{{ $badge->description ?? '' }}</span></article>
+        @empty
+            <div class="card card-body repost-empty-state">Henüz rozet kazanmadın.</div>
+        @endforelse
+    </div>
+    @if($nextBadge)
+        <p class="meta" style="margin-top:14px">Sıradaki rozet: {{ $nextBadge->name ?? $nextBadge->title ?? 'Yeni rozet' }}</p>
+    @endif
+@endsection

@@ -28,6 +28,18 @@ final class PageLayoutCatalog
                     'post_feed' => ['label' => 'Gonderi akisi', 'selector' => '[data-ografi-layout-section="post_feed"]'],
                 ],
             ],
+            'discover' => [
+                'label' => 'Kesfet',
+                'route' => 'discover',
+                'container' => '[data-ografi-layout-container="discover"]',
+                'blocks' => [
+                    'discover_search' => ['label' => 'Arama kutusu', 'selector' => '[data-ografi-layout-section="discover_search"]'],
+                    'discover_ads_top' => ['label' => 'Ust reklam alani', 'selector' => '[data-ografi-layout-section="discover_ads_top"]'],
+                    'discover_users' => ['label' => 'Onerilen kullanicilar', 'selector' => '[data-ografi-layout-section="discover_users"]'],
+                    'discover_communities' => ['label' => 'Topluluklar', 'selector' => '[data-ografi-layout-section="discover_communities"]'],
+                    'discover_posts' => ['label' => 'Onerilen gonderiler', 'selector' => '[data-ografi-layout-section="discover_posts"]'],
+                ],
+            ],
             'categories' => [
                 'label' => 'Kategoriler',
                 'route' => 'blog.categories',
@@ -134,6 +146,18 @@ final class PageLayoutCatalog
                 'blocks' => [
                     'drafts_header' => ['label' => 'Taslaklar basligi ve araclar', 'selector' => '[data-ografi-layout-section="drafts_header"]'],
                     'drafts_posts' => ['label' => 'Taslak gonderiler', 'selector' => '[data-ografi-layout-section="drafts_posts"]'],
+                ],
+            ],
+            'faq' => [
+                'label' => 'SSS',
+                'route' => 'pages.sss',
+                'container' => '[data-ografi-layout-container="faq"]',
+                'blocks' => [
+                    'faq_title' => ['label' => 'SSS basligi ve araclar', 'selector' => '[data-ografi-layout-section="faq_title"]'],
+                    'faq_title_spacer' => ['label' => 'Baslik boslugu', 'selector' => '[data-ografi-layout-section="faq_title_spacer"]'],
+                    'faq_search' => ['label' => 'SSS arama paneli', 'selector' => '[data-ografi-layout-section="faq_search"]'],
+                    'faq_search_spacer' => ['label' => 'Arama boslugu', 'selector' => '[data-ografi-layout-section="faq_search_spacer"]'],
+                    'faq_list' => ['label' => 'Soru ve cevap listesi', 'selector' => '[data-ografi-layout-section="faq_list"]'],
                 ],
             ],
             'profile' => [
@@ -575,6 +599,7 @@ final class PageLayoutCatalog
 
         $url = match ($pageKey) {
             'home' => route('home'),
+            'discover' => route('discover'),
             'categories' => route('blog.categories'),
             'tags' => route('blog.tags'),
             'blog_index' => route('blog.index'),
@@ -587,6 +612,7 @@ final class PageLayoutCatalog
             'notifications' => route('notifications.index'),
             'bookmarks' => route('blog.bookmarks'),
             'drafts' => route('blog.drafts'),
+            'faq' => route('pages.sss'),
             default => isset($definition['preview_path'])
                 ? url($definition['preview_path'])
                 : route('home'),

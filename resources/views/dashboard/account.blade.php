@@ -1,1 +1,17 @@
-@php($user=auth()->user())<!doctype html><html lang="tr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Hesap bilgileri · OgraFi</title><link rel="stylesheet" href="{{ asset('css/repost-kit.css') }}"><link rel="stylesheet" href="{{ asset('css/repost-theme.css') }}"></head><body><main class="card card-body" style="max-width:760px;margin:40px auto"><h1>Hesap bilgileri</h1><form method="POST" action="{{ route('dashboard.account.update') }}">@csrf @method('PUT')<label>Ad soyad</label><input name="name" value="{{ old('name',$user->name) }}" required><label>Kullanıcı adı</label><input name="username" value="{{ old('username',$user->username) }}" required><label>E-posta</label><input type="email" name="email" value="{{ old('email',$user->email) }}" required>@foreach(['name','username','email'] as $field)@error($field)<p>{{ $message }}</p>@enderror @endforeach<button class="btn btn-primary">Kaydet</button></form><a href="{{ route('dashboard') }}">Ayarlar</a></main></body></html>
+@extends('layouts.repost')
+
+@section('title', 'Hesap bilgileri — OgraFi')
+@section('content')
+    <div class="repost-feed-heading"><div><span class="repost-eyebrow">HESAP</span><h1>Hesap bilgileri</h1><p>Adını, kullanıcı adını ve e-posta adresini güncelle.</p></div></div>
+    <form method="POST" action="{{ route('dashboard.account.update') }}" class="card card-body repost-settings-form">
+        @csrf
+        @method('PUT')
+        <label for="name">Ad soyad</label><input id="name" name="name" value="{{ old('name', auth()->user()->name) }}" required maxlength="255">
+        @error('name')<span class="repost-form-error">{{ $message }}</span>@enderror
+        <label for="username">Kullanıcı adı</label><input id="username" name="username" value="{{ old('username', auth()->user()->username) }}" required maxlength="255">
+        @error('username')<span class="repost-form-error">{{ $message }}</span>@enderror
+        <label for="email">E-posta</label><input id="email" type="email" name="email" value="{{ old('email', auth()->user()->email) }}" required maxlength="255">
+        @error('email')<span class="repost-form-error">{{ $message }}</span>@enderror
+        <button class="btn btn-primary btn-rounded" type="submit">Bilgileri kaydet</button>
+    </form>
+@endsection

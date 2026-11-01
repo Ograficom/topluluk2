@@ -1,1 +1,23 @@
-@php($prefs=session('dashboard_notifications',[]))<!doctype html><html lang="tr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Bildirim tercihleri · OgraFi</title><link rel="stylesheet" href="{{ asset('css/repost-kit.css') }}"><link rel="stylesheet" href="{{ asset('css/repost-theme.css') }}"></head><body><main class="card card-body" style="max-width:760px;margin:40px auto"><h1>Bildirim tercihleri</h1><form method="POST" action="{{ route('dashboard.notifications.update') }}">@csrf @method('PUT')@foreach(['comments'=>'Gönderime yorum yapıldığında','replies'=>'Yoruma yanıt verildiğinde','likes'=>'Gönderim tepki aldığında','followers'=>'Yeni takipçi geldiğinde','mentions'=>'Bir yerde etiketlendiğimde','daily_digest_enabled'=>'Günlük e-posta özeti'] as $field=>$label)<label><input type="checkbox" name="{{ $field }}" value="1" @checked($prefs[$field]??auth()->user()->{$field}??false)> {{ $label }}</label>@endforeach<button class="btn btn-primary">Kaydet</button></form><form method="POST" action="{{ route('dashboard.notifications.digest-email') }}">@csrf @method('PUT')<label>Günlük özet e-posta adresi</label><input type="email" name="daily_digest_email" value="{{ auth()->user()->daily_digest_email ?? auth()->user()->email }}" required><button class="btn btn-secondary">E-posta adresini güncelle</button></form></main></body></html>
+@extends('layouts.repost')
+
+@section('title', 'Bildirimler — OgraFi')
+@section('content')
+    @php($prefs = session('dashboard_notifications', []))
+    <div class="repost-feed-heading"><div><span class="repost-eyebrow">BİLDİRİMLER</span><h1>Bildirim tercihleri</h1><p>Hangi etkinliklerde bildirim almak istediğini seç.</p></div></div>
+    <form method="POST" action="{{ route('dashboard.notifications.update') }}" class="card card-body repost-settings-form">
+        @csrf
+        @method('PUT')
+        @foreach(['comments' => 'Gönderilerime yapılan yorumlar', 'replies' => 'Yorumlarıma verilen yanıtlar', 'likes' => 'Beğeniler ve tepkiler', 'followers' => 'Yeni takipçiler', 'mentions' => 'Bahsedildiğim içerikler'] as $field => $label)
+            <label class="repost-settings-check"><input type="checkbox" name="{{ $field }}" value="1" @checked(old($field, $prefs[$field] ?? true))> {{ $label }}</label>
+        @endforeach
+        <label class="repost-settings-check"><input type="checkbox" name="daily_digest_enabled" value="1" @checked(old('daily_digest_enabled', auth()->user()->daily_digest_enabled))> Günlük e-posta özeti al</label>
+        <button class="btn btn-primary btn-rounded" type="submit">Bildirim tercihlerini kaydet</button>
+    </form>
+    <form method="POST" action="{{ route('dashboard.notifications.digest-email') }}" class="card card-body repost-settings-form" style="margin-top:14px">
+        @csrf
+        @method('PUT')
+        <label for="daily_digest_email">Günlük özet e-posta adresi</label>
+        <input id="daily_digest_email" type="email" name="daily_digest_email" value="{{ old('daily_digest_email', auth()->user()->daily_digest_email ?: auth()->user()->email) }}" required>
+        <button class="btn btn-secondary btn-rounded" type="submit">E-posta adresini güncelle</button>
+    </form>
+@endsection

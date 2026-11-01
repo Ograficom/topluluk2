@@ -1,1 +1,35 @@
-<!doctype html><html lang="{{ str_replace('_', '-', app()->getLocale()) }}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Arama · OgraFi</title><link rel="stylesheet" href="{{ asset('css/repost-kit.css') }}"><link rel="stylesheet" href="{{ asset('css/repost-theme.css') }}"><link rel="stylesheet" href="{{ asset('css/repost-ui.css') }}"></head><body class="repost-ui"><main class="main"><section class="feed card card-body"><h1 class="h2">Arama</h1><form method="GET" action="{{ route('search') }}"><input type="search" name="q" value="{{ $query }}" placeholder="Ne arıyorsun?"><button class="btn btn-primary">Ara</button></form>@if($query !== '')<p>“{{ $query }}” için sonuçlar</p>@foreach(($results['posts'] ?? []) as $post)<article class="card card-body"><a href="{{ route('blog.post',['post'=>$post->slug]) }}"><strong>{{ $post->title }}</strong></a><p>{{ $post->excerpt }}</p></article>@endforeach@foreach(($results['categories'] ?? []) as $category)<article class="card card-body"><a href="{{ route('blog.category',['category'=>$category->slug]) }}">{{ $category->name }}</a></article>@endforeach@foreach(($results['tags'] ?? []) as $tag)<a href="{{ route('blog.index',['tag'=>$tag->slug]) }}">{{ $tag->name }}</a>@endforeach@foreach(($results['users'] ?? []) as $user)<article class="card card-body"><a href="{{ route('users.show',['user'=>$user->username]) }}">{{ $user->name }}</a></article>@endforeach@endif</section></main></body></html>
+@extends('layouts.repost')
+
+@section('title', 'Arama — OgraFi')
+@section('content')
+    <div class="repost-feed-heading"><div><span class="repost-eyebrow">ARAMA</span><h1>OgraFi'de ara</h1></div></div>
+    <form method="GET" action="{{ route('search') }}" class="repost-sort-row">
+        <input type="search" name="q" value="{{ $query }}" placeholder="Gönderi, üye veya topluluk ara" autofocus>
+        <button type="submit" class="btn btn-primary btn-rounded">Ara</button>
+    </form>
+    @if($query === '')
+        <div class="card card-body repost-empty-state">Aramak istediğin kelimeyi yaz.</div>
+    @elseif($meta['too_short'] ?? false)
+        <div class="card card-body repost-empty-state">Arama terimi en az {{ $meta['min_length'] }} karakter olmalı.</div>
+    @else
+        @foreach(['posts' => 'Gönderiler', 'categories' => 'Topluluklar', 'users' => 'Üyeler', 'tags' => 'Etiketler', 'comments' => 'Yorumlar', 'pages' => 'Sayfalar'] as $key => $label)
+            @php($items = $results[$key] ?? [])
+            @if(count($items))
+                <section class="repost-discover-section">
+                    <h2>{{ $label }}</h2>
+                    <div class="repost-search-results">
+                        @foreach($items as $item)
+                            <a class="card card-body repost-search-result" href="{{ data_get($item, 'url', '#') }}">
+                                <strong>{{ data_get($item, 'title', data_get($item, 'name', data_get($item, 'username', 'Sonuç'))) }}</strong>
+                                <span class="meta">{{ \Illuminate\Support\Str::limit(strip_tags((string) data_get($item, 'excerpt', data_get($item, 'content', ''))), 130) }}</span>
+                            </a>
+                        @endforeach
+                    </div>
+                </section>
+            @endif
+        @endforeach
+        @if(collect($results)->flatten(1)->isEmpty())
+            <div class="card card-body repost-empty-state">“{{ $query }}” için sonuç bulunamadı.</div>
+        @endif
+    @endif
+@endsection

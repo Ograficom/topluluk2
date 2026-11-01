@@ -41,20 +41,15 @@ class FortifyServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // OgraFi uses its own verification-code flow and login screen; do not render missing Jetstream pages.
+        Fortify::verifyEmailView(fn () => redirect()->route('dashboard'));
+        Fortify::confirmPasswordView(fn () => redirect()->route('login'));
+
         Fortify::createUsersUsing(CreateNewUser::class);
         Fortify::updateUserProfileInformationUsing(UpdateUserProfileInformation::class);
         Fortify::updateUserPasswordsUsing(UpdateUserPassword::class);
         Fortify::resetUserPasswordsUsing(ResetUserPassword::class);
         Fortify::redirectUserForTwoFactorAuthenticationUsing(RedirectIfTwoFactorAuthenticatable::class);
-
-        Fortify::loginView(fn () => view('signin'));
-        Fortify::requestPasswordResetLinkView(fn () => view('lostpassword'));
-        Fortify::resetPasswordView(fn (Request $request) => view('auth.reset-password', [
-            'request' => $request,
-            'token' => $request->route('token'),
-        ]));
-        Fortify::verifyEmailView(fn () => view('auth.verify-email'));
-        Fortify::twoFactorChallengeView(fn () => view('auth.two-factor-challenge'));
 
         Fortify::authenticateUsing(function (Request $request) {
             $securitySettings = RecaptchaSetting::currentOrNull();

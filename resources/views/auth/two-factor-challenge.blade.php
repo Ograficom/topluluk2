@@ -1,1 +1,22 @@
-<!doctype html><html lang="{{ str_replace('_', '-', app()->getLocale()) }}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>İki aşamalı doğrulama · OgraFi</title><link rel="stylesheet" href="{{ asset('css/repost-kit.css') }}"><link rel="stylesheet" href="{{ asset('css/repost-theme.css') }}"><link rel="stylesheet" href="{{ asset('css/repost-ui.css') }}"></head><body class="repost-ui"><main class="main"><section class="card card-body" style="max-width:560px;margin:48px auto"><h1 class="h2">İki aşamalı doğrulama</h1><form method="POST" action="{{ route('two-factor.login') }}">@csrf<div><label for="code">Doğrulama kodu</label><input id="code" name="code" inputmode="numeric" autocomplete="one-time-code"></div><div><label for="recovery_code">Kurtarma kodu</label><input id="recovery_code" name="recovery_code" autocomplete="one-time-code"></div>@error('code')<p class="text-danger">{{ $message }}</p>@enderror<button class="btn btn-primary" type="submit">Devam et</button></form></section></main></body></html>
+@extends('layouts.repost')
+
+@section('title', 'İki adımlı giriş — OgraFi')
+@section('content')
+    <div class="repost-auth-wrap">
+        <section class="card card-body repost-auth-card">
+            <a href="{{ route('home') }}" class="repost-auth-brand">OgraFi</a>
+            <span class="repost-eyebrow">HESAP GÜVENLİĞİ</span>
+            <h1>Girişini doğrula</h1>
+            <p class="repost-auth-description">Kimlik doğrulama uygulamandaki kodu veya kurtarma kodlarından birini gir.</p>
+            <x-validation-errors />
+            <form method="POST" action="{{ route('two-factor.login') }}" class="repost-auth-form">
+                @csrf
+                <label for="code">Doğrulama kodu</label>
+                <input id="code" name="code" inputmode="numeric" autocomplete="one-time-code">
+                <label for="recovery_code">Kurtarma kodu</label>
+                <input id="recovery_code" name="recovery_code" autocomplete="one-time-code">
+                <button class="btn btn-primary btn-rounded" type="submit">Devam et</button>
+            </form>
+        </section>
+    </div>
+@endsection

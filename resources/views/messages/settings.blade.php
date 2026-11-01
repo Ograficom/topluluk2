@@ -1,1 +1,13 @@
-<!doctype html><html lang="{{ str_replace('_', '-', app()->getLocale()) }}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Mesaj ayarları · OgraFi</title><link rel="stylesheet" href="{{ asset('css/repost-kit.css') }}"><link rel="stylesheet" href="{{ asset('css/repost-theme.css') }}"><link rel="stylesheet" href="{{ asset('css/repost-ui.css') }}"></head><body class="repost-ui"><main class="main"><section class="feed card card-body"><h1 class="h2">Mesaj ayarları</h1><form method="POST" action="{{ route('messages.settings.update') }}">@csrf<label><input type="checkbox" name="allow_messages" value="1" @checked($preferences->allow_messages)> Mesaj almayı etkinleştir</label><label><input type="checkbox" name="allow_following_only" value="1" @checked($preferences->allow_following_only)> Yalnızca takip ettiklerim mesaj gönderebilsin</label><button class="btn btn-primary" type="submit">Ayarları kaydet</button></form></section></main></body></html>
+@extends('layouts.repost')
+
+@section('title', 'Mesaj ayarları — OgraFi')
+@section('content')
+    <div class="repost-feed-heading"><div><span class="repost-eyebrow">GİZLİLİK</span><h1>Mesaj ayarları</h1><p>Kimlerin sana mesaj gönderebileceğini belirle.</p></div></div>
+    <form method="POST" action="{{ route('messages.settings.update') }}" class="card card-body repost-message-settings">
+        @csrf
+        <label><input type="checkbox" name="allow_messages" value="1" @checked($preferences->allow_messages)> Üyelerden mesaj al</label>
+        <label><input type="checkbox" name="allow_following_only" value="1" @checked($preferences->allow_following_only)> Yalnızca takip ettiklerim mesaj gönderebilsin</label>
+        <p class="meta">Site genelindeki mesajlaşma kuralları bu tercihleri sınırlandırabilir.</p>
+        <button type="submit" class="btn btn-primary btn-rounded">Ayarları kaydet</button>
+    </form>
+@endsection

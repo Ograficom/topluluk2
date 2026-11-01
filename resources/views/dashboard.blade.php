@@ -1,1 +1,17 @@
-<!doctype html><html lang="tr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Kontrol paneli · OgraFi</title><link rel="stylesheet" href="{{ asset('css/repost-kit.css') }}"><link rel="stylesheet" href="{{ asset('css/repost-theme.css') }}"><link rel="stylesheet" href="{{ asset('css/repost-ui.css') }}"></head><body class="repost-ui"><main class="main"><section class="feed card card-body"><h1 class="h2">Hesap ayarları</h1><p>{{ auth()->user()->name }}, hesabını ve topluluk tercihlerini buradan yönetebilirsin.</p><nav class="grid">@foreach(['account'=>'Hesap','profile'=>'Profil','password'=>'Şifre','privacy'=>'Gizlilik','preferences'=>'Tercihler','notifications'=>'Bildirimler','blocks'=>'Engellenenler','badges'=>'Rozetler','two-factor-authentication'=>'İki aşamalı doğrulama','delete-account'=>'Hesabı sil'] as $path=>$label)<a class="card card-body" href="{{ url('/dashboard/'.$path) }}">{{ $label }}</a>@endforeach</nav></section></main></body></html>
+@extends('layouts.repost')
+
+@section('title', 'Hesap merkezi — OgraFi')
+@section('content')
+    <div class="repost-feed-heading"><div><span class="repost-eyebrow">HESAP MERKEZİ</span><h1>Hesap ayarları</h1><p>Profilini, güvenliğini ve topluluk tercihlerini yönet.</p></div></div>
+    <div class="repost-dashboard-grid">
+        <a class="card card-body repost-dashboard-tile" href="{{ route('profile.edit') }}"><strong>Profil bilgileri</strong><span>Hakkında, konum ve sosyal bağlantılar</span></a>
+        <a class="card card-body repost-dashboard-tile" href="{{ route('dashboard.account') }}"><strong>Hesap bilgileri</strong><span>Ad, kullanıcı adı ve e-posta</span></a>
+        <a class="card card-body repost-dashboard-tile" href="{{ route('dashboard.password') }}"><strong>Şifre</strong><span>Hesap şifreni değiştir</span></a>
+        <a class="card card-body repost-dashboard-tile" href="{{ route('dashboard.privacy') }}"><strong>Gizlilik</strong><span>Profil ve içerik görünürlüğü</span></a>
+        <a class="card card-body repost-dashboard-tile" href="{{ route('dashboard.preferences') }}"><strong>Tercihler</strong><span>Dil ve içerik tercihleri</span></a>
+        <a class="card card-body repost-dashboard-tile" href="{{ route('dashboard.notifications') }}"><strong>Bildirimler</strong><span>Bildirim ve e-posta tercihleri</span></a>
+        <a class="card card-body repost-dashboard-tile" href="{{ route('dashboard.blocks') }}"><strong>Engellenenler</strong><span>Engellediğin üyeleri yönet</span></a>
+        <a class="card card-body repost-dashboard-tile" href="{{ route('dashboard.badges') }}"><strong>Rozetler</strong><span>Kazandığın rozetler ve puanlar</span></a>
+        <a class="card card-body repost-dashboard-tile" href="{{ route('messages.settings') }}"><strong>Mesaj ayarları</strong><span>Kimlerin mesaj gönderebileceği</span></a>
+    </div>
+@endsection

@@ -20,7 +20,7 @@ class UsersIndexFollowStateTest extends TestCase
         $this->assertTrue($viewer->fresh()->followings()->where('followed_id', $target->id)->exists());
 
         $indexResponse = $this->actingAs($viewer)->get(route('users.index'));
-        $indexResponse->assertSee('Takiptesin');
+        $indexResponse->assertSee('Takip ediliyor');
 
         // toggle again -> unfollow
         $this->actingAs($viewer)->post(route('users.follow', $target));

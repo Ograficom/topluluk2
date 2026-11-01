@@ -1,1 +1,15 @@
-<!doctype html><html lang="tr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Site sağlığı · OgraFi</title><link rel="stylesheet" href="{{ asset('css/repost-kit.css') }}"><link rel="stylesheet" href="{{ asset('css/repost-theme.css') }}"></head><body><main class="card card-body" style="max-width:1100px;margin:40px auto"><h1>Site sağlığı</h1><div class="grid">@foreach(($summary ?? []) as $key=>$value)<article class="card card-body"><strong>{{ is_string($key)?str_replace('_',' ',$key):'Özet' }}</strong><p>{{ is_scalar($value)?$value:json_encode($value,JSON_UNESCAPED_UNICODE) }}</p></article>@endforeach</div><h2>Son ölçümler</h2><div class="table-responsive"><table><thead><tr><th>Sayfa</th><th>Ölçüm</th><th>Değer</th><th>Tarih</th></tr></thead><tbody>@foreach(($allSamples ?? []) as $sample)<tr><td>{{ $sample->page ?? $sample->url ?? '—' }}</td><td>{{ $sample->metric ?? '—' }}</td><td>{{ $sample->value ?? '—' }}</td><td>{{ $sample->created_at?->diffForHumans() }}</td></tr>@endforeach</tbody></table></div></main></body></html>
+@extends('layouts.repost')
+
+@section('title', 'Site sağlığı — OgraFi')
+@section('content')
+    <div class="repost-feed-heading"><div><span class="repost-eyebrow">YÖNETİM</span><h1>Site performansı</h1><p>Son 28 gündeki Core Web Vitals ölçümleri.</p></div></div>
+    <div class="card card-body repost-health-summary"><strong>{{ number_format((int) $allSamples) }}</strong><span class="meta">Toplam ölçüm</span><span class="meta">Güvenli bağlantı: {{ number_format((int) $secureSamples) }} · Güvensiz: {{ number_format((int) $insecureSamples) }}</span><span class="meta">Son ölçüm: {{ $lastSampleAt ? \Illuminate\Support\Carbon::parse($lastSampleAt)->diffForHumans() : 'Henüz yok' }}</span></div>
+    @foreach($summary as $device => $metrics)
+        <section class="repost-discover-section"><h2>{{ $device === 'mobile' ? 'Mobil' : 'Masaüstü' }}</h2><div class="repost-health-grid">
+            @foreach($metrics as $name => $data)
+                <article class="card card-body"><strong>{{ $name }}</strong><span class="meta">Örnek: {{ $data['count'] }}</span><span>75. yüzdelik: {{ $data['p75'] ?? '—' }}</span><span class="meta">İyi: {{ $data['good'] }} · Geliştirilmeli: {{ $data['needs'] }} · Zayıf: {{ $data['poor'] }}</span></article>
+            @endforeach
+        </div></section>
+    @endforeach
+    <section class="card card-body"><h2>En çok ölçüm alınan sayfalar</h2>@foreach($pageStats as $stat)<p>{{ $stat->page_path }} — {{ $stat->device_type }} — {{ $stat->samples }} ölçüm</p>@endforeach</section>
+@endsection

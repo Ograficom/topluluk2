@@ -1,1 +1,12 @@
-<!doctype html><html lang="tr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Gönderiyi bildir · OgraFi</title><link rel="stylesheet" href="{{ asset('css/repost-kit.css') }}"><link rel="stylesheet" href="{{ asset('css/repost-theme.css') }}"></head><body><main class="card card-body" style="max-width:700px;margin:40px auto"><h1>Gönderiyi bildir</h1><p>{{ $post->title }}</p><form method="POST" action="{{ route('blog.post.report',['post'=>$post->slug]) }}">@csrf<label>Bildirim nedeni</label><select name="topic" required>@foreach($topics as $key=>$label)<option value="{{ $key }}">{{ $label }}</option>@endforeach</select><label>Açıklama (isteğe bağlı)</label><textarea name="message" rows="5" maxlength="2000"></textarea><button class="btn btn-primary">Bildir</button></form></main></body></html>
+@extends('layouts.repost')
+
+@section('title', 'Gönderiyi bildir — OgraFi')
+@section('content')
+    <div class="repost-feed-heading"><div><span class="repost-eyebrow">GÜVENLİK</span><h1>Gönderiyi bildir</h1><p>{{ $post->title }}</p></div></div>
+    <form method="POST" action="{{ route('blog.post.report', $post->slug) }}" class="card card-body repost-settings-form">
+        @csrf
+        <label for="topic">Bildirim nedeni</label><select id="topic" name="topic" required>@foreach($topics as $key => $label)<option value="{{ $key }}" @selected(old('topic') === $key)>{{ $label }}</option>@endforeach</select>
+        <label for="message">Açıklama (isteğe bağlı)</label><textarea id="message" name="message" rows="5" maxlength="2000">{{ old('message') }}</textarea>
+        <button class="btn btn-primary btn-rounded" type="submit">Bildirimi gönder</button>
+    </form>
+@endsection

@@ -1,1 +1,16 @@
-<!doctype html><html lang="{{ str_replace('_', '-', app()->getLocale()) }}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>{{ $pageTitle ?? 'İletişim' }} · OgraFi</title><link rel="stylesheet" href="{{ asset('css/repost-kit.css') }}"><link rel="stylesheet" href="{{ asset('css/repost-theme.css') }}"><link rel="stylesheet" href="{{ asset('css/repost-ui.css') }}"></head><body class="repost-ui"><main class="main"><section class="feed card card-body"><h1 class="h2">{{ $pageTitle ?? 'Bize ulaşın' }}</h1><form method="POST" action="{{ route('contact.store') }}">@csrf<label for="name">Ad soyad</label><input id="name" name="name" value="{{ old('name', $user?->name) }}" required><label for="email">E-posta</label><input id="email" type="email" name="email" value="{{ old('email', $user?->email) }}" required><label for="subject">Konu</label><input id="subject" name="subject" value="{{ old('subject') }}" required><label for="message">Mesaj</label><textarea id="message" name="message" rows="6" required>{{ old('message') }}</textarea>@foreach(['name','email','subject','message'] as $field)@error($field)<p class="text-danger">{{ $message }}</p>@enderror @endforeach<button class="btn btn-primary" type="submit">Gönder</button></form></section></main></body></html>
+@extends('layouts.repost')
+
+@section('title', $pageTitle . ' — OgraFi')
+@section('content')
+    <div class="repost-feed-heading"><div><span class="repost-eyebrow">DESTEK</span><h1>Bize ulaşın</h1><p>Soru, öneri veya geri bildirimin için mesaj gönder.</p></div></div>
+    @if(session('contact_status'))<div class="card card-body repost-auth-status">{{ session('contact_status') }}</div>@endif
+    <form method="POST" action="{{ route('contact.store') }}" class="card card-body repost-settings-form">
+        @csrf
+        <label for="full_name">Ad soyad</label><input id="full_name" name="full_name" value="{{ old('full_name', $user?->name) }}" required>
+        <label for="email">E-posta</label><input id="email" type="email" name="email" value="{{ old('email', $user?->email) }}" required>
+        <label for="subject">Konu</label><input id="subject" name="subject" value="{{ old('subject') }}" required>
+        <label for="message">Mesaj</label><textarea id="message" name="message" rows="6" maxlength="5000" required>{{ old('message') }}</textarea>
+        <label class="repost-settings-check"><input type="checkbox" name="consent" value="1" required @checked(old('consent'))> Mesajımın yanıtlanması için bilgilerimin işlenmesini kabul ediyorum.</label>
+        <button class="btn btn-primary btn-rounded" type="submit">Mesajı gönder</button>
+    </form>
+@endsection

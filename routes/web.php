@@ -1,5 +1,6 @@
 <?php
 
+use App\Actions\Jetstream\DeleteUser;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\AdvertiseController;
 use App\Http\Controllers\BorsaController;
@@ -30,6 +31,7 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Middleware\ValidatePostSize;
@@ -59,7 +61,7 @@ Route::post('/email/verify-code', EmailVerificationCodeController::class)
     ->name('verification.code.verify');
 
 Route::middleware('guest')->group(function (): void {
-    Route::view('/register', 'signup')->name('register');
+    Route::view('/register', 'auth.register')->name('register');
     Route::post('/register/email', [RegistrationVerificationController::class, 'requestCode'])
         ->middleware('throttle:5,1')->name('register.email');
     Route::get('/register/verify-code', [RegistrationVerificationController::class, 'showVerify'])->name('register.verify');
@@ -86,6 +88,12 @@ Route::get('/auth/{provider}', [SocialLoginController::class, 'redirect'])
 Route::get('/auth/{provider}/callback', [SocialLoginController::class, 'callback'])
     ->whereIn('provider', ['google'])
     ->name('social.callback');
+
+Route::get('/auth/device/verify', [SocialLoginController::class, 'showDeviceVerification'])
+    ->name('social.device.verify');
+Route::post('/auth/device/verify', [SocialLoginController::class, 'verifyDevice'])
+    ->middleware('throttle:5,1')
+    ->name('social.device.verify.submit');
 
 Route::post('/auth/google/one-tap', [SocialLoginController::class, 'oneTap'])
     ->withoutMiddleware([VerifyCsrfToken::class])
@@ -170,8 +178,6 @@ Route::redirect('/user/login', '/login', 301);
 Route::redirect('/user/forgot-password', '/forgot-password', 301);
 Route::redirect('/user/reset-password', '/forgot-password', 301);
 Route::get('/cerez-politikasi', [CookiePolicyController::class, 'show'])->name('cookie.policy');
-Route::view('/4040', 'errors.404')->name('errors.preview.4040');
-Route::view('/template/home-like', 'templates.home-like')->name('templates.home-like');
 
 Route::get('/Categorys', [BlogController::class, 'categories'])->name('blog.categories');
 Route::middleware('auth')->group(function () {
@@ -365,6 +371,88 @@ Route::get('/feed/latest-check', function () {
 
 Route::get('/social-feed', $socialFeedHandler)->name('social-feed');
 
+Route::get('/discover', function () {
+    $viewerId = \Illuminate\Support\Facades\Auth::id();
+
+    $featuredUsers = User::query()
+        ->when($viewerId, fn ($query) => $query->whereKeyNot($viewerId))
+        ->withCount(['followers'])
+        ->orderByDesc('is_verified')
+        ->orderByDesc('followers_count')
+        ->orderByDesc('id')
+        ->take(2)
+        ->get([
+            'id',
+            'name',
+            'username',
+            'profile_photo_path',
+            'is_verified',
+            'verification_badge',
+            'verification_badge_svg',
+        ]);
+
+    $featuredCommunities = Category::query()
+        ->withCount(['followers', 'posts'])
+        ->orderByDesc('followers_count')
+        ->orderByDesc('posts_count')
+        ->orderBy('name')
+        ->take(3)
+        ->get([
+            'id',
+            'name',
+            'slug',
+            'profile_image',
+        ]);
+
+    $reactionTypes = ReactionType::query()
+        ->where('is_active', true)
+        ->get(['id', 'label', 'short_code', 'emoji', 'gif_url']);
+
+    $recommendedPosts = Post::query()
+        ->published()
+        ->with([
+            'category:id,name,slug,profile_image,cover_image',
+            'author:id,name,username,profile_photo_path,is_verified,verification_badge,verification_badge_svg',
+        ])
+        ->withCount(['comments', 'reactions'])
+        ->when($viewerId, function ($query) use ($viewerId) {
+            $query->withExists([
+                'bookmarkers as is_bookmarked' => fn ($inner) => $inner->where('users.id', $viewerId),
+            ]);
+        })
+        ->orderByDesc('is_pinned')
+        ->orderByDesc('reactions_count')
+        ->latest('published_at')
+        ->take(6)
+        ->get();
+
+    if (!$viewerId) {
+        $recommendedPosts->each->setAttribute('is_bookmarked', false);
+    }
+
+    app(\App\Services\PostCommentPreviewService::class)->attachToPosts($recommendedPosts);
+    app(\App\Services\PostLinkPreviewService::class)->attachToPosts($recommendedPosts);
+
+    $popularTags = Tag::withCount('posts')->orderByDesc('posts_count')->take(10)->get();
+    $popularComments = Comment::query()
+        ->whereNull('parent_id')
+        ->with([
+            'user:id,name,username,profile_photo_path,is_verified,verification_badge,verification_badge_svg',
+            'post:id,title,slug',
+        ])
+        ->latest('created_at')
+        ->take(10)
+        ->get(['id', 'post_id', 'user_id', 'author_name', 'content', 'created_at']);
+
+    return view('pages.discover', compact(
+        'featuredUsers',
+        'featuredCommunities',
+        'recommendedPosts',
+        'reactionTypes',
+        'popularTags',
+        'popularComments',
+    ));
+})->name('discover');
 
 Route::post('/telemetry/web-vitals', [WebVitalsController::class, 'store'])
     ->middleware('throttle:30,1')
@@ -490,6 +578,7 @@ Route::get('/tr/create', function () {
     return redirect()->route('blog.create');
 })->name('tr.create');
 
+Route::view('/p/sss', 'pages.sss')->name('pages.sss');
 Route::get('/sayfa/{slug}', [PageController::class, 'show'])->name('pages.show');
 Route::get('/p/{slug}', function (string $slug) {
     $canonicalSlug = $slug === 'hakkinda' ? 'hakkimizda' : $slug;
@@ -738,6 +827,22 @@ Route::middleware([
     Route::get('/dashboard/delete-account', function () {
         return view('dashboard.delete-account');
     })->name('dashboard.delete-account');
+
+    Route::delete('/dashboard/delete-account', function (Request $request, DeleteUser $deleteUser) {
+        $request->validate([
+            'password' => ['required', 'current_password'],
+        ]);
+
+        $user = $request->user();
+
+        Auth::guard('web')->logout();
+        $deleteUser->delete($user);
+
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect()->route('home');
+    })->name('dashboard.delete-account.destroy');
 
     Route::get('/settings', function () {
         return view('settings');

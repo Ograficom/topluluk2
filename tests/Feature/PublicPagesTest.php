@@ -76,9 +76,13 @@ class PublicPagesTest extends TestCase
             ->assertOk();
     }
 
-    public function test_removed_sss_page_returns_not_found(): void
+    public function test_sss_page_can_be_rendered(): void
     {
-        $this->get('/p/sss')->assertNotFound();
+        $response = $this->get('/p/sss');
+
+        $response
+            ->assertOk()
+            ->assertSee('Sıkça Sorulan Sorular');
     }
 
     public function test_admin_login_page_can_be_rendered(): void

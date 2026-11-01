@@ -1,1 +1,20 @@
-@php($user=auth()->user())<!doctype html><html lang="tr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Gizlilik · OgraFi</title><link rel="stylesheet" href="{{ asset('css/repost-kit.css') }}"><link rel="stylesheet" href="{{ asset('css/repost-theme.css') }}"></head><body><main class="card card-body" style="max-width:760px;margin:40px auto"><h1>Gizlilik ayarları</h1><form method="POST" action="{{ route('dashboard.privacy.update') }}">@csrf @method('PUT')@foreach(['following_visibility'=>'Takip listem','posts_visibility'=>'Gönderilerim','comments_visibility'=>'Yorumlarım'] as $field=>$label)<label>{{ $label }}</label><select name="{{ $field }}" required>@foreach(\App\Support\PrivacyVisibility::LEVELS as $level)<option value="{{ $level }}" @selected($user->{$field}===$level)>{{ ucfirst($level) }}</option>@endforeach</select>@endforeach<button class="btn btn-primary">Gizliliği kaydet</button></form></main></body></html>
+@extends('layouts.repost')
+
+@section('title', 'Gizlilik — OgraFi')
+@section('content')
+    <div class="repost-feed-heading"><div><span class="repost-eyebrow">GİZLİLİK</span><h1>Görünürlük ayarları</h1><p>Takipçi, gönderi ve yorum görünürlüğünü yönet.</p></div></div>
+    <form method="POST" action="{{ route('dashboard.privacy.update') }}" class="card card-body repost-settings-form">
+        @csrf
+        @method('PUT')
+        @foreach(['following_visibility' => 'Takip ettiklerim', 'posts_visibility' => 'Gönderilerim', 'comments_visibility' => 'Yorumlarım'] as $field => $label)
+            <label for="{{ $field }}">{{ $label }}</label>
+            <select id="{{ $field }}" name="{{ $field }}" required>
+                <option value="public" @selected(old($field, auth()->user()->{$field}) === 'public')>Herkese açık</option>
+                <option value="friends" @selected(old($field, auth()->user()->{$field}) === 'friends')>Karşılıklı takipçiler</option>
+                <option value="private" @selected(old($field, auth()->user()->{$field}) === 'private')>Yalnızca ben</option>
+            </select>
+            @error($field)<span class="repost-form-error">{{ $message }}</span>@enderror
+        @endforeach
+        <button class="btn btn-primary btn-rounded" type="submit">Gizlilik ayarlarını kaydet</button>
+    </form>
+@endsection

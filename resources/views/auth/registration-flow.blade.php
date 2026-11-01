@@ -1,10 +1,36 @@
-<!doctype html><html lang="{{ str_replace('_', '-', app()->getLocale()) }}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>{{ $stage === 'verify' ? 'E-posta doğrulama' : 'Üyeliği tamamla' }} · OgraFi</title><link rel="stylesheet" href="{{ asset('css/repost-kit.css') }}"><link rel="stylesheet" href="{{ asset('css/repost-theme.css') }}"><link rel="stylesheet" href="{{ asset('css/repost-ui.css') }}"></head><body class="repost-ui"><main class="main"><section class="card card-body" style="max-width:560px;margin:48px auto"><a href="{{ route('home') }}">OgraFi</a>
-@if($stage === 'verify')
-<h1 class="h2">E-posta adresini doğrula</h1><p>{{ $pending->email }} adresine gönderdiğimiz 6 haneli kodu gir. Kod 10 dakika geçerlidir.</p>
-<form method="POST" action="{{ route('register.verify.submit') }}">@csrf<label for="code">Doğrulama kodu</label><input id="code" type="text" name="code" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" autocomplete="one-time-code" required>@error('code')<p class="text-danger">{{ $message }}</p>@enderror<button class="btn btn-primary" type="submit">E-postayı doğrula</button></form>
-<form method="POST" action="{{ route('register.email') }}">@csrf<input type="hidden" name="email" value="{{ $pending->email }}"><button class="btn btn-secondary" type="submit">Yeni kod gönder</button></form>
-@else
-<h1 class="h2">Üyeliğini tamamla</h1><p>E-posta adresin doğrulandı: <strong>{{ $pending->email }}</strong></p>
-<form method="POST" action="{{ route('register.complete.submit') }}">@csrf<label for="name">Adın</label><input id="name" name="name" type="text" value="{{ old('name') }}" autocomplete="name" required>@error('name')<p class="text-danger">{{ $message }}</p>@enderror<label for="password">Şifre</label><input id="password" name="password" type="password" autocomplete="new-password" required>@error('password')<p class="text-danger">{{ $message }}</p>@enderror<label for="password_confirmation">Şifre tekrar</label><input id="password_confirmation" name="password_confirmation" type="password" autocomplete="new-password" required><button class="btn btn-primary" type="submit">Üyeliği oluştur</button></form>
-@endif
-</section></main></body></html>
+@extends('layouts.app')
+
+@section('title', $stage === 'verify' ? 'E-posta doğrulama — OgraFi' : 'Hesabını tamamla — OgraFi')
+
+@section('content')
+    <section class="card card-body repost-auth-card">
+        @if($stage === 'verify')
+            <span class="repost-eyebrow">E-POSTA DOĞRULAMA</span>
+            <h1 class="h3">Doğrulama kodunu gir</h1>
+            <p class="color-gray">{{ $pending->email }} adresine gönderilen 6 haneli kodu yaz.</p>
+            <form method="POST" action="{{ route('register.verify.submit') }}" class="repost-auth-form">
+                @csrf
+                <label for="verification-code">6 haneli kod</label>
+                <input id="verification-code" type="text" name="code" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" autocomplete="one-time-code" required>
+                @error('code')<p class="color-red">{{ $message }}</p>@enderror
+                <button type="submit" class="btn btn-primary btn-rounded">E-postayı doğrula</button>
+            </form>
+        @else
+            <span class="repost-eyebrow">SON ADIM</span>
+            <h1 class="h3">Hesabını tamamla</h1>
+            <p class="color-gray">{{ $pending->email }} adresi doğrulandı.</p>
+            <form method="POST" action="{{ route('register.complete.submit') }}" class="repost-auth-form">
+                @csrf
+                <label for="register-name">Adın</label>
+                <input id="register-name" type="text" name="name" value="{{ old('name') }}" autocomplete="name" required>
+                @error('name')<p class="color-red">{{ $message }}</p>@enderror
+                <label for="register-password">Şifre</label>
+                <input id="register-password" type="password" name="password" autocomplete="new-password" required>
+                @error('password')<p class="color-red">{{ $message }}</p>@enderror
+                <label for="register-password-confirmation">Şifreyi tekrar gir</label>
+                <input id="register-password-confirmation" type="password" name="password_confirmation" autocomplete="new-password" required>
+                <button type="submit" class="btn btn-primary btn-rounded">Hesabı oluştur</button>
+            </form>
+        @endif
+    </section>
+@endsection

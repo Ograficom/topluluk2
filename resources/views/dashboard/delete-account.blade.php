@@ -1,1 +1,18 @@
-<!doctype html><html lang="tr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Hesabı sil · OgraFi</title><link rel="stylesheet" href="{{ asset('css/repost-kit.css') }}"><link rel="stylesheet" href="{{ asset('css/repost-theme.css') }}"></head><body><main class="card card-body" style="max-width:760px;margin:40px auto"><h1>Hesabı sil</h1><p>Hesap silme işlemi geri alınamaz. Güvenlik nedeniyle bu işlem için yönetim veya hesap doğrulama akışı gereklidir.</p><a href="{{ route('contact.create') }}">Destek ekibiyle iletişime geç</a></main></body></html>
+@extends('layouts.repost')
+
+@section('title', 'Hesabı sil — OgraFi')
+@section('content')
+    <div class="repost-feed-heading"><div><span class="repost-eyebrow">HESAP GÜVENLİĞİ</span><h1>Hesabı sil</h1><p>Bu işlem hesabına ve ilişkili verilere erişimini sonlandırır.</p></div></div>
+    <section class="card card-body repost-danger-zone">
+        <strong>Hesabını kalıcı olarak silmek üzeresin.</strong>
+        <p>Devam etmeden önce kararını dikkatlice değerlendir. Silme işlemi geri alınamaz.</p>
+        <form method="POST" action="{{ route('dashboard.delete-account.destroy') }}" class="repost-settings-form" onsubmit="return confirm('Hesabını kalıcı olarak silmek istediğine emin misin?')">
+            @csrf
+            @method('DELETE')
+            <label for="password">Onay için şifren</label>
+            <input id="password" type="password" name="password" required autocomplete="current-password">
+            @error('password')<span class="repost-form-error">{{ $message }}</span>@enderror
+            <button class="btn btn-secondary btn-rounded" type="submit">Hesabımı kalıcı olarak sil</button>
+        </form>
+    </section>
+@endsection

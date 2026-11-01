@@ -1,108 +1,180 @@
-<!doctype html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-<head>
-  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{{ $post->meta_title ?: $post->title }} · OgraFi</title>
-  <meta name="description" content="{{ $post->meta_description ?: $post->excerpt }}">
-  <link rel="stylesheet" href="{{ asset('css/repost-kit.css') }}">
-  <link rel="stylesheet" href="{{ asset('css/repost-theme.css') }}">
-  <link rel="stylesheet" href="{{ asset('css/repost-ui.css') }}">
-</head>
-<body class="repost-ui">
-<header class="site-header"><div class="site-header-shell">
-  <a href="{{ route('home') }}" class="logo"><img src="{{ asset('images/ografi-logo.png') }}" alt="OgraFi" width="36" height="36"><span>OgraFi</span></a>
-  <nav><a href="{{ route('home') }}">Ana sayfa</a><a href="{{ route('blog.categories') }}">Topluluklar</a><a href="{{ route('blog.tags') }}">Etiketler</a></nav>
-  @auth<a href="{{ route('blog.create') }}">Gönderi oluştur</a>@else<a href="{{ route('login') }}">Giriş yap</a>@endauth
-</div></header>
-<main class="main"><div class="main__grid main__grid-full">
-  <aside class="main__aside"><a href="{{ route('home') }}">Akış</a><a href="{{ route('blog.categories') }}">Topluluklar</a><a href="{{ route('blog.tags') }}">Etiketler</a></aside>
-  <section class="feed">
-    <article class="card post">
-      <section class="card-body">
-        <div class="meta">
-          @if($post->category)<a href="{{ route('blog.category', ['category' => $post->category->slug]) }}">{{ $post->category->name }}</a>@endif
-          <time datetime="{{ optional($post->published_at)->toIso8601String() }}">{{ optional($post->published_at ?? $post->created_at)->diffForHumans() }}</time>
-        </div>
-        <h1 class="h2">{{ $post->title }}</h1>
-        <div class="user-box">
-          <img class="avatar" src="{{ $post->author?->profile_photo_path ? \Illuminate\Support\Facades\Storage::url($post->author->profile_photo_path) : asset('images/ografi-logo.png') }}" alt="" width="44" height="44">
-          <div class="user-box-content">
-            <a class="name" href="{{ $post->author?->username ? route('users.show', ['user' => $post->author->username]) : route('users.index') }}">{{ $post->author?->name ?? 'Silinmiş kullanıcı' }}</a>
-            <span class="meta">{{ $post->author?->username ? '@'.$post->author->username : '' }}</span>
-          </div>
-        </div>
-        @if($post->featured_image)
-          <img class="post__media-image" src="{{ $post->featured_image_url }}" alt="{{ $post->title }}" loading="lazy">
+@extends('layouts.app')
+
+@section('title', $post->getSEOTitle() ?: $post->title)
+@section('meta_description', $post->getSEODescription() ?: ($post->excerpt ?: 'OgraFi topluluk gönderisi.'))
+@section('canonical_url', $post->getUrlForSEO())
+
+@section('content')
+    <div data-ografi-layout-container="post_show" class="post-show-shell">
+        @include('partials.ads.slot', ['layoutSection' => 'post_ad_top'])
+    <article data-ografi-layout-section="post_content" class="ps-post-card card post repost-post-detail">
+        <section class="card-body">
+            <nav class="repost-breadcrumb" aria-label="İçerik yolu"><a href="{{ route('home') }}">OgraFi</a>@if($post->category)<span>/</span><a href="{{ route('blog.category', $post->category->slug) }}">{{ $post->category->name }}</a>@endif</nav>
+            <header class="post__header">
+                <div class="user-box">
+                    <a class="avatar" href="{{ route('users.show', $post->author->username) }}"><img src="{{ $post->author->profile_photo_url }}" alt="" width="40" height="40"></a>
+                    <div class="user-box-content">
+                        <a class="name" href="{{ route('users.show', $post->author->username) }}">{{ $post->author->name }}</a>
+                        <div class="meta"><time datetime="{{ optional($post->published_at)->toIso8601String() }}">{{ optional($post->published_at ?? $post->created_at)->format('d.m.Y H:i') }}</time></div>
+                    </div>
+                </div>
+                @auth
+                    @if(auth()->id() === $post->author_id)
+                        <a class="btn btn-secondary btn-sm btn-rounded" href="{{ route('blog.post.edit', $post->slug) }}">Düzenle</a>
+                    @else
+                        <a class="btn btn-secondary btn-sm btn-rounded" href="{{ route('blog.post.report.form', $post->slug) }}">Bildir</a>
+                    @endif
+                @endauth
+            </header>
+            <h1 class="repost-article-title">{{ $post->title }}</h1>
+            @if($post->excerpt)<p class="repost-article-excerpt">{{ $post->excerpt }}</p>@endif
+            @if($post->featured_image_url)
+                <figure class="repost-article-cover"><img src="{{ $post->featured_image_url }}" alt="{{ $post->title }}"></figure>
+            @endif
+            @if($post->tags->isNotEmpty())
+                <div class="post__tags">@foreach($post->tags as $tag)<a href="{{ route('search', ['q' => $tag->name]) }}">#{{ $tag->name }}</a>@endforeach</div>
+            @endif
+            <div class="editor repost-article-content">{!! $post->content !!}</div>
+        </section>
+        <footer class="post__footer card-body">
+            <div class="post__footer-stats small color-gray"><span>{{ number_format((int)$post->views_count) }} görüntülenme</span><span>{{ $post->comments->count() }} yorum</span></div>
+            @auth
+                <form method="POST" action="{{ route('blog.post.bookmark', $post->slug) }}">@csrf<button class="btn btn-secondary btn-sm btn-rounded" type="submit">{{ $isBookmarked ? 'Kaydedildi' : 'Kaydet' }}</button></form>
+            @endauth
+        </footer>
+        @if(isset($reactionTypes) && $reactionTypes->isNotEmpty())
+            <div class="post__options card-body">
+                <div class="post__options-set">
+                    @auth
+                        @foreach($reactionTypes as $reactionType)
+                            <form method="POST" action="{{ route('blog.post.reaction', $post->slug) }}">
+                                @csrf
+                                <input type="hidden" name="reaction_type_id" value="{{ $reactionType->id }}">
+                                <button class="btn btn-md btn-primary-soft" type="submit" title="{{ $reactionType->label }}">
+                                    @if($reactionType->gif_url)
+                                        <img src="{{ $reactionType->gif_url }}" alt="{{ $reactionType->label }}" width="22" height="22" loading="lazy">
+                                    @else
+                                        {{ $reactionType->emoji ?: $reactionType->label }}
+                                    @endif
+                                </button>
+                            </form>
+                        @endforeach
+                    @else
+                        <a class="btn btn-md btn-primary-soft" href="{{ route('login') }}">Tepki vermek için giriş yap</a>
+                    @endauth
+                </div>
+            </div>
         @endif
-        @if($post->excerpt)<p class="lead">{{ $post->excerpt }}</p>@endif
-        <div class="post-content">{!! $post->content !!}</div>
-        @if($post->tags->isNotEmpty())
-          <div class="post__tags">@foreach($post->tags as $tag)<a href="{{ route('blog.index', ['tag' => $tag->slug]) }}">{{ $tag->name }}</a>@endforeach</div>
-        @endif
-      </section>
-      <section class="card-body post__options">
-        <div class="post__options-set">
-          @foreach($reactionTypes as $reactionType)
-            <form method="POST" action="{{ route('blog.post.reaction', ['post' => $post->slug]) }}">
-              @csrf
-              <input type="hidden" name="reaction_type_id" value="{{ $reactionType->id }}">
-              <button class="btn btn-md btn-primary-soft" type="submit" title="{{ $reactionType->label }}">
-                @if($reactionType->gif_url)<img src="{{ $reactionType->gif_url }}" alt="" width="22" height="22">@else{{ $reactionType->emoji }}@endif
-                <span>{{ collect($reactionSummary)->firstWhere('short_code', $reactionType->short_code)['count'] ?? 0 }}</span>
-              </button>
-            </form>
-          @endforeach
-          <a class="btn btn-md btn-primary-soft" href="#comments">Yorumlar ({{ $post->comments->count() }})</a>
-        </div>
-        @auth
-          <form method="POST" action="{{ route('blog.post.bookmark', ['post' => $post->slug]) }}">@csrf
-            <button class="btn btn-md btn-square btn-primary-soft" type="submit">{{ $isBookmarked ? 'Kaydedildi' : 'Kaydet' }}</button>
-          </form>
-        @else
-          <a class="btn btn-md btn-square btn-primary-soft" href="{{ route('login') }}">Kaydet</a>
-        @endauth
-      </section>
     </article>
 
-    <section class="card card-body" id="comments">
-      <h2 class="h4">Yorumlar ({{ $post->comments->count() }})</h2>
-      @auth
-        <form method="POST" action="{{ route('blog.post.comment', ['post' => $post->slug]) }}" class="addcomment">
-          @csrf
-          <textarea name="content" rows="4" required maxlength="10000" placeholder="Yorumunu yaz...">{{ old('content') }}</textarea>
-          @error('content')<p class="text-danger">{{ $message }}</p>@enderror
-          <button class="btn btn-primary" type="submit">Yorum gönder</button>
-        </form>
-      @else
-        <p>Yorum yazmak için <a href="{{ route('login') }}">giriş yap</a>.</p>
-      @endauth
-      @forelse($post->comments as $comment)
-        <article class="comment">
-          <div class="user-box">
-            <img class="avatar" src="{{ $comment->user?->profile_photo_path ? \Illuminate\Support\Facades\Storage::url($comment->user->profile_photo_path) : asset('images/ografi-logo.png') }}" alt="" width="36" height="36">
-            <strong>{{ $comment->user?->name ?? $comment->author_name ?? 'Kullanıcı' }}</strong>
-            <time class="meta">{{ $comment->created_at?->diffForHumans() }}</time>
-          </div>
-          <p>{{ $comment->content }}</p>
-          @auth
-            <div class="comment__options">
-              <form method="POST" action="{{ route('blog.comment.like', ['comment' => $comment->id]) }}">@csrf<button type="submit">Beğen ({{ $comment->likes_count ?? 0 }})</button></form>
-              <form method="POST" action="{{ route('blog.comment.dislike', ['comment' => $comment->id]) }}">@csrf<button type="submit">Beğenme</button></form>
-            </div>
-          @endauth
-        </article>
-      @empty
-        <p class="color-gray">Henüz yorum yapılmamış.</p>
-      @endforelse
-    </section>
-    @if($recommendedPosts->isNotEmpty())
-      <section class="card card-body"><h2 class="h4">Benzer gönderiler</h2>
-        @foreach($recommendedPosts as $recommendedPost)
-          <article class="entry-card"><a href="{{ route('blog.post', ['post' => $recommendedPost->slug]) }}">{{ $recommendedPost->title }}</a><span class="meta">{{ $recommendedPost->author?->name }}</span></article>
+    @if(!empty($pollBlocks))
+        @foreach($pollBlocks as $poll)
+            <section class="card card-body repost-poll" data-poll-block="{{ $poll['id'] }}">
+                <h2>{{ $poll['question'] }}</h2>
+                <form method="POST" action="{{ route('blog.post.poll.vote', $post->slug) }}" data-poll-vote>
+                    @csrf
+                    <input type="hidden" name="block_id" value="{{ $poll['id'] }}">
+                    @foreach($poll['options'] as $optionIndex => $option)
+                        <label class="repost-poll-option">
+                            <input type="radio" name="option_index" value="{{ $optionIndex }}" @checked((string)$poll['user_vote'] === (string)$optionIndex) @disabled($poll['expired'] || $poll['user_vote'] !== null)>
+                            <span>{{ $option }}</span>
+                            @if($poll['expired'] || $poll['user_vote'] !== null)
+                                <span class="repost-poll-result"><span>{{ (int)($poll['counts'][$optionIndex] ?? 0) }} oy · {{ $poll['percentages'][$optionIndex] ?? 0 }}%</span><span class="repost-poll-bar"><span style="width:{{ $poll['percentages'][$optionIndex] ?? 0 }}%"></span></span></span>
+                            @endif
+                        </label>
+                    @endforeach
+                    <div class="repost-poll-footer"><span class="meta" data-poll-total>{{ $poll['total'] }} oy @if($poll['expired']) · Süresi doldu @elseif($poll['user_vote'] !== null) · Oyun kaydedildi @endif</span>
+                        @if(!$poll['expired'] && $poll['user_vote'] === null)<button class="btn btn-primary btn-sm btn-rounded" type="submit">Oy kullan</button>@endif
+                    </div>
+                    <p class="repost-form-error" data-poll-error hidden></p>
+                </form>
+            </section>
         @endforeach
-      </section>
     @endif
-  </section>
-</div></main>
-<script src="{{ asset('js/repost-ui.js') }}" defer></script>
-</body></html>
+
+    @include('partials.ads.slot', ['layoutSection' => 'post_ad_bottom'])
+    <section class="card card-body repost-comments ogx-comments-panel" data-ografi-layout-section="comments" data-ogx-comments id="comments">
+        <header class="repost-section-heading"><h2 class="h5">Yorumlar <span class="color-gray">({{ $post->comments->count() }})</span></h2></header>
+        @auth
+            @if(!$post->comments_disabled)
+                <form method="POST" action="{{ route('blog.post.comment', $post->slug) }}" class="repost-comment-form">
+                    @csrf
+                    <label for="comment-content">Yorumun</label>
+                    <textarea id="comment-content" name="content" rows="4" required maxlength="10000" placeholder="Düşünceni paylaş...">{{ old('content') }}</textarea>
+                    @error('content')<p class="color-red">{{ $message }}</p>@enderror
+                    <button class="btn btn-primary btn-rounded" type="submit">Yorum gönder</button>
+                </form>
+            @endif
+        @else
+            <p class="color-gray"><a href="{{ route('login') }}">Giriş yap</a> ve sohbete katıl.</p>
+        @endauth
+        @include('blog.partials.post-comments', ['post' => $post])
+    </section>
+
+    </div>
+
+    @if(isset($recommendedPosts) && $recommendedPosts->isNotEmpty())
+        <section class="feed repost-related-posts"><h2 class="h5">Bunlar da ilgini çekebilir</h2>
+            @foreach($recommendedPosts as $recommendedPost)
+                @include('partials.post-card', ['post' => $recommendedPost, 'reactionTypes' => $reactionTypes ?? collect()])
+            @endforeach
+        </section>
+    @endif
+@push('scripts')
+<script>
+document.addEventListener('submit', async (event) => {
+    const form = event.target.closest('[data-poll-vote]');
+    if (!form) return;
+    event.preventDefault();
+    const selected = form.querySelector('input[name="option_index"]:checked');
+    const error = form.querySelector('[data-poll-error]');
+    if (!selected) {
+        error.textContent = 'Önce bir seçenek seç.';
+        error.hidden = false;
+        return;
+    }
+    const button = form.querySelector('button[type="submit"]');
+    if (button) button.disabled = true;
+    error.hidden = true;
+    try {
+        const response = await fetch(form.action, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || ''
+            },
+            body: new FormData(form)
+        });
+        const result = await response.json();
+        if (!response.ok) throw new Error(result.message || 'Oy kaydedilemedi.');
+        const block = form.closest('[data-poll-block]');
+        form.querySelectorAll('.repost-poll-option').forEach((row, index) => {
+            const count = Number(result.counts?.[index] || 0);
+            const percentage = Number(result.percentages?.[index] || 0);
+            let resultNode = row.querySelector('.repost-poll-result');
+            if (!resultNode) {
+                resultNode = document.createElement('span');
+                resultNode.className = 'repost-poll-result';
+                resultNode.innerHTML = '<span></span><span class="repost-poll-bar"><span></span></span>';
+                row.appendChild(resultNode);
+            }
+            resultNode.querySelector('span:first-child').textContent = count + ' oy · ' + percentage + '%';
+            resultNode.querySelector('.repost-poll-bar > span').style.width = percentage + '%';
+            const input = row.querySelector('input');
+            input.disabled = true;
+            input.checked = input.value === selected.value;
+        });
+        const total = form.querySelector('[data-poll-total]');
+        if (total) total.textContent = Number(result.total || 0) + ' oy · Oyun kaydedildi';
+        if (button) button.remove();
+    } catch (exception) {
+        error.textContent = exception.message;
+        error.hidden = false;
+        if (button) button.disabled = false;
+    }
+});
+</script>
+@endpush
+
+@endsection
