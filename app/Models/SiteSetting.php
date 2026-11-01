@@ -12,6 +12,7 @@ class SiteSetting extends Model
     protected $fillable = [
         'brand_name',
         'brand_logo_path',
+        'favicon_path',
         'footer_year',
         'instagram_url',
         'telegram_url',
@@ -28,5 +29,27 @@ class SiteSetting extends Model
         return filled($this->brand_logo_path)
             ? Storage::disk('public')->url($this->brand_logo_path)
             : null;
+    }
+
+    public function faviconUrl(): ?string
+    {
+        return filled($this->favicon_path)
+            ? Storage::disk('public')->url($this->favicon_path)
+            : null;
+    }
+
+    public function faviconMimeType(): ?string
+    {
+        if (blank($this->favicon_path)) {
+            return null;
+        }
+
+        return match (strtolower(pathinfo($this->favicon_path, PATHINFO_EXTENSION))) {
+            'svg' => 'image/svg+xml',
+            'png' => 'image/png',
+            'ico' => 'image/x-icon',
+            'webp' => 'image/webp',
+            default => null,
+        };
     }
 }

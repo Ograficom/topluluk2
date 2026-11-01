@@ -7,7 +7,7 @@
     <meta name="theme-color" content="#f7f9fd">
     <title>@yield('title', $brandName) — {{ $brandName }}</title>
     <meta name="description" content="@yield('description', 'Repost topluluğunda yeni hikâyeleri ve fikirleri keşfedin.')">
-    <link rel="icon" href="{{ asset('assets/img/meta/logo.svg') }}" type="image/svg+xml">
+    <link rel="icon" href="{{ $faviconUrl ?? asset('assets/img/meta/logo.svg') }}" type="{{ $faviconMimeType ?? 'image/svg+xml' }}">
     <link rel="stylesheet" href="{{ asset('assets/libs/fancyapp/fancybox.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/libs/fancyapp/carousel.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/kit.css') }}">

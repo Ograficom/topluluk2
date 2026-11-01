@@ -15,39 +15,73 @@ class SiteBrandingController extends Controller
 {
     public function updateLogo(Request $request, SvgSanitizer $svgSanitizer): RedirectResponse
     {
-        abort_unless(
-            $request->user()?->canAccessPanel(Filament::getPanel('admin')),
-            403,
+        return $this->updateAsset(
+            $request,
+            $svgSanitizer,
+            'logo',
+            'brand_logo_path',
+            ['svg', 'png', 'jpg', 'jpeg', 'webp'],
+            ['image/svg+xml', 'image/svg', 'image/png', 'image/jpeg', 'image/webp'],
+            'Logo başarıyla güncellendi.',
         );
+    }
+
+    public function updateFavicon(Request $request, SvgSanitizer $svgSanitizer): RedirectResponse
+    {
+        return $this->updateAsset(
+            $request,
+            $svgSanitizer,
+            'favicon',
+            'favicon_path',
+            ['svg', 'png', 'ico', 'webp'],
+            ['image/svg+xml', 'image/svg', 'image/png', 'image/vnd.microsoft.icon', 'image/x-icon', 'image/ico', 'image/webp', 'application/octet-stream'],
+            'Favicon başarıyla güncellendi.',
+        );
+    }
+
+    private function updateAsset(
+        Request $request,
+        SvgSanitizer $svgSanitizer,
+        string $input,
+        string $column,
+        array $extensions,
+        array $mimeTypes,
+        string $message,
+    ): RedirectResponse {
+        abort_unless($request->user()?->canAccessPanel(Filament::getPanel('admin')), 403);
 
         $validated = $request->validate([
-            'logo' => [
+            $input => [
                 'required',
                 'file',
                 'max:2048',
-                'mimetypes:image/svg+xml,image/svg,image/png,image/jpeg,image/webp',
-                'extensions:svg,png,jpg,jpeg,webp',
+                'mimetypes:'.implode(',', $mimeTypes),
+                'extensions:'.implode(',', $extensions),
             ],
         ]);
 
-        $logo = $validated['logo'];
-        $mimeType = $logo->getMimeType();
+        $file = $validated[$input];
+        $mimeType = $file->getMimeType();
         $extension = match ($mimeType) {
             'image/svg+xml', 'image/svg' => 'svg',
             'image/png' => 'png',
             'image/jpeg' => 'jpg',
             'image/webp' => 'webp',
-            default => abort(422, 'Bu dosya türü logo olarak desteklenmiyor.'),
+            'image/vnd.microsoft.icon', 'image/x-icon', 'image/ico' => 'ico',
+            'application/octet-stream' => strtolower($file->getClientOriginalExtension()) === 'ico'
+                ? 'ico'
+                : abort(422, 'Bu dosya türü desteklenmiyor.'),
+            default => abort(422, 'Bu dosya türü desteklenmiyor.'),
         };
         $path = 'site-branding/'.Str::uuid().'.'.$extension;
         $disk = Storage::disk('public');
 
         if ($extension === 'svg') {
             try {
-                $contents = $svgSanitizer->sanitize($logo->getContent());
+                $contents = $svgSanitizer->sanitize($file->getContent());
             } catch (\InvalidArgumentException $exception) {
                 throw ValidationException::withMessages([
-                    'logo' => 'SVG dosyası geçersiz veya güvenli biçimde işlenemedi.',
+                    $input => 'SVG dosyası geçersiz veya güvenli biçimde işlenemedi.',
                 ]);
             }
 
@@ -56,21 +90,21 @@ class SiteBrandingController extends Controller
             }
 
             $disk->setVisibility($path, 'public');
-        } elseif (! $disk->putFileAs('site-branding', $logo, basename($path), ['visibility' => 'public'])) {
+        } elseif (! $disk->putFileAs('site-branding', $file, basename($path), ['visibility' => 'public'])) {
             throw new \RuntimeException('Logo dosyası depolama alanına kaydedilemedi.');
         }
 
         $settings = SiteSetting::current() ?? new SiteSetting;
-        $previousLogo = $settings->brand_logo_path;
+        $previousAsset = $settings->{$column};
 
         $settings->id = 1;
-        $settings->brand_logo_path = $path;
+        $settings->{$column} = $path;
         $settings->save();
 
-        if (filled($previousLogo) && $previousLogo !== $path) {
-            $disk->delete($previousLogo);
+        if (filled($previousAsset) && $previousAsset !== $path) {
+            $disk->delete($previousAsset);
         }
 
-        return back()->with('status', 'Logo başarıyla güncellendi.');
+        return back()->with('status', $message);
     }
 }

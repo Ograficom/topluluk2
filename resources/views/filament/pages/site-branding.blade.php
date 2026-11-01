@@ -1,47 +1,305 @@
 <x-filament-panels::page>
-    @if (session('status'))
-        <x-filament::section>
-            {{ session('status') }}
-        </x-filament::section>
-    @endif
+    <style>
+        .branding-page {
+            display: grid;
+            gap: 1.5rem;
+            max-width: 68rem;
+            margin-inline: auto;
+        }
 
-    <div class="space-y-6">
-        <form wire:submit="save" class="space-y-6">
+        .branding-intro {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            padding: 1.25rem 1.5rem;
+            border: 1px solid rgb(226 232 240 / 75%);
+            border-radius: 1rem;
+            background: linear-gradient(115deg, rgb(239 246 255 / 90%), rgb(255 255 255 / 96%) 58%);
+            color: #475569;
+            font-size: .925rem;
+            line-height: 1.65;
+        }
+
+        .branding-intro-mark {
+            display: grid;
+            width: 2.5rem;
+            height: 2.5rem;
+            flex: 0 0 auto;
+            place-items: center;
+            border: 1px solid #dbeafe;
+            border-radius: .8rem;
+            background: #fff;
+            color: #2563eb;
+            font-size: 1.15rem;
+            font-weight: 700;
+        }
+
+        .branding-intro p,
+        .branding-asset-card p {
+            margin: 0;
+        }
+
+        .branding-form {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .branding-save-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            padding: 1rem 1.25rem;
+            border: 1px solid rgb(226 232 240 / 80%);
+            border-radius: 1rem;
+            background: rgb(255 255 255 / 90%);
+        }
+
+        .branding-save-note {
+            color: #64748b;
+            font-size: .85rem;
+        }
+
+        .branding-asset-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 1rem;
+        }
+
+        .branding-asset-card {
+            display: grid;
+            align-content: start;
+            gap: 1rem;
+            padding: 1.25rem;
+            border: 1px solid rgb(226 232 240 / 80%);
+            border-radius: 1rem;
+            background: #fff;
+            box-shadow: 0 8px 24px rgb(15 23 42 / 3%);
+        }
+
+        .branding-asset-heading {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: .75rem;
+        }
+
+        .branding-asset-heading h2 {
+            margin: 0;
+            color: #0f172a;
+            font-size: 1rem;
+            font-weight: 650;
+            letter-spacing: -.01em;
+        }
+
+        .branding-asset-card p {
+            margin-top: .3rem;
+            color: #64748b;
+            font-size: .82rem;
+            line-height: 1.55;
+        }
+
+        .branding-pill {
+            flex: 0 0 auto;
+            padding: .25rem .55rem;
+            border-radius: 999px;
+            background: #f1f5f9;
+            color: #64748b;
+            font-size: .7rem;
+            font-weight: 600;
+        }
+
+        .branding-preview {
+            display: grid;
+            min-height: 7rem;
+            place-items: center;
+            overflow: hidden;
+            padding: 1rem;
+            border: 1px dashed #cbd5e1;
+            border-radius: .8rem;
+            background-color: #f8fafc;
+            background-image: radial-gradient(#cbd5e1 0.65px, transparent 0.65px);
+            background-size: 12px 12px;
+        }
+
+        .branding-preview--favicon {
+            min-height: 7rem;
+        }
+
+        .branding-logo-preview {
+            display: block;
+            width: auto;
+            max-width: min(100%, 18rem);
+            height: auto;
+            max-height: 4rem;
+            object-fit: contain;
+        }
+
+        .branding-favicon-preview {
+            width: 3.5rem;
+            height: 3.5rem;
+            border-radius: .8rem;
+            object-fit: contain;
+            box-shadow: 0 8px 18px rgb(15 23 42 / 12%);
+        }
+
+        .branding-upload-form {
+            display: grid;
+            gap: .75rem;
+        }
+
+        .branding-upload-label {
+            color: #334155;
+            font-size: .8rem;
+            font-weight: 600;
+        }
+
+        .branding-file-input {
+            display: block;
+            width: 100%;
+            padding: .45rem;
+            border: 1px solid #e2e8f0;
+            border-radius: .7rem;
+            background: #fff;
+            color: #475569;
+            font-size: .8rem;
+        }
+
+        .branding-file-input::file-selector-button {
+            margin-right: .75rem;
+            padding: .5rem .75rem;
+            border: 0;
+            border-radius: .5rem;
+            background: #eff6ff;
+            color: #1d4ed8;
+            font: inherit;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .branding-upload-hint {
+            color: #94a3b8;
+            font-size: .75rem;
+        }
+
+        .branding-status {
+            padding: .85rem 1rem;
+            border: 1px solid #bbf7d0;
+            border-radius: .75rem;
+            background: #f0fdf4;
+            color: #166534;
+            font-size: .875rem;
+        }
+
+        @media (max-width: 48rem) {
+            .branding-asset-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .branding-save-row {
+                align-items: stretch;
+                flex-direction: column;
+            }
+        }
+    </style>
+
+    <div class="branding-page">
+        <div class="branding-intro">
+            <span class="branding-intro-mark" aria-hidden="true">R</span>
+            <p>Marka adını, site logosunu ve sekme simgesini buradan yönetin. Değişiklikler kaydedildiğinde site genelinde uygulanır.</p>
+        </div>
+
+        @if (session('status'))
+            <div class="branding-status" role="status">{{ session('status') }}</div>
+        @endif
+
+        <form wire:submit="save" class="branding-form">
             {{ $this->form }}
 
-            <x-filament::button type="submit">
-                Marka ve alt bilgi ayarlarını kaydet
-            </x-filament::button>
+            <div class="branding-save-row">
+                <span class="branding-save-note">Marka ve sosyal bağlantı değişikliklerini kaydedin.</span>
+                <x-filament::button type="submit">
+                    Ayarları kaydet
+                </x-filament::button>
+            </div>
         </form>
 
-        <x-filament::section heading="Logo dosyası">
-            @if ($currentLogoUrl)
-                <img src="{{ $currentLogoUrl }}" alt="Mevcut logo" style="max-height: 80px; max-width: 240px; object-fit: contain;">
-            @endif
+        <div class="branding-asset-grid">
+            <section class="branding-asset-card" aria-labelledby="brand-logo-heading">
+                <div class="branding-asset-heading">
+                    <div>
+                        <h2 id="brand-logo-heading">Site logosu</h2>
+                        <p>Başlıkta markanızın yanında kullanılır.</p>
+                    </div>
+                    <span class="branding-pill">LOGO</span>
+                </div>
 
-            <form action="{{ route('admin.site-branding.logo.update') }}" method="POST" enctype="multipart/form-data" class="mt-4 space-y-4">
-                @csrf
+                <div class="branding-preview">
+                    <img
+                        src="{{ $currentLogoUrl ?? asset('assets/img/meta/logo.svg') }}"
+                        alt="Site logosu önizlemesi"
+                        class="branding-logo-preview"
+                    >
+                </div>
 
-                <div>
-                    <label for="brand-logo-upload" class="fi-fo-field-wrp-label">
-                        Logo (SVG, PNG, JPG veya WebP; en fazla 2 MB)
-                    </label>
+                <form action="{{ route('admin.site-branding.logo.update') }}" method="POST" enctype="multipart/form-data" class="branding-upload-form">
+                    @csrf
+                    <label class="branding-upload-label" for="brand-logo-upload">Yeni logo dosyası</label>
                     <input
                         id="brand-logo-upload"
+                        class="branding-file-input"
                         type="file"
                         name="logo"
                         accept=".svg,.png,.jpg,.jpeg,.webp,image/svg+xml,image/png,image/jpeg,image/webp"
                         required
                     >
+                    <span class="branding-upload-hint">SVG, PNG, JPG veya WebP · En fazla 2 MB</span>
                     @error('logo')
-                        <p class="mt-2 text-sm text-danger-600">{{ $message }}</p>
+                        <p class="text-sm text-danger-600" role="alert">{{ $message }}</p>
                     @enderror
+                    <x-filament::button type="submit" color="gray">
+                        Logoyu yükle
+                    </x-filament::button>
+                </form>
+            </section>
+
+            <section class="branding-asset-card" aria-labelledby="brand-favicon-heading">
+                <div class="branding-asset-heading">
+                    <div>
+                        <h2 id="brand-favicon-heading">Sekme simgesi</h2>
+                        <p>Tarayıcı sekmesinde ve yer imlerinde görünür.</p>
+                    </div>
+                    <span class="branding-pill">FAVICON</span>
                 </div>
 
-                <x-filament::button type="submit">
-                    Logoyu yükle
-                </x-filament::button>
-            </form>
-        </x-filament::section>
+                <div class="branding-preview branding-preview--favicon">
+                    <img
+                        src="{{ $currentFaviconUrl ?? asset('assets/img/meta/logo.svg') }}"
+                        alt="Sekme simgesi önizlemesi"
+                        class="branding-favicon-preview"
+                    >
+                </div>
+
+                <form action="{{ route('admin.site-branding.favicon.update') }}" method="POST" enctype="multipart/form-data" class="branding-upload-form">
+                    @csrf
+                    <label class="branding-upload-label" for="brand-favicon-upload">Yeni favicon dosyası</label>
+                    <input
+                        id="brand-favicon-upload"
+                        class="branding-file-input"
+                        type="file"
+                        name="favicon"
+                        accept=".svg,.png,.ico,.webp,image/svg+xml,image/png,image/x-icon,image/webp"
+                        required
+                    >
+                    <span class="branding-upload-hint">SVG, PNG, ICO veya WebP · En fazla 2 MB · Kare görsel önerilir</span>
+                    @error('favicon')
+                        <p class="text-sm text-danger-600" role="alert">{{ $message }}</p>
+                    @enderror
+                    <x-filament::button type="submit" color="gray">
+                        Simgeyi yükle
+                    </x-filament::button>
+                </form>
+            </section>
+        </div>
     </div>
 </x-filament-panels::page>

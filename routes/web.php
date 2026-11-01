@@ -51,6 +51,9 @@ Route::middleware('guest')->group(function (): void {
 Route::post('/admin/site-branding/logo', [SiteBrandingController::class, 'updateLogo'])
     ->middleware(['auth', 'throttle:10,1'])
     ->name('admin.site-branding.logo.update');
+Route::post('/admin/site-branding/favicon', [SiteBrandingController::class, 'updateFavicon'])
+    ->middleware(['auth', 'throttle:10,1'])
+    ->name('admin.site-branding.favicon.update');
 
 Route::middleware('auth')->group(function (): void {
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');

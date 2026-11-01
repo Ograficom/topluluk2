@@ -31,6 +31,7 @@ class AdminPanelProvider extends PanelProvider
             ->brandName(fn (): string => (SiteSetting::current()?->brand_name ?? SiteSetting::DEFAULT_BRAND_NAME).' Yönetim')
             ->brandLogo(fn (): ?string => SiteSetting::current()?->brandLogoUrl())
             ->brandLogoHeight('36px')
+            ->favicon(fn (): ?string => SiteSetting::current()?->faviconUrl() ?? asset('assets/img/meta/logo.svg'))
             ->login()
             ->colors([
                 'primary' => Color::Blue,

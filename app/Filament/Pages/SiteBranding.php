@@ -6,6 +6,7 @@ use App\Models\SiteSetting;
 use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
+use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 
@@ -25,10 +26,13 @@ class SiteBranding extends Page
 
     public ?string $currentLogoUrl = null;
 
+    public ?string $currentFaviconUrl = null;
+
     public function mount(): void
     {
         $settings = SiteSetting::current();
         $this->currentLogoUrl = $settings?->brandLogoUrl();
+        $this->currentFaviconUrl = $settings?->faviconUrl();
 
         $this->form->fill([
             'brand_name' => $settings?->brand_name ?? SiteSetting::DEFAULT_BRAND_NAME,
@@ -43,32 +47,43 @@ class SiteBranding extends Page
     {
         return $schema
             ->components([
-                TextInput::make('brand_name')
-                    ->label('Marka adı')
-                    ->required()
-                    ->maxLength(80),
-                TextInput::make('footer_year')
-                    ->label('Telif yılı')
-                    ->numeric()
-                    ->integer()
-                    ->minValue(1900)
-                    ->maxValue(9999)
-                    ->required(),
-                TextInput::make('instagram_url')
-                    ->label('Instagram bağlantısı')
-                    ->url()
-                    ->maxLength(2048)
-                    ->nullable(),
-                TextInput::make('telegram_url')
-                    ->label('Telegram bağlantısı')
-                    ->url()
-                    ->maxLength(2048)
-                    ->nullable(),
-                TextInput::make('threads_url')
-                    ->label('Threads bağlantısı')
-                    ->url()
-                    ->maxLength(2048)
-                    ->nullable(),
+                Section::make('Marka kimliği')
+                    ->description('Sitenin adı ve alt bilgisinde görünecek yıl.')
+                    ->schema([
+                        TextInput::make('brand_name')
+                            ->label('Marka adı')
+                            ->required()
+                            ->maxLength(80)
+                            ->columnSpanFull(),
+                        TextInput::make('footer_year')
+                            ->label('Telif yılı')
+                            ->numeric()
+                            ->integer()
+                            ->minValue(1900)
+                            ->maxValue(9999)
+                            ->required(),
+                    ])
+                    ->columns(2),
+                Section::make('Sosyal bağlantılar')
+                    ->description('Boş bıraktığınız bağlantılar sitede gösterilmez.')
+                    ->schema([
+                        TextInput::make('instagram_url')
+                            ->label('Instagram')
+                            ->url()
+                            ->maxLength(2048)
+                            ->nullable(),
+                        TextInput::make('telegram_url')
+                            ->label('Telegram')
+                            ->url()
+                            ->maxLength(2048)
+                            ->nullable(),
+                        TextInput::make('threads_url')
+                            ->label('Threads')
+                            ->url()
+                            ->maxLength(2048)
+                            ->nullable(),
+                    ])
+                    ->columns(2),
             ])
             ->statePath('data');
     }
@@ -87,6 +102,7 @@ class SiteBranding extends Page
         $settings->save();
 
         $this->currentLogoUrl = $settings->brandLogoUrl();
+        $this->currentFaviconUrl = $settings->faviconUrl();
 
         Notification::make()
             ->title('Marka ayarları kaydedildi.')

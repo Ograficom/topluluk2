@@ -34,6 +34,8 @@ class AppServiceProvider extends ServiceProvider
             $view->with([
                 'brandName' => $siteSettings?->brand_name ?? SiteSetting::DEFAULT_BRAND_NAME,
                 'brandLogoUrl' => $siteSettings?->brandLogoUrl(),
+                'faviconUrl' => $siteSettings?->faviconUrl(),
+                'faviconMimeType' => $siteSettings?->faviconMimeType(),
                 'navigationChannels' => Channel::query()->active()->orderBy('name')->limit(8)->get(),
                 'sidebarAuthors' => User::query()
                     ->whereNotNull('username')

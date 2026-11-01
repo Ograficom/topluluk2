@@ -529,6 +529,35 @@ class RepostFeedTest extends TestCase
             ->assertSee('grid-template-columns: auto;', false);
     }
 
+    public function test_administrators_can_upload_favicon_used_on_the_site_and_admin_panel(): void
+    {
+        Storage::fake('public');
+        $admin = User::factory()->create(['is_admin' => true]);
+        $this->actingAs($admin);
+
+        Livewire::test(SiteBranding::class)
+            ->assertSee('Sekme simgesi')
+            ->assertSee('Site logosu');
+
+        $this->post(route('admin.site-branding.favicon.update'), [
+            'favicon' => UploadedFile::fake()->image('favicon.png', 64, 64),
+        ])->assertRedirect();
+
+        $settings = SiteSetting::current();
+        $this->assertNotEmpty($settings->favicon_path);
+        $this->assertSame('image/png', $settings->faviconMimeType());
+        Storage::disk('public')->assertExists($settings->favicon_path);
+
+        $this->get('/')
+            ->assertOk()
+            ->assertSee('href="'.$settings->faviconUrl().'"', false)
+            ->assertSee('type="image/png"', false);
+
+        $this->get('/admin')
+            ->assertOk()
+            ->assertSee($settings->faviconUrl());
+    }
+
     public function test_administrators_can_edit_footer_year_and_social_links(): void
     {
         $admin = User::factory()->create(['is_admin' => true]);
@@ -631,6 +660,10 @@ class RepostFeedTest extends TestCase
                 'logo' => UploadedFile::fake()->image('logo.png'),
             ])
             ->assertForbidden();
+
+        $this->post(route('admin.site-branding.favicon.update'), [
+            'favicon' => UploadedFile::fake()->image('favicon.png'),
+        ])->assertForbidden();
 
         $this->assertDatabaseMissing('site_settings', ['id' => 1]);
         Storage::disk('public')->assertDirectoryEmpty('site-branding');
