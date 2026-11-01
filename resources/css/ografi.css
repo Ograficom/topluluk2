@@ -163,3 +163,10 @@
     .repost-main-grid .repost-left-sidebar,
     .repost-main-grid .repost-right-sidebar { display: none; }
 }
+
+.repost-poll-result { display: grid; flex: 1; min-width: 110px; gap: 4px; margin-left: auto; color: var(--gray-500); font-size: .76rem; text-align: right; }
+.repost-poll-bar { display: block; width: 100%; height: 5px; overflow: hidden; border-radius: 99px; background: var(--gray-150); }
+.repost-poll-bar>span { display: block; height: 100%; border-radius: inherit; background: var(--color-primary); }
+.repost-poll-footer { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 12px; }
+.repost-comment-actions { display: flex; gap: 7px; flex-wrap: wrap; margin-left: 48px; }
+@media(max-width:760px){.repost-comment-actions{margin-left:0}.repost-poll-option{flex-wrap:wrap}.repost-poll-result{flex-basis:100%;margin-left:25px;text-align:left}}
