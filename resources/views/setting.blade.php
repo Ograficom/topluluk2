@@ -1,1 +1,1 @@
-@extends('settings')
+@extends('dashboard')
