@@ -41,6 +41,7 @@
 @php
     $hideGlobalHeader = $__env->hasSection('hide_global_header');
     $noContainerPadding = $__env->hasSection('no_container_padding');
+    $isAuthLayout = request()->routeIs('login', 'register', 'register.verify', 'register.complete', 'password.request', 'password.reset', 'social.device.verify', 'two-factor.login');
 @endphp
 
 @unless($hideGlobalHeader)
@@ -93,8 +94,8 @@
     $widgetTags = $popularTags ?? ($tags ?? collect());
 @endphp
 
-<main class="container {{ $noContainerPadding ? 'repost-container-bleed' : '' }}">
-    <div class="main {{ $hideGlobalHeader ? 'repost-editor-grid' : 'main__grid' }}">
+<main class="container {{ $noContainerPadding ? 'repost-container-bleed' : '' }} {{ $isAuthLayout ? 'repost-auth-layout' : '' }}">
+    <div class="main {{ $hideGlobalHeader ? 'repost-editor-grid' : 'main__grid repost-main-grid' }}">
         @unless($hideGlobalHeader)
         <aside class="sidebar" aria-label="Topluluklar ve üyeler">
             <div class="sidebar__body">
@@ -204,7 +205,7 @@
     </div>
 </main>
 
-@unless($hideGlobalHeader)
+@unless($hideGlobalHeader || $isAuthLayout)
 <section class="mobmenu" data-scroll-menu>
     <nav class="mobmenu__content" aria-label="Mobil menü">
         <a class="mobmenu__link is-active" href="{{ url('/') }}"><svg width="20" height="20"><use href="#home"/></svg><span>Akış</span></a>
