@@ -8,7 +8,7 @@
     <title>@yield('title', config('app.name', 'OgraFi'))</title>
     <meta name="description" content="@yield('meta_description', 'OgraFi topluluk akışı')">
     @stack('meta')
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @vite(['resources/css/app.css', 'resources/css/ografi.css', 'resources/js/app.js'])
     @stack('styles')
 </head>
 <body>
