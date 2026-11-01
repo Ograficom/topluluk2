@@ -14,5 +14,6 @@
             {{ $slot }}
         </section>
     </main>
+    <x-cookie-banner />
 </body>
 </html>
