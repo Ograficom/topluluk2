@@ -344,7 +344,7 @@ Route::get('/', function () {
         'popularComments' => $popularComments,
         'popularTags' => $popularTags,
     ]);
-});
+})->name('home');
 
 Route::get('/feed/latest-check', function () {
     $latest = Post::query()
@@ -572,7 +572,6 @@ Route::get('/tr/create', function () {
     return redirect()->route('blog.create');
 })->name('tr.create');
 
-Route::view('/p/sss', 'pages.sss')->name('pages.sss');
 Route::get('/sayfa/{slug}', [PageController::class, 'show'])->name('pages.show');
 Route::get('/p/{slug}', function (string $slug) {
     $canonicalSlug = $slug === 'hakkinda' ? 'hakkimizda' : $slug;
@@ -838,57 +837,3 @@ Route::middleware(['auth'])->get('/ai', function () {
 
 Route::middleware(['auth', 'throttle:10,1'])->post('/blog/ai-assist', [BlogController::class, 'aiAssist'])
     ->name('blog.ai-assist');
-
-
-// -----------------------------------------------------------------------------
-// CHANNEL TEMA HTML SAYFALARI
-// resources/views altindaki secili 21 HTML dosyasini dogrudan sunar.
-// Bu prototip dosyalar Laravel Blade view degildir; response()->file kullanilir.
-// -----------------------------------------------------------------------------
-
-$channelThemePages = [
-    'channel',
-    'channels',
-    'contacts',
-    'dialog',
-    'favorites',
-    'index',
-    'last-comments',
-    'last-posts',
-    'lostpassword',
-    'messenger',
-    'page',
-    'post',
-    'profile',
-    'rating-users',
-    'setting',
-    'signin',
-    'signup',
-    'stats',
-    'subscriptions',
-    'tags-catalog',
-    'tagscloud',
-];
-
-foreach ($channelThemePages as $page) {
-    Route::get('/' . $page . '.html', function () use ($page) {
-        $path = resource_path('views/' . $page . '.html');
-        abort_unless(is_file($path), 404);
-
-        return response()->file($path, [
-            'Content-Type' => 'text/html; charset=UTF-8',
-            'X-Content-Type-Options' => 'nosniff',
-        ]);
-    })->name('channel-theme.' . str_replace('-', '.', $page));
-}
-
-// Ana adres de index.html prototipini gösterir.
-Route::get('/', function () {
-    $path = resource_path('views/index.html');
-    abort_unless(is_file($path), 404);
-
-    return response()->file($path, [
-        'Content-Type' => 'text/html; charset=UTF-8',
-        'X-Content-Type-Options' => 'nosniff',
-    ]);
-});
