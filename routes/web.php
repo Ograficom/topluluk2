@@ -1,12 +1,13 @@
 <?php
 
-use App\Http\Controllers\ChannelController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ChannelController;
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\PostInteractionController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SettingsController;
+use App\Http\Controllers\SiteBrandingController;
 use App\Http\Controllers\StatisticsController;
 use Illuminate\Support\Facades\Route;
 
@@ -46,6 +47,10 @@ Route::middleware('guest')->group(function (): void {
         ->middleware('throttle:5,1')
         ->name('register.store');
 });
+
+Route::post('/admin/site-branding/logo', [SiteBrandingController::class, 'updateLogo'])
+    ->middleware(['auth', 'throttle:10,1'])
+    ->name('admin.site-branding.logo.update');
 
 Route::middleware('auth')->group(function (): void {
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');

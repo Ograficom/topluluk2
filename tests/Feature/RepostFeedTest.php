@@ -504,9 +504,12 @@ class RepostFeedTest extends TestCase
 
         Livewire::test(SiteBranding::class)
             ->set('data.brand_name', 'Yeni Marka')
-            ->set('data.brand_logo_path', UploadedFile::fake()->image('logo.png'))
             ->call('save')
             ->assertHasNoErrors();
+
+        $this->post(route('admin.site-branding.logo.update'), [
+            'logo' => UploadedFile::fake()->image('logo.png'),
+        ])->assertRedirect();
 
         $settings = SiteSetting::current();
 
@@ -567,10 +570,9 @@ class RepostFeedTest extends TestCase
             '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 10" onload="alert(1)"><script>alert(1)</script><path d="M0 0h10v10z"/></svg>',
         )->mimeType('image/svg+xml');
 
-        Livewire::test(SiteBranding::class)
-            ->set('data.brand_logo_path', $svgUpload)
-            ->call('save')
-            ->assertHasNoErrors();
+        $this->post(route('admin.site-branding.logo.update'), [
+            'logo' => $svgUpload,
+        ])->assertRedirect();
 
         $logoPath = SiteSetting::current()->brand_logo_path;
         Storage::disk('public')->assertExists($logoPath);
@@ -579,6 +581,21 @@ class RepostFeedTest extends TestCase
         $this->assertStringContainsString('<path', $storedSvg);
         $this->assertStringNotContainsString('<script', $storedSvg);
         $this->assertStringNotContainsString('onload', $storedSvg);
+    }
+
+    public function test_non_administrators_cannot_upload_a_site_logo(): void
+    {
+        Storage::fake('public');
+        $user = User::factory()->create(['is_admin' => false]);
+
+        $this->actingAs($user)
+            ->post(route('admin.site-branding.logo.update'), [
+                'logo' => UploadedFile::fake()->image('logo.png'),
+            ])
+            ->assertForbidden();
+
+        $this->assertDatabaseMissing('site_settings', ['id' => 1]);
+        Storage::disk('public')->assertDirectoryEmpty('site-branding');
     }
 
     public function test_admin_grant_command_promotes_an_existing_account_after_confirmation(): void
