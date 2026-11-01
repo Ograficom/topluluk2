@@ -4,9 +4,10 @@
 @section('meta_description', $user->name.' adlı kullanıcının OgraFi profili ve paylaşımları.')
 
 @section('content')
+    <div data-ografi-layout-container="profile">
     <section class="profile card card-body repost-profile">
         <div class="repost-profile-cover" @if($user->cover_photo_url) style="background-image:url('{{ $user->cover_photo_url }}')" @endif></div>
-        <div class="repost-profile-main">
+        <div class="repost-profile-main" data-ografi-layout-section="profile_header">
             <div class="repost-profile-avatar"><img src="{{ $user->profile_photo_url }}" alt="{{ $user->name }}" width="104" height="104"></div>
             <div class="repost-profile-actions">
                 @if(auth()->check() && auth()->id() !== $user->id)
@@ -26,7 +27,7 @@
                 <span><strong>{{ number_format((int)$totalViews) }}</strong> görüntülenme</span>
             </div>
         </div>
-        <nav class="repost-profile-tabs" aria-label="Profil bölümleri">
+        <nav class="repost-profile-tabs" data-ografi-layout-section="profile_tabs" aria-label="Profil bölümleri">
             <a class="{{ $activeTab === 'stories' ? 'is-active' : '' }}" href="{{ request()->fullUrlWithQuery(['tab' => 'stories']) }}">Gönderiler</a>
             <a class="{{ $activeTab === 'comments' ? 'is-active' : '' }}" href="{{ request()->fullUrlWithQuery(['tab' => 'comments']) }}">Yorumlar</a>
             <a class="{{ $activeTab === 'followers' ? 'is-active' : '' }}" href="{{ request()->fullUrlWithQuery(['tab' => 'followers']) }}">Takipçiler</a>
@@ -34,6 +35,7 @@
         </nav>
     </section>
 
+    <div data-ografi-layout-section="profile_content">
     @if($hasBlockedUser || $isBlockedByUser)
         <section class="card card-body"><p>Bu profil şu anda görüntülenemiyor.</p></section>
     @elseif($activeTab === 'stories')
@@ -54,4 +56,6 @@
     @elseif($activeTab === 'followings')
         <section class="card card-body"><h2 class="h5">Takip edilenler</h2><ul class="widget__list">@forelse($followings as $following)<li class="user-card"><a class="user-box" href="{{ url('/u/'.$following->username) }}"><span class="avatar"><img src="{{ $following->profile_photo_url }}" alt="" width="40" height="40"></span><span class="user-box-content"><strong class="name">{{ $following->name }}</strong><span class="meta">@{{ $following->username }}</span></span></a></li>@empty<li class="color-gray">Henüz takip edilen üye yok.</li>@endforelse</ul></section>
     @endif
+    </div>
+    </div>
 @endsection
