@@ -1,0 +1,35 @@
+/* Repost v2 integration layer — OgraFi
+   Loaded after the existing Repost assets. Keeps the light theme as default. */
+:root {
+  --ografi-v2-page: #f7f9fd;
+  --ografi-v2-surface: #fff;
+  --ografi-v2-border: #e7eaf0;
+  --ografi-v2-muted: #748094;
+  --ografi-v2-primary: #2878e5;
+}
+html[data-theme="light"] body { background: var(--ografi-v2-page); }
+html[data-theme="light"] .header,
+html[data-theme="light"] .header__inner,
+html[data-theme="light"] .sidebar__footer { background: var(--ografi-v2-surface); }
+.card,
+.widget,
+.post,
+.post-card { border-color: var(--ografi-v2-border); }
+.main { min-width: 0; }
+.main__grid,
+.main__grid-full,
+.main__grid-feed { align-items: start; }
+.feed,
+.widgets { min-width: 0; }
+img, video, iframe { max-width: 100%; }
+button, a, input, textarea, select { -webkit-tap-highlight-color: transparent; }
+:focus-visible { outline-color: var(--ografi-v2-primary); }
+@media (max-width: 767.98px) {
+  .main__grid,
+  .main__grid-full,
+  .main__grid-feed { display: block; }
+  .sidebar,
+  .widgets { display: none; }
+  .feed { width: 100%; }
+  .container { padding-inline: 12px; }
+}
