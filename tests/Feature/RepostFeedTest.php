@@ -239,7 +239,8 @@ class RepostFeedTest extends TestCase
         $published = $this->createPost($channel, [
             'title' => 'Yol hikâyesi',
             'slug' => 'yol-hikayesi',
-            'body' => 'Yazının tam metni.',
+            'excerpt' => 'Kısa giriş metni.',
+            'body' => "Yazının ilk paragrafı.\n\nYazının ikinci paragrafı.",
         ]);
         $draft = $this->createPost($channel, [
             'title' => 'Gizli taslak',
@@ -249,7 +250,15 @@ class RepostFeedTest extends TestCase
 
         $this->get('/posts/yol-hikayesi')
             ->assertOk()
-            ->assertSee('Yazının tam metni.');
+            ->assertSeeInOrder([
+                'class="post__header"',
+                'class="post__title-full"',
+                'class="lead color-gray"',
+                'class="editor post-content"',
+                '<p>Yazının ilk paragrafı.</p>',
+                '<p>Yazının ikinci paragrafı.</p>',
+                'class="post__options card-body"',
+            ], false);
 
         $this->assertDatabaseHas('posts', ['id' => $published->id, 'views' => 1]);
         $this->get('/posts/gizli-taslak')->assertNotFound();

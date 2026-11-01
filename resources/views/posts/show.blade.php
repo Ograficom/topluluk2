@@ -13,26 +13,23 @@
     </div>
     <article class="card card-body post">
         <header class="post__header">
-                <div class="user-box">
-                    @if ($post->user)
-                        <a href="{{ route('profiles.show', $post->user) }}" class="avatar"><img src="{{ $post->user->avatarUrl() }}" alt="" width="40" height="40"></a>
-                    @else
-                        <span class="avatar"><img src="{{ asset('assets/img/noavatar.png') }}" alt="" width="40" height="40"></span>
-                    @endif
-                    <div class="user-box-content">
-                        <span class="name">
-                            @if ($post->user)<a class="name-text" href="{{ route('profiles.show', $post->user) }}">{{ $post->user->full_name ?: $post->user->name }}</a>@else<span class="name-text">Repost yazarı</span>@endif
-                            @if ($post->user?->hasVerifiedBadge())<span class="verify" role="img" aria-label="Verified profile"><x-repost-icon name="verify" size="14" /></span>@endif
-                        </span>
-                        <div class="meta">
-                            @if ($post->channel)<a href="{{ route('channels.show', $post->channel) }}">{{ $post->channel->name }}</a>@endif
-                            <time datetime="{{ $post->published_at?->toAtomString() }}">{{ $post->published_at?->diffForHumans() ?? $post->created_at->diffForHumans() }}</time>
-                        </div>
+            <div class="user-box">
+                @if ($post->user)
+                    <a href="{{ route('profiles.show', $post->user) }}" class="avatar"><img src="{{ $post->user->avatarUrl() }}" alt="" width="40" height="40"></a>
+                @else
+                    <span class="avatar"><img src="{{ asset('assets/img/noavatar.png') }}" alt="" width="40" height="40"></span>
+                @endif
+                <div class="user-box-content">
+                    <span class="name">
+                        @if ($post->user)<a class="name-text" href="{{ route('profiles.show', $post->user) }}">{{ $post->user->full_name ?: $post->user->name }}</a>@else<span class="name-text">Repost yazarı</span>@endif
+                        @if ($post->user?->hasVerifiedBadge())<span class="verify" role="img" aria-label="Verified profile"><x-repost-icon name="verify" size="14" /></span>@endif
+                    </span>
+                    <div class="meta">
+                        @if ($post->channel)<a href="{{ route('channels.show', $post->channel) }}">{{ $post->channel->name }}</a>@endif
+                        <time datetime="{{ $post->published_at?->toAtomString() }}">{{ $post->published_at?->diffForHumans() ?? $post->created_at->diffForHumans() }}</time>
                     </div>
                 </div>
             </div>
-            <h1 class="post__title-full">{{ $post->title }}</h1>
-            <p class="lead color-gray">{{ $post->excerpt }}</p>
         </header>
 
         @if ($post->coverImageUrl())
@@ -47,7 +44,17 @@
             </div>
         @endif
 
-        <section class="editor card-body post-content">{{ $post->body }}</section>
+        <h1 class="post__title-full">{{ $post->title }}</h1>
+        @if (filled($post->excerpt))
+            <p class="lead color-gray">{{ $post->excerpt }}</p>
+        @endif
+        <section class="editor post-content">
+            @foreach (preg_split('/\R{2,}/', trim($post->body)) ?: [] as $paragraph)
+                @if (filled($paragraph))
+                    <p>{!! nl2br(e($paragraph)) !!}</p>
+                @endif
+            @endforeach
+        </section>
         @if (filled($post->tags))
             <div class="card-body post__tags">
                 @foreach ($post->tags as $tag)
