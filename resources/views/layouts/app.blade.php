@@ -53,7 +53,7 @@
     $isAuthLayout = request()->routeIs('login', 'register', 'register.verify', 'register.complete', 'password.request', 'password.reset', 'social.device.verify', 'two-factor.login');
 @endphp
 
-@unless($hideGlobalHeader)
+@unless($hideGlobalHeader ?? false)
 <header class="header">
     <div class="header__inner container">
         <div class="header__start">
@@ -105,7 +105,7 @@
 
 <main class="container {{ $noContainerPadding ? 'repost-container-bleed' : '' }} {{ $isAuthLayout ? 'repost-auth-layout' : '' }}">
     <div class="main {{ $hideGlobalHeader ? 'repost-editor-grid' : 'main__grid repost-main-grid' }}">
-        @unless($hideGlobalHeader)
+        @unless($hideGlobalHeader ?? false)
         <aside class="sidebar" aria-label="Topluluklar ve üyeler">
             <div class="sidebar__body">
                 <section class="sidebar__section">
@@ -153,7 +153,7 @@
             @endif
         </section>
 
-        @unless($hideGlobalHeader)
+        @unless($hideGlobalHeader ?? false)
         <aside class="main__widgets" aria-label="Yan bilgiler">
             <div class="widgets">
                 @if($widgetTags->isNotEmpty())
