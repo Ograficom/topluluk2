@@ -144,3 +144,22 @@
     .ografi-cookie-banner { right: 10px; bottom: 10px; width: calc(100vw - 20px); align-items: stretch; flex-direction: column; gap: 12px; }
     .ografi-cookie-banner__actions { justify-content: flex-end; }
 }
+
+/* The public shell uses a readable three-column layout, not the 55px icon rail. */
+.repost-main-grid { grid-template-columns: 190px minmax(0, 1fr) 300px; grid-gap: 22px; align-items: start; }
+.repost-main-grid .repost-left-sidebar,
+.repost-main-grid .repost-right-sidebar { min-width: 0; align-self: start; }
+.repost-main-grid .repost-left-sidebar { position: sticky; top: calc(var(--header-height) + var(--header-offset)); }
+.repost-main-grid .repost-right-sidebar { position: sticky; top: calc(var(--header-height) + var(--header-offset)); }
+.repost-auth-layout .repost-main-grid { display: block; width: 100%; max-width: 600px; margin-inline: auto; }
+.repost-auth-layout .repost-left-sidebar,
+.repost-auth-layout .repost-right-sidebar { display: none; }
+@media (max-width: 1100px) {
+    .repost-main-grid { grid-template-columns: 175px minmax(0, 1fr); }
+    .repost-main-grid .repost-right-sidebar { display: none; }
+}
+@media (max-width: 767px) {
+    .repost-main-grid { display: block; }
+    .repost-main-grid .repost-left-sidebar,
+    .repost-main-grid .repost-right-sidebar { display: none; }
+}
