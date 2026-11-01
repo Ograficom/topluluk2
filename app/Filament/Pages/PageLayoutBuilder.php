@@ -372,7 +372,7 @@ class PageLayoutBuilder extends Page
             || preg_match('/^[a-z][a-z0-9+.-]*:/i', $path) === 1) {
             Notification::make()
                 ->title('Yalnizca bu sitenin yolunu gir')
-                ->body('Ornek: /, /discover, /blog/ veya /u/kullanici-adi')
+                ->body('Ornek: /, /Categorys, /blog/ veya /u/kullanici-adi')
                 ->warning()
                 ->send();
 
