@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Rules\UsernameFormat;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -20,7 +21,7 @@ class AuthController extends Controller
     public function register(Request $request): RedirectResponse
     {
         $validated = $request->validate([
-            'username' => ['required', 'string', 'max:30', 'alpha_dash:ascii', 'unique:users,username'],
+            'username' => ['required', 'string', 'max:30', new UsernameFormat, 'unique:users,username'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
             'password' => ['required', 'confirmed', Password::min(12)],
             'agree_rules' => ['accepted'],
@@ -54,9 +55,9 @@ class AuthController extends Controller
             'remember' => ['sometimes', 'boolean'],
         ]);
 
-        $key = mb_strtolower($validated['login_name']) . '|' . $request->ip();
+        $key = mb_strtolower($validated['login_name']).'|'.$request->ip();
 
-        if (RateLimiter::tooManyAttempts('login:' . $key, 5)) {
+        if (RateLimiter::tooManyAttempts('login:'.$key, 5)) {
             return back()
                 ->withErrors(['login_name' => 'Çok fazla giriş denemesi yapıldı. Lütfen bir dakika sonra tekrar deneyin.'])
                 ->onlyInput('login_name');
@@ -71,14 +72,14 @@ class AuthController extends Controller
             'email' => $user->email,
             'password' => $validated['password'],
         ], $request->boolean('remember'))) {
-            RateLimiter::hit('login:' . $key, 60);
+            RateLimiter::hit('login:'.$key, 60);
 
             return back()
                 ->withErrors(['login_name' => 'Giriş bilgileri eşleşmiyor.'])
                 ->onlyInput('login_name');
         }
 
-        RateLimiter::clear('login:' . $key);
+        RateLimiter::clear('login:'.$key);
         $request->session()->regenerate();
 
         return redirect()->intended(route('posts.index'));

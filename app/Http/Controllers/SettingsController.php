@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Rules\UsernameFormat;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Password;
@@ -36,7 +36,7 @@ class SettingsController extends Controller
     {
         $user = $request->user();
         $validated = $request->validate([
-            'username' => ['required', 'string', 'max:30', 'alpha_dash:ascii', Rule::unique('users', 'username')->ignore($user->id)],
+            'username' => ['required', 'string', 'max:30', new UsernameFormat, Rule::unique('users', 'username')->ignore($user->id)],
             'full_name' => ['required', 'string', 'max:255'],
             'signature' => ['nullable', 'string', 'max:500'],
             'bio' => ['nullable', 'string', 'max:2000'],

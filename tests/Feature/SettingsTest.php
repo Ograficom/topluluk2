@@ -32,6 +32,31 @@ class SettingsTest extends TestCase
         ]);
     }
 
+    public function test_registration_accepts_turkish_letters_and_dots_in_username(): void
+    {
+        $this->post('/signup', [
+            'username' => 'doğrulama.alfa_tire',
+            'email' => 'dogrulama@example.com',
+            'password' => 'a-strong-password-123',
+            'password_confirmation' => 'a-strong-password-123',
+            'agree_rules' => '1',
+        ])->assertRedirect('/');
+
+        $this->assertDatabaseHas('users', [
+            'username' => 'doğrulama.alfa_tire',
+            'email' => 'dogrulama@example.com',
+        ]);
+
+        $this->post('/logout')->assertRedirect('/');
+
+        $this->post('/signin', [
+            'login_name' => 'doğrulama.alfa_tire',
+            'password' => 'a-strong-password-123',
+        ])->assertRedirect('/');
+
+        $this->assertAuthenticated();
+    }
+
     public function test_login_page_has_a_working_login_form(): void
     {
         $this->get('/signin')
@@ -125,6 +150,27 @@ class SettingsTest extends TestCase
             'bio' => 'Profil açıklaması',
             'website' => 'https://example.com',
         ]);
+    }
+
+    public function test_profile_settings_accept_turkish_letters_and_dots_in_username(): void
+    {
+        $user = User::factory()->create();
+
+        $this->actingAs($user)
+            ->from('/settings')
+            ->patch('/settings/profile', [
+                'activeTab' => 'profile',
+                'username' => 'doğrulama.alfa_tire',
+                'full_name' => 'Doğrulama Alfa',
+            ])
+            ->assertRedirect('/settings');
+
+        $this->assertDatabaseHas('users', [
+            'id' => $user->id,
+            'username' => 'doğrulama.alfa_tire',
+        ]);
+
+        $this->get('/users/doğrulama.alfa_tire')->assertOk();
     }
 
     public function test_preferences_save_adult_content_and_timezone(): void
