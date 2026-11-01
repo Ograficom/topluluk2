@@ -87,6 +87,12 @@ Route::get('/auth/{provider}/callback', [SocialLoginController::class, 'callback
     ->whereIn('provider', ['google'])
     ->name('social.callback');
 
+Route::get('/auth/device/verify', [SocialLoginController::class, 'showDeviceVerification'])
+    ->name('social.device.verify');
+Route::post('/auth/device/verify', [SocialLoginController::class, 'verifyDevice'])
+    ->middleware('throttle:5,1')
+    ->name('social.device.verify.submit');
+
 Route::post('/auth/google/one-tap', [SocialLoginController::class, 'oneTap'])
     ->withoutMiddleware([VerifyCsrfToken::class])
     ->name('social.google.one_tap');
