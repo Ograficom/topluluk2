@@ -27,7 +27,7 @@
                 <div class="user-box-content">
                     <span class="name">
                         @if ($post->user)
-                            <a class="name-text" href="{{ route('profiles.show', $post->user) }}">{{ $post->user->full_name ?: $post->user->name }}</a>
+                            <a class="name-text" href="{{ route('profiles.show', $post->user) }}">{{ $post->user->displayName() }}</a>
                         @else
                             <span class="name-text">Repost yazarı</span>
                         @endif
@@ -116,7 +116,7 @@
                 @csrf
                 <input type="hidden" name="parent_id" value="{{ $replyTo?->id }}">
                 @if ($replyTo)
-                    <p class="small color-gray">{{ $replyTo->user?->full_name ?: $replyTo->user?->name }} kullanıcısına yanıt yazıyorsunuz. <a class="link" href="{{ route('posts.show', $post) }}#comments">İptal</a></p>
+                    <p class="small color-gray">{{ $replyTo->user?->displayName() ?? 'Repost kullanıcısı' }} kullanıcısına yanıt yazıyorsunuz. <a class="link" href="{{ route('posts.show', $post) }}#comments">İptal</a></p>
                 @endif
                 <textarea id="comment-body" name="body" rows="8" maxlength="5000" placeholder="Yorum yaz" aria-label="Yorum yaz">{{ old('body') }}</textarea>
                 <input id="comment-images" type="file" name="images[]" accept="image/jpeg,image/png,image/gif,image/webp" multiple hidden>

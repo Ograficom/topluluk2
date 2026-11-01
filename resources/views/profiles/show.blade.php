@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', $user->full_name ?: $user->name)
+@section('title', $user->displayName())
 
 @section('content')
     <article>
@@ -29,12 +29,12 @@
             @endauth
 
             <div class="profile__avatar">
-                <img src="{{ $user->avatarUrl() }}" alt="{{ $user->full_name ?: $user->name }}" width="90" height="90">
+                <img src="{{ $user->avatarUrl() }}" alt="{{ $user->displayName() }}" width="90" height="90">
             </div>
             <div class="profile__content">
                 <div class="profile__info">
                     <div class="profile__name">
-                        <h1 class="h3">{{ $user->full_name ?: $user->name }}</h1>
+                        <h1 class="h3">{{ $user->displayName() }}</h1>
                         @if ($user->hasVerifiedBadge())
                             <span class="verify" data-tooltip="Doğrulanmış profil" role="img" aria-label="Doğrulanmış profil">
                                 <x-repost-icon name="verify" size="14" class="color-primary" />
@@ -75,7 +75,7 @@
                                         </a>
                                         <div class="user-box-content">
                                             <a href="{{ route('profiles.show', $user) }}" class="name">
-                                                <span class="name-text">{{ $user->full_name ?: $user->name }}</span>
+                                                <span class="name-text">{{ $user->displayName() }}</span>
                                                 @if ($user->hasVerifiedBadge())
                                                     <span class="verify" role="img" aria-label="Doğrulanmış profil"><x-repost-icon name="verify" size="14" /></span>
                                                 @endif
@@ -134,7 +134,7 @@
                                 </a>
                                 <div class="user-box-content">
                                     <a href="{{ route('profiles.show', $user) }}" class="name">
-                                        <span class="name-text">{{ $user->full_name ?: $user->name }}</span>
+                                        <span class="name-text">{{ $user->displayName() }}</span>
                                         @if ($user->hasVerifiedBadge())
                                             <span class="verify" role="img" aria-label="Doğrulanmış profil"><x-repost-icon name="verify" size="14" /></span>
                                         @endif

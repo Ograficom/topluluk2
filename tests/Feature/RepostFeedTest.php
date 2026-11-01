@@ -390,6 +390,38 @@ class RepostFeedTest extends TestCase
         ]);
     }
 
+    public function test_post_comments_use_a_safe_public_name_and_reference_button_style(): void
+    {
+        $author = User::factory()->create([
+            'name' => 'enesbodur@ografi.com',
+            'username' => 'enesbodur@ografi.com',
+            'full_name' => null,
+        ]);
+        $member = User::factory()->create();
+        $channel = Channel::create([
+            'name' => 'Yorum görünümü',
+            'slug' => 'yorum-gorunumu',
+            'is_active' => true,
+        ]);
+        $post = $this->createPost($channel, [
+            'user_id' => $author->id,
+            'slug' => 'yorum-gorunumu',
+        ]);
+        $comment = Comment::create([
+            'post_id' => $post->id,
+            'user_id' => $author->id,
+            'body' => 'Örnek yorum.',
+        ]);
+
+        $this->actingAs($member)
+            ->get(route('posts.show', ['post' => $post, 'reply_to' => $comment->id]))
+            ->assertOk()
+            ->assertSee('enesbodur kullanıcısına yanıt yazıyorsunuz.')
+            ->assertSee('>enesbodur</a>', false)
+            ->assertDontSee('>enesbodur@ografi.com</a>', false)
+            ->assertSee('btn-link comment__rating', false);
+    }
+
     public function test_members_can_upload_and_view_comment_images(): void
     {
         Storage::fake('public');

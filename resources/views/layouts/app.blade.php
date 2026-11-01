@@ -71,7 +71,7 @@
                                         <span class="avatar"><img src="{{ auth()->user()->avatarUrl() }}" alt="" width="40" height="40"></span>
                                         <span class="user-box-content">
                                             <span class="name">
-                                                <span class="name-text">{{ auth()->user()->full_name ?: auth()->user()->name }}</span>
+                                                <span class="name-text">{{ auth()->user()->displayName() }}</span>
                                                 @if (auth()->user()->hasVerifiedBadge())
                                                     <span class="verify" role="img" aria-label="Doğrulanmış hesap" title="Doğrulanmış hesap"><x-repost-icon name="verify" size="14" /></span>
                                                 @endif
@@ -228,7 +228,7 @@
                                                 <span class="avatar"><img src="{{ $author->avatarUrl() }}" alt="" width="40" height="40"></span>
                                                 <span class="user-box-content">
                                                     <strong class="name">
-                                                        <span class="name-text">{{ $author->full_name ?: $author->name }}</span>
+                                                        <span class="name-text">{{ $author->displayName() }}</span>
                                                         @if ($author->hasVerifiedBadge())
                                                             <span class="verify" role="img" aria-label="Doğrulanmış hesap" title="Doğrulanmış hesap"><x-repost-icon name="verify" size="14" /></span>
                                                         @endif
@@ -284,7 +284,7 @@
                                                 <div class="user-box-content user-box-content--line">
                                                     @if ($comment->user)
                                                         <a href="{{ route('profiles.show', $comment->user) }}" class="name">
-                                                            <span class="name-text">{{ $comment->user->full_name ?: $comment->user->name }}</span>
+                                                            <span class="name-text">{{ $comment->user->displayName() }}</span>
                                                             @if ($comment->user->hasVerifiedBadge())
                                                                 <span class="verify" role="img" aria-label="Doğrulanmış profil"><x-repost-icon name="verify" size="14" /></span>
                                                             @endif

@@ -122,6 +122,17 @@ class User extends Authenticatable implements FilamentUser
         return $this->is_verified && $this->verification_status === 'approved';
     }
 
+    public function displayName(): string
+    {
+        $name = $this->full_name ?: $this->name ?: $this->username;
+
+        if (is_string($name) && filter_var($name, FILTER_VALIDATE_EMAIL)) {
+            return (string) str($name)->before('@');
+        }
+
+        return filled($name) ? (string) $name : 'Repost kullanıcısı';
+    }
+
     public function avatarUrl(): string
     {
         return $this->avatar_path

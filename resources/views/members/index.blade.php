@@ -14,7 +14,7 @@
                         </div>
                         <div class="user-box-content">
                             <span class="name">
-                                <span class="name-text">{{ $member->full_name ?: $member->name }}</span>
+                                <span class="name-text">{{ $member->displayName() }}</span>
                                 @if ($member->hasVerifiedBadge())
                                     <span class="verify" role="img" aria-label="Doğrulanmış profil" data-tooltip="Doğrulanmış profil">
                                         <x-repost-icon name="verify" size="14" />

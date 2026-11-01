@@ -67,7 +67,7 @@
                                 </label>
                                 <label class="setting__list-item setting__list-item--center">
                                     <span class="setting__list-label">Full name:</span>
-                                    <span class="setting__list-value"><input type="text" name="full_name" value="{{ old('full_name', $user->full_name ?: $user->name) }}" maxlength="255" required></span>
+                                    <span class="setting__list-value"><input type="text" name="full_name" value="{{ old('full_name', $user->full_name ?: $user->displayName()) }}" maxlength="255" required></span>
                                 </label>
                                 <label class="setting__list-item">
                                     <span class="setting__list-label">Signature:</span>
@@ -172,9 +172,9 @@
                                 @forelse ($blockedUsers as $blockedUser)
                                     <span class="ignore-list-item">
                                         @if (filled($blockedUser->username))
-                                            <a class="pm_list" href="{{ route('profiles.show', $blockedUser) }}">{{ $blockedUser->full_name ?: $blockedUser->name }}</a>
+                                            <a class="pm_list" href="{{ route('profiles.show', $blockedUser) }}">{{ $blockedUser->displayName() }}</a>
                                         @else
-                                            <span class="pm_list">{{ $blockedUser->full_name ?: $blockedUser->name }}</span>
+                                            <span class="pm_list">{{ $blockedUser->displayName() }}</span>
                                         @endif
                                         <form action="{{ route('settings.blocked-users.destroy', $blockedUser) }}" method="POST">
                                             @csrf
@@ -268,7 +268,7 @@
                                     <span class="avatar"><img src="{{ $user->avatarUrl() }}" alt="" width="40" height="40"></span>
                                     <span class="user-box-content">
                                         <span class="name">
-                                            {{ $user->full_name ?: $user->name }}
+                                            {{ $user->displayName() }}
                                             @if ($user->hasVerifiedBadge())<span class="verify"><x-repost-icon name="verify" size="14" /></span>@endif
                                         </span>
                                         <span class="meta">{{ filled($user->username) ? 'Back to profile' : 'Set a username in Profile settings' }}</span>

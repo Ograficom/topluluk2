@@ -20,7 +20,7 @@
             <header class="addpost__header">
                 <img class="addpost__header-avatar" src="{{ $user->avatarUrl() }}" alt="" width="40" height="40">
                 <div class="addpost__author">
-                    <span class="addpost__author-name">{{ $user->full_name ?: $user->name }}</span>
+                    <span class="addpost__author-name">{{ $user->displayName() }}</span>
                     <span class="small color-gray">Yazı yayınlandıktan sonra profilinde görünür.</span>
                 </div>
             </header>

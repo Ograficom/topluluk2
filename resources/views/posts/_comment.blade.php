@@ -17,7 +17,7 @@
         <div class="user-box-content">
             <span class="name">
                 @if ($comment->user)
-                    <a class="name-text" href="{{ route('profiles.show', $comment->user) }}">{{ $comment->user->full_name ?: $comment->user->name }}</a>
+                    <a class="name-text" href="{{ route('profiles.show', $comment->user) }}">{{ $comment->user->displayName() }}</a>
                 @else
                     <span class="name-text">Repost kullanıcısı</span>
                 @endif
@@ -50,7 +50,7 @@
             @auth
                 <form class="comment__rating-box" action="{{ route('posts.comments.reactions.like', ['post' => $post, 'comment' => $comment]) }}" method="POST">
                     @csrf
-                    <button class="comment__rating {{ ($comment->viewer_reacted ?? false) ? 'is-active' : '' }}" type="submit" aria-label="Yorumu beğen" aria-pressed="{{ ($comment->viewer_reacted ?? false) ? 'true' : 'false' }}">
+                    <button class="btn-link comment__rating {{ ($comment->viewer_reacted ?? false) ? 'is-active' : '' }}" type="submit" aria-label="Yorumu beğen" aria-pressed="{{ ($comment->viewer_reacted ?? false) ? 'true' : 'false' }}">
                         <span class="comment__rating-icon"><x-repost-icon name="like" size="16" /></span>
                         <span class="comment__rating-count">{{ number_format($comment->reactions_count ?? 0) }}</span>
                     </button>
