@@ -5152,3 +5152,7 @@ p {
 .repost-health-summary>strong{font-size:1.8rem}
 .repost-health-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
 @media(max-width:760px){.repost-reaction-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.repost-health-grid{grid-template-columns:1fr}}
+
+
+/* Tailwind utility classes used by the EditorJS composer and shared Blade screens. */
+@tailwind utilities;
