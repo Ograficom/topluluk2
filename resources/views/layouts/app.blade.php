@@ -11,7 +11,7 @@
     <meta property="og:title" content="@yield('title', 'OgraFi')">
     <meta property="og:description" content="@yield('meta_description', 'OgraFi topluluk akışı')">
     <meta property="og:type" content="website">
-    @php($canonicalUrl = trim($__env->yieldContent('canonical_url')))
+    @php($canonicalUrl = trim($__env->yieldContent('canonical_url')) ?: request()->url())
     @if($canonicalUrl !== '')
         <link rel="canonical" href="{{ $canonicalUrl }}">
         <meta property="og:url" content="{{ $canonicalUrl }}">
