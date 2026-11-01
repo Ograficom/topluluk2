@@ -10,7 +10,7 @@
         @if(request()->filled('tag'))
             <section data-ografi-layout-section="tag_title" class="repost-page-heading"><div><span class="repost-eyebrow">ETİKET AKIŞI</span><h1>#{{ request('tag') }}</h1></div></section>
         @endif
-        <div data-ografi-layout-section="blog_ads_top">@include('partials.ads.slot', ['layoutSection' => 'blog_ads_top'])</div>
+        @include('partials.ads.slot', ['layoutSection' => 'blog_ads_top'])
         <header class="repost-page-heading">
             <div><span class="repost-eyebrow">OGRAFI BLOG</span><h1>{{ isset($category) && $category ? $category->name : 'Gönderiler' }}</h1><p>Topluluğun yazılarını ve fikirlerini keşfet.</p></div>
             @auth<a href="{{ route('blog.create') }}" class="btn btn-primary btn-rounded">Gönderi oluştur</a>@endauth
