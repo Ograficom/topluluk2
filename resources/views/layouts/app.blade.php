@@ -103,7 +103,7 @@
     $widgetTags = $popularTags ?? ($tags ?? collect());
 @endphp
 
-<main class="container {{ ($noContainerPadding ?? false) ? 'repost-container-bleed' : '' }} {{ $isAuthLayout ? 'repost-auth-layout' : '' }}">
+<main class="container {{ ($noContainerPadding ?? false) ? 'repost-container-bleed' : '' }} {{ ($isAuthLayout ?? false) ? 'repost-auth-layout' : '' }}">
     <div class="main {{ ($hideGlobalHeader ?? false) ? 'repost-editor-grid' : 'main__grid repost-main-grid' }}">
         @unless($hideGlobalHeader ?? false)
         <aside class="sidebar" aria-label="Topluluklar ve üyeler">
