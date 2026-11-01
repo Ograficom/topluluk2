@@ -24,7 +24,15 @@ php artisan migrate --seed
 php artisan serve
 ```
 
-Uygulama `http://127.0.0.1:8000` adresinde, yönetim paneli ise `/admin` adresinde açılır. Yönetici kullanıcı yalnızca bu kimlik bilgileri ayarlanıp veritabanı tohumlandığında oluşturulur. Sonradan yönetici bilgisi eklemek için `.env` değerlerini doldurup `php artisan db:seed` komutunu çalıştırın.
+Uygulama `http://127.0.0.1:8000` adresinde, yönetim paneli ise `/admin` adresinde açılır. İlk kurulumda `.env` dosyasındaki `FILAMENT_ADMIN_EMAIL` ve `FILAMENT_ADMIN_PASSWORD` değerleri ayarlanıp `php artisan migrate --seed` çalıştırıldığında yönetici hesabı oluşturulur.
+
+Mevcut bir kullanıcıya yönetici erişimi vermek için komutu **uygulamanın bağlı olduğu sunucu/ortamda** çalıştırın:
+
+```powershell
+php artisan admin:grant kullanici@example.com
+```
+
+Komut hesabın varlığını doğrular ve erişimi vermeden önce onay ister; parola değiştirmez. Ardından kullanıcı hesabından çıkış yapıp yeniden giriş yaparak `/admin` adresini açın. GitHub'a kod göndermek, uzak sunucudaki veritabanı yetkilerini kendiliğinden değiştirmez; komut dağıtım sonrasında uzak uygulamada ayrıca çalıştırılmalıdır.
 
 ## İçerik ve yönetim
 

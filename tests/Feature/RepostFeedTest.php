@@ -491,6 +491,49 @@ class RepostFeedTest extends TestCase
         $this->actingAs($user)->get('/admin')->assertForbidden();
     }
 
+    public function test_admin_grant_command_promotes_an_existing_account_after_confirmation(): void
+    {
+        $user = User::factory()->create([
+            'email' => 'promote@example.com',
+            'is_admin' => false,
+        ]);
+
+        $this->artisan('admin:grant', ['email' => $user->email])
+            ->expectsConfirmation('promote@example.com hesabına Filament yönetici erişimi verilsin mi?', 'yes')
+            ->expectsOutputToContain('Yönetici erişimi verildi.')
+            ->assertExitCode(0);
+
+        $this->assertDatabaseHas('users', [
+            'id' => $user->id,
+            'is_admin' => true,
+        ]);
+    }
+
+    public function test_admin_grant_command_does_not_promote_an_account_without_confirmation(): void
+    {
+        $user = User::factory()->create([
+            'email' => 'not-promoted@example.com',
+            'is_admin' => false,
+        ]);
+
+        $this->artisan('admin:grant', ['email' => $user->email])
+            ->expectsConfirmation('not-promoted@example.com hesabına Filament yönetici erişimi verilsin mi?', 'no')
+            ->expectsOutputToContain('İşlem iptal edildi.')
+            ->assertExitCode(1);
+
+        $this->assertDatabaseHas('users', [
+            'id' => $user->id,
+            'is_admin' => false,
+        ]);
+    }
+
+    public function test_admin_grant_command_requires_an_existing_user(): void
+    {
+        $this->artisan('admin:grant', ['email' => 'missing@example.com'])
+            ->expectsOutputToContain('Bu e-posta adresiyle kayıtlı bir kullanıcı bulunamadı.')
+            ->assertExitCode(1);
+    }
+
     public function test_administrators_can_open_post_and_channel_creation_forms(): void
     {
         $admin = User::factory()->create(['is_admin' => true]);
