@@ -7,6 +7,15 @@
     <meta name="theme-color" content="#f7f9fd">
     <title>@yield('title', config('app.name', 'OgraFi'))</title>
     <meta name="description" content="@yield('meta_description', 'OgraFi topluluk akışı')">
+    <meta property="og:site_name" content="OgraFi">
+    <meta property="og:title" content="@yield('title', 'OgraFi')">
+    <meta property="og:description" content="@yield('meta_description', 'OgraFi topluluk akışı')">
+    <meta property="og:type" content="website">
+    @php($canonicalUrl = trim($__env->yieldContent('canonical_url')))
+    @if($canonicalUrl !== '')
+        <link rel="canonical" href="{{ $canonicalUrl }}">
+        <meta property="og:url" content="{{ $canonicalUrl }}">
+    @endif
     @stack('meta')
     @vite(['resources/css/app.css', 'resources/css/ografi.css', 'resources/js/app.js'])
     @stack('styles')
