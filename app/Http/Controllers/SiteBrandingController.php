@@ -9,6 +9,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Illuminate\Validation\ValidationException;
 
 class SiteBrandingController extends Controller
 {
@@ -42,7 +43,15 @@ class SiteBrandingController extends Controller
         $disk = Storage::disk('public');
 
         if ($extension === 'svg') {
-            if (! $disk->put($path, $svgSanitizer->sanitize($logo->getContent()))) {
+            try {
+                $contents = $svgSanitizer->sanitize($logo->getContent());
+            } catch (\InvalidArgumentException $exception) {
+                throw ValidationException::withMessages([
+                    'logo' => 'SVG dosyası geçersiz veya güvenli biçimde işlenemedi.',
+                ]);
+            }
+
+            if (! $disk->put($path, $contents)) {
                 throw new \RuntimeException('Logo dosyası depolama alanına kaydedilemedi.');
             }
 

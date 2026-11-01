@@ -508,7 +508,10 @@ class RepostFeedTest extends TestCase
             ->assertHasNoErrors();
 
         $this->post(route('admin.site-branding.logo.update'), [
-            'logo' => UploadedFile::fake()->image('logo.png'),
+            'logo' => UploadedFile::fake()->createWithContent(
+                'logo.svg',
+                '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 30"><path id="wordmark" d="M0 0h100v30H0z" fill="#106CFF"/><use href="#wordmark"/></svg>',
+            )->mimeType('image/svg+xml'),
         ])->assertRedirect();
 
         $settings = SiteSetting::current();
@@ -516,11 +519,14 @@ class RepostFeedTest extends TestCase
         $this->assertSame('Yeni Marka', $settings->brand_name);
         $this->assertNotEmpty($settings->brand_logo_path);
         Storage::disk('public')->assertExists($settings->brand_logo_path);
+        $this->assertStringContainsString('<use href="#wordmark"', Storage::disk('public')->get($settings->brand_logo_path));
 
         $this->get('/')
             ->assertOk()
             ->assertSee('Yeni Marka')
-            ->assertSee($settings->brandLogoUrl());
+            ->assertSee($settings->brandLogoUrl())
+            ->assertSee('logo-icon--custom')
+            ->assertSee('grid-template-columns: auto;', false);
     }
 
     public function test_administrators_can_edit_footer_year_and_social_links(): void
@@ -559,6 +565,26 @@ class RepostFeedTest extends TestCase
         $this->assertStringNotContainsString('https://example.com', $svg);
     }
 
+    public function test_svg_sanitizer_preserves_safe_references_and_embedded_raster_images(): void
+    {
+        $svg = app(SvgSanitizer::class)->sanitize(
+            '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 10 10"><defs><g id="mark"><path d="M0 0h10v10z"/></g></defs><use xlink:href="#mark"/><image xlink:href="data:image/png;base64,iVBORw0KGgo="/><use href="https://example.com/logo.svg#mark"/></svg>',
+        );
+
+        $this->assertStringContainsString('<use href="#mark"', $svg);
+        $this->assertStringContainsString('href="data:image/png;base64,iVBORw0KGgo="', $svg);
+        $this->assertStringNotContainsString('https://example.com', $svg);
+    }
+
+    public function test_svg_sanitizer_rejects_logos_without_visible_artwork(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+
+        app(SvgSanitizer::class)->sanitize(
+            '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 10"><defs><clipPath id="clip"><path d="M0 0h10v10z"/></clipPath></defs><g/></svg>',
+        );
+    }
+
     public function test_administrators_can_upload_sanitized_svg_logos(): void
     {
         Storage::fake('public');
@@ -581,6 +607,18 @@ class RepostFeedTest extends TestCase
         $this->assertStringContainsString('<path', $storedSvg);
         $this->assertStringNotContainsString('<script', $storedSvg);
         $this->assertStringNotContainsString('onload', $storedSvg);
+
+        $this->get('/')
+            ->assertOk()
+            ->assertSee(SiteSetting::current()->brandLogoUrl())
+            ->assertSee('logo-icon--custom')
+            ->assertSee('style="width: auto; height: 36px; max-width: 180px; object-fit: contain;"', false);
+
+        $this->get('/')
+            ->assertOk()
+            ->assertSee(SiteSetting::current()->brandLogoUrl())
+            ->assertSee('logo-icon--custom')
+            ->assertSee('style="width: auto; height: 36px; max-width: 180px; object-fit: contain;"', false);
     }
 
     public function test_non_administrators_cannot_upload_a_site_logo(): void

@@ -19,6 +19,9 @@ class SvgSanitizer
         'line',
         'polyline',
         'polygon',
+        'image',
+        'symbol',
+        'use',
         'defs',
         'linearGradient',
         'radialGradient',
@@ -28,6 +31,18 @@ class SvgSanitizer
         'title',
     ];
 
+    private const DRAWING_ELEMENTS = [
+        'path',
+        'rect',
+        'circle',
+        'ellipse',
+        'line',
+        'polyline',
+        'polygon',
+        'image',
+        'use',
+    ];
+
     private const ALLOWED_ATTRIBUTES = [
         'xmlns',
         'viewBox',
@@ -35,6 +50,7 @@ class SvgSanitizer
         'height',
         'preserveAspectRatio',
         'id',
+        'href',
         'fill',
         'fill-rule',
         'fill-opacity',
@@ -103,6 +119,10 @@ class SvgSanitizer
         $this->sanitizeAttributes($document->documentElement);
         $this->sanitizeNode($document->documentElement);
 
+        if (! $this->hasVisibleArtwork($document->documentElement)) {
+            throw new InvalidArgumentException('SVG logo does not contain supported visible artwork.');
+        }
+
         $document->documentElement->setAttribute('xmlns', 'http://www.w3.org/2000/svg');
 
         return $document->saveXML($document->documentElement) ?: throw new InvalidArgumentException('Unable to process the SVG logo.');
@@ -122,6 +142,16 @@ class SvgSanitizer
                 }
 
                 $this->sanitizeAttributes($child);
+
+                if (
+                    in_array($child->localName, ['image', 'use'], true)
+                    && blank($child->getAttribute('href'))
+                ) {
+                    $node->removeChild($child);
+
+                    continue;
+                }
+
                 $this->sanitizeNode($child);
 
                 continue;
@@ -138,10 +168,13 @@ class SvgSanitizer
         foreach (iterator_to_array($element->attributes) as $attribute) {
             $name = $attribute->localName;
             $value = trim($attribute->value);
+            $isXlinkHref = $name === 'href'
+                && $attribute->namespaceURI === 'http://www.w3.org/1999/xlink'
+                && in_array($element->localName, ['image', 'use'], true);
 
             if (
-                $attribute->namespaceURI !== null
-                || ! in_array($name, self::ALLOWED_ATTRIBUTES, true)
+                ($attribute->namespaceURI !== null && ! $isXlinkHref)
+                || (! $isXlinkHref && ! in_array($name, self::ALLOWED_ATTRIBUTES, true))
                 || preg_match('/[\x00-\x1F<>]/', $value)
                 || (str_contains(strtolower($value), 'url(') && ! preg_match('/^url\(\s*#[A-Za-z][A-Za-z0-9_.:-]*\s*\)$/', $value))
                 || in_array($name, ['clip-path', 'mask'], true) && ! preg_match('/^url\(\s*#[A-Za-z][A-Za-z0-9_.:-]*\s*\)$/', $value)
@@ -149,6 +182,24 @@ class SvgSanitizer
                 $element->removeAttributeNode($attribute);
 
                 continue;
+            }
+
+            if ($name === 'href') {
+                $isLocalReference = $element->localName === 'use'
+                    && preg_match('/^#[A-Za-z][A-Za-z0-9_.:-]*$/', $value);
+                $isEmbeddedRaster = $element->localName === 'image'
+                    && preg_match('/^data:image\/(?:png|jpeg|webp);base64,[A-Za-z0-9+\/]+={0,2}$/', $value);
+
+                if (! $isLocalReference && ! $isEmbeddedRaster) {
+                    $element->removeAttributeNode($attribute);
+
+                    continue;
+                }
+
+                if ($isXlinkHref) {
+                    $element->removeAttributeNode($attribute);
+                    $element->setAttribute('href', $value);
+                }
             }
 
             if ($name === 'xmlns' && $value !== 'http://www.w3.org/2000/svg') {
@@ -161,5 +212,36 @@ class SvgSanitizer
                 $element->removeAttributeNode($attribute);
             }
         }
+    }
+
+    private function hasVisibleArtwork(DOMElement $element): bool
+    {
+        foreach ($element->childNodes as $child) {
+            if (! $child instanceof DOMElement) {
+                continue;
+            }
+
+            if (in_array($child->localName, ['defs', 'symbol', 'clipPath', 'mask'], true)) {
+                continue;
+            }
+
+            if (in_array($child->localName, self::DRAWING_ELEMENTS, true)) {
+                if ($child->localName === 'use' && ! preg_match('/^#[A-Za-z][A-Za-z0-9_.:-]*$/', $child->getAttribute('href'))) {
+                    continue;
+                }
+
+                if ($child->localName === 'image' && ! preg_match('/^data:image\/(?:png|jpeg|webp);base64,[A-Za-z0-9+\/]+={0,2}$/', $child->getAttribute('href'))) {
+                    continue;
+                }
+
+                return true;
+            }
+
+            if ($this->hasVisibleArtwork($child)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
