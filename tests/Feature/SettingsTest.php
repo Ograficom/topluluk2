@@ -57,6 +57,24 @@ class SettingsTest extends TestCase
         $this->assertAuthenticated();
     }
 
+    public function test_registration_accepts_decomposed_turkish_letters_in_username(): void
+    {
+        $username = "do\u{0067}\u{0306}rulama.alfa_tire";
+
+        $this->post('/signup', [
+            'username' => $username,
+            'email' => 'decomposed@example.com',
+            'password' => 'a-strong-password-123',
+            'password_confirmation' => 'a-strong-password-123',
+            'agree_rules' => '1',
+        ])->assertRedirect('/');
+
+        $this->assertDatabaseHas('users', [
+            'username' => $username,
+            'email' => 'decomposed@example.com',
+        ]);
+    }
+
     public function test_login_page_has_a_working_login_form(): void
     {
         $this->get('/signin')
