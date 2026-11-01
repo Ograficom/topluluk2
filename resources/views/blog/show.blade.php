@@ -6,7 +6,7 @@
 
 @section('content')
     <div data-ografi-layout-container="post_show" class="post-show-shell">
-        <div data-ografi-layout-section="post_ad_top">@include('partials.ads.slot', ['layoutSection' => 'post_ad_top'])</div>
+        @include('partials.ads.slot', ['layoutSection' => 'post_ad_top'])
     <article data-ografi-layout-section="post_content" class="ps-post-card card post repost-post-detail">
         <section class="card-body">
             <nav class="repost-breadcrumb" aria-label="İçerik yolu"><a href="{{ route('home') }}">OgraFi</a>@if($post->category)<span>/</span><a href="{{ route('blog.category', $post->category->slug) }}">{{ $post->category->name }}</a>@endif</nav>
