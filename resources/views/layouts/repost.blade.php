@@ -86,7 +86,7 @@
         </div>
     </header>
 
-    <main class="container repost-page-container {{ request()->routeIs('login', 'register', 'register.verify', 'register.complete', 'password.request', 'password.reset') ? 'repost-auth-layout' : '' }}">
+    <main class="container repost-page-container {{ request()->routeIs('login', 'register', 'register.verify', 'register.complete', 'password.request', 'password.reset', 'social.device.verify', 'two-factor.login') ? 'repost-auth-layout' : '' }}">
         <div class="main main__grid repost-main-grid">
             <aside class="sidebar repost-left-sidebar" aria-label="Sol menü">
                 <div class="sidebar__body">
