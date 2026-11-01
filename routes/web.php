@@ -11,6 +11,13 @@ use App\Http\Controllers\StatisticsController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [PostController::class, 'index'])->name('posts.index');
+
+// Repost HTML demo dosya adlariyla uyumlu eski adresler.
+Route::get('/index.html', [PostController::class, 'index'])->name('legacy.home');
+Route::get('/channels.html', [ChannelController::class, 'index'])->name('legacy.channels');
+Route::get('/last-posts.html', [PostController::class, 'index'])->defaults('sort', 'latest')->name('legacy.last-posts');
+Route::get('/rating-users.html', [MemberController::class, 'index'])->name('legacy.rating-users');
+
 Route::get('/stats.html', [StatisticsController::class, 'index'])->name('stats.index');
 Route::get('/members', [MemberController::class, 'index'])->name('members.index');
 Route::middleware('auth')->group(function (): void {
@@ -29,10 +36,12 @@ Route::get('/channels/{channel:slug}', [ChannelController::class, 'show'])->name
 
 Route::middleware('guest')->group(function (): void {
     Route::get('/signin', [AuthController::class, 'showLogin'])->name('login');
+    Route::get('/signin.html', [AuthController::class, 'showLogin'])->name('legacy.signin');
     Route::post('/signin', [AuthController::class, 'login'])
         ->middleware('throttle:10,1')
         ->name('login.store');
     Route::get('/signup', [AuthController::class, 'showRegister'])->name('register');
+    Route::get('/signup.html', [AuthController::class, 'showRegister'])->name('legacy.signup');
     Route::post('/signup', [AuthController::class, 'register'])
         ->middleware('throttle:5,1')
         ->name('register.store');
