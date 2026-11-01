@@ -1,4 +1,4 @@
-<div data-ografi-layout-section="comments" class="repost-comment-list">
+<div class="repost-comment-list">
     @forelse($post->comments as $comment)
         <article class="repost-comment">
             <div class="user-box">
