@@ -84,7 +84,7 @@
 .repost-comment-content { margin: 10px 0 0 48px; line-height: 1.65; overflow-wrap: anywhere; }
 .repost-related-posts { margin-top: 18px; }
 .repost-profile { overflow: hidden; padding: 0; }
-.repost-profile-cover { min-height: 170px; background: linear-gradient(110deg, #eaf1ff, #f4f7fc); background-position: center; background-size: cover; }
+.repost-profile-cover { min-height: 170px; background: #eef3fb; background-position: center; background-size: cover; }
 .repost-profile-main { position: relative; padding: 0 22px 20px; }
 .repost-profile-avatar { width: 104px; height: 104px; margin-top: -52px; overflow: hidden; border: 4px solid var(--card-bg, #fff); border-radius: 50%; background: #e8efff; }
 .repost-profile-avatar img { display: block; width: 100%; height: 100%; object-fit: cover; }
@@ -176,8 +176,8 @@
 
 .ografi-switch { position: relative; display: inline-flex; flex: 0 0 auto; align-items: center; cursor: pointer; }
 .ografi-switch input { position: absolute; width: 1px; height: 1px; opacity: 0; }
-.ografi-switch__track { display: inline-flex; align-items: center; width: 42px; height: 24px; padding: 3px; border: 1px solid #cbd5e1; border-radius: 99px; background: #e2e8f0; transition: background-color .15s ease, border-color .15s ease; }
-.ografi-switch__track>span { display: block; width: 16px; height: 16px; border-radius: 50%; background: #fff; transition: transform .15s ease; }
+.ografi-switch__track { display: inline-flex; align-items: center; width: 42px; height: 24px; padding: 3px; border: 1px solid #cbd5e1; border-radius: 99px; background: #e2e8f0; }
+.ografi-switch__track>span { display: block; width: 16px; height: 16px; border-radius: 50%; background: #fff; }
 .ografi-switch input:checked+.ografi-switch__track { border-color: #2563eb; background: #2563eb; }
 .ografi-switch input:checked+.ografi-switch__track>span { transform: translateX(18px); }
 .ografi-switch input:focus-visible+.ografi-switch__track { outline: 2px solid #2563eb; outline-offset: 3px; }
