@@ -5142,3 +5142,13 @@ p {
 .repost-draft-row{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:14px 16px;border-bottom:1px solid var(--border-color)}
 .repost-draft-row p{margin-top:4px}
 @media(max-width:760px){.repost-draft-row{align-items:flex-start;flex-direction:column}}
+
+
+.repost-reaction-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.repost-reaction-tile{display:grid;justify-items:center;gap:7px;text-align:center}
+.repost-reaction-tile img{width:42px;height:42px;object-fit:contain}
+.repost-reaction-tile>span{font-size:2rem}
+.repost-health-summary{display:grid;gap:5px;margin-bottom:16px}
+.repost-health-summary>strong{font-size:1.8rem}
+.repost-health-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+@media(max-width:760px){.repost-reaction-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.repost-health-grid{grid-template-columns:1fr}}
