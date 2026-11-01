@@ -30,7 +30,7 @@ class CookieBanner extends Component
             }
 
             $policy = CookiePolicy::enabled()->latest('updated_at')->first();
-        } catch (\\Throwable) {
+        } catch (\Throwable) {
             // The installer and early boot screens may render before database migrations exist.
             return '';
         }
