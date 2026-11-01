@@ -75,6 +75,24 @@ class SettingsTest extends TestCase
         ]);
     }
 
+    public function test_registration_accepts_other_username_characters(): void
+    {
+        $username = 'doğrulama+alfa!@';
+
+        $this->post('/signup', [
+            'username' => $username,
+            'email' => 'special-username@example.com',
+            'password' => 'a-strong-password-123',
+            'password_confirmation' => 'a-strong-password-123',
+            'agree_rules' => '1',
+        ])->assertRedirect('/');
+
+        $this->assertDatabaseHas('users', [
+            'username' => $username,
+            'email' => 'special-username@example.com',
+        ]);
+    }
+
     public function test_login_page_has_a_working_login_form(): void
     {
         $this->get('/signin')
@@ -189,6 +207,28 @@ class SettingsTest extends TestCase
         ]);
 
         $this->get('/users/doğrulama.alfa_tire')->assertOk();
+    }
+
+    public function test_profile_settings_accept_other_username_characters(): void
+    {
+        $user = User::factory()->create();
+        $username = 'doğrulama+alfa!@';
+
+        $this->actingAs($user)
+            ->from('/settings')
+            ->patch('/settings/profile', [
+                'activeTab' => 'profile',
+                'username' => $username,
+                'full_name' => 'Doğrulama Alfa',
+            ])
+            ->assertRedirect('/settings');
+
+        $this->assertDatabaseHas('users', [
+            'id' => $user->id,
+            'username' => $username,
+        ]);
+
+        $this->get(route('profiles.show', $user))->assertOk();
     }
 
     public function test_preferences_save_adult_content_and_timezone(): void

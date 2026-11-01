@@ -3,7 +3,6 @@
 namespace App\Filament\Resources\Users\Schemas;
 
 use App\Models\User;
-use App\Rules\UsernameFormat;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
@@ -23,7 +22,6 @@ class UserForm
                     ->label('Kullanıcı adı')
                     ->required()
                     ->maxLength(30)
-                    ->rules([new UsernameFormat])
                     ->unique(ignoreRecord: true),
                 TextInput::make('email')
                     ->label('E-posta')
