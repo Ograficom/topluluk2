@@ -1,4 +1,4 @@
-name: Deploy to Server
+name: Deploy OgraFi Coming Soon Page
 
 on:
   push:
@@ -10,83 +10,8 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  quality:
-    name: Laravel and frontend tests
-    runs-on: ubuntu-latest
-    timeout-minutes: 20
-    env:
-      APP_ENV: testing
-      APP_INSTALL_ENABLED: 'true'
-      APP_INSTALLED: 'true'
-      LOGIN_SECURITY_FAIL_CLOSED: 'false'
-      DB_CONNECTION: sqlite
-      DB_DATABASE: ':memory:'
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Set up PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: '8.3'
-          extensions: mbstring, xml, ctype, iconv, intl, pdo_sqlite, fileinfo, curl
-          coverage: none
-          tools: composer:v2
-
-      - name: Prepare Laravel writable directories
-        run: |
-          mkdir -p storage/framework/cache
-          mkdir -p storage/framework/data
-          mkdir -p storage/framework/sessions
-          mkdir -p storage/framework/testing
-          mkdir -p storage/framework/views
-          mkdir -p storage/logs
-          mkdir -p bootstrap/cache
-
-      - name: Validate Composer files
-        run: composer validate --strict
-
-      - name: Install PHP dependencies
-        run: composer install --no-interaction --prefer-dist --no-progress --optimize-autoloader
-
-      - name: Prepare testing environment
-        run: |
-          cp .env.example .env
-          php artisan key:generate --force
-
-      - name: Run PHP syntax checks
-        run: |
-          find app bootstrap config database routes tests -type f -name '*.php' -print0 \
-            | xargs -0 -n1 php -l
-
-      - name: Compile all Blade views
-        env:
-          CACHE_STORE: array
-          SESSION_DRIVER: array
-          QUEUE_CONNECTION: sync
-        run: php artisan view:cache
-
-      - name: Run application tests
-        env:
-          CACHE_STORE: array
-          SESSION_DRIVER: array
-          QUEUE_CONNECTION: sync
-        run: php artisan test --compact
-
-      - name: Set up Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: '22'
-          cache: npm
-
-      - name: Install frontend dependencies
-        run: npm ci --include=dev --no-audit --no-fund
-
-      - name: Build frontend
-        run: npm run build
-
   deploy:
-    needs: quality
+    name: Publish static landing page
     runs-on: ubuntu-latest
     steps:
       - name: Deploy via SSH
@@ -97,7 +22,7 @@ jobs:
           password: ${{ secrets.SERVER_SSH_PASSWORD }}
           port: 22
           timeout: 120s
-          command_timeout: 20m
+          command_timeout: 10m
           script: |
             set -e
             TARGET_PATH="${{ secrets.SERVER_PATH }}"
@@ -105,230 +30,12 @@ jobs:
               TARGET_PATH="/www/wwwroot/ografi.com"
             fi
             cd "$TARGET_PATH"
-
-            rm -f .git/index.lock
-
-            git stash --include-untracked || true
             git fetch origin main
             git reset --hard origin/main
-            php artisan optimize:clear || true
-
-            set_env_value() {
-              KEY="$1"
-              VALUE="$2"
-              if grep -q "^${KEY}=" .env; then
-                sed -i "s|^${KEY}=.*|${KEY}=${VALUE}|" .env
-              else
-                printf '\n%s=%s\n' "$KEY" "$VALUE" >> .env
-              fi
-            }
-
-            set_env_value APP_ENV production
-            set_env_value APP_DEBUG false
-
-            set_env_value LOGIN_SECURITY_FAIL_CLOSED true
-            set_env_value LOGIN_SECURITY_GLOBAL_BLOCK_VPN true
-            set_env_value LOGIN_SECURITY_GLOBAL_BLOCK_TOR true
-            set_env_value LOGIN_SECURITY_BLOCK_DATACENTER true
-            set_env_value LOGIN_SECURITY_DECISION_CACHE_HOURS 12
-            set_env_value LOGIN_SECURITY_LIST_FRESH_HOURS 2
-            set_env_value LOGIN_SECURITY_LIST_STALE_DAYS 7
-
-            set_env_value LOGIN_SECURITY_IPQS_ENABLED true
-            set_env_value LOGIN_SECURITY_IPQS_STRICTNESS 1
-            set_env_value LOGIN_SECURITY_IPQS_ALLOW_PUBLIC_ACCESS_POINTS true
-            set_env_value LOGIN_SECURITY_IPQS_TIMEOUT 6
-
-            IPQS_API_KEY_VALUE="${{ secrets.IPQS_API_KEY }}"
-            if [ -n "$IPQS_API_KEY_VALUE" ]; then
-              set_env_value IPQS_API_KEY "$IPQS_API_KEY_VALUE"
-              echo "IPQS live network intelligence enabled."
-            else
-              echo "IPQS_API_KEY is empty; continuing with local lists + ProxyCheck live fallback." >&2
-            fi
-
-            set_env_value LOGIN_SECURITY_PROXYCHECK_ENABLED true
-            set_env_value LOGIN_SECURITY_PROXYCHECK_TIMEOUT 6
-            set_env_value LOGIN_SECURITY_PROXYCHECK_KEYLESS_DAILY_LIMIT 90
-
-            PROXYCHECK_API_KEY_VALUE="${{ secrets.PROXYCHECK_API_KEY }}"
-            if [ -n "$PROXYCHECK_API_KEY_VALUE" ]; then
-              set_env_value PROXYCHECK_API_KEY "$PROXYCHECK_API_KEY_VALUE"
-              echo "ProxyCheck authenticated live network intelligence enabled."
-            else
-              echo "PROXYCHECK_API_KEY is empty; ProxyCheck keyless live checks remain enabled." >&2
-            fi
-
-            COMPOSER_ALLOW_SUPERUSER=1 composer install --no-interaction --prefer-dist --optimize-autoloader
-            php artisan livewire:publish --assets --no-interaction
-
-            if [ ! -f package-lock.json ]; then
-              echo "package-lock.json is required for deterministic production builds" >&2
-              exit 1
-            fi
-            rm -rf node_modules
-            npm ci --include=dev --no-audit --no-fund
-            npm run build
-
-            OGRAFI_NGINX_CONFIG=/www/server/panel/vhost/nginx/ografi.com.conf
-            if [ -f "$OGRAFI_NGINX_CONFIG" ]; then
-              sed -i '/valid_referers ografi.com www.ografi.com;/d; /if (\$invalid_referer)/,+3d' "$OGRAFI_NGINX_CONFIG"
-              if nginx -t; then
-                nginx -s reload || true
-              fi
-            fi
-
-            php artisan migrate --force
-            php artisan network-security:refresh-lists || true
-            if [ -L public/storage ]; then
-              echo "Laravel storage symlink already present."
-            elif [ -e public/storage ]; then
-              echo "public/storage exists but is not a symlink; refusing to overwrite it." >&2
-              exit 1
-            else
-              php artisan storage:link
-            fi
-            php artisan optimize:clear || true
-
-            # Keep the Laravel scheduler running every minute in production.
-            PHP_BIN="$(command -v php || true)"
-            if [ -z "$PHP_BIN" ]; then
-              echo "PHP binary was not found; cannot install Laravel scheduler cron." >&2
-              exit 1
-            fi
-
-            CRON_MARKER="# ografi-laravel-scheduler"
-            CRON_TMP="$(mktemp)"
-            crontab -l 2>/dev/null | grep -vF "$CRON_MARKER" > "$CRON_TMP" || true
-            printf '* * * * * cd %s && %s artisan schedule:run >> storage/logs/scheduler.log 2>&1 %s\n' \
-              "$TARGET_PATH" "$PHP_BIN" "$CRON_MARKER" >> "$CRON_TMP"
-            crontab "$CRON_TMP"
-            rm -f "$CRON_TMP"
-            echo "Laravel scheduler cron installed for $TARGET_PATH."
-
-            # www.ografi.com is served from an Nginx include outside Laravel.
-            # Insert a host-specific canonical redirect immediately after the
-            # server_name directive found by nginx -T. This works whether the
-            # returned file is a full server block or a server-context include.
-            NGINX_BIN="$(command -v nginx || true)"
-            if [ -z "$NGINX_BIN" ] && [ -x /www/server/nginx/sbin/nginx ]; then
-              NGINX_BIN=/www/server/nginx/sbin/nginx
-            fi
-
-            if [ -z "$NGINX_BIN" ]; then
-              echo "Nginx binary was not found; refusing to leave www bypass unchecked." >&2
-              exit 1
-            fi
-
-            WWW_CONFIG="$($NGINX_BIN -T 2>&1 | awk '
-              /^# configuration file / {
-                file=$4
-                sub(/:$/, "", file)
-              }
-              /server_name[[:space:]].*www\.ografi\.com/ {
-                print file
-                exit
-              }
-            ')"
-
-            if [ -z "$WWW_CONFIG" ] || [ ! -f "$WWW_CONFIG" ]; then
-              echo "Unable to locate the Nginx include serving www.ografi.com" >&2
-              exit 1
-            fi
-
-            cp -a "$WWW_CONFIG" "$WWW_CONFIG.ografi-before-www-redirect"
-
-            python3 - "$WWW_CONFIG" <<'PY'
-            import re
-            import sys
-
-            path = sys.argv[1]
-            with open(path, 'r', encoding='utf-8') as handle:
-                lines = handle.readlines()
-
-            marker = '# ografi-managed-www-canonical'
-            if any(marker in line for line in lines):
-                print('www.ografi.com canonical redirect already configured')
-                raise SystemExit(0)
-
-            pattern = re.compile(r'^\s*server_name\b[^;]*\bwww\.ografi\.com\b[^;]*;')
-            for index, line in enumerate(lines):
-                if not pattern.search(line):
-                    continue
-
-                indent = re.match(r'^(\s*)', line).group(1)
-                injection = [
-                    f'{indent}{marker}\n',
-                    f'{indent}if ($host = www.ografi.com) {{\n',
-                    f'{indent}    return 301 https://ografi.com$request_uri;\n',
-                    f'{indent}}}\n',
-                ]
-                lines[index + 1:index + 1] = injection
-
-                with open(path, 'w', encoding='utf-8') as handle:
-                    handle.writelines(lines)
-
-                print(f'Configured www.ografi.com canonical redirect in {path}')
-                raise SystemExit(0)
-
-            print('Unable to locate server_name for www.ografi.com in selected Nginx include', file=sys.stderr)
-            raise SystemExit(1)
-            PY
-
-            if "$NGINX_BIN" -t; then
-              "$NGINX_BIN" -s reload
-              echo "www.ografi.com now redirects to canonical Laravel host."
-            else
-              cp -a "$WWW_CONFIG.ografi-before-www-redirect" "$WWW_CONFIG"
-              "$NGINX_BIN" -t
-              echo "Rejected invalid www redirect config and restored backup." >&2
-              exit 1
-            fi
-
-            chown -R www:www "$TARGET_PATH"
-            php artisan config:cache || true
-            php artisan route:cache || true
-            php artisan view:cache || true
-            /etc/init.d/php-fpm-84 restart || true
-
-            # Production verification: verify the deployed build through the public
-            # domain. Do not assume the homepage renders a post card; the homepage
-            # can legitimately be empty. Verify the actual Vite asset instead.
-            DEPLOYED_SHA="$(git rev-parse HEAD)"
-            echo "Deployed repository SHA: $DEPLOYED_SHA"
-            test -f public/build/manifest.json
-
-            LIVE_HTML="$(curl -kLsS --max-time 30 --resolve ografi.com:443:127.0.0.1 -w '\n__HTTP_STATUS:%{http_code}' https://ografi.com/ || true)"
-            LIVE_STATUS="$(printf '%s' "$LIVE_HTML" | sed -n 's/^__HTTP_STATUS://p' | tail -n 1)"
-            LIVE_BODY="$(printf '%s' "$LIVE_HTML" | sed '/^__HTTP_STATUS:/d')"
-
-            if [ "$LIVE_STATUS" != "200" ]; then
-              echo "Production verification failed: https://ografi.com returned HTTP $LIVE_STATUS." >&2
-              exit 1
-            fi
-
-            LIVE_CSS_PATHS="$(printf '%s' "$LIVE_BODY" | grep -oE '/build/assets/[^"[:space:]]+\.css' | sort -u || true)"
-            if [ -z "$LIVE_CSS_PATHS" ]; then
-              echo "Production verification failed: no Vite CSS asset was found in the live HTML." >&2
-              exit 1
-            fi
-
-            CSS_MATCHED=0
-            while IFS= read -r CSS_PATH; do
-              [ -n "$CSS_PATH" ] || continue
-              CSS_BODY="$(curl -ksS --max-time 30 -w '\n__HTTP_STATUS:%{http_code}' "https://ografi.com${CSS_PATH}" || true)"
-              CSS_STATUS="$(printf '%s' "$CSS_BODY" | sed -n 's/^__HTTP_STATUS://p' | tail -n 1)"
-              CSS_CONTENT="$(printf '%s' "$CSS_BODY" | sed '/^__HTTP_STATUS:/d')"
-
-              if [ "$CSS_STATUS" = "200" ] && printf '%s' "$CSS_CONTENT" | grep -q 'max-width:656px'; then
-                CSS_MATCHED=1
-                echo "Verified live post-card CSS asset: $CSS_PATH"
-                break
-              fi
-            done <<< "$LIVE_CSS_PATHS"
-
-            if [ "$CSS_MATCHED" -ne 1 ]; then
-              echo "Production verification failed: live Vite CSS does not contain the deployed post-card reference rules." >&2
-              echo "Live CSS assets: $LIVE_CSS_PATHS" >&2
-              exit 1
-            fi
+            test -s public/index.html
+            chown -R www:www public
+            echo "OgraFi coming-soon page published."
+            LIVE_STATUS="$(curl -kLsS --max-time 30 -o /tmp/ografi-coming-soon.html -w '%{http_code}' --resolve ografi.com:443:127.0.0.1 https://ografi.com/)"
+            test "$LIVE_STATUS" = "200"
+            grep -q 'Çok yakında' /tmp/ografi-coming-soon.html
+            echo "Live homepage verified: HTTP $LIVE_STATUS"
