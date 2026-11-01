@@ -1,1 +1,1 @@
-@extends('profile.public')
+@extends('blog.categories')
