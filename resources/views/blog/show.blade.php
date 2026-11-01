@@ -5,7 +5,9 @@
 @section('canonical_url', $post->getUrlForSEO())
 
 @section('content')
-    <article class="card post repost-post-detail">
+    <div data-ografi-layout-container="post_show" class="post-show-shell">
+        <div data-ografi-layout-section="post_ad_top">@include('partials.ads.slot', ['layoutSection' => 'post_ad_top'])</div>
+    <article data-ografi-layout-section="post_content" class="ps-post-card card post repost-post-detail">
         <section class="card-body">
             <nav class="repost-breadcrumb" aria-label="İçerik yolu"><a href="{{ route('home') }}">OgraFi</a>@if($post->category)<span>/</span><a href="{{ route('blog.category', $post->category->slug) }}">{{ $post->category->name }}</a>@endif</nav>
             <header class="post__header">
@@ -76,7 +78,8 @@
         @endforeach
     @endif
 
-    <section class="card card-body repost-comments" id="comments">
+    <div data-ografi-layout-section="post_ad_bottom">@include('partials.ads.slot', ['layoutSection' => 'post_ad_bottom'])</div>
+    <section class="card card-body repost-comments ogx-comments-panel" data-ogx-comments id="comments">
         <header class="repost-section-heading"><h2 class="h5">Yorumlar <span class="color-gray">({{ $post->comments->count() }})</span></h2></header>
         @auth
             @if(!$post->comments_disabled)
@@ -91,28 +94,11 @@
         @else
             <p class="color-gray"><a href="{{ route('login') }}">Giriş yap</a> ve sohbete katıl.</p>
         @endauth
-        <div class="repost-comment-list">
-            @forelse($post->comments as $comment)
-                <article class="repost-comment">
-                    <div class="user-box">
-                        <span class="avatar"><img src="{{ $comment->user?->profile_photo_url ?? '' }}" alt="" width="36" height="36"></span>
-                        <div class="user-box-content"><strong class="name">{{ $comment->user?->name ?? $comment->author_name ?? 'Üye' }}</strong><time class="meta">{{ $comment->created_at?->diffForHumans() }}</time></div>
-                    </div>
-                    <div class="repost-comment-content">{!! nl2br(e(strip_tags($comment->content))) !!}</div>
-                    <div class="repost-comment-actions">
-                        @auth
-                            <form method="POST" action="{{ route('blog.comment.like', $comment->id) }}">@csrf<button class="btn btn-secondary btn-xs" type="submit">Beğen · {{ (int)($comment->likes_count ?? 0) }}</button></form>
-                            <form method="POST" action="{{ route('blog.comment.dislike', $comment->id) }}">@csrf<button class="btn btn-secondary btn-xs" type="submit">Beğenme · {{ (int)($comment->dislikes_count ?? 0) }}</button></form>
-                        @else
-                            <span class="small color-gray">{{ (int)($comment->likes_count ?? 0) }} beğeni</span>
-                        @endauth
-                    </div>
-                </article>
-            @empty
-                <p class="color-gray">Henüz yorum yapılmamış. İlk yorumu sen yaz.</p>
-            @endforelse
-        </div>
+        @include('blog.partials.post-comments', ['post' => $post])
+div>
     </section>
+
+    </div>
 
     @if(isset($recommendedPosts) && $recommendedPosts->isNotEmpty())
         <section class="feed repost-related-posts"><h2 class="h5">Bunlar da ilgini çekebilir</h2>
