@@ -126,3 +126,9 @@
     .repost-profile-tabs { padding: 0 15px; gap: 16px; }
     .repost-comment-content { margin-left: 0; }
 }
+
+.repost-editor-grid { display: block; width: 100%; max-width: 1040px; margin: 24px auto; }
+.repost-container-bleed { width: 100%; max-width: none; padding-left: 0; padding-right: 0; }
+.repost-auth-layout .main__grid { grid-template-columns: minmax(0, 760px); justify-content: center; }
+.repost-auth-layout .sidebar,
+.repost-auth-layout .main__widgets { display: none; }
