@@ -173,3 +173,12 @@
 
 .repost-main-grid > .main__widgets { position: sticky; top: calc(var(--header-height) + var(--header-offset)); min-width: 0; align-self: start; }
 .repost-main-grid > .sidebar { width: auto; min-width: 0; }
+
+.ografi-switch { position: relative; display: inline-flex; flex: 0 0 auto; align-items: center; cursor: pointer; }
+.ografi-switch input { position: absolute; width: 1px; height: 1px; opacity: 0; }
+.ografi-switch__track { display: inline-flex; align-items: center; width: 42px; height: 24px; padding: 3px; border: 1px solid #cbd5e1; border-radius: 99px; background: #e2e8f0; transition: background-color .15s ease, border-color .15s ease; }
+.ografi-switch__track>span { display: block; width: 16px; height: 16px; border-radius: 50%; background: #fff; transition: transform .15s ease; }
+.ografi-switch input:checked+.ografi-switch__track { border-color: #2563eb; background: #2563eb; }
+.ografi-switch input:checked+.ografi-switch__track>span { transform: translateX(18px); }
+.ografi-switch input:focus-visible+.ografi-switch__track { outline: 2px solid #2563eb; outline-offset: 3px; }
+.ografi-switch input:disabled+.ografi-switch__track { opacity: .55; cursor: not-allowed; }
