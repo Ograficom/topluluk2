@@ -5,7 +5,7 @@
     $postExcerpt = $post->excerpt ?: \Illuminate\Support\Str::limit(strip_tags((string) $post->content), 220);
     $postReactionCounts = $post->reaction_counts ?? collect();
 @endphp
-<article class="card post">
+<article class="card post post-card" data-post-card-shell>
     <section class="card-body">
         <header class="post__header">
             <div class="user-box">
