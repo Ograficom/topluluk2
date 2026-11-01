@@ -4,43 +4,32 @@ namespace Tests\Feature;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Laravel\Jetstream\Features;
-use Laravel\Jetstream\Http\Livewire\DeleteUserForm;
-use Livewire\Livewire;
 use Tests\TestCase;
 
 class DeleteAccountTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_user_accounts_can_be_deleted(): void
+    public function test_user_accounts_can_be_deleted_through_the_application_endpoint(): void
     {
-        if (! Features::hasAccountDeletionFeatures()) {
-            $this->markTestSkipped('Account deletion is not enabled.');
-        }
+        $user = User::factory()->create();
 
-        $this->actingAs($user = User::factory()->create());
+        $this->actingAs($user)
+            ->delete(route('current-user.destroy'), ['password' => 'password'])
+            ->assertRedirect();
 
-        $component = Livewire::test(DeleteUserForm::class)
-            ->set('password', 'password')
-            ->call('deleteUser');
-
-        $this->assertNull($user->fresh());
+        $this->assertDatabaseMissing('users', ['id' => $user->id]);
+        $this->assertGuest();
     }
 
-    public function test_correct_password_must_be_provided_before_account_can_be_deleted(): void
+    public function test_account_deletion_requires_the_correct_password(): void
     {
-        if (! Features::hasAccountDeletionFeatures()) {
-            $this->markTestSkipped('Account deletion is not enabled.');
-        }
+        $user = User::factory()->create();
 
-        $this->actingAs($user = User::factory()->create());
+        $this->actingAs($user)
+            ->delete(route('current-user.destroy'), ['password' => 'wrong-password'])
+            ->assertSessionHasErrors('password');
 
-        Livewire::test(DeleteUserForm::class)
-            ->set('password', 'wrong-password')
-            ->call('deleteUser')
-            ->assertHasErrors(['password']);
-
-        $this->assertNotNull($user->fresh());
+        $this->assertDatabaseHas('users', ['id' => $user->id]);
     }
 }

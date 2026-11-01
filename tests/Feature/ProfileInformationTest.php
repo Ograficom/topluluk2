@@ -4,33 +4,43 @@ namespace Tests\Feature;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Laravel\Jetstream\Http\Livewire\UpdateProfileInformationForm;
-use Livewire\Livewire;
 use Tests\TestCase;
 
 class ProfileInformationTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_current_profile_information_is_available(): void
+    public function test_profile_settings_page_is_available(): void
     {
-        $this->actingAs($user = User::factory()->create());
+        $user = User::factory()->create();
 
-        $component = Livewire::test(UpdateProfileInformationForm::class);
-
-        $this->assertEquals($user->name, $component->state['name']);
-        $this->assertEquals($user->email, $component->state['email']);
+        $this->actingAs($user)
+            ->get(route('dashboard.profile'))
+            ->assertOk()
+            ->assertSee('Profil bilgileri');
     }
 
     public function test_profile_information_can_be_updated(): void
     {
-        $this->actingAs($user = User::factory()->create());
+        $user = User::factory()->create();
 
-        Livewire::test(UpdateProfileInformationForm::class)
-            ->set('state', ['name' => 'Test Name', 'email' => 'test@example.com'])
-            ->call('updateProfileInformation');
+        $this->actingAs($user)
+            ->put(route('dashboard.profile.update'), [
+                'bio' => 'OgraFi kullanıcısı',
+                'location' => 'Ankara',
+                'company' => 'OgraFi',
+                'education' => 'Üniversite',
+                'profile_type' => 'person',
+                'website_url' => 'https://example.com',
+                'social_x' => 'https://x.com/example',
+            ])
+            ->assertSessionHasNoErrors();
 
-        $this->assertEquals('Test Name', $user->fresh()->name);
-        $this->assertEquals('test@example.com', $user->fresh()->email);
+        $user->refresh();
+
+        $this->assertSame('OgraFi kullanıcısı', $user->bio);
+        $this->assertSame('Ankara', $user->location);
+        $this->assertSame('OgraFi', $user->company);
+        $this->assertSame('person', $user->profile_type);
     }
 }

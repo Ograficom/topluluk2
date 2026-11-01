@@ -41,6 +41,10 @@ class FortifyServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // OgraFi uses its own verification-code flow and login screen; do not render missing Jetstream pages.
+        Fortify::verifyEmailView(fn () => redirect()->route('dashboard'));
+        Fortify::confirmPasswordView(fn () => redirect()->route('login'));
+
         Fortify::createUsersUsing(CreateNewUser::class);
         Fortify::updateUserProfileInformationUsing(UpdateUserProfileInformation::class);
         Fortify::updateUserPasswordsUsing(UpdateUserPassword::class);
