@@ -19,8 +19,12 @@ class PostController extends Controller
     {
         $validated = $request->validate([
             'q' => ['nullable', 'string', 'max:100'],
+            'sort' => ['nullable', 'in:latest,popular,views'],
+            'period' => ['nullable', 'in:day,week,month'],
         ]);
         $search = trim($validated['q'] ?? '');
+        $sort = $validated['sort'] ?? 'latest';
+        $period = $validated['period'] ?? null;
         $viewer = $request->user();
 
         $posts = Post::query()
@@ -46,8 +50,16 @@ class PostController extends Controller
                         ->orWhere('body', 'like', "%{$search}%");
                 });
             })
-            ->orderByDesc('published_at')
-            ->orderByDesc('id')
+            ->when($period, function (Builder $query) use ($period): void {
+                $query->where('published_at', '>=', match ($period) {
+                    'day' => now()->subDay(),
+                    'week' => now()->subWeek(),
+                    'month' => now()->subMonth(),
+                });
+            })
+            ->when($sort === 'popular', fn (Builder $query) => $query->orderByDesc('likes_count'))
+            ->when($sort === 'views', fn (Builder $query) => $query->orderByDesc('views'))
+            ->when($sort === 'latest', fn (Builder $query) => $query->orderByDesc('published_at')->orderByDesc('id'))
             ->paginate(10)
             ->withQueryString();
 
@@ -57,7 +69,7 @@ class PostController extends Controller
             }
         });
 
-        return view('posts.index', compact('posts', 'search'));
+        return view('posts.index', compact('posts', 'search', 'sort', 'period'));
     }
 
     public function create(Request $request): View

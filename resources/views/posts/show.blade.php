@@ -13,7 +13,6 @@
     </div>
     <article class="card card-body post">
         <header class="post__header">
-            <div class="post__header">
                 <div class="user-box">
                     @if ($post->user)
                         <a href="{{ route('profiles.show', $post->user) }}" class="avatar"><img src="{{ $post->user->avatarUrl() }}" alt="" width="40" height="40"></a>
