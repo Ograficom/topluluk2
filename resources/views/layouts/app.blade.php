@@ -10,6 +10,7 @@
     @stack('meta')
     @vite(['resources/css/app.css', 'resources/css/ografi.css', 'resources/js/app.js'])
     @stack('styles')
+    @stack('head')
 </head>
 <body>
 <div id="repost-icon-sprite" class="sprite" aria-hidden="true">
@@ -37,6 +38,12 @@
     </svg>
 </div>
 
+@php
+    $hideGlobalHeader = $__env->hasSection('hide_global_header');
+    $noContainerPadding = $__env->hasSection('no_container_padding');
+@endphp
+
+@unless($hideGlobalHeader)
 <header class="header">
     <div class="header__inner container">
         <div class="header__start">
@@ -78,6 +85,7 @@
         </div>
     </div>
 </header>
+@endunless
 
 @php
     $sidebarCategories = $communityCategories ?? ($categories ?? collect());
@@ -85,8 +93,9 @@
     $widgetTags = $popularTags ?? ($tags ?? collect());
 @endphp
 
-<main class="container">
-    <div class="main main__grid">
+<main class="container {{ $noContainerPadding ? 'repost-container-bleed' : '' }}">
+    <div class="main {{ $hideGlobalHeader ? 'repost-editor-grid' : 'main__grid' }}">
+        @unless($hideGlobalHeader)
         <aside class="sidebar" aria-label="Topluluklar ve üyeler">
             <div class="sidebar__body">
                 <section class="sidebar__section">
@@ -124,11 +133,13 @@
                 <a class="btn btn-circle btn-xl btn-secondary-ghost" href="{{ url('/Categorys') }}" title="Toplulukları aç" aria-label="Toplulukları aç"><svg width="24" height="24"><use href="#menu-alt"/></svg></a>
             </div>
         </aside>
+        @endunless
 
         <section class="feed" aria-label="Sayfa içeriği">
             @yield('content')
         </section>
 
+        @unless($hideGlobalHeader)
         <aside class="main__widgets" aria-label="Yan bilgiler">
             <div class="widgets">
                 @if($widgetTags->isNotEmpty())
@@ -189,9 +200,11 @@
                 </footer>
             </div>
         </aside>
+        @endunless
     </div>
 </main>
 
+@unless($hideGlobalHeader)
 <section class="mobmenu" data-scroll-menu>
     <nav class="mobmenu__content" aria-label="Mobil menü">
         <a class="mobmenu__link is-active" href="{{ url('/') }}"><svg width="20" height="20"><use href="#home"/></svg><span>Akış</span></a>
@@ -213,6 +226,7 @@
         </div>
     </div>
 </div>
+@endunless
 @stack('scripts')
 </body>
 </html>
