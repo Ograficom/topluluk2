@@ -20,7 +20,7 @@
             document.documentElement.style.colorScheme = theme;
         })();
     </script>
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @vite(['resources/css/app.css', 'resources/css/ografi.css', 'resources/js/app.js'])
     @stack('head')
 </head>
 <body>
