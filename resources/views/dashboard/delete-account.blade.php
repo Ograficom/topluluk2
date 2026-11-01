@@ -6,7 +6,7 @@
     <section class="card card-body repost-danger-zone">
         <strong>Hesabını kalıcı olarak silmek üzeresin.</strong>
         <p>Devam etmeden önce kararını dikkatlice değerlendir. Silme işlemi geri alınamaz.</p>
-        <form method="POST" action="{{ route('current-user.destroy') }}" class="repost-settings-form" onsubmit="return confirm('Hesabını kalıcı olarak silmek istediğine emin misin?')">
+        <form method="POST" action="{{ route('dashboard.delete-account.destroy') }}" class="repost-settings-form" onsubmit="return confirm('Hesabını kalıcı olarak silmek istediğine emin misin?')">
             @csrf
             @method('DELETE')
             <label for="password">Onay için şifren</label>

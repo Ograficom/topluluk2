@@ -27,6 +27,30 @@
         <div class="post__short">
             <h2 class="post__short-title h3"><a class="color-title" href="{{ $postUrl }}"><span class="post__short-title-text">{{ $post->title }}</span></a></h2>
             @if($postExcerpt)<div class="text-clamp-3 color-text">{{ $postExcerpt }}</div>@endif
+            @if(is_array($post->link_preview ?? null) && filled($post->link_preview['url'] ?? null))
+                @php($linkPreview = $post->link_preview)
+                <a href="{{ $linkPreview['url'] }}" target="_blank" rel="nofollow noopener noreferrer" class="alma-link-preview" aria-label="{{ $linkPreview['title'] ?? $linkPreview['host'] ?? 'Bağlantıyı aç' }}">
+                    @if(filled($linkPreview['image_url'] ?? null))
+                        <div class="alma-link-preview__media">
+                            <img src="{{ $linkPreview['image_url'] }}" alt="{{ $linkPreview['title'] ?? $linkPreview['host'] ?? 'Bağlantı önizlemesi' }}" loading="lazy" class="alma-link-preview__image">
+                        </div>
+                    @endif
+                    <div class="alma-link-preview__body">
+                        <div class="alma-link-preview__head">
+                            <div class="min-w-0">
+                                <span class="alma-link-preview__eyebrow">{{ $linkPreview['site_name'] ?: ($linkPreview['source_label'] ?? 'Kaynak') }}</span>
+                                <span class="alma-link-preview__title">{{ $linkPreview['title'] ?: ($linkPreview['host'] ?? '') }}</span>
+                            </div>
+                        </div>
+                        @if(filled($linkPreview['description'] ?? null))
+                            <p class="alma-link-preview__description">{{ $linkPreview['description'] }}</p>
+                        @endif
+                        @if(filled($linkPreview['host'] ?? null))
+                            <span class="alma-link-preview__host">{{ $linkPreview['host'] }}</span>
+                        @endif
+                    </div>
+                </a>
+            @endif
             @if($post->relationLoaded('tags') && $post->tags->isNotEmpty())
                 <div class="post__tags">@foreach($post->tags as $tag)<a href="{{ url('/blog/tags?tag='.urlencode($tag->slug)) }}">{{ $tag->name }}</a>@endforeach</div>
             @endif

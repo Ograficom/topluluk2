@@ -1,5 +1,6 @@
 <?php
 
+use App\Actions\Jetstream\DeleteUser;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\AdvertiseController;
 use App\Http\Controllers\BorsaController;
@@ -825,6 +826,22 @@ Route::middleware([
     Route::get('/dashboard/delete-account', function () {
         return view('dashboard.delete-account');
     })->name('dashboard.delete-account');
+
+    Route::delete('/dashboard/delete-account', function (Request $request, DeleteUser $deleteUser) {
+        $request->validate([
+            'password' => ['required', 'current_password'],
+        ]);
+
+        $user = $request->user();
+
+        auth()->logout();
+        $deleteUser->delete($user);
+
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect()->route('home');
+    })->name('dashboard.delete-account.destroy');
 
     Route::get('/settings', function () {
         return view('settings');

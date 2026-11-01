@@ -15,7 +15,7 @@ class DeleteAccountTest extends TestCase
         $user = User::factory()->create();
 
         $this->actingAs($user)
-            ->delete(route('current-user.destroy'), ['password' => 'password'])
+            ->delete(route('dashboard.delete-account.destroy'), ['password' => 'password'])
             ->assertRedirect();
 
         $this->assertDatabaseMissing('users', ['id' => $user->id]);
@@ -27,7 +27,7 @@ class DeleteAccountTest extends TestCase
         $user = User::factory()->create();
 
         $this->actingAs($user)
-            ->delete(route('current-user.destroy'), ['password' => 'wrong-password'])
+            ->delete(route('dashboard.delete-account.destroy'), ['password' => 'wrong-password'])
             ->assertSessionHasErrors('password');
 
         $this->assertDatabaseHas('users', ['id' => $user->id]);
