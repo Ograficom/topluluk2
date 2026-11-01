@@ -31,6 +31,7 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Middleware\ValidatePostSize;
@@ -834,7 +835,7 @@ Route::middleware([
 
         $user = $request->user();
 
-        auth()->logout();
+        Auth::guard('web')->logout();
         $deleteUser->delete($user);
 
         $request->session()->invalidate();
