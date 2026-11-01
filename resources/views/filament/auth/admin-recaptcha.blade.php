@@ -11,7 +11,7 @@
             async verify() {
                 if (!window.grecaptcha || !window.grecaptcha.execute) return;
                 try {
-                    await window.grecaptcha.ready();
+                    await new Promise((resolve) => window.grecaptcha.ready(resolve));
                     this.token = await window.grecaptcha.execute(@js($siteKey), { action: 'admin_login' });
                     const input = document.querySelector('input[name=&quot;data[recaptcha_token]&quot;], input[name=&quot;recaptcha_token&quot;]');
                     if (input) {
@@ -23,10 +23,10 @@
                 }
             }
         }"
-        x-init="verify(); window.addEventListener('admin-recaptcha-refresh', () => verify())"
+        x-init="verify(); window.addEventListener('admin-recaptcha-refresh', () => verify()); window.addEventListener('admin-recaptcha-loaded', () => verify())"
         class="text-xs text-gray-500"
     >
         <span>Güvenlik doğrulaması etkin.</span>
     </div>
-    <script src="https://www.google.com/recaptcha/api.js?render={{ urlencode($siteKey) }}" async defer></script>
+    <script src="https://www.google.com/recaptcha/api.js?render={{ urlencode($siteKey) }}" async defer onload="window.dispatchEvent(new Event('admin-recaptcha-loaded'))"></script>
 @endif
