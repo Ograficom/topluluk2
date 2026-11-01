@@ -76,7 +76,8 @@ class PageLayoutCatalogTest extends TestCase
         $pages = PageLayoutCatalog::pageOptions();
 
         $this->assertArrayHasKey('home', $pages);
-        $this->assertArrayHasKey('discover', $pages);
+        $this->assertArrayNotHasKey('discover', $pages);
+        $this->assertArrayNotHasKey('faq', $pages);
         $this->assertArrayHasKey('categories', $pages);
         $this->assertArrayHasKey('tags', $pages);
         $this->assertArrayHasKey('post_show', $pages);
