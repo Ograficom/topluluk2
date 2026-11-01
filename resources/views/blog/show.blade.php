@@ -45,9 +45,23 @@
         @if(isset($reactionTypes) && $reactionTypes->isNotEmpty())
             <div class="post__options card-body">
                 <div class="post__options-set">
-                    @foreach($reactionTypes as $reactionType)
-                        <form method="POST" action="{{ route('blog.post.reaction', $post->slug) }}">@csrf<input type="hidden" name="reaction_type_id" value="{{ $reactionType->id }}"><button class="btn btn-md btn-primary-soft" type="submit">{{ $reactionType->emoji ?: $reactionType->label }}</button></form>
-                    @endforeach
+                    @auth
+                        @foreach($reactionTypes as $reactionType)
+                            <form method="POST" action="{{ route('blog.post.reaction', $post->slug) }}">
+                                @csrf
+                                <input type="hidden" name="reaction_type_id" value="{{ $reactionType->id }}">
+                                <button class="btn btn-md btn-primary-soft" type="submit" title="{{ $reactionType->label }}">
+                                    @if($reactionType->gif_url)
+                                        <img src="{{ $reactionType->gif_url }}" alt="{{ $reactionType->label }}" width="22" height="22" loading="lazy">
+                                    @else
+                                        {{ $reactionType->emoji ?: $reactionType->label }}
+                                    @endif
+                                </button>
+                            </form>
+                        @endforeach
+                    @else
+                        <a class="btn btn-md btn-primary-soft" href="{{ route('login') }}">Tepki vermek için giriş yap</a>
+                    @endauth
                 </div>
             </div>
         @endif
