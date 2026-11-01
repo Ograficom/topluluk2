@@ -3,7 +3,7 @@ name: Deploy to Server
 on:
   push:
     branches:
-      - main
+      - feature/repost-v2-ografi
 
 concurrency:
   group: ografi-production-deploy
@@ -109,8 +109,8 @@ jobs:
             rm -f .git/index.lock
 
             git stash --include-untracked || true
-            git fetch origin main
-            git reset --hard origin/main
+            git fetch origin feature/repost-v2-ografi
+            git reset --hard origin/feature/repost-v2-ografi
             php artisan optimize:clear || true
 
             set_env_value() {
