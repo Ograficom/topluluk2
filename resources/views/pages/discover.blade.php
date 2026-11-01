@@ -7,7 +7,7 @@
             <div><span class="repost-eyebrow">KEŞFET</span><h1>Yeni şeyler keşfet</h1><p>Öne çıkan üyeler, topluluklar ve gönderiler.</p></div>
             <form method="GET" action="{{ route('search') }}" class="repost-discover-search"><input type="search" name="q" value="{{ request('q') }}" placeholder="OgraFi'de ara"><button class="btn btn-primary btn-rounded">Ara</button></form>
         </section>
-        <div data-ografi-layout-section="discover_ads_top">@include('partials.ads.slot', ['layoutSection' => 'discover_ads_top'])</div>
+        @include('partials.ads.slot', ['layoutSection' => 'discover_ads_top'])
         @if($featuredUsers->isNotEmpty())
             <section data-ografi-layout-section="discover_users" class="repost-discover-section"><h2>Öne çıkan üyeler</h2><div class="repost-people-grid">
                 @foreach($featuredUsers as $person)
