@@ -71,6 +71,22 @@
             @if (blank($comment->parent_id))
                 <a class="comment__reply" href="{{ route('posts.show', ['post' => $post, 'reply_to' => $comment->id]) }}#comment-body">Yanıtla</a>
             @endif
+
+            <div class="dropdown dropup dropdown-sm">
+                <button class="btn btn-secondary-ghost btn-circle btn-xs" type="button" data-dropdown-toggle aria-expanded="false" aria-label="Yorum menüsünü aç">
+                    <x-repost-icon name="more" size="14" class="color-gray" />
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li class="dropdown-menu-item dropdown-menu-item-sm">
+                        <a href="mailto:{{ config('mail.from.address') }}?subject={{ rawurlencode('Yorum bildirimi') }}&amp;body={{ rawurlencode(route('posts.show', $post).'#comment-'.$comment->id) }}">Yorumu bildir</a>
+                    </li>
+                    @if (auth()->user()?->is($comment->user) || auth()->user()?->is_admin)
+                        <li class="dropdown-menu-item dropdown-menu-item-sm is-disabled">
+                            <span aria-disabled="true" title="Yorum düzenleme henüz desteklenmiyor">Yorumu düzenle</span>
+                        </li>
+                    @endif
+                </ul>
+            </div>
         </div>
     </div>
 

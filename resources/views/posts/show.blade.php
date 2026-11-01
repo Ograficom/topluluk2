@@ -43,6 +43,21 @@
                     </div>
                 </div>
             </div>
+            <div class="dropdown">
+                <button class="btn btn-secondary-ghost btn-circle btn-xs" type="button" data-dropdown-toggle aria-expanded="false" aria-label="Yazı menüsünü aç">
+                    <x-repost-icon name="more" size="16" />
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    @if (auth()->user()?->is($post->user) || auth()->user()?->is_admin)
+                        <li class="dropdown-menu-item dropdown-menu-item-sm is-disabled">
+                            <span aria-disabled="true" title="Yazı düzenleme henüz desteklenmiyor">Yazıyı düzenle</span>
+                        </li>
+                    @endif
+                    <li class="dropdown-menu-item dropdown-menu-item-sm">
+                        <a href="mailto:{{ config('mail.from.address') }}?subject={{ rawurlencode('Yazı bildirimi: '.$post->title) }}&amp;body={{ rawurlencode(route('posts.show', $post)) }}">Yazıyı bildir</a>
+                    </li>
+                </ul>
+            </div>
         </header>
 
         @if ($post->coverImageUrl())

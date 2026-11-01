@@ -277,7 +277,9 @@ class RepostFeedTest extends TestCase
             ->assertSee('İlk yorum.')
             ->assertSee('İkinci satır.')
             ->assertSee('Yorumu beğenmek için giriş yapın')
-            ->assertSee('Yanıtla');
+            ->assertSee('Yanıtla')
+            ->assertSee('Yazı menüsünü aç')
+            ->assertSee('Yorum menüsünü aç');
 
         $this->assertDatabaseHas('posts', ['id' => $published->id, 'views' => 1]);
         $this->get('/posts/gizli-taslak')->assertNotFound();
