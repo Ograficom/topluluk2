@@ -1,3 +1,5 @@
+@import '../libs/fancyapp/fancybox.css';
+@import '../libs/fancyapp/carousel.css';
 @import './kit.css';
 @import './engine.css';
 @import './editor.css';
