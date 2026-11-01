@@ -62,7 +62,7 @@
             </a>
         </div>
         <nav class="header__nav header__tabs" aria-label="Ana menü">
-            <a href="{{ url('/') }}" @if(request()->is('/')) aria-current="page" class="active" @endif>Akış</a>
+            <a href="{{ url('/') }}" @if(request()->routeIs('home')) aria-current="page" class="active" @endif>Akış</a>
             <a href="{{ url('/Categorys') }}">Topluluklar</a>
             <a href="{{ url('/users') }}">Üyeler</a>
         </nav>
