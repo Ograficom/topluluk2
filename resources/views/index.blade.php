@@ -7,12 +7,12 @@
   <meta name="theme-color" content="#f7f9fd">
   <title>Repost — something interesting every day</title>
   <meta name="description" content="A feed of fresh stories, news and opinions.">
-  <link rel="icon" href="./assets/img/meta/logo.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="./assets/libs/fancyapp/fancybox.css">
-  <link rel="stylesheet" href="./assets/libs/fancyapp/carousel.css">
-  <link rel="stylesheet" href="./assets/css/kit.css">
-  <link rel="stylesheet" href="./assets/css/app.css">
-  <link rel="stylesheet" href="./assets/css/engine.css">
+  <link rel="icon" href="{{ asset('images/ografi-logo.png') }}" type="image/svg+xml">
+  <link rel="stylesheet" href="">
+  <link rel="stylesheet" href="">
+  <link rel="stylesheet" href="{{ asset('css/repost-kit.css') }}">
+  <link rel="stylesheet" href="{{ asset('css/repost-theme.css') }}">
+  <link rel="stylesheet" href="{{ asset('css/repost-ui.css') }}">
   <script>
     (() => { const r=document.documentElement; let t; try{t=localStorage.getItem('theme')}catch{} if(t!=='light'&&t!=='dark')t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'; r.dataset.theme=t;r.dataset.bsTheme=t;r.style.colorScheme=t; })();
   </script>
@@ -191,22 +191,22 @@
   <header class="header">
   <div class="header__inner container">
     <div class="header__start"><a href="./" class="logo header__logo" aria-label="Home"><img src="./assets/img/meta/logo.svg" alt="" width="36" height="36" class="logo-icon"><span class="logo-text">Repost</span></a></div>
-    <nav class="header__nav header__tabs" aria-label="Main navigation"><a href="./index.html" class="active" aria-current="page">Feed</a><a href="./channels.html">Channels</a></nav>
+    <nav class="header__nav header__tabs" aria-label="Main navigation"><a href="{{ route('home') }}" class="active" aria-current="page">Feed</a><a href="{{ route('blog.categories') }}">Channels</a></nav>
     <div class="header__end">
       <button class="btn btn-secondary-ghost btn-circle btn-md" type="button" data-modal-btn="search" aria-label="Search" aria-haspopup="dialog" aria-controls="searchModal"><svg width="24" height="24"><use href="#search"></use></svg></button>
       <button class="switcher btn btn-secondary-ghost btn-circle btn-md" type="button" data-theme-toggle aria-label="Change theme"></button>
       <a href="#" class="btn btn-md btn-white btn-rounded shadow-sm header__write" aria-label="Write a post" title="Write a post"><svg width="18" height="18" aria-hidden="true"><use href="#pen"></use></svg><span>Write</span></a>
       <div class="dropdown dropdown-md">
-        <button id="userMenuButton" type="button" class="btn btn-secondary-ghost btn-circle avatar newpm" data-dropdown-toggle aria-expanded="false" aria-haspopup="menu" aria-controls="userMenu" aria-label="Repost profile" title="Repost profile"><img src="./assets/img/noavatar.png" alt="" draggable="false" width="40" height="40"></button>
+        <button id="userMenuButton" type="button" class="btn btn-secondary-ghost btn-circle avatar newpm" data-dropdown-toggle aria-expanded="false" aria-haspopup="menu" aria-controls="userMenu" aria-label="Repost profile" title="Repost profile"><img src="{{ asset('images/ografi-logo.png') }}" alt="" draggable="false" width="40" height="40"></button>
         <ul class="dropdown-menu dropdown-menu-end" id="userMenu" aria-labelledby="userMenuButton">
           <li class="dropdown-menu-item dropdown-menu-item-lg">
-            <a class="login__profile" href="./profile.html"><div class="user-box"><span class="avatar" aria-hidden="true"><img src="./assets/img/noavatar.png" alt="Repost" draggable="false" width="40" height="40"></span><span class="user-box-content"><span class="name"><span class="name-text">Repost</span><span class="verify" role="img" aria-label="Verified profile"><svg width="14" height="14" aria-hidden="true"><use href="#verify"></use></svg></span></span><span class="small color-gray">Go to profile</span></span></div></a>
+            <a class="login__profile" href="{{ auth()->user()?->username ? route('users.show', ['user' => auth()->user()->username]) : route('users.index') }}"><div class="user-box"><span class="avatar" aria-hidden="true"><img src="./assets/img/noavatar.png" alt="Repost" draggable="false" width="40" height="40"></span><span class="user-box-content"><span class="name"><span class="name-text">Repost</span><span class="verify" role="img" aria-label="Verified profile"><svg width="14" height="14" aria-hidden="true"><use href="#verify"></use></svg></span></span><span class="small color-gray">Go to profile</span></span></div></a>
           </li>
-          <li class="dropdown-menu-item dropdown-menu-item-lg"><a href="./messenger.html"><svg width="22" height="22" class="color-gray" aria-hidden="true"><use href="#message"></use></svg><span>Messages</span></a></li>
-          <li class="dropdown-menu-item dropdown-menu-item-lg"><a href="./favorites.html"><svg width="22" height="22" class="color-gray" aria-hidden="true"><use href="#bookmark"></use></svg><span>Favorites</span><span class="dropdown-menu-count">4</span></a></li>
-          <li class="dropdown-menu-item dropdown-menu-item-lg"><a href="./setting.html"><svg width="20" height="20" class="color-gray" aria-hidden="true"><use href="#setting"></use></svg><span>Settings</span></a></li>
+          <li class="dropdown-menu-item dropdown-menu-item-lg"><a href="{{ route('messages.index') }}"><svg width="22" height="22" class="color-gray" aria-hidden="true"><use href="#message"></use></svg><span>Messages</span></a></li>
+          <li class="dropdown-menu-item dropdown-menu-item-lg"><a href="{{ route('blog.bookmarks') }}"><svg width="22" height="22" class="color-gray" aria-hidden="true"><use href="#bookmark"></use></svg><span>Favorites</span><span class="dropdown-menu-count">4</span></a></li>
+          <li class="dropdown-menu-item dropdown-menu-item-lg"><a href="{{ route('settings.index') }}"><svg width="20" height="20" class="color-gray" aria-hidden="true"><use href="#setting"></use></svg><span>Settings</span></a></li>
           <li class="dropdown-menu-item dropdown-menu-item-lg"><a href="#"><svg width="20" height="20" class="color-gray" aria-hidden="true"><use href="#adminpanel"></use></svg><span>Control panel</span></a></li>
-          <li class="dropdown-menu-item dropdown-menu-item-lg is-danger"><a href="./signin.html"><svg width="20" height="20" aria-hidden="true"><use href="#logout"></use></svg><span>Log out</span></a></li>
+          <li class="dropdown-menu-item dropdown-menu-item-lg is-danger"><a href="{{ route('login') }}"><svg width="20" height="20" aria-hidden="true"><use href="#logout"></use></svg><span>Log out</span></a></li>
         </ul>
       </div>
     </div>
@@ -231,11 +231,11 @@
       <article class="entry-box has-image">
         <div class="entry-box-content">
           <div class="user-box user-box-sm"><a href="./profile.html" class="avatar" aria-label="Repost profile"><img src="./assets/img/noavatar.png" alt="" width="40" height="40"></a><div class="user-box-content"><a href="./profile.html" class="name"><span class="name-text">Repost</span><span class="verify" role="img" aria-label="Verified profile" data-tooltip="Verified profile"><svg width="14" height="14" aria-hidden="true"><use href="#verify"></use></svg></span></a></div></div>
-          <div class="entry-box-title-row"><a href="./post.html" class="entry-box-title">Georgia is a land of wonders</a></div>
+          <div class="entry-box-title-row"><a href="{{ route('blog.index') }}" class="entry-box-title">Georgia is a land of wonders</a></div>
           <div class="small text-clamp-2 color-text">Georgia lies at the crossroads of Europe and Asia and is known for its ancient history and breathtaking landscapes...</div>
           <div class="entry-box-meta meta"><span class="meta-item"><svg width="14" height="14" aria-hidden="true"><use href="#comment"></use></svg>0</span><span class="meta-item"><svg width="14" height="14" aria-hidden="true"><use href="#eye"></use></svg>8</span><span class="meta-item"><svg width="14" height="14" aria-hidden="true"><use href="#tags"></use></svg>Routes</span></div>
         </div>
-        <a href="./post.html" class="entry-box-image"><img src="./assets/img/demo/demo-horisontal.png" alt="Georgia city view" width="100" height="80"></a>
+        <a href="./post.html" class="entry-box-image"><img src="{{ asset('images/ografi-logo.png') }}" alt="Georgia city view" width="100" height="80"></a>
       </article>
     </div>
     <div class="entry-card">
@@ -266,7 +266,7 @@
   </div>
   
   <div class="sidebar__footer">
-    <a href="./subscriptions.html" class="btn btn-circle btn-xl btn-secondary-ghost" aria-label="Open subscriptions" title="Open subscriptions">
+    <a href="{{ route('users.index') }}" class="btn btn-circle btn-xl btn-secondary-ghost" aria-label="Open subscriptions" title="Open subscriptions">
       <svg width="24" height="24" aria-hidden="true" focusable="false"><use href="#menu-alt"></use></svg>
     </a>
   </div>
@@ -286,182 +286,125 @@
 </section>
 
         
+@forelse($posts as $post)
+@php($postAuthor = $post->author)
 <article class="card post">
   <section class="card-body">
     <header class="post__header">
       <div class="user-box">
-        <a href="./profile.html" class="avatar"><img src="./assets/img/noavatar.png" alt="" width="40" height="40"></a>
+        <a href="{{ $postAuthor?->username ? route('users.show', ['user' => $postAuthor->username]) : route('users.index') }}" class="avatar">
+          <img src="{{ $postAuthor?->profile_photo_path ? \Illuminate\Support\Facades\Storage::url($postAuthor->profile_photo_path) : asset('images/ografi-logo.png') }}" alt="{{ $postAuthor?->name ?? 'Kullanıcı' }}" width="40" height="40" loading="lazy">
+        </a>
         <div class="user-box-content">
-          <a href="./profile.html" class="name"><span class="name-text">Maria West</span><span class="verify" role="img" aria-label="Verified profile" data-tooltip="Verified profile"><svg width="14" height="14" aria-hidden="true"><use href="#verify"></use></svg></span></a>
-          <div class="meta"><a href="./channel.html">Travel</a><time>today, 12:40</time></div>
+          <a href="{{ $postAuthor?->username ? route('users.show', ['user' => $postAuthor->username]) : route('users.index') }}" class="name">
+            <span class="name-text">{{ $postAuthor?->name ?? 'Silinmiş kullanıcı' }}</span>
+            @if($postAuthor?->is_verified)
+              <span class="verify" role="img" aria-label="Onaylı profil"><svg width="14" height="14" aria-hidden="true"><use href="#verify"></use></svg></span>
+            @endif
+          </a>
+          <div class="meta">
+            @if($post->category)
+              <a href="{{ route('blog.category', ['category' => $post->category->slug]) }}">{{ $post->category->name }}</a>
+            @endif
+            <time datetime="{{ optional($post->published_at)->toIso8601String() }}">{{ optional($post->published_at ?? $post->created_at)->diffForHumans() }}</time>
+          </div>
         </div>
       </div>
     </header>
     <div class="post__short">
-      <h2 class="post__short-title h3"><a href="./post.html" class="color-title"><span role="img" aria-label="AI-assisted" data-tooltip="AI-assisted"><svg class="color-gray" width="20" height="20" aria-hidden="true"><use href="#ai"></use></svg></span><span class="post__short-title-text">A city worth returning to every autumn</span><span role="img" aria-label="Editorial post" data-tooltip="Editorial post"><svg class="color-primary" width="16" height="16" aria-hidden="true"><use href="#check"></use></svg></span></a></h2>
-      <div class="text-clamp-3 color-text">A relaxed walk through old neighborhoods, small coffee shops, quiet courtyards and places that rarely appear in guidebooks.</div>
-      <div class="post__tags"><a href="./tagscloud.html">travel</a><a href="./tagscloud.html">city</a></div>
-    </div>
-  </section>
-
-  
-  <section class="card-body post__short-media">
-    <div class="post__media">
-      
-      <img src="./assets/img/demo/demo-horisontal.png" alt="A city worth returning to every autumn" class="post__media-image" loading="lazy">
-    </div>
-  </section>
-  
-
-  <footer class="post__footer card-body"><div class="post__footer-stats small color-gray"><span>128 likes</span><span>2.4K views</span></div><span class="small color-gray">@marie_travels</span></footer>
-  <div class="post__options card-body">
-    <div class="post__options-set">
-      <button class="btn btn-md btn-square btn-primary-soft" title="Like"><svg width="20" height="20" aria-hidden="true"><use href="#like"></use></svg></button>
-      <span class="post__options-count">+1</span>
-      <button class="btn btn-md btn-square btn-primary-soft" title="Dislike"><svg width="20" height="20" aria-hidden="true"><use href="#dislike"></use></svg></button>
-      <button class="btn btn-md btn-primary-soft" title="Comments"><svg width="20" height="20" aria-hidden="true"><use href="#comment"></use></svg>23</button>
-      <div class="dropdown dropup dropdown-md"><button class="btn btn-md btn-square btn-primary-soft" type="button" data-dropdown-toggle aria-expanded="false" aria-controls="post-share-1" aria-label="Share"><svg width="20" height="20" aria-hidden="true"><use href="#share"></use></svg></button><ul class="dropdown-menu dropdown-menu-center" id="post-share-1"><li class="dropdown-menu-item dropdown-menu-item-sm"><button type="button" data-sharer="telegram" data-title="A city worth returning to every autumn" data-url="./"><svg width="16" height="16" aria-hidden="true" class="color-gray"><use href="#telegram"></use></svg>Send to Telegram</button></li><li class="dropdown-menu-item dropdown-menu-item-sm"><button type="button"><svg width="16" height="16" aria-hidden="true" class="color-gray"><use href="#link"></use></svg><span>Copy link</span></button></li></ul></div>
-    </div>
-    <button class="btn btn-md btn-square btn-primary-soft" title="Add to favorites"><svg width="20" height="20" aria-hidden="true"><use href="#bookmark"></use></svg></button>
-  </div>
-  <div class="user-box user-box-md post__bestcomm card-body"><div class="avatar online"><img src="./assets/img/noavatar.png" alt="Comment author" width="40" height="40"></div><div class="post__bestcomm-text text-clamp-1 color-text">A useful route with excellent stops along the way.</div></div>
-</article>
-
-<article class="card post">
-  <section class="card-body">
-    <header class="post__header">
-      <div class="user-box">
-        <a href="./profile.html" class="avatar"><img src="./assets/img/noavatar.png" alt="" width="40" height="40"></a>
-        <div class="user-box-content">
-          <a href="./profile.html" class="name"><span class="name-text">Eli North</span></a>
-          <div class="meta"><a href="./channel.html">Technology</a><time>today, 10:15</time></div>
+      <h2 class="post__short-title h3">
+        <a href="{{ route('blog.post', ['post' => $post->slug]) }}" class="color-title">
+          <span class="post__short-title-text">{{ $post->title }}</span>
+        </a>
+      </h2>
+      <div class="text-clamp-3 color-text">{{ \Illuminate\Support\Str::limit(trim(strip_tags((string) ($post->excerpt ?: $post->content))), 240) }}</div>
+      @if($post->tags->isNotEmpty())
+        <div class="post__tags">
+          @foreach($post->tags as $tag)
+            <a href="{{ route('blog.index', ['tag' => $tag->slug]) }}">{{ $tag->name }}</a>
+          @endforeach
         </div>
-      </div>
-    </header>
-    <div class="post__short">
-      <h2 class="post__short-title h3"><a href="./post.html" class="color-title"><span class="post__short-title-text">Seven habits that reduce distractions</span></a></h2>
-      <div class="text-clamp-3 color-text">Simple techniques for calm, focused work without complicated productivity systems or endless task lists.</div>
-      <div class="post__tags"><a href="./tagscloud.html">productivity</a><a href="./tagscloud.html">experience</a></div>
+      @endif
     </div>
   </section>
 
-  
-  <section class="card-body post__short-media">
-    <div class="post__media f-carousel is-media-loading" data-fancy-carousel>
-      
-      <div class="f-carousel__slide">
-        <a href="./assets/img/demo/demo-vertical.png" data-fancybox="post-images-2" data-src="./assets/img/demo/demo-vertical.png"><img src="./assets/img/demo/demo-vertical.png" alt="Seven habits that reduce distractions" class="post__media-image" draggable="false" decoding="async"></a>
+  @if($post->featured_image)
+    <section class="card-body post__short-media">
+      <div class="post__media">
+        <img src="{{ \Illuminate\Support\Facades\Storage::url($post->featured_image) }}" alt="{{ $post->title }}" class="post__media-image" loading="lazy">
       </div>
-      
-      <div class="f-carousel__slide">
-        <a href="./assets/img/demo/demo-horisontal.png" data-fancybox="post-images-2" data-src="./assets/img/demo/demo-horisontal.png"><img src="./assets/img/demo/demo-horisontal.png" alt="Seven habits that reduce distractions" class="post__media-image" draggable="false" loading="lazy" decoding="async"></a>
-      </div>
-      
-      <div class="f-carousel__slide">
-        <a href="./assets/img/demo/demo-vertical.png" data-fancybox="post-images-2" data-src="./assets/img/demo/demo-vertical.png"><img src="./assets/img/demo/demo-vertical.png" alt="Seven habits that reduce distractions" class="post__media-image" draggable="false" loading="lazy" decoding="async"></a>
-      </div>
-      
-      <button class="post__media-nav post__media-nav--prev" type="button" data-carousel-go-prev aria-label="Previous slide"><svg width="18" height="18" aria-hidden="true"><use href="#chevron-left"></use></svg></button>
-      <button class="post__media-nav post__media-nav--next" type="button" data-carousel-go-next aria-label="Next slide"><svg width="18" height="18" aria-hidden="true"><use href="#chevron-right"></use></svg></button>
-      <div class="post__media-loader" aria-hidden="true"><span class="loader"></span></div>
-    </div>
-  </section>
-  
+    </section>
+  @endif
 
-  <footer class="post__footer card-body"><div class="post__footer-stats small color-gray"><span>86 likes</span><span>1.8K views</span></div><span class="small color-gray">@north_notes</span></footer>
+  <footer class="post__footer card-body">
+    <div class="post__footer-stats small color-gray">
+      <span>{{ number_format((int) $post->reactions_count) }} tepki</span>
+      <span>{{ number_format((int) ($post->views_count ?? 0)) }} görüntülenme</span>
+    </div>
+    <span class="small color-gray">{{ $postAuthor?->username ? '@' . $postAuthor->username : '' }}</span>
+  </footer>
+
   <div class="post__options card-body">
     <div class="post__options-set">
-      <button class="btn btn-md btn-square btn-primary-soft" title="Like"><svg width="20" height="20" aria-hidden="true"><use href="#like"></use></svg></button>
-      <span class="post__options-count">+4</span>
-      <button class="btn btn-md btn-square btn-primary-soft" title="Dislike"><svg width="20" height="20" aria-hidden="true"><use href="#dislike"></use></svg></button>
-      <button class="btn btn-md btn-primary-soft" title="Comments"><svg width="20" height="20" aria-hidden="true"><use href="#comment"></use></svg>14</button>
-      <div class="dropdown dropup dropdown-md"><button class="btn btn-md btn-square btn-primary-soft" type="button" data-dropdown-toggle aria-expanded="false" aria-controls="post-share-2" aria-label="Share"><svg width="20" height="20" aria-hidden="true"><use href="#share"></use></svg></button><ul class="dropdown-menu dropdown-menu-center" id="post-share-2"><li class="dropdown-menu-item dropdown-menu-item-sm"><button type="button" data-sharer="telegram" data-title="Seven habits that reduce distractions" data-url="./"><svg width="16" height="16" aria-hidden="true" class="color-gray"><use href="#telegram"></use></svg>Send to Telegram</button></li><li class="dropdown-menu-item dropdown-menu-item-sm"><button type="button"><svg width="16" height="16" aria-hidden="true" class="color-gray"><use href="#link"></use></svg><span>Copy link</span></button></li></ul></div>
+      @forelse($reactionTypes as $reactionType)
+        <form method="POST" action="{{ route('blog.post.reaction', ['post' => $post->slug]) }}" class="inline-flex">
+          @csrf
+          <input type="hidden" name="reaction_type_id" value="{{ $reactionType->id }}">
+          <button class="btn btn-md btn-square btn-primary-soft" type="submit" title="{{ $reactionType->label }}">
+            @if($reactionType->gif_url)
+              <img src="{{ $reactionType->gif_url }}" alt="{{ $reactionType->label }}" width="20" height="20" loading="lazy">
+            @else
+              <span aria-hidden="true">{{ $reactionType->emoji }}</span>
+            @endif
+            <span class="sr-only">{{ $reactionType->label }}</span>
+            <span class="post__options-count">{{ $post->reaction_counts[$reactionType->id] ?? 0 }}</span>
+          </button>
+        </form>
+      @empty
+        <a class="btn btn-md btn-primary-soft" href="{{ route('blog.post', ['post' => $post->slug]) }}">Gönderiyi aç</a>
+      @endforelse
+      <a class="btn btn-md btn-primary-soft" href="{{ route('blog.post', ['post' => $post->slug]) }}#comments" title="Yorumlar">
+        <svg width="20" height="20" aria-hidden="true"><use href="#comment"></use></svg>{{ $post->comments_count }}
+      </a>
     </div>
-    <button class="btn btn-md btn-square btn-primary-soft" title="Remove from favorites"><svg class="color-primary" width="20" height="20" aria-hidden="true"><use href="#bookmark-filled"></use></svg></button>
+
+    @auth
+      <form method="POST" action="{{ route('blog.post.bookmark', ['post' => $post->slug]) }}">
+        @csrf
+        <button class="btn btn-md btn-square btn-primary-soft" type="submit" title="{{ $post->is_bookmarked ? 'Kaydedilenlerden çıkar' : 'Kaydet' }}">
+          <svg class="{{ $post->is_bookmarked ? 'color-primary' : '' }}" width="20" height="20" aria-hidden="true">
+            <use href="{{ $post->is_bookmarked ? '#bookmark-filled' : '#bookmark' }}"></use>
+          </svg>
+        </button>
+      </form>
+    @else
+      <a class="btn btn-md btn-square btn-primary-soft" href="{{ route('login') }}" title="Kaydetmek için giriş yap">
+        <svg width="20" height="20" aria-hidden="true"><use href="#bookmark"></use></svg>
+      </a>
+    @endauth
   </div>
-  
 </article>
-
-<article class="card post">
-  <section class="card-body">
-    <header class="post__header">
-      <div class="user-box">
-        <a href="./profile.html" class="avatar"><img src="./assets/img/noavatar.png" alt="" width="40" height="40"></a>
-        <div class="user-box-content">
-          <a href="./profile.html" class="name"><span class="name-text">PixelNomad</span><span class="verify" role="img" aria-label="Verified profile" data-tooltip="Verified profile"><svg width="14" height="14" aria-hidden="true"><use href="#verify"></use></svg></span></a>
-          <div class="meta"><a href="./channel.html">Design</a><time>yesterday, 21:07</time></div>
-        </div>
-      </div>
-    </header>
-    <div class="post__short">
-      <h2 class="post__short-title h3"><a href="./post.html" class="color-title"><span class="post__short-title-text">How everyday design changed over the last century</span></a></h2>
-      <div class="text-clamp-3 color-text">Form follows function, but sometimes a new form changes our habits. Here are several clear examples.</div>
-      <div class="post__tags"><a href="./tagscloud.html">design</a><a href="./tagscloud.html">history</a></div>
-    </div>
-  </section>
-
-  
-  <section class="card-body post__short-media">
-    <div class="post__media">
-      <div class="post__censored" data-censored="post-3"><div class="text-center post__censored-content"><span class="post__censored-info">18+ content</span><button type="button" class="btn btn-white btn-sm" data-censored-toggle="post-3"><svg width="18" height="18" aria-hidden="true"><use href="#eye"></use></svg>Show</button></div></div>
-      <img src="./assets/img/demo/demo-horisontal.png" alt="How everyday design changed over the last century" class="post__media-image" loading="lazy">
-    </div>
-  </section>
-  
-
-  <footer class="post__footer card-body"><div class="post__footer-stats small color-gray"><span>204 likes</span><span>4.1K views</span></div><span class="small color-gray">@pixelnomad</span></footer>
-  <div class="post__options card-body">
-    <div class="post__options-set">
-      <button class="btn btn-md btn-square btn-primary-soft" title="Like"><svg width="20" height="20" aria-hidden="true"><use href="#like"></use></svg></button>
-      <span class="post__options-count">+7</span>
-      <button class="btn btn-md btn-square btn-primary-soft" title="Dislike"><svg width="20" height="20" aria-hidden="true"><use href="#dislike"></use></svg></button>
-      <button class="btn btn-md btn-primary-soft" title="Comments"><svg width="20" height="20" aria-hidden="true"><use href="#comment"></use></svg>37</button>
-      <div class="dropdown dropup dropdown-md"><button class="btn btn-md btn-square btn-primary-soft" type="button" data-dropdown-toggle aria-expanded="false" aria-controls="post-share-3" aria-label="Share"><svg width="20" height="20" aria-hidden="true"><use href="#share"></use></svg></button><ul class="dropdown-menu dropdown-menu-center" id="post-share-3"><li class="dropdown-menu-item dropdown-menu-item-sm"><button type="button" data-sharer="telegram" data-title="How everyday design changed over the last century" data-url="./"><svg width="16" height="16" aria-hidden="true" class="color-gray"><use href="#telegram"></use></svg>Send to Telegram</button></li><li class="dropdown-menu-item dropdown-menu-item-sm"><button type="button"><svg width="16" height="16" aria-hidden="true" class="color-gray"><use href="#link"></use></svg><span>Copy link</span></button></li></ul></div>
-    </div>
-    <button class="btn btn-md btn-square btn-primary-soft" title="Add to favorites"><svg width="20" height="20" aria-hidden="true"><use href="#bookmark"></use></svg></button>
+@empty
+  <div class="card card-body text-center">
+    <h2 class="h5">Henüz gönderi yok</h2>
+    <p class="color-gray">Topluluğun ilk gönderisini sen paylaş.</p>
+    @auth
+      <a class="btn btn-primary" href="{{ route('blog.create') }}">Gönderi oluştur</a>
+    @else
+      <a class="btn btn-primary" href="{{ route('register') }}">Üye ol</a>
+    @endauth
   </div>
-  
-</article>
+@endforelse
 
-<article class="card post">
-  <section class="card-body">
-    <header class="post__header">
-      <div class="user-box">
-        <a href="./profile.html" class="avatar"><img src="./assets/img/noavatar.png" alt="" width="40" height="40"></a>
-        <div class="user-box-content">
-          <a href="./profile.html" class="name"><span class="name-text">Anna Fox</span></a>
-          <div class="meta"><a href="./channel.html">Stories</a><time>yesterday, 18:32</time></div>
-        </div>
-      </div>
-    </header>
-    <div class="post__short">
-      <h2 class="post__short-title h3"><a href="./post.html" class="color-title"><span class="post__short-title-text">Why quiet evenings are sometimes the most memorable</span></a></h2>
-      <div class="text-clamp-3 color-text">Not every good story needs a spectacular setting. Sometimes a familiar street, an unhurried conversation and a few hours without notifications are more than enough.</div>
-      <div class="post__tags"><a href="./tagscloud.html">stories</a><a href="./tagscloud.html">life</a><a href="./tagscloud.html">thoughts</a></div>
-    </div>
-  </section>
-
-  
-
-  <footer class="post__footer card-body"><div class="post__footer-stats small color-gray"><span>54 likes</span><span>912 views</span></div><span class="small color-gray">@annafox</span></footer>
-  <div class="post__options card-body">
-    <div class="post__options-set">
-      <button class="btn btn-md btn-square btn-primary-soft" title="Like"><svg width="20" height="20" aria-hidden="true"><use href="#like"></use></svg></button>
-      <span class="post__options-count">+3</span>
-      <button class="btn btn-md btn-square btn-primary-soft" title="Dislike"><svg width="20" height="20" aria-hidden="true"><use href="#dislike"></use></svg></button>
-      <button class="btn btn-md btn-primary-soft" title="Comments"><svg width="20" height="20" aria-hidden="true"><use href="#comment"></use></svg>8</button>
-      <div class="dropdown dropup dropdown-md"><button class="btn btn-md btn-square btn-primary-soft" type="button" data-dropdown-toggle aria-expanded="false" aria-controls="post-share-4" aria-label="Share"><svg width="20" height="20" aria-hidden="true"><use href="#share"></use></svg></button><ul class="dropdown-menu dropdown-menu-center" id="post-share-4"><li class="dropdown-menu-item dropdown-menu-item-sm"><button type="button" data-sharer="telegram" data-title="Why quiet evenings are sometimes the most memorable" data-url="./"><svg width="16" height="16" aria-hidden="true" class="color-gray"><use href="#telegram"></use></svg>Send to Telegram</button></li><li class="dropdown-menu-item dropdown-menu-item-sm"><button type="button"><svg width="16" height="16" aria-hidden="true" class="color-gray"><use href="#link"></use></svg><span>Copy link</span></button></li></ul></div>
-    </div>
-    <button class="btn btn-md btn-square btn-primary-soft" title="Add to favorites"><svg width="20" height="20" aria-hidden="true"><use href="#bookmark"></use></svg></button>
-  </div>
-  
-</article>
+@if($posts->hasPages())
+  <div class="navigation">{{ $posts->links() }}</div>
+@endif
 
         <div class="navigation"><button class="btn btn-md btn-secondary" type="button">Show more</button></div>
       </section>
       <aside class="main__widgets"><div class="widgets">
-  <section class="widget card card-body"><header><h2 class="widget__title h6">Tags</h2></header><div class="widget__content tagscloud"><span><a href="./tagscloud.html">technology</a></span><span><a href="./tagscloud.html">movies</a></span><span><a href="./tagscloud.html">design</a></span><span><a href="./tagscloud.html">travel</a></span><span><a href="./tagscloud.html">music</a></span><span><a href="./tagscloud.html">science</a></span><span><a href="./tagscloud.html">games</a></span><span><a href="./tagscloud.html">stories</a></span></div><footer class="widget__footer"><a href="./tagscloud.html" class="link-accent">Show all tags</a></footer></section>
-  <section class="widget card card-body"><header><h2 class="widget__title h6">Popular authors</h2></header><div class="widget__content widget__content--bleed"><ul class="widget__list"><li class="user-card"><a class="user-box" href="./profile.html"><span class="avatar"><img src="./assets/img/noavatar.png" alt="" width="40" height="40"></span><span class="user-box-content"><strong class="name"><span class="name-text">Alex Morgan</span></strong><span class="meta">23 posts</span></span></a></li><li class="user-card"><a class="user-box" href="./profile.html"><span class="avatar"><img src="./assets/img/noavatar.png" alt="" width="40" height="40"></span><span class="user-box-content"><strong class="name"><span class="name-text">Maria West</span><span class="verify" role="img" aria-label="Verified profile" data-tooltip="Verified profile"><svg width="14" height="14" aria-hidden="true"><use href="#verify"></use></svg></span></strong><span class="meta">2 posts</span></span></a></li><li class="user-card"><a class="user-box" href="./profile.html"><span class="avatar"><img src="./assets/img/noavatar.png" alt="" width="40" height="40"></span><span class="user-box-content"><strong class="name"><span class="name-text">PixelNomad</span></strong><span class="meta">2 posts</span></span></a></li></ul></div><footer class="widget__footer"><a href="./rating-users.html" class="link-accent">View ranking</a></footer></section>
+  <section class="widget card card-body"><header><h2 class="widget__title h6">Tags</h2></header><div class="widget__content tagscloud"><span><a href="{{ route('blog.tags') }}">technology</a></span><span><a href="./tagscloud.html">movies</a></span><span><a href="./tagscloud.html">design</a></span><span><a href="./tagscloud.html">travel</a></span><span><a href="./tagscloud.html">music</a></span><span><a href="./tagscloud.html">science</a></span><span><a href="./tagscloud.html">games</a></span><span><a href="./tagscloud.html">stories</a></span></div><footer class="widget__footer"><a href="./tagscloud.html" class="link-accent">Show all tags</a></footer></section>
+  <section class="widget card card-body"><header><h2 class="widget__title h6">Popular authors</h2></header><div class="widget__content widget__content--bleed"><ul class="widget__list"><li class="user-card"><a class="user-box" href="./profile.html"><span class="avatar"><img src="./assets/img/noavatar.png" alt="" width="40" height="40"></span><span class="user-box-content"><strong class="name"><span class="name-text">Alex Morgan</span></strong><span class="meta">23 posts</span></span></a></li><li class="user-card"><a class="user-box" href="./profile.html"><span class="avatar"><img src="./assets/img/noavatar.png" alt="" width="40" height="40"></span><span class="user-box-content"><strong class="name"><span class="name-text">Maria West</span><span class="verify" role="img" aria-label="Verified profile" data-tooltip="Verified profile"><svg width="14" height="14" aria-hidden="true"><use href="#verify"></use></svg></span></strong><span class="meta">2 posts</span></span></a></li><li class="user-card"><a class="user-box" href="./profile.html"><span class="avatar"><img src="./assets/img/noavatar.png" alt="" width="40" height="40"></span><span class="user-box-content"><strong class="name"><span class="name-text">PixelNomad</span></strong><span class="meta">2 posts</span></span></a></li></ul></div><footer class="widget__footer"><a href="{{ route('users.index') }}" class="link-accent">View ranking</a></footer></section>
   <section class="widget card card-body"><header><h2 class="widget__title h6">Popular posts</h2></header><div class="widget__content widget__content--bleed"><ul class="widget__list widget__list--separator"><li class="entry-card">
   <article class="entry-box">
     <div class="entry-box-content">
@@ -501,7 +444,7 @@
     <a href="./post.html" class="entry-box-image"><img src="./assets/img/demo/demo-horisontal.png" alt="Karelia by car: route and useful stops" width="100" height="80" loading="lazy"></a>
   </article>
 </li>
-</ul></div><footer class="widget__footer"><a href="./last-posts.html" class="link-accent">Latest posts</a></footer></section>
+</ul></div><footer class="widget__footer"><a href="{{ route('blog.index') }}" class="link-accent">Latest posts</a></footer></section>
   <section class="widget card card-body"><header><h2 class="widget__title h6">Latest comments</h2></header><div class="widget__content widget__content-offset"><ul class="widget__list widget__list--limit widget__list--separator widget__list--separator-lg"><li class="comm-card">
   <div class="user-box user-box-sm">
     <a href="./profile.html" class="avatar online" aria-label="Repost profile"><img src="./assets/img/noavatar.png" alt="" width="40" height="40"></a>
@@ -542,9 +485,9 @@
   <div class="comm-card-short text-clamp-3">Adding these stops to my itinerary.</div>
   <div class="small text-clamp-1"><span class="color-gray">On post:</span> <a href="./post.html" class="link">Karelia by car...</a></div>
 </li>
-</ul></div><footer class="widget__footer"><a href="./last-comments.html" class="link-accent">View all</a></footer></section>
+</ul></div><footer class="widget__footer"><a href="{{ route('blog.index') }}" class="link-accent">View all</a></footer></section>
   <footer class="footer">
-  <nav class="footer__menu" aria-label="Footer links"><a href="./contacts.html" class="footer__menu-link">Contacts</a><a href="./page.html" class="footer__menu-link">Rules</a><a href="./stats.html" class="footer__menu-link">Statistics</a><div class="dropdown dropup dropdown-md"><button class="btn btn-secondary btn-xs btn-rounded" type="button" data-dropdown-toggle aria-expanded="false" aria-controls="footer-more-menu" aria-label="Open additional menu"><svg class="color-gray" width="18" height="18" aria-hidden="true"><use href="#more"></use></svg></button><ul class="dropdown-menu dropdown-menu-end" id="footer-more-menu"><li class="dropdown-menu-item dropdown-menu-item-md"><a href="./last-posts.html">Latest posts</a></li></ul></div></nav>
+  <nav class="footer__menu" aria-label="Footer links"><a href="{{ route('contact.create') }}" class="footer__menu-link">Contacts</a><a href="{{ route('pages.show', ['slug' => 'hakkimizda']) }}" class="footer__menu-link">Rules</a><a href="./stats.html" class="footer__menu-link">Statistics</a><div class="dropdown dropup dropdown-md"><button class="btn btn-secondary btn-xs btn-rounded" type="button" data-dropdown-toggle aria-expanded="false" aria-controls="footer-more-menu" aria-label="Open additional menu"><svg class="color-gray" width="18" height="18" aria-hidden="true"><use href="#more"></use></svg></button><ul class="dropdown-menu dropdown-menu-end" id="footer-more-menu"><li class="dropdown-menu-item dropdown-menu-item-md"><a href="./last-posts.html">Latest posts</a></li></ul></div></nav>
   <small class="color-gray">Repost &copy;&nbsp;<span data-date="Y"></span></small>
   <nav class="footer__social" aria-label="Social media"><a href="#" class="btn btn-sm btn-secondary btn-square" aria-label="Instagram"><svg class="color-gray" width="16" height="16" aria-hidden="true"><use href="#instagram"></use></svg></a><a href="#" class="btn btn-sm btn-secondary btn-square" aria-label="Telegram"><svg class="color-gray" width="16" height="16" aria-hidden="true"><use href="#telegram"></use></svg></a><a href="#" class="btn btn-sm btn-secondary btn-square" aria-label="Threads"><svg class="color-gray" width="16" height="16" aria-hidden="true"><use href="#threads"></use></svg></a></nav>
 </footer>
@@ -665,10 +608,10 @@
 </div>
 
   <button class="btn btn-white btn-md btn-circle gotop" type="button" data-gotop aria-label="Back to top" aria-hidden="true" tabindex="-1"><svg class="color-gray" width="18" height="18" aria-hidden="true" focusable="false"><use href="#chevron-up"></use></svg></button>
-  <script src="./assets/libs/fancyapp/fancybox.umd.js"></script>
-  <script src="./assets/libs/fancyapp/carousel.umd.js"></script>
-  <script src="./assets/js/app.js"></script>
-  <script src="./assets/js/init.js"></script>
+  <script src=""></script>
+  <script src=""></script>
+  <script src="{{ asset('js/repost-ui.js') }}"></script>
+  <script src=""></script>
 </body>
 </html>
 
