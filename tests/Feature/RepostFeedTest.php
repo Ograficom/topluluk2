@@ -419,7 +419,14 @@ class RepostFeedTest extends TestCase
             ->assertSee('enesbodur kullanıcısına yanıt yazıyorsunuz.')
             ->assertSee('>enesbodur</a>', false)
             ->assertDontSee('>enesbodur@ografi.com</a>', false)
+            ->assertSee('aria-label="enesbodur"', false)
+            ->assertDontSee('aria-label="enesbodur@ografi.com"', false)
             ->assertSee('btn-link comment__rating', false);
+
+        $this->get(route('profiles.show', $author))
+            ->assertOk()
+            ->assertSee('@enesbodur')
+            ->assertDontSee('@enesbodur@ografi.com');
     }
 
     public function test_members_can_upload_and_view_comment_images(): void

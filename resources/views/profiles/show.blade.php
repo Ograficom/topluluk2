@@ -42,8 +42,8 @@
                         @endif
                     </div>
                     <div class="profile__meta">
-                        @if (filled($user->username))
-                            <span class="small color-gray">{{ '@'.$user->username }}</span>
+                        @if ($publicUsername = $user->publicUsername())
+                            <span class="small color-gray">{{ '@'.$publicUsername }}</span>
                         @endif
                         <span class="small color-gray">Üyelik tarihi {{ $user->created_at->format('d.m.Y') }}</span>
                     </div>

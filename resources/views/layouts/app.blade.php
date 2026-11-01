@@ -61,7 +61,7 @@
                 </a>
                 @auth
                     <div class="dropdown dropdown-md">
-                        <button id="userMenuButton" type="button" class="btn btn-secondary-ghost btn-circle avatar" data-dropdown-toggle aria-expanded="false" aria-haspopup="menu" aria-controls="userMenu" aria-label="{{ auth()->user()->name }}">
+                        <button id="userMenuButton" type="button" class="btn btn-secondary-ghost btn-circle avatar" data-dropdown-toggle aria-expanded="false" aria-haspopup="menu" aria-controls="userMenu" aria-label="{{ auth()->user()->displayName() }}">
                             <img src="{{ auth()->user()->avatarUrl() }}" alt="" width="40" height="40">
                         </button>
                         <ul class="dropdown-menu dropdown-menu-end" id="userMenu" aria-labelledby="userMenuButton">
@@ -160,7 +160,7 @@
                         <ul class="sidebar__list">
                             @foreach ($sidebarAuthors as $author)
                                 <li>
-                                    <a href="{{ route('profiles.show', $author) }}" class="channel-icon" aria-label="{{ $author->name }}" title="{{ $author->name }}">
+                                    <a href="{{ route('profiles.show', $author) }}" class="channel-icon" aria-label="{{ $author->displayName() }}" title="{{ $author->displayName() }}">
                                         <img src="{{ $author->avatarUrl() }}" alt="" width="50" height="50">
                                     </a>
                                 </li>
@@ -275,7 +275,7 @@
                                         <li class="comm-card">
                                             <div class="user-box user-box-sm">
                                                 @if ($comment->user)
-                                                    <a href="{{ route('profiles.show', $comment->user) }}" class="avatar" aria-label="{{ $comment->user->name }} profili">
+                                                    <a href="{{ route('profiles.show', $comment->user) }}" class="avatar" aria-label="{{ $comment->user->displayName() }} profili">
                                                         <img src="{{ $comment->user->avatarUrl() }}" alt="" width="40" height="40">
                                                     </a>
                                                 @else

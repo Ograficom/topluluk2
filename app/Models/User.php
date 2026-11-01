@@ -6,6 +6,8 @@ use Database\Factories\UserFactory;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -82,22 +84,22 @@ class User extends Authenticatable implements FilamentUser
         });
     }
 
-    public function posts(): \Illuminate\Database\Eloquent\Relations\HasMany
+    public function posts(): HasMany
     {
         return $this->hasMany(Post::class);
     }
 
-    public function comments(): \Illuminate\Database\Eloquent\Relations\HasMany
+    public function comments(): HasMany
     {
         return $this->hasMany(Comment::class);
     }
 
-    public function reactions(): \Illuminate\Database\Eloquent\Relations\HasMany
+    public function reactions(): HasMany
     {
         return $this->hasMany(PostReaction::class);
     }
 
-    public function blockedUsers(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    public function blockedUsers(): BelongsToMany
     {
         return $this->belongsToMany(
             self::class,
@@ -107,7 +109,7 @@ class User extends Authenticatable implements FilamentUser
         )->withTimestamps();
     }
 
-    public function blockedByUsers(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    public function blockedByUsers(): BelongsToMany
     {
         return $this->belongsToMany(
             self::class,
@@ -133,10 +135,23 @@ class User extends Authenticatable implements FilamentUser
         return filled($name) ? (string) $name : 'Repost kullanıcısı';
     }
 
+    public function publicUsername(): ?string
+    {
+        if (blank($this->username)) {
+            return null;
+        }
+
+        if (filter_var($this->username, FILTER_VALIDATE_EMAIL)) {
+            return (string) str($this->username)->before('@');
+        }
+
+        return $this->username;
+    }
+
     public function avatarUrl(): string
     {
         return $this->avatar_path
-            ? asset('storage/' . $this->avatar_path)
+            ? asset('storage/'.$this->avatar_path)
             : asset('assets/img/noavatar.png');
     }
 
