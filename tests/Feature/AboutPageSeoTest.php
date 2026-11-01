@@ -22,7 +22,7 @@ class AboutPageSeoTest extends TestCase
         Page::query()->create([
             'title' => 'Hakkımızda',
             'slug' => 'hakkimizda',
-            'content' => '<p>Ografi hakkında.</p>',
+            'content' => '<p>Eabodur Medya Prodüksiyon Limited Şirketi tarafından işletilir. Kuruluş tarihi: <time datetime="2025-12-25">25 Aralık 2025</time>.</p>',
             'is_published' => true,
             'published_at' => now(),
         ]);
