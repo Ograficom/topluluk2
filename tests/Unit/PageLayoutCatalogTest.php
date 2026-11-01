@@ -122,7 +122,7 @@ class PageLayoutCatalogTest extends TestCase
         $root = dirname(__DIR__, 2);
 
         $sourcesByPage = [
-            'home' => ['resources/views/templates/home-like.blade.php', 'resources/views/partials/ads/slot.blade.php'],
+            'home' => ['resources/views/index.blade.php', 'resources/views/partials/ads/slot.blade.php'],
             'discover' => ['resources/views/pages/discover.blade.php', 'resources/views/partials/ads/slot.blade.php'],
             'categories' => ['resources/views/blog/categories.blade.php'],
             'tags' => ['resources/views/blog/tags.blade.php'],
