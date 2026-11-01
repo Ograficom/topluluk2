@@ -33,22 +33,15 @@
             <a class="footer-drawer__link" href="{{ route('posts.index') }}">
                 <x-repost-icon name="feed" size="18" />
                 <span>Son yazılar</span>
-                <x-repost-icon name="chevron-right" size="16" class="color-gray" />
             </a>
             <a class="footer-drawer__link" href="mailto:{{ config('mail.from.address') }}">
-                <x-repost-icon name="mail" size="18" />
                 <span>İletişim</span>
-                <x-repost-icon name="chevron-right" size="16" class="color-gray" />
             </a>
             <a class="footer-drawer__link" href="{{ route('register') }}#signup-rules">
-                <x-repost-icon name="shield-check" size="18" />
                 <span>Kurallar</span>
-                <x-repost-icon name="chevron-right" size="16" class="color-gray" />
             </a>
             <a class="footer-drawer__link" href="{{ route('stats.index') }}">
-                <x-repost-icon name="chart-no-axes-column-increasing" size="18" />
                 <span>İstatistikler</span>
-                <x-repost-icon name="chevron-right" size="16" class="color-gray" />
             </a>
         </div>
     </div>
