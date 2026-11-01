@@ -253,11 +253,14 @@ class RepostFeedTest extends TestCase
             ->assertSeeInOrder([
                 'class="post__header"',
                 'class="post__title-full"',
-                'class="lead color-gray"',
-                'class="editor post-content"',
+                'class="editor"',
                 '<p>Yazının ilk paragrafı.</p>',
                 '<p>Yazının ikinci paragrafı.</p>',
-                'class="post__options card-body"',
+                'class="post__tags post__tags-full"',
+                'class="post__footer post__footer-full"',
+                'class="post__options"',
+                'aria-label="Favorilere ekle"',
+                'id="comments"',
             ], false);
 
         $this->assertDatabaseHas('posts', ['id' => $published->id, 'views' => 1]);

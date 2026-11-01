@@ -1,6 +1,6 @@
 @php($viewerReaction = $post->relationLoaded('reactions') ? $post->reactions->first()?->type : null)
 
-<div class="post__options card-body">
+<div class="post__options">
     <div class="post__options-set">
         @auth
             <form action="{{ route('posts.reactions.store', ['post' => $post, 'type' => 'like']) }}" method="POST">
@@ -35,4 +35,7 @@
             {{ number_format($post->comments_count ?? 0) }}
         </a>
     </div>
+    <button class="btn btn-md btn-square btn-primary-soft" type="button" title="Favoriler henüz etkin değil" aria-label="Favorilere ekle" disabled>
+        <x-repost-icon name="bookmark" size="20" />
+    </button>
 </div>
