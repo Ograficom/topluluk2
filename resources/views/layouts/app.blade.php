@@ -103,8 +103,8 @@
     $widgetTags = $popularTags ?? ($tags ?? collect());
 @endphp
 
-<main class="container {{ $noContainerPadding ? 'repost-container-bleed' : '' }} {{ $isAuthLayout ? 'repost-auth-layout' : '' }}">
-    <div class="main {{ $hideGlobalHeader ? 'repost-editor-grid' : 'main__grid repost-main-grid' }}">
+<main class="container {{ ($noContainerPadding ?? false) ? 'repost-container-bleed' : '' }} {{ $isAuthLayout ? 'repost-auth-layout' : '' }}">
+    <div class="main {{ ($hideGlobalHeader ?? false) ? 'repost-editor-grid' : 'main__grid repost-main-grid' }}">
         @unless($hideGlobalHeader ?? false)
         <aside class="sidebar" aria-label="Topluluklar ve üyeler">
             <div class="sidebar__body">
@@ -218,7 +218,7 @@
     </div>
 </main>
 
-@unless($hideGlobalHeader || $isAuthLayout)
+@unless(($hideGlobalHeader ?? false) || ($isAuthLayout ?? false))
 <section class="mobmenu" data-scroll-menu>
     <nav class="mobmenu__content" aria-label="Mobil menü">
         <a class="mobmenu__link is-active" href="{{ url('/') }}"><svg width="20" height="20"><use href="#home"/></svg><span>Akış</span></a>
