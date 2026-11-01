@@ -242,6 +242,27 @@
 </div>
 @endunless
 <x-cookie-banner />
+<script>
+document.addEventListener('click', async (event) => {
+    const button = event.target.closest('[data-copy-url]');
+    if (!button) return;
+    const url = button.dataset.copyUrl;
+    try {
+        await navigator.clipboard.writeText(url);
+        const previous = button.getAttribute('aria-label') || button.getAttribute('title') || '';
+        button.setAttribute('aria-label', 'Bağlantı kopyalandı');
+        button.setAttribute('title', 'Bağlantı kopyalandı');
+        window.setTimeout(() => {
+            if (previous) {
+                button.setAttribute('aria-label', previous);
+                button.setAttribute('title', previous);
+            }
+        }, 1800);
+    } catch (error) {
+        window.prompt('Bağlantıyı kopyala:', url);
+    }
+});
+</script>
 @stack('scripts')
 </body>
 </html>
