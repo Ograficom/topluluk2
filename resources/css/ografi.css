@@ -132,3 +132,15 @@
 .repost-auth-layout .main__grid { grid-template-columns: minmax(0, 760px); justify-content: center; }
 .repost-auth-layout .sidebar,
 .repost-auth-layout .main__widgets { display: none; }
+
+.ografi-cookie-banner { position: fixed; z-index: 1200; right: 18px; bottom: 18px; display: flex; align-items: center; gap: 20px; width: min(620px, calc(100vw - 36px)); padding: 18px; border: 1px solid var(--border-color); border-radius: 12px; background: #fff; color: #1f2937; }
+.ografi-cookie-banner__content { flex: 1; min-width: 0; }
+.ografi-cookie-banner__content p { margin: 5px 0; color: #64748b; font-size: .86rem; line-height: 1.5; }
+.ografi-cookie-banner__content a { font-size: .82rem; }
+.ografi-cookie-banner__actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.page-builder-section { margin: 14px 0; }
+.page-builder-section img { display: block; max-width: 100%; height: auto; }
+@media (max-width: 600px) {
+    .ografi-cookie-banner { right: 10px; bottom: 10px; width: calc(100vw - 20px); align-items: stretch; flex-direction: column; gap: 12px; }
+    .ografi-cookie-banner__actions { justify-content: flex-end; }
+}
