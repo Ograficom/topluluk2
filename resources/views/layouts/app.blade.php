@@ -194,7 +194,7 @@
                     <nav class="footer__menu" aria-label="Alt menü">
                         <a class="footer__menu-link" href="{{ url('/contact') }}">İletişim</a>
                         <a class="footer__menu-link" href="{{ url('/sayfa/kurallar') }}">Kurallar</a>
-                        <a class="footer__menu-link" href="{{ url('/stats') }}">İstatistikler</a>
+                        <a class="footer__menu-link" href="{{ route('users.index') }}">Üyeler</a>
                     </nav>
                     <small class="color-gray">OgraFi © {{ date('Y') }}</small>
                 </footer>
@@ -227,6 +227,7 @@
     </div>
 </div>
 @endunless
+<x-cookie-banner />
 @stack('scripts')
 </body>
 </html>
