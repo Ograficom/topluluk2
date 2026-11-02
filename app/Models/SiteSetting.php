@@ -26,14 +26,14 @@ class SiteSetting extends Model
     public function brandLogoUrl(): ?string
     {
         return filled($this->brand_logo_path)
-            ? '/storage/'.ltrim($this->brand_logo_path, '/')
+            ? '/site-branding/logo'
             : null;
     }
 
     public function faviconUrl(): ?string
     {
         return filled($this->favicon_path)
-            ? '/storage/'.ltrim($this->favicon_path, '/')
+            ? '/site-branding/favicon'
             : null;
     }
 

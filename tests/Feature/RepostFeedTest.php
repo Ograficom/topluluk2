@@ -778,7 +778,7 @@ class RepostFeedTest extends TestCase
 
         $this->assertSame('Yeni Marka', $settings->brand_name);
         $this->assertNotEmpty($settings->brand_logo_path);
-        $this->assertSame('/storage/'.$settings->brand_logo_path, $settings->brandLogoUrl());
+        $this->assertSame('/site-branding/logo', $settings->brandLogoUrl());
         Storage::disk('public')->assertExists($settings->brand_logo_path);
         $this->assertStringContainsString('<use href="#wordmark"', Storage::disk('public')->get($settings->brand_logo_path));
 
@@ -794,6 +794,10 @@ class RepostFeedTest extends TestCase
             ->assertSee('logo-icon--custom')
             ->assertSee('class="logo-text">Yeni Marka</span>', false)
             ->assertSee('onerror=', false);
+        $this->get($settings->brandLogoUrl())
+            ->assertOk()
+            ->assertHeader('Content-Type', 'image/svg+xml')
+            ->assertSee('<svg', false);
     }
 
     public function test_administrators_can_upload_favicon_used_on_the_site_and_admin_panel(): void
@@ -822,6 +826,9 @@ class RepostFeedTest extends TestCase
             ->assertOk()
             ->assertSee('href="'.$settings->faviconUrl().'"', false)
             ->assertSee('type="image/png"', false);
+        $this->get($settings->faviconUrl())
+            ->assertOk()
+            ->assertHeader('Content-Type', 'image/png');
 
         $this->get('/admin')
             ->assertOk()

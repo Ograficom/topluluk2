@@ -7,12 +7,23 @@ use App\Support\SvgSanitizer;
 use Filament\Facades\Filament;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 
 class SiteBrandingController extends Controller
 {
+    public function logo(): Response
+    {
+        return $this->serveAsset('brand_logo_path');
+    }
+
+    public function favicon(): Response
+    {
+        return $this->serveAsset('favicon_path');
+    }
+
     public function updateLogo(Request $request, SvgSanitizer $svgSanitizer): RedirectResponse
     {
         return $this->updateAsset(
@@ -108,5 +119,27 @@ class SiteBrandingController extends Controller
         return redirect()
             ->route('filament.admin.pages.site-branding')
             ->with('status', $message);
+    }
+
+    private function serveAsset(string $column): Response
+    {
+        $path = SiteSetting::current()?->{$column};
+        abort_if(blank($path), 404);
+
+        $disk = Storage::disk('public');
+        abort_unless($disk->exists($path), 404);
+
+        $contentType = match (strtolower(pathinfo($path, PATHINFO_EXTENSION))) {
+            'svg' => 'image/svg+xml',
+            'png' => 'image/png',
+            'jpg', 'jpeg' => 'image/jpeg',
+            'ico' => 'image/x-icon',
+            'webp' => 'image/webp',
+            default => abort(404),
+        };
+
+        return response($disk->get($path))
+            ->header('Content-Type', $contentType)
+            ->header('Cache-Control', 'no-store');
     }
 }

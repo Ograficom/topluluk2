@@ -32,6 +32,8 @@ Route::get('/subscriptions.html', fn () => redirect()->route('subscriptions.inde
 Route::get('/stats.html', [StatisticsController::class, 'index'])->name('stats.index');
 
 Route::get('/members', [MemberController::class, 'index'])->name('members.index');
+Route::get('/site-branding/logo', [SiteBrandingController::class, 'logo'])->name('site-branding.logo');
+Route::get('/site-branding/favicon', [SiteBrandingController::class, 'favicon'])->name('site-branding.favicon');
 Route::get('/last-posts', [CommunityController::class, 'latestPosts'])->name('posts.latest');
 Route::get('/last-comments', [CommunityController::class, 'latestComments'])->name('comments.latest');
 Route::get('/tags', [CommunityController::class, 'tags'])->name('tags.index');
