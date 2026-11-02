@@ -1,6 +1,7 @@
 @php($viewerReaction = $post->relationLoaded('reactions') ? $post->reactions->first()?->type : null)
+@php($netReactionCount = ($post->likes_count ?? 0) - ($post->dislikes_count ?? 0))
 
-<div class="post__options">
+<div class="post__options card-body">
     <div class="post__options-set">
         @auth
             <form action="{{ route('posts.reactions.store', ['post' => $post, 'type' => 'like']) }}" method="POST">
@@ -14,7 +15,7 @@
                 <x-repost-icon name="like" size="20" />
             </a>
         @endauth
-        <span class="post__options-count">{{ number_format($post->likes_count ?? 0) }}</span>
+        <span class="post__options-count">{{ $netReactionCount > 0 ? '+' : '' }}{{ number_format($netReactionCount) }}</span>
 
         @auth
             <form action="{{ route('posts.reactions.store', ['post' => $post, 'type' => 'dislike']) }}" method="POST">
@@ -28,17 +29,15 @@
                 <x-repost-icon name="dislike" size="20" />
             </a>
         @endauth
-        <span class="post__options-count">{{ number_format($post->dislikes_count ?? 0) }}</span>
-
         <a class="btn btn-md btn-primary-soft" href="{{ route('posts.show', $post) }}#comments" title="Comments" aria-label="Comments">
             <x-repost-icon name="comment" size="20" />
             {{ number_format($post->comments_count ?? 0) }}
         </a>
-        <button class="btn btn-md btn-square btn-primary-soft" type="button" data-share-post data-share-title="{{ $post->title }}" data-share-url="{{ route('posts.show', $post) }}" aria-label="Yazıyı paylaş" title="Yazıyı paylaş">
+        <button class="btn btn-md btn-square btn-primary-soft" type="button" data-share-post data-share-title="{{ $post->title }}" data-share-url="{{ route('posts.show', $post) }}" aria-label="Share" title="Share">
             <x-repost-icon name="share" size="20" />
         </button>
     </div>
-    <button class="btn btn-md btn-square btn-primary-soft" type="button" title="Favoriler henüz etkin değil" aria-label="Favorilere ekle" disabled>
+    <button class="btn btn-md btn-square btn-primary-soft" type="button" title="Add to favorites" aria-label="Favorilere ekle" disabled>
         <x-repost-icon name="bookmark" size="20" />
     </button>
 </div>

@@ -90,7 +90,7 @@
                                     </div>
                                 </header>
                                 <div class="post__short">
-                                    <h2 class="post__short-title h3"><a href="{{ route('posts.show', $post) }}" class="color-title">{{ $post->title }}</a></h2>
+                                    <h2 class="post__short-title h3"><a href="{{ route('posts.show', $post) }}" class="color-title"><span class="post__short-title-text">{{ $post->title }}</span></a></h2>
                                     <p class="text-clamp-3 color-text">{{ $post->excerpt }}</p>
                                     @if (filled($post->tags))
                                         <div class="post__tags">
@@ -115,14 +115,16 @@
                                     <span>{{ number_format($post->likes_count) }} beğeni</span>
                                     <span>{{ number_format($post->views) }} görüntülenme</span>
                                 </div>
-                                <a class="small color-gray" href="{{ route('posts.show', $post) }}">Yazıyı görüntüle</a>
+                                @if ($post->user?->publicUsername())
+                                    <span class="small color-gray">{{ '@'.$post->user->publicUsername() }}</span>
+                                @endif
                             </footer>
                             @include('posts._interactions', ['post' => $post])
                         </article>
                     @empty
                         <section class="card card-body empty-state"><h2 class="h4">Henüz yazı yok</h2></section>
                     @endforelse
-                    {{ $posts->links() }}
+                    @include('layouts._pagination', ['paginator' => $posts])
                 </section>
 
                 <section class="tabs-panel" id="profile-panel-comments" role="tabpanel" aria-labelledby="profile-tab-comments" data-tab-panel="comments" tabindex="0" hidden>
@@ -155,7 +157,7 @@
                     @empty
                         <section class="card card-body empty-state"><h2 class="h4">Henüz yorum yok</h2></section>
                     @endforelse
-                    {{ $comments->links() }}
+                    @include('layouts._pagination', ['paginator' => $comments])
                 </section>
             </div>
 

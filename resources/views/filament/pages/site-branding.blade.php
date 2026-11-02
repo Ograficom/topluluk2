@@ -182,6 +182,13 @@
             font-size: .75rem;
         }
 
+        .branding-modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: .75rem;
+            margin-top: 1.25rem;
+        }
+
         .branding-status {
             padding: .85rem 1rem;
             border: 1px solid #bbf7d0;
@@ -242,25 +249,49 @@
                     >
                 </div>
 
-                <form action="{{ route('admin.site-branding.logo.update') }}" method="POST" enctype="multipart/form-data" class="branding-upload-form">
-                    @csrf
-                    <label class="branding-upload-label" for="brand-logo-upload">Yeni logo dosyası</label>
-                    <input
-                        id="brand-logo-upload"
-                        class="branding-file-input"
-                        type="file"
-                        name="logo"
-                        accept=".svg,.png,.jpg,.jpeg,.webp,image/svg+xml,image/png,image/jpeg,image/webp"
-                        required
-                    >
-                    <span class="branding-upload-hint">SVG, PNG, JPG veya WebP · En fazla 2 MB</span>
-                    @error('logo')
-                        <p class="text-sm text-danger-600" role="alert">{{ $message }}</p>
-                    @enderror
-                    <x-filament::button type="submit" color="gray">
-                        Logoyu yükle
-                    </x-filament::button>
-                </form>
+                <x-filament::button
+                    type="button"
+                    color="gray"
+                    x-on:click="$dispatch('open-modal', { id: 'brand-logo-upload-modal' })"
+                >
+                    Logoyu düzenle
+                </x-filament::button>
+
+                <x-filament::modal
+                    id="brand-logo-upload-modal"
+                    heading="Site logosunu düzenle"
+                    description="SVG, PNG, JPG veya WebP dosyası seçin. En fazla 2 MB."
+                    width="md"
+                    x-init="{{ $errors->has('logo') ? '$nextTick(() => open())' : 'void 0' }}"
+                >
+                    <form action="{{ route('admin.site-branding.logo.update') }}" method="POST" enctype="multipart/form-data" class="branding-upload-form">
+                        @csrf
+                        <label class="branding-upload-label" for="brand-logo-upload">Yeni logo dosyası</label>
+                        <input
+                            id="brand-logo-upload"
+                            class="branding-file-input"
+                            type="file"
+                            name="logo"
+                            accept=".svg,.png,.jpg,.jpeg,.webp,image/svg+xml,image/png,image/jpeg,image/webp"
+                            required
+                        >
+                        @error('logo')
+                            <p class="text-sm text-danger-600" role="alert">{{ $message }}</p>
+                        @enderror
+                        <div class="branding-modal-actions">
+                            <x-filament::button
+                                type="button"
+                                color="gray"
+                                x-on:click="$dispatch('close-modal', { id: 'brand-logo-upload-modal' })"
+                            >
+                                İptal
+                            </x-filament::button>
+                            <x-filament::button type="submit">
+                                Logoyu yükle
+                            </x-filament::button>
+                        </div>
+                    </form>
+                </x-filament::modal>
             </section>
 
             <section class="branding-asset-card" aria-labelledby="brand-favicon-heading">

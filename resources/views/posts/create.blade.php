@@ -14,7 +14,7 @@
         </div>
     @endif
 
-    <div class="addpost">
+    <div class="addpost main__grid-feed">
         <form class="addpost__form card card-body" action="{{ route('posts.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <header class="addpost__header">
@@ -89,6 +89,7 @@
                     </footer>
                 @endif
             </section>
+            @include('layouts._footer')
         </aside>
     </div>
 @endsection

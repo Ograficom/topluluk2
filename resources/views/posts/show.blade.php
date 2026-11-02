@@ -91,7 +91,6 @@
         <footer class="post__footer post__footer-full">
             <div class="post__footer-stats small color-gray">
                 <span>{{ number_format($post->likes_count) }} beğeni</span>
-                <span>{{ number_format($post->dislikes_count) }} beğenmeme</span>
                 <span>{{ number_format($post->views) }} görüntülenme</span>
             </div>
             @if ($post->channel)

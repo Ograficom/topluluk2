@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Settings')
+@section('title', 'Ayarlar')
 
 @section('content')
     <div class="setting main__grid-feed">
@@ -27,7 +27,7 @@
                         tabindex="0"
                         @if ($activeTab !== 'profile') hidden @endif
                     >
-                        <h1 class="h3">Profile</h1>
+                        <h1 class="h3">Profil</h1>
                         <form class="setting__box" action="{{ route('settings.profile.update') }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             @method('PATCH')
@@ -35,60 +35,60 @@
                             <section class="avatar-upload-field">
                                 <div class="avatar__upload">
                                     <img class="avatar__upload-image" src="{{ $user->avatarUrl() }}" alt="" width="90" height="90">
-                                    <input type="file" id="image" name="avatar" accept="image/jpeg,image/png,image/gif" aria-label="Upload avatar">
+                                    <input type="file" id="image" name="avatar" accept="image/jpeg,image/png,image/gif" aria-label="Profil fotoğrafı yükle">
                                 </div>
                                 <div class="avatar-upload-field__content">
-                                    <div class="avatar-upload-field__title">Upload avatar</div>
-                                    <p class="avatar-upload-field__description">JPG, PNG or GIF. Maximum size: 2 MB.</p>
+                                    <div class="avatar-upload-field__title">Profil fotoğrafı yükle</div>
+                                    <p class="avatar-upload-field__description">JPG, PNG veya GIF. En fazla 2 MB.</p>
                                     <div class="checkbox setting__avatar-upload">
                                         <label class="form-check-label">
                                             <input class="form-check-input" type="checkbox" name="delete_avatar" value="1">
-                                            <span>Delete avatar</span>
+                                            <span>Profil fotoğrafını sil</span>
                                         </label>
                                     </div>
                                 </div>
                             </section>
 
                             <section>
-                                <h2 class="h5">Information</h2>
+                                <h2 class="h5">Bilgiler</h2>
                                 <dl class="setting__list">
-                                    <div class="setting__list-item"><dt class="setting__list-label">ID:</dt><dd class="setting__list-value">{{ $user->id }}</dd></div>
-                                    <div class="setting__list-item"><dt class="setting__list-label">Registration date:</dt><dd class="setting__list-value">{{ $user->created_at->format('F j, Y') }}</dd></div>
-                                    <div class="setting__list-item"><dt class="setting__list-label">Group:</dt><dd class="setting__list-value">{{ $user->is_admin ? 'Administrators' : 'Members' }}</dd></div>
-                                    <div class="setting__list-item"><dt class="setting__list-label">Username:</dt><dd class="setting__list-value">{{ $user->username }}</dd></div>
+                                    <div class="setting__list-item"><dt class="setting__list-label">Üye numarası:</dt><dd class="setting__list-value">{{ $user->id }}</dd></div>
+                                    <div class="setting__list-item"><dt class="setting__list-label">Kayıt tarihi:</dt><dd class="setting__list-value">{{ $user->created_at->format('d.m.Y') }}</dd></div>
+                                    <div class="setting__list-item"><dt class="setting__list-label">Grup:</dt><dd class="setting__list-value">{{ $user->is_admin ? 'Yöneticiler' : 'Üyeler' }}</dd></div>
+                                    <div class="setting__list-item"><dt class="setting__list-label">Kullanıcı adı:</dt><dd class="setting__list-value">{{ $user->username }}</dd></div>
                                 </dl>
                             </section>
 
                             <section class="setting__list">
-                                <h2 class="h5">Main</h2>
+                                <h2 class="h5">Temel bilgiler</h2>
                                 <label class="setting__list-item setting__list-item--center">
-                                    <span class="setting__list-label">Username:</span>
+                                    <span class="setting__list-label">Kullanıcı adı:</span>
                                     <span class="setting__list-value"><input type="text" name="username" value="{{ old('username', $user->username) }}" maxlength="30" required></span>
                                 </label>
                                 <label class="setting__list-item setting__list-item--center">
-                                    <span class="setting__list-label">Full name:</span>
+                                    <span class="setting__list-label">Ad soyad:</span>
                                     <span class="setting__list-value"><input type="text" name="full_name" value="{{ old('full_name', $user->full_name ?: $user->displayName()) }}" maxlength="255" required></span>
                                 </label>
                                 <label class="setting__list-item">
-                                    <span class="setting__list-label">Signature:</span>
+                                    <span class="setting__list-label">İmza:</span>
                                     <span class="setting__list-value"><textarea name="signature" rows="3" maxlength="500">{{ old('signature', $user->signature) }}</textarea></span>
                                 </label>
                                 <label class="setting__list-item">
-                                    <span class="setting__list-label">About:</span>
+                                    <span class="setting__list-label">Hakkımda:</span>
                                     <span class="setting__list-value"><textarea name="bio" maxlength="2000" rows="5">{{ old('bio', $user->bio) }}</textarea></span>
                                 </label>
                             </section>
 
                             <section class="setting__list">
-                                <h2 class="h5">Links</h2>
-                                <label class="setting__list-item setting__list-item--center"><span class="setting__list-label">Website:</span><span class="setting__list-value"><input type="url" name="website" value="{{ old('website', $user->website) }}" placeholder="https://example.com"></span></label>
-                                <label class="setting__list-item setting__list-item--center"><span class="setting__list-label">Instagram:</span><span class="setting__list-value"><input type="text" name="instagram" value="{{ old('instagram', $user->instagram) }}" placeholder="Username"></span></label>
-                                <label class="setting__list-item setting__list-item--center"><span class="setting__list-label">Telegram:</span><span class="setting__list-value"><input type="text" name="telegram" value="{{ old('telegram', $user->telegram) }}" placeholder="Username"></span></label>
-                                <label class="setting__list-item setting__list-item--center"><span class="setting__list-label">Threads:</span><span class="setting__list-value"><input type="text" name="threads" value="{{ old('threads', $user->threads) }}" placeholder="Username"></span></label>
-                                <label class="setting__list-item setting__list-item--center"><span class="setting__list-label">YouTube:</span><span class="setting__list-value"><input type="text" name="youtube" value="{{ old('youtube', $user->youtube) }}" placeholder="Username"></span></label>
-                                <p class="setting__list-item"><span></span><span class="small color-gray">Enter only the username in social link fields.</span></p>
+                                <h2 class="h5">Bağlantılar</h2>
+                                <label class="setting__list-item setting__list-item--center"><span class="setting__list-label">Web sitesi:</span><span class="setting__list-value"><input type="url" name="website" value="{{ old('website', $user->website) }}" placeholder="https://example.com"></span></label>
+                                <label class="setting__list-item setting__list-item--center"><span class="setting__list-label">Instagram:</span><span class="setting__list-value"><input type="text" name="instagram" value="{{ old('instagram', $user->instagram) }}" placeholder="Kullanıcı adı"></span></label>
+                                <label class="setting__list-item setting__list-item--center"><span class="setting__list-label">Telegram:</span><span class="setting__list-value"><input type="text" name="telegram" value="{{ old('telegram', $user->telegram) }}" placeholder="Kullanıcı adı"></span></label>
+                                <label class="setting__list-item setting__list-item--center"><span class="setting__list-label">Threads:</span><span class="setting__list-value"><input type="text" name="threads" value="{{ old('threads', $user->threads) }}" placeholder="Kullanıcı adı"></span></label>
+                                <label class="setting__list-item setting__list-item--center"><span class="setting__list-label">YouTube:</span><span class="setting__list-value"><input type="text" name="youtube" value="{{ old('youtube', $user->youtube) }}" placeholder="Kullanıcı adı"></span></label>
+                                <p class="setting__list-item"><span></span><span class="small color-gray">Sosyal medya alanlarına yalnızca kullanıcı adınızı yazın.</span></p>
                             </section>
-                            <div class="setting__submit"><button class="btn btn-primary" type="submit">Save</button></div>
+                            <div class="setting__submit"><button class="btn btn-primary" type="submit">Kaydet</button></div>
                         </form>
                     </section>
 
@@ -101,13 +101,13 @@
                         tabindex="0"
                         @if ($activeTab !== 'site') hidden @endif
                     >
-                        <h1 class="h3">System</h1>
+                        <h1 class="h3">Tercihler</h1>
                         <form class="setting__box setting__list" action="{{ route('settings.preferences.update') }}" method="POST">
                             @csrf
                             @method('PATCH')
                             <input type="hidden" name="activeTab" value="site">
                             <label class="setting__list-item setting__list-item--center">
-                                <span class="setting__list-label">Time zone</span>
+                                <span class="setting__list-label">Saat dilimi</span>
                                 <span class="setting__list-value">
                                     <select class="form-select" name="timezone">
                                         @foreach ($timezones as $timezone)
@@ -116,11 +116,11 @@
                                     </select>
                                 </span>
                             </label>
-                            <label class="form-check-label"><input class="form-check-input" type="checkbox" name="notify_posts" value="1" @checked(old('notify_posts', $user->notify_posts))> <span>Email me about new posts</span></label>
-                            <label class="form-check-label"><input class="form-check-input" type="checkbox" name="notify_replies" value="1" @checked(old('notify_replies', $user->notify_replies))> <span>Notify me about replies</span></label>
-                            <label class="form-check-label"><input class="form-check-input" type="checkbox" name="notify_announcements" value="1" @checked(old('notify_announcements', $user->notify_announcements))> <span>Receive site announcements</span></label>
-                            <label class="form-check-label"><input class="form-check-input" type="checkbox" name="show_adult_content" value="1" @checked(old('show_adult_content', $user->show_adult_content))> <span>Show 18+ content</span></label>
-                            <div><button class="btn btn-primary" type="submit">Save</button></div>
+                            <label class="form-check-label"><input class="form-check-input" type="checkbox" name="notify_posts" value="1" @checked(old('notify_posts', $user->notify_posts))> <span>Yeni yazılar hakkında e-posta gönder</span></label>
+                            <label class="form-check-label"><input class="form-check-input" type="checkbox" name="notify_replies" value="1" @checked(old('notify_replies', $user->notify_replies))> <span>Yanıtlar hakkında bildirim gönder</span></label>
+                            <label class="form-check-label"><input class="form-check-input" type="checkbox" name="notify_announcements" value="1" @checked(old('notify_announcements', $user->notify_announcements))> <span>Site duyurularını gönder</span></label>
+                            <label class="form-check-label"><input class="form-check-input" type="checkbox" name="show_adult_content" value="1" @checked(old('show_adult_content', $user->show_adult_content))> <span>18+ içerikleri göster</span></label>
+                            <div><button class="btn btn-primary" type="submit">Kaydet</button></div>
                         </form>
                     </section>
 
@@ -133,26 +133,26 @@
                         tabindex="0"
                         @if ($activeTab !== 'security') hidden @endif
                     >
-                        <h1 class="h3">Security</h1>
+                        <h1 class="h3">Güvenlik</h1>
                         <div class="setting__box setting__list">
                             <form class="setting__list" action="{{ route('settings.password.update') }}" method="POST">
                                 @csrf
                                 @method('PATCH')
                                 <input type="hidden" name="activeTab" value="security">
-                                <h2 class="h5">Change password</h2>
-                                <input type="password" name="current_password" placeholder="Current password" autocomplete="current-password" required>
-                                <input type="password" name="password" placeholder="New password" autocomplete="new-password" minlength="12" required>
-                                <input type="password" name="password_confirmation" placeholder="Repeat new password" autocomplete="new-password" required>
-                                <div><button class="btn btn-primary" type="submit">Update password</button></div>
+                                <h2 class="h5">Şifreyi değiştir</h2>
+                                <input type="password" name="current_password" placeholder="Mevcut şifre" autocomplete="current-password" required>
+                                <input type="password" name="password" placeholder="Yeni şifre" autocomplete="new-password" minlength="12" required>
+                                <input type="password" name="password_confirmation" placeholder="Yeni şifreyi tekrar girin" autocomplete="new-password" required>
+                                <div><button class="btn btn-primary" type="submit">Şifreyi güncelle</button></div>
                             </form>
                             <form class="setting__list" action="{{ route('settings.email.update') }}" method="POST">
                                 @csrf
                                 @method('PATCH')
                                 <input type="hidden" name="activeTab" value="security">
-                                <h2 class="h5">Email</h2>
+                                <h2 class="h5">E-posta</h2>
                                 <input type="email" name="email" value="{{ $user->email }}" autocomplete="email" required>
-                                <input type="password" name="current_password" placeholder="Confirm your password" autocomplete="current-password" required>
-                                <div><button class="btn btn-primary" type="submit">Update email</button></div>
+                                <input type="password" name="current_password" placeholder="Şifrenizi doğrulayın" autocomplete="current-password" required>
+                                <div><button class="btn btn-primary" type="submit">E-postayı güncelle</button></div>
                             </form>
                         </div>
                     </section>
@@ -166,7 +166,7 @@
                         tabindex="0"
                         @if ($activeTab !== 'blacklist') hidden @endif
                     >
-                        <h1 class="h3">Blacklist</h1>
+                        <h1 class="h3">Engellenen kullanıcılar</h1>
                         <div class="setting__box">
                             <div class="setting__ignorlist">
                                 @forelse ($blockedUsers as $blockedUser)
@@ -180,11 +180,11 @@
                                             @csrf
                                             @method('DELETE')
                                             <input type="hidden" name="activeTab" value="blacklist">
-                                            <button class="btn btn-red-ghost btn-circle btn-sm" type="submit" aria-label="Remove from blacklist"><x-repost-icon name="close" size="14" /></button>
+                                            <button class="btn btn-red-ghost btn-circle btn-sm" type="submit" aria-label="Engeli kaldır"><x-repost-icon name="close" size="14" /></button>
                                         </form>
                                     </span>
                                 @empty
-                                    <p class="color-gray">Your blacklist is empty.</p>
+                                    <p class="color-gray">Engellediğiniz kullanıcı yok.</p>
                                 @endforelse
                             </div>
                         </div>
@@ -199,32 +199,32 @@
                         tabindex="0"
                         @if ($activeTab !== 'verify') hidden @endif
                     >
-                        <h1 class="h3">Verification</h1>
+                        <h1 class="h3">Mavi tik doğrulaması</h1>
                         <div class="setting__box">
                             <section class="setting__list">
                                 @if ($user->hasVerifiedBadge())
-                                    <p>Your account has been successfully verified.</p>
-                                    <span class="verify" role="img" aria-label="Verified account"><x-repost-icon name="verify" size="18" /></span>
+                                    <p>Hesabınız başarıyla doğrulandı.</p>
+                                    <span class="verify" role="img" aria-label="Doğrulanmış hesap"><x-repost-icon name="verify" size="18" /></span>
                                 @elseif ($user->verification_status === 'pending')
-                                    <p>Your verification request is under review.</p>
-                                    <p class="small color-gray">Submitted {{ $user->verification_requested_at?->diffForHumans() }}.</p>
+                                    <p>Doğrulama başvurunuz inceleniyor.</p>
+                                    <p class="small color-gray">Başvuru {{ $user->verification_requested_at?->diffForHumans() }} gönderildi.</p>
                                     <form action="{{ route('settings.verification.cancel') }}" method="POST">
                                         @csrf
                                         @method('DELETE')
                                         <input type="hidden" name="activeTab" value="verify">
-                                        <button class="btn btn-secondary" type="submit">Cancel request</button>
+                                        <button class="btn btn-secondary" type="submit">Başvuruyu iptal et</button>
                                     </form>
                                 @else
                                     @if ($user->verification_status === 'rejected')
-                                        <p>Your previous request was not approved. You can submit a new request.</p>
+                                        <p>Önceki başvurunuz onaylanmadı. Yeni bir başvuru gönderebilirsiniz.</p>
                                     @endif
-                                    <p>Request the blue verification badge. Explain how your account can be independently verified. An administrator reviews each request.</p>
+                                    <p>Mavi tik doğrulaması için başvurun. Hesabınızın bağımsız olarak nasıl doğrulanabileceğini açıklayın. Her başvuru bir yönetici tarafından incelenir.</p>
                                     <form class="setting__list" action="{{ route('settings.verification.request') }}" method="POST">
                                         @csrf
                                         <input type="hidden" name="activeTab" value="verify">
-                                        <label for="verification_reason">Verification details</label>
+                                        <label for="verification_reason">Doğrulama bilgileri</label>
                                         <textarea id="verification_reason" name="verification_reason" rows="5" minlength="20" maxlength="2000" required>{{ old('verification_reason', $user->verification_status === 'rejected' ? $user->verification_reason : '') }}</textarea>
-                                        <button class="btn btn-primary" type="submit">Request verification</button>
+                                        <button class="btn btn-primary" type="submit">Doğrulama başvurusu gönder</button>
                                     </form>
                                 @endif
                             </section>
@@ -240,14 +240,14 @@
                         tabindex="0"
                         @if ($activeTab !== 'delete') hidden @endif
                     >
-                        <h1 class="h3">Delete account</h1>
+                        <h1 class="h3">Hesabı sil</h1>
                         <form class="setting__box setting__list" action="{{ route('settings.account.destroy') }}" method="POST">
                             @csrf
                             @method('DELETE')
                             <input type="hidden" name="activeTab" value="delete">
-                            <p>This permanently deletes your account and its comments. This action cannot be undone.</p>
-                            <input type="password" name="current_password" placeholder="Confirm your password" autocomplete="current-password" required>
-                            <div><button class="btn btn-red" type="submit">Delete account</button></div>
+                            <p>Hesabınız ve yorumlarınız kalıcı olarak silinir. Bu işlem geri alınamaz.</p>
+                            <input type="password" name="current_password" placeholder="Şifrenizi doğrulayın" autocomplete="current-password" required>
+                            <div><button class="btn btn-red" type="submit">Hesabı sil</button></div>
                         </form>
                     </section>
                 </div>
@@ -258,7 +258,7 @@
             <div class="widgets">
                 <section class="widget card card-body setting__menu">
                     <div class="widget__content widget__content--bleed">
-                        <ul class="menu" aria-label="Settings sections" data-tabs-nav="settings">
+                        <ul class="menu" aria-label="Ayar bölümleri" data-tabs-nav="settings">
                             <li class="menu__profile-item">
                                 @if (filled($user->username))
                                     <a href="{{ route('profiles.show', $user) }}" class="menu__profile user-box">
@@ -271,7 +271,7 @@
                                             {{ $user->displayName() }}
                                             @if ($user->hasVerifiedBadge())<span class="verify"><x-repost-icon name="verify" size="14" /></span>@endif
                                         </span>
-                                        <span class="meta">{{ filled($user->username) ? 'Back to profile' : 'Set a username in Profile settings' }}</span>
+                                        <span class="meta">{{ filled($user->username) ? 'Profile geri dön' : 'Profil ayarlarından kullanıcı adı belirleyin' }}</span>
                                     </span>
                                 @if (filled($user->username))
                                     </a>
@@ -281,12 +281,12 @@
                             </li>
                             <li class="menu__divider" aria-hidden="true"></li>
                             @foreach ([
-                                'profile' => ['Profile', 'user'],
-                                'site' => ['System', 'compass'],
-                                'security' => ['Security', 'security'],
-                                'blacklist' => ['Blacklist', 'list'],
-                                'verify' => ['Verification', 'comment'],
-                                'delete' => ['Delete account', 'trash'],
+                                'profile' => ['Profil', 'user'],
+                                'site' => ['Tercihler', 'compass'],
+                                'security' => ['Güvenlik', 'security'],
+                                'blacklist' => ['Engellenenler', 'list'],
+                                'verify' => ['Mavi tik doğrulaması', 'comment'],
+                                'delete' => ['Hesabı sil', 'trash'],
                             ] as $tab => [$label, $icon])
                                 <li class="menu__item {{ $tab === 'delete' ? 'menu__item--danger' : '' }}">
                                     <button

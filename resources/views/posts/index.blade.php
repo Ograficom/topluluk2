@@ -21,13 +21,21 @@
                 <div class="dropdown dropdown-sm">
                     <button class="hero__toggle" type="button" data-dropdown-toggle aria-expanded="false">
                         <x-repost-icon name="calendar" size="16" />
-                        <span class="hero__toggle-text">Tüm zamanlar</span>
+                        <span class="hero__toggle-text">
+                            {{ match ($period) {
+                                'day' => 'Son 24 saat',
+                                'week' => 'Bu hafta',
+                                'month' => 'Bu ay',
+                                default => 'Tüm zamanlar',
+                            } }}
+                        </span>
                         <x-repost-icon name="chevron-down" size="12" />
                     </button>
                     <ul class="dropdown-menu">
-                        <li class="dropdown-menu-item dropdown-menu-item-sm"><a href="{{ route('posts.index', ['period' => 'day']) }}">Son 24 saat</a></li>
-                        <li class="dropdown-menu-item dropdown-menu-item-sm"><a href="{{ route('posts.index', ['period' => 'week']) }}">Bu hafta</a></li>
-                        <li class="dropdown-menu-item dropdown-menu-item-sm"><a href="{{ route('posts.index', ['period' => 'month']) }}">Bu ay</a></li>
+                        <li @class(['dropdown-menu-item', 'dropdown-menu-item-sm', 'is-active' => blank($period)])><a href="{{ route('posts.index') }}">Tüm zamanlar</a></li>
+                        <li @class(['dropdown-menu-item', 'dropdown-menu-item-sm', 'is-active' => $period === 'day'])><a href="{{ route('posts.index', ['period' => 'day']) }}">Son 24 saat</a></li>
+                        <li @class(['dropdown-menu-item', 'dropdown-menu-item-sm', 'is-active' => $period === 'week'])><a href="{{ route('posts.index', ['period' => 'week']) }}">Bu hafta</a></li>
+                        <li @class(['dropdown-menu-item', 'dropdown-menu-item-sm', 'is-active' => $period === 'month'])><a href="{{ route('posts.index', ['period' => 'month']) }}">Bu ay</a></li>
                     </ul>
                 </div>
             </div>
@@ -36,16 +44,16 @@
                     <x-repost-icon name="sort" size="17" />
                 </button>
                 <ul class="dropdown-menu dropdown-menu-end">
-                    <li class="dropdown-menu-item dropdown-menu-item-sm"><a href="{{ route('posts.index', ['sort' => 'latest']) }}">En yeni</a></li>
-                    <li class="dropdown-menu-item dropdown-menu-item-sm"><a href="{{ route('posts.index', ['sort' => 'popular']) }}">Popüler</a></li>
-                    <li class="dropdown-menu-item dropdown-menu-item-sm"><a href="{{ route('posts.index', ['sort' => 'views']) }}">Görüntülenme</a></li>
+                    <li @class(['dropdown-menu-item', 'dropdown-menu-item-sm', 'is-active' => $sort === 'latest'])><a href="{{ route('posts.index', ['sort' => 'latest']) }}">En yeni</a></li>
+                    <li @class(['dropdown-menu-item', 'dropdown-menu-item-sm', 'is-active' => $sort === 'popular'])><a href="{{ route('posts.index', ['sort' => 'popular']) }}">Popüler</a></li>
+                    <li @class(['dropdown-menu-item', 'dropdown-menu-item-sm', 'is-active' => $sort === 'views'])><a href="{{ route('posts.index', ['sort' => 'views']) }}">Görüntülenme</a></li>
                 </ul>
             </div>
         </div>
     </section>
-    <div class="hero__digest card card-body">
-        @forelse ($posts->take(4) as $digestPost)
-            <div class="digest">
+    <div class="hero__digest card card-body" data-loadpost="last" data-loadpost-limit="5">
+        @forelse ($posts as $digestPost)
+            <div class="digest d-none" data-loadpost-item="last">
                 <a class="digest__title" href="{{ route('posts.show', $digestPost) }}">{{ $digestPost->title }}</a>
                 <span class="digest__comm">
                     <span class="digest__comm-icon"><x-repost-icon name="comment" size="12" /></span>
@@ -55,6 +63,13 @@
         @empty
             <div class="digest"><span class="color-gray">Henüz öne çıkan yazı yok.</span></div>
         @endforelse
+        @if ($posts->count() > 5)
+            <div>
+                <button class="hero__digest-more link-accent" type="button" data-loadpost-more="last">
+                    Daha fazla göster <x-repost-icon name="chevron-down" size="12" />
+                </button>
+            </div>
+        @endif
     </div>
     <div class="hero__header-main">
         <div>
@@ -96,7 +111,9 @@
                 </header>
                 <div class="post__short">
                     <h2 class="post__short-title h3">
-                        <a href="{{ route('posts.show', $post) }}" class="color-title">{{ $post->title }}</a>
+                        <a href="{{ route('posts.show', $post) }}" class="color-title">
+                            <span class="post__short-title-text">{{ $post->title }}</span>
+                        </a>
                     </h2>
                     <p class="text-clamp-3 color-text">{{ $post->excerpt }}</p>
                     @if (filled($post->tags))
@@ -126,10 +143,12 @@
 
             <footer class="post__footer card-body">
                 <div class="post__footer-stats small color-gray">
-                    <span>{{ number_format($post->views) }} görüntülenme</span>
                     <span>{{ number_format($post->likes_count) }} beğeni</span>
+                    <span>{{ number_format($post->views) }} görüntülenme</span>
                 </div>
-                <a class="small color-gray" href="{{ route('posts.show', $post) }}">Yazıyı oku</a>
+                @if ($post->user?->publicUsername())
+                    <span class="small color-gray">{{ '@'.$post->user->publicUsername() }}</span>
+                @endif
             </footer>
             @include('posts._interactions', ['post' => $post])
         </article>
@@ -142,5 +161,5 @@
         </section>
     @endforelse
 
-    {{ $posts->links() }}
+    @include('layouts._pagination', ['paginator' => $posts])
 @endsection

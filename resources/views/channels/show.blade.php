@@ -24,8 +24,10 @@
         </section>
     </div>
 
-    @forelse ($posts as $post)
-        <article class="card post">
+    <div class="channel-page__content">
+        <div class="channel__posts">
+        @forelse ($posts as $post)
+            <article class="card post">
             <section class="card-body">
                 <header class="post__header">
                     <div class="user-box">
@@ -44,7 +46,7 @@
                     </div>
                 </header>
                 <div class="post__short">
-                    <h2 class="post__short-title h3"><a href="{{ route('posts.show', $post) }}" class="color-title">{{ $post->title }}</a></h2>
+                    <h2 class="post__short-title h3"><a href="{{ route('posts.show', $post) }}" class="color-title"><span class="post__short-title-text">{{ $post->title }}</span></a></h2>
                     <p class="text-clamp-3 color-text">{{ $post->excerpt }}</p>
                 </div>
             </section>
@@ -58,16 +60,20 @@
                 </section>
             @endif
             <footer class="post__footer card-body">
-                <div class="post__footer-stats small color-gray"><span>{{ number_format($post->views) }} görüntülenme</span><span>{{ number_format($post->likes_count) }} beğeni</span></div>
-                <a class="small color-gray" href="{{ route('posts.show', $post) }}">Yazıyı oku</a>
+                <div class="post__footer-stats small color-gray"><span>{{ number_format($post->likes_count) }} beğeni</span><span>{{ number_format($post->views) }} görüntülenme</span></div>
+                @if ($post->user?->publicUsername())
+                    <span class="small color-gray">{{ '@'.$post->user->publicUsername() }}</span>
+                @endif
             </footer>
             @include('posts._interactions', ['post' => $post])
-        </article>
-    @empty
-        <section class="card card-body empty-state">
-            <h2 class="h4">Bu kanalda henüz yazı yok</h2>
-            <p class="color-gray">İlk yazılar yayınlandığında burada görünecek.</p>
-        </section>
-    @endforelse
-    {{ $posts->links() }}
+            </article>
+        @empty
+            <section class="card card-body empty-state">
+                <h2 class="h4">Bu kanalda henüz yazı yok</h2>
+                <p class="color-gray">İlk yazılar yayınlandığında burada görünecek.</p>
+            </section>
+        @endforelse
+        @include('layouts._pagination', ['paginator' => $posts])
+        </div>
+    </div>
 @endsection

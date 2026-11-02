@@ -127,9 +127,12 @@ class SettingsTest extends TestCase
             ->assertSee('data-tab-panel="security"', false)
             ->assertSee('data-tab-panel="blacklist"', false)
             ->assertSee('data-tab-panel="verify"', false)
-            ->assertSee('<button class="btn btn-red" type="submit">Delete account</button>', false)
+            ->assertSee('<button class="btn btn-red" type="submit">Hesabı sil</button>', false)
+            ->assertSee('Mavi tik doğrulaması')
             ->assertSee('sprite.svg#trash', false)
-            ->assertSee('Request verification');
+            ->assertSee('Doğrulama başvurusu gönder')
+            ->assertSee('Kullanıcı adı:')
+            ->assertDontSee('Update password');
     }
 
     public function test_settings_page_handles_accounts_without_a_username(): void
@@ -139,7 +142,7 @@ class SettingsTest extends TestCase
         $this->actingAs($user)
             ->get('/setting.html')
             ->assertOk()
-            ->assertSee('Set a username in Profile settings');
+            ->assertSee('Profil ayarlarından kullanıcı adı belirleyin');
     }
 
     public function test_migration_backfills_usernames_for_existing_accounts(): void

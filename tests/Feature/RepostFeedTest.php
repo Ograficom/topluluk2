@@ -6,6 +6,7 @@ use App\Filament\Pages\SiteBranding;
 use App\Models\Channel;
 use App\Models\Comment;
 use App\Models\Post;
+use App\Models\PostReaction;
 use App\Models\SiteSetting;
 use App\Models\User;
 use App\Support\SvgSanitizer;
@@ -45,6 +46,65 @@ class RepostFeedTest extends TestCase
             ->assertOk()
             ->assertSee($published->title)
             ->assertDontSee('Taslak yazı');
+    }
+
+    public function test_feed_uses_the_template_digest_show_more_and_active_filters(): void
+    {
+        $channel = Channel::create([
+            'name' => 'Akış şablonu',
+            'slug' => 'akis-sablonu',
+            'is_active' => true,
+        ]);
+
+        $posts = [];
+        foreach (range(1, 11) as $number) {
+            $posts[] = $this->createPost($channel, [
+                'title' => "Şablon yazısı {$number}",
+                'slug' => "sablon-yazisi-{$number}",
+            ]);
+        }
+
+        foreach (['like', 'like', 'dislike'] as $reaction) {
+            PostReaction::create([
+                'post_id' => $posts[0]->id,
+                'user_id' => User::factory()->create()->id,
+                'type' => $reaction,
+            ]);
+        }
+
+        $filteredFeed = $this->get(route('posts.index', ['sort' => 'popular', 'period' => 'week']))
+            ->assertOk()
+            ->assertSee('<aside class="main__widgets"', false)
+            ->assertDontSee('<aside class="profile__aside"', false)
+            ->assertSee('data-loadpost="last"', false)
+            ->assertSee('data-loadpost-limit="5"', false)
+            ->assertSee('data-loadpost-more="last"', false)
+            ->assertSee('data-loadpost-item="last"', false)
+            ->assertSee('class="post__short-title-text"', false)
+            ->assertSee('class="post__footer-stats small color-gray"', false)
+            ->assertSee('class="post__options card-body"', false)
+            ->assertSee('<span class="post__options-count">+1</span>', false)
+            ->assertSee('<nav class="navigation"', false)
+            ->assertSee('Daha fazla göster')
+            ->assertSee('page=2', false)
+            ->assertSee('Bu hafta')
+            ->assertSee('is-active', false);
+
+        $this->assertStringContainsString(
+            '<li class="dropdown-menu-item dropdown-menu-item-sm is-active"><a href="'.route('posts.index', ['period' => 'week']).'">Bu hafta</a></li>',
+            $filteredFeed->getContent(),
+        );
+
+        $this->get(route('posts.index', ['sort' => 'latest', 'q' => 'Şablon yazısı 1']))
+            ->assertOk()
+            ->assertSee('>Tüm zamanlar</a>', false)
+            ->assertDontSee('data-loadpost-more="last"', false);
+
+        $this->get(route('posts.index', ['sort' => 'popular', 'period' => 'week', 'page' => 2]))
+            ->assertOk()
+            ->assertSee('Önceki')
+            ->assertSee('rel="prev"', false)
+            ->assertDontSee('rel="next"', false);
     }
 
     public function test_homepage_shows_popular_comments_and_admin_category_shortcut(): void
@@ -267,7 +327,7 @@ class RepostFeedTest extends TestCase
                 '<p>Yazının ikinci paragrafı.</p>',
                 'class="post__tags post__tags-full"',
                 'class="post__footer post__footer-full"',
-                'class="post__options"',
+                'class="post__options card-body"',
                 'aria-label="Favorilere ekle"',
                 'id="comments"',
             ], false)
@@ -522,6 +582,8 @@ class RepostFeedTest extends TestCase
             ->assertOk()
             ->assertSee('profile__aside', false)
             ->assertSee('profile-panel-posts', false)
+            ->assertSee('class="post__short-title-text"', false)
+            ->assertSee('class="post__options card-body"', false)
             ->assertSee('Profil açıklama metni.')
             ->assertSee('Profil yazısı')
             ->assertSee(route('profiles.show', $user), false);
@@ -544,6 +606,9 @@ class RepostFeedTest extends TestCase
             ->get('/posts/create')
             ->assertOk()
             ->assertSee('action="'.route('posts.store').'"', false)
+            ->assertSee('class="main main__grid-full"', false)
+            ->assertSee('class="addpost main__grid-feed"', false)
+            ->assertDontSee('Popüler yazarlar')
             ->assertSee('name="title"', false)
             ->assertSee('name="body"', false);
 
@@ -670,10 +735,13 @@ class RepostFeedTest extends TestCase
         $this->get('/channels')
             ->assertOk()
             ->assertSee('Tasarım')
+            ->assertDontSee('<article class="feed">', false)
             ->assertDontSee('Gizli kanal');
 
         $this->get('/channels/tasarim')
             ->assertOk()
+            ->assertSee('channel-page__content', false)
+            ->assertSee('channel__posts', false)
             ->assertSee($published->title)
             ->assertDontSee('Taslak yazı');
 
@@ -703,7 +771,8 @@ class RepostFeedTest extends TestCase
                 'logo.svg',
                 '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 30"><path id="wordmark" d="M0 0h100v30H0z" fill="#106CFF"/><use href="#wordmark"/></svg>',
             )->mimeType('image/svg+xml'),
-        ])->assertRedirect();
+        ])->assertRedirect(route('filament.admin.pages.site-branding'))
+            ->assertSessionHas('status', 'Logo başarıyla güncellendi.');
 
         $settings = SiteSetting::current();
 
@@ -711,6 +780,11 @@ class RepostFeedTest extends TestCase
         $this->assertNotEmpty($settings->brand_logo_path);
         Storage::disk('public')->assertExists($settings->brand_logo_path);
         $this->assertStringContainsString('<use href="#wordmark"', Storage::disk('public')->get($settings->brand_logo_path));
+
+        $this->get(route('filament.admin.pages.site-branding'))
+            ->assertOk()
+            ->assertSee($settings->brandLogoUrl())
+            ->assertSee('Logo başarıyla güncellendi.');
 
         $this->get('/')
             ->assertOk()
@@ -728,7 +802,10 @@ class RepostFeedTest extends TestCase
 
         Livewire::test(SiteBranding::class)
             ->assertSee('Sekme simgesi')
-            ->assertSee('Site logosu');
+            ->assertSee('Site logosu')
+            ->assertSee('Logoyu düzenle')
+            ->assertSee('brand-logo-upload-modal')
+            ->assertSee('Yeni logo dosyası');
 
         $this->post(route('admin.site-branding.favicon.update'), [
             'favicon' => UploadedFile::fake()->image('favicon.png', 64, 64),

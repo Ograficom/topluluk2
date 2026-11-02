@@ -105,6 +105,8 @@ class SiteBrandingController extends Controller
             $disk->delete($previousAsset);
         }
 
-        return back()->with('status', $message);
+        return redirect()
+            ->route('filament.admin.pages.site-branding')
+            ->with('status', $message);
     }
 }

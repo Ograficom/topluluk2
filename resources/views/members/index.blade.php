@@ -32,6 +32,6 @@
         <div class="card-footer">
             <div class="allert">Sayfada en çok yazı yayımlayan 50 üye gösterilir.</div>
         </div>
-        {{ $members->links() }}
+        @include('layouts._pagination', ['paginator' => $members])
     </article>
 @endsection

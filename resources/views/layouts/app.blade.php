@@ -133,9 +133,11 @@
 
     @php($settingsPage = request()->routeIs('settings.edit', 'settings.legacy'))
     @php($profilePage = request()->routeIs('profiles.show'))
+    @php($postCreatePage = request()->routeIs('posts.create'))
+    @php($feedPage = request()->routeIs('posts.index'))
     @php($statsPage = request()->routeIs('stats.index'))
     <main class="container">
-        <div class="main {{ $settingsPage || $profilePage ? 'main__grid-full' : 'main__grid' }}">
+        <div class="main {{ $settingsPage || $profilePage || $postCreatePage ? 'main__grid-full' : 'main__grid' }}">
             <aside class="sidebar" aria-label="Kanallar ve yazarlar">
                 <div class="sidebar__body">
                     <section class="sidebar__section">
@@ -177,7 +179,7 @@
 
             @if ($settingsPage)
                 @yield('content')
-            @elseif ($profilePage)
+            @elseif ($profilePage || $postCreatePage)
                 <section class="feed">
                     @if (session('status'))
                         <div class="alert alert-success" role="status">{{ session('status') }}</div>
@@ -200,8 +202,9 @@
                     </section>
                 @endif
 
-                <aside class="{{ $statsPage ? 'main__widgets' : 'profile__aside' }}" aria-label="Popüler içerikler">
-                @unless ($statsPage)
+                @unless ($profilePage || $postCreatePage)
+                <aside class="{{ $statsPage || $feedPage ? 'main__widgets' : 'profile__aside' }}" aria-label="Popüler içerikler">
+                @unless ($statsPage || $feedPage)
                     <div class="side-panel__body">
                 @endunless
                     <div class="widgets">
@@ -310,11 +313,12 @@
                             </div>
                         </section>
                     </div>
-                @unless ($statsPage)
+                @unless ($statsPage || $feedPage)
                     </div>
                 @endunless
                 @include('layouts._footer')
                 </aside>
+                @endunless
             @endif
         </div>
     </main>
