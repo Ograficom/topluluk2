@@ -81,17 +81,14 @@
                                     </span>
                                 </a>
                             </li>
-                            <li class="dropdown-menu-item dropdown-menu-item-lg is-disabled">
-                                <button type="button" aria-disabled="true" title="Mesajlar henüz etkin değil">
-                                    <x-repost-icon name="message" size="22" class="color-gray" />
-                                    <span>Mesajlar</span>
-                                </button>
+                            <li class="dropdown-menu-item dropdown-menu-item-lg">
+                                <a href="{{ route('messenger.index') }}"><x-repost-icon name="message" size="22" class="color-gray" /><span>Mesajlar</span></a>
                             </li>
-                            <li class="dropdown-menu-item dropdown-menu-item-lg is-disabled">
-                                <button type="button" aria-disabled="true" title="Favoriler henüz etkin değil">
-                                    <x-repost-icon name="bookmark" size="22" class="color-gray" />
-                                    <span>Favoriler</span>
-                                </button>
+                            <li class="dropdown-menu-item dropdown-menu-item-lg">
+                                <a href="{{ route('favorites.index') }}"><x-repost-icon name="bookmark" size="22" class="color-gray" /><span>Favoriler</span></a>
+                            </li>
+                            <li class="dropdown-menu-item dropdown-menu-item-lg">
+                                <a href="{{ route('community.following') }}"><x-repost-icon name="user" size="20" class="color-gray" /><span>Takip akışı</span></a>
                             </li>
                             <li class="dropdown-menu-item dropdown-menu-item-lg">
                                 <a href="{{ route('settings.edit') }}"><x-repost-icon name="setting" size="20" class="color-gray" /><span>Ayarlar</span></a>
@@ -332,6 +329,9 @@
                 <x-repost-icon name="channels" size="20" /><span>Kanallar</span>
             </a>
             @auth
+                <a class="mobmenu__link {{ request()->routeIs('community.following') ? 'is-active' : '' }}" href="{{ route('community.following') }}"><x-repost-icon name="user" size="20" /><span>Takip</span></a>
+                <a class="mobmenu__link {{ request()->routeIs('favorites.index') ? 'is-active' : '' }}" href="{{ route('favorites.index') }}"><x-repost-icon name="bookmark" size="20" /><span>Favoriler</span></a>
+                <a class="mobmenu__link {{ request()->routeIs('messenger.*') ? 'is-active' : '' }}" href="{{ route('messenger.index') }}"><x-repost-icon name="message" size="20" /><span>Mesajlar</span></a>
                 <a class="mobmenu__link" href="{{ route('settings.edit') }}"><x-repost-icon name="setting" size="20" /><span>Ayarlar</span></a>
             @else
                 <a class="mobmenu__link" href="{{ route('login') }}"><x-repost-icon name="user" size="20" /><span>Giriş</span></a>

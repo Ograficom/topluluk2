@@ -49,8 +49,8 @@
                 </button>
                 <ul class="dropdown-menu dropdown-menu-end">
                     @if (auth()->user()?->is($post->user) || auth()->user()?->is_admin)
-                        <li class="dropdown-menu-item dropdown-menu-item-sm is-disabled">
-                            <span aria-disabled="true" title="Yazı düzenleme henüz desteklenmiyor">Yazıyı düzenle</span>
+                        <li class="dropdown-menu-item dropdown-menu-item-sm">
+                            <a href="{{ route('posts.edit', $post) }}">Yazıyı düzenle</a>
                         </li>
                     @endif
                     <li class="dropdown-menu-item dropdown-menu-item-sm">

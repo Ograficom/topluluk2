@@ -1,7 +1,7 @@
 <footer class="footer">
     <nav class="footer__menu" aria-label="Alt gezinme">
-        <a href="mailto:{{ config('mail.from.address') }}" class="footer__menu-link">İletişim</a>
-        <a href="{{ route('register') }}#signup-rules" class="footer__menu-link">Kurallar</a>
+        <a href="{{ route('contacts') }}" class="footer__menu-link">İletişim</a>
+        <a href="{{ route('pages.show', 'rules') }}" class="footer__menu-link">Kurallar</a>
         <a href="{{ route('stats.index') }}" class="footer__menu-link">İstatistikler</a>
         <button class="btn btn-secondary btn-xs btn-rounded" type="button" data-modal-btn="footer-more" aria-label="Yan menüyü aç" aria-haspopup="dialog">
             <x-repost-icon name="more" size="18" class="color-gray" />
@@ -30,19 +30,13 @@
             </button>
         </div>
         <div class="modal-body footer-drawer__body">
-            <a class="footer-drawer__link" href="{{ route('posts.index') }}">
-                <x-repost-icon name="feed" size="18" />
-                <span>Son yazılar</span>
-            </a>
-            <a class="footer-drawer__link" href="mailto:{{ config('mail.from.address') }}">
-                <span>İletişim</span>
-            </a>
-            <a class="footer-drawer__link" href="{{ route('register') }}#signup-rules">
-                <span>Kurallar</span>
-            </a>
-            <a class="footer-drawer__link" href="{{ route('stats.index') }}">
-                <span>İstatistikler</span>
-            </a>
+            <a class="footer-drawer__link" href="{{ route('posts.latest') }}"><x-repost-icon name="feed" size="18" /><span>Son yazılar</span></a>
+            <a class="footer-drawer__link" href="{{ route('comments.latest') }}"><x-repost-icon name="comment" size="18" /><span>Son yorumlar</span></a>
+            <a class="footer-drawer__link" href="{{ route('tags.index') }}"><x-repost-icon name="tags" size="18" /><span>Etiketler</span></a>
+            <a class="footer-drawer__link" href="{{ route('contacts') }}"><span>İletişim</span></a>
+            <a class="footer-drawer__link" href="{{ route('pages.show', 'about') }}"><span>Hakkımızda</span></a>
+            <a class="footer-drawer__link" href="{{ route('pages.show', 'rules') }}"><span>Kurallar</span></a>
+            <a class="footer-drawer__link" href="{{ route('stats.index') }}"><span>İstatistikler</span></a>
         </div>
     </div>
 </div>

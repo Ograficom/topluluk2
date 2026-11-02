@@ -58,7 +58,12 @@ class ProfileController extends Controller
             ->latest()
             ->paginate(10, ['*'], 'comments');
         $isBlocked = $viewer && $viewer->blockedUsers()->whereKey($user->id)->exists();
+        $isFollowing = $viewer && $viewer->following()->whereKey($user->id)->exists();
+        $followersCount = $user->followers()->count();
+        $followingCount = $user->following()->count();
 
-        return view('profiles.show', compact('user', 'posts', 'comments', 'isBlocked'));
+        return view('profiles.show', compact(
+            'user', 'posts', 'comments', 'isBlocked', 'isFollowing', 'followersCount', 'followingCount',
+        ));
     }
 }
