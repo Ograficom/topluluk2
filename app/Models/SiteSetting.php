@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Storage;
 
 class SiteSetting extends Model
 {
@@ -27,14 +26,14 @@ class SiteSetting extends Model
     public function brandLogoUrl(): ?string
     {
         return filled($this->brand_logo_path)
-            ? Storage::disk('public')->url($this->brand_logo_path)
+            ? '/storage/'.ltrim($this->brand_logo_path, '/')
             : null;
     }
 
     public function faviconUrl(): ?string
     {
         return filled($this->favicon_path)
-            ? Storage::disk('public')->url($this->favicon_path)
+            ? '/storage/'.ltrim($this->favicon_path, '/')
             : null;
     }
 

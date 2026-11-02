@@ -37,13 +37,16 @@
     <header class="header">
         <div class="header__inner container">
             <div class="header__start">
-                <a href="{{ route('posts.index') }}" class="logo header__logo" aria-label="{{ $brandName }} ana sayfa" @if ($brandLogoUrl) style="grid-template-columns: auto;" @endif>
-                    @if ($brandLogoUrl)
-                        <img src="{{ $brandLogoUrl }}" alt="{{ $brandName }}" class="logo-icon logo-icon--custom" style="width: auto; height: 36px; max-width: 180px; object-fit: contain;">
-                    @else
-                        <img src="{{ asset('assets/img/meta/logo.svg') }}" alt="" width="36" height="36" class="logo-icon">
-                        <span class="logo-text">{{ $brandName }}</span>
-                    @endif
+                <a href="{{ route('posts.index') }}" class="logo header__logo" aria-label="{{ $brandName }} ana sayfa">
+                    <img
+                        src="{{ $brandLogoUrl ?? asset('assets/img/meta/logo.svg') }}"
+                        alt=""
+                        width="36"
+                        height="36"
+                        @class(['logo-icon', 'logo-icon--custom' => $brandLogoUrl])
+                        onerror="this.onerror=null;this.src='{{ asset('assets/img/meta/logo.svg') }}';"
+                    >
+                    <span class="logo-text">{{ $brandName }}</span>
                 </a>
             </div>
             <nav class="header__nav header__tabs" aria-label="Ana gezinme">

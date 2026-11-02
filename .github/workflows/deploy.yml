@@ -67,4 +67,4 @@ jobs:
         run: |
           set -euo pipefail
           PORT="${SSH_PORT:-22}"
-          ssh -p "$PORT" "$SSH_USER@$SSH_HOST" "cd '$DEPLOY_PATH' && git pull --ff-only origin main && composer install --no-interaction --prefer-dist --no-dev --optimize-autoloader && php artisan migrate --force && php artisan optimize:clear && php artisan config:cache && php artisan route:cache && php artisan view:cache"
+          ssh -p "$PORT" "$SSH_USER@$SSH_HOST" "cd '$DEPLOY_PATH' && git pull --ff-only origin main && composer install --no-interaction --prefer-dist --no-dev --optimize-autoloader && php artisan migrate --force && php artisan storage:link --force && php artisan optimize:clear && php artisan config:cache && php artisan route:cache && php artisan view:cache"

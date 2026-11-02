@@ -778,6 +778,7 @@ class RepostFeedTest extends TestCase
 
         $this->assertSame('Yeni Marka', $settings->brand_name);
         $this->assertNotEmpty($settings->brand_logo_path);
+        $this->assertSame('/storage/'.$settings->brand_logo_path, $settings->brandLogoUrl());
         Storage::disk('public')->assertExists($settings->brand_logo_path);
         $this->assertStringContainsString('<use href="#wordmark"', Storage::disk('public')->get($settings->brand_logo_path));
 
@@ -791,7 +792,8 @@ class RepostFeedTest extends TestCase
             ->assertSee('Yeni Marka')
             ->assertSee($settings->brandLogoUrl())
             ->assertSee('logo-icon--custom')
-            ->assertSee('grid-template-columns: auto;', false);
+            ->assertSee('class="logo-text">Yeni Marka</span>', false)
+            ->assertSee('onerror=', false);
     }
 
     public function test_administrators_can_upload_favicon_used_on_the_site_and_admin_panel(): void
@@ -909,13 +911,15 @@ class RepostFeedTest extends TestCase
             ->assertOk()
             ->assertSee(SiteSetting::current()->brandLogoUrl())
             ->assertSee('logo-icon--custom')
-            ->assertSee('style="width: auto; height: 36px; max-width: 180px; object-fit: contain;"', false);
+            ->assertSee('class="logo-text">Repost</span>', false)
+            ->assertSee('onerror=', false);
 
         $this->get('/')
             ->assertOk()
             ->assertSee(SiteSetting::current()->brandLogoUrl())
             ->assertSee('logo-icon--custom')
-            ->assertSee('style="width: auto; height: 36px; max-width: 180px; object-fit: contain;"', false);
+            ->assertSee('class="logo-text">Repost</span>', false)
+            ->assertSee('onerror=', false);
     }
 
     public function test_non_administrators_cannot_upload_a_site_logo(): void
