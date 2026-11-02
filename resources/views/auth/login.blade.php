@@ -43,10 +43,13 @@
                         >
                         <button type="button" class="view-pass-btn" data-pass-btn="login" aria-label="Şifreyi göster" title="Şifreyi göster" aria-pressed="false"></button>
                     </div>
-                    <label class="form-check-label">
-                        <input class="form-check-input" type="checkbox" name="remember" value="1" @checked(old('remember'))>
-                        <span>Beni hatırla</span>
-                    </label>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <label class="form-check-label">
+                            <input class="form-check-input" type="checkbox" name="remember" value="1" @checked(old('remember'))>
+                            <span>Beni hatırla</span>
+                        </label>
+                        <a href="{{ route('password.request') }}" class="link small">Şifremi unuttum</a>
+                    </div>
                     <div class="signin__submit">
                         <button type="submit" class="btn btn-primary btn-lg btn-full">Giriş yap</button>
                         <a href="{{ route('register') }}" class="btn btn-secondary btn-lg btn-full">Hesap oluştur</a>

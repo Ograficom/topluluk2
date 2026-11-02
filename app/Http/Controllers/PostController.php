@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 use Illuminate\View\View;
 
@@ -83,6 +84,16 @@ class PostController extends Controller
         ]);
     }
 
+    public function edit(Request $request, Post $post): View
+    {
+        $this->authorizeManage($request, $post);
+        return view('posts.create', [
+            'channels' => Channel::query()->active()->orderBy('name')->get(),
+            'user' => $request->user(),
+            'post' => $post,
+        ]);
+    }
+
     public function store(Request $request): RedirectResponse
     {
         $validated = $request->validate([
@@ -134,6 +145,64 @@ class PostController extends Controller
         ]);
 
         return redirect()->route('posts.show', $post)->with('status', 'Yazınız yayınlandı.');
+    }
+
+    public function update(Request $request, Post $post): RedirectResponse
+    {
+        $this->authorizeManage($request, $post);
+        $validated = $request->validate([
+            'title' => ['required', 'string', 'max:255'],
+            'channel_id' => ['nullable', Rule::exists('channels', 'id')->where('is_active', true)],
+            'excerpt' => ['required', 'string', 'max:500'],
+            'body' => ['required', 'string', 'max:100000'],
+            'cover_image' => ['nullable', 'image', 'mimes:jpg,jpeg,png,gif,webp', 'max:5120'],
+            'tags' => ['nullable', 'string', 'max:500'],
+            'is_adult' => ['sometimes', 'boolean'],
+            'remove_cover' => ['sometimes', 'boolean'],
+        ]);
+
+        $baseSlug = Str::limit(Str::slug($validated['title']) ?: 'post', 240, '');
+        $slug = $baseSlug;
+        $suffix = 1;
+        while (Post::query()->where('slug', $slug)->where('id', '<>', $post->id)->exists()) {
+            $slug = Str::limit($baseSlug, 240 - strlen((string) $suffix), '').'-'.$suffix++;
+        }
+
+        $newCover = $request->file('cover_image')?->store('posts', 'public');
+        if ($request->hasFile('cover_image') && ! $newCover) {
+            throw new \RuntimeException('The post cover image could not be stored.');
+        }
+
+        $tags = collect(explode(',', $validated['tags'] ?? ''))
+            ->map(fn (string $tag): string => trim($tag))
+            ->filter()
+            ->unique(fn (string $tag): string => mb_strtolower($tag))
+            ->take(20)
+            ->values()
+            ->all();
+
+        $oldCover = $post->cover_image;
+        $post->fill([
+            'channel_id' => $validated['channel_id'] ?? null,
+            'title' => $validated['title'],
+            'slug' => $slug,
+            'excerpt' => $validated['excerpt'],
+            'body' => $validated['body'],
+            'tags' => $tags,
+            'is_adult' => $request->boolean('is_adult'),
+        ]);
+        if ($newCover) {
+            $post->cover_image = $newCover;
+        } elseif ($request->boolean('remove_cover')) {
+            $post->cover_image = null;
+        }
+        $post->save();
+
+        if ($oldCover && $oldCover !== $post->cover_image && ! filter_var($oldCover, FILTER_VALIDATE_URL)) {
+            Storage::disk('public')->delete($oldCover);
+        }
+
+        return redirect()->route('posts.show', $post)->with('status', 'Yazınız güncellendi.');
     }
 
     public function show(Request $request, Post $post): View
@@ -193,5 +262,10 @@ class PostController extends Controller
         }
 
         return view('posts.show', compact('post', 'replyTo'));
+    }
+
+    private function authorizeManage(Request $request, Post $post): void
+    {
+        abort_unless($request->user() && ($request->user()->is_admin || $request->user()->is($post->user)), 403);
     }
 }

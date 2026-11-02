@@ -59,6 +59,11 @@ class Post extends Model
         return $this->hasMany(PostReaction::class);
     }
 
+    public function bookmarkedBy(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'post_bookmarks')->withTimestamps();
+    }
+
     public function coverImageUrl(): ?string
     {
         $coverImage = trim((string) $this->cover_image);

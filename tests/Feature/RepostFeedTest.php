@@ -328,7 +328,7 @@ class RepostFeedTest extends TestCase
                 'class="post__tags post__tags-full"',
                 'class="post__footer post__footer-full"',
                 'class="post__options card-body"',
-                'aria-label="Favorilere ekle"',
+                'aria-label="Favorilere eklemek için giriş yap"',
                 'id="comments"',
             ], false)
             ->assertSee('Yorumlar (1)')

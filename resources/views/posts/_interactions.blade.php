@@ -1,5 +1,9 @@
 @php($viewerReaction = $post->relationLoaded('reactions') ? $post->reactions->first()?->type : null)
 @php($netReactionCount = ($post->likes_count ?? 0) - ($post->dislikes_count ?? 0))
+@php($isBookmarked = $post->getAttribute('is_bookmarked'))
+@if ($isBookmarked === null && auth()->check())
+    @php($isBookmarked = auth()->user()->bookmarks()->whereKey($post->id)->exists())
+@endif
 
 <div class="post__options card-body">
     <div class="post__options-set">
@@ -37,7 +41,14 @@
             <x-repost-icon name="share" size="20" />
         </button>
     </div>
-    <button class="btn btn-md btn-square btn-primary-soft" type="button" title="Add to favorites" aria-label="Favorilere ekle" disabled>
-        <x-repost-icon name="bookmark" size="20" />
-    </button>
+    @auth
+        <form action="{{ route('posts.bookmarks.toggle', $post) }}" method="POST">
+            @csrf
+            <button class="btn btn-md btn-square btn-primary-soft {{ $isBookmarked ? 'is-active' : '' }}" type="submit" title="{{ $isBookmarked ? 'Favorilerden çıkar' : 'Favorilere ekle' }}" aria-label="{{ $isBookmarked ? 'Favorilerden çıkar' : 'Favorilere ekle' }}" aria-pressed="{{ $isBookmarked ? 'true' : 'false' }}">
+                <x-repost-icon name="bookmark" size="20" />
+            </button>
+        </form>
+    @else
+        <a class="btn btn-md btn-square btn-primary-soft" href="{{ route('login') }}" title="Favorilere eklemek için giriş yap" aria-label="Favorilere eklemek için giriş yap"><x-repost-icon name="bookmark" size="20" /></a>
+    @endauth
 </div>
