@@ -224,18 +224,48 @@ class CommunityController extends Controller
     {
         $viewer = $request->user();
         $comments = Comment::query()
-            ->with(['user', 'post'])
+            ->with(['user', 'post', 'replies.user'])
+            ->withCount(['reactions', 'replies'])
             ->whereHas('post', fn (Builder $query) => $query
                 ->published()
                 ->when(! $viewer?->show_adult_content, fn (Builder $postQuery) => $postQuery->where('is_adult', false))
                 ->when($viewer, fn (Builder $query) => $query
                     ->whereNotIn('user_id', $viewer->blockedUsers()->select('users.id'))
                     ->whereNotIn('user_id', $viewer->blockedByUsers()->select('users.id'))))
+            ->when($viewer, function (Builder $query) use ($viewer): void {
+                $query->withExists([
+                    'reactions as viewer_reacted' => fn (Builder $reactions) => $reactions->where('user_id', $viewer->id),
+                ])->with([
+                    'replies' => fn ($replies) => $replies
+                        ->withCount('reactions')
+                        ->withExists([
+                            'reactions as viewer_reacted' => fn (Builder $reactions) => $reactions->where('user_id', $viewer->id),
+                        ]),
+                ]);
+            })
+            ->whereNull('parent_id')
             ->latest()
             ->paginate(30)
             ->withQueryString();
 
         return view('pages.latest-comments', compact('comments'));
+    }
+
+    public function moderateLatestComments(Request $request): RedirectResponse
+    {
+        abort_unless($request->user()?->is_admin, 403);
+
+        $validated = $request->validate([
+            'action' => ['required', 'in:delete'],
+            'selected_comments' => ['required', 'array', 'min:1', 'max:100'],
+            'selected_comments.*' => ['integer', 'distinct', 'exists:comments,id'],
+        ]);
+
+        Comment::query()
+            ->whereIn('id', $validated['selected_comments'])
+            ->delete();
+
+        return back()->with('status', 'Seçilen yorumlar silindi.');
     }
 
     public function tags(): View
