@@ -11,6 +11,7 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\View\View;
 
 class CommunityController extends Controller
@@ -298,6 +299,48 @@ class CommunityController extends Controller
     public function contacts(): View
     {
         return view('pages.contacts', ['supportEmail' => config('mail.from.address')]);
+    }
+
+    public function sendContact(Request $request): RedirectResponse
+    {
+        $validated = $request->validate([
+            'name' => ['required', 'string', 'max:35'],
+            'email' => ['required', 'email', 'max:254'],
+            'subject' => ['required', 'string', 'max:45'],
+            'recipient' => ['required', 'in:support,editorial,partnerships'],
+            'message' => ['required', 'string', 'max:10000'],
+            'attachments' => ['nullable', 'array', 'max:5'],
+            'attachments.*' => ['file', 'max:2048', 'mimes:jpg,jpeg,png,pdf,txt,doc,docx'],
+        ]);
+
+        $supportEmail = config('mail.from.address');
+        abort_unless(filled($supportEmail), 503, 'Destek e-posta adresi yapılandırılmamış.');
+
+        $departments = [
+            'support' => 'Teknik destek',
+            'editorial' => 'Editör ekibi',
+            'partnerships' => 'İş birlikleri',
+        ];
+
+        $body = "Gönderen: {$validated['name']}\n";
+        $body .= "E-posta: {$validated['email']}\n";
+        $body .= "Birim: {$departments[$validated['recipient']]}\n\n";
+        $body .= $validated['message'];
+
+        Mail::raw($body, function ($mail) use ($supportEmail, $validated, $departments): void {
+            $mail->to($supportEmail)
+                ->replyTo($validated['email'], $validated['name'])
+                ->subject('[OgraFi] '.$departments[$validated['recipient']].' - '.$validated['subject']);
+
+            foreach ($validated['attachments'] ?? [] as $attachment) {
+                $mail->attach($attachment->getRealPath(), [
+                    'as' => $attachment->getClientOriginalName(),
+                    'mime' => $attachment->getMimeType(),
+                ]);
+            }
+        });
+
+        return back()->with('status', 'Mesajın destek ekibine gönderildi.');
     }
 
     private function postQuery(?User $viewer): Builder
