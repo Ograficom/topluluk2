@@ -60,7 +60,8 @@ p {
   padding-bottom: var(--main-gap);
 }
 
-.profile__aside {
+.profile__aside,
+.main__widgets {
   position: sticky;
   top: calc(var(--header-height) + var(--header-offset));
   align-self: start;
@@ -4658,6 +4659,12 @@ p {
     grid-template-columns: minmax(280px, auto) 290px;
   }
 }
+@media screen and (max-width: 920px) {
+  .channels-index-page > .main__widgets {
+    display: none !important;
+  }
+}
+
 @media screen and (max-width: 920px) {
   .main__grid {
     grid-template-columns: 55px minmax(280px, auto);
