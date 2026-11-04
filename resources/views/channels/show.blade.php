@@ -215,7 +215,8 @@
             </div>
 
             <aside class="main__widgets">
-                <div class="widgets">
+                <div class="widgets channel-sidebar-widgets">
+                    <div class="channel-sidebar-scroll">
                     <section class="widget card card-body">
                         <header><h2 class="widget__title h6">{{ number_format($channel->subscribers_count) }} abone</h2></header>
                         <div class="widget__content">
@@ -264,8 +265,9 @@
                             @endif
                         </div>
                     </section>
+                    </div>
 
-                    <section class="widget card card-body">
+                    <section class="widget card card-body channel-sidebar-comments">
                         <header><h2 class="widget__title h6">{{ number_format($channelCommentsCount) }} yorum</h2></header>
                         <div class="widget__content widget__content-offset">
                             @if ($latestChannelComments->isNotEmpty())
