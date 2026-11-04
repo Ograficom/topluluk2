@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\View\View;
 
 class ProfileController extends Controller
@@ -61,8 +62,14 @@ class ProfileController extends Controller
         $isFollowing = $viewer && $viewer->following()->whereKey($user->id)->exists();
         $followersCount = $user->followers()->count();
         $followingCount = $user->following()->count();
+        $followerColumns = ['users.id', 'users.name', 'users.full_name', 'users.username', 'users.avatar_path', 'users.is_verified', 'users.verification_status'];
+
+        if (Schema::hasColumn('users', 'last_seen_at')) {
+            $followerColumns[] = 'users.last_seen_at';
+        }
+
         $profileFollowersQuery = $user->followers()
-            ->select(['users.id', 'users.name', 'users.full_name', 'users.username', 'users.avatar_path', 'users.is_verified', 'users.verification_status', 'users.last_seen_at'])
+            ->select($followerColumns)
             ->withCount(['posts' => fn (Builder $query) => $query->published()])
             ->latest('user_follows.created_at');
 
