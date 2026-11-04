@@ -29,7 +29,7 @@
             @endif
         </div>
     </section>
-    @if ($post->coverImageUrl() || count($post->galleryImageUrls()) > 0)
+    @if ($post->coverImageUrl() || count($post->galleryImageUrls()) > 0 || filled($post->video_url))
         <section class="card-body post__short-media">
             @include('posts._media', ['post' => $post])
         </section>
