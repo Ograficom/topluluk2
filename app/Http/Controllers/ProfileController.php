@@ -61,11 +61,13 @@ class ProfileController extends Controller
         $isFollowing = $viewer && $viewer->following()->whereKey($user->id)->exists();
         $followersCount = $user->followers()->count();
         $followingCount = $user->following()->count();
-        $profileFollowers = $user->followers()
+        $profileFollowersQuery = $user->followers()
             ->select(['users.id', 'users.name', 'users.full_name', 'users.username', 'users.avatar_path', 'users.is_verified', 'users.verification_status'])
-            ->latest('user_follows.created_at')
-            ->limit(8)
-            ->get();
+            ->withCount(['posts' => fn (Builder $query) => $query->published()])
+            ->latest('user_follows.created_at');
+
+        $profileFollowers = (clone $profileFollowersQuery)->limit(8)->get();
+        $allProfileFollowers = (clone $profileFollowersQuery)->limit(100)->get();
 
         $topPosition = User::query()
             ->withCount(['posts' => fn (Builder $query) => $query->published()])
@@ -79,7 +81,7 @@ class ProfileController extends Controller
 
         return view('profiles.show', compact(
             'user', 'posts', 'comments', 'isBlocked', 'isFollowing',
-            'followersCount', 'followingCount', 'profileFollowers', 'topPosition',
+            'followersCount', 'followingCount', 'profileFollowers', 'allProfileFollowers', 'topPosition',
         ));
     }
 }
