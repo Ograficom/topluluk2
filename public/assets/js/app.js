@@ -2561,3 +2561,30 @@ document.addEventListener("click", async (event) => {
     console.error("Yazı paylaşılırken hata oluştu.", error);
   }
 });
+
+
+// Comment editing
+document.addEventListener("click", (event) => {
+  const editButton = event.target.closest("[data-comment-edit-toggle]");
+  const cancelButton = event.target.closest("[data-comment-edit-cancel]");
+
+  if (editButton) {
+    event.preventDefault();
+
+    const id = editButton.dataset.commentEditToggle;
+    const form = document.getElementById(`comment-edit-${id}`);
+
+    if (!form) return;
+
+    form.hidden = false;
+    form.querySelector("textarea")?.focus();
+    return;
+  }
+
+  if (cancelButton) {
+    const id = cancelButton.dataset.commentEditCancel;
+    const form = document.getElementById(`comment-edit-${id}`);
+
+    if (form) form.hidden = true;
+  }
+});
