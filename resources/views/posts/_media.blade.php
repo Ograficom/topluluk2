@@ -6,6 +6,19 @@
     $mediaGroup = 'post-images-'.$post->id;
 @endphp
 
+@if (filled($post->video_url))
+    <div
+        class="post__media post__media-video is-media-loading"
+        data-player-url="{{ $post->video_url }}"
+        data-player-script="{{ asset('assets/libs/playerjs/playerjs.js') }}"
+    >
+        <div class="post__media-player-slide"></div>
+        <div class="post__media-loader" aria-hidden="true">
+            <span class="loader"></span>
+        </div>
+    </div>
+@endif
+
 @if ($mediaUrls->count() > 1)
     <div class="post__media f-carousel is-media-loading" data-fancy-carousel>
         @foreach ($mediaUrls as $mediaUrl)
