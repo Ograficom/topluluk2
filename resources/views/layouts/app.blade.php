@@ -148,7 +148,7 @@
     @php($channelsIndexPage = request()->routeIs('channels.index', 'legacy.channels'))
     @php($statsPage = request()->routeIs('stats.index'))
     <main class="container">
-        <div class="main {{ $settingsPage || $profilePage || $channelPage || $postCreatePage ? 'main__grid-full' : 'main__grid' }} {{ $channelsIndexPage ? 'channels-index-page' : '' }}">
+        <div class="main {{ $settingsPage || $profilePage || $channelPage || $postCreatePage ? 'main__grid-full' : 'main__grid' }}">
             <aside class="sidebar" aria-label="Kanallar ve yazarlar">
                 <div class="sidebar__body">
                     <section class="sidebar__section">
@@ -215,7 +215,7 @@
                 @endif
 
                 @unless ($profilePage || $channelPage || $postCreatePage)
-                <aside class="{{ $statsPage || $feedPage ? 'main__widgets' : 'profile__aside' }}" aria-label="Popüler içerikler">
+                <aside class="{{ $statsPage || $feedPage || $channelsIndexPage ? 'main__widgets' : 'profile__aside' }}" aria-label="Popüler içerikler">
                 @unless ($statsPage || $feedPage)
                     <div class="side-panel__body">
                 @endunless
