@@ -5,7 +5,7 @@
 @section('content')
     <section class="subscriptions__section card card-body channel-edit">
         <a href="{{ route('channels.show', $channel) }}" class="link-accent channel-edit__back">
-            <x-repost-icon name="arrow-left" size="16" />
+            <x-repost-icon name="chevron-left" size="16" />
             <span>Kategoriye dön</span>
         </a>
 
@@ -64,7 +64,7 @@
 
                             <div class="channel-image-upload__actions">
                                 <label class="channel-image-upload__button" for="channel-image">
-                                    <x-repost-icon name="upload" size="17" />
+                                    <x-repost-icon name="image" size="17" />
                                     <span>Görsel seç</span>
                                 </label>
                                 <span class="channel-image-upload__filename" id="channel-image-filename">Henüz dosya seçilmedi</span>
