@@ -220,19 +220,17 @@
                     <div class="side-panel__body">
                 @endunless
                     <div class="widgets">
-                        @if ($statsPage)
-                            <section class="widget card card-body">
-                                <header><h2 class="widget__title h6">Etiketler</h2></header>
-                                <div class="widget__content tagscloud">
-                                    @forelse ($popularTags as $tag)
-                                        <span><a href="{{ route('posts.index', ['q' => $tag]) }}">{{ $tag }}</a></span>
-                                    @empty
-                                        <span class="small color-gray">Henüz etiket yok</span>
-                                    @endforelse
-                                </div>
-                                <footer class="widget__footer"><a href="{{ route('posts.index') }}" class="link-accent">Tüm yazılar</a></footer>
-                            </section>
-                        @endif
+                        <section class="widget card card-body">
+                            <header><h2 class="widget__title h6">Etiketler</h2></header>
+                            <div class="widget__content tagscloud">
+                                @forelse ($popularTags as $tag => $count)
+                                    <span><a href="{{ route('tags.show', ['tag' => $tag]) }}">{{ $tag }}</a></span>
+                                @empty
+                                    <span class="small color-gray">Henüz etiket yok</span>
+                                @endforelse
+                            </div>
+                            <footer class="widget__footer"><a href="{{ route('tags.index') }}" class="link-accent">Tüm etiketler</a></footer>
+                        </section>
                         <section class="widget card card-body">
                             <header><h2 class="widget__title h6">Popüler yazarlar</h2></header>
                             <div class="widget__content widget__content--bleed">
@@ -265,14 +263,36 @@
                                 <ul class="widget__list widget__list--separator">
                                     @forelse ($sidebarPosts as $post)
                                         <li class="entry-card">
-                                            <article class="entry-box">
+                                            <article class="entry-box {{ $post->coverImageUrl() ? 'has-image' : '' }}">
                                                 <div class="entry-box-content">
+                                                    <div class="user-box">
+                                                        @if ($post->user)
+                                                            <a href="{{ route('profiles.show', $post->user) }}" class="avatar" aria-label="{{ $post->user->displayName() }} profili">
+                                                                <img src="{{ $post->user->avatarUrl() }}" alt="" width="40" height="40">
+                                                            </a>
+                                                        @else
+                                                            <span class="avatar"><img src="{{ asset('assets/img/noavatar.png') }}" alt="" width="40" height="40"></span>
+                                                        @endif
+                                                        <div class="user-box-content">
+                                                            @if ($post->user)
+                                                                <a href="{{ route('profiles.show', $post->user) }}" class="name"><span class="name-text">{{ $post->user->displayName() }}</span></a>
+                                                            @else
+                                                                <span class="name"><span class="name-text">OgraFi yazarı</span></span>
+                                                            @endif
+                                                            <span class="meta">{{ $post->published_at?->translatedFormat('d F Y') ?? $post->created_at->translatedFormat('d F Y') }}</span>
+                                                        </div>
+                                                    </div>
                                                     <a href="{{ route('posts.show', $post) }}" class="text-clamp-2 color-text">{{ $post->title }}</a>
                                                     <div class="meta">
                                                         <span class="meta-item"><x-repost-icon name="comment" size="14" />{{ $post->comments_count }}</span>
                                                         <span class="meta-item"><x-repost-icon name="eye" size="14" />{{ number_format($post->views) }}</span>
                                                     </div>
                                                 </div>
+                                                @if ($post->coverImageUrl())
+                                                    <a href="{{ route('posts.show', $post) }}" class="entry-box-image">
+                                                        <img src="{{ $post->coverImageUrl() }}" alt="{{ $post->title }}" width="100" height="80" loading="lazy">
+                                                    </a>
+                                                @endif
                                             </article>
                                         </li>
                                     @empty
