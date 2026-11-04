@@ -145,9 +145,10 @@
     @php($channelPage = request()->routeIs('channels.show', 'legacy.channel'))
     @php($postCreatePage = request()->routeIs('posts.create'))
     @php($feedPage = request()->routeIs('posts.index'))
+    @php($channelsIndexPage = request()->routeIs('channels.index', 'legacy.channels'))
     @php($statsPage = request()->routeIs('stats.index'))
     <main class="container">
-        <div class="main {{ $settingsPage || $profilePage || $channelPage || $postCreatePage ? 'main__grid-full' : 'main__grid' }}">
+        <div class="main {{ $settingsPage || $profilePage || $channelPage || $postCreatePage ? 'main__grid-full' : 'main__grid' }} {{ $channelsIndexPage ? 'channels-index-page' : '' }}">
             <aside class="sidebar" aria-label="Kanallar ve yazarlar">
                 <div class="sidebar__body">
                     <section class="sidebar__section">
