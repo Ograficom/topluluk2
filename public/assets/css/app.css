@@ -4763,7 +4763,7 @@ p {
     bottom: max(10px, env(safe-area-inset-bottom));
     left: 0;
     display: block;
-    width: min(calc(100% - 32px), 240px);
+    width: min(calc(100% - 32px), 232px);
     margin-inline: auto;
     pointer-events: none;
   }
