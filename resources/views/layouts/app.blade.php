@@ -101,6 +101,9 @@
                             </li>
                             @if (auth()->user()->is_admin)
                                 <li class="dropdown-menu-item dropdown-menu-item-lg">
+                                    <a href="{{ route('channels.create') }}" aria-label="Kategori ekle" title="Kategori ekle"><x-repost-icon name="plus" size="20" class="color-gray" /></a>
+                                </li>
+                                <li class="dropdown-menu-item dropdown-menu-item-lg">
                                     <a href="{{ url('/admin') }}"><x-repost-icon name="adminpanel" size="20" class="color-gray" /><span>Yönetim paneli</span></a>
                                 </li>
                             @endif
@@ -148,9 +151,6 @@
                 <div class="sidebar__body">
                     <section class="sidebar__section">
                         <h2 class="sidebar__title">Kanallar</h2>
-                        @if (auth()->user()?->is_admin)
-                            <a class="small link-accent" href="{{ route('channels.create') }}">Kategori ekle</a>
-                        @endif
                         <ul class="sidebar__list">
                             @forelse ($navigationChannels as $channel)
                                 <li>
