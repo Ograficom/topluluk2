@@ -15,6 +15,7 @@ class SitePage extends Model
         'meta_description',
         'is_published',
         'published_at',
+        'views',
     ];
 
     protected function casts(): array
@@ -22,6 +23,7 @@ class SitePage extends Model
         return [
             'is_published' => 'boolean',
             'published_at' => 'datetime',
+            'views' => 'integer',
         ];
     }
 
