@@ -94,6 +94,9 @@
                                 <a href="{{ route('community.following') }}"><x-repost-icon name="user" size="20" class="color-gray" /><span>Takip akışı</span></a>
                             </li>
                             <li class="dropdown-menu-item dropdown-menu-item-lg">
+                                <a href="{{ route('subscriptions.index') }}"><x-repost-icon name="users" size="20" class="color-gray" /><span>Abonelikler</span></a>
+                            </li>
+                            <li class="dropdown-menu-item dropdown-menu-item-lg">
                                 <a href="{{ route('settings.edit') }}"><x-repost-icon name="setting" size="20" class="color-gray" /><span>Ayarlar</span></a>
                             </li>
                             @if (auth()->user()->is_admin)
