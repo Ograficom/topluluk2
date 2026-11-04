@@ -44,7 +44,6 @@ class PostController extends Controller
                 $query->whereNotIn('user_id', $viewer->blockedUsers()->select('users.id'))
                     ->whereNotIn('user_id', $viewer->blockedByUsers()->select('users.id'));
             })
-            ->when(! $viewer?->show_adult_content, fn (Builder $query) => $query->where('is_adult', false))
             ->when($search !== '', function (Builder $query) use ($search): void {
                 $query->where(function (Builder $query) use ($search): void {
                     $query->where('title', 'like', "%{$search}%")
