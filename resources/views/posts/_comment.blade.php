@@ -78,7 +78,7 @@
                 </button>
                 <ul class="dropdown-menu dropdown-menu-end">
                     <li class="dropdown-menu-item dropdown-menu-item-sm">
-                        <a href="mailto:{{ config('mail.from.address') }}?subject={{ rawurlencode('Yorum bildirimi') }}&amp;body={{ rawurlencode(route('posts.show', $post).'#comment-'.$comment->id) }}">Yorumu bildir</a>
+                        <a href="mailto:{{ config('mail.from.address') }}?subject={{ rawurlencode('Yorum bildirimi') }}&amp;body={{ rawurlencode(route('posts.show', $post).'#comment-'.$comment->id) }}">Report</a>
                     </li>
                     @if (auth()->user()?->is($comment->user) || auth()->user()?->is_admin)
                         <li class="dropdown-menu-item dropdown-menu-item-sm">
