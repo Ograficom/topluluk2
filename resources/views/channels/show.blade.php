@@ -47,12 +47,23 @@
                     <a href="{{ route('channels.index') }}">Tüm kanallar</a>
                     <span> · {{ number_format($channel->subscribers_count) }} abone</span>
                 </div>
+                <div class="channel__tabs">
+                    <nav class="tabs-nav" data-tabs-nav="channel" role="tablist" aria-label="Kanal bölümleri">
+                        <button class="tabs-nav__button is-active" id="channel-tab-posts" type="button" role="tab" data-tab="posts" aria-controls="channel-panel-posts" aria-selected="true">
+                            Yazılar <span>{{ number_format($posts->total()) }}</span>
+                        </button>
+                        <button class="tabs-nav__button" id="channel-tab-comments" type="button" role="tab" data-tab="comments" aria-controls="channel-panel-comments" aria-selected="false" tabindex="-1">
+                            Yorumlar <span>{{ number_format($comments->total()) }}</span>
+                        </button>
+                    </nav>
+                </div>
             </div>
         </section>
     </div>
 
     @php($channelTags = $posts->getCollection()->flatMap(fn ($post) => $post->tags ?? [])->filter(fn ($tag) => is_string($tag) && trim($tag) !== '')->unique()->take(18))
-    <div class="channel-page__content">
+    <div class="channel-page__content tabs-content" data-tabs-container="channel">
+        <section class="tabs-panel is-active" id="channel-panel-posts" role="tabpanel" aria-labelledby="channel-tab-posts" data-tab-panel="posts" tabindex="0">
         <div class="channel__posts">
             <div class="channel__hero">
                 <div class="channel__hero-start">
@@ -122,5 +133,19 @@
         @include('layouts._pagination', ['paginator' => $posts])
             </div>
         </div>
+        </section>
+        <section class="tabs-panel" id="channel-panel-comments" role="tabpanel" aria-labelledby="channel-tab-comments" data-tab-panel="comments" tabindex="0">
+            <div class="comments-tree-list">
+                @forelse ($comments as $comment)
+                    @include('posts._comment', ['comment' => $comment, 'post' => $comment->post])
+                @empty
+                    <section class="card card-body empty-state">
+                        <h2 class="h4">Henüz yorum yok</h2>
+                        <p class="color-gray">Bu kanaldaki yazılara yapılan yorumlar burada görünecek.</p>
+                    </section>
+                @endforelse
+            </div>
+            @include('layouts._pagination', ['paginator' => $comments])
+        </section>
     </div>
 @endsection
