@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Channel;
 use App\Models\Comment;
 use App\Models\Conversation;
 use App\Models\Post;
@@ -14,6 +15,40 @@ use Illuminate\View\View;
 
 class CommunityController extends Controller
 {
+    public function subscriptions(Request $request): View
+    {
+        $viewer = $request->user();
+
+        $channels = $viewer->channels()
+            ->withCount('subscribers')
+            ->orderBy('name')
+            ->get();
+
+        $authors = $viewer->following()
+            ->withCount('posts')
+            ->orderBy('name')
+            ->get();
+
+        return view('community.subscriptions', compact('channels', 'authors'));
+    }
+
+    public function toggleChannelSubscription(Request $request, Channel $channel): RedirectResponse
+    {
+        abort_unless($channel->is_active, 404);
+
+        $subscriptions = $request->user()->channels();
+
+        if ($subscriptions->whereKey($channel->id)->exists()) {
+            $subscriptions->detach($channel->id);
+            $message = 'Kanal aboneliği kaldırıldı.';
+        } else {
+            $subscriptions->syncWithoutDetaching([$channel->id]);
+            $message = 'Kanala abone oldunuz.';
+        }
+
+        return back()->with('status', $message);
+    }
+
     public function following(Request $request): View
     {
         $viewer = $request->user();
