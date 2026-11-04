@@ -142,7 +142,7 @@
 
     @php($settingsPage = request()->routeIs('settings.edit', 'settings.legacy'))
     @php($profilePage = request()->routeIs('profiles.show'))
-    @php($channelPage = request()->routeIs('channels.show'))
+    @php($channelPage = request()->routeIs('channels.show', 'legacy.channel'))
     @php($postCreatePage = request()->routeIs('posts.create'))
     @php($feedPage = request()->routeIs('posts.index'))
     @php($statsPage = request()->routeIs('stats.index'))
