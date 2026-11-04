@@ -4,6 +4,9 @@
 
 @section('content')
     <article>
+        @if (session('status'))
+            <div class="alert alert-success" role="status">{{ session('status') }}</div>
+        @endif
         <section class="profile card card-body">
             @auth
                 <div class="edit">
