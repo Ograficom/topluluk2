@@ -5199,57 +5199,6 @@ p {
     }
 }
 
-/* Shared page grid: keep the right rail identical and stable on desktop. */
-@media screen and (min-width: 921px) {
-  .main__grid {
-    grid-template-columns: 55px minmax(0, 1fr) 320px;
-  }
-
-  .main__grid-feed {
-    grid-template-columns: minmax(0, 1fr) 320px;
-  }
-
-  .main__widgets,
-  .profile__aside {
-    position: sticky;
-    top: calc(var(--header-height) + var(--header-offset) + 12px);
-    align-self: start;
-    min-width: 0;
-    max-height: calc(100dvh - var(--header-height) - var(--header-offset) - 24px);
-    overflow-x: hidden;
-    overflow-y: auto;
-    overscroll-behavior: contain;
-    scrollbar-width: thin;
-    scrollbar-color: var(--gray-300) transparent;
-  }
-
-  .main__widgets::-webkit-scrollbar,
-  .profile__aside::-webkit-scrollbar {
-    width: 5px;
-  }
-
-  .main__widgets::-webkit-scrollbar-thumb,
-  .profile__aside::-webkit-scrollbar-thumb {
-    border-radius: 999px;
-    background: var(--gray-300);
-  }
-
-  .profile__aside > .side-panel__body {
-    min-height: 0;
-    overflow: visible;
-  }
-}
-
-/* On tablet and mobile, hide the desktop right rail instead of
-   moving it above the page content or squeezing the main column. */
-@media screen and (max-width: 920px) {
-  .main__widgets,
-  .profile__aside {
-    display: none !important;
-  }
-}
-
-
 /* Channels index: the desktop right rail (including its footer) is not part of the mobile layout. */
 @media screen and (max-width: 920px) {
   .channels-index-page > aside.profile__aside,
