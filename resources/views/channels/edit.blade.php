@@ -3,6 +3,64 @@
 @section('title', 'Kategori düzenle')
 
 @section('content')
+    <style>
+        .channel-edit .channel-image-upload {
+            display: flex !important;
+            align-items: center !important;
+            gap: 18px !important;
+            width: 100%;
+            max-width: 620px;
+            padding: 16px !important;
+            border: 1px solid var(--border-color, #e5e7eb);
+            border-radius: 14px;
+            background: #fff !important;
+            box-sizing: border-box;
+        }
+        .channel-edit .channel-image-upload__preview {
+            display: flex !important;
+            flex: 0 0 88px !important;
+            width: 88px !important;
+            height: 88px !important;
+            min-width: 88px;
+            align-items: center !important;
+            justify-content: center !important;
+            overflow: hidden !important;
+            border: 1px solid #e5e7eb;
+            border-radius: 14px !important;
+            background: #f3f6fa;
+            color: #64748b;
+            box-sizing: border-box;
+        }
+        .channel-edit .channel-image-upload__preview img {
+            display: block !important;
+            width: 100% !important;
+            height: 100% !important;
+            max-width: 100% !important;
+            max-height: 100% !important;
+            object-fit: cover !important;
+        }
+        .channel-edit .channel-image-upload__content { flex: 1 1 auto; min-width: 0; }
+        .channel-edit .channel-image-upload__content > strong { display:block; font-size: .95rem; }
+        .channel-edit .channel-image-upload__content > p { margin: 4px 0 10px; color: var(--color-gray, #64748b); font-size: .82rem; }
+        .channel-edit .channel-image-upload__actions { display:flex; align-items:center; flex-wrap:wrap; gap:10px; }
+        .channel-edit .channel-image-upload__button {
+            display:inline-flex !important; align-items:center; justify-content:center; gap:7px;
+            min-height:36px; padding:0 13px; border:1px solid #dbe3ee; border-radius:9px;
+            background:#f8fafc; color:#1769ff; cursor:pointer; font-size:.84rem; font-weight:600;
+        }
+        .channel-edit .channel-image-upload__button:hover { background:#eff6ff; border-color:#1769ff; }
+        .channel-edit .channel-image-upload__filename { color:#64748b; font-size:.8rem; overflow-wrap:anywhere; }
+        .channel-edit .channel-image-upload__hint { display:block; margin-top:8px; color:#64748b; font-size:.76rem; }
+        .channel-edit .channel-image-upload__remove { display:flex; align-items:center; gap:7px; width:fit-content; margin-top:9px; color:#64748b; font-size:.8rem; }
+        .channel-edit .channel-image-upload__remove input { width:15px; height:15px; margin:0; accent-color:#1769ff; }
+        .channel-edit .channel-image-upload__input { position:absolute !important; width:1px !important; height:1px !important; padding:0 !important; margin:-1px !important; overflow:hidden !important; clip:rect(0,0,0,0) !important; white-space:nowrap !important; border:0 !important; }
+        @media (max-width: 640px) {
+            .channel-edit .channel-image-upload { align-items:flex-start !important; gap:13px !important; padding:13px !important; }
+            .channel-edit .channel-image-upload__preview { flex-basis:68px !important; width:68px !important; height:68px !important; min-width:68px; }
+            .channel-edit .channel-image-upload__content > p { margin-bottom:8px; }
+        }
+    </style>
+
     <section class="subscriptions__section card card-body channel-edit">
         <a href="{{ route('channels.show', $channel) }}" class="link-accent channel-edit__back">
             <x-repost-icon name="chevron-left" size="16" />
@@ -47,24 +105,21 @@
                 <span class="setting__list-label">Kanal profil resmi</span>
                 <div class="setting__list-value">
                     <div class="channel-image-upload">
-                        <div class="channel-image-upload__preview-wrap">
-                            <div class="channel-image-upload__preview" id="channel-image-preview">
-                                @if ($channel->image_path)
-                                    <img src="{{ asset('storage/'.$channel->image_path) }}" alt="{{ $channel->name }}" id="channel-image-preview-img">
-                                @else
-                                    <x-repost-icon name="image" size="34" />
-                                @endif
-                            </div>
-                            <span class="channel-image-upload__status">Kanal görseli</span>
+                        <div class="channel-image-upload__preview" id="channel-image-preview">
+                            @if ($channel->image_path)
+                                <img src="{{ asset('storage/'.$channel->image_path) }}" alt="{{ $channel->name }}" id="channel-image-preview-img">
+                            @else
+                                <x-repost-icon name="image" size="28" />
+                            @endif
                         </div>
 
                         <div class="channel-image-upload__content">
-                            <strong>Profil görselini güncelle</strong>
-                            <p>Markanı veya kanalını en iyi yansıtan görseli seç.</p>
+                            <strong>Profil görseli</strong>
+                            <p>Kanalını temsil eden bir görsel yükle. Kare görseller en iyi sonucu verir.</p>
 
                             <div class="channel-image-upload__actions">
                                 <label class="channel-image-upload__button" for="channel-image">
-                                    <x-repost-icon name="image" size="17" />
+                                    <x-repost-icon name="image" size="16" />
                                     <span>Görsel seç</span>
                                 </label>
                                 <span class="channel-image-upload__filename" id="channel-image-filename">Henüz dosya seçilmedi</span>
@@ -75,7 +130,7 @@
                             @if ($channel->image_path)
                                 <label class="channel-image-upload__remove">
                                     <input type="checkbox" name="remove_image" value="1" id="channel-remove-image">
-                                    <span>Mevcut profil görselini kaldır</span>
+                                    <span>Mevcut görseli kaldır</span>
                                 </label>
                             @endif
                         </div>
