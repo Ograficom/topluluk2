@@ -18,14 +18,60 @@
                             </button>
                         </div>
                     </div>
+                    <aside class="channel__side">
+                        @auth
+                            <form action="{{ route('channels.subscribe', $channel) }}" method="POST">
+                                @csrf
+                                <button class="btn {{ $isSubscribed ? 'btn-secondary' : 'btn-primary' }}" type="submit">
+                                    {{ $isSubscribed ? 'Abonelikten çık' : 'Abone ol' }}
+                                </button>
+                            </form>
+                        @else
+                            <a class="btn btn-primary" href="{{ route('login') }}">Abone ol</a>
+                        @endauth
+                        <div class="channel__authors">
+                            <span class="channel__authors-title">Aktif yazarlar:</span>
+                            <ul class="user-set">
+                                @foreach ($posts->getCollection()->pluck('user')->filter()->unique('id')->take(5) as $author)
+                                    <li>
+                                        <a class="avatar" href="{{ route('profiles.show', $author) }}" aria-label="{{ $author->displayName() }}">
+                                            <img src="{{ $author->avatarUrl() }}" alt="" width="30" height="30" loading="lazy">
+                                        </a>
+                                    </li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    </aside>
                 </div>
-                <div class="channel__meta small color-gray"><a href="{{ route('channels.index') }}">Tüm kanallar</a></div>
+                <div class="channel__meta small color-gray">
+                    <a href="{{ route('channels.index') }}">Tüm kanallar</a>
+                    <span> · {{ number_format($channel->subscribers_count) }} abone</span>
+                </div>
             </div>
         </section>
     </div>
 
+    @php($channelTags = $posts->getCollection()->flatMap(fn ($post) => $post->tags ?? [])->filter(fn ($tag) => is_string($tag) && trim($tag) !== '')->unique()->take(18))
     <div class="channel-page__content">
         <div class="channel__posts">
+            <div class="channel__hero">
+                <div class="channel__hero-start">
+                    <span class="channel__hero-count">
+                        <x-repost-icon name="copy" size="17" />
+                        {{ number_format($posts->total()) }} yazı
+                    </span>
+                </div>
+                @if ($channelTags->isNotEmpty())
+                    <div class="channel__tags">
+                        <div class="channel__tags-list">
+                            @foreach ($channelTags as $tag)
+                                <a href="{{ route('tags.show', ['tag' => $tag]) }}">{{ $tag }}</a>
+                            @endforeach
+                        </div>
+                    </div>
+                @endif
+            </div>
+            <div class="feed">
         @forelse ($posts as $post)
             <article class="card post">
             <section class="card-body">
@@ -74,6 +120,7 @@
             </section>
         @endforelse
         @include('layouts._pagination', ['paginator' => $posts])
+            </div>
         </div>
     </div>
 @endsection
