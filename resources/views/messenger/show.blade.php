@@ -4,38 +4,92 @@
 
 @section('content')
     <article class="pm card card-body">
-        <header class="card-header">
-            <a href="{{ route('messenger.index') }}" class="link small">← Mesaj listesi</a>
-            <div class="user-box mt-2">
-                <span class="avatar"><img src="{{ $other?->avatarUrl() ?? asset('assets/img/noavatar.png') }}" alt="" width="44" height="44"></span>
-                <div class="user-box-content"><h1 class="h5 name">{{ $other?->displayName() ?? 'OgraFi üyesi' }}</h1><span class="meta">Özel konuşma</span></div>
-                @if ($other)<a href="{{ route('profiles.show', $other) }}" class="btn btn-secondary btn-sm">Profili gör</a>@endif
+        <header class="pm__header">
+            <h1 class="h3"><a href="{{ route('messenger.index') }}">Mesajlar</a></h1>
+            <div class="dropdown dropdown-md">
+                <button class="btn btn-secondary btn-xs btn-rounded" type="button" data-dropdown-toggle aria-expanded="false" aria-haspopup="menu" aria-controls="pmDialogMenu" aria-label="Mesaj menüsünü aç">
+                    <x-repost-icon name="more" size="18" class="color-gray" />
+                </button>
+                <ul class="pm__dropdown dropdown-menu dropdown-menu-end" id="pmDialogMenu">
+                    <li class="dropdown-menu-item dropdown-menu-item-sm"><a href="{{ route('messenger.index') }}">Mesaj listesi</a></li>
+                    @if ($other)
+                        <li class="dropdown-menu-item dropdown-menu-item-sm"><a href="{{ route('profiles.show', $other) }}">Profili görüntüle</a></li>
+                    @endif
+                </ul>
             </div>
         </header>
-        <div class="dialog__messages">
-            @forelse ($messages as $message)
-                <article class="comment card card-body {{ $message->user_id === auth()->id() ? 'is-own' : '' }}">
-                    <div class="user-box user-box-sm">
-                        <span class="avatar"><img src="{{ $message->user?->avatarUrl() ?? asset('assets/img/noavatar.png') }}" alt="" width="36" height="36"></span>
-                        <div class="user-box-content">
-                            <strong class="name">{{ $message->user?->displayName() ?? 'Silinmiş kullanıcı' }}</strong>
-                            <time class="meta" datetime="{{ $message->created_at->toAtomString() }}">{{ $message->created_at->format('d.m.Y H:i') }}</time>
-                        </div>
-                        @if ($message->read_at && $message->user_id === auth()->id())<span class="small color-gray">Okundu</span>@endif
+
+        <section class="pm-dialog">
+            <header class="pm-dialog__header">
+                <div class="pm-dialog__heading">
+                    <h2>{{ $other?->displayName() ?? 'OgraFi üyesi' }}</h2>
+                    <div class="pm-dialog__recipient">
+                        Konuştuğun kişi:
+                        @if ($other)
+                            <a class="pm_list" href="{{ route('profiles.show', $other) }}">{{ $other->displayName() }}</a>
+                        @else
+                            <span>Silinmiş kullanıcı</span>
+                        @endif
                     </div>
-                    <div class="comment__content"><p class="comment__text">{{ $message->body }}</p></div>
-                </article>
-            @empty
-                <p class="color-gray">Bu konuşmadaki ilk mesajı sen gönderebilirsin.</p>
-            @endforelse
+                </div>
+                @if ($other)
+                    <a class="btn btn-secondary btn-sm" href="{{ route('profiles.show', $other) }}">Profili gör</a>
+                @endif
+            </header>
+
+            <div class="pm-dialog__messages">
+                @forelse ($messages as $message)
+                    @php($isOwnMessage = (int) $message->user_id === (int) auth()->id())
+                    <article class="pm-dialog__message {{ $isOwnMessage ? 'is-own' : 'is-incoming' }}">
+                        <div class="pm-dialog__avatar">
+                            <img
+                                src="{{ $message->user?->avatarUrl() ?? asset('assets/img/noavatar.png') }}"
+                                alt="{{ $message->user?->displayName() ?? 'Silinmiş kullanıcı' }}"
+                                width="40"
+                                height="40"
+                                loading="lazy"
+                            >
+                        </div>
+                        <div class="pm-dialog__message-main">
+                            <div class="pm-dialog__meta">
+                                @if (! $isOwnMessage)
+                                    <a class="pm-dialog__author pm_list" href="{{ $message->user ? route('profiles.show', $message->user) : route('messenger.index') }}">
+                                        {{ $message->user?->displayName() ?? 'Silinmiş kullanıcı' }}
+                                    </a>
+                                @endif
+                                <time datetime="{{ $message->created_at->toAtomString() }}">{{ $message->created_at->format('d.m.Y H:i') }}</time>
+                                @if ($isOwnMessage)
+                                    <span class="pm-dialog__author">{{ $message->user?->displayName() ?? 'Sen' }}</span>
+                                @endif
+                            </div>
+                            <div class="pm-dialog__bubble">
+                                <div class="pm-dialog__text">{{ $message->body }}</div>
+                            </div>
+                            @if ($isOwnMessage && $message->read_at)
+                                <span class="small color-gray">Okundu</span>
+                            @endif
+                        </div>
+                    </article>
+                @empty
+                    <p class="color-gray">Bu konuşmadaki ilk mesajı sen gönderebilirsin.</p>
+                @endforelse
+            </div>
+
             {{ $messages->links() }}
-        </div>
-        <form action="{{ route('messenger.messages.store', $conversation) }}" method="POST" class="addcomment">
-            @csrf
-            <label class="form-label" for="message-body">Mesajın</label>
-            <textarea id="message-body" name="body" rows="4" maxlength="5000" required placeholder="Mesajını yaz...">{{ old('body') }}</textarea>
-            @error('body')<p class="color-red small">{{ $message }}</p>@enderror
-            <button class="btn btn-primary btn-md" type="submit">Mesaj gönder</button>
-        </form>
+
+            <form action="{{ route('messenger.messages.store', $conversation) }}" method="POST" class="pm-dialog__composer" id="dialog-message">
+                @csrf
+                <div class="pm-dialog__editor">
+                    <label class="visually-hidden" for="message-body">Mesajın</label>
+                    <textarea id="message-body" name="body" rows="5" maxlength="5000" required placeholder="Mesajını yaz...">{{ old('body') }}</textarea>
+                </div>
+                @error('body')
+                    <p class="small color-red">{{ $message }}</p>
+                @enderror
+                <div class="pm-dialog__composer-actions">
+                    <button class="btn btn-primary" type="submit">Mesaj gönder</button>
+                </div>
+            </form>
+        </section>
     </article>
 @endsection
