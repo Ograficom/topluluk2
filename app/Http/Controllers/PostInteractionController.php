@@ -136,6 +136,24 @@ class PostInteractionController extends Controller
         return redirect()->route('posts.show', $post)->withFragment('comments')->with('status', 'Seçilen yorumlar silindi.');
     }
 
+    public function updateComment(Request $request, Post $post, Comment $comment): RedirectResponse
+    {
+        $this->ensurePublished($post);
+        abort_unless($comment->post_id === $post->id, 404);
+        abort_unless($request->user()->is($comment->user) || $request->user()->is_admin, 403);
+
+        $validated = $request->validate([
+            'body' => ['required', 'string', 'max:5000'],
+        ]);
+
+        $comment->update(['body' => $validated['body']]);
+
+        return redirect()
+            ->route('posts.show', $post)
+            ->withFragment('comment-'.$comment->id)
+            ->with('status', 'Yorum güncellendi.');
+    }
+
     public function reactToComment(Request $request, Post $post, Comment $comment): RedirectResponse
     {
         $this->ensurePublished($post);
