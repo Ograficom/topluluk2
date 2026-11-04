@@ -332,14 +332,20 @@
             <a class="mobmenu__link {{ request()->routeIs('posts.index') ? 'is-active' : '' }}" href="{{ route('posts.index') }}" aria-label="Home">
                 <x-repost-icon name="home" size="20" /><span>Home</span>
             </a>
-            <a class="mobmenu__link {{ request()->routeIs('community.following') ? 'is-active' : '' }}" href="{{ auth()->check() ? route('community.following') : route('login') }}" aria-label="Navigation">
-                <x-repost-icon name="compass" size="20" /><span>Navigation</span>
-            </a>
+            <button class="mobmenu__link" type="button" data-side-panel-open="mobileAside" aria-controls="mobileAside" aria-expanded="false" aria-haspopup="dialog" title="Gezinme">
+                <x-repost-icon name="compass" size="20" /><span>Gezinme</span>
+            </button>
             <a class="mobmenu__link {{ request()->routeIs('channels.*') ? 'is-active' : '' }}" href="{{ route('channels.index') }}" aria-label="Channels">
                 <x-repost-icon name="channels" size="20" /><span>Channels</span>
             </a>
         </nav>
     </section>
+
+    @include('layouts._mobile-side-panel')
+
+    <button class="btn btn-white btn-md btn-circle gotop" type="button" data-gotop aria-label="Yukarı çık" aria-hidden="true" tabindex="-1">
+        <x-repost-icon name="chevron-up" size="18" class="color-gray" />
+    </button>
 
     <script src="{{ asset('assets/libs/fancyapp/fancybox.umd.js') }}"></script>
     <script src="{{ asset('assets/libs/fancyapp/carousel.umd.js') }}"></script>
