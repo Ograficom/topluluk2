@@ -22,6 +22,7 @@ class Post extends Model
         'excerpt',
         'body',
         'cover_image',
+        'media',
         'tags',
         'is_published',
         'published_at',
@@ -33,6 +34,7 @@ class Post extends Model
     {
         return [
             'tags' => 'array',
+            'media' => 'array',
             'is_published' => 'boolean',
             'published_at' => 'datetime',
             'is_adult' => 'boolean',
@@ -62,6 +64,37 @@ class Post extends Model
     public function bookmarkedBy(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
         return $this->belongsToMany(User::class, 'post_bookmarks')->withTimestamps();
+    }
+
+    public function galleryImageUrls(): array
+    {
+        return collect($this->media ?? [])
+            ->filter(fn ($path) => is_string($path) && trim($path) !== '')
+            ->map(function (string $path): ?string {
+                if (filter_var($path, FILTER_VALIDATE_URL)) {
+                    return in_array(parse_url($path, PHP_URL_SCHEME), ['http', 'https'], true) ? $path : null;
+                }
+
+                $path = ltrim($path, '/');
+
+                if (str_contains($path, '..')) {
+                    return null;
+                }
+
+                if (Str::startsWith($path, 'storage/')) {
+                    $path = Str::after($path, 'storage/');
+                }
+
+                if (Storage::disk('public')->exists($path)) {
+                    return asset('storage/'.$path);
+                }
+
+                return is_file(public_path($path)) ? asset($path) : null;
+            })
+            ->filter()
+            ->unique()
+            ->values()
+            ->all();
     }
 
     public function coverImageUrl(): ?string
