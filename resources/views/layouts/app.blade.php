@@ -328,21 +328,16 @@
     @endif
 
     <section class="mobmenu" data-scroll-menu>
-        <nav class="mobmenu__content" aria-label="Ana gezinme">
-            <a class="mobmenu__link {{ request()->routeIs('posts.index') ? 'is-active' : '' }}" href="{{ route('posts.index') }}">
-                <x-repost-icon name="home" size="20" /><span>Akış</span>
+        <nav class="mobmenu__content" aria-label="Mobile navigation">
+            <a class="mobmenu__link {{ request()->routeIs('posts.index') ? 'is-active' : '' }}" href="{{ route('posts.index') }}" aria-label="Home">
+                <x-repost-icon name="home" size="20" /><span>Home</span>
             </a>
-            <a class="mobmenu__link {{ request()->routeIs('channels.*') ? 'is-active' : '' }}" href="{{ route('channels.index') }}">
-                <x-repost-icon name="channels" size="20" /><span>Kanallar</span>
+            <a class="mobmenu__link {{ request()->routeIs('community.following') ? 'is-active' : '' }}" href="{{ auth()->check() ? route('community.following') : route('login') }}" aria-label="Navigation">
+                <x-repost-icon name="compass" size="20" /><span>Navigation</span>
             </a>
-            @auth
-                <a class="mobmenu__link {{ request()->routeIs('community.following') ? 'is-active' : '' }}" href="{{ route('community.following') }}"><x-repost-icon name="user" size="20" /><span>Takip</span></a>
-                <a class="mobmenu__link {{ request()->routeIs('favorites.index') ? 'is-active' : '' }}" href="{{ route('favorites.index') }}"><x-repost-icon name="bookmark" size="20" /><span>Favoriler</span></a>
-                <a class="mobmenu__link {{ request()->routeIs('messenger.*') ? 'is-active' : '' }}" href="{{ route('messenger.index') }}"><x-repost-icon name="message" size="20" /><span>Mesajlar</span></a>
-                <a class="mobmenu__link" href="{{ route('settings.edit') }}"><x-repost-icon name="setting" size="20" /><span>Ayarlar</span></a>
-            @else
-                <a class="mobmenu__link" href="{{ route('login') }}"><x-repost-icon name="user" size="20" /><span>Giriş</span></a>
-            @endauth
+            <a class="mobmenu__link {{ request()->routeIs('channels.*') ? 'is-active' : '' }}" href="{{ route('channels.index') }}" aria-label="Channels">
+                <x-repost-icon name="channels" size="20" /><span>Channels</span>
+            </a>
         </nav>
     </section>
 
