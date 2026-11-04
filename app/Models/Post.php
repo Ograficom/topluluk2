@@ -23,6 +23,7 @@ class Post extends Model
         'body',
         'cover_image',
         'media',
+        'video_url',
         'tags',
         'is_published',
         'published_at',
