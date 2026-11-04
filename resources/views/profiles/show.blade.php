@@ -28,7 +28,7 @@
                 </div>
             @endauth
 
-            <div class="profile__avatar">
+            <div class="profile__avatar {{ $user->isOnline() ? 'profile__online' : '' }}">
                 <img src="{{ $user->avatarUrl() }}" alt="{{ $user->displayName() }}" width="90" height="90">
             </div>
             <div class="profile__content">
@@ -200,7 +200,7 @@
                             <ul class="channel-subscriber-grid">
                                 @forelse ($profileFollowers as $follower)
                                     <li>
-                                        <a class="avatar" href="{{ route('profiles.show', $follower) }}" aria-label="{{ $follower->displayName() }}" title="{{ $follower->displayName() }}">
+                                        <a class="avatar {{ $follower->isOnline() ? 'online' : '' }}" href="{{ route('profiles.show', $follower) }}" aria-label="{{ $follower->displayName() }}" title="{{ $follower->displayName() }}">
                                             <img src="{{ $follower->avatarUrl() }}" alt="" width="40" height="40">
                                         </a>
                                     </li>
@@ -284,7 +284,7 @@
                         @forelse ($allProfileFollowers as $follower)
                             <li class="user-card">
                                 <a class="user-box" href="{{ route('profiles.show', $follower) }}">
-                                    <span class="avatar">
+                                    <span class="avatar {{ $follower->isOnline() ? 'online' : '' }}">
                                         <img src="{{ $follower->avatarUrl() }}" alt="" width="40" height="40" loading="lazy">
                                     </span>
                                     <span class="user-box-content">
