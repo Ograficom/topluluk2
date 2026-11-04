@@ -5214,3 +5214,74 @@ p {
     width: 100%;
   }
 }
+
+
+/* Repost-style guest sign-in modal */
+.auth-modal {
+  --modal-content-width: 420px;
+  --modal-content-radius: 28px;
+  --modal-viewport-offset: 24px;
+}
+.auth-modal .modal-content {
+  position: relative;
+}
+.auth-modal .signin {
+  width: 100%;
+  max-width: 350px;
+  margin: 12px auto;
+}
+.auth-modal .modal-close,
+.auth-modal .modal-back {
+  position: absolute;
+  top: 14px;
+  z-index: 2;
+}
+.auth-modal .modal-close { right: 14px; }
+.auth-modal .modal-back { left: 14px; }
+.auth-modal .signin > h2 {
+  margin: 12px 0 8px;
+  font-size: 1.55rem;
+}
+.auth-modal .signin > p {
+  margin: 0;
+}
+.auth-provider {
+  justify-content: center;
+  gap: 9px;
+}
+.auth-provider:disabled {
+  opacity: 1;
+  cursor: not-allowed;
+}
+.auth-provider__google,
+.auth-provider__yandex {
+  display: inline-grid;
+  width: 20px;
+  height: 20px;
+  flex: 0 0 20px;
+  place-items: center;
+  border-radius: 50%;
+  background: #fff;
+  font-weight: 800;
+}
+.auth-provider__google {
+  color: #4285f4;
+  font-size: 17px;
+}
+.auth-provider__yandex {
+  color: #f33;
+  font-size: 14px;
+}
+.auth-modal [hidden] {
+  display: none !important;
+}
+@media (max-width: 480px) {
+  .auth-modal {
+    --modal-content-width: calc(100vw - 28px);
+    --modal-content-radius: 24px;
+  }
+  .auth-modal .signin {
+    max-width: 100%;
+    padding-inline: 2px;
+  }
+}
