@@ -5,7 +5,8 @@
     ))->unique()->values();
     $mediaGroup = 'post-images-'.$post->id;
     $censored = $post->is_adult && ! auth()->user()?->show_adult_content;
-    $censoredKey = 'post-'.$post->id.'-media';
+    $videoCensoredKey = 'post-'.$post->id.'-video';
+    $imageCensoredKey = 'post-'.$post->id.'-images';
 @endphp
 
 @if (filled($post->video_url))
@@ -15,10 +16,10 @@
         data-player-script="{{ asset('assets/libs/playerjs/playerjs.js') }}"
     >
         @if ($censored)
-            <div class="post__censored" data-censored="{{ $censoredKey }}">
+            <div class="post__censored" data-censored="{{ $videoCensoredKey }}">
                 <div class="text-center post__censored-content">
                     <span class="post__censored-info">18+ content</span>
-                    <button type="button" class="btn btn-white btn-sm" data-censored-toggle="{{ $censoredKey }}">
+                    <button type="button" class="btn btn-white btn-sm" data-censored-toggle="{{ $videoCensoredKey }}">
                         <x-repost-icon name="eye" size="18" />
                         Show
                     </button>
@@ -35,10 +36,10 @@
 @if ($mediaUrls->count() > 1)
     <div class="post__media f-carousel is-media-loading" data-fancy-carousel>
         @if ($censored)
-            <div class="post__censored" data-censored="{{ $censoredKey }}">
+            <div class="post__censored" data-censored="{{ $imageCensoredKey }}">
                 <div class="text-center post__censored-content">
                     <span class="post__censored-info">18+ content</span>
-                    <button type="button" class="btn btn-white btn-sm" data-censored-toggle="{{ $censoredKey }}">
+                    <button type="button" class="btn btn-white btn-sm" data-censored-toggle="{{ $imageCensoredKey }}">
                         <x-repost-icon name="eye" size="18" />
                         Show
                     </button>
@@ -72,10 +73,10 @@
 @elseif ($mediaUrls->isNotEmpty())
     <div class="post__media">
         @if ($censored)
-            <div class="post__censored" data-censored="{{ $censoredKey }}">
+            <div class="post__censored" data-censored="{{ $imageCensoredKey }}">
                 <div class="text-center post__censored-content">
                     <span class="post__censored-info">18+ content</span>
-                    <button type="button" class="btn btn-white btn-sm" data-censored-toggle="{{ $censoredKey }}">
+                    <button type="button" class="btn btn-white btn-sm" data-censored-toggle="{{ $imageCensoredKey }}">
                         <x-repost-icon name="eye" size="18" />
                         Show
                     </button>
