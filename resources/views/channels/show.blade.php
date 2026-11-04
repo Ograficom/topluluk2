@@ -5,7 +5,13 @@
 @section('content')
     <div class="channel-page">
         <section class="channel card card-body">
-            <div class="channel__icon"><x-repost-icon name="image" size="24" /></div>
+            <div class="channel__icon">
+                @if ($channel->image_path)
+                    <img src="{{ asset('storage/'.$channel->image_path) }}" alt="{{ $channel->name }}" width="64" height="64">
+                @else
+                    <x-repost-icon name="image" size="24" />
+                @endif
+            </div>
             <div class="channel__info">
                 <div class="channel__overview">
                     <div class="channel__content">
