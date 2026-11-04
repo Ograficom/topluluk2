@@ -143,7 +143,7 @@
     @php($feedPage = request()->routeIs('posts.index'))
     @php($statsPage = request()->routeIs('stats.index'))
     <main class="container">
-        <div class="main {{ $settingsPage || $profilePage || $postCreatePage ? 'main__grid-full' : 'main__grid' }}">
+        <div class="main {{ $settingsPage || $postCreatePage ? 'main__grid-full' : 'main__grid' }}">
             <aside class="sidebar" aria-label="Kanallar ve yazarlar">
                 <div class="sidebar__body">
                     <section class="sidebar__section">
