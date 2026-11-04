@@ -101,7 +101,7 @@
                             </li>
                             @if (auth()->user()->is_admin)
                                 <li class="dropdown-menu-item dropdown-menu-item-lg">
-                                    <a href="{{ route('channels.create') }}" aria-label="Kategori ekle" title="Kategori ekle"><x-repost-icon name="plus" size="20" class="color-gray" /></a>
+                                    <a href="{{ route('channels.create') }}" aria-label="Kategori oluştur" title="Kategori oluştur"><x-repost-icon name="plus" size="20" class="color-gray" /><span>Kategori oluştur</span></a>
                                 </li>
                                 <li class="dropdown-menu-item dropdown-menu-item-lg">
                                     <a href="{{ url('/admin') }}"><x-repost-icon name="adminpanel" size="20" class="color-gray" /><span>Yönetim paneli</span></a>
