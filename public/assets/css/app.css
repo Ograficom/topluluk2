@@ -5132,42 +5132,68 @@ p {
 }
 
 
-/* Channel edit: prominent field guidance */
+/* Channel edit: compact branded guidance cards */
 .channel-edit .channel-edit__field-hint {
     display: flex !important;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 5px;
-    width: 100%;
-    box-sizing: border-box;
-    margin-top: 10px !important;
-    padding: 11px 13px !important;
-    border: 1px solid #bfdbfe !important;
-    border-left: 4px solid #2563eb !important;
-    border-radius: 9px !important;
-    background: #eff6ff !important;
-    color: #1e40af !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 9px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    margin-top: 12px !important;
+    padding: 13px 14px !important;
+    border: 1px solid #d7e6ff !important;
+    border-left: 3px solid #1769ff !important;
+    border-radius: 12px !important;
+    background: #f5f9ff !important;
+    color: #42536b !important;
     font-size: .84rem !important;
-    font-weight: 500;
-    line-height: 1.5;
+    font-weight: 400 !important;
+    line-height: 1.55 !important;
 }
 .channel-edit .channel-edit__field-hint-label {
-    display: inline-flex;
-    align-items: center;
-    width: fit-content;
-    padding: 3px 7px;
-    border-radius: 5px;
-    background: #dbeafe;
-    color: #1d4ed8;
-    font-size: .66rem;
-    font-weight: 800;
-    letter-spacing: .045em;
-    line-height: 1.3;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    width: fit-content !important;
+    padding: 5px 9px !important;
+    border: 1px solid #1769ff !important;
+    border-radius: 999px !important;
+    background: #1769ff !important;
+    color: #fff !important;
+    font-size: .68rem !important;
+    font-weight: 800 !important;
+    letter-spacing: .035em !important;
+    line-height: 1 !important;
+}
+.channel-edit .channel-edit__field-hint-icon {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 14px !important;
+    height: 14px !important;
+    border-radius: 50% !important;
+    background: rgba(255,255,255,.2) !important;
+    color: #fff !important;
+    font-size: 10px !important;
+    font-weight: 800 !important;
+    line-height: 1 !important;
+}
+.channel-edit .channel-edit__field-hint-text {
+    display: block !important;
+    width: 100% !important;
+    color: #42536b !important;
+    font-size: .82rem !important;
+    line-height: 1.55 !important;
 }
 @media (max-width: 640px) {
     .channel-edit .channel-edit__field-hint {
-        margin-top: 9px !important;
-        padding: 10px 11px !important;
+        gap: 8px !important;
+        margin-top: 10px !important;
+        padding: 12px !important;
+        font-size: .8rem !important;
+    }
+    .channel-edit .channel-edit__field-hint-text {
         font-size: .8rem !important;
     }
 }
