@@ -39,7 +39,7 @@ Route::get('/last-comments', [CommunityController::class, 'latestComments'])->na
 Route::get('/tags', [CommunityController::class, 'tags'])->name('tags.index');
 Route::get('/tags/{tag}', [CommunityController::class, 'tag'])->where('tag', '.*')->name('tags.show');
 Route::get('/tags-catalog/{tag}', [CommunityController::class, 'tag'])->where('tag', '.*')->name('legacy.tag');
-Route::get('/pages/{slug}', [CommunityController::class, 'page'])->whereIn('slug', ['about', 'rules', 'privacy'])->name('pages.show');
+Route::get('/pages/{slug}', [CommunityController::class, 'page'])->where('slug', '[A-Za-z0-9_-]+')->name('pages.show');
 Route::get('/about', fn () => redirect()->route('pages.show', 'about'));
 Route::get('/rules', fn () => redirect()->route('pages.show', 'rules'));
 Route::get('/privacy', fn () => redirect()->route('pages.show', 'privacy'));
