@@ -74,6 +74,7 @@ class User extends Authenticatable implements FilamentUser
             'notify_posts' => 'boolean',
             'notify_announcements' => 'boolean',
             'verification_requested_at' => 'datetime',
+            'last_seen_at' => 'datetime',
         ];
     }
 
@@ -185,6 +186,11 @@ class User extends Authenticatable implements FilamentUser
         return $this->avatar_path
             ? asset('storage/'.$this->avatar_path)
             : asset('assets/img/noavatar.png');
+    }
+
+    public function isOnline(): bool
+    {
+        return $this->last_seen_at !== null && $this->last_seen_at->greaterThanOrEqualTo(now()->subMinutes(5));
     }
 
     public function canAccessPanel(Panel $panel): bool
