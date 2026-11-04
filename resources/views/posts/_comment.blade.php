@@ -81,14 +81,37 @@
                         <a href="mailto:{{ config('mail.from.address') }}?subject={{ rawurlencode('Yorum bildirimi') }}&amp;body={{ rawurlencode(route('posts.show', $post).'#comment-'.$comment->id) }}">Yorumu bildir</a>
                     </li>
                     @if (auth()->user()?->is($comment->user) || auth()->user()?->is_admin)
-                        <li class="dropdown-menu-item dropdown-menu-item-sm is-disabled">
-                            <span aria-disabled="true" title="Yorum düzenleme henüz desteklenmiyor">Yorumu düzenle</span>
+                        <li class="dropdown-menu-item dropdown-menu-item-sm">
+                            <a href="#comment-edit-{{ $comment->id }}" data-comment-edit-toggle="{{ $comment->id }}">Edit</a>
                         </li>
                     @endif
                 </ul>
             </div>
         </div>
     </div>
+
+    @if (auth()->user()?->is($comment->user) || auth()->user()?->is_admin)
+        <form
+            id="comment-edit-{{ $comment->id }}"
+            class="card card-body"
+            action="{{ route('posts.comments.update', ['post' => $post, 'comment' => $comment]) }}"
+            method="POST"
+            hidden
+            data-comment-edit-form
+        >
+            @csrf
+            @method('PATCH')
+            <label class="visually-hidden" for="comment-edit-body-{{ $comment->id }}">Edit comment</label>
+            <textarea id="comment-edit-body-{{ $comment->id }}" name="body" rows="4" maxlength="5000" required>{{ $comment->body }}</textarea>
+            @error('body')
+                <p class="small color-red">{{ $message }}</p>
+            @enderror
+            <div class="d-flex justify-content-end gap-2">
+                <button class="btn btn-secondary btn-sm" type="button" data-comment-edit-cancel="{{ $comment->id }}">Cancel</button>
+                <button class="btn btn-primary btn-sm" type="submit">Save</button>
+            </div>
+        </form>
+    @endif
 
     @if ($comment->replies->isNotEmpty())
         <div class="comment__children">
