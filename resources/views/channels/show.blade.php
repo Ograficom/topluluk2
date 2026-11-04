@@ -16,6 +16,9 @@
                 <div class="channel__overview">
                     <div class="channel__content">
                         <h1 class="channel__title h3">{{ $channel->name }}</h1>
+                        @if (auth()->user()?->is_admin)
+                            <a class="link-accent" href="{{ route('channels.edit', $channel) }}">Kategoriyi düzenle</a>
+                        @endif
                         <div class="channel__description trim" data-trim data-trim-limit="2">
                             <div class="channel__description-text trim__content" data-trim-content>{{ $channel->description }}</div>
                             <button class="trim__toggle" data-trim-toggle type="button" hidden>
