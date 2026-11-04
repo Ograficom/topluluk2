@@ -113,7 +113,10 @@
                         </form>
                     </div>
                 @else
-                    <a href="{{ route('login') }}" class="btn btn-secondary btn-rounded btn-md">Giriş yap</a>
+                    <a href="{{ route('login') }}" class="btn btn-primary btn-rounded btn-md" aria-label="Sign in">
+                        <x-repost-icon name="user" size="18" />
+                        <span>Sign in</span>
+                    </a>
                 @endauth
             </div>
         </div>
@@ -161,7 +164,7 @@
                         </ul>
                     </section>
                     <section class="sidebar__section">
-                        <h2 class="sidebar__title">Yazarlar</h2>
+                        <h2 class="sidebar__title">Blogs</h2>
                         <ul class="sidebar__list">
                             @foreach ($sidebarAuthors as $author)
                                 <li>
