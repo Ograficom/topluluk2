@@ -115,7 +115,7 @@
 
                         <div class="channel-image-upload__content">
                             <strong>Profil görseli</strong>
-                            <p>Kanalını temsil eden bir görsel yükle. Kare görseller en iyi sonucu verir.</p>
+                            <span class="channel-image-upload__hint">JPG, PNG veya WebP · En fazla 5 MB</span>
 
                             <div class="channel-image-upload__actions">
                                 <label class="channel-image-upload__button" for="channel-image">
@@ -124,8 +124,6 @@
                                 </label>
                                 <span class="channel-image-upload__filename" id="channel-image-filename">Henüz dosya seçilmedi</span>
                             </div>
-
-                            <span class="channel-image-upload__hint">JPG, PNG veya WebP · En fazla 5 MB</span>
 
                             @if ($channel->image_path)
                                 <label class="channel-image-upload__remove">
