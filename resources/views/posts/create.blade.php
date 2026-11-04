@@ -45,6 +45,10 @@
                         <label class="addpost__label" for="post-body">Yazı içeriği</label>
                         <textarea id="post-body" name="body" rows="14" maxlength="100000" placeholder="Hikâyeni burada anlat..." required>{{ old('body', $post->body ?? '') }}</textarea>
                     </li>
+                    <li>
+                        <label class="addpost__label" for="post-video-url">Video bağlantısı (HTTPS)</label>
+                        <input id="post-video-url" name="video_url" type="url" value="{{ old('video_url', $post->video_url ?? '') }}" maxlength="2048" placeholder="https://...">
+                    </li>
                     <li class="addpost__actions">
                         <label class="addpost__label" for="post-media">Galeri görselleri (en fazla 10)</label>
                         <input class="form-attachments" id="post-media" name="media[]" type="file" accept="image/jpeg,image/png,image/gif,image/webp" multiple>
