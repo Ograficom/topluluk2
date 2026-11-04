@@ -42,6 +42,12 @@
                         @endif
                     </div>
                     <div class="profile__meta">
+                        @if ($topPosition)
+                            <a href="{{ route('members.index') }}" class="profile__top">
+                                <x-repost-icon name="bolt" size="20" />
+                                Top {{ $topPosition }}
+                            </a>
+                        @endif
                         @if ($publicUsername = $user->publicUsername())
                             <span class="small color-gray">{{ '@'.$publicUsername }}</span>
                         @endif
@@ -86,7 +92,8 @@
         </section>
 
         <div class="main main__grid-feed">
-            <div class="tabs-content" data-tabs-container="profile">
+            <div>
+                <div class="tabs-content" data-tabs-container="profile">
                 <section class="tabs-panel is-active" id="profile-panel-posts" role="tabpanel" aria-labelledby="profile-tab-posts" data-tab-panel="posts" tabindex="0">
                     @forelse ($posts as $post)
                         <article class="card post">
@@ -178,10 +185,30 @@
                     @endforelse
                     @include('layouts._pagination', ['paginator' => $comments])
                 </section>
+                </div>
             </div>
 
             <aside class="profile__aside">
                 <div class="widgets">
+                    <section class="widget card card-body">
+                        <header><h2 class="widget__title h6">Aboneler</h2></header>
+                        <div class="widget__content widget__content--bleed">
+                            <ul class="widget__avatars">
+                                @forelse ($profileFollowers as $follower)
+                                    <li>
+                                        <a class="avatar" href="{{ route('profiles.show', $follower) }}" aria-label="{{ $follower->displayName() }}" title="{{ $follower->displayName() }}">
+                                            <img src="{{ $follower->avatarUrl() }}" alt="" width="40" height="40">
+                                        </a>
+                                    </li>
+                                @empty
+                                    <li class="small color-gray">Henüz abone yok.</li>
+                                @endforelse
+                            </ul>
+                        </div>
+                        <footer class="widget__footer">
+                            <span class="small color-gray">{{ number_format($followersCount) }} toplam takipçi</span>
+                        </footer>
+                    </section>
                     <section class="widget card card-body">
                         <header><h2 class="widget__title h6">Hakkında</h2></header>
                         <div class="widget__content profile__about">
