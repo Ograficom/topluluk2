@@ -408,6 +408,31 @@
     <script src="{{ asset('assets/libs/sharer/sharer.min.js') }}"></script>
     <script src="{{ asset('assets/js/app.js') }}"></script>
     <script src="{{ asset('assets/js/init.js') }}"></script>
+    @guest
+    <script>
+    (() => {
+        const modal = document.querySelector('[data-modal="login"]');
+        if (!modal) return;
+        const options = modal.querySelector('[data-auth-step="options"]');
+        const email = modal.querySelector('[data-auth-step="email"]');
+        modal.addEventListener('click', (event) => {
+            if (event.target.closest('[data-auth-email]')) {
+                options.hidden = true;
+                email.hidden = false;
+                email.querySelector('input[name="login_name"]')?.focus();
+            }
+            if (event.target.closest('[data-auth-back]')) {
+                email.hidden = true;
+                options.hidden = false;
+            }
+        });
+        modal.addEventListener('close', () => {
+            email.hidden = true;
+            options.hidden = false;
+        });
+    })();
+    </script>
+    @endguest
     @stack('scripts')
 </body>
 </html>
