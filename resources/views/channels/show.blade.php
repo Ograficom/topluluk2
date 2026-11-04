@@ -137,7 +137,7 @@
         <section class="tabs-panel" id="channel-panel-comments" role="tabpanel" aria-labelledby="channel-tab-comments" data-tab-panel="comments" tabindex="0">
             <div class="comments-tree-list">
                 @forelse ($comments as $comment)
-                    @include('posts._comment', ['comment' => $comment, 'post' => $comment->post])
+                    @include('posts._comment', ['comment' => $comment, 'post' => $comment->post, 'allowModeration' => false])
                 @empty
                     <section class="card card-body empty-state">
                         <h2 class="h4">Henüz yorum yok</h2>
