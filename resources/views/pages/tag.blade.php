@@ -3,11 +3,22 @@
 @section('title', '#'.$tag)
 
 @section('content')
-    <header class="hero__header-main"><div><h1 class="h3">#{{ $tag }}</h1><p class="small color-gray">Bu etikete sahip yazılar.</p></div><a href="{{ route('tags.index') }}" class="link">Tüm etiketler</a></header>
-    @forelse ($posts as $post)
-        @include('posts._card', ['post' => $post])
-    @empty
-        <section class="card card-body empty-state"><h2 class="h4">Bu etikette henüz yazı yok</h2></section>
-    @endforelse
-    {{ $posts->links() }}
+    <section class="feed">
+        <section class="hero">
+            <h1 class="h2 hero__title">#{{ $tag }}</h1>
+            <div class="speedbar">
+                <a href="{{ route('posts.index') }}">OgraFi</a>
+                <span>/</span>
+                <a href="{{ route('tags.index') }}">Etiket bulutu</a>
+                <span>/</span>
+                <span>{{ $tag }}</span>
+            </div>
+        </section>
+        @forelse ($posts as $post)
+            @include('posts._card', ['post' => $post])
+        @empty
+            <section class="card card-body empty-state"><h2 class="h4">Bu etikette henüz yazı yok</h2></section>
+        @endforelse
+        @include('layouts._pagination', ['paginator' => $posts])
+    </section>
 @endsection
