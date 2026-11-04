@@ -126,18 +126,9 @@
                 </div>
             </section>
 
-            @if ($post->coverImageUrl())
+            @if ($post->coverImageUrl() || count($post->galleryImageUrls()) > 0)
                 <section class="card-body post__short-media">
-                    <div class="post__media">
-                        <a href="{{ route('posts.show', $post) }}">
-                            <img
-                                src="{{ $post->coverImageUrl() }}"
-                                alt="{{ $post->title }}"
-                                class="post__media-image"
-                                loading="lazy"
-                            >
-                        </a>
-                    </div>
+                    @include('posts._media', ['post' => $post])
                 </section>
             @endif
 
