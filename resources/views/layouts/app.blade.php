@@ -216,9 +216,6 @@
 
                 @unless ($profilePage || $channelPage || $postCreatePage)
                 <aside class="main__widgets" aria-label="Sağ sütun">
-                @unless ($statsPage || $feedPage)
-                    <div class="side-panel__body">
-                @endunless
                     <div class="widgets">
                         <section class="widget card card-body">
                             <header><h2 class="widget__title h6">Etiketler</h2></header>
@@ -344,11 +341,8 @@
                                 </ul>
                             </div>
                         </section>
+                        @include('layouts._footer')
                     </div>
-                @unless ($statsPage || $feedPage)
-                    </div>
-                @endunless
-                @include('layouts._footer')
                 </aside>
                 @endunless
             @endif
