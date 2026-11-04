@@ -1,4 +1,4 @@
-<article class="comment" id="comment-{{ $comment->id }}">
+<article class="comment {{ ($channelCommentCard ?? false) ? 'card card-body' : '' }}" id="comment-{{ $comment->id }}">
     @if (auth()->user()?->is_admin && ($allowModeration ?? true))
         <div class="comment__admin">
             <input class="form-check-input" type="checkbox" name="selected_comments[]" value="{{ $comment->id }}" form="{{ $moderationFormId ?? 'comment-moderation-form' }}" aria-label="{{ $comment->user?->displayName() ?? 'Kullanıcı' }} yorumunu seç">
@@ -45,6 +45,12 @@
                     </li>
                 @endforeach
             </ul>
+        @endif
+        @if (($showPostLink ?? false) && $comment->post)
+            <div class="comment__news">
+                <span>Yazıda:</span>
+                <a class="link" href="{{ route('posts.show', $comment->post) }}">{{ $comment->post->title }}</a>
+            </div>
         @endif
         <div class="comment__options">
             @auth
