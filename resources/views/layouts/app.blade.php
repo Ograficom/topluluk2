@@ -155,7 +155,11 @@
                             @forelse ($navigationChannels as $channel)
                                 <li>
                                     <a href="{{ route('channels.show', $channel) }}" class="channel-icon no-icon" aria-label="{{ $channel->name }}" title="{{ $channel->name }}">
-                                        <x-repost-icon name="image" size="16" />
+                                        @if ($channel->image_path)
+                                            <img src="{{ asset('storage/'.$channel->image_path) }}" alt="" width="50" height="50" loading="lazy">
+                                        @else
+                                            <x-repost-icon name="image" size="16" />
+                                        @endif
                                     </a>
                                 </li>
                             @empty
