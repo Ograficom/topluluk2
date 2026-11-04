@@ -3,6 +3,8 @@
 @section('title', $channel->name)
 
 @section('content')
+
+    @php($channelTags = $posts->getCollection()->flatMap(fn ($post) => $post->tags ?? [])->filter(fn ($tag) => is_string($tag) && trim($tag) !== '')->unique()->take(18))
     <div class="channel-page">
         <section class="channel card card-body">
             @if (auth()->user()?->is_admin)
