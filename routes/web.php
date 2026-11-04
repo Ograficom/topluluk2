@@ -107,6 +107,8 @@ Route::middleware('auth')->group(function (): void {
 Route::get('/posts/{post:slug}', [PostController::class, 'show'])->name('posts.show');
 Route::get('/channels', [ChannelController::class, 'index'])->name('channels.index');
 Route::get('/channels/create', [ChannelController::class, 'create'])->middleware('auth')->name('channels.create');
+Route::get('/channels/{channel:slug}/edit', [ChannelController::class, 'edit'])->middleware('auth')->name('channels.edit');
+Route::patch('/channels/{channel:slug}', [ChannelController::class, 'update'])->middleware(['auth', 'throttle:10,1'])->name('channels.update');
 Route::post('/channels', [ChannelController::class, 'store'])->middleware(['auth', 'throttle:10,1'])->name('channels.store');
 Route::get('/channels/{channel:slug}', [ChannelController::class, 'show'])->name('channels.show');
 Route::get('/users/{identifier}', [ProfileController::class, 'show'])->name('profiles.show');
