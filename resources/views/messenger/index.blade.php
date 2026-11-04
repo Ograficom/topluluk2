@@ -49,7 +49,39 @@
                     </div>
                 @endforelse
             </div>
+            <label class="pm-unread-filter form-check form-switch">
+                <span class="pm-unread-filter__label">Sadece okunmamış mesajları göster</span>
+                <input class="form-check-input pm-unread-filter__input" type="checkbox" data-pm-unread-filter role="switch" aria-label="Sadece okunmamış mesajları göster">
+            </label>
+            <span class="pm-no-messages small color-gray" data-pm-empty hidden>Okunmamış mesaj yok</span>
         </div>
         {{ $conversations->links() }}
     </article>
 @endsection
+
+@push('scripts')
+    <script>
+        (() => {
+            const filter = document.querySelector('[data-pm-unread-filter]');
+            const items = Array.from(document.querySelectorAll('.pm-list .pm-item'));
+            const empty = document.querySelector('[data-pm-empty]');
+
+            if (!filter || !items.length) return;
+
+            const applyFilter = () => {
+                let visibleCount = 0;
+
+                items.forEach((item) => {
+                    const visible = !filter.checked || item.classList.contains('is-unread');
+                    item.hidden = !visible;
+                    if (visible) visibleCount += 1;
+                });
+
+                if (empty) empty.hidden = !filter.checked || visibleCount > 0;
+            };
+
+            filter.addEventListener('change', applyFilter);
+            applyFilter();
+        })();
+    </script>
+@endpush
