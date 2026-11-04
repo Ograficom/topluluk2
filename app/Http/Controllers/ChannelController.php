@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Channel;
+use App\Models\Comment;
 use App\Models\Post;
 use App\Models\PostReaction;
 use Illuminate\Database\Eloquent\Builder;
@@ -104,7 +105,27 @@ class ChannelController extends Controller
             }
         });
 
-        return view('channels.show', compact('channel', 'posts', 'isSubscribed'));
+        $comments = Comment::query()
+            ->whereNull('parent_id')
+            ->whereHas('post', fn (Builder $query) => $query->where('channel_id', $channel->id)->published())
+            ->with(['user', 'post', 'replies.user'])
+            ->withCount(['reactions', 'replies'])
+            ->when($viewer, function (Builder $query) use ($viewer): void {
+                $query->withExists([
+                    'reactions as viewer_reacted' => fn (Builder $reactions) => $reactions->where('user_id', $viewer->id),
+                ])->with([
+                    'replies' => fn ($replies) => $replies
+                        ->withCount('reactions')
+                        ->withExists([
+                            'reactions as viewer_reacted' => fn (Builder $reactions) => $reactions->where('user_id', $viewer->id),
+                        ]),
+                ]);
+            })
+            ->latest()
+            ->paginate(15, ['*'], 'comments')
+            ->withQueryString();
+
+        return view('channels.show', compact('channel', 'posts', 'comments', 'isSubscribed'));
     }
 
     private function ensureAdmin(Request $request): void
