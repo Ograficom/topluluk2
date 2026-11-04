@@ -113,7 +113,7 @@
                         </form>
                     </div>
                 @else
-                    <a href="{{ route('login') }}" class="btn btn-primary btn-rounded btn-md" aria-label="Sign in">
+                    <a href="{{ route('login') }}" class="btn btn-primary btn-rounded" aria-label="Sign in">
                         <x-repost-icon name="user" size="18" />
                         <span>Sign in</span>
                     </a>
