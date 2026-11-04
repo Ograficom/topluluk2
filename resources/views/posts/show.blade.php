@@ -60,7 +60,7 @@
             </div>
         </header>
 
-        @if ($post->coverImageUrl() || count($post->galleryImageUrls()) > 0)
+        @if ($post->coverImageUrl() || count($post->galleryImageUrls()) > 0 || filled($post->video_url))
             <div class="post__media-full">
                 @include('posts._media', ['post' => $post])
             </div>
