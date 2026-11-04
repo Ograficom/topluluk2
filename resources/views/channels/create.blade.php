@@ -15,7 +15,7 @@
             </div>
         @endif
 
-        <form class="setting__box setting__list" action="{{ route('channels.store') }}" method="POST">
+        <form class="setting__box setting__list" action="{{ route('channels.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <label class="setting__list-item" for="channel-name">
                 <span class="setting__list-label">Kategori adı</span>
@@ -27,6 +27,13 @@
                 <span class="setting__list-label">URL adresi (isteğe bağlı)</span>
                 <span class="setting__list-value">
                     <input id="channel-slug" name="slug" type="text" value="{{ old('slug') }}" maxlength="255" placeholder="Otomatik oluşturulur">
+                </span>
+            </label>
+            <label class="setting__list-item" for="channel-image">
+                <span class="setting__list-label">Kategori profil resmi</span>
+                <span class="setting__list-value">
+                    <input id="channel-image" name="image" type="file" accept="image/jpeg,image/png,image/webp">
+                    <span class="small color-gray">JPG, PNG veya WebP · En fazla 5 MB</span>
                 </span>
             </label>
             <label class="setting__list-item" for="channel-description">
