@@ -71,19 +71,11 @@
             </div>
         @endif
     </div>
-    <div class="hero__header-main">
-        <div>
-            <h1 class="h3 feed-title">{{ filled($search) ? 'Arama sonuçları' : 'Keşfet' }}</h1>
-            @if (filled($search))
-                <p class="color-gray">“{{ $search }}” için bulunan yazılar</p>
-            @else
-                <p class="color-gray">Topluluktan yeni hikâyeler ve fikirler</p>
-            @endif
-        </div>
-        @if (filled($search))
+    @if (filled($search))
+        <div class="d-flex justify-content-end">
             <a class="btn btn-secondary-ghost btn-sm" href="{{ route('posts.index') }}">Aramayı temizle</a>
-        @endif
-    </div>
+        </div>
+    @endif
 
     @forelse ($posts as $post)
         <article class="card post">
