@@ -60,13 +60,9 @@
             </div>
         </header>
 
-        @if ($post->coverImageUrl())
+        @if ($post->coverImageUrl() || count($post->galleryImageUrls()) > 0)
             <div class="post__media-full">
-                <div class="post__media">
-                    <a href="{{ $post->coverImageUrl() }}" data-fancybox="full-post">
-                        <img src="{{ $post->coverImageUrl() }}" alt="{{ $post->title }}" class="post__media-image">
-                    </a>
-                </div>
+                @include('posts._media', ['post' => $post])
             </div>
         @endif
 
