@@ -102,6 +102,8 @@ class PostController extends Controller
             'excerpt' => ['required', 'string', 'max:500'],
             'body' => ['required', 'string', 'max:100000'],
             'cover_image' => ['nullable', 'image', 'mimes:jpg,jpeg,png,gif,webp', 'max:5120'],
+            'media' => ['nullable', 'array', 'max:10'],
+            'media.*' => ['image', 'mimes:jpg,jpeg,png,gif,webp', 'max:5120'],
             'tags' => ['nullable', 'string', 'max:500'],
             'is_adult' => ['sometimes', 'boolean'],
         ]);
@@ -122,6 +124,15 @@ class PostController extends Controller
             throw new \RuntimeException('The post cover image could not be stored.');
         }
 
+        $mediaPaths = [];
+        foreach ($request->file('media', []) as $mediaFile) {
+            $mediaPath = $mediaFile->store('posts/gallery', 'public');
+            if (! $mediaPath) {
+                throw new \RuntimeException('A gallery image could not be stored.');
+            }
+            $mediaPaths[] = $mediaPath;
+        }
+
         $tags = collect(explode(',', $validated['tags'] ?? ''))
             ->map(fn (string $tag): string => trim($tag))
             ->filter()
@@ -138,6 +149,7 @@ class PostController extends Controller
             'excerpt' => $validated['excerpt'],
             'body' => $validated['body'],
             'cover_image' => $coverImage,
+            'media' => $mediaPaths,
             'tags' => $tags,
             'is_published' => true,
             'published_at' => now(),
@@ -156,6 +168,10 @@ class PostController extends Controller
             'excerpt' => ['required', 'string', 'max:500'],
             'body' => ['required', 'string', 'max:100000'],
             'cover_image' => ['nullable', 'image', 'mimes:jpg,jpeg,png,gif,webp', 'max:5120'],
+            'media' => ['nullable', 'array', 'max:10'],
+            'media.*' => ['image', 'mimes:jpg,jpeg,png,gif,webp', 'max:5120'],
+            'remove_media' => ['nullable', 'array', 'max:10'],
+            'remove_media.*' => ['string', 'max:500'],
             'tags' => ['nullable', 'string', 'max:500'],
             'is_adult' => ['sometimes', 'boolean'],
             'remove_cover' => ['sometimes', 'boolean'],
@@ -182,7 +198,24 @@ class PostController extends Controller
             ->all();
 
         $oldCover = $post->cover_image;
+        $existingMedia = collect($post->media ?? []);
+        $removeMedia = collect($validated['remove_media'] ?? []);
+        $removedMedia = $existingMedia->filter(fn (string $path): bool => $removeMedia->contains($path));
+        foreach ($removedMedia as $mediaPath) {
+            Storage::disk('public')->delete($mediaPath);
+        }
+        $mediaPaths = $existingMedia->reject(fn (string $path): bool => $removeMedia->contains($path))->values();
+
+        foreach ($request->file('media', []) as $mediaFile) {
+            $mediaPath = $mediaFile->store('posts/gallery', 'public');
+            if (! $mediaPath) {
+                throw new \RuntimeException('A gallery image could not be stored.');
+            }
+            $mediaPaths->push($mediaPath);
+        }
+
         $post->fill([
+            'media' => $mediaPaths->all(),
             'channel_id' => $validated['channel_id'] ?? null,
             'title' => $validated['title'],
             'slug' => $slug,
