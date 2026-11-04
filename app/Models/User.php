@@ -99,6 +99,11 @@ class User extends Authenticatable implements FilamentUser
         return $this->belongsToMany(self::class, 'user_follows', 'follower_id', 'following_id')->withTimestamps();
     }
 
+    public function channels(): BelongsToMany
+    {
+        return $this->belongsToMany(Channel::class, 'channel_subscriptions')->withTimestamps();
+    }
+
     public function followers(): BelongsToMany
     {
         return $this->belongsToMany(self::class, 'user_follows', 'following_id', 'follower_id')->withTimestamps();
