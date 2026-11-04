@@ -1,5 +1,5 @@
 <article class="comment" id="comment-{{ $comment->id }}">
-    @if (auth()->user()?->is_admin)
+    @if (auth()->user()?->is_admin && ($allowModeration ?? true))
         <div class="comment__admin">
             <input class="form-check-input" type="checkbox" name="selected_comments[]" value="{{ $comment->id }}" form="{{ $moderationFormId ?? 'comment-moderation-form' }}" aria-label="{{ $comment->user?->displayName() ?? 'Kullanıcı' }} yorumunu seç">
         </div>
