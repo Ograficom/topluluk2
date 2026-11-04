@@ -193,7 +193,7 @@
                     <section class="widget card card-body">
                         <header><h2 class="widget__title h6">Aboneler</h2></header>
                         <div class="widget__content widget__content--bleed">
-                            <ul class="widget__avatars">
+                            <ul class="channel-subscriber-grid">
                                 @forelse ($profileFollowers as $follower)
                                     <li>
                                         <a class="avatar" href="{{ route('profiles.show', $follower) }}" aria-label="{{ $follower->displayName() }}" title="{{ $follower->displayName() }}">
@@ -257,7 +257,9 @@
                         </div>
                     </section>
                 </div>
-                @include('layouts._footer')
+                <div class="profile__aside-footer">
+                    @include('layouts._footer')
+                </div>
             </aside>
         </div>
     </article>
