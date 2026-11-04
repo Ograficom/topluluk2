@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Illuminate\View\View;
@@ -50,6 +51,62 @@ class ChannelController extends Controller
         $this->ensureAdmin($request);
 
         return view('channels.create');
+    }
+
+    public function edit(Request $request, Channel $channel): View
+    {
+        $this->ensureAdmin($request);
+
+        return view('channels.edit', compact('channel'));
+    }
+
+    public function update(Request $request, Channel $channel): RedirectResponse
+    {
+        $this->ensureAdmin($request);
+
+        $validated = $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'slug' => ['nullable', 'string', 'max:255', 'alpha_dash:ascii', Rule::unique('channels', 'slug')->ignore($channel->id)],
+            'description' => ['nullable', 'string', 'max:2000'],
+            'image' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:5120'],
+            'remove_image' => ['nullable', 'boolean'],
+        ]);
+
+        $slug = filled($validated['slug'] ?? null)
+            ? Str::slug($validated['slug'])
+            : Str::slug($validated['name']);
+        $slug = $slug !== '' ? $slug : 'channel';
+        $baseSlug = Str::limit($slug, 240, '');
+        $slug = $baseSlug;
+        $suffix = 1;
+
+        while (Channel::query()->where('slug', $slug)->whereKeyNot($channel->id)->exists()) {
+            $slug = Str::limit($baseSlug, 240 - strlen((string) $suffix), '').'-'.$suffix++;
+        }
+
+        $oldImagePath = $channel->image_path;
+        $imagePath = $oldImagePath;
+
+        if ($request->boolean('remove_image')) {
+            $imagePath = null;
+        }
+
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('channels', 'public');
+        }
+
+        $channel->update([
+            'name' => $validated['name'],
+            'slug' => $slug,
+            'description' => $validated['description'] ?? null,
+            'image_path' => $imagePath,
+        ]);
+
+        if ($oldImagePath && $oldImagePath !== $imagePath) {
+            Storage::disk('public')->delete($oldImagePath);
+        }
+
+        return redirect()->route('channels.show', $channel)->with('status', 'Kategori güncellendi.');
     }
 
     public function store(Request $request): RedirectResponse
