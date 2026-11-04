@@ -46,6 +46,20 @@
                         <textarea id="post-body" name="body" rows="14" maxlength="100000" placeholder="Hikâyeni burada anlat..." required>{{ old('body', $post->body ?? '') }}</textarea>
                     </li>
                     <li class="addpost__actions">
+                        <label class="addpost__label" for="post-media">Galeri görselleri (en fazla 10)</label>
+                        <input class="form-attachments" id="post-media" name="media[]" type="file" accept="image/jpeg,image/png,image/gif,image/webp" multiple>
+                        @if (isset($post) && filled($post->media))
+                            <div class="small color-gray">Mevcut galeri görselleri</div>
+                            @foreach ($post->media as $mediaPath)
+                                <label class="form-check-label">
+                                    <img src="{{ asset('storage/'.$mediaPath) }}" alt="" class="post__media-image" loading="lazy">
+                                    <input class="form-check-input" type="checkbox" name="remove_media[]" value="{{ $mediaPath }}">
+                                    <span>Bu görseli kaldır</span>
+                                </label>
+                            @endforeach
+                        @endif
+                    </li>
+                    <li class="addpost__actions">
                         <label class="addpost__label" for="post-cover">Kapak görseli</label>
                         <input class="form-attachments" id="post-cover" name="cover_image" type="file" accept="image/jpeg,image/png,image/gif,image/webp">
                         @if (isset($post) && $post->coverImageUrl())
