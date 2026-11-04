@@ -15,13 +15,22 @@ use Illuminate\View\View;
 
 class ChannelController extends Controller
 {
-    public function index(): View
+    public function index(Request $request): View
     {
+        $viewer = $request->user();
+
         $channels = Channel::query()
             ->active()
-            ->withCount(['posts' => fn (Builder $query) => $query->published()])
+            ->withCount([
+                'posts' => fn (Builder $query) => $query->published(),
+                'subscribers',
+            ])
+            ->when($viewer, fn (Builder $query) => $query->withExists([
+                'subscribers as is_subscribed' => fn (Builder $subscribers) => $subscribers->where('users.id', $viewer->id),
+            ]))
             ->orderBy('name')
-            ->paginate(12);
+            ->paginate(12)
+            ->withQueryString();
 
         return view('channels.index', compact('channels'));
     }
@@ -69,6 +78,10 @@ class ChannelController extends Controller
     {
         abort_unless($channel->is_active, 404);
         $viewer = $request->user();
+        $channel->loadCount('subscribers');
+        $isSubscribed = $viewer
+            ? $channel->subscribers()->whereKey($viewer->id)->exists()
+            : false;
 
         $posts = $channel->posts()
             ->published()
@@ -91,7 +104,7 @@ class ChannelController extends Controller
             }
         });
 
-        return view('channels.show', compact('channel', 'posts'));
+        return view('channels.show', compact('channel', 'posts', 'isSubscribed'));
     }
 
     private function ensureAdmin(Request $request): void
