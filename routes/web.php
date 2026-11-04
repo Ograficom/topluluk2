@@ -44,6 +44,7 @@ Route::get('/about', fn () => redirect()->route('pages.show', 'about'));
 Route::get('/rules', fn () => redirect()->route('pages.show', 'rules'));
 Route::get('/privacy', fn () => redirect()->route('pages.show', 'privacy'));
 Route::get('/contacts', [CommunityController::class, 'contacts'])->name('contacts');
+Route::post('/contacts', [CommunityController::class, 'sendContact'])->middleware('throttle:5,1')->name('contacts.send');
 
 Route::middleware('guest')->group(function (): void {
     Route::get('/signin', [AuthController::class, 'showLogin'])->name('login');
