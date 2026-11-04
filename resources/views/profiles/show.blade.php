@@ -210,7 +210,11 @@
                             </ul>
                         </div>
                         <footer class="widget__footer">
-                            <span class="small color-gray">{{ number_format($followersCount) }} toplam takipçi</span>
+                            @if ($followersCount > 8)
+                                <a class="link-accent" href="#profileSubscribersModal" data-modal-btn="profile-subscribers" aria-haspopup="dialog" aria-controls="profileSubscribersModal">Tüm aboneleri gör</a>
+                            @else
+                                <span class="small color-gray">{{ number_format($followersCount) }} toplam takipçi</span>
+                            @endif
                         </footer>
                     </section>
                     <section class="widget card card-body">
@@ -265,6 +269,44 @@
                     @include('layouts._footer')
                 </div>
             </aside>
+        </div>
+
+        <div class="modal" id="profileSubscribersModal" data-modal="profile-subscribers" aria-label="Tüm aboneler" aria-hidden="true">
+            <div class="modal-content">
+                <button type="button" class="btn btn-secondary btn-md btn-circle modal-close" data-modal-close aria-label="Kapat" title="Kapat">
+                    <x-repost-icon name="close" size="16" class="color-gray" />
+                </button>
+                <header class="modal-header">
+                    <h2 class="modal-title h4" id="profileSubscribersTitle">Tüm aboneler</h2>
+                </header>
+                <div class="modal-body">
+                    <ul class="channel__subscribers">
+                        @forelse ($allProfileFollowers as $follower)
+                            <li class="user-card">
+                                <a class="user-box" href="{{ route('profiles.show', $follower) }}">
+                                    <span class="avatar">
+                                        <img src="{{ $follower->avatarUrl() }}" alt="" width="40" height="40" loading="lazy">
+                                    </span>
+                                    <span class="user-box-content">
+                                        <strong class="name">
+                                            <span class="name-text">{{ $follower->displayName() }}</span>
+                                            @if ($follower->hasVerifiedBadge())
+                                                <span class="verify" role="img" aria-label="Doğrulanmış hesap"><x-repost-icon name="verify" size="14" /></span>
+                                            @endif
+                                        </strong>
+                                        <span class="meta">{{ number_format($follower->posts_count) }} yazı</span>
+                                    </span>
+                                </a>
+                            </li>
+                        @empty
+                            <li class="small color-gray">Henüz abone yok.</li>
+                        @endforelse
+                    </ul>
+                    @if ($followersCount > $allProfileFollowers->count())
+                        <p class="small color-gray">İlk 100 abone gösteriliyor.</p>
+                    @endif
+                </div>
+            </div>
         </div>
     </article>
 @endsection
