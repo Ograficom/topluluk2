@@ -10,6 +10,7 @@ return new class extends Migration
     {
         Schema::table('posts', function (Blueprint $table): void {
             $table->json('media')->nullable()->after('cover_image');
+            $table->string('video_url', 2048)->nullable()->after('media');
         });
     }
 
