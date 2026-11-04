@@ -30,6 +30,11 @@ class Channel extends Model
         return $this->hasMany(Post::class);
     }
 
+    public function subscribers(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'channel_subscriptions')->withTimestamps();
+    }
+
     public function scopeActive(Builder $query): Builder
     {
         return $query->where('is_active', true);
