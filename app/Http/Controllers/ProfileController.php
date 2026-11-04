@@ -62,7 +62,7 @@ class ProfileController extends Controller
         $followersCount = $user->followers()->count();
         $followingCount = $user->following()->count();
         $profileFollowersQuery = $user->followers()
-            ->select(['users.id', 'users.name', 'users.full_name', 'users.username', 'users.avatar_path', 'users.is_verified', 'users.verification_status'])
+            ->select(['users.id', 'users.name', 'users.full_name', 'users.username', 'users.avatar_path', 'users.is_verified', 'users.verification_status', 'users.last_seen_at'])
             ->withCount(['posts' => fn (Builder $query) => $query->published()])
             ->latest('user_follows.created_at');
 
