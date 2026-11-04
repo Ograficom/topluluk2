@@ -62,6 +62,7 @@ Route::middleware('guest')->group(function (): void {
 
 Route::middleware('auth')->group(function (): void {
     Route::get('/following', [CommunityController::class, 'following'])->name('community.following');
+    Route::post('/last-comments/moderate', [CommunityController::class, 'moderateLatestComments'])->name('comments.moderate');
     Route::get('/subscriptions', [CommunityController::class, 'subscriptions'])->name('subscriptions.index');
     Route::get('/favorites', [CommunityController::class, 'favorites'])->name('favorites.index');
     Route::post('/users/{target}/follow', [CommunityController::class, 'toggleFollow'])->middleware('throttle:30,1')->name('users.follow');
