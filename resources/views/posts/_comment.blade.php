@@ -122,7 +122,12 @@
     @if ($comment->replies->isNotEmpty())
         <div class="comment__children">
             @foreach ($comment->replies as $reply)
-                @include('posts._comment', ['comment' => $reply, 'post' => $post])
+                @include('posts._comment', [
+                    'comment' => $reply,
+                    'post' => $post,
+                    'channelCommentCard' => false,
+                    'showPostLink' => false,
+                ])
             @endforeach
         </div>
     @endif
