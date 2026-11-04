@@ -2,6 +2,11 @@
 
 @section('title', isset($post) ? 'Yazıyı düzenle' : 'Yazı oluştur')
 
+@push('head')
+    <link rel="stylesheet" href="{{ asset('assets/libs/tagify/tagify.css') }}">
+    <script src="{{ asset('assets/libs/tagify/tagify.js') }}"></script>
+@endpush
+
 @section('content')
     <header class="feed-heading">
         <h1 class="h3">{{ isset($post) ? 'Yazıyı düzenle' : 'Yazı oluştur' }}</h1>
@@ -50,8 +55,8 @@
                         @endif
                     </li>
                     <li>
-                        <label class="addpost__label" for="post-tags">Etiketler</label>
-                        <input class="addpost__ultratag" id="post-tags" name="tags" type="text" value="{{ old('tags', isset($post) ? implode(', ', $post->tags ?? []) : '') }}" maxlength="500" placeholder="Etiketleri virgülle ayır (ör. gezi, teknoloji)">
+                        <label class="addpost__label" for="tags">Etiketler</label>
+                        <input class="addpost__ultratag" id="tags" name="tags" type="text" value="{{ old('tags', isset($post) ? implode(', ', $post->tags ?? []) : '') }}" maxlength="500" placeholder="Etiketleri virgülle ayır (ör. gezi, teknoloji)">
                     </li>
                     <li>
                         <label class="addpost__label" for="post-channel">Kategori</label>
