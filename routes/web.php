@@ -95,6 +95,7 @@ Route::middleware('auth')->group(function (): void {
     Route::post('/users/{blockedUser}/block', [SettingsController::class, 'blockUser'])->name('users.block');
 
     Route::post('/posts/{post:slug}/comments', [PostInteractionController::class, 'comment'])->middleware('throttle:10,1')->name('posts.comments.store');
+    Route::patch('/posts/{post:slug}/comments/{comment}', [PostInteractionController::class, 'updateComment'])->middleware('throttle:10,1')->name('posts.comments.update');
     Route::post('/posts/{post:slug}/comments/moderate', [PostInteractionController::class, 'moderateComments'])->name('posts.comments.moderate');
     Route::post('/posts/{post:slug}/comments/{comment}/reactions/like', [PostInteractionController::class, 'reactToComment'])->middleware('throttle:30,1')->name('posts.comments.reactions.like');
     Route::post('/posts/{post:slug}/reactions/{type}', [PostInteractionController::class, 'react'])->whereIn('type', ['like', 'dislike'])->middleware('throttle:30,1')->name('posts.reactions.store');
