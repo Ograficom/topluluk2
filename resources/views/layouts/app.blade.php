@@ -213,7 +213,7 @@
                     </section>
                 @endif
 
-                @unless ($profilePage || $postCreatePage)
+                @unless ($profilePage || $channelPage || $postCreatePage)
                 <aside class="{{ $statsPage || $feedPage ? 'main__widgets' : 'profile__aside' }}" aria-label="Popüler içerikler">
                 @unless ($statsPage || $feedPage)
                     <div class="side-panel__body">
