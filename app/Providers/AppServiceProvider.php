@@ -44,8 +44,19 @@ class AppServiceProvider extends ServiceProvider
                     ->orderByDesc('posts_count')
                     ->limit(5)
                     ->get(),
+                'popularTags' => Post::query()
+                    ->published()
+                    ->latest('published_at')
+                    ->limit(200)
+                    ->pluck('tags')
+                    ->flatMap(fn ($tags) => $tags ?? [])
+                    ->filter(fn ($tag) => is_string($tag) && trim($tag) !== '')
+                    ->countBy()
+                    ->sortDesc()
+                    ->take(8),
                 'sidebarPosts' => Post::query()
                     ->published()
+                    ->with('user')
                     ->when(! $viewer?->show_adult_content, fn ($query) => $query->where('is_adult', false))
                     ->withCount('comments')
                     ->withCount([
