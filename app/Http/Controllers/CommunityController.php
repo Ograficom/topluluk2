@@ -300,6 +300,9 @@ class CommunityController extends Controller
             ->where('slug', $slug)
             ->firstOrFail();
 
+        $page->increment('views');
+        $page->refresh();
+
         return view('pages.show', compact('page', 'slug'));
     }
 
