@@ -6,6 +6,9 @@
 
     @php($channelTags = $posts->getCollection()->flatMap(fn ($post) => $post->tags ?? [])->filter(fn ($tag) => is_string($tag) && trim($tag) !== '')->unique()->take(18))
     <div class="channel-page">
+        @if (session('status'))
+            <div class="alert alert-success" role="status">{{ session('status') }}</div>
+        @endif
         <section class="channel card card-body">
             @if (auth()->user()?->is_admin)
                 <div class="edit">
