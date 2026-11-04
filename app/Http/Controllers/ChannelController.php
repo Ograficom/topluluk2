@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Illuminate\View\View;
@@ -20,15 +21,23 @@ class ChannelController extends Controller
     {
         $viewer = $request->user();
 
-        $channels = Channel::query()
+        $subscriptionsTableExists = Schema::hasTable('channel_subscriptions');
+
+        $channelsQuery = Channel::query()
             ->active()
             ->withCount([
                 'posts' => fn (Builder $query) => $query->published(),
-                'subscribers',
-            ])
-            ->when($viewer, fn (Builder $query) => $query->withExists([
-                'subscribers as is_subscribed' => fn (Builder $subscribers) => $subscribers->where('users.id', $viewer->id),
-            ]))
+            ]);
+
+        if ($subscriptionsTableExists) {
+            $channelsQuery
+                ->withCount('subscribers')
+                ->when($viewer, fn (Builder $query) => $query->withExists([
+                    'subscribers as is_subscribed' => fn (Builder $subscribers) => $subscribers->where('users.id', $viewer->id),
+                ]));
+        }
+
+        $channels = $channelsQuery
             ->orderBy('name')
             ->paginate(12)
             ->withQueryString();
@@ -79,8 +88,9 @@ class ChannelController extends Controller
     {
         abort_unless($channel->is_active, 404);
         $viewer = $request->user();
-        $channel->loadCount('subscribers');
-        $isSubscribed = $viewer
+        $subscriptionsTableExists = Schema::hasTable('channel_subscriptions');
+        $channel->setAttribute('subscribers_count', $subscriptionsTableExists ? $channel->subscribers()->count() : 0);
+        $isSubscribed = $viewer && $subscriptionsTableExists
             ? $channel->subscribers()->whereKey($viewer->id)->exists()
             : false;
 
