@@ -207,7 +207,40 @@ class ChannelController extends Controller
             ->paginate(15, ['*'], 'comments')
             ->withQueryString();
 
-        return view('channels.show', compact('channel', 'posts', 'comments', 'isSubscribed'));
+        $subscribers = $subscriptionsTableExists
+            ? $channel->subscribers()->orderBy('users.name')->get()
+            : collect();
+
+        $popularPosts = $channel->posts()
+            ->published()
+            ->with('user')
+            ->withCount('comments')
+            ->orderByDesc('views')
+            ->orderByDesc('id')
+            ->limit(5)
+            ->get();
+
+        $latestChannelComments = Comment::query()
+            ->whereHas('post', fn (Builder $query) => $query->where('channel_id', $channel->id)->published())
+            ->with(['user', 'post'])
+            ->latest()
+            ->limit(5)
+            ->get();
+
+        $channelCommentsCount = Comment::query()
+            ->whereHas('post', fn (Builder $query) => $query->where('channel_id', $channel->id)->published())
+            ->count();
+
+        return view('channels.show', compact(
+            'channel',
+            'posts',
+            'comments',
+            'isSubscribed',
+            'subscribers',
+            'popularPosts',
+            'latestChannelComments',
+            'channelCommentsCount'
+        ));
     }
 
     private function ensureAdmin(Request $request): void
