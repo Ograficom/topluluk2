@@ -60,6 +60,7 @@ class ChannelController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'slug' => ['nullable', 'string', 'max:255', 'alpha_dash:ascii', Rule::unique('channels', 'slug')],
             'description' => ['nullable', 'string', 'max:2000'],
+            'image' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:5120'],
         ]);
 
         $slug = filled($validated['slug'] ?? null)
@@ -74,10 +75,15 @@ class ChannelController extends Controller
             $slug = Str::limit($baseSlug, 240 - strlen((string) $suffix), '').'-'.$suffix++;
         }
 
+        $imagePath = $request->hasFile('image')
+            ? $request->file('image')->store('channels', 'public')
+            : null;
+
         $channel = Channel::create([
             'name' => $validated['name'],
             'slug' => $slug,
             'description' => $validated['description'] ?? null,
+            'image_path' => $imagePath,
             'is_active' => true,
         ]);
 
