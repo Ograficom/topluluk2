@@ -14,12 +14,12 @@
                                 <x-repost-icon name="image" size="18" />
                             </a>
                             <a href="{{ route('channels.show', $channel) }}" class="subchannel__name">{{ $channel->name }}</a>
-                            <div class="subchannel__count">{{ number_format($channel->posts_count) }} yazı · {{ number_format($channel->subscribers_count) }} abone</div>
+                            <div class="subchannel__count">{{ number_format($channel->posts_count) }} yazı · {{ number_format($channel->subscribers_count ?? 0) }} abone</div>
                             @auth
                                 <form action="{{ route('channels.subscribe', $channel) }}" method="POST">
                                     @csrf
-                                    <button class="btn {{ $channel->is_subscribed ? 'btn-secondary' : 'btn-primary' }} btn-sm btn-rounded" type="submit">
-                                        {{ $channel->is_subscribed ? 'Abonelikten çık' : 'Abone ol' }}
+                                    <button class="btn {{ ($channel->is_subscribed ?? false) ? 'btn-secondary' : 'btn-primary' }} btn-sm btn-rounded" type="submit">
+                                        {{ ($channel->is_subscribed ?? false) ? 'Abonelikten çık' : 'Abone ol' }}
                                     </button>
                                 </form>
                             @else
