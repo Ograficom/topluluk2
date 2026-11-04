@@ -61,9 +61,25 @@ class ProfileController extends Controller
         $isFollowing = $viewer && $viewer->following()->whereKey($user->id)->exists();
         $followersCount = $user->followers()->count();
         $followingCount = $user->following()->count();
+        $profileFollowers = $user->followers()
+            ->select(['users.id', 'users.name', 'users.full_name', 'users.username', 'users.avatar_path', 'users.is_verified', 'users.verification_status'])
+            ->latest('user_follows.created_at')
+            ->limit(8)
+            ->get();
+
+        $topPosition = User::query()
+            ->withCount(['posts' => fn (Builder $query) => $query->published()])
+            ->orderByDesc('posts_count')
+            ->orderBy('id')
+            ->limit(100)
+            ->get()
+            ->search(fn (User $member): bool => $member->is($user));
+
+        $topPosition = $topPosition === false ? null : $topPosition + 1;
 
         return view('profiles.show', compact(
-            'user', 'posts', 'comments', 'isBlocked', 'isFollowing', 'followersCount', 'followingCount',
+            'user', 'posts', 'comments', 'isBlocked', 'isFollowing',
+            'followersCount', 'followingCount', 'profileFollowers', 'topPosition',
         ));
     }
 }
