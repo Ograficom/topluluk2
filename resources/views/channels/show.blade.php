@@ -195,8 +195,107 @@
                     @include('layouts._pagination', ['paginator' => $comments])
                 </section>
             </div>
+
+            <aside class="main__widgets">
+                <div class="widgets">
+                    <section class="widget card card-body">
+                        <header><h2 class="widget__title h6">{{ number_format($channel->subscribers_count) }} abone</h2></header>
+                        <div class="widget__content">
+                            @if ($subscribers->isNotEmpty())
+                                <ul class="channel-subscriber-grid">
+                                    @foreach ($subscribers->take(12) as $subscriber)
+                                        <li><a class="avatar" href="{{ route('profiles.show', $subscriber) }}" aria-label="{{ $subscriber->displayName() }} profili" title="{{ $subscriber->displayName() }}"><img src="{{ $subscriber->avatarUrl() }}" alt="{{ $subscriber->displayName() }}" width="40" height="40" loading="lazy"></a></li>
+                                    @endforeach
+                                </ul>
+                            @else
+                                <p class="small color-gray">Henüz abone yok.</p>
+                            @endif
+                        </div>
+                        @if ($subscribers->isNotEmpty())
+                            <footer class="widget__footer"><a class="link-accent" href="#channelSubscribersModal" data-modal-btn="channel-subscribers" aria-haspopup="dialog" aria-controls="channelSubscribersModal">Tüm aboneler</a></footer>
+                        @endif
+                    </section>
+
+                    <section class="widget card card-body">
+                        <header><h2 class="widget__title h6">Kanaldaki popüler yazılar</h2></header>
+                        <div class="widget__content widget__content--bleed">
+                            @if ($popularPosts->isNotEmpty())
+                                <ul class="widget__list widget__list--separator">
+                                    @foreach ($popularPosts as $popularPost)
+                                        <li class="entry-card">
+                                            <article class="entry-box {{ $popularPost->coverImageUrl() ? 'has-image' : '' }}">
+                                                <div class="entry-box-content">
+                                                    @if ($popularPost->user)
+                                                        <div class="user-box">
+                                                            <a href="{{ route('profiles.show', $popularPost->user) }}" class="avatar"><img src="{{ $popularPost->user->avatarUrl() }}" alt="" width="40" height="40" loading="lazy"></a>
+                                                            <div class="user-box-content"><a href="{{ route('profiles.show', $popularPost->user) }}" class="name"><span class="name-text">{{ $popularPost->user->displayName() }}</span></a><span class="meta">{{ $popularPost->published_at?->diffForHumans() ?? $popularPost->created_at->diffForHumans() }}</span></div>
+                                                        </div>
+                                                    @endif
+                                                    <a href="{{ route('posts.show', $popularPost) }}" class="text-clamp-2 color-text">{{ $popularPost->title }}</a>
+                                                    <div class="meta"><span class="meta-item"><x-repost-icon name="comment" size="14" />{{ number_format($popularPost->comments_count) }}</span><span class="meta-item"><x-repost-icon name="eye" size="14" />{{ number_format($popularPost->views) }}</span></div>
+                                                </div>
+                                                @if ($popularPost->coverImageUrl())
+                                                    <a href="{{ route('posts.show', $popularPost) }}" class="entry-box-image"><img src="{{ $popularPost->coverImageUrl() }}" alt="{{ $popularPost->title }}" width="100" height="80" loading="lazy"></a>
+                                                @endif
+                                            </article>
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            @else
+                                <p class="small color-gray">Henüz popüler yazı yok.</p>
+                            @endif
+                        </div>
+                    </section>
+
+                    <section class="widget card card-body">
+                        <header><h2 class="widget__title h6">{{ number_format($channelCommentsCount) }} yorum</h2></header>
+                        <div class="widget__content widget__content-offset">
+                            @if ($latestChannelComments->isNotEmpty())
+                                <ul class="widget__list widget__list--limit widget__list--separator widget__list--separator-lg">
+                                    @foreach ($latestChannelComments as $latestComment)
+                                        <li class="comm-card">
+                                            @if ($latestComment->user)
+                                                <div class="user-box user-box-sm">
+                                                    <a href="{{ route('profiles.show', $latestComment->user) }}" class="avatar"><img src="{{ $latestComment->user->avatarUrl() }}" alt="" width="40" height="40" loading="lazy"></a>
+                                                    <div class="user-box-content user-box-content--line"><a href="{{ route('profiles.show', $latestComment->user) }}" class="name"><span class="name-text">{{ $latestComment->user->displayName() }}</span></a><time class="meta">{{ $latestComment->created_at->diffForHumans() }}</time></div>
+                                                </div>
+                                            @endif
+                                            <div class="comm-card-short text-clamp-3">{{ $latestComment->body }}</div>
+                                            <div class="small text-clamp-1"><span class="color-gray">Yazıda:</span> <a href="{{ route('posts.show', $latestComment->post) }}" class="link">{{ $latestComment->post?->title }}</a></div>
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            @else
+                                <p class="small color-gray">Henüz yorum yok.</p>
+                            @endif
+                        </div>
+                        <footer class="widget__footer"><a href="{{ route('channels.show', $channel) }}?tab=comments#channel-panel-comments" class="link-accent" data-channel-comments-tab>Tüm yorumları gör</a></footer>
+                    </section>
+                </div>
+            </aside>
         </div>
     </div>
+
+    @if ($subscribers->isNotEmpty())
+        <div class="modal" id="channelSubscribersModal" data-modal="channel-subscribers" role="dialog" aria-modal="true" aria-labelledby="channelSubscribersTitle" aria-hidden="true">
+            <div class="modal-content">
+                <button type="button" class="btn btn-secondary btn-md btn-circle modal-close" data-modal-close aria-label="Kapat" title="Kapat"><x-repost-icon name="close" size="16" class="color-gray" /></button>
+                <header class="modal-header"><h2 class="modal-title h4" id="channelSubscribersTitle">Tüm aboneler</h2></header>
+                <div class="modal-body">
+                    <ul class="channel__subscribers">
+                        @foreach ($subscribers as $subscriber)
+                            <li class="user-card">
+                                <a class="user-box" href="{{ route('profiles.show', $subscriber) }}">
+                                    <span class="avatar"><img src="{{ $subscriber->avatarUrl() }}" alt="" width="40" height="40" loading="lazy"></span>
+                                    <span class="user-box-content"><span class="name"><span class="name-text">{{ $subscriber->displayName() }}</span>@if ($subscriber->hasVerifiedBadge()) <span class="verify" role="img" aria-label="Doğrulanmış profil"><x-repost-icon name="verify" size="14" /></span>@endif</span>@if ($subscriber->publicUsername()) <span class="small color-gray">{{ '@'.$subscriber->publicUsername() }}</span>@endif</span>
+                                </a>
+                            </li>
+                        @endforeach
+                    </ul>
+                </div>
+            </div>
+        </div>
+    @endif
 @endsection
 
 @push('scripts')
