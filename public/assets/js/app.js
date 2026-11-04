@@ -330,7 +330,7 @@ document.addEventListener("show.bs.modal", (event) => {
       voiceButton.setAttribute("aria-pressed", String(isListening));
       voiceButton.setAttribute(
         "aria-label",
-        isListening ? "Stop voice input" : "Voice input",
+        isListening ? "Sesli aramayı durdur" : "Sesli arama",
       );
     };
 
@@ -354,7 +354,7 @@ document.addEventListener("show.bs.modal", (event) => {
 
     if (SpeechRecognition) {
       recognition = new SpeechRecognition();
-      recognition.lang = "ru-RU";
+      recognition.lang = "tr-TR";
       recognition.continuous = false;
       recognition.interimResults = true;
 
