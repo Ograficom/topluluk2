@@ -7,6 +7,7 @@ use App\Models\Comment;
 use App\Models\Conversation;
 use App\Models\Post;
 use App\Models\PostReaction;
+use App\Models\SitePage;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
@@ -294,36 +295,12 @@ class CommunityController extends Controller
 
     public function page(string $slug): View
     {
-        $pages = [
-            'about' => [
-                'title' => 'Hakkımızda',
-                'paragraphs' => [
-                    'OgraFi; insanların ilgi alanlarını, deneyimlerini ve fikirlerini paylaşabildiği bir topluluk platformudur.',
-                    'Kanalları keşfedebilir, yazılar yayımlayabilir, yorum yapabilir ve diğer üyelerle iletişim kurabilirsiniz.',
-                ],
-            ],
-            'rules' => [
-                'title' => 'Topluluk kuralları',
-                'paragraphs' => [
-                    'Saygılı olun. Hakaret, tehdit, hedef gösterme ve taciz kabul edilmez.',
-                    'Spam, yanıltıcı bağlantılar, izinsiz reklam ve başka kişilerin içeriklerini kaynak göstermeden kopyalamak yasaktır.',
-                    'Paylaşımlarınızın hukuka uygun olduğundan ve gerekli haklara sahip olduğunuzdan emin olun.',
-                    'Yöneticiler, kuralları ihlal eden içerikleri kaldırabilir ve hesaplara kısıtlama uygulayabilir.',
-                ],
-            ],
-            'privacy' => [
-                'title' => 'Gizlilik',
-                'paragraphs' => [
-                    'Hesap ve profil bilgileriniz, platformun temel topluluk özelliklerini sunmak için kullanılır.',
-                    'Şifrenizi kimseyle paylaşmayın. Hesabınızın güvenliğinden siz sorumlusunuz.',
-                    'Gizlilik ve veri talepleri için iletişim sayfasından site yönetimine ulaşabilirsiniz.',
-                ],
-            ],
-        ];
+        $page = SitePage::query()
+            ->published()
+            ->where('slug', $slug)
+            ->firstOrFail();
 
-        abort_unless(isset($pages[$slug]), 404);
-
-        return view('pages.show', ['page' => $pages[$slug], 'slug' => $slug]);
+        return view('pages.show', compact('page', 'slug'));
     }
 
     public function contacts(): View
