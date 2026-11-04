@@ -9,6 +9,7 @@ use App\Filament\Resources\SitePages\Schemas\SitePageForm;
 use App\Filament\Resources\SitePages\Tables\SitePagesTable;
 use App\Models\SitePage;
 use BackedEnum;
+use UnitEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
@@ -20,7 +21,7 @@ class SitePageResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedDocumentText;
 
-    protected static ?string $navigationGroup = 'Site yönetimi';
+    protected static string|UnitEnum|null $navigationGroup = 'Site yönetimi';
 
     protected static ?int $navigationSort = 30;
 
