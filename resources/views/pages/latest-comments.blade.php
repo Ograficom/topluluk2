@@ -13,36 +13,25 @@
             </div>
         </section>
 
-        @if (auth()->user()?->is_admin)
-            <form action="{{ route('comments.moderate') }}" method="POST" id="latest-comments-moderation-form">
+        @if (auth()->user()?->is_admin && $comments->isNotEmpty())
+            <form action="{{ route('comments.moderate') }}" method="POST" id="latest-comments-moderation-form" class="mass_comments_action">
                 @csrf
-                <div class="comments-tree-list">
-                    @forelse ($comments as $comment)
-                        @include('posts._comment', ['comment' => $comment, 'post' => $comment->post, 'moderationFormId' => 'latest-comments-moderation-form'])
-                    @empty
-                        <section class="card card-body empty-state"><h2 class="h4">Henüz yorum yok</h2></section>
-                    @endforelse
-                </div>
-                @if ($comments->isNotEmpty())
-                    <div class="mass_comments_action">
-                        <label for="latest-comments-action">Seçili yorumlar:</label>
-                        <select class="form-select" id="latest-comments-action" name="action" required>
-                            <option value="">— İşlem —</option>
-                            <option value="delete">Sil</option>
-                        </select>
-                        <button class="btn btn-primary btn-md" type="submit">Uygula</button>
-                    </div>
-                @endif
+                <label for="latest-comments-action">Seçili yorumlar:</label>
+                <select class="form-select" id="latest-comments-action" name="action" required>
+                    <option value="">— İşlem —</option>
+                    <option value="delete">Sil</option>
+                </select>
+                <button class="btn btn-primary btn-md" type="submit">Uygula</button>
             </form>
-        @else
-            <div class="comments-tree-list">
-                @forelse ($comments as $comment)
-                    @include('posts._comment', ['comment' => $comment, 'post' => $comment->post])
-                @empty
-                    <section class="card card-body empty-state"><h2 class="h4">Henüz yorum yok</h2></section>
-                @endforelse
-            </div>
         @endif
+
+        <div class="comments-tree-list">
+            @forelse ($comments as $comment)
+                @include('posts._comment', ['comment' => $comment, 'post' => $comment->post, 'moderationFormId' => 'latest-comments-moderation-form'])
+            @empty
+                <section class="card card-body empty-state"><h2 class="h4">Henüz yorum yok</h2></section>
+            @endforelse
+        </div>
 
         @include('layouts._pagination', ['paginator' => $comments])
     </section>
