@@ -105,7 +105,7 @@ class PostController extends Controller
             'media' => ['nullable', 'array', 'max:10'],
             'media.*' => ['image', 'mimes:jpg,jpeg,png,gif,webp', 'max:5120'],
             'video_url' => ['nullable', 'url', 'max:2048', function (string $attribute, mixed $value, \Closure $fail): void {
-                if (filled($value) && parse_url($value, PHP_URL_SCHEME) !== 'https') {
+                if (is_string($value) && filled($value) && parse_url($value, PHP_URL_SCHEME) !== 'https') {
                     $fail('Video bağlantısı HTTPS kullanmalıdır.');
                 }
             }],
