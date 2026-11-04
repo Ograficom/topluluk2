@@ -97,7 +97,7 @@
                 <span class="setting__list-label">URL adresi</span>
                 <span class="setting__list-value">
                     <input id="channel-slug" name="slug" type="text" value="{{ old('slug', $channel->slug) }}" maxlength="255">
-                    <span class="channel-edit__field-hint"><span class="channel-edit__field-hint-label"><span class="channel-edit__field-hint-icon">i</span> URL BİLGİSİ</span><span class="channel-edit__field-hint-text">Bu adres, kanalının paylaşılabilir bağlantısında kullanılır. Kısa ve kolay hatırlanır bir adres seç.</span></span>
+                    
                 </span>
             </label>
 
@@ -150,7 +150,7 @@
                 <span class="setting__list-label">Açıklama</span>
                 <span class="setting__list-value">
                     <textarea id="channel-description" name="description" rows="4" maxlength="2000">{{ old('description', $channel->description) }}</textarea>
-                    <span class="channel-edit__field-hint"><span class="channel-edit__field-hint-label"><span class="channel-edit__field-hint-icon">i</span> AÇIKLAMA İPUCU</span><span class="channel-edit__field-hint-text">Kanalın konusu, kimlere hitap ettiği ve burada ne tür içerikler paylaşılacağını anlat. Ziyaretçiler bu metin sayesinde kanalını tanır.</span></span>
+                    
                 </span>
             </label>
 
