@@ -95,6 +95,7 @@
             <div>
                 <div class="tabs-content" data-tabs-container="profile">
                 <section class="tabs-panel is-active" id="profile-panel-posts" role="tabpanel" aria-labelledby="profile-tab-posts" data-tab-panel="posts" tabindex="0">
+                    <div class="feed">
                     @forelse ($posts as $post)
                         <article class="card post">
                             <section class="card-body">
@@ -151,9 +152,11 @@
                         <section class="card card-body empty-state"><h2 class="h4">Henüz yazı yok</h2></section>
                     @endforelse
                     @include('layouts._pagination', ['paginator' => $posts])
+                    </div>
                 </section>
 
                 <section class="tabs-panel" id="profile-panel-comments" role="tabpanel" aria-labelledby="profile-tab-comments" data-tab-panel="comments" tabindex="0" hidden>
+                    <div class="feed">
                     @forelse ($comments as $comment)
                         <article class="comment card card-body">
                             <div class="user-box">
@@ -184,6 +187,7 @@
                         <section class="card card-body empty-state"><h2 class="h4">Henüz yorum yok</h2></section>
                     @endforelse
                     @include('layouts._pagination', ['paginator' => $comments])
+                    </div>
                 </section>
                 </div>
             </div>
