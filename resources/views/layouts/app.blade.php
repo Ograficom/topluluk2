@@ -189,9 +189,6 @@
             </aside>
 
             @if ($settingsPage || $profilePage || $channelPage)
-                @if (session('status'))
-                    <div class="alert alert-success" role="status">{{ session('status') }}</div>
-                @endif
                 @yield('content')
             @elseif ($postCreatePage)
                 <section class="feed">
