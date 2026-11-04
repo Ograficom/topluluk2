@@ -1,15 +1,13 @@
 @extends('layouts.app')
 
-@section('title', $page['title'])
+@section('title', $page->meta_title ?: $page->title)
 
 @section('content')
     <article class="card card-body">
-        <h1>{{ $page['title'] }}</h1>
+        <h1>{{ $page->title }}</h1>
 
         <div class="editor">
-            @foreach ($page['paragraphs'] as $paragraph)
-                <p>{{ $paragraph }}</p>
-            @endforeach
+            {!! $page->content !!}
         </div>
 
         <div class="static__footer">
