@@ -124,7 +124,7 @@
 
     <div class="modal modal-top search-modal" id="searchModal" data-modal="search" aria-hidden="true">
         <div class="modal-content" aria-label="Yazılarda ara">
-            <form action="{{ route('posts.index') }}" method="GET" class="search">
+            <form id="q_search" action="{{ route('posts.index') }}" method="GET" class="search">
                 <div class="search__form">
                     <input id="story" name="q" type="search" value="{{ request('q') }}" placeholder="Yazılarda ara" aria-label="Yazılarda ara" minlength="3" required>
                 </div>
@@ -132,6 +132,9 @@
             <div class="search__actions">
                 <button type="button" class="btn btn-secondary-ghost btn-circle search__options" data-search-clear aria-label="Aramayı temizle" hidden>
                     <x-repost-icon name="close" size="18" />
+                </button>
+                <button type="button" class="btn btn-secondary-ghost btn-circle search__options" data-search-voice aria-label="Sesli arama" aria-pressed="false">
+                    <x-repost-icon name="mic" size="18" />
                 </button>
             </div>
         </div>
