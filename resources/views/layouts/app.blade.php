@@ -116,11 +116,41 @@
                         </form>
                     </div>
                 @else
-                    <a href="{{ route('login') }}" class="btn btn-secondary btn-rounded btn-md">Giriş yap</a>
+                    <button type="button" class="btn btn-primary btn-rounded btn-md" data-modal-btn="login" aria-haspopup="dialog" aria-controls="loginModal"><x-repost-icon name="user" size="18" /><span>Giriş yap</span></button>
                 @endauth
             </div>
         </div>
     </header>
+
+    @guest
+    <div class="modal auth-modal" id="loginModal" data-modal="login" role="dialog" aria-modal="true" aria-labelledby="loginModalLabel" aria-hidden="true">
+        <div class="modal-content">
+            <button type="button" class="btn btn-secondary btn-md btn-circle modal-close" data-modal-close aria-label="Kapat"><x-repost-icon name="close" size="16" class="color-gray" /></button>
+            <div class="modal-body signin" data-auth-step="options">
+                <h2 class="text-center h1" id="loginModalLabel">Giriş yap</h2>
+                <p class="text-center color-gray">Tüm site özelliklerine erişmek için giriş yap.</p>
+                <div class="signin__body">
+                    <button type="button" class="btn btn-secondary btn-lg btn-full auth-provider" disabled><span class="auth-provider__google">G</span>Google ile devam et</button>
+                    <button type="button" class="btn btn-secondary btn-lg btn-full auth-provider" disabled><span class="auth-provider__yandex">Я</span>Yandex ile devam et</button>
+                    <button type="button" class="btn btn-primary btn-lg btn-full" data-auth-email>E-posta ile devam et</button>
+                </div>
+                <div class="signin__footer"><p class="small color-gray text-center">Devam ederek <a href="{{ route('pages.show', 'rules') }}" class="link">topluluk kurallarını</a> kabul etmiş olursun.</p></div>
+            </div>
+            <form class="modal-body signin" data-auth-step="email" action="{{ route('login.store') }}" method="POST" hidden>
+                @csrf
+                <button type="button" class="btn btn-secondary btn-md btn-circle modal-back" data-auth-back aria-label="Geri"><x-repost-icon name="chevron-left" size="18" class="color-gray" /></button>
+                <h2 class="text-center h1">Giriş yap</h2>
+                <p class="text-center color-gray">Hesabına erişmek için bilgilerini gir.</p>
+                <div class="signin__body">
+                    <div class="form-group"><input type="text" name="login_name" placeholder="Kullanıcı adı veya e-posta" autocomplete="username" required></div>
+                    <div class="form-group view-pass"><input type="password" name="password" data-pass-form="header-login" placeholder="Şifre" autocomplete="current-password" required><button type="button" class="view-pass-btn" data-pass-btn="header-login" aria-label="Şifreyi göster" title="Şifreyi göster" aria-pressed="false"></button></div>
+                    <div class="signin__submit"><button type="submit" class="btn btn-primary btn-lg btn-full">Giriş yap</button><a href="{{ route('register') }}" class="btn btn-secondary btn-lg btn-full">Hesap oluştur</a></div>
+                </div>
+                <div class="signin__footer"><p class="small color-gray text-center">Şifreni mi unuttun? <a href="{{ route('password.request') }}" class="link">Sıfırla</a></p></div>
+            </form>
+        </div>
+    </div>
+    @endguest
 
     <div class="modal modal-top search-modal" id="searchModal" data-modal="search" aria-hidden="true">
         <div class="modal-content" aria-label="Yazılarda ara">
