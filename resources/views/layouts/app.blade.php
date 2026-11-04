@@ -215,7 +215,7 @@
                 @endif
 
                 @unless ($profilePage || $channelPage || $postCreatePage)
-                <aside class="{{ $statsPage || $channelsIndexPage ? 'main__widgets' : 'profile__aside' }}" aria-label="Popüler içerikler">
+                <aside class="main__widgets" aria-label="Sağ sütun">
                 @unless ($statsPage || $feedPage)
                     <div class="side-panel__body">
                 @endunless
@@ -303,7 +303,7 @@
                             <footer class="widget__footer"><a href="{{ route('posts.index') }}" class="link-accent">Tüm yazılar</a></footer>
                         </section>
                         <section class="widget card card-body">
-                            <header><h2 class="widget__title h6">Popüler yorumlar</h2></header>
+                            <header><h2 class="widget__title h6">Son yorumlar</h2></header>
                             <div class="widget__content widget__content-offset">
                                 <ul class="widget__list widget__list--limit widget__list--separator widget__list--separator-lg">
                                     @forelse ($sidebarComments as $comment)
