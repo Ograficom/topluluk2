@@ -19,6 +19,9 @@
                             </a>
                             <a href="{{ route('channels.show', $channel) }}" class="subchannel__name">{{ $channel->name }}</a>
                             <div class="subchannel__count">{{ number_format($channel->posts_count) }} yazı · {{ number_format($channel->subscribers_count ?? 0) }} abone</div>
+                            @if (auth()->user()?->is_admin)
+                                <a class="link-accent" href="{{ route('channels.edit', $channel) }}">Düzenle</a>
+                            @endif
                             @auth
                                 <form action="{{ route('channels.subscribe', $channel) }}" method="POST">
                                     @csrf
