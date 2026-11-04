@@ -142,11 +142,12 @@
 
     @php($settingsPage = request()->routeIs('settings.edit', 'settings.legacy'))
     @php($profilePage = request()->routeIs('profiles.show'))
+    @php($channelPage = request()->routeIs('channels.show'))
     @php($postCreatePage = request()->routeIs('posts.create'))
     @php($feedPage = request()->routeIs('posts.index'))
     @php($statsPage = request()->routeIs('stats.index'))
     <main class="container">
-        <div class="main {{ $settingsPage || $profilePage || $postCreatePage ? 'main__grid-full' : 'main__grid' }}">
+        <div class="main {{ $settingsPage || $profilePage || $channelPage || $postCreatePage ? 'main__grid-full' : 'main__grid' }}">
             <aside class="sidebar" aria-label="Kanallar ve yazarlar">
                 <div class="sidebar__body">
                     <section class="sidebar__section">
@@ -187,9 +188,12 @@
                 </div>
             </aside>
 
-            @if ($settingsPage)
+            @if ($settingsPage || $profilePage || $channelPage)
+                @if (session('status'))
+                    <div class="alert alert-success" role="status">{{ session('status') }}</div>
+                @endif
                 @yield('content')
-            @elseif ($profilePage || $postCreatePage)
+            @elseif ($postCreatePage)
                 <section class="feed">
                     @if (session('status'))
                         <div class="alert alert-success" role="status">{{ session('status') }}</div>
