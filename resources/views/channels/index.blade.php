@@ -11,7 +11,11 @@
                     <li>
                         <article class="subchannel">
                             <a href="{{ route('channels.show', $channel) }}" class="subchannel__icon" aria-label="{{ $channel->name }} kategorisi">
-                                <x-repost-icon name="image" size="18" />
+                                @if ($channel->image_path)
+                                    <img src="{{ asset('storage/'.$channel->image_path) }}" alt="" width="50" height="50" loading="lazy">
+                                @else
+                                    <x-repost-icon name="image" size="18" />
+                                @endif
                             </a>
                             <a href="{{ route('channels.show', $channel) }}" class="subchannel__name">{{ $channel->name }}</a>
                             <div class="subchannel__count">{{ number_format($channel->posts_count) }} yazı · {{ number_format($channel->subscribers_count ?? 0) }} abone</div>
