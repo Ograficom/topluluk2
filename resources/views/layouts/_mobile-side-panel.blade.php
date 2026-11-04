@@ -106,10 +106,12 @@
                                         </div>
                                     </div>
                                     <div class="comm-card-short text-clamp-3">{{ $comment->body }}</div>
-                                    <div class="small text-clamp-1">
-                                        <span class="color-gray">Yazı:</span>
-                                        <a href="{{ route('posts.show', $comment->post) }}" class="link">{{ $comment->post?->title ?? 'Yazı görüntülenemiyor' }}</a>
-                                    </div>
+                                    @if ($comment->post)
+                                        <div class="small text-clamp-1">
+                                            <span class="color-gray">Yazı:</span>
+                                            <a href="{{ route('posts.show', $comment->post) }}#comments" class="link">{{ $comment->post->title }}</a>
+                                        </div>
+                                    @endif
                                 </li>
                             @empty
                                 <li class="comm-card"><span class="small color-gray">Henüz yorum yok</span></li>
