@@ -158,6 +158,15 @@
                                         <div class="post__short">
                                             <h2 class="post__short-title h3"><a href="{{ route('posts.show', $post) }}" class="color-title"><span class="post__short-title-text">{{ $post->title }}</span></a></h2>
                                             <p class="text-clamp-3 color-text">{{ $post->excerpt }}</p>
+                                            @if (is_array($post->tags) && count($post->tags) > 0)
+                                                <div class="post__tags">
+                                                    @foreach ($post->tags as $tag)
+                                                        @if (is_string($tag) && trim($tag) !== '')
+                                                            <a href="{{ route('tags.show', ['tag' => $tag]) }}">{{ $tag }}</a>
+                                                        @endif
+                                                    @endforeach
+                                                </div>
+                                            @endif
                                         </div>
                                     </section>
                                     @if ($post->coverImageUrl() || count($post->galleryImageUrls()) > 0 || filled($post->video_url))
@@ -187,7 +196,13 @@
                 <section class="tabs-panel" role="tabpanel" id="channel-panel-comments" aria-labelledby="channel-tab-comments" data-tab-panel="comments" tabindex="0">
                     <div class="comments-tree-list">
                         @forelse ($comments as $comment)
-                            @include('posts._comment', ['comment' => $comment, 'post' => $comment->post, 'allowModeration' => false])
+                            @include('posts._comment', [
+                                'comment' => $comment,
+                                'post' => $comment->post,
+                                'allowModeration' => false,
+                                'channelCommentCard' => true,
+                                'showPostLink' => true,
+                            ])
                         @empty
                             <section class="card card-body empty-state">
                                 <h2 class="h4">Henüz yorum yok</h2>
@@ -275,6 +290,7 @@
                         <footer class="widget__footer"><a href="{{ route('channels.show', $channel) }}?tab=comments#channel-panel-comments" class="link-accent" data-channel-comments-tab>Tüm yorumları gör</a></footer>
                     </section>
                 </div>
+                @include('layouts._footer')
             </aside>
         </div>
     </div>
