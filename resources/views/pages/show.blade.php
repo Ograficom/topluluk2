@@ -22,7 +22,7 @@
                 </span>
             </div>
             @if (auth()->check() && auth()->user()->is_admin)
-                <a class="btn btn-sm btn-secondary" href="{{ \\App\\Filament\\Resources\\SitePages\\SitePageResource::getUrl('edit', ['record' => $page]) }}">Düzenle</a>
+                <a class="btn btn-sm btn-secondary" href="{{ \App\Filament\Resources\SitePages\SitePageResource::getUrl('edit', ['record' => $page]) }}">Düzenle</a>
             @endif
         </footer>
     </article>
