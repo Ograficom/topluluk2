@@ -34,6 +34,12 @@ jobs:
         with:
           node-version: 22
 
+      - name: Validate theme JavaScript syntax
+        run: |
+          set -euo pipefail
+          node --check public/assets/js/app.js
+          node --check public/assets/js/init.js
+
       - name: Build frontend assets
         run: |
           npm install
