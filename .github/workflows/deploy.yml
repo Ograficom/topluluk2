@@ -18,6 +18,17 @@ jobs:
       - name: Checkout source
         uses: actions/checkout@v4
 
+      - name: Set up PHP for syntax checks
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate PHP source syntax
+        run: |
+          set -euo pipefail
+          find app bootstrap config database routes -type f -name '*.php' -print0 | xargs -0 -n1 php -l
+
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
