@@ -18,7 +18,7 @@
                 @csrf
                 <div class="comments-tree-list">
                     @forelse ($comments as $comment)
-                        @include('posts._comment', ['comment' => $comment, 'post' => $comment->post])
+                        @include('posts._comment', ['comment' => $comment, 'post' => $comment->post, 'moderationFormId' => 'latest-comments-moderation-form'])
                     @empty
                         <section class="card card-body empty-state"><h2 class="h4">Henüz yorum yok</h2></section>
                     @endforelse
