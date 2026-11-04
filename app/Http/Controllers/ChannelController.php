@@ -157,7 +157,8 @@ class ChannelController extends Controller
             ? $channel->subscribers()->whereKey($viewer->id)->exists()
             : false;
 
-        $posts = $channel->posts()
+        $sort = $request->query('sort', 'date');
+        $postsQuery = $channel->posts()
             ->published()
             ->with('user')
             ->withCount('comments')
@@ -168,10 +169,18 @@ class ChannelController extends Controller
             ->when(! $viewer?->show_adult_content, fn (Builder $query) => $query->where('is_adult', false))
             ->when($viewer, function (Builder $query) use ($viewer): void {
                 $query->with(['reactions' => fn (Relation $reactions) => $reactions->where('user_id', $viewer->id)]);
-            })
-            ->orderByDesc('published_at')
-            ->orderByDesc('id')
-            ->paginate(10);
+            });
+
+        match ($sort) {
+            'updated' => $postsQuery->orderByDesc('updated_at')->orderByDesc('id'),
+            'popular' => $postsQuery->orderByDesc('likes_count')->orderByDesc('comments_count')->orderByDesc('id'),
+            'views' => $postsQuery->orderByDesc('views')->orderByDesc('id'),
+            'comments' => $postsQuery->orderByDesc('comments_count')->orderByDesc('id'),
+            'alphabetical' => $postsQuery->orderBy('title')->orderByDesc('id'),
+            default => $postsQuery->orderByDesc('published_at')->orderByDesc('id'),
+        };
+
+        $posts = $postsQuery->paginate(10)->withQueryString();
         $posts->getCollection()->each(function (Post $post): void {
             if ($post->relationLoaded('reactions')) {
                 $post->setAttribute('viewer_reaction', $post->reactions->first()?->type);
