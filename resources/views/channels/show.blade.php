@@ -289,8 +289,8 @@
                         </div>
                         <footer class="widget__footer"><a href="{{ route('channels.show', $channel) }}?tab=comments#channel-panel-comments" class="link-accent" data-channel-comments-tab>Tüm yorumları gör</a></footer>
                     </section>
+                    @include('layouts._footer')
                 </div>
-                @include('layouts._footer')
             </aside>
         </div>
     </div>
