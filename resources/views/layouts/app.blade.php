@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="{{ asset('assets/libs/fancyapp/fancybox.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/libs/fancyapp/carousel.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/kit.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/css/app.css') }}?v=20261105-social-auth">
+    <link rel="stylesheet" href="{{ asset('assets/css/app.css') }}?v=20261105-static-footer">
     <link rel="stylesheet" href="{{ asset('assets/css/engine.css') }}">
     <script>
         (() => {
