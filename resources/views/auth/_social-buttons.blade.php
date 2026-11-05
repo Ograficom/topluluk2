@@ -1,10 +1,10 @@
 @php($oauthSettings = \App\Models\SiteSetting::current())
 @if ($oauthSettings?->isGoogleLoginEnabled() || $oauthSettings?->isYandexLoginEnabled())
-    <div class="auth-provider-list" aria-label="Sosyal hesapla giriş">
+    <div class="signin__body" aria-label="Sosyal hesapla giriş">
         @if ($oauthSettings?->isGoogleLoginEnabled())
-            <a href="{{ route('oauth.redirect', ['provider' => 'google']) }}" class="btn btn-secondary btn-lg btn-full auth-provider">
-                <span class="auth-provider__icon-wrap" aria-hidden="true">
-                    <svg class="auth-provider__icon auth-provider__icon--google" viewBox="0 0 16 16" focusable="false">
+            <a href="{{ route('oauth.redirect', ['provider' => 'google']) }}" class="btn btn-secondary btn-lg btn-full">
+                <span class="d-inline-flex align-items-center justify-content-center" aria-hidden="true">
+                    <svg class="auth-provider-icon" viewBox="0 0 16 16" focusable="false">
                         <path fill="#4285F4" d="M14.9 8.161c0-.476-.039-.954-.121-1.422h-6.64v2.695h3.802a3.24 3.24 0 0 1-1.407 2.127v1.75h2.269c1.332-1.22 2.097-3.02 2.097-5.15z"/>
                         <path fill="#34A853" d="M8.14 15c1.898 0 3.499-.62 4.665-1.69l-2.268-1.749c-.631.427-1.446.669-2.395.669-1.836 0-3.393-1.232-3.952-2.888H1.85v1.803A7.044 7.044 0 0 0 8.14 15z"/>
                         <path fill="#FBBC04" d="M4.187 9.342a4.17 4.17 0 0 1 0-2.68V4.859H1.849a6.97 6.97 0 0 0 0 6.286l2.338-1.803z"/>
@@ -17,7 +17,7 @@
 
         @if ($oauthSettings?->isYandexLoginEnabled())
             <a href="{{ route('oauth.redirect', ['provider' => 'yandex']) }}" class="btn btn-secondary btn-lg btn-full auth-provider">
-                <svg class="auth-provider__icon auth-provider__icon--yandex" viewBox="0 0 26 26" aria-hidden="true" focusable="false">
+                <svg class="auth-provider-icon" viewBox="0 0 26 26" aria-hidden="true" focusable="false">
                     <path fill="#f8604a" d="M26 13c0-7.18-5.82-13-13-13S0 5.82 0 13s5.82 13 13 13s13-5.82 13-13Z"/>
                     <path fill="#fff" d="M17.55 20.822h-2.622V7.28h-1.321c-2.254 0-3.38 1.127-3.38 2.817c0 1.885.758 2.816 2.448 3.943l1.322.932l-3.749 5.828H7.237l3.575-5.265c-2.059-1.495-3.185-2.817-3.185-5.265c0-3.012 2.058-5.07 6.023-5.07h3.9v15.622Z"/>
                 </svg>
