@@ -22,9 +22,15 @@
         <div class="post__short">
             <h2 class="post__short-title h3"><a href="{{ route('posts.show', $post) }}" class="color-title">{{ $post->title }}</a></h2>
             <p class="text-clamp-3 color-text">{{ $post->excerpt }}</p>
-            @if ($post->tags)
+            @if ($post->tagRecords->isNotEmpty())
                 <div class="post__tags">
-                    @foreach ($post->tags as $tag)<a href="{{ route('tags.show', ['tag' => $tag]) }}">{{ $tag }}</a>@endforeach
+                    @foreach ($post->tagRecords as $tag)
+                        <a href="{{ route('tags.show', ['tag' => $tag->slug]) }}">{{ $tag->name }}</a>
+                    @endforeach
+                </div>
+            @elseif ($post->tags)
+                <div class="post__tags">
+                    @foreach ($post->tags as $tag)<a href="{{ route('tags.show', ['tag' => \Illuminate\Support\Str::slug($tag)]) }}">{{ $tag }}</a>@endforeach
                 </div>
             @endif
         </div>
