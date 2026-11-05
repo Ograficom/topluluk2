@@ -87,7 +87,11 @@ class SocialAuthController extends Controller
                 ],
             )->throw()->json();
 
-            $profile = Http::withToken($token['access_token'] ?? '')
+            $profileRequest = $provider === 'google'
+                ? Http::withToken($token['access_token'] ?? '')
+                : Http::withHeaders(['Authorization' => 'OAuth '.($token['access_token'] ?? '')]);
+
+            $profile = $profileRequest
                 ->acceptJson()
                 ->get($provider === 'google'
                     ? 'https://openidconnect.googleapis.com/v1/userinfo'
@@ -142,6 +146,7 @@ class SocialAuthController extends Controller
                     'name' => filled($identity['name']) ? $identity['name'] : $username,
                     'username' => $username,
                     'email' => $identity['email'],
+                    'email_verified_at' => now(),
                     'password' => Str::random(64),
                     'verification_status' => 'unverified',
                 ]);
