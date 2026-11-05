@@ -8,7 +8,9 @@
             <h1 class="text-center h1">Hesap oluştur</h1>
             <p class="text-center color-gray">OgraFi topluluğuna katıl, yazılarını paylaş ve tartışmalara dahil ol.</p>
 
-            @include('auth._social-buttons')
+            <div class="signin__body">
+                @include('auth._social-buttons')
+            </div>
 
             @if ($errors->any())
                 <div class="alert alert-danger" role="alert">
