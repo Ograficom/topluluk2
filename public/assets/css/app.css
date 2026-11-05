@@ -5270,12 +5270,6 @@ p {
   display: contents;
 }
 
-/* Admin-only action; keep the original Repost card and subscribe-button geometry. */
-.subchannel__edit {
-  align-self: center;
-  margin-top: 7px;
-  font-size: 0.75rem;
-}
 .subchannel__footer > form {
   margin-top: 1.5rem;
 }
