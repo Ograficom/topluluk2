@@ -651,9 +651,9 @@ p {
   gap: 20px;
   margin: 12px -20px -20px;
   padding: 18px 20px;
-  border-top: 0;
+  border: 0;
   border-radius: 0 0 var(--card-border-radius, 20px) var(--card-border-radius, 20px);
-  background: var(--card-bg);
+  background-color: var(--white-900);
 }
 .static__counts {
   display: flex;
