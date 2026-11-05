@@ -1,4 +1,4 @@
-@php($oauthSettings = \\App\\Models\\SiteSetting::current())
+@php($oauthSettings = \App\Models\SiteSetting::current())
 @if ($oauthSettings?->isGoogleLoginEnabled() || $oauthSettings?->isYandexLoginEnabled())
     <div class="auth-provider-list" aria-label="Sosyal hesapla giriş">
         @if ($oauthSettings?->isGoogleLoginEnabled())
