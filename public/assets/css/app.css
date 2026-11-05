@@ -228,7 +228,7 @@ p {
   --online-border-color: var(--body-bg);
 }
 /* Channel sidebar: scroll the upper cards while keeping comments and footer anchored. */
-.channel-page__content + .main__widgets,
+.channel-page__content + .channel-page__content + .main__widgets,
 .main__grid-feed > .main__widgets {
   position: sticky;
   top: calc(var(--header-height) + var(--header-offset) + 12px);
