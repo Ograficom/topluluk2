@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="{{ asset('assets/libs/fancyapp/fancybox.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/libs/fancyapp/carousel.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/kit.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/css/app.css') }}?v=20261105-channel-upload-match-edit">
+    <link rel="stylesheet" href="{{ asset('assets/css/app.css') }}?v=20261105-social-auth">
     <link rel="stylesheet" href="{{ asset('assets/css/engine.css') }}">
     <script>
         (() => {
@@ -130,8 +130,13 @@
                 <h2 class="text-center h1" id="loginModalLabel">Giriş yap</h2>
                 <p class="text-center color-gray">Tüm site özelliklerine erişmek için giriş yap.</p>
                 <div class="signin__body">
-                    <button type="button" class="btn btn-secondary btn-lg btn-full auth-provider" disabled><span class="auth-provider__google">G</span>Google ile devam et</button>
-                    <button type="button" class="btn btn-secondary btn-lg btn-full auth-provider" disabled><span class="auth-provider__yandex">Я</span>Yandex ile devam et</button>
+                    @php($oauthSettings = \App\Models\SiteSetting::current())
+                    @if ($oauthSettings?->isGoogleLoginEnabled())
+                        <a href="{{ route('oauth.redirect', ['provider' => 'google']) }}" class="btn btn-secondary btn-lg btn-full auth-provider"><span class="auth-provider__google">G</span>Google ile devam et</a>
+                    @endif
+                    @if ($oauthSettings?->isYandexLoginEnabled())
+                        <a href="{{ route('oauth.redirect', ['provider' => 'yandex']) }}" class="btn btn-secondary btn-lg btn-full auth-provider"><span class="auth-provider__yandex">Я</span>Yandex ile devam et</a>
+                    @endif
                     <button type="button" class="btn btn-primary btn-lg btn-full" data-auth-email>E-posta ile devam et</button>
                 </div>
                 <div class="signin__footer"><p class="small color-gray text-center">Devam ederek <a href="{{ route('pages.show', 'rules') }}" class="link">topluluk kurallarını</a> kabul etmiş olursun.</p></div>
