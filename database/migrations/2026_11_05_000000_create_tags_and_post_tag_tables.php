@@ -20,38 +20,30 @@ return new class extends Migration
         Schema::create('post_tag', function (Blueprint $table): void {
             $table->foreignId('post_id')->constrained()->cascadeOnDelete();
             $table->foreignId('tag_id')->constrained()->cascadeOnDelete();
+            $table->timestamps();
             $table->primary(['post_id', 'tag_id']);
             $table->index('tag_id');
         });
 
-        // Keep the legacy JSON column intact and migrate its values into the relational tables.
+        // Preserve the legacy JSON column and copy existing tags into the new relational tables.
         DB::table('posts')->select(['id', 'tags'])->orderBy('id')->chunk(200, function ($posts): void {
             foreach ($posts as $post) {
                 $values = json_decode((string) $post->tags, true);
-                if (! is_array($values)) {
-                    continue;
-                }
+                if (! is_array($values)) continue;
 
                 foreach ($values as $value) {
-                    if (! is_string($value) || trim($value) === '') {
-                        continue;
-                    }
-
+                    if (! is_string($value) || trim($value) === '') continue;
                     $name = trim($value);
-                    $slug = Str::slug($name);
-                    if ($slug === '') {
-                        continue;
-                    }
+                    $base = Str::limit(Str::slug($name), 110, '');
+                    if ($base === '') continue;
 
-                    $tag = DB::table('tags')->where('slug', $slug)->first();
+                    $tag = DB::table('tags')->where('slug', $base)->first();
                     if (! $tag) {
-                        $base = Str::limit($slug, 110, '');
                         $slug = $base;
                         $suffix = 1;
                         while (DB::table('tags')->where('slug', $slug)->exists()) {
                             $slug = Str::limit($base, 110, '').'-'.$suffix++;
                         }
-
                         $tagId = DB::table('tags')->insertGetId([
                             'name' => $name,
                             'slug' => $slug,
@@ -65,6 +57,8 @@ return new class extends Migration
                     DB::table('post_tag')->insertOrIgnore([
                         'post_id' => $post->id,
                         'tag_id' => $tagId,
+                        'created_at' => now(),
+                        'updated_at' => now(),
                     ]);
                 }
             }
