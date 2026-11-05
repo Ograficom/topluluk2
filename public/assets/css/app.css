@@ -266,14 +266,7 @@ p {
   overflow-y: auto;
   overscroll-behavior: contain;
 }
-.channel-sidebar-widgets > .footer {
-  position: static;
-  flex: 0 0 auto;
-  margin-top: 0;
-  padding-bottom: 8px;
-  background: var(--body-bg);
-}
-@media screen and (max-width: 920px) {
+.channel-sidebar-widgets > @media screen and (max-width: 920px) {
   .main__grid-feed > .main__widgets {
     position: static;
     height: auto;
@@ -290,25 +283,6 @@ p {
   .channel-sidebar-comments {
     max-height: none;
   }
-}
-
-/* Right sidebar: keep the footer after the last widget and pin it
-   to the viewport bottom only when the user scrolls down to it. */
-.main__widgets {
-  min-width: 0;
-  align-self: start;
-}
-.main__widgets > .widgets {
-  min-width: 0;
-}
-.main__widgets .footer {
-  position: sticky;
-  bottom: 0;
-  z-index: 20;
-  width: 100%;
-  margin-top: 0;
-  padding: 14px 20px 20px;
-  background: var(--body-bg);
 }
 
 /* Widgets */
