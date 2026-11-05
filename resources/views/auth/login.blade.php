@@ -16,7 +16,9 @@
                 </div>
             @endif
 
-            @include('auth._social-buttons')
+            <div class="signin__body">
+                @include('auth._social-buttons')
+            </div>
 
             <form action="{{ route('login.store') }}" method="POST">
                 @csrf
