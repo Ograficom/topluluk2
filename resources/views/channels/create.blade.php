@@ -46,7 +46,7 @@
 
                             <div class="channel-image-upload__actions">
                                 <label class="channel-image-upload__button" for="channel-image">
-                                    <x-repost-icon name="upload" size="16" />
+                                    <x-repost-icon name="image" size="16" />
                                     <span>Görsel seç</span>
                                 </label>
                                 <span class="channel-image-upload__filename" id="channel-image-filename">Henüz dosya seçilmedi</span>
@@ -87,8 +87,6 @@
                 const file = input.files && input.files[0];
                 if (!file) {
                     filename.textContent = 'Henüz dosya seçilmedi';
-                    preview.innerHTML = '';
-                    preview.innerHTML = '<span aria-hidden="true">＋</span>';
                     return;
                 }
 
