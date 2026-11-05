@@ -18,7 +18,6 @@ class TagResource extends Resource
 {
     protected static ?string $model = Tag::class;
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedTag;
-    protected static ?int $navigationSort = 4;
 
     public static function form(Schema $schema): Schema { return TagForm::configure($schema); }
     public static function table(Table $table): Table { return TagsTable::configure($table); }
