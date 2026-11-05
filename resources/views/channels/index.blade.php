@@ -4,7 +4,7 @@
 
 @section('content')
     <section class="subscriptions__section card card-body">
-        <header class="subscriptions__header"><h1 class="h3">Kanallar</h1><p class="small color-gray">Topluluk ilgi alanlarını keşfet, kanalları incele.</p></header>
+        <h1 class="h3">Kanallar</h1>
         @if ($channels->isNotEmpty())
             <ul class="subscriptions__channels">
                 @foreach ($channels as $channel)
@@ -19,21 +19,16 @@
                             </a>
                             <a href="{{ route('channels.show', $channel) }}" class="subchannel__name">{{ $channel->name }}</a>
                             <div class="subchannel__count">{{ number_format($channel->posts_count) }} yazı · {{ number_format($channel->subscribers_count ?? 0) }} abone</div>
-                            <div class="subchannel__footer">
-                                @if (auth()->user()?->is_admin)
-                                    <a class="link-accent" href="{{ route('channels.edit', $channel) }}">Düzenle</a>
-                                @endif
-                                @auth
-                                    <form action="{{ route('channels.subscribe', $channel) }}" method="POST">
-                                        @csrf
-                                        <button class="btn {{ ($channel->is_subscribed ?? false) ? 'btn-secondary' : 'btn-primary' }} btn-sm btn-rounded" type="submit">
-                                            {{ ($channel->is_subscribed ?? false) ? 'Abonelikten çık' : 'Abone ol' }}
-                                        </button>
-                                    </form>
-                                @else
-                                    <a class="btn btn-secondary btn-sm btn-rounded" href="{{ route('login') }}">Abone ol</a>
-                                @endauth
-                            </div>
+                            @auth
+                                <form action="{{ route('channels.subscribe', $channel) }}" method="POST">
+                                    @csrf
+                                    <button class="btn {{ ($channel->is_subscribed ?? false) ? 'btn-secondary' : 'btn-primary' }} btn-sm btn-rounded" type="submit">
+                                        {{ ($channel->is_subscribed ?? false) ? 'Abonelikten çık' : 'Abone ol' }}
+                                    </button>
+                                </form>
+                            @else
+                                <a class="btn btn-secondary btn-sm btn-rounded" href="{{ route('login') }}">Abone ol</a>
+                            @endauth
                         </article>
                     </li>
                 @endforeach
