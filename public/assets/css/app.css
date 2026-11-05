@@ -5193,51 +5193,6 @@ p {
 }
 
 
-/* Repost-style guest sign-in modal */
-.auth-modal {
-  --modal-content-width: 420px;
-  --modal-content-radius: 28px;
-  --modal-viewport-offset: 24px;
-}
-.auth-modal .modal-content {
-  position: relative;
-}
-.auth-modal .signin {
-  width: 100%;
-  max-width: 350px;
-  margin: 12px auto;
-}
-.auth-modal .modal-close,
-.auth-modal .modal-back {
-  position: absolute;
-  top: 14px;
-  z-index: 2;
-}
-.auth-modal .modal-close { right: 14px; }
-.auth-modal .modal-back { left: 14px; }
-.auth-modal .signin > h2 {
-  margin: 12px 0 8px;
-  font-size: 1.55rem;
-}
-.auth-modal .signin > p {
-  margin: 0;
-}
-.auth-modal [hidden] {
-  display: none !important;
-}
-@media (max-width: 480px) {
-  .auth-modal {
-    --modal-content-width: calc(100vw - 28px);
-    --modal-content-radius: 24px;
-  }
-  .auth-modal .signin {
-    max-width: 100%;
-    padding-inline: 2px;
-  }
-}
-
-
-
 /* Keep Laravel's subscription form visually identical to the original Repost button child. */
 .subchannel__subscribe-form {
   display: contents;
