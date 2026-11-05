@@ -1779,6 +1779,9 @@ p {
 .subchannel:hover {
   background-color: var(--gray-150);
 }
+.subchannel__footer {
+  margin-top: auto;
+}
 .subchannel__icon {
   display: flex;
   overflow: hidden;
@@ -5268,4 +5271,18 @@ p {
 /* Keep Laravel's subscription form visually identical to the original Repost button child. */
 .subchannel__subscribe-form {
   display: contents;
+}
+
+/* Admin-only action; keep the original Repost card and subscribe-button geometry. */
+.subchannel__edit {
+  align-self: center;
+  margin-top: 7px;
+  font-size: 0.75rem;
+}
+.subchannel__footer > form {
+  margin-top: 1.5rem;
+}
+.subchannel__footer > form > .btn,
+.subchannel__footer > .btn {
+  width: 100%;
 }
