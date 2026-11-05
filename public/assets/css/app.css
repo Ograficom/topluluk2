@@ -5265,3 +5265,11 @@ p {
     padding-inline: 2px;
   }
 }
+
+/* Channel catalog card actions follow the original Repost subscriptions layout. */
+.subchannel__footer > form {
+  margin-top: 1.5rem;
+}
+.subchannel__footer .btn {
+  width: 100%;
+}
