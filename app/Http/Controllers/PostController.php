@@ -6,12 +6,13 @@ use App\Models\Channel;
 use App\Models\Comment;
 use App\Models\Post;
 use App\Models\PostReaction;
+use App\Models\Tag;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Illuminate\View\View;
 
@@ -29,58 +30,32 @@ class PostController extends Controller
         $period = $validated['period'] ?? null;
         $viewer = $request->user();
 
-        $posts = Post::query()
-            ->published()
-            ->with(['user', 'channel'])
+        $posts = Post::query()->published()->with(['user', 'channel', 'tagRecords'])
             ->withCount('comments')
             ->withCount([
                 'reactions as likes_count' => fn (Builder $query) => $query->where('type', PostReaction::LIKE),
                 'reactions as dislikes_count' => fn (Builder $query) => $query->where('type', PostReaction::DISLIKE),
             ])
-            ->when($viewer, function (Builder $query) use ($viewer): void {
-                $query->with(['reactions' => fn (Relation $reactions) => $reactions->where('user_id', $viewer->id)]);
-            })
-            ->when($viewer, function (Builder $query) use ($viewer): void {
-                $query->whereNotIn('user_id', $viewer->blockedUsers()->select('users.id'))
-                    ->whereNotIn('user_id', $viewer->blockedByUsers()->select('users.id'));
-            })
-            ->when($search !== '', function (Builder $query) use ($search): void {
-                $query->where(function (Builder $query) use ($search): void {
-                    $query->where('title', 'like', "%{$search}%")
-                        ->orWhere('excerpt', 'like', "%{$search}%")
-                        ->orWhere('body', 'like', "%{$search}%");
-                });
-            })
-            ->when($period, function (Builder $query) use ($period): void {
-                $query->where('published_at', '>=', match ($period) {
-                    'day' => now()->subDay(),
-                    'week' => now()->subWeek(),
-                    'month' => now()->subMonth(),
-                });
-            })
+            ->when($viewer, fn (Builder $query) => $query->with(['reactions' => fn (Relation $r) => $r->where('user_id', $viewer->id)]))
+            ->when($viewer, fn (Builder $query) => $query->whereNotIn('user_id', $viewer->blockedUsers()->select('users.id'))
+                ->whereNotIn('user_id', $viewer->blockedByUsers()->select('users.id')))
+            ->when($search !== '', fn (Builder $query) => $query->where(fn (Builder $q) => $q
+                ->where('title', 'like', "%{$search}%")->orWhere('excerpt', 'like', "%{$search}%")->orWhere('body', 'like', "%{$search}%")))
+            ->when($period, fn (Builder $query) => $query->where('published_at', '>=', match ($period) {
+                'day' => now()->subDay(), 'week' => now()->subWeek(), 'month' => now()->subMonth(),
+            }))
             ->when($sort === 'popular', fn (Builder $query) => $query->orderByDesc('likes_count'))
             ->when($sort === 'views', fn (Builder $query) => $query->orderByDesc('views'))
             ->when($sort === 'latest', fn (Builder $query) => $query->orderByDesc('published_at')->orderByDesc('id'))
-            ->paginate(10)
-            ->withQueryString();
+            ->paginate(10)->withQueryString();
 
-        $posts->getCollection()->each(function (Post $post): void {
-            if ($post->relationLoaded('reactions')) {
-                $post->setAttribute('viewer_reaction', $post->reactions->first()?->type);
-            }
-        });
-
+        $this->setViewerReactions($posts);
         return view('posts.index', compact('posts', 'search', 'sort', 'period'));
     }
 
     public function create(Request $request): View
     {
-        $channels = Channel::query()->active()->orderBy('name')->get();
-
-        return view('posts.create', [
-            'channels' => $channels,
-            'user' => $request->user(),
-        ]);
+        return view('posts.create', ['channels' => Channel::query()->active()->orderBy('name')->get(), 'user' => $request->user()]);
     }
 
     public function edit(Request $request, Post $post): View
@@ -104,47 +79,29 @@ class PostController extends Controller
             'media' => ['nullable', 'array', 'max:10'],
             'media.*' => ['image', 'mimes:jpg,jpeg,png,gif,webp', 'max:5120'],
             'video_url' => ['nullable', 'url', 'max:2048', function (string $attribute, mixed $value, \Closure $fail): void {
-                if (is_string($value) && filled($value) && parse_url($value, PHP_URL_SCHEME) !== 'https') {
-                    $fail('Video bağlantısı HTTPS kullanmalıdır.');
-                }
+                if (filled($value) && parse_url($value, PHP_URL_SCHEME) !== 'https') $fail('Video bağlantısı HTTPS kullanmalıdır.');
             }],
             'tags' => ['nullable', 'string', 'max:500'],
             'is_adult' => ['sometimes', 'boolean'],
         ]);
 
-        $slug = Str::slug($validated['title']);
-        $slug = $slug !== '' ? $slug : 'post';
-        $baseSlug = Str::limit($slug, 240, '');
-        $slug = $baseSlug;
-        $suffix = 1;
-
-        while (Post::query()->where('slug', $slug)->exists()) {
-            $slug = Str::limit($baseSlug, 240 - strlen((string) $suffix), '').'-'.$suffix++;
+        $slugBase = Str::limit(Str::slug($validated['title']) ?: 'post', 240, '');
+        $slug = $slugBase;
+        for ($suffix = 1; Post::query()->where('slug', $slug)->exists(); $suffix++) {
+            $slug = Str::limit($slugBase, 240 - strlen((string) $suffix), '').'-'.$suffix;
         }
 
         $coverImage = $request->file('cover_image')?->store('posts', 'public');
-
-        if ($request->hasFile('cover_image') && ! $coverImage) {
-            throw new \RuntimeException('The post cover image could not be stored.');
-        }
+        if ($request->hasFile('cover_image') && ! $coverImage) throw new \RuntimeException('The post cover image could not be stored.');
 
         $mediaPaths = [];
         foreach ($request->file('media', []) as $mediaFile) {
-            $mediaPath = $mediaFile->store('posts/gallery', 'public');
-            if (! $mediaPath) {
-                throw new \RuntimeException('A gallery image could not be stored.');
-            }
-            $mediaPaths[] = $mediaPath;
+            $path = $mediaFile->store('posts/gallery', 'public');
+            if (! $path) throw new \RuntimeException('A gallery image could not be stored.');
+            $mediaPaths[] = $path;
         }
 
-        $tags = collect(explode(',', $validated['tags'] ?? ''))
-            ->map(fn (string $tag): string => trim($tag))
-            ->filter()
-            ->unique(fn (string $tag): string => mb_strtolower($tag))
-            ->take(20)
-            ->values()
-            ->all();
-
+        $tags = $this->parseTags($validated['tags'] ?? '');
         $post = Post::create([
             'user_id' => $request->user()->id,
             'channel_id' => $validated['channel_id'] ?? null,
@@ -160,6 +117,7 @@ class PostController extends Controller
             'published_at' => now(),
             'is_adult' => $request->boolean('is_adult'),
         ]);
+        $this->syncTagRecords($post, $tags);
 
         return redirect()->route('posts.show', $post)->with('status', 'Yazınız yayınlandı.');
     }
@@ -176,9 +134,7 @@ class PostController extends Controller
             'media' => ['nullable', 'array', 'max:10'],
             'media.*' => ['image', 'mimes:jpg,jpeg,png,gif,webp', 'max:5120'],
             'video_url' => ['nullable', 'url', 'max:2048', function (string $attribute, mixed $value, \Closure $fail): void {
-                if (filled($value) && parse_url($value, PHP_URL_SCHEME) !== 'https') {
-                    $fail('Video bağlantısı HTTPS kullanmalıdır.');
-                }
+                if (filled($value) && parse_url($value, PHP_URL_SCHEME) !== 'https') $fail('Video bağlantısı HTTPS kullanmalıdır.');
             }],
             'remove_media' => ['nullable', 'array', 'max:10'],
             'remove_media.*' => ['string', 'max:500'],
@@ -187,41 +143,25 @@ class PostController extends Controller
             'remove_cover' => ['sometimes', 'boolean'],
         ]);
 
-        $baseSlug = Str::limit(Str::slug($validated['title']) ?: 'post', 240, '');
-        $slug = $baseSlug;
-        $suffix = 1;
-        while (Post::query()->where('slug', $slug)->where('id', '<>', $post->id)->exists()) {
-            $slug = Str::limit($baseSlug, 240 - strlen((string) $suffix), '').'-'.$suffix++;
+        $slugBase = Str::limit(Str::slug($validated['title']) ?: 'post', 240, '');
+        $slug = $slugBase;
+        for ($suffix = 1; Post::query()->where('slug', $slug)->where('id', '<>', $post->id)->exists(); $suffix++) {
+            $slug = Str::limit($slugBase, 240 - strlen((string) $suffix), '').'-'.$suffix;
         }
 
         $newCover = $request->file('cover_image')?->store('posts', 'public');
-        if ($request->hasFile('cover_image') && ! $newCover) {
-            throw new \RuntimeException('The post cover image could not be stored.');
-        }
+        if ($request->hasFile('cover_image') && ! $newCover) throw new \RuntimeException('The post cover image could not be stored.');
 
-        $tags = collect(explode(',', $validated['tags'] ?? ''))
-            ->map(fn (string $tag): string => trim($tag))
-            ->filter()
-            ->unique(fn (string $tag): string => mb_strtolower($tag))
-            ->take(20)
-            ->values()
-            ->all();
-
+        $tags = $this->parseTags($validated['tags'] ?? '');
         $oldCover = $post->cover_image;
         $existingMedia = collect($post->media ?? []);
         $removeMedia = collect($validated['remove_media'] ?? []);
-        $removedMedia = $existingMedia->filter(fn (string $path): bool => $removeMedia->contains($path));
-        foreach ($removedMedia as $mediaPath) {
-            Storage::disk('public')->delete($mediaPath);
-        }
-        $mediaPaths = $existingMedia->reject(fn (string $path): bool => $removeMedia->contains($path))->values();
-
+        foreach ($existingMedia->filter(fn (string $path) => $removeMedia->contains($path)) as $path) Storage::disk('public')->delete($path);
+        $mediaPaths = $existingMedia->reject(fn (string $path) => $removeMedia->contains($path))->values();
         foreach ($request->file('media', []) as $mediaFile) {
-            $mediaPath = $mediaFile->store('posts/gallery', 'public');
-            if (! $mediaPath) {
-                throw new \RuntimeException('A gallery image could not be stored.');
-            }
-            $mediaPaths->push($mediaPath);
+            $path = $mediaFile->store('posts/gallery', 'public');
+            if (! $path) throw new \RuntimeException('A gallery image could not be stored.');
+            $mediaPaths->push($path);
         }
 
         $post->fill([
@@ -235,77 +175,71 @@ class PostController extends Controller
             'tags' => $tags,
             'is_adult' => $request->boolean('is_adult'),
         ]);
-        if ($newCover) {
-            $post->cover_image = $newCover;
-        } elseif ($request->boolean('remove_cover')) {
-            $post->cover_image = null;
-        }
+        if ($newCover) $post->cover_image = $newCover;
+        elseif ($request->boolean('remove_cover')) $post->cover_image = null;
         $post->save();
+        $this->syncTagRecords($post, $tags);
 
-        if ($oldCover && $oldCover !== $post->cover_image && ! filter_var($oldCover, FILTER_VALIDATE_URL)) {
-            Storage::disk('public')->delete($oldCover);
-        }
+        if ($oldCover && $oldCover !== $post->cover_image && ! filter_var($oldCover, FILTER_VALIDATE_URL)) Storage::disk('public')->delete($oldCover);
 
         return redirect()->route('posts.show', $post)->with('status', 'Yazınız güncellendi.');
     }
 
     public function show(Request $request, Post $post): View
     {
-        abort_unless(
-            $post->is_published && (! $post->published_at || $post->published_at->isPast()),
-            404,
-        );
-
-        if ($post->is_adult && ! $request->user()?->show_adult_content) {
-            return view('posts.adult-warning');
-        }
+        abort_unless($post->is_published && (! $post->published_at || $post->published_at->isPast()), 404);
+        if ($post->is_adult && ! $request->user()?->show_adult_content) return view('posts.adult-warning');
 
         $post->increment('views');
-        $post->load(['user', 'channel']);
+        $post->load(['user', 'channel', 'tagRecords']);
         $replyTo = null;
-
         if ($request->filled('reply_to')) {
-            $replyTo = Comment::query()
-                ->where('post_id', $post->id)
-                ->whereNull('parent_id')
-                ->find($request->query('reply_to'));
+            $replyTo = Comment::query()->where('post_id', $post->id)->whereNull('parent_id')->find($request->query('reply_to'));
             abort_unless($replyTo, 404);
         }
 
-        $commentsQuery = $post->comments()
-            ->whereNull('parent_id')
-            ->with(['user', 'replies.user'])
-            ->withCount('reactions')
-            ->withCount('replies')
-            ->with([
-                'replies' => fn ($query) => $query->withCount('reactions'),
-            ]);
-
+        $commentsQuery = $post->comments()->whereNull('parent_id')->with(['user', 'replies.user'])
+            ->withCount('reactions')->withCount('replies')->with(['replies' => fn ($query) => $query->withCount('reactions')]);
         if ($request->user()) {
-            $commentsQuery
-                ->withExists([
-                    'reactions as viewer_reacted' => fn (Builder $query) => $query->where('user_id', $request->user()->id),
-                ])
-                ->with([
-                    'replies' => fn ($query) => $query
-                        ->withCount('reactions')
-                        ->withExists([
-                            'reactions as viewer_reacted' => fn (Builder $reactionQuery) => $reactionQuery->where('user_id', $request->user()->id),
-                        ]),
-                ]);
+            $commentsQuery->withExists(['reactions as viewer_reacted' => fn (Builder $query) => $query->where('user_id', $request->user()->id)])
+                ->with(['replies' => fn ($query) => $query->withCount('reactions')->withExists([
+                    'reactions as viewer_reacted' => fn (Builder $r) => $r->where('user_id', $request->user()->id),
+                ])]);
         }
-
         $post->setRelation('comments', $commentsQuery->get());
         $post->loadCount([
             'comments',
             'reactions as likes_count' => fn (Builder $query) => $query->where('type', PostReaction::LIKE),
             'reactions as dislikes_count' => fn (Builder $query) => $query->where('type', PostReaction::DISLIKE),
         ]);
-        if ($request->user()) {
-            $post->load(['reactions' => fn (Relation $query) => $query->where('user_id', $request->user()->id)]);
-        }
+        if ($request->user()) $post->load(['reactions' => fn (Relation $query) => $query->where('user_id', $request->user()->id)]);
 
         return view('posts.show', compact('post', 'replyTo'));
+    }
+
+    private function parseTags(string $input): array
+    {
+        return collect(explode(',', $input))->map(fn (string $tag) => trim($tag))->filter()
+            ->unique(fn (string $tag) => mb_strtolower($tag))->take(20)->values()->all();
+    }
+
+    private function syncTagRecords(Post $post, array $names): void
+    {
+        $ids = [];
+        foreach ($names as $name) {
+            $slug = Str::slug($name);
+            if ($slug === '') continue;
+            $tag = Tag::firstOrCreate(['slug' => $slug], ['name' => $name]);
+            $ids[] = $tag->id;
+        }
+        $post->tagRecords()->sync($ids);
+    }
+
+    private function setViewerReactions($paginator): void
+    {
+        $paginator->getCollection()->each(function (Post $post): void {
+            if ($post->relationLoaded('reactions')) $post->setAttribute('viewer_reaction', $post->reactions->first()?->type);
+        });
     }
 
     private function authorizeManage(Request $request, Post $post): void
