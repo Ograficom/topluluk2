@@ -16,6 +16,18 @@
                 </div>
             @endif
 
+            @php($oauthSettings = \App\Models\SiteSetting::current())
+            @if ($oauthSettings?->isGoogleLoginEnabled() || $oauthSettings?->isYandexLoginEnabled())
+                <div class="signin__body">
+                    @if ($oauthSettings?->isGoogleLoginEnabled())
+                        <a href="{{ route('oauth.redirect', ['provider' => 'google']) }}" class="btn btn-secondary btn-lg btn-full auth-provider"><span class="auth-provider__google">G</span>Google ile devam et</a>
+                    @endif
+                    @if ($oauthSettings?->isYandexLoginEnabled())
+                        <a href="{{ route('oauth.redirect', ['provider' => 'yandex']) }}" class="btn btn-secondary btn-lg btn-full auth-provider"><span class="auth-provider__yandex">Я</span>Yandex ile devam et</a>
+                    @endif
+                </div>
+            @endif
+
             <form action="{{ route('login.store') }}" method="POST">
                 @csrf
                 <div class="signin__body">
