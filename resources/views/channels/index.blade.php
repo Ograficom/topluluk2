@@ -38,12 +38,6 @@
                                 {{ number_format($channel->subscribers_count ?? 0) }} abone
                             </div>
 
-                            @if (auth()->user()?->is_admin)
-                                <a class="subchannel__edit link-accent" href="{{ route('channels.edit', $channel) }}">
-                                    Düzenle
-                                </a>
-                            @endif
-
                             @auth
                                 <form class="subchannel__subscribe-form" action="{{ route('channels.subscribe', $channel) }}" method="POST">
                                     @csrf
