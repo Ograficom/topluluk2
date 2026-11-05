@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('title', '#'.$tag)
+@section('description', 'OgraFi üzerinde #'.$tag.' etiketiyle yayınlanan yazılar.')
 
 @section('content')
     <section class="feed">
