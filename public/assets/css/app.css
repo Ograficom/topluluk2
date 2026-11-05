@@ -5270,10 +5270,3 @@ p {
   display: contents;
 }
 
-.subchannel__footer > form {
-  margin-top: 1.5rem;
-}
-.subchannel__footer > form > .btn,
-.subchannel__footer > .btn {
-  width: 100%;
-}
