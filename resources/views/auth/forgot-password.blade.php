@@ -8,7 +8,9 @@
             <h1 class="h2 text-center">Şifremi unuttum</h1>
             <p class="text-center color-gray">Hesabına bağlı e-posta adresine sıfırlama bağlantısı gönderelim.</p>
 
-            @include('auth._social-buttons')
+            <div class="signin__body">
+                @include('auth._social-buttons')
+            </div>
             @if (session('status'))<div class="alert alert-success" role="status">{{ session('status') }}</div>@endif
             @if ($errors->any())
                 <div class="alert alert-danger" role="alert">@foreach ($errors->all() as $error)<p>{{ $error }}</p>@endforeach</div>
