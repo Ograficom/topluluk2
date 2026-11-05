@@ -5264,18 +5264,8 @@ p {
 }
 
 
-/* Laravel form wrappers preserve the original Repost channel-card CTA layout. */
-.subchannel > .subchannel__subscribe-form,
-.subchannel > .subchannel__subscribe-link {
-  width: 100%;
-  margin-top: 1.5rem;
-}
-.subchannel > .subchannel__subscribe-form > .btn,
-.subchannel > .subchannel__subscribe-link {
-  width: 100%;
-}
-.subchannel__edit {
-  align-self: center;
-  margin-top: 7px;
-  font-size: 0.75rem;
+
+/* Keep Laravel's subscription form visually identical to the original Repost button child. */
+.subchannel__subscribe-form {
+  display: contents;
 }
