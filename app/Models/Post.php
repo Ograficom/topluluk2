@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -15,20 +16,9 @@ class Post extends Model
     use HasFactory;
 
     protected $fillable = [
-        'user_id',
-        'channel_id',
-        'title',
-        'slug',
-        'excerpt',
-        'body',
-        'cover_image',
-        'media',
-        'video_url',
-        'tags',
-        'is_published',
-        'published_at',
-        'views',
-        'is_adult',
+        'user_id', 'channel_id', 'title', 'slug', 'excerpt', 'body',
+        'cover_image', 'media', 'video_url', 'tags', 'is_published',
+        'published_at', 'views', 'is_adult',
     ];
 
     protected function casts(): array
@@ -42,27 +32,17 @@ class Post extends Model
         ];
     }
 
-    public function user(): BelongsTo
+    public function user(): BelongsTo { return $this->belongsTo(User::class); }
+    public function channel(): BelongsTo { return $this->belongsTo(Channel::class); }
+    public function comments(): HasMany { return $this->hasMany(Comment::class)->latest(); }
+    public function reactions(): HasMany { return $this->hasMany(PostReaction::class); }
+
+    public function tagRecords(): BelongsToMany
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsToMany(Tag::class)->withTimestamps();
     }
 
-    public function channel(): BelongsTo
-    {
-        return $this->belongsTo(Channel::class);
-    }
-
-    public function comments(): HasMany
-    {
-        return $this->hasMany(Comment::class)->latest();
-    }
-
-    public function reactions(): HasMany
-    {
-        return $this->hasMany(PostReaction::class);
-    }
-
-    public function bookmarkedBy(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    public function bookmarkedBy(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'post_bookmarks')->withTimestamps();
     }
@@ -75,71 +55,33 @@ class Post extends Model
                 if (filter_var($path, FILTER_VALIDATE_URL)) {
                     return in_array(parse_url($path, PHP_URL_SCHEME), ['http', 'https'], true) ? $path : null;
                 }
-
                 $path = ltrim($path, '/');
-
-                if (str_contains($path, '..')) {
-                    return null;
-                }
-
-                if (Str::startsWith($path, 'storage/')) {
-                    $path = Str::after($path, 'storage/');
-                }
-
-                if (Storage::disk('public')->exists($path)) {
-                    return asset('storage/'.$path);
-                }
-
+                if (str_contains($path, '..')) return null;
+                if (Str::startsWith($path, 'storage/')) $path = Str::after($path, 'storage/');
+                if (Storage::disk('public')->exists($path)) return asset('storage/'.$path);
                 return is_file(public_path($path)) ? asset($path) : null;
-            })
-            ->filter()
-            ->unique()
-            ->values()
-            ->all();
+            })->filter()->unique()->values()->all();
     }
 
     public function coverImageUrl(): ?string
     {
         $coverImage = trim((string) $this->cover_image);
-
-        if ($coverImage === '') {
-            return null;
-        }
-
+        if ($coverImage === '') return null;
         if (filter_var($coverImage, FILTER_VALIDATE_URL)) {
-            return in_array(parse_url($coverImage, PHP_URL_SCHEME), ['http', 'https'], true)
-                ? $coverImage
-                : null;
+            return in_array(parse_url($coverImage, PHP_URL_SCHEME), ['http', 'https'], true) ? $coverImage : null;
         }
-
         $path = ltrim($coverImage, '/');
-
-        if (str_contains($path, '..')) {
-            return null;
-        }
-
-        if (Str::startsWith($path, 'storage/')) {
-            $path = Str::after($path, 'storage/');
-        }
-
-        if (Storage::disk('public')->exists($path)) {
-            return asset('storage/'.$path);
-        }
-
+        if (str_contains($path, '..')) return null;
+        if (Str::startsWith($path, 'storage/')) $path = Str::after($path, 'storage/');
+        if (Storage::disk('public')->exists($path)) return asset('storage/'.$path);
         return is_file(public_path($path)) ? asset($path) : null;
     }
 
     public function scopePublished(Builder $query): Builder
     {
-        return $query
-            ->where('is_published', true)
-            ->where(fn (Builder $query) => $query
-                ->whereNull('published_at')
-                ->orWhere('published_at', '<=', now()));
+        return $query->where('is_published', true)
+            ->where(fn (Builder $query) => $query->whereNull('published_at')->orWhere('published_at', '<=', now()));
     }
 
-    public function getRouteKeyName(): string
-    {
-        return 'slug';
-    }
+    public function getRouteKeyName(): string { return 'slug'; }
 }
