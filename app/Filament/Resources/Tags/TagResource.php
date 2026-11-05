@@ -18,33 +18,13 @@ class TagResource extends Resource
 {
     protected static ?string $model = Tag::class;
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedTag;
-    protected static ?string $navigationGroup = 'İçerik yönetimi';
-    protected static ?int $navigationSort = 3;
+    protected static ?int $navigationSort = 4;
 
-    public static function form(Schema $schema): Schema
-    {
-        return TagForm::configure($schema);
-    }
-
-    public static function table(Table $table): Table
-    {
-        return TagsTable::configure($table);
-    }
-
-    public static function getNavigationLabel(): string
-    {
-        return 'Etiketler';
-    }
-
-    public static function getModelLabel(): string
-    {
-        return 'etiket';
-    }
-
-    public static function getPluralModelLabel(): string
-    {
-        return 'etiketler';
-    }
+    public static function form(Schema $schema): Schema { return TagForm::configure($schema); }
+    public static function table(Table $table): Table { return TagsTable::configure($table); }
+    public static function getNavigationLabel(): string { return 'Etiketler'; }
+    public static function getModelLabel(): string { return 'etiket'; }
+    public static function getPluralModelLabel(): string { return 'etiketler'; }
 
     public static function getPages(): array
     {
