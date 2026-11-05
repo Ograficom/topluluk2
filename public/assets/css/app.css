@@ -1779,9 +1779,6 @@ p {
 .subchannel:hover {
   background-color: var(--gray-150);
 }
-.subchannel__footer {
-  margin-top: auto;
-}
 .subchannel__icon {
   display: flex;
   overflow: hidden;
