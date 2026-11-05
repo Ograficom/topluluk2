@@ -16,7 +16,33 @@ class SiteSetting extends Model
         'instagram_url',
         'telegram_url',
         'threads_url',
+        'google_login_enabled',
+        'google_client_id',
+        'google_client_secret',
+        'yandex_login_enabled',
+        'yandex_client_id',
+        'yandex_client_secret',
     ];
+
+    protected function casts(): array
+    {
+        return [
+            'google_login_enabled' => 'boolean',
+            'yandex_login_enabled' => 'boolean',
+            'google_client_secret' => 'encrypted',
+            'yandex_client_secret' => 'encrypted',
+        ];
+    }
+
+    public function isGoogleLoginEnabled(): bool
+    {
+        return $this->google_login_enabled && filled($this->google_client_id) && filled($this->google_client_secret);
+    }
+
+    public function isYandexLoginEnabled(): bool
+    {
+        return $this->yandex_login_enabled && filled($this->yandex_client_id) && filled($this->yandex_client_secret);
+    }
 
     public static function current(): ?self
     {
