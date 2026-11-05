@@ -11,6 +11,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\SiteBrandingController;
 use App\Http\Controllers\StatisticsController;
+use App\Http\Controllers\SocialAuthController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [PostController::class, 'index'])->name('posts.index');
@@ -47,6 +48,9 @@ Route::get('/contacts', [CommunityController::class, 'contacts'])->name('contact
 Route::post('/contacts', [CommunityController::class, 'sendContact'])->middleware('throttle:5,1')->name('contacts.send');
 
 Route::middleware('guest')->group(function (): void {
+    Route::get('/auth/{provider}/redirect', [SocialAuthController::class, 'redirect'])->middleware('throttle:10,1')->name('oauth.redirect');
+    Route::get('/auth/{provider}/callback', [SocialAuthController::class, 'callback'])->middleware('throttle:10,1')->name('oauth.callback');
+
     Route::get('/signin', [AuthController::class, 'showLogin'])->name('login');
     Route::get('/signin.html', [AuthController::class, 'showLogin'])->name('legacy.signin');
     Route::post('/signin', [AuthController::class, 'login'])->middleware('throttle:10,1')->name('login.store');
