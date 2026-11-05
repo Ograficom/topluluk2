@@ -229,7 +229,7 @@
                     @yield('content')
                 </section>
             @else
-                @if ($statsPage)
+                @if ($statsPage || $channelsIndexPage)
                     <article class="feed">
                 @else
                     <section class="feed">
@@ -238,7 +238,7 @@
                         <div class="alert alert-success" role="status">{{ session('status') }}</div>
                     @endif
                     @yield('content')
-                @if ($statsPage)
+                @if ($statsPage || $channelsIndexPage)
                     </article>
                 @else
                     </section>
