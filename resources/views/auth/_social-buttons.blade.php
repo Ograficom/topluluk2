@@ -16,7 +16,7 @@
         @endif
 
         @if ($oauthSettings?->isYandexLoginEnabled())
-            <a href="{{ route('oauth.redirect', ['provider' => 'yandex']) }}" class="btn btn-secondary btn-lg btn-full auth-provider">
+            <a href="{{ route('oauth.redirect', ['provider' => 'yandex']) }}" class="btn btn-secondary btn-lg btn-full">
                 <svg width="20" height="20" viewBox="0 0 26 26" aria-hidden="true" focusable="false">
                     <path fill="#f8604a" d="M26 13c0-7.18-5.82-13-13-13S0 5.82 0 13s5.82 13 13 13s13-5.82 13-13Z"/>
                     <path fill="#fff" d="M17.55 20.822h-2.622V7.28h-1.321c-2.254 0-3.38 1.127-3.38 2.817c0 1.885.758 2.816 2.448 3.943l1.322.932l-3.749 5.828H7.237l3.575-5.265c-2.059-1.495-3.185-2.817-3.185-5.265c0-3.012 2.058-5.07 6.023-5.07h3.9v15.622Z"/>
