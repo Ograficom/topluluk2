@@ -96,6 +96,7 @@ Route::middleware('guest')->group(function (): void {
     Route::get('/signin', [AuthController::class, 'showLogin'])->name('login');
     Route::get('/signin.html', [AuthController::class, 'showLogin'])->name('legacy.signin');
     Route::post('/signin', [AuthController::class, 'login'])->middleware('throttle:10,1')->name('login.store');
+    Route::get('/username/check', [AuthController::class, 'checkUsername'])->middleware('throttle:30,1')->name('username.check');
     Route::get('/signup', [AuthController::class, 'showRegister'])->name('register');
     Route::get('/signup.html', [AuthController::class, 'showRegister'])->name('legacy.signup');
     Route::post('/signup', [AuthController::class, 'register'])->middleware('throttle:5,1')->name('register.store');
