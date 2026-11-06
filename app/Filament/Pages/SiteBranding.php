@@ -112,21 +112,6 @@ class SiteBranding extends Page
     }
 
 
-    public function confirmSocialNetworkToggle(string $provider): void
-    {
-        abort_unless(in_array($provider, ['google', 'yandex'], true), 404);
-
-        $selected = $this->data['social_networks'] ?? [];
-
-        if (in_array($provider, $selected, true)) {
-            $selected = array_values(array_diff($selected, [$provider]));
-        } else {
-            $selected[] = $provider;
-        }
-
-        $this->data['social_networks'] = array_values(array_unique($selected));
-    }
-
     public function save(): void
     {
         $data = $this->form->getState();
