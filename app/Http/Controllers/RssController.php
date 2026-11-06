@@ -17,17 +17,17 @@ class RssController extends Controller
         return $this->response($feeds->xml('latest'));
     }
 
-    public function author(string $username, RssFeedService $feeds): Response
+    public function author(RssFeedService $feeds, string $username): Response
     {
         return $this->response($feeds->xml('author', $username));
     }
 
-    public function channel(string $slug, RssFeedService $feeds): Response
+    public function channel(RssFeedService $feeds, string $slug): Response
     {
         return $this->response($feeds->xml('channel', $slug));
     }
 
-    public function tag(string $slug, RssFeedService $feeds): Response
+    public function tag(RssFeedService $feeds, string $slug): Response
     {
         return $this->response($feeds->xml('tag', $slug));
     }
