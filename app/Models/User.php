@@ -45,6 +45,8 @@ class User extends Authenticatable implements FilamentUser
         'verification_status',
         'verification_reason',
         'verification_requested_at',
+        'two_factor_secret',
+        'two_factor_recovery_codes',
     ];
 
     /**
@@ -55,6 +57,8 @@ class User extends Authenticatable implements FilamentUser
     protected $hidden = [
         'password',
         'remember_token',
+        'two_factor_secret',
+        'two_factor_recovery_codes',
     ];
 
     /**
@@ -75,6 +79,9 @@ class User extends Authenticatable implements FilamentUser
             'notify_announcements' => 'boolean',
             'verification_requested_at' => 'datetime',
             'last_seen_at' => 'datetime',
+            'two_factor_secret' => 'encrypted',
+            'two_factor_recovery_codes' => 'encrypted:array',
+            'two_factor_confirmed_at' => 'datetime',
         ];
     }
 
