@@ -27,6 +27,7 @@ class SettingsController extends Controller
         return view('settings.index', [
             'user' => $user,
             'blockedUsers' => $user->blockedUsers()->orderBy('name')->get(),
+            'socialAccounts' => $user->socialAccounts()->get()->keyBy('provider'),
             'activeTab' => in_array($activeTab, self::TABS, true) ? $activeTab : 'profile',
             'timezones' => timezone_identifiers_list(),
         ]);
