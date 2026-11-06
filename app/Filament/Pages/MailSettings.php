@@ -1,34 +1,36 @@
 <?php
 
-namespace App\Filament\Pages;
+namespace App\\Filament\\Pages;
 
-use App\Models\MailSetting;
-use Filament\Forms\Components\Select;
-use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\Toggle;
-use Filament\Notifications\Notification;
-use Filament\Pages\Page;
-use Filament\Schemas\Components\Section;
-use Filament\Schemas\Schema;
-use Filament\Support\Icons\Heroicon;
-use Illuminate\Support\Facades\Mail;
+use App\\Models\\MailSetting;
+use Filament\\Forms\\Components\\Select;
+use Filament\\Forms\\Components\\TextInput;
+use Filament\\Forms\\Components\\Toggle;
+use Filament\\Notifications\\Notification;
+use Filament\\Pages\\Page;
+use Filament\\Schemas\\Components\\Section;
+use Filament\\Schemas\\Schema;
+use Filament\\Support\\Icons\\Heroicon;
+use Illuminate\\Support\\Facades\\Mail;
 use Throwable;
 
 class MailSettings extends Page
 {
     protected static ?string $navigationLabel = 'E-posta / SMTP';
     protected static ?string $title = 'E-posta gönderim ayarları';
-    protected static string|\UnitEnum|null $navigationGroup = 'Site ayarları';
+    protected static string|\\UnitEnum|null $navigationGroup = 'Site ayarları';
     protected static ?int $navigationSort = 90;
-    protected static string|\BackedEnum|null $navigationIcon = Heroicon::OutlinedEnvelope;
+    protected static string|\\BackedEnum|null $navigationIcon = Heroicon::OutlinedEnvelope;
     protected string $view = 'filament.pages.mail-settings';
 
     public ?array $data = [];
     public ?string $testRecipient = null;
+    public bool $hasStoredPassword = false;
 
     public function mount(): void
     {
         $settings = MailSetting::current();
+        $this->hasStoredPassword = filled($settings->password);
 
         $this->form->fill([
             'enabled' => $settings->enabled,
@@ -97,8 +99,10 @@ class MailSettings extends Page
                             ->password()
                             ->revealable()
                             ->autocomplete('new-password')
-                            ->dehydrated()
-                            ->helperText('Güvenlik nedeniyle kayıtlı şifre burada gösterilmez. Değiştirmek için yeni şifre girin; boş bırakırsanız mevcut şifre korunur.')
+                            ->dehydrated(fn ($state): bool => filled($state))
+                            ->helperText(fn (): string => $this->hasStoredPassword
+                                ? 'Kayıtlı SMTP şifresi mevcut. Güvenlik nedeniyle gösterilmez. Değiştirmek için yeni şifre girin; boş bırakırsanız mevcut şifre korunur.'
+                                : 'Henüz SMTP şifresi kaydedilmemiş. İlk kayıt için Hostinger e-posta şifrenizi girin.')
                             ->maxLength(1000),
                     ])
                     ->columns(2),
@@ -127,6 +131,7 @@ class MailSettings extends Page
     public function save(): void
     {
         $data = $this->form->getState();
+        $password = data_get($this->data, 'password');
         $settings = MailSetting::current();
 
         $payload = [
@@ -140,9 +145,7 @@ class MailSettings extends Page
             'from_name' => trim($data['from_name']),
         ];
 
-        if (filled($data['password'] ?? null)) {
-            $payload['password'] = $data['password'];
-        } elseif (! filled($settings->password)) {
+        if (! filled($password) && ! filled($settings->password)) {
             Notification::make()
                 ->title('SMTP şifresi gerekli')
                 ->body('İlk kurulumu tamamlamak için SMTP şifresini girin.')
@@ -152,16 +155,27 @@ class MailSettings extends Page
             return;
         }
 
-        $settings->update($payload);
-        $this->applyMailConfig($settings->fresh());
+        $settings->fill($payload);
+
+        if (filled($password)) {
+            $settings->password = $password;
+        }
+
+        $settings->save();
+        $settings->refresh();
+
+        $this->hasStoredPassword = filled($settings->password);
+        $this->applyMailConfig($settings);
+
+        $this->data['password'] = null;
 
         Notification::make()
             ->title('E-posta ayarları kaydedildi')
-            ->body($settings->enabled ? 'SMTP gönderimi etkin.' : 'Ayarlar kaydedildi; SMTP gönderimi şu anda kapalı.')
+            ->body($this->hasStoredPassword
+                ? 'SMTP ayarları ve şifre veritabanına kaydedildi.'
+                : 'Ayarlar kaydedildi; SMTP gönderimi şu anda kapalı.')
             ->success()
             ->send();
-
-        $this->data['password'] = null;
     }
 
     public function sendTest(): void
