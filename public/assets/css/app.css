@@ -4725,8 +4725,7 @@ p {
   }
   .main__widgets,
   .header__write span,
-  .profile__aside-footer,
-  .setting__aside-footer {
+  .profile__aside-footer {
     display: none;
   }
   .main__grid-feed {
