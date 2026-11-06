@@ -175,19 +175,17 @@
                                         <label>Authenticator veya kurtarma kodu <input type="text" name="code" autocomplete="one-time-code" required></label>
                                         <button class="btn btn-secondary" type="submit">İki faktörlü doğrulamayı kapat</button>
                                     </form>
-                                @elseif ($user->two_factor_secret)
-                                    <p>1. Google Authenticator, Microsoft Authenticator veya 1Password uygulamasını açın.</p>
-                                    <p>2. Hesabı manuel ekleyin ve aşağıdaki anahtarı girin:</p>
-                                    <p><code style="overflow-wrap:anywhere">{{ $user->two_factor_secret }}</code></p>
-                                    <p class="small color-gray">Hesap: {{ $user->email }} · Tür: Zaman tabanlı (TOTP) · 6 hane · 30 saniye</p>
-                                    <form class="setting__list" action="{{ route('settings.two-factor.confirm') }}" method="POST">
-                                        @csrf
-                                        <label>Uygulamadaki 6 haneli kod <input type="text" name="code" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6}" maxlength="6" required></label>
-                                        <button class="btn btn-primary" type="submit">Kodu doğrula ve etkinleştir</button>
-                                    </form>
                                 @else
-                                    <p class="small color-gray">Hesabınıza girişte şifrenize ek olarak Authenticator uygulamanızdaki tek kullanımlık kod sorulur.</p>
-                                    <button class="btn btn-primary" type="button" data-modal-btn="two-factor-setup" aria-controls="twoFactorSetupModal">İki faktörlü doğrulamayı kur</button>
+                                    <p class="small color-gray">
+                                        @if ($user->two_factor_secret)
+                                            İki faktörlü doğrulama kurulumunuz beklemede. Devam etmek için kurulumu popup üzerinden açın.
+                                        @else
+                                            Hesabınıza girişte şifrenize ek olarak Authenticator uygulamanızdaki tek kullanımlık kod sorulur.
+                                        @endif
+                                    </p>
+                                    <button class="btn btn-primary" type="button" data-modal-btn="two-factor-setup" aria-controls="twoFactorSetupModal">
+                                        {{ $user->two_factor_secret ? 'Kuruluma devam et' : 'İki faktörlü doğrulamayı kur' }}
+                                    </button>
                                 @endif
                             </section>
 
