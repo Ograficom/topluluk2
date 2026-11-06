@@ -2471,3 +2471,27 @@ textarea {
 .two-factor-recovery-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; padding: 0; list-style: none; text-align: left; }
 .two-factor-recovery-list li { padding: 9px; border: 1px solid var(--border-color); border-radius: 8px; background: var(--color-surface); }
 @media (max-width: 480px) { .two-factor-modal { --modal-content-radius: 18px; } .two-factor-qr { width: 180px; min-height: 180px; } }
+
+
+/* Final two-factor modal layout */
+#twoFactorSetupModal > .two-factor-modal{--modal-content-width:500px;--modal-content-radius:26px}
+#twoFactorSetupModal .modal-header{min-height:66px;padding:20px 24px}
+#twoFactorSetupModal .modal-body{padding:24px 28px 28px}
+#twoFactorSetupModal .two-factor-step{width:100%;text-align:center}
+#twoFactorSetupModal .two-factor-step h3{margin:0 0 8px;color:var(--title-color);font-size:1.28rem;line-height:1.35;letter-spacing:-.025em}
+#twoFactorSetupModal .two-factor-mark{width:48px;height:48px;margin:0 auto 14px;border-color:#e5eaf2;background:#f5f8ff}
+#twoFactorSetupModal .two-factor-help{max-width:390px;margin:0 auto 18px;color:#596579;font-size:.94rem;line-height:1.55}
+#twoFactorSetupModal .two-factor-qr{display:flex;width:214px;height:214px;min-height:214px;align-items:center;justify-content:center;margin:18px auto 22px;padding:10px;border:1px solid #e2e8f0;border-radius:14px;background:#fff}
+#twoFactorSetupModal .two-factor-qr img,#twoFactorSetupModal .two-factor-qr canvas{display:block;width:190px!important;height:190px!important;max-width:100%;object-fit:contain}
+#twoFactorSetupModal .two-factor-continue{position:relative;display:flex;width:100%!important;min-height:48px;align-items:center;justify-content:center;gap:12px;margin:0;border-radius:11px;font-size:.94rem;font-weight:650}
+#twoFactorSetupModal .two-factor-continue span{position:absolute;right:18px}
+#twoFactorSetupModal .two-factor-divider{gap:12px;margin:18px 0 14px;color:#7a8494;font-size:.82rem}
+#twoFactorSetupModal .two-factor-secret-row{width:100%;gap:10px}
+#twoFactorSetupModal .two-factor-secret-row code{display:flex;min-height:48px;align-items:center;padding:11px 13px;color:#293345;font-size:.88rem;letter-spacing:.04em;background:#fbfcfe}
+#twoFactorSetupModal .two-factor-secret-row button{width:48px;height:48px;border-radius:11px}
+#twoFactorSetupModal #twoFactorAccount{display:block;margin:12px 0 0;color:#738096;font-size:.82rem;text-align:left}
+#twoFactorSetupModal .two-factor-step form{width:100%;text-align:left}
+#twoFactorSetupModal .two-factor-step form input{box-sizing:border-box;width:100%;min-height:50px;border-radius:11px}
+#twoFactorSetupModal [data-two-factor-back]{display:inline-flex;margin-top:14px}
+#twoFactorSetupModal .two-factor-recovery-list{margin:18px 0}
+@media(max-width:520px){#twoFactorSetupModal{--modal-viewport-padding-x:12px;--modal-viewport-offset:16px}#twoFactorSetupModal>.two-factor-modal{--modal-content-radius:20px}#twoFactorSetupModal .modal-body{padding:20px 18px 22px}#twoFactorSetupModal .two-factor-qr{width:194px;height:194px;min-height:194px}#twoFactorSetupModal .two-factor-qr img,#twoFactorSetupModal .two-factor-qr canvas{width:170px!important;height:170px!important}}
