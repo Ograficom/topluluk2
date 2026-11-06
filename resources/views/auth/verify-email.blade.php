@@ -4,50 +4,30 @@
 
 @push('head')
     <style>
-        .email-verify-page {
-            display: grid;
-            min-height: min(620px, calc(100vh - var(--header-height, 72px) - 48px));
-            place-items: center;
-            padding: clamp(24px, 6vw, 56px);
-        }
-        .email-verify-card {
-            width: min(100%, 480px);
-            margin-inline: auto;
-            text-align: center;
-        }
-        .email-verify-icon {
-            display: grid;
-            width: 72px;
-            height: 72px;
-            margin: 0 auto 24px;
-            place-items: center;
-            border-radius: 22px;
-            color: var(--primary, #1769ff);
-            background: var(--primary-bg, rgb(23 105 255 / 9%));
-        }
-        .email-verify-card .h1 {
-            margin-bottom: 12px;
-        }
-        .email-verify-description {
-            max-width: 390px;
-            margin: 0 auto;
-            line-height: 1.7;
-        }
-        .email-verify-notice {
-            margin: 24px 0 16px;
-            text-align: left;
-        }
-        .email-verify-actions {
-            display: grid;
+        .verify-actions {
+            display: flex;
             gap: 10px;
+            margin-top: 12px;
         }
-        .email-verify-actions .btn {
-            min-height: 48px;
+        .verify-actions form {
+            flex: 1 1 0;
+            min-width: 0;
+            margin: 0;
         }
-        @media (max-width: 575px) {
-            .email-verify-page {
-                min-height: auto;
-                padding: 28px 18px;
+        .verify-actions .btn {
+            width: 100%;
+            min-height: 46px;
+            white-space: normal;
+        }
+        .verify-status {
+            margin: 12px 0 0;
+        }
+        .verify-errors {
+            margin: 12px 0 0;
+        }
+        @media (max-width: 420px) {
+            .verify-actions {
+                flex-direction: column;
             }
         }
     </style>
@@ -60,26 +40,28 @@
             <p class="text-center color-gray">OgraFi hesabını kullanmaya başlamadan önce e-posta adresine gönderdiğimiz doğrulama bağlantısına tıkla.</p>
 
             @if (session('status'))
-                <div class="alert alert-success" role="status">{{ session('status') }}</div>
+                <div class="alert alert-success verify-status" role="status">{{ session('status') }}</div>
             @endif
 
             @if ($errors->any())
-                <div class="alert alert-danger" role="alert">
+                <div class="alert alert-danger verify-errors" role="alert">
                     @foreach ($errors->all() as $error)
                         <p>{{ $error }}</p>
                     @endforeach
                 </div>
             @endif
 
-            <form action="{{ route('verification.send') }}" method="POST">
-                @csrf
-                <button class="btn btn-primary btn-lg btn-full" type="submit">Doğrulama e-postasını yeniden gönder</button>
-            </form>
+            <div class="verify-actions">
+                <form action="{{ route('verification.send') }}" method="POST">
+                    @csrf
+                    <button class="btn btn-primary btn-lg" type="submit">Doğrulama e-postasını yeniden gönder</button>
+                </form>
 
-            <form action="{{ route('logout') }}" method="POST" class="mt-3">
-                @csrf
-                <button class="btn btn-secondary btn-lg btn-full" type="submit">Çıkış yap</button>
-            </form>
+                <form action="{{ route('logout') }}" method="POST">
+                    @csrf
+                    <button class="btn btn-secondary btn-lg" type="submit">Çıkış yap</button>
+                </form>
+            </div>
         </div>
     </section>
 @endsection
