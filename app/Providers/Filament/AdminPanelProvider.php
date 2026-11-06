@@ -33,7 +33,6 @@ class AdminPanelProvider extends PanelProvider
             ->brandLogoHeight('36px')
             ->favicon(fn (): ?string => SiteSetting::current()?->faviconUrl() ?? asset('assets/img/meta/logo.svg'))
             ->login()
-            ->viteTheme('resources/css/filament/admin/theme.css')
             ->colors([
                 'primary' => Color::Blue,
             ])
