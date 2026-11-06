@@ -375,7 +375,7 @@
         </div>
     </div>
     <div class="modal" id="twoFactorSetupModal" data-modal="two-factor-setup" role="dialog" aria-modal="true" aria-labelledby="twoFactorSetupModalLabel" aria-hidden="true">
-        <div class="modal-content">
+        <div class="modal-content two-factor-modal">
             <button type="button" class="btn btn-secondary btn-md btn-circle modal-close" data-modal-close aria-label="Kapat">
                 <x-repost-icon name="close" size="16" />
             </button>
@@ -383,14 +383,150 @@
                 <h2 class="modal-title" id="twoFactorSetupModalLabel">İki faktörlü doğrulama</h2>
             </header>
             <div class="modal-body">
-                İki faktörlü doğrulamayı etkinleştirdiğinizde hesabınıza giriş yaparken şifrenize ek olarak Authenticator uygulamanızdaki tek kullanımlık kod istenir.
-            </div>
-            <div class="modal-footer">
-                <form action="{{ route('settings.two-factor.start') }}" method="POST">
-                    @csrf
-                    <button class="btn btn-primary" type="submit">Kuruluma başla</button>
-                </form>
+                <div data-two-factor-step="loading" class="two-factor-step" hidden>
+                    <p>Kurulum hazırlanıyor...</p>
+                </div>
+                <div data-two-factor-step="scan" class="two-factor-step">
+                    <div class="two-factor-mark"><x-repost-icon name="security" size="28" /></div>
+                    <h3>İki aşamalı doğrulamayı aç</h3>
+                    <p class="two-factor-help">Authenticator uygulamanızı açın ve aşağıdaki QR kodunu tarayın.</p>
+                    <div id="twoFactorQr" class="two-factor-qr" aria-label="Authenticator QR kodu"></div>
+                    <button type="button" class="btn btn-primary two-factor-continue" data-two-factor-next>Devam et <span aria-hidden="true">→</span></button>
+                    <div class="two-factor-divider"><span>veya kodu manuel girin</span></div>
+                    <div class="two-factor-secret-row">
+                        <code id="twoFactorSecret">•••• •••• ••••</code>
+                        <button type="button" class="btn btn-secondary" data-copy-two-factor aria-label="Kurulum anahtarını kopyala"><x-repost-icon name="copy" size="18" /></button>
+                    </div>
+                    <p class="small color-gray" id="twoFactorAccount"></p>
+                </div>
+                <div data-two-factor-step="verify" class="two-factor-step" hidden>
+                    <h3>Authenticator kodunu girin</h3>
+                    <p class="two-factor-help">Uygulamanızda görünen 6 haneli kodu girerek kurulumu tamamlayın.</p>
+                    <form id="twoFactorVerifyForm">
+                        <label for="twoFactorCode">6 haneli doğrulama kodu</label>
+                        <input id="twoFactorCode" name="code" type="text" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6}" maxlength="6" required>
+                        <p class="two-factor-error" id="twoFactorError" role="alert" hidden></p>
+                        <button class="btn btn-primary two-factor-continue" type="submit">Doğrula ve etkinleştir</button>
+                    </form>
+                    <button type="button" class="btn btn-link" data-two-factor-back>Geri dön</button>
+                </div>
+                <div data-two-factor-step="done" class="two-factor-step" hidden>
+                    <h3>İki faktörlü doğrulama etkinleştirildi</h3>
+                    <p class="two-factor-help">Kurtarma kodlarınızı güvenli bir yere kaydedin. Her kod yalnızca bir kez kullanılabilir.</p>
+                    <ul id="twoFactorRecoveryCodes" class="two-factor-recovery-list"></ul>
+                    <button type="button" class="btn btn-primary two-factor-continue" data-two-factor-finish>Tamam</button>
+                </div>
             </div>
         </div>
     </div>
 @endsection
+
+@push('scripts')
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" referrerpolicy="no-referrer"></script>
+<script>
+(() => {
+    const modal = document.getElementById('twoFactorSetupModal');
+    if (!modal || modal.dataset.flowReady) return;
+    modal.dataset.flowReady = 'true';
+
+    const startUrl = @json(route('settings.two-factor.start'));
+    const confirmUrl = @json(route('settings.two-factor.confirm'));
+    const csrf = @json(csrf_token());
+    const secretEl = document.getElementById('twoFactorSecret');
+    const qrEl = document.getElementById('twoFactorQr');
+    const errorEl = document.getElementById('twoFactorError');
+    let secret = '';
+
+    function showStep(name) {
+        modal.querySelectorAll('[data-two-factor-step]').forEach((step) => {
+            step.hidden = step.dataset.twoFactorStep !== name;
+        });
+        modal.querySelector('.modal-content')?.focus();
+    }
+
+    async function requestJson(url, body = null) {
+        const response = await fetch(url, {
+            method: 'POST',
+            credentials: 'same-origin',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': csrf,
+                'X-Requested-With': 'XMLHttpRequest'
+            },
+            body: body ? JSON.stringify(body) : '{}'
+        });
+        const data = await response.json().catch(() => ({}));
+        if (!response.ok) throw new Error(data.message || 'İşlem tamamlanamadı. Tekrar deneyin.');
+        return data;
+    }
+
+    modal.addEventListener('modal:open', async () => {
+        showStep('loading');
+        try {
+            const data = await requestJson(startUrl);
+            secret = data.secret;
+            secretEl.textContent = secret;
+            document.getElementById('twoFactorAccount').textContent = data.account;
+            qrEl.innerHTML = '';
+            if (window.QRCode) {
+                new QRCode(qrEl, { text: data.otpauth_url, width: 180, height: 180, correctLevel: QRCode.CorrectLevel.M });
+            } else {
+                qrEl.textContent = 'QR kodu yüklenemedi. Manuel anahtarı kullanabilirsiniz.';
+            }
+            showStep('scan');
+        } catch (error) {
+            showStep('verify');
+            errorEl.hidden = false;
+            errorEl.textContent = error.message;
+        }
+    });
+
+    modal.querySelector('[data-two-factor-next]')?.addEventListener('click', () => {
+        errorEl.hidden = true;
+        showStep('verify');
+        document.getElementById('twoFactorCode').focus();
+    });
+
+    modal.querySelector('[data-two-factor-back]')?.addEventListener('click', () => showStep('scan'));
+
+    modal.querySelector('[data-copy-two-factor]')?.addEventListener('click', async () => {
+        try {
+            await navigator.clipboard.writeText(secret);
+            const button = modal.querySelector('[data-copy-two-factor]');
+            button.setAttribute('aria-label', 'Kopyalandı');
+        } catch {
+            secretEl.focus?.();
+        }
+    });
+
+    document.getElementById('twoFactorVerifyForm')?.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        errorEl.hidden = true;
+        const code = document.getElementById('twoFactorCode').value.trim();
+        const submit = event.currentTarget.querySelector('[type="submit"]');
+        submit.disabled = true;
+        try {
+            const data = await requestJson(confirmUrl, { code });
+            const list = document.getElementById('twoFactorRecoveryCodes');
+            list.innerHTML = '';
+            data.recovery_codes.forEach((code) => {
+                const item = document.createElement('li');
+                const value = document.createElement('code');
+                value.textContent = code;
+                item.append(value);
+                list.append(item);
+            });
+            showStep('done');
+        } catch (error) {
+            errorEl.hidden = false;
+            errorEl.textContent = error.message;
+        } finally {
+            submit.disabled = false;
+        }
+    });
+
+    modal.querySelector('[data-two-factor-finish]')?.addEventListener('click', () => window.location.reload());
+})();
+</script>
+@endpush
