@@ -14,6 +14,159 @@ use Throwable;
 
 class SocialAuthController extends Controller
 {
+
+    public function linkRedirect(Request $request, string $provider): RedirectResponse
+    {
+        abort_unless(in_array($provider, ['google', 'yandex'], true), 404);
+
+        $settings = SiteSetting::current();
+        $enabled = $provider === 'google'
+            ? $settings?->isGoogleLoginEnabled()
+            : $settings?->isYandexLoginEnabled();
+
+        if (! $enabled) {
+            return redirect()->route('settings.edit', ['tab' => 'security'])
+                ->with('activeTab', 'security')
+                ->withErrors(['social' => 'Bu bağlantı yöntemi şu anda kullanılamıyor.']);
+        }
+
+        $state = Str::random(48);
+        $request->session()->put('oauth_link_state_'.$provider, $state);
+
+        $query = [
+            'client_id' => $provider === 'google' ? $settings->google_client_id : $settings->yandex_client_id,
+            'redirect_uri' => route('oauth.link.callback', ['provider' => $provider]),
+            'response_type' => 'code',
+            'state' => $state,
+        ];
+
+        if ($provider === 'google') {
+            $query['scope'] = 'openid email profile';
+            $query['prompt'] = 'select_account';
+
+            return redirect()->away('https://accounts.google.com/o/oauth2/v2/auth?'.http_build_query($query));
+        }
+
+        $query['scope'] = 'login:email login:info';
+
+        return redirect()->away('https://oauth.yandex.com/authorize?'.http_build_query($query));
+    }
+
+    public function linkCallback(Request $request, string $provider): RedirectResponse
+    {
+        abort_unless(in_array($provider, ['google', 'yandex'], true), 404);
+
+        $settings = SiteSetting::current();
+        $enabled = $provider === 'google'
+            ? $settings?->isGoogleLoginEnabled()
+            : $settings?->isYandexLoginEnabled();
+
+        $expectedState = (string) $request->session()->pull('oauth_link_state_'.$provider);
+        $receivedState = (string) $request->query('state');
+
+        if (! $enabled || $expectedState === '' || $receivedState === '' || ! hash_equals($expectedState, $receivedState)) {
+            return redirect()->route('settings.edit', ['tab' => 'security'])
+                ->with('activeTab', 'security')
+                ->withErrors(['social' => 'Sosyal hesap bağlantısı doğrulanamadı. Lütfen tekrar deneyin.']);
+        }
+
+        if ($request->filled('error') || ! $request->filled('code')) {
+            return redirect()->route('settings.edit', ['tab' => 'security'])
+                ->with('activeTab', 'security')
+                ->withErrors(['social' => 'Hesap bağlama işlemi iptal edildi.']);
+        }
+
+        try {
+            $token = Http::asForm()->acceptJson()->post(
+                $provider === 'google' ? 'https://oauth2.googleapis.com/token' : 'https://oauth.yandex.com/token',
+                [
+                    'grant_type' => 'authorization_code',
+                    'code' => $request->query('code'),
+                    'client_id' => $provider === 'google' ? $settings->google_client_id : $settings->yandex_client_id,
+                    'client_secret' => $provider === 'google' ? $settings->google_client_secret : $settings->yandex_client_secret,
+                    'redirect_uri' => route('oauth.link.callback', ['provider' => $provider]),
+                ],
+            )->throw()->json();
+
+            $profileRequest = $provider === 'google'
+                ? Http::withToken($token['access_token'] ?? '')
+                : Http::withHeaders(['Authorization' => 'OAuth '.($token['access_token'] ?? '')]);
+
+            $profile = $profileRequest->acceptJson()->get(
+                $provider === 'google'
+                    ? 'https://openidconnect.googleapis.com/v1/userinfo'
+                    : 'https://login.yandex.ru/info?format=json'
+            )->throw()->json();
+        } catch (Throwable $exception) {
+            report($exception);
+
+            return redirect()->route('settings.edit', ['tab' => 'security'])
+                ->with('activeTab', 'security')
+                ->withErrors(['social' => 'Sağlayıcıdan hesap bilgileri alınamadı. Daha sonra tekrar deneyin.']);
+        }
+
+        $providerUserId = $provider === 'google' ? ($profile['sub'] ?? null) : ($profile['id'] ?? null);
+        $providerEmail = $provider === 'google'
+            ? (($profile['email_verified'] ?? false) ? ($profile['email'] ?? null) : null)
+            : ($profile['default_email'] ?? null);
+
+        if (! filled($providerUserId)) {
+            return redirect()->route('settings.edit', ['tab' => 'security'])
+                ->with('activeTab', 'security')
+                ->withErrors(['social' => 'Sağlayıcı geçerli bir hesap kimliği döndürmedi.']);
+        }
+
+        $existing = SocialAccount::query()
+            ->where('provider', $provider)
+            ->where('provider_user_id', (string) $providerUserId)
+            ->first();
+
+        if ($existing && $existing->user_id !== $request->user()->id) {
+            return redirect()->route('settings.edit', ['tab' => 'security'])
+                ->with('activeTab', 'security')
+                ->withErrors(['social' => 'Bu sosyal hesap başka bir OgraFi hesabına bağlı.']);
+        }
+
+        $alreadyLinked = $request->user()->socialAccounts()->where('provider', $provider)->first();
+        if ($alreadyLinked && (string) $alreadyLinked->provider_user_id !== (string) $providerUserId) {
+            return redirect()->route('settings.edit', ['tab' => 'security'])
+                ->with('activeTab', 'security')
+                ->withErrors(['social' => 'Önce mevcut '.$provider.' bağlantısını kaldırın.']);
+        }
+
+        if (! $existing) {
+            SocialAccount::create([
+                'user_id' => $request->user()->id,
+                'provider' => $provider,
+                'provider_user_id' => (string) $providerUserId,
+                'provider_email' => $providerEmail,
+            ]);
+        }
+
+        return redirect()->route('settings.edit', ['tab' => 'security'])
+            ->with('activeTab', 'security')
+            ->with('status', ucfirst($provider).' hesabınız OgraFi hesabınıza bağlandı.');
+    }
+
+    public function unlink(Request $request, string $provider): RedirectResponse
+    {
+        abort_unless(in_array($provider, ['google', 'yandex'], true), 404);
+
+        $account = $request->user()->socialAccounts()->where('provider', $provider)->first();
+
+        if (! $account) {
+            return redirect()->route('settings.edit', ['tab' => 'security'])
+                ->with('activeTab', 'security')
+                ->with('status', 'Bu sağlayıcıya bağlı bir hesap bulunmuyor.');
+        }
+
+        $account->delete();
+
+        return redirect()->route('settings.edit', ['tab' => 'security'])
+            ->with('activeTab', 'security')
+            ->with('status', ucfirst($provider).' bağlantısı kaldırıldı.');
+    }
+
     public function redirect(Request $request, string $provider): RedirectResponse
     {
         abort_unless(in_array($provider, ['google', 'yandex'], true), 404);
