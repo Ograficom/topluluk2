@@ -1,134 +1,151 @@
 <x-filament-panels::page>
-    <div class="mx-auto w-full max-w-6xl space-y-6">
+    <style>
+        .sitemap-manager { display:grid; gap:24px; width:100%; max-width:1120px; margin-inline:auto; color:#111827; }
+        .sitemap-manager * { box-sizing:border-box; }
+        .sm-intro { display:flex; align-items:center; justify-content:space-between; gap:20px; padding:24px; background:#fff; border:1px solid #e5e7eb; border-radius:16px; }
+        .sm-intro-main { display:flex; align-items:flex-start; gap:15px; min-width:0; }
+        .sm-icon { display:flex; align-items:center; justify-content:center; width:46px; height:46px; flex:0 0 46px; border-radius:12px; background:#eff6ff; color:#2563eb; }
+        .sm-icon svg { width:23px; height:23px; }
+        .sm-heading { margin:0; color:#111827; font-size:17px; font-weight:700; line-height:1.4; }
+        .sm-muted { margin:5px 0 0; color:#6b7280; font-size:13px; line-height:1.65; }
+        .sm-link { display:inline-flex; align-items:center; justify-content:center; gap:8px; min-height:40px; padding:0 14px; border:1px solid #e5e7eb; border-radius:9px; color:#374151; background:#fff; font-size:13px; font-weight:600; text-decoration:none; white-space:nowrap; }
+        .sm-link:hover { background:#f9fafb; }
+        .sm-stats { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px; }
+        .sm-stat { padding:21px 23px; border:1px solid #e5e7eb; border-radius:15px; background:#fff; }
+        .sm-stat-top { display:flex; align-items:center; justify-content:space-between; gap:12px; color:#6b7280; font-size:13px; font-weight:600; }
+        .sm-stat-icon { display:flex; align-items:center; justify-content:center; width:36px; height:36px; border-radius:10px; background:#eff6ff; color:#2563eb; }
+        .sm-stat-icon svg { width:19px; height:19px; }
+        .sm-stat-value { margin:12px 0 0; color:#111827; font-size:29px; font-weight:750; letter-spacing:-.8px; line-height:1.2; }
+        .sm-stat-help { margin:6px 0 0; color:#9ca3af; font-size:12px; }
+        .sm-panel { overflow:hidden; border:1px solid #e5e7eb; border-radius:16px; background:#fff; }
+        .sm-panel-head { padding:21px 25px; border-bottom:1px solid #f0f1f3; }
+        .sm-panel-head h3 { margin:0; color:#111827; font-size:16px; font-weight:700; }
+        .sm-panel-head p { margin:5px 0 0; color:#6b7280; font-size:13px; line-height:1.6; }
+        .sm-form-body { padding:25px; }
+        .sm-form-body .fi-section { border:0 !important; box-shadow:none !important; background:transparent !important; }
+        .sm-form-body .fi-section-header { display:none; }
+        .sm-form-actions { display:flex; align-items:center; justify-content:space-between; gap:16px; padding:17px 25px; border-top:1px solid #f0f1f3; background:#fafafa; }
+        .sm-actions { display:flex; align-items:center; flex-wrap:wrap; gap:9px; }
+        .sm-address { padding:22px 24px; border:1px solid #e5e7eb; border-radius:15px; background:#fff; }
+        .sm-address-head { display:flex; align-items:flex-start; gap:13px; }
+        .sm-address-code { display:block; min-width:0; flex:1; padding:12px 13px; border:1px solid #e5e7eb; border-radius:9px; background:#f9fafb; color:#374151; font-size:13px; line-height:1.6; overflow-wrap:anywhere; }
+        .sm-address-row { display:flex; align-items:center; gap:9px; margin-top:13px; }
+        .sm-copy { display:inline-flex; align-items:center; justify-content:center; gap:7px; min-height:42px; padding:0 13px; border:1px solid #e5e7eb; border-radius:9px; background:#fff; color:#374151; font-size:13px; font-weight:600; cursor:pointer; white-space:nowrap; }
+        .sm-copy:hover { background:#f9fafb; }
+        .sm-note { display:flex; align-items:flex-start; gap:11px; padding:15px 17px; border:1px solid #bfdbfe; border-radius:12px; background:#eff6ff; color:#1e40af; }
+        .sm-note svg { width:19px; height:19px; flex:0 0 19px; margin-top:2px; }
+        .sm-note strong { display:block; margin-bottom:3px; font-size:13px; }
+        .sm-note p { margin:0; color:#1e40af; font-size:12px; line-height:1.7; }
+        @media(max-width:640px) {
+            .sitemap-manager { gap:15px; }
+            .sm-intro { align-items:stretch; flex-direction:column; padding:17px; gap:14px; }
+            .sm-intro-main { gap:11px; }
+            .sm-intro .sm-link { width:100%; }
+            .sm-stats { gap:10px; }
+            .sm-stat { padding:15px; }
+            .sm-stat-value { font-size:24px; }
+            .sm-stat-help { line-height:1.5; }
+            .sm-panel-head { padding:18px; }
+            .sm-form-body { padding:16px; }
+            .sm-form-actions { align-items:stretch; flex-direction:column; padding:16px; }
+            .sm-actions { display:grid; grid-template-columns:1fr; width:100%; }
+            .sm-actions > * { width:100%; }
+            .sm-address { padding:17px; }
+            .sm-address-row { align-items:stretch; flex-direction:column; }
+            .sm-copy { width:100%; }
+        }
+        @media(prefers-color-scheme:dark) {
+            .sm-intro,.sm-stat,.sm-panel,.sm-address { background:#18181b; border-color:#3f3f46; }
+            .sm-heading,.sm-stat-value,.sm-panel-head h3 { color:#fafafa; }
+            .sm-muted,.sm-stat-top,.sm-stat-help,.sm-panel-head p { color:#a1a1aa; }
+            .sm-panel-head,.sm-form-actions { border-color:#3f3f46; }
+            .sm-form-actions { background:#202024; }
+            .sm-address-code { background:#27272a; border-color:#3f3f46; color:#e4e4e7; }
+            .sm-link,.sm-copy { background:#27272a; border-color:#3f3f46; color:#e4e4e7; }
+            .sm-note { background:#172554; border-color:#1d4ed8; }
+            .sm-note p { color:#bfdbfe; }
+        }
+    </style>
 
-        {{-- Page introduction --}}
-        <div class="flex flex-col gap-4 rounded-2xl border border-gray-200 bg-white p-5 sm:flex-row sm:items-center sm:justify-between sm:p-6">
-            <div class="flex items-start gap-4">
-                <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary-50 text-primary-600">
-                    <x-filament::icon icon="heroicon-o-globe-alt" class="h-6 w-6" />
-                </div>
-                <div class="min-w-0">
-                    <h2 class="text-lg font-semibold tracking-tight text-gray-950">XML Sitemap yönetimi</h2>
-                    <p class="mt-1 max-w-2xl text-sm leading-6 text-gray-500">
-                        OgraFi içeriklerinin arama motorları tarafından keşfedilmesini sağlayan sitemap dosyasını buradan yönetin.
-                    </p>
+    <div class="sitemap-manager">
+        <section class="sm-intro">
+            <div class="sm-intro-main">
+                <span class="sm-icon"><x-filament::icon icon="heroicon-o-globe-alt" /></span>
+                <div>
+                    <h2 class="sm-heading">XML Sitemap yönetimi</h2>
+                    <p class="sm-muted">OgraFi içeriklerinin arama motorları tarafından keşfedilmesini sağlayan sitemap dosyasını buradan yönetin.</p>
                 </div>
             </div>
-            <a
-                href="{{ $this->sitemapUrl() }}"
-                target="_blank"
-                rel="noopener"
-                class="inline-flex min-h-10 shrink-0 items-center justify-center gap-2 rounded-lg border border-gray-200 bg-white px-4 text-sm font-medium text-gray-700 transition hover:bg-gray-50"
-            >
-                <x-filament::icon icon="heroicon-o-arrow-top-right-on-square" class="h-4 w-4" />
+            <a href="{{ $this->sitemapUrl() }}" target="_blank" rel="noopener" class="sm-link">
+                <x-filament::icon icon="heroicon-o-arrow-top-right-on-square" class="size-4" />
                 Sitemap'i görüntüle
             </a>
-        </div>
+        </section>
 
-        {{-- Statistics --}}
-        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
-            <div class="rounded-2xl border border-gray-200 bg-white p-5 sm:p-6">
-                <div class="flex items-center justify-between gap-3">
-                    <p class="text-sm font-medium text-gray-500">Toplam URL</p>
-                    <span class="flex h-9 w-9 items-center justify-center rounded-lg bg-blue-50 text-blue-600">
-                        <x-filament::icon icon="heroicon-o-link" class="h-5 w-5" />
-                    </span>
+        <section class="sm-stats">
+            <div class="sm-stat">
+                <div class="sm-stat-top">
+                    <span>Toplam URL</span>
+                    <span class="sm-stat-icon"><x-filament::icon icon="heroicon-o-link" /></span>
                 </div>
-                <p class="mt-3 text-3xl font-semibold tracking-tight text-gray-950">{{ number_format($this->urlCount) }}</p>
-                <p class="mt-1 text-xs text-gray-500">Sitemap dosyasına eklenen adres sayısı</p>
+                <p class="sm-stat-value">{{ number_format($this->urlCount) }}</p>
+                <p class="sm-stat-help">Sitemap dosyasına eklenen adres sayısı</p>
             </div>
-
-            <div class="rounded-2xl border border-gray-200 bg-white p-5 sm:p-6">
-                <div class="flex items-center justify-between gap-3">
-                    <p class="text-sm font-medium text-gray-500">Son oluşturulma</p>
-                    <span class="flex h-9 w-9 items-center justify-center rounded-lg bg-emerald-50 text-emerald-600">
-                        <x-filament::icon icon="heroicon-o-clock" class="h-5 w-5" />
-                    </span>
+            <div class="sm-stat">
+                <div class="sm-stat-top">
+                    <span>Son oluşturulma</span>
+                    <span class="sm-stat-icon"><x-filament::icon icon="heroicon-o-clock" /></span>
                 </div>
-                <p class="mt-3 text-xl font-semibold tracking-tight text-gray-950">
-                    {{ $this->lastGeneratedAt ?? 'Henüz oluşturulmadı' }}
-                </p>
-                <p class="mt-1 text-xs text-gray-500">Sitemap dosyasının son yenilenme zamanı</p>
+                <p class="sm-stat-value" style="font-size:22px">{{ $this->lastGeneratedAt ?? 'Henüz oluşturulmadı' }}</p>
+                <p class="sm-stat-help">Sitemap dosyasının son yenilenme zamanı</p>
             </div>
-        </div>
+        </section>
 
-        {{-- Settings form --}}
-        <div class="overflow-hidden rounded-2xl border border-gray-200 bg-white">
-            <div class="border-b border-gray-100 px-5 py-5 sm:px-7">
-                <h3 class="text-base font-semibold text-gray-950">Yayın ve içerik ayarları</h3>
-                <p class="mt-1 text-sm text-gray-500">Sitemap'in hangi içerikleri kapsayacağını belirleyin.</p>
-            </div>
-
-            <form wire:submit="save" class="space-y-0">
-                <div class="p-5 sm:p-7">
+        <section class="sm-panel">
+            <header class="sm-panel-head">
+                <h3>Yayın ve içerik ayarları</h3>
+                <p>Sitemap'in hangi içerikleri kapsayacağını belirleyin.</p>
+            </header>
+            <form wire:submit="save">
+                <div class="sm-form-body">
                     {{ $this->form }}
                 </div>
-
-                <div class="flex flex-col gap-3 border-t border-gray-100 bg-gray-50/70 p-5 sm:flex-row sm:items-center sm:justify-between sm:px-7">
-                    <p class="text-xs leading-5 text-gray-500">
-                        Değişikliklerin geçerli olması için ayarlarınızı kaydedin.
-                    </p>
-                    <div class="flex flex-col gap-2 sm:flex-row">
-                        <x-filament::button
-                            type="submit"
-                            icon="heroicon-o-check"
-                            class="w-full sm:w-auto"
-                        >
-                            Ayarları kaydet
-                        </x-filament::button>
-
-                        <x-filament::button
-                            type="button"
-                            color="gray"
-                            icon="heroicon-o-arrow-path"
-                            wire:click="rebuild"
-                            wire:loading.attr="disabled"
-                            wire:target="rebuild"
-                            class="w-full sm:w-auto"
-                        >
+                <footer class="sm-form-actions">
+                    <p class="sm-muted" style="margin:0">Değişikliklerin geçerli olması için ayarlarınızı kaydedin.</p>
+                    <div class="sm-actions">
+                        <x-filament::button type="submit" icon="heroicon-o-check">Ayarları kaydet</x-filament::button>
+                        <x-filament::button type="button" color="gray" icon="heroicon-o-arrow-path" wire:click="rebuild" wire:loading.attr="disabled" wire:target="rebuild">
                             <span wire:loading.remove wire:target="rebuild">Şimdi yeniden oluştur</span>
                             <span wire:loading wire:target="rebuild">Oluşturuluyor...</span>
                         </x-filament::button>
                     </div>
-                </div>
+                </footer>
             </form>
-        </div>
+        </section>
 
-        {{-- Sitemap address --}}
-        <div class="rounded-2xl border border-gray-200 bg-white p-5 sm:p-6">
-            <div class="flex items-start gap-3">
-                <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gray-100 text-gray-600">
-                    <x-filament::icon icon="heroicon-o-document-text" class="h-5 w-5" />
-                </span>
-                <div class="min-w-0 flex-1">
-                    <h3 class="text-sm font-semibold text-gray-950">Sitemap dosya adresi</h3>
-                    <p class="mt-1 text-sm text-gray-500">Bu bağlantıyı Google Search Console ve diğer arama motorlarında kullanabilirsiniz.</p>
-                    <div class="mt-3 flex flex-col gap-2 sm:flex-row sm:items-center">
-                        <code class="min-w-0 flex-1 break-all rounded-lg border border-gray-200 bg-gray-50 px-3 py-3 text-sm text-gray-700">{{ $this->sitemapUrl() }}</code>
-                        <x-filament::button
-                            type="button"
-                            color="gray"
-                            outlined
-                            icon="heroicon-o-clipboard-document"
-                            x-on:click="window.navigator.clipboard.writeText(@js($this->sitemapUrl()))"
-                            class="shrink-0"
-                        >
+        <section class="sm-address">
+            <div class="sm-address-head">
+                <span class="sm-icon" style="background:#f3f4f6;color:#4b5563"><x-filament::icon icon="heroicon-o-document-text" /></span>
+                <div style="min-width:0;flex:1">
+                    <h3 class="sm-heading" style="font-size:14px">Sitemap dosya adresi</h3>
+                    <p class="sm-muted">Bu bağlantıyı Google Search Console ve diğer arama motorlarında kullanabilirsiniz.</p>
+                    <div class="sm-address-row">
+                        <code class="sm-address-code">{{ $this->sitemapUrl() }}</code>
+                        <button type="button" class="sm-copy" x-on:click="window.navigator.clipboard.writeText(@js($this->sitemapUrl()))">
+                            <x-filament::icon icon="heroicon-o-clipboard-document" class="size-4" />
                             Adresi kopyala
-                        </x-filament::button>
+                        </button>
                     </div>
                 </div>
             </div>
-        </div>
+        </section>
 
-        {{-- Information --}}
-        <div class="flex items-start gap-3 rounded-xl border border-blue-100 bg-blue-50/70 p-4">
-            <x-filament::icon icon="heroicon-o-information-circle" class="mt-0.5 h-5 w-5 shrink-0 text-blue-600" />
-            <div class="text-sm leading-6 text-blue-900">
-                <p class="font-medium">Otomatik güncelleme</p>
-                <p class="mt-1 text-blue-800">
-                    Yazı, kanal, etiket veya sabit sayfa eklendiğinde, güncellendiğinde ya da silindiğinde sitemap önbelleği otomatik yenilenir. Laravel zamanlayıcısı da her 15 dakikada bir sitemap önbelleğini yeniler.
-                </p>
+        <aside class="sm-note">
+            <x-filament::icon icon="heroicon-o-information-circle" />
+            <div>
+                <strong>Otomatik güncelleme</strong>
+                <p>Yazı, kanal, etiket veya sabit sayfa eklendiğinde, güncellendiğinde ya da silindiğinde sitemap önbelleği otomatik yenilenir. Laravel zamanlayıcısı da her 15 dakikada bir sitemap önbelleğini yeniler.</p>
             </div>
-        </div>
+        </aside>
     </div>
 </x-filament-panels::page>
