@@ -1357,3 +1357,23 @@ ul.sort > li:is(.asc, .desc) > a {
     padding: 0 15px !important;
   }
 }
+
+
+
+/* Settings social account connection management */
+.settings-social-section.setting__list{display:block!important;width:100%;margin:24px 0 0!important;padding:22px 0 26px!important;border-top:1px solid var(--border-color)}
+.settings-social-section__heading{margin:0 0 16px}
+.settings-social-section__heading h2{margin:0 0 5px!important;font-size:17px!important;font-weight:700!important}
+.settings-social-section__heading p{margin:0!important;color:var(--color-gray);font-size:13px}
+.settings-social-connections{display:flex;flex-direction:column;width:100%;gap:10px}
+.settings-social-connection{display:flex;align-items:center;justify-content:space-between;gap:14px;width:100%;min-height:70px;padding:12px 14px;border:1px solid var(--border-color);border-radius:13px;background:var(--color-surface-overlay)}
+.settings-social-connection__identity{display:flex;min-width:0;align-items:center;gap:12px}
+.settings-social-connection__icon{display:grid;width:42px;height:42px;flex:0 0 42px;place-items:center;border:1px solid var(--border-color);border-radius:11px;background:var(--color-secondary)}
+.settings-social-connection__text{display:flex;min-width:0;flex-direction:column;gap:4px}
+.settings-social-connection__text strong{color:var(--text-color);font-size:14px;font-weight:650}
+.settings-social-connection__text small{overflow:hidden;color:var(--color-gray);font-size:12px;text-overflow:ellipsis;white-space:nowrap}
+.settings-social-connection form{margin:0}
+.settings-social-action.btn{display:inline-flex!important;min-width:112px;min-height:38px;align-items:center;justify-content:center;padding:0 13px!important;border-radius:9px!important;font-size:12px!important;font-weight:650!important;white-space:nowrap}
+.settings-social-action--disconnect{color:#c2413a!important}
+.settings-social-action:disabled{opacity:.55;cursor:not-allowed}
+@media(max-width:520px){.settings-social-section.setting__list{margin-top:20px!important;padding:20px 0 calc(24px + env(safe-area-inset-bottom,0px))!important}.settings-social-connection{min-height:66px;gap:8px;padding:10px}.settings-social-connection__identity{gap:9px}.settings-social-connection__icon{width:38px;height:38px;flex-basis:38px}.settings-social-action.btn{min-width:92px;min-height:36px;padding:0 9px!important;font-size:11px!important}}
