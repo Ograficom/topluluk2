@@ -70,7 +70,7 @@ Route::post('/contacts', [CommunityController::class, 'sendContact'])->middlewar
 
 Route::get('/auth/{provider}/callback', [SocialAuthController::class, 'callback'])->middleware('throttle:10,1')->name('oauth.callback');
 
-Route::middleware('guest')->group(function (): void {
+Route::middleware(['auth', 'verified'])->group(function (): void {\n    Route::get('/email/verify', [EmailVerificationController::class, 'notice'])->name('verification.notice');\n    Route::get('/email/verify/{id}/{hash}', [EmailVerificationController::class, 'verify'])->middleware('signed')->name('verification.verify');\n    Route::post('/email/verification-notification', [EmailVerificationController::class, 'send'])->middleware('throttle:6,1')->name('verification.send');\n});\n\nRoute::middleware('guest')->group(function (): void {
     Route::get('/auth/{provider}/redirect', [SocialAuthController::class, 'redirect'])->middleware('throttle:10,1')->name('oauth.redirect');
 
     Route::get('/signin', [AuthController::class, 'showLogin'])->name('login');
