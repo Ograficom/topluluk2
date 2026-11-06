@@ -23,12 +23,18 @@ Route::get('/feed/authors/{username}.xml', [RssController::class, 'author'])->na
 Route::get('/feed/channels/{slug}.xml', [RssController::class, 'channel'])->name('rss.channel');
 Route::get('/feed/tags/{slug}.xml', [RssController::class, 'tag'])->name('rss.tag');
 Route::get('/robots.txt', function () {
-    $content = "User-agent: *\n";
-    $content .= "Allow: /\n";
-    $content .= "Disallow: /admin\n";
-    $content .= "Disallow: /signin\n";
-    $content .= "Disallow: /signup\n";
-    $content .= "Sitemap: ".url('/sitemap.xml')."\n";
+    $content = "User-agent: *
+";
+    $content .= "Allow: /
+";
+    $content .= "Disallow: /admin
+";
+    $content .= "Disallow: /signin
+";
+    $content .= "Disallow: /signup
+";
+    $content .= "Sitemap: ".url('/sitemap.xml')."
+";
 
     return response($content, 200, [
         'Content-Type' => 'text/plain; charset=UTF-8',
@@ -70,7 +76,13 @@ Route::post('/contacts', [CommunityController::class, 'sendContact'])->middlewar
 
 Route::get('/auth/{provider}/callback', [SocialAuthController::class, 'callback'])->middleware('throttle:10,1')->name('oauth.callback');
 
-Route::middleware('auth')->group(function (): void {\n    Route::get('/email/verify', [EmailVerificationController::class, 'notice'])->name('verification.notice');\n    Route::get('/email/verify/{id}/{hash}', [EmailVerificationController::class, 'verify'])->middleware('signed')->name('verification.verify');\n    Route::post('/email/verification-notification', [EmailVerificationController::class, 'send'])->middleware('throttle:6,1')->name('verification.send');\n});\n\nRoute::middleware('guest')->group(function (): void {
+Route::middleware('auth')->group(function (): void {
+    Route::get('/email/verify', [EmailVerificationController::class, 'notice'])->name('verification.notice');
+    Route::get('/email/verify/{id}/{hash}', [EmailVerificationController::class, 'verify'])->middleware('signed')->name('verification.verify');
+    Route::post('/email/verification-notification', [EmailVerificationController::class, 'send'])->middleware('throttle:6,1')->name('verification.send');
+});
+
+Route::middleware('guest')->group(function (): void {
     Route::get('/auth/{provider}/redirect', [SocialAuthController::class, 'redirect'])->middleware('throttle:10,1')->name('oauth.redirect');
 
     Route::get('/signin', [AuthController::class, 'showLogin'])->name('login');
@@ -91,7 +103,7 @@ Route::middleware('guest')->group(function (): void {
     Route::post('/two-factor-challenge', [AuthController::class, 'verifyTwoFactorChallenge'])->middleware('throttle:10,1')->name('two-factor.challenge.verify');
 });
 
-Route::middleware('auth')->group(function (): void {
+Route::middleware(['auth', 'verified'])->group(function (): void {
     Route::get('/following', [CommunityController::class, 'following'])->name('community.following');
     Route::post('/last-comments/moderate', [CommunityController::class, 'moderateLatestComments'])->name('comments.moderate');
     Route::get('/subscriptions', [CommunityController::class, 'subscriptions'])->name('subscriptions.index');
