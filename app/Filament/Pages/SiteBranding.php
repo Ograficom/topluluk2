@@ -5,7 +5,6 @@ namespace App\Filament\Pages;
 use App\Models\SiteSetting;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
-use Filament\Forms\Components\ToggleButtons;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
 use Filament\Schemas\Components\Section;
@@ -29,6 +28,12 @@ class SiteBranding extends Page
     public ?string $currentLogoUrl = null;
 
     public ?string $currentFaviconUrl = null;
+
+    public bool $showSocialNetworkModal = false;
+
+    public ?string $pendingSocialProvider = null;
+
+    public bool $pendingSocialEnabled = false;
 
     public function mount(): void
     {
@@ -74,20 +79,6 @@ class SiteBranding extends Page
                             ->required(),
                     ])
                     ->columns(2),
-                Section::make('Social networks')
-                    ->schema([
-                        ToggleButtons::make('social_networks')
-                            ->label('')
-                            ->options([
-                                'google' => 'Google',
-                                'yandex' => 'Yandex',
-                            ])
-                            ->multiple()
-                            ->inline()
-                            ->grouped(false)
-                            ->columns(2)
-                            ->columnSpanFull(),
-                    ]),
                 Section::make('Google OAuth ayarları')
                     ->description('Geri dönüş URL: '.route('oauth.callback', ['provider' => 'google']))
                     ->schema([
@@ -122,6 +113,44 @@ class SiteBranding extends Page
                     ->columns(2),
             ])
             ->statePath('data');
+    }
+
+
+    public function requestSocialNetworkToggle(string $provider): void
+    {
+        abort_unless(in_array($provider, ['google', 'yandex'], true), 404);
+
+        $selected = $this->data['social_networks'] ?? [];
+        $this->pendingSocialProvider = $provider;
+        $this->pendingSocialEnabled = ! in_array($provider, $selected, true);
+        $this->showSocialNetworkModal = true;
+    }
+
+    public function confirmSocialNetworkToggle(): void
+    {
+        if (! in_array($this->pendingSocialProvider, ['google', 'yandex'], true)) {
+            $this->showSocialNetworkModal = false;
+
+            return;
+        }
+
+        $selected = $this->data['social_networks'] ?? [];
+
+        if ($this->pendingSocialEnabled) {
+            $selected[] = $this->pendingSocialProvider;
+        } else {
+            $selected = array_values(array_diff($selected, [$this->pendingSocialProvider]));
+        }
+
+        $this->data['social_networks'] = array_values(array_unique($selected));
+        $this->showSocialNetworkModal = false;
+        $this->pendingSocialProvider = null;
+    }
+
+    public function cancelSocialNetworkToggle(): void
+    {
+        $this->showSocialNetworkModal = false;
+        $this->pendingSocialProvider = null;
     }
 
     public function save(): void
