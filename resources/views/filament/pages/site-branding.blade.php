@@ -217,22 +217,6 @@
         .social-network-option:hover{background:#e8edf4}
         .social-network-option.is-selected{border-color:#bfdbfe;background:#eff6ff;color:#1d4ed8}
 
-        /* Match the two-factor popup's exact component geometry */
-        .social-confirm-modal[data-modal]{--modal-content-width:450px;--modal-viewport-offset:40px;--modal-viewport-padding-x:16px;--modal-content-radius:30px;--modal-header-padding:20px;--modal-body-padding:20px;--modal-footer-padding:16px 20px;--modal-section-gap:12px;--modal-transition-duration:240ms;position:fixed;z-index:99999;inset:0;display:flex;align-items:center;justify-content:center;padding:var(--modal-viewport-offset) var(--modal-viewport-padding-x);overflow:hidden;background:transparent;backdrop-filter:blur(0);opacity:0;visibility:hidden;pointer-events:none;transition:background-color var(--modal-transition-duration) ease,backdrop-filter var(--modal-transition-duration) ease,opacity var(--modal-transition-duration) ease,visibility var(--modal-transition-duration) ease}
-        .social-confirm-modal[data-modal].is-open{background:rgb(15 23 42 / 48%);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);opacity:1;visibility:visible;pointer-events:auto}
-        .social-confirm-modal[data-modal]>.modal-content{position:relative;display:flex;width:min(100%,var(--modal-content-width));max-height:calc(100dvh - (var(--modal-viewport-offset)*2));flex-direction:column;overflow:hidden;border-radius:var(--modal-content-radius);color:#252b35;background:#fff;box-shadow:0 18px 55px rgb(15 23 42 / 22%);opacity:0;transform:translate3d(0,-10px,0) scale(1.08);transform-origin:center;transition:opacity var(--modal-transition-duration) ease,transform var(--modal-transition-duration) cubic-bezier(.2,.8,.2,1)}
-        .social-confirm-modal[data-modal].is-open>.modal-content{opacity:1;transform:translate3d(0,0,0) scale(1)}
-        .social-confirm-modal[data-modal] .modal-header,.social-confirm-modal[data-modal] .modal-footer{position:sticky;z-index:2;display:flex;flex:0 0 auto;align-items:center;gap:var(--modal-section-gap);background:#fff}
-        .social-confirm-modal[data-modal] .modal-header{top:0;min-height:64px;padding:var(--modal-header-padding);padding-right:64px;border-bottom:1px solid #e5eaf0}
-        .social-confirm-modal[data-modal] .modal-title{margin:0;color:#151b25;font-size:1.125rem;font-weight:700;line-height:1.25}
-        .social-confirm-modal[data-modal] .modal-body{min-height:0;padding:var(--modal-body-padding);overflow-y:auto;overscroll-behavior:contain;color:#343b46;font-size:.95rem;line-height:1.6}
-        .social-confirm-modal[data-modal] .modal-body h3{margin:0 0 8px;font-size:1.05rem;font-weight:700}
-        .social-confirm-modal[data-modal] .modal-body p{margin:0}
-        .social-confirm-modal[data-modal] .modal-footer{bottom:0;justify-content:flex-end;padding:var(--modal-footer-padding);border-top:1px solid #e5eaf0}
-        .social-confirm-modal[data-modal] .modal-close{position:absolute;z-index:3;top:15px;right:15px}
-        @media(max-width:480px){.social-confirm-modal[data-modal]{--modal-viewport-offset:20px;--modal-viewport-padding-x:10px;--modal-header-padding:16px;--modal-body-padding:16px;--modal-footer-padding:14px 16px}}
-        @media(prefers-reduced-motion:reduce){.social-confirm-modal[data-modal],.social-confirm-modal[data-modal]>.modal-content{transition:none}}
-
     </style>
 
     <div class="branding-page">
@@ -248,32 +232,29 @@
         <form wire:submit="save" class="branding-form">
             {{ $this->form }}
 
-            <section class="social-network-settings" aria-labelledby="social-network-title" x-data="{ socialModal: null }">
+            <section class="social-network-settings" aria-labelledby="social-network-title">
                 <h2 id="social-network-title">Social networks</h2>
                 <div class="social-network-options">
                     @foreach (['google' => 'Google', 'yandex' => 'Yandex'] as $provider => $label)
                         <button type="button"
                             class="social-network-option {{ in_array($provider, $data['social_networks'] ?? [], true) ? 'is-selected' : '' }}"
-                            @click="socialModal = '{{ $provider }}'">
+                            data-modal-btn="social-{{ $provider }}"
+                            aria-haspopup="dialog"
+                            aria-controls="social{{ ucfirst($provider) }}Modal">
                             <x-repost-icon :name="$provider" size="20" />
                             <span>{{ $label }}</span>
                         </button>
                     @endforeach
                 </div>
                 @foreach (['google' => 'Google', 'yandex' => 'Yandex'] as $provider => $label)
-                    <div class="modal social-confirm-modal"
-                        id="social{{ ucfirst($provider) }}Modal"
+                    <div class="modal" id="social{{ ucfirst($provider) }}Modal"
                         data-modal="social-{{ $provider }}"
                         role="dialog" aria-modal="true"
                         aria-labelledby="social{{ ucfirst($provider) }}ModalLabel"
-                        aria-hidden="true"
-                        x-cloak x-show="socialModal === '{{ $provider }}'"
-                        :class="{ 'is-open': socialModal === '{{ $provider }}' }"
-                        @keydown.escape.window="socialModal = null"
-                        @click.self="socialModal = null">
+                        aria-hidden="true">
                         <div class="modal-content">
                             <button type="button" class="btn btn-secondary btn-md btn-circle modal-close"
-                                @click="socialModal = null" aria-label="Kapat">
+                                data-modal-close aria-label="Kapat">
                                 <x-repost-icon name="close" size="16" />
                             </button>
                             <header class="modal-header">
@@ -284,10 +265,10 @@
                                 <p>Devam etmek istiyor musunuz?</p>
                             </div>
                             <footer class="modal-footer">
-                                <button type="button" class="btn btn-secondary btn-md" @click="socialModal = null">İptal</button>
+                                <button type="button" class="btn btn-secondary btn-md" data-modal-close>İptal</button>
                                 <button type="button" class="btn btn-primary btn-md"
                                     wire:click="confirmSocialNetworkToggle('{{ $provider }}')"
-                                    @click="socialModal = null">Onayla</button>
+                                    data-modal-close>Onayla</button>
                             </footer>
                         </div>
                     </div>
