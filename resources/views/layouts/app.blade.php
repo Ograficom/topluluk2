@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="{{ asset('assets/libs/fancyapp/fancybox.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/libs/fancyapp/carousel.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/kit.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/css/app.css') }}?v=20261106-settings-footer-fix">
+    <link rel="stylesheet" href="{{ asset('assets/css/app.css') }}?v=20261106-two-factor-bottom-sheet">
     <link rel="stylesheet" href="{{ asset('assets/css/engine.css') }}">
     <script>
         (() => {
