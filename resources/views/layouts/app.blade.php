@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="{{ asset('assets/libs/fancyapp/carousel.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/kit.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/app.css') }}?v=20261106-settings-social-polish">
-    <link rel="stylesheet" href="{{ asset('assets/css/engine.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/engine.css') }}?v=20261106-social-section-fix">
     <script>
         (() => {
             const root = document.documentElement;
