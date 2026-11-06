@@ -177,7 +177,7 @@ class SettingsController extends Controller
         }
 
         $user->forceFill([
-            'two_factor_secret' => \\App\\Support\\Totp::secret(),
+            'two_factor_secret' => \App\Support\Totp::secret(),
             'two_factor_recovery_codes' => null,
             'two_factor_confirmed_at' => null,
         ])->save();
@@ -194,11 +194,11 @@ class SettingsController extends Controller
             return back()->with('activeTab', 'security')->withErrors(['code' => 'Önce iki faktörlü doğrulama kurulumunu başlatın.']);
         }
 
-        if (! \\App\\Support\\Totp::verify($user->two_factor_secret, $validated['code'])) {
+        if (! \App\Support\Totp::verify($user->two_factor_secret, $validated['code'])) {
             return back()->with('activeTab', 'security')->withErrors(['code' => 'Doğrulama kodu geçersiz. Telefonunuzun saatini kontrol edip tekrar deneyin.']);
         }
 
-        $codes = \\App\\Support\\Totp::recoveryCodes();
+        $codes = \App\Support\Totp::recoveryCodes();
         $user->forceFill([
             'two_factor_recovery_codes' => $codes,
             'two_factor_confirmed_at' => now(),
@@ -235,7 +235,7 @@ class SettingsController extends Controller
             return false;
         }
 
-        if (\\App\\Support\\Totp::verify($user->two_factor_secret, $code)) {
+        if (\App\Support\Totp::verify($user->two_factor_secret, $code)) {
             return true;
         }
 
