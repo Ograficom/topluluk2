@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Services\SitemapService;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
@@ -36,11 +37,11 @@ class SitePage extends Model
         });
 
         static::saved(function (): void {
-            app(\\App\\Services\\SitemapService::class)->invalidate();
+            app(SitemapService::class)->invalidate();
         });
 
         static::deleted(function (): void {
-            app(\\App\\Services\\SitemapService::class)->invalidate();
+            app(SitemapService::class)->invalidate();
         });
     }
 
