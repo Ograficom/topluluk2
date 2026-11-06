@@ -1,3 +1,14 @@
+@push('head')
+    <style>
+        #result-registration.username-available {
+            color: #16803c;
+        }
+        #result-registration.username-taken {
+            color: #dc2626;
+        }
+    </style>
+@endpush
+
 @extends('layouts.app')
 
 @section('title', 'Hesap oluştur')
@@ -63,8 +74,13 @@
 
             const showResult = (message, available) => {
                 result.textContent = message;
-                result.classList.toggle('text-success', available === true);
-                result.classList.toggle('text-danger', available === false);
+                result.classList.remove('username-available', 'username-taken');
+
+                if (message === 'Kullanıcı adı kullanılabilir.') {
+                    result.classList.add('username-available');
+                } else if (message === 'Bu kullanıcı adı zaten alınmış.') {
+                    result.classList.add('username-taken');
+                }
             };
 
             input.addEventListener('input', () => {
