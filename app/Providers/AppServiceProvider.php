@@ -30,6 +30,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        Post::observe(SitemapObserver::class);
+        Channel::observe(SitemapObserver::class);
+        Tag::observe(SitemapObserver::class);
+        SitePage::observe(SitemapObserver::class);
+
         View::composer('layouts.app', function ($view): void {
             $viewer = auth()->user();
             $siteSettings = SiteSetting::current();
