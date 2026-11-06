@@ -1,26 +1,26 @@
 <?php
 
-namespace App\\Filament\\Pages;
+namespace App\Filament\Pages;
 
-use App\\Models\\MailSetting;
-use Filament\\Forms\\Components\\Select;
-use Filament\\Forms\\Components\\TextInput;
-use Filament\\Forms\\Components\\Toggle;
-use Filament\\Notifications\\Notification;
-use Filament\\Pages\\Page;
-use Filament\\Schemas\\Components\\Section;
-use Filament\\Schemas\\Schema;
-use Filament\\Support\\Icons\\Heroicon;
-use Illuminate\\Support\\Facades\\Mail;
+use App\Models\MailSetting;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
+use Filament\Notifications\Notification;
+use Filament\Pages\Page;
+use Filament\Schemas\Components\Section;
+use Filament\Schemas\Schema;
+use Filament\Support\Icons\Heroicon;
+use Illuminate\Support\Facades\Mail;
 use Throwable;
 
 class MailSettings extends Page
 {
     protected static ?string $navigationLabel = 'E-posta / SMTP';
     protected static ?string $title = 'E-posta gönderim ayarları';
-    protected static string|\\UnitEnum|null $navigationGroup = 'Site ayarları';
+    protected static string|\UnitEnum|null $navigationGroup = 'Site ayarları';
     protected static ?int $navigationSort = 90;
-    protected static string|\\BackedEnum|null $navigationIcon = Heroicon::OutlinedEnvelope;
+    protected static string|\BackedEnum|null $navigationIcon = Heroicon::OutlinedEnvelope;
     protected string $view = 'filament.pages.mail-settings';
 
     public ?array $data = [];
