@@ -10,14 +10,11 @@ use Filament\Forms\Components\Toggle;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
 use Filament\Schemas\Components\Section;
-use Filament\Schemas\Concerns\InteractsWithSchemas;
-use Filament\Schemas\Contracts\HasSchemas;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 
-class SitemapManager extends Page implements HasSchemas
+class SitemapManager extends Page
 {
-    use InteractsWithSchemas;
     protected static ?string $navigationLabel = 'Sitemap yönetimi';
 
     protected static ?string $title = 'Sitemap oluşturucu';
