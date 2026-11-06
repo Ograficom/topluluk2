@@ -112,6 +112,7 @@ Route::middleware('auth')->group(function (): void {
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
     Route::get('/settings', [SettingsController::class, 'edit'])->name('settings.edit');
+    Route::get('/settings/two-factor', fn () => redirect()->route('settings.edit', ['tab' => 'security']))->name('settings.two-factor');
     Route::get('/setting.html', [SettingsController::class, 'edit'])->name('settings.legacy');
     Route::patch('/settings/profile', [SettingsController::class, 'updateProfile'])->name('settings.profile.update');
     Route::patch('/settings/preferences', [SettingsController::class, 'updatePreferences'])->name('settings.preferences.update');
