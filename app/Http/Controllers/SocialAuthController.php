@@ -109,6 +109,11 @@ class SocialAuthController extends Controller
         $providerEmail = $provider === 'google'
             ? (($profile['email_verified'] ?? false) ? ($profile['email'] ?? null) : null)
             : ($profile['default_email'] ?? null);
+        $providerAvatarUrl = $provider === 'google'
+            ? ($profile['picture'] ?? null)
+            : (filled($profile['default_avatar_id'] ?? null)
+                ? 'https://avatars.yandex.net/get-yapic/'.$profile['default_avatar_id'].'/islands-200'
+                : null);
 
         if (! filled($providerUserId)) {
             return redirect()->route('settings.edit', ['tab' => 'security'])
@@ -140,7 +145,13 @@ class SocialAuthController extends Controller
                 'provider' => $provider,
                 'provider_user_id' => (string) $providerUserId,
                 'provider_email' => $providerEmail,
+                'provider_avatar_url' => $providerAvatarUrl,
             ]);
+        } else {
+            $existing->forceFill([
+                'provider_email' => $providerEmail,
+                'provider_avatar_url' => $providerAvatarUrl,
+            ])->save();
         }
 
         return redirect()->route('settings.edit', ['tab' => 'security'])
@@ -267,12 +278,16 @@ class SocialAuthController extends Controller
                 'email' => ($profile['email_verified'] ?? false) ? ($profile['email'] ?? null) : null,
                 'name' => $profile['name'] ?? $profile['given_name'] ?? null,
                 'username' => $profile['email'] ?? null,
+                'avatar' => $profile['picture'] ?? null,
             ]
             : [
                 'id' => $profile['id'] ?? null,
                 'email' => $profile['default_email'] ?? null,
                 'name' => $profile['display_name'] ?? $profile['real_name'] ?? $profile['login'] ?? null,
                 'username' => $profile['login'] ?? null,
+                'avatar' => filled($profile['default_avatar_id'] ?? null)
+                    ? 'https://avatars.yandex.net/get-yapic/'.$profile['default_avatar_id'].'/islands-200'
+                    : null,
             ];
 
         if (! filled($identity['id']) || ! filled($identity['email']) || ! filter_var($identity['email'], FILTER_VALIDATE_EMAIL)) {
@@ -314,7 +329,15 @@ class SocialAuthController extends Controller
                 'provider' => $provider,
                 'provider_user_id' => (string) $identity['id'],
                 'provider_email' => $identity['email'],
+                'provider_avatar_url' => $identity['avatar'],
             ]);
+        }
+
+        if ($social) {
+            $social->forceFill([
+                'provider_email' => $identity['email'],
+                'provider_avatar_url' => $identity['avatar'],
+            ])->save();
         }
 
         Auth::login($user, true);
