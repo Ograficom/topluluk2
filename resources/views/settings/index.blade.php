@@ -174,7 +174,6 @@
                                     </span>
                                 </div>
                             </section>
-                            <div><button class="btn btn-primary" type="button" disabled title="Kaydedilecek başka güvenlik ayarı bulunmuyor">Kaydetmek</button></div>
                         </div>
                     </section>
 
