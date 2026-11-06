@@ -59,10 +59,12 @@
                     <x-repost-icon name="search" size="24" />
                 </button>
                 <button class="switcher btn btn-secondary-ghost btn-circle btn-md" type="button" data-theme-toggle aria-label="Temayı değiştir"></button>
-                <a href="{{ auth()->check() ? route('posts.create') : route('login') }}" class="btn btn-md btn-white btn-rounded shadow-sm header__write">
-                    <x-repost-icon name="pen" size="18" />
-                    <span>Yaz</span>
-                </a>
+                @auth
+                    <a href="{{ route('posts.create') }}" class="btn btn-md btn-white btn-rounded shadow-sm header__write">
+                        <x-repost-icon name="pen" size="18" />
+                        <span>Yaz</span>
+                    </a>
+                @endauth
                 @auth
                     <div class="dropdown dropdown-md">
                         <button id="userMenuButton" type="button" class="btn btn-secondary-ghost btn-circle avatar" data-dropdown-toggle aria-expanded="false" aria-haspopup="menu" aria-controls="userMenu" aria-label="{{ auth()->user()->displayName() }}">
