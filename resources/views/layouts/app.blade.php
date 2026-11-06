@@ -178,6 +178,7 @@
     @php($channelsIndexPage = request()->routeIs('channels.index', 'legacy.channels'))
     @php($statsPage = request()->routeIs('stats.index'))
     @php($verificationPage = request()->routeIs('verification.notice'))
+    @php($verificationPage = request()->routeIs('verification.notice'))
     <main class="container">
         <div class="main {{ $settingsPage || $profilePage || $channelPage || $postCreatePage || $verificationPage ? 'main__grid-full' : 'main__grid' }}">
             <aside class="sidebar" aria-label="Kanallar ve yazarlar">
