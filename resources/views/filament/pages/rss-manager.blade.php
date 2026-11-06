@@ -1,75 +1,49 @@
 <x-filament-panels::page>
-    <div>
-        <x-filament::section
-            heading="RSS akış merkezi"
-            description="OgraFi içeriklerini RSS okuyucularına yayınlayın. Genel akışı ve her yazar, kanal veya etiket için ayrı akışları buradan yönetin."
-            icon="heroicon-o-rss"
-        >
-            <p>RSS yayınlarını ve içerik dağıtım ayarlarını bu sayfadan yönetebilirsiniz.</p>
-        </x-filament::section>
+    <form wire:submit="save">
+        {{ $this->form }}
 
-        <form wire:submit="save">
-            {{ $this->form }}
+        <div class="flex justify-end">
+            <x-filament::button type="submit" icon="heroicon-m-check">
+                Ayarları kaydet
+            </x-filament::button>
+        </div>
+    </form>
 
-            <div>
-                <x-filament::button type="submit" icon="heroicon-m-check">
-                    Ayarları kaydet
-                </x-filament::button>
-            </div>
-        </form>
-
-        <x-filament::section
-            heading="RSS adresleri"
-            description="Aşağıdaki adresleri RSS okuyucunuza ekleyebilir veya doğrudan açabilirsiniz."
-            icon="heroicon-o-link"
-        >
+    <x-filament::section
+        heading="RSS adresleri"
+        description="Kullanmak istediğiniz akış adresini kopyalayın."
+        icon="heroicon-o-rss"
+    >
+        <div class="divide-y divide-gray-200 dark:divide-white/10">
             @foreach ($this->feedUrls() as $index => $feed)
-                <x-filament::section
-                    :heading="$feed['label']"
-                    :key="'rss-feed-'.$index"
-                    collapsible
-                    collapsed
-                >
-                    <p>{{ $feed['url'] }}</p>
+                <div wire:key="rss-url-{{ $index }}" class="flex flex-col gap-2 py-3 first:pt-0 last:pb-0 sm:flex-row sm:items-center sm:justify-between">
+                    <div class="min-w-0">
+                        <p class="text-sm font-medium text-gray-950 dark:text-white">{{ $feed['label'] }}</p>
+                        <code class="mt-1 block break-all text-xs text-gray-500">{{ $feed['url'] }}</code>
+                    </div>
 
-                    @switch($index)
-                        @case(0)
-                            <p>Sitedeki tüm uygun yayınlar.</p>
-                            @break
-                        @case(1)
-                            <p>En son yayınlanan yazılar.</p>
-                            @break
-                        @case(2)
-                            <p>Kullanıcı adına göre yazar akışı. {username} alanını gerçek kullanıcı adıyla değiştirin.</p>
-                            @break
-                        @case(3)
-                            <p>Kanal slug değerine göre akış. {slug} alanını gerçek kanal slug değeriyle değiştirin.</p>
-                            @break
-                        @default
-                            <p>Etiket slug değerine göre akış. {slug} alanını gerçek etiket slug değeriyle değiştirin.</p>
-                    @endswitch
-
-                    <x-filament::button
-                        color="gray"
-                        size="sm"
-                        icon="heroicon-o-clipboard"
-                        x-on:click="window.navigator.clipboard.writeText(@js($feed['url']))"
-                    >
-                        Adresi kopyala
-                    </x-filament::button>
-
-                    <x-filament::button
-                        tag="a"
-                        :href="$feed['url']"
-                        target="_blank"
-                        color="gray"
-                        size="sm"
-                        icon="heroicon-o-arrow-top-right-on-square"
-                    >
-                        Akışı aç
-                    </x-filament::button>
-                </x-filament::section>
+                    <div class="flex shrink-0 items-center gap-2">
+                        <x-filament::icon-button
+                            icon="heroicon-o-clipboard"
+                            color="gray"
+                            tooltip="Adresi kopyala"
+                            x-on:click="window.navigator.clipboard.writeText(@js($feed['url']))"
+                        />
+                        <x-filament::icon-button
+                            tag="a"
+                            :href="$feed['url']"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            icon="heroicon-o-arrow-top-right-on-square"
+                            color="gray"
+                            tooltip="Akışı aç"
+                        />
+                    </div>
+                </div>
             @endforeach
-        </x-filament::section>
-    </div>
+        </div>
+        <p class="mt-4 text-xs text-gray-500">
+            Yazar, kanal ve etiket örneklerindeki <code>{username}</code> ve <code>{slug}</code> alanlarını gerçek değerlerle değiştirin.
+        </p>
+    </x-filament::section>
 </x-filament-panels::page>
