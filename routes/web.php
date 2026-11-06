@@ -85,6 +85,11 @@ Route::middleware('guest')->group(function (): void {
     Route::post('/reset-password', [PasswordResetController::class, 'reset'])->middleware('throttle:5,1')->name('password.update');
 });
 
+Route::middleware('guest')->group(function (): void {
+    Route::get('/two-factor-challenge', [AuthController::class, 'showTwoFactorChallenge'])->name('two-factor.challenge');
+    Route::post('/two-factor-challenge', [AuthController::class, 'verifyTwoFactorChallenge'])->middleware('throttle:10,1')->name('two-factor.challenge.verify');
+});
+
 Route::middleware('auth')->group(function (): void {
     Route::get('/following', [CommunityController::class, 'following'])->name('community.following');
     Route::post('/last-comments/moderate', [CommunityController::class, 'moderateLatestComments'])->name('comments.moderate');
@@ -112,6 +117,9 @@ Route::middleware('auth')->group(function (): void {
     Route::patch('/settings/preferences', [SettingsController::class, 'updatePreferences'])->name('settings.preferences.update');
     Route::patch('/settings/password', [SettingsController::class, 'updatePassword'])->name('settings.password.update');
     Route::patch('/settings/email', [SettingsController::class, 'updateEmail'])->name('settings.email.update');
+    Route::post('/settings/two-factor', [SettingsController::class, 'startTwoFactor'])->name('settings.two-factor.start');
+    Route::post('/settings/two-factor/confirm', [SettingsController::class, 'confirmTwoFactor'])->middleware('throttle:10,1')->name('settings.two-factor.confirm');
+    Route::delete('/settings/two-factor', [SettingsController::class, 'disableTwoFactor'])->middleware('throttle:10,1')->name('settings.two-factor.disable');
     Route::post('/settings/verification', [SettingsController::class, 'requestVerification'])->name('settings.verification.request');
     Route::delete('/settings/verification', [SettingsController::class, 'cancelVerification'])->name('settings.verification.cancel');
     Route::delete('/settings/blocked-users/{blockedUser}', [SettingsController::class, 'unblockUser'])->name('settings.blocked-users.destroy');
