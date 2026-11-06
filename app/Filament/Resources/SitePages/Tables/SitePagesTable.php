@@ -30,7 +30,7 @@ class SitePagesTable
                     ->boolean()
                     ->tooltip(fn (\\App\\Models\\SitePage $record): string => ! $record->is_published
                         ? 'Taslak: ziyaretçilere açık değil'
-                        : ($record->published_at?->isFuture() ? 'Planlandı: yayın tarihi henüz gelmedi' : 'Yayında')), 
+                        : ($record->published_at?->isFuture() ? 'Planlandı: yayın tarihi henüz gelmedi' : 'Yayında')),
                 TextColumn::make('updated_at')
                     ->label('Son güncelleme')
                     ->dateTime('d.m.Y H:i')
