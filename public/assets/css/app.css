@@ -5286,3 +5286,70 @@ p {
     height: 166px !important;
   }
 }
+
+
+
+/* Settings: finish the social accounts block */
+.settings-social-section {
+  gap: 12px;
+  margin-top: 22px;
+  padding: 20px 0 24px;
+  border-top: 1px solid var(--border-color);
+}
+.settings-social-section__heading {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.settings-social-section__heading h2 {
+  margin: 0;
+  color: var(--title-color);
+  font-size: 1rem;
+  font-weight: 700;
+}
+.settings-social-section__heading p {
+  margin: 0;
+  color: var(--color-gray);
+  font-size: .82rem;
+}
+.settings-social-section .setting__social {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin-top: 2px;
+}
+.settings-social-button {
+  display: inline-flex;
+  min-width: 106px;
+  min-height: 42px;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 0 15px;
+  border: 1px solid var(--border-color);
+  border-radius: 11px;
+  color: var(--text-color);
+  background: var(--color-secondary);
+  font-size: .86rem;
+  font-weight: 600;
+  line-height: 1;
+  cursor: default;
+}
+.settings-social-button svg {
+  display: block;
+  flex: 0 0 20px;
+}
+@media (max-width: 520px) {
+  .settings-social-section {
+    margin-top: 18px;
+    padding: 18px 0 calc(24px + env(safe-area-inset-bottom, 0px));
+  }
+  .settings-social-section .setting__social {
+    gap: 8px;
+  }
+  .settings-social-button {
+    min-height: 42px;
+    min-width: 104px;
+  }
+}
