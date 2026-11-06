@@ -5,67 +5,31 @@ namespace App\Models;
 use Database\Factories\UserFactory;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
+use Illuminate\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-class User extends Authenticatable implements FilamentUser
+class User extends Authenticatable implements FilamentUser, MustVerifyEmail
 {
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
-     */
     protected $fillable = [
-        'name',
-        'email',
-        'password',
-        'is_admin',
-        'username',
-        'full_name',
-        'signature',
-        'bio',
-        'avatar_path',
-        'website',
-        'instagram',
-        'telegram',
-        'threads',
-        'youtube',
-        'timezone',
-        'show_adult_content',
-        'notify_replies',
-        'notify_posts',
-        'notify_announcements',
-        'is_verified',
-        'verification_status',
-        'verification_reason',
-        'verification_requested_at',
-        'two_factor_secret',
+        'name', 'email', 'password', 'is_admin', 'username', 'full_name',
+        'signature', 'bio', 'avatar_path', 'website', 'instagram', 'telegram',
+        'threads', 'youtube', 'timezone', 'show_adult_content', 'notify_replies',
+        'notify_posts', 'notify_announcements', 'is_verified', 'verification_status',
+        'verification_reason', 'verification_requested_at', 'two_factor_secret',
         'two_factor_recovery_codes',
     ];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var list<string>
-     */
     protected $hidden = [
-        'password',
-        'remember_token',
-        'two_factor_secret',
-        'two_factor_recovery_codes',
+        'password', 'remember_token', 'two_factor_secret', 'two_factor_recovery_codes',
     ];
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
     protected function casts(): array
     {
         return [
@@ -85,9 +49,6 @@ class User extends Authenticatable implements FilamentUser
         ];
     }
 
-    /**
-     * Use the public username in URLs instead of exposing the numeric database ID.
-     */
     public function getRouteKeyName(): string
     {
         return 'username';
@@ -100,76 +61,25 @@ class User extends Authenticatable implements FilamentUser
         });
     }
 
-    public function socialAccounts(): HasMany
-    {
-        return $this->hasMany(SocialAccount::class);
-    }
-
-    public function posts(): HasMany
-    {
-        return $this->hasMany(Post::class);
-    }
-
-    public function comments(): HasMany
-    {
-        return $this->hasMany(Comment::class);
-    }
-
-    public function following(): BelongsToMany
-    {
-        return $this->belongsToMany(self::class, 'user_follows', 'follower_id', 'following_id')->withTimestamps();
-    }
-
-    public function channels(): BelongsToMany
-    {
-        return $this->belongsToMany(Channel::class, 'channel_subscriptions')->withTimestamps();
-    }
-
-    public function followers(): BelongsToMany
-    {
-        return $this->belongsToMany(self::class, 'user_follows', 'following_id', 'follower_id')->withTimestamps();
-    }
-
-    public function bookmarks(): BelongsToMany
-    {
-        return $this->belongsToMany(Post::class, 'post_bookmarks')->withTimestamps();
-    }
-
-    public function conversations(): BelongsToMany
-    {
-        return $this->belongsToMany(Conversation::class, 'conversation_user')
-            ->withPivot('last_read_at')
-            ->withTimestamps();
-    }
-
-    public function sentMessages(): HasMany
-    {
-        return $this->hasMany(Message::class);
-    }
-
-    public function reactions(): HasMany
-    {
-        return $this->hasMany(PostReaction::class);
-    }
+    public function socialAccounts(): HasMany { return $this->hasMany(SocialAccount::class); }
+    public function posts(): HasMany { return $this->hasMany(Post::class); }
+    public function comments(): HasMany { return $this->hasMany(Comment::class); }
+    public function following(): BelongsToMany { return $this->belongsToMany(self::class, 'user_follows', 'follower_id', 'following_id')->withTimestamps(); }
+    public function channels(): BelongsToMany { return $this->belongsToMany(Channel::class, 'channel_subscriptions')->withTimestamps(); }
+    public function followers(): BelongsToMany { return $this->belongsToMany(self::class, 'user_follows', 'following_id', 'follower_id')->withTimestamps(); }
+    public function bookmarks(): BelongsToMany { return $this->belongsToMany(Post::class, 'post_bookmarks')->withTimestamps(); }
+    public function conversations(): BelongsToMany { return $this->belongsToMany(Conversation::class, 'conversation_user')->withPivot('last_read_at')->withTimestamps(); }
+    public function sentMessages(): HasMany { return $this->hasMany(Message::class); }
+    public function reactions(): HasMany { return $this->hasMany(PostReaction::class); }
 
     public function blockedUsers(): BelongsToMany
     {
-        return $this->belongsToMany(
-            self::class,
-            'user_blocks',
-            'user_id',
-            'blocked_user_id',
-        )->withTimestamps();
+        return $this->belongsToMany(self::class, 'user_blocks', 'user_id', 'blocked_user_id')->withTimestamps();
     }
 
     public function blockedByUsers(): BelongsToMany
     {
-        return $this->belongsToMany(
-            self::class,
-            'user_blocks',
-            'blocked_user_id',
-            'user_id',
-        )->withTimestamps();
+        return $this->belongsToMany(self::class, 'user_blocks', 'blocked_user_id', 'user_id')->withTimestamps();
     }
 
     public function hasVerifiedBadge(): bool
@@ -180,32 +90,20 @@ class User extends Authenticatable implements FilamentUser
     public function displayName(): string
     {
         $name = $this->full_name ?: $this->name ?: $this->username;
-
-        if (is_string($name) && filter_var($name, FILTER_VALIDATE_EMAIL)) {
-            return (string) str($name)->before('@');
-        }
-
-        return filled($name) ? (string) $name : 'Repost kullanıcısı';
+        if (is_string($name) && filter_var($name, FILTER_VALIDATE_EMAIL)) return (string) str($name)->before('@');
+        return filled($name) ? (string) $name : 'OgraFi kullanıcısı';
     }
 
     public function publicUsername(): ?string
     {
-        if (blank($this->username)) {
-            return null;
-        }
-
-        if (filter_var($this->username, FILTER_VALIDATE_EMAIL)) {
-            return (string) str($this->username)->before('@');
-        }
-
+        if (blank($this->username)) return null;
+        if (filter_var($this->username, FILTER_VALIDATE_EMAIL)) return (string) str($this->username)->before('@');
         return $this->username;
     }
 
     public function avatarUrl(): string
     {
-        return $this->avatar_path
-            ? asset('storage/'.$this->avatar_path)
-            : asset('assets/img/noavatar.png');
+        return $this->avatar_path ? asset('storage/'.$this->avatar_path) : asset('assets/img/noavatar.png');
     }
 
     public function isOnline(): bool
