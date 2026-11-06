@@ -52,7 +52,10 @@ class SitePageForm
                 ->default(true),
             DateTimePicker::make('published_at')
                 ->label('Yayın tarihi')
-                ->seconds(false),
+                ->timezone('Europe/Istanbul')
+                ->default(now())
+                ->seconds(false)
+                ->helperText('Boş bırakılırsa sayfa hemen yayınlanır. İleri bir tarih seçerseniz o tarihte yayınlanır.'),
         ]);
     }
 }
