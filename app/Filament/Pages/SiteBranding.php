@@ -8,11 +8,14 @@ use Filament\Forms\Components\Toggle;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
 use Filament\Schemas\Components\Section;
+use Filament\Schemas\Concerns\InteractsWithSchemas;
+use Filament\Schemas\Contracts\HasSchemas;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 
-class SiteBranding extends Page
+class SiteBranding extends Page implements HasSchemas
 {
+    use InteractsWithSchemas;
     protected static ?string $navigationLabel = 'Marka ayarları';
 
     protected static ?string $title = 'Site markası';
