@@ -23,7 +23,7 @@ class SitemapManager extends Page
 
     protected static ?int $navigationSort = 110;
 
-    protected static string|\BackedEnum|null $navigationIcon = Heroicon::OutlinedMap;
+    protected static string|\BackedEnum|null $navigationIcon = Heroicon::OutlinedCog6Tooth;
 
     protected string $view = 'filament.pages.sitemap-manager';
 
