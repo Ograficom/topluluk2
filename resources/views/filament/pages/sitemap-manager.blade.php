@@ -28,7 +28,7 @@
         </form>
 
         <div class="rounded-xl border border-gray-200 bg-gray-50 p-4 text-sm leading-6 text-gray-600 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300">
-            Yazı, kanal, etiket veya sabit sayfa eklendiğinde, güncellendiğinde ya da silindiğinde sitemap önbelleği otomatik yenilenir. Ayrıca Laravel zamanlayıcısı her gece kontrol amaçlı yeniden oluşturur.
+            Yazı, kanal, etiket veya sabit sayfa eklendiğinde, güncellendiğinde ya da silindiğinde sitemap önbelleği otomatik yenilenir. Ayrıca Laravel zamanlayıcısı her 15 dakikada bir sitemap önbelleğini yeniler.
             <div class="mt-2 font-medium">
                 Sitemap adresi: <a class="text-primary-600 underline dark:text-primary-400" href="{{ $this->sitemapUrl() }}" target="_blank" rel="noopener">{{ $this->sitemapUrl() }}</a>
             </div>
