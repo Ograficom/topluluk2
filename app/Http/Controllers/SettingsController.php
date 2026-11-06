@@ -169,16 +169,12 @@ class SettingsController extends Controller
             ->with('status', 'Doğrulama başvurunuz iptal edildi.');
     }
 
-    public function startTwoFactor(Request $request): RedirectResponse|JsonResponse
+    public function startTwoFactor(Request $request): JsonResponse
     {
         $user = $request->user();
 
         if ($user->two_factor_confirmed_at) {
-            if ($request->expectsJson()) {
-                return response()->json(['message' => 'İki faktörlü doğrulama zaten etkin.'], 409);
-            }
-
-            return back()->with('activeTab', 'security')->with('status', 'İki faktörlü doğrulama zaten etkin.');
+            return response()->json(['message' => 'İki faktörlü doğrulama zaten etkin.'], 409);
         }
 
         if (! $user->two_factor_secret) {
@@ -194,36 +190,24 @@ class SettingsController extends Controller
         $label = $issuerName.':'.$user->email;
         $otpauth = 'otpauth://totp/'.rawurlencode($label).'?secret='.$user->two_factor_secret.'&issuer='.$issuer.'&algorithm=SHA1&digits=6&period=30';
 
-        if ($request->expectsJson()) {
-            return response()->json([
-                'secret' => $user->two_factor_secret,
-                'otpauth_url' => $otpauth,
-                'account' => $user->email,
-            ]);
-        }
-
-        return back()->with('activeTab', 'security')->with('status', 'Kurulum anahtarı oluşturuldu.');
+        return response()->json([
+            'secret' => $user->two_factor_secret,
+            'otpauth_url' => $otpauth,
+            'account' => $user->email,
+        ]);
     }
 
-    public function confirmTwoFactor(Request $request): RedirectResponse|JsonResponse
+    public function confirmTwoFactor(Request $request): JsonResponse
     {
         $validated = $request->validate(['code' => ['required', 'digits:6']]);
         $user = $request->user();
 
         if (! $user->two_factor_secret || $user->two_factor_confirmed_at) {
-            if ($request->expectsJson()) {
-                return response()->json(['message' => 'Önce kurulum işlemini başlatın.'], 409);
-            }
-
-            return back()->with('activeTab', 'security')->withErrors(['code' => 'Önce iki faktörlü doğrulama kurulumunu başlatın.']);
+            return response()->json(['message' => 'Önce kurulum işlemini başlatın.'], 409);
         }
 
         if (! \App\Support\Totp::verify($user->two_factor_secret, $validated['code'])) {
-            if ($request->expectsJson()) {
-                return response()->json(['message' => 'Kod geçersiz. Telefonunuzun saatini kontrol edip tekrar deneyin.'], 422);
-            }
-
-            return back()->with('activeTab', 'security')->withErrors(['code' => 'Doğrulama kodu geçersiz. Telefonunuzun saatini kontrol edip tekrar deneyin.']);
+            return response()->json(['message' => 'Kod geçersiz. Telefonunuzun saatini kontrol edip tekrar deneyin.'], 422);
         }
 
         $codes = \App\Support\Totp::recoveryCodes();
@@ -232,12 +216,7 @@ class SettingsController extends Controller
             'two_factor_confirmed_at' => now(),
         ])->save();
 
-        if ($request->expectsJson()) {
-            return response()->json(['message' => 'İki faktörlü doğrulama etkinleştirildi.', 'recovery_codes' => $codes]);
-        }
-
-        return back()->with('activeTab', 'security')->with('twoFactorRecoveryCodes', $codes)
-            ->with('status', 'İki faktörlü doğrulama etkinleştirildi. Kurtarma kodlarını güvenli bir yere kaydedin.');
+        return response()->json(['message' => 'İki faktörlü doğrulama etkinleştirildi.', 'recovery_codes' => $codes]);
     }
 
     public function disableTwoFactor(Request $request): RedirectResponse
