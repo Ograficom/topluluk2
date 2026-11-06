@@ -138,7 +138,7 @@ class AuthController extends Controller
 
     private function consumeTwoFactorCode(User $user, string $code): bool
     {
-        if ($user->two_factor_secret && \\App\\Support\\Totp::verify($user->two_factor_secret, $code)) {
+        if ($user->two_factor_secret && \App\Support\Totp::verify($user->two_factor_secret, $code)) {
             return true;
         }
 
