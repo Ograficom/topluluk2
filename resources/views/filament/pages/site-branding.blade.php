@@ -208,6 +208,31 @@
                 flex-direction: column;
             }
         }
+
+        .social-network-settings{display:grid;gap:1rem;padding:1.25rem 1.5rem;border:1px solid #e2e8f0;border-radius:1rem;background:#fff}
+        .social-network-settings h2{margin:0;color:#172033;font-size:1rem;font-weight:700}
+        .social-network-options{display:flex;flex-wrap:wrap;gap:.75rem}
+        .social-network-option{display:inline-flex;min-width:106px;min-height:42px;align-items:center;justify-content:center;gap:.55rem;padding:0 1rem;border:1px solid #e2e8f0;border-radius:.8rem;background:#f1f4f8;color:#253044;font-size:.875rem;font-weight:600;cursor:pointer;transition:background .15s ease,border-color .15s ease}
+        .social-network-option:hover{background:#e8edf4}
+        .social-network-option.is-selected{border-color:#bfdbfe;background:#eff6ff;color:#1d4ed8}
+        .social-network-option:disabled{opacity:.6;cursor:wait}
+        .social-network-modal-backdrop{position:fixed;z-index:9999;inset:0;display:grid;place-items:center;padding:1rem;background:rgb(15 23 42 / 48%);backdrop-filter:blur(4px)}
+        .social-network-modal{width:min(100%,440px);overflow:hidden;border:1px solid rgb(226 232 240 / 90%);border-radius:1.5rem;background:#fff;box-shadow:0 24px 70px rgb(15 23 42 / 22%);animation:social-network-modal-in .2s ease-out both}
+        .social-network-modal__header{display:flex;min-height:62px;align-items:center;justify-content:space-between;gap:1rem;padding:.9rem 1.25rem;border-bottom:1px solid #e8edf3}
+        .social-network-modal__header h2{margin:0;color:#111827;font-size:1rem;font-weight:700}
+        .social-network-modal__close{display:grid;width:36px;height:36px;flex:0 0 36px;place-items:center;border:0;border-radius:50%;background:#eef1f5;color:#334155;font-size:1.35rem;cursor:pointer}
+        .social-network-modal__body{display:grid;justify-items:center;gap:.65rem;padding:1.6rem 1.5rem 1.35rem;text-align:center}
+        .social-network-modal__icon{display:grid;width:52px;height:52px;place-items:center;border:1px solid #dbeafe;border-radius:50%;background:#eff6ff;color:#2563eb}
+        .social-network-modal__body h3{margin:.25rem 0 0;color:#202938;font-size:1.15rem;font-weight:700;line-height:1.4}
+        .social-network-modal__body p{max-width:340px;margin:0;color:#64748b;font-size:.875rem;line-height:1.6}
+        .social-network-modal__actions{display:flex;justify-content:flex-end;gap:.65rem;padding:1rem 1.25rem 1.2rem;border-top:1px solid #e8edf3}
+        .social-network-modal__button{min-width:100px;min-height:42px;padding:0 1rem;border:0;border-radius:.75rem;font-size:.875rem;font-weight:650;cursor:pointer}
+        .social-network-modal__button--cancel{background:#eef1f5;color:#334155}
+        .social-network-modal__button--confirm{background:#1769ff;color:#fff}
+        .social-network-modal__button:disabled{opacity:.6;cursor:wait}
+        @keyframes social-network-modal-in{from{opacity:0;transform:translateY(8px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}
+        @media(max-width:640px){.social-network-modal-backdrop{align-items:end;padding:0}.social-network-modal{width:100%;border-radius:1.35rem 1.35rem 0 0;padding-bottom:env(safe-area-inset-bottom,0px);animation-name:social-network-modal-sheet-in}@keyframes social-network-modal-sheet-in{from{opacity:.7;transform:translateY(100%)}to{opacity:1;transform:translateY(0)}}}
+
     </style>
 
     <div class="branding-page">
