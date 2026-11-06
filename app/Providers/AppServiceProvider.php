@@ -7,6 +7,7 @@ use App\Models\Comment;
 use App\Models\Post;
 use App\Models\PostReaction;
 use App\Models\SiteSetting;
+use App\Models\MailSetting;
 use App\Models\SitePage;
 use App\Models\Tag;
 use App\Observers\SitemapObserver;
@@ -30,6 +31,26 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        try {
+            $mailSettings = MailSetting::query()->find(1);
+
+            if ($mailSettings) {
+                config([
+                    'mail.default' => $mailSettings->enabled ? $mailSettings->mailer : 'log',
+                    'mail.mailers.smtp.transport' => 'smtp',
+                    'mail.mailers.smtp.scheme' => $mailSettings->scheme,
+                    'mail.mailers.smtp.host' => $mailSettings->host,
+                    'mail.mailers.smtp.port' => $mailSettings->port,
+                    'mail.mailers.smtp.username' => $mailSettings->username,
+                    'mail.mailers.smtp.password' => $mailSettings->password,
+                    'mail.from.address' => $mailSettings->from_address,
+                    'mail.from.name' => $mailSettings->from_name,
+                ]);
+            }
+        } catch (\\Throwable $exception) {
+            report($exception);
+        }
+
         Post::observe(SitemapObserver::class);
         Channel::observe(SitemapObserver::class);
         Tag::observe(SitemapObserver::class);
