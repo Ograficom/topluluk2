@@ -11,4 +11,5 @@ Artisan::command('inspire', function () {
 
 Schedule::call(fn () => app(SitemapService::class)->rebuild())
     ->everyFifteenMinutes()
+    ->name('sitemap-rebuild')
     ->withoutOverlapping();
