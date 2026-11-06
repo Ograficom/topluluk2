@@ -136,4 +136,5 @@ Route::get('/channels/{channel:slug}/edit', [ChannelController::class, 'edit'])-
 Route::patch('/channels/{channel:slug}', [ChannelController::class, 'update'])->middleware(['auth', 'throttle:10,1'])->name('channels.update');
 Route::post('/channels', [ChannelController::class, 'store'])->middleware(['auth', 'throttle:10,1'])->name('channels.store');
 Route::get('/channels/{channel:slug}', [ChannelController::class, 'show'])->name('channels.show');
-Route::get('/users/{identifier}', [ProfileController::class, 'show'])->name('profiles.show');
+Route::get('/@{identifier}', [ProfileController::class, 'show'])->name('profiles.show');
+Route::get('/users/{identifier}', [ProfileController::class, 'show'])->name('profiles.legacy');
