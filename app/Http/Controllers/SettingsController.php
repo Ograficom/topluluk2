@@ -168,6 +168,98 @@ class SettingsController extends Controller
             ->with('status', 'Doğrulama başvurunuz iptal edildi.');
     }
 
+    public function startTwoFactor(Request $request): RedirectResponse
+    {
+        $user = $request->user();
+
+        if ($user->two_factor_confirmed_at) {
+            return back()->with('activeTab', 'security')->with('status', 'İki faktörlü doğrulama zaten etkin.');
+        }
+
+        $user->forceFill([
+            'two_factor_secret' => \\App\\Support\\Totp::secret(),
+            'two_factor_recovery_codes' => null,
+            'two_factor_confirmed_at' => null,
+        ])->save();
+
+        return back()->with('activeTab', 'security')->with('status', 'Kurulum anahtarı oluşturuldu. Authenticator uygulamanıza ekleyip doğrulama kodunu girin.');
+    }
+
+    public function confirmTwoFactor(Request $request): RedirectResponse
+    {
+        $validated = $request->validate(['code' => ['required', 'digits:6']]);
+        $user = $request->user();
+
+        if (! $user->two_factor_secret || $user->two_factor_confirmed_at) {
+            return back()->with('activeTab', 'security')->withErrors(['code' => 'Önce iki faktörlü doğrulama kurulumunu başlatın.']);
+        }
+
+        if (! \\App\\Support\\Totp::verify($user->two_factor_secret, $validated['code'])) {
+            return back()->with('activeTab', 'security')->withErrors(['code' => 'Doğrulama kodu geçersiz. Telefonunuzun saatini kontrol edip tekrar deneyin.']);
+        }
+
+        $codes = \\App\\Support\\Totp::recoveryCodes();
+        $user->forceFill([
+            'two_factor_recovery_codes' => $codes,
+            'two_factor_confirmed_at' => now(),
+        ])->save();
+
+        return back()->with('activeTab', 'security')->with('twoFactorRecoveryCodes', $codes)
+            ->with('status', 'İki faktörlü doğrulama etkinleştirildi. Kurtarma kodlarını güvenli bir yere kaydedin.');
+    }
+
+    public function disableTwoFactor(Request $request): RedirectResponse
+    {
+        $validated = $request->validate([
+            'current_password' => ['required', 'current_password'],
+            'code' => ['required', 'string', 'max:20'],
+        ]);
+        $user = $request->user();
+
+        if (! $user->two_factor_confirmed_at || ! $this->validTwoFactorCode($user, $validated['code'])) {
+            return back()->with('activeTab', 'security')->withErrors(['code' => 'Doğrulama kodu geçersiz.']);
+        }
+
+        $user->forceFill([
+            'two_factor_secret' => null,
+            'two_factor_recovery_codes' => null,
+            'two_factor_confirmed_at' => null,
+        ])->save();
+
+        return back()->with('activeTab', 'security')->with('status', 'İki faktörlü doğrulama kapatıldı.');
+    }
+
+    private function validTwoFactorCode(User $user, string $code): bool
+    {
+        if (! $user->two_factor_secret) {
+            return false;
+        }
+
+        if (\\App\\Support\\Totp::verify($user->two_factor_secret, $code)) {
+            return true;
+        }
+
+        $codes = $user->two_factor_recovery_codes ?? [];
+        $normalized = strtoupper(str_replace([' ', '-'], '', $code));
+        $match = null;
+
+        foreach ($codes as $index => $recoveryCode) {
+            if (hash_equals($recoveryCode, $normalized)) {
+                $match = $index;
+                break;
+            }
+        }
+
+        if ($match === null) {
+            return false;
+        }
+
+        unset($codes[$match]);
+        $user->forceFill(['two_factor_recovery_codes' => array_values($codes)])->save();
+
+        return true;
+    }
+
     public function blockUser(Request $request, User $blockedUser): RedirectResponse
     {
         abort_if($request->user()->is($blockedUser), 422, 'Kendi hesabınızı engelleyemezsiniz.');
