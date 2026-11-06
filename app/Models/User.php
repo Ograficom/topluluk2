@@ -103,7 +103,19 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
 
     public function avatarUrl(): string
     {
-        return $this->avatar_path ? asset('storage/'.$this->avatar_path) : asset('assets/img/noavatar.png');
+        if (filled($this->avatar_path)) {
+            return asset('storage/'.$this->avatar_path);
+        }
+
+        $providerAvatar = $this->socialAccounts()
+            ->whereNotNull('provider_avatar_url')
+            ->where('provider_avatar_url', '<>', '')
+            ->orderByRaw("CASE provider WHEN 'google' THEN 0 WHEN 'yandex' THEN 1 ELSE 2 END")
+            ->value('provider_avatar_url');
+
+        return filled($providerAvatar)
+            ? $providerAvatar
+            : asset('assets/img/noavatar.png');
     }
 
     public function isOnline(): bool
