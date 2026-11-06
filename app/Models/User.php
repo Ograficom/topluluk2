@@ -78,6 +78,14 @@ class User extends Authenticatable implements FilamentUser
         ];
     }
 
+    /**
+     * Use the public username in URLs instead of exposing the numeric database ID.
+     */
+    public function getRouteKeyName(): string
+    {
+        return 'username';
+    }
+
     protected static function booted(): void
     {
         static::saving(function (User $user): void {
