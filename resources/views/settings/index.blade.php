@@ -198,7 +198,12 @@
                                         @php($connectedAccount = $socialAccounts->get($provider))
                                         @if ($connectedAccount)
                                             <button type="button" class="btn btn-secondary" data-modal-btn="social-unlink-{{ $provider }}" aria-controls="socialUnlink{{ ucfirst($provider) }}Modal">
-                                                <x-repost-icon :name="$provider" size="20" />{{ $socialProvider }}
+                                                @if (filled($connectedAccount->provider_avatar_url))
+                                                    <img src="{{ $connectedAccount->provider_avatar_url }}" alt="" width="20" height="20" class="settings-social-avatar" referrerpolicy="no-referrer">
+                                                @else
+                                                    <x-repost-icon :name="$provider" size="20" />
+                                                @endif
+                                                {{ $socialProvider }}
                                             </button>
                                         @elseif ($provider === 'google' ? $googleLoginAvailable : $yandexLoginAvailable)
                                             <button type="button" class="btn btn-secondary" data-modal-btn="social-link-{{ $provider }}" aria-controls="socialLink{{ ucfirst($provider) }}Modal">
@@ -463,6 +468,18 @@
         </div>
     </div>
 @endsection
+
+<style>
+    .setting__social .settings-social-avatar {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        flex: 0 0 20px;
+        border-radius: 50%;
+        object-fit: cover;
+        vertical-align: middle;
+    }
+</style>
 
 @push('scripts')
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" referrerpolicy="no-referrer"></script>
