@@ -3,6 +3,7 @@
 namespace App\Filament\Pages;
 
 use App\Models\SiteSetting;
+use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Notifications\Notification;
@@ -62,6 +63,7 @@ class SiteBranding extends Page
     {
         return $schema
             ->components([
+                Hidden::make('social_networks')->default([]),
                 Section::make('Marka kimliği')
                     ->description('Sitenin adı ve alt bilgisinde görünecek yıl.')
                     ->schema([
