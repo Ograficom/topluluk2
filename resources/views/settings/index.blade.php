@@ -187,10 +187,7 @@
                                     </form>
                                 @else
                                     <p class="small color-gray">Hesabınıza girişte şifrenize ek olarak Authenticator uygulamanızdaki tek kullanımlık kod sorulur.</p>
-                                    <form action="{{ route('settings.two-factor.start') }}" method="POST">
-                                        @csrf
-                                        <button class="btn btn-primary" type="submit">İki faktörlü doğrulamayı kur</button>
-                                    </form>
+                                    <button class="btn btn-primary" type="button" data-modal-btn="two-factor-setup" aria-controls="twoFactorSetupModal">İki faktörlü doğrulamayı kur</button>
                                 @endif
                             </section>
 
@@ -374,6 +371,25 @@
             <div class="modal-body">Kullanıcı adını ayda en fazla bir kez değiştirebilirsin. Değişiklik talebinde bulunmak için destek ekibiyle iletişime geçin.</div>
             <div class="modal-footer">
                 <a href="{{ route('contacts') }}" class="btn btn-primary">Destek ile iletişime geçin.</a>
+            </div>
+        </div>
+    </div>
+    <div class="modal" id="twoFactorSetupModal" data-modal="two-factor-setup" role="dialog" aria-modal="true" aria-labelledby="twoFactorSetupModalLabel" aria-hidden="true">
+        <div class="modal-content">
+            <button type="button" class="btn btn-secondary btn-md btn-circle modal-close" data-modal-close aria-label="Kapat">
+                <x-repost-icon name="close" size="16" />
+            </button>
+            <header class="modal-header">
+                <h2 class="modal-title" id="twoFactorSetupModalLabel">İki faktörlü doğrulama</h2>
+            </header>
+            <div class="modal-body">
+                İki faktörlü doğrulamayı etkinleştirdiğinizde hesabınıza giriş yaparken şifrenize ek olarak Authenticator uygulamanızdaki tek kullanımlık kod istenir.
+            </div>
+            <div class="modal-footer">
+                <form action="{{ route('settings.two-factor.start') }}" method="POST">
+                    @csrf
+                    <button class="btn btn-primary" type="submit">Kuruluma başla</button>
+                </form>
             </div>
         </div>
     </div>
