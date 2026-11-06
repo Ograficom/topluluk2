@@ -51,7 +51,7 @@ class MailSettings extends Page
             ->components([
                 Section::make('E-posta gönderimini etkinleştir')
                     ->description('SMTP ayarlarını kaydettikten sonra OgraFi sistem e-postaları bu sunucu üzerinden gönderilir.')
-                    ->icon(Heroicon::OutlinedPower)
+                    ->icon(Heroicon::OutlinedCog6Tooth)
                     ->schema([
                         Toggle::make('enabled')
                             ->label('SMTP gönderimini etkinleştir')
@@ -62,7 +62,7 @@ class MailSettings extends Page
 
                 Section::make('SMTP sunucu bilgileri')
                     ->description('Hostinger e-posta hizmetinizin bağlantı bilgilerini girin.')
-                    ->icon(Heroicon::OutlinedServer)
+                    ->icon(Heroicon::OutlinedGlobeAlt)
                     ->schema([
                         Select::make('mailer')
                             ->label('Gönderim yöntemi')
