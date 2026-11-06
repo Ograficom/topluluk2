@@ -183,9 +183,11 @@
                                             Hesabınıza girişte şifrenize ek olarak Authenticator uygulamanızdaki tek kullanımlık kod sorulur.
                                         @endif
                                     </p>
-                                    <button class="btn btn-primary" type="button" data-modal-btn="two-factor-setup" aria-controls="twoFactorSetupModal">
-                                        {{ $user->two_factor_secret ? 'Kuruluma devam et' : 'İki faktörlü doğrulamayı kur' }}
-                                    </button>
+                                    <div>
+                                        <button class="btn btn-primary" type="button" data-modal-btn="two-factor-setup" aria-controls="twoFactorSetupModal">
+                                            {{ $user->two_factor_secret ? 'Kuruluma devam et' : 'İki faktörlü doğrulamayı kur' }}
+                                        </button>
+                                    </div>
                                 @endif
                             </section>
 
