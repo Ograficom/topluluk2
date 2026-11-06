@@ -327,6 +327,9 @@
                     </div>
                 </section>
             </div>
+            <div class="setting__aside-footer">
+                @include('layouts._footer')
+            </div>
         </aside>
     </div>
     <div class="modal" id="changeUsernameModal" data-modal="change-username" role="dialog" aria-modal="true" aria-labelledby="changeUsernameModalLabel" aria-hidden="true">
