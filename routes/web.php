@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ChannelController;
 use App\Http\Controllers\CommunityController;
+use App\Http\Controllers\EmailVerificationController;
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\PasswordResetController;
 use App\Http\Controllers\PostController;
