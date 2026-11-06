@@ -15,6 +15,22 @@ class AuthController extends Controller
 {
     public function showRegister(): View { return view('auth.register'); }
 
+    public function checkUsername(Request $request)
+    {
+        $validated = $request->validate([
+            'username' => ['required', 'string', 'max:30'],
+        ]);
+
+        $available = ! User::query()
+            ->where('username', $validated['username'])
+            ->exists();
+
+        return response()->json([
+            'available' => $available,
+            'message' => $available ? 'Kullanıcı adı kullanılabilir.' : 'Bu kullanıcı adı zaten alınmış.',
+        ]);
+    }
+
     public function register(Request $request): RedirectResponse
     {
         $validated = $request->validate([
