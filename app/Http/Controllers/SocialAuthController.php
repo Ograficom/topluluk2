@@ -35,7 +35,7 @@ class SocialAuthController extends Controller
 
         $query = [
             'client_id' => $provider === 'google' ? $settings->google_client_id : $settings->yandex_client_id,
-            'redirect_uri' => route('oauth.link.callback', ['provider' => $provider]),
+            'redirect_uri' => route('oauth.callback', ['provider' => $provider]),
             'response_type' => 'code',
             'state' => $state,
         ];
@@ -203,6 +203,10 @@ class SocialAuthController extends Controller
 
     public function callback(Request $request, string $provider): RedirectResponse
     {
+        if ($request->session()->has('oauth_link_state_'.$provider)) {
+            return $this->linkCallback($request, $provider);
+        }
+
         abort_unless(in_array($provider, ['google', 'yandex'], true), 404);
 
         $expectedState = (string) $request->session()->pull('oauth_state_'.$provider);
