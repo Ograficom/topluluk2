@@ -10,5 +10,5 @@ Artisan::command('inspire', function () {
 })->purpose('Display an inspiring quote');
 
 Schedule::call(fn () => app(SitemapService::class)->rebuild())
-    ->daily()
+    ->everyFifteenMinutes()
     ->withoutOverlapping();
