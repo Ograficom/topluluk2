@@ -22,10 +22,15 @@ class SitePagesTable
                 TextColumn::make('slug')
                     ->label('URL')
                     ->searchable()
-                    ->copyable(),
+                    ->copyable()
+                    ->url(fn (\\App\\Models\\SitePage $record): string => route('pages.show', ['slug' => $record->slug]))
+                    ->openUrlInNewTab(),
                 IconColumn::make('is_published')
                     ->label('Yayın durumu')
-                    ->boolean(),
+                    ->boolean()
+                    ->tooltip(fn (\\App\\Models\\SitePage $record): string => ! $record->is_published
+                        ? 'Taslak: ziyaretçilere açık değil'
+                        : ($record->published_at?->isFuture() ? 'Planlandı: yayın tarihi henüz gelmedi' : 'Yayında')), 
                 TextColumn::make('updated_at')
                     ->label('Son güncelleme')
                     ->dateTime('d.m.Y H:i')
