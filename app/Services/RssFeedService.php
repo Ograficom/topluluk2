@@ -15,86 +15,120 @@ class RssFeedService
 {
     public function xml(string $type = 'all', ?string $slug = null): string
     {
+        abort_unless(in_array($type, ['all', 'latest', 'author', 'channel', 'tag'], true), 404);
+
         $settings = RssSetting::current();
         abort_unless($settings->enabled && $this->typeEnabled($settings, $type), 404);
 
-        $cacheKey = 'ografi.rss.'.sha1($type.'|'.($slug ?? ''));
-        return Cache::remember($cacheKey, now()->addMinutes(max(1, $settings->cache_minutes)), function () use ($type, $slug, $settings): string {
-            $query = Post::query()
-                ->published()
-                ->where('is_adult', false)
-                ->whereNotNull('slug')
-                ->with(['user', 'channel', 'tagRecords'])
-                ->orderByDesc('published_at')
-                ->orderByDesc('created_at');
+        $entity = null;
+        $query = Post::query()
+            ->published()
+            ->where('is_adult', false)
+            ->whereNotNull('slug')
+            ->with(['user', 'channel', 'tagRecords'])
+            ->orderByDesc('published_at')
+            ->orderByDesc('created_at');
 
-            $title = 'OgraFi';
-            $description = 'OgraFi üzerinde yayınlanan yazılar.';
+        $title = 'OgraFi';
+        $description = 'OgraFi üzerinde yayınlanan yazılar.';
 
-            if ($type === 'author') {
-                $author = User::query()->where('username', $slug)->firstOrFail();
-                $query->where('user_id', $author->id);
-                $title = $author->displayName().' - OgraFi';
-                $description = $author->bio ?: $author->displayName().' tarafından yayınlanan yazılar.';
-            } elseif ($type === 'channel') {
-                $channel = Channel::query()->active()->where('slug', $slug)->firstOrFail();
-                $query->where('channel_id', $channel->id);
-                $title = $channel->name.' - OgraFi';
-                $description = $channel->description ?: $channel->name.' kanalındaki yazılar.';
-            } elseif ($type === 'tag') {
-                $tag = Tag::query()->where('slug', $slug)->firstOrFail();
-                $query->whereHas('tagRecords', fn (Builder $tags) => $tags->whereKey($tag->id));
-                $title = '#'.$tag->name.' - OgraFi';
-                $description = '#'.$tag->name.' etiketiyle yayınlanan yazılar.';
-            } elseif ($type === 'latest') {
-                $title = 'OgraFi - Son yazılar';
-                $description = 'OgraFi üzerinde yayınlanan en yeni yazılar.';
-            }
+        if ($type === 'author') {
+            $entity = User::query()->where('username', $slug)->firstOrFail();
+            $query->where('user_id', $entity->getKey());
+            $title = $entity->displayName().' - OgraFi';
+            $description = $entity->bio ?: $entity->displayName().' tarafından yayınlanan yazılar.';
+        } elseif ($type === 'channel') {
+            $entity = Channel::query()->active()->where('slug', $slug)->firstOrFail();
+            $query->where('channel_id', $entity->getKey());
+            $title = $entity->name.' - OgraFi';
+            $description = $entity->description ?: $entity->name.' kanalındaki yazılar.';
+        } elseif ($type === 'tag') {
+            $entity = Tag::query()->where('slug', $slug)->firstOrFail();
+            $query->whereHas('tagRecords', fn (Builder $tags) => $tags->where('tags.id', $entity->getKey()));
+            $title = '#'.$entity->name.' - OgraFi';
+            $description = '#'.$entity->name.' etiketiyle yayınlanan yazılar.';
+        } elseif ($type === 'latest') {
+            $title = 'OgraFi - Son yazılar';
+            $description = 'OgraFi üzerinde yayınlanan en yeni yazılar.';
+        }
 
-            $items = $query->limit(max(1, min(100, $settings->item_limit)))->get();
-            $selfUrl = $this->feedUrl($type, $slug);
-            $xml = '<?xml version="1.0" encoding="UTF-8"?>'."\n";
-            $xml .= '<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel>'."\n";
-            $xml .= $this->element('title', $title);
-            $xml .= $this->element('link', url('/'));
-            $xml .= $this->element('description', $description);
-            $xml .= $this->element('language', 'tr-TR');
-            $xml .= $this->element('atom:link', '', ['href' => $selfUrl, 'rel' => 'self', 'type' => 'application/rss+xml'], true);
+        // The versioned key makes settings and post edits visible immediately without
+        // trying to enumerate every possible author/channel/tag cache key.
+        $contentVersion = Post::query()->max('updated_at') ?: 'empty';
+        $entityVersion = $entity?->updated_at?->getTimestamp() ?? 'none';
+        $cacheKey = 'ografi.rss.'.sha1(implode('|', [
+            $type,
+            (string) $slug,
+            (string) $settings->updated_at?->getTimestamp(),
+            (string) $contentVersion,
+            (string) $entityVersion,
+        ]));
 
-            foreach ($items as $post) {
-                $link = route('posts.show', $post);
-                $summary = $settings->content_mode === 'full'
-                    ? ($post->body ?: $post->excerpt)
-                    : ($post->excerpt ?: $post->body);
-                $summary = Str::limit(trim(preg_replace('/\s+/u', ' ', strip_tags((string) $summary)) ?? ''), 20000, '');
+        return Cache::remember(
+            $cacheKey,
+            now()->addMinutes(max(1, min(1440, (int) $settings->cache_minutes))),
+            function () use ($query, $settings, $title, $description, $type, $slug): string {
+                $items = $query->limit(max(1, min(100, (int) $settings->item_limit)))->get();
+                $selfUrl = $this->feedUrl($type, $slug);
+                $xml = '<?xml version="1.0" encoding="UTF-8"?>'."\n";
+                $xml .= '<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/"><channel>'."\n";
+                $xml .= $this->element('title', $title);
+                $xml .= $this->element('link', url('/'));
+                $xml .= $this->element('description', $description);
+                $xml .= $this->element('language', 'tr-TR');
+                $xml .= $this->element('atom:link', '', [
+                    'href' => $selfUrl,
+                    'rel' => 'self',
+                    'type' => 'application/rss+xml',
+                ], true);
 
-                $xml .= '<item>'."\n";
-                $xml .= $this->element('title', $post->title);
-                $xml .= $this->element('link', $link);
-                $xml .= $this->element('guid', $link, ['isPermaLink' => 'true'], true);
-                $xml .= $this->element('description', $summary);
-                $xml .= $this->element('author', $post->user?->email ?: $post->user?->displayName() ?: 'OgraFi');
-                $xml .= $this->element('pubDate', ($post->published_at ?: $post->created_at)?->toRssString() ?? now()->toRssString());
-                if ($post->channel) {
-                    $xml .= $this->element('category', $post->channel->name);
+                foreach ($items as $post) {
+                    $link = route('posts.show', ['post' => $post->slug]);
+                    $body = $post->body ?: $post->excerpt ?: '';
+                    $summary = $settings->content_mode === 'full'
+                        ? $body
+                        : ($post->excerpt ?: $body);
+                    $summary = Str::limit(
+                        trim(preg_replace('/\\s+/u', ' ', strip_tags((string) $summary)) ?? ''),
+                        20000,
+                        '',
+                    );
+
+                    $xml .= "<item>\n";
+                    $xml .= $this->element('title', (string) $post->title);
+                    $xml .= $this->element('link', $link);
+                    $xml .= $this->element('guid', $link, ['isPermaLink' => 'true'], true);
+                    $xml .= $this->element('description', $summary);
+                    // Do not expose account email addresses in a public feed.
+                    $xml .= $this->element('dc:creator', $post->user?->displayName() ?: 'OgraFi');
+                    $publishedAt = $post->published_at ?: $post->created_at;
+                    if ($publishedAt) {
+                        $xml .= $this->element('pubDate', $publishedAt->toRssString());
+                    }
+                    if ($post->channel) {
+                        $xml .= $this->element('category', (string) $post->channel->name);
+                    }
+                    foreach ($post->tagRecords as $tag) {
+                        $xml .= $this->element('category', (string) $tag->name);
+                    }
+                    if ($image = $post->coverImageUrl()) {
+                        $xml .= $this->element('enclosure', '', [
+                            'url' => $image,
+                            'type' => $this->imageMimeType($image),
+                        ] + ['length' => '0'], true);
+                    }
+                    $xml .= "</item>\n";
                 }
-                foreach ($post->tagRecords as $tag) {
-                    $xml .= $this->element('category', $tag->name);
-                }
-                $xml .= "</item>\n";
-            }
 
-            return $xml."</channel></rss>";
-        });
+                return $xml."</channel></rss>";
+            },
+        );
     }
 
     public function invalidate(): void
     {
-        foreach (['all', 'latest'] as $type) {
-            Cache::forget('ografi.rss.'.sha1($type.'|'));
-        }
-
-        // Entity-specific caches expire according to the Filament setting.
+        // Cache keys are versioned from settings and the latest post update.
+        // Old entries expire naturally; no broad Cache::flush() is needed.
     }
 
     private function typeEnabled(RssSetting $settings, string $type): bool
@@ -120,17 +154,32 @@ class RssFeedService
         };
     }
 
+    private function imageMimeType(string $url): string
+    {
+        $path = (string) parse_url($url, PHP_URL_PATH);
+        $extension = strtolower(pathinfo($path, PATHINFO_EXTENSION));
+
+        return match ($extension) {
+            'jpg', 'jpeg' => 'image/jpeg',
+            'png' => 'image/png',
+            'gif' => 'image/gif',
+            'webp' => 'image/webp',
+            'avif' => 'image/avif',
+            default => 'application/octet-stream',
+        };
+    }
+
     private function element(string $name, string $value, array $attributes = [], bool $selfClosing = false): string
     {
         $attrs = '';
         foreach ($attributes as $key => $attribute) {
-            $attrs .= ' '.$key.'="'.htmlspecialchars((string) $attribute, ENT_XML1 | ENT_QUOTES, 'UTF-8').'"';
+            $attrs .= ' '.$key.'="'.htmlspecialchars((string) $attribute, ENT_XML1 | ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8').'"';
         }
 
         if ($selfClosing) {
             return '<'.$name.$attrs.' />'."\n";
         }
 
-        return '<'.$name.$attrs.'>'.htmlspecialchars($value, ENT_XML1 | ENT_QUOTES, 'UTF-8').'</'.$name.'>'."\n";
+        return '<'.$name.$attrs.'>'.htmlspecialchars($value, ENT_XML1 | ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8').'</'.$name.'>'."\n";
     }
 }
