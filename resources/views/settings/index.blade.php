@@ -154,13 +154,44 @@
 
                             <section class="setting__list">
                                 <h2 class="h5">İki faktörlü kimlik doğrulama</h2>
-                                <div class="checkbox">
-                                    <label class="form-check-label" for="settings-two-factor">
-                                        <input class="form-check-input" id="settings-two-factor" type="checkbox" disabled aria-describedby="settings-two-factor-help">
-                                        <span>İki faktörlü kimlik doğrulamayı etkinleştirin</span>
-                                    </label>
-                                </div>
-                                <p class="small color-gray" id="settings-two-factor-help">İki faktörlü doğrulama henüz hesaplarda etkinleştirilemiyor.</p>
+                                @if ($user->two_factor_confirmed_at)
+                                    <p class="color-green">İki faktörlü doğrulama hesabınızda etkin.</p>
+                                    <p class="small color-gray">Giriş yaparken Authenticator uygulamanızdaki 6 haneli kod istenir. Her kurtarma kodu yalnızca bir kez kullanılabilir.</p>
+                                    @if (session('twoFactorRecoveryCodes'))
+                                        <div class="card card-body">
+                                            <strong>Kurtarma kodlarınız</strong>
+                                            <p class="small color-gray">Bu kodları şimdi kaydedin. Bu liste tekrar gösterilmeyecek.</p>
+                                            <ul>
+                                                @foreach (session('twoFactorRecoveryCodes') as $recoveryCode)
+                                                    <li><code>{{ $recoveryCode }}</code></li>
+                                                @endforeach
+                                            </ul>
+                                        </div>
+                                    @endif
+                                    <form class="setting__list" action="{{ route('settings.two-factor.disable') }}" method="POST">
+                                        @csrf
+                                        @method('DELETE')
+                                        <label>Şifreniz <input type="password" name="current_password" autocomplete="current-password" required></label>
+                                        <label>Authenticator veya kurtarma kodu <input type="text" name="code" autocomplete="one-time-code" required></label>
+                                        <button class="btn btn-secondary" type="submit">İki faktörlü doğrulamayı kapat</button>
+                                    </form>
+                                @elseif ($user->two_factor_secret)
+                                    <p>1. Google Authenticator, Microsoft Authenticator veya 1Password uygulamasını açın.</p>
+                                    <p>2. Hesabı manuel ekleyin ve aşağıdaki anahtarı girin:</p>
+                                    <p><code style="overflow-wrap:anywhere">{{ $user->two_factor_secret }}</code></p>
+                                    <p class="small color-gray">Hesap: {{ $user->email }} · Tür: Zaman tabanlı (TOTP) · 6 hane · 30 saniye</p>
+                                    <form class="setting__list" action="{{ route('settings.two-factor.confirm') }}" method="POST">
+                                        @csrf
+                                        <label>Uygulamadaki 6 haneli kod <input type="text" name="code" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6}" maxlength="6" required></label>
+                                        <button class="btn btn-primary" type="submit">Kodu doğrula ve etkinleştir</button>
+                                    </form>
+                                @else
+                                    <p class="small color-gray">Hesabınıza girişte şifrenize ek olarak Authenticator uygulamanızdaki tek kullanımlık kod sorulur.</p>
+                                    <form action="{{ route('settings.two-factor.start') }}" method="POST">
+                                        @csrf
+                                        <button class="btn btn-primary" type="submit">İki faktörlü doğrulamayı kur</button>
+                                    </form>
+                                @endif
                             </section>
 
                             <section class="setting__list">
