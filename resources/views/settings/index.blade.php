@@ -55,17 +55,13 @@
                                     <div class="setting__list-item"><dt class="setting__list-label">Üye numarası:</dt><dd class="setting__list-value">{{ $user->id }}</dd></div>
                                     <div class="setting__list-item"><dt class="setting__list-label">Kayıt tarihi:</dt><dd class="setting__list-value">{{ $user->created_at->format('d.m.Y') }}</dd></div>
                                     <div class="setting__list-item"><dt class="setting__list-label">Grup:</dt><dd class="setting__list-value">{{ $user->is_admin ? 'Yöneticiler' : 'Üyeler' }}</dd></div>
-                                    <div class="setting__list-item"><dt class="setting__list-label">Kullanıcı adı:</dt><dd class="setting__list-value">{{ $user->username }}</dd></div>
+                                    <div class="setting__list-item"><dt class="setting__list-label">Kullanıcı adı:</dt><dd class="setting__list-value">{{ $user->username }} <button type="button" class="btn-link link" data-modal-btn="change-username" aria-controls="changeUsernameModal">Değiştir</button></dd></div>
                                 </dl>
                             </section>
 
                             <section class="setting__list">
                                 <h2 class="h5">Temel bilgiler</h2>
-                                <label class="setting__list-item setting__list-item--center">
-                                    <span class="setting__list-label">Kullanıcı adı:</span>
-                                    <span class="setting__list-value"><input type="text" name="username" value="{{ old('username', $user->username) }}" maxlength="30" required></span>
-                                </label>
-                                <label class="setting__list-item setting__list-item--center">
+                                                                <label class="setting__list-item setting__list-item--center">
                                     <span class="setting__list-label">Ad soyad:</span>
                                     <span class="setting__list-value"><input type="text" name="full_name" value="{{ old('full_name', $user->full_name ?: $user->displayName()) }}" maxlength="255" required></span>
                                 </label>
@@ -139,12 +135,13 @@
                                 @csrf
                                 @method('PATCH')
                                 <input type="hidden" name="activeTab" value="security">
-                                <h2 class="h5">Şifreyi değiştir</h2>
-                                <input type="password" name="current_password" placeholder="Mevcut şifre" autocomplete="current-password" required>
-                                <input type="password" name="password" placeholder="Yeni şifre" autocomplete="new-password" minlength="12" required>
-                                <input type="password" name="password_confirmation" placeholder="Yeni şifreyi tekrar girin" autocomplete="new-password" required>
+                                <h2 class="h5">Şifre değiştir</h2>
+                                <input type="password" name="current_password" placeholder="Mevcut Şifre" autocomplete="current-password" required>
+                                <input type="password" name="password" placeholder="Yeni Şifre" autocomplete="new-password" minlength="12" required>
+                                <input type="password" name="password_confirmation" placeholder="Yeni şifreyi tekrar" autocomplete="new-password" required>
                                 <div><button class="btn btn-primary" type="submit">Şifreyi güncelle</button></div>
                             </form>
+
                             <form class="setting__list" action="{{ route('settings.email.update') }}" method="POST">
                                 @csrf
                                 @method('PATCH')
@@ -154,6 +151,30 @@
                                 <input type="password" name="current_password" placeholder="Şifrenizi doğrulayın" autocomplete="current-password" required>
                                 <div><button class="btn btn-primary" type="submit">E-postayı güncelle</button></div>
                             </form>
+
+                            <section class="setting__list">
+                                <h2 class="h5">İki faktörlü kimlik doğrulama</h2>
+                                <div class="checkbox">
+                                    <label class="form-check-label" for="settings-two-factor">
+                                        <input class="form-check-input" id="settings-two-factor" type="checkbox" disabled aria-describedby="settings-two-factor-help">
+                                        <span>İki faktörlü kimlik doğrulamayı etkinleştirin</span>
+                                    </label>
+                                </div>
+                                <p class="small color-gray" id="settings-two-factor-help">İki faktörlü doğrulama henüz hesaplarda etkinleştirilemiyor.</p>
+                            </section>
+
+                            <section class="setting__list">
+                                <h2 class="h5">Sosyal ağlar</h2>
+                                <div class="setting__social">
+                                    <span class="btn btn-secondary" aria-label="Google hesabı bağlantısı henüz desteklenmiyor">
+                                        <x-repost-icon name="google" size="20" />Google
+                                    </span>
+                                    <span class="btn btn-secondary" aria-label="Yandex hesabı bağlantısı henüz desteklenmiyor">
+                                        <x-repost-icon name="yandex" size="20" />Yandex
+                                    </span>
+                                </div>
+                            </section>
+                            <div><button class="btn btn-primary" type="button" disabled title="Kaydedilecek başka güvenlik ayarı bulunmuyor">Kaydetmek</button></div>
                         </div>
                     </section>
 
@@ -308,5 +329,19 @@
                 </section>
             </div>
         </aside>
+    </div>
+    <div class="modal" id="changeUsernameModal" data-modal="change-username" role="dialog" aria-modal="true" aria-labelledby="changeUsernameModalLabel" aria-hidden="true">
+        <div class="modal-content">
+            <button type="button" class="btn btn-secondary btn-md btn-circle modal-close" data-modal-close aria-label="Kapat">
+                <x-repost-icon name="close" size="16" />
+            </button>
+            <header class="modal-header">
+                <h2 class="modal-title" id="changeUsernameModalLabel">Kullanıcı adını değiştir</h2>
+            </header>
+            <div class="modal-body">Kullanıcı adını ayda en fazla bir kez değiştirebilirsin. Değişiklik talebinde bulunmak için destek ekibiyle iletişime geçin.</div>
+            <div class="modal-footer">
+                <a href="{{ route('contacts') }}" class="btn btn-primary">Destek ile iletişime geçin.</a>
+            </div>
+        </div>
     </div>
 @endsection
