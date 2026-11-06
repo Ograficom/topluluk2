@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\SitePages\Tables;
 
+use App\Models\SitePage;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
@@ -23,12 +24,12 @@ class SitePagesTable
                     ->label('URL')
                     ->searchable()
                     ->copyable()
-                    ->url(fn (\\App\\Models\\SitePage $record): string => route('pages.show', ['slug' => $record->slug]))
+                    ->url(fn (SitePage $record): string => route('pages.show', ['slug' => $record->slug]))
                     ->openUrlInNewTab(),
                 IconColumn::make('is_published')
                     ->label('Yayın durumu')
                     ->boolean()
-                    ->tooltip(fn (\\App\\Models\\SitePage $record): string => ! $record->is_published
+                    ->tooltip(fn (SitePage $record): string => ! $record->is_published
                         ? 'Taslak: ziyaretçilere açık değil'
                         : ($record->published_at?->isFuture() ? 'Planlandı: yayın tarihi henüz gelmedi' : 'Yayında')),
                 TextColumn::make('updated_at')
