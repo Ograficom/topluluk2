@@ -1,3 +1,41 @@
+@push('head')
+    <style>
+        .signup__list > li.signup__login {
+            position: relative;
+            display: block;
+            width: 100%;
+        }
+        .signup__list > li.signup__login input#signup-name {
+            display: block;
+            width: 100%;
+            box-sizing: border-box;
+            padding-right: 112px;
+        }
+        .signup__login .signup__login-check {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            z-index: 2;
+            height: calc(100% - 10px);
+            min-height: 34px;
+            padding: 0 14px;
+            white-space: nowrap;
+        }
+        #result-registration {
+            display: block;
+            margin-top: 5px;
+            font-size: 13px;
+            line-height: 1.35;
+        }
+        #result-registration.text-success {
+            color: #16803c !important;
+        }
+        #result-registration.text-danger {
+            color: #dc2626 !important;
+        }
+    </style>
+@endpush
+
 @extends('layouts.app')
 
 @section('title', 'Hesap oluştur')
