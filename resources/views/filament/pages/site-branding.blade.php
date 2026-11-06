@@ -209,14 +209,6 @@
             }
         }
 
-                [x-cloak]{display:none!important}
-        .social-network-settings{display:grid;gap:1rem;padding:1.25rem 1.5rem;border:1px solid #e2e8f0;border-radius:1rem;background:#fff}
-        .social-network-settings h2{margin:0;color:#172033;font-size:1rem;font-weight:700}
-        .social-network-options{display:flex;flex-wrap:wrap;gap:.75rem}
-        .social-network-option{display:inline-flex;min-width:106px;min-height:42px;align-items:center;justify-content:center;gap:.55rem;padding:0 1rem;border:1px solid #e2e8f0;border-radius:.8rem;background:#f1f4f8;color:#253044;font-size:.875rem;font-weight:600;cursor:pointer}
-        .social-network-option:hover{background:#e8edf4}
-        .social-network-option.is-selected{border-color:#bfdbfe;background:#eff6ff;color:#1d4ed8}
-
     </style>
 
     <div class="branding-page">
@@ -232,51 +224,8 @@
         <form wire:submit="save" class="branding-form">
             {{ $this->form }}
 
-            <section class="social-network-settings" aria-labelledby="social-network-title">
-                <h2 id="social-network-title">Social networks</h2>
-                <div class="social-network-options">
-                    @foreach (['google' => 'Google', 'yandex' => 'Yandex'] as $provider => $label)
-                        <button type="button"
-                            class="social-network-option {{ in_array($provider, $data['social_networks'] ?? [], true) ? 'is-selected' : '' }}"
-                            data-modal-btn="social-{{ $provider }}"
-                            aria-haspopup="dialog"
-                            aria-controls="social{{ ucfirst($provider) }}Modal">
-                            <x-repost-icon :name="$provider" size="20" />
-                            <span>{{ $label }}</span>
-                        </button>
-                    @endforeach
-                </div>
-                @foreach (['google' => 'Google', 'yandex' => 'Yandex'] as $provider => $label)
-                    <div class="modal" id="social{{ ucfirst($provider) }}Modal"
-                        data-modal="social-{{ $provider }}"
-                        role="dialog" aria-modal="true"
-                        aria-labelledby="social{{ ucfirst($provider) }}ModalLabel"
-                        aria-hidden="true">
-                        <div class="modal-content">
-                            <button type="button" class="btn btn-secondary btn-md btn-circle modal-close"
-                                data-modal-close aria-label="Kapat">
-                                <x-repost-icon name="close" size="16" />
-                            </button>
-                            <header class="modal-header">
-                                <h2 class="modal-title" id="social{{ ucfirst($provider) }}ModalLabel">Sosyal ağ ayarını değiştir</h2>
-                            </header>
-                            <div class="modal-body">
-                                <h3>{{ $label }} {{ in_array($provider, $data['social_networks'] ?? [], true) ? 'girişini kapatmak' : 'girişini etkinleştirmek' }} üzeresiniz.</h3>
-                                <p>Devam etmek istiyor musunuz?</p>
-                            </div>
-                            <footer class="modal-footer">
-                                <button type="button" class="btn btn-secondary btn-md" data-modal-close>İptal</button>
-                                <button type="button" class="btn btn-primary btn-md"
-                                    wire:click="confirmSocialNetworkToggle('{{ $provider }}')"
-                                    data-modal-close>Onayla</button>
-                            </footer>
-                        </div>
-                    </div>
-                @endforeach
-            </section>
-
             <div class="branding-save-row">
-                <span class="branding-save-note">Marka ve sosyal bağlantı değişikliklerini kaydedin.</span>
+                <span class="branding-save-note">Marka ayarlarındaki değişiklikleri kaydedin.</span>
                 <x-filament::button type="submit">
                     Ayarları kaydet
                 </x-filament::button>
