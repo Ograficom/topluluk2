@@ -135,7 +135,8 @@ class SiteBranding extends Page
         $settings->instagram_url = filled($data['instagram_url'] ?? null) ? $data['instagram_url'] : null;
         $settings->telegram_url = filled($data['telegram_url'] ?? null) ? $data['telegram_url'] : null;
         $settings->threads_url = filled($data['threads_url'] ?? null) ? $data['threads_url'] : null;
-        $socialNetworks = $data['social_networks'] ?? [];\n        $settings->google_login_enabled = in_array('google', $socialNetworks, true);
+        $socialNetworks = $data['social_networks'] ?? [];
+        $settings->google_login_enabled = in_array('google', $socialNetworks, true);
         $settings->google_client_id = filled($data['google_client_id'] ?? null) ? $data['google_client_id'] : null;
         if (filled($data['google_client_secret'] ?? null)) $settings->google_client_secret = $data['google_client_secret'];
         $settings->yandex_login_enabled = in_array('yandex', $socialNetworks, true);
