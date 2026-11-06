@@ -68,9 +68,10 @@ Route::get('/privacy', fn () => redirect()->route('pages.show', 'privacy'));
 Route::get('/contacts', [CommunityController::class, 'contacts'])->name('contacts');
 Route::post('/contacts', [CommunityController::class, 'sendContact'])->middleware('throttle:5,1')->name('contacts.send');
 
+Route::get('/auth/{provider}/callback', [SocialAuthController::class, 'callback'])->middleware('throttle:10,1')->name('oauth.callback');
+
 Route::middleware('guest')->group(function (): void {
     Route::get('/auth/{provider}/redirect', [SocialAuthController::class, 'redirect'])->middleware('throttle:10,1')->name('oauth.redirect');
-    Route::get('/auth/{provider}/callback', [SocialAuthController::class, 'callback'])->middleware('throttle:10,1')->name('oauth.callback');
 
     Route::get('/signin', [AuthController::class, 'showLogin'])->name('login');
     Route::get('/signin.html', [AuthController::class, 'showLogin'])->name('legacy.signin');
@@ -112,7 +113,6 @@ Route::middleware('auth')->group(function (): void {
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
     Route::get('/settings/social/{provider}/redirect', [SocialAuthController::class, 'linkRedirect'])->middleware('throttle:10,1')->name('oauth.link.redirect');
-    Route::get('/settings/social/{provider}/callback', [SocialAuthController::class, 'linkCallback'])->middleware('throttle:10,1')->name('oauth.link.callback');
     Route::delete('/settings/social/{provider}', [SocialAuthController::class, 'unlink'])->middleware('throttle:10,1')->name('oauth.unlink');
 
     Route::get('/settings', [SettingsController::class, 'edit'])->name('settings.edit');
