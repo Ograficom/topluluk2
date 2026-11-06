@@ -54,7 +54,7 @@ class RssFeedService
             $items = $query->limit(max(1, min(100, $settings->item_limit)))->get();
             $selfUrl = $this->feedUrl($type, $slug);
             $xml = '<?xml version="1.0" encoding="UTF-8"?>'."\n";
-            $xml .= '<rss version="2.0"><channel>'."\n";
+            $xml .= '<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel>'."\n";
             $xml .= $this->element('title', $title);
             $xml .= $this->element('link', url('/'));
             $xml .= $this->element('description', $description);
@@ -80,9 +80,6 @@ class RssFeedService
                 }
                 foreach ($post->tagRecords as $tag) {
                     $xml .= $this->element('category', $tag->name);
-                }
-                if ($image = $post->coverImageUrl()) {
-                    $xml .= $this->element('enclosure', '', ['url' => $image, 'type' => 'image'], true);
                 }
                 $xml .= "</item>\n";
             }
