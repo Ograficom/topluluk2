@@ -54,46 +54,32 @@
 @endpush
 
 @section('content')
-    <section class="card card-body email-verify-page">
-        <div class="email-verify-card">
-            <div class="email-verify-icon" aria-hidden="true">
-                <x-repost-icon name="verification" size="34" />
-            </div>
-
-            <h1 class="h1">E-posta adresini doğrula</h1>
-            <p class="color-gray email-verify-description">
-                OgraFi hesabının tüm özelliklerini kullanabilmek için e-posta adresine gönderdiğimiz doğrulama bağlantısını onayla.
-            </p>
+    <section class="card card-body">
+        <div class="modal-body signin">
+            <h1 class="text-center h1">E-posta adresini doğrula</h1>
+            <p class="text-center color-gray">OgraFi hesabını kullanmaya başlamadan önce e-posta adresine gönderdiğimiz doğrulama bağlantısına tıkla.</p>
 
             @if (session('status'))
-                <div class="alert alert-success email-verify-notice" role="status">
-                    {{ session('status') }}
-                </div>
+                <div class="alert alert-success" role="status">{{ session('status') }}</div>
             @endif
 
             @if ($errors->any())
-                <div class="alert alert-danger email-verify-notice" role="alert">
+                <div class="alert alert-danger" role="alert">
                     @foreach ($errors->all() as $error)
                         <p>{{ $error }}</p>
                     @endforeach
                 </div>
             @endif
 
-            <div class="email-verify-actions">
-                <form action="{{ route('verification.send') }}" method="POST">
-                    @csrf
-                    <button class="btn btn-primary btn-lg btn-full" type="submit">
-                        Doğrulama e-postasını yeniden gönder
-                    </button>
-                </form>
+            <form action="{{ route('verification.send') }}" method="POST">
+                @csrf
+                <button class="btn btn-primary btn-lg btn-full" type="submit">Doğrulama e-postasını yeniden gönder</button>
+            </form>
 
-                <form action="{{ route('logout') }}" method="POST">
-                    @csrf
-                    <button class="btn btn-secondary btn-lg btn-full" type="submit">
-                        Çıkış yap
-                    </button>
-                </form>
-            </div>
+            <form action="{{ route('logout') }}" method="POST" class="mt-3">
+                @csrf
+                <button class="btn btn-secondary btn-lg btn-full" type="submit">Çıkış yap</button>
+            </form>
         </div>
     </section>
 @endsection
