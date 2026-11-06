@@ -5,22 +5,21 @@
 @push('head')
     <style>
         .verify-actions {
-            display: flex;
-            align-items: stretch;
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) 120px;
             gap: 8px;
             margin-top: 16px;
         }
         .verify-actions form {
-            flex: 1 1 0;
             min-width: 0;
             margin: 0;
         }
         .verify-actions .btn {
             width: 100%;
             min-height: 46px;
-            padding-inline: 12px;
-            white-space: normal;
-            line-height: 1.25;
+            padding-inline: 10px;
+            white-space: nowrap;
+            font-size: 14px;
         }
         .verify-status {
             display: flex;
@@ -53,7 +52,7 @@
         }
         @media (max-width: 420px) {
             .verify-actions {
-                flex-direction: column;
+                grid-template-columns: 1fr;
             }
         }
     </style>
