@@ -220,19 +220,47 @@
                                             </div>
 
                                             @if ($connectedAccount)
-                                                <form method="POST" action="{{ route('oauth.unlink', ['provider' => $provider]) }}" onsubmit="return confirm('{{ $socialProvider['label'] }} bağlantısını kaldırmak istediğinize emin misiniz?')">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button class="btn btn-secondary settings-social-action settings-social-action--disconnect" type="submit">Bağlantıyı kes</button>
-                                                </form>
+                                                <button class="btn btn-secondary settings-social-action settings-social-action--disconnect" type="button" data-modal-btn="social-unlink-{{ $provider }}" aria-controls="socialUnlink{{ ucfirst($provider) }}Modal">Bağlantıyı kes</button>
                                             @elseif ($socialProvider['available'])
-                                                <a class="btn btn-secondary settings-social-action" href="{{ route('oauth.link.redirect', ['provider' => $provider]) }}">Bağla</a>
+                                                <button class="btn btn-secondary settings-social-action" type="button" data-modal-btn="social-link-{{ $provider }}" aria-controls="socialLink{{ ucfirst($provider) }}Modal">Bağla</button>
                                             @else
                                                 <button class="btn btn-secondary settings-social-action" type="button" disabled>Kapalı</button>
                                             @endif
                                         </div>
                                     @endforeach
                                 </div>
+                                @foreach (['google' => 'Google', 'yandex' => 'Yandex'] as $provider => $socialProvider)
+                                    @php($connectedAccount = $socialAccounts->get($provider))
+                                    @if ($connectedAccount)
+                                        <div class="modal" id="socialUnlink{{ ucfirst($provider) }}Modal" data-modal="social-unlink-{{ $provider }}" role="dialog" aria-modal="true" aria-labelledby="socialUnlink{{ ucfirst($provider) }}Title" aria-hidden="true">
+                                            <div class="modal-content">
+                                                <button type="button" class="btn btn-secondary btn-md btn-circle modal-close" data-modal-close aria-label="Kapat"><x-repost-icon name="close" size="16" /></button>
+                                                <header class="modal-header"><h2 class="modal-title" id="socialUnlink{{ ucfirst($provider) }}Title">{{ $socialProvider }} bağlantısını kes</h2></header>
+                                                <div class="modal-body"><p>{{ $socialProvider }} hesabınızın OgraFi bağlantısı kaldırılacak. Devam etmek istiyor musunuz?</p></div>
+                                                <footer class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-modal-close>İptal</button>
+                                                    <form method="POST" action="{{ route('oauth.unlink', ['provider' => $provider]) }}">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button class="btn btn-primary" type="submit">Onayla</button>
+                                                    </form>
+                                                </footer>
+                                            </div>
+                                        </div>
+                                    @elseif (($provider === 'google' ? $googleLoginAvailable : $yandexLoginAvailable))
+                                        <div class="modal" id="socialLink{{ ucfirst($provider) }}Modal" data-modal="social-link-{{ $provider }}" role="dialog" aria-modal="true" aria-labelledby="socialLink{{ ucfirst($provider) }}Title" aria-hidden="true">
+                                            <div class="modal-content">
+                                                <button type="button" class="btn btn-secondary btn-md btn-circle modal-close" data-modal-close aria-label="Kapat"><x-repost-icon name="close" size="16" /></button>
+                                                <header class="modal-header"><h2 class="modal-title" id="socialLink{{ ucfirst($provider) }}Title">{{ $socialProvider }} hesabını bağla</h2></header>
+                                                <div class="modal-body"><p>OgraFi hesabınızı {{ $socialProvider }} hesabınıza bağlamak için devam etmek istiyor musunuz?</p></div>
+                                                <footer class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-modal-close>İptal</button>
+                                                    <a class="btn btn-primary" href="{{ route('oauth.link.redirect', ['provider' => $provider]) }}">Onayla</a>
+                                                </footer>
+                                            </div>
+                                        </div>
+                                    @endif
+                                @endforeach
                             </section>
                         </div>
                     </section>
