@@ -189,9 +189,9 @@ class SettingsController extends Controller
             ])->save();
         }
 
-        $issuer = rawurlencode(config('app.name', 'OgraFi'));
-        $account = rawurlencode($user->email);
-        $label = $issuer.':'.$account;
+        $issuerName = config('app.name', 'OgraFi');
+        $issuer = rawurlencode($issuerName);
+        $label = $issuerName.':'.$user->email;
         $otpauth = 'otpauth://totp/'.rawurlencode($label).'?secret='.$user->two_factor_secret.'&issuer='.$issuer.'&algorithm=SHA1&digits=6&period=30';
 
         if ($request->expectsJson()) {
@@ -211,6 +211,10 @@ class SettingsController extends Controller
         $user = $request->user();
 
         if (! $user->two_factor_secret || $user->two_factor_confirmed_at) {
+            if ($request->expectsJson()) {
+                return response()->json(['message' => 'Önce kurulum işlemini başlatın.'], 409);
+            }
+
             return back()->with('activeTab', 'security')->withErrors(['code' => 'Önce iki faktörlü doğrulama kurulumunu başlatın.']);
         }
 
