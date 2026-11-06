@@ -30,12 +30,6 @@ class SiteBranding extends Page
 
     public ?string $currentFaviconUrl = null;
 
-    public bool $showSocialNetworkModal = false;
-
-    public ?string $pendingSocialProvider = null;
-
-    public bool $pendingSocialEnabled = false;
-
     public function mount(): void
     {
         $settings = SiteSetting::current();
@@ -118,41 +112,19 @@ class SiteBranding extends Page
     }
 
 
-    public function requestSocialNetworkToggle(string $provider): void
+    public function confirmSocialNetworkToggle(string $provider): void
     {
         abort_unless(in_array($provider, ['google', 'yandex'], true), 404);
 
         $selected = $this->data['social_networks'] ?? [];
-        $this->pendingSocialProvider = $provider;
-        $this->pendingSocialEnabled = ! in_array($provider, $selected, true);
-        $this->showSocialNetworkModal = true;
-    }
 
-    public function confirmSocialNetworkToggle(): void
-    {
-        if (! in_array($this->pendingSocialProvider, ['google', 'yandex'], true)) {
-            $this->showSocialNetworkModal = false;
-
-            return;
-        }
-
-        $selected = $this->data['social_networks'] ?? [];
-
-        if ($this->pendingSocialEnabled) {
-            $selected[] = $this->pendingSocialProvider;
+        if (in_array($provider, $selected, true)) {
+            $selected = array_values(array_diff($selected, [$provider]));
         } else {
-            $selected = array_values(array_diff($selected, [$this->pendingSocialProvider]));
+            $selected[] = $provider;
         }
 
         $this->data['social_networks'] = array_values(array_unique($selected));
-        $this->showSocialNetworkModal = false;
-        $this->pendingSocialProvider = null;
-    }
-
-    public function cancelSocialNetworkToggle(): void
-    {
-        $this->showSocialNetworkModal = false;
-        $this->pendingSocialProvider = null;
     }
 
     public function save(): void
