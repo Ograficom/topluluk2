@@ -34,6 +34,14 @@ class SitePage extends Model
                 $page->slug = Str::slug($page->title);
             }
         });
+
+        static::saved(function (): void {
+            app(\\App\\Services\\SitemapService::class)->invalidate();
+        });
+
+        static::deleted(function (): void {
+            app(\\App\\Services\\SitemapService::class)->invalidate();
+        });
     }
 
     public function scopePublished($query)
