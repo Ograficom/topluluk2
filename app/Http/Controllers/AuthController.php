@@ -82,6 +82,7 @@ class AuthController extends Controller
 
         if ($user->two_factor_confirmed_at) {
             Auth::logout();
+            $request->session()->regenerate();
             $request->session()->put([
                 'two_factor_login_user_id' => $user->id,
                 'two_factor_login_remember' => $request->boolean('remember'),
