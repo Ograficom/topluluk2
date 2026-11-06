@@ -64,10 +64,6 @@
             <h1 class="text-center h1">E-posta adresini doğrula</h1>
             <p class="text-center color-gray">OgraFi hesabını kullanmaya başlamadan önce e-posta adresine gönderdiğimiz doğrulama bağlantısına tıkla.</p>
 
-            @if (session('status'))
-                <div class="alert alert-success verify-status" role="status">{{ session('status') }}</div>
-            @endif
-
             @if ($errors->any())
                 <div class="alert alert-danger verify-errors" role="alert">
                     @foreach ($errors->all() as $error)
@@ -79,7 +75,7 @@
             <div class="verify-actions">
                 <form action="{{ route('verification.send') }}" method="POST">
                     @csrf
-                    <button class="btn btn-primary btn-lg" type="submit">Doğrulama e-postasını yeniden gönder</button>
+                    <button class="btn btn-primary btn-lg" type="submit">Kodu gönder</button>
                 </form>
 
                 <form action="{{ route('logout') }}" method="POST">
