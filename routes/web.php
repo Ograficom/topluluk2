@@ -68,7 +68,14 @@ Route::get('/last-comments', [CommunityController::class, 'latestComments'])->na
 Route::get('/tags', [CommunityController::class, 'tags'])->name('tags.index');
 Route::get('/tags/{tag}', [CommunityController::class, 'tag'])->where('tag', '.*')->name('tags.show');
 Route::get('/tags-catalog/{tag}', [CommunityController::class, 'tag'])->where('tag', '.*')->name('legacy.tag');
-Route::get('/pages/{slug}', [CommunityController::class, 'page'])->where('slug', '[A-Za-z0-9_-]+')->name('pages.show');
+// Canonical public URL for dynamically managed site pages.
+Route::get('/page/{slug}', [CommunityController::class, 'page'])
+    ->where('slug', '[A-Za-z0-9_-]+')
+    ->name('pages.show');
+
+// Keep previously shared plural URLs working.
+Route::get('/pages/{slug}', fn (string $slug) => redirect()->route('pages.show', ['slug' => $slug], 301))
+    ->where('slug', '[A-Za-z0-9_-]+');
 Route::get('/about', fn () => redirect()->route('pages.show', 'about'));
 Route::get('/rules', fn () => redirect()->route('pages.show', 'rules'));
 Route::get('/privacy', fn () => redirect()->route('pages.show', 'privacy'));
