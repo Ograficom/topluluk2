@@ -2447,3 +2447,27 @@ textarea {
 .d-none {
   display: none !important;
 }
+
+
+/* Two-factor setup modal */
+.two-factor-modal { --modal-content-width: 460px; --modal-content-radius: 24px; }
+.two-factor-step { text-align: center; }
+.two-factor-step[hidden] { display: none !important; }
+.two-factor-step h3 { margin: 4px 0 8px; font-size: 1.1rem; font-weight: 700; }
+.two-factor-mark { display: grid; place-items: center; width: 52px; height: 52px; margin: 0 auto 14px; border: 1px solid var(--border-color); border-radius: 50%; color: var(--primary-color); background: var(--color-surface); }
+.two-factor-help { margin: 0 auto 18px; color: var(--text-muted-color, #64748b); font-size: .9rem; }
+.two-factor-qr { display: grid; place-items: center; width: 200px; min-height: 200px; margin: 18px auto 24px; padding: 10px; border: 1px solid var(--border-color); border-radius: 12px; background: #fff; }
+.two-factor-qr img, .two-factor-qr canvas { display: block; max-width: 100%; }
+.two-factor-continue { display: flex; width: 100%; min-height: 46px; align-items: center; justify-content: space-between; margin-top: 14px; }
+.two-factor-divider { display: flex; align-items: center; gap: 10px; margin: 16px 0 12px; color: var(--text-muted-color, #64748b); font-size: .8rem; }
+.two-factor-divider::before, .two-factor-divider::after { content: ""; height: 1px; flex: 1; background: var(--border-color); }
+.two-factor-secret-row { display: flex; align-items: center; gap: 8px; }
+.two-factor-secret-row code { min-width: 0; flex: 1; padding: 12px; overflow-wrap: anywhere; border: 1px solid var(--border-color); border-radius: 10px; background: var(--color-surface); text-align: left; letter-spacing: .06em; }
+.two-factor-secret-row button { flex: 0 0 auto; }
+.two-factor-step form { text-align: left; }
+.two-factor-step form label { display: block; margin-bottom: 8px; font-weight: 600; }
+.two-factor-step form input { width: 100%; min-height: 46px; text-align: center; font-size: 1.25rem; letter-spacing: .25em; }
+.two-factor-error { margin: 10px 0; color: #dc2626; font-size: .875rem; }
+.two-factor-recovery-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; padding: 0; list-style: none; text-align: left; }
+.two-factor-recovery-list li { padding: 9px; border: 1px solid var(--border-color); border-radius: 8px; background: var(--color-surface); }
+@media (max-width: 480px) { .two-factor-modal { --modal-content-radius: 18px; } .two-factor-qr { width: 180px; min-height: 180px; } }
