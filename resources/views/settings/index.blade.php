@@ -326,7 +326,6 @@
                         </ul>
                     </div>
                 </section>
-            </div>
             <div class="setting__aside-footer">
                 <footer class="footer">
                     <nav class="footer__menu" aria-label="Alt gezinme">
@@ -355,6 +354,7 @@
                         @endforeach
                     </nav>
                 </footer>
+            </div>
             </div>
         </aside>
     </div>
