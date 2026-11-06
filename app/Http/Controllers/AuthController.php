@@ -33,6 +33,8 @@ class AuthController extends Controller
         ]);
 
         event(new Registered($user));
+        Auth::login($user);
+        $request->session()->regenerate();
 
         return redirect()->route('verification.notice')
             ->with('status', 'Kayıt tamamlandı. Hesabını etkinleştirmek için e-posta adresine gönderdiğimiz bağlantıya tıkla.');
