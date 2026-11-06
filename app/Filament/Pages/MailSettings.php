@@ -3,7 +3,6 @@
 namespace App\Filament\Pages;
 
 use App\Models\MailSetting;
-use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
@@ -13,7 +12,6 @@ use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\HtmlString;
 use Throwable;
 
 class MailSettings extends Page
