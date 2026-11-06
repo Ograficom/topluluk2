@@ -177,6 +177,7 @@
     @php($feedPage = request()->routeIs('posts.index'))
     @php($channelsIndexPage = request()->routeIs('channels.index', 'legacy.channels'))
     @php($statsPage = request()->routeIs('stats.index'))
+    @php($verificationPage = request()->routeIs('verification.notice'))
     <main class="container">
         <div class="main {{ $settingsPage || $profilePage || $channelPage || $postCreatePage ? 'main__grid-full' : 'main__grid' }}">
             <aside class="sidebar" aria-label="Kanallar ve yazarlar">
@@ -223,7 +224,7 @@
                 @yield('content')
             @elseif ($postCreatePage)
                 <section class="feed">
-                    @if (session('status'))
+                    @if (session('status') && ! $verificationPage)
                         <div class="alert alert-success" role="status">{{ session('status') }}</div>
                     @endif
                     @yield('content')
