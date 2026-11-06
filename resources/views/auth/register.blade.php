@@ -1,41 +1,3 @@
-@push('head')
-    <style>
-        .signup__list > li.signup__login {
-            position: relative;
-            display: block;
-            width: 100%;
-        }
-        .signup__list > li.signup__login input#signup-name {
-            display: block;
-            width: 100%;
-            box-sizing: border-box;
-            padding-right: 112px;
-        }
-        .signup__login .signup__login-check {
-            position: absolute;
-            top: 5px;
-            right: 5px;
-            z-index: 2;
-            height: calc(100% - 10px);
-            min-height: 34px;
-            padding: 0 14px;
-            white-space: nowrap;
-        }
-        #result-registration {
-            display: block;
-            margin-top: 5px;
-            font-size: 13px;
-            line-height: 1.35;
-        }
-        #result-registration.text-success {
-            color: #16803c !important;
-        }
-        #result-registration.text-danger {
-            color: #dc2626 !important;
-        }
-    </style>
-@endpush
-
 @extends('layouts.app')
 
 @section('title', 'Hesap oluştur')
@@ -64,8 +26,8 @@
                 <li class="signup__login">
                     <input type="text" name="username" id="signup-name" value="{{ old('username') }}" placeholder="Kullanıcı adı" aria-label="Kullanıcı adı" autocomplete="username" maxlength="30" spellcheck="false" required>
                     <button type="button" class="btn btn-secondary signup__login-check" id="username-check" title="Kullanıcı adını kontrol et" aria-label="Kullanıcı adını kontrol et">Kontrol et</button>
-                    <div id="result-registration" aria-live="polite"></div>
                 </li>
+                <li id="result-registration" aria-live="polite"></li>
                 <li class="view-pass">
                     <input type="password" name="password" id="signup-password" placeholder="Şifre (en az 12 karakter)" aria-label="Şifre" autocomplete="new-password" minlength="12" data-pass-form="signup-pass1" required>
                     <button type="button" class="view-pass-btn" data-pass-btn="signup-pass1" aria-label="Şifreyi göster" title="Şifreyi göster" aria-pressed="false"></button>
