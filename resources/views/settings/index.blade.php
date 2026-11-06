@@ -398,6 +398,7 @@
                         <button type="button" class="btn btn-secondary" data-copy-two-factor aria-label="Kurulum anahtarını kopyala"><x-repost-icon name="copy" size="18" /></button>
                     </div>
                     <p class="small color-gray" id="twoFactorAccount"></p>
+                    <p class="two-factor-error" id="twoFactorStartError" role="alert" hidden></p>
                 </div>
                 <div data-two-factor-step="verify" class="two-factor-step" hidden>
                     <h3>Authenticator kodunu girin</h3>
@@ -435,6 +436,7 @@
     const secretEl = document.getElementById('twoFactorSecret');
     const qrEl = document.getElementById('twoFactorQr');
     const errorEl = document.getElementById('twoFactorError');
+    const startErrorEl = document.getElementById('twoFactorStartError');
     let secret = '';
 
     function showStep(name) {
@@ -463,6 +465,8 @@
 
     modal.addEventListener('modal:open', async () => {
         showStep('loading');
+        startErrorEl.hidden = true;
+        errorEl.hidden = true;
         try {
             const data = await requestJson(startUrl);
             secret = data.secret;
@@ -476,9 +480,9 @@
             }
             showStep('scan');
         } catch (error) {
-            showStep('verify');
-            errorEl.hidden = false;
-            errorEl.textContent = error.message;
+            showStep('scan');
+            startErrorEl.hidden = false;
+            startErrorEl.textContent = error.message;
         }
     });
 
