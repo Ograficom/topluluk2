@@ -5226,3 +5226,63 @@ p {
 #twoFactorSetupModal .two-factor-recovery-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));width:100%;gap:8px;margin:16px 0;padding:0;list-style:none;text-align:left}
 #twoFactorSetupModal .two-factor-recovery-list li{padding:9px;border:1px solid #e4e9f0;border-radius:9px;background:#fafbfd}
 @media(max-width:520px){#twoFactorSetupModal .two-factor-modal{width:calc(100vw - 24px);border-radius:20px}#twoFactorSetupModal .modal-body{padding:22px 18px 24px}#twoFactorSetupModal .two-factor-qr{width:204px;height:204px;min-height:204px}#twoFactorSetupModal .two-factor-qr img,#twoFactorSetupModal .two-factor-qr canvas{width:180px!important;height:180px!important}}
+
+
+
+/* Two-factor modal becomes a bottom sheet on phones */
+@media (max-width: 640px) {
+  #twoFactorSetupModal {
+    align-items: flex-end !important;
+    justify-content: stretch;
+    padding: 0 !important;
+    --modal-viewport-offset: 0px;
+    --modal-viewport-padding-x: 0px;
+  }
+
+  #twoFactorSetupModal > .two-factor-modal {
+    width: 100% !important;
+    max-width: none !important;
+    max-height: min(92dvh, 760px) !important;
+    margin: 0;
+    border-radius: 22px 22px 0 0 !important;
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    transform: translate3d(0, 100%, 0) !important;
+    transform-origin: bottom center !important;
+    transition:
+      opacity 240ms ease,
+      transform 320ms cubic-bezier(.22,.8,.25,1) !important;
+  }
+
+  #twoFactorSetupModal.is-open > .two-factor-modal {
+    transform: translate3d(0, 0, 0) !important;
+  }
+
+  #twoFactorSetupModal .modal-header {
+    min-height: 62px;
+    padding: 16px 22px;
+    border-radius: 22px 22px 0 0;
+  }
+
+  #twoFactorSetupModal .modal-body {
+    padding: 22px 22px calc(22px + env(safe-area-inset-bottom, 0px));
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+@media (max-width: 380px) {
+  #twoFactorSetupModal .modal-body {
+    padding-right: 16px;
+    padding-left: 16px;
+  }
+  #twoFactorSetupModal .two-factor-qr {
+    width: 190px;
+    height: 190px;
+    min-height: 190px;
+  }
+  #twoFactorSetupModal .two-factor-qr img,
+  #twoFactorSetupModal .two-factor-qr canvas {
+    width: 166px !important;
+    height: 166px !important;
+  }
+}
