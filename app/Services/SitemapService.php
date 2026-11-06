@@ -15,6 +15,13 @@ class SitemapService
 
     public function xml(): string
     {
+        $cached = Cache::get(self::CACHE_KEY);
+
+        // Eski önbellekte XSL bağlantısı yoksa XML'i yeni biçimde yeniden üret.
+        if (is_string($cached) && ! str_contains($cached, '<?xml-stylesheet')) {
+            Cache::forget(self::CACHE_KEY);
+        }
+
         return Cache::rememberForever(self::CACHE_KEY, fn (): string => $this->buildAndStore());
     }
 
