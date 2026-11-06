@@ -191,14 +191,19 @@
                                 @endif
                             </section>
 
-                            <section class="setting__list">
-                                <h2 class="h5">Sosyal ağlar</h2>
+                            <section class="setting__list settings-social-section">
+                                <div class="settings-social-section__heading">
+                                    <h2 class="h5">Sosyal ağlar</h2>
+                                    <p>Harici hesap bağlantıları</p>
+                                </div>
                                 <div class="setting__social">
-                                    <span class="btn btn-secondary" aria-label="Google hesabı bağlantısı henüz desteklenmiyor">
-                                        <x-repost-icon name="google" size="20" />Google
+                                    <span class="btn btn-secondary settings-social-button" aria-label="Google hesabı bağlantısı henüz desteklenmiyor" aria-disabled="true">
+                                        <x-repost-icon name="google" size="20" />
+                                        <span>Google</span>
                                     </span>
-                                    <span class="btn btn-secondary" aria-label="Yandex hesabı bağlantısı henüz desteklenmiyor">
-                                        <x-repost-icon name="yandex" size="20" />Yandex
+                                    <span class="btn btn-secondary settings-social-button" aria-label="Yandex hesabı bağlantısı henüz desteklenmiyor" aria-disabled="true">
+                                        <x-repost-icon name="yandex" size="20" />
+                                        <span>Yandex</span>
                                     </span>
                                 </div>
                             </section>
