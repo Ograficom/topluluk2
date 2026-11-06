@@ -47,7 +47,7 @@ class AppServiceProvider extends ServiceProvider
                     'mail.from.name' => $mailSettings->from_name,
                 ]);
             }
-        } catch (\\Throwable $exception) {
+        } catch (\Throwable $exception) {
             report($exception);
         }
 
