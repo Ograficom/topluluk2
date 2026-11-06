@@ -21,6 +21,22 @@
             white-space: nowrap;
             font-size: 14px;
         }
+        .verify-send-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .verify-countdown {
+            min-width: 24px;
+            padding-left: 8px;
+            border-left: 1px solid rgb(255 255 255 / 45%);
+            font-variant-numeric: tabular-nums;
+        }
+        .verify-send-button:disabled {
+            cursor: not-allowed;
+            opacity: .75;
+        }
         .verify-status {
             display: flex;
             align-items: flex-start;
@@ -75,7 +91,10 @@
             <div class="verify-actions">
                 <form action="{{ route('verification.send') }}" method="POST">
                     @csrf
-                    <button class="btn btn-primary btn-lg" type="submit">Kodu gönder</button>
+                    <button class="btn btn-primary btn-lg verify-send-button" type="submit">
+                        <span>Kodu gönder</span>
+                        <span class="verify-countdown" data-verify-countdown hidden>59</span>
+                    </button>
                 </form>
 
                 <form action="{{ route('logout') }}" method="POST">
@@ -85,4 +104,45 @@
             </div>
         </div>
     </section>
+@push('scripts')
+    <script>
+        (() => {
+            const button = document.querySelector('.verify-send-button');
+            const countdown = document.querySelector('[data-verify-countdown]');
+
+            if (!button || !countdown) return;
+
+            let remaining = 59;
+            let interval = null;
+
+            const startCountdown = () => {
+                if (interval) window.clearInterval(interval);
+
+                remaining = 59;
+                button.disabled = true;
+                button.setAttribute('aria-disabled', 'true');
+                countdown.hidden = false;
+                countdown.textContent = remaining;
+
+                interval = window.setInterval(() => {
+                    remaining -= 1;
+                    countdown.textContent = remaining;
+
+                    if (remaining <= 0) {
+                        window.clearInterval(interval);
+                        interval = null;
+                        countdown.hidden = true;
+                        button.disabled = false;
+                        button.removeAttribute('aria-disabled');
+                    }
+                }, 1000);
+            };
+
+            @if (session('status'))
+                startCountdown();
+            @endif
+        })();
+    </script>
+@endpush
+
 @endsection
