@@ -223,6 +223,56 @@
         <form wire:submit="save" class="branding-form">
             {{ $this->form }}
 
+            <section class="social-network-settings" aria-labelledby="social-network-title">
+                <h2 id="social-network-title">Social networks</h2>
+                <div class="social-network-options">
+                    @foreach (['google' => 'Google', 'yandex' => 'Yandex'] as $provider => $label)
+                        <button
+                            type="button"
+                            class="social-network-option {{ in_array($provider, $data['social_networks'] ?? [], true) ? 'is-selected' : '' }}"
+                            wire:click="requestSocialNetworkToggle('{{ $provider }}')"
+                            wire:loading.attr="disabled"
+                            wire:target="requestSocialNetworkToggle"
+                            aria-label="{{ $label }} ayarını değiştir"
+                        >
+                            <x-repost-icon :name="$provider" size="20" />
+                            <span>{{ $label }}</span>
+                        </button>
+                    @endforeach
+                </div>
+            </section>
+
+            @if ($showSocialNetworkModal)
+                <div class="social-network-modal-backdrop" role="presentation">
+                    <section
+                        class="social-network-modal"
+                        role="dialog"
+                        aria-modal="true"
+                        aria-labelledby="social-network-modal-title"
+                    >
+                        <header class="social-network-modal__header">
+                            <h2 id="social-network-modal-title">Sosyal ağ ayarını onayla</h2>
+                            <button type="button" class="social-network-modal__close" wire:click="cancelSocialNetworkToggle" aria-label="Kapat">×</button>
+                        </header>
+                        <div class="social-network-modal__body">
+                            <span class="social-network-modal__icon">
+                                <x-repost-icon :name="$pendingSocialProvider === 'yandex' ? 'yandex' : 'google'" size="24" />
+                            </span>
+                            <h3>{{ ucfirst($pendingSocialProvider ?? '') }} {{ $pendingSocialEnabled ? 'girişini etkinleştirmek' : 'girişini devre dışı bırakmak' }} istiyor musunuz?</h3>
+                            <p>
+                                {{ $pendingSocialEnabled
+                                    ? 'Bu sağlayıcıyı etkinleştirmek için onay verin. Değişiklikleri uygulamak için ayrıca Ayarları kaydet butonuna basmanız gerekir.'
+                                    : 'Bu sağlayıcıyı devre dışı bırakmak için onay verin. Değişiklikleri uygulamak için ayrıca Ayarları kaydet butonuna basmanız gerekir.' }}
+                            </p>
+                        </div>
+                        <footer class="social-network-modal__actions">
+                            <button type="button" class="social-network-modal__button social-network-modal__button--cancel" wire:click="cancelSocialNetworkToggle">İptal</button>
+                            <button type="button" class="social-network-modal__button social-network-modal__button--confirm" wire:click="confirmSocialNetworkToggle" wire:loading.attr="disabled" wire:target="confirmSocialNetworkToggle">Onayla</button>
+                        </footer>
+                    </section>
+                </div>
+            @endif
+
             <div class="branding-save-row">
                 <span class="branding-save-note">Marka ve sosyal bağlantı değişikliklerini kaydedin.</span>
                 <x-filament::button type="submit">
