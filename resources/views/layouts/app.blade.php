@@ -236,7 +236,16 @@
                     <section class="feed">
                 @endif
                     @if (session('status'))
-                        <div class="alert alert-success" role="status">{{ session('status') }}</div>
+                        @if ($verificationPage)
+                            <div role="status" style="display:inline-flex;align-items:center;gap:10px;padding:8px 14px;background:#2563eb;color:#fff;border-radius:8px;box-shadow:0 1px 2px rgb(0 0 0 / 8%);font-size:14px;">
+                                <svg style="width:16px;height:16px;flex-shrink:0;color:#fff;" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
+                                </svg>
+                                <span style="font-weight:500;line-height:1;">{{ session('status') }}</span>
+                            </div>
+                        @else
+                            <div class="alert alert-success" role="status">{{ session('status') }}</div>
+                        @endif
                     @endif
                     @yield('content')
                 @if ($statsPage || $channelsIndexPage)
