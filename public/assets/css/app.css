@@ -4725,14 +4725,9 @@ p {
   }
   .main__widgets,
   .header__write span,
-  .profile__aside-footer {
-    display: none;
-  }
-
+  .profile__aside-footer,
   .setting__aside-footer {
-    display: block;
-    margin-top: 0;
-    padding-top: 0;
+    display: none;
   }
   .main__grid-feed {
     grid-template-columns: minmax(280px, auto);
