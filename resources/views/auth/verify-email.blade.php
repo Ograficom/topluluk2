@@ -6,8 +6,9 @@
     <style>
         .verify-actions {
             display: flex;
-            gap: 10px;
-            margin-top: 12px;
+            align-items: stretch;
+            gap: 8px;
+            margin-top: 16px;
         }
         .verify-actions form {
             flex: 1 1 0;
@@ -17,10 +18,35 @@
         .verify-actions .btn {
             width: 100%;
             min-height: 46px;
+            padding-inline: 12px;
             white-space: normal;
+            line-height: 1.25;
         }
         .verify-status {
-            margin: 12px 0 0;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin: 16px 0 0;
+            padding: 12px 14px;
+            border: 1px solid #b7e4c7;
+            border-radius: 10px;
+            color: #176b3a;
+            background: #effaf3;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        .verify-status::before {
+            content: "✓";
+            display: inline-grid;
+            flex: 0 0 20px;
+            width: 20px;
+            height: 20px;
+            place-items: center;
+            border-radius: 50%;
+            color: #fff;
+            background: #249653;
+            font-size: 12px;
+            font-weight: 700;
         }
         .verify-errors {
             margin: 12px 0 0;
