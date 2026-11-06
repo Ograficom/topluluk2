@@ -194,17 +194,44 @@
                             <section class="setting__list settings-social-section">
                                 <div class="settings-social-section__heading">
                                     <h2 class="h5">Sosyal ağlar</h2>
-                                    <p>Harici hesap bağlantıları</p>
+                                    <p>OgraFi hesabınıza bağlı sosyal hesapları buradan yönetebilirsiniz.</p>
                                 </div>
-                                <div class="setting__social">
-                                    <span class="btn btn-secondary settings-social-button" aria-label="Google hesabı bağlantısı henüz desteklenmiyor" aria-disabled="true">
-                                        <x-repost-icon name="google" size="20" />
-                                        <span>Google</span>
-                                    </span>
-                                    <span class="btn btn-secondary settings-social-button" aria-label="Yandex hesabı bağlantısı henüz desteklenmiyor" aria-disabled="true">
-                                        <x-repost-icon name="yandex" size="20" />
-                                        <span>Yandex</span>
-                                    </span>
+                                <div class="settings-social-connections">
+                                    @foreach ([
+                                        'google' => ['label' => 'Google', 'available' => $googleLoginAvailable],
+                                        'yandex' => ['label' => 'Yandex', 'available' => $yandexLoginAvailable],
+                                    ] as $provider => $socialProvider)
+                                        @php($connectedAccount = $socialAccounts->get($provider))
+                                        <div class="settings-social-connection">
+                                            <div class="settings-social-connection__identity">
+                                                <span class="settings-social-connection__icon">
+                                                    <x-repost-icon :name="$provider" size="20" />
+                                                </span>
+                                                <span class="settings-social-connection__text">
+                                                    <strong>{{ $socialProvider['label'] }}</strong>
+                                                    @if ($connectedAccount)
+                                                        <small>{{ $connectedAccount->provider_email ?: 'Hesap bağlı' }}</small>
+                                                    @elseif ($socialProvider['available'])
+                                                        <small>Bağlı değil</small>
+                                                    @else
+                                                        <small>Şu anda kullanılamıyor</small>
+                                                    @endif
+                                                </span>
+                                            </div>
+
+                                            @if ($connectedAccount)
+                                                <form method="POST" action="{{ route('oauth.unlink', ['provider' => $provider]) }}" onsubmit="return confirm('{{ $socialProvider['label'] }} bağlantısını kaldırmak istediğinize emin misiniz?')">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button class="btn btn-secondary settings-social-action settings-social-action--disconnect" type="submit">Bağlantıyı kes</button>
+                                                </form>
+                                            @elseif ($socialProvider['available'])
+                                                <a class="btn btn-secondary settings-social-action" href="{{ route('oauth.link.redirect', ['provider' => $provider]) }}">Bağla</a>
+                                            @else
+                                                <button class="btn btn-secondary settings-social-action" type="button" disabled>Kapalı</button>
+                                            @endif
+                                        </div>
+                                    @endforeach
                                 </div>
                             </section>
                         </div>
