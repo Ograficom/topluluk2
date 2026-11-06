@@ -4725,9 +4725,31 @@ p {
   }
   .main__widgets,
   .header__write span,
-  .profile__aside-footer,
-  .setting__aside-footer {
+  .profile__aside-footer {
     display: none;
+  }
+
+  .setting__aside-footer {
+    display: block;
+  }
+
+  .setting__aside-footer .footer {
+    padding: 8px 18px 20px;
+  }
+
+  .setting__aside-footer .footer__menu {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .setting__aside-footer .footer__menu-link {
+    display: inline-flex;
+  }
+
+  .setting__aside-footer .footer__social {
+    display: flex;
   }
   .main__grid-feed {
     grid-template-columns: minmax(280px, auto);
