@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\SiteSetting;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -28,6 +29,8 @@ class SettingsController extends Controller
             'user' => $user,
             'blockedUsers' => $user->blockedUsers()->orderBy('name')->get(),
             'socialAccounts' => $user->socialAccounts()->get()->keyBy('provider'),
+            'googleLoginAvailable' => SiteSetting::current()?->isGoogleLoginEnabled() ?? false,
+            'yandexLoginAvailable' => SiteSetting::current()?->isYandexLoginEnabled() ?? false,
             'activeTab' => in_array($activeTab, self::TABS, true) ? $activeTab : 'profile',
             'timezones' => timezone_identifiers_list(),
         ]);
