@@ -19,7 +19,7 @@ class RssManager extends Page
     protected static ?string $title = 'RSS akış yönetimi';
     protected static string|\UnitEnum|null $navigationGroup = 'Site ayarları';
     protected static ?int $navigationSort = 111;
-    protected static string|\BackedEnum|null $navigationIcon = Heroicon::OutlinedRss;
+    protected static string|\BackedEnum|null $navigationIcon = Heroicon::OutlinedGlobeAlt;
 
     protected string $view = 'filament.pages.rss-manager';
 
