@@ -111,6 +111,10 @@ Route::middleware('auth')->group(function (): void {
 
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
+    Route::get('/settings/social/{provider}/redirect', [SocialAuthController::class, 'linkRedirect'])->middleware('throttle:10,1')->name('oauth.link.redirect');
+    Route::get('/settings/social/{provider}/callback', [SocialAuthController::class, 'linkCallback'])->middleware('throttle:10,1')->name('oauth.link.callback');
+    Route::delete('/settings/social/{provider}', [SocialAuthController::class, 'unlink'])->middleware('throttle:10,1')->name('oauth.unlink');
+
     Route::get('/settings', [SettingsController::class, 'edit'])->name('settings.edit');
     Route::get('/settings/two-factor', fn () => redirect()->route('settings.edit', ['tab' => 'security']))->name('settings.two-factor');
     Route::get('/setting.html', [SettingsController::class, 'edit'])->name('settings.legacy');
