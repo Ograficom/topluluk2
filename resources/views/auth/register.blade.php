@@ -6,7 +6,7 @@
     <section class="card card-body">
         <div class="modal-body signin">
             <h1 class="text-center h1">Hesap oluştur</h1>
-            <p class="text-center color-gray">OgraFi topluluğuna katıl, yazılarını paylaş ve tartışmalara dahil ol.</p>
+            <p class="text-center color-gray">OgraFi topluluğuna katıl. Kayıt sonrası hesabını etkinleştirmek için e-posta adresine gönderilen doğrulama bağlantısına tıklaman gerekecek.</p>
 
             <div class="signin__body">
                 @include('auth._social-buttons')
