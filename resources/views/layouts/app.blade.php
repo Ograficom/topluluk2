@@ -379,10 +379,6 @@
         </div>
     </main>
 
-    @if ($settingsPage)
-        <div class="container">@include('layouts._footer')</div>
-    @endif
-
     <section class="mobmenu" data-scroll-menu>
         <nav class="mobmenu__content" aria-label="Mobile navigation">
             <a class="mobmenu__link {{ request()->routeIs('posts.index') ? 'is-active' : '' }}" href="{{ route('posts.index') }}" aria-label="Home">
