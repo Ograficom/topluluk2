@@ -2569,6 +2569,34 @@ p {
   gap: 5px;
   margin-top: 15px;
 }
+/* Settings sidebar footer placement */
+.setting__aside {
+  display: flex;
+  min-height: calc(100vh - var(--header-height) - var(--header-offset));
+  flex-direction: column;
+}
+
+.setting__aside > .widgets {
+  flex: 0 0 auto;
+}
+
+.setting__aside-footer {
+  display: block;
+  margin-top: auto;
+  padding-top: 16px;
+}
+
+@media screen and (max-width: 920px) {
+  .setting__aside {
+    min-height: 0;
+  }
+
+  .setting__aside-footer {
+    margin-top: 0;
+    padding-top: 8px;
+  }
+}
+
 /* Settings */
 
 .setting {
