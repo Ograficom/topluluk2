@@ -234,6 +234,21 @@ class SettingsTest extends TestCase
         $this->get(route('profiles.show', $user))->assertOk();
     }
 
+    public function test_profile_urls_use_the_public_username_instead_of_numeric_ids(): void
+    {
+        $user = User::factory()->create([
+            'username' => 'enes.bodur',
+        ]);
+
+        $profileUrl = route('profiles.show', $user);
+
+        $this->assertSame(url('/@enes.bodur'), $profileUrl);
+
+        $this->get($profileUrl)
+            ->assertOk()
+            ->assertSee('@enes.bodur');
+    }
+
     public function test_preferences_save_adult_content_and_timezone(): void
     {
         $user = User::factory()->create();
