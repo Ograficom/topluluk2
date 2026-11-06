@@ -19,7 +19,7 @@ class SitemapManager extends Page
 
     protected static ?string $title = 'Sitemap oluşturucu';
 
-    protected static ?string $navigationGroup = 'Site ayarları';
+    protected static string|\UnitEnum|null $navigationGroup = 'Site ayarları';
 
     protected static ?int $navigationSort = 110;
 
