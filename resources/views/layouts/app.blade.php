@@ -244,7 +244,7 @@
                     </section>
                 @endif
 
-                @unless ($profilePage || $channelPage || $postCreatePage || $verificationPage)
+                @unless ($profilePage || $channelPage || $postCreatePage)
                 <aside class="main__widgets" aria-label="Sağ sütun">
                     <div class="widgets">
                         <section class="widget card card-body">
