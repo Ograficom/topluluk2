@@ -111,12 +111,6 @@ class RssFeedService
                     foreach ($post->tagRecords as $tag) {
                         $xml .= $this->element('category', (string) $tag->name);
                     }
-                    if ($image = $post->coverImageUrl()) {
-                        $xml .= $this->element('enclosure', '', [
-                            'url' => $image,
-                            'type' => $this->imageMimeType($image),
-                        ] + ['length' => '0'], true);
-                    }
                     $xml .= "</item>\n";
                 }
 
@@ -151,21 +145,6 @@ class RssFeedService
             'channel' => url('/feed/channels/'.rawurlencode((string) $slug).'.xml'),
             'tag' => url('/feed/tags/'.rawurlencode((string) $slug).'.xml'),
             default => url('/rss.xml'),
-        };
-    }
-
-    private function imageMimeType(string $url): string
-    {
-        $path = (string) parse_url($url, PHP_URL_PATH);
-        $extension = strtolower(pathinfo($path, PATHINFO_EXTENSION));
-
-        return match ($extension) {
-            'jpg', 'jpeg' => 'image/jpeg',
-            'png' => 'image/png',
-            'gif' => 'image/gif',
-            'webp' => 'image/webp',
-            'avif' => 'image/avif',
-            default => 'application/octet-stream',
         };
     }
 
