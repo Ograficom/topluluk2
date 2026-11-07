@@ -35,7 +35,8 @@
                     <input type="email" name="email" id="signup-email" value="{{ old('email') }}" placeholder="E-posta" aria-label="E-posta" autocomplete="email" required>
                 </li>
                 <li class="signup__login">
-                    <input type="text" name="username" id="signup-name" value="{{ old('username') }}" placeholder="Kullanıcı adı" aria-label="Kullanıcı adı" autocomplete="username" maxlength="30" spellcheck="false" required>
+                    <input type="text" name="username" id="signup-name" value="{{ old('username') }}" placeholder="Kullanıcı adı" aria-label="Kullanıcı adı" autocomplete="nickname" maxlength="30" spellcheck="false" autocapitalize="none" required>
+                    <small class="small color-gray">E-posta adresinden bağımsız, kendine ait kullanıcı adını seç.</small>
                     <button type="button" class="btn btn-secondary signup__login-check" id="username-check" title="Kullanıcı adını kontrol et" aria-label="Kullanıcı adını kontrol et">Kontrol et</button>
                 </li>
                 <li id="result-registration" aria-live="polite"></li>
