@@ -130,7 +130,7 @@
                 button.addEventListener('click', () => {
                     if (!textarea) return;
                     const quote = button.getAttribute('data-quote-message') || '';
-                    textarea.value = quote.split('\\n').map((line) => '> ' + line).join('\\n') + '\\n\\n';
+                    textarea.value = quote.split('\n').map((line) => '> ' + line).join('\n') + '\n\n';
                     textarea.focus();
                     textarea.setSelectionRange(textarea.value.length, textarea.value.length);
                     document.querySelector('#dialog-message')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
