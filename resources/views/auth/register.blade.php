@@ -36,9 +36,9 @@
                 </li>
                 <li class="signup__login">
                     <input type="text" name="username" id="signup-name" value="{{ old('username') }}" placeholder="Kullanıcı adı" aria-label="Kullanıcı adı" autocomplete="nickname" maxlength="30" spellcheck="false" autocapitalize="none" required>
-                    <small class="small color-gray">E-posta adresinden bağımsız, kendine ait kullanıcı adını seç.</small>
                     <button type="button" class="btn btn-secondary signup__login-check" id="username-check" title="Kullanıcı adını kontrol et" aria-label="Kullanıcı adını kontrol et">Kontrol et</button>
                 </li>
+                <li><small class="small color-gray">E-posta adresinden bağımsız, kendine ait kullanıcı adını seç.</small></li>
                 <li id="result-registration" aria-live="polite"></li>
                 <li class="view-pass">
                     <input type="password" name="password" id="signup-password" placeholder="Şifre (en az 12 karakter)" aria-label="Şifre" autocomplete="new-password" minlength="12" data-pass-form="signup-pass1" required>
