@@ -18,7 +18,7 @@ class AdminOverview extends StatsOverviewWidget
 {
     protected static ?bool $isLazyLoaded = false;
 
-    protected ?string $heading = 'Repost genel durumu';
+    protected ?string $heading = 'OgraFi genel durumu';
 
     protected ?string $description = 'Topluluk içeriklerini ve hesapları yönetin.';
 
@@ -50,6 +50,16 @@ class AdminOverview extends StatsOverviewWidget
                 ->icon(Heroicon::OutlinedRectangleStack)
                 ->color('gray')
                 ->url(ChannelResource::getUrl()),
+            Stat::make('Etiketler', number_format(Tag::query()->count()))
+                ->description('İçerik etiketleri')
+                ->icon(Heroicon::OutlinedHashtag)
+                ->color('gray')
+                ->url(TagResource::getUrl()),
+            Stat::make('İletişim formları', number_format(SupportTicket::query()->count()))
+                ->description(number_format(SupportTicket::query()->where('status', SupportTicket::STATUS_NEW)->count()).' yeni talep')
+                ->icon(Heroicon::OutlinedLifebuoy)
+                ->color('warning')
+                ->url(SupportTicketResource::getUrl()),
         ];
     }
 }
