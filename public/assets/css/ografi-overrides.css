@@ -1332,3 +1332,185 @@ body.is-messenger-conversation .pm-dialog__messages {
     border-radius: 12px !important;
   }
 }
+
+
+/* Composer attachment and emoji popovers: anchored inside the message bar. */
+body.is-messenger-conversation .pm-dialog__composer .pm-composer__bar {
+  position: relative !important;
+  overflow: visible !important;
+}
+body.is-messenger-conversation .pm-composer__attachment-wrap,
+body.is-messenger-conversation .pm-composer__emoji-wrap {
+  position: relative !important;
+  display: flex !important;
+  flex: 0 0 auto !important;
+  align-items: center !important;
+}
+body.is-messenger-conversation .pm-composer__attachment,
+body.is-messenger-conversation .pm-composer__emoji {
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  display: grid !important;
+  place-items: center !important;
+  width: 38px !important;
+  height: 38px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 50% !important;
+  background: transparent !important;
+  color: #64748b !important;
+  cursor: pointer !important;
+}
+body.is-messenger-conversation .pm-composer__attachment:hover,
+body.is-messenger-conversation .pm-composer__emoji:hover {
+  background: #f1f5f9 !important;
+  color: #1768ed !important;
+}
+body.is-messenger-conversation .pm-composer__attachment svg,
+body.is-messenger-conversation .pm-composer__emoji svg {
+  display: block !important;
+  width: 21px !important;
+  height: 21px !important;
+  fill: none !important;
+  stroke: currentColor !important;
+  stroke-width: 1.8 !important;
+  stroke-linecap: round !important;
+  stroke-linejoin: round !important;
+}
+body.is-messenger-conversation .pm-composer__attachment-menu,
+body.is-messenger-conversation .pm-composer__emoji-picker {
+  position: absolute !important;
+  z-index: 3000 !important;
+  bottom: calc(100% + 12px) !important;
+  top: auto !important;
+  left: 0 !important;
+  right: auto !important;
+  width: 250px !important;
+  max-width: min(250px, calc(100vw - 32px)) !important;
+  margin: 0 !important;
+  padding: 7px !important;
+  border: 1px solid var(--gray-200, #e5e7eb) !important;
+  border-radius: 12px !important;
+  background: var(--color-surface-overlay, #fff) !important;
+  color: var(--color-dark, #1f2937) !important;
+  box-shadow: 0 8px 26px rgb(15 23 42 / 14%) !important;
+  text-align: left !important;
+}
+body.is-messenger-conversation .pm-composer__emoji-picker {
+  left: auto !important;
+  right: 0 !important;
+  width: 286px !important;
+  max-width: min(286px, calc(100vw - 32px)) !important;
+  padding: 12px !important;
+}
+body.is-messenger-conversation .pm-composer__attachment-menu[hidden],
+body.is-messenger-conversation .pm-composer__emoji-picker[hidden],
+body.is-messenger-conversation .pm-composer__gif-panel[hidden],
+body.is-messenger-conversation .pm-composer__emoji-grid[hidden] {
+  display: none !important;
+}
+body.is-messenger-conversation .pm-composer__attachment-menu:not([hidden]),
+body.is-messenger-conversation .pm-composer__emoji-picker:not([hidden]) {
+  display: block !important;
+}
+body.is-messenger-conversation .pm-composer__attachment-menu > button {
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+  width: 100% !important;
+  min-height: 42px !important;
+  padding: 9px 11px !important;
+  border: 0 !important;
+  border-radius: 8px !important;
+  background: transparent !important;
+  color: inherit !important;
+  font: inherit !important;
+  font-size: 13px !important;
+  font-weight: 500 !important;
+  text-align: left !important;
+  cursor: pointer !important;
+}
+body.is-messenger-conversation .pm-composer__attachment-menu > button:hover {
+  background: var(--gray-100, #f3f4f6) !important;
+  color: var(--color-primary, #1768ed) !important;
+}
+body.is-messenger-conversation .pm-composer__attachment-menu > button svg {
+  display: block !important;
+  width: 19px !important;
+  height: 19px !important;
+  flex: 0 0 19px !important;
+  fill: none !important;
+  stroke: currentColor !important;
+  stroke-width: 1.7 !important;
+  stroke-linecap: round !important;
+  stroke-linejoin: round !important;
+}
+body.is-messenger-conversation .pm-composer__picker-tabs {
+  display: flex !important;
+  gap: 5px !important;
+  margin: 0 0 10px !important;
+  padding: 0 0 9px !important;
+  border-bottom: 1px solid var(--gray-200, #e5e7eb) !important;
+}
+body.is-messenger-conversation .pm-composer__picker-tabs button {
+  min-height: 32px !important;
+  padding: 6px 12px !important;
+  border: 0 !important;
+  border-radius: 7px !important;
+  background: transparent !important;
+  color: var(--color-gray, #64748b) !important;
+  font: inherit !important;
+  font-size: 12px !important;
+  cursor: pointer !important;
+}
+body.is-messenger-conversation .pm-composer__picker-tabs button.is-active {
+  background: var(--blue-100, #eff6ff) !important;
+  color: var(--color-primary, #1768ed) !important;
+}
+body.is-messenger-conversation .pm-composer__emoji-grid {
+  display: grid !important;
+  grid-template-columns: repeat(6, minmax(0, 1fr)) !important;
+  gap: 3px !important;
+}
+body.is-messenger-conversation .pm-composer__emoji-grid button {
+  display: grid !important;
+  place-items: center !important;
+  min-width: 0 !important;
+  aspect-ratio: 1 !important;
+  padding: 3px !important;
+  border: 0 !important;
+  border-radius: 8px !important;
+  background: transparent !important;
+  font-size: 21px !important;
+  cursor: pointer !important;
+}
+body.is-messenger-conversation .pm-composer__emoji-grid button:hover {
+  background: var(--gray-100, #f3f4f6) !important;
+}
+body.is-messenger-conversation .pm-composer__gif-panel input {
+  width: 100% !important;
+  min-height: 38px !important;
+  padding: 8px 10px !important;
+  border: 1px solid var(--gray-300, #d1d5db) !important;
+  border-radius: 8px !important;
+  background: #fff !important;
+  font: inherit !important;
+  font-size: 13px !important;
+}
+body.is-messenger-conversation .pm-composer__gif-results {
+  max-height: 210px !important;
+  overflow-y: auto !important;
+}
+@media (max-width: 640px) {
+  body.is-messenger-conversation .pm-composer__attachment-menu {
+    left: 0 !important;
+    right: auto !important;
+    max-width: calc(100vw - 36px) !important;
+  }
+  body.is-messenger-conversation .pm-composer__emoji-picker {
+    right: -48px !important;
+    max-width: calc(100vw - 36px) !important;
+  }
+}
