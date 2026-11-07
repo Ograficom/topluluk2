@@ -40,6 +40,7 @@ class SettingsController extends Controller
     {
         $user = $request->user();
         $validated = $request->validate([
+            'username' => ['sometimes', 'required', 'string', 'max:30', Rule::unique('users', 'username')->ignore($user->id)],
             'full_name' => ['required', 'string', 'max:255'],
             'signature' => ['nullable', 'string', 'max:500'],
             'bio' => ['nullable', 'string', 'max:2000'],
@@ -74,6 +75,21 @@ class SettingsController extends Controller
         }
 
         return back()->with('activeTab', 'profile')->with('status', 'Profil bilgileriniz kaydedildi.');
+    }
+
+    public function updateUsername(Request $request): RedirectResponse
+    {
+        $user = $request->user();
+        $validated = $request->validate([
+            'username' => ['required', 'string', 'max:30', Rule::unique('users', 'username')->ignore($user->id)],
+        ]);
+
+        $user->username = trim($validated['username']);
+        $user->save();
+
+        return redirect()->route('settings.edit', ['tab' => 'profile'])
+            ->with('status', 'Kullanıcı adınız güncellendi.')
+            ->with('activeTab', 'profile');
     }
 
     public function updatePreferences(Request $request): RedirectResponse
