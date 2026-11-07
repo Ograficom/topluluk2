@@ -12,7 +12,9 @@ use App\Models\SitePage;
 use App\Models\Tag;
 use App\Observers\SitemapObserver;
 use App\Models\User;
+use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
@@ -31,6 +33,24 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        VerifyEmail::toMailUsing(function (object $notifiable, string $url): MailMessage {
+            $siteSettings = SiteSetting::current();
+            $brandName = filled($siteSettings?->brand_name) ? $siteSettings->brand_name : 'OgraFi';
+            $logoUrl = filled($siteSettings?->brandLogoUrl()) ? url($siteSettings->brandLogoUrl()) : null;
+
+            return (new MailMessage)
+                ->subject($brandName.' | E-posta adresini doğrula')
+                ->view([
+                    'html' => 'emails.verify-email',
+                    'text' => 'emails.verify-email-text',
+                ], [
+                    'url' => $url,
+                    'user' => $notifiable,
+                    'brandName' => $brandName,
+                    'logoUrl' => $logoUrl,
+                ]);
+        });
+
         try {
             $mailSettings = MailSetting::query()->find(1);
 
