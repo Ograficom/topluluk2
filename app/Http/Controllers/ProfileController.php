@@ -73,7 +73,7 @@ class ProfileController extends Controller
             ->withCount(['posts' => fn (Builder $query) => $query->published()])
             ->latest('user_follows.created_at');
 
-        $profileFollowers = (clone $profileFollowersQuery)->limit(8)->get();
+        $profileFollowers = (clone $profileFollowersQuery)->limit(12)->get();
         $allProfileFollowers = (clone $profileFollowersQuery)->limit(100)->get();
 
         $topPosition = User::query()
