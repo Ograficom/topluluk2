@@ -663,122 +663,29 @@
  .pm-composer__send svg{width:22px!important;height:22px!important}
 }
 
-/* Conversation identity bar: sticky while reading, full-width on phones */
-.pm-dialog__header--conversation{
- position:sticky!important;
- top:0!important;
- z-index:80!important;
- width:100%!important;
- min-width:0!important;
- box-sizing:border-box!important;
- flex-shrink:0!important;
- isolation:isolate!important;
-}
-.pm-dialog{min-width:0!important}
-@media(max-width:640px){
- .pm-dialog__header--conversation{
-  position:sticky!important;
-  top:0!important;
-  left:auto!important;
-  right:auto!important;
-  width:calc(100% + 28px)!important;
-  max-width:none!important;
-  margin:0 -14px!important;
-  padding:8px 14px!important;
-  min-height:62px!important;
-  border-radius:0!important;
-  background:#fff!important;
-  box-shadow:0 1px 0 #e9edf2!important;
- }
- .pm-dialog__header--conversation .pm-dialog__identity{
-  flex:1 1 0!important;
-  width:0!important;
+
+/* Messenger conversation header — one canonical responsive rule set */
+.pm.card.card-body{
   min-width:0!important;
-  overflow:hidden!important;
- }
- .pm-dialog__header--conversation .pm-dialog__identity-avatar{
-  width:36px!important;height:36px!important;flex:0 0 36px!important;
- }
- .pm-dialog__header--conversation .pm-dialog__identity-copy{min-width:0!important;max-width:100%!important}
- .pm-dialog__header--conversation .pm-dialog__identity-copy strong,
- .pm-dialog__header--conversation .pm-dialog__identity-status{
-  display:block!important;max-width:100%!important;overflow:hidden!important;
-  white-space:nowrap!important;text-overflow:ellipsis!important;
- }
- .pm-dialog__header--conversation .pm-dialog__identity-copy strong{font-size:14px!important}
- .pm-dialog__header--conversation .pm-dialog__identity-status{font-size:11px!important}
- .pm-dialog__header-menu{flex:0 0 36px!important}
- .pm-dialog__header-more{width:36px!important;height:36px!important}
-}
-
-/* Final messenger header correction: sticky below the site navbar, never inset */
-.pm-dialog__header--conversation{
- position:sticky!important;
- top:64px!important;
- z-index:120!important;
- display:flex!important;
- width:100%!important;
- max-width:100%!important;
- margin:0!important;
- box-sizing:border-box!important;
- border-radius:0!important;
- background:#fff!important;
-}
-.pm-dialog{overflow:visible!important;min-width:0!important}
-.pm.card.card-body:has(.pm-dialog__header--conversation){overflow:visible!important}
-@media(max-width:767px){
- .pm-dialog__header--conversation{
-  position:sticky!important;
-  top:58px!important;
-  left:auto!important;right:auto!important;
-  width:100%!important;
-  max-width:100%!important;
-  margin:0!important;
-  padding:8px 12px!important;
-  min-height:60px!important;
-  border-radius:0!important;
-  background:#fff!important;
-  box-shadow:0 1px 0 #e9edf2!important;
- }
- .pm-dialog__header--conversation .pm-dialog__identity{
-  flex:1 1 auto!important;width:auto!important;min-width:0!important;
-  overflow:hidden!important;
- }
- .pm-dialog__header--conversation .pm-dialog__identity-avatar{
-  width:36px!important;height:36px!important;flex:0 0 36px!important;
- }
- .pm-dialog__header--conversation .pm-dialog__identity-copy{min-width:0!important;max-width:100%!important}
- .pm-dialog__header--conversation .pm-dialog__identity-copy strong,
- .pm-dialog__header--conversation .pm-dialog__identity-status{
-  display:block!important;max-width:100%!important;overflow:hidden!important;
-  white-space:nowrap!important;text-overflow:ellipsis!important;
- }
- .pm-dialog__header--conversation .pm-dialog__identity-copy strong{font-size:14px!important}
- .pm-dialog__header--conversation .pm-dialog__identity-status{font-size:11px!important}
- .pm-dialog__header-menu{flex:0 0 36px!important}
- .pm-dialog__header-more{width:36px!important;height:36px!important}
-}
-
-
-/* Messenger conversation header — true edge-to-edge sticky bar inside the card.
-   The card body has 20px padding; cancel it so the bar aligns with the card edges. */
-.pm.card.card-body:has(> .pm-dialog){
   overflow:visible!important;
 }
-.pm.card.card-body:has(> .pm-dialog) > .pm-dialog{
+.pm-dialog{
+  min-width:0!important;
   margin-top:0!important;
-  gap:16px!important;
-  min-width:0!important;
   overflow:visible!important;
 }
 .pm-dialog__header--conversation{
   position:sticky!important;
-  top:var(--header-height,64px)!important;
+  top:var(--header-height,70px)!important;
   z-index:95!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:space-between!important;
+  gap:12px!important;
   box-sizing:border-box!important;
-  width:auto!important;
+  width:calc(100% + 40px)!important;
   max-width:none!important;
-  min-height:60px!important;
+  min-height:62px!important;
   margin:0 -20px!important;
   padding:8px 20px!important;
   border:0!important;
@@ -787,61 +694,85 @@
   background:#fff!important;
 }
 .pm-dialog__header--conversation .pm-dialog__identity{
-  min-width:0!important;
+  display:flex!important;
+  align-items:center!important;
   flex:1 1 auto!important;
+  min-width:0!important;
+  gap:10px!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  background:transparent!important;
+  text-align:left!important;
 }
-.pm-dialog__header--conversation .pm-dialog__header-menu,
-.pm-dialog__header--conversation .pm-dialog__header-more{
-  flex-shrink:0!important;
+.pm-dialog__header--conversation .pm-dialog__identity-avatar{
+  display:block!important;
+  width:36px!important;
+  height:36px!important;
+  flex:0 0 36px!important;
+  border-radius:50%!important;
+  object-fit:cover!important;
+}
+.pm-dialog__header--conversation .pm-dialog__identity-copy{
+  display:flex!important;
+  flex-direction:column!important;
+  min-width:0!important;
+  gap:2px!important;
+}
+.pm-dialog__header--conversation .pm-dialog__identity-copy strong{
+  overflow:hidden!important;
+  color:#202633!important;
+  font-size:14px!important;
+  line-height:1.25!important;
+  text-overflow:ellipsis!important;
+  white-space:nowrap!important;
+}
+.pm-dialog__header--conversation .pm-dialog__identity-status{
+  display:block!important;
+  overflow:hidden!important;
+  color:#718096!important;
+  font-size:11px!important;
+  line-height:1.25!important;
+  text-overflow:ellipsis!important;
+  white-space:nowrap!important;
+}
+.pm-dialog__header-menu{
+  position:relative!important;
+  flex:0 0 36px!important;
+}
+.pm-dialog__header-more{
+  display:grid!important;
+  place-items:center!important;
+  width:36px!important;
+  height:36px!important;
+  padding:0!important;
+  border:0!important;
+  border-radius:50%!important;
+  background:#f0f3f7!important;
 }
 @media(max-width:767px){
-  .pm.card.card-body:has(> .pm-dialog){
+  .pm.card.card-body{
     padding:14px!important;
     overflow:visible!important;
   }
-  .pm.card.card-body:has(> .pm-dialog) > .pm-dialog{
-    margin-top:0!important;
-    gap:14px!important;
-  }
   .pm-dialog__header--conversation{
-    top:var(--header-height,64px)!important;
-    width:auto!important;
+    top:var(--header-height,70px)!important;
+    width:calc(100% + 28px)!important;
     min-height:58px!important;
     margin:0 -14px!important;
     padding:7px 14px!important;
-    border-radius:0!important;
+    gap:8px!important;
   }
   .pm-dialog__header--conversation .pm-dialog__identity{
     gap:9px!important;
-    flex:1 1 0!important;
-    width:auto!important;
-    min-width:0!important;
   }
   .pm-dialog__header--conversation .pm-dialog__identity-avatar{
     width:34px!important;
     height:34px!important;
-    flex:0 0 34px!important;
+    flex-basis:34px!important;
   }
-  .pm-dialog__header--conversation .pm-dialog__identity-copy{
-    min-width:0!important;
-    overflow:hidden!important;
-  }
-  .pm-dialog__header--conversation .pm-dialog__identity-copy strong{
-    display:block!important;
-    max-width:100%!important;
-    overflow:hidden!important;
-    font-size:14px!important;
-    white-space:nowrap!important;
-    text-overflow:ellipsis!important;
-  }
-  .pm-dialog__header--conversation .pm-dialog__identity-status{
-    display:block!important;
-    max-width:100%!important;
-    overflow:hidden!important;
-    font-size:11px!important;
-    white-space:nowrap!important;
-    text-overflow:ellipsis!important;
-  }
-  .pm-dialog__header-menu{flex:0 0 36px!important}
-  .pm-dialog__header-more{width:36px!important;height:36px!important}
+  .pm-dialog__header__identity-copy strong{font-size:13px!important}
+  .pm-dialog__header--conversation .pm-dialog__identity-status{font-size:10.5px!important}
+  .pm-dialog__header-menu{flex-basis:34px!important}
+  .pm-dialog__header-more{width:34px!important;height:34px!important}
 }
