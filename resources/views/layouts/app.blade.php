@@ -450,6 +450,31 @@
     })();
     </script>
     @endguest
+    @auth
+    <script>
+    (() => {
+        const ping = () => {
+            if (document.visibilityState !== 'visible') return;
+
+            fetch(@json(route('presence.ping')), {
+                method: 'POST',
+                credentials: 'same-origin',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || '',
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Accept': 'application/json'
+                }
+            }).catch(() => {});
+        };
+
+        ping();
+        window.setInterval(ping, 60000);
+        document.addEventListener('visibilitychange', () => {
+            if (document.visibilityState === 'visible') ping();
+        });
+    })();
+    </script>
+    @endauth
     @stack('scripts')
 </body>
 </html>
