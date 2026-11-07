@@ -21,6 +21,9 @@
                 @else
                     <span class="name-text">Repost kullanıcısı</span>
                 @endif
+                @if ($comment->user?->hasVerifiedCompanyBadge())
+                    <x-company-verified-badge size="14" />
+                @endif
                 @if ($comment->user?->hasVerifiedBadge())
                     <span class="verify" role="img" aria-label="Doğrulanmış hesap"><x-repost-icon name="verify" size="14" /></span>
                 @endif
