@@ -1249,3 +1249,41 @@ body.is-messenger-conversation .pm-dialog__composer .pm-composer__bar {
     max-width: none !important;
   }
 }
+
+
+/* Composer correction based on actual conversation layout */
+body.is-messenger-conversation .pm-dialog__composer.pm-composer {
+  width: min(760px, calc(100vw - 56px)) !important;
+  max-width: 760px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+body.is-messenger-conversation .pm-dialog__composer .pm-composer__bar {
+  width: 100% !important;
+  min-height: 54px !important;
+  padding: 5px 10px !important;
+  gap: 10px !important;
+}
+body.is-messenger-conversation .pm-dialog__composer textarea {
+  flex: 1 1 auto !important;
+  min-width: 0 !important;
+  width: 100% !important;
+}
+body.is-messenger-conversation .pm-dialog__composer .pm-composer__attachment {
+  margin-left: 3px !important;
+}
+body.is-messenger-conversation .pm-dialog__composer .pm-composer__send {
+  margin-right: 3px !important;
+}
+@media (max-width: 640px) {
+  body.is-messenger-conversation .pm-dialog__composer.pm-composer {
+    width: calc(100vw - 48px) !important;
+    max-width: none !important;
+    bottom: max(12px, env(safe-area-inset-bottom)) !important;
+  }
+  body.is-messenger-conversation .pm-dialog__composer .pm-composer__bar {
+    min-height: 52px !important;
+    padding: 4px 9px !important;
+    gap: 8px !important;
+  }
+}
