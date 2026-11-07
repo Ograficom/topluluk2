@@ -26,6 +26,8 @@ class SupportTicketForm
                             'support' => 'Teknik destek',
                             'editorial' => 'Editör ekibi',
                             'partnerships' => 'İş birlikleri',
+                            'bug' => 'Hata bildirimi',
+                            'suggestion' => 'Görüş ve öneri',
                         ])
                         ->disabled()
                         ->dehydrated(false),

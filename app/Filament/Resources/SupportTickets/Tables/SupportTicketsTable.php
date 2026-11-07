@@ -23,6 +23,8 @@ class SupportTicketsTable
                     'support' => 'Teknik destek',
                     'editorial' => 'Editör ekibi',
                     'partnerships' => 'İş birlikleri',
+                    'bug' => 'Hata bildirimi',
+                    'suggestion' => 'Görüş ve öneri',
                     default => $state,
                 }),
                 TextColumn::make('status')->label('Durum')->badge()->formatStateUsing(fn (string $state): string => match ($state) {
@@ -51,6 +53,8 @@ class SupportTicketsTable
                     'support' => 'Teknik destek',
                     'editorial' => 'Editör ekibi',
                     'partnerships' => 'İş birlikleri',
+                    'bug' => 'Hata bildirimi',
+                    'suggestion' => 'Görüş ve öneri',
                 ]),
             ])
             ->recordActions([
