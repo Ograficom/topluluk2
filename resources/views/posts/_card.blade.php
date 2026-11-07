@@ -10,7 +10,10 @@
                 <div class="user-box-content">
                     <a href="{{ $post->user ? route('profiles.show', $post->user) : route('posts.index') }}" class="name">
                         <span class="name-text">{{ $post->user?->displayName() ?? 'OgraFi yazarı' }}</span>
-                        @if ($post->user?->hasVerifiedBadge())<span class="verify" role="img" aria-label="Doğrulanmış hesap"><x-repost-icon name="verify" size="14" /></span>@endif
+                        @if ($post->user?->hasVerifiedCompanyBadge())
+                    <x-company-verified-badge size="14" />
+                @endif
+                @if ($post->user?->hasVerifiedBadge())<span class="verify" role="img" aria-label="Doğrulanmış hesap"><x-repost-icon name="verify" size="14" /></span>@endif
                     </a>
                     <div class="meta">
                         @if ($post->channel)<a href="{{ route('channels.show', $post->channel) }}">{{ $post->channel->name }}</a>@endif
