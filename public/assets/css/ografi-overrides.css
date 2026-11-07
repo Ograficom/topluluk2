@@ -362,3 +362,67 @@
 .pm-user-info__chevron{width:15px!important;height:15px!important;margin-left:auto!important;color:#a0aaba!important}
 .pm-user-info__empty{display:grid!important;place-items:center!important;min-height:74px!important;margin-top:12px!important;color:#7b8491!important;font-size:13px!important;text-align:center!important}
 @media(max-width:640px){.pm-user-info{inset:10px!important;width:auto!important;border-radius:18px!important;padding-inline:13px!important}.pm-user-info__profile{padding:15px 0 18px!important}}
+
+/* Final polish: bright, spacious messenger contact sheet */
+.pm-user-info{
+  position:fixed!important;isolation:isolate!important;z-index:10020!important;
+  top:14px!important;right:14px!important;bottom:14px!important;
+  width:min(400px,calc(100vw - 28px))!important;
+  padding:0 18px 22px!important;overflow-y:auto!important;
+  background:#f8faff!important;color:#172033!important;
+  border:1px solid #e8edf5!important;border-radius:24px!important;
+  box-shadow:0 0 0 100vmax rgba(23,35,55,.24),0 18px 55px rgba(20,35,55,.16)!important;
+}
+.pm-user-info::before{display:none!important;content:none!important}
+.pm-user-info__top{
+  min-height:62px!important;margin:0 -18px!important;padding:0 17px!important;
+  background:rgba(255,255,255,.94)!important;border-bottom:1px solid #edf1f6!important;
+  border-radius:24px 24px 0 0!important;backdrop-filter:blur(12px)!important;
+}
+.pm-user-info__top strong{font-size:15px!important;letter-spacing:-.2px!important}
+.pm-user-info__icon{width:36px!important;height:36px!important;border-radius:12px!important;background:#f3f6fb!important;color:#64748b!important;transition:background .15s,color .15s!important}
+.pm-user-info__icon:hover{background:#eaf2ff!important;color:#1768ed!important}
+.pm-user-info__profile{
+  position:relative!important;align-items:center!important;padding:30px 14px 25px!important;
+  margin:0 -2px 16px!important;border-radius:0 0 20px 20px!important;
+  background:linear-gradient(180deg,#fff 0%,#f1f6ff 100%)!important;
+}
+.pm-user-info__profile img{
+  width:100px!important;height:100px!important;margin:0 0 15px!important;
+  border:5px solid #fff!important;box-shadow:0 5px 18px rgba(35,85,160,.13)!important;
+}
+.pm-user-info__profile h3{font-size:20px!important;letter-spacing:-.35px!important;margin-bottom:5px!important}
+.pm-user-info__profile p{font-size:13px!important;color:#71809a!important;margin-bottom:11px!important}
+.pm-user-info__profile .pm-dialog__status{
+  display:inline-flex!important;align-items:center!important;gap:7px!important;
+  padding:7px 12px!important;border:1px solid #e5ebf4!important;border-radius:30px!important;
+  background:#fff!important;color:#65758d!important;font-size:12px!important;font-weight:600!important;
+}
+.pm-user-info__menu{
+  border:1px solid #e8edf4!important;border-radius:17px!important;
+  background:#fff!important;box-shadow:0 4px 14px rgba(27,44,70,.035)!important;
+}
+.pm-user-info__menu-row{
+  min-height:55px!important;padding:0 15px!important;gap:13px!important;
+  border-bottom:1px solid #f0f3f7!important;background:#fff!important;
+  color:#344258!important;font-size:13px!important;font-weight:550!important;
+  transition:background .15s,color .15s!important;
+}
+.pm-user-info__menu-row:last-child{border-bottom:0!important}
+.pm-user-info__menu-row:hover{background:#f7faff!important;color:#1768ed!important}
+.pm-user-info__menu-icon{width:34px!important;height:34px!important;flex:0 0 34px!important;border-radius:11px!important;background:#f2f6fc!important;color:#61748f!important}
+.pm-user-info__menu-icon svg{width:18px!important;height:18px!important}
+.pm-user-info__chevron{color:#a5b1c2!important}
+.pm-user-info__empty{
+  min-height:94px!important;margin-top:15px!important;padding:15px!important;
+  border:1px dashed #dce5f1!important;border-radius:16px!important;
+  background:rgba(255,255,255,.65)!important;color:#8491a4!important;
+  font-size:13px!important;
+}
+@media(max-width:640px){
+ .pm-user-info{inset:8px!important;width:auto!important;border-radius:20px!important;padding-inline:14px!important}
+ .pm-user-info__top{margin-inline:-14px!important;padding-inline:14px!important;border-radius:20px 20px 0 0!important}
+ .pm-user-info__profile{padding:25px 12px 22px!important}
+ .pm-user-info__profile img{width:92px!important;height:92px!important}
+ .pm-user-info__menu-row{min-height:53px!important}
+}
