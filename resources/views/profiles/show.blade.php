@@ -60,29 +60,6 @@
                         @endif
                         <span class="small color-gray">Üyelik tarihi {{ $user->created_at->format('d.m.Y') }}</span>
                     </div>
-                    <div class="profile__meta">
-                        <span class="small color-gray">{{ number_format($posts->total()) }} yazı</span>
-                        <span class="small color-gray">{{ number_format($followersCount) }} takipçi</span>
-                        <span class="small color-gray">{{ number_format($followingCount) }} takip</span>
-                    </div>
-                    @if (auth()->check() && ! auth()->user()->is($user))
-                        <div class="profile__actions">
-                            @unless ($isBlocked)
-                                <form action="{{ route('users.follow', $user) }}" method="POST">
-                                    @csrf
-                                    <button class="btn {{ $isFollowing ? 'btn-secondary' : 'btn-primary' }} btn-md" type="submit">
-                                        {{ $isFollowing ? 'Takibi bırak' : 'Takip et' }}
-                                    </button>
-                                </form>
-                                <form action="{{ route('messenger.start', $user) }}" method="POST">
-                                    @csrf
-                                    <button class="btn btn-secondary btn-md" type="submit"><x-repost-icon name="message" size="16" /> Mesaj gönder</button>
-                                </form>
-                            @endunless
-                        </div>
-                    @elseif (! auth()->check())
-                        <div class="profile__actions"><a class="btn btn-primary btn-md" href="{{ route('login') }}">Takip etmek için giriş yap</a></div>
-                    @endif
                     @if ($user->signature)
                         <div class="profile__signature">{{ $user->signature }}</div>
                     @endif
