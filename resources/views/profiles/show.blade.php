@@ -66,6 +66,26 @@
                 @endif
             </div>
         </div>
+        @if (auth()->check() && auth()->id() !== $user->id && ! $isBlocked)
+            <div class="profile__actions" aria-label="Profil işlemleri">
+                <form action="{{ route('messenger.start', $user) }}" method="POST">
+                    @csrf
+                    <button class="profile__message-button" type="submit" aria-label="{{ $user->displayName() }} kullanıcısına mesaj gönder" title="Mesaj gönder">
+                        <x-repost-icon name="message" size="19" />
+                    </button>
+                </form>
+                <form action="{{ route('users.follow', $user) }}" method="POST">
+                    @csrf
+                    <button class="profile__subscribe-button {{ $isFollowing ? 'is-following' : '' }}" type="submit">
+                        {{ $isFollowing ? 'Abone olundu' : 'Abone ol' }}
+                    </button>
+                </form>
+            </div>
+        @elseif (! auth()->check() && ! $isBlocked)
+            <div class="profile__actions">
+                <a class="profile__subscribe-button" href="{{ route('login') }}">Abone ol</a>
+            </div>
+        @endif
         <nav class="tabs-nav profile__nav" aria-label="Profil bölümleri" data-tabs-nav="profile">
             <button class="tabs-nav__button is-active" id="profile-tab-posts" type="button" data-tab="posts" aria-selected="true" aria-controls="profile-panel-posts"><span>Yazılar ({{ $posts->total() }})</span></button>
             <button class="tabs-nav__button" id="profile-tab-comments" type="button" data-tab="comments" aria-selected="false" aria-controls="profile-panel-comments" tabindex="-1"><span>Yorumlar ({{ $comments->total() }})</span></button>
