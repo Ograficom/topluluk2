@@ -202,3 +202,82 @@
     display: block;
   }
 }
+
+
+/* Profile refinement: calmer typography and more deliberate spacing. */
+.profile__aside .widgets {
+  gap: 22px;
+}
+.profile__aside .widget {
+  --widget-gap: 17px;
+  padding: 20px;
+}
+.profile__aside .widget__title {
+  font-size: .94rem;
+  line-height: 1.4;
+  font-weight: 600;
+}
+.profile__aside .widget__content {
+  font-size: .9rem;
+  line-height: 1.65;
+}
+.profile__aside .profile__about {
+  gap: 10px;
+}
+.profile__aside .profile__about-info {
+  margin-top: 12px;
+  font-size: .9rem;
+  line-height: 1.65;
+  font-weight: 400;
+}
+.profile__aside .profile__site {
+  font-size: .86rem;
+  font-weight: 400;
+}
+.profile__aside .widget__footer {
+  margin-top: 2px;
+  font-size: .82rem;
+}
+.profile__aside .channel-subscriber-grid {
+  row-gap: 12px;
+}
+.profile__aside .channel-subscriber-grid .subscriber-empty {
+  grid-column: 1 / -1;
+  width: auto;
+  height: auto;
+  font-size: .86rem;
+  line-height: 1.55;
+  white-space: normal;
+}
+.profile__name h1 {
+  font-size: 1.22rem;
+  line-height: 1.35;
+  font-weight: 600;
+}
+.profile__meta {
+  gap: 9px;
+  margin-top: 8px;
+}
+.profile__rate,
+.profile__top {
+  font-size: .86rem;
+  font-weight: 500;
+}
+.profile__meta .small {
+  font-size: .8rem;
+  font-weight: 400;
+}
+.profile__signature {
+  margin-top: 13px;
+  font-size: .9rem;
+  line-height: 1.6;
+  font-weight: 400;
+}
+@media screen and (max-width: 520px) {
+  .profile__aside .widget {
+    padding: 20px;
+  }
+  .profile__aside .widgets {
+    gap: 20px;
+  }
+}
