@@ -23,21 +23,50 @@
 
         <section class="pm-dialog">
             <header class="pm-dialog__header">
-                <div class="pm-dialog__heading">
-                    <h2>{{ $other?->displayName() ?? 'OgraFi üyesi' }}</h2>
-                    <div class="pm-dialog__recipient">
-                        <span class="pm-dialog__status {{ $other?->isOnline() ? 'is-online' : '' }}">
-                            <span class="pm-dialog__status-dot" aria-hidden="true"></span>
-                            {{ $other?->isOnline() ? 'Şu anda çevrimiçi' : 'Özel konuşma' }}
-                        </span>
-                        @if ($other)
-                            <a class="pm-dialog__profile-link" href="{{ route('profiles.show', $other) }}">
-                                Profili görüntüle
-                                <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M6 3h7v7M13 3 6.5 9.5M11 9v4H3V5h4" /></svg>
+                <button class="pm-dialog__identity" type="button" data-open-user-info aria-label="Kullanıcı bilgilerini aç">
+                    <img class="pm-dialog__identity-avatar" src="{{ $other?->avatarUrl() ?? asset('assets/img/noavatar.png') }}" alt="{{ $other?->displayName() ?? 'Kullanıcı' }}">
+                    <span class="pm-dialog__identity-copy">
+                        <strong>{{ $other?->displayName() ?? 'OgraFi üyesi' }}</strong>
+                        <span class="pm-dialog__identity-status"><i class="{{ $other?->isOnline() ? 'is-online' : '' }}"></i>{{ $other?->isOnline() ? 'Şu anda çevrimiçi' : 'Özel konuşma' }}</span>
+                    </span>
+                </button>
+                @if ($other)
+                    <button class="pm-dialog__settings-button" type="button" data-open-user-info aria-label="Kullanıcı bilgileri ve ayarları">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.88l.06.06-1.7 2.94-.08-.02a1.7 1.7 0 0 0-1.8.68l-.05.07h-3.4l-.03-.08a1.7 1.7 0 0 0-1.48-1.12 1.7 1.7 0 0 0-.9.2l-.08.04-2.94-1.7.02-.08a1.7 1.7 0 0 0-.68-1.8l-.07-.05v-3.4l.08-.03a1.7 1.7 0 0 0 1.12-1.48 1.7 1.7 0 0 0-.2-.9l-.04-.08 1.7-2.94.08.02a1.7 1.7 0 0 0 1.8-.68l.05-.07h3.4l.03.08a1.7 1.7 0 0 0 1.48 1.12 1.7 1.7 0 0 0 .9-.2l.08-.04 2.94 1.7-.02.08a1.7 1.7 0 0 0 .68 1.8l.07.05v3.4l-.08.03a1.7 1.7 0 0 0-1.12 1.48z"></path></svg>
+                    </button>
+                @endif
+                @if ($other)
+                    <section class="pm-user-info" data-user-info hidden aria-label="Kullanıcı bilgileri">
+                        <div class="pm-user-info__top">
+                            <button type="button" data-close-user-info aria-label="Kapat" class="pm-user-info__icon">
+                                <svg viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></svg>
+                            </button>
+                            <strong>Kullanıcı Bilgisi</strong>
+                            <a href="{{ route('profiles.show', $other) }}" class="pm-user-info__icon" aria-label="Profili aç">
+                                <svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2M10 7a4 4 0 1 0 0 8 4 4 0 0 0 0-8ZM19 8v6M16 11h6"/></svg>
                             </a>
-                        @endif
-                    </div>
-                </div>
+                        </div>
+                        <div class="pm-user-info__profile">
+                            <img src="{{ $other->avatarUrl() }}" alt="{{ $other->displayName() }}">
+                            <h3>{{ $other->displayName() }}</h3>
+                            <p>{{ '@'.$other->username }}</p>
+                            <span class="pm-dialog__status {{ $other->isOnline() ? 'is-online' : '' }}"><i class="pm-dialog__status-dot"></i>{{ $other->isOnline() ? 'Çevrimiçi' : 'OgraFi üyesi' }}</span>
+                        </div>
+                        <div class="pm-user-info__details">
+                            <div><span class="pm-user-info__detail-icon">☎</span><span><strong>{{ '@'.$other->username }}</strong><small>Kullanıcı adı</small></span></div>
+                            <div><span class="pm-user-info__detail-icon is-blue">●</span><span><strong>Bildirimler</strong><small>Sohbet bildirimleri</small></span><span class="pm-user-info__static-switch" aria-hidden="true"></span></div>
+                        </div>
+                        <nav class="pm-user-info__tabs" aria-label="Paylaşılan içerik türleri">
+                            <button type="button" class="is-active" data-info-tab="media">Medya</button>
+                            <button type="button" data-info-tab="files">Dosyalar</button>
+                            <button type="button" data-info-tab="links">Bağlantılar</button>
+                            <button type="button" data-info-tab="music">Müzik</button>
+                            <button type="button" data-info-tab="gif">GIF</button>
+                            <button type="button" data-info-tab="voice">Ses</button>
+                        </nav>
+                        <div class="pm-user-info__empty" data-info-empty>Henüz paylaşılan medya yok</div>
+                    </section>
+                @endif
             </header>
 
             <div class="pm-dialog__messages" id="pmMessages">
@@ -134,6 +163,20 @@
 @push('scripts')
     <script>
         (() => {
+            const userInfo = document.querySelector('[data-user-info]');
+            document.querySelectorAll('[data-open-user-info]').forEach((button) => button.addEventListener('click', () => {
+                if (userInfo) userInfo.hidden = false;
+            }));
+            document.querySelector('[data-close-user-info]')?.addEventListener('click', () => {
+                if (userInfo) userInfo.hidden = true;
+            });
+            const infoTabLabels = { media: 'Henüz paylaşılan medya yok', files: 'Henüz paylaşılan dosya yok', links: 'Henüz paylaşılan bağlantı yok', music: 'Henüz paylaşılan müzik yok', gif: 'Henüz GIF paylaşılmamış', voice: 'Henüz sesli mesaj yok' };
+            document.querySelectorAll('[data-info-tab]').forEach((tab) => tab.addEventListener('click', () => {
+                document.querySelectorAll('[data-info-tab]').forEach((item) => item.classList.toggle('is-active', item === tab));
+                const empty = document.querySelector('[data-info-empty]');
+                if (empty) empty.textContent = infoTabLabels[tab.dataset.infoTab] || infoTabLabels.media;
+            }));
+
             const textarea = document.querySelector('#dialog-message');
             const messages = document.querySelector('#pmMessages');
             if (!messages) return;
