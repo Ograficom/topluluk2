@@ -307,8 +307,11 @@ class SocialAuthController extends Controller
             $user = User::query()->where('email', $identity['email'])->first();
 
             if (! $user) {
+                $usernameNumber = 1;
+
                 do {
-                    $username = 'user-'.Str::lower(Str::random(10));
+                    $username = 'user'.$usernameNumber;
+                    $usernameNumber++;
                 } while (User::query()->where('username', $username)->exists());
 
                 $user = User::create([
