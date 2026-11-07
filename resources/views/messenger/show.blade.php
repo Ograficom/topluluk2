@@ -126,25 +126,15 @@
             <form action="{{ route('messenger.messages.store', $conversation) }}" method="POST" class="pm-dialog__composer pm-composer">
                 @csrf
                 <div class="pm-composer__bar">
-                    <span class="pm-composer__attachment" aria-hidden="true">
-                        <svg viewBox="0 0 24 24"><path d="m21.4 11.1-8.9 8.9a6 6 0 0 1-8.5-8.5l9.2-9.2a4 4 0 0 1 5.7 5.7l-9.2 9.2a2 2 0 0 1-2.8-2.8l8.5-8.5"/></svg>
-                    </span>
-                    <label class="visually-hidden" for="dialog-message">Mesajın</label>
-                    <textarea id="dialog-message" name="body" rows="1" maxlength="5000" required placeholder="Message">{{ old('body') }}</textarea>
-                    <div class="pm-composer__emoji-wrap">
-                        <button class="pm-composer__emoji" type="button" data-emoji-toggle aria-label="Emoji ekle">
-                            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8.5 14.2s1.2 2 3.5 2 3.5-2 3.5-2M9 9.5h.01M15 9.5h.01"/></svg>
-                        </button>
-                        <div class="pm-composer__emoji-picker" data-emoji-picker hidden>
-                            @foreach (['😀','😂','🥰','😍','😉','😊','🤔','👍','❤️','🔥','🎉','🙏'] as $emoji)
-                                <button type="button" data-insert-emoji="{{ $emoji }}">{{ $emoji }}</button>
-                            @endforeach
-                        </div>
-                    </div>
-                    <button class="pm-composer__send" type="submit" aria-label="Mesajı gönder">
-                        <svg viewBox="0 0 24 24"><path d="M12 3a7 7 0 0 0-7 7v4a3 3 0 0 0 3 3h1v-7H7v4a1 1 0 0 1-1-1v-3a6 6 0 0 1 12 0v3a1 1 0 0 1-1 1v-4h-2v7h1a3 3 0 0 0 3-3v-4a7 7 0 0 0-7-7Z"/><path d="M9 20h6"/></svg>
-                    </button>
-                </div>
+                    <label class="pm-composer__attachment" for="dialog-attachment" title="Dosya ekle" aria-label="Dosya ekle"><svg viewBox="0 0 24 24"><path d="m21.4 11.1-8.9 8.9a6 6 0 0 1-8.5-8.5l9.2-9.2a4 4 0 0 1 5.7 5.7l-9.2 9.2a2 2 0 0 1-2.8-2.8l8.5-8.5"/></svg><input id="dialog-attachment" type="file" name="attachment" hidden></label>
+                    <label class="visually-hidden" for="dialog-message">Mesaj</label><textarea id="dialog-message" name="body" rows="1" maxlength="5000" placeholder="Mesaj yazın…">{{ old('body') }}</textarea>
+                    <input type="hidden" name="gif_url" id="dialog-gif-url">
+                    <div class="pm-composer__emoji-wrap"><button class="pm-composer__emoji" type="button" data-emoji-toggle aria-label="Emoji ve GIF ekle"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8.5 14.2s1.2 2 3.5 2 3.5-2 3.5-2M9 9.5h.01M15 9.5h.01"/></svg></button>
+                    <div class="pm-composer__emoji-picker" data-emoji-picker hidden><div class="pm-composer__picker-tabs"><button type="button" class="is-active" data-picker-tab="emoji">Emoji</button><button type="button" data-picker-tab="gif">GIF</button></div>
+                    <div class="pm-composer__emoji-grid" data-emoji-grid>@foreach (['😀','😂','🥰','😍','😉','😊','🤔','👍','❤️','🔥','🎉','🙏','👏','🥳','😎','😭','🤣','💙','✨','🙌'] as $emoji)<button type="button" data-insert-emoji="{{ $emoji }}">{{ $emoji }}</button>@endforeach</div>
+                    <div class="pm-composer__gif-panel" data-gif-panel hidden><input type="search" data-gif-search placeholder="GIF ara…" autocomplete="off"><div class="pm-composer__gif-results" data-gif-results>GIF aramak için yazın.</div></div></div></div>
+                    <button class="pm-composer__send" type="submit" aria-label="Gönder" title="Gönder"><svg viewBox="0 0 24 24"><path d="M21.7 2.8 14.4 21c-.4 1-1.8 1-2.2 0l-2.5-6.2-6.2-2.5c-1-.4-1-1.8 0-2.2l18.2-7.3Z"/><path d="m9.7 14.3 5.1-5.1"/></svg></button>
+                </div><div class="pm-composer__attachment-preview" data-attachment-preview hidden></div><div class="pm-composer__gif-selected" data-gif-selected hidden>GIF seçildi <button type="button" data-clear-gif>×</button></div>
                 @error('body')
                     <p class="small color-red">{{ $message }}</p>
                 @enderror
@@ -170,23 +160,15 @@
                 if (empty) empty.textContent = infoTabLabels[tab.dataset.infoTab] || infoTabLabels.media;
             }));
 
-            const textarea = document.querySelector('#dialog-message');
-            const emojiPicker = document.querySelector('[data-emoji-picker]');
-            document.querySelector('[data-emoji-toggle]')?.addEventListener('click', () => {
-                if (emojiPicker) emojiPicker.hidden = !emojiPicker.hidden;
-            });
-            emojiPicker?.querySelectorAll('[data-insert-emoji]').forEach((button) => button.addEventListener('click', () => {
-                if (!textarea) return;
-                const emoji = button.dataset.insertEmoji || '';
-                const start = textarea.selectionStart ?? textarea.value.length;
-                const end = textarea.selectionEnd ?? start;
-                textarea.setRangeText(emoji, start, end, 'end');
-                textarea.focus();
-                emojiPicker.hidden = true;
-            }));
-            document.addEventListener('click', (event) => {
-                if (!event.target.closest('.pm-composer__emoji-wrap') && emojiPicker) emojiPicker.hidden = true;
-            });
+            const textarea=document.querySelector('#dialog-message'),emojiPicker=document.querySelector('[data-emoji-picker]'),emojiGrid=document.querySelector('[data-emoji-grid]'),gifPanel=document.querySelector('[data-gif-panel]'),gifSearch=document.querySelector('[data-gif-search]'),gifResults=document.querySelector('[data-gif-results]'),gifInput=document.querySelector('#dialog-gif-url'),fileInput=document.querySelector('#dialog-attachment'),filePreview=document.querySelector('[data-attachment-preview]'),gifSelected=document.querySelector('[data-gif-selected]'),composer=document.querySelector('.pm-composer');
+            document.querySelector('[data-emoji-toggle]')?.addEventListener('click',()=>emojiPicker.hidden=!emojiPicker.hidden);
+            emojiPicker?.querySelectorAll('[data-insert-emoji]').forEach(btn=>btn.addEventListener('click',()=>{const x=textarea.selectionStart??textarea.value.length,y=textarea.selectionEnd??x;textarea.setRangeText(btn.dataset.insertEmoji||'',x,y,'end');textarea.focus();}));
+            document.querySelectorAll('[data-picker-tab]').forEach(tab=>tab.addEventListener('click',()=>{document.querySelectorAll('[data-picker-tab]').forEach(x=>x.classList.toggle('is-active',x===tab));emojiGrid.hidden=tab.dataset.pickerTab!=='emoji';gifPanel.hidden=tab.dataset.pickerTab!=='gif';}));
+            let gifTimer;gifSearch?.addEventListener('input',()=>{clearTimeout(gifTimer);const q=gifSearch.value.trim();if(q.length<2){gifResults.textContent='GIF aramak için en az 2 karakter yazın.';return;}gifTimer=setTimeout(async()=>{gifResults.textContent='GIF’ler aranıyor…';try{const res=await fetch('{{ route('messenger.gifs.search') }}?q='+encodeURIComponent(q),{headers:{Accept:'application/json'}});if(!res.ok)throw Error();const data=await res.json();gifResults.replaceChildren();(data.results||[]).forEach(g=>{const btn=document.createElement('button');btn.type='button';btn.className='pm-composer__gif-item';const img=document.createElement('img');img.src=g.preview;img.alt=g.title||'GIF';btn.append(img);btn.addEventListener('click',()=>{gifInput.value=g.url;gifSelected.hidden=false;emojiPicker.hidden=true;textarea.value='';});gifResults.append(btn);});if(!data.results?.length)gifResults.textContent='Sonuç bulunamadı.';}catch(e){gifResults.textContent='GIF yüklenemedi. API anahtarını kontrol edin.';}},350);});
+            document.querySelector('[data-clear-gif]')?.addEventListener('click',()=>{gifInput.value='';gifSelected.hidden=true;});
+            fileInput?.addEventListener('change',()=>{const file=fileInput.files?.[0];filePreview.hidden=!file;if(file)filePreview.textContent=file.name+' · '+Math.ceil(file.size/1024)+' KB';});
+            composer?.addEventListener('submit',e=>{if(!(textarea.value.trim()||fileInput.files.length||gifInput.value)){e.preventDefault();textarea.focus();}});
+            document.addEventListener('click',e=>{if(!e.target.closest('.pm-composer__emoji-wrap')&&emojiPicker)emojiPicker.hidden=true;});
             const messages = document.querySelector('#pmMessages');
             if (!messages) return;
 
