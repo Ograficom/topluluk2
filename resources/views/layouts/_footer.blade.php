@@ -7,9 +7,6 @@
                 <x-repost-icon name="more" size="18" class="color-gray" />
             </button>
             <ul class="dropdown-menu dropdown-menu-end" id="footer-more-menu">
-                <li class="dropdown-menu-item dropdown-menu-item-md">
-                    <a href="{{ route('posts.latest') }}">Son yazılar</a>
-                </li>
                 @foreach ($footerPages as $page)
                     <li class="dropdown-menu-item dropdown-menu-item-md">
                         <a href="{{ route('pages.show', $page->slug) }}">{{ $page->title }}</a>

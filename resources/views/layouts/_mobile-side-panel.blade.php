@@ -22,7 +22,7 @@
                 <section class="widget card card-body">
                     <header><h2 class="widget__title h6">Etiketler</h2></header>
                     <div class="widget__content tagscloud">
-                        @forelse ($mobilePopularTags as $tag)
+                        @forelse ($mobilePopularTags as $tag => $count)
                             <span><a href="{{ route('tags.show', ['tag' => $tag]) }}">{{ $tag }}</a></span>
                         @empty
                             <span class="small color-gray">Henüz etiket yok</span>
