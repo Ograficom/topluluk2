@@ -78,6 +78,9 @@
                                         <span class="user-box-content">
                                             <span class="name">
                                                 <span class="name-text">{{ auth()->user()->displayName() }}</span>
+                                                @if (auth()->user()->hasVerifiedCompanyBadge())
+                                                    <x-company-verified-badge size="14" />
+                                                @endif
                                                 @if (auth()->user()->hasVerifiedBadge())
                                                     <span class="verify" role="img" aria-label="Doğrulanmış hesap" title="Doğrulanmış hesap"><x-repost-icon name="verify" size="14" /></span>
                                                 @endif
@@ -281,7 +284,10 @@
                                                 <span class="user-box-content">
                                                     <strong class="name">
                                                         <span class="name-text">{{ $author->displayName() }}</span>
-                                                        @if ($author->hasVerifiedBadge())
+                                                        @if ($author->hasVerifiedCompanyBadge())
+                                                                <x-company-verified-badge size="14" />
+                                                            @endif
+                                                            @if ($author->hasVerifiedBadge())
                                                             <span class="verify" role="img" aria-label="Doğrulanmış hesap" title="Doğrulanmış hesap"><x-repost-icon name="verify" size="14" /></span>
                                                         @endif
                                                     </strong>
