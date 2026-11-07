@@ -14,6 +14,8 @@ return [
     |
     */
 
+    'giphy' => ['key' => env('GIPHY_API_KEY', env('GIF_API_KEY'))],
+
     'postmark' => [
         'token' => env('POSTMARK_TOKEN'),
     ],
