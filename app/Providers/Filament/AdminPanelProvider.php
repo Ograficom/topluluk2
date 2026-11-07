@@ -9,6 +9,7 @@ use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
 use Filament\Pages\Dashboard;
+use Filament\Navigation\NavigationGroup;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
@@ -33,6 +34,11 @@ class AdminPanelProvider extends PanelProvider
             ->brandLogoHeight('36px')
             ->favicon(fn (): ?string => SiteSetting::current()?->faviconUrl() ?? asset('assets/img/meta/logo.svg'))
             ->login()
+            ->navigationGroups([
+                NavigationGroup::make()
+                    ->label('Ayarlar')
+                    ->icon(\\Filament\\Support\\Icons\\Heroicon::OutlinedCog6Tooth),
+            ])
             ->colors([
                 'primary' => Color::Blue,
             ])
