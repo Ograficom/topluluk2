@@ -63,9 +63,6 @@
                                     @endif
                                 </ul>
                             </div>
-                            @if ($isUnread)
-                                <span class="pm-item__unread" aria-label="{{ $conversation->unread_count }} okunmamış mesaj"></span>
-                            @endif
                         </article>
                     @empty
                         <div class="card-body empty-state">

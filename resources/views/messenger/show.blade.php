@@ -31,14 +31,6 @@
                         @endif
                     </div>
                 </div>
-                @if ($other)
-                    <a class="pm-dialog__profile" href="{{ route('profiles.show', $other) }}" aria-label="Kullanıcı profilini aç">
-                        <img src="{{ $other->avatarUrl() }}" alt="" width="44" height="44">
-                        @if ($other->isOnline())
-                            <span class="is-online" title="Çevrimiçi"></span>
-                        @endif
-                    </a>
-                @endif
             </header>
 
             <div class="pm-dialog__messages" id="pmMessages">
@@ -104,7 +96,6 @@
                     <p class="small color-red">{{ $message }}</p>
                 @enderror
                 <div class="pm-dialog__composer-actions">
-                    <span class="small color-gray">Enter ile gönderme kapalı · Mesajını göndermek için butona bas.</span>
                     <button class="btn btn-primary" type="submit">Gönder</button>
                 </div>
             </form>
