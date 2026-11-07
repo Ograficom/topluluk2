@@ -729,7 +729,7 @@ body.is-messenger-conversation .pm-dialog__header-more{
 body.is-messenger-conversation .pm-dialog__header-more:hover{
   background:#f1f3f5!important;
 }
-@media(max-width:767px){
+@media(max-width:640px){
   body.is-messenger-conversation .pm.card.card-body{
     margin:0!important;padding:0!important;border-radius:0!important;min-height:100dvh!important;
   }
@@ -750,7 +750,7 @@ body.is-messenger-conversation .pm-dialog__header-more:hover{
 
 /* Mobile-only Telegram-inspired conversation bar.
    Keep the normal OgraFi site header untouched on desktop. */
-@media(max-width:767px){
+@media(max-width:640px){
   body.is-messenger-conversation > .header,
   body.is-messenger-conversation .header{
     display:none!important;
@@ -818,7 +818,7 @@ body.is-messenger-conversation .pm-dialog__header-more:hover{
   }
 }
 /* Desktop: retain the original OgraFi global header and normal conversation header. */
-@media(min-width:768px){
+@media(min-width:641px){
   body.is-messenger-conversation .header{display:flex!important}
   body.is-messenger-conversation .pm-dialog__header--conversation{
     position:static!important;top:auto!important;width:100%!important;
@@ -828,7 +828,7 @@ body.is-messenger-conversation .pm-dialog__header-more:hover{
 
 
 /* Mobile-only Telegram-style header: hide OgraFi branding during an active conversation */
-@media (max-width: 767px) {
+@media (max-width: 640px) {
   body.is-messenger-conversation > header.header {
     display: none !important;
     height: 0 !important;
@@ -881,7 +881,7 @@ body.is-messenger-conversation .pm-dialog__header-more:hover{
 
 
 /* Mobile conversation header: flush to the top and wider side-to-side */
-@media (max-width: 767px) {
+@media (max-width: 640px) {
   body.is-messenger-conversation .pm-dialog__header--conversation {
     position: sticky !important;
     top: 0 !important;
@@ -896,7 +896,7 @@ body.is-messenger-conversation .pm-dialog__header-more:hover{
 
 
 /* Conversation screen mobile canvas: remove the site's desktop grid/container framing */
-@media (max-width: 767px) {
+@media (max-width: 640px) {
   html:has(body.is-messenger-conversation),
   body.is-messenger-conversation {
     width:100%!important;
@@ -971,7 +971,7 @@ body.is-messenger-conversation .pm-dialog__header-more:hover{
 
 
 /* Keep the Telegram-style conversation bar fixed to the viewport while scrolling */
-@media (max-width: 767px) {
+@media (max-width: 640px) {
   body.is-messenger-conversation .pm-dialog {
     padding-top: 76px !important;
   }
@@ -987,5 +987,80 @@ body.is-messenger-conversation .pm-dialog__header-more:hover{
     min-height: 58px !important;
     margin: 0 !important;
     box-sizing: border-box !important;
+  }
+}
+
+
+/* Desktop/tablet messenger: restore the normal site layout and stop using the mobile fixed header */
+@media (min-width: 641px) {
+  body.is-messenger-conversation .header {
+    display: flex !important;
+  }
+  body.is-messenger-conversation main.container {
+    width: min(100% - 40px, 1440px) !important;
+    max-width: 1440px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+  }
+  body.is-messenger-conversation .main {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) 280px !important;
+    gap: 24px !important;
+    width: 100% !important;
+    max-width: none !important;
+    margin: 0 auto !important;
+    padding: 0 !important;
+  }
+  body.is-messenger-conversation .main > .sidebar {
+    display: block !important;
+  }
+  body.is-messenger-conversation .main > .main__widgets {
+    display: block !important;
+    min-width: 0 !important;
+  }
+  body.is-messenger-conversation .main > .feed {
+    display: block !important;
+    min-width: 0 !important;
+    width: 100% !important;
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  body.is-messenger-conversation .pm.card.card-body {
+    width: 100% !important;
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 1px solid #e8edf3 !important;
+    border-radius: 18px !important;
+    background: #fff !important;
+    box-shadow: 0 2px 12px rgba(20,35,55,.05) !important;
+    overflow: visible !important;
+  }
+  body.is-messenger-conversation .pm-dialog {
+    display: flex !important;
+    flex-direction: column !important;
+    min-width: 0 !important;
+    padding-top: 0 !important;
+    overflow: visible !important;
+  }
+  body.is-messenger-conversation .pm-dialog__header--conversation {
+    position: static !important;
+    top: auto !important;
+    left: auto !important;
+    transform: none !important;
+    z-index: auto !important;
+    width: 100% !important;
+    max-width: none !important;
+    min-height: 68px !important;
+    margin: 0 !important;
+    padding: 12px 20px !important;
+    border: 0 !important;
+    border-bottom: 1px solid #edf0f4 !important;
+    border-radius: 0 !important;
+    background: #fff !important;
+    box-shadow: none !important;
   }
 }
