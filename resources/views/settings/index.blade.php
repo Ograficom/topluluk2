@@ -294,11 +294,13 @@
                         tabindex="0"
                         @if ($activeTab !== 'verify') hidden @endif
                     >
-                        <h1 class="h3">Mavi tik doğrulaması</h1>
+                        <h1 class="h3">{{ $user->is_company ? "Şirket doğrulaması" : "Mavi tik doğrulaması" }}</h1>
                         <div class="setting__box">
                             <section class="setting__list">
-                                @if ($user->hasVerifiedCompanyBadge())
+                                @if ($user->is_company && $user->hasVerifiedCompanyBadge())
                                     <p>Şirket hesabınız altın rozetle doğrulanmıştır.</p>
+                                @elseif ($user->is_company)
+                                    <p>Bu bir şirket hesabıdır. Altın şirket doğrulama rozeti yönetici incelemesiyle verilir.</p>
                                 @elseif ($user->hasVerifiedBadge())
                                     <p>Hesabınız başarıyla doğrulandı.</p>
                                     <span class="verify" role="img" aria-label="Doğrulanmış hesap"><x-repost-icon name="verify" size="18" /></span>
@@ -382,7 +384,7 @@
                                 'site' => ['Tercihler', 'compass'],
                                 'security' => ['Güvenlik', 'security'],
                                 'blacklist' => ['Engellenenler', 'list'],
-                                'verify' => ['Mavi tik doğrulaması', 'comment'],
+                                'verify' => [$user->is_company ? 'Şirket doğrulaması' : 'Mavi tik doğrulaması', 'comment'],
                                 'delete' => ['Hesabı sil', 'trash'],
                             ] as $tab => [$label, $icon])
                                 <li class="menu__item {{ $tab === 'delete' ? 'menu__item--danger' : '' }}">
