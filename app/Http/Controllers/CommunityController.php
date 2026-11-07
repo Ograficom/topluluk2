@@ -112,7 +112,14 @@ class CommunityController extends Controller
         $viewer = $request->user();
         $conversations = $viewer->conversations()
             ->with(['participants' => fn ($query) => $query->where('users.id', '<>', $viewer->id), 'latestMessage.user'])
-            ->withCount('messages')->orderByDesc('conversations.updated_at')->paginate(20);
+            ->withCount([
+                'messages',
+                'messages as unread_count' => fn ($query) => $query
+                    ->where('user_id', '<>', $viewer->id)
+                    ->whereNull('read_at'),
+            ])
+            ->orderByDesc('conversations.updated_at')
+            ->paginate(20);
         return view('messenger.index', compact('conversations'));
     }
 
