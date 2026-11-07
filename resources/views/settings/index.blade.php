@@ -419,10 +419,19 @@
             <header class="modal-header">
                 <h2 class="modal-title" id="changeUsernameModalLabel">Kullanıcı adını değiştir</h2>
             </header>
-            <div class="modal-body">Kullanıcı adını ayda en fazla bir kez değiştirebilirsin. Değişiklik talebinde bulunmak için destek ekibiyle iletişime geçin.</div>
-            <div class="modal-footer">
-                <a href="{{ route('contacts') }}" class="btn btn-primary">Destek ile iletişime geçin.</a>
-            </div>
+            <form action="{{ route('settings.username.update') }}" method="POST">
+                @csrf
+                @method('PATCH')
+                <div class="modal-body">
+                    <label for="settings-username">Kullanıcı adı</label>
+                    <input id="settings-username" type="text" name="username" value="{{ old('username', $user->username) }}" maxlength="30" autocomplete="nickname" autocapitalize="none" spellcheck="false" required>
+                    <p class="small color-gray">E-posta adresinden bağımsız, kendin belirle. En fazla 30 karakter ve başka bir kullanıcı tarafından alınmamış olmalı.</p>
+                    @error('username')<p class="color-red" role="alert">{{ $message }}</p>@enderror
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Kullanıcı adını kaydet</button>
+                </div>
+            </form>
         </div>
     </div>
     <div class="modal" id="twoFactorSetupModal" data-modal="two-factor-setup" role="dialog" aria-modal="true" aria-labelledby="twoFactorSetupModalLabel" aria-hidden="true">
@@ -594,6 +603,15 @@
     });
 
     modal.querySelector('[data-two-factor-finish]')?.addEventListener('click', () => window.location.reload());
+})();
+</script>
+
+<script>
+(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('choose_username') !== '1') return;
+    document.querySelector('[data-modal-btn="change-username"]')?.click();
+    document.getElementById('settings-username')?.focus();
 })();
 </script>
 @endpush
