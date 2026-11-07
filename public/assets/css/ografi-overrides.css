@@ -991,21 +991,21 @@ body.is-messenger-conversation .pm-dialog__header-more:hover{
 }
 
 
-/* Desktop/tablet messenger: preserve the original three-column OgraFi grid */
+/* Conversation page: restore the exact original Repost theme container and grid widths */
 @media (min-width: 641px) {
   body.is-messenger-conversation main.container {
-    width: min(100% - 40px, 1440px) !important;
-    max-width: 1440px !important;
+    width: 100% !important;
+    max-width: var(--container, 1120px) !important;
     margin-left: auto !important;
     margin-right: auto !important;
-    padding-left: 20px !important;
-    padding-right: 20px !important;
+    padding-left: 10px !important;
+    padding-right: 10px !important;
   }
   body.is-messenger-conversation .main.main__grid {
     display: grid !important;
-    grid-template-columns: 185px minmax(0, 1fr) 280px !important;
+    grid-template-columns: 55px minmax(280px, auto) 320px !important;
     align-items: start !important;
-    gap: 24px !important;
+    gap: var(--main-gap, 20px) !important;
     width: 100% !important;
     max-width: none !important;
     margin: 0 auto !important;
