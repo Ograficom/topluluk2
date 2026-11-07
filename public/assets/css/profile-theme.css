@@ -289,3 +289,16 @@
     margin-top: 22px;
   }
 }
+
+
+/* Mobile profile footer: reserve real layout space after the About card.
+   Padding is intentional here (rather than margin) to avoid margin collapse
+   and to remain effective alongside the shared app.css responsive rule. */
+@media screen and (max-width: 920px) {
+  .profile__aside > aside > .profile__aside-footer {
+    display: block !important;
+    box-sizing: border-box;
+    margin-top: 0 !important;
+    padding-top: 28px !important;
+  }
+}
