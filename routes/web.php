@@ -158,6 +158,8 @@ Route::middleware(['auth', 'verified'])->group(function (): void {
     Route::post('/users/{recipient}/message', [CommunityController::class, 'startConversation'])->middleware('throttle:20,1')->name('messenger.start');
 
     Route::get('/messenger', [CommunityController::class, 'messenger'])->name('messenger.index');
+    Route::get('/messenger/gifs/search', [CommunityController::class, 'searchGifs'])->middleware('throttle:30,1')->name('messenger.gifs.search');
+    Route::get('/messenger/{conversation}/messages/{message}/attachment', [CommunityController::class, 'downloadMessageAttachment'])->name('messenger.messages.attachment');
     Route::post('/messenger/{conversation}/action', [CommunityController::class, 'conversationAction'])->middleware('throttle:30,1')->name('messenger.conversations.action');
     Route::get('/messenger/{conversation}', [CommunityController::class, 'showConversation'])->name('messenger.show');
     Route::post('/messenger/{conversation}/messages', [CommunityController::class, 'sendMessage'])->middleware('throttle:30,1')->name('messenger.messages.store');
