@@ -92,3 +92,53 @@
 .pm-item__dropdown .dropdown-menu .dropdown-menu-item.is-danger > form > button:hover,
 .pm-dialog__actions .dropdown-menu .dropdown-menu-item.is-danger > form > button:hover { background: #fff1f0 !important; }
 .pm-item__dropdown .dropdown-menu, .pm-dialog__actions .dropdown-menu { padding: 6px !important; }
+
+
+/* Refined messenger dropdown actions */
+.pm-dialog__actions .dropdown-menu .dropdown-menu-item {
+    display: block !important;
+    width: 100% !important;
+    padding: 0 !important;
+    border-radius: 10px !important;
+    background: transparent !important;
+}
+.pm-dialog__actions .dropdown-menu .dropdown-menu-item.is-danger {
+    background: transparent !important;
+}
+.pm-dialog__actions .dropdown-menu .dropdown-menu-item > button,
+.pm-dialog__actions .dropdown-menu .dropdown-menu-item > form > button {
+    display: flex !important;
+    align-items: center !important;
+    width: 100% !important;
+    min-height: 38px !important;
+    padding: 9px 12px !important;
+    border: 0 !important;
+    border-radius: 9px !important;
+    background: transparent !important;
+    color: #303640 !important;
+    font: inherit !important;
+    font-size: 13px !important;
+    font-weight: 500 !important;
+    line-height: 1.35 !important;
+    text-align: left !important;
+    box-shadow: none !important;
+    cursor: pointer !important;
+    transition: background-color .15s ease, color .15s ease !important;
+}
+.pm-dialog__actions .dropdown-menu .dropdown-menu-item > button:hover,
+.pm-dialog__actions .dropdown-menu .dropdown-menu-item > form > button:hover {
+    background: #f3f6fb !important;
+    color: #145ee8 !important;
+}
+.pm-dialog__actions .dropdown-menu .dropdown-menu-item.is-danger > form > button {
+    color: #e5484d !important;
+    font-weight: 500 !important;
+}
+.pm-dialog__actions .dropdown-menu .dropdown-menu-item.is-danger > form > button:hover {
+    color: #c92a32 !important;
+    background: #fff1f1 !important;
+}
+.pm-dialog__actions .dropdown-menu {
+    padding: 6px !important;
+    gap: 2px !important;
+}
