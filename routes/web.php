@@ -158,6 +158,7 @@ Route::middleware(['auth', 'verified'])->group(function (): void {
     Route::post('/users/{recipient}/message', [CommunityController::class, 'startConversation'])->middleware('throttle:20,1')->name('messenger.start');
 
     Route::get('/messenger', [CommunityController::class, 'messenger'])->name('messenger.index');
+    Route::post('/messenger/{conversation}/action', [CommunityController::class, 'conversationAction'])->middleware('throttle:30,1')->name('messenger.conversations.action');
     Route::get('/messenger/{conversation}', [CommunityController::class, 'showConversation'])->name('messenger.show');
     Route::post('/messenger/{conversation}/messages', [CommunityController::class, 'sendMessage'])->middleware('throttle:30,1')->name('messenger.messages.store');
     Route::patch('/messenger/{conversation}/messages/{message}', [CommunityController::class, 'updateMessage'])->middleware('throttle:30,1')->name('messenger.messages.update');

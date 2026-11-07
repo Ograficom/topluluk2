@@ -11,8 +11,12 @@
                     <x-repost-icon name="more" size="18" class="color-gray" />
                 </button>
                 <ul class="pm__dropdown dropdown-menu dropdown-menu-end" id="pmMenu">
-                    <li class="dropdown-menu-item dropdown-menu-item-sm"><a href="{{ route('members.index') }}">Yeni mesaj başlat</a></li>
-                    <li class="dropdown-menu-item dropdown-menu-item-sm"><a href="{{ route('posts.index') }}">Akışa dön</a></li>
+                    <li class="dropdown-menu-item dropdown-menu-item-sm"><a href="{{ route('members.index') }}">Bir mesaj yazın</a></li>
+                    <li class="dropdown-menu-item dropdown-menu-item-sm"><a href="{{ route('messenger.index') }}">Mesaj listesi</a></li>
+                    <li class="pm__dropdown-limit">
+                        <div class="pm__limit-label">{{ $messageUsagePercent }}% / (50 mesaj)</div>
+                        <div class="pm_progress_bar" role="progressbar" aria-label="Mesaj kullanım oranı" aria-valuemin="0" aria-valuemax="100" aria-valuenow="{{ $messageUsagePercent }}"><span style="width: {{ $messageUsagePercent }}%"></span></div>
+                    </li>
                 </ul>
             </div>
         </header>
@@ -57,10 +61,9 @@
                                     <x-repost-icon name="more" size="18" />
                                 </button>
                                 <ul class="dropdown-menu dropdown-menu-end">
-                                    <li class="dropdown-menu-item dropdown-menu-item-sm"><a href="{{ route('messenger.show', $conversation) }}">Konuşmayı aç</a></li>
-                                    @if ($person)
-                                        <li class="dropdown-menu-item dropdown-menu-item-sm"><a href="{{ route('profiles.show', $person) }}">Profili görüntüle</a></li>
-                                    @endif
+                                    <li class="dropdown-menu-item dropdown-menu-item-sm"><form action="{{ route('messenger.conversations.action', $conversation) }}" method="POST">@csrf<input type="hidden" name="action" value="read"><button type="submit">Okundu olarak işaretle</button></form></li>
+                                    <li class="dropdown-menu-item dropdown-menu-item-sm"><form action="{{ route('messenger.conversations.action', $conversation) }}" method="POST">@csrf<input type="hidden" name="action" value="unread"><button type="submit">Okunmamış olarak işaretle</button></form></li>
+                                    <li class="dropdown-menu-item dropdown-menu-item-sm is-danger"><form action="{{ route('messenger.conversations.action', $conversation) }}" method="POST" data-delete-conversation>@csrf<input type="hidden" name="action" value="delete"><button type="submit">Silmek</button></form></li>
                                 </ul>
                             </div>
                         </article>
@@ -90,6 +93,12 @@
 @push('scripts')
     <script>
         (() => {
+            document.querySelectorAll('[data-delete-conversation]').forEach((form) => {
+                form.addEventListener('submit', (event) => {
+                    if (!window.confirm('Bu konuşmayı mesaj listenden kaldırmak istiyor musun?')) event.preventDefault();
+                });
+            });
+
             const filter = document.querySelector('[data-pm-unread-filter]');
             const list = document.querySelector('.pm-list');
             const empty = document.querySelector('[data-pm-empty]');

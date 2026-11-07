@@ -121,7 +121,34 @@ class CommunityController extends Controller
             ])
             ->orderByDesc('conversations.updated_at')
             ->paginate(20);
-        return view('messenger.index', compact('conversations'));
+        $messageUsageCount = Message::query()->where('user_id', $viewer->id)->count();
+        $messageUsagePercent = min(100, (int) round(($messageUsageCount / 50) * 100));
+        return view('messenger.index', compact('conversations', 'messageUsageCount', 'messageUsagePercent'));
+    }
+
+    public function conversationAction(Request $request, Conversation $conversation): RedirectResponse
+    {
+        $viewer = $request->user();
+        abort_unless($conversation->participants()->where('users.id', $viewer->id)->exists(), 404);
+        $validated = $request->validate(['action' => ['required', 'in:read,unread,delete']]);
+
+        if ($validated['action'] === 'read') {
+            $conversation->messages()->where('user_id', '<>', $viewer->id)->whereNull('read_at')->update(['read_at' => now()]);
+            $conversation->participants()->updateExistingPivot($viewer->id, ['last_read_at' => now()]);
+            return back()->with('status', 'Konuşma okundu olarak işaretlendi.');
+        }
+
+        if ($validated['action'] === 'unread') {
+            $latestIncoming = $conversation->messages()->where('user_id', '<>', $viewer->id)->latest('created_at')->first();
+            if ($latestIncoming) {
+                $latestIncoming->update(['read_at' => null]);
+                $conversation->participants()->updateExistingPivot($viewer->id, ['last_read_at' => null]);
+            }
+            return back()->with('status', 'Konuşma okunmamış olarak işaretlendi.');
+        }
+
+        $conversation->participants()->detach($viewer->id);
+        return redirect()->route('messenger.index')->with('status', 'Konuşma mesaj listenden kaldırıldı.');
     }
 
     public function showConversation(Request $request, Conversation $conversation): View
