@@ -4,36 +4,24 @@
 
 @section('content')
     <article class="pm card card-body">
-        <header class="pm__header">
-            <h1 class="h3"><a href="{{ route('messenger.index') }}">Mesajlar</a></h1>
-            <div class="dropdown dropdown-md">
-                <button class="btn btn-secondary btn-xs btn-rounded" type="button" data-dropdown-toggle aria-expanded="false" aria-haspopup="menu" aria-controls="pmDialogMenu" aria-label="Sohbet menüsünü aç">
-                    <x-repost-icon name="more" size="18" class="color-gray" />
-                </button>
-                <ul class="pm__dropdown dropdown-menu dropdown-menu-end" id="pmDialogMenu">
-                    <li class="dropdown-menu-item dropdown-menu-item-sm"><a href="#dialog-message">Bir mesaj yazın</a></li>
-                    <li class="dropdown-menu-item dropdown-menu-item-sm"><a href="{{ route('messenger.index') }}">Mesaj listesi</a></li>
-                    <li class="pm__dropdown-limit">
-                        <div class="pm__limit-label">{{ $messageUsagePercent }}% / (50 mesaj)</div>
-                        <div class="pm_progress_bar" role="progressbar" aria-label="Mesaj kullanım oranı" aria-valuemin="0" aria-valuemax="100" aria-valuenow="{{ $messageUsagePercent }}"><span style="width: {{ $messageUsagePercent }}%"></span></div>
-                    </li>
-                </ul>
-            </div>
-        </header>
-
         <section class="pm-dialog">
-            <header class="pm-dialog__header">
+            <header class="pm-dialog__header pm-dialog__header--conversation">
                 <button class="pm-dialog__identity" type="button" data-open-user-info aria-label="Kullanıcı bilgilerini aç">
                     <img class="pm-dialog__identity-avatar" src="{{ $other?->avatarUrl() ?? asset('assets/img/noavatar.png') }}" alt="{{ $other?->displayName() ?? 'Kullanıcı' }}">
                     <span class="pm-dialog__identity-copy">
                         <strong>{{ $other?->displayName() ?? 'OgraFi üyesi' }}</strong>
-                        <span class="pm-dialog__identity-status"><i class="{{ $other?->isOnline() ? 'is-online' : '' }}"></i>@if ($other?->isOnline()) Şu anda çevrimiçi @elseif ($other?->last_seen_at) {{ $other->last_seen_at->locale('tr')->diffForHumans() }} aktifti @else Aktiflik bilgisi yok @endif</span>
+                        <span class="pm-dialog__identity-status"><i class="{{ $other?->isOnline() ? 'is-online' : '' }}"></i>@if ($other?->isOnline()) Şu anda çevrimiçi @elseif ($other?->last_seen_at) {{ '@'.$other->username }} · {{ $other->last_seen_at->locale('tr')->diffForHumans() }} aktifti @else {{ '@'.$other?->username }} · Aktiflik bilgisi yok @endif</span>
                     </span>
                 </button>
-
-                @if ($other)
-
-                @endif
+                <div class="dropdown dropdown-md pm-dialog__header-menu">
+                    <button class="pm-dialog__header-more" type="button" data-dropdown-toggle aria-expanded="false" aria-haspopup="menu" aria-label="Sohbet seçenekleri"><x-repost-icon name="more" size="19" /></button>
+                    <ul class="pm__dropdown dropdown-menu dropdown-menu-end">
+                        <li class="dropdown-menu-item dropdown-menu-item-sm"><button type="button" data-open-user-info>Kullanıcı bilgisi</button></li>
+                        <li class="dropdown-menu-item dropdown-menu-item-sm"><a href="#dialog-message">Bir mesaj yazın</a></li>
+                        <li class="dropdown-menu-item dropdown-menu-item-sm"><a href="{{ route('messenger.index') }}">Mesaj listesi</a></li>
+                        <li class="pm__dropdown-limit"><div class="pm__limit-label">{{ $messageUsagePercent }}% / (50 mesaj)</div><div class="pm_progress_bar" role="progressbar" aria-label="Mesaj kullanım oranı" aria-valuemin="0" aria-valuemax="100" aria-valuenow="{{ $messageUsagePercent }}"><span style="width: {{ $messageUsagePercent }}%"></span></div></li>
+                    </ul>
+                </div>
             </header>
 
             <section class="pm-user-info" data-user-info hidden aria-label="Kullanıcı bilgileri">
