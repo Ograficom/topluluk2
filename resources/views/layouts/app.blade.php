@@ -14,9 +14,6 @@
     <link rel="stylesheet" href="{{ asset('assets/css/kit.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/app.css') }}?v=20261106-settings-social-polish">
     <link rel="stylesheet" href="{{ asset('assets/css/engine.css') }}?v=20261106-social-account-management">
-    @if (request()->routeIs('profiles.show'))
-        <link rel="stylesheet" href="{{ asset('assets/css/profile-theme.css') }}?v=20261107-profile-layout">
-    @endif
     <script>
         (() => {
             const root = document.documentElement;
