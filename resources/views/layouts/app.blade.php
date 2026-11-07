@@ -359,7 +359,10 @@
                                                     @if ($comment->user)
                                                         <a href="{{ route('profiles.show', $comment->user) }}" class="name">
                                                             <span class="name-text">{{ $comment->user->displayName() }}</span>
-                                                            @if ($comment->user->hasVerifiedBadge())
+                                                            @if ($comment->user->hasVerifiedCompanyBadge())
+                    <x-company-verified-badge size="14" />
+                @endif
+                @if ($comment->user->hasVerifiedBadge())
                                                                 <span class="verify" role="img" aria-label="Doğrulanmış profil"><x-repost-icon name="verify" size="14" /></span>
                                                             @endif
                                                         </a>
