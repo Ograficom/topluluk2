@@ -991,11 +991,8 @@ body.is-messenger-conversation .pm-dialog__header-more:hover{
 }
 
 
-/* Desktop/tablet messenger: restore the normal site layout and stop using the mobile fixed header */
+/* Desktop/tablet messenger: preserve the original three-column OgraFi grid */
 @media (min-width: 641px) {
-  body.is-messenger-conversation .header {
-    display: flex !important;
-  }
   body.is-messenger-conversation main.container {
     width: min(100% - 40px, 1440px) !important;
     max-width: 1440px !important;
@@ -1004,9 +1001,10 @@ body.is-messenger-conversation .pm-dialog__header-more:hover{
     padding-left: 20px !important;
     padding-right: 20px !important;
   }
-  body.is-messenger-conversation .main {
+  body.is-messenger-conversation .main.main__grid {
     display: grid !important;
-    grid-template-columns: minmax(0, 1fr) 280px !important;
+    grid-template-columns: 185px minmax(0, 1fr) 280px !important;
+    align-items: start !important;
     gap: 24px !important;
     width: 100% !important;
     max-width: none !important;
@@ -1014,9 +1012,6 @@ body.is-messenger-conversation .pm-dialog__header-more:hover{
     padding: 0 !important;
   }
   body.is-messenger-conversation .main > .sidebar {
-    display: block !important;
-  }
-  body.is-messenger-conversation .main > .main__widgets {
     display: block !important;
     min-width: 0 !important;
   }
@@ -1028,9 +1023,16 @@ body.is-messenger-conversation .pm-dialog__header-more:hover{
     margin: 0 !important;
     padding: 0 !important;
   }
+  body.is-messenger-conversation .main > .main__widgets {
+    display: block !important;
+    min-width: 0 !important;
+    width: 100% !important;
+  }
   body.is-messenger-conversation .pm.card.card-body {
+    display: block !important;
     width: 100% !important;
     max-width: none !important;
+    min-width: 0 !important;
     margin: 0 !important;
     padding: 0 !important;
     border: 1px solid #e8edf3 !important;
@@ -1064,7 +1066,6 @@ body.is-messenger-conversation .pm-dialog__header-more:hover{
     box-shadow: none !important;
   }
 }
-
 
 /* Fixed message composer on both desktop and mobile */
 body.is-messenger-conversation .pm-dialog__composer.pm-composer {
@@ -1101,5 +1102,14 @@ body.is-messenger-conversation .pm-dialog__composer .pm-composer__emoji-picker {
   }
   body.is-messenger-conversation .pm-dialog__messages {
     padding-bottom: 100px !important;
+  }
+}
+
+
+/* Desktop composer remains viewport-fixed and uses the full conversation width */
+@media (min-width: 641px) {
+  body.is-messenger-conversation .pm-dialog__composer.pm-composer {
+    width: min(760px, calc(100vw - 500px)) !important;
+    max-width: 760px !important;
   }
 }
