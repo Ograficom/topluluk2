@@ -1,63 +1,129 @@
-# Repost
+# OgraFi
 
-Repost, sağlanan HTML tasarımını Laravel 12 ve Filament yönetim paneliyle birleştiren bir içerik topluluğu uygulamasıdır.
+OgraFi, kullanıcıların içerik yayımlayabildiği, farklı kanallarda topluluklar oluşturabildiği ve diğer üyelerle etkileşim kurabildiği Laravel tabanlı bir içerik ve topluluk platformudur.
 
-## Gereksinimler
+Proje; içerik akışı, kanal sayfaları, üye profilleri ve yönetim araçlarını tek bir uygulamada bir araya getirir. Arayüz, masaüstü ve mobil ekranlarda kullanılabilecek şekilde tasarlanmıştır.
 
-- PHP 8.3 veya üzeri
-- Composer
-- SQLite (PHP `pdo_sqlite` eklentisi)
+## Öne çıkan özellikler
+
+### İçerik ve akış
+- Yayınlanmış yazıların listelendiği ana akış.
+- Yazı ayrıntı sayfaları, arama ve sayfalama.
+- Yazılarda kapak/görsel galerisi, etiketler ve içerik bilgileri.
+- Beğeni, beğenmeme, yorum, görüntülenme ve yer imi etkileşimleri.
+- Yazı oluşturma ve yayın durumunu yönetme.
+
+### Kanallar ve topluluk
+- Kanalların listelendiği keşif sayfası.
+- Her kanal için açıklama, abone sayısı ve kanal yazıları.
+- Kanallara abone olma ve kanal içeriklerini görüntüleme.
+- Kanal yazıları ve yorumları arasında gezinme.
+
+### Üyelik ve profiller
+- Kayıt, oturum açma ve e-posta doğrulama.
+- Kullanıcı adıyla profil adresleri.
+- Profil bilgileri, avatar ve sosyal bağlantılar.
+- Kullanıcıları takip etme ve çevrimiçi durumunu gösterme.
+- Google ve Yandex gibi sosyal giriş sağlayıcılarıyla hesap bağlantısı.
+- Bildirim ve hesap tercihleri.
+
+### Yönetim paneli
+- Filament tabanlı yönetim paneli: `/admin`.
+- Yazı ve kanal yönetimi.
+- Kullanıcı ve doğrulama başvurularını yönetme.
+- Marka, e-posta, sitemap ve RSS ayarları.
+- Yönetim paneline erişim yalnızca yönetici yetkisine sahip hesaplara açıktır.
+
+## Teknoloji altyapısı
+
+- **Backend:** Laravel 12
+- **Yönetim paneli:** Filament 5
+- **Frontend:** Blade, Tailwind CSS, Vite ve JavaScript
+- **Veritabanı:** Laravel tarafından desteklenen veritabanları (sunucu yapılandırmasına bağlı olarak MySQL/MariaDB veya SQLite)
+- **PHP:** 8.2 veya üzeri
 
 ## Kurulum
 
-```powershell
+Projeyi klonlayın ve bağımlılıkları yükleyin:
+
+```bash
+git clone https://github.com/Ograficom/topluluk2.git
+cd topluluk2
 composer install
-if (-not (Test-Path .env)) { Copy-Item .env.example .env }
-php artisan key:generate
-php artisan storage:link
+npm install
 ```
 
-`.env` dosyasındaki `FILAMENT_ADMIN_EMAIL` ve `FILAMENT_ADMIN_PASSWORD` alanlarına bir yönetici e-posta adresi ve güçlü bir parola girin. Ardından tabloları ve örnek içerikleri oluşturun:
+Ortam dosyasını oluşturun:
 
+**Windows PowerShell**
 ```powershell
+if (-not (Test-Path .env)) { Copy-Item .env.example .env }
+```
+
+**Linux / macOS**
+```bash
+cp .env.example .env
+```
+
+Uygulama anahtarını oluşturun:
+
+```bash
+php artisan key:generate
+```
+
+Veritabanı bağlantısını `.env` dosyasında yapılandırdıktan sonra:
+
+```bash
 php artisan migrate --seed
+php artisan storage:link
+npm run build
+```
+
+Geliştirme sunucusunu başlatın:
+
+```bash
 php artisan serve
 ```
 
-Uygulama `http://127.0.0.1:8000` adresinde, yönetim paneli ise `/admin` adresinde açılır. İlk kurulumda `.env` dosyasındaki `FILAMENT_ADMIN_EMAIL` ve `FILAMENT_ADMIN_PASSWORD` değerleri ayarlanıp `php artisan migrate --seed` çalıştırıldığında yönetici hesabı oluşturulur.
+Uygulama varsayılan olarak `http://127.0.0.1:8000` adresinde açılır. Yönetim paneli `/admin` yolundadır.
 
-Mevcut bir kullanıcıya yönetici erişimi vermek için komutu **uygulamanın bağlı olduğu sunucu/ortamda** çalıştırın:
+## Yönetici hesabı
 
-```powershell
+İlk yönetici hesabının oluşturulması için `.env` dosyasındaki aşağıdaki değerleri yapılandırın:
+
+```dotenv
+FILAMENT_ADMIN_EMAIL=admin@example.com
+FILAMENT_ADMIN_PASSWORD=guclu-bir-parola
+```
+
+Ardından veritabanı seed işlemini çalıştırın:
+
+```bash
+php artisan migrate --seed
+```
+
+Mevcut bir kullanıcıya yönetici yetkisi vermek için komutu uygulamanın çalıştığı ortamda çalıştırın:
+
+```bash
 php artisan admin:grant kullanici@example.com
 ```
 
-Komut hesabın varlığını doğrular ve erişimi vermeden önce onay ister; parola değiştirmez. Ardından kullanıcı hesabından çıkış yapıp yeniden giriş yaparak `/admin` adresini açın. GitHub'a kod göndermek, uzak sunucudaki veritabanı yetkilerini kendiliğinden değiştirmez; komut dağıtım sonrasında uzak uygulamada ayrıca çalıştırılmalıdır.
-
-## İçerik ve yönetim
-
-- Ana akışta yayınlanmış yazılar listelenir; arama, sayfalama ve yazı ayrıntı sayfası bulunur.
-- Kanallar listelenebilir, her kanalın yayınlanmış yazıları ayrı sayfada görüntülenebilir.
-- Filament panelinde yazı ve kanal oluşturma, düzenleme, silme ve yayın durumunu yönetme ekranları bulunur.
-- Filament panelindeki **Marka ayarları** sayfasından site adı, SVG/raster logo, telif yılı ve Instagram, Telegram, Threads bağlantıları değiştirilebilir; SVG dosyaları güvenli biçimde temizlenerek saklanır.
-- Panel erişimi `users.is_admin` alanı ile sınırlandırılmıştır.
-- Örnek kanallar ve yazılar `php artisan db:seed` ile yüklenir.
-
-## Üyelik ve etkileşimler
-
-- `/signup` üzerinden hesap oluşturulabilir; kullanıcı adı veya e-posta ile `/signin` üzerinden giriş yapılabilir.
-- Giriş yapan üyeler üst menüdeki **Yaz** bağlantısıyla yazı oluşturabilir; kategori/kanal oluşturma formu yalnızca yöneticilere açıktır ve Kanallar sayfasında görünür.
-- Üyeler yazılara yorum bırakabilir, beğeni/beğenmeme tepkisi verebilir ve profil bilgileriyle hesap tercihlerini `/setting.html` sayfasından yönetebilir.
-- Görüntülenme sayısı yazı ayrıntı sayfasında artırılır.
-- Doğrulama rozeti için ayarlardaki Verification bölümünden başvuru gönderilir; yönetici başvuruyu Filament kullanıcı ekranından onaylayabilir veya reddedebilir.
-- Ayarlar ayrıca profil görseli, sosyal bağlantılar, saat dilimi, bildirim tercihleri, 18+ içerik tercihi, parola/e-posta, kara liste ve hesap silme kontrollerini içerir.
-
-## Şablon
-
-Repost HTML şablonunun CSS, JavaScript, görsel ve font dosyaları `public/assets` altına kopyalanmıştır. Uygulama ana akış, yazı ve kanal sayfalarında bu tasarımın stillerini kullanır. Şablonun orijinal dosyaları `Repost/dist` altında korunur.
+Komut kullanıcı hesabını doğrular ve yönetici yetkisi vermeden önce onay ister. GitHub'a kod göndermek, uzak sunucudaki kullanıcı yetkilerini otomatik olarak değiştirmez; komut dağıtım yapılan sunucuda ayrıca çalıştırılmalıdır.
 
 ## Testler
 
-```powershell
+```bash
 php artisan test
 ```
+
+## Proje yapısı
+
+- `app/` — Laravel uygulama kodu, modeller ve yönetim paneli sınıfları.
+- `database/` — Migration, factory ve seed dosyaları.
+- `resources/` — Blade görünümleri, CSS ve JavaScript kaynakları.
+- `public/` — Genel erişime açık varlıklar ve derlenmiş dosyalar.
+- `routes/` — Web ve uygulama rotaları.
+
+## Lisans
+
+Bu depoda ayrıca bir lisans dosyası belirtilmediği sürece kullanım ve dağıtım koşulları için depo sahibinden izin alınmalıdır.
