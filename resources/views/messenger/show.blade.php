@@ -50,7 +50,7 @@
         <img src="{{ $other->avatarUrl() }}" alt="{{ $other->displayName() }}">
         <h3>{{ $other->displayName() }}</h3>
         <p>{{ '@'.$other->username }}</p>
-        <span class="pm-dialog__status {{ $other->isOnline() ? 'is-online' : '' }}"><i class="pm-dialog__status-dot"></i>{{ $other->isOnline() ? 'Çevrimiçi' : 'OgraFi üyesi' }}</span>
+        
     </div>
     <div class="pm-user-info__menu" aria-label="Sohbet seçenekleri">
         <a class="pm-user-info__menu-row" href="{{ route('profiles.show', $other) }}"><span class="pm-user-info__menu-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c.5-3.2 3-5 7-5s6.5 1.8 7 5"/></svg></span><span>Profili görüntüle</span><svg class="pm-user-info__chevron" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg></a>

@@ -521,3 +521,18 @@
   .pm-user-info__menu-icon svg { width: 18px !important; height: 18px !important; }
   .pm-user-info__chevron { width: 15px !important; height: 15px !important; }
 }
+
+/* User info panel: remove membership badge and unify profile background */
+.pm-user-info__profile{
+  background:transparent!important;
+  border-radius:0!important;
+}
+.pm-user-info__profile .pm-dialog__status{display:none!important}
+@media(max-width:640px){
+  .pm-user-info__profile{
+    background:transparent!important;
+    border-radius:0!important;
+    margin:0!important;
+    padding:24px 12px 20px!important;
+  }
+}
