@@ -1,0 +1,27 @@
+/* OgraFi-specific layout corrections.
+   Keep the original Repost theme stylesheets untouched. */
+
+/* Let channel sidebar widgets follow their content naturally.
+   The upper stack must not stretch to fill the viewport. */
+.main__grid-feed > .main__widgets {
+    height: auto;
+    min-height: 0;
+    max-height: none;
+}
+
+.channel-sidebar-widgets {
+    height: auto;
+    min-height: 0;
+    overflow: visible;
+}
+
+.channel-sidebar-scroll {
+    flex: 0 1 auto;
+    min-height: 0;
+    overflow: visible;
+}
+
+.channel-sidebar-comments {
+    flex: 0 0 auto;
+    max-height: none;
+}
