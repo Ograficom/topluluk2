@@ -26,10 +26,15 @@
                 <div class="pm-dialog__heading">
                     <h2>{{ $other?->displayName() ?? 'OgraFi üyesi' }}</h2>
                     <div class="pm-dialog__recipient">
-                        {{ $other?->isOnline() ? 'Şu anda çevrimiçi' : 'Özel konuşma' }}
+                        <span class="pm-dialog__status {{ $other?->isOnline() ? 'is-online' : '' }}">
+                            <span class="pm-dialog__status-dot" aria-hidden="true"></span>
+                            {{ $other?->isOnline() ? 'Şu anda çevrimiçi' : 'Özel konuşma' }}
+                        </span>
                         @if ($other)
-                            <span aria-hidden="true">·</span>
-                            <a class="pm_list" href="{{ route('profiles.show', $other) }}">Profili görüntüle</a>
+                            <a class="pm-dialog__profile-link" href="{{ route('profiles.show', $other) }}">
+                                Profili görüntüle
+                                <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M6 3h7v7M13 3 6.5 9.5M11 9v4H3V5h4" /></svg>
+                            </a>
                         @endif
                     </div>
                 </div>

@@ -204,3 +204,94 @@
     outline: 2px solid rgba(23, 95, 232, .25) !important;
     outline-offset: -2px !important;
 }
+
+
+/* Messenger conversation heading */
+.pm-dialog__header {
+    padding: 20px 22px !important;
+    border-bottom: 1px solid #edf0f5 !important;
+    background: linear-gradient(180deg, #fff 0%, #fbfcfe 100%) !important;
+}
+.pm-dialog__heading {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 8px !important;
+    min-width: 0 !important;
+}
+.pm-dialog__heading h2 {
+    margin: 0 !important;
+    color: #202633 !important;
+    font-size: 19px !important;
+    font-weight: 700 !important;
+    line-height: 1.25 !important;
+    letter-spacing: -.025em !important;
+}
+.pm-dialog__recipient {
+    display: flex !important;
+    align-items: center !important;
+    flex-wrap: wrap !important;
+    gap: 9px !important;
+    color: #718096 !important;
+    font-size: 12px !important;
+    line-height: 1.4 !important;
+}
+.pm-dialog__status {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 7px !important;
+    min-height: 26px !important;
+    padding: 4px 10px !important;
+    border: 1px solid #e9edf3 !important;
+    border-radius: 999px !important;
+    background: #f6f8fb !important;
+    color: #68758a !important;
+    font-weight: 500 !important;
+}
+.pm-dialog__status-dot {
+    width: 7px !important;
+    height: 7px !important;
+    flex: 0 0 7px !important;
+    border-radius: 50% !important;
+    background: #aab4c2 !important;
+}
+.pm-dialog__status.is-online {
+    border-color: #d8f3e3 !important;
+    background: #f0fbf4 !important;
+    color: #16834a !important;
+}
+.pm-dialog__status.is-online .pm-dialog__status-dot {
+    background: #20b66a !important;
+    box-shadow: 0 0 0 3px rgba(32,182,106,.12) !important;
+}
+.pm-dialog__profile-link {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 5px !important;
+    min-height: 26px !important;
+    padding: 4px 9px !important;
+    border-radius: 999px !important;
+    color: #1768ed !important;
+    background: #eef5ff !important;
+    font-size: 12px !important;
+    font-weight: 600 !important;
+    text-decoration: none !important;
+    transition: background-color .15s ease, color .15s ease !important;
+}
+.pm-dialog__profile-link:hover {
+    color: #0e50c4 !important;
+    background: #e2edff !important;
+}
+.pm-dialog__profile-link svg {
+    width: 13px !important;
+    height: 13px !important;
+    fill: none !important;
+    stroke: currentColor !important;
+    stroke-width: 1.5 !important;
+    stroke-linecap: round !important;
+    stroke-linejoin: round !important;
+}
+@media (max-width: 640px) {
+    .pm-dialog__header { padding: 16px !important; }
+    .pm-dialog__heading h2 { font-size: 17px !important; }
+}
