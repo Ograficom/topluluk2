@@ -825,3 +825,56 @@ body.is-messenger-conversation .pm-dialog__header-more:hover{
     margin:0!important;border-radius:0!important;box-shadow:none!important;
   }
 }
+
+
+/* Mobile-only Telegram-style header: hide OgraFi branding during an active conversation */
+@media (max-width: 767px) {
+  body.is-messenger-conversation > header.header {
+    display: none !important;
+    height: 0 !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+  }
+  body.is-messenger-conversation .pm-dialog__header--conversation {
+    position: sticky !important;
+    top: max(6px, env(safe-area-inset-top)) !important;
+    z-index: 999 !important;
+    display: flex !important;
+    width: calc(100% - 20px) !important;
+    min-height: 56px !important;
+    margin: 8px 10px 0 !important;
+    padding: 5px 12px !important;
+    box-sizing: border-box !important;
+    align-items: center !important;
+    gap: 10px !important;
+    border: 0 !important;
+    border-radius: 999px !important;
+    background: #fff !important;
+    box-shadow: 0 2px 9px rgba(25, 38, 58, .14) !important;
+  }
+  body.is-messenger-conversation .pm-dialog__back {
+    flex: 0 0 30px !important;
+    width: 30px !important;
+    height: 38px !important;
+  }
+  body.is-messenger-conversation .pm-dialog__identity-avatar {
+    width: 40px !important;
+    height: 40px !important;
+    flex-basis: 40px !important;
+  }
+  body.is-messenger-conversation .pm-dialog__identity-copy strong {
+    font-size: 15px !important;
+  }
+  body.is-messenger-conversation .pm-dialog__identity-status {
+    font-size: 12px !important;
+  }
+  body.is-messenger-conversation .pm-dialog__header-menu {
+    flex: 0 0 22px !important;
+  }
+  body.is-messenger-conversation .pm-dialog__header-more {
+    width: 22px !important;
+    height: 38px !important;
+  }
+}
