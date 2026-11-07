@@ -18,7 +18,7 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
     use HasFactory, Notifiable;
 
     protected $fillable = [
-        'name', 'email', 'password', 'is_admin', 'username', 'full_name',
+        'name', 'email', 'password', 'is_admin', 'is_company', 'is_company_verified', 'username', 'full_name',
         'signature', 'bio', 'avatar_path', 'website', 'instagram', 'telegram',
         'threads', 'youtube', 'timezone', 'show_adult_content', 'notify_replies',
         'notify_posts', 'notify_announcements', 'is_verified', 'verification_status',
@@ -36,6 +36,8 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
             'is_admin' => 'boolean',
+            'is_company' => 'boolean',
+            'is_company_verified' => 'boolean',
             'is_verified' => 'boolean',
             'show_adult_content' => 'boolean',
             'notify_replies' => 'boolean',
@@ -84,7 +86,12 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
 
     public function hasVerifiedBadge(): bool
     {
-        return $this->is_verified && $this->verification_status === 'approved';
+        return ! $this->is_company && $this->is_verified && $this->verification_status === 'approved';
+    }
+
+    public function hasVerifiedCompanyBadge(): bool
+    {
+        return $this->is_company && $this->is_company_verified;
     }
 
     public function displayName(): string
