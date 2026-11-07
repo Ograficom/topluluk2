@@ -995,7 +995,7 @@ body.is-messenger-conversation .pm-dialog__header-more:hover{
    All rules are scoped to the conversation page; global site width is untouched. */
 body.is-messenger-conversation main.container {
   width: 100% !important;
-  max-width: var(--container, 1120px) !important;
+  max-width: 1120px !important;
   margin-inline: auto !important;
   padding-inline: 10px !important;
 }
