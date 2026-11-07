@@ -211,7 +211,7 @@ class CommunityController extends Controller
             'name' => ['required', 'string', 'max:35'],
             'email' => ['required', 'email', 'max:254'],
             'subject' => ['required', 'string', 'max:45'],
-            'recipient' => ['required', 'in:support,editorial,partnerships'],
+            'recipient' => ['required', 'in:support,editorial,partnerships,bug,suggestion'],
             'message' => ['required', 'string', 'max:10000'],
             'attachments' => ['nullable', 'array', 'max:5'],
             'attachments.*' => ['file', 'max:2048', 'mimes:jpg,jpeg,png,pdf,txt,doc,docx'],
@@ -221,6 +221,8 @@ class CommunityController extends Controller
             'support' => 'Teknik destek',
             'editorial' => 'Editör ekibi',
             'partnerships' => 'İş birlikleri',
+            'bug' => 'Hata bildirimi',
+            'suggestion' => 'Görüş ve öneri',
         ];
 
         $attachmentPaths = [];

@@ -30,6 +30,8 @@
                         <option value="support" @selected(old('recipient') === 'support')>Teknik destek</option>
                         <option value="editorial" @selected(old('recipient') === 'editorial')>Editör ekibi</option>
                         <option value="partnerships" @selected(old('recipient') === 'partnerships')>İş birlikleri</option>
+                        <option value="bug" @selected(old('recipient') === 'bug')>Hata bildirimi</option>
+                        <option value="suggestion" @selected(old('recipient') === 'suggestion')>Görüş ve öneri</option>
                     </select>
                     @error('recipient')<span class="small color-red">{{ $message }}</span>@enderror
                 </li>
