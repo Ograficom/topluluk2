@@ -96,7 +96,19 @@
                                     </div>
                                 @endif
                             </div>
-                            <div class="pm-dialog__bubble" data-message-bubble><div class="pm-dialog__text">{{ $message->body }}</div></div>
+                            <div class="pm-dialog__bubble" data-message-bubble>
+                                @if ($message->body)<div class="pm-dialog__text">{{ $message->body }}</div>@endif
+                                @if ($message->attachment_path)
+                                    <a class="pm-dialog__file" href="{{ route('messenger.messages.attachment', [$conversation, $message]) }}">
+                                        @if (str_starts_with((string) $message->attachment_mime, 'image/'))
+                                            <img src="{{ route('messenger.messages.attachment', [$conversation, $message]) }}" alt="{{ $message->attachment_name }}" loading="lazy">
+                                        @else
+                                            <span class="pm-dialog__file-icon">↓</span><span>{{ $message->attachment_name }}</span>
+                                        @endif
+                                    </a>
+                                @endif
+                                @if ($message->gif_url)<img class="pm-dialog__gif" src="{{ $message->gif_url }}" alt="GIF" loading="lazy">@endif
+                            </div>
                             @if ($isOwnMessage)
                                 <form class="pm-dialog__edit-form" action="{{ route('messenger.messages.update', [$conversation, $message]) }}" method="POST" data-edit-form hidden>
                                     @csrf
