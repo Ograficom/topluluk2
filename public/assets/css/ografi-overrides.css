@@ -1064,3 +1064,42 @@ body.is-messenger-conversation .pm-dialog__header-more:hover{
     box-shadow: none !important;
   }
 }
+
+
+/* Fixed message composer on both desktop and mobile */
+body.is-messenger-conversation .pm-dialog__composer.pm-composer {
+  position: fixed !important;
+  left: 50% !important;
+  right: auto !important;
+  bottom: max(14px, env(safe-area-inset-bottom)) !important;
+  transform: translateX(-50%) !important;
+  z-index: 950 !important;
+  width: min(760px, calc(100vw - 40px)) !important;
+  max-width: 760px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  box-sizing: border-box !important;
+}
+body.is-messenger-conversation .pm-dialog__composer .pm-composer__bar {
+  width: 100% !important;
+  box-sizing: border-box !important;
+  background: #fff !important;
+  box-shadow: 0 3px 18px rgba(25, 40, 65, .13) !important;
+}
+body.is-messenger-conversation .pm-dialog__messages {
+  padding-bottom: 112px !important;
+}
+body.is-messenger-conversation .pm-dialog__composer .pm-composer__emoji-picker {
+  bottom: calc(100% + 10px) !important;
+  top: auto !important;
+}
+@media (max-width: 640px) {
+  body.is-messenger-conversation .pm-dialog__composer.pm-composer {
+    bottom: max(8px, env(safe-area-inset-bottom)) !important;
+    width: calc(100vw - 20px) !important;
+    max-width: none !important;
+  }
+  body.is-messenger-conversation .pm-dialog__messages {
+    padding-bottom: 100px !important;
+  }
+}
