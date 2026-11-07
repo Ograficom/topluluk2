@@ -16,10 +16,9 @@ use Throwable;
 
 class MailSettings extends Page
 {
-    protected static string|\\UnitEnum|null $navigationGroup = 'Ayarlar';
+    protected static string|\UnitEnum|null $navigationGroup = 'Ayarlar';
     protected static ?string $navigationLabel = 'E-posta / SMTP';
     protected static ?string $title = 'E-posta gönderim ayarları';
-    protected static string|\UnitEnum|null $navigationGroup = 'Site ayarları';
     protected static ?int $navigationSort = 2;
     protected static string|\BackedEnum|null $navigationIcon = Heroicon::OutlinedEnvelope;
     protected string $view = 'filament.pages.mail-settings';
