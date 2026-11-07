@@ -746,3 +746,82 @@ body.is-messenger-conversation .pm-dialog__header-more:hover{
   body.is-messenger-conversation .pm-dialog__identity-copy strong{font-size:14px!important}
   body.is-messenger-conversation .pm-dialog__identity-status{font-size:11px!important}
 }
+
+
+/* Mobile-only Telegram-inspired conversation bar.
+   Keep the normal OgraFi site header untouched on desktop. */
+@media(max-width:767px){
+  body.is-messenger-conversation > .header,
+  body.is-messenger-conversation .header{
+    display:none!important;
+  }
+  body.is-messenger-conversation .pm.card.card-body{
+    margin:0!important;padding:0!important;min-height:100dvh!important;
+    border-radius:0!important;overflow:visible!important;
+  }
+  body.is-messenger-conversation .pm-dialog{
+    display:flex!important;flex-direction:column!important;gap:0!important;
+    min-width:0!important;overflow:visible!important;
+  }
+  body.is-messenger-conversation .pm-dialog__header--conversation{
+    position:sticky!important;top:7px!important;z-index:200!important;
+    display:flex!important;align-items:center!important;gap:10px!important;
+    width:calc(100% - 20px)!important;min-height:54px!important;
+    margin:7px 10px 0!important;padding:5px 11px!important;
+    box-sizing:border-box!important;border:0!important;border-radius:999px!important;
+    background:#fff!important;box-shadow:0 2px 9px rgba(20,35,55,.13)!important;
+  }
+  body.is-messenger-conversation .pm-dialog__back{
+    display:grid!important;place-items:center!important;flex:0 0 30px!important;
+    width:30px!important;height:36px!important;padding:0!important;
+    color:#151a22!important;text-decoration:none!important;
+  }
+  body.is-messenger-conversation .pm-dialog__back svg{
+    display:block!important;width:24px!important;height:24px!important;
+    fill:none!important;stroke:currentColor!important;stroke-width:2!important;
+    stroke-linecap:round!important;stroke-linejoin:round!important;
+  }
+  body.is-messenger-conversation .pm-dialog__identity{
+    display:flex!important;align-items:center!important;gap:9px!important;
+    flex:1 1 auto!important;min-width:0!important;margin:0!important;padding:0!important;
+    border:0!important;background:transparent!important;text-align:left!important;
+  }
+  body.is-messenger-conversation .pm-dialog__identity-avatar{
+    display:block!important;width:38px!important;height:38px!important;
+    flex:0 0 38px!important;border-radius:50%!important;object-fit:cover!important;
+  }
+  body.is-messenger-conversation .pm-dialog__identity-copy{
+    display:flex!important;flex-direction:column!important;gap:1px!important;min-width:0!important;
+  }
+  body.is-messenger-conversation .pm-dialog__identity-copy strong{
+    display:block!important;overflow:hidden!important;color:#171c25!important;
+    font-size:14px!important;font-weight:700!important;line-height:1.2!important;
+    white-space:nowrap!important;text-overflow:ellipsis!important;
+  }
+  body.is-messenger-conversation .pm-dialog__identity-status{
+    display:block!important;overflow:hidden!important;color:#7b8491!important;
+    font-size:11px!important;line-height:1.2!important;
+    white-space:nowrap!important;text-overflow:ellipsis!important;
+  }
+  body.is-messenger-conversation .pm-dialog__identity-status i{display:none!important}
+  body.is-messenger-conversation .pm-dialog__header-menu{
+    position:relative!important;display:block!important;flex:0 0 24px!important;
+    margin:0 0 0 auto!important;
+  }
+  body.is-messenger-conversation .pm-dialog__header-more{
+    display:grid!important;place-items:center!important;width:24px!important;height:38px!important;
+    padding:0!important;border:0!important;border-radius:50%!important;
+    color:#171c25!important;background:transparent!important;
+  }
+  body.is-messenger-conversation .pm-dialog__vertical-dots{
+    display:block!important;width:19px!important;height:19px!important;
+  }
+}
+/* Desktop: retain the original OgraFi global header and normal conversation header. */
+@media(min-width:768px){
+  body.is-messenger-conversation .header{display:flex!important}
+  body.is-messenger-conversation .pm-dialog__header--conversation{
+    position:static!important;top:auto!important;width:100%!important;
+    margin:0!important;border-radius:0!important;box-shadow:none!important;
+  }
+}

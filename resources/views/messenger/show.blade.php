@@ -17,7 +17,7 @@
                     </span>
                 </button>
                 <div class="dropdown dropdown-md pm-dialog__header-menu">
-                    <button class="pm-dialog__header-more" type="button" data-dropdown-toggle aria-expanded="false" aria-haspopup="menu" aria-label="Sohbet seçenekleri"><x-repost-icon name="more" size="19" /></button>
+                    <button class="pm-dialog__header-more" type="button" data-dropdown-toggle aria-expanded="false" aria-haspopup="menu" aria-label="Sohbet seçenekleri"><svg class="pm-dialog__vertical-dots" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="5" r="1.6" fill="currentColor"/><circle cx="12" cy="12" r="1.6" fill="currentColor"/><circle cx="12" cy="19" r="1.6" fill="currentColor"/></svg></button>
                     <ul class="pm__dropdown dropdown-menu dropdown-menu-end">
                         <li class="dropdown-menu-item dropdown-menu-item-sm"><button type="button" data-open-user-info>Kullanıcı bilgisi</button></li>
                         <li class="dropdown-menu-item dropdown-menu-item-sm"><a href="#dialog-message">Bir mesaj yazın</a></li>
