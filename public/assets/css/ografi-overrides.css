@@ -893,3 +893,78 @@ body.is-messenger-conversation .pm-dialog__header-more:hover{
     border-radius: 0 0 999px 999px !important;
   }
 }
+
+
+/* Conversation screen mobile canvas: remove the site's desktop grid/container framing */
+@media (max-width: 767px) {
+  html:has(body.is-messenger-conversation),
+  body.is-messenger-conversation {
+    width:100%!important;
+    min-width:0!important;
+    min-height:100%!important;
+    margin:0!important;
+    padding:0!important;
+    overflow-x:hidden!important;
+    background:#f4f6fa!important;
+  }
+  body.is-messenger-conversation main.container {
+    display:block!important;
+    width:100%!important;
+    max-width:none!important;
+    min-width:0!important;
+    margin:0!important;
+    padding:0!important;
+  }
+  body.is-messenger-conversation .main {
+    display:block!important;
+    width:100%!important;
+    max-width:none!important;
+    min-width:0!important;
+    margin:0!important;
+    padding:0!important;
+    grid-template-columns:minmax(0,1fr)!important;
+    gap:0!important;
+  }
+  body.is-messenger-conversation .main > .sidebar,
+  body.is-messenger-conversation .main > .main__widgets {
+    display:none!important;
+  }
+  body.is-messenger-conversation .main > .feed {
+    display:block!important;
+    width:100%!important;
+    max-width:none!important;
+    min-width:0!important;
+    margin:0!important;
+    padding:0!important;
+    border:0!important;
+    border-radius:0!important;
+    background:transparent!important;
+    box-shadow:none!important;
+  }
+  body.is-messenger-conversation .pm.card.card-body {
+    display:block!important;
+    width:100%!important;
+    max-width:none!important;
+    min-width:0!important;
+    margin:0!important;
+    padding:0!important;
+    border:0!important;
+    border-radius:0!important;
+    background:transparent!important;
+    box-shadow:none!important;
+    overflow:visible!important;
+  }
+  body.is-messenger-conversation .pm-dialog__header--conversation {
+    position:sticky!important;
+    top:8px!important;
+    width:calc(100% - 16px)!important;
+    max-width:none!important;
+    min-height:58px!important;
+    margin:8px 8px 12px!important;
+    padding:6px 12px!important;
+    border:0!important;
+    border-radius:999px!important;
+    background:#fff!important;
+    box-shadow:0 2px 10px rgba(20,35,55,.14)!important;
+  }
+}
