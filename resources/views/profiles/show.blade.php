@@ -2,6 +2,10 @@
 
 @section('title', $user->displayName())
 
+@push('head')
+    <link rel="stylesheet" href="{{ asset('assets/css/profile-theme.css') }}?v=20261107-profile-reference">
+@endpush
+
 @section('content')
 <article>
     @if (session('status'))
@@ -146,7 +150,7 @@
             <aside>
                 <div class="widgets">
                     <section class="widget card card-body">
-                        <header><h2 class="widget__title h6">Aboneler</h2></header>
+                        <header><h2 class="widget__title h6">{{ number_format($followersCount) }} abone</h2></header>
                         <div class="widget__content">
                             <ul class="channel-subscriber-grid">
                                 @forelse ($profileFollowers as $follower)
@@ -157,17 +161,17 @@
                             </ul>
                         </div>
                         <footer class="widget__footer">
-                            @if ($followersCount > 8)
-                                <a class="link-accent" href="#profileSubscribersModal" data-modal-btn="profile-subscribers" aria-haspopup="dialog" aria-controls="profileSubscribersModal">Tüm aboneleri gör</a>
+                            @if ($followersCount > 0)
+                                <a class="link-accent" href="#profileSubscribersModal" data-modal-btn="profile-subscribers" aria-haspopup="dialog" aria-controls="profileSubscribersModal">Tüm aboneler</a>
                             @else
-                                <span class="small color-gray">{{ number_format($followersCount) }} toplam takipçi</span>
+                                <span class="small color-gray">Henüz abone yok.</span>
                             @endif
                         </footer>
                     </section>
 
                     <section class="widget card card-body">
                         <header><h2 class="widget__title h6">Hakkında</h2></header>
-                        <div class="widget__content widget__content-offset profile__about">
+                        <div class="widget__content profile__about">
                             @if ($user->website)
                                 <a href="{{ $user->website }}" class="profile__site" target="_blank" rel="noopener noreferrer"><x-repost-icon name="link" size="16" /><span class="link">{{ parse_url($user->website, PHP_URL_HOST) ?: $user->website }}</span></a>
                             @endif
@@ -187,10 +191,6 @@
                         </div>
                     </section>
 
-                    <section class="widget card card-body">
-                        <header><h2 class="widget__title h6">Profil istatistikleri</h2></header>
-                        <div class="widget__content"><div class="profile__meta"><span class="small color-gray">{{ number_format($posts->total()) }} yazı</span><span class="small color-gray">{{ number_format($comments->total()) }} yorum</span></div></div>
-                    </section>
                 </div>
                 <div class="profile__aside-footer">@include('layouts._footer')</div>
             </aside>
