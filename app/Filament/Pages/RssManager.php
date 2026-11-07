@@ -15,10 +15,9 @@ use Filament\Support\Icons\Heroicon;
 
 class RssManager extends Page
 {
-    protected static string|\\UnitEnum|null $navigationGroup = 'Ayarlar';
+    protected static string|\UnitEnum|null $navigationGroup = 'Ayarlar';
     protected static ?string $navigationLabel = 'RSS yönetimi';
     protected static ?string $title = 'RSS akış yönetimi';
-    protected static string|\UnitEnum|null $navigationGroup = 'Site ayarları';
     protected static ?int $navigationSort = 4;
     protected static string|\BackedEnum|null $navigationIcon = Heroicon::OutlinedGlobeAlt;
 
