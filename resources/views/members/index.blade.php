@@ -20,6 +20,9 @@
                                         <x-repost-icon name="verify" size="14" />
                                     </span>
                                 @endif
+@if ($member)
+    <x-company-verified-badge size="14" />
+@endif
                             </span>
                             <span class="meta">{{ number_format($member->posts_count) }} yazı</span>
                         </div>
