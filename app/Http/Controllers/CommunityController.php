@@ -15,6 +15,7 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Throwable;
@@ -169,12 +170,28 @@ class CommunityController extends Controller
     {
         $viewer = $request->user();
         abort_unless($conversation->participants()->where('users.id', $viewer->id)->exists(), 404);
-        $validated = $request->validate(['body' => ['required', 'string', 'max:5000']]);
-        $recipient = $conversation->participants()->where('users.id', '<>', $viewer->id)->first();
-        abort_if($recipient && ($viewer->blockedUsers()->whereKey($recipient->id)->exists() || $viewer->blockedByUsers()->whereKey($recipient->id)->exists()), 403, 'Bu kullanıcıyla mesajlaşma engellenmiş.');
-        $conversation->messages()->create(['user_id' => $viewer->id, 'body' => trim($validated['body'])]);
-        $conversation->touch();
-        return redirect()->route('messenger.show', $conversation);
+        $data=$request->validate(['body'=>['nullable','string','max:5000'],'attachment'=>['nullable','file','max:10240'],'gif_url'=>['nullable','url','max:2048']]);
+        abort_if(!filled($data['body']??null)&&!$request->hasFile('attachment')&&!filled($data['gif_url']??null),422,'Mesaj, dosya veya GIF eklemelisiniz.');
+        $recipient=$conversation->participants()->where('users.id','<>',$viewer->id)->first();
+        abort_if($recipient&&($viewer->blockedUsers()->whereKey($recipient->id)->exists()||$viewer->blockedByUsers()->whereKey($recipient->id)->exists()),403,'Bu kullanıcıyla mesajlaşma engellenmiş.');
+        $attrs=['user_id'=>$viewer->id,'body'=>trim((string)($data['body']??''))?:null];
+        if($request->hasFile('attachment')){$file=$request->file('attachment');$attrs['attachment_path']=$file->store('messages','local');$attrs['attachment_name']=$file->getClientOriginalName();$attrs['attachment_mime']=$file->getMimeType();$attrs['attachment_size']=$file->getSize();}
+        if(filled($data['gif_url']??null)){$host=parse_url($data['gif_url'],PHP_URL_HOST);abort_unless($host&&(str_ends_with($host,'.giphy.com')||$host==='giphy.com'),422,'Geçersiz GIF adresi.');$attrs['gif_url']=$data['gif_url'];}
+        $conversation->messages()->create($attrs);$conversation->touch();return redirect()->route('messenger.show',$conversation);
+    }
+
+    public function searchGifs(Request $request)
+    {
+        $data=$request->validate(['q'=>['required','string','min:2','max:80']]);$key=config('services.giphy.key');abort_unless(filled($key),503,'GIF servisi yapılandırılmamış.');
+        $response=Http::timeout(8)->get('https://api.giphy.com/v1/gifs/search',['api_key'=>$key,'q'=>$data['q'],'limit'=>18,'rating'=>'pg-13','lang'=>'tr']);
+        if(!$response->successful())return response()->json(['results'=>[]],502);
+        $results=collect($response->json('data',[]))->map(function(array $gif):?array{$preview=$gif['images']['fixed_width_small']['url']??$gif['images']['fixed_width']['url']??null;$url=$gif['images']['original']['url']??null;return $preview&&$url?['preview'=>$preview,'url'=>$url,'title'=>$gif['title']??'GIF']:null;})->filter()->values();
+        return response()->json(['results'=>$results]);
+    }
+    public function downloadMessageAttachment(Request $request,Conversation $conversation,Message $message)
+    {
+        abort_unless($conversation->participants()->where('users.id',$request->user()->id)->exists(),404);abort_unless((int)$message->conversation_id===(int)$conversation->id&&filled($message->attachment_path),404);abort_unless(Storage::disk('local')->exists($message->attachment_path),404);
+        return Storage::disk('local')->download($message->attachment_path,$message->attachment_name?:basename($message->attachment_path));
     }
 
     public function updateMessage(Request $request, Conversation $conversation, Message $message): RedirectResponse
