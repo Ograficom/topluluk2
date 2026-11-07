@@ -10,11 +10,13 @@
                 <li class="dropdown-menu-item dropdown-menu-item-md">
                     <a href="{{ route('posts.latest') }}">Son yazılar</a>
                 </li>
+                @foreach ($footerPages as $page)
+                    <li class="dropdown-menu-item dropdown-menu-item-md">
+                        <a href="{{ route('pages.show', $page->slug) }}">{{ $page->title }}</a>
+                    </li>
+                @endforeach
             </ul>
         </div>
-        @foreach ($footerPages as $page)
-            <a href="{{ route('pages.show', $page->slug) }}" class="footer__menu-link">{{ $page->title }}</a>
-        @endforeach
     </nav>
 
     <small class="color-gray">{{ $brandName }} &copy;&nbsp;{{ $footerYear }}</small>
