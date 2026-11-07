@@ -1,7 +1,6 @@
 <footer class="footer">
     <nav class="footer__menu" aria-label="Alt gezinme">
         <a href="{{ route('contacts') }}" class="footer__menu-link">İletişim</a>
-        <a href="{{ route('pages.show', 'rules') }}" class="footer__menu-link">Kurallar</a>
         <a href="{{ route('stats.index') }}" class="footer__menu-link">İstatistikler</a>
         <div class="dropdown dropup dropdown-md">
             <button class="btn btn-secondary btn-xs btn-rounded" type="button" data-dropdown-toggle aria-expanded="false" aria-controls="footer-more-menu" aria-label="Diğer bağlantıları aç">
@@ -13,6 +12,9 @@
                 </li>
             </ul>
         </div>
+        @foreach ($footerPages as $page)
+            <a href="{{ route('pages.show', $page->slug) }}" class="footer__menu-link">{{ $page->title }}</a>
+        @endforeach
     </nav>
 
     <small class="color-gray">{{ $brandName }} &copy;&nbsp;{{ $footerYear }}</small>

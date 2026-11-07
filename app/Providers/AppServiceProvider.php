@@ -20,17 +20,11 @@ use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
-    /**
-     * Register any application services.
-     */
     public function register(): void
     {
         //
     }
 
-    /**
-     * Bootstrap any application services.
-     */
     public function boot(): void
     {
         VerifyEmail::toMailUsing(function (object $notifiable, string $url): MailMessage {
@@ -137,6 +131,10 @@ class AppServiceProvider extends ServiceProvider
             $view->with([
                 'brandName' => $siteSettings?->brand_name ?? SiteSetting::DEFAULT_BRAND_NAME,
                 'footerYear' => $siteSettings?->footer_year ?? now()->year,
+                'footerPages' => SitePage::query()
+                    ->published()
+                    ->orderBy('title')
+                    ->get(['title', 'slug']),
                 'footerSocialLinks' => [
                     'instagram' => $siteSettings?->instagram_url,
                     'telegram' => $siteSettings?->telegram_url,
