@@ -127,7 +127,7 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
 
     public function isOnline(): bool
     {
-        return $this->last_seen_at !== null && $this->last_seen_at->greaterThanOrEqualTo(now()->subMinutes(5));
+        return $this->last_seen_at !== null && $this->last_seen_at->greaterThanOrEqualTo(now()->subMinutes(2));
     }
 
     public function canAccessPanel(Panel $panel): bool
