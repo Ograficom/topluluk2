@@ -10,7 +10,6 @@ use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
 use Filament\Pages\Dashboard;
 use Filament\Navigation\NavigationGroup;
-use Filament\Support\Icons\Heroicon;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
@@ -37,8 +36,7 @@ class AdminPanelProvider extends PanelProvider
             ->login()
             ->navigationGroups([
                 NavigationGroup::make()
-                    ->label('Ayarlar')
-                    ->icon(Heroicon::OutlinedCog6Tooth),
+                    ->label('Ayarlar'),
             ])
             ->colors([
                 'primary' => Color::Blue,
