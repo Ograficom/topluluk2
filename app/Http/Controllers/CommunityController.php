@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Channel;
 use App\Models\Comment;
 use App\Models\Conversation;
+use App\Models\Message;
 use App\Models\Post;
 use App\Models\PostReaction;
 use App\Models\SitePage;
@@ -132,7 +133,9 @@ class CommunityController extends Controller
         $conversation->load(['participants' => fn ($query) => $query->where('users.id', '<>', $viewer->id)]);
         $other = $conversation->participants->first();
         $messages = $conversation->messages()->with('user')->paginate(50);
-        return view('messenger.show', compact('conversation', 'other', 'messages'));
+        $messageUsageCount = Message::query()->where('user_id', $viewer->id)->count();
+        $messageUsagePercent = min(100, (int) round(($messageUsageCount / 50) * 100));
+        return view('messenger.show', compact('conversation', 'other', 'messages', 'messageUsageCount', 'messageUsagePercent'));
     }
 
     public function sendMessage(Request $request, Conversation $conversation): RedirectResponse
@@ -145,6 +148,23 @@ class CommunityController extends Controller
         $conversation->messages()->create(['user_id' => $viewer->id, 'body' => trim($validated['body'])]);
         $conversation->touch();
         return redirect()->route('messenger.show', $conversation);
+    }
+
+    public function updateMessage(Request $request, Conversation $conversation, Message $message): RedirectResponse
+    {
+        abort_unless($conversation->participants()->where('users.id', $request->user()->id)->exists(), 404);
+        abort_unless((int) $message->conversation_id === (int) $conversation->id && (int) $message->user_id === (int) $request->user()->id, 403);
+        $validated = $request->validate(['body' => ['required', 'string', 'max:5000']]);
+        $message->update(['body' => trim($validated['body'])]);
+        return redirect()->route('messenger.show', $conversation)->with('status', 'Mesaj güncellendi.');
+    }
+
+    public function deleteMessage(Request $request, Conversation $conversation, Message $message): RedirectResponse
+    {
+        abort_unless($conversation->participants()->where('users.id', $request->user()->id)->exists(), 404);
+        abort_unless((int) $message->conversation_id === (int) $conversation->id && (int) $message->user_id === (int) $request->user()->id, 403);
+        $message->delete();
+        return redirect()->route('messenger.show', $conversation)->with('status', 'Mesaj silindi.');
     }
 
     public function latestPosts(Request $request): View

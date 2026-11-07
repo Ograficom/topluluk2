@@ -160,6 +160,8 @@ Route::middleware(['auth', 'verified'])->group(function (): void {
     Route::get('/messenger', [CommunityController::class, 'messenger'])->name('messenger.index');
     Route::get('/messenger/{conversation}', [CommunityController::class, 'showConversation'])->name('messenger.show');
     Route::post('/messenger/{conversation}/messages', [CommunityController::class, 'sendMessage'])->middleware('throttle:30,1')->name('messenger.messages.store');
+    Route::patch('/messenger/{conversation}/messages/{message}', [CommunityController::class, 'updateMessage'])->middleware('throttle:30,1')->name('messenger.messages.update');
+    Route::delete('/messenger/{conversation}/messages/{message}', [CommunityController::class, 'deleteMessage'])->middleware('throttle:30,1')->name('messenger.messages.delete');
 
     Route::post('/posts/{post:slug}/bookmark', [CommunityController::class, 'toggleBookmark'])->middleware('throttle:30,1')->name('posts.bookmarks.toggle');
     Route::get('/posts/create', [PostController::class, 'create'])->name('posts.create');

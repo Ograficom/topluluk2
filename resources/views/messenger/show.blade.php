@@ -11,10 +11,12 @@
                     <x-repost-icon name="more" size="18" class="color-gray" />
                 </button>
                 <ul class="pm__dropdown dropdown-menu dropdown-menu-end" id="pmDialogMenu">
+                    <li class="dropdown-menu-item dropdown-menu-item-sm"><a href="#dialog-message">Bir mesaj yazın</a></li>
                     <li class="dropdown-menu-item dropdown-menu-item-sm"><a href="{{ route('messenger.index') }}">Mesaj listesi</a></li>
-                    @if ($other)
-                        <li class="dropdown-menu-item dropdown-menu-item-sm"><a href="{{ route('profiles.show', $other) }}">Profili görüntüle</a></li>
-                    @endif
+                    <li class="pm__dropdown-limit">
+                        <div class="pm__limit-label">{{ $messageUsagePercent }}% / (50 mesaj)</div>
+                        <div class="pm_progress_bar" role="progressbar" aria-label="Mesaj kullanım oranı" aria-valuemin="0" aria-valuemax="100" aria-valuenow="{{ $messageUsagePercent }}"><span style="width: {{ $messageUsagePercent }}%"></span></div>
+                    </li>
                 </ul>
             </div>
         </header>
@@ -57,20 +59,34 @@
                                         <x-repost-icon name="more" size="18" />
                                     </button>
                                     <div class="dropdown-menu dropdown-menu-end">
-                                        <div class="dropdown-menu-item dropdown-menu-item-sm">
-                                            <button type="button" data-quote-message="{{ $message->body }}">Alıntıla</button>
-                                        </div>
-                                        @if ($message->user)
-                                            <div class="dropdown-menu-item dropdown-menu-item-sm">
-                                                <a href="{{ route('profiles.show', $message->user) }}">Profili görüntüle</a>
+                                        <div class="dropdown-menu-item dropdown-menu-item-sm"><button type="button" data-quote-message="{{ $message->body }}">Alıntıla</button></div>
+                                        @if ($isOwnMessage)
+                                            <div class="dropdown-menu-item dropdown-menu-item-sm"><button type="button" data-edit-message="{{ $message->id }}">Düzenle</button></div>
+                                            <div class="dropdown-menu-item dropdown-menu-item-sm is-danger">
+                                                <form action="{{ route('messenger.messages.delete', [$conversation, $message]) }}" method="POST" data-delete-message>
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit">Sil</button>
+                                                </form>
                                             </div>
+                                        @elseif ($message->user)
+                                            <div class="dropdown-menu-item dropdown-menu-item-sm"><a href="{{ route('profiles.show', $message->user) }}">Profili görüntüle</a></div>
                                         @endif
                                     </div>
                                 </div>
                             </div>
-                            <div class="pm-dialog__bubble">
-                                <div class="pm-dialog__text">{{ $message->body }}</div>
-                            </div>
+                            <div class="pm-dialog__bubble" data-message-bubble><div class="pm-dialog__text">{{ $message->body }}</div></div>
+                            @if ($isOwnMessage)
+                                <form class="pm-dialog__edit-form" action="{{ route('messenger.messages.update', [$conversation, $message]) }}" method="POST" data-edit-form hidden>
+                                    @csrf
+                                    @method('PATCH')
+                                    <textarea name="body" rows="3" maxlength="5000" required>{{ $message->body }}</textarea>
+                                    <div class="pm-dialog__edit-actions">
+                                        <button class="btn btn-primary btn-sm" type="submit">Kaydet</button>
+                                        <button class="btn btn-secondary btn-sm" type="button" data-cancel-edit>Vazgeç</button>
+                                    </div>
+                                </form>
+                            @endif
                             @if ($isOwnMessage && $message->read_at)
                                 <span class="small color-gray">Okundu</span>
                             @endif
@@ -108,14 +124,44 @@
         (() => {
             const textarea = document.querySelector('#message-body');
             const messages = document.querySelector('#pmMessages');
-            if (!textarea || !messages) return;
+            if (!messages) return;
 
             messages.querySelectorAll('[data-quote-message]').forEach((button) => {
                 button.addEventListener('click', () => {
+                    if (!textarea) return;
                     const quote = button.getAttribute('data-quote-message') || '';
-                    textarea.value = quote.split('\n').map((line) => '> ' + line).join('\n') + '\n\n';
+                    textarea.value = quote.split('\\n').map((line) => '> ' + line).join('\\n') + '\\n\\n';
                     textarea.focus();
                     textarea.setSelectionRange(textarea.value.length, textarea.value.length);
+                    document.querySelector('#dialog-message')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                });
+            });
+
+            messages.querySelectorAll('[data-edit-message]').forEach((button) => {
+                button.addEventListener('click', () => {
+                    const article = button.closest('[data-message-id]');
+                    const form = article?.querySelector('[data-edit-form]');
+                    const bubble = article?.querySelector('[data-message-bubble]');
+                    if (!form || !bubble) return;
+                    form.hidden = false;
+                    bubble.hidden = true;
+                    form.querySelector('textarea')?.focus();
+                });
+            });
+
+            messages.querySelectorAll('[data-cancel-edit]').forEach((button) => {
+                button.addEventListener('click', () => {
+                    const article = button.closest('[data-message-id]');
+                    const form = article?.querySelector('[data-edit-form]');
+                    const bubble = article?.querySelector('[data-message-bubble]');
+                    if (form) form.hidden = true;
+                    if (bubble) bubble.hidden = false;
+                });
+            });
+
+            messages.querySelectorAll('[data-delete-message]').forEach((form) => {
+                form.addEventListener('submit', (event) => {
+                    if (!window.confirm('Bu mesajı silmek istediğine emin misin?')) event.preventDefault();
                 });
             });
         })();
