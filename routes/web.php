@@ -84,6 +84,23 @@ Route::get('/privacy', fn () => redirect()->route('pages.show', 'privacy'));
 Route::get('/contacts', [CommunityController::class, 'contacts'])->name('contacts');
 Route::post('/contacts', [CommunityController::class, 'sendContact'])->middleware('throttle:5,1')->name('contacts.send');
 
+Route::get('/support-tickets/{supportTicket}/attachments/{index}/preview', function (SupportTicket $supportTicket, int $index) {
+    abort_unless(auth()->user()?->is_admin, 403);
+
+    $disk = Storage::disk('local');
+    $path = $supportTicket->attachments[$index] ?? null;
+    abort_unless($path && $disk->exists($path), 404);
+
+    $mimeType = $disk->mimeType($path);
+    abort_unless(in_array($mimeType, ['image/jpeg', 'image/png', 'image/gif', 'image/webp'], true), 404);
+
+    return response()->file($disk->path($path), [
+        'Content-Type' => $mimeType,
+        'X-Content-Type-Options' => 'nosniff',
+        'Content-Disposition' => 'inline; filename="' . addslashes(basename($path)) . '"',
+    ]);
+})->middleware('auth')->whereNumber('index')->name('support-tickets.attachments.preview');
+
 Route::get('/support-tickets/{supportTicket}/attachments/{index}', function (SupportTicket $supportTicket, int $index) {
     abort_unless(auth()->user()?->is_admin, 403);
 
