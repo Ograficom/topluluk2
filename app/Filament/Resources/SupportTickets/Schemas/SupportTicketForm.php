@@ -3,7 +3,7 @@
 namespace App\Filament\Resources\SupportTickets\Schemas;
 
 use App\Models\SupportTicket;
-use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
@@ -37,13 +37,11 @@ class SupportTicketForm
                         ->disabled()
                         ->dehydrated(false)
                         ->columnSpanFull(),
-                    FileUpload::make('attachments')
+                    Placeholder::make('attachments_list')
                         ->label('Dosya ekleri')
-                        ->disk('local')
-                        ->directory('support-tickets')
-                        ->multiple()
-                        ->disabled()
-                        ->dehydrated(false)
+                        ->content(fn (?SupportTicket $record) => view('filament.support-tickets.attachments', [
+                            'ticket' => $record,
+                        ]))
                         ->columnSpanFull(),
                 ])->columns(2),
             Section::make('Talep yönetimi')

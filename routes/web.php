@@ -82,6 +82,15 @@ Route::get('/privacy', fn () => redirect()->route('pages.show', 'privacy'));
 Route::get('/contacts', [CommunityController::class, 'contacts'])->name('contacts');
 Route::post('/contacts', [CommunityController::class, 'sendContact'])->middleware('throttle:5,1')->name('contacts.send');
 
+Route::get('/support-tickets/{supportTicket}/attachments/{index}', function (\\App\\Models\\SupportTicket $supportTicket, int $index) {
+    abort_unless(auth()->user()?->is_admin, 403);
+
+    $path = $supportTicket->attachments[$index] ?? null;
+    abort_unless($path && \\Illuminate\\Support\\Facades\\Storage::disk('local')->exists($path), 404);
+
+    return \\Illuminate\\Support\\Facades\\Storage::disk('local')->download($path, basename($path));
+})->middleware('auth')->whereNumber('index')->name('support-tickets.attachments.download');
+
 Route::get('/auth/{provider}/callback', [SocialAuthController::class, 'callback'])->middleware('throttle:10,1')->name('oauth.callback');
 
 Route::middleware('auth')->group(function (): void {
