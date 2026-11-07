@@ -991,22 +991,17 @@ body.is-messenger-conversation .pm-dialog__header-more:hover{
 }
 
 
-/* Conversation page width: mirror only the original Repost dialog.html container/grid breakpoints.
-   All rules are scoped to the conversation page; global site width is untouched. */
+/* Conversation page layout: copy the original Repost dialog.html container/grid rules.
+   Source: Repost/dist/assets/css/kit.css and app.css. Keep this scoped to the conversation page. */
 body.is-messenger-conversation main.container {
   width: 100% !important;
-  max-width: 1120px !important;
+  max-width: var(--container) !important;
   margin-inline: auto !important;
   padding-inline: 10px !important;
 }
 body.is-messenger-conversation .main.main__grid {
-  display: grid !important;
   grid-template-columns: 55px minmax(280px, auto) 320px !important;
-  gap: var(--main-gap, 20px) !important;
-  width: 100% !important;
-  max-width: none !important;
-  margin: 0 !important;
-  padding: 0 !important;
+  grid-gap: var(--main-gap) !important;
 }
 @media screen and (max-width: 1120px) {
   body.is-messenger-conversation .main.main__grid {
