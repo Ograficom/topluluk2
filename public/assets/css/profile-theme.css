@@ -335,7 +335,7 @@
 
 
 /* Profile follow and direct-message actions */
-.profile__actions{display:flex;align-items:center;justify-content:flex-end;gap:10px;margin:0 0 16px auto}
+.profile__actions{display:flex;align-items:center;justify-content:flex-end;gap:10px;align-self:start;margin:0 0 0 auto}
 .profile__actions form{margin:0}
 .profile__message-button{display:inline-flex;width:42px;height:42px;align-items:center;justify-content:center;border:1px solid var(--border-color,#e5e9f0);border-radius:50%;background:var(--card-bg,#fff);color:var(--color-title,#344054);cursor:pointer;transition:background-color .15s,border-color .15s,color .15s}
 .profile__message-button:hover{background:var(--color-primary-soft,#eff6ff);border-color:var(--color-primary,#1769f5);color:var(--color-primary,#1769f5)}
