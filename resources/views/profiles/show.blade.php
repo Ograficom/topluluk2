@@ -43,6 +43,9 @@
                                 <x-repost-icon name="verify" size="14" class="color-primary" />
                             </span>
                         @endif
+@if ($user)
+    <x-company-verified-badge size="14" />
+@endif
                     </div>
                     <div class="profile__meta">
                         @if ($topPosition)
@@ -113,6 +116,9 @@
                                                 @if ($user->hasVerifiedBadge())
                                                     <span class="verify" role="img" aria-label="Doğrulanmış profil"><x-repost-icon name="verify" size="14" /></span>
                                                 @endif
+@if ($user)
+    <x-company-verified-badge size="14" />
+@endif
                                             </a>
                                             <div class="meta">
                                                 @if ($post->channel)
@@ -172,6 +178,9 @@
                                         @if ($user->hasVerifiedBadge())
                                             <span class="verify" role="img" aria-label="Doğrulanmış profil"><x-repost-icon name="verify" size="14" /></span>
                                         @endif
+@if ($user)
+    <x-company-verified-badge size="14" />
+@endif
                                     </a>
                                     <div class="meta"><time datetime="{{ $comment->created_at->toAtomString() }}">{{ $comment->created_at->diffForHumans() }}</time></div>
                                 </div>
@@ -296,6 +305,9 @@
                                             @if ($follower->hasVerifiedBadge())
                                                 <span class="verify" role="img" aria-label="Doğrulanmış hesap"><x-repost-icon name="verify" size="14" /></span>
                                             @endif
+@if ($follower)
+    <x-company-verified-badge size="14" />
+@endif
                                         </strong>
                                         <span class="meta">{{ number_format($follower->posts_count) }} yazı</span>
                                     </span>
