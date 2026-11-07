@@ -162,6 +162,20 @@ class SettingsTest extends TestCase
         ]);
     }
 
+    public function test_user_can_choose_and_change_their_own_username_from_settings(): void
+    {
+        $user = User::factory()->create(['username' => 'email-prefix']);
+
+        $this->actingAs($user)
+            ->patch('/settings/username', ['username' => 'my.own_handle'])
+            ->assertRedirect('/settings?tab=profile');
+
+        $this->assertDatabaseHas('users', [
+            'id' => $user->id,
+            'username' => 'my.own_handle',
+        ]);
+    }
+
     public function test_profile_settings_update_saved_fields(): void
     {
         $user = User::factory()->create();
