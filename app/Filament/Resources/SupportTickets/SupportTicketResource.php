@@ -19,7 +19,7 @@ class SupportTicketResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedLifebuoy;
 
-    protected static ?string $navigationGroup = 'İletişim';
+    protected static string|\UnitEnum|null $navigationGroup = 'İletişim';
 
     protected static ?int $navigationSort = 1;
 
