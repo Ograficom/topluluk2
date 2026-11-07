@@ -991,82 +991,44 @@ body.is-messenger-conversation .pm-dialog__header-more:hover{
 }
 
 
-/* Conversation page: restore the exact original Repost theme container and grid widths */
-@media (min-width: 641px) {
-  body.is-messenger-conversation main.container {
-    width: 100% !important;
-    max-width: var(--container, 1120px) !important;
-    margin-left: auto !important;
-    margin-right: auto !important;
-    padding-left: 10px !important;
-    padding-right: 10px !important;
-  }
+/* Conversation page width: mirror only the original Repost dialog.html container/grid breakpoints.
+   All rules are scoped to the conversation page; global site width is untouched. */
+body.is-messenger-conversation main.container {
+  width: 100% !important;
+  max-width: var(--container, 1120px) !important;
+  margin-inline: auto !important;
+  padding-inline: 10px !important;
+}
+body.is-messenger-conversation .main.main__grid {
+  display: grid !important;
+  grid-template-columns: 55px minmax(280px, auto) 320px !important;
+  gap: var(--main-gap, 20px) !important;
+  width: 100% !important;
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+@media screen and (max-width: 1120px) {
   body.is-messenger-conversation .main.main__grid {
-    display: grid !important;
-    grid-template-columns: 55px minmax(280px, auto) 320px !important;
-    align-items: start !important;
-    gap: var(--main-gap, 20px) !important;
-    width: 100% !important;
-    max-width: none !important;
-    margin: 0 auto !important;
-    padding: 0 !important;
-  }
-  body.is-messenger-conversation .main > .sidebar {
-    display: block !important;
-    min-width: 0 !important;
-  }
-  body.is-messenger-conversation .main > .feed {
-    display: block !important;
-    min-width: 0 !important;
-    width: 100% !important;
-    max-width: none !important;
-    margin: 0 !important;
-    padding: 0 !important;
-  }
-  body.is-messenger-conversation .main > .main__widgets {
-    display: block !important;
-    min-width: 0 !important;
-    width: 100% !important;
-  }
-  body.is-messenger-conversation .pm.card.card-body {
-    display: block !important;
-    width: 100% !important;
-    max-width: none !important;
-    min-width: 0 !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    border: 1px solid #e8edf3 !important;
-    border-radius: 18px !important;
-    background: #fff !important;
-    box-shadow: 0 2px 12px rgba(20,35,55,.05) !important;
-    overflow: visible !important;
-  }
-  body.is-messenger-conversation .pm-dialog {
-    display: flex !important;
-    flex-direction: column !important;
-    min-width: 0 !important;
-    padding-top: 0 !important;
-    overflow: visible !important;
-  }
-  body.is-messenger-conversation .pm-dialog__header--conversation {
-    position: static !important;
-    top: auto !important;
-    left: auto !important;
-    transform: none !important;
-    z-index: auto !important;
-    width: 100% !important;
-    max-width: none !important;
-    min-height: 68px !important;
-    margin: 0 !important;
-    padding: 12px 20px !important;
-    border: 0 !important;
-    border-bottom: 1px solid #edf0f4 !important;
-    border-radius: 0 !important;
-    background: #fff !important;
-    box-shadow: none !important;
+    grid-template-columns: 55px minmax(280px, auto) 290px !important;
   }
 }
-
+@media screen and (max-width: 920px) {
+  body.is-messenger-conversation .main.main__grid {
+    grid-template-columns: 55px minmax(280px, auto) !important;
+  }
+  body.is-messenger-conversation .main > .main__widgets {
+    display: none !important;
+  }
+}
+@media screen and (max-width: 720px) {
+  body.is-messenger-conversation .main.main__grid {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+  body.is-messenger-conversation .main > .sidebar {
+    display: none !important;
+  }
+}
 /* Fixed message composer on both desktop and mobile */
 body.is-messenger-conversation .pm-dialog__composer.pm-composer {
   position: fixed !important;
