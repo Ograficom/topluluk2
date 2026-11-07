@@ -142,3 +142,65 @@
     padding: 6px !important;
     gap: 2px !important;
 }
+
+
+/* Conversation list dropdown: polished full-width form actions */
+.pm-item__dropdown .dropdown-menu {
+    padding: 7px !important;
+    gap: 3px !important;
+}
+.pm-item__dropdown .dropdown-menu > .dropdown-menu-item {
+    display: block !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    border-radius: 10px !important;
+    background: transparent !important;
+}
+.pm-item__dropdown .dropdown-menu > .dropdown-menu-item > form {
+    display: block !important;
+    width: 100% !important;
+    margin: 0 !important;
+}
+.pm-item__dropdown .dropdown-menu > .dropdown-menu-item > form > button {
+    appearance: none !important;
+    -webkit-appearance: none !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    width: 100% !important;
+    min-height: 38px !important;
+    padding: 9px 12px !important;
+    margin: 0 !important;
+    border: 0 !important;
+    border-radius: 9px !important;
+    outline: 0 !important;
+    box-shadow: none !important;
+    background: #fff !important;
+    color: #343a46 !important;
+    font-family: inherit !important;
+    font-size: 13px !important;
+    font-weight: 500 !important;
+    line-height: 1.35 !important;
+    text-align: left !important;
+    white-space: normal !important;
+    cursor: pointer !important;
+    transition: background-color .16s ease, color .16s ease !important;
+}
+.pm-item__dropdown .dropdown-menu > .dropdown-menu-item > form > button:hover {
+    background: #f3f6fb !important;
+    color: #175fe8 !important;
+}
+.pm-item__dropdown .dropdown-menu > .dropdown-menu-item.is-danger > form > button {
+    background: #fff !important;
+    color: #e0444b !important;
+}
+.pm-item__dropdown .dropdown-menu > .dropdown-menu-item.is-danger > form > button:hover {
+    background: #fff1f1 !important;
+    color: #c92e38 !important;
+}
+.pm-item__dropdown .dropdown-menu > .dropdown-menu-item > form > button:focus-visible {
+    outline: 2px solid rgba(23, 95, 232, .25) !important;
+    outline-offset: -2px !important;
+}
