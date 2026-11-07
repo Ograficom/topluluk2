@@ -138,8 +138,17 @@
             <form action="{{ route('messenger.messages.store', $conversation) }}" method="POST" enctype="multipart/form-data" class="pm-dialog__composer pm-composer">
                 @csrf
                 <div class="pm-composer__bar">
-                    <label class="pm-composer__attachment" for="dialog-attachment" title="Dosya ekle" aria-label="Dosya ekle"><svg viewBox="0 0 24 24"><path d="m21.4 11.1-8.9 8.9a6 6 0 0 1-8.5-8.5l9.2-9.2a4 4 0 0 1 5.7 5.7l-9.2 9.2a2 2 0 0 1-2.8-2.8l8.5-8.5"/></svg><input id="dialog-attachment" type="file" name="attachment" aria-label="Dosya seç" hidden></label>
-                    <label class="visually-hidden" for="dialog-message">Mesaj</label><textarea id="dialog-message" name="body" rows="1" maxlength="5000" placeholder="Mesaj yazın…" aria-label="Mesaj yazın">{{ old('body') }}</textarea>
+                    <div class="pm-composer__attachment-wrap">
+                        <button class="pm-composer__attachment" type="button" data-attachment-toggle aria-label="Dosya ekle" aria-expanded="false" title="Dosya ekle">
+                            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m21.4 11.1-8.9 8.9a6 6 0 0 1-8.5-8.5l9.2-9.2a4 4 0 0 1 5.7 5.7l-9.2 9.2a2 2 0 0 1-2.8-2.8l8.5-8.5"/></svg>
+                        </button>
+                        <div class="pm-composer__attachment-menu" data-attachment-menu hidden>
+                            <button type="button" data-attachment-kind="media"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="8.5" cy="9" r="1.5"/><path d="m21 15-5-5L5 20"/></svg><span>Fotoğraf ya da Video</span></button>
+                            <button type="button" data-attachment-kind="file"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V10z"/><path d="M13 3v7h7"/></svg><span>Dosya</span></button>
+                        </div>
+                        <input id="dialog-attachment" type="file" name="attachment" aria-label="Dosya seç" hidden>
+                    </div>
+                    <textarea id="dialog-message" name="body" rows="1" maxlength="5000" aria-label="Mesaj" autocomplete="off">{{ old('body') }}</textarea>
                     <input type="hidden" name="gif_url" id="dialog-gif-url">
                     <div class="pm-composer__emoji-wrap"><button class="pm-composer__emoji" type="button" data-emoji-toggle aria-label="Emoji ve GIF ekle"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8.5 14.2s1.2 2 3.5 2 3.5-2 3.5-2M9 9.5h.01M15 9.5h.01"/></svg></button>
                     <div class="pm-composer__emoji-picker" data-emoji-picker hidden><div class="pm-composer__picker-tabs"><button type="button" class="is-active" data-picker-tab="emoji">Emoji</button><button type="button" data-picker-tab="gif">GIF</button></div>
