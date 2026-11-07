@@ -7,11 +7,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Message extends Model
 {
-    protected $fillable = ['conversation_id', 'user_id', 'body', 'read_at'];
+    protected $fillable = ['conversation_id', 'user_id', 'body', 'read_at', 'attachment_path', 'attachment_name', 'attachment_mime', 'attachment_size', 'gif_url'];
 
     protected function casts(): array
     {
-        return ['read_at' => 'datetime'];
+        return ['read_at' => 'datetime', 'attachment_size' => 'integer'];
     }
 
     public function conversation(): BelongsTo
