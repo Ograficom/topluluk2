@@ -15,12 +15,10 @@ use Filament\Support\Icons\Heroicon;
 
 class SitemapManager extends Page
 {
-    protected static string|\\UnitEnum|null $navigationGroup = 'Ayarlar';
+    protected static string|\UnitEnum|null $navigationGroup = 'Ayarlar';
     protected static ?string $navigationLabel = 'Sitemap yönetimi';
 
     protected static ?string $title = 'Sitemap oluşturucu';
-
-    protected static string|\UnitEnum|null $navigationGroup = 'Site ayarları';
 
     protected static ?int $navigationSort = 3;
 
