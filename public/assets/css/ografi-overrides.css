@@ -664,137 +664,115 @@
 }
 
 
-/* Messenger conversation header — one canonical responsive rule set */
-.pm.card.card-body{
+
+/* Dedicated conversation view: replace the global site bar with a compact chat header */
+body.is-messenger-conversation .header{
+  display:none!important;
+}
+body.is-messenger-conversation .pm.card.card-body{
+  padding:0!important;
+  overflow:visible!important;
+}
+body.is-messenger-conversation .pm-dialog{
+  display:flex!important;
+  flex-direction:column!important;
+  gap:0!important;
   min-width:0!important;
   overflow:visible!important;
 }
-.pm-dialog{
-  min-width:0!important;
-  margin-top:0!important;
-  overflow:visible!important;
-}
-.pm-dialog__header--conversation{
+body.is-messenger-conversation .pm-dialog__header--conversation{
   position:sticky!important;
-  top:var(--header-height,70px)!important;
-  z-index:95!important;
+  top:0!important;
+  z-index:100!important;
   display:flex!important;
   align-items:center!important;
   justify-content:space-between!important;
-  gap:12px!important;
+  width:100%!important;
+  min-height:68px!important;
   box-sizing:border-box!important;
-  width:calc(100% + 40px)!important;
-  max-width:none!important;
-  min-height:62px!important;
-  margin:0 -20px!important;
-  padding:8px 20px!important;
+  margin:0!important;
+  padding:10px 18px!important;
   border:0!important;
-  border-bottom:1px solid #e9edf3!important;
+  border-bottom:1px solid #edf0f4!important;
   border-radius:0!important;
   background:#fff!important;
 }
-.pm-dialog__header--conversation .pm-dialog__identity{
+body.is-messenger-conversation .pm-dialog__identity{
   display:flex!important;
   align-items:center!important;
+  gap:11px!important;
   flex:1 1 auto!important;
   min-width:0!important;
-  gap:10px!important;
   margin:0!important;
   padding:0!important;
   border:0!important;
   background:transparent!important;
   text-align:left!important;
 }
-.pm-dialog__header--conversation .pm-dialog__identity-avatar{
+body.is-messenger-conversation .pm-dialog__identity-avatar{
   display:block!important;
-  width:36px!important;
-  height:36px!important;
-  flex:0 0 36px!important;
+  width:40px!important;
+  height:40px!important;
+  flex:0 0 40px!important;
   border-radius:50%!important;
   object-fit:cover!important;
 }
-.pm-dialog__header--conversation .pm-dialog__identity-copy{
+body.is-messenger-conversation .pm-dialog__identity-copy{
   display:flex!important;
   flex-direction:column!important;
   min-width:0!important;
-  gap:2px!important;
+  gap:3px!important;
 }
-.pm-dialog__header--conversation .pm-dialog__identity-copy strong{
+body.is-messenger-conversation .pm-dialog__identity-copy strong{
   overflow:hidden!important;
   color:#202633!important;
-  font-size:14px!important;
-  line-height:1.25!important;
+  font-size:15px!important;
+  font-weight:700!important;
+  line-height:1.2!important;
   text-overflow:ellipsis!important;
   white-space:nowrap!important;
 }
-.pm-dialog__header--conversation .pm-dialog__identity-status{
+body.is-messenger-conversation .pm-dialog__identity-status{
   display:block!important;
   overflow:hidden!important;
   color:#718096!important;
-  font-size:11px!important;
-  line-height:1.25!important;
+  font-size:12px!important;
+  line-height:1.2!important;
   text-overflow:ellipsis!important;
   white-space:nowrap!important;
 }
-.pm-dialog__header-menu{
+body.is-messenger-conversation .pm-dialog__header-menu{
   position:relative!important;
-  flex:0 0 36px!important;
+  flex:0 0 38px!important;
+  margin-left:12px!important;
 }
-.pm-dialog__header-more{
+body.is-messenger-conversation .pm-dialog__header-more{
   display:grid!important;
   place-items:center!important;
-  width:36px!important;
-  height:36px!important;
+  width:38px!important;
+  height:38px!important;
   padding:0!important;
   border:0!important;
   border-radius:50%!important;
   background:#f0f3f7!important;
 }
 @media(max-width:767px){
-  .pm.card.card-body{
-    padding:14px!important;
-    overflow:visible!important;
+  body.is-messenger-conversation .pm.card.card-body{
+    margin:0!important;
+    padding:0!important;
+    border-radius:0!important;
+    min-height:100dvh!important;
   }
-  .pm-dialog__header--conversation{
-    top:var(--header-height,70px)!important;
-    width:calc(100% + 28px)!important;
-    min-height:58px!important;
-    margin:0 -14px!important;
-    padding:7px 14px!important;
-    gap:8px!important;
+  body.is-messenger-conversation .pm-dialog__header--conversation{
+    top:0!important;
+    min-height:64px!important;
+    padding:8px 14px!important;
   }
-  .pm-dialog__header--conversation .pm-dialog__identity{
-    gap:9px!important;
+  body.is-messenger-conversation .pm-dialog__identity-avatar{
+    width:36px!important;
+    height:36px!important;
+    flex-basis:36px!important;
   }
-  .pm-dialog__header--conversation .pm-dialog__identity-avatar{
-    width:34px!important;
-    height:34px!important;
-    flex-basis:34px!important;
-  }
-  .pm-dialog__header__identity-copy strong{font-size:13px!important}
-  .pm-dialog__header--conversation .pm-dialog__identity-status{font-size:10.5px!important}
-  .pm-dialog__header-menu{flex-basis:34px!important}
-  .pm-dialog__header-more{width:34px!important;height:34px!important}
-}
-
-
-/* Conversation header intentionally contains no voice/video call controls. */
-.pm-dialog__header--conversation :is(
-  .pm-dialog__video-call,
-  .pm-dialog__voice-call,
-  .pm-dialog__call,
-  .pm-dialog__header-call,
-  [data-video-call],
-  [data-voice-call],
-  [aria-label*="Görüntülü"],
-  [aria-label*="Sesli arama"],
-  [title*="Görüntülü"],
-  [title*="Sesli arama"]
-){
-  display:none!important;
-}
-.pm-dialog__header--conversation{
-  display:flex!important;
-  align-items:center!important;
-  justify-content:space-between!important;
+  body.is-messenger-conversation .pm-dialog__identity-copy strong{font-size:14px!important}
+  body.is-messenger-conversation .pm-dialog__identity-status{font-size:11px!important}
 }

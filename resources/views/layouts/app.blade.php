@@ -35,7 +35,7 @@
     </script>
     @stack('head')
 </head>
-<body>
+<body @class(['is-messenger-conversation' => request()->routeIs('messenger.show')])>
     <header class="header">
         <div class="header__inner container">
             <div class="header__start">
