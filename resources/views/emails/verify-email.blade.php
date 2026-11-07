@@ -37,15 +37,10 @@
                                 </tr>
                                 <tr>
                                     <td style="padding:30px 42px 40px;">
-                                        <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin:0 0 24px;">
-                                            <tr>
-                                                <td style="background:#edf5fe;border:1px solid #dceaff;border-radius:20px;padding:7px 12px;font-size:11px;line-height:14px;font-weight:700;letter-spacing:.7px;color:#0b5ed7;">HESAP GÜVENLİĞİ</td>
-                                            </tr>
-                                        </table>
-                                        <h1 style="margin:0 0 14px;font-size:25px;line-height:1.3;font-weight:700;letter-spacing:-.55px;color:#172033;">E-posta adresini doğrula</h1>
-                                        <p style="margin:0 0 10px;font-size:15px;line-height:1.6;color:#263247;">Merhaba{{ filled($user->name ?? null) ? ' '.e($user->name) : '' }},</p>
-                                        <p style="margin:0 0 27px;font-size:14px;line-height:1.8;color:#657187;">{{ $brandName }} topluluğuna katıldığın için teşekkürler. Hesabını güvence altına almak ve üyeliğini tamamlamak için e-posta adresini doğrulaman gerekiyor.</p>
-                                        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:0 0 27px;">
+                                        <h1 style="margin:0 0 14px;font-size:24px;line-height:1.3;font-weight:700;letter-spacing:-.55px;color:#172033;">E-posta adresini doğrula</h1>
+                                        <p style="margin:0 0 8px;font-size:14px;line-height:1.6;color:#263247;">Merhaba{{ filled($user->name ?? null) ? ' '.e($user->name) : '' }},</p>
+                                        <p style="margin:0 0 22px;font-size:14px;line-height:1.7;color:#657187;">Hesabını doğrulamak için aşağıdaki düğmeye tıklaman yeterli.</p>
+                                        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:0 0 22px;">
                                             <tr>
                                                 <td align="center" bgcolor="#0d6efd" style="border-radius:8px;">
                                                     <a href="{{ $url }}" target="_blank" style="display:block;padding:15px 22px;font-size:14px;line-height:20px;font-weight:700;letter-spacing:.1px;color:#ffffff;text-decoration:none;border-radius:8px;">E-posta adresimi doğrula&nbsp; &rarr;</a>
@@ -55,15 +50,15 @@
                                         <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#f7f9fc;border:1px solid #e9edf4;border-radius:9px;margin:0 0 25px;">
                                             <tr>
                                                 <td style="padding:15px 16px;">
-                                                    <p style="margin:0 0 7px;font-size:12px;line-height:18px;font-weight:700;color:#344054;">Buton çalışmıyor mu?</p>
-                                                    <p style="margin:0 0 8px;font-size:12px;line-height:1.6;color:#7a8496;">Aşağıdaki bağlantıyı tarayıcına kopyalayabilirsin:</p>
+                                                    <p style="margin:0 0 7px;font-size:12px;line-height:18px;font-weight:700;color:#344054;">Bağlantı açılmıyor mu?</p>
+                                                    <p style="margin:0 0 8px;font-size:12px;line-height:1.6;color:#7a8496;">Bu bağlantıyı tarayıcına kopyala:</p>
                                                     <p style="margin:0;font-size:12px;line-height:1.7;word-break:break-all;"><a href="{{ $url }}" style="color:#0b5ed7;text-decoration:underline;">{{ $url }}</a></p>
                                                 </td>
                                             </tr>
                                         </table>
                                         <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
                                             <tr><td style="border-top:1px solid #edf0f5;padding-top:20px;">
-                                                <p style="margin:0;font-size:12px;line-height:1.8;color:#7a8496;">Bu hesabı sen oluşturmadıysan bu e-postayı dikkate almayabilirsin. Hesabın doğrulanmaz ve başka bir işlem yapman gerekmez.</p>
+                                                <p style="margin:0;font-size:12px;line-height:1.8;color:#7a8496;">Bu hesabı sen oluşturmadıysan e-postayı yok sayabilirsin.</p>
                                             </td></tr>
                                         </table>
                                         <p style="margin:25px 0 0;font-size:13px;line-height:1.7;color:#526075;">İyi günler,<br><strong style="color:#172033;">{{ $brandName }} ekibi</strong></p>
@@ -74,7 +69,7 @@
                     </tr>
                     <tr>
                         <td align="center" style="padding:23px 18px 0;">
-                            <p style="margin:0 0 7px;font-size:11px;line-height:1.7;color:#8993a5;">Bu e-posta, {{ $brandName }} üyelik işlemin kapsamında otomatik olarak gönderilmiştir.</p>
+                            <p style="margin:0 0 7px;font-size:11px;line-height:1.7;color:#8993a5;">Bu otomatik bir e-postadır. Yanıtlamana gerek yoktur.</p>
                             <p style="margin:0;font-size:11px;line-height:1.8;color:#a0a8b6;">© {{ date('Y') }} {{ $brandName }} · Tüm hakları saklıdır.</p>
                             <p style="margin:7px 0 0;font-size:11px;line-height:1.7;"><a href="{{ url('/') }}" style="color:#0b5ed7;text-decoration:none;font-weight:600;">{{ parse_url(url('/'), PHP_URL_HOST) }}</a></p>
                         </td>
