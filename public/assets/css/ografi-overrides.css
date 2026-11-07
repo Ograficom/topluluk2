@@ -1244,3 +1244,72 @@ body.is-messenger-conversation .pm-dialog__composer .pm-composer__send {
     gap: 8px !important;
   }
 }
+
+
+/* Messenger page width: final scoped layout lock matching Repost/dist/dialog.html. */
+body.is-messenger-conversation main.container {
+  width: 100% !important;
+  max-width: var(--container, 1120px) !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  padding-left: 10px !important;
+  padding-right: 10px !important;
+  box-sizing: border-box !important;
+}
+body.is-messenger-conversation main.container > .main.main__grid {
+  display: grid !important;
+  grid-template-columns: 55px minmax(0, 1fr) 320px !important;
+  gap: var(--main-gap, 20px) !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  margin: var(--header-offset, 20px) 0 0 !important;
+  padding: 0 !important;
+  box-sizing: border-box !important;
+}
+body.is-messenger-conversation main.container > .main.main__grid > .feed {
+  display: flex !important;
+  width: auto !important;
+  max-width: none !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+  padding: 0 0 var(--main-gap, 20px) !important;
+  box-sizing: border-box !important;
+}
+body.is-messenger-conversation .pm.card.card-body {
+  display: block !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+  box-sizing: border-box !important;
+}
+@media screen and (max-width: 1120px) {
+  body.is-messenger-conversation main.container > .main.main__grid {
+    grid-template-columns: 55px minmax(0, 1fr) 290px !important;
+  }
+}
+@media screen and (max-width: 920px) {
+  body.is-messenger-conversation main.container > .main.main__grid {
+    grid-template-columns: 55px minmax(0, 1fr) !important;
+  }
+  body.is-messenger-conversation main.container > .main.main__grid > .main__widgets {
+    display: none !important;
+  }
+}
+@media screen and (max-width: 720px) {
+  body.is-messenger-conversation main.container {
+    max-width: var(--container, 1120px) !important;
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+  }
+  body.is-messenger-conversation main.container > .main.main__grid {
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 0 !important;
+    margin-top: 0 !important;
+  }
+  body.is-messenger-conversation main.container > .main.main__grid > .sidebar,
+  body.is-messenger-conversation main.container > .main.main__grid > .main__widgets {
+    display: none !important;
+  }
+}
