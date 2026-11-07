@@ -3,7 +3,7 @@
 @section('title', $user->displayName())
 
 @push('head')
-    <link rel="stylesheet" href="{{ asset('assets/css/profile-theme.css') }}?v=20261107-profile-spacing">
+    <link rel="stylesheet" href="{{ asset('assets/css/profile-theme.css') }}?v=20261107-profile-footer-gap">
 @endpush
 
 @section('content')
