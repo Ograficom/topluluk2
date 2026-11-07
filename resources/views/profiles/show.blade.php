@@ -3,7 +3,7 @@
 @section('title', $user->displayName())
 
 @push('head')
-    <link rel="stylesheet" href="{{ asset('assets/css/profile-theme.css') }}?v=20261107-profile-footer-gap-2">
+    <link rel="stylesheet" href="{{ asset('assets/css/profile-theme.css') }}?v=20261107-profile-footer-inline">
 @endpush
 
 @section('content')
@@ -190,7 +190,7 @@
                     </section>
 
                 </div>
-                <div class="profile__aside-footer">@include('layouts._footer')</div>
+                <div class="profile__aside-footer" style="display:block; margin-top:28px; padding-top:0;">@include('layouts._footer')</div>
             </aside>
         </div>
     </div>
