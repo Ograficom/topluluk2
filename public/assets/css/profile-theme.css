@@ -335,7 +335,7 @@
 
 
 /* Profile follow and direct-message actions */
-.profile__actions{display:flex;align-items:center;justify-content:flex-end;gap:10px;align-self:start;margin:0 0 0 auto}
+.profile__actions{grid-column:2;grid-row:1;display:flex!important;align-items:center;justify-content:flex-end;gap:10px;align-self:start;margin:0 0 0 auto;padding-top:0!important}.profile__content>.profile__info{grid-column:1;grid-row:1;min-width:0}
 .profile__actions form{margin:0}
 .profile__message-button{display:inline-flex;width:42px;height:42px;align-items:center;justify-content:center;border:1px solid var(--border-color,#e5e9f0);border-radius:50%;background:var(--card-bg,#fff);color:var(--color-title,#344054);cursor:pointer;transition:background-color .15s,border-color .15s,color .15s}
 .profile__message-button:hover{background:var(--color-primary-soft,#eff6ff);border-color:var(--color-primary,#1769f5);color:var(--color-primary,#1769f5)}
@@ -343,4 +343,4 @@
 .profile__subscribe-button:hover{background:var(--color-primary-hover,#075bdc);border-color:var(--color-primary-hover,#075bdc)}
 .profile__subscribe-button.is-following{background:var(--card-bg,#fff);color:var(--color-title,#344054)!important;border-color:var(--border-color,#e5e9f0)}
 .profile__subscribe-button.is-following:hover{background:#fff1f2;border-color:#e11d48;color:#e11d48!important}
-@media(max-width:575px){.profile__actions{gap:7px;margin-bottom:12px}.profile__message-button{width:38px;height:38px}.profile__subscribe-button{min-height:38px;padding-inline:13px;font-size:.82rem}}
+@media(max-width:575px){.profile__content{grid-template-columns:minmax(0,1fr) auto;align-items:start;gap:10px}.profile__actions{grid-column:2;grid-row:1;gap:7px;margin-bottom:0}.profile__message-button{width:38px;height:38px}.profile__subscribe-button{min-height:38px;padding-inline:13px;font-size:.82rem}}
