@@ -8,8 +8,8 @@
             @php
                 $fileName = basename($path);
                 $extension = strtoupper(pathinfo($fileName, PATHINFO_EXTENSION));
-                $fileSize = \\Illuminate\\Support\\Facades\\Storage::disk('local')->exists($path)
-                    ? \\Illuminate\\Support\\Facades\\Storage::disk('local')->size($path)
+                $fileSize = \Illuminate\Support\Facades\Storage::disk('local')->exists($path)
+                    ? \Illuminate\Support\Facades\Storage::disk('local')->size($path)
                     : null;
             @endphp
             <a
