@@ -47,20 +47,13 @@
                         </div>
                         <div class="pm-dialog__message-main">
                             <div class="pm-dialog__meta">
-                                @if (! $isOwnMessage)
-                                    <a class="pm-dialog__author pm_list" href="{{ $message->user ? route('profiles.show', $message->user) : route('messenger.index') }}">{{ $message->user?->displayName() ?? 'Silinmiş kullanıcı' }}</a>
-                                @endif
-                                <time datetime="{{ $message->created_at->toAtomString() }}">{{ $message->created_at->format('d.m.Y, H:i') }}</time>
                                 @if ($isOwnMessage)
-                                    <span class="pm-dialog__author">{{ $message->user?->displayName() ?? 'Sen' }}</span>
-                                @endif
-                                <div class="dropdown pm-dialog__actions">
-                                    <button class="pm-dialog__more" type="button" data-dropdown-toggle aria-expanded="false" aria-haspopup="menu" aria-label="Mesaj seçenekleri">
-                                        <x-repost-icon name="more" size="18" />
-                                    </button>
-                                    <div class="dropdown-menu dropdown-menu-end">
-                                        <div class="dropdown-menu-item dropdown-menu-item-sm"><button type="button" data-quote-message="{{ $message->body }}">Alıntıla</button></div>
-                                        @if ($isOwnMessage)
+                                    <div class="dropdown pm-dialog__actions">
+                                        <button class="pm-dialog__more" type="button" data-dropdown-toggle aria-expanded="false" aria-haspopup="menu" aria-label="Mesaj seçenekleri">
+                                            <x-repost-icon name="more" size="18" />
+                                        </button>
+                                        <div class="dropdown-menu dropdown-menu-end">
+                                            <div class="dropdown-menu-item dropdown-menu-item-sm"><button type="button" data-quote-message="{{ $message->body }}">Alıntıla</button></div>
                                             <div class="dropdown-menu-item dropdown-menu-item-sm"><button type="button" data-edit-message="{{ $message->id }}">Düzenle</button></div>
                                             <div class="dropdown-menu-item dropdown-menu-item-sm is-danger">
                                                 <form action="{{ route('messenger.messages.delete', [$conversation, $message]) }}" method="POST" data-delete-message>
@@ -69,11 +62,25 @@
                                                     <button type="submit">Sil</button>
                                                 </form>
                                             </div>
-                                        @elseif ($message->user)
-                                            <div class="dropdown-menu-item dropdown-menu-item-sm"><a href="{{ route('profiles.show', $message->user) }}">Profili görüntüle</a></div>
-                                        @endif
+                                        </div>
                                     </div>
-                                </div>
+                                    <time datetime="{{ $message->created_at->toAtomString() }}">{{ $message->created_at->format('d.m.Y, H:i') }}</time>
+                                    <span class="pm-dialog__author">{{ $message->user?->displayName() ?? 'Sen' }}</span>
+                                @else
+                                    <a class="pm-dialog__author pm_list" href="{{ $message->user ? route('profiles.show', $message->user) : route('messenger.index') }}">{{ $message->user?->displayName() ?? 'Silinmiş kullanıcı' }}</a>
+                                    <time datetime="{{ $message->created_at->toAtomString() }}">{{ $message->created_at->format('d.m.Y, H:i') }}</time>
+                                    <div class="dropdown pm-dialog__actions">
+                                        <button class="pm-dialog__more" type="button" data-dropdown-toggle aria-expanded="false" aria-haspopup="menu" aria-label="Mesaj seçenekleri">
+                                            <x-repost-icon name="more" size="18" />
+                                        </button>
+                                        <div class="dropdown-menu dropdown-menu-end">
+                                            <div class="dropdown-menu-item dropdown-menu-item-sm"><button type="button" data-quote-message="{{ $message->body }}">Alıntıla</button></div>
+                                            @if ($message->user)
+                                                <div class="dropdown-menu-item dropdown-menu-item-sm"><a href="{{ route('profiles.show', $message->user) }}">Profili görüntüle</a></div>
+                                            @endif
+                                        </div>
+                                    </div>
+                                @endif
                             </div>
                             <div class="pm-dialog__bubble" data-message-bubble><div class="pm-dialog__text">{{ $message->body }}</div></div>
                             @if ($isOwnMessage)
@@ -102,11 +109,11 @@
 
             {{ $messages->links() }}
 
-            <form action="{{ route('messenger.messages.store', $conversation) }}" method="POST" class="pm-dialog__composer" id="dialog-message">
+            <form action="{{ route('messenger.messages.store', $conversation) }}" method="POST" class="pm-dialog__composer">
                 @csrf
                 <div class="pm-dialog__editor">
                     <label class="visually-hidden" for="message-body">Mesajın</label>
-                    <textarea id="message-body" name="body" rows="3" maxlength="5000" required placeholder="Mesajını yaz...">{{ old('body') }}</textarea>
+                    <textarea id="dialog-message" name="body" rows="3" maxlength="5000" required placeholder="Mesajını yaz...">{{ old('body') }}</textarea>
                 </div>
                 @error('body')
                     <p class="small color-red">{{ $message }}</p>
@@ -122,7 +129,7 @@
 @push('scripts')
     <script>
         (() => {
-            const textarea = document.querySelector('#message-body');
+            const textarea = document.querySelector('#dialog-message');
             const messages = document.querySelector('#pmMessages');
             if (!messages) return;
 

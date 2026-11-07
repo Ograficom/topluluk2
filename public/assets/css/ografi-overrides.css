@@ -46,3 +46,20 @@
 .pm-item__dropdown .dropdown-menu-item.is-danger > form > button { color: var(--bs-danger, #dc3545); }
 .pm__dropdown-limit { min-width: 0; }
 .pm__dropdown-limit .pm_progress_bar { width: 100%; max-width: none; }
+
+/* Repost messenger/dialog behavior: preserve original component design. */
+.pm-item__dropdown .dropdown-menu-item > form, .pm-dialog__actions .dropdown-menu-item > form { width:100%; margin:0; }
+.pm-item__dropdown .dropdown-menu-item > form > button, .pm-dialog__actions .dropdown-menu-item > form > button {
+ display:block; width:100%; padding:0; border:0; background:transparent; color:inherit; font:inherit; text-align:left; cursor:pointer;
+}
+.pm-item__dropdown .dropdown-menu-item.is-danger > form > button, .pm-dialog__actions .dropdown-menu-item.is-danger > form > button { color:var(--bs-danger,#dc3545); }
+.pm-dialog__edit-form[hidden] { display:none !important; }
+.pm-dialog__message-main { overflow-wrap:anywhere; }
+@media (max-width:767.98px) {
+ .pm-dialog__message-main { max-width:calc(100% - 40px); }
+ .pm-dialog__meta { max-width:100%; flex-wrap:wrap; }
+ .pm-item__preview { padding-right:0; flex-wrap:wrap; gap:2px 5px; }
+ .pm-item__preview time { position:static; flex:0 0 100%; margin-top:3px; }
+ .pm-item__body { padding-right:28px; }
+ .pm-item__dropdown, .pm-dialog__actions { visibility:visible; opacity:1; }
+}

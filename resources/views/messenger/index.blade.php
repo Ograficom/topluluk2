@@ -61,8 +61,7 @@
                                     <x-repost-icon name="more" size="18" />
                                 </button>
                                 <ul class="dropdown-menu dropdown-menu-end">
-                                    <li class="dropdown-menu-item dropdown-menu-item-sm"><form action="{{ route('messenger.conversations.action', $conversation) }}" method="POST">@csrf<input type="hidden" name="action" value="read"><button type="submit">Okundu olarak işaretle</button></form></li>
-                                    <li class="dropdown-menu-item dropdown-menu-item-sm"><form action="{{ route('messenger.conversations.action', $conversation) }}" method="POST">@csrf<input type="hidden" name="action" value="unread"><button type="submit">Okunmamış olarak işaretle</button></form></li>
+                                    <li class="dropdown-menu-item dropdown-menu-item-sm"><form action="{{ route('messenger.conversations.action', $conversation) }}" method="POST">@csrf<input type="hidden" name="action" value="{{ $isUnread ? 'read' : 'unread' }}"><button type="submit">{{ $isUnread ? 'Okundu olarak işaretle' : 'Okunmamış olarak işaretle' }}</button></form></li>
                                     <li class="dropdown-menu-item dropdown-menu-item-sm is-danger"><form action="{{ route('messenger.conversations.action', $conversation) }}" method="POST" data-delete-conversation>@csrf<input type="hidden" name="action" value="delete"><button type="submit">Silmek</button></form></li>
                                 </ul>
                             </div>
