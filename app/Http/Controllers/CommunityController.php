@@ -208,8 +208,8 @@ class CommunityController extends Controller
     public function sendContact(Request $request): RedirectResponse
     {
         $validated = $request->validate([
-            'name' => ['required', 'string', 'max:35'],
-            'email' => ['required', 'email', 'max:254'],
+            'name' => [$request->user() ? 'nullable' : 'required', 'string', 'max:35'],
+            'email' => [$request->user() ? 'nullable' : 'required', 'email', 'max:254'],
             'subject' => ['required', 'string', 'max:45'],
             'recipient' => ['required', 'in:support,editorial,partnerships,bug,suggestion'],
             'message' => ['required', 'string', 'max:10000'],
@@ -232,8 +232,8 @@ class CommunityController extends Controller
 
         $ticket = SupportTicket::create([
             'user_id' => $request->user()?->id,
-            'name' => $validated['name'],
-            'email' => $validated['email'],
+            'name' => $request->user()?->displayName() ?? $validated['name'],
+            'email' => $request->user()?->email ?? $validated['email'],
             'subject' => $validated['subject'],
             'department' => $validated['recipient'],
             'message' => trim($validated['message']),

@@ -8,16 +8,29 @@
             @csrf
             <h1 class="h3">Destek ekibiyle iletişim</h1>
             <ul class="feedback__list">
-                <li class="form-group">
-                    <label class="visually-hidden" for="contact-name">Adın</label>
-                    <input id="contact-name" name="name" type="text" value="{{ old('name', auth()->user()?->displayName()) }}" maxlength="35" autocomplete="name" placeholder="Adın" required>
-                    @error('name')<span class="small color-red">{{ $message }}</span>@enderror
-                </li>
-                <li class="form-group">
-                    <label class="visually-hidden" for="contact-email">E-posta adresin</label>
-                    <input id="contact-email" name="email" type="email" value="{{ old('email', auth()->user()?->email) }}" maxlength="254" autocomplete="email" placeholder="E-posta adresin" required>
-                    @error('email')<span class="small color-red">{{ $message }}</span>@enderror
-                </li>
+                @auth
+                    <li>
+                        <div style="display:flex;align-items:center;gap:13px;padding:13px 15px;border:1px solid var(--border-color);border-radius:14px;background:var(--body-bg);">
+                            <img src="{{ auth()->user()->avatarUrl() }}" alt="" width="46" height="46" style="width:46px;height:46px;flex:0 0 46px;object-fit:cover;border-radius:50%;">
+                            <div style="min-width:0;display:flex;flex-direction:column;gap:2px;">
+                                <strong style="font-size:.95rem;line-height:1.35;color:var(--title-color);">{{ auth()->user()->displayName() }}</strong>
+                                <span style="font-size:.8rem;color:var(--color-gray);">Oturum açmış hesap</span>
+                            </div>
+                            <span aria-hidden="true" style="margin-left:auto;color:var(--color-primary);font-size:.8rem;font-weight:600;">Hesabın</span>
+                        </div>
+                    </li>
+                @else
+                    <li class="form-group">
+                        <label class="visually-hidden" for="contact-name">Adın</label>
+                        <input id="contact-name" name="name" type="text" value="{{ old('name') }}" maxlength="35" autocomplete="name" placeholder="Adın" required>
+                        @error('name')<span class="small color-red">{{ $message }}</span>@enderror
+                    </li>
+                    <li class="form-group">
+                        <label class="visually-hidden" for="contact-email">E-posta adresin</label>
+                        <input id="contact-email" name="email" type="email" value="{{ old('email') }}" maxlength="254" autocomplete="email" placeholder="E-posta adresin" required>
+                        @error('email')<span class="small color-red">{{ $message }}</span>@enderror
+                    </li>
+                @endauth
                 <li class="form-group">
                     <label class="visually-hidden" for="contact-sub">Konu</label>
                     <input id="contact-sub" name="subject" type="text" value="{{ old('subject') }}" maxlength="45" placeholder="Konu" required>
