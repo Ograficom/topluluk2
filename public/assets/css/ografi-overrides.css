@@ -63,3 +63,32 @@
  .pm-item__body { padding-right:28px; }
  .pm-item__dropdown, .pm-dialog__actions { visibility:visible; opacity:1; }
 }
+
+
+/* Fix native browser button rendering inside messenger dropdowns. */
+.pm-item__dropdown .dropdown-menu .dropdown-menu-item > form,
+.pm-dialog__actions .dropdown-menu .dropdown-menu-item > form {
+    display: block !important; width: 100% !important; margin: 0 !important;
+}
+.pm-item__dropdown .dropdown-menu .dropdown-menu-item > form > button,
+.pm-dialog__actions .dropdown-menu .dropdown-menu-item > form > button {
+    appearance: none !important; -webkit-appearance: none !important;
+    display: flex !important; align-items: center !important;
+    width: 100% !important; min-height: 38px !important;
+    padding: 9px 14px !important; margin: 0 !important;
+    border: 0 !important; border-radius: 0 !important;
+    outline: 0 !important; box-shadow: none !important;
+    background: transparent !important; color: var(--text-color, #252a31) !important;
+    font: inherit !important; font-size: .875rem !important; font-weight: 400 !important;
+    line-height: 1.35 !important; text-align: left !important;
+    white-space: normal !important; cursor: pointer !important;
+}
+.pm-item__dropdown .dropdown-menu .dropdown-menu-item > form > button:hover,
+.pm-dialog__actions .dropdown-menu .dropdown-menu-item > form > button:hover {
+    background: var(--hover-bg, #f4f6f9) !important;
+}
+.pm-item__dropdown .dropdown-menu .dropdown-menu-item.is-danger > form > button,
+.pm-dialog__actions .dropdown-menu .dropdown-menu-item.is-danger > form > button { color: #f04438 !important; }
+.pm-item__dropdown .dropdown-menu .dropdown-menu-item.is-danger > form > button:hover,
+.pm-dialog__actions .dropdown-menu .dropdown-menu-item.is-danger > form > button:hover { background: #fff1f0 !important; }
+.pm-item__dropdown .dropdown-menu, .pm-dialog__actions .dropdown-menu { padding: 6px !important; }
