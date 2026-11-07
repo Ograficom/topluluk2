@@ -6,11 +6,14 @@
     <article class="pm card card-body">
         <section class="pm-dialog">
             <header class="pm-dialog__header pm-dialog__header--conversation">
+                <a class="pm-dialog__back" href="{{ route('messenger.index') }}" aria-label="Mesaj listesine dön">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+                </a>
                 <button class="pm-dialog__identity" type="button" data-open-user-info aria-label="Kullanıcı bilgilerini aç">
                     <img class="pm-dialog__identity-avatar" src="{{ $other?->avatarUrl() ?? asset('assets/img/noavatar.png') }}" alt="{{ $other?->displayName() ?? 'Kullanıcı' }}">
                     <span class="pm-dialog__identity-copy">
                         <strong>{{ $other?->displayName() ?? 'OgraFi üyesi' }}</strong>
-                        <span class="pm-dialog__identity-status"><i class="{{ $other?->isOnline() ? 'is-online' : '' }}"></i>@if ($other?->isOnline()) Şu anda çevrimiçi @elseif ($other?->last_seen_at) {{ '@'.$other->username }} · {{ $other->last_seen_at->locale('tr')->diffForHumans() }} aktifti @else {{ '@'.$other?->username }} · Aktiflik bilgisi yok @endif</span>
+                        <span class="pm-dialog__identity-status"><i class="{{ $other?->isOnline() ? 'is-online' : '' }}"></i>@if ($other?->isOnline()) Şu anda çevrimiçi @elseif ($other?->last_seen_at) {{ $other->last_seen_at->locale('tr')->diffForHumans() }} aktifti @else Aktiflik bilgisi yok @endif</span>
                     </span>
                 </button>
                 <div class="dropdown dropdown-md pm-dialog__header-menu">
