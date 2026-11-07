@@ -52,6 +52,9 @@
                                         @if ($author->hasVerifiedBadge())
                                             <span class="verify" role="img" aria-label="Doğrulanmış hesap"><x-repost-icon name="verify" size="14" /></span>
                                         @endif
+@if ($author)
+    <x-company-verified-badge size="14" />
+@endif
                                     </strong>
                                     <span class="meta">{{ number_format($author->posts_count) }} yazı</span>
                                 </span>
