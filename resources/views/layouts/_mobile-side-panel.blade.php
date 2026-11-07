@@ -124,16 +124,9 @@
                     <footer class="widget__footer"><a href="{{ route('comments.latest') }}" class="link-accent">Tüm yorumlar</a></footer>
                 </section>
 
-                <section class="widget card card-body">
-                    <header><h2 class="widget__title h6">Gezinme</h2></header>
-                    <div class="widget__content widget__content--bleed">
-                        <ul class="widget__list">
-                            <li class="user-card"><a class="user-box" href="{{ auth()->check() ? route('community.following') : route('login') }}"><span class="user-box-content"><span class="name">Takip akışı</span></span></a></li>
-                            <li class="user-card"><a class="user-box" href="{{ route('posts.latest') }}"><span class="user-box-content"><span class="name">Son yazılar</span></span></a></li>
-                            <li class="user-card"><a class="user-box" href="{{ route('stats.index') }}"><span class="user-box-content"><span class="name">İstatistikler</span></span></a></li>
-                        </ul>
-                    </div>
-                </section>
+                <div class="mobile-side-panel__footer">
+                    @include('layouts._footer')
+                </div>
             </div>
         </div>
     </div>
