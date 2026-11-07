@@ -536,3 +536,44 @@
     padding:24px 12px 20px!important;
   }
 }
+
+/* Pure white messenger bottom sheet */
+@media (max-width:640px){
+  .pm-user-info{
+    background:#fff!important;
+    border:1px solid #edf0f4!important;
+    border-bottom:0!important;
+    box-shadow:0 -10px 36px rgba(20,30,45,.12)!important;
+  }
+  .pm-user-info__top{
+    background:#fff!important;
+    border-bottom:1px solid #f0f2f5!important;
+  }
+  .pm-user-info__profile{
+    background:#fff!important;
+    border-radius:0!important;
+  }
+  .pm-user-info__profile img{
+    box-shadow:0 3px 14px rgba(20,30,45,.09)!important;
+  }
+  .pm-user-info__menu,
+  .pm-user-info__menu-row{
+    background:#fff!important;
+  }
+  .pm-user-info__menu{
+    border-color:#eceff3!important;
+    box-shadow:none!important;
+  }
+  .pm-user-info__menu-row{
+    border-bottom-color:#f0f2f5!important;
+  }
+  .pm-user-info__menu-icon{
+    background:#f5f6f8!important;
+    color:#64748b!important;
+  }
+  .pm-user-info__empty{
+    background:#fff!important;
+    border-color:#e7ebf0!important;
+  }
+  .pm-user-info::after{background:#d8dde5!important}
+}
