@@ -14,13 +14,14 @@ use Filament\Support\Icons\Heroicon;
 
 class SiteBranding extends Page
 {
+    protected static string|\\UnitEnum|null $navigationGroup = 'Ayarlar';
     protected static ?string $navigationLabel = 'Marka ayarları';
 
     protected static ?string $title = 'Site markası';
 
     protected static string|\BackedEnum|null $navigationIcon = Heroicon::OutlinedCog6Tooth;
 
-    protected static ?int $navigationSort = 100;
+    protected static ?int $navigationSort = 1;
 
     protected string $view = 'filament.pages.site-branding';
 
