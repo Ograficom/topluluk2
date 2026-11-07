@@ -295,3 +295,35 @@
     .pm-dialog__header { padding: 16px !important; }
     .pm-dialog__heading h2 { font-size: 17px !important; }
 }
+
+
+/* Unread-only switch row: align label and switch like the clean reference. */
+.pm-unread-filter {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    width: 100% !important;
+    min-height: 74px !important;
+    padding: 16px 24px 16px 39px !important;
+    margin: 0 !important;
+    gap: 16px !important;
+    border: 0 !important;
+    background: #fff !important;
+}
+.pm-unread-filter__label {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 0 !important;
+    margin: 0 !important;
+    color: #60738f !important;
+    font-size: 13px !important;
+    font-weight: 400 !important;
+    line-height: 1.4 !important;
+}
+.pm-unread-filter__input {
+    flex: 0 0 auto !important;
+    margin: 0 !important;
+}
+@media (max-width: 640px) {
+    .pm-unread-filter { padding-right: 18px !important; padding-left: 24px !important; }
+}
