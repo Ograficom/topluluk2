@@ -187,3 +187,18 @@
     justify-content: start;
   }
 }
+
+/* Match the supplied mobile profile reference: keep the 320px sidebar
+   and show the original footer directly below the About card. */
+@media screen and (max-width: 920px) {
+  .profile__aside {
+    width: 100%;
+    max-width: 320px;
+    position: static;
+    order: -1;
+  }
+
+  .profile__aside-footer {
+    display: block;
+  }
+}
