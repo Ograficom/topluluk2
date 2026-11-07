@@ -37,6 +37,12 @@ class UsersTable
                     ->formatStateUsing(fn ($state): string => $state ? 'Onaylandı' : 'Onay bekliyor')
                     ->color(fn ($state): string => $state ? 'success' : 'warning')
                     ->sortable(),
+                IconColumn::make('is_company')
+                    ->label('Şirket hesabı')
+                    ->boolean(),
+                IconColumn::make('is_company_verified')
+                    ->label('Şirket doğrulandı')
+                    ->boolean(),
                 TextColumn::make('verification_status')
                     ->label('Mavi tik')
                     ->badge()
@@ -77,6 +83,12 @@ class UsersTable
                         'unverified' => $query->whereNull('email_verified_at'),
                         default => $query,
                     }),
+                SelectFilter::make('is_company')
+                    ->label('Şirket hesabı')
+                    ->options([1 => 'Şirket', 0 => 'Bireysel']),
+                SelectFilter::make('is_company_verified')
+                    ->label('Şirket doğrulaması')
+                    ->options([1 => 'Doğrulandı', 0 => 'Doğrulanmadı']),
                 SelectFilter::make('verification_status')
                     ->label('Mavi tik')
                     ->options([
