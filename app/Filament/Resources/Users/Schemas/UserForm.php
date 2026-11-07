@@ -39,6 +39,12 @@ class UserForm
                     ->label('Yönetici')
                     ->required()
                     ->disabled(fn (?User $record): bool => $record?->is(auth()->user()) ?? false),
+                Toggle::make('is_company')
+                    ->label('Şirket hesabı')
+                    ->helperText('Bu hesabı bir şirket veya kurum temsil ediyorsa etkinleştirin.'),
+                Toggle::make('is_company_verified')
+                    ->label('Altın şirket doğrulama rozeti')
+                    ->helperText('Yalnızca şirket hesabı etkin olan profillerde gösterilir.'),
                 Select::make('verification_status')
                     ->label('Mavi tik durumu')
                     ->options([
