@@ -776,3 +776,25 @@
   .pm-dialog__header-menu{flex-basis:34px!important}
   .pm-dialog__header-more{width:34px!important;height:34px!important}
 }
+
+
+/* Conversation header intentionally contains no voice/video call controls. */
+.pm-dialog__header--conversation :is(
+  .pm-dialog__video-call,
+  .pm-dialog__voice-call,
+  .pm-dialog__call,
+  .pm-dialog__header-call,
+  [data-video-call],
+  [data-voice-call],
+  [aria-label*="Görüntülü"],
+  [aria-label*="Sesli arama"],
+  [title*="Görüntülü"],
+  [title*="Sesli arama"]
+){
+  display:none!important;
+}
+.pm-dialog__header--conversation{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:space-between!important;
+}
