@@ -115,6 +115,12 @@ Route::middleware('guest')->group(function (): void {
 });
 
 Route::middleware(['auth', 'verified'])->group(function (): void {
+    Route::post('/presence/ping', function () {
+        auth()->user()->forceFill(['last_seen_at' => now()])->saveQuietly();
+
+        return response()->noContent();
+    })->middleware('throttle:2,1')->name('presence.ping');
+
     Route::get('/following', [CommunityController::class, 'following'])->name('community.following');
     Route::post('/last-comments/moderate', [CommunityController::class, 'moderateLatestComments'])->name('comments.moderate');
     Route::get('/subscriptions', [CommunityController::class, 'subscriptions'])->name('subscriptions.index');
