@@ -10,7 +10,7 @@
             <ul class="feedback__list">
                 @auth
                     <li>
-                        <div style="display:flex;align-items:center;gap:13px;padding:13px 15px;border:1px solid var(--border-color);border-radius:14px;background:var(--body-bg);">
+                        <div style="display:flex;align-items:center;gap:13px;padding:13px 15px;border:0;border-radius:14px;background:var(--body-bg);">
                             <img src="{{ auth()->user()->avatarUrl() }}" alt="" width="46" height="46" style="width:46px;height:46px;flex:0 0 46px;object-fit:cover;border-radius:50%;">
                             <div style="min-width:0;display:flex;flex-direction:column;gap:2px;">
                                 <strong style="font-size:.95rem;line-height:1.35;color:var(--title-color);">{{ auth()->user()->displayName() }}</strong>
