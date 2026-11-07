@@ -50,6 +50,10 @@ class SitePageForm
             Toggle::make('is_published')
                 ->label('Yayında')
                 ->default(true),
+            Toggle::make('show_in_footer')
+                ->label('Alt bilgide göster')
+                ->helperText('Kapalıysa sayfa yayında kalır ve doğrudan bağlantısıyla açılır; yalnızca alt bilgi menüsünde gösterilmez.')
+                ->default(true),
             DateTimePicker::make('published_at')
                 ->label('Yayın tarihi')
                 ->timezone('Europe/Istanbul')

@@ -133,6 +133,7 @@ class AppServiceProvider extends ServiceProvider
                 'footerYear' => $siteSettings?->footer_year ?? now()->year,
                 'footerPages' => SitePage::query()
                     ->published()
+                    ->where('show_in_footer', true)
                     ->orderBy('title')
                     ->get(['title', 'slug']),
                 'footerSocialLinks' => [
