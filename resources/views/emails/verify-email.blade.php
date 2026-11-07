@@ -14,24 +14,29 @@
             <td align="center" style="padding:42px 16px 46px;">
                 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:580px;">
                     <tr>
-                        <td align="center" style="padding:0 0 27px;">
-                            <a href="{{ url('/') }}" style="display:inline-block;text-decoration:none;">
-                                @if ($logoUrl)
-                                    <img src="{{ $logoUrl }}" alt="{{ $brandName }}" width="156" style="display:block;width:auto;max-width:156px;max-height:48px;height:auto;border:0;outline:none;text-decoration:none;">
-                                @else
-                                    <span style="font-size:27px;line-height:34px;font-weight:700;letter-spacing:-1px;color:#172033;">{{ $brandName }}</span>
-                                @endif
-                            </a>
-                        </td>
-                    </tr>
-                    <tr>
                         <td style="background:#ffffff;border:1px solid #e7ebf2;border-radius:14px;overflow:hidden;">
                             <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
                                 <tr>
                                     <td height="5" style="height:5px;background-color:#0d6efd;font-size:0;line-height:0;">&nbsp;</td>
                                 </tr>
                                 <tr>
-                                    <td style="padding:38px 42px 40px;">
+                                    <td style="padding:28px 42px 0;">
+                                        <a href="{{ url('/') }}" style="display:inline-block;text-decoration:none;color:#101828;">
+                                            <table role="presentation" cellpadding="0" cellspacing="0" border="0">
+                                                <tr>
+                                                    <td valign="middle" style="padding-right:10px;">
+                                                        <img src="{{ $logoUrl ?: url('/assets/img/meta/logo.svg') }}" alt="" width="36" height="36" style="display:block;width:36px;height:36px;object-fit:contain;border:0;outline:none;text-decoration:none;">
+                                                    </td>
+                                                    <td valign="middle" style="font-size:25px;line-height:32px;font-weight:700;letter-spacing:-.8px;color:#101828;">
+                                                        {{ $brandName }}
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="padding:30px 42px 40px;">
                                         <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin:0 0 24px;">
                                             <tr>
                                                 <td style="background:#edf5fe;border:1px solid #dceaff;border-radius:20px;padding:7px 12px;font-size:11px;line-height:14px;font-weight:700;letter-spacing:.7px;color:#0b5ed7;">HESAP GÜVENLİĞİ</td>
