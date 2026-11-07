@@ -8,6 +8,7 @@
             ['label' => 'Yorumlar', 'value' => \App\Models\Comment::query()->count(), 'description' => 'Topluluk yorumları', 'icon' => 'heroicon-o-chat-bubble-left-right', 'tone' => 'green', 'url' => \App\Filament\Resources\Comments\CommentResource::getUrl()],
             ['label' => 'Kanallar', 'value' => \App\Models\Channel::query()->count(), 'description' => 'İçerik kategorileri', 'icon' => 'heroicon-o-rectangle-stack', 'tone' => 'cyan', 'url' => \App\Filament\Resources\Channels\ChannelResource::getUrl()],
             ['label' => 'Etiketler', 'value' => \App\Models\Tag::query()->count(), 'description' => 'İçerik etiketleri', 'icon' => 'heroicon-o-hashtag', 'tone' => 'pink', 'url' => \App\Filament\Resources\Tags\TagResource::getUrl()],
+            ['label' => 'Sayfalar', 'value' => \\App\\Models\\SitePage::query()->count(), 'description' => 'Oluşturulan site sayfaları', 'icon' => 'heroicon-o-rectangle-stack', 'tone' => 'cyan', 'url' => \\App\\Filament\\Resources\\SitePages\\SitePageResource::getUrl()],
             ['label' => 'Destek talepleri', 'value' => \App\Models\SupportTicket::query()->count(), 'description' => \App\Models\SupportTicket::query()->where('status', \App\Models\SupportTicket::STATUS_NEW)->count().' yeni talep', 'icon' => 'heroicon-o-lifebuoy', 'tone' => 'orange', 'url' => \App\Filament\Resources\SupportTickets\SupportTicketResource::getUrl()],
         ];
         $recentTickets = \App\Models\SupportTicket::query()->latest()->limit(4)->get();
