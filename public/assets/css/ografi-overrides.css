@@ -1206,3 +1206,46 @@ body.is-messenger-conversation .pm-composer__send svg {
     gap: 9px !important;
   }
 }
+
+/* Messenger final polish: sticky conversation header on desktop and mobile. */
+body.is-messenger-conversation .pm-dialog,
+body.is-messenger-conversation .pm {
+  overflow: visible !important;
+}
+body.is-messenger-conversation .pm-dialog__header--conversation {
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 1200 !important;
+  width: calc(100% - 24px) !important;
+  min-height: 64px !important;
+  margin: 0 auto !important;
+  padding: 9px 16px !important;
+  box-sizing: border-box !important;
+  border: 1px solid #e8edf3 !important;
+  border-top: 0 !important;
+  border-radius: 0 0 14px 14px !important;
+  background: rgba(255,255,255,.98) !important;
+  box-shadow: 0 2px 10px rgba(20,35,55,.07) !important;
+  backdrop-filter: blur(10px) !important;
+}
+body.is-messenger-conversation .pm-dialog__composer.pm-composer {
+  width: min(720px, calc(100vw - 48px)) !important;
+  max-width: 720px !important;
+}
+body.is-messenger-conversation .pm-dialog__composer .pm-composer__bar {
+  width: 100% !important;
+  box-sizing: border-box !important;
+}
+@media (max-width: 640px) {
+  body.is-messenger-conversation .pm-dialog__header--conversation {
+    top: 0 !important;
+    width: calc(100% - 16px) !important;
+    min-height: 56px !important;
+    padding: 7px 10px !important;
+    border-radius: 0 0 12px 12px !important;
+  }
+  body.is-messenger-conversation .pm-dialog__composer.pm-composer {
+    width: calc(100vw - 32px) !important;
+    max-width: none !important;
+  }
+}
