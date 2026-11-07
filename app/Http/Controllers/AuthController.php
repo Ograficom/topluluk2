@@ -77,13 +77,6 @@ class AuthController extends Controller
             return back()->withErrors(['login_name' => 'Giriş bilgileri eşleşmiyor.'])->onlyInput('login_name');
         }
 
-        if (! $user->hasVerifiedEmail()) {
-            Auth::logout();
-            $request->session()->invalidate();
-            $request->session()->regenerateToken();
-            return redirect()->route('verification.notice')->with('status', 'Devam etmek için önce e-posta adresini doğrulamalısın.');
-        }
-
         RateLimiter::clear('login:'.$key);
         if ($user->two_factor_confirmed_at) {
             Auth::logout();
@@ -97,6 +90,12 @@ class AuthController extends Controller
         }
 
         $request->session()->regenerate();
+
+        if (! $user->hasVerifiedEmail()) {
+            return redirect()->route('verification.notice')
+                ->with('status', 'Hesabın açık. E-posta adresini doğrulayana veya yönetici onaylayana kadar doğrulama ekranında kalacaksın.');
+        }
+
         return redirect()->intended(route('posts.index'));
     }
 
