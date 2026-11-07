@@ -299,29 +299,27 @@ class SocialAuthController extends Controller
             ->where('provider_user_id', (string) $identity['id'])
             ->first();
 
+        $createdNewUser = false;
+
         if ($social) {
             $user = $social->user;
         } else {
             $user = User::query()->where('email', $identity['email'])->first();
 
             if (! $user) {
-                $base = Str::slug((string) ($identity['username'] ?: Str::before($identity['email'], '@')));
-                $base = $base !== '' ? Str::limit($base, 24, '') : 'user';
-                $username = $base;
-                $suffix = 1;
-
-                while (User::query()->where('username', $username)->exists()) {
-                    $username = Str::limit($base, 24, '').$suffix++;
-                }
+                do {
+                    $username = 'user-'.Str::lower(Str::random(10));
+                } while (User::query()->where('username', $username)->exists());
 
                 $user = User::create([
-                    'name' => filled($identity['name']) ? $identity['name'] : $username,
+                    'name' => filled($identity['name']) ? $identity['name'] : 'OgraFi kullanıcısı',
                     'username' => $username,
                     'email' => $identity['email'],
                     'email_verified_at' => now(),
                     'password' => Str::random(64),
                     'verification_status' => 'unverified',
                 ]);
+                $createdNewUser = true;
             }
 
             SocialAccount::create([
@@ -342,6 +340,11 @@ class SocialAuthController extends Controller
 
         Auth::login($user, true);
         $request->session()->regenerate();
+
+        if ($createdNewUser) {
+            return redirect()->route('settings.edit', ['tab' => 'profile', 'choose_username' => 1])
+                ->with('status', 'Hesabın oluşturuldu. Profilinde kullanacağın kullanıcı adını şimdi kendin belirle.');
+        }
 
         return redirect()->intended(route('posts.index'));
     }
