@@ -27,7 +27,10 @@
                             <li class="dropdown-menu-item dropdown-menu-item-sm"><a href="{{ route('members.index') }}">İstatistikler</a></li>
                         @elseif (! $isBlocked)
                             <li class="dropdown-menu-item dropdown-menu-item-sm">
-                                <form action="{{ route('users.block', $user) }}" method="POST">@csrf<button type="submit">Kullanıcıyı engelle</button></form>
+                                <form class="profile__block-form" action="{{ route('users.block', $user) }}" method="POST">
+                                    @csrf
+                                    <button class="profile__block-action" type="submit">Kullanıcıyı engelle</button>
+                                </form>
                             </li>
                         @endif
                     </ul>

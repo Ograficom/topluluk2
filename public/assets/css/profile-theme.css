@@ -302,3 +302,33 @@
     padding-top: 28px !important;
   }
 }
+
+
+/* Profile action dropdown: keep the block action inside the same menu surface. */
+.profile__block-form {
+  display: block;
+  width: 100%;
+  margin: 0;
+}
+.profile__block-action {
+  display: flex;
+  width: 100%;
+  min-height: var(--dropdown-item-min-height, 35px);
+  align-items: center;
+  padding: 0 var(--dropdown-item-padding-x, 10px);
+  border: 0;
+  border-radius: var(--dropdown-item-radius, 11px);
+  background: transparent;
+  color: var(--text-color);
+  font: inherit;
+  font-size: var(--dropdown-item-font-size, .85rem);
+  line-height: 1.2;
+  text-align: left;
+  cursor: pointer;
+}
+.profile__block-action:hover,
+.profile__block-action:focus-visible {
+  outline: 0;
+  color: var(--title-color);
+  background: var(--gray-100);
+}
