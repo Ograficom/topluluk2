@@ -134,6 +134,7 @@ class AppServiceProvider extends ServiceProvider
                 'footerPages' => SitePage::query()
                     ->published()
                     ->where('show_in_footer', true)
+                    ->orderBy('footer_sort_order')
                     ->orderBy('title')
                     ->get(['title', 'slug']),
                 'footerSocialLinks' => [

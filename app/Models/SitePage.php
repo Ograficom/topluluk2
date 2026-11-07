@@ -16,6 +16,7 @@ class SitePage extends Model
         'meta_description',
         'is_published',
         'show_in_footer',
+        'footer_sort_order',
         'published_at',
         'views',
     ];
@@ -25,6 +26,7 @@ class SitePage extends Model
         return [
             'is_published' => 'boolean',
             'show_in_footer' => 'boolean',
+            'footer_sort_order' => 'integer',
             'published_at' => 'datetime',
             'views' => 'integer',
         ];

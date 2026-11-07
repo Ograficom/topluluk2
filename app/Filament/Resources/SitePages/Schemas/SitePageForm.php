@@ -54,6 +54,13 @@ class SitePageForm
                 ->label('Alt bilgide göster')
                 ->helperText('Kapalıysa sayfa yayında kalır ve doğrudan bağlantısıyla açılır; yalnızca alt bilgi menüsünde gösterilmez.')
                 ->default(true),
+            TextInput::make('footer_sort_order')
+                ->label('Alt bilgi sırası')
+                ->numeric()
+                ->integer()
+                ->minValue(0)
+                ->default(0)
+                ->helperText('Küçük sayı önce gösterilir. Aynı sıradaki sayfalar başlığa göre sıralanır.'),
             DateTimePicker::make('published_at')
                 ->label('Yayın tarihi')
                 ->timezone('Europe/Istanbul')
