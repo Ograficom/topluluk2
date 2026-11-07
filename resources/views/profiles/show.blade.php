@@ -2,9 +2,6 @@
 
 @section('title', $user->displayName())
 
-@push('head')
-    <link rel="stylesheet" href="{{ asset('assets/css/profile-theme.css') }}?v=20261107-original-profile">
-@endpush
 
 @section('content')
     <article>
@@ -208,7 +205,8 @@
                 </div>
             </div>
 
-            <aside class="profile__aside">
+            <div class="profile__aside">
+                <aside>
                 <div class="widgets">
                     <section class="widget card card-body">
                         <header><h2 class="widget__title h6">Aboneler</h2></header>
@@ -284,7 +282,8 @@
                 <div class="profile__aside-footer">
                     @include('layouts._footer')
                 </div>
-            </aside>
+                </aside>
+            </div>
         </div>
 
         <div class="modal" id="profileSubscribersModal" data-modal="profile-subscribers" aria-label="Tüm aboneler" aria-hidden="true">
@@ -309,7 +308,7 @@
                                             @if ($follower->hasVerifiedBadge())
                                                 <span class="verify" role="img" aria-label="Doğrulanmış hesap"><x-repost-icon name="verify" size="14" /></span>
                                             @endif
-@if ($follower)
+@if ($follower->hasVerifiedCompanyBadge())
     <x-company-verified-badge size="14" />
 @endif
                                         </strong>
