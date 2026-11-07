@@ -1313,3 +1313,22 @@ body.is-messenger-conversation .pm.card.card-body {
     display: none !important;
   }
 }
+
+
+/* Conversation messages panel sits clearly below the sticky conversation header. */
+body.is-messenger-conversation .pm-dialog__messages {
+  position: relative !important;
+  margin-top: 14px !important;
+  padding: 18px 18px 112px !important;
+  border: 1px solid #e8edf3 !important;
+  border-radius: 12px !important;
+  background: #fff !important;
+  box-sizing: border-box !important;
+}
+@media (max-width: 640px) {
+  body.is-messenger-conversation .pm-dialog__messages {
+    margin: 12px 8px 0 !important;
+    padding: 14px 12px 100px !important;
+    border-radius: 12px !important;
+  }
+}
