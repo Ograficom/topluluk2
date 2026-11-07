@@ -36,38 +36,40 @@
                     </button>
                 @endif
                 @if ($other)
-                    <section class="pm-user-info" data-user-info hidden aria-label="Kullanıcı bilgileri">
-                        <div class="pm-user-info__top">
-                            <button type="button" data-close-user-info aria-label="Kapat" class="pm-user-info__icon">
-                                <svg viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></svg>
-                            </button>
-                            <strong>Kullanıcı Bilgisi</strong>
-                            <a href="{{ route('profiles.show', $other) }}" class="pm-user-info__icon" aria-label="Profili aç">
-                                <svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2M10 7a4 4 0 1 0 0 8 4 4 0 0 0 0-8ZM19 8v6M16 11h6"/></svg>
-                            </a>
-                        </div>
-                        <div class="pm-user-info__profile">
-                            <img src="{{ $other->avatarUrl() }}" alt="{{ $other->displayName() }}">
-                            <h3>{{ $other->displayName() }}</h3>
-                            <p>{{ '@'.$other->username }}</p>
-                            <span class="pm-dialog__status {{ $other->isOnline() ? 'is-online' : '' }}"><i class="pm-dialog__status-dot"></i>{{ $other->isOnline() ? 'Çevrimiçi' : 'OgraFi üyesi' }}</span>
-                        </div>
-                        <div class="pm-user-info__details">
-                            <div><span class="pm-user-info__detail-icon">☎</span><span><strong>{{ '@'.$other->username }}</strong><small>Kullanıcı adı</small></span></div>
-                            <div><span class="pm-user-info__detail-icon is-blue">●</span><span><strong>Bildirimler</strong><small>Sohbet bildirimleri</small></span><span class="pm-user-info__static-switch" aria-hidden="true"></span></div>
-                        </div>
-                        <nav class="pm-user-info__tabs" aria-label="Paylaşılan içerik türleri">
-                            <button type="button" class="is-active" data-info-tab="media">Medya</button>
-                            <button type="button" data-info-tab="files">Dosyalar</button>
-                            <button type="button" data-info-tab="links">Bağlantılar</button>
-                            <button type="button" data-info-tab="music">Müzik</button>
-                            <button type="button" data-info-tab="gif">GIF</button>
-                            <button type="button" data-info-tab="voice">Ses</button>
-                        </nav>
-                        <div class="pm-user-info__empty" data-info-empty>Henüz paylaşılan medya yok</div>
-                    </section>
+
                 @endif
             </header>
+
+            <section class="pm-user-info" data-user-info hidden aria-label="Kullanıcı bilgileri">
+                <div class="pm-user-info__top">
+                    <button type="button" data-close-user-info aria-label="Kapat" class="pm-user-info__icon">
+                        <svg viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></svg>
+                    </button>
+                    <strong>Kullanıcı Bilgisi</strong>
+                    <a href="{{ route('profiles.show', $other) }}" class="pm-user-info__icon" aria-label="Profili aç">
+                        <svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2M10 7a4 4 0 1 0 0 8 4 4 0 0 0 0-8ZM19 8v6M16 11h6"/></svg>
+                    </a>
+                </div>
+                <div class="pm-user-info__profile">
+                    <img src="{{ $other->avatarUrl() }}" alt="{{ $other->displayName() }}">
+                    <h3>{{ $other->displayName() }}</h3>
+                    <p>{{ '@'.$other->username }}</p>
+                    <span class="pm-dialog__status {{ $other->isOnline() ? 'is-online' : '' }}"><i class="pm-dialog__status-dot"></i>{{ $other->isOnline() ? 'Çevrimiçi' : 'OgraFi üyesi' }}</span>
+                </div>
+                <div class="pm-user-info__details">
+                    <div><span class="pm-user-info__detail-icon">☎</span><span><strong>{{ '@'.$other->username }}</strong><small>Kullanıcı adı</small></span></div>
+                    <div><span class="pm-user-info__detail-icon is-blue">●</span><span><strong>Bildirimler</strong><small>Sohbet bildirimleri</small></span><span class="pm-user-info__static-switch" aria-hidden="true"></span></div>
+                </div>
+                <nav class="pm-user-info__tabs" aria-label="Paylaşılan içerik türleri">
+                    <button type="button" class="is-active" data-info-tab="media">Medya</button>
+                    <button type="button" data-info-tab="files">Dosyalar</button>
+                    <button type="button" data-info-tab="links">Bağlantılar</button>
+                    <button type="button" data-info-tab="music">Müzik</button>
+                    <button type="button" data-info-tab="gif">GIF</button>
+                    <button type="button" data-info-tab="voice">Ses</button>
+                </nav>
+                <div class="pm-user-info__empty" data-info-empty>Henüz paylaşılan medya yok</div>
+            </section>
 
             <div class="pm-dialog__messages" id="pmMessages">
                 @forelse ($messages as $message)
