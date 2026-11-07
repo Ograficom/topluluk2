@@ -878,3 +878,18 @@ body.is-messenger-conversation .pm-dialog__header-more:hover{
     height: 38px !important;
   }
 }
+
+
+/* Mobile conversation header: flush to the top and wider side-to-side */
+@media (max-width: 767px) {
+  body.is-messenger-conversation .pm-dialog__header--conversation {
+    position: sticky !important;
+    top: 0 !important;
+    width: calc(100% - 8px) !important;
+    min-height: 56px !important;
+    margin: 0 4px 0 !important;
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+    border-radius: 0 0 999px 999px !important;
+  }
+}
