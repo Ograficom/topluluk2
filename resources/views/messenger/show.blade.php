@@ -120,18 +120,31 @@
 
             {{ $messages->links() }}
 
-            <form action="{{ route('messenger.messages.store', $conversation) }}" method="POST" class="pm-dialog__composer">
+            <form action="{{ route('messenger.messages.store', $conversation) }}" method="POST" class="pm-dialog__composer pm-composer">
                 @csrf
-                <div class="pm-dialog__editor">
-                    <label class="visually-hidden" for="message-body">Mesajın</label>
-                    <textarea id="dialog-message" name="body" rows="3" maxlength="5000" required placeholder="Mesajını yaz...">{{ old('body') }}</textarea>
+                <div class="pm-composer__bar">
+                    <span class="pm-composer__attachment" aria-hidden="true">
+                        <svg viewBox="0 0 24 24"><path d="m21.4 11.1-8.9 8.9a6 6 0 0 1-8.5-8.5l9.2-9.2a4 4 0 0 1 5.7 5.7l-9.2 9.2a2 2 0 0 1-2.8-2.8l8.5-8.5"/></svg>
+                    </span>
+                    <label class="visually-hidden" for="dialog-message">Mesajın</label>
+                    <textarea id="dialog-message" name="body" rows="1" maxlength="5000" required placeholder="Message">{{ old('body') }}</textarea>
+                    <div class="pm-composer__emoji-wrap">
+                        <button class="pm-composer__emoji" type="button" data-emoji-toggle aria-label="Emoji ekle">
+                            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8.5 14.2s1.2 2 3.5 2 3.5-2 3.5-2M9 9.5h.01M15 9.5h.01"/></svg>
+                        </button>
+                        <div class="pm-composer__emoji-picker" data-emoji-picker hidden>
+                            @foreach (['😀','😂','🥰','😍','😉','😊','🤔','👍','❤️','🔥','🎉','🙏'] as $emoji)
+                                <button type="button" data-insert-emoji="{{ $emoji }}">{{ $emoji }}</button>
+                            @endforeach
+                        </div>
+                    </div>
+                    <button class="pm-composer__send" type="submit" aria-label="Mesajı gönder">
+                        <svg viewBox="0 0 24 24"><path d="M12 3a7 7 0 0 0-7 7v4a3 3 0 0 0 3 3h1v-7H7v4a1 1 0 0 1-1-1v-3a6 6 0 0 1 12 0v3a1 1 0 0 1-1 1v-4h-2v7h1a3 3 0 0 0 3-3v-4a7 7 0 0 0-7-7Z"/><path d="M9 20h6"/></svg>
+                    </button>
                 </div>
                 @error('body')
                     <p class="small color-red">{{ $message }}</p>
                 @enderror
-                <div class="pm-dialog__composer-actions">
-                    <button class="btn btn-primary" type="submit">Gönder</button>
-                </div>
             </form>
         </section>
     </article>
@@ -155,6 +168,22 @@
             }));
 
             const textarea = document.querySelector('#dialog-message');
+            const emojiPicker = document.querySelector('[data-emoji-picker]');
+            document.querySelector('[data-emoji-toggle]')?.addEventListener('click', () => {
+                if (emojiPicker) emojiPicker.hidden = !emojiPicker.hidden;
+            });
+            emojiPicker?.querySelectorAll('[data-insert-emoji]').forEach((button) => button.addEventListener('click', () => {
+                if (!textarea) return;
+                const emoji = button.dataset.insertEmoji || '';
+                const start = textarea.selectionStart ?? textarea.value.length;
+                const end = textarea.selectionEnd ?? start;
+                textarea.setRangeText(emoji, start, end, 'end');
+                textarea.focus();
+                emojiPicker.hidden = true;
+            }));
+            document.addEventListener('click', (event) => {
+                if (!event.target.closest('.pm-composer__emoji-wrap') && emojiPicker) emojiPicker.hidden = true;
+            });
             const messages = document.querySelector('#pmMessages');
             if (!messages) return;
 

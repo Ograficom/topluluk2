@@ -614,3 +614,51 @@
 .pm-dialog__header-menu .pm__dropdown{min-width:205px!important}
 .pm-dialog__header-menu .pm__dropdown-limit{padding:10px 13px!important}
 @media(max-width:640px){.pm-dialog__header--conversation{min-height:54px!important;padding:6px 10px!important;gap:8px!important}.pm-dialog__header--conversation .pm-dialog__identity-avatar{width:31px!important;height:31px!important;flex-basis:31px!important}.pm-dialog__header--conversation .pm-dialog__identity-copy strong{font-size:13px!important}.pm-dialog__header--conversation .pm-dialog__identity-status{font-size:10px!important}.pm-dialog__header-more{width:32px!important;height:32px!important}}
+
+/* Messenger composer: compact rounded input bar inspired by the supplied reference */
+.pm-composer{margin-top:14px!important;padding:0!important;border:0!important;background:transparent!important}
+.pm-composer__bar{
+ display:flex!important;align-items:center!important;gap:12px!important;
+ min-height:48px!important;padding:4px 5px 4px 13px!important;
+ border:1px solid #e3e8ef!important;border-radius:999px!important;
+ background:#fff!important;box-shadow:0 2px 7px rgba(24,39,58,.07)!important;
+}
+.pm-composer__attachment{display:grid!important;place-items:center!important;width:22px!important;height:30px!important;flex:0 0 22px!important;color:#202833!important}
+.pm-composer__attachment svg{display:block!important;width:21px!important;height:21px!important;fill:none!important;stroke:currentColor!important;stroke-width:1.9!important;stroke-linecap:round!important;stroke-linejoin:round!important}
+.pm-composer__bar textarea{
+ display:block!important;flex:1 1 auto!important;min-width:0!important;width:100%!important;
+ min-height:34px!important;max-height:112px!important;margin:0!important;padding:8px 0!important;
+ resize:none!important;overflow-y:auto!important;border:0!important;outline:0!important;
+ border-radius:0!important;background:transparent!important;box-shadow:none!important;
+ color:#263344!important;font:inherit!important;font-size:15px!important;line-height:20px!important;
+}
+.pm-composer__bar textarea:focus{border:0!important;outline:0!important;box-shadow:none!important}
+.pm-composer__bar textarea::placeholder{color:#9aa5b3!important;opacity:1!important}
+.pm-composer__emoji-wrap{position:relative!important;flex:0 0 auto!important}
+.pm-composer__emoji,.pm-composer__send{
+ display:grid!important;place-items:center!important;width:39px!important;height:39px!important;
+ flex:0 0 39px!important;padding:0!important;border:0!important;border-radius:50%!important;cursor:pointer!important;
+}
+.pm-composer__emoji{background:transparent!important;color:#222b36!important}
+.pm-composer__emoji:hover{background:#f2f5f9!important}
+.pm-composer__emoji svg{display:block!important;width:22px!important;height:22px!important;fill:none!important;stroke:currentColor!important;stroke-width:1.8!important;stroke-linecap:round!important;stroke-linejoin:round!important}
+.pm-composer__send{background:#2788ed!important;color:#fff!important;box-shadow:0 2px 5px rgba(39,136,237,.2)!important}
+.pm-composer__send:hover{background:#1675d8!important}
+.pm-composer__send svg{display:block!important;width:23px!important;height:23px!important;fill:none!important;stroke:currentColor!important;stroke-width:1.8!important;stroke-linecap:round!important;stroke-linejoin:round!important}
+.pm-composer__emoji-picker{
+ position:absolute!important;right:-8px!important;bottom:49px!important;z-index:30!important;
+ display:grid!important;grid-template-columns:repeat(6,34px)!important;gap:3px!important;
+ padding:8px!important;border:1px solid #e8edf3!important;border-radius:14px!important;
+ background:#fff!important;box-shadow:0 8px 28px rgba(20,35,55,.15)!important;
+}
+.pm-composer__emoji-picker[hidden]{display:none!important}
+.pm-composer__emoji-picker button{display:grid!important;place-items:center!important;width:34px!important;height:34px!important;padding:0!important;border:0!important;border-radius:8px!important;background:#fff!important;font-size:20px!important;cursor:pointer!important}
+.pm-composer__emoji-picker button:hover{background:#f1f5fa!important}
+@media(max-width:640px){
+ .pm-composer{margin-top:10px!important}
+ .pm-composer__bar{min-height:44px!important;gap:8px!important;padding:3px 4px 3px 11px!important}
+ .pm-composer__bar textarea{min-height:32px!important;padding:6px 0!important;font-size:14px!important}
+ .pm-composer__emoji,.pm-composer__send{width:36px!important;height:36px!important;flex-basis:36px!important}
+ .pm-composer__emoji svg{width:21px!important;height:21px!important}
+ .pm-composer__send svg{width:22px!important;height:22px!important}
+}
