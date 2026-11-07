@@ -25,3 +25,17 @@
     flex: 0 0 auto;
     max-height: none;
 }
+
+
+/* Messenger dialog action polish */
+.pm__dropdown-limit { min-width: 0; }
+.pm__dropdown-limit .pm__limit-label { color: var(--pm-muted); font-size: .78rem; line-height: 1.4; }
+.pm__dropdown-limit .pm_progress_bar { width: 100%; max-width: none; height: 5px; margin-top: 10px; border-radius: 99px; background: var(--pm-secondary-light); }
+.pm__dropdown-limit .pm_progress_bar span { display: block; height: 100%; border-radius: inherit; background: var(--pm-primary); }
+.pm-dialog__actions .dropdown-menu-item.is-danger form { width: 100%; margin: 0; }
+.pm-dialog__actions .dropdown-menu-item > form > button { display: block; width: 100%; padding: 0; border: 0; background: transparent; color: inherit; font: inherit; text-align: left; cursor: pointer; }
+.pm-dialog__actions .dropdown-menu-item.is-danger > form > button { color: var(--bs-danger, #dc3545); }
+.pm-dialog__edit-form { display: flex; width: min(100%, 420px); flex-direction: column; gap: 10px; margin-top: 6px; }
+.pm-dialog__edit-form[hidden] { display: none !important; }
+.pm-dialog__edit-form textarea { display: block; width: 100%; min-height: 90px; padding: 11px 13px; border: 1px solid var(--border-color); border-radius: 12px; background: var(--card-bg); color: var(--text-color); font: inherit; font-size: .88rem; line-height: 1.5; resize: vertical; }
+.pm-dialog__edit-actions { display: flex; justify-content: flex-end; gap: 8px; }
