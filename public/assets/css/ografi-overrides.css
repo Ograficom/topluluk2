@@ -968,3 +968,24 @@ body.is-messenger-conversation .pm-dialog__header-more:hover{
     box-shadow:0 2px 10px rgba(20,35,55,.14)!important;
   }
 }
+
+
+/* Keep the Telegram-style conversation bar fixed to the viewport while scrolling */
+@media (max-width: 767px) {
+  body.is-messenger-conversation .pm-dialog {
+    padding-top: 76px !important;
+  }
+  body.is-messenger-conversation .pm-dialog__header--conversation {
+    position: fixed !important;
+    top: max(8px, env(safe-area-inset-top)) !important;
+    left: 50% !important;
+    right: auto !important;
+    transform: translateX(-50%) !important;
+    z-index: 1000 !important;
+    width: calc(100% - 24px) !important;
+    max-width: 560px !important;
+    min-height: 58px !important;
+    margin: 0 !important;
+    box-sizing: border-box !important;
+  }
+}
