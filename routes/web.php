@@ -85,6 +85,9 @@ Route::post('/contacts', [CommunityController::class, 'sendContact'])->middlewar
 Route::get('/auth/{provider}/callback', [SocialAuthController::class, 'callback'])->middleware('throttle:10,1')->name('oauth.callback');
 
 Route::middleware('auth')->group(function (): void {
+    // Users must be able to log out even when their email is not verified.
+    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
     Route::get('/email/verify', [EmailVerificationController::class, 'notice'])->name('verification.notice');
     Route::get('/email/verify/{id}/{hash}', [EmailVerificationController::class, 'verify'])->middleware('signed')->name('verification.verify');
     Route::post('/email/verification-notification', [EmailVerificationController::class, 'send'])->middleware('throttle:6,1')->name('verification.send');});
@@ -129,8 +132,6 @@ Route::middleware(['auth', 'verified'])->group(function (): void {
     Route::post('/posts', [PostController::class, 'store'])->middleware('throttle:10,1')->name('posts.store');
     Route::get('/posts/{post:slug}/edit', [PostController::class, 'edit'])->name('posts.edit');
     Route::patch('/posts/{post:slug}', [PostController::class, 'update'])->name('posts.update');
-
-    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
     Route::get('/settings/social/{provider}/redirect', [SocialAuthController::class, 'linkRedirect'])->middleware('throttle:10,1')->name('oauth.link.redirect');
     Route::delete('/settings/social/{provider}', [SocialAuthController::class, 'unlink'])->middleware('throttle:10,1')->name('oauth.unlink');
