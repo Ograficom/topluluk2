@@ -27,14 +27,10 @@
                     <img class="pm-dialog__identity-avatar" src="{{ $other?->avatarUrl() ?? asset('assets/img/noavatar.png') }}" alt="{{ $other?->displayName() ?? 'Kullanıcı' }}">
                     <span class="pm-dialog__identity-copy">
                         <strong>{{ $other?->displayName() ?? 'OgraFi üyesi' }}</strong>
-                        <span class="pm-dialog__identity-status"><i class="{{ $other?->isOnline() ? 'is-online' : '' }}"></i>{{ $other?->isOnline() ? 'Şu anda çevrimiçi' : 'Özel konuşma' }}</span>
+                        <span class="pm-dialog__identity-status"><i class="{{ $other?->isOnline() ? 'is-online' : '' }}"></i>@if ($other?->isOnline()) Şu anda çevrimiçi @elseif ($other?->last_seen_at) {{ $other->last_seen_at->locale('tr')->diffForHumans() }} aktifti @else Aktiflik bilgisi yok @endif</span>
                     </span>
                 </button>
-                @if ($other)
-                    <button class="pm-dialog__settings-button" type="button" data-open-user-info aria-label="Kullanıcı bilgileri ve ayarları">
-                        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.88l.06.06-1.7 2.94-.08-.02a1.7 1.7 0 0 0-1.8.68l-.05.07h-3.4l-.03-.08a1.7 1.7 0 0 0-1.48-1.12 1.7 1.7 0 0 0-.9.2l-.08.04-2.94-1.7.02-.08a1.7 1.7 0 0 0-.68-1.8l-.07-.05v-3.4l.08-.03a1.7 1.7 0 0 0 1.12-1.48 1.7 1.7 0 0 0-.2-.9l-.04-.08 1.7-2.94.08.02a1.7 1.7 0 0 0 1.8-.68l.05-.07h3.4l.03.08a1.7 1.7 0 0 0 1.48 1.12 1.7 1.7 0 0 0 .9-.2l.08-.04 2.94 1.7-.02.08a1.7 1.7 0 0 0 .68 1.8l.07.05v3.4l-.08.03a1.7 1.7 0 0 0-1.12 1.48z"></path></svg>
-                    </button>
-                @endif
+
                 @if ($other)
 
                 @endif
