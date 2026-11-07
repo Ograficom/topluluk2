@@ -135,7 +135,7 @@
 
             {{ $messages->links() }}
 
-            <form action="{{ route('messenger.messages.store', $conversation) }}" method="POST" class="pm-dialog__composer pm-composer">
+            <form action="{{ route('messenger.messages.store', $conversation) }}" method="POST" enctype="multipart/form-data" class="pm-dialog__composer pm-composer">
                 @csrf
                 <div class="pm-composer__bar">
                     <label class="pm-composer__attachment" for="dialog-attachment" title="Dosya ekle" aria-label="Dosya ekle"><svg viewBox="0 0 24 24"><path d="m21.4 11.1-8.9 8.9a6 6 0 0 1-8.5-8.5l9.2-9.2a4 4 0 0 1 5.7 5.7l-9.2 9.2a2 2 0 0 1-2.8-2.8l8.5-8.5"/></svg><input id="dialog-attachment" type="file" name="attachment" hidden></label>
