@@ -90,7 +90,10 @@
                         <div class="user-box-content">
                             <span class="name">
                                 @if ($post->user)<a class="name-text" href="{{ route('profiles.show', $post->user) }}">{{ $post->user->displayName() }}</a>@else<span class="name-text">Repost yazarı</span>@endif
-                                @if ($post->user?->hasVerifiedBadge())<span class="verify" role="img" aria-label="Verified profile"><x-repost-icon name="verify" size="14" /></span>@endif
+                                @if ($post->user?->hasVerifiedCompanyBadge())
+                    <x-company-verified-badge size="14" />
+                @endif
+                @if ($post->user?->hasVerifiedBadge())<span class="verify" role="img" aria-label="Verified profile"><x-repost-icon name="verify" size="14" /></span>@endif
                             </span>
                             <div class="meta">
                                 @if ($post->channel)
