@@ -297,7 +297,9 @@
                         <h1 class="h3">Mavi tik doğrulaması</h1>
                         <div class="setting__box">
                             <section class="setting__list">
-                                @if ($user->hasVerifiedBadge())
+                                @if ($user->hasVerifiedCompanyBadge())
+                                    <p>Şirket hesabınız altın rozetle doğrulanmıştır.</p>
+                                @elseif ($user->hasVerifiedBadge())
                                     <p>Hesabınız başarıyla doğrulandı.</p>
                                     <span class="verify" role="img" aria-label="Doğrulanmış hesap"><x-repost-icon name="verify" size="18" /></span>
                                 @elseif ($user->verification_status === 'pending')
@@ -364,7 +366,7 @@
                                     <span class="user-box-content">
                                         <span class="name">
                                             {{ $user->displayName() }}
-                                            @if ($user->hasVerifiedBadge())<span class="verify"><x-repost-icon name="verify" size="14" /></span>@endif
+                                            @if ($user->hasVerifiedCompanyBadge())<x-company-verified-badge size="14" />@elseif ($user->hasVerifiedBadge())<span class="verify"><x-repost-icon name="verify" size="14" /></span>@endif
                                         </span>
                                         <span class="meta">{{ filled($user->username) ? 'Profile geri dön' : 'Profil ayarlarından kullanıcı adı belirleyin' }}</span>
                                     </span>
