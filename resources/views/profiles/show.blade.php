@@ -156,15 +156,13 @@
                                 @forelse ($profileFollowers as $follower)
                                     <li><a class="avatar {{ $follower->isOnline() ? 'online' : '' }}" href="{{ route('profiles.show', $follower) }}" aria-label="{{ $follower->displayName() }}" title="{{ $follower->displayName() }}"><img src="{{ $follower->avatarUrl() }}" alt="" width="40" height="40"></a></li>
                                 @empty
-                                    <li class="small color-gray">Henüz abone yok.</li>
+                                    <li class="subscriber-empty small color-gray">Henüz abone yok.</li>
                                 @endforelse
                             </ul>
                         </div>
                         <footer class="widget__footer">
                             @if ($followersCount > 0)
                                 <a class="link-accent" href="#profileSubscribersModal" data-modal-btn="profile-subscribers" aria-haspopup="dialog" aria-controls="profileSubscribersModal">Tüm aboneler</a>
-                            @else
-                                <span class="small color-gray">Henüz abone yok.</span>
                             @endif
                         </footer>
                     </section>
