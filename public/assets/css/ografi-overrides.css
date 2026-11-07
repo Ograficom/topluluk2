@@ -710,3 +710,51 @@
  .pm-dialog__header-menu{flex:0 0 36px!important}
  .pm-dialog__header-more{width:36px!important;height:36px!important}
 }
+
+/* Final messenger header correction: sticky below the site navbar, never inset */
+.pm-dialog__header--conversation{
+ position:sticky!important;
+ top:64px!important;
+ z-index:120!important;
+ display:flex!important;
+ width:100%!important;
+ max-width:100%!important;
+ margin:0!important;
+ box-sizing:border-box!important;
+ border-radius:0!important;
+ background:#fff!important;
+}
+.pm-dialog{overflow:visible!important;min-width:0!important}
+.pm.card.card-body:has(.pm-dialog__header--conversation){overflow:visible!important}
+@media(max-width:767px){
+ .pm-dialog__header--conversation{
+  position:sticky!important;
+  top:58px!important;
+  left:auto!important;right:auto!important;
+  width:100%!important;
+  max-width:100%!important;
+  margin:0!important;
+  padding:8px 12px!important;
+  min-height:60px!important;
+  border-radius:0!important;
+  background:#fff!important;
+  box-shadow:0 1px 0 #e9edf2!important;
+ }
+ .pm-dialog__header--conversation .pm-dialog__identity{
+  flex:1 1 auto!important;width:auto!important;min-width:0!important;
+  overflow:hidden!important;
+ }
+ .pm-dialog__header--conversation .pm-dialog__identity-avatar{
+  width:36px!important;height:36px!important;flex:0 0 36px!important;
+ }
+ .pm-dialog__header--conversation .pm-dialog__identity-copy{min-width:0!important;max-width:100%!important}
+ .pm-dialog__header--conversation .pm-dialog__identity-copy strong,
+ .pm-dialog__header--conversation .pm-dialog__identity-status{
+  display:block!important;max-width:100%!important;overflow:hidden!important;
+  white-space:nowrap!important;text-overflow:ellipsis!important;
+ }
+ .pm-dialog__header--conversation .pm-dialog__identity-copy strong{font-size:14px!important}
+ .pm-dialog__header--conversation .pm-dialog__identity-status{font-size:11px!important}
+ .pm-dialog__header-menu{flex:0 0 36px!important}
+ .pm-dialog__header-more{width:36px!important;height:36px!important}
+}
