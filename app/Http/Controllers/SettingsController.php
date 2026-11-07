@@ -128,6 +128,11 @@ class SettingsController extends Controller
     {
         $user = $request->user();
 
+        if ($user->is_company) {
+            return back()->withInput(['activeTab' => 'verify'])
+                ->withErrors(['verification_reason' => 'Şirket hesapları için altın doğrulama rozeti yönetici tarafından verilir.']);
+        }
+
         if ($user->hasVerifiedBadge()) {
             return back()->withInput(['activeTab' => 'verify'])
                 ->withErrors(['verification_reason' => 'Hesabınız zaten doğrulanmış.']);
