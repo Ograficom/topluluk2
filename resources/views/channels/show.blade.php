@@ -144,6 +144,9 @@
                                                         @else
                                                             <span class="name-text">Repost yazarı</span>
                                                         @endif
+                                                        @if ($post->user?->hasVerifiedCompanyBadge())
+                                                            <x-company-verified-badge size="14" />
+                                                        @endif
                                                         @if ($post->user?->hasVerifiedBadge())
                                                             <span class="verify" role="img" aria-label="Doğrulanmış profil"><x-repost-icon name="verify" size="14" /></span>
                                                         @endif
@@ -308,7 +311,7 @@
                             <li class="user-card">
                                 <a class="user-box" href="{{ route('profiles.show', $subscriber) }}">
                                     <span class="avatar"><img src="{{ $subscriber->avatarUrl() }}" alt="" width="40" height="40" loading="lazy"></span>
-                                    <span class="user-box-content"><span class="name"><span class="name-text">{{ $subscriber->displayName() }}</span>@if ($subscriber->hasVerifiedBadge()) <span class="verify" role="img" aria-label="Doğrulanmış profil"><x-repost-icon name="verify" size="14" /></span>@endif</span>@if ($subscriber->publicUsername()) <span class="small color-gray">{{ '@'.$subscriber->publicUsername() }}</span>@endif</span>
+                                    <span class="user-box-content"><span class="name"><span class="name-text">{{ $subscriber->displayName() }}</span>@if ($subscriber->hasVerifiedCompanyBadge()) <x-company-verified-badge size="14" /> @endif @if ($subscriber->hasVerifiedBadge()) <span class="verify" role="img" aria-label="Doğrulanmış profil"><x-repost-icon name="verify" size="14" /></span>@endif</span>@if ($subscriber->publicUsername()) <span class="small color-gray">{{ '@'.$subscriber->publicUsername() }}</span>@endif</span>
                                 </a>
                             </li>
                         @endforeach
