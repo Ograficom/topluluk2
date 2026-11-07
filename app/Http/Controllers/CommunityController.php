@@ -8,12 +8,15 @@ use App\Models\Conversation;
 use App\Models\Post;
 use App\Models\PostReaction;
 use App\Models\SitePage;
+use App\Models\SupportTicket;
 use App\Models\Tag;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Storage;
+use Throwable;
 use Illuminate\View\View;
 
 class CommunityController extends Controller
@@ -213,17 +216,51 @@ class CommunityController extends Controller
             'attachments' => ['nullable', 'array', 'max:5'],
             'attachments.*' => ['file', 'max:2048', 'mimes:jpg,jpeg,png,pdf,txt,doc,docx'],
         ]);
+
+        $departments = [
+            'support' => 'Teknik destek',
+            'editorial' => 'Editör ekibi',
+            'partnerships' => 'İş birlikleri',
+        ];
+
+        $attachmentPaths = [];
+        foreach ($validated['attachments'] ?? [] as $attachment) {
+            $attachmentPaths[] = $attachment->store('support-tickets', 'local');
+        }
+
+        $ticket = SupportTicket::create([
+            'user_id' => $request->user()?->id,
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+            'subject' => $validated['subject'],
+            'department' => $validated['recipient'],
+            'message' => trim($validated['message']),
+            'attachments' => $attachmentPaths,
+            'status' => SupportTicket::STATUS_NEW,
+        ]);
+
         $supportEmail = config('mail.from.address');
-        abort_unless(filled($supportEmail), 503, 'Destek e-posta adresi yapılandırılmamış.');
-        $departments = ['support' => 'Teknik destek', 'editorial' => 'Editör ekibi', 'partnerships' => 'İş birlikleri'];
-        $body = "Gönderen: {$validated['name']}\nE-posta: {$validated['email']}\nBirim: {$departments[$validated['recipient']]}\n\n{$validated['message']}";
-        Mail::raw($body, function ($mail) use ($supportEmail, $validated, $departments): void {
-            $mail->to($supportEmail)->replyTo($validated['email'], $validated['name'])
-                ->subject('[OgraFi] '.$departments[$validated['recipient']].' - '.$validated['subject']);
-            foreach ($validated['attachments'] ?? [] as $attachment) {
-                $mail->attach($attachment->getRealPath(), ['as' => $attachment->getClientOriginalName(), 'mime' => $attachment->getMimeType()]);
-            }
-        });
+        if (blank($supportEmail)) {
+            return back()->with('status', 'Mesajın kaydedildi. Destek e-posta adresi yapılandırılmadığı için e-posta bildirimi gönderilemedi.');
+        }
+
+        $body = "Talep No: #{$ticket->id}\nGönderen: {$ticket->name}\nE-posta: {$ticket->email}\nBirim: {$departments[$ticket->department]}\n\n{$ticket->message}";
+        try {
+            Mail::raw($body, function ($mail) use ($supportEmail, $ticket, $departments, $validated): void {
+                $mail->to($supportEmail)->replyTo($ticket->email, $ticket->name)
+                    ->subject('[OgraFi Destek #' . $ticket->id . '] ' . $departments[$ticket->department] . ' - ' . $ticket->subject);
+                foreach ($validated['attachments'] ?? [] as $attachment) {
+                    $mail->attach($attachment->getRealPath(), [
+                        'as' => $attachment->getClientOriginalName(),
+                        'mime' => $attachment->getMimeType(),
+                    ]);
+                }
+            });
+        } catch (Throwable $exception) {
+            report($exception);
+            return back()->with('status', 'Mesajın kaydedildi ancak e-posta bildirimi gönderilemedi. Destek ekibi talebini yönetim panelinden görebilir.');
+        }
+
         return back()->with('status', 'Mesajın destek ekibine gönderildi.');
     }
 
