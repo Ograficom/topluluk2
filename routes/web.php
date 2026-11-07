@@ -140,6 +140,7 @@ Route::middleware(['auth', 'verified'])->group(function (): void {
     Route::get('/settings/two-factor', fn () => redirect()->route('settings.edit', ['tab' => 'security']))->name('settings.two-factor');
     Route::get('/setting.html', [SettingsController::class, 'edit'])->name('settings.legacy');
     Route::patch('/settings/profile', [SettingsController::class, 'updateProfile'])->name('settings.profile.update');
+    Route::patch('/settings/username', [SettingsController::class, 'updateUsername'])->name('settings.username.update');
     Route::patch('/settings/preferences', [SettingsController::class, 'updatePreferences'])->name('settings.preferences.update');
     Route::patch('/settings/password', [SettingsController::class, 'updatePassword'])->name('settings.password.update');
     Route::patch('/settings/email', [SettingsController::class, 'updateEmail'])->name('settings.email.update');
