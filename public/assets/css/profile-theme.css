@@ -281,3 +281,11 @@
     gap: 20px;
   }
 }
+
+
+/* Give the profile footer the same breathing room as the Repost reference. */
+@media screen and (max-width: 920px) {
+  .profile__aside-footer {
+    margin-top: 22px;
+  }
+}
