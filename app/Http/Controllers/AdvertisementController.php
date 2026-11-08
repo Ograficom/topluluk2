@@ -24,11 +24,13 @@ class AdvertisementController extends Controller
         foreach ($ads as $ad) {
             $adEvents = $events->get($ad->id, collect());
             $impressions = $adEvents->where('event_type', 'impression');
-            $clicks = $adEvents->where('event_type', 'click');
+            $clicks = $adEvents->whereIn('event_type', ['click', 'card_click']);
+            $outboundClicks = $adEvents->where('event_type', 'click');
             $ad->analytics = [
                 'impressions' => $impressions->count(),
                 'detail_views' => $adEvents->where('event_type', 'detail')->count(),
                 'clicks' => $clicks->count(),
+                'outbound_clicks' => $outboundClicks->count(),
                 'reads' => $adEvents->where('event_type', 'read')->count(),
                 'read_seconds' => (int) $adEvents->where('event_type', 'read')->sum('seconds'),
                 'returns' => $adEvents->where('event_type', 'return')->count(),
@@ -174,6 +176,9 @@ class AdvertisementController extends Controller
         $advertisement->load(['user', 'post']);
         if (! $isOwner && ! $request->user()?->is_admin) {
             AdvertisementEvent::record($advertisement, $request, 'detail');
+            if ($request->query('source') === 'feed') {
+                AdvertisementEvent::record($advertisement, $request, 'card_click');
+            }
         }
 
         $visitorToken = hash('sha256', $request->session()->getId());
