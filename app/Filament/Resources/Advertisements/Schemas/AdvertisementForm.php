@@ -3,6 +3,7 @@
 namespace App\\Filament\\Resources\\Advertisements\\Schemas;
 
 use Filament\\Forms\\Components\\DateTimePicker;
+use Filament\\Forms\\Components\\FileUpload;
 use Filament\\Forms\\Components\\Select;
 use Filament\\Forms\\Components\\Textarea;
 use Filament\\Forms\\Components\\TextInput;
@@ -34,10 +35,13 @@ class AdvertisementForm
                         ->rows(6)
                         ->required()
                         ->columnSpanFull(),
-                    TextInput::make('image_path')
-                        ->label('Görsel dosya yolu')
-                        ->helperText('public disk üzerindeki dosya yolu.')
-                        ->maxLength(2048),
+                    FileUpload::make('image_path')
+                        ->label('Reklam görseli')
+                        ->image()
+                        ->disk('public')
+                        ->directory('advertisements')
+                        ->imageEditor()
+                        ->columnSpanFull(),
                     TextInput::make('video_url')
                         ->label('Video bağlantısı')
                         ->url()
