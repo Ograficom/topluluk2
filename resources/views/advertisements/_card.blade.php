@@ -5,7 +5,7 @@
     $isOwner = ! $preview && auth()->check() && auth()->id() === $ad->user_id;
 @endphp
 
-<article class="card post post--sponsored">
+<article class="card post post--sponsored" @unless($preview) data-ad-impression-url="{{ route('advertisements.impression', $ad) }}" @endunless>
     <section class="card-body">
         <header class="post__header">
             <div class="user-box">
@@ -97,3 +97,45 @@
         </div>
     </footer>
 </article>
+
+@if (! $preview)
+    @push('scripts')
+    <script>
+    (() => {
+        if (window.__ografiAdImpressionsBound) return;
+        window.__ografiAdImpressionsBound = true;
+        const observeAds = () => {
+            const cards = document.querySelectorAll('[data-ad-impression-url]:not([data-ad-impression-sent])');
+            const sendImpression = (card) => {
+                if (card.dataset.adImpressionSent) return;
+                card.dataset.adImpressionSent = '1';
+                fetch(card.dataset.adImpressionUrl, {
+                    method: 'POST',
+                    credentials: 'same-origin',
+                    keepalive: true,
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || '',
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'Accept': 'application/json'
+                    }
+                }).catch(() => { delete card.dataset.adImpressionSent; });
+            };
+            if (!('IntersectionObserver' in window)) {
+                cards.forEach(sendImpression);
+                return;
+            }
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach((entry) => {
+                    if (!entry.isIntersecting) return;
+                    sendImpression(entry.target);
+                    observer.unobserve(entry.target);
+                });
+            }, { threshold: 0.5 });
+            cards.forEach((card) => observer.observe(card));
+        };
+        if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', observeAds, { once: true });
+        else observeAds();
+    })();
+    </script>
+    @endpush
+@endif
