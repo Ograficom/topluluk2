@@ -58,21 +58,14 @@
         </section>
     @endif
 
-    <footer class="post__footer card-body">
-        <div class="post__footer-stats small color-gray">
-            @if ($post)
-                <span>{{ number_format($post->likes_count ?? 0) }} beğeni</span>
-                <span>{{ number_format($post->views ?? 0) }} görüntülenme</span>
-            @else
-                <span>Sponsorlu içerik</span>
-            @endif
-        </div>
+    <footer class="post__footer card-body" style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
+        <span class="small color-gray">Sponsorlu içerik</span>
         @if ($preview)
             <span class="small color-gray">Reklam önizlemesi</span>
         @else
-            <a class="btn btn-primary btn-sm" href="{{ $detailUrl }}" style="display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:10px 16px;border-radius:10px;font-weight:600;text-decoration:none;box-shadow:0 2px 5px rgba(20,80,190,.18);transition:background-color .18s ease,transform .18s ease" aria-label="Reklam ayrıntılarını görüntüle">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7"/><path d="M7 7h10v10"/></svg>
+            <a class="btn btn-primary" href="{{ $detailUrl }}" style="display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:40px;padding:9px 17px;border-radius:11px;font-weight:600;text-decoration:none;white-space:nowrap" aria-label="Reklam ayrıntılarını görüntüle">
                 <span>Ayrıntıları görüntüle</span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7"/><path d="M7 7h10v10"/></svg>
             </a>
         @endif
     </footer>
