@@ -14,7 +14,7 @@ class AdvertisementController extends Controller
 {
     public function index(Request $request): View
     {
-        $ads = $request->user()->advertisements()->latest()->paginate(15);
+        $ads = $request->user()->advertisements()->with(['user', 'post'])->latest()->paginate(15);
         return view('advertisements.index', compact('ads'));
     }
 
