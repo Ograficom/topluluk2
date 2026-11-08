@@ -5367,3 +5367,226 @@ p {
     visibility: hidden !important;
   }
 }
+
+
+/* Advertisement analytics: consistent, structured detail panels. */
+.ad-analytics-details {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 16px;
+}
+.ad-analytics-panel {
+  min-width: 0;
+  padding: 20px !important;
+}
+.ad-analytics-panel__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: 18px;
+}
+.ad-analytics-panel__head h3 {
+  margin: 0 0 5px;
+}
+.ad-analytics-panel__head p {
+  margin: 0;
+}
+.ad-analytics-panel__icon {
+  display: inline-flex;
+  width: 38px;
+  height: 38px;
+  flex: 0 0 38px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  color: var(--color-primary);
+  background: var(--blue-400);
+}
+.ad-analytics-panel__icon--green {
+  color: var(--green-500);
+  background: var(--green-100);
+}
+.ad-analytics-panel__icon--orange {
+  color: var(--orange-500);
+  background: var(--orange-100);
+}
+.ad-analytics-panel__icon--blue {
+  color: var(--color-primary);
+  background: var(--blue-400);
+}
+.ad-analytics-metrics {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+.ad-analytics-metric {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 7px;
+  padding: 13px 14px;
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  background: var(--body-bg, #fff);
+}
+.ad-analytics-metric__label {
+  color: var(--color-gray);
+  font-size: .82rem;
+  line-height: 1.4;
+}
+.ad-analytics-metric strong {
+  color: var(--title-color);
+  font-size: 1.35rem;
+  font-weight: 650;
+  line-height: 1.15;
+  overflow-wrap: anywhere;
+}
+.ad-analytics-audience {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+.ad-analytics-audience__row {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-width: 0;
+  font-size: .9rem;
+}
+.ad-analytics-audience__row strong {
+  margin-left: auto;
+  color: var(--title-color);
+  font-weight: 650;
+}
+.ad-analytics-audience__percent {
+  min-width: 52px;
+  color: var(--color-gray);
+  text-align: right;
+  font-size: .82rem;
+}
+.ad-analytics-dot {
+  display: inline-block;
+  width: 9px;
+  height: 9px;
+  flex: 0 0 9px;
+  border-radius: 50%;
+}
+.ad-analytics-dot--member {
+  background: var(--color-primary);
+}
+.ad-analytics-dot--visitor {
+  background: var(--green-500);
+}
+.ad-analytics-progress {
+  display: flex;
+  width: 100%;
+  height: 10px;
+  overflow: hidden;
+  border-radius: 99px;
+  background: var(--border-color);
+}
+.ad-analytics-progress__member {
+  display: block;
+  height: 100%;
+  background: var(--color-primary);
+}
+.ad-analytics-progress__visitor {
+  display: block;
+  height: 100%;
+  background: var(--green-500);
+}
+.ad-analytics-clicks {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin-bottom: 16px;
+}
+.ad-analytics-clicks__item {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 7px;
+  padding: 13px;
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+}
+.ad-analytics-clicks__label {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--color-gray);
+  font-size: .82rem;
+}
+.ad-analytics-clicks__item strong {
+  color: var(--title-color);
+  font-size: 1.5rem;
+  line-height: 1.1;
+}
+.ad-analytics-progress--clicks {
+  height: 11px;
+}
+.ad-analytics-empty {
+  margin: 0;
+}
+.ad-analytics-budget {
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: 14px;
+}
+.ad-analytics-budget__value {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 6px;
+}
+.ad-analytics-budget__value strong {
+  color: var(--title-color);
+  font-size: 1.4rem;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+}
+.ad-analytics-budget__value--right {
+  text-align: right;
+}
+.ad-analytics-progress--budget {
+  height: 12px;
+}
+.ad-analytics-progress--budget > span {
+  display: block;
+  height: 100%;
+  border-radius: 99px;
+  background: var(--green-500);
+}
+.ad-analytics-budget__foot {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  margin: 12px 0 0;
+}
+.ad-analytics-budget__foot strong {
+  color: var(--title-color);
+}
+@media (max-width: 640px) {
+  .ad-analytics-details {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 12px;
+  }
+  .ad-analytics-panel {
+    padding: 16px !important;
+  }
+  .ad-analytics-metrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .ad-analytics-clicks {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .ad-analytics-metric strong {
+    font-size: 1.2rem;
+  }
+  .ad-analytics-budget__value strong {
+    font-size: 1.2rem;
+  }
+}
