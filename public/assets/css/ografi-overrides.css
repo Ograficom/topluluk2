@@ -2322,3 +2322,7 @@ body.is-messenger-conversation .pm-dialog__composer .pm-composer__send svg {
  .post-create-simple__footer { position:sticky; bottom:0; background:var(--white-900,#fff); padding:12px 0 calc(12px + env(safe-area-inset-bottom)); }
  .post-create-simple__footer .btn { min-width:112px; }
 }
+
+
+.post-create-simple__seo-label { display:block; margin:0 0 5px; color:var(--color-gray); font-size:12px; font-weight:600; }
+.post-create-simple__seo { display:block; width:100%; min-height:64px; margin:0 0 14px; padding:10px 12px; border:1px solid var(--border-color); border-radius:10px; background:var(--white-900); color:var(--text-color); resize:vertical; }
