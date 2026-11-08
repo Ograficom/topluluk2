@@ -267,6 +267,10 @@ p {
   overscroll-behavior: contain;
 }
 .channel-sidebar-widgets > @media screen and (max-width: 920px) {
+  /* Repost original responsive behavior: hide the right widgets column on tablet/mobile. */
+  .main__widgets {
+    display: none;
+  }
   .main__grid-feed > .main__widgets {
     position: static;
     height: auto;
