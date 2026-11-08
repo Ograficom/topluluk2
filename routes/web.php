@@ -14,12 +14,14 @@ use App\Http\Controllers\SiteBrandingController;
 use App\Http\Controllers\StatisticsController;
 use App\Http\Controllers\SitemapController;
 use App\Http\Controllers\RssController;
+use App\Http\Controllers\RssReaderController;
 use App\Http\Controllers\SocialAuthController;
 use App\Models\SupportTicket;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
 
 Route::get('/sitemap.xml', SitemapController::class)->name('sitemap');
+Route::get('/rss', [RssReaderController::class, 'index'])->name('rss.reader');
 Route::get('/rss.xml', [RssController::class, 'all'])->name('rss.all');
 Route::get('/feed/latest.xml', [RssController::class, 'latest'])->name('rss.latest');
 Route::get('/feed/authors/{username}.xml', [RssController::class, 'author'])->name('rss.author');
