@@ -2576,6 +2576,10 @@ document.addEventListener("click", (event) => {
 
     if (!form) return;
 
+    document.querySelectorAll("[data-comment-edit-form]").forEach((editForm) => {
+      if (editForm !== form) editForm.hidden = true;
+    });
+
     form.hidden = false;
     form.querySelector("textarea")?.focus();
     return;
