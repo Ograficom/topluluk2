@@ -2592,3 +2592,56 @@ document.addEventListener("click", (event) => {
     if (form) form.hidden = true;
   }
 });
+
+
+// Post composer: live text preview, character counters and selected media feedback.
+(() => {
+  const title = document.querySelector("[data-post-title-input]");
+  const excerpt = document.querySelector("[data-post-excerpt-input]");
+  const titleCount = document.querySelector("[data-title-count]");
+  const excerptCount = document.querySelector("[data-excerpt-count]");
+  const previewTitle = document.querySelector("[data-post-preview-title]");
+  const previewExcerpt = document.querySelector("[data-post-preview-excerpt]");
+  const updateText = () => {
+    if (title && titleCount) titleCount.textContent = String(title.value.length);
+    if (excerpt && excerptCount) excerptCount.textContent = String(excerpt.value.length);
+    if (previewTitle) previewTitle.textContent = title?.value.trim() || "Yazı başlığın burada görünecek";
+    if (previewExcerpt) previewExcerpt.textContent = excerpt?.value.trim() || "Kısa açıklaman burada görünecek.";
+  };
+  title?.addEventListener("input", updateText);
+  excerpt?.addEventListener("input", updateText);
+  updateText();
+
+  const galleryInput = document.querySelector("[data-post-gallery-input]");
+  const galleryList = document.querySelector("[data-post-gallery-list]");
+  galleryInput?.addEventListener("change", () => {
+    if (!galleryList) return;
+    galleryList.replaceChildren();
+    Array.from(galleryInput.files || []).forEach((file) => {
+      const item = document.createElement("span");
+      item.className = "post-composer-file-item";
+      item.textContent = file.name;
+      galleryList.append(item);
+    });
+    if (galleryInput.files?.length) {
+      const count = document.createElement("span");
+      count.className = "post-composer-file-item";
+      count.textContent = galleryInput.files.length + " / 10 görsel seçildi";
+      galleryList.append(count);
+    }
+  });
+
+  const coverInput = document.querySelector("[data-post-cover-input]");
+  const coverPreview = document.querySelector("[data-post-cover-preview]");
+  coverInput?.addEventListener("change", () => {
+    if (!coverPreview) return;
+    coverPreview.replaceChildren();
+    const file = coverInput.files?.[0];
+    if (!file || !file.type.startsWith("image/")) return;
+    const image = document.createElement("img");
+    image.alt = "Seçilen kapak görseli önizlemesi";
+    image.src = URL.createObjectURL(file);
+    image.onload = () => URL.revokeObjectURL(image.src);
+    coverPreview.append(image);
+  });
+})();
