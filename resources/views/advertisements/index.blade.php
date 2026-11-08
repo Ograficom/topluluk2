@@ -66,9 +66,10 @@
                     </header>
                     <div class="d-flex flex-wrap gap-3">
                         <div><strong>{{ number_format($stats['detail_views']) }}</strong><div class="small color-gray">Ayrıntı görüntüleme</div></div>
+                        <div><strong>{{ number_format($stats['outbound_clicks']) }}</strong><div class="small color-gray">Dış bağlantı tıklaması</div></div>
                         <div><strong>{{ number_format($stats['reads']) }}</strong><div class="small color-gray">Okuma (15 sn+)</div></div>
                         <div><strong>{{ gmdate('H:i:s', min($stats['read_seconds'], 86399)) }}</strong><div class="small color-gray">Toplam okuma süresi</div></div>
-                        <div><strong>{{ number_format($stats['returns']) }}</strong><div class="small color-gray">Tıklama sonrası geri dönüş</div></div>
+                        <div><strong>{{ number_format($stats['returns']) }}</strong><div class="small color-gray">Dış bağlantı sonrası geri dönüş</div></div>
                     </div>
                 </section>
 
