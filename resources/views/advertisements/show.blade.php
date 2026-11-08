@@ -66,3 +66,31 @@
         </footer>
     </article>
 @endsection
+
+@push('scripts')
+<script>
+(() => {
+    const startedAt = Date.now();
+    let sent = false;
+    const sendRead = () => {
+        if (sent || document.visibilityState !== 'visible') return;
+        const seconds = Math.floor((Date.now() - startedAt) / 1000);
+        if (seconds < 15) return;
+        sent = true;
+        fetch(@json(route('advertisements.read', $advertisement)), {
+            method: 'POST',
+            credentials: 'same-origin',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || '',
+                'X-Requested-With': 'XMLHttpRequest',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify({ seconds })
+        }).catch(() => { sent = false; });
+    };
+    window.setInterval(sendRead, 3000);
+    document.addEventListener('visibilitychange', sendRead);
+})();
+</script>
+@endpush
