@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\AdvertisementController;
 use App\Http\Controllers\ChannelController;
 use App\Http\Controllers\CommunityController;
 use App\Http\Controllers\EmailVerificationController;
@@ -169,6 +170,10 @@ Route::middleware(['auth', 'verified'])->group(function (): void {
     Route::delete('/messenger/{conversation}/messages/{message}', [CommunityController::class, 'deleteMessage'])->middleware('throttle:30,1')->name('messenger.messages.delete');
 
     Route::post('/posts/{post:slug}/bookmark', [CommunityController::class, 'toggleBookmark'])->middleware('throttle:30,1')->name('posts.bookmarks.toggle');
+    Route::get('/advertisements', [AdvertisementController::class, 'index'])->name('advertisements.index');
+    Route::get('/advertisements/create', [AdvertisementController::class, 'create'])->name('advertisements.create');
+    Route::post('/advertisements', [AdvertisementController::class, 'store'])->middleware('throttle:5,1')->name('advertisements.store');
+
     Route::get('/posts/create', [PostController::class, 'create'])->name('posts.create');
     Route::post('/posts', [PostController::class, 'store'])->middleware('throttle:10,1')->name('posts.store');
     Route::get('/posts/{post:slug}/edit', [PostController::class, 'edit'])->name('posts.edit');
@@ -205,6 +210,7 @@ Route::middleware(['auth', 'verified'])->group(function (): void {
     Route::post('/admin/site-branding/favicon', [SiteBrandingController::class, 'updateFavicon'])->middleware('throttle:10,1')->name('admin.site-branding.favicon.update');
 });
 
+Route::get('/advertisements/{advertisement}/click', [AdvertisementController::class, 'click'])->middleware('throttle:60,1')->name('advertisements.click');
 Route::get('/posts/{post:slug}', [PostController::class, 'show'])->name('posts.show');
 Route::get('/channels', [ChannelController::class, 'index'])->name('channels.index');
 Route::get('/channels/create', [ChannelController::class, 'create'])->middleware('auth')->name('channels.create');
