@@ -312,7 +312,9 @@
                             <footer class="widget__footer"><a href="{{ route('members.index') }}" class="link-accent">Üye sıralaması</a></footer>
                         </section>
                         <section class="widget card card-body">
-                            <header><h2 class="widget__title h6">Popüler yazılar</h2></header>
+                            <header>
+                                <h2 class="widget__title h6">Popüler yazılar</h2>
+                            </header>
                             <div class="widget__content widget__content--bleed">
                                 <ul class="widget__list widget__list--separator">
                                     @forelse ($sidebarPosts as $post)
@@ -322,18 +324,30 @@
                                                     <div class="user-box">
                                                         @if ($post->user)
                                                             <a href="{{ route('profiles.show', $post->user) }}" class="avatar" aria-label="{{ $post->user->displayName() }} profili">
-                                                                <img src="{{ $post->user->avatarUrl() }}" alt="" width="40" height="40">
+                                                                <img src="{{ $post->user->avatarUrl() }}" alt="" width="40" height="40" loading="lazy">
                                                             </a>
                                                         @else
-                                                            <span class="avatar"><img src="{{ asset('assets/img/noavatar.png') }}" alt="" width="40" height="40"></span>
+                                                            <span class="avatar">
+                                                                <img src="{{ asset('assets/img/noavatar.png') }}" alt="" width="40" height="40" loading="lazy">
+                                                            </span>
                                                         @endif
                                                         <div class="user-box-content">
                                                             @if ($post->user)
-                                                                <a href="{{ route('profiles.show', $post->user) }}" class="name"><span class="name-text">{{ $post->user->displayName() }}</span></a>
+                                                                <a href="{{ route('profiles.show', $post->user) }}" class="name">
+                                                                    <span class="name-text">{{ $post->user->displayName() }}</span>
+                                                                    @if ($post->user->hasVerifiedCompanyBadge())
+                                                                        <x-company-verified-badge size="14" />
+                                                                    @endif
+                                                                    @if ($post->user->hasVerifiedBadge())
+                                                                        <span class="verify" role="img" aria-label="Doğrulanmış profil" title="Doğrulanmış profil">
+                                                                            <x-repost-icon name="verify" size="14" />
+                                                                        </span>
+                                                                    @endif
+                                                                </a>
                                                             @else
                                                                 <span class="name"><span class="name-text">OgraFi yazarı</span></span>
                                                             @endif
-                                                            <span class="meta">{{ $post->published_at?->translatedFormat('d F Y') ?? $post->created_at->translatedFormat('d F Y') }}</span>
+                                                            <time class="meta" datetime="{{ ($post->published_at ?? $post->created_at)->toAtomString() }}">{{ ($post->published_at ?? $post->created_at)->translatedFormat('d F Y') }}</time>
                                                         </div>
                                                     </div>
                                                     <a href="{{ route('posts.show', $post) }}" class="text-clamp-2 color-text">{{ $post->title }}</a>
@@ -343,18 +357,22 @@
                                                     </div>
                                                 </div>
                                                 @if ($post->coverImageUrl())
-                                                    <a href="{{ route('posts.show', $post) }}" class="entry-box-image">
+                                                    <a href="{{ route('posts.show', $post) }}" class="entry-box-image" aria-label="{{ $post->title }}">
                                                         <img src="{{ $post->coverImageUrl() }}" alt="{{ $post->title }}" width="100" height="80" loading="lazy">
                                                     </a>
                                                 @endif
                                             </article>
                                         </li>
                                     @empty
-                                        <li class="entry-card"><span class="small color-gray">Henüz yayınlanmış yazı yok</span></li>
+                                        <li class="entry-card">
+                                            <span class="small color-gray">Henüz yayınlanmış yazı yok</span>
+                                        </li>
                                     @endforelse
                                 </ul>
                             </div>
-                            <footer class="widget__footer"><a href="{{ route('posts.index') }}" class="link-accent">Tüm yazılar</a></footer>
+                            <footer class="widget__footer">
+                                <a href="{{ route('posts.index') }}" class="link-accent">Tüm yazılar</a>
+                            </footer>
                         </section>
                         <section class="widget card card-body">
                             <header><h2 class="widget__title h6">Son yorumlar</h2></header>
