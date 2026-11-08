@@ -28,11 +28,11 @@ class AdvertisementController extends Controller
             $outboundClicks = $adEvents->where('event_type', 'click');
             $cardClicks = $adEvents->where('event_type', 'card_click');
             $ad->analytics = [
-                'impressions' => $impressions->count(),
+                'impressions' => (int) $ad->impressions,
                 'detail_views' => $adEvents->where('event_type', 'detail')->count(),
-                'clicks' => $clicks->count(),
+                'clicks' => (int) $ad->clicks + $cardClicks->count(),
                 'card_clicks' => $cardClicks->count(),
-                'outbound_clicks' => $outboundClicks->count(),
+                'outbound_clicks' => (int) $ad->clicks,
                 'reads' => $adEvents->where('event_type', 'read')->count(),
                 'read_seconds' => (int) $adEvents->where('event_type', 'read')->sum('seconds'),
                 'returns' => $adEvents->where('event_type', 'return')->count(),
