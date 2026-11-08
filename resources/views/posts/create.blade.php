@@ -60,8 +60,18 @@
                         <p class="post-composer-hint">İçeriğin otomatik olarak Editor.js blokları şeklinde kaydedilir.</p>
                     </li>
                     <li>
-                        <label class="addpost__label" for="post-video-url">Video bağlantısı (HTTPS)</label>
-                        <input id="post-video-url" name="video_url" type="url" value="{{ old('video_url', $post->video_url ?? '') }}" maxlength="2048" placeholder="https://...">
+                        <label class="addpost__label" for="post-video-url">Video veya sosyal medya bağlantısı</label>
+                        <input id="post-video-url" name="video_url" type="url" value="{{ old('video_url', $post->video_url ?? '') }}" maxlength="2048" placeholder="YouTube, Facebook, X, Reddit, Instagram veya TikTok bağlantısı">
+                        <p class="post-composer-hint">Desteklenen bağlantılar gönderide oynatıcı içinde açılır. Bağlantı herkese açık olmalı; platformun gömme izni vermesi gerekir.</p>
+                    </li>
+                    <li class="addpost__actions">
+                        <label class="addpost__label" for="post-video-file">Cihazından video yükle</label>
+                        <p class="post-composer-hint">MP4, WebM, OGG, MOV veya M4V · En fazla 100 MB.</p>
+                        <input class="form-attachments" id="post-video-file" name="video_file" type="file" accept="video/mp4,video/webm,video/ogg,video/quicktime,.m4v">
+                        @if (isset($post) && $post->video_path)
+                            <div class="post-composer-file-item">Mevcut video kayıtlı</div>
+                            <label class="form-check-label"><input class="form-check-input" type="checkbox" name="remove_video" value="1"> <span>Yüklenmiş videoyu kaldır</span></label>
+                        @endif
                     </li>
                     <li class="post-composer-divider"><span class="post-composer-step">02</span><div><strong>Görsel ve video</strong><span>Yazını fotoğraflar ve video bağlantısıyla zenginleştir.</span></div></li>
                     <li class="addpost__actions">
