@@ -2144,3 +2144,49 @@ body.is-messenger-conversation .pm-dialog__composer .pm-composer__send svg {
     flex-basis: 24px !important;
   }
 }
+
+
+/* Final mobile screenshot correction: restore the full conversation header
+   and prevent the global bottom navigation from covering the composer. */
+@media (max-width: 720px) {
+  body.is-messenger-conversation .pm-dialog__header--conversation {
+    position: relative !important;
+    inset: auto !important;
+    left: auto !important;
+    right: auto !important;
+    transform: none !important;
+    display: flex !important;
+    flex: 0 0 auto !important;
+    align-self: stretch !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+    margin: 0 0 8px !important;
+    border-radius: 14px !important;
+  }
+
+  body.is-messenger-conversation .pm-dialog__header--conversation .pm-dialog__identity {
+    flex: 1 1 auto !important;
+    min-width: 0 !important;
+  }
+
+  body.is-messenger-conversation .pm-dialog__header--conversation .pm-dialog__identity-copy {
+    flex: 1 1 auto !important;
+    min-width: 0 !important;
+  }
+
+  body.is-messenger-conversation .pm-dialog__header-menu {
+    flex: 0 0 30px !important;
+    margin-left: auto !important;
+  }
+
+  body.is-messenger-conversation .mobmenu {
+    display: none !important;
+  }
+
+  body.is-messenger-conversation .pm-dialog__composer.pm-composer {
+    margin-bottom: 0 !important;
+    padding-bottom: max(8px, env(safe-area-inset-bottom, 0px)) !important;
+  }
+}
