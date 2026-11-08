@@ -52,4 +52,17 @@
             Yazar, kanal ve etiket örneklerindeki <code>{username}</code> ve <code>{slug}</code> alanlarını gerçek değerlerle değiştirin.
         </p>
     </x-filament::section>
+
+    <x-filament::section
+        heading="OgraFi RSS okuyucu"
+        description="Diğer sitelerin RSS kaynaklarını ekleyip OgraFi içerisinde okuyun."
+        icon="heroicon-o-rss"
+    >
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap">
+            <p style="margin:0;color:var(--gray-500);font-size:.875rem">Dış RSS kaynaklarını yönetmek, yenilemek ve duraklatmak için kaynak yönetimine gidin.</p>
+            <x-filament::button tag="a" href="{{ url('/admin/rss-sources') }}" icon="heroicon-o-arrow-top-right-on-square" color="gray">Dış kaynakları yönet</x-filament::button>
+            <x-filament::button tag="a" href="{{ url('/rss') }}" target="_blank" icon="heroicon-o-eye">RSS okuyucuyu aç</x-filament::button>
+        </div>
+    </x-filament::section>
+
 </x-filament-panels::page>
