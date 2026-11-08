@@ -44,13 +44,7 @@
 
     @if ($post && ($post->coverImageUrl() || count($post->galleryImageUrls()) > 0 || filled($post->video_url)))
         <section class="card-body post__short-media">
-            @if ($preview)
-                @include('posts._media', ['post' => $post])
-            @else
-                <a href="{{ $detailUrl }}" aria-label="{{ $ad->title }} reklam ayrıntıları">
-                    @include('posts._media', ['post' => $post])
-                </a>
-            @endif
+            @include('posts._media', ['post' => $post])
         </section>
     @elseif ($ad->imageUrl())
         <section class="card-body post__short-media">
