@@ -1,22 +1,22 @@
 <?php
 
-namespace App\\Filament\\Pages;
+namespace App\Filament\Pages;
 
-use App\\Models\\SiteSetting;
-use Filament\\Forms\\Components\\TextInput;
-use Filament\\Notifications\\Notification;
-use Filament\\Pages\\Page;
-use Filament\\Schemas\\Components\\Section;
-use Filament\\Schemas\\Schema;
-use Filament\\Support\\Icons\\Heroicon;
+use App\Models\SiteSetting;
+use Filament\Forms\Components\TextInput;
+use Filament\Notifications\Notification;
+use Filament\Pages\Page;
+use Filament\Schemas\Components\Section;
+use Filament\Schemas\Schema;
+use Filament\Support\Icons\Heroicon;
 
 class AdvertisementPricing extends Page
 {
-    protected static string|\\UnitEnum|null $navigationGroup = 'Ayarlar';
+    protected static string|\UnitEnum|null $navigationGroup = 'Ayarlar';
     protected static ?string $navigationLabel = 'Reklam fiyatlandırması';
     protected static ?string $title = 'Reklam fiyatlandırması';
     protected static ?int $navigationSort = 5;
-    protected static string|\\BackedEnum|null $navigationIcon = Heroicon::OutlinedCog6Tooth;
+    protected static string|\BackedEnum|null $navigationIcon = Heroicon::OutlinedCog6Tooth;
 
     protected string $view = 'filament.pages.advertisement-pricing';
 
