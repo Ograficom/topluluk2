@@ -29,7 +29,7 @@ class AdvertisementController extends Controller
         $data = $request->validate([
             'title' => ['required', 'string', 'max:160'],
             'description' => ['required', 'string', 'max:2000'],
-            'image' => ['nullable', 'image', 'mimes:jpg,jpeg,png,gif,webp', 'max:5120'],
+            'image' => ['nullable', 'image', 'mimes:jpg,png,gif,webp', 'max:5120'],
             'video_url' => ['nullable', 'url', 'max:2048', 'starts_with:https://'],
             'target_url' => ['required', 'url', 'max:2048', 'starts_with:https://'],
             'button_text' => ['required', 'string', 'max:40'],
@@ -40,8 +40,8 @@ class AdvertisementController extends Controller
             'ends_at.after' => 'Yayın bitişi, yayın başlangıcından sonra olmalıdır.',
         ]);
 
-        $startsAt = Carbon::parse($data['starts_at']);
-        $endsAt = Carbon::parse($data['ends_at']);
+        $startsAt = Carbon::parse($data['starts_at'], 'Europe/Istanbul')->utc();
+        $endsAt = Carbon::parse($data['ends_at'], 'Europe/Istanbul')->utc();
         $durationDays = max(1, (int) ceil($startsAt->diffInMinutes($endsAt) / 1440));
         $dailyPrice = (float) (SiteSetting::current()?->advertisement_daily_price ?? 200);
         $totalPrice = round($durationDays * $dailyPrice, 2);
