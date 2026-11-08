@@ -1694,7 +1694,7 @@ body.is-messenger-conversation .pm-dialog {
   gap: 0 !important;
   width: 100% !important;
   min-width: 0 !important;
-  height: min(680px, calc(100dvh - var(--header-height, 56px) - 32px)) !important;
+  height: min(600px, calc(100dvh - var(--header-height, 56px) - 32px)) !important;
   min-height: 420px !important;
   margin-top: 0 !important;
   overflow: visible !important;
