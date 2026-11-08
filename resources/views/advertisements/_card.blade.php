@@ -32,7 +32,7 @@
             </div>
             @if ($isOwner)
                 <a class="post--sponsored-edit" href="{{ route('advertisements.edit', $ad) }}" aria-label="Reklamı düzenle" title="Reklamı düzenle">
-                    <x-repost-icon name="edit" size="17" />
+                    <svg class="post-sponsored-edit__icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L8 18l-4 1 1-4Z"/></svg>
                 </a>
             @endif
         </header>
@@ -246,6 +246,49 @@
 
     .post--sponsored .post__footer > div > a.btn-primary {
         min-width: 0 !important;
+    }
+}
+
+
+/* Make the sponsored-card edit control visible in the header on mobile and desktop. */
+.post--sponsored .post__header {
+    position: relative;
+    padding-right: 42px;
+}
+.post--sponsored .post__header > .post--sponsored-edit {
+    position: absolute !important;
+    top: 0 !important;
+    right: 0 !important;
+    z-index: 5;
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    width: 34px !important;
+    min-width: 34px;
+    height: 34px !important;
+    min-height: 34px;
+    padding: 0 !important;
+    margin: 0 !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 9px !important;
+    background: #fff !important;
+    color: #64748b !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    text-decoration: none !important;
+    box-shadow: none !important;
+}
+.post--sponsored .post__header > .post--sponsored-edit svg {
+    display: block !important;
+    width: 18px;
+    height: 18px;
+    stroke: currentColor;
+}
+@media (max-width: 600px) {
+    .post--sponsored .post__header { padding-right: 40px; }
+    .post--sponsored .post__header > .post--sponsored-edit {
+        top: 0 !important;
+        right: 0 !important;
     }
 }
 
