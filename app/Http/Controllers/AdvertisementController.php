@@ -1,11 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\\Http\\Controllers;
 
-use App\Models\Advertisement;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
-use Illuminate\View\View;
+use App\\Models\\Advertisement;
+use App\\Models\\SiteSetting;
+use Illuminate\\Http\\RedirectResponse;
+use Illuminate\\Http\\Request;
+use Illuminate\\Support\\Carbon;
+use Illuminate\\View\\View;
 
 class AdvertisementController extends Controller
 {
@@ -17,7 +19,9 @@ class AdvertisementController extends Controller
 
     public function create(): View
     {
-        return view('advertisements.create');
+        $dailyPrice = (float) (SiteSetting::current()?->advertisement_daily_price ?? 200);
+
+        return view('advertisements.create', compact('dailyPrice'));
     }
 
     public function store(Request $request): RedirectResponse
@@ -31,11 +35,19 @@ class AdvertisementController extends Controller
             'button_text' => ['required', 'string', 'max:40'],
             'starts_at' => ['required', 'date', 'after_or_equal:today'],
             'ends_at' => ['required', 'date', 'after:starts_at'],
-            'total_budget' => ['required', 'numeric', 'min:1', 'max:10000000'],
-            'daily_budget' => ['required', 'numeric', 'min:1', 'lte:total_budget'],
+        ], [
+            'starts_at.after_or_equal' => 'Yayın başlangıcı bugünden önce olamaz.',
+            'ends_at.after' => 'Yayın bitişi, yayın başlangıcından sonra olmalıdır.',
         ]);
 
+        $startsAt = Carbon::parse($data['starts_at']);
+        $endsAt = Carbon::parse($data['ends_at']);
+        $durationDays = max(1, (int) ceil($startsAt->diffInMinutes($endsAt) / 1440));
+        $dailyPrice = (float) (SiteSetting::current()?->advertisement_daily_price ?? 200);
+        $totalPrice = round($durationDays * $dailyPrice, 2);
+
         $image = $request->file('image')?->store('advertisements', 'public');
+
         $request->user()->advertisements()->create([
             'title' => $data['title'],
             'description' => $data['description'],
@@ -43,10 +55,10 @@ class AdvertisementController extends Controller
             'video_url' => $data['video_url'] ?? null,
             'target_url' => $data['target_url'],
             'button_text' => $data['button_text'],
-            'starts_at' => $data['starts_at'],
-            'ends_at' => $data['ends_at'],
-            'total_budget' => $data['total_budget'],
-            'daily_budget' => $data['daily_budget'],
+            'starts_at' => $startsAt,
+            'ends_at' => $endsAt,
+            'total_budget' => $totalPrice,
+            'daily_budget' => $dailyPrice,
             'billing_type' => 'paid',
             'payment_status' => 'pending',
             'status' => 'pending',
