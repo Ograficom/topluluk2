@@ -2256,3 +2256,40 @@ body.is-messenger-conversation .pm-dialog__composer .pm-composer__send svg {
     overflow: hidden !important;
   }
 }
+
+
+/* Post share dropdown */
+.post-share-dropdown {
+    position: relative;
+    display: inline-flex;
+    flex: 0 0 auto;
+}
+.post-share-dropdown > .post-share-menu {
+    --dropdown-width: 210px;
+    --dropdown-menu-padding: 7px;
+    --dropdown-menu-radius: 16px;
+    --dropdown-menu-shadow: 0 12px 32px rgba(15, 23, 42, .14);
+    --dropdown-menu-bg: #fff;
+    --dropdown-menu-border-color: #e8edf4;
+    --dropdown-item-color: #303846;
+    --dropdown-item-bg: transparent;
+    --dropdown-item-font-size: 13px;
+    --dropdown-item-min-height: 36px;
+    --dropdown-item-radius: 10px;
+    --dropdown-item-gap: 10px;
+    --dropdown-item-padding-x: 10px;
+}
+.post-share-dropdown > .post-share-menu .dropdown-menu-item > :is(a, button) {
+    color: #303846;
+    background: transparent;
+    font: inherit;
+    font-size: 13px;
+    cursor: pointer;
+}
+.post-share-dropdown > .post-share-menu .dropdown-menu-item > :is(a, button):hover {
+    color: #1769ff;
+    background: #f3f6fb;
+}
+.post-share-dropdown > .post-share-menu svg {
+    color: #64748b;
+}
