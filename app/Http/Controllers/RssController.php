@@ -35,7 +35,7 @@ class RssController extends Controller
     private function response(string $xml): Response
     {
         return response($xml, 200, [
-            'Content-Type' => 'application/rss+xml; charset=UTF-8',
+            'Content-Type' => 'application/xml; charset=UTF-8',
             'Cache-Control' => 'public, max-age=300',
             'X-Content-Type-Options' => 'nosniff',
         ]);
