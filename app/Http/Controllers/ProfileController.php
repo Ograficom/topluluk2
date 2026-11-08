@@ -35,16 +35,6 @@ class ProfileController extends Controller
         $posts = Post::query()
             ->published()
             ->where('user_id', $user->id)
-            ->where(function (Builder $query) use ($viewer, $user): void {
-                $query->whereNull('advertisement_id')
-                    ->orWhereHas('advertisement', function (Builder $advertisement) use ($viewer, $user): void {
-                        if ($viewer && $viewer->is($user)) {
-                            $advertisement->whereIn('status', ['pending', 'approved']);
-                        } else {
-                            $advertisement->deliverable();
-                        }
-                    });
-            })
             ->with(['user', 'channel', 'advertisement'])
             ->with(['comments' => fn ($query) => $query->with('user')->limit(1)])
             ->withCount('comments')
@@ -66,7 +56,8 @@ class ProfileController extends Controller
 
         $comments = $user->comments()
             ->with(['post', 'post.channel'])
-            ->when(! $viewer?->show_adult_content, fn (Builder $query) => $query->whereHas('post', fn (Builder $postQuery) => $postQuery->where('is_adult', false)))
+            ->whereHas('post', fn (Builder $postQuery) => $postQuery->published()
+                ->when(! $viewer?->show_adult_content, fn (Builder $query) => $query->where('is_adult', false)))
             ->latest()
             ->paginate(10, ['*'], 'comments');
         $isBlocked = $viewer && $viewer->blockedUsers()->whereKey($user->id)->exists();
