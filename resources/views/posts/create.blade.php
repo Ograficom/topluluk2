@@ -192,7 +192,7 @@
           logLevel: 'ERROR',
           data,
           tools,
-          inlineToolbar: ['marker', 'inlineCode', 'link'],
+          inlineToolbar: ['marker', 'inlineCode'],
           onReady: () => {
             if (status) status.textContent = 'Editör hazır';
             holder.classList.add('is-ready');
