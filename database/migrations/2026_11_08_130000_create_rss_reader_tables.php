@@ -11,7 +11,8 @@ return new class extends Migration
         Schema::create('rss_sources', function (Blueprint $table): void {
             $table->id();
             $table->string('name', 160);
-            $table->string('url', 2048)->unique();
+            $table->text('url');
+            $table->char('url_hash', 64)->unique();
             $table->string('site_url', 2048)->nullable();
             $table->text('description')->nullable();
             $table->boolean('is_active')->default(true)->index();
