@@ -5,17 +5,17 @@
     @php($isBookmarked = auth()->user()->bookmarks()->whereKey($post->id)->exists())
 @endif
 
-<div class="post__options card-body">
+<div class="post__options">
     <div class="post__options-set">
         @auth
             <form action="{{ route('posts.reactions.store', ['post' => $post, 'type' => 'like']) }}" method="POST">
                 @csrf
-                <button class="btn btn-md btn-square btn-primary-soft {{ $viewerReaction === 'like' ? 'is-active' : '' }}" type="submit" title="Like" aria-label="Like" aria-pressed="{{ $viewerReaction === 'like' ? 'true' : 'false' }}">
+                <button class="btn btn-md btn-square btn-primary-soft {{ $viewerReaction === 'like' ? 'is-active' : '' }}" type="submit" title="Beğen" aria-label="Beğen" aria-pressed="{{ $viewerReaction === 'like' ? 'true' : 'false' }}">
                     <x-repost-icon name="like" size="20" />
                 </button>
             </form>
         @else
-            <a class="btn btn-md btn-square btn-primary-soft" href="{{ route('login') }}" title="Sign in to like" aria-label="Sign in to like">
+            <a class="btn btn-md btn-square btn-primary-soft" href="{{ route('login') }}" title="Beğenmek için giriş yap" aria-label="Beğenmek için giriş yap">
                 <x-repost-icon name="like" size="20" />
             </a>
         @endauth
@@ -24,20 +24,20 @@
         @auth
             <form action="{{ route('posts.reactions.store', ['post' => $post, 'type' => 'dislike']) }}" method="POST">
                 @csrf
-                <button class="btn btn-md btn-square btn-primary-soft {{ $viewerReaction === 'dislike' ? 'is-active' : '' }}" type="submit" title="Dislike" aria-label="Dislike" aria-pressed="{{ $viewerReaction === 'dislike' ? 'true' : 'false' }}">
+                <button class="btn btn-md btn-square btn-primary-soft {{ $viewerReaction === 'dislike' ? 'is-active' : '' }}" type="submit" title="Beğenme" aria-label="Beğenme" aria-pressed="{{ $viewerReaction === 'dislike' ? 'true' : 'false' }}">
                     <x-repost-icon name="dislike" size="20" />
                 </button>
             </form>
         @else
-            <a class="btn btn-md btn-square btn-primary-soft" href="{{ route('login') }}" title="Sign in to dislike" aria-label="Sign in to dislike">
+            <a class="btn btn-md btn-square btn-primary-soft" href="{{ route('login') }}" title="Beğenmemek için giriş yap" aria-label="Beğenmemek için giriş yap">
                 <x-repost-icon name="dislike" size="20" />
             </a>
         @endauth
-        <a class="btn btn-md btn-primary-soft" href="{{ route('posts.show', $post) }}#comments" title="Comments" aria-label="Comments">
+        <a class="btn btn-md btn-primary-soft" href="{{ route('posts.show', $post) }}#comments" title="Yorumlar" aria-label="Yorumlar">
             <x-repost-icon name="comment" size="20" />
             {{ number_format($post->comments_count ?? 0) }}
         </a>
-        <button class="btn btn-md btn-square btn-primary-soft" type="button" data-share-post data-share-title="{{ $post->title }}" data-share-url="{{ route('posts.show', $post) }}" aria-label="Share" title="Share">
+        <button class="btn btn-md btn-square btn-primary-soft" type="button" data-share-post data-share-title="{{ $post->title }}" data-share-url="{{ route('posts.show', $post) }}" aria-label="Paylaş" title="Paylaş">
             <x-repost-icon name="share" size="20" />
         </button>
     </div>
