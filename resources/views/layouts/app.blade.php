@@ -455,7 +455,7 @@
     <script src="{{ asset('assets/libs/fancyapp/fancybox.umd.js') }}"></script>
     <script src="{{ asset('assets/libs/fancyapp/carousel.umd.js') }}"></script>
     <script src="{{ asset('assets/libs/sharer/sharer.min.js') }}"></script>
-    <script src="{{ asset('assets/js/app.js') }}?v=20261108-detailed-post-composer?v=20261108-comment-editor-layout"></script>
+    <script src="{{ asset('assets/js/app.js?share-menu=20261108') }}?v=20261108-detailed-post-composer?v=20261108-comment-editor-layout"></script>
     <script src="{{ asset('assets/js/init.js') }}"></script>
     @guest
     <script>
