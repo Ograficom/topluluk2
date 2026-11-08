@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="{{ asset('assets/css/kit.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/app.css') }}?v=20261108-detailed-post-composer">
     <link rel="stylesheet" href="{{ asset('assets/css/engine.css') }}?v=20261106-social-account-management">
-    <link rel="stylesheet" href="{{ asset('assets/css/ografi-overrides.css') }}?v=20261108-right-sidebar-no-inner-scroll&share-menu=20261108">
+    <link rel="stylesheet" href="{{ asset('assets/css/ografi-overrides.css') }}?v=20261109-post-composer-feed-seo">
     <script>
         (() => {
             const root = document.documentElement;
@@ -196,7 +196,7 @@
     @php($statsPage = request()->routeIs('stats.index'))
     @php($verificationPage = request()->routeIs('verification.notice'))
     <main class="container">
-        <div class="main {{ $settingsPage || $profilePage || $channelPage || $postCreatePage ? 'main__grid-full' : 'main__grid' }}">
+        <div class="main {{ $settingsPage || $profilePage || $channelPage ? 'main__grid-full' : 'main__grid' }}">
             <aside class="sidebar" aria-label="Kanallar ve yazarlar">
                 <div class="sidebar__body">
                     <section class="sidebar__section">
@@ -271,7 +271,7 @@
                     </section>
                 @endif
 
-                @unless ($profilePage || $channelPage || $postCreatePage)
+                @unless ($profilePage || $channelPage)
                 <aside class="main__widgets" aria-label="Sağ sütun">
                     <div class="widgets">
                         <section class="widget card card-body">
