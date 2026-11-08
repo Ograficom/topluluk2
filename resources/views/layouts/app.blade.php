@@ -401,6 +401,7 @@
         </div>
     </main>
 
+    @unless (request()->routeIs('messenger.show'))
     <section class="mobmenu" data-scroll-menu>
         <nav class="mobmenu__content" aria-label="Mobile navigation">
             <a class="mobmenu__link {{ request()->routeIs('posts.index') ? 'is-active' : '' }}" href="{{ route('posts.index') }}" aria-label="Home">
@@ -414,6 +415,7 @@
             </a>
         </nav>
     </section>
+    @endunless
 
     @include('layouts._mobile-side-panel')
 
