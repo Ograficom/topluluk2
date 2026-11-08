@@ -59,6 +59,15 @@ class AdvertisementController extends Controller
         return view('advertisements.index', compact('ads'));
     }
 
+    public function trackImpression(Request $request, Advertisement $advertisement): \Illuminate\Http\Response
+    {
+        abort_unless(Advertisement::query()->whereKey($advertisement->id)->deliverable()->exists(), 404);
+
+        AdvertisementEvent::record($advertisement, $request, 'impression');
+
+        return response()->noContent();
+    }
+
     public function create(): View
     {
         $dailyPrice = (float) (SiteSetting::current()?->advertisement_daily_price ?? 200);
