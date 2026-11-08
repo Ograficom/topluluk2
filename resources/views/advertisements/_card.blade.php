@@ -61,7 +61,7 @@
 
     <footer class="post__footer card-body" style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
         <span class="small color-gray">Sponsorlu içerik</span>
-        <div style="display:flex;align-items:center;justify-content:flex-end;gap:8px;flex-wrap:wrap">
+        <div style="display:flex;align-items:center;justify-content:flex-end;gap:10px;flex-wrap:wrap;min-width:0">
             @if ($isOwner)
                 <a class="btn btn-secondary-ghost btn-sm" href="{{ route('advertisements.edit', $ad) }}" aria-label="Reklamı düzenle">
                     <x-repost-icon name="edit" size="15" />
@@ -71,9 +71,9 @@
             @if ($preview)
                 <span class="small color-gray">Reklam önizlemesi</span>
             @else
-                <a class="btn btn-primary" href="{{ $detailUrl }}" style="display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:40px;padding:9px 17px;border-radius:11px;font-weight:600;text-decoration:none;white-space:nowrap" aria-label="Reklam ayrıntılarını görüntüle">
+                <a class="btn btn-primary" href="{{ $detailUrl }}" style="display:inline-flex;flex:0 0 auto;align-items:center;justify-content:center;gap:9px;width:auto;min-width:max-content;height:42px;box-sizing:border-box;padding:0 20px;border-radius:11px;font-size:14px;line-height:1;font-weight:600;text-decoration:none;white-space:nowrap" aria-label="Reklam ayrıntılarını görüntüle">
                     <span>{{ $ad->button_text ?: 'Daha fazla bilgi al' }}</span>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7"/><path d="M7 7h10v10"/></svg>
+                    <svg style="display:block;flex:0 0 16px" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7"/><path d="M7 7h10v10"/></svg>
                 </a>
             @endif
         </div>
