@@ -118,7 +118,7 @@
                                         </div>
                                     </header>
                                     <div class="post__short">
-                                        <h2 class="post__short-title h3">@if ($post->advertisement && $post->advertisement->status === 'approved')<a href="{{ route('advertisements.click', $post->advertisement) }}" class="color-title" rel="sponsored nofollow"><span class="post__short-title-text">{{ $post->title }}</span></a>@else<a href="{{ route('posts.show', $post) }}" class="color-title"><span class="post__short-title-text">{{ $post->title }}</span></a>@endif</h2>
+                                        <h2 class="post__short-title h3">@if ($post->advertisement && $post->advertisement->status === 'approved')<a href="{{ route('advertisements.show', $post->advertisement) }}" class="color-title"><span class="post__short-title-text">{{ $post->title }}</span></a>@else<a href="{{ route('posts.show', $post) }}" class="color-title"><span class="post__short-title-text">{{ $post->title }}</span></a>@endif</h2>
                                         @if ($post->excerpt)<div class="text-clamp-3 color-text">{{ $post->excerpt }}</div>@endif
                                         @if ($post->advertisement && auth()->check() && auth()->user()->is($user) && $post->advertisement->status === 'pending')<div class="small color-gray">Reklam başvurusu · Onay bekliyor</div>@endif
                                         @if (filled($post->tags))
@@ -131,7 +131,7 @@
                                 @endif
                                 <footer class="post__footer card-body">
                                     <div class="post__footer-stats small color-gray"><span>{{ number_format($post->likes_count) }} beğeni</span><span>{{ number_format($post->views) }} görüntülenme</span></div>
-                                    @if ($post->advertisement && $post->advertisement->status === 'approved')<a class="btn btn-primary btn-sm" href="{{ route('advertisements.click', $post->advertisement) }}" rel="sponsored nofollow">{{ $post->advertisement->button_text }}</a>@elseif ($post->advertisement)<span class="small color-gray">Yayın onayı bekleniyor</span>@elseif ($post->user?->publicUsername())<span class="small color-gray">{{ '@'.$post->user->publicUsername() }}</span>@endif
+                                    @if ($post->advertisement && $post->advertisement->status === 'approved')<a class="btn btn-primary btn-sm" href="{{ route('advertisements.show', $post->advertisement) }}">Ayrıntıları görüntüle</a>@elseif ($post->advertisement)<span class="small color-gray">Yayın onayı bekleniyor</span>@elseif ($post->user?->publicUsername())<span class="small color-gray">{{ '@'.$post->user->publicUsername() }}</span>@endif
                                 </footer>
                                 @unless ($post->advertisement)
                                     @include('posts._interactions', ['post' => $post])
