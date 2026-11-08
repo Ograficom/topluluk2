@@ -7,6 +7,7 @@ use App\Models\SiteSetting;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 
 class AdvertisementController extends Controller
@@ -22,6 +23,63 @@ class AdvertisementController extends Controller
         $dailyPrice = (float) (SiteSetting::current()?->advertisement_daily_price ?? 200);
 
         return view('advertisements.create', compact('dailyPrice'));
+    }
+
+    public function edit(Request $request, Advertisement $advertisement): View
+    {
+        abort_unless($request->user()->is($advertisement->user), 403);
+
+        return view('advertisements.create', [
+            'dailyPrice' => (float) $advertisement->daily_budget,
+            'advertisement' => $advertisement,
+        ]);
+    }
+
+    public function update(Request $request, Advertisement $advertisement): RedirectResponse
+    {
+        abort_unless($request->user()->is($advertisement->user), 403);
+
+        $data = $request->validate([
+            'title' => ['required', 'string', 'max:160'],
+            'description' => ['required', 'string', 'max:2000'],
+            'image' => ['nullable', 'image', 'mimes:jpg,jpeg,png,gif,webp', 'max:5120'],
+            'remove_image' => ['sometimes', 'boolean'],
+            'video_url' => ['nullable', 'url', 'max:2048', 'starts_with:https://'],
+            'target_url' => ['nullable', 'url', 'max:2048', 'starts_with:https://'],
+            'button_text' => ['nullable', 'string', 'max:40'],
+            'starts_at' => ['required', 'date'],
+            'ends_at' => ['required', 'date', 'after:starts_at'],
+        ]);
+
+        $startsAt = Carbon::parse($data['starts_at'], 'Europe/Istanbul')->utc();
+        $endsAt = Carbon::parse($data['ends_at'], 'Europe/Istanbul')->utc();
+        $image = $advertisement->image_path;
+
+        if ($request->boolean('remove_image') && $image) {
+            Storage::disk('public')->delete($image);
+            $image = null;
+        }
+
+        if ($request->hasFile('image')) {
+            $newImage = $request->file('image')->store('advertisements', 'public');
+            if (! $newImage) throw new \RuntimeException('Reklam görseli kaydedilemedi.');
+            if ($image) Storage::disk('public')->delete($image);
+            $image = $newImage;
+        }
+
+        $advertisement->update([
+            'title' => $data['title'],
+            'description' => $data['description'],
+            'image_path' => $image,
+            'video_url' => $data['video_url'] ?? null,
+            'target_url' => $data['target_url'] ?? '',
+            'button_text' => $data['button_text'] ?: 'Daha fazla bilgi al',
+            'starts_at' => $startsAt,
+            'ends_at' => $endsAt,
+            'total_budget' => round(max(1, (int) ceil($startsAt->diffInMinutes($endsAt) / 1440)) * (float) $advertisement->daily_budget, 2),
+        ]);
+
+        return redirect()->route('advertisements.index')->with('status', 'Reklamın güncellendi.');
     }
 
     public function store(Request $request): RedirectResponse
