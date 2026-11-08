@@ -1866,3 +1866,32 @@ body.is-messenger-conversation .pm-dialog__composer .pm-composer__send svg {
     flex: 0 0 auto !important;
   }
 }
+
+
+/* Messenger feed wrapper is the sticky scroll container: keep the whole conversation panel at a constant height as the page scrolls.
+   The feed wrapper (not the inner card) is sticky, so the card cannot collapse at the
+   bottom of the sidebar's grid row. No grid columns or widths are changed. */
+@media (min-width: 641px) {
+  body.is-messenger-conversation .main > .feed {
+    position: sticky !important;
+    top: calc(var(--header-height, 56px) + 14px) !important;
+    align-self: start !important;
+    height: min(600px, calc(100dvh - var(--header-height, 56px) - 28px)) !important;
+    min-height: 420px !important;
+    max-height: calc(100dvh - var(--header-height, 56px) - 28px) !important;
+    overflow: visible !important;
+  }
+  body.is-messenger-conversation .main > .feed > .pm.card.card-body {
+    position: relative !important;
+    top: auto !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    max-height: 100% !important;
+    margin: 0 !important;
+    flex: 1 1 auto !important;
+  }
+  body.is-messenger-conversation .main > .feed > .pm.card.card-body .pm-dialog {
+    height: 100% !important;
+    min-height: 0 !important;
+  }
+}
