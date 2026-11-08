@@ -70,7 +70,30 @@
         @if ($preview)
             <span class="small color-gray">Reklam önizlemesi</span>
         @else
-            <a class="btn btn-primary btn-sm" href="{{ $detailUrl }}">Ayrıntıları görüntüle</a>
+            <a class="btn btn-primary btn-sm ad-detail-button" href="{{ $detailUrl }}">Ayrıntıları görüntüle <x-repost-icon name="arrow-up-right" size="14" /></a>
         @endif
     </footer>
 </article>
+
+@once
+    <style>
+        .post--sponsored .ad-detail-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            min-height: 40px;
+            padding: 0 17px;
+            border-radius: 10px;
+            font-weight: 650;
+            letter-spacing: -.01em;
+            box-shadow: 0 2px 5px rgba(23, 105, 255, .16);
+            transition: background-color .18s ease, transform .18s ease, box-shadow .18s ease;
+        }
+        .post--sponsored .ad-detail-button:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 5px 12px rgba(23, 105, 255, .22);
+        }
+        .post--sponsored .ad-detail-button svg { flex: 0 0 auto; }
+    </style>
+@endonce
