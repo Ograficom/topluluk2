@@ -37,15 +37,8 @@
 
             <input type="hidden" id="post-body" name="body" value="{{ old('body', $post->body ?? '') }}">
             <section class="post-create-simple__writing" aria-label="Yazı içeriği düzenleyicisi">
-                <div class="post-create-simple__writing-head">
-                    <div>
-                        <strong>Yazı içeriği</strong>
-                        <span>Metnini yaz, başlık ve medya blokları ekle.</span>
-                    </div>
-                    <span class="post-create-simple__editor-status" data-editor-status>Hazırlanıyor…</span>
-                </div>
                 <div id="post-editorjs" class="post-editorjs post-create-simple__editor" aria-label="Yazı içeriği" data-placeholder="Hikâyeni burada anlat…"></div>
-                <p class="post-create-simple__editor-hint">Yazmaya başla. Yeni blok eklemek için sol taraftaki + simgesini kullan.</p>
+                <p class="post-create-simple__editor-status" data-editor-status role="status" aria-live="polite">Editör yükleniyor…</p>
             </section>
 
             <div class="post-create-simple__media">
@@ -118,98 +111,139 @@
         </form>
     </div>
 <script>
-(async () => {
-  const holder = document.getElementById('post-editorjs');
-  const input = document.getElementById('post-body');
-  const form = holder?.closest('form');
-  const status = document.querySelector('[data-editor-status]');
-  if (!holder || !input || !form) return;
+(() => {
+  const start = () => {
+    const holder = document.getElementById('post-editorjs');
+    const input = document.getElementById('post-body');
+    const form = holder?.closest('form');
+    const status = document.querySelector('[data-editor-status]');
+    if (!holder || !input || !form || holder.dataset.editorStarted === '1') return;
+    holder.dataset.editorStarted = '1';
 
-  const setStatus = message => { if (status) status.textContent = message; };
-  const loadScript = src => new Promise((resolve, reject) => {
-    const script = document.createElement('script');
-    script.src = src;
-    script.async = false;
-    script.onload = resolve;
-    script.onerror = () => reject(new Error('Dosya yüklenemedi: ' + src));
-    document.head.appendChild(script);
-  });
-
-  try {
-    setStatus('Editör yükleniyor…');
-    const scripts = [
-      'https://cdn.jsdelivr.net/npm/@editorjs/editorjs@2.30.8',
-      'https://cdn.jsdelivr.net/npm/@editorjs/header@2.8.8',
-      'https://cdn.jsdelivr.net/npm/@editorjs/list@2.0.8',
-      'https://cdn.jsdelivr.net/npm/@editorjs/quote@2.7.6',
-      'https://cdn.jsdelivr.net/npm/@editorjs/embed@2.7.6',
-      'https://cdn.jsdelivr.net/npm/@editorjs/inline-code@1.5.0',
-      'https://cdn.jsdelivr.net/npm/@editorjs/marker@1.4.0'
-    ];
-    for (const src of scripts) await loadScript(src);
-    if (!window.EditorJS) throw new Error('Editor.js ana kütüphanesi yüklenemedi.');
-
-    const tools = {
-      header: { class: window.Header, inlineToolbar: true, config: { levels: [2, 3, 4], defaultLevel: 2 } },
-      list: { class: window.EditorjsList, inlineToolbar: true, config: { defaultStyle: 'unordered' } },
-      quote: { class: window.Quote, inlineToolbar: true, config: { quotePlaceholder: 'Alıntını yaz…', captionPlaceholder: 'Kaynak' } },
-      inlineCode: window.InlineCode,
-      marker: window.Marker,
-      embed: { class: window.Embed, config: { services: [
-        { name: 'youtube', regex: /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:watch\?v=|shorts\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/, embedUrl: 'https://www.youtube.com/embed/<%= remote_id %>', html: '<iframe width="100%" height="360" src="<%= embed %>" frameborder="0" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>', height: 360, width: 640 },
-        { name: 'facebook', regex: /https?:\/\/(?:www\.)?facebook\.com\/.+/, embedUrl: 'https://www.facebook.com/plugins/video.php?href=<%= encodeURIComponent(url) %>&show_text=0', html: '<iframe width="100%" height="420" src="<%= embed %>" frameborder="0" allowfullscreen></iframe>', height: 420, width: 640 },
-        { name: 'x', regex: /https?:\/\/(?:www\.)?(?:x\.com|twitter\.com)\/.+\/status\/(\d+)/, embedUrl: 'https://platform.twitter.com/embed/Tweet.html?id=<%= remote_id %>', html: '<iframe width="100%" height="550" src="<%= embed %>" frameborder="0" allowfullscreen></iframe>', height: 550, width: 550 },
-        { name: 'instagram', regex: /https?:\/\/(?:www\.)?instagram\.com\/(?:p|reel|tv)\/([a-zA-Z0-9_-]+)/, embedUrl: 'https://www.instagram.com/p/<%= remote_id %>/embed', html: '<iframe width="100%" height="540" src="<%= embed %>" frameborder="0" scrolling="no"></iframe>', height: 540, width: 400 },
-        { name: 'tiktok', regex: /https?:\/\/(?:www\.|vm\.)?tiktok\.com\/(?:@[^/]+\/video\/|t/)?([a-zA-Z0-9]+)/, embedUrl: 'https://www.tiktok.com/embed/v2/<%= remote_id %>', html: '<iframe width="100%" height="740" src="<%= embed %>" frameborder="0" allowfullscreen></iframe>', height: 740, width: 325 }
-      ] } }
+    const setStatus = message => { if (status) status.textContent = message; };
+    const loadScript = (url, timeout = 12000) => new Promise((resolve, reject) => {
+      const script = document.createElement('script');
+      let settled = false;
+      const finish = (error) => {
+        if (settled) return;
+        settled = true;
+        clearTimeout(timer);
+        error ? reject(error) : resolve();
+      };
+      const timer = setTimeout(() => {
+        script.remove();
+        finish(new Error('Zaman aşımı: ' + url));
+      }, timeout);
+      script.src = url;
+      script.async = true;
+      script.crossOrigin = 'anonymous';
+      script.onload = () => finish();
+      script.onerror = () => finish(new Error('Yüklenemedi: ' + url));
+      document.head.appendChild(script);
+    });
+    const loadWithFallback = async path => {
+      let lastError;
+      for (const base of ['https://cdn.jsdelivr.net/npm/', 'https://unpkg.com/']) {
+        try { await loadScript(base + path); return true; }
+        catch (error) { lastError = error; }
+      }
+      throw lastError || new Error('Editör dosyası yüklenemedi.');
+    };
+    const loadOptionalTool = async path => {
+      try { await loadWithFallback(path); return true; }
+      catch (error) { console.warn('Editor.js aracı yüklenemedi:', path, error); return false; }
     };
 
-    let initial = { blocks: [] };
-    if (input.value.trim()) {
+    (async () => {
       try {
-        const parsed = JSON.parse(input.value);
-        initial = parsed && Array.isArray(parsed.blocks) ? parsed : { blocks: [{ type: 'paragraph', data: { text: input.value } }] };
-      } catch (_) {
-        initial = { blocks: input.value.split(/\n{2,}/).filter(Boolean).map(text => ({ type: 'paragraph', data: { text } })) };
-      }
-    }
+        setStatus('Editör yükleniyor…');
+        if (!window.EditorJS) {
+          await loadWithFallback('@editorjs/editorjs@2.30.8');
+        }
+        if (typeof window.EditorJS !== 'function') {
+          throw new Error('Editor.js ana dosyası yüklendi ancak EditorJS nesnesi bulunamadı.');
+        }
 
-    let editor;
-    editor = new window.EditorJS({
-      holder,
-      placeholder: 'Hikâyeni burada anlat…',
-      minHeight: 260,
-      autofocus: false,
-      logLevel: 'ERROR',
-      data: initial,
-      tools,
-      inlineToolbar: ['marker', 'inlineCode'],
-      onReady: () => {
-        holder.classList.add('is-ready');
-        setStatus('Editör hazır');
-      },
-      onChange: async () => {
-        try { input.value = JSON.stringify(await editor.save()); } catch (error) { console.error(error); }
-      }
-    });
+        const optionalTools = [
+          ['@editorjs/header@2.8.8', 'Header'],
+          ['@editorjs/list@2.0.8', 'EditorjsList'],
+          ['@editorjs/quote@2.7.6', 'Quote'],
+          ['@editorjs/embed@2.7.6', 'Embed'],
+          ['@editorjs/inline-code@1.5.0', 'InlineCode'],
+          ['@editorjs/marker@1.4.0', 'Marker']
+        ];
+        await Promise.all(optionalTools.map(([path]) => loadOptionalTool(path)));
 
-    await editor.isReady;
-    setStatus('Editör hazır');
-    form.addEventListener('submit', async event => {
-      event.preventDefault();
-      try {
+        const tools = {};
+        if (window.Header) tools.header = { class: window.Header, inlineToolbar: true, config: { levels: [2, 3, 4], defaultLevel: 2 } };
+        if (window.EditorjsList) tools.list = { class: window.EditorjsList, inlineToolbar: true, config: { defaultStyle: 'unordered' } };
+        if (window.Quote) tools.quote = { class: window.Quote, inlineToolbar: true, config: { quotePlaceholder: 'Alıntını yaz…', captionPlaceholder: 'Kaynak' } };
+        if (window.Embed) tools.embed = { class: window.Embed, config: { services: {
+          youtube: true, facebook: true, twitter: true, instagram: true, tiktok: true
+        } } };
+        if (window.InlineCode) tools.inlineCode = window.InlineCode;
+        if (window.Marker) tools.marker = window.Marker;
+
+        let initial = { blocks: [] };
+        if (input.value.trim()) {
+          try {
+            const parsed = JSON.parse(input.value);
+            initial = parsed && Array.isArray(parsed.blocks)
+              ? parsed
+              : { blocks: [{ type: 'paragraph', data: { text: input.value } }] };
+          } catch (_) {
+            initial = { blocks: input.value.split(/\n{2,}/).filter(Boolean).map(text => ({ type: 'paragraph', data: { text } })) };
+          }
+        }
+
+        const editor = new window.EditorJS({
+          holder,
+          placeholder: 'Hikâyeni burada anlat…',
+          minHeight: 260,
+          autofocus: false,
+          logLevel: 'ERROR',
+          data: initial,
+          tools,
+          inlineToolbar: ['marker', 'inlineCode'],
+          onReady: () => {
+            holder.classList.add('is-ready');
+            setStatus('Yazmaya başlayabilirsin');
+          },
+          onChange: async () => {
+            try { input.value = JSON.stringify(await editor.save()); }
+            catch (error) { console.error('Editor.js içerik senkronizasyonu:', error); }
+          }
+        });
+
         await editor.isReady;
-        input.value = JSON.stringify(await editor.save());
-        HTMLFormElement.prototype.submit.call(form);
+        holder.classList.add('is-ready');
+        setStatus('Yazmaya başlayabilirsin');
+
+        form.addEventListener('submit', async event => {
+          event.preventDefault();
+          const submitButton = form.querySelector('button[type="submit"]');
+          if (submitButton) submitButton.disabled = true;
+          try {
+            input.value = JSON.stringify(await editor.save());
+            HTMLFormElement.prototype.submit.call(form);
+          } catch (error) {
+            console.error('Editor.js kaydı başarısız:', error);
+            setStatus('İçerik kaydedilemedi. Tekrar dene.');
+            if (submitButton) submitButton.disabled = false;
+          }
+        });
       } catch (error) {
-        console.error('Editor.js kaydı başarısız:', error);
-        alert('Yazı içeriği kaydedilemedi. Lütfen tekrar deneyin.');
+        console.error('Editor.js başlatma hatası:', error);
+        setStatus('Editör yüklenemedi — bağlantıyı kontrol edip sayfayı yenile.');
+        holder.innerHTML = '<div class="post-create-simple__editor-error">Editör yüklenemedi. İnternet bağlantısını kontrol edip sayfayı yenile.</div>';
       }
-    });
-  } catch (error) {
-    console.error('Editor.js yükleme/başlatma hatası:', error);
-    setStatus('Editör yüklenemedi');
-    holder.innerHTML = '<div class="post-create-simple__editor-error">Editör yüklenemedi. Sayfayı yenileyin veya bağlantınızı kontrol edin.</div>';
+    })();
+  };
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', start, { once: true });
+  } else {
+    start();
   }
 })();
 </script>
