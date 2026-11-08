@@ -65,7 +65,7 @@ class Advertisement extends Model
             'body' => $this->description,
             'cover_image' => $this->image_path,
             'video_url' => $this->video_url,
-            'is_published' => true,
+            'is_published' => $this->status === 'approved',
             'published_at' => $this->created_at ?? now(),
             'is_adult' => false,
         ];
