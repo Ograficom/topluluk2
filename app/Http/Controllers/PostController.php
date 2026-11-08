@@ -31,7 +31,7 @@ class PostController extends Controller
         $period = $validated['period'] ?? null;
         $viewer = $request->user();
 
-        $posts = Post::query()->published()->with(['user', 'channel', 'tagRecords'])
+        $posts = Post::query()->published()->whereNull('advertisement_id')->with(['user', 'channel', 'tagRecords'])
             ->withCount('comments')
             ->withCount([
                 'reactions as likes_count' => fn (Builder $query) => $query->where('type', PostReaction::LIKE),
@@ -192,6 +192,13 @@ class PostController extends Controller
     public function show(Request $request, Post $post): View
     {
         abort_unless($post->is_published && (! $post->published_at || $post->published_at->isPast()), 404);
+        if ($post->advertisement_id) {
+            $post->load('advertisement');
+            $ad = $post->advertisement;
+            $isDeliverable = $ad && $ad->status === 'approved' && $ad->starts_at?->isPast() && $ad->ends_at?->isFuture()
+                && ($ad->billing_type === 'free' || ($ad->payment_status === 'paid' && $ad->spent_amount < $ad->total_budget));
+            abort_unless($isDeliverable || $request->user()?->is($post->user), 404);
+        }
         if ($post->is_adult && ! $request->user()?->show_adult_content) return view('posts.adult-warning');
 
         $post->increment('views');
