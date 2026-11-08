@@ -2,164 +2,138 @@
 
 @section('title', isset($post) ? 'Yazıyı düzenle' : 'Yazı oluştur')
 
-@push('head')
-    <link rel="stylesheet" href="{{ asset('assets/libs/tagify/tagify.css') }}">
-    <script src="{{ asset('assets/libs/tagify/tagify.js') }}"></script>
-@endpush
-
 @section('content')
-    <div class="d-flex justify-content-end mb-3"><a class="btn btn-secondary-ghost btn-sm" href="{{ route('advertisements.create') }}">Reklam oluştur</a></div>
-    <header class="feed-heading post-composer-heading">
-        <div>
-            <span class="post-composer-eyebrow">{{ isset($post) ? 'İÇERİK YÖNETİMİ' : 'O G R A F I · TOPLULUK' }}</span>
-            <h1 class="h3">{{ isset($post) ? 'Yazıyı düzenle' : 'Yazı oluştur' }}</h1>
-            <p class="color-gray">{{ isset($post) ? 'Yazındaki bilgileri güncelle ve yeniden kaydet.' : 'Fikrini, deneyimini veya hikâyeni toplulukla paylaş.' }}</p>
-        </div>
-    </header>
-
     @if ($errors->any())
         <div class="card card-body color-red" role="alert">
-            @foreach ($errors->all() as $error)<p>{{ $error }}</p>@endforeach
+            @foreach ($errors->all() as $error)
+                <p>{{ $error }}</p>
+            @endforeach
         </div>
     @endif
 
-    <div class="addpost main__grid-feed">
+    <div class="addpost post-create-simple">
         <form class="addpost__form card card-body" action="{{ isset($post) ? route('posts.update', $post) : route('posts.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
-            @if (isset($post)) @method('PATCH') @endif
-            <header class="addpost__header">
-                <img class="addpost__header-avatar" src="{{ $user->avatarUrl() }}" alt="" width="40" height="40">
-                <div class="addpost__author">
-                    <span class="addpost__author-name">{{ $user->displayName() }}</span>
-                    <span class="small color-gray">Yazı yayınlandıktan sonra profilinde görünür.</span>
-                </div>
-            </header>
+            @if (isset($post))
+                @method('PATCH')
+            @endif
 
-            <div class="addpost__content">
-                <div class="post-composer-section-heading">
-                    <span class="post-composer-step">01</span>
-                    <div><strong>İçeriğini oluştur</strong><span>Başlık ve metinle anlatmak istediklerini paylaş.</span></div>
-                </div>
-                <div class="addpost__intro small color-gray">Yeni bir yayın oluştur</div>
-                <ul class="addpost__fields">
-                    <li>
-                        <label class="addpost__label" for="post-title">Başlık</label>
-                        <input class="addpost__title" id="post-title" name="title" type="text" value="{{ old('title', $post->title ?? '') }}" maxlength="255" placeholder="Yazı başlığı" required data-post-title-input>
-                        <div class="post-composer-field-meta"><span>Okuyucunun ilk göreceği başlık.</span><span><b data-title-count>0</b> / 255</span></div>
-                    </li>
-                    <li>
-                        <label class="addpost__label" for="post-excerpt">Kısa açıklama</label>
-                        <textarea id="post-excerpt" name="excerpt" rows="2" maxlength="500" placeholder="Yazını kısaca tanıt (en fazla 500 karakter)" required data-post-excerpt-input>{{ old('excerpt', $post->excerpt ?? '') }}</textarea>
-                        <div class="post-composer-field-meta"><span>Akışta başlığın altında görünür.</span><span><b data-excerpt-count>0</b> / 500</span></div>
-                    </li>
-                    <li class="addpost__editor">
-                        <label class="addpost__label" for="post-body">Yazı içeriği</label>
-                        <input type="hidden" id="post-body" name="body" value="{{ old('body', $post->body ?? '') }}">
-                        <div class="editorjs-toolbar-note">Metnini biçimlendir; başlık, liste, alıntı, kod ve tablo blokları ekle.</div>
-                        <div id="post-editorjs" class="post-editorjs" aria-label="Yazı içerik editörü"></div>
-                        <p class="post-composer-hint">İçeriğin otomatik olarak Editor.js blokları şeklinde kaydedilir.</p>
-                    </li>
-                    <li>
-                        <label class="addpost__label" for="post-video-url">Video bağlantısı</label>
-                        <input id="post-video-url" name="video_url" type="url" value="{{ old('video_url', $post->video_url ?? '') }}" maxlength="2048" placeholder="YouTube, Facebook, X, Reddit, Instagram veya TikTok bağlantısı">
-                        <p class="post-composer-hint">Desteklenen platform bağlantıları yazı içinde oynatılabilir gömülü video olarak gösterilir.</p>
-                    </li>
-                    <li class="addpost__actions">
-                        <label class="addpost__label" for="post-video-file">Bilgisayarından video yükle</label>
-                        <p class="post-composer-hint">MP4, WebM, MOV veya MKV · En fazla 100 MB.</p>
-                        <input class="form-attachments" id="post-video-file" name="video_file" type="file" accept="video/mp4,video/webm,video/quicktime,video/x-matroska">
-                        @if (isset($post) && $post->video_path)
-                            <p class="small color-gray">Bu yazıda yüklü bir video var. Yeni video seçersen mevcut video değiştirilir.</p>
-                        @endif
-                    </li>
-                    <li class="post-composer-divider"><span class="post-composer-step">02</span><div><strong>Görsel ve video</strong><span>Yazını fotoğraflar ve video bağlantısıyla zenginleştir.</span></div></li>
-                    <li class="addpost__actions">
-                        <label class="addpost__label" for="post-media">Galeri görselleri (en fazla 10)</label>
-                        <p class="post-composer-hint">JPG, PNG, GIF veya WebP · Her dosya en fazla 5 MB.</p>
-                        <input class="form-attachments" id="post-media" name="media[]" type="file" accept="image/jpeg,image/png,image/gif,image/webp" multiple data-post-gallery-input>
-                        <div class="post-composer-file-list" data-post-gallery-list aria-live="polite"></div>
-                        @if (isset($post) && filled($post->media))
-                            <div class="small color-gray">Mevcut galeri görselleri</div>
-                            @foreach ($post->media as $mediaPath)
-                                <label class="form-check-label">
-                                    <img src="{{ asset('storage/'.$mediaPath) }}" alt="" class="post__media-image" loading="lazy">
-                                    <input class="form-check-input" type="checkbox" name="remove_media[]" value="{{ $mediaPath }}">
-                                    <span>Bu görseli kaldır</span>
-                                </label>
-                            @endforeach
-                        @endif
-                    </li>
-                    <li class="addpost__actions">
-                        <label class="addpost__label" for="post-cover">Kapak görseli</label>
-                        <p class="post-composer-hint">Yazının kapak görseli akışta ve detay sayfasında kullanılır.</p>
-                        <input class="form-attachments" id="post-cover" name="cover_image" type="file" accept="image/jpeg,image/png,image/gif,image/webp" data-post-cover-input>
-                        <div class="post-composer-cover-preview" data-post-cover-preview aria-live="polite"></div>
-                        @if (isset($post) && $post->coverImageUrl())
-                            <div class="small color-gray">Mevcut kapak görseli</div>
-                            <img src="{{ $post->coverImageUrl() }}" alt="" style="max-width:180px;height:auto;">
-                            <label class="form-check-label"><input class="form-check-input" type="checkbox" name="remove_cover" value="1"> <span>Kapak görselini kaldır</span></label>
-                        @endif
-                    </li>
-                    <li class="post-composer-divider"><span class="post-composer-step">03</span><div><strong>Keşfedilmeyi kolaylaştır</strong><span>Kategori ve etiketlerle içeriğini doğru okuyucularla buluştur.</span></div></li>
-                    <li>
-                        <label class="addpost__label" for="tags">Etiketler</label>
-                        <p class="post-composer-hint">Birden fazla etiketi virgülle ayır. Örnek: teknoloji, gezi, deneyim.</p>
-                        <input class="addpost__ultratag" id="tags" name="tags" type="text" value="{{ old('tags', isset($post) ? implode(', ', $post->tags ?? []) : '') }}" maxlength="500" placeholder="Etiketleri virgülle ayır (ör. gezi, teknoloji)">
-                    </li>
-                    <li>
-                        <label class="addpost__label" for="post-channel">Kategori</label>
-                        <p class="post-composer-hint">Yazının konusuna en uygun kategoriyi seç.</p>
-                        <select id="post-channel" name="channel_id">
-                            <option value="">Kategori seçmeden yayınla</option>
-                            @foreach ($channels as $channel)
-                                <option value="{{ $channel->id }}" @selected((string) old('channel_id', $post->channel_id ?? '') === (string) $channel->id)>{{ $channel->name }}</option>
-                            @endforeach
-                        </select>
-                    </li>
-                </ul>
-
-                <div class="post-composer-divider"><span class="post-composer-step">04</span><div><strong>Yayın ayarları</strong><span>İçeriğinin hedef kitlesini belirle.</span></div></div>
-                <div class="addpost__settings">
-                    <div class="checkbox">
-                        <label class="form-check-label" for="post-adult">
-                            <input class="form-check-input" id="post-adult" type="checkbox" name="is_adult" value="1" @checked(old('is_adult', $post->is_adult ?? false))>
-                            <span>18+ içerik olarak işaretle</span>
-                        </label>
-                    </div>
-                </div>
-                <div class="post-composer-submit-note">Yayınla butonuna bastığında içeriğin OgraFi topluluğunda paylaşılır.</div>
-                <footer class="addpost__footer">
-                    <button class="btn btn-primary" type="submit">{{ isset($post) ? 'Değişiklikleri kaydet' : 'Yayınla' }}</button>
-                    <a class="btn btn-secondary-ghost" href="{{ route('posts.index') }}">Vazgeç</a>
-                </footer>
+            <div class="post-create-simple__author">
+                <img src="{{ $user->avatarUrl() }}" alt="" width="38" height="38">
+                <strong>{{ $user->displayName() }}</strong>
             </div>
-        </form>
 
-        <aside class="addpost__sidebar">
-            <section class="widget card card-body post-composer-checklist">
-                <header><h2 class="widget__title h6">Yayınlamadan önce</h2></header>
-                <div class="widget__content">
-                    <ul>
-                        <li>Açık ve açıklayıcı bir başlık seç.</li>
-                        <li>İçeriğine uygun bir kategori belirle.</li>
-                        <li>Yetişkinlere yönelik içeriği 18+ olarak işaretle.</li>
-                    </ul>
-                </div>
-                <div class="post-composer-preview" aria-live="polite">
-                    <span class="post-composer-eyebrow">CANLI ÖNİZLEME</span>
-                    <h3 data-post-preview-title>{{ old('title', $post->title ?? 'Yazı başlığın burada görünecek') }}</h3>
-                    <p data-post-preview-excerpt>{{ old('excerpt', $post->excerpt ?? 'Kısa açıklaman burada görünecek.') }}</p>
-                </div>
-                @if (auth()->user()->is_admin)
-                    <footer class="widget__footer">
-                        <a class="link-accent" href="{{ route('channels.create') }}">Yeni kategori oluştur</a>
-                    </footer>
+            <input class="post-create-simple__title" id="post-title" name="title" type="text"
+                value="{{ old('title', $post->title ?? '') }}" maxlength="255"
+                placeholder="Başlık" aria-label="Başlık" required>
+
+            <textarea class="post-create-simple__excerpt" id="post-excerpt" name="excerpt"
+                rows="2" maxlength="500" placeholder="Kısaca anlat..." aria-label="Kısa açıklama"
+                required>{{ old('excerpt', $post->excerpt ?? '') }}</textarea>
+
+            <input type="hidden" id="post-body" name="body" value="{{ old('body', $post->body ?? '') }}">
+            <div id="post-editorjs" class="post-editorjs post-create-simple__editor" aria-label="Yazı içeriği"></div>
+
+            <div class="post-create-simple__media">
+                <label for="post-cover" class="post-create-simple__file">
+                    <span class="icon icon-image" aria-hidden="true"></span>
+                    Kapak görseli
+                </label>
+                <input id="post-cover" name="cover_image" type="file" accept="image/jpeg,image/png,image/gif,image/webp" data-post-cover-input>
+                <div class="post-composer-cover-preview" data-post-cover-preview aria-live="polite"></div>
+                @if (isset($post) && $post->coverImageUrl())
+                    <img src="{{ $post->coverImageUrl() }}" alt="" style="max-width:120px;height:auto;border-radius:8px;">
+                    <label class="small"><input type="checkbox" name="remove_cover" value="1"> Mevcut kapağı kaldır</label>
                 @endif
-            </section>
-            @include('layouts._footer')
-        </aside>
+
+                <label for="post-media" class="post-create-simple__file">
+                    <span class="icon icon-images" aria-hidden="true"></span>
+                    Fotoğraf ekle
+                </label>
+                <input id="post-media" name="media[]" type="file" accept="image/jpeg,image/png,image/gif,image/webp" multiple data-post-gallery-input>
+                <div class="post-composer-file-list" data-post-gallery-list aria-live="polite"></div>
+                @if (isset($post) && filled($post->media))
+                    <div class="post-create-simple__existing-media">
+                        @foreach ($post->media as $mediaPath)
+                            <label><img src="{{ asset('storage/'.$mediaPath) }}" alt=""><input type="checkbox" name="remove_media[]" value="{{ $mediaPath }}"> Kaldır</label>
+                        @endforeach
+                    </div>
+                @endif
+
+                <label for="post-video-url" class="post-create-simple__file">
+                    <span class="icon icon-video" aria-hidden="true"></span>
+                    Video bağlantısı
+                </label>
+                <input id="post-video-url" name="video_url" type="url" value="{{ old('video_url', $post->video_url ?? '') }}"
+                    maxlength="2048" placeholder="YouTube, Instagram, TikTok vb. bağlantı">
+
+                <label for="post-video-file" class="post-create-simple__file">
+                    <span class="icon icon-upload" aria-hidden="true"></span>
+                    Video dosyası yükle
+                </label>
+                <input id="post-video-file" name="video_file" type="file" accept="video/mp4,video/webm,video/quicktime,video/x-matroska">
+                @if (isset($post) && $post->video_path)
+                    <p class="small color-gray">Mevcut video kayıtlı. Yeni video seçersen değiştirilir.</p>
+                @endif
+            </div>
+
+            <details class="post-create-simple__options">
+                <summary>Diğer ayarlar</summary>
+                <label for="post-channel">Kategori</label>
+                <select id="post-channel" name="channel_id">
+                    <option value="">Kategori seç</option>
+                    @foreach ($channels as $channel)
+                        <option value="{{ $channel->id }}" @selected((string) old('channel_id', $post->channel_id ?? '') === (string) $channel->id)>{{ $channel->name }}</option>
+                    @endforeach
+                </select>
+
+                <label for="tags">Etiketler</label>
+                <input id="tags" name="tags" type="text" value="{{ old('tags', isset($post) ? implode(', ', $post->tags ?? []) : '') }}"
+                    maxlength="500" placeholder="Örn. teknoloji, gezi">
+
+                <label class="post-create-simple__adult">
+                    <input id="post-adult" type="checkbox" name="is_adult" value="1" @checked(old('is_adult', $post->is_adult ?? false))>
+                    18+ içerik
+                </label>
+            </details>
+
+            <footer class="post-create-simple__footer">
+                <a href="{{ route('posts.index') }}">Vazgeç</a>
+                <button class="btn btn-primary" type="submit">{{ isset($post) ? 'Kaydet' : 'Yayınla' }}</button>
+            </footer>
+        </form>
     </div>
 @endsection
+
+@push('head')
+<style>
+.post-create-simple { display:block; }
+.post-create-simple__author { display:flex; align-items:center; gap:10px; margin-bottom:18px; }
+.post-create-simple__author img { width:38px; height:38px; border-radius:50%; object-fit:cover; }
+.post-create-simple__title { width:100%; border:0; outline:0; padding:8px 0; font-size:1.45rem; font-weight:700; color:var(--title-color); background:transparent; }
+.post-create-simple__excerpt { width:100%; min-height:58px; margin:8px 0 14px; padding:10px 0; border:0; border-bottom:1px solid var(--border-color); resize:vertical; background:transparent; }
+.post-create-simple__editor { min-height:220px; border:0; border-bottom:1px solid var(--border-color); border-radius:0; padding:14px 0; }
+.post-create-simple__media { display:flex; flex-wrap:wrap; align-items:center; gap:10px; padding:16px 0; border-bottom:1px solid var(--border-color); }
+.post-create-simple__media > input[type=file] { max-width:100%; font-size:12px; }
+.post-create-simple__file { display:inline-flex; align-items:center; gap:6px; color:var(--text-color); font-size:13px; font-weight:600; cursor:pointer; }
+.post-create-simple__file .icon { color:var(--color-primary,#1769ff); }
+.post-create-simple__existing-media { display:flex; flex-wrap:wrap; gap:10px; width:100%; }
+.post-create-simple__existing-media img { display:block; width:76px; height:60px; object-fit:cover; border-radius:7px; }
+.post-create-simple__options { padding:14px 0; border-bottom:1px solid var(--border-color); }
+.post-create-simple__options summary { cursor:pointer; font-weight:600; }
+.post-create-simple__options label:not(.post-create-simple__adult) { display:block; margin-top:14px; font-size:13px; }
+.post-create-simple__options select,.post-create-simple__options > input { width:100%; margin-top:6px; }
+.post-create-simple__adult { display:flex; align-items:center; gap:8px; margin-top:14px; }
+.post-create-simple__footer { display:flex; align-items:center; justify-content:flex-end; gap:16px; padding-top:16px; }
+.post-create-simple__footer > a { color:var(--color-gray); }
+@media(max-width:600px) {
+ .post-create-simple .addpost__form { padding:16px; }
+ .post-create-simple__media { align-items:flex-start; flex-direction:column; }
+ .post-create-simple__footer { position:sticky; bottom:0; background:var(--white-900,#fff); padding:12px 0 calc(12px + env(safe-area-inset-bottom)); }
+ .post-create-simple__footer .btn { min-width:112px; }
+}
+</style>
+@endpush
 
 @push('scripts')
     <script src="https://cdn.jsdelivr.net/npm/@editorjs/editorjs@2.30.8"></script>
