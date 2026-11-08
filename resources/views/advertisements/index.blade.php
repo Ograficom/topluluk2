@@ -10,15 +10,16 @@
     </header>
 
     @forelse ($ads as $ad)
-        <article class="card card-body">
+        @include('advertisements._card', ['ad' => $ad, 'preview' => true])
+        <section class="card card-body">
             <div class="d-flex justify-content-between align-items-start gap-2">
                 <div>
                     <h2 class="h5">{{ $ad->title }}</h2>
-                    <p class="color-gray">{{ $ad->description }}</p>
+                    <p class="color-gray">{{ match($ad->status) {'pending' => 'Onay bekliyor','approved' => ($ad->ends_at->isPast() ? 'Süresi doldu' : 'Onaylandı'),'rejected' => 'Reddedildi','paused' => 'Durduruldu',default => $ad->status} }}</p>
                 </div>
-                <span class="badge">{{ match($ad->status) {'pending' => 'Onay bekliyor','approved' => ($ad->ends_at->isPast() ? 'Süresi doldu' : 'Onaylandı'),'rejected' => 'Reddedildi','paused' => 'Durduruldu',default => $ad->status} }}</span>
+                <span class="badge">{{ $ad->status }}</span>
             </div>
-            <p class="small color-gray">Yayın: {{ $ad->starts_at->format('d.m.Y H:i') }} – {{ $ad->ends_at->format('d.m.Y H:i') }}</p>
+            <p class="small color-gray">Yayın: {{ $ad->starts_at->timezone('Europe/Istanbul')->format('d.m.Y H:i') }} – {{ $ad->ends_at->timezone('Europe/Istanbul')->format('d.m.Y H:i') }}</p>
             <div class="d-flex flex-wrap gap-3 small">
                 <span>{{ number_format($ad->impressions) }} gösterim</span>
                 <span>{{ number_format($ad->clicks) }} tıklama</span>
@@ -27,7 +28,7 @@
                 <span>Harcanan: {{ number_format((float)$ad->spent_amount, 2, ',', '.') }} ₺</span>
             </div>
             @if ($ad->rejection_reason)<p class="color-red small">Ret nedeni: {{ $ad->rejection_reason }}</p>@endif
-        </article>
+        </section>
     @empty
         <section class="card card-body empty-state"><h2 class="h5">Henüz reklamın yok</h2><p class="color-gray">İlk reklam başvurunu oluşturarak başlayabilirsin.</p></section>
     @endforelse
