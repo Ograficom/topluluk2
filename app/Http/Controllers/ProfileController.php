@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Advertisement;
 use App\Models\Post;
 use App\Models\PostReaction;
 use App\Models\User;
@@ -53,6 +54,25 @@ class ProfileController extends Controller
             }
         });
 
+        // Show active site advertisements inside the profile's post feed.
+        $profileAds = $posts->currentPage() === 1
+            ? Advertisement::query()->deliverable()->with('user')->inRandomOrder()->limit(min(2, max(1, $posts->count())))->get()
+            : collect();
+
+        foreach ($profileAds as $profileAd) {
+            $profileAd->increment('impressions');
+        }
+
+        $profileAdPositions = [];
+        $profileAdCount = $profileAds->count();
+        $profilePostCount = $posts->count();
+
+        if ($profileAdCount > 0 && $profilePostCount > 0) {
+            foreach ($profileAds as $adIndex => $profileAd) {
+                $profileAdPositions[(int) floor((($adIndex + 1) * ($profilePostCount + 1)) / ($profileAdCount + 1))] = $adIndex;
+            }
+        }
+
         $comments = $user->comments()
             ->with(['post', 'post.channel'])
             ->when(! $viewer?->show_adult_content, fn (Builder $query) => $query->whereHas('post', fn (Builder $postQuery) => $postQuery->where('is_adult', false)))
@@ -87,7 +107,7 @@ class ProfileController extends Controller
         $topPosition = $topPosition === false ? null : $topPosition + 1;
 
         return view('profiles.show', compact(
-            'user', 'posts', 'comments', 'isBlocked', 'isFollowing',
+            'user', 'posts', 'profileAds', 'profileAdPositions', 'comments', 'isBlocked', 'isFollowing',
             'followersCount', 'followingCount', 'profileFollowers', 'allProfileFollowers', 'topPosition',
         ));
     }
