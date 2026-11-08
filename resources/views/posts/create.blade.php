@@ -304,4 +304,93 @@
   }
 })();
 </script>
+<script>
+(() => {
+    const initComposerDetails = () => {
+        const title = document.getElementById('post-title');
+        const excerpt = document.getElementById('post-excerpt');
+        const meta = document.getElementById('post-meta-description');
+        const previewTitle = document.querySelector('[data-seo-preview-title]');
+        const previewDescription = document.querySelector('[data-seo-preview-description]');
+
+        const updateCounter = input => {
+            if (!input) return;
+            const counter = document.querySelector('[data-count-for="' + input.id + '"]');
+            if (counter) {
+                const recommended = input.id === 'post-title' ? 60 : 160;
+                counter.textContent = input.value.length + ' / ' + recommended + ' önerilen';
+                counter.classList.toggle('is-over', input.value.length > recommended);
+            }
+        };
+        const updateSeoPreview = () => {
+            if (previewTitle) previewTitle.textContent = title?.value.trim() || 'Yazı başlığın burada görünecek';
+            if (previewDescription) {
+                previewDescription.textContent = meta?.value.trim() || excerpt?.value.trim() || 'Meta açıklaman veya kısa açıklaman burada görünecek.';
+            }
+        };
+        [title, excerpt, meta].forEach(input => {
+            if (!input) return;
+            updateCounter(input);
+            input.addEventListener('input', () => {
+                updateCounter(input);
+                updateSeoPreview();
+            });
+        });
+        updateSeoPreview();
+
+        const coverInput = document.querySelector('[data-post-cover-input]');
+        const coverPreview = document.querySelector('[data-post-cover-preview]');
+        if (coverInput && coverPreview) {
+            coverInput.addEventListener('change', () => {
+                coverPreview.replaceChildren();
+                const file = coverInput.files?.[0];
+                if (!file) return;
+                const image = document.createElement('img');
+                image.src = URL.createObjectURL(file);
+                image.alt = 'Seçilen kapak görseli';
+                image.onload = () => URL.revokeObjectURL(image.src);
+                const name = document.createElement('span');
+                name.textContent = file.name;
+                coverPreview.append(image, name);
+            });
+        }
+
+        const galleryInput = document.querySelector('[data-post-gallery-input]');
+        const galleryList = document.querySelector('[data-post-gallery-list]');
+        if (galleryInput && galleryList) {
+            galleryInput.addEventListener('change', () => {
+                galleryList.replaceChildren();
+                Array.from(galleryInput.files || []).forEach(file => {
+                    const item = document.createElement('div');
+                    item.className = 'post-composer-gallery-item';
+                    const image = document.createElement('img');
+                    image.src = URL.createObjectURL(file);
+                    image.alt = '';
+                    image.onload = () => URL.revokeObjectURL(image.src);
+                    const name = document.createElement('span');
+                    name.textContent = file.name;
+                    item.append(image, name);
+                    galleryList.append(item);
+                });
+            });
+        }
+
+        const form = document.querySelector('.post-create-simple form');
+        form?.addEventListener('submit', () => {
+            const button = form.querySelector('button[type="submit"]');
+            if (button) {
+                button.disabled = true;
+                button.dataset.originalText = button.textContent;
+                button.textContent = 'Hazırlanıyor…';
+            }
+        });
+    };
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initComposerDetails, { once: true });
+    } else {
+        initComposerDetails();
+    }
+})();
+</script>
 @endsection
