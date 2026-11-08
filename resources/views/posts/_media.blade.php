@@ -9,6 +9,15 @@
     $imageCensoredKey = 'post-'.$post->id.'-images';
 @endphp
 
+@if (filled($post->video_path))
+    <div class="post__media post__media-video post-uploaded-video">
+        <video controls playsinline preload="metadata" @if ($post->coverImageUrl()) poster="{{ $post->coverImageUrl() }}" @endif>
+            <source src="{{ asset('storage/'.$post->video_path) }}" type="{{ str_ends_with(strtolower($post->video_path), '.webm') ? 'video/webm' : (str_ends_with(strtolower($post->video_path), '.mov') ? 'video/quicktime' : (str_ends_with(strtolower($post->video_path), '.mkv') ? 'video/x-matroska' : 'video/mp4')) }}">
+            Tarayıcınız video oynatmayı desteklemiyor.
+        </video>
+    </div>
+@endif
+
 @if (filled($post->video_url))
     <div
         class="post__media post__media-video is-media-loading"
