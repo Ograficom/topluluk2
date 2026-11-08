@@ -33,8 +33,14 @@
 
             @include('advertisements._card', ['ad' => $ad, 'preview' => true])
 
+            <details class="advertisement-analytics" style="margin-top:16px">
+                <summary class="btn btn-secondary-ghost" style="display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;min-height:44px;padding:11px 16px;border:1px solid var(--border-color);border-radius:12px;cursor:pointer;list-style:none">
+                    <span style="display:inline-flex;align-items:center;gap:9px"><x-repost-icon name="feed" size="18" /> İstatistikler</span>
+                    <x-repost-icon name="chevron-down" size="16" />
+                </summary>
+                <div class="advertisement-analytics__content" style="padding-top:16px">
             @if ($ad->status === 'approved' && $ad->starts_at->isPast() && $ad->ends_at->isFuture())
-            <div class="stats__counts" style="margin-top:18px">
+            <div class="stats__counts" style="margin-top:0">
                 <div class="stats__count-card stats__count-card--posts card card-body">
                     <div class="stats__count-head"><span class="stats__count-label small color-gray">Gösterim</span><span class="stats__count-icon"><x-repost-icon name="eye" size="18" /></span></div>
                     <span class="stats__count-num">{{ number_format($stats['impressions']) }}</span>
@@ -107,11 +113,13 @@
             </section>
 
             @else
-                <section class="card card-body" style="margin-top:16px">
-                    <h3 class="h5">Reklam istatistikleri</h3>
+                <section class="card card-body">
+                    <h3 class="h5">İstatistikler henüz hazır değil</h3>
                     <p class="small color-gray">Gösterim, tıklama, okuma ve hedef kitle verileri reklam yayınlandığında burada toplanmaya başlayacak.</p>
                 </section>
             @endif
+                </div>
+            </details>
 
             @if ($ad->rejection_reason)<p class="color-red small">Ret nedeni: {{ $ad->rejection_reason }}</p>@endif
         </section>
