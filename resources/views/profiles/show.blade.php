@@ -213,7 +213,7 @@
                     </section>
 
                 </div>
-                <div class="profile__aside-footer" style="display:block; margin-top:28px; padding-top:0;">@include('layouts._footer')</div>
+                <div class="profile__aside-footer">@include('layouts._footer')</div>
             </aside>
         </div>
     </div>
