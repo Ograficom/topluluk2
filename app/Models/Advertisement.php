@@ -40,27 +40,42 @@ class Advertisement extends Model
             }
         });
 
-        static::saved(function (Advertisement $advertisement): void {
-            $post = $advertisement->post;
-            $base = Str::limit(Str::slug($advertisement->title) ?: 'sponsored-post', 240, '');
-            $slug = $post?->slug ?? $base;
-            for ($suffix = 1; Post::query()->where('slug', $slug)->when($post, fn ($q) => $q->where('id', '<>', $post->id))->exists(); $suffix++) {
-                $slug = Str::limit($base, 240 - strlen((string) $suffix), '').'-'.$suffix;
-            }
-            $attributes = [
-                'user_id' => $advertisement->user_id,
-                'title' => $advertisement->title,
-                'slug' => $slug,
-                'excerpt' => Str::limit($advertisement->description, 500),
-                'body' => $advertisement->description,
-                'cover_image' => $advertisement->image_path,
-                'video_url' => $advertisement->video_url,
-                'is_published' => true,
-                'published_at' => $advertisement->created_at ?? now(),
-                'is_adult' => false,
-            ];
-            $post ? $post->update($attributes) : $advertisement->post()->create($attributes);
-        });
+        static::saved(fn (Advertisement $advertisement) => $advertisement->syncLinkedPost());;
+    }
+
+    /**
+     * Keep the profile/feed Post mirror in sync with the advertisement record.
+     * This is also called after Filament saves an advertisement.
+     */
+    public function syncLinkedPost(): Post
+    {
+        $post = $this->post()->first();
+        $base = Str::limit(Str::slug($this->title) ?: 'sponsored-post', 240, '');
+        $slug = $post?->slug ?? $base;
+
+        for ($suffix = 1; Post::query()->where('slug', $slug)->when($post, fn ($query) => $query->where('id', '<>', $post->id))->exists(); $suffix++) {
+            $slug = Str::limit($base, 240 - strlen((string) $suffix), '').'-'.$suffix;
+        }
+
+        $attributes = [
+            'user_id' => $this->user_id,
+            'title' => $this->title,
+            'slug' => $slug,
+            'excerpt' => Str::limit($this->description, 500),
+            'body' => $this->description,
+            'cover_image' => $this->image_path,
+            'video_url' => $this->video_url,
+            'is_published' => true,
+            'published_at' => $this->created_at ?? now(),
+            'is_adult' => false,
+        ];
+
+        if ($post) {
+            $post->update($attributes);
+            return $post->refresh();
+        }
+
+        return $this->post()->create($attributes);
     }
 
     public function user(): BelongsTo { return $this->belongsTo(User::class); }
