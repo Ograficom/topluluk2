@@ -87,11 +87,11 @@
                 </button>
                 <ul class="dropdown-menu dropdown-menu-end">
                     <li class="dropdown-menu-item dropdown-menu-item-sm">
-                        <a href="mailto:{{ config('mail.from.address') }}?subject={{ rawurlencode('Yorum bildirimi') }}&amp;body={{ rawurlencode(route('posts.show', $post).'#comment-'.$comment->id) }}">Report</a>
+                        <a href="mailto:{{ config('mail.from.address') }}?subject={{ rawurlencode('Yorum bildirimi') }}&amp;body={{ rawurlencode(route('posts.show', $post).'#comment-'.$comment->id) }}">Bildir</a>
                     </li>
                     @if (auth()->user()?->is($comment->user) || auth()->user()?->is_admin)
                         <li class="dropdown-menu-item dropdown-menu-item-sm">
-                            <a href="#comment-edit-{{ $comment->id }}" data-comment-edit-toggle="{{ $comment->id }}">Edit</a>
+                            <a href="#comment-edit-{{ $comment->id }}" data-comment-edit-toggle="{{ $comment->id }}">Düzenle</a>
                         </li>
                     @endif
                 </ul>
@@ -102,7 +102,7 @@
     @if (auth()->user()?->is($comment->user) || auth()->user()?->is_admin)
         <form
             id="comment-edit-{{ $comment->id }}"
-            class="card card-body"
+            class="comment__edit-form card card-body"
             action="{{ route('posts.comments.update', ['post' => $post, 'comment' => $comment]) }}"
             method="POST"
             hidden
@@ -110,14 +110,14 @@
         >
             @csrf
             @method('PATCH')
-            <label class="visually-hidden" for="comment-edit-body-{{ $comment->id }}">Edit comment</label>
+            <label class="visually-hidden" for="comment-edit-body-{{ $comment->id }}">Yorumu düzenle</label>
             <textarea id="comment-edit-body-{{ $comment->id }}" name="body" rows="4" maxlength="5000" required>{{ $comment->body }}</textarea>
             @error('body')
                 <p class="small color-red">{{ $message }}</p>
             @enderror
             <div class="d-flex justify-content-end gap-2">
-                <button class="btn btn-secondary btn-sm" type="button" data-comment-edit-cancel="{{ $comment->id }}">Cancel</button>
-                <button class="btn btn-primary btn-sm" type="submit">Save</button>
+                <button class="btn btn-secondary btn-sm" type="button" data-comment-edit-cancel="{{ $comment->id }}">Vazgeç</button>
+                <button class="btn btn-primary btn-sm" type="submit">Kaydet</button>
             </div>
         </form>
     @endif
