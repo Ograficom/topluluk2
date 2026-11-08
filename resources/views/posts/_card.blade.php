@@ -52,22 +52,9 @@
             <a class="small color-gray" href="{{ route('profiles.show', $post->user) }}">{{ '@'.$post->user->publicUsername() }}</a>
         @endif
     </footer>
+    @include('posts._interactions', ['post' => $post, 'interactionContainerClass' => 'card-body'])
     @if ($post->relationLoaded('comments') && $post->comments->isNotEmpty())
         @php($latestComment = $post->comments->first())
-        <div class="user-box user-box-md post__bestcomm card-body">
-            @if ($latestComment->user)
-                <a href="{{ route('profiles.show', $latestComment->user) }}" class="avatar">
-                    <img src="{{ $latestComment->user->avatarUrl() }}" alt="" width="40" height="40" loading="lazy">
-                </a>
-            @else
-                <span class="avatar">
-                    <img src="{{ asset('assets/img/noavatar.png') }}" alt="" width="40" height="40" loading="lazy">
-                </span>
-            @endif
-            <a href="{{ route('posts.show', $post) }}#comments" class="post__bestcomm-text text-clamp-1 color-text">
-                {{ \Illuminate\Support\Str::limit(trim(strip_tags($latestComment->body)), 180) }}
-            </a>
-        </div>
+        <div class="user-box user-box-md post__bestcomm card-body"><div class="avatar online"><img src="{{ $latestComment->user?->avatarUrl() ?? asset('assets/img/noavatar.png') }}" alt="Comment author" width="40" height="40" loading="lazy"></div><div class="post__bestcomm-text text-clamp-1 color-text">{{ trim(strip_tags($latestComment->body)) }}</div></div>
     @endif
-    @include('posts._interactions', ['post' => $post, 'interactionContainerClass' => 'card-body'])
 </article>
