@@ -162,7 +162,9 @@ class AdvertisementController extends Controller
         abort_unless($isOwner || Advertisement::query()->whereKey($advertisement->id)->deliverable()->exists(), 404);
 
         $advertisement->load(['user', 'post']);
-        AdvertisementEvent::record($advertisement, $request, 'detail');
+        if (! $isOwner && ! $request->user()?->is_admin) {
+            AdvertisementEvent::record($advertisement, $request, 'detail');
+        }
 
         $visitorToken = hash('sha256', $request->session()->getId());
         $lastClick = AdvertisementEvent::query()->where('advertisement_id', $advertisement->id)
@@ -170,7 +172,7 @@ class AdvertisementController extends Controller
         $lastReturn = AdvertisementEvent::query()->where('advertisement_id', $advertisement->id)
             ->where('visitor_token', $visitorToken)->where('event_type', 'return')->latest()->first();
 
-        if ($lastClick && (! $lastReturn || $lastClick->created_at->gt($lastReturn->created_at))) {
+        if (! $isOwner && ! $request->user()?->is_admin && $lastClick && (! $lastReturn || $lastClick->created_at->gt($lastReturn->created_at))) {
             AdvertisementEvent::record($advertisement, $request, 'return');
         }
 
@@ -191,7 +193,7 @@ class AdvertisementController extends Controller
         return response()->noContent();
     }
 
-    public function click(Advertisement $advertisement): RedirectResponse
+    public function click(Request $request, Advertisement $advertisement): RedirectResponse
     {
         abort_unless($advertisement->status === 'approved'
             && $advertisement->starts_at->isPast()
@@ -203,7 +205,7 @@ class AdvertisementController extends Controller
             return redirect()->route('advertisements.show', $advertisement);
         }
 
-        AdvertisementEvent::record($advertisement, request(), 'click');
+        AdvertisementEvent::record($advertisement, $request, 'click');
         return redirect()->away($advertisement->target_url);
     }
 }
