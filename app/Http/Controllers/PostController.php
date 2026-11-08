@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Advertisement;
+use App\Models\AdvertisementEvent;
 use App\Models\Channel;
 use App\Models\Comment;
 use App\Models\Post;
@@ -51,7 +52,7 @@ class PostController extends Controller
             ->paginate(10)->withQueryString();
 
         $ads = $search === '' ? Advertisement::query()->deliverable()->with(['user', 'post'])->inRandomOrder()->limit(2)->get() : collect();
-        foreach ($ads as $ad) $ad->increment('impressions');
+        foreach ($ads as $ad) AdvertisementEvent::record($ad, $request, 'impression');
 
         $this->setViewerReactions($posts);
         return view('posts.index', compact('posts', 'ads', 'search', 'sort', 'period'));
