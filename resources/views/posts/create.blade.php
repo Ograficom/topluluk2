@@ -31,6 +31,10 @@
                 rows="2" maxlength="500" placeholder="Kısaca anlat..." aria-label="Kısa açıklama"
                 required>{{ old('excerpt', $post->excerpt ?? '') }}</textarea>
 
+            <label class="post-create-simple__seo-label" for="post-meta-description">SEO meta açıklaması</label>
+            <textarea class="post-create-simple__seo" id="post-meta-description" name="meta_description" rows="2" maxlength="500"
+                placeholder="Google arama sonuçlarında görünecek açıklama">{{ old('meta_description', $post->meta_description ?? '') }}</textarea>
+
             <input type="hidden" id="post-body" name="body" value="{{ old('body', $post->body ?? '') }}">
             <div id="post-editorjs" class="post-editorjs post-create-simple__editor" aria-label="Yazı içeriği"></div>
 
@@ -86,10 +90,6 @@
                         <option value="{{ $channel->id }}" @selected((string) old('channel_id', $post->channel_id ?? '') === (string) $channel->id)>{{ $channel->name }}</option>
                     @endforeach
                 </select>
-
-                <label for="post-meta-description">SEO meta açıklaması</label>
-                <textarea id="post-meta-description" name="meta_description" rows="2" maxlength="500"
-                    placeholder="Arama motorlarında görünecek kısa açıklama">{{ old('meta_description', $post->meta_description ?? '') }}</textarea>
 
                 <label for="tags">Etiketler</label>
                 <input id="tags" name="tags" type="text" value="{{ old('tags', isset($post) ? implode(', ', $post->tags ?? []) : '') }}"
