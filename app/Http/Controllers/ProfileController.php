@@ -54,19 +54,33 @@ class ProfileController extends Controller
             }
         });
 
-        // Show only this profile owner's active advertisements as their own feed entries.
+        // Keep the profile owner's advertisements in their own profile feed.
+        // Owners can see pending submissions; visitors only see deliverable ads.
+        $isOwnProfile = $viewer && $viewer->is($user);
+
         $profileAds = $posts->currentPage() === 1
             ? Advertisement::query()
                 ->where('user_id', $user->id)
-                ->deliverable()
+                ->when(
+                    ! $isOwnProfile,
+                    fn (Builder $query) => $query->deliverable(),
+                    fn (Builder $query) => $query->whereIn('status', ['pending', 'approved'])->where(function (Builder $query): void {
+                        $query->where('status', 'pending')->orWhere(fn (Builder $active) => $active->deliverable());
+                    }),
+                )
                 ->with('user')
                 ->latest('created_at')
                 ->limit(2)
                 ->get()
             : collect();
 
+        // Pending previews are visible only to their owner and must not count as impressions.
         foreach ($profileAds as $profileAd) {
-            $profileAd->increment('impressions');
+            if ($profileAd->status === 'approved' && $profileAd->starts_at?->isPast() && $profileAd->ends_at?->isFuture()
+                && ($profileAd->billing_type === 'free'
+                    || ($profileAd->payment_status === 'paid' && $profileAd->spent_amount < $profileAd->total_budget))) {
+                $profileAd->increment('impressions');
+            }
         }
 
         $profileAdPositions = [];
