@@ -36,7 +36,7 @@
             @if ($ad->status === 'approved' && $ad->starts_at->isPast() && $ad->ends_at->isFuture())
             <details class="advertisement-analytics" style="margin-top:16px">
                 <summary class="btn btn-secondary-ghost" style="display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;min-height:44px;padding:11px 16px;border:1px solid var(--border-color);border-radius:12px;cursor:pointer;list-style:none">
-                    <span style="display:inline-flex;align-items:center;gap:9px"><x-repost-icon name="chart" size="18" /> İstatistikler</span>
+                    <span style="display:inline-flex;align-items:center;gap:9px"><x-repost-icon name="feed" size="18" /> İstatistikler</span>
                     <x-repost-icon name="chevron-down" size="16" />
                 </summary>
                 <div class="advertisement-analytics__content" style="padding-top:16px">
