@@ -46,6 +46,7 @@ class ProfileController extends Controller
                     });
             })
             ->with(['user', 'channel', 'advertisement'])
+            ->with(['comments' => fn ($query) => $query->with('user')->limit(1)])
             ->withCount('comments')
             ->withCount([
                 'reactions as likes_count' => fn (Builder $query) => $query->where('type', PostReaction::LIKE),
