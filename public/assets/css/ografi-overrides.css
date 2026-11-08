@@ -1868,496 +1868,88 @@ body.is-messenger-conversation .pm-dialog__composer .pm-composer__send svg {
 }
 
 
-/* Messenger feed wrapper is the sticky scroll container: keep the whole conversation panel at a constant height as the page scrolls.
-   The feed wrapper (not the inner card) is sticky, so the card cannot collapse at the
-   bottom of the sidebar's grid row. No grid columns or widths are changed. */
-@media (min-width: 641px) {
-  body.is-messenger-conversation .main > .feed {
-    position: sticky !important;
-    top: calc(var(--header-height, 56px) + 14px) !important;
-    align-self: start !important;
-    height: min(600px, calc(100dvh - var(--header-height, 56px) - 28px)) !important;
-    min-height: 420px !important;
-    max-height: calc(100dvh - var(--header-height, 56px) - 28px) !important;
-    overflow: visible !important;
-  }
-  body.is-messenger-conversation .main > .feed > .pm.card.card-body {
-    position: relative !important;
-    top: auto !important;
-    height: 100% !important;
-    min-height: 0 !important;
-    max-height: 100% !important;
-    margin: 0 !important;
-    flex: 1 1 auto !important;
-  }
-  body.is-messenger-conversation .main > .feed > .pm.card.card-body .pm-dialog {
-    height: 100% !important;
-    min-height: 0 !important;
-  }
-}
 
-
-/* Desktop messenger: use the available viewport height, leaving only a small bottom gap. */
-@media (min-width: 641px) {
-  body.is-messenger-conversation .main > .feed {
-    position: sticky !important;
-    top: 8px !important;
-    height: calc(100dvh - 16px) !important;
-    min-height: 0 !important;
-    max-height: calc(100dvh - 16px) !important;
-    overflow: visible !important;
-  }
-  body.is-messenger-conversation .main > .feed > .pm.card.card-body {
-    height: 100% !important;
-    min-height: 0 !important;
-    max-height: 100% !important;
-  }
-  body.is-messenger-conversation .main > .feed > .pm.card.card-body .pm-dialog {
-    height: 100% !important;
-    min-height: 0 !important;
-  }
-}
-
-
-/* Messenger conversation: lock the document and make the center message history
-   the only scrollable area. The header, side columns and composer stay stationary. */
+/* Messenger page: inherit the exact Repost site shell and grid.
+   Width, max-width, grid columns and gaps come only from the original
+   .container and .main__grid rules in kit.css/app.css. This block controls
+   only viewport height and the inner conversation scrolling behavior. */
 @media (min-width: 641px) {
   html:has(body.is-messenger-conversation),
   body.is-messenger-conversation {
-    height: 100% !important;
-    max-height: 100dvh !important;
-    overflow: hidden !important;
-  }
-  body.is-messenger-conversation {
     height: 100dvh !important;
+    overflow: hidden !important;
   }
   body.is-messenger-conversation main.container {
     height: calc(100dvh - var(--header-height)) !important;
-    max-height: calc(100dvh - var(--header-height)) !important;
+    min-height: 0 !important;
     overflow: hidden !important;
   }
   body.is-messenger-conversation main.container > .main.main__grid {
-    height: 100% !important;
+    height: calc(100% - var(--header-offset)) !important;
     min-height: 0 !important;
-    margin-top: 0 !important;
-    align-items: stretch !important;
-    overflow: hidden !important;
-  }
-  body.is-messenger-conversation .main > .feed {
-    position: relative !important;
-    top: auto !important;
-    height: 100% !important;
-    min-height: 0 !important;
-    max-height: 100% !important;
-    padding: 0 !important;
-    overflow: hidden !important;
-  }
-  body.is-messenger-conversation .main > .feed > .pm.card.card-body {
-    height: 100% !important;
-    min-height: 0 !important;
-    max-height: 100% !important;
-    overflow: hidden !important;
-  }
-  body.is-messenger-conversation .pm-dialog {
-    display: flex !important;
-    height: 100% !important;
-    min-height: 0 !important;
-    overflow: hidden !important;
-  }
-  body.is-messenger-conversation .pm-dialog__header--conversation,
-  body.is-messenger-conversation .pm-dialog__composer.pm-composer {
-    flex: 0 0 auto !important;
-  }
-  body.is-messenger-conversation .pm-dialog__messages {
-    flex: 1 1 0 !important;
-    min-height: 0 !important;
-    overflow-x: hidden !important;
-    overflow-y: auto !important;
-    overscroll-behavior: contain !important;
-    scrollbar-gutter: stable !important;
-  }
-}
-
-
-/* Final conversation flex repair: reserve a real bottom row for the composer,
-   and give the message list the remaining height as its only scroll container. */
-@media (min-width: 641px) {
-  html:has(body.is-messenger-conversation),
-  body.is-messenger-conversation {
-    width: 100% !important;
-    height: 100dvh !important;
-    min-height: 0 !important;
-    overflow: hidden !important;
-  }
-  body.is-messenger-conversation main.container {
-    display: block !important;
-    height: calc(100dvh - var(--header-height)) !important;
-    min-height: 0 !important;
-    max-height: calc(100dvh - var(--header-height)) !important;
-    overflow: hidden !important;
-  }
-  body.is-messenger-conversation main.container > .main.main__grid {
-    display: grid !important;
     grid-template-rows: minmax(0, 1fr) !important;
-    height: 100% !important;
-    min-height: 0 !important;
-    overflow: hidden !important;
+    align-items: stretch !important;
+  }
+  body.is-messenger-conversation main.container > .main.main__grid > .sidebar,
+  body.is-messenger-conversation main.container > .main.main__grid > .main__widgets {
+    position: sticky !important;
+    top: calc(var(--header-height) + var(--header-offset)) !important;
+    align-self: start !important;
   }
   body.is-messenger-conversation main.container > .main.main__grid > .feed {
-    display: flex !important;
-    flex-direction: column !important;
     height: 100% !important;
     min-height: 0 !important;
-    max-height: 100% !important;
+    padding-bottom: 0 !important;
     overflow: hidden !important;
   }
-  body.is-messenger-conversation .pm.card.card-body,
-  body.is-messenger-conversation .pm-dialog {
+  body.is-messenger-conversation .pm.card.card-body {
     display: flex !important;
+    flex: 1 1 auto !important;
     flex-direction: column !important;
+    width: 100% !important;
+    min-width: 0 !important;
     height: 100% !important;
     min-height: 0 !important;
-    max-height: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    overflow: hidden !important;
+  }
+  body.is-messenger-conversation .pm-dialog {
+    display: flex !important;
+    flex: 1 1 auto !important;
+    flex-direction: column !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    gap: 0 !important;
     overflow: hidden !important;
   }
   body.is-messenger-conversation .pm-dialog__header--conversation {
-    display: flex !important;
     position: relative !important;
-    flex: 0 0 62px !important;
-    min-height: 62px !important;
-    margin-bottom: 8px !important;
-  }
-  body.is-messenger-conversation .pm-user-info[hidden] {
-    display: none !important;
+    top: auto !important;
+    flex: 0 0 auto !important;
   }
   body.is-messenger-conversation .pm-dialog__messages {
     display: flex !important;
     flex: 1 1 0% !important;
     height: 0 !important;
     min-height: 0 !important;
-    max-height: none !important;
+    margin: 0 !important;
     overflow-x: hidden !important;
     overflow-y: auto !important;
     overscroll-behavior: contain !important;
   }
-  body.is-messenger-conversation .pm-dialog > nav,
-  body.is-messenger-conversation .pm-dialog > .pagination {
-    display: none !important;
-  }
   body.is-messenger-conversation .pm-dialog__composer.pm-composer {
-    display: flex !important;
     position: relative !important;
     inset: auto !important;
     flex: 0 0 auto !important;
     width: 100% !important;
-    min-height: 72px !important;
-    margin: 8px 0 0 !important;
-    visibility: visible !important;
-    opacity: 1 !important;
-    z-index: 5 !important;
-  }
-}
-
-
-/* Remove the redundant outer conversation card surface.
-   Keep the individual conversation header and composer surfaces intact. */
-body.is-messenger-conversation article.pm.card.card-body {
-  background: transparent !important;
-  border: 0 !important;
-  outline: 0 !important;
-  box-shadow: none !important;
-  border-radius: 0 !important;
-  padding: 0 !important;
-}
-body.is-messenger-conversation article.pm.card.card-body::before,
-body.is-messenger-conversation article.pm.card.card-body::after {
-  display: none !important;
-  content: none !important;
-}
-
-
-/* Messenger page: restore the exact Repost dialog.html site shell and grid.
-   Source: Repost/dist/assets/css/kit.css (.container) + app.css (.main/.main__grid/.feed).
-   Only the conversation route is affected; no global site widths are changed. */
-body.is-messenger-conversation main.container {
-  display: block !important;
-  width: 100% !important;
-  max-width: 1120px !important;
-  min-width: 0 !important;
-  margin: 0 auto !important;
-  padding: 0 10px !important;
-  box-sizing: border-box !important;
-  overflow: hidden !important;
-}
-body.is-messenger-conversation main.container > .main.main__grid {
-  display: grid !important;
-  grid-template-columns: 55px minmax(280px, auto) 320px !important;
-  grid-gap: 20px !important;
-  width: 100% !important;
-  max-width: 100% !important;
-  min-width: 0 !important;
-  margin: var(--header-offset, 20px) 0 0 !important;
-  padding: 0 !important;
-  box-sizing: border-box !important;
-  align-items: start !important;
-  overflow: hidden !important;
-}
-body.is-messenger-conversation main.container > .main.main__grid > .sidebar {
-  display: flex !important;
-  position: sticky !important;
-  top: calc(var(--header-height, 70px) + var(--header-offset, 20px)) !important;
-  width: auto !important;
-  height: calc(100dvh - var(--header-height, 70px) - var(--header-offset, 20px)) !important;
-  min-width: 0 !important;
-  overflow: hidden !important;
-}
-body.is-messenger-conversation main.container > .main.main__grid > .feed {
-  display: flex !important;
-  flex-direction: column !important;
-  width: auto !important;
-  max-width: none !important;
-  min-width: 0 !important;
-  height: calc(100dvh - var(--header-height, 70px) - var(--header-offset, 20px) - 20px) !important;
-  min-height: 0 !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  gap: 0 !important;
-  overflow: hidden !important;
-}
-body.is-messenger-conversation .pm.card.card-body {
-  display: flex !important;
-  flex: 1 1 auto !important;
-  flex-direction: column !important;
-  width: 100% !important;
-  max-width: 100% !important;
-  min-width: 0 !important;
-  height: 100% !important;
-  min-height: 0 !important;
-  margin: 0 !important;
-  box-sizing: border-box !important;
-  overflow: hidden !important;
-}
-body.is-messenger-conversation .pm-dialog {
-  display: flex !important;
-  flex: 1 1 auto !important;
-  flex-direction: column !important;
-  width: 100% !important;
-  min-width: 0 !important;
-  height: 100% !important;
-  min-height: 0 !important;
-  margin: 0 !important;
-  gap: 0 !important;
-  overflow: hidden !important;
-}
-body.is-messenger-conversation .pm-dialog__header--conversation {
-  position: sticky !important;
-  top: 0 !important;
-  flex: 0 0 auto !important;
-}
-body.is-messenger-conversation .pm-dialog__messages {
-  display: flex !important;
-  flex: 1 1 0 !important;
-  height: 0 !important;
-  min-height: 0 !important;
-  margin: 0 !important;
-  overflow-x: hidden !important;
-  overflow-y: auto !important;
-  overscroll-behavior: contain !important;
-}
-body.is-messenger-conversation .pm-dialog__composer.pm-composer {
-  position: relative !important;
-  inset: auto !important;
-  left: auto !important;
-  right: auto !important;
-  bottom: auto !important;
-  transform: none !important;
-  flex: 0 0 auto !important;
-  width: 100% !important;
-  max-width: 100% !important;
-  margin: 10px 0 0 !important;
-  z-index: 5 !important;
-}
-body.is-messenger-conversation main.container > .main.main__grid > .main__widgets {
-  display: flex !important;
-  position: sticky !important;
-  top: calc(var(--header-height, 70px) + var(--header-offset, 20px)) !important;
-  align-self: start !important;
-  width: auto !important;
-  min-width: 0 !important;
-}
-
-/* Same responsive breakpoints as the original Repost dialog page. */
-@media screen and (max-width: 1120px) {
-  body.is-messenger-conversation main.container > .main.main__grid {
-    grid-template-columns: 55px minmax(280px, auto) 290px !important;
-  }
-}
-@media screen and (max-width: 920px) {
-  body.is-messenger-conversation main.container > .main.main__grid {
-    grid-template-columns: 55px minmax(280px, auto) !important;
-  }
-  body.is-messenger-conversation main.container > .main.main__grid > .main__widgets {
-    display: none !important;
-  }
-}
-@media screen and (max-width: 720px) {
-  body.is-messenger-conversation main.container {
     max-width: 100% !important;
-    padding: 0 !important;
-  }
-  body.is-messenger-conversation main.container > .main.main__grid {
-    grid-template-columns: minmax(0, 1fr) !important;
-    grid-gap: 0 !important;
-    margin-top: 0 !important;
-  }
-  body.is-messenger-conversation main.container > .main.main__grid > .sidebar,
-  body.is-messenger-conversation main.container > .main.main__grid > .main__widgets {
-    display: none !important;
-  }
-  body.is-messenger-conversation main.container > .main.main__grid > .feed {
-    height: 100dvh !important;
-  }
-}
-
-
-/* FINAL: exact Repost dialog.html shell and grid, applied after all legacy messenger overrides. */
-body.is-messenger-conversation main.container {
-  display: block !important;
-  width: 100% !important;
-  max-width: 1120px !important;
-  min-width: 0 !important;
-  margin: 0 auto !important;
-  padding: 0 10px !important;
-  box-sizing: border-box !important;
-}
-body.is-messenger-conversation main.container > .main.main__grid {
-  display: grid !important;
-  grid-template-columns: 55px minmax(280px, auto) 320px !important;
-  grid-template-rows: minmax(0, 1fr) !important;
-  grid-gap: 20px !important;
-  width: 100% !important;
-  max-width: 100% !important;
-  min-width: 0 !important;
-  height: calc(100dvh - var(--header-height, 70px) - var(--header-offset, 20px)) !important;
-  min-height: 0 !important;
-  margin: var(--header-offset, 20px) 0 0 !important;
-  padding: 0 !important;
-  align-items: stretch !important;
-  box-sizing: border-box !important;
-}
-body.is-messenger-conversation main.container > .main.main__grid > .sidebar {
-  display: flex !important;
-  position: sticky !important;
-  top: calc(var(--header-height, 70px) + var(--header-offset, 20px)) !important;
-  width: auto !important;
-  min-width: 0 !important;
-  height: calc(100dvh - var(--header-height, 70px) - var(--header-offset, 20px)) !important;
-  overflow: hidden !important;
-}
-body.is-messenger-conversation main.container > .main.main__grid > .feed {
-  display: flex !important;
-  position: relative !important;
-  flex-direction: column !important;
-  width: auto !important;
-  max-width: none !important;
-  min-width: 0 !important;
-  height: 100% !important;
-  min-height: 0 !important;
-  margin: 0 !important;
-  padding: 0 0 20px !important;
-  gap: 0 !important;
-  overflow: hidden !important;
-}
-body.is-messenger-conversation .pm.card.card-body {
-  display: flex !important;
-  flex: 1 1 auto !important;
-  flex-direction: column !important;
-  width: 100% !important;
-  max-width: 100% !important;
-  min-width: 0 !important;
-  height: 100% !important;
-  min-height: 0 !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  border: 0 !important;
-  border-radius: 0 !important;
-  background: transparent !important;
-  box-shadow: none !important;
-  overflow: hidden !important;
-}
-body.is-messenger-conversation .pm-dialog {
-  display: flex !important;
-  flex: 1 1 auto !important;
-  flex-direction: column !important;
-  width: 100% !important;
-  min-width: 0 !important;
-  height: 100% !important;
-  min-height: 0 !important;
-  margin: 0 !important;
-  gap: 0 !important;
-  overflow: hidden !important;
-}
-body.is-messenger-conversation .pm-dialog__header--conversation {
-  position: relative !important;
-  top: auto !important;
-  flex: 0 0 auto !important;
-}
-body.is-messenger-conversation .pm-dialog__messages {
-  display: flex !important;
-  flex: 1 1 0% !important;
-  height: 0 !important;
-  min-height: 0 !important;
-  margin: 0 !important;
-  overflow-x: hidden !important;
-  overflow-y: auto !important;
-  overscroll-behavior: contain !important;
-}
-body.is-messenger-conversation .pm-dialog__composer.pm-composer {
-  position: relative !important;
-  inset: auto !important;
-  flex: 0 0 auto !important;
-  width: 100% !important;
-  max-width: 100% !important;
-  margin: 10px 0 0 !important;
-}
-body.is-messenger-conversation main.container > .main.main__grid > .main__widgets {
-  display: flex !important;
-  position: sticky !important;
-  top: calc(var(--header-height, 70px) + var(--header-offset, 20px)) !important;
-  align-self: start !important;
-  width: auto !important;
-  min-width: 0 !important;
-}
-@media screen and (max-width: 1120px) {
-  body.is-messenger-conversation main.container > .main.main__grid {
-    grid-template-columns: 55px minmax(280px, auto) 290px !important;
-  }
-}
-@media screen and (max-width: 920px) {
-  body.is-messenger-conversation main.container > .main.main__grid {
-    grid-template-columns: 55px minmax(280px, auto) !important;
-  }
-  body.is-messenger-conversation main.container > .main.main__grid > .main__widgets {
-    display: none !important;
-  }
-}
-@media screen and (max-width: 720px) {
-  body.is-messenger-conversation main.container {
-    max-width: 100% !important;
-    padding: 0 !important;
-  }
-  body.is-messenger-conversation main.container > .main.main__grid {
-    grid-template-columns: minmax(0, 1fr) !important;
-    grid-gap: 0 !important;
-    height: 100dvh !important;
-    margin-top: 0 !important;
-  }
-  body.is-messenger-conversation main.container > .main.main__grid > .sidebar,
-  body.is-messenger-conversation main.container > .main.main__grid > .main__widgets {
-    display: none !important;
-  }
-  body.is-messenger-conversation main.container > .main.main__grid > .feed {
-    height: 100% !important;
-    padding-bottom: 0 !important;
+    margin: 10px 0 0 !important;
   }
 }
