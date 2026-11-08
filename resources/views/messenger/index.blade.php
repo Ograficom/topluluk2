@@ -79,9 +79,7 @@
                 {{ $conversations->links() }}
                 <label class="pm-unread-filter form-check form-switch">
                     <span class="pm-unread-filter__label">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
-                            <path d="M21 11.5a8.5 8.5 0 0 1-8.5 8.5 8.4 8.4 0 0 1-3.6-.8L3 21l1.8-4.9A8.4 8.4 0 0 1 4 12.5 8.5 8.5 0 1 1 21 11.5Z" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
-                        </svg>
+                        <svg width="20" height="20" aria-hidden="true"><use href="#message"></use></svg>
                         <span>Sadece okunmamışlar</span>
                     </span>
                     <input class="form-check-input pm-unread-filter__input" type="checkbox" data-pm-unread-filter role="switch" aria-label="Sadece okunmamış mesajları göster">
