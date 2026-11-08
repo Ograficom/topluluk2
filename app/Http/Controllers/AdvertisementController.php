@@ -31,8 +31,8 @@ class AdvertisementController extends Controller
             'description' => ['required', 'string', 'max:2000'],
             'image' => ['nullable', 'image', 'mimes:jpg,jpeg,png,gif,webp', 'max:5120'],
             'video_url' => ['nullable', 'url', 'max:2048', 'starts_with:https://'],
-            'target_url' => ['required', 'url', 'max:2048', 'starts_with:https://'],
-            'button_text' => ['required', 'string', 'max:40'],
+            'target_url' => ['nullable', 'url', 'max:2048', 'starts_with:https://'],
+            'button_text' => ['nullable', 'string', 'max:40'],
             'starts_at' => ['required', 'date', 'after_or_equal:today'],
             'ends_at' => ['required', 'date', 'after:starts_at'],
         ], [
@@ -53,8 +53,8 @@ class AdvertisementController extends Controller
             'description' => $data['description'],
             'image_path' => $image,
             'video_url' => $data['video_url'] ?? null,
-            'target_url' => $data['target_url'],
-            'button_text' => $data['button_text'],
+            'target_url' => $data['target_url'] ?? null,
+            'button_text' => $data['button_text'] ?: 'Daha fazla bilgi al',
             'starts_at' => $startsAt,
             'ends_at' => $endsAt,
             'total_budget' => $totalPrice,
@@ -68,6 +68,17 @@ class AdvertisementController extends Controller
             ->with('status', 'Reklam başvurun alındı. Yönetici onayı ve ödeme kontrolünden sonra yayınlanacak.');
     }
 
+    public function show(Request $request, Advertisement $advertisement): View
+    {
+        $isOwner = $request->user()?->is($advertisement->user);
+        abort_unless($isOwner || Advertisement::query()->whereKey($advertisement->id)->deliverable()->exists(), 404);
+
+        $advertisement->load(['user', 'post']);
+        $advertisement->increment('impressions');
+
+        return view('advertisements.show', compact('advertisement'));
+    }
+
     public function click(Advertisement $advertisement): RedirectResponse
     {
         abort_unless($advertisement->status === 'approved'
@@ -75,6 +86,10 @@ class AdvertisementController extends Controller
             && $advertisement->ends_at->isFuture()
             && ($advertisement->billing_type === 'free'
                 || ($advertisement->payment_status === 'paid' && $advertisement->spent_amount < $advertisement->total_budget)), 404);
+
+        if (! filled($advertisement->target_url)) {
+            return redirect()->route('advertisements.show', $advertisement);
+        }
 
         $advertisement->increment('clicks');
         return redirect()->away($advertisement->target_url);
