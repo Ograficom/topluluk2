@@ -1,18 +1,18 @@
 <?php
 
-namespace App\\Filament\\Resources\\Advertisements;
+namespace App\Filament\Resources\Advertisements;
 
-use App\\Filament\\Resources\\Advertisements\\Pages\\CreateAdvertisement;
-use App\\Filament\\Resources\\Advertisements\\Pages\\EditAdvertisement;
-use App\\Filament\\Resources\\Advertisements\\Pages\\ListAdvertisements;
-use App\\Filament\\Resources\\Advertisements\\Schemas\\AdvertisementForm;
-use App\\Filament\\Resources\\Advertisements\\Tables\\AdvertisementsTable;
-use App\\Models\\Advertisement;
+use App\Filament\Resources\Advertisements\Pages\CreateAdvertisement;
+use App\Filament\Resources\Advertisements\Pages\EditAdvertisement;
+use App\Filament\Resources\Advertisements\Pages\ListAdvertisements;
+use App\Filament\Resources\Advertisements\Schemas\AdvertisementForm;
+use App\Filament\Resources\Advertisements\Tables\AdvertisementsTable;
+use App\Models\Advertisement;
 use BackedEnum;
-use Filament\\Resources\\Resource;
-use Filament\\Schemas\\Schema;
-use Filament\\Support\\Icons\\Heroicon;
-use Filament\\Tables\\Table;
+use Filament\Resources\Resource;
+use Filament\Schemas\Schema;
+use Filament\Support\Icons\Heroicon;
+use Filament\Tables\Table;
 
 class AdvertisementResource extends Resource
 {
