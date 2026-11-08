@@ -12,12 +12,13 @@ return new class extends Migration
             $table->id();
             $table->foreignId('advertisement_id')->constrained()->cascadeOnDelete();
             $table->foreignId('user_id')->nullable()->constrained()->nullOnDelete();
-            $table->char('visitor_hash', 64)->index();
+            $table->char('visitor_token', 64)->index();
             $table->string('event_type', 24)->index();
-            $table->unsignedSmallInteger('duration_seconds')->default(0);
+            $table->unsignedSmallInteger('seconds')->default(0);
+            $table->string('referrer_host', 255)->nullable();
             $table->timestamps();
             $table->index(['advertisement_id', 'created_at']);
-            $table->index(['advertisement_id', 'visitor_hash', 'created_at'], 'ad_events_visitor_idx');
+            $table->index(['advertisement_id', 'visitor_token', 'created_at'], 'ad_events_visitor_idx');
         });
     }
 
