@@ -4,11 +4,11 @@
 
 @section('content')
     <header class="feed-heading">
-        <h1 class="h3">Reklam yöneticisi</h1>
-        <div style="display:flex;align-items:center;flex-wrap:wrap;column-gap:10px;row-gap:8px">
-            <p class="color-gray" style="display:inline-block;flex:0 1 auto;margin:0">Yayınlanan reklamlarının erişimini, etkileşimini ve hedef kitlesini takip et.</p>
-            <a class="btn btn-primary" style="display:inline-flex;flex:0 0 auto;align-items:center;white-space:nowrap;margin:0" href="{{ route('advertisements.create') }}">Reklam oluştur</a>
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
+            <h1 class="h3" style="margin:0">Reklam yöneticisi</h1>
+            <a class="btn btn-primary" style="display:inline-flex;flex:0 0 auto;align-items:center;justify-content:center;white-space:nowrap;margin:0" href="{{ route('advertisements.create') }}">Reklam oluştur</a>
         </div>
+        <p class="color-gray" style="margin:8px 0 0">Yayınlanan reklamlarının erişimini, etkileşimini ve hedef kitlesini takip et.</p>
     </header>
 
     @forelse ($ads as $ad)
