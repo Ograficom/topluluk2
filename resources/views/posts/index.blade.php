@@ -78,6 +78,16 @@
         </div>
     @endif
 
+    @php
+        $feedAds = ($ads ?? collect())->values();
+        $feedAdCount = $feedAds->count();
+        $postCount = $posts->count();
+        $adPositions = [];
+        foreach ($feedAds as $adIndex => $feedAd) {
+            $adPositions[(int) ceil(($postCount * ($adIndex + 1)) / ($feedAdCount + 1))] = $adIndex;
+        }
+    @endphp
+
     @forelse ($posts as $post)
         <article class="card post">
             <section class="card-body">
@@ -140,17 +150,8 @@
             @include('posts._interactions', ['post' => $post])
         </article>
 
-        @php
-            $feedAds = $ads ?? collect();
-            $feedAdCount = $feedAds->count();
-            $postCount = $posts->count();
-            $adPositions = $feedAdCount > 0
-                ? $feedAds->keys()->map(fn ($key, $index) => (int) ceil(($postCount * ($index + 1)) / ($feedAdCount + 1)))->all()
-                : [];
-        @endphp
-        @if ($feedAdCount > 0 && in_array($loop->iteration, $adPositions, true))
-            @php $feedAd = $feedAds->shift(); @endphp
-            @include('advertisements._card', ['ad' => $feedAd])
+        @if (isset($adPositions[$loop->iteration]))
+            @include('advertisements._card', ['ad' => $feedAds->get($adPositions[$loop->iteration])])
         @endif
     @empty
         <section class="card card-body empty-state">
