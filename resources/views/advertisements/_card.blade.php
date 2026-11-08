@@ -1,7 +1,7 @@
 @php
     $preview = $preview ?? false;
     $post = $ad->post;
-    $detailUrl = $preview ? null : route('advertisements.show', $ad);
+    $detailUrl = $preview ? null : route('advertisements.show', ['advertisement' => $ad, 'source' => 'feed']);
     $isOwner = ! $preview && auth()->check() && auth()->id() === $ad->user_id;
 @endphp
 
