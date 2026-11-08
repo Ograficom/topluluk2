@@ -40,7 +40,7 @@ class Advertisement extends Model
             }
         });
 
-        static::saved(fn (Advertisement $advertisement) => $advertisement->syncLinkedPost());;
+        static::saved(fn (Advertisement $advertisement) => $advertisement->syncLinkedPost());
     }
 
     /**
