@@ -28,6 +28,7 @@
                 <span>Harcanan: {{ number_format((float)$ad->spent_amount, 2, ',', '.') }} ₺</span>
             </div>
             @if ($ad->rejection_reason)<p class="color-red small">Ret nedeni: {{ $ad->rejection_reason }}</p>@endif
+            <div class="mt-3"><a class="btn btn-secondary-ghost btn-sm" href="{{ route('advertisements.edit', $ad) }}">Reklamı düzenle</a></div>
         </section>
     @empty
         <section class="card card-body empty-state"><h2 class="h5">Henüz reklamın yok</h2><p class="color-gray">İlk reklam başvurunu oluşturarak başlayabilirsin.</p></section>
