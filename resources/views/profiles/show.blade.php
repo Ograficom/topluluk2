@@ -134,8 +134,15 @@
                                 </footer>
                                 @include('posts._interactions', ['post' => $post])
                             </article>
+
+                            @if (isset($profileAdPositions[$loop->iteration]))
+                                @include('advertisements._card', ['ad' => $profileAds->get($profileAdPositions[$loop->iteration])])
+                            @endif
                         @empty
                             <section class="card card-body empty-state"><h2 class="h4">Henüz yazı yok</h2></section>
+                            @foreach ($profileAds as $profileAd)
+                                @include('advertisements._card', ['ad' => $profileAd])
+                            @endforeach
                         @endforelse
                         @include('layouts._pagination', ['paginator' => $posts])
                     </div>
