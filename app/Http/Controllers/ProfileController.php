@@ -56,7 +56,7 @@ class ProfileController extends Controller
 
         // Show active site advertisements inside the profile's post feed.
         $profileAds = $posts->currentPage() === 1
-            ? Advertisement::query()->deliverable()->with('user')->inRandomOrder()->limit(min(2, $posts->count()))->get()
+            ? Advertisement::query()->deliverable()->with('user')->inRandomOrder()->limit(min(2, max(1, $posts->count())))->get()
             : collect();
 
         foreach ($profileAds as $profileAd) {
