@@ -78,10 +78,21 @@ class Post extends Model
         return is_file(public_path($path)) ? asset($path) : null;
     }
 
+    /**
+     * Publicly visible posts must be published and, when sponsored, backed by
+     * an approved advertisement that is currently eligible for delivery.
+     * This keeps pending/rejected/paused/expired/unpaid ads out of every
+     * public feed, teaser, comment widget, tag list and channel query using
+     * the published scope.
+     */
     public function scopePublished(Builder $query): Builder
     {
         return $query->where('is_published', true)
-            ->where(fn (Builder $query) => $query->whereNull('published_at')->orWhere('published_at', '<=', now()));
+            ->where(fn (Builder $query) => $query->whereNull('published_at')->orWhere('published_at', '<=', now()))
+            ->where(function (Builder $query): void {
+                $query->whereNull('advertisement_id')
+                    ->orWhereHas('advertisement', fn (Builder $advertisement) => $advertisement->deliverable());
+            });
     }
 
     public function getRouteKeyName(): string { return 'slug'; }
