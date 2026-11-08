@@ -65,6 +65,7 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
 
     public function socialAccounts(): HasMany { return $this->hasMany(SocialAccount::class); }
     public function posts(): HasMany { return $this->hasMany(Post::class); }
+    public function advertisements(): HasMany { return $this->hasMany(Advertisement::class); }
     public function comments(): HasMany { return $this->hasMany(Comment::class); }
     public function following(): BelongsToMany { return $this->belongsToMany(self::class, 'user_follows', 'follower_id', 'following_id')->withTimestamps(); }
     public function channels(): BelongsToMany { return $this->belongsToMany(Channel::class, 'channel_subscriptions')->withTimestamps(); }
