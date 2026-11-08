@@ -70,7 +70,10 @@
         @if ($preview)
             <span class="small color-gray">Reklam önizlemesi</span>
         @else
-            <a class="btn btn-primary btn-sm" href="{{ $detailUrl }}">Ayrıntıları görüntüle</a>
+            <a class="btn btn-primary btn-sm" href="{{ $detailUrl }}" style="display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:10px 16px;border-radius:10px;font-weight:600;text-decoration:none;box-shadow:0 2px 5px rgba(20,80,190,.18);transition:background-color .18s ease,transform .18s ease" aria-label="Reklam ayrıntılarını görüntüle">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7"/><path d="M7 7h10v10"/></svg>
+                <span>Ayrıntıları görüntüle</span>
+            </a>
         @endif
     </footer>
 </article>
