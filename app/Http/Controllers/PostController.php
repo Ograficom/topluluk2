@@ -32,6 +32,7 @@ class PostController extends Controller
         $viewer = $request->user();
 
         $posts = Post::query()->published()->whereNull('advertisement_id')->with(['user', 'channel', 'tagRecords'])
+            ->with(['comments' => fn ($query) => $query->with('user')->limit(1)])
             ->withCount('comments')
             ->withCount([
                 'reactions as likes_count' => fn (Builder $query) => $query->where('type', PostReaction::LIKE),
