@@ -2211,3 +2211,23 @@ body.is-messenger-conversation .pm-dialog__composer .pm-composer__send svg {
     margin-top: -8px !important;
   }
 }
+
+
+/* OgraFi external RSS reader */
+.rss-reader{display:grid;gap:14px}
+.rss-reader .hero{margin-bottom:2px}
+.rss-reader .hero p{margin:5px 0 0}
+.rss-reader-sources{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 4px}
+.rss-reader-sources a{display:inline-flex;align-items:center;padding:7px 12px;border:1px solid var(--border-color,#e5e7eb);border-radius:999px;background:var(--card-bg,#fff);color:var(--text-color,#475569);font-size:12px;text-decoration:none}
+.rss-reader-sources a.is-active{border-color:#bfdbfe;background:#eff6ff;color:#2563eb;font-weight:650}
+.rss-reader-item{overflow:hidden}
+.rss-reader-item .card-body{padding:18px 20px}
+.rss-reader-image{display:block;max-height:300px;overflow:hidden;background:#f1f5f9}
+.rss-reader-image img{display:block;width:100%;max-height:300px;object-fit:cover}
+.rss-reader-meta{display:flex;flex-wrap:wrap;gap:5px;color:var(--muted-color,#64748b);font-size:11px}
+.rss-reader-title{margin:8px 0;font-weight:700;line-height:1.4}
+.rss-reader-title a{color:inherit;text-decoration:none}
+.rss-reader-title a:hover{color:#2563eb}
+.rss-reader-summary{margin:0;font-size:13px;line-height:1.7;overflow-wrap:anywhere}
+.rss-reader-open{display:inline-flex;align-items:center;gap:5px;margin-top:12px;font-size:12px;font-weight:650}
+@media(max-width:640px){.rss-reader-item .card-body{padding:15px}.rss-reader-image,.rss-reader-image img{max-height:220px}}
