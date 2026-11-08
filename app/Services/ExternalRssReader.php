@@ -147,16 +147,18 @@ class ExternalRssReader
 
     private function entries(SimpleXMLElement $xml): ?iterable
     {
-        if ($xml->getName() === 'rss' && isset($xml->channel->item)) {
-            return $xml->channel->item;
+        if ($xml->getName() === 'rss' && isset($xml->channel)) {
+            return $xml->channel->item ?? [];
         }
 
         if ($xml->getName() === 'feed') {
-            return $xml->children('http://www.w3.org/2005/Atom')->entry;
+            $atom = $xml->children('http://www.w3.org/2005/Atom');
+            return $atom->entry ?? [];
         }
 
         if ($xml->getName() === 'RDF') {
-            return $xml->children('http://purl.org/rss/1.0/')->item;
+            $rdf = $xml->children('http://purl.org/rss/1.0/');
+            return $rdf->item ?? [];
         }
 
         return null;
