@@ -15,10 +15,13 @@ class SitemapService
 
     public function xml(): string
     {
-        return Cache::rememberForever(
+        $xml = Cache::rememberForever(
             self::CACHE_KEY,
             fn (): string => $this->buildAndStore(),
         );
+
+        // Remove legacy XSLT instructions from already-cached sitemap XML as well.
+        return preg_replace('/<\\?xml-stylesheet\\b[^?]*\\?>\\s*/i', '', $xml) ?? $xml;
     }
 
     public function rebuild(): array
@@ -91,7 +94,6 @@ class SitemapService
         }
 
         $xml = '<?xml version="1.0" encoding="UTF-8"?>'."\n";
-        $xml .= '<?xml-stylesheet type="text/xsl" href="/sitemap.xsl"?>'."\n";
         $xml .= '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'."\n";
 
         foreach (array_slice(array_values($urls), 0, 50000) as $url) {
