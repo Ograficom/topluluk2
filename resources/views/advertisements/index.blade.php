@@ -48,6 +48,17 @@
                 </div>
             </div>
 
+            <section class="stats__chart card card-body" style="margin-top:16px">
+                <header class="stats__chart-head">
+                    <div><h3 class="h5">Son 14 gün</h3><p class="small color-gray">Gösterim ve tıklama değişimi</p></div>
+                </header>
+                <div id="advertisement-chart-{{ $ad->id }}"
+                    class="stats__chart-canvas stats__chart-canvas--wide"
+                    data-labels='@json($stats['timeline']->pluck('date')->values())'
+                    data-impressions='@json($stats['timeline']->pluck('impressions')->values())'
+                    data-clicks='@json($stats['timeline']->pluck('clicks')->values())'></div>
+            </section>
+
             <div class="stats__chart-grid" style="margin-top:16px">
                 <section class="stats__chart card card-body">
                     <header class="stats__chart-head">
@@ -100,3 +111,36 @@
     @endforelse
     @include('layouts._pagination', ['paginator' => $ads])
 @endsection
+
+@push('scripts')
+<script src="{{ asset('assets/libs/apexcharts/apexcharts.min.js') }}"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    if (typeof ApexCharts === 'undefined') return;
+    document.querySelectorAll('[id^="advertisement-chart-"]').forEach((element) => {
+        const labels = JSON.parse(element.dataset.labels || '[]');
+        const impressions = JSON.parse(element.dataset.impressions || '[]');
+        const clicks = JSON.parse(element.dataset.clicks || '[]');
+        const styles = getComputedStyle(document.documentElement);
+        const textColor = styles.getPropertyValue('--text-color').trim() || '#212529';
+        const mutedColor = styles.getPropertyValue('--muted').trim() || '#64748b';
+        const borderColor = styles.getPropertyValue('--border-color').trim() || '#eef0f5';
+        const primaryColor = styles.getPropertyValue('--primary').trim() || '#0d6efd';
+        const greenColor = styles.getPropertyValue('--green').trim() || '#17b548';
+        new ApexCharts(element, {
+            chart: { type: 'area', height: 280, toolbar: { show: false }, zoom: { enabled: false }, fontFamily: 'Inter, system-ui, sans-serif' },
+            series: [{ name: 'Gösterim', data: impressions }, { name: 'Tıklama', data: clicks }],
+            colors: [primaryColor, greenColor],
+            dataLabels: { enabled: false },
+            stroke: { curve: 'smooth', width: 3 },
+            fill: { type: 'gradient', gradient: { opacityFrom: 0.4, opacityTo: 0.04, stops: [0, 90, 100] } },
+            grid: { borderColor, strokeDashArray: 4 },
+            legend: { labels: { colors: textColor } },
+            xaxis: { categories: labels, labels: { style: { colors: mutedColor } }, axisBorder: { color: borderColor }, axisTicks: { color: borderColor } },
+            yaxis: { min: 0, labels: { style: { colors: mutedColor } } },
+            tooltip: { theme: document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light' }
+        }).render();
+    });
+});
+</script>
+@endpush
