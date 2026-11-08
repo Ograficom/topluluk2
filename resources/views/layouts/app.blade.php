@@ -196,7 +196,7 @@
     @php($statsPage = request()->routeIs('stats.index'))
     @php($verificationPage = request()->routeIs('verification.notice'))
     <main class="container">
-        <div class="main {{ $settingsPage || $profilePage || $channelPage || $postCreatePage ? 'main__grid-full' : 'main__grid' }}">
+        <div class="main {{ $settingsPage || $profilePage || $channelPage ? 'main__grid-full' : 'main__grid' }}">
             <aside class="sidebar" aria-label="Kanallar ve yazarlar">
                 <div class="sidebar__body">
                     <section class="sidebar__section">
@@ -271,7 +271,7 @@
                     </section>
                 @endif
 
-                @unless ($profilePage || $channelPage || $postCreatePage)
+                @unless ($profilePage || $channelPage)
                 <aside class="main__widgets" aria-label="Sağ sütun">
                     <div class="widgets">
                         <section class="widget card card-body">
