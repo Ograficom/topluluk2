@@ -73,7 +73,7 @@
                             <h3 class="h5">Erişim ve etkileşim</h3>
                             <p class="small color-gray">Reklamın ayrıntılı performansı</p>
                         </div>
-                        <span class="ad-analytics-panel__icon"><x-repost-icon name="activity" size="19" /></span>
+                        <span class="ad-analytics-panel__icon"><x-repost-icon name="feed" size="19" /></span>
                     </header>
                     <div class="ad-analytics-metrics">
                         <div class="ad-analytics-metric">
@@ -105,7 +105,7 @@
                             <h3 class="h5">Reklamı kimler gördü?</h3>
                             <p class="small color-gray">Tekil oturumlara göre hedef kitle dağılımı</p>
                         </div>
-                        <span class="ad-analytics-panel__icon ad-analytics-panel__icon--green"><x-repost-icon name="users" size="19" /></span>
+                        <span class="ad-analytics-panel__icon ad-analytics-panel__icon--green"><x-repost-icon name="user" size="19" /></span>
                     </header>
                     <div class="ad-analytics-audience">
                         <div class="ad-analytics-audience__row">
@@ -131,7 +131,7 @@
                             <h3 class="h5">Tıklayan kitle</h3>
                             <p class="small color-gray">Reklam bağlantısına tıklayanların dağılımı</p>
                         </div>
-                        <span class="ad-analytics-panel__icon ad-analytics-panel__icon--orange"><x-repost-icon name="mouse-pointer-click" size="19" /></span>
+                        <span class="ad-analytics-panel__icon ad-analytics-panel__icon--orange"><x-repost-icon name="link" size="19" /></span>
                     </header>
                     <div class="ad-analytics-clicks">
                         <div class="ad-analytics-clicks__item">
@@ -161,7 +161,7 @@
                             <h3 class="h5">Reklam bütçesi</h3>
                             <p class="small color-gray">Toplam bütçe ve şu ana kadarki harcama</p>
                         </div>
-                        <span class="ad-analytics-panel__icon ad-analytics-panel__icon--blue"><x-repost-icon name="wallet" size="19" /></span>
+                        <span class="ad-analytics-panel__icon ad-analytics-panel__icon--blue"><x-repost-icon name="list" size="19" /></span>
                     </header>
                     <div class="ad-analytics-budget">
                         <div class="ad-analytics-budget__value">
