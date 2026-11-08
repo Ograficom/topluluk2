@@ -30,6 +30,11 @@
                     </div>
                 </div>
             </div>
+            @if ($isOwner)
+                <a class="post--sponsored-edit" href="{{ route('advertisements.edit', $ad) }}" aria-label="Reklamı düzenle" title="Reklamı düzenle">
+                    <x-repost-icon name="edit" size="17" />
+                </a>
+            @endif
         </header>
         <div class="post__short">
             <h2 class="post__short-title h3">
@@ -62,12 +67,6 @@
     <footer class="post__footer card-body" style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;box-sizing:border-box;padding-top:14px;padding-bottom:26px;min-height:78px">
         <span class="small color-gray">Sponsorlu içerik</span>
         <div style="display:flex;align-items:center;justify-content:flex-end;gap:10px;flex-wrap:wrap;min-width:0">
-            @if ($isOwner)
-                <a class="btn btn-secondary-ghost btn-sm" href="{{ route('advertisements.edit', $ad) }}" aria-label="Reklamı düzenle">
-                    <x-repost-icon name="edit" size="15" />
-                    Reklamı düzenle
-                </a>
-            @endif
             @if ($preview)
                 <span class="small color-gray">Reklam önizlemesi</span>
             @else
@@ -121,6 +120,32 @@
     .post--sponsored .user-box-content {
         flex: 1 1 auto;
         overflow: hidden;
+    }
+
+    .post--sponsored .post__header {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .post--sponsored .post--sponsored-edit {
+        display: inline-flex;
+        flex: 0 0 34px;
+        width: 34px;
+        height: 34px;
+        margin-left: auto;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid #e7ebf2;
+        border-radius: 9px;
+        color: #64748b;
+        background: #fff;
+        text-decoration: none;
+    }
+
+    .post--sponsored .post--sponsored-edit:hover {
+        color: #1769ff;
+        background: #f5f8ff;
     }
 
     .post--sponsored .user-box-content .name,
@@ -180,19 +205,22 @@
     }
 
     .post--sponsored .post__footer > span {
-        flex: 1 0 100%;
+        flex: 0 1 auto;
+        margin-right: auto;
+        white-space: nowrap;
     }
 
     .post--sponsored .post__footer > div {
         display: flex !important;
-        width: 100%;
+        width: auto;
         min-width: 0 !important;
-        justify-content: stretch !important;
+        justify-content: flex-end !important;
         gap: 8px !important;
+        margin-left: auto;
     }
 
     .post--sponsored .post__footer > div > a {
-        flex: 1 1 0 !important;
+        flex: 0 0 auto !important;
         min-width: 0 !important;
         max-width: 100%;
         justify-content: center;
