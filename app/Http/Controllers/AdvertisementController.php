@@ -40,6 +40,16 @@ class AdvertisementController extends Controller
             $ad->analytics['ctr'] = $ad->analytics['impressions'] > 0
                 ? round(($ad->analytics['clicks'] / $ad->analytics['impressions']) * 100, 2)
                 : 0;
+            $ad->analytics['timeline'] = collect(range(13, 0))->map(function (int $daysAgo) use ($adEvents): array {
+                $date = now()->subDays($daysAgo)->toDateString();
+                $dayEvents = $adEvents->filter(fn ($event) => $event->created_at->toDateString() === $date);
+
+                return [
+                    'date' => now()->subDays($daysAgo)->format('d.m'),
+                    'impressions' => $dayEvents->where('event_type', 'impression')->count(),
+                    'clicks' => $dayEvents->where('event_type', 'click')->count(),
+                ];
+            })->values();
         }
 
         return view('advertisements.index', compact('ads'));
