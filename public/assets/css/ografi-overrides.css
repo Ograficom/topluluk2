@@ -1977,3 +1977,83 @@ body.is-messenger-conversation .pm-dialog__composer .pm-composer__send svg {
     scrollbar-gutter: stable !important;
   }
 }
+
+
+/* Final conversation flex repair: reserve a real bottom row for the composer,
+   and give the message list the remaining height as its only scroll container. */
+@media (min-width: 641px) {
+  html:has(body.is-messenger-conversation),
+  body.is-messenger-conversation {
+    width: 100% !important;
+    height: 100dvh !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+  }
+  body.is-messenger-conversation main.container {
+    display: block !important;
+    height: calc(100dvh - var(--header-height)) !important;
+    min-height: 0 !important;
+    max-height: calc(100dvh - var(--header-height)) !important;
+    overflow: hidden !important;
+  }
+  body.is-messenger-conversation main.container > .main.main__grid {
+    display: grid !important;
+    grid-template-rows: minmax(0, 1fr) !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+  }
+  body.is-messenger-conversation main.container > .main.main__grid > .feed {
+    display: flex !important;
+    flex-direction: column !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    max-height: 100% !important;
+    overflow: hidden !important;
+  }
+  body.is-messenger-conversation .pm.card.card-body,
+  body.is-messenger-conversation .pm-dialog {
+    display: flex !important;
+    flex-direction: column !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    max-height: 100% !important;
+    overflow: hidden !important;
+  }
+  body.is-messenger-conversation .pm-dialog__header--conversation {
+    display: flex !important;
+    position: relative !important;
+    flex: 0 0 62px !important;
+    min-height: 62px !important;
+    margin-bottom: 8px !important;
+  }
+  body.is-messenger-conversation .pm-user-info[hidden] {
+    display: none !important;
+  }
+  body.is-messenger-conversation .pm-dialog__messages {
+    display: flex !important;
+    flex: 1 1 0% !important;
+    height: 0 !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    overscroll-behavior: contain !important;
+  }
+  body.is-messenger-conversation .pm-dialog > nav,
+  body.is-messenger-conversation .pm-dialog > .pagination {
+    display: none !important;
+  }
+  body.is-messenger-conversation .pm-dialog__composer.pm-composer {
+    display: flex !important;
+    position: relative !important;
+    inset: auto !important;
+    flex: 0 0 auto !important;
+    width: 100% !important;
+    min-height: 72px !important;
+    margin: 8px 0 0 !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    z-index: 5 !important;
+  }
+}
