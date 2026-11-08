@@ -13,7 +13,7 @@ use Throwable;
 
 class RssSources extends Page
 {
-    protected static string|\UnitEnum|null $navigationGroup = 'İçerik';
+    protected static string|\UnitEnum|null $navigationGroup = 'Ayarlar';
     protected static ?string $navigationLabel = 'Dış RSS kaynakları';
     protected static ?string $title = 'Dış RSS kaynakları';
     protected static ?int $navigationSort = 6;
