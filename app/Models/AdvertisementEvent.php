@@ -19,6 +19,10 @@ class AdvertisementEvent extends Model
 
     public static function record(Advertisement $advertisement, Request $request, string $type, int $seconds = 0): ?self
     {
+        if (! Schema::hasTable('advertisement_events')) {
+            return null;
+        }
+
         $visitorToken = hash('sha256', $request->session()->getId());
         $userId = $request->user()?->id;
 
