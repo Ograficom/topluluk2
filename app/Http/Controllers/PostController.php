@@ -51,7 +51,6 @@ class PostController extends Controller
             ->paginate(10)->withQueryString();
 
         $ads = $search === '' ? Advertisement::query()->deliverable()->with(['user', 'post'])->inRandomOrder()->limit(2)->get() : collect();
-        foreach ($ads as $ad) $ad->increment('impressions');
 
         $this->setViewerReactions($posts);
         return view('posts.index', compact('posts', 'ads', 'search', 'sort', 'period'));

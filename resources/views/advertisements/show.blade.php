@@ -66,3 +66,45 @@
         </footer>
     </article>
 @endsection
+
+@push('scripts')
+<script>
+(() => {
+    let activeMilliseconds = 0;
+    let lastTick = Date.now();
+    let sent = false;
+
+    const accountTime = () => {
+        const now = Date.now();
+        if (document.visibilityState === 'visible') {
+            activeMilliseconds += now - lastTick;
+        }
+        lastTick = now;
+    };
+
+    const sendRead = () => {
+        accountTime();
+        if (sent || activeMilliseconds < 15000) return;
+        sent = true;
+
+        fetch(@json(route('advertisements.read', $advertisement)), {
+            method: 'POST',
+            credentials: 'same-origin',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || '',
+                'X-Requested-With': 'XMLHttpRequest',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify({ seconds: Math.floor(activeMilliseconds / 1000) })
+        }).catch(() => { sent = false; });
+    };
+
+    window.setInterval(sendRead, 1000);
+    document.addEventListener('visibilitychange', () => {
+        accountTime();
+        lastTick = Date.now();
+    });
+})();
+</script>
+@endpush

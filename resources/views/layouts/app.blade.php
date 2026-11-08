@@ -115,7 +115,7 @@
                                 <a href="{{ route('settings.edit') }}"><x-repost-icon name="setting" size="20" class="color-gray" /><span>Ayarlar</span></a>
                             </li>
                             <li class="dropdown-menu-item dropdown-menu-item-lg">
-                                <a href="{{ route('advertisements.index') }}"><x-repost-icon name="image" size="20" class="color-gray" /><span>Reklam yöneticisi</span></a>
+                                <a href="{{ route('advertisements.index') }}"><x-repost-icon name="megaphone" size="20" class="color-gray" /><span>Reklam yöneticisi</span></a>
                             </li>
                             @if (auth()->user()->is_admin)
                                 <li class="dropdown-menu-item dropdown-menu-item-lg">

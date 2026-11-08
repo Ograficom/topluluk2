@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Advertisement;
+use App\Models\AdvertisementEvent;
 use App\Models\SiteSetting;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -15,7 +16,56 @@ class AdvertisementController extends Controller
     public function index(Request $request): View
     {
         $ads = $request->user()->advertisements()->with(['user', 'post'])->latest()->paginate(15);
+        $events = AdvertisementEvent::query()
+            ->whereIn('advertisement_id', $ads->getCollection()->pluck('id'))
+            ->get()
+            ->groupBy('advertisement_id');
+
+        foreach ($ads as $ad) {
+            $adEvents = $events->get($ad->id, collect());
+            $impressions = $adEvents->where('event_type', 'impression');
+            $clicks = $adEvents->whereIn('event_type', ['click', 'card_click']);
+            $outboundClicks = $adEvents->where('event_type', 'click');
+            $cardClicks = $adEvents->where('event_type', 'card_click');
+            $ad->analytics = [
+                'impressions' => (int) $ad->impressions,
+                'detail_views' => $adEvents->where('event_type', 'detail')->count(),
+                'clicks' => (int) $ad->clicks + $cardClicks->count(),
+                'card_clicks' => $cardClicks->count(),
+                'outbound_clicks' => (int) $ad->clicks,
+                'reads' => $adEvents->where('event_type', 'read')->count(),
+                'read_seconds' => (int) $adEvents->where('event_type', 'read')->sum('seconds'),
+                'returns' => $adEvents->where('event_type', 'return')->count(),
+                'members' => $impressions->whereNotNull('user_id')->unique('user_id')->count(),
+                'visitors' => $impressions->whereNull('user_id')->unique('visitor_token')->count(),
+                'member_clicks' => $clicks->whereNotNull('user_id')->count(),
+                'visitor_clicks' => $clicks->whereNull('user_id')->count(),
+            ];
+            $ad->analytics['ctr'] = $ad->analytics['impressions'] > 0
+                ? round(($ad->analytics['clicks'] / $ad->analytics['impressions']) * 100, 2)
+                : 0;
+            $ad->analytics['timeline'] = collect(range(13, 0))->map(function (int $daysAgo) use ($adEvents): array {
+                $date = now()->subDays($daysAgo)->toDateString();
+                $dayEvents = $adEvents->filter(fn ($event) => $event->created_at->toDateString() === $date);
+
+                return [
+                    'date' => now()->subDays($daysAgo)->format('d.m'),
+                    'impressions' => $dayEvents->where('event_type', 'impression')->count(),
+                    'clicks' => $dayEvents->whereIn('event_type', ['click', 'card_click'])->count(),
+                ];
+            })->values();
+        }
+
         return view('advertisements.index', compact('ads'));
+    }
+
+    public function trackImpression(Request $request, Advertisement $advertisement): \Illuminate\Http\Response
+    {
+        abort_unless(Advertisement::query()->whereKey($advertisement->id)->deliverable()->exists(), 404);
+
+        AdvertisementEvent::record($advertisement, $request, 'impression');
+
+        return response()->noContent();
     }
 
     public function create(): View
@@ -135,12 +185,41 @@ class AdvertisementController extends Controller
         abort_unless($isOwner || Advertisement::query()->whereKey($advertisement->id)->deliverable()->exists(), 404);
 
         $advertisement->load(['user', 'post']);
-        $advertisement->increment('impressions');
+        if (! $isOwner && ! $request->user()?->is_admin) {
+            AdvertisementEvent::record($advertisement, $request, 'detail');
+            if ($request->query('source') === 'feed') {
+                AdvertisementEvent::record($advertisement, $request, 'card_click');
+            }
+        }
+
+        $visitorToken = hash('sha256', $request->session()->getId());
+        $lastClick = AdvertisementEvent::query()->where('advertisement_id', $advertisement->id)
+            ->where('visitor_token', $visitorToken)->where('event_type', 'click')->latest()->first();
+        $lastReturn = AdvertisementEvent::query()->where('advertisement_id', $advertisement->id)
+            ->where('visitor_token', $visitorToken)->where('event_type', 'return')->latest()->first();
+
+        if (! $isOwner && ! $request->user()?->is_admin && $lastClick && (! $lastReturn || $lastClick->created_at->gt($lastReturn->created_at))) {
+            AdvertisementEvent::record($advertisement, $request, 'return');
+        }
 
         return view('advertisements.show', compact('advertisement'));
     }
 
-    public function click(Advertisement $advertisement): RedirectResponse
+    public function trackRead(Request $request, Advertisement $advertisement): \Illuminate\Http\Response
+    {
+        abort_unless(Advertisement::query()->whereKey($advertisement->id)->deliverable()->exists(), 404);
+
+        $sessionKey = 'advertisement_read_'.$advertisement->id;
+        if (! $request->session()->has($sessionKey)) {
+            $seconds = (int) $request->validate(['seconds' => ['required', 'integer', 'min:15', 'max:3600']])['seconds'];
+            AdvertisementEvent::record($advertisement, $request, 'read', $seconds);
+            $request->session()->put($sessionKey, true);
+        }
+
+        return response()->noContent();
+    }
+
+    public function click(Request $request, Advertisement $advertisement): RedirectResponse
     {
         abort_unless($advertisement->status === 'approved'
             && $advertisement->starts_at->isPast()
@@ -152,7 +231,7 @@ class AdvertisementController extends Controller
             return redirect()->route('advertisements.show', $advertisement);
         }
 
-        $advertisement->increment('clicks');
+        AdvertisementEvent::record($advertisement, $request, 'click');
         return redirect()->away($advertisement->target_url);
     }
 }

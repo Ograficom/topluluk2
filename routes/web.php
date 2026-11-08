@@ -212,7 +212,9 @@ Route::middleware(['auth', 'verified'])->group(function (): void {
     Route::post('/admin/site-branding/favicon', [SiteBrandingController::class, 'updateFavicon'])->middleware('throttle:10,1')->name('admin.site-branding.favicon.update');
 });
 
+Route::post('/advertisements/{advertisement}/impression', [AdvertisementController::class, 'trackImpression'])->middleware('throttle:120,1')->name('advertisements.impression');
 Route::get('/advertisements/{advertisement}', [AdvertisementController::class, 'show'])->name('advertisements.show');
+Route::post('/advertisements/{advertisement}/read', [AdvertisementController::class, 'trackRead'])->middleware('throttle:10,1')->name('advertisements.read');
 Route::get('/advertisements/{advertisement}/click', [AdvertisementController::class, 'click'])->middleware('throttle:60,1')->name('advertisements.click');
 Route::get('/posts/{post:slug}', [PostController::class, 'show'])->name('posts.show');
 Route::get('/channels', [ChannelController::class, 'index'])->name('channels.index');
