@@ -2231,3 +2231,28 @@ body.is-messenger-conversation .pm-dialog__composer .pm-composer__send svg {
 .rss-reader-summary{margin:0;font-size:13px;line-height:1.7;overflow-wrap:anywhere}
 .rss-reader-open{display:inline-flex;align-items:center;gap:5px;margin-top:12px;font-size:12px;font-weight:650}
 @media(max-width:640px){.rss-reader-item .card-body{padding:15px}.rss-reader-image,.rss-reader-image img{max-height:220px}}
+
+
+/* Right rail: sticky on desktop without creating a nested scrollbar. */
+@media screen and (min-width: 921px) {
+  html body main.container > .main.main__grid > aside.main__widgets {
+    position: sticky !important;
+    top: calc(var(--header-height, 70px) + var(--header-offset, 0px) + 12px) !important;
+    align-self: start !important;
+    max-height: none !important;
+    height: auto !important;
+    overflow: visible !important;
+  }
+}
+
+/* Match the original Repost ZIP mobile behavior: the right rail is removed from the feed entirely. */
+@media screen and (max-width: 920px) {
+  html body main.container > .main.main__grid > aside.main__widgets {
+    display: none !important;
+    visibility: hidden !important;
+    position: static !important;
+    height: 0 !important;
+    max-height: 0 !important;
+    overflow: hidden !important;
+  }
+}
