@@ -29,7 +29,7 @@ class AdvertisementController extends Controller
         $data = $request->validate([
             'title' => ['required', 'string', 'max:160'],
             'description' => ['required', 'string', 'max:2000'],
-            'image' => ['nullable', 'image', 'mimes:jpg,png,gif,webp', 'max:5120'],
+            'image' => ['nullable', 'image', 'mimes:jpg,jpeg,png,gif,webp', 'max:5120'],
             'video_url' => ['nullable', 'url', 'max:2048', 'starts_with:https://'],
             'target_url' => ['required', 'url', 'max:2048', 'starts_with:https://'],
             'button_text' => ['required', 'string', 'max:40'],
