@@ -59,6 +59,7 @@ class ExternalRssReader
 
             $saved = 0;
             foreach ($entries as $entry) {
+                if ($saved >= 100) break;
                 $item = $this->normalizeEntry($entry, $url);
                 if ($item === null) {
                     continue;
