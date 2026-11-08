@@ -96,7 +96,7 @@ class PostController extends Controller
         }
 
         $videoPath = $request->file('video_file')?->store('posts/videos', 'public');
-        if ($request->hasFile('video_file') && ! $videoPath) throw new \\RuntimeException('The post video could not be stored.');
+        if ($request->hasFile('video_file') && ! $videoPath) throw new \RuntimeException('The post video could not be stored.');
 
         $coverImage = $request->file('cover_image')?->store('posts', 'public');
         if ($request->hasFile('cover_image') && ! $coverImage) throw new \RuntimeException('The post cover image could not be stored.');
@@ -159,7 +159,7 @@ class PostController extends Controller
         }
 
         $newVideo = $request->file('video_file')?->store('posts/videos', 'public');
-        if ($request->hasFile('video_file') && ! $newVideo) throw new \\RuntimeException('The post video could not be stored.');
+        if ($request->hasFile('video_file') && ! $newVideo) throw new \RuntimeException('The post video could not be stored.');
 
         $newCover = $request->file('cover_image')?->store('posts', 'public');
         if ($request->hasFile('cover_image') && ! $newCover) throw new \RuntimeException('The post cover image could not be stored.');
