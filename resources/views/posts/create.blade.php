@@ -8,6 +8,7 @@
 @endpush
 
 @section('content')
+    <div class="d-flex justify-content-end mb-3"><a class="btn btn-secondary-ghost btn-sm" href="{{ route('advertisements.create') }}">Reklam oluştur</a></div>
     <header class="feed-heading">
         <h1 class="h3">{{ isset($post) ? 'Yazıyı düzenle' : 'Yazı oluştur' }}</h1>
         <p class="color-gray">{{ isset($post) ? 'Yazındaki bilgileri güncelle.' : 'Hikâyeni toplulukla paylaş.' }}</p>
