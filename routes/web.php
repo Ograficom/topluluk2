@@ -22,7 +22,7 @@ use Illuminate\Support\Facades\Storage;
 
 Route::get('/sitemap.xml', SitemapController::class)->name('sitemap');
 Route::get('/rss', [RssController::class, 'all'])->name('rss.all');
-Route::get('/rss.xml', [RssController::class, 'all'])->name('rss.xml');
+Route::get('/rss.xml', fn () => redirect()->route('rss.all', status: 301))->name('rss.xml');
 Route::get('/feed/latest.xml', [RssController::class, 'latest'])->name('rss.latest');
 Route::get('/feed/authors/{username}.xml', [RssController::class, 'author'])->name('rss.author');
 Route::get('/feed/channels/{slug}.xml', [RssController::class, 'channel'])->name('rss.channel');
