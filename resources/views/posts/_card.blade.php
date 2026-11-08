@@ -49,7 +49,7 @@
             <span>{{ number_format($post->views ?? 0) }} görüntülenme</span>
         </div>
         @if ($post->user?->publicUsername())
-            <a class="small color-gray" href="{{ route('profiles.show', $post->user) }}">@{{ $post->user->publicUsername() }}</a>
+            <a class="small color-gray" href="{{ route('profiles.show', $post->user) }}">{{ '@'.$post->user->publicUsername() }}</a>
         @endif
     </footer>
     @include('posts._interactions', ['post' => $post, 'interactionContainerClass' => 'card-body'])
