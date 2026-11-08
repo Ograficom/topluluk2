@@ -2236,3 +2236,11 @@ body.is-messenger-conversation .pm-dialog__composer .pm-composer__send svg {
     padding-top: 76px !important;
   }
 }
+
+
+/* Desktop conversation header: lift it slightly without changing any layout widths. */
+@media (min-width: 721px) {
+  body.is-messenger-conversation .pm-dialog__header--conversation {
+    margin-top: -8px !important;
+  }
+}
