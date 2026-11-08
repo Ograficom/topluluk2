@@ -51,7 +51,7 @@ class AdvertisementController extends Controller
                 return [
                     'date' => now()->subDays($daysAgo)->format('d.m'),
                     'impressions' => $dayEvents->where('event_type', 'impression')->count(),
-                    'clicks' => $dayEvents->where('event_type', 'click')->count(),
+                    'clicks' => $dayEvents->whereIn('event_type', ['click', 'card_click'])->count(),
                 ];
             })->values();
         }
