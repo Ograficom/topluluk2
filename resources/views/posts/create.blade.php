@@ -4,6 +4,7 @@
 
 @push('head')
     <link rel="stylesheet" href="{{ asset('assets/libs/tagify/tagify.css') }}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@editorjs/editorjs@2.30.8/dist/editor.min.css">
     <script src="{{ asset('assets/libs/tagify/tagify.js') }}"></script>
 @endpush
 
@@ -54,8 +55,10 @@
                     </li>
                     <li class="addpost__editor">
                         <label class="addpost__label" for="post-body">Yazı içeriği</label>
-                        <textarea id="post-body" name="body" rows="14" maxlength="100000" placeholder="Hikâyeni burada anlat..." required>{{ old('body', $post->body ?? '') }}</textarea>
-                        <p class="post-composer-hint">Paragraflar kullan, önemli noktaları açıkça anlat. Yayınlandıktan sonra yazı detay sayfanda görüntülenir.</p>
+                        <input type="hidden" id="post-body" name="body" value="{{ old('body', $post->body ?? '') }}" required>
+                        <div class="editorjs-toolbar-note">Metnini biçimlendir; başlık, liste, alıntı, kod ve tablo blokları ekle.</div>
+                        <div id="post-editorjs" class="post-editorjs" aria-label="Yazı içerik editörü"></div>
+                        <p class="post-composer-hint">İçeriğin otomatik olarak Editor.js blokları şeklinde kaydedilir.</p>
                     </li>
                     <li>
                         <label class="addpost__label" for="post-video-url">Video bağlantısı (HTTPS)</label>
@@ -149,3 +152,67 @@
         </aside>
     </div>
 @endsection
+
+@push('scripts')
+    <script src="https://cdn.jsdelivr.net/npm/@editorjs/editorjs@2.30.8"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@editorjs/header@2.8.8"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@editorjs/list@2.0.8"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@editorjs/quote@2.7.6"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@editorjs/code@2.9.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@editorjs/delimiter@1.4.2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@editorjs/table@2.4.3"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@editorjs/inline-code@1.5.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@editorjs/marker@1.4.0"></script>
+    <script>
+    (() => {
+      const input = document.getElementById('post-body');
+      const holder = document.getElementById('post-editorjs');
+      const form = holder?.closest('form');
+      if (!input || !holder || !form || !window.EditorJS) return;
+
+      const initial = input.value.trim();
+      let data = { blocks: [] };
+      if (initial) {
+        try {
+          const parsed = JSON.parse(initial);
+          if (parsed && Array.isArray(parsed.blocks)) data = parsed;
+          else data = { blocks: [{ type: 'paragraph', data: { text: initial.replace(/\\r?\\n/g, '<br>') } }] };
+        } catch (_) {
+          data = { blocks: initial.split(/\\n{2,}/).filter(Boolean).map(text => ({ type: 'paragraph', data: { text } })) };
+        }
+      }
+
+      const editor = new EditorJS({
+        holder: holder,
+        placeholder: 'Hikâyeni burada anlat...',
+        minHeight: 240,
+        data,
+        tools: {
+          header: { class: window.Header, inlineToolbar: true, config: { levels: [2, 3, 4], defaultLevel: 2 } },
+          list: { class: window.EditorjsList, inlineToolbar: true, config: { defaultStyle: 'unordered' } },
+          quote: { class: window.Quote, inlineToolbar: true, config: { quotePlaceholder: 'Alıntıyı yaz', captionPlaceholder: 'Kaynak' } },
+          code: { class: window.CodeTool },
+          delimiter: window.Delimiter,
+          table: { class: window.Table, inlineToolbar: true, config: { rows: 2, cols: 3 } },
+          inlineCode: window.InlineCode,
+          marker: window.Marker
+        },
+        onChange: async () => {
+          try { input.value = JSON.stringify(await editor.save()); } catch (_) {}
+        }
+      });
+
+      form.addEventListener('submit', async event => {
+        event.preventDefault();
+        try {
+          const output = await editor.save();
+          input.value = JSON.stringify(output);
+          HTMLFormElement.prototype.submit.call(form);
+        } catch (error) {
+          console.error('Editor.js kaydı başarısız:', error);
+          alert('Yazı içeriği hazırlanamadı. Lütfen tekrar deneyin.');
+        }
+      });
+    })();
+    </script>
+@endpush
