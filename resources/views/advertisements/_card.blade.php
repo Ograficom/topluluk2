@@ -100,6 +100,7 @@
 /* Sponsored advertisement card: mobile-only layout corrections */
 @media (max-width: 600px) {
     .post--sponsored {
+        position: relative;
         min-width: 0;
         max-width: 100%;
         overflow: hidden;
@@ -128,12 +129,17 @@
         gap: 10px;
     }
 
+    .post--sponsored .post__header {
+        padding-right: 42px;
+    }
+
     .post--sponsored .post--sponsored-edit {
+        position: absolute;
+        top: 12px;
+        right: 12px;
         display: inline-flex;
-        flex: 0 0 34px;
-        width: 34px;
-        height: 34px;
-        margin-left: auto;
+        width: 32px;
+        height: 32px;
         align-items: center;
         justify-content: center;
         border: 1px solid #e7ebf2;
@@ -141,6 +147,7 @@
         color: #64748b;
         background: #fff;
         text-decoration: none;
+        z-index: 2;
     }
 
     .post--sponsored .post--sponsored-edit:hover {
@@ -197,8 +204,9 @@
     }
 
     .post--sponsored .post__footer {
-        align-items: stretch !important;
-        gap: 10px !important;
+        align-items: center !important;
+        flex-wrap: nowrap !important;
+        gap: 8px !important;
         padding-top: 12px !important;
         padding-bottom: 16px !important;
         min-height: 0 !important;
@@ -206,12 +214,14 @@
 
     .post--sponsored .post__footer > span {
         flex: 0 1 auto;
+        min-width: 0;
         margin-right: auto;
         white-space: nowrap;
     }
 
     .post--sponsored .post__footer > div {
         display: flex !important;
+        flex: 0 0 auto;
         width: auto;
         min-width: 0 !important;
         justify-content: flex-end !important;
