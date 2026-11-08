@@ -213,6 +213,7 @@ Route::middleware(['auth', 'verified'])->group(function (): void {
 });
 
 Route::get('/advertisements/{advertisement}', [AdvertisementController::class, 'show'])->name('advertisements.show');
+Route::post('/advertisements/{advertisement}/read', [AdvertisementController::class, 'trackRead'])->middleware('throttle:10,1')->name('advertisements.read');
 Route::get('/advertisements/{advertisement}/click', [AdvertisementController::class, 'click'])->middleware('throttle:60,1')->name('advertisements.click');
 Route::get('/posts/{post:slug}', [PostController::class, 'show'])->name('posts.show');
 Route::get('/channels', [ChannelController::class, 'index'])->name('channels.index');
