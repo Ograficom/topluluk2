@@ -66,52 +66,121 @@
                     data-clicks='@json($stats['timeline']->pluck('clicks')->values())'></div>
             </section>
 
-            <div class="stats__chart-grid" style="margin-top:16px">
-                <section class="stats__chart card card-body">
-                    <header class="stats__chart-head">
-                        <div><h3 class="h5">Erişim ve etkileşim</h3><p class="small color-gray">Reklamın nasıl kullanıldığının özeti</p></div>
+            <div class="ad-analytics-details">
+                <section class="ad-analytics-panel card card-body">
+                    <header class="ad-analytics-panel__head">
+                        <div>
+                            <h3 class="h5">Erişim ve etkileşim</h3>
+                            <p class="small color-gray">Reklamın ayrıntılı performansı</p>
+                        </div>
+                        <span class="ad-analytics-panel__icon"><x-repost-icon name="feed" size="19" /></span>
                     </header>
-                    <div class="d-flex flex-wrap gap-3">
-                        <div><strong>{{ number_format($stats['detail_views']) }}</strong><div class="small color-gray">Ayrıntı görüntüleme</div></div>
-                        <div><strong>{{ number_format($stats['outbound_clicks']) }}</strong><div class="small color-gray">Dış bağlantı tıklaması</div></div>
-                        <div><strong>{{ number_format($stats['reads']) }}</strong><div class="small color-gray">Okuma (15 sn+)</div></div>
-                        <div><strong>{{ gmdate('H:i:s', min($stats['read_seconds'], 86399)) }}</strong><div class="small color-gray">Toplam okuma süresi</div></div>
-                        <div><strong>{{ number_format($stats['returns']) }}</strong><div class="small color-gray">Dış bağlantı sonrası geri dönüş</div></div>
+                    <div class="ad-analytics-metrics">
+                        <div class="ad-analytics-metric">
+                            <span class="ad-analytics-metric__label">Ayrıntı görüntüleme</span>
+                            <strong>{{ number_format($stats['detail_views']) }}</strong>
+                        </div>
+                        <div class="ad-analytics-metric">
+                            <span class="ad-analytics-metric__label">Dış bağlantı tıklaması</span>
+                            <strong>{{ number_format($stats['outbound_clicks']) }}</strong>
+                        </div>
+                        <div class="ad-analytics-metric">
+                            <span class="ad-analytics-metric__label">Okuma (15 sn+)</span>
+                            <strong>{{ number_format($stats['reads']) }}</strong>
+                        </div>
+                        <div class="ad-analytics-metric">
+                            <span class="ad-analytics-metric__label">Toplam okuma süresi</span>
+                            <strong>{{ gmdate('H:i:s', min($stats['read_seconds'], 86399)) }}</strong>
+                        </div>
+                        <div class="ad-analytics-metric">
+                            <span class="ad-analytics-metric__label">Geri dönüş</span>
+                            <strong>{{ number_format($stats['returns']) }}</strong>
+                        </div>
                     </div>
                 </section>
 
-                <section class="stats__chart card card-body">
-                    <header class="stats__chart-head">
-                        <div><h3 class="h5">Reklamı kimler gördü?</h3><p class="small color-gray">Tekil oturum bazında erişim</p></div>
+                <section class="ad-analytics-panel card card-body">
+                    <header class="ad-analytics-panel__head">
+                        <div>
+                            <h3 class="h5">Reklamı kimler gördü?</h3>
+                            <p class="small color-gray">Tekil oturumlara göre hedef kitle dağılımı</p>
+                        </div>
+                        <span class="ad-analytics-panel__icon ad-analytics-panel__icon--green"><x-repost-icon name="user" size="19" /></span>
                     </header>
-                    <div class="d-flex justify-content-between small"><span>Üyeler</span><strong>{{ number_format($stats['members']) }} · %{{ $memberPercent }}</strong></div>
-                    <div style="height:9px;background:var(--border-color,#eef0f5);border-radius:99px;overflow:hidden;margin:7px 0 14px"><div style="height:100%;width:{{ $memberPercent }}%;background:var(--primary,#0d6efd);border-radius:99px"></div></div>
-                    <div class="d-flex justify-content-between small"><span>Ziyaretçiler</span><strong>{{ number_format($stats['visitors']) }} · %{{ $visitorPercent }}</strong></div>
-                    <div style="height:9px;background:var(--border-color,#eef0f5);border-radius:99px;overflow:hidden;margin:7px 0 0"><div style="height:100%;width:{{ $visitorPercent }}%;background:var(--green,#17b548);border-radius:99px"></div></div>
+                    <div class="ad-analytics-audience">
+                        <div class="ad-analytics-audience__row">
+                            <span class="ad-analytics-dot ad-analytics-dot--member"></span>
+                            <span>Üyeler</span>
+                            <strong>{{ number_format($stats['members']) }}</strong>
+                            <span class="ad-analytics-audience__percent">%{{ $memberPercent }}</span>
+                        </div>
+                        <div class="ad-analytics-progress"><span class="ad-analytics-progress__member" style="width:{{ $memberPercent }}%"></span></div>
+                        <div class="ad-analytics-audience__row">
+                            <span class="ad-analytics-dot ad-analytics-dot--visitor"></span>
+                            <span>Ziyaretçiler</span>
+                            <strong>{{ number_format($stats['visitors']) }}</strong>
+                            <span class="ad-analytics-audience__percent">%{{ $visitorPercent }}</span>
+                        </div>
+                        <div class="ad-analytics-progress"><span class="ad-analytics-progress__visitor" style="width:{{ $visitorPercent }}%"></span></div>
+                    </div>
+                </section>
+
+                <section class="ad-analytics-panel card card-body">
+                    <header class="ad-analytics-panel__head">
+                        <div>
+                            <h3 class="h5">Tıklayan kitle</h3>
+                            <p class="small color-gray">Reklam bağlantısına tıklayanların dağılımı</p>
+                        </div>
+                        <span class="ad-analytics-panel__icon ad-analytics-panel__icon--orange"><x-repost-icon name="link" size="19" /></span>
+                    </header>
+                    <div class="ad-analytics-clicks">
+                        <div class="ad-analytics-clicks__item">
+                            <span class="ad-analytics-clicks__label"><span class="ad-analytics-dot ad-analytics-dot--member"></span>Üye tıklaması</span>
+                            <strong>{{ number_format($stats['member_clicks']) }}</strong>
+                            <span class="small color-gray">%{{ $memberClickPercent }}</span>
+                        </div>
+                        <div class="ad-analytics-clicks__item">
+                            <span class="ad-analytics-clicks__label"><span class="ad-analytics-dot ad-analytics-dot--visitor"></span>Ziyaretçi tıklaması</span>
+                            <strong>{{ number_format($stats['visitor_clicks']) }}</strong>
+                            <span class="small color-gray">%{{ $visitorClickPercent }}</span>
+                        </div>
+                    </div>
+                    @if ($stats['clicks'] > 0)
+                        <div class="ad-analytics-progress ad-analytics-progress--clicks">
+                            <span class="ad-analytics-progress__member" style="width:{{ $memberClickPercent }}%"></span>
+                            <span class="ad-analytics-progress__visitor" style="width:{{ $visitorClickPercent }}%"></span>
+                        </div>
+                    @else
+                        <p class="small color-gray ad-analytics-empty">Henüz tıklama verisi yok.</p>
+                    @endif
+                </section>
+
+                <section class="ad-analytics-panel card card-body">
+                    <header class="ad-analytics-panel__head">
+                        <div>
+                            <h3 class="h5">Reklam bütçesi</h3>
+                            <p class="small color-gray">Toplam bütçe ve şu ana kadarki harcama</p>
+                        </div>
+                        <span class="ad-analytics-panel__icon ad-analytics-panel__icon--blue"><x-repost-icon name="list" size="19" /></span>
+                    </header>
+                    <div class="ad-analytics-budget">
+                        <div class="ad-analytics-budget__value">
+                            <span class="small color-gray">Harcanan</span>
+                            <strong>{{ number_format((float) $ad->spent_amount, 2, ',', '.') }} ₺</strong>
+                        </div>
+                        <div class="ad-analytics-budget__value ad-analytics-budget__value--right">
+                            <span class="small color-gray">Toplam bütçe</span>
+                            <strong>{{ number_format((float) $ad->total_budget, 2, ',', '.') }} ₺</strong>
+                        </div>
+                    </div>
+                    <div class="ad-analytics-progress ad-analytics-progress--budget">
+                        <span style="width:{{ $ad->total_budget > 0 ? min(100, ((float) $ad->spent_amount / (float) $ad->total_budget) * 100) : 0 }}%"></span>
+                    </div>
+                    <p class="small color-gray ad-analytics-budget__foot">
+                        Kalan bütçe: <strong>{{ number_format(max(0, (float) $ad->total_budget - (float) $ad->spent_amount), 2, ',', '.') }} ₺</strong>
+                    </p>
                 </section>
             </div>
-
-            <section class="stats__chart card card-body" style="margin-top:16px">
-                <header class="stats__chart-head">
-                    <div><h3 class="h5">Tıklayan kitle</h3><p class="small color-gray">Üye ve ziyaretçi tıklamaları</p></div>
-                </header>
-                <div class="d-flex flex-wrap justify-content-between gap-3">
-                    <div><strong>{{ number_format($stats['member_clicks']) }}</strong><div class="small color-gray">Üye tıklaması</div></div>
-                    <div><strong>{{ number_format($stats['visitor_clicks']) }}</strong><div class="small color-gray">Ziyaretçi tıklaması</div></div>
-                    <div><strong>{{ number_format((float) $ad->total_budget, 2, ',', '.') }} ₺</strong><div class="small color-gray">Toplam bütçe</div></div>
-                    <div><strong>{{ number_format((float) $ad->spent_amount, 2, ',', '.') }} ₺</strong><div class="small color-gray">Harcanan</div></div>
-                </div>
-                @if ($stats['clicks'] > 0)
-                    <div style="display:flex;height:12px;overflow:hidden;border-radius:99px;background:var(--border-color,#eef0f5);margin-top:16px">
-                        <span style="width:{{ $memberClickPercent }}%;background:var(--primary,#0d6efd)"></span>
-                        <span style="width:{{ $visitorClickPercent }}%;background:var(--green,#17b548)"></span>
-                    </div>
-                    <div class="d-flex flex-wrap gap-3 small color-gray" style="margin-top:8px"><span>Üye %{{ $memberClickPercent }}</span><span>Ziyaretçi %{{ $visitorClickPercent }}</span></div>
-                @else
-                    <p class="small color-gray" style="margin-top:12px">Henüz tıklama verisi yok.</p>
-                @endif
-            </section>
-
             @else
                 <section class="card card-body">
                     <h3 class="h5">İstatistikler henüz hazır değil</h3>
