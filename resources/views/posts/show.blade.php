@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title', $post->title)
-@section('description', $post->excerpt)
+@section('description', $post->meta_description ?: $post->excerpt)
 
 @section('content')
     <div class="speedbar">
