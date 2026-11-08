@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Advertisement;
 use App\Models\Post;
 use App\Models\PostReaction;
 use App\Models\User;
@@ -36,7 +35,17 @@ class ProfileController extends Controller
         $posts = Post::query()
             ->published()
             ->where('user_id', $user->id)
-            ->with(['user', 'channel'])
+            ->where(function (Builder $query) use ($viewer, $user): void {
+                $query->whereNull('advertisement_id')
+                    ->orWhereHas('advertisement', function (Builder $advertisement) use ($viewer, $user): void {
+                        if ($viewer && $viewer->is($user)) {
+                            $advertisement->whereIn('status', ['pending', 'approved']);
+                        } else {
+                            $advertisement->deliverable();
+                        }
+                    });
+            })
+            ->with(['user', 'channel', 'advertisement'])
             ->withCount('comments')
             ->withCount([
                 'reactions as likes_count' => fn (Builder $query) => $query->where('type', PostReaction::LIKE),
@@ -53,31 +62,6 @@ class ProfileController extends Controller
                 $post->setAttribute('viewer_reaction', $post->reactions->first()?->type);
             }
         });
-
-        // Show only this profile owner's active advertisements as their own feed entries.
-        $profileAds = $posts->currentPage() === 1
-            ? Advertisement::query()
-                ->where('user_id', $user->id)
-                ->deliverable()
-                ->with('user')
-                ->latest('created_at')
-                ->limit(2)
-                ->get()
-            : collect();
-
-        foreach ($profileAds as $profileAd) {
-            $profileAd->increment('impressions');
-        }
-
-        $profileAdPositions = [];
-        $profileAdCount = $profileAds->count();
-        $profilePostCount = $posts->count();
-
-        if ($profileAdCount > 0 && $profilePostCount > 0) {
-            foreach ($profileAds as $adIndex => $profileAd) {
-                $profileAdPositions[(int) floor((($adIndex + 1) * ($profilePostCount + 1)) / ($profileAdCount + 1))] = $adIndex;
-            }
-        }
 
         $comments = $user->comments()
             ->with(['post', 'post.channel'])
@@ -113,7 +97,7 @@ class ProfileController extends Controller
         $topPosition = $topPosition === false ? null : $topPosition + 1;
 
         return view('profiles.show', compact(
-            'user', 'posts', 'profileAds', 'profileAdPositions', 'comments', 'isBlocked', 'isFollowing',
+            'user', 'posts', 'comments', 'isBlocked', 'isFollowing',
             'followersCount', 'followingCount', 'profileFollowers', 'allProfileFollowers', 'topPosition',
         ));
     }
