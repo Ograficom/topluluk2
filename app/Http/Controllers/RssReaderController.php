@@ -1,9 +1,9 @@
 <?php
 
-namespace App\\Http\\Controllers;
+namespace App\Http\Controllers;
 
-use App\\Services\\RssFeedService;
-use Illuminate\\Http\\Response;
+use App\Services\RssFeedService;
+use Illuminate\Http\Response;
 
 class RssReaderController extends Controller
 {
