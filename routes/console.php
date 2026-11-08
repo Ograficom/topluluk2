@@ -13,3 +13,8 @@ Schedule::call(fn () => app(SitemapService::class)->rebuild())
     ->everyFifteenMinutes()
     ->name('sitemap-rebuild')
     ->withoutOverlapping();
+
+Schedule::command('rss:fetch')
+    ->everyFifteenMinutes()
+    ->name('external-rss-fetch')
+    ->withoutOverlapping();
