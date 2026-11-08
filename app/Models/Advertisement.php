@@ -1,11 +1,11 @@
 <?php
 
-namespace App\\Models;
+namespace App\Models;
 
-use Illuminate\\Database\\Eloquent\\Builder;
-use Illuminate\\Database\\Eloquent\\Model;
-use Illuminate\\Database\\Relations\\BelongsTo;
-use Illuminate\\Support\\Facades\\Storage;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Relations\BelongsTo;
+use Illuminate\Support\Facades\Storage;
 
 class Advertisement extends Model
 {
