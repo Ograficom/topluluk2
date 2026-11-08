@@ -5611,3 +5611,54 @@ p {
     visibility: hidden !important;
   }
 }
+
+
+/* Comment editor: hidden means genuinely hidden, even when the form uses card styles. */
+.comment__edit-form[hidden] {
+  display: none !important;
+}
+.comment__edit-form:not([hidden]) {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: calc(100% - 50px);
+  margin: 12px 0 16px 50px;
+  padding: 16px;
+}
+.comment__edit-form textarea {
+  display: block;
+  width: 100%;
+  min-height: 100px;
+  padding: 12px 14px;
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  background: var(--white-900);
+  color: var(--title-color);
+  font: inherit;
+  line-height: 1.5;
+  resize: vertical;
+}
+.comment__edit-form .d-flex {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+.comment__edit-form .btn {
+  min-height: 36px;
+  padding: 7px 14px;
+}
+.comment__children > .comment > .comment__edit-form {
+  width: calc(100% - 26px);
+  margin-left: 26px;
+}
+@media (max-width: 640px) {
+  .comment__edit-form:not([hidden]) {
+    width: calc(100% - 12px);
+    margin-left: 12px;
+    padding: 13px;
+  }
+  .comment__children > .comment > .comment__edit-form {
+    width: calc(100% - 8px);
+    margin-left: 8px;
+  }
+}
