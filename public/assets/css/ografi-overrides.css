@@ -1895,3 +1895,25 @@ body.is-messenger-conversation .pm-dialog__composer .pm-composer__send svg {
     min-height: 0 !important;
   }
 }
+
+
+/* Desktop messenger: use the available viewport height, leaving only a small bottom gap. */
+@media (min-width: 641px) {
+  body.is-messenger-conversation .main > .feed {
+    position: sticky !important;
+    top: 8px !important;
+    height: calc(100dvh - 16px) !important;
+    min-height: 0 !important;
+    max-height: calc(100dvh - 16px) !important;
+    overflow: visible !important;
+  }
+  body.is-messenger-conversation .main > .feed > .pm.card.card-body {
+    height: 100% !important;
+    min-height: 0 !important;
+    max-height: 100% !important;
+  }
+  body.is-messenger-conversation .main > .feed > .pm.card.card-body .pm-dialog {
+    height: 100% !important;
+    min-height: 0 !important;
+  }
+}
