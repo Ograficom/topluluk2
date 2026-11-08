@@ -36,6 +36,14 @@
     @stack('head')
 </head>
 <body @class(['is-messenger-conversation' => request()->routeIs('messenger.show')])>
+    <div id="repost-icon-sprite" class="sprite" aria-hidden="true">
+        <svg xmlns="http://www.w3.org/2000/svg" width="0" height="0" fill="none" style="visibility:hidden;position:absolute" aria-hidden="true">
+            <symbol id="message" viewBox="0 0 24 24">
+                <path d="M21 11.5a8.5 8.5 0 0 1-8.5 8.5 8.4 8.4 0 0 1-3.6-.8L3 21l1.8-4.9A8.4 8.4 0 0 1 4 12.5 8.5 8.5 0 1 1 21 11.5Z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+            </symbol>
+        </svg>
+    </div>
+
     <header class="header">
         <div class="header__inner container">
             <div class="header__start">
