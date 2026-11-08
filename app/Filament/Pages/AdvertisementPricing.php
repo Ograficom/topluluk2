@@ -16,7 +16,7 @@ class AdvertisementPricing extends Page
     protected static ?string $navigationLabel = 'Reklam fiyatlandırması';
     protected static ?string $title = 'Reklam fiyatlandırması';
     protected static ?int $navigationSort = 5;
-    protected static string|\\BackedEnum|null $navigationIcon = Heroicon::OutlinedCurrencyDollar;
+    protected static string|\\BackedEnum|null $navigationIcon = Heroicon::OutlinedCog6Tooth;
 
     protected string $view = 'filament.pages.advertisement-pricing';
 
