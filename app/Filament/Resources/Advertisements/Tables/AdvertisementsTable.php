@@ -1,11 +1,11 @@
 <?php
 
-namespace App\\Filament\\Resources\\Advertisements\\Tables;
+namespace App\Filament\Resources\Advertisements\Tables;
 
-use Filament\\Actions\\EditAction;
-use Filament\\Tables\\Columns\\TextColumn;
-use Filament\\Tables\\Filters\\SelectFilter;
-use Filament\\Tables\\Table;
+use Filament\Actions\EditAction;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\SelectFilter;
+use Filament\Tables\Table;
 
 class AdvertisementsTable
 {
