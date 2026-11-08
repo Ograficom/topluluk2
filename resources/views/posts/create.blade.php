@@ -4,7 +4,6 @@
 
 @push('head')
     <link rel="stylesheet" href="{{ asset('assets/libs/tagify/tagify.css') }}">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@editorjs/editorjs@2.30.8/dist/editor.min.css">
     <script src="{{ asset('assets/libs/tagify/tagify.js') }}"></script>
 @endpush
 
@@ -55,7 +54,7 @@
                     </li>
                     <li class="addpost__editor">
                         <label class="addpost__label" for="post-body">Yazı içeriği</label>
-                        <input type="hidden" id="post-body" name="body" value="{{ old('body', $post->body ?? '') }}" required>
+                        <input type="hidden" id="post-body" name="body" value="{{ old('body', $post->body ?? '') }}">
                         <div class="editorjs-toolbar-note">Metnini biçimlendir; başlık, liste, alıntı, kod ve tablo blokları ekle.</div>
                         <div id="post-editorjs" class="post-editorjs" aria-label="Yazı içerik editörü"></div>
                         <p class="post-composer-hint">İçeriğin otomatik olarak Editor.js blokları şeklinde kaydedilir.</p>
