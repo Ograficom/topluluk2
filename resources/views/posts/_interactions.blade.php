@@ -5,7 +5,7 @@
     @php($isBookmarked = auth()->user()->bookmarks()->whereKey($post->id)->exists())
 @endif
 
-<div class="post__options">
+<div class="post__options {{ $interactionContainerClass ?? '' }}">
     <div class="post__options-set">
         @auth
             <form action="{{ route('posts.reactions.store', ['post' => $post, 'type' => 'like']) }}" method="POST">
@@ -37,11 +37,11 @@
             <x-repost-icon name="comment" size="20" />
             {{ number_format($post->comments_count ?? 0) }}
         </a>
-        <div class="dropdown post-share-dropdown">
+        <div class="dropdown dropup dropdown-md post-share-dropdown">
             <button class="btn btn-md btn-square btn-primary-soft" type="button" data-dropdown-toggle aria-expanded="false" aria-label="Paylaş" title="Paylaş">
                 <x-repost-icon name="share" size="20" />
             </button>
-            <ul class="dropdown-menu dropdown-menu-end post-share-menu">
+            <ul class="dropdown-menu dropdown-menu-center post-share-menu">
                 <li class="dropdown-menu-item dropdown-menu-item-sm">
                     <a href="https://t.me/share/url?url={{ urlencode(route('posts.show', $post)) }}&amp;text={{ urlencode($post->title) }}" target="_blank" rel="noopener noreferrer">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
