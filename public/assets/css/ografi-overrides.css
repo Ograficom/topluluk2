@@ -2057,3 +2057,20 @@ body.is-messenger-conversation .pm-dialog__composer .pm-composer__send svg {
     z-index: 5 !important;
   }
 }
+
+
+/* Remove the redundant outer conversation card surface.
+   Keep the individual conversation header and composer surfaces intact. */
+body.is-messenger-conversation article.pm.card.card-body {
+  background: transparent !important;
+  border: 0 !important;
+  outline: 0 !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  padding: 0 !important;
+}
+body.is-messenger-conversation article.pm.card.card-body::before,
+body.is-messenger-conversation article.pm.card.card-body::after {
+  display: none !important;
+  content: none !important;
+}
