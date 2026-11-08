@@ -16,7 +16,7 @@ class Post extends Model
     use HasFactory;
 
     protected $fillable = [
-        'user_id', 'channel_id', 'title', 'slug', 'excerpt', 'body',
+        'user_id', 'channel_id', 'advertisement_id', 'title', 'slug', 'excerpt', 'body',
         'cover_image', 'media', 'video_url', 'tags', 'is_published',
         'published_at', 'views', 'is_adult',
     ];
@@ -34,6 +34,7 @@ class Post extends Model
 
     public function user(): BelongsTo { return $this->belongsTo(User::class); }
     public function channel(): BelongsTo { return $this->belongsTo(Channel::class); }
+    public function advertisement(): BelongsTo { return $this->belongsTo(Advertisement::class); }
     public function comments(): HasMany { return $this->hasMany(Comment::class)->latest(); }
     public function reactions(): HasMany { return $this->hasMany(PostReaction::class); }
 

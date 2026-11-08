@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 
 class Advertisement extends Model
@@ -37,9 +39,32 @@ class Advertisement extends Model
                 $advertisement->rejection_reason = null;
             }
         });
+
+        static::saved(function (Advertisement $advertisement): void {
+            $post = $advertisement->post;
+            $base = Str::limit(Str::slug($advertisement->title) ?: 'sponsored-post', 240, '');
+            $slug = $post?->slug ?? $base;
+            for ($suffix = 1; Post::query()->where('slug', $slug)->when($post, fn ($q) => $q->where('id', '<>', $post->id))->exists(); $suffix++) {
+                $slug = Str::limit($base, 240 - strlen((string) $suffix), '').'-'.$suffix;
+            }
+            $attributes = [
+                'user_id' => $advertisement->user_id,
+                'title' => $advertisement->title,
+                'slug' => $slug,
+                'excerpt' => Str::limit($advertisement->description, 500),
+                'body' => $advertisement->description,
+                'cover_image' => $advertisement->image_path,
+                'video_url' => $advertisement->video_url,
+                'is_published' => true,
+                'published_at' => $advertisement->created_at ?? now(),
+                'is_adult' => false,
+            ];
+            $post ? $post->update($attributes) : $advertisement->post()->create($attributes);
+        });
     }
 
     public function user(): BelongsTo { return $this->belongsTo(User::class); }
+    public function post(): HasOne { return $this->hasOne(Post::class); }
     public function approver(): BelongsTo { return $this->belongsTo(User::class, 'approved_by'); }
 
     public function imageUrl(): ?string

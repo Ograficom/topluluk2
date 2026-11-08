@@ -111,15 +111,16 @@
                                                     @if ($user->hasVerifiedCompanyBadge())<x-company-verified-badge size="14" />@endif
                                                 </a>
                                                 <div class="meta">
-                                                    @if ($post->channel)<a href="{{ route('channels.show', $post->channel) }}">{{ $post->channel->name }}</a>@endif
+                                                    @if ($post->advertisement)<span>Sponsorlu içerik</span>@elseif ($post->channel)<a href="{{ route('channels.show', $post->channel) }}">{{ $post->channel->name }}</a>@endif
                                                     <time datetime="{{ $post->published_at?->toAtomString() }}">{{ $post->published_at?->diffForHumans() ?? $post->created_at->diffForHumans() }}</time>
                                                 </div>
                                             </div>
                                         </div>
                                     </header>
                                     <div class="post__short">
-                                        <h2 class="post__short-title h3"><a href="{{ route('posts.show', $post) }}" class="color-title"><span class="post__short-title-text">{{ $post->title }}</span></a></h2>
+                                        <h2 class="post__short-title h3">@if ($post->advertisement && $post->advertisement->status === 'approved')<a href="{{ route('advertisements.click', $post->advertisement) }}" class="color-title" rel="sponsored nofollow"><span class="post__short-title-text">{{ $post->title }}</span></a>@else<a href="{{ route('posts.show', $post) }}" class="color-title"><span class="post__short-title-text">{{ $post->title }}</span></a>@endif</h2>
                                         @if ($post->excerpt)<div class="text-clamp-3 color-text">{{ $post->excerpt }}</div>@endif
+                                        @if ($post->advertisement && auth()->check() && auth()->user()->is($user) && $post->advertisement->status === 'pending')<div class="small color-gray">Reklam başvurusu · Onay bekliyor</div>@endif
                                         @if (filled($post->tags))
                                             <div class="post__tags">@foreach ($post->tags as $tag)<a href="{{ route('posts.index', ['q' => $tag]) }}">{{ $tag }}</a>@endforeach</div>
                                         @endif
@@ -130,19 +131,17 @@
                                 @endif
                                 <footer class="post__footer card-body">
                                     <div class="post__footer-stats small color-gray"><span>{{ number_format($post->likes_count) }} beğeni</span><span>{{ number_format($post->views) }} görüntülenme</span></div>
-                                    @if ($post->user?->publicUsername())<span class="small color-gray">{{ '@'.$post->user->publicUsername() }}</span>@endif
+                                    @if ($post->advertisement && $post->advertisement->status === 'approved')<a class="btn btn-primary btn-sm" href="{{ route('advertisements.click', $post->advertisement) }}" rel="sponsored nofollow">{{ $post->advertisement->button_text }}</a>@elseif ($post->advertisement)<span class="small color-gray">Yayın onayı bekleniyor</span>@elseif ($post->user?->publicUsername())<span class="small color-gray">{{ '@'.$post->user->publicUsername() }}</span>@endif
                                 </footer>
-                                @include('posts._interactions', ['post' => $post])
+                                @unless ($post->advertisement)
+                                    @include('posts._interactions', ['post' => $post])
+                                @else
+                                    <div class="post__footer card-body"><span class="small color-gray">Sponsorlu içerik</span></div>
+                                @endunless
                             </article>
 
-                            @if (isset($profileAdPositions[$loop->iteration]))
-                                @include('advertisements._card', ['ad' => $profileAds->get($profileAdPositions[$loop->iteration])])
-                            @endif
                         @empty
                             <section class="card card-body empty-state"><h2 class="h4">Henüz yazı yok</h2></section>
-                            @foreach ($profileAds as $profileAd)
-                                @include('advertisements._card', ['ad' => $profileAd])
-                            @endforeach
                         @endforelse
                         @include('layouts._pagination', ['paginator' => $posts])
                     </div>
