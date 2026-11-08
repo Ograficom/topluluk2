@@ -2569,7 +2569,10 @@ body.is-messenger-conversation .pm-dialog__composer .pm-composer__send svg {
     border-radius:8px;
     background:#fff;
     color:#475569;
-    font:600 12px/1.2 inherit;
+    font-family:inherit;
+    font-size:12px;
+    font-weight:600;
+    line-height:1.2;
     cursor:pointer;
 }
 .post-create-simple__editor-toolbar button:hover,
