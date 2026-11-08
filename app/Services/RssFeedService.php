@@ -144,7 +144,7 @@ class RssFeedService
             'author' => url('/feed/authors/'.rawurlencode((string) $slug).'.xml'),
             'channel' => url('/feed/channels/'.rawurlencode((string) $slug).'.xml'),
             'tag' => url('/feed/tags/'.rawurlencode((string) $slug).'.xml'),
-            default => url('/rss.xml'),
+            default => url('/rss'),
         };
     }
 
