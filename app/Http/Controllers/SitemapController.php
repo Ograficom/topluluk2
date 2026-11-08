@@ -14,8 +14,12 @@ class SitemapController extends Controller
         abort_unless(SitemapSetting::current()->enabled, 404);
 
         $raw = $request->boolean('raw');
+        $xml = $sitemap->xml();
 
-        return response($sitemap->xml(), 200, [
+        // Strip any stylesheet processing instruction, including one left by an older cached build.
+        $xml = preg_replace('/<\\?xml-stylesheet\\b[^?]*\\?>\\s*/i', '', $xml) ?? $xml;
+
+        return response($xml, 200, [
             // Normal endpoint remains machine-readable XML for Google and Yandex.
             // ?raw=1 asks the browser to display the literal XML markup as text.
             'Content-Type' => $raw ? 'text/plain; charset=UTF-8' : 'application/xml; charset=UTF-8',
