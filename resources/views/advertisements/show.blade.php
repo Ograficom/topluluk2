@@ -70,21 +70,21 @@
 @push('scripts')
 <script>
 (() => {
-    let activeSeconds = 0;
+    let activeMilliseconds = 0;
     let lastTick = Date.now();
     let sent = false;
 
     const accountTime = () => {
         const now = Date.now();
         if (document.visibilityState === 'visible') {
-            activeSeconds += Math.floor((now - lastTick) / 1000);
+            activeMilliseconds += now - lastTick;
         }
         lastTick = now;
     };
 
     const sendRead = () => {
         accountTime();
-        if (sent || activeSeconds < 15) return;
+        if (sent || activeMilliseconds < 15000) return;
         sent = true;
 
         fetch(@json(route('advertisements.read', $advertisement)), {
@@ -96,7 +96,7 @@
                 'X-Requested-With': 'XMLHttpRequest',
                 'Accept': 'application/json'
             },
-            body: JSON.stringify({ seconds: activeSeconds })
+            body: JSON.stringify({ seconds: Math.floor(activeMilliseconds / 1000) })
         }).catch(() => { sent = false; });
     };
 
