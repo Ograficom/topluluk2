@@ -30,7 +30,7 @@ class AdvertisementController extends Controller
             $clicks = $adEvents->whereIn('event_type', ['click', 'card_click']);
             $outboundClicks = $adEvents->where('event_type', 'click');
             $cardClicks = $adEvents->where('event_type', 'card_click');
-            $ad->analytics = [
+            $analytics = [
                 'impressions' => (int) $ad->impressions,
                 'detail_views' => $adEvents->where('event_type', 'detail')->count(),
                 'clicks' => (int) $ad->clicks + $cardClicks->count(),
@@ -44,10 +44,10 @@ class AdvertisementController extends Controller
                 'member_clicks' => $clicks->whereNotNull('user_id')->count(),
                 'visitor_clicks' => $clicks->whereNull('user_id')->count(),
             ];
-            $ad->analytics['ctr'] = $ad->analytics['impressions'] > 0
-                ? round(($ad->analytics['clicks'] / $ad->analytics['impressions']) * 100, 2)
+            $analytics['ctr'] = $analytics['impressions'] > 0
+                ? round(($analytics['clicks'] / $analytics['impressions']) * 100, 2)
                 : 0;
-            $ad->analytics['timeline'] = collect(range(13, 0))->map(function (int $daysAgo) use ($adEvents): array {
+            $analytics['timeline'] = collect(range(13, 0))->map(function (int $daysAgo) use ($adEvents): array {
                 $date = now()->subDays($daysAgo)->toDateString();
                 $dayEvents = $adEvents->filter(fn ($event) => $event->created_at->toDateString() === $date);
 
@@ -57,6 +57,7 @@ class AdvertisementController extends Controller
                     'clicks' => $dayEvents->whereIn('event_type', ['click', 'card_click'])->count(),
                 ];
             })->values();
+            $ad->setAttribute('analytics', $analytics);
         }
 
         return view('advertisements.index', compact('ads'));
