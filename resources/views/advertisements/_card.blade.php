@@ -59,7 +59,7 @@
         </section>
     @endif
 
-    <footer class="post__footer card-body" style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
+    <footer class="post__footer card-body" style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;box-sizing:border-box;padding-top:14px;padding-bottom:26px;min-height:78px">
         <span class="small color-gray">Sponsorlu içerik</span>
         <div style="display:flex;align-items:center;justify-content:flex-end;gap:10px;flex-wrap:wrap;min-width:0">
             @if ($isOwner)
