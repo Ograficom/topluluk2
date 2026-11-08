@@ -98,144 +98,67 @@
 
 <style>
 /* Sponsored advertisement card: mobile-only layout corrections */
+.post-sponsored-edit__label { display: inline; }
+
 @media (max-width: 600px) {
-    .post--sponsored {
-        min-width: 0;
-        max-width: 100%;
-        overflow: hidden;
-        box-sizing: border-box;
-    }
+    .post--sponsored { position: relative; }
 
-    .post--sponsored .card-body,
-    .post--sponsored .post__header,
-    .post--sponsored .user-box,
-    .post--sponsored .user-box-content,
-    .post--sponsored .post__short,
-    .post--sponsored .post__short-media {
-        min-width: 0;
-        max-width: 100%;
-        box-sizing: border-box;
-    }
-
-    .post--sponsored .user-box-content {
-        flex: 1 1 auto;
-        overflow: hidden;
-    }
-
-    .post--sponsored .post__header {
-        display: flex;
-        align-items: flex-start;
-        gap: 10px;
-    }
-
-    .post--sponsored .post--sponsored-edit {
-        display: inline-flex;
-        flex: 0 0 34px;
-        width: 34px;
-        height: 34px;
-        margin-left: auto;
-        align-items: center;
-        justify-content: center;
-        border: 1px solid #e7ebf2;
-        border-radius: 9px;
-        color: #64748b;
-        background: #fff;
-        text-decoration: none;
-    }
-
-    .post--sponsored .post--sponsored-edit:hover {
-        color: #1769ff;
-        background: #f5f8ff;
-    }
-
-    .post--sponsored .user-box-content .name,
-    .post--sponsored .user-box-content .meta {
-        min-width: 0;
-        max-width: 100%;
-        overflow-wrap: anywhere;
-    }
-
-    .post--sponsored .post__short-title,
-    .post--sponsored .post__short-title-text,
-    .post--sponsored .post__short p {
-        overflow-wrap: anywhere;
-        word-break: normal;
-    }
-
-    .post--sponsored .post__short-media {
-        padding-top: 0;
-    }
-
-    .post--sponsored .post__media,
-    .post--sponsored .post__media a {
-        display: block;
-        width: 100%;
-        max-width: 100%;
-        min-width: 0;
-    }
-
-    /* The theme gives .post__media a fixed 340px height.
-       Remove that fixed box on phones so the complete ad image is visible. */
-    .post--sponsored .post__media:not(:has(.post__media-player-slide)) {
-        height: auto !important;
-        min-height: 0;
-        max-height: none;
-        aspect-ratio: auto;
-        overflow: visible;
-    }
-
-    .post--sponsored .post__media-image,
-    .post--sponsored .post__media img,
-    .post--sponsored .post__media video {
-        display: block;
-        width: 100%;
-        max-width: 100%;
-        height: auto !important;
-        max-height: none;
-        object-fit: contain;
-        box-sizing: border-box;
-    }
-
+    /* Keep sponsor label and CTA on one shared footer row. */
     .post--sponsored .post__footer {
-        align-items: stretch !important;
-        gap: 10px !important;
+        display: flex !important;
+        flex-direction: row !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        flex-wrap: nowrap !important;
+        gap: 8px !important;
         padding-top: 12px !important;
         padding-bottom: 16px !important;
         min-height: 0 !important;
     }
 
     .post--sponsored .post__footer > span {
-        flex: 0 1 auto;
-        margin-right: auto;
+        flex: 1 1 auto !important;
+        min-width: 0;
         white-space: nowrap;
     }
 
     .post--sponsored .post__footer > div {
         display: flex !important;
-        width: auto;
+        flex: 0 0 auto !important;
+        width: auto !important;
         min-width: 0 !important;
         justify-content: flex-end !important;
-        gap: 8px !important;
-        margin-left: auto;
     }
 
-    .post--sponsored .post__footer > div > a {
-        flex: 0 0 auto !important;
-        min-width: 0 !important;
-        max-width: 100%;
+    .post--sponsored .post__footer > div > a.post-sponsored-edit {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        z-index: 2;
+        display: inline-flex !important;
+        width: 34px !important;
+        height: 34px;
+        min-height: 34px;
+        padding: 0 !important;
+        align-items: center;
         justify-content: center;
-        padding-right: 8px !important;
-        padding-left: 8px !important;
-        min-height: 42px;
-        font-size: 13px;
-        line-height: 1.2;
-        white-space: normal !important;
-        text-align: center;
-        overflow-wrap: anywhere;
+        border: 0;
+        border-radius: 9px;
+        background: rgba(255,255,255,.94);
+        color: #64748b;
     }
+
+    .post--sponsored .post-sponsored-edit__label { display: none; }
 
     .post--sponsored .post__footer > div > a.btn-primary {
+        display: inline-flex !important;
+        flex: 0 0 auto !important;
+        width: auto !important;
         min-width: 0 !important;
+        max-width: 100%;
+        min-height: 42px;
+        padding: 0 18px !important;
+        white-space: nowrap !important;
     }
 }
 
