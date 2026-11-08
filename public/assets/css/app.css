@@ -5357,3 +5357,13 @@ p {
     min-width: 104px;
   }
 }
+
+
+/* Repost sidebar: never append the desktop right column below the feed on small screens. */
+@media screen and (max-width: 920px) {
+  html body .main__widgets,
+  html body aside.main__widgets {
+    display: none !important;
+    visibility: hidden !important;
+  }
+}
