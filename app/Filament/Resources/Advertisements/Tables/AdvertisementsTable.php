@@ -17,8 +17,8 @@ class AdvertisementsTable
             TextColumn::make('status')->label('Durum')->badge(),
             TextColumn::make('billing_type')->label('Tür')->badge(),
             TextColumn::make('payment_status')->label('Ödeme')->badge(),
-            TextColumn::make('starts_at')->label('Başlangıç')->dateTime('d.m.Y H:i')->sortable(),
-            TextColumn::make('ends_at')->label('Bitiş')->dateTime('d.m.Y H:i')->sortable(),
+            TextColumn::make('starts_at')->label('Başlangıç')->dateTime('d.m.Y H:i', 'Europe/Istanbul')->sortable(),
+            TextColumn::make('ends_at')->label('Bitiş')->dateTime('d.m.Y H:i', 'Europe/Istanbul')->sortable(),
             TextColumn::make('impressions')->label('Gösterim')->numeric(),
             TextColumn::make('clicks')->label('Tıklama')->numeric(),
         ])->filters([

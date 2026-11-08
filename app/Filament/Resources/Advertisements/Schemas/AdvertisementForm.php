@@ -20,8 +20,8 @@ class AdvertisementForm
             TextInput::make('video_url')->label('Video bağlantısı')->url()->maxLength(2048),
             TextInput::make('target_url')->label('Hedef bağlantı')->url()->required()->columnSpanFull(),
             TextInput::make('button_text')->label('Buton yazısı')->required()->maxLength(40),
-            DateTimePicker::make('starts_at')->label('Başlangıç')->required(),
-            DateTimePicker::make('ends_at')->label('Bitiş')->required(),
+            DateTimePicker::make('starts_at')->label('Başlangıç')->timezone('Europe/Istanbul')->required(),
+            DateTimePicker::make('ends_at')->label('Bitiş')->timezone('Europe/Istanbul')->required(),
             Select::make('status')->label('Yayın durumu')->default('pending')->options([
                 'pending' => 'Onay bekliyor', 'approved' => 'Onaylandı', 'rejected' => 'Reddedildi', 'paused' => 'Durduruldu',
             ])->required(),
