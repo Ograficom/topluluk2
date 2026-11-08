@@ -115,7 +115,7 @@
                                 <a href="{{ route('settings.edit') }}"><x-repost-icon name="setting" size="20" class="color-gray" /><span>Ayarlar</span></a>
                             </li>
                             <li class="dropdown-menu-item dropdown-menu-item-lg">
-                                <a href="{{ route('advertisements.index') }}"><x-repost-icon name="image" size="20" class="color-gray" /><span>Reklam yöneticisi</span></a>
+                                <a href="{{ route('advertisements.index') }}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" class="color-gray" aria-hidden="true"><path d="M3 11v2a2 2 0 0 0 2 2h2l10 5V4L7 9H5a2 2 0 0 0-2 2Z"/><path d="M7 15l2 6h4l-2.5-7.25"/><path d="M17 8a5 5 0 0 1 0 8"/></svg><span>Reklam yöneticisi</span></a>
                             </li>
                             @if (auth()->user()->is_admin)
                                 <li class="dropdown-menu-item dropdown-menu-item-lg">
