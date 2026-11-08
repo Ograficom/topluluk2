@@ -10,6 +10,7 @@ class RssSource extends Model
     protected $fillable = [
         'name',
         'url',
+        'url_hash',
         'site_url',
         'description',
         'is_active',
