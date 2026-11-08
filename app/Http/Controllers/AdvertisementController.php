@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Advertisement;
+use App\Models\AdvertisementEvent;
 use App\Models\SiteSetting;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -176,7 +177,7 @@ class AdvertisementController extends Controller
         return view('advertisements.show', compact('advertisement'));
     }
 
-    public function trackRead(Request $request, Advertisement $advertisement): \\Illuminate\\Http\\Response
+    public function trackRead(Request $request, Advertisement $advertisement): \Illuminate\Http\Response
     {
         abort_unless(Advertisement::query()->whereKey($advertisement->id)->deliverable()->exists(), 404);
 
