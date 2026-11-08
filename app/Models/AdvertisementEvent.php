@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Schema;
 
 class AdvertisementEvent extends Model
 {
@@ -19,6 +20,10 @@ class AdvertisementEvent extends Model
 
     public static function record(Advertisement $advertisement, Request $request, string $type, int $seconds = 0): ?self
     {
+        if (! Schema::hasTable('advertisement_events')) {
+            return null;
+        }
+
         $visitorToken = hash('sha256', $request->session()->getId());
         $userId = $request->user()?->id;
 
