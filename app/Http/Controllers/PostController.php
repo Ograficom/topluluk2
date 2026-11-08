@@ -84,6 +84,7 @@ class PostController extends Controller
             'video_url' => ['nullable', 'url', 'max:2048', function (string $attribute, mixed $value, \Closure $fail): void {
                 if (filled($value) && parse_url($value, PHP_URL_SCHEME) !== 'https') $fail('Video bağlantısı HTTPS kullanmalıdır.');
             }],
+            'video_file' => ['nullable', 'file', 'mimes:mp4,webm,ogg,mov,m4v', 'max:102400'],
             'tags' => ['nullable', 'string', 'max:500'],
             'is_adult' => ['sometimes', 'boolean'],
         ]);
@@ -95,6 +96,8 @@ class PostController extends Controller
         }
 
         $coverImage = $request->file('cover_image')?->store('posts', 'public');
+        $videoPath = $request->file('video_file')?->store('posts/videos', 'public');
+        if ($request->hasFile('video_file') && ! $videoPath) throw new \\RuntimeException('The uploaded video could not be stored.');
         if ($request->hasFile('cover_image') && ! $coverImage) throw new \RuntimeException('The post cover image could not be stored.');
 
         $mediaPaths = [];
@@ -115,6 +118,7 @@ class PostController extends Controller
             'cover_image' => $coverImage,
             'media' => $mediaPaths,
             'video_url' => $validated['video_url'] ?? null,
+            'video_path' => $videoPath,
             'tags' => $tags,
             'is_published' => true,
             'published_at' => now(),
@@ -139,6 +143,8 @@ class PostController extends Controller
             'video_url' => ['nullable', 'url', 'max:2048', function (string $attribute, mixed $value, \Closure $fail): void {
                 if (filled($value) && parse_url($value, PHP_URL_SCHEME) !== 'https') $fail('Video bağlantısı HTTPS kullanmalıdır.');
             }],
+            'video_file' => ['nullable', 'file', 'mimes:mp4,webm,ogg,mov,m4v', 'max:102400'],
+            'remove_video' => ['sometimes', 'boolean'],
             'remove_media' => ['nullable', 'array', 'max:10'],
             'remove_media.*' => ['string', 'max:500'],
             'tags' => ['nullable', 'string', 'max:500'],
@@ -153,6 +159,8 @@ class PostController extends Controller
         }
 
         $newCover = $request->file('cover_image')?->store('posts', 'public');
+        $newVideoPath = $request->file('video_file')?->store('posts/videos', 'public');
+        if ($request->hasFile('video_file') && ! $newVideoPath) throw new \\RuntimeException('The uploaded video could not be stored.');
         if ($request->hasFile('cover_image') && ! $newCover) throw new \RuntimeException('The post cover image could not be stored.');
 
         $tags = $this->parseTags($validated['tags'] ?? '');
@@ -179,6 +187,14 @@ class PostController extends Controller
             'is_adult' => $request->boolean('is_adult'),
         ]);
         if ($newCover) $post->cover_image = $newCover;
+        if ($newVideoPath) {
+            if ($post->video_path) Storage::disk('public')->delete($post->video_path);
+            $post->video_path = $newVideoPath;
+        }
+        if ($request->boolean('remove_video') && $post->video_path) {
+            Storage::disk('public')->delete($post->video_path);
+            $post->video_path = null;
+        }
         elseif ($request->boolean('remove_cover')) $post->cover_image = null;
         $post->save();
         $this->syncTagRecords($post, $tags);
