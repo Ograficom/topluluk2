@@ -22,6 +22,10 @@ class AdvertisementEvent extends Model
         $visitorToken = hash('sha256', $request->session()->getId());
         $userId = $request->user()?->id;
 
+        if ($request->user()?->is($advertisement->user) || $request->user()?->is_admin) {
+            return null;
+        }
+
         if ($type === 'impression') {
             $alreadyCounted = self::query()
                 ->where('advertisement_id', $advertisement->id)
