@@ -22,6 +22,11 @@ class EditAdvertisement extends EditRecord
         return parent::getSaveFormAction()->label('Değişiklikleri kaydet');
     }
 
+    protected function afterSave(): void
+    {
+        $this->record->refresh()->syncLinkedPost();
+    }
+
     protected function getSavedNotificationTitle(): ?string
     {
         return 'Reklam bilgileri güncellendi';
