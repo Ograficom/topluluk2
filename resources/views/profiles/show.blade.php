@@ -131,7 +131,23 @@
                                 @endif
                                 <footer class="post__footer card-body">
                                     <div class="post__footer-stats small color-gray"><span>{{ number_format($post->likes_count) }} beğeni</span><span>{{ number_format($post->views) }} görüntülenme</span></div>
-                                    @if ($post->advertisement && $post->advertisement->status === 'approved')<a class="btn btn-primary btn-sm" href="{{ route('advertisements.show', $post->advertisement) }}">Ayrıntıları görüntüle</a>@elseif ($post->advertisement)<span class="small color-gray">Yayın onayı bekleniyor</span>@elseif ($post->user?->publicUsername())<span class="small color-gray">{{ '@'.$post->user->publicUsername() }}</span>@endif
+                                    @if ($post->advertisement)
+                                        <div class="d-flex align-items-center flex-wrap gap-2">
+                                            @if (auth()->check() && auth()->user()->is($user))
+                                                <a class="btn btn-secondary-ghost btn-sm" href="{{ route('advertisements.edit', $post->advertisement) }}" aria-label="Bu reklamı düzenle">
+                                                    <x-repost-icon name="edit" size="15" />
+                                                    Reklamı düzenle
+                                                </a>
+                                            @endif
+                                            @if ($post->advertisement->status === 'approved')
+                                                <a class="btn btn-primary btn-sm" href="{{ route('advertisements.show', $post->advertisement) }}">Ayrıntıları görüntüle</a>
+                                            @else
+                                                <span class="small color-gray">Yayın onayı bekleniyor</span>
+                                            @endif
+                                        </div>
+                                    @elseif ($post->user?->publicUsername())
+                                        <span class="small color-gray">{{ '@'.$post->user->publicUsername() }}</span>
+                                    @endif
                                 </footer>
                                 @unless ($post->advertisement)
                                     @include('posts._interactions', ['post' => $post])
