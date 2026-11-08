@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\Storage;
 
 class Advertisement extends Model
@@ -26,6 +26,17 @@ class Advertisement extends Model
             'daily_budget' => 'decimal:2',
             'spent_amount' => 'decimal:2',
         ];
+    }
+
+    protected static function booted(): void
+    {
+        static::saving(function (Advertisement $advertisement): void {
+            if ($advertisement->isDirty('status') && $advertisement->status === 'approved') {
+                $advertisement->approved_by = auth()->id();
+                $advertisement->approved_at = now();
+                $advertisement->rejection_reason = null;
+            }
+        });
     }
 
     public function user(): BelongsTo { return $this->belongsTo(User::class); }
