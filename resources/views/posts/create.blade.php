@@ -87,6 +87,10 @@
                     @endforeach
                 </select>
 
+                <label for="post-meta-description">SEO meta açıklaması</label>
+                <textarea id="post-meta-description" name="meta_description" rows="2" maxlength="500"
+                    placeholder="Arama motorlarında görünecek kısa açıklama">{{ old('meta_description', $post->meta_description ?? '') }}</textarea>
+
                 <label for="tags">Etiketler</label>
                 <input id="tags" name="tags" type="text" value="{{ old('tags', isset($post) ? implode(', ', $post->tags ?? []) : '') }}"
                     maxlength="500" placeholder="Örn. teknoloji, gezi">
@@ -105,35 +109,6 @@
     </div>
 @endsection
 
-@push('head')
-<style>
-.post-create-simple { display:block; }
-.post-create-simple__author { display:flex; align-items:center; gap:10px; margin-bottom:18px; }
-.post-create-simple__author img { width:38px; height:38px; border-radius:50%; object-fit:cover; }
-.post-create-simple__title { width:100%; border:0; outline:0; padding:8px 0; font-size:1.45rem; font-weight:700; color:var(--title-color); background:transparent; }
-.post-create-simple__excerpt { width:100%; min-height:58px; margin:8px 0 14px; padding:10px 0; border:0; border-bottom:1px solid var(--border-color); resize:vertical; background:transparent; }
-.post-create-simple__editor { min-height:220px; border:0; border-bottom:1px solid var(--border-color); border-radius:0; padding:14px 0; }
-.post-create-simple__media { display:flex; flex-wrap:wrap; align-items:center; gap:10px; padding:16px 0; border-bottom:1px solid var(--border-color); }
-.post-create-simple__media > input[type=file] { max-width:100%; font-size:12px; }
-.post-create-simple__file { display:inline-flex; align-items:center; gap:6px; color:var(--text-color); font-size:13px; font-weight:600; cursor:pointer; }
-.post-create-simple__file .icon { color:var(--color-primary,#1769ff); }
-.post-create-simple__existing-media { display:flex; flex-wrap:wrap; gap:10px; width:100%; }
-.post-create-simple__existing-media img { display:block; width:76px; height:60px; object-fit:cover; border-radius:7px; }
-.post-create-simple__options { padding:14px 0; border-bottom:1px solid var(--border-color); }
-.post-create-simple__options summary { cursor:pointer; font-weight:600; }
-.post-create-simple__options label:not(.post-create-simple__adult) { display:block; margin-top:14px; font-size:13px; }
-.post-create-simple__options select,.post-create-simple__options > input { width:100%; margin-top:6px; }
-.post-create-simple__adult { display:flex; align-items:center; gap:8px; margin-top:14px; }
-.post-create-simple__footer { display:flex; align-items:center; justify-content:flex-end; gap:16px; padding-top:16px; }
-.post-create-simple__footer > a { color:var(--color-gray); }
-@media(max-width:600px) {
- .post-create-simple .addpost__form { padding:16px; }
- .post-create-simple__media { align-items:flex-start; flex-direction:column; }
- .post-create-simple__footer { position:sticky; bottom:0; background:var(--white-900,#fff); padding:12px 0 calc(12px + env(safe-area-inset-bottom)); }
- .post-create-simple__footer .btn { min-width:112px; }
-}
-</style>
-@endpush
 
 @push('scripts')
     <script src="https://cdn.jsdelivr.net/npm/@editorjs/editorjs@2.30.8"></script>
