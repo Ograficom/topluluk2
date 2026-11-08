@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="{{ asset('assets/libs/fancyapp/fancybox.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/libs/fancyapp/carousel.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/kit.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/css/app.css') }}?v=20261108-home-right-sidebar-sticky">
+    <link rel="stylesheet" href="{{ asset('assets/css/app.css') }}?v=20261108-comment-editor-layout">
     <link rel="stylesheet" href="{{ asset('assets/css/engine.css') }}?v=20261106-social-account-management">
     <link rel="stylesheet" href="{{ asset('assets/css/ografi-overrides.css') }}?v=20261108-right-sidebar-no-inner-scroll">
     <script>
@@ -455,7 +455,7 @@
     <script src="{{ asset('assets/libs/fancyapp/fancybox.umd.js') }}"></script>
     <script src="{{ asset('assets/libs/fancyapp/carousel.umd.js') }}"></script>
     <script src="{{ asset('assets/libs/sharer/sharer.min.js') }}"></script>
-    <script src="{{ asset('assets/js/app.js') }}"></script>
+    <script src="{{ asset('assets/js/app.js') }}?v=20261108-comment-editor-layout"></script>
     <script src="{{ asset('assets/js/init.js') }}"></script>
     @guest
     <script>
