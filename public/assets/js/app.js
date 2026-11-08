@@ -2536,29 +2536,40 @@ document.addEventListener("change", (event) => {
 });
 
 document.addEventListener("click", async (event) => {
-  const button = event.target.closest("[data-share-post]");
+  const button = event.target.closest("[data-copy-share-url]");
 
   if (!button) return;
 
-  const shareData = {
-    title: button.dataset.shareTitle,
-    url: button.dataset.shareUrl,
-  };
+  event.preventDefault();
+  const url = button.dataset.copyShareUrl;
+  const label = button.querySelector("span");
+  const originalLabel = label?.textContent || "Copy link";
 
   try {
-    if (navigator.share) {
-      await navigator.share(shareData);
-    } else if (navigator.clipboard?.writeText) {
-      await navigator.clipboard.writeText(shareData.url);
-      button.setAttribute("aria-label", "Bağlantı kopyalandı");
-      button.setAttribute("title", "Bağlantı kopyalandı");
+    if (navigator.clipboard?.writeText && window.isSecureContext) {
+      await navigator.clipboard.writeText(url);
     } else {
-      window.prompt("Yazı bağlantısını kopyalayın:", shareData.url);
+      const input = document.createElement("textarea");
+      input.value = url;
+      input.setAttribute("readonly", "");
+      input.style.position = "fixed";
+      input.style.opacity = "0";
+      document.body.append(input);
+      input.select();
+      const copied = document.execCommand("copy");
+      input.remove();
+      if (!copied) throw new Error("Bağlantı panoya kopyalanamadı.");
     }
-  } catch (error) {
-    if (error instanceof DOMException && error.name === "AbortError") return;
 
-    console.error("Yazı paylaşılırken hata oluştu.", error);
+    if (label) label.textContent = "Link copied";
+    button.setAttribute("aria-label", "Link copied");
+    window.setTimeout(() => {
+      if (label) label.textContent = originalLabel;
+      button.removeAttribute("aria-label");
+    }, 1800);
+  } catch (error) {
+    console.error("Bağlantı kopyalanırken hata oluştu.", error);
+    window.prompt("Bağlantıyı kopyalayın:", url);
   }
 });
 
