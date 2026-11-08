@@ -78,11 +78,15 @@
         </div>
     @endif
 
-    @if (($ads ?? collect())->isNotEmpty())
-        @foreach ($ads as $ad)
-            @include('advertisements._card', ['ad' => $ad])
-        @endforeach
-    @endif
+    @php
+        $feedAds = ($ads ?? collect())->values();
+        $feedAdCount = $feedAds->count();
+        $postCount = $posts->count();
+        $adPositions = [];
+        foreach ($feedAds as $adIndex => $feedAd) {
+            $adPositions[(int) ceil(($postCount * ($adIndex + 1)) / ($feedAdCount + 1))] = $adIndex;
+        }
+    @endphp
 
     @forelse ($posts as $post)
         <article class="card post">
@@ -145,6 +149,10 @@
             </footer>
             @include('posts._interactions', ['post' => $post])
         </article>
+
+        @if (isset($adPositions[$loop->iteration]))
+            @include('advertisements._card', ['ad' => $feedAds->get($adPositions[$loop->iteration])])
+        @endif
     @empty
         <section class="card card-body empty-state">
             <h2 class="h4">Henüz yayınlanmış yazı yok</h2>
