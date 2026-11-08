@@ -77,6 +77,9 @@ class AdvertisementController extends Controller
             'starts_at' => $startsAt,
             'ends_at' => $endsAt,
             'total_budget' => round(max(1, (int) ceil($startsAt->diffInMinutes($endsAt) / 1440)) * (float) $advertisement->daily_budget, 2),
+            'status' => 'pending',
+            'approved_by' => null,
+            'approved_at' => null,
         ]);
 
         return redirect()->route('advertisements.index')->with('status', 'Reklamın güncellendi.');
