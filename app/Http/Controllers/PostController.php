@@ -31,7 +31,7 @@ class PostController extends Controller
         $period = $validated['period'] ?? null;
         $viewer = $request->user();
 
-        $posts = Post::query()->published()->whereNull('advertisement_id')->with(['user', 'channel', 'tagRecords'])
+        $posts = Post::query()->published()->whereNull('advertisement_id')->with(['user', 'channel', 'tagRecords', 'comments' => fn ($query) => $query->with('user')->latest()->limit(1)])
             ->with(['comments' => fn ($query) => $query->with('user')->limit(1)])
             ->withCount('comments')
             ->withCount([
