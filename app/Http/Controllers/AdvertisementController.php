@@ -53,7 +53,7 @@ class AdvertisementController extends Controller
             'description' => $data['description'],
             'image_path' => $image,
             'video_url' => $data['video_url'] ?? null,
-            'target_url' => $data['target_url'] ?? null,
+            'target_url' => $data['target_url'] ?? '',
             'button_text' => $data['button_text'] ?: 'Daha fazla bilgi al',
             'starts_at' => $startsAt,
             'ends_at' => $endsAt,
