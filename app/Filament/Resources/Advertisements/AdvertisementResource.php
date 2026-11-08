@@ -2,6 +2,7 @@
 
 namespace App\\Filament\\Resources\\Advertisements;
 
+use App\\Filament\\Resources\\Advertisements\\Pages\\CreateAdvertisement;
 use App\\Filament\\Resources\\Advertisements\\Pages\\EditAdvertisement;
 use App\\Filament\\Resources\\Advertisements\\Pages\\ListAdvertisements;
 use App\\Filament\\Resources\\Advertisements\\Schemas\\AdvertisementForm;
@@ -25,6 +26,6 @@ class AdvertisementResource extends Resource
     public static function getPluralModelLabel(): string { return 'reklamlar'; }
     public static function getPages(): array
     {
-        return ['index' => ListAdvertisements::route('/'), 'edit' => EditAdvertisement::route('/{record}/edit')];
+        return ['index' => ListAdvertisements::route('/'), 'create' => CreateAdvertisement::route('/create'), 'edit' => EditAdvertisement::route('/{record}/edit')];
     }
 }
