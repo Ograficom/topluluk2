@@ -18,6 +18,8 @@ class AdvertisementResource extends Resource
 {
     protected static ?string $model = Advertisement::class;
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedMegaphone;
+    protected static ?string $navigationGroup = 'Reklam yönetimi';
+    protected static ?int $navigationSort = 10;
 
     public static function form(Schema $schema): Schema { return AdvertisementForm::configure($schema); }
     public static function table(Table $table): Table { return AdvertisementsTable::configure($table); }

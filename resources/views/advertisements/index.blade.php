@@ -20,6 +20,7 @@
                 <span class="badge">{{ $ad->status }}</span>
             </div>
             <p class="small color-gray">Yayın: {{ $ad->starts_at->timezone('Europe/Istanbul')->format('d.m.Y H:i') }} – {{ $ad->ends_at->timezone('Europe/Istanbul')->format('d.m.Y H:i') }}</p>
+            <div class="d-flex flex-wrap gap-2 mt-3"><a class="btn btn-secondary-ghost btn-sm" href="{{ route('advertisements.edit', $ad) }}"><x-repost-icon name="edit" size="14" /> Reklamı düzenle</a><a class="btn btn-secondary-ghost btn-sm" href="{{ route('advertisements.show', $ad) }}">Ayrıntıları görüntüle</a></div>
             <div class="d-flex flex-wrap gap-3 small">
                 <span>{{ number_format($ad->impressions) }} gösterim</span>
                 <span>{{ number_format($ad->clicks) }} tıklama</span>
