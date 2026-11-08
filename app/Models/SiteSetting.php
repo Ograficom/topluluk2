@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Models;
+namespace App\\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\\Database\\Eloquent\\Model;
 
 class SiteSetting extends Model
 {
@@ -22,6 +22,7 @@ class SiteSetting extends Model
         'yandex_login_enabled',
         'yandex_client_id',
         'yandex_client_secret',
+        'advertisement_daily_price',
     ];
 
     protected function casts(): array
@@ -31,6 +32,7 @@ class SiteSetting extends Model
             'yandex_login_enabled' => 'boolean',
             'google_client_secret' => 'encrypted',
             'yandex_client_secret' => 'encrypted',
+            'advertisement_daily_price' => 'decimal:2',
         ];
     }
 
