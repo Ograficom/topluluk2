@@ -37,9 +37,25 @@
             <x-repost-icon name="comment" size="20" />
             {{ number_format($post->comments_count ?? 0) }}
         </a>
-        <button class="btn btn-md btn-square btn-primary-soft" type="button" data-share-post data-share-title="{{ $post->title }}" data-share-url="{{ route('posts.show', $post) }}" aria-label="Paylaş" title="Paylaş">
-            <x-repost-icon name="share" size="20" />
-        </button>
+        <div class="dropdown post-share-dropdown">
+            <button class="btn btn-md btn-square btn-primary-soft" type="button" data-dropdown-toggle aria-expanded="false" aria-label="Paylaş" title="Paylaş">
+                <x-repost-icon name="share" size="20" />
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end post-share-menu">
+                <li class="dropdown-menu-item dropdown-menu-item-sm">
+                    <a href="https://t.me/share/url?url={{ urlencode(route('posts.show', $post)) }}&amp;text={{ urlencode($post->title) }}" target="_blank" rel="noopener noreferrer">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
+                        <span>Send to Telegram</span>
+                    </a>
+                </li>
+                <li class="dropdown-menu-item dropdown-menu-item-sm">
+                    <button type="button" data-copy-share-url="{{ route('posts.show', $post) }}">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.07 0l3-3A5 5 0 0 0 13 2.93l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.07 0l-3 3A5 5 0 0 0 11 21.07l1.71-1.71"/></svg>
+                        <span>Copy link</span>
+                    </button>
+                </li>
+            </ul>
+        </div>
     </div>
     @auth
         <form action="{{ route('posts.bookmarks.toggle', $post) }}" method="POST">
