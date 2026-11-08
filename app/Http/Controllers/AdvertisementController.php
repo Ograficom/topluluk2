@@ -1,13 +1,13 @@
 <?php
 
-namespace App\\Http\\Controllers;
+namespace App\Http\Controllers;
 
-use App\\Models\\Advertisement;
-use App\\Models\\SiteSetting;
-use Illuminate\\Http\\RedirectResponse;
-use Illuminate\\Http\\Request;
-use Illuminate\\Support\\Carbon;
-use Illuminate\\View\\View;
+use App\Models\Advertisement;
+use App\Models\SiteSetting;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
+use Illuminate\View\View;
 
 class AdvertisementController extends Controller
 {
