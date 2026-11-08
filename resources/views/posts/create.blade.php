@@ -18,98 +18,155 @@
                 @method('PATCH')
             @endif
 
-            <div class="post-create-simple__author">
-                <img src="{{ $user->avatarUrl() }}" alt="" width="38" height="38">
-                <strong>{{ $user->displayName() }}</strong>
+            <div class="post-composer-heading">
+                <div class="post-create-simple__author">
+                    <img src="{{ $user->avatarUrl() }}" alt="" width="40" height="40">
+                    <div>
+                        <strong>{{ $user->displayName() }}</strong>
+                        <span>{{ isset($post) ? 'Yazını düzenliyorsun' : 'Yeni bir yazı paylaş' }}</span>
+                    </div>
+                </div>
+                <span class="post-composer-private-note"><span class="icon icon-check-circle" aria-hidden="true"></span> İçeriğin sana ait</span>
             </div>
 
-            <input class="post-create-simple__title" id="post-title" name="title" type="text"
-                value="{{ old('title', $post->title ?? '') }}" maxlength="255"
-                placeholder="Başlık" aria-label="Başlık" required>
+            <div class="post-composer-field">
+                <label class="post-composer-label" for="post-title">Başlık <span>Gerekli</span></label>
+                <input class="post-create-simple__title" id="post-title" name="title" type="text"
+                    value="{{ old('title', $post->title ?? '') }}" maxlength="255"
+                    placeholder="Yazının başlığını yaz" aria-label="Başlık" required>
+                <div class="post-composer-hint-row">
+                    <span>Net ve açıklayıcı bir başlık seç.</span>
+                    <span data-count-for="post-title">0 / 60 önerilen</span>
+                </div>
+            </div>
 
-            <textarea class="post-create-simple__excerpt" id="post-excerpt" name="excerpt"
-                rows="2" maxlength="500" placeholder="Kısaca anlat..." aria-label="Kısa açıklama"
-                required>{{ old('excerpt', $post->excerpt ?? '') }}</textarea>
+            <div class="post-composer-field">
+                <label class="post-composer-label" for="post-excerpt">Kısa açıklama <span>Gerekli</span></label>
+                <textarea class="post-create-simple__excerpt" id="post-excerpt" name="excerpt"
+                    rows="3" maxlength="500" placeholder="Yazının ne hakkında olduğunu birkaç cümleyle anlat." aria-label="Kısa açıklama"
+                    required>{{ old('excerpt', $post->excerpt ?? '') }}</textarea>
+                <div class="post-composer-hint-row">
+                    <span>Akışta ve paylaşım önizlemelerinde kullanılabilir.</span>
+                    <span data-count-for="post-excerpt">0 / 160 önerilen</span>
+                </div>
+            </div>
 
-            <label class="post-create-simple__seo-label" for="post-meta-description">SEO meta açıklaması</label>
-            <textarea class="post-create-simple__seo" id="post-meta-description" name="meta_description" rows="2" maxlength="500"
-                placeholder="Google arama sonuçlarında görünecek açıklama">{{ old('meta_description', $post->meta_description ?? '') }}</textarea>
-
-            <input type="hidden" id="post-body" name="body" value="{{ old('body', $post->body ?? '') }}">
-            <section class="post-create-simple__writing" aria-label="Yazı içeriği düzenleyicisi">
-                <div id="post-editorjs" class="post-editorjs post-create-simple__editor" aria-label="Yazı içeriği" data-placeholder="Hikâyeni burada anlat…"></div>
-                <p class="post-create-simple__editor-status" data-editor-status role="status" aria-live="polite">Editör yükleniyor…</p>
+            <section class="post-composer-seo" aria-labelledby="post-seo-heading">
+                <div class="post-composer-section-heading">
+                    <div>
+                        <span class="post-composer-eyebrow">ARAMA MOTORU OPTİMİZASYONU</span>
+                        <h2 id="post-seo-heading">Google görünümü</h2>
+                        <p>Arama sonuçlarında görünecek açıklamayı düzenle.</p>
+                    </div>
+                    <span class="post-composer-seo-mark"><span class="icon icon-search" aria-hidden="true"></span> SEO</span>
+                </div>
+                <label class="post-composer-label" for="post-meta-description">Meta açıklaması <span>İsteğe bağlı</span></label>
+                <textarea class="post-create-simple__seo" id="post-meta-description" name="meta_description" rows="3" maxlength="500"
+                    placeholder="Bu sayfayı özetleyen, doğal ve açıklayıcı bir metin yaz.">{{ old('meta_description', $post->meta_description ?? '') }}</textarea>
+                <div class="post-composer-hint-row">
+                    <span>Yaklaşık 150–160 karakter kullan.</span>
+                    <span data-count-for="post-meta-description">0 / 160 önerilen</span>
+                </div>
+                <div class="post-composer-google-preview" aria-live="polite">
+                    <span class="post-composer-google-url">ografi.com › yazı</span>
+                    <strong data-seo-preview-title>{{ old('title', $post->title ?? '') ?: 'Yazı başlığın burada görünecek' }}</strong>
+                    <p data-seo-preview-description>{{ old('meta_description', $post->meta_description ?? '') ?: (old('excerpt', $post->excerpt ?? '') ?: 'Meta açıklaman veya kısa açıklaman burada görünecek.') }}</p>
+                </div>
             </section>
 
-            <div class="post-create-simple__media">
-                <label for="post-cover" class="post-create-simple__file">
-                    <span class="icon icon-image" aria-hidden="true"></span>
-                    Kapak görseli
-                </label>
-                <input id="post-cover" name="cover_image" type="file" accept="image/jpeg,image/png,image/gif,image/webp" data-post-cover-input>
-                <div class="post-composer-cover-preview" data-post-cover-preview aria-live="polite"></div>
-                @if (isset($post) && $post->coverImageUrl())
-                    <img src="{{ $post->coverImageUrl() }}" alt="" style="max-width:120px;height:auto;border-radius:8px;">
-                    <label class="small"><input type="checkbox" name="remove_cover" value="1"> Mevcut kapağı kaldır</label>
-                @endif
-
-                <label for="post-media" class="post-create-simple__file">
-                    <span class="icon icon-images" aria-hidden="true"></span>
-                    Fotoğraf ekle
-                </label>
-                <input id="post-media" name="media[]" type="file" accept="image/jpeg,image/png,image/gif,image/webp" multiple data-post-gallery-input>
-                <div class="post-composer-file-list" data-post-gallery-list aria-live="polite"></div>
-                @if (isset($post) && filled($post->media))
-                    <div class="post-create-simple__existing-media">
-                        @foreach ($post->media as $mediaPath)
-                            <label><img src="{{ asset('storage/'.$mediaPath) }}" alt=""><input type="checkbox" name="remove_media[]" value="{{ $mediaPath }}"> Kaldır</label>
-                        @endforeach
+            <input type="hidden" id="post-body" name="body" value="{{ old('body', $post->body ?? '') }}">
+            <section class="post-composer-editor-section" aria-label="Yazı içeriği düzenleyicisi">
+                <div class="post-composer-section-heading post-composer-editor-heading">
+                    <div>
+                        <span class="post-composer-eyebrow">İÇERİK</span>
+                        <h2>Yazı içeriği</h2>
+                        <p>Metin, başlık, liste, alıntı ve bağlantı ekleyebilirsin.</p>
                     </div>
-                @endif
+                    <span class="post-create-simple__editor-status" data-editor-status role="status" aria-live="polite">Editör hazırlanıyor…</span>
+                </div>
+                <div class="post-create-simple__writing">
+                    <div id="post-editorjs" class="post-editorjs post-create-simple__editor" aria-label="Yazı içeriği" data-placeholder="Yazmaya başla…"></div>
+                    <div class="post-composer-editor-tip"><span class="icon icon-plus-circle" aria-hidden="true"></span> Yeni blok eklemek için sol taraftaki + simgesini kullan.</div>
+                </div>
+            </section>
 
-                <label for="post-video-url" class="post-create-simple__file">
-                    <span class="icon icon-video" aria-hidden="true"></span>
-                    Video bağlantısı
-                </label>
-                <input id="post-video-url" name="video_url" type="url" value="{{ old('video_url', $post->video_url ?? '') }}"
-                    maxlength="2048" placeholder="YouTube, Instagram, TikTok vb. bağlantı">
+            <section class="post-composer-media-section">
+                <div class="post-composer-section-heading">
+                    <div>
+                        <span class="post-composer-eyebrow">GÖRSEL VE VİDEO</span>
+                        <h2>Yazını zenginleştir</h2>
+                        <p>Kapak görseli, fotoğraf galerisi veya video ekle.</p>
+                    </div>
+                </div>
+                <div class="post-create-simple__media">
+                    <label for="post-cover" class="post-create-simple__file">
+                        <span class="icon icon-image" aria-hidden="true"></span> Kapak görseli
+                    </label>
+                    <input id="post-cover" name="cover_image" type="file" accept="image/jpeg,image/png,image/gif,image/webp" data-post-cover-input>
+                    <div class="post-composer-cover-preview" data-post-cover-preview aria-live="polite"></div>
+                    @if (isset($post) && $post->coverImageUrl())
+                        <div class="post-composer-existing-cover">
+                            <img src="{{ $post->coverImageUrl() }}" alt="Mevcut kapak görseli">
+                            <label class="small"><input type="checkbox" name="remove_cover" value="1"> Mevcut kapağı kaldır</label>
+                        </div>
+                    @endif
 
-                <label for="post-video-file" class="post-create-simple__file">
-                    <span class="icon icon-upload" aria-hidden="true"></span>
-                    Video dosyası yükle
-                </label>
-                <input id="post-video-file" name="video_file" type="file" accept="video/mp4,video/webm,video/quicktime,video/x-matroska">
-                @if (isset($post) && $post->video_path)
-                    <p class="small color-gray">Mevcut video kayıtlı. Yeni video seçersen değiştirilir.</p>
-                @endif
-            </div>
+                    <label for="post-media" class="post-create-simple__file">
+                        <span class="icon icon-images" aria-hidden="true"></span> Fotoğraf ekle
+                    </label>
+                    <input id="post-media" name="media[]" type="file" accept="image/jpeg,image/png,image/gif,image/webp" multiple data-post-gallery-input>
+                    <div class="post-composer-file-list" data-post-gallery-list aria-live="polite"></div>
+                    @if (isset($post) && filled($post->media))
+                        <div class="post-create-simple__existing-media">
+                            @foreach ($post->media as $mediaPath)
+                                <label><img src="{{ asset('storage/'.$mediaPath) }}" alt=""><input type="checkbox" name="remove_media[]" value="{{ $mediaPath }}"> Kaldır</label>
+                            @endforeach
+                        </div>
+                    @endif
 
-            <details class="post-create-simple__options">
-                <summary>Diğer ayarlar</summary>
-                <label for="post-channel">Kategori</label>
-                <select id="post-channel" name="channel_id">
-                    <option value="">Kategori seç</option>
-                    @foreach ($channels as $channel)
-                        <option value="{{ $channel->id }}" @selected((string) old('channel_id', $post->channel_id ?? '') === (string) $channel->id)>{{ $channel->name }}</option>
-                    @endforeach
-                </select>
+                    <label for="post-video-url" class="post-create-simple__file">
+                        <span class="icon icon-video" aria-hidden="true"></span> Video bağlantısı
+                    </label>
+                    <input id="post-video-url" name="video_url" type="url" value="{{ old('video_url', $post->video_url ?? '') }}"
+                        maxlength="2048" placeholder="YouTube, Instagram, TikTok vb. bağlantı">
+                    <label for="post-video-file" class="post-create-simple__file">
+                        <span class="icon icon-upload" aria-hidden="true"></span> Video dosyası yükle
+                    </label>
+                    <input id="post-video-file" name="video_file" type="file" accept="video/mp4,video/webm,video/quicktime,video/x-matroska">
+                    @if (isset($post) && $post->video_path)
+                        <p class="small color-gray">Mevcut video kayıtlı. Yeni video seçersen değiştirilir.</p>
+                    @endif
+                </div>
+            </section>
 
-                <label for="tags">Etiketler</label>
-                <input id="tags" name="tags" type="text" value="{{ old('tags', isset($post) ? implode(', ', $post->tags ?? []) : '') }}"
-                    maxlength="500" placeholder="Örn. teknoloji, gezi">
-
-                <label class="post-create-simple__adult">
-                    <input id="post-adult" type="checkbox" name="is_adult" value="1" @checked(old('is_adult', $post->is_adult ?? false))>
-                    18+ içerik
-                </label>
+            <details class="post-create-simple__options post-composer-advanced">
+                <summary><span><span class="icon icon-sliders" aria-hidden="true"></span> Diğer ayarlar</span><small>Kategori, etiket ve içerik tercihleri</small></summary>
+                <div class="post-composer-advanced-content">
+                    <label for="post-channel">Kategori</label>
+                    <select id="post-channel" name="channel_id">
+                        <option value="">Kategori seç</option>
+                        @foreach ($channels as $channel)
+                            <option value="{{ $channel->id }}" @selected((string) old('channel_id', $post->channel_id ?? '') === (string) $channel->id)>{{ $channel->name }}</option>
+                        @endforeach
+                    </select>
+                    <label for="tags">Etiketler</label>
+                    <input id="tags" name="tags" type="text" value="{{ old('tags', isset($post) ? implode(', ', $post->tags ?? []) : '') }}"
+                        maxlength="500" placeholder="Örn. teknoloji, gezi, yazılım">
+                    <p class="post-composer-field-help">Etiketleri virgülle ayırarak yaz.</p>
+                    <label class="post-create-simple__adult">
+                        <input id="post-adult" type="checkbox" name="is_adult" value="1" @checked(old('is_adult', $post->is_adult ?? false))>
+                        18+ içerik
+                    </label>
+                </div>
             </details>
 
             <footer class="post-create-simple__footer">
                 <a href="{{ route('posts.index') }}">Vazgeç</a>
-                <button class="btn btn-primary" type="submit">{{ isset($post) ? 'Kaydet' : 'Yayınla' }}</button>
+                <button class="btn btn-primary" type="submit">{{ isset($post) ? 'Değişiklikleri kaydet' : 'Yayınla' }}</button>
             </footer>
         </form>
     </div>
+
 <script>
 (() => {
   const start = () => {
@@ -207,7 +264,7 @@
           inlineToolbar: ['marker', 'inlineCode'],
           onReady: () => {
             holder.classList.add('is-ready');
-            setStatus('Yazmaya başlayabilirsin');
+            setStatus('Editör hazır');
           },
           onChange: async () => {
             try { input.value = JSON.stringify(await editor.save()); }
@@ -248,6 +305,3 @@
 })();
 </script>
 @endsection
-
-
-
