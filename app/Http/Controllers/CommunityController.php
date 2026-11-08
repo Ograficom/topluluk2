@@ -339,7 +339,9 @@ class CommunityController extends Controller
 
     private function postQuery(?User $viewer): Builder
     {
-        return Post::query()->published()->with(['user', 'channel', 'tagRecords'])->withCount('comments')
+        return Post::query()->published()->with(['user', 'channel', 'tagRecords'])
+            ->with(['comments' => fn ($query) => $query->with('user')->limit(1)])
+            ->withCount('comments')
             ->withCount([
                 'reactions as likes_count' => fn (Builder $q) => $q->where('type', PostReaction::LIKE),
                 'reactions as dislikes_count' => fn (Builder $q) => $q->where('type', PostReaction::DISLIKE),
