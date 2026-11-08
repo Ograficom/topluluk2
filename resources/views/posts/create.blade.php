@@ -44,15 +44,8 @@
                     </div>
                     <span class="post-create-simple__editor-status" data-editor-status>Hazırlanıyor…</span>
                 </div>
-                <div class="post-create-simple__editor-toolbar" role="toolbar" aria-label="İçerik araçları">
-                    <button type="button" data-editor-tool="paragraph" title="Paragraf">Paragraf</button>
-                    <button type="button" data-editor-tool="header" title="Başlık">Başlık</button>
-                    <button type="button" data-editor-tool="list" title="Liste">Liste</button>
-                    <button type="button" data-editor-tool="quote" title="Alıntı">Alıntı</button>
-                    <button type="button" data-editor-tool="embed" title="Video veya sosyal medya">Medya</button>
-                </div>
                 <div id="post-editorjs" class="post-editorjs post-create-simple__editor" aria-label="Yazı içeriği" data-placeholder="Hikâyeni burada anlat…"></div>
-                <p class="post-create-simple__editor-hint">Yeni blok eklemek için sol taraftaki + düğmesini veya yukarıdaki araçları kullan.</p>
+                <p class="post-create-simple__editor-hint">Yazmaya başla. Yeni blok eklemek için sol taraftaki + simgesini kullan.</p>
             </section>
 
             <div class="post-create-simple__media">
@@ -124,122 +117,103 @@
             </footer>
         </form>
     </div>
-@endsection
+<script>
+(async () => {
+  const holder = document.getElementById('post-editorjs');
+  const input = document.getElementById('post-body');
+  const form = holder?.closest('form');
+  const status = document.querySelector('[data-editor-status]');
+  if (!holder || !input || !form) return;
 
+  const setStatus = message => { if (status) status.textContent = message; };
+  const loadScript = src => new Promise((resolve, reject) => {
+    const script = document.createElement('script');
+    script.src = src;
+    script.async = false;
+    script.onload = resolve;
+    script.onerror = () => reject(new Error('Dosya yüklenemedi: ' + src));
+    document.head.appendChild(script);
+  });
 
-@push('scripts')
-    <script src="https://cdn.jsdelivr.net/npm/@editorjs/editorjs@2.30.8"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@editorjs/header@2.8.8"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@editorjs/list@2.0.8"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@editorjs/quote@2.7.6"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@editorjs/code@2.9.0"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@editorjs/delimiter@1.4.2"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@editorjs/table@2.4.3"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@editorjs/inline-code@1.5.0"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@editorjs/marker@1.4.0"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@editorjs/embed@2.7.6"></script>
-    <script>
-    (() => {
-      const input = document.getElementById('post-body');
-      const holder = document.getElementById('post-editorjs');
-      const form = holder?.closest('form');
-      const status = document.querySelector('[data-editor-status]');
-      if (!input || !holder || !form) return;
+  try {
+    setStatus('Editör yükleniyor…');
+    const scripts = [
+      'https://cdn.jsdelivr.net/npm/@editorjs/editorjs@2.30.8',
+      'https://cdn.jsdelivr.net/npm/@editorjs/header@2.8.8',
+      'https://cdn.jsdelivr.net/npm/@editorjs/list@2.0.8',
+      'https://cdn.jsdelivr.net/npm/@editorjs/quote@2.7.6',
+      'https://cdn.jsdelivr.net/npm/@editorjs/embed@2.7.6',
+      'https://cdn.jsdelivr.net/npm/@editorjs/inline-code@1.5.0',
+      'https://cdn.jsdelivr.net/npm/@editorjs/marker@1.4.0'
+    ];
+    for (const src of scripts) await loadScript(src);
+    if (!window.EditorJS) throw new Error('Editor.js ana kütüphanesi yüklenemedi.');
 
-      if (!window.EditorJS) {
-        if (status) status.textContent = 'Editör yüklenemedi. Sayfayı yenileyin.';
-        holder.innerHTML = '<p class="post-create-simple__editor-error">Metin editörü yüklenemedi. İnternet bağlantınızı kontrol edip sayfayı yenileyin.</p>';
-        return;
-      }
-
-      const initial = input.value.trim();
-      let data = { blocks: [] };
-      if (initial) {
-        try {
-          const parsed = JSON.parse(initial);
-          data = parsed && Array.isArray(parsed.blocks)
-            ? parsed
-            : { blocks: [{ type: 'paragraph', data: { text: initial.replace(/\r?\n/g, '<br>') } }] };
-        } catch (_) {
-          data = { blocks: initial.split(/\n{2,}/).filter(Boolean).map(text => ({ type: 'paragraph', data: { text } })) };
-        }
-      }
-
-      const tools = {};
-      if (window.Header) tools.header = { class: window.Header, inlineToolbar: true, config: { levels: [2, 3, 4], defaultLevel: 2 } };
-      if (window.EditorjsList) tools.list = { class: window.EditorjsList, inlineToolbar: true, config: { defaultStyle: 'unordered' } };
-      if (window.Quote) tools.quote = { class: window.Quote, inlineToolbar: true, config: { quotePlaceholder: 'Alıntıyı yaz', captionPlaceholder: 'Kaynak' } };
-      if (window.CodeTool) tools.code = { class: window.CodeTool };
-      if (window.Delimiter) tools.delimiter = window.Delimiter;
-      if (window.Table) tools.table = { class: window.Table, inlineToolbar: true, config: { rows: 2, cols: 3 } };
-      if (window.InlineCode) tools.inlineCode = window.InlineCode;
-      if (window.Marker) tools.marker = window.Marker;
-      if (window.Embed) tools.embed = { class: window.Embed, config: { services: [
+    const tools = {
+      header: { class: window.Header, inlineToolbar: true, config: { levels: [2, 3, 4], defaultLevel: 2 } },
+      list: { class: window.EditorjsList, inlineToolbar: true, config: { defaultStyle: 'unordered' } },
+      quote: { class: window.Quote, inlineToolbar: true, config: { quotePlaceholder: 'Alıntını yaz…', captionPlaceholder: 'Kaynak' } },
+      inlineCode: window.InlineCode,
+      marker: window.Marker,
+      embed: { class: window.Embed, config: { services: [
         { name: 'youtube', regex: /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:watch\?v=|shorts\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/, embedUrl: 'https://www.youtube.com/embed/<%= remote_id %>', html: '<iframe width="100%" height="360" src="<%= embed %>" frameborder="0" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>', height: 360, width: 640 },
-        { name: 'facebook', regex: /https?:\/\/(?:www\.)?facebook\.com\/.+/, embedUrl: 'https://www.facebook.com/plugins/video.php?href=<%= encodeURIComponent(url) %>&show_text=0', html: '<iframe width="100%" height="420" src="<%= embed %>" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowfullscreen></iframe>', height: 420, width: 640 },
+        { name: 'facebook', regex: /https?:\/\/(?:www\.)?facebook\.com\/.+/, embedUrl: 'https://www.facebook.com/plugins/video.php?href=<%= encodeURIComponent(url) %>&show_text=0', html: '<iframe width="100%" height="420" src="<%= embed %>" frameborder="0" allowfullscreen></iframe>', height: 420, width: 640 },
         { name: 'x', regex: /https?:\/\/(?:www\.)?(?:x\.com|twitter\.com)\/.+\/status\/(\d+)/, embedUrl: 'https://platform.twitter.com/embed/Tweet.html?id=<%= remote_id %>', html: '<iframe width="100%" height="550" src="<%= embed %>" frameborder="0" allowfullscreen></iframe>', height: 550, width: 550 },
         { name: 'instagram', regex: /https?:\/\/(?:www\.)?instagram\.com\/(?:p|reel|tv)\/([a-zA-Z0-9_-]+)/, embedUrl: 'https://www.instagram.com/p/<%= remote_id %>/embed', html: '<iframe width="100%" height="540" src="<%= embed %>" frameborder="0" scrolling="no"></iframe>', height: 540, width: 400 },
         { name: 'tiktok', regex: /https?:\/\/(?:www\.|vm\.)?tiktok\.com\/(?:@[^/]+\/video\/|t/)?([a-zA-Z0-9]+)/, embedUrl: 'https://www.tiktok.com/embed/v2/<%= remote_id %>', html: '<iframe width="100%" height="740" src="<%= embed %>" frameborder="0" allowfullscreen></iframe>', height: 740, width: 325 }
-      ] } };
+      ] } }
+    };
 
-      let editor;
+    let initial = { blocks: [] };
+    if (input.value.trim()) {
       try {
-        editor = new EditorJS({
-          holder,
-          placeholder: 'Hikâyeni burada anlat…',
-          minHeight: 180,
-          autofocus: false,
-          logLevel: 'ERROR',
-          data,
-          tools,
-          inlineToolbar: ['marker', 'inlineCode'],
-          onReady: () => {
-            if (status) status.textContent = 'Editör hazır';
-            holder.classList.add('is-ready');
-          },
-          onChange: async () => {
-            try { input.value = JSON.stringify(await editor.save()); } catch (_) {}
-          }
-        });
-      } catch (error) {
-        console.error('Editor.js başlatılamadı:', error);
-        if (status) status.textContent = 'Editör başlatılamadı';
+        const parsed = JSON.parse(input.value);
+        initial = parsed && Array.isArray(parsed.blocks) ? parsed : { blocks: [{ type: 'paragraph', data: { text: input.value } }] };
+      } catch (_) {
+        initial = { blocks: input.value.split(/\n{2,}/).filter(Boolean).map(text => ({ type: 'paragraph', data: { text } })) };
       }
+    }
 
-      editor?.isReady?.catch(error => {
-        console.error('Editor.js yüklenemedi:', error);
-        if (status) status.textContent = 'Editör yüklenemedi';
-        holder.innerHTML = '<p class="post-create-simple__editor-error">Editör başlatılamadı. Lütfen sayfayı yenileyin.</p>';
-      });
+    let editor;
+    editor = new window.EditorJS({
+      holder,
+      placeholder: 'Hikâyeni burada anlat…',
+      minHeight: 260,
+      autofocus: false,
+      logLevel: 'ERROR',
+      data: initial,
+      tools,
+      inlineToolbar: ['marker', 'inlineCode'],
+      onReady: () => {
+        holder.classList.add('is-ready');
+        setStatus('Editör hazır');
+      },
+      onChange: async () => {
+        try { input.value = JSON.stringify(await editor.save()); } catch (error) { console.error(error); }
+      }
+    });
 
-      document.querySelectorAll('[data-editor-tool]').forEach(button => {
-        button.addEventListener('click', async () => {
-          if (!editor) return;
-          try {
-            await editor.isReady;
-            const type = button.dataset.editorTool;
-            if (type === 'paragraph') editor.blocks.insert('paragraph', { text: '' });
-            else if (type === 'header' && tools.header) editor.blocks.insert('header', { text: '', level: 2 });
-            else if (type === 'list' && tools.list) editor.blocks.insert('list', { style: 'unordered', items: [''] });
-            else if (type === 'quote' && tools.quote) editor.blocks.insert('quote', { text: '', caption: '' });
-            else if (type === 'embed' && tools.embed) editor.blocks.insert('embed', { service: '', source: '', embed: '', width: 0, height: 0 });
-            else return;
-            holder.scrollIntoView({ behavior: 'smooth', block: 'center' });
-          } catch (error) { console.error('Editör bloğu eklenemedi:', error); }
-        });
-      });
+    await editor.isReady;
+    setStatus('Editör hazır');
+    form.addEventListener('submit', async event => {
+      event.preventDefault();
+      try {
+        await editor.isReady;
+        input.value = JSON.stringify(await editor.save());
+        HTMLFormElement.prototype.submit.call(form);
+      } catch (error) {
+        console.error('Editor.js kaydı başarısız:', error);
+        alert('Yazı içeriği kaydedilemedi. Lütfen tekrar deneyin.');
+      }
+    });
+  } catch (error) {
+    console.error('Editor.js yükleme/başlatma hatası:', error);
+    setStatus('Editör yüklenemedi');
+    holder.innerHTML = '<div class="post-create-simple__editor-error">Editör yüklenemedi. Sayfayı yenileyin veya bağlantınızı kontrol edin.</div>';
+  }
+})();
+</script>
+@endsection
 
-      form.addEventListener('submit', async event => {
-        event.preventDefault();
-        try {
-          await editor.isReady;
-          input.value = JSON.stringify(await editor.save());
-          HTMLFormElement.prototype.submit.call(form);
-        } catch (error) {
-          console.error('Editor.js kaydı başarısız:', error);
-          alert('Yazı içeriği hazırlanamadı. Lütfen tekrar deneyin.');
-        }
-      });
-    })();
-    </script>
-@endpush
+
+

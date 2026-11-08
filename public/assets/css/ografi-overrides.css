@@ -2695,3 +2695,51 @@ body.is-messenger-conversation .pm-dialog__composer .pm-composer__send svg {
 [data-theme="dark"] .post-create-simple__editor-toolbar button { border-color:#3b4554; background:#242b36; color:#dbe3ee; }
 [data-theme="dark"] .post-create-simple__editor .ce-toolbar__plus,
 [data-theme="dark"] .post-create-simple__editor .ce-toolbar__settings-btn { background:#303744; color:#e2e8f0; }
+
+
+/* Final composer polish: use Editor.js native block controls, not a fake toolbar. */
+.post-create-simple__editor-toolbar { display:none !important; }
+.post-create-simple__writing { margin-top:16px; border-radius:12px; }
+.post-create-simple__writing-head { min-height:52px; padding:12px 15px; }
+.post-create-simple__editor-status { white-space:nowrap; }
+.post-create-simple__editor {
+    min-height:220px;
+    padding:18px 14px 12px 38px;
+    border:0;
+    background:#fff;
+}
+.post-create-simple__editor .codex-editor__redactor { min-height:180px; padding-bottom:24px !important; }
+.post-create-simple__editor .ce-toolbar { left:-34px; }
+.post-create-simple__editor .ce-toolbar__plus,
+.post-create-simple__editor .ce-toolbar__settings-btn { opacity:1; }
+.post-create-simple__editor-hint { padding:0 15px 12px 38px; }
+.post-create-simple__media {
+    display:flex;
+    flex-wrap:wrap;
+    align-items:center;
+    gap:10px;
+    padding:14px 0;
+}
+.post-create-simple__media > .post-composer-cover-preview:empty,
+.post-create-simple__media > .post-composer-file-list:empty { display:none !important; }
+.post-create-simple__media > input[type="file"] { display:none !important; }
+.post-create-simple__file {
+    min-height:38px;
+    padding:8px 12px;
+    border-radius:8px;
+    background:#fff;
+}
+.post-create-simple__media > label[for="post-video-url"] { margin:0; }
+.post-create-simple__media > input[type="url"] {
+    flex:1 1 100%;
+    min-width:0;
+    margin:0;
+}
+.post-create-simple__media > label[for="post-video-file"] { margin-top:2px; }
+@media(max-width:600px) {
+    .post-create-simple__editor { min-height:190px; padding:15px 10px 10px 28px; }
+    .post-create-simple__editor .ce-toolbar { left:-28px; }
+    .post-create-simple__editor-hint { padding-left:28px; }
+    .post-create-simple__media { flex-direction:row; align-items:center; gap:8px; }
+    .post-create-simple__media > input[type="url"] { flex-basis:100%; }
+}
