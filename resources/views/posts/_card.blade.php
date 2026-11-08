@@ -46,10 +46,11 @@
     <footer class="post__footer card-body">
         <div class="post__footer-stats small color-gray">
             <span>{{ number_format($post->likes_count ?? 0) }} beğeni</span>
-            <span>{{ number_format($post->comments_count ?? 0) }} yorum</span>
-            <span>{{ number_format($post->views) }} görüntülenme</span>
+            <span>{{ number_format($post->views ?? 0) }} görüntülenme</span>
         </div>
-        <a class="small color-gray" href="{{ route('posts.show', $post) }}">Yazıyı görüntüle</a>
+        @if ($post->user?->publicUsername())
+            <a class="small color-gray" href="{{ route('profiles.show', $post->user) }}">@{{ $post->user->publicUsername() }}</a>
+        @endif
     </footer>
-    @include('posts._interactions', ['post' => $post])
+    @include('posts._interactions', ['post' => $post, 'interactionContainerClass' => 'card-body'])
 </article>
