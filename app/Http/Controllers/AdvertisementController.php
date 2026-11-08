@@ -42,7 +42,7 @@ class AdvertisementController extends Controller
                 'visitor_clicks' => $clicks->whereNull('user_id')->count(),
             ];
             $ad->analytics['ctr'] = $ad->analytics['impressions'] > 0
-                ? round(($ad->analytics['card_clicks'] / $ad->analytics['impressions']) * 100, 2)
+                ? round(($ad->analytics['clicks'] / $ad->analytics['impressions']) * 100, 2)
                 : 0;
             $ad->analytics['timeline'] = collect(range(13, 0))->map(function (int $daysAgo) use ($adEvents): array {
                 $date = now()->subDays($daysAgo)->toDateString();
