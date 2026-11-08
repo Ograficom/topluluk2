@@ -36,7 +36,24 @@
                 placeholder="Google arama sonuçlarında görünecek açıklama">{{ old('meta_description', $post->meta_description ?? '') }}</textarea>
 
             <input type="hidden" id="post-body" name="body" value="{{ old('body', $post->body ?? '') }}">
-            <div id="post-editorjs" class="post-editorjs post-create-simple__editor" aria-label="Yazı içeriği"></div>
+            <section class="post-create-simple__writing" aria-label="Yazı içeriği düzenleyicisi">
+                <div class="post-create-simple__writing-head">
+                    <div>
+                        <strong>Yazı içeriği</strong>
+                        <span>Metnini yaz, başlık ve medya blokları ekle.</span>
+                    </div>
+                    <span class="post-create-simple__editor-status" data-editor-status>Hazırlanıyor…</span>
+                </div>
+                <div class="post-create-simple__editor-toolbar" role="toolbar" aria-label="İçerik araçları">
+                    <button type="button" data-editor-tool="paragraph" title="Paragraf">Paragraf</button>
+                    <button type="button" data-editor-tool="header" title="Başlık">Başlık</button>
+                    <button type="button" data-editor-tool="list" title="Liste">Liste</button>
+                    <button type="button" data-editor-tool="quote" title="Alıntı">Alıntı</button>
+                    <button type="button" data-editor-tool="embed" title="Video veya sosyal medya">Medya</button>
+                </div>
+                <div id="post-editorjs" class="post-editorjs post-create-simple__editor" aria-label="Yazı içeriği" data-placeholder="Hikâyeni burada anlat…"></div>
+                <p class="post-create-simple__editor-hint">Yeni blok eklemek için sol taraftaki + düğmesini veya yukarıdaki araçları kullan.</p>
+            </section>
 
             <div class="post-create-simple__media">
                 <label for="post-cover" class="post-create-simple__file">
@@ -126,58 +143,97 @@
       const input = document.getElementById('post-body');
       const holder = document.getElementById('post-editorjs');
       const form = holder?.closest('form');
-      if (!input || !holder || !form || !window.EditorJS) return;
+      const status = document.querySelector('[data-editor-status]');
+      if (!input || !holder || !form) return;
+
+      if (!window.EditorJS) {
+        if (status) status.textContent = 'Editör yüklenemedi. Sayfayı yenileyin.';
+        holder.innerHTML = '<p class="post-create-simple__editor-error">Metin editörü yüklenemedi. İnternet bağlantınızı kontrol edip sayfayı yenileyin.</p>';
+        return;
+      }
 
       const initial = input.value.trim();
       let data = { blocks: [] };
       if (initial) {
         try {
           const parsed = JSON.parse(initial);
-          if (parsed && Array.isArray(parsed.blocks)) data = parsed;
-          else data = { blocks: [{ type: 'paragraph', data: { text: initial.replace(/\\r?\\n/g, '<br>') } }] };
+          data = parsed && Array.isArray(parsed.blocks)
+            ? parsed
+            : { blocks: [{ type: 'paragraph', data: { text: initial.replace(/\\r?\\n/g, '<br>') } }] };
         } catch (_) {
           data = { blocks: initial.split(/\\n{2,}/).filter(Boolean).map(text => ({ type: 'paragraph', data: { text } })) };
         }
       }
 
-      const editor = new EditorJS({
-        holder: holder,
-        placeholder: 'Hikâyeni burada anlat...',
-        minHeight: 240,
-        data,
-        tools: {
-          header: { class: window.Header, inlineToolbar: true, config: { levels: [2, 3, 4], defaultLevel: 2 } },
-          list: { class: window.EditorjsList, inlineToolbar: true, config: { defaultStyle: 'unordered' } },
-          quote: { class: window.Quote, inlineToolbar: true, config: { quotePlaceholder: 'Alıntıyı yaz', captionPlaceholder: 'Kaynak' } },
-          code: { class: window.CodeTool },
-          delimiter: window.Delimiter,
-          table: { class: window.Table, inlineToolbar: true, config: { rows: 2, cols: 3 } },
-          inlineCode: window.InlineCode,
-          marker: window.Marker,
-          embed: {
-            class: window.Embed,
-            config: {
-              services: [
-                { name: 'youtube', regex: /(?:https?:\\/\\/)?(?:www\\.)?(?:youtube\\.com\\/(?:watch\\?v=|shorts\\/)|youtu\\.be\\/)([a-zA-Z0-9_-]{11})/, embedUrl: 'https://www.youtube.com/embed/<%= remote_id %>', html: '<iframe width="100%" height="360" src="<%= embed %>" frameborder="0" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>', height: 360, width: 640 },
-                { name: 'facebook', regex: /https?:\\/\\/(?:www\\.)?facebook\\.com\\/.+/, embedUrl: 'https://www.facebook.com/plugins/video.php?href=<%= encodeURIComponent(url) %>&show_text=0', html: '<iframe width="100%" height="420" src="<%= embed %>" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowfullscreen></iframe>', height: 420, width: 640 },
-                { name: 'x', regex: /https?:\\/\\/(?:www\\.)?(?:x\\.com|twitter\\.com)\\/.+\\/status\\/(\\d+)/, embedUrl: 'https://platform.twitter.com/embed/Tweet.html?id=<%= remote_id %>', html: '<iframe width="100%" height="550" src="<%= embed %>" frameborder="0" allowfullscreen></iframe>', height: 550, width: 550 },
-                { name: 'instagram', regex: /https?:\\/\\/(?:www\\.)?instagram\\.com\\/(?:p|reel|tv)\\/([a-zA-Z0-9_-]+)/, embedUrl: 'https://www.instagram.com/p/<%= remote_id %>/embed', html: '<iframe width="100%" height="540" src="<%= embed %>" frameborder="0" scrolling="no"></iframe>', height: 540, width: 400 },
-                { name: 'tiktok', regex: /https?:\\/\\/(?:www\\.|vm\\.)?tiktok\\.com\\/(?:@[^/]+\\/video\\/|t/)?([a-zA-Z0-9]+)/, embedUrl: 'https://www.tiktok.com/embed/v2/<%= remote_id %>', html: '<iframe width="100%" height="740" src="<%= embed %>" frameborder="0" allowfullscreen></iframe>', height: 740, width: 325 },
-                { name: 'reddit', regex: /https?:\\/\\/(?:www\\.)?reddit\\.com\\/r\\/.+\\/comments\\/([a-zA-Z0-9]+)/, embedUrl: 'https://www.redditmedia.com/r/<%= remote_id %>/comments/<%= remote_id %>/embed', html: '<iframe width="100%" height="500" src="<%= embed %>" frameborder="0" scrolling="no"></iframe>', height: 500, width: 640 }
-              ]
-            }
+      const tools = {};
+      if (window.Header) tools.header = { class: window.Header, inlineToolbar: true, config: { levels: [2, 3, 4], defaultLevel: 2 } };
+      if (window.EditorjsList) tools.list = { class: window.EditorjsList, inlineToolbar: true, config: { defaultStyle: 'unordered' } };
+      if (window.Quote) tools.quote = { class: window.Quote, inlineToolbar: true, config: { quotePlaceholder: 'Alıntıyı yaz', captionPlaceholder: 'Kaynak' } };
+      if (window.CodeTool) tools.code = { class: window.CodeTool };
+      if (window.Delimiter) tools.delimiter = window.Delimiter;
+      if (window.Table) tools.table = { class: window.Table, inlineToolbar: true, config: { rows: 2, cols: 3 } };
+      if (window.InlineCode) tools.inlineCode = window.InlineCode;
+      if (window.Marker) tools.marker = window.Marker;
+      if (window.Embed) tools.embed = { class: window.Embed, config: { services: [
+        { name: 'youtube', regex: /(?:https?:\\/\\/)?(?:www\\.)?(?:youtube\\.com\\/(?:watch\\?v=|shorts\\/)|youtu\\.be\\/)([a-zA-Z0-9_-]{11})/, embedUrl: 'https://www.youtube.com/embed/<%= remote_id %>', html: '<iframe width="100%" height="360" src="<%= embed %>" frameborder="0" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>', height: 360, width: 640 },
+        { name: 'facebook', regex: /https?:\\/\\/(?:www\\.)?facebook\\.com\\/.+/, embedUrl: 'https://www.facebook.com/plugins/video.php?href=<%= encodeURIComponent(url) %>&show_text=0', html: '<iframe width="100%" height="420" src="<%= embed %>" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowfullscreen></iframe>', height: 420, width: 640 },
+        { name: 'x', regex: /https?:\\/\\/(?:www\\.)?(?:x\\.com|twitter\\.com)\\/.+\\/status\\/(\\d+)/, embedUrl: 'https://platform.twitter.com/embed/Tweet.html?id=<%= remote_id %>', html: '<iframe width="100%" height="550" src="<%= embed %>" frameborder="0" allowfullscreen></iframe>', height: 550, width: 550 },
+        { name: 'instagram', regex: /https?:\\/\\/(?:www\\.)?instagram\\.com\\/(?:p|reel|tv)\\/([a-zA-Z0-9_-]+)/, embedUrl: 'https://www.instagram.com/p/<%= remote_id %>/embed', html: '<iframe width="100%" height="540" src="<%= embed %>" frameborder="0" scrolling="no"></iframe>', height: 540, width: 400 },
+        { name: 'tiktok', regex: /https?:\\/\\/(?:www\\.|vm\\.)?tiktok\\.com\\/(?:@[^/]+\\/video\\/|t/)?([a-zA-Z0-9]+)/, embedUrl: 'https://www.tiktok.com/embed/v2/<%= remote_id %>', html: '<iframe width="100%" height="740" src="<%= embed %>" frameborder="0" allowfullscreen></iframe>', height: 740, width: 325 }
+      ] } };
+
+      let editor;
+      try {
+        editor = new EditorJS({
+          holder,
+          placeholder: 'Hikâyeni burada anlat…',
+          minHeight: 180,
+          autofocus: false,
+          logLevel: 'ERROR',
+          data,
+          tools,
+          inlineToolbar: ['marker', 'inlineCode', 'link'],
+          onReady: () => {
+            if (status) status.textContent = 'Editör hazır';
+            holder.classList.add('is-ready');
+          },
+          onChange: async () => {
+            try { input.value = JSON.stringify(await editor.save()); } catch (_) {}
           }
-        },
-        onChange: async () => {
-          try { input.value = JSON.stringify(await editor.save()); } catch (_) {}
-        }
+        });
+      } catch (error) {
+        console.error('Editor.js başlatılamadı:', error);
+        if (status) status.textContent = 'Editör başlatılamadı';
+      }
+
+      editor?.isReady?.catch(error => {
+        console.error('Editor.js yüklenemedi:', error);
+        if (status) status.textContent = 'Editör yüklenemedi';
+        holder.innerHTML = '<p class="post-create-simple__editor-error">Editör başlatılamadı. Lütfen sayfayı yenileyin.</p>';
+      });
+
+      document.querySelectorAll('[data-editor-tool]').forEach(button => {
+        button.addEventListener('click', async () => {
+          if (!editor) return;
+          try {
+            await editor.isReady;
+            const type = button.dataset.editorTool;
+            if (type === 'paragraph') editor.blocks.insert('paragraph', { text: '' });
+            else if (type === 'header' && tools.header) editor.blocks.insert('header', { text: '', level: 2 });
+            else if (type === 'list' && tools.list) editor.blocks.insert('list', { style: 'unordered', items: [''] });
+            else if (type === 'quote' && tools.quote) editor.blocks.insert('quote', { text: '', caption: '' });
+            else if (type === 'embed' && tools.embed) editor.blocks.insert('embed', { service: '', source: '', embed: '', width: 0, height: 0 });
+            else return;
+            holder.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          } catch (error) { console.error('Editör bloğu eklenemedi:', error); }
+        });
       });
 
       form.addEventListener('submit', async event => {
         event.preventDefault();
         try {
-          const output = await editor.save();
-          input.value = JSON.stringify(output);
+          await editor.isReady;
+          input.value = JSON.stringify(await editor.save());
           HTMLFormElement.prototype.submit.call(form);
         } catch (error) {
           console.error('Editor.js kaydı başarısız:', error);
