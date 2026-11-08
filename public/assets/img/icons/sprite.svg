@@ -165,4 +165,8 @@
     <path fill="#f8604a" d="M26 13c0-7.18-5.82-13-13-13S0 5.82 0 13s5.82 13 13 13s13-5.82 13-13Z"/>
     <path fill="#fff" d="M17.55 20.822h-2.622V7.28h-1.321c-2.254 0-3.38 1.127-3.38 2.817c0 1.885.758 2.816 2.448 3.943l1.322.932l-3.749 5.828H7.237l3.575-5.265c-2.059-1.495-3.185-2.817-3.185-5.265c0-3.012 2.058-5.07 6.023-5.07h3.9v15.622Z"/>
 </symbol>
+<symbol id="megaphone" viewBox="0 0 24 24">
+    <path d="M3 11v2a2 2 0 0 0 2 2h2l10 5V4L7 9H5a2 2 0 0 0-2 2Z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M7 15l2 6h4l-2.5-7.25M17 8a5 5 0 0 1 0 8" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+</symbol>
 </svg>
