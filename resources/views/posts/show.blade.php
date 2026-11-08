@@ -49,7 +49,7 @@
             </div>
         </header>
 
-        @if ($post->coverImageUrl() || count($post->galleryImageUrls()) > 0 || filled($post->video_url))
+        @if ($post->coverImageUrl() || count($post->galleryImageUrls()) > 0 || filled($post->video_url) || filled($post->video_path))
             <div class="post__media-full">@include('posts._media', ['post' => $post])</div>
         @endif
 
