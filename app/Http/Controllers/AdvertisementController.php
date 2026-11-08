@@ -68,6 +68,66 @@ class AdvertisementController extends Controller
             ->with('status', 'Reklam başvurun alındı. Yönetici onayı ve ödeme kontrolünden sonra yayınlanacak.');
     }
 
+    public function edit(Request $request, Advertisement $advertisement): View
+    {
+        abort_unless($request->user()->is($advertisement->user), 403);
+        $dailyPrice = (float) (SiteSetting::current()?->advertisement_daily_price ?? 200);
+
+        return view('advertisements.edit', compact('advertisement', 'dailyPrice'));
+    }
+
+    public function update(Request $request, Advertisement $advertisement): RedirectResponse
+    {
+        abort_unless($request->user()->is($advertisement->user), 403);
+
+        $data = $request->validate([
+            'title' => ['required', 'string', 'max:160'],
+            'description' => ['required', 'string', 'max:2000'],
+            'image' => ['nullable', 'image', 'mimes:jpg,jpeg,png,gif,webp', 'max:5120'],
+            'remove_image' => ['nullable', 'boolean'],
+            'video_url' => ['nullable', 'url', 'max:2048', 'starts_with:https://'],
+            'target_url' => ['nullable', 'url', 'max:2048', 'starts_with:https://'],
+            'button_text' => ['nullable', 'string', 'max:40'],
+            'starts_at' => ['required', 'date', 'after_or_equal:today'],
+            'ends_at' => ['required', 'date', 'after:starts_at'],
+        ]);
+
+        $image = $advertisement->image_path;
+        if ($request->boolean('remove_image') && $image) {
+            Storage::disk('public')->delete($image);
+            $image = null;
+        }
+        if ($request->hasFile('image')) {
+            if ($image) Storage::disk('public')->delete($image);
+            $image = $request->file('image')->store('advertisements', 'public');
+        }
+
+        $startsAt = Carbon::parse($data['starts_at'], 'Europe/Istanbul')->utc();
+        $endsAt = Carbon::parse($data['ends_at'], 'Europe/Istanbul')->utc();
+        $days = max(1, (int) ceil($startsAt->diffInMinutes($endsAt) / 1440));
+        $dailyPrice = (float) (SiteSetting::current()?->advertisement_daily_price ?? 200);
+
+        $advertisement->update([
+            'title' => $data['title'],
+            'description' => $data['description'],
+            'image_path' => $image,
+            'video_url' => $data['video_url'] ?? null,
+            'target_url' => $data['target_url'] ?? '',
+            'button_text' => $data['button_text'] ?: 'Daha fazla bilgi al',
+            'starts_at' => $startsAt,
+            'ends_at' => $endsAt,
+            'daily_budget' => $dailyPrice,
+            'total_budget' => round($days * $dailyPrice, 2),
+            'status' => 'pending',
+            'approved_by' => null,
+            'approved_at' => null,
+            'rejection_reason' => null,
+        ]);
+
+        return redirect()->route('advertisements.index')
+            ->with('status', 'Reklamın güncellendi ve yeniden yönetici onayına gönderildi.');
+    }
+
     public function show(Request $request, Advertisement $advertisement): View
     {
         $isOwner = $request->user()?->is($advertisement->user);
