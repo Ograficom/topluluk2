@@ -27,7 +27,7 @@ return new class extends Migration
                 'advertisement_id' => $ad->id,
                 'title' => $ad->title,
                 'slug' => $slug,
-                'excerpt' => Str::limit($ad->description, 500),
+                'excerpt' => Str::limit($ad->description, 250),
                 'body' => $ad->description,
                 'cover_image' => $ad->image_path,
                 'video_url' => $ad->video_url,

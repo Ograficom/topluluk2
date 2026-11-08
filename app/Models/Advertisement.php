@@ -61,7 +61,7 @@ class Advertisement extends Model
             'user_id' => $this->user_id,
             'title' => $this->title,
             'slug' => $slug,
-            'excerpt' => Str::limit($this->description, 500),
+            'excerpt' => Str::limit($this->description, 250),
             'body' => $this->description,
             'cover_image' => $this->image_path,
             'video_url' => $this->video_url,
