@@ -33,6 +33,7 @@
 
             @include('advertisements._card', ['ad' => $ad, 'preview' => true])
 
+            @if ($ad->status === 'approved' && $ad->starts_at->isPast() && $ad->ends_at->isFuture())
             <div class="stats__counts" style="margin-top:18px">
                 <div class="stats__count-card stats__count-card--posts card card-body">
                     <div class="stats__count-head"><span class="stats__count-label small color-gray">Gösterim</span><span class="stats__count-icon"><x-repost-icon name="eye" size="18" /></span></div>
@@ -104,6 +105,13 @@
                     <p class="small color-gray" style="margin-top:12px">Henüz tıklama verisi yok.</p>
                 @endif
             </section>
+
+            @else
+                <section class="card card-body" style="margin-top:16px">
+                    <h3 class="h5">Reklam istatistikleri</h3>
+                    <p class="small color-gray">Gösterim, tıklama, okuma ve hedef kitle verileri reklam yayınlandığında burada toplanmaya başlayacak.</p>
+                </section>
+            @endif
 
             @if ($ad->rejection_reason)<p class="color-red small">Ret nedeni: {{ $ad->rejection_reason }}</p>@endif
         </section>
