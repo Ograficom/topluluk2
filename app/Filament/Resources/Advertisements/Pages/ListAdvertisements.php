@@ -1,9 +1,9 @@
 <?php
 
-namespace App\\Filament\\Resources\\Advertisements\\Pages;
+namespace App\Filament\Resources\Advertisements\Pages;
 
-use App\\Filament\\Resources\\Advertisements\\AdvertisementResource;
-use Filament\\Resources\\Pages\\ListRecords;
+use App\Filament\Resources\Advertisements\AdvertisementResource;
+use Filament\Resources\Pages\ListRecords;
 
 class ListAdvertisements extends ListRecords
 {
