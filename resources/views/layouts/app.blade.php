@@ -16,6 +16,14 @@
     <link rel="stylesheet" href="{{ asset('assets/css/engine.css') }}?v=20261106-social-account-management">
     <link rel="stylesheet" href="{{ asset('assets/css/ografi-overrides.css') }}?v=20261108-two-way-rss-v17">
     <style>
+        /* Repost ZIP responsive rule: hide the right widgets column on mobile/tablet. */
+        @media screen and (max-width: 920px) {
+            html body main.container > .main > aside.main__widgets {
+                display: none !important;
+            }
+        }
+    </style>
+    <style>
         /* Repost ZIP responsive rule: right widgets are not part of the mobile feed. */
         @media screen and (max-width: 920px) {
             html body main.container > .main > aside.main__widgets {
