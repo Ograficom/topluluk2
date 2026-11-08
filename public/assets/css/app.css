@@ -5590,3 +5590,24 @@ p {
     font-size: 1.2rem;
   }
 }
+
+
+/* Keep the homepage right rail visible while the feed scrolls, matching Repost's sticky channel rail. */
+@media screen and (min-width: 921px) {
+  html body main.container > .main.main__grid > aside.main__widgets {
+    position: sticky !important;
+    top: calc(var(--header-height, 70px) + var(--header-offset, 0px) + 12px) !important;
+    align-self: start !important;
+    max-height: calc(100vh - var(--header-height, 70px) - var(--header-offset, 0px) - 24px) !important;
+    overflow-y: auto !important;
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+  }
+}
+
+@media screen and (max-width: 920px) {
+  html body main.container > .main.main__grid > aside.main__widgets {
+    display: none !important;
+    visibility: hidden !important;
+  }
+}
