@@ -70,13 +70,23 @@
 @push('scripts')
 <script>
 (() => {
-    const startedAt = Date.now();
+    let activeSeconds = 0;
+    let lastTick = Date.now();
     let sent = false;
+
+    const accountTime = () => {
+        const now = Date.now();
+        if (document.visibilityState === 'visible') {
+            activeSeconds += Math.floor((now - lastTick) / 1000);
+        }
+        lastTick = now;
+    };
+
     const sendRead = () => {
-        if (sent || document.visibilityState !== 'visible') return;
-        const seconds = Math.floor((Date.now() - startedAt) / 1000);
-        if (seconds < 15) return;
+        accountTime();
+        if (sent || activeSeconds < 15) return;
         sent = true;
+
         fetch(@json(route('advertisements.read', $advertisement)), {
             method: 'POST',
             credentials: 'same-origin',
@@ -86,11 +96,15 @@
                 'X-Requested-With': 'XMLHttpRequest',
                 'Accept': 'application/json'
             },
-            body: JSON.stringify({ seconds })
+            body: JSON.stringify({ seconds: activeSeconds })
         }).catch(() => { sent = false; });
     };
-    window.setInterval(sendRead, 3000);
-    document.addEventListener('visibilitychange', sendRead);
+
+    window.setInterval(sendRead, 1000);
+    document.addEventListener('visibilitychange', () => {
+        accountTime();
+        lastTick = Date.now();
+    });
 })();
 </script>
 @endpush
