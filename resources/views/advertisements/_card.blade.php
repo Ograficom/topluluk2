@@ -96,6 +96,119 @@
             @endif
         </div>
     </footer>
+
+<style>
+/* Sponsored advertisement card: mobile-only layout corrections */
+@media (max-width: 600px) {
+    .post--sponsored {
+        min-width: 0;
+        max-width: 100%;
+        overflow: hidden;
+        box-sizing: border-box;
+    }
+
+    .post--sponsored .card-body,
+    .post--sponsored .post__header,
+    .post--sponsored .user-box,
+    .post--sponsored .user-box-content,
+    .post--sponsored .post__short,
+    .post--sponsored .post__short-media {
+        min-width: 0;
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+
+    .post--sponsored .user-box-content {
+        flex: 1 1 auto;
+        overflow: hidden;
+    }
+
+    .post--sponsored .user-box-content .name,
+    .post--sponsored .user-box-content .meta {
+        min-width: 0;
+        max-width: 100%;
+        overflow-wrap: anywhere;
+    }
+
+    .post--sponsored .post__short-title,
+    .post--sponsored .post__short-title-text,
+    .post--sponsored .post__short p {
+        overflow-wrap: anywhere;
+        word-break: normal;
+    }
+
+    .post--sponsored .post__short-media {
+        padding-top: 0;
+    }
+
+    .post--sponsored .post__media,
+    .post--sponsored .post__media a {
+        display: block;
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+    }
+
+    .post--sponsored .post__media-image,
+    .post--sponsored .post__media img,
+    .post--sponsored .post__media video {
+        display: block;
+        width: 100%;
+        max-width: 100%;
+        height: auto;
+        object-fit: contain;
+        box-sizing: border-box;
+    }
+
+    .post--sponsored .post__footer {
+        align-items: stretch !important;
+        gap: 10px !important;
+        padding-top: 12px !important;
+        padding-bottom: 16px !important;
+        min-height: 0 !important;
+    }
+
+    .post--sponsored .post__footer > span {
+        flex: 1 0 100%;
+    }
+
+    .post--sponsored .post__footer > div {
+        display: flex !important;
+        width: 100%;
+        min-width: 0 !important;
+        justify-content: stretch !important;
+        gap: 8px !important;
+    }
+
+    .post--sponsored .post__footer > div > a {
+        flex: 1 1 0 !important;
+        min-width: 0 !important;
+        max-width: 100%;
+        justify-content: center;
+        padding-right: 10px !important;
+        padding-left: 10px !important;
+        white-space: normal !important;
+        text-align: center;
+        overflow-wrap: anywhere;
+    }
+
+    .post--sponsored .post__footer > div > a.btn-primary {
+        min-width: 0 !important;
+    }
+}
+
+@media (max-width: 380px) {
+    .post--sponsored .post__footer > div {
+        flex-direction: column;
+    }
+
+    .post--sponsored .post__footer > div > a {
+        width: 100%;
+        flex-basis: auto !important;
+    }
+}
+</style>
+
 </article>
 
 @if (! $preview)
