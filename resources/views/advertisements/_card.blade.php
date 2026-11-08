@@ -149,13 +149,24 @@
         min-width: 0;
     }
 
+    /* The theme gives .post__media a fixed 340px height.
+       Remove that fixed box on phones so the complete ad image is visible. */
+    .post--sponsored .post__media:not(:has(.post__media-player-slide)) {
+        height: auto !important;
+        min-height: 0;
+        max-height: none;
+        aspect-ratio: auto;
+        overflow: visible;
+    }
+
     .post--sponsored .post__media-image,
     .post--sponsored .post__media img,
     .post--sponsored .post__media video {
         display: block;
         width: 100%;
         max-width: 100%;
-        height: auto;
+        height: auto !important;
+        max-height: none;
         object-fit: contain;
         box-sizing: border-box;
     }
@@ -185,8 +196,11 @@
         min-width: 0 !important;
         max-width: 100%;
         justify-content: center;
-        padding-right: 10px !important;
-        padding-left: 10px !important;
+        padding-right: 8px !important;
+        padding-left: 8px !important;
+        min-height: 42px;
+        font-size: 13px;
+        line-height: 1.2;
         white-space: normal !important;
         text-align: center;
         overflow-wrap: anywhere;
@@ -197,16 +211,6 @@
     }
 }
 
-@media (max-width: 380px) {
-    .post--sponsored .post__footer > div {
-        flex-direction: column;
-    }
-
-    .post--sponsored .post__footer > div > a {
-        width: 100%;
-        flex-basis: auto !important;
-    }
-}
 </style>
 
 </article>
