@@ -22,7 +22,7 @@
         </header>
 
         <div class="pm__list-wrap">
-            <form action="{{ route('messenger.index') }}" id="pmlist" method="GET">
+            <div id="pmlist">
                 <div class="pm-list">
                     @forelse ($conversations as $conversation)
                         @php
@@ -76,15 +76,16 @@
                 </div>
 
                 <span class="pm-no-messages" data-pm-empty hidden>Okunmamış mesaj yok</span>
+                {{ $conversations->links() }}
                 <label class="pm-unread-filter form-check form-switch">
                     <span class="pm-unread-filter__label">
+                        <x-repost-icon name="message" size="20" />
                         <span>Sadece okunmamışlar</span>
                     </span>
                     <input class="form-check-input pm-unread-filter__input" type="checkbox" data-pm-unread-filter role="switch" aria-label="Sadece okunmamış mesajları göster">
                 </label>
-            </form>
+            </div>
         </div>
-        {{ $conversations->links() }}
     </article>
 @endsection
 
