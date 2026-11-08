@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Advertisement;
 use App\Models\Channel;
 use App\Models\Comment;
 use App\Models\Post;
@@ -49,8 +50,11 @@ class PostController extends Controller
             ->when($sort === 'latest', fn (Builder $query) => $query->orderByDesc('published_at')->orderByDesc('id'))
             ->paginate(10)->withQueryString();
 
+        $ads = $search === '' ? Advertisement::query()->deliverable()->with('user')->inRandomOrder()->limit(2)->get() : collect();
+        foreach ($ads as $ad) $ad->increment('impressions');
+
         $this->setViewerReactions($posts);
-        return view('posts.index', compact('posts', 'search', 'sort', 'period'));
+        return view('posts.index', compact('posts', 'ads', 'search', 'sort', 'period'));
     }
 
     public function create(Request $request): View

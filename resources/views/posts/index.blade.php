@@ -3,6 +3,7 @@
 @section('title', filled($search) ? 'Arama sonuçları' : 'Akış')
 
 @section('content')
+    <div class="d-flex justify-content-end mb-3"><a class="btn btn-secondary-ghost btn-sm" href="{{ route('advertisements.index') }}">Reklamlarım</a><a class="btn btn-primary btn-sm" href="{{ route('advertisements.create') }}">Reklam ver</a></div>
     <section aria-label="Akış ayarları">
         <div class="hero__header-main">
             <div>
@@ -75,6 +76,12 @@
         <div class="d-flex justify-content-end">
             <a class="btn btn-secondary-ghost btn-sm" href="{{ route('posts.index') }}">Aramayı temizle</a>
         </div>
+    @endif
+
+    @if (($ads ?? collect())->isNotEmpty())
+        @foreach ($ads as $ad)
+            @include('advertisements._card', ['ad' => $ad])
+        @endforeach
     @endif
 
     @forelse ($posts as $post)
