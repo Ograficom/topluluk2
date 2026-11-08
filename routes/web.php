@@ -172,6 +172,8 @@ Route::middleware(['auth', 'verified'])->group(function (): void {
     Route::post('/posts/{post:slug}/bookmark', [CommunityController::class, 'toggleBookmark'])->middleware('throttle:30,1')->name('posts.bookmarks.toggle');
     Route::get('/advertisements', [AdvertisementController::class, 'index'])->name('advertisements.index');
     Route::get('/advertisements/create', [AdvertisementController::class, 'create'])->name('advertisements.create');
+    Route::get('/advertisements/{advertisement}/edit', [AdvertisementController::class, 'edit'])->name('advertisements.edit');
+    Route::put('/advertisements/{advertisement}', [AdvertisementController::class, 'update'])->middleware('throttle:10,1')->name('advertisements.update');
     Route::post('/advertisements', [AdvertisementController::class, 'store'])->middleware('throttle:5,1')->name('advertisements.store');
 
     Route::get('/posts/create', [PostController::class, 'create'])->name('posts.create');
