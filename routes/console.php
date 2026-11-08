@@ -4,6 +4,7 @@ use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Schedule;
 use App\Services\SitemapService;
+use App\Services\ExternalRssReader;
 
 Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
@@ -14,7 +15,7 @@ Schedule::call(fn () => app(SitemapService::class)->rebuild())
     ->name('sitemap-rebuild')
     ->withoutOverlapping();
 
-Schedule::command('rss:fetch')
+Schedule::call(fn () => app(ExternalRssReader::class)->fetchAll())
     ->everyFifteenMinutes()
     ->name('external-rss-fetch')
     ->withoutOverlapping();
