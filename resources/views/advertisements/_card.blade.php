@@ -16,8 +16,12 @@
                         @endif
                     </span>
                     <div class="meta">
-                        <span>Sponsorlu</span>
-                        <time datetime="{{ $ad->starts_at?->toAtomString() }}">{{ $ad->starts_at?->diffForHumans() }}</time>
+                        @if ($ad->status === 'pending')
+                            <span>Reklam başvurusu · Onay bekliyor</span>
+                        @else
+                            <span>Sponsorlu</span>
+                        @endif
+                        <time datetime="{{ $ad->created_at?->toAtomString() }}">{{ $ad->created_at?->diffForHumans() }}</time>
                     </div>
                 </div>
             </div>
