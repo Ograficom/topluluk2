@@ -54,10 +54,52 @@
         @endif
 
         <h1 class="post__title-full">{{ $post->title }}</h1>
-        <section class="editor">
-            @foreach (preg_split('/\R{2,}/', trim($post->body)) ?: [] as $paragraph)
-                @if (filled($paragraph))<p>{!! nl2br(e($paragraph)) !!}</p>@endif
-            @endforeach
+        <section class="editor editorjs-content">
+            @php
+                $editorContent = json_decode($post->body, true);
+                $editorBlocks = is_array($editorContent) && isset($editorContent['blocks']) && is_array($editorContent['blocks']) ? $editorContent['blocks'] : null;
+            @endphp
+            @if ($editorBlocks !== null)
+                @foreach ($editorBlocks as $block)
+                    @php $blockData = $block['data'] ?? []; @endphp
+                    @switch($block['type'] ?? '')
+                        @case('header')
+                            <h{{ min(4, max(2, (int) ($blockData['level'] ?? 2))) }}>{{ $blockData['text'] ?? '' }}</h{{ min(4, max(2, (int) ($blockData['level'] ?? 2))) }}>
+                            @break
+                        @case('paragraph')
+                            @if (filled($blockData['text'] ?? ''))<p>{!! nl2br(e($blockData['text'])) !!}</p>@endif
+                            @break
+                        @case('list')
+                            @php $listTag = ($blockData['style'] ?? 'unordered') === 'ordered' ? 'ol' : 'ul'; @endphp
+                            <{{ $listTag }}>
+                                @foreach (($blockData['items'] ?? []) as $item)
+                                    <li>{{ is_array($item) ? ($item['content'] ?? '') : $item }}</li>
+                                @endforeach
+                            </{{ $listTag }}>
+                            @break
+                        @case('quote')
+                            <blockquote><p>{{ $blockData['text'] ?? '' }}</p>@if (filled($blockData['caption'] ?? ''))<cite>{{ $blockData['caption'] }}</cite>@endif</blockquote>
+                            @break
+                        @case('code')
+                            <pre><code>{{ $blockData['code'] ?? '' }}</code></pre>
+                            @break
+                        @case('delimiter')
+                            <hr>
+                            @break
+                        @case('table')
+                            <div class="editorjs-table-wrap"><table>
+                                @foreach (($blockData['content'] ?? []) as $row)
+                                    <tr>@foreach ($row as $cell)<td>{{ $cell }}</td>@endforeach</tr>
+                                @endforeach
+                            </table></div>
+                            @break
+                    @endswitch
+                @endforeach
+            @else
+                @foreach (preg_split('/\\R{2,}/', trim($post->body)) ?: [] as $paragraph)
+                    @if (filled($paragraph))<p>{!! nl2br(e($paragraph)) !!}</p>@endif
+                @endforeach
+            @endif
         </section>
 
         @if ($post->tagRecords->isNotEmpty())
