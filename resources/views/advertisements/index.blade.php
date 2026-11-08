@@ -5,8 +5,10 @@
 @section('content')
     <header class="feed-heading">
         <h1 class="h3">Reklam yöneticisi</h1>
-        <p class="color-gray">Yayınlanan reklamlarının erişimini, etkileşimini ve hedef kitlesini takip et.</p>
-        <a class="btn btn-primary" href="{{ route('advertisements.create') }}">Reklam oluştur</a>
+        <div class="d-flex align-items-center flex-wrap gap-2">
+            <p class="color-gray" style="margin:0">Yayınlanan reklamlarının erişimini, etkileşimini ve hedef kitlesini takip et.</p>
+            <a class="btn btn-primary" href="{{ route('advertisements.create') }}">Reklam oluştur</a>
+        </div>
     </header>
 
     @forelse ($ads as $ad)
