@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Advertisement;
 use App\Models\Post;
 use App\Models\PostReaction;
 use App\Models\User;
