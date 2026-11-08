@@ -60,8 +60,17 @@
                         <p class="post-composer-hint">İçeriğin otomatik olarak Editor.js blokları şeklinde kaydedilir.</p>
                     </li>
                     <li>
-                        <label class="addpost__label" for="post-video-url">Video bağlantısı (HTTPS)</label>
-                        <input id="post-video-url" name="video_url" type="url" value="{{ old('video_url', $post->video_url ?? '') }}" maxlength="2048" placeholder="https://...">
+                        <label class="addpost__label" for="post-video-url">Video bağlantısı</label>
+                        <input id="post-video-url" name="video_url" type="url" value="{{ old('video_url', $post->video_url ?? '') }}" maxlength="2048" placeholder="YouTube, Facebook, X, Reddit, Instagram veya TikTok bağlantısı">
+                        <p class="post-composer-hint">Desteklenen platform bağlantıları yazı içinde oynatılabilir gömülü video olarak gösterilir.</p>
+                    </li>
+                    <li class="addpost__actions">
+                        <label class="addpost__label" for="post-video-file">Bilgisayarından video yükle</label>
+                        <p class="post-composer-hint">MP4, WebM, MOV veya MKV · En fazla 100 MB.</p>
+                        <input class="form-attachments" id="post-video-file" name="video_file" type="file" accept="video/mp4,video/webm,video/quicktime,video/x-matroska">
+                        @if (isset($post) && $post->video_path)
+                            <p class="small color-gray">Bu yazıda yüklü bir video var. Yeni video seçersen mevcut video değiştirilir.</p>
+                        @endif
                     </li>
                     <li class="post-composer-divider"><span class="post-composer-step">02</span><div><strong>Görsel ve video</strong><span>Yazını fotoğraflar ve video bağlantısıyla zenginleştir.</span></div></li>
                     <li class="addpost__actions">
@@ -162,6 +171,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@editorjs/table@2.4.3"></script>
     <script src="https://cdn.jsdelivr.net/npm/@editorjs/inline-code@1.5.0"></script>
     <script src="https://cdn.jsdelivr.net/npm/@editorjs/marker@1.4.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@editorjs/embed@2.7.6"></script>
     <script>
     (() => {
       const input = document.getElementById('post-body');
@@ -194,7 +204,20 @@
           delimiter: window.Delimiter,
           table: { class: window.Table, inlineToolbar: true, config: { rows: 2, cols: 3 } },
           inlineCode: window.InlineCode,
-          marker: window.Marker
+          marker: window.Marker,
+          embed: {
+            class: window.Embed,
+            config: {
+              services: [
+                { name: 'youtube', regex: /(?:https?:\\/\\/)?(?:www\\.)?(?:youtube\\.com\\/(?:watch\\?v=|shorts\\/)|youtu\\.be\\/)([a-zA-Z0-9_-]{11})/, embedUrl: 'https://www.youtube.com/embed/<%= remote_id %>', html: '<iframe width="100%" height="360" src="<%= embed %>" frameborder="0" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>', height: 360, width: 640 },
+                { name: 'facebook', regex: /https?:\\/\\/(?:www\\.)?facebook\\.com\\/.+/, embedUrl: 'https://www.facebook.com/plugins/video.php?href=<%= encodeURIComponent(url) %>&show_text=0', html: '<iframe width="100%" height="420" src="<%= embed %>" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowfullscreen></iframe>', height: 420, width: 640 },
+                { name: 'x', regex: /https?:\\/\\/(?:www\\.)?(?:x\\.com|twitter\\.com)\\/.+\\/status\\/(\\d+)/, embedUrl: 'https://platform.twitter.com/embed/Tweet.html?id=<%= remote_id %>', html: '<iframe width="100%" height="550" src="<%= embed %>" frameborder="0" allowfullscreen></iframe>', height: 550, width: 550 },
+                { name: 'instagram', regex: /https?:\\/\\/(?:www\\.)?instagram\\.com\\/(?:p|reel|tv)\\/([a-zA-Z0-9_-]+)/, embedUrl: 'https://www.instagram.com/p/<%= remote_id %>/embed', html: '<iframe width="100%" height="540" src="<%= embed %>" frameborder="0" scrolling="no"></iframe>', height: 540, width: 400 },
+                { name: 'tiktok', regex: /https?:\\/\\/(?:www\\.|vm\\.)?tiktok\\.com\\/(?:@[^/]+\\/video\\/|t/)?([a-zA-Z0-9]+)/, embedUrl: 'https://www.tiktok.com/embed/v2/<%= remote_id %>', html: '<iframe width="100%" height="740" src="<%= embed %>" frameborder="0" allowfullscreen></iframe>', height: 740, width: 325 },
+                { name: 'reddit', regex: /https?:\\/\\/(?:www\\.)?reddit\\.com\\/r\\/.+\\/comments\\/([a-zA-Z0-9]+)/, embedUrl: 'https://www.redditmedia.com/r/<%= remote_id %>/comments/<%= remote_id %>/embed', html: '<iframe width="100%" height="500" src="<%= embed %>" frameborder="0" scrolling="no"></iframe>', height: 500, width: 640 }
+              ]
+            }
+          }
         },
         onChange: async () => {
           try { input.value = JSON.stringify(await editor.save()); } catch (_) {}

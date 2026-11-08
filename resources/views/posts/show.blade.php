@@ -49,7 +49,7 @@
             </div>
         </header>
 
-        @if ($post->coverImageUrl() || count($post->galleryImageUrls()) > 0 || filled($post->video_url))
+        @if ($post->coverImageUrl() || count($post->galleryImageUrls()) > 0 || filled($post->video_url) || filled($post->video_path))
             <div class="post__media-full">@include('posts._media', ['post' => $post])</div>
         @endif
 
@@ -82,6 +82,32 @@
                             @break
                         @case('code')
                             <pre><code>{{ $blockData['code'] ?? '' }}</code></pre>
+                            @break
+                        @case('embed')
+                            @php
+                                $embedSource = $blockData['source'] ?? '';
+                                $embedHost = strtolower(parse_url($embedSource, PHP_URL_HOST) ?: '');
+                                $safeEmbedUrl = null;
+                                if (in_array($embedHost, ['youtube.com', 'www.youtube.com', 'm.youtube.com', 'youtu.be', 'www.youtu.be'], true)) {
+                                    preg_match('~(?:v=|youtu\\.be/|shorts/)([a-zA-Z0-9_-]{11})~', $embedSource, $match);
+                                    if (!empty($match[1])) $safeEmbedUrl = 'https://www.youtube-nocookie.com/embed/'.$match[1];
+                                } elseif (in_array($embedHost, ['facebook.com', 'www.facebook.com', 'm.facebook.com'], true)) {
+                                    $safeEmbedUrl = 'https://www.facebook.com/plugins/video.php?href='.urlencode($embedSource).'&show_text=0';
+                                } elseif (in_array($embedHost, ['x.com', 'www.x.com', 'twitter.com', 'www.twitter.com'], true)) {
+                                    if (preg_match('~/status/(\\d+)~', $embedSource, $match)) $safeEmbedUrl = 'https://platform.twitter.com/embed/Tweet.html?id='.$match[1];
+                                } elseif (in_array($embedHost, ['instagram.com', 'www.instagram.com'], true)) {
+                                    if (preg_match('~/(?:p|reel|tv)/([a-zA-Z0-9_-]+)~', $embedSource, $match)) $safeEmbedUrl = 'https://www.instagram.com/p/'.$match[1].'/embed';
+                                } elseif (in_array($embedHost, ['tiktok.com', 'www.tiktok.com', 'vm.tiktok.com'], true)) {
+                                    if (preg_match('~/video/(\\d+)~', $embedSource, $match)) $safeEmbedUrl = 'https://www.tiktok.com/embed/v2/'.$match[1];
+                                } elseif (in_array($embedHost, ['reddit.com', 'www.reddit.com', 'old.reddit.com'], true)) {
+                                    if (preg_match('~(/r/[^/]+/comments/[^/]+)~', $embedSource, $match)) $safeEmbedUrl = 'https://www.redditmedia.com'.$match[1].'/embed';
+                                }
+                            @endphp
+                            @if ($safeEmbedUrl)
+                                <div class="post-embedded-video">
+                                    <iframe src="{{ $safeEmbedUrl }}" title="Gömülü video" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                                </div>
+                            @endif
                             @break
                         @case('delimiter')
                             <hr>

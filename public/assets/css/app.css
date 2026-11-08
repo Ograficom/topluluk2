@@ -5880,3 +5880,31 @@ p {
   .post-editorjs .ce-toolbar__content,
   .post-editorjs .ce-block__content { margin-left: 42px; margin-right: 8px; }
 }
+
+
+/* Responsive social embeds and uploaded post videos */
+.post-embedded-video,
+.post-uploaded-video {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  border-radius: 12px;
+  background: #080b12;
+}
+.post-embedded-video { aspect-ratio: 16 / 9; }
+.post-embedded-video iframe,
+.post-uploaded-video video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+.post-uploaded-video video {
+  max-height: 680px;
+  object-fit: contain;
+}
+.post-uploaded-video { min-height: 180px; }
+@media (max-width: 640px) {
+  .post-embedded-video { border-radius: 9px; }
+  .post-uploaded-video video { max-height: 420px; }
+}
