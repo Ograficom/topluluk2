@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Filament\Pages\SiteBranding;
 use App\Models\Channel;
+use App\Models\Advertisement;
 use App\Models\Comment;
 use App\Models\Post;
 use App\Models\PostReaction;
@@ -708,6 +709,95 @@ class RepostFeedTest extends TestCase
             ->assertOk()
             ->assertSee('Yetişkin yazı metni.');
         $this->assertDatabaseHas('posts', ['id' => $post->id, 'views' => 1]);
+    }
+
+    public function test_unapproved_advertisements_never_appear_in_public_posts_comments_or_teasers(): void
+    {
+        $owner = User::factory()->create();
+        $commenter = User::factory()->create();
+        $channel = Channel::create([
+            'name' => 'Reklam görünürlük kanalı',
+            'slug' => 'reklam-gorunurluk-kanali',
+            'is_active' => true,
+        ]);
+
+        $pendingAd = Advertisement::create([
+            'user_id' => $owner->id,
+            'title' => 'Gizli bekleyen reklam',
+            'description' => 'Onaylanmadan görünmemesi gereken reklam açıklaması.',
+            'target_url' => 'https://example.com/pending',
+            'starts_at' => now()->subDay(),
+            'ends_at' => now()->addDay(),
+            'status' => 'pending',
+            'billing_type' => 'free',
+            'payment_status' => 'pending',
+        ]);
+        $pendingPost = $pendingAd->post()->firstOrFail();
+        $pendingPost->update(['channel_id' => $channel->id]);
+        Comment::create([
+            'post_id' => $pendingPost->id,
+            'user_id' => $commenter->id,
+            'body' => 'Bekleyen reklamın gizli yorumu.',
+        ]);
+
+        $approvedAd = Advertisement::create([
+            'user_id' => $owner->id,
+            'title' => 'Onaylı reklam görünür',
+            'description' => 'Yönetici onayından geçmiş reklam.',
+            'target_url' => 'https://example.com/approved',
+            'starts_at' => now()->subDay(),
+            'ends_at' => now()->addDay(),
+            'status' => 'approved',
+            'billing_type' => 'free',
+            'payment_status' => 'pending',
+        ]);
+        $approvedPost = $approvedAd->post()->firstOrFail();
+        $approvedPost->update(['channel_id' => $channel->id]);
+        Comment::create([
+            'post_id' => $approvedPost->id,
+            'user_id' => $commenter->id,
+            'body' => 'Onaylı reklamın yorumu.',
+        ]);
+
+        $this->assertDatabaseHas('posts', [
+            'id' => $pendingPost->id,
+            'is_published' => false,
+        ]);
+
+        $this->get('/')
+            ->assertOk()
+            ->assertDontSee('Gizli bekleyen reklam')
+            ->assertSee('Onaylı reklam görünür');
+
+        $this->get('/last-posts.html')
+            ->assertOk()
+            ->assertDontSee('Gizli bekleyen reklam')
+            ->assertSee('Onaylı reklam görünür');
+
+        $this->get('/last-comments.html')
+            ->assertOk()
+            ->assertDontSee('Bekleyen reklamın gizli yorumu.')
+            ->assertSee('Onaylı reklamın yorumu.');
+
+        $this->get(route('channels.show', $channel))
+            ->assertOk()
+            ->assertDontSee('Gizli bekleyen reklam')
+            ->assertDontSee('Bekleyen reklamın gizli yorumu.')
+            ->assertSee('Onaylı reklam görünür');
+
+        $this->get(route('profiles.show', $owner))
+            ->assertOk()
+            ->assertDontSee('Gizli bekleyen reklam')
+            ->assertDontSee('Bekleyen reklamın gizli yorumu.')
+            ->assertSee('Onaylı reklam görünür');
+
+        $this->actingAs($owner)
+            ->get(route('profiles.show', $owner))
+            ->assertOk()
+            ->assertDontSee('Gizli bekleyen reklam')
+            ->assertDontSee('Bekleyen reklamın gizli yorumu.');
+
+        $this->get(route('posts.show', $pendingPost))->assertNotFound();
     }
 
     public function test_channel_pages_only_show_active_channels_and_published_posts(): void
