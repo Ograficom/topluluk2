@@ -16,10 +16,12 @@ class AdvertisementController extends Controller
     public function index(Request $request): View
     {
         $ads = $request->user()->advertisements()->with(['user', 'post'])->latest()->paginate(15);
-        $events = AdvertisementEvent::query()
-            ->whereIn('advertisement_id', $ads->getCollection()->pluck('id'))
-            ->get()
-            ->groupBy('advertisement_id');
+        $events = Schema::hasTable('advertisement_events')
+            ? AdvertisementEvent::query()
+                ->whereIn('advertisement_id', $ads->getCollection()->pluck('id'))
+                ->get()
+                ->groupBy('advertisement_id')
+            : collect();
 
         foreach ($ads as $ad) {
             $adEvents = $events->get($ad->id, collect());
@@ -192,14 +194,16 @@ class AdvertisementController extends Controller
             }
         }
 
-        $visitorToken = hash('sha256', $request->session()->getId());
-        $lastClick = AdvertisementEvent::query()->where('advertisement_id', $advertisement->id)
-            ->where('visitor_token', $visitorToken)->where('event_type', 'click')->latest()->first();
-        $lastReturn = AdvertisementEvent::query()->where('advertisement_id', $advertisement->id)
-            ->where('visitor_token', $visitorToken)->where('event_type', 'return')->latest()->first();
+        if (Schema::hasTable('advertisement_events')) {
+            $visitorToken = hash('sha256', $request->session()->getId());
+            $lastClick = AdvertisementEvent::query()->where('advertisement_id', $advertisement->id)
+                ->where('visitor_token', $visitorToken)->where('event_type', 'click')->latest()->first();
+            $lastReturn = AdvertisementEvent::query()->where('advertisement_id', $advertisement->id)
+                ->where('visitor_token', $visitorToken)->where('event_type', 'return')->latest()->first();
 
-        if (! $isOwner && ! $request->user()?->is_admin && $lastClick && (! $lastReturn || $lastClick->created_at->gt($lastReturn->created_at))) {
-            AdvertisementEvent::record($advertisement, $request, 'return');
+            if (! $isOwner && ! $request->user()?->is_admin && $lastClick && (! $lastReturn || $lastClick->created_at->gt($lastReturn->created_at))) {
+                AdvertisementEvent::record($advertisement, $request, 'return');
+            }
         }
 
         return view('advertisements.show', compact('advertisement'));
