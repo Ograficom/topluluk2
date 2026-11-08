@@ -73,7 +73,25 @@
             @else
                 <a class="btn btn-primary" href="{{ $detailUrl }}" style="display:inline-flex;flex:0 0 auto;align-items:center;justify-content:center;gap:9px;width:auto;min-width:max-content;height:42px;box-sizing:border-box;padding:0 20px;border-radius:11px;font-size:14px;line-height:1;font-weight:600;text-decoration:none;white-space:nowrap" aria-label="Reklam ayrıntılarını görüntüle">
                     <span>{{ $ad->button_text ?: 'Daha fazla bilgi al' }}</span>
-                    <svg style="display:block;flex:0 0 16px" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7"/><path d="M7 7h10v10"/></svg>
+                    @switch($ad->button_text ?: 'Daha fazla bilgi al')
+                        @case('Daha fazla bilgi al')
+                            <svg style="display:block;flex:0 0 18px" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 11v5"/><path d="M12 7h.01"/></svg>
+                            @break
+                        @case('İncele')
+                            <svg style="display:block;flex:0 0 18px" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+                            @break
+                        @case('Alışveriş yap')
+                            <svg style="display:block;flex:0 0 18px" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 8h14l-1 13H6L5 8Z"/><path d="M9 8a3 3 0 0 1 6 0"/></svg>
+                            @break
+                        @case('Kaydol')
+                            <svg style="display:block;flex:0 0 18px" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="4"/><path d="M3 21v-2a6 6 0 0 1 6-6h2"/><path d="M19 14v6"/><path d="M16 17h6"/></svg>
+                            @break
+                        @case('Hemen başvur')
+                            <svg style="display:block;flex:0 0 18px" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
+                            @break
+                        @default
+                            <svg style="display:block;flex:0 0 18px" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7"/><path d="M7 7h10v10"/></svg>
+                    @endswitch
                 </a>
             @endif
         </div>
