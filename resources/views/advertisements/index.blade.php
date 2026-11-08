@@ -39,11 +39,11 @@
                     <span class="stats__count-num">{{ number_format($stats['impressions']) }}</span>
                 </div>
                 <div class="stats__count-card stats__count-card--comments card card-body">
-                    <div class="stats__count-head"><span class="stats__count-label small color-gray">Tıklama</span><span class="stats__count-icon"><x-repost-icon name="external-link" size="18" /></span></div>
+                    <div class="stats__count-head"><span class="stats__count-label small color-gray">Tıklama</span><span class="stats__count-icon"><x-repost-icon name="link" size="18" /></span></div>
                     <span class="stats__count-num">{{ number_format($stats['clicks']) }}</span>
                 </div>
                 <div class="stats__count-card stats__count-card--users card card-body">
-                    <div class="stats__count-head"><span class="stats__count-label small color-gray">Tıklama oranı</span><span class="stats__count-icon"><x-repost-icon name="chart" size="18" /></span></div>
+                    <div class="stats__count-head"><span class="stats__count-label small color-gray">Tıklama oranı</span><span class="stats__count-icon"><x-repost-icon name="bolt" size="18" /></span></div>
                     <span class="stats__count-num">%{{ number_format($stats['ctr'], 2, ',', '.') }}</span>
                 </div>
             </div>
