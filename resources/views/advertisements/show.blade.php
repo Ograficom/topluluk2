@@ -28,9 +28,15 @@
                     </div>
                 </div>
             </div>
+            @if (auth()->check() && (auth()->user()->is($advertisement->user) || auth()->user()->is_admin))
+                <div class="dropdown">
+                    <button class="btn btn-secondary-ghost btn-circle btn-xs" type="button" data-dropdown-toggle aria-expanded="false" aria-label="Reklam menüsünü aç"><x-repost-icon name="more" size="16" /></button>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li class="dropdown-menu-item dropdown-menu-item-sm"><a href="{{ route('advertisements.edit', $advertisement) }}">Reklamı düzenle</a></li>
+                    </ul>
+                </div>
+            @endif
         </header>
-
-        <h1 class="post__title-full">{{ $advertisement->title }}</h1>
 
         @if ($advertisement->post && ($advertisement->post->coverImageUrl() || count($advertisement->post->galleryImageUrls()) > 0 || filled($advertisement->post->video_url)))
             <div class="post__media-full">
@@ -43,6 +49,8 @@
                 </div>
             </div>
         @endif
+
+        <h1 class="post__title-full">{{ $advertisement->title }}</h1>
 
         <section class="editor">
             @foreach (preg_split('/\R{2,}/', trim($advertisement->description)) ?: [] as $paragraph)
