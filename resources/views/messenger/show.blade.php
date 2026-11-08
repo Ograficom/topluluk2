@@ -3,7 +3,7 @@
 @section('title', ($other?->displayName() ?? 'Mesajlaşma') . ' ile sohbet')
 
 @section('content')
-    <article class="pm card card-body">
+    <article class="pm">
         <section class="pm-dialog">
             <header class="pm-dialog__header pm-dialog__header--conversation">
                 <a class="pm-dialog__back" href="{{ route('messenger.index') }}" aria-label="Mesaj listesine dön">
