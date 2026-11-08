@@ -2,7 +2,7 @@
     <nav class="footer__menu" aria-label="Alt gezinme">
         <a href="{{ route('contacts') }}" class="footer__menu-link">İletişim</a>
         <a href="{{ route('stats.index') }}" class="footer__menu-link">İstatistikler</a>
-        <a href="{{ route('rss.reader') }}" class="footer__menu-link">RSS akışı</a>
+        <a href="{{ route('rss.all') }}" class="footer__menu-link">RSS akışı</a>
         <div class="dropdown dropup dropdown-md">
             <button class="btn btn-secondary btn-xs btn-rounded" type="button" data-dropdown-toggle aria-expanded="false" aria-controls="footer-more-menu" aria-label="Diğer bağlantıları aç">
                 <x-repost-icon name="more" size="18" class="color-gray" />
