@@ -50,7 +50,7 @@ class PostController extends Controller
             ->when($sort === 'latest', fn (Builder $query) => $query->orderByDesc('published_at')->orderByDesc('id'))
             ->paginate(10)->withQueryString();
 
-        $ads = $search === '' ? Advertisement::query()->deliverable()->with('user')->inRandomOrder()->limit(2)->get() : collect();
+        $ads = $search === '' ? Advertisement::query()->deliverable()->with(['user', 'post'])->inRandomOrder()->limit(2)->get() : collect();
         foreach ($ads as $ad) $ad->increment('impressions');
 
         $this->setViewerReactions($posts);
