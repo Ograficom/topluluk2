@@ -1831,3 +1831,38 @@ body.is-messenger-conversation .pm-dialog__composer .pm-composer__send svg {
     min-width: 36px !important;
   }
 }
+
+
+/* Keep the complete desktop conversation panel at a stable height while the page scrolls.
+   The message list scrolls internally; the site grid and column widths remain unchanged. */
+@media (min-width: 641px) {
+  body.is-messenger-conversation .pm.card.card-body {
+    position: sticky !important;
+    top: calc(var(--header-height, 56px) + 14px) !important;
+    align-self: start !important;
+    height: min(600px, calc(100dvh - var(--header-height, 56px) - 28px)) !important;
+    min-height: 420px !important;
+    max-height: calc(100dvh - var(--header-height, 56px) - 28px) !important;
+    flex: 0 0 auto !important;
+    overflow: visible !important;
+  }
+  body.is-messenger-conversation .pm-dialog {
+    height: 100% !important;
+    min-height: 0 !important;
+    flex: 1 1 auto !important;
+  }
+  body.is-messenger-conversation .pm-dialog__header--conversation {
+    position: relative !important;
+    top: auto !important;
+    flex: 0 0 auto !important;
+  }
+  body.is-messenger-conversation .pm-dialog__messages {
+    flex: 1 1 0 !important;
+    min-height: 0 !important;
+  }
+  body.is-messenger-conversation .pm-dialog__composer.pm-composer {
+    position: relative !important;
+    bottom: auto !important;
+    flex: 0 0 auto !important;
+  }
+}
