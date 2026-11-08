@@ -23,8 +23,8 @@
             </div>
         </header>
         <div class="post__short">
-            <h2 class="post__short-title h3"><a href="{{ route('posts.show', $post) }}" class="color-title">{{ $post->title }}</a></h2>
-            <p class="text-clamp-3 color-text">{{ $post->excerpt }}</p>
+            <h2 class="post__short-title h3"><a href="{{ route('posts.show', $post) }}" class="color-title"><span class="post__short-title-text">{{ $post->title }}</span></a></h2>
+            <div class="text-clamp-3 color-text">{{ $post->excerpt }}</div>
             @if ($post->tagRecords->isNotEmpty())
                 <div class="post__tags">
                     @foreach ($post->tagRecords as $tag)
