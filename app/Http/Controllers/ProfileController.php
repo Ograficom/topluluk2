@@ -54,9 +54,15 @@ class ProfileController extends Controller
             }
         });
 
-        // Show active site advertisements inside the profile's post feed.
+        // Show only this profile owner's active advertisements as their own feed entries.
         $profileAds = $posts->currentPage() === 1
-            ? Advertisement::query()->deliverable()->with('user')->inRandomOrder()->limit(min(2, max(1, $posts->count())))->get()
+            ? Advertisement::query()
+                ->where('user_id', $user->id)
+                ->deliverable()
+                ->with('user')
+                ->latest('created_at')
+                ->limit(2)
+                ->get()
             : collect();
 
         foreach ($profileAds as $profileAd) {
