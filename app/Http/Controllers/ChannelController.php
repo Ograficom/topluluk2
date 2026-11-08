@@ -161,6 +161,7 @@ class ChannelController extends Controller
         $postsQuery = $channel->posts()
             ->published()
             ->with('user')
+            ->with(['comments' => fn ($query) => $query->with('user')->limit(1)])
             ->withCount('comments')
             ->withCount([
                 'reactions as likes_count' => fn (Builder $query) => $query->where('type', PostReaction::LIKE),
