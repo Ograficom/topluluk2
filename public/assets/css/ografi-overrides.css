@@ -3978,3 +3978,43 @@ body.is-messenger-conversation .pm-dialog__composer .pm-composer__send svg {
     .ografi-pbx-art-chip--bottom { bottom: 6px; left: 4px; }
     .ografi-pbx-hero h1 { font-size: clamp(28px, 7.5cqw, 36px); }
 }
+
+
+/* Santral mobile hero: place the illustration first and centered above the copy */
+@media (max-width: 820px) {
+    .ografi-pbx-page .ografi-pbx-hero {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: flex-start !important;
+        gap: 8px !important;
+    }
+    .ografi-pbx-page .ografi-pbx-hero-art {
+        order: -10 !important;
+        align-self: center !important;
+        justify-self: center !important;
+        width: min(100%, 360px) !important;
+        min-height: 220px !important;
+        margin: 0 auto 12px !important;
+        inset: auto !important;
+    }
+    .ografi-pbx-page .ografi-pbx-hero-copy {
+        order: 1 !important;
+        align-self: stretch !important;
+        width: 100% !important;
+        text-align: left !important;
+    }
+    .ografi-pbx-page .ografi-pbx-art-orbit,
+    .ografi-pbx-page .ografi-pbx-art-card,
+    .ografi-pbx-page .ografi-pbx-art-chip {
+        left: auto;
+        right: auto;
+    }
+}
+@media (max-width: 520px) {
+    .ografi-pbx-page .ografi-pbx-hero-art {
+        width: 100% !important;
+        min-height: 205px !important;
+        margin-bottom: 8px !important;
+    }
+}
