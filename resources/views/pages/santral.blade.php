@@ -39,7 +39,7 @@
                 <section class="ografi-pbx-feature">
                     <x-repost-icon name="message" size="22" />
                     <h3>Bulut santral</h3>
-                    <p of="">Ofis dışında olsanız da ekibiniz aynı telefon sistemi üzerinden çağrı alıp yapabilir. Kullanıcı ve dahili yapılandırmasını işletmenize göre hazırlıyoruz.</p>
+                    <p>Ofis dışında olsanız da ekibiniz aynı telefon sistemi üzerinden çağrı alıp yapabilir. Kullanıcı ve dahili yapılandırmasını işletmenize göre hazırlıyoruz.</p>
                 </section>
                 <section class="ografi-pbx-feature">
                     <x-repost-icon name="list" size="22" />
