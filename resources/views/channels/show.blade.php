@@ -6,9 +6,6 @@
 @section('description', \Illuminate\Support\Str::limit(trim(strip_tags($channel->description ?: $channel->name.' kanalındaki güncel forum yazılarını, soruları ve topluluk yorumlarını keşfedin.')), 160, ''))
 @section('canonical', $channel->canonical_url ?: route('channels.show', $channel))
 @section('robots', ($channel->robots_index ?? true) ? 'index,follow' : 'noindex,follow')
-@if (filled($channel->meta_keywords))
-    @section('seo_keywords', $channel->meta_keywords)
-@endif
 @section('og_type', 'website')
 @if (filled($channel->og_image))
     @section('seo_image', $channel->og_image)
