@@ -13,7 +13,7 @@
         .rss-source-stat strong{display:block;margin-top:5px;color:#172033;font-size:18px;font-weight:750}
         .rss-source-form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
         .rss-source-field label{display:block;margin-bottom:7px;color:#344054;font-size:12px;font-weight:650}
-        .rss-source-field select{width:100%;min-height:44px;padding:9px 12px;border:1px solid #dfe5ee;border-radius:9px;background:#fff;color:#273449;font-size:13px}
+        .rss-source-field select,.rss-source-field input{width:100%;min-height:44px;padding:9px 12px;border:1px solid #dfe5ee;border-radius:9px;background:#fff;color:#273449;font-size:13px}
         .rss-source-toggle{grid-column:1/-1;display:flex;align-items:center;gap:9px;padding:13px;border:1px solid #edf0f5;border-radius:10px;color:#475569;font-size:12px}
         .rss-source-toggle input{width:16px;height:16px;accent-color:#2563eb}
         .rss-source-actions{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:18px}
@@ -54,6 +54,12 @@
             <div class="rss-source-panel-body">
                 <form wire:submit="saveSettings">
                     <div class="rss-source-form">
+                        <div class="rss-source-field" style="grid-column:1/-1">
+                            <label for="rss-source-url">RSS adresi</label>
+                            <input id="rss-source-url" type="url" wire:model="sourceUrl" placeholder="https://site.com/rss" required>
+                            @error('sourceUrl')<p class="text-sm text-danger-600 mt-1">{{ $message }}</p>@enderror
+                            <p style="margin:6px 0 0;color:#7b8798;font-size:11px">Kaynağın RSS bağlantısını buradan değiştirebilirsiniz. Değişiklik mevcut kayıtlı içerikleri silmez.</p>
+                        </div>
                         <div class="rss-source-field">
                             <label for="rss-source-author">Yayın yazarı</label>
                             <select id="rss-source-author" wire:model="authorId" required>
