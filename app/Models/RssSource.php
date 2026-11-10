@@ -11,6 +11,9 @@ class RssSource extends Model
         'name',
         'url',
         'url_hash',
+        'author_id',
+        'channel_id',
+        'auto_publish',
         'site_url',
         'description',
         'is_active',
@@ -22,9 +25,14 @@ class RssSource extends Model
     {
         return [
             'is_active' => 'boolean',
+            'auto_publish' => 'boolean',
             'last_fetched_at' => 'datetime',
         ];
     }
+
+    public function author() { return $this->belongsTo(User::class, 'author_id'); }
+
+    public function channel() { return $this->belongsTo(Channel::class, 'channel_id'); }
 
     public function items(): HasMany
     {
