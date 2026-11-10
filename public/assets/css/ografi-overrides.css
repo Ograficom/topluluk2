@@ -2792,3 +2792,101 @@ body.is-messenger-conversation .pm-dialog__composer .pm-composer__send svg {
         border-top:1px solid var(--border-color); background:var(--card-bg,#fff);
     }
 }
+
+
+/* Composer readable typography */
+.post-create-simple .post-composer-label {
+    font-size:15px;
+    line-height:1.45;
+    font-weight:700;
+}
+.post-create-simple .post-composer-label > span {
+    font-size:12px;
+}
+.post-create-simple .post-create-simple__title {
+    min-height:54px;
+    padding:13px 15px;
+    font-size:20px;
+    line-height:1.4;
+}
+.post-create-simple .post-create-simple__excerpt,
+.post-create-simple .post-create-simple__seo,
+.post-create-simple .post-create-simple__media input[type="url"] {
+    font-size:16px;
+    line-height:1.65;
+}
+.post-create-simple .post-create-simple__excerpt {
+    min-height:112px;
+    padding:13px 15px;
+}
+.post-create-simple .post-create-simple__seo {
+    min-height:100px;
+    padding:12px 14px;
+}
+.post-create-simple .post-create-simple__editor,
+.post-create-simple .post-create-simple__editor .ce-paragraph,
+.post-create-simple .post-create-simple__editor .ce-header,
+.post-create-simple .post-create-simple__editor .cdx-quote__text,
+.post-create-simple .post-create-simple__editor .cdx-list {
+    font-size:16px;
+    line-height:1.75;
+}
+.post-create-simple .post-create-simple__editor .ce-block {
+    margin-bottom:10px;
+}
+.post-create-simple .post-composer-count,
+.post-create-simple .post-composer-field-help,
+.post-create-simple .post-composer-editor-tip {
+    font-size:12px;
+    line-height:1.5;
+}
+.post-create-simple .post-composer-editor-title p,
+.post-create-simple .post-composer-media-title p {
+    font-size:13px;
+    line-height:1.5;
+}
+.post-create-simple .post-composer-seo summary,
+.post-create-simple .post-composer-advanced summary {
+    min-height:50px;
+    font-size:15px;
+}
+.post-create-simple .post-composer-seo summary small {
+    font-size:12px;
+}
+.post-create-simple .post-create-simple__file {
+    min-height:46px;
+    font-size:14px;
+}
+.post-create-simple .post-create-simple__footer > a,
+.post-create-simple .post-create-simple__footer .btn {
+    font-size:14px;
+}
+.post-create-simple .post-create-simple__footer .btn {
+    min-height:44px;
+}
+@media (max-width:600px) {
+    .post-create-simple .post-composer-label { font-size:15px; }
+    .post-create-simple .post-create-simple__title {
+        min-height:50px;
+        font-size:19px;
+    }
+    .post-create-simple .post-create-simple__excerpt,
+    .post-create-simple .post-create-simple__seo,
+    .post-create-simple .post-create-simple__media input[type="url"] {
+        font-size:16px;
+    }
+    .post-create-simple .post-create-simple__editor,
+    .post-create-simple .post-create-simple__editor .ce-paragraph,
+    .post-create-simple .post-create-simple__editor .ce-header,
+    .post-create-simple .post-create-simple__editor .cdx-quote__text,
+    .post-create-simple .post-create-simple__editor .cdx-list {
+        font-size:16px;
+        line-height:1.7;
+    }
+    .post-create-simple .post-composer-count,
+    .post-create-simple .post-composer-field-help,
+    .post-create-simple .post-composer-editor-tip {
+        font-size:11px;
+    }
+    .post-create-simple .post-create-simple__file { font-size:14px; }
+}
