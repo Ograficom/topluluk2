@@ -4073,38 +4073,51 @@ body.is-messenger-conversation .pm-dialog__composer .pm-composer__send svg {
 }
 
 
-/* Santral hero actions: inset both CTAs and give them matching primary styling */
+/* Santral hero actions: keep both CTAs comfortably inset and visually distinct */
 .ografi-pbx-page .ografi-pbx-actions {
     display: grid !important;
     grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-    gap: 10px !important;
-    padding-inline: 14px !important;
+    gap: 12px !important;
+    padding-inline: 18px !important;
     box-sizing: border-box;
 }
 .ografi-pbx-page .ografi-pbx-actions > .btn {
     display: inline-flex;
     width: 100% !important;
     min-width: 0 !important;
-    min-height: 46px;
+    min-height: 48px;
     align-items: center;
     justify-content: center;
     gap: 8px;
-    padding: 11px 14px !important;
-    border: 1px solid #1769ff !important;
+    padding: 12px 20px !important;
     border-radius: 14px;
-    background: #1769ff !important;
-    color: #fff !important;
     font-weight: 700;
     line-height: 1.25;
     text-align: center;
     white-space: normal;
     box-shadow: none;
 }
-.ografi-pbx-page .ografi-pbx-actions > .btn:hover,
-.ografi-pbx-page .ografi-pbx-actions > .btn:focus-visible {
+.ografi-pbx-page .ografi-pbx-actions > .btn-primary {
+    border: 1px solid #1769ff !important;
+    background: #1769ff !important;
+    color: #fff !important;
+}
+.ografi-pbx-page .ografi-pbx-actions > .btn-secondary {
+    border: 1px solid #c8d9f7 !important;
+    background: #fff !important;
+    color: #1769ff !important;
+}
+.ografi-pbx-page .ografi-pbx-actions > .btn-primary:hover,
+.ografi-pbx-page .ografi-pbx-actions > .btn-primary:focus-visible {
     border-color: #0b57df !important;
     background: #0b57df !important;
     color: #fff !important;
+}
+.ografi-pbx-page .ografi-pbx-actions > .btn-secondary:hover,
+.ografi-pbx-page .ografi-pbx-actions > .btn-secondary:focus-visible {
+    border-color: #1769ff !important;
+    background: #f4f8ff !important;
+    color: #1458cf !important;
 }
 @container (max-width: 520px) {
     .ografi-pbx-page .ografi-pbx-actions {
