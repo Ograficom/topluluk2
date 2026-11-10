@@ -162,6 +162,25 @@
             @endif
         </section>
 
+        @if ($rssItem && filled($rssItem->link))
+            @php
+                $rssSourceUrl = $rssItem->link;
+                $rssSourceHost = parse_url($rssSourceUrl, PHP_URL_HOST);
+                $rssSourceHost = $rssSourceHost ? preg_replace('/^www\\./i', '', $rssSourceHost) : $rssSourceUrl;
+                $rssSourceName = $rssItem->source?->name ?: $rssSourceHost;
+            @endphp
+            <aside class="post-source-card" aria-label="İçerik kaynağı">
+                <div class="post-source-card__meta">KAYNAK</div>
+                <a class="post-source-card__link" href="{{ $rssSourceUrl }}" target="_blank" rel="nofollow noopener noreferrer">
+                    <span class="post-source-card__text">
+                        <strong>{{ $rssSourceName }}</strong>
+                        <small>{{ $rssSourceHost }}</small>
+                    </span>
+                    <x-repost-icon name="external-link" size="16" />
+                </a>
+            </aside>
+        @endif
+
         @if ($post->tagRecords->isNotEmpty())
             <div class="post__tags post__tags-full">
                 @foreach ($post->tagRecords as $tag)
