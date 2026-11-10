@@ -85,7 +85,11 @@ Route::get('/about', fn () => redirect()->route('pages.show', 'about'));
 Route::get('/rules', fn () => redirect()->route('pages.show', 'rules'));
 Route::get('/privacy', fn () => redirect()->route('pages.show', 'privacy'));
 Route::get('/contacts', [CommunityController::class, 'contacts'])->name('contacts');
-Route::view('/santral', 'pages.santral')->name('santral');
+Route::get('/santral', function () {
+    return view('pages.santral', [
+        'santralSettings' => \App\Models\SantralPageSetting::query()->find(1),
+    ]);
+})->name('santral');
 Route::post('/contacts', [CommunityController::class, 'sendContact'])->middleware('throttle:5,1')->name('contacts.send');
 
 Route::get('/support-tickets/{supportTicket}/attachments/{index}/preview', function (SupportTicket $supportTicket, int $index) {
