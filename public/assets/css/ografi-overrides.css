@@ -3613,3 +3613,68 @@ body.is-messenger-conversation .pm-dialog__composer .pm-composer__send svg {
     .ografi-pbx-slider-controls { right: 10px; bottom: 10px; }
     .ografi-pbx-activation-modal { padding: 25px 21px; }
 }
+
+
+
+/* Santral pricing, infrastructure and consistent section alignment */
+.ografi-pbx-page { display: flex; flex-direction: column; gap: 0; }
+.ografi-pbx-hero { align-items: center; }
+.ografi-pbx-hero-copy { max-width: 690px; }
+.ografi-pbx-hero h1 { max-width: 640px; line-height: 1.06; letter-spacing: -.045em; }
+.ografi-pbx-hero .ografi-pbx-lead { max-width: 610px; line-height: 1.75; }
+.ografi-pbx-actions { flex-direction: row; align-items: center; }
+.ografi-pbx-actions .btn { display: inline-flex; align-items: center; justify-content: center; gap: 9px; white-space: nowrap; }
+.ografi-pbx-hero-copy > .small { max-width: 560px; margin-top: 12px; line-height: 1.6; }
+.ografi-pbx-section { padding: 30px 0; border-bottom: 1px solid #e5eaf2; }
+.ografi-pbx-section > h2, .ografi-pbx-section-heading h2 { margin: 0 0 18px; font-size: clamp(21px, 2.5vw, 27px); line-height: 1.25; letter-spacing: -.025em; }
+.ografi-pbx-section-heading { display: flex; justify-content: space-between; align-items: end; gap: 20px; margin-bottom: 22px; }
+.ografi-pbx-section-heading h2 { margin: 5px 0 8px; }
+.ografi-pbx-section-heading p { max-width: 760px; margin: 0; color: #64748b; line-height: 1.7; }
+.ografi-pbx-section-kicker { color: #2563eb; font-size: 10px; font-weight: 800; letter-spacing: .14em; }
+.ografi-pbx-pricing-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; align-items: stretch; }
+.ografi-pbx-plan { position: relative; display: flex; min-width: 0; flex-direction: column; padding: 22px; border: 1px solid #e0e7f1; border-radius: 17px; background: #fff; }
+.ografi-pbx-plan.is-featured { border: 1.5px solid #8bb8ff; background: linear-gradient(180deg, #f5f9ff 0%, #fff 48%); }
+.ografi-pbx-plan-badge { position: absolute; top: -11px; right: 18px; padding: 5px 10px; border-radius: 999px; background: #2165e8; color: #fff; font-size: 10px; font-weight: 750; }
+.ografi-pbx-plan-icon { display: grid; width: 42px; height: 42px; place-items: center; border: 1px solid #d9e8ff; border-radius: 12px; background: #eff6ff; color: #2563eb; }
+.ografi-pbx-plan h3 { margin: 15px 0 6px; color: #172033; font-size: 19px; font-weight: 800; }
+.ografi-pbx-plan-head p { min-height: 44px; margin: 0; color: #64748b; font-size: 13px; line-height: 1.6; }
+.ografi-pbx-plan-price { display: flex; align-items: baseline; flex-wrap: wrap; gap: 6px; margin: 19px 0 15px; padding: 15px 0; border-top: 1px solid #e8edf5; border-bottom: 1px solid #e8edf5; }
+.ografi-pbx-plan-price strong { color: #111827; font-size: clamp(22px, 2.2vw, 29px); font-weight: 850; letter-spacing: -.04em; }
+.ografi-pbx-plan-price span { color: #718096; font-size: 12px; }
+.ografi-pbx-plan ul { display: grid; gap: 11px; margin: 0 0 22px; padding: 0; list-style: none; }
+.ografi-pbx-plan li { display: flex; align-items: flex-start; gap: 9px; color: #475569; font-size: 13px; line-height: 1.5; }
+.ografi-pbx-plan li svg { flex: 0 0 auto; margin-top: 1px; color: #21865a; }
+.ografi-pbx-plan > .btn { display: inline-flex; width: 100%; align-items: center; justify-content: center; gap: 8px; margin-top: auto; }
+.ografi-pbx-plan > small { margin-top: 10px; color: #8994a6; font-size: 10px; line-height: 1.5; text-align: center; }
+.ografi-pbx-infrastructure { display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); align-items: center; gap: 28px; }
+.ografi-pbx-infra-copy h2 { margin: 7px 0 10px; font-size: 24px; line-height: 1.25; }
+.ografi-pbx-infra-copy p { margin: 0; color: #64748b; font-size: 13px; line-height: 1.75; }
+.ografi-pbx-tech-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.ografi-pbx-tech-grid > div { display: grid; grid-template-columns: 40px minmax(0, 1fr); align-items: center; column-gap: 11px; padding: 13px; border: 1px solid #e4eaf3; border-radius: 13px; background: #f8faff; }
+.ografi-pbx-tech-grid > div > span { display: grid; grid-row: span 2; width: 40px; height: 40px; place-items: center; border: 1px solid #d9e8ff; border-radius: 11px; background: #fff; color: #2563eb; }
+.ografi-pbx-tech-grid strong { color: #1e293b; font-size: 13px; }
+.ografi-pbx-tech-grid small { color: #748198; font-size: 10px; line-height: 1.45; }
+.ografi-pbx-steps { display: grid; gap: 17px; margin: 0; padding: 0; list-style: none; }
+.ografi-pbx-steps li { display: grid; grid-template-columns: 38px minmax(0, 1fr); gap: 0 12px; align-items: start; }
+.ografi-pbx-steps li::before { display: grid; width: 34px; height: 34px; place-items: center; border-radius: 50%; background: #eff6ff; color: #2563eb; font-size: 13px; font-weight: 800; content: counter(list-item); }
+.ografi-pbx-steps li strong, .ografi-pbx-steps li span { grid-column: 2; }
+.ografi-pbx-steps li strong { margin: 1px 0 3px; }
+.ografi-pbx-steps li span { color: #64748b; font-size: 13px; line-height: 1.6; }
+.ografi-pbx-bottom { display: flex; align-items: center; justify-content: space-between; gap: 22px; margin-top: 26px; padding: 23px; border: 1px solid #d9e7ff; border-radius: 16px; background: linear-gradient(115deg, #f5f9ff, #fff); }
+.ografi-pbx-bottom h2 { margin: 0 0 7px; font-size: 21px; line-height: 1.3; }
+.ografi-pbx-bottom p { max-width: 680px; margin: 0; color: #64748b; font-size: 13px; line-height: 1.6; }
+.ografi-pbx-bottom .btn { display: inline-flex; flex: 0 0 auto; align-items: center; justify-content: center; }
+@media (max-width: 900px) {
+    .ografi-pbx-pricing-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .ografi-pbx-infrastructure { grid-template-columns: 1fr; gap: 18px; }
+}
+@media (max-width: 700px) {
+    .ografi-pbx-actions { align-items: stretch; flex-direction: column; }
+    .ografi-pbx-actions .btn { width: 100%; }
+    .ografi-pbx-pricing-grid { grid-template-columns: 1fr; gap: 14px; }
+    .ografi-pbx-plan-head p { min-height: 0; }
+    .ografi-pbx-section-heading { align-items: flex-start; }
+    .ografi-pbx-tech-grid { grid-template-columns: 1fr 1fr; }
+    .ografi-pbx-bottom { align-items: stretch; flex-direction: column; }
+    .ografi-pbx-bottom .btn { width: 100%; }
+}
