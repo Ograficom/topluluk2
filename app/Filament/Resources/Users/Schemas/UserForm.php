@@ -58,6 +58,16 @@ class UserForm
                     ->label('Doğrulama başvurusu')
                     ->disabled()
                     ->columnSpanFull(),
+                \\Filament\\Schemas\\Components\\Section::make('Herkese açık profil SEO ayarları')
+                    ->description('Bu kullanıcının herkese açık profil sayfasına özel SEO bilgileri. Hesap ayarları ve özel alanlar indekslenmez.')
+                    ->schema([
+                        TextInput::make('profile_seo_title')->label('SEO başlığı')->maxLength(255),
+                        \\Filament\\Forms\\Components\\Textarea::make('profile_seo_description')->label('Meta açıklaması')->rows(3)->maxLength(500)->columnSpanFull(),
+                        \\Filament\\Forms\\Components\\TextInput::make('profile_seo_keywords')->label('Anahtar kelimeler')->maxLength(2000)->columnSpanFull(),
+                        TextInput::make('profile_canonical_url')->label('Canonical URL')->url()->maxLength(2048)->columnSpanFull(),
+                        TextInput::make('profile_og_image')->label('Sosyal paylaşım görseli URL')->url()->maxLength(2048)->columnSpanFull(),
+                        Toggle::make('profile_robots_index')->label('Profili indekslet')->default(true),
+                    ])->columns(2),
             ]);
     }
 }
