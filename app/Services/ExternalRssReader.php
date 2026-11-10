@@ -159,6 +159,22 @@ class ExternalRssReader
             'data' => ['text' => 'Bu içerik RSS kaynağından alınmıştır. Kaynak: '.$item->link],
         ];
 
+        $tagNames = collect($item->tags ?? [])
+            ->filter(fn ($tag) => is_string($tag) && trim($tag) !== '')
+            ->map(fn ($tag) => mb_substr(trim(ltrim($tag, '#')), 0, 100))
+            ->unique(fn ($tag) => mb_strtolower($tag))
+            ->take(20)
+            ->values()
+            ->all();
+        $imageUrls = collect($item->image_urls ?? [])
+            ->filter(fn ($image) => is_string($image) && $this->safeWebUrl($image))
+            ->unique()
+            ->take(10)
+            ->values()
+            ->all();
+        $coverImage = $item->image_url ?: ($imageUrls[0] ?? null);
+        $galleryImages = collect($imageUrls)->reject(fn ($image) => $image === $coverImage)->values()->all();
+
         $post = Post::query()->create([
             'user_id' => $source->author_id,
             'channel_id' => $source->channel_id,
@@ -167,13 +183,22 @@ class ExternalRssReader
             'excerpt' => $excerpt,
             'meta_description' => Str::limit($excerpt, 300, ''),
             'body' => json_encode(['time' => now()->valueOf(), 'blocks' => $blocks, 'version' => '2.30.0'], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES),
-            'cover_image' => $item->image_url,
-            'media' => [],
-            'tags' => [],
+            'cover_image' => $coverImage,
+            'media' => $galleryImages,
+            'tags' => $tagNames,
             'is_published' => true,
             'published_at' => now(),
             'is_adult' => false,
         ]);
+
+        $tagIds = [];
+        foreach ($tagNames as $tagName) {
+            $base = Str::slug($tagName);
+            if ($base === '') continue;
+            $tag = Tag::query()->firstOrCreate(['slug' => $base], ['name' => $tagName]);
+            $tagIds[] = $tag->id;
+        }
+        $post->tagRecords()->sync($tagIds);
 
         $item->forceFill(['published_post_id' => $post->id])->save();
     }
@@ -325,18 +350,59 @@ class ExternalRssReader
             $author = trim((string) $atom->author->name);
         }
 
-        $image = '';
+        // Read all standard RSS/Media RSS image locations, including inline HTML images.
+        $images = [];
         $media = $entry->children('http://search.yahoo.com/mrss/');
-        if (isset($media->thumbnail)) {
-            $image = (string) ($media->thumbnail->attributes()->url ?? '');
-        } elseif (isset($media->content)) {
-            $image = (string) ($media->content->attributes()->url ?? '');
+        foreach ($media->thumbnail ?? [] as $thumbnail) {
+            $images[] = (string) ($thumbnail->attributes()->url ?? '');
         }
-        if ($image === '' && isset($entry->enclosure)) {
-            $enclosure = $entry->enclosure->attributes();
-            $type = strtolower((string) ($enclosure['type'] ?? ''));
-            if (str_starts_with($type, 'image/')) $image = (string) ($enclosure['url'] ?? '');
+        foreach ($media->content ?? [] as $mediaContent) {
+            $attributes = $mediaContent->attributes();
+            $type = strtolower((string) ($attributes['type'] ?? ''));
+            $medium = strtolower((string) ($attributes['medium'] ?? ''));
+            if ($medium === 'image' || str_starts_with($type, 'image/')) {
+                $images[] = (string) ($attributes['url'] ?? '');
+            }
         }
+        foreach ($entry->enclosure ?? [] as $enclosureNode) {
+            $attributes = $enclosureNode->attributes();
+            if (str_starts_with(strtolower((string) ($attributes['type'] ?? '')), 'image/')) {
+                $images[] = (string) ($attributes['url'] ?? '');
+            }
+        }
+        if (preg_match_all('~<img\\b[^>]*\\bsrc=[\\\"\\\']([^\\\"\\\']+)[\\\"\\\']~i', $content, $matches)) {
+            $images = array_merge($images, $matches[1]);
+        }
+        $imageUrls = collect($images)
+            ->map(fn ($image) => $this->resolveUrl(trim((string) $image), $feedUrl))
+            ->filter()
+            ->unique()
+            ->take(10)
+            ->values()
+            ->all();
+        $image = $imageUrls[0] ?? '';
+
+        // RSS <category>, Atom category/@term and Dublin Core subject tags.
+        $tags = [];
+        foreach ($entry->category ?? [] as $category) {
+            $tags[] = trim((string) $category);
+        }
+        $atomEntry = $entry->children('http://www.w3.org/2005/Atom');
+        foreach ($atomEntry->category ?? [] as $category) {
+            $attributes = $category->attributes();
+            $tags[] = trim((string) ($attributes['term'] ?? $attributes['label'] ?? $category));
+        }
+        $dc = $entry->children('http://purl.org/dc/elements/1.1/');
+        foreach ($dc->subject ?? [] as $subject) {
+            $tags[] = trim((string) $subject);
+        }
+        $tags = collect($tags)
+            ->filter()
+            ->map(fn ($tag) => mb_substr(ltrim($tag, '#'), 0, 100))
+            ->unique(fn ($tag) => mb_strtolower($tag))
+            ->take(20)
+            ->values()
+            ->all();
 
         $date = trim((string) ($entry->pubDate ?? $entry->published ?? $entry->updated ?? $atom->published ?? $atom->updated ?? ''));
         try {
@@ -352,6 +418,8 @@ class ExternalRssReader
             'summary' => Str::limit($this->plainText($content), 12000, ''),
             'author' => $author !== '' ? Str::limit($author, 255, '') : null,
             'image_url' => $this->safeWebUrl($image),
+            'image_urls' => $imageUrls,
+            'tags' => $tags,
             'published_at' => $publishedAt,
         ];
     }
