@@ -4231,3 +4231,19 @@ body.is-messenger-conversation .pm-dialog__composer .pm-composer__send svg {
         padding-bottom: 88px;
     }
 }
+
+
+/* Align the fixed Santral action dock exactly with the central feed column. */
+.ografi-pbx-fixed-actions {
+    left: 0;
+    width: auto;
+    max-width: none;
+    transform: none;
+}
+@media (max-width: 700px) {
+    .ografi-pbx-fixed-actions {
+        width: auto;
+        left: 0;
+        right: auto;
+    }
+}
