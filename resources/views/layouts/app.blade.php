@@ -119,7 +119,7 @@
                         </button>
                         <ul class="dropdown-menu dropdown-menu-end" id="userMenu" aria-labelledby="userMenuButton">
                             <li class="dropdown-menu-item dropdown-menu-item-lg">
-                                <a class="login__profile" href="{{ route('profiles.show', auth()->user()) }}">
+                                <a class="login__profile" href="{{ auth()->user()->username ? route('profiles.show', ['identifier' => auth()->user()->username]) : route('settings') }}">
                                     <span class="user-box">
                                         <span class="avatar"><img src="{{ auth()->user()->avatarUrl() }}" alt="" width="40" height="40"></span>
                                         <span class="user-box-content">
