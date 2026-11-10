@@ -1,14 +1,14 @@
 <?php
 
-namespace App\\Services;
+namespace App\Services;
 
-use App\\Models\\Channel;
-use App\\Models\\Post;
-use App\\Models\\RssSetting;
-use App\\Models\\Tag;
-use App\\Models\\User;
-use Illuminate\\Database\\Eloquent\\Builder;
-use Illuminate\\Support\\Facades\\Cache;
+use App\Models\Channel;
+use App\Models\Post;
+use App\Models\RssSetting;
+use App\Models\Tag;
+use App\Models\User;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Cache;
 
 class RssFeedService
 {
@@ -67,8 +67,8 @@ class RssFeedService
             function () use ($query, $settings, $title, $description, $type, $slug): string {
                 $items = $query->limit(max(1, min(100, (int) $settings->item_limit)))->get();
                 $selfUrl = $this->feedUrl($type, $slug);
-                $xml = '<?xml version="1.0" encoding="UTF-8"?>'."\\n";
-                $xml .= '<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel>'."\\n";
+                $xml = '<?xml version="1.0" encoding="UTF-8"?>'."\n";
+                $xml .= '<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel>'."\n";
                 $xml .= $this->element('title', $title);
                 $xml .= $this->element('link', url('/'));
                 $xml .= $this->element('description', $description);
@@ -86,7 +86,7 @@ class RssFeedService
                     // article body. CDATA preserves HTML and avoids truncating long posts.
                     $fullContent = $body;
 
-                    $xml .= "<item>\\n";
+                    $xml .= "<item>\n";
                     $xml .= $this->element('title', (string) $post->title);
                     $xml .= $this->element('link', $link);
                     $xml .= $this->element('guid', $link, ['isPermaLink' => 'true'], true);
@@ -103,7 +103,7 @@ class RssFeedService
                     foreach ($post->tagRecords as $tag) {
                         $xml .= $this->element('category', (string) $tag->name);
                     }
-                    $xml .= "</item>\\n";
+                    $xml .= "</item>\n";
                 }
 
                 return $xml."</channel></rss>";
@@ -143,7 +143,7 @@ class RssFeedService
     private function cdataElement(string $name, string $value): string
     {
         // A CDATA section cannot contain its closing delimiter; split it safely.
-        return '<'.$name.'><![CDATA['.str_replace(']]>', ']]]]><![CDATA[>', $value).']]></'.$name.'>'."\\n";
+        return '<'.$name.'><![CDATA['.str_replace(']]>', ']]]]><![CDATA[>', $value).']]></'.$name.'>'."\n";
     }
 
     private function element(string $name, string $value, array $attributes = [], bool $selfClosing = false): string
@@ -154,9 +154,9 @@ class RssFeedService
         }
 
         if ($selfClosing) {
-            return '<'.$name.$attrs.' />'."\\n";
+            return '<'.$name.$attrs.' />'."\n";
         }
 
-        return '<'.$name.$attrs.'>'.htmlspecialchars($value, ENT_XML1 | ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8').'</'.$name.'>'."\\n";
+        return '<'.$name.$attrs.'>'.htmlspecialchars($value, ENT_XML1 | ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8').'</'.$name.'>'."\n";
     }
 }
