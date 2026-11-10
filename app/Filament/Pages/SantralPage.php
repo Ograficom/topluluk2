@@ -38,12 +38,12 @@ class SantralPage extends Page
             'hero_note' => $settings->hero_note,
             'features_title' => $settings->features_title,
             'features' => $settings->features ?: [
-                ['icon' => 'phone-call', 'title' => 'Bulut santral', 'description' => 'İşletmenizin çağrılarını tek merkezden yönetin.'],
-                ['icon' => 'list', 'title' => 'Sesli yanıt sistemi (IVR)', 'description' => 'Arayanları doğru ekibe yönlendiren karşılama menüleri.'],
-                ['icon' => 'phone', 'title' => 'Kurumsal telefon numaraları', 'description' => '0850, 0312, 0212, 0216 ve 0232 numara çözümleri.'],
-                ['icon' => 'message-circle', 'title' => 'WhatsApp Business', 'description' => 'WhatsApp iletişimini iş akışlarınıza bağlayın.'],
-                ['icon' => 'shield-check', 'title' => 'OTP ve SMS', 'description' => 'Doğrulama ve bilgilendirme mesajları.'],
-                ['icon' => 'workflow', 'title' => 'CRM, API ve Webhook', 'description' => 'Kullandığınız sistemlerle entegrasyon.'],
+                ['icon' => 'channels', 'title' => 'Bulut santral hizmeti', 'description' => 'Bulut santral altyapısını biz sağlıyor, hat ve dahili ayarlarınızı kurup yönetiyoruz.'],
+                ['icon' => 'list', 'title' => 'IVR ve profesyonel karşılama', 'description' => 'İşletmenize özel sesli karşılama ve tuşlama menülerini hazırlıyoruz.'],
+                ['icon' => 'megaphone', 'title' => '0850 ve şehir numaraları', 'description' => 'Numara talepleriniz için başvuru ve operatör bağlantısını sağlıyoruz.'],
+                ['icon' => 'message', 'title' => 'WhatsApp Business entegrasyonu', 'description' => 'WhatsApp Business bağlantısını iş akışlarınıza göre yapılandırıyoruz.'],
+                ['icon' => 'security', 'title' => 'SMS ve OTP entegrasyonu', 'description' => 'SMS ve OTP bağlantılarını kuruyor, test ediyor ve devreye alıyoruz.'],
+                ['icon' => 'bolt', 'title' => 'CRM, API ve Webhook bağlantıları', 'description' => 'Santrali CRM ve özel yazılımlarınıza bağlıyoruz.'],
             ],
             'steps_title' => $settings->steps_title,
             'packages_title' => $settings->packages_title,
@@ -96,7 +96,14 @@ class SantralPage extends Page
                         Repeater::make('features')
                             ->label('Hizmet kartları')
                             ->schema([
-                                TextInput::make('icon')->label('Lucide ikon adı')->placeholder('phone-call')->maxLength(60),
+                                Select::make('icon')->label('İkon')->options([
+                                    'channels' => 'Bulut santral',
+                                    'list' => 'IVR / Karşılama',
+                                    'megaphone' => 'Telefon numaraları',
+                                    'message' => 'WhatsApp Business',
+                                    'security' => 'SMS / OTP',
+                                    'bolt' => 'CRM / API',
+                                ])->required()->native(false),
                                 TextInput::make('title')->label('Başlık')->required()->maxLength(120),
                                 Textarea::make('description')->label('Açıklama')->rows(3)->required(),
                             ])->columns(2)->defaultItems(0)->reorderable()->collapsible()->columnSpanFull(),
