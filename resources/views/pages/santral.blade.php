@@ -54,7 +54,7 @@
                         {{ $santralSettings?->primary_button_text ?: 'Santral hizmeti için iletişime geç' }}
                     </a>
                     <button class="btn btn-secondary btn-lg ografi-pbx-activation-trigger" type="button" data-santral-activation-open>
-                        <x-repost-icon name="plug" size="18" />
+                        <x-repost-icon name="channels" size="18" />
                         {{ $santralSettings?->activation_button_text ?: 'Entegrasyona başla' }}
                     </button>
                 </div>
@@ -194,13 +194,13 @@
     </article>
 
     <dialog class="ografi-pbx-activation-modal" data-santral-activation-modal aria-labelledby="santral-activation-title">
-        <button class="ografi-pbx-modal-close" type="button" data-santral-activation-close aria-label="Kapat"><x-repost-icon name="x" size="19" /></button>
-        <div class="ografi-pbx-modal-icon"><x-repost-icon name="plug" size="28" /></div>
+        <button class="ografi-pbx-modal-close" type="button" data-santral-activation-close aria-label="Kapat"><x-repost-icon name="close" size="19" /></button>
+        <div class="ografi-pbx-modal-icon"><x-repost-icon name="channels" size="28" /></div>
         <span class="ografi-pbx-modal-eyebrow">OGRAFI SANTRAL</span>
         <h2 id="santral-activation-title">Hesabınızın santral hizmeti aktivasyonu yapılmamış.</h2>
         <p>Entegrasyonu kullanmaya başlamadan önce santral hizmetinizin hesabınız için etkinleştirilmesi gerekiyor. Aktivasyon ve kurulum için bizimle iletişime geçebilirsiniz.</p>
         <a class="btn btn-primary btn-lg" href="{{ route('contacts', ['subject' => 'Santral hizmeti aktivasyonu', 'recipient' => 'partnerships']) }}">
-            <x-repost-icon name="message-circle" size="18" /> Aktivasyon için iletişime geç
+            <x-repost-icon name="message" size="18" /> Aktivasyon için iletişime geç
         </a>
         <button class="ografi-pbx-modal-dismiss" type="button" data-santral-activation-close>Şimdi değil</button>
     </dialog>
