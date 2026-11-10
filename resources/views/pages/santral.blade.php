@@ -1,9 +1,11 @@
 @extends('layouts.app')
 
-@section('title', 'OgraFi Santral — Bulut Santral ve İletişim Çözümleri')
-@section('description', 'OgraFi Santral ile işletmenize özel bulut santral, IVR, kurumsal telefon numarası, WhatsApp Business ve CRM entegrasyonları.')
+@section('title', $santralSettings?->seo_title ?: 'Bulut Santral Hizmeti ve Kurumsal Telefon Santrali | OgraFi')
+@section('description', $santralSettings?->seo_description ?: 'OgraFi ile işletmenize uygun fiyatlı bulut santral hizmeti alın. Asterisk 22, IVR, 0850 numara, Netgsm SIP ve profesyonel kurulum desteği.')
 @section('canonical', route('santral'))
 @section('og_type', 'website')
+@section('seo_keywords', implode(', ', $santralSettings?->seo_tags ?: ['bulut santral', 'bulut telefon santrali', 'santral hizmeti', 'Asterisk 22', 'IVR', '0850 numara', 'Netgsm SIP', 'kurumsal telefon']))
+@section('seo_image', $santralSettings?->featured_image ? \\Illuminate\\Support\\Facades\\Storage::disk('public')->url($santralSettings->featured_image) : asset('assets/img/meta/logo.svg'))
 
 @php
     $santralSlides = collect($santralSettings?->slides ?? [])->filter(fn ($slide) => filled($slide['image'] ?? null))->values();
@@ -37,7 +39,9 @@
             'provider' => ['@type' => 'Organization', 'name' => 'OgraFi', 'url' => route('posts.index')],
             'areaServed' => ['@type' => 'Country', 'name' => 'Türkiye'],
             'url' => route('santral'),
-            'description' => $santralSettings?->hero_description ?: 'İşletmelere özel bulut santral, IVR, telefon numarası ve entegrasyon hizmetleri.',
+            'description' => $santralSettings?->seo_description ?: ($santralSettings?->hero_description ?: 'İşletmelere özel bulut santral, IVR, telefon numarası ve entegrasyon hizmetleri.'),
+            'image' => $santralSettings?->featured_image ? \\Illuminate\\Support\\Facades\\Storage::disk('public')->url($santralSettings->featured_image) : asset('assets/img/meta/logo.svg'),
+            'keywords' => $santralSettings?->seo_tags ?: ['bulut santral', 'Asterisk 22', 'IVR', 'Netgsm SIP'],
         ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_HEX_TAG | JSON_HEX_AMP) !!}
     </script>
 @endpush
