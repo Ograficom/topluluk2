@@ -3191,3 +3191,97 @@ body.is-messenger-conversation .pm-dialog__composer .pm-composer__send svg {
         padding:12px 16px calc(12px + env(safe-area-inset-bottom));
     }
 }
+
+
+/* Post composer finishing pass: clearer controls and reliable small-screen editing. */
+.post-create-simple .post-create-simple__title:focus,
+.post-create-simple .post-create-simple__excerpt:focus,
+.post-create-simple .post-create-simple__seo:focus,
+.post-create-simple .post-create-simple__media input[type="url"]:focus,
+.post-create-simple .post-composer-advanced-content select:focus,
+.post-create-simple .post-composer-advanced-content input:focus {
+    outline:0;
+    border-color:#7eabff;
+    box-shadow:0 0 0 3px rgba(37,99,235,.10);
+}
+.post-create-simple .post-composer-seo summary,
+.post-create-simple .post-composer-advanced summary {
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    cursor:pointer;
+}
+.post-create-simple .post-composer-seo summary::after,
+.post-create-simple .post-composer-advanced summary::after {
+    content:"";
+    width:8px;
+    height:8px;
+    flex:0 0 8px;
+    border-right:1.7px solid #748198;
+    border-bottom:1.7px solid #748198;
+    transform:rotate(45deg);
+    transition:transform .15s ease;
+}
+.post-create-simple .post-composer-seo[open] summary::after,
+.post-create-simple .post-composer-advanced[open] summary::after {
+    transform:rotate(225deg);
+}
+.post-create-simple .post-composer-google-preview {
+    overflow:hidden;
+}
+.post-create-simple .post-composer-google-preview strong,
+.post-create-simple .post-composer-google-preview p {
+    display:block;
+    overflow-wrap:anywhere;
+}
+.post-create-simple .post-create-simple__media input[type="file"] {
+    max-width:100%;
+    min-width:0;
+    font-size:12px;
+}
+.post-create-simple .post-create-simple__editor {
+    min-width:0;
+    overflow-wrap:anywhere;
+}
+.post-create-simple .post-create-simple__editor .codex-editor {
+    max-width:100%;
+}
+.post-create-simple .post-composer-existing-cover img,
+.post-create-simple .post-create-simple__existing-media img {
+    max-width:100%;
+    object-fit:cover;
+}
+.post-create-simple .post-create-simple__footer button:disabled {
+    opacity:.65;
+    cursor:wait;
+}
+@media (max-width:600px) {
+    .post-create-simple .post-composer-seo summary,
+    .post-create-simple .post-composer-advanced summary {
+        min-height:52px;
+    }
+    .post-create-simple .post-composer-seo summary small {
+        margin-left:auto;
+        text-align:right;
+    }
+    .post-create-simple .post-composer-editor-title {
+        gap:10px;
+    }
+    .post-create-simple .post-create-simple__editor-status {
+        flex:0 0 auto;
+        max-width:112px;
+        overflow:hidden;
+        text-overflow:ellipsis;
+    }
+    .post-create-simple .post-create-simple__editor .ce-toolbar__content,
+    .post-create-simple .post-create-simple__editor .ce-block__content {
+        max-width:100%;
+    }
+    .post-create-simple .post-create-simple__footer {
+        gap:10px;
+    }
+    .post-create-simple .post-create-simple__footer .btn {
+        min-width:116px;
+    }
+}
