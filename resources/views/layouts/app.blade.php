@@ -52,7 +52,7 @@
     <link rel="stylesheet" href="{{ asset('assets/css/kit.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/app.css') }}?v=20261108-detailed-post-composer">
     <link rel="stylesheet" href="{{ asset('assets/css/engine.css') }}?v=20261106-social-account-management">
-    <link rel="stylesheet" href="{{ asset('assets/css/ografi-overrides.css') }}?v=20261110-composer-modern">
+    <link rel="stylesheet" href="{{ asset('assets/css/ografi-overrides.css') }}?v=20261110-composer-final">
     <script>
         (() => {
             const root = document.documentElement;
@@ -228,7 +228,7 @@
     @php($settingsPage = request()->routeIs('settings.edit', 'settings.legacy'))
     @php($profilePage = request()->routeIs('profiles.show'))
     @php($channelPage = request()->routeIs('channels.show', 'legacy.channel'))
-    @php($postCreatePage = request()->routeIs('posts.create'))
+    @php($postCreatePage = request()->routeIs('posts.create', 'posts.edit'))
     @php($feedPage = request()->routeIs('posts.index'))
     @php($channelsIndexPage = request()->routeIs('channels.index', 'legacy.channels'))
     @php($statsPage = request()->routeIs('stats.index'))
