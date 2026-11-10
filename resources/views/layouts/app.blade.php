@@ -6,7 +6,6 @@
     <meta name="format-detection" content="telephone=no">
     <meta name="theme-color" content="#f7f9fd">
     <title>@yield('title', $brandName) — {{ $brandName }}</title>
-    <meta name="description" content="@yield('description', 'Repost topluluğunda yeni hikâyeleri ve fikirleri keşfedin.')">
     @php
         $seoDescription = trim($__env->yieldContent('description', 'OgraFi; teknoloji, gündem, yaşam ve ilgi alanlarında yazıların, fikirlerin ve topluluk sohbetlerinin buluştuğu platformdur.'));
         $seoTitle = trim($__env->yieldContent('title', $brandName));
@@ -16,6 +15,7 @@
             || request()->filled('sort')
             || request()->filled('period')
             || request()->filled('comments')
+            || request()->filled('reply_to')
             || request()->routeIs(
                 'login', 'legacy.signin', 'register', 'legacy.signup', 'password.*',
                 'posts.create', 'posts.edit', 'channels.create', 'channels.edit',
@@ -26,6 +26,7 @@
             $seoCanonical .= '?page='.max(1, (int) request()->query('page'));
         }
     @endphp
+    <meta name="description" content="{{ $seoDescription }}">
     <meta name="robots" content="{{ $seoNoindex ? 'noindex,follow' : 'index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1' }}">
     <link rel="canonical" href="{{ $seoCanonical }}">
     <meta property="og:locale" content="tr_TR">
