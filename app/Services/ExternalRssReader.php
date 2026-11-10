@@ -661,17 +661,17 @@ class ExternalRssReader
     {
         if ($value === '') return '';
 
-        $value = preg_replace('~<br\\s*/?>|</(p|div|li|h[1-6]|blockquote|tr)>~i', "$0\\n", $value) ?? $value;
-        $value = preg_replace('~<(p|div|li|h[1-6]|blockquote|tr)(\\s[^>]*)?>~i', "\\n", $value) ?? $value;
+        $value = preg_replace('~<br\\s*/?>|</(p|div|li|h[1-6]|blockquote|tr)>~i', "$0\n", $value) ?? $value;
+        $value = preg_replace('~<(p|div|li|h[1-6]|blockquote|tr)(\\s[^>]*)?>~i', "\n", $value) ?? $value;
         $decoded = html_entity_decode(strip_tags($value), ENT_QUOTES | ENT_HTML5, 'UTF-8');
-        $decoded = str_replace(["\\r\\n", "\\r"], "\\n", $decoded);
-        $lines = preg_split('/\\n+/u', $decoded) ?: [];
+        $decoded = str_replace(["\\r\n", "\\r"], "\n", $decoded);
+        $lines = preg_split('/\n+/u', $decoded) ?: [];
         $lines = array_values(array_filter(array_map(
             fn ($line) => trim(preg_replace('/[\\t ]+/u', ' ', $line) ?? ''),
             $lines
         ), fn ($line) => $line !== ''));
 
-        return trim(implode("\\n\\n", $lines));
+        return trim(implode("\n\n", $lines));
     }
 
     private function plainText(string $value): string
