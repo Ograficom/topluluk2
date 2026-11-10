@@ -99,6 +99,9 @@
                 <section class="tabs-panel is-active" id="profile-panel-posts" role="tabpanel" aria-labelledby="profile-tab-posts" data-tab-panel="posts" tabindex="0">
                     <div class="feed">
                         @forelse ($posts as $post)
+                            @if ($post->advertisement && $post->advertisement->status === 'approved')
+                                @include('advertisements._card', ['ad' => $post->advertisement])
+                            @else
                             <article class="card post profile-post-card {{ $post->advertisement ? 'profile-post-card--sponsored' : '' }}">
                                 <section class="card-body">
                                     <header class="post__header">
@@ -158,6 +161,7 @@
                                     @include('posts._interactions', ['post' => $post])
                                 @endunless
                             </article>
+                            @endif
 
                         @empty
                             <section class="card card-body empty-state"><h2 class="h4">Henüz yazı yok</h2></section>
