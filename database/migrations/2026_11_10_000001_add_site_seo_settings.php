@@ -14,8 +14,6 @@ return new class extends Migration
                 if (! Schema::hasColumn('site_settings', 'seo_default_description')) $table->text('seo_default_description')->nullable();
                 if (! Schema::hasColumn('site_settings', 'seo_default_keywords')) $table->text('seo_default_keywords')->nullable();
                 if (! Schema::hasColumn('site_settings', 'seo_og_image')) $table->string('seo_og_image', 2048)->nullable();
-                if (! Schema::hasColumn('site_settings', 'google_site_verification')) $table->string('google_site_verification', 255)->nullable();
-                if (! Schema::hasColumn('site_settings', 'home_seo_og_image')) $table->string('home_seo_og_image', 2048)->nullable();
                 if (! Schema::hasColumn('site_settings', 'home_seo_title')) $table->string('home_seo_title', 255)->nullable();
                 if (! Schema::hasColumn('site_settings', 'home_seo_description')) $table->text('home_seo_description')->nullable();
                 if (! Schema::hasColumn('site_settings', 'home_seo_keywords')) $table->text('home_seo_keywords')->nullable();
@@ -47,7 +45,7 @@ return new class extends Migration
     public function down(): void
     {
         foreach ([
-            'site_settings' => ['seo_default_title', 'seo_default_description', 'seo_default_keywords', 'seo_og_image', 'google_site_verification', 'home_seo_og_image', 'home_seo_title', 'home_seo_description', 'home_seo_keywords', 'home_seo_index'],
+            'site_settings' => ['seo_default_title', 'seo_default_description', 'seo_default_keywords', 'seo_og_image', 'home_seo_title', 'home_seo_description', 'home_seo_keywords', 'home_seo_index'],
             'site_pages' => ['meta_keywords', 'canonical_url', 'robots_index', 'og_image'],
             'channels' => ['meta_title', 'meta_description', 'meta_keywords', 'canonical_url', 'robots_index', 'og_image'],
         ] as $tableName => $columns) {
