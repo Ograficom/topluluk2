@@ -8,6 +8,7 @@ use Filament\Notifications\Notification;
 use Filament\Pages\Page;
 use Filament\Support\Icons\Heroicon;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 use Throwable;
 
@@ -65,7 +66,7 @@ class RssSources extends Page
             report($exception);
             Notification::make()
                 ->title('Kaynak kaydedildi ancak okunamadı')
-                ->body('Adres kaydedildi. Kaynak adresini veya XML biçimini kontrol edin; ayrıntı kaynak durumunda gösteriliyor.')
+                ->body('Adres kaydedildi. '.Str::limit($exception->getMessage(), 180))
                 ->warning()
                 ->persistent()
                 ->send();
@@ -80,7 +81,7 @@ class RssSources extends Page
             Notification::make()->title('RSS kaynağı güncellendi')->body($count.' içerik işlendi.')->success()->send();
         } catch (Throwable $exception) {
             report($exception);
-            Notification::make()->title('RSS kaynağı okunamadı')->body('Kaynak durumundaki hata bilgisini kontrol edin.')->danger()->send();
+            Notification::make()->title('RSS kaynağı okunamadı')->body(Str::limit($exception->getMessage(), 180))->danger()->send();
         }
     }
 
