@@ -106,8 +106,6 @@
     alignCookiePopup();
     window.addEventListener('resize', alignCookiePopup, { passive: true });
     window.addEventListener('scroll', alignCookiePopup, { passive: true });
-    window.addEventListener('resize', alignDetailsPopup, { passive: true });
-    window.addEventListener('scroll', alignDetailsPopup, { passive: true });
 
     const storageKey = 'ografi_cookie_consent_v1';
     const categories = ['preferences', 'analytics', 'marketing'];
@@ -171,6 +169,9 @@
         details.style.bottom = 'auto';
         details.style.transform = 'none';
     };
+
+    window.addEventListener('resize', alignDetailsPopup, { passive: true });
+    window.addEventListener('scroll', alignDetailsPopup, { passive: true });
 
     const openSettings = () => {
         const consent = getConsent();
