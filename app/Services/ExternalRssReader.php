@@ -75,7 +75,6 @@ class ExternalRssReader
                     'rss_source_id' => $source->id,
                     'guid_hash' => hash('sha256', $item['guid']),
                 ]);
-                $isNewItem = ! $rssItem->exists;
                 $rssItem->fill($item);
                 $rssItem->save();
 
