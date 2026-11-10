@@ -7,6 +7,38 @@
     <meta name="theme-color" content="#f7f9fd">
     <title>@yield('title', $brandName) — {{ $brandName }}</title>
     <meta name="description" content="@yield('description', 'Repost topluluğunda yeni hikâyeleri ve fikirleri keşfedin.')">
+    @php
+        $seoDescription = trim($__env->yieldContent('description', 'OgraFi; teknoloji, gündem, yaşam ve ilgi alanlarında yazıların, fikirlerin ve topluluk sohbetlerinin buluştuğu platformdur.'));
+        $seoTitle = trim($__env->yieldContent('title', $brandName));
+        $seoCanonical = trim($__env->yieldContent('canonical')) ?: url()->current();
+        $seoImage = trim($__env->yieldContent('seo_image')) ?: ($brandLogoUrl ?? asset('assets/img/meta/logo.svg'));
+        $seoNoindex = request()->filled('q')
+            || request()->filled('sort')
+            || request()->filled('period')
+            || request()->filled('comments')
+            || request()->routeIs(
+                'login', 'legacy.signin', 'register', 'legacy.signup', 'password.*',
+                'posts.create', 'posts.edit', 'channels.create', 'channels.edit',
+                'settings.*', 'favorites.*', 'messenger.*', 'subscriptions.*',
+                'community.following', 'advertisements.*', 'verification.*'
+            );
+        if ((int) request()->query('page', 1) > 1 && ! request()->filled('sort') && ! request()->filled('q')) {
+            $seoCanonical .= '?page='.max(1, (int) request()->query('page'));
+        }
+    @endphp
+    <meta name="robots" content="{{ $seoNoindex ? 'noindex,follow' : 'index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1' }}">
+    <link rel="canonical" href="{{ $seoCanonical }}">
+    <meta property="og:locale" content="tr_TR">
+    <meta property="og:site_name" content="{{ $brandName }}">
+    <meta property="og:type" content="@yield('og_type', 'website')">
+    <meta property="og:title" content="{{ $seoTitle }} — {{ $brandName }}">
+    <meta property="og:description" content="{{ $seoDescription }}">
+    <meta property="og:url" content="{{ $seoCanonical }}">
+    <meta property="og:image" content="{{ $seoImage }}">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ $seoTitle }} — {{ $brandName }}">
+    <meta name="twitter:description" content="{{ $seoDescription }}">
+    <meta name="twitter:image" content="{{ $seoImage }}">
     <link rel="icon" href="{{ $faviconUrl ?? asset('assets/img/meta/logo.svg') }}" type="{{ $faviconMimeType ?? 'image/svg+xml' }}">
     <link rel="alternate" type="application/rss+xml" title="{{ $brandName }} RSS" href="{{ url('/rss.xml') }}">
     <link rel="stylesheet" href="{{ asset('assets/libs/fancyapp/fancybox.css') }}">
