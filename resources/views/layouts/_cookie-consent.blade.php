@@ -1,10 +1,18 @@
 <section class="cookie-consent" data-cookie-consent hidden aria-label="Çerez tercihleri">
-    <div class="cookie-consent__backdrop" data-cookie-close></div>
-    <div class="cookie-consent__panel" role="dialog" aria-modal="true" aria-labelledby="cookieConsentTitle">
-        <div class="cookie-consent__intro">
-            <span class="cookie-consent__eyebrow">GİZLİLİK TERCİHLERİ</span>
-            <h2 id="cookieConsentTitle">Çerez tercihlerini yönet</h2>
-            <p>OgraFi'nin düzgün çalışması için zorunlu çerezler kullanılır. Diğer çerezleri kabul edip etmemek sana bağlı. Tercihini istediğin zaman değiştirebilirsin.</p>
+    <div class="cookie-consent__notice" role="status">
+        <p>Çerez kullanıyoruz. <a href="{{ route('pages.show', 'privacy') }}">Detaylar</a></p>
+        <button type="button" class="cookie-consent__button cookie-consent__button--quiet" data-cookie-reject>Reddet</button>
+        <button type="button" class="cookie-consent__button cookie-consent__button--primary" data-cookie-accept>Kabul et</button>
+        <button type="button" class="cookie-consent__settings-link" data-cookie-details-open>Ayarlar</button>
+    </div>
+
+    <div class="cookie-consent__details" data-cookie-details hidden>
+        <div class="cookie-consent__details-head">
+            <div>
+                <strong>Çerez tercihleri</strong>
+                <p>OgraFi'nin düzgün çalışması için zorunlu çerezler kullanılır. Diğer çerezleri tercihine göre açıp kapatabilirsin.</p>
+            </div>
+            <button type="button" class="cookie-consent__close" data-cookie-details-close aria-label="Kapat">×</button>
         </div>
 
         <div class="cookie-consent__options">
@@ -28,43 +36,47 @@
 
         <div class="cookie-consent__actions">
             <button type="button" class="cookie-consent__button cookie-consent__button--quiet" data-cookie-reject>İsteğe bağlıları reddet</button>
-            <button type="button" class="cookie-consent__button cookie-consent__button--outline" data-cookie-save>Seçimlerimi kaydet</button>
-            <button type="button" class="cookie-consent__button cookie-consent__button--primary" data-cookie-accept>Kabul et</button>
+            <button type="button" class="cookie-consent__button cookie-consent__button--outline" data-cookie-save>Seçimleri kaydet</button>
+            <button type="button" class="cookie-consent__button cookie-consent__button--primary" data-cookie-accept>Hepsini kabul et</button>
         </div>
-        <p class="cookie-consent__legal">Tercihlerini daha sonra sayfanın altındaki “Çerez ayarları” bağlantısından değiştirebilirsin. <a href="{{ route('pages.show', 'privacy') }}">Gizlilik politikası</a></p>
+        <p class="cookie-consent__legal"><a href="{{ route('pages.show', 'privacy') }}">Gizlilik politikası</a></p>
     </div>
 </section>
 
 <style>
-.cookie-consent[hidden]{display:none!important}
-.cookie-consent{position:fixed;inset:0;z-index:10050;display:grid;align-items:end;justify-items:center;padding:20px}
-.cookie-consent__backdrop{position:absolute;inset:0;background:rgba(15,23,42,.48);backdrop-filter:blur(2px)}
-.cookie-consent__panel{position:relative;width:min(100%,620px);max-height:min(88vh,760px);overflow:auto;background:#fff;color:#172033;border:1px solid #e5eaf1;border-radius:16px;padding:24px;box-shadow:0 18px 60px rgba(15,23,42,.2)}
-.footer__legal{display:flex;align-items:center;gap:12px;flex-wrap:wrap}.footer__legal button{border:0;background:transparent;padding:0;font:inherit;color:inherit;cursor:pointer;text-decoration:underline;text-underline-offset:3px}\n.cookie-consent__eyebrow{font-size:11px;letter-spacing:.1em;font-weight:700;color:#64748b}
-.cookie-consent__intro h2{font-size:22px;line-height:1.25;margin:7px 0 8px;font-weight:700}
-.cookie-consent__intro p,.cookie-consent__option small,.cookie-consent__legal{font-size:13px;line-height:1.55;color:#64748b}
-.cookie-consent__intro p{margin:0 0 18px}
+.cookie-consent[hidden],.cookie-consent__details[hidden]{display:none!important}
+.cookie-consent{position:fixed;left:16px;bottom:16px;z-index:10050;width:max-content;max-width:calc(100vw - 32px);color:#202124;font-family:inherit}
+.cookie-consent__notice{display:flex;align-items:center;gap:10px;flex-wrap:wrap;background:#fff;border:1px solid #e7e7e7;border-radius:12px;padding:10px 12px;box-shadow:0 4px 18px rgba(0,0,0,.12)}
+.cookie-consent__notice p{margin:0;font-size:12px;line-height:1.4;white-space:nowrap}
+.cookie-consent__notice a,.cookie-consent__legal a{color:#2563eb;text-decoration:none}
+.cookie-consent__notice a:hover,.cookie-consent__legal a:hover{text-decoration:underline}
+.cookie-consent__button{min-height:30px;padding:6px 11px;border-radius:8px;font-family:inherit;font-size:11px;font-weight:600;line-height:1.2;cursor:pointer;white-space:nowrap}
+.cookie-consent__button--quiet{border:1px solid #e5e7eb;background:#f5f5f5;color:#333}
+.cookie-consent__button--outline{border:1px solid #dbe2ea;background:#fff;color:#334155}
+.cookie-consent__button--primary{border:1px solid #2563eb;background:#2563eb;color:#fff}
+.cookie-consent__settings-link{border:0;background:transparent;padding:4px 2px;color:#555;font-family:inherit;font-size:12px;cursor:pointer}
+.cookie-consent__details{position:absolute;left:0;bottom:calc(100% + 10px);width:min(420px,calc(100vw - 32px));max-height:min(72vh,620px);overflow:auto;background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:18px;box-shadow:0 8px 30px rgba(0,0,0,.16)}
+.cookie-consent__details-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;margin-bottom:12px}
+.cookie-consent__details-head strong{font-size:16px}
+.cookie-consent__details-head p,.cookie-consent__option small,.cookie-consent__legal{font-size:12px;line-height:1.5;color:#64748b}
+.cookie-consent__details-head p{margin:5px 0 0}
+.cookie-consent__close{border:0;background:#f3f4f6;border-radius:50%;width:28px;height:28px;font-size:20px;line-height:1;cursor:pointer;color:#555;flex:none}
 .cookie-consent__options{border-top:1px solid #edf0f4}
-.cookie-consent__option{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:13px 0;border-bottom:1px solid #edf0f4}
-.cookie-consent__option strong{display:block;font-size:14px;font-weight:650}
-.cookie-consent__option small{display:block;margin-top:3px;max-width:410px}
-.cookie-consent__toggle{display:flex;align-items:center;gap:8px;flex-shrink:0;cursor:pointer}
+.cookie-consent__option{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:11px 0;border-bottom:1px solid #edf0f4}
+.cookie-consent__option strong{display:block;font-size:13px}
+.cookie-consent__option small{display:block;margin-top:3px;max-width:275px}
+.cookie-consent__toggle{display:flex;align-items:center;gap:7px;flex-shrink:0;cursor:pointer}
 .cookie-consent__toggle input{position:absolute;opacity:0;width:1px;height:1px}
-.cookie-consent__toggle span{width:38px;height:22px;border-radius:99px;background:#cbd5e1;position:relative;transition:background .15s}
-.cookie-consent__toggle span:after{content:"";position:absolute;width:16px;height:16px;left:3px;top:3px;border-radius:50%;background:#fff;transition:transform .15s}
+.cookie-consent__toggle span{width:36px;height:21px;border-radius:99px;background:#cbd5e1;position:relative}
+.cookie-consent__toggle span:after{content:"";position:absolute;width:15px;height:15px;left:3px;top:3px;border-radius:50%;background:#fff;transition:transform .15s}
 .cookie-consent__toggle input:checked+span{background:#2563eb}
-.cookie-consent__toggle input:checked+span:after{transform:translateX(16px)}
+.cookie-consent__toggle input:checked+span:after{transform:translateX(15px)}
 .cookie-consent__toggle input:disabled+span{background:#94a3b8;cursor:not-allowed}
 .cookie-consent__toggle em{font-size:10px;font-style:normal;color:#64748b;white-space:nowrap}
-.cookie-consent__actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}
-.cookie-consent__button{min-height:40px;padding:9px 13px;border-radius:9px;font-size:12px;font-weight:650;cursor:pointer}
-.cookie-consent__button--quiet{border:1px solid #dbe2ea;background:#fff;color:#334155}
-.cookie-consent__button--outline{border:1px solid #2563eb;background:#fff;color:#1d4ed8}
-.cookie-consent__button--primary{border:1px solid #2563eb;background:#2563eb;color:#fff;margin-left:auto}
-.cookie-consent__legal{margin:12px 0 0;font-size:11px}
-.cookie-consent__legal a{color:#1d4ed8;text-decoration:underline}
+.cookie-consent__actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:14px}
+.cookie-consent__legal{margin:10px 0 0}
 .cookie-consent__toggle .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
-@media(max-width:600px){.cookie-consent{padding:0;align-items:end}.cookie-consent__panel{width:100%;max-height:90vh;border-radius:16px 16px 0 0;padding:20px 16px calc(18px + env(safe-area-inset-bottom))}.cookie-consent__actions{display:grid;grid-template-columns:1fr 1fr}.cookie-consent__button--primary{grid-column:1/-1;margin:0;grid-row:1}.cookie-consent__button{width:100%}.cookie-consent__option small{max-width:230px}}
+@media(max-width:520px){.cookie-consent{left:10px;bottom:10px;max-width:calc(100vw - 20px)}.cookie-consent__notice{gap:7px;padding:9px}.cookie-consent__notice p{font-size:11px}.cookie-consent__button{padding:6px 8px;font-size:10px}.cookie-consent__details{width:calc(100vw - 20px)}.cookie-consent__option small{max-width:190px}}
 </style>
 
 <script>
@@ -75,6 +87,7 @@
 
     const storageKey = 'ografi_cookie_consent_v1';
     const categories = ['preferences', 'analytics', 'marketing'];
+    const details = root.querySelector('[data-cookie-details]');
     const readConsent = () => {
         try {
             const raw = localStorage.getItem(storageKey);
@@ -92,7 +105,9 @@
             categories: Object.fromEntries(categories.map((key) => [key, Boolean(selected[key])])),
             updatedAt: new Date().toISOString()
         };
-        localStorage.setItem(storageKey, JSON.stringify(consent));
+        try {
+            localStorage.setItem(storageKey, JSON.stringify(consent));
+        } catch {}
         document.cookie = 'ografi_cookie_consent=' + encodeURIComponent(JSON.stringify(consent)) + '; Path=/; Max-Age=15552000; SameSite=Lax' + (location.protocol === 'https:' ? '; Secure' : '');
         root.hidden = true;
         document.documentElement.dataset.cookieConsent = 'saved';
@@ -114,21 +129,21 @@
             placeholder.after(script);
         });
     };
-    const open = () => {
+    const openSettings = () => {
         const consent = getConsent();
         categories.forEach((key) => {
             const input = root.querySelector('[data-cookie-category="' + key + '"]');
             if (input) input.checked = Boolean(consent?.categories?.[key]);
         });
         root.hidden = false;
-        root.querySelector('[data-cookie-accept]')?.focus();
+        details.hidden = false;
     };
-    root.querySelector('[data-cookie-accept]')?.addEventListener('click', () => {
+    root.querySelectorAll('[data-cookie-accept]').forEach((button) => button.addEventListener('click', () => {
         saveConsent({ preferences: true, analytics: true, marketing: true });
-    });
-    root.querySelector('[data-cookie-reject]')?.addEventListener('click', () => {
+    }));
+    root.querySelectorAll('[data-cookie-reject]').forEach((button) => button.addEventListener('click', () => {
         saveConsent({ preferences: false, analytics: false, marketing: false });
-    });
+    }));
     root.querySelector('[data-cookie-save]')?.addEventListener('click', () => {
         const selected = {};
         categories.forEach((key) => {
@@ -136,15 +151,17 @@
         });
         saveConsent(selected);
     });
-    root.querySelectorAll('[data-cookie-close]').forEach((el) => el.addEventListener('click', () => { root.hidden = true; }));
-    document.querySelectorAll('[data-cookie-settings-open]').forEach((button) => button.addEventListener('click', open));
+    root.querySelector('[data-cookie-details-open]')?.addEventListener('click', openSettings);
+    root.querySelector('[data-cookie-details-close]')?.addEventListener('click', () => { details.hidden = true; });
+    document.querySelectorAll('[data-cookie-settings-open]').forEach((button) => button.addEventListener('click', openSettings));
 
     const existing = getConsent();
     if (existing) {
         root.hidden = true;
         activateApprovedScripts(existing);
     } else {
-        open();
+        root.hidden = false;
+        details.hidden = true;
     }
 })();
 </script>
