@@ -4018,3 +4018,15 @@ body.is-messenger-conversation .pm-dialog__composer .pm-composer__send svg {
         margin-bottom: 8px !important;
     }
 }
+
+
+/* Keep the package swipe hint fully below the horizontal scrollbar */
+@media (max-width: 820px) {
+    .ografi-pbx-page .ografi-pbx-swipe-hint {
+        position: relative;
+        z-index: 1;
+        margin-top: 5px !important;
+        padding-top: 2px;
+        line-height: 1.5;
+    }
+}
