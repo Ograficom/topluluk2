@@ -126,6 +126,15 @@ class AppServiceProvider extends ServiceProvider
             ]);
         });
 
+        View::composer(['posts.index', 'pages.show', 'channels.show'], function ($view): void {
+            $siteSettings = SiteSetting::current();
+
+            $view->with([
+                'brandName' => $siteSettings?->brand_name ?? SiteSetting::DEFAULT_BRAND_NAME,
+                'seoSettings' => $siteSettings,
+            ]);
+        });
+
         View::composer('layouts._footer', function ($view): void {
             $siteSettings = SiteSetting::current();
 
