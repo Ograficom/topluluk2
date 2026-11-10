@@ -35,10 +35,6 @@ Route::get('/robots.txt', function () {
 ";
     $content .= "Disallow: /admin
 ";
-    $content .= "Disallow: /signin
-";
-    $content .= "Disallow: /signup
-";
     $content .= "Sitemap: ".url('/sitemap.xml')."
 ";
 
