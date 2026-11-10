@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('seo_entity', 'true')
+
 @section('title', $user->profile_seo_title ?: $user->displayName().' profili')
 @section('description', $user->profile_seo_description ?: \\Illuminate\\Support\\Str::limit(trim(strip_tags($user->bio ?: $user->signature ?: $user->displayName().' adlı kullanıcının OgraFi topluluk profili.')), 160, ''))
 @section('canonical', $user->profile_canonical_url ?: route('profiles.show', $user))
