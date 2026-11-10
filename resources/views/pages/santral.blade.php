@@ -126,7 +126,9 @@
                     <p>{{ $santralSettings?->packages_description ?: 'İhtiyacınıza uygun paketi seçin. Başvurunuz incelenip onaylandıktan ve aktivasyon tamamlandıktan sonra santral hizmetiniz kullanıma açılır.' }}</p>
                 </div>
             </div>
-            <div class="ografi-pbx-pricing-grid">
+            <div class="ografi-pbx-package-carousel">
+                <button class="ografi-pbx-package-arrow is-prev" type="button" data-santral-package-prev aria-label="Önceki paket"><x-repost-icon name="chevron-left" size="19" /></button>
+                <div class="ografi-pbx-pricing-grid" data-santral-package-track tabindex="0" aria-label="Santral paketleri">
                 @foreach ($santralPackages as $package)
                     @php($packageFeatures = collect(preg_split('/\\r?\\n/', $package['features'] ?? ''))->filter())
                     <article class="ografi-pbx-plan {{ !empty($package['featured']) ? 'is-featured' : '' }}">
@@ -154,7 +156,10 @@
                         <small>Hizmet, başvuru ve aktivasyon onayından sonra açılır.</small>
                     </article>
                 @endforeach
+                </div>
+                <button class="ografi-pbx-package-arrow is-next" type="button" data-santral-package-next aria-label="Sonraki paket"><x-repost-icon name="chevron-right" size="19" /></button>
             </div>
+            <p class="ografi-pbx-swipe-hint">Paketleri görmek için sağa veya sola kaydırın</p>
         </section>
 
         <section class="ografi-pbx-section ografi-pbx-infrastructure">
@@ -164,10 +169,10 @@
                 <p>OgraFi Santral, doğrudan kurulu Asterisk 22 PBX ve PJSIP teknolojileri üzerinde çalışır. Operatör bağlantısı Netgsm SIP trunk üzerinden sağlanır.</p>
             </div>
             <div class="ografi-pbx-tech-grid">
-                <div><span><x-repost-icon name="server" size="21" /></span><strong>Asterisk 22</strong><small>IP PBX santral motoru</small></div>
-                <div><span><x-repost-icon name="network" size="21" /></span><strong>PJSIP</strong><small>SIP uçları ve trunk bağlantıları</small></div>
-                <div><span><x-repost-icon name="phone" size="21" /></span><strong>Netgsm SIP</strong><small>Operatör ve telefon hattı bağlantısı</small></div>
-                <div><span><x-repost-icon name="globe" size="21" /></span><strong>SIP standardı</strong><small>Uyumlu IP telefon ve softphone desteği</small></div>
+                <div><span class="ografi-pbx-tech-logo ografi-pbx-logo-asterisk" aria-label="Asterisk logosu"><svg viewBox="0 0 48 48" role="img" aria-hidden="true"><path d="M24 3 29 18 44 12 34 25 45 36 29 32 24 47 19 32 3 36 14 25 4 12 19 18Z" fill="currentColor"/></svg></span><strong>Asterisk 22</strong><small>IP PBX santral motoru</small></div>
+                <div><span class="ografi-pbx-tech-logo ografi-pbx-logo-pjsip" aria-label="PJSIP"><b>PJ</b><i>SIP</i></span><strong>PJSIP</strong><small>SIP uçları ve trunk bağlantıları</small></div>
+                <div><span class="ografi-pbx-tech-logo ografi-pbx-logo-netgsm" aria-label="Netgsm"><b>net</b><strong>gsm</strong></span><strong>Netgsm SIP</strong><small>Operatör ve telefon hattı bağlantısı</small></div>
+                <div><span class="ografi-pbx-tech-logo ografi-pbx-logo-sip" aria-label="SIP standardı"><svg viewBox="0 0 48 48" role="img" aria-hidden="true"><path d="M7 24h5l4-11 7 22 7-22 4 11h7" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span><strong>SIP standardı</strong><small>Uyumlu IP telefon ve softphone desteği</small></div>
             </div>
         </section>
 
