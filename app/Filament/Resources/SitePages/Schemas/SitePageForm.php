@@ -41,6 +41,7 @@ class SitePageForm
                 ]),
             TextInput::make('meta_title')
                 ->label('Google sonuç başlığı')
+                ->helperText('Site adı otomatik olarak sona eklenir; tekrar yazmayın.')
                 ->maxLength(255),
             Textarea::make('meta_description')
                 ->label('Google sonuç açıklaması')
