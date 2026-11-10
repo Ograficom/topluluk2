@@ -30,6 +30,9 @@ jobs:
           find app bootstrap config database routes -type f -name '*.php' -print0 | xargs -0 -n1 php -l
 
       - name: Install PHP dependencies and run automated tests
+        env:
+          APP_ENV: testing
+          APP_KEY: base64:VGhpc0lzQVRlc3RPbmx5S2V5Rm9yR2l0SHViQ2k9
         run: |
           set -euo pipefail
           composer install --no-interaction --prefer-dist
