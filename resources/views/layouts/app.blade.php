@@ -30,8 +30,8 @@
         }
     @endphp
     <meta name="description" content="{{ $seoDescription }}">
-    @if (filled($seoKeywords))
-        <meta name="keywords" content="{{ $seoKeywords }}">
+    @if (filled($seoSettings?->google_site_verification))
+        <meta name="google-site-verification" content="{{ $seoSettings->google_site_verification }}">
     @endif
     <meta name="robots" content="{{ $seoNoindex ? 'noindex,follow' : ($seoRobotsOverride ?: 'index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1') }}">
     <link rel="canonical" href="{{ $seoCanonical }}">
