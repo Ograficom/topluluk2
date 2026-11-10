@@ -9,6 +9,7 @@ use App\Models\SitemapSetting;
 use App\Models\SeoPageSetting;
 use App\Models\SiteSetting;
 use App\Models\Tag;
+use App\Models\User;
 use Illuminate\Support\Facades\Cache;
 
 class SitemapService
@@ -83,6 +84,15 @@ class SitemapService
                 ->where(fn ($query) => $query->whereNull('robots_index')->orWhere('robots_index', true))
                 ->orderBy('id')->limit(50000)->get()
                 ->each(fn (SitePage $page) => $add('/page/'.rawurlencode($page->slug), $page->updated_at));
+
+            User::query()
+                ->whereNotNull('username')
+                ->where('username', '<>', '')
+                ->where(fn ($query) => $query->whereNull('profile_robots_index')->orWhere('profile_robots_index', true))
+                ->orderBy('id')
+                ->limit(50000)
+                ->get(['username', 'updated_at'])
+                ->each(fn (User $user) => $add('/@'.rawurlencode($user->username), $user->updated_at));
         }
 
         if (in_array('posts', $included, true)) {
