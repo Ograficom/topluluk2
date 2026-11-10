@@ -20,9 +20,6 @@
         ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_HEX_TAG | JSON_HEX_AMP) !!}
     </script>
 @endpush
-@if (filled($page->meta_keywords))
-    @section('seo_keywords', $page->meta_keywords)
-@endif
 @if (filled($page->og_image))
     @section('seo_image', $page->og_image)
 @endif
