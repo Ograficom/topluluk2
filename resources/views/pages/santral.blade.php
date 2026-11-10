@@ -48,23 +48,7 @@
             <div class="ografi-pbx-hero-copy">
                 <h1>{{ $santralSettings?->hero_title ?: 'İşletmenizin iletişimi, tek merkezden.' }}</h1>
                 <p class="ografi-pbx-lead">{{ $santralSettings?->hero_description ?: 'Telefon trafiğinizi profesyonel bir bulut santralle yönetin. Numara, karşılama menüsü, ekip yönlendirmesi ve entegrasyonları sizin için kurup yapılandıralım.' }}</p>
-                <div class="ografi-pbx-actions">
-                    <a class="btn btn-primary btn-lg" href="{{ route('contacts', ['subject' => 'OgraFi Santral hizmeti', 'recipient' => 'partnerships']) }}">
-                        <x-repost-icon name="message" size="18" />
-                        {{ $santralSettings?->primary_button_text ?: 'Santral hizmeti için iletişime geç' }}
-                    </a>
-                    @auth
-                        <button class="btn btn-secondary btn-lg ografi-pbx-activation-trigger" type="button" data-santral-activation-open>
-                            <x-repost-icon name="channels" size="18" />
-                            {{ $santralSettings?->activation_button_text ?: 'Entegrasyona başla' }}
-                        </button>
-                    @else
-                        <a class="btn btn-secondary btn-lg ografi-pbx-activation-trigger" href="{{ route('register') }}">
-                            <x-repost-icon name="user" size="18" />
-                            {{ $santralSettings?->activation_button_text ?: 'Entegrasyona başla' }}
-                        </a>
-                    @endauth
-                </div>
+
                 <p class="small color-gray">{{ $santralSettings?->hero_note ?: 'Hazır bir script satmıyoruz; kurulumdan yapılandırmaya ve teknik desteğe kadar hizmet sunuyoruz.' }}</p>
             </div>
             <div class="ografi-pbx-hero-art" aria-hidden="true">
@@ -199,6 +183,26 @@
             <a class="btn btn-primary btn-lg" href="{{ route('contacts', ['subject' => 'OgraFi Santral hizmeti', 'recipient' => 'partnerships']) }}">Teklif ve bilgi alın</a>
         </section>
     </article>
+
+    <div class="ografi-pbx-fixed-actions" role="region" aria-label="Santral iletişim işlemleri">
+        <div class="ografi-pbx-actions">
+            <a class="btn btn-primary btn-lg" href="{{ route('contacts', ['subject' => 'OgraFi Santral hizmeti', 'recipient' => 'partnerships']) }}">
+                <x-repost-icon name="message" size="18" />
+                {{ $santralSettings?->primary_button_text ?: 'Santral hizmeti için iletişime geç' }}
+            </a>
+            @auth
+                <button class="btn btn-secondary btn-lg ografi-pbx-activation-trigger" type="button" data-santral-activation-open>
+                    <x-repost-icon name="channels" size="18" />
+                    {{ $santralSettings?->activation_button_text ?: 'Entegrasyona başla' }}
+                </button>
+            @else
+                <a class="btn btn-secondary btn-lg ografi-pbx-activation-trigger" href="{{ route('register') }}">
+                    <x-repost-icon name="user" size="18" />
+                    {{ $santralSettings?->activation_button_text ?: 'Entegrasyona başla' }}
+                </a>
+            @endauth
+        </div>
+    </div>
 
     @auth
     <dialog class="ografi-pbx-activation-modal" data-santral-activation-modal aria-labelledby="santral-activation-title">
