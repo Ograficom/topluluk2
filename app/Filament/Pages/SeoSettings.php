@@ -53,6 +53,7 @@ class SeoSettings extends Page
     {
         return $schema->components([
             Section::make('Google Search Console')
+                ->id('seo-search-console')
                 ->description('Search Console mülkünüzü HTML meta etiketiyle doğrulamak için Google’ın verdiği yalnızca doğrulama kodunu girin. Tam meta etiketini veya URL’yi yapıştırmayın.')
                 ->schema([
                     TextInput::make('google_site_verification')
@@ -64,6 +65,7 @@ class SeoSettings extends Page
                 ]),
 
             Section::make('Ana sayfa Google görünümü')
+                ->id('seo-homepage-fields')
                 ->description('Ana sayfanın Google sonuçlarında kullanabileceği başlık ve açıklama. Google, arama sorgusuna göre başlığı veya açıklama metnini kendisi değiştirebilir.')
                 ->schema([
                     TextInput::make('home_seo_title')
@@ -101,6 +103,7 @@ class SeoSettings extends Page
                 ]),
 
             Section::make('Diğer herkese açık sayfalar')
+                ->id('seo-pages')
                 ->description('Buradan liste ve sabit rotaları ayrı ayrı yönetin. Yazılar, kanallar, statik sayfalar ve kullanıcı profilleri kendi düzenleme ekranlarındaki SEO alanlarını kullanır. Özel hesap sayfaları noindex kalır.')
                 ->schema([
                     Repeater::make('pages')
