@@ -57,7 +57,7 @@
             'areaServed' => ['@type' => 'Country', 'name' => 'Türkiye'],
             'url' => route('santral'),
             'description' => $santralSettings?->seo_description ?: ($santralSettings?->hero_description ?: 'İşletmelere özel bulut santral, IVR, telefon numarası ve entegrasyon hizmetleri.'),
-            'image' => $santralSettings?->featured_image ? \Illuminate\Support\Facades\Storage::disk('public')->url($santralSettings->featured_image) : asset('assets/img/meta/logo.svg'),
+            'image' => $santralOgImage,
             'keywords' => $santralSeoTags,
         ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_HEX_TAG | JSON_HEX_AMP) !!}
     </script>
