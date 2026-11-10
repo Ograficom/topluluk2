@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('seo_entity', 'true')
+
 @section('title', $post->seo_title ?: $post->title)
 @section('description', $post->meta_description ?: $post->excerpt)
 @section('canonical', $post->canonical_url ?: route('posts.show', $post))
