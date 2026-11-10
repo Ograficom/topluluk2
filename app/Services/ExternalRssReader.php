@@ -19,40 +19,16 @@ class ExternalRssReader
     {
         try {
             $url = $this->validatedFeedUrl($source->url);
-            $response = null;
+            $response = $this->requestFeed($url);
 
-            // Follow a small number of redirects manually so every redirect target
-            // is revalidated against the SSRF protections above.
-            for ($redirect = 0; $redirect <= 3; $redirect++) {
-                $origin = (parse_url($url, PHP_URL_SCHEME) ?: 'https').'://'.parse_url($url, PHP_URL_HOST).'/';
-
-                $response = Http::withOptions([
-                    'allow_redirects' => false,
-                    'verify' => true,
-                ])->connectTimeout(7)->timeout(20)->withHeaders([
-                    'Accept' => 'application/rss+xml, application/atom+xml, application/xml, text/xml, application/*+xml;q=0.9, */*;q=0.5',
-                    'Accept-Language' => 'tr-TR,tr;q=0.9,en-US;q=0.8,en;q=0.7',
-                    'Cache-Control' => 'no-cache',
-                    'Pragma' => 'no-cache',
-                    'Referer' => $origin,
-                    'User-Agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36',
-                ])->get($url);
-
-                if (! $response->redirect()) {
-                    break;
+            // NTV may reject direct requests from data-centre IPs with HTTP 403.
+            // In that case, use Google News RSS restricted to the same NTV section.
+            if ($response->status() === 403 && $this->isNtvFeed($url)) {
+                $fallbackUrl = $this->ntvFallbackFeedUrl($url);
+                $response = $this->requestFeed($fallbackUrl);
+                if ($response->successful()) {
+                    $url = $fallbackUrl;
                 }
-
-                if ($redirect === 3) {
-                    throw new RuntimeException('RSS kaynağı çok fazla yönlendirme yaptı.');
-                }
-
-                $location = trim((string) $response->header('Location'));
-                $nextUrl = $location !== '' ? $this->resolveUrl($location, $url) : null;
-                if ($nextUrl === null) {
-                    throw new RuntimeException('RSS kaynağı geçersiz bir yönlendirme adresi döndürdü.');
-                }
-
-                $url = $this->validatedFeedUrl($nextUrl);
             }
 
             if (! $response || ! $response->successful()) {
@@ -138,6 +114,63 @@ class ExternalRssReader
         });
 
         return $result;
+    }
+
+
+    private function requestFeed(string $url)
+    {
+        $url = $this->validatedFeedUrl($url);
+        $response = null;
+
+        // Follow redirects manually; every destination is checked against SSRF rules.
+        for ($redirect = 0; $redirect <= 3; $redirect++) {
+            $origin = (parse_url($url, PHP_URL_SCHEME) ?: 'https').'://'.parse_url($url, PHP_URL_HOST).'/';
+
+            $response = Http::withOptions([
+                'allow_redirects' => false,
+                'verify' => true,
+            ])->connectTimeout(7)->timeout(20)->withHeaders([
+                'Accept' => 'application/rss+xml, application/atom+xml, application/xml, text/xml, application/*+xml;q=0.9, */*;q=0.5',
+                'Accept-Language' => 'tr-TR,tr;q=0.9,en-US;q=0.8,en;q=0.7',
+                'Cache-Control' => 'no-cache',
+                'Pragma' => 'no-cache',
+                'Referer' => $origin,
+                'User-Agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36',
+            ])->get($url);
+
+            if (! $response->redirect()) {
+                return $response;
+            }
+
+            if ($redirect === 3) {
+                throw new RuntimeException('RSS kaynağı çok fazla yönlendirme yaptı.');
+            }
+
+            $location = trim((string) $response->header('Location'));
+            $nextUrl = $location !== '' ? $this->resolveUrl($location, $url) : null;
+            if ($nextUrl === null) {
+                throw new RuntimeException('RSS kaynağı geçersiz bir yönlendirme adresi döndürdü.');
+            }
+
+            $url = $this->validatedFeedUrl($nextUrl);
+        }
+
+        return $response;
+    }
+
+    private function isNtvFeed(string $url): bool
+    {
+        return strtolower((string) parse_url($url, PHP_URL_HOST)) === 'www.ntv.com.tr'
+            && str_ends_with(strtolower((string) parse_url($url, PHP_URL_PATH)), '.rss');
+    }
+
+    private function ntvFallbackFeedUrl(string $url): string
+    {
+        $path = trim((string) parse_url($url, PHP_URL_PATH), '/');
+        $section = preg_replace('/\\.rss$/i', '', basename($path)) ?: 'son-dakika';
+        $query = rawurlencode('site:ntv.com.tr/'.$section);
+
+        return 'https://news.google.com/rss/search?q='.$query.'&hl=tr&gl=TR&ceid=TR%3Atr';
     }
 
     private function validatedFeedUrl(string $url): string
