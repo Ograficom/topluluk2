@@ -8,6 +8,7 @@ use App\Models\RssSource;
 use App\Models\Tag;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use RuntimeException;
 use SimpleXMLElement;
@@ -557,10 +558,22 @@ class ExternalRssReader
     {
         try {
             [$response, $finalUrl] = $this->requestFeedWithFinalUrl($articleUrl);
-            if (! $response || ! $response->successful()) return [];
+            if (! $response || ! $response->successful()) {
+                Log::warning('RSS article page request failed', [
+                    'url' => $articleUrl,
+                    'status' => $response?->status(),
+                ]);
+                return [];
+            }
 
             $html = $response->body();
-            if ($html === '' || strlen($html) > 5_000_000) return [];
+            if ($html === '' || strlen($html) > 5_000_000) {
+                Log::warning('RSS article page response is empty or too large', [
+                    'url' => $articleUrl,
+                    'bytes' => strlen($html),
+                ]);
+                return [];
+            }
 
             $previous = libxml_use_internal_errors(true);
             try {
@@ -722,6 +735,14 @@ class ExternalRssReader
                     ->values()
                     ->all();
 
+                Log::info('RSS article body extraction completed', [
+                    'url' => $articleUrl,
+                    'final_url' => $finalUrl,
+                    'html_bytes' => strlen($html),
+                    'article_body_chars' => mb_strlen($articleBody),
+                    'article_body_paragraphs' => count(array_filter(preg_split('/\\n\\s*\\n/u', $articleBody) ?: [])),
+                ]);
+
                 return [
                     'images' => array_slice(array_values(array_unique($images)), 0, 10),
                     'tags' => $tags,
@@ -733,7 +754,11 @@ class ExternalRssReader
                 libxml_clear_errors();
                 libxml_use_internal_errors($previous);
             }
-        } catch (Throwable) {
+        } catch (Throwable $exception) {
+            Log::warning('RSS article page extraction threw an exception', [
+                'url' => $articleUrl,
+                'exception' => $exception->getMessage(),
+            ]);
             // Metadata enrichment is optional; a publisher blocking page requests
             // must not prevent the RSS headline itself from being imported.
             return [];
