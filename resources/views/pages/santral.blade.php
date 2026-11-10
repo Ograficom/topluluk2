@@ -196,7 +196,7 @@
                     {{ $santralSettings?->activation_button_text ?: 'Entegrasyona başla' }}
                 </button>
             @else
-                <a class="btn btn-secondary btn-lg ografi-pbx-activation-trigger" href="{{ route('register') }}">
+                <a class="btn btn-secondary btn-lg ografi-pbx-activation-trigger" href="{{ route('login') }}">
                     <x-repost-icon name="user" size="18" />
                     {{ $santralSettings?->activation_button_text ?: 'Entegrasyona başla' }}
                 </a>
