@@ -11,6 +11,64 @@
             }
         }
     </style>
+<script>
+(() => {
+    const panel = document.querySelector('[data-tab-panel="cookies"]');
+    if (!panel) return;
+
+    const keys = ['preferences', 'analytics', 'marketing'];
+    const storageKey = 'ografi_cookie_consent_v1';
+    const root = document.querySelector('[data-cookie-consent]');
+
+    const readConsent = () => {
+        try {
+            const value = JSON.parse(localStorage.getItem(storageKey) || 'null');
+            return value && value.version === 1 && value.categories ? value : null;
+        } catch {
+            return null;
+        }
+    };
+
+    const syncFromStorage = () => {
+        const consent = readConsent();
+        keys.forEach((key) => {
+            const input = panel.querySelector('[data-settings-cookie-category="' + key + '"]');
+            if (input) input.checked = Boolean(consent?.categories?.[key]);
+        });
+    };
+
+    const saveThroughConsentManager = (mode) => {
+        if (!root) return;
+        if (mode === 'accept') {
+            root.querySelector('[data-cookie-accept]')?.click();
+            syncFromStorage();
+            return;
+        }
+        if (mode === 'reject') {
+            root.querySelector('[data-cookie-reject]')?.click();
+            syncFromStorage();
+            return;
+        }
+
+        keys.forEach((key) => {
+            const source = panel.querySelector('[data-settings-cookie-category="' + key + '"]');
+            const target = root.querySelector('[data-cookie-category="' + key + '"]');
+            if (source && target) target.checked = source.checked;
+        });
+        root.querySelector('[data-cookie-save]')?.click();
+        syncFromStorage();
+    };
+
+    panel.querySelector('[data-settings-cookie-save]')?.addEventListener('click', () => saveThroughConsentManager('save'));
+    panel.querySelector('[data-settings-cookie-accept]')?.addEventListener('click', () => saveThroughConsentManager('accept'));
+    panel.querySelector('[data-settings-cookie-reject]')?.addEventListener('click', () => saveThroughConsentManager('reject'));
+
+    syncFromStorage();
+    window.addEventListener('storage', syncFromStorage);
+    window.addEventListener('ografi:cookie-consent-updated', syncFromStorage);
+})();
+</script>
+
 @endpush
 
 @section('content')
@@ -129,6 +187,42 @@
                             <label class="form-check-label"><input class="form-check-input" type="checkbox" name="show_adult_content" value="1" @checked(old('show_adult_content', $user->show_adult_content))> <span>18+ içerikleri göster</span></label>
                             <div><button class="btn btn-primary" type="submit">Kaydet</button></div>
                         </form>
+                    </section>
+
+                    <section
+                        class="tabs-panel {{ $activeTab === 'cookies' ? 'is-active' : '' }}"
+                        id="settings-cookies-pane"
+                        data-tab-panel="cookies"
+                        role="tabpanel"
+                        aria-labelledby="settings-cookies-tab"
+                        tabindex="0"
+                        @if ($activeTab !== 'cookies') hidden @endif
+                    >
+                        <h1 class="h3">Çerez ayarları</h1>
+                        <div class="setting__box setting__list">
+                            <p class="color-gray">OgraFi'nin düzgün çalışması için zorunlu çerezler her zaman etkindir. Diğer çerez kategorilerini aşağıdan yönetebilirsin.</p>
+                            <div class="setting__list-item setting__list-item--center">
+                                <span class="setting__list-label"><strong>Zorunlu çerezler</strong><small class="d-block color-gray">Oturum, güvenlik ve temel site işlevleri için gereklidir. Kapatılamaz.</small></span>
+                                <span class="setting__list-value"><input type="checkbox" checked disabled aria-label="Zorunlu çerezler her zaman açık"></span>
+                            </div>
+                            <label class="setting__list-item setting__list-item--center">
+                                <span class="setting__list-label"><strong>Tercih çerezleri</strong><small class="d-block color-gray">Tema ve benzeri seçimlerini hatırlamamıza yardımcı olur.</small></span>
+                                <span class="setting__list-value"><input type="checkbox" data-settings-cookie-category="preferences"></span>
+                            </label>
+                            <label class="setting__list-item setting__list-item--center">
+                                <span class="setting__list-label"><strong>Analitik çerezler</strong><small class="d-block color-gray">Site kullanımını ölçerek OgraFi'yi geliştirmemize yardımcı olur.</small></span>
+                                <span class="setting__list-value"><input type="checkbox" data-settings-cookie-category="analytics"></span>
+                            </label>
+                            <label class="setting__list-item setting__list-item--center">
+                                <span class="setting__list-label"><strong>Pazarlama çerezleri</strong><small class="d-block color-gray">Reklam performansını ölçmek ve ilgili içerikler sunmak için kullanılır.</small></span>
+                                <span class="setting__list-value"><input type="checkbox" data-settings-cookie-category="marketing"></span>
+                            </label>
+                            <div class="setting__submit" style="display:flex;gap:8px;flex-wrap:wrap">
+                                <button class="btn btn-secondary" type="button" data-settings-cookie-reject>İsteğe bağlıları reddet</button>
+                                <button class="btn btn-primary" type="button" data-settings-cookie-save>Seçimleri kaydet</button>
+                                <button class="btn btn-primary" type="button" data-settings-cookie-accept>Hepsini kabul et</button>
+                            </div>
+                        </div>
                     </section>
 
                     <section
@@ -411,9 +505,11 @@
                             @endforeach
                             <li class="menu__item">
                                 <button
-                                    class="menu__link"
+                                    class="menu__link {{ $activeTab === 'cookies' ? 'is-active' : '' }}"
+                                    id="settings-cookies-tab"
                                     type="button"
-                                    data-cookie-settings-open
+                                    data-tab="cookies"
+                                    aria-selected="{{ $activeTab === 'cookies' ? 'true' : 'false' }}"
                                     aria-label="Çerez ayarları"
                                     title="Çerez ayarları"
                                 >
