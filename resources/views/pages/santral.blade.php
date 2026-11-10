@@ -242,6 +242,23 @@
         document.querySelector('[data-santral-package-next]')?.addEventListener('click', () => scrollPackages(1));
     }
 
+    // Keep the floating CTA dock inside the feed column, not across the sidebar.
+    const actionDock = document.querySelector('.ografi-pbx-fixed-actions');
+    const feedColumn = document.querySelector('.main > .feed');
+    if (actionDock && feedColumn) {
+        const alignActionDock = () => {
+            const rect = feedColumn.getBoundingClientRect();
+            actionDock.style.left = `${Math.round(rect.left)}px`;
+            actionDock.style.width = `${Math.round(rect.width)}px`;
+        };
+        alignActionDock();
+        window.addEventListener('resize', alignActionDock, { passive: true });
+        if ('ResizeObserver' in window) {
+            new ResizeObserver(alignActionDock).observe(feedColumn);
+        }
+        requestAnimationFrame(alignActionDock);
+    }
+
     const slider = document.querySelector('[data-santral-slider]');
     if (!slider) return;
     const slides = [...slider.querySelectorAll('[data-santral-slide]')];
