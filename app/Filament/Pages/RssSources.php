@@ -3,6 +3,8 @@
 namespace App\Filament\Pages;
 
 use App\Models\RssSource;
+use App\Models\Channel;
+use App\Models\User;
 use App\Services\ExternalRssReader;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
@@ -24,6 +26,44 @@ class RssSources extends Page
 
     public string $sourceName = '';
     public string $sourceUrl = '';
+    public ?int $authorId = null;
+    public ?int $channelId = null;
+    public bool $autoPublish = true;
+    public array $sourceSettings = [];
+
+    public function mount(): void
+    {
+        RssSource::query()->get()->each(function (RssSource $source): void {
+            $this->sourceSettings[$source->id] = [
+                'author_id' => $source->author_id,
+                'channel_id' => $source->channel_id,
+                'auto_publish' => $source->auto_publish,
+            ];
+        });
+    }
+
+    public function authors(): array
+    {
+        return User::query()->orderBy('name')->get()->mapWithKeys(fn (User $user) => [$user->id => $user->displayName()])->all();
+    }
+
+    public function channels(): array
+    {
+        return Channel::query()->active()->orderBy('name')->pluck('name', 'id')->all();
+    }
+
+    public function saveSourceSettings(int $sourceId): void
+    {
+        $source = RssSource::query()->findOrFail($sourceId);
+        $settings = $this->sourceSettings[$sourceId] ?? [];
+        $data = Validator::make($settings, [
+            'author_id' => ['required', 'integer', 'exists:users,id'],
+            'channel_id' => ['required', 'integer', 'exists:channels,id'],
+            'auto_publish' => ['required', 'boolean'],
+        ])->validate();
+        $source->update($data);
+        Notification::make()->title('RSS yayın ayarları kaydedildi.')->success()->send();
+    }
 
     public function addSource(ExternalRssReader $reader): void
     {
@@ -49,11 +89,17 @@ class RssSources extends Page
             'name' => $data['name'],
             'url' => $data['url'],
             'url_hash' => $urlHash,
+            'author_id' => $data['author_id'],
+            'channel_id' => $data['channel_id'],
+            'auto_publish' => $this->autoPublish,
             'is_active' => true,
         ]);
 
         $this->sourceName = '';
         $this->sourceUrl = '';
+        $this->authorId = null;
+        $this->channelId = null;
+        $this->autoPublish = true;
 
         try {
             $count = $reader->fetchSource($source);
