@@ -1,5 +1,23 @@
 @extends('layouts.app')
 
+@section('title', 'Forum Kanalları ve Kategoriler')
+@section('description', 'OgraFi forum kanallarını keşfedin. İlgi alanınıza göre teknoloji, gündem, yaşam ve diğer topluluk kategorilerindeki güncel yazıları inceleyin.')
+@section('canonical', route('channels.index'))
+@section('og_type', 'website')
+
+@push('head')
+    <script type="application/ld+json">
+        {!! json_encode([
+            '@context' => 'https://schema.org',
+            '@type' => 'CollectionPage',
+            'name' => 'OgraFi Forum Kanalları',
+            'description' => 'OgraFi topluluk forumundaki ilgi alanı kanalları ve kategoriler.',
+            'url' => route('channels.index'),
+            'isPartOf' => ['@type' => 'WebSite', 'name' => 'OgraFi', 'url' => url('/')],
+        ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_HEX_TAG | JSON_HEX_AMP) !!}
+    </script>
+@endpush
+
 @section('title', 'Kanallar')
 
 @section('content')
