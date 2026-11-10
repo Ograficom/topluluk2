@@ -16,6 +16,8 @@ class RssItem extends Model
         'summary',
         'author',
         'image_url',
+        'image_urls',
+        'tags',
         'published_at',
     ];
 
@@ -23,6 +25,8 @@ class RssItem extends Model
     {
         return [
             'published_at' => 'datetime',
+            'image_urls' => 'array',
+            'tags' => 'array',
         ];
     }
 
