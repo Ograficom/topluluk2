@@ -3887,3 +3887,47 @@ body.is-messenger-conversation .pm-dialog__composer .pm-composer__send svg {
     .ografi-pbx-hero > .ografi-pbx-eyebrow { top: 14px; right: 14px; }
     .ografi-pbx-hero-copy { padding-top: 40px; }
 }
+
+
+/* Santral hero: remove eyebrow label and pin the illustration to the upper-right */
+.ografi-pbx-hero > .ografi-pbx-eyebrow,
+.ografi-pbx-hero-copy > .ografi-pbx-eyebrow { display: none !important; }
+@container (max-width: 820px) {
+    .ografi-pbx-hero { position: relative; display: block; min-height: 0; padding: 26px 22px 24px; }
+    .ografi-pbx-hero-art {
+        position: absolute;
+        top: 18px;
+        right: 16px;
+        width: 190px;
+        min-height: 170px;
+        margin: 0;
+        transform: none;
+    }
+    .ografi-pbx-art-orbit { width: 150px; height: 150px; }
+    .ografi-pbx-art-orbit--two { width: 180px; height: 180px; }
+    .ografi-pbx-art-card { width: 150px; min-height: 116px; gap: 4px; border-radius: 16px; }
+    .ografi-pbx-art-card > svg { width: 25px; height: 25px; }
+    .ografi-pbx-art-card strong { font-size: 13px; }
+    .ografi-pbx-art-card small { font-size: 10px; }
+    .ografi-pbx-art-dot { top: 10px; right: 11px; width: 7px; height: 7px; }
+    .ografi-pbx-art-bars { height: 15px; margin-top: 0; }
+    .ografi-pbx-art-bars i { width: 3px; }
+    .ografi-pbx-art-chip { max-width: 68%; padding: 6px 8px; font-size: 9px; }
+    .ografi-pbx-art-chip--top { top: 0; right: 0; }
+    .ografi-pbx-art-chip--bottom { bottom: 0; left: 0; }
+    .ografi-pbx-hero-copy { position: relative; z-index: 1; padding: 0 !important; }
+    .ografi-pbx-hero h1 { max-width: 58%; min-height: 112px; margin: 0 0 14px; font-size: clamp(27px, 5.5cqw, 38px); line-height: 1.08; }
+    .ografi-pbx-lead { max-width: 100%; }
+}
+@container (max-width: 520px) {
+    .ografi-pbx-hero { padding: 20px 16px 22px; }
+    .ografi-pbx-hero-art { top: 20px; right: 8px; width: 150px; min-height: 145px; }
+    .ografi-pbx-art-orbit { width: 120px; height: 120px; }
+    .ografi-pbx-art-orbit--two { width: 145px; height: 145px; }
+    .ografi-pbx-art-card { width: 122px; min-height: 100px; }
+    .ografi-pbx-art-card > svg { width: 21px; height: 21px; }
+    .ografi-pbx-art-card strong { font-size: 11px; }
+    .ografi-pbx-art-card small { font-size: 9px; }
+    .ografi-pbx-art-chip { font-size: 8px; }
+    .ografi-pbx-hero h1 { max-width: 62%; min-height: 105px; font-size: clamp(25px, 7cqw, 32px); }
+}
