@@ -5,7 +5,7 @@
 @section('canonical', route('santral'))
 @section('og_type', 'website')
 @section('seo_keywords', implode(', ', $santralSettings?->seo_tags ?: ['bulut santral', 'bulut telefon santrali', 'santral hizmeti', 'Asterisk 22', 'IVR', '0850 numara', 'Netgsm SIP', 'kurumsal telefon']))
-@section('seo_image', $santralSettings?->featured_image ? \\Illuminate\\Support\\Facades\\Storage::disk('public')->url($santralSettings->featured_image) : asset('assets/img/meta/logo.svg'))
+@section('seo_image', $santralSettings?->featured_image ? \Illuminate\Support\Facades\Storage::disk('public')->url($santralSettings->featured_image) : asset('assets/img/meta/logo.svg'))
 
 @php
     $santralSlides = collect($santralSettings?->slides ?? [])->filter(fn ($slide) => filled($slide['image'] ?? null))->values();
@@ -40,7 +40,7 @@
             'areaServed' => ['@type' => 'Country', 'name' => 'Türkiye'],
             'url' => route('santral'),
             'description' => $santralSettings?->seo_description ?: ($santralSettings?->hero_description ?: 'İşletmelere özel bulut santral, IVR, telefon numarası ve entegrasyon hizmetleri.'),
-            'image' => $santralSettings?->featured_image ? \\Illuminate\\Support\\Facades\\Storage::disk('public')->url($santralSettings->featured_image) : asset('assets/img/meta/logo.svg'),
+            'image' => $santralSettings?->featured_image ? \Illuminate\Support\Facades\Storage::disk('public')->url($santralSettings->featured_image) : asset('assets/img/meta/logo.svg'),
             'keywords' => $santralSettings?->seo_tags ?: ['bulut santral', 'Asterisk 22', 'IVR', 'Netgsm SIP'],
         ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_HEX_TAG | JSON_HEX_AMP) !!}
     </script>
