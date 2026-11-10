@@ -70,7 +70,7 @@ class SeoSettings extends Page
                         ->label('Ana sayfa SEO başlığı')
                         ->maxLength(255)
                         ->placeholder('OgraFi – Fikirlerin ve toplulukların buluşma noktası')
-                        ->helperText('Kısa, özgün ve sayfanın içeriğini doğru anlatan bir başlık yazın.')
+                        ->helperText('Kısa, özgün ve sayfanın içeriğini doğru anlatan bir başlık yazın. Site adı otomatik sona eklenir; burada tekrar yazmayın.')
                         ->columnSpanFull(),
                     Textarea::make('home_seo_description')
                         ->label('Ana sayfa meta açıklaması')
