@@ -27,7 +27,7 @@ class SitePageForm
                 ->required()
                 ->maxLength(180)
                 ->unique(ignoreRecord: true)
-                ->helperText('Örnek: about → /pages/about'),
+                ->helperText('Örnek: about → /page/about'),
             RichEditor::make('content')
                 ->label('Sayfa içeriği')
                 ->columnSpanFull()
