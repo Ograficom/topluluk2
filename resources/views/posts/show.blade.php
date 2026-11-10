@@ -91,7 +91,13 @@
         <section class="editor editorjs-content">
             @php
                 $editorContent = json_decode($post->body, true);
-                $editorBlocks = is_array($editorContent) && isset($editorContent['blocks']) && is_array($editorContent['blocks']) ? $editorContent['blocks'] : null;
+                $editorBlocks = is_array($editorContent) && isset($editorContent['blocks']) && is_array($editorContent['blocks']) ? array_values(array_filter(
+                    $editorContent['blocks'],
+                    fn ($block) => ! str_starts_with(
+                        trim((string) data_get($block, 'data.text', '')),
+                        'Bu içerik RSS kaynağından alınmıştır. Kaynak:'
+                    )
+                )) : null;
             @endphp
             @if ($editorBlocks !== null)
                 @foreach ($editorBlocks as $block)
@@ -157,7 +163,9 @@
                 @endforeach
             @else
                 @foreach (preg_split('/\\R{2,}/', trim($post->body)) ?: [] as $paragraph)
-                    @if (filled($paragraph))<p>{!! nl2br(e($paragraph)) !!}</p>@endif
+                    @if (filled($paragraph) && ! str_starts_with(trim($paragraph), 'Bu içerik RSS kaynağından alınmıştır. Kaynak:'))
+                        <p>{!! nl2br(e($paragraph)) !!}</p>
+                    @endif
                 @endforeach
             @endif
         </section>
