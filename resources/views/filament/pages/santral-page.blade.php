@@ -1,8 +1,76 @@
 <x-filament-panels::page>
-    <div class="mb-5 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-gray-200 bg-white p-4 dark:border-gray-700 dark:bg-gray-900">
+    <style>
+        .santral-editor-intro {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            margin-bottom: 22px;
+            padding: 20px 22px;
+            border: 1px solid #e5e7eb;
+            border-radius: 14px;
+            background: #fff;
+        }
+        .santral-editor-intro__title {
+            margin: 0;
+            color: #111827;
+            font-size: 15px;
+            font-weight: 700;
+            line-height: 1.5;
+        }
+        .santral-editor-intro__description {
+            margin: 5px 0 0;
+            color: #6b7280;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+        .santral-editor-savebar {
+            position: sticky;
+            bottom: 12px;
+            z-index: 20;
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 24px;
+            padding: 12px 14px;
+            border: 1px solid #e5e7eb;
+            border-radius: 14px;
+            background: rgba(255,255,255,.96);
+            box-shadow: 0 4px 18px rgba(15,23,42,.08);
+            backdrop-filter: blur(12px);
+        }
+        .dark .santral-editor-intro {
+            border-color: #374151;
+            background: #111827;
+        }
+        .dark .santral-editor-intro__title {
+            color: #f9fafb;
+        }
+        .dark .santral-editor-intro__description {
+            color: #9ca3af;
+        }
+        .dark .santral-editor-savebar {
+            border-color: #374151;
+            background: rgba(17,24,39,.96);
+            box-shadow: 0 4px 18px rgba(0,0,0,.24);
+        }
+        @media (max-width: 640px) {
+            .santral-editor-intro {
+                align-items: flex-start;
+                flex-direction: column;
+                padding: 16px;
+            }
+            .santral-editor-savebar {
+                bottom: 8px;
+            }
+        }
+    </style>
+
+    <div class="santral-editor-intro">
         <div>
-            <h2 class="text-sm font-semibold text-gray-950 dark:text-white">Santral sayfası düzenleyicisi</h2>
-            <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">İçerikleri sekmelerden düzenleyin. Değişiklikler, kaydet butonuna bastığınızda canlı sayfaya uygulanır.</p>
+            <h2 class="santral-editor-intro__title">Santral sayfası düzenleyicisi</h2>
+            <p class="santral-editor-intro__description">
+                İçerikleri sekmelerden düzenleyin. Değişiklikler, kaydet butonuna bastığınızda canlı sayfaya uygulanır.
+            </p>
         </div>
         <x-filament::button
             tag="a"
@@ -15,10 +83,10 @@
         </x-filament::button>
     </div>
 
-    <form wire:submit="save" class="space-y-6">
+    <form wire:submit="save">
         {{ $this->form }}
 
-        <div class="sticky bottom-3 z-10 flex justify-end rounded-xl border border-gray-200 bg-white/95 p-3 shadow-sm backdrop-blur dark:border-gray-700 dark:bg-gray-900/95">
+        <div class="santral-editor-savebar">
             <x-filament::button type="submit" icon="heroicon-o-check">
                 Değişiklikleri kaydet
             </x-filament::button>
