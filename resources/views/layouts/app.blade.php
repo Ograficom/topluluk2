@@ -7,11 +7,13 @@
     <meta name="theme-color" content="#f7f9fd">
     <title>@yield('title', $brandName) — {{ $brandName }}</title>
     @php
-        $seoDescription = trim($__env->yieldContent('description', 'OgraFi; teknoloji, gündem, yaşam ve ilgi alanlarında yazıların, fikirlerin ve topluluk sohbetlerinin buluştuğu platformdur.'));
-        $seoTitle = trim($__env->yieldContent('title', $brandName));
+        $seoDescription = trim($__env->yieldContent('description', $seoSettings?->seo_default_description ?: 'OgraFi; teknoloji, gündem, yaşam ve ilgi alanlarında yazıların, fikirlerin ve topluluk sohbetlerinin buluştuğu platformdur.'));
+        $seoTitle = trim($__env->yieldContent('title', $seoSettings?->seo_default_title ?: $brandName));
         $seoCanonical = trim($__env->yieldContent('canonical')) ?: url()->current();
-        $seoImage = trim($__env->yieldContent('seo_image')) ?: ($brandLogoUrl ?? asset('assets/img/meta/logo.svg'));
-        $seoNoindex = request()->filled('q')
+        $seoImage = trim($__env->yieldContent('seo_image')) ?: ($seoSettings?->seo_og_image ?: ($brandLogoUrl ?? asset('assets/img/meta/logo.svg')));
+        $seoRobotsOverride = trim($__env->yieldContent('robots'));
+        $seoKeywords = trim($__env->yieldContent('seo_keywords', $seoSettings?->seo_default_keywords ?? ''));
+        $seoNoindex = $seoRobotsOverride === 'noindex,follow' || request()->filled('q')
             || request()->filled('sort')
             || request()->filled('period')
             || request()->filled('comments')
@@ -27,7 +29,10 @@
         }
     @endphp
     <meta name="description" content="{{ $seoDescription }}">
-    <meta name="robots" content="{{ $seoNoindex ? 'noindex,follow' : 'index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1' }}">
+    @if (filled($seoKeywords))
+        <meta name="keywords" content="{{ $seoKeywords }}">
+    @endif
+    <meta name="robots" content="{{ $seoNoindex ? 'noindex,follow' : ($seoRobotsOverride ?: 'index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1') }}">
     <link rel="canonical" href="{{ $seoCanonical }}">
     <meta property="og:locale" content="tr_TR">
     <meta property="og:site_name" content="{{ $brandName }}">
