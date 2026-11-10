@@ -53,7 +53,7 @@ class RssFeedService
 
         $contentVersion = Post::query()->max('updated_at') ?: 'empty';
         $entityVersion = $entity?->updated_at?->getTimestamp() ?? 'none';
-        $cacheKey = 'ografi.rss.'.sha1(implode('|', [
+        $cacheKey = 'ografi.rss.v2.'.sha1(implode('|', [
             $type,
             (string) $slug,
             (string) $settings->updated_at?->getTimestamp(),
