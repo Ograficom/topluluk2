@@ -10,6 +10,7 @@ use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
 use App\Filament\Pages\Dashboard;
 use Filament\Navigation\NavigationGroup;
+use Filament\View\PanelsRenderHook;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
@@ -37,6 +38,17 @@ class AdminPanelProvider extends PanelProvider
                 NavigationGroup::make()
                     ->label('Ayarlar'),
             ])
+            ->renderHook(
+                PanelsRenderHook::PAGE_START,
+                fn (): string => request()->is(
+                    'admin/content-management',
+                    'admin/channels*',
+                    'admin/comments*',
+                    'admin/posts*',
+                    'admin/tags*',
+                    'admin/rss-sources*',
+                ) ? view('filament.components.content-management-tabs')->render() : '',
+            )
             ->colors([
                 'primary' => Color::Blue,
             ])
