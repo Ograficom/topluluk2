@@ -6,9 +6,6 @@
 @section('description', $post->meta_description ?: $post->excerpt)
 @section('canonical', $post->canonical_url ?: route('posts.show', $post))
 @section('robots', ($post->robots_index ?? true) && ! $post->is_adult ? 'index,follow' : 'noindex,follow')
-@if (filled($post->seo_keywords))
-    @section('seo_keywords', $post->seo_keywords)
-@endif
 @section('og_type', 'article')
 @if (filled($post->og_image))
     @section('seo_image', $post->og_image)
