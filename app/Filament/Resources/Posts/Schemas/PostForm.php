@@ -28,6 +28,16 @@ class PostForm
             Textarea::make('body')->label('Yazı')->required()->rows(14)->columnSpanFull(),
             TextInput::make('cover_image')->label('Kapak görseli adresi')->maxLength(2048)
                 ->placeholder('https://... veya assets/img/...')->columnSpanFull(),
+            \\Filament\\Schemas\\Components\\Section::make('Yazı SEO ayarları')
+                ->description('Bu yazının arama motorlarında ve sosyal medya paylaşımlarında nasıl görüneceğini belirleyin.')
+                ->schema([
+                    TextInput::make('seo_title')->label('SEO başlığı')->maxLength(255)->helperText('Boş bırakılırsa yazı başlığı kullanılır.'),
+                    Textarea::make('meta_description')->label('Meta açıklaması')->rows(3)->maxLength(500)->columnSpanFull(),
+                    TextInput::make('seo_keywords')->label('Anahtar kelimeler')->maxLength(2000)->columnSpanFull(),
+                    TextInput::make('canonical_url')->label('Canonical URL')->url()->maxLength(2048)->columnSpanFull(),
+                    TextInput::make('og_image')->label('Sosyal paylaşım görseli URL')->url()->maxLength(2048)->columnSpanFull(),
+                    Toggle::make('robots_index')->label('Arama motorlarında indekslensin')->default(true),
+                ])->columns(2),
             Select::make('tagRecords')->label('Etiketler')->relationship('tagRecords', 'name')
                 ->multiple()->searchable()->preload()->columnSpanFull()
                 ->createOptionForm([
