@@ -188,7 +188,7 @@
         <div class="ografi-pbx-actions">
             <a class="btn btn-primary btn-lg" href="{{ route('contacts', ['subject' => 'OgraFi Santral hizmeti', 'recipient' => 'partnerships']) }}">
                 <x-repost-icon name="message" size="18" />
-                {{ $santralSettings?->primary_button_text ?: 'Santral hizmeti için iletişime geç' }}
+                İletişime geç
             </a>
             @auth
                 <button class="btn btn-secondary btn-lg ografi-pbx-activation-trigger" type="button" data-santral-activation-open>
