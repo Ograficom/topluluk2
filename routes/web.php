@@ -86,8 +86,12 @@ Route::get('/rules', fn () => redirect()->route('pages.show', 'rules'));
 Route::get('/privacy', fn () => redirect()->route('pages.show', 'privacy'));
 Route::get('/contacts', [CommunityController::class, 'contacts'])->name('contacts');
 Route::get('/santral', function () {
+    $santralSettings = \Illuminate\Support\Facades\Schema::hasTable('santral_page_settings')
+        ? \App\Models\SantralPageSetting::query()->find(1)
+        : null;
+
     return view('pages.santral', [
-        'santralSettings' => \App\Models\SantralPageSetting::query()->find(1),
+        'santralSettings' => $santralSettings,
     ]);
 })->name('santral');
 Route::post('/contacts', [CommunityController::class, 'sendContact'])->middleware('throttle:5,1')->name('contacts.send');
