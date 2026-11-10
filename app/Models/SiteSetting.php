@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Services\SitemapService;
 use Illuminate\Database\Eloquent\Model;
 
 class SiteSetting extends Model
@@ -26,6 +27,11 @@ class SiteSetting extends Model
         'seo_default_title', 'seo_default_description', 'seo_default_keywords', 'seo_og_image', 'google_site_verification', 'home_seo_og_image',
         'home_seo_title', 'home_seo_description', 'home_seo_keywords', 'home_seo_index',
     ];
+
+    protected static function booted(): void
+    {
+        static::saved(fn () => app(SitemapService::class)->invalidate());
+    }
 
     protected function casts(): array
     {
