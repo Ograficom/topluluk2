@@ -91,3 +91,15 @@ jobs:
           set -euo pipefail
           PORT="${SSH_PORT:-22}"
           ssh -p "$PORT" "$SSH_USER@$SSH_HOST" "cd '$DEPLOY_PATH' && git pull --ff-only origin main && composer install --no-interaction --prefer-dist --no-dev --optimize-autoloader && php artisan migrate --force && php artisan optimize:clear && php artisan config:cache && php artisan route:cache && php artisan view:cache"
+
+      - name: Ensure Laravel scheduler runs every minute
+        env:
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_USER: ${{ secrets.SSH_USER }}
+          SSH_PORT: ${{ secrets.SSH_PORT }}
+          DEPLOY_PATH: ${{ secrets.DEPLOY_PATH }}
+        run: |
+          set -euo pipefail
+          PORT="${SSH_PORT:-22}"
+          REMOTE_CRON="* * * * * cd '$DEPLOY_PATH' && php artisan schedule:run >> /dev/null 2>&1"
+          ssh -p "$PORT" "$SSH_USER@$SSH_HOST" "(crontab -l 2>/dev/null | grep -Fv 'php artisan schedule:run' || true; printf '%s\\n' '$REMOTE_CRON') | crontab -"
