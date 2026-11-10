@@ -1,4 +1,4 @@
-@php($oauthSettings = \\App\\Models\\SiteSetting::current())
+@php($oauthSettings = \App\Models\SiteSetting::current())
 @if ($oauthSettings?->isGoogleLoginEnabled() || $oauthSettings?->isYandexLoginEnabled())
     @if ($oauthSettings?->isGoogleLoginEnabled())
         <a class="btn btn-secondary btn-lg btn-full" href="{{ route('oauth.redirect', ['provider' => 'google']) }}">
