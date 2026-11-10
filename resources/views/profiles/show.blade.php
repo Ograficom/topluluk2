@@ -3,7 +3,15 @@
 @section('title', $user->displayName())
 
 @push('head')
-    <link rel="stylesheet" href="{{ asset('assets/css/profile-theme.css') }}?v=20261110-profile-sponsored-card-fix">
+    <link rel="stylesheet" href="{{ asset('assets/css/profile-theme.css') }}?v=20261110-profile-sponsored-card-fix-mobile-footer">
+    <style>
+        /* Match the original Repost mobile profile layout: hide the aside footer below tablet width. */
+        @media screen and (max-width: 920px) {
+            .profile__aside-footer {
+                display: none !important;
+            }
+        }
+    </style>
 @endpush
 
 @section('content')
