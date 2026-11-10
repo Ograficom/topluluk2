@@ -35,9 +35,6 @@
         </div>
 
         <form wire:submit="save" class="grid gap-5">
-            <div id="seo-search-console" class="scroll-mt-24">
-                {{ $this->form->getComponent('google_site_verification') ?? '' }}
-            </div>
             {{ $this->form }}
 
             @php
