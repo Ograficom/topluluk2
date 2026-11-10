@@ -669,7 +669,7 @@ class ExternalRssReader
                     if (! $bodyNodes || $bodyNodes->length === 0) continue;
 
                     foreach ($bodyNodes as $bodyNode) {
-                        if (! $bodyNode instanceof \\DOMElement) continue;
+                        if (! $bodyNode instanceof \DOMElement) continue;
                         $paragraphNodes = $xpath->query('.//h1 | .//h2 | .//h3 | .//p', $bodyNode);
                         if (! $paragraphNodes) continue;
 
@@ -679,7 +679,7 @@ class ExternalRssReader
                             if ($text === '' || mb_strlen($text) < 35) continue;
 
                             $class = strtolower($paragraphNode->getAttribute('class'));
-                            $parentClass = strtolower($paragraphNode->parentNode instanceof \\DOMElement ? $paragraphNode->parentNode->getAttribute('class') : '');
+                            $parentClass = strtolower($paragraphNode->parentNode instanceof \DOMElement ? $paragraphNode->parentNode->getAttribute('class') : '');
                             if (preg_match('/advert|related|recommend|social|share|comment|newsletter|breadcrumb|author-box|tag-list/', $class.' '.$parentClass)) continue;
 
                             $parts[] = $text;
