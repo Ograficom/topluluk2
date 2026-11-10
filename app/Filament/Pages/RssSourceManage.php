@@ -1,22 +1,22 @@
 <?php
 
-namespace App\\Filament\\Pages;
+namespace App\Filament\Pages;
 
-use App\\Models\\RssSource;
-use App\\Services\\ExternalRssReader;
-use Filament\\Notifications\\Notification;
-use Filament\\Pages\\Page;
-use Filament\\Support\\Icons\\Heroicon;
-use Illuminate\\Support\\Facades\\Validator;
-use Illuminate\\Support\\Str;
+use App\Models\RssSource;
+use App\Services\ExternalRssReader;
+use Filament\Notifications\Notification;
+use Filament\Pages\Page;
+use Filament\Support\Icons\Heroicon;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 use Throwable;
 
 class RssSourceManage extends Page
 {
-    protected static string|\\UnitEnum|null $navigationGroup = 'Ayarlar';
+    protected static string|\UnitEnum|null $navigationGroup = 'Ayarlar';
     protected static ?string $navigationLabel = 'RSS kaynağı ayarları';
     protected static ?string $title = 'RSS kaynağı ayarları';
-    protected static string|\\BackedEnum|null $navigationIcon = Heroicon::OutlinedRss;
+    protected static string|\BackedEnum|null $navigationIcon = Heroicon::OutlinedRss;
     protected static ?string $slug = 'rss-sources/{record}/manage';
     protected static bool $shouldRegisterNavigation = false;
     protected string $view = 'filament.pages.rss-source-manage';
@@ -36,13 +36,13 @@ class RssSourceManage extends Page
 
     public function authors(): array
     {
-        return \\App\\Models\\User::query()->orderBy('name')->get()
+        return \App\Models\User::query()->orderBy('name')->get()
             ->mapWithKeys(fn ($user) => [$user->id => $user->displayName()])->all();
     }
 
     public function channels(): array
     {
-        return \\App\\Models\\Channel::query()->active()->orderBy('name')->pluck('name', 'id')->all();
+        return \App\Models\Channel::query()->active()->orderBy('name')->pluck('name', 'id')->all();
     }
 
     public function saveSettings(): void
