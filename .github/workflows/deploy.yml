@@ -29,6 +29,12 @@ jobs:
           set -euo pipefail
           find app bootstrap config database routes -type f -name '*.php' -print0 | xargs -0 -n1 php -l
 
+      - name: Install PHP dependencies and run automated tests
+        run: |
+          set -euo pipefail
+          composer install --no-interaction --prefer-dist
+          php artisan test
+
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
