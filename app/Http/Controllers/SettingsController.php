@@ -322,15 +322,30 @@ class SettingsController extends Controller
 
         $user = $request->user();
 
-        if ($user->avatar_path) {
-            Storage::disk('public')->delete($user->avatar_path);
+        if ($user->is_admin) {
+            return back()->withErrors([
+                'current_password' => 'Yönetici hesabı bu ekrandan kapatılamaz.',
+            ])->with('activeTab', 'delete');
         }
 
+        \Illuminate\Support\Facades\DB::transaction(function () use ($user): void {
+            \App\Models\AccountDeletionRequest::create([
+                'user_id' => $user->id,
+                'user_name' => $user->displayName(),
+                'username' => $user->username,
+                'email' => $user->email,
+                'status' => 'pending',
+                'requested_at' => now(),
+            ]);
+
+            // Hide the account immediately while preserving it for admin review.
+            $user->delete();
+        });
+
         Auth::logout();
-        $user->delete();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect()->route('posts.index');
+        return redirect()->route('posts.index')->with('status', 'Hesabınız kapatıldı. Kalıcı silme talebiniz yönetici incelemesine alındı.');
     }
 }

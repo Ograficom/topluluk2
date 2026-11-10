@@ -355,7 +355,7 @@
                             @csrf
                             @method('DELETE')
                             <input type="hidden" name="activeTab" value="delete">
-                            <p>Hesabınız ve yorumlarınız kalıcı olarak silinir. Bu işlem geri alınamaz.</p>
+                            <p>Hesabınız hemen kapatılır ve profiliniz gizlenir. Kalıcı silme talebiniz yönetici tarafından incelenir; onaylandığında hesabınız ve ilişkili kayıtlarınız silinir.</p>
                             <input type="password" name="current_password" placeholder="Şifrenizi doğrulayın" autocomplete="current-password" required>
                             <div><button class="btn btn-red" type="submit">Hesabı sil</button></div>
                         </form>

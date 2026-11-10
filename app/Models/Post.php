@@ -32,7 +32,7 @@ class Post extends Model
         ];
     }
 
-    public function user(): BelongsTo { return $this->belongsTo(User::class); }
+    public function user(): BelongsTo { return $this->belongsTo(User::class)->withTrashed(); }
     public function channel(): BelongsTo { return $this->belongsTo(Channel::class); }
     public function advertisement(): BelongsTo { return $this->belongsTo(Advertisement::class); }
     public function comments(): HasMany { return $this->hasMany(Comment::class)->latest(); }

@@ -6,7 +6,6 @@ use App\Models\User;
 use Filament\Actions\Action;
 use Filament\Actions\BulkAction;
 use Filament\Actions\BulkActionGroup;
-use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Notifications\Notification;
 use Filament\Tables\Columns\IconColumn;
@@ -136,7 +135,6 @@ class UsersTable
                                 ->success()
                                 ->send();
                         }),
-                    DeleteBulkAction::make(),
                 ]),
             ]);
     }
