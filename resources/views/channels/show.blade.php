@@ -29,8 +29,6 @@
     </script>
 @endpush
 
-@section('title', $channel->name)
-
 @section('content')
 
     @php($channelTags = $posts->getCollection()->flatMap(fn ($post) => $post->tags ?? [])->filter(fn ($tag) => is_string($tag) && trim($tag) !== '')->unique()->take(18))
