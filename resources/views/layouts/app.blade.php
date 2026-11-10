@@ -30,6 +30,27 @@
         }
     @endphp
     <meta name="description" content="{{ $seoDescription }}">
+    <meta property="og:image:alt" content="{{ $seoTitle }} — {{ $brandName }}">
+    @if (filled($seoSettings?->google_site_verification))
+        <meta name="google-site-verification" content="{{ $seoSettings->google_site_verification }}">
+    @endif
+    <script type="application/ld+json">
+        {!! json_encode([
+            '@context' => 'https://schema.org',
+            '@type' => 'Organization',
+            'name' => $brandName,
+            'url' => url('/'),
+            'logo' => [
+                '@type' => 'ImageObject',
+                'url' => $brandLogoUrl ? url($brandLogoUrl) : asset('assets/img/meta/logo.svg'),
+            ],
+            'sameAs' => array_values(array_filter([
+                $seoSettings?->instagram_url,
+                $seoSettings?->telegram_url,
+                $seoSettings?->threads_url,
+            ])),
+        ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_HEX_TAG | JSON_HEX_AMP) !!}
+    </script>
     @if (filled($seoSettings?->google_site_verification))
         <meta name="google-site-verification" content="{{ $seoSettings->google_site_verification }}">
     @endif
