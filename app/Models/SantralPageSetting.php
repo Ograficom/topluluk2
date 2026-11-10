@@ -15,7 +15,8 @@ class SantralPageSetting extends Model
         return [
             'features' => 'array',
             'steps' => 'array',
-            'slides' => 'array',\n            'packages' => 'array',
+            'slides' => 'array',
+            'packages' => 'array',
         ];
     }
 
