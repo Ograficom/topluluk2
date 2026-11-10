@@ -282,7 +282,7 @@ class CommunityController extends Controller
             'name' => [$request->user() ? 'nullable' : 'required', 'string', 'max:35'],
             'email' => [$request->user() ? 'nullable' : 'required', 'email', 'max:254'],
             'subject' => ['required', 'string', 'max:45'],
-            'recipient' => ['required', 'in:support,editorial,partnerships,bug,suggestion'],
+            'recipient' => ['required', 'in:support,editorial,marketing,partnerships,bug,suggestion'],
             'message' => ['required', 'string', 'max:10000'],
             'attachments' => ['nullable', 'array', 'max:5'],
             'attachments.*' => ['file', 'max:2048', 'mimes:jpg,jpeg,png,pdf,txt,doc,docx'],
@@ -291,6 +291,7 @@ class CommunityController extends Controller
         $departments = [
             'support' => 'Teknik destek',
             'editorial' => 'Editör ekibi',
+            'marketing' => 'Pazarlama',
             'partnerships' => 'İş birlikleri',
             'bug' => 'Hata bildirimi',
             'suggestion' => 'Görüş ve öneri',
