@@ -79,6 +79,7 @@ class AppServiceProvider extends ServiceProvider
                 'brandLogoUrl' => $siteSettings?->brandLogoUrl(),
                 'faviconUrl' => $siteSettings?->faviconUrl(),
                 'faviconMimeType' => $siteSettings?->faviconMimeType(),
+                'seoSettings' => $siteSettings,
                 'navigationChannels' => Channel::query()->active()->orderBy('name')->limit(8)->get(),
                 'sidebarAuthors' => User::query()
                     ->whereNotNull('username')
