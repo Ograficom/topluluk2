@@ -50,9 +50,9 @@
     <link rel="stylesheet" href="{{ asset('assets/libs/fancyapp/fancybox.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/libs/fancyapp/carousel.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/kit.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/css/app.css') }}?v=20261108-detailed-post-composer">
-    <link rel="stylesheet" href="{{ asset('assets/css/engine.css') }}?v=20261106-social-account-management">
-    <link rel="stylesheet" href="{{ asset('assets/css/ografi-overrides.css') }}?v=20261110-santral-carousel-layout">
+    <link rel="stylesheet" href="{{ asset('assets/css/app.css') }}?v=20261110-santral-eyebrow-top-right">
+    <link rel="stylesheet" href="{{ asset('assets/css/engine.css') }}?v=20261110-santral-eyebrow-top-right">
+    <link rel="stylesheet" href="{{ asset('assets/css/ografi-overrides.css') }}?v=20261110-santral-eyebrow-top-right">
     <script>
         (() => {
             const root = document.documentElement;
@@ -496,7 +496,7 @@
     <script src="{{ asset('assets/libs/fancyapp/fancybox.umd.js') }}"></script>
     <script src="{{ asset('assets/libs/fancyapp/carousel.umd.js') }}"></script>
     <script src="{{ asset('assets/libs/sharer/sharer.min.js') }}"></script>
-    <script src="{{ asset('assets/js/app.js') }}?v=20261108-share-menu"></script>
+    <script src="{{ asset('assets/js/app.js') }}?v=20261110-santral-eyebrow-top-right"></script>
     <script src="{{ asset('assets/js/init.js') }}"></script>
     @guest
     <script>
