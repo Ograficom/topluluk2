@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\RssItem;
+use App\Models\Post;
 use App\Models\RssSource;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Http;
@@ -70,13 +71,18 @@ class ExternalRssReader
                     continue;
                 }
 
-                RssItem::query()->updateOrCreate(
-                    [
-                        'rss_source_id' => $source->id,
-                        'guid_hash' => hash('sha256', $item['guid']),
-                    ],
-                    $item,
-                );
+                $rssItem = RssItem::query()->firstOrNew([
+                    'rss_source_id' => $source->id,
+                    'guid_hash' => hash('sha256', $item['guid']),
+                ]);
+                $isNewItem = ! $rssItem->exists;
+                $rssItem->fill($item);
+                $rssItem->save();
+
+                if ($isNewItem && $source->auto_publish && $source->author_id && $source->channel_id) {
+                    $this->publishItem($source, $rssItem);
+                }
+
                 $saved++;
             }
 
@@ -116,6 +122,53 @@ class ExternalRssReader
         return $result;
     }
 
+
+
+    private function publishItem(RssSource $source, RssItem $item): void
+    {
+        if ($item->published_post_id || ! $source->auto_publish || ! $source->author_id || ! $source->channel_id) {
+            return;
+        }
+
+        $title = Str::limit(trim($item->title), 255, '');
+        if ($title === '') return;
+
+        $summary = trim((string) $item->summary);
+        $excerpt = Str::limit($summary !== '' ? $summary : $title, 500, '');
+        $slugBase = Str::limit(Str::slug($title) ?: 'rss-haberi', 220, '');
+        $slug = $slugBase;
+        for ($suffix = 1; Post::query()->where('slug', $slug)->exists(); $suffix++) {
+            $slug = Str::limit($slugBase, 220 - strlen((string) $suffix), '').'-'.$suffix;
+        }
+
+        $blocks = [];
+        if ($summary !== '') {
+            $blocks[] = ['id' => Str::random(10), 'type' => 'paragraph', 'data' => ['text' => $summary]];
+        }
+        $blocks[] = [
+            'id' => Str::random(10),
+            'type' => 'paragraph',
+            'data' => ['text' => 'Bu içerik RSS kaynağından alınmıştır. Kaynak: '.$item->link],
+        ];
+
+        $post = Post::query()->create([
+            'user_id' => $source->author_id,
+            'channel_id' => $source->channel_id,
+            'title' => $title,
+            'slug' => $slug,
+            'excerpt' => $excerpt,
+            'meta_description' => Str::limit($excerpt, 300, ''),
+            'body' => json_encode(['time' => now()->valueOf(), 'blocks' => $blocks, 'version' => '2.30.0'], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES),
+            'cover_image' => $item->image_url,
+            'media' => [],
+            'tags' => [],
+            'is_published' => true,
+            'published_at' => now(),
+            'is_adult' => false,
+        ]);
+
+        $item->forceFill(['published_post_id' => $post->id])->save();
+    }
 
     private function requestFeed(string $url)
     {
