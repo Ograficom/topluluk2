@@ -1,6 +1,14 @@
 @extends('layouts.app')
 
-@section('title', filled($search) ? 'Arama sonuçları' : 'Akış')
+@section('title', filled($search) ? 'Arama sonuçları' : ($seoSettings?->home_seo_title ?: 'OgraFi Forum'))
+@section('description', filled($search)
+    ? 'OgraFi üzerinde aradığınız konularla ilgili topluluk yazılarını keşfedin.'
+    : ($seoSettings?->home_seo_description ?: 'OgraFi forumunda teknoloji, gündem, yaşam ve ilgi alanlarında konuları keşfedin; fikirlerinizi paylaşın, topluluğa katılın.'))
+@section('canonical', route('posts.index'))
+@section('robots', filled($search) || filled($sort) || filled($period) || !($seoSettings?->home_seo_index ?? true) ? 'noindex,follow' : 'index,follow')
+@if (filled($seoSettings?->home_seo_keywords))
+    @section('seo_keywords', $seoSettings->home_seo_keywords)
+@endif
 
 @section('content')
     <section aria-label="Akış ayarları">
