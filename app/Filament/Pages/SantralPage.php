@@ -79,6 +79,7 @@ class SantralPage extends Page
                 Tabs::make('Santral içerik düzenleyici')
                     ->tabs([
                         Tab::make('Genel görünüm')
+                            ->icon(Heroicon::OutlinedHome)
                             ->schema([
                                 Section::make('Üst alan ve butonlar')
                     ->description('Santral sayfasının ilk görünen bölümünü ve aktivasyon penceresini yönetin.')
@@ -92,6 +93,7 @@ class SantralPage extends Page
                     ])->columns(2)
                             ]),
                         Tab::make('SEO ve görsel')
+                            ->icon(Heroicon::OutlinedMagnifyingGlass)
                             ->schema([
                                 Section::make('SEO ve öne çıkan görsel')
                     ->description('Google arama sonucu, sosyal medya paylaşımı ve sayfanın öne çıkan görselini buradan yönetin.')
@@ -103,6 +105,7 @@ class SantralPage extends Page
                     ])->columns(2)
                             ]),
                         Tab::make('Slaytlar')
+                            ->icon(Heroicon::OutlinedPhoto)
                             ->schema([
                                 Section::make('Sayfa slaytları')
                     ->description('Görsel, başlık ve açıklama ekleyin. Slaytlar santral sayfasında otomatik kayan bir alanda gösterilir.')
@@ -121,6 +124,7 @@ class SantralPage extends Page
                     ])
                             ]),
                         Tab::make('Hizmetler ve adımlar')
+                            ->icon(Heroicon::OutlinedWrenchScrewdriver)
                             ->schema([
                                 Section::make('Hizmet alanı')
                     ->schema([
@@ -158,6 +162,7 @@ class SantralPage extends Page
                     ])
                             ]),
                         Tab::make('Paketler ve alt alan')
+                            ->icon(Heroicon::OutlinedRectangleStack)
                             ->schema([
                                 Section::make('Fiyatlandırma paketleri')
                     ->description('Üç santral paketinin adını, aylık ücretini ve özelliklerini buradan yönetin. Fiyatı 0 bırakırsanız sayfada Teklif alın gösterilir.')
