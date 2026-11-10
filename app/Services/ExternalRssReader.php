@@ -445,6 +445,22 @@ class ExternalRssReader
             ->values()
             ->all();
 
+        // Many publishers expose only a headline in RSS. Enrich missing image,
+        // description and tags from the publicly accessible article metadata.
+        // Do not copy the full copyrighted article body into OgraFi.
+        if ($imageUrls === [] || $tags === [] || $this->plainText($content) === $this->plainText($title)) {
+            $articleMetadata = $this->fetchArticleMetadata($link);
+            if ($articleMetadata !== []) {
+                $imageUrls = array_values(array_unique(array_merge($imageUrls, $articleMetadata['images'] ?? [])));
+                $imageUrls = array_slice($imageUrls, 0, 10);
+                $image = $image ?: ($imageUrls[0] ?? '');
+                $tags = array_values(array_unique(array_slice(array_merge($tags, $articleMetadata['tags'] ?? []), 0, 20)));
+                if ($this->plainText($content) === '' || $this->plainText($content) === $this->plainText($title)) {
+                    $content = $articleMetadata['description'] ?? $content;
+                }
+            }
+        }
+
         $date = trim((string) ($entry->pubDate ?? $entry->published ?? $entry->updated ?? $atom->published ?? $atom->updated ?? ''));
         try {
             $publishedAt = $date !== '' ? Carbon::parse($date) : null;
@@ -463,6 +479,90 @@ class ExternalRssReader
             'tags' => $tags,
             'published_at' => $publishedAt,
         ];
+    }
+
+    private function fetchArticleMetadata(string $articleUrl): array
+    {
+        try {
+            $response = $this->requestFeed($articleUrl);
+            if (! $response || ! $response->successful()) return [];
+
+            $html = $response->body();
+            if ($html === '' || strlen($html) > 5_000_000) return [];
+
+            $previous = libxml_use_internal_errors(true);
+            try {
+                $document = new \DOMDocument();
+                $document->loadHTML('<?xml encoding="UTF-8">'.$html, LIBXML_NONET | LIBXML_NOWARNING | LIBXML_NOERROR);
+                $xpath = new \DOMXPath($document);
+                $meta = function (string $property) use ($xpath): string {
+                    $nodes = $xpath->query('//meta[@property="'.$property.'" or @name="'.$property.'"]/@content');
+                    return $nodes && $nodes->length ? trim((string) $nodes->item(0)->nodeValue) : '';
+                };
+
+                $images = [];
+                foreach (['og:image', 'og:image:secure_url', 'twitter:image', 'twitter:image:src'] as $key) {
+                    $value = $meta($key);
+                    if ($value !== '') {
+                        $resolved = $this->resolveUrl($value, $articleUrl);
+                        if ($resolved) $images[] = $resolved;
+                    }
+                }
+
+                $tags = [];
+                foreach (['keywords', 'news_keywords', 'article:tag', 'article:section'] as $key) {
+                    $value = $meta($key);
+                    if ($value !== '') {
+                        foreach (preg_split('/[,;|]/u', $value, -1, PREG_SPLIT_NO_EMPTY) ?: [] as $tag) {
+                            $tags[] = trim($tag);
+                        }
+                    }
+                }
+
+                $description = $meta('og:description') ?: $meta('description') ?: $meta('twitter:description');
+
+                // Structured article metadata often contains better keywords and a concise description.
+                $jsonLdNodes = $xpath->query('//script[@type="application/ld+json"]');
+                if ($jsonLdNodes) {
+                    foreach ($jsonLdNodes as $node) {
+                        $data = json_decode((string) $node->textContent, true);
+                        foreach (is_array($data) && array_is_list($data) ? $data : [$data] as $structured) {
+                            if (! is_array($structured)) continue;
+                            if (isset($structured['@graph']) && is_array($structured['@graph'])) {
+                                foreach ($structured['@graph'] as $graphItem) {
+                                    if (! is_array($graphItem)) continue;
+                                    $tags = array_merge($tags, (array) ($graphItem['keywords'] ?? []));
+                                    $description = $description ?: (string) ($graphItem['description'] ?? '');
+                                }
+                            }
+                            $tags = array_merge($tags, (array) ($structured['keywords'] ?? []), (array) ($structured['articleSection'] ?? []));
+                            $description = $description ?: (string) ($structured['description'] ?? '');
+                        }
+                    }
+                }
+
+                $tags = collect($tags)
+                    ->filter(fn ($tag) => is_string($tag) && trim($tag) !== '')
+                    ->map(fn ($tag) => mb_substr(trim(ltrim($tag, '#')), 0, 100))
+                    ->unique(fn ($tag) => mb_strtolower($tag))
+                    ->take(20)
+                    ->values()
+                    ->all();
+
+                return [
+                    'images' => array_values(array_unique($images)),
+                    'tags' => $tags,
+                    'description' => Str::limit($this->plainText($description), 12000, ''),
+                ];
+            } finally {
+                libxml_clear_errors();
+                libxml_use_internal_errors($previous);
+            }
+        } catch (Throwable) {
+            // Metadata enrichment is optional; a publisher blocking page requests
+            // must not prevent the RSS headline itself from being imported.
+            return [];
+        }
     }
 
     private function channelValue(SimpleXMLElement $xml, string $key): string
