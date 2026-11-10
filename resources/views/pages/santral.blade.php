@@ -244,22 +244,23 @@
 
     // Move the dock out of layout/transform ancestors, then align it to the feed column.
     const actionDock = document.querySelector('.ografi-pbx-fixed-actions');
-    const feedColumn = document.querySelector('.main > .feed');
-    if (actionDock && feedColumn) {
+    const pageCard = document.querySelector('.ografi-pbx-page');
+    if (actionDock && pageCard) {
         document.body.appendChild(actionDock);
         const alignActionDock = () => {
-            const rect = feedColumn.getBoundingClientRect();
+            const rect = pageCard.getBoundingClientRect();
             actionDock.style.setProperty('position', 'fixed', 'important');
             actionDock.style.setProperty('left', `${Math.round(rect.left)}px`, 'important');
             actionDock.style.setProperty('right', 'auto', 'important');
             actionDock.style.setProperty('width', `${Math.round(rect.width)}px`, 'important');
             actionDock.style.setProperty('max-width', 'none', 'important');
             actionDock.style.setProperty('transform', 'none', 'important');
+            actionDock.style.setProperty('box-sizing', 'border-box', 'important');
         };
         alignActionDock();
         window.addEventListener('resize', alignActionDock, { passive: true });
         window.addEventListener('scroll', alignActionDock, { passive: true });
-        if ('ResizeObserver' in window) new ResizeObserver(alignActionDock).observe(feedColumn);
+        if ('ResizeObserver' in window) new ResizeObserver(alignActionDock).observe(pageCard);
         requestAnimationFrame(alignActionDock);
     }
 
