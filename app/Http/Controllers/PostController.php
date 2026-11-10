@@ -7,6 +7,7 @@ use App\Models\Channel;
 use App\Models\Comment;
 use App\Models\Post;
 use App\Models\PostReaction;
+use App\Models\RssItem;
 use App\Models\Tag;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\Relation;
@@ -218,6 +219,10 @@ class PostController extends Controller
 
         $post->increment('views');
         $post->load(['user', 'channel', 'tagRecords']);
+        $rssItem = RssItem::query()
+            ->with('source:id,name')
+            ->where('published_post_id', $post->id)
+            ->first();
         $replyTo = null;
         if ($request->filled('reply_to')) {
             $replyTo = Comment::query()->where('post_id', $post->id)->whereNull('parent_id')->find($request->query('reply_to'));
@@ -240,7 +245,7 @@ class PostController extends Controller
         ]);
         if ($request->user()) $post->load(['reactions' => fn (Relation $query) => $query->where('user_id', $request->user()->id)]);
 
-        return view('posts.show', compact('post', 'replyTo'));
+        return view('posts.show', compact('post', 'replyTo', 'rssItem'));
     }
 
     private function parseTags(string $input): array
