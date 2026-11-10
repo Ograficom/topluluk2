@@ -12,6 +12,8 @@ use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
 use Filament\Schemas\Components\Section;
+use Filament\Schemas\Components\Tabs;
+use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 
@@ -74,7 +76,11 @@ class SantralPage extends Page
     {
         return $schema
             ->components([
-                Section::make('Üst alan ve butonlar')
+                Tabs::make('Santral içerik düzenleyici')
+                    ->tabs([
+                        Tab::make('Genel görünüm')
+                            ->schema([
+                                Section::make('Üst alan ve butonlar')
                     ->description('Santral sayfasının ilk görünen bölümünü ve aktivasyon penceresini yönetin.')
                     ->schema([
                         TextInput::make('eyebrow')->label('Üst küçük başlık')->required()->maxLength(100),
@@ -83,32 +89,47 @@ class SantralPage extends Page
                         TextInput::make('primary_button_text')->label('İletişim butonu')->required()->maxLength(100),
                         TextInput::make('activation_button_text')->label('Entegrasyon butonu')->required()->maxLength(100),
                         Textarea::make('hero_note')->label('Buton altı kısa not')->rows(2)->columnSpanFull(),
-                    ])->columns(2),
-                Section::make('SEO ve öne çıkan görsel')
+                    ])->columns(2)
+                            ]),
+                        Tab::make('SEO ve görsel')
+                            ->schema([
+                                Section::make('SEO ve öne çıkan görsel')
                     ->description('Google arama sonucu, sosyal medya paylaşımı ve sayfanın öne çıkan görselini buradan yönetin.')
                     ->schema([
                         TextInput::make('seo_title')->label('SEO başlığı')->maxLength(180)->helperText('Önerilen uzunluk: 50–60 karakter. Boş bırakılırsa ana başlık kullanılır.')->columnSpanFull(),
                         Textarea::make('seo_description')->label('Meta açıklaması')->rows(3)->maxLength(320)->helperText('Önerilen uzunluk: 140–160 karakter. Sayfanın hizmetini ve faydasını net anlatın.')->columnSpanFull(),
                         TagsInput::make('seo_tags')->label('SEO etiketleri / anahtar kelimeler')->placeholder('Bulut santral, Asterisk, IVR...')->separator(',')->columnSpanFull(),
                         FileUpload::make('featured_image')->label('Öne çıkan görsel (Open Graph)')->image()->disk('public')->directory('santral/seo')->visibility('public')->imageEditor()->helperText('Google ve sosyal medya paylaşımlarında kullanılır. 1200 × 630 px görsel tercih edin.')->columnSpanFull(),
-                    ])->columns(2),
-                Section::make('Sayfa slaytları')
+                    ])->columns(2)
+                            ]),
+                        Tab::make('Slaytlar')
+                            ->schema([
+                                Section::make('Sayfa slaytları')
                     ->description('Görsel, başlık ve açıklama ekleyin. Slaytlar santral sayfasında otomatik kayan bir alanda gösterilir.')
                     ->schema([
                         Repeater::make('slides')
                             ->label('Slaytlar')
+                            ->addActionLabel('Yeni slayt ekle')
+                            ->itemLabel(fn (array $state): ?string => $state['title'] ?? 'Yeni slayt')
+                            ->cloneable()
                             ->schema([
                                 FileUpload::make('image')->label('Slayt görseli')->image()->disk('public')->directory('santral/slides')->visibility('public')->imageEditor()->required(),
                                 TextInput::make('title')->label('Slayt başlığı')->maxLength(160)->required(),
                                 Textarea::make('description')->label('Slayt açıklaması')->rows(2),
                                 TextInput::make('link')->label('İsteğe bağlı bağlantı')->url()->maxLength(2048),
                             ])->columns(2)->defaultItems(0)->reorderable()->collapsible()->columnSpanFull(),
-                    ]),
-                Section::make('Hizmet alanı')
+                    ])
+                            ]),
+                        Tab::make('Hizmetler ve adımlar')
+                            ->schema([
+                                Section::make('Hizmet alanı')
                     ->schema([
                         TextInput::make('features_title')->label('Bölüm başlığı')->required()->maxLength(160),
                         Repeater::make('features')
                             ->label('Hizmet kartları')
+                            ->addActionLabel('Yeni hizmet ekle')
+                            ->itemLabel(fn (array $state): ?string => $state['title'] ?? 'Yeni hizmet')
+                            ->cloneable()
                             ->schema([
                                 Select::make('icon')->label('İkon')->options([
                                     'channels' => 'Bulut santral',
@@ -122,12 +143,28 @@ class SantralPage extends Page
                                 Textarea::make('description')->label('Açıklama')->rows(3)->required(),
                             ])->columns(2)->defaultItems(0)->reorderable()->collapsible()->columnSpanFull(),
                     ]),
-                Section::make('Fiyatlandırma paketleri')
+                                Section::make('Nasıl çalışır?')
+                    ->schema([
+                        TextInput::make('steps_title')->label('Bölüm başlığı')->required()->maxLength(160),
+                        Repeater::make('steps')
+                            ->label('Adımlar')
+                            ->addActionLabel('Yeni adım ekle')
+                            ->itemLabel(fn (array $state): ?string => $state['title'] ?? 'Yeni adım')
+                            ->cloneable()
+                            ->schema([
+                                TextInput::make('title')->label('Adım başlığı')->required()->maxLength(120),
+                                Textarea::make('description')->label('Açıklama')->rows(2)->required(),
+                            ])->columns(2)->defaultItems(0)->reorderable()->collapsible()->columnSpanFull(),
+                    ])
+                            ]),
+                        Tab::make('Paketler ve alt alan')
+                            ->schema([
+                                Section::make('Fiyatlandırma paketleri')
                     ->description('Üç santral paketinin adını, aylık ücretini ve özelliklerini buradan yönetin. Fiyatı 0 bırakırsanız sayfada Teklif alın gösterilir.')
                     ->schema([
                         TextInput::make('packages_title')->label('Paket alanı başlığı')->required()->maxLength(180),
                         Textarea::make('packages_description')->label('Paket alanı açıklaması')->rows(2)->columnSpanFull(),
-                        Repeater::make('packages')->label('Santral paketleri')->minItems(3)->maxItems(3)->schema([
+                        Repeater::make('packages')->label('Santral paketleri')->minItems(3)->maxItems(3)->addActionLabel('Paket ekle')->itemLabel(fn (array $state): ?string => $state['name'] ?? 'Yeni paket')->collapsible()->schema([
                             Select::make('icon')->label('Paket ikonu')->options([
                                 'channels' => 'Santral',
                                 'bolt' => 'Performans',
@@ -143,22 +180,15 @@ class SantralPage extends Page
                             \Filament\Forms\Components\Toggle::make('featured')->label('Öne çıkarılan paket'),
                         ])->columns(2)->defaultItems(3)->reorderable(false)->collapsible()->columnSpanFull(),
                     ]),
-                Section::make('Nasıl çalışır?')
-                    ->schema([
-                        TextInput::make('steps_title')->label('Bölüm başlığı')->required()->maxLength(160),
-                        Repeater::make('steps')
-                            ->label('Adımlar')
-                            ->schema([
-                                TextInput::make('title')->label('Adım başlığı')->required()->maxLength(120),
-                                Textarea::make('description')->label('Açıklama')->rows(2)->required(),
-                            ])->columns(2)->defaultItems(0)->reorderable()->collapsible()->columnSpanFull(),
-                    ]),
-                Section::make('Alt çağrı alanı')
+                                Section::make('Alt çağrı alanı')
                     ->schema([
                         TextInput::make('bottom_title')->label('Başlık')->required()->maxLength(180),
                         Textarea::make('bottom_description')->label('Açıklama')->rows(3)->columnSpanFull(),
-                    ])->columns(2),
-            ])
+                    ])->columns(2)
+                            ]),
+                    ])
+                    ->contained(false)
+                    ->columnSpanFull(),            ])
             ->statePath('data');
     }
 
