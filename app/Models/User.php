@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Services\SitemapService;
 use Database\Factories\UserFactory;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
@@ -23,7 +24,8 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
         'threads', 'youtube', 'timezone', 'show_adult_content', 'notify_replies',
         'notify_posts', 'notify_announcements', 'is_verified', 'verification_status',
         'verification_reason', 'verification_requested_at', 'two_factor_secret',
-        'two_factor_recovery_codes',
+        'two_factor_recovery_codes', 'profile_seo_title', 'profile_seo_description', 'profile_seo_keywords',
+        'profile_canonical_url', 'profile_robots_index', 'profile_og_image',
     ];
 
     protected $hidden = [
@@ -48,6 +50,7 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
             'two_factor_secret' => 'encrypted',
             'two_factor_recovery_codes' => 'encrypted:array',
             'two_factor_confirmed_at' => 'datetime',
+            'profile_robots_index' => 'boolean',
         ];
     }
 
@@ -61,6 +64,9 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
         static::saving(function (User $user): void {
             $user->is_verified = $user->verification_status === 'approved';
         });
+
+        static::saved(fn () => app(SitemapService::class)->invalidate());
+        static::deleted(fn () => app(SitemapService::class)->invalidate());
     }
 
     public function socialAccounts(): HasMany { return $this->hasMany(SocialAccount::class); }

@@ -6,7 +6,10 @@ use App\Models\Channel;
 use App\Models\Post;
 use App\Models\SitePage;
 use App\Models\SitemapSetting;
+use App\Models\SeoPageSetting;
+use App\Models\SiteSetting;
 use App\Models\Tag;
+use App\Models\User;
 use Illuminate\Support\Facades\Cache;
 
 class SitemapService
@@ -47,6 +50,8 @@ class SitemapService
         $baseUrl = rtrim($settings->base_url ?: config('app.url'), '/');
         $included = $settings->include ?? [];
         $urls = [];
+        $routeSeo = SeoPageSetting::query()->get()->keyBy('route_name');
+        $siteSeo = SiteSetting::current();
 
         $add = function (string $path, $lastModified = null) use (&$urls, $baseUrl): void {
             $path = '/'.ltrim($path, '/');
@@ -57,17 +62,43 @@ class SitemapService
         };
 
         if (in_array('pages', $included, true)) {
-            $add('/');
-            $add('/channels');
-            $add('/tags');
-            $add('/contacts');
-            SitePage::query()->published()->orderBy('id')->limit(50000)->get()
+            $staticPages = [
+                ['route' => 'posts.index', 'path' => '/', 'enabled' => $siteSeo->home_seo_index ?? true],
+                ['route' => 'channels.index', 'path' => '/channels'],
+                ['route' => 'tags.index', 'path' => '/tags'],
+                ['route' => 'members.index', 'path' => '/members'],
+                ['route' => 'posts.latest', 'path' => '/last-posts'],
+                ['route' => 'comments.latest', 'path' => '/last-comments'],
+                ['route' => 'contacts', 'path' => '/contacts'],
+                ['route' => 'stats.index', 'path' => '/stats.html'],
+            ];
+
+            foreach ($staticPages as $page) {
+                $routeSetting = $routeSeo->get($page['route']);
+                if (($page['enabled'] ?? true) && ($routeSetting?->robots_index ?? true)) {
+                    $add($page['path']);
+                }
+            }
+
+            SitePage::query()->published()
+                ->where(fn ($query) => $query->whereNull('robots_index')->orWhere('robots_index', true))
+                ->orderBy('id')->limit(50000)->get()
                 ->each(fn (SitePage $page) => $add('/page/'.rawurlencode($page->slug), $page->updated_at));
+
+            User::query()
+                ->whereNotNull('username')
+                ->where('username', '<>', '')
+                ->where(fn ($query) => $query->whereNull('profile_robots_index')->orWhere('profile_robots_index', true))
+                ->orderBy('id')
+                ->limit(50000)
+                ->get(['username', 'updated_at'])
+                ->each(fn (User $user) => $add('/@'.$user->username, $user->updated_at));
         }
 
         if (in_array('posts', $included, true)) {
             Post::query()->published()
                 ->where('is_adult', false)
+                ->where(fn ($query) => $query->whereNull('robots_index')->orWhere('robots_index', true))
                 ->whereNotNull('slug')
                 ->orderByDesc('updated_at')
                 ->limit(50000)
@@ -77,6 +108,7 @@ class SitemapService
 
         if (in_array('channels', $included, true)) {
             Channel::query()->active()
+                ->where(fn ($query) => $query->whereNull('robots_index')->orWhere('robots_index', true))
                 ->whereNotNull('slug')
                 ->orderBy('id')
                 ->limit(50000)
@@ -84,7 +116,7 @@ class SitemapService
                 ->each(fn (Channel $channel) => $add('/channels/'.rawurlencode($channel->slug), $channel->updated_at));
         }
 
-        if (in_array('tags', $included, true)) {
+        if (in_array('tags', $included, true) && ($routeSeo->get('tags.show')?->robots_index ?? true)) {
             Tag::query()->whereHas('posts', fn ($query) => $query->published()->where('is_adult', false))
                 ->whereNotNull('slug')
                 ->orderBy('id')

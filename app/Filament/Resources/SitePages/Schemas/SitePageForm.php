@@ -40,29 +40,26 @@ class SitePageForm
                     'undo', 'redo',
                 ]),
             TextInput::make('meta_title')
-                ->label('SEO başlığı')
+                ->label('Google sonuç başlığı')
+                ->helperText('Site adı otomatik olarak sona eklenir; tekrar yazmayın.')
                 ->maxLength(255),
             Textarea::make('meta_description')
-                ->label('SEO açıklaması')
+                ->label('Google sonuç açıklaması')
                 ->rows(3)
                 ->maxLength(500)
-                ->columnSpanFull(),
-            TextInput::make('meta_keywords')
-                ->label('SEO anahtar kelimeleri')
-                ->maxLength(2000)
-                ->helperText('Virgülle ayırın. Google bu alanı doğrudan sıralama faktörü olarak kullanmaz.')
+                ->helperText('Sayfanın içeriğini doğru ve özgün biçimde özetleyin.')
                 ->columnSpanFull(),
             TextInput::make('canonical_url')
                 ->label('Canonical URL')
                 ->url()
                 ->maxLength(2048)
-                ->helperText('Boş bırakılırsa sayfanın kendi adresi kullanılır.')
+                ->helperText('Yalnızca aynı içeriğin farklı URL’leri varsa tercih edilen asıl adresi girin. Aksi halde boş bırakın.')
                 ->columnSpanFull(),
             TextInput::make('og_image')
                 ->label('Sosyal paylaşım görseli URL')
                 ->url()
                 ->maxLength(2048)
-                ->helperText('Boş bırakılırsa site genelindeki varsayılan görsel kullanılır.')
+                ->helperText('Sosyal paylaşım kartı içindir; Google başlık/açıklama alanı değildir. 1200 × 630 px önerilir. Boşsa genel görsel kullanılır.')
                 ->columnSpanFull(),
             Toggle::make('robots_index')
                 ->label('Arama motorlarında indekslensin')

@@ -1,10 +1,13 @@
 @extends('layouts.app')
 
-@section('title', filled($search) ? 'Arama sonuçları' : ($seoSettings?->home_seo_title ?: 'OgraFi Forum'))
+@section('title', filled($search) ? 'Arama sonuçları' : ($seoSettings?->home_seo_title ?: ($seoSettings?->seo_default_title ?: 'OgraFi Forum')))
 @section('description', filled($search)
     ? 'OgraFi üzerinde aradığınız konularla ilgili topluluk yazılarını keşfedin.'
-    : ($seoSettings?->home_seo_description ?: 'OgraFi forumunda teknoloji, gündem, yaşam ve ilgi alanlarında konuları keşfedin; fikirlerinizi paylaşın, topluluğa katılın.'))
+    : ($seoSettings?->home_seo_description ?: ($seoSettings?->seo_default_description ?: 'OgraFi forumunda teknoloji, gündem, yaşam ve ilgi alanlarında konuları keşfedin; fikirlerinizi paylaşın, topluluğa katılın.')))
 @section('canonical', route('posts.index'))
+@if (filled($seoSettings?->home_seo_og_image))
+    @section('seo_image', $seoSettings->home_seo_og_image)
+@endif
 @section('robots', filled($search) || filled($sort) || filled($period) || !($seoSettings?->home_seo_index ?? true) ? 'noindex,follow' : 'index,follow')
 @push('head')
     <script type="application/ld+json">
@@ -19,9 +22,6 @@
         ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_HEX_TAG | JSON_HEX_AMP) !!}
     </script>
 @endpush
-@if (filled($seoSettings?->home_seo_keywords))
-    @section('seo_keywords', $seoSettings->home_seo_keywords)
-@endif
 
 @section('content')
     <section aria-label="Akış ayarları">

@@ -18,7 +18,7 @@ class Post extends Model
     protected $fillable = [
         'user_id', 'channel_id', 'advertisement_id', 'title', 'slug', 'excerpt', 'body',
         'cover_image', 'media', 'video_url', 'video_path', 'meta_description', 'tags', 'is_published',
-        'published_at', 'views', 'is_adult',
+        'published_at', 'views', 'is_adult', 'seo_title', 'seo_keywords', 'canonical_url', 'robots_index', 'og_image',
     ];
 
     protected function casts(): array
@@ -29,6 +29,7 @@ class Post extends Model
             'is_published' => 'boolean',
             'published_at' => 'datetime',
             'is_adult' => 'boolean',
+            'robots_index' => 'boolean',
         ];
     }
 

@@ -7,6 +7,7 @@ use App\Models\Comment;
 use App\Models\Post;
 use App\Models\PostReaction;
 use App\Models\SiteSetting;
+use App\Models\SeoPageSetting;
 use App\Models\MailSetting;
 use App\Models\SitePage;
 use App\Models\Tag;
@@ -80,6 +81,9 @@ class AppServiceProvider extends ServiceProvider
                 'faviconUrl' => $siteSettings?->faviconUrl(),
                 'faviconMimeType' => $siteSettings?->faviconMimeType(),
                 'seoSettings' => $siteSettings,
+                'routeSeoSetting' => request()->route()?->getName()
+                    ? SeoPageSetting::query()->where('route_name', request()->route()->getName())->first()
+                    : null,
                 'navigationChannels' => Channel::query()->active()->orderBy('name')->limit(8)->get(),
                 'sidebarAuthors' => User::query()
                     ->whereNotNull('username')
@@ -126,7 +130,7 @@ class AppServiceProvider extends ServiceProvider
             ]);
         });
 
-        View::composer(['posts.index', 'pages.show', 'channels.show'], function ($view): void {
+        View::composer(['posts.index', 'pages.show', 'channels.show', 'profiles.show'], function ($view): void {
             $siteSettings = SiteSetting::current();
 
             $view->with([

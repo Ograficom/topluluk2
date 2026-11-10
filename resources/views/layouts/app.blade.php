@@ -5,15 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="format-detection" content="telephone=no">
     <meta name="theme-color" content="#f7f9fd">
-    <title>@yield('title', $brandName) — {{ $brandName }}</title>
+    <title>{{ filled($routeSeoSetting?->title ?? null) && ! $__env->yieldContent('seo_entity') ? $routeSeoSetting->title : trim($__env->yieldContent('title', $seoSettings?->seo_default_title ?: $brandName)) }} — {{ $brandName }}</title>
     @php
-        $seoDescription = trim($__env->yieldContent('description', $seoSettings?->seo_default_description ?: 'OgraFi; teknoloji, gündem, yaşam ve ilgi alanlarında yazıların, fikirlerin ve topluluk sohbetlerinin buluştuğu platformdur.'));
-        $seoTitle = trim($__env->yieldContent('title', $seoSettings?->seo_default_title ?: $brandName));
-        $seoCanonical = trim($__env->yieldContent('canonical')) ?: url()->current();
-        $seoImage = trim($__env->yieldContent('seo_image')) ?: ($seoSettings?->seo_og_image ?: ($brandLogoUrl ?? asset('assets/img/meta/logo.svg')));
+        $seoDescription = filled($routeSeoSetting?->description ?? null) && ! $__env->yieldContent('seo_entity') ? trim($routeSeoSetting->description) : trim($__env->yieldContent('description', $seoSettings?->seo_default_description ?: 'OgraFi; teknoloji, gündem, yaşam ve ilgi alanlarında yazıların, fikirlerin ve topluluk sohbetlerinin buluştuğu platformdur.'));
+        $seoTitle = filled($routeSeoSetting?->title ?? null) && ! $__env->yieldContent('seo_entity') ? trim($routeSeoSetting->title) : trim($__env->yieldContent('title', $seoSettings?->seo_default_title ?: $brandName));
+        $seoCanonical = filled($routeSeoSetting?->canonical_url ?? null) && ! $__env->yieldContent('seo_entity') ? trim($routeSeoSetting->canonical_url) : (trim($__env->yieldContent('canonical')) ?: url()->current());
+        $seoImage = filled($routeSeoSetting?->og_image ?? null) && ! $__env->yieldContent('seo_entity') ? trim($routeSeoSetting->og_image) : (trim($__env->yieldContent('seo_image')) ?: ($seoSettings?->seo_og_image ?: ($brandLogoUrl ?? asset('assets/img/meta/logo.svg'))));
         $seoRobotsOverride = trim($__env->yieldContent('robots'));
-        $seoKeywords = trim($__env->yieldContent('seo_keywords', $seoSettings?->seo_default_keywords ?? ''));
-        $seoNoindex = $seoRobotsOverride === 'noindex,follow' || request()->filled('q')
+        $routeNoindex = $routeSeoSetting && ! $routeSeoSetting->robots_index;
+        $seoKeywords = filled($routeSeoSetting?->keywords ?? null) && ! $__env->yieldContent('seo_entity') ? trim($routeSeoSetting->keywords) : trim($__env->yieldContent('seo_keywords', $seoSettings?->seo_default_keywords ?? ''));
+        $seoNoindex = $routeNoindex || $seoRobotsOverride === 'noindex,follow' || request()->filled('q')
             || request()->filled('sort')
             || request()->filled('period')
             || request()->filled('comments')
@@ -29,9 +30,27 @@
         }
     @endphp
     <meta name="description" content="{{ $seoDescription }}">
-    @if (filled($seoKeywords))
-        <meta name="keywords" content="{{ $seoKeywords }}">
+    <meta property="og:image:alt" content="{{ $seoTitle }} — {{ $brandName }}">
+    @if (filled($seoSettings?->google_site_verification))
+        <meta name="google-site-verification" content="{{ $seoSettings->google_site_verification }}">
     @endif
+    <script type="application/ld+json">
+        {!! json_encode([
+            '@context' => 'https://schema.org',
+            '@type' => 'Organization',
+            'name' => $brandName,
+            'url' => url('/'),
+            'logo' => [
+                '@type' => 'ImageObject',
+                'url' => $brandLogoUrl ? url($brandLogoUrl) : asset('assets/img/meta/logo.svg'),
+            ],
+            'sameAs' => array_values(array_filter([
+                $seoSettings?->instagram_url,
+                $seoSettings?->telegram_url,
+                $seoSettings?->threads_url,
+            ])),
+        ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_HEX_TAG | JSON_HEX_AMP) !!}
+    </script>
     <meta name="robots" content="{{ $seoNoindex ? 'noindex,follow' : ($seoRobotsOverride ?: 'index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1') }}">
     <link rel="canonical" href="{{ $seoCanonical }}">
     <meta property="og:locale" content="tr_TR">

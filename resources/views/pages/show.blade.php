@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('seo_entity', 'true')
+
 @section('title', $page->meta_title ?: $page->title)
 @section('description', $page->meta_description ?: $page->title.' — OgraFi hakkında bilgiler, topluluk politikaları ve site içerikleri.')
 @section('canonical', $page->canonical_url ?: route('pages.show', $page->slug))
@@ -18,9 +20,6 @@
         ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_HEX_TAG | JSON_HEX_AMP) !!}
     </script>
 @endpush
-@if (filled($page->meta_keywords))
-    @section('seo_keywords', $page->meta_keywords)
-@endif
 @if (filled($page->og_image))
     @section('seo_image', $page->og_image)
 @endif
