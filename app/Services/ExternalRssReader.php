@@ -163,7 +163,7 @@ class ExternalRssReader
         $body = $post->body;
         $decodedExistingBody = is_string($body) ? json_decode($body, true) : null;
         $existingBlocks = is_array($decodedExistingBody) ? ($decodedExistingBody['blocks'] ?? []) : [];
-        $existingText = collect($existingBlocks)->map(fn ($block) => trim((string) data_get($block, 'data.text', '')))->filter()->implode("\\n\\n");
+        $existingText = collect($existingBlocks)->map(fn ($block) => trim((string) data_get($block, 'data.text', '')))->filter()->implode("\n\n");
         $newText = trim((string) $item->summary);
         if (count($existingBlocks) <= 1 && $newText !== '' && mb_strlen($newText) > mb_strlen($existingText)) {
             $paragraphs = preg_split('/\\n\\s*\\n/u', $newText) ?: [$newText];
@@ -668,7 +668,7 @@ class ExternalRssReader
                                 if ($text !== '' && mb_strlen($text) > 35) $parts[] = $text;
                             }
                         }
-                        $articleBody = implode("\\n\\n", array_values(array_unique($parts)));
+                        $articleBody = implode("\n\n", array_values(array_unique($parts)));
                     }
                 }
 
