@@ -1,7 +1,7 @@
 <section class="cookie-consent" data-cookie-consent hidden aria-label="Çerez tercihleri">
     <div class="cookie-consent__notice" role="status">
         <p>Çerez kullanıyoruz. <a href="{{ route('pages.show', 'privacy') }}">Detaylar</a></p>
-        <button type="button" class="cookie-consent__button cookie-consent__button--primary" data-cookie-accept>Kabul et</button>
+        <button type="button" class="cookie-consent__button cookie-consent__button--primary" data-cookie-accept>TAMAM</button>
     </div>
 
     <div class="cookie-consent__details" data-cookie-details hidden>
@@ -74,7 +74,7 @@
 .cookie-consent__actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:14px}
 .cookie-consent__legal{margin:10px 0 0}
 .cookie-consent__toggle .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
-@media(max-width:520px){.cookie-consent{left:10px;right:auto;bottom:10px;max-width:calc(100vw - 20px)}.cookie-consent__notice{gap:7px;padding:9px}.cookie-consent__notice p{font-size:11px}.cookie-consent__button{padding:6px 8px;font-size:10px}.cookie-consent__details{width:calc(100vw - 20px)}.cookie-consent__option small{max-width:190px}}
+@media(max-width:920px){.cookie-consent{left:10px!important;right:10px!important;bottom:calc(64px + env(safe-area-inset-bottom))!important;width:auto!important;max-width:none!important}.cookie-consent__notice{width:100%;box-sizing:border-box;display:flex;flex-wrap:nowrap;align-items:center;justify-content:space-between;gap:10px;padding:8px 12px;border-radius:14px;box-shadow:0 4px 18px rgba(0,0,0,.12)}.cookie-consent__notice p{min-width:0;font-size:12px;white-space:nowrap}.cookie-consent__button{flex:0 0 auto;min-height:32px;padding:7px 13px;font-size:11px;border-radius:18px}.cookie-consent__details{width:calc(100vw - 20px)}.cookie-consent__option small{max-width:190px}}
 </style>
 
 <script>
@@ -87,7 +87,10 @@
         const feed = document.querySelector('main.container .main:not(.main__grid-full) > .feed');
         if (!feed || window.innerWidth <= 920) {
             root.style.left = '10px';
-            root.style.right = 'auto';
+            root.style.right = '10px';
+            root.style.width = 'auto';
+            root.style.maxWidth = 'none';
+            root.style.bottom = 'calc(64px + env(safe-area-inset-bottom))';
             return;
         }
 
