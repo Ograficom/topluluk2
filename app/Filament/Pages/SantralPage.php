@@ -115,6 +115,13 @@ class SantralPage extends Page
                         TextInput::make('packages_title')->label('Paket alanı başlığı')->required()->maxLength(180),
                         Textarea::make('packages_description')->label('Paket alanı açıklaması')->rows(2)->columnSpanFull(),
                         Repeater::make('packages')->label('Santral paketleri')->minItems(3)->maxItems(3)->schema([
+                            Select::make('icon')->label('Paket ikonu')->options([
+                                'channels' => 'Santral',
+                                'bolt' => 'Performans',
+                                'security' => 'Güvenlik',
+                                'list' => 'Özellikler',
+                                'megaphone' => 'İletişim',
+                            ])->default('channels')->required()->native(false),
                             TextInput::make('name')->label('Paket adı')->required()->maxLength(80),
                             TextInput::make('price')->label('Fiyat (TL)')->numeric()->minValue(0)->default(0)->required(),
                             TextInput::make('period')->label('Ücret dönemi')->default('aylık')->maxLength(30),
