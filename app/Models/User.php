@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Services\SitemapService;
 use Database\Factories\UserFactory;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
@@ -63,6 +64,9 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
         static::saving(function (User $user): void {
             $user->is_verified = $user->verification_status === 'approved';
         });
+
+        static::saved(fn () => app(SitemapService::class)->invalidate());
+        static::deleted(fn () => app(SitemapService::class)->invalidate());
     }
 
     public function socialAccounts(): HasMany { return $this->hasMany(SocialAccount::class); }
