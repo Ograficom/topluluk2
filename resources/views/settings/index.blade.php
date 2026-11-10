@@ -393,6 +393,35 @@
                             @foreach ([
                                 'profile' => ['Profil', 'user'],
                                 'site' => ['Tercihler', 'compass'],
+                            ] as $tab => [$label, $icon])
+                                <li class="menu__item">
+                                    <button
+                                        class="menu__link {{ $activeTab === $tab ? 'is-active' : '' }}"
+                                        id="settings-{{ $tab }}-tab"
+                                        type="button"
+                                        data-tab="{{ $tab }}"
+                                        aria-selected="{{ $activeTab === $tab ? 'true' : 'false' }}"
+                                        aria-label="{{ $label }}"
+                                        title="{{ $label }}"
+                                    >
+                                        <x-repost-icon name="{{ $icon }}" size="20" class="menu__icon color-gray" />
+                                        <span>{{ $label }}</span>
+                                    </button>
+                                </li>
+                            @endforeach
+                            <li class="menu__item">
+                                <button
+                                    class="menu__link"
+                                    type="button"
+                                    data-cookie-settings-open
+                                    aria-label="Çerez ayarları"
+                                    title="Çerez ayarları"
+                                >
+                                    <x-repost-icon name="setting" size="20" class="menu__icon color-gray" />
+                                    <span>Çerez ayarları</span>
+                                </button>
+                            </li>
+                            @foreach ([
                                 'security' => ['Güvenlik', 'security'],
                                 'blacklist' => ['Engellenenler', 'list'],
                                 'verify' => [$user->is_company ? 'Şirket doğrulaması' : 'Mavi tik doğrulaması', 'comment'],
@@ -413,18 +442,6 @@
                                     </button>
                                 </li>
                             @endforeach
-                            <li class="menu__item">
-                                <button
-                                    class="menu__link"
-                                    type="button"
-                                    data-cookie-settings-open
-                                    aria-label="Çerez ayarları"
-                                    title="Çerez ayarları"
-                                >
-                                    <x-repost-icon name="security" size="20" class="menu__icon color-gray" />
-                                    <span>Çerez ayarları</span>
-                                </button>
-                            </li>
                         </ul>
                     </div>
                 </section>
