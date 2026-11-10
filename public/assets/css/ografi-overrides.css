@@ -3867,3 +3867,23 @@ body.is-messenger-conversation .pm-dialog__composer .pm-composer__send svg {
     .ografi-pbx-tech-grid { grid-template-columns: minmax(0, 1fr); }
     .ografi-pbx-plan { flex-basis: 86%; width: 86%; }
 }
+
+
+/* Keep the Santral label at the hero's upper-right edge */
+.ografi-pbx-hero { position: relative; }
+.ografi-pbx-hero > .ografi-pbx-eyebrow {
+    position: absolute;
+    top: 22px;
+    right: 24px;
+    z-index: 4;
+    margin: 0;
+}
+.ografi-pbx-hero-copy > .ografi-pbx-eyebrow { display: none; }
+@container (max-width: 820px) {
+    .ografi-pbx-hero > .ografi-pbx-eyebrow { top: 18px; right: 18px; }
+    .ografi-pbx-hero-copy { padding-top: 42px; }
+}
+@container (max-width: 520px) {
+    .ografi-pbx-hero > .ografi-pbx-eyebrow { top: 14px; right: 14px; }
+    .ografi-pbx-hero-copy { padding-top: 40px; }
+}
