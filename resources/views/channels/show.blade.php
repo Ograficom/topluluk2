@@ -15,6 +15,9 @@
 @endif
 
 @push('head')
+    @if (filled($channel->meta_keywords))
+        <meta name="keywords" content="{{ $channel->meta_keywords }}">
+    @endif
     <script type="application/ld+json">
         {!! json_encode([
             '@context' => 'https://schema.org',
