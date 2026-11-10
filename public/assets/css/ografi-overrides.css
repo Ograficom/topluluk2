@@ -4446,10 +4446,11 @@ body.is-messenger-conversation .pm-dialog__composer .pm-composer__send svg {
     .ografi-pbx-fixed-actions .ografi-pbx-actions > .btn { font-size: 11px !important; }
 }
 
-/* Santral: remove the fixed action dock's outer white container; keep both buttons intact. */
+/* Santral: transparent dock and action row; button surfaces remain unchanged. */
 html body .ografi-pbx-fixed-actions,
-html body .ografi-pbx-fixed-actions:before,
-html body .ografi-pbx-fixed-actions:after {
+html body .ografi-pbx-fixed-actions::before,
+html body .ografi-pbx-fixed-actions::after,
+html body .ografi-pbx-fixed-actions > .ografi-pbx-actions {
     background: transparent !important;
     border: 0 !important;
     border-color: transparent !important;
