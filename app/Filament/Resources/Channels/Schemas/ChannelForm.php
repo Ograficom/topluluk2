@@ -30,6 +30,16 @@ class ChannelForm
                     ->label('Açıklama')
                     ->rows(4)
                     ->columnSpanFull(),
+                \Filament\Schemas\Components\Section::make('SEO ayarları')
+                    ->description('Bu kanalın Google sonuçlarında ve sosyal paylaşımlarda nasıl görüneceğini belirleyin.')
+                    ->schema([
+                        TextInput::make('meta_title')->label('SEO başlığı')->maxLength(255),
+                        Textarea::make('meta_description')->label('Meta açıklaması')->rows(3)->maxLength(500)->columnSpanFull(),
+                        TextInput::make('meta_keywords')->label('Anahtar kelimeler')->maxLength(2000)->columnSpanFull(),
+                        TextInput::make('canonical_url')->label('Canonical URL')->url()->maxLength(2048)->columnSpanFull(),
+                        TextInput::make('og_image')->label('Sosyal paylaşım görseli URL')->url()->maxLength(2048)->columnSpanFull(),
+                        Toggle::make('robots_index')->label('Arama motorlarında indekslensin')->default(true),
+                    ])->columns(2),
                 Toggle::make('is_active')
                     ->label('Yayında')
                     ->default(true),
