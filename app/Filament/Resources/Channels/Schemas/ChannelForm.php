@@ -33,7 +33,7 @@ class ChannelForm
                 \Filament\Schemas\Components\Section::make('SEO ayarları')
                     ->description('Bu kanalın Google sonuçlarında ve sosyal paylaşımlarda nasıl görüneceğini belirleyin.')
                     ->schema([
-                        TextInput::make('meta_title')->label('Google sonuç başlığı')->maxLength(255)->helperText('Boşsa kanal adı ve sayfa içeriği kullanılır.'),
+                        TextInput::make('meta_title')->label('Google sonuç başlığı')->maxLength(255)->helperText('Boşsa kanal adı ve sayfa içeriği kullanılır. Site adı otomatik eklenir.'),
                         Textarea::make('meta_description')->label('Google sonuç açıklaması')->rows(3)->maxLength(500)->helperText('Kanalın konusunu doğal bir dille özetleyin.')->columnSpanFull(),
                         TextInput::make('canonical_url')->label('Canonical URL')->url()->maxLength(2048)->helperText('Özel bir canonical adres kullanmıyorsanız boş bırakın.')->columnSpanFull(),
                         TextInput::make('og_image')->label('Sosyal paylaşım görseli URL')->url()->maxLength(2048)->helperText('Google sıralama alanı değildir; sosyal paylaşım kartında görünür. 1200 × 630 px önerilir.')->columnSpanFull(),
