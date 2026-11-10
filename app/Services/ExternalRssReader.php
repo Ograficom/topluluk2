@@ -660,7 +660,7 @@ class ExternalRssReader
                     }
                     if ($bodyNodes && $bodyNodes->length > 0) {
                         $bodyNode = $bodyNodes->item(0);
-                        $paragraphNodes = (new \\DOMXPath($document))->query('.//h1 | .//h2 | .//h3 | .//p', $bodyNode);
+                        $paragraphNodes = (new \DOMXPath($document))->query('.//h1 | .//h2 | .//h3 | .//p', $bodyNode);
                         $parts = [];
                         if ($paragraphNodes) {
                             foreach ($paragraphNodes as $paragraphNode) {
