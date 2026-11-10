@@ -21,6 +21,78 @@
         .rss-admin-actions{display:flex;align-items:center;gap:5px;flex:0 0 auto}
         @media(max-width:760px){.rss-admin-form{grid-template-columns:1fr}.rss-admin-row{align-items:flex-start;flex-wrap:wrap;padding:14px}.rss-admin-actions{width:100%;justify-content:flex-end}.rss-admin-body{padding:15px}.rss-admin-publish-settings{align-items:stretch;flex-direction:column}.rss-admin-publish-settings select{max-width:none;width:100%}.rss-admin-publish-settings .fi-btn{margin-left:0;width:100%}}
         .dark .rss-admin-card{background:#18181b;border-color:#3f3f46}.dark .rss-admin-head{border-color:#3f3f46}.dark .rss-admin-head h3,.dark .rss-admin-info strong{color:#fafafa}
+
+        /* RSS manager visual refinement */
+        .rss-admin{gap:20px}
+        .rss-admin-card{border-color:#e4e9f1;border-radius:16px;box-shadow:0 2px 10px rgba(15,23,42,.025)}
+        .rss-admin-head{padding:19px 22px;background:linear-gradient(180deg,#fff 0%,#fbfcff 100%)}
+        .rss-admin-head h3{font-size:15px;letter-spacing:-.015em}
+        .rss-admin-head p{font-size:12px;color:#7b8798}
+        .rss-admin-body{padding:21px 22px}
+        .rss-admin-form{gap:16px}
+        .rss-admin-form label span{display:inline-block;margin-bottom:7px;color:#344054;font-size:12px;font-weight:650}
+        .rss-admin-form .fi-input,.rss-admin-publish-settings .fi-input{
+            min-height:43px;border:1px solid #dfe5ee;border-radius:9px;background:#fff;
+            padding:9px 12px;color:#273449;font-size:13px;box-shadow:none;
+            transition:border-color .15s ease,box-shadow .15s ease;
+        }
+        .rss-admin-form .fi-input:focus,.rss-admin-publish-settings .fi-input:focus{
+            border-color:#8bb2ff;outline:0;box-shadow:0 0 0 3px rgba(37,99,235,.10)
+        }
+        .rss-admin-form input::placeholder{color:#a0aaba}
+        .rss-admin-form>div:last-child{padding-top:2px}
+        .rss-admin-form>div:last-child label{color:#536176!important;font-size:12px!important}
+        .rss-admin-form>div:last-child input{width:15px;height:15px}
+        .rss-admin-list{padding:5px 0}
+        .rss-admin-row{position:relative;align-items:center;gap:15px;padding:18px 20px;border-bottom:1px solid #f0f2f6;transition:background .15s ease}
+        .rss-admin-row:hover{background:#fcfdff}
+        .rss-admin-icon{width:42px;height:42px;flex-basis:42px;border:1px solid #e3edff;border-radius:12px;background:#f1f6ff;color:#3979ee}
+        .rss-admin-info{padding:1px 0}
+        .rss-admin-info strong{font-size:14px;font-weight:750;letter-spacing:-.015em}
+        .rss-admin-info>a{width:fit-content;max-width:100%;margin-top:4px;color:#718096;font-size:11px;text-decoration:none}
+        .rss-admin-info>a:hover{color:#2563eb;text-decoration:underline}
+        .rss-admin-meta{align-items:center;gap:7px 9px;margin-top:8px;font-size:11px}
+        .rss-admin-meta>span:nth-child(2){display:none}
+        .rss-admin-meta>span:nth-child(1),.rss-admin-meta>span:nth-child(3){color:#8490a1}
+        .rss-admin-status{padding:4px 9px;border:1px solid #d8f2e5;background:#f0fbf5;color:#16804d;font-size:10px;font-weight:700}
+        .rss-admin-status.is-off{border-color:#e8ebf0;background:#f6f7f9;color:#778194}
+        .rss-admin-publish-settings{gap:9px;margin-top:13px;padding-top:13px;border-color:#edf0f5}
+        .rss-admin-publish-settings select{min-width:160px;max-width:210px}
+        .rss-admin-publish-settings label{min-height:38px;padding:0 5px;color:#526176;font-size:11px;font-weight:600}
+        .rss-admin-publish-settings label input{width:15px;height:15px}
+        .rss-admin-publish-settings .fi-btn{min-height:38px;border:1px solid #dce5f2;border-radius:9px;background:#fff;color:#315d9d;font-size:11px;font-weight:700;box-shadow:none}
+        .rss-admin-publish-settings .fi-btn:hover{border-color:#b9d0f7;background:#f5f9ff}
+        .rss-admin-actions{gap:4px;padding:5px;border:1px solid #edf0f4;border-radius:10px;background:#fff}
+        .rss-admin-actions .fi-icon-btn{border-radius:7px}
+        .rss-admin-actions .fi-icon-btn:hover{background:#f1f5fb}
+        .rss-admin-error{padding:9px 11px;border:1px solid #fee2e2;border-radius:8px;background:#fff7f7}
+        .rss-admin-card>.rss-admin-head .fi-btn{min-height:38px;border:1px solid #e1e6ed;border-radius:9px;background:#fff;color:#344054;font-size:12px;font-weight:650;box-shadow:none}
+        .rss-admin-card>.rss-admin-head .fi-btn:hover{border-color:#c8d7ee;background:#f8faff}
+        .dark .rss-admin-head{background:#202027}
+        .dark .rss-admin-row:hover{background:#202027}
+        .dark .rss-admin-form .fi-input,.dark .rss-admin-publish-settings .fi-input,.dark .rss-admin-actions{background:#18181b;border-color:#3f3f46;color:#f4f4f5}
+        .dark .rss-admin-publish-settings .fi-btn{background:#27272a;border-color:#3f3f46;color:#d4e3ff}
+        @media(max-width:760px){
+            .rss-admin-head{padding:16px}
+            .rss-admin-body{padding:16px}
+            .rss-admin-row{gap:11px;padding:15px 14px}
+            .rss-admin-info{flex-basis:calc(100% - 58px)}
+            .rss-admin-actions{width:auto;margin-left:auto}
+            .rss-admin-publish-settings{padding:13px 0 0}
+            .rss-admin-publish-settings select{min-width:0;width:100%;max-width:none}
+            .rss-admin-publish-settings label{min-height:34px}
+            .rss-admin-publish-settings .fi-btn{width:100%;min-height:40px}
+            .rss-admin-card>.rss-admin-head{align-items:flex-start!important}
+            .rss-admin-card>.rss-admin-head .fi-btn{flex:0 0 auto}
+        }
+        @media(max-width:420px){
+            .rss-admin-card>.rss-admin-head{flex-direction:column;align-items:stretch!important}
+            .rss-admin-card>.rss-admin-head .fi-btn{width:100%}
+            .rss-admin-row{align-items:flex-start}
+            .rss-admin-actions{margin-left:auto}
+            .rss-admin-meta{gap:6px}
+        }
+
     </style>
 
     <div class="rss-admin">
