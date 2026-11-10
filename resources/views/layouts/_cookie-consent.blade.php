@@ -40,7 +40,7 @@
 .cookie-consent{position:fixed;inset:0;z-index:10050;display:grid;align-items:end;justify-items:center;padding:20px}
 .cookie-consent__backdrop{position:absolute;inset:0;background:rgba(15,23,42,.48);backdrop-filter:blur(2px)}
 .cookie-consent__panel{position:relative;width:min(100%,620px);max-height:min(88vh,760px);overflow:auto;background:#fff;color:#172033;border:1px solid #e5eaf1;border-radius:16px;padding:24px;box-shadow:0 18px 60px rgba(15,23,42,.2)}
-.cookie-consent__eyebrow{font-size:11px;letter-spacing:.1em;font-weight:700;color:#64748b}
+.footer__legal{display:flex;align-items:center;gap:12px;flex-wrap:wrap}.footer__legal button{border:0;background:transparent;padding:0;font:inherit;color:inherit;cursor:pointer;text-decoration:underline;text-underline-offset:3px}\n.cookie-consent__eyebrow{font-size:11px;letter-spacing:.1em;font-weight:700;color:#64748b}
 .cookie-consent__intro h2{font-size:22px;line-height:1.25;margin:7px 0 8px;font-weight:700}
 .cookie-consent__intro p,.cookie-consent__option small,.cookie-consent__legal{font-size:13px;line-height:1.55;color:#64748b}
 .cookie-consent__intro p{margin:0 0 18px}
