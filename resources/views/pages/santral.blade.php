@@ -140,7 +140,7 @@
                                 <li><x-repost-icon name="check-circle" size="17" /> <span>{{ $feature }}</span></li>
                             @endforeach
                         </ul>
-                        <a class="btn {{ !empty($package['featured']) ? 'btn-primary' : 'btn-secondary' }} btn-lg" href="{{ route('contacts', ['subject' => 'OgraFi Santral - ' . ($package['name'] ?? 'Paket') . ' başvurusu', 'recipient' => 'partnerships']) }}">
+                        <a class="btn {{ !empty($package['featured']) ? 'btn-primary' : 'btn-secondary' }} btn-lg" href="{{ route('contacts', ['subject' => 'Santral satış', 'recipient' => 'marketing']) }}">
                             Paketi seç <x-repost-icon name="arrow-right" size="17" />
                         </a>
                         <small>Hizmet, başvuru ve aktivasyon onayından sonra açılır.</small>
@@ -211,7 +211,7 @@
         <span class="ografi-pbx-modal-eyebrow">OGRAFI SANTRAL</span>
         <h2 id="santral-activation-title">Hesabınızın santral hizmeti aktivasyonu yapılmamış.</h2>
         <p>Entegrasyonu kullanmaya başlamadan önce santral hizmetinizin hesabınız için etkinleştirilmesi gerekiyor. Aktivasyon ve kurulum için bizimle iletişime geçebilirsiniz.</p>
-        <a class="btn btn-primary btn-lg" href="{{ route('contacts', ['subject' => 'Santral hizmeti aktivasyonu', 'recipient' => 'partnerships']) }}">
+        <a class="btn btn-primary btn-lg" href="{{ route('contacts', ['subject' => 'Santral satış', 'recipient' => 'marketing']) }}">
             <x-repost-icon name="message" size="18" /> Aktivasyon için iletişime geç
         </a>
         <button class="ografi-pbx-modal-dismiss" type="button" data-santral-activation-close>Şimdi değil</button>
