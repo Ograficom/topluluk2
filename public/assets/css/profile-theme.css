@@ -228,3 +228,118 @@
 .profile__subscribe-button.is-following{background:var(--card-bg,#fff);color:var(--color-title,#344054)!important;border-color:var(--border-color,#e5e9f0)}
 .profile__subscribe-button.is-following:hover{background:#fff1f2;border-color:#e11d48;color:#e11d48!important}
 @media(max-width:575px){.profile__content{grid-template-columns:minmax(0,1fr) auto;align-items:start;gap:10px}.profile__actions{grid-column:2;grid-row:1;gap:7px;margin-bottom:0}.profile__message-button{width:38px;height:38px}.profile__subscribe-button{min-height:38px;padding-inline:13px;font-size:.82rem}}
+
+
+/* Sponsored posts in profile feed: keep the media and action row aligned. */
+.profile-post-card--sponsored {
+  min-width: 0;
+  overflow: hidden;
+}
+.profile-post-card--sponsored .post__header {
+  position: relative;
+  min-width: 0;
+  padding-right: 42px;
+}
+.profile-post-card--sponsored .profile-sponsored-edit {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: inline-flex;
+  width: 34px;
+  height: 34px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border-color, #e5e9f0);
+  border-radius: 9px;
+  background: var(--card-bg, #fff);
+  color: var(--color-gray, #64748b);
+  text-decoration: none;
+}
+.profile-post-card--sponsored .profile-sponsored-edit:hover {
+  border-color: var(--color-primary, #1769ff);
+  color: var(--color-primary, #1769ff);
+}
+.profile-post-card--sponsored .post__short-media {
+  min-width: 0;
+}
+.profile-post-card--sponsored .post__media {
+  width: 100%;
+  max-width: 100%;
+  height: auto !important;
+  min-height: 0;
+  max-height: none;
+  aspect-ratio: auto !important;
+  overflow: hidden;
+}
+.profile-post-card--sponsored .post__media a {
+  display: block;
+  width: 100%;
+  height: auto !important;
+}
+.profile-post-card--sponsored .post__media img,
+.profile-post-card--sponsored .post__media-image {
+  display: block;
+  width: 100% !important;
+  max-width: 100%;
+  height: auto !important;
+  max-height: none;
+  object-fit: contain !important;
+}
+.profile-post-card--sponsored .profile-sponsored-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: nowrap;
+  gap: 10px;
+  min-width: 0;
+  padding-top: 12px;
+  padding-bottom: 18px;
+}
+.profile-post-card--sponsored .profile-sponsored-footer > span {
+  flex: 0 1 auto;
+  min-width: 0;
+  white-space: nowrap;
+}
+.profile-post-card--sponsored .profile-sponsored-actions {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: flex-end;
+  min-width: 0;
+}
+.profile-post-card--sponsored .profile-sponsored-details {
+  display: inline-flex;
+  min-height: 42px;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 0 15px;
+  border-radius: 11px;
+  white-space: nowrap;
+  text-decoration: none;
+}
+.profile-post-card--sponsored .profile-sponsored-details svg {
+  flex: 0 0 16px;
+}
+@media (max-width: 600px) {
+  .profile-post-card--sponsored .post__header {
+    padding-right: 40px;
+  }
+  .profile-post-card--sponsored .profile-sponsored-edit {
+    width: 32px;
+    height: 32px;
+  }
+  .profile-post-card--sponsored .post__short-media {
+    padding-top: 0;
+  }
+  .profile-post-card--sponsored .profile-sponsored-footer {
+    gap: 7px;
+    padding-top: 10px;
+    padding-bottom: 18px;
+  }
+  .profile-post-card--sponsored .profile-sponsored-details {
+    min-height: 40px;
+    padding: 0 11px;
+    font-size: 13px;
+  }
+}
