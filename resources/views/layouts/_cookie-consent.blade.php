@@ -53,7 +53,7 @@
 .cookie-consent__button--outline{border:1px solid #dbe2ea;background:#fff;color:#334155}
 .cookie-consent__button--primary{border:1px solid #2563eb;background:#2563eb;color:#fff}
 .cookie-consent__settings-link{border:0;background:transparent;padding:4px 2px;color:#555;font-family:inherit;font-size:12px;cursor:pointer}
-.cookie-consent__details{position:absolute;left:0;right:auto;bottom:calc(100% + 10px);width:min(420px,calc(100vw - 32px));max-height:min(72vh,620px);overflow:auto;background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:18px;box-shadow:0 8px 30px rgba(0,0,0,.16)}
+.cookie-consent__details{position:fixed;left:50%;top:50%;right:auto;bottom:auto;transform:translate(-50%,-50%);box-sizing:border-box;width:min(420px,calc(100vw - 32px));max-height:min(72vh,620px);overflow:auto;background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:18px;box-shadow:0 8px 30px rgba(0,0,0,.16)}
 .cookie-consent__details-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;margin-bottom:12px}
 .cookie-consent__details-head strong{font-size:16px}
 .cookie-consent__details-head p,.cookie-consent__option small,.cookie-consent__legal{font-size:12px;line-height:1.5;color:#64748b}
@@ -102,6 +102,8 @@
     alignCookiePopup();
     window.addEventListener('resize', alignCookiePopup, { passive: true });
     window.addEventListener('scroll', alignCookiePopup, { passive: true });
+    window.addEventListener('resize', alignDetailsPopup, { passive: true });
+    window.addEventListener('scroll', alignDetailsPopup, { passive: true });
 
     const storageKey = 'ografi_cookie_consent_v1';
     const categories = ['preferences', 'analytics', 'marketing'];
@@ -147,6 +149,25 @@
             placeholder.after(script);
         });
     };
+    const alignDetailsPopup = () => {
+        if (details.hidden) return;
+        const popupRect = details.getBoundingClientRect();
+        const feed = window.innerWidth > 920
+            ? document.querySelector('main.container .main:not(.main__grid-full) > .feed')
+            : null;
+        const anchor = feed ? feed.getBoundingClientRect() : { left: 0, right: window.innerWidth, top: 0, bottom: window.innerHeight, width: window.innerWidth, height: window.innerHeight };
+        const left = Math.min(
+            Math.max(anchor.left + (anchor.width - popupRect.width) / 2, 16),
+            Math.max(16, window.innerWidth - popupRect.width - 16)
+        );
+        const top = Math.max(16, (window.innerHeight - popupRect.height) / 2);
+        details.style.left = Math.round(left) + 'px';
+        details.style.top = Math.round(top) + 'px';
+        details.style.right = 'auto';
+        details.style.bottom = 'auto';
+        details.style.transform = 'none';
+    };
+
     const openSettings = () => {
         const consent = getConsent();
         categories.forEach((key) => {
@@ -155,6 +176,7 @@
         });
         root.hidden = false;
         details.hidden = false;
+        requestAnimationFrame(alignDetailsPopup);
     };
     root.querySelectorAll('[data-cookie-accept]').forEach((button) => button.addEventListener('click', () => {
         saveConsent({ preferences: true, analytics: true, marketing: true });
