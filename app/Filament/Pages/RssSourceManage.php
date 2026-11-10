@@ -22,6 +22,7 @@ class RssSourceManage extends Page
     protected string $view = 'filament.pages.rss-source-manage';
 
     public RssSource $source;
+    public string $sourceUrl = '';
     public ?int $authorId = null;
     public ?int $channelId = null;
     public bool $autoPublish = false;
@@ -29,6 +30,7 @@ class RssSourceManage extends Page
     public function mount(int|string $record): void
     {
         $this->source = RssSource::query()->withCount('items')->findOrFail($record);
+        $this->sourceUrl = $this->source->url;
         $this->authorId = $this->source->author_id;
         $this->channelId = $this->source->channel_id;
         $this->autoPublish = (bool) $this->source->auto_publish;
@@ -48,21 +50,47 @@ class RssSourceManage extends Page
     public function saveSettings(): void
     {
         $data = Validator::make([
+            'url' => trim($this->sourceUrl),
             'author_id' => $this->authorId,
             'channel_id' => $this->channelId,
             'auto_publish' => $this->autoPublish,
         ], [
+            'url' => ['required', 'url', 'max:2048'],
             'author_id' => ['required', 'integer', 'exists:users,id'],
             'channel_id' => ['required', 'integer', 'exists:channels,id'],
             'auto_publish' => ['required', 'boolean'],
         ], [
+            'url.required' => 'RSS adresi gerekli.',
+            'url.url' => 'Geçerli bir RSS adresi girin.',
+            'url.max' => 'RSS adresi 2048 karakterden uzun olamaz.',
             'author_id.required' => 'Yayın yazarı seçmelisiniz.',
             'channel_id.required' => 'Kategori seçmelisiniz.',
         ])->validate();
 
-        $this->source->update($data);
+        $urlHash = hash('sha256', rtrim($data['url']));
+        $duplicate = RssSource::query()
+            ->where('url_hash', $urlHash)
+            ->whereKeyNot($this->source->getKey())
+            ->exists();
+
+        if ($duplicate) {
+            $this->addError('sourceUrl', 'Bu RSS adresi başka bir kaynağa zaten eklenmiş.');
+            return;
+        }
+
+        $this->resetErrorBag('sourceUrl');
+
+        $this->source->update([
+            'url' => $data['url'],
+            'url_hash' => $urlHash,
+            'author_id' => $data['author_id'],
+            'channel_id' => $data['channel_id'],
+            'auto_publish' => $data['auto_publish'],
+        ]);
         $this->source->refresh();
-        Notification::make()->title('Kaynak ayarları kaydedildi')->success()->send();
+        $this->sourceUrl = $this->source->url;
+
+        Notification::make()->title('RSS kaynağı ayarları kaydedildi')->body('RSS adresi ve yayın ayarları güncellendi.')->success()->send();
     }
 
     public function refreshNow(ExternalRssReader $reader): void
