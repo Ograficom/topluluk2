@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('seo_entity', 'true')
+
 @section('title', $channel->meta_title ?: $channel->name.' Forumu ve Güncel Konular')
 @section('description', \Illuminate\Support\Str::limit(trim(strip_tags($channel->description ?: $channel->name.' kanalındaki güncel forum yazılarını, soruları ve topluluk yorumlarını keşfedin.')), 160, ''))
 @section('canonical', $channel->canonical_url ?: route('channels.show', $channel))
