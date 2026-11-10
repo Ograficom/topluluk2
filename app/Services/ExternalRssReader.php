@@ -246,18 +246,27 @@ class ExternalRssReader
 
     private function requestFeed(string $url)
     {
+        return $this->requestFeedWithFinalUrl($url)[0];
+    }
+
+    /**
+     * Follow redirects manually and return the final public URL as well.
+     * The final URL is important for Google News RSS links, which redirect
+     * to the original publisher's article page.
+     */
+    private function requestFeedWithFinalUrl(string $url): array
+    {
         $url = $this->validatedFeedUrl($url);
         $response = null;
 
-        // Follow redirects manually; every destination is checked against SSRF rules.
-        for ($redirect = 0; $redirect <= 3; $redirect++) {
+        for ($redirect = 0; $redirect <= 5; $redirect++) {
             $origin = (parse_url($url, PHP_URL_SCHEME) ?: 'https').'://'.parse_url($url, PHP_URL_HOST).'/';
 
             $response = Http::withOptions([
                 'allow_redirects' => false,
                 'verify' => true,
             ])->connectTimeout(7)->timeout(20)->withHeaders([
-                'Accept' => 'application/rss+xml, application/atom+xml, application/xml, text/xml, application/*+xml;q=0.9, */*;q=0.5',
+                'Accept' => 'text/html,application/xhtml+xml,application/rss+xml,application/atom+xml,application/xml;q=0.9,*/*;q=0.8',
                 'Accept-Language' => 'tr-TR,tr;q=0.9,en-US;q=0.8,en;q=0.7',
                 'Cache-Control' => 'no-cache',
                 'Pragma' => 'no-cache',
@@ -266,23 +275,23 @@ class ExternalRssReader
             ])->get($url);
 
             if (! $response->redirect()) {
-                return $response;
+                return [$response, $url];
             }
 
-            if ($redirect === 3) {
-                throw new RuntimeException('RSS kaynağı çok fazla yönlendirme yaptı.');
+            if ($redirect === 5) {
+                throw new RuntimeException('Kaynak çok fazla yönlendirme yaptı.');
             }
 
             $location = trim((string) $response->header('Location'));
             $nextUrl = $location !== '' ? $this->resolveUrl($location, $url) : null;
             if ($nextUrl === null) {
-                throw new RuntimeException('RSS kaynağı geçersiz bir yönlendirme adresi döndürdü.');
+                throw new RuntimeException('Kaynak geçersiz bir yönlendirme adresi döndürdü.');
             }
 
             $url = $this->validatedFeedUrl($nextUrl);
         }
 
-        return $response;
+        return [$response, $url];
     }
 
     private function isNtvFeed(string $url): bool
@@ -451,6 +460,11 @@ class ExternalRssReader
         if ($imageUrls === [] || $tags === [] || $this->plainText($content) === $this->plainText($title)) {
             $articleMetadata = $this->fetchArticleMetadata($link);
             if ($articleMetadata !== []) {
+                if (! empty($articleMetadata['url']) && ! str_contains((string) parse_url($link, PHP_URL_HOST), 'news.google.com')) {
+                    $link = $articleMetadata['url'];
+                } elseif (! empty($articleMetadata['url']) && str_contains((string) parse_url($link, PHP_URL_HOST), 'news.google.com')) {
+                    $link = $articleMetadata['url'];
+                }
                 $imageUrls = array_values(array_unique(array_merge($imageUrls, $articleMetadata['images'] ?? [])));
                 $imageUrls = array_slice($imageUrls, 0, 10);
                 $image = $image ?: ($imageUrls[0] ?? '');
@@ -484,7 +498,7 @@ class ExternalRssReader
     private function fetchArticleMetadata(string $articleUrl): array
     {
         try {
-            $response = $this->requestFeed($articleUrl);
+            [$response, $finalUrl] = $this->requestFeedWithFinalUrl($articleUrl);
             if (! $response || ! $response->successful()) return [];
 
             $html = $response->body();
@@ -500,12 +514,23 @@ class ExternalRssReader
                     return $nodes && $nodes->length ? trim((string) $nodes->item(0)->nodeValue) : '';
                 };
 
+                $canonicalNodes = $xpath->query('//link[@rel="canonical"]/@href');
+                $canonicalUrl = $canonicalNodes && $canonicalNodes->length
+                    ? $this->resolveUrl(trim((string) $canonicalNodes->item(0)->nodeValue), $finalUrl)
+                    : null;
+                $publisherUrl = $canonicalUrl ?: ($this->resolveUrl($meta('og:url'), $finalUrl) ?: $finalUrl);
+                $finalHost = strtolower((string) parse_url($finalUrl, PHP_URL_HOST));
+                $isGoogleNewsWrapper = $finalHost === 'news.google.com' || str_ends_with($finalHost, '.news.google.com');
+
                 $images = [];
-                foreach (['og:image', 'og:image:secure_url', 'twitter:image', 'twitter:image:src'] as $key) {
-                    $value = $meta($key);
-                    if ($value !== '') {
-                        $resolved = $this->resolveUrl($value, $articleUrl);
-                        if ($resolved) $images[] = $resolved;
+                // Never use Google's wrapper/logo as the article's cover image.
+                if (! $isGoogleNewsWrapper) {
+                    foreach (['og:image', 'og:image:secure_url', 'twitter:image', 'twitter:image:src'] as $key) {
+                        $value = $meta($key);
+                        if ($value !== '') {
+                            $resolved = $this->resolveUrl($value, $finalUrl);
+                            if ($resolved) $images[] = $resolved;
+                        }
                     }
                 }
 
@@ -553,6 +578,7 @@ class ExternalRssReader
                     'images' => array_values(array_unique($images)),
                     'tags' => $tags,
                     'description' => Str::limit($this->plainText($description), 12000, ''),
+                    'url' => $publisherUrl,
                 ];
             } finally {
                 libxml_clear_errors();
