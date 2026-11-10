@@ -19,20 +19,49 @@ class ExternalRssReader
     {
         try {
             $url = $this->validatedFeedUrl($source->url);
-            $response = Http::withOptions([
-                'allow_redirects' => false,
-                'verify' => true,
-            ])->connectTimeout(5)->timeout(12)->withHeaders([
-                'Accept' => 'application/rss+xml, application/atom+xml, application/xml, text/xml;q=0.9, */*;q=0.5',
-                'User-Agent' => 'OgraFi-RSS-Reader/1.0 (+'.url('/rss').')',
-            ])->get($url);
+            $response = null;
 
-            if ($response->redirect()) {
-                throw new RuntimeException('RSS adresi yönlendirme döndürdü. Yönlendirme hedefini doğrudan kaynak adresi olarak ekleyin.');
+            // Follow a small number of redirects manually so every redirect target
+            // is revalidated against the SSRF protections above.
+            for ($redirect = 0; $redirect <= 3; $redirect++) {
+                $origin = (parse_url($url, PHP_URL_SCHEME) ?: 'https').'://'.parse_url($url, PHP_URL_HOST).'/';
+
+                $response = Http::withOptions([
+                    'allow_redirects' => false,
+                    'verify' => true,
+                ])->connectTimeout(7)->timeout(20)->withHeaders([
+                    'Accept' => 'application/rss+xml, application/atom+xml, application/xml, text/xml, application/*+xml;q=0.9, */*;q=0.5',
+                    'Accept-Language' => 'tr-TR,tr;q=0.9,en-US;q=0.8,en;q=0.7',
+                    'Cache-Control' => 'no-cache',
+                    'Pragma' => 'no-cache',
+                    'Referer' => $origin,
+                    'User-Agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36',
+                ])->get($url);
+
+                if (! $response->redirect()) {
+                    break;
+                }
+
+                if ($redirect === 3) {
+                    throw new RuntimeException('RSS kaynağı çok fazla yönlendirme yaptı.');
+                }
+
+                $location = trim((string) $response->header('Location'));
+                $nextUrl = $location !== '' ? $this->resolveUrl($location, $url) : null;
+                if ($nextUrl === null) {
+                    throw new RuntimeException('RSS kaynağı geçersiz bir yönlendirme adresi döndürdü.');
+                }
+
+                $url = $this->validatedFeedUrl($nextUrl);
             }
 
-            if (! $response->successful()) {
-                throw new RuntimeException('Kaynak HTTP '.$response->status().' yanıtı döndürdü.');
+            if (! $response || ! $response->successful()) {
+                $status = $response?->status() ?? 0;
+                if ($status === 403) {
+                    throw new RuntimeException('Kaynak HTTP 403 döndürdü: NTV sunucusu OgraFi sunucusundan gelen otomatik isteği engelliyor. Tarayıcı başlıkları ve güvenli yönlendirme denendi; kaynak tarafındaki IP/bot koruması devam ediyorsa alternatif RSS adresi veya izin listesi gerekir.');
+                }
+
+                throw new RuntimeException('Kaynak HTTP '.$status.' yanıtı döndürdü.');
             }
 
             $body = $response->body();
