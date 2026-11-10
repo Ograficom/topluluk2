@@ -45,7 +45,7 @@ class SantralPage extends Page
                 ['icon' => 'shield-check', 'title' => 'OTP ve SMS', 'description' => 'Doğrulama ve bilgilendirme mesajları.'],
                 ['icon' => 'workflow', 'title' => 'CRM, API ve Webhook', 'description' => 'Kullandığınız sistemlerle entegrasyon.'],
             ],
-            'steps_title' => $settings->steps_title,
+            'steps_title' => $settings->steps_title,\n            'packages_title' => $settings->packages_title,\n            'packages_description' => $settings->packages_description,\n            'packages' => $settings->packages ?: [\n                ['name' => 'Başlangıç', 'price' => 0, 'period' => 'aylık', 'description' => 'Temel telefon trafiği ve çağrı yönlendirme ihtiyaçları için.', 'features' => "Bulut santral\\nTemel karşılama\\nÇağrı yönlendirme\\nTeknik destek", 'featured' => false],\n                ['name' => 'İşletme', 'price' => 0, 'period' => 'aylık', 'description' => 'Günlük çağrı trafiği olan işletmeler için kapsamlı paket.', 'features' => "Tüm Başlangıç özellikleri\\nIVR sesli yanıt menüsü\\nBirden fazla dahili\\nÇağrı raporları\\nEntegrasyon desteği", 'featured' => true],\n                ['name' => 'Profesyonel', 'price' => 0, 'period' => 'aylık', 'description' => 'Yoğun çağrı ve özel entegrasyon ihtiyacı olan ekipler için.', 'features' => "Tüm İşletme özellikleri\\nGelişmiş çağrı akışları\\nCRM / API entegrasyonu\\nÖzel yapılandırma\\nÖncelikli destek", 'featured' => false],\n            ],
             'steps' => $settings->steps ?: [
                 ['title' => 'İhtiyacınızı belirleyelim', 'description' => 'Hat, kullanıcı ve entegrasyon ihtiyaçlarınızı netleştirelim.'],
                 ['title' => 'Sisteminizi hazırlayalım', 'description' => 'Numara, karşılama ve yönlendirme ayarlarını yapalım.'],
@@ -93,6 +93,20 @@ class SantralPage extends Page
                                 TextInput::make('title')->label('Başlık')->required()->maxLength(120),
                                 Textarea::make('description')->label('Açıklama')->rows(3)->required(),
                             ])->columns(2)->defaultItems(0)->reorderable()->collapsible()->columnSpanFull(),
+                    ]),
+                Section::make('Fiyatlandırma paketleri')
+                    ->description('Üç santral paketinin adını, aylık ücretini ve özelliklerini buradan yönetin. Fiyatı 0 bırakırsanız sayfada Teklif alın gösterilir.')
+                    ->schema([
+                        TextInput::make('packages_title')->label('Paket alanı başlığı')->required()->maxLength(180),
+                        Textarea::make('packages_description')->label('Paket alanı açıklaması')->rows(2)->columnSpanFull(),
+                        Repeater::make('packages')->label('Santral paketleri')->minItems(3)->maxItems(3)->schema([
+                            TextInput::make('name')->label('Paket adı')->required()->maxLength(80),
+                            TextInput::make('price')->label('Fiyat (TL)')->numeric()->minValue(0)->default(0)->required(),
+                            TextInput::make('period')->label('Ücret dönemi')->default('aylık')->maxLength(30),
+                            Textarea::make('description')->label('Kısa açıklama')->rows(2)->required(),
+                            Textarea::make('features')->label('Özellikler (her satıra bir özellik)')->rows(5)->required()->columnSpanFull(),
+                            \\Filament\\Forms\\Components\\Toggle::make('featured')->label('Öne çıkarılan paket'),
+                        ])->columns(2)->defaultItems(3)->reorderable(false)->collapsible()->columnSpanFull(),
                     ]),
                 Section::make('Nasıl çalışır?')
                     ->schema([
