@@ -346,6 +346,6 @@ class SettingsController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect()->route('posts.index')->with('status', 'Hesabınız silindi.');
+        return redirect()->route('posts.index')->with('status', 'Hesabınız kapatıldı. Kalıcı silme talebiniz yönetici incelemesine alındı.');
     }
 }
