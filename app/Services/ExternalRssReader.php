@@ -624,7 +624,9 @@ class ExternalRssReader
 
                 $description = $meta('og:description') ?: $meta('description') ?: $meta('twitter:description');
 
-                // Prefer structured articleBody when the publisher exposes it.
+                // Collect every available full-body candidate. Some publishers expose
+                // only the lead paragraph in JSON-LD/itemprop while the remaining
+                // paragraphs live in a separate article content container.
                 $articleBody = '';
                 $jsonLdNodes = $xpath->query('//script[@type="application/ld+json"]');
                 if ($jsonLdNodes) {
@@ -640,38 +642,57 @@ class ExternalRssReader
                             foreach ($candidates as $candidate) {
                                 if (! is_array($candidate)) continue;
                                 $bodyCandidate = $candidate['articleBody'] ?? null;
-                                if (is_string($bodyCandidate) && mb_strlen($this->readableContent($bodyCandidate)) > mb_strlen($articleBody)) {
-                                    $articleBody = $this->readableContent($bodyCandidate);
+                                if (is_string($bodyCandidate)) {
+                                    $bodyText = $this->readableContent($bodyCandidate);
+                                    if (mb_strlen($bodyText) > mb_strlen($articleBody)) {
+                                        $articleBody = $bodyText;
+                                    }
                                 }
                             }
                         }
                     }
                 }
 
-                // Fallback to semantic article-body containers. Extract only
-                // headings and paragraphs, not navigation, recommendations or ads.
-                if ($articleBody === '') {
-                    $bodyNodes = $xpath->query('//*[@itemprop="articleBody"]');
-                    if (! $bodyNodes || $bodyNodes->length === 0) {
-                        $bodyNodes = $xpath->query('//article[contains(translate(@class,"ABCDEFGHIJKLMNOPQRSTUVWXYZ","abcdefghijklmnopqrstuvwxyz"),"article-body") or contains(translate(@class,"ABCDEFGHIJKLMNOPQRSTUVWXYZ","abcdefghijklmnopqrstuvwxyz"),"article-content") or contains(translate(@class,"ABCDEFGHIJKLMNOPQRSTUVWXYZ","abcdefghijklmnopqrstuvwxyz"),"news-content") or contains(translate(@class,"ABCDEFGHIJKLMNOPQRSTUVWXYZ","abcdefghijklmnopqrstuvwxyz"),"detail-content")]');
-                    }
-                    if (! $bodyNodes || $bodyNodes->length === 0) {
-                        $bodyNodes = $xpath->query('//article');
-                    }
-                    if ($bodyNodes && $bodyNodes->length > 0) {
-                        $bodyNode = $bodyNodes->item(0);
-                        $paragraphNodes = (new \DOMXPath($document))->query('.//h1 | .//h2 | .//h3 | .//p', $bodyNode);
+                // Check semantic containers independently and keep the longest
+                // clean result instead of stopping at the first, often abbreviated,
+                // articleBody element.
+                $bodyQueries = [
+                    '//*[@itemprop="articleBody"]',
+                    '//article[contains(translate(@class,"ABCDEFGHIJKLMNOPQRSTUVWXYZ","abcdefghijklmnopqrstuvwxyz"),"article-body") or contains(translate(@class,"ABCDEFGHIJKLMNOPQRSTUVWXYZ","abcdefghijklmnopqrstuvwxyz"),"article-content") or contains(translate(@class,"ABCDEFGHIJKLMNOPQRSTUVWXYZ","abcdefghijklmnopqrstuvwxyz"),"news-content") or contains(translate(@class,"ABCDEFGHIJKLMNOPQRSTUVWXYZ","abcdefghijklmnopqrstuvwxyz"),"detail-content")]',
+                    '//main//article',
+                    '//article',
+                    '//*[contains(translate(@class,"ABCDEFGHIJKLMNOPQRSTUVWXYZ","abcdefghijklmnopqrstuvwxyz"),"article-detail") or contains(translate(@class,"ABCDEFGHIJKLMNOPQRSTUVWXYZ","abcdefghijklmnopqrstuvwxyz"),"news-detail")]',
+                ];
+
+                foreach ($bodyQueries as $bodyQuery) {
+                    $bodyNodes = $xpath->query($bodyQuery);
+                    if (! $bodyNodes || $bodyNodes->length === 0) continue;
+
+                    foreach ($bodyNodes as $bodyNode) {
+                        if (! $bodyNode instanceof \\DOMElement) continue;
+                        $paragraphNodes = $xpath->query('.//h1 | .//h2 | .//h3 | .//p', $bodyNode);
+                        if (! $paragraphNodes) continue;
+
                         $parts = [];
-                        if ($paragraphNodes) {
-                            foreach ($paragraphNodes as $paragraphNode) {
-                                $text = trim(preg_replace('/\\s+/u', ' ', $paragraphNode->textContent) ?? '');
-                                if ($text !== '' && mb_strlen($text) > 35) $parts[] = $text;
-                            }
+                        foreach ($paragraphNodes as $paragraphNode) {
+                            $text = trim(preg_replace('/\\s+/u', ' ', $paragraphNode->textContent) ?? '');
+                            if ($text === '' || mb_strlen($text) < 35) continue;
+
+                            $class = strtolower($paragraphNode->getAttribute('class'));
+                            $parentClass = strtolower($paragraphNode->parentNode instanceof \\DOMElement ? $paragraphNode->parentNode->getAttribute('class') : '');
+                            if (preg_match('/advert|related|recommend|social|share|comment|newsletter|breadcrumb|author-box|tag-list/', $class.' '.$parentClass)) continue;
+
+                            $parts[] = $text;
                         }
-                        $articleBody = implode("\n\n", array_values(array_unique($parts)));
+
+                        $candidateBody = implode("\\n\\n", array_values(array_unique($parts)));
+                        if (mb_strlen($candidateBody) > mb_strlen($articleBody)) {
+                            $articleBody = $candidateBody;
+                        }
                     }
                 }
 
+                $articleBody = Str::limit($articleBody, 100000, '');
 
                 // Structured article metadata often contains better keywords and a concise description.
                 $jsonLdNodes = $xpath->query('//script[@type="application/ld+json"]');
