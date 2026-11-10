@@ -159,23 +159,13 @@
                                 <span class="rss-admin-status {{ $source->is_active ? '' : 'is-off' }}">{{ $source->is_active ? 'Etkin' : 'Duraklatıldı' }}</span>
                                 <span class="rss-admin-status {{ $source->auto_publish ? '' : 'is-off' }}">{{ $source->auto_publish ? 'Otomatik yayın açık' : 'Otomatik yayın kapalı' }}</span>
                             </div>
-                            <div class="rss-admin-publish-settings">
-                                <select class="fi-input" wire:model="sourceSettings.{{ $source->id }}.author_id" aria-label="Yayın yazarı">
-                                    <option value="">Yazar seçin</option>
-                                    @foreach ($this->authors() as $id => $name)<option value="{{ $id }}">{{ $name }}</option>@endforeach
-                                </select>
-                                <select class="fi-input" wire:model="sourceSettings.{{ $source->id }}.channel_id" aria-label="Yayın kategorisi">
-                                    <option value="">Kategori seçin</option>
-                                    @foreach ($this->channels() as $id => $name)<option value="{{ $id }}">{{ $name }}</option>@endforeach
-                                </select>
-                                <label><input type="checkbox" wire:model="sourceSettings.{{ $source->id }}.auto_publish" style="accent-color:#2563eb"> Otomatik yayınla</label>
-                                <x-filament::button size="sm" color="gray" wire:click="saveSourceSettings({{ $source->id }})">Ayarları kaydet</x-filament::button>
-                            </div>
+
                             @if ($source->last_error)
                                 <p class="rss-admin-error">{{ $source->last_error }}</p>
                             @endif
                         </div>
                         <div class="rss-admin-actions">
+                            <x-filament::button size="sm" color="gray" tag="a" href="{{ \\App\\Filament\\Pages\\RssSourceManage::getUrl(['record' => $source->id]) }}">Kaynağı yönet</x-filament::button>
                             <x-filament::icon-button icon="heroicon-o-arrow-path" color="gray" tooltip="Şimdi güncelle" wire:click="refreshSource({{ $source->id }})" />
                             <x-filament::icon-button icon="{{ $source->is_active ? 'heroicon-o-pause' : 'heroicon-o-play' }}" color="gray" tooltip="{{ $source->is_active ? 'Duraklat' : 'Etkinleştir' }}" wire:click="toggleSource({{ $source->id }})" />
                             <x-filament::icon-button icon="heroicon-o-trash" color="danger" tooltip="Kaynağı sil" wire:click="deleteSource({{ $source->id }})" wire:confirm="Bu RSS kaynağı ve kayıtlı içerikleri silinsin mi?" />
