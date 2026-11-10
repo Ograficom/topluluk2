@@ -402,10 +402,26 @@ class ExternalRssReader
             $guid = $link;
         }
 
-        $content = (string) ($entry->description ?? $entry->summary ?? $entry->content ?? $atom->summary ?? $atom->content ?? '');
+        // Prefer the richest content explicitly supplied by the feed. Publishers often
+        // put a teaser in <description> and fuller feed text in content:encoded or
+        // Atom <content>; choosing description first silently discards that content.
         $contentNamespace = $entry->children('http://purl.org/rss/1.0/modules/content/');
-        if (isset($contentNamespace->encoded)) {
-            $content = (string) $contentNamespace->encoded;
+        $contentCandidates = [
+            (string) ($contentNamespace->encoded ?? ''),
+            (string) ($atom->content ?? ''),
+            (string) ($entry->content ?? ''),
+            (string) ($atom->summary ?? ''),
+            (string) ($entry->description ?? ''),
+            (string) ($entry->summary ?? ''),
+        ];
+        $content = '';
+        $bestContentLength = 0;
+        foreach ($contentCandidates as $candidate) {
+            $candidateLength = mb_strlen($this->readableContent($candidate));
+            if ($candidateLength > $bestContentLength) {
+                $content = $candidate;
+                $bestContentLength = $candidateLength;
+            }
         }
 
         $author = trim((string) ($entry->author ?? ''));
@@ -499,7 +515,7 @@ class ExternalRssReader
             'guid' => Str::limit($guid, 2000, ''),
             'title' => Str::limit($title, 500, ''),
             'link' => $link,
-            'summary' => Str::limit($this->plainText($content), 12000, ''),
+            'summary' => Str::limit($this->readableContent($content), 12000, ''),
             'author' => $author !== '' ? Str::limit($author, 255, '') : null,
             'image_url' => $this->safeWebUrl($image),
             'image_urls' => $imageUrls,
@@ -635,6 +651,27 @@ class ExternalRssReader
         if ($xml->getName() === 'rss') return (string) ($xml->channel->description ?? '');
         $atom = $xml->children('http://www.w3.org/2005/Atom');
         return (string) ($atom->subtitle ?? '');
+    }
+
+    /**
+     * Convert HTML supplied inside an RSS/Atom item to readable text and keep
+     * paragraph boundaries. The publisher's webpage is not scraped for its body.
+     */
+    private function readableContent(string $value): string
+    {
+        if ($value === '') return '';
+
+        $value = preg_replace('~<br\\s*/?>|</(p|div|li|h[1-6]|blockquote|tr)>~i', "$0\\n", $value) ?? $value;
+        $value = preg_replace('~<(p|div|li|h[1-6]|blockquote|tr)(\\s[^>]*)?>~i', "\\n", $value) ?? $value;
+        $decoded = html_entity_decode(strip_tags($value), ENT_QUOTES | ENT_HTML5, 'UTF-8');
+        $decoded = str_replace(["\\r\\n", "\\r"], "\\n", $decoded);
+        $lines = preg_split('/\\n+/u', $decoded) ?: [];
+        $lines = array_values(array_filter(array_map(
+            fn ($line) => trim(preg_replace('/[\\t ]+/u', ' ', $line) ?? ''),
+            $lines
+        ), fn ($line) => $line !== ''));
+
+        return trim(implode("\\n\\n", $lines));
     }
 
     private function plainText(string $value): string
