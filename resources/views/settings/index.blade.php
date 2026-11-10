@@ -11,63 +11,7 @@
             }
         }
     </style>
-<script>
-(() => {
-    const panel = document.querySelector('[data-tab-panel="cookies"]');
-    if (!panel) return;
 
-    const keys = ['preferences', 'analytics', 'marketing'];
-    const storageKey = 'ografi_cookie_consent_v1';
-    const root = document.querySelector('[data-cookie-consent]');
-
-    const readConsent = () => {
-        try {
-            const value = JSON.parse(localStorage.getItem(storageKey) || 'null');
-            return value && value.version === 1 && value.categories ? value : null;
-        } catch {
-            return null;
-        }
-    };
-
-    const syncFromStorage = () => {
-        const consent = readConsent();
-        keys.forEach((key) => {
-            const input = panel.querySelector('[data-settings-cookie-category="' + key + '"]');
-            if (input) input.checked = Boolean(consent?.categories?.[key]);
-        });
-    };
-
-    const saveThroughConsentManager = (mode) => {
-        if (!root) return;
-        if (mode === 'accept') {
-            root.querySelector('[data-cookie-accept]')?.click();
-            syncFromStorage();
-            return;
-        }
-        if (mode === 'reject') {
-            root.querySelector('[data-cookie-reject]')?.click();
-            syncFromStorage();
-            return;
-        }
-
-        keys.forEach((key) => {
-            const source = panel.querySelector('[data-settings-cookie-category="' + key + '"]');
-            const target = root.querySelector('[data-cookie-category="' + key + '"]');
-            if (source && target) target.checked = source.checked;
-        });
-        root.querySelector('[data-cookie-save]')?.click();
-        syncFromStorage();
-    };
-
-    panel.querySelector('[data-settings-cookie-save]')?.addEventListener('click', () => saveThroughConsentManager('save'));
-    panel.querySelector('[data-settings-cookie-accept]')?.addEventListener('click', () => saveThroughConsentManager('accept'));
-    panel.querySelector('[data-settings-cookie-reject]')?.addEventListener('click', () => saveThroughConsentManager('reject'));
-
-    syncFromStorage();
-    window.addEventListener('storage', syncFromStorage);
-    window.addEventListener('ografi:cookie-consent-updated', syncFromStorage);
-})();
-</script>
 
 @endpush
 
@@ -748,6 +692,63 @@
     if (params.get('choose_username') !== '1') return;
     document.querySelector('[data-modal-btn="change-username"]')?.click();
     document.getElementById('settings-username')?.focus();
+})();
+</script>
+<script>
+(() => {
+    const panel = document.querySelector('[data-tab-panel="cookies"]');
+    if (!panel) return;
+
+    const keys = ['preferences', 'analytics', 'marketing'];
+    const storageKey = 'ografi_cookie_consent_v1';
+    const root = document.querySelector('[data-cookie-consent]');
+
+    const readConsent = () => {
+        try {
+            const value = JSON.parse(localStorage.getItem(storageKey) || 'null');
+            return value && value.version === 1 && value.categories ? value : null;
+        } catch {
+            return null;
+        }
+    };
+
+    const syncFromStorage = () => {
+        const consent = readConsent();
+        keys.forEach((key) => {
+            const input = panel.querySelector('[data-settings-cookie-category="' + key + '"]');
+            if (input) input.checked = Boolean(consent?.categories?.[key]);
+        });
+    };
+
+    const saveThroughConsentManager = (mode) => {
+        if (!root) return;
+        if (mode === 'accept') {
+            root.querySelector('[data-cookie-accept]')?.click();
+            syncFromStorage();
+            return;
+        }
+        if (mode === 'reject') {
+            root.querySelector('[data-cookie-reject]')?.click();
+            syncFromStorage();
+            return;
+        }
+
+        keys.forEach((key) => {
+            const source = panel.querySelector('[data-settings-cookie-category="' + key + '"]');
+            const target = root.querySelector('[data-cookie-category="' + key + '"]');
+            if (source && target) target.checked = source.checked;
+        });
+        root.querySelector('[data-cookie-save]')?.click();
+        syncFromStorage();
+    };
+
+    panel.querySelector('[data-settings-cookie-save]')?.addEventListener('click', () => saveThroughConsentManager('save'));
+    panel.querySelector('[data-settings-cookie-accept]')?.addEventListener('click', () => saveThroughConsentManager('accept'));
+    panel.querySelector('[data-settings-cookie-reject]')?.addEventListener('click', () => saveThroughConsentManager('reject'));
+
+    syncFromStorage();
+    window.addEventListener('storage', syncFromStorage);
+    window.addEventListener('ografi:cookie-consent-updated', syncFromStorage);
 })();
 </script>
 @endpush
