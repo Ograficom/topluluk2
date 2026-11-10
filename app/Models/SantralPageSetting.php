@@ -16,6 +16,7 @@ class SantralPageSetting extends Model
             'features' => 'array',
             'steps' => 'array',
             'slides' => 'array',
+            'seo_tags' => 'array',
             'packages' => 'array',
         ];
     }
