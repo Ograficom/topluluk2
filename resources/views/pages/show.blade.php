@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('seo_entity', 'true')
+
 @section('title', $page->meta_title ?: $page->title)
 @section('description', $page->meta_description ?: $page->title.' — OgraFi hakkında bilgiler, topluluk politikaları ve site içerikleri.')
 @section('canonical', $page->canonical_url ?: route('pages.show', $page->slug))
