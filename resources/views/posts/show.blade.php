@@ -3,6 +3,40 @@
 @section('title', $post->title)
 @section('description', $post->meta_description ?: $post->excerpt)
 
+@section('canonical', route('posts.show', $post))
+@section('og_type', 'article')
+@if ($post->coverImageUrl())
+    @section('seo_image', $post->coverImageUrl())
+@endif
+
+@push('head')
+    <meta property="article:published_time" content="{{ $post->published_at?->toAtomString() }}">
+    <meta property="article:modified_time" content="{{ $post->updated_at?->toAtomString() }}">
+    @if ($post->user)
+        <meta property="article:author" content="{{ $post->user->displayName() }}">
+    @endif
+    @if ($post->channel)
+        <meta property="article:section" content="{{ $post->channel->name }}">
+    @endif
+    <script type="application/ld+json">
+        {!! json_encode([
+            '@context' => 'https://schema.org',
+            '@type' => 'Article',
+            'mainEntityOfPage' => ['@type' => 'WebPage', '@id' => route('posts.show', $post)],
+            'headline' => $post->title,
+            'description' => \Illuminate\Support\Str::limit(trim(strip_tags($post->meta_description ?: $post->excerpt)), 300, ''),
+            'datePublished' => $post->published_at?->toAtomString(),
+            'dateModified' => ($post->updated_at ?: $post->published_at)?->toAtomString(),
+            'author' => $post->user ? ['@type' => 'Person', 'name' => $post->user->displayName(), 'url' => route('profiles.show', $post->user)] : ['@type' => 'Organization', 'name' => 'OgraFi'],
+            'publisher' => ['@type' => 'Organization', 'name' => 'OgraFi', 'url' => url('/')],
+            'image' => $post->coverImageUrl() ? [$post->coverImageUrl()] : [asset('assets/img/meta/logo.svg')],
+            'articleSection' => $post->channel?->name,
+            'inLanguage' => 'tr-TR',
+        ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_HEX_TAG | JSON_HEX_AMP) !!}
+    </script>
+@endpush
+
+
 @section('content')
     <div class="speedbar">
         <a href="{{ route('posts.index') }}">OgraFi</a>
