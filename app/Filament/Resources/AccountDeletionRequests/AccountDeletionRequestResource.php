@@ -17,7 +17,7 @@ class AccountDeletionRequestResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedUserMinus;
 
-    protected static ?string $navigationGroup = 'Kullanıcı Yönetimi';
+    protected static string|\UnitEnum|null $navigationGroup = 'Kullanıcı Yönetimi';
 
     protected static ?int $navigationSort = 20;
 
