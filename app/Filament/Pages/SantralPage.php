@@ -32,6 +32,10 @@ class SantralPage extends Page
 
         $this->form->fill([
             'eyebrow' => $settings->eyebrow,
+            'seo_title' => $settings->seo_title,
+            'seo_description' => $settings->seo_description,
+            'seo_tags' => $settings->seo_tags ?: [],
+            'featured_image' => $settings->featured_image,
             'hero_title' => $settings->hero_title,
             'hero_description' => $settings->hero_description,
             'primary_button_text' => $settings->primary_button_text,
@@ -78,6 +82,14 @@ class SantralPage extends Page
                         TextInput::make('primary_button_text')->label('İletişim butonu')->required()->maxLength(100),
                         TextInput::make('activation_button_text')->label('Entegrasyon butonu')->required()->maxLength(100),
                         Textarea::make('hero_note')->label('Buton altı kısa not')->rows(2)->columnSpanFull(),
+                    ])->columns(2),
+                Section::make('SEO ve öne çıkan görsel')
+                    ->description('Google arama sonucu, sosyal medya paylaşımı ve sayfanın öne çıkan görselini buradan yönetin.')
+                    ->schema([
+                        TextInput::make('seo_title')->label('SEO başlığı')->maxLength(180)->helperText('Önerilen uzunluk: 50–60 karakter. Boş bırakılırsa ana başlık kullanılır.')->columnSpanFull(),
+                        Textarea::make('seo_description')->label('Meta açıklaması')->rows(3)->maxLength(320)->helperText('Önerilen uzunluk: 140–160 karakter. Sayfanın hizmetini ve faydasını net anlatın.')->columnSpanFull(),
+                        TagsInput::make('seo_tags')->label('SEO etiketleri / anahtar kelimeler')->placeholder('Bulut santral, Asterisk, IVR...')->separator(',')->columnSpanFull(),
+                        FileUpload::make('featured_image')->label('Öne çıkan görsel (Open Graph)')->image()->disk('public')->directory('santral/seo')->visibility('public')->imageEditor()->helperText('Google ve sosyal medya paylaşımlarında kullanılır. 1200 × 630 px görsel tercih edin.')->columnSpanFull(),
                     ])->columns(2),
                 Section::make('Sayfa slaytları')
                     ->description('Görsel, başlık ve açıklama ekleyin. Slaytlar santral sayfasında otomatik kayan bir alanda gösterilir.')
