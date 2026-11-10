@@ -6,9 +6,6 @@
 @section('description', $user->profile_seo_description ?: \\Illuminate\\Support\\Str::limit(trim(strip_tags($user->bio ?: $user->signature ?: $user->displayName().' adlı kullanıcının OgraFi topluluk profili.')), 160, ''))
 @section('canonical', $user->profile_canonical_url ?: route('profiles.show', $user))
 @section('robots', ($user->profile_robots_index ?? true) && ! request()->hasAny(['posts', 'comments']) ? 'index,follow' : 'noindex,follow')
-@if (filled($user->profile_seo_keywords))
-    @section('seo_keywords', $user->profile_seo_keywords)
-@endif
 @if (filled($user->profile_og_image))
     @section('seo_image', $user->profile_og_image)
 @elseif (filled($user->avatar_path))
