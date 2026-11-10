@@ -5,6 +5,19 @@
 @section('canonical', $page->canonical_url ?: route('pages.show', $page->slug))
 @section('robots', ($page->robots_index ?? true) ? 'index,follow' : 'noindex,follow')
 @section('og_type', 'article')
+@push('head')
+    <script type="application/ld+json">
+        {!! json_encode([
+            '@context' => 'https://schema.org',
+            '@type' => 'WebPage',
+            'name' => $page->meta_title ?: $page->title,
+            'description' => $page->meta_description ?: $page->title,
+            'url' => $page->canonical_url ?: route('pages.show', $page->slug),
+            'inLanguage' => 'tr-TR',
+            'isPartOf' => ['@type' => 'WebSite', 'name' => $brandName, 'url' => route('posts.index')],
+        ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_HEX_TAG | JSON_HEX_AMP) !!}
+    </script>
+@endpush
 @if (filled($page->meta_keywords))
     @section('seo_keywords', $page->meta_keywords)
 @endif
