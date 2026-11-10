@@ -74,11 +74,14 @@ class RssSources extends Page
             'channel_id' => $this->channelId,
         ], [
             'name' => ['required', 'string', 'max:160'],
+            'url' => ['required', 'url', 'max:2048'],
             'author_id' => ['required', 'integer', 'exists:users,id'],
             'channel_id' => ['required', 'integer', 'exists:channels,id'],
         ], [
             'name.required' => 'Kaynak adı gerekli.',
+            'url.required' => 'RSS adresi gerekli.',
             'url.url' => 'Geçerli bir RSS adresi girin.',
+            'url.max' => 'RSS adresi 2048 karakterden uzun olamaz.',
             'author_id.required' => 'Yayın yazarı seçin.',
             'channel_id.required' => 'Yayın kategorisi seçin.',
         ])->validate();
