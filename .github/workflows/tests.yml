@@ -7,6 +7,7 @@ on:
   push:
     branches:
       - main
+      - 'feature/ografi-seo-per-page'
 
 permissions:
   contents: read
