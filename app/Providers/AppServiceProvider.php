@@ -126,7 +126,7 @@ class AppServiceProvider extends ServiceProvider
             ]);
         });
 
-        View::composer(['posts.index', 'pages.show', 'channels.show'], function ($view): void {
+        View::composer(['posts.index', 'pages.show', 'channels.show', 'profiles.show'], function ($view): void {
             $siteSettings = SiteSetting::current();
 
             $view->with([
