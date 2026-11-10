@@ -2890,3 +2890,304 @@ body.is-messenger-conversation .pm-dialog__composer .pm-composer__send svg {
     }
     .post-create-simple .post-create-simple__file { font-size:14px; }
 }
+
+
+/* OgraFi modern composer layout — visual polish only; inherits the existing column width. */
+.post-create-simple .addpost__form {
+    padding:24px;
+    border:1px solid #e6ebf2;
+    border-radius:16px;
+    background:#fff;
+    box-shadow:0 3px 14px rgba(20,35,60,.035);
+}
+.post-create-simple .post-composer-author {
+    position:relative;
+    display:flex;
+    align-items:center;
+    gap:12px;
+    margin:0 0 25px;
+    padding:0 0 18px;
+    border-bottom:1px solid #edf0f5;
+}
+.post-create-simple .post-composer-author img {
+    width:44px;
+    height:44px;
+    border:2px solid #eef4ff;
+    border-radius:13px;
+}
+.post-create-simple .post-composer-author strong {
+    font-size:15px;
+    font-weight:750;
+    letter-spacing:-.02em;
+}
+.post-create-simple .post-composer-author span {
+    font-size:12px;
+    color:#7b8798;
+}
+.post-create-simple .post-composer-field {
+    margin-bottom:22px;
+}
+.post-create-simple .post-composer-label {
+    margin-bottom:9px;
+    color:#263246;
+    font-size:14px;
+    font-weight:750;
+    letter-spacing:-.01em;
+}
+.post-create-simple .post-composer-label > span {
+    padding:3px 7px;
+    border-radius:20px;
+    background:#f1f5f9;
+    color:#718096;
+    font-size:10px;
+}
+.post-create-simple .post-create-simple__title {
+    min-height:58px;
+    border:1px solid #dfe6ef;
+    border-radius:11px;
+    background:#fff;
+    font-size:21px;
+    font-weight:700;
+    letter-spacing:-.025em;
+}
+.post-create-simple .post-create-simple__excerpt,
+.post-create-simple .post-create-simple__seo,
+.post-create-simple .post-create-simple__media input[type="url"] {
+    border:1px solid #dfe6ef;
+    border-radius:11px;
+    background:#fff;
+}
+.post-create-simple .post-create-simple__excerpt {
+    min-height:116px;
+}
+.post-create-simple .post-composer-count {
+    margin-top:8px;
+    color:#8995a6;
+    font-size:11px;
+}
+.post-create-simple .post-composer-seo {
+    margin:0 0 22px;
+    overflow:hidden;
+    border:1px solid #e3eaf4;
+    border-radius:12px;
+    background:#f8faff;
+}
+.post-create-simple .post-composer-seo summary {
+    min-height:54px;
+    padding:0 15px;
+}
+.post-create-simple .post-composer-seo summary > span {
+    font-size:14px;
+    font-weight:750;
+}
+.post-create-simple .post-composer-seo summary .icon {
+    display:inline-flex;
+    width:28px;
+    height:28px;
+    align-items:center;
+    justify-content:center;
+    border-radius:8px;
+    background:#e8f1ff;
+}
+.post-create-simple .post-composer-seo-content {
+    padding:2px 15px 15px;
+}
+.post-create-simple .post-composer-google-preview {
+    margin-top:14px;
+    padding:14px;
+    border:1px solid #e4eaf2;
+    border-radius:10px;
+    background:#fff;
+}
+.post-create-simple .post-composer-google-preview > span {
+    font-size:11px;
+}
+.post-create-simple .post-composer-google-preview strong {
+    font-size:16px;
+}
+.post-create-simple .post-composer-google-preview p {
+    font-size:12px;
+    line-height:1.6;
+}
+.post-create-simple .post-composer-editor-section {
+    margin:0 0 23px;
+    padding:17px;
+    border:1px solid #e3eaf3;
+    border-radius:13px;
+    background:#fff;
+}
+.post-create-simple .post-composer-editor-title {
+    align-items:center;
+    margin-bottom:13px;
+}
+.post-create-simple .post-composer-editor-title .post-composer-label {
+    display:flex;
+    align-items:center;
+    gap:9px;
+    margin:0;
+    font-size:16px;
+}
+.post-create-simple .post-composer-editor-title .post-composer-label::before {
+    content:"";
+    display:block;
+    width:4px;
+    height:20px;
+    border-radius:5px;
+    background:#1769ff;
+}
+.post-create-simple .post-composer-editor-title p,
+.post-create-simple .post-composer-media-title p {
+    margin-top:5px;
+    color:#7b8798;
+    font-size:12px;
+}
+.post-create-simple .post-create-simple__editor-status {
+    padding:6px 10px;
+    border:1px solid #e1eaff;
+    border-radius:20px;
+    background:#f1f6ff;
+    color:#2468e8;
+    font-size:11px;
+    font-weight:650;
+}
+.post-create-simple .post-create-simple__writing {
+    min-height:350px;
+    border:1px solid #e6ebf2;
+    border-radius:10px;
+    background:#fff;
+}
+.post-create-simple .post-create-simple__editor {
+    min-height:320px;
+    padding-top:22px;
+    padding-bottom:20px;
+}
+.post-create-simple .post-create-simple__editor .codex-editor,
+.post-create-simple .post-create-simple__editor .codex-editor__redactor {
+    min-height:280px;
+}
+.post-create-simple .post-composer-editor-tip {
+    padding-top:8px;
+    color:#8793a5;
+}
+.post-create-simple .post-composer-media-section {
+    margin:0 0 18px;
+    padding:17px;
+    border:1px solid #e3eaf3;
+    border-radius:13px;
+    background:#fbfcfe;
+}
+.post-create-simple .post-composer-media-title {
+    margin-bottom:13px;
+}
+.post-create-simple .post-composer-media-title .post-composer-label {
+    font-size:15px;
+}
+.post-create-simple .post-create-simple__file {
+    min-height:48px;
+    border:1px solid #dfe6ef;
+    border-radius:9px;
+    background:#fff;
+    color:#344054;
+    font-size:13px;
+    transition:border-color .15s ease, background .15s ease;
+}
+.post-create-simple .post-create-simple__file:hover {
+    border-color:#9dbdff;
+    background:#f7faff;
+}
+.post-create-simple .post-composer-advanced {
+    margin-top:0;
+    padding:0 14px;
+    border:1px solid #e3eaf3;
+    border-radius:11px;
+    background:#fff;
+}
+.post-create-simple .post-composer-advanced summary {
+    min-height:52px;
+    font-size:14px;
+}
+.post-create-simple .post-composer-advanced-content {
+    padding:0 0 16px;
+}
+.post-create-simple .post-composer-advanced-content > label:not(.post-create-simple__adult) {
+    margin-top:14px;
+    color:#344054;
+    font-size:13px;
+    font-weight:650;
+}
+.post-create-simple .post-composer-advanced-content select,
+.post-create-simple .post-composer-advanced-content > input:not([type="checkbox"]) {
+    min-height:46px;
+    border:1px solid #dfe6ef;
+    border-radius:9px;
+    background:#fff;
+    font-size:14px;
+}
+.post-create-simple .post-create-simple__footer {
+    margin-top:18px;
+    padding-top:18px;
+    border-top:1px solid #edf0f5;
+}
+.post-create-simple .post-create-simple__footer .btn {
+    min-height:46px;
+    border-radius:10px;
+    font-size:14px;
+    font-weight:700;
+}
+@media (max-width:600px) {
+    .post-create-simple .addpost__form {
+        padding:16px;
+        border-radius:14px;
+        box-shadow:none;
+    }
+    .post-create-simple .post-composer-author {
+        margin-bottom:20px;
+        padding-bottom:15px;
+    }
+    .post-create-simple .post-composer-field {
+        margin-bottom:19px;
+    }
+    .post-create-simple .post-create-simple__title {
+        min-height:54px;
+        font-size:19px;
+    }
+    .post-create-simple .post-create-simple__excerpt {
+        min-height:104px;
+    }
+    .post-create-simple .post-composer-seo {
+        margin-bottom:18px;
+    }
+    .post-create-simple .post-composer-editor-section,
+    .post-create-simple .post-composer-media-section {
+        padding:13px;
+        border-radius:11px;
+    }
+    .post-create-simple .post-composer-editor-title {
+        align-items:flex-start;
+    }
+    .post-create-simple .post-composer-editor-title .post-composer-label {
+        font-size:15px;
+    }
+    .post-create-simple .post-create-simple__writing {
+        min-height:300px;
+    }
+    .post-create-simple .post-create-simple__editor {
+        min-height:270px;
+        padding:18px 8px 14px 34px;
+    }
+    .post-create-simple .post-create-simple__editor .codex-editor,
+    .post-create-simple .post-create-simple__editor .codex-editor__redactor {
+        min-height:235px;
+    }
+    .post-create-simple .post-composer-media-title .post-composer-label {
+        font-size:15px;
+    }
+    .post-create-simple .post-create-simple__file {
+        min-height:46px;
+        font-size:14px;
+    }
+    .post-create-simple .post-create-simple__footer {
+        margin:14px -16px -16px;
+        padding:12px 16px calc(12px + env(safe-area-inset-bottom));
+    }
+}
