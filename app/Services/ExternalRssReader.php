@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\RssItem;
 use App\Models\Post;
 use App\Models\RssSource;
+use App\Models\Tag;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
@@ -78,6 +79,10 @@ class ExternalRssReader
                 $rssItem->fill($item);
                 $rssItem->save();
 
+                if ($rssItem->published_post_id) {
+                    $this->syncPublishedPostAssets($rssItem);
+                }
+
                 $saved++;
             }
 
@@ -131,6 +136,42 @@ class ExternalRssReader
     }
 
 
+
+    private function syncPublishedPostAssets(RssItem $item): void
+    {
+        $post = Post::query()->find($item->published_post_id);
+        if (! $post) return;
+
+        $images = collect($item->image_urls ?? [])
+            ->filter(fn ($image) => is_string($image) && $this->safeWebUrl($image))
+            ->unique()
+            ->take(10)
+            ->values();
+        $cover = $item->image_url ?: $images->first();
+        $gallery = $images->reject(fn ($image) => $image === $cover)->values()->all();
+        $tagNames = collect($item->tags ?? [])
+            ->filter(fn ($tag) => is_string($tag) && trim($tag) !== '')
+            ->map(fn ($tag) => mb_substr(trim(ltrim($tag, '#')), 0, 100))
+            ->unique(fn ($tag) => mb_strtolower($tag))
+            ->take(20)
+            ->values()
+            ->all();
+
+        $post->forceFill([
+            'cover_image' => $cover ?: $post->cover_image,
+            'media' => $gallery,
+            'tags' => $tagNames,
+        ])->save();
+
+        $tagIds = [];
+        foreach ($tagNames as $tagName) {
+            $base = Str::slug($tagName);
+            if ($base === '') continue;
+            $tag = Tag::query()->firstOrCreate(['slug' => $base], ['name' => $tagName]);
+            $tagIds[] = $tag->id;
+        }
+        $post->tagRecords()->sync($tagIds);
+    }
 
     private function publishItem(RssSource $source, RssItem $item): void
     {
