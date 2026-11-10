@@ -1,6 +1,7 @@
 <section class="cookie-consent" data-cookie-consent hidden aria-label="Çerez tercihleri">
     <div class="cookie-consent__notice" role="status">
         <p>Çerez kullanıyoruz. <a href="{{ route('pages.show', 'privacy') }}">Detaylar</a></p>
+        <button type="button" class="cookie-consent__settings-link" data-cookie-details-open>Ayarlar</button>
         <button type="button" class="cookie-consent__button cookie-consent__button--primary" data-cookie-accept>TAMAM</button>
     </div>
 
