@@ -6,12 +6,13 @@ use App\Models\Channel;
 use App\Models\Post;
 use App\Models\SitePage;
 use App\Models\SitemapSetting;
+use App\Models\SantralPageSetting;
 use App\Models\Tag;
 use Illuminate\Support\Facades\Cache;
 
 class SitemapService
 {
-    private const CACHE_KEY = 'ografI.sitemap.xml.v2';
+    private const CACHE_KEY = 'ografI.sitemap.xml.v3';
 
     public function xml(): string
     {
@@ -61,6 +62,7 @@ class SitemapService
             $add('/channels');
             $add('/tags');
             $add('/contacts');
+            $add('/santral', SantralPageSetting::query()->find(1)?->updated_at);
             SitePage::query()->published()->orderBy('id')->limit(50000)->get()
                 ->each(fn (SitePage $page) => $add('/page/'.rawurlencode($page->slug), $page->updated_at));
         }
