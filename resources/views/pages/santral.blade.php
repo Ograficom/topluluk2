@@ -219,6 +219,17 @@
         });
     }
 
+    const packageTrack = document.querySelector('[data-santral-package-track]');
+    if (packageTrack) {
+        const scrollPackages = (direction) => {
+            const card = packageTrack.querySelector('.ografi-pbx-plan');
+            const step = card ? card.getBoundingClientRect().width + 14 : packageTrack.clientWidth * 0.85;
+            packageTrack.scrollBy({ left: direction * step, behavior: 'smooth' });
+        };
+        document.querySelector('[data-santral-package-prev]')?.addEventListener('click', () => scrollPackages(-1));
+        document.querySelector('[data-santral-package-next]')?.addEventListener('click', () => scrollPackages(1));
+    }
+
     const slider = document.querySelector('[data-santral-slider]');
     if (!slider) return;
     const slides = [...slider.querySelectorAll('[data-santral-slide]')];
