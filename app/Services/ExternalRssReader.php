@@ -79,11 +79,20 @@ class ExternalRssReader
                 $rssItem->fill($item);
                 $rssItem->save();
 
-                if ($isNewItem && $source->auto_publish && $source->author_id && $source->channel_id) {
-                    $this->publishItem($source, $rssItem);
-                }
-
                 $saved++;
+            }
+
+            // Publish a small batch each run. This safely drains the first-import
+            // backlog without flooding the site with dozens of posts at once.
+            if ($source->auto_publish && $source->author_id && $source->channel_id) {
+                RssItem::query()
+                    ->where('rss_source_id', $source->id)
+                    ->whereNull('published_post_id')
+                    ->orderBy('published_at')
+                    ->orderBy('id')
+                    ->limit(3)
+                    ->get()
+                    ->each(fn (RssItem $pendingItem) => $this->publishItem($source, $pendingItem));
             }
 
             $source->forceFill([
