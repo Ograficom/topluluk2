@@ -168,10 +168,10 @@
                 <p>OgraFi Santral, doğrudan kurulu Asterisk 22 PBX ve PJSIP teknolojileri üzerinde çalışır. Operatör bağlantısı Netgsm SIP trunk üzerinden sağlanır.</p>
             </div>
             <div class="ografi-pbx-tech-grid">
-                <div><span class="ografi-pbx-tech-logo ografi-pbx-logo-asterisk" aria-label="Asterisk logosu"><svg viewBox="0 0 48 48" role="img" aria-hidden="true"><path d="M24 3 29 18 44 12 34 25 45 36 29 32 24 47 19 32 3 36 14 25 4 12 19 18Z" fill="currentColor"/></svg></span><strong>Asterisk 22</strong><small>IP PBX santral motoru</small></div>
-                <div><span class="ografi-pbx-tech-logo ografi-pbx-logo-pjsip" aria-label="PJSIP"><b>PJ</b><i>SIP</i></span><strong>PJSIP</strong><small>SIP uçları ve trunk bağlantıları</small></div>
-                <div><span class="ografi-pbx-tech-logo ografi-pbx-logo-netgsm" aria-label="Netgsm"><b>net</b><strong>gsm</strong></span><strong>Netgsm SIP</strong><small>Operatör ve telefon hattı bağlantısı</small></div>
-                <div><span class="ografi-pbx-tech-logo ografi-pbx-logo-sip" aria-label="SIP standardı"><svg viewBox="0 0 48 48" role="img" aria-hidden="true"><path d="M7 24h5l4-11 7 22 7-22 4 11h7" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span><strong>SIP standardı</strong><small>Uyumlu IP telefon ve softphone desteği</small></div>
+                <div><span class="ografi-pbx-tech-logo ografi-pbx-logo-asterisk" aria-label="Asterisk resmi logosu"><img src="https://upload.wikimedia.org/wikipedia/commons/2/20/Asterisk_logo.svg" alt="Asterisk" loading="lazy"></span><strong>Asterisk 22</strong><small>IP PBX santral motoru</small></div>
+                <div><span class="ografi-pbx-tech-logo ografi-pbx-logo-pjsip" aria-label="PJSIP resmi proje adı"><span class="ografi-pbx-pjsip-wordmark">PJSIP</span></span><strong>PJSIP</strong><small>SIP uçları ve trunk bağlantıları</small></div>
+                <div><span class="ografi-pbx-tech-logo ografi-pbx-logo-netgsm" aria-label="Netgsm resmi logosu"><img src="https://cdn.netgsm.com.tr/images/logos/netgsm/dark/netgsm-logo.png" alt="Netgsm" loading="lazy"></span><strong>Netgsm SIP</strong><small>Operatör ve telefon hattı bağlantısı</small></div>
+                <div><span class="ografi-pbx-tech-logo ografi-pbx-logo-sip" aria-label="SIP protokolü"><span class="ografi-pbx-sip-wordmark">SIP</span></span><strong>SIP standardı</strong><small>Uyumlu IP telefon ve softphone desteği</small></div>
             </div>
         </section>
 
