@@ -3,7 +3,7 @@
 @section('seo_entity', 'true')
 
 @section('title', $user->profile_seo_title ?: $user->displayName().' profili')
-@section('description', $user->profile_seo_description ?: \\Illuminate\\Support\\Str::limit(trim(strip_tags($user->bio ?: $user->signature ?: $user->displayName().' adlı kullanıcının OgraFi topluluk profili.')), 160, ''))
+@section('description', $user->profile_seo_description ?: \Illuminate\Support\\Str::limit(trim(strip_tags($user->bio ?: $user->signature ?: $user->displayName().' adlı kullanıcının OgraFi topluluk profili.')), 160, ''))
 @section('canonical', $user->profile_canonical_url ?: route('profiles.show', $user))
 @section('robots', ($user->profile_robots_index ?? true) && ! request()->hasAny(['posts', 'comments']) ? 'index,follow' : 'noindex,follow')
 @if (filled($user->profile_og_image))
@@ -18,7 +18,7 @@
             '@context' => 'https://schema.org',
             '@type' => 'ProfilePage',
             'name' => $user->profile_seo_title ?: $user->displayName(),
-            'description' => $user->profile_seo_description ?: \\Illuminate\\Support\\Str::limit(trim(strip_tags($user->bio ?: $user->signature ?: $user->displayName().' adlı kullanıcının OgraFi topluluk profili.')), 300, ''),
+            'description' => $user->profile_seo_description ?: \Illuminate\Support\\Str::limit(trim(strip_tags($user->bio ?: $user->signature ?: $user->displayName().' adlı kullanıcının OgraFi topluluk profili.')), 300, ''),
             'url' => $user->profile_canonical_url ?: route('profiles.show', $user),
             'mainEntity' => ['@type' => 'Person', 'name' => $user->displayName(), 'url' => route('profiles.show', $user), 'image' => $user->avatarUrl()],
             'inLanguage' => 'tr-TR',
