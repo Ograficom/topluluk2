@@ -1,10 +1,27 @@
 @extends('layouts.app')
 
+@php
+    $santralSeoTags = $santralSettings?->seo_tags;
+    if (is_string($santralSeoTags)) {
+        $decodedSeoTags = json_decode($santralSeoTags, true);
+        $santralSeoTags = is_array($decodedSeoTags) ? $decodedSeoTags : preg_split('/[,،]+/u', $santralSeoTags);
+    }
+    $santralSeoTags = collect(is_array($santralSeoTags) ? $santralSeoTags : [])
+        ->map(fn ($tag) => trim((string) $tag))
+        ->filter()
+        ->values()
+        ->all();
+
+    if ($santralSeoTags === []) {
+        $santralSeoTags = ['bulut santral', 'bulut telefon santrali', 'santral hizmeti', 'Asterisk 22', 'IVR', '0850 numara', 'Netgsm SIP', 'kurumsal telefon'];
+    }
+@endphp
+
 @section('title', $santralSettings?->seo_title ?: 'Bulut Santral Hizmeti ve Kurumsal Telefon Santrali | OgraFi')
 @section('description', $santralSettings?->seo_description ?: 'OgraFi ile işletmenize uygun fiyatlı bulut santral hizmeti alın. Asterisk 22, IVR, 0850 numara, Netgsm SIP ve profesyonel kurulum desteği.')
 @section('canonical', route('santral'))
 @section('og_type', 'website')
-@section('seo_keywords', implode(', ', $santralSettings?->seo_tags ?: ['bulut santral', 'bulut telefon santrali', 'santral hizmeti', 'Asterisk 22', 'IVR', '0850 numara', 'Netgsm SIP', 'kurumsal telefon']))
+@section('seo_keywords', implode(', ', $santralSeoTags))
 @section('seo_image', $santralSettings?->featured_image ? \Illuminate\Support\Facades\Storage::disk('public')->url($santralSettings->featured_image) : asset('assets/img/meta/logo.svg'))
 
 @php
@@ -41,7 +58,7 @@
             'url' => route('santral'),
             'description' => $santralSettings?->seo_description ?: ($santralSettings?->hero_description ?: 'İşletmelere özel bulut santral, IVR, telefon numarası ve entegrasyon hizmetleri.'),
             'image' => $santralSettings?->featured_image ? \Illuminate\Support\Facades\Storage::disk('public')->url($santralSettings->featured_image) : asset('assets/img/meta/logo.svg'),
-            'keywords' => $santralSettings?->seo_tags ?: ['bulut santral', 'Asterisk 22', 'IVR', 'Netgsm SIP'],
+            'keywords' => $santralSeoTags,
         ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_HEX_TAG | JSON_HEX_AMP) !!}
     </script>
 @endpush
