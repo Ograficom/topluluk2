@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="format-detection" content="telephone=no">
     <meta name="theme-color" content="#f7f9fd">
-    <title>{{ filled($routeSeoSetting?->title ?? null) && ! $__env->yieldContent('seo_entity') ? $routeSeoSetting->title : trim($__env->yieldContent('title', $brandName)) }} — {{ $brandName }}</title>
+    <title>{{ filled($routeSeoSetting?->title ?? null) && ! $__env->yieldContent('seo_entity') ? $routeSeoSetting->title : trim($__env->yieldContent('title', $seoSettings?->seo_default_title ?: $brandName)) }} — {{ $brandName }}</title>
     @php
         $seoDescription = trim($__env->yieldContent('description', $routeSeoSetting?->description ?: ($seoSettings?->seo_default_description ?: 'OgraFi; teknoloji, gündem, yaşam ve ilgi alanlarında yazıların, fikirlerin ve topluluk sohbetlerinin buluştuğu platformdur.')));
         $seoTitle = filled($routeSeoSetting?->title ?? null) && ! $__env->yieldContent('seo_entity') ? trim($routeSeoSetting->title) : trim($__env->yieldContent('title', $seoSettings?->seo_default_title ?: $brandName));
