@@ -15,6 +15,23 @@
     if ($santralSeoTags === []) {
         $santralSeoTags = ['bulut santral', 'bulut telefon santrali', 'santral hizmeti', 'Asterisk 22', 'IVR', '0850 numara', 'Netgsm SIP', 'kurumsal telefon'];
     }
+
+    $santralOgImage = $santralSettings?->featured_image
+        ? \Illuminate\Support\Facades\Storage::disk('public')->url($santralSettings->featured_image)
+        : asset('assets/img/meta/logo.svg');
+
+    if (!\Illuminate\Support\Str::startsWith($santralOgImage, ['https://', 'http://'])) {
+        $santralOgImage = url($santralOgImage);
+    }
+
+    $santralOgImageInfo = null;
+    if ($santralSettings?->featured_image && \Illuminate\Support\Facades\Storage::disk('public')->exists($santralSettings->featured_image)) {
+        try {
+            $santralOgImageInfo = @getimagesize(\Illuminate\Support\Facades\Storage::disk('public')->path($santralSettings->featured_image)) ?: null;
+        } catch (\Throwable $exception) {
+            $santralOgImageInfo = null;
+        }
+    }
 @endphp
 
 @section('title', $santralSettings?->seo_title ?: 'Bulut Santral Hizmeti ve Kurumsal Telefon Santrali | OgraFi')
@@ -22,7 +39,7 @@
 @section('canonical', route('santral'))
 @section('og_type', 'website')
 @section('seo_keywords', implode(', ', $santralSeoTags))
-@section('seo_image', $santralSettings?->featured_image ? \Illuminate\Support\Facades\Storage::disk('public')->url($santralSettings->featured_image) : asset('assets/img/meta/logo.svg'))
+@section('seo_image', $santralOgImage)
 
 @php
     $santralSlides = collect($santralSettings?->slides ?? [])->filter(fn ($slide) => filled($slide['image'] ?? null))->values();
@@ -47,6 +64,14 @@
 @endphp
 
 @push('head')
+    <meta property="og:image:secure_url" content="{{ $santralOgImage }}">
+    <meta property="og:image:alt" content="{{ $santralSettings?->seo_title ?: 'OgraFi Santral' }}">
+    @if ($santralOgImageInfo)
+        <meta property="og:image:width" content="{{ $santralOgImageInfo[0] }}">
+        <meta property="og:image:height" content="{{ $santralOgImageInfo[1] }}">
+        <meta property="og:image:type" content="{{ $santralOgImageInfo['mime'] ?? 'image/jpeg' }}">
+    @endif
+    <meta name="twitter:image:alt" content="{{ $santralSettings?->seo_title ?: 'OgraFi Santral' }}">
     <script type="application/ld+json">
         {!! json_encode([
             '@context' => 'https://schema.org',
