@@ -28,7 +28,7 @@ class PostForm
             Textarea::make('body')->label('Yazı')->required()->rows(14)->columnSpanFull(),
             TextInput::make('cover_image')->label('Kapak görseli adresi')->maxLength(2048)
                 ->placeholder('https://... veya assets/img/...')->columnSpanFull(),
-            \\Filament\\Schemas\\Components\\Section::make('Yazı SEO ayarları')
+            \Filament\\Schemas\\Components\\Section::make('Yazı SEO ayarları')
                 ->description('Bu yazının arama motorlarında ve sosyal medya paylaşımlarında nasıl görüneceğini belirleyin.')
                 ->schema([
                     TextInput::make('seo_title')->label('Google sonuç başlığı')->maxLength(255)->helperText('Boş bırakılırsa yazı başlığı kullanılır. Kısa, özgün ve içeriğe uygun yazın. Site adı otomatik eklenir; tekrar yazmayın.'),
