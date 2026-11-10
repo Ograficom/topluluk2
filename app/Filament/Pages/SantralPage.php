@@ -45,7 +45,14 @@ class SantralPage extends Page
                 ['icon' => 'shield-check', 'title' => 'OTP ve SMS', 'description' => 'Doğrulama ve bilgilendirme mesajları.'],
                 ['icon' => 'workflow', 'title' => 'CRM, API ve Webhook', 'description' => 'Kullandığınız sistemlerle entegrasyon.'],
             ],
-            'steps_title' => $settings->steps_title,\n            'packages_title' => $settings->packages_title,\n            'packages_description' => $settings->packages_description,\n            'packages' => $settings->packages ?: [\n                ['name' => 'Başlangıç', 'price' => 0, 'period' => 'aylık', 'description' => 'Temel telefon trafiği ve çağrı yönlendirme ihtiyaçları için.', 'features' => "Bulut santral\\nTemel karşılama\\nÇağrı yönlendirme\\nTeknik destek", 'featured' => false],\n                ['name' => 'İşletme', 'price' => 0, 'period' => 'aylık', 'description' => 'Günlük çağrı trafiği olan işletmeler için kapsamlı paket.', 'features' => "Tüm Başlangıç özellikleri\\nIVR sesli yanıt menüsü\\nBirden fazla dahili\\nÇağrı raporları\\nEntegrasyon desteği", 'featured' => true],\n                ['name' => 'Profesyonel', 'price' => 0, 'period' => 'aylık', 'description' => 'Yoğun çağrı ve özel entegrasyon ihtiyacı olan ekipler için.', 'features' => "Tüm İşletme özellikleri\\nGelişmiş çağrı akışları\\nCRM / API entegrasyonu\\nÖzel yapılandırma\\nÖncelikli destek", 'featured' => false],\n            ],
+            'steps_title' => $settings->steps_title,
+            'packages_title' => $settings->packages_title,
+            'packages_description' => $settings->packages_description,
+            'packages' => $settings->packages ?: [
+                ['name' => 'Başlangıç', 'price' => 0, 'period' => 'aylık', 'description' => 'Temel telefon trafiği ve çağrı yönlendirme ihtiyaçları için.', 'features' => "Bulut santral\nTemel karşılama\nÇağrı yönlendirme\nTeknik destek", 'featured' => false],
+                ['name' => 'İşletme', 'price' => 0, 'period' => 'aylık', 'description' => 'Günlük çağrı trafiği olan işletmeler için kapsamlı paket.', 'features' => "Tüm Başlangıç özellikleri\nIVR sesli yanıt menüsü\nBirden fazla dahili\nÇağrı raporları\nEntegrasyon desteği", 'featured' => true],
+                ['name' => 'Profesyonel', 'price' => 0, 'period' => 'aylık', 'description' => 'Yoğun çağrı ve özel entegrasyon ihtiyacı olan ekipler için.', 'features' => "Tüm İşletme özellikleri\nGelişmiş çağrı akışları\nCRM / API entegrasyonu\nÖzel yapılandırma\nÖncelikli destek", 'featured' => false],
+            ],
             'steps' => $settings->steps ?: [
                 ['title' => 'İhtiyacınızı belirleyelim', 'description' => 'Hat, kullanıcı ve entegrasyon ihtiyaçlarınızı netleştirelim.'],
                 ['title' => 'Sisteminizi hazırlayalım', 'description' => 'Numara, karşılama ve yönlendirme ayarlarını yapalım.'],
