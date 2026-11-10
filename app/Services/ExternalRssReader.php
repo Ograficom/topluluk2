@@ -685,7 +685,7 @@ class ExternalRssReader
                             $parts[] = $text;
                         }
 
-                        $candidateBody = implode("\\n\\n", array_values(array_unique($parts)));
+                        $candidateBody = implode("\n\n", array_values(array_unique($parts)));
                         if (mb_strlen($candidateBody) > mb_strlen($articleBody)) {
                             $articleBody = $candidateBody;
                         }
