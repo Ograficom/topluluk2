@@ -165,7 +165,7 @@ class ExternalRssReader
         $existingBlocks = is_array($decodedExistingBody) ? ($decodedExistingBody['blocks'] ?? []) : [];
         $existingText = collect($existingBlocks)->map(fn ($block) => trim((string) data_get($block, 'data.text', '')))->filter()->implode("\n\n");
         $newText = trim((string) $item->summary);
-        if (count($existingBlocks) <= 1 && $newText !== '' && mb_strlen($newText) > mb_strlen($existingText)) {
+        if ($newText !== '' && mb_strlen($existingText) < 1500 && mb_strlen($newText) > mb_strlen($existingText)) {
             $paragraphs = preg_split('/\\n\\s*\\n/u', $newText) ?: [$newText];
             $blocks = [];
             foreach ($paragraphs as $paragraph) {
