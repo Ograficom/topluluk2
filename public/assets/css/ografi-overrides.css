@@ -4125,3 +4125,50 @@ body.is-messenger-conversation .pm-dialog__composer .pm-composer__send svg {
         padding-inline: 12px !important;
     }
 }
+
+
+/* Hard-contain infrastructure brand images inside their logo tiles */
+.ografi-pbx-page .ografi-pbx-tech-grid > div > .ografi-pbx-tech-logo {
+    position: relative !important;
+    display: flex !important;
+    flex: 0 0 48px !important;
+    width: 48px !important;
+    min-width: 48px !important;
+    max-width: 48px !important;
+    height: 48px !important;
+    min-height: 48px !important;
+    max-height: 48px !important;
+    padding: 6px !important;
+    overflow: hidden !important;
+    box-sizing: border-box !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+.ografi-pbx-page .ografi-pbx-tech-grid > div > .ografi-pbx-tech-logo img {
+    position: static !important;
+    display: block !important;
+    width: 100% !important;
+    height: 100% !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    max-width: 34px !important;
+    max-height: 34px !important;
+    margin: 0 !important;
+    object-fit: contain !important;
+    transform: none !important;
+}
+.ografi-pbx-page .ografi-pbx-tech-grid > div > .ografi-pbx-logo-netgsm img {
+    max-width: 38px !important;
+    max-height: 26px !important;
+}
+.ografi-pbx-page .ografi-pbx-tech-grid {
+    min-width: 0;
+}
+.ografi-pbx-page .ografi-pbx-infrastructure {
+    min-width: 0;
+    align-items: center;
+}
+.ografi-pbx-page .ografi-pbx-tech-grid > div {
+    min-width: 0;
+    overflow: hidden;
+}
