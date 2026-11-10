@@ -1,6 +1,16 @@
 @extends('layouts.app')
 
 @section('title', $page->meta_title ?: $page->title)
+@section('description', $page->meta_description ?: $page->title.' — OgraFi hakkında bilgiler, topluluk politikaları ve site içerikleri.')
+@section('canonical', $page->canonical_url ?: route('pages.show', $page->slug))
+@section('robots', ($page->robots_index ?? true) ? 'index,follow' : 'noindex,follow')
+@section('og_type', 'article')
+@if (filled($page->meta_keywords))
+    @section('seo_keywords', $page->meta_keywords)
+@endif
+@if (filled($page->og_image))
+    @section('seo_image', $page->og_image)
+@endif
 
 @section('content')
     <article class="card card-body">
