@@ -1,5 +1,34 @@
 @extends('layouts.app')
 
+@section('title', $channel->name.' Forumu ve Güncel Konular')
+@section('description', \Illuminate\Support\Str::limit(trim(strip_tags($channel->description ?: $channel->name.' kanalındaki güncel forum yazılarını, soruları ve topluluk yorumlarını keşfedin.')), 160, ''))
+@section('canonical', route('channels.show', $channel))
+@section('og_type', 'website')
+@if ($channel->image_path)
+    @section('seo_image', asset('storage/'.$channel->image_path))
+@endif
+
+@push('head')
+    <script type="application/ld+json">
+        {!! json_encode([
+            '@context' => 'https://schema.org',
+            '@type' => 'CollectionPage',
+            'name' => $channel->name.' Forumu',
+            'description' => \Illuminate\Support\Str::limit(trim(strip_tags($channel->description ?: $channel->name.' forumundaki güncel konular ve topluluk paylaşımları.')), 300, ''),
+            'url' => route('channels.show', $channel),
+            'isPartOf' => ['@type' => 'WebSite', 'name' => 'OgraFi', 'url' => url('/')],
+            'breadcrumb' => [
+                '@type' => 'BreadcrumbList',
+                'itemListElement' => [
+                    ['@type' => 'ListItem', 'position' => 1, 'name' => 'Ana Sayfa', 'item' => route('posts.index')],
+                    ['@type' => 'ListItem', 'position' => 2, 'name' => 'Forum Kanalları', 'item' => route('channels.index')],
+                    ['@type' => 'ListItem', 'position' => 3, 'name' => $channel->name, 'item' => route('channels.show', $channel)],
+                ],
+            ],
+        ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_HEX_TAG | JSON_HEX_AMP) !!}
+    </script>
+@endpush
+
 @section('title', $channel->name)
 
 @section('content')
