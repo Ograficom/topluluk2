@@ -7,13 +7,13 @@
     <meta name="theme-color" content="#f7f9fd">
     <title>{{ filled($routeSeoSetting?->title ?? null) && ! $__env->yieldContent('seo_entity') ? $routeSeoSetting->title : trim($__env->yieldContent('title', $seoSettings?->seo_default_title ?: $brandName)) }} — {{ $brandName }}</title>
     @php
-        $seoDescription = trim($__env->yieldContent('description', $routeSeoSetting?->description ?: ($seoSettings?->seo_default_description ?: 'OgraFi; teknoloji, gündem, yaşam ve ilgi alanlarında yazıların, fikirlerin ve topluluk sohbetlerinin buluştuğu platformdur.')));
+        $seoDescription = filled($routeSeoSetting?->description ?? null) && ! $__env->yieldContent('seo_entity') ? trim($routeSeoSetting->description) : trim($__env->yieldContent('description', $seoSettings?->seo_default_description ?: 'OgraFi; teknoloji, gündem, yaşam ve ilgi alanlarında yazıların, fikirlerin ve topluluk sohbetlerinin buluştuğu platformdur.'));
         $seoTitle = filled($routeSeoSetting?->title ?? null) && ! $__env->yieldContent('seo_entity') ? trim($routeSeoSetting->title) : trim($__env->yieldContent('title', $seoSettings?->seo_default_title ?: $brandName));
-        $seoCanonical = trim($__env->yieldContent('canonical')) ?: ($routeSeoSetting?->canonical_url ?: url()->current());
-        $seoImage = trim($__env->yieldContent('seo_image')) ?: ($routeSeoSetting?->og_image ?: ($seoSettings?->seo_og_image ?: ($brandLogoUrl ?? asset('assets/img/meta/logo.svg'))));
+        $seoCanonical = filled($routeSeoSetting?->canonical_url ?? null) && ! $__env->yieldContent('seo_entity') ? trim($routeSeoSetting->canonical_url) : (trim($__env->yieldContent('canonical')) ?: url()->current());
+        $seoImage = filled($routeSeoSetting?->og_image ?? null) && ! $__env->yieldContent('seo_entity') ? trim($routeSeoSetting->og_image) : (trim($__env->yieldContent('seo_image')) ?: ($seoSettings?->seo_og_image ?: ($brandLogoUrl ?? asset('assets/img/meta/logo.svg'))));
         $seoRobotsOverride = trim($__env->yieldContent('robots'));
         $routeNoindex = $routeSeoSetting && ! $routeSeoSetting->robots_index;
-        $seoKeywords = trim($__env->yieldContent('seo_keywords', $routeSeoSetting?->keywords ?: ($seoSettings?->seo_default_keywords ?? '')));
+        $seoKeywords = filled($routeSeoSetting?->keywords ?? null) && ! $__env->yieldContent('seo_entity') ? trim($routeSeoSetting->keywords) : trim($__env->yieldContent('seo_keywords', $seoSettings?->seo_default_keywords ?? ''));
         $seoNoindex = $routeNoindex || $seoRobotsOverride === 'noindex,follow' || request()->filled('q')
             || request()->filled('sort')
             || request()->filled('period')
