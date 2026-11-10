@@ -15,10 +15,15 @@
         ['icon' => 'shield-check', 'title' => 'OTP ve SMS', 'description' => 'Doğrulama kodu ve bilgilendirme mesajları için SMS/OTP süreçlerinizi yapılandırın.'],
         ['icon' => 'workflow', 'title' => 'CRM, API ve Webhook', 'description' => 'Çağrı ve müşteri süreçlerinizi CRM veya özel yazılımlarla entegre edin.'],
     ];
+    $santralPackages = $santralSettings?->packages ?: [
+        ['name' => 'Başlangıç', 'price' => 0, 'period' => 'aylık', 'description' => 'Temel telefon trafiği ve çağrı yönlendirme ihtiyaçları için.', 'features' => "Bulut santral\nTemel karşılama\nÇağrı yönlendirme\nTeknik destek", 'featured' => false],
+        ['name' => 'İşletme', 'price' => 0, 'period' => 'aylık', 'description' => 'Günlük çağrı trafiği olan işletmeler için kapsamlı paket.', 'features' => "Tüm Başlangıç özellikleri\nIVR sesli yanıt menüsü\nBirden fazla dahili\nÇağrı raporları\nEntegrasyon desteği", 'featured' => true],
+        ['name' => 'Profesyonel', 'price' => 0, 'period' => 'aylık', 'description' => 'Yoğun çağrı ve özel entegrasyon ihtiyacı olan ekipler için.', 'features' => "Tüm İşletme özellikleri\nGelişmiş çağrı akışları\nCRM / API entegrasyonu\nÖzel yapılandırma\nÖncelikli destek", 'featured' => false],
+    ];
     $santralSteps = $santralSettings?->steps ?: [
         ['title' => 'İhtiyacınızı belirleyelim', 'description' => 'Hat, kullanıcı, dahili, çağrı akışı ve entegrasyon ihtiyaçlarınızı birlikte netleştirelim.'],
-        ['title' => 'Sisteminizi hazırlayalım', 'description' => 'Santrali kurup numara, karşılama, yönlendirme ve kullanıcı ayarlarını yapılandıralım.'],
-        ['title' => 'Devreye alıp destek verelim', 'description' => 'Testlerin ardından sistemi kullanıma açalım; ihtiyaç duyduğunuzda teknik destek sağlayalım.'],
+        ['title' => 'Sisteminizi hazırlayalım', 'description' => 'Hazır santral altyapısını hesabınıza tanımlayıp numara ve kullanıcı ayarlarınızı yapalım.'],
+        ['title' => 'Devreye alıp destek verelim', 'description' => 'Kontrollerin ardından, başvurunuz onaylandığında hizmetinizi kullanıma açalım.'],
     ];
 @endphp
 
@@ -114,7 +119,7 @@
         </section>
 
         <section class="ografi-pbx-section">
-            <h2>{{ $santralSettings?->steps_title ?: 'Kurulumla uğraşmayın, biz yönetelim' }}</h2>
+            <h2>{{ $santralSettings?->steps_title ?: 'Uygun fiyatlı, hazır bulut santral' }}</h2>
             <ol class="ografi-pbx-steps">
                 @foreach ($santralSteps as $step)
                     <li><strong>{{ $step['title'] ?? '' }}</strong><span>{{ $step['description'] ?? '' }}</span></li>
@@ -125,7 +130,7 @@
         <section class="ografi-pbx-bottom">
             <div>
                 <h2>{{ $santralSettings?->bottom_title ?: 'İşletmeniz için doğru santral çözümünü birlikte kuralım.' }}</h2>
-                <p>{{ $santralSettings?->bottom_description ?: 'İhtiyacınızı ve mevcut altyapınızı anlatın; size uygun kurulum ve hizmet kapsamını değerlendirelim.' }}</p>
+                <p>{{ $santralSettings?->bottom_description ?: 'Size uygun paketi seçin. Başvurunuz incelenip onaylandıktan ve gerekli aktivasyon tamamlandıktan sonra santral hizmetinizi kullanmaya başlayın.' }}</p>
             </div>
             <a class="btn btn-primary btn-lg" href="{{ route('contacts', ['subject' => 'OgraFi Santral hizmeti', 'recipient' => 'partnerships']) }}">Teklif ve bilgi alın</a>
         </section>
