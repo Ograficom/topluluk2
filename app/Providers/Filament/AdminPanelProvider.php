@@ -28,6 +28,7 @@ class AdminPanelProvider extends PanelProvider
             ->default()
             ->id('admin')
             ->path('admin')
+            ->topNavigation()
             ->brandName(fn (): string => (SiteSetting::current()?->brand_name ?? SiteSetting::DEFAULT_BRAND_NAME).' Yönetim')
             ->brandLogo(fn (): ?string => SiteSetting::current()?->brandLogoUrl())
             ->brandLogoHeight('36px')
