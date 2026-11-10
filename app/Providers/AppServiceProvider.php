@@ -79,6 +79,7 @@ class AppServiceProvider extends ServiceProvider
                 'brandLogoUrl' => $siteSettings?->brandLogoUrl(),
                 'faviconUrl' => $siteSettings?->faviconUrl(),
                 'faviconMimeType' => $siteSettings?->faviconMimeType(),
+                'seoSettings' => $siteSettings,
                 'navigationChannels' => Channel::query()->active()->orderBy('name')->limit(8)->get(),
                 'sidebarAuthors' => User::query()
                     ->whereNotNull('username')
@@ -122,6 +123,15 @@ class AppServiceProvider extends ServiceProvider
                     ->latest('comments.created_at')
                     ->limit(5)
                     ->get(),
+            ]);
+        });
+
+        View::composer(['posts.index', 'pages.show', 'channels.show'], function ($view): void {
+            $siteSettings = SiteSetting::current();
+
+            $view->with([
+                'brandName' => $siteSettings?->brand_name ?? SiteSetting::DEFAULT_BRAND_NAME,
+                'seoSettings' => $siteSettings,
             ]);
         });
 

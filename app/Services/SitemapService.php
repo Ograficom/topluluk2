@@ -62,7 +62,7 @@ class SitemapService
             $add('/tags');
             $add('/contacts');
             SitePage::query()->published()->orderBy('id')->limit(50000)->get()
-                ->each(fn (SitePage $page) => $add('/pages/'.rawurlencode($page->slug), $page->updated_at));
+                ->each(fn (SitePage $page) => $add('/page/'.rawurlencode($page->slug), $page->updated_at));
         }
 
         if (in_array('posts', $included, true)) {

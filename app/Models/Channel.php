@@ -18,12 +18,14 @@ class Channel extends Model
         'description',
         'image_path',
         'is_active',
+        'meta_title', 'meta_description', 'meta_keywords', 'canonical_url', 'robots_index', 'og_image',
     ];
 
     protected function casts(): array
     {
         return [
             'is_active' => 'boolean',
+            'robots_index' => 'boolean',
         ];
     }
 

@@ -27,7 +27,7 @@ class SitePageForm
                 ->required()
                 ->maxLength(180)
                 ->unique(ignoreRecord: true)
-                ->helperText('Örnek: about → /pages/about'),
+                ->helperText('Örnek: about → /page/about'),
             RichEditor::make('content')
                 ->label('Sayfa içeriği')
                 ->columnSpanFull()
@@ -47,6 +47,27 @@ class SitePageForm
                 ->rows(3)
                 ->maxLength(500)
                 ->columnSpanFull(),
+            TextInput::make('meta_keywords')
+                ->label('SEO anahtar kelimeleri')
+                ->maxLength(2000)
+                ->helperText('Virgülle ayırın. Google bu alanı doğrudan sıralama faktörü olarak kullanmaz.')
+                ->columnSpanFull(),
+            TextInput::make('canonical_url')
+                ->label('Canonical URL')
+                ->url()
+                ->maxLength(2048)
+                ->helperText('Boş bırakılırsa sayfanın kendi adresi kullanılır.')
+                ->columnSpanFull(),
+            TextInput::make('og_image')
+                ->label('Sosyal paylaşım görseli URL')
+                ->url()
+                ->maxLength(2048)
+                ->helperText('Boş bırakılırsa site genelindeki varsayılan görsel kullanılır.')
+                ->columnSpanFull(),
+            Toggle::make('robots_index')
+                ->label('Arama motorlarında indekslensin')
+                ->default(true)
+                ->helperText('Kapalıysa sayfa noindex,follow olarak işaretlenir.'),
             Toggle::make('is_published')
                 ->label('Yayında')
                 ->default(true),

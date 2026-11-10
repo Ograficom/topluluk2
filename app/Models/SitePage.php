@@ -14,6 +14,7 @@ class SitePage extends Model
         'content',
         'meta_title',
         'meta_description',
+        'meta_keywords', 'canonical_url', 'robots_index', 'og_image',
         'is_published',
         'show_in_footer',
         'footer_sort_order',
@@ -25,6 +26,7 @@ class SitePage extends Model
     {
         return [
             'is_published' => 'boolean',
+            'robots_index' => 'boolean',
             'show_in_footer' => 'boolean',
             'footer_sort_order' => 'integer',
             'published_at' => 'datetime',
