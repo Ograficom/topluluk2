@@ -70,7 +70,7 @@ class RssSourceManage extends Page
         $urlHash = hash('sha256', rtrim($data['url']));
         $duplicate = RssSource::query()
             ->where('url_hash', $urlHash)
-            ->whereKeyNot($this->source->getKey())
+            ->where('id', '<>', $this->source->getKey())
             ->exists();
 
         if ($duplicate) {
