@@ -1,10 +1,16 @@
 @extends('layouts.app')
 
-@section('title', $channel->name.' Forumu ve Güncel Konular')
+@section('title', $channel->meta_title ?: $channel->name.' Forumu ve Güncel Konular')
 @section('description', \Illuminate\Support\Str::limit(trim(strip_tags($channel->description ?: $channel->name.' kanalındaki güncel forum yazılarını, soruları ve topluluk yorumlarını keşfedin.')), 160, ''))
-@section('canonical', route('channels.show', $channel))
+@section('canonical', $channel->canonical_url ?: route('channels.show', $channel))
+@section('robots', ($channel->robots_index ?? true) ? 'index,follow' : 'noindex,follow')
+@if (filled($channel->meta_keywords))
+    @section('seo_keywords', $channel->meta_keywords)
+@endif
 @section('og_type', 'website')
-@if ($channel->image_path)
+@if (filled($channel->og_image))
+    @section('seo_image', $channel->og_image)
+@elseif ($channel->image_path)
     @section('seo_image', asset('storage/'.$channel->image_path))
 @endif
 
