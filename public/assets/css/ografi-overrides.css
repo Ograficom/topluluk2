@@ -3346,3 +3346,114 @@ body.is-messenger-conversation .pm-dialog__composer .pm-composer__send svg {
         border-radius: 12px;
     }
 }
+
+
+/* OgraFi Santral service page */
+.ografi-pbx-page { gap: 0; }
+.ografi-pbx-hero {
+    padding: 12px 4px 30px;
+    border-bottom: 1px solid var(--border-color, #e8edf4);
+}
+.ografi-pbx-eyebrow {
+    display: inline-flex;
+    margin-bottom: 12px;
+    color: var(--color-primary, #2563eb);
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: .12em;
+}
+.ografi-pbx-hero h1 {
+    max-width: 680px;
+    margin: 0 0 12px;
+    color: var(--title-color, #172033);
+    font-size: clamp(28px, 4vw, 42px);
+    font-weight: 800;
+    line-height: 1.12;
+    letter-spacing: -.035em;
+}
+.ografi-pbx-lead {
+    max-width: 680px;
+    margin: 0 0 20px;
+    color: var(--text-color, #596579);
+    font-size: 16px;
+    line-height: 1.75;
+}
+.ografi-pbx-hero .btn { display: inline-flex; align-items: center; gap: 9px; }
+.ografi-pbx-hero > .small { margin: 12px 0 0; }
+.ografi-pbx-section { padding: 26px 0; border-bottom: 1px solid var(--border-color, #e8edf4); }
+.ografi-pbx-section > h2,
+.ografi-pbx-bottom h2 {
+    margin: 0 0 18px;
+    color: var(--title-color, #172033);
+    font-size: 20px;
+    font-weight: 750;
+    letter-spacing: -.02em;
+}
+.ografi-pbx-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+}
+.ografi-pbx-feature {
+    min-width: 0;
+    padding: 17px;
+    border: 1px solid var(--border-color, #e8edf4);
+    border-radius: 13px;
+    background: var(--body-bg, #fff);
+}
+.ografi-pbx-feature > svg { color: var(--color-primary, #2563eb); }
+.ografi-pbx-feature h3 {
+    margin: 10px 0 6px;
+    color: var(--title-color, #172033);
+    font-size: 15px;
+    font-weight: 700;
+}
+.ografi-pbx-feature p {
+    margin: 0;
+    color: var(--text-color, #667085);
+    font-size: 13px;
+    line-height: 1.65;
+}
+.ografi-pbx-steps { display: grid; gap: 13px; margin: 0; padding: 0; list-style: none; counter-reset: pbx-step; }
+.ografi-pbx-steps li {
+    display: grid;
+    grid-template-columns: 34px minmax(0, 1fr);
+    gap: 2px 12px;
+    align-items: start;
+    counter-increment: pbx-step;
+}
+.ografi-pbx-steps li::before {
+    content: counter(pbx-step);
+    display: grid;
+    width: 32px;
+    height: 32px;
+    place-items: center;
+    grid-row: span 2;
+    border-radius: 50%;
+    background: #eff6ff;
+    color: #2563eb;
+    font-size: 13px;
+    font-weight: 800;
+}
+.ografi-pbx-steps strong { color: var(--title-color, #172033); font-size: 14px; }
+.ografi-pbx-steps span { color: var(--text-color, #667085); font-size: 13px; line-height: 1.6; }
+.ografi-pbx-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+    margin-top: 24px;
+    padding: 20px;
+    border: 1px solid #dbeafe;
+    border-radius: 14px;
+    background: #f7faff;
+}
+.ografi-pbx-bottom h2 { margin-bottom: 6px; }
+.ografi-pbx-bottom p { margin: 0; color: #64748b; font-size: 13px; line-height: 1.6; }
+.ografi-pbx-bottom .btn { flex: 0 0 auto; }
+@media (max-width: 640px) {
+    .ografi-pbx-hero { padding: 4px 0 24px; }
+    .ografi-pbx-grid { grid-template-columns: 1fr; }
+    .ografi-pbx-bottom { align-items: stretch; flex-direction: column; padding: 16px; }
+    .ografi-pbx-bottom .btn { justify-content: center; }
+}
