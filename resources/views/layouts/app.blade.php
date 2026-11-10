@@ -51,9 +51,6 @@
             ])),
         ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_HEX_TAG | JSON_HEX_AMP) !!}
     </script>
-    @if (filled($seoSettings?->google_site_verification))
-        <meta name="google-site-verification" content="{{ $seoSettings->google_site_verification }}">
-    @endif
     <meta name="robots" content="{{ $seoNoindex ? 'noindex,follow' : ($seoRobotsOverride ?: 'index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1') }}">
     <link rel="canonical" href="{{ $seoCanonical }}">
     <meta property="og:locale" content="tr_TR">
