@@ -53,10 +53,17 @@
                         <x-repost-icon name="message" size="18" />
                         {{ $santralSettings?->primary_button_text ?: 'Santral hizmeti için iletişime geç' }}
                     </a>
-                    <button class="btn btn-secondary btn-lg ografi-pbx-activation-trigger" type="button" data-santral-activation-open>
-                        <x-repost-icon name="channels" size="18" />
-                        {{ $santralSettings?->activation_button_text ?: 'Entegrasyona başla' }}
-                    </button>
+                    @auth
+                        <button class="btn btn-secondary btn-lg ografi-pbx-activation-trigger" type="button" data-santral-activation-open>
+                            <x-repost-icon name="channels" size="18" />
+                            {{ $santralSettings?->activation_button_text ?: 'Entegrasyona başla' }}
+                        </button>
+                    @else
+                        <a class="btn btn-secondary btn-lg ografi-pbx-activation-trigger" href="{{ route('register') }}">
+                            <x-repost-icon name="user" size="18" />
+                            {{ $santralSettings?->activation_button_text ?: 'Entegrasyona başla' }}
+                        </a>
+                    @endauth
                 </div>
                 <p class="small color-gray">{{ $santralSettings?->hero_note ?: 'Hazır bir script satmıyoruz; kurulumdan yapılandırmaya ve teknik desteğe kadar hizmet sunuyoruz.' }}</p>
             </div>
@@ -193,6 +200,7 @@
         </section>
     </article>
 
+    @auth
     <dialog class="ografi-pbx-activation-modal" data-santral-activation-modal aria-labelledby="santral-activation-title">
         <button class="ografi-pbx-modal-close" type="button" data-santral-activation-close aria-label="Kapat"><x-repost-icon name="close" size="19" /></button>
         <div class="ografi-pbx-modal-icon"><x-repost-icon name="channels" size="28" /></div>
@@ -204,6 +212,7 @@
         </a>
         <button class="ografi-pbx-modal-dismiss" type="button" data-santral-activation-close>Şimdi değil</button>
     </dialog>
+    @endauth
 @endsection
 
 @push('scripts')
