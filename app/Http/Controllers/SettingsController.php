@@ -15,7 +15,7 @@ use Illuminate\View\View;
 
 class SettingsController extends Controller
 {
-    private const TABS = ['profile', 'site', 'security', 'blacklist', 'verify', 'delete'];
+    private const TABS = ['profile', 'site', 'cookies', 'security', 'blacklist', 'verify', 'delete'];
 
     public function edit(Request $request): View
     {
