@@ -133,7 +133,7 @@
                     <article class="ografi-pbx-plan {{ !empty($package['featured']) ? 'is-featured' : '' }}">
                         @if (!empty($package['featured']))<span class="ografi-pbx-plan-badge">En çok tercih edilen</span>@endif
                         <div class="ografi-pbx-plan-head">
-                            <span class="ografi-pbx-plan-icon"><x-repost-icon name="phone-call" size="20" /></span>
+                            <span class="ografi-pbx-plan-icon"><x-repost-icon :name="$package['icon'] ?? ['channels', 'bolt', 'security'][$loop->index % 3]" size="23" /></span>
                             <h3>{{ $package['name'] ?? 'Santral paketi' }}</h3>
                             <p>{{ $package['description'] ?? '' }}</p>
                         </div>
