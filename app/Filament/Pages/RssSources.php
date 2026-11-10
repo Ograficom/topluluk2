@@ -70,6 +70,8 @@ class RssSources extends Page
         $data = Validator::make([
             'name' => trim($this->sourceName),
             'url' => trim($this->sourceUrl),
+            'author_id' => $this->authorId,
+            'channel_id' => $this->channelId,
         ], [
             'name' => ['required', 'string', 'max:160'],
             'url' => ['required', 'string', 'url', 'max:2048', 'regex:/^https?:\\/\\//i'],
