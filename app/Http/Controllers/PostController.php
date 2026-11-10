@@ -245,8 +245,19 @@ class PostController extends Controller
 
     private function parseTags(string $input): array
     {
-        return collect(explode(',', $input))->map(fn (string $tag) => trim($tag))->filter()
-            ->unique(fn (string $tag) => mb_strtolower($tag))->take(20)->values()->all();
+        // Accept both comma-separated tags and hashtag input such as
+        // "#Atatürk #Tarih #Cumhuriyet" without saving the whole line as one tag.
+        $parts = preg_split('/\\s*,\\s*|\\s+(?=#)/u', trim($input), -1, PREG_SPLIT_NO_EMPTY) ?: [];
+
+        return collect($parts)
+            ->map(fn (string $tag) => trim($tag, " \\t\\n\\r\\0\\x0B#"))
+            ->filter()
+            // Keep individual values within the tags.name column limit.
+            ->map(fn (string $tag) => mb_substr($tag, 0, 100))
+            ->unique(fn (string $tag) => mb_strtolower($tag))
+            ->take(20)
+            ->values()
+            ->all();
     }
 
     private function syncTagRecords(Post $post, array $names): void
