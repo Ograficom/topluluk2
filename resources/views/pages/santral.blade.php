@@ -118,6 +118,59 @@
             </div>
         </section>
 
+        <section class="ografi-pbx-section ografi-pbx-pricing" id="santral-paketleri">
+            <div class="ografi-pbx-section-heading">
+                <div>
+                    <span class="ografi-pbx-section-kicker">ŞEFFAF FİYATLANDIRMA</span>
+                    <h2>{{ $santralSettings?->packages_title ?: 'İşletmeniz için uygun fiyatlı hazır santral paketleri' }}</h2>
+                    <p>{{ $santralSettings?->packages_description ?: 'İhtiyacınıza uygun paketi seçin. Başvurunuz incelenip onaylandıktan ve aktivasyon tamamlandıktan sonra santral hizmetiniz kullanıma açılır.' }}</p>
+                </div>
+            </div>
+            <div class="ografi-pbx-pricing-grid">
+                @foreach ($santralPackages as $package)
+                    @php($packageFeatures = collect(preg_split('/\\r?\\n/', $package['features'] ?? ''))->filter())
+                    <article class="ografi-pbx-plan {{ !empty($package['featured']) ? 'is-featured' : '' }}">
+                        @if (!empty($package['featured']))<span class="ografi-pbx-plan-badge">En çok tercih edilen</span>@endif
+                        <div class="ografi-pbx-plan-head">
+                            <span class="ografi-pbx-plan-icon"><x-repost-icon name="phone-call" size="20" /></span>
+                            <h3>{{ $package['name'] ?? 'Santral paketi' }}</h3>
+                            <p>{{ $package['description'] ?? '' }}</p>
+                        </div>
+                        <div class="ografi-pbx-plan-price">
+                            @if ((float) ($package['price'] ?? 0) > 0)
+                                <strong>{{ number_format((float) $package['price'], 0, ',', '.') }} TL</strong><span>/ {{ $package['period'] ?? 'aylık' }}</span>
+                            @else
+                                <strong>Teklif alın</strong><span>ihtiyacınıza göre</span>
+                            @endif
+                        </div>
+                        <ul>
+                            @foreach ($packageFeatures as $feature)
+                                <li><x-repost-icon name="check-circle" size="17" /> <span>{{ $feature }}</span></li>
+                            @endforeach
+                        </ul>
+                        <a class="btn {{ !empty($package['featured']) ? 'btn-primary' : 'btn-secondary' }} btn-lg" href="{{ route('contacts', ['subject' => 'OgraFi Santral - ' . ($package['name'] ?? 'Paket') . ' başvurusu', 'recipient' => 'partnerships']) }}">
+                            Paketi seç <x-repost-icon name="arrow-right" size="17" />
+                        </a>
+                        <small>Hizmet, başvuru ve aktivasyon onayından sonra açılır.</small>
+                    </article>
+                @endforeach
+            </div>
+        </section>
+
+        <section class="ografi-pbx-section ografi-pbx-infrastructure">
+            <div class="ografi-pbx-infra-copy">
+                <span class="ografi-pbx-section-kicker">KULLANDIĞIMIZ ALTYAPI</span>
+                <h2>Güvenilir telefon altyapısı, açık standartlar</h2>
+                <p>OgraFi Santral, doğrudan kurulu Asterisk 22 PBX ve PJSIP teknolojileri üzerinde çalışır. Operatör bağlantısı Netgsm SIP trunk üzerinden sağlanır.</p>
+            </div>
+            <div class="ografi-pbx-tech-grid">
+                <div><span><x-repost-icon name="server" size="21" /></span><strong>Asterisk 22</strong><small>IP PBX santral motoru</small></div>
+                <div><span><x-repost-icon name="network" size="21" /></span><strong>PJSIP</strong><small>SIP uçları ve trunk bağlantıları</small></div>
+                <div><span><x-repost-icon name="phone" size="21" /></span><strong>Netgsm SIP</strong><small>Operatör ve telefon hattı bağlantısı</small></div>
+                <div><span><x-repost-icon name="globe" size="21" /></span><strong>SIP standardı</strong><small>Uyumlu IP telefon ve softphone desteği</small></div>
+            </div>
+        </section>
+
         <section class="ografi-pbx-section">
             <h2>{{ $santralSettings?->steps_title ?: 'Uygun fiyatlı, hazır bulut santral' }}</h2>
             <ol class="ografi-pbx-steps">
