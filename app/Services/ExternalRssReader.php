@@ -457,7 +457,7 @@ class ExternalRssReader
         // Many publishers expose only a headline in RSS. Enrich missing image,
         // description and tags from the publicly accessible article metadata.
         // Do not copy the full copyrighted article body into OgraFi.
-        if ($imageUrls === [] || $tags === [] || $this->plainText($content) === $this->plainText($title)) {
+        if ($imageUrls === [] || $tags === [] || $this->plainText($content) === $this->plainText($title) || str_contains((string) parse_url($link, PHP_URL_HOST), 'news.google.com')) {
             $articleMetadata = $this->fetchArticleMetadata($link);
             if ($articleMetadata !== []) {
                 if (! empty($articleMetadata['url']) && ! str_contains((string) parse_url($link, PHP_URL_HOST), 'news.google.com')) {
@@ -465,9 +465,9 @@ class ExternalRssReader
                 } elseif (! empty($articleMetadata['url']) && str_contains((string) parse_url($link, PHP_URL_HOST), 'news.google.com')) {
                     $link = $articleMetadata['url'];
                 }
-                $imageUrls = array_values(array_unique(array_merge($imageUrls, $articleMetadata['images'] ?? [])));
-                $imageUrls = array_slice($imageUrls, 0, 10);
-                $image = $image ?: ($imageUrls[0] ?? '');
+                $articleImages = $articleMetadata['images'] ?? [];
+                $imageUrls = array_slice(array_values(array_unique(array_merge($articleImages, $imageUrls))), 0, 10);
+                $image = $articleImages[0] ?? ($image ?: ($imageUrls[0] ?? ''));
                 $tags = array_values(array_unique(array_slice(array_merge($tags, $articleMetadata['tags'] ?? []), 0, 20)));
                 if ($this->plainText($content) === '' || $this->plainText($content) === $this->plainText($title)) {
                     $content = $articleMetadata['description'] ?? $content;
