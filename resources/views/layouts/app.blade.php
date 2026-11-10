@@ -52,7 +52,7 @@
     <link rel="stylesheet" href="{{ asset('assets/css/kit.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/app.css') }}?v=20261108-detailed-post-composer">
     <link rel="stylesheet" href="{{ asset('assets/css/engine.css') }}?v=20261106-social-account-management">
-    <link rel="stylesheet" href="{{ asset('assets/css/ografi-overrides.css') }}?v=20261110-rss-source-card">
+    <link rel="stylesheet" href="{{ asset('assets/css/ografi-overrides.css') }}?v=20261110-santral-page">
     <script>
         (() => {
             const root = document.documentElement;
@@ -154,6 +154,9 @@
                             </li>
                             <li class="dropdown-menu-item dropdown-menu-item-lg">
                                 <a href="{{ route('advertisements.index') }}"><x-repost-icon name="feed" size="20" class="color-gray" /><span>Reklam yöneticisi</span></a>
+                            </li>
+                            <li class="dropdown-menu-item dropdown-menu-item-lg">
+                                <a href="{{ route('santral') }}"><x-repost-icon name="message" size="20" class="color-gray" /><span>Santral hizmeti</span></a>
                             </li>
                             @if (auth()->user()->is_admin)
                                 <li class="dropdown-menu-item dropdown-menu-item-lg">
