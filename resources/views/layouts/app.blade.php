@@ -153,10 +153,10 @@
                                 <a href="{{ route('settings.edit') }}"><x-repost-icon name="setting" size="20" class="color-gray" /><span>Ayarlar</span></a>
                             </li>
                             <li class="dropdown-menu-item dropdown-menu-item-lg">
-                                <a href="{{ route('advertisements.index') }}"><x-repost-icon name="feed" size="20" class="color-gray" /><span>Reklam yöneticisi</span></a>
+                                <a href="{{ route('advertisements.index') }}"><x-repost-icon name="feed" size="20" class="color-gray" /><span>Reklam yöneticisi</span><span style="display:inline-flex;align-items:center;justify-content:center;margin-left:auto;padding:3px 7px;border-radius:6px;background:#2563eb;color:#fff;font-size:10px;font-weight:700;line-height:1.2;">Yeni</span></a>
                             </li>
                             <li class="dropdown-menu-item dropdown-menu-item-lg">
-                                <a href="{{ route('santral') }}"><x-repost-icon name="message" size="20" class="color-gray" /><span>Santral hizmeti</span></a>
+                                <a href="{{ route('santral') }}"><x-repost-icon name="message" size="20" class="color-gray" /><span>Santral hizmeti</span><span style="display:inline-flex;align-items:center;justify-content:center;margin-left:auto;padding:3px 7px;border-radius:6px;background:#2563eb;color:#fff;font-size:10px;font-weight:700;line-height:1.2;">Yeni</span></a>
                             </li>
                             @if (auth()->user()->is_admin)
                                 <li class="dropdown-menu-item dropdown-menu-item-lg">
