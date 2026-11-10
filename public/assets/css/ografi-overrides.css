@@ -4234,3 +4234,64 @@ body.is-messenger-conversation .pm-dialog__composer .pm-composer__send svg {
 
 
 /* Dock geometry is set from the feed column by the Santral page script. */
+
+
+/* Final Santral polish — scoped to this page; keep Repost layout dimensions intact. */
+.ografi-pbx-page .ografi-pbx-hero-copy > .ografi-pbx-eyebrow {
+    display: inline-flex !important;
+    align-items: center;
+    width: fit-content;
+    margin: 0 0 14px;
+    padding: 6px 11px;
+    border: 1px solid #d7e5ff;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, .9);
+    color: #1769ff;
+    font-size: 10px;
+    font-weight: 800;
+    line-height: 1.3;
+    letter-spacing: .12em;
+}
+.ografi-pbx-page .ografi-pbx-hero-copy {
+    min-width: 0;
+}
+.ografi-pbx-page .ografi-pbx-hero h1 {
+    overflow-wrap: anywhere;
+}
+.ografi-pbx-page .ografi-pbx-feature,
+.ografi-pbx-page .ografi-pbx-plan,
+.ografi-pbx-page .ografi-pbx-tech-grid > div {
+    min-width: 0;
+}
+.ografi-pbx-page .ografi-pbx-feature p,
+.ografi-pbx-page .ografi-pbx-plan p,
+.ografi-pbx-page .ografi-pbx-plan li,
+.ografi-pbx-page .ografi-pbx-tech-grid small {
+    overflow-wrap: anywhere;
+}
+.ografi-pbx-page :is(a, button):focus-visible {
+    outline: 3px solid rgba(37, 99, 235, .35);
+    outline-offset: 3px;
+}
+@media (max-width: 640px) {
+    .ografi-pbx-page .ografi-pbx-section {
+        padding-block: 22px;
+    }
+    .ografi-pbx-page .ografi-pbx-section > h2,
+    .ografi-pbx-page .ografi-pbx-bottom h2 {
+        line-height: 1.2;
+    }
+    .ografi-pbx-page .ografi-pbx-slider-track,
+    .ografi-pbx-page .ografi-pbx-slide {
+        min-height: 190px;
+    }
+}
+@media (prefers-reduced-motion: reduce) {
+    .ografi-pbx-page *,
+    .ografi-pbx-fixed-actions * {
+        scroll-behavior: auto !important;
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .01ms !important;
+    }
+}
