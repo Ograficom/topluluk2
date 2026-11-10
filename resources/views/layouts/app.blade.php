@@ -52,11 +52,20 @@
     <link rel="stylesheet" href="{{ asset('assets/css/kit.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/app.css') }}?v=20261110-santral-real-brand-logos-hint-gap">
     <link rel="stylesheet" href="{{ asset('assets/css/engine.css') }}?v=20261110-santral-hero-buttons-inset-blue">
-    <link rel="stylesheet" href="{{ asset('assets/css/ografi-overrides.css') }}?v=20261111-santral-hide-mobile-nav'theme');
-            } catch {}
+    <link rel="stylesheet" href="{{ asset('assets/css/ografi-overrides.css') }}?v=20261111-santral-hide-mobile-nav">
+    <script>
+        (() => {
+            const root = document.documentElement;
+            let theme = null;
+
+            try {
+                theme = localStorage.getItem('theme');
+            } catch (error) {
+                theme = null;
+            }
 
             if (theme !== 'light' && theme !== 'dark') {
-                theme = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+                theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
             }
 
             root.dataset.theme = theme;
