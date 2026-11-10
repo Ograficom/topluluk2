@@ -126,7 +126,7 @@
         </section>
 
         <div>
-            <x-filament::button color="gray" icon="heroicon-o-arrow-left" tag="a" href="{{ \\App\\Filament\\Pages\\RssSources::getUrl() }}">Tüm RSS kaynaklarına dön</x-filament::button>
+            <x-filament::button color="gray" icon="heroicon-o-arrow-left" tag="a" href="{{ \App\Filament\Pages\RssSources::getUrl() }}">Tüm RSS kaynaklarına dön</x-filament::button>
         </div>
     </div>
 </x-filament-panels::page>
