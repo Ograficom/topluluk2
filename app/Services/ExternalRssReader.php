@@ -534,6 +534,26 @@ class ExternalRssReader
                     }
                 }
 
+                // Collect actual article-body images as a gallery too, not only the
+                // publisher's single og:image. Prefer lazy-loaded full-size URLs.
+                $imageNodes = $xpath->query('//article//img | //main//img | //*[@itemprop="articleBody"]//img');
+                if ($imageNodes) {
+                    foreach ($imageNodes as $imageNode) {
+                        if (! $imageNode instanceof \DOMElement) continue;
+                        $candidate = '';
+                        foreach (['data-src', 'data-original', 'data-lazy-src', 'data-url', 'src'] as $attribute) {
+                            $candidate = trim($imageNode->getAttribute($attribute));
+                            if ($candidate !== '') break;
+                        }
+                        if ($candidate === '' || str_starts_with($candidate, 'data:')) continue;
+                        $resolved = $this->resolveUrl($candidate, $finalUrl);
+                        if (! $resolved) continue;
+                        $path = strtolower((string) parse_url($resolved, PHP_URL_PATH));
+                        if (preg_match('/\\.(svg|gif)$/i', $path) || preg_match('/logo|icon|avatar|placeholder|sprite|tracking|pixel/i', $path)) continue;
+                        $images[] = $resolved;
+                    }
+                }
+
                 $tags = [];
                 foreach (['keywords', 'news_keywords', 'article:tag', 'article:section'] as $key) {
                     $value = $meta($key);
@@ -575,7 +595,7 @@ class ExternalRssReader
                     ->all();
 
                 return [
-                    'images' => array_values(array_unique($images)),
+                    'images' => array_slice(array_values(array_unique($images)), 0, 10),
                     'tags' => $tags,
                     'description' => Str::limit($this->plainText($description), 12000, ''),
                     'url' => $publisherUrl,
