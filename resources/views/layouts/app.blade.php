@@ -548,6 +548,7 @@
     })();
     </script>
     @endauth
+    @include('layouts._cookie-consent')
     @stack('scripts')
 </body>
 </html>
