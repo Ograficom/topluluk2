@@ -16,7 +16,7 @@
                     <span class="flex size-10 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-700 dark:bg-blue-400/10 dark:text-blue-300"><x-heroicon-o-shield-check class="size-5" /></span>
                     <span><span class="block text-sm font-semibold text-gray-900 dark:text-white">Search Console</span><span class="mt-0.5 block text-xs text-gray-500">Site doğrulaması</span></span>
                 </a>
-                <a href="#seo-homepage" class="group flex items-center gap-3 px-5 py-4 transition hover:bg-gray-50 dark:hover:bg-gray-800/60">
+                <a href="#seo-homepage-fields" class="group flex items-center gap-3 px-5 py-4 transition hover:bg-gray-50 dark:hover:bg-gray-800/60">
                     <span class="flex size-10 shrink-0 items-center justify-center rounded-xl bg-violet-50 text-violet-700 dark:bg-violet-400/10 dark:text-violet-300"><x-heroicon-o-home class="size-5" /></span>
                     <span><span class="block text-sm font-semibold text-gray-900 dark:text-white">Ana sayfa</span><span class="mt-0.5 block text-xs text-gray-500">Başlık ve açıklama</span></span>
                 </a>
@@ -80,7 +80,7 @@
                 </ul>
             </section>
 
-            <div class="sticky bottom-3 z-10 flex justify-end rounded-xl border border-gray-200 bg-white/95 p-3 shadow-sm backdrop-blur dark:border-gray-700 dark:bg-gray-900/95">
+            <div class="sticky bottom-3 z-10 flex justify-end rounded-xl border border-gray-200 bg-white/95 p-3 backdrop-blur dark:border-gray-700 dark:bg-gray-900/95">
                 <x-filament::button type="submit" icon="heroicon-o-check">SEO ayarlarını kaydet</x-filament::button>
             </div>
         </form>
