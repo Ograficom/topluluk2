@@ -157,10 +157,28 @@ class ExternalRssReader
             ->values()
             ->all();
 
+        // Remove the old inline RSS attribution paragraph; the dedicated source card
+        // on the post detail page is now the only place that displays the source.
+        $body = $post->body;
+        if (is_string($body)) {
+            $decodedBody = json_decode($body, true);
+            if (is_array($decodedBody) && isset($decodedBody['blocks']) && is_array($decodedBody['blocks'])) {
+                $decodedBody['blocks'] = array_values(array_filter(
+                    $decodedBody['blocks'],
+                    fn ($block) => ! str_starts_with(
+                        trim((string) data_get($block, 'data.text', '')),
+                        'Bu içerik RSS kaynağından alınmıştır. Kaynak:'
+                    )
+                ));
+                $body = json_encode($decodedBody, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+            }
+        }
+
         $post->forceFill([
             'cover_image' => $cover ?: $post->cover_image,
             'media' => $gallery,
             'tags' => $tagNames,
+            'body' => $body,
         ])->save();
 
         $tagIds = [];
@@ -194,11 +212,6 @@ class ExternalRssReader
         if ($summary !== '') {
             $blocks[] = ['id' => Str::random(10), 'type' => 'paragraph', 'data' => ['text' => $summary]];
         }
-        $blocks[] = [
-            'id' => Str::random(10),
-            'type' => 'paragraph',
-            'data' => ['text' => 'Bu içerik RSS kaynağından alınmıştır. Kaynak: '.$item->link],
-        ];
 
         $tagNames = collect($item->tags ?? [])
             ->filter(fn ($tag) => is_string($tag) && trim($tag) !== '')
