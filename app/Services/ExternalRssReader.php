@@ -157,9 +157,26 @@ class ExternalRssReader
             ->values()
             ->all();
 
-        // Remove the old inline RSS attribution paragraph; the dedicated source card
-        // on the post detail page is now the only place that displays the source.
+        // Refresh the body of untouched, auto-imported posts when the feed
+        // now provides a richer authorized article body. Do not overwrite posts
+        // whose EditorJS content has been manually expanded or edited.
         $body = $post->body;
+        $decodedExistingBody = is_string($body) ? json_decode($body, true) : null;
+        $existingBlocks = is_array($decodedExistingBody) ? ($decodedExistingBody['blocks'] ?? []) : [];
+        $existingText = collect($existingBlocks)->map(fn ($block) => trim((string) data_get($block, 'data.text', '')))->filter()->implode("\\n\\n");
+        $newText = trim((string) $item->summary);
+        if (count($existingBlocks) <= 1 && $newText !== '' && mb_strlen($newText) > mb_strlen($existingText)) {
+            $paragraphs = preg_split('/\\n\\s*\\n/u', $newText) ?: [$newText];
+            $blocks = [];
+            foreach ($paragraphs as $paragraph) {
+                $paragraph = trim($paragraph);
+                if ($paragraph === '') continue;
+                $blocks[] = ['id' => Str::random(10), 'type' => 'paragraph', 'data' => ['text' => $paragraph]];
+            }
+            if ($blocks !== []) {
+                $body = json_encode(['time' => now()->valueOf(), 'blocks' => $blocks, 'version' => '2.30.0'], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+            }
+        }
         if (is_string($body)) {
             $decodedBody = json_decode($body, true);
             if (is_array($decodedBody) && isset($decodedBody['blocks']) && is_array($decodedBody['blocks'])) {
@@ -210,7 +227,11 @@ class ExternalRssReader
 
         $blocks = [];
         if ($summary !== '') {
-            $blocks[] = ['id' => Str::random(10), 'type' => 'paragraph', 'data' => ['text' => $summary]];
+            foreach (preg_split('/\\n\\s*\\n/u', $summary) ?: [$summary] as $paragraph) {
+                $paragraph = trim($paragraph);
+                if ($paragraph === '') continue;
+                $blocks[] = ['id' => Str::random(10), 'type' => 'paragraph', 'data' => ['text' => $paragraph]];
+            }
         }
 
         $tagNames = collect($item->tags ?? [])
@@ -523,7 +544,7 @@ class ExternalRssReader
             'guid' => Str::limit($guid, 2000, ''),
             'title' => Str::limit($title, 500, ''),
             'link' => $link,
-            'summary' => Str::limit($this->readableContent($content), 12000, ''),
+            'summary' => Str::limit($this->readableContent($content), 50000, ''),
             'author' => $author !== '' ? Str::limit($author, 255, '') : null,
             'image_url' => $this->safeWebUrl($image),
             'image_urls' => $imageUrls,
