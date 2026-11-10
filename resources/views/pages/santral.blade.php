@@ -8,12 +8,12 @@
 @php
     $santralSlides = collect($santralSettings?->slides ?? [])->filter(fn ($slide) => filled($slide['image'] ?? null))->values();
     $santralFeatures = $santralSettings?->features ?: [
-        ['icon' => 'phone-call', 'title' => 'Bulut santral', 'description' => 'Ofis dışında olsanız da ekibiniz aynı telefon sistemi üzerinden çağrı alıp yapabilir. Kullanıcı ve dahili yapısını işletmenize göre hazırlıyoruz.'],
-        ['icon' => 'list', 'title' => 'Sesli yanıt sistemi (IVR)', 'description' => 'Karşılama ve tuşlama menüleriyle arayanları doğru ekibe yönlendirin.'],
-        ['icon' => 'phone', 'title' => 'Kurumsal telefon numaraları', 'description' => '0850, 0312, 0212, 0216 ve 0232 alan kodlarında numara çözümleri için başvuru ve yapılandırma desteği.'],
-        ['icon' => 'message-circle', 'title' => 'WhatsApp Business', 'description' => 'Müşteri iletişim süreçlerinizi WhatsApp Business çözümleriyle iş akışlarınıza bağlayın.'],
-        ['icon' => 'shield-check', 'title' => 'OTP ve SMS', 'description' => 'Doğrulama kodu ve bilgilendirme mesajları için SMS/OTP süreçlerinizi yapılandırın.'],
-        ['icon' => 'workflow', 'title' => 'CRM, API ve Webhook', 'description' => 'Çağrı ve müşteri süreçlerinizi CRM veya özel yazılımlarla entegre edin.'],
+        ['icon' => 'channels', 'title' => 'Bulut santral hizmeti', 'description' => 'Bulut santral altyapısını biz sağlıyor, işletmenizin hatlarını, dahili kullanıcılarını ve çağrı yönlendirmelerini sizin adınıza kurup yönetiyoruz.'],
+        ['icon' => 'list', 'title' => 'IVR ve profesyonel karşılama', 'description' => 'İşletmenize özel sesli karşılama ve tuşlama menülerini hazırlıyor, aramaları doğru departman ve kişilere yönlendiriyoruz.'],
+        ['icon' => 'megaphone', 'title' => '0850 ve şehir numaraları', 'description' => '0850, 0312, 0212, 0216 ve 0232 numara talepleriniz için başvuru, operatör bağlantısı ve santral tanımlamasını sağlıyoruz.'],
+        ['icon' => 'message', 'title' => 'WhatsApp Business entegrasyonu', 'description' => 'WhatsApp Business bağlantısını ve müşteri iletişim akışlarını işletmenizin kullandığı süreçlere göre yapılandırıyoruz.'],
+        ['icon' => 'security', 'title' => 'SMS ve OTP entegrasyonu', 'description' => 'Doğrulama kodu ve bilgilendirme mesajları için SMS/OTP bağlantılarını kuruyor, test ediyor ve devreye alıyoruz.'],
+        ['icon' => 'bolt', 'title' => 'CRM, API ve Webhook bağlantıları', 'description' => 'Santral çağrı olaylarını CRM ve özel yazılımlarınıza bağlıyor; ihtiyaç duyulan API ve Webhook akışlarını yapılandırıyoruz.'],
     ];
     $santralPackages = $santralSettings?->packages ?: [
         ['name' => 'Başlangıç', 'price' => 0, 'period' => 'aylık', 'description' => 'Temel telefon trafiği ve çağrı yönlendirme ihtiyaçları için.', 'features' => "Bulut santral\nTemel karşılama\nÇağrı yönlendirme\nTeknik destek", 'featured' => false],
@@ -110,7 +110,7 @@
             <div class="ografi-pbx-grid">
                 @foreach ($santralFeatures as $feature)
                     <section class="ografi-pbx-feature">
-                        <span class="ografi-pbx-feature-icon"><x-repost-icon :name="$feature['icon'] ?? 'phone'" size="21" /></span>
+                        <span class="ografi-pbx-feature-icon"><x-repost-icon :name="in_array($feature['icon'] ?? '', ['channels', 'list', 'megaphone', 'message', 'security', 'bolt'], true) ? $feature['icon'] : ['channels', 'list', 'megaphone', 'message', 'security', 'bolt'][$loop->index % 6]" size="23" /></span>
                         <h3>{{ $feature['title'] ?? '' }}</h3>
                         <p>{{ $feature['description'] ?? '' }}</p>
                     </section>
