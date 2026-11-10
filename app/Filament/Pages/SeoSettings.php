@@ -69,15 +69,17 @@ class SeoSettings extends Page
                     TextInput::make('home_seo_title')
                         ->label('Ana sayfa SEO başlığı')
                         ->maxLength(255)
+                        ->live(debounce: 500)
                         ->placeholder('OgraFi – Fikirlerin ve toplulukların buluşma noktası')
-                        ->helperText('Kısa, özgün ve sayfanın içeriğini doğru anlatan bir başlık yazın. Site adı otomatik sona eklenir; burada tekrar yazmayın.')
+                        ->helperText('Her sayfada farklı, açık ve içeriği doğru anlatan bir başlık kullanın. Site adı otomatik sona eklenir; burada tekrar yazmayın. Google başlığı arama sorgusuna göre farklı gösterebilir.')
                         ->columnSpanFull(),
                     Textarea::make('home_seo_description')
                         ->label('Ana sayfa meta açıklaması')
                         ->rows(3)
                         ->maxLength(500)
+                        ->live(debounce: 500)
                         ->placeholder('OgraFi topluluğunda teknoloji, gündem ve ilgi alanlarını keşfedin; yazılar paylaşın ve tartışmalara katılın.')
-                        ->helperText('Sayfayı özetleyen doğal bir açıklama yazın. Google bu metni her aramada göstermek zorunda değildir.')
+                        ->helperText('Sayfayı doğru ve özgün biçimde özetleyin. Google çoğu aramada sayfa içeriğinden kendi snippet metnini seçebilir; sabit karakter sınırı yoktur.')
                         ->columnSpanFull(),
                     Toggle::make('home_seo_index')
                         ->label('Ana sayfanın Google tarafından indekslenmesine izin ver')
@@ -92,6 +94,7 @@ class SeoSettings extends Page
                         ->label('Ana sayfa paylaşım görseli URL')
                         ->url()
                         ->maxLength(2048)
+                        ->live(debounce: 500)
                         ->placeholder('https://ografi.com/storage/seo/ana-sayfa.jpg')
                         ->helperText('Boş bırakılırsa genel paylaşım görseli kullanılır.')
                         ->columnSpanFull(),
