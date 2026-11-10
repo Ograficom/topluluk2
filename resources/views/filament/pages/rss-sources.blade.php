@@ -165,7 +165,7 @@
                             @endif
                         </div>
                         <div class="rss-admin-actions">
-                            <x-filament::button size="sm" color="gray" tag="a" href="{{ \\App\\Filament\\Pages\\RssSourceManage::getUrl(['record' => $source->id]) }}">Kaynağı yönet</x-filament::button>
+                            <x-filament::button size="sm" color="gray" tag="a" href="{{ \App\Filament\Pages\RssSourceManage::getUrl(['record' => $source->id]) }}">Kaynağı yönet</x-filament::button>
                             <x-filament::icon-button icon="heroicon-o-arrow-path" color="gray" tooltip="Şimdi güncelle" wire:click="refreshSource({{ $source->id }})" />
                             <x-filament::icon-button icon="{{ $source->is_active ? 'heroicon-o-pause' : 'heroicon-o-play' }}" color="gray" tooltip="{{ $source->is_active ? 'Duraklat' : 'Etkinleştir' }}" wire:click="toggleSource({{ $source->id }})" />
                             <x-filament::icon-button icon="heroicon-o-trash" color="danger" tooltip="Kaynağı sil" wire:click="deleteSource({{ $source->id }})" wire:confirm="Bu RSS kaynağı ve kayıtlı içerikleri silinsin mi?" />
