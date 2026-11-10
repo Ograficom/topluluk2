@@ -1,11 +1,16 @@
 @extends('layouts.app')
 
-@section('title', $post->title)
+@section('title', $post->seo_title ?: $post->title)
 @section('description', $post->meta_description ?: $post->excerpt)
-
-@section('canonical', route('posts.show', $post))
+@section('canonical', $post->canonical_url ?: route('posts.show', $post))
+@section('robots', ($post->robots_index ?? true) && ! $post->is_adult ? 'index,follow' : 'noindex,follow')
+@if (filled($post->seo_keywords))
+    @section('seo_keywords', $post->seo_keywords)
+@endif
 @section('og_type', 'article')
-@if ($post->coverImageUrl())
+@if (filled($post->og_image))
+    @section('seo_image', $post->og_image)
+@elseif ($post->coverImageUrl())
     @section('seo_image', $post->coverImageUrl())
 @endif
 
@@ -22,8 +27,8 @@
         {!! json_encode([
             '@context' => 'https://schema.org',
             '@type' => 'Article',
-            'mainEntityOfPage' => ['@type' => 'WebPage', '@id' => route('posts.show', $post)],
-            'headline' => $post->title,
+            'mainEntityOfPage' => ['@type' => 'WebPage', '@id' => $post->canonical_url ?: route('posts.show', $post)],
+            'headline' => $post->seo_title ?: $post->title,
             'description' => \Illuminate\Support\Str::limit(trim(strip_tags($post->meta_description ?: $post->excerpt)), 300, ''),
             'datePublished' => $post->published_at?->toAtomString(),
             'dateModified' => ($post->updated_at ?: $post->published_at)?->toAtomString(),
