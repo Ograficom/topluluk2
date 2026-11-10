@@ -50,7 +50,7 @@
     <link rel="stylesheet" href="{{ asset('assets/libs/fancyapp/fancybox.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/libs/fancyapp/carousel.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/kit.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/css/app.css') }}?v=20261110-santral-eyebrow-top-right">
+    <link rel="stylesheet" href="{{ asset('assets/css/app.css') }}?v=20261110-santral-art-top-centered">
     <link rel="stylesheet" href="{{ asset('assets/css/engine.css') }}?v=20261110-santral-eyebrow-top-right">
     <link rel="stylesheet" href="{{ asset('assets/css/ografi-overrides.css') }}?v=20261110-santral-eyebrow-top-right">
     <script>
