@@ -1,9 +1,7 @@
 <section class="cookie-consent" data-cookie-consent hidden aria-label="Çerez tercihleri">
     <div class="cookie-consent__notice" role="status">
         <p>Çerez kullanıyoruz. <a href="{{ route('pages.show', 'privacy') }}">Detaylar</a></p>
-        <button type="button" class="cookie-consent__button cookie-consent__button--quiet" data-cookie-reject>Reddet</button>
         <button type="button" class="cookie-consent__button cookie-consent__button--primary" data-cookie-accept>Kabul et</button>
-        <button type="button" class="cookie-consent__settings-link" data-cookie-details-open>Ayarlar</button>
     </div>
 
     <div class="cookie-consent__details" data-cookie-details hidden>
@@ -45,7 +43,7 @@
 
 <style>
 .cookie-consent[hidden],.cookie-consent__details[hidden]{display:none!important}
-.cookie-consent{position:fixed;left:16px;bottom:16px;z-index:10050;width:max-content;max-width:calc(100vw - 32px);color:#202124;font-family:inherit}
+.cookie-consent{position:fixed;right:16px;left:auto;bottom:16px;z-index:10050;width:max-content;max-width:calc(100vw - 32px);color:#202124;font-family:inherit}
 .cookie-consent__notice{display:flex;align-items:center;gap:10px;flex-wrap:wrap;background:#fff;border:1px solid #e7e7e7;border-radius:12px;padding:10px 12px;box-shadow:0 4px 18px rgba(0,0,0,.12)}
 .cookie-consent__notice p{margin:0;font-size:12px;line-height:1.4;white-space:nowrap}
 .cookie-consent__notice a,.cookie-consent__legal a{color:#2563eb;text-decoration:none}
@@ -55,7 +53,7 @@
 .cookie-consent__button--outline{border:1px solid #dbe2ea;background:#fff;color:#334155}
 .cookie-consent__button--primary{border:1px solid #2563eb;background:#2563eb;color:#fff}
 .cookie-consent__settings-link{border:0;background:transparent;padding:4px 2px;color:#555;font-family:inherit;font-size:12px;cursor:pointer}
-.cookie-consent__details{position:absolute;left:0;bottom:calc(100% + 10px);width:min(420px,calc(100vw - 32px));max-height:min(72vh,620px);overflow:auto;background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:18px;box-shadow:0 8px 30px rgba(0,0,0,.16)}
+.cookie-consent__details{position:absolute;right:0;left:auto;bottom:calc(100% + 10px);width:min(420px,calc(100vw - 32px));max-height:min(72vh,620px);overflow:auto;background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:18px;box-shadow:0 8px 30px rgba(0,0,0,.16)}
 .cookie-consent__details-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;margin-bottom:12px}
 .cookie-consent__details-head strong{font-size:16px}
 .cookie-consent__details-head p,.cookie-consent__option small,.cookie-consent__legal{font-size:12px;line-height:1.5;color:#64748b}
@@ -76,7 +74,7 @@
 .cookie-consent__actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:14px}
 .cookie-consent__legal{margin:10px 0 0}
 .cookie-consent__toggle .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
-@media(max-width:520px){.cookie-consent{left:10px;bottom:10px;max-width:calc(100vw - 20px)}.cookie-consent__notice{gap:7px;padding:9px}.cookie-consent__notice p{font-size:11px}.cookie-consent__button{padding:6px 8px;font-size:10px}.cookie-consent__details{width:calc(100vw - 20px)}.cookie-consent__option small{max-width:190px}}
+@media(max-width:520px){.cookie-consent{right:10px;left:auto;bottom:10px;max-width:calc(100vw - 20px)}.cookie-consent__notice{gap:7px;padding:9px}.cookie-consent__notice p{font-size:11px}.cookie-consent__button{padding:6px 8px;font-size:10px}.cookie-consent__details{width:calc(100vw - 20px)}.cookie-consent__option small{max-width:190px}}
 </style>
 
 <script>
