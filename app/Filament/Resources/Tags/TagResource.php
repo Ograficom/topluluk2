@@ -16,6 +16,8 @@ use Filament\Tables\Table;
 
 class TagResource extends Resource
 {
+    protected static string|\UnitEnum|null $navigationGroup = 'İçerik Yönetimi';
+
     protected static ?string $model = Tag::class;
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedTag;
 
