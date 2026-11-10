@@ -180,13 +180,13 @@
                 <h2>{{ $santralSettings?->bottom_title ?: 'İşletmeniz için doğru santral çözümünü birlikte kuralım.' }}</h2>
                 <p>{{ $santralSettings?->bottom_description ?: 'Size uygun paketi seçin. Başvurunuz incelenip onaylandıktan ve gerekli aktivasyon tamamlandıktan sonra santral hizmetinizi kullanmaya başlayın.' }}</p>
             </div>
-            <a class="btn btn-primary btn-lg" href="{{ route('contacts', ['subject' => 'OgraFi Santral hizmeti', 'recipient' => 'partnerships']) }}">Teklif ve bilgi alın</a>
+            <a class="btn btn-primary btn-lg" href="{{ route('contacts', ['subject' => 'Santral satış', 'recipient' => 'marketing']) }}">Teklif ve bilgi alın</a>
         </section>
     </article>
 
     <div class="ografi-pbx-fixed-actions" role="region" aria-label="Santral iletişim işlemleri">
         <div class="ografi-pbx-actions">
-            <a class="btn btn-primary btn-lg" href="{{ route('contacts', ['subject' => 'OgraFi Santral hizmeti', 'recipient' => 'partnerships']) }}">
+            <a class="btn btn-primary btn-lg" href="{{ route('contacts', ['subject' => 'Santral satış', 'recipient' => 'marketing']) }}">
                 <x-repost-icon name="message" size="18" />
                 İletişime geç
             </a>
