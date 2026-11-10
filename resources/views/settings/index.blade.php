@@ -413,6 +413,18 @@
                                     </button>
                                 </li>
                             @endforeach
+                            <li class="menu__item">
+                                <button
+                                    class="menu__link"
+                                    type="button"
+                                    data-cookie-settings-open
+                                    aria-label="Çerez ayarları"
+                                    title="Çerez ayarları"
+                                >
+                                    <x-repost-icon name="security" size="20" class="menu__icon color-gray" />
+                                    <span>Çerez ayarları</span>
+                                </button>
+                            </li>
                         </ul>
                     </div>
                 </section>

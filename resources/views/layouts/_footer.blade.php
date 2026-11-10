@@ -17,7 +17,7 @@
         </div>
     </nav>
 
-    <div class="footer__legal"><small class="color-gray">{{ $brandName }} &copy;&nbsp;{{ $footerYear }}</small><button type="button" class="footer__menu-link" data-cookie-settings-open>Çerez ayarları</button></div>
+    <div class="footer__legal"><small class="color-gray">{{ $brandName }} &copy;&nbsp;{{ $footerYear }}</small></div>
 
     <nav class="footer__social" aria-label="Sosyal medya">
         @foreach (['instagram' => 'Instagram', 'telegram' => 'Telegram', 'threads' => 'Threads'] as $network => $label)
