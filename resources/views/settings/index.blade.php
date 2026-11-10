@@ -2,6 +2,17 @@
 
 @section('title', 'Ayarlar')
 
+@push('head')
+    <style>
+        /* Repost mobile settings layout: keep the settings menu, hide its desktop footer. */
+        @media screen and (max-width: 920px) {
+            html body .setting__aside-footer {
+                display: none !important;
+            }
+        }
+    </style>
+@endpush
+
 @section('content')
     <div class="setting main__grid-feed">
         <div data-setting-view>
