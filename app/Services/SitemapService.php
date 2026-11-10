@@ -92,7 +92,7 @@ class SitemapService
                 ->orderBy('id')
                 ->limit(50000)
                 ->get(['username', 'updated_at'])
-                ->each(fn (User $user) => $add('/@'.rawurlencode($user->username), $user->updated_at));
+                ->each(fn (User $user) => $add('/@'.$user->username, $user->updated_at));
         }
 
         if (in_array('posts', $included, true)) {
