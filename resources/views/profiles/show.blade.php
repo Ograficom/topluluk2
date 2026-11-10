@@ -1,6 +1,31 @@
 @extends('layouts.app')
 
-@section('title', $user->displayName())
+@section('title', $user->profile_seo_title ?: $user->displayName().' profili')
+@section('description', $user->profile_seo_description ?: \\Illuminate\\Support\\Str::limit(trim(strip_tags($user->bio ?: $user->signature ?: $user->displayName().' adlı kullanıcının OgraFi topluluk profili.')), 160, ''))
+@section('canonical', $user->profile_canonical_url ?: route('profiles.show', $user))
+@section('robots', ($user->profile_robots_index ?? true) && ! request()->hasAny(['posts', 'comments']) ? 'index,follow' : 'noindex,follow')
+@if (filled($user->profile_seo_keywords))
+    @section('seo_keywords', $user->profile_seo_keywords)
+@endif
+@if (filled($user->profile_og_image))
+    @section('seo_image', $user->profile_og_image)
+@elseif (filled($user->avatar_path))
+    @section('seo_image', $user->avatarUrl())
+@endif
+
+@push('head')
+    <script type="application/ld+json">
+        {!! json_encode([
+            '@context' => 'https://schema.org',
+            '@type' => 'ProfilePage',
+            'name' => $user->profile_seo_title ?: $user->displayName(),
+            'description' => $user->profile_seo_description ?: \\Illuminate\\Support\\Str::limit(trim(strip_tags($user->bio ?: $user->signature ?: $user->displayName().' adlı kullanıcının OgraFi topluluk profili.')), 300, ''),
+            'url' => $user->profile_canonical_url ?: route('profiles.show', $user),
+            'mainEntity' => ['@type' => 'Person', 'name' => $user->displayName(), 'url' => route('profiles.show', $user), 'image' => $user->avatarUrl()],
+            'inLanguage' => 'tr-TR',
+        ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_HEX_TAG | JSON_HEX_AMP) !!}
+    </script>
+@endpush
 
 @push('head')
     <link rel="stylesheet" href="{{ asset('assets/css/profile-theme.css') }}?v=20261108-profile-mobile-fix-2">
