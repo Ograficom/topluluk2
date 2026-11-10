@@ -4445,3 +4445,18 @@ body.is-messenger-conversation .pm-dialog__composer .pm-composer__send svg {
     .ografi-pbx-page .ografi-pbx-plan { width: 90% !important; }
     .ografi-pbx-fixed-actions .ografi-pbx-actions > .btn { font-size: 11px !important; }
 }
+
+/* Santral: remove the fixed action dock's outer white container; keep both buttons intact. */
+html body .ografi-pbx-fixed-actions,
+html body .ografi-pbx-fixed-actions:before,
+html body .ografi-pbx-fixed-actions:after {
+    background: transparent !important;
+    border: 0 !important;
+    border-color: transparent !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    outline: 0 !important;
+    padding: 0 !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+}
