@@ -105,7 +105,7 @@ class SantralPage extends Page
                             TextInput::make('period')->label('Ücret dönemi')->default('aylık')->maxLength(30),
                             Textarea::make('description')->label('Kısa açıklama')->rows(2)->required(),
                             Textarea::make('features')->label('Özellikler (her satıra bir özellik)')->rows(5)->required()->columnSpanFull(),
-                            \\Filament\\Forms\\Components\\Toggle::make('featured')->label('Öne çıkarılan paket'),
+                            \Filament\Forms\Components\Toggle::make('featured')->label('Öne çıkarılan paket'),
                         ])->columns(2)->defaultItems(3)->reorderable(false)->collapsible()->columnSpanFull(),
                     ]),
                 Section::make('Nasıl çalışır?')
