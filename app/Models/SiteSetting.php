@@ -23,7 +23,7 @@ class SiteSetting extends Model
         'yandex_client_id',
         'yandex_client_secret',
         'advertisement_daily_price',
-        'seo_default_title', 'seo_default_description', 'seo_default_keywords', 'seo_og_image',
+        'seo_default_title', 'seo_default_description', 'seo_default_keywords', 'seo_og_image', 'google_site_verification', 'home_seo_og_image',
         'home_seo_title', 'home_seo_description', 'home_seo_keywords', 'home_seo_index',
     ];
 
