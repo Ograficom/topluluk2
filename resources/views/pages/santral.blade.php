@@ -45,7 +45,6 @@
 @section('content')
     <article class="card card-body ografi-pbx-page">
         <section class="ografi-pbx-hero">
-            <span class="ografi-pbx-eyebrow">{{ $santralSettings?->eyebrow ?: 'OGRAFI SANTRAL' }}</span>
             <div class="ografi-pbx-hero-copy">
                 <h1>{{ $santralSettings?->hero_title ?: 'İşletmenizin iletişimi, tek merkezden.' }}</h1>
                 <p class="ografi-pbx-lead">{{ $santralSettings?->hero_description ?: 'Telefon trafiğinizi profesyonel bir bulut santralle yönetin. Numara, karşılama menüsü, ekip yönlendirmesi ve entegrasyonları sizin için kurup yapılandıralım.' }}</p>
