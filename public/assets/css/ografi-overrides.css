@@ -4471,3 +4471,133 @@ html body .ografi-pbx-fixed-actions > .ografi-pbx-actions {
         pointer-events: none !important;
     }
 }
+
+
+/* OgraFi Santral — follow the site's active dark/light theme without changing layout dimensions. */
+[data-theme="dark"] .ografi-pbx-page {
+    color: #e5eaf3;
+    background: #171c26;
+    border-color: #30394a;
+}
+[data-theme="dark"] .ografi-pbx-page .ografi-pbx-hero {
+    border-color: #34445e;
+    background:
+        radial-gradient(circle at 88% 16%, rgb(59 130 246 / 16%), transparent 34%),
+        linear-gradient(125deg, #1b2637 0%, #1b2230 58%, #202d42 100%);
+}
+[data-theme="dark"] .ografi-pbx-page .ografi-pbx-hero h1,
+[data-theme="dark"] .ografi-pbx-page .ografi-pbx-section h2,
+[data-theme="dark"] .ografi-pbx-page .ografi-pbx-bottom h2,
+[data-theme="dark"] .ografi-pbx-page .ografi-pbx-infra-copy h2,
+[data-theme="dark"] .ografi-pbx-page .ografi-pbx-feature h3,
+[data-theme="dark"] .ografi-pbx-page .ografi-pbx-plan h3,
+[data-theme="dark"] .ografi-pbx-page .ografi-pbx-plan-price strong,
+[data-theme="dark"] .ografi-pbx-page .ografi-pbx-tech-grid strong,
+[data-theme="dark"] .ografi-pbx-page .ografi-pbx-steps strong {
+    color: #f1f5fb !important;
+}
+[data-theme="dark"] .ografi-pbx-page .ografi-pbx-lead,
+[data-theme="dark"] .ografi-pbx-page .ografi-pbx-hero-copy > .small,
+[data-theme="dark"] .ografi-pbx-page .ografi-pbx-section-heading p,
+[data-theme="dark"] .ografi-pbx-page .ografi-pbx-feature p,
+[data-theme="dark"] .ografi-pbx-page .ografi-pbx-plan-head p,
+[data-theme="dark"] .ografi-pbx-page .ografi-pbx-plan li,
+[data-theme="dark"] .ografi-pbx-page .ografi-pbx-plan > small,
+[data-theme="dark"] .ografi-pbx-page .ografi-pbx-infra-copy p,
+[data-theme="dark"] .ografi-pbx-page .ografi-pbx-tech-grid small,
+[data-theme="dark"] .ografi-pbx-page .ografi-pbx-steps span,
+[data-theme="dark"] .ografi-pbx-page .ografi-pbx-bottom p {
+    color: #aab6c8 !important;
+}
+[data-theme="dark"] .ografi-pbx-page .ografi-pbx-eyebrow,
+[data-theme="dark"] .ografi-pbx-page .ografi-pbx-art-card,
+[data-theme="dark"] .ografi-pbx-page .ografi-pbx-art-chip,
+[data-theme="dark"] .ografi-pbx-page .ografi-pbx-tech-grid > div > span,
+[data-theme="dark"] .ografi-pbx-page .ografi-pbx-plan-icon {
+    border-color: #35445b;
+    background: #222c3b;
+    color: #8db8ff;
+}
+[data-theme="dark"] .ografi-pbx-page .ografi-pbx-art-card strong {
+    color: #f1f5fb;
+}
+[data-theme="dark"] .ografi-pbx-page .ografi-pbx-art-card small,
+[data-theme="dark"] .ografi-pbx-page .ografi-pbx-art-chip {
+    color: #b6c2d3;
+}
+[data-theme="dark"] .ografi-pbx-page .ografi-pbx-art-dot {
+    box-shadow: 0 0 0 5px #174b3a;
+}
+[data-theme="dark"] .ografi-pbx-page .ografi-pbx-slider {
+    border-color: #354155;
+    background: #202a39;
+}
+[data-theme="dark"] .ografi-pbx-page .ografi-pbx-feature {
+    border-color: #354155;
+    background: #1d2532;
+}
+[data-theme="dark"] .ografi-pbx-page .ografi-pbx-feature-icon,
+[data-theme="dark"] .ografi-pbx-page .ografi-pbx-steps li::before,
+[data-theme="dark"] .ografi-pbx-page .ografi-pbx-modal-icon {
+    border-color: #344b6d;
+    background: #243750;
+    color: #8db8ff;
+}
+[data-theme="dark"] .ografi-pbx-page .ografi-pbx-section {
+    border-bottom-color: #30394a;
+}
+[data-theme="dark"] .ografi-pbx-page .ografi-pbx-plan {
+    border-color: #354155;
+    background: #1d2532;
+}
+[data-theme="dark"] .ografi-pbx-page .ografi-pbx-plan.is-featured {
+    border-color: #4776b9;
+    background: linear-gradient(180deg, #24364e 0%, #1d2532 55%);
+}
+[data-theme="dark"] .ografi-pbx-page .ografi-pbx-plan-price {
+    border-color: #354155;
+}
+[data-theme="dark"] .ografi-pbx-page .ografi-pbx-tech-grid > div {
+    border-color: #354155;
+    background: #202a39;
+}
+[data-theme="dark"] .ografi-pbx-page .ografi-pbx-bottom {
+    border-color: #354b69;
+    background: linear-gradient(115deg, #22334a, #1d2532);
+}
+[data-theme="dark"] .ografi-pbx-page .ografi-pbx-activation-trigger {
+    border-color: #45658f !important;
+    background: #243750 !important;
+    color: #a9caff !important;
+}
+[data-theme="dark"] .ografi-pbx-page .ografi-pbx-activation-trigger:hover {
+    border-color: #6b9bda !important;
+    background: #2a4160 !important;
+}
+[data-theme="dark"] .ografi-pbx-activation-modal {
+    border-color: #3a4659;
+    background: #1d2532;
+    color: #e5eaf3;
+}
+[data-theme="dark"] .ografi-pbx-activation-modal h2 {
+    color: #f1f5fb;
+}
+[data-theme="dark"] .ografi-pbx-activation-modal p,
+[data-theme="dark"] .ografi-pbx-modal-dismiss {
+    color: #aab6c8;
+}
+[data-theme="dark"] .ografi-pbx-modal-close {
+    background: #2b3545;
+    color: #c4cede;
+}
+[data-theme="dark"] .ografi-pbx-fixed-actions .ografi-pbx-actions > .btn-secondary {
+    border-color: #45658f !important;
+    background: #243750 !important;
+    color: #a9caff !important;
+}
+[data-theme="dark"] .ografi-pbx-fixed-actions .ografi-pbx-actions > .btn-secondary:hover,
+[data-theme="dark"] .ografi-pbx-fixed-actions .ografi-pbx-actions > .btn-secondary:focus-visible {
+    border-color: #6b9bda !important;
+    background: #2a4160 !important;
+    color: #d5e6ff !important;
+}
