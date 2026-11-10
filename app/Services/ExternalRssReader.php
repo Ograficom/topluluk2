@@ -486,7 +486,13 @@ class ExternalRssReader
         // Many publishers expose only a headline in RSS. Enrich missing image,
         // description and tags from the publicly accessible article metadata.
         // Do not copy the full copyrighted article body into OgraFi.
-        if ($imageUrls === [] || $tags === [] || $this->plainText($content) === $this->plainText($title) || str_contains((string) parse_url($link, PHP_URL_HOST), 'news.google.com')) {
+        $articleHost = strtolower((string) parse_url($link, PHP_URL_HOST));
+        $isCumhuriyetArticle = $articleHost === 'cumhuriyet.com.tr' || str_ends_with($articleHost, '.cumhuriyet.com.tr');
+
+        // Cumhuriyet's public RSS supplies summaries, not the complete article.
+        // When the publisher has authorized full-text republication, attempt to
+        // extract the article body from the linked page as well as its metadata.
+        if ($isCumhuriyetArticle || $imageUrls === [] || $tags === [] || $this->plainText($content) === $this->plainText($title) || str_contains($articleHost, 'news.google.com')) {
             $articleMetadata = $this->fetchArticleMetadata($link);
             if ($articleMetadata !== []) {
                 if (! empty($articleMetadata['url']) && ! str_contains((string) parse_url($link, PHP_URL_HOST), 'news.google.com')) {
@@ -498,7 +504,9 @@ class ExternalRssReader
                 $imageUrls = array_slice(array_values(array_unique(array_merge($articleImages, $imageUrls))), 0, 10);
                 $image = $articleImages[0] ?? ($image ?: ($imageUrls[0] ?? ''));
                 $tags = array_values(array_unique(array_slice(array_merge($tags, $articleMetadata['tags'] ?? []), 0, 20)));
-                if ($this->plainText($content) === '' || $this->plainText($content) === $this->plainText($title)) {
+                if ($isCumhuriyetArticle && ! empty($articleMetadata['article_body'])) {
+                    $content = $articleMetadata['article_body'];
+                } elseif ($this->plainText($content) === '' || $this->plainText($content) === $this->plainText($title)) {
                     $content = $articleMetadata['description'] ?? $content;
                 }
             }
@@ -595,6 +603,55 @@ class ExternalRssReader
 
                 $description = $meta('og:description') ?: $meta('description') ?: $meta('twitter:description');
 
+                // Prefer structured articleBody when the publisher exposes it.
+                $articleBody = '';
+                $jsonLdNodes = $xpath->query('//script[@type="application/ld+json"]');
+                if ($jsonLdNodes) {
+                    foreach ($jsonLdNodes as $node) {
+                        $data = json_decode((string) $node->textContent, true);
+                        $structuredItems = is_array($data) && array_is_list($data) ? $data : [$data];
+                        foreach ($structuredItems as $structured) {
+                            if (! is_array($structured)) continue;
+                            $candidates = [$structured];
+                            if (isset($structured['@graph']) && is_array($structured['@graph'])) {
+                                $candidates = array_merge($candidates, $structured['@graph']);
+                            }
+                            foreach ($candidates as $candidate) {
+                                if (! is_array($candidate)) continue;
+                                $bodyCandidate = $candidate['articleBody'] ?? null;
+                                if (is_string($bodyCandidate) && mb_strlen($this->readableContent($bodyCandidate)) > mb_strlen($articleBody)) {
+                                    $articleBody = $this->readableContent($bodyCandidate);
+                                }
+                            }
+                        }
+                    }
+                }
+
+                // Fallback to semantic article-body containers. Extract only
+                // headings and paragraphs, not navigation, recommendations or ads.
+                if ($articleBody === '') {
+                    $bodyNodes = $xpath->query('//*[@itemprop="articleBody"]');
+                    if (! $bodyNodes || $bodyNodes->length === 0) {
+                        $bodyNodes = $xpath->query('//article[contains(translate(@class,"ABCDEFGHIJKLMNOPQRSTUVWXYZ","abcdefghijklmnopqrstuvwxyz"),"article-body") or contains(translate(@class,"ABCDEFGHIJKLMNOPQRSTUVWXYZ","abcdefghijklmnopqrstuvwxyz"),"article-content") or contains(translate(@class,"ABCDEFGHIJKLMNOPQRSTUVWXYZ","abcdefghijklmnopqrstuvwxyz"),"news-content") or contains(translate(@class,"ABCDEFGHIJKLMNOPQRSTUVWXYZ","abcdefghijklmnopqrstuvwxyz"),"detail-content")]');
+                    }
+                    if (! $bodyNodes || $bodyNodes->length === 0) {
+                        $bodyNodes = $xpath->query('//article');
+                    }
+                    if ($bodyNodes && $bodyNodes->length > 0) {
+                        $bodyNode = $bodyNodes->item(0);
+                        $paragraphNodes = (new \\DOMXPath($document))->query('.//h1 | .//h2 | .//h3 | .//p', $bodyNode);
+                        $parts = [];
+                        if ($paragraphNodes) {
+                            foreach ($paragraphNodes as $paragraphNode) {
+                                $text = trim(preg_replace('/\\s+/u', ' ', $paragraphNode->textContent) ?? '');
+                                if ($text !== '' && mb_strlen($text) > 35) $parts[] = $text;
+                            }
+                        }
+                        $articleBody = implode("\\n\\n", array_values(array_unique($parts)));
+                    }
+                }
+
+
                 // Structured article metadata often contains better keywords and a concise description.
                 $jsonLdNodes = $xpath->query('//script[@type="application/ld+json"]');
                 if ($jsonLdNodes) {
@@ -627,6 +684,7 @@ class ExternalRssReader
                     'images' => array_slice(array_values(array_unique($images)), 0, 10),
                     'tags' => $tags,
                     'description' => Str::limit($this->plainText($description), 12000, ''),
+                    'article_body' => Str::limit($articleBody, 50000, ''),
                     'url' => $publisherUrl,
                 ];
             } finally {
