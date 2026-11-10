@@ -31,7 +31,7 @@ class PostForm
             \\Filament\\Schemas\\Components\\Section::make('Yazı SEO ayarları')
                 ->description('Bu yazının arama motorlarında ve sosyal medya paylaşımlarında nasıl görüneceğini belirleyin.')
                 ->schema([
-                    TextInput::make('seo_title')->label('Google sonuç başlığı')->maxLength(255)->helperText('Boş bırakılırsa yazı başlığı kullanılır. Kısa, özgün ve içeriğe uygun yazın.'),
+                    TextInput::make('seo_title')->label('Google sonuç başlığı')->maxLength(255)->helperText('Boş bırakılırsa yazı başlığı kullanılır. Kısa, özgün ve içeriğe uygun yazın. Site adı otomatik eklenir; tekrar yazmayın.'),
                     Textarea::make('meta_description')->label('Google sonuç açıklaması')->rows(3)->maxLength(500)->helperText('Yazıyı özetleyen özgün bir açıklama girin. Google sorguya göre sayfa içeriğinden farklı bir snippet seçebilir.')->columnSpanFull(),
                     TextInput::make('canonical_url')->label('Canonical URL')->url()->maxLength(2048)->helperText('Aynı içeriğin birden fazla adresi varsa tercih edilen asıl URL. Emin değilseniz boş bırakın.')->columnSpanFull(),
                     TextInput::make('og_image')->label('Sosyal paylaşım görseli URL')->url()->maxLength(2048)->helperText('Google başlık/açıklama alanı değildir. Paylaşım kartları için 1200 × 630 px görsel önerilir.')->columnSpanFull(),
