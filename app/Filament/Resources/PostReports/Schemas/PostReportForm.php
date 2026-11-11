@@ -2,6 +2,8 @@
 
 namespace App\Filament\Resources\PostReports\Schemas;
 
+use App\Models\PostReport;
+use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Schemas\Components\Section;
@@ -14,14 +16,12 @@ class PostReportForm
         return $schema->components([
             Section::make('Şikayet bilgileri')
                 ->schema([
-                    Textarea::make('post.title')
+                    Placeholder::make('reported_post')
                         ->label('Bildirilen yazı')
-                        ->disabled()
-                        ->dehydrated(false),
-                    Textarea::make('user.name')
+                        ->content(fn (?PostReport $record): string => $record?->post?->title ?? 'Silinmiş yazı'),
+                    Placeholder::make('reporting_user')
                         ->label('Bildiren kullanıcı')
-                        ->disabled()
-                        ->dehydrated(false),
+                        ->content(fn (?PostReport $record): string => $record?->user?->name ?? 'Silinmiş kullanıcı'),
                     Select::make('reason')
                         ->label('Bildirim nedeni')
                         ->options([
