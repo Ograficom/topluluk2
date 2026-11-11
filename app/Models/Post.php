@@ -18,7 +18,7 @@ class Post extends Model
     protected $fillable = [
         'user_id', 'channel_id', 'advertisement_id', 'title', 'slug', 'excerpt', 'body',
         'cover_image', 'media', 'video_url', 'video_path', 'meta_description', 'tags', 'is_published',
-        'published_at', 'views', 'is_adult',
+        'published_at', 'views', 'is_adult', 'is_spam',
     ];
 
     protected function casts(): array
@@ -29,6 +29,7 @@ class Post extends Model
             'is_published' => 'boolean',
             'published_at' => 'datetime',
             'is_adult' => 'boolean',
+            'is_spam' => 'boolean',
         ];
     }
 
@@ -88,6 +89,7 @@ class Post extends Model
     public function scopePublished(Builder $query): Builder
     {
         return $query->where('is_published', true)
+            ->where('is_spam', false)
             ->where(fn (Builder $query) => $query->whereNull('published_at')->orWhere('published_at', '<=', now()))
             ->where(function (Builder $query): void {
                 $query->whereNull('advertisement_id')
