@@ -15,6 +15,8 @@ use Filament\Tables\Table;
 
 class PostReportResource extends Resource
 {
+    protected static bool $shouldRegisterNavigation = false;
+
     protected static ?string $model = PostReport::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedFlag;
