@@ -1,11 +1,4 @@
 <div class="admin-page-heading"><h1>Ayarlar</h1></div>
-<section class="protection-style-intro">
-    <div class="protection-style-icon"><x-filament::icon icon="heroicon-o-adjustments-horizontal" /></div>
-    <div>
-        <h2>OgraFi site ayarları</h2>
-        <p>Marka, e-posta, SEO, sitemap ve RSS yapılandırmalarını tek merkezden yönetin.</p>
-    </div>
-</section>
 
 <nav class="cm-tabs" aria-label="Ayarlar bölümleri">
     <a href="{{ \App\Filament\Pages\SiteBranding::getUrl() }}" @class(['cm-tab', 'is-active' => request()->routeIs('filament.admin.pages.site-branding')])>
