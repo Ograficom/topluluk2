@@ -1,21 +1,21 @@
 <nav class="cm-tabs" aria-label="Ayarlar bölümleri">
-    <a href="{{ \\App\\Filament\\Pages\\SiteBranding::getUrl() }}" @class(['cm-tab', 'is-active' => request()->routeIs('filament.admin.pages.site-branding')])>
+    <a href="{{ \App\Filament\Pages\SiteBranding::getUrl() }}" @class(['cm-tab', 'is-active' => request()->routeIs('filament.admin.pages.site-branding')])>
         <x-filament::icon icon="heroicon-o-cog-6-tooth" />
         <span>Marka ayarları</span>
     </a>
-    <a href="{{ \\App\\Filament\\Pages\\MailSettings::getUrl() }}" @class(['cm-tab', 'is-active' => request()->routeIs('filament.admin.pages.mail-settings')])>
+    <a href="{{ \App\Filament\Pages\MailSettings::getUrl() }}" @class(['cm-tab', 'is-active' => request()->routeIs('filament.admin.pages.mail-settings')])>
         <x-filament::icon icon="heroicon-o-envelope" />
         <span>E-posta / SMTP</span>
     </a>
-    <a href="{{ \\App\\Filament\\Pages\\SeoSettings::getUrl() }}" @class(['cm-tab', 'is-active' => request()->routeIs('filament.admin.pages.seo-settings')])>
+    <a href="{{ \App\Filament\Pages\SeoSettings::getUrl() }}" @class(['cm-tab', 'is-active' => request()->routeIs('filament.admin.pages.seo-settings')])>
         <x-filament::icon icon="heroicon-o-magnifying-glass" />
         <span>SEO ayarları</span>
     </a>
-    <a href="{{ \\App\\Filament\\Pages\\SitemapManager::getUrl() }}" @class(['cm-tab', 'is-active' => request()->routeIs('filament.admin.pages.sitemap-manager')])>
+    <a href="{{ \App\Filament\Pages\SitemapManager::getUrl() }}" @class(['cm-tab', 'is-active' => request()->routeIs('filament.admin.pages.sitemap-manager')])>
         <x-filament::icon icon="heroicon-o-squares-2x2" />
         <span>Sitemap yönetimi</span>
     </a>
-    <a href="{{ \\App\\Filament\\Pages\\RssManager::getUrl() }}" @class(['cm-tab', 'is-active' => request()->routeIs('filament.admin.pages.rss-manager')])>
+    <a href="{{ \App\Filament\Pages\RssManager::getUrl() }}" @class(['cm-tab', 'is-active' => request()->routeIs('filament.admin.pages.rss-manager')])>
         <x-filament::icon icon="heroicon-o-rss" />
         <span>RSS yönetimi</span>
     </a>
