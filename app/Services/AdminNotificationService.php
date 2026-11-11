@@ -16,7 +16,7 @@ class AdminNotificationService
     ): void {
         User::query()
             ->where('is_admin', true)
-            ->when($exceptUserId !== null, fn ($query) => $query->whereKeyNot($exceptUserId))
+            ->when($exceptUserId !== null, fn ($query) => $query->where('id', '<>', $exceptUserId))
             ->each(function (User $admin) use ($title, $body, $url): void {
                 Notification::make()
                     ->title($title)
