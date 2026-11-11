@@ -22,6 +22,11 @@ class PostsTable
                     ->searchable()
                     ->sortable()
                     ->limit(48),
+                TextColumn::make('is_spam')
+                    ->label('Koruma')
+                    ->badge()
+                    ->formatStateUsing(fn (bool $state): string => $state ? 'Spam incelemesinde' : 'Temiz')
+                    ->color(fn (bool $state): string => $state ? 'danger' : 'success'),
                 TextColumn::make('channel.name')
                     ->label('Kanal')
                     ->placeholder('—')
@@ -39,6 +44,9 @@ class PostsTable
                     ->sortable(),
             ])
             ->filters([
+                SelectFilter::make('is_spam')
+                    ->label('Spam durumu')
+                    ->options([1 => 'Spam incelemesinde', 0 => 'Temiz postlar']),
                 SelectFilter::make('channel_id')
                     ->label('Kanal')
                     ->options(fn () => Channel::query()->orderBy('name')->pluck('name', 'id')),
