@@ -111,6 +111,7 @@ class PostController extends Controller
         }
 
         $tags = $this->parseTags($validated['tags'] ?? '');
+        $isSpam = app(PostSpamFilter::class)->shouldFlag($validated['title'], $validated['excerpt'], $validated['body']);
         $post = Post::create([
             'user_id' => $request->user()->id,
             'channel_id' => $validated['channel_id'] ?? null,
@@ -124,13 +125,16 @@ class PostController extends Controller
             'video_url' => $validated['video_url'] ?? null,
             'video_path' => $videoPath,
             'tags' => $tags,
-            'is_published' => true,
-            'published_at' => now(),
+            'is_published' => ! $isSpam,
+            'is_spam' => $isSpam,
+            'published_at' => $isSpam ? null : now(),
             'is_adult' => $request->boolean('is_adult'),
         ]);
         $this->syncTagRecords($post, $tags);
 
-        return redirect()->route('posts.show', $post)->with('status', 'Yazınız yayınlandı.');
+        return $isSpam
+            ? redirect()->route('posts.index')->with('status', 'Postunuz spam filtresine takıldı ve yönetici incelemesine alındı.')
+            : redirect()->route('posts.show', $post)->with('status', 'Yazınız yayınlandı.');
     }
 
     public function update(Request $request, Post $post): RedirectResponse
@@ -169,6 +173,7 @@ class PostController extends Controller
         if ($request->hasFile('cover_image') && ! $newCover) throw new \RuntimeException('The post cover image could not be stored.');
 
         $tags = $this->parseTags($validated['tags'] ?? '');
+        $isSpam = app(PostSpamFilter::class)->shouldFlag($validated['title'], $validated['excerpt'], $validated['body']);
         $oldCover = $post->cover_image;
         $oldVideo = $post->video_path;
         $existingMedia = collect($post->media ?? []);
@@ -192,7 +197,9 @@ class PostController extends Controller
             'body' => $validated['body'],
             'tags' => $tags,
             'is_adult' => $request->boolean('is_adult'),
+            'is_spam' => $isSpam,
         ]);
+        if ($isSpam) $post->is_published = false;
         if ($newVideo) $post->video_path = $newVideo;
         if ($newCover) $post->cover_image = $newCover;
         elseif ($request->boolean('remove_cover')) $post->cover_image = null;
@@ -202,12 +209,14 @@ class PostController extends Controller
         if ($oldCover && $oldCover !== $post->cover_image && ! filter_var($oldCover, FILTER_VALIDATE_URL)) Storage::disk('public')->delete($oldCover);
         if ($oldVideo && $oldVideo !== $post->video_path) Storage::disk('public')->delete($oldVideo);
 
-        return redirect()->route('posts.show', $post)->with('status', 'Yazınız güncellendi.');
+        return $isSpam
+            ? redirect()->route('posts.index')->with('status', 'Postunuz spam incelemesine alındı; onaylanana kadar yayında görünmeyecek.')
+            : redirect()->route('posts.show', $post)->with('status', 'Yazınız güncellendi.');
     }
 
     public function show(Request $request, Post $post): View
     {
-        abort_unless($post->is_published && (! $post->published_at || $post->published_at->isPast()), 404);
+        abort_unless(! $post->is_spam && $post->is_published && (! $post->published_at || $post->published_at->isPast()), 404);
         if ($post->advertisement_id) {
             $post->load('advertisement');
             $ad = $post->advertisement;
