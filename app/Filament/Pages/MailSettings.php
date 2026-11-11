@@ -16,6 +16,8 @@ use Throwable;
 
 class MailSettings extends Page
 {
+    protected static bool $shouldRegisterNavigation = false;
+
     protected static string|\UnitEnum|null $navigationGroup = 'Ayarlar';
     protected static ?string $navigationLabel = 'E-posta / SMTP';
     protected static ?string $title = 'E-posta gönderim ayarları';
