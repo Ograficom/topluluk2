@@ -230,7 +230,7 @@ class PostController extends Controller
         }
 
         $commentsQuery = $post->comments()->whereNull('parent_id')->where('is_spam', false)->with(['user', 'replies' => fn ($query) => $query->where('is_spam', false)->with('user')])
-            ->withCount('reactions')->withCount('replies')->with(['replies' => fn ($query) => $query->where('is_spam', false)->withCount('reactions')]);
+            ->withCount('reactions')->withCount(['replies' => fn ($query) => $query->where('is_spam', false)])->with(['replies' => fn ($query) => $query->where('is_spam', false)->withCount('reactions')]);
         if ($request->user()) {
             $commentsQuery->withExists(['reactions as viewer_reacted' => fn (Builder $query) => $query->where('user_id', $request->user()->id)])
                 ->with(['replies' => fn ($query) => $query->where('is_spam', false)->withCount('reactions')->withExists([
@@ -239,7 +239,7 @@ class PostController extends Controller
         }
         $post->setRelation('comments', $commentsQuery->get());
         $post->loadCount([
-            'comments',
+            'comments' => fn (Builder $query) => $query->where('is_spam', false),
             'reactions as likes_count' => fn (Builder $query) => $query->where('type', PostReaction::LIKE),
             'reactions as dislikes_count' => fn (Builder $query) => $query->where('type', PostReaction::DISLIKE),
         ]);
