@@ -68,21 +68,8 @@
     </style>
 
     <div class="sitemap-manager">
-        <section class="sm-intro">
-            <div class="sm-intro-main">
-                <span class="sm-icon"><x-filament::icon icon="heroicon-o-globe-alt" /></span>
-                <div>
-                    <h2 class="sm-heading">XML Sitemap yönetimi</h2>
-                    <p class="sm-muted">OgraFi içeriklerinin arama motorları tarafından keşfedilmesini sağlayan sitemap dosyasını buradan yönetin.</p>
-                </div>
-            </div>
-            <a href="{{ $this->sitemapUrl() }}" target="_blank" rel="noopener" class="sm-link">
-                <x-filament::icon icon="heroicon-o-arrow-top-right-on-square" class="size-4" />
-                Sitemap'i görüntüle
-            </a>
-        </section>
 
-        <section class="sm-stats">
+<section class="sm-stats">
             <div class="sm-stat">
                 <div class="sm-stat-top">
                     <span>Toplam URL</span>
