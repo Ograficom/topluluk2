@@ -13,6 +13,7 @@ use App\Models\SupportTicket;
 use App\Models\Tag;
 use App\Models\User;
 use App\Notifications\SiteActivityNotification;
+use App\Services\AdminNotificationService;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -319,14 +320,12 @@ class CommunityController extends Controller
             'status' => SupportTicket::STATUS_NEW,
         ]);
 
-        User::query()->where('is_admin', true)
-            ->when($request->user(), fn ($query) => $query->where('id', '<>', $request->user()->id))
-            ->get()
-            ->each(fn (User $admin) => $admin->notify(new SiteActivityNotification(
-                'Yeni destek talebi',
-                $ticket->name.' yeni bir destek talebi gönderdi: '.$ticket->subject,
-                '/admin/support-tickets',
-            )));
+        AdminNotificationService::sendToAdmins(
+            'Yeni destek talebi',
+            $ticket->name.' yeni bir destek talebi gönderdi: '.$ticket->subject,
+            \App\Filament\Resources\SupportTickets\SupportTicketResource::getUrl(),
+            $request->user() ? (int) $request->user()->id : null,
+        );
 
         $supportEmail = config('mail.from.address');
         if (blank($supportEmail)) {
