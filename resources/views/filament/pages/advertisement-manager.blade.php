@@ -82,17 +82,6 @@
         @media(max-width:640px) { .ad-manager-welcome { min-height:0; padding:16px; border-radius:13px; } }
     </style>
 
-    <div class="admin-page-heading"><h1>Reklam yöneticisi</h1></div>
-
-    <section class="admin-page-intro ad-manager-welcome">
-        <div class="admin-page-intro-icon ad-manager-icon"><x-filament::icon icon="heroicon-o-megaphone" /></div>
-        <div class="admin-page-intro-content">
-            <p class="admin-page-intro-eyebrow ad-manager-eyebrow">OGRAFI YÖNETİM MERKEZİ</p>
-            <h2>Reklam performansı</h2>
-            <p>Yayınlanan reklamların erişimini, etkileşimini ve harcama durumunu tek ekrandan takip edin.</p>
-        </div>
-    </section>
-
     <div class="ad-stat-grid">
         <article class="ad-stat-card">
             <span class="ad-stat-icon blue"><x-filament::icon icon="heroicon-o-megaphone" /></span>
