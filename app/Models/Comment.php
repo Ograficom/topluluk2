@@ -18,12 +18,14 @@ class Comment extends Model
         'parent_id',
         'body',
         'images',
+        'is_spam',
     ];
 
     protected function casts(): array
     {
         return [
             'images' => 'array',
+            'is_spam' => 'boolean',
         ];
     }
 
