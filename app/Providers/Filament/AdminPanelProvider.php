@@ -39,17 +39,20 @@ class AdminPanelProvider extends PanelProvider
             ->favicon(fn (): ?string => SiteSetting::current()?->faviconUrl() ?? asset('assets/img/meta/logo.svg'))
             ->login()
             ->navigationGroups([
-                NavigationGroup::make()
-                    ->label('Ayarlar'),
-                NavigationGroup::make()
-                    ->label('Kullanıcı Yönetimi'),
+                NavigationGroup::make()->label('Ayarlar'),
+                NavigationGroup::make()->label('Kullanıcı Yönetimi'),
             ])
             ->navigationItems([
                 NavigationItem::make('İletişim')
                     ->icon(Heroicon::OutlinedLifebuoy)
                     ->url(fn (): string => FeedbackManagement::getUrl())
-                    ->badge(fn (): ?string => ($count = PostReport::query()->where('status', 'pending')->count()) > 0 ? (string) $count : null)
-                    ->badgeColor('danger')
+                    ->badge(
+                        fn (): ?string => rescue(
+                            fn (): ?string => ($count = PostReport::query()->where('status', 'pending')->count()) > 0 ? (string) $count : null,
+                            null,
+                        ),
+                        'danger',
+                    )
                     ->isActiveWhen(fn (): bool => request()->is('admin/feedback-management', 'admin/post-reports*', 'admin/support-tickets*'))
                     ->sort(3),
             ])
@@ -67,18 +70,12 @@ class AdminPanelProvider extends PanelProvider
                     default => '',
                 },
             )
-            ->colors([
-                'primary' => Color::Blue,
-            ])
+            ->colors(['primary' => Color::Blue])
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\Filament\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\Filament\Pages')
-            ->pages([
-                Dashboard::class,
-            ])
+            ->pages([Dashboard::class])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\Filament\Widgets')
-            ->widgets([
-                AdminOverview::class,
-            ])
+            ->widgets([AdminOverview::class])
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,
@@ -90,8 +87,6 @@ class AdminPanelProvider extends PanelProvider
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
             ])
-            ->authMiddleware([
-                Authenticate::class,
-            ]);
+            ->authMiddleware([Authenticate::class]);
     }
 }
