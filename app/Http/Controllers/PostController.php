@@ -10,6 +10,7 @@ use App\Models\PostReaction;
 use App\Models\RssItem;
 use App\Models\Tag;
 use App\Services\PostSpamFilter;
+use App\Services\UserNotificationService;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\RedirectResponse;
@@ -132,6 +133,25 @@ class PostController extends Controller
             'is_adult' => $request->boolean('is_adult'),
         ]);
         $this->syncTagRecords($post, $tags);
+
+        if (! $isSpam) {
+            $recipients = $request->user()->followers()->get();
+
+            if ($post->channel_id) {
+                $channel = Channel::query()->find($post->channel_id);
+                if ($channel) {
+                    $recipients = $recipients->merge($channel->subscribers()->get());
+                }
+            }
+
+            $recipients->unique('id')->each(fn (\App\Models\User $recipient) => UserNotificationService::send(
+                $recipient,
+                'posts',
+                'Yeni yazı yayınlandı',
+                $request->user()->displayName().' yeni bir yazı yayınladı: '.$post->title,
+                route('posts.show', $post),
+            ));
+        }
 
         return $isSpam
             ? redirect()->route('posts.index')->with('status', 'Postunuz spam filtresine takıldı ve yönetici incelemesine alındı.')
