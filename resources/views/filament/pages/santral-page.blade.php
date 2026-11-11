@@ -65,14 +65,7 @@
         }
     </style>
 
-    <div class="santral-editor-intro">
-        <div>
-            <h2 class="santral-editor-intro__title">Santral sayfası düzenleyicisi</h2>
-            <p class="santral-editor-intro__description">
-                İçerikleri sekmelerden düzenleyin. Değişiklikler, kaydet butonuna bastığınızda canlı sayfaya uygulanır.
-            </p>
-        </div>
-        <x-filament::button
+<x-filament::button
             tag="a"
             :href="url('/santral')"
             target="_blank"
