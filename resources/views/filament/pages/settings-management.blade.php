@@ -26,6 +26,7 @@
             .admin-page-intro p:last-child { font-size:12px; }
         }
     </style>
+    <style>
         .settings-landing {
             display:flex;
             align-items:center;
