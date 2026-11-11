@@ -229,11 +229,11 @@ class PostController extends Controller
             abort_unless($replyTo, 404);
         }
 
-        $commentsQuery = $post->comments()->whereNull('parent_id')->with(['user', 'replies.user'])
-            ->withCount('reactions')->withCount('replies')->with(['replies' => fn ($query) => $query->withCount('reactions')]);
+        $commentsQuery = $post->comments()->whereNull('parent_id')->where('is_spam', false)->with(['user', 'replies' => fn ($query) => $query->where('is_spam', false)->with('user')])
+            ->withCount('reactions')->withCount('replies')->with(['replies' => fn ($query) => $query->where('is_spam', false)->withCount('reactions')]);
         if ($request->user()) {
             $commentsQuery->withExists(['reactions as viewer_reacted' => fn (Builder $query) => $query->where('user_id', $request->user()->id)])
-                ->with(['replies' => fn ($query) => $query->withCount('reactions')->withExists([
+                ->with(['replies' => fn ($query) => $query->where('is_spam', false)->withCount('reactions')->withExists([
                     'reactions as viewer_reacted' => fn (Builder $r) => $r->where('user_id', $request->user()->id),
                 ])]);
         }
