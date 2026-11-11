@@ -1,25 +1,59 @@
 <x-filament-panels::page>
-    <div class="mb-6 rounded-xl border border-primary-200 bg-primary-50/70 p-5 dark:border-primary-900 dark:bg-primary-950/30">
-        <div class="flex items-start gap-3">
-            <div class="mt-0.5 rounded-lg bg-white p-2 text-primary-600 shadow-sm dark:bg-gray-900 dark:text-primary-400">
-                <x-filament::icon icon="heroicon-o-shield-check" class="h-5 w-5" />
-            </div>
-            <div>
-                <h2 class="text-base font-semibold text-gray-950 dark:text-white">OgraFi içerik koruması</h2>
-                <p class="mt-1 text-sm leading-6 text-gray-600 dark:text-gray-300">
-                    Yorumları ve postları spam içeriklerine karşı koruyun. Ayarları sekmelerden yönetin, şüpheli içerikleri inceleme listelerinden kontrol edin.
-                </p>
-            </div>
+    <div class="protection-intro">
+        <div class="protection-intro-icon">
+            <x-filament::icon icon="heroicon-o-shield-check" />
+        </div>
+        <div>
+            <h2>OgraFi içerik koruması</h2>
+            <p>Yorumları ve postları spam içeriklerine karşı koruyun. Ayarları sekmelerden yönetin, şüpheli içerikleri inceleme listelerinden kontrol edin.</p>
         </div>
     </div>
 
-    <form wire:submit="save" class="space-y-6">
+    <form wire:submit="save" class="protection-form">
         {{ $this->form }}
 
-        <div class="flex justify-end border-t border-gray-200 pt-5 dark:border-gray-800">
+        <div class="protection-save">
             <x-filament::button type="submit" icon="heroicon-o-check">
                 Koruma ayarlarını kaydet
             </x-filament::button>
         </div>
     </form>
+
+    <style>
+        .protection-intro {
+            display:flex; align-items:flex-start; gap:14px; width:100%;
+            margin:0 0 22px; padding:18px 20px; border:1px solid #dbeafe;
+            border-radius:12px; background:#f8fbff;
+        }
+        .protection-intro-icon {
+            display:flex; align-items:center; justify-content:center; flex:0 0 42px;
+            width:42px; height:42px; border:1px solid #dbeafe; border-radius:10px;
+            background:#fff; color:#2563eb;
+        }
+        .protection-intro-icon svg { width:21px; height:21px; }
+        .protection-intro h2 { margin:0; color:#111827; font-size:15px; font-weight:650; }
+        .protection-intro p { margin:4px 0 0; color:#64748b; font-size:13px; line-height:1.6; }
+        .protection-form { width:100%; }
+        .protection-form .fi-tabs {
+            width:100% !important; max-width:100%; margin:0 0 20px !important;
+            justify-content:flex-start !important;
+        }
+        .protection-form .fi-tabs nav,
+        .protection-form [role="tablist"] {
+            justify-content:flex-start !important; margin-inline:0 !important;
+        }
+        .protection-save {
+            display:flex; justify-content:flex-end; width:100%;
+            margin-top:20px; padding-top:18px; border-top:1px solid #e5e7eb;
+        }
+        .dark .protection-intro { border-color:#1e3a5f; background:#111c2e; }
+        .dark .protection-intro-icon { border-color:#1e3a5f; background:#172554; color:#93c5fd; }
+        .dark .protection-intro h2 { color:#f9fafb; }
+        .dark .protection-intro p { color:#9ca3af; }
+        .dark .protection-save { border-color:#374151; }
+        @media(max-width:640px) {
+            .protection-intro { padding:15px; gap:11px; }
+            .protection-form .fi-tabs { overflow-x:auto; }
+        }
+    </style>
 </x-filament-panels::page>
