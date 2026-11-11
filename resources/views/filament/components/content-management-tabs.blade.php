@@ -2,13 +2,40 @@
     <div class="cm-posts-intro">
         <h1>Postlar</h1>
         <div class="cm-posts-welcome">
-            <div class="cm-posts-welcome-icon">
-                <x-filament::icon icon="heroicon-o-document-text" />
-            </div>
-            <div>
-                <h2>OgraFi içerik yönetimi</h2>
-                <p>Toplulukta yayınlanan postları buradan oluşturun, düzenleyin, yayın durumlarını takip edin ve içeriklerinizi tek merkezden yönetin.</p>
-            </div>
+            <div class="cm-posts-welcome-icon"><x-filament::icon icon="heroicon-o-document-text" /></div>
+            <div><h2>OgraFi içerik yönetimi</h2><p>Postları oluşturun, düzenleyin ve yayın durumlarını tek merkezden yönetin.</p></div>
+        </div>
+    </div>
+@elseif (request()->is('admin/channels*'))
+    <div class="cm-posts-intro">
+        <h1>Kanallar</h1>
+        <div class="cm-posts-welcome">
+            <div class="cm-posts-welcome-icon"><x-filament::icon icon="heroicon-o-rectangle-stack" /></div>
+            <div><h2>OgraFi içerik yönetimi</h2><p>İçerik kanallarını ve topluluk kategorilerini buradan yönetin.</p></div>
+        </div>
+    </div>
+@elseif (request()->is('admin/tags*'))
+    <div class="cm-posts-intro">
+        <h1>Etiketler</h1>
+        <div class="cm-posts-welcome">
+            <div class="cm-posts-welcome-icon"><x-filament::icon icon="heroicon-o-tag" /></div>
+            <div><h2>OgraFi içerik yönetimi</h2><p>İçerik etiketlerini düzenleyin ve yayınlarınızı daha kolay sınıflandırın.</p></div>
+        </div>
+    </div>
+@elseif (request()->is('admin/comments*'))
+    <div class="cm-posts-intro">
+        <h1>Yorumlar</h1>
+        <div class="cm-posts-welcome">
+            <div class="cm-posts-welcome-icon"><x-filament::icon icon="heroicon-o-chat-bubble-left-right" /></div>
+            <div><h2>OgraFi içerik yönetimi</h2><p>Topluluk yorumlarını inceleyin ve moderasyon işlemlerini yönetin.</p></div>
+        </div>
+    </div>
+@elseif (request()->is('admin/rss-sources*'))
+    <div class="cm-posts-intro">
+        <h1>Dış Bağlantılar</h1>
+        <div class="cm-posts-welcome">
+            <div class="cm-posts-welcome-icon"><x-filament::icon icon="heroicon-o-rss" /></div>
+            <div><h2>OgraFi içerik yönetimi</h2><p>Harici RSS kaynaklarını ve içerik aktarım bağlantılarını yönetin.</p></div>
         </div>
     </div>
 @endif
@@ -38,7 +65,7 @@
 
 <style>
     .cm-posts-intro { margin:0 0 22px; }
-    .cm-posts-intro h1 { margin:0 0 18px; color:#111827; font-size:30px; font-weight:750; letter-spacing:-.035em; line-height:1.2; }
+    .cm-posts-intro h1 { margin:0 0 18px; color:#111827; font-size:30px; font-weight:700; letter-spacing:-.035em; line-height:1.2; }
     .cm-posts-welcome {
         display:flex; align-items:flex-start; gap:14px; width:100%;
         padding:18px 20px; border:1px solid #dbeafe; border-radius:12px;
