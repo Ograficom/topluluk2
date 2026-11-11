@@ -10,6 +10,7 @@ use App\Models\User;
 use App\Services\CommentSpamFilter;
 use App\Notifications\SiteActivityNotification;
 use App\Services\AdminNotificationService;
+use App\Services\UserNotificationService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -108,13 +109,21 @@ class PostInteractionController extends Controller
         );
 
         if (! $isSpam) {
+            UserNotificationService::notifyMentions(
+                $request->user(),
+                (string) ($validated['body'] ?? ''),
+                route('posts.show', $post).'#comment-'.$comment->id,
+            );
+
             $recipient = $parent?->user ?? $post->user;
             if ($recipient && ! $recipient->is($request->user())) {
-                $recipient->notify(new SiteActivityNotification(
+                UserNotificationService::send(
+                    $recipient,
+                    'replies',
                     $parent ? 'Yorumuna yanıt geldi' : 'Yazına yeni yorum',
                     $request->user()->displayName().' yorum yaptı: '.str($validated['body'] ?? 'Bir görsel paylaştı')->limit(100),
                     route('posts.show', $post).'#comment-'.$comment->id,
-                ));
+                );
             }
         }
 
