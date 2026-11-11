@@ -38,6 +38,8 @@ class AdminPanelProvider extends PanelProvider
             ->brandLogoHeight('36px')
             ->favicon(fn (): ?string => SiteSetting::current()?->faviconUrl() ?? asset('assets/img/meta/logo.svg'))
             ->login()
+            ->databaseNotifications()
+            ->databaseNotificationsPolling('30s')
             ->navigationGroups([
                 NavigationGroup::make()->label('Ayarlar'),
                 NavigationGroup::make()->label('Kullanıcı Yönetimi'),
@@ -56,10 +58,6 @@ class AdminPanelProvider extends PanelProvider
                     ->isActiveWhen(fn (): bool => request()->is('admin/feedback-management', 'admin/post-reports*', 'admin/support-tickets*'))
                     ->sort(3),
             ])
-            ->renderHook(
-                PanelsRenderHook::USER_MENU_BEFORE,
-                fn (): string => view('filament.components.admin-notifications')->render(),
-            )
             ->renderHook(
                 PanelsRenderHook::PAGE_START,
                 fn (): string => match (true) {
