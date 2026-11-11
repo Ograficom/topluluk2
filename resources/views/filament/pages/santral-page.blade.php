@@ -1,6 +1,6 @@
 <x-filament-panels::page>
     <style>
-        .santral-editor-intro {
+        .santral-editor-toolbar {\n            display: flex;\n            justify-content: flex-end;\n            align-items: center;\n            width: 100%;\n            margin: 0 0 14px;\n        }\n        .santral-editor-toolbar .fi-btn {\n            width: auto !important;\n            flex: 0 0 auto;\n        }\n        .santral-editor-intro {
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -53,7 +53,7 @@
             background: rgba(17,24,39,.96);
             box-shadow: 0 4px 18px rgba(0,0,0,.24);
         }
-        @media (max-width: 640px) {
+        @media (max-width: 640px) {\n            .santral-editor-toolbar {\n                margin-bottom: 10px;\n            }
             .santral-editor-intro {
                 align-items: flex-start;
                 flex-direction: column;
@@ -65,12 +65,14 @@
         }
     </style>
 
-<x-filament::button
+<div class="santral-editor-toolbar">
+        <x-filament::button
             tag="a"
             :href="url('/santral')"
             target="_blank"
             color="gray"
             icon="heroicon-o-arrow-top-right-on-square"
+            size="sm"
         >
             Sayfayı önizle
         </x-filament::button>
