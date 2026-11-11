@@ -38,8 +38,6 @@ class AdminPanelProvider extends PanelProvider
                 NavigationGroup::make()
                     ->label('Ayarlar'),
                 NavigationGroup::make()
-                    ->label('Koruma'),
-                NavigationGroup::make()
                     ->label('Kullanıcı Yönetimi'),
             ])
             ->renderHook(
