@@ -5,7 +5,7 @@ namespace App\Console\Commands;
 use App\Services\AdminNotificationService;
 use Illuminate\Console\Command;
 
-class SyncAllAdminRecordNotifications extends Command
+class SyncAdminPendingNotifications extends Command
 {
     protected $signature = 'admin-notifications:sync-all';
 
