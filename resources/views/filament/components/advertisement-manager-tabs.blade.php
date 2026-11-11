@@ -1,11 +1,4 @@
 <div class="admin-page-heading"><h1>Reklam yöneticisi</h1></div>
-<section class="protection-style-intro">
-    <div class="protection-style-icon"><x-filament::icon icon="heroicon-o-megaphone" /></div>
-    <div>
-        <h2>Reklam performansı</h2>
-        <p>Yayınlanan reklamların erişimini, etkileşimini ve harcama durumunu tek ekrandan takip edin.</p>
-    </div>
-</section>
 
 <nav class="cm-tabs" aria-label="Reklam yönetimi bölümleri">
     <a href="{{ \App\Filament\Pages\AdvertisementManager::getUrl() }}" @class(['cm-tab', 'is-active' => request()->is('admin/advertisement-manager')])>
