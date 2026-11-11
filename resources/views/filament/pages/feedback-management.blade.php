@@ -1,23 +1,23 @@
 <x-filament-panels::page>
     @php
-        $reports = \\App\\Models\\PostReport::query();
-        $tickets = \\App\\Models\\SupportTicket::query();
+        $reports = \App\Models\PostReport::query();
+        $tickets = \App\Models\SupportTicket::query();
 
         $stats = [
-            ['label' => 'Toplam şikayet', 'value' => (clone $reports)->count(), 'description' => 'Bildirilen tüm yazılar', 'icon' => 'heroicon-o-flag', 'tone' => 'red', 'url' => \\App\\Filament\\Resources\\PostReports\\PostReportResource::getUrl()],
-            ['label' => 'Bekleyen şikayetler', 'value' => (clone $reports)->where('status', 'pending')->count(), 'description' => 'İnceleme bekliyor', 'icon' => 'heroicon-o-clock', 'tone' => 'amber', 'url' => \\App\\Filament\\Resources\\PostReports\\PostReportResource::getUrl()],
-            ['label' => 'İncelenen şikayetler', 'value' => (clone $reports)->where('status', 'reviewing')->count(), 'description' => 'İşlem devam ediyor', 'icon' => 'heroicon-o-eye', 'tone' => 'blue', 'url' => \\App\\Filament\\Resources\\PostReports\\PostReportResource::getUrl()],
-            ['label' => 'Sonuçlanan şikayetler', 'value' => (clone $reports)->whereIn('status', ['resolved', 'rejected'])->count(), 'description' => 'İşlem tamamlandı', 'icon' => 'heroicon-o-check-circle', 'tone' => 'green', 'url' => \\App\\Filament\\Resources\\PostReports\\PostReportResource::getUrl()],
-            ['label' => 'Toplam destek talebi', 'value' => (clone $tickets)->count(), 'description' => 'Gelen tüm başvurular', 'icon' => 'heroicon-o-lifebuoy', 'tone' => 'violet', 'url' => \\App\\Filament\\Resources\\SupportTickets\\SupportTicketResource::getUrl()],
-            ['label' => 'Yeni destek talepleri', 'value' => (clone $tickets)->where('status', \\App\\Models\\SupportTicket::STATUS_NEW)->count(), 'description' => 'Yanıt bekleyen talepler', 'icon' => 'heroicon-o-inbox', 'tone' => 'amber', 'url' => \\App\\Filament\\Resources\\SupportTickets\\SupportTicketResource::getUrl()],
-            ['label' => 'İncelenen destekler', 'value' => (clone $tickets)->where('status', \\App\\Models\\SupportTicket::STATUS_REVIEWING)->count(), 'description' => 'Üzerinde çalışılıyor', 'icon' => 'heroicon-o-eye', 'tone' => 'blue', 'url' => \\App\\Filament\\Resources\\SupportTickets\\SupportTicketResource::getUrl()],
-            ['label' => 'Yanıtlanan / çözülen', 'value' => (clone $tickets)->whereIn('status', [\\App\\Models\\SupportTicket::STATUS_REPLIED, \\App\\Models\\SupportTicket::STATUS_RESOLVED])->count(), 'description' => 'İşlemi tamamlanan talepler', 'icon' => 'heroicon-o-check-circle', 'tone' => 'green', 'url' => \\App\\Filament\\Resources\\SupportTickets\\SupportTicketResource::getUrl()],
+            ['label' => 'Toplam şikayet', 'value' => (clone $reports)->count(), 'description' => 'Bildirilen tüm yazılar', 'icon' => 'heroicon-o-flag', 'tone' => 'red', 'url' => \App\Filament\Resources\PostReports\PostReportResource::getUrl()],
+            ['label' => 'Bekleyen şikayetler', 'value' => (clone $reports)->where('status', 'pending')->count(), 'description' => 'İnceleme bekliyor', 'icon' => 'heroicon-o-clock', 'tone' => 'amber', 'url' => \App\Filament\Resources\PostReports\PostReportResource::getUrl()],
+            ['label' => 'İncelenen şikayetler', 'value' => (clone $reports)->where('status', 'reviewing')->count(), 'description' => 'İşlem devam ediyor', 'icon' => 'heroicon-o-eye', 'tone' => 'blue', 'url' => \App\Filament\Resources\PostReports\PostReportResource::getUrl()],
+            ['label' => 'Sonuçlanan şikayetler', 'value' => (clone $reports)->whereIn('status', ['resolved', 'rejected'])->count(), 'description' => 'İşlem tamamlandı', 'icon' => 'heroicon-o-check-circle', 'tone' => 'green', 'url' => \App\Filament\Resources\PostReports\PostReportResource::getUrl()],
+            ['label' => 'Toplam destek talebi', 'value' => (clone $tickets)->count(), 'description' => 'Gelen tüm başvurular', 'icon' => 'heroicon-o-lifebuoy', 'tone' => 'violet', 'url' => \App\Filament\Resources\SupportTickets\SupportTicketResource::getUrl()],
+            ['label' => 'Yeni destek talepleri', 'value' => (clone $tickets)->where('status', \App\Models\SupportTicket::STATUS_NEW)->count(), 'description' => 'Yanıt bekleyen talepler', 'icon' => 'heroicon-o-inbox', 'tone' => 'amber', 'url' => \App\Filament\Resources\SupportTickets\SupportTicketResource::getUrl()],
+            ['label' => 'İncelenen destekler', 'value' => (clone $tickets)->where('status', \App\Models\SupportTicket::STATUS_REVIEWING)->count(), 'description' => 'Üzerinde çalışılıyor', 'icon' => 'heroicon-o-eye', 'tone' => 'blue', 'url' => \App\Filament\Resources\SupportTickets\SupportTicketResource::getUrl()],
+            ['label' => 'Yanıtlanan / çözülen', 'value' => (clone $tickets)->whereIn('status', [\App\Models\SupportTicket::STATUS_REPLIED, \App\Models\SupportTicket::STATUS_RESOLVED])->count(), 'description' => 'İşlemi tamamlanan talepler', 'icon' => 'heroicon-o-check-circle', 'tone' => 'green', 'url' => \App\Filament\Resources\SupportTickets\SupportTicketResource::getUrl()],
         ];
 
-        $recentReports = \\App\\Models\\PostReport::query()->with(['post', 'user'])->latest()->limit(5)->get();
-        $recentTickets = \\App\\Models\\SupportTicket::query()->latest()->limit(5)->get();
+        $recentReports = \App\Models\PostReport::query()->with(['post', 'user'])->latest()->limit(5)->get();
+        $recentTickets = \App\Models\SupportTicket::query()->latest()->limit(5)->get();
         $totalOpen = (clone $reports)->whereIn('status', ['pending', 'reviewing'])->count()
-            + (clone $tickets)->whereIn('status', [\\App\\Models\\SupportTicket::STATUS_NEW, \\App\\Models\\SupportTicket::STATUS_REVIEWING])->count();
+            + (clone $tickets)->whereIn('status', [\App\Models\SupportTicket::STATUS_NEW, \App\Models\SupportTicket::STATUS_REVIEWING])->count();
     @endphp
 
     <style>
@@ -103,8 +103,8 @@
         <section>
             <div class="fb-section-head"><div><h3>Başvuru istatistikleri</h3><p>Son 12 ayda gelen şikayet ve destek talepleri.</p></div></div>
             <div class="fb-charts">
-                <div class="fb-chart">@livewire(\\App\\Filament\\Widgets\\PostReportsGrowthChart::class)</div>
-                <div class="fb-chart">@livewire(\\App\\Filament\\Widgets\\SupportTicketsGrowthChart::class)</div>
+                <div class="fb-chart">@livewire(\App\Filament\Widgets\PostReportsGrowthChart::class)</div>
+                <div class="fb-chart">@livewire(\App\Filament\Widgets\SupportTicketsGrowthChart::class)</div>
             </div>
         </section>
 
@@ -112,7 +112,7 @@
             <div class="fb-panel">
                 <div class="fb-panel-head">
                     <div><h3>Son yazı şikayetleri</h3><p>En son gönderilen bildirimler.</p></div>
-                    <a class="fb-panel-link" href="{{ \\App\\Filament\\Resources\\PostReports\\PostReportResource::getUrl() }}">Tümünü gör</a>
+                    <a class="fb-panel-link" href="{{ \App\Filament\Resources\PostReports\PostReportResource::getUrl() }}">Tümünü gör</a>
                 </div>
                 <div class="fb-list">
                     @forelse ($recentReports as $report)
@@ -132,7 +132,7 @@
             <div class="fb-panel">
                 <div class="fb-panel-head">
                     <div><h3>Son destek talepleri</h3><p>Kullanıcılardan gelen son başvurular.</p></div>
-                    <a class="fb-panel-link" href="{{ \\App\\Filament\\Resources\\SupportTickets\\SupportTicketResource::getUrl() }}">Tümünü gör</a>
+                    <a class="fb-panel-link" href="{{ \App\Filament\Resources\SupportTickets\SupportTicketResource::getUrl() }}">Tümünü gör</a>
                 </div>
                 <div class="fb-list">
                     @forelse ($recentTickets as $ticket)
