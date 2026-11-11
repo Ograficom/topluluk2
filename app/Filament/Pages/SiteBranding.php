@@ -14,6 +14,8 @@ use Filament\Support\Icons\Heroicon;
 
 class SiteBranding extends Page
 {
+    protected static bool $shouldRegisterNavigation = false;
+
     protected static string|\UnitEnum|null $navigationGroup = 'Ayarlar';
     protected static ?string $navigationLabel = 'Marka ayarları';
 
