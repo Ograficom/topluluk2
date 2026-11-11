@@ -15,6 +15,8 @@ use Filament\Support\Icons\Heroicon;
 
 class SitemapManager extends Page
 {
+    protected static bool $shouldRegisterNavigation = false;
+
     protected static string|\UnitEnum|null $navigationGroup = 'Ayarlar';
     protected static ?string $navigationLabel = 'Sitemap yönetimi';
 
