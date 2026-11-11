@@ -1,9 +1,6 @@
 <x-filament-panels::page>
-    <div class="protection-intro">
-        <div class="protection-intro-icon">
-            <x-filament::icon icon="heroicon-o-shield-check" />
-        </div>
-        <div>
+
+<div>
             <h2>OgraFi içerik koruması</h2>
             <p>Yorumları ve postları spam içeriklerine karşı koruyun. Ayarları sekmelerden yönetin, şüpheli içerikleri inceleme listelerinden kontrol edin.</p>
         </div>
