@@ -127,8 +127,25 @@
                 @endauth
                 @auth
                     @php
-                        $headerNotifications = auth()->user()->notifications()->latest()->limit(8)->get();
-                        $unreadNotificationCount = auth()->user()->unreadNotifications()->count();
+                        $notificationUser = auth()->user();
+                        $visibleNotificationCategories = collect(['replies', 'posts', 'announcements', 'followers', 'messages', 'mentions', 'security'])
+                            ->filter(fn (string $category): bool => (bool) data_get($notificationUser->notification_preferences ?? [], 'stream.'.$category, true))
+                            ->values()
+                            ->all();
+                        $visibleNotifications = fn ($query) => $query->where(function ($items) use ($visibleNotificationCategories): void {
+                            $items->whereNull('data->category');
+                            if ($visibleNotificationCategories !== []) {
+                                $items->orWhereIn('data->category', $visibleNotificationCategories);
+                            }
+                        });
+                        $headerNotifications = $notificationUser->notifications()
+                            ->where($visibleNotifications)
+                            ->latest()
+                            ->limit(8)
+                            ->get();
+                        $unreadNotificationCount = $notificationUser->unreadNotifications()
+                            ->where($visibleNotifications)
+                            ->count();
                     @endphp
                     <div class="dropdown dropdown-md notification-dropdown">
                         <button id="notificationMenuButton" type="button" class="btn btn-secondary-ghost btn-circle notification-trigger" data-dropdown-toggle aria-expanded="false" aria-haspopup="menu" aria-controls="notificationMenu" aria-label="Bildirimler{{ $unreadNotificationCount > 0 ? ', '.$unreadNotificationCount.' okunmamış' : '' }}">
@@ -663,6 +680,54 @@
         document.addEventListener('visibilitychange', () => {
             if (document.visibilityState === 'visible') ping();
         });
+
+        // Browser notifications are shown while OgraFi is open and permission is granted.
+        let pushCursor;
+        try {
+            pushCursor = sessionStorage.getItem('ografi-push-cursor') || new Date().toISOString();
+        } catch (error) {
+            pushCursor = new Date().toISOString();
+        }
+
+        const pollBrowserNotifications = async () => {
+            if (document.visibilityState !== 'visible' || !('Notification' in window) || Notification.permission !== 'granted') {
+                return;
+            }
+
+            try {
+                const response = await fetch(@json(route('notifications.poll-push')) + '?since=' + encodeURIComponent(pushCursor), {
+                    credentials: 'same-origin',
+                    headers: { 'Accept': 'application/json', 'X-Requested-With': 'XMLHttpRequest' }
+                });
+
+                if (!response.ok) return;
+
+                const payload = await response.json();
+                pushCursor = payload.server_time || new Date().toISOString();
+
+                try {
+                    sessionStorage.setItem('ografi-push-cursor', pushCursor);
+                } catch (error) {}
+
+                (payload.notifications || []).forEach((item) => {
+                    const notice = new Notification(item.title || 'OgraFi', {
+                        body: item.body || 'Yeni bir bildirimin var.',
+                        icon: @json(asset('assets/img/meta/logo.svg')),
+                        tag: item.id
+                    });
+
+                    notice.onclick = () => {
+                        window.focus();
+                        window.location.href = item.url || '/';
+                    };
+                });
+            } catch (error) {
+                // A temporary polling failure should not interrupt the page.
+            }
+        };
+
+        pollBrowserNotifications();
+        window.setInterval(pollBrowserNotifications, 30000);
     })();
     </script>
     @endauth
