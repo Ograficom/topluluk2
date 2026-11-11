@@ -19,7 +19,7 @@ class PostReportResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedFlag;
 
-    protected static string|\UnitEnum|null $navigationGroup = 'İçerik Yönetimi';
+    protected static string|\UnitEnum|null $navigationGroup = 'İletişim';
 
     protected static ?int $navigationSort = 1;
 
