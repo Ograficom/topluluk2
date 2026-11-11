@@ -48,7 +48,7 @@ class UserNotificationService
 
         User::query()
             ->whereIn('username', $usernames)
-            ->whereKeyNot($sender->id)
+            ->where('id', '<>', $sender->id)
             ->get()
             ->each(fn (User $recipient) => self::send(
                 $recipient,
