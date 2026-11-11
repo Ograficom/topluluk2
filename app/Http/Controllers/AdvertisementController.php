@@ -7,6 +7,7 @@ use App\Models\AdvertisementEvent;
 use App\Models\SiteSetting;
 use App\Models\User;
 use App\Notifications\SiteActivityNotification;
+use App\Services\AdminNotificationService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -121,12 +122,10 @@ class AdvertisementController extends Controller
             'status' => 'pending',
         ]);
 
-        User::query()->where('is_admin', true)->get()->each(
-            fn (User $admin) => $admin->notify(new SiteActivityNotification(
-                'Yeni reklam başvurusu',
-                $request->user()->displayName().' yeni bir reklam gönderdi: '.$advertisement->title,
-                \App\Filament\Resources\Advertisements\AdvertisementResource::getUrl(),
-            )),
+        AdminNotificationService::sendToAdmins(
+            'Yeni reklam başvurusu',
+            $request->user()->displayName().' yeni bir reklam gönderdi: '.$advertisement->title,
+            \App\Filament\Resources\Advertisements\AdvertisementResource::getUrl(),
         );
 
         return redirect()->route('advertisements.index')
