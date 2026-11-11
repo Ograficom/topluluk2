@@ -29,7 +29,7 @@ class CommentSpamFilter
             ->values();
 
         foreach ($words as $word) {
-            if (str_contains($normalized, $word)) {
+            if (preg_match('/(?:^| )'.preg_quote($word, '/').'(?:$| )/u', $normalized) === 1) {
                 return true;
             }
         }
@@ -45,11 +45,15 @@ class CommentSpamFilter
             return true;
         }
 
-        return Comment::query()
-            ->where('user_id', $userId)
-            ->where('body', trim($body))
-            ->where('created_at', '>=', now()->subMinutes(10))
-            ->exists();
+        if (filled(trim($body))) {
+            return Comment::query()
+                ->where('user_id', $userId)
+                ->where('body', trim($body))
+                ->where('created_at', '>=', now()->subMinutes(10))
+                ->exists();
+        }
+
+        return false;
     }
 
     private function normalize(string $value): string
