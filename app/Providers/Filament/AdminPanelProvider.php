@@ -38,6 +38,8 @@ class AdminPanelProvider extends PanelProvider
                 NavigationGroup::make()
                     ->label('Ayarlar'),
                 NavigationGroup::make()
+                    ->label('Koruma'),
+                NavigationGroup::make()
                     ->label('Kullanıcı Yönetimi'),
             ])
             ->renderHook(
@@ -45,7 +47,7 @@ class AdminPanelProvider extends PanelProvider
                 fn (): string => match (true) {
                     request()->is('admin/content-management', 'admin/channels*', 'admin/comments*', 'admin/posts*', 'admin/tags*', 'admin/rss-sources*')
                         => view('filament.components.content-management-tabs')->render(),
-                    request()->is('admin/settings-management', 'admin/site-branding', 'admin/mail-settings', 'admin/seo-settings', 'admin/sitemap-manager', 'admin/rss-manager', 'admin/comment-spam-settings', 'admin/site-pages*')
+                    request()->is('admin/settings-management', 'admin/site-branding', 'admin/mail-settings', 'admin/seo-settings', 'admin/sitemap-manager', 'admin/rss-manager', 'admin/site-pages*')
                         => view('filament.components.settings-tabs')->render(),
                     default => '',
                 },
