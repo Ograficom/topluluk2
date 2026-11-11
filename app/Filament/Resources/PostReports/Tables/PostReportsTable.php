@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\PostReports\Tables;
 
+use Filament\Actions\DeleteAction;
 use Filament\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
@@ -59,6 +60,9 @@ class PostReportsTable
             ])
             ->recordActions([
                 EditAction::make()->label('İncele'),
+                DeleteAction::make()
+                    ->label('Sil')
+                    ->requiresConfirmation(),
             ]);
     }
 }
