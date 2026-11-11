@@ -1,10 +1,10 @@
 <?php
 
-namespace App\\Filament\\Widgets;
+namespace App\Filament\Widgets;
 
-use App\\Filament\\Widgets\\Concerns\\BuildsMonthlyChart;
-use App\\Models\\PostReport;
-use Filament\\Widgets\\ChartWidget;
+use App\Filament\Widgets\Concerns\BuildsMonthlyChart;
+use App\Models\PostReport;
+use Filament\Widgets\ChartWidget;
 
 class PostReportsGrowthChart extends ChartWidget
 {
