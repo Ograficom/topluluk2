@@ -37,6 +37,8 @@ class AdminPanelProvider extends PanelProvider
             ->navigationGroups([
                 NavigationGroup::make()
                     ->label('Ayarlar'),
+                NavigationGroup::make()
+                    ->label('Kullanıcı Yönetimi'),
             ])
             ->renderHook(
                 PanelsRenderHook::PAGE_START,
