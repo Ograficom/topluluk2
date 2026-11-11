@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\SiteSetting;
 use App\Models\User;
 use App\Notifications\SiteActivityNotification;
+use App\Services\AdminNotificationService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -345,12 +346,10 @@ class SettingsController extends Controller
             return $deletionRequest;
         });
 
-        User::query()->where('is_admin', true)->get()->each(
-            fn (User $admin) => $admin->notify(new SiteActivityNotification(
-                'Yeni hesap silme talebi',
-                $deletionRequest->user_name.' hesabının kalıcı olarak silinmesini istedi.',
-                \App\Filament\Resources\AccountDeletionRequests\AccountDeletionRequestResource::getUrl(),
-            )),
+        AdminNotificationService::sendToAdmins(
+            'Yeni hesap silme talebi',
+            $deletionRequest->user_name.' hesabının kalıcı olarak silinmesini istedi.',
+            \App\Filament\Resources\AccountDeletionRequests\AccountDeletionRequestResource::getUrl(),
         );
 
         Auth::logout();
