@@ -16,6 +16,10 @@ return [
 
     'giphy' => ['key' => env('GIPHY_API_KEY', env('GIF_API_KEY'))],
 
+    'facebook' => [
+        'app_id' => env('FACEBOOK_APP_ID', env('FACEBOOK_CLIENT_ID')),
+    ],
+
     'postmark' => [
         'token' => env('POSTMARK_TOKEN'),
     ],
