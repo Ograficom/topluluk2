@@ -9,7 +9,7 @@
 @endif
 @section('og_type', 'website')
 @if ($channel->image_path)
-    @section('seo_image', \\Illuminate\\Support\\Facades\\Storage::disk('public')->url($channel->image_path))
+    @section('seo_image', \Illuminate\\Support\\Facades\\Storage::disk('public')->url($channel->image_path))
 @endif
 
 @push('head')
@@ -58,7 +58,7 @@
 
             <div class="channel__icon">
                 @if ($channel->image_path)
-                    <img src="{{ \\Illuminate\\Support\\Facades\\Storage::disk('public')->url($channel->image_path) }}" alt="{{ $channel->name }}" width="64" height="64">
+                    <img src="{{ \Illuminate\\Support\\Facades\\Storage::disk('public')->url($channel->image_path) }}" alt="{{ $channel->name }}" width="64" height="64">
                 @else
                     <x-repost-icon name="image" size="28" />
                 @endif
