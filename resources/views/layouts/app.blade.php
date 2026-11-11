@@ -16,7 +16,7 @@
             $seoImage = filled($defaultSeoImage)
                 ? (filter_var($defaultSeoImage, FILTER_VALIDATE_URL)
                     ? $defaultSeoImage
-                    : \\Illuminate\\Support\\Facades\\Storage::disk('public')->url($defaultSeoImage))
+                    : \Illuminate\Support\Facades\Storage::disk('public')->url($defaultSeoImage))
                 : ($brandLogoUrl ?? asset('assets/img/meta/logo.svg'));
         }
         $seoRobotsOverride = trim($__env->yieldContent('robots'));
