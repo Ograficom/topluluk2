@@ -4,6 +4,7 @@ namespace App\Providers\Filament;
 
 use App\Filament\Widgets\AdminOverview;
 use App\Filament\Pages\FeedbackManagement;
+use App\Models\PostReport;
 use App\Models\SiteSetting;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
@@ -47,6 +48,8 @@ class AdminPanelProvider extends PanelProvider
                 NavigationItem::make('İletişim')
                     ->icon(Heroicon::OutlinedLifebuoy)
                     ->url(fn (): string => FeedbackManagement::getUrl())
+                    ->badge(fn (): ?string => ($count = PostReport::query()->where('status', 'pending')->count()) > 0 ? (string) $count : null)
+                    ->badgeColor('danger')
                     ->isActiveWhen(fn (): bool => request()->is('admin/feedback-management', 'admin/post-reports*', 'admin/support-tickets*'))
                     ->sort(3),
             ])
