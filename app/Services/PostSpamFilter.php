@@ -1,9 +1,9 @@
 <?php
 
-namespace App\\Services;
+namespace App\Services;
 
-use App\\Models\\SiteSetting;
-use Illuminate\\Support\\Str;
+use App\Models\SiteSetting;
+use Illuminate\Support\Str;
 
 class PostSpamFilter
 {
@@ -38,8 +38,8 @@ class PostSpamFilter
     {
         $value = Str::lower(strip_tags($value));
         $value = strtr($value, ['ı' => 'i', 'İ' => 'i', 'ş' => 's', 'ğ' => 'g', 'ü' => 'u', 'ö' => 'o', 'ç' => 'c']);
-        $value = preg_replace('/[^\\p{L}\\p{N}]+/u', ' ', $value) ?? '';
+        $value = preg_replace('/[^\p{L}\p{N}]+/u', ' ', $value) ?? '';
 
-        return trim(preg_replace('/\\s+/u', ' ', $value) ?? '');
+        return trim(preg_replace('/\s+/u', ' ', $value) ?? '');
     }
 }
