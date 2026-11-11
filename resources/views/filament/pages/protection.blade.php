@@ -1,11 +1,4 @@
 <x-filament-panels::page>
-
-<div>
-            <h2>OgraFi içerik koruması</h2>
-            <p>Yorumları ve postları spam içeriklerine karşı koruyun. Ayarları sekmelerden yönetin, şüpheli içerikleri inceleme listelerinden kontrol edin.</p>
-        </div>
-    </div>
-
     <form wire:submit="save" class="protection-form">
         {{ $this->form }}
 
