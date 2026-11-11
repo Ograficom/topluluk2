@@ -6,6 +6,7 @@ use App\Models\Comment;
 use App\Models\CommentReaction;
 use App\Models\Post;
 use App\Models\PostReaction;
+use App\Models\User;
 use App\Services\CommentSpamFilter;
 use App\Notifications\SiteActivityNotification;
 use Illuminate\Http\RedirectResponse;
@@ -98,6 +99,14 @@ class PostInteractionController extends Controller
             'images' => $imagePaths,
             'is_spam' => $isSpam,
         ]);
+
+        User::query()->where('is_admin', true)->get()->each(
+            fn (User $admin) => $admin->notify(new SiteActivityNotification(
+                $isSpam ? 'İncelenecek spam yorum' : 'Yeni yorum',
+                $request->user()->displayName().' yorum gönderdi: '.str($validated['body'] ?? 'Görsel içeren yorum')->limit(100),
+                \App\Filament\Resources\Comments\CommentResource::getUrl(),
+            )),
+        );
 
         if (! $isSpam) {
             $recipient = $parent?->user ?? $post->user;
