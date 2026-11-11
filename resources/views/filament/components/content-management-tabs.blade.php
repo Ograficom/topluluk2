@@ -1,29 +1,29 @@
 <nav class="cm-tabs" aria-label="İçerik yönetimi bölümleri">
+    <a href="{{ url('/admin/posts') }}" @class(['cm-tab', 'is-active' => request()->is('admin/posts*')])>
+        <x-filament::icon icon="heroicon-o-document-text" />
+        <span>Postlar</span>
+    </a>
     <a href="{{ url('/admin/channels') }}" @class(['cm-tab', 'is-active' => request()->is('admin/channels*')])>
         <x-filament::icon icon="heroicon-o-rectangle-stack" />
         <span>Kanallar</span>
-    </a>
-    <a href="{{ url('/admin/comments') }}" @class(['cm-tab', 'is-active' => request()->is('admin/comments*')])>
-        <x-filament::icon icon="heroicon-o-chat-bubble-left-right" />
-        <span>Yorumlar</span>
-    </a>
-    <a href="{{ url('/admin/posts') }}" @class(['cm-tab', 'is-active' => request()->is('admin/posts*')])>
-        <x-filament::icon icon="heroicon-o-document-text" />
-        <span>Yazılar</span>
     </a>
     <a href="{{ url('/admin/tags') }}" @class(['cm-tab', 'is-active' => request()->is('admin/tags*')])>
         <x-filament::icon icon="heroicon-o-tag" />
         <span>Etiketler</span>
     </a>
+    <a href="{{ url('/admin/comments') }}" @class(['cm-tab', 'is-active' => request()->is('admin/comments*')])>
+        <x-filament::icon icon="heroicon-o-chat-bubble-left-right" />
+        <span>Yorumlar</span>
+    </a>
     <a href="{{ url('/admin/rss-sources') }}" @class(['cm-tab', 'is-active' => request()->is('admin/rss-sources*')])>
         <x-filament::icon icon="heroicon-o-rss" />
-        <span>Dış RSS bağlantıları</span>
+        <span>Dış Bağlantılar</span>
     </a>
 </nav>
 
 <style>
     .cm-tabs {
-        display:flex; align-items:center; gap:5px; width:100%; margin:0 0 22px;
+        display:flex; align-items:center; gap:5px; width:100%; margin:24px 0 22px;
         padding:7px; overflow-x:auto; white-space:nowrap; scrollbar-width:thin;
         border:1px solid #e5e7eb; border-radius:14px; background:#fff;
         box-shadow:0 1px 2px rgba(15,23,42,.06);
@@ -58,7 +58,7 @@
     .dark .cm-welcome h2 { color:#fafafa; }
     .dark .cm-welcome p { color:#a1a1aa; }
     @media(max-width:640px) {
-        .cm-tabs { gap:3px; padding:5px; margin-bottom:16px; border-radius:12px; }
+        .cm-tabs { gap:3px; padding:5px; margin:18px 0 16px; border-radius:12px; }
         .cm-tab { min-height:40px; gap:7px; padding:0 11px; font-size:13px; }
         .cm-welcome { padding:16px; }
     }
