@@ -1,11 +1,11 @@
 <nav class="cm-tabs" aria-label="Reklam yönetimi bölümleri">
-    <a href="{{ \App\Filament\Pages\\AdvertisementManager::getUrl() }}" @class(['cm-tab', 'is-active' => request()->is('admin/advertisement-manager')])>
+    <a href="{{ \App\Filament\Pages\AdvertisementManager::getUrl() }}" @class(['cm-tab', 'is-active' => request()->is('admin/advertisement-manager')])>
         <x-filament::icon icon="heroicon-o-squares-2x2" /><span>Genel görünüm</span>
     </a>
-    <a href="{{ \App\Filament\Resources\\Advertisements\\AdvertisementResource::getUrl() }}" @class(['cm-tab', 'is-active' => request()->is('admin/advertisements*')])>
+    <a href="{{ \App\Filament\Resources\Advertisements\AdvertisementResource::getUrl() }}" @class(['cm-tab', 'is-active' => request()->is('admin/advertisements*')])>
         <x-filament::icon icon="heroicon-o-megaphone" /><span>Reklamlar</span>
     </a>
-    <a href="{{ \App\Filament\Pages\\AdvertisementPricing::getUrl() }}" @class(['cm-tab', 'is-active' => request()->is('admin/advertisement-pricing')])>
+    <a href="{{ \App\Filament\Pages\AdvertisementPricing::getUrl() }}" @class(['cm-tab', 'is-active' => request()->is('admin/advertisement-pricing')])>
         <x-filament::icon icon="heroicon-o-banknotes" /><span>Reklam fiyatlandırması</span>
     </a>
 </nav>
