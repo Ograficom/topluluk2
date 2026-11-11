@@ -7,6 +7,7 @@ use App\Models\CommentReaction;
 use App\Models\Post;
 use App\Models\PostReaction;
 use App\Services\CommentSpamFilter;
+use App\Notifications\SiteActivityNotification;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -97,6 +98,17 @@ class PostInteractionController extends Controller
             'images' => $imagePaths,
             'is_spam' => $isSpam,
         ]);
+
+        if (! $isSpam) {
+            $recipient = $parent?->user ?? $post->user;
+            if ($recipient && ! $recipient->is($request->user())) {
+                $recipient->notify(new SiteActivityNotification(
+                    $parent ? 'Yorumuna yanıt geldi' : 'Yazına yeni yorum',
+                    $request->user()->displayName().' yorum yaptı: '.str($validated['body'] ?? 'Bir görsel paylaştı')->limit(100),
+                    route('posts.show', $post).'#comment-'.$comment->id,
+                ));
+            }
+        }
 
         return redirect()->route('posts.show', $post)
             ->withFragment('comment-'.$comment->id)
