@@ -43,6 +43,9 @@
     <meta name="robots" content="{{ $seoNoindex ? 'noindex,follow' : ($seoRobotsOverride ?: 'index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1') }}">
     <link rel="canonical" href="{{ $seoCanonical }}">
     <meta property="og:locale" content="tr_TR">
+    @if (filled(config('services.facebook.app_id')))
+        <meta property="fb:app_id" content="{{ config('services.facebook.app_id') }}">
+    @endif
     <meta property="og:site_name" content="{{ $brandName }}">
     <meta property="og:type" content="@yield('og_type', 'website')">
     <meta property="og:title" content="{{ $seoTitle }} — {{ $brandName }}">
