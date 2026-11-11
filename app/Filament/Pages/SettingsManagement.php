@@ -20,4 +20,8 @@ class SettingsManagement extends Page
     protected static ?int $navigationSort = 9999;
 
     protected string $view = 'filament.pages.settings-management';
+    public function getHeading(): ?string
+    {
+        return null;
+    }
 }
