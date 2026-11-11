@@ -1,6 +1,10 @@
 <div class="admin-page-heading"><h1>Geri Bildirim Yönetimi</h1></div>
 
 <nav class="cm-tabs" aria-label="Geri bildirim yönetimi bölümleri">
+    <a href="{{ \App\Filament\Pages\FeedbackManagement::getUrl() }}" @class(['cm-tab', 'is-active' => request()->is('admin/feedback-management')])>
+        <x-filament::icon icon="heroicon-o-chart-bar" />
+        <span>Genel bakış</span>
+    </a>
     <a href="{{ \App\Filament\Resources\PostReports\PostReportResource::getUrl('index') }}" @class(['cm-tab', 'is-active' => request()->is('admin/post-reports*')])>
         <x-filament::icon icon="heroicon-o-flag" />
         <span>Yazı şikayetleri</span>
