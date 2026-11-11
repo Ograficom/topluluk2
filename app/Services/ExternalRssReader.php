@@ -101,6 +101,10 @@ class ExternalRssReader
                 RssItem::query()
                     ->where('rss_source_id', $source->id)
                     ->whereNull('published_post_id')
+                    ->where(function ($query) {
+                        $query->whereNull('link')
+                            ->orWhere('link', 'not like', '%cumhuriyet.com.tr%');
+                    })
                     ->orderBy('published_at')
                     ->orderBy('id')
                     ->limit(3)
