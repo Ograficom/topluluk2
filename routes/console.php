@@ -10,6 +10,11 @@ Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
 })->purpose('Display an inspiring quote');
 
+Schedule::command('admin-notifications:sync-pending')
+    ->everyMinute()
+    ->name('admin-pending-notifications-sync')
+    ->withoutOverlapping();
+
 Schedule::call(fn () => app(SitemapService::class)->rebuild())
     ->everyFifteenMinutes()
     ->name('sitemap-rebuild')
