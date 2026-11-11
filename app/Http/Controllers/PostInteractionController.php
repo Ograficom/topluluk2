@@ -9,6 +9,7 @@ use App\Models\PostReaction;
 use App\Models\User;
 use App\Services\CommentSpamFilter;
 use App\Notifications\SiteActivityNotification;
+use App\Services\AdminNotificationService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -100,12 +101,10 @@ class PostInteractionController extends Controller
             'is_spam' => $isSpam,
         ]);
 
-        User::query()->where('is_admin', true)->get()->each(
-            fn (User $admin) => $admin->notify(new SiteActivityNotification(
-                $isSpam ? 'İncelenecek spam yorum' : 'Yeni yorum',
-                $request->user()->displayName().' yorum gönderdi: '.str($validated['body'] ?? 'Görsel içeren yorum')->limit(100),
-                \App\Filament\Resources\Comments\CommentResource::getUrl(),
-            )),
+        AdminNotificationService::sendToAdmins(
+            $isSpam ? 'İncelenecek spam yorum' : 'Yeni yorum',
+            $request->user()->displayName().' yorum gönderdi: '.str($validated['body'] ?? 'Görsel içeren yorum')->limit(100),
+            \App\Filament\Resources\Comments\CommentResource::getUrl(),
         );
 
         if (! $isSpam) {
