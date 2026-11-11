@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Channels\Schemas;
 
 use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Components\Utilities\Set;
@@ -26,6 +27,15 @@ class ChannelForm
                     ->required()
                     ->maxLength(255)
                     ->unique(ignoreRecord: true),
+                FileUpload::make('image_path')
+                    ->label('Kanal profil resmi')
+                    ->image()
+                    ->disk('public')
+                    ->directory('channels')
+                    ->visibility('public')
+                    ->imageEditor()
+                    ->maxSize(5120)
+                    ->columnSpanFull(),
                 Textarea::make('description')
                     ->label('Açıklama')
                     ->rows(4)
