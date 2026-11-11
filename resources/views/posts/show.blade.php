@@ -78,7 +78,7 @@
                     @if (auth()->user()?->is($post->user) || auth()->user()?->is_admin)
                         <li class="dropdown-menu-item dropdown-menu-item-sm"><a href="{{ route('posts.edit', $post) }}">Yazıyı düzenle</a></li>
                     @endif
-                    <li class="dropdown-menu-item dropdown-menu-item-sm"><a href="mailto:{{ config('mail.from.address') }}?subject={{ rawurlencode('Yazı bildirimi: '.$post->title) }}&amp;body={{ rawurlencode(route('posts.show', $post)) }}">Yazıyı bildir</a></li>
+                    <li class="dropdown-menu-item dropdown-menu-item-sm"><button type="button" class="post-report-trigger" data-post-report-open>Yazıyı bildir</button></li>
                 </ul>
             </div>
         </header>
@@ -253,4 +253,52 @@
             </form>
         @endif
     </section>
+
+    <dialog id="post-report-dialog" aria-labelledby="post-report-title" style="width:min(520px,calc(100% - 32px));max-width:520px;border:1px solid #e5e7eb;border-radius:14px;padding:0;box-shadow:0 20px 60px rgba(0,0,0,.2)">
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:18px 20px;border-bottom:1px solid #e5e7eb">
+            <h2 id="post-report-title" style="margin:0;font-size:18px;font-weight:700">Yazıyı bildir</h2>
+            <button type="button" data-post-report-close aria-label="Pencereyi kapat" style="border:0;background:transparent;font-size:22px;line-height:1;cursor:pointer">×</button>
+        </div>
+        @auth
+            <form method="POST" action="{{ route('posts.report', $post) }}" style="padding:20px">
+                @csrf
+                <p style="margin:0 0 14px;color:#64748b;font-size:14px">Bu yazının topluluk kurallarını ihlal ettiğini düşünüyorsan nedenini seçerek yönetime bildirebilirsin.</p>
+                <label for="post-report-reason" style="display:block;margin-bottom:7px;font-weight:600">Bildirim nedeni</label>
+                <select id="post-report-reason" name="reason" required style="width:100%;min-height:42px;border:1px solid #cbd5e1;border-radius:8px;padding:8px 10px">
+                    <option value="">Bir neden seç</option>
+                    <option value="spam">Spam veya reklam</option>
+                    <option value="misinformation">Yanlış veya yanıltıcı bilgi</option>
+                    <option value="harassment">Hakaret veya taciz</option>
+                    <option value="copyright">Telif hakkı ihlali</option>
+                    <option value="inappropriate">Uygunsuz içerik</option>
+                    <option value="other">Diğer</option>
+                </select>
+                <label for="post-report-details" style="display:block;margin:14px 0 7px;font-weight:600">Açıklama (isteğe bağlı)</label>
+                <textarea id="post-report-details" name="details" rows="4" maxlength="2000" placeholder="Bildiriminle ilgili ek bilgi yazabilirsin..." style="width:100%;border:1px solid #cbd5e1;border-radius:8px;padding:10px;resize:vertical"></textarea>
+                <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:16px">
+                    <button type="button" data-post-report-close class="btn btn-secondary">Vazgeç</button>
+                    <button type="submit" class="btn btn-primary">Bildirimi gönder</button>
+                </div>
+            </form>
+        @else
+            <div style="padding:20px">
+                <p>Yazı bildirmek için önce hesabına giriş yapmalısın.</p>
+                <a class="btn btn-primary" href="{{ route('login') }}">Giriş yap</a>
+            </div>
+        @endauth
+    </dialog>
+    <style>
+        #post-report-dialog::backdrop{background:rgba(15,23,42,.55)}
+        #post-report-dialog .post-report-trigger{cursor:pointer}
+        .post-report-trigger{width:100%;border:0;background:transparent;text-align:left;padding:0;color:inherit;font:inherit;cursor:pointer}
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded',function(){
+            const dialog=document.getElementById('post-report-dialog');
+            if(!dialog)return;
+            document.querySelectorAll('[data-post-report-open]').forEach(button=>button.addEventListener('click',()=>dialog.showModal()));
+            dialog.querySelectorAll('[data-post-report-close]').forEach(button=>button.addEventListener('click',()=>dialog.close()));
+            dialog.addEventListener('click',event=>{if(event.target===dialog)dialog.close();});
+        });
+    </script>
 @endsection
