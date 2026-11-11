@@ -6,6 +6,7 @@ use App\Models\SiteSetting;
 use App\Models\User;
 use App\Notifications\SiteActivityNotification;
 use App\Services\AdminNotificationService;
+use App\Services\UserNotificationService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -164,6 +165,14 @@ class SettingsController extends Controller
 
         $request->user()->update(['password' => $validated['password']]);
 
+        UserNotificationService::send(
+            $request->user(),
+            'security',
+            'Parolan güncellendi',
+            'Hesap parolan başarıyla değiştirildi.',
+            route('settings.edit', ['tab' => 'security']),
+        );
+
         return back()->with('activeTab', 'security')->with('status', 'Parolanız güncellendi.');
     }
 
@@ -178,6 +187,14 @@ class SettingsController extends Controller
         $user->email = $validated['email'];
         $user->email_verified_at = null;
         $user->save();
+
+        UserNotificationService::send(
+            $user,
+            'security',
+            'E-posta adresin değiştirildi',
+            'Hesabının e-posta adresi başarıyla güncellendi.',
+            route('settings.edit', ['tab' => 'security']),
+        );
 
         return back()->with('activeTab', 'security')->with('status', 'E-posta adresiniz güncellendi.');
     }
