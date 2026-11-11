@@ -6,7 +6,6 @@ use App\Models\PushSubscription;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Support\Str;
 
 class NotificationController extends Controller
@@ -62,47 +61,6 @@ class NotificationController extends Controller
             ->delete();
 
         return response()->json(['deleted' => true]);
-    }
-
-    public function pollPush(Request $request): JsonResponse
-    {
-        $validated = $request->validate([
-            'since' => ['required', 'date'],
-        ]);
-
-        $user = $request->user();
-        $preferences = $user->notification_preferences ?? [];
-
-        $items = $user->notifications()
-            ->where('created_at', '>', \Illuminate\Support\Carbon::parse($validated['since']))
-            ->oldest('created_at')
-            ->limit(30)
-            ->get()
-            ->filter(function ($notification) use ($preferences): bool {
-                $category = data_get($notification->data, 'category');
-
-                return is_string($category)
-                    && (bool) data_get($preferences, 'push.'.$category, $category === 'security');
-            })
-            ->values()
-            ->map(function ($notification): array {
-                $url = data_get($notification->data, 'url', route('posts.index'));
-                if (! is_string($url) || (! str_starts_with($url, '/') && ! str_starts_with($url, url('/')))) {
-                    $url = route('posts.index');
-                }
-
-                return [
-                    'id' => $notification->id,
-                    'title' => data_get($notification->data, 'title', 'Yeni bildirim'),
-                    'body' => data_get($notification->data, 'message', data_get($notification->data, 'body', 'OgraFi hesabında yeni bir hareket var.')),
-                    'url' => $url,
-                ];
-            });
-
-        return response()->json([
-            'notifications' => $items,
-            'server_time' => now()->toIso8601String(),
-        ]);
     }
 
     public function open(string $notification): RedirectResponse
