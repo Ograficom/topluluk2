@@ -19,10 +19,6 @@
         <x-filament::icon icon="heroicon-o-rss" />
         <span>RSS yönetimi</span>
     </a>
-    <a href="{{ \App\Filament\Resources\SitePages\SitePageResource::getUrl() }}" @class(['cm-tab', 'is-active' => request()->is('admin/site-pages*')])>
-        <x-filament::icon icon="heroicon-o-document-text" />
-        <span>Sayfa ayarları</span>
-    </a>
     <a href="{{ \App\Filament\Pages\CommentSpamSettings::getUrl() }}" @class(['cm-tab', 'is-active' => request()->routeIs('filament.admin.pages.comment-spam-settings')])>
         <x-filament::icon icon="heroicon-o-shield-check" />
         <span>Spam yorum filtresi</span>
