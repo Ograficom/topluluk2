@@ -49,4 +49,4 @@
         .admin-page-heading h1 { font-size:25px; }
         .protection-style-intro { padding:15px; gap:11px; }
     }
-<</style>
+</style>
