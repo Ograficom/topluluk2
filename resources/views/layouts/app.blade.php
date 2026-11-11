@@ -154,17 +154,35 @@
                                         $notificationTitle = data_get($notification->data, 'title', 'Yeni bildirim');
                                         $notificationBody = data_get($notification->data, 'message', data_get($notification->data, 'body', 'Hesabında yeni bir hareket var.'));
                                     @endphp
-                                    <a href="{{ route('notifications.open', $notification->id) }}" class="notification-item{{ $notification->read_at ? '' : ' is-unread' }}">
-                                        <span class="notification-item__icon">
-                                            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" aria-hidden="true"><path d="M12 3v18M3 12h18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
-                                        </span>
-                                        <span class="notification-item__content">
-                                            <strong>{{ $notificationTitle }}</strong>
-                                            <span>{{ $notificationBody }}</span>
-                                            <time datetime="{{ $notification->created_at?->toIso8601String() }}">{{ $notification->created_at?->diffForHumans() }}</time>
-                                        </span>
-                                        @if (! $notification->read_at)<span class="notification-item__unread" aria-label="Okunmadı"></span>@endif
-                                    </a>
+                                    <div class="notification-item{{ $notification->read_at ? '' : ' is-unread' }}">
+                                        <a href="{{ route('notifications.open', $notification->id) }}" class="notification-item__main">
+                                            <span class="notification-item__icon">
+                                                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" aria-hidden="true"><path d="M12 3v18M3 12h18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+                                            </span>
+                                            <span class="notification-item__content">
+                                                <strong>{{ $notificationTitle }}</strong>
+                                                <span>{{ $notificationBody }}</span>
+                                                <time datetime="{{ $notification->created_at?->toIso8601String() }}">{{ $notification->created_at?->diffForHumans() }}</time>
+                                            </span>
+                                            @if (! $notification->read_at)<span class="notification-item__unread" aria-label="Okunmadı"></span>@endif
+                                        </a>
+                                        <details class="notification-item__actions">
+                                            <summary aria-label="Bildirim seçenekleri">
+                                                <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><circle cx="5" cy="12" r="1.7"/><circle cx="12" cy="12" r="1.7"/><circle cx="19" cy="12" r="1.7"/></svg>
+                                            </summary>
+                                            <div class="notification-item__actions-menu">
+                                                <form method="POST" action="{{ route($notification->read_at ? 'notifications.mark-unread' : 'notifications.mark-read', $notification->id) }}">
+                                                    @csrf
+                                                    <button type="submit">{{ $notification->read_at ? 'Okunmamış olarak işaretle' : 'Okundu olarak işaretle' }}</button>
+                                                </form>
+                                                <form method="POST" action="{{ route('notifications.destroy', $notification->id) }}" onsubmit="return confirm('Bu bildirimi silmek istediğine emin misin?')">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="is-danger">Silmek</button>
+                                                </form>
+                                            </div>
+                                        </details>
+                                    </div>
                                 @empty
                                     <div class="notification-empty">
                                         <span class="notification-empty__icon"><svg viewBox="0 0 24 24" width="25" height="25" fill="none" aria-hidden="true"><path d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
@@ -184,10 +202,21 @@
                         .notification-menu__head strong{font-size:15px;font-weight:800}
                         .notification-menu__head form button{padding:0;border:0;background:none;color:#2563eb;font-size:11px;font-weight:700;cursor:pointer}
                         .notification-menu__list{max-height:390px;overflow-y:auto}
-                        .notification-item{display:flex;align-items:flex-start;gap:11px;padding:13px 15px;text-decoration:none!important;border-bottom:1px solid rgba(148,163,184,.16)}
+                        .notification-item{position:relative;display:flex;align-items:flex-start;gap:5px;padding:10px 10px 10px 13px;border-bottom:1px solid rgba(148,163,184,.16)}
                         .notification-item:hover{background:rgba(148,163,184,.08)}
                         .notification-item.is-unread{background:rgba(37,99,235,.045)}
+                        .notification-item__main{display:flex;align-items:flex-start;gap:11px;flex:1;min-width:0;padding:3px 0;text-decoration:none!important}
                         .notification-item__icon{display:grid;place-items:center;flex:none;width:34px;height:34px;border-radius:11px;background:#eff6ff;color:#2563eb}
+                        .notification-item__actions{position:relative;flex:none;margin-left:auto}
+                        .notification-item__actions summary{display:grid;place-items:center;width:30px;height:30px;border-radius:8px;color:#8b93a1;list-style:none;cursor:pointer}
+                        .notification-item__actions summary::-webkit-details-marker{display:none}
+                        .notification-item__actions summary:hover,.notification-item__actions[open] summary{background:rgba(148,163,184,.13);color:var(--body-color,#172033)}
+                        .notification-item__actions-menu{position:absolute;z-index:30;top:calc(100% + 5px);right:0;width:210px;padding:6px;background:var(--dropdown-menu-bg,#fff);border:1px solid var(--dropdown-menu-border-color,#e5e7eb);border-radius:13px;box-shadow:0 8px 24px rgba(15,23,42,.13)}
+                        .notification-item__actions-menu form{margin:0}
+                        .notification-item__actions-menu button{display:block;width:100%;padding:10px 11px;border:0;border-radius:8px;background:transparent;color:var(--body-color,#374151);font-size:12px;text-align:left;cursor:pointer}
+                        .notification-item__actions-menu button:hover{background:rgba(148,163,184,.12)}
+                        .notification-item__actions-menu button.is-danger{color:#ef4444}
+                        [data-theme="dark"] .notification-item__actions-menu{--dropdown-menu-bg:#202938;--dropdown-menu-border-color:#374151}
                         .notification-item__content{display:flex;flex:1;min-width:0;flex-direction:column;gap:3px}
                         .notification-item__content strong{color:var(--body-color,#172033);font-size:12px;font-weight:750}
                         .notification-item__content>span{color:var(--text-muted,#718096);font-size:11px;line-height:1.45;overflow-wrap:anywhere}
@@ -199,6 +228,7 @@
                         .notification-empty>span:last-child{color:var(--text-muted,#718096);font-size:11px}
                         [data-theme="dark"] .notification-trigger__dot{border-color:#171e29}
                         [data-theme="dark"] .notification-item__icon,[data-theme="dark"] .notification-empty__icon{background:#1e3150;color:#93c5fd}
+                        [data-theme="dark"] .notification-item__actions summary:hover,[data-theme="dark"] .notification-item__actions[open] summary{color:#e5e7eb}
                     </style>
                     @php($favoriteCount = auth()->user()->bookmarks()->count())
                     <div class="dropdown dropdown-md">
