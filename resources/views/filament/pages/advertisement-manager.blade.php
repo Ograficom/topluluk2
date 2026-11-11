@@ -164,6 +164,7 @@
             .admin-page-intro p:last-child { font-size:12px; }
         }
     </style>
+    <style>
         .ad-manager-welcome{display:flex;align-items:center;gap:16px;padding:22px 24px;border:1px solid #dbe5f2;border-radius:15px;background:linear-gradient(110deg,#fff 0%,#f4f8ff 100%)}
         .ad-manager-icon{display:grid;place-items:center;flex:0 0 48px;width:48px;height:48px;border-radius:13px;background:#eaf2ff;color:#2563eb}
         .ad-manager-icon svg{width:24px;height:24px}
