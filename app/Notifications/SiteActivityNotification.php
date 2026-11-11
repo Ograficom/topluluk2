@@ -4,20 +4,45 @@ namespace App\Notifications;
 
 use Filament\Actions\Action;
 use Filament\Notifications\Notification as FilamentNotification;
+use Illuminate\Bus\Queueable;
+use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
 class SiteActivityNotification extends Notification
 {
+    use Queueable;
+
     public function __construct(
         public readonly string $title,
         public readonly string $message,
         public readonly string $url,
         public readonly ?string $sourceKey = null,
+        public readonly ?string $category = null,
     ) {}
 
     public function via(object $notifiable): array
     {
-        return ['database'];
+        // Administrative notifications have no user preference category.
+        if ($this->category === null) {
+            return ['database'];
+        }
+
+        $preferences = $notifiable->notification_preferences ?? [];
+        $channels = [];
+
+        $streamEnabled = (bool) data_get($preferences, 'stream.'.$this->category, true);
+        $emailEnabled = (bool) data_get($preferences, 'email.'.$this->category, false);
+        $pushEnabled = (bool) data_get($preferences, 'push.'.$this->category, false);
+
+        if ($streamEnabled || $pushEnabled) {
+            $channels[] = 'database';
+        }
+
+        if ($emailEnabled) {
+            $channels[] = 'mail';
+        }
+
+        return $channels;
     }
 
     public function toDatabase(object $notifiable): array
@@ -34,7 +59,25 @@ class SiteActivityNotification extends Notification
                         ->markAsRead(),
                 ])
                 ->getDatabaseMessage(),
+            'title' => $this->title,
+            'message' => $this->message,
+            'url' => $this->url,
+            'category' => $this->category,
             'source_key' => $this->sourceKey,
         ];
+    }
+
+    public function toMail(object $notifiable): MailMessage
+    {
+        $target = str_starts_with($this->url, 'http')
+            ? $this->url
+            : url('/'.ltrim($this->url, '/'));
+
+        return (new MailMessage)
+            ->subject($this->title.' — OgraFi')
+            ->greeting('Merhaba '.$notifiable->displayName().'!')
+            ->line($this->message)
+            ->action('Bildirimi görüntüle', $target)
+            ->line('Bu e-postayı bildirim tercihlerin açık olduğu için aldın.');
     }
 }
