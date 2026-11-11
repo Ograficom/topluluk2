@@ -31,8 +31,8 @@ class SiteActivityNotification extends Notification
         $channels = [];
 
         $streamEnabled = (bool) data_get($preferences, 'stream.'.$this->category, true);
-        $emailEnabled = (bool) data_get($preferences, 'email.'.$this->category, false);
-        $pushEnabled = (bool) data_get($preferences, 'push.'.$this->category, false);
+        $legacyEmailDefault = match ($this->category) { 'replies' => (bool) ($notifiable->notify_replies ?? true), 'posts' => (bool) ($notifiable->notify_posts ?? true), 'announcements' => (bool) ($notifiable->notify_announcements ?? true), default => true };\n        $emailEnabled = (bool) data_get($preferences, 'email.'.$this->category, $legacyEmailDefault);
+        $pushEnabled = (bool) data_get($preferences, 'push.'.$this->category, $this->category === 'security');
 
         if ($streamEnabled || $pushEnabled) {
             $channels[] = 'database';
