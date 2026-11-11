@@ -1,3 +1,12 @@
+<div class="admin-page-heading"><h1>Ayarlar</h1></div>
+<section class="protection-style-intro">
+    <div class="protection-style-icon"><x-filament::icon icon="heroicon-o-adjustments-horizontal" /></div>
+    <div>
+        <h2>OgraFi site ayarları</h2>
+        <p>Marka, e-posta, SEO, sitemap ve RSS yapılandırmalarını tek merkezden yönetin.</p>
+    </div>
+</section>
+
 <nav class="cm-tabs" aria-label="Ayarlar bölümleri">
     <a href="{{ \App\Filament\Pages\SiteBranding::getUrl() }}" @class(['cm-tab', 'is-active' => request()->routeIs('filament.admin.pages.site-branding')])>
         <x-filament::icon icon="heroicon-o-cog-6-tooth" />
@@ -63,4 +72,22 @@
         .cm-tab { min-height:40px; gap:7px; padding:0 11px; font-size:13px; }
         .cm-welcome { padding:16px; }
     }
-</style>
+
+    .admin-page-heading { margin:0 0 18px; }
+    .admin-page-heading h1 { margin:0; color:#111827; font-size:30px; font-weight:700; letter-spacing:-.035em; line-height:1.2; }
+    .protection-style-intro { display:flex; align-items:flex-start; gap:14px; width:100%; margin:0 0 22px; padding:18px 20px; border:1px solid #dbeafe; border-radius:12px; background:#f8fbff; }
+    .protection-style-icon { display:flex; align-items:center; justify-content:center; flex:0 0 42px; width:42px; height:42px; border:1px solid #dbeafe; border-radius:10px; background:#fff; color:#2563eb; }
+    .protection-style-icon svg { width:21px; height:21px; }
+    .protection-style-intro h2 { margin:0; color:#111827; font-size:15px; font-weight:650; }
+    .protection-style-intro p { margin:4px 0 0; color:#64748b; font-size:13px; line-height:1.6; }
+    .dark .admin-page-heading h1 { color:#f9fafb; }
+    .dark .protection-style-intro { border-color:#1e3a5f; background:#111c2e; }
+    .dark .protection-style-icon { border-color:#1e3a5f; background:#172554; color:#93c5fd; }
+    .dark .protection-style-intro h2 { color:#f9fafb; }
+    .dark .protection-style-intro p { color:#9ca3af; }
+    @media(max-width:640px) {
+        .admin-page-heading { margin-bottom:14px; }
+        .admin-page-heading h1 { font-size:25px; }
+        .protection-style-intro { padding:15px; gap:11px; }
+    }
+<</style>
