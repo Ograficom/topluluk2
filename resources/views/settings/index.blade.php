@@ -299,7 +299,7 @@
                                             data-enable-browser-notifications
                                             data-vapid-public-key="{{ $vapidPublicKey ?? '' }}"
                                             data-subscription-url="{{ route('notifications.push-subscriptions.store') }}">Tarayıcı bildirimlerini etkinleştir</button>
-                                        <span class="notification-preferences__note" data-browser-notification-status>Push bildirimleri, OgraFi açıkken tarayıcı izniyle gösterilir.</span>
+                                        <span class="notification-preferences__note" data-browser-notification-status>Push bildirimleri, tarayıcı izni ve cihaz aboneliğiyle arka planda da iletilir.</span>
                                     </div>
                                 </div>
                             </div>
@@ -1001,7 +1001,7 @@
             } catch (error) {}
         }
 
-        showStatus('Bu cihazda arka plan bildirimlerini etkinleştir.');
+        showStatus('Bu cihazda arka plan push bildirimlerini etkinleştir.');
         button.textContent = 'Tarayıcı bildirimlerini etkinleştir';
         button.disabled = false;
     };
