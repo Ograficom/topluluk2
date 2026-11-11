@@ -115,16 +115,5 @@
         }
     </style>
 
-    <div class="admin-page-heading"><h1>Ayarlar</h1></div>
 
-    <section class="admin-page-intro settings-landing">
-        <div class="admin-page-intro-icon settings-landing-icon">
-            <x-filament::icon icon="heroicon-o-adjustments-horizontal" />
-        </div>
-        <div class="admin-page-intro-content settings-landing-content">
-            <p class="admin-page-intro-eyebrow settings-landing-eyebrow">OGRAFI YÖNETİM MERKEZİ</p>
-            <h2>Site ayarları</h2>
-            <p>Marka, e-posta, SEO, sitemap ve RSS yapılandırmalarını tek merkezden yönetin.</p>
-        </div>
-    </section>
 </x-filament-panels::page>
