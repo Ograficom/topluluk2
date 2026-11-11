@@ -1,11 +1,11 @@
 <?php
 
-namespace App\\Filament\\Pages;
+namespace App\Filament\Pages;
 
-use App\\Models\\Advertisement;
-use App\\Models\\AdvertisementEvent;
-use Filament\\Pages\\Page;
-use Illuminate\\Support\\Facades\\Schema;
+use App\Models\Advertisement;
+use App\Models\AdvertisementEvent;
+use Filament\Pages\Page;
+use Illuminate\Support\Facades\Schema;
 
 class AdvertisementManager extends Page
 {
@@ -15,9 +15,9 @@ class AdvertisementManager extends Page
 
     protected static ?string $title = 'Reklam yöneticisi';
 
-    protected static string|\\UnitEnum|null $navigationGroup = null;
+    protected static string|\UnitEnum|null $navigationGroup = null;
 
-    protected static string|\\BackedEnum|null $navigationIcon = 'heroicon-o-megaphone';
+    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-megaphone';
 
     protected static ?int $navigationSort = 9998;
 
