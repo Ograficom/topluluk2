@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\PushSubscription;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -10,6 +11,45 @@ use Illuminate\Support\Str;
 
 class NotificationController extends Controller
 {
+    public function storePushSubscription(Request $request): JsonResponse
+    {
+        $validated = $request->validate([
+            'endpoint' => ['required', 'url', 'max:4096'],
+            'keys.p256dh' => ['required', 'string', 'max:512'],
+            'keys.auth' => ['required', 'string', 'max:512'],
+            'contentEncoding' => ['nullable', 'in:aes128gcm,aesgcm'],
+        ]);
+
+        $endpointHash = hash('sha256', $validated['endpoint']);
+
+        PushSubscription::query()->updateOrCreate(
+            ['endpoint_hash' => $endpointHash],
+            [
+                'user_id' => $request->user()->id,
+                'endpoint' => $validated['endpoint'],
+                'public_key' => $validated['keys']['p256dh'],
+                'auth_token' => $validated['keys']['auth'],
+                'content_encoding' => $validated['contentEncoding'] ?? 'aes128gcm',
+            ],
+        );
+
+        return response()->json(['saved' => true]);
+    }
+
+    public function destroyPushSubscription(Request $request): JsonResponse
+    {
+        $validated = $request->validate([
+            'endpoint' => ['required', 'url', 'max:4096'],
+        ]);
+
+        PushSubscription::query()
+            ->where('user_id', $request->user()->id)
+            ->where('endpoint_hash', hash('sha256', $validated['endpoint']))
+            ->delete();
+
+        return response()->json(['deleted' => true]);
+    }
+
     public function pollPush(Request $request): JsonResponse
     {
         $validated = $request->validate([
