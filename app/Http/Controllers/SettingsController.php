@@ -36,6 +36,7 @@ class SettingsController extends Controller
             'yandexLoginAvailable' => SiteSetting::current()?->isYandexLoginEnabled() ?? false,
             'activeTab' => in_array($activeTab, self::TABS, true) ? $activeTab : 'profile',
             'timezones' => timezone_identifiers_list(),
+            'vapidPublicKey' => config('webpush.public_key'),
             'notificationPreferences' => array_replace_recursive([
                 'stream' => [
                     'replies' => true,
