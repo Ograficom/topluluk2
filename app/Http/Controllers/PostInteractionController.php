@@ -6,6 +6,7 @@ use App\Models\Comment;
 use App\Models\CommentReaction;
 use App\Models\Post;
 use App\Models\PostReaction;
+use App\Services\CommentSpamFilter;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -74,6 +75,8 @@ class PostInteractionController extends Controller
             }
         }
 
+        $isSpam = app(CommentSpamFilter::class)->shouldFlag($request->user()->id, $validated['body'] ?? '');
+
         $imagePaths = [];
 
         foreach ($request->file('images', []) as $image) {
@@ -92,9 +95,12 @@ class PostInteractionController extends Controller
             'parent_id' => $parent?->id,
             'body' => $validated['body'] ?? '',
             'images' => $imagePaths,
+            'is_spam' => $isSpam,
         ]);
 
-        return redirect()->route('posts.show', $post)->withFragment('comment-'.$comment->id);
+        return redirect()->route('posts.show', $post)
+            ->withFragment('comment-'.$comment->id)
+            ->with('status', $isSpam ? 'Yorumun spam filtresine takıldı ve yönetici incelemesine alındı.' : 'Yorumun yayınlandı.');
     }
 
     public function moderateComments(Request $request, Post $post): RedirectResponse
