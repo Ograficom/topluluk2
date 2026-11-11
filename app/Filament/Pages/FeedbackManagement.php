@@ -1,8 +1,8 @@
 <?php
 
-namespace App\\Filament\\Pages;
+namespace App\Filament\Pages;
 
-use Filament\\Pages\\Page;
+use Filament\Pages\Page;
 
 class FeedbackManagement extends Page
 {
