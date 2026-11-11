@@ -85,22 +85,8 @@
     </style>
 
     <div class="cm-dashboard" wire:poll.60s>
-        <section class="cm-hero">
-            <div class="cm-identity">
-                <img src="{{ $admin->avatarUrl() }}" alt="" class="cm-avatar">
-                <div>
-                    <p class="cm-eyebrow">OgraFi içerik yönetimi</p>
-                    <h2 class="cm-hero-title">İçerik merkezine hoş geldin, {{ $admin->displayName() }}</h2>
-                    <p class="cm-hero-note">Postları, kanalları, etiketleri, yorumları ve RSS kaynaklarını tek merkezden yönet.</p>
-                </div>
-            </div>
-            <div class="cm-actions">
-                <a href="{{ \App\Filament\Resources\Posts\PostResource::getUrl('create') }}" class="cm-action cm-action-primary"><x-filament::icon icon="heroicon-o-plus" /> Yeni post oluştur</a>
-                <a href="{{ \App\Filament\Pages\RssSources::getUrl() }}" class="cm-action"><x-filament::icon icon="heroicon-o-rss" /> RSS kaynakları</a>
-            </div>
-        </section>
 
-        <section>
+<section>
             <div class="cm-section-head">
                 <div><h3 class="cm-section-title">İçerik genel durumu</h3><p class="cm-section-note">Veritabanından alınan güncel içerik ve etkileşim sayıları.</p></div>
                 <span class="cm-live">● CANLI · 60 SN'DE YENİLENİR</span>
