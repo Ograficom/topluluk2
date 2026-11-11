@@ -32,19 +32,8 @@
     </style>
 
     <div class="mail-settings">
-        <section class="ms-hero">
-            <span class="ms-hero-icon"><x-filament::icon icon="heroicon-o-envelope" /></span>
-            <div style="min-width:0">
-                <h2 class="ms-title">OgraFi e-posta altyapısı</h2>
-                <p class="ms-desc">Kayıt doğrulama, şifre sıfırlama ve sistem bildirimlerinin gönderim sunucusunu yönetin.</p>
-            </div>
-            @php($mailEnabled = \App\Models\MailSetting::current()->enabled)
-            <span class="ms-status {{ $mailEnabled ? 'is-on' : '' }}">
-                <span class="ms-status-dot"></span>{{ $mailEnabled ? 'Gönderim etkin' : 'Gönderim kapalı' }}
-            </span>
-        </section>
 
-        <section class="ms-card">
+<section class="ms-card">
             <header class="ms-card-head">
                 <h3>SMTP yapılandırması</h3>
                 <p>Bağlantı ve gönderici bilgilerini düzenleyin. Şifreniz güvenli biçimde şifrelenerek saklanır.</p>
