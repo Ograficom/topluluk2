@@ -212,12 +212,8 @@
     </style>
 
     <div class="branding-page">
-        <div class="branding-intro">
-            <span class="branding-intro-mark" aria-hidden="true">R</span>
-            <p>Marka adını, site logosunu ve sekme simgesini buradan yönetin. Değişiklikler kaydedildiğinde site genelinde uygulanır.</p>
-        </div>
 
-        @if (session('status'))
+@if (session('status'))
             <div class="branding-status" role="status">{{ session('status') }}</div>
         @endif
 
