@@ -52,7 +52,7 @@
         .cm-stat-desc{margin:6px 0 0;color:var(--cm-muted);font-size:11px}
         .cm-blue{background:#eaf2ff;color:#2563eb}.cm-green{background:#e7f8ef;color:#15965b}.cm-amber{background:#fff5df;color:#c17b08}.cm-cyan{background:#e4f8fb;color:#07869b}.cm-pink{background:#fff0f6;color:#d34e8c}.cm-violet{background:#f1edff;color:#7955d9}.cm-orange{background:#fff0e6;color:#dc6b25}
         .dark .cm-blue{background:#1d3151}.dark .cm-green{background:#193c30}.dark .cm-amber{background:#49391e}.dark .cm-cyan{background:#173a43}.dark .cm-pink{background:#45263a}.dark .cm-violet{background:#30264a}.dark .cm-orange{background:#4a3022}
-        .cm-charts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px}
+        .cm-charts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px}
         .cm-chart{min-width:0;overflow:hidden;padding:12px;border:1px solid var(--cm-border);border-radius:17px;background:#fff}
         .dark .cm-chart{background:#171e29}
         .cm-chart .fi-section{border:0!important;box-shadow:none!important;background:transparent!important}
@@ -79,7 +79,7 @@
         .cm-quick:hover{border-color:#b9d2ff;background:#f7faff}
         .cm-quick svg{width:17px;height:17px;color:#64748b}
         .dark .cm-quick:hover{background:#202938}
-        @media(max-width:1100px){.cm-stats{grid-template-columns:repeat(3,minmax(0,1fr))}}
+        @media(max-width:1100px){.cm-stats{grid-template-columns:repeat(3,minmax(0,1fr))}.cm-charts{grid-template-columns:repeat(2,minmax(0,1fr))}}
         @media(max-width:767px){.cm-dashboard{gap:21px}.cm-hero{align-items:flex-start;flex-direction:column;padding:20px}.cm-hero-title{font-size:21px}.cm-avatar{width:53px;height:53px}.cm-actions{width:100%}.cm-action{flex:1}.cm-stats{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.cm-stat{padding:13px}.cm-stat-value{font-size:25px}.cm-charts,.cm-panels{grid-template-columns:1fr}.cm-panel{padding:16px}}
         @media(max-width:380px){.cm-stats{grid-template-columns:1fr}.cm-quick-grid{grid-template-columns:1fr}}
     </style>
