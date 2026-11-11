@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Post;
 use App\Models\PostReport;
+use App\Models\User;
+use App\Notifications\SiteActivityNotification;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
@@ -28,6 +30,13 @@ class PostReportController extends Controller
             'details' => $validated['details'] ?? null,
             'status' => 'pending',
         ]);
+
+        User::query()->where('is_admin', true)->where('id', '<>', $request->user()->id)->get()
+            ->each(fn (User $admin) => $admin->notify(new SiteActivityNotification(
+                'Yeni yazı şikayeti',
+                $request->user()->displayName().' bir yazıyı şikayet etti: '.$post->title,
+                '/admin/post-reports',
+            )));
 
         $recipient = config('mail.from.address');
         if (filled($recipient)) {
