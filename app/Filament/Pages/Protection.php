@@ -13,8 +13,8 @@ use Filament\Support\Icons\Heroicon;
 
 class Protection extends Page
 {
-    protected static string|\UnitEnum|null $navigationGroup = 'Koruma';
-    protected static ?string $navigationLabel = 'Koruma merkezi';
+    protected static string|\UnitEnum|null $navigationGroup = null;
+    protected static ?string $navigationLabel = 'Koruma';
     protected static ?string $title = 'Koruma';
     protected static ?int $navigationSort = 1;
     protected static string|\BackedEnum|null $navigationIcon = Heroicon::OutlinedShieldCheck;
