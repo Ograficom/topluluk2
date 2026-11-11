@@ -9,6 +9,7 @@ use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
+use Filament\Support\Icons\Heroicon;
 use Illuminate\Support\Str;
 
 class ChannelForm
@@ -18,6 +19,9 @@ class ChannelForm
         return $schema
             ->components([
                 Section::make('Temel bilgiler')
+                    ->icon(Heroicon::OutlinedRectangleStack)
+                    ->iconColor('primary')
+                    ->extraAttributes(['class' => 'rounded-2xl border border-gray-200 shadow-sm dark:border-gray-700'])
                     ->description('Kanalın adını, bağlantı adresini ve ziyaretçilere gösterilecek açıklamayı düzenleyin.')
                     ->schema([
                         TextInput::make('name')
@@ -47,6 +51,9 @@ class ChannelForm
                     ->columnSpanFull(),
 
                 Section::make('Kanal görseli')
+                    ->icon(Heroicon::OutlinedPhoto)
+                    ->iconColor('primary')
+                    ->extraAttributes(['class' => 'rounded-2xl border border-gray-200 shadow-sm dark:border-gray-700'])
                     ->description('Bu görsel kanal sayfasında ve sosyal medya bağlantı önizlemelerinde otomatik kullanılır.')
                     ->schema([
                         FileUpload::make('image_path')
@@ -65,6 +72,9 @@ class ChannelForm
                     ->columnSpanFull(),
 
                 Section::make('SEO ve arama görünümü')
+                    ->icon(Heroicon::OutlinedMagnifyingGlass)
+                    ->iconColor('primary')
+                    ->extraAttributes(['class' => 'rounded-2xl border border-gray-200 shadow-sm dark:border-gray-700'])
                     ->description('Google sonuçlarında görünecek başlık ve açıklamayı belirleyin. Boş bıraktığınız alanlarda kanal adı ve açıklaması kullanılır.')
                     ->schema([
                         TextInput::make('meta_title')
@@ -104,6 +114,9 @@ class ChannelForm
                     ->columnSpanFull(),
 
                 Section::make('Yayın durumu')
+                    ->icon(Heroicon::OutlinedEye)
+                    ->iconColor('primary')
+                    ->extraAttributes(['class' => 'rounded-2xl border border-gray-200 shadow-sm dark:border-gray-700'])
                     ->description('Kanalın ziyaretçilere açık olup olmayacağını belirleyin.')
                     ->schema([
                         Toggle::make('is_active')
