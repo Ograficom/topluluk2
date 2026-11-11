@@ -179,7 +179,8 @@ Route::middleware(['auth', 'verified'])->group(function (): void {
     Route::patch('/messenger/{conversation}/messages/{message}', [CommunityController::class, 'updateMessage'])->middleware('throttle:30,1')->name('messenger.messages.update');
     Route::delete('/messenger/{conversation}/messages/{message}', [CommunityController::class, 'deleteMessage'])->middleware('throttle:30,1')->name('messenger.messages.delete');
 
-    Route::post('/posts/{post:slug}/bookmark', [CommunityController::class, 'toggleBookmark'])->middleware('throttle:30,1')->name('posts.bookmarks.toggle');\n    Route::post('/posts/{post:slug}/report', [PostReportController::class, 'store'])->middleware('throttle:5,10')->name('posts.report');
+    Route::post('/posts/{post:slug}/bookmark', [CommunityController::class, 'toggleBookmark'])->middleware('throttle:30,1')->name('posts.bookmarks.toggle');
+    Route::post('/posts/{post:slug}/report', [PostReportController::class, 'store'])->middleware('throttle:5,10')->name('posts.report');
     Route::get('/advertisements', [AdvertisementController::class, 'index'])->name('advertisements.index');
     Route::get('/advertisements/create', [AdvertisementController::class, 'create'])->name('advertisements.create');
     Route::get('/advertisements/{advertisement}/edit', [AdvertisementController::class, 'edit'])->name('advertisements.edit');
