@@ -12,7 +12,7 @@ use Filament\Support\Icons\Heroicon;
 
 class AdvertisementPricing extends Page
 {
-    protected static string|\UnitEnum|null $navigationGroup = 'Ayarlar';
+    protected static bool $shouldRegisterNavigation = false;
     protected static ?string $navigationLabel = 'Reklam fiyatlandırması';
     protected static ?string $title = 'Reklam fiyatlandırması';
     protected static ?int $navigationSort = 5;
