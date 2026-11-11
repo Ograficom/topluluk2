@@ -12,6 +12,7 @@ use App\Models\SitePage;
 use App\Models\SupportTicket;
 use App\Models\Tag;
 use App\Models\User;
+use App\Notifications\SiteActivityNotification;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -87,6 +88,11 @@ class CommunityController extends Controller
             $message = 'Takip bırakıldı.';
         } else {
             $viewer->following()->syncWithoutDetaching([$target->id]);
+            $target->notify(new SiteActivityNotification(
+                'Yeni takipçi',
+                $viewer->displayName().' seni takip etmeye başladı.',
+                $viewer->username ? '/@'.$viewer->username : '/users/'.$viewer->id,
+            ));
             $message = 'Kullanıcı takip ediliyor.';
         }
         return back()->with('status', $message);
