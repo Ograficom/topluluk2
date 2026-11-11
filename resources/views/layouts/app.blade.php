@@ -126,8 +126,9 @@
                     </a>
                 @endauth
                 @auth
+                    @php($favoriteCount = auth()->user()->bookmarks()->count())
                     <div class="dropdown dropdown-md">
-                        <button id="userMenuButton" type="button" class="btn btn-secondary-ghost btn-circle avatar" data-dropdown-toggle aria-expanded="false" aria-haspopup="menu" aria-controls="userMenu" aria-label="{{ auth()->user()->displayName() }}">
+                        <button id="userMenuButton" type="button" @class(['btn btn-secondary-ghost btn-circle avatar', 'newpm' => $favoriteCount > 0]) data-dropdown-toggle aria-expanded="false" aria-haspopup="menu" aria-controls="userMenu" aria-label="{{ auth()->user()->displayName() }}">
                             <img src="{{ auth()->user()->avatarUrl() }}" alt="" width="40" height="40">
                         </button>
                         <ul class="dropdown-menu dropdown-menu-end" id="userMenu" aria-labelledby="userMenuButton">
@@ -154,7 +155,7 @@
                                 <a href="{{ route('messenger.index') }}"><x-repost-icon name="message" size="22" class="color-gray" /><span>Mesajlar</span></a>
                             </li>
                             <li class="dropdown-menu-item dropdown-menu-item-lg">
-                                <a href="{{ route('favorites.index') }}"><x-repost-icon name="bookmark" size="22" class="color-gray" /><span>Favoriler</span></a>
+                                <a href="{{ route('favorites.index') }}"><x-repost-icon name="bookmark" size="22" class="color-gray" /><span>Favoriler</span>@if ($favoriteCount > 0)<span class="dropdown-menu-count">{{ number_format($favoriteCount) }}</span>@endif</a>
                             </li>
                             <li class="dropdown-menu-item dropdown-menu-item-lg">
                                 <a href="{{ route('community.following') }}"><x-repost-icon name="user" size="20" class="color-gray" /><span>Takip akışı</span></a>
