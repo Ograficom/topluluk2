@@ -4,6 +4,25 @@
 
 @push('head')
     <style>
+        .notification-preferences{margin-top:22px;padding:18px;border:1px solid #e2e8f0;border-radius:14px;background:#fff}
+        .notification-preferences__intro h2{margin:0 0 4px;font-size:16px;font-weight:750}
+        .notification-preferences__intro p,.notification-preferences__note{margin:0;color:#718096;font-size:12px}
+        .notification-preferences__tabs{display:flex;gap:6px;margin:16px 0 8px;padding:4px;border-radius:10px;background:#f1f5f9}
+        .notification-preferences__tabs button{flex:1;padding:9px 12px;border:0;border-radius:8px;background:transparent;color:#64748b;font-size:12px;font-weight:650;cursor:pointer}
+        .notification-preferences__tabs button.is-active{background:#fff;color:#2563eb;box-shadow:0 1px 3px rgba(15,23,42,.1)}
+        .notification-preferences__panel{display:block}
+        .notification-preferences__panel[hidden]{display:none!important}
+        .notification-preference{display:flex;align-items:center;gap:12px;padding:12px 2px;border-bottom:1px solid #edf0f4;cursor:pointer}
+        .notification-preference__icon{display:grid;place-items:center;flex:none;width:32px;height:32px;border-radius:9px;background:#eff6ff;color:#2563eb;font-weight:700}
+        .notification-preference__text{display:flex;flex:1;min-width:0;flex-direction:column;gap:3px}
+        .notification-preference__text strong{font-size:12px;font-weight:700}
+        .notification-preference__text small{color:#718096;font-size:11px;line-height:1.35}
+        .notification-preference__switch{appearance:none;position:relative;flex:none;width:36px;height:21px;margin:0;border:0;border-radius:20px;background:#cbd5e1;cursor:pointer;transition:background .15s}
+        .notification-preference__switch:before{content:"";position:absolute;top:3px;left:3px;width:15px;height:15px;border-radius:50%;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.18);transition:transform .15s}
+        .notification-preference__switch:checked{background:#2563eb}
+        .notification-preference__switch:checked:before{transform:translateX(15px)}
+        .notification-preferences__note{margin-top:12px;line-height:1.5}
+        @media(max-width:600px){.notification-preferences{padding:13px}.notification-preference{gap:9px}}
         /* Repost mobile settings layout: keep the settings menu, hide its desktop footer. */
         @media screen and (max-width: 920px) {
             html body .setting__aside-footer {
@@ -125,10 +144,131 @@
                                     </select>
                                 </span>
                             </label>
-                            <label class="form-check-label"><input class="form-check-input" type="checkbox" name="notify_posts" value="1" @checked(old('notify_posts', $user->notify_posts))> <span>Yeni yazılar hakkında e-posta gönder</span></label>
-                            <label class="form-check-label"><input class="form-check-input" type="checkbox" name="notify_replies" value="1" @checked(old('notify_replies', $user->notify_replies))> <span>Yanıtlar hakkında bildirim gönder</span></label>
-                            <label class="form-check-label"><input class="form-check-input" type="checkbox" name="notify_announcements" value="1" @checked(old('notify_announcements', $user->notify_announcements))> <span>Site duyurularını gönder</span></label>
                             <label class="form-check-label"><input class="form-check-input" type="checkbox" name="show_adult_content" value="1" @checked(old('show_adult_content', $user->show_adult_content))> <span>18+ içerikleri göster</span></label>
+                            <div class="notification-preferences">
+                                <div class="notification-preferences__intro">
+                                    <h2>Bildirim tercihleri</h2>
+                                    <p>E-posta, anlık bildirim ve SMS bildirimlerini ayrı ayrı yönet.</p>
+                                </div>
+                                <div class="notification-preferences__tabs" role="tablist" aria-label="Bildirim kanalı">
+                                    <button type="button" class="is-active" data-notification-channel="email" role="tab" aria-selected="true">E-posta</button>
+                                    <button type="button" data-notification-channel="push" role="tab" aria-selected="false">Push</button>
+                                    <button type="button" data-notification-channel="sms" role="tab" aria-selected="false">SMS</button>
+                                </div>
+                                <div class="notification-preferences__panel" data-notification-panel="email"  role="tabpanel">
+                                    <label class="notification-preference">
+                                        <span class="notification-preference__icon">↩</span>
+                                        <span class="notification-preference__text"><strong>Yanıtlar</strong><small>Yazılarına ve yorumlarına gelen yanıtlar</small></span>
+                                        <input type="hidden" name="notification_preferences[email][replies]" value="0">
+                                        <input class="notification-preference__switch" type="checkbox" name="notification_preferences[email][replies]" value="1" @checked(old('notification_preferences.email.replies', data_get($notificationPreferences, 'email.replies', true)))>
+                                    </label><label class="notification-preference">
+                                        <span class="notification-preference__icon">▤</span>
+                                        <span class="notification-preference__text"><strong>Yeni yazılar</strong><small>Takip ettiğin kanallardaki yeni yazılar</small></span>
+                                        <input type="hidden" name="notification_preferences[email][posts]" value="0">
+                                        <input class="notification-preference__switch" type="checkbox" name="notification_preferences[email][posts]" value="1" @checked(old('notification_preferences.email.posts', data_get($notificationPreferences, 'email.posts', true)))>
+                                    </label><label class="notification-preference">
+                                        <span class="notification-preference__icon">♢</span>
+                                        <span class="notification-preference__text"><strong>Duyurular</strong><small>OgraFi duyuruları ve önemli güncellemeler</small></span>
+                                        <input type="hidden" name="notification_preferences[email][announcements]" value="0">
+                                        <input class="notification-preference__switch" type="checkbox" name="notification_preferences[email][announcements]" value="1" @checked(old('notification_preferences.email.announcements', data_get($notificationPreferences, 'email.announcements', true)))>
+                                    </label><label class="notification-preference">
+                                        <span class="notification-preference__icon">♙</span>
+                                        <span class="notification-preference__text"><strong>Yeni takipçiler</strong><small>Seni takip etmeye başlayan kişiler</small></span>
+                                        <input type="hidden" name="notification_preferences[email][followers]" value="0">
+                                        <input class="notification-preference__switch" type="checkbox" name="notification_preferences[email][followers]" value="1" @checked(old('notification_preferences.email.followers', data_get($notificationPreferences, 'email.followers', true)))>
+                                    </label><label class="notification-preference">
+                                        <span class="notification-preference__icon">▢</span>
+                                        <span class="notification-preference__text"><strong>Mesajlar</strong><small>Yeni özel mesajlar</small></span>
+                                        <input type="hidden" name="notification_preferences[email][messages]" value="0">
+                                        <input class="notification-preference__switch" type="checkbox" name="notification_preferences[email][messages]" value="1" @checked(old('notification_preferences.email.messages', data_get($notificationPreferences, 'email.messages', true)))>
+                                    </label><label class="notification-preference">
+                                        <span class="notification-preference__icon">@</span>
+                                        <span class="notification-preference__text"><strong>Bahsetmeler</strong><small>Birisi senden bahsettiğinde</small></span>
+                                        <input type="hidden" name="notification_preferences[email][mentions]" value="0">
+                                        <input class="notification-preference__switch" type="checkbox" name="notification_preferences[email][mentions]" value="1" @checked(old('notification_preferences.email.mentions', data_get($notificationPreferences, 'email.mentions', true)))>
+                                    </label><label class="notification-preference">
+                                        <span class="notification-preference__icon">◇</span>
+                                        <span class="notification-preference__text"><strong>Güvenlik bildirimleri</strong><small>Hesap ve güvenlik hareketleri</small></span>
+                                        <input type="hidden" name="notification_preferences[email][security]" value="0">
+                                        <input class="notification-preference__switch" type="checkbox" name="notification_preferences[email][security]" value="1" @checked(old('notification_preferences.email.security', data_get($notificationPreferences, 'email.security', true)))>
+                                    </label>
+                                </div><div class="notification-preferences__panel" data-notification-panel="push" hidden role="tabpanel">
+                                    <label class="notification-preference">
+                                        <span class="notification-preference__icon">↩</span>
+                                        <span class="notification-preference__text"><strong>Yanıtlar</strong><small>Yazılarına ve yorumlarına gelen yanıtlar</small></span>
+                                        <input type="hidden" name="notification_preferences[push][replies]" value="0">
+                                        <input class="notification-preference__switch" type="checkbox" name="notification_preferences[push][replies]" value="1" @checked(old('notification_preferences.push.replies', data_get($notificationPreferences, 'push.replies', false)))>
+                                    </label><label class="notification-preference">
+                                        <span class="notification-preference__icon">▤</span>
+                                        <span class="notification-preference__text"><strong>Yeni yazılar</strong><small>Takip ettiğin kanallardaki yeni yazılar</small></span>
+                                        <input type="hidden" name="notification_preferences[push][posts]" value="0">
+                                        <input class="notification-preference__switch" type="checkbox" name="notification_preferences[push][posts]" value="1" @checked(old('notification_preferences.push.posts', data_get($notificationPreferences, 'push.posts', false)))>
+                                    </label><label class="notification-preference">
+                                        <span class="notification-preference__icon">♢</span>
+                                        <span class="notification-preference__text"><strong>Duyurular</strong><small>OgraFi duyuruları ve önemli güncellemeler</small></span>
+                                        <input type="hidden" name="notification_preferences[push][announcements]" value="0">
+                                        <input class="notification-preference__switch" type="checkbox" name="notification_preferences[push][announcements]" value="1" @checked(old('notification_preferences.push.announcements', data_get($notificationPreferences, 'push.announcements', false)))>
+                                    </label><label class="notification-preference">
+                                        <span class="notification-preference__icon">♙</span>
+                                        <span class="notification-preference__text"><strong>Yeni takipçiler</strong><small>Seni takip etmeye başlayan kişiler</small></span>
+                                        <input type="hidden" name="notification_preferences[push][followers]" value="0">
+                                        <input class="notification-preference__switch" type="checkbox" name="notification_preferences[push][followers]" value="1" @checked(old('notification_preferences.push.followers', data_get($notificationPreferences, 'push.followers', false)))>
+                                    </label><label class="notification-preference">
+                                        <span class="notification-preference__icon">▢</span>
+                                        <span class="notification-preference__text"><strong>Mesajlar</strong><small>Yeni özel mesajlar</small></span>
+                                        <input type="hidden" name="notification_preferences[push][messages]" value="0">
+                                        <input class="notification-preference__switch" type="checkbox" name="notification_preferences[push][messages]" value="1" @checked(old('notification_preferences.push.messages', data_get($notificationPreferences, 'push.messages', false)))>
+                                    </label><label class="notification-preference">
+                                        <span class="notification-preference__icon">@</span>
+                                        <span class="notification-preference__text"><strong>Bahsetmeler</strong><small>Birisi senden bahsettiğinde</small></span>
+                                        <input type="hidden" name="notification_preferences[push][mentions]" value="0">
+                                        <input class="notification-preference__switch" type="checkbox" name="notification_preferences[push][mentions]" value="1" @checked(old('notification_preferences.push.mentions', data_get($notificationPreferences, 'push.mentions', false)))>
+                                    </label><label class="notification-preference">
+                                        <span class="notification-preference__icon">◇</span>
+                                        <span class="notification-preference__text"><strong>Güvenlik bildirimleri</strong><small>Hesap ve güvenlik hareketleri</small></span>
+                                        <input type="hidden" name="notification_preferences[push][security]" value="0">
+                                        <input class="notification-preference__switch" type="checkbox" name="notification_preferences[push][security]" value="1" @checked(old('notification_preferences.push.security', data_get($notificationPreferences, 'push.security', true)))>
+                                    </label>
+                                </div><div class="notification-preferences__panel" data-notification-panel="sms" hidden role="tabpanel">
+                                    <label class="notification-preference">
+                                        <span class="notification-preference__icon">↩</span>
+                                        <span class="notification-preference__text"><strong>Yanıtlar</strong><small>Yazılarına ve yorumlarına gelen yanıtlar</small></span>
+                                        <input type="hidden" name="notification_preferences[sms][replies]" value="0">
+                                        <input class="notification-preference__switch" type="checkbox" name="notification_preferences[sms][replies]" value="1" @checked(old('notification_preferences.sms.replies', data_get($notificationPreferences, 'sms.replies', false)))>
+                                    </label><label class="notification-preference">
+                                        <span class="notification-preference__icon">▤</span>
+                                        <span class="notification-preference__text"><strong>Yeni yazılar</strong><small>Takip ettiğin kanallardaki yeni yazılar</small></span>
+                                        <input type="hidden" name="notification_preferences[sms][posts]" value="0">
+                                        <input class="notification-preference__switch" type="checkbox" name="notification_preferences[sms][posts]" value="1" @checked(old('notification_preferences.sms.posts', data_get($notificationPreferences, 'sms.posts', false)))>
+                                    </label><label class="notification-preference">
+                                        <span class="notification-preference__icon">♢</span>
+                                        <span class="notification-preference__text"><strong>Duyurular</strong><small>OgraFi duyuruları ve önemli güncellemeler</small></span>
+                                        <input type="hidden" name="notification_preferences[sms][announcements]" value="0">
+                                        <input class="notification-preference__switch" type="checkbox" name="notification_preferences[sms][announcements]" value="1" @checked(old('notification_preferences.sms.announcements', data_get($notificationPreferences, 'sms.announcements', false)))>
+                                    </label><label class="notification-preference">
+                                        <span class="notification-preference__icon">♙</span>
+                                        <span class="notification-preference__text"><strong>Yeni takipçiler</strong><small>Seni takip etmeye başlayan kişiler</small></span>
+                                        <input type="hidden" name="notification_preferences[sms][followers]" value="0">
+                                        <input class="notification-preference__switch" type="checkbox" name="notification_preferences[sms][followers]" value="1" @checked(old('notification_preferences.sms.followers', data_get($notificationPreferences, 'sms.followers', false)))>
+                                    </label><label class="notification-preference">
+                                        <span class="notification-preference__icon">▢</span>
+                                        <span class="notification-preference__text"><strong>Mesajlar</strong><small>Yeni özel mesajlar</small></span>
+                                        <input type="hidden" name="notification_preferences[sms][messages]" value="0">
+                                        <input class="notification-preference__switch" type="checkbox" name="notification_preferences[sms][messages]" value="1" @checked(old('notification_preferences.sms.messages', data_get($notificationPreferences, 'sms.messages', false)))>
+                                    </label><label class="notification-preference">
+                                        <span class="notification-preference__icon">@</span>
+                                        <span class="notification-preference__text"><strong>Bahsetmeler</strong><small>Birisi senden bahsettiğinde</small></span>
+                                        <input type="hidden" name="notification_preferences[sms][mentions]" value="0">
+                                        <input class="notification-preference__switch" type="checkbox" name="notification_preferences[sms][mentions]" value="1" @checked(old('notification_preferences.sms.mentions', data_get($notificationPreferences, 'sms.mentions', false)))>
+                                    </label><label class="notification-preference">
+                                        <span class="notification-preference__icon">◇</span>
+                                        <span class="notification-preference__text"><strong>Güvenlik bildirimleri</strong><small>Hesap ve güvenlik hareketleri</small></span>
+                                        <input type="hidden" name="notification_preferences[sms][security]" value="0">
+                                        <input class="notification-preference__switch" type="checkbox" name="notification_preferences[sms][security]" value="1" @checked(old('notification_preferences.sms.security', data_get($notificationPreferences, 'sms.security', false)))>
+                                    </label>
+                                </div>
+                                <p class="notification-preferences__note">Push ve SMS bildirimleri, ilgili gönderim kanalları etkinleştirildiğinde iletilir.</p>
+                            </div>
                             <div><button class="btn btn-primary" type="submit">Kaydet</button></div>
                         </form>
                     </section>
@@ -749,6 +889,23 @@
     syncFromStorage();
     window.addEventListener('storage', syncFromStorage);
     window.addEventListener('ografi:cookie-consent-updated', syncFromStorage);
+})();
+</script>
+<script>
+(() => {
+    document.querySelectorAll('[data-notification-channel]').forEach((button) => {
+        button.addEventListener('click', () => {
+            const channel = button.dataset.notificationChannel;
+            document.querySelectorAll('[data-notification-channel]').forEach((tab) => {
+                const active = tab === button;
+                tab.classList.toggle('is-active', active);
+                tab.setAttribute('aria-selected', active ? 'true' : 'false');
+            });
+            document.querySelectorAll('[data-notification-panel]').forEach((panel) => {
+                panel.hidden = panel.dataset.notificationPanel !== channel;
+            });
+        });
+    });
 })();
 </script>
 @endpush
