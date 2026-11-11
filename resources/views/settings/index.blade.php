@@ -29,6 +29,9 @@
         .notification-channel-row{padding:12px 2px;border-bottom:1px solid #edf0f4}
         .notification-channel-switch{display:flex;align-items:center;flex-direction:column;gap:7px;color:#718096;font-size:10px;cursor:pointer}
         .notification-preferences__note{margin-top:12px;line-height:1.5}
+        .notification-push-permission{display:flex;align-items:center;flex-wrap:wrap;gap:10px;margin-top:14px}
+        .notification-push-permission .btn{flex:none}
+        .notification-push-permission [data-browser-notification-status]{margin:0}
         @media(max-width:600px){.notification-preferences{padding:13px}.notification-preference{gap:9px}.notification-channel-heading,.notification-channel-row{grid-template-columns:28px minmax(90px,1fr) 48px 42px;gap:6px}.notification-channel-row .notification-preference__text strong{font-size:11px}.notification-channel-row .notification-preference__text small{font-size:10px}}
         /* Repost mobile settings layout: keep the settings menu, hide its desktop footer. */
         @media screen and (max-width: 920px) {
@@ -291,7 +294,10 @@
                                             <input class="notification-preference__switch" type="checkbox" name="notification_preferences[push][security]" value="1" @checked(old('notification_preferences.push.security', data_get($notificationPreferences, 'push.security', true)))>
                                         </label>
                                     </div>
-                                    <p class="notification-preferences__note">Push bildirimleri, tarayıcı veya cihaz bildirim izni verildiğinde gönderilebilir.</p>
+                                    <div class="notification-push-permission">
+                                        <button type="button" class="btn btn-secondary btn-sm" data-enable-browser-notifications>Tarayıcı bildirimlerini etkinleştir</button>
+                                        <span class="notification-preferences__note" data-browser-notification-status>Push bildirimleri, OgraFi açıkken tarayıcı izniyle gösterilir.</span>
+                                    </div>
                                 </div>
                             </div>
                             <div><button class="btn btn-primary" type="submit">Kaydet</button></div>
@@ -933,6 +939,54 @@
             });
         });
     });
+})();
+</script>
+<script>
+(() => {
+    const button = document.querySelector('[data-enable-browser-notifications]');
+    const status = document.querySelector('[data-browser-notification-status]');
+    if (!button || !status) return;
+
+    const refresh = () => {
+        if (!('Notification' in window)) {
+            status.textContent = 'Bu tarayıcı masaüstü bildirimlerini desteklemiyor.';
+            button.disabled = true;
+            return;
+        }
+
+        if (Notification.permission === 'granted') {
+            status.textContent = 'Tarayıcı bildirim izni açık. Push tercihlerini etkinleştirebilirsin.';
+            button.textContent = 'Bildirim izni etkin';
+            button.disabled = true;
+        } else if (Notification.permission === 'denied') {
+            status.textContent = 'Bildirim izni tarayıcı tarafından engellendi. Site izinlerinden açmalısın.';
+            button.textContent = 'Tarayıcı izni engellendi';
+            button.disabled = true;
+        }
+    };
+
+    button.addEventListener('click', async () => {
+        if (!('Notification' in window)) {
+            refresh();
+            return;
+        }
+
+        try {
+            const permission = await Notification.requestPermission();
+            if (permission === 'granted') {
+                status.textContent = 'İzin verildi. Push tercihleri açık olan yeni bildirimler masaüstünde gösterilecek.';
+            } else {
+                status.textContent = permission === 'denied'
+                    ? 'İzin reddedildi. Tarayıcı site ayarlarından bildirim iznini aç.'
+                    : 'Bildirim izni henüz verilmedi.';
+            }
+            refresh();
+        } catch (error) {
+            status.textContent = 'Bildirim izni alınamadı. Tarayıcı ayarlarını kontrol et.';
+        }
+    });
+
+    refresh();
 })();
 </script>
 @endpush
