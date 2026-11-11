@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\SiteSetting;
 use App\Models\User;
+use App\Notifications\SiteActivityNotification;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -328,8 +329,8 @@ class SettingsController extends Controller
             ])->with('activeTab', 'delete');
         }
 
-        \Illuminate\Support\Facades\DB::transaction(function () use ($user): void {
-            \App\Models\AccountDeletionRequest::create([
+        $deletionRequest = \Illuminate\Support\Facades\DB::transaction(function () use ($user): \App\Models\AccountDeletionRequest {
+            $deletionRequest = \App\Models\AccountDeletionRequest::create([
                 'user_id' => $user->id,
                 'user_name' => $user->displayName(),
                 'username' => $user->username,
@@ -340,7 +341,17 @@ class SettingsController extends Controller
 
             // Hide the account immediately while preserving it for admin review.
             $user->delete();
+
+            return $deletionRequest;
         });
+
+        User::query()->where('is_admin', true)->get()->each(
+            fn (User $admin) => $admin->notify(new SiteActivityNotification(
+                'Yeni hesap silme talebi',
+                $deletionRequest->user_name.' hesabının kalıcı olarak silinmesini istedi.',
+                \App\Filament\Resources\AccountDeletionRequests\AccountDeletionRequestResource::getUrl(),
+            )),
+        );
 
         Auth::logout();
         $request->session()->invalidate();
