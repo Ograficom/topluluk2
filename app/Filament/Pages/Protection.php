@@ -39,27 +39,70 @@ class Protection extends Page
     public function form(Schema $schema): Schema
     {
         return $schema->components([
-            Section::make('Yorum spam koruması')
-                ->description('Yasaklı kelimeler, bağlantı sayısı ve yorum sıklığına göre şüpheli yorumları incelemeye alır.')
-                ->schema([
-                    Toggle::make('comment_spam_enabled')->label('Yorum spam filtresini etkinleştir')->default(true)->columnSpanFull(),
-                    Textarea::make('comment_spam_words')->label('Yorumlarda yasaklı kelimeler')
-                        ->placeholder("Her satıra bir kelime veya ifade yazın")->rows(7)->columnSpanFull(),
-                ])->columns(2),
-            Section::make('Post spam koruması')
-                ->description('Yeni postların başlık, açıklama ve içeriklerini kontrol eder. Eşleşen postlar yayına alınmaz, spam listesinde bekler.')
-                ->schema([
-                    Toggle::make('post_spam_enabled')->label('Post spam filtresini etkinleştir')->default(true)->columnSpanFull(),
-                    Textarea::make('post_spam_words')->label('Postlarda yasaklı kelimeler')
-                        ->placeholder("Her satıra bir kelime veya ifade yazın")->rows(7)->columnSpanFull(),
-                ])->columns(2),
-            Section::make('Yorum gönderim sınırları')
-                ->schema([
-                    \Filament\Forms\Components\TextInput::make('comment_spam_max_links')
-                        ->label('İzin verilen en fazla bağlantı')->numeric()->minValue(0)->maxValue(20)->required(),
-                    \Filament\Forms\Components\TextInput::make('comment_spam_rate_limit')
-                        ->label('Dakikada izin verilen yorum')->numeric()->minValue(1)->maxValue(30)->required(),
-                ])->columns(2),
+            Tabs::make('Koruma ayarları')
+                ->tabs([
+                    Tab::make('Yorum koruması')
+                        ->icon(Heroicon::OutlinedChatBubbleLeftRight)
+                        ->schema([
+                            Section::make('Yorum spam filtresi')
+                                ->description('Yasaklı kelime ve ifadeleri içeren yorumlar otomatik olarak incelemeye alınır.')
+                                ->schema([
+                                    Toggle::make('comment_spam_enabled')
+                                        ->label('Yorum spam filtresini etkinleştir')
+                                        ->default(true)
+                                        ->inline(false),
+                                    Textarea::make('comment_spam_words')
+                                        ->label('Yasaklı kelimeler ve ifadeler')
+                                        ->placeholder("Her satıra bir kelime veya ifade yazın")
+                                        ->helperText('Örnek: reklam, bahis, istenmeyen bağlantılar. Birden fazla kelime içeren ifadeler de ekleyebilirsiniz.')
+                                        ->rows(9)
+                                        ->columnSpanFull(),
+                                ]),
+                            Section::make('Yorum gönderim sınırları')
+                                ->description('Kısa sürede yapılan yoğun yorum gönderimlerini ve bağlantı spamini sınırlar.')
+                                ->schema([
+                                    \\Filament\\Forms\\Components\\TextInput::make('comment_spam_max_links')
+                                        ->label('İzin verilen en fazla bağlantı')
+                                        ->numeric()->minValue(0)->maxValue(20)->required(),
+                                    \\Filament\\Forms\\Components\\TextInput::make('comment_spam_rate_limit')
+                                        ->label('Dakikada izin verilen yorum')
+                                        ->numeric()->minValue(1)->maxValue(30)->required(),
+                                ])->columns(2),
+                        ]),
+                    Tab::make('Post koruması')
+                        ->icon(Heroicon::OutlinedDocumentText)
+                        ->schema([
+                            Section::make('Post spam filtresi')
+                                ->description('Post başlığı, açıklaması ve içeriği yasaklı kelimelere göre kontrol edilir. Eşleşen postlar yönetici onayına kadar yayına çıkmaz.')
+                                ->schema([
+                                    Toggle::make('post_spam_enabled')
+                                        ->label('Post spam filtresini etkinleştir')
+                                        ->default(true)
+                                        ->inline(false),
+                                    Textarea::make('post_spam_words')
+                                        ->label('Postlarda yasaklı kelimeler')
+                                        ->placeholder("Her satıra bir kelime veya ifade yazın")
+                                        ->helperText('Bu liste yalnızca yeni postların başlık, açıklama ve içeriklerinde uygulanır.')
+                                        ->rows(9)
+                                        ->columnSpanFull(),
+                                ]),
+                        ]),
+                    Tab::make('Spam listeleri')
+                        ->icon(Heroicon::OutlinedQueueList)
+                        ->schema([
+                            Section::make('İnceleme listeleri')
+                                ->description('Filtreye takılan içerikleri buradan açıp kontrol edebilir, hatalı işaretlenenleri onaylayabilirsiniz.')
+                                ->schema([
+                                    \\Filament\\Forms\\Components\\Placeholder::make('comment_spam_list_link')
+                                        ->label('Yorumlar')
+                                        ->content(new \\Illuminate\\Support\\HtmlString('<a class="fi-link fi-size-md" href="'.url('/admin/comments?tableFilters[is_spam][value]=1').'">Spam yorum listesini aç →</a>')),
+                                    \\Filament\\Forms\\Components\\Placeholder::make('post_spam_list_link')
+                                        ->label('Postlar')
+                                        ->content(new \\Illuminate\\Support\\HtmlString('<a class="fi-link fi-size-md" href="'.url('/admin/posts?tableFilters[is_spam][value]=1').'">Spam post listesini aç →</a>')),
+                                ]),
+                        ]),
+                ])
+                ->contained(false),
         ])->statePath('data');
     }
 
