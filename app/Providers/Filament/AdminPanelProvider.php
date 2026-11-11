@@ -42,14 +42,13 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->renderHook(
                 PanelsRenderHook::PAGE_START,
-                fn (): string => request()->is(
-                    'admin/content-management',
-                    'admin/channels*',
-                    'admin/comments*',
-                    'admin/posts*',
-                    'admin/tags*',
-                    'admin/rss-sources*',
-                ) ? view('filament.components.content-management-tabs')->render() : '',
+                fn (): string => match (true) {
+                    request()->is('admin/content-management', 'admin/channels*', 'admin/comments*', 'admin/posts*', 'admin/tags*', 'admin/rss-sources*')
+                        => view('filament.components.content-management-tabs')->render(),
+                    request()->is('admin/site-branding', 'admin/mail-settings', 'admin/seo-settings', 'admin/sitemap-manager', 'admin/rss-manager')
+                        => view('filament.components.settings-tabs')->render(),
+                    default => '',
+                },
             )
             ->colors([
                 'primary' => Color::Blue,
