@@ -104,5 +104,6 @@ jobs:
         run: |
           set -euo pipefail
           PORT="${SSH_PORT:-22}"
-          REMOTE_CRON="$(printf '%s' "* * * * * cd '$DEPLOY_PATH' && php artisan schedule:run >> /dev/null 2>&1" | base64 -w0)"
-          ssh -p "$PORT" "$SSH_USER@$SSH_HOST" "(crontab -l 2>/dev/null | grep -Fv 'php artisan schedule:run' || true; printf '%s' '$REMOTE_CRON' | base64 -d) | crontab -"
+          PHP_BIN="/www/server/php/84/bin/php"
+          REMOTE_CRON="$(printf '%s' "* * * * * cd '$DEPLOY_PATH' && '$PHP_BIN' artisan schedule:run >> /dev/null 2>&1" | base64 -w0)"
+          ssh -p "$PORT" "$SSH_USER@$SSH_HOST" "test -x '$PHP_BIN' && (crontab -l 2>/dev/null | grep -Fv 'php artisan schedule:run' | grep -Fv '$PHP_BIN artisan schedule:run' || true; printf '%s' '$REMOTE_CRON' | base64 -d) | crontab -"
