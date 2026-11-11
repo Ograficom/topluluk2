@@ -4,14 +4,11 @@ namespace App\Notifications;
 
 use Filament\Actions\Action;
 use Filament\Notifications\Notification as FilamentNotification;
-use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
 class SiteActivityNotification extends Notification
 {
-    use Queueable;
-
     public function __construct(
         public readonly string $title,
         public readonly string $message,
@@ -22,7 +19,7 @@ class SiteActivityNotification extends Notification
 
     public function via(object $notifiable): array
     {
-        // Administrative notifications have no user preference category.
+        // Administrative notifications are always kept in the Filament database inbox.
         if ($this->category === null) {
             return ['database'];
         }
@@ -31,9 +28,18 @@ class SiteActivityNotification extends Notification
         $channels = [];
 
         $streamEnabled = (bool) data_get($preferences, 'stream.'.$this->category, true);
-        $legacyEmailDefault = match ($this->category) { 'replies' => (bool) ($notifiable->notify_replies ?? true), 'posts' => (bool) ($notifiable->notify_posts ?? true), 'announcements' => (bool) ($notifiable->notify_announcements ?? true), default => true };\n        $emailEnabled = (bool) data_get($preferences, 'email.'.$this->category, $legacyEmailDefault);
+
+        $legacyEmailDefault = match ($this->category) {
+            'replies' => (bool) ($notifiable->notify_replies ?? true),
+            'posts' => (bool) ($notifiable->notify_posts ?? true),
+            'announcements' => (bool) ($notifiable->notify_announcements ?? true),
+            default => true,
+        };
+
+        $emailEnabled = (bool) data_get($preferences, 'email.'.$this->category, $legacyEmailDefault);
         $pushEnabled = (bool) data_get($preferences, 'push.'.$this->category, $this->category === 'security');
 
+        // The database row powers the in-site stream and is also the durable push event record.
         if ($streamEnabled || $pushEnabled) {
             $channels[] = 'database';
         }
