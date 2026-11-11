@@ -36,6 +36,15 @@ class SettingsController extends Controller
             'activeTab' => in_array($activeTab, self::TABS, true) ? $activeTab : 'profile',
             'timezones' => timezone_identifiers_list(),
             'notificationPreferences' => array_replace_recursive([
+                'stream' => [
+                    'replies' => true,
+                    'posts' => true,
+                    'announcements' => true,
+                    'followers' => true,
+                    'messages' => true,
+                    'mentions' => true,
+                    'security' => true,
+                ],
                 'email' => [
                     'replies' => (bool) $user->notify_replies,
                     'posts' => (bool) $user->notify_posts,
@@ -53,15 +62,6 @@ class SettingsController extends Controller
                     'messages' => false,
                     'mentions' => false,
                     'security' => true,
-                ],
-                'sms' => [
-                    'replies' => false,
-                    'posts' => false,
-                    'announcements' => false,
-                    'followers' => false,
-                    'messages' => false,
-                    'mentions' => false,
-                    'security' => false,
                 ],
             ], $user->notification_preferences ?? []),
         ]);
@@ -129,9 +129,9 @@ class SettingsController extends Controller
             'timezone' => ['required', Rule::in(timezone_identifiers_list())],
             'show_adult_content' => ['sometimes', 'boolean'],
             'notification_preferences' => ['required', 'array'],
+            'notification_preferences.stream' => ['required', 'array'],
             'notification_preferences.email' => ['required', 'array'],
             'notification_preferences.push' => ['required', 'array'],
-            'notification_preferences.sms' => ['required', 'array'],
             'notification_preferences.*.replies' => ['required', 'boolean'],
             'notification_preferences.*.posts' => ['required', 'boolean'],
             'notification_preferences.*.announcements' => ['required', 'boolean'],
