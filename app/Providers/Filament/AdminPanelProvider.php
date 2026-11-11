@@ -47,7 +47,7 @@ class AdminPanelProvider extends PanelProvider
                         => view('filament.components.content-management-tabs')->render(),
                     request()->is('admin/settings-management', 'admin/site-branding', 'admin/mail-settings', 'admin/seo-settings', 'admin/sitemap-manager', 'admin/rss-manager', 'admin/site-pages*')
                         => view('filament.components.settings-tabs')->render(),
-                    request()->is('admin/post-reports*', 'admin/support-tickets*')
+                    request()->is('admin/feedback-management', 'admin/post-reports*', 'admin/support-tickets*')
                         => view('filament.components.feedback-management-tabs')->render(),
                     request()->is('admin/advertisement-manager', 'admin/advertisements*', 'admin/advertisement-pricing')
                         => view('filament.components.advertisement-manager-tabs')->render(),
