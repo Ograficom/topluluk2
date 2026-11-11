@@ -14,6 +14,8 @@ use Filament\Support\Icons\Heroicon;
 
 class SeoSettings extends Page
 {
+    protected static bool $shouldRegisterNavigation = false;
+
     protected static string|\UnitEnum|null $navigationGroup = 'Ayarlar';
     protected static ?string $navigationLabel = 'SEO ayarları';
     protected static ?string $title = 'Site SEO yönetimi';
