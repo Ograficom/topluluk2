@@ -73,6 +73,14 @@ class ExternalRssReader
                     continue;
                 }
 
+                // Do not import Cumhuriyet articles from any configured feed.
+                // This prevents old/aggregated feeds from continuing to reintroduce
+                // Cumhuriyet links after the administrator switches to another source.
+                $articleHost = strtolower((string) parse_url($item['link'] ?? '', PHP_URL_HOST));
+                if ($articleHost === 'cumhuriyet.com.tr' || str_ends_with($articleHost, '.cumhuriyet.com.tr')) {
+                    continue;
+                }
+
                 $rssItem = RssItem::query()->firstOrNew([
                     'rss_source_id' => $source->id,
                     'guid_hash' => hash('sha256', $item['guid']),
