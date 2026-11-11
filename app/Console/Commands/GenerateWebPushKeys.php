@@ -14,7 +14,7 @@ class GenerateWebPushKeys extends Command
     public function handle(): int
     {
         if (! class_exists(VAPID::class)) {
-            $this->error('minishlink/web-push paketi kurulu değil. Önce composer require minishlink/web-push:^9.0 çalıştırın.');
+            $this->error('minishlink/web-push paketi kurulu değil. Önce composer update minishlink/web-push --with-all-dependencies çalıştırın.');
 
             return self::FAILURE;
         }
