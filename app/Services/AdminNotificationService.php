@@ -24,11 +24,11 @@ class AdminNotificationService
             ->each(fn (User $admin) => $admin->notify(new SiteActivityNotification($title, $body, $url)));
     }
 
-    public static function syncPendingToAdmins(): int
+    public static function syncAllRecordsToAdmins(): int
     {
         $created = 0;
 
-        $reports = PostReport::query()->with(['post', 'user'])->where('status', 'pending')->get();
+        $reports = PostReport::query()->with(['post', 'user'])->get();
         foreach ($reports as $report) {
             $created += self::sendOnce(
                 'post-report:'.$report->id,
@@ -38,7 +38,7 @@ class AdminNotificationService
             );
         }
 
-        foreach (SupportTicket::query()->where('status', SupportTicket::STATUS_NEW)->get() as $ticket) {
+        foreach (SupportTicket::query()->get() as $ticket) {
             $created += self::sendOnce(
                 'support-ticket:'.$ticket->id,
                 'Yeni destek talebi',
@@ -47,7 +47,7 @@ class AdminNotificationService
             );
         }
 
-        foreach (AccountDeletionRequest::query()->where('status', 'pending')->get() as $request) {
+        foreach (AccountDeletionRequest::query()->get() as $request) {
             $created += self::sendOnce(
                 'account-deletion:'.$request->id,
                 'Yeni hesap silme talebi',
@@ -56,7 +56,7 @@ class AdminNotificationService
             );
         }
 
-        foreach (Comment::query()->with(['user', 'post'])->where('created_at', '>=', now()->subDay())->get() as $comment) {
+        foreach (Comment::query()->with(['user', 'post'])->get() as $comment) {
             $created += self::sendOnce(
                 'comment:'.$comment->id,
                 $comment->is_spam ? 'İncelenecek spam yorum' : 'Yeni yorum',
@@ -65,7 +65,7 @@ class AdminNotificationService
             );
         }
 
-        foreach (Advertisement::query()->with('user')->where('status', 'pending')->get() as $advertisement) {
+        foreach (Advertisement::query()->with('user')->get() as $advertisement) {
             $created += self::sendOnce(
                 'advertisement:'.$advertisement->id,
                 'Yeni reklam başvurusu',
