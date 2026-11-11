@@ -80,4 +80,8 @@ class AdvertisementManager extends Page
 
         return compact('ads', 'totals', 'daily', 'maxDaily');
     }
+    public function getHeading(): ?string
+    {
+        return null;
+    }
 }
