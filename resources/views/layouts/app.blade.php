@@ -10,7 +10,15 @@
         $seoDescription = trim($__env->yieldContent('description', $seoSettings?->seo_default_description ?: 'OgraFi; teknoloji, gündem, yaşam ve ilgi alanlarında yazıların, fikirlerin ve topluluk sohbetlerinin buluştuğu platformdur.'));
         $seoTitle = trim($__env->yieldContent('title', $seoSettings?->seo_default_title ?: $brandName));
         $seoCanonical = trim($__env->yieldContent('canonical')) ?: url()->current();
-        $seoImage = trim($__env->yieldContent('seo_image')) ?: ($seoSettings?->seo_og_image ?: ($brandLogoUrl ?? asset('assets/img/meta/logo.svg')));
+        $seoImage = trim($__env->yieldContent('seo_image'));
+        if ($seoImage === '') {
+            $defaultSeoImage = $seoSettings?->seo_og_image;
+            $seoImage = filled($defaultSeoImage)
+                ? (filter_var($defaultSeoImage, FILTER_VALIDATE_URL)
+                    ? $defaultSeoImage
+                    : \\Illuminate\\Support\\Facades\\Storage::disk('public')->url($defaultSeoImage))
+                : ($brandLogoUrl ?? asset('assets/img/meta/logo.svg'));
+        }
         $seoRobotsOverride = trim($__env->yieldContent('robots'));
         $seoKeywords = trim($__env->yieldContent('seo_keywords', $seoSettings?->seo_default_keywords ?? ''));
         $seoNoindex = $seoRobotsOverride === 'noindex,follow' || request()->filled('q')
