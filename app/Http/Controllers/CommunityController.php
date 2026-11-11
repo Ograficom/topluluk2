@@ -319,6 +319,15 @@ class CommunityController extends Controller
             'status' => SupportTicket::STATUS_NEW,
         ]);
 
+        User::query()->where('is_admin', true)
+            ->when($request->user(), fn ($query) => $query->where('id', '<>', $request->user()->id))
+            ->get()
+            ->each(fn (User $admin) => $admin->notify(new SiteActivityNotification(
+                'Yeni destek talebi',
+                $ticket->name.' yeni bir destek talebi gönderdi: '.$ticket->subject,
+                '/admin/support-tickets',
+            )));
+
         $supportEmail = config('mail.from.address');
         if (blank($supportEmail)) {
             return back()->with('status', 'Mesajın kaydedildi. Destek e-posta adresi yapılandırılmadığı için e-posta bildirimi gönderilemedi.');
