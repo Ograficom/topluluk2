@@ -1,5 +1,9 @@
 <x-filament-panels::page>
+    
+    
+
     <style>
+
         .admin-page-heading { margin:0 0 18px; }
         .admin-page-heading h1 { margin:0; color:#111827; font-size:30px; font-weight:750; letter-spacing:-.035em; line-height:1.2; }
         .admin-page-intro { display:flex; align-items:center; gap:16px; min-height:118px; width:100%; margin:0 0 18px; padding:22px 24px; border:1px solid #dbe5f2; border-radius:15px; background:linear-gradient(110deg,#fff 0%,#f4f8ff 100%); }
@@ -25,8 +29,8 @@
             .admin-page-intro h2 { font-size:16px; }
             .admin-page-intro p:last-child { font-size:12px; }
         }
-    </style>
-    <style>
+    
+
         .settings-landing {
             display:flex;
             align-items:center;
@@ -88,6 +92,25 @@
             .settings-landing-icon { flex-basis:50px;width:50px;height:50px;border-radius:14px; }
             .settings-landing-icon svg { width:24px;height:24px; }
             .settings-landing h2 { font-size:18px; }
+            .settings-landing p { font-size:12px; }
+        }
+    
+        .settings-landing { min-height:118px; padding:22px 24px; border:1px solid #dbe5f2; border-radius:15px; background:linear-gradient(110deg,#fff 0%,#f4f8ff 100%); }
+        .settings-landing-icon { flex:0 0 48px; width:48px; height:48px; border:1px solid #dbeafe; border-radius:13px; background:#eaf2ff; color:#2563eb; }
+        .settings-landing-icon svg { width:24px; height:24px; }
+        .settings-landing-eyebrow { margin:0 0 4px; color:#2563eb; font-size:10px; }
+        .settings-landing h2 { font-size:18px; letter-spacing:0; line-height:normal; }
+        .settings-landing p { margin:5px 0 0; color:#64748b; font-size:13px; line-height:1.6; }
+        .dark .settings-landing { border-color:#303b4d; background:linear-gradient(110deg,#171e29 0%,#1a2637 100%); }
+        .dark .settings-landing-icon { border-color:#34445b; background:#202c3e; color:#93c5fd; }
+        .dark .settings-landing-eyebrow { color:#93c5fd; }
+        .dark .settings-landing h2 { color:#f3f6fb; }
+        .dark .settings-landing p { color:#a0aec0; }
+        @media(max-width:640px) {
+            .settings-landing { min-height:0; gap:12px; padding:16px; border-radius:13px; }
+            .settings-landing-icon { flex-basis:44px; width:44px; height:44px; }
+            .settings-landing-icon svg { width:22px; height:22px; }
+            .settings-landing h2 { font-size:16px; }
             .settings-landing p { font-size:12px; }
         }
     </style>
