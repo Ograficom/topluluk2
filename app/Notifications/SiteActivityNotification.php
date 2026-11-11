@@ -3,7 +3,8 @@
 namespace App\Notifications;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Notifications\Notification;
+use Filament\Actions\Action;
+use Filament\Notifications\Notification as FilamentNotification;
 
 class SiteActivityNotification extends Notification
 {
@@ -22,10 +23,16 @@ class SiteActivityNotification extends Notification
 
     public function toDatabase(object $notifiable): array
     {
-        return [
-            'title' => $this->title,
-            'message' => $this->message,
-            'url' => $this->url,
-        ];
+        return FilamentNotification::make()
+            ->title($this->title)
+            ->body($this->message)
+            ->actions([
+                Action::make('view')
+                    ->label('Görüntüle')
+                    ->button()
+                    ->url($this->url)
+                    ->markAsRead(),
+            ])
+            ->getDatabaseMessage();
     }
 }
