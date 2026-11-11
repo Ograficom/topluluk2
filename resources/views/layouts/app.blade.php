@@ -126,6 +126,80 @@
                     </a>
                 @endauth
                 @auth
+                    @php
+                        $headerNotifications = auth()->user()->notifications()->latest()->limit(8)->get();
+                        $unreadNotificationCount = auth()->user()->unreadNotifications()->count();
+                    @endphp
+                    <div class="dropdown dropdown-md notification-dropdown">
+                        <button id="notificationMenuButton" type="button" class="btn btn-secondary-ghost btn-circle notification-trigger" data-dropdown-toggle aria-expanded="false" aria-haspopup="menu" aria-controls="notificationMenu" aria-label="Bildirimler{{ $unreadNotificationCount > 0 ? ', '.$unreadNotificationCount.' okunmamış' : '' }}">
+                            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" aria-hidden="true"><path d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                            @if ($unreadNotificationCount > 0)
+                                <span class="notification-trigger__count">{{ $unreadNotificationCount > 99 ? '99+' : $unreadNotificationCount }}</span>
+                                <span class="notification-trigger__dot" aria-hidden="true"></span>
+                            @endif
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-end notification-menu" id="notificationMenu" aria-labelledby="notificationMenuButton">
+                            <div class="notification-menu__head">
+                                <strong>Bildirimler</strong>
+                                @if ($unreadNotificationCount > 0)
+                                    <form action="{{ route('notifications.read-all') }}" method="POST">
+                                        @csrf
+                                        <button type="submit">Tümünü okundu işaretle</button>
+                                    </form>
+                                @endif
+                            </div>
+                            <div class="notification-menu__list">
+                                @forelse ($headerNotifications as $notification)
+                                    @php
+                                        $notificationTitle = data_get($notification->data, 'title', 'Yeni bildirim');
+                                        $notificationBody = data_get($notification->data, 'message', data_get($notification->data, 'body', 'Hesabında yeni bir hareket var.'));
+                                    @endphp
+                                    <a href="{{ route('notifications.open', $notification->id) }}" class="notification-item{{ $notification->read_at ? '' : ' is-unread' }}">
+                                        <span class="notification-item__icon">
+                                            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" aria-hidden="true"><path d="M12 3v18M3 12h18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+                                        </span>
+                                        <span class="notification-item__content">
+                                            <strong>{{ $notificationTitle }}</strong>
+                                            <span>{{ $notificationBody }}</span>
+                                            <time datetime="{{ $notification->created_at?->toIso8601String() }}">{{ $notification->created_at?->diffForHumans() }}</time>
+                                        </span>
+                                        @if (! $notification->read_at)<span class="notification-item__unread" aria-label="Okunmadı"></span>@endif
+                                    </a>
+                                @empty
+                                    <div class="notification-empty">
+                                        <span class="notification-empty__icon"><svg viewBox="0 0 24 24" width="25" height="25" fill="none" aria-hidden="true"><path d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                                        <strong>Henüz bildirimin yok</strong>
+                                        <span>Yeni etkileşimler burada görünecek.</span>
+                                    </div>
+                                @endforelse
+                            </div>
+                        </div>
+                    </div>
+                    <style>
+                        .notification-trigger{position:relative!important;overflow:visible!important}
+                        .notification-trigger__count{position:absolute;top:-4px;right:-5px;min-width:18px;height:18px;padding:0 4px;display:grid;place-items:center;border:2px solid var(--body-bg,#fff);border-radius:20px;background:#2563eb;color:#fff;font-size:10px;font-weight:800;line-height:1}
+                        .notification-trigger__dot{position:absolute;top:1px;right:1px;width:8px;height:8px;border:2px solid #fff;border-radius:50%;background:#ef4444}
+                        .notification-menu{width:min(360px,calc(100vw - 24px));max-height:470px;padding:0!important;overflow:hidden}
+                        .notification-menu__head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:15px 16px;border-bottom:1px solid var(--dropdown-menu-border-color,#e5e7eb)}
+                        .notification-menu__head strong{font-size:15px;font-weight:800}
+                        .notification-menu__head form button{padding:0;border:0;background:none;color:#2563eb;font-size:11px;font-weight:700;cursor:pointer}
+                        .notification-menu__list{max-height:390px;overflow-y:auto}
+                        .notification-item{display:flex;align-items:flex-start;gap:11px;padding:13px 15px;text-decoration:none!important;border-bottom:1px solid rgba(148,163,184,.16)}
+                        .notification-item:hover{background:rgba(148,163,184,.08)}
+                        .notification-item.is-unread{background:rgba(37,99,235,.045)}
+                        .notification-item__icon{display:grid;place-items:center;flex:none;width:34px;height:34px;border-radius:11px;background:#eff6ff;color:#2563eb}
+                        .notification-item__content{display:flex;flex:1;min-width:0;flex-direction:column;gap:3px}
+                        .notification-item__content strong{color:var(--body-color,#172033);font-size:12px;font-weight:750}
+                        .notification-item__content>span{color:var(--text-muted,#718096);font-size:11px;line-height:1.45;overflow-wrap:anywhere}
+                        .notification-item__content time{margin-top:2px;color:var(--text-muted,#94a3b8);font-size:10px}
+                        .notification-item__unread{flex:none;width:7px;height:7px;margin-top:7px;border-radius:50%;background:#2563eb}
+                        .notification-empty{display:flex;align-items:center;flex-direction:column;gap:7px;padding:30px 15px;text-align:center}
+                        .notification-empty__icon{display:grid;place-items:center;width:48px;height:48px;border-radius:50%;background:#f1f5f9;color:#94a3b8}
+                        .notification-empty strong{font-size:13px}
+                        .notification-empty>span:last-child{color:var(--text-muted,#718096);font-size:11px}
+                        [data-theme="dark"] .notification-trigger__dot{border-color:#171e29}
+                        [data-theme="dark"] .notification-item__icon,[data-theme="dark"] .notification-empty__icon{background:#1e3150;color:#93c5fd}
+                    </style>
                     @php($favoriteCount = auth()->user()->bookmarks()->count())
                     <div class="dropdown dropdown-md">
                         <button id="userMenuButton" type="button" @class(['btn btn-secondary-ghost btn-circle avatar', 'newpm' => $favoriteCount > 0]) data-dropdown-toggle aria-expanded="false" aria-haspopup="menu" aria-controls="userMenu" aria-label="{{ auth()->user()->displayName() }}">
