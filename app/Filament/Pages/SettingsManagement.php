@@ -3,7 +3,6 @@
 namespace App\Filament\Pages;
 
 use Filament\Pages\Page;
-use Filament\Support\Icons\Heroicon;
 
 class SettingsManagement extends Page
 {
@@ -15,7 +14,7 @@ class SettingsManagement extends Page
 
     protected static string|\UnitEnum|null $navigationGroup = 'Ayarlar';
 
-    protected static string|\BackedEnum|null $navigationIcon = Heroicon::OutlinedAdjustmentsHorizontal;
+    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-adjustments-horizontal';
 
     protected static ?int $navigationSort = 1;
 
