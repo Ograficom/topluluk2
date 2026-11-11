@@ -31,6 +31,8 @@ class UserNotificationService
                 'exception' => $exception->getMessage(),
             ]);
         }
+
+        WebPushNotificationService::send($recipient, $category, $title, $message, $url);
     }
 
     /**
