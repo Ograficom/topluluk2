@@ -221,13 +221,13 @@ class CommunityController extends Controller
     public function latestComments(Request $request): View
     {
         $viewer = $request->user();
-        $comments = Comment::query()->with(['user', 'post', 'replies.user'])->withCount(['reactions', 'replies'])
+        $comments = Comment::query()->where('is_spam', false)->with(['user', 'post', 'replies' => fn ($query) => $query->where('is_spam', false)->with('user')])->withCount(['reactions', 'replies' => fn ($query) => $query->where('is_spam', false)])
             ->whereHas('post', fn (Builder $query) => $query->published()
                 ->when(! $viewer?->show_adult_content, fn (Builder $q) => $q->where('is_adult', false))
                 ->when($viewer, fn (Builder $q) => $q->whereNotIn('user_id', $viewer->blockedUsers()->select('users.id'))
                     ->whereNotIn('user_id', $viewer->blockedByUsers()->select('users.id'))))
             ->when($viewer, fn (Builder $query) => $query->withExists(['reactions as viewer_reacted' => fn (Builder $r) => $r->where('user_id', $viewer->id)])
-                ->with(['replies' => fn ($replies) => $replies->withCount('reactions')
+                ->with(['replies' => fn ($replies) => $replies->where('is_spam', false)->withCount('reactions')
                     ->withExists(['reactions as viewer_reacted' => fn (Builder $r) => $r->where('user_id', $viewer->id)])]))
             ->whereNull('parent_id')->latest()->paginate(30)->withQueryString();
         return view('pages.latest-comments', compact('comments'));
