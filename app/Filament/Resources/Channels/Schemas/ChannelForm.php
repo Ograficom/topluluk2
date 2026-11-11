@@ -55,8 +55,10 @@ class ChannelForm
                             ->disk('public')
                             ->directory('channels')
                             ->visibility('public')
-                            ->imageEditor()
+                            ->imagePreviewHeight('180')
                             ->maxSize(5120)
+                            ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])
+                            ->storeFiles(true)
                             ->helperText('JPG, PNG veya WebP. En fazla 5 MB. Yeni görsel yüklediğinizde SEO ve sosyal paylaşım görseli otomatik güncellenir.')
                             ->columnSpanFull(),
                     ])
