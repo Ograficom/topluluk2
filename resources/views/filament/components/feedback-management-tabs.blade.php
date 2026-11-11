@@ -1,11 +1,11 @@
 <div class="admin-page-heading"><h1>Geri Bildirim Yönetimi</h1></div>
 
 <nav class="cm-tabs" aria-label="Geri bildirim yönetimi bölümleri">
-    <a href="{{ \App\Filament\Resources\\PostReports\\PostReportResource::getUrl('index') }}" @class(['cm-tab', 'is-active' => request()->is('admin/post-reports*')])>
+    <a href="{{ \App\Filament\Resources\PostReports\PostReportResource::getUrl('index') }}" @class(['cm-tab', 'is-active' => request()->is('admin/post-reports*')])>
         <x-filament::icon icon="heroicon-o-flag" />
         <span>Yazı şikayetleri</span>
     </a>
-    <a href="{{ \App\Filament\Resources\\SupportTickets\\SupportTicketResource::getUrl('index') }}" @class(['cm-tab', 'is-active' => request()->is('admin/support-tickets*')])>
+    <a href="{{ \App\Filament\Resources\SupportTickets\SupportTicketResource::getUrl('index') }}" @class(['cm-tab', 'is-active' => request()->is('admin/support-tickets*')])>
         <x-filament::icon icon="heroicon-o-lifebuoy" />
         <span>Destek ve geri bildirim</span>
     </a>
