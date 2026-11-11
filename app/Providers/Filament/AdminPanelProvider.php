@@ -39,6 +39,9 @@ class AdminPanelProvider extends PanelProvider
                     ->label('Ayarlar'),
                 NavigationGroup::make()
                     ->label('Kullanıcı Yönetimi'),
+                NavigationGroup::make()
+                    ->label('İletişim')
+                    ->collapsible(false),
             ])
             ->renderHook(
                 PanelsRenderHook::PAGE_START,
