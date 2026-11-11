@@ -3,6 +3,7 @@
 namespace App\Notifications;
 
 use Illuminate\Bus\Queueable;
+use Illuminate\Notifications\Notification;
 use Filament\Actions\Action;
 use Filament\Notifications\Notification as FilamentNotification;
 
