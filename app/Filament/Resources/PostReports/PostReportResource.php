@@ -21,7 +21,7 @@ class PostReportResource extends Resource
 
     protected static string|\UnitEnum|null $navigationGroup = 'İçerik Yönetimi';
 
-    protected static ?int $navigationSort = 8;
+    protected static ?int $navigationSort = 1;
 
     public static function form(Schema $schema): Schema
     {
