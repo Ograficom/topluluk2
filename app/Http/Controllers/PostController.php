@@ -127,7 +127,7 @@ class PostController extends Controller
             'video_path' => $videoPath,
             'tags' => $tags,
             'is_published' => ! $isSpam,
-            'is_spam' => $isSpam,
+            'is_spam' => ($isSpam || $wasSpam),
             'published_at' => $isSpam ? null : now(),
             'is_adult' => $request->boolean('is_adult'),
         ]);
@@ -201,7 +201,7 @@ class PostController extends Controller
             'is_adult' => $request->boolean('is_adult'),
             'is_spam' => $isSpam,
         ]);
-        if ($isSpam) $post->is_published = false;
+        if ($isSpam || $wasSpam) $post->is_published = false;
         if ($newVideo) $post->video_path = $newVideo;
         if ($newCover) $post->cover_image = $newCover;
         elseif ($request->boolean('remove_cover')) $post->cover_image = null;
@@ -211,12 +211,8 @@ class PostController extends Controller
         if ($oldCover && $oldCover !== $post->cover_image && ! filter_var($oldCover, FILTER_VALIDATE_URL)) Storage::disk('public')->delete($oldCover);
         if ($oldVideo && $oldVideo !== $post->video_path) Storage::disk('public')->delete($oldVideo);
 
-        if ($isSpam) {
-            return redirect()->route('posts.index')->with('status', 'Postunuz spam incelemesine alındı; onaylanana kadar yayında görünmeyecek.');
-        }
-
-        if ($wasSpam) {
-            return redirect()->route('posts.index')->with('status', 'Post düzenlendi. Yayına alınması için yönetici onayı bekliyor.');
+        if ($isSpam || $wasSpam) {
+            return redirect()->route('posts.index')->with('status', 'Post spam incelemesinde. Yayına alınması için yönetici onayı bekliyor.');
         }
 
         return redirect()->route('posts.show', $post)->with('status', 'Yazınız güncellendi.');
