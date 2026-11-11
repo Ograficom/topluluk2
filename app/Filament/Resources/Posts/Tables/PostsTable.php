@@ -5,6 +5,7 @@ namespace App\Filament\Resources\Posts\Tables;
 use App\Models\Channel;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\Action;
 use Filament\Actions\EditAction;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
@@ -22,6 +23,11 @@ class PostsTable
                     ->searchable()
                     ->sortable()
                     ->limit(48),
+                TextColumn::make('is_spam')
+                    ->label('Koruma')
+                    ->badge()
+                    ->formatStateUsing(fn (bool $state): string => $state ? 'Spam incelemesinde' : 'Temiz')
+                    ->color(fn (bool $state): string => $state ? 'danger' : 'success'),
                 TextColumn::make('is_spam')
                     ->label('Koruma')
                     ->badge()
@@ -47,6 +53,9 @@ class PostsTable
                 SelectFilter::make('is_spam')
                     ->label('Spam durumu')
                     ->options([1 => 'Spam incelemesinde', 0 => 'Temiz postlar']),
+                SelectFilter::make('is_spam')
+                    ->label('Spam durumu')
+                    ->options([1 => 'Spam incelemesinde', 0 => 'Temiz postlar']),
                 SelectFilter::make('channel_id')
                     ->label('Kanal')
                     ->options(fn () => Channel::query()->orderBy('name')->pluck('name', 'id')),
@@ -56,6 +65,13 @@ class PostsTable
             ])
             ->recordActions([
                 EditAction::make(),
+                Action::make('approveSpam')
+                    ->label('Spam değil, yayınla')
+                    ->icon('heroicon-o-check-circle')
+                    ->color('success')
+                    ->visible(fn ($record): bool => (bool) $record->is_spam)
+                    ->requiresConfirmation()
+                    ->action(fn ($record) => $record->update(['is_spam' => false, 'is_published' => true, 'published_at' => $record->published_at ?? now()])),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
