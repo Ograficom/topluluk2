@@ -22,7 +22,7 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
         'name', 'email', 'password', 'is_admin', 'is_company', 'is_company_verified', 'username', 'full_name',
         'signature', 'bio', 'avatar_path', 'website', 'instagram', 'telegram',
         'threads', 'youtube', 'timezone', 'show_adult_content', 'notify_replies',
-        'notify_posts', 'notify_announcements', 'is_verified', 'verification_status',
+        'notify_posts', 'notify_announcements', 'notification_preferences', 'is_verified', 'verification_status',
         'verification_reason', 'verification_requested_at', 'two_factor_secret',
         'two_factor_recovery_codes',
     ];
@@ -44,6 +44,7 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
             'notify_replies' => 'boolean',
             'notify_posts' => 'boolean',
             'notify_announcements' => 'boolean',
+            'notification_preferences' => 'array',
             'verification_requested_at' => 'datetime',
             'last_seen_at' => 'datetime',
             'two_factor_secret' => 'encrypted',
