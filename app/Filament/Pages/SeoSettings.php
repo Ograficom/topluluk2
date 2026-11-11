@@ -57,7 +57,21 @@ class SeoSettings extends Page
                     TextInput::make('seo_default_title')->label('Varsayılan SEO başlığı')->maxLength(255),
                     Textarea::make('seo_default_description')->label('Varsayılan meta açıklaması')->rows(3)->maxLength(500)->columnSpanFull(),
                     TextInput::make('seo_default_keywords')->label('Varsayılan anahtar kelimeler')->maxLength(1000)->columnSpanFull(),
-                    TextInput::make('seo_og_image')->label('Varsayılan paylaşım görseli URL')->url()->maxLength(2048)->helperText('Open Graph / sosyal medya paylaşımlarında kullanılacak mutlak görsel adresi.')->columnSpanFull(),
+                    FileUpload::make('seo_og_image')
+                        ->label('Varsayılan paylaşım görseli')
+                        ->image()
+                        ->imageEditor()
+                        ->imageCropAspectRatio('1200:630')
+                        ->imageResizeMode('cover')
+                        ->imageResizeTargetWidth(1200)
+                        ->imageResizeTargetHeight(630)
+                        ->disk('public')
+                        ->directory('seo')
+                        ->visibility('public')
+                        ->maxSize(10240)
+                        ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])
+                        ->helperText('Sosyal medya paylaşım görseli. 1200 × 630 px oranında kırpılır ve yeniden boyutlandırılır. JPG, PNG veya WebP; en fazla 10 MB.')
+                        ->columnSpanFull(),
                 ])->columns(2),
         ])->statePath('data');
     }
@@ -71,7 +85,7 @@ class SeoSettings extends Page
             'seo_default_title' => filled($data['seo_default_title'] ?? null) ? trim($data['seo_default_title']) : null,
             'seo_default_description' => filled($data['seo_default_description'] ?? null) ? trim($data['seo_default_description']) : null,
             'seo_default_keywords' => filled($data['seo_default_keywords'] ?? null) ? trim($data['seo_default_keywords']) : null,
-            'seo_og_image' => filled($data['seo_og_image'] ?? null) ? trim($data['seo_og_image']) : null,
+            'seo_og_image' => filled($data['seo_og_image'] ?? null) ? $data['seo_og_image'] : null,
             'home_seo_title' => filled($data['home_seo_title'] ?? null) ? trim($data['home_seo_title']) : null,
             'home_seo_description' => filled($data['home_seo_description'] ?? null) ? trim($data['home_seo_description']) : null,
             'home_seo_keywords' => filled($data['home_seo_keywords'] ?? null) ? trim($data['home_seo_keywords']) : null,
