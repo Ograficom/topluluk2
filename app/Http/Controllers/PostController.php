@@ -141,6 +141,7 @@ class PostController extends Controller
     public function update(Request $request, Post $post): RedirectResponse
     {
         $this->authorizeManage($request, $post);
+        $wasSpam = (bool) $post->is_spam;
         $validated = $request->validate([
             'title' => ['required', 'string', 'max:255'],
             'channel_id' => ['nullable', Rule::exists('channels', 'id')->where('is_active', true)],
@@ -210,9 +211,15 @@ class PostController extends Controller
         if ($oldCover && $oldCover !== $post->cover_image && ! filter_var($oldCover, FILTER_VALIDATE_URL)) Storage::disk('public')->delete($oldCover);
         if ($oldVideo && $oldVideo !== $post->video_path) Storage::disk('public')->delete($oldVideo);
 
-        return $isSpam
-            ? redirect()->route('posts.index')->with('status', 'Postunuz spam incelemesine alındı; onaylanana kadar yayında görünmeyecek.')
-            : redirect()->route('posts.show', $post)->with('status', 'Yazınız güncellendi.');
+        if ($isSpam) {
+            return redirect()->route('posts.index')->with('status', 'Postunuz spam incelemesine alındı; onaylanana kadar yayında görünmeyecek.');
+        }
+
+        if ($wasSpam) {
+            return redirect()->route('posts.index')->with('status', 'Post düzenlendi. Yayına alınması için yönetici onayı bekliyor.');
+        }
+
+        return redirect()->route('posts.show', $post)->with('status', 'Yazınız güncellendi.');
     }
 
     public function show(Request $request, Post $post): View
