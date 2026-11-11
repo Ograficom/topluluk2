@@ -157,6 +157,7 @@ Route::middleware('guest')->group(function (): void {
 });
 
 Route::middleware(['auth', 'verified'])->group(function (): void {
+    Route::get('/notifications/poll-push', [NotificationController::class, 'pollPush'])->middleware('throttle:30,1')->name('notifications.poll-push');
     Route::get('/notifications/{notification}/open', [NotificationController::class, 'open'])->name('notifications.open');
     Route::post('/notifications/read-all', [NotificationController::class, 'markAllRead'])->name('notifications.read-all');
     Route::post('/notifications/{notification}/read', [NotificationController::class, 'markRead'])->name('notifications.mark-read');
