@@ -1,6 +1,4 @@
 <x-filament-panels::page>
-    @include('filament.components.content-management-tabs')
-
     <section class="cm-welcome">
         <div class="cm-welcome-icon">
             <x-filament::icon icon="heroicon-o-rectangle-stack" />
