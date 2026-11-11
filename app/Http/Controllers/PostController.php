@@ -127,7 +127,7 @@ class PostController extends Controller
             'video_path' => $videoPath,
             'tags' => $tags,
             'is_published' => ! $isSpam,
-            'is_spam' => ($isSpam || $wasSpam),
+            'is_spam' => $isSpam,
             'published_at' => $isSpam ? null : now(),
             'is_adult' => $request->boolean('is_adult'),
         ]);
@@ -199,7 +199,7 @@ class PostController extends Controller
             'body' => $validated['body'],
             'tags' => $tags,
             'is_adult' => $request->boolean('is_adult'),
-            'is_spam' => $isSpam,
+            'is_spam' => ($isSpam || $wasSpam),
         ]);
         if ($isSpam || $wasSpam) $post->is_published = false;
         if ($newVideo) $post->video_path = $newVideo;
