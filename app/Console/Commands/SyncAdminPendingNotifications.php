@@ -5,15 +5,15 @@ namespace App\Console\Commands;
 use App\Services\AdminNotificationService;
 use Illuminate\Console\Command;
 
-class SyncAdminPendingNotifications extends Command
+class SyncAllAdminRecordNotifications extends Command
 {
-    protected $signature = 'admin-notifications:sync-pending';
+    protected $signature = 'admin-notifications:sync-all';
 
-    protected $description = 'Create Filament database notifications for existing pending admin records';
+    protected $description = 'Create persistent Filament database notifications for all existing admin records';
 
     public function handle(): int
     {
-        $count = AdminNotificationService::syncPendingToAdmins();
+        $count = AdminNotificationService::syncAllRecordsToAdmins();
 
         $this->info($count.' yeni yönetim bildirimi oluşturuldu.');
 
