@@ -63,10 +63,10 @@ class Protection extends Page
                             Section::make('Yorum gönderim sınırları')
                                 ->description('Kısa sürede yapılan yoğun yorum gönderimlerini ve bağlantı spamini sınırlar.')
                                 ->schema([
-                                    \\Filament\\Forms\\Components\\TextInput::make('comment_spam_max_links')
+                                    \Filament\\Forms\\Components\\TextInput::make('comment_spam_max_links')
                                         ->label('İzin verilen en fazla bağlantı')
                                         ->numeric()->minValue(0)->maxValue(20)->required(),
-                                    \\Filament\\Forms\\Components\\TextInput::make('comment_spam_rate_limit')
+                                    \Filament\\Forms\\Components\\TextInput::make('comment_spam_rate_limit')
                                         ->label('Dakikada izin verilen yorum')
                                         ->numeric()->minValue(1)->maxValue(30)->required(),
                                 ])->columns(2),
@@ -95,12 +95,12 @@ class Protection extends Page
                             Section::make('İnceleme listeleri')
                                 ->description('Filtreye takılan içerikleri buradan açıp kontrol edebilir, hatalı işaretlenenleri onaylayabilirsiniz.')
                                 ->schema([
-                                    \\Filament\\Forms\\Components\\Placeholder::make('comment_spam_list_link')
+                                    \Filament\\Forms\\Components\\Placeholder::make('comment_spam_list_link')
                                         ->label('Yorumlar')
-                                        ->content(new \\Illuminate\\Support\\HtmlString('<a class="fi-link fi-size-md" href="'.url('/admin/comments?tableFilters[is_spam][value]=1').'">Spam yorum listesini aç →</a>')),
-                                    \\Filament\\Forms\\Components\\Placeholder::make('post_spam_list_link')
+                                        ->content(new \Illuminate\\Support\\HtmlString('<a class="fi-link fi-size-md" href="'.url('/admin/comments?tableFilters[is_spam][value]=1').'">Spam yorum listesini aç →</a>')),
+                                    \Filament\\Forms\\Components\\Placeholder::make('post_spam_list_link')
                                         ->label('Postlar')
-                                        ->content(new \\Illuminate\\Support\\HtmlString('<a class="fi-link fi-size-md" href="'.url('/admin/posts?tableFilters[is_spam][value]=1').'">Spam post listesini aç →</a>')),
+                                        ->content(new \Illuminate\\Support\\HtmlString('<a class="fi-link fi-size-md" href="'.url('/admin/posts?tableFilters[is_spam][value]=1').'">Spam post listesini aç →</a>')),
                                 ]),
                         ]),
                 ])
