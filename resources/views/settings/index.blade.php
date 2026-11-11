@@ -295,7 +295,10 @@
                                         </label>
                                     </div>
                                     <div class="notification-push-permission">
-                                        <button type="button" class="btn btn-secondary btn-sm" data-enable-browser-notifications>Tarayıcı bildirimlerini etkinleştir</button>
+                                        <button type="button" class="btn btn-secondary btn-sm"
+                                            data-enable-browser-notifications
+                                            data-vapid-public-key="{{ $vapidPublicKey ?? '' }}"
+                                            data-subscription-url="{{ route('notifications.push-subscriptions.store') }}">Tarayıcı bildirimlerini etkinleştir</button>
                                         <span class="notification-preferences__note" data-browser-notification-status>Push bildirimleri, OgraFi açıkken tarayıcı izniyle gösterilir.</span>
                                     </div>
                                 </div>
@@ -947,42 +950,112 @@
     const status = document.querySelector('[data-browser-notification-status]');
     if (!button || !status) return;
 
-    const refresh = () => {
-        if (!('Notification' in window)) {
-            status.textContent = 'Bu tarayıcı masaüstü bildirimlerini desteklemiyor.';
+    const publicKey = button.dataset.vapidPublicKey || '';
+    const subscriptionUrl = button.dataset.subscriptionUrl;
+    const csrf = document.querySelector('meta[name="csrf-token"]')?.content || '';
+
+    const decodeVapidKey = (value) => {
+        const padding = '='.repeat((4 - value.length % 4) % 4);
+        const base64 = (value + padding).replace(/-/g, '+').replace(/_/g, '/');
+        const raw = atob(base64);
+        return Uint8Array.from(raw, (character) => character.charCodeAt(0));
+    };
+
+    const showStatus = (message) => { status.textContent = message; };
+
+    const existingSubscription = async () => {
+        if (!('serviceWorker' in navigator) || !('PushManager' in window)) return null;
+        const registration = await navigator.serviceWorker.getRegistration('/');
+        return registration ? registration.pushManager.getSubscription() : null;
+    };
+
+    const refresh = async () => {
+        if (!('Notification' in window) || !('serviceWorker' in navigator) || !('PushManager' in window)) {
+            showStatus('Bu tarayıcı web push bildirimlerini desteklemiyor.');
+            button.disabled = true;
+            return;
+        }
+
+        if (!publicKey) {
+            showStatus('Push sunucu anahtarları henüz yapılandırılmadı. Yönetici VAPID anahtarlarını eklemeli.');
+            button.disabled = true;
+            return;
+        }
+
+        if (Notification.permission === 'denied') {
+            showStatus('Bildirim izni tarayıcı tarafından engellendi. Site izinlerinden açmalısın.');
+            button.textContent = 'Tarayıcı izni engellendi';
             button.disabled = true;
             return;
         }
 
         if (Notification.permission === 'granted') {
-            status.textContent = 'Tarayıcı bildirim izni açık. Push tercihlerini etkinleştirebilirsin.';
-            button.textContent = 'Bildirim izni etkin';
-            button.disabled = true;
-        } else if (Notification.permission === 'denied') {
-            status.textContent = 'Bildirim izni tarayıcı tarafından engellendi. Site izinlerinden açmalısın.';
-            button.textContent = 'Tarayıcı izni engellendi';
-            button.disabled = true;
+            try {
+                const subscription = await existingSubscription();
+                if (subscription) {
+                    showStatus('Bu cihaz push bildirimleri için bağlı.');
+                    button.textContent = 'Bu cihaz bağlı';
+                    button.disabled = true;
+                    return;
+                }
+            } catch (error) {}
         }
+
+        showStatus('Bu cihazda arka plan bildirimlerini etkinleştir.');
+        button.textContent = 'Tarayıcı bildirimlerini etkinleştir';
+        button.disabled = false;
     };
 
     button.addEventListener('click', async () => {
-        if (!('Notification' in window)) {
-            refresh();
-            return;
-        }
+        button.disabled = true;
+        showStatus('Tarayıcı bildirimi hazırlanıyor...');
 
         try {
-            const permission = await Notification.requestPermission();
-            if (permission === 'granted') {
-                status.textContent = 'İzin verildi. Push tercihleri açık olan yeni bildirimler masaüstünde gösterilecek.';
-            } else {
-                status.textContent = permission === 'denied'
+            const permission = Notification.permission === 'granted'
+                ? 'granted'
+                : await Notification.requestPermission();
+
+            if (permission !== 'granted') {
+                showStatus(permission === 'denied'
                     ? 'İzin reddedildi. Tarayıcı site ayarlarından bildirim iznini aç.'
-                    : 'Bildirim izni henüz verilmedi.';
+                    : 'Bildirim izni henüz verilmedi.');
+                button.disabled = false;
+                return;
             }
-            refresh();
+
+            const registration = await navigator.serviceWorker.register('/sw.js', { scope: '/' });
+            await navigator.serviceWorker.ready;
+
+            let subscription = await registration.pushManager.getSubscription();
+            if (!subscription) {
+                subscription = await registration.pushManager.subscribe({
+                    userVisibleOnly: true,
+                    applicationServerKey: decodeVapidKey(publicKey)
+                });
+            }
+
+            const response = await fetch(subscriptionUrl, {
+                method: 'POST',
+                credentials: 'same-origin',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'X-CSRF-TOKEN': csrf,
+                    'X-Requested-With': 'XMLHttpRequest'
+                },
+                body: JSON.stringify(subscription.toJSON())
+            });
+
+            if (!response.ok) {
+                throw new Error('Push aboneliği sunucuya kaydedilemedi.');
+            }
+
+            showStatus('Bu cihaz arka plan push bildirimlerine bağlandı.');
+            button.textContent = 'Bu cihaz bağlı';
+            button.disabled = true;
         } catch (error) {
-            status.textContent = 'Bildirim izni alınamadı. Tarayıcı ayarlarını kontrol et.';
+            showStatus(error.message || 'Push kurulamadı. HTTPS, VAPID anahtarları ve tarayıcı izinlerini kontrol et.');
+            button.disabled = false;
         }
     });
 
