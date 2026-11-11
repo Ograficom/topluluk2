@@ -1,3 +1,18 @@
+@if (request()->is('admin/posts*'))
+    <div class="cm-posts-intro">
+        <h1>Postlar</h1>
+        <div class="cm-posts-welcome">
+            <div class="cm-posts-welcome-icon">
+                <x-filament::icon icon="heroicon-o-document-text" />
+            </div>
+            <div>
+                <h2>OgraFi içerik yönetimi</h2>
+                <p>Toplulukta yayınlanan postları buradan oluşturun, düzenleyin, yayın durumlarını takip edin ve içeriklerinizi tek merkezden yönetin.</p>
+            </div>
+        </div>
+    </div>
+@endif
+
 <nav class="cm-tabs" aria-label="İçerik yönetimi bölümleri">
     <a href="{{ url('/admin/posts') }}" @class(['cm-tab', 'is-active' => request()->is('admin/posts*')])>
         <x-filament::icon icon="heroicon-o-document-text" />
@@ -22,6 +37,27 @@
 </nav>
 
 <style>
+    .cm-posts-intro { margin:0 0 22px; }
+    .cm-posts-intro h1 { margin:0 0 18px; color:#111827; font-size:30px; font-weight:750; letter-spacing:-.035em; line-height:1.2; }
+    .cm-posts-welcome {
+        display:flex; align-items:flex-start; gap:14px; width:100%;
+        padding:18px 20px; border:1px solid #dbeafe; border-radius:12px;
+        background:#f8fbff;
+    }
+    .cm-posts-welcome-icon {
+        display:flex; align-items:center; justify-content:center; flex:0 0 42px;
+        width:42px; height:42px; border:1px solid #dbeafe; border-radius:10px;
+        background:#fff; color:#2563eb;
+    }
+    .cm-posts-welcome-icon svg { width:21px; height:21px; }
+    .cm-posts-welcome h2 { margin:0; color:#111827; font-size:15px; font-weight:650; }
+    .cm-posts-welcome p { margin:4px 0 0; color:#64748b; font-size:13px; line-height:1.6; }
+    body:has(.cm-posts-intro) .fi-header-heading { display:none !important; }
+    .dark .cm-posts-intro h1 { color:#f9fafb; }
+    .dark .cm-posts-welcome { border-color:#1e3a5f; background:#111c2e; }
+    .dark .cm-posts-welcome-icon { border-color:#1e3a5f; background:#172554; color:#93c5fd; }
+    .dark .cm-posts-welcome h2 { color:#f9fafb; }
+    .dark .cm-posts-welcome p { color:#9ca3af; }
     .cm-tabs {
         display:flex; align-items:center; gap:5px; width:100%; margin:24px 0 22px;
         padding:7px; overflow-x:auto; white-space:nowrap; scrollbar-width:thin;
@@ -58,6 +94,10 @@
     .dark .cm-welcome h2 { color:#fafafa; }
     .dark .cm-welcome p { color:#a1a1aa; }
     @media(max-width:640px) {
+        .cm-posts-intro { margin-bottom:16px; }
+        .cm-posts-intro h1 { margin-bottom:14px; font-size:25px; }
+        .cm-posts-welcome { padding:15px; gap:11px; }
+
         .cm-tabs { gap:3px; padding:5px; margin:18px 0 16px; border-radius:12px; }
         .cm-tab { min-height:40px; gap:7px; padding:0 11px; font-size:13px; }
         .cm-welcome { padding:16px; }
