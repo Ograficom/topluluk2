@@ -12,11 +12,12 @@ class SettingsManagement extends Page
 
     protected static ?string $title = 'Ayarlar';
 
-    protected static string|\UnitEnum|null $navigationGroup = 'Ayarlar';
+    // Keep this as a standalone navigation item, outside collapsible groups.
+    protected static string|\UnitEnum|null $navigationGroup = null;
 
     protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-adjustments-horizontal';
 
-    protected static ?int $navigationSort = 1;
+    protected static ?int $navigationSort = 9999;
 
     protected string $view = 'filament.pages.settings-management';
 }
