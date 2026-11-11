@@ -8,9 +8,7 @@
     @section('seo_keywords', $channel->meta_keywords)
 @endif
 @section('og_type', 'website')
-@if (filled($channel->og_image))
-    @section('seo_image', $channel->og_image)
-@elseif ($channel->image_path)
+@if ($channel->image_path)
     @section('seo_image', asset('storage/'.$channel->image_path))
 @endif
 
