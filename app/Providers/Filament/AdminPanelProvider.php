@@ -3,6 +3,7 @@
 namespace App\Providers\Filament;
 
 use App\Filament\Widgets\AdminOverview;
+use App\Filament\Pages\FeedbackManagement;
 use App\Models\SiteSetting;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
@@ -10,6 +11,8 @@ use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
 use App\Filament\Pages\Dashboard;
 use Filament\Navigation\NavigationGroup;
+use Filament\Navigation\NavigationItem;
+use Filament\Support\Icons\Heroicon;
 use Filament\View\PanelsRenderHook;
 use Filament\Panel;
 use Filament\PanelProvider;
@@ -39,9 +42,13 @@ class AdminPanelProvider extends PanelProvider
                     ->label('Ayarlar'),
                 NavigationGroup::make()
                     ->label('Kullanıcı Yönetimi'),
-                NavigationGroup::make()
-                    ->label('İletişim')
-                    ->collapsible(false),
+            ])
+            ->navigationItems([
+                NavigationItem::make('İletişim')
+                    ->icon(Heroicon::OutlinedLifebuoy)
+                    ->url(fn (): string => FeedbackManagement::getUrl())
+                    ->isActiveWhen(fn (): bool => request()->is('admin/feedback-management', 'admin/post-reports*', 'admin/support-tickets*'))
+                    ->sort(3),
             ])
             ->renderHook(
                 PanelsRenderHook::PAGE_START,
@@ -50,8 +57,6 @@ class AdminPanelProvider extends PanelProvider
                         => view('filament.components.content-management-tabs')->render(),
                     request()->is('admin/settings-management', 'admin/site-branding', 'admin/mail-settings', 'admin/seo-settings', 'admin/sitemap-manager', 'admin/rss-manager', 'admin/site-pages*')
                         => view('filament.components.settings-tabs')->render(),
-                    request()->is('admin/feedback-management', 'admin/post-reports*', 'admin/support-tickets*')
-                        => view('filament.components.feedback-management-tabs')->render(),
                     request()->is('admin/advertisement-manager', 'admin/advertisements*', 'admin/advertisement-pricing')
                         => view('filament.components.advertisement-manager-tabs')->render(),
                     default => '',
