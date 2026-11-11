@@ -27,13 +27,16 @@ class AdvertisementManager extends Page
     {
         $publishedAds = Advertisement::query()
             ->where('status', 'approved')
-            ->withCount([
+            ->with(['user:id,name'])
+            ->latest('approved_at');
+
+        if (Schema::hasTable('advertisement_events')) {
+            $publishedAds->withCount([
                 'events as detail_views_count' => fn ($query) => $query->where('event_type', 'detail'),
                 'events as card_clicks_count' => fn ($query) => $query->where('event_type', 'card_click'),
                 'events as reads_count' => fn ($query) => $query->where('event_type', 'read'),
-            ])
-            ->with(['user:id,name'])
-            ->latest('approved_at');
+            ]);
+        }
 
         $ads = $publishedAds->get();
 
