@@ -35,7 +35,35 @@ class SettingsController extends Controller
             'yandexLoginAvailable' => SiteSetting::current()?->isYandexLoginEnabled() ?? false,
             'activeTab' => in_array($activeTab, self::TABS, true) ? $activeTab : 'profile',
             'timezones' => timezone_identifiers_list(),
-            'notificationPreferences' => array_replace_recursive({"email":{"replies":true,"posts":true,"announcements":true,"followers":true,"messages":true,"mentions":true,"security":true},"push":{"replies":false,"posts":false,"announcements":false,"followers":false,"messages":false,"mentions":false,"security":true},"sms":{"replies":false,"posts":false,"announcements":false,"followers":false,"messages":false,"mentions":false,"security":false}}, $user->notification_preferences ?? []),
+            'notificationPreferences' => array_replace_recursive([
+                'email' => [
+                    'replies' => (bool) $user->notify_replies,
+                    'posts' => (bool) $user->notify_posts,
+                    'announcements' => (bool) $user->notify_announcements,
+                    'followers' => true,
+                    'messages' => true,
+                    'mentions' => true,
+                    'security' => true,
+                ],
+                'push' => [
+                    'replies' => false,
+                    'posts' => false,
+                    'announcements' => false,
+                    'followers' => false,
+                    'messages' => false,
+                    'mentions' => false,
+                    'security' => true,
+                ],
+                'sms' => [
+                    'replies' => false,
+                    'posts' => false,
+                    'announcements' => false,
+                    'followers' => false,
+                    'messages' => false,
+                    'mentions' => false,
+                    'security' => false,
+                ],
+            ], $user->notification_preferences ?? []),
         ]);
     }
 
