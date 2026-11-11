@@ -71,7 +71,11 @@ class NotificationController extends Controller
         $item->markAsRead();
 
         $target = data_get($item->data, 'url');
-        if (! is_string($target) || ! str_starts_with($target, '/') || str_starts_with($target, '//')) {
+        $isLocalPath = is_string($target) && str_starts_with($target, '/') && ! str_starts_with($target, '//');
+        $targetHost = is_string($target) ? parse_url($target, PHP_URL_HOST) : null;
+        $isSameHostUrl = is_string($targetHost) && hash_equals(request()->getHost(), $targetHost);
+
+        if (! $isLocalPath && ! $isSameHostUrl) {
             $target = route('posts.index');
         }
 
