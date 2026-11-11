@@ -1,41 +1,36 @@
 @if (request()->is('admin/posts*'))
     <div class="cm-posts-intro">
         <h1>Postlar</h1>
-        <div class="cm-posts-welcome">
-            <div class="cm-posts-welcome-icon"><x-filament::icon icon="heroicon-o-document-text" /></div>
-            <div><h2>OgraFi içerik yönetimi</h2><p>Postları oluşturun, düzenleyin ve yayın durumlarını tek merkezden yönetin.</p></div>
+
+<div><h2>OgraFi içerik yönetimi</h2><p>Postları oluşturun, düzenleyin ve yayın durumlarını tek merkezden yönetin.</p></div>
         </div>
     </div>
 @elseif (request()->is('admin/channels*'))
     <div class="cm-posts-intro">
         <h1>Kanallar</h1>
-        <div class="cm-posts-welcome">
-            <div class="cm-posts-welcome-icon"><x-filament::icon icon="heroicon-o-rectangle-stack" /></div>
-            <div><h2>OgraFi içerik yönetimi</h2><p>İçerik kanallarını ve topluluk kategorilerini buradan yönetin.</p></div>
+
+<div><h2>OgraFi içerik yönetimi</h2><p>İçerik kanallarını ve topluluk kategorilerini buradan yönetin.</p></div>
         </div>
     </div>
 @elseif (request()->is('admin/tags*'))
     <div class="cm-posts-intro">
         <h1>Etiketler</h1>
-        <div class="cm-posts-welcome">
-            <div class="cm-posts-welcome-icon"><x-filament::icon icon="heroicon-o-tag" /></div>
-            <div><h2>OgraFi içerik yönetimi</h2><p>İçerik etiketlerini düzenleyin ve yayınlarınızı daha kolay sınıflandırın.</p></div>
+
+<div><h2>OgraFi içerik yönetimi</h2><p>İçerik etiketlerini düzenleyin ve yayınlarınızı daha kolay sınıflandırın.</p></div>
         </div>
     </div>
 @elseif (request()->is('admin/comments*'))
     <div class="cm-posts-intro">
         <h1>Yorumlar</h1>
-        <div class="cm-posts-welcome">
-            <div class="cm-posts-welcome-icon"><x-filament::icon icon="heroicon-o-chat-bubble-left-right" /></div>
-            <div><h2>OgraFi içerik yönetimi</h2><p>Topluluk yorumlarını inceleyin ve moderasyon işlemlerini yönetin.</p></div>
+
+<div><h2>OgraFi içerik yönetimi</h2><p>Topluluk yorumlarını inceleyin ve moderasyon işlemlerini yönetin.</p></div>
         </div>
     </div>
 @elseif (request()->is('admin/rss-sources*'))
     <div class="cm-posts-intro">
         <h1>Dış Bağlantılar</h1>
-        <div class="cm-posts-welcome">
-            <div class="cm-posts-welcome-icon"><x-filament::icon icon="heroicon-o-rss" /></div>
-            <div><h2>OgraFi içerik yönetimi</h2><p>Harici RSS kaynaklarını ve içerik aktarım bağlantılarını yönetin.</p></div>
+
+<div><h2>OgraFi içerik yönetimi</h2><p>Harici RSS kaynaklarını ve içerik aktarım bağlantılarını yönetin.</p></div>
         </div>
     </div>
 @endif
