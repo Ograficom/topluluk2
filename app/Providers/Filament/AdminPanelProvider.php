@@ -57,6 +57,10 @@ class AdminPanelProvider extends PanelProvider
                     ->sort(3),
             ])
             ->renderHook(
+                PanelsRenderHook::USER_MENU_BEFORE,
+                fn (): string => view('filament.components.admin-notifications')->render(),
+            )
+            ->renderHook(
                 PanelsRenderHook::PAGE_START,
                 fn (): string => match (true) {
                     request()->is('admin/content-management', 'admin/channels*', 'admin/comments*', 'admin/posts*', 'admin/tags*', 'admin/rss-sources*')
