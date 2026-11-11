@@ -29,4 +29,32 @@ class NotificationController extends Controller
 
         return back()->with('status', 'Tüm bildirimler okundu olarak işaretlendi.');
     }
+
+    public function markRead(string $notification): RedirectResponse
+    {
+        $this->notificationForCurrentUser($notification)->markAsRead();
+
+        return back();
+    }
+
+    public function markUnread(string $notification): RedirectResponse
+    {
+        $this->notificationForCurrentUser($notification)->markAsUnread();
+
+        return back();
+    }
+
+    public function destroy(string $notification): RedirectResponse
+    {
+        $this->notificationForCurrentUser($notification)->delete();
+
+        return back()->with('status', 'Bildirim silindi.');
+    }
+
+    private function notificationForCurrentUser(string $notification)
+    {
+        abort_unless(Str::isUuid($notification), 404);
+
+        return auth()->user()->notifications()->whereKey($notification)->firstOrFail();
+    }
 }
