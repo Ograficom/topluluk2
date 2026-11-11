@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Services\UserNotificationService;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -96,6 +97,14 @@ class AuthController extends Controller
                 ->with('status', 'Hesabın açık. E-posta adresini doğrulayana veya yönetici onaylayana kadar doğrulama ekranında kalacaksın.');
         }
 
+        UserNotificationService::send(
+            $user,
+            'security',
+            'Yeni hesap girişi',
+            'OgraFi hesabına yeni bir oturum açıldı.',
+            route('settings.edit', ['tab' => 'security']),
+        );
+
         return redirect()->intended(route('posts.index'));
     }
 
@@ -127,6 +136,15 @@ class AuthController extends Controller
         $request->session()->forget(['two_factor_login_user_id', 'two_factor_login_remember', 'two_factor_login_started_at']);
         Auth::login($user, $remember);
         $request->session()->regenerate();
+
+        UserNotificationService::send(
+            $user,
+            'security',
+            'Yeni hesap girişi',
+            'İki aşamalı doğrulama tamamlandı ve hesabına giriş yapıldı.',
+            route('settings.edit', ['tab' => 'security']),
+        );
+
         return redirect()->intended(route('posts.index'));
     }
 
