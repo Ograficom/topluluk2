@@ -16,7 +16,7 @@ use Filament\Tables\Table;
 
 class UserResource extends Resource
 {
-    protected static string|\UnitEnum|null $navigationGroup = 'İçerik Yönetimi';
+    protected static string|\UnitEnum|null $navigationGroup = 'Kullanıcı Yönetimi';
 
     protected static ?string $model = User::class;
 
