@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Advertisement;
 use App\Models\AdvertisementEvent;
 use App\Models\SiteSetting;
+use App\Models\User;
+use App\Notifications\SiteActivityNotification;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -103,7 +105,7 @@ class AdvertisementController extends Controller
 
         $image = $request->file('image')?->store('advertisements', 'public');
 
-        $request->user()->advertisements()->create([
+        $advertisement = $request->user()->advertisements()->create([
             'title' => $data['title'],
             'description' => $data['description'],
             'image_path' => $image,
@@ -118,6 +120,14 @@ class AdvertisementController extends Controller
             'payment_status' => 'pending',
             'status' => 'pending',
         ]);
+
+        User::query()->where('is_admin', true)->get()->each(
+            fn (User $admin) => $admin->notify(new SiteActivityNotification(
+                'Yeni reklam başvurusu',
+                $request->user()->displayName().' yeni bir reklam gönderdi: '.$advertisement->title,
+                \App\Filament\Resources\Advertisements\AdvertisementResource::getUrl(),
+            )),
+        );
 
         return redirect()->route('advertisements.index')
             ->with('status', 'Reklam başvurun alındı. Yönetici onayı ve ödeme kontrolünden sonra yayınlanacak.');
