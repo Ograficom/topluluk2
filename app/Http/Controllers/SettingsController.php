@@ -35,6 +35,7 @@ class SettingsController extends Controller
             'yandexLoginAvailable' => SiteSetting::current()?->isYandexLoginEnabled() ?? false,
             'activeTab' => in_array($activeTab, self::TABS, true) ? $activeTab : 'profile',
             'timezones' => timezone_identifiers_list(),
+            'notificationPreferences' => array_replace_recursive({"email":{"replies":true,"posts":true,"announcements":true,"followers":true,"messages":true,"mentions":true,"security":true},"push":{"replies":false,"posts":false,"announcements":false,"followers":false,"messages":false,"mentions":false,"security":true},"sms":{"replies":false,"posts":false,"announcements":false,"followers":false,"messages":false,"mentions":false,"security":false}}, $user->notification_preferences ?? []),
         ]);
     }
 
@@ -99,17 +100,28 @@ class SettingsController extends Controller
         $validated = $request->validate([
             'timezone' => ['required', Rule::in(timezone_identifiers_list())],
             'show_adult_content' => ['sometimes', 'boolean'],
-            'notify_replies' => ['sometimes', 'boolean'],
-            'notify_posts' => ['sometimes', 'boolean'],
-            'notify_announcements' => ['sometimes', 'boolean'],
+            'notification_preferences' => ['required', 'array'],
+            'notification_preferences.email' => ['required', 'array'],
+            'notification_preferences.push' => ['required', 'array'],
+            'notification_preferences.sms' => ['required', 'array'],
+            'notification_preferences.*.replies' => ['required', 'boolean'],
+            'notification_preferences.*.posts' => ['required', 'boolean'],
+            'notification_preferences.*.announcements' => ['required', 'boolean'],
+            'notification_preferences.*.followers' => ['required', 'boolean'],
+            'notification_preferences.*.messages' => ['required', 'boolean'],
+            'notification_preferences.*.mentions' => ['required', 'boolean'],
+            'notification_preferences.*.security' => ['required', 'boolean'],
         ]);
+
+        $preferences = $validated['notification_preferences'];
 
         $request->user()->update([
             'timezone' => $validated['timezone'],
             'show_adult_content' => $request->boolean('show_adult_content'),
-            'notify_replies' => $request->boolean('notify_replies'),
-            'notify_posts' => $request->boolean('notify_posts'),
-            'notify_announcements' => $request->boolean('notify_announcements'),
+            'notification_preferences' => $preferences,
+            'notify_replies' => (bool) $preferences['email']['replies'],
+            'notify_posts' => (bool) $preferences['email']['posts'],
+            'notify_announcements' => (bool) $preferences['email']['announcements'],
         ]);
 
         return back()->with('activeTab', 'site')->with('status', 'Tercihleriniz kaydedildi.');
