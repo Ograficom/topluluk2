@@ -15,6 +15,8 @@ use Filament\Tables\Table;
 
 class SupportTicketResource extends Resource
 {
+    protected static bool $shouldRegisterNavigation = false;
+
     protected static ?string $model = SupportTicket::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedLifebuoy;
