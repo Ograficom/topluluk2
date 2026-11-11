@@ -14,6 +14,7 @@ use App\Models\Tag;
 use App\Models\User;
 use App\Notifications\SiteActivityNotification;
 use App\Services\AdminNotificationService;
+use App\Services\UserNotificationService;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -89,11 +90,13 @@ class CommunityController extends Controller
             $message = 'Takip bırakıldı.';
         } else {
             $viewer->following()->syncWithoutDetaching([$target->id]);
-            $target->notify(new SiteActivityNotification(
+            UserNotificationService::send(
+                $target,
+                'followers',
                 'Yeni takipçi',
                 $viewer->displayName().' seni takip etmeye başladı.',
                 $viewer->username ? '/@'.$viewer->username : '/users/'.$viewer->id,
-            ));
+            );
             $message = 'Kullanıcı takip ediliyor.';
         }
         return back()->with('status', $message);
@@ -184,7 +187,26 @@ class CommunityController extends Controller
         $attrs=['user_id'=>$viewer->id,'body'=>trim((string)($data['body']??''))?:null];
         if($request->hasFile('attachment')){$file=$request->file('attachment');$attrs['attachment_path']=$file->store('messages','local');$attrs['attachment_name']=$file->getClientOriginalName();$attrs['attachment_mime']=$file->getMimeType();$attrs['attachment_size']=$file->getSize();}
         if(filled($data['gif_url']??null)){$host=parse_url($data['gif_url'],PHP_URL_HOST);abort_unless($host&&(str_ends_with($host,'.giphy.com')||$host==='giphy.com'),422,'Geçersiz GIF adresi.');$attrs['gif_url']=$data['gif_url'];}
-        $conversation->messages()->create($attrs);$conversation->touch();return redirect()->route('messenger.show',$conversation);
+        $message = $conversation->messages()->create($attrs);
+        $conversation->touch();
+
+        if ($recipient) {
+            UserNotificationService::send(
+                $recipient,
+                'messages',
+                'Yeni mesaj',
+                $viewer->displayName().' sana bir mesaj gönderdi: '.str($message->body ?: ($message->attachment_name ?: 'Bir GIF paylaştı'))->limit(120),
+                route('messenger.show', $conversation),
+            );
+
+            UserNotificationService::notifyMentions(
+                $viewer,
+                (string) ($message->body ?? ''),
+                route('messenger.show', $conversation),
+            );
+        }
+
+        return redirect()->route('messenger.show', $conversation);
     }
 
     public function searchGifs(Request $request)
