@@ -81,26 +81,7 @@
     </style>
 
     <div class="ogra-dashboard">
-        <section class="od-hero">
-            <div class="od-identity">
-                <img src="{{ $admin->avatarUrl() }}" alt="" class="od-avatar">
-                <div>
-                    <p class="od-eyebrow">OgraFi yönetim paneli</p>
-                    <h2 class="od-welcome">Merhaba, {{ $admin->displayName() }}</h2>
-                    <p class="od-subtitle">Topluluğunun bugünkü durumuna genel bir bakış.</p>
-                </div>
-            </div>
-            <div class="od-actions">
-                <a href="{{ \App\Filament\Resources\Posts\PostResource::getUrl() }}" class="od-button od-button-primary">
-                    <x-filament::icon icon="heroicon-o-document-plus" /> Yazıları yönet
-                </a>
-                <a href="{{ \App\Filament\Resources\SupportTickets\SupportTicketResource::getUrl() }}" class="od-button od-button-secondary">
-                    <x-filament::icon icon="heroicon-o-inbox" /> Destek kutusu
-                </a>
-            </div>
-        </section>
-
-        <section>
+<section>
             <div class="od-section-head">
                 <div><h3 class="od-section-title">Genel durum</h3><p class="od-section-note">OgraFi'deki içerik ve topluluk verileri.</p></div>
                 <span class="od-live-label">Güncel veriler</span>
