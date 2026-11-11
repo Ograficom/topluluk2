@@ -50,17 +50,7 @@ class AdvertisementManager extends Page
             ? round(($totals['clicks'] / $totals['impressions']) * 100, 2)
             : 0;
 
-        $daily = collect(range(13, 0))->map(function (int $daysAgo): array {
-            $date = now()->subDays($daysAgo);
-
-            return [
-                'date' => $date->toDateString(),
-                'label' => $date->translatedFormat('d M'),
-                'impressions' => 0,
-                'clicks' => 0,
-            ];
-        });
-
+        $events = collect();
         if (Schema::hasTable('advertisement_events')) {
             $events = AdvertisementEvent::query()
                 ->join('advertisements', 'advertisements.id', '=', 'advertisement_events.advertisement_id')
@@ -70,12 +60,18 @@ class AdvertisementManager extends Page
                 ->selectRaw('DATE(advertisement_events.created_at) as event_date, advertisement_events.event_type, COUNT(*) as total')
                 ->groupBy('event_date', 'advertisement_events.event_type')
                 ->get();
-
-            foreach ($daily as $index => $day) {
-                $daily[$index]['impressions'] = (int) $events->where('event_date', $day['date'])->where('event_type', 'impression')->sum('total');
-                $daily[$index]['clicks'] = (int) $events->where('event_date', $day['date'])->whereIn('event_type', ['click', 'card_click'])->sum('total');
-            }
         }
+
+        $daily = collect(range(13, 0))->map(function (int $daysAgo) use ($events): array {
+            $date = now()->subDays($daysAgo);
+
+            return [
+                'date' => $date->toDateString(),
+                'label' => $date->translatedFormat('d M'),
+                'impressions' => (int) $events->where('event_date', $date->toDateString())->where('event_type', 'impression')->sum('total'),
+                'clicks' => (int) $events->where('event_date', $date->toDateString())->whereIn('event_type', ['click', 'card_click'])->sum('total'),
+            ];
+        })->values();
 
         $maxDaily = max(1, (int) $daily->max(fn ($day) => max($day['impressions'], $day['clicks'])));
 
