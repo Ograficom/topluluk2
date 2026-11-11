@@ -14,7 +14,21 @@ class NotificationController extends Controller
     public function storePushSubscription(Request $request): JsonResponse
     {
         $validated = $request->validate([
-            'endpoint' => ['required', 'url', 'max:4096'],
+            'endpoint' => [
+                'required',
+                'url',
+                'max:4096',
+                'starts_with:https://',
+                function (string $attribute, mixed $value, \Closure $fail): void {
+                    $host = parse_url((string) $value, PHP_URL_HOST);
+                    $allowed = in_array($host, ['fcm.googleapis.com', 'web.push.apple.com'], true)
+                        || (is_string($host) && str_ends_with($host, '.push.services.mozilla.com'));
+
+                    if (! $allowed) {
+                        $fail('Geçersiz tarayıcı push uç noktası.');
+                    }
+                },
+            ],
             'keys.p256dh' => ['required', 'string', 'max:512'],
             'keys.auth' => ['required', 'string', 'max:512'],
             'contentEncoding' => ['nullable', 'in:aes128gcm,aesgcm'],
