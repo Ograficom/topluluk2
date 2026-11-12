@@ -76,10 +76,6 @@ class PostInteractionController extends Controller
     {
         $this->ensurePublished($post);
         abort_unless(! $post->advertisement_id, 404);
-        if ($post->user?->is($request->user())) {
-            return back()->with('status', 'Kendi yazını yeniden paylaşamazsın.');
-        }
-
         $repost = \App\Models\PostRepost::query()
             ->where('post_id', $post->id)
             ->where('user_id', $request->user()->id)
