@@ -250,8 +250,8 @@
                         .notification-trigger__dot{position:absolute;top:1px;right:1px;width:8px;height:8px;border:2px solid #fff;border-radius:50%;background:#ef4444}
                         .notification-menu{width:min(360px,calc(100vw - 24px));max-height:470px;padding:0!important;overflow:hidden}
                         .notification-menu__head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 14px;border-bottom:1px solid var(--dropdown-menu-border-color,#e5e7eb)}
-                        .notification-menu__head strong{font-size:15px;font-weight:800}
-                        .notification-menu__options{position:relative;flex:none;margin-left:auto}
+                        .notification-menu__head strong{font-size:15px;font-weight:800;flex:none}\n                        .notification-menu__head .notification-live-status{margin-left:auto!important;flex:none!important}
+                        .notification-menu__options{position:relative;flex:none;margin-left:0}
                         .notification-menu__options .pm-item__more{display:grid;place-items:center;width:36px;height:32px;padding:0;border:0;border-radius:9px;background:#eef2f7;color:#64748b;list-style:none;cursor:pointer;outline:none}
                         .notification-menu__options .pm-item__more::-webkit-details-marker{display:none}
                         .notification-menu__options .pm-item__more::marker{content:""}
@@ -297,9 +297,9 @@
                             body.notification-sheet-open{overflow:hidden}
                             .notification-sheet-backdrop{display:block;position:fixed;inset:0;z-index:119998;width:100%;height:100%;padding:0;border:0;background:rgba(15,23,42,.38);opacity:0;visibility:hidden;transition:opacity .24s ease,visibility .24s ease}
                             body.notification-sheet-open .notification-sheet-backdrop{opacity:1;visibility:visible}
-                            .notification-dropdown .notification-menu{position:fixed!important;inset:auto 0 0!important;z-index:119999!important;display:flex!important;flex-direction:column!important;width:100vw!important;max-width:none!important;height:min(72dvh,620px)!important;max-height:min(72dvh,620px)!important;margin:0!important;padding:0!important;border:1px solid rgba(148,163,184,.2)!important;border-bottom:0!important;border-radius:20px 20px 0 0!important;background:var(--dropdown-menu-bg,#fff)!important;box-shadow:0 -12px 38px rgba(15,23,42,.18)!important;overflow:hidden!important;transform:translate3d(0,105%,0);visibility:hidden;opacity:0;transition:transform .28s cubic-bezier(.2,.75,.25,1),opacity .2s ease,visibility .28s ease}
+                            .notification-dropdown .notification-menu{position:fixed!important;inset:auto 0 0!important;z-index:119999!important;display:flex!important;flex-direction:column!important;width:100vw!important;max-width:none!important;height:72vh!important;height:min(72dvh,620px)!important;min-height:72vh!important;max-height:72vh!important;margin:0!important;padding:0!important;border:1px solid rgba(148,163,184,.2)!important;border-bottom:0!important;border-radius:20px 20px 0 0!important;background:var(--dropdown-menu-bg,#fff)!important;box-shadow:0 -12px 38px rgba(15,23,42,.18)!important;overflow:hidden!important;transform:translate3d(0,105%,0);visibility:hidden;opacity:0;transition:transform .28s cubic-bezier(.2,.75,.25,1),opacity .2s ease,visibility .28s ease}
                             .notification-dropdown .notification-menu.show{transform:translate3d(0,0,0);visibility:visible;opacity:1}
-                            .notification-menu__head{position:relative;flex:none;min-height:62px;padding:16px 16px 12px}
+                            .notification-menu__head{position:relative;display:flex!important;align-items:center!important;justify-content:flex-start!important;gap:12px!important;flex:none;min-height:62px;padding:16px 16px 12px}
                             .notification-menu__head:before{content:"";position:absolute;top:6px;left:50%;width:36px;height:4px;border-radius:9px;background:#cbd5e1;transform:translateX(-50%)}
                             .notification-menu__list{flex:1;min-height:0;max-height:none;overflow-y:auto;padding-bottom:calc(16px + env(safe-area-inset-bottom));overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
                             .notification-item{padding:12px 12px 12px 14px}
