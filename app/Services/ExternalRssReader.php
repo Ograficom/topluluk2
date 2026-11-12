@@ -633,7 +633,7 @@ class ExternalRssReader
                         $resolved = $this->resolveUrl($candidate, $finalUrl);
                         if (! $resolved) continue;
                         $path = strtolower((string) parse_url($resolved, PHP_URL_PATH));
-                        if (preg_match('/\\.(svg|gif)$/i', $path) || preg_match('/logo|icon|avatar|placeholder|sprite|tracking|pixel/i', $path)) continue;
+                        if (preg_match('/\\.svg$/i', $path) || preg_match('/logo|icon|avatar|placeholder|sprite|tracking|pixel/i', $path)) continue;
                         $images[] = $resolved;
                     }
                 }
