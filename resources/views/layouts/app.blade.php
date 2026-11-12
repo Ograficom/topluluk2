@@ -311,6 +311,42 @@
                             .notification-item__main{gap:10px}
                         }
                     </style>
+                @auth
+                    @php($desktopFavoriteCount = auth()->user()->bookmarks()->count())
+                    <div class="dropdown dropdown-md header-profile-dropdown">
+                        <button id="desktopUserMenuButton" type="button" class="btn btn-secondary-ghost btn-circle header-profile-trigger" data-dropdown-toggle aria-expanded="false" aria-haspopup="menu" aria-controls="desktopUserMenu" aria-label="Profil menüsünü aç">
+                            <img src="{{ auth()->user()->avatarUrl() }}" alt="" width="36" height="36" loading="lazy">
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end header-profile-menu" id="desktopUserMenu" aria-labelledby="desktopUserMenuButton">
+                            <li class="dropdown-menu-item dropdown-menu-item-lg">
+                                <a href="{{ route('profiles.show', auth()->user()->username) }}"><img class="header-profile-menu__avatar" src="{{ auth()->user()->avatarUrl() }}" alt="" width="28" height="28"><span><strong>{{ auth()->user()->displayName() }}</strong><small>Profili görüntüle</small></span></a>
+                            </li>
+                            <li class="dropdown-menu-item dropdown-menu-item-lg">
+                                <a href="{{ route('messenger.index') }}"><x-repost-icon name="message" size="20" class="color-gray" /><span>Mesajlar</span></a>
+                            </li>
+                            <li class="dropdown-menu-item dropdown-menu-item-lg">
+                                <a href="{{ route('favorites.index') }}"><x-repost-icon name="bookmark" size="20" class="color-gray" /><span>Favoriler</span>@if ($desktopFavoriteCount > 0)<span class="dropdown-menu-count">{{ number_format($desktopFavoriteCount) }}</span>@endif</a>
+                            </li>
+                            <li class="dropdown-menu-item dropdown-menu-item-lg">
+                                <a href="{{ route('community.following') }}"><x-repost-icon name="user" size="20" class="color-gray" /><span>Takip akışı</span></a>
+                            </li>
+                            <li class="dropdown-menu-item dropdown-menu-item-lg">
+                                <a href="{{ route('subscriptions.index') }}"><x-repost-icon name="user" size="20" class="color-gray" /><span>Abonelikler</span></a>
+                            </li>
+                            <li class="dropdown-menu-item dropdown-menu-item-lg">
+                                <a href="{{ route('settings.edit') }}"><x-repost-icon name="setting" size="20" class="color-gray" /><span>Ayarlar</span></a>
+                            </li>
+                            @if (auth()->user()->is_admin)
+                                <li class="dropdown-menu-item dropdown-menu-item-lg">
+                                    <a href="{{ url('/admin') }}"><x-repost-icon name="adminpanel" size="20" class="color-gray" /><span>Yönetim paneli</span></a>
+                                </li>
+                            @endif
+                            <li class="dropdown-menu-item dropdown-menu-item-lg is-danger">
+                                <button type="submit" form="desktopLogoutForm"><x-repost-icon name="logout" size="20" /><span>Çıkış yap</span></button>
+                            </li>
+                        </ul>
+                        <form id="desktopLogoutForm" action="{{ route('logout') }}" method="POST" hidden>@csrf</form>
+                    </div>
                 @else
                     <button type="button" class="btn btn-primary btn-rounded btn-md" data-modal-btn="login" aria-haspopup="dialog" aria-controls="loginModal"><x-repost-icon name="user" size="18" /><span>Giriş yap</span></button>
                 @endauth
