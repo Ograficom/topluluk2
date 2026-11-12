@@ -116,66 +116,138 @@
 
     <style>
         .notification-center-page {
-            color: #111827;
+            color: #172033;
+            gap: 24px;
         }
 
-        .notification-center-page .notification-panel {
-            border-color: #e5e7eb;
-            border-radius: 14px;
-            transition: border-color .18s ease;
+        .notification-center-page .notification-panel,
+        .notification-center-page .notification-section {
+            position: relative;
+            overflow: hidden;
+            border: 1px solid #dce4ef !important;
+            border-radius: 16px !important;
+            background: #fff;
+            box-shadow: 0 3px 12px rgb(15 23 42 / 3%);
         }
 
-        .notification-center-page .notification-panel:hover {
-            border-color: #cbd5e1;
+        .notification-center-page .notification-panel:hover,
+        .notification-center-page .notification-section:hover {
+            border-color: #b8c9e2 !important;
+            box-shadow: 0 8px 24px rgb(15 23 42 / 6%);
         }
 
         .notification-center-page .notification-push-panel {
-            background: linear-gradient(135deg, #ffffff 0%, #f8fbff 100%);
+            padding: 25px 27px;
+            border-color: #cbdcf4 !important;
+            background: linear-gradient(120deg, #f1f6ff 0%, #ffffff 62%, #f6faff 100%);
+        }
+
+        .notification-center-page .notification-push-panel::before {
+            position: absolute;
+            inset: 0 auto 0 0;
+            width: 4px;
+            background: #3478ee;
+            content: "";
+        }
+
+        .notification-center-page .notification-push-panel h2,
+        .notification-center-page .notification-section .fi-section-header-heading {
+            color: #14243d;
+            font-size: 15px;
+            font-weight: 750;
+            letter-spacing: -.015em;
+        }
+
+        .notification-center-page .notification-push-panel p,
+        .notification-center-page .notification-section .fi-section-header-description {
+            color: #64748b;
+            line-height: 1.65;
         }
 
         .notification-center-page .notification-info {
-            border: 1px solid #e8edf5;
-            line-height: 1.7;
+            border: 1px solid #dce7f7;
+            border-radius: 11px;
+            background: #edf4ff;
+            line-height: 1.75;
+            padding: 13px 16px;
         }
 
         .notification-center-page .notification-info code {
-            border-radius: 5px;
-            background: #e9eef7;
-            padding: 2px 6px;
+            border: 1px solid #d5e3fa;
+            border-radius: 6px;
+            background: #fff;
+            padding: 3px 7px;
             color: #1d4ed8;
-            font-size: .85em;
+            font-size: .86em;
         }
 
-        .notification-center-page .fi-section {
-            overflow: hidden;
-            border: 1px solid #e5e7eb;
-            border-radius: 14px;
-            box-shadow: none;
+        .notification-center-page .notification-section {
+            border-radius: 16px !important;
         }
 
-        .notification-center-page .fi-section-header {
-            padding: 18px 22px;
+        .notification-center-page .notification-section .fi-section-header {
+            min-height: 76px;
+            padding: 19px 23px;
+            border-bottom: 1px solid #e8edf4;
+            background: linear-gradient(110deg, #f8faff 0%, #fff 75%);
         }
 
-        .notification-center-page .fi-section-content {
-            padding: 20px 22px;
+        .notification-center-page .notification-section .fi-section-header-icon {
+            display: grid;
+            width: 38px;
+            height: 38px;
+            place-items: center;
+            border: 1px solid #d9e6fb;
+            border-radius: 11px;
+            background: #edf4ff;
+            color: #3478ee;
         }
 
-        .notification-center-page .fi-fo-field-wrp-label {
-            font-weight: 600;
-            color: #263449;
+        .notification-center-page .notification-section .fi-section-content {
+            padding: 19px 22px 22px;
         }
 
-        .notification-center-page .fi-toggle {
-            --toggle-color: #2563eb;
+        .notification-center-page .notification-section .fi-fo-field-wrp {
+            min-height: 58px;
+            border: 1px solid #e5ebf3;
+            border-radius: 11px;
+            background: #fbfcfe;
+            padding: 13px 15px;
+            transition: border-color .16s ease, background .16s ease, box-shadow .16s ease;
+        }
+
+        .notification-center-page .notification-section .fi-fo-field-wrp:hover {
+            border-color: #c6d8f3;
+            background: #f7faff;
+        }
+
+        .notification-center-page .notification-section .fi-fo-field-wrp-label {
+            color: #26364d;
+            font-size: 13px;
+            font-weight: 650;
+        }
+
+        .notification-center-page .notification-section .fi-toggle {
+            --toggle-color: #3478ee;
+        }
+
+        .notification-center-page .notification-section--general .fi-fo-field-wrp {
+            min-height: 68px;
+            background: #f5f8ff;
+        }
+
+        .notification-center-page .notification-section--channels .fi-section-content,
+        .notification-center-page .notification-section--types .fi-section-content {
+            display: grid;
+            gap: 12px;
         }
 
         .notification-center-page .notification-input {
-            min-height: 44px;
-            border: 1px solid #d7deea;
-            border-radius: 9px;
+            min-height: 46px;
+            border: 1px solid #d5deeb;
+            border-radius: 10px;
             background-color: #fff;
-            padding: 10px 13px;
+            padding: 11px 14px;
             color: #111827;
             font-size: 14px;
             outline: none;
@@ -183,21 +255,34 @@
         }
 
         .notification-center-page textarea.notification-input {
-            min-height: 112px;
+            min-height: 120px;
             resize: vertical;
         }
 
         .notification-center-page .notification-input:focus {
-            border-color: #3b82f6;
-            box-shadow: 0 0 0 3px rgb(59 130 246 / 12%);
+            border-color: #3478ee;
+            box-shadow: 0 0 0 4px rgb(52 120 238 / 12%);
         }
 
         .notification-center-page .notification-save-row {
-            border-color: #e5e7eb;
+            border-color: #e3eaf3;
+            padding-top: 18px;
+        }
+
+        .notification-center-page .notification-save-row button {
+            min-height: 43px;
+            border-radius: 10px;
+            padding-inline: 19px;
+            font-weight: 650;
         }
 
         .notification-center-page .notification-table thead th {
-            letter-spacing: .025em;
+            background: #f5f8fd;
+            color: #64748b;
+            font-size: 11px;
+            font-weight: 750;
+            letter-spacing: .06em;
+            text-transform: uppercase;
             white-space: nowrap;
         }
 
@@ -206,29 +291,35 @@
         }
 
         .notification-center-page .notification-table tbody tr:hover {
-            background: #f8fafc;
+            background: #f2f7ff;
         }
 
         .notification-center-page .notification-empty {
-            background: #fafbfc;
+            background: #f8faff;
+        }
+
+        .notification-center-page .notification-section--channels .fi-sc,
+        .notification-center-page .notification-section--types .fi-sc {
+            gap: 12px;
         }
 
         @media (max-width: 767px) {
             .notification-center-page {
-                gap: 14px;
+                gap: 15px;
             }
 
-            .notification-center-page .notification-panel {
-                border-radius: 11px;
-                padding: 16px;
+            .notification-center-page .notification-panel,
+            .notification-center-page .notification-push-panel {
+                border-radius: 12px !important;
+                padding: 17px;
             }
 
-            .notification-center-page .fi-section-header {
+            .notification-center-page .notification-section .fi-section-header {
                 padding: 15px 16px;
             }
 
-            .notification-center-page .fi-section-content {
-                padding: 16px;
+            .notification-center-page .notification-section .fi-section-content {
+                padding: 15px;
             }
 
             .notification-center-page .notification-save-row {
@@ -246,41 +337,88 @@
         }
 
         .dark .notification-center-page .notification-panel,
-        .dark .notification-center-page .fi-section {
-            border-color: #374151;
+        .dark .notification-center-page .notification-section {
+            border-color: #37465d !important;
+            background: #111c2e;
         }
 
         .dark .notification-center-page .notification-push-panel {
-            background: linear-gradient(135deg, #111827 0%, #17243a 100%);
+            border-color: #30496d !important;
+            background: linear-gradient(120deg, #14243b 0%, #111c2e 75%);
         }
 
-        .dark .notification-center-page .notification-info,
-        .dark .notification-center-page .notification-empty {
-            border-color: #374151;
-            background: #1f2937;
+        .dark .notification-center-page .notification-push-panel h2,
+        .dark .notification-center-page .notification-section .fi-section-header-heading {
+            color: #f1f5f9;
+        }
+
+        .dark .notification-center-page .notification-push-panel p,
+        .dark .notification-center-page .notification-section .fi-section-header-description {
+            color: #a8b6ca;
+        }
+
+        .dark .notification-center-page .notification-info {
+            border-color: #344a69;
+            background: #1b2d47;
+            color: #cbd5e1;
         }
 
         .dark .notification-center-page .notification-info code {
-            background: #263750;
+            border-color: #405a7d;
+            background: #13233a;
             color: #93c5fd;
         }
 
-        .dark .notification-center-page .fi-fo-field-wrp-label {
-            color: #e5e7eb;
+        .dark .notification-center-page .notification-section .fi-section-header {
+            border-color: #344258;
+            background: linear-gradient(110deg, #18263b 0%, #111c2e 80%);
+        }
+
+        .dark .notification-center-page .notification-section .fi-section-header-icon {
+            border-color: #344e72;
+            background: #1d3556;
+            color: #8bb8ff;
+        }
+
+        .dark .notification-center-page .notification-section .fi-fo-field-wrp {
+            border-color: #344258;
+            background: #172438;
+        }
+
+        .dark .notification-center-page .notification-section .fi-fo-field-wrp:hover {
+            border-color: #49668f;
+            background: #1b2c45;
+        }
+
+        .dark .notification-center-page .notification-section .fi-fo-field-wrp-label {
+            color: #e2e8f0;
+        }
+
+        .dark .notification-center-page .notification-section--general .fi-fo-field-wrp {
+            background: #1a2b45;
         }
 
         .dark .notification-center-page .notification-input {
-            border-color: #4b5563;
-            background: #111827;
+            border-color: #43536b;
+            background: #111c2e;
             color: #f9fafb;
         }
 
-        .dark .notification-center-page .notification-table tbody tr:hover {
-            background: #1f2937;
+        .dark .notification-center-page .notification-save-row {
+            border-color: #344258;
         }
 
-        .dark .notification-center-page .notification-save-row {
-            border-color: #374151;
+        .dark .notification-center-page .notification-table thead th {
+            background: #18263b;
+            color: #a8b6ca;
+        }
+
+        .dark .notification-center-page .notification-table tbody tr:hover {
+            background: #1a2b45;
+        }
+
+        .dark .notification-center-page .notification-empty {
+            background: #172438;
         }
     </style>
 </x-filament-panels::page>
