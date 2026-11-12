@@ -6041,6 +6041,14 @@ body.is-messenger-conversation .pm-dialog__composer .pm-composer__send{
     }
 
     body > #userMenu {
+        --dropdown-menu-bg: #ffffff;
+        --dropdown-menu-border-color: rgba(15, 23, 42, 0.08);
+        --dropdown-menu-shadow: 0 12px 32px rgba(15, 23, 42, 0.16);
+        background-color: #ffffff !important;
+        color: #1f2937;
+        border: 1px solid rgba(15, 23, 42, 0.08) !important;
+        border-radius: 16px !important;
+        box-shadow: 0 12px 32px rgba(15, 23, 42, 0.16) !important;
         position: fixed !important;
         display: flex !important;
         top: auto !important;
@@ -6059,6 +6067,16 @@ body.is-messenger-conversation .pm-dialog__composer .pm-composer__send{
         visibility: hidden !important;
         pointer-events: none !important;
         transform: translate3d(0, 6px, 0) !important;
+    }
+
+    [data-theme="dark"] body > #userMenu {
+        --dropdown-menu-bg: #1b1f27;
+        --dropdown-menu-border-color: rgba(255, 255, 255, 0.1);
+        --dropdown-menu-shadow: 0 12px 32px rgba(0, 0, 0, 0.38);
+        background-color: #1b1f27 !important;
+        color: #e5e7eb;
+        border-color: rgba(255, 255, 255, 0.1) !important;
+        box-shadow: 0 12px 32px rgba(0, 0, 0, 0.38) !important;
     }
 
     body > #userMenu.is-mobile-profile-open {
