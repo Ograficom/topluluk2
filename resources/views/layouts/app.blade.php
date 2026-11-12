@@ -61,7 +61,7 @@
     <link rel="stylesheet" href="{{ asset('assets/libs/fancyapp/fancybox.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/libs/fancyapp/carousel.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/kit.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/css/app.css') }}?v=20261112-repost-reference">
+    <link rel="stylesheet" href="{{ asset('assets/css/app.css') }}?v=20261112-mobile-write-menu">
     <link rel="stylesheet" href="{{ asset('assets/css/engine.css') }}?v=20261110-santral-hero-buttons-inset-blue">
     <link rel="stylesheet" href="{{ asset('assets/css/ografi-overrides.css') }}?v=20261112-publish-composer-interaction-fixes">
     <script>
@@ -676,6 +676,11 @@
             <a class="mobmenu__link {{ request()->routeIs('posts.index') ? 'is-active' : '' }}" href="{{ route('posts.index') }}" aria-label="Home">
                 <x-repost-icon name="home" size="20" /><span>Home</span>
             </a>
+            @auth
+                <a class="mobmenu__link mobmenu__link--write" href="{{ route('posts.create') }}" data-post-composer-trigger aria-label="Yazı oluştur">
+                    <x-repost-icon name="pen" size="20" /><span>Yaz</span>
+                </a>
+            @endauth
             <button class="mobmenu__link" type="button" data-side-panel-open="mobileAside" aria-controls="mobileAside" aria-expanded="false" aria-haspopup="dialog" title="Gezinme">
                 <x-repost-icon name="compass" size="20" /><span>Gezinme</span>
             </button>
