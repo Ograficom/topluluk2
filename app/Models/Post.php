@@ -17,7 +17,7 @@ class Post extends Model
 
     protected $fillable = [
         'user_id', 'channel_id', 'advertisement_id', 'title', 'slug', 'excerpt', 'body',
-        'cover_image', 'media', 'video_url', 'video_path', 'meta_description', 'tags', 'is_published',
+        'cover_image', 'media', 'video_url', 'video_path', 'meta_description', 'location', 'tags', 'is_published',
         'published_at', 'views', 'is_adult', 'is_spam',
     ];
 
