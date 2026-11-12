@@ -148,7 +148,7 @@
                         </div>
                         <input id="dialog-attachment" type="file" name="attachment" aria-label="Dosya seç" hidden>
                     </div>
-                    <textarea id="dialog-message" name="body" rows="1" maxlength="5000" aria-label="Mesaj" autocomplete="off">{{ old('body') }}</textarea>
+                    <textarea id="dialog-message" name="body" rows="1" maxlength="5000" aria-label="Mesaj" autocomplete="off" oninput="this.style.setProperty('height','auto','important');this.style.setProperty('height',Math.min(this.scrollHeight,160)+'px','important');this.style.setProperty('overflow-y',this.scrollHeight>160?'auto':'hidden','important')">{{ old('body') }}</textarea>
                     <input type="hidden" name="gif_url" id="dialog-gif-url">
                     <div class="pm-composer__emoji-wrap"><button class="pm-composer__emoji" type="button" data-emoji-toggle aria-label="Emoji ve GIF ekle"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8.5 14.2s1.2 2 3.5 2 3.5-2 3.5-2M9 9.5h.01M15 9.5h.01"/></svg></button>
                     <div class="pm-composer__emoji-picker" data-emoji-picker hidden><div class="pm-composer__picker-tabs"><button type="button" class="is-active" data-picker-tab="emoji">Emoji</button><button type="button" data-picker-tab="gif">GIF</button></div>
@@ -184,13 +184,11 @@
             const textarea=document.querySelector('#dialog-message'),emojiPicker=document.querySelector('[data-emoji-picker]'),emojiGrid=document.querySelector('[data-emoji-grid]'),gifPanel=document.querySelector('[data-gif-panel]'),gifSearch=document.querySelector('[data-gif-search]'),gifResults=document.querySelector('[data-gif-results]'),gifInput=document.querySelector('#dialog-gif-url'),fileInput=document.querySelector('#dialog-attachment'),filePreview=document.querySelector('[data-attachment-preview]'),gifSelected=document.querySelector('[data-gif-selected]'),composer=document.querySelector('.pm-composer');
             const resizeMessageTextarea = () => {
                 if (!textarea) return;
-                textarea.style.height = 'auto';
-                const styles = window.getComputedStyle(textarea);
-                const lineHeight = Number.parseFloat(styles.lineHeight) || 20;
                 const maxHeight = 160;
+                textarea.style.setProperty('height', 'auto', 'important');
                 const nextHeight = Math.min(textarea.scrollHeight, maxHeight);
-                textarea.style.height = Math.max(lineHeight + 16, nextHeight) + 'px';
-                textarea.style.overflowY = textarea.scrollHeight > maxHeight ? 'auto' : 'hidden';
+                textarea.style.setProperty('height', Math.max(36, nextHeight) + 'px', 'important');
+                textarea.style.setProperty('overflow-y', textarea.scrollHeight > maxHeight ? 'auto' : 'hidden', 'important');
             };
             textarea?.addEventListener('input', resizeMessageTextarea);
             resizeMessageTextarea();
