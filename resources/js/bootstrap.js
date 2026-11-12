@@ -28,6 +28,38 @@ const notificationButton = document.getElementById('notificationMenuButton');
 const notificationMenu = document.getElementById('notificationMenu');
 const notificationHeader = notificationMenu?.querySelector('.notification-menu__head');
 
+if (notificationButton && notificationMenu) {
+    const backdrop = document.querySelector('.notification-sheet-backdrop');
+    const mobileSheet = window.matchMedia('(max-width: 767px)');
+
+    const syncNotificationSheet = () => {
+        const isOpen = mobileSheet.matches && notificationMenu.classList.contains('show');
+        document.body.classList.toggle('notification-sheet-open', isOpen);
+        if (backdrop) backdrop.setAttribute('aria-hidden', String(!isOpen));
+    };
+
+    const observer = new MutationObserver(syncNotificationSheet);
+    observer.observe(notificationMenu, { attributes: true, attributeFilter: ['class'] });
+    mobileSheet.addEventListener?.('change', syncNotificationSheet);
+
+    backdrop?.addEventListener('click', () => {
+        if (notificationMenu.classList.contains('show')) notificationButton.click();
+    });
+
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && document.body.classList.contains('notification-sheet-open')) {
+            notificationButton.click();
+        }
+    });
+
+    notificationButton.addEventListener('click', () => {
+        requestAnimationFrame(syncNotificationSheet);
+        requestAnimationFrame(() => requestAnimationFrame(syncNotificationSheet));
+    });
+
+    syncNotificationSheet();
+}
+
 let liveStatus = null;
 
 if (notificationButton && notificationHeader) {
