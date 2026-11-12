@@ -6826,3 +6826,72 @@ body.is-messenger-conversation .pm-dialog__composer .pm-composer__send{
         grid-template-rows: 46px 44px 72px 76px minmax(110px, 1fr) 54px 54px !important;
     }
 }
+
+
+/* Composer dimensions aligned to the supplied 585x343 reference. */
+.post-create-modal-page > form.post-create-modal {
+    width: 585px !important;
+    max-width: calc(100vw - 32px) !important;
+    height: 343px !important;
+    min-height: 343px !important;
+    max-height: min(343px, calc(100dvh - 24px)) !important;
+    grid-template-rows: 48px 48px 60px minmax(70px, 1fr) 44px 52px !important;
+    border-radius: 22px !important;
+}
+.post-create-modal > .addpost__modal-head { grid-row: 1 !important; }
+.post-create-modal > .addpost__header { grid-row: 2 !important; }
+.post-create-modal > .post-composer-field:not(:has(#post-excerpt)) {
+    grid-row: 3 !important;
+    padding-top: 8px !important;
+    padding-bottom: 4px !important;
+}
+.post-create-modal > .post-composer-field:has(#post-excerpt) { display: none !important; }
+.post-create-modal > .post-composer-editor-section {
+    grid-row: 4 !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    overflow: visible !important;
+}
+.post-create-modal .post-composer-editor-title { display: none !important; }
+.post-create-modal .post-create-simple__writing { min-height: 0 !important; }
+.post-create-modal .post-editorjs {
+    min-height: 72px !important;
+    padding: 0 !important;
+}
+.post-create-modal .post-editorjs [contenteditable="true"] { min-height: 66px !important; }
+.post-create-modal > .post-composer-media-section {
+    grid-row: 5 !important;
+    padding-top: 2px !important;
+    padding-bottom: 2px !important;
+    border-top: 0 !important;
+    border-bottom: 0 !important;
+}
+.post-create-modal .post-create-simple__media { min-height: 40px !important; }
+.post-create-modal > details.post-composer-advanced {
+    left: 24px !important;
+    bottom: 8px !important;
+}
+.post-create-modal > .post-create-simple__footer {
+    grid-row: 6 !important;
+    padding-right: 20px !important;
+}
+.post-create-modal .post-create-simple__footer > a { display: none !important; }
+.post-create-modal .post-create-simple__footer button {
+    height: 36px !important;
+    min-width: 108px !important;
+}
+@media (max-width: 640px) {
+    .post-create-modal-page > form.post-create-modal {
+        width: 100% !important;
+        max-width: none !important;
+        height: min(343px, calc(100dvh - 16px)) !important;
+        min-height: 300px !important;
+        max-height: calc(100dvh - 16px) !important;
+        grid-template-rows: 46px 46px 58px minmax(70px, 1fr) 42px 50px !important;
+    }
+    .post-create-modal > .addpost__header,
+    .post-create-modal > .post-composer-field,
+    .post-create-modal > .post-composer-editor-section,
+    .post-create-modal > .post-composer-media-section { padding-left: 18px !important; padding-right: 18px !important; }
+    .post-create-modal > details.post-composer-advanced { left: 18px !important; bottom: 7px !important; }
+}
