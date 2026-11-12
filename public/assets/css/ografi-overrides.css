@@ -6895,3 +6895,72 @@ body.is-messenger-conversation .pm-dialog__composer .pm-composer__send{
     .post-create-modal > .post-composer-media-section { padding-left: 18px !important; padding-right: 18px !important; }
     .post-create-modal > details.post-composer-advanced { left: 18px !important; bottom: 7px !important; }
 }
+
+
+/* Composer inner canvas: keep the reference's open writing area and visible add-block control. */
+.post-create-modal .post-composer-editor-section {
+    position: relative !important;
+    overflow: visible !important;
+}
+.post-create-modal .post-create-simple__writing {
+    position: relative !important;
+    display: block !important;
+    width: 100% !important;
+    overflow: visible !important;
+}
+.post-create-modal .post-editorjs {
+    position: relative !important;
+    width: 100% !important;
+    min-height: 72px !important;
+    overflow: visible !important;
+}
+.post-create-modal .codex-editor {
+    min-height: 72px !important;
+    overflow: visible !important;
+}
+.post-create-modal .codex-editor__redactor {
+    min-height: 66px !important;
+    padding-left: 0 !important;
+    padding-bottom: 0 !important;
+}
+.post-create-modal .ce-toolbar {
+    position: absolute !important;
+    z-index: 4 !important;
+    left: -38px !important;
+    top: 0 !important;
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+.post-create-modal .ce-toolbar__content {
+    max-width: none !important;
+    margin: 0 !important;
+}
+.post-create-modal .ce-toolbar__plus {
+    display: grid !important;
+    width: 28px !important;
+    height: 28px !important;
+    place-items: center !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    border: 1px solid #e5eaf0 !important;
+    border-radius: 50% !important;
+    background: #fff !important;
+    color: #526176 !important;
+    box-shadow: 0 2px 6px rgba(15, 23, 42, .10) !important;
+}
+.post-create-modal .ce-toolbar__settings-btn { display: none !important; }
+.post-create-modal .ce-block__content { max-width: 100% !important; }
+.post-create-modal .post-create-simple__media {
+    justify-content: flex-start !important;
+    gap: 12px !important;
+}
+.post-create-modal .post-composer-tool {
+    border: 0 !important;
+    background: transparent !important;
+    color: #647b9a !important;
+}
+.post-create-modal .post-composer-tool:hover {
+    background: #f1f5f9 !important;
+    color: #2563eb !important;
+}
