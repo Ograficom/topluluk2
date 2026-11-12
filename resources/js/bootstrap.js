@@ -29,32 +29,45 @@ const notificationMenu = document.getElementById('notificationMenu');
 const notificationHeader = notificationMenu?.querySelector('.notification-menu__head');
 
 const notificationOptions = notificationMenu?.querySelector('.notification-menu__options');
-const notificationOptionsButton = notificationOptions?.querySelector('.pm-item__more');
-const notificationOptionsMenu = notificationOptions?.querySelector('.dropdown-menu');
 
-if (notificationOptionsButton && notificationOptionsMenu) {
-    notificationOptionsButton.addEventListener('click', (event) => {
+const closeNotificationOptions = () => {
+    const menu = notificationOptions?.querySelector('.dropdown-menu');
+    const button = notificationOptions?.querySelector('.pm-item__more');
+    if (!menu || !button) return;
+    menu.hidden = true;
+    menu.style.setProperty('display', 'none', 'important');
+    button.setAttribute('aria-expanded', 'false');
+};
+
+// Capture the click before Bootstrap's global dropdown handler can swallow it.
+document.addEventListener('click', (event) => {
+    const trigger = event.target.closest?.('#notificationMenu .notification-menu__options .pm-item__more');
+    const menu = notificationOptions?.querySelector('.dropdown-menu');
+
+    if (trigger && menu) {
         event.preventDefault();
         event.stopPropagation();
-        const willOpen = notificationOptionsMenu.hidden;
-        notificationOptionsMenu.hidden = !willOpen;
-        notificationOptionsButton.setAttribute('aria-expanded', String(willOpen));
-    });
+        event.stopImmediatePropagation();
 
-    document.addEventListener('click', (event) => {
-        if (!notificationOptions.contains(event.target)) {
-            notificationOptionsMenu.hidden = true;
-            notificationOptionsButton.setAttribute('aria-expanded', 'false');
+        const open = menu.hidden || menu.style.display === 'none';
+        menu.hidden = !open;
+        if (open) {
+            menu.style.setProperty('display', 'block', 'important');
+        } else {
+            menu.style.setProperty('display', 'none', 'important');
         }
-    });
+        trigger.setAttribute('aria-expanded', String(open));
+        return;
+    }
 
-    document.addEventListener('keydown', (event) => {
-        if (event.key === 'Escape') {
-            notificationOptionsMenu.hidden = true;
-            notificationOptionsButton.setAttribute('aria-expanded', 'false');
-        }
-    });
-}
+    if (notificationOptions && !notificationOptions.contains(event.target)) {
+        closeNotificationOptions();
+    }
+}, true);
+
+document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') closeNotificationOptions();
+});
 
 if (notificationButton && notificationMenu) {
     const backdrop = document.querySelector('.notification-sheet-backdrop');
