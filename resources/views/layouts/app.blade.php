@@ -173,20 +173,7 @@
                         <div class="dropdown-menu dropdown-menu-end notification-menu" id="notificationMenu" aria-labelledby="notificationMenuButton">
                             <div class="notification-menu__head">
                                 <strong>Bildirimler</strong>
-                                <div class="dropdown notification-menu__actions">
-                                    <button class="pm-item__more" type="button" data-dropdown-toggle aria-expanded="false" aria-haspopup="menu" aria-label="Bildirim seçenekleri" aria-controls="notificationActionsMenu">
-                                        <svg width="18" height="18" aria-hidden="true"><use href="#more"></use></svg>
-                                    </button>
-                                    <ul class="dropdown-menu dropdown-menu-end" id="notificationActionsMenu" aria-label="Bildirim seçenekleri">
-                                        <li class="dropdown-menu-item dropdown-menu-item-sm"><button type="submit" form="notificationMarkAllRead">Tümünü okundu olarak işaretle</button></li>
-                                        <li class="dropdown-menu-item dropdown-menu-item-sm"><button type="submit" form="notificationMarkAllUnread">Tümünü okunmadı olarak işaretle</button></li>
-                                        <li class="dropdown-menu-item dropdown-menu-item-sm is-danger"><button type="submit" form="notificationDeleteAll">Tümünü temizle</button></li>
-                                        <li class="dropdown-menu-item dropdown-menu-item-sm"><a href="{{ route('settings.edit') }}">Ayarlar</a></li>
-                                    </ul>
-                                    <form id="notificationMarkAllRead" method="POST" action="{{ route('notifications.read-all') }}" hidden>@csrf</form>
-                                    <form id="notificationMarkAllUnread" method="POST" action="{{ route('notifications.unread-all') }}" hidden>@csrf</form>
-                                    <form id="notificationDeleteAll" method="POST" action="{{ route('notifications.destroy-all') }}" onsubmit="return confirm('Tüm bildirimleri silmek istediğine emin misin?')" hidden>@csrf @method('DELETE')</form>
-                                </div>
+
                             </div>
                             <div class="notification-menu__list">
                                 @forelse ($headerNotifications as $notification)
@@ -255,7 +242,6 @@
                         .notification-menu{width:min(360px,calc(100vw - 24px));max-height:470px;padding:0!important;overflow:hidden}
                         .notification-menu__head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 14px;border-bottom:1px solid var(--dropdown-menu-border-color,#e5e7eb)}
                         .notification-menu__head strong{font-size:15px;font-weight:800;flex:none}\n                        .notification-menu__head .notification-live-status{margin-left:auto!important;flex:none!important}
-                        .notification-menu__actions{position:relative;flex:none;margin-left:auto}
                         .notification-menu__list{max-height:390px;overflow-y:auto}
                         .notification-item{position:relative;display:flex;align-items:flex-start;gap:5px;padding:10px 10px 10px 13px;border-bottom:1px solid rgba(148,163,184,.16)}
                         /* Notification rows follow the actual Repost messenger list styling */
@@ -323,7 +309,6 @@
                             .notification-menu__list{flex:1;min-height:0;max-height:none;overflow-y:auto;padding-bottom:calc(16px + env(safe-area-inset-bottom));overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
                             .notification-item{padding:12px 12px 12px 14px}
                             .notification-item__main{gap:10px}
-                            .notification-menu__actions .dropdown-menu{position:absolute!important;top:calc(100% + 7px)!important;right:0!important;bottom:auto!important;left:auto!important;z-index:120002!important;min-width:210px!important;max-height: min(45dvh,320px);overflow-y:auto}
                         }
                     </style>
                     @php($favoriteCount = auth()->user()->bookmarks()->count())
