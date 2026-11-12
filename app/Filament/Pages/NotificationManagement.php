@@ -3,6 +3,7 @@
 namespace App\Filament\Pages;
 
 use App\Models\NotificationSystemSetting;
+use App\Models\User;
 use App\Services\UserNotificationService;
 use Filament\Forms\Components\Toggle;
 use Filament\Notifications\Notification;
@@ -11,6 +12,7 @@ use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 use Throwable;
 
 class NotificationManagement extends Page
@@ -26,6 +28,8 @@ class NotificationManagement extends Page
     public array $recentNotifications = [];
     public bool $pushConfigured = false;
     public ?string $testRecipient = null;
+    public string $announcementTitle = '';
+    public string $announcementMessage = '';
 
     public function mount(): void
     {
@@ -137,6 +141,56 @@ class NotificationManagement extends Page
             report($exception);
             Notification::make()->title('Test bildirimi gönderilemedi')->body('Ayrıntılar uygulama günlüklerine kaydedildi.')->danger()->send();
         }
+
+        $this->loadRecentNotifications();
+    }
+
+    public function sendAnnouncement(): void
+    {
+        $validated = Validator::make([
+            'title' => $this->announcementTitle,
+            'message' => $this->announcementMessage,
+        ], [
+            'title' => ['required', 'string', 'max:180'],
+            'message' => ['required', 'string', 'max:5000'],
+        ], [
+            'title.required' => 'Duyuru başlığı gerekli.',
+            'message.required' => 'Duyuru metni gerekli.',
+        ])->validate();
+
+        $settings = NotificationSystemSetting::current();
+        if (! $settings->enabled('enabled') || ! $settings->enabled('categories.announcements')) {
+            Notification::make()
+                ->title('Duyuru bildirimleri kapalı')
+                ->body('Önce genel bildirim sistemini ve duyuru bildirim türünü etkinleştirin.')
+                ->warning()
+                ->send();
+
+            return;
+        }
+
+        $sent = 0;
+        User::query()->select('id')->chunkById(100, function ($users) use (&$sent, $validated): void {
+            foreach ($users as $user) {
+                UserNotificationService::send(
+                    $user,
+                    'announcements',
+                    $validated['title'],
+                    $validated['message'],
+                    url('/'),
+                );
+                $sent++;
+            }
+        });
+
+        $this->announcementTitle = '';
+        $this->announcementMessage = '';
+
+        Notification::make()
+            ->title('Duyuru bildirimi gönderim kuyruğuna alındı')
+            ->body(number_format($sent).' kullanıcı için bildirim işlemi başlatıldı. Her kullanıcının kanal tercihleri ve sistem ayarları uygulandı.')
+            ->success()
+            ->send();
 
         $this->loadRecentNotifications();
     }
