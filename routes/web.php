@@ -161,6 +161,7 @@ Route::middleware(['auth', 'verified'])->group(function (): void {
     Route::delete('/notifications/push-subscriptions', [NotificationController::class, 'destroyPushSubscription'])->middleware('throttle:10,1')->name('notifications.push-subscriptions.destroy');
     Route::get('/notifications/{notification}/open', [NotificationController::class, 'open'])->name('notifications.open');
     Route::post('/notifications/read-all', [NotificationController::class, 'markAllRead'])->name('notifications.read-all');
+    Route::post('/notifications/unread-all', [NotificationController::class, 'markAllUnread'])->name('notifications.unread-all');
     Route::delete('/notifications', [NotificationController::class, 'destroyAll'])->name('notifications.destroy-all');
     Route::post('/notifications/{notification}/read', [NotificationController::class, 'markRead'])->name('notifications.mark-read');
     Route::post('/notifications/{notification}/unread', [NotificationController::class, 'markUnread'])->name('notifications.mark-unread');
