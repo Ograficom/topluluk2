@@ -24,6 +24,7 @@ class NotificationSystemSetting extends Model
                 'push_enabled' => true,
                 'categories' => [
                     'replies' => true,
+                    'likes' => true,
                     'posts' => true,
                     'announcements' => true,
                     'followers' => true,
