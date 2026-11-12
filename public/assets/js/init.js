@@ -158,6 +158,28 @@ function initFancyCarousels() {
     carouselInstance.on("change", () => resetPlayerSwipeGuards(carousel));
     carouselInstance.init();
 
+    // Repost media navigation controls are rendered in _media.blade.php.
+    // Connect their explicit buttons to the Fancyapps Carousel instance.
+    carousel.querySelectorAll("[data-carousel-go-prev]").forEach((button) => {
+      if (button.dataset.carouselControlInit) return;
+      button.addEventListener("click", (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        carouselInstance.prev();
+      });
+      button.dataset.carouselControlInit = "true";
+    });
+
+    carousel.querySelectorAll("[data-carousel-go-next]").forEach((button) => {
+      if (button.dataset.carouselControlInit) return;
+      button.addEventListener("click", (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        carouselInstance.next();
+      });
+      button.dataset.carouselControlInit = "true";
+    });
+
     carousel.dataset.fancyCarouselInit = "true";
 
     if (!carousel.querySelector("[data-player-url]")) {
