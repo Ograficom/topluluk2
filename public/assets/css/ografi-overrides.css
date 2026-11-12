@@ -5353,3 +5353,52 @@ body.is-messenger-conversation .pm-dialog__composer .pm-composer__send{
         right: auto !important;
     }
 }
+
+
+/* Reference composer polish: match the compact OgraFi publication dialog. */
+.post-create-modal-page > form.post-create-modal {
+    grid-template-rows: 48px 44px 52px minmax(70px, 1fr) 48px 58px !important;
+    height: 374px !important;
+    min-height: 374px !important;
+    max-height: min(374px, calc(100dvh - 28px)) !important;
+}
+.post-create-modal > .post-composer-field:has(#post-excerpt) {
+    display: none !important;
+}
+.post-create-modal > .post-composer-field:has(#post-title) {
+    grid-row: 3 !important;
+    min-height: 0 !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+}
+.post-create-modal > .post-composer-editor-section {
+    grid-row: 4 !important;
+    min-height: 0 !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+}
+.post-create-modal > .post-composer-media-section {
+    grid-row: 5 !important;
+}
+.post-create-modal > .post-create-simple__footer {
+    grid-row: 6 !important;
+}
+.post-create-modal .post-editorjs,
+.post-create-modal .post-editorjs .codex-editor,
+.post-create-modal .post-editorjs .codex-editor__redactor {
+    min-height: 0 !important;
+}
+.post-create-modal .post-editorjs .ce-block:first-child {
+    margin-top: 0 !important;
+}
+.post-create-modal .post-create-simple__editor .ce-toolbar {
+    left: -42px !important;
+}
+@media (max-width: 640px) {
+    .post-create-modal-page > form.post-create-modal {
+        grid-template-rows: 48px 44px 52px minmax(90px, 1fr) 48px 58px !important;
+        height: min(560px, 88dvh) !important;
+        min-height: min(420px, 88dvh) !important;
+        max-height: 88dvh !important;
+    }
+}
