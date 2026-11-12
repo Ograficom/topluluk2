@@ -63,7 +63,7 @@
     <link rel="stylesheet" href="{{ asset('assets/css/kit.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/app.css') }}?v=20261112-mobile-write-menu">
     <link rel="stylesheet" href="{{ asset('assets/css/engine.css') }}?v=20261110-santral-hero-buttons-inset-blue">
-    <link rel="stylesheet" href="{{ asset('assets/css/ografi-overrides.css') }}?v=20261112-profile-menu-opaque-2">
+    <link rel="stylesheet" href="{{ asset('assets/css/ografi-overrides.css') }}?v=20261112-repost-native-dropdown-1">
     <script>
         (() => {
             const root = document.documentElement;
@@ -628,7 +628,7 @@
             @auth
             @php($favoriteCount = auth()->user()->bookmarks()->count())
                     <div class="dropdown dropup dropdown-md mobmenu__profile-dropdown">
-                        <button id="userMenuButton" type="button" @class(['mobmenu__link mobmenu__link--profile', 'newpm' => $favoriteCount > 0]) data-profile-menu-toggle aria-expanded="false" aria-haspopup="menu" aria-controls="userMenu" aria-label="Profil menüsünü aç">
+                        <button id="userMenuButton" type="button" @class(['mobmenu__link mobmenu__link--profile', 'newpm' => $favoriteCount > 0]) data-dropdown-toggle aria-expanded="false" aria-haspopup="menu" aria-controls="userMenu" aria-label="Profil menüsünü aç">
                             <img src="{{ auth()->user()->avatarUrl() }}" alt="" width="24" height="24" loading="lazy"><span>Profil</span>
                         </button>
                         <ul class="dropdown-menu dropdown-menu-center" id="userMenu" aria-labelledby="userMenuButton">
@@ -674,40 +674,6 @@
     </section>
     @endunless
 
-    <script>
-    (() => {
-        const root = document.querySelector('.mobmenu__profile-dropdown');
-        const trigger = root?.querySelector('[data-profile-menu-toggle]');
-        const menu = root?.querySelector('#userMenu');
-        if (!root || !trigger || !menu || root.dataset.profileMenuReady === '1') return;
-
-        root.dataset.profileMenuReady = '1';
-
-        const placeholder = document.createComment('mobile-profile-menu');
-        menu.parentNode.insertBefore(placeholder, menu);
-        document.body.appendChild(menu);
-
-        const close = () => {
-            menu.classList.remove('is-mobile-profile-open');
-            trigger.setAttribute('aria-expanded', 'false');
-        };
-
-        trigger.addEventListener('click', (event) => {
-            event.preventDefault();
-            event.stopPropagation();
-            const isOpen = menu.classList.toggle('is-mobile-profile-open');
-            trigger.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
-        });
-
-        document.addEventListener('click', (event) => {
-            if (!root.contains(event.target) && !menu.contains(event.target)) close();
-        });
-
-        document.addEventListener('keydown', (event) => {
-            if (event.key === 'Escape') close();
-        });
-    })();
-    </script>
 
     @include('layouts._mobile-side-panel')
 
