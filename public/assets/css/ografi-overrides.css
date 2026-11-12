@@ -4698,3 +4698,302 @@ body.is-messenger-conversation .pm-dialog__composer .pm-composer__send{
         width:30px!important;
     }
 }
+
+
+/* OgraFi composer: compact reference-style publish dialog (scoped; existing editor/actions preserved). */
+.post-create-modal-page {
+    position: fixed !important;
+    inset: 0 !important;
+    z-index: 1400 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 20px !important;
+    overflow: auto !important;
+    background: rgba(42, 51, 66, .50) !important;
+    -webkit-backdrop-filter: blur(7px) !important;
+    backdrop-filter: blur(7px) !important;
+}
+.post-create-modal-page > .post-create-modal {
+    position: relative !important;
+    box-sizing: border-box !important;
+    display: flex !important;
+    flex: 0 1 620px !important;
+    flex-direction: column !important;
+    width: min(620px, calc(100vw - 32px)) !important;
+    max-width: 620px !important;
+    height: 365px !important;
+    min-height: 365px !important;
+    max-height: min(365px, calc(100dvh - 28px)) !important;
+    margin: auto !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+    border: 1px solid #edf0f4 !important;
+    border-radius: 25px !important;
+    background: #fff !important;
+    color: #182235 !important;
+    box-shadow: 0 22px 65px rgba(15, 23, 42, .18) !important;
+}
+.post-create-modal .addpost__modal-head {
+    display: flex !important;
+    flex: 0 0 50px !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    min-height: 50px !important;
+    padding: 0 19px 0 22px !important;
+    border: 0 !important;
+}
+.post-create-modal .addpost__modal-head strong {
+    color: #182235 !important;
+    font-size: 15px !important;
+    font-weight: 700 !important;
+}
+.post-create-modal .addpost__header {
+    display: flex !important;
+    flex: 0 0 46px !important;
+    align-items: center !important;
+    min-height: 46px !important;
+    padding: 0 18px !important;
+}
+.post-create-modal .addpost__header-avatar {
+    width: 34px !important;
+    height: 34px !important;
+    flex: 0 0 34px !important;
+}
+.post-create-modal .addpost__author {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 9px !important;
+}
+.post-create-modal .addpost__author-name {
+    color: #273244 !important;
+    font-size: 13px !important;
+    font-weight: 600 !important;
+}
+.post-create-modal .addpost__author select {
+    max-width: 190px !important;
+    min-height: 28px !important;
+    padding: 0 3px !important;
+    border: 0 !important;
+    background: transparent !important;
+    color: #718096 !important;
+    font-size: 12px !important;
+    box-shadow: none !important;
+}
+.post-create-modal .post-composer-field {
+    flex: 0 0 48px !important;
+    min-height: 48px !important;
+    margin: 0 !important;
+    padding: 1px 58px 0 !important;
+}
+.post-create-modal .post-composer-field + .post-composer-field {
+    display: none !important;
+}
+.post-create-modal .post-composer-label,
+.post-create-modal .post-composer-count {
+    display: none !important;
+}
+.post-create-modal .post-create-simple__title {
+    width: 100% !important;
+    height: 42px !important;
+    min-height: 42px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    outline: 0 !important;
+    background: transparent !important;
+    color: #667994 !important;
+    font-size: 19px !important;
+    font-weight: 650 !important;
+    box-shadow: none !important;
+}
+.post-create-modal .post-create-simple__title::placeholder {
+    color: #687b98 !important;
+    opacity: 1 !important;
+}
+.post-create-modal .post-composer-editor-section {
+    display: flex !important;
+    flex: 1 1 auto !important;
+    min-height: 70px !important;
+    margin: 0 !important;
+    padding: 0 58px !important;
+    overflow-y: auto !important;
+    border: 0 !important;
+}
+.post-create-modal .post-composer-editor-title,
+.post-create-modal .post-composer-editor-tip {
+    display: none !important;
+}
+.post-create-modal .post-create-simple__writing {
+    flex: 1 1 auto !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+.post-create-modal .post-editorjs {
+    min-height: 72px !important;
+    padding: 2px 0 !important;
+    border: 0 !important;
+    color: #687b98 !important;
+    font-size: 14px !important;
+    box-shadow: none !important;
+}
+.post-create-modal .post-editorjs [contenteditable="true"] {
+    min-height: 65px !important;
+    outline: 0 !important;
+}
+.post-create-modal .post-composer-media-section {
+    flex: 0 0 48px !important;
+    min-height: 48px !important;
+    margin: 0 !important;
+    padding: 0 58px !important;
+    border: 0 !important;
+}
+.post-create-modal .post-composer-media-title {
+    display: none !important;
+}
+.post-create-modal .post-create-simple__media {
+    display: flex !important;
+    align-items: center !important;
+    gap: 12px !important;
+    min-height: 42px !important;
+    margin: 0 !important;
+    padding: 3px 0 !important;
+}
+.post-create-modal .post-create-simple__media label[for="post-cover"],
+.post-create-modal .post-create-simple__media label[for="post-media"],
+.post-create-modal .post-create-simple__media label[for="post-video-url"],
+.post-create-modal .post-create-simple__media label[for="post-video-file"] {
+    display: inline-flex !important;
+    flex: 0 0 28px !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 28px !important;
+    height: 34px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 1px solid #e3eaf4 !important;
+    border-radius: 9px !important;
+    color: #667b99 !important;
+    cursor: pointer !important;
+    font-size: 0 !important;
+}
+.post-create-modal .post-create-simple__media label svg {
+    width: 17px !important;
+    height: 17px !important;
+}
+.post-create-modal .post-create-simple__media input[type="file"],
+.post-create-modal .post-create-simple__media input[type="url"] {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    overflow: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+}
+.post-create-modal details.post-composer-advanced {
+    position: absolute !important;
+    z-index: 4 !important;
+    left: 20px !important;
+    bottom: 17px !important;
+    margin: 0 !important;
+}
+.post-create-modal .post-create-simple__options summary {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    min-height: 34px !important;
+    color: #71839d !important;
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    cursor: pointer !important;
+}
+.post-create-modal .post-create-simple__options summary:hover {
+    color: #2563eb !important;
+}
+.post-create-modal .post-composer-advanced-content {
+    position: absolute !important;
+    left: 0 !important;
+    bottom: 42px !important;
+    width: min(430px, calc(100vw - 70px)) !important;
+    max-height: min(55vh, 360px) !important;
+    overflow: auto !important;
+    padding: 16px !important;
+    border: 1px solid #e8edf4 !important;
+    border-radius: 14px !important;
+    background: #fff !important;
+    box-shadow: 0 12px 35px rgba(20, 35, 55, .14) !important;
+}
+.post-create-modal .post-create-simple__footer {
+    position: absolute !important;
+    right: 18px !important;
+    bottom: 16px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+    width: auto !important;
+    min-height: 40px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+}
+.post-create-modal .post-create-simple__footer > a {
+    display: none !important;
+}
+.post-create-modal .post-create-simple__footer button {
+    min-width: 110px !important;
+    height: 40px !important;
+    margin: 0 !important;
+    padding: 0 19px !important;
+    border: 0 !important;
+    border-radius: 22px !important;
+    background: #1267f5 !important;
+    color: #fff !important;
+    font-size: 13px !important;
+    font-weight: 700 !important;
+}
+.post-create-modal .post-create-simple__footer button:hover {
+    background: #0758df !important;
+}
+.post-create-modal .post-composer-cover-preview,
+.post-create-modal .post-composer-file-list,
+.post-create-modal .post-composer-existing-cover,
+.post-create-modal .post-create-simple__existing-media {
+    max-width: 100% !important;
+}
+.post-create-modal.is-expanded {
+    width: min(900px, calc(100vw - 32px)) !important;
+    max-width: 900px !important;
+    height: min(80dvh, 760px) !important;
+    min-height: min(80dvh, 420px) !important;
+    max-height: 80dvh !important;
+}
+@media (max-width: 640px) {
+    .post-create-modal-page {
+        align-items: flex-end !important;
+        padding: 8px !important;
+    }
+    .post-create-modal-page > .post-create-modal {
+        width: 100% !important;
+        max-width: none !important;
+        height: min(560px, 88dvh) !important;
+        min-height: min(420px, 88dvh) !important;
+        max-height: 88dvh !important;
+        border-radius: 22px !important;
+    }
+    .post-create-modal .post-composer-field,
+    .post-create-modal .post-composer-editor-section,
+    .post-create-modal .post-composer-media-section {
+        padding-left: 22px !important;
+        padding-right: 22px !important;
+    }
+    .post-create-modal details.post-composer-advanced {
+        left: 16px !important;
+        bottom: 14px !important;
+    }
+    .post-create-modal .post-create-simple__footer {
+        right: 14px !important;
+        bottom: 12px !important;
+    }
+}
