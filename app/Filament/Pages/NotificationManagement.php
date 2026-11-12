@@ -27,6 +27,7 @@ class NotificationManagement extends Page
     public ?array $data = [];
     public array $recentNotifications = [];
     public bool $pushConfigured = false;
+    public int $registeredDevicesCount = 0;
     public ?string $testRecipient = null;
     public string $announcementTitle = '';
     public string $announcementMessage = '';
@@ -37,6 +38,7 @@ class NotificationManagement extends Page
         $values = $settings->settings ?? [];
 
         $this->pushConfigured = filled(config('webpush.public_key')) && filled(config('webpush.private_key'));
+        $this->registeredDevicesCount = \App\Models\PushSubscription::query()->count();
 
         $this->form->fill([
             'enabled' => data_get($values, 'enabled', true),
