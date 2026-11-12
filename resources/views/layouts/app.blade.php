@@ -129,7 +129,7 @@
                 @auth
                     @php
                         $notificationUser = auth()->user();
-                        $visibleNotificationCategories = collect(['replies', 'posts', 'announcements', 'followers', 'messages', 'mentions', 'security'])
+                        $visibleNotificationCategories = collect(['replies', 'likes', 'posts', 'announcements', 'followers', 'messages', 'mentions', 'security'])
                             ->filter(fn (string $category): bool => (bool) data_get($notificationUser->notification_preferences ?? [], 'stream.'.$category, true))
                             ->values()
                             ->all();
