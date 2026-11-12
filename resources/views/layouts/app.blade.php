@@ -136,7 +136,7 @@
                 </button>
                 <button class="switcher btn btn-secondary-ghost btn-circle btn-md" type="button" data-theme-toggle aria-label="Temayı değiştir"></button>
                 @auth
-                    <a href="{{ route('posts.create') }}" class="btn btn-md btn-white btn-rounded shadow-sm header__write">
+                    <a href="{{ route('posts.create') }}" class="btn btn-md btn-white btn-rounded shadow-sm header__write" data-post-composer-trigger>
                         <x-repost-icon name="pen" size="18" />
                         <span>Yaz</span>
                     </a>
@@ -697,6 +697,82 @@
     <script src="{{ asset('assets/libs/sharer/sharer.min.js') }}"></script>
     <script src="{{ asset('assets/js/app.js') }}?v=20261110-santral-art-top-centered"></script>
     <script src="{{ asset('assets/js/init.js') }}?v=20261112-postim-swipe"></script>
+
+    @auth
+    <script>
+    (() => {
+        if (window.__ografiPostComposerBound) return;
+        window.__ografiPostComposerBound = true;
+
+        const closeComposer = () => {
+            document.querySelector('.post-create-modal-page[data-live-composer="1"]')?.remove();
+            document.body.classList.remove('post-composer-open');
+        };
+
+        document.addEventListener('click', async (event) => {
+            const trigger = event.target.closest('[data-post-composer-trigger]');
+            if (trigger) {
+                event.preventDefault();
+                if (document.querySelector('.post-create-modal-page[data-live-composer="1"]')) return;
+
+                const originalText = trigger.innerHTML;
+                trigger.setAttribute('aria-busy', 'true');
+
+                try {
+                    const response = await fetch(trigger.href, {
+                        credentials: 'same-origin',
+                        headers: { 'X-Requested-With': 'XMLHttpRequest', 'Accept': 'text/html' }
+                    });
+                    if (!response.ok) throw new Error('Composer request failed: ' + response.status);
+
+                    const html = await response.text();
+                    const parsed = new DOMParser().parseFromString(html, 'text/html');
+                    const source = parsed.querySelector('.post-create-modal-page');
+                    if (!source) throw new Error('Composer markup not found');
+
+                    const modal = source.cloneNode(true);
+                    modal.dataset.liveComposer = '1';
+                    modal.setAttribute('role', 'dialog');
+                    modal.setAttribute('aria-modal', 'true');
+                    modal.setAttribute('aria-label', 'Yeni yayın');
+
+                    const inlineScripts = Array.from(modal.querySelectorAll('script'));
+                    inlineScripts.forEach(oldScript => {
+                        const newScript = document.createElement('script');
+                        Array.from(oldScript.attributes).forEach(attribute => newScript.setAttribute(attribute.name, attribute.value));
+                        newScript.textContent = oldScript.textContent;
+                        oldScript.replaceWith(newScript);
+                    });
+
+                    document.body.appendChild(modal);
+                    document.body.classList.add('post-composer-open');
+                    modal.querySelector('#post-title')?.focus();
+                } catch (error) {
+                    console.error('Post composer açılamadı:', error);
+                    window.location.href = trigger.href;
+                } finally {
+                    trigger.removeAttribute('aria-busy');
+                    trigger.innerHTML = originalText;
+                }
+                return;
+            }
+
+            const liveModal = document.querySelector('.post-create-modal-page[data-live-composer="1"]');
+            if (!liveModal) return;
+
+            if (event.target === liveModal || event.target.closest('.addpost__modal-close')) {
+                event.preventDefault();
+                closeComposer();
+            }
+        });
+
+        document.addEventListener('keydown', event => {
+            if (event.key === 'Escape') closeComposer();
+        });
+    })();
+    </script>
+    @endauth
+
     @guest
     <script>
     (() => {
