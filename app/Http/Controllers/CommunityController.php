@@ -195,8 +195,12 @@ class CommunityController extends Controller
                 $recipient,
                 'messages',
                 'Yeni mesaj',
-                $viewer->displayName().' sana bir mesaj gönderdi: '.str($message->body ?: ($message->attachment_name ?: 'Bir GIF paylaştı'))->limit(120),
+                $viewer->displayName().' sana yeni bir mesaj gönderdi.',
                 route('messenger.show', $conversation),
+                $viewer->displayName(),
+                $request->hasFile('attachment')
+                    ? 'Sana bir dosya gönderdi.'
+                    : (filled($message->gif_url) ? 'Sana bir GIF gönderdi.' : 'Sana bir mesaj yazdı.'),
             );
 
             UserNotificationService::notifyMentions(
