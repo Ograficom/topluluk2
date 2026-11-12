@@ -9,7 +9,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('posts', function (Blueprint $table): void {
-            $table->string('location', 255)->nullable()->after('meta_description');
+            $table->string('location', 255)->nullable();
         });
     }
 
