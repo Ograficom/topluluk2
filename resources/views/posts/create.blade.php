@@ -75,7 +75,7 @@
                     </div>
                 </div>
                 <div class="post-create-simple__media addpost__actions">
-                    <label for="post-cover" class="post-create-simple__file"><x-repost-icon name="image" size="19" /> Kapak görseli</label>
+                    <label for="post-cover" class="post-create-simple__file"><x-repost-icon name="images" size="19" /> Kapak görseli</label>
                     <input id="post-cover" name="cover_image" type="file" accept="image/jpeg,image/png,image/gif,image/webp" data-post-cover-input>
                     <div class="post-composer-cover-preview" data-post-cover-preview aria-live="polite"></div>
                     @if (isset($post) && $post->coverImageUrl())
@@ -99,7 +99,7 @@
                     <label for="post-video-url" class="post-create-simple__file"><x-repost-icon name="video" size="19" /> Video bağlantısı</label>
                     <input id="post-video-url" name="video_url" type="url" value="{{ old('video_url', $post->video_url ?? '') }}"
                         maxlength="2048" placeholder="YouTube, Instagram, TikTok bağlantısı">
-                    <label for="post-video-file" class="post-create-simple__file"><x-repost-icon name="file-text" size="19" /> Video dosyası yükle</label>
+                    <label for="post-video-file" class="post-create-simple__file"><x-repost-icon name="upload" size="19" /> Video dosyası yükle</label>
                     <input id="post-video-file" name="video_file" type="file" accept="video/mp4,video/webm,video/quicktime,video/x-matroska">
                     @if (isset($post) && $post->video_path)
                         <p class="small color-gray">Mevcut video kayıtlı. Yeni video seçersen değiştirilir.</p>
