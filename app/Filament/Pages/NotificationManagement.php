@@ -69,7 +69,7 @@ class NotificationManagement extends Page
                     ]),
                 Section::make('Gönderim kanalları')
                     ->description('Her kanal bağımsız olarak açılıp kapatılabilir. Kullanıcının kendi tercihleri de ayrıca dikkate alınır.')
-                    ->icon(Heroicon::OutlinedPaperAirplane)
+                    ->icon('heroicon-o-paper-airplane')
                     ->schema([
                         Toggle::make('stream_enabled')->label('Site içi bildirim akışı')->default(true),
                         Toggle::make('email_enabled')->label('E-posta bildirimleri')->default(true),
