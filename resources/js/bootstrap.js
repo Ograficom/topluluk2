@@ -99,7 +99,9 @@ if (notificationButton && notificationHeader) {
     liveStatus.setAttribute('aria-label', 'Canlı bağlantı hazırlanıyor');
     liveStatus.title = 'Canlı bağlantı hazırlanıyor';
     liveStatus.style.cssText = 'display:inline-block;flex:none;width:7px;height:7px;margin-left:auto;border-radius:50%;background:#94a3b8;';
-    notificationHeader.append(liveStatus);
+    const options = notificationHeader.querySelector('.notification-menu__options');
+    if (options) notificationHeader.insertBefore(liveStatus, options);
+    else notificationHeader.append(liveStatus);
 }
 
 const setLiveStatus = (message, state = 'pending') => {
