@@ -717,7 +717,7 @@
     <script src="{{ asset('assets/libs/fancyapp/carousel.umd.js') }}"></script>
     <script src="{{ asset('assets/libs/sharer/sharer.min.js') }}"></script>
     <script src="{{ asset('assets/js/app.js') }}?v=20261110-santral-art-top-centered"></script>
-    <script src="{{ asset('assets/js/init.js') }}"></script>
+    <script src="{{ asset('assets/js/init.js') }}?v=20261112-post-carousel-lazy-init"></script>
     @guest
     <script>
     (() => {
