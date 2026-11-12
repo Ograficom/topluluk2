@@ -170,7 +170,27 @@
                         <div class="dropdown-menu dropdown-menu-end notification-menu" id="notificationMenu" aria-labelledby="notificationMenuButton">
                             <div class="notification-menu__head">
                                 <strong>Bildirimler</strong>
-
+                                <details class="notification-menu__options">
+                                    <summary class="pm-item__more" aria-label="Bildirim seçenekleri" title="Bildirim seçenekleri">
+                                        <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><circle cx="5" cy="12" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="19" cy="12" r="1.8"/></svg>
+                                    </summary>
+                                    <div class="dropdown-menu dropdown-menu-end" aria-label="Bildirim seçenekleri">
+                                        <form method="POST" action="{{ route('notifications.read-all') }}">
+                                            @csrf
+                                            <button type="submit">Tümünü okundu olarak işaretle</button>
+                                        </form>
+                                        <form method="POST" action="{{ route('notifications.unread-all') }}">
+                                            @csrf
+                                            <button type="submit">Tümünü okunmadı olarak işaretle</button>
+                                        </form>
+                                        <form method="POST" action="{{ route('notifications.destroy-all') }}" onsubmit="return confirm('Tüm bildirimleri silmek istediğine emin misin?')">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="is-danger">Tümünü temizle</button>
+                                        </form>
+                                        <a href="{{ route('settings.edit', ['tab' => 'notifications']) }}">Ayarlar</a>
+                                    </div>
+                                </details>
                             </div>
                             <div class="notification-menu__list">
                                 @forelse ($headerNotifications as $notification)
