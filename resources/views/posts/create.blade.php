@@ -26,6 +26,7 @@
                 <img class="addpost__header-avatar" src="{{ $user->avatarUrl() }}" alt="" width="40" height="40">
                 <div class="addpost__author">
                     <span class="addpost__author-name">{{ $user->displayName() }}</span>
+                    <span class="addpost__channel-separator" aria-hidden="true">›</span>
                     <select id="post-channel" name="channel_id" aria-label="Bir kanal seçin">
                         <option value="">Bir kanal seçin</option>
                         @foreach ($channels as $channel)
@@ -39,7 +40,7 @@
                 <label class="post-composer-label" for="post-title">Yazı başlığı</label>
                 <input class="post-create-simple__title addpost__title" id="post-title" name="title" type="text"
                     value="{{ old('title', $post->title ?? '') }}" maxlength="255"
-                    placeholder="Başlık" required>
+                    placeholder="Gönderi başlığı" required>
                 <div class="post-composer-count"><span>Arama ve paylaşım için açık bir başlık seç.</span><span data-count-for="post-title">0 / 60</span></div>
             </div>
 
@@ -129,7 +130,7 @@
             </section>
 
             <details class="post-create-simple__options post-composer-advanced">
-                <summary><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h9m4 0h3M4 17h3m4 0h9"/><circle cx="15" cy="7" r="2"/><circle cx="9" cy="17" r="2"/></svg> Diğer ayarlar</summary>
+                <summary><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h9m4 0h3M4 17h3m4 0h9"/><circle cx="15" cy="7" r="2"/><circle cx="9" cy="17" r="2"/></svg> Yayın ayarları</summary>
                 <div class="post-composer-advanced-content">
                     <label for="post-cover" class="post-create-simple__file"><x-repost-icon name="images" size="17" /> Kapak görseli seç</label>
                     <label for="tags">Etiketler</label>
@@ -159,7 +160,7 @@
 
             <footer class="post-create-simple__footer addpost__footer">
                 <a href="{{ route('posts.index') }}">Vazgeç</a>
-                <button class="btn btn-primary" type="submit">{{ isset($post) ? 'Kaydet' : 'Yayınla' }}</button>
+                <button class="btn btn-primary post-composer-publish" type="submit">{{ isset($post) ? 'Kaydet' : 'Yayınla' }}</button>
             </footer>
         </form>
     </div>
