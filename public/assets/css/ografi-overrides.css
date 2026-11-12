@@ -6464,3 +6464,365 @@ body.is-messenger-conversation .pm-dialog__composer .pm-composer__send{
         padding-left: 18px !important;
     }
 }
+
+
+/* OgraFi create composer — complete layout pass */
+.post-create-modal-page {
+    padding: 20px !important;
+    background: rgba(15, 23, 42, .54) !important;
+    -webkit-backdrop-filter: blur(4px) !important;
+    backdrop-filter: blur(4px) !important;
+}
+.post-create-modal-page > form.post-create-modal {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    grid-template-rows: 52px 52px 82px 88px minmax(180px, 1fr) 62px 62px !important;
+    gap: 0 !important;
+    width: min(620px, calc(100vw - 32px)) !important;
+    max-width: 620px !important;
+    height: min(760px, calc(100dvh - 40px)) !important;
+    min-height: 620px !important;
+    max-height: calc(100dvh - 40px) !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+    border: 1px solid #e7ebf1 !important;
+    border-radius: 18px !important;
+    background: #fff !important;
+    box-shadow: 0 20px 60px rgba(15, 23, 42, .2) !important;
+}
+.post-create-modal > .addpost__modal-head {
+    grid-row: 1 !important;
+    min-height: 0 !important;
+    padding: 0 20px !important;
+    border-bottom: 1px solid #edf0f4 !important;
+}
+.post-create-modal > .addpost__header {
+    grid-row: 2 !important;
+    min-height: 0 !important;
+    padding: 0 24px !important;
+    border-bottom: 1px solid #f0f2f5 !important;
+}
+.post-create-modal .addpost__author-name { color: #202b3c !important; }
+.post-create-modal .addpost__author select {
+    max-width: 220px !important;
+    min-height: 30px !important;
+    padding: 0 8px !important;
+    border: 1px solid #e6eaf0 !important;
+    border-radius: 7px !important;
+    background: #f8fafc !important;
+    color: #475569 !important;
+}
+.post-create-modal > .post-composer-field {
+    display: block !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 12px 24px 8px !important;
+}
+.post-create-modal > .post-composer-field:not(:has(#post-excerpt)) { grid-row: 3 !important; }
+.post-create-modal > .post-composer-field:has(#post-excerpt) {
+    grid-row: 4 !important;
+    border-bottom: 1px solid #edf0f4 !important;
+}
+.post-create-modal .post-composer-label {
+    display: block !important;
+    margin: 0 0 5px !important;
+    color: #64748b !important;
+    font-size: 11px !important;
+    font-weight: 700 !important;
+    letter-spacing: .02em !important;
+}
+.post-create-modal .post-create-simple__title {
+    display: block !important;
+    width: 100% !important;
+    height: 34px !important;
+    min-height: 34px !important;
+    padding: 0 !important;
+    border: 0 !important;
+    outline: 0 !important;
+    background: transparent !important;
+    color: #172033 !important;
+    font-size: 21px !important;
+    font-weight: 750 !important;
+    line-height: 1.3 !important;
+    box-shadow: none !important;
+}
+.post-create-modal .post-create-simple__title::placeholder { color: #a0aaba !important; }
+.post-create-modal .post-create-simple__excerpt {
+    display: block !important;
+    width: 100% !important;
+    min-height: 42px !important;
+    max-height: 48px !important;
+    resize: none !important;
+    padding: 5px 0 !important;
+    border: 0 !important;
+    outline: 0 !important;
+    background: transparent !important;
+    color: #344256 !important;
+    font-size: 13px !important;
+    line-height: 1.5 !important;
+    box-shadow: none !important;
+}
+.post-create-modal .post-composer-count {
+    display: flex !important;
+    justify-content: space-between !important;
+    gap: 12px !important;
+    margin-top: 2px !important;
+    color: #98a2b3 !important;
+    font-size: 10px !important;
+}
+.post-create-modal .post-composer-count > span:first-child { display: none !important; }
+.post-create-modal > .post-composer-editor-section {
+    grid-row: 5 !important;
+    display: flex !important;
+    min-height: 0 !important;
+    height: auto !important;
+    margin: 0 !important;
+    padding: 14px 24px !important;
+    overflow: auto !important;
+    border: 0 !important;
+}
+.post-create-modal .post-composer-editor-title {
+    display: flex !important;
+    flex: 0 0 auto !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 12px !important;
+    margin-bottom: 10px !important;
+}
+.post-create-modal .post-composer-editor-title p {
+    margin: 2px 0 0 !important;
+    color: #98a2b3 !important;
+    font-size: 11px !important;
+}
+.post-create-modal .post-create-simple__editor-status {
+    color: #7b8798 !important;
+    font-size: 11px !important;
+}
+.post-create-modal .post-create-simple__writing {
+    flex: 1 1 auto !important;
+    min-height: 110px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+.post-create-modal .post-editorjs {
+    min-height: 120px !important;
+    padding: 4px 0 !important;
+    border: 0 !important;
+    color: #263449 !important;
+    font-size: 14px !important;
+    box-shadow: none !important;
+}
+.post-create-modal .post-editorjs [contenteditable="true"] {
+    min-height: 100px !important;
+    outline: 0 !important;
+}
+.post-create-modal .post-editorjs [contenteditable="true"]:empty::before {
+    color: #a0aaba !important;
+}
+.post-create-modal .ce-toolbar,
+.post-create-modal .ce-toolbar__plus,
+.post-create-modal .ce-toolbar__settings-btn,
+.post-create-modal .ce-inline-toolbar {
+    display: flex !important;
+}
+.post-create-modal .ce-toolbar__plus,
+.post-create-modal .ce-toolbar__settings-btn {
+    color: #64748b !important;
+}
+.post-create-modal .codex-editor,
+.post-create-modal .codex-editor__redactor,
+.post-create-modal .ce-block,
+.post-create-modal .ce-block__content {
+    max-width: 100% !important;
+}
+.post-create-modal .codex-editor__redactor { padding-bottom: 12px !important; }
+.post-create-modal > .post-composer-media-section {
+    grid-row: 6 !important;
+    min-height: 0 !important;
+    height: auto !important;
+    margin: 0 !important;
+    padding: 8px 24px !important;
+    overflow: visible !important;
+    border-top: 1px solid #edf0f4 !important;
+    border-bottom: 1px solid #edf0f4 !important;
+}
+.post-create-modal .post-composer-media-title { display: none !important; }
+.post-create-modal .post-create-simple__media {
+    display: flex !important;
+    min-height: 44px !important;
+    height: auto !important;
+    align-items: center !important;
+    gap: 9px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+.post-create-modal .post-composer-tool {
+    display: inline-flex !important;
+    flex: 0 0 36px !important;
+    width: 36px !important;
+    height: 36px !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 0 !important;
+    border: 1px solid #e6ebf2 !important;
+    border-radius: 9px !important;
+    background: #fff !important;
+    color: #64748b !important;
+    cursor: pointer !important;
+}
+.post-create-modal .post-composer-tool:hover {
+    border-color: #b9d1fb !important;
+    background: #f5f8ff !important;
+    color: #2563eb !important;
+}
+.post-create-modal .post-composer-tool svg {
+    width: 18px !important;
+    height: 18px !important;
+    fill: none !important;
+    stroke: currentColor !important;
+    stroke-width: 1.7 !important;
+    stroke-linecap: round !important;
+    stroke-linejoin: round !important;
+}
+.post-create-modal .post-create-simple__media input[type="file"] {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    overflow: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+}
+.post-create-modal .post-composer-location-panel,
+.post-create-modal .post-composer-video-panel {
+    position: absolute !important;
+    z-index: 8 !important;
+    right: 20px !important;
+    bottom: 70px !important;
+    left: 20px !important;
+    padding: 14px !important;
+    border: 1px solid #e5eaf1 !important;
+    border-radius: 12px !important;
+    background: #fff !important;
+    box-shadow: 0 10px 30px rgba(15, 23, 42, .12) !important;
+}
+.post-create-modal .post-composer-location-panel[hidden],
+.post-create-modal .post-composer-video-panel[hidden] { display: none !important; }
+.post-create-modal .post-composer-location-panel label,
+.post-create-modal .post-composer-video-panel label {
+    display: block !important;
+    margin-bottom: 7px !important;
+    color: #475569 !important;
+    font-size: 12px !important;
+    font-weight: 700 !important;
+}
+.post-create-modal .post-composer-location-panel input,
+.post-create-modal .post-composer-video-panel input {
+    width: 100% !important;
+    min-height: 38px !important;
+    padding: 8px 10px !important;
+    border: 1px solid #dfe5ed !important;
+    border-radius: 8px !important;
+    background: #fff !important;
+}
+.post-create-modal > details.post-composer-advanced {
+    position: absolute !important;
+    z-index: 10 !important;
+    left: 24px !important;
+    bottom: 17px !important;
+    display: block !important;
+    width: max-content !important;
+    margin: 0 !important;
+}
+.post-create-modal > details.post-composer-advanced > summary {
+    display: inline-flex !important;
+    min-height: 36px !important;
+    align-items: center !important;
+    gap: 8px !important;
+    color: #64748b !important;
+    font-size: 12px !important;
+    font-weight: 650 !important;
+    cursor: pointer !important;
+}
+.post-create-modal .post-composer-advanced-content {
+    position: absolute !important;
+    bottom: 42px !important;
+    left: 0 !important;
+    width: min(430px, calc(100vw - 70px)) !important;
+    max-height: min(55vh, 360px) !important;
+    overflow: auto !important;
+    padding: 16px !important;
+    border: 1px solid #e5eaf1 !important;
+    border-radius: 12px !important;
+    background: #fff !important;
+    box-shadow: 0 12px 35px rgba(15, 23, 42, .14) !important;
+}
+.post-create-modal > .post-create-simple__footer {
+    position: static !important;
+    grid-row: 7 !important;
+    display: flex !important;
+    min-height: 0 !important;
+    height: auto !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+    margin: 0 !important;
+    padding: 0 20px !important;
+    border: 0 !important;
+}
+.post-create-modal .post-create-simple__footer > a {
+    display: inline-flex !important;
+    margin-right: auto !important;
+    color: #64748b !important;
+    font-size: 12px !important;
+}
+.post-create-modal .post-create-simple__footer button {
+    min-width: 112px !important;
+    height: 38px !important;
+    margin: 0 !important;
+    padding: 0 20px !important;
+    border: 0 !important;
+    border-radius: 8px !important;
+    background: #2563eb !important;
+    color: #fff !important;
+    font-size: 13px !important;
+    font-weight: 700 !important;
+}
+.post-create-modal .post-create-simple__footer button:hover { background: #1d4ed8 !important; }
+.post-create-modal .post-create-simple__footer button:disabled { opacity: .65 !important; cursor: wait !important; }
+.post-create-modal.is-expanded {
+    width: min(620px, calc(100vw - 32px)) !important;
+    max-width: 620px !important;
+    height: min(860px, calc(100dvh - 24px)) !important;
+    min-height: 620px !important;
+    max-height: calc(100dvh - 24px) !important;
+}
+@media (max-width: 640px) {
+    .post-create-modal-page {
+        align-items: flex-end !important;
+        padding: 8px !important;
+    }
+    .post-create-modal-page > form.post-create-modal {
+        width: 100% !important;
+        max-width: none !important;
+        height: min(760px, 92dvh) !important;
+        min-height: min(600px, 92dvh) !important;
+        max-height: 92dvh !important;
+        grid-template-rows: 50px 50px 78px 82px minmax(150px, 1fr) 58px 58px !important;
+        border-radius: 18px 18px 12px 12px !important;
+    }
+    .post-create-modal > .addpost__header,
+    .post-create-modal > .post-composer-field,
+    .post-create-modal > .post-composer-editor-section,
+    .post-create-modal > .post-composer-media-section { padding-left: 16px !important; padding-right: 16px !important; }
+    .post-create-modal .post-create-simple__title { font-size: 19px !important; }
+    .post-create-modal .post-create-simple__excerpt { font-size: 12px !important; }
+    .post-create-modal > details.post-composer-advanced { left: 16px !important; bottom: 11px !important; }
+    .post-create-modal > .post-create-simple__footer { padding: 0 14px !important; }
+    .post-create-modal .post-composer-tool { flex-basis: 34px !important; width: 34px !important; height: 34px !important; }
+}
+@media (max-height: 680px) and (min-width: 641px) {
+    .post-create-modal-page > form.post-create-modal {
+        height: calc(100dvh - 24px) !important;
+        min-height: 0 !important;
+        grid-template-rows: 46px 44px 72px 76px minmax(110px, 1fr) 54px 54px !important;
+    }
+}
