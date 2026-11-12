@@ -21,7 +21,7 @@ class NotificationManagement extends Page
     protected static ?string $navigationLabel = 'Bildirim merkezi';
     protected static ?string $title = 'Bildirim merkezi';
     protected static ?int $navigationSort = 3;
-    protected static string|\BackedEnum|null $navigationIcon = Heroicon::OutlinedBell;
+    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-bell';
     protected string $view = 'filament.pages.notification-management';
 
     public ?array $data = [];
@@ -63,7 +63,7 @@ class NotificationManagement extends Page
             ->components([
                 Section::make('Genel bildirim kontrolü')
                     ->description('Bu ana anahtar kapatılırsa OgraFi kullanıcılarına yeni bildirim gönderilmez. Yönetici panelinin kendi sistem bildirimleri bundan etkilenmez.')
-                    ->icon(Heroicon::OutlinedBell)
+                    ->icon('heroicon-o-bell')
                     ->schema([
                         Toggle::make('enabled')->label('Bildirim sistemini etkinleştir')->default(true)->inline(false),
                     ]),
