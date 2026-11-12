@@ -243,6 +243,7 @@
                             </div>
                         </div>
                     </div>
+                    <button type="button" class="notification-sheet-backdrop" aria-label="Bildirimleri kapat"></button>
                     <style>
                         .notification-trigger{position:relative!important;overflow:visible!important}
                         .notification-trigger__count{position:absolute;top:-4px;right:-5px;min-width:18px;height:18px;padding:0 4px;display:grid;place-items:center;border:2px solid var(--body-bg,#fff);border-radius:20px;background:#2563eb;color:#fff;font-size:10px;font-weight:800;line-height:1}
@@ -286,6 +287,21 @@
                         [data-theme="dark"] .notification-trigger__dot{border-color:#171e29}
                         [data-theme="dark"] .notification-item__icon,[data-theme="dark"] .notification-empty__icon{background:#1e3150;color:#93c5fd}
                         [data-theme="dark"] .notification-item__actions summary:hover,[data-theme="dark"] .notification-item__actions[open] summary{color:#e5e7eb}
+
+                        .notification-sheet-backdrop{display:none}
+                        @media (max-width: 767px){
+                            body.notification-sheet-open{overflow:hidden}
+                            .notification-sheet-backdrop{display:block;position:fixed;inset:0;z-index:1090;width:100%;height:100%;padding:0;border:0;background:rgba(15,23,42,.38);opacity:0;visibility:hidden;transition:opacity .24s ease,visibility .24s ease}
+                            body.notification-sheet-open .notification-sheet-backdrop{opacity:1;visibility:visible}
+                            .notification-dropdown .notification-menu{position:fixed!important;inset:auto 0 0!important;z-index:1091!important;display:block!important;width:100vw!important;max-width:none!important;max-height:min(78dvh,680px)!important;margin:0!important;padding:0!important;border:1px solid rgba(148,163,184,.2)!important;border-bottom:0!important;border-radius:20px 20px 0 0!important;background:var(--dropdown-menu-bg,#fff)!important;box-shadow:0 -12px 38px rgba(15,23,42,.18)!important;overflow:hidden!important;transform:translate3d(0,105%,0);visibility:hidden;opacity:0;transition:transform .28s cubic-bezier(.2,.75,.25,1),opacity .2s ease,visibility .28s ease}
+                            .notification-dropdown .notification-menu.show{transform:translate3d(0,0,0);visibility:visible;opacity:1}
+                            .notification-menu__head{min-height:58px;padding:12px 16px}
+                            .notification-menu__head:before{content:"";position:absolute;top:6px;left:50%;width:36px;height:4px;border-radius:9px;background:#cbd5e1;transform:translateX(-50%)}
+                            .notification-menu__list{max-height:calc(min(78dvh,680px) - 60px);padding-bottom:env(safe-area-inset-bottom);overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
+                            .notification-item{padding:12px 12px 12px 14px}
+                            .notification-item__main{gap:10px}
+                            .notification-menu__options .dropdown-menu{position:absolute!important;right:0!important;left:auto!important;z-index:1093!important}
+                        }
                     </style>
                     @php($favoriteCount = auth()->user()->bookmarks()->count())
                     <div class="dropdown dropdown-md">
