@@ -42,7 +42,33 @@
     </div>
 @endif
 
-@if ($mediaUrls->count() > 1)
+@if ($mediaUrls->count() === 2)
+    <div class="post__media post__media-grid" aria-label="Gönderi görselleri">
+        @if ($censored)
+            <div class="post__censored" data-censored="{{ $imageCensoredKey }}">
+                <div class="text-center post__censored-content">
+                    <span class="post__censored-info">18+ content</span>
+                    <button type="button" class="btn btn-white btn-sm" data-censored-toggle="{{ $imageCensoredKey }}">
+                        <x-repost-icon name="eye" size="18" />
+                        Show
+                    </button>
+                </div>
+            </div>
+        @endif
+        @foreach ($mediaUrls as $mediaUrl)
+            <a href="{{ $mediaUrl }}" data-fancybox="{{ $mediaGroup }}" aria-label="Görseli büyüt">
+                <img
+                    src="{{ $mediaUrl }}"
+                    alt="{{ $post->title }} - {{ $loop->iteration }}"
+                    class="post__media-image"
+                    decoding="async"
+                    loading="{{ $loop->first ? 'eager' : 'lazy' }}"
+                    draggable="false"
+                >
+            </a>
+        @endforeach
+    </div>
+@elseif ($mediaUrls->count() > 2)
     <div class="post__media f-carousel is-media-loading" data-fancy-carousel>
         @if ($censored)
             <div class="post__censored" data-censored="{{ $imageCensoredKey }}">
