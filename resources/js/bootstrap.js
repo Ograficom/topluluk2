@@ -28,46 +28,48 @@ const notificationButton = document.getElementById('notificationMenuButton');
 const notificationMenu = document.getElementById('notificationMenu');
 const notificationHeader = notificationMenu?.querySelector('.notification-menu__head');
 
-const notificationOptions = notificationMenu?.querySelector('.notification-menu__options');
-
+const getNotificationOptions = () => notificationMenu?.querySelector('.notification-menu__options');
 const closeNotificationOptions = () => {
-    const menu = notificationOptions?.querySelector('.dropdown-menu');
-    const button = notificationOptions?.querySelector('.pm-item__more');
+    const root = getNotificationOptions();
+    const menu = root?.querySelector(':scope > .dropdown-menu');
+    const button = root?.querySelector('.pm-item__more');
     if (!menu || !button) return;
     menu.hidden = true;
     menu.style.setProperty('display', 'none', 'important');
     button.setAttribute('aria-expanded', 'false');
 };
 
-// Capture the click before Bootstrap's global dropdown handler can swallow it.
-document.addEventListener('click', (event) => {
-    const trigger = event.target.closest?.('#notificationMenu .notification-menu__options .pm-item__more');
-    const menu = notificationOptions?.querySelector('.dropdown-menu');
+const initNotificationOptions = () => {
+    const root = getNotificationOptions();
+    const button = root?.querySelector('.pm-item__more');
+    const menu = root?.querySelector(':scope > .dropdown-menu');
+    if (!root || !button || !menu || button.dataset.optionsBound === 'true') return;
+    button.dataset.optionsBound = 'true';
 
-    if (trigger && menu) {
+    // Bind directly to the visible three-dot button; do not depend on global dropdown handlers.
+    button.addEventListener('click', (event) => {
         event.preventDefault();
         event.stopPropagation();
-        event.stopImmediatePropagation();
+        const opening = menu.hidden || getComputedStyle(menu).display === 'none';
+        menu.hidden = !opening;
+        menu.style.setProperty('display', opening ? 'block' : 'none', 'important');
+        button.setAttribute('aria-expanded', String(opening));
+    });
 
-        const open = menu.hidden || menu.style.display === 'none';
-        menu.hidden = !open;
-        if (open) {
-            menu.style.setProperty('display', 'block', 'important');
-        } else {
-            menu.style.setProperty('display', 'none', 'important');
-        }
-        trigger.setAttribute('aria-expanded', String(open));
-        return;
-    }
+    document.addEventListener('click', (event) => {
+        if (!root.contains(event.target)) closeNotificationOptions();
+    });
 
-    if (notificationOptions && !notificationOptions.contains(event.target)) {
-        closeNotificationOptions();
-    }
-}, true);
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') closeNotificationOptions();
+    });
+};
 
-document.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape') closeNotificationOptions();
-});
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initNotificationOptions, { once: true });
+} else {
+    initNotificationOptions();
+}
 
 if (notificationButton && notificationMenu) {
     const backdrop = document.querySelector('.notification-sheet-backdrop');
