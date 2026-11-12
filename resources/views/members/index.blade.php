@@ -20,7 +20,7 @@
                                         <x-repost-icon name="verify" size="14" />
                                     </span>
                                 @endif
-@if ($member)
+@if ($member->hasVerifiedCompanyBadge())
     <x-company-verified-badge size="14" />
 @endif
                             </span>
