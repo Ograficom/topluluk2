@@ -13,7 +13,9 @@
                 <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="max-width:620px;">
                     <tr>
                         <td align="center" style="padding:0 0 22px;">
-                            <div style="display:inline-block;width:42px;height:42px;line-height:42px;border-radius:13px;background:#2563eb;color:#fff;font-size:23px;font-weight:800;text-align:center;">O</div>
+                            <a href="{{ url('/') }}" style="display:inline-block;text-decoration:none;">
+                                <img src="{{ $logoUrl }}" alt="{{ $siteName }}" width="58" height="58" style="display:block;width:58px;height:58px;object-fit:contain;border:0;outline:none;text-decoration:none;margin:0 auto;">
+                            </a>
                             <div style="padding-top:9px;font-size:21px;font-weight:800;letter-spacing:-.5px;color:#172033;">{{ $siteName }}</div>
                             <div style="padding-top:5px;font-size:12px;letter-spacing:1.6px;text-transform:uppercase;color:#8290a5;">Topluluğundan haber var</div>
                         </td>
