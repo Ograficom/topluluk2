@@ -6040,15 +6040,13 @@ body.is-messenger-conversation .pm-dialog__composer .pm-composer__send{
         object-fit: cover;
     }
 
-    .mobmenu__profile-dropdown > .dropdown-menu {
+    body > #userMenu {
         position: fixed !important;
         display: flex !important;
         top: auto !important;
         right: 10px !important;
-        bottom: calc(max(10px, env(safe-area-inset-bottom)) + 62px) !important;
+        bottom: calc(max(10px, env(safe-area-inset-bottom)) + 68px) !important;
         left: auto !important;
-        transform: translate3d(0, 4px, 0) !important;
-        z-index: 1200 !important;
         width: min(320px, calc(100vw - 20px)) !important;
         max-height: min(70dvh, 520px) !important;
         overflow-x: hidden !important;
@@ -6056,12 +6054,14 @@ body.is-messenger-conversation .pm-dialog__composer .pm-composer__send{
         overscroll-behavior: contain;
         -webkit-overflow-scrolling: touch;
         box-sizing: border-box;
-        opacity: 0;
-        visibility: hidden;
-        pointer-events: none;
+        z-index: 9999 !important;
+        opacity: 0 !important;
+        visibility: hidden !important;
+        pointer-events: none !important;
+        transform: translate3d(0, 6px, 0) !important;
     }
 
-    .mobmenu__profile-dropdown.is-open > .dropdown-menu {
+    body > #userMenu.is-mobile-profile-open {
         opacity: 1 !important;
         visibility: visible !important;
         pointer-events: auto !important;
