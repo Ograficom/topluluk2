@@ -185,34 +185,21 @@
             const textarea=document.querySelector('#dialog-message'),emojiPicker=document.querySelector('[data-emoji-picker]'),emojiGrid=document.querySelector('[data-emoji-grid]'),gifPanel=document.querySelector('[data-gif-panel]'),gifSearch=document.querySelector('[data-gif-search]'),gifResults=document.querySelector('[data-gif-results]'),gifInput=document.querySelector('#dialog-gif-url'),fileInput=document.querySelector('#dialog-attachment'),filePreview=document.querySelector('[data-attachment-preview]'),gifSelected=document.querySelector('[data-gif-selected]'),composer=document.querySelector('.pm-composer');
             const resizeMessageTextarea = () => {
                 if (!textarea) return;
-
+                const maxHeight = 220;
                 const bar = textarea.closest('.pm-composer__bar');
-                const maxHeight = 160;
 
-                // Reset first so scrollHeight measures the full content, including wrapped lines.
-                textarea.style.setProperty('height', '1px', 'important');
+                textarea.style.setProperty('height', 'auto', 'important');
                 textarea.style.setProperty('overflow-y', 'hidden', 'important');
 
-                const contentHeight = Math.min(textarea.scrollHeight, maxHeight);
-                const textareaHeight = Math.max(36, contentHeight);
-
-                textarea.style.setProperty('height', textareaHeight + 'px', 'important');
-                textarea.style.setProperty('max-height', maxHeight + 'px', 'important');
-                textarea.style.setProperty('overflow-y', contentHeight >= maxHeight ? 'auto' : 'hidden', 'important');
+                const fullHeight = textarea.scrollHeight;
+                const nextHeight = Math.max(60, Math.min(fullHeight, maxHeight));
+                textarea.style.setProperty('height', nextHeight + 'px', 'important');
+                textarea.style.setProperty('overflow-y', fullHeight > maxHeight ? 'auto' : 'hidden', 'important');
+                textarea.scrollTop = 0;
 
                 if (bar) {
-                    const barStyle = window.getComputedStyle(bar);
-                    const verticalPadding = (parseFloat(barStyle.paddingTop) || 0) + (parseFloat(barStyle.paddingBottom) || 0);
-                    const borders = (parseFloat(barStyle.borderTopWidth) || 0) + (parseFloat(barStyle.borderBottomWidth) || 0);
-                    const controlsHeight = Math.max(
-                        textareaHeight,
-                        bar.querySelector('.pm-composer__send')?.offsetHeight || 0,
-                        bar.querySelector('.pm-composer__attachment')?.offsetHeight || 0,
-                        bar.querySelector('.pm-composer__emoji')?.offsetHeight || 0
-                    );
                     bar.style.setProperty('height', 'auto', 'important');
-                    bar.style.setProperty('min-height', (controlsHeight + verticalPadding + borders) + 'px', 'important');
-                    bar.style.setProperty('align-items', 'flex-end', 'important');
+                    bar.style.setProperty('min-height', '0', 'important');
                 }
             };
             textarea?.addEventListener('input', resizeMessageTextarea);
