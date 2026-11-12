@@ -5318,3 +5318,38 @@ body.is-messenger-conversation .pm-dialog__composer .pm-composer__send{
         left: -32px !important;
     }
 }
+
+
+/* Pin Editor.js block plus control to the LEFT of each text block. */
+.post-create-modal .post-create-simple__editor .ce-toolbar {
+    left: -42px !important;
+    right: auto !important;
+    width: 42px !important;
+}
+.post-create-modal .post-create-simple__editor .ce-toolbar__content {
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: flex-start !important;
+    align-items: flex-start !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+}
+.post-create-modal .post-create-simple__editor .ce-toolbar__actions {
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: flex-start !important;
+}
+.post-create-modal .post-create-simple__editor .ce-toolbar__plus {
+    order: 0 !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+}
+.post-create-modal .post-create-simple__editor .ce-toolbar__settings-btn {
+    order: 1 !important;
+}
+@media (max-width: 640px) {
+    .post-create-modal .post-create-simple__editor .ce-toolbar {
+        left: -36px !important;
+        right: auto !important;
+    }
+}
