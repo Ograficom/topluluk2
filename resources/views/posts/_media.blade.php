@@ -42,8 +42,8 @@
     </div>
 @endif
 
-@if ($mediaUrls->count() === 2)
-    <div class="post__media post__media-grid" aria-label="Gönderi görselleri">
+@if ($mediaUrls->count() > 1)
+    <div class="post__media f-carousel post__media-paired-carousel is-media-loading" data-fancy-carousel data-paired-carousel aria-label="Gönderi görsel galerisi">
         @if ($censored)
             <div class="post__censored" data-censored="{{ $imageCensoredKey }}">
                 <div class="text-center post__censored-content">
@@ -56,19 +56,17 @@
             </div>
         @endif
         @foreach ($mediaUrls as $mediaUrl)
-            <a href="{{ $mediaUrl }}" data-fancybox="{{ $mediaGroup }}" aria-label="Görseli büyüt">
-                <img
-                    src="{{ $mediaUrl }}"
-                    alt="{{ $post->title }} - {{ $loop->iteration }}"
-                    class="post__media-image"
-                    decoding="async"
-                    loading="{{ $loop->first ? 'eager' : 'lazy' }}"
-                    draggable="false"
-                >
-            </a>
+            <div class="f-carousel__slide">
+                <a href="{{ $mediaUrl }}" data-fancybox="{{ $mediaGroup }}" aria-label="Görseli büyüt">
+                    <img src="{{ $mediaUrl }}" alt="{{ $post->title }} - {{ $loop->iteration }}" class="post__media-image" decoding="async" loading="{{ $loop->first ? 'eager' : 'lazy' }}" draggable="false">
+                </a>
+            </div>
         @endforeach
+        <button class="post__media-nav post__media-nav--prev" type="button" data-carousel-go-prev aria-label="Önceki görsel"><x-repost-icon name="chevron-left" size="18" /></button>
+        <button class="post__media-nav post__media-nav--next" type="button" data-carousel-go-next aria-label="Sonraki görsel"><x-repost-icon name="chevron-right" size="18" /></button>
+        <div class="post__media-loader" aria-hidden="true"><span class="loader"></span></div>
     </div>
-@elseif ($mediaUrls->count() > 2)
+@elseif ($mediaUrls->count() === 1)
     <div class="post__media f-carousel is-media-loading" data-fancy-carousel>
         @if ($censored)
             <div class="post__censored" data-censored="{{ $imageCensoredKey }}">
