@@ -5968,3 +5968,23 @@ body.is-messenger-conversation .pm-dialog__composer .pm-composer__send{
     .post-create-modal .post-composer-toolbar .post-composer-location-panel > label,
     .post-create-modal .post-composer-toolbar .post-composer-video-panel > label { grid-column: 1 / -1 !important; }
 }
+
+
+/* Mobile bottom navigation: place the write action inside the bar. */
+@media screen and (max-width: 720px) {
+    .header__end .header__write {
+        display: none !important;
+    }
+
+    .mobmenu__content:has(.mobmenu__link--write) {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .mobmenu__link--write {
+        color: var(--color-primary);
+    }
+
+    .mobmenu__link--write:is(:hover, :focus-visible) {
+        background-color: color-mix(in srgb, var(--color-primary) 10%, transparent);
+    }
+}
