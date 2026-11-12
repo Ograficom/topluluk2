@@ -311,7 +311,6 @@
                             .notification-item__main{gap:10px}
                         }
                     </style>
-                @auth
                     @php($desktopFavoriteCount = auth()->user()->bookmarks()->count())
                     <div class="dropdown dropdown-md header-profile-dropdown">
                         <button id="desktopUserMenuButton" type="button" class="btn btn-secondary-ghost btn-circle header-profile-trigger" data-dropdown-toggle aria-expanded="false" aria-haspopup="menu" aria-controls="desktopUserMenu" aria-label="Profil menüsünü aç">
