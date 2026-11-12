@@ -61,7 +61,7 @@
     <link rel="stylesheet" href="{{ asset('assets/libs/fancyapp/fancybox.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/libs/fancyapp/carousel.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/kit.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/css/app.css') }}?v=20261112-post-paired-images">
+    <link rel="stylesheet" href="{{ asset('assets/css/app.css') }}?v=20261112-postim-swipe">
     <link rel="stylesheet" href="{{ asset('assets/css/engine.css') }}?v=20261110-santral-hero-buttons-inset-blue">
     <link rel="stylesheet" href="{{ asset('assets/css/ografi-overrides.css') }}?v=20261111-santral-dark-theme">
     <script>
@@ -717,7 +717,7 @@
     <script src="{{ asset('assets/libs/fancyapp/carousel.umd.js') }}"></script>
     <script src="{{ asset('assets/libs/sharer/sharer.min.js') }}"></script>
     <script src="{{ asset('assets/js/app.js') }}?v=20261110-santral-art-top-centered"></script>
-    <script src="{{ asset('assets/js/init.js') }}?v=20261112-post-carousel-controls"></script>
+    <script src="{{ asset('assets/js/init.js') }}?v=20261112-postim-swipe"></script>
     @guest
     <script>
     (() => {
