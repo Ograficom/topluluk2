@@ -594,8 +594,8 @@
 .pm-composer__attachment svg{display:block!important;width:21px!important;height:21px!important;fill:none!important;stroke:currentColor!important;stroke-width:1.9!important;stroke-linecap:round!important;stroke-linejoin:round!important}
 .pm-composer__bar textarea{
  display:block!important;flex:1 1 auto!important;min-width:0!important;width:100%!important;
- min-height:34px!important;max-height:112px!important;margin:0!important;padding:8px 0!important;
- resize:none!important;overflow-y:auto!important;border:0!important;outline:0!important;
+ min-height:36px!important;max-height:160px!important;margin:0!important;padding:8px 0!important;
+ resize:none!important;overflow-y:hidden!important;border:0!important;outline:0!important;
  border-radius:0!important;background:transparent!important;box-shadow:none!important;
  color:#263344!important;font:inherit!important;font-size:15px!important;line-height:20px!important;
 }
