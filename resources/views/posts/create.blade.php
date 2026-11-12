@@ -11,24 +11,33 @@
         </div>
     @endif
 
-    <div class="addpost post-create-simple">
-        <form class="addpost__form card card-body" action="{{ isset($post) ? route('posts.update', $post) : route('posts.store') }}" method="POST" enctype="multipart/form-data">
+    <div class="addpost post-create-simple post-create-modal-page">
+        <form class="addpost__form card card-body post-create-modal" action="{{ isset($post) ? route('posts.update', $post) : route('posts.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
             @if (isset($post))
                 @method('PATCH')
             @endif
 
-            <div class="post-composer-author">
-                <img src="{{ $user->avatarUrl() }}" alt="" width="38" height="38">
-                <div>
-                    <strong>{{ $user->displayName() }}</strong>
-                    <span>{{ isset($post) ? 'Yazıyı düzenle' : 'Yeni yazı oluştur' }}</span>
+            <header class="addpost__modal-head">
+                <strong>{{ isset($post) ? 'Yayını düzenle' : 'Yeni yayın' }}</strong>
+                <a href="{{ route('posts.index') }}" class="addpost__modal-close" aria-label="Kapat"><x-repost-icon name="close" size="22" /></a>
+            </header>
+            <div class="addpost__header">
+                <img class="addpost__header-avatar" src="{{ $user->avatarUrl() }}" alt="" width="40" height="40">
+                <div class="addpost__author">
+                    <span class="addpost__author-name">{{ $user->displayName() }}</span>
+                    <select id="post-channel" name="channel_id" aria-label="Bir kanal seçin">
+                        <option value="">Bir kanal seçin</option>
+                        @foreach ($channels as $channel)
+                            <option value="{{ $channel->id }}" @selected((string) old('channel_id', $post->channel_id ?? '') === (string) $channel->id)>{{ $channel->name }}</option>
+                        @endforeach
+                    </select>
                 </div>
             </div>
 
             <div class="post-composer-field">
                 <label class="post-composer-label" for="post-title">Yazı başlığı</label>
-                <input class="post-create-simple__title" id="post-title" name="title" type="text"
+                <input class="post-create-simple__title addpost__title" id="post-title" name="title" type="text"
                     value="{{ old('title', $post->title ?? '') }}" maxlength="255"
                     placeholder="Yazının başlığını yaz" required>
                 <div class="post-composer-count"><span>Arama ve paylaşım için açık bir başlık seç.</span><span data-count-for="post-title">0 / 60</span></div>
@@ -68,7 +77,7 @@
                     </div>
                     <span class="post-create-simple__editor-status" data-editor-status role="status" aria-live="polite">Hazırlanıyor…</span>
                 </div>
-                <div class="post-create-simple__writing">
+                <div class="post-create-simple__writing addpost__editor">
                     <div id="post-editorjs" class="post-editorjs post-create-simple__editor" aria-label="Yazı içeriği" data-placeholder="Yazmaya başla..."></div>
                     <div class="post-composer-editor-tip">Blok eklemek için sol taraftaki + simgesini kullan.</div>
                 </div>
@@ -81,7 +90,7 @@
                         <p>Yazına kapak, fotoğraf veya video ekle.</p>
                     </div>
                 </div>
-                <div class="post-create-simple__media">
+                <div class="post-create-simple__media addpost__actions">
                     <label for="post-cover" class="post-create-simple__file"><span class="icon icon-image" aria-hidden="true"></span> Kapak görseli</label>
                     <input id="post-cover" name="cover_image" type="file" accept="image/jpeg,image/png,image/gif,image/webp" data-post-cover-input>
                     <div class="post-composer-cover-preview" data-post-cover-preview aria-live="polite"></div>
@@ -117,13 +126,6 @@
             <details class="post-create-simple__options post-composer-advanced">
                 <summary><span class="icon icon-sliders" aria-hidden="true"></span> Diğer ayarlar</summary>
                 <div class="post-composer-advanced-content">
-                    <label for="post-channel">Kategori</label>
-                    <select id="post-channel" name="channel_id">
-                        <option value="">Kategori seç</option>
-                        @foreach ($channels as $channel)
-                            <option value="{{ $channel->id }}" @selected((string) old('channel_id', $post->channel_id ?? '') === (string) $channel->id)>{{ $channel->name }}</option>
-                        @endforeach
-                    </select>
                     <label for="tags">Etiketler</label>
                     <input id="tags" name="tags" type="text" value="{{ old('tags', isset($post) ? implode(', ', $post->tags ?? []) : '') }}"
                         maxlength="500" placeholder="Örn. teknoloji, gezi, yazılım">
@@ -132,7 +134,7 @@
                 </div>
             </details>
 
-            <footer class="post-create-simple__footer">
+            <footer class="post-create-simple__footer addpost__footer">
                 <a href="{{ route('posts.index') }}">Vazgeç</a>
                 <button class="btn btn-primary" type="submit">{{ isset($post) ? 'Kaydet' : 'Yayınla' }}</button>
             </footer>
