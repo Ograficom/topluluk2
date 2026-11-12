@@ -683,20 +683,24 @@
 
         root.dataset.profileMenuReady = '1';
 
+        const placeholder = document.createComment('mobile-profile-menu');
+        menu.parentNode.insertBefore(placeholder, menu);
+        document.body.appendChild(menu);
+
         const close = () => {
-            root.classList.remove('is-open');
+            menu.classList.remove('is-mobile-profile-open');
             trigger.setAttribute('aria-expanded', 'false');
         };
 
         trigger.addEventListener('click', (event) => {
             event.preventDefault();
             event.stopPropagation();
-            const isOpen = root.classList.toggle('is-open');
+            const isOpen = menu.classList.toggle('is-mobile-profile-open');
             trigger.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
         });
 
         document.addEventListener('click', (event) => {
-            if (!root.contains(event.target)) close();
+            if (!root.contains(event.target) && !menu.contains(event.target)) close();
         });
 
         document.addEventListener('keydown', (event) => {
