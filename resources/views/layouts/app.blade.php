@@ -158,11 +158,11 @@
                         <div class="dropdown-menu dropdown-menu-end notification-menu" id="notificationMenu" aria-labelledby="notificationMenuButton">
                             <div class="notification-menu__head">
                                 <strong>Bildirimler</strong>
-                                <details class="notification-menu__options">
-                                    <summary class="pm-item__more" aria-label="Bildirim seçenekleri" title="Bildirim seçenekleri">
+                                <div class="notification-menu__options">
+                                    <button class="pm-item__more" type="button" aria-expanded="false" aria-haspopup="true" aria-label="Bildirim seçenekleri" title="Bildirim seçenekleri">
                                         <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><circle cx="5" cy="12" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="19" cy="12" r="1.8"/></svg>
-                                    </summary>
-                                    <ul class="dropdown-menu dropdown-menu-end" aria-label="Bildirim seçenekleri">
+                                    </button>
+                                    <ul class="dropdown-menu dropdown-menu-end" aria-label="Bildirim seçenekleri" hidden>
                                         @if ($unreadNotificationCount > 0)
                                             <li class="dropdown-menu-item dropdown-menu-item-sm">
                                                 <form action="{{ route('notifications.read-all') }}" method="POST">
@@ -182,7 +182,7 @@
                                             <a href="{{ route('settings.edit', ['tab' => 'site']) }}">Ayarlar</a>
                                         </li>
                                     </ul>
-                                </details>
+                                </div>
                             </div>
                             <div class="notification-menu__list">
                                 @forelse ($headerNotifications as $notification)
@@ -251,14 +251,14 @@
                         .notification-menu{width:min(360px,calc(100vw - 24px));max-height:470px;padding:0!important;overflow:hidden}
                         .notification-menu__head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 14px;border-bottom:1px solid var(--dropdown-menu-border-color,#e5e7eb)}
                         .notification-menu__head strong{font-size:15px;font-weight:800}
-                        .notification-menu__options{position:relative;flex:none}
+                        .notification-menu__options{position:relative;flex:none;margin-left:auto}
                         .notification-menu__options .pm-item__more{display:grid;place-items:center;width:36px;height:32px;padding:0;border:0;border-radius:9px;background:#eef2f7;color:#64748b;list-style:none;cursor:pointer;outline:none}
                         .notification-menu__options .pm-item__more::-webkit-details-marker{display:none}
                         .notification-menu__options .pm-item__more::marker{content:""}
                         .notification-menu__options .pm-item__more:hover,.notification-menu__options[open] .pm-item__more{background:#e2e8f0;color:#334155}
                         .notification-menu__options .pm-item__more svg{display:block;width:20px;height:20px;fill:currentColor}
                         .notification-menu__options .dropdown-menu{display:none;position:absolute;top:calc(100% + 7px);right:0;z-index:120002;min-width:205px;margin:0;padding:6px;background:var(--dropdown-menu-bg,#fff);border:1px solid var(--dropdown-menu-border-color,#e5e7eb);border-radius:12px;box-shadow:0 8px 24px rgba(15,23,42,.13)}
-                        .notification-menu__options[open]>.dropdown-menu{display:block}
+                        .notification-menu__options .dropdown-menu:not([hidden]){display:block!important}
                         .notification-menu__options .dropdown-menu form{margin:0}
                         .notification-menu__options .dropdown-menu button{display:block;width:100%;padding:0;border:0;background:none;color:inherit;font:inherit;text-align:left;cursor:pointer}
                         .notification-menu__options .dropdown-menu .is-danger button{color:#dc2626}
