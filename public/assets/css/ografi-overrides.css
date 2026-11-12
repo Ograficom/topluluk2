@@ -4602,158 +4602,42 @@ html body .ografi-pbx-fixed-actions > .ografi-pbx-actions {
     color: #d5e6ff !important;
 }
 
-/* Definitive messenger composer auto-grow override.
-   Older rules above fixed #dialog-message to 38px, which prevented expansion. */
-body.is-messenger-conversation .pm-dialog__composer .pm-composer__bar{
-    height:auto!important;
-    min-height:54px!important;
-    align-items:flex-end!important;
-    overflow:visible!important;
-}
-body.is-messenger-conversation .pm-dialog__composer #dialog-message{
-    height:auto!important;
-    min-height:38px!important;
-    max-height:160px!important;
-    flex:1 1 0!important;
-    align-self:stretch!important;
-    overflow-x:hidden!important;
-    overflow-y:hidden!important;
-    white-space:pre-wrap!important;
-    overflow-wrap:anywhere!important;
-    field-sizing:content!important;
-    box-sizing:border-box!important;
-}
-@media(max-width:640px){
-    body.is-messenger-conversation .pm-dialog__composer .pm-composer__bar{
-        min-height:52px!important;
-        align-items:flex-end!important;
-    }
-    body.is-messenger-conversation .pm-dialog__composer #dialog-message{
-        min-height:36px!important;
-        max-height:160px!important;
-        font-size:16px!important;
-    }
-}
 
-/* Composer and textarea must grow together; override all legacy fixed-height rules. */
-body.is-messenger-conversation .pm-dialog__composer .pm-composer__bar{
-    height:auto!important;
-    min-height:54px!important;
-    align-items:flex-end!important;
-    overflow:visible!important;
-}
-body.is-messenger-conversation .pm-dialog__composer #dialog-message{
-    display:block!important;
-    height:36px!important;
-    min-height:36px!important;
-    max-height:160px!important;
-    flex:1 1 0!important;
-    align-self:stretch!important;
-    box-sizing:border-box!important;
-    overflow-x:hidden!important;
-    overflow-y:hidden!important;
-    white-space:pre-wrap!important;
-    overflow-wrap:anywhere!important;
-    resize:none!important;
-}
-
-/* Reference-matched composer: text starts at the top and the control rail stays at the bottom. */
+/* Messenger composer: grow naturally with typed lines; controls stay bottom-aligned. */
 body.is-messenger-conversation .pm-dialog__composer .pm-composer__bar{
     position:relative!important;
-    display:block!important;
-    height:auto!important;
-    min-height:0!important;
-    padding:0!important;
-    border:1px solid #e4e9f0!important;
-    border-radius:24px!important;
-    background:#fff!important;
-    overflow:visible!important;
-    box-sizing:border-box!important;
-}
-body.is-messenger-conversation .pm-dialog__composer #dialog-message{
-    display:block!important;
-    position:relative!important;
+    display:flex!important;
+    flex-direction:row!important;
+    align-items:flex-end!important;
+    gap:10px!important;
     width:100%!important;
-    min-width:0!important;
-    height:60px!important;
-    min-height:60px!important;
-    max-height:220px!important;
-    margin:0!important;
-    padding:13px 48px 48px 15px!important;
-    box-sizing:border-box!important;
-    overflow-x:hidden!important;
-    overflow-y:hidden!important;
-    resize:none!important;
-    white-space:pre-wrap!important;
-    overflow-wrap:anywhere!important;
-    line-height:21px!important;
-    font-size:15px!important;
-    vertical-align:top!important;
-    color:#263344!important;
-    background:transparent!important;
-    border:0!important;
-    outline:0!important;
-    box-shadow:none!important;
-}
-body.is-messenger-conversation .pm-dialog__composer .pm-composer__attachment-wrap{
-    position:absolute!important;left:12px!important;bottom:8px!important;z-index:4!important;
-    width:32px!important;height:32px!important;
-}
-body.is-messenger-conversation .pm-dialog__composer .pm-composer__attachment{width:32px!important;height:32px!important}
-body.is-messenger-conversation .pm-dialog__composer .pm-composer__emoji-wrap{
-    position:absolute!important;right:58px!important;bottom:8px!important;z-index:4!important;
-    width:34px!important;height:34px!important;
-}
-body.is-messenger-conversation .pm-dialog__composer .pm-composer__emoji{width:34px!important;height:34px!important}
-body.is-messenger-conversation .pm-dialog__composer .pm-composer__send{
-    position:absolute!important;right:8px!important;bottom:7px!important;z-index:4!important;
-    width:40px!important;height:40px!important;
-}
-body.is-messenger-conversation .pm-dialog__composer .pm-composer__expand{
-    position:absolute!important;top:8px!important;right:10px!important;z-index:4!important;
-    display:grid!important;place-items:center!important;width:30px!important;height:30px!important;
-    padding:5px!important;border:0!important;border-radius:8px!important;background:transparent!important;
-    color:#374151!important;cursor:pointer!important;
-}
-body.is-messenger-conversation .pm-dialog__composer .pm-composer__expand svg{
-    display:block!important;width:20px!important;height:20px!important;fill:none!important;
-    stroke:currentColor!important;stroke-width:1.8!important;stroke-linecap:round!important;stroke-linejoin:round!important;
-}
-@media(max-width:640px){
-    body.is-messenger-conversation .pm-dialog__composer #dialog-message{
-        min-height:60px!important;max-height:180px!important;padding:12px 44px 46px 13px!important;font-size:16px!important;
-    }
-}
-
-/* Final reference layout: multiline text area above a bottom-aligned control row. */
-body.is-messenger-conversation .pm-dialog__composer .pm-composer__bar{
-    position:relative!important;
-    display:block!important;
     height:auto!important;
-    min-height:0!important;
-    padding:0!important;
+    min-height:54px!important;
+    max-height:none!important;
+    padding:8px 10px!important;
+    box-sizing:border-box!important;
+    overflow:visible!important;
     border:1px solid #e4e9f0!important;
     border-radius:24px!important;
     background:#fff!important;
-    overflow:visible!important;
-    box-sizing:border-box!important;
 }
 body.is-messenger-conversation .pm-dialog__composer #dialog-message{
     display:block!important;
-    position:relative!important;
+    position:static!important;
+    flex:1 1 auto!important;
+    align-self:stretch!important;
     width:100%!important;
     min-width:0!important;
     max-width:none!important;
-    height:60px!important;
-    min-height:60px!important;
+    height:38px!important;
+    min-height:38px!important;
     max-height:220px!important;
     margin:0!important;
-    padding:13px 48px 12px 48px!important;
+    padding:8px 0!important;
     box-sizing:border-box!important;
-    flex:none!important;
+    resize:none!important;
     overflow-x:hidden!important;
     overflow-y:hidden!important;
-    resize:none!important;
     white-space:pre-wrap!important;
     overflow-wrap:anywhere!important;
     line-height:21px!important;
@@ -4764,56 +4648,53 @@ body.is-messenger-conversation .pm-dialog__composer #dialog-message{
     outline:0!important;
     box-shadow:none!important;
 }
-body.is-messenger-conversation .pm-dialog__composer .pm-composer__attachment-wrap{
-    position:absolute!important;left:12px!important;bottom:8px!important;z-index:5!important;
-    width:32px!important;height:32px!important;
-}
+body.is-messenger-conversation .pm-dialog__composer .pm-composer__attachment-wrap,
 body.is-messenger-conversation .pm-dialog__composer .pm-composer__emoji-wrap{
-    position:absolute!important;right:58px!important;bottom:8px!important;z-index:5!important;
-    width:34px!important;height:34px!important;
+    position:static!important;
+    display:flex!important;
+    flex:0 0 34px!important;
+    width:34px!important;
+    height:38px!important;
+    align-items:flex-end!important;
+    justify-content:center!important;
+    margin:0!important;
+    z-index:2!important;
+}
+body.is-messenger-conversation .pm-dialog__composer .pm-composer__attachment,
+body.is-messenger-conversation .pm-dialog__composer .pm-composer__emoji{
+    display:grid!important;
+    place-items:center!important;
+    width:34px!important;
+    height:38px!important;
+    margin:0!important;
 }
 body.is-messenger-conversation .pm-dialog__composer .pm-composer__send{
-    position:absolute!important;right:8px!important;bottom:7px!important;z-index:5!important;
-    width:40px!important;height:40px!important;
-}
-body.is-messenger-conversation .pm-dialog__composer .pm-composer__expand{
-    position:absolute!important;top:8px!important;right:10px!important;z-index:6!important;
-    display:grid!important;place-items:center!important;width:30px!important;height:30px!important;
-    padding:5px!important;border:0!important;border-radius:8px!important;background:transparent!important;
-    color:#374151!important;cursor:pointer!important;
-}
-body.is-messenger-conversation .pm-dialog__composer .pm-composer__expand svg{
-    display:block!important;width:20px!important;height:20px!important;fill:none!important;
-    stroke:currentColor!important;stroke-width:1.8!important;stroke-linecap:round!important;stroke-linejoin:round!important;
+    position:static!important;
+    display:grid!important;
+    flex:0 0 40px!important;
+    width:40px!important;
+    height:40px!important;
+    align-self:flex-end!important;
+    margin:0!important;
 }
 @media(max-width:640px){
-    body.is-messenger-conversation .pm-dialog__composer #dialog-message{
-        min-height:60px!important;max-height:180px!important;padding:12px 44px 10px 44px!important;font-size:16px!important;
+    body.is-messenger-conversation .pm-dialog__composer .pm-composer__bar{
+        gap:7px!important;
+        min-height:52px!important;
+        padding:6px 7px!important;
     }
-}
-
-/* Expand control expands the whole composer only when its top-right button is pressed. */
-body.is-messenger-conversation .pm-dialog__composer.is-expanded .pm-composer__bar{
-    height:45vh!important;
-    min-height:45vh!important;
-    max-height:420px!important;
-}
-body.is-messenger-conversation .pm-dialog__composer.is-expanded #dialog-message{
-    height:45vh!important;
-    min-height:45vh!important;
-    max-height:420px!important;
-    padding:14px 48px 54px 48px!important;
-    overflow-y:auto!important;
-}
-body.is-messenger-conversation .pm-dialog__composer.is-expanded .pm-composer__expand{
-    background:#f1f5f9!important;
-    border-radius:8px!important;
-}
-@media(max-width:640px){
-    body.is-messenger-conversation .pm-dialog__composer.is-expanded .pm-composer__bar,
-    body.is-messenger-conversation .pm-dialog__composer.is-expanded #dialog-message{
-        height:45dvh!important;
-        min-height:45dvh!important;
-        max-height:420px!important;
+    body.is-messenger-conversation .pm-dialog__composer #dialog-message{
+        min-height:38px!important;
+        max-height:180px!important;
+        font-size:16px!important;
+    }
+    body.is-messenger-conversation .pm-dialog__composer .pm-composer__attachment-wrap,
+    body.is-messenger-conversation .pm-dialog__composer .pm-composer__emoji-wrap{
+        flex-basis:30px!important;
+        width:30px!important;
+    }
+    body.is-messenger-conversation .pm-dialog__composer .pm-composer__attachment,
+    body.is-messenger-conversation .pm-dialog__composer .pm-composer__emoji{
+        width:30px!important;
     }
 }
