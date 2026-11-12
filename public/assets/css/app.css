@@ -5982,3 +5982,78 @@ p {
   .post__media-paired-carousel .f-carousel__slide:last-child,
   .post__media-paired-carousel .f-carousel__slide:last-child img { border-radius: 15px; }
 }
+
+
+/* Header logo alternates between OgraFi and COP31 without changing header layout. */
+.header-logo-swap {
+  position: relative;
+  display: block;
+  width: 150px;
+  height: 40px;
+  flex: 0 0 150px;
+  overflow: hidden;
+}
+
+.header-logo-swap__brand,
+.header-logo-swap__cop {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  transition: opacity 700ms ease, transform 700ms ease;
+}
+
+.header-logo-swap__brand {
+  display: grid;
+  grid-template-columns: 36px 1fr;
+  gap: 8px;
+  opacity: 1;
+  animation: ografi-logo-brand-cycle 10s infinite;
+}
+
+.header-logo-swap__cop {
+  justify-content: center;
+  opacity: 0;
+  transform: translateX(12px);
+  animation: ografi-logo-cop-cycle 10s infinite;
+}
+
+.header-logo-swap__cop img {
+  display: block;
+  width: 150px;
+  height: 40px;
+  object-fit: contain;
+  mix-blend-mode: multiply;
+}
+
+@keyframes ografi-logo-brand-cycle {
+  0%, 40% { opacity: 1; transform: translateX(0); }
+  48%, 92% { opacity: 0; transform: translateX(-12px); }
+  100% { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes ografi-logo-cop-cycle {
+  0%, 40% { opacity: 0; transform: translateX(12px); }
+  48%, 92% { opacity: 1; transform: translateX(0); }
+  100% { opacity: 0; transform: translateX(12px); }
+}
+
+@media (max-width: 420px) {
+  .header-logo-swap {
+    width: 110px;
+    flex-basis: 110px;
+  }
+  .header-logo-swap__cop img {
+    width: 110px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .header-logo-swap__brand,
+  .header-logo-swap__cop {
+    animation: none;
+  }
+  .header-logo-swap__brand { opacity: 1; }
+  .header-logo-swap__cop { opacity: 0; }
+}
