@@ -5,6 +5,7 @@ namespace App\Notifications;
 use App\Models\NotificationSystemSetting;
 use Filament\Actions\Action;
 use Filament\Notifications\Notification as FilamentNotification;
+use Illuminate\Notifications\Messages\BroadcastMessage;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
@@ -22,7 +23,7 @@ class SiteActivityNotification extends Notification
     {
         // Administrative notifications are always kept in the Filament database inbox.
         if ($this->category === null) {
-            return ['database'];
+            return ['database', 'broadcast'];
         }
 
         $systemSettings = NotificationSystemSetting::current();
@@ -48,6 +49,10 @@ class SiteActivityNotification extends Notification
         // The database row powers the in-site stream and is also the durable push event record.
         if ($streamEnabled || $pushEnabled) {
             $channels[] = 'database';
+        }
+
+        if ($streamEnabled) {
+            $channels[] = 'broadcast';
         }
 
         if ($emailEnabled) {
@@ -77,6 +82,16 @@ class SiteActivityNotification extends Notification
             'category' => $this->category,
             'source_key' => $this->sourceKey,
         ];
+    }
+
+    public function toBroadcast(object $notifiable): BroadcastMessage
+    {
+        return new BroadcastMessage([
+            'title' => $this->title,
+            'message' => $this->message,
+            'url' => $this->url,
+            'category' => $this->category,
+        ]);
     }
 
     public function toMail(object $notifiable): MailMessage
