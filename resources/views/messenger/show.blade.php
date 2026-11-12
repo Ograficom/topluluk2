@@ -185,20 +185,28 @@
             const textarea=document.querySelector('#dialog-message'),emojiPicker=document.querySelector('[data-emoji-picker]'),emojiGrid=document.querySelector('[data-emoji-grid]'),gifPanel=document.querySelector('[data-gif-panel]'),gifSearch=document.querySelector('[data-gif-search]'),gifResults=document.querySelector('[data-gif-results]'),gifInput=document.querySelector('#dialog-gif-url'),fileInput=document.querySelector('#dialog-attachment'),filePreview=document.querySelector('[data-attachment-preview]'),gifSelected=document.querySelector('[data-gif-selected]'),composer=document.querySelector('.pm-composer');
             const resizeMessageTextarea = () => {
                 if (!textarea) return;
-                const maxHeight = 220;
                 const bar = textarea.closest('.pm-composer__bar');
+                const expanded = composer?.classList.contains('is-expanded') || false;
 
+                if (expanded) {
+                    const expandedHeight = Math.min(Math.round(window.innerHeight * 0.45), 420);
+                    textarea.style.setProperty('height', expandedHeight + 'px', 'important');
+                    textarea.style.setProperty('max-height', expandedHeight + 'px', 'important');
+                    textarea.style.setProperty('overflow-y', 'auto', 'important');
+                    bar?.style.setProperty('height', expandedHeight + 'px', 'important');
+                    bar?.style.setProperty('min-height', expandedHeight + 'px', 'important');
+                    return;
+                }
+
+                const maxHeight = 220;
                 textarea.style.setProperty('height', '0px', 'important');
                 const contentHeight = textarea.scrollHeight;
                 const nextHeight = Math.max(60, Math.min(contentHeight, maxHeight));
-
                 textarea.style.setProperty('height', nextHeight + 'px', 'important');
+                textarea.style.setProperty('max-height', maxHeight + 'px', 'important');
                 textarea.style.setProperty('overflow-y', contentHeight > maxHeight ? 'auto' : 'hidden', 'important');
-
-                if (bar) {
-                    bar.style.setProperty('height', 'auto', 'important');
-                    bar.style.setProperty('min-height', '0', 'important');
-                }
+                bar?.style.setProperty('height', 'auto', 'important');
+                bar?.style.setProperty('min-height', '0', 'important');
             };
             textarea?.addEventListener('input', resizeMessageTextarea);
             const expandComposerButton = document.querySelector('[data-composer-expand]');
