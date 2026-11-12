@@ -255,7 +255,18 @@
           const submitButton = form.querySelector('button[type="submit"]');
           if (submitButton) submitButton.disabled = true;
           try {
-            input.value = JSON.stringify(await editor.save());
+            const savedData = await editor.save();
+            input.value = JSON.stringify(savedData);
+            const excerptField = document.getElementById('post-excerpt');
+            if (excerptField && !excerptField.value.trim()) {
+              const textFromBlocks = (savedData.blocks || [])
+                .map(block => block.data?.text || block.data?.caption || '')
+                .join(' ')
+                .replace(/<[^>]*>/g, ' ')
+                .replace(/\\s+/g, ' ')
+                .trim();
+              excerptField.value = (textFromBlocks || document.getElementById('post-title')?.value || 'Yeni yayın').slice(0, 500);
+            }
             HTMLFormElement.prototype.submit.call(form);
           } catch (error) {
             console.error('Editor.js kaydı başarısız:', error);
