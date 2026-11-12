@@ -89,6 +89,13 @@ class NotificationController extends Controller
         return back()->with('status', 'Tüm bildirimler okundu olarak işaretlendi.');
     }
 
+    public function destroyAll(): RedirectResponse
+    {
+        auth()->user()->notifications()->delete();
+
+        return back()->with('status', 'Tüm bildirimler silindi.');
+    }
+
     public function markRead(string $notification): RedirectResponse
     {
         $this->notificationForCurrentUser($notification)->markAsRead();
