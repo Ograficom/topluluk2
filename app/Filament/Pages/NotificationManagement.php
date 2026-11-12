@@ -62,30 +62,33 @@ class NotificationManagement extends Page
         return $schema
             ->components([
                 Section::make('Genel bildirim kontrolü')
+                    ->extraAttributes(['class' => 'notification-section notification-section--general'])
                     ->description('Bu ana anahtar kapatılırsa OgraFi kullanıcılarına yeni bildirim gönderilmez. Yönetici panelinin kendi sistem bildirimleri bundan etkilenmez.')
                     ->icon('heroicon-o-bell')
                     ->schema([
-                        Toggle::make('enabled')->label('Bildirim sistemini etkinleştir')->default(true)->inline(false),
+                        Toggle::make('enabled')->label('Bildirim sistemini etkinleştir')->default(true)->extraAttributes(['class' => 'notification-toggle-row'])->inline(false),
                     ]),
                 Section::make('Gönderim kanalları')
+                    ->extraAttributes(['class' => 'notification-section notification-section--channels'])
                     ->description('Her kanal bağımsız olarak açılıp kapatılabilir. Kullanıcının kendi tercihleri de ayrıca dikkate alınır.')
                     ->icon('heroicon-o-paper-airplane')
                     ->schema([
-                        Toggle::make('stream_enabled')->label('Site içi bildirim akışı')->default(true),
-                        Toggle::make('email_enabled')->label('E-posta bildirimleri')->default(true),
-                        Toggle::make('push_enabled')->label('Tarayıcı Push bildirimleri')->default(true),
+                        Toggle::make('stream_enabled')->label('Site içi bildirim akışı')->default(true)->extraAttributes(['class' => 'notification-toggle-row']),
+                        Toggle::make('email_enabled')->label('E-posta bildirimleri')->default(true)->extraAttributes(['class' => 'notification-toggle-row']),
+                        Toggle::make('push_enabled')->label('Tarayıcı Push bildirimleri')->default(true)->extraAttributes(['class' => 'notification-toggle-row']),
                     ])->columns(3),
                 Section::make('Bildirim türleri')
+                    ->extraAttributes(['class' => 'notification-section notification-section--types'])
                     ->description('Sistemde hangi olaylar için bildirim üretileceğini belirleyin.')
                     ->icon(Heroicon::OutlinedAdjustmentsHorizontal)
                     ->schema([
-                        Toggle::make('category_replies')->label('Yorumlar ve yanıtlar')->default(true),
-                        Toggle::make('category_posts')->label('Yeni yazılar')->default(true),
-                        Toggle::make('category_announcements')->label('Site duyuruları')->default(true),
-                        Toggle::make('category_followers')->label('Yeni takipçiler')->default(true),
-                        Toggle::make('category_messages')->label('Özel mesajlar')->default(true),
-                        Toggle::make('category_mentions')->label('@bahsetmeler')->default(true),
-                        Toggle::make('category_security')->label('Hesap güvenliği')->default(true),
+                        Toggle::make('category_replies')->label('Yorumlar ve yanıtlar')->default(true)->extraAttributes(['class' => 'notification-toggle-row']),
+                        Toggle::make('category_posts')->label('Yeni yazılar')->default(true)->extraAttributes(['class' => 'notification-toggle-row']),
+                        Toggle::make('category_announcements')->label('Site duyuruları')->default(true)->extraAttributes(['class' => 'notification-toggle-row']),
+                        Toggle::make('category_followers')->label('Yeni takipçiler')->default(true)->extraAttributes(['class' => 'notification-toggle-row']),
+                        Toggle::make('category_messages')->label('Özel mesajlar')->default(true)->extraAttributes(['class' => 'notification-toggle-row']),
+                        Toggle::make('category_mentions')->label('@bahsetmeler')->default(true)->extraAttributes(['class' => 'notification-toggle-row']),
+                        Toggle::make('category_security')->label('Hesap güvenliği')->default(true)->extraAttributes(['class' => 'notification-toggle-row']),
                     ])->columns(2),
             ])
             ->statePath('data');
