@@ -6044,9 +6044,9 @@ body.is-messenger-conversation .pm-dialog__composer .pm-composer__send{
         position: fixed !important;
         display: flex !important;
         top: auto !important;
-        right: 10px !important;
+        right: auto !important;
+        left: calc(100vw - min(320px, calc(100vw - 20px)) - 10px) !important;
         bottom: calc(max(10px, env(safe-area-inset-bottom)) + 68px) !important;
-        left: auto !important;
         width: min(320px, calc(100vw - 20px)) !important;
         max-height: min(70dvh, 520px) !important;
         overflow-x: hidden !important;
