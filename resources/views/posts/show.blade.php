@@ -72,13 +72,15 @@
                     </div>
                 </div>
             </div>
-            <div class="dropdown">
-                <button class="btn btn-secondary-ghost btn-circle btn-xs" type="button" data-dropdown-toggle aria-expanded="false" aria-label="Yazı menüsünü aç"><x-repost-icon name="more" size="16" /></button>
-                <ul class="dropdown-menu dropdown-menu-end">
+            <div class="post-actions-menu" data-post-actions-menu>
+                <button class="btn btn-secondary-ghost btn-circle btn-xs" type="button" data-post-actions-toggle aria-expanded="false" aria-label="Yazı menüsünü aç">
+                    <x-repost-icon name="more" size="16" />
+                </button>
+                <ul class="post-actions-menu__list" data-post-actions-list hidden>
                     @if (auth()->user()?->is($post->user) || auth()->user()?->is_admin)
-                        <li class="dropdown-menu-item dropdown-menu-item-sm"><a href="{{ route('posts.edit', $post) }}">Yazıyı düzenle</a></li>
+                        <li><a href="{{ route('posts.edit', $post) }}">Yazıyı düzenle</a></li>
                     @endif
-                    <li class="dropdown-menu-item dropdown-menu-item-sm"><button type="button" class="post-report-trigger" data-post-report-open data-dropdown-close>Yazıyı bildir</button></li>
+                    <li><button type="button" class="post-report-trigger" data-post-report-open>Yazıyı bildir</button></li>
                 </ul>
             </div>
         </header>
@@ -295,6 +297,12 @@
         @endauth
     </dialog>
     <style>
+        .post-actions-menu{position:relative;display:inline-flex;flex:none}
+        .post-actions-menu__list{position:absolute;z-index:1000;top:calc(100% + 7px);right:0;min-width:190px;margin:0;padding:6px;list-style:none;border:1px solid #e5e7eb;border-radius:11px;background:#fff;box-shadow:0 10px 28px rgba(15,23,42,.14)}
+        .post-actions-menu__list[hidden]{display:none!important}
+        .post-actions-menu__list li{display:block;margin:0;padding:0}
+        .post-actions-menu__list a,.post-actions-menu__list button{display:block;width:100%;padding:10px 11px;border:0;border-radius:7px;background:transparent;color:#263247;text-align:left;text-decoration:none;font:inherit;cursor:pointer}
+        .post-actions-menu__list a:hover,.post-actions-menu__list button:hover{background:#eff6ff;color:#1d4ed8}
         #post-report-dialog::backdrop{background:rgba(15,23,42,.55)}
         #post-report-dialog .post-report-trigger{cursor:pointer}
         .post-report-trigger{width:100%;border:0;background:transparent;text-align:left;padding:0;color:inherit;font:inherit;cursor:pointer}
@@ -320,8 +328,40 @@
                 dialog.dataset.initialized = 'true';
 
                 document.addEventListener('click', (event) => {
+                    const toggle = event.target.closest('[data-post-actions-toggle]');
+                    if (toggle) {
+                        event.preventDefault();
+                        const root = toggle.closest('[data-post-actions-menu]');
+                        const list = root?.querySelector('[data-post-actions-list]');
+                        if (!root || !list) return;
+                        const opening = list.hidden;
+                        document.querySelectorAll('[data-post-actions-list]').forEach((other) => {
+                            if (other !== list) {
+                                other.hidden = true;
+                                other.closest('[data-post-actions-menu]')?.querySelector('[data-post-actions-toggle]')?.setAttribute('aria-expanded', 'false');
+                            }
+                        });
+                        list.hidden = !opening;
+                        toggle.setAttribute('aria-expanded', String(opening));
+                        return;
+                    }
+
                     const opener = event.target.closest('[data-post-report-open]');
-                    if (!opener) return;
+                    if (!opener) {
+                        if (!event.target.closest('[data-post-actions-menu]')) {
+                            document.querySelectorAll('[data-post-actions-list]').forEach((list) => {
+                                list.hidden = true;
+                                list.closest('[data-post-actions-menu]')?.querySelector('[data-post-actions-toggle]')?.setAttribute('aria-expanded', 'false');
+                            });
+                        }
+                        return;
+                    }
+                    const menuRoot = opener.closest('[data-post-actions-menu]');
+                    const menuList = menuRoot?.querySelector('[data-post-actions-list]');
+                    if (menuList) {
+                        menuList.hidden = true;
+                        menuRoot.querySelector('[data-post-actions-toggle]')?.setAttribute('aria-expanded', 'false');
+                    }
                     event.preventDefault();
                     if (typeof dialog.showModal === 'function') {
                         if (!dialog.open) dialog.showModal();
