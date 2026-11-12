@@ -5976,6 +5976,10 @@ body.is-messenger-conversation .pm-dialog__composer .pm-composer__send{
         display: none !important;
     }
 
+    .header__end #userMenuButton {
+        display: none !important;
+    }
+
     .mobmenu__content:has(.mobmenu__link--write):has(.mobmenu__link--profile) {
         grid-template-columns: repeat(5, minmax(0, 1fr));
     }
