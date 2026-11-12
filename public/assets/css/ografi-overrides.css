@@ -6979,3 +6979,23 @@ body.is-messenger-conversation .pm-dialog__composer .pm-composer__send{
     background: #f1f5f9 !important;
     color: #2563eb !important;
 }
+
+/* Repost action inside the post share dropdown */
+.post-share-menu .post-repost-action {
+    display:flex;
+    width:100%;
+    min-height:38px;
+    align-items:center;
+    gap:10px;
+    padding:8px 12px;
+    border:0;
+    background:transparent;
+    color:inherit;
+    text-align:left;
+    cursor:pointer;
+    font:inherit;
+}
+.post-share-menu .post-repost-action:hover { background:var(--dropdown-hover-bg, #f3f6fa); }
+.post-share-menu .post-repost-action svg { flex:0 0 16px; color:currentColor; }
+.post-share-menu .post-repost-action span { flex:1; }
+.post-share-menu li:has(> form) { padding:0; }
