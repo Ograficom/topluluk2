@@ -9,6 +9,10 @@
         <x-filament::icon icon="heroicon-o-envelope" />
         <span>E-posta / SMTP</span>
     </a>
+    <a href="{{ \App\Filament\Pages\NotificationManagement::getUrl() }}" @class(['cm-tab', 'is-active' => request()->routeIs('filament.admin.pages.notification-management')])>
+        <x-filament::icon icon="heroicon-o-bell" />
+        <span>Bildirim merkezi</span>
+    </a>
     <a href="{{ \App\Filament\Pages\SeoSettings::getUrl() }}" @class(['cm-tab', 'is-active' => request()->routeIs('filament.admin.pages.seo-settings')])>
         <x-filament::icon icon="heroicon-o-magnifying-glass" />
         <span>SEO ayarları</span>
