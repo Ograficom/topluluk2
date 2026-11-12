@@ -736,16 +736,21 @@
                     modal.setAttribute('aria-modal', 'true');
                     modal.setAttribute('aria-label', 'Yeni yayın');
 
-                    const inlineScripts = Array.from(modal.querySelectorAll('script'));
-                    inlineScripts.forEach(oldScript => {
-                        const newScript = document.createElement('script');
-                        Array.from(oldScript.attributes).forEach(attribute => newScript.setAttribute(attribute.name, attribute.value));
-                        newScript.textContent = oldScript.textContent;
-                        oldScript.replaceWith(newScript);
-                    });
-
                     document.body.appendChild(modal);
                     document.body.classList.add('post-composer-open');
+
+                    const composerScripts = Array.from(parsed.querySelectorAll('script')).filter(script =>
+                        !script.src && (
+                            script.textContent.includes('const start = () =>') ||
+                            script.textContent.includes('const initComposerDetails = () =>')
+                        )
+                    );
+                    composerScripts.forEach(oldScript => {
+                        const newScript = document.createElement('script');
+                        newScript.textContent = oldScript.textContent;
+                        document.body.appendChild(newScript);
+                    });
+
                     modal.querySelector('#post-title')?.focus();
                 } catch (error) {
                     console.error('Post composer açılamadı:', error);
