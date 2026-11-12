@@ -57,7 +57,7 @@
             @elseif ($post->tags)
                 <div class="post__tags">
                     @foreach ($post->tags as $tag)
-                        <a href="{{ route('tags.show', ['tag' => \\Illuminate\\Support\\Str::slug($tag)]) }}">{{ $tag }}</a>
+                        <a href="{{ route('tags.show', ['tag' => \Illuminate\Support\Str::slug($tag)]) }}">{{ $tag }}</a>
                     @endforeach
                 </div>
             @endif
