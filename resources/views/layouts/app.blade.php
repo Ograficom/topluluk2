@@ -160,7 +160,7 @@
                                 <strong>Bildirimler</strong>
                                 <details class="notification-menu__options">
                                     <summary class="pm-item__more" aria-label="Bildirim seçenekleri" title="Bildirim seçenekleri">
-                                        <x-repost-icon name="more" size="18" />
+                                        <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><circle cx="5" cy="12" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="19" cy="12" r="1.8"/></svg>
                                     </summary>
                                     <ul class="dropdown-menu dropdown-menu-end" aria-label="Bildirim seçenekleri">
                                         @if ($unreadNotificationCount > 0)
@@ -252,13 +252,13 @@
                         .notification-menu__head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 14px;border-bottom:1px solid var(--dropdown-menu-border-color,#e5e7eb)}
                         .notification-menu__head strong{font-size:15px;font-weight:800}
                         .notification-menu__options{position:relative;flex:none}
-                        .notification-menu__options .pm-item__more{display:grid;place-items:center;width:36px;height:32px;padding:0;border:0;border-radius:9px;background:#eef2f7;color:#64748b;list-style:none;cursor:pointer}
+                        .notification-menu__options .pm-item__more{display:grid;place-items:center;width:36px;height:32px;padding:0;border:0;border-radius:9px;background:#eef2f7;color:#64748b;list-style:none;cursor:pointer;outline:none}
                         .notification-menu__options .pm-item__more::-webkit-details-marker{display:none}
                         .notification-menu__options .pm-item__more::marker{content:""}
                         .notification-menu__options .pm-item__more:hover,.notification-menu__options[open] .pm-item__more{background:#e2e8f0;color:#334155}
-                        .notification-menu__options .pm-item__more svg{display:block;width:18px;height:18px}
-                        .notification-menu__options .dropdown-menu{display:none;position:absolute;top:calc(100% + 7px);right:0;z-index:1093;min-width:205px;margin:0;padding:6px;background:var(--dropdown-menu-bg,#fff);border:1px solid var(--dropdown-menu-border-color,#e5e7eb);border-radius:12px;box-shadow:0 8px 24px rgba(15,23,42,.13)}
-                        .notification-menu__options[open] .dropdown-menu{display:block}
+                        .notification-menu__options .pm-item__more svg{display:block;width:20px;height:20px;fill:currentColor}
+                        .notification-menu__options .dropdown-menu{display:none;position:absolute;top:calc(100% + 7px);right:0;z-index:120002;min-width:205px;margin:0;padding:6px;background:var(--dropdown-menu-bg,#fff);border:1px solid var(--dropdown-menu-border-color,#e5e7eb);border-radius:12px;box-shadow:0 8px 24px rgba(15,23,42,.13)}
+                        .notification-menu__options[open]>.dropdown-menu{display:block}
                         .notification-menu__options .dropdown-menu form{margin:0}
                         .notification-menu__options .dropdown-menu button{display:block;width:100%;padding:0;border:0;background:none;color:inherit;font:inherit;text-align:left;cursor:pointer}
                         .notification-menu__options .dropdown-menu .is-danger button{color:#dc2626}
@@ -295,16 +295,16 @@
                         .notification-sheet-backdrop{display:none}
                         @media (max-width: 767px){
                             body.notification-sheet-open{overflow:hidden}
-                            .notification-sheet-backdrop{display:block;position:fixed;inset:0;z-index:1090;width:100%;height:100%;padding:0;border:0;background:rgba(15,23,42,.38);opacity:0;visibility:hidden;transition:opacity .24s ease,visibility .24s ease}
+                            .notification-sheet-backdrop{display:block;position:fixed;inset:0;z-index:119998;width:100%;height:100%;padding:0;border:0;background:rgba(15,23,42,.38);opacity:0;visibility:hidden;transition:opacity .24s ease,visibility .24s ease}
                             body.notification-sheet-open .notification-sheet-backdrop{opacity:1;visibility:visible}
-                            .notification-dropdown .notification-menu{position:fixed!important;inset:auto 0 0!important;z-index:1091!important;display:block!important;width:100vw!important;max-width:none!important;max-height:min(78dvh,680px)!important;margin:0!important;padding:0!important;border:1px solid rgba(148,163,184,.2)!important;border-bottom:0!important;border-radius:20px 20px 0 0!important;background:var(--dropdown-menu-bg,#fff)!important;box-shadow:0 -12px 38px rgba(15,23,42,.18)!important;overflow:hidden!important;transform:translate3d(0,105%,0);visibility:hidden;opacity:0;transition:transform .28s cubic-bezier(.2,.75,.25,1),opacity .2s ease,visibility .28s ease}
+                            .notification-dropdown .notification-menu{position:fixed!important;inset:auto 0 0!important;z-index:119999!important;display:flex!important;flex-direction:column!important;width:100vw!important;max-width:none!important;height:min(72dvh,620px)!important;max-height:min(72dvh,620px)!important;margin:0!important;padding:0!important;border:1px solid rgba(148,163,184,.2)!important;border-bottom:0!important;border-radius:20px 20px 0 0!important;background:var(--dropdown-menu-bg,#fff)!important;box-shadow:0 -12px 38px rgba(15,23,42,.18)!important;overflow:hidden!important;transform:translate3d(0,105%,0);visibility:hidden;opacity:0;transition:transform .28s cubic-bezier(.2,.75,.25,1),opacity .2s ease,visibility .28s ease}
                             .notification-dropdown .notification-menu.show{transform:translate3d(0,0,0);visibility:visible;opacity:1}
-                            .notification-menu__head{min-height:58px;padding:12px 16px}
+                            .notification-menu__head{position:relative;flex:none;min-height:62px;padding:16px 16px 12px}
                             .notification-menu__head:before{content:"";position:absolute;top:6px;left:50%;width:36px;height:4px;border-radius:9px;background:#cbd5e1;transform:translateX(-50%)}
-                            .notification-menu__list{max-height:calc(min(78dvh,680px) - 60px);padding-bottom:env(safe-area-inset-bottom);overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
+                            .notification-menu__list{flex:1;min-height:0;max-height:none;overflow-y:auto;padding-bottom:calc(16px + env(safe-area-inset-bottom));overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
                             .notification-item{padding:12px 12px 12px 14px}
                             .notification-item__main{gap:10px}
-                            .notification-menu__options .dropdown-menu{position:absolute!important;right:0!important;left:auto!important;z-index:1093!important}
+                            .notification-menu__options .dropdown-menu{position:absolute!important;top:calc(100% + 7px)!important;right:0!important;bottom:auto!important;left:auto!important;z-index:120002!important;min-width:210px!important;max-height: min(45dvh,320px);overflow-y:auto}
                         }
                     </style>
                     @php($favoriteCount = auth()->user()->bookmarks()->count())
