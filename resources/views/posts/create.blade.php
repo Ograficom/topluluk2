@@ -75,7 +75,7 @@
                     </div>
                 </div>
                 <div class="post-create-simple__media addpost__actions">
-                    <label for="post-cover" class="post-create-simple__file"><span class="icon icon-image" aria-hidden="true"></span> Kapak görseli</label>
+                    <label for="post-cover" class="post-create-simple__file"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg> Kapak görseli</label>
                     <input id="post-cover" name="cover_image" type="file" accept="image/jpeg,image/png,image/gif,image/webp" data-post-cover-input>
                     <div class="post-composer-cover-preview" data-post-cover-preview aria-live="polite"></div>
                     @if (isset($post) && $post->coverImageUrl())
@@ -85,7 +85,7 @@
                         </div>
                     @endif
 
-                    <label for="post-media" class="post-create-simple__file"><span class="icon icon-images" aria-hidden="true"></span> Fotoğraf ekle</label>
+                    <label for="post-media" class="post-create-simple__file"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="16" height="16" rx="2"/><path d="M7 4V2h14v16h-2"/><circle cx="8.5" cy="9" r="1.5"/><path d="m19 15-4-4-8 8"/></svg> Fotoğraf ekle</label>
                     <input id="post-media" name="media[]" type="file" accept="image/jpeg,image/png,image/gif,image/webp" multiple data-post-gallery-input>
                     <div class="post-composer-file-list" data-post-gallery-list aria-live="polite"></div>
                     @if (isset($post) && filled($post->media))
@@ -96,10 +96,10 @@
                         </div>
                     @endif
 
-                    <label for="post-video-url" class="post-create-simple__file"><span class="icon icon-video" aria-hidden="true"></span> Video bağlantısı</label>
+                    <label for="post-video-url" class="post-create-simple__file"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="m10 9 5 3-5 3z"/></svg> Video bağlantısı</label>
                     <input id="post-video-url" name="video_url" type="url" value="{{ old('video_url', $post->video_url ?? '') }}"
                         maxlength="2048" placeholder="YouTube, Instagram, TikTok bağlantısı">
-                    <label for="post-video-file" class="post-create-simple__file"><span class="icon icon-upload" aria-hidden="true"></span> Video dosyası yükle</label>
+                    <label for="post-video-file" class="post-create-simple__file"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 16V4m-4 4 4-4 4 4"/><path d="M4 16v4h16v-4"/></svg> Video dosyası yükle</label>
                     <input id="post-video-file" name="video_file" type="file" accept="video/mp4,video/webm,video/quicktime,video/x-matroska">
                     @if (isset($post) && $post->video_path)
                         <p class="small color-gray">Mevcut video kayıtlı. Yeni video seçersen değiştirilir.</p>
@@ -108,7 +108,7 @@
             </section>
 
             <details class="post-create-simple__options post-composer-advanced">
-                <summary><span class="icon icon-sliders" aria-hidden="true"></span> Diğer ayarlar</summary>
+                <summary><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h9m4 0h3M4 17h3m4 0h9"/><circle cx="15" cy="7" r="2"/><circle cx="9" cy="17" r="2"/></svg> Diğer ayarlar</summary>
                 <div class="post-composer-advanced-content">
                     <label for="tags">Etiketler</label>
                     <input id="tags" name="tags" type="text" value="{{ old('tags', isset($post) ? implode(', ', $post->tags ?? []) : '') }}"
@@ -116,7 +116,7 @@
                     <p class="post-composer-field-help">Etiketleri virgülle ayır.</p>
             <details class="post-composer-seo">
                 <summary>
-                    <span><span class="icon icon-search" aria-hidden="true"></span> SEO ayarları</span>
+                    <span><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg> SEO ayarları</span>
                     <small>Google arama görünümü</small>
                 </summary>
                 <div class="post-composer-seo-content">
