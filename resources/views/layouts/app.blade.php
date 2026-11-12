@@ -153,7 +153,6 @@
                             <svg viewBox="0 0 24 24" width="22" height="22" fill="none" aria-hidden="true"><path d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
                             @if ($unreadNotificationCount > 0)
                                 <span class="notification-trigger__count">{{ $unreadNotificationCount > 99 ? '99+' : $unreadNotificationCount }}</span>
-                                <span class="notification-trigger__dot" aria-hidden="true"></span>
                             @endif
                         </button>
                         <div class="dropdown-menu dropdown-menu-end notification-menu" id="notificationMenu" aria-labelledby="notificationMenuButton">
