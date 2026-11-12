@@ -46,7 +46,7 @@
             <div class="post-composer-field">
                 <label class="post-composer-label" for="post-excerpt">Kısa açıklama</label>
                 <textarea class="post-create-simple__excerpt" id="post-excerpt" name="excerpt" rows="3" maxlength="500"
-                    placeholder="Yazını birkaç cümleyle özetle..." required>{{ old('excerpt', $post->excerpt ?? '') }}</textarea>
+                    placeholder="Yazını birkaç cümleyle özetle...">{{ old('excerpt', $post->excerpt ?? '') }}</textarea>
                 <div class="post-composer-count"><span>Gönderi kartlarında ve arama önizlemelerinde kullanılır.</span><span data-count-for="post-excerpt">0 / 160</span></div>
             </div>
 
