@@ -2,6 +2,7 @@
 
 namespace App\Notifications;
 
+use App\Models\NotificationSystemSetting;
 use Filament\Actions\Action;
 use Filament\Notifications\Notification as FilamentNotification;
 use Illuminate\Notifications\Messages\MailMessage;
@@ -24,10 +25,15 @@ class SiteActivityNotification extends Notification
             return ['database'];
         }
 
+        $systemSettings = NotificationSystemSetting::current();
+        if (! $systemSettings->enabled('enabled') || ! $systemSettings->enabled('categories.'.$this->category)) {
+            return [];
+        }
+
         $preferences = $notifiable->notification_preferences ?? [];
         $channels = [];
 
-        $streamEnabled = (bool) data_get($preferences, 'stream.'.$this->category, true);
+        $streamEnabled = $systemSettings->enabled('stream_enabled') && (bool) data_get($preferences, 'stream.'.$this->category, true);
 
         $legacyEmailDefault = match ($this->category) {
             'replies' => (bool) ($notifiable->notify_replies ?? true),
@@ -36,8 +42,8 @@ class SiteActivityNotification extends Notification
             default => true,
         };
 
-        $emailEnabled = (bool) data_get($preferences, 'email.'.$this->category, $legacyEmailDefault);
-        $pushEnabled = (bool) data_get($preferences, 'push.'.$this->category, $this->category === 'security');
+        $emailEnabled = $systemSettings->enabled('email_enabled') && (bool) data_get($preferences, 'email.'.$this->category, $legacyEmailDefault);
+        $pushEnabled = $systemSettings->enabled('push_enabled') && (bool) data_get($preferences, 'push.'.$this->category, $this->category === 'security');
 
         // The database row powers the in-site stream and is also the durable push event record.
         if ($streamEnabled || $pushEnabled) {
