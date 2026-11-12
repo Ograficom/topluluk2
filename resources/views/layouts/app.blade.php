@@ -188,7 +188,7 @@
                                             @method('DELETE')
                                             <button type="submit" class="is-danger">Tümünü temizle</button>
                                         </form>
-                                        <a href="{{ route('settings.edit', ['tab' => 'notifications']) }}">Ayarlar</a>
+                                        <a href="{{ route('settings.edit') }}">Ayarlar</a>
                                     </div>
                                 </details>
                             </div>
@@ -266,7 +266,7 @@
                         .notification-menu__options .pm-item__more:hover,.notification-menu__options[open] .pm-item__more{background:#e2e8f0;color:#334155}
                         .notification-menu__options .pm-item__more svg{display:block;width:20px;height:20px;fill:currentColor}
                         .notification-menu__options .dropdown-menu{display:none;position:absolute;top:calc(100% + 7px);right:0;z-index:120002;min-width:205px;margin:0;padding:6px;background:var(--dropdown-menu-bg,#fff);border:1px solid var(--dropdown-menu-border-color,#e5e7eb);border-radius:12px;box-shadow:0 8px 24px rgba(15,23,42,.13)}
-                        .notification-menu__options .dropdown-menu:not([hidden]){display:block!important}
+                        .notification-menu__options[open] .dropdown-menu{display:block!important}
                         .notification-menu__options .dropdown-menu form{margin:0}
                         .notification-menu__options .dropdown-menu button{display:block;width:100%;padding:0;border:0;background:none;color:inherit;font:inherit;text-align:left;cursor:pointer}
                         .notification-menu__options .dropdown-menu .is-danger button{color:#dc2626}
