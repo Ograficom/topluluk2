@@ -5980,20 +5980,10 @@ body.is-messenger-conversation .pm-dialog__composer .pm-composer__send{
         grid-template-columns: repeat(5, minmax(0, 1fr));
     }
 
-    .mobmenu__link {
-        gap: 3px;
-        padding: 5px 2px 4px;
-    }
-
-    .mobmenu__link svg {
-        width: 24px;
-        height: 24px;
-        flex-basis: 24px;
-    }
-
-    .mobmenu__link span {
-        font-size: 0.68rem;
-        font-weight: 650;
+    .mobmenu__content:has(.mobmenu__link--write):has(.mobmenu__link--profile) {
+        min-height: 62px;
+        padding-top: 7px;
+        padding-bottom: 7px;
     }
 
     .mobmenu__profile-dropdown {
@@ -6013,8 +6003,8 @@ body.is-messenger-conversation .pm-dialog__composer .pm-composer__send{
     }
 
     .mobmenu__profile-dropdown > .mobmenu__link--profile img {
-        width: 27px;
-        height: 27px;
+        width: 24px;
+        height: 24px;
         border-radius: 50%;
         object-fit: cover;
     }
