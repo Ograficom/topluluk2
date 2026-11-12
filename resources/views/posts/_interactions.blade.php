@@ -43,7 +43,7 @@
             </button>
             <ul class="dropdown-menu dropdown-menu-center post-share-menu">
                 @auth
-                    @if (! $post->user?->is(auth()->user()) && ! $post->advertisement_id)
+                    @if (! $post->advertisement_id)
                         @php($viewerReposted = auth()->user()->reposts()->where('post_id', $post->id)->exists())
                     <li class="dropdown-menu-item dropdown-menu-item-sm">
                         <form action="{{ route('posts.reposts.toggle', $post) }}" method="POST">
