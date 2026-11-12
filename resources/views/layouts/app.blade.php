@@ -318,25 +318,6 @@
                         </button>
                         <ul class="dropdown-menu dropdown-menu-end" id="userMenu" aria-labelledby="userMenuButton">
                             <li class="dropdown-menu-item dropdown-menu-item-lg">
-                                <a class="login__profile" href="{{ auth()->user()->username ? route('profiles.show', ['identifier' => auth()->user()->username]) : route('settings.edit') }}">
-                                    <span class="user-box">
-                                        <span class="avatar"><img src="{{ auth()->user()->avatarUrl() }}" alt="" width="40" height="40"></span>
-                                        <span class="user-box-content">
-                                            <span class="name">
-                                                <span class="name-text">{{ auth()->user()->displayName() }}</span>
-                                                @if (auth()->user()->hasVerifiedCompanyBadge())
-                                                    <x-company-verified-badge size="14" />
-                                                @endif
-                                                @if (auth()->user()->hasVerifiedBadge())
-                                                    <span class="verify" role="img" aria-label="Doğrulanmış hesap" title="Doğrulanmış hesap"><x-repost-icon name="verify" size="14" /></span>
-                                                @endif
-                                            </span>
-                                            <span class="small color-gray">Profili görüntüle</span>
-                                        </span>
-                                    </span>
-                                </a>
-                            </li>
-                            <li class="dropdown-menu-item dropdown-menu-item-lg">
                                 <a href="{{ route('messenger.index') }}"><x-repost-icon name="message" size="22" class="color-gray" /><span>Mesajlar</span></a>
                             </li>
                             <li class="dropdown-menu-item dropdown-menu-item-lg">
@@ -687,6 +668,11 @@
             <a class="mobmenu__link {{ request()->routeIs('channels.*') ? 'is-active' : '' }}" href="{{ route('channels.index') }}" aria-label="Channels">
                 <x-repost-icon name="channels" size="20" /><span>Channels</span>
             </a>
+            @auth
+                <a class="mobmenu__link mobmenu__link--profile {{ request()->routeIs('profiles.show') ? 'is-active' : '' }}" href="{{ auth()->user()->username ? route('profiles.show', ['identifier' => auth()->user()->username]) : route('settings.edit') }}" aria-label="Profilim">
+                    <img src="{{ auth()->user()->avatarUrl() }}" alt="" width="24" height="24" loading="lazy"><span>Profil</span>
+                </a>
+            @endauth
         </nav>
     </section>
     @endunless
