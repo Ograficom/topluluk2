@@ -93,6 +93,9 @@
             <symbol id="message" viewBox="0 0 24 24">
                 <path d="M21 11.5a8.5 8.5 0 0 1-8.5 8.5 8.4 8.4 0 0 1-3.6-.8L3 21l1.8-4.9A8.4 8.4 0 0 1 4 12.5 8.5 8.5 0 1 1 21 11.5Z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
             </symbol>
+            <symbol id="more" viewBox="0 0 24 24">
+                <circle cx="5" cy="12" r="2" fill="currentColor"/><circle cx="12" cy="12" r="2" fill="currentColor"/><circle cx="19" cy="12" r="2" fill="currentColor"/>
+            </symbol>
         </svg>
     </div>
 
@@ -175,29 +178,14 @@
                                         <svg width="18" height="18" aria-hidden="true"><use href="#more"></use></svg>
                                     </button>
                                     <ul class="dropdown-menu dropdown-menu-end" id="notificationActionsMenu" aria-label="Bildirim seçenekleri">
-                                        <li class="dropdown-menu-item dropdown-menu-item-sm">
-                                            <form method="POST" action="{{ route('notifications.read-all') }}">
-                                                @csrf
-                                                <button type="submit">Tümünü okundu olarak işaretle</button>
-                                            </form>
-                                        </li>
-                                        <li class="dropdown-menu-item dropdown-menu-item-sm">
-                                            <form method="POST" action="{{ route('notifications.unread-all') }}">
-                                                @csrf
-                                                <button type="submit">Tümünü okunmadı olarak işaretle</button>
-                                            </form>
-                                        </li>
-                                        <li class="dropdown-menu-item dropdown-menu-item-sm is-danger">
-                                            <form method="POST" action="{{ route('notifications.destroy-all') }}" onsubmit="return confirm('Tüm bildirimleri silmek istediğine emin misin?')">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit">Tümünü temizle</button>
-                                            </form>
-                                        </li>
-                                        <li class="dropdown-menu-item dropdown-menu-item-sm">
-                                            <a href="{{ route('settings.edit') }}">Ayarlar</a>
-                                        </li>
+                                        <li class="dropdown-menu-item dropdown-menu-item-sm"><button type="submit" form="notificationMarkAllRead">Tümünü okundu olarak işaretle</button></li>
+                                        <li class="dropdown-menu-item dropdown-menu-item-sm"><button type="submit" form="notificationMarkAllUnread">Tümünü okunmadı olarak işaretle</button></li>
+                                        <li class="dropdown-menu-item dropdown-menu-item-sm is-danger"><button type="submit" form="notificationDeleteAll">Tümünü temizle</button></li>
+                                        <li class="dropdown-menu-item dropdown-menu-item-sm"><a href="{{ route('settings.edit') }}">Ayarlar</a></li>
                                     </ul>
+                                    <form id="notificationMarkAllRead" method="POST" action="{{ route('notifications.read-all') }}" hidden>@csrf</form>
+                                    <form id="notificationMarkAllUnread" method="POST" action="{{ route('notifications.unread-all') }}" hidden>@csrf</form>
+                                    <form id="notificationDeleteAll" method="POST" action="{{ route('notifications.destroy-all') }}" onsubmit="return confirm('Tüm bildirimleri silmek istediğine emin misin?')" hidden>@csrf @method('DELETE')</form>
                                 </div>
                             </div>
                             <div class="notification-menu__list">
@@ -268,14 +256,6 @@
                         .notification-menu__head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 14px;border-bottom:1px solid var(--dropdown-menu-border-color,#e5e7eb)}
                         .notification-menu__head strong{font-size:15px;font-weight:800;flex:none}\n                        .notification-menu__head .notification-live-status{margin-left:auto!important;flex:none!important}
                         .notification-menu__actions{position:relative;flex:none;margin-left:auto}
-                        .notification-menu__actions .pm-item__more{width:34px;height:34px}
-                        .notification-menu__actions .dropdown-menu{min-width:220px}
-                        .notification-menu__actions .dropdown-menu-item > :is(a,button){font-size:.82rem}
-                        .notification-menu__actions .dropdown-menu-item form{width:100%;margin:0}
-                        .notification-menu__actions .dropdown-menu-item form button{display:flex;width:100%;min-height:35px;align-items:center;padding:7px 10px;border:0;border-radius:11px;background:transparent;color:var(--dropdown-item-color,var(--text-color));font:inherit;font-size:.82rem;text-align:left;cursor:pointer}
-                        .notification-menu__actions .dropdown-menu-item form button:hover{background:var(--dropdown-item-hover-bg,var(--gray-100));color:var(--dropdown-item-hover-color,var(--title-color))}
-                        .notification-menu__actions .dropdown-menu-item.is-danger form button{color:var(--dropdown-item-danger-color,var(--red-500))}
-                        .notification-menu__actions .dropdown-menu-item.is-danger form button:hover{background:var(--dropdown-item-danger-hover-bg,var(--red-100));color:var(--dropdown-item-danger-hover-color,var(--red-600))}
                         .notification-menu__list{max-height:390px;overflow-y:auto}
                         .notification-item{position:relative;display:flex;align-items:flex-start;gap:5px;padding:10px 10px 10px 13px;border-bottom:1px solid rgba(148,163,184,.16)}
                         /* Notification rows follow the actual Repost messenger list styling */
@@ -343,7 +323,7 @@
                             .notification-menu__list{flex:1;min-height:0;max-height:none;overflow-y:auto;padding-bottom:calc(16px + env(safe-area-inset-bottom));overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
                             .notification-item{padding:12px 12px 12px 14px}
                             .notification-item__main{gap:10px}
-                            .notification-menu__options .dropdown-menu{position:absolute!important;top:calc(100% + 7px)!important;right:0!important;bottom:auto!important;left:auto!important;z-index:120002!important;min-width:210px!important;max-height: min(45dvh,320px);overflow-y:auto}
+                            .notification-menu__actions .dropdown-menu{position:absolute!important;top:calc(100% + 7px)!important;right:0!important;bottom:auto!important;left:auto!important;z-index:120002!important;min-width:210px!important;max-height: min(45dvh,320px);overflow-y:auto}
                         }
                     </style>
                     @php($favoriteCount = auth()->user()->bookmarks()->count())
