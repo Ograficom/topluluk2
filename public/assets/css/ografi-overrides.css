@@ -6025,16 +6025,16 @@ body.is-messenger-conversation .pm-dialog__composer .pm-composer__send{
     }
 
     .mobmenu__profile-dropdown > .dropdown-menu {
-        position: absolute !important;
+        position: fixed !important;
         display: flex !important;
-        bottom: calc(100% + 8px) !important;
         top: auto !important;
-        left: 50% !important;
-        right: auto !important;
-        transform: translate3d(-50%, 4px, 0) !important;
+        right: 10px !important;
+        bottom: calc(max(10px, env(safe-area-inset-bottom)) + 62px) !important;
+        left: auto !important;
+        transform: translate3d(0, 4px, 0) !important;
         z-index: 1200 !important;
-        width: min(300px, calc(100vw - 20px)) !important;
-        max-height: min(70dvh, 520px);
+        width: min(320px, calc(100vw - 20px)) !important;
+        max-height: min(70dvh, 520px) !important;
         overflow-x: hidden !important;
         overflow-y: auto !important;
         overscroll-behavior: contain;
@@ -6049,7 +6049,7 @@ body.is-messenger-conversation .pm-dialog__composer .pm-composer__send{
         opacity: 1 !important;
         visibility: visible !important;
         pointer-events: auto !important;
-        transform: translate3d(-50%, 0, 0) !important;
+        transform: translate3d(0, 0, 0) !important;
     }
 
     .mobmenu__link--write {
