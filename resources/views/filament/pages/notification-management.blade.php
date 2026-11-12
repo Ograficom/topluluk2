@@ -37,18 +37,18 @@
                 <h2 class="text-base font-semibold text-gray-950 dark:text-white">Site duyurusu gönder</h2>
                 <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Tüm kullanıcılara duyuru bildirimi oluşturur. E-posta ve Push gönderimleri, sistem ayarları ile kullanıcıların kendi tercihlerine göre yapılır.</p>
             </div>
-            <form wire:submit="sendAnnouncement" class="mt-5 grid gap-4">
-                <div>
-                    <label for="announcementTitle" class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-200">Duyuru başlığı</label>
+            <form wire:submit="sendAnnouncement" class="notification-announcement-form">
+                <div class="notification-announcement-field">
+                    <label for="announcementTitle">Duyuru başlığı</label>
                     <input id="announcementTitle" type="text" wire:model="announcementTitle" maxlength="180" required class="notification-input w-full rounded-lg border-gray-300 dark:border-gray-700 dark:bg-gray-800" placeholder="Önemli site duyurusu">
                     @error('title') <p class="mt-1 text-sm text-danger-600">{{ $message }}</p> @enderror
                 </div>
-                <div>
-                    <label for="announcementMessage" class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-200">Duyuru metni</label>
+                <div class="notification-announcement-field">
+                    <label for="announcementMessage">Duyuru metni</label>
                     <textarea id="announcementMessage" wire:model="announcementMessage" rows="4" maxlength="5000" required class="notification-input w-full rounded-lg border-gray-300 dark:border-gray-700 dark:bg-gray-800" placeholder="Kullanıcılara iletilecek duyuru..."></textarea>
                     @error('message') <p class="mt-1 text-sm text-danger-600">{{ $message }}</p> @enderror
                 </div>
-                <div class="flex justify-end">
+                <div class="notification-announcement-actions">
                     <x-filament::button type="submit" icon="heroicon-o-megaphone" wire:confirm="Duyuruyu tüm kullanıcılara göndermek istediğinize emin misiniz?">Duyuruyu gönder</x-filament::button>
                 </div>
             </form>
@@ -116,8 +116,80 @@
 
     <style>
         .notification-center-page {
-            color: #172033;
+            display: grid;
             gap: 24px;
+            color: #172033;
+        }
+
+        /* This view has its own layout rules so it does not depend on Tailwind
+           generating utility classes from dynamically discovered Blade files. */
+        .notification-center-page > .notification-panel {
+            box-sizing: border-box;
+            padding: 24px;
+        }
+
+        .notification-center-page > .notification-table-panel {
+            padding: 0;
+        }
+
+        .notification-center-page .notification-push-panel {
+            box-sizing: border-box;
+            padding: 25px 27px;
+        }
+
+        .notification-center-page .notification-announcement-form {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr);
+            gap: 18px;
+            margin-top: 22px;
+        }
+
+        .notification-center-page .notification-announcement-field {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr);
+            gap: 8px;
+            min-width: 0;
+        }
+
+        .notification-center-page .notification-announcement-field > label {
+            display: block;
+            margin: 0;
+            color: #334155;
+            font-size: 13px;
+            font-weight: 650;
+            line-height: 1.5;
+        }
+
+        .notification-center-page .notification-announcement-field .notification-input {
+            display: block;
+            width: 100%;
+            max-width: none;
+            box-sizing: border-box;
+        }
+
+        .notification-center-page .notification-announcement-actions {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            padding-top: 2px;
+        }
+
+        .notification-center-page .notification-table-panel > div:first-child {
+            padding: 20px 24px;
+        }
+
+        .notification-center-page .notification-table th,
+        .notification-center-page .notification-table td {
+            padding: 13px 20px;
+        }
+
+        .notification-center-page .notification-empty {
+            padding: 38px 24px;
+            text-align: center;
+        }
+
+        .notification-center-page > .notification-panel:not(.notification-table-panel) + .notification-panel {
+            margin-top: 0;
         }
 
         .notification-center-page .notification-panel,
@@ -306,6 +378,38 @@
         @media (max-width: 767px) {
             .notification-center-page {
                 gap: 15px;
+            }
+
+            .notification-center-page > .notification-panel,
+            .notification-center-page .notification-push-panel {
+                padding: 17px;
+            }
+
+            .notification-center-page > .notification-table-panel {
+                padding: 0;
+            }
+
+            .notification-center-page .notification-announcement-form {
+                gap: 15px;
+                margin-top: 17px;
+            }
+
+            .notification-center-page .notification-announcement-actions {
+                justify-content: stretch;
+            }
+
+            .notification-center-page .notification-announcement-actions button {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .notification-center-page .notification-table-panel > div:first-child {
+                padding: 16px;
+            }
+
+            .notification-center-page .notification-table th,
+            .notification-center-page .notification-table td {
+                padding: 11px 14px;
             }
 
             .notification-center-page .notification-panel,
