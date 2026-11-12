@@ -6111,5 +6111,14 @@ p {
 .post-create-modal .post-create-simple__options[open]{position:relative}
 .post-create-modal .post-create-simple__options .post-composer-advanced-content{position:absolute;bottom:42px;left:0;z-index:6;width:min(340px,calc(100vw - 70px));padding:16px;border:1px solid #e2e8f0;border-radius:12px;background:#fff;box-shadow:0 12px 32px rgb(15 23 42/12%)}
 .post-create-modal .post-create-simple__footer button{min-width:92px;border-radius:24px}
-.post-create-modal .post-composer-seo{display:none}
+.post-create-modal .post-composer-seo{display:block;margin-top:12px;border-top:1px solid #e2e8f0;padding-top:10px}
 @media(max-width:640px){.post-create-modal-page{align-items:flex-end;padding:8px}.post-create-modal{width:100%;max-width:none;max-height:90vh;min-height:55vh;border-radius:20px}.post-create-modal .post-composer-field,.post-create-modal .post-composer-editor-section,.post-create-modal .post-composer-media-section{padding-left:22px;padding-right:22px}.post-create-modal .post-create-simple__footer{padding-left:22px}}
+
+body.post-composer-open{overflow:hidden}
+.post-create-modal .post-create-simple__media label[for=post-video-url]{display:inline-flex;width:22px;height:28px;align-items:center;justify-content:center;color:#64748b;cursor:pointer;font-size:0}
+.post-create-modal .post-create-simple__media label[for=post-video-url]:before{content:"↗";font-size:20px}
+.post-create-modal .post-create-simple__media input[type=url]{display:block;position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}
+.post-create-modal .post-composer-seo summary{display:flex;align-items:center;justify-content:space-between;gap:12px;color:#64748b;font-size:13px;cursor:pointer}
+.post-create-modal .post-composer-seo-content{padding-top:12px}
+.post-create-modal .post-composer-seo-content textarea{width:100%}
+.post-create-modal .post-composer-google-preview{margin-top:12px}
