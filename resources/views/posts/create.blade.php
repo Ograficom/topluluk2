@@ -50,23 +50,7 @@
                 <div class="post-composer-count"><span>Gönderi kartlarında ve arama önizlemelerinde kullanılır.</span><span data-count-for="post-excerpt">0 / 160</span></div>
             </div>
 
-            <details class="post-composer-seo">
-                <summary>
-                    <span><span class="icon icon-search" aria-hidden="true"></span> SEO ayarları</span>
-                    <small>Google arama görünümü</small>
-                </summary>
-                <div class="post-composer-seo-content">
-                    <label class="post-composer-label" for="post-meta-description">Meta açıklaması <span>İsteğe bağlı</span></label>
-                    <textarea class="post-create-simple__seo" id="post-meta-description" name="meta_description" rows="3" maxlength="500"
-                        placeholder="Google'da görünecek açıklama...">{{ old('meta_description', $post->meta_description ?? '') }}</textarea>
-                    <div class="post-composer-count"><span>150–160 karakter hedefle.</span><span data-count-for="post-meta-description">0 / 160</span></div>
-                    <div class="post-composer-google-preview" aria-live="polite">
-                        <span>ografi.com › yazı</span>
-                        <strong data-seo-preview-title>{{ old('title', $post->title ?? '') ?: 'Yazı başlığın burada görünecek' }}</strong>
-                        <p data-seo-preview-description>{{ old('meta_description', $post->meta_description ?? '') ?: (old('excerpt', $post->excerpt ?? '') ?: 'Yazının açıklaması burada görünecek.') }}</p>
-                    </div>
-                </div>
-            </details>
+
 
             <input type="hidden" id="post-body" name="body" value="{{ old('body', $post->body ?? '') }}">
             <section class="post-composer-editor-section" aria-label="Yazı içeriği düzenleyicisi">
@@ -130,6 +114,23 @@
                     <input id="tags" name="tags" type="text" value="{{ old('tags', isset($post) ? implode(', ', $post->tags ?? []) : '') }}"
                         maxlength="500" placeholder="Örn. teknoloji, gezi, yazılım">
                     <p class="post-composer-field-help">Etiketleri virgülle ayır.</p>
+            <details class="post-composer-seo">
+                <summary>
+                    <span><span class="icon icon-search" aria-hidden="true"></span> SEO ayarları</span>
+                    <small>Google arama görünümü</small>
+                </summary>
+                <div class="post-composer-seo-content">
+                    <label class="post-composer-label" for="post-meta-description">Meta açıklaması <span>İsteğe bağlı</span></label>
+                    <textarea class="post-create-simple__seo" id="post-meta-description" name="meta_description" rows="3" maxlength="500"
+                        placeholder="Google'da görünecek açıklama...">{{ old('meta_description', $post->meta_description ?? '') }}</textarea>
+                    <div class="post-composer-count"><span>150–160 karakter hedefle.</span><span data-count-for="post-meta-description">0 / 160</span></div>
+                    <div class="post-composer-google-preview" aria-live="polite">
+                        <span>ografi.com › yazı</span>
+                        <strong data-seo-preview-title>{{ old('title', $post->title ?? '') ?: 'Yazı başlığın burada görünecek' }}</strong>
+                        <p data-seo-preview-description>{{ old('meta_description', $post->meta_description ?? '') ?: (old('excerpt', $post->excerpt ?? '') ?: 'Yazının açıklaması burada görünecek.') }}</p>
+                    </div>
+                </div>
+            </details>
                     <label class="post-create-simple__adult"><input id="post-adult" type="checkbox" name="is_adult" value="1" @checked(old('is_adult', $post->is_adult ?? false))> 18+ içerik</label>
                 </div>
             </details>
