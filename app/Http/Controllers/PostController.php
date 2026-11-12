@@ -169,6 +169,7 @@ class PostController extends Controller
             'channel_id' => ['nullable', Rule::exists('channels', 'id')->where('is_active', true)],
             'excerpt' => ['required', 'string', 'max:500'],
             'meta_description' => ['nullable', 'string', 'max:500'],
+            'location' => ['nullable', 'string', 'max:255'],
             'body' => ['required', 'string', 'max:100000'],
             'cover_image' => ['nullable', 'image', 'mimes:jpg,jpeg,png,gif,webp', 'max:5120'],
             'media' => ['nullable', 'array', 'max:10'],
