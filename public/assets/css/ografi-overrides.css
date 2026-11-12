@@ -5261,3 +5261,60 @@ body.is-messenger-conversation .pm-dialog__composer .pm-composer__send{
 .post-create-modal .post-composer-advanced-content label[for="post-cover"]::before {
     content: "Kapak görseli seç";
 }
+
+
+/* Restore Editor.js native block controls: keep the + and settings buttons available. */
+.post-create-modal .post-create-simple__editor .ce-toolbar,
+.post-create-modal .post-create-simple__editor .ce-toolbar__content {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+.post-create-modal .post-create-simple__editor .ce-toolbar {
+    left: -38px !important;
+    z-index: 20 !important;
+}
+.post-create-modal .post-create-simple__editor .ce-toolbar__plus,
+.post-create-modal .post-create-simple__editor .ce-toolbar__settings-btn {
+    display: inline-flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+}
+.post-create-modal .post-create-simple__editor .ce-toolbar__plus {
+    width: 30px !important;
+    height: 30px !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border: 1px solid #e1e7ef !important;
+    border-radius: 50% !important;
+    background: #fff !important;
+    color: #64748b !important;
+    box-shadow: 0 2px 7px rgba(15, 23, 42, .12) !important;
+}
+.post-create-modal .post-create-simple__editor .ce-toolbar__plus:hover {
+    background: #eef5ff !important;
+    color: #1768ed !important;
+}
+.post-create-modal .post-create-simple__editor .ce-toolbar__settings-btn {
+    width: 28px !important;
+    height: 28px !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+.post-create-modal .post-create-simple__editor .ce-inline-toolbar,
+.post-create-modal .post-create-simple__editor .ce-conversion-toolbar,
+.post-create-modal .post-create-simple__editor .ce-popover {
+    visibility: visible !important;
+}
+.post-create-modal .post-create-simple__editor .ce-block {
+    margin-left: 0 !important;
+}
+.post-create-modal .post-create-simple__editor .codex-editor__redactor {
+    padding-bottom: 0 !important;
+}
+@media (max-width: 640px) {
+    .post-create-modal .post-create-simple__editor .ce-toolbar {
+        left: -32px !important;
+    }
+}
