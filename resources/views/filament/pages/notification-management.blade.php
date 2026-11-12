@@ -28,6 +28,26 @@
             </div>
         </form>
 
+        <section class="rounded-xl border border-gray-200 bg-white p-5 dark:border-gray-700 dark:bg-gray-900">
+            <h2 class="text-base font-semibold text-gray-950 dark:text-white">Site duyurusu gönder</h2>
+            <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Tüm kullanıcılara duyuru bildirimi oluşturur. E-posta ve Push gönderimleri, sistem ayarları ile kullanıcıların kendi tercihlerine göre yapılır.</p>
+            <form wire:submit="sendAnnouncement" class="mt-4 grid gap-4">
+                <div>
+                    <label for="announcementTitle" class="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-200">Duyuru başlığı</label>
+                    <input id="announcementTitle" type="text" wire:model="announcementTitle" maxlength="180" required class="fi-input-wrp w-full rounded-lg border-gray-300 shadow-sm dark:border-gray-700 dark:bg-gray-800" placeholder="Önemli site duyurusu">
+                    @error('title') <p class="mt-1 text-sm text-danger-600">{{ $message }}</p> @enderror
+                </div>
+                <div>
+                    <label for="announcementMessage" class="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-200">Duyuru metni</label>
+                    <textarea id="announcementMessage" wire:model="announcementMessage" rows="4" maxlength="5000" required class="fi-input-wrp w-full rounded-lg border-gray-300 shadow-sm dark:border-gray-700 dark:bg-gray-800" placeholder="Kullanıcılara iletilecek duyuru..."></textarea>
+                    @error('message') <p class="mt-1 text-sm text-danger-600">{{ $message }}</p> @enderror
+                </div>
+                <div class="flex justify-end">
+                    <x-filament::button type="submit" icon="heroicon-o-megaphone" wire:confirm="Duyuruyu tüm kullanıcılara göndermek istediğinize emin misiniz?">Duyuruyu gönder</x-filament::button>
+                </div>
+            </form>
+        </section>
+
         <section class="overflow-hidden rounded-xl border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
             <div class="flex flex-wrap items-center justify-between gap-3 border-b border-gray-200 p-5 dark:border-gray-700">
                 <div>
