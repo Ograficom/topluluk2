@@ -5951,3 +5951,34 @@ p {
   }
 }
 
+
+/* Paired Repost gallery: two images side by side on desktop, swipeable on touch/mobile. */
+.post__media.post__media-paired-carousel {
+  --f-carousel-gap: 2px;
+  --f-carousel-spacing: 2px;
+  --f-carousel-slide-width: calc(50% - 1px);
+  height: 340px;
+  touch-action: pan-y pinch-zoom;
+  cursor: grab;
+}
+.post__media-paired-carousel:active { cursor: grabbing; }
+.post__media-paired-carousel .f-carousel__slide {
+  --f-carousel-slide-width: calc(50% - 1px);
+  width: var(--f-carousel-slide-width);
+  height: 100%;
+  overflow: hidden;
+}
+.post__media-paired-carousel .f-carousel__slide > a { display: block; width: 100%; height: 100%; overflow: hidden; }
+.post__media-paired-carousel .post__media-image { display: block; width: 100%; height: 100%; border-radius: 0; object-fit: cover; user-select: none; -webkit-user-drag: none; }
+.post__media-paired-carousel .f-carousel__slide:first-child,
+.post__media-paired-carousel .f-carousel__slide:first-child img { border-radius: 15px 0 0 15px; }
+.post__media-paired-carousel .f-carousel__slide:last-child,
+.post__media-paired-carousel .f-carousel__slide:last-child img { border-radius: 0 15px 15px 0; }
+@media (max-width: 767.98px) {
+  .post__media.post__media-paired-carousel { --f-carousel-slide-width: 100%; height: clamp(220px, 68vw, 340px); }
+  .post__media-paired-carousel .f-carousel__slide { --f-carousel-slide-width: 100%; width: 100%; }
+  .post__media-paired-carousel .f-carousel__slide:first-child,
+  .post__media-paired-carousel .f-carousel__slide:first-child img,
+  .post__media-paired-carousel .f-carousel__slide:last-child,
+  .post__media-paired-carousel .f-carousel__slide:last-child img { border-radius: 15px; }
+}
