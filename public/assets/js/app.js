@@ -1573,7 +1573,9 @@ if (document.readyState === "loading") {
 
   function closeAll(except = null) {
     Array.from(openDropdowns).forEach((root) => {
-      if (root !== except) closeDropdown(root);
+      // Keep an already-open parent dropdown when opening a nested menu.
+      // The notification actions dropdown lives inside the notification panel.
+      if (root !== except && !root.contains(except)) closeDropdown(root);
     });
   }
 
