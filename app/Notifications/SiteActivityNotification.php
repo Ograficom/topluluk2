@@ -4,6 +4,7 @@ namespace App\Notifications;
 
 use App\Models\NotificationSystemSetting;
 use App\Models\MailSetting;
+use App\Models\SiteSetting;
 use Filament\Actions\Action;
 use Filament\Notifications\Notification as FilamentNotification;
 use Illuminate\Notifications\Messages\BroadcastMessage;
@@ -127,15 +128,22 @@ class SiteActivityNotification extends Notification
             ? $this->url
             : url('/'.ltrim($this->url, '/'));
 
+        $siteSettings = SiteSetting::current();
+        $siteName = filled($siteSettings?->brand_name) ? $siteSettings->brand_name : 'OgraFi';
+        $logoUrl = filled($siteSettings?->brandLogoUrl())
+            ? url($siteSettings->brandLogoUrl())
+            : url('/assets/img/meta/logo.svg');
+
         return (new MailMessage)
-            ->subject($this->title.' — OgraFi')
+            ->subject($this->title.' — '.$siteName)
             ->view('emails.notifications.activity', [
                 'recipientName' => $notifiable->displayName(),
                 'senderName' => $this->senderName ?: 'OgraFi',
                 'summary' => $this->mailSummary ?: 'Hesabında yeni bir etkinlik var.',
                 'sentAt' => now()->timezone(config('app.timezone'))->locale('tr')->translatedFormat('d F Y, H:i'),
                 'target' => $target,
-                'siteName' => config('app.name', 'OgraFi'),
+                'siteName' => $siteName,
+                'logoUrl' => $logoUrl,
             ]);
     }
 }
