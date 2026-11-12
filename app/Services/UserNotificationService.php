@@ -16,7 +16,7 @@ class UserNotificationService
         string $message,
         string $url,
     ): void {
-        if (! in_array($category, ['replies', 'posts', 'announcements', 'followers', 'messages', 'mentions', 'security'], true)) {
+        if (! in_array($category, ['replies', 'likes', 'posts', 'announcements', 'followers', 'messages', 'mentions', 'security'], true)) {
             throw new \InvalidArgumentException('Unknown notification category: '.$category);
         }
 
