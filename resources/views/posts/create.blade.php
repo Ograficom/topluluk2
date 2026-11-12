@@ -20,7 +20,7 @@
 
             <header class="addpost__modal-head">
                 <strong>{{ isset($post) ? 'Yayını düzenle' : 'Yeni yayın' }}</strong>
-                <a href="{{ route('posts.index') }}" class="addpost__modal-close" aria-label="Kapat"><x-repost-icon name="close" size="22" /></a>
+                <div class="addpost__modal-controls"><button type="button" class="addpost__modal-expand" data-post-composer-expand aria-label="Genişlet" aria-pressed="false"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" aria-hidden="true"><path d="M8 4H4v4M16 4h4v4M20 16v4h-4M4 16v4h4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button><a href="{{ route('posts.index') }}" class="addpost__modal-close" aria-label="Kapat"><x-repost-icon name="close" size="22" /></a></div>
             </header>
             <div class="addpost__header">
                 <img class="addpost__header-avatar" src="{{ $user->avatarUrl() }}" alt="" width="40" height="40">
