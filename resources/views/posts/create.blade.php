@@ -96,13 +96,15 @@
                         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h16M4 15h16M9 4l-2 16M17 4l-2 16"/></svg>
                     </button>
 
-                    <input id="post-video-url" name="video_url" type="url" value="{{ old('video_url', $post->video_url ?? '') }}" maxlength="2048" placeholder="YouTube, Instagram veya TikTok bağlantısı" data-composer-video-field>
                     <div class="post-composer-location-panel" data-composer-location-panel hidden>
                         <label for="post-location">Konum</label>
                         <input id="post-location" name="location" type="text" maxlength="255" value="{{ old('location', $post->location ?? '') }}" placeholder="Şehir, mekan veya adres">
                         <button type="button" data-composer-location-close aria-label="Konum alanını kapat">×</button>
                     </div>
-                    <div class="post-composer-video-panel" data-composer-video-panel hidden></div>
+                    <div class="post-composer-video-panel" data-composer-video-panel hidden>
+                        <label for="post-video-url">Video bağlantısı</label>
+                        <input id="post-video-url" name="video_url" type="url" value="{{ old('video_url', $post->video_url ?? '') }}" maxlength="2048" placeholder="YouTube, Instagram veya TikTok bağlantısı">
+                    </div>
 
                     <input id="post-cover" name="cover_image" type="file" accept="image/jpeg,image/png,image/gif,image/webp" data-post-cover-input>
                     <div class="post-composer-cover-preview" data-post-cover-preview aria-live="polite"></div>
@@ -379,6 +381,43 @@
                 });
             });
         }
+
+        const locationToggle = document.querySelector('[data-composer-location-toggle]');
+        const locationPanel = document.querySelector('[data-composer-location-panel]');
+        const locationClose = document.querySelector('[data-composer-location-close]');
+        const videoToggle = document.querySelector('[data-composer-video-toggle]');
+        const videoPanel = document.querySelector('[data-composer-video-panel]');
+        const tagsToggle = document.querySelector('[data-composer-tags-toggle]');
+        const tagsDetails = document.querySelector('.post-composer-advanced');
+        const tagsInput = document.getElementById('tags');
+        const closeComposerPanels = () => {
+            if (locationPanel) locationPanel.hidden = true;
+            if (videoPanel) videoPanel.hidden = true;
+            locationToggle?.setAttribute('aria-expanded', 'false');
+            videoToggle?.setAttribute('aria-expanded', 'false');
+        };
+        locationToggle?.addEventListener('click', () => {
+            const opening = locationPanel?.hidden;
+            closeComposerPanels();
+            if (locationPanel) locationPanel.hidden = !opening;
+            locationToggle.setAttribute('aria-expanded', opening ? 'true' : 'false');
+            if (opening) document.getElementById('post-location')?.focus();
+        });
+        locationClose?.addEventListener('click', () => {
+            if (locationPanel) locationPanel.hidden = true;
+            locationToggle?.setAttribute('aria-expanded', 'false');
+        });
+        videoToggle?.addEventListener('click', () => {
+            const opening = videoPanel?.hidden;
+            closeComposerPanels();
+            if (videoPanel) videoPanel.hidden = !opening;
+            videoToggle.setAttribute('aria-expanded', opening ? 'true' : 'false');
+            if (opening) document.getElementById('post-video-url')?.focus();
+        });
+        tagsToggle?.addEventListener('click', () => {
+            if (tagsDetails) tagsDetails.open = true;
+            tagsInput?.focus();
+        });
 
         const form = document.querySelector('.post-create-simple form');
         form?.addEventListener('submit', () => {
