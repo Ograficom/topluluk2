@@ -14,7 +14,7 @@
             </div>
             <div class="mt-4 flex flex-wrap items-center gap-3 text-sm text-gray-600 dark:text-gray-300">
                 <span class="rounded-lg bg-gray-100 px-3 py-2 dark:bg-gray-800">Kayıtlı cihaz: <strong>{{ number_format($registeredDevicesCount) }}</strong></span>
-                <a class="text-primary-600 hover:underline dark:text-primary-400" href="{{ \\App\\Filament\\Pages\\MailSettings::getUrl() }}">SMTP ayarlarını yönet</a>
+                <a class="text-primary-600 hover:underline dark:text-primary-400" href="{{ \App\Filament\Pages\MailSettings::getUrl() }}">SMTP ayarlarını yönet</a>
             </div>
             <div class="mt-4 rounded-lg bg-gray-50 p-4 text-sm text-gray-600 dark:bg-gray-800 dark:text-gray-300">
                 @if ($pushConfigured)
