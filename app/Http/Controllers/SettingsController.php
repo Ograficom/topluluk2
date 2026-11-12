@@ -50,7 +50,7 @@ class SettingsController extends Controller
                 ],
                 'email' => [
                     'replies' => (bool) $user->notify_replies,
-                    'likes' => true,
+                    'likes' => false,
                     'posts' => (bool) $user->notify_posts,
                     'announcements' => (bool) $user->notify_announcements,
                     'followers' => true,
