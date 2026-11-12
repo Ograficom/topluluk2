@@ -119,13 +119,6 @@ if (notificationButton && window.Echo) {
 
             count.textContent = next > 99 ? '99+' : String(next);
 
-            if (!notificationButton.querySelector('.notification-trigger__dot')) {
-                const dot = document.createElement('span');
-                dot.className = 'notification-trigger__dot';
-                dot.setAttribute('aria-hidden', 'true');
-                notificationButton.append(dot);
-            }
-
             notificationButton.setAttribute('aria-label', `Bildirimler, ${next} okunmamış`);
         };
 
