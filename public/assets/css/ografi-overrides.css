@@ -5980,12 +5980,6 @@ body.is-messenger-conversation .pm-dialog__composer .pm-composer__send{
         grid-template-columns: repeat(5, minmax(0, 1fr));
     }
 
-    .mobmenu__content:has(.mobmenu__link--write):has(.mobmenu__link--profile) {
-        min-height: 62px;
-        padding-top: 7px;
-        padding-bottom: 7px;
-    }
-
     .mobmenu__profile-dropdown {
         position: relative;
         display: flex;
