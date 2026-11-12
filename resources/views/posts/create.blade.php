@@ -39,7 +39,7 @@
                 <label class="post-composer-label" for="post-title">Yazı başlığı</label>
                 <input class="post-create-simple__title addpost__title" id="post-title" name="title" type="text"
                     value="{{ old('title', $post->title ?? '') }}" maxlength="255"
-                    placeholder="Yazının başlığını yaz" required>
+                    placeholder="Başlık" required>
                 <div class="post-composer-count"><span>Arama ve paylaşım için açık bir başlık seç.</span><span data-count-for="post-title">0 / 60</span></div>
             </div>
 
@@ -62,7 +62,7 @@
                     <span class="post-create-simple__editor-status" data-editor-status role="status" aria-live="polite">Hazırlanıyor…</span>
                 </div>
                 <div class="post-create-simple__writing addpost__editor">
-                    <div id="post-editorjs" class="post-editorjs post-create-simple__editor" aria-label="Yazı içeriği" data-placeholder="Yazmaya başla..."></div>
+                    <div id="post-editorjs" class="post-editorjs post-create-simple__editor" aria-label="Yazı içeriği" data-placeholder="En iyi metnini yaz..."></div>
                     <div class="post-composer-editor-tip">Blok eklemek için sol taraftaki + simgesini kullan.</div>
                 </div>
             </section>
@@ -252,7 +252,7 @@
 
         const editor = new window.EditorJS({
           holder,
-          placeholder: 'Hikâyeni burada anlat…',
+          placeholder: 'En iyi metnini yaz…',
           minHeight: 260,
           autofocus: false,
           logLevel: 'ERROR',
