@@ -154,6 +154,7 @@
                     <div class="pm-composer__emoji-picker" data-emoji-picker hidden><div class="pm-composer__picker-tabs"><button type="button" class="is-active" data-picker-tab="emoji">Emoji</button><button type="button" data-picker-tab="gif">GIF</button></div>
                     <div class="pm-composer__emoji-grid" data-emoji-grid>@foreach (['😀','😂','🥰','😍','😉','😊','🤔','👍','❤️','🔥','🎉','🙏','👏','🥳','😎','😭','🤣','💙','✨','🙌'] as $emoji)<button type="button" data-insert-emoji="{{ $emoji }}">{{ $emoji }}</button>@endforeach</div>
                     <div class="pm-composer__gif-panel" data-gif-panel hidden><input type="search" data-gif-search placeholder="GIF ara…" autocomplete="off"><div class="pm-composer__gif-results" data-gif-results>GIF aramak için yazın.</div></div></div></div>
+                    <button class="pm-composer__expand" type="button" data-composer-expand aria-label="Mesaj alanını genişlet" aria-pressed="false" title="Mesaj alanını genişlet"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 3H3v5M3 3l7 7M16 3h5v5m0-5-7 7M3 16v5h5m-5 0 7-7m11 2v5h-5m5 0-7-7"/></svg></button>
                     <button class="pm-composer__send" type="submit" aria-label="Gönder" title="Gönder"><svg viewBox="0 0 24 24"><path d="M21.7 2.8 14.4 21c-.4 1-1.8 1-2.2 0l-2.5-6.2-6.2-2.5c-1-.4-1-1.8 0-2.2l18.2-7.3Z"/><path d="m9.7 14.3 5.1-5.1"/></svg></button>
                 </div><div class="pm-composer__attachment-preview" data-attachment-preview hidden></div><div class="pm-composer__gif-selected" data-gif-selected hidden>GIF seçildi <button type="button" data-clear-gif>×</button></div>
                 @error('body')
@@ -215,6 +216,14 @@
                 }
             };
             textarea?.addEventListener('input', resizeMessageTextarea);
+            const expandComposerButton = document.querySelector('[data-composer-expand]');
+            expandComposerButton?.addEventListener('click', () => {
+                const expanded = composer?.classList.toggle('is-expanded') || false;
+                expandComposerButton.setAttribute('aria-pressed', String(expanded));
+                expandComposerButton.setAttribute('aria-label', expanded ? 'Mesaj alanını daralt' : 'Mesaj alanını genişlet');
+                resizeMessageTextarea();
+                textarea?.focus();
+            });
             resizeMessageTextarea();
             const attachmentMenu=document.querySelector('[data-attachment-menu]'),attachmentToggle=document.querySelector('[data-attachment-toggle]');
             attachmentToggle?.addEventListener('click',()=>{attachmentMenu.hidden=!attachmentMenu.hidden;attachmentToggle.setAttribute('aria-expanded',String(!attachmentMenu.hidden));if(emojiPicker)emojiPicker.hidden=true;});
