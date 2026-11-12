@@ -5976,8 +5976,15 @@ body.is-messenger-conversation .pm-dialog__composer .pm-composer__send{
         display: none !important;
     }
 
-    .mobmenu__content:has(.mobmenu__link--write) {
-        grid-template-columns: repeat(4, minmax(0, 1fr));
+    .mobmenu__content:has(.mobmenu__link--write):has(.mobmenu__link--profile) {
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+    }
+
+    .mobmenu__link--profile img {
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        object-fit: cover;
     }
 
     .mobmenu__link--write {
