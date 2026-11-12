@@ -84,6 +84,7 @@
             root.style.colorScheme = theme;
         })();
     </script>
+    @vite('resources/js/app.js')
     @stack('head')
 </head>
 <body @class(['is-messenger-conversation' => request()->routeIs('messenger.show')])>
@@ -148,7 +149,7 @@
                             ->count();
                     @endphp
                     <div class="dropdown dropdown-md notification-dropdown">
-                        <button id="notificationMenuButton" type="button" class="btn btn-secondary-ghost btn-circle notification-trigger" data-dropdown-toggle aria-expanded="false" aria-haspopup="menu" aria-controls="notificationMenu" aria-label="Bildirimler{{ $unreadNotificationCount > 0 ? ', '.$unreadNotificationCount.' okunmamış' : '' }}">
+                        <button id="notificationMenuButton" type="button" class="btn btn-secondary-ghost btn-circle notification-trigger" data-dropdown-toggle aria-expanded="false" aria-haspopup="menu" aria-controls="notificationMenu" data-notification-user-id="{{ $notificationUser->id }}" data-notification-open-template="{{ route('notifications.open', ['notification' => '__NOTIFICATION__']) }}" aria-label="Bildirimler{{ $unreadNotificationCount > 0 ? ', '.$unreadNotificationCount.' okunmamış' : '' }}">
                             <svg viewBox="0 0 24 24" width="22" height="22" fill="none" aria-hidden="true"><path d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
                             @if ($unreadNotificationCount > 0)
                                 <span class="notification-trigger__count">{{ $unreadNotificationCount > 99 ? '99+' : $unreadNotificationCount }}</span>
