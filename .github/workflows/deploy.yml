@@ -1,5 +1,8 @@
 name: Deploy OgraFi
 
+permissions:
+  contents: write
+
 on:
   push:
     branches:
@@ -35,7 +38,14 @@ jobs:
           APP_KEY: base64:MTIzNDU2Nzg5MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTI=
         run: |
           set -euo pipefail
-          composer install --no-interaction --prefer-dist
+          composer update minishlink/web-push laravel/reverb --with-all-dependencies --no-interaction --prefer-dist
+          if ! git diff --quiet -- composer.lock; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add composer.lock
+            git commit -m "Update Composer lock for web push and Reverb"
+            git push origin HEAD:main
+          fi
           php artisan test
 
       - name: Set up Node.js
