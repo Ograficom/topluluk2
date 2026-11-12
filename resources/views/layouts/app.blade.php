@@ -311,49 +311,6 @@
                             .notification-item__main{gap:10px}
                         }
                     </style>
-                    @php($favoriteCount = auth()->user()->bookmarks()->count())
-                    <div class="dropdown dropdown-md">
-                        <button id="userMenuButton" type="button" @class(['btn btn-secondary-ghost btn-circle avatar', 'newpm' => $favoriteCount > 0]) data-dropdown-toggle aria-expanded="false" aria-haspopup="menu" aria-controls="userMenu" aria-label="{{ auth()->user()->displayName() }}">
-                            <img src="{{ auth()->user()->avatarUrl() }}" alt="" width="40" height="40">
-                        </button>
-                        <ul class="dropdown-menu dropdown-menu-end" id="userMenu" aria-labelledby="userMenuButton">
-                            <li class="dropdown-menu-item dropdown-menu-item-lg">
-                                <a href="{{ route('messenger.index') }}"><x-repost-icon name="message" size="22" class="color-gray" /><span>Mesajlar</span></a>
-                            </li>
-                            <li class="dropdown-menu-item dropdown-menu-item-lg">
-                                <a href="{{ route('favorites.index') }}"><x-repost-icon name="bookmark" size="22" class="color-gray" /><span>Favoriler</span>@if ($favoriteCount > 0)<span class="dropdown-menu-count">{{ number_format($favoriteCount) }}</span>@endif</a>
-                            </li>
-                            <li class="dropdown-menu-item dropdown-menu-item-lg">
-                                <a href="{{ route('community.following') }}"><x-repost-icon name="user" size="20" class="color-gray" /><span>Takip akışı</span></a>
-                            </li>
-                            <li class="dropdown-menu-item dropdown-menu-item-lg">
-                                <a href="{{ route('subscriptions.index') }}"><x-repost-icon name="user" size="20" class="color-gray" /><span>Abonelikler</span></a>
-                            </li>
-                            <li class="dropdown-menu-item dropdown-menu-item-lg">
-                                <a href="{{ route('settings.edit') }}"><x-repost-icon name="setting" size="20" class="color-gray" /><span>Ayarlar</span></a>
-                            </li>
-                            <li class="dropdown-menu-item dropdown-menu-item-lg">
-                                <a href="{{ route('advertisements.index') }}"><x-repost-icon name="feed" size="20" class="color-gray" /><span>Reklam yöneticisi</span><span style="display:inline-flex;align-items:center;justify-content:center;margin-left:auto;padding:3px 7px;border-radius:6px;background:#2563eb;color:#fff;font-size:10px;font-weight:700;line-height:1.2;">Yeni</span></a>
-                            </li>
-                            <li class="dropdown-menu-item dropdown-menu-item-lg">
-                                <a href="{{ route('santral') }}"><x-repost-icon name="message" size="20" class="color-gray" /><span>Santral hizmeti</span><span style="display:inline-flex;align-items:center;justify-content:center;margin-left:auto;padding:3px 7px;border-radius:6px;background:#2563eb;color:#fff;font-size:10px;font-weight:700;line-height:1.2;">Yeni</span></a>
-                            </li>
-                            @if (auth()->user()->is_admin)
-                                <li class="dropdown-menu-item dropdown-menu-item-lg">
-                                    <a href="{{ route('channels.create') }}" aria-label="Kategori oluştur" title="Kategori oluştur"><x-repost-icon name="plus" size="20" class="color-gray" /><span>Kategori oluştur</span></a>
-                                </li>
-                                <li class="dropdown-menu-item dropdown-menu-item-lg">
-                                    <a href="{{ url('/admin') }}"><x-repost-icon name="adminpanel" size="20" class="color-gray" /><span>Yönetim paneli</span></a>
-                                </li>
-                            @endif
-                            <li class="dropdown-menu-item dropdown-menu-item-lg is-danger">
-                                <button type="submit" form="logoutForm"><x-repost-icon name="logout" size="20" /><span>Çıkış yap</span></button>
-                            </li>
-                        </ul>
-                        <form id="logoutForm" action="{{ route('logout') }}" method="POST" hidden>
-                            @csrf
-                        </form>
-                    </div>
                 @else
                     <button type="button" class="btn btn-primary btn-rounded btn-md" data-modal-btn="login" aria-haspopup="dialog" aria-controls="loginModal"><x-repost-icon name="user" size="18" /><span>Giriş yap</span></button>
                 @endauth
@@ -669,9 +626,49 @@
                 <x-repost-icon name="channels" size="20" /><span>Channels</span>
             </a>
             @auth
-                <button class="mobmenu__link mobmenu__link--profile" type="button" aria-label="Profil menüsünü aç" aria-controls="userMenu" onclick="document.getElementById('userMenuButton')?.click()">
-                    <img src="{{ auth()->user()->avatarUrl() }}" alt="" width="24" height="24" loading="lazy"><span>Profil</span>
-                </button>
+            @php($favoriteCount = auth()->user()->bookmarks()->count())
+                    <div class="dropdown dropup dropdown-md mobmenu__profile-dropdown">
+                        <button id="userMenuButton" type="button" @class(['btn btn-secondary-ghost btn-circle avatar', 'newpm' => $favoriteCount > 0]) data-dropdown-toggle aria-expanded="false" aria-haspopup="menu" aria-controls="userMenu" aria-label="Profil menüsünü aç">
+                            <img src="{{ auth()->user()->avatarUrl() }}" alt="" width="24" height="24" loading="lazy"><span>Profil</span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-center" id="userMenu" aria-labelledby="userMenuButton">
+                            <li class="dropdown-menu-item dropdown-menu-item-lg">
+                                <a href="{{ route('messenger.index') }}"><x-repost-icon name="message" size="22" class="color-gray" /><span>Mesajlar</span></a>
+                            </li>
+                            <li class="dropdown-menu-item dropdown-menu-item-lg">
+                                <a href="{{ route('favorites.index') }}"><x-repost-icon name="bookmark" size="22" class="color-gray" /><span>Favoriler</span>@if ($favoriteCount > 0)<span class="dropdown-menu-count">{{ number_format($favoriteCount) }}</span>@endif</a>
+                            </li>
+                            <li class="dropdown-menu-item dropdown-menu-item-lg">
+                                <a href="{{ route('community.following') }}"><x-repost-icon name="user" size="20" class="color-gray" /><span>Takip akışı</span></a>
+                            </li>
+                            <li class="dropdown-menu-item dropdown-menu-item-lg">
+                                <a href="{{ route('subscriptions.index') }}"><x-repost-icon name="user" size="20" class="color-gray" /><span>Abonelikler</span></a>
+                            </li>
+                            <li class="dropdown-menu-item dropdown-menu-item-lg">
+                                <a href="{{ route('settings.edit') }}"><x-repost-icon name="setting" size="20" class="color-gray" /><span>Ayarlar</span></a>
+                            </li>
+                            <li class="dropdown-menu-item dropdown-menu-item-lg">
+                                <a href="{{ route('advertisements.index') }}"><x-repost-icon name="feed" size="20" class="color-gray" /><span>Reklam yöneticisi</span><span style="display:inline-flex;align-items:center;justify-content:center;margin-left:auto;padding:3px 7px;border-radius:6px;background:#2563eb;color:#fff;font-size:10px;font-weight:700;line-height:1.2;">Yeni</span></a>
+                            </li>
+                            <li class="dropdown-menu-item dropdown-menu-item-lg">
+                                <a href="{{ route('santral') }}"><x-repost-icon name="message" size="20" class="color-gray" /><span>Santral hizmeti</span><span style="display:inline-flex;align-items:center;justify-content:center;margin-left:auto;padding:3px 7px;border-radius:6px;background:#2563eb;color:#fff;font-size:10px;font-weight:700;line-height:1.2;">Yeni</span></a>
+                            </li>
+                            @if (auth()->user()->is_admin)
+                                <li class="dropdown-menu-item dropdown-menu-item-lg">
+                                    <a href="{{ route('channels.create') }}" aria-label="Kategori oluştur" title="Kategori oluştur"><x-repost-icon name="plus" size="20" class="color-gray" /><span>Kategori oluştur</span></a>
+                                </li>
+                                <li class="dropdown-menu-item dropdown-menu-item-lg">
+                                    <a href="{{ url('/admin') }}"><x-repost-icon name="adminpanel" size="20" class="color-gray" /><span>Yönetim paneli</span></a>
+                                </li>
+                            @endif
+                            <li class="dropdown-menu-item dropdown-menu-item-lg is-danger">
+                                <button type="submit" form="logoutForm"><x-repost-icon name="logout" size="20" /><span>Çıkış yap</span></button>
+                            </li>
+                        </ul>
+                        <form id="logoutForm" action="{{ route('logout') }}" method="POST" hidden>
+                            @csrf
+                        </form>
+                    </div>
             @endauth
         </nav>
     </section>
