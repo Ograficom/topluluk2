@@ -24,7 +24,9 @@ class PostInteractionController extends Controller
         abort_unless(in_array($type, [PostReaction::LIKE, PostReaction::DISLIKE], true), 404);
         $this->ensurePublished($post);
 
-        DB::transaction(function () use ($request, $post, $type): void {
+        $notifyLike = false;
+
+        DB::transaction(function () use ($request, $post, $type, &$notifyLike): void {
             $reaction = PostReaction::query()
                 ->where('post_id', $post->id)
                 ->where('user_id', $request->user()->id)
@@ -39,6 +41,7 @@ class PostInteractionController extends Controller
 
             if ($reaction) {
                 $reaction->update(['type' => $type]);
+                $notifyLike = $type === PostReaction::LIKE;
 
                 return;
             }
@@ -48,7 +51,23 @@ class PostInteractionController extends Controller
                 'user_id' => $request->user()->id,
                 'type' => $type,
             ]);
+
+            $notifyLike = $type === PostReaction::LIKE;
         });
+
+        if (
+            $notifyLike
+            && $post->user
+            && ! $post->user->is($request->user())
+        ) {
+            UserNotificationService::send(
+                $post->user,
+                'likes',
+                'Yazın beğenildi',
+                $request->user()->displayName().' yazını beğendi: '.$post->title,
+                route('posts.show', $post),
+            );
+        }
 
         return back();
     }
