@@ -61,7 +61,7 @@
     <link rel="stylesheet" href="{{ asset('assets/libs/fancyapp/fancybox.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/libs/fancyapp/carousel.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/kit.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/css/app.css') }}?v=20261112-repost-composer">
+    <link rel="stylesheet" href="{{ asset('assets/css/app.css') }}?v=20261112-repost-reference">
     <link rel="stylesheet" href="{{ asset('assets/css/engine.css') }}?v=20261110-santral-hero-buttons-inset-blue">
     <link rel="stylesheet" href="{{ asset('assets/css/ografi-overrides.css') }}?v=20261111-santral-dark-theme">
     <script>
@@ -764,6 +764,14 @@
 
             const liveModal = document.querySelector('.post-create-modal-page[data-live-composer="1"]');
             if (!liveModal) return;
+
+            const expandButton = event.target.closest('[data-post-composer-expand]');
+            if (expandButton) {
+                const expanded = liveModal.classList.toggle('is-expanded');
+                expandButton.setAttribute('aria-pressed', expanded ? 'true' : 'false');
+                expandButton.setAttribute('aria-label', expanded ? 'Küçült' : 'Genişlet');
+                return;
+            }
 
             if (event.target === liveModal || event.target.closest('.addpost__modal-close')) {
                 event.preventDefault();
