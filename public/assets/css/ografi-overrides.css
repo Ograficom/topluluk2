@@ -5770,7 +5770,7 @@ body.is-messenger-conversation .pm-dialog__composer .pm-composer__send{
 }
 
 
-/* Mobile header: keep the OgraFi wordmark visible instead of hiding it or swapping to COP31. */
+/* Mobile header: retain the same OgraFi / COP31 logo rotation used on desktop. */
 @media screen and (max-width: 420px) {
     .header .header__logo.header-logo-swap {
         width: 150px !important;
@@ -5780,17 +5780,33 @@ body.is-messenger-conversation .pm-dialog__composer .pm-composer__send{
         display: grid !important;
         grid-template-columns: 36px max-content !important;
         gap: 8px !important;
-        opacity: 1 !important;
-        transform: none !important;
-        animation: none !important;
+        animation: ografi-logo-brand-cycle 10s infinite !important;
     }
     .header .header__logo .header-logo-swap__cop {
-        display: none !important;
-        animation: none !important;
+        display: flex !important;
+        justify-content: center !important;
+        animation: ografi-logo-cop-cycle 10s infinite !important;
+    }
+    .header .header__logo .header-logo-swap__cop img {
+        display: block !important;
+        width: 150px !important;
+        height: 40px !important;
+        object-fit: contain !important;
     }
     .header .header__logo .logo-text {
         display: block !important;
         white-space: nowrap !important;
+    }
+}
+
+/* Keep both campaign identities available on mobile even with reduced-motion enabled. */
+@media screen and (max-width: 420px) and (prefers-reduced-motion: reduce) {
+    .header .header__logo .header-logo-swap__brand {
+        animation: ografi-logo-brand-cycle 10s infinite !important;
+    }
+    .header .header__logo .header-logo-swap__cop {
+        display: flex !important;
+        animation: ografi-logo-cop-cycle 10s infinite !important;
     }
 }
 
