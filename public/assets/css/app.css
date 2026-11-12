@@ -6369,3 +6369,7 @@ body.post-composer-open{overflow:hidden}
   .post-create-modal .post-composer-media-section { padding-left: 22px !important; padding-right: 22px !important; }
   .post-create-modal .post-create-simple__footer { padding-left: 22px !important; }
 }
+
+.addpost__modal-controls{display:flex;align-items:center;gap:12px}
+.addpost__modal-expand{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;padding:0;border:0;background:transparent;color:#71839d;cursor:pointer}
+.post-create-modal.is-expanded{width:min(900px,calc(100vw - 32px))!important;max-width:900px!important;height:min(80dvh,760px)!important;max-height:80dvh!important}
