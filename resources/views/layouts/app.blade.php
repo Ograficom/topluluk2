@@ -709,9 +709,21 @@
         if (window.__ografiPostComposerBound) return;
         window.__ografiPostComposerBound = true;
 
+        let composerReturnFocus = null;
+        let composerPreviousOverflow = '';
+
         const closeComposer = () => {
-            document.querySelector('.post-create-modal-page[data-live-composer="1"]')?.remove();
+            const modal = document.querySelector('.post-create-modal-page[data-live-composer="1"]');
+            if (!modal) return;
+
+            modal.remove();
             document.body.classList.remove('post-composer-open');
+            document.body.style.overflow = composerPreviousOverflow;
+
+            if (composerReturnFocus && document.contains(composerReturnFocus)) {
+                composerReturnFocus.focus({ preventScroll: true });
+            }
+            composerReturnFocus = null;
         };
 
         document.addEventListener('click', async (event) => {
@@ -735,6 +747,11 @@
                     const source = parsed.querySelector('.post-create-modal-page');
                     if (!source) throw new Error('Composer markup not found');
 
+                    composerReturnFocus = document.activeElement instanceof HTMLElement
+                        ? document.activeElement
+                        : trigger;
+                    composerPreviousOverflow = document.body.style.overflow;
+
                     const modal = source.cloneNode(true);
                     modal.dataset.liveComposer = '1';
                     modal.setAttribute('role', 'dialog');
@@ -743,6 +760,7 @@
 
                     document.body.appendChild(modal);
                     document.body.classList.add('post-composer-open');
+                    document.body.style.overflow = 'hidden';
 
                     const composerScripts = Array.from(parsed.querySelectorAll('script')).filter(script =>
                         !script.src && (
@@ -785,7 +803,37 @@
         });
 
         document.addEventListener('keydown', event => {
-            if (event.key === 'Escape') closeComposer();
+            const modal = document.querySelector('.post-create-modal-page[data-live-composer="1"]');
+            if (!modal) return;
+
+            if (event.key === 'Escape') {
+                event.preventDefault();
+                closeComposer();
+                return;
+            }
+
+            if (event.key !== 'Tab') return;
+
+            const focusable = Array.from(modal.querySelectorAll(
+                'a[href], button:not([disabled]), input:not([disabled]):not([type="hidden"]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+            )).filter(element => element.getClientRects().length > 0);
+
+            if (!focusable.length) {
+                event.preventDefault();
+                modal.focus();
+                return;
+            }
+
+            const first = focusable[0];
+            const last = focusable[focusable.length - 1];
+
+            if (event.shiftKey && (document.activeElement === first || !modal.contains(document.activeElement))) {
+                event.preventDefault();
+                last.focus();
+            } else if (!event.shiftKey && (document.activeElement === last || !modal.contains(document.activeElement))) {
+                event.preventDefault();
+                first.focus();
+            }
         });
     })();
     </script>
