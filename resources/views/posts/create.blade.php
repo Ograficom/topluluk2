@@ -74,20 +74,45 @@
                         <p>Yazına kapak, fotoğraf veya video ekle.</p>
                     </div>
                 </div>
-                <div class="post-create-simple__media addpost__actions">
-                    <label for="post-cover" class="post-create-simple__file"><x-repost-icon name="images" size="19" /> Kapak görseli</label>
+                <div class="post-create-simple__media addpost__actions post-composer-toolbar">
+                    <label for="post-media" class="post-composer-tool" aria-label="Fotoğraf ekle" title="Fotoğraf ekle">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="4" width="17" height="16" rx="2"/><circle cx="8.5" cy="9" r="1.5"/><path d="m20.5 15-5-5L5 20"/></svg>
+                    </label>
+                    <input id="post-media" name="media[]" type="file" accept="image/jpeg,image/png,image/gif,image/webp" multiple data-post-gallery-input>
+
+                    <button type="button" class="post-composer-tool" data-composer-location-toggle aria-label="Konum ekle" title="Konum ekle" aria-expanded="false">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></svg>
+                    </button>
+
+                    <button type="button" class="post-composer-tool" data-composer-video-toggle aria-label="Video bağlantısı ekle" title="Video bağlantısı ekle" aria-expanded="false">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="m10 9 5 3-5 3z"/></svg>
+                    </button>
+                    <label for="post-video-file" class="post-composer-tool" aria-label="Video dosyası ekle" title="Dosya yükle">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V10z"/><path d="M13 3v7h7M8 14h8M8 17h8"/></svg>
+                    </label>
+                    <input id="post-video-file" name="video_file" type="file" accept="video/mp4,video/webm,video/quicktime,video/x-matroska">
+
+                    <button type="button" class="post-composer-tool" data-composer-tags-toggle aria-label="Etiket ekle" title="Etiket ekle">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h16M4 15h16M9 4l-2 16M17 4l-2 16"/></svg>
+                    </button>
+
+                    <input id="post-video-url" name="video_url" type="url" value="{{ old('video_url', $post->video_url ?? '') }}" maxlength="2048" placeholder="YouTube, Instagram veya TikTok bağlantısı" data-composer-video-field>
+                    <div class="post-composer-location-panel" data-composer-location-panel hidden>
+                        <label for="post-location">Konum</label>
+                        <input id="post-location" name="location" type="text" maxlength="255" value="{{ old('location', $post->location ?? '') }}" placeholder="Şehir, mekan veya adres">
+                        <button type="button" data-composer-location-close aria-label="Konum alanını kapat">×</button>
+                    </div>
+                    <div class="post-composer-video-panel" data-composer-video-panel hidden></div>
+
                     <input id="post-cover" name="cover_image" type="file" accept="image/jpeg,image/png,image/gif,image/webp" data-post-cover-input>
                     <div class="post-composer-cover-preview" data-post-cover-preview aria-live="polite"></div>
+                    <div class="post-composer-file-list" data-post-gallery-list aria-live="polite"></div>
                     @if (isset($post) && $post->coverImageUrl())
                         <div class="post-composer-existing-cover">
                             <img src="{{ $post->coverImageUrl() }}" alt="Mevcut kapak görseli">
                             <label class="small"><input type="checkbox" name="remove_cover" value="1"> Kapağı kaldır</label>
                         </div>
                     @endif
-
-                    <label for="post-media" class="post-create-simple__file"><x-repost-icon name="image" size="19" /> Fotoğraf ekle</label>
-                    <input id="post-media" name="media[]" type="file" accept="image/jpeg,image/png,image/gif,image/webp" multiple data-post-gallery-input>
-                    <div class="post-composer-file-list" data-post-gallery-list aria-live="polite"></div>
                     @if (isset($post) && filled($post->media))
                         <div class="post-create-simple__existing-media">
                             @foreach ($post->media as $mediaPath)
@@ -95,12 +120,6 @@
                             @endforeach
                         </div>
                     @endif
-
-                    <label for="post-video-url" class="post-create-simple__file"><x-repost-icon name="video" size="19" /> Video bağlantısı</label>
-                    <input id="post-video-url" name="video_url" type="url" value="{{ old('video_url', $post->video_url ?? '') }}"
-                        maxlength="2048" placeholder="YouTube, Instagram, TikTok bağlantısı">
-                    <label for="post-video-file" class="post-create-simple__file"><x-repost-icon name="upload" size="19" /> Video dosyası yükle</label>
-                    <input id="post-video-file" name="video_file" type="file" accept="video/mp4,video/webm,video/quicktime,video/x-matroska">
                     @if (isset($post) && $post->video_path)
                         <p class="small color-gray">Mevcut video kayıtlı. Yeni video seçersen değiştirilir.</p>
                     @endif
