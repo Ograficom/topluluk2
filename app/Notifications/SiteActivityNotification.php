@@ -43,7 +43,31 @@ class SiteActivityNotification extends Notification
             default => true,
         };
 
-        $emailEnabled = $systemSettings->enabled('email_enabled') && (bool) data_get($preferences, 'email.'.$this->category, $legacyEmailDefault);
+        // SMTP settings are stored in the database; apply them on every request
+        // because Filament's settings form only changes runtime config for its own request.
+        $mailSettings = MailSetting::current();
+        $smtpEnabled = $mailSettings->enabled
+            && filled($mailSettings->host)
+            && filled($mailSettings->username)
+            && filled($mailSettings->password);
+
+        if ($smtpEnabled) {
+            config([
+                'mail.default' => $mailSettings->mailer ?: 'smtp',
+                'mail.mailers.smtp.transport' => 'smtp',
+                'mail.mailers.smtp.scheme' => $mailSettings->scheme,
+                'mail.mailers.smtp.host' => $mailSettings->host,
+                'mail.mailers.smtp.port' => $mailSettings->port,
+                'mail.mailers.smtp.username' => $mailSettings->username,
+                'mail.mailers.smtp.password' => $mailSettings->password,
+                'mail.from.address' => $mailSettings->from_address,
+                'mail.from.name' => $mailSettings->from_name,
+            ]);
+        }
+
+        $emailEnabled = $systemSettings->enabled('email_enabled')
+            && $smtpEnabled
+            && (bool) data_get($preferences, 'email.'.$this->category, $legacyEmailDefault);
         $pushEnabled = $systemSettings->enabled('push_enabled') && (bool) data_get($preferences, 'push.'.$this->category, $this->category === 'security');
 
         // The database row powers the in-site stream and is also the durable push event record.
