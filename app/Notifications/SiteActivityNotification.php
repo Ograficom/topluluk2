@@ -3,6 +3,7 @@
 namespace App\Notifications;
 
 use App\Models\NotificationSystemSetting;
+use App\Models\MailSetting;
 use Filament\Actions\Action;
 use Filament\Notifications\Notification as FilamentNotification;
 use Illuminate\Notifications\Messages\BroadcastMessage;
