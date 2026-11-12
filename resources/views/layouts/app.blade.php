@@ -171,24 +171,40 @@
                             <div class="notification-menu__head">
                                 <strong>Bildirimler</strong>
                                 <details class="notification-menu__options">
-                                    <summary class="pm-item__more" aria-label="Bildirim seçenekleri" title="Bildirim seçenekleri">
-                                        <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><circle cx="5" cy="12" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="19" cy="12" r="1.8"/></svg>
+                                    <summary class="notification-actions-trigger" aria-label="Bildirim seçenekleri" title="Bildirim seçenekleri">
+                                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                                            <circle cx="12" cy="5" r="1.65"/><circle cx="12" cy="12" r="1.65"/><circle cx="12" cy="19" r="1.65"/>
+                                        </svg>
                                     </summary>
-                                    <div class="dropdown-menu dropdown-menu-end" aria-label="Bildirim seçenekleri">
+                                    <div class="notification-actions-popover" aria-label="Bildirim seçenekleri">
                                         <form method="POST" action="{{ route('notifications.read-all') }}">
                                             @csrf
-                                            <button type="submit">Tümünü okundu olarak işaretle</button>
+                                            <button type="submit">
+                                                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg>
+                                                <span>Tümünü okundu olarak işaretle</span>
+                                            </button>
                                         </form>
                                         <form method="POST" action="{{ route('notifications.unread-all') }}">
                                             @csrf
-                                            <button type="submit">Tümünü okunmadı olarak işaretle</button>
+                                            <button type="submit">
+                                                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 8v4m0 4h.01"/><circle cx="12" cy="12" r="9"/></svg>
+                                                <span>Tümünü okunmadı olarak işaretle</span>
+                                            </button>
                                         </form>
+                                        <div class="notification-actions-divider"></div>
                                         <form method="POST" action="{{ route('notifications.destroy-all') }}" onsubmit="return confirm('Tüm bildirimleri silmek istediğine emin misin?')">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="is-danger">Tümünü temizle</button>
+                                            <button type="submit" class="is-danger">
+                                                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18M8 6V4h8v2m-9 0 1 14h8l1-14M10 10v6m4-6v6"/></svg>
+                                                <span>Tümünü temizle</span>
+                                            </button>
                                         </form>
-                                        <a href="{{ route('settings.edit') }}">Ayarlar</a>
+                                        <div class="notification-actions-divider"></div>
+                                        <a href="{{ route('settings.edit') }}">
+                                            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8Z"/><path d="m19.4 15 .1.1 1.4 1.1-1.4 2.4-1.7-.7a8 8 0 0 1-1.5.9l-.3 1.8h-2.8l-.3-1.8a8 8 0 0 1-1.5-.9l-1.7.7-1.4-2.4 1.4-1.1a7 7 0 0 1 0-1.8l-1.4-1.1 1.4-2.4 1.7.7a8 8 0 0 1 1.5-.9l.3-1.8h2.8l.3 1.8a8 8 0 0 1 1.5.9l1.7-.7 1.4 2.4-1.4 1.1a7 7 0 0 1 0 1.8Z"/></svg>
+                                            <span>Ayarlar</span>
+                                        </a>
                                     </div>
                                 </details>
                             </div>
@@ -259,17 +275,23 @@
                         .notification-menu{width:min(360px,calc(100vw - 24px));max-height:470px;padding:0!important;overflow:hidden}
                         .notification-menu__head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 14px;border-bottom:1px solid var(--dropdown-menu-border-color,#e5e7eb)}
                         .notification-menu__head strong{font-size:15px;font-weight:800;flex:none}\n                        .notification-menu__head .notification-live-status{margin-left:auto!important;flex:none!important}
-                        .notification-menu__options{position:relative;flex:none;margin-left:0}
-                        .notification-menu__options .pm-item__more{display:grid;place-items:center;width:36px;height:32px;padding:0;border:0;border-radius:9px;background:#eef2f7;color:#64748b;list-style:none;cursor:pointer;outline:none}
-                        .notification-menu__options .pm-item__more::-webkit-details-marker{display:none}
-                        .notification-menu__options .pm-item__more::marker{content:""}
-                        .notification-menu__options .pm-item__more:hover,.notification-menu__options[open] .pm-item__more{background:#e2e8f0;color:#334155}
-                        .notification-menu__options .pm-item__more svg{display:block;width:20px;height:20px;fill:currentColor}
-                        .notification-menu__options .dropdown-menu{display:none;position:absolute;top:calc(100% + 7px);right:0;z-index:120002;min-width:205px;margin:0;padding:6px;background:var(--dropdown-menu-bg,#fff);border:1px solid var(--dropdown-menu-border-color,#e5e7eb);border-radius:12px;box-shadow:0 8px 24px rgba(15,23,42,.13)}
-                        .notification-menu__options[open] .dropdown-menu{display:block!important}
-                        .notification-menu__options .dropdown-menu form{margin:0}
-                        .notification-menu__options .dropdown-menu button{display:block;width:100%;padding:0;border:0;background:none;color:inherit;font:inherit;text-align:left;cursor:pointer}
-                        .notification-menu__options .dropdown-menu .is-danger button{color:#dc2626}
+                        .notification-menu__options{position:relative;display:flex;align-items:center;flex:none;margin-left:auto}
+                        .notification-actions-trigger{display:grid;place-items:center;width:34px;height:34px;padding:0;border:1px solid transparent;border-radius:10px;background:transparent;color:#7b8494;list-style:none;cursor:pointer;transition:background .16s ease,color .16s ease,border-color .16s ease}
+                        .notification-actions-trigger::-webkit-details-marker{display:none}
+                        .notification-actions-trigger::marker{content:""}
+                        .notification-actions-trigger:hover,.notification-menu__options[open] .notification-actions-trigger{border-color:var(--border-color,#e5e7eb);background:var(--pm-secondary-light,#f1f5f9);color:var(--title-color,#1e293b)}
+                        .notification-actions-trigger:focus-visible{outline:2px solid #3b82f6;outline-offset:2px}
+                        .notification-actions-trigger svg{width:19px;height:19px;fill:currentColor}
+                        .notification-actions-popover{position:absolute;top:calc(100% + 9px);right:0;z-index:120002;display:none;width:258px;padding:7px;background:var(--card-bg,#fff);border:1px solid var(--border-color,#e5e7eb);border-radius:13px;box-shadow:0 14px 38px rgba(15,23,42,.17)}
+                        .notification-menu__options[open] .notification-actions-popover{display:block}
+                        .notification-actions-popover form{margin:0}
+                        .notification-actions-popover button,.notification-actions-popover a{display:flex;width:100%;min-height:39px;align-items:center;gap:11px;padding:8px 10px;border:0;border-radius:8px;background:transparent;color:var(--text-color,#334155);font:inherit;font-size:12.5px;font-weight:600;line-height:1.35;text-align:left;text-decoration:none;cursor:pointer}
+                        .notification-actions-popover button:hover,.notification-actions-popover a:hover{background:var(--pm-secondary-light,#f1f5f9);color:var(--title-color,#0f172a)}
+                        .notification-actions-popover svg{width:17px;height:17px;flex:none;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;color:#64748b}
+                        .notification-actions-popover .is-danger{color:#dc2626}
+                        .notification-actions-popover .is-danger svg{color:#dc2626}
+                        .notification-actions-popover .is-danger:hover{background:#fef2f2;color:#b91c1c}
+                        .notification-actions-divider{height:1px;margin:5px 4px;background:var(--border-color,#e5e7eb)}
                         .notification-menu__list{max-height:390px;overflow-y:auto}
                         .notification-item{position:relative;display:flex;align-items:flex-start;gap:5px;padding:10px 10px 10px 13px;border-bottom:1px solid rgba(148,163,184,.16)}
                         /* Notification rows follow the actual Repost messenger list styling */
