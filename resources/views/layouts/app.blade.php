@@ -669,9 +669,9 @@
                 <x-repost-icon name="channels" size="20" /><span>Channels</span>
             </a>
             @auth
-                <a class="mobmenu__link mobmenu__link--profile {{ request()->routeIs('profiles.show') ? 'is-active' : '' }}" href="{{ auth()->user()->username ? route('profiles.show', ['identifier' => auth()->user()->username]) : route('settings.edit') }}" aria-label="Profilim">
+                <button class="mobmenu__link mobmenu__link--profile" type="button" aria-label="Profil menüsünü aç" aria-controls="userMenu" onclick="document.getElementById('userMenuButton')?.click()">
                     <img src="{{ auth()->user()->avatarUrl() }}" alt="" width="24" height="24" loading="lazy"><span>Profil</span>
-                </a>
+                </button>
             @endauth
         </nav>
     </section>
