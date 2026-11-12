@@ -182,12 +182,24 @@
             }));
 
             const textarea=document.querySelector('#dialog-message'),emojiPicker=document.querySelector('[data-emoji-picker]'),emojiGrid=document.querySelector('[data-emoji-grid]'),gifPanel=document.querySelector('[data-gif-panel]'),gifSearch=document.querySelector('[data-gif-search]'),gifResults=document.querySelector('[data-gif-results]'),gifInput=document.querySelector('#dialog-gif-url'),fileInput=document.querySelector('#dialog-attachment'),filePreview=document.querySelector('[data-attachment-preview]'),gifSelected=document.querySelector('[data-gif-selected]'),composer=document.querySelector('.pm-composer');
+            const resizeMessageTextarea = () => {
+                if (!textarea) return;
+                textarea.style.height = 'auto';
+                const styles = window.getComputedStyle(textarea);
+                const lineHeight = Number.parseFloat(styles.lineHeight) || 20;
+                const maxHeight = 160;
+                const nextHeight = Math.min(textarea.scrollHeight, maxHeight);
+                textarea.style.height = Math.max(lineHeight + 16, nextHeight) + 'px';
+                textarea.style.overflowY = textarea.scrollHeight > maxHeight ? 'auto' : 'hidden';
+            };
+            textarea?.addEventListener('input', resizeMessageTextarea);
+            resizeMessageTextarea();
             const attachmentMenu=document.querySelector('[data-attachment-menu]'),attachmentToggle=document.querySelector('[data-attachment-toggle]');
             attachmentToggle?.addEventListener('click',()=>{attachmentMenu.hidden=!attachmentMenu.hidden;attachmentToggle.setAttribute('aria-expanded',String(!attachmentMenu.hidden));if(emojiPicker)emojiPicker.hidden=true;});
             attachmentMenu?.querySelectorAll('[data-attachment-kind]').forEach(item=>item.addEventListener('click',()=>{if(fileInput){fileInput.accept=item.dataset.attachmentKind==='media'?'image/*,video/*':'';fileInput.click();}attachmentMenu.hidden=true;attachmentToggle?.setAttribute('aria-expanded','false');}));
             document.querySelector('[data-emoji-toggle]')?.addEventListener('click',()=>{emojiPicker.hidden=!emojiPicker.hidden;if(attachmentMenu)attachmentMenu.hidden=true;});
 
-            emojiPicker?.querySelectorAll('[data-insert-emoji]').forEach(btn=>btn.addEventListener('click',()=>{const x=textarea.selectionStart??textarea.value.length,y=textarea.selectionEnd??x;textarea.setRangeText(btn.dataset.insertEmoji||'',x,y,'end');textarea.focus();}));
+            emojiPicker?.querySelectorAll('[data-insert-emoji]').forEach(btn=>btn.addEventListener('click',()=>{const x=textarea.selectionStart??textarea.value.length,y=textarea.selectionEnd??x;textarea.setRangeText(btn.dataset.insertEmoji||'',x,y,'end');resizeMessageTextarea();textarea.focus();}));
             document.querySelectorAll('[data-picker-tab]').forEach(tab=>tab.addEventListener('click',()=>{document.querySelectorAll('[data-picker-tab]').forEach(x=>x.classList.toggle('is-active',x===tab));emojiGrid.hidden=tab.dataset.pickerTab!=='emoji';gifPanel.hidden=tab.dataset.pickerTab!=='gif';}));
             let gifTimer;gifSearch?.addEventListener('input',()=>{clearTimeout(gifTimer);const q=gifSearch.value.trim();if(q.length<2){gifResults.textContent='GIF aramak için en az 2 karakter yazın.';return;}gifTimer=setTimeout(async()=>{gifResults.textContent='GIF’ler aranıyor…';try{const res=await fetch('{{ route('messenger.gifs.search') }}?q='+encodeURIComponent(q),{headers:{Accept:'application/json'}});if(!res.ok)throw Error();const data=await res.json();gifResults.replaceChildren();(data.results||[]).forEach(g=>{const btn=document.createElement('button');btn.type='button';btn.className='pm-composer__gif-item';const img=document.createElement('img');img.src=g.preview;img.alt=g.title||'GIF';btn.append(img);btn.addEventListener('click',()=>{gifInput.value=g.url;gifSelected.hidden=false;emojiPicker.hidden=true;textarea.value='';});gifResults.append(btn);});if(!data.results?.length)gifResults.textContent='Sonuç bulunamadı.';}catch(e){gifResults.textContent='GIF yüklenemedi. API anahtarını kontrol edin.';}},350);});
             document.querySelector('[data-clear-gif]')?.addEventListener('click',()=>{gifInput.value='';gifSelected.hidden=true;});
@@ -202,6 +214,7 @@
                     if (!textarea) return;
                     const quote = button.getAttribute('data-quote-message') || '';
                     textarea.value = quote.split('\n').map((line) => '> ' + line).join('\n') + '\n\n';
+                    resizeMessageTextarea();
                     textarea.focus();
                     textarea.setSelectionRange(textarea.value.length, textarea.value.length);
                     document.querySelector('#dialog-message')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
