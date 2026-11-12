@@ -63,7 +63,7 @@
     <link rel="stylesheet" href="{{ asset('assets/css/kit.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/app.css') }}?v=20261112-mobile-write-menu">
     <link rel="stylesheet" href="{{ asset('assets/css/engine.css') }}?v=20261110-santral-hero-buttons-inset-blue">
-    <link rel="stylesheet" href="{{ asset('assets/css/ografi-overrides.css') }}?v=20261112-desktop-header-profile-menu-1">
+    <link rel="stylesheet" href="{{ asset('assets/css/ografi-overrides.css') }}?v=20261112-repost-original-profile-header-1">
     <script>
         (() => {
             const root = document.documentElement;
@@ -312,19 +312,27 @@
                         }
                     </style>
                     @php($desktopFavoriteCount = auth()->user()->bookmarks()->count())
-                    <div class="dropdown dropdown-md header-profile-dropdown">
-                        <button id="desktopUserMenuButton" type="button" class="btn btn-secondary-ghost btn-circle header-profile-trigger" data-dropdown-toggle aria-expanded="false" aria-haspopup="menu" aria-controls="desktopUserMenu" aria-label="Profil menüsünü aç">
-                            <img src="{{ auth()->user()->avatarUrl() }}" alt="" width="36" height="36" loading="lazy">
+                    <div class="dropdown dropdown-md">
+                        <button id="desktopUserMenuButton" type="button" class="btn btn-secondary-ghost btn-circle avatar" data-dropdown-toggle aria-expanded="false" aria-haspopup="menu" aria-controls="desktopUserMenu" aria-label="Profil menüsünü aç" title="Profil">
+                            <img src="{{ auth()->user()->avatarUrl() }}" alt="" draggable="false" width="40" height="40">
                         </button>
-                        <ul class="dropdown-menu dropdown-menu-end header-profile-menu" id="desktopUserMenu" aria-labelledby="desktopUserMenuButton">
+                        <ul class="dropdown-menu dropdown-menu-end" id="desktopUserMenu" aria-labelledby="desktopUserMenuButton">
                             <li class="dropdown-menu-item dropdown-menu-item-lg">
-                                <a href="{{ route('profiles.show', auth()->user()->username) }}"><img class="header-profile-menu__avatar" src="{{ auth()->user()->avatarUrl() }}" alt="" width="28" height="28"><span><strong>{{ auth()->user()->displayName() }}</strong><small>Profili görüntüle</small></span></a>
+                                <a class="login__profile" href="{{ route('profiles.show', auth()->user()->username) }}">
+                                    <div class="user-box">
+                                        <span class="avatar" aria-hidden="true"><img src="{{ auth()->user()->avatarUrl() }}" alt="" draggable="false" width="40" height="40"></span>
+                                        <span class="user-box-content">
+                                            <span class="name"><span class="name-text">{{ auth()->user()->displayName() }}</span></span>
+                                            <span class="small color-gray">Profili görüntüle</span>
+                                        </span>
+                                    </div>
+                                </a>
                             </li>
                             <li class="dropdown-menu-item dropdown-menu-item-lg">
-                                <a href="{{ route('messenger.index') }}"><x-repost-icon name="message" size="20" class="color-gray" /><span>Mesajlar</span></a>
+                                <a href="{{ route('messenger.index') }}"><x-repost-icon name="message" size="22" class="color-gray" /><span>Mesajlar</span></a>
                             </li>
                             <li class="dropdown-menu-item dropdown-menu-item-lg">
-                                <a href="{{ route('favorites.index') }}"><x-repost-icon name="bookmark" size="20" class="color-gray" /><span>Favoriler</span>@if ($desktopFavoriteCount > 0)<span class="dropdown-menu-count">{{ number_format($desktopFavoriteCount) }}</span>@endif</a>
+                                <a href="{{ route('favorites.index') }}"><x-repost-icon name="bookmark" size="22" class="color-gray" /><span>Favoriler</span>@if ($desktopFavoriteCount > 0)<span class="dropdown-menu-count">{{ number_format($desktopFavoriteCount) }}</span>@endif</a>
                             </li>
                             <li class="dropdown-menu-item dropdown-menu-item-lg">
                                 <a href="{{ route('community.following') }}"><x-repost-icon name="user" size="20" class="color-gray" /><span>Takip akışı</span></a>
