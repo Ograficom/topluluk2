@@ -78,7 +78,7 @@
                     @if (auth()->user()?->is($post->user) || auth()->user()?->is_admin)
                         <li class="dropdown-menu-item dropdown-menu-item-sm"><a href="{{ route('posts.edit', $post) }}">Yazıyı düzenle</a></li>
                     @endif
-                    <li class="dropdown-menu-item dropdown-menu-item-sm"><button type="button" class="post-report-trigger" data-post-report-open>Yazıyı bildir</button></li>
+                    <li class="dropdown-menu-item dropdown-menu-item-sm"><button type="button" class="post-report-trigger" data-post-report-open data-dropdown-close>Yazıyı bildir</button></li>
                 </ul>
             </div>
         </header>
@@ -313,52 +313,100 @@
         #post-report-dialog textarea:focus{outline:0;border-color:#2563eb;box-shadow:0 0 0 3px rgba(37,99,235,.12)}
     </style>
     <script>
-        document.addEventListener('DOMContentLoaded',function(){
-            const dialog=document.getElementById('post-report-dialog');
-            if(!dialog)return;
-            document.querySelectorAll('[data-post-report-open]').forEach(button=>button.addEventListener('click',()=>dialog.showModal()));
-            dialog.querySelectorAll('[data-post-report-close]').forEach(button=>button.addEventListener('click',()=>dialog.close()));
-            dialog.addEventListener('click',event=>{if(event.target===dialog)dialog.close();});
+        (() => {
+            const initPostReport = () => {
+                const dialog = document.getElementById('post-report-dialog');
+                if (!dialog || dialog.dataset.initialized === 'true') return;
+                dialog.dataset.initialized = 'true';
 
-            const select=dialog.querySelector('[data-report-select]');
-            if(!select)return;
-            const trigger=select.querySelector('[data-report-select-trigger]');
-            const menu=select.querySelector('[role="listbox"]');
-            const valueInput=dialog.querySelector('#post-report-reason');
-            const label=select.querySelector('[data-report-select-label]');
-            const error=select.querySelector('[data-report-select-error]');
-            const closeMenu=()=>{menu.hidden=true;select.classList.remove('is-open');trigger.setAttribute('aria-expanded','false');};
-            trigger.addEventListener('click',()=>{
-                const opening=menu.hidden;
-                menu.hidden=!opening;
-                select.classList.toggle('is-open',opening);
-                trigger.setAttribute('aria-expanded',String(opening));
-            });
-            menu.querySelectorAll('[data-value]').forEach(option=>option.addEventListener('click',()=>{
-                valueInput.value=option.dataset.value;
-                label.textContent=option.textContent.trim();
-                menu.querySelectorAll('[role="option"]').forEach(item=>item.setAttribute('aria-selected',String(item===option)));
-                error.hidden=true;
-                closeMenu();
-            }));
-            document.addEventListener('click',event=>{if(!select.contains(event.target))closeMenu();});
-            dialog.querySelector('form')?.addEventListener('submit',event=>{
-                if(!valueInput.value){
+                document.addEventListener('click', (event) => {
+                    const opener = event.target.closest('[data-post-report-open]');
+                    if (!opener) return;
                     event.preventDefault();
-                    error.hidden=false;
-                    trigger.focus();
-                    menu.hidden=false;
-                    select.classList.add('is-open');
-                    trigger.setAttribute('aria-expanded','true');
-                }
-            });
-            dialog.addEventListener('close',()=>{
-                valueInput.value='';
-                label.textContent='Bir neden seç';
-                error.hidden=true;
-                menu.querySelectorAll('[role="option"]').forEach(item=>item.removeAttribute('aria-selected'));
-                closeMenu();
-            });
-        });
+                    if (typeof dialog.showModal === 'function') {
+                        if (!dialog.open) dialog.showModal();
+                    } else {
+                        dialog.setAttribute('open', '');
+                    }
+                });
+
+                dialog.querySelectorAll('[data-post-report-close]').forEach((button) => {
+                    button.addEventListener('click', () => {
+                        if (typeof dialog.close === 'function') dialog.close();
+                        else dialog.removeAttribute('open');
+                    });
+                });
+
+                dialog.addEventListener('click', (event) => {
+                    if (event.target === dialog) {
+                        if (typeof dialog.close === 'function') dialog.close();
+                        else dialog.removeAttribute('open');
+                    }
+                });
+
+                const select = dialog.querySelector('[data-report-select]');
+                if (!select) return;
+                const trigger = select.querySelector('[data-report-select-trigger]');
+                const menu = select.querySelector('[role="listbox"]');
+                const valueInput = dialog.querySelector('#post-report-reason');
+                const label = select.querySelector('[data-report-select-label]');
+                const error = select.querySelector('[data-report-select-error]');
+                if (!trigger || !menu || !valueInput || !label || !error) return;
+
+                const closeMenu = () => {
+                    menu.hidden = true;
+                    select.classList.remove('is-open');
+                    trigger.setAttribute('aria-expanded', 'false');
+                };
+
+                trigger.addEventListener('click', () => {
+                    const opening = menu.hidden;
+                    menu.hidden = !opening;
+                    select.classList.toggle('is-open', opening);
+                    trigger.setAttribute('aria-expanded', String(opening));
+                });
+
+                menu.querySelectorAll('[data-value]').forEach((option) => {
+                    option.addEventListener('click', () => {
+                        valueInput.value = option.dataset.value;
+                        label.textContent = option.textContent.trim();
+                        menu.querySelectorAll('[role="option"]').forEach((item) => {
+                            item.setAttribute('aria-selected', String(item === option));
+                        });
+                        error.hidden = true;
+                        closeMenu();
+                    });
+                });
+
+                document.addEventListener('click', (event) => {
+                    if (!select.contains(event.target)) closeMenu();
+                });
+
+                dialog.querySelector('form')?.addEventListener('submit', (event) => {
+                    if (!valueInput.value) {
+                        event.preventDefault();
+                        error.hidden = false;
+                        trigger.focus();
+                        menu.hidden = false;
+                        select.classList.add('is-open');
+                        trigger.setAttribute('aria-expanded', 'true');
+                    }
+                });
+
+                dialog.addEventListener('close', () => {
+                    valueInput.value = '';
+                    label.textContent = 'Bir neden seç';
+                    error.hidden = true;
+                    menu.querySelectorAll('[role="option"]').forEach((item) => item.removeAttribute('aria-selected'));
+                    closeMenu();
+                });
+            };
+
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', initPostReport, { once: true });
+            } else {
+                initPostReport();
+            }
+        })();
     </script>
 @endsection
