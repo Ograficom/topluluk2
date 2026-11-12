@@ -420,8 +420,15 @@
             if (opening) document.getElementById('post-video-url')?.focus();
         });
         tagsToggle?.addEventListener('click', () => {
+            closeComposerPanels();
             if (tagsDetails) tagsDetails.open = true;
             tagsInput?.focus();
+        });
+
+        document.addEventListener('click', event => {
+            if (locationPanel?.hidden && videoPanel?.hidden) return;
+            if (event.target.closest('[data-composer-location-panel], [data-composer-video-panel], [data-composer-location-toggle], [data-composer-video-toggle]')) return;
+            closeComposerPanels();
         });
 
         const form = document.querySelector('.post-create-simple form');
