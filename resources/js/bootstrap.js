@@ -35,21 +35,25 @@ if (notificationButton && notificationHeader) {
     liveStatus.className = 'notification-live-status';
     liveStatus.setAttribute('role', 'status');
     liveStatus.setAttribute('aria-live', 'polite');
-    liveStatus.textContent = 'Canlı bağlantı hazırlanıyor…';
-    liveStatus.style.cssText = 'display:block;margin-top:3px;font-size:11px;font-weight:500;color:#64748b;';
+    liveStatus.textContent = '';
+    liveStatus.setAttribute('aria-label', 'Canlı bağlantı hazırlanıyor');
+    liveStatus.title = 'Canlı bağlantı hazırlanıyor';
+    liveStatus.style.cssText = 'display:inline-block;flex:none;width:7px;height:7px;margin-left:auto;border-radius:50%;background:#94a3b8;';
     notificationHeader.append(liveStatus);
 }
 
 const setLiveStatus = (message, state = 'pending') => {
     if (!liveStatus) return;
 
-    liveStatus.textContent = message;
+    liveStatus.textContent = '';
+    liveStatus.setAttribute('aria-label', message);
+    liveStatus.title = message;
     liveStatus.dataset.state = state;
-    liveStatus.style.color = state === 'connected'
+    liveStatus.style.backgroundColor = state === 'connected'
         ? '#16a34a'
         : state === 'error'
             ? '#dc2626'
-            : '#64748b';
+            : '#94a3b8';
 };
 
 if (!reverbKey || !reverbHost) {
