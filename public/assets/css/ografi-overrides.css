@@ -5996,12 +5996,17 @@ body.is-messenger-conversation .pm-dialog__composer .pm-composer__send{
         height: 27px;
     }
 
+    .mobmenu {
+        overflow: visible !important;
+    }
+
     .mobmenu__profile-dropdown {
         position: relative;
         display: flex;
         align-items: stretch;
         justify-content: center;
         min-width: 0;
+        overflow: visible !important;
     }
 
     .mobmenu__profile-dropdown > .mobmenu__link--profile {
@@ -6029,6 +6034,12 @@ body.is-messenger-conversation .pm-dialog__composer .pm-composer__send{
         transform: translate3d(-50%, 4px, 0) !important;
         z-index: 1200 !important;
         width: min(300px, calc(100vw - 20px)) !important;
+        max-height: min(70dvh, 520px);
+        overflow-x: hidden !important;
+        overflow-y: auto !important;
+        overscroll-behavior: contain;
+        -webkit-overflow-scrolling: touch;
+        box-sizing: border-box;
         opacity: 0;
         visibility: hidden;
         pointer-events: none;
