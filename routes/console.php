@@ -20,7 +20,8 @@ Schedule::call(fn () => app(SitemapService::class)->rebuild())
     ->name('sitemap-rebuild')
     ->withoutOverlapping();
 
-Schedule::call(fn () => app(ExternalRssReader::class)->fetchAll())
+Schedule::command('rss:fetch')
     ->everyFiveMinutes()
     ->name('external-rss-fetch')
-    ->withoutOverlapping();
+    ->withoutOverlapping()
+    ->appendOutputTo(storage_path('logs/rss-schedule.log'));
