@@ -5768,3 +5768,28 @@ body.is-messenger-conversation .pm-dialog__composer .pm-composer__send{
     .post-create-modal > details.post-composer-advanced { left: 18px !important; bottom: 18px !important; }
     .post-create-modal > .post-create-simple__footer { padding-right: 14px !important; }
 }
+
+
+/* Mobile header: keep the OgraFi wordmark visible instead of hiding it or swapping to COP31. */
+@media screen and (max-width: 420px) {
+    .header .header__logo.header-logo-swap {
+        width: 150px !important;
+        flex: 0 0 150px !important;
+    }
+    .header .header__logo .header-logo-swap__brand {
+        display: grid !important;
+        grid-template-columns: 36px max-content !important;
+        gap: 8px !important;
+        opacity: 1 !important;
+        transform: none !important;
+        animation: none !important;
+    }
+    .header .header__logo .header-logo-swap__cop {
+        display: none !important;
+        animation: none !important;
+    }
+    .header .header__logo .logo-text {
+        display: block !important;
+        white-space: nowrap !important;
+    }
+}
