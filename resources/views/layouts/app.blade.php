@@ -807,6 +807,22 @@
             if (!modal) return;
 
             if (event.key === 'Escape') {
+                const openPanel = modal.querySelector('[data-composer-location-panel]:not([hidden]), [data-composer-video-panel]:not([hidden])');
+                if (openPanel) {
+                    event.preventDefault();
+                    openPanel.hidden = true;
+                    modal.querySelector('[data-composer-location-toggle]')?.setAttribute('aria-expanded', 'false');
+                    modal.querySelector('[data-composer-video-toggle]')?.setAttribute('aria-expanded', 'false');
+                    return;
+                }
+
+                const openSettings = modal.querySelector('.post-composer-advanced[open]');
+                if (openSettings) {
+                    event.preventDefault();
+                    openSettings.open = false;
+                    return;
+                }
+
                 event.preventDefault();
                 closeComposer();
                 return;
