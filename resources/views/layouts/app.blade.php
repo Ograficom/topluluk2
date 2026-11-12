@@ -61,7 +61,7 @@
     <link rel="stylesheet" href="{{ asset('assets/libs/fancyapp/fancybox.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/libs/fancyapp/carousel.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/kit.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/css/app.css') }}?v=20261112-postim-swipe">
+    <link rel="stylesheet" href="{{ asset('assets/css/app.css') }}?v=20261112-logo-swap">
     <link rel="stylesheet" href="{{ asset('assets/css/engine.css') }}?v=20261110-santral-hero-buttons-inset-blue">
     <link rel="stylesheet" href="{{ asset('assets/css/ografi-overrides.css') }}?v=20261111-santral-dark-theme">
     <script>
@@ -99,16 +99,28 @@
     <header class="header">
         <div class="header__inner container">
             <div class="header__start">
-                <a href="{{ route('posts.index') }}" class="logo header__logo" aria-label="{{ $brandName }} ana sayfa">
-                    <img
-                        src="{{ $brandLogoUrl ?? asset('assets/img/meta/logo.svg') }}"
-                        alt=""
-                        width="36"
-                        height="36"
-                        @class(['logo-icon', 'logo-icon--custom' => $brandLogoUrl])
-                        onerror="this.onerror=null;this.src='{{ asset('assets/img/meta/logo.svg') }}';"
-                    >
-                    <span class="logo-text">{{ $brandName }}</span>
+                <a href="{{ route('posts.index') }}" class="logo header__logo header-logo-swap" aria-label="{{ $brandName }} ana sayfa">
+                    <span class="header-logo-swap__brand">
+                        <img
+                            src="{{ $brandLogoUrl ?? asset('assets/img/meta/logo.svg') }}"
+                            alt=""
+                            width="36"
+                            height="36"
+                            @class(['logo-icon', 'logo-icon--custom' => $brandLogoUrl])
+                            onerror="this.onerror=null;this.src='{{ asset('assets/img/meta/logo.svg') }}';"
+                        >
+                        <span class="logo-text">{{ $brandName }}</span>
+                    </span>
+                    <span class="header-logo-swap__cop" aria-hidden="true">
+                        <img
+                            src="https://www.tudav.org/uploads/2026/07/27/cop31-logojpg-27072026_000958-df03.jpg"
+                            alt=""
+                            width="150"
+                            height="40"
+                            loading="eager"
+                            decoding="async"
+                        >
+                    </span>
                 </a>
             </div>
             <nav class="header__nav header__tabs" aria-label="Ana gezinme">
