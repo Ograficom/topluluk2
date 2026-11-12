@@ -72,6 +72,41 @@ class PostInteractionController extends Controller
         return back();
     }
 
+    public function repost(Request $request, Post $post): RedirectResponse
+    {
+        $this->ensurePublished($post);
+        abort_unless(! $post->advertisement_id, 404);
+        abort_unless(! $post->user?->is($request->user()), 403, 'Kendi yazını yeniden paylaşamazsın.');
+
+        $repost = \App\Models\PostRepost::query()
+            ->where('post_id', $post->id)
+            ->where('user_id', $request->user()->id)
+            ->first();
+
+        if ($repost) {
+            $repost->delete();
+
+            return back()->with('status', 'Yeniden paylaşımın kaldırıldı.');
+        }
+
+        \App\Models\PostRepost::create([
+            'post_id' => $post->id,
+            'user_id' => $request->user()->id,
+        ]);
+
+        if ($post->user && ! $post->user->is($request->user())) {
+            UserNotificationService::send(
+                $post->user,
+                'posts',
+                'Yazın yeniden paylaşıldı',
+                $request->user()->displayName().' yazını yeniden paylaştı: '.$post->title,
+                route('posts.show', $post),
+            );
+        }
+
+        return back()->with('status', 'Yazı yeniden paylaşıldı.');
+    }
+
     public function comment(Request $request, Post $post): RedirectResponse
     {
         $this->ensurePublished($post);
