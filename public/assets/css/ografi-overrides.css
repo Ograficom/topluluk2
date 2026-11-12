@@ -4997,3 +4997,139 @@ body.is-messenger-conversation .pm-dialog__composer .pm-composer__send{
         bottom: 12px !important;
     }
 }
+
+
+/* OgraFi composer layout correction: prevent editor, media and footer collisions. */
+.post-create-modal-page > form.post-create-modal {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    grid-template-rows: 50px 46px 48px minmax(90px, 1fr) 48px 58px !important;
+    align-content: stretch !important;
+    gap: 0 !important;
+    height: 400px !important;
+    min-height: 400px !important;
+    max-height: min(400px, calc(100dvh - 28px)) !important;
+    overflow: hidden !important;
+}
+.post-create-modal > .addpost__modal-head { grid-row: 1 !important; min-height: 0 !important; }
+.post-create-modal > .addpost__header { grid-row: 2 !important; min-height: 0 !important; }
+.post-create-modal > .post-composer-field:not(:has(#post-excerpt)) { grid-row: 3 !important; min-height: 0 !important; }
+.post-create-modal > .post-composer-editor-section {
+    grid-row: 4 !important;
+    min-height: 0 !important;
+    height: 100% !important;
+    overflow: auto !important;
+    align-self: stretch !important;
+    border-top: 1px solid #edf1f6 !important;
+    border-bottom: 1px solid #edf1f6 !important;
+}
+.post-create-modal > .post-composer-media-section {
+    position: relative !important;
+    grid-row: 5 !important;
+    min-height: 0 !important;
+    height: 48px !important;
+    overflow: visible !important;
+    align-self: stretch !important;
+    z-index: 2 !important;
+}
+.post-create-modal > .post-create-simple__options,
+.post-create-modal > details.post-composer-advanced {
+    position: absolute !important;
+    left: 20px !important;
+    bottom: 17px !important;
+    z-index: 5 !important;
+    display: block !important;
+    width: max-content !important;
+    max-width: calc(100% - 160px) !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    background: transparent !important;
+}
+.post-create-modal > details.post-composer-advanced > summary {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    min-height: 34px !important;
+    padding: 0 !important;
+    list-style: none !important;
+    white-space: nowrap !important;
+}
+.post-create-modal > details.post-composer-advanced > summary::-webkit-details-marker { display: none !important; }
+.post-create-modal > details.post-composer-advanced .post-composer-advanced-content {
+    position: absolute !important;
+    left: 0 !important;
+    bottom: 42px !important;
+    width: min(430px, calc(100vw - 70px)) !important;
+    max-height: min(55vh, 360px) !important;
+    overflow: auto !important;
+    padding: 16px !important;
+    border: 1px solid #e8edf4 !important;
+    border-radius: 14px !important;
+    background: #fff !important;
+    box-shadow: 0 12px 35px rgba(20, 35, 55, .14) !important;
+}
+.post-create-modal > .post-create-simple__footer {
+    position: static !important;
+    grid-row: 6 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+    min-height: 58px !important;
+    height: 58px !important;
+    padding: 0 18px !important;
+    margin: 0 !important;
+    border: 0 !important;
+    z-index: 3 !important;
+}
+.post-create-modal > .post-create-simple__footer button {
+    min-width: 110px !important;
+    height: 40px !important;
+    margin: 0 !important;
+}
+.post-create-modal .ce-toolbar,
+.post-create-modal .ce-toolbar__plus,
+.post-create-modal .ce-toolbar__settings-btn,
+.post-create-modal .ce-inline-toolbar {
+    display: none !important;
+}
+.post-create-modal .codex-editor,
+.post-create-modal .codex-editor__redactor,
+.post-create-modal .ce-block,
+.post-create-modal .ce-block__content {
+    max-width: 100% !important;
+}
+.post-create-modal .codex-editor__redactor {
+    padding-bottom: 0 !important;
+}
+.post-create-modal .post-create-simple__media {
+    min-height: 48px !important;
+    height: 48px !important;
+    padding: 5px 0 !important;
+    gap: 12px !important;
+}
+.post-create-modal .post-create-simple__media label[for="post-cover"],
+.post-create-modal .post-create-simple__media label[for="post-media"],
+.post-create-modal .post-create-simple__media label[for="post-video-url"],
+.post-create-modal .post-create-simple__media label[for="post-video-file"] {
+    flex: 0 0 28px !important;
+    width: 28px !important;
+    height: 34px !important;
+    border: 1px solid #e3eaf4 !important;
+    border-radius: 9px !important;
+}
+@media (max-width: 640px) {
+    .post-create-modal-page > form.post-create-modal {
+        grid-template-rows: 50px 46px 48px minmax(90px, 1fr) 48px 58px !important;
+        height: min(560px, 88dvh) !important;
+        min-height: min(420px, 88dvh) !important;
+        max-height: 88dvh !important;
+    }
+    .post-create-modal > details.post-composer-advanced {
+        left: 14px !important;
+        bottom: 12px !important;
+    }
+    .post-create-modal > .post-create-simple__footer {
+        padding-right: 14px !important;
+    }
+}
