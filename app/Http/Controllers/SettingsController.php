@@ -40,6 +40,7 @@ class SettingsController extends Controller
             'notificationPreferences' => array_replace_recursive([
                 'stream' => [
                     'replies' => true,
+                    'likes' => true,
                     'posts' => true,
                     'announcements' => true,
                     'followers' => true,
@@ -49,6 +50,7 @@ class SettingsController extends Controller
                 ],
                 'email' => [
                     'replies' => (bool) $user->notify_replies,
+                    'likes' => true,
                     'posts' => (bool) $user->notify_posts,
                     'announcements' => (bool) $user->notify_announcements,
                     'followers' => true,
@@ -58,6 +60,7 @@ class SettingsController extends Controller
                 ],
                 'push' => [
                     'replies' => false,
+                    'likes' => false,
                     'posts' => false,
                     'announcements' => false,
                     'followers' => false,
@@ -135,6 +138,7 @@ class SettingsController extends Controller
             'notification_preferences.email' => ['required', 'array'],
             'notification_preferences.push' => ['required', 'array'],
             'notification_preferences.*.replies' => ['required', 'boolean'],
+            'notification_preferences.*.likes' => ['required', 'boolean'],
             'notification_preferences.*.posts' => ['required', 'boolean'],
             'notification_preferences.*.announcements' => ['required', 'boolean'],
             'notification_preferences.*.followers' => ['required', 'boolean'],
