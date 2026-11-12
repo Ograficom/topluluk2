@@ -264,25 +264,31 @@
                         .notification-menu__options .dropdown-menu .is-danger button{color:#dc2626}
                         .notification-menu__list{max-height:390px;overflow-y:auto}
                         .notification-item{position:relative;display:flex;align-items:flex-start;gap:5px;padding:10px 10px 10px 13px;border-bottom:1px solid rgba(148,163,184,.16)}
-                        /* Repost theme-aligned notification rows */
-                        .notification-menu{background:var(--card-bg,#fff);border:1px solid var(--border-color,rgba(148,163,184,.18));border-radius:14px}
-                        .notification-menu__head{background:var(--card-bg,#fff)}
-                        .notification-item{align-items:flex-start;gap:8px;padding:12px 10px 12px 12px;border-bottom:1px solid var(--border-color,rgba(148,163,184,.14));background:transparent;transition:background-color .18s ease}
+                        /* Notification rows follow the actual Repost messenger list styling */
+                        .notification-menu{background:var(--card-bg);border:1px solid var(--border-color);border-radius:14px}
+                        .notification-menu__head{background:var(--card-bg)}
+                        .notification-item{
+                            position:relative;display:flex;min-width:0;align-items:center;gap:8px;
+                            margin:3px 6px;padding:10px 6px 10px 10px;border:0;border-radius:12px;
+                            background:transparent;transition:background-color var(--pm-transition);
+                        }
                         .notification-item:last-child{border-bottom:0}
-                        .notification-item:hover{background:var(--pm-secondary-light,#f5f7fa)}
-                        .notification-item.is-unread{background:transparent}
-                        .notification-item.is-unread:hover{background:var(--pm-secondary-light,#f5f7fa)}
-                        .notification-item__main{gap:10px;align-items:flex-start;padding:2px 0}
-                        .notification-item__icon{width:36px;height:36px;border-radius:11px;background:var(--pm-secondary,#f1f3f6);color:var(--primary-color,#2563eb)}
-                        .notification-item__content{gap:3px}
-                        .notification-item__content strong{font-family:var(--font-secondary,inherit);font-size:.84rem;font-weight:700;line-height:1.35;color:var(--title-color,#202733)}
-                        .notification-item__content>span{font-size:.78rem;line-height:1.45;color:var(--text-muted,var(--gray-500,#718096))}
-                        .notification-item__content time{margin-top:3px;font-size:.7rem;color:var(--gray-500,#8a94a5)}
-                        .notification-item__unread{width:7px;height:7px;margin:7px 2px 0 0;border-radius:50%;background:var(--primary-color,#2563eb)}
-                        .notification-item__actions summary{width:28px;height:28px;border-radius:8px;color:var(--pm-muted,var(--gray-500,#7b8493))}
-                        .notification-item__actions summary:hover,.notification-item__actions[open] summary{background:var(--pm-secondary-light,#f5f7fa);color:var(--text-color,#273142)}
-                        [data-theme="dark"] .notification-item{border-bottom-color:rgba(148,163,184,.12)}
-                        [data-theme="dark"] .notification-item__icon{background:var(--pm-secondary,#263244);color:var(--primary-color,#8ab4ff)}
+                        .notification-item:hover,.notification-item:focus-within{background-color:var(--pm-secondary-light)}
+                        .notification-item.is-unread,.notification-item.is-unread:hover{background-color:transparent}
+                        .notification-item.is-unread:focus-within,.notification-item.is-unread:hover{background-color:var(--pm-secondary-light)}
+                        .notification-item__main{display:flex;min-width:0;flex:1 1 auto;align-items:center;gap:12px;padding:2px 0;text-decoration:none!important}
+                        .notification-item__icon{display:grid;place-items:center;width:38px;height:38px;flex:0 0 38px;border-radius:11px;background:var(--pm-secondary);color:var(--color-primary)}
+                        .notification-item__content{display:flex;min-width:0;flex:1 1 auto;flex-direction:column;gap:3px}
+                        .notification-item__content strong{display:block;overflow:hidden;color:var(--title-color);font-family:var(--font-secondary);font-size:.9rem;font-weight:700;line-height:1.3;text-overflow:ellipsis}
+                        .notification-item__content>span{display:-webkit-box;overflow:hidden;color:var(--pm-muted);font-size:.8rem;line-height:1.4;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+                        .notification-item__content time{margin-top:2px;color:var(--pm-muted);font-size:.7rem;line-height:1.3}
+                        .notification-item__unread{width:7px;height:7px;flex:0 0 7px;margin:0 3px 0 0;border-radius:50%;background:var(--color-primary)}
+                        .notification-item__actions{position:relative;z-index:3;flex:none;margin-left:0}
+                        .notification-item__actions summary{display:flex;width:34px;height:34px;align-items:center;justify-content:center;border:0;border-radius:10px;background:transparent;color:var(--pm-muted);cursor:pointer}
+                        .notification-item__actions summary:hover,.notification-item__actions[open] summary{background:transparent;color:var(--text-color)}
+                        .notification-item__actions .dropdown-menu{min-width:190px}
+                        [data-theme="dark"] .notification-item{border:0}
+                        [data-theme="dark"] .notification-item__icon{background:var(--pm-secondary);color:var(--color-primary)}
                         .notification-item:hover{background:rgba(148,163,184,.08)}
                         .notification-item.is-unread{background:rgba(37,99,235,.045)}
                         .notification-item__main{display:flex;align-items:flex-start;gap:11px;flex:1;min-width:0;padding:3px 0;text-decoration:none!important}
