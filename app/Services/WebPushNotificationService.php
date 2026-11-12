@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\NotificationSystemSetting;
 use App\Models\PushSubscription;
 use App\Models\User;
 use Illuminate\Support\Facades\Log;
@@ -13,6 +14,13 @@ class WebPushNotificationService
 {
     public static function send(User $recipient, string $category, string $title, string $body, string $url): void
     {
+        $systemSettings = NotificationSystemSetting::current();
+        if (! $systemSettings->enabled('enabled')
+            || ! $systemSettings->enabled('push_enabled')
+            || ! $systemSettings->enabled('categories.'.$category)) {
+            return;
+        }
+
         $preferences = $recipient->notification_preferences ?? [];
 
         if (! (bool) data_get($preferences, 'push.'.$category, $category === 'security')) {
