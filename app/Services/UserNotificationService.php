@@ -15,13 +15,15 @@ class UserNotificationService
         string $title,
         string $message,
         string $url,
+        ?string $senderName = null,
+        ?string $mailSummary = null,
     ): void {
         if (! in_array($category, ['replies', 'likes', 'posts', 'announcements', 'followers', 'messages', 'mentions', 'security'], true)) {
             throw new \InvalidArgumentException('Unknown notification category: '.$category);
         }
 
         try {
-            $recipient->notify(new SiteActivityNotification($title, $message, $url, null, $category));
+            $recipient->notify(new SiteActivityNotification($title, $message, $url, null, $category, $senderName, $mailSummary));
         } catch (Throwable $exception) {
             // A mail transport outage must not break the user's main action.
             Log::warning('User notification delivery failed.', [
