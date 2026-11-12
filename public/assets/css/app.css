@@ -6390,3 +6390,27 @@ body.post-composer-open{overflow:hidden}
 .post-create-modal .ce-paragraph {
   padding-left: 0 !important;
 }
+
+
+/* Consistent Lucide-style outline icons in the post composer toolbar. */
+.post-create-modal .post-create-simple__media label svg,
+.post-create-modal .post-create-simple__options summary > svg,
+.post-create-modal .post-composer-seo summary svg {
+  display: block !important;
+  width: 19px !important;
+  height: 19px !important;
+  flex: 0 0 19px;
+  fill: none !important;
+  stroke: currentColor !important;
+  stroke-width: 1.8 !important;
+  stroke-linecap: round !important;
+  stroke-linejoin: round !important;
+}
+.post-create-modal .post-create-simple__media label:hover,
+.post-create-modal .post-create-simple__options summary:hover,
+.post-create-modal .post-composer-seo summary:hover {
+  color: #2563eb !important;
+}
+.post-create-modal .post-create-simple__media label {
+  transition: color .15s ease;
+}
