@@ -190,6 +190,7 @@ Route::middleware(['auth', 'verified'])->group(function (): void {
     Route::delete('/messenger/{conversation}/messages/{message}', [CommunityController::class, 'deleteMessage'])->middleware('throttle:30,1')->name('messenger.messages.delete');
 
     Route::post('/posts/{post:slug}/bookmark', [CommunityController::class, 'toggleBookmark'])->middleware('throttle:30,1')->name('posts.bookmarks.toggle');
+    Route::post('/posts/{post:slug}/repost', [PostInteractionController::class, 'repost'])->middleware('throttle:20,1')->name('posts.reposts.toggle');
     Route::post('/posts/{post:slug}/report', [PostReportController::class, 'store'])->middleware('throttle:5,10')->name('posts.report');
     Route::get('/advertisements', [AdvertisementController::class, 'index'])->name('advertisements.index');
     Route::get('/advertisements/create', [AdvertisementController::class, 'create'])->name('advertisements.create');
