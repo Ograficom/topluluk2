@@ -95,8 +95,9 @@ class ExternalRssReader
                 $saved++;
             }
 
-            // Publish a small batch each run. This safely drains the first-import
-            // backlog without flooding the site with dozens of posts at once.
+            // Publish the newest pending articles first. An old first-import backlog
+            // must not hold current news behind hundreds of older RSS entries.
+            // Keep the batch bounded so one source cannot flood the site.
             if ($source->auto_publish && $source->author_id && $source->channel_id) {
                 RssItem::query()
                     ->where('rss_source_id', $source->id)
@@ -105,9 +106,9 @@ class ExternalRssReader
                         $query->whereNull('link')
                             ->orWhere('link', 'not like', '%cumhuriyet.com.tr%');
                     })
-                    ->orderBy('published_at')
-                    ->orderBy('id')
-                    ->limit(3)
+                    ->orderByDesc('published_at')
+                    ->orderByDesc('id')
+                    ->limit(5)
                     ->get()
                     ->each(fn (RssItem $pendingItem) => $this->publishItem($source, $pendingItem));
             }
