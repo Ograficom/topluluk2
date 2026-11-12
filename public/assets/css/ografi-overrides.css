@@ -6999,3 +6999,55 @@ body.is-messenger-conversation .pm-dialog__composer .pm-composer__send{
 .post-share-menu .post-repost-action svg { flex:0 0 16px; color:currentColor; }
 .post-share-menu .post-repost-action span { flex:1; }
 .post-share-menu li:has(> form) { padding:0; }
+
+
+/* Make the nested repost form control visually identical to dropdown links. */
+.post-share-menu .dropdown-menu-item > form {
+    display: flex;
+    width: 100%;
+    flex: 1 1 auto;
+    margin: 0;
+}
+.post-share-menu .dropdown-menu-item > form > .post-repost-action {
+    display: flex;
+    width: 100%;
+    flex: 1 1 auto;
+    min-height: var(--dropdown-item-min-height, 35px);
+    align-items: center;
+    justify-content: flex-start;
+    gap: var(--dropdown-item-gap, 9px);
+    margin: 0;
+    padding: 0 var(--dropdown-item-padding-x, 10px);
+    border: 0;
+    border-radius: var(--dropdown-item-radius, 11px);
+    outline: 0;
+    color: var(--dropdown-item-color, inherit);
+    background: var(--dropdown-item-bg, transparent);
+    font-family: var(--dropdown-item-font-family, inherit);
+    font-size: var(--dropdown-item-font-size, .85rem);
+    font-weight: var(--dropdown-item-font-weight, 400);
+    line-height: var(--dropdown-item-line-height, 1.2);
+    text-align: left;
+    text-decoration: none;
+    white-space: nowrap;
+    cursor: pointer;
+    appearance: none;
+    transition: color 140ms ease, background-color 140ms ease, box-shadow 140ms ease;
+}
+.post-share-menu .dropdown-menu-item:is(:hover, :focus-within) > form > .post-repost-action,
+.post-share-menu .dropdown-menu-item > form > .post-repost-action:focus-visible {
+    color: var(--dropdown-item-hover-color, inherit);
+    background: var(--dropdown-item-hover-bg, rgba(0, 0, 0, .04));
+}
+.post-share-menu .dropdown-menu-item > form > .post-repost-action > svg {
+    display: block;
+    width: 16px;
+    height: 16px;
+    flex: 0 0 19px;
+    align-self: center;
+}
+.post-share-menu .dropdown-menu-item > form > .post-repost-action > span {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
