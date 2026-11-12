@@ -148,7 +148,7 @@
                         </div>
                         <input id="dialog-attachment" type="file" name="attachment" aria-label="Dosya seç" hidden>
                     </div>
-                    <textarea id="dialog-message" name="body" rows="1" maxlength="5000" aria-label="Mesaj" autocomplete="off" oninput="this.style.setProperty('height','auto','important');this.style.setProperty('height',Math.min(this.scrollHeight,160)+'px','important');this.style.setProperty('overflow-y',this.scrollHeight>160?'auto':'hidden','important')">{{ old('body') }}</textarea>
+                    <textarea id="dialog-message" name="body" rows="1" maxlength="5000" aria-label="Mesaj" autocomplete="off">{{ old('body') }}</textarea>
                     <input type="hidden" name="gif_url" id="dialog-gif-url">
                     <div class="pm-composer__emoji-wrap"><button class="pm-composer__emoji" type="button" data-emoji-toggle aria-label="Emoji ve GIF ekle"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8.5 14.2s1.2 2 3.5 2 3.5-2 3.5-2M9 9.5h.01M15 9.5h.01"/></svg></button>
                     <div class="pm-composer__emoji-picker" data-emoji-picker hidden><div class="pm-composer__picker-tabs"><button type="button" class="is-active" data-picker-tab="emoji">Emoji</button><button type="button" data-picker-tab="gif">GIF</button></div>
@@ -188,14 +188,12 @@
                 const maxHeight = 220;
                 const bar = textarea.closest('.pm-composer__bar');
 
-                textarea.style.setProperty('height', 'auto', 'important');
-                textarea.style.setProperty('overflow-y', 'hidden', 'important');
+                textarea.style.setProperty('height', '0px', 'important');
+                const contentHeight = textarea.scrollHeight;
+                const nextHeight = Math.max(60, Math.min(contentHeight, maxHeight));
 
-                const fullHeight = textarea.scrollHeight;
-                const nextHeight = Math.max(60, Math.min(fullHeight, maxHeight));
                 textarea.style.setProperty('height', nextHeight + 'px', 'important');
-                textarea.style.setProperty('overflow-y', fullHeight > maxHeight ? 'auto' : 'hidden', 'important');
-                textarea.scrollTop = 0;
+                textarea.style.setProperty('overflow-y', contentHeight > maxHeight ? 'auto' : 'hidden', 'important');
 
                 if (bar) {
                     bar.style.setProperty('height', 'auto', 'important');
