@@ -628,7 +628,7 @@
             @auth
             @php($favoriteCount = auth()->user()->bookmarks()->count())
                     <div class="dropdown dropup dropdown-md mobmenu__profile-dropdown">
-                        <button id="userMenuButton" type="button" @class(['btn btn-secondary-ghost btn-circle avatar', 'newpm' => $favoriteCount > 0]) data-dropdown-toggle aria-expanded="false" aria-haspopup="menu" aria-controls="userMenu" aria-label="Profil menüsünü aç">
+                        <button id="userMenuButton" type="button" @class(['mobmenu__link mobmenu__link--profile', 'newpm' => $favoriteCount > 0]) data-dropdown-toggle aria-expanded="false" aria-haspopup="menu" aria-controls="userMenu" aria-label="Profil menüsünü aç">
                             <img src="{{ auth()->user()->avatarUrl() }}" alt="" width="24" height="24" loading="lazy"><span>Profil</span>
                         </button>
                         <ul class="dropdown-menu dropdown-menu-center" id="userMenu" aria-labelledby="userMenuButton">
