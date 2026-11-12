@@ -17,53 +17,34 @@ function setMediaLoading(el, isLoading) {
 function setPostMediaSlideOrientation(carousel) {
   const images = carousel.querySelectorAll(".post__media-image");
 
-  return Promise.all(
-    [...images].map((image) => {
-      const setOrientation = () => {
-        const slide = image.closest(".f-carousel__slide");
+  images.forEach((image) => {
+    const setOrientation = () => {
+      const slide = image.closest(".f-carousel__slide");
 
-        if (!slide || !image.naturalWidth || !image.naturalHeight) return;
+      if (!slide || !image.naturalWidth || !image.naturalHeight) return;
 
-        const isVertical = image.naturalHeight > image.naturalWidth;
+      const isVertical = image.naturalHeight > image.naturalWidth;
+      slide.classList.toggle("is-vertical", isVertical);
+      slide.classList.toggle("is-horizontal", !isVertical);
 
-        slide.classList.toggle("is-vertical", isVertical);
-        slide.classList.toggle("is-horizontal", !isVertical);
-
-        if (isVertical) {
-          const carouselHeight = carousel.getBoundingClientRect().height || 340;
-          const slideWidth = Math.round(
-            (carouselHeight * image.naturalWidth) / image.naturalHeight,
-          );
-          slide.style.setProperty(
-            "--f-carousel-slide-width",
-            `${slideWidth}px`,
-          );
-        } else {
-          slide.style.setProperty("--f-carousel-slide-width", "100%");
-        }
-      };
-
-      if (image.complete) {
-        setOrientation();
-        return Promise.resolve();
-      }
-
-      return new Promise((resolve) => {
-        image.addEventListener(
-          "load",
-          () => {
-            setOrientation();
-            resolve();
-          },
-          { once: true },
+      if (isVertical) {
+        const carouselHeight = carousel.getBoundingClientRect().height || 340;
+        const slideWidth = Math.round(
+          (carouselHeight * image.naturalWidth) / image.naturalHeight,
         );
+        slide.style.setProperty("--f-carousel-slide-width", `${slideWidth}px`);
+      } else {
+        slide.style.setProperty("--f-carousel-slide-width", "100%");
+      }
+    };
 
-        image.addEventListener("error", resolve, { once: true });
-      });
-    }),
-  );
+    if (image.complete) {
+      setOrientation();
+    } else {
+      image.addEventListener("load", setOrientation, { once: true });
+    }
+  });
 }
-
 function initPlayerSwipeGuards(carousel) {
   carousel.querySelectorAll(".post__media-player-slide").forEach((slide) => {
     slide.style.setProperty("--f-carousel-slide-width", "100%");
@@ -159,30 +140,29 @@ function initFancyCarousels() {
 
     carousel.dataset.fancyCarouselInit = "pending";
 
-    setPostMediaSlideOrientation(carousel).then(() => {
-      initPlayerSwipeGuards(carousel);
+    setPostMediaSlideOrientation(carousel);
+    initPlayerSwipeGuards(carousel);
 
-      const carouselInstance = Carousel(carousel, {
-        center: false,
-        fill: false,
-        infinite: false,
-        slidesPerPage: "auto",
-        transition: "tween",
-        tween: {
-          friction: 20,
-          tension: 180,
-        },
-      });
-
-      carouselInstance.on("change", () => resetPlayerSwipeGuards(carousel));
-      carouselInstance.init();
-
-      carousel.dataset.fancyCarouselInit = "true";
-
-      if (!carousel.querySelector("[data-player-url]")) {
-        hideMediaLoader(carousel);
-      }
+    const carouselInstance = Carousel(carousel, {
+      center: false,
+      fill: false,
+      infinite: false,
+      slidesPerPage: "auto",
+      transition: "tween",
+      tween: {
+        friction: 20,
+        tension: 180,
+      },
     });
+
+    carouselInstance.on("change", () => resetPlayerSwipeGuards(carousel));
+    carouselInstance.init();
+
+    carousel.dataset.fancyCarouselInit = "true";
+
+    if (!carousel.querySelector("[data-player-url]")) {
+      hideMediaLoader(carousel);
+    }
   });
 }
 
