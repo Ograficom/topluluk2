@@ -28,6 +28,34 @@ const notificationButton = document.getElementById('notificationMenuButton');
 const notificationMenu = document.getElementById('notificationMenu');
 const notificationHeader = notificationMenu?.querySelector('.notification-menu__head');
 
+const notificationOptions = notificationMenu?.querySelector('.notification-menu__options');
+const notificationOptionsButton = notificationOptions?.querySelector('.pm-item__more');
+const notificationOptionsMenu = notificationOptions?.querySelector('.dropdown-menu');
+
+if (notificationOptionsButton && notificationOptionsMenu) {
+    notificationOptionsButton.addEventListener('click', (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        const willOpen = notificationOptionsMenu.hidden;
+        notificationOptionsMenu.hidden = !willOpen;
+        notificationOptionsButton.setAttribute('aria-expanded', String(willOpen));
+    });
+
+    document.addEventListener('click', (event) => {
+        if (!notificationOptions.contains(event.target)) {
+            notificationOptionsMenu.hidden = true;
+            notificationOptionsButton.setAttribute('aria-expanded', 'false');
+        }
+    });
+
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') {
+            notificationOptionsMenu.hidden = true;
+            notificationOptionsButton.setAttribute('aria-expanded', 'false');
+        }
+    });
+}
+
 if (notificationButton && notificationMenu) {
     const backdrop = document.querySelector('.notification-sheet-backdrop');
     const mobileSheet = window.matchMedia('(max-width: 767px)');
