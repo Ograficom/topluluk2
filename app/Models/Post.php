@@ -38,6 +38,7 @@ class Post extends Model
     public function advertisement(): BelongsTo { return $this->belongsTo(Advertisement::class); }
     public function comments(): HasMany { return $this->hasMany(Comment::class)->latest(); }
     public function reactions(): HasMany { return $this->hasMany(PostReaction::class); }
+    public function reposts(): HasMany { return $this->hasMany(PostRepost::class); }
 
     public function tagRecords(): BelongsToMany
     {
