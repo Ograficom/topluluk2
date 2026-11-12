@@ -27,6 +27,11 @@ function setPostMediaSlideOrientation(carousel) {
       slide.classList.toggle("is-vertical", isVertical);
       slide.classList.toggle("is-horizontal", !isVertical);
 
+      if (carousel.hasAttribute("data-paired-carousel")) {
+        // CSS owns the paired layout widths so desktop stays two-up and mobile stays swipeable.
+        return;
+      }
+
       if (isVertical) {
         const carouselHeight = carousel.getBoundingClientRect().height || 340;
         const slideWidth = Math.round(
