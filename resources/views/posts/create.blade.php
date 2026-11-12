@@ -131,6 +131,7 @@
             <details class="post-create-simple__options post-composer-advanced">
                 <summary><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h9m4 0h3M4 17h3m4 0h9"/><circle cx="15" cy="7" r="2"/><circle cx="9" cy="17" r="2"/></svg> Diğer ayarlar</summary>
                 <div class="post-composer-advanced-content">
+                    <label for="post-cover" class="post-create-simple__file"><x-repost-icon name="images" size="17" /> Kapak görseli seç</label>
                     <label for="tags">Etiketler</label>
                     <input id="tags" name="tags" type="text" value="{{ old('tags', isset($post) ? implode(', ', $post->tags ?? []) : '') }}"
                         maxlength="500" placeholder="Örn. teknoloji, gezi, yazılım">
