@@ -628,7 +628,7 @@
             @auth
             @php($favoriteCount = auth()->user()->bookmarks()->count())
                     <div class="dropdown dropup dropdown-md mobmenu__profile-dropdown">
-                        <button id="userMenuButton" type="button" @class(['mobmenu__link mobmenu__link--profile', 'newpm' => $favoriteCount > 0]) data-dropdown-toggle aria-expanded="false" aria-haspopup="menu" aria-controls="userMenu" aria-label="Profil menüsünü aç">
+                        <button id="userMenuButton" type="button" @class(['mobmenu__link mobmenu__link--profile', 'newpm' => $favoriteCount > 0]) data-profile-menu-toggle aria-expanded="false" aria-haspopup="menu" aria-controls="userMenu" aria-label="Profil menüsünü aç">
                             <img src="{{ auth()->user()->avatarUrl() }}" alt="" width="24" height="24" loading="lazy"><span>Profil</span>
                         </button>
                         <ul class="dropdown-menu dropdown-menu-center" id="userMenu" aria-labelledby="userMenuButton">
@@ -673,6 +673,37 @@
         </nav>
     </section>
     @endunless
+
+    <script>
+    (() => {
+        const root = document.querySelector('.mobmenu__profile-dropdown');
+        const trigger = root?.querySelector('[data-profile-menu-toggle]');
+        const menu = root?.querySelector('#userMenu');
+        if (!root || !trigger || !menu || root.dataset.profileMenuReady === '1') return;
+
+        root.dataset.profileMenuReady = '1';
+
+        const close = () => {
+            root.classList.remove('is-open');
+            trigger.setAttribute('aria-expanded', 'false');
+        };
+
+        trigger.addEventListener('click', (event) => {
+            event.preventDefault();
+            event.stopPropagation();
+            const isOpen = root.classList.toggle('is-open');
+            trigger.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+        });
+
+        document.addEventListener('click', (event) => {
+            if (!root.contains(event.target)) close();
+        });
+
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape') close();
+        });
+    })();
+    </script>
 
     @include('layouts._mobile-side-panel')
 
