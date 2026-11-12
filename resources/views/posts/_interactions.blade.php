@@ -42,6 +42,24 @@
                 <x-repost-icon name="share" size="20" />
             </button>
             <ul class="dropdown-menu dropdown-menu-center post-share-menu">
+                @auth
+                    @php($viewerReposted = auth()->user()->reposts()->where('post_id', $post->id)->exists())
+                    @if (! $post->user?->is(auth()->user()) && ! $post->advertisement_id)
+                        <li class="dropdown-menu-item dropdown-menu-item-sm">
+                            <form action="{{ route('posts.reposts.toggle', $post) }}" method="POST">
+                                @csrf
+                                <button type="submit" class="post-repost-action" aria-label="{{ $viewerReposted ? 'Yeniden paylaşımı kaldır' : 'Yeniden paylaş' }}">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m17 2 4 4-4 4"/><path d="M3 11V9a3 3 0 0 1 3-3h15"/><path d="m7 22-4-4 4-4"/><path d="M21 13v2a3 3 0 0 1-3 3H3"/></svg>
+                                    <span>{{ $viewerReposted ? 'Undo repost' : 'Repost' }}</span>
+                                </button>
+                            </form>
+                        </li>
+                    @endif
+                @else
+                    <li class="dropdown-menu-item dropdown-menu-item-sm">
+                        <a href="{{ route('login') }}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m17 2 4 4-4 4"/><path d="M3 11V9a3 3 0 0 1 3-3h15"/></svg><span>Repost için giriş yap</span></a>
+                    </li>
+                @endauth
                 <li class="dropdown-menu-item dropdown-menu-item-sm">
                     <a href="https://t.me/share/url?url={{ urlencode(route('posts.show', $post)) }}&amp;text={{ urlencode($post->title) }}" target="_blank" rel="noopener noreferrer">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
