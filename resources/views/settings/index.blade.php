@@ -172,6 +172,12 @@
                                         <input class="notification-preference__switch" type="checkbox" name="notification_preferences[stream][replies]" value="1" @checked(old('notification_preferences.stream.replies', data_get($notificationPreferences, 'stream.replies', true)))>
                                     </label>
                                     <label class="notification-preference">
+                                        <span class="notification-preference__icon"><x-repost-icon name="heart" size="19" /></span>
+                                        <span class="notification-preference__text"><strong>Gönderi beğenileri</strong><small>Birisi gönderini beğendiğinde</small></span>
+                                        <input type="hidden" name="notification_preferences[stream][likes]" value="0">
+                                        <input class="notification-preference__switch" type="checkbox" name="notification_preferences[stream][likes]" value="1" @checked(old('notification_preferences.stream.likes', data_get($notificationPreferences, 'stream.likes', true)))>
+                                    </label>
+                                    <label class="notification-preference">
                                         <span class="notification-preference__icon"><x-repost-icon name="feed" size="19" /></span>
                                         <span class="notification-preference__text"><strong>Yeni yazılar</strong><small>Takip ettiğin kanallardaki yeni yazılar</small></span>
                                         <input type="hidden" name="notification_preferences[stream][posts]" value="0">
@@ -220,6 +226,18 @@
                                         <label class="notification-channel-switch"><span>Push</span>
                                             <input type="hidden" name="notification_preferences[push][replies]" value="0">
                                             <input class="notification-preference__switch" type="checkbox" name="notification_preferences[push][replies]" value="1" @checked(old('notification_preferences.push.replies', data_get($notificationPreferences, 'push.replies', false)))>
+                                        </label>
+                                    </div>
+                                    <div class="notification-channel-row">
+                                        <span class="notification-preference__icon"><x-repost-icon name="heart" size="19" /></span>
+                                        <span class="notification-preference__text"><strong>Gönderi beğenileri</strong><small>Birisi gönderini beğendiğinde</small></span>
+                                        <label class="notification-channel-switch"><span>E-posta</span>
+                                            <input type="hidden" name="notification_preferences[email][likes]" value="0">
+                                            <input class="notification-preference__switch" type="checkbox" name="notification_preferences[email][likes]" value="1" @checked(old('notification_preferences.email.likes', data_get($notificationPreferences, 'email.likes', true)))>
+                                        </label>
+                                        <label class="notification-channel-switch"><span>Push</span>
+                                            <input type="hidden" name="notification_preferences[push][likes]" value="0">
+                                            <input class="notification-preference__switch" type="checkbox" name="notification_preferences[push][likes]" value="1" @checked(old('notification_preferences.push.likes', data_get($notificationPreferences, 'push.likes', false)))>
                                         </label>
                                     </div>
                                     <div class="notification-channel-row">
