@@ -5133,3 +5133,131 @@ body.is-messenger-conversation .pm-dialog__composer .pm-composer__send{
         padding-right: 14px !important;
     }
 }
+
+
+/* OgraFi composer toolbar: reference-style icon row and inline attachment fields. */
+.post-create-modal .post-composer-toolbar {
+    position: relative !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 11px !important;
+    overflow: visible !important;
+}
+.post-create-modal .post-composer-tool {
+    appearance: none !important;
+    -webkit-appearance: none !important;
+    display: inline-flex !important;
+    flex: 0 0 28px !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 28px !important;
+    height: 34px !important;
+    min-width: 28px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    border-radius: 7px !important;
+    background: transparent !important;
+    color: #647995 !important;
+    cursor: pointer !important;
+    font-size: 0 !important;
+    box-shadow: none !important;
+}
+.post-create-modal .post-composer-tool svg {
+    display: block !important;
+    width: 19px !important;
+    height: 19px !important;
+    fill: none !important;
+    stroke: currentColor !important;
+    stroke-width: 1.8 !important;
+    stroke-linecap: round !important;
+    stroke-linejoin: round !important;
+}
+.post-create-modal .post-composer-tool:hover,
+.post-create-modal .post-composer-tool[aria-expanded="true"] {
+    color: #1768ed !important;
+    background: #eef5ff !important;
+}
+.post-create-modal .post-composer-toolbar input[type="file"] {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    overflow: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+}
+.post-create-modal .post-composer-toolbar .post-composer-location-panel,
+.post-create-modal .post-composer-toolbar .post-composer-video-panel {
+    position: absolute !important;
+    z-index: 12 !important;
+    left: 0 !important;
+    bottom: calc(100% + 7px) !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    width: min(390px, calc(100vw - 90px)) !important;
+    padding: 10px 12px !important;
+    border: 1px solid #e5eaf1 !important;
+    border-radius: 12px !important;
+    background: #fff !important;
+    box-shadow: 0 10px 30px rgba(20, 35, 55, .13) !important;
+}
+.post-create-modal .post-composer-toolbar .post-composer-location-panel[hidden],
+.post-create-modal .post-composer-toolbar .post-composer-video-panel[hidden] {
+    display: none !important;
+}
+.post-create-modal .post-composer-toolbar .post-composer-location-panel label,
+.post-create-modal .post-composer-toolbar .post-composer-video-panel label {
+    flex: 0 0 auto !important;
+    color: #64748b !important;
+    font-size: 12px !important;
+    font-weight: 650 !important;
+}
+.post-create-modal .post-composer-toolbar .post-composer-location-panel input,
+.post-create-modal .post-composer-toolbar .post-composer-video-panel input {
+    display: block !important;
+    position: static !important;
+    flex: 1 1 auto !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    height: 36px !important;
+    min-height: 36px !important;
+    padding: 0 10px !important;
+    border: 1px solid #e4eaf2 !important;
+    border-radius: 8px !important;
+    outline: 0 !important;
+    background: #fff !important;
+    color: #273244 !important;
+    font-size: 13px !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+    box-shadow: none !important;
+}
+.post-create-modal .post-composer-toolbar .post-composer-location-panel input:focus,
+.post-create-modal .post-composer-toolbar .post-composer-video-panel input:focus {
+    border-color: #8bb5ff !important;
+}
+.post-create-modal .post-composer-toolbar [data-composer-location-close] {
+    flex: 0 0 26px !important;
+    width: 26px !important;
+    height: 26px !important;
+    border: 0 !important;
+    border-radius: 7px !important;
+    background: #f2f5f9 !important;
+    color: #64748b !important;
+    font-size: 19px !important;
+    line-height: 1 !important;
+    cursor: pointer !important;
+}
+.post-create-modal .post-composer-advanced-content label[for="post-cover"] {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 7px !important;
+    margin: 0 0 12px !important;
+    color: #53647b !important;
+    font-size: 13px !important;
+    cursor: pointer !important;
+}
+.post-create-modal .post-composer-advanced-content label[for="post-cover"]::before {
+    content: "Kapak görseli seç";
+}
