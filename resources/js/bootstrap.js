@@ -30,7 +30,8 @@ const notificationHeader = notificationMenu?.querySelector('.notification-menu__
 
 // Resolve elements at interaction time: this module is loaded in the document head,
 // so top-level DOM references may be null before the page markup exists.
-const getNotificationMenu = () => document.getElementById('notificationMenu');\nconst getNotificationOptions = () => getNotificationMenu()?.querySelector('.notification-menu__options');
+const getNotificationMenu = () => document.getElementById('notificationMenu');
+const getNotificationOptions = () => getNotificationMenu()?.querySelector('.notification-menu__options');
 const closeNotificationOptions = () => {
     const root = getNotificationOptions();
     const menu = root?.querySelector(':scope > .dropdown-menu');
