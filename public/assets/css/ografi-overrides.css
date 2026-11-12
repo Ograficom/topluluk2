@@ -4601,3 +4601,36 @@ html body .ografi-pbx-fixed-actions > .ografi-pbx-actions {
     background: #2a4160 !important;
     color: #d5e6ff !important;
 }
+
+/* Definitive messenger composer auto-grow override.
+   Older rules above fixed #dialog-message to 38px, which prevented expansion. */
+body.is-messenger-conversation .pm-dialog__composer .pm-composer__bar{
+    height:auto!important;
+    min-height:54px!important;
+    align-items:flex-end!important;
+    overflow:visible!important;
+}
+body.is-messenger-conversation .pm-dialog__composer #dialog-message{
+    height:auto!important;
+    min-height:38px!important;
+    max-height:160px!important;
+    flex:1 1 0!important;
+    align-self:stretch!important;
+    overflow-x:hidden!important;
+    overflow-y:hidden!important;
+    white-space:pre-wrap!important;
+    overflow-wrap:anywhere!important;
+    field-sizing:content!important;
+    box-sizing:border-box!important;
+}
+@media(max-width:640px){
+    body.is-messenger-conversation .pm-dialog__composer .pm-composer__bar{
+        min-height:52px!important;
+        align-items:flex-end!important;
+    }
+    body.is-messenger-conversation .pm-dialog__composer #dialog-message{
+        min-height:36px!important;
+        max-height:160px!important;
+        font-size:16px!important;
+    }
+}
