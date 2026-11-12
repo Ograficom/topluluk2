@@ -18,6 +18,8 @@ class SiteActivityNotification extends Notification
         public readonly string $url,
         public readonly ?string $sourceKey = null,
         public readonly ?string $category = null,
+        public readonly ?string $senderName = null,
+        public readonly ?string $mailSummary = null,
     ) {}
 
     public function via(object $notifiable): array
@@ -127,9 +129,13 @@ class SiteActivityNotification extends Notification
 
         return (new MailMessage)
             ->subject($this->title.' — OgraFi')
-            ->greeting('Merhaba '.$notifiable->displayName().'!')
-            ->line($this->message)
-            ->action('Bildirimi görüntüle', $target)
-            ->line('Bu e-postayı bildirim tercihlerin açık olduğu için aldın.');
+            ->view('emails.notifications.activity', [
+                'recipientName' => $notifiable->displayName(),
+                'senderName' => $this->senderName ?: 'OgraFi',
+                'summary' => $this->mailSummary ?: 'Hesabında yeni bir etkinlik var.',
+                'sentAt' => now()->timezone(config('app.timezone'))->locale('tr')->translatedFormat('d F Y, H:i'),
+                'target' => $target,
+                'siteName' => config('app.name', 'OgraFi'),
+            ]);
     }
 }
