@@ -30,50 +30,6 @@ const notificationHeader = notificationMenu?.querySelector('.notification-menu__
 
 // Resolve elements at interaction time: this module is loaded in the document head,
 // so top-level DOM references may be null before the page markup exists.
-const getNotificationMenu = () => document.getElementById('notificationMenu');
-const getNotificationOptions = () => getNotificationMenu()?.querySelector('.notification-menu__options');
-const closeNotificationOptions = () => {
-    const root = getNotificationOptions();
-    const menu = root?.querySelector(':scope > .dropdown-menu');
-    const button = root?.querySelector('.pm-item__more');
-    if (!menu || !button) return;
-    menu.hidden = true;
-    menu.style.setProperty('display', 'none', 'important');
-    button.setAttribute('aria-expanded', 'false');
-};
-
-const initNotificationOptions = () => {
-    const root = getNotificationOptions();
-    const button = root?.querySelector('.pm-item__more');
-    const menu = root?.querySelector(':scope > .dropdown-menu');
-    if (!root || !button || !menu || button.dataset.optionsBound === 'true') return;
-    button.dataset.optionsBound = 'true';
-
-    // Bind directly to the visible three-dot button; do not depend on global dropdown handlers.
-    button.addEventListener('click', (event) => {
-        event.preventDefault();
-        event.stopPropagation();
-        const opening = menu.hidden || getComputedStyle(menu).display === 'none';
-        menu.hidden = !opening;
-        menu.style.setProperty('display', opening ? 'block' : 'none', 'important');
-        button.setAttribute('aria-expanded', String(opening));
-    });
-
-    document.addEventListener('click', (event) => {
-        if (!root.contains(event.target)) closeNotificationOptions();
-    });
-
-    document.addEventListener('keydown', (event) => {
-        if (event.key === 'Escape') closeNotificationOptions();
-    });
-};
-
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initNotificationOptions, { once: true });
-} else {
-    initNotificationOptions();
-}
-
 if (notificationButton && notificationMenu) {
     const backdrop = document.querySelector('.notification-sheet-backdrop');
     const mobileSheet = window.matchMedia('(max-width: 767px)');
@@ -117,8 +73,8 @@ if (notificationButton && notificationHeader) {
     liveStatus.setAttribute('aria-label', 'Canlı bağlantı hazırlanıyor');
     liveStatus.title = 'Canlı bağlantı hazırlanıyor';
     liveStatus.style.cssText = 'display:inline-block;flex:none;width:7px;height:7px;margin-left:auto;border-radius:50%;background:#94a3b8;';
-    const options = notificationHeader.querySelector('.notification-menu__options');
-    if (options) notificationHeader.insertBefore(liveStatus, options);
+    const actions = notificationHeader.querySelector('.notification-menu__actions');
+    if (actions) notificationHeader.insertBefore(liveStatus, actions);
     else notificationHeader.append(liveStatus);
 }
 
