@@ -640,10 +640,9 @@
     </main>
 
     @unless (request()->routeIs('messenger.show'))
-    @unless (request()->routeIs('messenger.show'))
     <section class="mobmenu" data-scroll-menu>
         <nav class="mobmenu__content" aria-label="Ana gezinme">
-            <a class="mobmenu__link {{ request()->routeIs('posts.index') ? 'is-active' : '' }}" href="{{ route('posts.index') }}" aria-current="{{ request()->routeIs('posts.index') ? 'page' : 'false' }}">
+            <a class="mobmenu__link {{ request()->routeIs('posts.index') ? 'is-active' : '' }}" href="{{ route('posts.index') }}" @if (request()->routeIs('posts.index')) aria-current="page" @endif>
                 <x-repost-icon name="home" size="20" /><span>Ana sayfa</span>
             </a>
             <button class="mobmenu__link" type="button" data-side-panel-open="mobileAside" aria-controls="mobileAside" aria-expanded="false" aria-haspopup="dialog" title="Gezinme">
@@ -654,7 +653,6 @@
             </a>
         </nav>
     </section>
-    @endunless
     @endunless
 
 
