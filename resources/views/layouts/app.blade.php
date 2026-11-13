@@ -102,28 +102,16 @@
     <header class="header">
         <div class="header__inner container">
             <div class="header__start">
-                <a href="{{ route('posts.index') }}" class="logo header__logo header-logo-swap" aria-label="{{ $brandName }} ana sayfa">
-                    <span class="header-logo-swap__brand">
-                        <img
-                            src="{{ $brandLogoUrl ?? asset('assets/img/meta/logo.svg') }}"
-                            alt=""
-                            width="36"
-                            height="36"
-                            @class(['logo-icon', 'logo-icon--custom' => $brandLogoUrl])
-                            onerror="this.onerror=null;this.src='{{ asset('assets/img/meta/logo.svg') }}';"
-                        >
-                        <span class="logo-text">{{ $brandName }}</span>
-                    </span>
-                    <span class="header-logo-swap__cop" aria-hidden="true">
-                        <img
-                            src="https://www.tudav.org/uploads/2026/07/27/cop31-logojpg-27072026_000958-df03.jpg"
-                            alt=""
-                            width="150"
-                            height="40"
-                            loading="eager"
-                            decoding="async"
-                        >
-                    </span>
+                <a href="{{ route('posts.index') }}" class="logo header__logo" aria-label="{{ $brandName }} ana sayfa">
+                    <img
+                        src="{{ $brandLogoUrl ?? asset('assets/img/meta/logo.svg') }}"
+                        alt=""
+                        width="36"
+                        height="36"
+                        @class(['logo-icon', 'logo-icon--custom' => $brandLogoUrl])
+                        onerror="this.onerror=null;this.src='{{ asset('assets/img/meta/logo.svg') }}';"
+                    >
+                    <span class="logo-text">{{ $brandName }}</span>
                 </a>
             </div>
             <nav class="header__nav header__tabs" aria-label="Ana gezinme">
@@ -652,69 +640,21 @@
     </main>
 
     @unless (request()->routeIs('messenger.show'))
+    @unless (request()->routeIs('messenger.show'))
     <section class="mobmenu" data-scroll-menu>
-        <nav class="mobmenu__content" aria-label="Mobile navigation">
-            <a class="mobmenu__link {{ request()->routeIs('posts.index') ? 'is-active' : '' }}" href="{{ route('posts.index') }}" aria-label="Home">
-                <x-repost-icon name="home" size="20" /><span>Home</span>
+        <nav class="mobmenu__content" aria-label="Ana gezinme">
+            <a class="mobmenu__link {{ request()->routeIs('posts.index') ? 'is-active' : '' }}" href="{{ route('posts.index') }}" aria-current="{{ request()->routeIs('posts.index') ? 'page' : 'false' }}">
+                <x-repost-icon name="home" size="20" /><span>Ana sayfa</span>
             </a>
-            @auth
-                <a class="mobmenu__link mobmenu__link--write" href="{{ route('posts.create') }}" data-post-composer-trigger aria-label="Yazı oluştur">
-                    <x-repost-icon name="pen" size="20" /><span>Yaz</span>
-                </a>
-            @endauth
             <button class="mobmenu__link" type="button" data-side-panel-open="mobileAside" aria-controls="mobileAside" aria-expanded="false" aria-haspopup="dialog" title="Gezinme">
                 <x-repost-icon name="compass" size="20" /><span>Gezinme</span>
             </button>
-            <a class="mobmenu__link {{ request()->routeIs('channels.*') ? 'is-active' : '' }}" href="{{ route('channels.index') }}" aria-label="Channels">
-                <x-repost-icon name="channels" size="20" /><span>Channels</span>
+            <a class="mobmenu__link {{ request()->routeIs('channels.*') ? 'is-active' : '' }}" href="{{ route('channels.index') }}">
+                <x-repost-icon name="channels" size="20" /><span>Kanallar</span>
             </a>
-            @auth
-            @php($favoriteCount = auth()->user()->bookmarks()->count())
-                    <div class="dropdown dropup dropdown-md mobmenu__profile-dropdown">
-                        <button id="userMenuButton" type="button" @class(['mobmenu__link mobmenu__link--profile', 'newpm' => $favoriteCount > 0]) data-dropdown-toggle aria-expanded="false" aria-haspopup="menu" aria-controls="userMenu" aria-label="Profil menüsünü aç">
-                            <img src="{{ auth()->user()->avatarUrl() }}" alt="" width="24" height="24" loading="lazy"><span>Profil</span>
-                        </button>
-                        <ul class="dropdown-menu dropdown-menu-center" id="userMenu" aria-labelledby="userMenuButton">
-                            <li class="dropdown-menu-item dropdown-menu-item-lg">
-                                <a href="{{ route('messenger.index') }}"><x-repost-icon name="message" size="22" class="color-gray" /><span>Mesajlar</span></a>
-                            </li>
-                            <li class="dropdown-menu-item dropdown-menu-item-lg">
-                                <a href="{{ route('favorites.index') }}"><x-repost-icon name="bookmark" size="22" class="color-gray" /><span>Favoriler</span>@if ($favoriteCount > 0)<span class="dropdown-menu-count">{{ number_format($favoriteCount) }}</span>@endif</a>
-                            </li>
-                            <li class="dropdown-menu-item dropdown-menu-item-lg">
-                                <a href="{{ route('community.following') }}"><x-repost-icon name="user" size="20" class="color-gray" /><span>Takip akışı</span></a>
-                            </li>
-                            <li class="dropdown-menu-item dropdown-menu-item-lg">
-                                <a href="{{ route('subscriptions.index') }}"><x-repost-icon name="user" size="20" class="color-gray" /><span>Abonelikler</span></a>
-                            </li>
-                            <li class="dropdown-menu-item dropdown-menu-item-lg">
-                                <a href="{{ route('settings.edit') }}"><x-repost-icon name="setting" size="20" class="color-gray" /><span>Ayarlar</span></a>
-                            </li>
-                            <li class="dropdown-menu-item dropdown-menu-item-lg">
-                                <a href="{{ route('advertisements.index') }}"><x-repost-icon name="feed" size="20" class="color-gray" /><span>Reklam yöneticisi</span><span style="display:inline-flex;align-items:center;justify-content:center;margin-left:auto;padding:3px 7px;border-radius:6px;background:#2563eb;color:#fff;font-size:10px;font-weight:700;line-height:1.2;">Yeni</span></a>
-                            </li>
-                            <li class="dropdown-menu-item dropdown-menu-item-lg">
-                                <a href="{{ route('santral') }}"><x-repost-icon name="message" size="20" class="color-gray" /><span>Santral hizmeti</span><span style="display:inline-flex;align-items:center;justify-content:center;margin-left:auto;padding:3px 7px;border-radius:6px;background:#2563eb;color:#fff;font-size:10px;font-weight:700;line-height:1.2;">Yeni</span></a>
-                            </li>
-                            @if (auth()->user()->is_admin)
-                                <li class="dropdown-menu-item dropdown-menu-item-lg">
-                                    <a href="{{ route('channels.create') }}" aria-label="Kategori oluştur" title="Kategori oluştur"><x-repost-icon name="plus" size="20" class="color-gray" /><span>Kategori oluştur</span></a>
-                                </li>
-                                <li class="dropdown-menu-item dropdown-menu-item-lg">
-                                    <a href="{{ url('/admin') }}"><x-repost-icon name="adminpanel" size="20" class="color-gray" /><span>Yönetim paneli</span></a>
-                                </li>
-                            @endif
-                            <li class="dropdown-menu-item dropdown-menu-item-lg is-danger">
-                                <button type="submit" form="logoutForm"><x-repost-icon name="logout" size="20" /><span>Çıkış yap</span></button>
-                            </li>
-                        </ul>
-                        <form id="logoutForm" action="{{ route('logout') }}" method="POST" hidden>
-                            @csrf
-                        </form>
-                    </div>
-            @endauth
         </nav>
     </section>
+    @endunless
     @endunless
 
 
