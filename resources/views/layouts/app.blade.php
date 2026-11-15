@@ -42,7 +42,8 @@
     @if (filled($seoKeywords))
         <meta name="keywords" content="{{ $seoKeywords }}">
     @endif
-    <meta name="robots" content="{{ $seoNoindex ? 'noindex,follow' : ($seoRobotsOverride ?: 'index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1') }}">
+    @php($isIndexableHomepage = request()->routeIs('posts.index') && ! request()->filled('q') && ! request()->filled('sort') && ! request()->filled('period'))
+    <meta name="robots" content="{{ $isIndexableHomepage ? 'index,follow' : ($seoNoindex ? 'noindex,follow' : ($seoRobotsOverride ?: 'index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1')) }}">
     <link rel="canonical" href="{{ $seoCanonical }}">
     <meta property="og:locale" content="tr_TR">
     @if (filled(config('services.facebook.app_id')))
