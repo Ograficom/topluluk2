@@ -90,7 +90,7 @@ class SeoSettings extends Page
             'home_seo_title' => filled($data['home_seo_title'] ?? null) ? trim($data['home_seo_title']) : null,
             'home_seo_description' => filled($data['home_seo_description'] ?? null) ? trim($data['home_seo_description']) : null,
             'home_seo_keywords' => filled($data['home_seo_keywords'] ?? null) ? trim($data['home_seo_keywords']) : null,
-            'home_seo_index' => (bool) ($data['home_seo_index'] ?? false),
+            'home_seo_index' => (bool) ($data['home_seo_index'] ?? true),
         ]);
         $settings->save();
 
