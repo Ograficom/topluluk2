@@ -94,6 +94,31 @@
     </script>
     @vite('resources/js/app.js')
     @stack('head')
+    @if (! request()->routeIs('cp.*'))
+        <script type="application/ld+json">
+            {!! json_encode([
+                '@context' => 'https://schema.org',
+                '@type' => 'Organization',
+                '@id' => 'https://ografi.com/#organization',
+                'name' => 'OgraFi',
+                'url' => 'https://ografi.com/',
+                'description' => $seoSettings?->seo_default_description ?: 'OgraFi; teknoloji, gündem, yaşam ve ilgi alanlarında yazıların, fikirlerin ve topluluk sohbetlerinin buluştuğu platformdur.',
+                'telephone' => '+908503059806',
+                'logo' => $brandLogoUrl ?? asset('assets/img/meta/logo.svg'),
+                'areaServed' => [
+                    '@type' => 'Country',
+                    'name' => 'Türkiye',
+                ],
+                'contactPoint' => [[
+                    '@type' => 'ContactPoint',
+                    'telephone' => '+908503059806',
+                    'contactType' => 'customer service',
+                    'availableLanguage' => ['Turkish'],
+                    'areaServed' => 'TR',
+                ]],
+            ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_HEX_TAG | JSON_HEX_AMP) !!}
+        </script>
+    @endif
 </head>
 <body @class(['is-messenger-conversation' => request()->routeIs('messenger.show')])>
     <div id="repost-icon-sprite" class="sprite" aria-hidden="true">
