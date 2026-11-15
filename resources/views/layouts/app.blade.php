@@ -21,7 +21,9 @@
         }
         $seoRobotsOverride = trim($__env->yieldContent('robots'));
         $seoKeywords = trim($__env->yieldContent('seo_keywords', $seoSettings?->seo_default_keywords ?? ''));
-        $seoNoindex = $seoRobotsOverride === 'noindex,follow' || request()->filled('q')
+        $seoNoindex = $seoRobotsOverride === 'noindex,follow'
+            || (request()->routeIs('posts.index') && $seoSettings && ! $seoSettings->home_seo_index)
+            || request()->filled('q')
             || request()->filled('sort')
             || request()->filled('period')
             || request()->filled('comments')
