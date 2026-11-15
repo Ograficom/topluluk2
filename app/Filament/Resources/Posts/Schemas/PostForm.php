@@ -25,6 +25,9 @@ class PostForm
                 ->options(fn () => Channel::query()->orderBy('name')->pluck('name', 'id'))
                 ->searchable()->preload(),
             Textarea::make('excerpt')->label('Kısa açıklama')->required()->maxLength(500)->rows(3)->columnSpanFull(),
+            Textarea::make('meta_description')->label('SEO meta açıklaması')->maxLength(500)->rows(3)
+                ->helperText('Arama motoru sonuçlarında yazı başlığının altında görünebilecek açıklama. Boş bırakılırsa kısa açıklama kullanılır.')
+                ->columnSpanFull(),
             Textarea::make('body')->label('Yazı')->required()->rows(14)->columnSpanFull(),
             TextInput::make('cover_image')->label('Kapak görseli adresi')->maxLength(2048)
                 ->placeholder('https://... veya assets/img/...')->columnSpanFull(),
