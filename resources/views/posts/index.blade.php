@@ -5,7 +5,7 @@
     ? 'OgraFi üzerinde aradığınız konularla ilgili topluluk yazılarını keşfedin.'
     : ($seoSettings?->home_seo_description ?: 'OgraFi forumunda teknoloji, gündem, yaşam ve ilgi alanlarında konuları keşfedin; fikirlerinizi paylaşın, topluluğa katılın.'))
 @section('canonical', route('posts.index'))
-@section('robots', filled($search) || filled($sort) || filled($period) ? 'noindex,follow' : 'index,follow')
+@section('robots', request()->filled('q') || request()->filled('sort') || request()->filled('period') ? 'noindex,follow' : 'index,follow')
 @push('head')
     <script type="application/ld+json">
         {!! json_encode([
