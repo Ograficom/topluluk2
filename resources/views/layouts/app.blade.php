@@ -42,7 +42,12 @@
     @if (filled($seoKeywords))
         <meta name="keywords" content="{{ $seoKeywords }}">
     @endif
-    @php($isIndexableHomepage = request()->routeIs('posts.index') && ! request()->filled('q') && ! request()->filled('sort') && ! request()->filled('period'))
+    @php
+        $isIndexableHomepage = request()->routeIs('posts.index')
+            && ! request()->filled('q')
+            && ! request()->filled('sort')
+            && ! request()->filled('period');
+    @endphp
     <meta name="robots" content="{{ $isIndexableHomepage ? 'index,follow' : ($seoNoindex ? 'noindex,follow' : ($seoRobotsOverride ?: 'index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1')) }}">
     <link rel="canonical" href="{{ $seoCanonical }}">
     <meta property="og:locale" content="tr_TR">
