@@ -25,7 +25,7 @@ class GoogleDriveController extends Controller
         $expectedState = (string) session()->pull('google_drive_oauth_state', '');
         $receivedState = (string) $request->query('state', '');
 
-        abort_unless($expectedState !== '' && $receivedState !== '' && hash_equals($expectedState, $receivedState), 419, 'Google OAuth state doğrulaması başarısız.');
+        abort_unless(GoogleDriveOAuthState::matches($expectedState, $receivedState), 419, 'Google OAuth state doğrulaması başarısız.');
 
         if ($request->filled('error')) {
             return redirect()->route('filament.admin.pages.google-drive-settings')
