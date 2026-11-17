@@ -63,7 +63,7 @@ jobs:
           find app bootstrap config database routes tests -type f -name '*.php' -print0 | xargs -0 -n1 php -l
 
       - name: Run Google Drive OAuth regression tests
-        run: php artisan test --filter=GoogleDriveOAuthTest
+        run: php artisan test --testsuite=Unit --filter=GoogleDriveOAuthStateTest
 
       - name: Run existing application test suite (baseline report)
         continue-on-error: true
