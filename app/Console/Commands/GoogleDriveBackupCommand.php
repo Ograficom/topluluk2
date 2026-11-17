@@ -21,9 +21,8 @@ class GoogleDriveBackupCommand extends Command
             return self::SUCCESS;
         }
 
-        $connection = config('database.connections.'.config('database.default'));
-
-        if (! in_array($connection['driver'] ?? null, ['mysql', 'mariadb'], true)) {
+        $db = config('database.connections.'.config('database.default'));
+        if (! in_array($db['driver'] ?? null, ['mysql', 'mariadb'], true)) {
             $this->error('Otomatik yedekleme yalnızca MySQL/MariaDB bağlantısını destekler.');
             return self::FAILURE;
         }
@@ -39,57 +38,84 @@ class GoogleDriveBackupCommand extends Command
             return self::FAILURE;
         }
 
-        $name = 'ografi-db-'.now()->format('Y-m-d_His').'.sql.enc';
-        $path = $directory.DIRECTORY_SEPARATOR.$name;
-        $output = fopen($path, 'wb');
+        $stamp = now()->format('Y-m-d_His');
+        $plainPath = $directory.'/ografi-db-'.$stamp.'.sql';
+        $encryptedPath = $directory.'/ografi-db-'.$stamp.'.sql.enc';
+        $plain = fopen($plainPath, 'wb');
 
-        if (! $output) {
-            $this->error('Şifreli yedek dosyası oluşturulamadı.');
+        if (! $plain) {
+            $this->error('Geçici veritabanı akışı oluşturulamadı.');
             return self::FAILURE;
         }
 
-        @chmod($path, 0600);
-        $process = new Process($this->dumpCommand($connection), base_path(), $this->processEnvironment($connection));
+        @chmod($plainPath, 0600);
+        $process = new Process($this->dumpCommand($db), base_path(), $this->processEnvironment($db));
         $process->setTimeout(null);
         $exitCode = self::FAILURE;
 
         try {
-            $process->run(function (string $type, string $buffer) use ($output, $cryptor): void {
+            $process->run(function (string $type, string $buffer) use ($plain): void {
                 if ($type === Process::ERR) {
                     $this->output->write($buffer);
                     return;
                 }
 
-                $stream = fopen('php://temp', 'w+b');
-                fwrite($stream, $buffer);
-                rewind($stream);
-                $cryptor->encryptStream($stream, $output);
-                fclose($stream);
+                if (fwrite($plain, $buffer) === false) {
+                    throw new \RuntimeException('Veritabanı yedeği geçici dosyaya yazılamadı.');
+                }
             });
+
+            fflush($plain);
+            fclose($plain);
+            $plain = null;
 
             if (! $process->isSuccessful()) {
                 throw new \RuntimeException('mysqldump başarısız: '.$process->getErrorOutput());
             }
 
-            fflush($output);
-            fclose($output);
-            $output = null;
+            if (! is_file($plainPath) || filesize($plainPath) === 0) {
+                throw new \RuntimeException('mysqldump boş yedek oluşturdu.');
+            }
 
-            $uploaded = $storage->upload($path, $name);
-            GoogleDriveConnection::current()?->forceFill(['last_checked_at' => now(), 'last_error' => null])->save();
+            $input = fopen($plainPath, 'rb');
+            $encrypted = fopen($encryptedPath, 'wb');
+            if (! $input || ! $encrypted) {
+                throw new \RuntimeException('Şifreleme dosyaları açılamadı.');
+            }
+
+            @chmod($encryptedPath, 0600);
+            try {
+                $cryptor->encryptStream($input, $encrypted);
+                fflush($encrypted);
+            } finally {
+                fclose($input);
+                fclose($encrypted);
+            }
+
+            $name = basename($encryptedPath);
+            $uploaded = $storage->upload($encryptedPath, $name);
+            GoogleDriveConnection::current()?->forceFill([
+                'last_checked_at' => now(),
+                'last_error' => null,
+            ])->save();
 
             $this->info('Şifreli veritabanı yedeği Google Drive’a yüklendi: '.$uploaded['name']);
             $this->line('Drive file ID: '.$uploaded['id']);
             $exitCode = self::SUCCESS;
         } catch (Throwable $exception) {
             $this->error($exception->getMessage());
-            GoogleDriveConnection::current()?->forceFill(['last_error' => mb_substr($exception->getMessage(), 0, 2000)])->save();
+            GoogleDriveConnection::current()?->forceFill([
+                'last_error' => mb_substr($exception->getMessage(), 0, 2000),
+            ])->save();
         } finally {
-            if (is_resource($output)) {
-                fclose($output);
+            if (is_resource($plain)) {
+                fclose($plain);
             }
-            if (is_file($path)) {
-                @unlink($path);
+
+            foreach ([$plainPath, $encryptedPath] as $temporaryFile) {
+                if (is_file($temporaryFile)) {
+                    @unlink($temporaryFile);
+                }
             }
         }
 
