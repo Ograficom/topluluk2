@@ -8,5 +8,5 @@ Route::middleware(['web', 'auth'])->prefix('admin/google-drive')->name('admin.go
     Route::delete('/disconnect', [GoogleDriveController::class, 'disconnect'])->name('disconnect');
 });
 
-Route::middleware(['web'])->get('/auth/google-drive/callback', [GoogleDriveController::class, 'callback'])
+Route::middleware(['web', 'auth'])->get('/auth/google-drive/callback', [GoogleDriveController::class, 'callback'])
     ->name('google-drive.callback');
