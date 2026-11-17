@@ -9,7 +9,7 @@ use Illuminate\View\View;
 use Throwable;
 class GoogleDriveController extends Controller
 {
-    public function index(): View { return view('filament.pages.google-drive-settings',['connection'=>GoogleDriveConnection::current()]); }
+    public function index(): View\n    {\n        abort_unless(auth()->user()?->is_admin === true, 403);\n        return view('filament.pages.google-drive-settings',['connection'=>GoogleDriveConnection::current()]);\n    }
     public function redirect(GoogleDriveClient $client): RedirectResponse
     {
         abort_unless(config('google-drive.client_id') && config('google-drive.client_secret'),503,'Google Drive OAuth bilgileri yapılandırılmadı.');
