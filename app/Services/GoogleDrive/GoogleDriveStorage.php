@@ -121,6 +121,85 @@ class GoogleDriveStorage
         ];
     }
 
+
+    /**
+     * Stream a Drive file to disk without loading the complete backup into memory.
+     */
+    public function downloadToPath(string $fileId, string $destination): void
+    {
+        $response = $this->client->service()->files->get($fileId, ['alt' => 'media']);
+        $body = $response->getBody();
+        $directory = dirname($destination);
+
+        if (! is_dir($directory) && ! mkdir($directory, 0700, true) && ! is_dir($directory)) {
+            throw new RuntimeException('İndirme klasörü oluşturulamadı.');
+        }
+
+        $handle = fopen($destination, 'wb');
+
+        if ($handle === false) {
+            throw new RuntimeException('İndirme dosyası oluşturulamadı.');
+        }
+
+        try {
+            while (! $body->eof()) {
+                $chunk = $body->read(1024 * 1024);
+
+                if ($chunk === '') {
+                    continue;
+                }
+
+                if (fwrite($handle, $chunk) === false) {
+                    throw new RuntimeException('İndirilen dosya diske yazılamadı.');
+                }
+            }
+        } finally {
+            fclose($handle);
+        }
+
+        @chmod($destination, 0600);
+    }
+
+    /**
+     * List backup files owned by the configured application folder.
+     */
+    public function listFiles(string $folderId, string $namePrefix): array
+    {
+        $files = [];
+        $pageToken = null;
+
+        do {
+            $params = [
+                'q' => sprintf(
+                    "'%s' in parents and trashed = false and name contains '%s'",
+                    addcslashes($folderId, "\\\\'"),
+                    addcslashes($namePrefix, "\\\\'")
+                ),
+                'pageSize' => 100,
+                'orderBy' => 'createdTime desc',
+                'fields' => 'nextPageToken,files(id,name,mimeType,size,createdTime)',
+            ];
+
+            if ($pageToken) {
+                $params['pageToken'] = $pageToken;
+            }
+
+            $result = $this->client->service()->files->listFiles($params);
+
+            foreach ($result->getFiles() as $file) {
+                $files[] = [
+                    'id' => (string) $file->getId(),
+                    'name' => (string) $file->getName(),
+                    'created_time' => $file->getCreatedTime(),
+                ];
+            }
+
+            $pageToken = $result->getNextPageToken();
+        } while ($pageToken);
+
+        return $files;
+    }
+
     public function delete(string $fileId): void
     {
         $this->client->service()->files->delete($fileId);
