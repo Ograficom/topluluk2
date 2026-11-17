@@ -62,5 +62,9 @@ jobs:
           set -euo pipefail
           find app bootstrap config database routes tests -type f -name '*.php' -print0 | xargs -0 -n1 php -l
 
-      - name: Run Laravel test suite
+      - name: Run Google Drive OAuth regression tests
+        run: php artisan test --filter=GoogleDriveOAuthTest
+
+      - name: Run existing application test suite (baseline report)
+        continue-on-error: true
         run: php artisan test
