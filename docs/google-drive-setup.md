@@ -56,7 +56,7 @@ Google Drive bağlantısı kurulduktan sonra elle yedek almak için:
 php artisan google-drive:backup
 ```
 
-Komut MariaDB veritabanını mysqldump ile alır, dosyayı XChaCha20-Poly1305 secretstream ile akış halinde şifreler ve Drive kök klasörüne ofargi-db-*.sql.enc adıyla yükler. Geçici SQL ve şifreli dosyalar işlem sonunda sunucudan silinir. Geçici dosyalar yalnızca sunucu hesabına açık izinlerle tutulur.
+Komut MariaDB veritabanını mysqldump ile alır, dosyayı XChaCha20-Poly1305 secretstream ile akış halinde şifreler ve Drive kök klasörüne ografi-db-*.sql.enc adıyla yükler. Geçici SQL ve şifreli dosyalar işlem sonunda sunucudan silinir. Geçici dosyalar yalnızca sunucu hesabına açık izinlerle tutulur.
 
 Şifreleme anahtarı mevcut Laravel APP_KEY değerinden türetilir. **APP_KEY değişirse veya kaybolursa eski yedekler çözülemez.** APP_KEY'i güvenli ve Drive hesabından bağımsız bir yerde saklayın.
 
