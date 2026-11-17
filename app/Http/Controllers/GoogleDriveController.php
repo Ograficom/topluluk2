@@ -22,6 +22,8 @@ class GoogleDriveController extends Controller
 
     public function callback(Request $request, GoogleDriveClient $driveClient, GoogleDriveStorage $storage): RedirectResponse
     {
+        abort_unless(auth()->user()?->is_admin === true, 403);
+
         $expectedState = (string) session()->pull('google_drive_oauth_state', '');
         $receivedState = (string) $request->query('state', '');
 
