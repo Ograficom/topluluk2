@@ -3,7 +3,7 @@
 namespace App\Services\GoogleDrive;
 
 use Google\Http\MediaFileUpload;
-use Google\Service\Drive\DriveFile;
+use Google\Service\Drive;\nuse Google\Service\Drive\DriveFile;
 use Illuminate\Http\UploadedFile;
 use RuntimeException;
 
@@ -62,7 +62,7 @@ class GoogleDriveStorage
             : (mime_content_type($path) ?: 'application/octet-stream');
 
         $client = $this->client->client();
-        $service = $this->client->service();
+        $service = new Drive($client);
         $metadata = new DriveFile(['name' => $name, 'parents' => [$folderId]]);
         $client->setDefer(true);
         $handle = fopen($path, 'rb');
