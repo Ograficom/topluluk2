@@ -2,8 +2,10 @@
 
 namespace App\Services\GoogleDrive;
 
+use App\Models\GoogleDriveConnection;
 use Google\Http\MediaFileUpload;
-use Google\Service\Drive;\nuse Google\Service\Drive\DriveFile;
+use Google\Service\Drive;
+use Google\Service\Drive\DriveFile;
 use Illuminate\Http\UploadedFile;
 use RuntimeException;
 
@@ -13,7 +15,7 @@ class GoogleDriveStorage
 
     public function ensureRootFolder(): string
     {
-        $connection = \App\Models\GoogleDriveConnection::current();
+        $connection = GoogleDriveConnection::current();
 
         if ($connection?->root_folder_id) {
             return $connection->root_folder_id;
@@ -25,7 +27,7 @@ class GoogleDriveStorage
         ]);
 
         $created = $this->client->service()->files->create($folder, ['fields' => 'id,name']);
-        $connection ??= new \App\Models\GoogleDriveConnection();
+        $connection ??= new GoogleDriveConnection();
         $connection->root_folder_id = $created->id;
         $connection->save();
 
@@ -46,7 +48,7 @@ class GoogleDriveStorage
     }
 
     /**
-     * Uploads large files in resumable chunks instead of loading the whole file into PHP memory.
+     * Upload files in resumable chunks to keep PHP memory usage bounded.
      */
     public function upload(UploadedFile|string $file, string $name, ?string $folderId = null): array
     {
@@ -54,6 +56,12 @@ class GoogleDriveStorage
 
         if (! $path || ! is_file($path) || ! is_readable($path)) {
             throw new RuntimeException('Yüklenecek dosya okunamadı.');
+        }
+
+        $fileSize = filesize($path);
+
+        if ($fileSize === false || $fileSize === 0) {
+            throw new RuntimeException('Boş veya boyutu okunamayan dosya yüklenemez.');
         }
 
         $folderId ??= $this->ensureRootFolder();
@@ -64,8 +72,13 @@ class GoogleDriveStorage
         $client = $this->client->client();
         $service = new Drive($client);
         $metadata = new DriveFile(['name' => $name, 'parents' => [$folderId]]);
-        $client->setDefer(true);
         $handle = fopen($path, 'rb');
+
+        if ($handle === false) {
+            throw new RuntimeException('Dosya açılırken hata oluştu.');
+        }
+
+        $client->setDefer(true);
 
         try {
             $request = $service->files->create($metadata);
@@ -77,14 +90,14 @@ class GoogleDriveStorage
                 true,
                 5 * 1024 * 1024,
             );
-            $upload->setFileSize(filesize($path));
+            $upload->setFileSize($fileSize);
 
             $result = false;
 
             while (! $result && ! feof($handle)) {
                 $chunk = fread($handle, 5 * 1024 * 1024);
 
-                if ($chunk === false) {
+                if ($chunk === false || $chunk === '') {
                     throw new RuntimeException('Dosya okunurken hata oluştu.');
                 }
 
@@ -96,17 +109,14 @@ class GoogleDriveStorage
             }
         } finally {
             $client->setDefer(false);
-
-            if (is_resource($handle)) {
-                fclose($handle);
-            }
+            fclose($handle);
         }
 
         return [
             'id' => (string) $result->id,
             'name' => (string) $result->name,
             'mime_type' => (string) $result->mimeType,
-            'size' => (int) ($result->size ?? filesize($path)),
+            'size' => (int) ($result->size ?? $fileSize),
             'web_view_link' => $result->webViewLink,
         ];
     }
