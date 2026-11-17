@@ -17,7 +17,7 @@ class GoogleDriveSettings extends Page
 
     public static function canAccess(): bool
     {
-        return auth()->user()?->is_admin === true;
+        return (bool) auth()->user()?->is_admin;
     }
 
     public static function shouldRegisterNavigation(): bool
