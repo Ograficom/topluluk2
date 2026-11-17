@@ -7,33 +7,36 @@ use App\Services\GoogleDrive\GoogleDriveClient;
 use App\Services\GoogleDrive\GoogleDriveStorage;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\View\View;
 use Throwable;
 
 class GoogleDriveController extends Controller
 {
-    public function index(): View
-    {
-        abort_unless(auth()->user()?->is_admin === true, 403);
-        return view('filament.pages.google-drive-settings', [
-            'connection' => GoogleDriveConnection::current(),
-        ]);
-    }
-
     public function redirect(GoogleDriveClient $client): RedirectResponse
     {
         abort_unless(auth()->user()?->is_admin === true, 403);
         abort_unless(config('google-drive.client_id') && config('google-drive.client_secret'), 503, 'Google Drive OAuth bilgileri yapılandırılmadı.');
+
         return redirect()->away($client->authorizationUrl());
     }
 
     public function callback(Request $request, GoogleDriveClient $driveClient, GoogleDriveStorage $storage): RedirectResponse
     {
+        $expectedState = (string) session()->pull('google_drive_oauth_state', '');
+        $receivedState = (string) $request->query('state', '');
+
+        abort_unless($expectedState !== '' && $receivedState !== '' && hash_equals($expectedState, $receivedState), 419, 'Google OAuth state doğrulaması başarısız.');
+
+        if ($request->filled('error')) {
+            return redirect()->route('filament.cp.pages.google-drive-settings')
+                ->withErrors(['drive' => 'Google hesabı bağlantı isteğini reddetti.']);
+        }
+
         $request->validate(['code' => ['required', 'string']]);
 
         try {
             $client = $driveClient->make(true);
             $token = $client->fetchAccessTokenWithAuthCode($request->string('code')->toString());
+
             if (isset($token['error'])) {
                 throw new \RuntimeException('OAuth token alınamadı.');
             }
@@ -43,9 +46,11 @@ class GoogleDriveController extends Controller
             $connection = GoogleDriveConnection::current() ?? new GoogleDriveConnection();
             $connection->account_email = $user->email;
             $connection->access_token = $token;
+
             if (! empty($token['refresh_token'])) {
                 $connection->refresh_token = $token['refresh_token'];
             }
+
             $connection->token_expires_at = now()->addSeconds((int) ($token['expires_in'] ?? 3600));
             $connection->scopes = config('google-drive.scopes');
             $connection->connected_at = now();
@@ -54,12 +59,13 @@ class GoogleDriveController extends Controller
 
             $storage->ensureRootFolder();
 
-            return redirect()->route('admin.google-drive.index')->with('status', 'Google Drive hesabı bağlandı.');
+            return redirect()->route('filament.cp.pages.google-drive-settings')
+                ->with('status', 'Google Drive hesabı bağlandı.');
         } catch (Throwable $exception) {
             report($exception);
 
-            return redirect()->route('admin.google-drive.index')->withErrors([
-                'drive' => 'Google Drive bağlantısı kurulamadı. OAuth ayarlarını kontrol edin.',
+            return redirect()->route('filament.cp.pages.google-drive-settings')->withErrors([
+                'drive' => 'Google Drive bağlantısı kurulamadı. OAuth ayarlarını ve izinleri kontrol edin.',
             ]);
         }
     }
@@ -69,6 +75,7 @@ class GoogleDriveController extends Controller
         abort_unless(auth()->user()?->is_admin === true, 403);
         GoogleDriveConnection::query()->delete();
 
-        return redirect()->route('admin.google-drive.index')->with('status', 'Google Drive bağlantısı kaldırıldı.');
+        return redirect()->route('filament.cp.pages.google-drive-settings')
+            ->with('status', 'Google Drive bağlantısı kaldırıldı.');
     }
 }
