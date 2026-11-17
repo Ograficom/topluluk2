@@ -32,7 +32,7 @@ class GoogleDrivePruneBackupsCommand extends Command
 
         try {
             foreach ($storage->listFiles($connection->root_folder_id, 'ografi-db-') as $file) {
-                if (empty($file['created_time'])) {
+                if (! str_starts_with($file['name'], 'ografi-db-') || ! str_ends_with($file['name'], '.sql.enc') || empty($file['created_time'])) {
                     continue;
                 }
 
