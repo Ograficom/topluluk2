@@ -25,3 +25,15 @@ Schedule::command('rss:fetch')
     ->name('external-rss-fetch')
     ->withoutOverlapping()
     ->appendOutputTo(storage_path('logs/rss-schedule.log'));
+
+
+Schedule::command('google-drive:backup')
+    ->dailyAt('02:00')
+    ->name('google-drive-daily-encrypted-backup')
+    ->withoutOverlapping()
+    ->onFailure(fn () => logger()->error('Google Drive daily backup failed.'));
+
+Schedule::command('google-drive:prune')
+    ->dailyAt('02:30')
+    ->name('google-drive-backup-retention-cleanup')
+    ->withoutOverlapping();
