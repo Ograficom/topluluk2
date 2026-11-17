@@ -26,7 +26,7 @@ class GoogleDriveBackupCryptor
             throw new RuntimeException('APP_KEY çözümlenemedi.');
         }
 
-        return hash_hkdf('sha256', $appKey, SODIUM_CRYPTO_SECRETSTREAM_XCHACHA20POLY1305_KEYBYTES, 'ografI-google-drive-backup-v1');
+        return hash_hkdf('sha256', $appKey, SODIUM_CRYPTO_SECRETSTREAM_XCHACHA20POLY1305_KEYBYTES, 'ografi-google-drive-backup-v1');
     }
 
     public function encryptStream($input, $output): void
@@ -69,6 +69,10 @@ class GoogleDriveBackupCryptor
 
     public function decryptFile(string $source, string $destination): void
     {
+        if (! function_exists('sodium_crypto_secretstream_xchacha20poly1305_init_pull')) {
+            throw new RuntimeException('PHP sodium eklentisi gerekli.');
+        }
+
         $input = fopen($source, 'rb');
         $output = fopen($destination, 'wb');
 
