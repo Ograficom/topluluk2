@@ -40,7 +40,7 @@ php artisan migrate --force
 php artisan optimize:clear
 ```
 
-Yönetim panelinde /admin/google-drive sayfasını açıp Google hesabını bağlayın.
+Yönetim panelinde /admin/google-drive-settings sayfasını açıp Google hesabını bağlayın.
 
 ## Önemli
 
