@@ -26,7 +26,7 @@ class GoogleDriveClient
     public function authorizationUrl(): string
     {
         $client = $this->make(true);
-        $state = bin2hex(random_bytes(32));
+        $state = GoogleDriveOAuthState::issue();
         session()->put('google_drive_oauth_state', $state);
         $client->setState($state);
 
