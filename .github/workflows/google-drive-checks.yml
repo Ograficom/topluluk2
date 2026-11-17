@@ -39,11 +39,11 @@ jobs:
           coverage: none
           tools: composer:v2
 
-      - name: Validate Composer manifest
-        run: composer validate --no-check-publish
-
       - name: Resolve Google API dependency and update lock file
         run: composer update google/apiclient --with-dependencies --no-interaction --prefer-dist
+
+      - name: Validate Composer manifest and lock file
+        run: composer validate --no-check-publish
 
       - name: Commit generated Composer lock
         run: |
