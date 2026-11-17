@@ -247,3 +247,5 @@ Route::post('/channels', [ChannelController::class, 'store'])->middleware(['auth
 Route::get('/channels/{channel:slug}', [ChannelController::class, 'show'])->name('channels.show');
 Route::get('/@{identifier}', [ProfileController::class, 'show'])->name('profiles.show');
 Route::get('/users/{identifier}', [ProfileController::class, 'show'])->name('profiles.legacy');
+
+require __DIR__.'/google-drive.php';

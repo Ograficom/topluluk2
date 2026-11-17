@@ -47,6 +47,13 @@ return [
             'report' => false,
         ],
 
+        'google_drive_staging' => [
+            'driver' => 'local',
+            'root' => storage_path('app/google-drive-staging'),
+            'throw' => true,
+            'report' => true,
+        ],
+
         's3' => [
             'driver' => 's3',
             'key' => env('AWS_ACCESS_KEY_ID'),
