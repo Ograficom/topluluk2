@@ -246,6 +246,8 @@ Route::patch('/channels/{channel:slug}', [ChannelController::class, 'update'])->
 Route::post('/channels', [ChannelController::class, 'store'])->middleware(['auth', 'throttle:10,1'])->name('channels.store');
 Route::get('/channels/{channel:slug}', [ChannelController::class, 'show'])->name('channels.show');
 Route::get('/@{identifier}', [ProfileController::class, 'show'])->name('profiles.show');
-Route::get('/users/{identifier}', [ProfileController::class, 'show'])->name('profiles.legacy');\n\nrequire __DIR__.'/google-drive.php';\n
+Route::get('/users/{identifier}', [ProfileController::class, 'show'])->name('profiles.legacy');require __DIR__.'/google-drive.php';
+
+require __DIR__.'/google-drive.php';
 
 require __DIR__.'/google-drive.php';
