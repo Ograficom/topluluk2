@@ -27,7 +27,7 @@ class GoogleDriveController extends Controller
         abort_unless($expectedState !== '' && $receivedState !== '' && hash_equals($expectedState, $receivedState), 419, 'Google OAuth state doğrulaması başarısız.');
 
         if ($request->filled('error')) {
-            return redirect()->route('filament.cp.pages.google-drive-settings')
+            return redirect()->route('filament.admin.pages.google-drive-settings')
                 ->withErrors(['drive' => 'Google hesabı bağlantı isteğini reddetti.']);
         }
 
@@ -59,12 +59,12 @@ class GoogleDriveController extends Controller
 
             $storage->ensureRootFolder();
 
-            return redirect()->route('filament.cp.pages.google-drive-settings')
+            return redirect()->route('filament.admin.pages.google-drive-settings')
                 ->with('status', 'Google Drive hesabı bağlandı.');
         } catch (Throwable $exception) {
             report($exception);
 
-            return redirect()->route('filament.cp.pages.google-drive-settings')->withErrors([
+            return redirect()->route('filament.admin.pages.google-drive-settings')->withErrors([
                 'drive' => 'Google Drive bağlantısı kurulamadı. OAuth ayarlarını ve izinleri kontrol edin.',
             ]);
         }
@@ -75,7 +75,7 @@ class GoogleDriveController extends Controller
         abort_unless(auth()->user()?->is_admin === true, 403);
         GoogleDriveConnection::query()->delete();
 
-        return redirect()->route('filament.cp.pages.google-drive-settings')
+        return redirect()->route('filament.admin.pages.google-drive-settings')
             ->with('status', 'Google Drive bağlantısı kaldırıldı.');
     }
 }
