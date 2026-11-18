@@ -507,3 +507,51 @@ html[data-theme="dark"] .gokturk-keyboard__translate-menu{
     background:var(--color-surface-overlay);
     color:var(--text-color);
 }
+
+
+/* OgraFi: keep the floating keyboard below theme navigation and overlays. */
+.gokturk-keyboard{
+    z-index:80;
+}
+.gokturk-keyboard__launcher{
+    display:flex;
+    align-items:center;
+    justify-content:flex-end;
+    gap:8px;
+}
+.gokturk-keyboard__dismiss{
+    display:grid;
+    flex:0 0 30px;
+    width:30px;
+    height:30px;
+    place-items:center;
+    padding:0;
+    border:1px solid var(--border-color, #dbe3ef);
+    border-radius:9px;
+    background:var(--card-bg, #fff);
+    color:var(--color-gray, #64748b);
+    box-shadow:var(--shadow-sm, 0 2px 4px rgba(15,23,42,.08));
+    font:600 20px/1 var(--font-secondary, system-ui, sans-serif);
+    cursor:pointer;
+    transition:color .15s ease,background-color .15s ease,border-color .15s ease;
+}
+.gokturk-keyboard__dismiss:hover{
+    border-color:var(--color-primary, #0d6efd);
+    background:var(--gray-100, #f7f9fd);
+    color:var(--color-primary, #0d6efd);
+}
+.gokturk-keyboard__panel{
+    z-index:1;
+}
+@media(max-width:600px){
+    .gokturk-keyboard{
+        right:12px;
+        bottom:82px;
+        z-index:80;
+    }
+}
+html[data-theme="dark"] .gokturk-keyboard__dismiss{
+    border-color:var(--border-color, #475569);
+    background:var(--card-bg, #172033);
+    color:var(--text-color, #e2e8f0);
+}
