@@ -7079,3 +7079,81 @@ body.is-messenger-conversation .pm-dialog__composer .pm-composer__send{
     overflow: visible !important;
   }
 }
+
+
+/* Homepage sidebar advertisement — inherits the exact Repost widget card width. */
+.sidebar-ad-widget{
+    gap:14px;
+}
+.sidebar-ad-widget__header{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+}
+.sidebar-ad-widget__label{
+    display:inline-flex;
+    align-items:center;
+    min-height:22px;
+    padding:3px 8px;
+    border:1px solid var(--border-color);
+    border-radius:7px;
+    color:var(--color-gray);
+    font-size:.7rem;
+    font-weight:600;
+    line-height:1;
+}
+.sidebar-ad-widget__image{
+    display:block;
+    overflow:hidden;
+    width:100%;
+    border-radius:12px;
+    background:var(--body-bg);
+}
+.sidebar-ad-widget__image img{
+    display:block;
+    width:100%;
+    max-height:190px;
+    aspect-ratio:16 / 9;
+    object-fit:cover;
+}
+.sidebar-ad-widget__body,
+.sidebar-ad-widget__empty-content{
+    display:flex;
+    min-width:0;
+    flex-direction:column;
+    align-items:flex-start;
+    gap:10px;
+}
+.sidebar-ad-widget__title{
+    margin:0;
+    color:var(--title-color);
+    font-size:.95rem;
+    font-weight:650;
+    line-height:1.35;
+    overflow-wrap:anywhere;
+}
+.sidebar-ad-widget__description,
+.sidebar-ad-widget__empty-content p{
+    margin:0;
+    color:var(--color-gray);
+    font-size:.84rem;
+    line-height:1.55;
+}
+.sidebar-ad-widget__empty-content{
+    padding:14px;
+    border:1px dashed var(--border-color);
+    border-radius:12px;
+    background:var(--body-bg);
+}
+.sidebar-ad-widget__empty-content strong{
+    color:var(--title-color);
+    font-size:.92rem;
+    line-height:1.4;
+}
+.sidebar-ad-widget__button{
+    align-self:stretch;
+    justify-content:center;
+    min-height:38px;
+    font-size:.84rem;
+}
