@@ -136,6 +136,7 @@
     function renderKeys() {
         keys.replaceChildren();
         keys.classList.toggle('is-turkish', mode === 'turkish');
+        keys.classList.toggle('is-gokturk', mode === 'gokturk');
 
         if (mode === 'turkish') {
             renderTurkishKeys();
