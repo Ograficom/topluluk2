@@ -248,3 +248,56 @@ html[data-theme="dark"] .gokturk-keyboard__keys.is-gokturk .gokturk-keyboard__go
 @media(max-width:600px){
     .gokturk-keyboard__actions button{min-height:36px;font-size:12px}
 }
+
+/* Compact translation-icon launcher; the Göktürkçe action lives inside the opened panel */
+.gokturk-keyboard__toggle{
+    display:grid;
+    width:42px;
+    min-width:42px;
+    height:42px;
+    min-height:42px;
+    padding:0;
+    place-items:center;
+    border:1px solid #dbe3ef;
+    border-radius:12px;
+    background:#fff;
+    color:#2563eb;
+    box-shadow:0 2px 8px rgba(15,23,42,.06);
+}
+.gokturk-keyboard__toggle svg{
+    display:block;
+    width:21px;
+    height:21px;
+    fill:none;
+    stroke:currentColor;
+    stroke-width:1.8;
+    stroke-linecap:round;
+    stroke-linejoin:round;
+}
+.gokturk-keyboard__toggle:hover{
+    border-color:#93b4f5;
+    background:#eff6ff;
+}
+.gokturk-keyboard__actions{
+    grid-template-columns:repeat(3,minmax(0,1fr));
+}
+.gokturk-keyboard__actions .gokturk-keyboard__convert{
+    border-color:#93b4f5;
+    background:#eff6ff;
+    color:#1d4ed8;
+    font-weight:700;
+}
+.gokturk-keyboard__actions .gokturk-keyboard__convert:hover{
+    border-color:#60a5fa;
+    background:#dbeafe;
+}
+html[data-theme="dark"] .gokturk-keyboard__toggle{
+    border-color:#475569;
+    background:#172033;
+    color:#93c5fd;
+}
+html[data-theme="dark"] .gokturk-keyboard__actions .gokturk-keyboard__convert{
+    border-color:#3b82f6;
+    background:#1e3a8a;
+    color:#dbeafe;
+}
