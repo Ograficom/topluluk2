@@ -515,7 +515,7 @@
                 @endif
 
                 @unless ($profilePage || $channelPage)
-                <aside class="main__widgets" aria-label="Sağ sütun">
+                <aside @class(['main__widgets', 'homepage-widgets' => request()->routeIs('posts.index')]) aria-label="Sağ sütun">
                     <div class="widgets">
                         <section class="widget card card-body">
                             <header><h2 class="widget__title h6">Etiketler</h2></header>
