@@ -509,9 +509,10 @@ html[data-theme="dark"] .gokturk-keyboard__translate-menu{
 }
 
 
-/* OgraFi: keep the floating keyboard below theme navigation and overlays. */
+/* OgraFi: keep the keyboard launcher slightly above the back-to-top control. */
 .gokturk-keyboard{
-    z-index:80;
+    bottom:64px;
+    z-index:1201;
 }
 .gokturk-keyboard__launcher{
     display:flex;
@@ -525,8 +526,8 @@ html[data-theme="dark"] .gokturk-keyboard__translate-menu{
 @media(max-width:600px){
     .gokturk-keyboard{
         right:12px;
-        bottom:82px;
-        z-index:80;
+        bottom:96px;
+        z-index:1201;
     }
 }
 
