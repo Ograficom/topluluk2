@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\Advertisement;
 use App\Models\Channel;
 use App\Models\Comment;
 use App\Models\Post;
@@ -81,6 +82,9 @@ class AppServiceProvider extends ServiceProvider
                 'faviconMimeType' => $siteSettings?->faviconMimeType(),
                 'seoSettings' => $siteSettings,
                 'navigationChannels' => Channel::query()->active()->orderBy('name')->limit(8)->get(),
+                'sidebarAdvertisement' => request()->routeIs('posts.index') && ! request()->filled('q')
+                    ? Advertisement::query()->deliverable()->with('user')->inRandomOrder()->first()
+                    : null,
                 'sidebarAuthors' => User::query()
                     ->whereNotNull('username')
                     ->where('username', '<>', '')
