@@ -123,7 +123,7 @@
         </script>
     @endif
 </head>
-<body @class(['is-messenger-conversation' => request()->routeIs('messenger.show')])>
+<body data-authenticated="{{ auth()->check() ? 'true' : 'false' }}" @class(['is-messenger-conversation' => request()->routeIs('messenger.show')])>
     <div id="repost-icon-sprite" class="sprite" aria-hidden="true">
         <svg xmlns="http://www.w3.org/2000/svg" width="0" height="0" fill="none" style="visibility:hidden;position:absolute" aria-hidden="true">
             <symbol id="message" viewBox="0 0 24 24">
