@@ -99,3 +99,38 @@ html[data-theme="dark"] .gokturk-keyboard__keys.is-turkish .gokturk-keyboard__sp
 .gokturk-keyboard__keys.is-turkish .gokturk-keyboard__icon-key.is-active svg{
     stroke-width:2.2;
 }
+
+/* Göktürk tuşları Türkçe Q tuşlarıyla aynı ölçü ve 12 sütun düzeninde */
+.gokturk-keyboard__keys.is-gokturk{
+    grid-template-columns:repeat(12,minmax(0,1fr));
+    gap:4px;
+}
+.gokturk-keyboard__keys.is-gokturk .gokturk-keyboard__key{
+    min-width:0;
+    min-height:38px;
+    padding:0 2px;
+    border:1px solid #d9e0e8;
+    border-radius:5px;
+    background:#f1f4f7;
+    color:#172033;
+    font-family:serif;
+    font-size:19px;
+    font-weight:500;
+    box-shadow:0 1px 0 rgba(15,23,42,.08);
+}
+.gokturk-keyboard__keys.is-gokturk .gokturk-keyboard__key:hover{
+    border-color:#aab8c9;
+    background:#e2e8f0;
+    color:#172033;
+}
+html[data-theme="dark"] .gokturk-keyboard__keys.is-gokturk .gokturk-keyboard__key{
+    border-color:#475569;
+    background:#334155;
+    color:#f1f5f9;
+}
+@media(max-width:600px){
+    .gokturk-keyboard__keys.is-gokturk .gokturk-keyboard__key{
+        min-height:35px;
+        font-size:17px;
+    }
+}
