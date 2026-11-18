@@ -906,7 +906,7 @@
     })();
     </script>
     @endauth
-    <script src="{{ asset('assets/js/gokturk-keyboard.js') }}?v=20261118-2" defer></script>
+    <script src="{{ asset('assets/js/gokturk-keyboard.js') }}?v=20261118-3" defer></script>
     @include('layouts._cookie-consent')
     @stack('scripts')
 </body>
