@@ -1,11 +1,10 @@
 (() => {
     'use strict';
 
-    // Orhun alfabesinin klavye tuşları ve metin ekleme davranışı korunur.
     const alphabet = Array.from({ length: 0x2f }, (_, index) => String.fromCodePoint(0x10c00 + index));
     const root = document.createElement('div');
     root.className = 'gokturk-keyboard';
-    root.innerHTML = '<button class="gokturk-keyboard__toggle" type="button" aria-expanded="false" aria-controls="gokturkKeyboardPanel"><span aria-hidden="true">𐰀</span><span>Göktürkçe</span></button><section class="gokturk-keyboard__panel" id="gokturkKeyboardPanel" aria-label="Sanal klavye" hidden><header class="gokturk-keyboard__header"><div><strong data-keyboard-title>Göktürkçe klavye</strong><small data-keyboard-subtitle>Orhun alfabesi · Unicode</small></div><button class="gokturk-keyboard__close" type="button" aria-label="Klavye panelini kapat">×</button></header><div class="gokturk-keyboard__keys" aria-label="Klavye harfleri"></div><footer class="gokturk-keyboard__actions"><button type="button" data-key-action="latin" aria-label="Türkçe klavyeye geç">Türkçe</button><button type="button" data-key-action="space">Boşluk</button><button type="button" data-key-action="backspace">Sil</button><button type="button" data-key-action="enter">Satır sonu</button></footer><p class="gokturk-keyboard__hint">Önce yazı alanına tıkla, ardından harfleri seç.</p></section>';
+    root.innerHTML = '<button class="gokturk-keyboard__toggle" type="button" aria-expanded="false" aria-controls="gokturkKeyboardPanel"><span aria-hidden="true">𐰀</span><span>Göktürkçe</span></button><section class="gokturk-keyboard__panel" id="gokturkKeyboardPanel" aria-label="Sanal klavye" hidden><header class="gokturk-keyboard__header"><div><strong data-keyboard-title>Göktürkçe klavye</strong><small data-keyboard-subtitle>Orhun alfabesi · Unicode</small></div><button class="gokturk-keyboard__close" type="button" aria-label="Klavye panelini kapat">×</button></header><textarea class="gokturk-keyboard__input" data-keyboard-input rows="3" placeholder="Metnini buraya yaz..." aria-label="Göktürkçe veya Türkçe metin"></textarea><div class="gokturk-keyboard__keys" aria-label="Klavye harfleri"></div><footer class="gokturk-keyboard__actions"><button type="button" data-key-action="latin" aria-label="Türkçe klavyeye geç">Türkçe</button><button type="button" data-key-action="space">Boşluk</button><button type="button" data-key-action="backspace">Sil</button><button type="button" data-key-action="enter">Satır sonu</button></footer><p class="gokturk-keyboard__hint">Yazdıkların yalnızca bu kutuda görünür.</p></section>';
     document.body.appendChild(root);
 
     const toggle = root.querySelector('.gokturk-keyboard__toggle');
@@ -14,7 +13,7 @@
     const switchButton = root.querySelector('[data-key-action="latin"]');
     const title = root.querySelector('[data-keyboard-title]');
     const subtitle = root.querySelector('[data-keyboard-subtitle]');
-    let lastTarget = null;
+    const input = root.querySelector('[data-keyboard-input]');
     let mode = 'gokturk';
 
     const layouts = {
@@ -47,70 +46,28 @@
         toggle.querySelector('span:first-child').textContent = turkish ? 'A' : '𐰀';
     }
 
-    function isEditable(element) {
-        if (!(element instanceof HTMLElement)) return false;
-        if (element.isContentEditable) return true;
-        if (element instanceof HTMLTextAreaElement) return !element.disabled && !element.readOnly;
-        if (element instanceof HTMLInputElement) {
-            return !element.disabled && !element.readOnly &&
-                !['button','checkbox','color','file','hidden','image','radio','range','reset','submit'].includes(element.type);
-        }
-        return false;
-    }
-
-    document.addEventListener('focusin', event => {
-        if (isEditable(event.target)) lastTarget = event.target;
-    });
-
     function insert(value) {
-        const target = lastTarget;
-        if (!isEditable(target) || !target.isConnected) return;
-        target.focus({ preventScroll: true });
-
-        if (target instanceof HTMLInputElement || target instanceof HTMLTextAreaElement) {
-            const start = target.selectionStart ?? target.value.length;
-            const end = target.selectionEnd ?? start;
-            if (value === '\n' && target instanceof HTMLInputElement) return;
-            target.setRangeText(value, start, end, 'end');
-            target.dispatchEvent(new InputEvent('input', { bubbles: true, inputType: 'insertText', data: value }));
-            return;
-        }
-
-        const selection = window.getSelection();
-        if (!selection) return;
-        let range = selection.rangeCount ? selection.getRangeAt(0) : null;
-        if (!range || !target.contains(range.commonAncestorContainer)) {
-            range = document.createRange();
-            range.selectNodeContents(target);
-            range.collapse(false);
-        }
-        range.deleteContents();
-        const node = document.createTextNode(value);
-        range.insertNode(node);
-        range.setStartAfter(node);
-        range.collapse(true);
-        selection.removeAllRanges();
-        selection.addRange(range);
-        target.dispatchEvent(new InputEvent('input', {
+        input.focus({ preventScroll: true });
+        const start = input.selectionStart ?? input.value.length;
+        const end = input.selectionEnd ?? start;
+        input.setRangeText(value, start, end, 'end');
+        input.dispatchEvent(new InputEvent('input', {
             bubbles: true,
-            inputType: value === '\n' ? 'insertParagraph' : 'insertText',
+            inputType: value === '\n' ? 'insertLineBreak' : 'insertText',
             data: value
         }));
     }
 
     function backspace() {
-        const target = lastTarget;
-        if (!isEditable(target)) return;
-        target.focus({ preventScroll: true });
-        if (target instanceof HTMLInputElement || target instanceof HTMLTextAreaElement) {
-            const start = target.selectionStart ?? target.value.length;
-            const end = target.selectionEnd ?? start;
-            target.setRangeText('', start === end ? Math.max(0, start - 1) : start, end, 'end');
-            target.dispatchEvent(new InputEvent('input', { bubbles: true, inputType: 'deleteContentBackward' }));
-        } else {
-            document.execCommand('delete');
-            target.dispatchEvent(new InputEvent('input', { bubbles: true, inputType: 'deleteContentBackward' }));
-        }
+        input.focus({ preventScroll: true });
+        const start = input.selectionStart ?? input.value.length;
+        const end = input.selectionEnd ?? start;
+        if (start === end && start === 0) return;
+        input.setRangeText('', start === end ? start - 1 : start, end, 'end');
+        input.dispatchEvent(new InputEvent('input', {
+            bubbles: true,
+            inputType: 'deleteContentBackward'
+        }));
     }
 
     root.querySelectorAll('[data-key-action]').forEach(button => {
@@ -133,6 +90,7 @@
     toggle.addEventListener('click', () => {
         panel.hidden = !panel.hidden;
         toggle.setAttribute('aria-expanded', String(!panel.hidden));
+        if (!panel.hidden) input.focus({ preventScroll: true });
     });
     root.querySelector('.gokturk-keyboard__close').addEventListener('click', () => {
         panel.hidden = true;
