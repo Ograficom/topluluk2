@@ -4,7 +4,7 @@
     const alphabet = Array.from({ length: 0x2f }, (_, index) => String.fromCodePoint(0x10c00 + index));
     const root = document.createElement('div');
     root.className = 'gokturk-keyboard';
-    root.innerHTML = '<button class="gokturk-keyboard__toggle" type="button" aria-expanded="false" aria-controls="gokturkKeyboardPanel"><span aria-hidden="true">𐰀</span><span>Göktürkçe</span></button><section class="gokturk-keyboard__panel" id="gokturkKeyboardPanel" aria-label="Sanal klavye" hidden><header class="gokturk-keyboard__header"><div class="gokturk-keyboard__heading"><div><strong data-keyboard-title>Göktürkçe klavye</strong><small data-keyboard-subtitle>Orhun alfabesi · Unicode</small></div><button class="gokturk-keyboard__translate" type="button" data-key-action="translate" aria-label="Kutudaki metni Göktürkçeye çevir" title="Göktürkçeye çevir"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 5h9M8.5 3v2c0 5-2.5 8-5.5 10M5 9c1.2 2 3 3.7 5.5 5M14 19l3.5-9 3.5 9M15.2 16h4.6M14 5h7M17.5 5c0 5 2 8 4.5 10"/></svg></button></div><button class="gokturk-keyboard__close" type="button" aria-label="Klavye panelini kapat">×</button></header><textarea class="gokturk-keyboard__input" data-keyboard-input rows="3" placeholder="Metnini buraya yaz..." aria-label="Göktürkçe veya Türkçe metin"></textarea><div class="gokturk-keyboard__keys" aria-label="Klavye harfleri"></div><footer class="gokturk-keyboard__actions"><button type="button" data-key-action="latin" aria-label="Türkçe klavyeye geç">Türkçe</button><button type="button" data-key-action="space">Boşluk</button><button type="button" data-key-action="enter">Satır sonu</button></footer><p class="gokturk-keyboard__hint">Alfabe değiştirdiğinde kutudaki metin de otomatik çevrilir.</p></section>';
+    root.innerHTML = '<button class="gokturk-keyboard__toggle" type="button" aria-expanded="false" aria-controls="gokturkKeyboardPanel"><span aria-hidden="true">𐰀</span><span>Göktürkçe</span></button><section class="gokturk-keyboard__panel" id="gokturkKeyboardPanel" aria-label="Sanal klavye" hidden><header class="gokturk-keyboard__header"><div class="gokturk-keyboard__heading"><div><strong data-keyboard-title>Göktürkçe klavye</strong><small data-keyboard-subtitle>Orhun alfabesi · Unicode</small></div><div class="gokturk-keyboard__translate-wrap"><button class="gokturk-keyboard__translate" type="button" data-translate-menu-toggle aria-label="Çeviri seçeneklerini aç" title="Çeviri seçenekleri" aria-haspopup="menu" aria-expanded="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 5h9M8.5 3v2c0 5-2.5 8-5.5 10M5 9c1.2 2 3 3.7 5.5 5M14 19l3.5-9 3.5 9M15.2 16h4.6M14 5h7M17.5 5c0 5 2 8 4.5 10"/></svg></button><div class="gokturk-keyboard__translate-menu" data-translate-menu role="menu" hidden><button type="button" role="menuitem" data-key-action="translate-old">Göktürkçeye çevir</button><button type="button" role="menuitem" data-key-action="translate-latin">Türkçeye çevir</button></div></div></div><button class="gokturk-keyboard__close" type="button" aria-label="Klavye panelini kapat">×</button></header><textarea class="gokturk-keyboard__input" data-keyboard-input rows="3" placeholder="Metnini buraya yaz..." aria-label="Göktürkçe veya Türkçe metin"></textarea><div class="gokturk-keyboard__keys" aria-label="Klavye harfleri"></div><footer class="gokturk-keyboard__actions"><button type="button" data-key-action="latin" aria-label="Türkçe klavyeye geç">Türkçe</button><button type="button" data-key-action="space">Boşluk</button><button type="button" data-key-action="enter">Satır sonu</button></footer><p class="gokturk-keyboard__hint">Alfabe değiştirdiğinde kutudaki metin de otomatik çevrilir.</p></section>';
     document.body.appendChild(root);
 
     const toggle = root.querySelector('.gokturk-keyboard__toggle');
@@ -189,10 +189,9 @@
         }));
     }
 
-    function translateToOldTurkic() {
+    function translateText(direction) {
         const start = input.selectionStart ?? input.value.length;
         const end = input.selectionEnd ?? start;
-        const direction = 'toOldTurkic';
         const convertedCaret = convertText(input.value.slice(0, start), direction).length;
         const convertedSelectionEnd = convertText(input.value.slice(0, end), direction).length;
 
@@ -231,14 +230,34 @@
         button.addEventListener('click', () => {
             const action = button.dataset.keyAction;
             if (action === 'latin') switchAlphabet();
-            else if (action === 'translate') translateToOldTurkic();
+            else if (action === 'translate-old') { translateText('toOldTurkic'); closeTranslateMenu(); }
+            else if (action === 'translate-latin') { translateText('toLatin'); closeTranslateMenu(); }
             else if (action === 'space') insert(' ');
             else if (action === 'enter') insert('\n');
             else if (action === 'backspace') backspace();
         });
     });
 
-    toggle.addEventListener('click', () => {
+    const translateMenuToggle = root.querySelector('[data-translate-menu-toggle]');
+    const translateMenu = root.querySelector('[data-translate-menu]');
+
+    function closeTranslateMenu() {
+        if (!translateMenu || !translateMenuToggle) return;
+        translateMenu.hidden = true;
+        translateMenuToggle.setAttribute('aria-expanded', 'false');
+    }
+
+    translateMenuToggle.addEventListener('click', () => {
+        const isOpen = !translateMenu.hidden;
+        translateMenu.hidden = isOpen;
+        translateMenuToggle.setAttribute('aria-expanded', String(!isOpen));
+    });
+
+    document.addEventListener('pointerdown', event => {
+        if (!event.target.closest('.gokturk-keyboard__translate-wrap')) closeTranslateMenu();
+    });
+
+        toggle.addEventListener('click', () => {
         panel.hidden = !panel.hidden;
         toggle.setAttribute('aria-expanded', String(!panel.hidden));
         if (!panel.hidden) input.focus({ preventScroll: true });
@@ -254,6 +273,10 @@
         }
     });
     document.addEventListener('keydown', event => {
+        if (event.key === 'Escape' && translateMenu && !translateMenu.hidden) {
+            closeTranslateMenu();
+            return;
+        }
         if (event.key === 'Escape' && !panel.hidden) {
             panel.hidden = true;
             toggle.setAttribute('aria-expanded', 'false');
