@@ -82,9 +82,11 @@ class AppServiceProvider extends ServiceProvider
                 'faviconMimeType' => $siteSettings?->faviconMimeType(),
                 'seoSettings' => $siteSettings,
                 'navigationChannels' => Channel::query()->active()->orderBy('name')->limit(8)->get(),
-                'sidebarAdvertisement' => request()->routeIs('posts.index') && ! request()->filled('q')
-                    ? Advertisement::query()->deliverable()->with('user')->inRandomOrder()->first()
-                    : null,
+                'sidebarAdvertisement' => Advertisement::query()
+                    ->deliverable()
+                    ->with('user')
+                    ->inRandomOrder()
+                    ->first(),
                 'sidebarAuthors' => User::query()
                     ->whereNotNull('username')
                     ->where('username', '<>', '')
