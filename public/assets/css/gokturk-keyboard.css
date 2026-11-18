@@ -530,3 +530,32 @@ html[data-theme="dark"] .gokturk-keyboard__translate-menu{
     }
 }
 
+
+
+/* Repost theme overlay treatment: blur and dim the page behind the keyboard. */
+.gokturk-keyboard__backdrop{
+    position:fixed;
+    z-index:1200;
+    inset:0;
+    background-color:var(--color-overlay-backdrop, rgba(15,23,42,.48));
+    -webkit-backdrop-filter:blur(4px);
+    backdrop-filter:blur(4px);
+    opacity:0;
+    visibility:hidden;
+    pointer-events:none;
+    transition:opacity .2s ease, visibility .2s ease;
+}
+.gokturk-keyboard__backdrop.is-visible{
+    opacity:1;
+    visibility:visible;
+    pointer-events:auto;
+}
+.gokturk-keyboard{
+    z-index:1201;
+}
+.gokturk-keyboard__panel{
+    z-index:1;
+}
+@media(prefers-reduced-motion:reduce){
+    .gokturk-keyboard__backdrop{transition:none}
+}
