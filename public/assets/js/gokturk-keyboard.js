@@ -2,23 +2,9 @@
     'use strict';
 
     const alphabet = Array.from({ length: 0x2f }, (_, index) => String.fromCodePoint(0x10c00 + index));
-    const isAuthenticated = document.body.dataset.authenticated === 'true';
-    const dismissedUntilKey = 'ografi.gokturkKeyboard.dismissedUntil';
-    const weekInMilliseconds = 7 * 24 * 60 * 60 * 1000;
-
-    if (isAuthenticated) {
-        try {
-            const dismissedUntil = Number(localStorage.getItem(dismissedUntilKey) || 0);
-            if (dismissedUntil > Date.now()) return;
-            localStorage.removeItem(dismissedUntilKey);
-        } catch (_) {
-            // Storage kapalıysa klavye normal şekilde gösterilir.
-        }
-    }
-
     const root = document.createElement('div');
     root.className = 'gokturk-keyboard';
-    root.innerHTML = '<div class="gokturk-keyboard__launcher"><button class="gokturk-keyboard__toggle" type="button" aria-expanded="false" aria-controls="gokturkKeyboardPanel"><span aria-hidden="true">𐰀</span><span>Göktürkçe</span></button><button class="gokturk-keyboard__dismiss" type="button" aria-label="Göktürkçe klavyeyi kapat" title="Kapat">×</button></div><section class="gokturk-keyboard__panel" id="gokturkKeyboardPanel" aria-label="Sanal klavye" hidden><header class="gokturk-keyboard__header"><div class="gokturk-keyboard__heading"><div><strong data-keyboard-title>Göktürkçe klavye</strong><small data-keyboard-subtitle>Orhun alfabesi · Unicode</small></div><div class="gokturk-keyboard__translate-wrap"><button class="gokturk-keyboard__translate" type="button" data-translate-menu-toggle aria-label="Çeviri seçeneklerini aç" title="Çeviri seçeneklerini aç" aria-expanded="false" aria-controls="gokturkTranslateMenu"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 5h9M8.5 3v2c0 5-2.5 8-5.5 10M5 9c1.2 2 3 3.7 5.5 5M14 19l3.5-9 3.5 9M15.2 16h4.6M14 5h7M17.5 5c0 5 2 8 4.5 10"/></svg></button><div class="gokturk-keyboard__translate-menu" id="gokturkTranslateMenu" hidden><button type="button" data-key-action="latin" aria-label="Göktürkçe klavyeye geç">Göktürkçe</button></div></div></div><button class="gokturk-keyboard__close" type="button" aria-label="Klavye panelini kapat">×</button></header><textarea class="gokturk-keyboard__input" data-keyboard-input rows="3" placeholder="Metnini buraya yaz..." aria-label="Göktürkçe veya Türkçe metin"></textarea><div class="gokturk-keyboard__keys" aria-label="Klavye harfleri"></div><footer class="gokturk-keyboard__actions"><button type="button" data-key-action="space">Boşluk</button><button type="button" data-key-action="enter">Satır sonu</button></footer><p class="gokturk-keyboard__hint">Alfabe değiştirdiğinde kutudaki metin de otomatik çevrilir.</p></section>';
+    root.innerHTML = '<div class="gokturk-keyboard__launcher"><button class="gokturk-keyboard__toggle" type="button" aria-expanded="false" aria-controls="gokturkKeyboardPanel"><span aria-hidden="true">𐰀</span><span>Göktürkçe</span></button></div><section class="gokturk-keyboard__panel" id="gokturkKeyboardPanel" aria-label="Sanal klavye" hidden><header class="gokturk-keyboard__header"><div class="gokturk-keyboard__heading"><div><strong data-keyboard-title>Göktürkçe klavye</strong><small data-keyboard-subtitle>Orhun alfabesi · Unicode</small></div><div class="gokturk-keyboard__translate-wrap"><button class="gokturk-keyboard__translate" type="button" data-translate-menu-toggle aria-label="Çeviri seçeneklerini aç" title="Çeviri seçeneklerini aç" aria-expanded="false" aria-controls="gokturkTranslateMenu"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 5h9M8.5 3v2c0 5-2.5 8-5.5 10M5 9c1.2 2 3 3.7 5.5 5M14 19l3.5-9 3.5 9M15.2 16h4.6M14 5h7M17.5 5c0 5 2 8 4.5 10"/></svg></button><div class="gokturk-keyboard__translate-menu" id="gokturkTranslateMenu" hidden><button type="button" data-key-action="latin" aria-label="Göktürkçe klavyeye geç">Göktürkçe</button></div></div></div><button class="gokturk-keyboard__close" type="button" aria-label="Klavye panelini kapat">×</button></header><textarea class="gokturk-keyboard__input" data-keyboard-input rows="3" placeholder="Metnini buraya yaz..." aria-label="Göktürkçe veya Türkçe metin"></textarea><div class="gokturk-keyboard__keys" aria-label="Klavye harfleri"></div><footer class="gokturk-keyboard__actions"><button type="button" data-key-action="space">Boşluk</button><button type="button" data-key-action="enter">Satır sonu</button></footer><p class="gokturk-keyboard__hint">Alfabe değiştirdiğinde kutudaki metin de otomatik çevrilir.</p></section>';
     document.body.appendChild(root);
 
     const toggle = root.querySelector('.gokturk-keyboard__toggle');
@@ -278,16 +264,6 @@
         toggle.setAttribute('aria-expanded', 'false');
     });
 
-    root.querySelector('.gokturk-keyboard__dismiss').addEventListener('click', () => {
-        if (isAuthenticated) {
-            try {
-                localStorage.setItem(dismissedUntilKey, String(Date.now() + weekInMilliseconds));
-            } catch (_) {
-                // Storage kapalıysa yalnızca bu sayfa görüntüsünde kapat.
-            }
-        }
-        root.remove();
-    });
     document.addEventListener('pointerdown', event => {
         if (!root.contains(event.target)) {
             panel.hidden = true;
