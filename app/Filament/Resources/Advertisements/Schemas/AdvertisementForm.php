@@ -7,6 +7,7 @@ use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 
@@ -39,6 +40,16 @@ class AdvertisementForm
                         'pending' => 'Onay bekliyor', 'approved' => 'Onaylandı', 'rejected' => 'Reddedildi', 'paused' => 'Durduruldu',
                     ])->required()->native(false),
                     Textarea::make('rejection_reason')->label('Ret nedeni')->rows(2)->columnSpanFull(),
+                ]),
+            Section::make('Yayın alanı')
+                ->description('Reklamın hangi alanda gösterileceğini belirle.')
+                ->icon('heroicon-o-rectangle-stack')
+                ->schema([
+                    Toggle::make('show_in_sidebar_widget')
+                        ->label('Sağ widget'ta göster')
+                        ->helperText('Etkinleştirildiğinde reklam, sitenin sağ sütunundaki reklam kutusunda yayınlanır.')
+                        ->default(true)
+                        ->inline(false),
                 ]),
             Section::make('Ödeme ve bütçe')
                 ->description('Ücretlendirme, tahsilat ve reklam harcaması.')
