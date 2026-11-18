@@ -102,16 +102,18 @@
 
             row.forEach(item => {
                 if (typeof item === 'object' && item.action === 'shift') {
-                    const shift = makeKey('⇧', 'gokturk-keyboard__special' + (shiftOn ? ' is-active' : ''), () => {
+                    const shift = makeKey('', 'gokturk-keyboard__special gokturk-keyboard__icon-key' + (shiftOn ? ' is-active' : ''), () => {
                         shiftOn = !shiftOn;
                         renderKeys();
                     }, 'Büyük harf');
+                    shift.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 3 4 11h4v8h8v-8h4L12 3Z"/></svg>';
                     rowElement.appendChild(shift);
                     return;
                 }
 
                 if (typeof item === 'object' && item.action === 'backspace') {
-                    const back = makeKey('⌫', 'gokturk-keyboard__special', backspace, 'Geri sil');
+                    const back = makeKey('', 'gokturk-keyboard__special gokturk-keyboard__icon-key', backspace, 'Geri sil');
+                    back.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 4H20V20H9L2 12 9 4Z"/><path d="m12 9 5 6m0-6-5 6"/></svg>';
                     rowElement.appendChild(back);
                     return;
                 }
