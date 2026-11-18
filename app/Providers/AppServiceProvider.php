@@ -84,6 +84,7 @@ class AppServiceProvider extends ServiceProvider
                 'navigationChannels' => Channel::query()->active()->orderBy('name')->limit(8)->get(),
                 'sidebarAdvertisement' => Advertisement::query()
                     ->deliverable()
+                    ->where('show_in_sidebar_widget', true)
                     ->with('user')
                     ->inRandomOrder()
                     ->first(),
