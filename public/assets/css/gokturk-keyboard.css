@@ -540,16 +540,6 @@ html[data-theme="dark"] .gokturk-keyboard__translate-menu{
     background:var(--gray-100, #f7f9fd);
     color:var(--color-primary, #0d6efd);
 }
-.gokturk-keyboard__dismiss svg{
-    display:block;
-    width:17px;
-    height:17px;
-    fill:none;
-    stroke:currentColor;
-    stroke-width:1.7;
-    stroke-linecap:round;
-    stroke-linejoin:round;
-}
 .gokturk-keyboard__panel{
     z-index:1;
 }
