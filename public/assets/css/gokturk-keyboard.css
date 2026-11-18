@@ -351,3 +351,159 @@ html[data-theme="dark"] .gokturk-keyboard__translate-menu button{
     width:var(--keyboard-key-width);
     max-width:var(--keyboard-key-width);
 }
+
+
+/* OgraFi / Repost tema entegrasyonu — tema ZIP'indeki kit.css tasarım tokenları */
+.gokturk-keyboard{
+    font-family:var(--font-primary, "Roboto", system-ui, sans-serif);
+    color:var(--text-color, #212529);
+}
+.gokturk-keyboard__panel{
+    box-sizing:border-box;
+    padding:20px;
+    border:1px solid var(--card-border-color, var(--border-color, #e7ebef));
+    border-radius:20px;
+    background:var(--card-bg, #fff);
+    color:var(--text-color, #212529);
+    box-shadow:var(--card-box-shadow, 0 5px 20px rgba(15,23,42,.06));
+}
+.gokturk-keyboard__header strong{
+    color:var(--title-color, #000);
+    font-family:var(--font-secondary, "Inter", sans-serif);
+    font-weight:700;
+    letter-spacing:-.01em;
+}
+.gokturk-keyboard__header small,
+.gokturk-keyboard__hint{
+    color:var(--color-gray, var(--gray-500, #64748b));
+    font-family:var(--font-primary, "Roboto", sans-serif);
+}
+.gokturk-keyboard__toggle,
+.gokturk-keyboard__translate,
+.gokturk-keyboard__close,
+.gokturk-keyboard__actions button,
+.gokturk-keyboard__translate-menu button{
+    font-family:var(--font-secondary, "Inter", sans-serif);
+    transition:color .15s ease,background-color .15s ease,border-color .15s ease,box-shadow .15s ease;
+}
+.gokturk-keyboard__toggle{
+    min-height:42px;
+    border-color:var(--border-color, #e7ebef);
+    background:var(--card-bg, #fff);
+    color:var(--text-color, #212529);
+    box-shadow:var(--shadow-sm, 0 2px 4px rgba(15,23,42,.08));
+}
+.gokturk-keyboard__toggle:hover,
+.gokturk-keyboard__translate:hover{
+    border-color:var(--color-primary, #0d6efd);
+    background:var(--blue-400, #edf5fe);
+    color:var(--color-primary, #0d6efd);
+}
+.gokturk-keyboard__input{
+    box-sizing:border-box;
+    border:1px solid var(--gray-300, #d5dbe2);
+    border-radius:.75rem;
+    background:var(--color-surface-overlay, #fff);
+    color:var(--text-color, #212529);
+    box-shadow:0 2px 3px rgb(15 23 42 / 4%);
+    font-family:var(--font-primary, "Roboto", sans-serif);
+    transition:border-color .15s ease,box-shadow .15s ease,background-color .15s ease;
+}
+.gokturk-keyboard__input:hover{
+    border-color:var(--gray-400, #b7c0ca);
+}
+.gokturk-keyboard__input:focus{
+    border-color:var(--color-primary, #0d6efd);
+    box-shadow:0 2px 3px rgb(15 23 42 / 4%),0 0 0 .2rem color-mix(in srgb,var(--color-primary, #0d6efd) 12%,transparent);
+}
+.gokturk-keyboard__input::placeholder{
+    color:var(--title-color, #000);
+    opacity:.55;
+}
+.gokturk-keyboard__keys .gokturk-keyboard__key,
+.gokturk-keyboard__keys .gokturk-keyboard__gokturk-backspace{
+    border:1px solid var(--gray-300, #d5dbe2);
+    border-radius:.75rem;
+    background:var(--color-surface-overlay, #fff);
+    color:var(--text-color, #212529);
+    box-shadow:0 2px 3px rgb(15 23 42 / 4%);
+    transition:border-color .15s ease,background-color .15s ease,color .15s ease,box-shadow .15s ease;
+}
+.gokturk-keyboard__keys .gokturk-keyboard__key:hover,
+.gokturk-keyboard__keys .gokturk-keyboard__gokturk-backspace:hover{
+    border-color:var(--gray-400, #b7c0ca);
+    background:var(--gray-100, #f7f9fd);
+    color:var(--title-color, #000);
+}
+.gokturk-keyboard__keys .gokturk-keyboard__special{
+    background:var(--gray-150, #eef0f5);
+    color:var(--gray-600, #475569);
+}
+.gokturk-keyboard__keys .gokturk-keyboard__special.is-active{
+    border-color:var(--gray-400, #b7c0ca);
+    background:var(--gray-200, #e7ebef);
+}
+.gokturk-keyboard__actions button{
+    border:1px solid var(--gray-300, #d5dbe2);
+    border-radius:.75rem;
+    background:var(--color-surface-overlay, #fff);
+    color:var(--text-color, #212529);
+    box-shadow:0 2px 3px rgb(15 23 42 / 4%);
+    font-size:.86rem;
+    font-weight:600;
+}
+.gokturk-keyboard__actions button:hover{
+    border-color:var(--gray-400, #b7c0ca);
+    background:var(--gray-100, #f7f9fd);
+    color:var(--title-color, #000);
+}
+.gokturk-keyboard__translate{
+    border-color:var(--border-color, #e7ebef);
+    border-radius:.75rem;
+    background:var(--color-surface-overlay, #fff);
+    color:var(--color-primary, #0d6efd);
+    box-shadow:var(--shadow-sm, 0 2px 4px rgba(15,23,42,.08));
+}
+.gokturk-keyboard__close{
+    border:1px solid var(--gray-300, #d5dbe2);
+    border-radius:.75rem;
+    background:var(--gray-100, #f7f9fd);
+    color:var(--gray-600, #475569);
+    box-shadow:var(--shadow-sm, 0 2px 4px rgba(15,23,42,.08));
+}
+.gokturk-keyboard__translate-menu{
+    padding:6px;
+    gap:2px;
+    border:1px solid var(--border-color, #e7ebef);
+    border-radius:16px;
+    background:var(--color-surface-overlay, #fff);
+    box-shadow:var(--shadow-lg, 0 12px 32px rgba(15,23,42,.12));
+}
+.gokturk-keyboard__translate-menu button{
+    min-height:36px;
+    border-radius:11px;
+    background:transparent;
+    color:var(--text-color, #212529);
+    font-family:var(--font-primary, "Roboto", sans-serif);
+    font-size:.875rem;
+    font-weight:500;
+}
+.gokturk-keyboard__translate-menu button:hover{
+    background:var(--gray-100, #f7f9fd);
+    color:var(--title-color, #000);
+}
+html[data-theme="dark"] .gokturk-keyboard__panel{
+    border-color:var(--card-border-color, var(--border-color));
+    background:var(--card-bg, var(--gray-100));
+    color:var(--text-color);
+    box-shadow:var(--card-box-shadow);
+}
+html[data-theme="dark"] .gokturk-keyboard__input,
+html[data-theme="dark"] .gokturk-keyboard__keys .gokturk-keyboard__key,
+html[data-theme="dark"] .gokturk-keyboard__keys .gokturk-keyboard__gokturk-backspace,
+html[data-theme="dark"] .gokturk-keyboard__actions button,
+html[data-theme="dark"] .gokturk-keyboard__translate-menu{
+    border-color:var(--border-color);
+    background:var(--color-surface-overlay);
+    color:var(--text-color);
+}
