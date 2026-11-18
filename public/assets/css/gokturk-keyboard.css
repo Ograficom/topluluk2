@@ -298,3 +298,12 @@ html[data-theme="dark"] .gokturk-keyboard__translate-menu button{
     background:#1e3a8a;
     color:#dbeafe;
 }
+
+/* Alt sırada yalnızca Boşluk ve Satır sonu; alfabe düğmesi çeviri menüsünde */
+.gokturk-keyboard__actions{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+}
+.gokturk-keyboard__translate-menu [data-key-action="latin"]{
+    width:100%;
+    min-height:38px;
+}
