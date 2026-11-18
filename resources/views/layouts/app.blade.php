@@ -71,7 +71,7 @@
     <link rel="stylesheet" href="{{ asset('assets/css/kit.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/app.css') }}?v=20261112-mobile-write-menu">
     <link rel="stylesheet" href="{{ asset('assets/css/engine.css') }}?v=20261110-santral-hero-buttons-inset-blue">
-    <link rel="stylesheet" href="{{ asset('assets/css/ografi-overrides.css') }}?v=20261119-sidebar-ad-widget-all-pages-2">
+    <link rel="stylesheet" href="{{ asset('assets/css/ografi-overrides.css') }}?v=20261119-sidebar-ad-widget-schedule-refresh-3">
     <link rel="stylesheet" href="{{ asset('assets/css/gokturk-keyboard.css') }}?v=20261119-6">
     <script>
         (() => {
@@ -558,7 +558,7 @@
                             <footer class="widget__footer"><a href="{{ route('members.index') }}" class="link-accent">Üye sıralaması</a></footer>
                         </section>
                             @if ($sidebarAdvertisement)
-                                <section class="widget card card-body sidebar-ad-widget" data-ad-impression="{{ route('advertisements.impression', $sidebarAdvertisement) }}">
+                                <section class="widget card card-body sidebar-ad-widget" data-ad-impression="{{ route('advertisements.impression', $sidebarAdvertisement) }}" data-ad-refresh-at="{{ $sidebarAdvertisement->ends_at->timestamp * 1000 }}">
                                     <header class="sidebar-ad-widget__header">
                                         <h2 class="widget__title h6">Sponsorlu içerik</h2>
                                         <span class="sidebar-ad-widget__label">Reklam</span>
@@ -575,7 +575,7 @@
                                     </div>
                                 </section>
                             @else
-                                <section class="widget card card-body sidebar-ad-widget sidebar-ad-widget--empty">
+                                <section class="widget card card-body sidebar-ad-widget sidebar-ad-widget--empty" @if ($sidebarAdvertisementNextStartAt) data-ad-refresh-at="{{ \Illuminate\Support\Carbon::parse($sidebarAdvertisementNextStartAt)->timestamp * 1000 }}" @endif>
                                     <header class="sidebar-ad-widget__header">
                                         <h2 class="widget__title h6">Reklam alanı</h2>
                                         <span class="sidebar-ad-widget__label">Sponsorlu</span>
@@ -972,6 +972,28 @@
     })();
     </script>
 @endif
+<script>
+(() => {
+    const widget = document.querySelector('.sidebar-ad-widget[data-ad-refresh-at]');
+    if (!widget) return;
+
+    const refreshAt = Number(widget.dataset.adRefreshAt);
+    if (!Number.isFinite(refreshAt) || refreshAt <= 0) return;
+
+    let refreshed = false;
+    const refreshWhenDue = () => {
+        if (refreshed || Date.now() < refreshAt) return;
+        refreshed = true;
+        window.location.reload();
+    };
+
+    const delay = Math.max(0, refreshAt - Date.now());
+    window.setTimeout(refreshWhenDue, Math.min(delay + 250, 2147483647));
+    document.addEventListener('visibilitychange', () => {
+        if (document.visibilityState === 'visible') refreshWhenDue();
+    });
+})();
+</script>
 @stack('scripts')
 </body>
 </html>
