@@ -61,6 +61,37 @@
                     <footer class="widget__footer"><a href="{{ route('members.index') }}" class="link-accent">Üye sıralaması</a></footer>
                 </section>
 
+                @if ($sidebarAdvertisement)
+                    <section class="widget card card-body sidebar-ad-widget" data-ad-impression="{{ route('advertisements.impression', $sidebarAdvertisement) }}" data-ad-refresh-at="{{ $sidebarAdvertisement->ends_at->timestamp * 1000 }}">
+                        <header class="sidebar-ad-widget__header">
+                            <h2 class="widget__title h6">Sponsorlu içerik</h2>
+                            <span class="sidebar-ad-widget__label">Reklam</span>
+                        </header>
+                        @if ($sidebarAdvertisement->imageUrl())
+                            <a class="sidebar-ad-widget__image" href="{{ route('advertisements.show', ['advertisement' => $sidebarAdvertisement, 'source' => 'sidebar']) }}" aria-label="{{ $sidebarAdvertisement->title }}">
+                                <img src="{{ $sidebarAdvertisement->imageUrl() }}" alt="{{ $sidebarAdvertisement->title }}" loading="lazy">
+                            </a>
+                        @endif
+                        <div class="sidebar-ad-widget__body">
+                            <h3 class="sidebar-ad-widget__title">{{ $sidebarAdvertisement->title }}</h3>
+                            <p class="sidebar-ad-widget__description">{{ \Illuminate\Support\Str::limit($sidebarAdvertisement->description, 150) }}</p>
+                            <a class="btn btn-primary sidebar-ad-widget__button" href="{{ route('advertisements.click', $sidebarAdvertisement) }}" rel="sponsored nofollow">{{ $sidebarAdvertisement->button_text ?: 'Daha fazla bilgi al' }}</a>
+                        </div>
+                    </section>
+                @else
+                    <section class="widget card card-body sidebar-ad-widget sidebar-ad-widget--empty" @if ($sidebarAdvertisementNextStartAt) data-ad-refresh-at="{{ \Illuminate\Support\Carbon::parse($sidebarAdvertisementNextStartAt)->timestamp * 1000 }}" @endif>
+                        <header class="sidebar-ad-widget__header">
+                            <h2 class="widget__title h6">Reklam alanı</h2>
+                            <span class="sidebar-ad-widget__label">Sponsorlu</span>
+                        </header>
+                        <div class="sidebar-ad-widget__empty-content">
+                            <strong>Markanı OgraFi topluluğuna tanıt.</strong>
+                            <p>Reklamını yayınla, daha fazla kişiye ulaş.</p>
+                            <a class="btn btn-primary sidebar-ad-widget__button" href="{{ route('advertisements.create') }}">Reklam ver</a>
+                        </div>
+                    </section>
+                @endif
+
                 <section class="widget card card-body">
                     <header><h2 class="widget__title h6">Popüler yazılar</h2></header>
                     <div class="widget__content widget__content--bleed">
