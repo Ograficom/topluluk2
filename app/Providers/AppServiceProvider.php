@@ -88,6 +88,15 @@ class AppServiceProvider extends ServiceProvider
                     ->with('user')
                     ->inRandomOrder()
                     ->first(),
+                'sidebarAdvertisementNextStartAt' => Advertisement::query()
+                    ->where('status', 'approved')
+                    ->where('show_in_sidebar_widget', true)
+                    ->where('starts_at', '>', now())
+                    ->where('ends_at', '>', now())
+                    ->where(fn (\Illuminate\Database\Eloquent\Builder $q) => $q->where('billing_type', 'free')
+                        ->orWhere(fn (\Illuminate\Database\Eloquent\Builder $paid) => $paid->where('payment_status', 'paid')
+                            ->whereColumn('spent_amount', '<', 'total_budget')))
+                    ->min('starts_at'),
                 'sidebarAuthors' => User::query()
                     ->whereNotNull('username')
                     ->where('username', '<>', '')
