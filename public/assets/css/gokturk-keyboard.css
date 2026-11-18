@@ -25,3 +25,58 @@ html[data-theme="dark"] .gokturk-keyboard__header small,html[data-theme="dark"] 
 .gokturk-keyboard__actions [data-key-action="latin"]{grid-column:1}
 html[data-theme="dark"] .gokturk-keyboard__input{border-color:#334155;background:#1e293b;color:#e2e8f0}
 html[data-theme="dark"] .gokturk-keyboard__input::placeholder{color:#94a3b8}
+/* Türkçe Q klavye: üç sıralı, mobil tuş düzeni */
+.gokturk-keyboard__keys.is-turkish{
+    display:flex;
+    flex-direction:column;
+    gap:5px;
+}
+.gokturk-keyboard__row{
+    display:grid;
+    gap:4px;
+    width:100%;
+}
+.gokturk-keyboard__row--1{grid-template-columns:repeat(12,minmax(0,1fr))}
+.gokturk-keyboard__row--2{grid-template-columns:repeat(11,minmax(0,1fr))}
+.gokturk-keyboard__row--3{grid-template-columns:1.45fr repeat(9,minmax(0,1fr)) 1.45fr}
+.gokturk-keyboard__keys.is-turkish .gokturk-keyboard__key{
+    min-width:0;
+    min-height:38px;
+    padding:0 2px;
+    border:1px solid #d9e0e8;
+    border-radius:5px;
+    background:#f1f4f7;
+    color:#344054;
+    font-family:Arial,sans-serif;
+    font-size:16px;
+    font-weight:500;
+    box-shadow:0 1px 0 rgba(15,23,42,.08);
+}
+.gokturk-keyboard__keys.is-turkish .gokturk-keyboard__special{
+    background:#e2e8f0;
+    color:#475569;
+    font-family:Arial,sans-serif;
+    font-size:20px;
+}
+.gokturk-keyboard__keys.is-turkish .gokturk-keyboard__special.is-active{
+    background:#cbd5e1;
+    border-color:#94a3b8;
+}
+.gokturk-keyboard__keys.is-turkish .gokturk-keyboard__key:hover{
+    border-color:#aab8c9;
+    background:#e2e8f0;
+    color:#172033;
+}
+html[data-theme="dark"] .gokturk-keyboard__keys.is-turkish .gokturk-keyboard__key{
+    border-color:#475569;
+    background:#334155;
+    color:#f1f5f9;
+}
+html[data-theme="dark"] .gokturk-keyboard__keys.is-turkish .gokturk-keyboard__special{
+    background:#475569;
+    color:#f8fafc;
+}
+@media(max-width:600px){
+    .gokturk-keyboard__keys.is-turkish .gokturk-keyboard__key{min-height:35px;font-size:15px}
+    .gokturk-keyboard__keys.is-turkish .gokturk-keyboard__special{font-size:18px}
+}
