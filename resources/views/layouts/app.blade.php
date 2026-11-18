@@ -71,7 +71,7 @@
     <link rel="stylesheet" href="{{ asset('assets/css/kit.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/app.css') }}?v=20261112-mobile-write-menu">
     <link rel="stylesheet" href="{{ asset('assets/css/engine.css') }}?v=20261110-santral-hero-buttons-inset-blue">
-    <link rel="stylesheet" href="{{ asset('assets/css/ografi-overrides.css') }}?v=20261119-homepage-repost-widgets-1">
+    <link rel="stylesheet" href="{{ asset('assets/css/ografi-overrides.css') }}?v=20261119-repost-native-sidebar-2">
     <link rel="stylesheet" href="{{ asset('assets/css/gokturk-keyboard.css') }}?v=20261119-6">
     <script>
         (() => {
@@ -515,7 +515,7 @@
                 @endif
 
                 @unless ($profilePage || $channelPage)
-                <aside @class(['main__widgets', 'homepage-widgets' => request()->routeIs('posts.index')]) aria-label="Sağ sütun">
+                <aside class="main__widgets" aria-label="Sağ sütun">
                     <div class="widgets">
                         <section class="widget card card-body">
                             <header><h2 class="widget__title h6">Etiketler</h2></header>
