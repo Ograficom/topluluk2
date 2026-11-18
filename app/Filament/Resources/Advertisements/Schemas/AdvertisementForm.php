@@ -46,7 +46,7 @@ class AdvertisementForm
                 ->icon('heroicon-o-rectangle-stack')
                 ->schema([
                     Toggle::make('show_in_sidebar_widget')
-                        ->label('Sağ widget'ta göster')
+                        ->label("Sağ widget'ta göster")
                         ->helperText('Etkinleştirildiğinde reklam, sitenin sağ sütunundaki reklam kutusunda yayınlanır.')
                         ->default(true)
                         ->inline(false),
