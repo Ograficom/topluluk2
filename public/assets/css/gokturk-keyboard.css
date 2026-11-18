@@ -307,3 +307,47 @@ html[data-theme="dark"] .gokturk-keyboard__translate-menu button{
     width:100%;
     min-height:38px;
 }
+
+
+/* Ortak sabit tuş genişliği: Göktürkçe ve Türkçe Q */
+.gokturk-keyboard__keys{
+    --keyboard-key-gap:4px;
+    --keyboard-key-width:calc((100% - 44px)/12);
+}
+.gokturk-keyboard__keys.is-gokturk{
+    display:grid;
+    grid-template-columns:repeat(12,minmax(0,1fr));
+    gap:var(--keyboard-key-gap);
+}
+.gokturk-keyboard__keys.is-gokturk .gokturk-keyboard__key,
+.gokturk-keyboard__keys.is-gokturk .gokturk-keyboard__gokturk-backspace{
+    box-sizing:border-box;
+    width:100%;
+    min-width:0;
+}
+.gokturk-keyboard__keys.is-turkish{
+    display:flex;
+    flex-direction:column;
+    gap:5px;
+}
+.gokturk-keyboard__keys.is-turkish .gokturk-keyboard__row{
+    display:flex;
+    justify-content:center;
+    align-items:stretch;
+    gap:var(--keyboard-key-gap);
+    width:100%;
+}
+.gokturk-keyboard__keys.is-turkish .gokturk-keyboard__row > .gokturk-keyboard__key{
+    box-sizing:border-box;
+    flex:0 0 var(--keyboard-key-width);
+    width:var(--keyboard-key-width);
+    min-width:0;
+    max-width:var(--keyboard-key-width);
+    padding-left:0;
+    padding-right:0;
+}
+.gokturk-keyboard__keys.is-turkish .gokturk-keyboard__row > .gokturk-keyboard__special{
+    flex-basis:var(--keyboard-key-width);
+    width:var(--keyboard-key-width);
+    max-width:var(--keyboard-key-width);
+}
