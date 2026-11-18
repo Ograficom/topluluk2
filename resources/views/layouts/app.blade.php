@@ -73,7 +73,7 @@
     <link rel="stylesheet" href="{{ asset('assets/css/engine.css') }}?v=20261110-santral-hero-buttons-inset-blue">
     <link rel="stylesheet" href="{{ asset('assets/css/ografi-overrides.css') }}?v=20261119-mobile-sidebar-ad-widget-4">
     @if (request()->routeIs('posts.index', 'posts.show'))
-    <link rel="stylesheet" href="{{ asset('assets/css/gokturk-keyboard.css') }}?v=20261119-restore-close-x-9">
+    <link rel="stylesheet" href="{{ asset('assets/css/gokturk-keyboard.css') }}?v=20261119-remove-dismiss-control-10">
     @endif
     <script>
         (() => {
@@ -939,7 +939,7 @@
     </script>
     @endauth
     @if (request()->routeIs('posts.index', 'posts.show'))
-    <script src="{{ asset('assets/js/gokturk-keyboard.js') }}?v=20261119-restore-close-x-9" defer></script>
+    <script src="{{ asset('assets/js/gokturk-keyboard.js') }}?v=20261119-remove-dismiss-control-10" defer></script>
     @endif
     @include('layouts._cookie-consent')
     @if ($sidebarAdvertisement)
