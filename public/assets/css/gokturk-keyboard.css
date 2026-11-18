@@ -529,8 +529,4 @@ html[data-theme="dark"] .gokturk-keyboard__translate-menu{
         z-index:80;
     }
 }
-html[data-theme="dark"] .gokturk-keyboard__dismiss{
-    border-color:var(--border-color, #475569);
-    background:var(--card-bg, #172033);
-    color:var(--text-color, #e2e8f0);
-}
+
