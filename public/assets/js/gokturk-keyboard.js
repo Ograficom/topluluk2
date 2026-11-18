@@ -15,14 +15,17 @@
     const subtitle = root.querySelector('[data-keyboard-subtitle]');
     const input = root.querySelector('[data-keyboard-input]');
     let mode = 'gokturk';
+    let shiftOn = false;
 
     const layouts = {
         gokturk: alphabet,
-        turkish: Array.from('QWERTYUIOPĞÜASDFGHJKLŞİZXCVBNMÖÇ')
+        turkish: [
+            ['q','w','e','r','t','y','u','ı','o','p','ğ','ü'],
+            ['a','s','d','f','g','h','j','k','l','ş','i'],
+            [{ action: 'shift' },'z','x','c','v','b','n','m','ö','ç',{ action: 'backspace' }]
+        ]
     };
 
-    // Basitleştirilmiş, pratik Latin <-> Orhun harf eşlemesi.
-    // Tarihî metinlerde ses uyumu ve harf varyantları ayrıca değerlendirilmelidir.
     const latinToOldTurkic = {
         a: '𐰀', b: '𐰉', c: '𐰲', ç: '𐰲', d: '𐰑', e: '𐰅',
         f: '𐰯', g: '𐰍', ğ: '𐰏', h: '𐰴', ı: '𐰃', i: '𐰃',
@@ -59,8 +62,7 @@
     }
 
     function latinCharacterToOldTurkic(character) {
-        const lower = character.toLocaleLowerCase('tr-TR');
-        const converted = latinToOldTurkic[lower];
+        const converted = latinToOldTurkic[character.toLocaleLowerCase('tr-TR')];
         return converted ? preserveCase(character, converted) : character;
     }
 
@@ -82,21 +84,65 @@
             : oldTurkicCharacterToLatin(character);
     }
 
+    function makeKey(label, className, onClick, ariaLabel) {
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = 'gokturk-keyboard__key' + (className ? ' ' + className : '');
+        button.textContent = label;
+        button.setAttribute('aria-label', ariaLabel || label);
+        button.addEventListener('pointerdown', event => event.preventDefault());
+        button.addEventListener('click', onClick);
+        return button;
+    }
+
+    function renderTurkishKeys() {
+        layouts.turkish.forEach((row, rowIndex) => {
+            const rowElement = document.createElement('div');
+            rowElement.className = 'gokturk-keyboard__row gokturk-keyboard__row--' + (rowIndex + 1);
+
+            row.forEach(item => {
+                if (typeof item === 'object' && item.action === 'shift') {
+                    const shift = makeKey('⇧', 'gokturk-keyboard__special' + (shiftOn ? ' is-active' : ''), () => {
+                        shiftOn = !shiftOn;
+                        renderKeys();
+                    }, 'Büyük harf');
+                    rowElement.appendChild(shift);
+                    return;
+                }
+
+                if (typeof item === 'object' && item.action === 'backspace') {
+                    const back = makeKey('⌫', 'gokturk-keyboard__special', backspace, 'Geri sil');
+                    rowElement.appendChild(back);
+                    return;
+                }
+
+                const shown = shiftOn ? item.toLocaleUpperCase('tr-TR') : item;
+                const key = makeKey(shown, '', () => {
+                    insert(convertKey(shown));
+                    if (shiftOn) {
+                        shiftOn = false;
+                        renderKeys();
+                    }
+                }, shown);
+                rowElement.appendChild(key);
+            });
+
+            keys.appendChild(rowElement);
+        });
+    }
+
     function renderKeys() {
         keys.replaceChildren();
-        layouts[mode].forEach((character, index) => {
-            const button = document.createElement('button');
-            button.type = 'button';
-            button.className = 'gokturk-keyboard__key';
-            button.textContent = character;
-            button.title = mode === 'gokturk'
-                ? 'Unicode U+' + (0x10c00 + index).toString(16).toUpperCase()
-                : 'Türkçe ' + character;
-            button.setAttribute('aria-label', (mode === 'gokturk' ? 'Göktürk harfi ' : 'Türkçe harf ') + character);
-            button.addEventListener('pointerdown', event => event.preventDefault());
-            button.addEventListener('click', () => insert(convertKey(character)));
-            keys.appendChild(button);
-        });
+
+        if (mode === 'turkish') {
+            renderTurkishKeys();
+        } else {
+            alphabet.forEach((character, index) => {
+                const button = makeKey(character, '', () => insert(oldTurkicCharacterToLatin(character)));
+                button.title = 'Unicode U+' + (0x10c00 + index).toString(16).toUpperCase();
+                keys.appendChild(button);
+            });
+        }
 
         const turkish = mode === 'turkish';
         switchButton.textContent = turkish ? 'Göktürkçe' : 'Türkçe';
@@ -135,17 +181,13 @@
         const nextMode = mode === 'gokturk' ? 'turkish' : 'gokturk';
         const start = input.selectionStart ?? input.value.length;
         const end = input.selectionEnd ?? start;
-
-        // Göktürk tuşları Latin çıktı üretir; Türkçe tuşları Göktürk çıktı üretir.
-        // Geçişte mevcut metin de yeni görünür alfabeye dönüştürülür.
         const direction = mode === 'gokturk' ? 'toOldTurkic' : 'toLatin';
-        const beforeCaret = input.value.slice(0, start);
-        const converted = convertText(input.value, direction);
-        const convertedCaret = convertText(beforeCaret, direction).length;
+        const convertedCaret = convertText(input.value.slice(0, start), direction).length;
 
-        input.value = converted;
+        input.value = convertText(input.value, direction);
         input.setSelectionRange(convertedCaret, convertedCaret + Math.max(0, end - start));
         mode = nextMode;
+        shiftOn = false;
         renderKeys();
         input.dispatchEvent(new InputEvent('input', {
             bubbles: true,
@@ -159,15 +201,10 @@
         button.addEventListener('pointerdown', event => event.preventDefault());
         button.addEventListener('click', () => {
             const action = button.dataset.keyAction;
-            if (action === 'latin') {
-                switchAlphabet();
-            } else if (action === 'space') {
-                insert(' ');
-            } else if (action === 'enter') {
-                insert('\n');
-            } else if (action === 'backspace') {
-                backspace();
-            }
+            if (action === 'latin') switchAlphabet();
+            else if (action === 'space') insert(' ');
+            else if (action === 'enter') insert('\n');
+            else if (action === 'backspace') backspace();
         });
     });
 
