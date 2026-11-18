@@ -71,7 +71,7 @@
     <link rel="stylesheet" href="{{ asset('assets/css/kit.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/app.css') }}?v=20261112-mobile-write-menu">
     <link rel="stylesheet" href="{{ asset('assets/css/engine.css') }}?v=20261110-santral-hero-buttons-inset-blue">
-    <link rel="stylesheet" href="{{ asset('assets/css/ografi-overrides.css') }}?v=20261119-homepage-sidebar-ad-widget-1">
+    <link rel="stylesheet" href="{{ asset('assets/css/ografi-overrides.css') }}?v=20261119-sidebar-ad-widget-all-pages-2">
     <link rel="stylesheet" href="{{ asset('assets/css/gokturk-keyboard.css') }}?v=20261119-6">
     <script>
         (() => {
@@ -557,7 +557,6 @@
                             </div>
                             <footer class="widget__footer"><a href="{{ route('members.index') }}" class="link-accent">Üye sıralaması</a></footer>
                         </section>
-                        @if ($feedPage)
                             @if ($sidebarAdvertisement)
                                 <section class="widget card card-body sidebar-ad-widget" data-ad-impression="{{ route('advertisements.impression', $sidebarAdvertisement) }}">
                                     <header class="sidebar-ad-widget__header">
@@ -588,7 +587,6 @@
                                     </div>
                                 </section>
                             @endif
-                        @endif
                         <section class="widget card card-body">
                             <header>
                                 <h2 class="widget__title h6">Popüler yazılar</h2>
@@ -940,7 +938,7 @@
     @endauth
     <script src="{{ asset('assets/js/gokturk-keyboard.js') }}?v=20261119-4" defer></script>
     @include('layouts._cookie-consent')
-    @if ($feedPage && $sidebarAdvertisement)
+    @if ($sidebarAdvertisement)
     <script>
     (() => {
         const ad = document.querySelector('[data-ad-impression]');
