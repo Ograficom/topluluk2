@@ -248,3 +248,57 @@ html[data-theme="dark"] .gokturk-keyboard__keys.is-gokturk .gokturk-keyboard__go
 @media(max-width:600px){
     .gokturk-keyboard__actions button{min-height:36px;font-size:12px}
 }
+
+/* Açılır çeviri seçenekleri */
+.gokturk-keyboard__translate-wrap{
+    position:relative;
+    display:flex;
+    flex:0 0 auto;
+}
+.gokturk-keyboard__translate-menu{
+    position:absolute;
+    z-index:5;
+    top:calc(100% + 8px);
+    right:0;
+    display:grid;
+    width:190px;
+    gap:4px;
+    padding:6px;
+    border:1px solid #dbe3ef;
+    border-radius:10px;
+    background:#fff;
+    box-shadow:0 8px 24px rgba(15,23,42,.12);
+}
+.gokturk-keyboard__translate-menu[hidden]{
+    display:none;
+}
+.gokturk-keyboard__translate-menu button{
+    min-height:36px;
+    padding:7px 10px;
+    border:0;
+    border-radius:7px;
+    background:transparent;
+    color:#263449;
+    font:inherit;
+    font-size:12px;
+    text-align:left;
+    cursor:pointer;
+}
+.gokturk-keyboard__translate-menu button:hover,
+.gokturk-keyboard__translate-menu button:focus-visible{
+    outline:none;
+    background:#eff6ff;
+    color:#1d4ed8;
+}
+html[data-theme="dark"] .gokturk-keyboard__translate-menu{
+    border-color:#334155;
+    background:#172033;
+}
+html[data-theme="dark"] .gokturk-keyboard__translate-menu button{
+    color:#e2e8f0;
+}
+html[data-theme="dark"] .gokturk-keyboard__translate-menu button:hover,
+html[data-theme="dark"] .gokturk-keyboard__translate-menu button:focus-visible{
+    background:#1e3a8a;
+    color:#dbeafe;
+}
