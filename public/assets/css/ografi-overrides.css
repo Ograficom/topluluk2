@@ -7051,3 +7051,31 @@ body.is-messenger-conversation .pm-dialog__composer .pm-composer__send{
     overflow: hidden;
     text-overflow: ellipsis;
 }
+
+
+/* Repost ZIP index.html: homepage right rail uses the native, non-sticky flow.
+   The original index keeps the widgets in normal document flow. Do not change
+   the sidebar/grid column widths or other pages' sidebar behavior. */
+@media screen and (min-width: 921px) {
+  html body main.container > .main.main__grid > aside.main__widgets.homepage-index-widgets {
+    position: static !important;
+    inset: auto !important;
+    top: auto !important;
+    align-self: stretch !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    overflow: visible !important;
+    overflow-y: visible !important;
+    overscroll-behavior: auto !important;
+  }
+  html body main.container > .main.main__grid > aside.main__widgets.homepage-index-widgets > .widgets {
+    display: flex !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    flex-direction: column !important;
+    gap: var(--main-gap) !important;
+    overflow: visible !important;
+  }
+}
