@@ -71,7 +71,7 @@
     <link rel="stylesheet" href="{{ asset('assets/css/kit.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/app.css') }}?v=20261112-mobile-write-menu">
     <link rel="stylesheet" href="{{ asset('assets/css/engine.css') }}?v=20261110-santral-hero-buttons-inset-blue">
-    <link rel="stylesheet" href="{{ asset('assets/css/ografi-overrides.css') }}?v=20261119-index-right-rail-native-flow">
+    <link rel="stylesheet" href="{{ asset('assets/css/ografi-overrides.css') }}?v=20261119-homepage-sidebar-ad-widget-1">
     <link rel="stylesheet" href="{{ asset('assets/css/gokturk-keyboard.css') }}?v=20261119-6">
     <script>
         (() => {
@@ -940,6 +940,40 @@
     @endauth
     <script src="{{ asset('assets/js/gokturk-keyboard.js') }}?v=20261119-4" defer></script>
     @include('layouts._cookie-consent')
-    @stack('scripts')
+    @if ($feedPage && $sidebarAdvertisement)
+    <script>
+    (() => {
+        const ad = document.querySelector('[data-ad-impression]');
+        if (!ad) return;
+        const endpoint = ad.dataset.adImpression;
+        let sent = false;
+        const sendImpression = () => {
+            if (sent) return;
+            sent = true;
+            fetch(endpoint, {
+                method: 'POST',
+                credentials: 'same-origin',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || '',
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Accept': 'application/json'
+                }
+            }).catch(() => { sent = false; });
+        };
+        if ('IntersectionObserver' in window) {
+            const observer = new IntersectionObserver(entries => {
+                if (entries.some(entry => entry.isIntersecting && entry.intersectionRatio >= 0.5)) {
+                    sendImpression();
+                    observer.disconnect();
+                }
+            }, { threshold: 0.5 });
+            observer.observe(ad);
+        } else {
+            sendImpression();
+        }
+    })();
+    </script>
+@endif
+@stack('scripts')
 </body>
 </html>
