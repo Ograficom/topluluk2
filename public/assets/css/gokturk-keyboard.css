@@ -134,3 +134,58 @@ html[data-theme="dark"] .gokturk-keyboard__keys.is-gokturk .gokturk-keyboard__ke
         font-size:17px;
     }
 }
+
+/* Başlıkta tek tıkla Göktürkçe çeviri kontrolü */
+.gokturk-keyboard__heading{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    min-width:0;
+    flex:1;
+}
+.gokturk-keyboard__translate{
+    display:grid;
+    flex:0 0 30px;
+    width:30px;
+    height:30px;
+    place-items:center;
+    border:1px solid #dbe3ef;
+    border-radius:8px;
+    background:#f8fafc;
+    color:#2563eb;
+    cursor:pointer;
+}
+.gokturk-keyboard__translate svg{
+    display:block;
+    width:19px;
+    height:19px;
+    fill:none;
+    stroke:currentColor;
+    stroke-width:1.8;
+    stroke-linecap:round;
+    stroke-linejoin:round;
+}
+.gokturk-keyboard__translate:hover{
+    border-color:#93b4f5;
+    background:#eff6ff;
+}
+.gokturk-keyboard__keys.is-gokturk .gokturk-keyboard__gokturk-backspace{
+    display:grid;
+    place-items:center;
+}
+.gokturk-keyboard__keys.is-gokturk .gokturk-keyboard__gokturk-backspace svg{
+    display:block;
+    width:21px;
+    height:21px;
+    fill:none;
+    stroke:currentColor;
+    stroke-width:1.8;
+    stroke-linecap:round;
+    stroke-linejoin:round;
+}
+html[data-theme="dark"] .gokturk-keyboard__translate{
+    border-color:#475569;
+    background:#334155;
+    color:#93c5fd;
+}
