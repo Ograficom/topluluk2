@@ -14,7 +14,7 @@ class Advertisement extends Model
 {
     protected $fillable = [
         'user_id', 'title', 'description', 'image_path', 'video_url', 'target_url',
-        'button_text', 'starts_at', 'ends_at', 'status', 'billing_type',
+        'button_text', 'starts_at', 'ends_at', 'status', 'billing_type', 'show_in_sidebar_widget',
         'total_budget', 'daily_budget', 'spent_amount', 'payment_status',
         'approved_by', 'approved_at', 'rejection_reason', 'impressions', 'clicks',
     ];
@@ -23,6 +23,7 @@ class Advertisement extends Model
     {
         return [
             'starts_at' => 'datetime',
+            'show_in_sidebar_widget' => 'boolean',
             'ends_at' => 'datetime',
             'approved_at' => 'datetime',
             'total_budget' => 'decimal:2',
