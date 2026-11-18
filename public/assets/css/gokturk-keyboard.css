@@ -18,3 +18,10 @@ html[data-theme="dark"] .gokturk-keyboard__toggle,html[data-theme="dark"] .goktu
 html[data-theme="dark"] .gokturk-keyboard__key,html[data-theme="dark"] .gokturk-keyboard__actions button{border-color:#334155;background:#1e293b;color:#e2e8f0}
 html[data-theme="dark"] .gokturk-keyboard__close{background:#334155;color:#e2e8f0}
 html[data-theme="dark"] .gokturk-keyboard__header small,html[data-theme="dark"] .gokturk-keyboard__hint{color:#94a3b8}
+.gokturk-keyboard__input{display:block;width:100%;min-height:68px;margin:0 0 10px;padding:9px 11px;resize:vertical;border:1px solid #dbe3ef;border-radius:9px;background:#fff;color:#172033;font:inherit;font-size:14px;line-height:1.5;outline:none}
+.gokturk-keyboard__input:focus{border-color:#93b4f5;box-shadow:0 0 0 2px rgba(37,99,235,.08)}
+.gokturk-keyboard__input::placeholder{color:#94a3b8}
+.gokturk-keyboard__actions{grid-template-columns:1fr 1fr 1fr}
+.gokturk-keyboard__actions [data-key-action="latin"]{grid-column:1}
+html[data-theme="dark"] .gokturk-keyboard__input{border-color:#334155;background:#1e293b;color:#e2e8f0}
+html[data-theme="dark"] .gokturk-keyboard__input::placeholder{color:#94a3b8}
