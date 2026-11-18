@@ -517,7 +517,7 @@ html[data-theme="dark"] .gokturk-keyboard__translate-menu{
     display:flex;
     align-items:center;
     justify-content:flex-end;
-    gap:8px;
+    gap:3px;
 }
 .gokturk-keyboard__dismiss{
     display:grid;
