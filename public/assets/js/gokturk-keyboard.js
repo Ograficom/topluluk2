@@ -152,7 +152,7 @@
         }
 
         const turkish = mode === 'turkish';
-        switchButton.textContent = turkish ? 'Göktürkçe klavye' : 'Türkçe klavye';
+        switchButton.textContent = turkish ? 'Göktürkçe' : 'Türkçe';
         switchButton.setAttribute('aria-label', turkish ? 'Göktürkçe klavyeye geç' : 'Türkçe klavyeye geç');
         title.textContent = turkish ? 'Göktürkçe çeviri' : 'Göktürkçe klavye';
         subtitle.textContent = turkish ? 'Türkçe Q · Göktürkçe çıktı' : 'Orhun alfabesi · Latin çıktı';
@@ -177,7 +177,12 @@
         const start = input.selectionStart ?? input.value.length;
         const end = input.selectionEnd ?? start;
         if (start === end && start === 0) return;
-        input.setRangeText('', start === end ? start - 1 : start, end, 'end');
+        let deleteStart = start;
+        if (start === end) {
+            const previousCharacter = Array.from(input.value.slice(0, start)).pop() || '';
+            deleteStart = start - previousCharacter.length;
+        }
+        input.setRangeText('', deleteStart, end, 'end');
         input.dispatchEvent(new InputEvent('input', {
             bubbles: true,
             inputType: 'deleteContentBackward'
