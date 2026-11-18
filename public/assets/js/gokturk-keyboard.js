@@ -4,7 +4,7 @@
     const alphabet = Array.from({ length: 0x2f }, (_, index) => String.fromCodePoint(0x10c00 + index));
     const root = document.createElement('div');
     root.className = 'gokturk-keyboard';
-    root.innerHTML = '<button class="gokturk-keyboard__toggle" type="button" aria-expanded="false" aria-controls="gokturkKeyboardPanel"><span aria-hidden="true">𐰀</span><span>Göktürkçe</span></button><section class="gokturk-keyboard__panel" id="gokturkKeyboardPanel" aria-label="Sanal klavye" hidden><header class="gokturk-keyboard__header"><div><strong data-keyboard-title>Göktürkçe klavye</strong><small data-keyboard-subtitle>Orhun alfabesi · Unicode</small></div><button class="gokturk-keyboard__close" type="button" aria-label="Klavye panelini kapat">×</button></header><textarea class="gokturk-keyboard__input" data-keyboard-input rows="3" placeholder="Metnini buraya yaz..." aria-label="Göktürkçe veya Türkçe metin"></textarea><div class="gokturk-keyboard__keys" aria-label="Klavye harfleri"></div><footer class="gokturk-keyboard__actions"><button type="button" data-key-action="latin" aria-label="Türkçe klavyeye geç">Türkçe</button><button type="button" data-key-action="space">Boşluk</button><button type="button" data-key-action="backspace">Sil</button><button type="button" data-key-action="enter">Satır sonu</button></footer><p class="gokturk-keyboard__hint">Alfabe değiştirdiğinde kutudaki metin de otomatik çevrilir.</p></section>';
+    root.innerHTML = '<button class="gokturk-keyboard__toggle" type="button" aria-expanded="false" aria-controls="gokturkKeyboardPanel"><span aria-hidden="true">𐰀</span><span>Göktürkçe</span></button><section class="gokturk-keyboard__panel" id="gokturkKeyboardPanel" aria-label="Sanal klavye" hidden><header class="gokturk-keyboard__header"><div class="gokturk-keyboard__heading"><div><strong data-keyboard-title>Göktürkçe klavye</strong><small data-keyboard-subtitle>Orhun alfabesi · Unicode</small></div><button class="gokturk-keyboard__translate" type="button" data-key-action="translate" aria-label="Kutudaki metni Göktürkçeye çevir" title="Göktürkçeye çevir"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m5 8 6 6m-7 0 6-6 2-3M2 5h12M7 2h1M22 22l-5-10-5 10m2-4h6"/></svg></button></div><button class="gokturk-keyboard__close" type="button" aria-label="Klavye panelini kapat">×</button></header><textarea class="gokturk-keyboard__input" data-keyboard-input rows="3" placeholder="Metnini buraya yaz..." aria-label="Göktürkçe veya Türkçe metin"></textarea><div class="gokturk-keyboard__keys" aria-label="Klavye harfleri"></div><footer class="gokturk-keyboard__actions"><button type="button" data-key-action="latin" aria-label="Türkçe klavyeye geç">Türkçe</button><button type="button" data-key-action="space">Boşluk</button><button type="button" data-key-action="enter">Satır sonu</button></footer><p class="gokturk-keyboard__hint">Alfabe değiştirdiğinde kutudaki metin de otomatik çevrilir.</p></section>';
     document.body.appendChild(root);
 
     const toggle = root.querySelector('.gokturk-keyboard__toggle');
@@ -146,6 +146,9 @@
                 button.title = 'Unicode U+' + (0x10c00 + index).toString(16).toUpperCase();
                 keys.appendChild(button);
             });
+            const back = makeKey('', 'gokturk-keyboard__icon-key gokturk-keyboard__gokturk-backspace', backspace, 'Geri sil');
+            back.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 4H20V20H9L2 12 9 4Z"/><path d="m12 9 5 6m0-6-5 6"/></svg>';
+            keys.appendChild(back);
         }
 
         const turkish = mode === 'turkish';
@@ -181,6 +184,23 @@
         }));
     }
 
+    function translateToOldTurkic() {
+        const start = input.selectionStart ?? input.value.length;
+        const end = input.selectionEnd ?? start;
+        const direction = 'toOldTurkic';
+        const convertedCaret = convertText(input.value.slice(0, start), direction).length;
+        const convertedSelectionEnd = convertText(input.value.slice(0, end), direction).length;
+
+        input.value = convertText(input.value, direction);
+        input.setSelectionRange(convertedCaret, convertedSelectionEnd);
+        input.dispatchEvent(new InputEvent('input', {
+            bubbles: true,
+            inputType: 'insertReplacementText',
+            data: null
+        }));
+        input.focus({ preventScroll: true });
+    }
+
     function switchAlphabet() {
         const nextMode = mode === 'gokturk' ? 'turkish' : 'gokturk';
         const start = input.selectionStart ?? input.value.length;
@@ -206,6 +226,7 @@
         button.addEventListener('click', () => {
             const action = button.dataset.keyAction;
             if (action === 'latin') switchAlphabet();
+            else if (action === 'translate') translateToOldTurkic();
             else if (action === 'space') insert(' ');
             else if (action === 'enter') insert('\n');
             else if (action === 'backspace') backspace();
