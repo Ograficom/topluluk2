@@ -16,11 +16,11 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->appendToGroup('web', \App\Http\Middleware\UpdateLastSeenAt::class);
     })
     ->withExceptions(function (Exceptions $exceptions) {
-        $exceptions->render(function (\\Illuminate\\Session\\TokenMismatchException $exception, \\Illuminate\\Http\\Request $request) {
+        $exceptions->render(function (\Illuminate\Session\TokenMismatchException $exception, \Illuminate\Http\Request $request) {
             return response()->view('errors.419', [], 419);
         });
 
-        $exceptions->render(function (\\Symfony\\Component\\HttpKernel\\Exception\\HttpExceptionInterface $exception, \\Illuminate\\Http\\Request $request) {
+        $exceptions->render(function (\Symfony\Component\HttpKernel\Exception\HttpExceptionInterface $exception, \Illuminate\Http\Request $request) {
             $status = $exception->getStatusCode();
 
             if (in_array($status, [404, 502], true)) {
