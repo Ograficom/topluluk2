@@ -1,0 +1,28 @@
+{
+  "id": "/",
+  "name": "OgraFi",
+  "short_name": "OgraFi",
+  "description": "OgraFi topluluğuna katıl, paylaş, keşfet ve sohbet et.",
+  "lang": "tr-TR",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#f7f9fd",
+  "theme_color": "#f7f9fd",
+  "categories": ["social", "news"],
+  "icons": [
+    {
+      "src": "/assets/img/meta/pwa-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/assets/img/meta/pwa-icon-maskable.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
+  ]
+}
