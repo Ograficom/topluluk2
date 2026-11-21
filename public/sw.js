@@ -1,6 +1,6 @@
-const CACHE_VERSION = 'ografi-pwa-v1';
+const CACHE_VERSION = 'ografi-pwa-v2';
 const STATIC_CACHE = CACHE_VERSION + '-static';
-const OFFLINE_URL = '/offline.html';
+const OFFLINE_URL = '/offline';
 
 self.addEventListener('install', event => {
     event.waitUntil((async () => {
