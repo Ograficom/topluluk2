@@ -1,26 +1,26 @@
 <?php
 
-namespace App\\Filament\\Pages;
+namespace App\Filament\Pages;
 
-use App\\Models\\SiteSetting;
-use Filament\\Forms\\Components\\FileUpload;
-use Filament\\Forms\\Components\\Select;
-use Filament\\Forms\\Components\\Textarea;
-use Filament\\Forms\\Components\\TextInput;
-use Filament\\Forms\\Components\\Toggle;
-use Filament\\Notifications\\Notification;
-use Filament\\Pages\\Page;
-use Filament\\Schemas\\Components\\Section;
-use Filament\\Schemas\\Schema;
-use Filament\\Support\\Icons\\Heroicon;
+use App\Models\SiteSetting;
+use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
+use Filament\Notifications\Notification;
+use Filament\Pages\Page;
+use Filament\Schemas\Components\Section;
+use Filament\Schemas\Schema;
+use Filament\Support\Icons\Heroicon;
 
 class PwaManagement extends Page
 {
     protected static bool $shouldRegisterNavigation = false;
-    protected static string|\\UnitEnum|null $navigationGroup = 'Ayarlar';
+    protected static string|\UnitEnum|null $navigationGroup = 'Ayarlar';
     protected static ?string $navigationLabel = 'PWA yönetimi';
     protected static ?string $title = 'PWA uygulama yönetimi';
-    protected static string|\\BackedEnum|null $navigationIcon = Heroicon::OutlinedDevicePhoneMobile;
+    protected static string|\BackedEnum|null $navigationIcon = Heroicon::OutlinedDevicePhoneMobile;
     protected static ?int $navigationSort = 7;
     protected string $view = 'filament.pages.pwa-management';
 
@@ -58,7 +58,7 @@ class PwaManagement extends Page
                     TextInput::make('pwa_name')->label('Uygulama adı')->required()->maxLength(80),
                     TextInput::make('pwa_short_name')->label('Kısa uygulama adı')->required()->maxLength(24)->helperText('Ana ekrandaki ikonun altında görünür.'),
                     Textarea::make('pwa_description')->label('Uygulama açıklaması')->rows(2)->maxLength(250)->columnSpanFull(),
-                    TextInput::make('pwa_start_url')->label('Açılış adresi')->required()->default('/')->maxLength(255)->regex('/^\\/(?!\\/).*/')->helperText('Yalnızca site içi yol kullan. Örnek: / veya /last-posts'),
+                    TextInput::make('pwa_start_url')->label('Açılış adresi')->required()->default('/')->maxLength(255)->regex('/^\/(?!\/).*/')->helperText('Yalnızca site içi yol kullan. Örnek: / veya /last-posts'),
                     Select::make('pwa_display')->label('Açılış biçimi')->options([
                         'standalone' => 'Bağımsız uygulama (önerilen)',
                         'minimal-ui' => 'Minimal tarayıcı kontrolleri',
