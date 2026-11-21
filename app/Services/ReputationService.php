@@ -20,11 +20,11 @@ class ReputationService
             return;
         }
 
-        $points = match ($description) {
-            'Yazı yayınladı' => (int) $settings->post_points,
-            'Yorum yaptı' => (int) $settings->comment_points,
-            'Yazısı beğenildi' => (int) $settings->post_like_points,
-            'Yorumu beğenildi' => (int) $settings->comment_like_points,
+        $points = match (true) {
+            str_starts_with($eventKey, 'post:') => (int) $settings->post_points,
+            str_starts_with($eventKey, 'comment:') => (int) $settings->comment_points,
+            str_starts_with($eventKey, 'post-like:') => (int) $settings->post_like_points,
+            str_starts_with($eventKey, 'comment-like:') => (int) $settings->comment_like_points,
             default => $points,
         };
 
@@ -62,18 +62,18 @@ class ReputationService
 
     public function badgeFor(int $score): array
     {
-        $customBadges = collect(ReputationSetting::current()->reward_badges ?? [])
+        $customBadge = collect(ReputationSetting::current()->reward_badges ?? [])
             ->filter(fn (array $badge): bool => filled($badge['name'] ?? null) && (int) ($badge['required_points'] ?? 0) <= $score)
             ->sortByDesc(fn (array $badge): int => (int) ($badge['required_points'] ?? 0))
             ->first();
 
-        if ($customBadges) {
+        if ($customBadge) {
             return [
-                'name' => $customBadges['name'],
+                'name' => $customBadge['name'],
                 'next' => null,
-                'minimum' => (int) ($customBadges['required_points'] ?? 0),
-                'description' => $customBadges['description'] ?? null,
-                'icon' => $customBadges['icon'] ?? 'trophy',
+                'minimum' => (int) ($customBadge['required_points'] ?? 0),
+                'description' => $customBadge['description'] ?? null,
+                'icon' => $customBadge['icon'] ?? 'trophy',
                 'custom' => true,
             ];
         }
