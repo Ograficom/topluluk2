@@ -263,6 +263,12 @@
         </div>
     </div>
 
+    @if (request()->routeIs('profiles.show'))
+        <div class="profile-page-mobile-footer">
+            @include('layouts._footer')
+        </div>
+    @endif
+
     <div class="modal" id="profileSubscribersModal" data-modal="profile-subscribers" aria-label="Tüm aboneler" aria-hidden="true">
         <div class="modal-content">
             <button type="button" class="btn btn-secondary btn-md btn-circle modal-close" data-modal-close aria-label="Kapat" title="Kapat"><x-repost-icon name="close" size="16" class="color-gray" /></button>
