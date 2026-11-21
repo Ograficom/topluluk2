@@ -3,7 +3,7 @@
 @section('title', $user->displayName())
 
 @push('head')
-    <link rel="stylesheet" href="{{ asset('assets/css/profile-theme.css') }}?v=20261122-repost-footer-space-24px">
+    <link rel="stylesheet" href="{{ asset('assets/css/profile-theme.css') }}?v=20261122-repost-aside-footer-sibling-20px">
     <style>
         /* Match Repost profile template: the sidebar footer is desktop-only. */
         @media screen and (max-width: 920px) {
@@ -256,9 +256,9 @@
                             </div>
                         </div>
                     </section>
-
-                    <div class="profile__aside-footer">@include('layouts._footer')</div>
                 </div>
+
+                <div class="profile__aside-footer">@include('layouts._footer')</div>
             </aside>
         </div>
     </div>
