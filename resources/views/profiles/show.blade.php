@@ -3,7 +3,7 @@
 @section('title', $user->displayName())
 
 @push('head')
-    <link rel="stylesheet" href="{{ asset('assets/css/profile-theme.css') }}?v=20261122-profile-earned-badges-modal">
+    <link rel="stylesheet" href="{{ asset('assets/css/profile-theme.css') }}?v=20261122-profile-badge-zoom">
 @endpush
 
 @section('content')
@@ -232,7 +232,7 @@
                         <header><h2 class="widget__title h6">Aldığı rozetler</h2></header>
                         <div class="profile-reward-badges" aria-label="Kazanılmış ödül rozetleri">
                             @foreach ($earnedRewardBadges as $earnedBadge)
-                                <div class="profile-reward-badge" title="{{ $earnedBadge['description'] ?? $earnedBadge['name'] }}">
+                                <button class="profile-reward-badge profile-reward-badge--button" type="button" data-modal-btn="profile-earned-badge-{{ $loop->index }}" aria-haspopup="dialog" title="{{ $earnedBadge['description'] ?? $earnedBadge['name'] }}">
                                     <span class="profile-reward-badge__visual">
                                         @if (filled($earnedBadge['image'] ?? null))
                                             <img src="{{ \Illuminate\Support\Facades\Storage::disk('public')->url($earnedBadge['image']) }}" alt="" loading="lazy">
@@ -241,7 +241,7 @@
                                         @endif
                                     </span>
                                     <span class="profile-reward-badge__name">{{ $earnedBadge['name'] }}</span>
-                                </div>
+                                </button>
                             @endforeach
                         </div>
                     </section>
@@ -284,7 +284,7 @@
                 @if ($earnedRewardBadges->isNotEmpty())
                     <div class="profile-earned-badges-list">
                         @foreach ($earnedRewardBadges as $earnedBadge)
-                            <div class="profile-earned-badge">
+                            <button class="profile-earned-badge profile-earned-badge--button" type="button" data-modal-btn="profile-earned-badge-{{ $loop->index }}" aria-haspopup="dialog" title="{{ $earnedBadge['name'] }}">
                                 <span class="profile-earned-badge__image">
                                     @if (filled($earnedBadge['image'] ?? null))
                                         <img src="{{ \Illuminate\Support\Facades\Storage::disk('public')->url($earnedBadge['image']) }}" alt="" loading="lazy">
@@ -299,7 +299,7 @@
                                         <small>{{ $earnedBadge['description'] }}</small>
                                     @endif
                                 </span>
-                            </div>
+                            </button>
                         @endforeach
                     </div>
                 @else
@@ -308,6 +308,28 @@
             </div>
         </div>
     </div>
+
+    @foreach ($earnedRewardBadges as $earnedBadge)
+        <div class="modal" id="profile-earned-badge-{{ $loop->index }}" data-modal="profile-earned-badge-{{ $loop->index }}" aria-label="{{ $earnedBadge['name'] }} rozeti" aria-hidden="true">
+            <div class="modal-content profile-earned-badge-detail-modal">
+                <button type="button" class="btn btn-secondary btn-md btn-circle modal-close" data-modal-close aria-label="Kapat" title="Kapat"><x-repost-icon name="close" size="16" class="color-gray" /></button>
+                <header class="modal-header"><h2 class="modal-title h4">{{ $earnedBadge['name'] }}</h2></header>
+                <div class="modal-body profile-earned-badge-detail">
+                    <div class="profile-earned-badge-detail__visual">
+                        @if (filled($earnedBadge['image'] ?? null))
+                            <img src="{{ IlluminateSupportFacadesStorage::disk('public')->url($earnedBadge['image']) }}" alt="{{ $earnedBadge['name'] }} rozeti">
+                        @else
+                            <x-repost-icon :name="$earnedBadge['icon'] ?? 'trophy'" size="88" />
+                        @endif
+                    </div>
+                    <strong>{{ number_format((int) ($earnedBadge['required_points'] ?? 0)) }} puan</strong>
+                    @if (filled($earnedBadge['description'] ?? null))
+                        <p>{{ $earnedBadge['description'] }}</p>
+                    @endif
+                </div>
+            </div>
+        </div>
+    @endforeach
 
     <div class="modal" id="profileSubscribersModal" data-modal="profile-subscribers" aria-label="Tüm aboneler" aria-hidden="true">
         <div class="modal-content">
