@@ -227,6 +227,26 @@
                         </footer>
                     </section>
 
+                    @if ($earnedRewardBadges->isNotEmpty())
+                    <section class="widget card card-body profile-reward-widget">
+                        <header><h2 class="widget__title h6">Aldığı rozetler</h2></header>
+                        <div class="profile-reward-badges" aria-label="Kazanılmış ödül rozetleri">
+                            @foreach ($earnedRewardBadges as $earnedBadge)
+                                <div class="profile-reward-badge" title="{{ $earnedBadge['description'] ?? $earnedBadge['name'] }}">
+                                    <span class="profile-reward-badge__visual">
+                                        @if (filled($earnedBadge['image'] ?? null))
+                                            <img src="{{ \\Illuminate\\Support\\Facades\\Storage::disk('public')->url($earnedBadge['image']) }}" alt="" loading="lazy">
+                                        @else
+                                            <x-repost-icon :name="$earnedBadge['icon'] ?? 'trophy'" size="22" />
+                                        @endif
+                                    </span>
+                                    <span class="profile-reward-badge__name">{{ $earnedBadge['name'] }}</span>
+                                </div>
+                            @endforeach
+                        </div>
+                    </section>
+                    @endif
+
                     <section class="widget card card-body">
                         <header><h2 class="widget__title h6">Hakkında</h2></header>
                         <div class="widget__content profile__about">
