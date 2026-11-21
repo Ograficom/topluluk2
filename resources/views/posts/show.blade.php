@@ -11,7 +11,13 @@
 
 @push('head')
     <style>
-        .similar-posts__grid{display:flex;flex-direction:column;gap:14px}
+        .similar-posts{display:block;width:100%;max-width:none;margin:24px 0 0;padding:0;background:transparent;border:0;box-shadow:none;border-radius:0}
+        .similar-posts__header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0 0 14px;padding:0}
+        .similar-posts__eyebrow{display:block;font-size:11px;font-weight:700;letter-spacing:.06em;color:var(--color-gray)}
+        .similar-posts__header h2{margin:4px 0 0}
+        .similar-posts__count{flex:none;font-size:13px;color:var(--color-gray)}
+        .similar-posts__grid{display:flex;flex-direction:column;gap:14px;width:100%;min-width:0}
+        .similar-posts__grid>.card.post{width:100%;max-width:none;min-width:0;margin:0}
     </style>
 
     <meta property="article:published_time" content="{{ $post->published_at?->toAtomString() }}">
@@ -261,7 +267,7 @@
     </section>
 
     @if ($similarPosts->isNotEmpty())
-        <section class="card card-body similar-posts" aria-labelledby="similar-posts-title">
+        <section class="similar-posts" aria-labelledby="similar-posts-title">
             <div class="similar-posts__header"><div><span class="similar-posts__eyebrow">KEŞFETMEYE DEVAM ET</span><h2 class="h5" id="similar-posts-title">Bunlar da ilgini çekebilir</h2></div><span class="similar-posts__count">{{ $similarPosts->count() }} yazı</span></div>
             <div class="similar-posts__grid">
                 @foreach ($similarPosts as $similarPost)
