@@ -721,7 +721,7 @@
                                 </ul>
                             </div>
                         </section>
-                        @unless (request()->routeIs('profiles.show'))
+                        @unless ($profilePage)
                             @include('layouts._footer')
                         @endunless
                     </div>
