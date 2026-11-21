@@ -74,6 +74,7 @@ class ReputationService
                 'minimum' => (int) ($customBadge['required_points'] ?? 0),
                 'description' => $customBadge['description'] ?? null,
                 'icon' => $customBadge['icon'] ?? 'trophy',
+                'image' => $customBadge['image'] ?? null,
                 'custom' => true,
             ];
         }
