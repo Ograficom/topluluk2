@@ -282,10 +282,7 @@
                             </header>
                             <div class="post__short">
                                 <h3 class="post__short-title h3"><a href="{{ route('posts.show', $similarPost) }}" class="color-title"><span class="post__short-title-text">{{ $similarPost->title }}</span></a></h3>
-                                @if ($similarPost->excerpt)<div class="similar-post-card__excerpt">{{ \\Illuminate\\Support\\Str::limit($similarPost->excerpt, 150) }}</div>@endif
-                                @if ($similarPost->tagRecords->isNotEmpty())
-                                    <div class="post__tags">@foreach ($similarPost->tagRecords->take(3) as $tag)<a href="{{ route('tags.show', $tag) }}">{{ $tag->name }}</a>@endforeach</div>
-                                @endif
+                                @if ($similarPost->excerpt)<div class="similar-post-card__excerpt">{{ \Illuminate\Support\Str::limit($similarPost->excerpt, 150) }}</div>@endif
                             </div>
                         </section>
                         @if ($similarPost->coverImageUrl())
