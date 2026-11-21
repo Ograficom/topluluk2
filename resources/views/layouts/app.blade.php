@@ -707,7 +707,9 @@
                                 </ul>
                             </div>
                         </section>
-                        @include('layouts._footer')
+                        @unless (request()->routeIs('profiles.show'))
+                            @include('layouts._footer')
+                        @endunless
                     </div>
                 </aside>
                 @endunless
