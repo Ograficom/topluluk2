@@ -444,6 +444,20 @@
 
     @php($settingsPage = request()->routeIs('settings.edit', 'settings.legacy'))
     @php($profilePage = request()->routeIs('profiles.show'))
+    @if ($profilePage)
+    <style>
+        .profile-page-mobile-footer { display: none; }
+        @media screen and (max-width: 920px) {
+            .profile-page-mobile-footer {
+                display: block;
+                width: 100%;
+                margin-top: 0;
+                padding: 0 12px 24px;
+            }
+        }
+    </style>
+    @endif
+
     @php($channelPage = request()->routeIs('channels.show', 'legacy.channel'))
     @php($postCreatePage = request()->routeIs('posts.create', 'posts.edit'))
     @php($feedPage = request()->routeIs('posts.index'))
@@ -716,6 +730,12 @@
             @endif
         </div>
     </main>
+
+    @if ($profilePage)
+        <div class="profile-page-mobile-footer">
+            @include('layouts._footer')
+        </div>
+    @endif
 
     @unless (request()->routeIs('messenger.show'))
     <section class="mobmenu" data-scroll-menu>
