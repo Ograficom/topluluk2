@@ -176,12 +176,15 @@
   }
 }
 
-/* Desktop: match the reference theme's clear gap below the About card. */
+/* Repost profile template: visible breathing room between About card and footer. */
 @media screen and (min-width: 921px) {
   .profile__aside-footer {
-    margin-top: 26px !important;
+    display: block !important;
+    box-sizing: border-box;
+    padding-top: 24px !important;
+    margin-top: 0 !important;
   }
-}
+}}
 
 
 
