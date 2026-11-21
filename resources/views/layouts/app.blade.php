@@ -4,7 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="format-detection" content="telephone=no">
-    <meta name="theme-color" content="#f7f9fd">
+    @php($pwaSettings = \\App\\Models\\SiteSetting::current())
+    <meta name="theme-color" content="{{ $pwaSettings?->pwa_theme_color ?? '#f7f9fd' }}">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    @if ($pwaSettings?->pwa_enabled ?? true)
+        <link rel="manifest" href="{{ route('pwa.manifest') }}">
+        @if ($pwaSettings?->pwa_icon_192_path)
+            <link rel="apple-touch-icon" href="{{ \\Illuminate\\Support\\Facades\\Storage::disk('public')->url($pwaSettings->pwa_icon_192_path) }}">
+        @endif
+    @endif
     <title>@yield('title', $brandName) — {{ $brandName }}</title>
     @php
         $seoDescription = trim($__env->yieldContent('description', $seoSettings?->seo_default_description ?: 'OgraFi; teknoloji, gündem, yaşam ve ilgi alanlarında yazıların, fikirlerin ve topluluk sohbetlerinin buluştuğu platformdur.'));
@@ -999,6 +1009,15 @@
     window.setTimeout(refreshWhenDue, Math.min(delay + 250, 2147483647));
     document.addEventListener('visibilitychange', () => {
         if (document.visibilityState === 'visible') refreshWhenDue();
+    });
+})();
+</script>
+<script>
+(() => {
+    if (!('serviceWorker' in navigator)) return;
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js', { scope: '/' })
+            .catch(error => console.error('OgraFi PWA service worker kaydedilemedi:', error));
     });
 })();
 </script>
