@@ -77,6 +77,7 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
     public function sentMessages(): HasMany { return $this->hasMany(Message::class); }
     public function reactions(): HasMany { return $this->hasMany(PostReaction::class); }
     public function reposts(): HasMany { return $this->hasMany(PostRepost::class); }
+    public function reputationTransactions(): HasMany { return $this->hasMany(ReputationTransaction::class); }
 
     public function blockedUsers(): BelongsToMany
     {
