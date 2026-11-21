@@ -3,7 +3,7 @@
 @section('title', $user->displayName())
 
 @push('head')
-    <link rel="stylesheet" href="{{ asset('assets/css/profile-theme.css') }}?v=20261122-repost-aside-footer-sibling-20px">
+    <link rel="stylesheet" href="{{ asset('assets/css/profile-theme.css') }}?v=20261122-profile-reward-badges">
 @endpush
 
 @section('content')
@@ -235,7 +235,7 @@
                                 <div class="profile-reward-badge" title="{{ $earnedBadge['description'] ?? $earnedBadge['name'] }}">
                                     <span class="profile-reward-badge__visual">
                                         @if (filled($earnedBadge['image'] ?? null))
-                                            <img src="{{ \\Illuminate\\Support\\Facades\\Storage::disk('public')->url($earnedBadge['image']) }}" alt="" loading="lazy">
+                                            <img src="{{ \Illuminate\Support\Facades\Storage::disk('public')->url($earnedBadge['image']) }}" alt="" loading="lazy">
                                         @else
                                             <x-repost-icon :name="$earnedBadge['icon'] ?? 'trophy'" size="22" />
                                         @endif
