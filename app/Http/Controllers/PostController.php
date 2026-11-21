@@ -287,7 +287,14 @@ class PostController extends Controller
             ->when(! $post->channel_id && $post->tagRecords->isNotEmpty(), fn (Builder $query) => $query->whereHas('tagRecords', fn (Builder $tags) => $tags->whereIn('tags.id', $post->tagRecords->pluck('id'))))
             ->when($request->user(), fn (Builder $query) => $query->whereNotIn('user_id', $request->user()->blockedUsers()->select('users.id'))->whereNotIn('user_id', $request->user()->blockedByUsers()->select('users.id')))
             ->when(! $request->user()?->show_adult_content, fn (Builder $query) => $query->where('is_adult', false))
-            ->with(['user', 'channel'])->orderByDesc('published_at')->orderByDesc('id')->limit(3)->get();
+            ->with(['user', 'channel', 'tagRecords'])
+            ->withCount('comments')
+            ->withCount([
+                'reactions as likes_count' => fn (Builder $query) => $query->where('type', PostReaction::LIKE),
+                'reactions as dislikes_count' => fn (Builder $query) => $query->where('type', PostReaction::DISLIKE),
+            ])
+            ->when($request->user(), fn (Builder $query) => $query->with(['reactions' => fn (Relation $reactions) => $reactions->where('user_id', $request->user()->id)]))
+            ->orderByDesc('published_at')->orderByDesc('id')->limit(3)->get();
 
         return view('posts.show', compact('post', 'replyTo', 'rssItem', 'similarPosts'));
     }
