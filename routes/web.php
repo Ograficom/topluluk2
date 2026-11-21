@@ -23,6 +23,64 @@ use App\Models\SupportTicket;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
 
+
+Route::get('/manifest.webmanifest', function () {
+    $settings = \App\Models\SiteSetting::current();
+    abort_unless($settings?->pwa_enabled ?? true, 404);
+
+    $storage = Storage::disk('public');
+    $icons = [];
+    $icon192 = $settings?->pwa_icon_192_path;
+    $icon512 = $settings?->pwa_icon_512_path;
+    $maskable512 = $settings?->pwa_maskable_icon_512_path;
+
+    foreach ([[$icon192, '192x192', 'any'], [$icon512, '512x512', 'any'], [$maskable512 ?: $icon512, '512x512', 'maskable']] as [$path, $size, $purpose]) {
+        if (blank($path) || ! $storage->exists($path)) continue;
+        $icons[] = [
+            'src' => $storage->url($path),
+            'sizes' => $size,
+            'type' => $storage->mimeType($path) ?: 'image/png',
+            'purpose' => $purpose,
+        ];
+    }
+
+    if (! count($icons)) {
+        $defaultIcon = asset('assets/img/meta/pwa-icon.svg');
+        $defaultMaskableIcon = asset('assets/img/meta/pwa-icon-maskable.svg');
+        $icons = [
+            ['src' => $defaultIcon, 'sizes' => '192x192', 'type' => 'image/svg+xml', 'purpose' => 'any'],
+            ['src' => $defaultIcon, 'sizes' => '512x512', 'type' => 'image/svg+xml', 'purpose' => 'any'],
+            ['src' => $defaultMaskableIcon, 'sizes' => '512x512', 'type' => 'image/svg+xml', 'purpose' => 'maskable'],
+        ];
+    }
+
+    $startUrl = $settings?->pwa_start_url ?: '/';
+    if (! str_starts_with($startUrl, '/') || str_starts_with($startUrl, '//')) $startUrl = '/';
+
+    return response()->json([
+        'id' => '/',
+        'name' => $settings?->pwa_name ?: 'OgraFi',
+        'short_name' => $settings?->pwa_short_name ?: 'OgraFi',
+        'description' => $settings?->pwa_description ?: 'OgraFi topluluk uygulaması',
+        'lang' => 'tr-TR',
+        'start_url' => $startUrl,
+        'scope' => '/',
+        'display' => $settings?->pwa_display ?: 'standalone',
+        'orientation' => $settings?->pwa_orientation ?: 'any',
+        'background_color' => $settings?->pwa_background_color ?: '#f7f9fd',
+        'theme_color' => $settings?->pwa_theme_color ?: '#2563eb',
+        'categories' => ['social', 'news'],
+        'icons' => $icons,
+    ])->header('Content-Type', 'application/manifest+json; charset=UTF-8')
+      ->header('Cache-Control', 'no-cache, no-store, must-revalidate');
+})->name('pwa.manifest');
+
+Route::get('/offline', function () {
+    return response()->view('pwa.offline', [
+        'settings' => \App\Models\SiteSetting::current(),
+    ])->header('Cache-Control', 'no-store');
+})->name('pwa.offline');
+
 Route::get('/sitemap.xml', SitemapController::class)->name('sitemap');
 Route::get('/rss', [RssController::class, 'all'])->name('rss.all');
 Route::get('/rss.xml', fn () => redirect()->route('rss.all', status: 301))->name('rss.xml');
