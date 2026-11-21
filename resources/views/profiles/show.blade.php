@@ -258,7 +258,7 @@
                     </section>
                 </div>
 
-                <div class="profile__aside-footer">@include('layouts._footer')</div>
+                <div class="profile__aside-footer" style="margin-top: 24px;">@include('layouts._footer')</div>
             </aside>
         </div>
     </div>
