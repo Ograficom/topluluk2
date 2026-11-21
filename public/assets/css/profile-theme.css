@@ -166,25 +166,14 @@
 .profile__aside > aside { min-width: 0; }
 .profile__aside .widget { min-width: 0; }
 
-/* Repost reference: footer follows About as the next item in the widgets stack. */
+/* Repost/dist/profile.html: footer is a sibling of .widgets inside the sidebar.
+   Keep its desktop gap separate from the spacing between the two white cards. */
 @media screen and (min-width: 921px) {
-  .profile__aside .widgets {
-    row-gap: 26px !important;
-  }
   .profile__aside-footer {
-    margin-top: 0 !important;
+    display: block;
+    margin-top: 20px;
   }
 }
-
-/* Repost profile template: visible breathing room between About card and footer. */
-@media screen and (min-width: 921px) {
-  .profile__aside-footer {
-    display: block !important;
-    box-sizing: border-box;
-    padding-top: 24px !important;
-    margin-top: 0 !important;
-  }
-}}
 
 
 
