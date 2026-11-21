@@ -282,7 +282,7 @@ class PostController extends Controller
         ]);
         if ($request->user()) $post->load(['reactions' => fn (Relation $query) => $query->where('user_id', $request->user()->id)]);
 
-        $similarPosts = Post::query()->published()->whereNull('advertisement_id')->whereKeyNot($post->id)
+        $similarPosts = Post::query()->published()->whereNull('advertisement_id')->where('posts.id', '<>', $post->id)
             ->when($post->channel_id, fn (Builder $query) => $query->where('channel_id', $post->channel_id))
             ->when(! $post->channel_id && $post->tagRecords->isNotEmpty(), fn (Builder $query) => $query->whereHas('tagRecords', fn (Builder $tags) => $tags->whereIn('tags.id', $post->tagRecords->pluck('id'))))
             ->when($request->user(), fn (Builder $query) => $query->whereNotIn('user_id', $request->user()->blockedUsers()->select('users.id'))->whereNotIn('user_id', $request->user()->blockedByUsers()->select('users.id')))
