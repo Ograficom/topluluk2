@@ -42,6 +42,7 @@ class PostInteractionController extends Controller
             }
 
             if ($reaction) {
+                $likeRemoved = $reaction->type === PostReaction::LIKE && $type !== PostReaction::LIKE;
                 $reaction->update(['type' => $type]);
                 $notifyLike = $type === PostReaction::LIKE;
 
