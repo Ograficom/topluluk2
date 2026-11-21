@@ -27,6 +27,10 @@ class SiteSetting extends Model
         'home_seo_title', 'home_seo_description', 'home_seo_keywords', 'home_seo_index',
         'comment_spam_enabled', 'comment_spam_words', 'comment_spam_max_links', 'comment_spam_rate_limit',
         'post_spam_enabled', 'post_spam_words',
+        'pwa_enabled', 'pwa_name', 'pwa_short_name', 'pwa_description',
+        'pwa_start_url', 'pwa_display', 'pwa_orientation', 'pwa_theme_color',
+        'pwa_background_color', 'pwa_icon_192_path', 'pwa_icon_512_path',
+        'pwa_maskable_icon_512_path', 'pwa_offline_title', 'pwa_offline_message',
     ];
 
     protected function casts(): array
@@ -43,6 +47,7 @@ class SiteSetting extends Model
             'comment_spam_max_links' => 'integer',
             'comment_spam_rate_limit' => 'integer',
             'post_spam_enabled' => 'boolean',
+            'pwa_enabled' => 'boolean',
             'post_spam_words' => 'array',
         ];
     }
