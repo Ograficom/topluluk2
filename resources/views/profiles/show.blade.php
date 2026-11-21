@@ -257,8 +257,8 @@
                         </div>
                     </section>
 
+                    <div class="profile__aside-footer">@include('layouts._footer')</div>
                 </div>
-                <div class="profile__aside-footer">@include('layouts._footer')</div>
             </aside>
         </div>
     </div>
