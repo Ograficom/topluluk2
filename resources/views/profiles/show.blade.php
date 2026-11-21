@@ -5,17 +5,10 @@
 @push('head')
     <link rel="stylesheet" href="{{ asset('assets/css/profile-theme.css') }}?v=20261110-profile-sponsored-card-fix-mobile-footer">
     <style>
-        /* Desktop keeps the footer in the profile sidebar; mobile moves it after the full profile content. */
-        .profile-page-mobile-footer {
-            display: none;
-        }
+        /* Match Repost profile template: the sidebar footer is desktop-only. */
         @media screen and (max-width: 920px) {
             .profile__aside-footer {
                 display: none !important;
-            }
-            .profile-page-mobile-footer {
-                display: block;
-                margin-top: 24px;
             }
         }
     </style>
@@ -269,12 +262,6 @@
             </aside>
         </div>
     </div>
-
-    @if (request()->routeIs('profiles.show'))
-        <div class="profile-page-mobile-footer">
-            @include('layouts._footer')
-        </div>
-    @endif
 
     <div class="modal" id="profileSubscribersModal" data-modal="profile-subscribers" aria-label="Tüm aboneler" aria-hidden="true">
         <div class="modal-content">
