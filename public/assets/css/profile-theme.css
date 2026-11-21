@@ -166,6 +166,16 @@
 .profile__aside > aside { min-width: 0; }
 .profile__aside .widget { min-width: 0; }
 
+/* Repost reference: footer follows About as the next item in the widgets stack. */
+@media screen and (min-width: 921px) {
+  .profile__aside .widgets {
+    row-gap: 26px !important;
+  }
+  .profile__aside-footer {
+    margin-top: 0 !important;
+  }
+}
+
 /* Desktop: match the reference theme's clear gap below the About card. */
 @media screen and (min-width: 921px) {
   .profile__aside-footer {
