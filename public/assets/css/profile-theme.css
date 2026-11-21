@@ -166,13 +166,13 @@
 .profile__aside > aside { min-width: 0; }
 .profile__aside .widget { min-width: 0; }
 
-/* Repost/dist/profile.html: footer is a sibling of .widgets inside the sidebar.
-   Keep its desktop gap separate from the spacing between the two white cards. */
-@media screen and (min-width: 921px) {
-  .profile__aside-footer {
-    display: block;
-    margin-top: 20px;
-  }
+/* Repost reference: sidebar footer is a sibling of .widgets, with the original 20px separation. */
+.profile__aside-footer {
+  display: block;
+  margin-top: 20px;
+}
+@media screen and (max-width: 920px) {
+  .profile__aside-footer { display: none; }
 }
 
 
