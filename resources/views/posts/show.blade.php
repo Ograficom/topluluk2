@@ -11,10 +11,9 @@
 
 @push('head')
     <style>
-      .similar-posts{margin-top:1.25rem}.similar-posts__header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px}.similar-posts__header h2{margin:4px 0 0}.similar-posts__eyebrow{font-size:10px;font-weight:750;letter-spacing:.12em;color:var(--bs-primary,#64748b)}.similar-posts__count{font-size:12px;color:var(--bs-secondary-color,#888)}
-      .similar-posts__grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.similar-post-card{display:flex;min-width:0;flex-direction:column;overflow:hidden;border:1px solid var(--bs-border-color,#e5e7eb);border-radius:12px;color:inherit;text-decoration:none;background:var(--bs-body-bg,transparent);transition:border-color .18s,transform .18s}.similar-post-card:hover{border-color:var(--bs-primary,#64748b);transform:translateY(-2px);color:inherit}
-      .similar-post-card__image,.similar-post-card__placeholder{display:flex;width:100%;aspect-ratio:16/9;object-fit:cover;background:var(--bs-tertiary-bg,#f1f5f9);align-items:center;justify-content:center;color:var(--bs-secondary-color,#888)}.similar-post-card__content{display:flex;flex:1;flex-direction:column;gap:7px;padding:12px}.similar-post-card__channel{font-size:11px;color:var(--bs-primary,#64748b);font-weight:650}.similar-post-card__content strong{font-size:14px;line-height:1.45;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}.similar-post-card__excerpt{font-size:12px;line-height:1.5;color:var(--bs-secondary-color,#888);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}.similar-post-card__meta{margin-top:auto;padding-top:4px;font-size:11px;color:var(--bs-secondary-color,#888)}
-      @media(max-width:640px){.similar-posts__grid{grid-template-columns:1fr}.similar-post-card{flex-direction:row}.similar-post-card__image,.similar-post-card__placeholder{width:112px;min-width:112px;aspect-ratio:1/1}.similar-post-card__content{padding:10px}}
+      .similar-posts{margin-top:1.25rem}.similar-posts__header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px}.similar-posts__header h2{margin:4px 0 0}.similar-posts__eyebrow{font-size:10px;font-weight:750;letter-spacing:.12em;color:var(--bs-primary,#106CFF)}.similar-posts__count{font-size:12px;color:var(--bs-secondary-color,#888)}
+      .similar-posts__grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;align-items:start}.similar-post-card.card.post{min-width:0;margin:0;overflow:hidden;border-radius:12px;transition:transform .18s ease,border-color .18s ease}.similar-post-card.card.post:hover{transform:translateY(-2px)}.similar-post-card .post__header{min-width:0}.similar-post-card .user-box{min-width:0}.similar-post-card .user-box-content{min-width:0}.similar-post-card .name-text,.similar-post-card .meta a{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.similar-post-card .post__short{min-width:0}.similar-post-card .post__short-title{margin:0 0 8px;font-size:15px;line-height:1.4}.similar-post-card .post__short-title a{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;text-decoration:none}.similar-post-card .similar-post-card__excerpt{font-size:13px;line-height:1.55;color:var(--bs-secondary-color,#888);display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}.similar-post-card .post__short-media{padding-top:0}.similar-post-card .post__media{overflow:hidden;border-radius:9px}.similar-post-card .post__media-image,.similar-post-card__placeholder{display:block;width:100%;aspect-ratio:16/9;object-fit:cover;background:var(--bs-tertiary-bg,#f1f5f9)}.similar-post-card__placeholder{display:flex;align-items:center;justify-content:center;color:var(--bs-secondary-color,#888)}.similar-post-card .post__footer{display:flex;align-items:center;justify-content:space-between;gap:8px;padding-top:10px;padding-bottom:12px}.similar-post-card .post__footer-stats{display:flex;flex-wrap:wrap;gap:10px;font-size:11px}.similar-post-card__open{font-size:12px;font-weight:600;color:var(--bs-primary,#106CFF);white-space:nowrap}
+      @media(max-width:760px){.similar-posts__grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}}@media(max-width:520px){.similar-posts__grid{grid-template-columns:1fr}.similar-post-card.card.post{display:grid;grid-template-columns:104px minmax(0,1fr);align-items:stretch}.similar-post-card.card.post>section:first-child{grid-column:2;grid-row:1;padding:12px 12px 6px 0}.similar-post-card.card.post>.post__short-media{grid-column:1;grid-row:1 / span 2;padding:12px 0 12px 12px;display:flex;align-items:center}.similar-post-card .post__media{width:100%}.similar-post-card .post__media-image,.similar-post-card__placeholder{aspect-ratio:1/1}.similar-post-card.card.post>.post__footer{grid-column:2;padding:4px 12px 12px 0}.similar-post-card .post__header .avatar{width:30px;height:30px}.similar-post-card .post__header .avatar img{width:30px;height:30px}.similar-post-card .post__short-title{font-size:14px}.similar-post-card .similar-post-card__excerpt{font-size:12px;-webkit-line-clamp:2}}
     </style>
     <meta property="article:published_time" content="{{ $post->published_at?->toAtomString() }}">
     <meta property="article:modified_time" content="{{ $post->updated_at?->toAtomString() }}">
@@ -267,10 +266,34 @@
             <div class="similar-posts__header"><div><span class="similar-posts__eyebrow">KEŞFETMEYE DEVAM ET</span><h2 class="h5" id="similar-posts-title">Bunlar da ilgini çekebilir</h2></div><span class="similar-posts__count">{{ $similarPosts->count() }} yazı</span></div>
             <div class="similar-posts__grid">
                 @foreach ($similarPosts as $similarPost)
-                    <a class="similar-post-card" href="{{ route('posts.show', $similarPost) }}">
-                        @if ($similarPost->coverImageUrl())<img class="similar-post-card__image" src="{{ $similarPost->coverImageUrl() }}" alt="" loading="lazy" width="320" height="180">@else<span class="similar-post-card__placeholder"><x-repost-icon name="feed" size="24" /></span>@endif
-                        <span class="similar-post-card__content">@if ($similarPost->channel)<span class="similar-post-card__channel">{{ $similarPost->channel->name }}</span>@endif<strong>{{ $similarPost->title }}</strong>@if ($similarPost->excerpt)<span class="similar-post-card__excerpt">{{ \Illuminate\Support\Str::limit($similarPost->excerpt, 105) }}</span>@endif<span class="similar-post-card__meta">{{ $similarPost->published_at?->diffForHumans() ?? $similarPost->created_at->diffForHumans() }}</span></span>
-                    </a>
+                    <article class="card post similar-post-card">
+                        <section class="card-body">
+                            <header class="post__header">
+                                <div class="user-box">
+                                    @if ($similarPost->user)
+                                        <a href="{{ route('profiles.show', $similarPost->user) }}" class="avatar"><img src="{{ $similarPost->user->avatarUrl() }}" alt="" width="40" height="40" loading="lazy"></a>
+                                    @else
+                                        <span class="avatar"><img src="{{ asset('assets/img/noavatar.png') }}" alt="" width="40" height="40"></span>
+                                    @endif
+                                    <div class="user-box-content">
+                                        <span class="name"><span class="name-text">{{ $similarPost->user?->displayName() ?? 'OgraFi kullanıcısı' }}</span>@if ($similarPost->user?->hasVerifiedBadge())<span class="verify" role="img" aria-label="Doğrulanmış hesap"><x-repost-icon name="verify" size="14" /></span>@endif</span>
+                                        <div class="meta">@if ($similarPost->channel)<a href="{{ route('channels.show', $similarPost->channel) }}">{{ $similarPost->channel->name }}</a>@endif<time datetime="{{ $similarPost->published_at?->toAtomString() }}">{{ $similarPost->published_at?->diffForHumans() ?? $similarPost->created_at->diffForHumans() }}</time></div>
+                                    </div>
+                                </div>
+                            </header>
+                            <div class="post__short">
+                                <h3 class="post__short-title h3"><a href="{{ route('posts.show', $similarPost) }}" class="color-title"><span class="post__short-title-text">{{ $similarPost->title }}</span></a></h3>
+                                @if ($similarPost->excerpt)<div class="similar-post-card__excerpt">{{ \Illuminate\Support\Str::limit($similarPost->excerpt, 150) }}</div>@endif
+                            </div>
+                        </section>
+                        @if ($similarPost->coverImageUrl())
+                            <section class="card-body post__short-media"><div class="post__media"><a href="{{ route('posts.show', $similarPost) }}"><img src="{{ $similarPost->coverImageUrl() }}" alt="{{ $similarPost->title }}" class="post__media-image" loading="lazy" width="320" height="180"></a></div></section>
+                        @endif
+                        <footer class="post__footer card-body">
+                            <div class="post__footer-stats small color-gray"><span>{{ number_format($similarPost->likes_count ?? 0) }} beğeni</span><span>{{ number_format($similarPost->views) }} görüntülenme</span></div>
+                            <a class="similar-post-card__open" href="{{ route('posts.show', $similarPost) }}">Yazıyı oku</a>
+                        </footer>
+                    </article>
                 @endforeach
             </div>
         </section>
