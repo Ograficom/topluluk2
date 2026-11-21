@@ -68,9 +68,9 @@
                         <span class="profile__rate">{{ '@'.$publicUsername }}</span>
                     @endif
                     <span class="small color-gray">Üyelik tarihi {{ $user->created_at->translatedFormat('d F Y, H:i') }}</span>
-                    @unless ($user->is_company)
+                    @if (! (\App\Models\ReputationSetting::current()->exclude_company_accounts && $user->is_company))
                     <span class="small color-gray" title="Topluluk katkı puanı">{{ number_format($reputationScore) }} puan · {{ $reputationBadge['name'] }}</span>
-                    @endunless
+                    @endif
                 </div>
                 @if ($user->signature)
                     <div class="profile__signature">{{ $user->signature }}</div>
