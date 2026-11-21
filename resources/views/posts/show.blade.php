@@ -11,9 +11,9 @@
 
 @push('head')
     <style>
-      .similar-posts{margin-top:1.25rem}.similar-posts__header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px}.similar-posts__header h2{margin:4px 0 0}.similar-posts__eyebrow{font-size:10px;font-weight:750;letter-spacing:.12em;color:var(--bs-primary,#106CFF)}.similar-posts__count{font-size:12px;color:var(--bs-secondary-color,#888)}
-      .similar-posts__grid{display:grid;grid-template-columns:minmax(0,1fr);gap:14px;align-items:stretch}.similar-post-card.card.post{display:flex;min-width:0;flex-direction:column;margin:0;overflow:hidden}.similar-post-card .card-body{min-width:0}.similar-post-card .post__header,.similar-post-card .user-box,.similar-post-card .user-box-content{min-width:0}.similar-post-card .name-text,.similar-post-card .meta a{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.similar-post-card .post__short-title{margin:0 0 8px;font-size:15px;line-height:1.4}.similar-post-card .post__short-title a{display:block;overflow:hidden;text-decoration:none}.similar-post-card .post__short-title-text{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}.similar-post-card .similar-post-card__excerpt{font-size:13px;line-height:1.55;color:var(--bs-secondary-color,#888);display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}.similar-post-card .post__tags{display:flex;flex-wrap:wrap;gap:5px;max-height:24px;overflow:hidden}.similar-post-card .post__short-media{padding-top:0}.similar-post-card .post__media{height:auto;aspect-ratio:16/9;overflow:hidden;border-radius:12px}.similar-post-card .post__media-image,.similar-post-card__placeholder{display:block;width:100%;height:100%;min-height:0;aspect-ratio:16/9;object-fit:cover;background:var(--bs-tertiary-bg,#f1f5f9)}.similar-post-card__placeholder{display:flex;align-items:center;justify-content:center;color:var(--bs-secondary-color,#888)}.similar-post-card .post__footer{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:auto;padding-top:12px;padding-bottom:12px}.similar-post-card .post__footer-stats{display:flex;flex-wrap:wrap;gap:10px;font-size:11px}
-      @media(max-width:520px){.similar-post-card .post__media{aspect-ratio:16/9}.similar-post-card .post__media-image,.similar-post-card__placeholder{aspect-ratio:16/9}}    </style>
+        .similar-posts__grid{display:flex;flex-direction:column;gap:14px}
+    </style>
+
     <meta property="article:published_time" content="{{ $post->published_at?->toAtomString() }}">
     <meta property="article:modified_time" content="{{ $post->updated_at?->toAtomString() }}">
     @if ($post->user)
@@ -265,31 +265,7 @@
             <div class="similar-posts__header"><div><span class="similar-posts__eyebrow">KEŞFETMEYE DEVAM ET</span><h2 class="h5" id="similar-posts-title">Bunlar da ilgini çekebilir</h2></div><span class="similar-posts__count">{{ $similarPosts->count() }} yazı</span></div>
             <div class="similar-posts__grid">
                 @foreach ($similarPosts as $similarPost)
-                    <article class="card post similar-post-card">
-                        <section class="card-body">
-                            <header class="post__header">
-                                <div class="user-box">
-                                    @if ($similarPost->user)
-                                        <a href="{{ route('profiles.show', $similarPost->user) }}" class="avatar"><img src="{{ $similarPost->user->avatarUrl() }}" alt="" width="40" height="40" loading="lazy"></a>
-                                    @else
-                                        <span class="avatar"><img src="{{ asset('assets/img/noavatar.png') }}" alt="" width="40" height="40"></span>
-                                    @endif
-                                    <div class="user-box-content">
-                                        <a href="{{ $similarPost->user ? route('profiles.show', $similarPost->user) : '#' }}" class="name"><span class="name-text">{{ $similarPost->user?->displayName() ?? 'OgraFi kullanıcısı' }}</span>@if ($similarPost->user?->hasVerifiedBadge())<span class="verify" role="img" aria-label="Doğrulanmış hesap"><x-repost-icon name="verify" size="14" /></span>@endif</a>
-                                        <div class="meta">@if ($similarPost->channel)<a href="{{ route('channels.show', $similarPost->channel) }}">{{ $similarPost->channel->name }}</a>@endif<time datetime="{{ $similarPost->published_at?->toAtomString() }}">{{ $similarPost->published_at?->diffForHumans() ?? $similarPost->created_at->diffForHumans() }}</time></div>
-                                    </div>
-                                </div>
-                            </header>
-                            <div class="post__short">
-                                <h3 class="post__short-title h3"><a href="{{ route('posts.show', $similarPost) }}" class="color-title"><span class="post__short-title-text">{{ $similarPost->title }}</span></a></h3>
-                                @if ($similarPost->excerpt)<div class="similar-post-card__excerpt">{{ \Illuminate\Support\Str::limit($similarPost->excerpt, 150) }}</div>@endif
-                            </div>
-                        </section>
-                        @if ($similarPost->coverImageUrl())
-                            <section class="card-body post__short-media"><div class="post__media"><a href="{{ route('posts.show', $similarPost) }}"><img src="{{ $similarPost->coverImageUrl() }}" alt="{{ $similarPost->title }}" class="post__media-image" loading="lazy" width="640" height="360"></a></div></section>
-                        @endif
-                        <footer class="post__footer card-body"><div class="post__footer-stats small color-gray"><span>{{ number_format($similarPost->likes_count ?? 0) }} beğeni</span><span>{{ number_format($similarPost->views) }} görüntülenme</span></div></footer>
-                    </article>
+                    @include('posts._card', ['post' => $similarPost])
                 @endforeach
             </div>
         </section>
