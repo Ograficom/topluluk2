@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\ReputationSetting;
 use App\Models\ReputationTransaction;
 use App\Models\User;
 
@@ -14,6 +15,23 @@ class ReputationService
 
     public function award(User $user, int $points, string $eventKey, string $description, ?string $sourceType = null, ?int $sourceId = null): void
     {
+        $settings = ReputationSetting::current();
+        if (! $settings->enabled || ($settings->exclude_company_accounts && $user->is_company)) {
+            return;
+        }
+
+        $points = match ($description) {
+            'Yazı yayınladı' => (int) $settings->post_points,
+            'Yorum yaptı' => (int) $settings->comment_points,
+            'Yazısı beğenildi' => (int) $settings->post_like_points,
+            'Yorumu beğenildi' => (int) $settings->comment_like_points,
+            default => $points,
+        };
+
+        if ($points <= 0) {
+            return;
+        }
+
         ReputationTransaction::query()->firstOrCreate(
             ['event_key' => $eventKey],
             ['user_id' => $user->id, 'points' => $points, 'description' => $description, 'source_type' => $sourceType, 'source_id' => $sourceId],
@@ -29,17 +47,37 @@ class ReputationService
 
         ReputationTransaction::query()->firstOrCreate(
             ['event_key' => 'revoke:'.$eventKey],
-            ['user_id' => $user->id, 'points' => -$points, 'description' => $description, 'source_type' => $sourceType, 'source_id' => $sourceId],
+            ['user_id' => $user->id, 'points' => -abs((int) $original->points), 'description' => $description, 'source_type' => $sourceType, 'source_id' => $sourceId],
         );
     }
 
     public function score(User $user): int
     {
+        if (ReputationSetting::current()->exclude_company_accounts && $user->is_company) {
+            return 0;
+        }
+
         return (int) $user->reputationTransactions()->sum('points');
     }
 
     public function badgeFor(int $score): array
     {
+        $customBadges = collect(ReputationSetting::current()->reward_badges ?? [])
+            ->filter(fn (array $badge): bool => filled($badge['name'] ?? null) && (int) ($badge['required_points'] ?? 0) <= $score)
+            ->sortByDesc(fn (array $badge): int => (int) ($badge['required_points'] ?? 0))
+            ->first();
+
+        if ($customBadges) {
+            return [
+                'name' => $customBadges['name'],
+                'next' => null,
+                'minimum' => (int) ($customBadges['required_points'] ?? 0),
+                'description' => $customBadges['description'] ?? null,
+                'icon' => $customBadges['icon'] ?? 'trophy',
+                'custom' => true,
+            ];
+        }
+
         return match (true) {
             $score >= 1000 => ['name' => 'Efsane', 'next' => null, 'minimum' => 1000],
             $score >= 500 => ['name' => 'Usta', 'next' => 1000, 'minimum' => 500],
