@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="format-detection" content="telephone=no">
-    @php($pwaSettings = \App\Models\SiteSetting::current())
+    @php
+        $pwaSettings = \App\Models\SiteSetting::current();
+    @endphp
     <meta name="theme-color" content="{{ $pwaSettings?->pwa_theme_color ?? '#f7f9fd' }}">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
