@@ -45,12 +45,13 @@ Route::get('/manifest.webmanifest', function () {
     }
 
     if (! count($icons)) {
-        $icons = [[
-            'src' => asset('assets/img/meta/pwa-icon.svg'),
-            'sizes' => 'any',
-            'type' => 'image/svg+xml',
-            'purpose' => 'any',
-        ]];
+        $defaultIcon = asset('assets/img/meta/pwa-icon.svg');
+        $defaultMaskableIcon = asset('assets/img/meta/pwa-icon-maskable.svg');
+        $icons = [
+            ['src' => $defaultIcon, 'sizes' => '192x192', 'type' => 'image/svg+xml', 'purpose' => 'any'],
+            ['src' => $defaultIcon, 'sizes' => '512x512', 'type' => 'image/svg+xml', 'purpose' => 'any'],
+            ['src' => $defaultMaskableIcon, 'sizes' => '512x512', 'type' => 'image/svg+xml', 'purpose' => 'maskable'],
+        ];
     }
 
     $startUrl = $settings?->pwa_start_url ?: '/';
