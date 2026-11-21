@@ -731,11 +731,7 @@
         </div>
     </main>
 
-    @if ($profilePage)
-        <div class="profile-page-mobile-footer">
-            @include('layouts._footer')
-        </div>
-    @endif
+
 
     @unless (request()->routeIs('messenger.show'))
     <section class="mobmenu" data-scroll-menu>
