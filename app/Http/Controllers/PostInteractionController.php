@@ -58,10 +58,10 @@ class PostInteractionController extends Controller
         });
 
         if ($post->user && ! $post->user->is($request->user())) {
-            $reputation = app(\\App\\Services\\ReputationService::class);
+            $reputation = app(\App\Services\ReputationService::class);
             $eventKey = 'post-like:'.$post->id.':'.$request->user()->id;
-            if ($notifyLike) $reputation->award($post->user, \\App\\Services\\ReputationService::POST_LIKED, $eventKey, 'Yazısı beğenildi', Post::class, $post->id);
-            if ($likeRemoved) $reputation->revoke($post->user, \\App\\Services\\ReputationService::POST_LIKED, $eventKey, 'Yazı beğenisi geri alındı', Post::class, $post->id);
+            if ($notifyLike) $reputation->award($post->user, \App\Services\ReputationService::POST_LIKED, $eventKey, 'Yazısı beğenildi', Post::class, $post->id);
+            if ($likeRemoved) $reputation->revoke($post->user, \App\Services\ReputationService::POST_LIKED, $eventKey, 'Yazı beğenisi geri alındı', Post::class, $post->id);
         }
 
         if (
@@ -164,7 +164,7 @@ class PostInteractionController extends Controller
         ]);
 
         if (! $isSpam) {
-            app(\\App\\Services\\ReputationService::class)->award($request->user(), \\App\\Services\\ReputationService::COMMENT_PUBLISHED, 'comment:'.$comment->id.':published', 'Yorum yaptı', Comment::class, $comment->id);
+            app(\App\Services\ReputationService::class)->award($request->user(), \App\Services\ReputationService::COMMENT_PUBLISHED, 'comment:'.$comment->id.':published', 'Yorum yaptı', Comment::class, $comment->id);
         }
 
         AdminNotificationService::sendToAdmins(
@@ -280,10 +280,10 @@ class PostInteractionController extends Controller
         });
 
         if ($comment->user && ! $comment->user->is($request->user())) {
-            $reputation = app(\\App\\Services\\ReputationService::class);
+            $reputation = app(\App\Services\ReputationService::class);
             $eventKey = 'comment-like:'.$comment->id.':'.$request->user()->id;
-            if ($removed) $reputation->revoke($comment->user, \\App\\Services\\ReputationService::COMMENT_LIKED, $eventKey, 'Yorum beğenisi geri alındı', Comment::class, $comment->id);
-            else $reputation->award($comment->user, \\App\\Services\\ReputationService::COMMENT_LIKED, $eventKey, 'Yorumu beğenildi', Comment::class, $comment->id);
+            if ($removed) $reputation->revoke($comment->user, \App\Services\ReputationService::COMMENT_LIKED, $eventKey, 'Yorum beğenisi geri alındı', Comment::class, $comment->id);
+            else $reputation->award($comment->user, \App\Services\ReputationService::COMMENT_LIKED, $eventKey, 'Yorumu beğenildi', Comment::class, $comment->id);
         }
 
         return back();
