@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Post;
 use App\Models\PostReaction;
+use App\Models\ReputationSetting;
 use App\Models\User;
 use App\Services\ReputationService;
 use Illuminate\Database\Eloquent\Builder;
@@ -65,6 +66,12 @@ class ProfileController extends Controller
         $reputationScore = $reputationService->score($user);
         $reputationBadge = $reputationService->badgeFor($reputationScore);
 
+        $earnedRewardBadges = collect(ReputationSetting::current()->reward_badges ?? [])
+            ->filter(fn (array $badge): bool => filled($badge['name'] ?? null)
+                && (int) ($badge['required_points'] ?? 0) <= $reputationScore)
+            ->sortByDesc(fn (array $badge): int => (int) ($badge['required_points'] ?? 0))
+            ->values();
+
         $isBlocked = $viewer && $viewer->blockedUsers()->whereKey($user->id)->exists();
         $isFollowing = $viewer && $viewer->following()->whereKey($user->id)->exists();
         $followersCount = $user->followers()->count();
@@ -95,7 +102,7 @@ class ProfileController extends Controller
 
         return view('profiles.show', compact(
             'user', 'posts', 'comments', 'isBlocked', 'isFollowing',
-            'followersCount', 'followingCount', 'profileFollowers', 'allProfileFollowers', 'topPosition', 'reputationScore', 'reputationBadge',
+            'followersCount', 'followingCount', 'profileFollowers', 'allProfileFollowers', 'topPosition', 'reputationScore', 'reputationBadge', 'earnedRewardBadges',
         ));
     }
 }
