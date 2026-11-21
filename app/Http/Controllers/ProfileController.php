@@ -60,6 +60,10 @@ class ProfileController extends Controller
                 ->when(! $viewer?->show_adult_content, fn (Builder $query) => $query->where('is_adult', false)))
             ->latest()
             ->paginate(10, ['*'], 'comments');
+        $reputationService = app(ReputationService::class);
+        $reputationScore = $reputationService->score($user);
+        $reputationBadge = $reputationService->badgeFor($reputationScore);
+
         $isBlocked = $viewer && $viewer->blockedUsers()->whereKey($user->id)->exists();
         $isFollowing = $viewer && $viewer->following()->whereKey($user->id)->exists();
         $followersCount = $user->followers()->count();
@@ -90,7 +94,7 @@ class ProfileController extends Controller
 
         return view('profiles.show', compact(
             'user', 'posts', 'comments', 'isBlocked', 'isFollowing',
-            'followersCount', 'followingCount', 'profileFollowers', 'allProfileFollowers', 'topPosition',
+            'followersCount', 'followingCount', 'profileFollowers', 'allProfileFollowers', 'topPosition', 'reputationScore', 'reputationBadge',
         ));
     }
 }
