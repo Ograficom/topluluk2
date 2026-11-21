@@ -1,9 +1,9 @@
 <?php
 
-namespace App\\Services;
+namespace App\Services;
 
-use App\\Models\\ReputationTransaction;
-use App\\Models\\User;
+use App\Models\ReputationTransaction;
+use App\Models\User;
 
 class ReputationService
 {
