@@ -10,6 +10,12 @@
 @endif
 
 @push('head')
+    <style>
+      .similar-posts{margin-top:1.25rem}.similar-posts__header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px}.similar-posts__header h2{margin:4px 0 0}.similar-posts__eyebrow{font-size:10px;font-weight:750;letter-spacing:.12em;color:var(--bs-primary,#64748b)}.similar-posts__count{font-size:12px;color:var(--bs-secondary-color,#888)}
+      .similar-posts__grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.similar-post-card{display:flex;min-width:0;flex-direction:column;overflow:hidden;border:1px solid var(--bs-border-color,#e5e7eb);border-radius:12px;color:inherit;text-decoration:none;background:var(--bs-body-bg,transparent);transition:border-color .18s,transform .18s}.similar-post-card:hover{border-color:var(--bs-primary,#64748b);transform:translateY(-2px);color:inherit}
+      .similar-post-card__image,.similar-post-card__placeholder{display:flex;width:100%;aspect-ratio:16/9;object-fit:cover;background:var(--bs-tertiary-bg,#f1f5f9);align-items:center;justify-content:center;color:var(--bs-secondary-color,#888)}.similar-post-card__content{display:flex;flex:1;flex-direction:column;gap:7px;padding:12px}.similar-post-card__channel{font-size:11px;color:var(--bs-primary,#64748b);font-weight:650}.similar-post-card__content strong{font-size:14px;line-height:1.45;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}.similar-post-card__excerpt{font-size:12px;line-height:1.5;color:var(--bs-secondary-color,#888);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}.similar-post-card__meta{margin-top:auto;padding-top:4px;font-size:11px;color:var(--bs-secondary-color,#888)}
+      @media(max-width:640px){.similar-posts__grid{grid-template-columns:1fr}.similar-post-card{flex-direction:row}.similar-post-card__image,.similar-post-card__placeholder{width:112px;min-width:112px;aspect-ratio:1/1}.similar-post-card__content{padding:10px}}
+    </style>
     <meta property="article:published_time" content="{{ $post->published_at?->toAtomString() }}">
     <meta property="article:modified_time" content="{{ $post->updated_at?->toAtomString() }}">
     @if ($post->user)
@@ -255,6 +261,20 @@
             </form>
         @endif
     </section>
+
+    @if ($similarPosts->isNotEmpty())
+        <section class="card card-body similar-posts" aria-labelledby="similar-posts-title">
+            <div class="similar-posts__header"><div><span class="similar-posts__eyebrow">KEŞFETMEYE DEVAM ET</span><h2 class="h5" id="similar-posts-title">Bunlar da ilgini çekebilir</h2></div><span class="similar-posts__count">{{ $similarPosts->count() }} yazı</span></div>
+            <div class="similar-posts__grid">
+                @foreach ($similarPosts as $similarPost)
+                    <a class="similar-post-card" href="{{ route('posts.show', $similarPost) }}">
+                        @if ($similarPost->coverImageUrl())<img class="similar-post-card__image" src="{{ $similarPost->coverImageUrl() }}" alt="" loading="lazy" width="320" height="180">@else<span class="similar-post-card__placeholder"><x-repost-icon name="feed" size="24" /></span>@endif
+                        <span class="similar-post-card__content">@if ($similarPost->channel)<span class="similar-post-card__channel">{{ $similarPost->channel->name }}</span>@endif<strong>{{ $similarPost->title }}</strong>@if ($similarPost->excerpt)<span class="similar-post-card__excerpt">{{ \Illuminate\Support\Str::limit($similarPost->excerpt, 105) }}</span>@endif<span class="similar-post-card__meta">{{ $similarPost->published_at?->diffForHumans() ?? $similarPost->created_at->diffForHumans() }}</span></span>
+                    </a>
+                @endforeach
+            </div>
+        </section>
+    @endif
 
     <dialog id="post-report-dialog" aria-labelledby="post-report-title" style="width:min(520px,calc(100% - 32px));max-width:520px;border:1px solid #e5e7eb;border-radius:14px;padding:0;box-shadow:0 20px 60px rgba(0,0,0,.2)">
         <div style="display:flex;align-items:center;justify-content:space-between;padding:18px 20px;border-bottom:1px solid #e5e7eb">
