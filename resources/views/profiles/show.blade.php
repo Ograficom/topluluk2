@@ -69,7 +69,12 @@
                     @endif
                     <span class="small color-gray">Üyelik tarihi {{ $user->created_at->translatedFormat('d F Y, H:i') }}</span>
                     @if (! (\App\Models\ReputationSetting::current()->exclude_company_accounts && $user->is_company))
-                    <span class="small color-gray" title="Topluluk katkı puanı">{{ number_format($reputationScore) }} puan · {{ $reputationBadge['name'] }}</span>
+                    <span class="small color-gray" title="Topluluk katkı puanı">
+                        @if (! empty($reputationBadge['image']))
+                            <img src="{{ \Illuminate\Support\Facades\Storage::disk('public')->url($reputationBadge['image']) }}" alt="{{ $reputationBadge['name'] }} rozeti" width="24" height="24" style="display:inline-block;object-fit:contain;vertical-align:middle">
+                        @endif
+                        {{ number_format($reputationScore) }} puan · {{ $reputationBadge['name'] }}
+                    </span>
                     @endif
                 </div>
                 @if ($user->signature)
