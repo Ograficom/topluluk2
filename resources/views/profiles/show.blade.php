@@ -3,7 +3,7 @@
 @section('title', $user->displayName())
 
 @push('head')
-    <link rel="stylesheet" href="{{ asset('assets/css/profile-theme.css') }}?v=20261122-profile-reward-badges">
+    <link rel="stylesheet" href="{{ asset('assets/css/profile-theme.css') }}?v=20261122-profile-earned-badges-modal">
 @endpush
 
 @section('content')
@@ -61,12 +61,12 @@
                     @endif
                     <span class="small color-gray">Üyelik tarihi {{ $user->created_at->translatedFormat('d F Y, H:i') }}</span>
                     @if (! (\App\Models\ReputationSetting::current()->exclude_company_accounts && $user->is_company))
-                    <span class="small color-gray" title="Topluluk katkı puanı">
+                    <button class="profile-reputation-trigger small color-gray" type="button" data-modal-btn="profile-earned-badges" aria-haspopup="dialog" aria-controls="profileEarnedBadgesModal" title="Kazanılan rozetleri görüntüle">
                         @if (! empty($reputationBadge['image']))
-                            <img src="{{ \Illuminate\Support\Facades\Storage::disk('public')->url($reputationBadge['image']) }}" alt="{{ $reputationBadge['name'] }} rozeti" width="24" height="24" style="display:inline-block;object-fit:contain;vertical-align:middle">
+                            <img src="{{ \Illuminate\Support\Facades\Storage::disk('public')->url($reputationBadge['image']) }}" alt="" width="24" height="24" style="display:inline-block;object-fit:contain;vertical-align:middle">
                         @endif
                         {{ number_format($reputationScore) }} puan · {{ $reputationBadge['name'] }}
-                    </span>
+                    </button>
                     @endif
                 </div>
                 @if ($user->signature)
@@ -273,6 +273,39 @@
                     @include('layouts._footer')
                 </div>
             </aside>
+        </div>
+    </div>
+
+    <div class="modal" id="profileEarnedBadgesModal" data-modal="profile-earned-badges" aria-label="Alınan rozetler" aria-hidden="true">
+        <div class="modal-content profile-earned-badges-modal">
+            <button type="button" class="btn btn-secondary btn-md btn-circle modal-close" data-modal-close aria-label="Kapat" title="Kapat"><x-repost-icon name="close" size="16" class="color-gray" /></button>
+            <header class="modal-header"><h2 class="modal-title h4" id="profileEarnedBadgesTitle">Alınan rozetler</h2></header>
+            <div class="modal-body">
+                @if ($earnedRewardBadges->isNotEmpty())
+                    <div class="profile-earned-badges-list">
+                        @foreach ($earnedRewardBadges as $earnedBadge)
+                            <div class="profile-earned-badge">
+                                <span class="profile-earned-badge__image">
+                                    @if (filled($earnedBadge['image'] ?? null))
+                                        <img src="{{ \Illuminate\Support\Facades\Storage::disk('public')->url($earnedBadge['image']) }}" alt="" loading="lazy">
+                                    @else
+                                        <x-repost-icon :name="$earnedBadge['icon'] ?? 'trophy'" size="24" />
+                                    @endif
+                                </span>
+                                <span class="profile-earned-badge__details">
+                                    <strong>{{ $earnedBadge['name'] }}</strong>
+                                    <small>{{ number_format((int) ($earnedBadge['required_points'] ?? 0)) }} puan</small>
+                                    @if (filled($earnedBadge['description'] ?? null))
+                                        <small>{{ $earnedBadge['description'] }}</small>
+                                    @endif
+                                </span>
+                            </div>
+                        @endforeach
+                    </div>
+                @else
+                    <p class="small color-gray">Henüz kazanılmış özel rozet yok.</p>
+                @endif
+            </div>
         </div>
     </div>
 
