@@ -3,7 +3,7 @@
 @section('title', $user->displayName())
 
 @push('head')
-    <link rel="stylesheet" href="{{ asset('assets/css/profile-theme.css') }}?v=20261122-profile-footer-gap-fix-2">
+    <link rel="stylesheet" href="{{ asset('assets/css/profile-theme.css') }}?v=20261122-repost-footer-gap-3">
     <style>
         /* Match Repost profile template: the sidebar footer is desktop-only. */
         @media screen and (max-width: 920px) {
