@@ -249,8 +249,9 @@
                         </div>
                     </section>
                 </div>
-
-
+                <div class="profile__aside-footer">
+                    @include('layouts._footer')
+                </div>
             </aside>
         </div>
     </div>
