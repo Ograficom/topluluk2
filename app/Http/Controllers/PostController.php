@@ -137,6 +137,7 @@ class PostController extends Controller
         $this->syncTagRecords($post, $tags);
 
         if (! $isSpam) {
+            app(\\App\\Services\\ReputationService::class)->award($request->user(), \\App\\Services\\ReputationService::POST_PUBLISHED, 'post:'.$post->id.':published', 'Yazı yayınladı', Post::class, $post->id);
             $recipients = $request->user()->followers()->get();
 
             if ($post->channel_id) {
