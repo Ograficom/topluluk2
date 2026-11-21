@@ -15,6 +15,35 @@ class Post extends Model
 {
     use HasFactory;
 
+    protected static function booted(): void
+    {
+        static::created(function (Post $post): void {
+            $post->awardPublicationReputation();
+        });
+
+        static::updated(function (Post $post): void {
+            if ($post->wasChanged(['is_published', 'is_spam'])) {
+                $post->awardPublicationReputation();
+            }
+        });
+    }
+
+    private function awardPublicationReputation(): void
+    {
+        if (! $this->is_published || $this->is_spam || $this->advertisement_id || ! $this->user) {
+            return;
+        }
+
+        app(\App\Services\ReputationService::class)->award(
+            $this->user,
+            \App\Services\ReputationService::POST_PUBLISHED,
+            'post:'.$this->id.':published',
+            'Yazı yayınladı',
+            self::class,
+            $this->id,
+        );
+    }
+
     protected $fillable = [
         'user_id', 'channel_id', 'advertisement_id', 'title', 'slug', 'excerpt', 'body',
         'cover_image', 'media', 'video_url', 'video_path', 'meta_description', 'location', 'tags', 'is_published',
