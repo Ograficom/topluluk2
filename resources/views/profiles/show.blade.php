@@ -317,7 +317,7 @@
                 <div class="modal-body profile-earned-badge-detail">
                     <div class="profile-earned-badge-detail__visual">
                         @if (filled($earnedBadge['image'] ?? null))
-                            <img src="{{ IlluminateSupportFacadesStorage::disk('public')->url($earnedBadge['image']) }}" alt="{{ $earnedBadge['name'] }} rozeti">
+                            <img src="{{ \\Illuminate\\Support\\Facades\\Storage::disk('public')->url($earnedBadge['image']) }}" alt="{{ $earnedBadge['name'] }} rozeti">
                         @else
                             <x-repost-icon :name="$earnedBadge['icon'] ?? 'trophy'" size="88" />
                         @endif
