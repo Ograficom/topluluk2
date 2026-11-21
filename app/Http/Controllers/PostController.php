@@ -137,6 +137,7 @@ class PostController extends Controller
         $this->syncTagRecords($post, $tags);
 
         if (! $isSpam) {
+            app(\App\Services\ReputationService::class)->award($request->user(), \App\Services\ReputationService::POST_PUBLISHED, 'post:'.$post->id.':published', 'Yazı yayınladı', Post::class, $post->id);
             $recipients = $request->user()->followers()->get();
 
             if ($post->channel_id) {
@@ -303,10 +304,10 @@ class PostController extends Controller
     {
         // Accept both comma-separated tags and hashtag input such as
         // "#Atatürk #Tarih #Cumhuriyet" without saving the whole line as one tag.
-        $parts = preg_split('/\\s*,\\s*|\\s+(?=#)/u', trim($input), -1, PREG_SPLIT_NO_EMPTY) ?: [];
+        $parts = preg_split('/\s*,\s*|\s+(?=#)/u', trim($input), -1, PREG_SPLIT_NO_EMPTY) ?: [];
 
         return collect($parts)
-            ->map(fn (string $tag) => trim($tag, " \\t\\n\\r\\0\\x0B#"))
+            ->map(fn (string $tag) => trim($tag, " \t\n\r\0\x0B#"))
             ->filter()
             // Keep individual values within the tags.name column limit.
             ->map(fn (string $tag) => mb_substr($tag, 0, 100))

@@ -25,8 +25,9 @@ class PostInteractionController extends Controller
         $this->ensurePublished($post);
 
         $notifyLike = false;
+        $likeRemoved = false;
 
-        DB::transaction(function () use ($request, $post, $type, &$notifyLike): void {
+        DB::transaction(function () use ($request, $post, $type, &$notifyLike, &$likeRemoved): void {
             $reaction = PostReaction::query()
                 ->where('post_id', $post->id)
                 ->where('user_id', $request->user()->id)
@@ -34,12 +35,14 @@ class PostInteractionController extends Controller
                 ->first();
 
             if ($reaction?->type === $type) {
+                $likeRemoved = $type === PostReaction::LIKE;
                 $reaction->delete();
 
                 return;
             }
 
             if ($reaction) {
+                $likeRemoved = $reaction->type === PostReaction::LIKE && $type !== PostReaction::LIKE;
                 $reaction->update(['type' => $type]);
                 $notifyLike = $type === PostReaction::LIKE;
 
@@ -54,6 +57,13 @@ class PostInteractionController extends Controller
 
             $notifyLike = $type === PostReaction::LIKE;
         });
+
+        if ($post->user && ! $post->user->is($request->user())) {
+            $reputation = app(\App\Services\ReputationService::class);
+            $eventKey = 'post-like:'.$post->id.':'.$request->user()->id;
+            if ($notifyLike) $reputation->award($post->user, \App\Services\ReputationService::POST_LIKED, $eventKey, 'Yazısı beğenildi', Post::class, $post->id);
+            if ($likeRemoved) $reputation->revoke($post->user, \App\Services\ReputationService::POST_LIKED, $eventKey, 'Yazı beğenisi geri alındı', Post::class, $post->id);
+        }
 
         if (
             $notifyLike
@@ -154,6 +164,10 @@ class PostInteractionController extends Controller
             'is_spam' => $isSpam,
         ]);
 
+        if (! $isSpam) {
+            app(\App\Services\ReputationService::class)->award($request->user(), \App\Services\ReputationService::COMMENT_PUBLISHED, 'comment:'.$comment->id.':published', 'Yorum yaptı', Comment::class, $comment->id);
+        }
+
         AdminNotificationService::sendToAdmins(
             $isSpam ? 'İncelenecek spam yorum' : 'Yeni yorum',
             $request->user()->displayName().' yorum gönderdi: '.str($validated['body'] ?? 'Görsel içeren yorum')->limit(100),
@@ -246,7 +260,8 @@ class PostInteractionController extends Controller
         $this->ensurePublished($post);
         abort_unless($comment->post_id === $post->id, 404);
 
-        DB::transaction(function () use ($request, $comment): void {
+        $removed = false;
+        DB::transaction(function () use ($request, $comment, &$removed): void {
             $reaction = CommentReaction::query()
                 ->where('comment_id', $comment->id)
                 ->where('user_id', $request->user()->id)
@@ -254,8 +269,8 @@ class PostInteractionController extends Controller
                 ->first();
 
             if ($reaction) {
+                $removed = true;
                 $reaction->delete();
-
                 return;
             }
 
@@ -264,6 +279,13 @@ class PostInteractionController extends Controller
                 'user_id' => $request->user()->id,
             ]);
         });
+
+        if ($comment->user && ! $comment->user->is($request->user())) {
+            $reputation = app(\App\Services\ReputationService::class);
+            $eventKey = 'comment-like:'.$comment->id.':'.$request->user()->id;
+            if ($removed) $reputation->revoke($comment->user, \App\Services\ReputationService::COMMENT_LIKED, $eventKey, 'Yorum beğenisi geri alındı', Comment::class, $comment->id);
+            else $reputation->award($comment->user, \App\Services\ReputationService::COMMENT_LIKED, $eventKey, 'Yorumu beğenildi', Comment::class, $comment->id);
+        }
 
         return back();
     }
