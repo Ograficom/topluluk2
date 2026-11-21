@@ -5,10 +5,17 @@
 @push('head')
     <link rel="stylesheet" href="{{ asset('assets/css/profile-theme.css') }}?v=20261110-profile-sponsored-card-fix-mobile-footer">
     <style>
-        /* Match the original Repost mobile profile layout: hide the aside footer below tablet width. */
+        /* Desktop keeps the footer in the profile sidebar; mobile moves it after the full profile content. */
+        .profile-page-mobile-footer {
+            display: none;
+        }
         @media screen and (max-width: 920px) {
             .profile__aside-footer {
                 display: none !important;
+            }
+            .profile-page-mobile-footer {
+                display: block;
+                margin-top: 24px;
             }
         }
     </style>
