@@ -451,7 +451,7 @@
             .profile-page-mobile-footer {
                 display: block;
                 width: 100%;
-                margin-top: 0;
+                margin-top: 20px;
                 padding: 0 12px 24px;
             }
         }
