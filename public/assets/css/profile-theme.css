@@ -166,6 +166,13 @@
 .profile__aside > aside { min-width: 0; }
 .profile__aside .widget { min-width: 0; }
 
+/* Desktop: match the reference theme's clear gap below the About card. */
+@media screen and (min-width: 921px) {
+  .profile__aside-footer {
+    margin-top: 26px !important;
+  }
+}
+
 
 
 /* Keep the reference proportions as the viewport narrows. */
