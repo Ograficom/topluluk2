@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="format-detection" content="telephone=no">
-    @php($pwaSettings = \\App\\Models\\SiteSetting::current())
+    @php($pwaSettings = \App\Models\SiteSetting::current())
     <meta name="theme-color" content="{{ $pwaSettings?->pwa_theme_color ?? '#f7f9fd' }}">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -12,7 +12,7 @@
     @if ($pwaSettings?->pwa_enabled ?? true)
         <link rel="manifest" href="{{ route('pwa.manifest') }}">
         @if ($pwaSettings?->pwa_icon_192_path)
-            <link rel="apple-touch-icon" href="{{ \\Illuminate\\Support\\Facades\\Storage::disk('public')->url($pwaSettings->pwa_icon_192_path) }}">
+            <link rel="apple-touch-icon" href="{{ \Illuminate\Support\Facades\Storage::disk('public')->url($pwaSettings->pwa_icon_192_path) }}">
         @endif
     @endif
     <title>@yield('title', $brandName) — {{ $brandName }}</title>
