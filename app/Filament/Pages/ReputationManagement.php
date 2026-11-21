@@ -3,6 +3,7 @@
 namespace App\Filament\Pages;
 
 use App\Models\ReputationSetting;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
@@ -47,6 +48,7 @@ class ReputationManagement extends Page
                 Repeater::make('reward_badges')->label('Ödül rozetleri')->schema([
                     TextInput::make('name')->label('Rozet adı')->required()->maxLength(80),
                     TextInput::make('required_points')->label('Gerekli puan')->numeric()->minValue(0)->required(),
+                    FileUpload::make('image')->label('Rozet görseli')->image()->disk('public')->directory('reputation-badges')->visibility('public')->imageEditor()->maxSize(2048)->helperText('Rozet için PNG, JPG, WEBP veya SVG olmayan bir görsel yükleyin. En fazla 2 MB.'),
                     TextInput::make('icon')->label('İkon adı (Lucide)')->placeholder('trophy')->maxLength(60),
                     Textarea::make('description')->label('Açıklama')->rows(2)->maxLength(250)->columnSpanFull(),
                 ])->columns(2)->defaultItems(0)->addActionLabel('Yeni ödül rozeti ekle')->reorderable()->columnSpanFull(),
