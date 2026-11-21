@@ -25,7 +25,7 @@
         <x-filament::icon icon="heroicon-o-rss" />
         <span>RSS yönetimi</span>
     </a>
-    <a href="{{ \\App\\Filament\\Pages\\PwaManagement::getUrl() }}" @class(['cm-tab', 'is-active' => request()->routeIs('filament.admin.pages.pwa-management')])>
+    <a href="{{ \App\Filament\Pages\PwaManagement::getUrl() }}" @class(['cm-tab', 'is-active' => request()->routeIs('filament.admin.pages.pwa-management')])>
         <x-filament::icon icon="heroicon-o-device-phone-mobile" />
         <span>PWA yönetimi</span>
     </a>
