@@ -166,10 +166,7 @@
 .profile__aside > aside { min-width: 0; }
 .profile__aside .widget { min-width: 0; }
 
-/* Repost desktop profile: leave a clear vertical gap between the About card and footer. */
-.profile__aside-footer {
-  margin-top: var(--main-gap, 20px);
-}
+
 
 /* Keep the reference proportions as the viewport narrows. */
 @media screen and (max-width: 1120px) {
