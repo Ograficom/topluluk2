@@ -36,7 +36,7 @@
                 </div>
             </div>
 
-            <div class="post-composer-field">
+            <div class="post-composer-field post-composer-title-field">
                 <label class="post-composer-label" for="post-title">Yazı başlığı</label>
                 <input class="post-create-simple__title addpost__title" id="post-title" name="title" type="text"
                     value="{{ old('title', $post->title ?? '') }}" maxlength="255"
@@ -44,7 +44,7 @@
                 <div class="post-composer-count"><span>Arama ve paylaşım için açık bir başlık seç.</span><span data-count-for="post-title">0 / 60</span></div>
             </div>
 
-            <div class="post-composer-field">
+            <div class="post-composer-field post-composer-excerpt-field">
                 <label class="post-composer-label" for="post-excerpt">Kısa açıklama</label>
                 <textarea class="post-create-simple__excerpt" id="post-excerpt" name="excerpt" rows="3" maxlength="500"
                     placeholder="Yazını birkaç cümleyle özetle...">{{ old('excerpt', $post->excerpt ?? '') }}</textarea>
