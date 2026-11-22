@@ -10855,3 +10855,29 @@ body.is-messenger-conversation .pm-dialog__composer .pm-composer__send{
     width: min(480px, calc(100vw - 24px)) !important;
     min-height: 260px !important;
 }
+
+
+/* Stabilize gallery modal: keep the composer page intact behind the gallery overlay. */
+.addpost.post-create-simple.post-create-modal-page.is-gallery-open {
+    background: rgba(20, 28, 40, .42) !important;
+    -webkit-backdrop-filter: blur(5px) !important;
+    backdrop-filter: blur(5px) !important;
+}
+.addpost.post-create-simple.post-create-modal-page > form.post-create-modal.is-gallery-open {
+    background: #fff !important;
+    border-color: transparent !important;
+    box-shadow: 0 18px 55px rgba(15,23,42,.20) !important;
+    overflow: hidden !important;
+}
+.addpost.post-create-simple.post-create-modal-page .post-gallery-modal:not([hidden]) {
+    position: fixed !important;
+    inset: 0 !important;
+    z-index: 14000 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 16px !important;
+    background: rgba(25,35,50,.48) !important;
+    -webkit-backdrop-filter: blur(5px) !important;
+    backdrop-filter: blur(5px) !important;
+}
