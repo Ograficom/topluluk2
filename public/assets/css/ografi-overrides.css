@@ -10635,3 +10635,23 @@ body.is-messenger-conversation .pm-dialog__composer .pm-composer__send{
 .addpost.post-create-simple.post-create-modal-page .post-composer-source-field { display: flex !important; flex-direction: column !important; gap: 8px !important; margin-top: 12px !important; }
 .addpost.post-create-simple.post-create-modal-page .post-composer-source-field label { display: block !important; color: #71839d !important; font-family: var(--font-primary) !important; font-size: 12px !important; line-height: 1.4 !important; }
 .addpost.post-create-simple.post-create-modal-page .post-composer-source-field select { display: block !important; width: 100% !important; min-height: 42px !important; padding: 0 12px !important; border: 1px solid #d8e0eb !important; border-radius: 12px !important; background: #fff !important; color: #303944 !important; font-family: var(--font-primary) !important; font-size: 13px !important; }
+
+
+/* Source attribution is a free-text field, not a dropdown. */
+.addpost.post-create-simple.post-create-modal-page .post-composer-source-field input[type="text"] {
+    display: block !important;
+    width: 100% !important;
+    min-height: 46px !important;
+    padding: 0 13px !important;
+    border: 1px solid #d8e0eb !important;
+    border-radius: 12px !important;
+    outline: none !important;
+    background: #fff !important;
+    color: #303944 !important;
+    font-family: var(--font-primary) !important;
+    font-size: 13px !important;
+}
+.addpost.post-create-simple.post-create-modal-page .post-composer-source-field input[type="text"]:focus {
+    border-color: #2563eb !important;
+    box-shadow: 0 0 0 3px rgba(37,99,235,.12) !important;
+}
