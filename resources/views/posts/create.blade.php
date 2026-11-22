@@ -918,11 +918,22 @@
         const openTagsModal = () => {
             if (!tagsModal || !tagsModalPlaceholder) return;
             closeComposerPanels();
-            if (tagsModal.parentNode !== document.body) document.body.appendChild(tagsModal);
+            // Move the overlay outside the transformed composer/layout tree.
+            // A transformed ancestor makes position:fixed behave like an absolutely positioned child.
+            if (tagsModal.parentNode !== document.documentElement) {
+                document.documentElement.appendChild(tagsModal);
+            }
 
-            // Remove the hidden attribute first; the [hidden] rule otherwise keeps the modal invisible.
             tagsModal.hidden = false;
             tagsModal.classList.add('is-open');
+            tagsModal.style.cssText = [
+                'position:fixed', 'inset:0', 'z-index:2147483647',
+                'display:flex', 'align-items:center', 'justify-content:center',
+                'box-sizing:border-box', 'width:100vw', 'height:100vh',
+                'margin:0', 'padding:12px',
+                'background:rgba(25,35,50,.48)',
+                'backdrop-filter:blur(5px)', '-webkit-backdrop-filter:blur(5px)'
+            ].join(';') + ';';
             if (composerForm) {
                 composerForm.style.display = 'none';
                 composerForm.setAttribute('aria-hidden', 'true');
