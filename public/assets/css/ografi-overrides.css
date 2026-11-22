@@ -10453,3 +10453,20 @@ body.is-messenger-conversation .pm-dialog__composer .pm-composer__send{
     position: relative !important;
     overflow: hidden !important;
 }
+
+
+/* Show the composer title at the top-left while keeping controls at the top-right. */
+.addpost.post-create-simple.post-create-modal-page > form.post-create-modal > header.addpost__modal-head {
+    justify-content: space-between !important;
+    padding: 0 20px !important;
+}
+.addpost.post-create-simple.post-create-modal-page > form.post-create-modal > header.addpost__modal-head > strong {
+    display: block !important;
+    margin: 0 !important;
+    color: #202633 !important;
+    font-family: inherit !important;
+    font-size: 17px !important;
+    font-weight: 700 !important;
+    line-height: 1.2 !important;
+    visibility: visible !important;
+}
