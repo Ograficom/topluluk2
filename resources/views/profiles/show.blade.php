@@ -3,7 +3,7 @@
 @section('title', $user->displayName())
 
 @push('head')
-    <link rel="stylesheet" href="{{ asset('assets/css/profile-theme.css') }}?v=20261122-profile-badge-zoom">
+    <link rel="stylesheet" href="{{ asset('assets/css/profile-theme.css') }}?v=20261122-profile-badge-link">
 @endpush
 
 @section('content')
@@ -246,7 +246,7 @@
                         </div>
                         @if ($earnedRewardBadges->count() > 8)
                             <footer class="widget__footer">
-                                <button type="button" class="link-accent profile-all-badges-trigger" data-modal-btn="profile-earned-badges" aria-haspopup="dialog" aria-controls="profileEarnedBadgesModal">Tüm rozetler</button>
+                                <button type="button" class="profile-all-badges-trigger" data-modal-btn="profile-earned-badges" aria-haspopup="dialog" aria-controls="profileEarnedBadgesModal">Tüm rozetler</button>
                             </footer>
                         @endif
                     </section>
