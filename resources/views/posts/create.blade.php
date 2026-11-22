@@ -138,34 +138,34 @@
             </section>
 
             <details class="post-create-simple__options post-composer-advanced">
-                <summary><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h9m4 0h3M4 17h3m4 0h9"/><circle cx="15" cy="7" r="2"/><circle cx="9" cy="17" r="2"/></svg> Yayınlama Seçenekleri</summary>
-                <div class="post-composer-advanced-content">
-                    <label for="post-cover" class="post-create-simple__file">
-                        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
-                        <span>Kapak görseli seç</span>
-                    </label>
-                    <label for="tags">Etiketler</label>
-                    <input id="tags" name="tags" type="text" value="{{ old('tags', isset($post) ? implode(', ', $post->tags ?? []) : '') }}"
-                        maxlength="500" placeholder="Örn. teknoloji, gezi, yazılım">
-                    <p class="post-composer-field-help">Etiketleri virgülle ayır.</p>
-            <details class="post-composer-seo">
                 <summary>
-                    <span><x-repost-icon name="search" size="18" /> SEO ayarları</span>
-                    <small>Google arama görünümü</small>
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h9m4 0h3M4 17h3m4 0h9"/><circle cx="15" cy="7" r="2"/><circle cx="9" cy="17" r="2"/></svg>
+                    <span>Yayınlama Seçenekleri</span>
                 </summary>
-                <div class="post-composer-seo-content">
-                    <label class="post-composer-label" for="post-meta-description">Meta açıklaması <span>İsteğe bağlı</span></label>
-                    <textarea class="post-create-simple__seo" id="post-meta-description" name="meta_description" rows="3" maxlength="500"
-                        placeholder="Google'da görünecek açıklama...">{{ old('meta_description', $post->meta_description ?? '') }}</textarea>
-                    <div class="post-composer-count"><span>150–160 karakter hedefle.</span><span data-count-for="post-meta-description">0 / 160</span></div>
-                    <div class="post-composer-google-preview" aria-live="polite">
-                        <span>ografi.com › yazı</span>
-                        <strong data-seo-preview-title>{{ old('title', $post->title ?? '') ?: 'Yazı başlığın burada görünecek' }}</strong>
-                        <p data-seo-preview-description>{{ old('meta_description', $post->meta_description ?? '') ?: (old('excerpt', $post->excerpt ?? '') ?: 'Yazının açıklaması burada görünecek.') }}</p>
+                <div class="post-composer-advanced-content">
+                    <div class="post-composer-setting-row">
+                        <label class="post-create-simple__adult" for="post-adult">
+                            <input id="post-adult" type="checkbox" name="is_adult" value="1" @checked(old('is_adult', $post->is_adult ?? false))>
+                            <span>18+ içerik</span>
+                        </label>
                     </div>
-                </div>
-            </details>
-                    <label class="post-create-simple__adult"><input id="post-adult" type="checkbox" name="is_adult" value="1" @checked(old('is_adult', $post->is_adult ?? false))> 18+ içerik</label>
+                    <div class="post-composer-setting-row">
+                        <label class="post-composer-ai" for="post-ai-content">
+                            <input id="post-ai-content" type="checkbox" name="ai_content_disclosure" value="1" @checked(old('ai_content_disclosure', false))>
+                            <span>İçerik yapay zeka verileri içermektedir.</span>
+                        </label>
+                    </div>
+                    <div class="post-composer-source-field">
+                        <label for="post-source">Lütfen kaynağı belirtin.</label>
+                        <select id="post-source" name="content_source">
+                            <option value="">Kaynak seçin</option>
+                            <option value="original" @selected(old('content_source') === 'original')>Kendi bilgi ve deneyimim</option>
+                            <option value="website" @selected(old('content_source') === 'website')>İnternet sitesi</option>
+                            <option value="book" @selected(old('content_source') === 'book')>Kitap veya yayın</option>
+                            <option value="academic" @selected(old('content_source') === 'academic')>Akademik kaynak</option>
+                            <option value="other" @selected(old('content_source') === 'other')>Diğer</option>
+                        </select>
+                    </div>
                 </div>
             </details>
 
