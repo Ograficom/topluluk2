@@ -357,7 +357,13 @@
 
 
 /* Earned custom reward badges — placed between subscribers and About. */
-.profile-reward-widget { gap: 14px; }
+/* Match the subscribers card: identical card shell and widget spacing. */
+.profile-reward-widget {
+  gap: var(--widget-gap, 15px);
+  padding: var(--card-spacer-y, 20px) var(--card-spacer-x, 20px);
+  border-radius: var(--card-border-radius, 20px);
+  background: var(--card-bg, #fff);
+}
 .profile-reward-badges {
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
