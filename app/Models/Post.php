@@ -42,6 +42,8 @@ class Post extends Model
             self::class,
             $this->id,
         );
+
+        app(\App\Services\CommunityTaskService::class)->completeAvailableTasks($this->user);
     }
 
     protected $fillable = [
