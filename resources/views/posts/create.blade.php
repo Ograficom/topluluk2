@@ -22,10 +22,10 @@
                 <strong>{{ isset($post) ? 'Yayını düzenle' : 'Yeni yayın' }}</strong>
                 <div class="addpost__modal-controls">
                     <button type="button" class="addpost__modal-expand" data-post-composer-expand aria-label="Genişlet" aria-pressed="false">
-                        <svg width="20" height="20" aria-hidden="true" focusable="false"><use href="#window-expand"></use></svg>
+                        <img src="https://media.hugeicons.com/previews/icons/expand-solid-rounded@3x.webp?x=1.0.2" width="20" height="20" alt="" aria-hidden="true">
                     </button>
                     <a href="{{ route('posts.index') }}" class="addpost__modal-close" aria-label="Kapat">
-                        <svg width="20" height="20" aria-hidden="true" focusable="false"><use href="#close"></use></svg>
+                        <img src="https://ico.hugeicons.com/multiplication-sign-stroke-rounded@2x.webp" width="20" height="20" alt="" aria-hidden="true">
                     </a>
                 </div>
             </header>
