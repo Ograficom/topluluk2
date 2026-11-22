@@ -8500,3 +8500,210 @@ body.is-messenger-conversation .pm-dialog__composer .pm-composer__send{
   .post-create-modal > .post-create-simple__footer { padding-right:14px !important; }
   .post-create-modal.is-expanded { width:100% !important; max-width:100% !important; height:calc(100dvh - 16px) !important; }
 }
+
+
+/* Screenshot-accurate OgraFi composer — final authoritative rules. */
+.post-create-modal-page {
+  position:fixed !important; inset:0 !important; z-index:12000 !important;
+  display:flex !important; align-items:center !important; justify-content:center !important;
+  padding:0 !important; background:rgba(38,48,64,.48) !important;
+  -webkit-backdrop-filter:blur(5px) !important; backdrop-filter:blur(5px) !important;
+}
+.post-create-modal-page > form.post-create-modal {
+  position:relative !important; display:grid !important;
+  grid-template-columns:minmax(0,1fr) !important;
+  grid-template-rows:48px 48px 48px minmax(90px,1fr) 52px 48px !important;
+  gap:0 !important; width:623px !important; max-width:calc(100vw - 32px) !important;
+  height:366px !important; min-height:366px !important; max-height:calc(100dvh - 24px) !important;
+  margin:0 !important; padding:0 !important; overflow:visible !important;
+  border:0 !important; border-radius:24px !important; background:#fff !important;
+  box-shadow:0 16px 48px rgba(18,28,45,.18) !important;
+}
+.post-create-modal > .addpost__modal-head {
+  grid-row:1 !important; display:flex !important; align-items:center !important;
+  justify-content:space-between !important; min-height:0 !important; margin:0 !important;
+  padding:0 20px !important; border:0 !important; background:transparent !important;
+}
+.post-create-modal > .addpost__modal-head strong {
+  color:#111827 !important; font-size:15px !important; font-weight:700 !important;
+}
+.post-create-modal .addpost__modal-controls { display:flex !important; align-items:center !important; gap:15px !important; }
+.post-create-modal .addpost__modal-expand,
+.post-create-modal .addpost__modal-close {
+  display:grid !important; place-items:center !important; width:24px !important; height:28px !important;
+  margin:0 !important; padding:0 !important; border:0 !important; background:transparent !important;
+  color:#6f83a0 !important; box-shadow:none !important;
+}
+.post-create-modal > .addpost__header {
+  grid-row:2 !important; display:flex !important; align-items:center !important;
+  min-height:0 !important; margin:0 !important; padding:0 18px !important;
+  border:0 !important; background:transparent !important;
+}
+.post-create-modal .addpost__header-avatar {
+  width:34px !important; height:34px !important; flex:0 0 34px !important;
+  margin:0 9px 0 0 !important; border-radius:50% !important; object-fit:cover !important;
+}
+.post-create-modal .addpost__author { display:flex !important; align-items:center !important; gap:9px !important; min-width:0 !important; }
+.post-create-modal .addpost__author-name { color:#252f3e !important; font-size:13px !important; font-weight:650 !important; }
+.post-create-modal .addpost__channel-separator { color:#9aa9bd !important; font-size:17px !important; }
+.post-create-modal .addpost__author select {
+  width:auto !important; max-width:220px !important; min-height:28px !important; margin:0 !important; padding:0 !important;
+  border:0 !important; outline:0 !important; background:transparent !important; color:#71839d !important;
+  font-size:12px !important; box-shadow:none !important;
+}
+.post-create-modal > .post-composer-title-field {
+  grid-row:3 !important; display:flex !important; align-items:center !important;
+  min-height:0 !important; margin:0 !important; padding:0 58px !important;
+  border:0 !important; background:transparent !important; box-shadow:none !important;
+}
+.post-create-modal > .post-composer-title-field > .post-composer-label {
+  display:none !important;
+}
+.post-create-modal > .post-composer-title-field > .post-create-simple__title {
+  display:block !important; width:100% !important; min-width:0 !important;
+  height:42px !important; min-height:42px !important; margin:0 !important; padding:0 !important;
+  border:0 !important; border-radius:0 !important; outline:0 !important;
+  background:transparent !important; color:#7185a2 !important;
+  font-size:18px !important; line-height:1.35 !important; font-weight:700 !important;
+  box-shadow:none !important;
+}
+.post-create-modal > .post-composer-title-field > .post-create-simple__title::placeholder {
+  color:#7185a2 !important; opacity:1 !important;
+}
+.post-create-modal > .post-composer-title-field > .post-composer-count { display:none !important; }
+.post-create-modal > .post-composer-excerpt-field { display:none !important; }
+.post-create-modal > .post-composer-editor-section {
+  grid-row:4 !important; position:relative !important; display:flex !important;
+  min-height:0 !important; height:auto !important; margin:0 !important; padding:0 58px !important;
+  overflow:visible !important; border:0 !important; border-radius:0 !important;
+  background:transparent !important; box-shadow:none !important;
+}
+.post-create-modal .post-composer-editor-title,
+.post-create-modal .post-composer-editor-tip,
+.post-create-modal [data-editor-status] { display:none !important; }
+.post-create-modal .post-create-simple__writing.addpost__editor {
+  position:relative !important; display:block !important; flex:1 1 auto !important;
+  width:100% !important; min-width:0 !important; min-height:0 !important; height:100% !important;
+  margin:0 !important; padding:0 !important; overflow:visible !important;
+  border:0 !important; border-radius:0 !important; background:transparent !important; box-shadow:none !important;
+}
+.post-create-modal #post-editorjs.post-editorjs,
+.post-create-modal #post-editorjs .codex-editor {
+  position:relative !important; display:block !important; width:100% !important;
+  min-width:0 !important; min-height:100% !important; height:100% !important;
+  margin:0 !important; padding:0 !important; overflow:visible !important;
+  border:0 !important; border-radius:0 !important; outline:0 !important;
+  background:transparent !important; box-shadow:none !important;
+}
+.post-create-modal #post-editorjs .codex-editor__redactor {
+  width:100% !important; min-height:100% !important; margin:0 !important;
+  padding:0 !important; border:0 !important; background:transparent !important;
+}
+.post-create-modal #post-editorjs .ce-block,
+.post-create-modal #post-editorjs .ce-block__content {
+  max-width:none !important; margin:0 !important; padding:0 !important;
+  border:0 !important; background:transparent !important; box-shadow:none !important;
+}
+.post-create-modal #post-editorjs [contenteditable="true"] {
+  min-height:84px !important; margin:0 !important; padding:0 !important;
+  border:0 !important; outline:0 !important; background:transparent !important;
+  color:#71839d !important; font-size:13px !important; line-height:1.5 !important; box-shadow:none !important;
+}
+.post-create-modal #post-editorjs [contenteditable="true"]:empty:before {
+  content:attr(data-placeholder) !important; color:#71839d !important; opacity:1 !important;
+}
+.post-create-modal #post-editorjs .ce-toolbar {
+  position:absolute !important; top:0 !important; left:-45px !important; right:auto !important;
+  width:30px !important; height:30px !important; margin:0 !important; padding:0 !important;
+  border:0 !important; background:transparent !important; box-shadow:none !important;
+}
+.post-create-modal #post-editorjs .ce-toolbar__content {
+  position:static !important; display:block !important; width:30px !important; max-width:30px !important;
+  margin:0 !important; padding:0 !important; border:0 !important; background:transparent !important;
+}
+.post-create-modal #post-editorjs .ce-toolbar__plus {
+  position:static !important; display:grid !important; place-items:center !important;
+  width:28px !important; height:28px !important; margin:0 !important; padding:0 !important;
+  border:0 !important; border-radius:50% !important; background:#fff !important;
+  color:#526783 !important; box-shadow:0 1px 5px rgba(15,23,42,.14) !important;
+}
+.post-create-modal #post-editorjs .ce-toolbar__actions,
+.post-create-modal #post-editorjs .ce-toolbar__settings-btn,
+.post-create-modal #post-editorjs .ce-toolbar__actions * { display:none !important; }
+.post-create-modal > .post-composer-media-section {
+  grid-row:5 !important; display:flex !important; align-items:center !important;
+  min-height:0 !important; height:auto !important; margin:0 !important; padding:0 54px !important;
+  overflow:visible !important; border:0 !important; background:transparent !important;
+}
+.post-create-modal .post-composer-media-title { display:none !important; }
+.post-create-modal .post-create-simple__media {
+  display:flex !important; align-items:center !important; justify-content:flex-start !important;
+  min-height:40px !important; height:auto !important; gap:14px !important; margin:0 !important; padding:0 !important;
+}
+.post-create-modal .post-composer-tool {
+  display:inline-flex !important; flex:0 0 22px !important; align-items:center !important; justify-content:center !important;
+  width:22px !important; height:28px !important; margin:0 !important; padding:0 !important;
+  border:0 !important; border-radius:0 !important; background:transparent !important; color:#637b99 !important;
+}
+.post-create-modal .post-composer-tool svg {
+  width:18px !important; height:18px !important; fill:none !important; stroke:currentColor !important;
+  stroke-width:1.7 !important; stroke-linecap:round !important; stroke-linejoin:round !important;
+}
+.post-create-modal .post-create-simple__media input[type=file] {
+  position:absolute !important; width:1px !important; height:1px !important; opacity:0 !important; pointer-events:none !important;
+}
+.post-create-modal .post-composer-location-panel,
+.post-create-modal .post-composer-video-panel {
+  position:absolute !important; z-index:20 !important; right:10px !important; bottom:42px !important;
+  width:min(340px,calc(100vw - 48px)) !important; padding:14px !important;
+  border:1px solid #e4eaf2 !important; border-radius:12px !important; background:#fff !important;
+  box-shadow:0 10px 30px rgba(15,23,42,.14) !important;
+}
+.post-create-modal .post-composer-location-panel[hidden],
+.post-create-modal .post-composer-video-panel[hidden] { display:none !important; }
+.post-create-modal > details.post-composer-advanced {
+  position:absolute !important; z-index:25 !important; left:58px !important; bottom:20px !important;
+  display:block !important; width:max-content !important; margin:0 !important;
+}
+.post-create-modal > details.post-composer-advanced > summary {
+  display:inline-flex !important; align-items:center !important; gap:9px !important;
+  min-height:28px !important; padding:0 !important; border:0 !important;
+  background:transparent !important; color:#71839d !important; font-size:12px !important; font-weight:650 !important;
+}
+.post-create-modal > details.post-composer-advanced > summary svg { width:18px !important; height:18px !important; }
+.post-create-modal .post-composer-advanced-content {
+  position:absolute !important; left:0 !important; bottom:36px !important;
+  width:min(430px,calc(100vw - 48px)) !important; max-height:65vh !important; overflow:auto !important;
+  padding:16px !important; border:1px solid #e4eaf2 !important; border-radius:12px !important;
+  background:#fff !important; box-shadow:0 12px 32px rgba(15,23,42,.15) !important;
+}
+.post-create-modal > .post-create-simple__footer {
+  grid-row:6 !important; display:flex !important; align-items:center !important;
+  justify-content:flex-end !important; min-height:0 !important; margin:0 !important;
+  padding:0 0 0 130px !important; border:0 !important; background:transparent !important;
+}
+.post-create-modal .post-create-simple__footer > a { display:none !important; }
+.post-create-modal .post-create-simple__footer button {
+  display:inline-flex !important; align-items:center !important; justify-content:center !important;
+  min-width:112px !important; height:38px !important; margin:0 !important; padding:0 20px !important;
+  border:0 !important; border-radius:22px !important; background:#0866ff !important;
+  color:#fff !important; font-size:14px !important; font-weight:700 !important; box-shadow:none !important;
+}
+.post-create-modal.is-expanded {
+  width:min(920px,calc(100vw - 32px)) !important; max-width:min(920px,calc(100vw - 32px)) !important;
+  height:min(760px,calc(100dvh - 24px)) !important; min-height:400px !important;
+}
+@media(max-width:640px) {
+  .post-create-modal-page { padding:8px !important; }
+  .post-create-modal-page > form.post-create-modal {
+    width:100% !important; max-width:100% !important; height:min(366px,calc(100dvh - 16px)) !important;
+    min-height:300px !important; max-height:calc(100dvh - 16px) !important;
+    grid-template-rows:46px 46px 48px minmax(82px,1fr) 50px 48px !important;
+  }
+  .post-create-modal > .post-composer-title-field,
+  .post-create-modal > .post-composer-editor-section { padding-right:42px !important; padding-left:42px !important; }
+  .post-create-modal > .post-composer-media-section { padding-right:38px !important; padding-left:38px !important; }
+  .post-create-modal > details.post-composer-advanced { left:42px !important; bottom:18px !important; }
+  .post-create-modal > .post-create-simple__footer { padding-right:0 !important; }
+  .post-create-modal.is-expanded { width:100% !important; max-width:100% !important; height:calc(100dvh - 16px) !important; }
+}
