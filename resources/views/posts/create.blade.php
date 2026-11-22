@@ -157,7 +157,7 @@
                     </div>
                     <div class="post-composer-source-field">
                         <label for="post-source">Lütfen kaynağı belirtin.</label>
-                        <input id="post-source" name="content_source" type="text" value="{{ old('content_source', '') }}" maxlength="1000" placeholder="Kaynak bağlantısını veya adını yazın">
+                        <input id="post-source" name="content_source" type="text" value="{{ old('content_source', '') }}" maxlength="1000" placeholder="">
                     </div>
                 </div>
             </details>
