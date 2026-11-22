@@ -136,19 +136,6 @@ class PostController extends Controller
         ]);
         $this->syncTagRecords($post, $tags);
 
-        // Explicit award in the regular publishing flow; the model hook is a
-        // safety net for posts published through other parts of the application.
-        if (! $isSpam) {
-            app(\\App\\Services\\ReputationService::class)->award(
-                $request->user(),
-                \\App\\Services\\ReputationService::POST_PUBLISHED,
-                'post:'.$post->id.':published',
-                'Yazı yayınladı',
-                Post::class,
-                $post->id,
-            );
-        }
-
         if (! $isSpam) {
             app(\App\Services\ReputationService::class)->award($request->user(), \App\Services\ReputationService::POST_PUBLISHED, 'post:'.$post->id.':published', 'Yazı yayınladı', Post::class, $post->id);
             $recipients = $request->user()->followers()->get();
