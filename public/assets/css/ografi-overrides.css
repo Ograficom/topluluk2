@@ -10881,3 +10881,62 @@ body.is-messenger-conversation .pm-dialog__composer .pm-composer__send{
     -webkit-backdrop-filter: blur(5px) !important;
     backdrop-filter: blur(5px) !important;
 }
+
+
+/* Exact gallery transition: modal is a sibling of the composer form, not inside it. */
+.addpost.post-create-simple.post-create-modal-page.is-gallery-open > form.post-create-modal {
+    visibility: hidden !important;
+    pointer-events: none !important;
+}
+.addpost.post-create-simple.post-create-modal-page > .post-gallery-modal[hidden] {
+    display: none !important;
+}
+.addpost.post-create-simple.post-create-modal-page > .post-gallery-modal:not([hidden]) {
+    position: fixed !important;
+    inset: 0 !important;
+    z-index: 15000 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 12px !important;
+    background: rgba(25,35,50,.48) !important;
+    -webkit-backdrop-filter: blur(5px) !important;
+    backdrop-filter: blur(5px) !important;
+}
+.addpost.post-create-simple.post-create-modal-page > .post-gallery-modal:not([hidden]) > .post-gallery-dialog {
+    box-sizing: border-box !important;
+    width: min(480px, 34vw, calc(100vw - 24px)) !important;
+    min-width: 240px !important;
+    min-height: 0 !important;
+    padding: 14px 12px 12px !important;
+    border-radius: 22px !important;
+}
+.addpost.post-create-simple.post-create-modal-page > .post-gallery-modal:not([hidden]) .post-gallery-dialog h2 {
+    margin: 0 0 16px !important;
+    font-size: 16px !important;
+}
+.addpost.post-create-simple.post-create-modal-page > .post-gallery-modal:not([hidden]) .post-gallery-back {
+    top: 13px !important;
+    left: 14px !important;
+}
+.addpost.post-create-simple.post-create-modal-page > .post-gallery-modal:not([hidden]) .post-gallery-dropzone {
+    min-height: 0 !important;
+    padding: 10px !important;
+    gap: 5px !important;
+    border-radius: 12px !important;
+}
+.addpost.post-create-simple.post-create-modal-page > .post-gallery-modal:not([hidden]) .post-gallery-picture-icon {
+    width: 20px !important;
+    height: 20px !important;
+}
+.addpost.post-create-simple.post-create-modal-page > .post-gallery-modal:not([hidden]) .post-gallery-dropzone strong {
+    font-size: 11px !important;
+}
+.addpost.post-create-simple.post-create-modal-page > .post-gallery-modal:not([hidden]) .post-gallery-dropzone > span {
+    font-size: 10px !important;
+}
+.addpost.post-create-simple.post-create-modal-page > .post-gallery-modal:not([hidden]) .post-gallery-upload {
+    height: 28px !important;
+    margin-top: 3px !important;
+    font-size: 11px !important;
+}
