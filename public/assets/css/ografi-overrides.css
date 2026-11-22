@@ -10429,3 +10429,27 @@ body.is-messenger-conversation .pm-dialog__composer .pm-composer__send{
 .addpost.post-create-simple.post-create-modal-page > form.post-create-modal > header.addpost__modal-head .post-composer-collapse-icon { display: none !important; }
 .addpost.post-create-simple.post-create-modal-page.is-expanded > form.post-create-modal > header.addpost__modal-head .post-composer-expand-icon { display: none !important; }
 .addpost.post-create-simple.post-create-modal-page.is-expanded > form.post-create-modal > header.addpost__modal-head .post-composer-collapse-icon { display: block !important; }
+
+
+/* Hard fix: show exactly one state icon in the expand button. */
+.addpost.post-create-simple.post-create-modal-page > form.post-create-modal > header.addpost__modal-head button[data-post-composer-expand] > img.post-composer-expand-icon,
+.addpost.post-create-simple.post-create-modal-page:not(.is-expanded) > form.post-create-modal > header.addpost__modal-head button[data-post-composer-expand] > img.post-composer-expand-icon {
+    display: block !important;
+    visibility: visible !important;
+}
+.addpost.post-create-simple.post-create-modal-page > form.post-create-modal > header.addpost__modal-head button[data-post-composer-expand] > img.post-composer-collapse-icon {
+    display: none !important;
+    visibility: hidden !important;
+}
+.addpost.post-create-simple.post-create-modal-page.is-expanded > form.post-create-modal > header.addpost__modal-head button[data-post-composer-expand] > img.post-composer-expand-icon {
+    display: none !important;
+    visibility: hidden !important;
+}
+.addpost.post-create-simple.post-create-modal-page.is-expanded > form.post-create-modal > header.addpost__modal-head button[data-post-composer-expand] > img.post-composer-collapse-icon {
+    display: block !important;
+    visibility: visible !important;
+}
+.addpost.post-create-simple.post-create-modal-page > form.post-create-modal > header.addpost__modal-head button[data-post-composer-expand] {
+    position: relative !important;
+    overflow: hidden !important;
+}
