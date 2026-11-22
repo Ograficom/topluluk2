@@ -633,6 +633,16 @@
     display: block !important;
     pointer-events: none !important;
     z-index: 5 !important;
+    transform-origin: center center;
+    animation: profile-badges-orbit 18s linear infinite;
+    will-change: transform;
+  }
+  @keyframes profile-badges-orbit {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .profile-avatar-earned-badges { animation: none; }
   }
   .profile-avatar-earned-badge {
     position: absolute !important;
