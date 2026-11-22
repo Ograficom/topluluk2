@@ -9194,3 +9194,127 @@ body.is-messenger-conversation .pm-dialog__composer .pm-composer__send{
         height: calc(100dvh - 16px) !important;
     }
 }
+
+
+/* FINAL POSITIONING CORRECTION — match the supplied 680x400 composer screenshot. */
+.post-create-modal-page > form.post-create-modal {
+    display: block !important;
+    position: relative !important;
+    width: 680px !important;
+    height: 400px !important;
+    min-height: 400px !important;
+    max-height: calc(100dvh - 24px) !important;
+    overflow: visible !important;
+}
+.post-create-modal > .addpost__modal-head {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
+    height: 48px !important;
+    padding: 0 22px 0 23px !important;
+}
+.post-create-modal > .addpost__header {
+    position: absolute !important;
+    top: 48px !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
+    height: 48px !important;
+    padding: 0 18px !important;
+}
+.post-create-modal > .post-composer-title-field {
+    position: absolute !important;
+    top: 104px !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
+    height: 42px !important;
+    padding: 0 64px !important;
+}
+.post-create-modal > .post-composer-editor-section {
+    position: absolute !important;
+    top: 154px !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 145px !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    padding: 0 64px !important;
+}
+.post-create-modal .post-create-simple__writing.addpost__editor,
+.post-create-modal #post-editorjs.post-editorjs,
+.post-create-modal #post-editorjs .codex-editor {
+    height: 100% !important;
+    min-height: 0 !important;
+}
+.post-create-modal #post-editorjs .codex-editor__redactor {
+    min-height: 100% !important;
+}
+.post-create-modal #post-editorjs [contenteditable="true"] {
+    min-height: 90px !important;
+    padding-top: 10px !important;
+}
+.post-create-modal #post-editorjs .ce-toolbar {
+    top: 0 !important;
+    left: -49px !important;
+}
+.post-create-modal #post-editorjs .ce-toolbar__plus:hover::after {
+    left: -12px !important;
+    bottom: 37px !important;
+}
+.post-create-modal > .post-composer-media-section {
+    position: absolute !important;
+    top: 252px !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
+    height: 52px !important;
+    min-height: 52px !important;
+    padding: 0 64px !important;
+}
+.post-create-modal > details.post-composer-advanced {
+    position: absolute !important;
+    left: 64px !important;
+    bottom: 23px !important;
+}
+.post-create-modal > .post-create-simple__footer {
+    position: absolute !important;
+    right: 0 !important;
+    bottom: 16px !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 48px !important;
+    min-height: 48px !important;
+    padding: 0 0 0 130px !important;
+}
+.post-create-modal .post-create-simple__footer button {
+    margin-right: -14px !important;
+}
+@media (max-width: 640px) {
+    .post-create-modal-page > form.post-create-modal {
+        width: 100% !important;
+        height: min(400px, calc(100dvh - 16px)) !important;
+        min-height: 300px !important;
+    }
+    .post-create-modal > .post-composer-title-field {
+        padding-right: 42px !important;
+        padding-left: 42px !important;
+    }
+    .post-create-modal > .post-composer-editor-section {
+        padding-right: 42px !important;
+        padding-left: 42px !important;
+    }
+    .post-create-modal > .post-composer-media-section {
+        padding-right: 38px !important;
+        padding-left: 38px !important;
+    }
+    .post-create-modal > details.post-composer-advanced {
+        left: 42px !important;
+    }
+    .post-create-modal > .post-create-simple__footer {
+        padding-right: 0 !important;
+    }
+}
