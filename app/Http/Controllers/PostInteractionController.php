@@ -166,6 +166,7 @@ class PostInteractionController extends Controller
 
         if (! $isSpam) {
             app(\App\Services\ReputationService::class)->award($request->user(), \App\Services\ReputationService::COMMENT_PUBLISHED, 'comment:'.$comment->id.':published', 'Yorum yaptı', Comment::class, $comment->id);
+            app(\App\Services\CommunityTaskService::class)->completeAvailableTasks($request->user());
         }
 
         AdminNotificationService::sendToAdmins(
