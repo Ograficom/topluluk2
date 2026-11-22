@@ -84,9 +84,9 @@
                     </div>
                 </div>
                 <div class="post-create-simple__media addpost__actions post-composer-toolbar">
-                    <label for="post-media" class="post-composer-tool" aria-label="Fotoğraf ekle" title="Fotoğraf ekle">
+                    <button type="button" class="post-composer-tool" data-gallery-open aria-label="Görsel ekle" title="Görsel ekle">
                         <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="4" width="17" height="16" rx="2"/><circle cx="8.5" cy="9" r="1.5"/><path d="m20.5 15-5-5L5 20"/></svg>
-                    </label>
+                    </button>
                     <input id="post-media" name="media[]" type="file" accept="image/jpeg,image/png,image/gif,image/webp" multiple data-post-gallery-input>
 
                     <button type="button" class="post-composer-tool" data-composer-location-toggle aria-label="Konum ekle" title="Konum ekle" aria-expanded="false">
@@ -105,6 +105,21 @@
                         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h16M4 15h16M9 4l-2 16M17 4l-2 16"/></svg>
                     </button>
 
+                    <div class="post-gallery-modal" data-gallery-modal hidden>
+                        <div class="post-gallery-dialog" role="dialog" aria-modal="true" aria-labelledby="post-gallery-title">
+                            <button type="button" class="post-gallery-back" data-gallery-close aria-label="Geri dön">
+                                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>
+                            </button>
+                            <h2 id="post-gallery-title">Görseller</h2>
+                            <div class="post-gallery-dropzone" data-gallery-dropzone>
+                                <svg class="post-gallery-picture-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
+                                <strong>Görselleri buraya sürükleyip bırakın.</strong>
+                                <span>veya bunları cihazınızdan seçin</span>
+                                <button type="button" class="post-gallery-upload" data-gallery-choose>Resimleri yükle</button>
+                                <div class="post-gallery-selected" data-gallery-selected aria-live="polite"></div>
+                            </div>
+                        </div>
+                    </div>
                     <div class="post-composer-location-panel" data-composer-location-panel hidden>
                         <label for="post-location">Konum</label>
                         <input id="post-location" name="location" type="text" maxlength="255" value="{{ old('location', $post->location ?? '') }}" placeholder="Şehir, mekan veya adres">
@@ -370,10 +385,28 @@
 
         const galleryInput = document.querySelector('[data-post-gallery-input]');
         const galleryList = document.querySelector('[data-post-gallery-list]');
-        if (galleryInput && galleryList) {
-            galleryInput.addEventListener('change', () => {
+        const galleryModal = document.querySelector('[data-gallery-modal]');
+        const galleryDropzone = document.querySelector('[data-gallery-dropzone]');
+        const gallerySelected = document.querySelector('[data-gallery-selected]');
+        const openGallery = () => { if (galleryModal) galleryModal.hidden = false; };
+        const closeGallery = () => { if (galleryModal) galleryModal.hidden = true; };
+        document.querySelector('[data-gallery-open]')?.addEventListener('click', openGallery);
+        document.querySelectorAll('[data-gallery-close]').forEach(button => button.addEventListener('click', closeGallery));
+        document.querySelector('[data-gallery-choose]')?.addEventListener('click', () => galleryInput?.click());
+        galleryModal?.addEventListener('click', event => { if (event.target === galleryModal) closeGallery(); });
+        document.addEventListener('keydown', event => { if (event.key === 'Escape' && galleryModal && !galleryModal.hidden) closeGallery(); });
+        const showGalleryFiles = () => {
+            if (!galleryInput || !gallerySelected) return;
+            gallerySelected.replaceChildren();
+            const files = Array.from(galleryInput.files || []);
+            if (!files.length) return;
+            const status = document.createElement('span');
+            status.className = 'post-gallery-file-count';
+            status.textContent = files.length + ' görsel seçildi';
+            gallerySelected.append(status);
+            if (galleryList) {
                 galleryList.replaceChildren();
-                Array.from(galleryInput.files || []).forEach(file => {
+                files.forEach(file => {
                     const item = document.createElement('div');
                     item.className = 'post-composer-gallery-item';
                     const image = document.createElement('img');
@@ -385,8 +418,23 @@
                     item.append(image, name);
                     galleryList.append(item);
                 });
-            });
-        }
+            }
+        };
+        galleryInput?.addEventListener('change', showGalleryFiles);
+        ['dragenter', 'dragover'].forEach(type => galleryDropzone?.addEventListener(type, event => {
+            event.preventDefault(); galleryDropzone.classList.add('is-dragging');
+        }));
+        ['dragleave', 'drop'].forEach(type => galleryDropzone?.addEventListener(type, event => {
+            event.preventDefault(); galleryDropzone.classList.remove('is-dragging');
+        }));
+        galleryDropzone?.addEventListener('drop', event => {
+            const files = Array.from(event.dataTransfer?.files || []).filter(file => file.type.startsWith('image/'));
+            if (!files.length || !galleryInput) return;
+            const transfer = new DataTransfer();
+            [...Array.from(galleryInput.files || []), ...files].slice(0, 10).forEach(file => transfer.items.add(file));
+            galleryInput.files = transfer.files;
+            galleryInput.dispatchEvent(new Event('change', { bubbles: true }));
+        });
 
         const locationToggle = document.querySelector('[data-composer-location-toggle]');
         const locationPanel = document.querySelector('[data-composer-location-panel]');
