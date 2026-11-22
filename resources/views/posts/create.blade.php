@@ -916,94 +916,51 @@
         if (tagsModal && tagsModalOriginalParent && tagsModalPlaceholder) {
             tagsModalOriginalParent.insertBefore(tagsModalPlaceholder, tagsModal);
         }
-        const previousTagsComposerDisplay = composerForm?.style.display || '';
+        const previousComposerRootDisplay = composerOverlay?.style.display || '';
         const openTagsModal = () => {
             if (!tagsModal || !tagsModalPlaceholder) return;
             closeComposerPanels();
-            // Move the overlay outside the transformed composer/layout tree.
-            // A transformed ancestor makes position:fixed behave like an absolutely positioned child.
-            if (tagsModal.parentNode !== document.documentElement) {
-                document.documentElement.appendChild(tagsModal);
-            }
 
+            // Portal the dialog to body. Never leave it inside the transformed composer wrapper.
+            if (tagsModal.parentNode !== document.body) document.body.appendChild(tagsModal);
             tagsModal.hidden = false;
-            tagsModal.classList.add('is-open');
-            const important = (element, rules) => {
-                if (!element) return;
-                Object.entries(rules).forEach(([property, value]) => element.style.setProperty(property, value, 'important'));
-            };
+            tagsModal.removeAttribute('hidden');
+            tagsModal.style.cssText = [
+                'position:fixed', 'inset:0', 'z-index:2147483647',
+                'display:flex', 'align-items:center', 'justify-content:center',
+                'box-sizing:border-box', 'width:100vw', 'height:100vh',
+                'margin:0', 'padding:12px',
+                'background:rgba(25,35,50,.48)',
+                'backdrop-filter:blur(5px)', '-webkit-backdrop-filter:blur(5px)'
+            ].join(';') + ';';
 
-            // Full-screen overlay: center its dialog using flex, not nested fixed positioning.
-            important(tagsModal, {
-                position: 'fixed', inset: '0', zIndex: '2147483647',
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                boxSizing: 'border-box', width: '100vw', height: '100vh',
-                margin: '0', padding: '12px',
-                background: 'rgba(25,35,50,.48)',
-                backdropFilter: 'blur(5px)', WebkitBackdropFilter: 'blur(5px)'
-            });
+            const dialog = tagsModal.querySelector('.post-tags-dialog');
+            if (dialog) dialog.style.cssText = [
+                'position:relative', 'inset:auto', 'left:auto', 'top:auto',
+                'display:block', 'flex:0 1 480px', 'box-sizing:border-box',
+                'width:min(480px, calc(100vw - 32px))',
+                'min-width:0', 'height:143px', 'min-height:143px', 'max-height:143px',
+                'margin:0', 'padding:26px 18px 24px',
+                'border:0', 'border-radius:26px', 'background:#fff',
+                'box-shadow:0 20px 60px rgba(15,23,42,.2)',
+                'color:#202633', 'font-family:Arial,sans-serif', 'transform:none'
+            ].join(';') + ';';
 
-            const tagsDialog = tagsModal.querySelector('.post-tags-dialog');
-            important(tagsDialog, {
-                position: 'relative', left: 'auto', top: 'auto',
-                display: 'block', flex: '0 1 480px', boxSizing: 'border-box',
-                width: 'min(480px, calc(100vw - 32px))',
-                minWidth: '0', height: '143px', minHeight: '143px', maxHeight: '143px',
-                margin: '0', padding: '26px 18px 24px',
-                border: '0', borderRadius: '26px', background: '#fff',
-                boxShadow: '0 20px 60px rgba(15,23,42,.2)',
-                color: '#202633', fontFamily: 'Arial,sans-serif',
-                transform: 'none'
-            });
+            const title = tagsModal.querySelector('#post-tags-title');
+            if (title) title.style.cssText = 'display:block;margin:0 0 27px;padding:0;text-align:center;color:#30343b;font:700 18px/1.25 Arial,sans-serif;';
+            const back = tagsModal.querySelector('.post-tags-back');
+            if (back) back.style.cssText = 'position:absolute;top:27px;left:25px;display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;margin:0;padding:0;border:0;background:transparent;color:#71839d;cursor:pointer;';
+            const backSvg = back?.querySelector('svg');
+            if (backSvg) backSvg.style.cssText = 'display:block;width:21px;height:21px;fill:none;stroke:#71839d;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;';
+            const wrap = tagsModal.querySelector('.post-tags-input-wrap');
+            if (wrap) wrap.style.cssText = 'display:flex;flex:0 0 44px;flex-wrap:nowrap;align-items:center;gap:10px;position:relative;box-sizing:border-box;width:100%;height:44px;min-height:44px;max-height:44px;margin:0;padding:0 13px;overflow:hidden;border:1px solid transparent;border-radius:13px;background:#f7f8fb;';
+            const hash = wrap?.querySelector('svg');
+            if (hash) hash.style.cssText = 'display:block;position:static;flex:0 0 16px;width:16px;height:16px;margin:0;padding:0;fill:none;stroke:#71839d;stroke-width:1.8;transform:none;';
+            if (tagsInput) tagsInput.style.cssText = 'position:static;display:block;flex:1 1 0%;align-self:center;box-sizing:border-box;width:1%;min-width:0;max-width:none;height:42px;min-height:42px;max-height:42px;margin:0;padding:0;border:0;border-radius:0;outline:0;float:none;transform:none;background:transparent;box-shadow:none;color:#303944;font:13px/42px Arial,sans-serif;';
 
-            const tagsTitle = tagsModal.querySelector('#post-tags-title');
-            important(tagsTitle, {
-                display: 'block', margin: '0 0 27px', padding: '0',
-                textAlign: 'center', color: '#30343b',
-                font: '700 18px/1.25 Arial,sans-serif'
-            });
-
-            const tagsBack = tagsModal.querySelector('.post-tags-back');
-            important(tagsBack, {
-                position: 'absolute', top: '27px', left: '25px',
-                display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-                width: '22px', height: '22px', margin: '0', padding: '0',
-                border: '0', background: 'transparent', color: '#71839d', cursor: 'pointer'
-            });
-
-            const tagsWrap = tagsModal.querySelector('.post-tags-input-wrap');
-            important(tagsWrap, {
-                display: 'flex', flex: '0 0 44px', flexWrap: 'nowrap',
-                alignItems: 'center', gap: '10px', position: 'relative',
-                boxSizing: 'border-box', width: '100%', height: '44px',
-                minHeight: '44px', maxHeight: '44px', margin: '0',
-                padding: '0 13px', overflow: 'hidden',
-                border: '1px solid transparent', borderRadius: '13px',
-                background: '#f7f8fb'
-            });
-
-            const tagsHash = tagsWrap?.querySelector('svg');
-            important(tagsHash, {
-                display: 'block', position: 'static', flex: '0 0 16px',
-                width: '16px', height: '16px', margin: '0', padding: '0',
-                fill: 'none', stroke: '#71839d', strokeWidth: '1.8', transform: 'none'
-            });
-
-            important(tagsInput, {
-                position: 'static', display: 'block', flex: '1 1 0%',
-                alignSelf: 'center', boxSizing: 'border-box',
-                width: '1%', minWidth: '0', maxWidth: 'none',
-                height: '42px', minHeight: '42px', maxHeight: '42px',
-                margin: '0', padding: '0', border: '0', borderRadius: '0',
-                outline: '0', float: 'none', transform: 'none',
-                background: 'transparent', boxShadow: 'none',
-                color: '#303944', font: '13px/42px Arial,sans-serif'
-            });
-
-            if (composerForm) {
-                composerForm.style.setProperty('display', 'none', 'important');
-                composerForm.setAttribute('aria-hidden', 'true');
-            }
+            // Hide the entire old composer layer; the page itself remains visible behind this modal.
+            if (composerOverlay) composerOverlay.style.setProperty('display', 'none', 'important');
+            composerForm?.setAttribute('aria-hidden', 'true');
             composerOverlay?.classList.add('is-tags-open');
             tagsToggle?.setAttribute('aria-expanded', 'true');
             window.setTimeout(() => tagsInput?.focus(), 0);
@@ -1011,18 +968,17 @@
         const closeTagsModal = () => {
             if (tagsModal) {
                 tagsModal.hidden = true;
-                tagsModal.classList.remove('is-open');
-                tagsModal.removeAttribute('style');
+                tagsModal.style.cssText = 'display:none !important;';
             }
             if (tagsModal && tagsModalPlaceholder?.parentNode) {
                 tagsModalPlaceholder.parentNode.insertBefore(tagsModal, tagsModalPlaceholder);
             }
-            if (composerForm) {
-                composerForm.style.removeProperty('display');
-                if (previousTagsComposerDisplay) composerForm.style.display = previousTagsComposerDisplay;
-                composerForm.removeAttribute('aria-hidden');
+            if (composerOverlay) {
+                composerOverlay.style.removeProperty('display');
+                if (previousComposerRootDisplay) composerOverlay.style.display = previousComposerRootDisplay;
+                composerOverlay.classList.remove('is-tags-open');
             }
-            composerOverlay?.classList.remove('is-tags-open');
+            composerForm?.removeAttribute('aria-hidden');
             tagsToggle?.setAttribute('aria-expanded', 'false');
         };
         tagsToggle?.addEventListener('click', openTagsModal);
