@@ -63,7 +63,7 @@
                     <span class="post-create-simple__editor-status" data-editor-status role="status" aria-live="polite">Hazırlanıyor…</span>
                 </div>
                 <div class="post-create-simple__writing addpost__editor">
-                    <div id="post-editorjs" class="post-editorjs post-create-simple__editor" aria-label="Yazı içeriği" data-placeholder="En iyi metnini yaz..."></div>
+                    <div id="post-editorjs" class="post-editorjs post-create-simple__editor" aria-label="Yazı içeriği" data-placeholder="Напиши свой лучший текст"></div>
                     <div class="post-composer-editor-tip">Blok eklemek için sol taraftaki + simgesini kullan.</div>
                 </div>
             </section>
