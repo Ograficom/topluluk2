@@ -246,12 +246,11 @@
     backdrop-filter:blur(5px) !important;
 }
 .post-tags-dialog {
-    position:fixed !important;
-    left:50vw !important;
-    top:50vh !important;
+    position:relative !important;
+    left:auto !important;
+    top:auto !important;
     display:block !important;
-    flex:none !important;
-    transform:translate(-50%, -50%) !important;
+    flex:0 1 480px !important;
     box-sizing:border-box !important;
     width:min(480px, calc(100vw - 32px)) !important;
     min-width:0 !important;
@@ -947,7 +946,7 @@
             const tagsDialog = tagsModal.querySelector('.post-tags-dialog');
             important(tagsDialog, {
                 position: 'relative', left: 'auto', top: 'auto',
-                display: 'block', flex: '0 0 480px', boxSizing: 'border-box',
+                display: 'block', flex: '0 1 480px', boxSizing: 'border-box',
                 width: 'min(480px, calc(100vw - 32px))',
                 minWidth: '0', height: '143px', minHeight: '143px', maxHeight: '143px',
                 margin: '0', padding: '26px 18px 24px',
