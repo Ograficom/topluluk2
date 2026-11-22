@@ -10422,3 +10422,10 @@ body.is-messenger-conversation .pm-dialog__composer .pm-composer__send{
 .addpost.post-create-simple.post-create-modal-page > form.post-create-modal > header.addpost__modal-head .addpost__modal-expand:active img {
     transform: rotate(4deg) !important;
 }
+
+
+/* Swap expand/collapse Hugeicons according to the live modal state. */
+.addpost.post-create-simple.post-create-modal-page > form.post-create-modal > header.addpost__modal-head .post-composer-expand-icon { display: block !important; }
+.addpost.post-create-simple.post-create-modal-page > form.post-create-modal > header.addpost__modal-head .post-composer-collapse-icon { display: none !important; }
+.addpost.post-create-simple.post-create-modal-page.is-expanded > form.post-create-modal > header.addpost__modal-head .post-composer-expand-icon { display: none !important; }
+.addpost.post-create-simple.post-create-modal-page.is-expanded > form.post-create-modal > header.addpost__modal-head .post-composer-collapse-icon { display: block !important; }
