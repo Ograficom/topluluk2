@@ -10470,3 +10470,10 @@ body.is-messenger-conversation .pm-dialog__composer .pm-composer__send{
     line-height: 1.2 !important;
     visibility: visible !important;
 }
+
+
+/* Lower the title and top-right controls slightly inside the white composer card. */
+.addpost.post-create-simple.post-create-modal-page > form.post-create-modal > header.addpost__modal-head {
+    padding-top: 10px !important;
+    box-sizing: border-box !important;
+}
