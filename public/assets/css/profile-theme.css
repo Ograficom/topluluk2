@@ -164,7 +164,28 @@
   min-width: 0;
 }
 .profile__aside > aside { min-width: 0; }
-.profile__aside .widget { min-width: 0; }
+
+/* Repost ZIP reference: keep every sidebar panel on the original widget/card shell. */
+.profile__aside .widget {
+  --widget-gap: 15px;
+  --widget-content-bleed: 10px;
+  --widget-list-gap: 2px;
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: var(--widget-gap);
+}
+.profile__aside .widget.card {
+  position: relative;
+  border-radius: var(--card-border-radius);
+  background-clip: border-box;
+  background-color: var(--card-bg);
+  border: 1px solid var(--card-border-color);
+  box-shadow: var(--card-box-shadow);
+}
+.profile__aside .widget.card-body {
+  padding: var(--card-spacer-y) var(--card-spacer-x);
+}
 
 /* Repost reference: sidebar footer is a sibling of .widgets, with the original 20px separation. */
 .profile__aside-footer {
