@@ -10544,3 +10544,17 @@ body.is-messenger-conversation .pm-dialog__composer .pm-composer__send{
 .addpost.post-create-simple.post-create-modal-page > form.post-create-modal > header.addpost__modal-head > strong {
     font-size: 20px !important;
 }
+
+
+/* Slightly enlarge the author avatar and name below the composer heading. */
+.addpost.post-create-simple.post-create-modal-page > form.post-create-modal > .addpost__header {
+    gap: 12px !important;
+}
+.addpost.post-create-simple.post-create-modal-page > form.post-create-modal > .addpost__header .addpost__header-avatar {
+    flex-basis: 44px !important;
+    width: 44px !important;
+    height: 44px !important;
+}
+.addpost.post-create-simple.post-create-modal-page > form.post-create-modal > .addpost__header .addpost__author-name {
+    font-size: 16px !important;
+}
