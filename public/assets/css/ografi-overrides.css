@@ -9942,3 +9942,104 @@ body.is-messenger-conversation .pm-dialog__composer .pm-composer__send{
         left: 42px !important;
     }
 }
+
+
+/* FINAL REFERENCE MATCH — match the first screenshot's compact 590x345 composer. */
+.post-create-modal-page > form.post-create-modal {
+    box-sizing: border-box !important;
+    width: 590px !important;
+    min-width: 590px !important;
+    max-width: min(590px, calc(100vw - 32px)) !important;
+    height: 345px !important;
+    min-height: 345px !important;
+    max-height: min(345px, calc(100dvh - 24px)) !important;
+    grid-template-rows: 48px 48px 58px minmax(70px, 1fr) 44px 52px !important;
+    border-radius: 24px !important;
+}
+.post-create-modal > .addpost__modal-head {
+    padding-right: 22px !important;
+    padding-left: 22px !important;
+}
+.post-create-modal > .addpost__header {
+    padding-right: 24px !important;
+    padding-left: 24px !important;
+}
+.post-create-modal > .post-composer-title-field {
+    top: 94px !important;
+    left: 0 !important;
+    right: 0 !important;
+    height: 42px !important;
+    margin: 0 !important;
+    padding: 0 59px !important;
+    border: 0 !important;
+    border-bottom: 0 !important;
+    background: transparent !important;
+}
+.post-create-modal > .post-composer-title-field > .post-create-simple__title {
+    height: 42px !important;
+    min-height: 42px !important;
+    font-size: 18px !important;
+}
+.post-create-modal > .post-composer-editor-section {
+    top: 132px !important;
+    bottom: 104px !important;
+    padding: 0 59px !important;
+}
+.post-create-modal #post-editorjs .ce-paragraph[data-placeholder]::before,
+.post-create-modal #post-editorjs .ce-paragraph:empty::before,
+.post-create-modal #post-editorjs [contenteditable="true"]:empty::before {
+    content: "Напиши свой лучший текст" !important;
+    color: #71839d !important;
+    opacity: 1 !important;
+    font-size: 13px !important;
+    font-weight: 400 !important;
+}
+.post-create-modal > .post-composer-media-section {
+    top: auto !important;
+    bottom: 66px !important;
+    padding: 0 55px !important;
+}
+.post-create-modal .post-create-simple__media {
+    gap: 14px !important;
+}
+.post-create-modal > details.post-composer-advanced {
+    left: 59px !important;
+    bottom: 17px !important;
+}
+.post-create-modal > .post-create-simple__footer {
+    bottom: 9px !important;
+}
+.post-create-modal .post-create-simple__footer button {
+    width: 112px !important;
+    min-width: 112px !important;
+    height: 38px !important;
+    margin-right: -13px !important;
+}
+@media (max-width: 640px) {
+    .post-create-modal-page > form.post-create-modal {
+        width: calc(100vw - 16px) !important;
+        min-width: 0 !important;
+        max-width: calc(100vw - 16px) !important;
+        height: min(345px, calc(100dvh - 16px)) !important;
+        min-height: 300px !important;
+        max-height: calc(100dvh - 16px) !important;
+    }
+    .post-create-modal > .post-composer-title-field {
+        padding-right: 42px !important;
+        padding-left: 42px !important;
+    }
+    .post-create-modal > .post-composer-editor-section {
+        top: 132px !important;
+        bottom: 104px !important;
+        padding-right: 42px !important;
+        padding-left: 42px !important;
+    }
+    .post-create-modal > .post-composer-media-section {
+        bottom: 66px !important;
+        padding-right: 38px !important;
+        padding-left: 38px !important;
+    }
+    .post-create-modal > details.post-composer-advanced {
+        left: 42px !important;
+    }
+}
