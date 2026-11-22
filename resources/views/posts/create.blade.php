@@ -157,14 +157,7 @@
                     </div>
                     <div class="post-composer-source-field">
                         <label for="post-source">Lütfen kaynağı belirtin.</label>
-                        <select id="post-source" name="content_source">
-                            <option value="">Kaynak seçin</option>
-                            <option value="original" @selected(old('content_source') === 'original')>Kendi bilgi ve deneyimim</option>
-                            <option value="website" @selected(old('content_source') === 'website')>İnternet sitesi</option>
-                            <option value="book" @selected(old('content_source') === 'book')>Kitap veya yayın</option>
-                            <option value="academic" @selected(old('content_source') === 'academic')>Akademik kaynak</option>
-                            <option value="other" @selected(old('content_source') === 'other')>Diğer</option>
-                        </select>
+                        <input id="post-source" name="content_source" type="text" value="{{ old('content_source', '') }}" maxlength="1000" placeholder="Kaynak bağlantısını veya adını yazın">
                     </div>
                 </div>
             </details>
