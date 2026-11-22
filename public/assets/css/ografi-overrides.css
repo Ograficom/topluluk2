@@ -10655,3 +10655,17 @@ body.is-messenger-conversation .pm-dialog__composer .pm-composer__send{
     border-color: #2563eb !important;
     box-shadow: 0 0 0 3px rgba(37,99,235,.12) !important;
 }
+
+
+/* Remove the disclosure chevron from the publishing-options label. */
+.addpost.post-create-simple.post-create-modal-page > form.post-create-modal > details.post-composer-advanced > summary {
+    list-style: none !important;
+    -webkit-appearance: none !important;
+    appearance: none !important;
+}
+.addpost.post-create-simple.post-create-modal-page > form.post-create-modal > details.post-composer-advanced > summary::marker,
+.addpost.post-create-simple.post-create-modal-page > form.post-create-modal > details.post-composer-advanced > summary::-webkit-details-marker,
+.addpost.post-create-simple.post-create-modal-page > form.post-create-modal > details.post-composer-advanced > summary::after {
+    display: none !important;
+    content: none !important;
+}
