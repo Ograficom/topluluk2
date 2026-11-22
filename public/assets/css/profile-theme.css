@@ -625,34 +625,45 @@
 
 /* Earned badges orbit the avatar on small screens, matching the mobile reference. */
 .profile-avatar-earned-badges { display: none; }
-@media (max-width: 520px) {
-  .profile__avatar { overflow: visible; }
+@media screen and (max-width: 520px) {
+  .profile__avatar { position: relative !important; overflow: visible !important; }
   .profile-avatar-earned-badges {
-    position: absolute;
-    inset: -17px;
-    display: block;
-    pointer-events: none;
-    z-index: 3;
+    position: absolute !important;
+    inset: -17px !important;
+    display: block !important;
+    pointer-events: none !important;
+    z-index: 5 !important;
   }
   .profile-avatar-earned-badge {
-    position: absolute;
-    display: flex;
-    width: 34px;
-    height: 34px;
-    align-items: center;
-    justify-content: center;
+    position: absolute !important;
+    display: flex !important;
+    width: 34px !important;
+    min-width: 34px !important;
+    max-width: 34px !important;
+    height: 34px !important;
+    min-height: 34px !important;
+    max-height: 34px !important;
+    align-items: center !important;
+    justify-content: center !important;
+    margin: 0 !important;
+    padding: 0 !important;
     filter: drop-shadow(0 1px 2px rgb(0 0 0 / 16%));
   }
   .profile-avatar-earned-badge img {
-    display: block;
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
+    display: block !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    max-height: 100% !important;
+    border-radius: 0 !important;
+    object-fit: contain !important;
   }
-  .profile-avatar-earned-badge:nth-child(1) { top: -3px; left: 50%; transform: translateX(-50%); }
-  .profile-avatar-earned-badge:nth-child(2) { top: 18%; right: -5px; }
-  .profile-avatar-earned-badge:nth-child(3) { right: 2px; bottom: -3px; }
-  .profile-avatar-earned-badge:nth-child(4) { bottom: -3px; left: 2px; }
-  .profile-avatar-earned-badge:nth-child(5) { top: 18%; left: -5px; }
-  .profile-reputation-trigger { display: none; }
+  .profile-avatar-earned-badge:nth-child(1) { top: -3px !important; left: 50% !important; transform: translateX(-50%) !important; }
+  .profile-avatar-earned-badge:nth-child(2) { top: 18% !important; right: -5px !important; }
+  .profile-avatar-earned-badge:nth-child(3) { right: 2px !important; bottom: -3px !important; }
+  .profile-avatar-earned-badge:nth-child(4) { bottom: -3px !important; left: 2px !important; }
+  .profile-avatar-earned-badge:nth-child(5) { top: 18% !important; left: -5px !important; }
+  .profile__meta .profile-reputation-trigger { display: none !important; }
 }
