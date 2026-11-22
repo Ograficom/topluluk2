@@ -540,3 +540,14 @@
     height: min(260px, 72vw);
   }
 }
+
+
+.profile-all-badges-trigger {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--color-primary, #1769f5);
+  font: inherit;
+  cursor: pointer;
+}
+.profile-all-badges-trigger:hover { text-decoration: underline; }
