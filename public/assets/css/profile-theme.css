@@ -377,9 +377,9 @@
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  border: 1px solid var(--border-color, #e5e9f0);
+  border: 0;
   border-radius: 14px;
-  background: var(--gray-100, #f7f9fc);
+  background: transparent;
   color: var(--color-primary, #1769f5);
 }
 .profile-reward-badge__visual img {
