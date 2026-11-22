@@ -9809,3 +9809,59 @@ body.is-messenger-conversation .pm-dialog__composer .pm-composer__send{
         height: calc(100dvh - 16px) !important;
     }
 }
+
+
+/* Requested size increase: enlarge the composer card and give the writing area more room. */
+.post-create-modal-page > form.post-create-modal {
+    width: 760px !important;
+    max-width: calc(100vw - 32px) !important;
+    height: 440px !important;
+    min-height: 440px !important;
+    max-height: calc(100dvh - 32px) !important;
+}
+.post-create-modal > .post-composer-title-field {
+    padding-right: 72px !important;
+    padding-left: 72px !important;
+}
+.post-create-modal > .post-composer-editor-section {
+    top: 143px !important;
+    bottom: 116px !important;
+    padding-right: 72px !important;
+    padding-left: 72px !important;
+}
+.post-create-modal > .post-composer-media-section {
+    top: auto !important;
+    bottom: 76px !important;
+    padding-right: 68px !important;
+    padding-left: 68px !important;
+}
+.post-create-modal > details.post-composer-advanced {
+    left: 72px !important;
+    bottom: 24px !important;
+}
+.post-create-modal > .post-create-simple__footer {
+    bottom: 18px !important;
+}
+@media (max-width: 640px) {
+    .post-create-modal-page > form.post-create-modal {
+        width: calc(100vw - 16px) !important;
+        max-width: calc(100vw - 16px) !important;
+        height: min(440px, calc(100dvh - 16px)) !important;
+        min-height: 340px !important;
+    }
+    .post-create-modal > .post-composer-title-field {
+        padding-right: 42px !important;
+        padding-left: 42px !important;
+    }
+    .post-create-modal > .post-composer-editor-section {
+        padding-right: 42px !important;
+        padding-left: 42px !important;
+    }
+    .post-create-modal > .post-composer-media-section {
+        padding-right: 38px !important;
+        padding-left: 38px !important;
+    }
+    .post-create-modal > details.post-composer-advanced {
+        left: 42px !important;
+    }
+}
