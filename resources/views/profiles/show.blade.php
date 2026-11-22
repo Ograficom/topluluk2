@@ -3,7 +3,7 @@
 @section('title', $user->displayName())
 
 @push('head')
-    <link rel="stylesheet" href="{{ asset('assets/css/profile-theme.css') }}?v=20261122-mobile-avatar-badges-orbit">
+    <link rel="stylesheet" href="{{ asset('assets/css/profile-theme.css') }}?v=20261122-latest-avatar-badge">
 @endpush
 
 @section('content')
@@ -42,7 +42,7 @@
             <img src="{{ $user->avatarUrl() }}" alt="{{ $user->displayName() }}" width="90" height="90">
             @if ($earnedRewardBadges->isNotEmpty())
                 <div class="profile-avatar-earned-badges" aria-label="Kazanılmış rozetler">
-                    @foreach ($earnedRewardBadges->take(5) as $earnedBadge)
+                    @foreach ($earnedRewardBadges->take(1) as $earnedBadge)
                         <span class="profile-avatar-earned-badge" aria-hidden="true">
                             @if (filled($earnedBadge['image'] ?? null))
                                 <img src="{{ \Illuminate\Support\Facades\Storage::disk('public')->url($earnedBadge['image']) }}" alt="">
