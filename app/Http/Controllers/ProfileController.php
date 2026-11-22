@@ -72,6 +72,16 @@ class ProfileController extends Controller
             ->sortByDesc(fn (array $badge): int => (int) ($badge['required_points'] ?? 0))
             ->values();
 
+        $taskAwardedBadges = $user->taskCompletions()
+            ->whereNotNull('badge')
+            ->get()
+            ->pluck('badge')
+            ->filter(fn ($badge): bool => is_array($badge) && filled($badge['name'] ?? null));
+        $earnedRewardBadges = $earnedRewardBadges
+            ->concat($taskAwardedBadges)
+            ->unique(fn (array $badge): string => (string) ($badge['name'] ?? '').'|'.(string) ($badge['image'] ?? ''))
+            ->values();
+
         $isBlocked = $viewer && $viewer->blockedUsers()->whereKey($user->id)->exists();
         $isFollowing = $viewer && $viewer->following()->whereKey($user->id)->exists();
         $followersCount = $user->followers()->count();
