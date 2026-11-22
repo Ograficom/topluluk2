@@ -10233,3 +10233,22 @@ body.is-messenger-conversation .pm-dialog__composer .pm-composer__send{
         max-height: calc(100dvh - 16px) !important;
     }
 }
+
+
+/* The expand script toggles .is-expanded on the page wrapper, not on the form. */
+.addpost.post-create-simple.post-create-modal-page.is-expanded > form.post-create-modal {
+    width: min(1100px, calc(100vw - 32px)) !important;
+    min-width: 0 !important;
+    max-width: calc(100vw - 32px) !important;
+    height: min(760px, calc(100dvh - 32px)) !important;
+    min-height: 0 !important;
+    max-height: calc(100dvh - 32px) !important;
+}
+@media (max-width: 640px) {
+    .addpost.post-create-simple.post-create-modal-page.is-expanded > form.post-create-modal {
+        width: calc(100vw - 16px) !important;
+        max-width: calc(100vw - 16px) !important;
+        height: calc(100dvh - 16px) !important;
+        max-height: calc(100dvh - 16px) !important;
+    }
+}
