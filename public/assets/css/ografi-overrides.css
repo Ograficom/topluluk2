@@ -10729,3 +10729,47 @@ body.is-messenger-conversation .pm-dialog__composer .pm-composer__send{
 .addpost.post-create-simple.post-create-modal-page > form.post-create-modal > .post-composer-toolbar > .post-composer-file-list {
     display: none !important;
 }
+
+
+/* The toolbar lives inside a section; reveal that parent too (the blank-card reset hides all direct form children). */
+.addpost.post-create-simple.post-create-modal-page > form.post-create-modal > section.post-composer-media-section {
+    position: absolute !important;
+    left: 20px !important;
+    right: 20px !important;
+    bottom: 56px !important;
+    z-index: 7 !important;
+    display: block !important;
+    width: auto !important;
+    height: 30px !important;
+    min-height: 30px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: visible !important;
+    border: 0 !important;
+    background: transparent !important;
+    visibility: visible !important;
+}
+.addpost.post-create-simple.post-create-modal-page > form.post-create-modal > section.post-composer-media-section > .post-composer-media-title {
+    display: none !important;
+}
+.addpost.post-create-simple.post-create-modal-page > form.post-create-modal > section.post-composer-media-section > .post-composer-toolbar {
+    position: static !important;
+    left: auto !important;
+    right: auto !important;
+    bottom: auto !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 18px !important;
+    width: 100% !important;
+    height: 30px !important;
+    min-height: 30px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: visible !important;
+    visibility: visible !important;
+}
+.addpost.post-create-simple.post-create-modal-page > form.post-create-modal > section.post-composer-media-section > .post-composer-toolbar > .post-composer-tool {
+    display: inline-flex !important;
+    visibility: visible !important;
+}
