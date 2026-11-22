@@ -10669,3 +10669,63 @@ body.is-messenger-conversation .pm-dialog__composer .pm-composer__send{
     display: none !important;
     content: none !important;
 }
+
+
+/* Restore the media/action icon row directly above publishing options. */
+.addpost.post-create-simple.post-create-modal-page > form.post-create-modal > .post-composer-toolbar {
+    position: absolute !important;
+    left: 20px !important;
+    bottom: 56px !important;
+    z-index: 6 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 18px !important;
+    width: auto !important;
+    height: 30px !important;
+    min-height: 30px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    background: transparent !important;
+    visibility: visible !important;
+}
+.addpost.post-create-simple.post-create-modal-page > form.post-create-modal > .post-composer-toolbar > .post-composer-tool {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex: 0 0 22px !important;
+    width: 22px !important;
+    height: 26px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    border-radius: 5px !important;
+    background: transparent !important;
+    color: #71839d !important;
+    cursor: pointer !important;
+    visibility: visible !important;
+    transition: color .15s ease, transform .15s ease !important;
+}
+.addpost.post-create-simple.post-create-modal-page > form.post-create-modal > .post-composer-toolbar > .post-composer-tool:hover {
+    color: #2563eb !important;
+    transform: translateY(-1px) !important;
+}
+.addpost.post-create-simple.post-create-modal-page > form.post-create-modal > .post-composer-toolbar > .post-composer-tool svg {
+    display: block !important;
+    width: 20px !important;
+    height: 20px !important;
+    fill: none !important;
+    stroke: currentColor !important;
+    stroke-width: 1.7 !important;
+    stroke-linecap: round !important;
+    stroke-linejoin: round !important;
+    visibility: visible !important;
+}
+.addpost.post-create-simple.post-create-modal-page > form.post-create-modal > .post-composer-toolbar > input[type="file"],
+.addpost.post-create-simple.post-create-modal-page > form.post-create-modal > .post-composer-toolbar > .post-composer-location-panel,
+.addpost.post-create-simple.post-create-modal-page > form.post-create-modal > .post-composer-toolbar > .post-composer-video-panel,
+.addpost.post-create-simple.post-create-modal-page > form.post-create-modal > .post-composer-toolbar > .post-composer-cover-preview,
+.addpost.post-create-simple.post-create-modal-page > form.post-create-modal > .post-composer-toolbar > .post-composer-file-list {
+    display: none !important;
+}
