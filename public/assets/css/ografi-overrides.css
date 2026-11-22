@@ -10949,3 +10949,101 @@ body.is-messenger-conversation .pm-dialog__composer .pm-composer__send{
     opacity: 0 !important;
     pointer-events: none !important;
 }
+
+
+/* Video URL dialog: mirrors the supplied compact Video modal reference. */
+.addpost.post-create-simple.post-create-modal-page > .post-video-modal[hidden] { display: none !important; }
+.addpost.post-create-simple.post-create-modal-page > .post-video-modal:not([hidden]) {
+    position: fixed !important;
+    inset: 0 !important;
+    z-index: 16000 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 12px !important;
+    background: rgba(25,35,50,.48) !important;
+    -webkit-backdrop-filter: blur(5px) !important;
+    backdrop-filter: blur(5px) !important;
+}
+.addpost.post-create-simple.post-create-modal-page.is-video-open > form.addpost__form.post-create-modal {
+    display: none !important;
+}
+.addpost.post-create-simple.post-create-modal-page .post-video-dialog {
+    position: relative !important;
+    box-sizing: border-box !important;
+    width: min(480px, calc(100vw - 24px)) !important;
+    min-height: 180px !important;
+    padding: 26px 18px 18px !important;
+    border-radius: 26px !important;
+    background: #fff !important;
+    box-shadow: 0 20px 60px rgba(15,23,42,.2) !important;
+    color: #202633 !important;
+    font-family: var(--font-primary) !important;
+}
+.addpost.post-create-simple.post-create-modal-page .post-video-dialog h2 {
+    display: block !important;
+    margin: 0 0 27px !important;
+    text-align: center !important;
+    color: #30343b !important;
+    font: 700 18px/1.25 var(--font-primary) !important;
+}
+.addpost.post-create-simple.post-create-modal-page .post-video-back {
+    position: absolute !important;
+    top: 27px !important;
+    left: 25px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 22px !important;
+    height: 22px !important;
+    padding: 0 !important;
+    border: 0 !important;
+    background: transparent !important;
+    color: #71839d !important;
+    cursor: pointer !important;
+}
+.addpost.post-create-simple.post-create-modal-page .post-video-back svg {
+    width: 21px !important;
+    height: 21px !important;
+    fill: none !important;
+    stroke: currentColor !important;
+    stroke-width: 1.8 !important;
+    stroke-linecap: round !important;
+    stroke-linejoin: round !important;
+}
+.addpost.post-create-simple.post-create-modal-page .post-video-dialog > input#post-video-url {
+    display: block !important;
+    box-sizing: border-box !important;
+    width: 100% !important;
+    height: 44px !important;
+    margin: 0 !important;
+    padding: 0 13px !important;
+    border: 1px solid #d5deea !important;
+    border-radius: 13px !important;
+    outline: none !important;
+    background: #fff !important;
+    color: #303944 !important;
+    font: 13px/1.4 var(--font-primary) !important;
+    box-shadow: 0 2px 5px rgba(15,23,42,.04) !important;
+}
+.addpost.post-create-simple.post-create-modal-page .post-video-dialog > input#post-video-url:focus {
+    border-color: #9bb9e8 !important;
+    box-shadow: 0 0 0 3px rgba(37,99,235,.08) !important;
+}
+.addpost.post-create-simple.post-create-modal-page .post-video-hint {
+    display: flex !important;
+    align-items: center !important;
+    gap: 9px !important;
+    margin: 15px 0 0 !important;
+    color: #71839d !important;
+    font: 12px/1.4 var(--font-primary) !important;
+}
+.addpost.post-create-simple.post-create-modal-page .post-video-hint svg {
+    display: block !important;
+    flex: 0 0 16px !important;
+    width: 16px !important;
+    height: 16px !important;
+    fill: none !important;
+    stroke: currentColor !important;
+    stroke-width: 1.8 !important;
+}
