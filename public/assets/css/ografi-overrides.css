@@ -10375,3 +10375,13 @@ body.is-messenger-conversation .pm-dialog__composer .pm-composer__send{
     stroke-linecap: round !important;
     stroke-linejoin: round !important;
 }
+
+
+/* Hugeicons supplied expand and multiplication-sign artwork. */
+.addpost.post-create-simple.post-create-modal-page > form.post-create-modal > header.addpost__modal-head .addpost__modal-expand img,
+.addpost.post-create-simple.post-create-modal-page > form.post-create-modal > header.addpost__modal-head .addpost__modal-close img {
+    display: block !important;
+    width: 20px !important;
+    height: 20px !important;
+    object-fit: contain !important;
+}
