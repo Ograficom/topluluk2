@@ -231,7 +231,7 @@
                     <section class="widget card card-body profile-reward-widget">
                         <header><h2 class="widget__title h6">Aldığı rozetler</h2></header>
                         <div class="profile-reward-badges" aria-label="Kazanılmış ödül rozetleri">
-                            @foreach ($earnedRewardBadges as $earnedBadge)
+                            @foreach ($earnedRewardBadges->take(10) as $earnedBadge)
                                 <button class="profile-reward-badge profile-reward-badge--button" type="button" data-modal-btn="profile-earned-badge-{{ $loop->index }}" aria-haspopup="dialog" title="{{ $earnedBadge['description'] ?? $earnedBadge['name'] }}">
                                     <span class="profile-reward-badge__visual">
                                         @if (filled($earnedBadge['image'] ?? null))
@@ -244,6 +244,11 @@
                                 </button>
                             @endforeach
                         </div>
+                        @if ($earnedRewardBadges->count() > 10)
+                            <footer class="widget__footer">
+                                <button type="button" class="link-accent profile-all-badges-trigger" data-modal-btn="profile-earned-badges" aria-haspopup="dialog" aria-controls="profileEarnedBadgesModal">Tüm rozetler</button>
+                            </footer>
+                        @endif
                     </section>
                     @endif
 
