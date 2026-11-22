@@ -5,6 +5,7 @@ namespace App\Filament\Pages;
 use App\Models\ReputationSetting;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Repeater;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\Toggle;
@@ -13,6 +14,7 @@ use Filament\Pages\Page;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
+use Illuminate\Support\Str;
 
 class ReputationManagement extends Page
 {
@@ -53,6 +55,25 @@ class ReputationManagement extends Page
                     Textarea::make('description')->label('Açıklama')->rows(2)->maxLength(250)->columnSpanFull(),
                 ])->columns(2)->defaultItems(0)->addActionLabel('Yeni ödül rozeti ekle')->reorderable()->columnSpanFull(),
             ]),
+            Section::make('Görevler')->description('Kullanıcıların tamamlayabileceği görevleri oluşturun. Görevler herkese açık listelenir; tamamlayanlara puan ve seçtiğiniz rozet otomatik verilir.')->schema([
+                Repeater::make('tasks')->label('Topluluk görevleri')->schema([
+                    TextInput::make('title')->label('Görev adı')->required()->maxLength(120),
+                    Select::make('activity')->label('Yapılacak etkinlik')->options([
+                        'comments' => 'Yorum yap',
+                        'posts' => 'Yazı yayınla',
+                    ])->required()->default('comments'),
+                    TextInput::make('target_count')->label('Gerekli adet')->numeric()->minValue(1)->required()->default(3),
+                    TextInput::make('reward_points')->label('Görev puanı')->numeric()->minValue(0)->required()->default(10),
+                    Select::make('reward_badge')->label('Görev tamamlanınca verilecek rozet')
+                        ->options(fn (): array => collect($this->data['reward_badges'] ?? [])
+                            ->filter(fn (array $badge): bool => filled($badge['name'] ?? null))
+                            ->mapWithKeys(fn (array $badge): array => [$badge['name'] => $badge['name']])
+                            ->all())
+                        ->searchable()->placeholder('Rozet seçme (isteğe bağlı)')->nullable(),
+                    Textarea::make('description')->label('Görev açıklaması')->rows(2)->maxLength(250)->columnSpanFull(),
+                    Toggle::make('active')->label('Görev yayında')->default(true),
+                ])->columns(2)->defaultItems(0)->addActionLabel('Yeni görev ekle')->reorderable()->columnSpanFull(),
+            ]),
         ])->statePath('data');
     }
 
@@ -67,6 +88,12 @@ class ReputationManagement extends Page
             'post_like_points' => (int) $data['post_like_points'],
             'comment_like_points' => (int) $data['comment_like_points'],
             'reward_badges' => array_values($data['reward_badges'] ?? []),
+            'tasks' => collect($data['tasks'] ?? [])->map(function (array $task): array {
+                $task['key'] = filled($task['key'] ?? null) ? $task['key'] : (string) Str::uuid();
+                $task['target_count'] = max(1, (int) ($task['target_count'] ?? 1));
+                $task['reward_points'] = max(0, (int) ($task['reward_points'] ?? 0));
+                return $task;
+            })->values()->all(),
         ]);
 
         Notification::make()->title('İtibar ve ödül ayarları kaydedildi.')->success()->send();
