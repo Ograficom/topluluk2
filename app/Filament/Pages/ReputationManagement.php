@@ -53,7 +53,7 @@ class ReputationManagement extends Page
                     FileUpload::make('image')->label('Rozet görseli')->image()->disk('public')->directory('reputation-badges')->visibility('public')->imageEditor()->maxSize(2048)->helperText('Rozet için PNG, JPG, WEBP veya SVG olmayan bir görsel yükleyin. En fazla 2 MB.'),
                     TextInput::make('icon')->label('İkon adı (Lucide)')->placeholder('trophy')->maxLength(60),
                     Textarea::make('description')->label('Açıklama')->rows(2)->maxLength(250)->columnSpanFull(),
-                ])->columns(2)->defaultItems(0)->addActionLabel('Yeni ödül rozeti ekle')->reorderable()->columnSpanFull(),
+                ])->columns(2)->defaultItems(0)->addActionLabel('Yeni ödül rozeti ekle')->reorderable()->live()->columnSpanFull(),
             ]),
             Section::make('Görevler')->description('Kullanıcıların tamamlayabileceği görevleri oluşturun. Görevler herkese açık listelenir; tamamlayanlara puan ve seçtiğiniz rozet otomatik verilir.')->schema([
                 Repeater::make('tasks')->label('Topluluk görevleri')->schema([
@@ -90,6 +90,7 @@ class ReputationManagement extends Page
             'reward_badges' => array_values($data['reward_badges'] ?? []),
             'tasks' => collect($data['tasks'] ?? [])->map(function (array $task): array {
                 $task['key'] = filled($task['key'] ?? null) ? $task['key'] : (string) Str::uuid();
+                $task['starts_at'] = filled($task['starts_at'] ?? null) ? $task['starts_at'] : now()->toDateTimeString();
                 $task['target_count'] = max(1, (int) ($task['target_count'] ?? 1));
                 $task['reward_points'] = max(0, (int) ($task['reward_points'] ?? 0));
                 return $task;
