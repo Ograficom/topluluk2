@@ -388,18 +388,11 @@
         const galleryModal = document.querySelector('[data-gallery-modal]');
         const galleryDropzone = document.querySelector('[data-gallery-dropzone]');
         const gallerySelected = document.querySelector('[data-gallery-selected]');
-        const composerOverlay = document.querySelector('.addpost.post-create-modal-page');
-        const composerForm = composerOverlay?.querySelector('form.post-create-modal');
         const openGallery = () => {
-            if (!galleryModal) return;
-            galleryModal.hidden = false;
-            composerOverlay?.classList.add('is-gallery-open');
-            composerForm?.classList.add('is-gallery-open');
+            if (galleryModal) galleryModal.hidden = false;
         };
         const closeGallery = () => {
             if (galleryModal) galleryModal.hidden = true;
-            composerOverlay?.classList.remove('is-gallery-open');
-            composerForm?.classList.remove('is-gallery-open');
         };
         document.querySelector('[data-gallery-open]')?.addEventListener('click', openGallery);
         document.querySelectorAll('[data-gallery-close]').forEach(button => button.addEventListener('click', closeGallery));
