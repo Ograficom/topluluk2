@@ -3,7 +3,7 @@
 @section('title', $user->displayName())
 
 @push('head')
-    <link rel="stylesheet" href="{{ asset('assets/css/profile-theme.css') }}?v=20261122-profile-badge-link">
+    <link rel="stylesheet" href="{{ asset('assets/css/profile-theme.css') }}?v=20261122-repost-sidebar-cards">
 @endpush
 
 @section('content')
@@ -228,7 +228,7 @@
                     </section>
 
                     @if ($earnedRewardBadges->isNotEmpty())
-                    <section class="widget card card-body profile-reward-widget">
+                    <section class="widget card card-body">
                         <header><h2 class="widget__title h6">Aldığı rozetler</h2></header>
                         <div class="profile-reward-badges" aria-label="Kazanılmış ödül rozetleri">
                             @foreach ($earnedRewardBadges->take(10) as $earnedBadge)
