@@ -920,7 +920,8 @@
             closeComposerPanels();
             if (tagsModal.parentNode !== document.body) document.body.appendChild(tagsModal);
 
-            // Keep presentation in the dedicated stylesheet; JS only controls modal state.
+            // Remove the hidden attribute first; the [hidden] rule otherwise keeps the modal invisible.
+            tagsModal.hidden = false;
             tagsModal.classList.add('is-open');
             if (composerForm) {
                 composerForm.style.display = 'none';
