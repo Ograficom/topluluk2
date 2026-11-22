@@ -10558,3 +10558,10 @@ body.is-messenger-conversation .pm-dialog__composer .pm-composer__send{
 .addpost.post-create-simple.post-create-modal-page > form.post-create-modal > .addpost__header .addpost__author-name {
     font-size: 16px !important;
 }
+
+
+/* Increase only the author name text in the composer identity row. */
+.addpost.post-create-simple.post-create-modal-page > form.post-create-modal > .addpost__header .addpost__author-name {
+    font-size: 18px !important;
+    font-weight: 650 !important;
+}
