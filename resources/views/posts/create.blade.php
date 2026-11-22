@@ -12,7 +12,7 @@
     @endif
 
     <div class="addpost post-create-simple post-create-modal-page">
-        <form class="addpost__form card card-body post-create-modal" action="{{ isset($post) ? route('posts.update', $post) : route('posts.store') }}" method="POST" enctype="multipart/form-data">
+        <form id="post-create-form" class="addpost__form card card-body post-create-modal" action="{{ isset($post) ? route('posts.update', $post) : route('posts.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
             @if (isset($post))
                 @method('PATCH')
@@ -111,10 +111,7 @@
                         <input id="post-location" name="location" type="text" maxlength="255" value="{{ old('location', $post->location ?? '') }}" placeholder="Şehir, mekan veya adres">
                         <button type="button" data-composer-location-close aria-label="Konum alanını kapat">×</button>
                     </div>
-                    <div class="post-composer-video-panel" data-composer-video-panel hidden>
-                        <label for="post-video-url">Video bağlantısı</label>
-                        <input id="post-video-url" name="video_url" type="url" value="{{ old('video_url', $post->video_url ?? '') }}" maxlength="2048" placeholder="YouTube, Instagram veya TikTok bağlantısı">
-                    </div>
+
 
                     <input id="post-cover" name="cover_image" type="file" accept="image/jpeg,image/png,image/gif,image/webp" data-post-cover-input>
                     <div class="post-composer-cover-preview" data-post-cover-preview aria-live="polite"></div>
@@ -183,6 +180,21 @@
                             </div>
                         </div>
                     </div>
+        <div class="post-video-modal" data-video-modal hidden>
+            <div class="post-video-dialog" role="dialog" aria-modal="true" aria-labelledby="post-video-title">
+                <button type="button" class="post-video-back" data-video-close aria-label="Geri dön">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>
+                </button>
+                <h2 id="post-video-title">Video</h2>
+                <input id="post-video-url" name="video_url" form="post-create-form" type="url"
+                    value="{{ old('video_url', $post->video_url ?? '') }}" maxlength="2048"
+                    placeholder="" aria-label="Video bağlantısı">
+                <p class="post-video-hint">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5m0-8h.01"/></svg>
+                    <span>Video servislerinden bir video bağlantısı ekleyebilirsiniz.</span>
+                </p>
+            </div>
+        </div>
     </div>
 
 <script>
@@ -452,13 +464,13 @@
         const locationPanel = document.querySelector('[data-composer-location-panel]');
         const locationClose = document.querySelector('[data-composer-location-close]');
         const videoToggle = document.querySelector('[data-composer-video-toggle]');
-        const videoPanel = document.querySelector('[data-composer-video-panel]');
+        const videoModal = document.querySelector('[data-video-modal]');
+        const videoInput = document.getElementById('post-video-url');
         const tagsToggle = document.querySelector('[data-composer-tags-toggle]');
         const tagsDetails = document.querySelector('.post-composer-advanced');
         const tagsInput = document.getElementById('tags');
         const closeComposerPanels = () => {
             if (locationPanel) locationPanel.hidden = true;
-            if (videoPanel) videoPanel.hidden = true;
             locationToggle?.setAttribute('aria-expanded', 'false');
             videoToggle?.setAttribute('aria-expanded', 'false');
         };
@@ -473,13 +485,25 @@
             if (locationPanel) locationPanel.hidden = true;
             locationToggle?.setAttribute('aria-expanded', 'false');
         });
-        videoToggle?.addEventListener('click', () => {
-            const opening = videoPanel?.hidden;
+        const openVideoModal = () => {
+            if (!videoModal) return;
             closeComposerPanels();
-            if (videoPanel) videoPanel.hidden = !opening;
-            videoToggle.setAttribute('aria-expanded', opening ? 'true' : 'false');
-            if (opening) document.getElementById('post-video-url')?.focus();
-        });
+            videoModal.hidden = false;
+            composerOverlay?.classList.add('is-video-open');
+            composerForm?.setAttribute('aria-hidden', 'true');
+            videoToggle?.setAttribute('aria-expanded', 'true');
+            window.setTimeout(() => videoInput?.focus(), 0);
+        };
+        const closeVideoModal = () => {
+            if (videoModal) videoModal.hidden = true;
+            composerOverlay?.classList.remove('is-video-open');
+            composerForm?.removeAttribute('aria-hidden');
+            videoToggle?.setAttribute('aria-expanded', 'false');
+        };
+        videoToggle?.addEventListener('click', openVideoModal);
+        document.querySelectorAll('[data-video-close]').forEach(button => button.addEventListener('click', closeVideoModal));
+        videoModal?.addEventListener('click', event => { if (event.target === videoModal) closeVideoModal(); });
+        document.addEventListener('keydown', event => { if (event.key === 'Escape' && videoModal && !videoModal.hidden) closeVideoModal(); });
         tagsToggle?.addEventListener('click', () => {
             closeComposerPanels();
             if (tagsDetails) tagsDetails.open = true;
@@ -487,8 +511,8 @@
         });
 
         document.addEventListener('click', event => {
-            if (locationPanel?.hidden && videoPanel?.hidden) return;
-            if (event.target.closest('[data-composer-location-panel], [data-composer-video-panel], [data-composer-location-toggle], [data-composer-video-toggle]')) return;
+            if (locationPanel?.hidden) return;
+            if (event.target.closest('[data-composer-location-panel], [data-composer-location-toggle]')) return;
             closeComposerPanels();
         });
 
