@@ -10271,3 +10271,22 @@ body.is-messenger-conversation .pm-dialog__composer .pm-composer__send{
         max-height: calc(100dvh - 16px) !important;
     }
 }
+
+
+/* User-requested default empty card size: 700px wide x 500px high. */
+.addpost.post-create-simple.post-create-modal-page > form.post-create-modal {
+    width: 700px !important;
+    min-width: 0 !important;
+    max-width: calc(100vw - 32px) !important;
+    height: 500px !important;
+    min-height: 0 !important;
+    max-height: calc(100dvh - 32px) !important;
+}
+@media (max-width: 640px) {
+    .addpost.post-create-simple.post-create-modal-page > form.post-create-modal {
+        width: calc(100vw - 16px) !important;
+        max-width: calc(100vw - 16px) !important;
+        height: min(500px, calc(100dvh - 16px)) !important;
+        max-height: calc(100dvh - 16px) !important;
+    }
+}
