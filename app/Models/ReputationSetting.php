@@ -8,7 +8,7 @@ class ReputationSetting extends Model
 {
     protected $fillable = [
         'enabled', 'exclude_company_accounts', 'post_points', 'comment_points',
-        'post_like_points', 'comment_like_points', 'reward_badges',
+        'post_like_points', 'comment_like_points', 'reward_badges', 'tasks',
     ];
 
     protected function casts(): array
@@ -17,6 +17,7 @@ class ReputationSetting extends Model
             'enabled' => 'boolean',
             'exclude_company_accounts' => 'boolean',
             'reward_badges' => 'array',
+            'tasks' => 'array',
         ];
     }
 
