@@ -256,8 +256,8 @@
 
         const editor = new window.EditorJS({
           holder,
-          placeholder: 'En iyi metnini yaz…',
-          minHeight: 260,
+          placeholder: 'Напиши свой лучший текст',
+          minHeight: 84,
           autofocus: false,
           logLevel: 'ERROR',
           data: initial,
