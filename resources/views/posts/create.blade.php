@@ -37,7 +37,7 @@
             </div>
 
             <div class="post-composer-field post-composer-title-field">
-                <label class="post-composer-label" for="post-title">Yazı başlığı</label>
+                <label class="post-composer-label" for="post-title">Gönderi başlığı</label>
                 <input class="post-create-simple__title addpost__title" id="post-title" name="title" type="text"
                     value="{{ old('title', $post->title ?? '') }}" maxlength="255"
                     placeholder="Gönderi başlığı" required>
