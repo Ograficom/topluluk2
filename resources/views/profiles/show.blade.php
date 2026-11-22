@@ -3,7 +3,7 @@
 @section('title', $user->displayName())
 
 @push('head')
-    <link rel="stylesheet" href="{{ asset('assets/css/profile-theme.css') }}?v=20261122-repost-sidebar-cards">
+    <link rel="stylesheet" href="{{ asset('assets/css/profile-theme.css') }}?v=20261122-mobile-avatar-badges">
 @endpush
 
 @section('content')
