@@ -242,7 +242,8 @@
 .post-tags-dialog {
     position:relative !important; box-sizing:border-box !important;
     width:min(480px, calc(100vw - 32px)) !important; min-width:0 !important;
-    min-height:0 !important; margin:0 auto !important; padding:26px 18px 18px !important;
+    height:143px !important; min-height:143px !important; max-height:143px !important;
+    margin:0 auto !important; padding:26px 18px 24px !important;
     border:0 !important; border-radius:26px !important; background:#fff !important;
     box-shadow:0 20px 60px rgba(15,23,42,.2) !important; color:#202633 !important;
     font-family:var(--font-primary, Arial, sans-serif) !important;
@@ -259,7 +260,7 @@
     border:0 !important; background:transparent !important; color:#71839d !important; cursor:pointer !important;
 }
 .post-tags-back svg { width:21px !important; height:21px !important; fill:none !important; stroke:currentColor !important; stroke-width:1.8 !important; }
-.post-tags-dialog { height:auto !important; min-height:0 !important; }
+.post-tags-dialog { height:143px !important; min-height:143px !important; max-height:143px !important; }
 .post-tags-input-wrap {
     display:flex !important; flex:0 0 44px !important; flex-wrap:nowrap !important;
     align-items:center !important; gap:10px !important; position:relative !important;
@@ -854,8 +855,8 @@
             if (dialog) dialog.style.cssText = [
                 'position:relative', 'display:block', 'box-sizing:border-box',
                 'flex:0 1 480px', 'width:min(480px, calc(100vw - 24px))',
-                'min-width:0', 'min-height:0', 'margin:0 auto',
-                'padding:26px 18px 18px', 'border:0', 'border-radius:26px',
+                'min-width:0', 'height:143px', 'min-height:143px', 'max-height:143px', 'margin:0 auto',
+                'padding:26px 18px 24px', 'border:0', 'border-radius:26px',
                 'background:#fff', 'box-shadow:0 20px 60px rgba(15,23,42,.2)',
                 'color:#202633', 'font-family:Arial,sans-serif', 'transform:none'
             ].join(';') + ';';
