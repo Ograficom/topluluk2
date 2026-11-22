@@ -228,6 +228,9 @@
 
 
 <style id="post-tags-modal-style">
+.addpost.post-create-simple.post-create-modal-page.is-tags-open > form#post-create-form {
+    display:none !important; visibility:hidden !important; pointer-events:none !important;
+}
 .post-tags-modal[hidden] { display:none !important; }
 .post-tags-modal:not([hidden]) {
     position:fixed !important; inset:0 !important; z-index:2147483002 !important;
