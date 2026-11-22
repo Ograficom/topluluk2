@@ -22,7 +22,8 @@
                 <strong>{{ isset($post) ? 'Yayını düzenle' : 'Yeni yayın' }}</strong>
                 <div class="addpost__modal-controls">
                     <button type="button" class="addpost__modal-expand" data-post-composer-expand aria-label="Genişlet" aria-pressed="false">
-                        <img src="https://media.hugeicons.com/previews/icons/expand-solid-rounded@3x.webp?x=1.0.2" width="20" height="20" alt="" aria-hidden="true">
+                        <img class="post-composer-expand-icon" src="https://media.hugeicons.com/previews/icons/expand-solid-rounded@3x.webp?x=1.0.2" width="20" height="20" alt="" aria-hidden="true">
+                        <img class="post-composer-collapse-icon" src="https://media.hugeicons.com/previews/icons/collapse-stroke-rounded@3x.webp?x=1.0.2" width="20" height="20" alt="" aria-hidden="true">
                     </button>
                     <a href="{{ route('posts.index') }}" class="addpost__modal-close" aria-label="Kapat">
                         <img src="https://media.hugeicons.com/previews/icons/multiplication-sign-stroke-rounded@3x.webp?x=1.0.2" width="20" height="20" alt="" aria-hidden="true">
