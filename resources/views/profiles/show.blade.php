@@ -300,9 +300,6 @@
                                 <span class="profile-earned-badge__details">
                                     <strong>{{ $earnedBadge['name'] }}</strong>
                                     <small>{{ number_format((int) ($earnedBadge['required_points'] ?? 0)) }} puan</small>
-                                    @if (filled($earnedBadge['description'] ?? null))
-                                        <small>{{ $earnedBadge['description'] }}</small>
-                                    @endif
                                 </span>
                             </button>
                         @endforeach
