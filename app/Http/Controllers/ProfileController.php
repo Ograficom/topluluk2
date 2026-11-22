@@ -72,11 +72,13 @@ class ProfileController extends Controller
             ->sortByDesc(fn (array $badge): int => (int) ($badge['required_points'] ?? 0))
             ->values();
 
-        $taskAwardedBadges = $user->taskCompletions()
-            ->whereNotNull('badge')
-            ->get()
-            ->pluck('badge')
-            ->filter(fn ($badge): bool => is_array($badge) && filled($badge['name'] ?? null));
+        $taskAwardedBadges = Schema::hasTable('task_completions')
+            ? $user->taskCompletions()
+                ->whereNotNull('badge')
+                ->get()
+                ->pluck('badge')
+                ->filter(fn ($badge): bool => is_array($badge) && filled($badge['name'] ?? null))
+            : collect();
         $earnedRewardBadges = $earnedRewardBadges
             ->concat($taskAwardedBadges)
             ->unique(fn (array $badge): string => (string) ($badge['name'] ?? '').'|'.(string) ($badge['image'] ?? ''))
