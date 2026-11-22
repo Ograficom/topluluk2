@@ -102,7 +102,7 @@
                     <input id="post-video-file" name="video_file" type="file" accept="video/mp4,video/webm,video/quicktime,video/x-matroska">
 
                     <button type="button" class="post-composer-tool" data-composer-widget-toggle aria-label="Widget ekle" title="Widget ekle" aria-expanded="false">
-                        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m8 8-4 4 4 4M16 8l4 4-4 4M14 4l-4 16"/></svg>
                     </button>
                     <button type="button" class="post-composer-tool" data-composer-tags-toggle aria-label="Etiket ekle" title="Etiket ekle">
                         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h16M4 15h16M9 4l-2 16M17 4l-2 16"/></svg>
