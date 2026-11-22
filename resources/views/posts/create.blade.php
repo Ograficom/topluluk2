@@ -820,20 +820,62 @@
         document.querySelectorAll('[data-widget-close]').forEach(button => button.addEventListener('click', closeWidgetModal));
         widgetModal?.addEventListener('click', event => { if (event.target === widgetModal) closeWidgetModal(); });
         document.addEventListener('keydown', event => { if (event.key === 'Escape' && widgetModal && !widgetModal.hidden) closeWidgetModal(); });
+        const tagsModalPlaceholder = tagsModal ? document.createComment('tags-modal-position') : null;
+        const tagsModalOriginalParent = tagsModal?.parentNode || null;
+        if (tagsModal && tagsModalOriginalParent && tagsModalPlaceholder) {
+            tagsModalOriginalParent.insertBefore(tagsModalPlaceholder, tagsModal);
+        }
+        const previousTagsComposerDisplay = composerForm?.style.display || '';
         const openTagsModal = () => {
-            if (!tagsModal) return;
+            if (!tagsModal || !tagsModalPlaceholder) return;
             closeComposerPanels();
-            if (tagsModal.parentElement !== document.body) document.body.appendChild(tagsModal);
+            if (tagsModal.parentNode !== document.body) document.body.appendChild(tagsModal);
+
+            // Use the same body-level fixed overlay strategy as the working media dialogs.
             tagsModal.hidden = false;
+            tagsModal.style.cssText = [
+                'position:fixed', 'inset:0', 'z-index:2147483647',
+                'display:flex', 'align-items:center', 'justify-content:center',
+                'box-sizing:border-box', 'width:100vw', 'height:100vh',
+                'margin:0', 'padding:12px',
+                'background:rgba(25,35,50,.48)',
+                'backdrop-filter:blur(5px)', '-webkit-backdrop-filter:blur(5px)'
+            ].join(';') + ';';
+
+            const dialog = tagsModal.querySelector('.post-tags-dialog');
+            if (dialog) dialog.style.cssText = [
+                'position:relative', 'display:block', 'box-sizing:border-box',
+                'flex:0 1 480px', 'width:min(480px, calc(100vw - 24px))',
+                'min-width:0', 'min-height:0', 'margin:0 auto',
+                'padding:26px 18px 18px', 'border:0', 'border-radius:26px',
+                'background:#fff', 'box-shadow:0 20px 60px rgba(15,23,42,.2)',
+                'color:#202633', 'font-family:Arial,sans-serif', 'transform:none'
+            ].join(';') + ';';
+
+            const title = tagsModal.querySelector('#post-tags-title');
+            if (title) title.style.cssText = 'display:block;margin:0 0 27px;padding:0;text-align:center;color:#30343b;font:700 18px/1.25 Arial,sans-serif;';
+            const back = tagsModal.querySelector('.post-tags-back');
+            if (back) back.style.cssText = 'position:absolute;top:27px;left:25px;display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;padding:0;border:0;background:transparent;color:#71839d;cursor:pointer;';
+            const inputWrap = tagsModal.querySelector('.post-tags-input-wrap');
+            if (inputWrap) inputWrap.style.cssText = 'display:flex;align-items:center;gap:10px;box-sizing:border-box;width:100%;min-height:44px;padding:0 13px;border:1px solid transparent;border-radius:13px;background:#f7f8fb;';
+            if (composerForm) {
+                composerForm.style.display = 'none';
+                composerForm.setAttribute('aria-hidden', 'true');
+            }
             composerOverlay?.classList.add('is-tags-open');
-            composerForm?.setAttribute('aria-hidden', 'true');
             tagsToggle?.setAttribute('aria-expanded', 'true');
             window.setTimeout(() => tagsInput?.focus(), 0);
         };
         const closeTagsModal = () => {
             if (tagsModal) tagsModal.hidden = true;
+            if (tagsModal && tagsModalPlaceholder?.parentNode) {
+                tagsModalPlaceholder.parentNode.insertBefore(tagsModal, tagsModalPlaceholder);
+            }
+            if (composerForm) {
+                composerForm.style.display = previousTagsComposerDisplay;
+                composerForm.removeAttribute('aria-hidden');
+            }
             composerOverlay?.classList.remove('is-tags-open');
-            composerForm?.removeAttribute('aria-hidden');
             tagsToggle?.setAttribute('aria-expanded', 'false');
         };
         tagsToggle?.addEventListener('click', openTagsModal);
