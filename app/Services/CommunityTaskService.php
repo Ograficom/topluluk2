@@ -25,9 +25,13 @@ class CommunityTaskService
     {
         return match ($task['activity'] ?? 'comments') {
             'posts' => Post::query()->where('user_id', $user->id)->published()
-                ->whereNull('advertisement_id')->count(),
+                ->whereNull('advertisement_id')
+                ->when(filled($task['starts_at'] ?? null), fn ($query) => $query->where('created_at', '>=', $task['starts_at']))
+                ->count(),
             default => Comment::query()->where('user_id', $user->id)
-                ->where('is_spam', false)->count(),
+                ->where('is_spam', false)
+                ->when(filled($task['starts_at'] ?? null), fn ($query) => $query->where('created_at', '>=', $task['starts_at']))
+                ->count(),
         };
     }
 
