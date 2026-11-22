@@ -690,19 +690,68 @@
         document.querySelectorAll('[data-video-close]').forEach(button => button.addEventListener('click', closeVideoModal));
         videoModal?.addEventListener('click', event => { if (event.target === videoModal) closeVideoModal(); });
         document.addEventListener('keydown', event => { if (event.key === 'Escape' && videoModal && !videoModal.hidden) closeVideoModal(); });
+        const widgetModalPlaceholder = widgetModal ? document.createComment('widget-modal-position') : null;
+        const widgetOriginalParent = widgetModal?.parentNode || null;
+        if (widgetModal && widgetOriginalParent && widgetModalPlaceholder) {
+            widgetOriginalParent.insertBefore(widgetModalPlaceholder, widgetModal);
+        }
+        const previousComposerDisplay = composerForm?.style.display || '';
         const openWidgetModal = () => {
-            if (!widgetModal) return;
+            if (!widgetModal || !widgetModalPlaceholder) return;
             closeComposerPanels();
+
+            // Move the dialog to body so transformed composer wrappers cannot offset fixed positioning.
+            if (widgetModal.parentNode !== document.body) document.body.appendChild(widgetModal);
             widgetModal.hidden = false;
+            widgetModal.style.cssText = [
+                'position:fixed', 'inset:0', 'z-index:2147483647',
+                'display:flex', 'align-items:center', 'justify-content:center',
+                'box-sizing:border-box', 'width:100vw', 'height:100vh',
+                'margin:0', 'padding:12px',
+                'background:rgba(25,35,50,.48)',
+                'backdrop-filter:blur(5px)', '-webkit-backdrop-filter:blur(5px)'
+            ].join(';') + ';';
+
+            const dialog = widgetModal.querySelector('.post-widget-dialog');
+            if (dialog) dialog.style.cssText = [
+                'position:relative', 'display:block', 'box-sizing:border-box',
+                'flex:0 1 480px', 'width:min(480px, calc(100vw - 24px))',
+                'min-width:0', 'min-height:260px', 'margin:0 auto',
+                'padding:26px 18px 20px', 'border:0', 'border-radius:26px',
+                'background:#fff', 'box-shadow:0 20px 60px rgba(15,23,42,.2)',
+                'color:#202633', 'font-family:Arial,sans-serif', 'transform:none'
+            ].join(';') + ';';
+
+            const title = widgetModal.querySelector('#post-widget-title');
+            if (title) title.style.cssText = 'display:block;margin:0 0 27px;padding:0;text-align:center;color:#30343b;font:700 18px/1.25 Arial,sans-serif;';
+            const back = widgetModal.querySelector('.post-widget-back');
+            if (back) back.style.cssText = 'position:absolute;top:27px;left:25px;display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;padding:0;border:0;background:transparent;color:#71839d;cursor:pointer;';
+            if (widgetInput) widgetInput.style.cssText = 'display:block;box-sizing:border-box;width:100%;height:100px;min-height:100px;max-height:45vh;margin:0;padding:12px;resize:vertical;border:1px solid #d5deea;border-radius:13px;outline:none;background:#fff;color:#303944;font:13px/1.45 Arial,sans-serif;box-shadow:0 2px 5px rgba(15,23,42,.04);';
+            const hint = widgetModal.querySelector('.post-widget-hint');
+            if (hint) hint.style.cssText = 'display:flex;align-items:flex-start;gap:9px;margin:15px 0 0;color:#71839d;font:12px/1.55 Arial,sans-serif;';
+            const hintIcon = hint?.querySelector('svg');
+            if (hintIcon) hintIcon.style.cssText = 'display:block;flex:0 0 16px;width:16px;height:16px;margin-top:1px;fill:none;stroke:currentColor;stroke-width:1.8;';
+
+            if (composerForm) {
+                composerForm.style.setProperty('display', 'none', 'important');
+                composerForm.setAttribute('aria-hidden', 'true');
+            }
             composerOverlay?.classList.add('is-widget-open');
-            composerForm?.setAttribute('aria-hidden', 'true');
             widgetToggle?.setAttribute('aria-expanded', 'true');
             window.setTimeout(() => widgetInput?.focus(), 0);
         };
         const closeWidgetModal = () => {
-            if (widgetModal) widgetModal.hidden = true;
+            if (!widgetModal) return;
+            widgetModal.hidden = true;
+            widgetModal.style.cssText = 'display:none !important;';
+            if (widgetOriginalParent && widgetModalPlaceholder?.parentNode === widgetOriginalParent) {
+                widgetOriginalParent.insertBefore(widgetModal, widgetModalPlaceholder);
+            }
+            if (composerForm) {
+                composerForm.style.display = previousComposerDisplay;
+                composerForm.removeAttribute('aria-hidden');
+            }
             composerOverlay?.classList.remove('is-widget-open');
-            composerForm?.removeAttribute('aria-hidden');
             widgetToggle?.setAttribute('aria-expanded', 'false');
         };
         widgetToggle?.addEventListener('click', openWidgetModal);
