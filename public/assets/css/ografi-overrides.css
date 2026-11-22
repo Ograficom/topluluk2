@@ -10290,3 +10290,15 @@ body.is-messenger-conversation .pm-dialog__composer .pm-composer__send{
         max-height: calc(100dvh - 16px) !important;
     }
 }
+
+
+/* Reduce the empty white composer card height by 50px; keep width unchanged. */
+.addpost.post-create-simple.post-create-modal-page > form.post-create-modal {
+    height: 450px !important;
+    max-height: calc(100dvh - 32px) !important;
+}
+@media (max-width: 640px) {
+    .addpost.post-create-simple.post-create-modal-page > form.post-create-modal {
+        height: min(450px, calc(100dvh - 16px)) !important;
+    }
+}
