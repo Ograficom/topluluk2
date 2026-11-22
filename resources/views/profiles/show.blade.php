@@ -40,6 +40,19 @@
 
         <div class="profile__avatar {{ $user->isOnline() ? 'profile__online' : '' }}">
             <img src="{{ $user->avatarUrl() }}" alt="{{ $user->displayName() }}" width="90" height="90">
+            @if ($earnedRewardBadges->isNotEmpty())
+                <div class="profile-avatar-earned-badges" aria-label="Kazanılmış rozetler">
+                    @foreach ($earnedRewardBadges->take(5) as $earnedBadge)
+                        <span class="profile-avatar-earned-badge" aria-hidden="true">
+                            @if (filled($earnedBadge['image'] ?? null))
+                                <img src="{{ \Illuminate\Support\Facades\Storage::disk('public')->url($earnedBadge['image']) }}" alt="">
+                            @else
+                                <x-repost-icon :name="$earnedBadge['icon'] ?? 'trophy'" size="28" />
+                            @endif
+                        </span>
+                    @endforeach
+                </div>
+            @endif
         </div>
         <div class="profile__content">
             <div class="profile__info">
