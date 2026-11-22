@@ -10385,3 +10385,40 @@ body.is-messenger-conversation .pm-dialog__composer .pm-composer__send{
     height: 20px !important;
     object-fit: contain !important;
 }
+
+
+/* Icon-only composer controls: remove grey tiles and add clear interaction feedback. */
+.addpost.post-create-simple.post-create-modal-page > form.post-create-modal > header.addpost__modal-head .addpost__modal-expand,
+.addpost.post-create-simple.post-create-modal-page > form.post-create-modal > header.addpost__modal-head .addpost__modal-close {
+    background: transparent !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    border-radius: 50% !important;
+    transition: transform .16s ease, opacity .16s ease, color .16s ease !important;
+    -webkit-tap-highlight-color: transparent;
+}
+.addpost.post-create-simple.post-create-modal-page > form.post-create-modal > header.addpost__modal-head .addpost__modal-expand:hover,
+.addpost.post-create-simple.post-create-modal-page > form.post-create-modal > header.addpost__modal-head .addpost__modal-close:hover {
+    background: transparent !important;
+    color: #1768ed !important;
+    opacity: .78 !important;
+    transform: scale(1.12) !important;
+}
+.addpost.post-create-simple.post-create-modal-page > form.post-create-modal > header.addpost__modal-head .addpost__modal-expand:active,
+.addpost.post-create-simple.post-create-modal-page > form.post-create-modal > header.addpost__modal-head .addpost__modal-close:active {
+    background: transparent !important;
+    opacity: .55 !important;
+    transform: scale(.88) !important;
+}
+.addpost.post-create-simple.post-create-modal-page > form.post-create-modal > header.addpost__modal-head .addpost__modal-expand:focus-visible,
+.addpost.post-create-simple.post-create-modal-page > form.post-create-modal > header.addpost__modal-head .addpost__modal-close:focus-visible {
+    outline: 2px solid rgba(23, 104, 237, .45) !important;
+    outline-offset: 2px !important;
+}
+.addpost.post-create-simple.post-create-modal-page > form.post-create-modal > header.addpost__modal-head .addpost__modal-expand img,
+.addpost.post-create-simple.post-create-modal-page > form.post-create-modal > header.addpost__modal-head .addpost__modal-close img {
+    transition: transform .16s ease, opacity .16s ease !important;
+}
+.addpost.post-create-simple.post-create-modal-page > form.post-create-modal > header.addpost__modal-head .addpost__modal-expand:active img {
+    transform: rotate(4deg) !important;
+}
