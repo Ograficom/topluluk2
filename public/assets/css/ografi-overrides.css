@@ -9865,3 +9865,80 @@ body.is-messenger-conversation .pm-dialog__composer .pm-composer__send{
         left: 42px !important;
     }
 }
+
+
+/* Match the first supplied reference: wider, shorter card with a true open writing canvas. */
+.post-create-modal-page > form.post-create-modal {
+    width: 800px !important;
+    max-width: calc(100vw - 48px) !important;
+    height: 400px !important;
+    min-height: 400px !important;
+    max-height: calc(100dvh - 40px) !important;
+    border-radius: 24px !important;
+}
+.post-create-modal > .post-composer-title-field {
+    top: 116px !important;
+    left: 0 !important;
+    right: 0 !important;
+    margin: 0 72px !important;
+    padding: 0 !important;
+    border: 0 !important;
+    border-bottom: 1px solid #e4eaf2 !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+}
+.post-create-modal > .post-composer-editor-section {
+    top: 150px !important;
+    bottom: 105px !important;
+    padding: 0 72px !important;
+}
+.post-create-modal #post-editorjs [contenteditable="true"] {
+    min-height: 110px !important;
+}
+.post-create-modal #post-editorjs .ce-paragraph[data-placeholder]:empty::before,
+.post-create-modal #post-editorjs [contenteditable="true"]:empty::before {
+    content: "Напиши свой лучший текст" !important;
+    color: #71839d !important;
+    opacity: 1 !important;
+}
+.post-create-modal > .post-composer-media-section {
+    top: auto !important;
+    bottom: 76px !important;
+    padding: 0 68px !important;
+}
+.post-create-modal > details.post-composer-advanced {
+    left: 72px !important;
+    bottom: 22px !important;
+}
+.post-create-modal > .post-create-simple__footer {
+    bottom: 14px !important;
+}
+.post-create-modal .post-create-simple__footer button {
+    margin-right: -13px !important;
+}
+@media (max-width: 640px) {
+    .post-create-modal-page > form.post-create-modal {
+        width: calc(100vw - 16px) !important;
+        max-width: calc(100vw - 16px) !important;
+        height: min(400px, calc(100dvh - 16px)) !important;
+        min-height: 320px !important;
+    }
+    .post-create-modal > .post-composer-title-field {
+        margin-right: 42px !important;
+        margin-left: 42px !important;
+    }
+    .post-create-modal > .post-composer-editor-section {
+        top: 150px !important;
+        bottom: 105px !important;
+        padding-right: 42px !important;
+        padding-left: 42px !important;
+    }
+    .post-create-modal > .post-composer-media-section {
+        bottom: 76px !important;
+        padding-right: 38px !important;
+        padding-left: 38px !important;
+    }
+    .post-create-modal > details.post-composer-advanced {
+        left: 42px !important;
+    }
+}
