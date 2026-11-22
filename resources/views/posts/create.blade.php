@@ -105,21 +105,7 @@
                         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h16M4 15h16M9 4l-2 16M17 4l-2 16"/></svg>
                     </button>
 
-                    <div class="post-gallery-modal" data-gallery-modal hidden>
-                        <div class="post-gallery-dialog" role="dialog" aria-modal="true" aria-labelledby="post-gallery-title">
-                            <button type="button" class="post-gallery-back" data-gallery-close aria-label="Geri dön">
-                                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>
-                            </button>
-                            <h2 id="post-gallery-title">Görseller</h2>
-                            <div class="post-gallery-dropzone" data-gallery-dropzone>
-                                <svg class="post-gallery-picture-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
-                                <strong>Görselleri buraya sürükleyip bırakın.</strong>
-                                <span>veya bunları cihazınızdan seçin</span>
-                                <button type="button" class="post-gallery-upload" data-gallery-choose>Resimleri yükle</button>
-                                <div class="post-gallery-selected" data-gallery-selected aria-live="polite"></div>
-                            </div>
-                        </div>
-                    </div>
+
                     <div class="post-composer-location-panel" data-composer-location-panel hidden>
                         <label for="post-location">Konum</label>
                         <input id="post-location" name="location" type="text" maxlength="255" value="{{ old('location', $post->location ?? '') }}" placeholder="Şehir, mekan veya adres">
@@ -182,6 +168,21 @@
                 <button class="btn btn-primary post-composer-publish" type="submit">{{ isset($post) ? 'Kaydet' : 'Yayınla' }}</button>
             </footer>
         </form>
+        <div class="post-gallery-modal" data-gallery-modal hidden>
+                        <div class="post-gallery-dialog" role="dialog" aria-modal="true" aria-labelledby="post-gallery-title">
+                            <button type="button" class="post-gallery-back" data-gallery-close aria-label="Geri dön">
+                                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>
+                            </button>
+                            <h2 id="post-gallery-title">Görseller</h2>
+                            <div class="post-gallery-dropzone" data-gallery-dropzone>
+                                <svg class="post-gallery-picture-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
+                                <strong>Görselleri buraya sürükleyip bırakın.</strong>
+                                <span>veya bunları cihazınızdan seçin</span>
+                                <button type="button" class="post-gallery-upload" data-gallery-choose>Resimleri yükle</button>
+                                <div class="post-gallery-selected" data-gallery-selected aria-live="polite"></div>
+                            </div>
+                        </div>
+                    </div>
     </div>
 
 <script>
@@ -388,11 +389,18 @@
         const galleryModal = document.querySelector('[data-gallery-modal]');
         const galleryDropzone = document.querySelector('[data-gallery-dropzone]');
         const gallerySelected = document.querySelector('[data-gallery-selected]');
+        const composerOverlay = document.querySelector('.addpost.post-create-simple.post-create-modal-page');
+        const composerForm = composerOverlay?.querySelector('form.post-create-modal');
         const openGallery = () => {
-            if (galleryModal) galleryModal.hidden = false;
+            if (!galleryModal) return;
+            galleryModal.hidden = false;
+            composerOverlay?.classList.add('is-gallery-open');
+            composerForm?.setAttribute('aria-hidden', 'true');
         };
         const closeGallery = () => {
             if (galleryModal) galleryModal.hidden = true;
+            composerOverlay?.classList.remove('is-gallery-open');
+            composerForm?.removeAttribute('aria-hidden');
         };
         document.querySelector('[data-gallery-open]')?.addEventListener('click', openGallery);
         document.querySelectorAll('[data-gallery-close]').forEach(button => button.addEventListener('click', closeGallery));
