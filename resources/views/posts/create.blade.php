@@ -259,18 +259,26 @@
     border:0 !important; background:transparent !important; color:#71839d !important; cursor:pointer !important;
 }
 .post-tags-back svg { width:21px !important; height:21px !important; fill:none !important; stroke:currentColor !important; stroke-width:1.8 !important; }
+.post-tags-dialog { height:auto !important; min-height:0 !important; }
 .post-tags-input-wrap {
-    display:flex !important; align-items:center !important; gap:10px !important;
-    box-sizing:border-box !important; width:100% !important; min-height:44px !important;
-    padding:0 13px !important; border:1px solid transparent !important; border-radius:13px !important;
+    display:flex !important; flex:0 0 44px !important; flex-wrap:nowrap !important;
+    align-items:center !important; gap:10px !important; position:relative !important;
+    box-sizing:border-box !important; width:100% !important; height:44px !important;
+    min-height:44px !important; max-height:44px !important; margin:0 !important;
+    padding:0 13px !important; overflow:hidden !important;
+    border:1px solid transparent !important; border-radius:13px !important;
     background:#f7f8fb !important;
 }
 .post-tags-input-wrap > svg { flex:0 0 16px !important; width:16px !important; height:16px !important; fill:none !important; stroke:#71839d !important; stroke-width:1.8 !important; }
 .post-tags-input-wrap input#post-tags-input {
-    display:block !important; flex:1 1 auto !important; min-width:0 !important; width:100% !important;
-    height:42px !important; margin:0 !important; padding:0 !important; border:0 !important;
-    outline:0 !important; background:transparent !important; box-shadow:none !important;
-    color:#303944 !important; font:13px/1.4 var(--font-primary, Arial, sans-serif) !important;
+    position:static !important; display:block !important; flex:1 1 0% !important;
+    align-self:center !important; box-sizing:border-box !important; min-width:0 !important;
+    max-width:none !important; width:1% !important; height:42px !important;
+    min-height:42px !important; max-height:42px !important; margin:0 !important;
+    padding:0 !important; border:0 !important; border-radius:0 !important; outline:0 !important;
+    float:none !important; transform:none !important; background:transparent !important;
+    box-shadow:none !important; color:#303944 !important;
+    font:13px/42px var(--font-primary, Arial, sans-serif) !important;
 }
 .post-tags-input-wrap:focus-within { border-color:#d5deea !important; background:#fff !important; }
 .post-tags-input-wrap input::placeholder { color:#71839d !important; opacity:1 !important; }
@@ -857,7 +865,12 @@
             const back = tagsModal.querySelector('.post-tags-back');
             if (back) back.style.cssText = 'position:absolute;top:27px;left:25px;display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;padding:0;border:0;background:transparent;color:#71839d;cursor:pointer;';
             const inputWrap = tagsModal.querySelector('.post-tags-input-wrap');
-            if (inputWrap) inputWrap.style.cssText = 'display:flex;align-items:center;gap:10px;box-sizing:border-box;width:100%;min-height:44px;padding:0 13px;border:1px solid transparent;border-radius:13px;background:#f7f8fb;';
+            if (inputWrap) inputWrap.style.cssText = 'display:flex;flex:0 0 44px;flex-wrap:nowrap;align-items:center;gap:10px;position:relative;box-sizing:border-box;width:100%;height:44px;min-height:44px;max-height:44px;margin:0;padding:0 13px;overflow:hidden;border:1px solid transparent;border-radius:13px;background:#f7f8fb;';
+            const hashIcon = inputWrap?.querySelector('svg');
+            if (hashIcon) hashIcon.style.cssText = 'display:block;position:static;flex:0 0 16px;width:16px;height:16px;margin:0;padding:0;fill:none;stroke:#71839d;stroke-width:1.8;transform:none;';
+            if (tagsInput) tagsInput.style.cssText = 'position:static;display:block;flex:1 1 0%;align-self:center;box-sizing:border-box;width:1%;min-width:0;max-width:none;height:42px;min-height:42px;max-height:42px;margin:0;padding:0;border:0;border-radius:0;outline:0;background:transparent;box-shadow:none;color:#303944;font:13px/42px Arial,sans-serif;float:none;transform:none;';
+            const backIcon = back?.querySelector('svg');
+            if (backIcon) backIcon.style.cssText = 'display:block;width:21px;height:21px;fill:none;stroke:#71839d;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;';
             if (composerForm) {
                 composerForm.style.display = 'none';
                 composerForm.setAttribute('aria-hidden', 'true');
