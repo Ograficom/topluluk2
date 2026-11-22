@@ -543,11 +543,18 @@
 
 
 .profile-all-badges-trigger {
+  display: inline;
+  margin: 0;
   padding: 0;
   border: 0;
-  background: transparent;
+  background: none;
   color: var(--color-primary, #1769f5);
   font: inherit;
+  font-weight: 500;
+  line-height: inherit;
+  text-align: left;
   cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
 }
 .profile-all-badges-trigger:hover { text-decoration: underline; }
