@@ -58,7 +58,7 @@
                             @endforelse
                         </ul>
                     </div>
-                    <footer class="widget__footer"><a href="{{ route('members.index') }}" class="link-accent">Üye sıralaması</a></footer>
+                    <footer class="widget__footer"><a href="{{ route('tasks.index') }}" class="link-accent">Görevler ve liderlik</a><span class="mx-1">·</span><a href="{{ route('members.index') }}" class="link-accent">Üye sıralaması</a></footer>
                 </section>
 
                 @if ($sidebarAdvertisement)
