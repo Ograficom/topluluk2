@@ -10477,3 +10477,9 @@ body.is-messenger-conversation .pm-dialog__composer .pm-composer__send{
     padding-top: 10px !important;
     box-sizing: border-box !important;
 }
+
+
+/* Match the composer title to the site's primary typography. */
+.addpost.post-create-simple.post-create-modal-page > form.post-create-modal > header.addpost__modal-head > strong {
+    font-family: var(--font-primary) !important;
+}
