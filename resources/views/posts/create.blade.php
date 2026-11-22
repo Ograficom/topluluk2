@@ -197,6 +197,113 @@
         </div>
     </div>
 
+<style id="post-video-modal-fix">
+.addpost.post-create-simple.post-create-modal-page.is-video-open > form#post-create-form {
+    display: none !important;
+}
+.addpost.post-create-simple.post-create-modal-page > .post-video-modal[hidden] {
+    display: none !important;
+}
+.addpost.post-create-simple.post-create-modal-page > .post-video-modal:not([hidden]) {
+    position: fixed !important;
+    inset: 0 !important;
+    z-index: 2147483000 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    box-sizing: border-box !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    margin: 0 !important;
+    padding: 16px !important;
+    background: rgba(25,35,50,.48) !important;
+    -webkit-backdrop-filter: blur(5px) !important;
+    backdrop-filter: blur(5px) !important;
+}
+.addpost.post-create-simple.post-create-modal-page > .post-video-modal:not([hidden]) > .post-video-dialog {
+    position: relative !important;
+    inset: auto !important;
+    display: block !important;
+    flex: 0 1 480px !important;
+    box-sizing: border-box !important;
+    width: min(480px, calc(100vw - 32px)) !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    max-height: calc(100vh - 32px) !important;
+    margin: 0 auto !important;
+    padding: 26px 18px 18px !important;
+    overflow: visible !important;
+    border: 0 !important;
+    border-radius: 26px !important;
+    background: #fff !important;
+    box-shadow: 0 20px 60px rgba(15,23,42,.2) !important;
+    color: #202633 !important;
+    font-family: var(--font-primary, Arial, sans-serif) !important;
+    transform: none !important;
+}
+.addpost.post-create-simple.post-create-modal-page > .post-video-modal .post-video-dialog h2 {
+    display: block !important;
+    margin: 0 0 27px !important;
+    padding: 0 !important;
+    text-align: center !important;
+    color: #30343b !important;
+    font: 700 18px/1.25 var(--font-primary, Arial, sans-serif) !important;
+}
+.addpost.post-create-simple.post-create-modal-page > .post-video-modal .post-video-back {
+    position: absolute !important;
+    top: 27px !important;
+    left: 25px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 22px !important;
+    height: 22px !important;
+    padding: 0 !important;
+    border: 0 !important;
+    background: transparent !important;
+    color: #71839d !important;
+    cursor: pointer !important;
+}
+.addpost.post-create-simple.post-create-modal-page > .post-video-modal .post-video-back svg {
+    width: 21px !important;
+    height: 21px !important;
+    fill: none !important;
+    stroke: currentColor !important;
+    stroke-width: 1.8 !important;
+}
+.addpost.post-create-simple.post-create-modal-page > .post-video-modal input#post-video-url {
+    display: block !important;
+    box-sizing: border-box !important;
+    width: 100% !important;
+    height: 44px !important;
+    margin: 0 !important;
+    padding: 0 13px !important;
+    border: 1px solid #d5deea !important;
+    border-radius: 13px !important;
+    background: #fff !important;
+    color: #303944 !important;
+    font: 13px/1.4 var(--font-primary, Arial, sans-serif) !important;
+    box-shadow: 0 2px 5px rgba(15,23,42,.04) !important;
+}
+.addpost.post-create-simple.post-create-modal-page > .post-video-modal .post-video-hint {
+    display: flex !important;
+    align-items: center !important;
+    gap: 9px !important;
+    margin: 15px 0 0 !important;
+    color: #71839d !important;
+    font: 12px/1.4 var(--font-primary, Arial, sans-serif) !important;
+}
+.addpost.post-create-simple.post-create-modal-page > .post-video-modal .post-video-hint svg {
+    display: block !important;
+    flex: 0 0 16px !important;
+    width: 16px !important;
+    height: 16px !important;
+    fill: none !important;
+    stroke: currentColor !important;
+    stroke-width: 1.8 !important;
+}
+</style>
+
 <script>
 (() => {
   const start = () => {
