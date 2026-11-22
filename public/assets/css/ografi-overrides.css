@@ -10538,3 +10538,9 @@ body.is-messenger-conversation .pm-dialog__composer .pm-composer__send{
     display: none !important;
     visibility: hidden !important;
 }
+
+
+/* Increase the Yeni yayın heading size without moving surrounding elements. */
+.addpost.post-create-simple.post-create-modal-page > form.post-create-modal > header.addpost__modal-head > strong {
+    font-size: 20px !important;
+}
