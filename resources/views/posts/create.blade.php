@@ -246,16 +246,19 @@
     backdrop-filter:blur(5px) !important;
 }
 .post-tags-dialog {
-    position:relative !important;
+    position:fixed !important;
+    left:50vw !important;
+    top:50vh !important;
     display:block !important;
-    flex:0 1 480px !important;
+    flex:none !important;
+    transform:translate(-50%, -50%) !important;
     box-sizing:border-box !important;
     width:min(480px, calc(100vw - 32px)) !important;
     min-width:0 !important;
     height:143px !important;
     min-height:143px !important;
     max-height:143px !important;
-    margin:0 auto !important;
+    margin:0 !important;
     padding:26px 18px 24px !important;
     border:0 !important;
     border-radius:26px !important;
@@ -926,6 +929,18 @@
 
             tagsModal.hidden = false;
             tagsModal.classList.add('is-open');
+            const tagsDialog = tagsModal.querySelector('.post-tags-dialog');
+            if (tagsDialog) {
+                tagsDialog.style.setProperty('position', 'fixed', 'important');
+                tagsDialog.style.setProperty('left', '50vw', 'important');
+                tagsDialog.style.setProperty('top', '50vh', 'important');
+                tagsDialog.style.setProperty('margin', '0', 'important');
+                tagsDialog.style.setProperty('transform', 'translate(-50%, -50%)', 'important');
+                tagsDialog.style.setProperty('width', 'min(480px, calc(100vw - 32px))', 'important');
+                tagsDialog.style.setProperty('height', '143px', 'important');
+                tagsDialog.style.setProperty('min-height', '143px', 'important');
+                tagsDialog.style.setProperty('max-height', '143px', 'important');
+            }
             tagsModal.style.cssText = [
                 'position:fixed', 'inset:0', 'z-index:2147483647',
                 'display:flex', 'align-items:center', 'justify-content:center',
