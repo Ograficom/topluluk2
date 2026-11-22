@@ -228,61 +228,141 @@
 
 
 <style id="post-tags-modal-style">
-.addpost.post-create-simple.post-create-modal-page.is-tags-open > form#post-create-form {
-    display:none !important; visibility:hidden !important; pointer-events:none !important;
-}
 .post-tags-modal[hidden] { display:none !important; }
-.post-tags-modal:not([hidden]) {
-    position:fixed !important; inset:0 !important; z-index:2147483002 !important;
-    display:flex !important; align-items:center !important; justify-content:center !important;
-    box-sizing:border-box !important; width:100vw !important; height:100vh !important;
-    margin:0 !important; padding:16px !important; background:rgba(25,35,50,.48) !important;
-    -webkit-backdrop-filter:blur(5px) !important; backdrop-filter:blur(5px) !important;
+.post-tags-modal.is-open {
+    position:fixed !important;
+    inset:0 !important;
+    z-index:2147483647 !important;
+    display:flex !important;
+    align-items:center !important;
+    justify-content:center !important;
+    box-sizing:border-box !important;
+    width:100vw !important;
+    height:100vh !important;
+    margin:0 !important;
+    padding:12px !important;
+    background:rgba(25,35,50,.48) !important;
+    -webkit-backdrop-filter:blur(5px) !important;
+    backdrop-filter:blur(5px) !important;
 }
 .post-tags-dialog {
-    position:relative !important; box-sizing:border-box !important;
-    width:min(480px, calc(100vw - 32px)) !important; min-width:0 !important;
-    height:143px !important; min-height:143px !important; max-height:143px !important;
-    margin:0 auto !important; padding:26px 18px 24px !important;
-    border:0 !important; border-radius:26px !important; background:#fff !important;
-    box-shadow:0 20px 60px rgba(15,23,42,.2) !important; color:#202633 !important;
-    font-family:var(--font-primary, Arial, sans-serif) !important;
+    position:relative !important;
+    display:block !important;
+    flex:0 1 480px !important;
+    box-sizing:border-box !important;
+    width:min(480px, calc(100vw - 32px)) !important;
+    min-width:0 !important;
+    height:143px !important;
+    min-height:143px !important;
+    max-height:143px !important;
+    margin:0 auto !important;
+    padding:26px 18px 24px !important;
+    border:0 !important;
+    border-radius:26px !important;
+    background:#fff !important;
+    box-shadow:0 20px 60px rgba(15,23,42,.2) !important;
+    color:#202633 !important;
+    font-family:Arial,sans-serif !important;
+    transform:none !important;
 }
 .post-tags-dialog h2 {
-    display:block !important; margin:0 0 27px !important; padding:0 !important;
-    text-align:center !important; color:#30343b !important;
-    font:700 18px/1.25 var(--font-primary, Arial, sans-serif) !important;
+    display:block !important;
+    margin:0 0 27px !important;
+    padding:0 !important;
+    text-align:center !important;
+    color:#30343b !important;
+    font:700 18px/1.25 Arial,sans-serif !important;
 }
 .post-tags-back {
-    position:absolute !important; top:27px !important; left:25px !important;
-    display:inline-flex !important; align-items:center !important; justify-content:center !important;
-    width:22px !important; height:22px !important; padding:0 !important;
-    border:0 !important; background:transparent !important; color:#71839d !important; cursor:pointer !important;
+    position:absolute !important;
+    top:27px !important;
+    left:25px !important;
+    display:inline-flex !important;
+    align-items:center !important;
+    justify-content:center !important;
+    width:22px !important;
+    height:22px !important;
+    margin:0 !important;
+    padding:0 !important;
+    border:0 !important;
+    background:transparent !important;
+    color:#71839d !important;
+    cursor:pointer !important;
 }
-.post-tags-back svg { width:21px !important; height:21px !important; fill:none !important; stroke:currentColor !important; stroke-width:1.8 !important; }
-.post-tags-dialog { height:143px !important; min-height:143px !important; max-height:143px !important; }
+.post-tags-back svg {
+    display:block !important;
+    width:21px !important;
+    height:21px !important;
+    fill:none !important;
+    stroke:currentColor !important;
+    stroke-width:1.8 !important;
+    stroke-linecap:round !important;
+    stroke-linejoin:round !important;
+}
 .post-tags-input-wrap {
-    display:flex !important; flex:0 0 44px !important; flex-wrap:nowrap !important;
-    align-items:center !important; gap:10px !important; position:relative !important;
-    box-sizing:border-box !important; width:100% !important; height:44px !important;
-    min-height:44px !important; max-height:44px !important; margin:0 !important;
-    padding:0 13px !important; overflow:hidden !important;
-    border:1px solid transparent !important; border-radius:13px !important;
+    display:flex !important;
+    flex:0 0 44px !important;
+    flex-wrap:nowrap !important;
+    align-items:center !important;
+    gap:10px !important;
+    position:relative !important;
+    box-sizing:border-box !important;
+    width:100% !important;
+    height:44px !important;
+    min-height:44px !important;
+    max-height:44px !important;
+    margin:0 !important;
+    padding:0 13px !important;
+    overflow:hidden !important;
+    border:1px solid transparent !important;
+    border-radius:13px !important;
     background:#f7f8fb !important;
 }
-.post-tags-input-wrap > svg { flex:0 0 16px !important; width:16px !important; height:16px !important; fill:none !important; stroke:#71839d !important; stroke-width:1.8 !important; }
-.post-tags-input-wrap input#post-tags-input {
-    position:static !important; display:block !important; flex:1 1 0% !important;
-    align-self:center !important; box-sizing:border-box !important; min-width:0 !important;
-    max-width:none !important; width:1% !important; height:42px !important;
-    min-height:42px !important; max-height:42px !important; margin:0 !important;
-    padding:0 !important; border:0 !important; border-radius:0 !important; outline:0 !important;
-    float:none !important; transform:none !important; background:transparent !important;
-    box-shadow:none !important; color:#303944 !important;
-    font:13px/42px var(--font-primary, Arial, sans-serif) !important;
+.post-tags-input-wrap > svg {
+    display:block !important;
+    position:static !important;
+    flex:0 0 16px !important;
+    width:16px !important;
+    height:16px !important;
+    margin:0 !important;
+    padding:0 !important;
+    fill:none !important;
+    stroke:#71839d !important;
+    stroke-width:1.8 !important;
+    transform:none !important;
 }
-.post-tags-input-wrap:focus-within { border-color:#d5deea !important; background:#fff !important; }
-.post-tags-input-wrap input::placeholder { color:#71839d !important; opacity:1 !important; }
+.post-tags-input-wrap input#post-tags-input {
+    position:static !important;
+    display:block !important;
+    flex:1 1 0% !important;
+    align-self:center !important;
+    box-sizing:border-box !important;
+    width:1% !important;
+    min-width:0 !important;
+    max-width:none !important;
+    height:42px !important;
+    min-height:42px !important;
+    max-height:42px !important;
+    margin:0 !important;
+    padding:0 !important;
+    border:0 !important;
+    border-radius:0 !important;
+    outline:0 !important;
+    float:none !important;
+    transform:none !important;
+    background:transparent !important;
+    box-shadow:none !important;
+    color:#303944 !important;
+    font:13px/42px Arial,sans-serif !important;
+}
+.post-tags-input-wrap:focus-within {
+    border-color:#d5deea !important;
+    background:#fff !important;
+}
+.post-tags-input-wrap input#post-tags-input::placeholder {
+    color:#71839d !important;
+    opacity:1 !important;
+}
 </style>
 
 <style id="post-widget-modal-style">
@@ -840,38 +920,8 @@
             closeComposerPanels();
             if (tagsModal.parentNode !== document.body) document.body.appendChild(tagsModal);
 
-            // Use the same body-level fixed overlay strategy as the working media dialogs.
-            tagsModal.hidden = false;
-            tagsModal.style.cssText = [
-                'position:fixed', 'inset:0', 'z-index:2147483647',
-                'display:flex', 'align-items:center', 'justify-content:center',
-                'box-sizing:border-box', 'width:100vw', 'height:100vh',
-                'margin:0', 'padding:12px',
-                'background:rgba(25,35,50,.48)',
-                'backdrop-filter:blur(5px)', '-webkit-backdrop-filter:blur(5px)'
-            ].join(';') + ';';
-
-            const dialog = tagsModal.querySelector('.post-tags-dialog');
-            if (dialog) dialog.style.cssText = [
-                'position:relative', 'display:block', 'box-sizing:border-box',
-                'flex:0 1 480px', 'width:min(480px, calc(100vw - 24px))',
-                'min-width:0', 'height:143px', 'min-height:143px', 'max-height:143px', 'margin:0 auto',
-                'padding:26px 18px 24px', 'border:0', 'border-radius:26px',
-                'background:#fff', 'box-shadow:0 20px 60px rgba(15,23,42,.2)',
-                'color:#202633', 'font-family:Arial,sans-serif', 'transform:none'
-            ].join(';') + ';';
-
-            const title = tagsModal.querySelector('#post-tags-title');
-            if (title) title.style.cssText = 'display:block;margin:0 0 27px;padding:0;text-align:center;color:#30343b;font:700 18px/1.25 Arial,sans-serif;';
-            const back = tagsModal.querySelector('.post-tags-back');
-            if (back) back.style.cssText = 'position:absolute;top:27px;left:25px;display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;padding:0;border:0;background:transparent;color:#71839d;cursor:pointer;';
-            const inputWrap = tagsModal.querySelector('.post-tags-input-wrap');
-            if (inputWrap) inputWrap.style.cssText = 'display:flex;flex:0 0 44px;flex-wrap:nowrap;align-items:center;gap:10px;position:relative;box-sizing:border-box;width:100%;height:44px;min-height:44px;max-height:44px;margin:0;padding:0 13px;overflow:hidden;border:1px solid transparent;border-radius:13px;background:#f7f8fb;';
-            const hashIcon = inputWrap?.querySelector('svg');
-            if (hashIcon) hashIcon.style.cssText = 'display:block;position:static;flex:0 0 16px;width:16px;height:16px;margin:0;padding:0;fill:none;stroke:#71839d;stroke-width:1.8;transform:none;';
-            if (tagsInput) tagsInput.style.cssText = 'position:static;display:block;flex:1 1 0%;align-self:center;box-sizing:border-box;width:1%;min-width:0;max-width:none;height:42px;min-height:42px;max-height:42px;margin:0;padding:0;border:0;border-radius:0;outline:0;background:transparent;box-shadow:none;color:#303944;font:13px/42px Arial,sans-serif;float:none;transform:none;';
-            const backIcon = back?.querySelector('svg');
-            if (backIcon) backIcon.style.cssText = 'display:block;width:21px;height:21px;fill:none;stroke:#71839d;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;';
+            // Keep presentation in the dedicated stylesheet; JS only controls modal state.
+            tagsModal.classList.add('is-open');
             if (composerForm) {
                 composerForm.style.display = 'none';
                 composerForm.setAttribute('aria-hidden', 'true');
@@ -881,7 +931,11 @@
             window.setTimeout(() => tagsInput?.focus(), 0);
         };
         const closeTagsModal = () => {
-            if (tagsModal) tagsModal.hidden = true;
+            if (tagsModal) {
+                tagsModal.hidden = true;
+                tagsModal.classList.remove('is-open');
+                tagsModal.removeAttribute('style');
+            }
             if (tagsModal && tagsModalPlaceholder?.parentNode) {
                 tagsModalPlaceholder.parentNode.insertBefore(tagsModal, tagsModalPlaceholder);
             }
