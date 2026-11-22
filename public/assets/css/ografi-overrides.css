@@ -10940,3 +10940,12 @@ body.is-messenger-conversation .pm-dialog__composer .pm-composer__send{
     margin-top: 3px !important;
     font-size: 11px !important;
 }
+
+
+/* Final fix: fully remove the composer form from layout while gallery is open. */
+.addpost.post-create-simple.post-create-modal-page.is-gallery-open > form.addpost__form.post-create-modal {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+}
