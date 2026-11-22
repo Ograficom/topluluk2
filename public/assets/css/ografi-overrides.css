@@ -10819,3 +10819,39 @@ body.is-messenger-conversation .pm-dialog__composer .pm-composer__send{
 }
 .addpost.post-create-simple.post-create-modal-page .post-gallery-upload:hover { background: #dce5ef !important; }
 .addpost.post-create-simple.post-create-modal-page .post-gallery-selected { color: #2878f0 !important; font: 12px/1.4 var(--font-primary) !important; }
+
+
+/* Match the reference interaction: gallery replaces the composer temporarily. */
+.addpost.post-create-simple.post-create-modal-page.is-gallery-open {
+    background: transparent !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+}
+.addpost.post-create-simple.post-create-modal-page > form.post-create-modal.is-gallery-open {
+    background: transparent !important;
+    border-color: transparent !important;
+    box-shadow: none !important;
+    overflow: visible !important;
+}
+.addpost.post-create-simple.post-create-modal-page > form.post-create-modal.is-gallery-open > :not(section.post-composer-media-section) {
+    visibility: hidden !important;
+    pointer-events: none !important;
+}
+.addpost.post-create-simple.post-create-modal-page > form.post-create-modal.is-gallery-open > section.post-composer-media-section {
+    position: static !important;
+    display: contents !important;
+    visibility: visible !important;
+}
+.addpost.post-create-simple.post-create-modal-page > form.post-create-modal.is-gallery-open > section.post-composer-media-section > :not(.post-gallery-modal) {
+    display: none !important;
+    visibility: hidden !important;
+}
+.addpost.post-create-simple.post-create-modal-page.is-gallery-open .post-gallery-modal {
+    background: rgba(25,35,50,.48) !important;
+    -webkit-backdrop-filter: blur(5px) !important;
+    backdrop-filter: blur(5px) !important;
+}
+.addpost.post-create-simple.post-create-modal-page.is-gallery-open .post-gallery-dialog {
+    width: min(480px, calc(100vw - 24px)) !important;
+    min-height: 260px !important;
+}
