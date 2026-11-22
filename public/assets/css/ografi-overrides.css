@@ -10116,3 +10116,30 @@ body.is-messenger-conversation .pm-dialog__composer .pm-composer__send{
         left: 42px !important;
     }
 }
+
+
+/* User request: leave only the empty white composer card. */
+.post-create-modal-page > form.post-create-modal > * {
+    display: none !important;
+}
+.post-create-modal-page > form.post-create-modal {
+    width: 590px !important;
+    min-width: 590px !important;
+    max-width: calc(100vw - 32px) !important;
+    height: 345px !important;
+    min-height: 345px !important;
+    padding: 0 !important;
+    border: 0 !important;
+    border-radius: 24px !important;
+    background: #fff !important;
+    box-shadow: 0 18px 55px rgba(15, 23, 42, .20) !important;
+}
+@media (max-width: 640px) {
+    .post-create-modal-page > form.post-create-modal {
+        width: calc(100vw - 16px) !important;
+        min-width: 0 !important;
+        max-width: calc(100vw - 16px) !important;
+        height: min(345px, calc(100dvh - 16px)) !important;
+        min-height: 280px !important;
+    }
+}
