@@ -7958,7 +7958,7 @@ body.is-messenger-conversation .pm-dialog__composer .pm-composer__send{
 
 /* Final composer correction: neutralize Repost editor chrome and anchor Editor.js controls. */
 .post-create-modal {
-    border-radius: 0 !important;
+    border-radius: 27px !important;
 }
 .post-create-modal > .post-composer-title-field {
     display: grid !important;
