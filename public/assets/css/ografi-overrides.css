@@ -10143,3 +10143,50 @@ body.is-messenger-conversation .pm-dialog__composer .pm-composer__send{
         min-height: 280px !important;
     }
 }
+
+
+/* Hard reset: the composer is intentionally an empty white card, with no visible contents. */
+.addpost.post-create-simple.post-create-modal-page {
+    position: fixed !important;
+    inset: 0 !important;
+    z-index: 12000 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 16px !important;
+    background: rgba(20, 28, 40, .42) !important;
+    -webkit-backdrop-filter: blur(5px) !important;
+    backdrop-filter: blur(5px) !important;
+}
+.addpost.post-create-simple.post-create-modal-page > form.post-create-modal {
+    all: initial !important;
+    box-sizing: border-box !important;
+    display: block !important;
+    position: relative !important;
+    width: 590px !important;
+    min-width: 0 !important;
+    max-width: calc(100vw - 32px) !important;
+    height: 345px !important;
+    min-height: 0 !important;
+    max-height: calc(100dvh - 32px) !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+    border: 0 !important;
+    border-radius: 16px !important;
+    background: #fff !important;
+    box-shadow: 0 18px 55px rgba(15, 23, 42, .20) !important;
+}
+.addpost.post-create-simple.post-create-modal-page > form.post-create-modal > *,
+.addpost.post-create-simple.post-create-modal-page > form.post-create-modal::before,
+.addpost.post-create-simple.post-create-modal-page > form.post-create-modal::after {
+    display: none !important;
+    visibility: hidden !important;
+}
+@media (max-width: 640px) {
+    .addpost.post-create-simple.post-create-modal-page > form.post-create-modal {
+        width: calc(100vw - 16px) !important;
+        max-width: calc(100vw - 16px) !important;
+        height: min(345px, calc(100dvh - 16px)) !important;
+    }
+}
