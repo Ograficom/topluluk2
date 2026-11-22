@@ -196,6 +196,19 @@
                 </p>
             </div>
         </div>
+        <div class="post-tags-modal" data-tags-modal hidden>
+            <div class="post-tags-dialog" role="dialog" aria-modal="true" aria-labelledby="post-tags-title">
+                <button type="button" class="post-tags-back" data-tags-close aria-label="Geri dön">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>
+                </button>
+                <h2 id="post-tags-title">Etiketler</h2>
+                <div class="post-tags-input-wrap">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h16M4 15h16M9 4l-2 16M17 4l-2 16"/></svg>
+                    <input id="post-tags-input" name="tags" form="post-create-form" type="text" maxlength="500"
+                        value="{{ old('tags', $post->tags ?? '') }}" placeholder="Укажите теги" aria-label="Etiketler">
+                </div>
+            </div>
+        </div>
         <div class="post-video-modal" data-video-modal hidden>
             <div class="post-video-dialog" role="dialog" aria-modal="true" aria-labelledby="post-video-title">
                 <button type="button" class="post-video-back" data-video-close aria-label="Geri dön">
@@ -213,6 +226,52 @@
         </div>
     </div>
 
+
+<style id="post-tags-modal-style">
+.post-tags-modal[hidden] { display:none !important; }
+.post-tags-modal:not([hidden]) {
+    position:fixed !important; inset:0 !important; z-index:2147483002 !important;
+    display:flex !important; align-items:center !important; justify-content:center !important;
+    box-sizing:border-box !important; width:100vw !important; height:100vh !important;
+    margin:0 !important; padding:16px !important; background:rgba(25,35,50,.48) !important;
+    -webkit-backdrop-filter:blur(5px) !important; backdrop-filter:blur(5px) !important;
+}
+.post-tags-dialog {
+    position:relative !important; box-sizing:border-box !important;
+    width:min(480px, calc(100vw - 32px)) !important; min-width:0 !important;
+    min-height:0 !important; margin:0 auto !important; padding:26px 18px 18px !important;
+    border:0 !important; border-radius:26px !important; background:#fff !important;
+    box-shadow:0 20px 60px rgba(15,23,42,.2) !important; color:#202633 !important;
+    font-family:var(--font-primary, Arial, sans-serif) !important;
+}
+.post-tags-dialog h2 {
+    display:block !important; margin:0 0 27px !important; padding:0 !important;
+    text-align:center !important; color:#30343b !important;
+    font:700 18px/1.25 var(--font-primary, Arial, sans-serif) !important;
+}
+.post-tags-back {
+    position:absolute !important; top:27px !important; left:25px !important;
+    display:inline-flex !important; align-items:center !important; justify-content:center !important;
+    width:22px !important; height:22px !important; padding:0 !important;
+    border:0 !important; background:transparent !important; color:#71839d !important; cursor:pointer !important;
+}
+.post-tags-back svg { width:21px !important; height:21px !important; fill:none !important; stroke:currentColor !important; stroke-width:1.8 !important; }
+.post-tags-input-wrap {
+    display:flex !important; align-items:center !important; gap:10px !important;
+    box-sizing:border-box !important; width:100% !important; min-height:44px !important;
+    padding:0 13px !important; border:1px solid transparent !important; border-radius:13px !important;
+    background:#f7f8fb !important;
+}
+.post-tags-input-wrap > svg { flex:0 0 16px !important; width:16px !important; height:16px !important; fill:none !important; stroke:#71839d !important; stroke-width:1.8 !important; }
+.post-tags-input-wrap input#post-tags-input {
+    display:block !important; flex:1 1 auto !important; min-width:0 !important; width:100% !important;
+    height:42px !important; margin:0 !important; padding:0 !important; border:0 !important;
+    outline:0 !important; background:transparent !important; box-shadow:none !important;
+    color:#303944 !important; font:13px/1.4 var(--font-primary, Arial, sans-serif) !important;
+}
+.post-tags-input-wrap:focus-within { border-color:#d5deea !important; background:#fff !important; }
+.post-tags-input-wrap input::placeholder { color:#71839d !important; opacity:1 !important; }
+</style>
 
 <style id="post-widget-modal-style">
 .addpost.post-create-simple.post-create-modal-page > .post-widget-modal[hidden] { display:none !important; }
@@ -653,8 +712,8 @@
         const widgetModal = document.querySelector('[data-widget-modal]');
         const widgetInput = document.getElementById('post-widget-code');
         const tagsToggle = document.querySelector('[data-composer-tags-toggle]');
-        const tagsDetails = document.querySelector('.post-composer-advanced');
-        const tagsInput = document.getElementById('tags');
+        const tagsModal = document.querySelector('[data-tags-modal]');
+        const tagsInput = document.getElementById('post-tags-input');
         const closeComposerPanels = () => {
             if (locationPanel) locationPanel.hidden = true;
             locationToggle?.setAttribute('aria-expanded', 'false');
@@ -758,11 +817,26 @@
         document.querySelectorAll('[data-widget-close]').forEach(button => button.addEventListener('click', closeWidgetModal));
         widgetModal?.addEventListener('click', event => { if (event.target === widgetModal) closeWidgetModal(); });
         document.addEventListener('keydown', event => { if (event.key === 'Escape' && widgetModal && !widgetModal.hidden) closeWidgetModal(); });
-        tagsToggle?.addEventListener('click', () => {
+        const openTagsModal = () => {
+            if (!tagsModal) return;
             closeComposerPanels();
-            if (tagsDetails) tagsDetails.open = true;
-            tagsInput?.focus();
-        });
+            if (tagsModal.parentElement !== document.body) document.body.appendChild(tagsModal);
+            tagsModal.hidden = false;
+            composerOverlay?.classList.add('is-tags-open');
+            composerForm?.setAttribute('aria-hidden', 'true');
+            tagsToggle?.setAttribute('aria-expanded', 'true');
+            window.setTimeout(() => tagsInput?.focus(), 0);
+        };
+        const closeTagsModal = () => {
+            if (tagsModal) tagsModal.hidden = true;
+            composerOverlay?.classList.remove('is-tags-open');
+            composerForm?.removeAttribute('aria-hidden');
+            tagsToggle?.setAttribute('aria-expanded', 'false');
+        };
+        tagsToggle?.addEventListener('click', openTagsModal);
+        document.querySelectorAll('[data-tags-close]').forEach(button => button.addEventListener('click', closeTagsModal));
+        tagsModal?.addEventListener('click', event => { if (event.target === tagsModal) closeTagsModal(); });
+        document.addEventListener('keydown', event => { if (event.key === 'Escape' && tagsModal && !tagsModal.hidden) closeTagsModal(); });
 
         document.addEventListener('click', event => {
             if (locationPanel?.hidden) return;
