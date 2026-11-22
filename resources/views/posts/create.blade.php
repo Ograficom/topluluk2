@@ -929,28 +929,80 @@
 
             tagsModal.hidden = false;
             tagsModal.classList.add('is-open');
+            const important = (element, rules) => {
+                if (!element) return;
+                Object.entries(rules).forEach(([property, value]) => element.style.setProperty(property, value, 'important'));
+            };
+
+            // Full-screen overlay: center its dialog using flex, not nested fixed positioning.
+            important(tagsModal, {
+                position: 'fixed', inset: '0', zIndex: '2147483647',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                boxSizing: 'border-box', width: '100vw', height: '100vh',
+                margin: '0', padding: '12px',
+                background: 'rgba(25,35,50,.48)',
+                backdropFilter: 'blur(5px)', WebkitBackdropFilter: 'blur(5px)'
+            });
+
             const tagsDialog = tagsModal.querySelector('.post-tags-dialog');
-            if (tagsDialog) {
-                tagsDialog.style.setProperty('position', 'fixed', 'important');
-                tagsDialog.style.setProperty('left', '50vw', 'important');
-                tagsDialog.style.setProperty('top', '50vh', 'important');
-                tagsDialog.style.setProperty('margin', '0', 'important');
-                tagsDialog.style.setProperty('transform', 'translate(-50%, -50%)', 'important');
-                tagsDialog.style.setProperty('width', 'min(480px, calc(100vw - 32px))', 'important');
-                tagsDialog.style.setProperty('height', '143px', 'important');
-                tagsDialog.style.setProperty('min-height', '143px', 'important');
-                tagsDialog.style.setProperty('max-height', '143px', 'important');
-            }
-            tagsModal.style.cssText = [
-                'position:fixed', 'inset:0', 'z-index:2147483647',
-                'display:flex', 'align-items:center', 'justify-content:center',
-                'box-sizing:border-box', 'width:100vw', 'height:100vh',
-                'margin:0', 'padding:12px',
-                'background:rgba(25,35,50,.48)',
-                'backdrop-filter:blur(5px)', '-webkit-backdrop-filter:blur(5px)'
-            ].join(';') + ';';
+            important(tagsDialog, {
+                position: 'relative', left: 'auto', top: 'auto',
+                display: 'block', flex: '0 0 480px', boxSizing: 'border-box',
+                width: 'min(480px, calc(100vw - 32px))',
+                minWidth: '0', height: '143px', minHeight: '143px', maxHeight: '143px',
+                margin: '0', padding: '26px 18px 24px',
+                border: '0', borderRadius: '26px', background: '#fff',
+                boxShadow: '0 20px 60px rgba(15,23,42,.2)',
+                color: '#202633', fontFamily: 'Arial,sans-serif',
+                transform: 'none'
+            });
+
+            const tagsTitle = tagsModal.querySelector('#post-tags-title');
+            important(tagsTitle, {
+                display: 'block', margin: '0 0 27px', padding: '0',
+                textAlign: 'center', color: '#30343b',
+                font: '700 18px/1.25 Arial,sans-serif'
+            });
+
+            const tagsBack = tagsModal.querySelector('.post-tags-back');
+            important(tagsBack, {
+                position: 'absolute', top: '27px', left: '25px',
+                display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+                width: '22px', height: '22px', margin: '0', padding: '0',
+                border: '0', background: 'transparent', color: '#71839d', cursor: 'pointer'
+            });
+
+            const tagsWrap = tagsModal.querySelector('.post-tags-input-wrap');
+            important(tagsWrap, {
+                display: 'flex', flex: '0 0 44px', flexWrap: 'nowrap',
+                alignItems: 'center', gap: '10px', position: 'relative',
+                boxSizing: 'border-box', width: '100%', height: '44px',
+                minHeight: '44px', maxHeight: '44px', margin: '0',
+                padding: '0 13px', overflow: 'hidden',
+                border: '1px solid transparent', borderRadius: '13px',
+                background: '#f7f8fb'
+            });
+
+            const tagsHash = tagsWrap?.querySelector('svg');
+            important(tagsHash, {
+                display: 'block', position: 'static', flex: '0 0 16px',
+                width: '16px', height: '16px', margin: '0', padding: '0',
+                fill: 'none', stroke: '#71839d', strokeWidth: '1.8', transform: 'none'
+            });
+
+            important(tagsInput, {
+                position: 'static', display: 'block', flex: '1 1 0%',
+                alignSelf: 'center', boxSizing: 'border-box',
+                width: '1%', minWidth: '0', maxWidth: 'none',
+                height: '42px', minHeight: '42px', maxHeight: '42px',
+                margin: '0', padding: '0', border: '0', borderRadius: '0',
+                outline: '0', float: 'none', transform: 'none',
+                background: 'transparent', boxShadow: 'none',
+                color: '#303944', font: '13px/42px Arial,sans-serif'
+            });
+
             if (composerForm) {
-                composerForm.style.display = 'none';
+                composerForm.style.setProperty('display', 'none', 'important');
                 composerForm.setAttribute('aria-hidden', 'true');
             }
             composerOverlay?.classList.add('is-tags-open');
@@ -967,7 +1019,8 @@
                 tagsModalPlaceholder.parentNode.insertBefore(tagsModal, tagsModalPlaceholder);
             }
             if (composerForm) {
-                composerForm.style.display = previousTagsComposerDisplay;
+                composerForm.style.removeProperty('display');
+                if (previousTagsComposerDisplay) composerForm.style.display = previousTagsComposerDisplay;
                 composerForm.removeAttribute('aria-hidden');
             }
             composerOverlay?.classList.remove('is-tags-open');
