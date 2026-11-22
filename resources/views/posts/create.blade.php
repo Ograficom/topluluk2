@@ -101,6 +101,9 @@
                     </label>
                     <input id="post-video-file" name="video_file" type="file" accept="video/mp4,video/webm,video/quicktime,video/x-matroska">
 
+                    <button type="button" class="post-composer-tool" data-composer-widget-toggle aria-label="Widget ekle" title="Widget ekle" aria-expanded="false">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>
+                    </button>
                     <button type="button" class="post-composer-tool" data-composer-tags-toggle aria-label="Etiket ekle" title="Etiket ekle">
                         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h16M4 15h16M9 4l-2 16M17 4l-2 16"/></svg>
                     </button>
@@ -180,6 +183,19 @@
                             </div>
                         </div>
                     </div>
+        <div class="post-widget-modal" data-widget-modal hidden>
+            <div class="post-widget-dialog" role="dialog" aria-modal="true" aria-labelledby="post-widget-title">
+                <button type="button" class="post-widget-back" data-widget-close aria-label="Geri dön">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>
+                </button>
+                <h2 id="post-widget-title">Widget</h2>
+                <textarea id="post-widget-code" maxlength="10000" placeholder="" aria-label="Widget kodu"></textarea>
+                <p class="post-widget-hint">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5m0-8h.01"/></svg>
+                    <span>Buraya konu başlıkları, Twitter gönderileri, haritalar ve diğer widget kodlarını yapıştırabilirsiniz.</span>
+                </p>
+            </div>
+        </div>
         <div class="post-video-modal" data-video-modal hidden>
             <div class="post-video-dialog" role="dialog" aria-modal="true" aria-labelledby="post-video-title">
                 <button type="button" class="post-video-back" data-video-close aria-label="Geri dön">
@@ -196,6 +212,66 @@
             </div>
         </div>
     </div>
+
+
+<style id="post-widget-modal-style">
+.addpost.post-create-simple.post-create-modal-page > .post-widget-modal[hidden] { display:none !important; }
+.addpost.post-create-simple.post-create-modal-page > .post-widget-modal:not([hidden]) {
+    position:fixed !important; inset:0 !important; z-index:2147483001 !important;
+    display:flex !important; align-items:center !important; justify-content:center !important;
+    box-sizing:border-box !important; width:100vw !important; height:100vh !important;
+    margin:0 !important; padding:16px !important; background:rgba(25,35,50,.48) !important;
+    -webkit-backdrop-filter:blur(5px) !important; backdrop-filter:blur(5px) !important;
+}
+.addpost.post-create-simple.post-create-modal-page.is-widget-open > form#post-create-form {
+    display:none !important; visibility:hidden !important; pointer-events:none !important;
+}
+.addpost.post-create-simple.post-create-modal-page > .post-widget-modal:not([hidden]) > .post-widget-dialog {
+    position:relative !important; display:block !important; flex:0 1 480px !important;
+    box-sizing:border-box !important; width:min(480px, calc(100vw - 32px)) !important;
+    min-width:0 !important; min-height:0 !important; margin:0 auto !important;
+    padding:26px 18px 18px !important; border:0 !important; border-radius:26px !important;
+    background:#fff !important; box-shadow:0 20px 60px rgba(15,23,42,.2) !important;
+    color:#202633 !important; font-family:var(--font-primary, Arial, sans-serif) !important;
+    transform:none !important;
+}
+.addpost.post-create-simple.post-create-modal-page > .post-widget-modal .post-widget-dialog h2 {
+    display:block !important; margin:0 0 27px !important; padding:0 !important;
+    text-align:center !important; color:#30343b !important;
+    font:700 18px/1.25 var(--font-primary, Arial, sans-serif) !important;
+}
+.addpost.post-create-simple.post-create-modal-page > .post-widget-modal .post-widget-back {
+    position:absolute !important; top:27px !important; left:25px !important;
+    display:inline-flex !important; align-items:center !important; justify-content:center !important;
+    width:22px !important; height:22px !important; padding:0 !important;
+    border:0 !important; background:transparent !important; color:#71839d !important; cursor:pointer !important;
+}
+.addpost.post-create-simple.post-create-modal-page > .post-widget-modal .post-widget-back svg {
+    width:21px !important; height:21px !important; fill:none !important; stroke:currentColor !important;
+    stroke-width:1.8 !important; stroke-linecap:round !important; stroke-linejoin:round !important;
+}
+.addpost.post-create-simple.post-create-modal-page > .post-widget-modal textarea#post-widget-code {
+    display:block !important; box-sizing:border-box !important; width:100% !important;
+    min-height:100px !important; height:100px !important; max-height:45vh !important;
+    margin:0 !important; padding:12px !important; resize:vertical !important;
+    border:1px solid #d5deea !important; border-radius:13px !important; outline:none !important;
+    background:#fff !important; color:#303944 !important;
+    font:13px/1.45 var(--font-primary, Arial, sans-serif) !important;
+    box-shadow:0 2px 5px rgba(15,23,42,.04) !important;
+}
+.addpost.post-create-simple.post-create-modal-page > .post-widget-modal textarea#post-widget-code:focus {
+    border-color:#9bb9e8 !important; box-shadow:0 0 0 3px rgba(37,99,235,.08) !important;
+}
+.addpost.post-create-simple.post-create-modal-page > .post-widget-modal .post-widget-hint {
+    display:flex !important; align-items:flex-start !important; gap:9px !important;
+    margin:15px 0 0 !important; color:#71839d !important;
+    font:12px/1.55 var(--font-primary, Arial, sans-serif) !important;
+}
+.addpost.post-create-simple.post-create-modal-page > .post-widget-modal .post-widget-hint svg {
+    display:block !important; flex:0 0 16px !important; width:16px !important; height:16px !important;
+    margin-top:1px !important; fill:none !important; stroke:currentColor !important; stroke-width:1.8 !important;
+}
+</style>
 
 <style id="post-video-modal-fix">
 .addpost.post-create-simple.post-create-modal-page.is-video-open > form#post-create-form {
@@ -573,6 +649,9 @@
         const videoToggle = document.querySelector('[data-composer-video-toggle]');
         const videoModal = document.querySelector('[data-video-modal]');
         const videoInput = document.getElementById('post-video-url');
+        const widgetToggle = document.querySelector('[data-composer-widget-toggle]');
+        const widgetModal = document.querySelector('[data-widget-modal]');
+        const widgetInput = document.getElementById('post-widget-code');
         const tagsToggle = document.querySelector('[data-composer-tags-toggle]');
         const tagsDetails = document.querySelector('.post-composer-advanced');
         const tagsInput = document.getElementById('tags');
@@ -611,6 +690,25 @@
         document.querySelectorAll('[data-video-close]').forEach(button => button.addEventListener('click', closeVideoModal));
         videoModal?.addEventListener('click', event => { if (event.target === videoModal) closeVideoModal(); });
         document.addEventListener('keydown', event => { if (event.key === 'Escape' && videoModal && !videoModal.hidden) closeVideoModal(); });
+        const openWidgetModal = () => {
+            if (!widgetModal) return;
+            closeComposerPanels();
+            widgetModal.hidden = false;
+            composerOverlay?.classList.add('is-widget-open');
+            composerForm?.setAttribute('aria-hidden', 'true');
+            widgetToggle?.setAttribute('aria-expanded', 'true');
+            window.setTimeout(() => widgetInput?.focus(), 0);
+        };
+        const closeWidgetModal = () => {
+            if (widgetModal) widgetModal.hidden = true;
+            composerOverlay?.classList.remove('is-widget-open');
+            composerForm?.removeAttribute('aria-hidden');
+            widgetToggle?.setAttribute('aria-expanded', 'false');
+        };
+        widgetToggle?.addEventListener('click', openWidgetModal);
+        document.querySelectorAll('[data-widget-close]').forEach(button => button.addEventListener('click', closeWidgetModal));
+        widgetModal?.addEventListener('click', event => { if (event.target === widgetModal) closeWidgetModal(); });
+        document.addEventListener('keydown', event => { if (event.key === 'Escape' && widgetModal && !widgetModal.hidden) closeWidgetModal(); });
         tagsToggle?.addEventListener('click', () => {
             closeComposerPanels();
             if (tagsDetails) tagsDetails.open = true;
