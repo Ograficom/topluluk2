@@ -91,11 +91,12 @@
             </div>
         </header>
 
+        <h1 class="post__title-full">{{ $post->title }}</h1>
+
         @if ($post->coverImageUrl() || count($post->galleryImageUrls()) > 0 || filled($post->video_url) || filled($post->video_path))
             <div class="post__media-full">@include('posts._media', ['post' => $post])</div>
         @endif
 
-        <h1 class="post__title-full">{{ $post->title }}</h1>
         <section class="editor editorjs-content">
             @php
                 $editorContent = json_decode($post->body, true);

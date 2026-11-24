@@ -1,16 +1,6 @@
 /* OgraFi profile page — layout rules adapted from the supplied Repost profile.html/app.css.
    Kept isolated from the shared theme stylesheets so other pages are unaffected. */
 
-/* The page shell follows the original Repost 55px sidebar + content grid. */
-.main {
-  display: grid;
-  min-width: 0;
-  margin-top: var(--header-offset);
-}
-.main__grid-full {
-  grid-template-columns: 55px minmax(280px, auto);
-  gap: var(--main-gap);
-}
 .main__grid-feed {
   display: grid;
   min-width: 0;
@@ -245,7 +235,6 @@
   .main__grid-feed { grid-template-columns: minmax(0, 1fr) 290px; }
 }
 @media screen and (max-width: 920px) {
-  .main__grid-full { grid-template-columns: minmax(0, 1fr); }
   .main__grid-feed { grid-template-columns: minmax(0, 1fr); }
   .profile__aside {
     position: static;
