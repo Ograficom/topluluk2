@@ -71,7 +71,7 @@
                     <span class="post-create-simple__editor-status" data-editor-status role="status" aria-live="polite">Hazırlanıyor…</span>
                 </div>
                 <div class="post-create-simple__writing addpost__editor">
-                    <div id="post-editorjs" class="post-editorjs post-create-simple__editor" aria-label="Yazı içeriği" data-placeholder="Напиши свой лучший текст"></div>
+                    <div id="post-editorjs" class="post-editorjs post-create-simple__editor" aria-label="Yazı içeriği" data-placeholder="En iyi yazını burada yaz"></div>
                     <div class="post-composer-editor-tip">Blok eklemek için sol taraftaki + simgesini kullan.</div>
                 </div>
             </section>
@@ -205,7 +205,7 @@
                 <div class="post-tags-input-wrap">
                     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h16M4 15h16M9 4l-2 16M17 4l-2 16"/></svg>
                     <input id="post-tags-input" name="tags" form="post-create-form" type="text" maxlength="500"
-                        value="{{ old('tags', $post->tags ?? '') }}" placeholder="Укажите теги" aria-label="Etiketler">
+                        value="{{ old('tags', $post->tags ?? '') }}" placeholder="Etiketleri girin" aria-label="Etiketler">
                 </div>
             </div>
         </div>
@@ -621,7 +621,7 @@
 
         const editor = new window.EditorJS({
           holder,
-          placeholder: 'Напиши свой лучший текст',
+          placeholder: 'En iyi yazını burada yaz',
           minHeight: 84,
           autofocus: false,
           logLevel: 'ERROR',

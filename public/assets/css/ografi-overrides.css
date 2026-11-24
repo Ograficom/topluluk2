@@ -9897,7 +9897,7 @@ body.is-messenger-conversation .pm-dialog__composer .pm-composer__send{
 }
 .post-create-modal #post-editorjs .ce-paragraph[data-placeholder]:empty::before,
 .post-create-modal #post-editorjs [contenteditable="true"]:empty::before {
-    content: "Напиши свой лучший текст" !important;
+    content: "En iyi yazını burada yaz" !important;
     color: #71839d !important;
     opacity: 1 !important;
 }
@@ -9988,7 +9988,7 @@ body.is-messenger-conversation .pm-dialog__composer .pm-composer__send{
 .post-create-modal #post-editorjs .ce-paragraph[data-placeholder]::before,
 .post-create-modal #post-editorjs .ce-paragraph:empty::before,
 .post-create-modal #post-editorjs [contenteditable="true"]:empty::before {
-    content: "Напиши свой лучший текст" !important;
+    content: "En iyi yazını burada yaz" !important;
     color: #71839d !important;
     opacity: 1 !important;
     font-size: 13px !important;
@@ -10072,7 +10072,7 @@ body.is-messenger-conversation .pm-dialog__composer .pm-composer__send{
 .post-create-modal #post-editorjs .ce-block:first-child .ce-paragraph:empty::before,
 .post-create-modal #post-editorjs .ce-block:first-child [contenteditable="true"]:empty::before,
 .post-create-modal #post-editorjs .ce-paragraph[data-placeholder]:empty::before {
-    content: "Напиши свой лучший текст" !important;
+    content: "En iyi yazını burada yaz" !important;
     display: block !important;
     color: #71839d !important;
     opacity: 1 !important;
@@ -10114,203 +10114,6 @@ body.is-messenger-conversation .pm-dialog__composer .pm-composer__send{
     }
     .post-create-modal > details.post-composer-advanced {
         left: 42px !important;
-    }
-}
-
-
-/* User request: leave only the empty white composer card. */
-.post-create-modal-page > form.post-create-modal > * {
-    display: none !important;
-}
-.post-create-modal-page > form.post-create-modal {
-    width: 590px !important;
-    min-width: 590px !important;
-    max-width: calc(100vw - 32px) !important;
-    height: 345px !important;
-    min-height: 345px !important;
-    padding: 0 !important;
-    border: 0 !important;
-    border-radius: 24px !important;
-    background: #fff !important;
-    box-shadow: 0 18px 55px rgba(15, 23, 42, .20) !important;
-}
-@media (max-width: 640px) {
-    .post-create-modal-page > form.post-create-modal {
-        width: calc(100vw - 16px) !important;
-        min-width: 0 !important;
-        max-width: calc(100vw - 16px) !important;
-        height: min(345px, calc(100dvh - 16px)) !important;
-        min-height: 280px !important;
-    }
-}
-
-
-/* Hard reset: the composer is intentionally an empty white card, with no visible contents. */
-.addpost.post-create-simple.post-create-modal-page {
-    position: fixed !important;
-    inset: 0 !important;
-    z-index: 12000 !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    padding: 16px !important;
-    background: rgba(20, 28, 40, .42) !important;
-    -webkit-backdrop-filter: blur(5px) !important;
-    backdrop-filter: blur(5px) !important;
-}
-.addpost.post-create-simple.post-create-modal-page > form.post-create-modal {
-    all: initial !important;
-    box-sizing: border-box !important;
-    display: block !important;
-    position: relative !important;
-    width: 590px !important;
-    min-width: 0 !important;
-    max-width: calc(100vw - 32px) !important;
-    height: 345px !important;
-    min-height: 0 !important;
-    max-height: calc(100dvh - 32px) !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    overflow: hidden !important;
-    border: 0 !important;
-    border-radius: 16px !important;
-    background: #fff !important;
-    box-shadow: 0 18px 55px rgba(15, 23, 42, .20) !important;
-}
-.addpost.post-create-simple.post-create-modal-page > form.post-create-modal > *,
-.addpost.post-create-simple.post-create-modal-page > form.post-create-modal::before,
-.addpost.post-create-simple.post-create-modal-page > form.post-create-modal::after {
-    display: none !important;
-    visibility: hidden !important;
-}
-@media (max-width: 640px) {
-    .addpost.post-create-simple.post-create-modal-page > form.post-create-modal {
-        width: calc(100vw - 16px) !important;
-        max-width: calc(100vw - 16px) !important;
-        height: min(345px, calc(100dvh - 16px)) !important;
-    }
-}
-
-
-/* User request: slightly increase the empty white card height; preserve its width. */
-.addpost.post-create-simple.post-create-modal-page > form.post-create-modal {
-    height: 400px !important;
-    max-height: calc(100dvh - 32px) !important;
-}
-@media (max-width: 640px) {
-    .addpost.post-create-simple.post-create-modal-page > form.post-create-modal {
-        height: min(400px, calc(100dvh - 16px)) !important;
-    }
-}
-
-
-/* User request: set empty white card height to 500px; keep width unchanged. */
-.addpost.post-create-simple.post-create-modal-page > form.post-create-modal {
-    height: 500px !important;
-    max-height: calc(100dvh - 32px) !important;
-}
-@media (max-width: 640px) {
-    .addpost.post-create-simple.post-create-modal-page > form.post-create-modal {
-        height: min(500px, calc(100dvh - 16px)) !important;
-    }
-}
-
-
-/* User-requested empty white card dimensions: 780px wide x 500px high. */
-.addpost.post-create-simple.post-create-modal-page > form.post-create-modal {
-    width: 780px !important;
-    min-width: 0 !important;
-    max-width: calc(100vw - 32px) !important;
-    height: 500px !important;
-    min-height: 0 !important;
-    max-height: calc(100dvh - 32px) !important;
-}
-@media (max-width: 640px) {
-    .addpost.post-create-simple.post-create-modal-page > form.post-create-modal {
-        width: calc(100vw - 16px) !important;
-        max-width: calc(100vw - 16px) !important;
-        height: min(500px, calc(100dvh - 16px)) !important;
-        max-height: calc(100dvh - 16px) !important;
-    }
-}
-
-
-/* The expand script toggles .is-expanded on the page wrapper, not on the form. */
-.addpost.post-create-simple.post-create-modal-page.is-expanded > form.post-create-modal {
-    width: min(1100px, calc(100vw - 32px)) !important;
-    min-width: 0 !important;
-    max-width: calc(100vw - 32px) !important;
-    height: min(760px, calc(100dvh - 32px)) !important;
-    min-height: 0 !important;
-    max-height: calc(100dvh - 32px) !important;
-}
-@media (max-width: 640px) {
-    .addpost.post-create-simple.post-create-modal-page.is-expanded > form.post-create-modal {
-        width: calc(100vw - 16px) !important;
-        max-width: calc(100vw - 16px) !important;
-        height: calc(100dvh - 16px) !important;
-        max-height: calc(100dvh - 16px) !important;
-    }
-}
-
-
-/* User-requested default empty card size: 590px wide x 400px high. */
-.addpost.post-create-simple.post-create-modal-page > form.post-create-modal {
-    width: 590px !important;
-    min-width: 0 !important;
-    max-width: calc(100vw - 32px) !important;
-    height: 400px !important;
-    min-height: 0 !important;
-    max-height: calc(100dvh - 32px) !important;
-}
-@media (max-width: 640px) {
-    .addpost.post-create-simple.post-create-modal-page > form.post-create-modal {
-        width: calc(100vw - 16px) !important;
-        max-width: calc(100vw - 16px) !important;
-        height: min(400px, calc(100dvh - 16px)) !important;
-        max-height: calc(100dvh - 16px) !important;
-    }
-}
-
-
-/* User-requested default empty card size: 700px wide x 500px high. */
-.addpost.post-create-simple.post-create-modal-page > form.post-create-modal {
-    width: 700px !important;
-    min-width: 0 !important;
-    max-width: calc(100vw - 32px) !important;
-    height: 500px !important;
-    min-height: 0 !important;
-    max-height: calc(100dvh - 32px) !important;
-}
-@media (max-width: 640px) {
-    .addpost.post-create-simple.post-create-modal-page > form.post-create-modal {
-        width: calc(100vw - 16px) !important;
-        max-width: calc(100vw - 16px) !important;
-        height: min(500px, calc(100dvh - 16px)) !important;
-        max-height: calc(100dvh - 16px) !important;
-    }
-}
-
-
-/* Reduce the empty white composer card height by 50px; keep width unchanged. */
-.addpost.post-create-simple.post-create-modal-page > form.post-create-modal {
-    height: 450px !important;
-    max-height: calc(100dvh - 32px) !important;
-}
-@media (max-width: 640px) {
-    .addpost.post-create-simple.post-create-modal-page > form.post-create-modal {
-        height: min(450px, calc(100dvh - 16px)) !important;
-    }
-}
-
-
-/* Reduce the empty composer card height by another 10px; preserve width. */
-.addpost.post-create-simple.post-create-modal-page > form.post-create-modal {
-    height: 440px !important;
-}
-@media (max-width: 640px) {
-    .addpost.post-create-simple.post-create-modal-page > form.post-create-modal {
-        height: min(440px, calc(100dvh - 16px)) !important;
     }
 }
 
@@ -11046,4 +10849,316 @@ body.is-messenger-conversation .pm-dialog__composer .pm-composer__send{
     fill: none !important;
     stroke: currentColor !important;
     stroke-width: 1.8 !important;
+}
+
+
+/* Post composer: compact reference layout. Keep the real form and media dialogs intact. */
+.addpost.post-create-simple.post-create-modal-page {
+    position: fixed !important;
+    inset: 0 !important;
+    z-index: 12000 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 16px !important;
+    background: rgba(20, 28, 40, .42) !important;
+    backdrop-filter: blur(5px) !important;
+}
+.addpost.post-create-simple.post-create-modal-page > form#post-create-form {
+    box-sizing: border-box !important;
+    position: relative !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 0 !important;
+    width: min(680px, calc(100vw - 32px)) !important;
+    min-width: 0 !important;
+    max-width: calc(100vw - 32px) !important;
+    height: min(400px, calc(100dvh - 32px)) !important;
+    min-height: 0 !important;
+    max-height: calc(100dvh - 32px) !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+    border: 0 !important;
+    border-radius: 28px !important;
+    background: #fff !important;
+    color: #202633 !important;
+    font-family: var(--font-primary, Arial, sans-serif) !important;
+    box-shadow: 0 18px 55px rgba(15, 23, 42, .20) !important;
+    visibility: visible !important;
+}
+.addpost.post-create-simple.post-create-modal-page.is-expanded > form#post-create-form {
+    width: min(1100px, calc(100vw - 32px)) !important;
+    height: min(760px, calc(100dvh - 32px)) !important;
+}
+.addpost.post-create-simple.post-create-modal-page:is(.is-gallery-open,.is-video-open,.is-widget-open) > form#post-create-form {
+    display: none !important;
+}
+.post-create-modal-page > #post-create-form > header.addpost__modal-head {
+    position: relative !important;
+    inset: auto !important;
+    flex: 0 0 60px !important;
+    height: 60px !important;
+    min-height: 60px !important;
+    padding: 0 20px 0 23px !important;
+    box-sizing: border-box !important;
+}
+.post-create-modal-page > #post-create-form > header.addpost__modal-head > strong {
+    font-size: 18px !important;
+    font-weight: 700 !important;
+}
+.post-create-modal-page > #post-create-form > .addpost__header {
+    position: relative !important;
+    inset: auto !important;
+    flex: 0 0 42px !important;
+    width: 100% !important;
+    min-height: 42px !important;
+    height: 42px !important;
+    padding: 0 18px !important;
+    box-sizing: border-box !important;
+    gap: 10px !important;
+}
+.post-create-modal-page > #post-create-form > .addpost__header .addpost__header-avatar {
+    width: 36px !important;
+    height: 36px !important;
+    flex: 0 0 36px !important;
+    margin: 0 !important;
+}
+.post-create-modal-page > #post-create-form > .addpost__header .addpost__author {
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 8px !important;
+    flex: 1 1 auto !important;
+    min-width: 0 !important;
+}
+.post-create-modal-page > #post-create-form > .addpost__header .addpost__author-name {
+    font-size: 14px !important;
+    font-weight: 650 !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    min-width: 0 !important;
+}
+.post-create-modal-page > #post-create-form > .addpost__header .addpost__channel-separator {
+    display: inline-block !important;
+    visibility: visible !important;
+    color: #9aa9bd !important;
+}
+.post-create-modal-page > #post-create-form > .addpost__header .addpost__author select {
+    display: block !important;
+    visibility: visible !important;
+    width: auto !important;
+    min-width: 0 !important;
+    max-width: min(220px, 45%) !important;
+    appearance: none !important;
+    font-size: 13px !important;
+    cursor: pointer !important;
+}
+.post-create-modal-page > #post-create-form > .post-composer-title-field {
+    position: relative !important;
+    inset: auto !important;
+    display: flex !important;
+    visibility: visible !important;
+    flex: 0 0 46px !important;
+    width: 100% !important;
+    height: 46px !important;
+    padding: 0 30px 0 64px !important;
+    margin: 0 !important;
+    box-sizing: border-box !important;
+}
+.post-create-modal-page > #post-create-form #post-title {
+    display: block !important;
+    visibility: visible !important;
+    width: 100% !important;
+    color: #202633 !important;
+    font-size: 20px !important;
+    font-weight: 650 !important;
+}
+.post-create-modal-page > #post-create-form #post-title::placeholder {
+    color: #64748b !important;
+    opacity: 1 !important;
+}
+.post-create-modal-page > #post-create-form > .post-composer-excerpt-field,
+.post-create-modal-page > #post-create-form > input[type="hidden"] {
+    display: none !important;
+}
+.post-create-modal-page > #post-create-form > .post-composer-editor-section {
+    position: relative !important;
+    inset: auto !important;
+    display: flex !important;
+    visibility: visible !important;
+    flex: 1 1 0 !important;
+    width: 100% !important;
+    min-height: 0 !important;
+    height: auto !important;
+    padding: 10px 30px 0 64px !important;
+    margin: 0 !important;
+    box-sizing: border-box !important;
+    overflow: auto !important;
+    overscroll-behavior: contain;
+}
+.post-create-modal-page > #post-create-form #post-editorjs [contenteditable="true"] {
+    color: #263244 !important;
+    font-size: 15px !important;
+    line-height: 1.55 !important;
+    min-height: 24px !important;
+}
+.post-create-modal-page > #post-create-form #post-editorjs:not(.is-ready):empty::before {
+    content: attr(data-placeholder);
+    color: #71839d;
+    font-size: 15px;
+}
+.post-create-modal-page > #post-create-form #post-editorjs .ce-block:first-child .ce-paragraph:empty::before,
+.post-create-modal-page > #post-create-form #post-editorjs .ce-block:first-child [contenteditable="true"]:empty::before,
+.post-create-modal-page > #post-create-form #post-editorjs .ce-paragraph[data-placeholder]:empty::before {
+    content: attr(data-placeholder) !important;
+    color: #71839d !important;
+    opacity: 1 !important;
+    pointer-events: none !important;
+}
+.post-create-modal-page > #post-create-form #post-editorjs .ce-block:first-child .ce-paragraph:not([data-placeholder]):empty::before {
+    content: "En iyi yazını burada yaz" !important;
+}
+.post-create-modal-page > #post-create-form > section.post-composer-media-section {
+    position: relative !important;
+    inset: auto !important;
+    display: block !important;
+    visibility: visible !important;
+    flex: 0 0 auto !important;
+    width: 100% !important;
+    min-height: 44px !important;
+    height: auto !important;
+    padding: 0 30px 0 64px !important;
+    margin: 0 0 36px !important;
+    box-sizing: border-box !important;
+}
+.post-create-modal-page > #post-create-form > section.post-composer-media-section > .post-composer-toolbar {
+    position: relative !important;
+    inset: auto !important;
+    display: flex !important;
+    flex-wrap: wrap !important;
+    align-items: center !important;
+    gap: 6px 12px !important;
+    min-height: 44px !important;
+    height: auto !important;
+    padding: 0 !important;
+}
+.post-create-modal-page > #post-create-form .post-composer-toolbar > .post-composer-tool {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex: 0 0 28px !important;
+    width: 28px !important;
+    height: 30px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    border-radius: 6px !important;
+    background: transparent !important;
+    color: #64748b !important;
+    cursor: pointer !important;
+    box-shadow: none !important;
+}
+.post-create-modal-page > #post-create-form .post-composer-toolbar > .post-composer-tool:hover,
+.post-create-modal-page > #post-create-form .post-composer-toolbar > .post-composer-tool:focus-visible {
+    background: #f1f5f9 !important;
+    color: #0d6efd !important;
+}
+.post-create-modal-page > #post-create-form .post-composer-toolbar > .post-composer-tool svg {
+    display: block !important;
+    width: 20px !important;
+    height: 20px !important;
+    stroke: currentColor !important;
+    fill: none !important;
+    stroke-width: 1.8 !important;
+}
+.post-create-modal-page > #post-create-form .post-composer-location-panel:not([hidden]) {
+    display: flex !important;
+    visibility: visible !important;
+}
+.post-create-modal-page > #post-create-form .post-composer-file-list:not(:empty),
+.post-create-modal-page > #post-create-form .post-composer-cover-preview:not(:empty),
+.post-create-modal-page > #post-create-form .post-create-simple__existing-media,
+.post-create-modal-page > #post-create-form .post-composer-existing-cover {
+    display: flex !important;
+    flex: 1 0 100% !important;
+    gap: 8px !important;
+    max-height: 68px !important;
+    overflow: auto !important;
+}
+.post-create-modal-page > #post-create-form > details.post-composer-advanced {
+    left: 64px !important;
+    bottom: 20px !important;
+    max-width: calc(100% - 180px) !important;
+    z-index: 20 !important;
+}
+.post-create-modal-page > #post-create-form > details.post-composer-advanced > summary {
+    min-height: 40px !important;
+    font-size: 14px !important;
+    font-weight: 600 !important;
+}
+.post-create-modal-page > #post-create-form > footer.post-create-simple__footer {
+    position: relative !important;
+    inset: auto !important;
+    display: flex !important;
+    visibility: visible !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+    flex: 0 0 60px !important;
+    width: 100% !important;
+    height: 60px !important;
+    min-height: 60px !important;
+    margin: 0 !important;
+    padding: 0 23px 20px !important;
+    box-sizing: border-box !important;
+    border: 0 !important;
+    background: transparent !important;
+}
+.post-create-modal-page > #post-create-form > footer.post-create-simple__footer > a { display: none !important; }
+.post-create-modal-page > #post-create-form > footer.post-create-simple__footer > button.post-composer-publish {
+    display: inline-flex !important;
+    visibility: visible !important;
+    align-items: center !important;
+    justify-content: center !important;
+    min-width: 102px !important;
+    width: auto !important;
+    min-height: 40px !important;
+    height: 40px !important;
+    margin: 0 !important;
+    padding: 0 18px !important;
+    border: 0 !important;
+    border-radius: 999px !important;
+    background: #0d6efd !important;
+    color: #fff !important;
+    font-size: 14px !important;
+    font-weight: 650 !important;
+    box-shadow: none !important;
+    cursor: pointer !important;
+}
+.post-create-modal-page > #post-create-form > footer.post-create-simple__footer > button.post-composer-publish:hover { background: #075bd8 !important; }
+.post-create-modal-page > #post-create-form > footer.post-create-simple__footer > button.post-composer-publish:disabled { opacity: .55 !important; cursor: wait !important; }
+.post-create-modal-page > #post-create-form :is(button,a,select,input):focus-visible { outline: 2px solid #8bb8ff !important; outline-offset: 2px !important; }
+@media (max-width: 640px) {
+    .addpost.post-create-simple.post-create-modal-page { padding: 8px !important; }
+    .addpost.post-create-simple.post-create-modal-page > form#post-create-form {
+        width: calc(100vw - 16px) !important;
+        max-width: calc(100vw - 16px) !important;
+        height: min(440px, calc(100dvh - 16px)) !important;
+        max-height: calc(100dvh - 16px) !important;
+        border-radius: 22px !important;
+    }
+    .addpost.post-create-simple.post-create-modal-page.is-expanded > form#post-create-form {
+        height: calc(100dvh - 16px) !important;
+    }
+    .post-create-modal-page > #post-create-form > .post-composer-title-field,
+    .post-create-modal-page > #post-create-form > .post-composer-editor-section,
+    .post-create-modal-page > #post-create-form > section.post-composer-media-section {
+        padding-left: 24px !important;
+        padding-right: 18px !important;
+    }
+    .post-create-modal-page > #post-create-form > details.post-composer-advanced { left: 22px !important; }
+    .post-create-modal-page > #post-create-form > details.post-composer-advanced > summary { font-size: 12px !important; gap: 6px !important; }
+    .post-create-modal-page > #post-create-form > footer.post-create-simple__footer { padding-right: 18px !important; }
+}
+@media (max-height: 440px) {
+    .post-create-modal-page > #post-create-form > section.post-composer-media-section { margin-bottom: 4px !important; }
 }
