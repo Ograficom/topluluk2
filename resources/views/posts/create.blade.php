@@ -108,6 +108,89 @@
                     left: -39px !important;
                 }
             }
+
+            /* Repost theme typography: Roboto body, Inter headings and controls.
+               Keep the original theme's rem sizes, scoped to the composer. */
+            .addpost.post-create-simple.post-create-modal-page > form#post-create-form {
+                font-family: var(--font-primary, Roboto, sans-serif) !important;
+                font-size: .95rem !important;
+                line-height: 1.5 !important;
+            }
+            .addpost.post-create-simple.post-create-modal-page > #post-create-form > .addpost__modal-head > strong {
+                font-family: var(--font-secondary, Inter, sans-serif) !important;
+                font-size: 1.125rem !important;
+                font-weight: 700 !important;
+                line-height: 1.25 !important;
+            }
+            .addpost.post-create-simple.post-create-modal-page > #post-create-form .addpost__author .addpost__author-name {
+                font-family: var(--font-secondary, Inter, sans-serif) !important;
+                font-size: .95rem !important;
+                font-weight: 600 !important;
+            }
+            .addpost.post-create-simple.post-create-modal-page > #post-create-form .addpost__author select {
+                font-family: var(--font-primary, Roboto, sans-serif) !important;
+                font-size: 13px !important;
+                line-height: 1.5 !important;
+            }
+            .addpost.post-create-simple.post-create-modal-page > #post-create-form #post-title,
+            .addpost.post-create-simple.post-create-modal-page > #post-create-form #post-title::placeholder {
+                font-family: var(--font-primary, Roboto, sans-serif) !important;
+                font-size: 1.4rem !important;
+                font-weight: 600 !important;
+                line-height: 1.5 !important;
+            }
+            .addpost.post-create-simple.post-create-modal-page > #post-create-form #post-editorjs,
+            .addpost.post-create-simple.post-create-modal-page > #post-create-form #post-editorjs .ce-block__content,
+            .addpost.post-create-simple.post-create-modal-page > #post-create-form #post-editorjs [contenteditable="true"],
+            .addpost.post-create-simple.post-create-modal-page > #post-create-form #post-editorjs .ce-paragraph,
+            .addpost.post-create-simple.post-create-modal-page > #post-create-form #post-editorjs input,
+            .addpost.post-create-simple.post-create-modal-page > #post-create-form #post-editorjs textarea {
+                font-family: var(--font-primary, Roboto, sans-serif) !important;
+                font-size: .95rem !important;
+                line-height: 1.5 !important;
+            }
+            .addpost.post-create-simple.post-create-modal-page > #post-create-form #post-editorjs h2.ce-header { font-size: 1.5rem !important; font-weight: 700 !important; }
+            .addpost.post-create-simple.post-create-modal-page > #post-create-form #post-editorjs h3.ce-header { font-size: 1.375rem !important; font-weight: 700 !important; }
+            .addpost.post-create-simple.post-create-modal-page > #post-create-form #post-editorjs h4.ce-header { font-size: 1.25rem !important; font-weight: 700 !important; }
+            .addpost.post-create-simple.post-create-modal-page > #post-create-form #post-editorjs .ce-header {
+                font-family: var(--font-secondary, Inter, sans-serif) !important;
+                line-height: 1.25 !important;
+            }
+            /* One placeholder, on the initial paragraph only; blank lines stay blank. */
+            .addpost.post-create-simple.post-create-modal-page > #post-create-form #post-editorjs .ce-paragraph::before {
+                content: none !important;
+            }
+            .addpost.post-create-simple.post-create-modal-page > #post-create-form #post-editorjs .ce-block:first-child:only-child .ce-paragraph:empty::before {
+                content: "En iyi yazını burada yaz" !important;
+                display: block !important;
+                font-family: var(--font-primary, Roboto, sans-serif) !important;
+                font-size: .95rem !important;
+                font-weight: 400 !important;
+                line-height: 1.5 !important;
+                color: #64748b !important;
+                opacity: 1 !important;
+                pointer-events: none !important;
+            }
+            .addpost.post-create-simple.post-create-modal-page > #post-create-form #post-editorjs:not(.is-ready):empty::before {
+                font-family: var(--font-primary, Roboto, sans-serif) !important;
+                font-size: .95rem !important;
+                line-height: 1.5 !important;
+            }
+            .addpost.post-create-simple.post-create-modal-page > #post-create-form #post-editorjs.is-ready::before {
+                content: none !important;
+            }
+            .addpost.post-create-simple.post-create-modal-page > #post-create-form > details.post-composer-advanced > summary,
+            .addpost.post-create-simple.post-create-modal-page > #post-create-form > footer.post-create-simple__footer > button.post-composer-publish {
+                font-family: var(--font-secondary, Inter, sans-serif) !important;
+                font-size: .86rem !important;
+                font-weight: 600 !important;
+                line-height: 1.25 !important;
+            }
+            .addpost.post-create-simple.post-create-modal-page > #post-create-form .composer-block-picker button:not([hidden]) {
+                font-family: var(--font-primary, Roboto, sans-serif) !important;
+                font-size: .95rem !important;
+                line-height: 1.5 !important;
+            }
         </style>
         <form id="post-create-form" class="addpost__form card card-body post-create-modal" action="{{ isset($post) ? route('posts.update', $post) : route('posts.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
