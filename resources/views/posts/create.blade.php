@@ -16,7 +16,8 @@
             /* Grow with actual Editor.js blocks, including empty paragraphs.
                Once the viewport is full, only the editor scrolls. */
             .addpost.post-create-simple.post-create-modal-page:not(.is-expanded) {
-                align-items: flex-start !important;
+                align-items: center !important;
+                justify-content: center !important;
             }
             .addpost.post-create-simple.post-create-modal-page:not(.is-expanded) > form#post-create-form {
                 --composer-base-height: 400px;
@@ -24,7 +25,7 @@
                 height: auto !important;
                 min-height: min(var(--composer-base-height), calc(100dvh - var(--composer-viewport-gap))) !important;
                 max-height: calc(100dvh - var(--composer-viewport-gap)) !important;
-                margin-top: var(--composer-grow-offset, 0px) !important;
+                margin: 0 !important;
                 flex-shrink: 0 !important;
             }
             .addpost.post-create-simple.post-create-modal-page:not(.is-expanded) > #post-create-form > .post-composer-editor-section {
@@ -741,28 +742,6 @@
     const status = document.querySelector('[data-editor-status]');
     if (!holder || !input || !form || holder.dataset.editorStarted === '1') return;
     holder.dataset.editorStarted = '1';
-
-    // Preserve the initial centered position while the card grows downwards.
-    // When the bottom reaches the viewport, move it up just enough to fit.
-    const composerRoot = form.closest('.post-create-modal-page');
-    const syncComposerOffset = () => {
-      if (!form.isConnected || !composerRoot || composerRoot.classList.contains('is-expanded') || !form.offsetHeight) return;
-      const rootStyle = getComputedStyle(composerRoot);
-      const formStyle = getComputedStyle(form);
-      const baseHeight = parseFloat(formStyle.getPropertyValue('--composer-base-height')) || 400;
-      const available = Math.max(0, composerRoot.clientHeight - (parseFloat(rootStyle.paddingTop) || 0) - (parseFloat(rootStyle.paddingBottom) || 0));
-      const offset = Math.max(0, Math.min((available - baseHeight) / 2, available - form.offsetHeight));
-      const value = Math.floor(offset) + 'px';
-      if (form.style.getPropertyValue('--composer-grow-offset') !== value) {
-        form.style.setProperty('--composer-grow-offset', value);
-      }
-    };
-    if (window.ResizeObserver) {
-      const composerResizeObserver = new ResizeObserver(syncComposerOffset);
-      composerResizeObserver.observe(form);
-      composerResizeObserver.observe(composerRoot);
-    }
-    syncComposerOffset();
 
     const blockToggle = form.querySelector('[data-block-picker-toggle]');
     const blockPicker = form.querySelector('[data-block-picker]');
