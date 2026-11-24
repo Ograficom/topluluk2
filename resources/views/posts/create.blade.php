@@ -192,6 +192,92 @@
                 font-size: .95rem !important;
                 line-height: 1.5 !important;
             }
+
+            /* Editor.js 2.30: the inline toolbar wraps an absolutely positioned
+               popover. Older vertical-menu rules must not clip its outer wrapper. */
+            .post-create-modal-page > #post-create-form #post-editorjs .ce-inline-toolbar {
+                display: block !important;
+                z-index: 45 !important;
+                overflow: visible !important;
+                border: 0 !important;
+                border-radius: 0 !important;
+                background: transparent !important;
+                box-shadow: none !important;
+            }
+            .post-create-modal-page > #post-create-form #post-editorjs .ce-inline-toolbar .ce-popover {
+                width: auto !important;
+                max-width: none !important;
+                max-height: none !important;
+                overflow: visible !important;
+                border: 0 !important;
+                background: transparent !important;
+                box-shadow: none !important;
+                --border-radius: 12px;
+                --color-border: #e2e8f0;
+                --color-background: #fff;
+                --color-text-primary: #253247;
+                --color-text-icon-active: #0d6efd;
+                --color-background-icon-active: #eaf2ff;
+                --color-background-item-hover: #f1f5f9;
+            }
+            .post-create-modal-page > #post-create-form #post-editorjs .ce-inline-toolbar .ce-popover:not(.ce-popover--opened) > .ce-popover__container {
+                max-height: 0 !important;
+                padding: 0 !important;
+                border: 0 !important;
+                opacity: 0 !important;
+                pointer-events: none !important;
+                overflow: hidden !important;
+            }
+            .post-create-modal-page > #post-create-form #post-editorjs .ce-inline-toolbar .ce-popover--inline.ce-popover--opened > .ce-popover__container {
+                box-sizing: border-box !important;
+                display: flex !important;
+                flex-direction: row !important;
+                width: max-content !important;
+                min-width: max-content !important;
+                height: auto !important;
+                min-height: 38px !important;
+                max-height: none !important;
+                padding: 4px !important;
+                overflow: visible !important;
+                border: 1px solid #e2e8f0 !important;
+                border-radius: 12px !important;
+                background: #fff !important;
+                box-shadow: 0 8px 24px rgba(15,23,42,.12) !important;
+            }
+            .post-create-modal-page > #post-create-form #post-editorjs .ce-inline-toolbar .ce-popover--inline > .ce-popover__container > .ce-popover__items {
+                display: flex !important;
+                align-items: center !important;
+                gap: 2px !important;
+                max-height: none !important;
+                overflow: visible !important;
+            }
+            .post-create-modal-page > #post-create-form #post-editorjs .ce-inline-toolbar .ce-popover--inline > .ce-popover__container > .ce-popover__items > .ce-popover-item:not(.ce-popover-item--hidden) {
+                display: flex !important;
+                flex: 0 0 auto !important;
+                align-items: center !important;
+                justify-content: center !important;
+                min-width: 28px !important;
+                min-height: 30px !important;
+                margin: 0 !important;
+                padding: 4px !important;
+                border-radius: 7px !important;
+            }
+            .post-create-modal-page > #post-create-form #post-editorjs .ce-inline-toolbar .ce-popover--inline > .ce-popover__container > .ce-popover__items > .ce-popover-item .ce-popover-item__icon {
+                display: flex !important;
+                color: inherit !important;
+            }
+            .post-create-modal-page > #post-create-form #post-editorjs .ce-inline-toolbar .ce-popover--inline > .ce-popover__container > .ce-popover__items > .ce-popover-item svg {
+                display: block !important;
+                width: 20px !important;
+                height: 20px !important;
+            }
+            .post-create-modal-page > #post-create-form #post-editorjs .ce-inline-toolbar .ce-popover--nested.ce-popover--opened > .ce-popover__container {
+                max-height: 220px !important;
+                overflow: auto !important;
+                border: 1px solid #e2e8f0 !important;
+                border-radius: 12px !important;
+                background: #fff !important;
+            }
         </style>
         <form id="post-create-form" class="addpost__form card card-body post-create-modal" action="{{ isset($post) ? route('posts.update', $post) : route('posts.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
@@ -912,7 +998,7 @@
           logLevel: 'ERROR',
           data: initial,
           tools,
-          inlineToolbar: ['marker', 'inlineCode'],
+          inlineToolbar: ['link', 'bold', 'italic', ...(tools.inlineCode ? ['inlineCode'] : []), ...(tools.marker ? ['marker'] : [])],
           onReady: () => {
             holder.classList.add('is-ready');
             setStatus('Editör hazır');
