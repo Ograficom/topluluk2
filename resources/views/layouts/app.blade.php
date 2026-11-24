@@ -80,9 +80,12 @@
     <link rel="alternate" type="application/rss+xml" title="{{ $brandName }} RSS" href="{{ url('/rss.xml') }}">
     <link rel="stylesheet" href="{{ asset('assets/libs/fancyapp/fancybox.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/libs/fancyapp/carousel.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/css/kit.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/css/app.css') }}?v=20261124-repost-native-grid-v3">
-    <link rel="stylesheet" href="{{ asset('assets/css/engine.css') }}?v=20261110-santral-hero-buttons-inset-blue">
+    <link rel="stylesheet" href="{{ asset('assets/css/kit.css') }}?v=repost-original-20261124">
+    <link rel="stylesheet" href="{{ asset('assets/css/ografi-kit-extensions.css') }}?v=20261124-v1">
+    <link rel="stylesheet" href="{{ asset('assets/css/app.css') }}?v=repost-original-20261124">
+    <link rel="stylesheet" href="{{ asset('assets/css/ografi-app-extensions.css') }}?v=20261124-v1">
+    <link rel="stylesheet" href="{{ asset('assets/css/engine.css') }}?v=repost-original-20261124">
+    <link rel="stylesheet" href="{{ asset('assets/css/ografi-engine-extensions.css') }}?v=20261124-v1">
     <link rel="stylesheet" href="{{ asset('assets/css/ografi-overrides.css') }}?v=20261124-mobile-write-v1">
     <script>
         (() => {
@@ -479,6 +482,7 @@
     @php($feedPage = request()->routeIs('posts.index'))
     @php($channelsIndexPage = request()->routeIs('channels.index', 'legacy.channels'))
     @php($statsPage = request()->routeIs('stats.index'))
+    @php($subscriptionsPage = request()->routeIs('subscriptions.index'))
     @php($verificationPage = request()->routeIs('verification.notice'))
     <main class="container">
         <div class="main {{ $settingsPage || $profilePage || $channelPage ? 'main__grid-full' : 'main__grid' }}">
@@ -532,7 +536,9 @@
                     @yield('content')
                 </section>
             @else
-                @if ($statsPage || $channelsIndexPage)
+                @if ($subscriptionsPage)
+                    <article class="feed subscriptions">
+                @elseif ($statsPage || $channelsIndexPage)
                     <article class="feed">
                 @else
                     <section class="feed">
@@ -550,7 +556,7 @@
                         @endif
                     @endif
                     @yield('content')
-                @if ($statsPage || $channelsIndexPage)
+                @if ($statsPage || $channelsIndexPage || $subscriptionsPage)
                     </article>
                 @else
                     </section>
