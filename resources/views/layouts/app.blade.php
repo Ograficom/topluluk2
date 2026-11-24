@@ -83,7 +83,7 @@
     <link rel="stylesheet" href="{{ asset('assets/css/kit.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/app.css') }}?v=20261124-repost-native-grid-v3">
     <link rel="stylesheet" href="{{ asset('assets/css/engine.css') }}?v=20261110-santral-hero-buttons-inset-blue">
-    <link rel="stylesheet" href="{{ asset('assets/css/ografi-overrides.css') }}?v=20261124-repost-native-grid-v3">
+    <link rel="stylesheet" href="{{ asset('assets/css/ografi-overrides.css') }}?v=20261124-mobile-write-v1">
     <script>
         (() => {
             const root = document.documentElement;
@@ -169,7 +169,7 @@
                 </button>
                 <button class="switcher btn btn-secondary-ghost btn-circle btn-md" type="button" data-theme-toggle aria-label="Temayı değiştir"></button>
                 @auth
-                    <a href="{{ route('posts.create') }}" class="btn btn-md btn-white btn-rounded shadow-sm header__write" data-post-composer-trigger>
+                    <a href="{{ route('posts.create') }}" class="btn btn-md btn-white btn-rounded shadow-sm header__write" data-post-composer-trigger aria-label="Yeni gönderi" title="Yeni gönderi">
                         <x-repost-icon name="pen" size="18" />
                         <span>Yaz</span>
                     </a>
