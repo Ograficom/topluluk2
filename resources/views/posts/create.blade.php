@@ -104,6 +104,30 @@
 #createPostBox .post-composer-location-panel button {border:0;background:transparent;color:#64748b;font-size:20px;cursor:pointer;}
 @media(max-width:640px){#createPostModal.repost-modal-backdrop{padding:12px!important;}#createPostBox :is(.repost-modal-topbar,.repost-modal-userbar,.repost-modal-body,.repost-modal-footer){padding-inline:16px;}#createPostBox .repost-toolbar{gap:10px;}#createPostBox .repost-settings-popover{max-width:calc(100vw - 58px);}}
 @media(prefers-reduced-motion:reduce){#createPostBox{transition:none!important;}}
+
+/* Compact search field only, for both Editor.js block and conversion menus. */
+#createPostBox #post-editorjs .ce-popover .cdx-search-field {
+    box-sizing:border-box!important;
+    height:30px!important;min-height:30px!important;max-height:30px!important;
+    padding:0 7px!important;gap:6px!important;align-items:center!important;
+}
+#createPostBox #post-editorjs .ce-popover .cdx-search-field__input {
+    box-sizing:border-box!important;flex:1 1 0!important;
+    width:100%!important;min-width:0!important;
+    height:26px!important;min-height:0!important;max-height:26px!important;
+    margin:0!important;padding:0!important;border:0!important;
+    border-radius:0!important;background:transparent!important;
+    box-shadow:none!important;outline:none!important;
+    font-size:12px!important;line-height:26px!important;
+}
+#createPostBox #post-editorjs .ce-popover .cdx-search-field__icon {
+    display:flex!important;align-items:center!important;justify-content:center!important;
+    flex:0 0 16px!important;width:16px!important;height:16px!important;
+    margin:0!important;
+}
+#createPostBox #post-editorjs .ce-popover .cdx-search-field__icon svg {
+    width:16px!important;height:16px!important;
+}
         </style>
         <form class="repost-modal-box" id="createPostBox" action="{{ isset($post) ? route('posts.update', $post) : route('posts.store') }}" method="POST" enctype="multipart/form-data">
     @csrf
