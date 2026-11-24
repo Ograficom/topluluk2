@@ -41,7 +41,7 @@
                 position: absolute !important; inset: auto !important; z-index: 100 !important;
                 display: flex !important; flex-direction: column !important; gap: 2px !important;
                 box-sizing: border-box !important; width: 188px !important; max-width: calc(100% - 24px) !important;
-                max-height: 180px !important; overflow: auto !important;
+                max-height: min(350px, calc(100% - 24px)) !important; overflow: auto !important;
                 margin: 0 !important; padding: 6px !important; border: 1px solid #e2e8f0 !important;
                 border-radius: 12px !important; background: #fff !important; color: #253247 !important;
                 box-shadow: 0 8px 24px rgba(15,23,42,.14) !important;
@@ -230,6 +230,12 @@
                 <button type="button" data-insert-block="header" hidden>H　Başlık</button>
                 <button type="button" data-insert-block="list" hidden>☰　Liste</button>
                 <button type="button" data-insert-block="quote" hidden>❝　Alıntı</button>
+                <button type="button" data-insert-block="code" hidden>&lt;/&gt;　Kod</button>
+                <button type="button" data-insert-block="delimiter" hidden>···　Ayırıcı</button>
+                <button type="button" data-insert-block="table" hidden>▦　Tablo</button>
+                <button type="button" data-insert-block="embed" hidden>↗　Gömülü medya</button>
+                <button type="button" data-block-action="gallery">▧　Görsel</button>
+                <button type="button" data-block-action="video">▷　Video</button>
             </div>
 
             <footer class="post-create-simple__footer addpost__footer">
@@ -656,9 +662,45 @@
       const index = insertionIndex >= 0 && insertionIndex < count ? insertionIndex + 1 : count;
       const data = type === 'header' ? { text: '', level: 2 } : {};
       closeBlockPicker();
-      activeEditor.blocks.insert(type, data, {}, index, true);
-      activeEditor.caret.setToBlock(index, 'start');
+      const inserted = activeEditor.blocks.insert(type, data, {}, index, true);
+      if (type === 'embed') inserted?.holder?.querySelector('input')?.focus();
+      else if (type !== 'delimiter') activeEditor.caret.setToBlock(index, 'start');
     }));
+
+    blockPicker?.querySelectorAll('[data-block-action]').forEach(option => {
+      option.addEventListener('click', () => {
+        closeBlockPicker();
+        const selector = option.dataset.blockAction === 'gallery' ? '[data-gallery-open]' : '[data-composer-video-toggle]';
+        form.querySelector(selector)?.click();
+      });
+    });
+
+    // An editable URL block uses the existing safe server-side embed renderer.
+    class ComposerEmbedTool {
+      constructor({ data, readOnly }) { this.data = data || {}; this.readOnly = readOnly; }
+      static get toolbox() { return { title: 'Gömülü medya', icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 7H7a5 5 0 0 0 0 10h3m4-10h3a5 5 0 0 1 0 10h-3M8 12h8"/></svg>' }; }
+      static get isReadOnlySupported() { return true; }
+      static get pasteConfig() { return { patterns: { media: /^https?:\/\/(?:[\w-]+\.)?(?:youtube\.com|youtu\.be|facebook\.com|x\.com|twitter\.com|instagram\.com|tiktok\.com|reddit\.com)\/.+$/i } }; }
+      onPaste(event) { if (this.field) this.field.value = event.detail.data; }
+      render() {
+        const field = document.createElement('input');
+        field.type = 'url';
+        field.placeholder = 'YouTube, Instagram, X veya başka desteklenen medya bağlantısı';
+        field.setAttribute('aria-label', 'Gömülü medya bağlantısı');
+        field.value = this.data.source || '';
+        field.readOnly = this.readOnly;
+        field.style.cssText = 'display:block;width:100%;box-sizing:border-box;padding:9px 11px;border:1px solid #d5deea;border-radius:8px;background:transparent;color:inherit;font:inherit;';
+        this.field = field;
+        return field;
+      }
+      save() { return { ...this.data, source: this.field.value.trim() }; }
+      validate(data) {
+        try {
+          const url = new URL(data.source);
+          return ['https:', 'http:'].includes(url.protocol) && /^(?:[\w-]+\.)?(?:youtube\.com|youtu\.be|facebook\.com|x\.com|twitter\.com|instagram\.com|tiktok\.com|reddit\.com)$/i.test(url.hostname);
+        } catch (_) { return false; }
+      }
+    }
 
     const setStatus = message => { if (status) status.textContent = message; };
     const loadScript = (url, timeout = 12000) => new Promise((resolve, reject) => {
@@ -708,7 +750,9 @@
           ['@editorjs/header@2.8.8', 'Header'],
           ['@editorjs/list@2.0.8', 'EditorjsList'],
           ['@editorjs/quote@2.7.6', 'Quote'],
-          ['@editorjs/embed@2.7.6', 'Embed'],
+          ['@editorjs/code@2.9.4', 'CodeTool'],
+          ['@editorjs/delimiter@1.4.2', 'Delimiter'],
+          ['@editorjs/table@2.4.5', 'Table'],
           ['@editorjs/inline-code@1.5.0', 'InlineCode'],
           ['@editorjs/marker@1.4.0', 'Marker']
         ];
@@ -718,9 +762,10 @@
         if (window.Header) tools.header = { class: window.Header, inlineToolbar: true, config: { levels: [2, 3, 4], defaultLevel: 2 } };
         if (window.EditorjsList) tools.list = { class: window.EditorjsList, inlineToolbar: true, config: { defaultStyle: 'unordered' } };
         if (window.Quote) tools.quote = { class: window.Quote, inlineToolbar: true, config: { quotePlaceholder: 'Alıntını yaz…', captionPlaceholder: 'Kaynak' } };
-        if (window.Embed) tools.embed = { class: window.Embed, config: { services: {
-          youtube: true, facebook: true, twitter: true, instagram: true, tiktok: true
-        } } };
+        if (window.CodeTool) tools.code = { class: window.CodeTool, config: { placeholder: 'Kodunu yaz…' } };
+        if (window.Delimiter) tools.delimiter = window.Delimiter;
+        if (window.Table) tools.table = { class: window.Table, inlineToolbar: true, config: { rows: 2, cols: 2 } };
+        tools.embed = ComposerEmbedTool;
         if (window.InlineCode) tools.inlineCode = window.InlineCode;
         if (window.Marker) tools.marker = window.Marker;
 
