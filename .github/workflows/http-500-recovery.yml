@@ -1,0 +1,64 @@
+name: Emergency HTTP 500 recovery
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/http-500-recovery.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ografi-production
+  cancel-in-progress: false
+
+jobs:
+  recover:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Build and validate application
+        env:
+          APP_ENV: testing
+          APP_KEY: base64:MTIzNDU2Nzg5MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTI=
+        run: |
+          set -euo pipefail
+          find app bootstrap config database routes -type f -name '*.php' -print0 | xargs -0 -n1 php -l
+          npm install
+          npm run build
+          node --check public/assets/js/app.js
+          node --check public/assets/js/init.js
+          node --check public/sw.js
+          composer install --no-interaction --prefer-dist
+          php artisan view:cache
+          find storage/framework/views -type f -name '*.php' -print0 | xargs -0 -n1 php -l
+          php artisan view:clear
+          php artisan test --filter='ProductionRecoveryTest|NotificationFeedTest|test_post_statistics_show_actual_counts_and_are_only_on_detail'
+      - name: Start SSH agent
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+      - name: Restore tested application and verify HTTP response
+        env:
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_USER: ${{ secrets.SSH_USER }}
+          SSH_PORT: ${{ secrets.SSH_PORT }}
+          DEPLOY_PATH: ${{ secrets.DEPLOY_PATH }}
+        run: |
+          set -euo pipefail
+          PORT="${SSH_PORT:-22}"
+          mkdir -p ~/.ssh
+          ssh-keyscan -p "$PORT" "$SSH_HOST" >> ~/.ssh/known_hosts
+          ssh -p "$PORT" "$SSH_USER@$SSH_HOST" "cd '$DEPLOY_PATH' && git fetch origin main && test \"\$(git rev-parse origin/main)\" = '$GITHUB_SHA' && git merge --ff-only '$GITHUB_SHA'"
+          ssh -p "$PORT" "$SSH_USER@$SSH_HOST" "mkdir -p '$DEPLOY_PATH/public/build'"
+          scp -P "$PORT" -r public/build/. "$SSH_USER@$SSH_HOST:$DEPLOY_PATH/public/build/"
+          ssh -p "$PORT" "$SSH_USER@$SSH_HOST" "cd '$DEPLOY_PATH' && composer install --no-interaction --prefer-dist --no-dev --optimize-autoloader && php artisan optimize:clear && php artisan migrate --force && php artisan config:cache && php artisan route:cache && php artisan view:cache"
+          curl --fail --silent --show-error --location --retry 3 --retry-delay 3 --max-time 30 -o /dev/null -w 'OgraFi HTTP %{http_code}\n' https://ografi.com/
