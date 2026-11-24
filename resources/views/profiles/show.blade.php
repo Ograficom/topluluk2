@@ -3,7 +3,7 @@
 @section('title', $user->displayName())
 
 @push('head')
-    <link rel="stylesheet" href="{{ asset('assets/css/profile-theme.css') }}?v=20261124-profile-mobile-text-v1">
+    <link rel="stylesheet" href="{{ asset('assets/css/profile-theme.css') }}?v=20261124-profile-mobile-text-v2">
 @endpush
 
 @section('content')
