@@ -173,6 +173,60 @@
     #ografi-composer-form .compose-footer .btn {padding-inline:12px;}
     #ografi-composer-form .compose-settings summary {font-size:12px;}
 }
+
+/* Layout and visual scale from the supplied Medium/Reddit-style reference. */
+#ografi-composer-form {
+    --ref-surface:var(--card-bg);--ref-muted:var(--color-gray);
+    --ref-soft:var(--gray-100);--ref-border:var(--border-color);
+    --ref-ink:var(--title-color);--ref-button:#18181b;
+    width:min(672px,100%);border-radius:16px;max-height:90dvh;
+    font-family:var(--font-secondary);box-shadow:0 20px 45px rgba(0,0,0,.14);
+}
+#ografi-composer-form .compose-head {min-height:61px;padding:16px 20px;border-color:var(--ref-border);}
+#ografi-composer-form .compose-head strong {font:600 16px/1.3 var(--font-secondary);white-space:nowrap;}
+#ografi-composer-form .compose-head-left {display:flex;align-items:center;gap:12px;min-width:0;}
+#ografi-composer-form .compose-channel {display:flex;align-items:center;gap:5px;background:var(--gray-150);border-radius:8px;padding:4px 8px;min-width:0;}
+#ografi-composer-form .compose-channel svg {width:14px;height:14px;flex:none;fill:none;stroke:var(--color-gray);stroke-width:1.7;}
+#ografi-composer-form #post-channel {height:23px;min-height:23px;max-width:165px;border:0;background:transparent;padding:0;color:var(--text-color);font:500 12px/1.2 var(--font-secondary);}
+#ografi-composer-form .compose-main {padding:20px 24px;gap:16px;scrollbar-width:thin;}
+#ografi-composer-form .compose-avatar {width:32px;height:32px;border:1px solid var(--ref-border);}
+#ografi-composer-form .compose-name {font:600 12px/1.3 var(--font-secondary);}
+#ografi-composer-form .compose-title-field:focus-within {box-shadow:none;}
+#ografi-composer-form #post-title {height:44px;min-height:44px;font:700 30px/1.3 var(--font-secondary);letter-spacing:-.035em;}
+#ografi-composer-form #post-title::placeholder {color:var(--gray-400);}
+#ografi-composer-form .compose-writing {min-height:112px;padding:0 0 0 34px;}
+#ografi-composer-form #post-editorjs {font:400 16px/1.625 var(--font-secondary);min-height:105px;}
+#ografi-composer-form #post-editorjs .codex-editor,#ografi-composer-form #post-editorjs .codex-editor__redactor {min-height:105px;}
+#ografi-composer-form .composer-block-add {width:26px;height:26px;background:transparent;border:1px solid var(--ref-border);}
+#ografi-composer-form .composer-block-add:hover {background:var(--gray-150);}
+#ografi-composer-form .compose-tags {border-top:1px solid var(--ref-border);padding-top:11px;display:flex;flex-direction:column;gap:6px;}
+#ografi-composer-form .compose-tag-chips {display:flex;flex-wrap:wrap;gap:5px;}
+#ografi-composer-form .compose-tag-chips:empty {display:none;}
+#ografi-composer-form .compose-tag {display:inline-flex;align-items:center;gap:5px;padding:3px 9px;border-radius:999px;background:var(--gray-150);color:var(--text-color);font:500 12px/1.5 var(--font-secondary);}
+#ografi-composer-form .compose-tag button {border:0;padding:0 1px;background:transparent;color:var(--color-gray);cursor:pointer;font-size:15px;}
+#ografi-composer-form [data-compose-tag-entry] {width:100%;height:25px;min-height:25px;border:0;box-shadow:none;outline:0;background:transparent;color:var(--text-color);padding:0;font:400 12px/1.4 var(--font-secondary);}
+#ografi-composer-form [data-compose-tag-entry]::placeholder {color:var(--ref-muted);}
+#ografi-composer-form .compose-previews {flex:none;}
+#ografi-composer-form .compose-previews img {width:100%;max-width:140px;height:86px;object-fit:cover;}
+#ografi-composer-form .compose-footer {background:var(--ref-soft);border-radius:0 0 16px 16px;flex-wrap:wrap;gap:8px;padding:12px 20px;justify-content:flex-start;}
+#ografi-composer-form .compose-attachments {flex:0 1 auto;gap:1px;padding:0;border:0;flex-wrap:wrap;}
+#ografi-composer-form .compose-media-button {background:transparent;width:30px;height:32px;border-radius:8px;}
+#ografi-composer-form .compose-media-button svg {width:17px;height:17px;}
+#ografi-composer-form .compose-settings summary {width:30px;justify-content:center;min-height:32px;}
+#ografi-composer-form .compose-footer-actions {margin-left:auto;gap:10px;}
+#ografi-composer-form .compose-char-count {font:400 11px/1.2 ui-monospace,monospace;color:var(--ref-muted);white-space:nowrap;}
+#ografi-composer-form .post-composer-publish {background:var(--ref-button);border-color:var(--ref-button);color:#fff;border-radius:12px;min-height:36px;padding:0 16px;font-size:12px;box-shadow:none;}
+#ografi-composer-form .post-composer-publish:hover {background:#3f3f46;}
+[data-theme="dark"] #ografi-composer-form .post-composer-publish {background:#e4e4e7;color:#18181b;border-color:#e4e4e7;}
+@media(max-width:640px) {
+    #ografi-composer-form .compose-head-left {gap:6px;}
+    #ografi-composer-form .compose-head strong {font-size:14px;}
+    #ografi-composer-form #post-channel {max-width:100px;}
+    #ografi-composer-form #post-title {font-size:24px;}
+    #ografi-composer-form .compose-main {padding:16px;}
+    #ografi-composer-form .compose-footer {padding:10px 12px;}
+    #ografi-composer-form .compose-char-count {display:none;}
+}
         </style>
         <form id="ografi-composer-form" class="ografi-composer-form" action="{{ isset($post) ? route('posts.update', $post) : route('posts.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
@@ -181,7 +235,12 @@
             @endif
 
             <header class="compose-head">
-                <strong>{{ isset($post) ? 'Yayını düzenle' : 'Yeni yayın' }}</strong>
+                <div class="compose-head-left"><strong>{{ isset($post) ? 'Yayını düzenle' : 'Gönderi Oluştur' }}</strong><div class="compose-channel"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M8 9h8M8 13h5"/></svg><select id="post-channel" name="channel_id" aria-label="Bir kanal seçin">
+                        <option value="">Bir kanal seçin</option>
+                        @foreach ($channels as $channel)
+                            <option value="{{ $channel->id }}" @selected((string) old('channel_id', $post->channel_id ?? '') === (string) $channel->id)>{{ $channel->name }}</option>
+                        @endforeach
+                    </select></div></div>
                 <div class="compose-controls">
                     <button type="button" class="compose-icon addpost__modal-expand" data-post-composer-expand aria-label="Genişlet" aria-pressed="false">
                         <svg class="composer-expand-symbol" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 4h6v6M10 20H4v-6"/></svg>
@@ -197,12 +256,7 @@
                 <img class="compose-avatar" src="{{ $user->avatarUrl() }}" alt="" width="40" height="40">
                 <div class="compose-identity">
                     <span class="compose-name">{{ $user->displayName() }}</span>
-                    <select id="post-channel" name="channel_id" aria-label="Bir kanal seçin">
-                        <option value="">Bir kanal seçin</option>
-                        @foreach ($channels as $channel)
-                            <option value="{{ $channel->id }}" @selected((string) old('channel_id', $post->channel_id ?? '') === (string) $channel->id)>{{ $channel->name }}</option>
-                        @endforeach
-                    </select>
+                    
                 </div>
             </div>
 
@@ -210,7 +264,7 @@
                 <label class="compose-visually-hidden" for="post-title">Gönderi başlığı</label>
                 <input class="compose-title-input" id="post-title" name="title" type="text"
                     value="{{ old('title', $post->title ?? '') }}" maxlength="255"
-                    placeholder="Gönderi başlığı" required>
+                    placeholder="Başlık ekle..." required>
                 <div class="compose-visually-hidden"><span>Arama ve paylaşım için açık bir başlık seç.</span><span data-count-for="post-title">0 / 60</span></div>
             </div>
 
@@ -229,12 +283,43 @@
                     <button type="button" class="composer-block-add" data-block-picker-toggle aria-label="İçerik bloğu ekle" aria-expanded="false" aria-controls="composer-block-picker" title="Blok ekle">
                         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
                     </button>
-                    <div id="post-editorjs" class="compose-editor" aria-label="Yazı içeriği" data-placeholder="En iyi yazını burada yaz"></div>
+                    <div id="post-editorjs" class="compose-editor" aria-label="Yazı içeriği" data-placeholder="Aklındakileri veya hikayeni paylaş..."></div>
             </section>
+                <div class="compose-previews">
+                    <div class="post-composer-cover-preview" data-post-cover-preview aria-live="polite"></div>
+                    <div class="post-composer-file-list" data-post-gallery-list aria-live="polite"></div>
+                    @if (isset($post) && $post->coverImageUrl())
+                        <div class="post-composer-existing-cover">
+                            <img src="{{ $post->coverImageUrl() }}" alt="Mevcut kapak görseli">
+                            <label class="small"><input type="checkbox" name="remove_cover" value="1"> Kapağı kaldır</label>
+                        </div>
+                    @endif
+                    @if (isset($post) && filled($post->media))
+                        <div class="post-create-simple__existing-media">
+                            @foreach ($post->media as $mediaPath)
+                                <label><img src="{{ asset('storage/'.$mediaPath) }}" alt=""><input type="checkbox" name="remove_media[]" value="{{ $mediaPath }}"> Kaldır</label>
+                            @endforeach
+                        </div>
+                    @endif
+                    @if (isset($post) && $post->video_path)
+                        <p class="small color-gray">Mevcut video kayıtlı. Yeni video seçersen değiştirilir.</p>
+                    @endif
+                    </div>
+                <div class="post-composer-location-panel" data-composer-location-panel hidden>
+                        <label for="post-location">Konum</label>
+                        <input id="post-location" name="location" type="text" maxlength="255" value="{{ old('location', $post->location ?? '') }}" placeholder="Şehir, mekan veya adres">
+                        <button type="button" data-composer-location-close aria-label="Konum alanını kapat">×</button>
+                    </div>
+                <div class="compose-tags">
+                    <div class="compose-tag-chips" data-compose-tag-chips></div>
+                    <input type="text" data-compose-tag-entry maxlength="100" autocomplete="off" aria-label="Etiket ekle" placeholder="Etiket ekle (Enter veya virgül ile)...">
+                    <input type="hidden" id="post-tags-input" name="tags" maxlength="500" value="{{ old('tags', $post->tags ?? '') }}">
+                </div>
             </div>
 
-            <section class="compose-attachments" aria-label="Gönderiye ekle">
-                <span class="compose-attachments-label">Gönderiye ekle</span>
+
+            <footer class="compose-footer">            <section class="compose-attachments" aria-label="Gönderiye ekle">
+                
                     <button type="button" class="compose-media-button" data-gallery-open aria-label="Görsel ekle" title="Görsel ekle">
                         <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="4" width="17" height="16" rx="2"/><circle cx="8.5" cy="9" r="1.5"/><path d="m20.5 15-5-5L5 20"/></svg>
                     </button>
@@ -255,46 +340,19 @@
                     <button type="button" class="compose-media-button" data-composer-widget-toggle aria-label="Widget ekle" title="Widget ekle" aria-expanded="false">
                         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m8 8-4 4 4 4M16 8l4 4-4 4M14 4l-4 16"/></svg>
                     </button>
-                    <button type="button" class="compose-media-button" data-composer-tags-toggle aria-label="Etiket ekle" title="Etiket ekle">
-                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h16M4 15h16M9 4l-2 16M17 4l-2 16"/></svg>
-                    </button>
+                    
 
 
-                    <div class="post-composer-location-panel" data-composer-location-panel hidden>
-                        <label for="post-location">Konum</label>
-                        <input id="post-location" name="location" type="text" maxlength="255" value="{{ old('location', $post->location ?? '') }}" placeholder="Şehir, mekan veya adres">
-                        <button type="button" data-composer-location-close aria-label="Konum alanını kapat">×</button>
-                    </div>
+                    
 
 
                     <input class="compose-file-input" id="post-cover" name="cover_image" type="file" accept="image/jpeg,image/png,image/gif,image/webp" data-post-cover-input>
-                    <div class="compose-previews">
-                    <div class="post-composer-cover-preview" data-post-cover-preview aria-live="polite"></div>
-                    <div class="post-composer-file-list" data-post-gallery-list aria-live="polite"></div>
-                    @if (isset($post) && $post->coverImageUrl())
-                        <div class="post-composer-existing-cover">
-                            <img src="{{ $post->coverImageUrl() }}" alt="Mevcut kapak görseli">
-                            <label class="small"><input type="checkbox" name="remove_cover" value="1"> Kapağı kaldır</label>
-                        </div>
-                    @endif
-                    @if (isset($post) && filled($post->media))
-                        <div class="post-create-simple__existing-media">
-                            @foreach ($post->media as $mediaPath)
-                                <label><img src="{{ asset('storage/'.$mediaPath) }}" alt=""><input type="checkbox" name="remove_media[]" value="{{ $mediaPath }}"> Kaldır</label>
-                            @endforeach
-                        </div>
-                    @endif
-                    @if (isset($post) && $post->video_path)
-                        <p class="small color-gray">Mevcut video kayıtlı. Yeni video seçersen değiştirilir.</p>
-                    @endif
-                    </div>
-            </section>
-
-            <footer class="compose-footer">
+                                <button type="button" class="compose-media-button" data-compose-direct-block="code" title="Kod bloğu ekle" aria-label="Kod bloğu ekle"><svg viewBox="0 0 24 24"><path d="m8 6-6 6 6 6m8-12 6 6-6 6m-2-15-4 18"/></svg></button>
+<button type="button" class="compose-media-button" data-compose-direct-block="quote" title="Alıntı ekle" aria-label="Alıntı ekle"><svg viewBox="0 0 24 24"><path d="M4 5h16v12h-7l-4 4v-4H4zM8 9h8M8 13h4"/></svg></button></section>
             <details class="compose-settings post-composer-advanced">
                 <summary>
                     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h9m4 0h3M4 17h3m4 0h9"/><circle cx="15" cy="7" r="2"/><circle cx="9" cy="17" r="2"/></svg>
-                    <span>Yayın ayarları</span>
+                    <span class="compose-visually-hidden">Yayın ayarları</span>
                 </summary>
                 <div class="post-composer-advanced-content">
                     <div class="post-composer-setting-row">
@@ -316,7 +374,7 @@
                 </div>
             </details>
                 <div class="compose-footer-actions">
-                    <a class="btn btn-secondary compose-cancel addpost__modal-close" href="{{ route('posts.index') }}">Vazgeç</a>
+                    <span class="compose-char-count" data-compose-char-count>0 karakter</span>
                     <button class="btn btn-primary post-composer-publish" type="submit">{{ isset($post) ? 'Kaydet' : 'Yayınla' }}</button>
                 </div>
             </footer>
@@ -374,8 +432,7 @@
                 <h2 id="post-tags-title">Etiketler</h2>
                 <div class="post-tags-input-wrap">
                     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h16M4 15h16M9 4l-2 16M17 4l-2 16"/></svg>
-                    <input id="post-tags-input" name="tags" form="ografi-composer-form" type="text" maxlength="500"
-                        value="{{ old('tags', $post->tags ?? '') }}" placeholder="Etiketleri girin" aria-label="Etiketler">
+                    <span>Etiketleri gönderi alanından ekleyin.</span>
                 </div>
             </div>
         </div>
@@ -721,6 +778,55 @@
     const blockOptions = Array.from(blockPicker?.querySelectorAll('[data-insert-block]') || []);
     let activeEditor = null;
     let insertionIndex = -1;
+    const tagInput = form.querySelector('[data-compose-tag-entry]');
+    const tagValue = form.querySelector('#post-tags-input');
+    const tagChips = form.querySelector('[data-compose-tag-chips]');
+    let composeTags = (tagValue?.value || '').split(',').map(t => t.trim().replace(/^#/, '')).filter(Boolean);
+    const renderComposeTags = () => {
+      if (!tagValue || !tagChips) return;
+      tagValue.value = composeTags.join(',');
+      tagChips.replaceChildren();
+      composeTags.forEach((tag, index) => {
+        const chip = document.createElement('span');
+        chip.className = 'compose-tag';
+        chip.append(document.createTextNode('#' + tag));
+        const remove = document.createElement('button');
+        remove.type = 'button'; remove.textContent = '×';
+        remove.setAttribute('aria-label', tag + ' etiketini kaldır');
+        remove.addEventListener('click', () => { composeTags.splice(index, 1); renderComposeTags(); });
+        chip.append(remove); tagChips.append(chip);
+      });
+    };
+    const addComposeTag = () => {
+      if (!tagInput || !tagValue) return;
+      for (const raw of tagInput.value.split(',')) {
+        const tag = raw.trim().replace(/^#/, '');
+        if (tag && !composeTags.includes(tag) && [...composeTags, tag].join(',').length <= 500) composeTags.push(tag);
+      }
+      tagInput.value = ''; renderComposeTags();
+    };
+    renderComposeTags();
+    tagInput?.addEventListener('keydown', event => {
+      if (event.key === 'Enter' || event.key === ',') { event.preventDefault(); addComposeTag(); }
+    });
+    tagInput?.addEventListener('blur', addComposeTag);
+    form.addEventListener('submit', addComposeTag, { capture: true });
+    const charCount = form.querySelector('[data-compose-char-count]');
+    const updateComposeCount = () => {
+      if (charCount) charCount.textContent = Array.from(holder.querySelectorAll('.ce-block [contenteditable="true"]')).map(el => el.textContent || '').join('').length + ' karakter';
+    };
+    holder.addEventListener('input', updateComposeCount);
+    form.querySelectorAll('[data-compose-direct-block]').forEach(button => {
+      button.addEventListener('click', () => {
+        if (!activeEditor) return;
+        const type = button.dataset.composeDirectBlock;
+        const option = blockPicker?.querySelector('[data-insert-block="' + type + '"]');
+        if (!option || option.hidden) return;
+        insertionIndex = activeEditor.blocks.getCurrentBlockIndex();
+        option.click();
+      });
+    });
+
 
     const closeBlockPicker = (restoreFocus = false) => {
       if (blockPicker) blockPicker.hidden = true;
@@ -878,7 +984,7 @@
 
         const editor = new window.EditorJS({
           holder,
-          placeholder: 'En iyi yazını burada yaz',
+          placeholder: 'Aklındakileri veya hikayeni paylaş...',
           minHeight: 84,
           autofocus: false,
           logLevel: 'ERROR',
@@ -911,6 +1017,7 @@
         await editor.isReady;
         holder.classList.add('is-ready');
         activeEditor = editor;
+        updateComposeCount();
         if (blockStatus) blockStatus.hidden = true;
         blockOptions.forEach(option => {
           const type = option.dataset.insertBlock;
