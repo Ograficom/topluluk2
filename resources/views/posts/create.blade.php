@@ -303,30 +303,32 @@
                 border-radius: 7px !important;
             }
 
-            /* Clean composer: isolated from the legacy theme's competing layout rules. */
+            /* Repost 3.0 composer — theme palette and component metrics from kit.css/app.css. */
             .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"] {
                 align-items: center !important;
                 justify-content: center !important;
                 padding: 16px !important;
-                background: rgba(25, 35, 50, .44) !important;
+                background: var(--color-overlay-backdrop) !important;
                 backdrop-filter: blur(4px) !important;
             }
             .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"] > form#post-create-form {
                 --composer-base-height: 400px;
                 --composer-viewport-gap: 32px;
-                --composer-gutter: 68px;
-                --composer-edge: 24px;
-                --composer-ink: #202b39;
-                --composer-muted: #64748b;
-                --composer-line: #e9edf3;
-                --composer-accent: #0d6efd;
+                --composer-gutter: 70px;
+                --composer-edge: 20px;
+                --composer-ink: var(--text-color);
+                --composer-muted: var(--color-gray);
+                --composer-line: var(--border-color);
+                --composer-accent: var(--color-primary);
                 width: min(680px, calc(100vw - 32px)) !important;
-                border-radius: 22px !important;
-                border: 1px solid rgba(226,232,240,.8) !important;
-                background: #fff !important;
+                border-radius: 30px !important;
+                border: 0 !important;
+                background: var(--color-surface-overlay) !important;
                 color: var(--composer-ink) !important;
-                box-shadow: 0 16px 48px rgba(15,23,42,.15) !important;
-                font-size: 16px !important;
+                box-shadow: var(--shadow-lg) !important;
+                font-family: var(--font-primary) !important;
+                font-size: .95rem !important;
+                font-weight: 400 !important;
                 line-height: 1.5 !important;
             }
             .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"]:not(.is-expanded) > form#post-create-form {
@@ -342,20 +344,21 @@
                 display: flex !important;
                 align-items: center !important;
                 justify-content: space-between !important;
-                flex: 0 0 59px !important;
+                flex: 0 0 64px !important;
                 width: 100% !important;
-                height: 59px !important;
-                min-height: 59px !important;
+                height: 64px !important;
+                min-height: 64px !important;
                 margin: 0 !important;
                 padding: 0 var(--composer-edge) !important;
                 box-sizing: border-box !important;
                 border-bottom: 1px solid var(--composer-line) !important;
             }
             .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"] > form#post-create-form > header.addpost__modal-head > strong {
-                color: var(--composer-ink) !important;
-                font-size: 18px !important;
-                font-weight: 650 !important;
-                letter-spacing: -.025em !important;
+                color: var(--title-color) !important;
+                font-family: var(--font-secondary) !important;
+                font-size: 1.125rem !important;
+                font-weight: 600 !important;
+                letter-spacing: normal !important;
             }
             .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"] > form#post-create-form .addpost__modal-controls { gap: 4px !important; }
             .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"] > form#post-create-form > header.addpost__modal-head :is(.addpost__modal-expand,.addpost__modal-close) {
@@ -371,7 +374,7 @@
                 opacity: 1 !important;
             }
             .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"] > form#post-create-form > header.addpost__modal-head :is(.addpost__modal-expand,.addpost__modal-close):hover {
-                background: #f1f5f9 !important;
+                background: var(--gray-150) !important;
                 color: var(--composer-ink) !important;
             }
             .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"] > form#post-create-form .addpost__modal-controls svg {
@@ -394,33 +397,33 @@
                 gap: 10px !important;
             }
             .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"] > form#post-create-form .addpost__header .addpost__header-avatar {
-                width: 36px !important; height: 36px !important; flex-basis: 36px !important;
+                width: 40px !important; height: 40px !important; flex-basis: 40px !important;
                 border-radius: 50% !important; object-fit: cover !important;
             }
             .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"] > form#post-create-form .addpost__header .addpost__author { gap: 10px !important; }
             .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"] > form#post-create-form .addpost__author .addpost__author-name {
-                color: var(--composer-ink) !important; font-size: 14px !important; font-weight: 650 !important;
+                color: var(--text-color) !important; font-family: var(--font-secondary) !important; font-size: .95rem !important; font-weight: 600 !important;
             }
-            .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"] > form#post-create-form .addpost__author .addpost__channel-separator { display: none !important; }
+            .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"] > form#post-create-form .addpost__author .addpost__channel-separator { display: inline-block !important; color: var(--color-gray) !important; }
             .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"] > form#post-create-form .addpost__author select#post-channel {
                 appearance: auto !important; -webkit-appearance: auto !important;
                 flex: 0 1 auto !important; max-width: min(230px, 55%) !important;
-                width: auto !important; height: 32px !important;
-                margin: 0 !important; padding: 0 8px !important;
-                border: 1px solid #e4e9f0 !important; border-radius: 8px !important;
-                background: #f8fafc !important; color: #52647b !important;
-                font-size: 13px !important; font-weight: 500 !important; cursor: pointer !important;
+                width: auto !important; height: 28px !important;
+                margin: 0 !important; padding: 0 4px !important;
+                border: 0 !important; border-radius: 0 !important;
+                background: transparent !important; color: var(--color-gray) !important;
+                font-size: 13px !important; font-weight: 400 !important; cursor: pointer !important;
             }
             .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"] > form#post-create-form > .post-composer-title-field {
                 flex: 0 0 48px !important; height: 48px !important; min-height: 48px !important;
                 padding: 0 var(--composer-edge) 0 var(--composer-gutter) !important;
             }
             .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"] > form#post-create-form #post-title, .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"] > form#post-create-form #post-title::placeholder {
-                color: var(--composer-ink) !important;
-                font-size: 23px !important; font-weight: 650 !important;
-                letter-spacing: -.025em !important; line-height: 1.35 !important;
+                color: var(--title-color) !important;
+                font-size: 1.4rem !important; font-weight: 600 !important;
+                letter-spacing: normal !important; line-height: 1.5 !important;
             }
-            .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"] > form#post-create-form #post-title::placeholder { color: #8491a4 !important; }
+            .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"] > form#post-create-form #post-title::placeholder { color: var(--color-gray) !important; }
             .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"] > form#post-create-form > .post-composer-editor-section {
                 padding: 9px var(--composer-edge) 10px var(--composer-gutter) !important;
             }
@@ -430,13 +433,13 @@
             .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"] > form#post-create-form #post-editorjs input,
             .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"] > form#post-create-form #post-editorjs textarea {
                 color: var(--composer-ink) !important;
-                font-size: 16px !important; line-height: 1.6 !important;
+                font-size: .95rem !important; line-height: 1.5 !important;
                 overflow-wrap: anywhere;
             }
-            .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"] > form#post-create-form #post-editorjs .ce-paragraph { min-height: 26px !important; padding: 2px 0 !important; }
+            .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"] > form#post-create-form #post-editorjs .ce-paragraph { min-height: 24px !important; padding: 2px 0 !important; }
             .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"] > form#post-create-form #post-editorjs .ce-block:first-child:only-child .ce-paragraph:empty::before,
             .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"] > form#post-create-form #post-editorjs:not(.is-ready):empty::before {
-                color: #8491a4 !important; font-size: 16px !important; line-height: 1.6 !important;
+                color: var(--color-gray) !important; font-size: .95rem !important; line-height: 1.5 !important;
             }
             .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"] > form#post-create-form #post-editorjs h2.ce-header { font-size: 24px !important; line-height: 1.3 !important; }
             .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"] > form#post-create-form #post-editorjs h3.ce-header { font-size: 21px !important; line-height: 1.3 !important; }
@@ -444,26 +447,26 @@
             .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"] > form#post-create-form .composer-block-add {
                 left: -42px !important; top: 1px !important;
                 width: 30px !important; height: 30px !important;
-                border: 1px solid #e0e6ee !important; border-radius: 50% !important;
-                background: #fff !important; color: #64748b !important;
+                border: 0 !important; border-radius: 50% !important;
+                background: var(--gray-150) !important; color: var(--color-gray) !important;
                 box-shadow: none !important; transition: background .15s, color .15s !important;
             }
             .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"] > form#post-create-form .composer-block-add:hover,
             .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"] > form#post-create-form .composer-block-add[aria-expanded="true"] {
-                background: #edf4ff !important; border-color: #d3e4ff !important; color: var(--composer-accent) !important;
+                background: var(--blue-400) !important; border-color: transparent !important; color: var(--composer-accent) !important;
             }
             .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"] > form#post-create-form > .composer-block-picker:not([hidden]) {
                 width: 218px !important; padding: 6px !important; gap: 2px !important;
-                border-radius: 13px !important; box-shadow: 0 8px 24px rgba(15,23,42,.12) !important;
+                border-radius: 16px !important; border-color: var(--border-color) !important; background: var(--color-surface-overlay) !important; color: var(--text-color) !important; box-shadow: var(--shadow-lg) !important;
             }
             .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"] > form#post-create-form .composer-block-picker button:not([hidden]) {
-                min-height: 34px !important; padding: 6px 9px !important; gap: 11px !important;
-                font-size: 14px !important; font-weight: 500 !important;
+                min-height: 36px !important; padding: 6px 10px !important; gap: 10px !important;
+                font-family: var(--font-primary) !important; font-size: .875rem !important; font-weight: 400 !important; border-radius: 11px !important;
             }
             .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"] > form#post-create-form .composer-block-picker button svg {
                 display: block !important; flex: 0 0 18px !important; width: 18px !important; height: 18px !important;
                 fill: none !important; stroke: currentColor !important; stroke-width: 1.7 !important;
-                stroke-linecap: round !important; stroke-linejoin: round !important; color: #64748b !important;
+                stroke-linecap: round !important; stroke-linejoin: round !important; color: var(--color-gray) !important;
             }
             .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"] > form#post-create-form .composer-block-picker button:hover svg { color: var(--composer-accent) !important; }
             .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"] > form#post-create-form > section.post-composer-media-section {
@@ -471,16 +474,16 @@
                 min-height: 46px !important; margin: 0 0 8px !important;
             }
             .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"] > form#post-create-form > section.post-composer-media-section > .post-composer-toolbar {
-                min-height: 44px !important; gap: 4px 6px !important; align-items: center !important;
+                min-height: 44px !important; gap: 8px !important; align-items: center !important;
             }
             .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"] > form#post-create-form .post-composer-toolbar > .post-composer-tool {
                 width: 34px !important; height: 34px !important; flex: 0 0 34px !important;
-                border-radius: 8px !important; color: #65758b !important;
+                border-radius: .6875rem !important; color: var(--color-gray) !important;
             }
             .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"] > form#post-create-form .post-composer-toolbar > .post-composer-tool:hover,
             .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"] > form#post-create-form .post-composer-toolbar > .post-composer-tool:focus-visible,
             .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"] > form#post-create-form .post-composer-toolbar > .post-composer-tool[aria-expanded="true"] {
-                background: #edf4ff !important; color: var(--composer-accent) !important;
+                background: var(--blue-400) !important; color: var(--composer-accent) !important;
             }
             .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"] > form#post-create-form .post-composer-toolbar > .post-composer-tool svg {
                 width: 20px !important; height: 20px !important; stroke-width: 1.7 !important;
@@ -489,7 +492,7 @@
                 flex: 0 0 68px !important; height: 68px !important; min-height: 68px !important;
                 margin: 0 !important; padding: 0 var(--composer-edge) !important;
                 border-top: 1px solid var(--composer-line) !important;
-                align-items: center !important; background: #fff !important;
+                align-items: center !important; background: var(--color-surface-overlay) !important;
             }
             .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"] > form#post-create-form > details.post-composer-advanced {
                 left: var(--composer-edge) !important; bottom: 14px !important;
@@ -498,20 +501,20 @@
             .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"] > form#post-create-form > details.post-composer-advanced > summary {
                 min-height: 40px !important; padding: 0 8px !important; margin-left: -8px !important;
                 border-radius: 8px !important; color: var(--composer-muted) !important;
-                font-size: 13px !important; font-weight: 550 !important;
+                font-family: var(--font-secondary) !important; font-size: .86rem !important; font-weight: 600 !important;
             }
             .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"] > form#post-create-form > details.post-composer-advanced > summary:hover,
             .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"] > form#post-create-form > details.post-composer-advanced[open] > summary {
-                color: var(--composer-accent) !important; background: #edf4ff !important;
+                color: var(--composer-accent) !important; background: var(--blue-400) !important;
             }
             .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"] > form#post-create-form > footer.post-create-simple__footer > button.post-composer-publish {
                 min-width: 108px !important; height: 40px !important; min-height: 40px !important;
-                padding: 0 22px !important; border-radius: 10px !important;
-                background: var(--composer-accent) !important; color: white !important;
-                font-size: 14px !important; font-weight: 650 !important; box-shadow: none !important;
+                padding: 0 1rem !important; border-radius: .75rem !important;
+                background: var(--composer-accent) !important; color: var(--color-white) !important;
+                font-family: var(--font-secondary) !important; font-size: .86rem !important; font-weight: 600 !important; box-shadow: none !important;
                 transition: background .15s !important;
             }
-            .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"] > form#post-create-form > footer.post-create-simple__footer > button.post-composer-publish:hover { background: #095cd6 !important; }
+            .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"] > form#post-create-form > footer.post-create-simple__footer > button.post-composer-publish:hover { background: var(--blue-600) !important; }
             @media (max-width: 640px) {
                 .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"] { padding: 8px !important; }
                 .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"] > form#post-create-form {
@@ -525,7 +528,7 @@
                 }
                 .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"].is-expanded > form#post-create-form { height: calc(100dvh - 16px) !important; }
                 .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"] > form#post-create-form .composer-block-add { left: -36px !important; width: 28px !important; height: 28px !important; }
-                .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"] > form#post-create-form #post-title, .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"] > form#post-create-form #post-title::placeholder { font-size: 21px !important; }
+                .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"] > form#post-create-form #post-title, .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"] > form#post-create-form #post-title::placeholder { font-size: 1.4rem !important; }
                 .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"] > form#post-create-form .addpost__header .addpost__author { gap: 6px !important; }
                 .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"] > form#post-create-form .post-composer-toolbar > .post-composer-tool { width: 31px !important; flex-basis: 31px !important; }
                 .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"] > form#post-create-form > details.post-composer-advanced > summary { font-size: 12px !important; gap: 6px !important; }
@@ -534,6 +537,43 @@
             @media (prefers-reduced-motion: reduce) {
                 .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"] > form#post-create-form :is(.composer-block-add,.post-composer-publish) { transition: none !important; }
             }
+        
+            .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"] > form#post-create-form .composer-block-picker button:hover,
+            .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"] > form#post-create-form .composer-block-picker button:focus-visible {
+                background: var(--gray-100) !important; color: var(--title-color) !important;
+            }
+            .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"] > form#post-create-form #post-editorjs .ce-inline-toolbar .ce-popover {
+                --color-border: var(--border-color);
+                --color-background: var(--color-surface-overlay);
+                --color-text-primary: var(--text-color);
+                --color-text-secondary: var(--color-gray);
+                --color-text-icon-active: var(--color-primary);
+                --color-background-icon-active: var(--blue-400);
+                --color-background-item-hover: var(--gray-100);
+            }
+            .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"] > form#post-create-form #post-editorjs .ce-inline-toolbar .ce-popover.ce-popover--opened > .ce-popover__container {
+                border-color: var(--border-color) !important;
+                background: var(--color-surface-overlay) !important;
+                color: var(--text-color) !important;
+                border-radius: 16px !important;
+                box-shadow: var(--shadow-lg) !important;
+            }
+            .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"] > form#post-create-form #post-editorjs .ce-inline-toolbar .ce-popover-item:not(.ce-popover-item--active) { color: var(--text-color) !important; }
+            .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"] > form#post-create-form #post-editorjs .ce-inline-toolbar .ce-popover-item--active { color: var(--color-primary) !important; background: var(--blue-400) !important; }
+            .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"] > form#post-create-form > details.post-composer-advanced > .post-composer-advanced-content {
+                border: 1px solid var(--border-color) !important;
+                background: var(--color-surface-overlay) !important;
+                color: var(--text-color) !important;
+                border-radius: 16px !important;
+                box-shadow: var(--shadow-lg) !important;
+            }
+            .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"] > form#post-create-form .post-composer-setting-row label,
+            .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"] > form#post-create-form .post-composer-source-field label { color: var(--text-color) !important; font-family: var(--font-primary) !important; }
+            .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"] > form#post-create-form .post-composer-source-field input {
+                color: var(--text-color) !important; background: var(--gray-100) !important; border-color: var(--border-color) !important;
+            }
+            .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"] > form#post-create-form .post-composer-setting-row input[type="checkbox"] { background: var(--color-secondary) !important; border-color: var(--border-color) !important; }
+            .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"] > form#post-create-form .post-composer-setting-row input[type="checkbox"]:checked { background: var(--color-primary) !important; border-color: var(--color-primary) !important; }
         </style>
         <form id="post-create-form" class="addpost__form card card-body post-create-modal" action="{{ isset($post) ? route('posts.update', $post) : route('posts.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
