@@ -62,6 +62,7 @@
                     <span class="small color-gray">Üyelik tarihi {{ $user->created_at->translatedFormat('d F Y, H:i') }}</span>
                     @if (! (\App\Models\ReputationSetting::current()->exclude_company_accounts && $user->is_company))
                     <button class="profile-reputation-trigger small color-gray" type="button" data-modal-btn="profile-earned-badges" aria-haspopup="dialog" aria-controls="profileEarnedBadgesModal" title="Kazanılan rozetleri görüntüle">
+                        <span>{{ $earnedRewardBadges->count() }} rozet</span>
                         @if (! empty($reputationBadge['image']))
                             <img src="{{ \Illuminate\Support\Facades\Storage::disk('public')->url($reputationBadge['image']) }}" alt="" width="24" height="24" style="display:inline-block;object-fit:contain;vertical-align:middle">
                         @endif
@@ -225,31 +226,6 @@
                             @endif
                         </footer>
                     </section>
-
-                    @if ($earnedRewardBadges->isNotEmpty())
-                    <section class="widget card card-body">
-                        <header><h2 class="widget__title h6">Aldığı rozetler</h2></header>
-                        <div class="profile-reward-badges" aria-label="Kazanılmış ödül rozetleri">
-                            @foreach ($earnedRewardBadges->take(10) as $earnedBadge)
-                                <button class="profile-reward-badge profile-reward-badge--button" type="button" data-modal-btn="profile-earned-badge-{{ $loop->index }}" aria-haspopup="dialog" title="{{ $earnedBadge['description'] ?? $earnedBadge['name'] }}">
-                                    <span class="profile-reward-badge__visual">
-                                        @if (filled($earnedBadge['image'] ?? null))
-                                            <img src="{{ \Illuminate\Support\Facades\Storage::disk('public')->url($earnedBadge['image']) }}" alt="" loading="lazy">
-                                        @else
-                                            <x-repost-icon :name="$earnedBadge['icon'] ?? 'trophy'" size="22" />
-                                        @endif
-                                    </span>
-                                    <span class="profile-reward-badge__name">{{ $earnedBadge['name'] }}</span>
-                                </button>
-                            @endforeach
-                        </div>
-                        @if ($earnedRewardBadges->count() > 10)
-                            <footer class="widget__footer">
-                                <button type="button" class="profile-all-badges-trigger" data-modal-btn="profile-earned-badges" aria-haspopup="dialog" aria-controls="profileEarnedBadgesModal">Tüm rozetler</button>
-                            </footer>
-                        @endif
-                    </section>
-                    @endif
 
                     <section class="widget card card-body">
                         <header><h2 class="widget__title h6">Hakkında</h2></header>
