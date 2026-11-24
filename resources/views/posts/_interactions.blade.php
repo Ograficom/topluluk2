@@ -74,6 +74,11 @@
                 </li>
             </ul>
         </div>
+        @if ($showPostStatistics ?? false)
+            <button class="btn btn-md btn-square btn-primary-soft post-statistics-trigger" type="button" data-post-statistics-open aria-haspopup="dialog" aria-controls="post-statistics-dialog" title="Gönderi istatistikleri" aria-label="Gönderi istatistiklerini göster">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v18h18"/><path d="m6 14 5-5 4 4 6-6"/><path d="M17 7h4v4"/></svg>
+            </button>
+        @endif
     </div>
     @auth
         <form action="{{ route('posts.bookmarks.toggle', $post) }}" method="POST">
