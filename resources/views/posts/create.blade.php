@@ -227,6 +227,35 @@
     </div>
 
 
+<style>
+.post-create-modal #post-editorjs .ce-toolbar__actions {
+    display: flex !important;
+    position: static !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    transform: none !important;
+}
+.post-create-modal #post-editorjs .ce-toolbar__actions .ce-toolbar__plus {
+    display: grid !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    cursor: pointer;
+}
+.post-create-modal #post-editorjs .ce-toolbar__actions .ce-toolbar__plus svg,
+.post-create-modal #post-editorjs .ce-toolbar__actions .ce-toolbar__plus svg * {
+    display: revert !important;
+}
+.post-create-modal #post-editorjs .ce-toolbar__settings-btn {
+    display: none !important;
+}
+.post-create-modal #post-editorjs .ce-toolbar {
+    z-index: 10 !important;
+}
+.post-create-modal #post-editorjs .ce-popover {
+    z-index: 30 !important;
+}
+</style>
+
 <style id="post-tags-modal-style">
 .post-tags-modal[hidden] { display:none !important; }
 .post-tags-modal.is-open {
@@ -640,6 +669,10 @@
 
         await editor.isReady;
         holder.classList.add('is-ready');
+        // Show the native block inserter as soon as the composer opens.
+        if (!input.value.trim() && editor.blocks.getBlocksCount() > 0 && !form.contains(document.activeElement)) {
+          editor.caret.setToFirstBlock('start');
+        }
         setStatus('Yazmaya başlayabilirsin');
 
         form.addEventListener('submit', async event => {
