@@ -81,9 +81,9 @@
     <link rel="stylesheet" href="{{ asset('assets/libs/fancyapp/fancybox.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/libs/fancyapp/carousel.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/kit.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/css/app.css') }}?v=20261124-tablet-and-cookie-scroll">
+    <link rel="stylesheet" href="{{ asset('assets/css/app.css') }}?v=20261124-repost-mobile-restore">
     <link rel="stylesheet" href="{{ asset('assets/css/engine.css') }}?v=20261110-santral-hero-buttons-inset-blue">
-    <link rel="stylesheet" href="{{ asset('assets/css/ografi-overrides.css') }}?v=20261124-community-widgets">
+    <link rel="stylesheet" href="{{ asset('assets/css/ografi-overrides.css') }}?v=20261124-repost-mobile-restore">
     @if (request()->routeIs('posts.index', 'posts.show'))
     <link rel="stylesheet" href="{{ asset('assets/css/gokturk-keyboard.css') }}?v=20261119-keyboard-launcher-offset-12">
     @endif
@@ -520,12 +520,6 @@
                         @else
                             <div class="alert alert-success" role="status">{{ session('status') }}</div>
                         @endif
-                    @endif
-                    @if ($feedPage)
-                        <div class="mobile-community-widgets widgets">
-                            @include('layouts._community-links-widget')
-                            @include('layouts._tags-widget')
-                        </div>
                     @endif
                     @yield('content')
                 @if ($statsPage || $channelsIndexPage)
