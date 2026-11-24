@@ -12,6 +12,26 @@ class Comment extends Model
 {
     use HasFactory;
 
+    protected static function booted(): void
+    {
+        static::saved(function (Comment $comment): void {
+            if ($comment->is_spam || ! $comment->user
+                || (! $comment->wasRecentlyCreated && ! $comment->wasChanged('is_spam'))) {
+                return;
+            }
+
+            app(\App\Services\ReputationService::class)->award(
+                $comment->user,
+                \App\Services\ReputationService::COMMENT_PUBLISHED,
+                'comment:'.$comment->id.':published',
+                'Yorum yaptı',
+                self::class,
+                $comment->id,
+            );
+            app(\App\Services\CommunityTaskService::class)->completeAvailableTasks($comment->user);
+        });
+    }
+
     protected $fillable = [
         'post_id',
         'user_id',

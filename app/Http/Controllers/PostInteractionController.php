@@ -164,11 +164,6 @@ class PostInteractionController extends Controller
             'is_spam' => $isSpam,
         ]);
 
-        if (! $isSpam) {
-            app(\App\Services\ReputationService::class)->award($request->user(), \App\Services\ReputationService::COMMENT_PUBLISHED, 'comment:'.$comment->id.':published', 'Yorum yaptı', Comment::class, $comment->id);
-            app(\App\Services\CommunityTaskService::class)->completeAvailableTasks($request->user());
-        }
-
         AdminNotificationService::sendToAdmins(
             $isSpam ? 'İncelenecek spam yorum' : 'Yeni yorum',
             $request->user()->displayName().' yorum gönderdi: '.str($validated['body'] ?? 'Görsel içeren yorum')->limit(100),
