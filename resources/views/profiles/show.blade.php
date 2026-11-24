@@ -62,7 +62,7 @@
                     <span class="small color-gray">Üyelik tarihi {{ $user->created_at->translatedFormat('d F Y, H:i') }}</span>
                     @if (! (\App\Models\ReputationSetting::current()->exclude_company_accounts && $user->is_company))
                     <button class="profile-reputation-trigger small color-gray" type="button" data-modal-btn="profile-earned-badges" aria-haspopup="dialog" aria-controls="profileEarnedBadgesModal" title="Kazanılan rozetleri görüntüle">
-                        <span>{{ $earnedRewardBadges->count() }} rozet</span>
+                        <span class="color-green">{{ number_format($reputationScore, 0, ',', '.') }} puan</span>
                         @if (! empty($reputationBadge['image']))
                             <img src="{{ \Illuminate\Support\Facades\Storage::disk('public')->url($reputationBadge['image']) }}" alt="" width="24" height="24" style="display:inline-block;object-fit:contain;vertical-align:middle">
                         @endif
