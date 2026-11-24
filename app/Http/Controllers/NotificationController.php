@@ -10,6 +10,32 @@ use Illuminate\Support\Str;
 
 class NotificationController extends Controller
 {
+    public static function visibleFilter(\App\Models\User $notificationUser): \Closure
+    {
+        $visibleNotificationCategories = collect(['replies', 'likes', 'posts', 'announcements', 'followers', 'messages', 'mentions', 'security'])
+           ->filter(fn (string $category): bool => (bool) data_get($notificationUser->notification_preferences ?? [], 'stream.'.$category, true))
+           ->values()
+           ->all();
+                        return fn ($query) => $query->where(function ($items) use ($visibleNotificationCategories): void {
+           $items->whereNull('data->category');
+           if ($visibleNotificationCategories !== []) {
+               $items->orWhereIn('data->category', $visibleNotificationCategories);
+           }
+                        });
+    }
+
+    public function feed(Request $request): JsonResponse
+    {
+        $user = $request->user();
+        $visible = self::visibleFilter($user);
+        $headerNotifications = $user->notifications()->where($visible)->latest()->limit(30)->get();
+
+        return response()->json([
+            'unread' => $user->unreadNotifications()->where($visible)->count(),
+            'html' => view('layouts._notification-items', compact('headerNotifications'))->render(),
+        ])->header('Cache-Control', 'private, no-store');
+    }
+
     public function storePushSubscription(Request $request): JsonResponse
     {
         $validated = $request->validate([
@@ -20,8 +46,8 @@ class NotificationController extends Controller
                 'starts_with:https://',
                 function (string $attribute, mixed $value, \Closure $fail): void {
                     $host = parse_url((string) $value, PHP_URL_HOST);
-                    $allowed = in_array($host, ['fcm.googleapis.com', 'web.push.apple.com'], true)
-                        || (is_string($host) && str_ends_with($host, '.push.services.mozilla.com'));
+                    $allowed = in_array($host, ['fcm.googleapis.com', 'web.push.apple.com', 'wns.windows.com'], true)
+                        || (is_string($host) && (str_ends_with($host, '.push.services.mozilla.com') || str_ends_with($host, '.notify.windows.com') || str_ends_with($host, '.push.apple.com')));
 
                     if (! $allowed) {
                         $fail('Geçersiz tarayıcı push uç noktası.');
@@ -82,44 +108,56 @@ class NotificationController extends Controller
         return redirect($target);
     }
 
-    public function markAllRead(): RedirectResponse
+    public function markAllRead(): RedirectResponse|JsonResponse
     {
         auth()->user()->unreadNotifications()->update(['read_at' => now()]);
+
+        if (request()->expectsJson()) return response()->json(['ok' => true]);
 
         return back()->with('status', 'Tüm bildirimler okundu olarak işaretlendi.');
     }
 
-    public function markAllUnread(): RedirectResponse
+    public function markAllUnread(): RedirectResponse|JsonResponse
     {
         auth()->user()->notifications()->whereNotNull('read_at')->update(['read_at' => null]);
+
+        if (request()->expectsJson()) return response()->json(['ok' => true]);
 
         return back()->with('status', 'Tüm bildirimler okunmadı olarak işaretlendi.');
     }
 
-    public function destroyAll(): RedirectResponse
+    public function destroyAll(): RedirectResponse|JsonResponse
     {
         auth()->user()->notifications()->delete();
+
+        if (request()->expectsJson()) return response()->json(['ok' => true]);
 
         return back()->with('status', 'Tüm bildirimler silindi.');
     }
 
-    public function markRead(string $notification): RedirectResponse
+    public function markRead(string $notification): RedirectResponse|JsonResponse
     {
         $this->notificationForCurrentUser($notification)->markAsRead();
 
+        if (request()->expectsJson()) return response()->json(['ok' => true]);
+
         return back();
     }
 
-    public function markUnread(string $notification): RedirectResponse
+    public function markUnread(string $notification): RedirectResponse|JsonResponse
     {
         $this->notificationForCurrentUser($notification)->markAsUnread();
 
+        if (request()->expectsJson()) return response()->json(['ok' => true]);
+
         return back();
     }
 
-    public function destroy(string $notification): RedirectResponse
+    public function destroy(string $notification): RedirectResponse|JsonResponse
     {
         $this->notificationForCurrentUser($notification)->delete();
+
+        if (request()->expectsJson()) return response()->json(['ok' => true]);
 
         return back()->with('status', 'Bildirim silindi.');
     }

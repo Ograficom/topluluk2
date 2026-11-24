@@ -180,20 +180,11 @@
                 @auth
                     @php
                         $notificationUser = auth()->user();
-                        $visibleNotificationCategories = collect(['replies', 'likes', 'posts', 'announcements', 'followers', 'messages', 'mentions', 'security'])
-                            ->filter(fn (string $category): bool => (bool) data_get($notificationUser->notification_preferences ?? [], 'stream.'.$category, true))
-                            ->values()
-                            ->all();
-                        $visibleNotifications = fn ($query) => $query->where(function ($items) use ($visibleNotificationCategories): void {
-                            $items->whereNull('data->category');
-                            if ($visibleNotificationCategories !== []) {
-                                $items->orWhereIn('data->category', $visibleNotificationCategories);
-                            }
-                        });
+                        $visibleNotifications = \App\Http\Controllers\NotificationController::visibleFilter($notificationUser);
                         $headerNotifications = $notificationUser->notifications()
                             ->where($visibleNotifications)
                             ->latest()
-                            ->limit(8)
+                            ->limit(30)
                             ->get();
                         $unreadNotificationCount = $notificationUser->unreadNotifications()
                             ->where($visibleNotifications)
@@ -201,6 +192,18 @@
                     @endphp
                     <button type="button" class="notification-sheet-backdrop" aria-label="Bildirimleri kapat" aria-hidden="true" tabindex="-1"></button>
                     <style>
+                        #desktopUserMenuButton{position:relative!important;overflow:visible!important}
+                        #desktopUserMenuButton [data-notification-dot]{position:absolute;z-index:2;top:0;right:0;width:9px;height:9px;box-sizing:border-box;border:2px solid var(--body-bg,#fff);border-radius:50%;background:#ef4444;pointer-events:none}
+                        #desktopUserMenuButton [data-notification-dot][hidden]{display:none!important}
+                        .notification-menu .notification-item__actions-menu{position:static!important;width:100%;min-width:140px;max-width:100%;box-shadow:none;margin:4px 0}
+                        .notification-menu .notification-item:has(details[open]){flex-wrap:wrap}
+                        .notification-menu .notification-item:has(details[open]) .notification-item__actions{flex:0 0 100%;display:flex;flex-direction:column;align-items:flex-end}
+                        .notification-menu__footer{display:flex;flex:none;gap:8px;flex-wrap:wrap;padding:8px 12px;border-top:1px solid var(--border-color)}
+                        .notification-menu__footer form{margin:0}
+                        .notification-menu__footer button{border:0;background:transparent;color:var(--color-primary);font:inherit;font-size:12px;cursor:pointer;padding:6px}
+                        .notification-menu__footer .is-danger,.notification-menu__error{color:#ef4444}
+                        .notification-menu__error{font-size:12px;padding:8px 12px}
+                        .notification-menu__error[hidden]{display:none!important}
                         #desktopUserMenu [data-notification-count][hidden],#notificationDropdownToggle{display:none!important}
                         .notification-dropdown{position:absolute!important;inset:0 0 0 auto!important;width:0!important;min-width:0!important;pointer-events:none}
                         .notification-dropdown.is-open > .notification-menu{pointer-events:auto}
@@ -320,6 +323,7 @@
                     <div class="dropdown dropdown-md">
                         <button id="desktopUserMenuButton" type="button" class="btn btn-secondary-ghost btn-circle avatar" data-dropdown-toggle aria-expanded="false" aria-haspopup="menu" aria-controls="desktopUserMenu" aria-label="Profil menüsünü aç" title="Profil">
                             <img src="{{ auth()->user()->avatarUrl() }}" alt="" draggable="false" width="40" height="40">
+                            <span data-notification-dot aria-hidden="true" @if ($unreadNotificationCount === 0) hidden @endif></span>
                         </button>
                         <ul class="dropdown-menu dropdown-menu-end" id="desktopUserMenu" aria-labelledby="desktopUserMenuButton">
                             <li class="dropdown-menu-item dropdown-menu-item-lg">
@@ -334,7 +338,7 @@
                                 </a>
                             </li>
                             <li class="dropdown-menu-item dropdown-menu-item-lg">
-                                <button id="notificationMenuButton" type="button" aria-expanded="false" aria-haspopup="menu" aria-controls="notificationMenu" data-notification-user-id="{{ $notificationUser->id }}" data-notification-open-template="{{ route('notifications.open', ['notification' => '__NOTIFICATION__']) }}" data-unread-count="{{ $unreadNotificationCount }}" aria-label="Bildirimler{{ $unreadNotificationCount > 0 ? ', '.$unreadNotificationCount.' okunmamış' : '' }}">
+                                <button id="notificationMenuButton" type="button" aria-expanded="false" aria-haspopup="menu" aria-controls="notificationMenu" data-notification-user-id="{{ $notificationUser->id }}" data-notification-open-template="{{ route('notifications.open', ['notification' => '__NOTIFICATION__']) }}" data-unread-count="{{ $unreadNotificationCount }}" data-notification-feed="{{ route('notifications.feed') }}" aria-label="Bildirimler{{ $unreadNotificationCount > 0 ? ', '.$unreadNotificationCount.' okunmamış' : '' }}">
                                     <svg class="color-gray" viewBox="0 0 24 24" width="20" height="20" fill="none" aria-hidden="true"><path d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
                                     <span>Bildirimler</span>
                                     <span class="dropdown-menu-count" data-notification-count @if ($unreadNotificationCount === 0) hidden @endif>{{ $unreadNotificationCount > 99 ? '99+' : $unreadNotificationCount }}</span>
@@ -376,61 +380,12 @@
                                 </div>
                             </div>
                             <div class="notification-menu__list">
-                                @forelse ($headerNotifications as $notification)
-                                    @php
-                                        $notificationTitle = data_get($notification->data, 'title', 'Yeni bildirim');
-                                        $notificationBody = data_get($notification->data, 'message', data_get($notification->data, 'body', 'Hesabında yeni bir hareket var.'));
-                                        $notificationCategory = data_get($notification->data, 'category', 'announcements');
-                                        $notificationIconPaths = [
-                                            'replies' => ['M21 15a4 4 0 0 1-4 4H7l-4 2V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z', 'M8 10h8', 'M8 14h5'],
-                                            'likes' => ['M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8l1.1 1.1L12 21l7.8-7.5 1.1-1.1a5.5 5.5 0 0 0-.1-7.8z'],
-                                            'posts' => ['M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z', 'M14 2v6h6', 'M8 13h8', 'M8 17h8'],
-                                            'announcements' => ['M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9', 'M10 21h4', 'M12 2v2'],
-                                            'followers' => ['M16 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2', 'M10 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8', 'M19 8v6', 'M16 11h6'],
-                                            'messages' => ['M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.4 8.4 0 0 1 3.8-.9h.5a8.5 8.5 0 0 1 8 8z'],
-                                            'mentions' => ['M10 13a5 5 0 0 0 7.1 0l3-3a5 5 0 0 0-7.1-7.1l-1.7 1.7', 'M14 11a5 5 0 0 0-7.1 0l-3 3a5 5 0 0 0 7.1 7.1l1.7-1.7'],
-                                            'security' => ['M12 22s8-4 8-11V5l-8-3-8 3v6c0 7 8 11 8 11z', 'm9 12 2 2 4-4'],
-                                        ];
-                                        $notificationIcon = $notificationIconPaths[$notificationCategory] ?? $notificationIconPaths['announcements'];
-                                    @endphp
-                                    <div class="notification-item{{ $notification->read_at ? '' : ' is-unread' }}">
-                                        <a href="{{ route('notifications.open', $notification->id) }}" class="notification-item__main">
-                                            <span class="notification-item__icon">
-                                                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                                                    @foreach ($notificationIcon as $iconPath)<path d="{{ $iconPath }}"/>@endforeach
-                                                </svg>
-                                            </span>
-                                            <span class="notification-item__content">
-                                                <strong>{{ $notificationTitle }}</strong>
-                                                <span>{{ $notificationBody }}</span>
-                                                <time datetime="{{ $notification->created_at?->toIso8601String() }}">{{ $notification->created_at?->diffForHumans() }}</time>
-                                            </span>
-                                            @if (! $notification->read_at)<span class="notification-item__unread" aria-label="Okunmadı"></span>@endif
-                                        </a>
-                                        <details class="notification-item__actions">
-                                            <summary aria-label="Bildirim seçenekleri">
-                                                <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><circle cx="5" cy="12" r="1.7"/><circle cx="12" cy="12" r="1.7"/><circle cx="19" cy="12" r="1.7"/></svg>
-                                            </summary>
-                                            <div class="notification-item__actions-menu">
-                                                <form method="POST" action="{{ route($notification->read_at ? 'notifications.mark-unread' : 'notifications.mark-read', $notification->id) }}">
-                                                    @csrf
-                                                    <button type="submit">{{ $notification->read_at ? 'Okunmamış olarak işaretle' : 'Okundu olarak işaretle' }}</button>
-                                                </form>
-                                                <form method="POST" action="{{ route('notifications.destroy', $notification->id) }}" onsubmit="return confirm('Bu bildirimi silmek istediğine emin misin?')">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="is-danger">Silmek</button>
-                                                </form>
-                                            </div>
-                                        </details>
-                                    </div>
-                                @empty
-                                    <div class="notification-empty">
-                                        <span class="notification-empty__icon"><svg viewBox="0 0 24 24" width="25" height="25" fill="none" aria-hidden="true"><path d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-                                        <strong>Henüz bildirimin yok</strong>
-                                        <span>Yeni etkileşimler burada görünecek.</span>
-                                    </div>
-                                @endforelse
+                                @include('layouts._notification-items', ['headerNotifications' => $headerNotifications])
+                            </div>
+                            <p data-notification-error class="notification-menu__error" role="alert" hidden></p>
+                            <div class="notification-menu__footer">
+                                <form method="POST" action="{{ route('notifications.read-all') }}">@csrf<button type="submit">Tümünü okundu işaretle</button></form>
+                                <form method="POST" action="{{ route('notifications.destroy-all') }}" onsubmit="return confirm('Tüm bildirimlerini silmek istiyor musun?')">@csrf @method('DELETE')<button type="submit" class="is-danger">Tümünü sil</button></form>
                             </div>
                         </div>
                     </div>

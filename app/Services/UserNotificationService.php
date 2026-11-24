@@ -5,6 +5,8 @@ namespace App\Services;
 use App\Models\User;
 use App\Notifications\SiteActivityNotification;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Str;
 use Throwable;
 
 class UserNotificationService
@@ -22,19 +24,29 @@ class UserNotificationService
             throw new \InvalidArgumentException('Unknown notification category: '.$category);
         }
 
+        $notification = new SiteActivityNotification($title, $message, $url, null, $category, $senderName, $mailSummary);
+        $notification->id = (string) Str::uuid();
+
         try {
-            $recipient->notify(new SiteActivityNotification($title, $message, $url, null, $category, $senderName, $mailSummary));
+            $channels = $notification->via($recipient);
         } catch (Throwable $exception) {
-            // A mail transport outage must not break the user's main action.
-            Log::warning('User notification delivery failed.', [
-                'user_id' => $recipient->id,
-                'category' => $category,
-                'title' => $title,
-                'exception' => $exception->getMessage(),
-            ]);
+            Log::warning('Notification channel configuration failed.', ['user_id' => $recipient->id, 'category' => $category, 'exception' => $exception->getMessage()]);
+            $channels = [];
         }
 
-        WebPushNotificationService::send($recipient, $category, $title, $message, $url);
+        foreach ($channels as $channel) {
+            try {
+                Notification::sendNow($recipient, $notification, [$channel]);
+            } catch (Throwable $exception) {
+                Log::warning('User notification delivery failed.', ['user_id' => $recipient->id, 'category' => $category, 'channel' => $channel, 'exception' => $exception->getMessage()]);
+            }
+        }
+
+        try {
+            WebPushNotificationService::send($recipient, $category, $title, $message, $url);
+        } catch (Throwable $exception) {
+            Log::warning('Web Push configuration failed.', ['user_id' => $recipient->id, 'category' => $category, 'exception' => $exception->getMessage()]);
+        }
     }
 
     /**

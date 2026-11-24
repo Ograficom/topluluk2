@@ -10,6 +10,8 @@ use Filament\Notifications\Notification as FilamentNotification;
 use Illuminate\Notifications\Messages\BroadcastMessage;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use Illuminate\Support\Facades\Log;
+use Throwable;
 
 class SiteActivityNotification extends Notification
 {
@@ -49,24 +51,31 @@ class SiteActivityNotification extends Notification
 
         // SMTP settings are stored in the database; apply them on every request
         // because Filament's settings form only changes runtime config for its own request.
-        $mailSettings = MailSetting::current();
-        $smtpEnabled = $mailSettings->enabled
-            && filled($mailSettings->host)
-            && filled($mailSettings->username)
-            && filled($mailSettings->password);
+        $smtpEnabled = false;
+        try {
+            $mailSettings = MailSetting::current();
+            $smtpEnabled = $mailSettings->enabled
+                && filled($mailSettings->host)
+                && filled($mailSettings->username)
+                && filled($mailSettings->password);
 
-        if ($smtpEnabled) {
-            config([
-                'mail.default' => $mailSettings->mailer ?: 'smtp',
-                'mail.mailers.smtp.transport' => 'smtp',
-                'mail.mailers.smtp.scheme' => $mailSettings->scheme,
-                'mail.mailers.smtp.host' => $mailSettings->host,
-                'mail.mailers.smtp.port' => $mailSettings->port,
-                'mail.mailers.smtp.username' => $mailSettings->username,
-                'mail.mailers.smtp.password' => $mailSettings->password,
-                'mail.from.address' => $mailSettings->from_address,
-                'mail.from.name' => $mailSettings->from_name,
-            ]);
+            if ($smtpEnabled) {
+                config([
+                    'mail.default' => $mailSettings->mailer ?: 'smtp',
+                    'mail.mailers.smtp.transport' => 'smtp',
+                    'mail.mailers.smtp.scheme' => $mailSettings->scheme,
+                    'mail.mailers.smtp.host' => $mailSettings->host,
+                    'mail.mailers.smtp.port' => $mailSettings->port,
+                    'mail.mailers.smtp.username' => $mailSettings->username,
+                    'mail.mailers.smtp.password' => $mailSettings->password,
+                    'mail.from.address' => $mailSettings->from_address,
+                    'mail.from.name' => $mailSettings->from_name,
+                ]);
+            }
+
+        } catch (Throwable $exception) {
+            $smtpEnabled = false;
+            Log::warning('SMTP configuration unavailable for notification.', ['exception' => $exception->getMessage()]);
         }
 
         $emailEnabled = $systemSettings->enabled('email_enabled')
