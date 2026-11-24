@@ -19,7 +19,7 @@ class ProductionRecoveryTest extends TestCase
         $channel = Channel::create(['name' => 'Recovery', 'slug' => 'recovery', 'is_active' => true]);
         $post = Post::create([
             'user_id' => $author->id, 'channel_id' => $channel->id,
-            'title' => 'Recovery post', 'slug' => 'recovery-post', 'body' => 'Recovery body',
+            'title' => 'Recovery post', 'slug' => 'recovery-post', 'excerpt' => 'Recovery excerpt', 'body' => 'Recovery body',
             'is_published' => true, 'published_at' => now()->subMinute(),
         ]);
 

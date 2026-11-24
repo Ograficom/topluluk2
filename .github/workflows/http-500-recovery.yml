@@ -1,4 +1,5 @@
 name: Emergency HTTP 500 recovery
+# Recovery gate uses a complete post fixture, including its required excerpt.
 
 on:
   push:
