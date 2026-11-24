@@ -4724,17 +4724,17 @@ p {
   }
 }
 @media screen and (max-width: 920px) {
-  .main__grid,
-  .main__grid-full {
-    grid-template-columns: 55px minmax(0, 1fr);
+  .main__grid {
+    grid-template-columns: 55px minmax(280px, auto);
   }
   .main__widgets,
   .header__write span,
-  .profile__aside-footer {
+  .profile__aside-footer,
+  .setting__aside-footer {
     display: none;
   }
   .main__grid-feed {
-    grid-template-columns: minmax(0, 1fr);
+    grid-template-columns: minmax(280px, auto);
   }
   .profile__aside {
     position: static;
