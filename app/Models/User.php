@@ -58,6 +58,29 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
         return 'username';
     }
 
+    public function getRouteKey(): mixed
+    {
+        // Legacy accounts can have no public username or an email as username.
+        // Use the existing numeric profile lookup rather than exposing an email.
+        $username = $this->username;
+
+        return filled($username) && ! filter_var($username, FILTER_VALIDATE_EMAIL)
+            ? $username
+            : $this->getKey();
+    }
+
+    public function resolveRouteBinding($value, $field = null)
+    {
+        if ($field === null || $field === $this->getRouteKeyName()) {
+            $user = parent::resolveRouteBinding($value, $field);
+            if ($user || ! ctype_digit((string) $value)) return $user;
+
+            return $this->whereKey($value)->first();
+        }
+
+        return parent::resolveRouteBinding($value, $field);
+    }
+
     protected static function booted(): void
     {
         static::saving(function (User $user): void {

@@ -47,7 +47,9 @@ class AppServiceProvider extends ServiceProvider
         });
 
         try {
-            $mailSettings = MailSetting::query()->find(1);
+            $mailSettings = \Illuminate\Support\Facades\Schema::hasTable('mail_settings')
+                ? MailSetting::query()->find(1)
+                : null;
 
             if ($mailSettings) {
                 config([

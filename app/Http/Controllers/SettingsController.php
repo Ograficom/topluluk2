@@ -130,6 +130,31 @@ class SettingsController extends Controller
 
     public function updatePreferences(Request $request): RedirectResponse
     {
+        if (! $request->has('notification_preferences')) {
+            $validated = $request->validate([
+                'timezone' => ['required', Rule::in(timezone_identifiers_list())],
+                'show_adult_content' => ['sometimes', 'boolean'],
+                'notify_replies' => ['sometimes', 'boolean'],
+                'notify_posts' => ['sometimes', 'boolean'],
+                'notify_announcements' => ['sometimes', 'boolean'],
+            ]);
+            $user = $request->user();
+            $preferences = $user->notification_preferences ?? [];
+            foreach (['replies', 'posts', 'announcements'] as $category) {
+                $key = 'notify_'.$category;
+                if ($request->has($key)) {
+                    $preferences['email'][$category] = $request->boolean($key);
+                    $user->{$key} = $request->boolean($key);
+                }
+            }
+            $user->timezone = $validated['timezone'];
+            $user->show_adult_content = $request->boolean('show_adult_content');
+            $user->notification_preferences = $preferences;
+            $user->save();
+
+            return back()->with('activeTab', 'site')->with('status', 'Tercihleriniz kaydedildi.');
+        }
+
         $validated = $request->validate([
             'timezone' => ['required', Rule::in(timezone_identifiers_list())],
             'show_adult_content' => ['sometimes', 'boolean'],

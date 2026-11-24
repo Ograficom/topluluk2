@@ -223,6 +223,10 @@ if (notificationButton && notificationMenu) {
             if (!response.ok) throw new Error('Bildirimler güncellenemedi.');
             const data = await response.json();
             if (mutating || revision !== startedRevision) return;
+            if (errorBox?.dataset.refreshError === 'true') {
+                errorBox.hidden = true;
+                delete errorBox.dataset.refreshError;
+            }
             const unread = Number(data.unread) || 0;
             const count = notificationButton.querySelector('[data-notification-count]');
             notificationButton.dataset.unreadCount = String(unread);
@@ -233,7 +237,12 @@ if (notificationButton && notificationMenu) {
                 list.innerHTML = data.html;
             }
         } catch (error) {
-            // Keep the last successful list if the connection drops.
+            // Keep the last successful list and expose connection problems.
+            if (errorBox && errorBox.hidden) {
+                errorBox.textContent = 'Bildirimler güncellenemedi. Bağlantı tekrar denenecek.';
+                errorBox.hidden = false;
+                errorBox.dataset.refreshError = 'true';
+            }
         } finally {
             refreshing = false;
             if (pending) { pending = false; refresh(); }

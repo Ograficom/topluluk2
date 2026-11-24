@@ -34,7 +34,9 @@ class PostController extends Controller
         $period = $validated['period'] ?? null;
         $viewer = $request->user();
 
-        $posts = Post::query()->published()->whereNull('advertisement_id')->with(['user', 'channel', 'tagRecords', 'comments' => fn ($query) => $query->with('user')->latest()->limit(1)])
+        $posts = Post::query()->published()->whereNull('advertisement_id')
+            ->when(! $viewer?->show_adult_content, fn (Builder $query) => $query->where('is_adult', false))
+            ->with(['user', 'channel', 'tagRecords', 'comments' => fn ($query) => $query->with('user')->latest()->limit(1)])
             ->withCount('comments')
             ->withCount([
                 'reactions as likes_count' => fn (Builder $query) => $query->where('type', PostReaction::LIKE),
