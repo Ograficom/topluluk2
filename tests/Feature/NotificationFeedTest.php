@@ -23,6 +23,11 @@ class NotificationFeedTest extends TestCase
         $own = $make($user, 'Kendi bildirimim');
         $foreign = $make($other, 'Başkasının bildirimi');
 
+        $this->get(route('notifications.index'))->assertRedirect(route('login'));
+        $this->actingAs($user)->get(route('notifications.index'))
+            ->assertOk()->assertSee('Kendi bildirimim')->assertDontSee('Başkasının bildirimi');
+        $this->assertDatabaseHas('notifications', ['id' => $own->id, 'read_at' => null]);
+
         $this->actingAs($user)->getJson(route('notifications.feed'))
             ->assertOk()->assertJsonPath('unread', 1)
             ->assertSee('Kendi bildirimim')->assertDontSee('Başkasının bildirimi');
@@ -32,6 +37,12 @@ class NotificationFeedTest extends TestCase
         $this->getJson(route('notifications.feed'))->assertOk()->assertJsonPath('unread', 0);
         $this->deleteJson(route('notifications.destroy', $own->id))->assertOk();
         $this->getJson(route('notifications.feed'))->assertOk()->assertJsonPath('unread', 0)->assertDontSee('Kendi bildirimim');
+        $this->assertDatabaseHas('notifications', ['id' => $foreign->id]);
+
+        $make($user, 'Silinecek bildirim');
+        $this->from(route('notifications.index'))->delete(route('notifications.destroy-all'))
+            ->assertRedirect(route('notifications.index'));
+        $this->get(route('notifications.index'))->assertOk()->assertSee('Henüz bildirimin yok');
         $this->assertDatabaseHas('notifications', ['id' => $foreign->id]);
     }
 }

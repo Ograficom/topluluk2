@@ -338,7 +338,7 @@
                                 </a>
                             </li>
                             <li class="dropdown-menu-item dropdown-menu-item-lg">
-                                <button id="notificationMenuButton" type="button" aria-expanded="false" aria-haspopup="menu" aria-controls="notificationMenu" data-notification-user-id="{{ $notificationUser->id }}" data-notification-open-template="{{ route('notifications.open', ['notification' => '__NOTIFICATION__']) }}" data-unread-count="{{ $unreadNotificationCount }}" data-notification-feed="{{ route('notifications.feed') }}" aria-label="Bildirimler{{ $unreadNotificationCount > 0 ? ', '.$unreadNotificationCount.' okunmamış' : '' }}">
+                                <button id="notificationMenuButton" type="button" aria-expanded="false" aria-haspopup="menu" aria-controls="notificationMenu" data-notification-user-id="{{ $notificationUser->id }}" data-notification-open-template="{{ route('notifications.open', ['notification' => '__NOTIFICATION__']) }}" data-unread-count="{{ $unreadNotificationCount }}" data-notification-feed="{{ \Illuminate\Support\Facades\Route::has('notifications.feed') ? route('notifications.feed') : '' }}" aria-label="Bildirimler{{ $unreadNotificationCount > 0 ? ', '.$unreadNotificationCount.' okunmamış' : '' }}">
                                     <svg class="color-gray" viewBox="0 0 24 24" width="20" height="20" fill="none" aria-hidden="true"><path d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
                                     <span>Bildirimler</span>
                                     <span class="dropdown-menu-count" data-notification-count @if ($unreadNotificationCount === 0) hidden @endif>{{ $unreadNotificationCount > 99 ? '99+' : $unreadNotificationCount }}</span>
@@ -384,6 +384,9 @@
                             </div>
                             <p data-notification-error class="notification-menu__error" role="alert" hidden></p>
                             <div class="notification-menu__footer">
+                                 @if (\Illuminate\Support\Facades\Route::has('notifications.index'))
+                                     <a href="{{ route('notifications.index') }}" class="link-accent small">Tüm bildirimler</a>
+                                 @endif
                                 <form method="POST" action="{{ route('notifications.read-all') }}">@csrf<button type="submit">Tümünü okundu işaretle</button></form>
                                 <form method="POST" action="{{ route('notifications.destroy-all') }}" onsubmit="return confirm('Tüm bildirimlerini silmek istiyor musun?')">@csrf @method('DELETE')<button type="submit" class="is-danger">Tümünü sil</button></form>
                             </div>

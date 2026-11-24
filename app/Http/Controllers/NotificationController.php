@@ -24,6 +24,16 @@ class NotificationController extends Controller
                         });
     }
 
+    public function index(Request $request): \Illuminate\Http\Response
+    {
+        $user = $request->user();
+        $visible = self::visibleFilter($user);
+        $notifications = $user->notifications()->where($visible)->latest()->paginate(30);
+
+        return response()->view('notifications.index', compact('notifications'))
+            ->header('Cache-Control', 'private, no-store');
+    }
+
     public function feed(Request $request): JsonResponse
     {
         $user = $request->user();
@@ -114,7 +124,7 @@ class NotificationController extends Controller
 
         if (request()->expectsJson()) return response()->json(['ok' => true]);
 
-        return back()->with('status', 'Tüm bildirimler okundu olarak işaretlendi.');
+        return redirect()->route('notifications.index')->with('status', 'Tüm bildirimler okundu olarak işaretlendi.');
     }
 
     public function markAllUnread(): RedirectResponse|JsonResponse
@@ -123,7 +133,7 @@ class NotificationController extends Controller
 
         if (request()->expectsJson()) return response()->json(['ok' => true]);
 
-        return back()->with('status', 'Tüm bildirimler okunmadı olarak işaretlendi.');
+        return redirect()->route('notifications.index')->with('status', 'Tüm bildirimler okunmadı olarak işaretlendi.');
     }
 
     public function destroyAll(): RedirectResponse|JsonResponse
@@ -132,7 +142,7 @@ class NotificationController extends Controller
 
         if (request()->expectsJson()) return response()->json(['ok' => true]);
 
-        return back()->with('status', 'Tüm bildirimler silindi.');
+        return redirect()->route('notifications.index')->with('status', 'Tüm bildirimler silindi.');
     }
 
     public function markRead(string $notification): RedirectResponse|JsonResponse
@@ -141,7 +151,7 @@ class NotificationController extends Controller
 
         if (request()->expectsJson()) return response()->json(['ok' => true]);
 
-        return back();
+        return redirect()->route('notifications.index');
     }
 
     public function markUnread(string $notification): RedirectResponse|JsonResponse
@@ -150,7 +160,7 @@ class NotificationController extends Controller
 
         if (request()->expectsJson()) return response()->json(['ok' => true]);
 
-        return back();
+        return redirect()->route('notifications.index');
     }
 
     public function destroy(string $notification): RedirectResponse|JsonResponse
@@ -159,7 +169,7 @@ class NotificationController extends Controller
 
         if (request()->expectsJson()) return response()->json(['ok' => true]);
 
-        return back()->with('status', 'Bildirim silindi.');
+        return redirect()->route('notifications.index')->with('status', 'Bildirim silindi.');
     }
 
     private function notificationForCurrentUser(string $notification)
