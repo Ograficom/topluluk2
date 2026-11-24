@@ -314,7 +314,9 @@
                             .notification-sheet-backdrop,.notification-dropdown > .notification-menu{transition:none!important}
                         }
                     </style>
-                    @php($desktopFavoriteCount = auth()->user()->bookmarks()->count())
+                    @php
+                        $desktopFavoriteCount = auth()->user()->bookmarks()->count();
+                    @endphp
                     <div class="dropdown dropdown-md">
                         <button id="desktopUserMenuButton" type="button" class="btn btn-secondary-ghost btn-circle avatar" data-dropdown-toggle aria-expanded="false" aria-haspopup="menu" aria-controls="desktopUserMenu" aria-label="Profil menüsünü aç" title="Profil">
                             <img src="{{ auth()->user()->avatarUrl() }}" alt="" draggable="false" width="40" height="40">
@@ -520,15 +522,33 @@
         </div>
     </div>
 
-    @php($settingsPage = request()->routeIs('settings.edit', 'settings.legacy'))
-    @php($profilePage = request()->routeIs('profiles.show', 'profiles.legacy'))
-    @php($channelPage = request()->routeIs('channels.show', 'legacy.channel'))
-    @php($postCreatePage = request()->routeIs('posts.create', 'posts.edit'))
-    @php($feedPage = request()->routeIs('posts.index'))
-    @php($channelsIndexPage = request()->routeIs('channels.index', 'legacy.channels'))
-    @php($statsPage = request()->routeIs('stats.index'))
-    @php($subscriptionsPage = request()->routeIs('subscriptions.index'))
-    @php($verificationPage = request()->routeIs('verification.notice'))
+    @php
+        $settingsPage = request()->routeIs('settings.edit', 'settings.legacy');
+    @endphp
+    @php
+        $profilePage = request()->routeIs('profiles.show', 'profiles.legacy');
+    @endphp
+    @php
+        $channelPage = request()->routeIs('channels.show', 'legacy.channel');
+    @endphp
+    @php
+        $postCreatePage = request()->routeIs('posts.create', 'posts.edit');
+    @endphp
+    @php
+        $feedPage = request()->routeIs('posts.index');
+    @endphp
+    @php
+        $channelsIndexPage = request()->routeIs('channels.index', 'legacy.channels');
+    @endphp
+    @php
+        $statsPage = request()->routeIs('stats.index');
+    @endphp
+    @php
+        $subscriptionsPage = request()->routeIs('subscriptions.index');
+    @endphp
+    @php
+        $verificationPage = request()->routeIs('verification.notice');
+    @endphp
     <main class="container">
         <div class="main {{ $settingsPage || $profilePage || $channelPage ? 'main__grid-full' : 'main__grid' }}">
             <aside class="sidebar" aria-label="Kanallar ve yazarlar">
