@@ -11,7 +11,7 @@
         </div>
     @endif
 
-    <div class="addpost post-create-simple post-create-modal-page">
+    <div class="addpost post-create-simple post-create-modal-page" data-composer-design="clean">
         <style>
             /* Grow with actual Editor.js blocks, including empty paragraphs.
                Once the viewport is full, only the editor scrolls. */
@@ -302,6 +302,238 @@
                 min-height: 32px !important;
                 border-radius: 7px !important;
             }
+
+            /* Clean composer: isolated from the legacy theme's competing layout rules. */
+            .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"] {
+                align-items: center !important;
+                justify-content: center !important;
+                padding: 16px !important;
+                background: rgba(25, 35, 50, .44) !important;
+                backdrop-filter: blur(4px) !important;
+            }
+            .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"] > form#post-create-form {
+                --composer-base-height: 400px;
+                --composer-viewport-gap: 32px;
+                --composer-gutter: 68px;
+                --composer-edge: 24px;
+                --composer-ink: #202b39;
+                --composer-muted: #64748b;
+                --composer-line: #e9edf3;
+                --composer-accent: #0d6efd;
+                width: min(680px, calc(100vw - 32px)) !important;
+                border-radius: 22px !important;
+                border: 1px solid rgba(226,232,240,.8) !important;
+                background: #fff !important;
+                color: var(--composer-ink) !important;
+                box-shadow: 0 16px 48px rgba(15,23,42,.15) !important;
+                font-size: 16px !important;
+                line-height: 1.5 !important;
+            }
+            .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"]:not(.is-expanded) > form#post-create-form {
+                height: auto !important;
+                min-height: min(var(--composer-base-height), calc(100dvh - var(--composer-viewport-gap))) !important;
+                max-height: calc(100dvh - var(--composer-viewport-gap)) !important;
+            }
+            .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"].is-expanded > form#post-create-form {
+                width: min(1040px, calc(100vw - 32px)) !important;
+                height: min(820px, calc(100dvh - 32px)) !important;
+            }
+            .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"] > form#post-create-form > header.addpost__modal-head {
+                display: flex !important;
+                align-items: center !important;
+                justify-content: space-between !important;
+                flex: 0 0 59px !important;
+                width: 100% !important;
+                height: 59px !important;
+                min-height: 59px !important;
+                margin: 0 !important;
+                padding: 0 var(--composer-edge) !important;
+                box-sizing: border-box !important;
+                border-bottom: 1px solid var(--composer-line) !important;
+            }
+            .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"] > form#post-create-form > header.addpost__modal-head > strong {
+                color: var(--composer-ink) !important;
+                font-size: 18px !important;
+                font-weight: 650 !important;
+                letter-spacing: -.025em !important;
+            }
+            .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"] > form#post-create-form .addpost__modal-controls { gap: 4px !important; }
+            .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"] > form#post-create-form > header.addpost__modal-head :is(.addpost__modal-expand,.addpost__modal-close) {
+                display: grid !important;
+                place-items: center !important;
+                width: 34px !important;
+                height: 34px !important;
+                border-radius: 9px !important;
+                color: var(--composer-muted) !important;
+                background: transparent !important;
+                transform: none !important;
+                box-shadow: none !important;
+                opacity: 1 !important;
+            }
+            .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"] > form#post-create-form > header.addpost__modal-head :is(.addpost__modal-expand,.addpost__modal-close):hover {
+                background: #f1f5f9 !important;
+                color: var(--composer-ink) !important;
+            }
+            .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"] > form#post-create-form .addpost__modal-controls svg {
+                width: 19px !important;
+                height: 19px !important;
+                fill: none !important;
+                stroke: currentColor !important;
+                stroke-width: 1.8 !important;
+                stroke-linecap: round !important;
+                stroke-linejoin: round !important;
+            }
+            .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"] > form#post-create-form .addpost__modal-expand .composer-collapse-symbol,
+            .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"].is-expanded > form#post-create-form .addpost__modal-expand .composer-expand-symbol { display: none !important; }
+            .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"].is-expanded > form#post-create-form .addpost__modal-expand .composer-collapse-symbol { display: block !important; }
+            .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"] > form#post-create-form > .addpost__header {
+                flex: 0 0 60px !important;
+                height: 60px !important;
+                min-height: 60px !important;
+                padding: 0 var(--composer-edge) !important;
+                gap: 10px !important;
+            }
+            .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"] > form#post-create-form .addpost__header .addpost__header-avatar {
+                width: 36px !important; height: 36px !important; flex-basis: 36px !important;
+                border-radius: 50% !important; object-fit: cover !important;
+            }
+            .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"] > form#post-create-form .addpost__header .addpost__author { gap: 10px !important; }
+            .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"] > form#post-create-form .addpost__author .addpost__author-name {
+                color: var(--composer-ink) !important; font-size: 14px !important; font-weight: 650 !important;
+            }
+            .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"] > form#post-create-form .addpost__author .addpost__channel-separator { display: none !important; }
+            .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"] > form#post-create-form .addpost__author select#post-channel {
+                appearance: auto !important; -webkit-appearance: auto !important;
+                flex: 0 1 auto !important; max-width: min(230px, 55%) !important;
+                width: auto !important; height: 32px !important;
+                margin: 0 !important; padding: 0 8px !important;
+                border: 1px solid #e4e9f0 !important; border-radius: 8px !important;
+                background: #f8fafc !important; color: #52647b !important;
+                font-size: 13px !important; font-weight: 500 !important; cursor: pointer !important;
+            }
+            .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"] > form#post-create-form > .post-composer-title-field {
+                flex: 0 0 48px !important; height: 48px !important; min-height: 48px !important;
+                padding: 0 var(--composer-edge) 0 var(--composer-gutter) !important;
+            }
+            .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"] > form#post-create-form #post-title, .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"] > form#post-create-form #post-title::placeholder {
+                color: var(--composer-ink) !important;
+                font-size: 23px !important; font-weight: 650 !important;
+                letter-spacing: -.025em !important; line-height: 1.35 !important;
+            }
+            .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"] > form#post-create-form #post-title::placeholder { color: #8491a4 !important; }
+            .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"] > form#post-create-form > .post-composer-editor-section {
+                padding: 9px var(--composer-edge) 10px var(--composer-gutter) !important;
+            }
+            .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"] > form#post-create-form #post-editorjs .ce-block__content,
+            .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"] > form#post-create-form #post-editorjs [contenteditable="true"],
+            .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"] > form#post-create-form #post-editorjs .ce-paragraph,
+            .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"] > form#post-create-form #post-editorjs input,
+            .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"] > form#post-create-form #post-editorjs textarea {
+                color: var(--composer-ink) !important;
+                font-size: 16px !important; line-height: 1.6 !important;
+                overflow-wrap: anywhere;
+            }
+            .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"] > form#post-create-form #post-editorjs .ce-paragraph { min-height: 26px !important; padding: 2px 0 !important; }
+            .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"] > form#post-create-form #post-editorjs .ce-block:first-child:only-child .ce-paragraph:empty::before,
+            .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"] > form#post-create-form #post-editorjs:not(.is-ready):empty::before {
+                color: #8491a4 !important; font-size: 16px !important; line-height: 1.6 !important;
+            }
+            .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"] > form#post-create-form #post-editorjs h2.ce-header { font-size: 24px !important; line-height: 1.3 !important; }
+            .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"] > form#post-create-form #post-editorjs h3.ce-header { font-size: 21px !important; line-height: 1.3 !important; }
+            .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"] > form#post-create-form #post-editorjs h4.ce-header { font-size: 18px !important; line-height: 1.3 !important; }
+            .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"] > form#post-create-form .composer-block-add {
+                left: -42px !important; top: 1px !important;
+                width: 30px !important; height: 30px !important;
+                border: 1px solid #e0e6ee !important; border-radius: 50% !important;
+                background: #fff !important; color: #64748b !important;
+                box-shadow: none !important; transition: background .15s, color .15s !important;
+            }
+            .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"] > form#post-create-form .composer-block-add:hover,
+            .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"] > form#post-create-form .composer-block-add[aria-expanded="true"] {
+                background: #edf4ff !important; border-color: #d3e4ff !important; color: var(--composer-accent) !important;
+            }
+            .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"] > form#post-create-form > .composer-block-picker:not([hidden]) {
+                width: 218px !important; padding: 6px !important; gap: 2px !important;
+                border-radius: 13px !important; box-shadow: 0 8px 24px rgba(15,23,42,.12) !important;
+            }
+            .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"] > form#post-create-form .composer-block-picker button:not([hidden]) {
+                min-height: 34px !important; padding: 6px 9px !important; gap: 11px !important;
+                font-size: 14px !important; font-weight: 500 !important;
+            }
+            .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"] > form#post-create-form .composer-block-picker button svg {
+                display: block !important; flex: 0 0 18px !important; width: 18px !important; height: 18px !important;
+                fill: none !important; stroke: currentColor !important; stroke-width: 1.7 !important;
+                stroke-linecap: round !important; stroke-linejoin: round !important; color: #64748b !important;
+            }
+            .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"] > form#post-create-form .composer-block-picker button:hover svg { color: var(--composer-accent) !important; }
+            .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"] > form#post-create-form > section.post-composer-media-section {
+                padding: 0 var(--composer-edge) 0 var(--composer-gutter) !important;
+                min-height: 46px !important; margin: 0 0 8px !important;
+            }
+            .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"] > form#post-create-form > section.post-composer-media-section > .post-composer-toolbar {
+                min-height: 44px !important; gap: 4px 6px !important; align-items: center !important;
+            }
+            .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"] > form#post-create-form .post-composer-toolbar > .post-composer-tool {
+                width: 34px !important; height: 34px !important; flex: 0 0 34px !important;
+                border-radius: 8px !important; color: #65758b !important;
+            }
+            .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"] > form#post-create-form .post-composer-toolbar > .post-composer-tool:hover,
+            .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"] > form#post-create-form .post-composer-toolbar > .post-composer-tool:focus-visible,
+            .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"] > form#post-create-form .post-composer-toolbar > .post-composer-tool[aria-expanded="true"] {
+                background: #edf4ff !important; color: var(--composer-accent) !important;
+            }
+            .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"] > form#post-create-form .post-composer-toolbar > .post-composer-tool svg {
+                width: 20px !important; height: 20px !important; stroke-width: 1.7 !important;
+            }
+            .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"] > form#post-create-form > footer.post-create-simple__footer {
+                flex: 0 0 68px !important; height: 68px !important; min-height: 68px !important;
+                margin: 0 !important; padding: 0 var(--composer-edge) !important;
+                border-top: 1px solid var(--composer-line) !important;
+                align-items: center !important; background: #fff !important;
+            }
+            .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"] > form#post-create-form > details.post-composer-advanced {
+                left: var(--composer-edge) !important; bottom: 14px !important;
+                max-width: calc(100% - 160px) !important;
+            }
+            .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"] > form#post-create-form > details.post-composer-advanced > summary {
+                min-height: 40px !important; padding: 0 8px !important; margin-left: -8px !important;
+                border-radius: 8px !important; color: var(--composer-muted) !important;
+                font-size: 13px !important; font-weight: 550 !important;
+            }
+            .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"] > form#post-create-form > details.post-composer-advanced > summary:hover,
+            .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"] > form#post-create-form > details.post-composer-advanced[open] > summary {
+                color: var(--composer-accent) !important; background: #edf4ff !important;
+            }
+            .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"] > form#post-create-form > footer.post-create-simple__footer > button.post-composer-publish {
+                min-width: 108px !important; height: 40px !important; min-height: 40px !important;
+                padding: 0 22px !important; border-radius: 10px !important;
+                background: var(--composer-accent) !important; color: white !important;
+                font-size: 14px !important; font-weight: 650 !important; box-shadow: none !important;
+                transition: background .15s !important;
+            }
+            .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"] > form#post-create-form > footer.post-create-simple__footer > button.post-composer-publish:hover { background: #095cd6 !important; }
+            @media (max-width: 640px) {
+                .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"] { padding: 8px !important; }
+                .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"] > form#post-create-form {
+                    --composer-base-height: 400px;
+                    --composer-viewport-gap: 16px;
+                    --composer-gutter: 50px;
+                    --composer-edge: 16px;
+                    width: calc(100vw - 16px) !important;
+                    max-width: calc(100vw - 16px) !important;
+                    border-radius: 18px !important;
+                }
+                .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"].is-expanded > form#post-create-form { height: calc(100dvh - 16px) !important; }
+                .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"] > form#post-create-form .composer-block-add { left: -36px !important; width: 28px !important; height: 28px !important; }
+                .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"] > form#post-create-form #post-title, .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"] > form#post-create-form #post-title::placeholder { font-size: 21px !important; }
+                .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"] > form#post-create-form .addpost__header .addpost__author { gap: 6px !important; }
+                .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"] > form#post-create-form .post-composer-toolbar > .post-composer-tool { width: 31px !important; flex-basis: 31px !important; }
+                .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"] > form#post-create-form > details.post-composer-advanced > summary { font-size: 12px !important; gap: 6px !important; }
+                .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"] > form#post-create-form > footer.post-create-simple__footer > button.post-composer-publish { min-width: 92px !important; padding: 0 16px !important; }
+            }
+            @media (prefers-reduced-motion: reduce) {
+                .addpost.post-create-simple.post-create-modal-page[data-composer-design="clean"] > form#post-create-form :is(.composer-block-add,.post-composer-publish) { transition: none !important; }
+            }
         </style>
         <form id="post-create-form" class="addpost__form card card-body post-create-modal" action="{{ isset($post) ? route('posts.update', $post) : route('posts.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
@@ -313,11 +545,11 @@
                 <strong>{{ isset($post) ? 'Yayını düzenle' : 'Yeni yayın' }}</strong>
                 <div class="addpost__modal-controls">
                     <button type="button" class="addpost__modal-expand" data-post-composer-expand aria-label="Genişlet" aria-pressed="false">
-                        <img class="post-composer-expand-icon" src="https://media.hugeicons.com/previews/icons/expand-solid-rounded@3x.webp?x=1.0.2" width="20" height="20" alt="" aria-hidden="true">
-                        <img class="post-composer-collapse-icon" src="https://media.hugeicons.com/previews/icons/collapse-stroke-rounded@3x.webp?x=1.0.2" width="20" height="20" alt="" aria-hidden="true">
+                        <svg class="composer-expand-symbol" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 4h6v6M10 20H4v-6"/></svg>
+                        <svg class="composer-collapse-symbol" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 10h-6V4M4 14h6v6"/></svg>
                     </button>
                     <a href="{{ route('posts.index') }}" class="addpost__modal-close" aria-label="Kapat">
-                        <img src="https://media.hugeicons.com/previews/icons/multiplication-sign-stroke-rounded@3x.webp?x=1.0.2" width="20" height="20" alt="" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg>
                     </a>
                 </div>
             </header>
@@ -459,17 +691,17 @@
 
             <div id="composer-block-picker" class="composer-block-picker" data-block-picker hidden role="group" aria-label="İçerik blokları">
                 <span data-block-picker-status role="status">Editör yükleniyor…</span>
-                <button type="button" data-insert-block="paragraph" hidden>¶　Metin</button>
-                <button type="button" data-insert-block="header" hidden>H　Başlık</button>
-                <button type="button" data-insert-block="list" hidden>☰　Liste</button>
-                <button type="button" data-insert-block="list" data-list-style="checklist" hidden>☑　Onay kutulu liste</button>
-                <button type="button" data-insert-block="quote" hidden>❝　Alıntı</button>
-                <button type="button" data-insert-block="code" hidden>&lt;/&gt;　Kod</button>
-                <button type="button" data-insert-block="delimiter" hidden>···　Ayırıcı</button>
-                <button type="button" data-insert-block="table" hidden>▦　Tablo</button>
-                <button type="button" data-insert-block="embed" hidden>↗　Gömülü medya</button>
-                <button type="button" data-block-action="gallery">▧　Görsel</button>
-                <button type="button" data-block-action="video">▷　Video</button>
+                <button type="button" data-insert-block="paragraph" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v16M16 4v16M16 4H9a5 5 0 0 0 0 10h3"/></svg><span>Metin</span></button>
+                <button type="button" data-insert-block="header" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5v14M19 5v14M5 12h14"/></svg><span>Başlık</span></button>
+                <button type="button" data-insert-block="list" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6h11M9 12h11M9 18h11"/><circle cx="4" cy="6" r=".7"/><circle cx="4" cy="12" r=".7"/><circle cx="4" cy="18" r=".7"/></svg><span>Liste</span></button>
+                <button type="button" data-insert-block="list" data-list-style="checklist" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="16" height="16" rx="3"/><path d="m7 12 3 3 5-6"/></svg><span>Onay kutulu liste</span></button>
+                <button type="button" data-insert-block="quote" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 7H4v7h6V7Zm0 7c0 3-2 4-4 5M20 7h-6v7h6V7Zm0 7c0 3-2 4-4 5"/></svg><span>Alıntı</span></button>
+                <button type="button" data-insert-block="code" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m8 6-6 6 6 6m8-12 6 6-6 6m-2-15-4 18"/></svg><span>Kod</span></button>
+                <button type="button" data-insert-block="delimiter" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h16"/></svg><span>Ayırıcı</span></button>
+                <button type="button" data-insert-block="table" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18M3 15h18M10 4v16"/></svg><span>Tablo</span></button>
+                <button type="button" data-insert-block="embed" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 13a4 4 0 0 0 6 0l4-4a4 4 0 0 0-6-6l-2 2m2 6a4 4 0 0 0-6 0l-4 4a4 4 0 0 0 6 6l2-2"/></svg><span>Gömülü medya</span></button>
+                <button type="button" data-block-action="gallery"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="8" cy="9" r="1.5"/><path d="m3 17 5-5 4 4 4-5 5 6"/></svg><span>Görsel</span></button>
+                <button type="button" data-block-action="video"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="m10 9 5 3-5 3z"/></svg><span>Video</span></button>
             </div>
 
             <footer class="post-create-simple__footer addpost__footer">
