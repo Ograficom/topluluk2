@@ -73,7 +73,7 @@
 #createPostBox .repost-modal-body {min-height:0;}
 #createPostBox .repost-title-input {flex:none;padding:0;margin:0;height:28px;min-height:28px;line-height:1.5;box-shadow:none;border-radius:0;}
 #createPostBox .repost-editor-wrap {position:relative;flex:none;min-width:0;padding-left:32px;}
-#createPostBox #post-editorjs {overflow:visible;font:400 15px/1.6 inherit;min-height:92px;}
+#createPostBox #post-editorjs {overflow:visible;font-family:inherit;font-size:15px;font-weight:400;line-height:1.6;min-height:92px;}
 #createPostBox #post-editorjs:not(.is-ready):empty::before {content:attr(data-placeholder);color:#94a3b8;}
 #createPostBox #post-editorjs :is(.codex-editor,.codex-editor__redactor) {min-height:92px;height:auto;overflow:visible;padding-bottom:0!important;margin-right:0!important;}
 #createPostBox #post-editorjs :is(.ce-block__content,.ce-toolbar__content) {max-width:none;margin-left:0;margin-right:0;}
@@ -896,16 +896,25 @@
         if (blockToggle) blockToggle.hidden = true;
         if (textarea) {
           textarea.hidden = false;
+          let structuredBody = false;
           try {
             const data = JSON.parse(input.value);
-            const div = document.createElement('div');
-            textarea.value = (data.blocks || []).map(b => { div.innerHTML = b.data?.text || ''; return div.textContent; }).join('\n\n');
+            structuredBody = (data.blocks || []).some(b => b.type !== 'paragraph' || /<[^>]+>/.test(b.data?.text || ''));
+            textarea.value = (data.blocks || []).map(b => new DOMParser().parseFromString(b.data?.text || '', 'text/html').body.textContent).join('\n\n');
           } catch (_) { textarea.value = input.value; }
           textarea.dispatchEvent(new Event('input'));
+          // Preserve existing rich content if the editor failed to load.
+          if (structuredBody) {
+            textarea.readOnly = true;
+            textarea.title = 'Biçimlendirilmiş içeriği düzenlemek için editörün yüklenmesi gerekir.';
+          }
+          const originalText = textarea.value;
           form.addEventListener('submit', () => {
-            input.value = JSON.stringify({ blocks: [{ type: 'paragraph', data: { text: textarea.value.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;') } }] });
+            if (!structuredBody && (textarea.value !== originalText || !input.value)) {
+              input.value = JSON.stringify({ blocks: [{ type: 'paragraph', data: { text: textarea.value.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;') } }] });
+            }
             const excerpt = form.querySelector('#post-excerpt');
-            if (excerpt && !excerpt.value.trim()) excerpt.value = textarea.value.slice(0,500);
+            if (excerpt && !excerpt.value.trim()) excerpt.value = (textarea.value || form.querySelector('#post-title')?.value || '').slice(0,500);
           });
         }
         if (publishBtn) publishBtn.disabled = false;
