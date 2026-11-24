@@ -128,6 +128,47 @@
 #createPostBox #post-editorjs .ce-popover .cdx-search-field__icon svg {
     width:16px!important;height:16px!important;
 }
+
+/* Channel selector: match Repost app.css Select2 dropdown, retaining single channel_id. */
+#createPostBox .repost-channel-select {position:relative;min-width:0;max-width:100%;flex:0 1 auto;}
+#createPostBox .repost-channel-select .repost-modal-cat {max-width:100%;}
+#createPostBox .repost-channel-trigger {
+    display:inline-flex;align-items:center;gap:5px;max-width:100%;
+    min-height:26px;padding:2px 6px;margin:0;border:0;border-radius:6px;
+    background:transparent;color:var(--color-gray,#64748b);
+    font:400 13px/1.4 var(--font-primary,Inter,sans-serif);cursor:pointer;
+}
+#createPostBox .repost-channel-trigger span {overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+#createPostBox .repost-channel-trigger svg {flex:none;transition:transform .2s ease;}
+#createPostBox .repost-channel-trigger[aria-expanded="true"] svg {transform:scaleY(-1);}
+#createPostBox .repost-channel-trigger:hover,#createPostBox .repost-channel-trigger[aria-expanded="true"] {background:var(--gray-150,#eef0f5);color:var(--text-color,#334155);}
+#createPostBox .repost-channel-menu {
+    position:absolute;top:calc(100% + 6px);left:0;z-index:1150;
+    width:min(280px,calc(100vw - 48px));max-width:280px;
+    padding:10px;border:1px solid var(--border-color,#e2e8f0);border-radius:14px;
+    background:var(--color-surface-overlay,#fff);box-shadow:var(--shadow-lg,0 12px 32px rgba(15,23,42,.12));
+    color:var(--text-color,#334155);
+}
+#createPostBox .repost-channel-search {
+    display:block;width:100%;height:38px!important;min-height:38px!important;
+    margin:0 0 8px;padding:8px 12px!important;box-sizing:border-box;
+    border:1px solid var(--border-color,#e2e8f0);border-radius:9px;
+    background:var(--card-bg,#fff);color:var(--text-color,#334155);
+    font:400 13px/20px var(--font-primary,Inter,sans-serif);outline:none;box-shadow:none;
+}
+#createPostBox .repost-channel-search:focus {border-color:var(--color-primary,#0d6efd);}
+#createPostBox .repost-channel-options {display:flex;flex-direction:column;gap:3px;max-height:min(300px,35dvh);overflow-y:auto;scrollbar-width:thin;}
+#createPostBox .repost-channel-option {
+    display:flex;align-items:center;justify-content:space-between;gap:10px;
+    width:100%;min-height:34px;padding:8px 10px;margin:0;border:0;border-radius:10px;
+    background:transparent;color:var(--text-color,#334155);text-align:left;
+    font:500 13px/1.4 var(--font-secondary,Inter,sans-serif);cursor:pointer;
+}
+#createPostBox .repost-channel-option:hover,#createPostBox .repost-channel-option:focus-visible,#createPostBox .repost-channel-option[aria-pressed="true"] {
+    background:var(--gray-100,#f7f9fd);color:var(--text-color,#334155);
+}
+#createPostBox .repost-channel-option[aria-pressed="true"]::after {content:"✓";color:var(--color-primary,#0d6efd);font-size:13px;}
+#createPostBox .repost-channel-empty {margin:5px 0;text-align:center;font-size:12px;color:var(--color-gray,#64748b);}
         </style>
         <form class="repost-modal-box" id="createPostBox" action="{{ isset($post) ? route('posts.update', $post) : route('posts.store') }}" method="POST" enctype="multipart/form-data">
     @csrf
@@ -155,12 +196,23 @@
       <img src="{{ $user->avatarUrl() }}" alt="" class="repost-modal-avatar">
       <span class="repost-modal-username">{{ $user->displayName() }}</span>
       <span class="repost-modal-sep">›</span>
+      <div class="repost-channel-select" data-repost-channel>
       <select class="repost-modal-cat" id="post-channel" name="channel_id" aria-label="Kategori seç">
                         <option value="">Kategori seç</option>
                         @foreach ($channels as $channel)
                             <option value="{{ $channel->id }}" @selected((string) old('channel_id', $post->channel_id ?? '') === (string) $channel->id)>{{ $channel->name }}</option>
                         @endforeach
                     </select>
+      <button type="button" class="repost-channel-trigger" data-channel-trigger aria-label="Kategori seç" aria-expanded="false" aria-controls="repost-channel-menu" hidden>
+        <span data-channel-label>Kategori seç</span>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 8 7 7 7-7"/></svg>
+      </button>
+      <div id="repost-channel-menu" class="repost-channel-menu" data-channel-menu hidden>
+        <input type="search" class="repost-channel-search" data-channel-search placeholder="Kategori ara..." aria-label="Kategori ara" autocomplete="off">
+        <div class="repost-channel-options" data-channel-options aria-label="Kategoriler"></div>
+        <p class="repost-channel-empty" data-channel-empty hidden>Kategori bulunamadı.</p>
+      </div>
+    </div>
     </div>
 
     <!-- 3. Başlık ve Metin Alanı -->
@@ -956,6 +1008,84 @@
 <script>
 (() => {
     const initComposerDetails = () => {
+        // Initialize after AJAX insertion; the real select remains the submitted field.
+        const channelWrap = document.querySelector('#createPostBox [data-repost-channel]');
+        const channelSelect = channelWrap?.querySelector('#post-channel');
+        const channelTrigger = channelWrap?.querySelector('[data-channel-trigger]');
+        const channelMenu = channelWrap?.querySelector('[data-channel-menu]');
+        const channelSearch = channelWrap?.querySelector('[data-channel-search]');
+        const channelOptions = channelWrap?.querySelector('[data-channel-options]');
+        const channelLabel = channelWrap?.querySelector('[data-channel-label]');
+        const channelEmpty = channelWrap?.querySelector('[data-channel-empty]');
+        if (channelSelect && channelTrigger && channelMenu && channelSearch && channelOptions && channelLabel && channelEmpty && !channelWrap.dataset.initialized) {
+            channelWrap.dataset.initialized = '1';
+            const syncChannel = () => {
+                channelLabel.textContent = channelSelect.selectedOptions[0]?.textContent.trim() || 'Kategori seç';
+                channelOptions.querySelectorAll('button').forEach(button => button.setAttribute('aria-pressed', String(button.dataset.value === channelSelect.value)));
+            };
+            const closeChannel = (focus = false) => {
+                channelMenu.hidden = true;
+                channelTrigger.setAttribute('aria-expanded', 'false');
+                if (focus) channelTrigger.focus();
+            };
+            for (const option of channelSelect.options) {
+                const button = document.createElement('button');
+                button.type = 'button';
+                button.className = 'repost-channel-option';
+                button.dataset.value = option.value;
+                button.textContent = option.textContent.trim();
+                button.disabled = option.disabled;
+                button.addEventListener('click', () => {
+                    channelSelect.value = option.value;
+                    channelSelect.dispatchEvent(new Event('change', {bubbles:true}));
+                    closeChannel(true);
+                });
+                channelOptions.appendChild(button);
+            }
+            const filterChannels = () => {
+                const query = channelSearch.value.trim().toLocaleLowerCase('tr');
+                let count = 0;
+                channelOptions.querySelectorAll('button').forEach(button => {
+                    button.hidden = !button.textContent.toLocaleLowerCase('tr').includes(query);
+                    if (!button.hidden) count++;
+                });
+                channelEmpty.hidden = count > 0;
+            };
+            const openChannel = () => {
+                channelSearch.value = '';
+                filterChannels();
+                channelMenu.hidden = false;
+                channelTrigger.setAttribute('aria-expanded', 'true');
+                channelMenu.style.left = '0px';
+                const right = channelMenu.getBoundingClientRect().right;
+                if (right > window.innerWidth - 12) channelMenu.style.left = -Math.max(0,right - window.innerWidth + 12) + 'px';
+                channelSearch.focus();
+            };
+            channelSelect.addEventListener('change', syncChannel);
+            channelSearch.addEventListener('input', filterChannels);
+            channelTrigger.addEventListener('click', () => channelMenu.hidden ? openChannel() : closeChannel());
+            channelWrap.addEventListener('keydown', event => {
+                if (event.key === 'Escape' && !channelMenu.hidden) {
+                    event.preventDefault(); event.stopPropagation(); closeChannel(true);
+                } else if (event.key === 'Enter' && event.target === channelSearch) {
+                    event.preventDefault(); channelOptions.querySelector('button:not([hidden]):not([disabled])')?.click();
+                } else if (['ArrowDown','ArrowUp'].includes(event.key)) {
+                    event.preventDefault();
+                    if (channelMenu.hidden) {openChannel(); return;}
+                    const items = Array.from(channelOptions.querySelectorAll('button:not([hidden]):not([disabled])'));
+                    const index = items.indexOf(document.activeElement);
+                    const next = event.key === 'ArrowDown' ? Math.min(index+1,items.length-1) : Math.max(0,index-1);
+                    items[next]?.focus();
+                }
+            });
+            channelWrap.addEventListener('focusout', event => {
+                if (!channelWrap.contains(event.relatedTarget)) closeChannel();
+            });
+            syncChannel();
+            channelSelect.hidden = true;
+            channelTrigger.hidden = false;
+        }
+
         const title = document.getElementById('post-title');
         const excerpt = document.getElementById('post-excerpt');
         const meta = document.getElementById('post-meta-description');
