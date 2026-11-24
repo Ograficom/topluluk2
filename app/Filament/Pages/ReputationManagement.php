@@ -3,6 +3,9 @@
 namespace App\Filament\Pages;
 
 use App\Models\ReputationSetting;
+use App\Models\User;
+use Filament\Forms\Components\Hidden;
+use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
@@ -57,11 +60,19 @@ class ReputationManagement extends Page
             ]),
             Section::make('Görevler')->description('Kullanıcıların tamamlayabileceği görevleri oluşturun. Görevler herkese açık listelenir; tamamlayanlara puan ve seçtiğiniz rozet otomatik verilir.')->schema([
                 Repeater::make('tasks')->label('Topluluk görevleri')->schema([
+                    Hidden::make('key'),
                     TextInput::make('title')->label('Görev adı')->required()->maxLength(120),
                     Select::make('activity')->label('Yapılacak etkinlik')->options([
                         'comments' => 'Yorum yap',
                         'posts' => 'Yazı yayınla',
+                        'event' => 'Etkinlik / yönetici onaylı görev',
                     ])->required()->default('comments'),
+                    DateTimePicker::make('starts_at')->label('Başlangıç')->required()->default(now()),
+                    DateTimePicker::make('ends_at')->label('Bitiş (isteğe bağlı)')->after('starts_at')->nullable(),
+                    Select::make('approved_users')->label('Etkinliği / görevi tamamladığı onaylanan üyeler')->multiple()->searchable()
+                        ->getSearchResultsUsing(fn (string $search): array => User::query()->where('username', 'like', '%'.$search.'%')->limit(30)->pluck('username', 'id')->all())
+                        ->getOptionLabelsUsing(fn (array $values): array => User::query()->whereIn('id', $values)->pluck('username', 'id')->all())
+                        ->helperText('Etkinlik türünde yalnızca bu üyeler ödül alır. Gerekli adet 1 olarak uygulanır.')->columnSpanFull(),
                     TextInput::make('target_count')->label('Gerekli adet')->numeric()->minValue(1)->required()->default(3),
                     TextInput::make('reward_points')->label('Görev puanı')->numeric()->minValue(0)->required()->default(10),
                     Select::make('reward_badge')->label('Görev tamamlanınca verilecek rozet')
@@ -91,11 +102,17 @@ class ReputationManagement extends Page
             'tasks' => collect($data['tasks'] ?? [])->map(function (array $task): array {
                 $task['key'] = filled($task['key'] ?? null) ? $task['key'] : (string) Str::uuid();
                 $task['starts_at'] = filled($task['starts_at'] ?? null) ? $task['starts_at'] : now()->toDateTimeString();
-                $task['target_count'] = max(1, (int) ($task['target_count'] ?? 1));
+                $task['target_count'] = ($task['activity'] ?? '') === 'event' ? 1 : max(1, (int) ($task['target_count'] ?? 1));
                 $task['reward_points'] = max(0, (int) ($task['reward_points'] ?? 0));
                 return $task;
             })->values()->all(),
         ]);
+
+        $this->form->fill(ReputationSetting::current()->toArray());
+        $approvedIds = collect($data['tasks'] ?? [])->where('activity', 'event')->pluck('approved_users')->flatten()->unique();
+        User::query()->whereIn('id', $approvedIds)->each(function (User $user): void {
+            app(\App\Services\CommunityTaskService::class)->completeAvailableTasks($user);
+        });
 
         Notification::make()->title('İtibar ve ödül ayarları kaydedildi.')->success()->send();
     }

@@ -23,15 +23,22 @@ class CommunityTaskService
 
     public function progress(User $user, array $task): int
     {
+        if (filled($task['starts_at'] ?? null) && now()->lt($task['starts_at'])) {
+            return 0;
+        }
         return match ($task['activity'] ?? 'comments') {
+            'event' => (! filled($task['ends_at'] ?? null) || now()->lte($task['ends_at'])) && in_array((string) $user->id, array_map('strval', $task['approved_users'] ?? []), true) ? 1 : 0,
             'posts' => Post::query()->where('user_id', $user->id)->published()
                 ->whereNull('advertisement_id')
                 ->when(filled($task['starts_at'] ?? null), fn ($query) => $query->where('created_at', '>=', $task['starts_at']))
+                ->when(filled($task['ends_at'] ?? null), fn ($query) => $query->where('created_at', '<=', $task['ends_at']))
                 ->count(),
-            default => Comment::query()->where('user_id', $user->id)
+            'comments' => Comment::query()->where('user_id', $user->id)
                 ->where('is_spam', false)
                 ->when(filled($task['starts_at'] ?? null), fn ($query) => $query->where('created_at', '>=', $task['starts_at']))
+                ->when(filled($task['ends_at'] ?? null), fn ($query) => $query->where('created_at', '<=', $task['ends_at']))
                 ->count(),
+            default => 0,
         };
     }
 
@@ -54,6 +61,7 @@ class CommunityTaskService
                     && ($badge['name'] ?? null) === $task['reward_badge']);
 
             DB::transaction(function () use ($user, $task, $key, $selectedBadge): void {
+                User::query()->whereKey($user->id)->lockForUpdate()->firstOrFail();
                 $completion = TaskCompletion::query()->firstOrCreate(
                     ['user_id' => $user->id, 'task_key' => $key],
                     [

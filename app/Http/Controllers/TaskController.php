@@ -17,6 +17,15 @@ class TaskController extends Controller
     {
         $viewer = $request->user();
         $settings = ReputationSetting::current();
+        if ($viewer) {
+            $taskService->completeAvailableTasks($viewer);
+        }
+        $period = in_array($request->query('period'), ['week', 'month'], true) ? $request->query('period') : 'all';
+        $since = match ($period) {
+            'week' => now()->startOfWeek(),
+            'month' => now()->startOfMonth(),
+            default => null,
+        };
         $tasks = collect($taskService->tasks())->map(function (array $task) use ($viewer, $taskService): array {
             $progress = $viewer ? $taskService->progress($viewer, $task) : 0;
             $target = max(1, (int) ($task['target_count'] ?? 1));
@@ -36,7 +45,7 @@ class TaskController extends Controller
 
         $leaderboard = User::query()
             ->select('users.*')
-            ->withSum('reputationTransactions as reputation_score', 'points')
+            ->withSum(['reputationTransactions as reputation_score' => fn ($query) => $query->when($since, fn ($query) => $query->where('created_at', '>=', $since))], 'points')
             ->when($settings->exclude_company_accounts, fn (Builder $query) => $query->where('is_company', false))
             ->when($viewer, fn (Builder $query) => $query
                 ->whereNotIn('users.id', $viewer->blockedUsers()->select('users.id'))
@@ -52,6 +61,7 @@ class TaskController extends Controller
 
         return view('tasks.index', [
             'tasks' => $tasks,
+            'period' => $period,
             'leaderboard' => $leaderboard,
             'myCompletions' => $myCompletions,
             'myScore' => $viewer ? $reputationService->score($viewer) : 0,

@@ -4,14 +4,14 @@
 @section('description', 'OgraFi topluluk görevlerini tamamla, puan kazan ve liderlik tablosunda yüksel.')
 
 @push('head')
-    <link rel="stylesheet" href="{{ asset('assets/css/tasks.css') }}?v=20261122-tasks-1">
+    <link rel="stylesheet" href="{{ asset('assets/css/tasks.css') }}?v=20261124-tasks-2">
 @endpush
 
 @section('content')
 <article class="tasks-page">
     <header class="tasks-page__hero card card-body">
         <div>
-            <span class="tasks-page__eyebrow">OGRAFI TOPLULUK</span>
+
             <h1 class="h3">Görevler ve liderlik</h1>
             <p class="color-gray">Görevleri tamamla, puan kazan ve topluluğun en aktif üyeleri arasına katıl.</p>
         </div>
@@ -57,7 +57,7 @@
                             @if (filled($task['description'] ?? null))
                                 <p>{{ $task['description'] }}</p>
                             @else
-                                <p>{{ ($task['activity'] ?? 'comments') === 'posts' ? 'Yazı yayınla' : 'Yorum yap' }} · {{ $item['target'] }} adet</p>
+                                <p>{{ match ($task['activity'] ?? 'comments') { 'posts' => 'Yazı yayınla', 'event' => 'Yönetici onaylı etkinlik', default => 'Yorum yap' } }} · {{ $item['target'] }} adet</p>
                             @endif
                         </div>
                         @if ($item['completed'])
@@ -69,8 +69,11 @@
                     <div class="task-progress" role="progressbar" aria-valuenow="{{ $item['progress'] }}" aria-valuemin="0" aria-valuemax="{{ $item['target'] }}">
                         <span style="width: {{ $item['percent'] }}%"></span>
                     </div>
+                    @if (filled($task['ends_at'] ?? null))
+                        <p class="small color-gray">Bitiş {{ \Illuminate\Support\Carbon::parse($task['ends_at'])->format('d.m.Y H:i') }}</p>
+                    @endif
                     <div class="task-card__footer">
-                        <span>{{ $item['progress'] }} / {{ $item['target'] }} {{ ($task['activity'] ?? 'comments') === 'posts' ? 'yazı' : 'yorum' }}</span>
+                        <span>{{ $item['progress'] }} / {{ $item['target'] }} {{ match ($task['activity'] ?? 'comments') { 'posts' => 'yazı', 'event' => 'onay', default => 'yorum' } }}</span>
                         @if ($badge)
                             <span class="task-card__badge">Rozet: {{ $badge['name'] }}</span>
                         @endif
@@ -92,15 +95,20 @@
             <header class="tasks-panel__header">
                 <div>
                     <h2 class="h5">Liderlik tablosu</h2>
-                    <p class="small color-gray">Toplam itibar puanına göre sıralama</p>
+                    <p class="small color-gray">Seçilen dönemde kazanılan net puana göre</p>
                 </div>
                 <x-repost-icon name="trophy" size="22" />
             </header>
+            <nav class="tabs-nav" aria-label="Sıralama dönemi">
+                @foreach (['all' => 'Tüm zamanlar', 'month' => 'Bu ay', 'week' => 'Bu hafta'] as $value => $label)
+                    <a href="{{ route('tasks.index', ['period' => $value]) }}" class="tabs-nav__button {{ $period === $value ? 'is-active' : '' }}" @if ($period === $value) aria-current="page" @endif>{{ $label }}</a>
+                @endforeach
+            </nav>
             <ol class="leaderboard-list">
                 @forelse ($leaderboard as $member)
                     <li class="leaderboard-item">
                         <span class="leaderboard-rank">{{ $loop->iteration }}</span>
-                        <a href="{{ route('profiles.show', $member) }}" class="leaderboard-user">
+                        <a href="{{ route('profiles.show', $member->username ?: $member->id) }}" class="leaderboard-user">
                             <img src="{{ $member->avatarUrl() }}" alt="" loading="lazy">
                             <span>
                                 <strong>{{ $member->displayName() }}</strong>
