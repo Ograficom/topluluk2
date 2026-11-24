@@ -1,32 +1,6 @@
 /* OgraFi-specific layout corrections.
    Keep the original Repost theme stylesheets untouched. */
 
-/* Let channel sidebar widgets follow their content naturally.
-   The upper stack must not stretch to fill the viewport. */
-.main__grid-feed > .main__widgets {
-    height: auto;
-    min-height: 0;
-    max-height: none;
-}
-
-.channel-sidebar-widgets {
-    height: auto;
-    min-height: 0;
-    overflow: visible;
-}
-
-.channel-sidebar-scroll {
-    flex: 0 1 auto;
-    min-height: 0;
-    overflow: visible;
-}
-
-.channel-sidebar-comments {
-    flex: 0 0 auto;
-    max-height: none;
-}
-
-
 /* Messenger dialog action polish */
 .pm__dropdown-limit { min-width: 0; }
 .pm__dropdown-limit .pm__limit-label { color: var(--pm-muted); font-size: .78rem; line-height: 1.4; }
@@ -2231,31 +2205,6 @@ body.is-messenger-conversation .pm-dialog__composer .pm-composer__send svg {
 .rss-reader-summary{margin:0;font-size:13px;line-height:1.7;overflow-wrap:anywhere}
 .rss-reader-open{display:inline-flex;align-items:center;gap:5px;margin-top:12px;font-size:12px;font-weight:650}
 @media(max-width:640px){.rss-reader-item .card-body{padding:15px}.rss-reader-image,.rss-reader-image img{max-height:220px}}
-
-
-/* Right rail: sticky on desktop without creating a nested scrollbar. */
-@media screen and (min-width: 921px) {
-  html body main.container > .main.main__grid > aside.main__widgets {
-    position: sticky !important;
-    top: calc(var(--header-height, 70px) + var(--header-offset, 0px) + 12px) !important;
-    align-self: start !important;
-    max-height: none !important;
-    height: auto !important;
-    overflow: visible !important;
-  }
-}
-
-/* Match the original Repost ZIP mobile behavior: the right rail is removed from the feed entirely. */
-@media screen and (max-width: 920px) {
-  html body main.container > .main.main__grid > aside.main__widgets {
-    display: none !important;
-    visibility: hidden !important;
-    position: static !important;
-    height: 0 !important;
-    max-height: 0 !important;
-    overflow: hidden !important;
-  }
-}
 
 
 /* Post share dropdown */
@@ -7053,34 +7002,6 @@ body.is-messenger-conversation .pm-dialog__composer .pm-composer__send{
 }
 
 
-/* Repost ZIP index.html: homepage right rail uses the native, non-sticky flow.
-   The original index keeps the widgets in normal document flow. Do not change
-   the sidebar/grid column widths or other pages' sidebar behavior. */
-@media screen and (min-width: 921px) {
-  html body main.container > .main.main__grid > aside.main__widgets.homepage-index-widgets {
-    position: static !important;
-    inset: auto !important;
-    top: auto !important;
-    align-self: stretch !important;
-    height: auto !important;
-    min-height: 0 !important;
-    max-height: none !important;
-    overflow: visible !important;
-    overflow-y: visible !important;
-    overscroll-behavior: auto !important;
-  }
-  html body main.container > .main.main__grid > aside.main__widgets.homepage-index-widgets > .widgets {
-    display: flex !important;
-    height: auto !important;
-    min-height: 0 !important;
-    max-height: none !important;
-    flex-direction: column !important;
-    gap: var(--main-gap) !important;
-    overflow: visible !important;
-  }
-}
-
-
 /* Homepage sidebar advertisement — inherits the exact Repost widget card width. */
 .sidebar-ad-widget{
     gap:14px;
@@ -11161,4 +11082,63 @@ body.is-messenger-conversation .pm-dialog__composer .pm-composer__send{
 }
 @media (max-height: 440px) {
     .post-create-modal-page > #post-create-form > section.post-composer-media-section { margin-bottom: 4px !important; }
+}
+
+/* Repost 3.0 responsive layout — shared by home, post, channel, profile and other pages.
+   Base grid / sidebar / widget rules come from the original app.css.
+   Keep messenger's conversation-specific layout and the mobile drawer intact. */
+body:not(.is-messenger-conversation) main.container > .main > :is(.feed, .main__widgets),
+body:not(.is-messenger-conversation) .main__grid-feed > * {
+    min-width: 0;
+}
+body:not(.is-messenger-conversation) main.container .main__widgets {
+    position: static;
+    align-self: start;
+    min-width: 0;
+    height: auto;
+    min-height: 0;
+    max-height: none;
+    overflow: visible;
+}
+.channel-sidebar-widgets,
+.channel-sidebar-scroll {
+    display: flex;
+    flex-direction: column;
+    gap: var(--main-gap);
+    height: auto;
+    min-height: 0;
+    overflow: visible;
+}
+.channel-sidebar-comments {
+    max-height: none;
+    overflow: visible;
+}
+/* Hide legacy inline copies of desktop widgets. The original theme provides
+   the same widgets through the separately opened mobile side panel. */
+.mobile-community-widgets { display: none !important; }
+@media screen and (max-width: 920px) {
+    html body main.container .main__widgets {
+        display: none !important;
+        visibility: hidden !important;
+    }
+}
+@media screen and (max-width: 720px) {
+    html body main.container > .main > .sidebar { display: none !important; }
+    body:not(.is-messenger-conversation) main.container .main__grid-feed {
+        grid-template-columns: minmax(0, 1fr);
+    }
+    /* The drawer must never enter the document flow when closed. */
+    #mobileAside:not(.is-open) {
+        visibility: hidden !important;
+        pointer-events: none !important;
+    }
+    #mobileAside { position: fixed !important; inset: 0 !important; }
+    #mobileAside:not(.is-open) .side-panel__dialog {
+        transform: translate3d(-100%, 0, 0);
+    }
+    body:not(.is-messenger-conversation) .feed > :is(.card, section, article, .speedbar) { min-width: 0; }
+    .feed .hero__header-main > div:first-child { min-width: 0; }
+    .feed .editorjs-content { min-width: 0; overflow-wrap: anywhere; }
+    .feed .editorjs-content :is(img, video, iframe, embed, object) { max-width: 100%; }
+    .feed .editorjs-content :is(pre, .editorjs-table-wrap) { max-width: 100%; overflow-x: auto; }
 }
