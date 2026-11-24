@@ -30,7 +30,9 @@ const notificationHeader = notificationMenu?.querySelector('.notification-menu__
 
 // The mobile drawer uses the same notification DOM and dropdown state as desktop.
 if (notificationButton && notificationMenu) {
-    const root = notificationButton.closest('.notification-dropdown');
+    const root = notificationMenu.closest('.notification-dropdown');
+    const dropdownToggle = document.getElementById('notificationDropdownToggle');
+    const profileToggle = document.getElementById('desktopUserMenuButton');
     const backdrop = document.querySelector('.notification-sheet-backdrop');
     const closeButton = notificationMenu.querySelector('[data-notification-drawer-close]');
     const mobileSheet = window.matchMedia('(max-width: 767px)');
@@ -56,7 +58,7 @@ if (notificationButton && notificationMenu) {
         } else {
             notificationButton.setAttribute('aria-haspopup', 'menu');
             notificationMenu.setAttribute('role', 'menu');
-            notificationMenu.setAttribute('aria-labelledby', notificationButton.id);
+            notificationMenu.setAttribute('aria-labelledby', 'notificationDrawerTitle');
             notificationMenu.removeAttribute('aria-hidden');
             notificationMenu.removeAttribute('aria-modal');
         }
@@ -69,13 +71,13 @@ if (notificationButton && notificationMenu) {
         });
         if (justClosed) {
             notificationMenu.querySelectorAll('details[open]').forEach(item => { item.open = false; });
-            if (notificationMenu.contains(document.activeElement)) notificationButton.focus({ preventScroll: true });
+            if (notificationMenu.contains(document.activeElement)) profileToggle?.focus({ preventScroll: true });
         }
     };
 
     const closeDrawer = () => {
-        if (mobileSheet.matches && menuIsOpen()) notificationButton.click();
-        notificationButton.focus({ preventScroll: true });
+        if (mobileSheet.matches && menuIsOpen()) dropdownToggle?.click();
+        profileToggle?.focus({ preventScroll: true });
         syncNotificationSheet();
     };
 
@@ -88,7 +90,7 @@ if (notificationButton && notificationMenu) {
     }
 
     mobileSheet.addEventListener?.('change', () => {
-        if (menuIsOpen()) notificationButton.click();
+        if (menuIsOpen()) dropdownToggle?.click();
         syncNotificationSheet();
     });
 
@@ -217,17 +219,14 @@ if (notificationButton && window.Echo) {
         });
 
         const updateUnreadCount = () => {
-            const current = Number(notificationButton.querySelector('.notification-trigger__count')?.textContent || 0);
+            const current = Number(notificationButton.dataset.unreadCount || 0);
             const next = current + 1;
-            let count = notificationButton.querySelector('.notification-trigger__count');
-
-            if (!count) {
-                count = document.createElement('span');
-                count.className = 'notification-trigger__count';
-                notificationButton.append(count);
+            notificationButton.dataset.unreadCount = String(next);
+            const count = notificationButton.querySelector('[data-notification-count]');
+            if (count) {
+                count.hidden = false;
+                count.textContent = next > 99 ? '99+' : String(next);
             }
-
-            count.textContent = next > 99 ? '99+' : String(next);
 
             notificationButton.setAttribute('aria-label', `Bildirimler, ${next} okunmamış`);
         };
