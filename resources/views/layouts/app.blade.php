@@ -313,6 +313,127 @@
                             .notification-item__actions-menu{max-width:calc(100vw - 66px)}
                             .notification-item:nth-last-child(-n+2) .notification-item__actions-menu{top:auto;bottom:calc(100% + 5px)}
                         }
+
+                        /* Repost messenger palette and compact dropdown, scoped to the notification panel. */
+                        #notificationMenu{
+                            --pm-primary:var(--color-primary);
+                            --pm-secondary:var(--color-secondary);
+                            --pm-secondary-light:var(--gray-100);
+                            --pm-muted:var(--color-gray);
+                            --pm-transition:.15s ease;
+                            gap:0!important;min-height:0;width:min(376px,calc(100vw - 24px));
+                            max-height:min(510px,calc(100dvh - 88px));padding:0!important;
+                            border-radius:var(--dropdown-menu-radius,20px);
+                            background:var(--card-bg);box-shadow:var(--dropdown-menu-shadow);
+                        }
+                        #notificationMenu .notification-menu__head{
+                            display:flex!important;align-items:center!important;justify-content:flex-start!important;
+                            flex:0 0 auto;gap:10px!important;padding:12px 14px;
+                            min-height:56px;border-bottom:1px solid var(--border-color);
+                        }
+                        #notificationMenu .notification-menu__head strong{
+                            order:0;flex:0 0 auto;color:var(--title-color);
+                            font:700 1rem/1.3 var(--font-secondary);
+                        }
+                        #notificationMenu .notification-live-status{
+                            order:1;flex:none!important;margin-left:auto!important;
+                        }
+                        #notificationMenu .notification-menu__actions{
+                            order:2;display:flex;align-items:center;flex:none;margin-left:auto;
+                        }
+                        #notificationMenu .notification-menu__head:has(.notification-live-status) .notification-menu__actions{margin-left:0}
+                        #notificationMenu .notification-drawer-close{
+                            --btn-size:32px;display:inline-flex!important;align-items:center;justify-content:center;
+                            flex:0 0 32px;width:32px;height:32px;min-width:32px;padding:0;
+                            border-radius:50%;background:var(--pm-secondary);color:var(--title-color);
+                        }
+                        #notificationMenu .notification-menu__list{
+                            flex:1 1 auto;min-height:0;max-height:360px;
+                            padding:6px;overflow-x:hidden;overflow-y:auto;
+                            overscroll-behavior:contain;scrollbar-width:thin;
+                            scrollbar-color:var(--gray-300, #b8c2ce) transparent;
+                        }
+                        #notificationMenu .notification-item,
+                        #notificationMenu .notification-item:has(details[open]){
+                            position:relative;display:flex;align-items:center;flex-wrap:nowrap;
+                            min-width:0;gap:0;padding:10px 8px 10px 10px;margin:0 0 5px;
+                            border:0;border-radius:12px;background:transparent;
+                            transition:background-color var(--pm-transition);
+                        }
+                        #notificationMenu .notification-item:last-child{margin-bottom:0}
+                        #notificationMenu .notification-item.is-unread,
+                        #notificationMenu .notification-item:hover,
+                        #notificationMenu .notification-item:focus-within{background:var(--pm-secondary-light)}
+                        #notificationMenu .notification-item:has(details[open]){z-index:31}
+                        #notificationMenu .notification-item__main{
+                            position:relative;display:flex;align-items:center;flex:1 1 auto;
+                            min-width:0;min-height:40px;gap:10px;padding:0 32px 0 0;
+                        }
+                        #notificationMenu .notification-item__main:has(.notification-item__unread){padding-right:44px}
+                        #notificationMenu .notification-item__icon{
+                            display:grid;place-items:center;width:40px;height:40px;flex:0 0 40px;
+                            border-radius:50%;background:var(--pm-secondary);color:var(--pm-primary);
+                        }
+                        #notificationMenu .notification-item__icon svg{width:20px;height:20px}
+                        #notificationMenu .notification-item__content strong{
+                            color:var(--title-color);font:700 .9rem/1.3 var(--font-secondary);
+                            overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+                        }
+                        #notificationMenu .notification-item__content>span{
+                            color:var(--pm-muted);font-size:.8rem;line-height:1.35;
+                            display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+                        }
+                        #notificationMenu .notification-item__content time{
+                            color:var(--pm-muted);font-size:.7rem;line-height:1.35;margin:0;
+                        }
+                        #notificationMenu .notification-item__unread{
+                            position:absolute;right:35px;top:7px;flex:none;width:7px;height:7px;margin:0;
+                            background:var(--pm-primary);
+                        }
+                        #notificationMenu .notification-item__actions,
+                        #notificationMenu .notification-item:has(details[open]) .notification-item__actions{
+                            position:absolute;top:6px;right:5px;z-index:30;display:block;flex:none;margin:0;
+                        }
+                        #notificationMenu .notification-item__actions summary{
+                            display:grid;place-items:center;width:32px;height:32px;padding:0;
+                            border-radius:10px;color:var(--pm-muted);background:transparent;
+                        }
+                        #notificationMenu .notification-item__actions summary:hover,
+                        #notificationMenu .notification-item__actions[open] summary{background:var(--pm-secondary);color:var(--title-color)}
+                        #notificationMenu .notification-item__actions-menu{
+                            position:absolute!important;z-index:32;top:calc(100% + 4px);bottom:auto;right:0;
+                            width:210px;max-width:calc(100vw - 60px);min-width:0;margin:0;padding:5px;
+                            border:1px solid var(--dropdown-menu-border-color,var(--border-color));
+                            border-radius:var(--dropdown-menu-radius,14px);background:var(--dropdown-menu-bg,var(--card-bg));
+                            box-shadow:var(--dropdown-menu-shadow);
+                        }
+                        #notificationMenu .notification-item__actions.opens-up .notification-item__actions-menu{top:auto;bottom:calc(100% + 4px)}
+                        #notificationMenu .notification-item__actions-menu button{
+                            min-height:35px;padding:8px 10px;border-radius:10px;color:var(--text-color);font-size:.82rem;
+                        }
+                        #notificationMenu .notification-item__actions-menu button:hover{background:var(--pm-secondary-light)}
+                        #notificationMenu .notification-item__actions-menu button.is-danger{color:var(--color-red,#ef4444)}
+                        #notificationMenu .notification-menu__footer{
+                            display:flex;flex-direction:column;flex:0 0 auto;gap:8px;
+                            padding:10px 12px 12px;border-top:1px solid var(--border-color);background:var(--card-bg);
+                        }
+                        #notificationMenu .notification-menu__all{
+                            display:flex;align-items:center;justify-content:center;gap:8px;width:100%;
+                            min-height:36px;border-radius:10px;background:var(--pm-secondary);
+                            color:var(--title-color);font-size:.85rem;font-weight:600;text-decoration:none!important;
+                        }
+                        #notificationMenu .notification-menu__all:hover{background:var(--pm-secondary-light)}
+                        #notificationMenu .notification-menu__bulk{display:flex;align-items:center;justify-content:space-between;gap:6px}
+                        #notificationMenu .notification-menu__bulk button{
+                            color:var(--pm-muted);font-size:.75rem;padding:6px 4px;border-radius:8px;
+                        }
+                        #notificationMenu .notification-menu__bulk button:hover{background:var(--pm-secondary-light);color:var(--title-color)}
+                        #notificationMenu .notification-menu__bulk .is-danger{color:var(--color-red,#ef4444)}
+                        @media(max-width:767px){
+                            #notificationMenu .notification-menu__head{min-height:60px;padding:calc(12px + env(safe-area-inset-top,0px)) 16px 12px}
+                            #notificationMenu .notification-menu__list{padding:8px 12px;max-height:none!important}
+                            #notificationMenu .notification-menu__footer{padding:12px 16px calc(12px + env(safe-area-inset-bottom,0px))}
+                        }
                         @media (max-width:767px) and (prefers-reduced-motion:reduce){
                             .notification-sheet-backdrop,.notification-dropdown > .notification-menu{transition:none!important}
                         }
@@ -385,10 +506,12 @@
                             <p data-notification-error class="notification-menu__error" role="alert" hidden></p>
                             <div class="notification-menu__footer">
                                  @if (\Illuminate\Support\Facades\Route::has('notifications.index'))
-                                     <a href="{{ route('notifications.index') }}" class="link-accent small">Tüm bildirimler</a>
+                                     <a href="{{ route('notifications.index') }}" class="notification-menu__all">Tüm bildirimler <x-repost-icon name="chevron-down" size="12" /></a>
                                  @endif
-                                <form method="POST" action="{{ route('notifications.read-all') }}">@csrf<button type="submit">Tümünü okundu işaretle</button></form>
-                                <form method="POST" action="{{ route('notifications.destroy-all') }}" onsubmit="return confirm('Tüm bildirimlerini silmek istiyor musun?')">@csrf @method('DELETE')<button type="submit" class="is-danger">Tümünü sil</button></form>
+                                <div class="notification-menu__bulk">
+                                    <form method="POST" action="{{ route('notifications.read-all') }}">@csrf<button type="submit">Tümünü okundu işaretle</button></form>
+                                    <form method="POST" action="{{ route('notifications.destroy-all') }}" onsubmit="return confirm('Tüm bildirimlerini silmek istiyor musun?')">@csrf @method('DELETE')<button type="submit" class="is-danger">Tümünü sil</button></form>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -403,6 +526,30 @@
                             const root = toggle?.closest('.notification-dropdown');
                             const close = menu?.querySelector('[data-notification-drawer-close]');
                             if (!row || !toggle || !profile || !root || !close) return;
+                            // Delegation also covers rows replaced by the live feed.
+                            menu.addEventListener('toggle', event => {
+                                const details = event.target;
+                                if (!(details instanceof HTMLDetailsElement) || !details.matches('.notification-item__actions') || !details.open) return;
+                                menu.querySelectorAll('.notification-item__actions[open]').forEach(other => {
+                                    if (other !== details) other.open = false;
+                                });
+                                const list = menu.querySelector('.notification-menu__list');
+                                const actions = details.querySelector('.notification-item__actions-menu');
+                                if (!list || !actions) return;
+                                details.classList.remove('opens-up');
+                                const bounds = list.getBoundingClientRect();
+                                const anchor = details.getBoundingClientRect();
+                                const height = actions.offsetHeight + 6;
+                                if (bounds.bottom - anchor.bottom < height && anchor.top - bounds.top >= height) {
+                                    details.classList.add('opens-up');
+                                } else if (bounds.bottom - anchor.bottom < height) {
+                                    list.scrollTop += height - (bounds.bottom - anchor.bottom);
+                                }
+                            }, true);
+                            menu.addEventListener('click', event => {
+                                if (event.target.closest('.notification-item__actions')) return;
+                                menu.querySelectorAll('.notification-item__actions[open]').forEach(details => { details.open = false; });
+                            });
                             row.addEventListener('click', () => {
                                 if (profile.getAttribute('aria-expanded') === 'true') profile.click();
                                 if (!root.classList.contains('is-open')) toggle.click();
