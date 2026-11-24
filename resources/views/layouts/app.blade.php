@@ -354,7 +354,7 @@
                         </button>
                         <ul class="dropdown-menu dropdown-menu-end" id="desktopUserMenu" aria-labelledby="desktopUserMenuButton">
                             <li class="dropdown-menu-item dropdown-menu-item-lg">
-                                <a class="login__profile" href="{{ route('profiles.show', auth()->user()->username) }}">
+                                <a class="login__profile" href="{{ route('profiles.show', auth()->user()->username ?: auth()->id()) }}">
                                     <div class="user-box">
                                         <span class="avatar" aria-hidden="true"><img src="{{ auth()->user()->avatarUrl() }}" alt="" draggable="false" width="40" height="40"></span>
                                         <span class="user-box-content">
@@ -445,7 +445,7 @@
     </div>
 
     @php($settingsPage = request()->routeIs('settings.edit', 'settings.legacy'))
-    @php($profilePage = request()->routeIs('profiles.show'))
+    @php($profilePage = request()->routeIs('profiles.show', 'profiles.legacy'))
     @php($channelPage = request()->routeIs('channels.show', 'legacy.channel'))
     @php($postCreatePage = request()->routeIs('posts.create', 'posts.edit'))
     @php($feedPage = request()->routeIs('posts.index'))
