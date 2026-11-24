@@ -119,12 +119,26 @@
                             @if (filled($blockData['text'] ?? ''))<p>{!! nl2br(e($blockData['text'])) !!}</p>@endif
                             @break
                         @case('list')
-                            @php $listTag = ($blockData['style'] ?? 'unordered') === 'ordered' ? 'ol' : 'ul'; @endphp
-                            <{{ $listTag }}>
-                                @foreach (($blockData['items'] ?? []) as $item)
-                                    <li>{{ is_array($item) ? ($item['content'] ?? '') : $item }}</li>
-                                @endforeach
-                            </{{ $listTag }}>
+                            @php
+                                $listStyle = $blockData['style'] ?? 'unordered';
+                                $listTag = $listStyle === 'ordered' ? 'ol' : 'ul';
+                            @endphp
+                            @if ($listStyle === 'checklist')
+                                <ul style="list-style:none;padding-inline-start:0">
+                                    @foreach (($blockData['items'] ?? []) as $item)
+                                        <li style="display:flex;align-items:baseline;gap:8px">
+                                            <span role="img" aria-label="{{ data_get($item, 'meta.checked', false) ? 'Tamamlandı' : 'Tamamlanmadı' }}" style="flex-shrink:0">{{ data_get($item, 'meta.checked', false) ? '☑' : '☐' }}</span>
+                                            <span>{{ is_array($item) ? ($item['content'] ?? '') : $item }}</span>
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            @else
+                                <{{ $listTag }}>
+                                    @foreach (($blockData['items'] ?? []) as $item)
+                                        <li>{{ is_array($item) ? ($item['content'] ?? '') : $item }}</li>
+                                    @endforeach
+                                </{{ $listTag }}>
+                            @endif
                             @break
                         @case('quote')
                             <blockquote><p>{{ $blockData['text'] ?? '' }}</p>@if (filled($blockData['caption'] ?? ''))<cite>{{ $blockData['caption'] }}</cite>@endif</blockquote>
