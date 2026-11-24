@@ -347,6 +347,38 @@ class RepostFeedTest extends TestCase
         $this->assertDatabaseHas('posts', ['id' => $draft->id, 'views' => 0]);
     }
 
+    public function test_post_statistics_show_actual_counts_and_are_only_on_detail(): void
+    {
+        $author = User::factory()->create();
+        $channel = Channel::create(['name' => 'İstatistik', 'slug' => 'istatistik', 'is_active' => true]);
+        $post = $this->createPost($channel, ['user_id' => $author->id, 'views' => 9]);
+
+        foreach ([PostReaction::LIKE, PostReaction::LIKE, PostReaction::DISLIKE] as $type) {
+            PostReaction::create([
+                'post_id' => $post->id,
+                'user_id' => User::factory()->create()->id,
+                'type' => $type,
+            ]);
+        }
+        Comment::create(['post_id' => $post->id, 'user_id' => $author->id, 'body' => 'Görünen yorum']);
+        Comment::create(['post_id' => $post->id, 'user_id' => $author->id, 'body' => 'Spam yorum', 'is_spam' => true]);
+
+        $this->get(route('posts.index'))->assertOk()->assertDontSee('data-post-statistics-open', false);
+
+        $this->get(route('posts.show', $post))
+            ->assertOk()
+            ->assertSee('data-post-statistics-open', false)
+            ->assertSee('id="post-statistics-dialog"', false)
+            ->assertSee('data-post-stat="views">10</dd>', false)
+            ->assertSee('data-post-stat="comments">1</dd>', false)
+            ->assertSee('data-post-stat="ratings">3</dd>', false)
+            ->assertSee('data-post-stat="likes">2</dd>', false)
+            ->assertSee('data-post-stat="dislikes">1</dd>', false)
+            ->assertSee('data-post-stat="score">1</dd>', false)
+            ->assertSee($author->displayName())
+            ->assertSee($post->published_at->copy()->locale('tr')->translatedFormat('j F Y'));
+    }
+
     public function test_members_can_react_and_comment_on_a_published_post(): void
     {
         $user = User::factory()->create();
