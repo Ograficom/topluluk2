@@ -205,8 +205,12 @@
                         </button>
                         <div class="dropdown-menu dropdown-menu-end notification-menu" id="notificationMenu" aria-labelledby="notificationMenuButton">
                             <div class="notification-menu__head">
-                                <strong>Bildirimler</strong>
-
+                                <strong id="notificationDrawerTitle">Bildirimler</strong>
+                                <div class="notification-menu__actions">
+                                    <button type="button" class="btn btn-secondary btn-circle notification-drawer-close" data-notification-drawer-close aria-label="Bildirimleri kapat">
+                                        <x-repost-icon name="close" size="18" />
+                                    </button>
+                                </div>
                             </div>
                             <div class="notification-menu__list">
                                 @forelse ($headerNotifications as $notification)
@@ -267,14 +271,15 @@
                             </div>
                         </div>
                     </div>
-                    <button type="button" class="notification-sheet-backdrop" aria-label="Bildirimleri kapat"></button>
+                    <button type="button" class="notification-sheet-backdrop" aria-label="Bildirimleri kapat" aria-hidden="true" tabindex="-1"></button>
                     <style>
                         .notification-trigger{position:relative!important;overflow:visible!important}
                         .notification-trigger__count{position:absolute;top:-4px;right:-5px;min-width:18px;height:18px;padding:0 4px;display:grid;place-items:center;border:2px solid var(--body-bg,#fff);border-radius:20px;background:#2563eb;color:#fff;font-size:10px;font-weight:800;line-height:1}
                         .notification-trigger__dot{position:absolute;top:1px;right:1px;width:8px;height:8px;border:2px solid #fff;border-radius:50%;background:#ef4444}
                         .notification-menu{width:min(360px,calc(100vw - 24px));max-height:470px;padding:0!important;overflow:hidden}
                         .notification-menu__head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 14px;border-bottom:1px solid var(--dropdown-menu-border-color,#e5e7eb)}
-                        .notification-menu__head strong{font-size:15px;font-weight:800;flex:none}\n                        .notification-menu__head .notification-live-status{margin-left:auto!important;flex:none!important}
+                        .notification-menu__head strong{font-size:15px;font-weight:800;flex:none}
+                        .notification-menu__head .notification-live-status{margin-left:auto!important;flex:none!important}
                         .notification-menu__list{max-height:390px;overflow-y:auto}
                         .notification-item{position:relative;display:flex;align-items:flex-start;gap:5px;padding:10px 10px 10px 13px;border-bottom:1px solid rgba(148,163,184,.16)}
                         /* Notification rows follow the actual Repost messenger list styling */
@@ -330,18 +335,44 @@
                         [data-theme="dark"] .notification-item__icon,[data-theme="dark"] .notification-empty__icon{background:#1e3150;color:#93c5fd}
                         [data-theme="dark"] .notification-item__actions summary:hover,[data-theme="dark"] .notification-item__actions[open] summary{color:#e5e7eb}
 
-                        .notification-sheet-backdrop{display:none}
+                        .notification-sheet-backdrop,.notification-drawer-close,.notification-menu__actions{display:none}
                         @media (max-width: 767px){
-                            body.notification-sheet-open{overflow:hidden}
-                            .notification-sheet-backdrop{display:block;position:fixed;inset:0;z-index:119998;width:100%;height:100%;padding:0;border:0;background:rgba(15,23,42,.38);opacity:0;visibility:hidden;transition:opacity .24s ease,visibility .24s ease}
-                            body.notification-sheet-open .notification-sheet-backdrop{opacity:1;visibility:visible}
-                            .notification-dropdown .notification-menu{position:fixed!important;inset:auto 0 0!important;z-index:119999!important;display:flex!important;flex-direction:column!important;width:100vw!important;max-width:none!important;height:72vh!important;height:min(72dvh,620px)!important;min-height:72vh!important;max-height:72vh!important;margin:0!important;padding:0!important;border:1px solid rgba(148,163,184,.2)!important;border-bottom:0!important;border-radius:20px 20px 0 0!important;background:var(--dropdown-menu-bg,#fff)!important;box-shadow:0 -12px 38px rgba(15,23,42,.18)!important;overflow:hidden!important;transform:translate3d(0,105%,0);visibility:hidden;opacity:0;transition:transform .28s cubic-bezier(.2,.75,.25,1),opacity .2s ease,visibility .28s ease}
-                            .notification-dropdown .notification-menu.show{transform:translate3d(0,0,0);visibility:visible;opacity:1}
-                            .notification-menu__head{position:relative;display:flex!important;align-items:center!important;justify-content:flex-start!important;gap:12px!important;flex:none;min-height:62px;padding:16px 16px 12px}
-                            .notification-menu__head:before{content:"";position:absolute;top:6px;left:50%;width:36px;height:4px;border-radius:9px;background:#cbd5e1;transform:translateX(-50%)}
-                            .notification-menu__list{flex:1;min-height:0;max-height:none;overflow-y:auto;padding-bottom:calc(16px + env(safe-area-inset-bottom));overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
-                            .notification-item{padding:12px 12px 12px 14px}
+                            body.notification-sheet-open{overflow:hidden;overscroll-behavior:none}
+                            body.notification-sheet-open .header{z-index:11050!important}
+                            .notification-sheet-backdrop{display:block;position:fixed;inset:0;z-index:119998;width:100%;height:100%;padding:0;border:0;background:var(--color-overlay-backdrop,rgba(15,23,42,.45));opacity:0;visibility:hidden;pointer-events:none;transition:opacity .24s ease,visibility .24s ease}
+                            body.notification-sheet-open .notification-sheet-backdrop{opacity:1;visibility:visible;pointer-events:auto}
+                            .notification-dropdown > .notification-menu{
+                                position:fixed!important;inset:0 0 0 auto!important;z-index:119999!important;
+                                display:flex!important;flex-direction:column!important;gap:0!important;
+                                width:min(360px,calc(100vw - 20px))!important;max-width:100%!important;
+                                height:100vh!important;height:100dvh!important;min-height:0!important;max-height:none!important;
+                                margin:0!important;padding:0!important;border:0!important;border-radius:0!important;
+                                background:var(--card-bg,var(--body-bg))!important;box-shadow:var(--shadow-lg)!important;
+                                overflow:hidden!important;transform:translate3d(100%,0,0)!important;
+                                visibility:hidden;opacity:0;pointer-events:none;
+                                transition:transform .26s cubic-bezier(.2,.75,.25,1),opacity .24s ease,visibility .26s ease;
+                            }
+                            .notification-dropdown:is(.is-open,.show) > .notification-menu,.notification-dropdown > .notification-menu.show{
+                                transform:translate3d(0,0,0)!important;visibility:visible;opacity:1;pointer-events:auto;
+                            }
+                            .notification-menu__head{position:relative;display:flex!important;align-items:center!important;justify-content:flex-start!important;gap:12px!important;flex:none;min-height:68px;padding:calc(12px + env(safe-area-inset-top,0px)) 16px 12px;border-bottom:1px solid var(--border-color)}
+                            .notification-menu__head strong{font:600 1.125rem/1.25 var(--font-secondary);color:var(--title-color)}
+                            .notification-menu__head .notification-live-status{margin-left:auto!important;flex:none!important}
+                            .notification-menu__actions{display:flex;align-items:center;flex:none;margin-left:auto}
+                            .notification-menu__head:has(.notification-live-status) .notification-menu__actions{margin-left:0}
+                            .notification-drawer-close{display:inline-flex!important;align-items:center;justify-content:center;width:36px;height:36px;padding:0;flex:none}
+                            .notification-menu__list{flex:1 1 auto;min-height:0;max-height:none!important;overflow-y:auto;overflow-x:hidden;padding:8px 8px calc(16px + env(safe-area-inset-bottom,0px));overscroll-behavior:contain;-webkit-overflow-scrolling:touch;scrollbar-width:thin}
+                            .notification-item{padding:12px 8px 12px 10px;margin:3px 0;border-radius:12px}
                             .notification-item__main{gap:10px}
+                            .notification-item__content strong{font-size:.875rem;color:var(--title-color)}
+                            .notification-item__content>span{font-size:.8rem;color:var(--color-gray)}
+                            .notification-item__content time{font-size:.72rem;color:var(--color-gray)}
+                            .notification-item__actions[open]{z-index:5}
+                            .notification-item__actions-menu{max-width:calc(100vw - 66px)}
+                            .notification-item:nth-last-child(-n+2) .notification-item__actions-menu{top:auto;bottom:calc(100% + 5px)}
+                        }
+                        @media (max-width:767px) and (prefers-reduced-motion:reduce){
+                            .notification-sheet-backdrop,.notification-dropdown > .notification-menu{transition:none!important}
                         }
                     </style>
                     @php($desktopFavoriteCount = auth()->user()->bookmarks()->count())
