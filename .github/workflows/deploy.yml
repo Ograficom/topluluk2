@@ -32,22 +32,6 @@ jobs:
           set -euo pipefail
           find app bootstrap config database routes -type f -name '*.php' -print0 | xargs -0 -n1 php -l
 
-      - name: Install PHP dependencies and run automated tests
-        env:
-          APP_ENV: testing
-          APP_KEY: base64:MTIzNDU2Nzg5MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTI=
-        run: |
-          set -euo pipefail
-          composer update minishlink/web-push laravel/reverb --with-all-dependencies --no-interaction --prefer-dist
-          if ! git diff --quiet -- composer.lock; then
-            git config user.name "github-actions[bot]"
-            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git add composer.lock
-            git commit -m "Update Composer lock for web push and Reverb"
-            git push origin HEAD:main
-          fi
-          php artisan test
-
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
@@ -63,6 +47,22 @@ jobs:
         run: |
           npm install
           npm run build
+
+      - name: Install PHP dependencies and run automated tests
+        env:
+          APP_ENV: testing
+          APP_KEY: base64:MTIzNDU2Nzg5MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTI=
+        run: |
+          set -euo pipefail
+          composer update minishlink/web-push laravel/reverb --with-all-dependencies --no-interaction --prefer-dist
+          if ! git diff --quiet -- composer.lock; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add composer.lock
+            git commit -m "Update Composer lock for web push and Reverb"
+            git push origin HEAD:main
+          fi
+          php artisan test
 
       - name: Start SSH agent
         uses: webfactory/ssh-agent@v0.9.0
