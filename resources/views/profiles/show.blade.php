@@ -59,7 +59,20 @@
                     @if ($publicUsername = $user->publicUsername())
                         <span class="profile__rate">{{ '@'.$publicUsername }}</span>
                     @endif
-                    <span class="small color-gray">Üyelik tarihi {{ $user->created_at->translatedFormat('d F Y, H:i') }}</span>
+                    @php
+                        $joinedAt = $user->created_at->copy()->timezone('Europe/Istanbul')->startOfDay();
+                        $today = now('Europe/Istanbul')->startOfDay();
+                        $membershipDays = max(0, (int) $joinedAt->diffInDays($today, false));
+                    @endphp
+                    <span class="small color-gray">Üyelik tarihi
+                        @if ($today->gte($joinedAt->copy()->addMonthNoOverflow()))
+                            {{ $joinedAt->locale('tr')->translatedFormat('F Y') }}
+                        @elseif ($membershipDays === 0)
+                            bugün
+                        @else
+                            {{ $membershipDays }} gün önce
+                        @endif
+                    </span>
                     @if (! (\App\Models\ReputationSetting::current()->exclude_company_accounts && $user->is_company))
                     <button class="profile-reputation-trigger small color-gray" type="button" data-modal-btn="profile-earned-badges" aria-haspopup="dialog" aria-controls="profileEarnedBadgesModal" title="Kazanılan rozetleri görüntüle">
                         <span class="color-green">{{ number_format($reputationScore, 0, ',', '.') }} puan</span>
