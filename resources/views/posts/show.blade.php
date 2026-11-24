@@ -231,7 +231,7 @@
             </div>
             @if ($post->channel)<a class="link small" href="{{ route('channels.show', $post->channel) }}">{{ $post->channel->name }}</a>@endif
         </footer>
-        @include('posts._interactions', ['post' => $post])
+        @include('posts._interactions', ['post' => $post, 'showPostStatistics' => true])
     </article>
 
     <section class="card card-body" id="comments">
@@ -286,6 +286,108 @@
             </div>
         </section>
     @endif
+
+    @php
+        $statisticsLikes = (int) $post->likes_count;
+        $statisticsDislikes = (int) $post->dislikes_count;
+        $statisticsDate = $post->published_at ?? $post->created_at;
+        $statistics = [
+            'views' => ['Görüntülenme', (int) $post->views],
+            'comments' => ['Yorumlar', (int) $post->comments_count],
+            'ratings' => ['Değerlendirme', $statisticsLikes + $statisticsDislikes],
+            'likes' => ['Beğeniler', $statisticsLikes],
+            'dislikes' => ['Beğenmeme', $statisticsDislikes],
+            'score' => ['Toplam puan', $statisticsLikes - $statisticsDislikes],
+        ];
+    @endphp
+    <dialog id="post-statistics-dialog" class="post-statistics-dialog" aria-labelledby="post-statistics-title" aria-describedby="post-statistics-heading">
+        <div class="post-statistics__header">
+            <div>
+                <h2 id="post-statistics-title">Gönderi istatistikleri</h2>
+                <p id="post-statistics-heading">{{ $post->title }}</p>
+            </div>
+            <button class="post-statistics__close" type="button" data-post-statistics-close aria-label="İstatistik penceresini kapat" autofocus>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg>
+            </button>
+        </div>
+        <dl class="post-statistics__grid">
+            @foreach ($statistics as $key => [$label, $value])
+                <div class="post-statistics__tile">
+                    <dt>{{ $label }}</dt>
+                    <dd data-post-stat="{{ $key }}">{{ number_format($value, 0, ',', '.') }}</dd>
+                </div>
+            @endforeach
+        </dl>
+        <dl class="post-statistics__details">
+            <div class="post-statistics__row">
+                <dt>Yazar</dt>
+                <dd>
+                    @if ($post->user)
+                        <a href="{{ route('profiles.show', $post->user) }}" class="post-statistics__author">{{ $post->user->displayName() }}</a>
+                        @if ($post->user->hasVerifiedCompanyBadge())<x-company-verified-badge size="14" />@endif
+                        @if ($post->user->hasVerifiedBadge())<span class="verify" role="img" aria-label="Doğrulanmış hesap"><x-repost-icon name="verify" size="14" /></span>@endif
+                    @else
+                        Repost yazarı
+                    @endif
+                </dd>
+            </div>
+            <div class="post-statistics__row">
+                <dt>Tarih</dt>
+                <dd><time datetime="{{ $statisticsDate->toAtomString() }}">{{ $statisticsDate->copy()->locale('tr')->translatedFormat('j F Y') }}</time></dd>
+            </div>
+        </dl>
+    </dialog>
+    <style>
+        .post-statistics-trigger:hover,.post-statistics-trigger:focus-visible,.post-statistics-trigger[aria-expanded="true"]{color:var(--color-primary,#1769ff);background:var(--content-item-hover-bg,#f4f7fb)}
+        .post-statistics-dialog{position:fixed;inset:0;margin:auto;box-sizing:border-box;width:min(356px,calc(100% - 32px));max-width:none;max-height:calc(100% - 32px);overflow:auto;padding:20px 18px 16px;border:0;border-radius:20px;background:var(--card-bg,#fff);color:var(--text-color,#212529);box-shadow:0 16px 48px rgba(15,23,42,.15);font:inherit;text-align:start}
+        .post-statistics-dialog:not([open]){display:none}
+        .post-statistics-dialog::backdrop{background:rgba(30,41,59,.48);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px)}
+        html:has(.post-statistics-dialog[open]){overflow:hidden}
+        .post-statistics__header{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:18px}
+        .post-statistics__header>div{min-width:0;flex:1}
+        #post-statistics-title{margin:0 0 6px;font-size:12px;font-weight:600;line-height:1.3;color:var(--color-gray,#64748b)}
+        #post-statistics-heading{margin:0;font-size:17px;font-weight:700;line-height:1.3;color:var(--title-color,#111);overflow-wrap:anywhere}
+        .post-statistics__close{flex:0 0 32px;display:grid;place-items:center;width:32px;height:32px;margin:-6px -4px 0 0;padding:0;border:0;border-radius:50%;background:var(--gray-200,#e7ebef);color:var(--color-gray,#64748b);cursor:pointer}
+        .post-statistics__close:hover{color:var(--color-primary,#1769ff)}
+        .post-statistics__close:focus-visible,.post-statistics__author:focus-visible{outline:2px solid var(--color-primary,#1769ff);outline-offset:2px}
+        .post-statistics__grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:0 0 14px;padding:0}
+        .post-statistics__tile{min-width:0;min-height:58px;padding:9px 10px;border-radius:14px;background:var(--gray-100,#f7f9fd);box-sizing:border-box}
+        [data-theme="dark"] .post-statistics__tile{background:var(--gray-200,#232833)}
+        .post-statistics__tile dt{margin:0 0 3px;color:var(--color-gray,#64748b);font-size:11px;font-weight:400;line-height:1.3;overflow-wrap:anywhere}
+        .post-statistics__tile dd{margin:0;color:var(--title-color,#111);font-size:18px;font-weight:700;line-height:1.2;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+        .post-statistics__details{margin:0;padding:0}
+        .post-statistics__row{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:46px;padding:12px 0;border-top:1px solid var(--border-color,#e7ebef);box-sizing:border-box}
+        .post-statistics__row dt{flex:none;margin:0;color:var(--color-gray,#64748b);font-size:13px;font-weight:400}
+        .post-statistics__row dd{display:flex;justify-content:flex-end;align-items:center;gap:4px;min-width:0;margin:0;font-size:12px;text-align:end;overflow-wrap:anywhere}
+        .post-statistics__row dd .verify{flex:none}
+        .post-statistics__author{min-width:0;color:var(--color-primary,#1769ff);text-decoration:none}
+        @media(max-width:340px){.post-statistics-dialog{padding:16px 12px}.post-statistics__grid{gap:6px}.post-statistics__tile{padding:8px 6px}.post-statistics__tile dd{font-size:16px}}
+    </style>
+    <script>
+        (() => {
+            const dialog = document.getElementById('post-statistics-dialog');
+            const opener = document.querySelector('[data-post-statistics-open]');
+            if (!dialog || !opener) return;
+            const closer = dialog.querySelector('[data-post-statistics-close]');
+            opener.setAttribute('aria-expanded', 'false');
+            opener.addEventListener('click', () => {
+                if (dialog.open) return;
+                dialog.showModal();
+                opener.setAttribute('aria-expanded', 'true');
+            });
+            closer.addEventListener('click', () => dialog.close());
+            dialog.addEventListener('click', (event) => {
+                if (event.target !== dialog) return;
+                const bounds = dialog.getBoundingClientRect();
+                if (event.clientX < bounds.left || event.clientX > bounds.right ||
+                    event.clientY < bounds.top || event.clientY > bounds.bottom) dialog.close();
+            });
+            dialog.addEventListener('close', () => {
+                opener.setAttribute('aria-expanded', 'false');
+                opener.focus({preventScroll: true});
+            });
+        })();
+    </script>
 
     <dialog id="post-report-dialog" aria-labelledby="post-report-title" style="width:min(520px,calc(100% - 32px));max-width:520px;border:1px solid #e5e7eb;border-radius:14px;padding:0;box-shadow:0 20px 60px rgba(0,0,0,.2)">
         <div style="display:flex;align-items:center;justify-content:space-between;padding:18px 20px;border-bottom:1px solid #e5e7eb">
