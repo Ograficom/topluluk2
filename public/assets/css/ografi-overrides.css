@@ -11162,3 +11162,20 @@ body.is-messenger-conversation .pm-dialog__composer .pm-composer__send{
 @media (max-height: 440px) {
     .post-create-modal-page > #post-create-form > section.post-composer-media-section { margin-bottom: 4px !important; }
 }
+
+.mobile-community-widgets {
+    display: none;
+}
+
+@media screen and (max-width: 920px) {
+    html body main.container > .main.main__grid > aside.homepage-index-widgets {
+        display: none !important;
+    }
+
+    .mobile-community-widgets {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        margin-bottom: 12px;
+    }
+}

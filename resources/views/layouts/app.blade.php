@@ -83,7 +83,7 @@
     <link rel="stylesheet" href="{{ asset('assets/css/kit.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/app.css') }}?v=20261112-mobile-write-menu">
     <link rel="stylesheet" href="{{ asset('assets/css/engine.css') }}?v=20261110-santral-hero-buttons-inset-blue">
-    <link rel="stylesheet" href="{{ asset('assets/css/ografi-overrides.css') }}?v=20261124-composer-reference">
+    <link rel="stylesheet" href="{{ asset('assets/css/ografi-overrides.css') }}?v=20261124-community-widgets">
     @if (request()->routeIs('posts.index', 'posts.show'))
     <link rel="stylesheet" href="{{ asset('assets/css/gokturk-keyboard.css') }}?v=20261119-keyboard-launcher-offset-12">
     @endif
@@ -521,6 +521,12 @@
                             <div class="alert alert-success" role="status">{{ session('status') }}</div>
                         @endif
                     @endif
+                    @if ($feedPage)
+                        <div class="mobile-community-widgets widgets">
+                            @include('layouts._community-links-widget')
+                            @include('layouts._tags-widget')
+                        </div>
+                    @endif
                     @yield('content')
                 @if ($statsPage || $channelsIndexPage)
                     </article>
@@ -531,17 +537,10 @@
                 @unless ($profilePage || $channelPage)
                 <aside class="main__widgets {{ $feedPage ? 'homepage-index-widgets' : '' }}" aria-label="Sağ sütun">
                     <div class="widgets">
-                        <section class="widget card card-body">
-                            <header><h2 class="widget__title h6">Etiketler</h2></header>
-                            <div class="widget__content tagscloud">
-                                @forelse ($popularTags as $tag => $count)
-                                    <span><a href="{{ route('tags.show', ['tag' => $tag]) }}">{{ $tag }}</a></span>
-                                @empty
-                                    <span class="small color-gray">Henüz etiket yok</span>
-                                @endforelse
-                            </div>
-                            <footer class="widget__footer"><a href="{{ route('tags.index') }}" class="link-accent">Tüm etiketler</a></footer>
-                        </section>
+                        @if ($feedPage)
+                            @include('layouts._community-links-widget')
+                        @endif
+                        @include('layouts._tags-widget')
                         <section class="widget card card-body">
                             <header><h2 class="widget__title h6">Popüler yazarlar</h2></header>
                             <div class="widget__content widget__content--bleed">

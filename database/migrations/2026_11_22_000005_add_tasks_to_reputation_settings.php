@@ -8,10 +8,6 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::table('reputation_settings', function (Blueprint $table): void {
-            $table->json('tasks')->nullable()->after('reward_badges');
-        });
-
         Schema::create('user_task_progress', function (Blueprint $table): void {
             $table->id();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
@@ -29,8 +25,5 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('user_task_progress');
-        Schema::table('reputation_settings', function (Blueprint $table): void {
-            $table->dropColumn('tasks');
-        });
     }
 };

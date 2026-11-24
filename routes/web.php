@@ -72,6 +72,30 @@ Route::get('/manifest.webmanifest', function () {
         'theme_color' => $settings?->pwa_theme_color ?: '#2563eb',
         'categories' => ['social', 'news'],
         'icons' => $icons,
+        'screenshots' => [
+            [
+                'src' => asset('assets/img/pwa/feed-desktop.jpg'),
+                'sizes' => '960x540',
+                'type' => 'image/jpeg',
+                'form_factor' => 'wide',
+                'label' => 'OgraFi ana akışı',
+            ],
+            [
+                'src' => asset('assets/img/pwa/channels-desktop.jpg'),
+                'sizes' => '960x540',
+                'type' => 'image/jpeg',
+                'form_factor' => 'wide',
+                'label' => 'OgraFi kanalları',
+            ],
+            [
+                'src' => asset('assets/img/pwa/feed-mobile.jpg'),
+                'sizes' => '390x844',
+                'type' => 'image/jpeg',
+                'form_factor' => 'narrow',
+                'label' => 'OgraFi mobil ana akışı',
+            ],
+        ],
+        'prefer_related_applications' => false,
     ])->header('Content-Type', 'application/manifest+json; charset=UTF-8')
       ->header('Cache-Control', 'no-cache, no-store, must-revalidate');
 })->name('pwa.manifest');
