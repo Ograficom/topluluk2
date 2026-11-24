@@ -783,6 +783,7 @@
 
                 try {
                     const response = await fetch(trigger.href, {
+                        cache: 'no-store',
                         credentials: 'same-origin',
                         headers: { 'X-Requested-With': 'XMLHttpRequest', 'Accept': 'text/html' }
                     });
