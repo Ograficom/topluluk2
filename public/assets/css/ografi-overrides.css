@@ -5937,23 +5937,47 @@ body.is-messenger-conversation .pm-dialog__composer .pm-composer__send{
 
 /* Mobile bottom navigation: place the write action inside the bar. */
 @media screen and (max-width: 720px) {
-    /* Keep the original header composer action accessible on mobile. */
-    .header__end .header__write {
+    /* Mobile header: use the theme's original 40px circular button size. */
+    .header__end:has(.header__write) {
+        gap: 4px;
+    }
+    .header__end:has(.header__write) > :is(.btn,.dropdown > .btn),
+    .header__end:has(.header__write) > .dropdown > .btn {
+        --btn-size: 40px;
         display: inline-flex !important;
         align-items: center;
         justify-content: center;
-        flex: 0 0 32px;
-        width: 32px;
-        height: 32px;
-        min-width: 32px;
+        flex: 0 0 40px;
+        width: 40px;
+        min-width: 40px;
+        height: 40px;
         padding: 0;
         border-radius: 50%;
+    }
+    .header__end:has(.header__write) > .dropdown {
+        flex: 0 0 40px;
+    }
+    .header__end .header__write {
+        --btn-bg: transparent;
+        --btn-color: var(--color-gray);
+        --btn-hover-bg: var(--gray-150);
+        --btn-hover-color: var(--title-color);
+        --btn-active-bg: var(--gray-150);
+        box-shadow: none !important;
     }
     .header__end .header__write span {
         display: none;
     }
-    .header__end:has(.header__write) {
-        gap: 4px;
+    .header__end:has(.header__write) > .btn > svg,
+    .header__end:has(.header__write) > .dropdown > .notification-trigger > svg {
+        width: 24px;
+        height: 24px;
+        flex: 0 0 24px;
+    }
+    .header__end:has(.header__write) #desktopUserMenuButton img {
+        width: 40px;
+        height: 40px;
+        object-fit: cover;
     }
 
     .mobmenu__content:has(.mobmenu__link--write):has(.mobmenu__link--profile) {

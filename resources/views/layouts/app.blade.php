@@ -86,7 +86,7 @@
     <link rel="stylesheet" href="{{ asset('assets/css/ografi-app-extensions.css') }}?v=20261124-v1">
     <link rel="stylesheet" href="{{ asset('assets/css/engine.css') }}?v=repost-original-20261124">
     <link rel="stylesheet" href="{{ asset('assets/css/ografi-engine-extensions.css') }}?v=20261124-v1">
-    <link rel="stylesheet" href="{{ asset('assets/css/ografi-overrides.css') }}?v=20261124-mobile-write-v1">
+    <link rel="stylesheet" href="{{ asset('assets/css/ografi-overrides.css') }}?v=20261124-mobile-header-drawer-v2">
     <script>
         (() => {
             const root = document.documentElement;
@@ -340,14 +340,15 @@
 
                         .notification-sheet-backdrop,.notification-drawer-close,.notification-menu__actions{display:none}
                         @media (max-width: 767px){
-                            body.notification-sheet-open{overflow:hidden;overscroll-behavior:none}
-                            body.notification-sheet-open .header{z-index:11050!important}
+                            body:is(.notification-sheet-open,:has(.notification-dropdown.is-open),:has(.notification-dropdown.show),:has(#notificationMenu.show)){overflow:hidden!important;overscroll-behavior:none}
+                            body:is(.notification-sheet-open,:has(.notification-dropdown.is-open),:has(.notification-dropdown.show),:has(#notificationMenu.show)) > .header{z-index:120000!important}
+                            body:is(.notification-sheet-open,:has(.notification-dropdown.is-open),:has(.notification-dropdown.show),:has(#notificationMenu.show)) :is(.mobmenu,.gotop){visibility:hidden!important;opacity:0!important;pointer-events:none!important}
                             .notification-sheet-backdrop{display:block;position:fixed;inset:0;z-index:119998;width:100%;height:100%;padding:0;border:0;background:var(--color-overlay-backdrop,rgba(15,23,42,.45));opacity:0;visibility:hidden;pointer-events:none;transition:opacity .24s ease,visibility .24s ease}
-                            body.notification-sheet-open .notification-sheet-backdrop{opacity:1;visibility:visible;pointer-events:auto}
+                            body:is(.notification-sheet-open,:has(.notification-dropdown.is-open),:has(.notification-dropdown.show),:has(#notificationMenu.show)) .notification-sheet-backdrop{opacity:1;visibility:visible;pointer-events:auto}
                             .notification-dropdown > .notification-menu{
                                 position:fixed!important;inset:0 0 0 auto!important;z-index:119999!important;
                                 display:flex!important;flex-direction:column!important;gap:0!important;
-                                width:min(360px,calc(100vw - 20px))!important;max-width:100%!important;
+                                width:min(420px,100vw)!important;max-width:100%!important;
                                 height:100vh!important;height:100dvh!important;min-height:0!important;max-height:none!important;
                                 margin:0!important;padding:0!important;border:0!important;border-radius:0!important;
                                 background:var(--card-bg,var(--body-bg))!important;box-shadow:var(--shadow-lg)!important;
@@ -358,18 +359,23 @@
                             .notification-dropdown:is(.is-open,.show) > .notification-menu,.notification-dropdown > .notification-menu.show{
                                 transform:translate3d(0,0,0)!important;visibility:visible;opacity:1;pointer-events:auto;
                             }
-                            .notification-menu__head{position:relative;display:flex!important;align-items:center!important;justify-content:flex-start!important;gap:12px!important;flex:none;min-height:68px;padding:calc(12px + env(safe-area-inset-top,0px)) 16px 12px;border-bottom:1px solid var(--border-color)}
-                            .notification-menu__head strong{font:600 1.125rem/1.25 var(--font-secondary);color:var(--title-color)}
-                            .notification-menu__head .notification-live-status{margin-left:auto!important;flex:none!important}
-                            .notification-menu__actions{display:flex;align-items:center;flex:none;margin-left:auto}
-                            .notification-menu__head:has(.notification-live-status) .notification-menu__actions{margin-left:0}
-                            .notification-drawer-close{display:inline-flex!important;align-items:center;justify-content:center;width:36px;height:36px;padding:0;flex:none}
-                            .notification-menu__list{flex:1 1 auto;min-height:0;max-height:none!important;overflow-y:auto;overflow-x:hidden;padding:8px 8px calc(16px + env(safe-area-inset-bottom,0px));overscroll-behavior:contain;-webkit-overflow-scrolling:touch;scrollbar-width:thin}
-                            .notification-item{padding:12px 8px 12px 10px;margin:3px 0;border-radius:12px}
-                            .notification-item__main{gap:10px}
-                            .notification-item__content strong{font-size:.875rem;color:var(--title-color)}
-                            .notification-item__content>span{font-size:.8rem;color:var(--color-gray)}
-                            .notification-item__content time{font-size:.72rem;color:var(--color-gray)}
+                            #notificationMenu .notification-menu__head{position:relative;display:flex!important;align-items:center!important;justify-content:flex-start!important;gap:12px!important;flex:none;min-height:64px;padding:calc(12px + env(safe-area-inset-top,0px)) 16px 12px;border-bottom:1px solid var(--border-color)}
+                            #notificationMenu .notification-menu__head strong{font:600 1.125rem/1.25 var(--font-secondary);color:var(--title-color);order:0}
+                            #notificationMenu .notification-live-status{order:1;margin-left:auto!important;flex:none!important}
+                            #notificationMenu .notification-menu__actions{order:2;display:flex;align-items:center;flex:none;margin-left:auto}
+                            #notificationMenu .notification-menu__head:has(.notification-live-status) .notification-menu__actions{margin-left:0}
+                            #notificationMenu .notification-drawer-close{display:inline-flex!important;align-items:center;justify-content:center;--btn-size:40px;width:40px;height:40px;padding:0;flex:0 0 40px;background:var(--gray-100);color:var(--text-color)}
+                            #notificationMenu .notification-menu__list{flex:1 1 auto;min-height:0;max-height:none!important;overflow-y:auto;overflow-x:hidden;padding:0 16px calc(16px + env(safe-area-inset-bottom,0px));overscroll-behavior:contain;-webkit-overflow-scrolling:touch;scrollbar-width:thin}
+                            #notificationMenu .notification-item{padding:14px 0;margin:0;border:0;border-bottom:1px solid var(--border-color);border-radius:0;gap:8px;background:transparent}
+                            #notificationMenu .notification-item:last-child{border-bottom:0}
+                            #notificationMenu .notification-item:hover,#notificationMenu .notification-item:focus-within{background:var(--gray-100)}
+                            #notificationMenu .notification-item__main{gap:12px;align-items:flex-start}
+                            #notificationMenu .notification-item__icon{width:40px;height:40px;flex:0 0 40px;border-radius:12px;background:var(--gray-100);color:var(--color-primary)}
+                            #notificationMenu .notification-item__content strong{font-size:.95rem;font-weight:600;color:var(--title-color)}
+                            #notificationMenu .notification-item__content>span{font-size:.85rem;color:var(--color-gray)}
+                            #notificationMenu .notification-item__content time{font-size:.75rem;color:var(--color-gray)}
+                            #notificationMenu .notification-item__actions summary{width:36px;height:36px}
+                            #notificationMenu .notification-item__unread{margin-top:7px;flex:0 0 7px;background:var(--color-primary)}
                             .notification-item__actions[open]{z-index:5}
                             .notification-item__actions-menu{max-width:calc(100vw - 66px)}
                             .notification-item:nth-last-child(-n+2) .notification-item__actions-menu{top:auto;bottom:calc(100% + 5px)}
