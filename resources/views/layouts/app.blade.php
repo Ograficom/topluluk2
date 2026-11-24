@@ -84,9 +84,6 @@
     <link rel="stylesheet" href="{{ asset('assets/css/app.css') }}?v=20261124-repost-native-grid-v3">
     <link rel="stylesheet" href="{{ asset('assets/css/engine.css') }}?v=20261110-santral-hero-buttons-inset-blue">
     <link rel="stylesheet" href="{{ asset('assets/css/ografi-overrides.css') }}?v=20261124-repost-native-grid-v3">
-    @if (request()->routeIs('posts.index', 'posts.show'))
-    <link rel="stylesheet" href="{{ asset('assets/css/gokturk-keyboard.css') }}?v=20261119-keyboard-launcher-offset-12">
-    @endif
     <script>
         (() => {
             const root = document.documentElement;
@@ -948,9 +945,6 @@
     })();
     </script>
     @endauth
-    @if (request()->routeIs('posts.index', 'posts.show'))
-    <script src="{{ asset('assets/js/gokturk-keyboard.js') }}?v=20261119-keyboard-launcher-offset-12" defer></script>
-    @endif
     @include('layouts._cookie-consent')
     @if ($sidebarAdvertisement)
     <script>
