@@ -28,37 +28,107 @@ const notificationButton = document.getElementById('notificationMenuButton');
 const notificationMenu = document.getElementById('notificationMenu');
 const notificationHeader = notificationMenu?.querySelector('.notification-menu__head');
 
-// Resolve elements at interaction time: this module is loaded in the document head,
-// so top-level DOM references may be null before the page markup exists.
+// The mobile drawer uses the same notification DOM and dropdown state as desktop.
 if (notificationButton && notificationMenu) {
+    const root = notificationButton.closest('.notification-dropdown');
     const backdrop = document.querySelector('.notification-sheet-backdrop');
+    const closeButton = notificationMenu.querySelector('[data-notification-drawer-close]');
     const mobileSheet = window.matchMedia('(max-width: 767px)');
+    let wasOpen = false;
+
+    const menuIsOpen = () => root?.classList.contains('is-open')
+        || root?.classList.contains('show')
+        || notificationMenu.classList.contains('show');
 
     const syncNotificationSheet = () => {
-        const isOpen = mobileSheet.matches && notificationMenu.classList.contains('show');
+        const isMobile = mobileSheet.matches;
+        const isOpen = isMobile && menuIsOpen();
         document.body.classList.toggle('notification-sheet-open', isOpen);
-        if (backdrop) backdrop.setAttribute('aria-hidden', String(!isOpen));
+        backdrop?.setAttribute('aria-hidden', String(!isOpen));
+
+        if (isMobile) {
+            notificationButton.setAttribute('aria-haspopup', 'dialog');
+            notificationMenu.setAttribute('role', 'dialog');
+            notificationMenu.setAttribute('aria-labelledby', 'notificationDrawerTitle');
+            notificationMenu.setAttribute('aria-hidden', String(!isOpen));
+            if (isOpen) notificationMenu.setAttribute('aria-modal', 'true');
+            else notificationMenu.removeAttribute('aria-modal');
+        } else {
+            notificationButton.setAttribute('aria-haspopup', 'menu');
+            notificationMenu.setAttribute('role', 'menu');
+            notificationMenu.setAttribute('aria-labelledby', notificationButton.id);
+            notificationMenu.removeAttribute('aria-hidden');
+            notificationMenu.removeAttribute('aria-modal');
+        }
+
+        const justOpened = isOpen && !wasOpen;
+        const justClosed = !isOpen && wasOpen;
+        wasOpen = isOpen;
+        if (justOpened) requestAnimationFrame(() => {
+            if (mobileSheet.matches && menuIsOpen()) closeButton?.focus({ preventScroll: true });
+        });
+        if (justClosed) {
+            notificationMenu.querySelectorAll('details[open]').forEach(item => { item.open = false; });
+            if (notificationMenu.contains(document.activeElement)) notificationButton.focus({ preventScroll: true });
+        }
     };
 
-    const observer = new MutationObserver(syncNotificationSheet);
-    observer.observe(notificationMenu, { attributes: true, attributeFilter: ['class'] });
-    mobileSheet.addEventListener?.('change', syncNotificationSheet);
+    const closeDrawer = () => {
+        if (mobileSheet.matches && menuIsOpen()) notificationButton.click();
+        notificationButton.focus({ preventScroll: true });
+        syncNotificationSheet();
+    };
 
-    backdrop?.addEventListener('click', () => {
-        if (notificationMenu.classList.contains('show')) notificationButton.click();
+    if (root) {
+        const observer = new MutationObserver(syncNotificationSheet);
+        observer.observe(root, { attributes: true, attributeFilter: ['class'] });
+        observer.observe(notificationMenu, { attributes: true, attributeFilter: ['class'] });
+        root.addEventListener('dropdown:open', syncNotificationSheet);
+        root.addEventListener('dropdown:close', syncNotificationSheet);
+    }
+
+    mobileSheet.addEventListener?.('change', () => {
+        if (menuIsOpen()) notificationButton.click();
+        syncNotificationSheet();
     });
 
-    document.addEventListener('keydown', (event) => {
-        if (event.key === 'Escape' && document.body.classList.contains('notification-sheet-open')) {
-            notificationButton.click();
+    // Prevent the generic outside-click handler from closing before the backdrop click.
+    backdrop?.addEventListener('pointerdown', event => {
+        if (mobileSheet.matches && menuIsOpen()) {
+            event.preventDefault();
+            event.stopPropagation();
         }
     });
+    backdrop?.addEventListener('click', closeDrawer);
+    closeButton?.addEventListener('click', closeDrawer);
 
-    notificationButton.addEventListener('click', () => {
-        requestAnimationFrame(syncNotificationSheet);
-        requestAnimationFrame(() => requestAnimationFrame(syncNotificationSheet));
-    });
+    document.addEventListener('keydown', event => {
+        if (!mobileSheet.matches || !menuIsOpen()) return;
+        if (event.key === 'Escape') {
+            event.preventDefault();
+            event.stopPropagation();
+            closeDrawer();
+            return;
+        }
+        if (event.key !== 'Tab') return;
+        const focusable = Array.from(notificationMenu.querySelectorAll(
+            'a[href], button:not([disabled]), summary, input:not([disabled]), [tabindex="0"]'
+        )).filter(element => element.getClientRects().length && element.tabIndex >= 0);
+        if (!focusable.length) return;
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        if (event.shiftKey && (document.activeElement === first || !notificationMenu.contains(document.activeElement))) {
+            event.preventDefault();
+            event.stopPropagation();
+            last.focus();
+        } else if (!event.shiftKey && (document.activeElement === last || !notificationMenu.contains(document.activeElement))) {
+            event.preventDefault();
+            event.stopPropagation();
+            first.focus();
+        }
+    }, true);
 
+    notificationButton.addEventListener('click', () => requestAnimationFrame(syncNotificationSheet));
     syncNotificationSheet();
 }
 
