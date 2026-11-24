@@ -11,281 +11,146 @@
         </div>
     @endif
 
-    <div class="addpost post-create-simple post-create-modal-page" data-composer-design="repost-rebuilt">
+    <div class="repost-modal-backdrop addpost post-create-simple post-create-modal-page" id="createPostModal" style="display: flex;">
         <style>
 
-/* Standalone Repost composer. The legacy post-create-modal class and form id
-   are deliberately not used here: their old layout rules must not apply. */
-[data-composer-design="repost-rebuilt"] {
-    display:flex !important; position:fixed !important; inset:0 !important;
-    z-index:12000 !important; align-items:center !important; justify-content:center !important;
-    padding:16px !important; box-sizing:border-box !important;
-    background:var(--color-overlay-backdrop,rgba(15,23,42,.48)) !important;
-    backdrop-filter:blur(4px) !important;
-}
-#ografi-composer-form {
-    --compose-pad:24px;
-    position:relative; display:flex; flex-direction:column;
-    width:min(590px,100%); max-width:100%; min-width:0;
-    max-height:calc(100dvh - 32px); margin:0; padding:0;
-    border:1px solid var(--card-border-color); border-radius:24px;
-    background:var(--card-bg); color:var(--text-color);
-    box-shadow:var(--shadow-lg); box-sizing:border-box;
-    font:400 .95rem/1.5 var(--font-primary); overflow:visible;
-}
-[data-composer-design="repost-rebuilt"].is-expanded > #ografi-composer-form {
-    width:min(960px,100%); height:calc(100dvh - 32px);
-}
-[data-composer-design="repost-rebuilt"]:is(.is-gallery-open,.is-video-open,.is-widget-open) > #ografi-composer-form {display:none !important;}
-#ografi-composer-form *, #ografi-composer-form *::before, #ografi-composer-form *::after {box-sizing:border-box;}
-#ografi-composer-form [hidden] {display:none !important;}
-#ografi-composer-form .compose-head {
-    display:flex; align-items:center; justify-content:space-between; gap:12px;
-    flex:none; min-height:65px; padding:16px var(--compose-pad);
-    border-bottom:1px solid var(--border-color);
-}
-#ografi-composer-form .compose-head strong {font:600 1.125rem/1.25 var(--font-secondary);color:var(--title-color);}
-#ografi-composer-form .compose-controls {display:flex;align-items:center;gap:4px;}
-#ografi-composer-form .compose-icon,
-#ografi-composer-form .compose-media-button {
-    display:inline-flex;align-items:center;justify-content:center;gap:6px;
-    flex:none; padding:0; width:34px;height:34px;border:0;border-radius:11px;
-    background:transparent;color:var(--color-gray);cursor:pointer;text-decoration:none;
-}
-#ografi-composer-form .compose-icon:hover,
-#ografi-composer-form .compose-media-button:hover,
-#ografi-composer-form .compose-media-button[aria-expanded="true"] {background:var(--gray-150);color:var(--color-primary);}
-#ografi-composer-form :is(.compose-icon,.compose-media-button,.composer-block-add,.composer-block-picker button,.compose-settings summary) svg {
-    display:block;flex:none;width:20px;height:20px;fill:none;stroke:currentColor;
-    stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;
-}
-#ografi-composer-form .composer-collapse-symbol,
-[data-composer-design="repost-rebuilt"].is-expanded #ografi-composer-form .composer-expand-symbol {display:none;}
-[data-composer-design="repost-rebuilt"].is-expanded #ografi-composer-form .composer-collapse-symbol {display:block;}
-#ografi-composer-form .compose-main {
-    display:flex;flex-direction:column;gap:20px;flex:1 1 auto;min-height:0;
-    padding:22px var(--compose-pad) 18px;overflow:auto;overscroll-behavior:contain;
-}
-#ografi-composer-form .compose-author {display:flex;align-items:center;gap:11px;min-width:0;flex:none;}
-#ografi-composer-form .compose-avatar {width:40px;height:40px;flex:none;object-fit:cover;border-radius:50%;}
-#ografi-composer-form .compose-identity {display:flex;flex-direction:column;align-items:flex-start;gap:4px;min-width:0;}
-#ografi-composer-form .compose-name {font:600 .95rem/1.2 var(--font-secondary);color:var(--title-color);max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
-#ografi-composer-form #post-channel {
-    width:auto;max-width:100%;min-height:25px;height:25px;padding:0 7px;margin:0;
-    font:400 .8125rem/1.2 var(--font-primary);appearance:auto;
-    border:1px solid var(--border-color);border-radius:7px;
-    background:var(--gray-100);color:var(--color-gray);cursor:pointer;
-}
-#ografi-composer-form .compose-title-field {flex:none;min-width:0;}
-#ografi-composer-form #post-title {
-    display:block;width:100%;height:38px;min-height:38px;margin:0;padding:0;
-    border:0;border-radius:0;outline:0;box-shadow:none;background:transparent;
-    font:600 1.4rem/1.5 var(--font-primary);color:var(--title-color);
-}
-#ografi-composer-form #post-title::placeholder {color:var(--color-gray);opacity:1;}
-#ografi-composer-form .compose-title-field:focus-within {box-shadow:0 1px 0 var(--color-primary);}
-#ografi-composer-form .compose-visually-hidden {position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap;border:0;}
-#ografi-composer-form .compose-writing {
-    position:relative;min-height:132px;flex:1 0 auto;padding:2px 0 0 38px;
-}
-#ografi-composer-form .composer-block-add {
-    display:grid;place-items:center;position:absolute;top:0;left:0;
-    width:28px;height:28px;padding:0;margin:0;border:0;border-radius:50%;
-    color:var(--color-gray);background:var(--gray-150);cursor:pointer;
-}
-#ografi-composer-form .composer-block-add svg {width:18px;height:18px;}
-#ografi-composer-form .composer-block-add:hover,
-#ografi-composer-form .composer-block-add[aria-expanded="true"] {background:var(--blue-400);color:var(--color-primary);}
-#ografi-composer-form #post-editorjs {position:relative;min-height:120px;min-width:0;overflow:visible;font:400 .95rem/1.6 var(--font-primary);color:var(--text-color);}
-#ografi-composer-form #post-editorjs .codex-editor,
-#ografi-composer-form #post-editorjs .codex-editor__redactor {height:auto;min-height:120px;overflow:visible;padding-bottom:0 !important;margin-right:0 !important;}
-#ografi-composer-form #post-editorjs .ce-block__content,
-#ografi-composer-form #post-editorjs .ce-toolbar__content {max-width:none;margin-left:0;margin-right:0;}
-#ografi-composer-form #post-editorjs .ce-paragraph {font:inherit;min-height:24px;padding:3px 0;overflow-wrap:anywhere;}
-#ografi-composer-form #post-editorjs [contenteditable="true"] {color:var(--text-color);outline:none;overflow-wrap:anywhere;}
-#ografi-composer-form #post-editorjs:not(.is-ready):empty::before {content:attr(data-placeholder);color:var(--color-gray);}
-#ografi-composer-form #post-editorjs .ce-paragraph[data-placeholder]::before,
-#ografi-composer-form #post-editorjs .ce-paragraph[data-placeholder-active]::before {color:var(--color-gray);}
-#ografi-composer-form #post-editorjs .ce-toolbar__plus {display:none !important;}
-#ografi-composer-form #post-editorjs .ce-toolbar {z-index:10;}
-#ografi-composer-form #post-editorjs .ce-inline-toolbar {z-index:45;overflow:visible;}
-#ografi-composer-form #post-editorjs .ce-popover {
-    --border-radius:12px;--color-border:var(--border-color);
-    --color-background:var(--card-bg);--color-text-primary:var(--text-color);
-    --color-text-secondary:var(--color-gray);--color-background-item-hover:var(--gray-150);
-    --color-text-icon-active:var(--color-primary);--color-background-icon-active:var(--blue-400);
-    overflow:visible;
-}
-#ografi-composer-form #post-editorjs .ce-popover--opened > .ce-popover__container {box-shadow:var(--shadow-lg);}
-#ografi-composer-form .compose-main:has(.ce-inline-toolbar .ce-popover--opened) {padding-bottom:56px;}
-#ografi-composer-form .compose-main:has(.ce-inline-toolbar .ce-popover--nested.ce-popover--opened) {padding-bottom:230px;}
-#ografi-composer-form .compose-attachments {flex:none;display:flex;align-items:center;flex-wrap:wrap;gap:8px;padding:12px var(--compose-pad);border-top:1px solid var(--border-color);}
-#ografi-composer-form .compose-attachments-label {color:var(--color-gray);font:500 .8125rem/1.3 var(--font-secondary);margin-right:auto;}
-#ografi-composer-form .compose-media-button {background:var(--gray-100);width:36px;height:36px;}
-#ografi-composer-form .compose-file-input {position:absolute;width:1px;height:1px;opacity:0;clip-path:inset(50%);pointer-events:none;}
-#ografi-composer-form .compose-previews {display:flex;flex:1 0 100%;gap:8px;flex-wrap:wrap;}
-#ografi-composer-form .compose-previews:not(:has(img,p,label, .post-composer-gallery-item)) {display:none;}
-#ografi-composer-form .compose-previews img {width:54px;height:54px;object-fit:cover;border-radius:9px;}
-#ografi-composer-form .post-composer-gallery-item {display:flex;align-items:center;gap:6px;font-size:12px;max-width:170px;overflow:hidden;}
-#ografi-composer-form .post-composer-gallery-item span {white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-#ografi-composer-form .post-composer-location-panel:not([hidden]) {display:flex;align-items:center;gap:8px;flex:1 0 100%;flex-wrap:wrap;}
-#ografi-composer-form .post-composer-location-panel label {font-size:13px;color:var(--color-gray);}
-#ografi-composer-form .post-composer-location-panel input,
-#ografi-composer-form .post-composer-source-field input {flex:1;min-width:0;width:100%;height:38px;border:1px solid var(--border-color);border-radius:11px;padding:0 10px;background:var(--gray-100);color:var(--text-color);font:inherit;}
-#ografi-composer-form .post-composer-location-panel button {border:0;background:transparent;color:var(--color-gray);font-size:20px;cursor:pointer;}
-#ografi-composer-form .compose-footer {display:flex;align-items:center;justify-content:space-between;gap:10px;flex:none;padding:14px var(--compose-pad);border-top:1px solid var(--border-color);}
-#ografi-composer-form .compose-footer-actions {display:flex;align-items:center;gap:8px;flex:none;}
-#ografi-composer-form .compose-footer .btn {min-height:40px;font:600 .86rem/1.25 var(--font-secondary);padding:0 15px;}
-#ografi-composer-form .compose-settings {position:relative;min-width:0;}
-#ografi-composer-form .compose-settings summary {display:flex;align-items:center;gap:7px;min-height:38px;cursor:pointer;list-style:none;color:var(--color-gray);font:500 .8125rem/1.25 var(--font-secondary);}
-#ografi-composer-form .compose-settings summary::-webkit-details-marker {display:none;}
-#ografi-composer-form .compose-settings summary svg {width:18px;height:18px;}
-#ografi-composer-form .compose-settings[open] summary {color:var(--color-primary);}
-#ografi-composer-form .post-composer-advanced-content {position:absolute;bottom:calc(100% + 8px);left:0;width:min(310px,calc(100vw - 56px));max-height:50dvh;overflow:auto;padding:14px;border:1px solid var(--border-color);border-radius:16px;background:var(--card-bg);box-shadow:var(--shadow-lg);z-index:65;}
-#ografi-composer-form .compose-settings:not([open]) .post-composer-advanced-content {display:none;}
-#ografi-composer-form .post-composer-setting-row {padding:6px 0;}
-#ografi-composer-form .post-composer-setting-row label {display:flex;align-items:center;gap:9px;font-size:13px;cursor:pointer;}
-#ografi-composer-form .post-composer-setting-row input {accent-color:var(--color-primary);}
-#ografi-composer-form .post-composer-source-field {display:grid;gap:6px;margin-top:10px;font-size:13px;}
-#ografi-composer-form .composer-block-picker:not([hidden]) {
-    display:flex;flex-direction:column;gap:2px;position:absolute;z-index:100;
-    width:214px;max-width:calc(100% - 24px);max-height:min(350px,calc(100% - 24px));overflow:auto;
-    padding:6px;border:1px solid var(--border-color);border-radius:14px;
-    background:var(--card-bg);color:var(--text-color);box-shadow:var(--shadow-lg);
-}
-#ografi-composer-form .composer-block-picker button {
-    display:flex;align-items:center;gap:10px;padding:7px 10px;min-height:34px;flex:none;
-    border:0;border-radius:9px;background:transparent;color:inherit;font:400 .875rem/1.3 var(--font-primary);
-    text-align:left;cursor:pointer;
-}
-#ografi-composer-form .composer-block-picker button svg {width:18px;height:18px;color:var(--color-gray);}
-#ografi-composer-form .composer-block-picker button:hover {background:var(--gray-150);color:var(--color-primary);}
-#ografi-composer-form :is(button,a,summary,select):focus-visible {outline:2px solid var(--color-primary);outline-offset:2px;}
-@media(max-width:640px){
-    [data-composer-design="repost-rebuilt"] {padding:8px !important;}
-    #ografi-composer-form {--compose-pad:16px;border-radius:20px;max-height:calc(100dvh - 16px);}
-    [data-composer-design="repost-rebuilt"].is-expanded > #ografi-composer-form {height:calc(100dvh - 16px);}
-    #ografi-composer-form .compose-main {gap:16px;padding-block:16px;}
-    #ografi-composer-form .compose-attachments {gap:5px;}
-    #ografi-composer-form .compose-attachments-label {flex-basis:100%;}
-    #ografi-composer-form .compose-media-button {width:34px;height:34px;}
-    #ografi-composer-form .compose-footer .compose-cancel {display:none;}
-    #ografi-composer-form .compose-footer .btn {padding-inline:12px;}
-    #ografi-composer-form .compose-settings summary {font-size:12px;}
-}
-
-/* Layout and visual scale from the supplied Medium/Reddit-style reference. */
-#ografi-composer-form {
-    --ref-surface:var(--card-bg);--ref-muted:var(--color-gray);
-    --ref-soft:var(--gray-100);--ref-border:var(--border-color);
-    --ref-ink:var(--title-color);--ref-button:#18181b;
-    width:min(672px,100%);border-radius:16px;max-height:90dvh;
-    font-family:var(--font-secondary);box-shadow:0 20px 45px rgba(0,0,0,.14);
-}
-#ografi-composer-form .compose-head {min-height:61px;padding:16px 20px;border-color:var(--ref-border);}
-#ografi-composer-form .compose-head strong {font:600 16px/1.3 var(--font-secondary);white-space:nowrap;}
-#ografi-composer-form .compose-head-left {display:flex;align-items:center;gap:12px;min-width:0;}
-#ografi-composer-form .compose-channel {display:flex;align-items:center;gap:5px;background:var(--gray-150);border-radius:8px;padding:4px 8px;min-width:0;}
-#ografi-composer-form .compose-channel svg {width:14px;height:14px;flex:none;fill:none;stroke:var(--color-gray);stroke-width:1.7;}
-#ografi-composer-form #post-channel {height:23px;min-height:23px;max-width:165px;border:0;background:transparent;padding:0;color:var(--text-color);font:500 12px/1.2 var(--font-secondary);}
-#ografi-composer-form .compose-main {padding:20px 24px;gap:16px;scrollbar-width:thin;}
-#ografi-composer-form .compose-avatar {width:32px;height:32px;border:1px solid var(--ref-border);}
-#ografi-composer-form .compose-name {font:600 12px/1.3 var(--font-secondary);}
-#ografi-composer-form .compose-title-field:focus-within {box-shadow:none;}
-#ografi-composer-form #post-title {height:44px;min-height:44px;font:700 30px/1.3 var(--font-secondary);letter-spacing:-.035em;}
-#ografi-composer-form #post-title::placeholder {color:var(--gray-400);}
-#ografi-composer-form .compose-writing {min-height:112px;padding:0 0 0 34px;}
-#ografi-composer-form #post-editorjs {font:400 16px/1.625 var(--font-secondary);min-height:105px;}
-#ografi-composer-form #post-editorjs .codex-editor,#ografi-composer-form #post-editorjs .codex-editor__redactor {min-height:105px;}
-#ografi-composer-form .composer-block-add {width:26px;height:26px;background:transparent;border:1px solid var(--ref-border);}
-#ografi-composer-form .composer-block-add:hover {background:var(--gray-150);}
-#ografi-composer-form .compose-tags {border-top:1px solid var(--ref-border);padding-top:11px;display:flex;flex-direction:column;gap:6px;}
-#ografi-composer-form .compose-tag-chips {display:flex;flex-wrap:wrap;gap:5px;}
-#ografi-composer-form .compose-tag-chips:empty {display:none;}
-#ografi-composer-form .compose-tag {display:inline-flex;align-items:center;gap:5px;padding:3px 9px;border-radius:999px;background:var(--gray-150);color:var(--text-color);font:500 12px/1.5 var(--font-secondary);}
-#ografi-composer-form .compose-tag button {border:0;padding:0 1px;background:transparent;color:var(--color-gray);cursor:pointer;font-size:15px;}
-#ografi-composer-form [data-compose-tag-entry] {width:100%;height:25px;min-height:25px;border:0;box-shadow:none;outline:0;background:transparent;color:var(--text-color);padding:0;font:400 12px/1.4 var(--font-secondary);}
-#ografi-composer-form [data-compose-tag-entry]::placeholder {color:var(--ref-muted);}
-#ografi-composer-form .compose-previews {flex:none;}
-#ografi-composer-form .compose-previews img {width:100%;max-width:140px;height:86px;object-fit:cover;}
-#ografi-composer-form .compose-footer {background:var(--ref-soft);border-radius:0 0 16px 16px;flex-wrap:wrap;gap:8px;padding:12px 20px;justify-content:flex-start;}
-#ografi-composer-form .compose-attachments {flex:0 1 auto;gap:1px;padding:0;border:0;flex-wrap:wrap;}
-#ografi-composer-form .compose-media-button {background:transparent;width:30px;height:32px;border-radius:8px;}
-#ografi-composer-form .compose-media-button svg {width:17px;height:17px;}
-#ografi-composer-form .compose-settings summary {width:30px;justify-content:center;min-height:32px;}
-#ografi-composer-form .compose-footer-actions {margin-left:auto;gap:10px;}
-#ografi-composer-form .compose-char-count {font:400 11px/1.2 ui-monospace,monospace;color:var(--ref-muted);white-space:nowrap;}
-#ografi-composer-form .post-composer-publish {background:var(--ref-button);border-color:var(--ref-button);color:#fff;border-radius:12px;min-height:36px;padding:0 16px;font-size:12px;box-shadow:none;}
-#ografi-composer-form .post-composer-publish:hover {background:#3f3f46;}
-[data-theme="dark"] #ografi-composer-form .post-composer-publish {background:#e4e4e7;color:#18181b;border-color:#e4e4e7;}
-@media(max-width:640px) {
-    #ografi-composer-form .compose-head-left {gap:6px;}
-    #ografi-composer-form .compose-head strong {font-size:14px;}
-    #ografi-composer-form #post-channel {max-width:100px;}
-    #ografi-composer-form #post-title {font-size:24px;}
-    #ografi-composer-form .compose-main {padding:16px;}
-    #ografi-composer-form .compose-footer {padding:10px 12px;}
-    #ografi-composer-form .compose-char-count {display:none;}
-}
+/* Original supplied Repost modal CSS. */
+.repost-modal-backdrop {position:fixed;inset:0;z-index:1050;background:rgba(15,23,42,.45);display:flex;align-items:center;justify-content:center;padding:16px;font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;}
+.repost-modal-box {width:100%;max-width:600px;max-height:90vh;background:#ffffff;border:1px solid #e2e8f0;border-radius:20px;display:flex;flex-direction:column;transition:max-width .2s ease,min-height .2s ease;position:relative;}
+.repost-modal-box.is-expanded {max-width:860px;min-height:75vh;}
+.repost-modal-topbar {display:flex;align-items:center;justify-content:space-between;padding:18px 24px 10px;}
+.repost-modal-heading {margin:0;font-size:19px;font-weight:600;color:#0f172a;letter-spacing:-.01em;}
+.repost-modal-actions {display:flex;align-items:center;gap:6px;}
+.repost-icon-btn {width:34px;height:34px;border-radius:10px;border:none;background:transparent;color:#475569;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;transition:background .15s ease,color .15s ease;}
+.repost-icon-btn:hover {background:#f1f5f9;color:#0f172a;}
+.repost-modal-userbar {display:flex;align-items:center;gap:10px;padding:6px 24px 14px;}
+.repost-modal-avatar {width:32px;height:32px;border-radius:50%;object-fit:cover;background:#f1f5f9;}
+.repost-modal-username {font-size:14px;font-weight:600;color:#0f172a;}
+.repost-modal-sep {font-size:16px;color:#94a3b8;line-height:1;}
+.repost-modal-cat {font-size:13.5px;font-weight:400;color:#64748b;background:transparent;border:none;padding:2px 6px;border-radius:6px;cursor:pointer;outline:none;}
+.repost-modal-cat:hover {background:#f1f5f9;color:#334155;}
+.repost-modal-body {padding:4px 24px 18px;overflow-y:auto;flex:1;display:flex;flex-direction:column;gap:14px;}
+.repost-title-input {width:100%;border:none;outline:none;font-size:18px;font-weight:600;color:#0f172a;background:transparent;}
+.repost-title-input::placeholder {color:#64748b;}
+.repost-content-textarea {width:100%;border:none;outline:none;resize:none;overflow:hidden;font-family:inherit;font-size:15px;line-height:1.6;color:#334155;background:transparent;min-height:92px;}
+.repost-content-textarea::placeholder {color:#94a3b8;}
+.repost-modal-footer {padding:6px 24px 20px;display:flex;flex-direction:column;gap:16px;}
+.repost-toolbar {display:flex;align-items:center;gap:14px;}
+.repost-tool-btn {width:32px;height:32px;border-radius:8px;border:none;background:transparent;color:#64748b;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;transition:background .15s ease,color .15s ease;}
+.repost-tool-btn:hover {background:#f1f5f9;color:#0f172a;}
+.repost-footer-bottom {display:flex;align-items:center;justify-content:space-between;}
+.repost-settings-wrap {position:relative;}
+.repost-settings-trigger {display:inline-flex;align-items:center;gap:8px;background:transparent;border:none;padding:6px 8px 6px 0;font-size:13.5px;color:#64748b;cursor:pointer;border-radius:8px;transition:color .15s ease;}
+.repost-settings-trigger:hover,.repost-settings-trigger.is-active {color:#0f172a;}
+.repost-settings-popover {position:absolute;bottom:calc(100% + 12px);left:0;width:340px;background:#fff;border:1px solid #e2e8f0;border-radius:16px;padding:18px 20px;box-shadow:0 10px 28px rgba(15,23,42,.08);display:none;flex-direction:column;gap:16px;z-index:1060;}
+.repost-settings-popover.is-open {display:flex;}
+.repost-switch-row {display:flex;align-items:center;gap:12px;cursor:pointer;user-select:none;}
+.repost-switch-row input {display:none;}
+.repost-switch-slider {width:40px;height:24px;background:#e2e8f0;border-radius:9999px;position:relative;flex-shrink:0;transition:background .2s ease;}
+.repost-switch-slider::after {content:'';position:absolute;top:3px;left:3px;width:18px;height:18px;background:#fff;border-radius:50%;box-shadow:0 1px 2px rgba(0,0,0,.12);transition:transform .2s ease;}
+.repost-switch-row input:checked + .repost-switch-slider {background:#2563eb;}
+.repost-switch-row input:checked + .repost-switch-slider::after {transform:translateX(16px);}
+.repost-switch-label {font-size:14px;color:#334155;line-height:1.4;}
+.repost-source-group {display:flex;flex-direction:column;gap:8px;}
+.repost-source-label {font-size:13.5px;color:#64748b;}
+.repost-source-input {width:100%;height:44px;padding:0 14px;border:1px solid #cbd5e1;border-radius:12px;font-size:14px;color:#0f172a;background:#fff;outline:none;box-sizing:border-box;transition:border-color .15s ease;}
+.repost-source-input:focus {border-color:#2563eb;}
+.repost-publish-btn {background:#0a84ff;color:#fff;border:none;border-radius:12px;padding:11px 22px;font-size:14px;font-weight:500;cursor:pointer;transition:background .15s ease;}
+.repost-publish-btn:hover {background:#0070e0;}
+/* Integration only: isolate from old modal CSS and preserve the supplied geometry. */
+#createPostModal.repost-modal-backdrop {position:fixed!important;inset:0!important;z-index:12000!important;display:flex;align-items:center!important;justify-content:center!important;padding:16px!important;background:rgba(15,23,42,.45)!important;box-sizing:border-box!important;backdrop-filter:none!important;}
+#createPostModal > #createPostBox {position:relative!important;display:flex;flex-direction:column!important;box-sizing:border-box!important;width:100%!important;max-width:600px!important;max-height:90dvh!important;min-height:0!important;height:auto!important;padding:0!important;margin:0!important;border:1px solid #e2e8f0!important;border-radius:20px!important;background:#fff!important;box-shadow:none!important;color:#334155!important;font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif!important;overflow:visible!important;}
+#createPostModal > #createPostBox.is-expanded {max-width:860px!important;min-height:75dvh!important;}
+#createPostModal:is(.is-gallery-open,.is-video-open,.is-widget-open) > #createPostBox {display:none!important;}
+#createPostBox *,#createPostBox *::before,#createPostBox *::after {box-sizing:border-box;}
+#createPostBox [hidden] {display:none!important;}
+#createPostBox :is(.repost-modal-topbar,.repost-modal-userbar,.repost-modal-footer) {flex-shrink:0;}
+#createPostBox .repost-modal-heading {line-height:1.3;}
+#createPostBox .repost-modal-userbar {min-width:0;}
+#createPostBox .repost-modal-avatar {flex:0 0 32px;}
+#createPostBox .repost-modal-username {white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+#createPostBox .repost-modal-cat {width:auto;min-width:0;max-width:50%;height:auto;appearance:auto;box-shadow:none;}
+#createPostBox .repost-modal-body {min-height:0;}
+#createPostBox .repost-title-input {flex:none;padding:0;margin:0;height:28px;min-height:28px;line-height:1.5;box-shadow:none;border-radius:0;}
+#createPostBox .repost-editor-wrap {position:relative;flex:none;min-width:0;padding-left:32px;}
+#createPostBox #post-editorjs {overflow:visible;font:400 15px/1.6 inherit;min-height:92px;}
+#createPostBox #post-editorjs:not(.is-ready):empty::before {content:attr(data-placeholder);color:#94a3b8;}
+#createPostBox #post-editorjs :is(.codex-editor,.codex-editor__redactor) {min-height:92px;height:auto;overflow:visible;padding-bottom:0!important;margin-right:0!important;}
+#createPostBox #post-editorjs :is(.ce-block__content,.ce-toolbar__content) {max-width:none;margin-left:0;margin-right:0;}
+#createPostBox #post-editorjs .ce-paragraph {font-size:15px;line-height:1.6;padding:2px 0;min-height:24px;overflow-wrap:anywhere;}
+#createPostBox #post-editorjs [contenteditable="true"] {outline:0;overflow-wrap:anywhere;}
+#createPostBox #post-editorjs .ce-toolbar__plus {display:none!important;}
+#createPostBox #post-editorjs .ce-inline-toolbar {z-index:45;overflow:visible;}
+#createPostBox #post-editorjs .ce-popover {--border-radius:12px;--color-border:#e2e8f0;--color-background:#fff;--color-text-primary:#334155;--color-text-icon-active:#0a84ff;overflow:visible;}
+#createPostBox .repost-modal-body:has(.ce-inline-toolbar .ce-popover--opened) {padding-bottom:60px;}
+#createPostBox .repost-modal-body:has(.ce-inline-toolbar .ce-popover--nested.ce-popover--opened) {padding-bottom:230px;}
+#createPostBox .composer-block-add {position:absolute;left:0;top:0;width:26px;height:26px;display:grid;place-items:center;border:0;border-radius:50%;background:#f1f5f9;color:#64748b;padding:0;cursor:pointer;}
+#createPostBox .composer-block-add:hover,#createPostBox .composer-block-add[aria-expanded="true"] {background:#e2e8f0;color:#0a84ff;}
+#createPostBox .composer-block-picker:not([hidden]) {position:absolute;z-index:1100;display:flex;flex-direction:column;gap:2px;width:214px;max-width:calc(100% - 24px);max-height:min(350px,calc(100% - 24px));overflow:auto;border:1px solid #e2e8f0;border-radius:12px;background:#fff;padding:6px;box-shadow:0 10px 28px rgba(15,23,42,.08);}
+#createPostBox .composer-block-picker button {display:flex;align-items:center;gap:10px;border:0;border-radius:8px;background:transparent;padding:7px 9px;color:#334155;font-size:14px;cursor:pointer;text-align:left;flex:none;}
+#createPostBox .composer-block-picker button:hover {background:#f1f5f9;}
+#createPostBox .composer-block-picker button svg {width:18px;height:18px;flex:none;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;}
+#createPostBox .repost-sr-only,#createPostBox .repost-switch-row input {position:absolute;width:1px;height:1px;clip-path:inset(50%);overflow:hidden;white-space:nowrap;display:block;padding:0;margin:0;}
+#createPostBox .repost-switch-row input:focus-visible + .repost-switch-slider {outline:2px solid #2563eb;outline-offset:2px;}
+#createPostBox .repost-settings-popover {max-width:calc(100vw - 64px);max-height:60dvh;overflow:auto;}
+#createPostBox .repost-source-input {box-shadow:none;margin:0;}
+#createPostBox .repost-publish-btn:disabled {opacity:.55;cursor:wait;}
+#createPostBox .compose-previews {display:flex;flex-wrap:wrap;gap:8px;}
+#createPostBox .compose-previews:not(:has(img,p,label)) {display:none;}
+#createPostBox .compose-previews img {width:56px;height:56px;object-fit:cover;border-radius:8px;}
+#createPostBox .post-composer-gallery-item {display:flex;gap:6px;align-items:center;font-size:12px;max-width:180px;overflow:hidden;}
+#createPostBox .post-composer-location-panel:not([hidden]) {display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+#createPostBox .post-composer-location-panel input {min-width:0;flex:1;border:1px solid #cbd5e1;border-radius:12px;padding:8px;background:#fff;color:#334155;}
+#createPostBox .post-composer-location-panel button {border:0;background:transparent;color:#64748b;font-size:20px;cursor:pointer;}
+@media(max-width:640px){#createPostModal.repost-modal-backdrop{padding:12px!important;}#createPostBox :is(.repost-modal-topbar,.repost-modal-userbar,.repost-modal-body,.repost-modal-footer){padding-inline:16px;}#createPostBox .repost-toolbar{gap:10px;}#createPostBox .repost-settings-popover{max-width:calc(100vw - 58px);}}
+@media(prefers-reduced-motion:reduce){#createPostBox{transition:none!important;}}
         </style>
-        <form id="ografi-composer-form" class="ografi-composer-form" action="{{ isset($post) ? route('posts.update', $post) : route('posts.store') }}" method="POST" enctype="multipart/form-data">
-            @csrf
-            @if (isset($post))
-                @method('PATCH')
-            @endif
+        <form class="repost-modal-box" id="createPostBox" action="{{ isset($post) ? route('posts.update', $post) : route('posts.store') }}" method="POST" enctype="multipart/form-data">
+    @csrf
+    @if (isset($post))
+        @method('PATCH')
+    @endif
 
-            <header class="compose-head">
-                <div class="compose-head-left"><strong>{{ isset($post) ? 'Yayını düzenle' : 'Gönderi Oluştur' }}</strong><div class="compose-channel"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M8 9h8M8 13h5"/></svg><select id="post-channel" name="channel_id" aria-label="Bir kanal seçin">
-                        <option value="">Bir kanal seçin</option>
+    <!-- 1. Üst Başlık Satırı -->
+    <div class="repost-modal-topbar">
+      <h2 class="repost-modal-heading">{{ isset($post) ? 'Gönderiyi düzenle' : 'Yeni gönderi' }}</h2>
+      <div class="repost-modal-actions">
+        <button type="button" class="repost-icon-btn" id="toggleExpandBtn" title="Büyüt / Küçült" aria-label="Büyüt / Küçült" aria-pressed="false">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="15 3 21 3 21 9"></polyline><polyline points="9 21 3 21 3 15"></polyline><line x1="21" y1="3" x2="14" y2="10"></line><line x1="3" y1="21" x2="10" y2="14"></line>
+          </svg>
+        </button>
+        <button type="button" class="repost-icon-btn addpost__modal-close" id="closePostModalBtn" title="Kapat" aria-label="Kapat">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- 2. Kullanıcı + Kategori Seç Satırı -->
+    <div class="repost-modal-userbar">
+      <img src="{{ $user->avatarUrl() }}" alt="" class="repost-modal-avatar">
+      <span class="repost-modal-username">{{ $user->displayName() }}</span>
+      <span class="repost-modal-sep">›</span>
+      <select class="repost-modal-cat" id="post-channel" name="channel_id" aria-label="Kategori seç">
+                        <option value="">Kategori seç</option>
                         @foreach ($channels as $channel)
                             <option value="{{ $channel->id }}" @selected((string) old('channel_id', $post->channel_id ?? '') === (string) $channel->id)>{{ $channel->name }}</option>
                         @endforeach
-                    </select></div></div>
-                <div class="compose-controls">
-                    <button type="button" class="compose-icon addpost__modal-expand" data-post-composer-expand aria-label="Genişlet" aria-pressed="false">
-                        <svg class="composer-expand-symbol" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 4h6v6M10 20H4v-6"/></svg>
-                        <svg class="composer-collapse-symbol" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 10h-6V4M4 14h6v6"/></svg>
-                    </button>
-                    <a href="{{ route('posts.index') }}" class="compose-icon addpost__modal-close" aria-label="Kapat">
-                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg>
-                    </a>
-                </div>
-            </header>
-            <div class="compose-main">
-            <div class="compose-author">
-                <img class="compose-avatar" src="{{ $user->avatarUrl() }}" alt="" width="40" height="40">
-                <div class="compose-identity">
-                    <span class="compose-name">{{ $user->displayName() }}</span>
-                    
-                </div>
-            </div>
+                    </select>
+    </div>
 
-            <div class="compose-title-field">
-                <label class="compose-visually-hidden" for="post-title">Gönderi başlığı</label>
-                <input class="compose-title-input" id="post-title" name="title" type="text"
-                    value="{{ old('title', $post->title ?? '') }}" maxlength="255"
-                    placeholder="Başlık ekle..." required>
-                <div class="compose-visually-hidden"><span>Arama ve paylaşım için açık bir başlık seç.</span><span data-count-for="post-title">0 / 60</span></div>
-            </div>
-
-            <div class="compose-visually-hidden">
-                <label class="post-composer-label" for="post-excerpt">Kısa açıklama</label>
-                <textarea class="post-create-simple__excerpt" id="post-excerpt" name="excerpt" rows="3" maxlength="500"
-                    placeholder="Yazını birkaç cümleyle özetle...">{{ old('excerpt', $post->excerpt ?? '') }}</textarea>
-                <div class="post-composer-count"><span>Gönderi kartlarında ve arama önizlemelerinde kullanılır.</span><span data-count-for="post-excerpt">0 / 160</span></div>
-            </div>
-
-
-
-            <input type="hidden" id="post-body" name="body" value="{{ old('body', $post->body ?? '') }}">
-            <section class="compose-writing" aria-label="Yazı içeriği düzenleyicisi">
-                <span class="compose-visually-hidden" data-editor-status role="status" aria-live="polite">Hazırlanıyor…</span>
-                    <button type="button" class="composer-block-add" data-block-picker-toggle aria-label="İçerik bloğu ekle" aria-expanded="false" aria-controls="composer-block-picker" title="Blok ekle">
-                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
-                    </button>
-                    <div id="post-editorjs" class="compose-editor" aria-label="Yazı içeriği" data-placeholder="Aklındakileri veya hikayeni paylaş..."></div>
-            </section>
-                <div class="compose-previews">
+    <!-- 3. Başlık ve Metin Alanı -->
+    <div class="repost-modal-body">
+      <input type="text" class="repost-title-input" id="post-title" name="title" value="{{ old('title', $post->title ?? '') }}" maxlength="255" placeholder="Başlık" aria-label="Başlık" required>
+      <input type="hidden" id="post-body" name="body" value="{{ old('body', $post->body ?? '') }}">
+      <textarea id="post-excerpt" name="excerpt" hidden>{{ old('excerpt', $post->excerpt ?? '') }}</textarea>
+      <div class="repost-editor-wrap">
+        <span class="repost-sr-only" data-editor-status role="status" aria-live="polite"></span>
+        <button type="button" class="composer-block-add" data-block-picker-toggle aria-label="İçerik bloğu ekle" aria-expanded="false" aria-controls="composer-block-picker" title="Blok ekle"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button>
+        <div class="repost-content-textarea" id="post-editorjs" data-placeholder="Bir şeyler yazın..." aria-label="Gönderi içeriği"></div>
+        <textarea class="repost-content-textarea" id="postTextarea" rows="4" placeholder="Bir şeyler yazın..." aria-label="Gönderi içeriği" hidden></textarea>
+      </div>
+      <div class="compose-previews">
                     <div class="post-composer-cover-preview" data-post-cover-preview aria-live="polite"></div>
                     <div class="post-composer-file-list" data-post-gallery-list aria-live="polite"></div>
                     @if (isset($post) && $post->coverImageUrl())
@@ -305,81 +170,61 @@
                         <p class="small color-gray">Mevcut video kayıtlı. Yeni video seçersen değiştirilir.</p>
                     @endif
                     </div>
-                <div class="post-composer-location-panel" data-composer-location-panel hidden>
+      <div class="post-composer-location-panel" data-composer-location-panel hidden>
                         <label for="post-location">Konum</label>
                         <input id="post-location" name="location" type="text" maxlength="255" value="{{ old('location', $post->location ?? '') }}" placeholder="Şehir, mekan veya adres">
                         <button type="button" data-composer-location-close aria-label="Konum alanını kapat">×</button>
                     </div>
-                <div class="compose-tags">
-                    <div class="compose-tag-chips" data-compose-tag-chips></div>
-                    <input type="text" data-compose-tag-entry maxlength="100" autocomplete="off" aria-label="Etiket ekle" placeholder="Etiket ekle (Enter veya virgül ile)...">
-                    <input type="hidden" id="post-tags-input" name="tags" maxlength="500" value="{{ old('tags', $post->tags ?? '') }}">
-                </div>
+    </div>
+
+    <!-- 4. Alt Alan: Üstte 5 İkon, Altta Yayın Ayarları + Yayınla -->
+    <div class="repost-modal-footer">
+      <div class="repost-toolbar">
+        <button type="button" class="repost-tool-btn" title="Görsel" aria-label="Görsel" data-gallery-open>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><rect x="3" y="4" width="18" height="16" rx="2.5"></rect><circle cx="8.5" cy="9" r="1.25" fill="currentColor" stroke="none"></circle><path stroke-linecap="round" stroke-linejoin="round" d="M4 17l5-4.5 3.5 3 3-2.5L20 17"></path></svg>
+        </button>
+        <button type="button" class="repost-tool-btn" title="Konum" aria-label="Konum" data-composer-location-toggle aria-expanded="false">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path stroke-linecap="round" stroke-linejoin="round" d="M12 21c-4-4.2-7-7.6-7-11a7 7 0 1114 0c0 3.4-3 6.8-7 11z"></path><circle cx="12" cy="10" r="2.25"></circle></svg>
+        </button>
+        <button type="button" class="repost-tool-btn" title="Video" aria-label="Video" data-composer-video-toggle aria-expanded="false">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><rect x="3" y="5" width="18" height="14" rx="3"></rect><path stroke-linecap="round" stroke-linejoin="round" d="M10.25 9.5l4.5 2.5-4.5 2.5v-5z"></path></svg>
+        </button>
+        <button type="button" class="repost-tool-btn" title="Video dosyası yükle" aria-label="Video dosyası yükle" data-repost-file>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path stroke-linecap="round" stroke-linejoin="round" d="M7 3h7l5 5v11a2 2 0 01-2 2H7a2 2 0 01-2-2V5a2 2 0 012-2z"></path><path stroke-linecap="round" stroke-linejoin="round" d="M9 13h6M9 17h4"></path></svg>
+        </button>
+        <button type="button" class="repost-tool-btn" title="Etiket" aria-label="Etiket" data-composer-tags-toggle aria-expanded="false">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path stroke-linecap="round" stroke-linejoin="round" d="M9.5 4L7.5 20M16.5 4l-2 16M4.5 9h15M3.5 15h15"></path></svg>
+        </button>
+        <input class="repost-file-input" hidden id="post-media" name="media[]" type="file" accept="image/jpeg,image/png,image/gif,image/webp" multiple data-post-gallery-input>
+<input class="repost-file-input" hidden id="post-video-file" name="video_file" type="file" accept="video/mp4,video/webm,video/quicktime,video/x-matroska">
+<input class="repost-file-input" hidden id="post-cover" name="cover_image" type="file" accept="image/jpeg,image/png,image/gif,image/webp" data-post-cover-input>
+        <button type="button" data-composer-widget-toggle hidden aria-label="Widget ekle"></button>
+      </div>
+      <div class="repost-footer-bottom">
+        <div class="repost-settings-wrap">
+          <button type="button" class="repost-settings-trigger" id="postSettingsBtn" aria-expanded="false" aria-controls="postSettingsPopover">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="6" x2="20" y2="6"></line><line x1="4" y1="12" x2="20" y2="12"></line><line x1="4" y1="18" x2="20" y2="18"></line><circle cx="9" cy="6" r="2" fill="#ffffff"></circle><circle cx="15" cy="12" r="2" fill="#ffffff"></circle><circle cx="10" cy="18" r="2" fill="#ffffff"></circle></svg>
+            <span>Yayın ayarları</span>
+          </button>
+          <div class="repost-settings-popover" id="postSettingsPopover">
+            <label class="repost-switch-row">
+              <input type="checkbox" id="post-adult" name="is_adult" value="1" @checked(old('is_adult', $post->is_adult ?? false))>
+              <span class="repost-switch-slider"></span><span class="repost-switch-label">18+ içerik</span>
+            </label>
+            <label class="repost-switch-row">
+              <input type="checkbox" id="post-ai-content" name="ai_content_disclosure" value="1" @checked(old('ai_content_disclosure', false))>
+              <span class="repost-switch-slider"></span><span class="repost-switch-label">İçerik yapay zeka verileri içermektedir.</span>
+            </label>
+            <div class="repost-source-group">
+              <label class="repost-source-label" for="post-source">Lütfen kaynağı belirtin.</label>
+              <input type="text" id="post-source" name="content_source" class="repost-source-input" maxlength="1000" value="{{ old('content_source', '') }}">
             </div>
-
-
-            <footer class="compose-footer">            <section class="compose-attachments" aria-label="Gönderiye ekle">
-                
-                    <button type="button" class="compose-media-button" data-gallery-open aria-label="Görsel ekle" title="Görsel ekle">
-                        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="4" width="17" height="16" rx="2"/><circle cx="8.5" cy="9" r="1.5"/><path d="m20.5 15-5-5L5 20"/></svg>
-                    </button>
-                    <input class="compose-file-input" id="post-media" name="media[]" type="file" accept="image/jpeg,image/png,image/gif,image/webp" multiple data-post-gallery-input>
-
-                    <button type="button" class="compose-media-button" data-composer-location-toggle aria-label="Konum ekle" title="Konum ekle" aria-expanded="false">
-                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></svg>
-                    </button>
-
-                    <button type="button" class="compose-media-button" data-composer-video-toggle aria-label="Video bağlantısı ekle" title="Video bağlantısı ekle" aria-expanded="false">
-                        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="m10 9 5 3-5 3z"/></svg>
-                    </button>
-                    <label for="post-video-file" class="compose-media-button" aria-label="Video dosyası ekle" title="Dosya yükle">
-                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V10z"/><path d="M13 3v7h7M8 14h8M8 17h8"/></svg>
-                    </label>
-                    <input class="compose-file-input" id="post-video-file" name="video_file" type="file" accept="video/mp4,video/webm,video/quicktime,video/x-matroska">
-
-                    <button type="button" class="compose-media-button" data-composer-widget-toggle aria-label="Widget ekle" title="Widget ekle" aria-expanded="false">
-                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m8 8-4 4 4 4M16 8l4 4-4 4M14 4l-4 16"/></svg>
-                    </button>
-                    
-
-
-                    
-
-
-                    <input class="compose-file-input" id="post-cover" name="cover_image" type="file" accept="image/jpeg,image/png,image/gif,image/webp" data-post-cover-input>
-                                <button type="button" class="compose-media-button" data-compose-direct-block="code" title="Kod bloğu ekle" aria-label="Kod bloğu ekle"><svg viewBox="0 0 24 24"><path d="m8 6-6 6 6 6m8-12 6 6-6 6m-2-15-4 18"/></svg></button>
-<button type="button" class="compose-media-button" data-compose-direct-block="quote" title="Alıntı ekle" aria-label="Alıntı ekle"><svg viewBox="0 0 24 24"><path d="M4 5h16v12h-7l-4 4v-4H4zM8 9h8M8 13h4"/></svg></button></section>
-            <details class="compose-settings post-composer-advanced">
-                <summary>
-                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h9m4 0h3M4 17h3m4 0h9"/><circle cx="15" cy="7" r="2"/><circle cx="9" cy="17" r="2"/></svg>
-                    <span class="compose-visually-hidden">Yayın ayarları</span>
-                </summary>
-                <div class="post-composer-advanced-content">
-                    <div class="post-composer-setting-row">
-                        <label class="post-create-simple__adult" for="post-adult">
-                            <input id="post-adult" type="checkbox" name="is_adult" value="1" @checked(old('is_adult', $post->is_adult ?? false))>
-                            <span>18+ içerik</span>
-                        </label>
-                    </div>
-                    <div class="post-composer-setting-row">
-                        <label class="post-composer-ai" for="post-ai-content">
-                            <input id="post-ai-content" type="checkbox" name="ai_content_disclosure" value="1" @checked(old('ai_content_disclosure', false))>
-                            <span>İçerik yapay zeka verileri içermektedir.</span>
-                        </label>
-                    </div>
-                    <div class="post-composer-source-field">
-                        <label for="post-source">Lütfen kaynağı belirtin.</label>
-                        <input id="post-source" name="content_source" type="text" value="{{ old('content_source', '') }}" maxlength="1000" placeholder="">
-                    </div>
-                </div>
-            </details>
-                <div class="compose-footer-actions">
-                    <span class="compose-char-count" data-compose-char-count>0 karakter</span>
-                    <button class="btn btn-primary post-composer-publish" type="submit">{{ isset($post) ? 'Kaydet' : 'Yayınla' }}</button>
-                </div>
-            </footer>
-
-            <div id="composer-block-picker" class="composer-block-picker" data-block-picker hidden role="group" aria-label="İçerik blokları">
+          </div>
+        </div>
+        <button type="submit" class="repost-publish-btn">{{ isset($post) ? 'Kaydet' : 'Yayınla' }}</button>
+      </div>
+    </div>
+    <div id="composer-block-picker" class="composer-block-picker" data-block-picker hidden role="group" aria-label="İçerik blokları">
                 <span data-block-picker-status role="status">Editör yükleniyor…</span>
                 <button type="button" data-insert-block="paragraph" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v16M16 4v16M16 4H9a5 5 0 0 0 0 10h3"/></svg><span>Metin</span></button>
                 <button type="button" data-insert-block="header" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5v14M19 5v14M5 12h14"/></svg><span>Başlık</span></button>
@@ -392,10 +237,8 @@
                 <button type="button" data-insert-block="embed" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 13a4 4 0 0 0 6 0l4-4a4 4 0 0 0-6-6l-2 2m2 6a4 4 0 0 0-6 0l-4 4a4 4 0 0 0 6 6l2-2"/></svg><span>Gömülü medya</span></button>
                 <button type="button" data-block-action="gallery"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="8" cy="9" r="1.5"/><path d="m3 17 5-5 4 4 4-5 5 6"/></svg><span>Görsel</span></button>
                 <button type="button" data-block-action="video"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="m10 9 5 3-5 3z"/></svg><span>Video</span></button>
-            </div>
-
-
-        </form>
+            <button type="button" data-block-action="widget"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="m8 6-6 6 6 6m8-12 6 6-6 6"/></svg><span>Widget</span></button></div>
+</form>
         <div class="post-gallery-modal" data-gallery-modal hidden>
                         <div class="post-gallery-dialog" role="dialog" aria-modal="true" aria-labelledby="post-gallery-title">
                             <button type="button" class="post-gallery-back" data-gallery-close aria-label="Geri dön">
@@ -432,7 +275,7 @@
                 <h2 id="post-tags-title">Etiketler</h2>
                 <div class="post-tags-input-wrap">
                     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h16M4 15h16M9 4l-2 16M17 4l-2 16"/></svg>
-                    <span>Etiketleri gönderi alanından ekleyin.</span>
+                    <input id="post-tags-input" name="tags" form="createPostBox" type="text" maxlength="500" value="{{ old('tags', $post->tags ?? '') }}" placeholder="Etiketleri girin" aria-label="Etiketler">
                 </div>
             </div>
         </div>
@@ -442,7 +285,7 @@
                     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>
                 </button>
                 <h2 id="post-video-title">Video</h2>
-                <input id="post-video-url" name="video_url" form="ografi-composer-form" type="url"
+                <input id="post-video-url" name="video_url" form="createPostBox" type="url"
                     value="{{ old('video_url', $post->video_url ?? '') }}" maxlength="2048"
                     placeholder="" aria-label="Video bağlantısı">
                 <p class="post-video-hint">
@@ -778,55 +621,49 @@
     const blockOptions = Array.from(blockPicker?.querySelectorAll('[data-insert-block]') || []);
     let activeEditor = null;
     let insertionIndex = -1;
-    const tagInput = form.querySelector('[data-compose-tag-entry]');
-    const tagValue = form.querySelector('#post-tags-input');
-    const tagChips = form.querySelector('[data-compose-tag-chips]');
-    let composeTags = (tagValue?.value || '').split(',').map(t => t.trim().replace(/^#/, '')).filter(Boolean);
-    const renderComposeTags = () => {
-      if (!tagValue || !tagChips) return;
-      tagValue.value = composeTags.join(',');
-      tagChips.replaceChildren();
-      composeTags.forEach((tag, index) => {
-        const chip = document.createElement('span');
-        chip.className = 'compose-tag';
-        chip.append(document.createTextNode('#' + tag));
-        const remove = document.createElement('button');
-        remove.type = 'button'; remove.textContent = '×';
-        remove.setAttribute('aria-label', tag + ' etiketini kaldır');
-        remove.addEventListener('click', () => { composeTags.splice(index, 1); renderComposeTags(); });
-        chip.append(remove); tagChips.append(chip);
-      });
-    };
-    const addComposeTag = () => {
-      if (!tagInput || !tagValue) return;
-      for (const raw of tagInput.value.split(',')) {
-        const tag = raw.trim().replace(/^#/, '');
-        if (tag && !composeTags.includes(tag) && [...composeTags, tag].join(',').length <= 500) composeTags.push(tag);
-      }
-      tagInput.value = ''; renderComposeTags();
-    };
-    renderComposeTags();
-    tagInput?.addEventListener('keydown', event => {
-      if (event.key === 'Enter' || event.key === ',') { event.preventDefault(); addComposeTag(); }
-    });
-    tagInput?.addEventListener('blur', addComposeTag);
-    form.addEventListener('submit', addComposeTag, { capture: true });
-    const charCount = form.querySelector('[data-compose-char-count]');
-    const updateComposeCount = () => {
-      if (charCount) charCount.textContent = Array.from(holder.querySelectorAll('.ce-block [contenteditable="true"]')).map(el => el.textContent || '').join('').length + ' karakter';
-    };
-    holder.addEventListener('input', updateComposeCount);
-    form.querySelectorAll('[data-compose-direct-block]').forEach(button => {
-      button.addEventListener('click', () => {
-        if (!activeEditor) return;
-        const type = button.dataset.composeDirectBlock;
-        const option = blockPicker?.querySelector('[data-insert-block="' + type + '"]');
-        if (!option || option.hidden) return;
-        insertionIndex = activeEditor.blocks.getCurrentBlockIndex();
-        option.click();
-      });
-    });
 
+    // Original reference modal interactions, initialized when AJAX clones the dialog.
+    const modalBackdrop = document.getElementById('createPostModal');
+    const modalBox = document.getElementById('createPostBox');
+    const textarea = document.getElementById('postTextarea');
+    const expandBtn = document.getElementById('toggleExpandBtn');
+    const closeBtn = document.getElementById('closePostModalBtn');
+    const settingsBtn = document.getElementById('postSettingsBtn');
+    const settingsPopover = document.getElementById('postSettingsPopover');
+    const publishBtn = form.querySelector('[type="submit"]');
+    if (publishBtn) publishBtn.disabled = true;
+    textarea?.addEventListener('input', function () {
+      this.style.height = 'auto';
+      this.style.height = this.scrollHeight + 'px';
+    });
+    expandBtn?.addEventListener('click', () => {
+      const expanded = modalBox.classList.toggle('is-expanded');
+      expandBtn.setAttribute('aria-pressed', String(expanded));
+    });
+    settingsBtn?.addEventListener('click', e => {
+      e.stopPropagation();
+      settingsPopover.classList.toggle('is-open');
+      settingsBtn.classList.toggle('is-active');
+      settingsBtn.setAttribute('aria-expanded', String(settingsPopover.classList.contains('is-open')));
+    });
+    const closeSettings = () => {
+      settingsPopover?.classList.remove('is-open');
+      settingsBtn?.classList.remove('is-active');
+      settingsBtn?.setAttribute('aria-expanded', 'false');
+    };
+    document.addEventListener('click', e => {
+      if (form.isConnected && !settingsPopover.contains(e.target) && !settingsBtn.contains(e.target)) closeSettings();
+    });
+    form.addEventListener('keydown', e => {
+      if (e.key === 'Escape' && settingsPopover.classList.contains('is-open')) {
+        e.preventDefault(); e.stopPropagation(); closeSettings(); settingsBtn.focus();
+      }
+    });
+    closeBtn?.addEventListener('click', () => {
+      if (!modalBackdrop.dataset.liveComposer) window.location.href = @json(route('posts.index'));
+      // The live modal is removed by the existing layout close handler.
+    });
+    form.querySelector('[data-repost-file]')?.addEventListener('click', () => form.querySelector('#post-video-file')?.click());
 
     const closeBlockPicker = (restoreFocus = false) => {
       if (blockPicker) blockPicker.hidden = true;
@@ -871,7 +708,7 @@
     blockPicker?.querySelectorAll('[data-block-action]').forEach(option => {
       option.addEventListener('click', () => {
         closeBlockPicker();
-        const selector = option.dataset.blockAction === 'gallery' ? '[data-gallery-open]' : '[data-composer-video-toggle]';
+        const selector = option.dataset.blockAction === 'gallery' ? '[data-gallery-open]' : option.dataset.blockAction === 'widget' ? '[data-composer-widget-toggle]' : '[data-composer-video-toggle]';
         form.querySelector(selector)?.click();
       });
     });
@@ -984,7 +821,7 @@
 
         const editor = new window.EditorJS({
           holder,
-          placeholder: 'Aklındakileri veya hikayeni paylaş...',
+          placeholder: 'Bir şeyler yazın...',
           minHeight: 84,
           autofocus: false,
           logLevel: 'ERROR',
@@ -1017,7 +854,8 @@
         await editor.isReady;
         holder.classList.add('is-ready');
         activeEditor = editor;
-        updateComposeCount();
+        if (publishBtn) publishBtn.disabled = false;
+
         if (blockStatus) blockStatus.hidden = true;
         blockOptions.forEach(option => {
           const type = option.dataset.insertBlock;
@@ -1053,7 +891,24 @@
         console.error('Editor.js başlatma hatası:', error);
         if (blockStatus) { blockStatus.hidden = false; blockStatus.textContent = 'Editör yüklenemedi. Sayfayı yenile.'; }
         setStatus('Editör yüklenemedi — bağlantıyı kontrol edip sayfayı yenile.');
-        holder.innerHTML = '<div class="post-create-simple__editor-error">Editör yüklenemedi. İnternet bağlantısını kontrol edip sayfayı yenile.</div>';
+        // Keep the reference textarea usable if the Editor.js CDN is unavailable.
+        holder.hidden = true;
+        if (blockToggle) blockToggle.hidden = true;
+        if (textarea) {
+          textarea.hidden = false;
+          try {
+            const data = JSON.parse(input.value);
+            const div = document.createElement('div');
+            textarea.value = (data.blocks || []).map(b => { div.innerHTML = b.data?.text || ''; return div.textContent; }).join('\n\n');
+          } catch (_) { textarea.value = input.value; }
+          textarea.dispatchEvent(new Event('input'));
+          form.addEventListener('submit', () => {
+            input.value = JSON.stringify({ blocks: [{ type: 'paragraph', data: { text: textarea.value.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;') } }] });
+            const excerpt = form.querySelector('#post-excerpt');
+            if (excerpt && !excerpt.value.trim()) excerpt.value = textarea.value.slice(0,500);
+          });
+        }
+        if (publishBtn) publishBtn.disabled = false;
       }
     })();
   };
@@ -1122,7 +977,7 @@
         const galleryDropzone = document.querySelector('[data-gallery-dropzone]');
         const gallerySelected = document.querySelector('[data-gallery-selected]');
         const composerOverlay = document.querySelector('.addpost.post-create-simple.post-create-modal-page');
-        const composerForm = composerOverlay?.querySelector('#ografi-composer-form');
+        const composerForm = composerOverlay?.querySelector('#createPostBox');
         const openGallery = () => {
             if (!galleryModal) return;
             galleryModal.hidden = false;
