@@ -57,7 +57,7 @@
                             @if (filled($task['description'] ?? null))
                                 <p>{{ $task['description'] }}</p>
                             @else
-                                <p>{{ match ($task['activity'] ?? 'comments') { 'posts' => 'Yazı yayınla', 'event' => 'Yönetici onaylı etkinlik', default => 'Yorum yap' } }} · {{ $item['target'] }} adet</p>
+                                <p>{{ \App\Services\CommunityTaskService::ACTIVITIES[$task['activity'] ?? 'comments'] ?? 'Görev' }} · {{ $item['target'] }} adet</p>
                             @endif
                         </div>
                         @if ($item['completed'])
@@ -73,11 +73,17 @@
                         <p class="small color-gray">Bitiş {{ \Illuminate\Support\Carbon::parse($task['ends_at'])->format('d.m.Y H:i') }}</p>
                     @endif
                     <div class="task-card__footer">
-                        <span>{{ $item['progress'] }} / {{ $item['target'] }} {{ match ($task['activity'] ?? 'comments') { 'posts' => 'yazı', 'event' => 'onay', default => 'yorum' } }}</span>
+                        <span>{{ $item['progress'] }} / {{ $item['target'] }} {{ match ($task['activity'] ?? 'comments') { 'posts' => 'yazı', 'comments' => 'yorum', 'follow_members' => 'üye', 'login_streak' => 'gün', default => 'tamamlanma' } }}</span>
                         @if ($badge)
                             <span class="task-card__badge">Rozet: {{ $badge['name'] }}</span>
                         @endif
                     </div>
+                    @if (filled($task['action_url'] ?? null) && in_array(parse_url($task['action_url'], PHP_URL_SCHEME), ['http', 'https'], true))
+                        <a class="btn btn-primary btn-sm" href="{{ $task['action_url'] }}" target="_blank" rel="noopener noreferrer">Görev bağlantısını aç</a>
+                    @endif
+                    @if (in_array($task['activity'] ?? '', ['event', 'social_follow'], true))
+                        <p class="small color-gray">Tamamladıktan sonra yönetici onayıyla ödülün verilir.</p>
+                    @endif
                     @guest
                         <small class="task-login-hint"><a href="{{ route('login') }}">Giriş yap</a> ve görev ilerlemeni takip et.</small>
                     @endguest

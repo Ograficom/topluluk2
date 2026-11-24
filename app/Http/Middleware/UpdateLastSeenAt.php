@@ -21,6 +21,12 @@ class UpdateLastSeenAt
             $user->forceFill(['last_seen_at' => now()])->saveQuietly();
         }
 
-        return $next($request);
+        $previousAvatar = $user?->avatar_path;
+        $response = $next($request);
+        $currentUser = $request->user();
+        if ($currentUser && $response->getStatusCode() < 400 && Schema::hasTable('task_activity_days')) {
+            app(\App\Services\CommunityTaskService::class)->observeUser($currentUser->fresh(), $previousAvatar);
+        }
+        return $response;
     }
 }

@@ -13,6 +13,70 @@ use Illuminate\Support\Str;
 
 class CommunityTaskService
 {
+    public const ACTIVITIES = [
+        'comments' => 'Yorum yap',
+        'posts' => 'Yazı yayınla',
+        'follow_members' => 'Üye takip et',
+        'login_streak' => 'Ardışık günlerde giriş yap',
+        'registration' => 'Üyelik oluştur',
+        'profile_complete' => 'Profilini tamamla',
+        'two_factor' => 'İki aşamalı doğrulamayı etkinleştir',
+        'avatar_added' => 'Profil resmi ekle',
+        'avatar_changed' => 'Profil resmini değiştir',
+        'social_follow' => 'Sosyal medyada takip et (onaylı)',
+        'event' => 'Etkinlik / yönetici onaylı görev',
+    ];
+
+    public function recordDay(User $user, string $activity): void
+    {
+        DB::table('task_activity_days')->insertOrIgnore([
+            'user_id' => $user->id,
+            'activity' => $activity,
+            'day' => now('Europe/Istanbul')->toDateString(),
+            'created_at' => now(),
+        ]);
+    }
+
+    public function observeUser(User $user, ?string $previousAvatar): void
+    {
+        $this->recordDay($user, 'login_streak');
+        if (filled($user->avatar_path)) {
+            $this->recordDay($user, 'avatar_added');
+            if (filled($previousAvatar) && $previousAvatar !== $user->avatar_path) {
+                $this->recordDay($user, 'avatar_changed');
+            }
+        }
+        if (filled($user->name) && filled($user->username) && filled($user->avatar_path) && filled($user->bio)) {
+            $this->recordDay($user, 'profile_complete');
+        }
+        if ($user->two_factor_confirmed_at) {
+            $this->recordDay($user, 'two_factor');
+        }
+        $this->completeAvailableTasks($user);
+    }
+
+    private function activityProgress(User $user, array $task): int
+    {
+        $days = DB::table('task_activity_days')->where('user_id', $user->id)
+            ->where('activity', $task['activity'])
+            ->when(filled($task['starts_at'] ?? null), fn ($query) => $query->where('created_at', '>=', $task['starts_at']))
+            ->when(filled($task['ends_at'] ?? null), fn ($query) => $query->where('created_at', '<=', $task['ends_at']))
+            ->orderBy('day')->pluck('day');
+        if ($task['activity'] !== 'login_streak') {
+            return $days->isNotEmpty() ? 1 : 0;
+        }
+        $best = 0;
+        $streak = 0;
+        $previous = null;
+        foreach ($days as $day) {
+            $date = \Illuminate\Support\Carbon::parse($day);
+            $streak = $previous && $previous->copy()->addDay()->equalTo($date) ? $streak + 1 : 1;
+            $best = max($best, $streak);
+            $previous = $date;
+        }
+        return $best;
+    }
+
     public function tasks(): array
     {
         return collect(ReputationSetting::current()->tasks ?? [])
@@ -27,7 +91,15 @@ class CommunityTaskService
             return 0;
         }
         return match ($task['activity'] ?? 'comments') {
-            'event' => (! filled($task['ends_at'] ?? null) || now()->lte($task['ends_at'])) && in_array((string) $user->id, array_map('strval', $task['approved_users'] ?? []), true) ? 1 : 0,
+            'follow_members' => $user->following()
+                ->where('users.id', '!=', $user->id)
+                ->when(filled($task['starts_at'] ?? null), fn ($query) => $query->where('user_follows.created_at', '>=', $task['starts_at']))
+                ->when(filled($task['ends_at'] ?? null), fn ($query) => $query->where('user_follows.created_at', '<=', $task['ends_at']))->count(),
+            'registration' => $user->created_at
+                && (! filled($task['starts_at'] ?? null) || $user->created_at->gte($task['starts_at']))
+                && (! filled($task['ends_at'] ?? null) || $user->created_at->lte($task['ends_at'])) ? 1 : 0,
+            'login_streak', 'profile_complete', 'two_factor', 'avatar_added', 'avatar_changed' => $this->activityProgress($user, $task),
+            'event', 'social_follow' => (! filled($task['ends_at'] ?? null) || now()->lte($task['ends_at'])) && in_array((string) $user->id, array_map('strval', $task['approved_users'] ?? []), true) ? 1 : 0,
             'posts' => Post::query()->where('user_id', $user->id)->published()
                 ->whereNull('advertisement_id')
                 ->when(filled($task['starts_at'] ?? null), fn ($query) => $query->where('created_at', '>=', $task['starts_at']))

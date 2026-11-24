@@ -48,19 +48,18 @@ class ReputationManagement extends Page
                             Repeater::make('tasks')->label('Topluluk görevleri')->schema([
                                 Hidden::make('key'),
                                 TextInput::make('title')->label('Görev adı')->required()->maxLength(120),
-                                Select::make('activity')->label('Yapılacak etkinlik')->options([
-                                    'comments' => 'Yorum yap',
-                                    'posts' => 'Yazı yayınla',
-                                    'event' => 'Etkinlik / yönetici onaylı görev',
-                                ])->required()->default('comments')->live(),
+                                Select::make('activity')->label('Yapılacak etkinlik')->options(\App\Services\CommunityTaskService::ACTIVITIES)->required()->default('comments')->live(),
+                                TextInput::make('action_url')->label('Sosyal medya hesabı / etkinlik bağlantısı')->url()->maxLength(2048)->nullable()
+                                    ->rules(['nullable', 'url:http,https'])
+                                    ->helperText('Sosyal takip harici platformda doğrulanır; onaylanan üyeleri aşağıdan seçin.'),
                                 DateTimePicker::make('starts_at')->label('Başlangıç')->required()->default(now()),
                                 DateTimePicker::make('ends_at')->label('Bitiş (isteğe bağlı)')->after('starts_at')->nullable(),
                                 Select::make('approved_users')->label('Etkinliği / görevi tamamladığı onaylanan üyeler')->multiple()->searchable()
                                     ->getSearchResultsUsing(fn (string $search): array => User::query()->where('username', 'like', '%'.$search.'%')->limit(30)->pluck('username', 'id')->all())
                                     ->getOptionLabelsUsing(fn (array $values): array => User::query()->whereIn('id', $values)->pluck('username', 'id')->all())
-                                    ->visible(fn (\Filament\Schemas\Components\Utilities\Get $get): bool => $get('activity') === 'event')
+                                    ->visible(fn (\Filament\Schemas\Components\Utilities\Get $get): bool => in_array($get('activity'), ['event', 'social_follow'], true))
                                     ->helperText('Etkinlik türünde yalnızca bu üyeler ödül alır. Gerekli adet 1 olarak uygulanır.')->columnSpanFull(),
-                                TextInput::make('target_count')->label('Gerekli adet')->numeric()->minValue(1)->required()->default(3),
+                                TextInput::make('target_count')->label('Gerekli adet')->numeric()->minValue(1)->required()->default(3)->helperText('Takipte farklı üye sayısı, girişte ardışık gün sayısıdır. Profil, güvenlik ve onay görevlerinde hedef 1 olur.'),
                                 TextInput::make('reward_points')->label('Görev puanı')->numeric()->minValue(0)->required()->default(10),
                                 Select::make('reward_badge')->label('Görev tamamlanınca verilecek rozet')
                                     ->options(fn (): array => collect($this->data['reward_badges'] ?? [])
@@ -114,14 +113,14 @@ class ReputationManagement extends Page
             'tasks' => collect($data['tasks'] ?? [])->map(function (array $task): array {
                 $task['key'] = filled($task['key'] ?? null) ? $task['key'] : (string) Str::uuid();
                 $task['starts_at'] = filled($task['starts_at'] ?? null) ? $task['starts_at'] : now()->toDateTimeString();
-                $task['target_count'] = ($task['activity'] ?? '') === 'event' ? 1 : max(1, (int) ($task['target_count'] ?? 1));
+                $task['target_count'] = in_array($task['activity'] ?? '', ['event', 'social_follow', 'registration', 'profile_complete', 'two_factor', 'avatar_added', 'avatar_changed'], true) ? 1 : max(1, (int) ($task['target_count'] ?? 1));
                 $task['reward_points'] = max(0, (int) ($task['reward_points'] ?? 0));
                 return $task;
             })->values()->all(),
         ]);
 
         $this->form->fill(ReputationSetting::current()->toArray());
-        $approvedIds = collect($data['tasks'] ?? [])->where('activity', 'event')->pluck('approved_users')->flatten()->unique();
+        $approvedIds = collect($data['tasks'] ?? [])->whereIn('activity', ['event', 'social_follow'])->pluck('approved_users')->flatten()->unique();
         User::query()->whereIn('id', $approvedIds)->each(function (User $user): void {
             app(\App\Services\CommunityTaskService::class)->completeAvailableTasks($user);
         });
