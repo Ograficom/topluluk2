@@ -5937,8 +5937,23 @@ body.is-messenger-conversation .pm-dialog__composer .pm-composer__send{
 
 /* Mobile bottom navigation: place the write action inside the bar. */
 @media screen and (max-width: 720px) {
+    /* Keep the original header composer action accessible on mobile. */
     .header__end .header__write {
-        display: none !important;
+        display: inline-flex !important;
+        align-items: center;
+        justify-content: center;
+        flex: 0 0 32px;
+        width: 32px;
+        height: 32px;
+        min-width: 32px;
+        padding: 0;
+        border-radius: 50%;
+    }
+    .header__end .header__write span {
+        display: none;
+    }
+    .header__end:has(.header__write) {
+        gap: 4px;
     }
 
     .mobmenu__content:has(.mobmenu__link--write):has(.mobmenu__link--profile) {
