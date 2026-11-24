@@ -12,6 +12,64 @@
     @endif
 
     <div class="addpost post-create-simple post-create-modal-page">
+        <style>
+            .post-create-modal-page > #post-create-form { position: relative !important; }
+            .post-create-modal-page > #post-create-form .composer-block-add {
+                position: absolute !important; top: 0 !important; left: -43px !important;
+                display: grid !important; place-items: center !important; visibility: visible !important;
+                opacity: 1 !important; z-index: 12 !important; width: 30px !important; height: 30px !important;
+                margin: 0 !important; padding: 0 !important; border: 0 !important;
+                border-radius: 50% !important; background: #f0f1f3 !important; color: #253247 !important;
+                box-shadow: 0 2px 7px rgba(15,23,42,.15) !important; cursor: pointer !important;
+            }
+            .post-create-modal-page > #post-create-form .composer-block-add svg {
+                display: block !important; width: 18px !important; height: 18px !important;
+                fill: none !important; stroke: currentColor !important; stroke-width: 1.8 !important;
+                stroke-linecap: round !important;
+            }
+            .post-create-modal-page > #post-create-form .composer-block-add[aria-expanded="true"] {
+                background: #e1e8f3 !important; color: #0d6efd !important;
+            }
+            .post-create-modal-page > #post-create-form #post-editorjs .ce-toolbar__plus {
+                display: none !important;
+            }
+            .post-create-modal-page > #post-create-form > .composer-block-picker[hidden],
+            .post-create-modal-page > #post-create-form .composer-block-picker [hidden] {
+                display: none !important;
+            }
+            .post-create-modal-page > #post-create-form > .composer-block-picker:not([hidden]) {
+                position: absolute !important; inset: auto !important; z-index: 100 !important;
+                display: flex !important; flex-direction: column !important; gap: 2px !important;
+                box-sizing: border-box !important; width: 188px !important; max-width: calc(100% - 24px) !important;
+                max-height: 180px !important; overflow: auto !important;
+                margin: 0 !important; padding: 6px !important; border: 1px solid #e2e8f0 !important;
+                border-radius: 12px !important; background: #fff !important; color: #253247 !important;
+                box-shadow: 0 8px 24px rgba(15,23,42,.14) !important;
+            }
+            .post-create-modal-page > #post-create-form .composer-block-picker button:not([hidden]) {
+                display: flex !important; align-items: center !important; gap: 9px !important;
+                flex: 0 0 auto !important; width: 100% !important; min-height: 32px !important;
+                margin: 0 !important; padding: 6px 9px !important; border: 0 !important;
+                border-radius: 6px !important; background: transparent !important;
+                color: inherit !important; font-size: 13px !important; text-align: left !important;
+                cursor: pointer !important;
+            }
+            .post-create-modal-page > #post-create-form .composer-block-picker button:hover,
+            .post-create-modal-page > #post-create-form .composer-block-picker button:focus-visible {
+                background: #f1f5f9 !important;
+            }
+            .post-create-modal-page > #post-create-form .composer-block-picker [data-block-picker-status] {
+                padding: 6px !important; font-size: 12px !important; line-height: 1.4 !important;
+            }
+            @media (max-width: 640px) {
+                .post-create-modal-page > #post-create-form > .post-composer-editor-section {
+                    padding-left: 54px !important;
+                }
+                .post-create-modal-page > #post-create-form .composer-block-add {
+                    left: -39px !important;
+                }
+            }
+        </style>
         <form id="post-create-form" class="addpost__form card card-body post-create-modal" action="{{ isset($post) ? route('posts.update', $post) : route('posts.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
             @if (isset($post))
@@ -71,6 +129,9 @@
                     <span class="post-create-simple__editor-status" data-editor-status role="status" aria-live="polite">Hazırlanıyor…</span>
                 </div>
                 <div class="post-create-simple__writing addpost__editor">
+                    <button type="button" class="composer-block-add" data-block-picker-toggle aria-label="İçerik bloğu ekle" aria-expanded="false" aria-controls="composer-block-picker" title="Blok ekle">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+                    </button>
                     <div id="post-editorjs" class="post-editorjs post-create-simple__editor" aria-label="Yazı içeriği" data-placeholder="En iyi yazını burada yaz"></div>
                     <div class="post-composer-editor-tip">Blok eklemek için sol taraftaki + simgesini kullan.</div>
                 </div>
@@ -163,6 +224,14 @@
                 </div>
             </details>
 
+            <div id="composer-block-picker" class="composer-block-picker" data-block-picker hidden role="group" aria-label="İçerik blokları">
+                <span data-block-picker-status role="status">Editör yükleniyor…</span>
+                <button type="button" data-insert-block="paragraph" hidden>¶　Metin</button>
+                <button type="button" data-insert-block="header" hidden>H　Başlık</button>
+                <button type="button" data-insert-block="list" hidden>☰　Liste</button>
+                <button type="button" data-insert-block="quote" hidden>❝　Alıntı</button>
+            </div>
+
             <footer class="post-create-simple__footer addpost__footer">
                 <a href="{{ route('posts.index') }}">Vazgeç</a>
                 <button class="btn btn-primary post-composer-publish" type="submit">{{ isset($post) ? 'Kaydet' : 'Yayınla' }}</button>
@@ -227,34 +296,7 @@
     </div>
 
 
-<style>
-.post-create-modal #post-editorjs .ce-toolbar__actions {
-    display: flex !important;
-    position: static !important;
-    visibility: visible !important;
-    opacity: 1 !important;
-    transform: none !important;
-}
-.post-create-modal #post-editorjs .ce-toolbar__actions .ce-toolbar__plus {
-    display: grid !important;
-    visibility: visible !important;
-    opacity: 1 !important;
-    cursor: pointer;
-}
-.post-create-modal #post-editorjs .ce-toolbar__actions .ce-toolbar__plus svg,
-.post-create-modal #post-editorjs .ce-toolbar__actions .ce-toolbar__plus svg * {
-    display: revert !important;
-}
-.post-create-modal #post-editorjs .ce-toolbar__settings-btn {
-    display: none !important;
-}
-.post-create-modal #post-editorjs .ce-toolbar {
-    z-index: 10 !important;
-}
-.post-create-modal #post-editorjs .ce-popover {
-    z-index: 30 !important;
-}
-</style>
+
 
 <style id="post-tags-modal-style">
 .post-tags-modal[hidden] { display:none !important; }
@@ -572,6 +614,52 @@
     if (!holder || !input || !form || holder.dataset.editorStarted === '1') return;
     holder.dataset.editorStarted = '1';
 
+    const blockToggle = form.querySelector('[data-block-picker-toggle]');
+    const blockPicker = form.querySelector('[data-block-picker]');
+    const blockStatus = blockPicker?.querySelector('[data-block-picker-status]');
+    const blockOptions = Array.from(blockPicker?.querySelectorAll('[data-insert-block]') || []);
+    let activeEditor = null;
+    let insertionIndex = -1;
+
+    const closeBlockPicker = (restoreFocus = false) => {
+      if (blockPicker) blockPicker.hidden = true;
+      blockToggle?.setAttribute('aria-expanded', 'false');
+      if (restoreFocus) blockToggle?.focus();
+    };
+    blockToggle?.addEventListener('click', () => {
+      if (!blockPicker) return;
+      if (!blockPicker.hidden) { closeBlockPicker(); return; }
+      insertionIndex = activeEditor?.blocks.getCurrentBlockIndex() ?? -1;
+      blockPicker.hidden = false;
+      blockToggle.setAttribute('aria-expanded', 'true');
+      const formRect = form.getBoundingClientRect();
+      const toggleRect = blockToggle.getBoundingClientRect();
+      const left = Math.max(12, Math.min(toggleRect.right - formRect.left + 7, form.clientWidth - blockPicker.offsetWidth - 12));
+      const top = Math.max(12, Math.min(toggleRect.top - formRect.top, form.clientHeight - blockPicker.offsetHeight - 12));
+      blockPicker.style.setProperty('left', left + 'px', 'important');
+      blockPicker.style.setProperty('top', top + 'px', 'important');
+    });
+    form.addEventListener('click', event => {
+      if (!event.target.closest('[data-block-picker], [data-block-picker-toggle]')) closeBlockPicker();
+    });
+    form.addEventListener('keydown', event => {
+      if (event.key === 'Escape' && blockPicker && !blockPicker.hidden) {
+        event.preventDefault();
+        event.stopPropagation();
+        closeBlockPicker(true);
+      }
+    });
+    blockOptions.forEach(option => option.addEventListener('click', () => {
+      if (!activeEditor) return;
+      const type = option.dataset.insertBlock;
+      const count = activeEditor.blocks.getBlocksCount();
+      const index = insertionIndex >= 0 && insertionIndex < count ? insertionIndex + 1 : count;
+      const data = type === 'header' ? { text: '', level: 2 } : {};
+      closeBlockPicker();
+      activeEditor.blocks.insert(type, data, {}, index, true);
+      activeEditor.caret.setToBlock(index, 'start');
+    }));
+
     const setStatus = message => { if (status) status.textContent = message; };
     const loadScript = (url, timeout = 12000) => new Promise((resolve, reject) => {
       const script = document.createElement('script');
@@ -669,10 +757,12 @@
 
         await editor.isReady;
         holder.classList.add('is-ready');
-        // Show the native block inserter as soon as the composer opens.
-        if (!input.value.trim() && editor.blocks.getBlocksCount() > 0 && !form.contains(document.activeElement)) {
-          editor.caret.setToFirstBlock('start');
-        }
+        activeEditor = editor;
+        if (blockStatus) blockStatus.hidden = true;
+        blockOptions.forEach(option => {
+          const type = option.dataset.insertBlock;
+          option.hidden = type !== 'paragraph' && !tools[type];
+        });
         setStatus('Yazmaya başlayabilirsin');
 
         form.addEventListener('submit', async event => {
@@ -701,6 +791,7 @@
         });
       } catch (error) {
         console.error('Editor.js başlatma hatası:', error);
+        if (blockStatus) { blockStatus.hidden = false; blockStatus.textContent = 'Editör yüklenemedi. Sayfayı yenile.'; }
         setStatus('Editör yüklenemedi — bağlantıyı kontrol edip sayfayı yenile.');
         holder.innerHTML = '<div class="post-create-simple__editor-error">Editör yüklenemedi. İnternet bağlantısını kontrol edip sayfayı yenile.</div>';
       }
