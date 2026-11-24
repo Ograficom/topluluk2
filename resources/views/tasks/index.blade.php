@@ -4,33 +4,16 @@
 @section('description', 'OgraFi topluluk görevlerini tamamla, puan kazan ve liderlik tablosunda yüksel.')
 
 @push('head')
-    <link rel="stylesheet" href="{{ asset('assets/css/tasks.css') }}?v=20261124-tasks-2">
+    <link rel="stylesheet" href="{{ asset('assets/css/tasks.css') }}?v=20261124-tasks-single-column">
 @endpush
 
 @section('content')
 <article class="tasks-page">
-    <header class="tasks-page__hero card card-body">
-        <div>
-
-            <h1 class="h3">Görevler ve liderlik</h1>
-            <p class="color-gray">Görevleri tamamla, puan kazan ve topluluğun en aktif üyeleri arasına katıl.</p>
-        </div>
-        @auth
-            <div class="tasks-page__score">
-                <span>Toplam puanın</span>
-                <strong>{{ number_format($myScore) }}</strong>
-                <small>{{ $myBadge['name'] ?? 'Yeni Üye' }}</small>
-            </div>
-        @else
-            <a href="{{ route('login') }}" class="btn btn-primary btn-md">Giriş yap</a>
-        @endauth
-    </header>
-
     <div class="tasks-page__grid">
         <section class="card card-body tasks-panel">
             <header class="tasks-panel__header">
                 <div>
-                    <h2 class="h5">Aktif görevler</h2>
+                    <h1 class="h3">Aktif görevler</h1>
                     <p class="small color-gray">Tamamladığın görevlerin ödülleri otomatik hesabına eklenir.</p>
                 </div>
                 <span class="tasks-count">{{ $tasks->count() }}</span>
@@ -75,7 +58,14 @@
                     <div class="task-card__footer">
                         <span>{{ $item['progress'] }} / {{ $item['target'] }} {{ match ($task['activity'] ?? 'comments') { 'posts' => 'yazı', 'comments' => 'yorum', 'follow_members' => 'üye', 'login_streak' => 'gün', default => 'tamamlanma' } }}</span>
                         @if ($badge)
-                            <span class="task-card__badge">Rozet: {{ $badge['name'] }}</span>
+                            <span class="task-card__badge">
+                                @if (filled($badge['image'] ?? null))
+                                    <img src="{{ \Illuminate\Support\Facades\Storage::disk('public')->url($badge['image']) }}" alt="" width="32" height="32" loading="lazy">
+                                @else
+                                    <x-repost-icon :name="$badge['icon'] ?? 'trophy'" size="24" />
+                                @endif
+                                <span>Kazanılacak rozet <strong>{{ $badge['name'] }}</strong></span>
+                            </span>
                         @endif
                     </div>
                     @if (filled($task['action_url'] ?? null) && in_array(parse_url($task['action_url'], PHP_URL_SCHEME), ['http', 'https'], true))
