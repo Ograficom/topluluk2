@@ -278,6 +278,30 @@
                 border-radius: 12px !important;
                 background: #fff !important;
             }
+            /* Keep the native conversion submenu visible outside the scrollable editor. */
+            .addpost.post-create-simple.post-create-modal-page > #post-create-form:has(.ce-inline-toolbar .ce-popover--nested.ce-popover--opened) {
+                overflow: visible !important;
+            }
+            .addpost.post-create-simple.post-create-modal-page > #post-create-form > .post-composer-editor-section:has(.ce-inline-toolbar .ce-popover--nested.ce-popover--opened) {
+                overflow: visible !important;
+                z-index: 40 !important;
+            }
+            .post-create-modal-page > #post-create-form #post-editorjs .ce-inline-toolbar .ce-popover--nested.ce-popover--opened > .ce-popover__container {
+                width: min(220px, calc(100vw - 48px)) !important;
+                min-width: 0 !important;
+                height: auto !important;
+                max-height: min(240px, 40dvh) !important;
+                padding: 6px !important;
+                box-shadow: 0 8px 24px rgba(15,23,42,.12) !important;
+            }
+            .post-create-modal-page > #post-create-form #post-editorjs .ce-inline-toolbar .ce-popover--nested .ce-popover__items {
+                max-height: none !important;
+                overflow: auto !important;
+            }
+            .post-create-modal-page > #post-create-form #post-editorjs .ce-inline-toolbar .ce-popover--nested .ce-popover-item:not(.ce-popover-item--hidden) {
+                min-height: 32px !important;
+                border-radius: 7px !important;
+            }
         </style>
         <form id="post-create-form" class="addpost__form card card-body post-create-modal" action="{{ isset($post) ? route('posts.update', $post) : route('posts.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
@@ -438,6 +462,7 @@
                 <button type="button" data-insert-block="paragraph" hidden>¶　Metin</button>
                 <button type="button" data-insert-block="header" hidden>H　Başlık</button>
                 <button type="button" data-insert-block="list" hidden>☰　Liste</button>
+                <button type="button" data-insert-block="list" data-list-style="checklist" hidden>☑　Onay kutulu liste</button>
                 <button type="button" data-insert-block="quote" hidden>❝　Alıntı</button>
                 <button type="button" data-insert-block="code" hidden>&lt;/&gt;　Kod</button>
                 <button type="button" data-insert-block="delimiter" hidden>···　Ayırıcı</button>
@@ -869,7 +894,7 @@
       const type = option.dataset.insertBlock;
       const count = activeEditor.blocks.getBlocksCount();
       const index = insertionIndex >= 0 && insertionIndex < count ? insertionIndex + 1 : count;
-      const data = type === 'header' ? { text: '', level: 2 } : {};
+      const data = type === 'header' ? { text: '', level: 2 } : type === 'list' && option.dataset.listStyle === 'checklist' ? { style: 'checklist', meta: {}, items: [] } : {};
       closeBlockPicker();
       const inserted = activeEditor.blocks.insert(type, data, {}, index, true);
       if (type === 'embed') inserted?.holder?.querySelector('input')?.focus();
@@ -998,7 +1023,20 @@
           logLevel: 'ERROR',
           data: initial,
           tools,
-          inlineToolbar: ['link', 'bold', 'italic', ...(tools.inlineCode ? ['inlineCode'] : []), ...(tools.marker ? ['marker'] : [])],
+          inlineToolbar: ['convertTo', 'link', 'bold', 'italic', ...(tools.inlineCode ? ['inlineCode'] : []), ...(tools.marker ? ['marker'] : [])],
+          i18n: {
+            messages: {
+              ui: {
+                popover: { Filter: 'Filtrele', 'Nothing found': 'Sonuç bulunamadı' }
+              },
+              toolNames: {
+                Text: 'Metin', Heading: 'Başlık', List: 'Liste', Quote: 'Alıntı',
+                'Ordered List': 'Numaralı liste', 'Unordered List': 'Madde işaretli liste',
+                Checklist: 'Onay kutulu liste', Link: 'Bağlantı', Bold: 'Kalın', Italic: 'İtalik',
+                'Inline Code': 'Satır içi kod', Marker: 'Vurgula'
+              }
+            }
+          },
           onReady: () => {
             holder.classList.add('is-ready');
             setStatus('Editör hazır');
