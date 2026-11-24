@@ -1011,9 +1011,9 @@
             try {
                 const subscription = await existingSubscription();
                 if (subscription) {
-                    showStatus('Bu cihaz push bildirimleri için bağlı.');
-                    button.textContent = 'Bu cihaz bağlı';
-                    button.disabled = true;
+                    showStatus('Bu cihazda tarayıcı izni ve abonelik var. Sunucu kaydını yenilemek için yeniden bağlanabilirsin.');
+                    button.textContent = 'Bu cihazı yeniden bağla';
+                    button.disabled = false;
                     return;
                 }
             } catch (error) {}
@@ -1045,10 +1045,19 @@
             await navigator.serviceWorker.ready;
 
             let subscription = await registration.pushManager.getSubscription();
+            const expectedKey = decodeVapidKey(publicKey);
+            const currentKey = subscription?.options?.applicationServerKey;
+            if (subscription && currentKey) {
+                const previous = new Uint8Array(currentKey);
+                if (previous.length !== expectedKey.length || previous.some((byte, index) => byte !== expectedKey[index])) {
+                    await subscription.unsubscribe();
+                    subscription = null;
+                }
+            }
             if (!subscription) {
                 subscription = await registration.pushManager.subscribe({
                     userVisibleOnly: true,
-                    applicationServerKey: decodeVapidKey(publicKey)
+                    applicationServerKey: expectedKey
                 });
             }
 
@@ -1065,12 +1074,13 @@
             });
 
             if (!response.ok) {
-                throw new Error('Push aboneliği sunucuya kaydedilemedi.');
+                const error = await response.json().catch(() => ({}));
+                throw new Error(error.message || 'Push aboneliği sunucuya kaydedilemedi.');
             }
 
-            showStatus('Bu cihaz arka plan push bildirimlerine bağlandı.');
-            button.textContent = 'Bu cihaz bağlı';
-            button.disabled = true;
+            showStatus('Cihaz aboneliği sunucuya kaydedildi. Almak istediğin Push bildirim türlerini seçip Kaydet düğmesine bas.');
+            button.textContent = 'Bu cihazı yeniden bağla';
+            button.disabled = false;
         } catch (error) {
             showStatus(error.message || 'Push kurulamadı. HTTPS, VAPID anahtarları ve tarayıcı izinlerini kontrol et.');
             button.disabled = false;

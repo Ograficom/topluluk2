@@ -72,7 +72,7 @@ class WebPushNotificationService
 
             foreach ($webPush->flush() as $report) {
                 if ($report->isSubscriptionExpired()) {
-                    $endpoint = $report->getEndpoint();
+                    $endpoint = (string) $report->getEndpoint();
                     PushSubscription::query()
                         ->where('user_id', $recipient->id)
                         ->where('endpoint', $endpoint)

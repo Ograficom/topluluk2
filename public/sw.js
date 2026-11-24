@@ -1,11 +1,11 @@
-const CACHE_VERSION = 'ografi-pwa-v1';
+const CACHE_VERSION = 'ografi-pwa-v2';
 const STATIC_CACHE = CACHE_VERSION + '-static';
 const OFFLINE_URL = '/offline';
 
 self.addEventListener('install', event => {
     event.waitUntil((async () => {
         const cache = await caches.open(STATIC_CACHE);
-        await cache.addAll([OFFLINE_URL, '/assets/img/meta/pwa-icon.svg']);
+        await Promise.allSettled([OFFLINE_URL, '/assets/img/meta/pwa-icon.svg'].map(url => cache.add(url)));
         await self.skipWaiting();
     })());
 });
@@ -64,7 +64,8 @@ self.addEventListener('push', event => {
 
 self.addEventListener('notificationclick', event => {
     event.notification.close();
-    const target = new URL(event.notification.data?.url || '/', self.location.origin).href;
+    const destination = new URL(event.notification.data?.url || '/', self.location.origin);
+    const target = destination.origin === self.location.origin ? destination.href : self.location.origin + '/';
     event.waitUntil((async () => {
         const windows = await self.clients.matchAll({ type: 'window', includeUncontrolled: true });
         for (const client of windows) {
