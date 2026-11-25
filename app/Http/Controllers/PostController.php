@@ -122,6 +122,11 @@ class PostController extends Controller
 
     public function store(Request $request): RedirectResponse
     {
+        return $this->publishPost($request);
+    }
+
+    public function publishPost(Request $request, ?Post $quoteSource = null): RedirectResponse
+    {
         $validated = $request->validate([
             'title' => ['required', 'string', 'max:255'],
             'channel_id' => ['nullable', Rule::exists('channels', 'id')->where('is_active', true)],
@@ -166,6 +171,7 @@ class PostController extends Controller
         $isSpam = app(PostSpamFilter::class)->shouldFlag($validated['title'], $validated['excerpt'], $validated['body']);
         $post = Post::create([
             'user_id' => $request->user()->id,
+            'quoted_post_id' => $quoteSource?->id,
             'channel_id' => $validated['channel_id'] ?? null,
             'title' => $validated['title'],
             'slug' => $slug,
@@ -182,13 +188,15 @@ class PostController extends Controller
             'is_published' => ! $isSpam,
             'is_spam' => $isSpam,
             'published_at' => $isSpam ? null : now(),
-            'is_adult' => $request->boolean('is_adult'),
+            'is_adult' => $request->boolean('is_adult') || (bool) $quoteSource?->is_adult,
             'show_toc' => $request->boolean('show_toc'),
         ]);
         $this->syncTagRecords($post, $tags);
 
         if (! $isSpam) {
-            app(\App\Services\ReputationService::class)->award($request->user(), \App\Services\ReputationService::POST_PUBLISHED, 'post:'.$post->id.':published', 'Yazı yayınladı', Post::class, $post->id);
+            if (! $quoteSource) {
+                app(\App\Services\ReputationService::class)->award($request->user(), \App\Services\ReputationService::POST_PUBLISHED, 'post:'.$post->id.':published', 'Yazı yayınladı', Post::class, $post->id);
+            }
             $recipients = $request->user()->followers()->get();
 
             if ($post->channel_id) {
@@ -198,6 +206,14 @@ class PostController extends Controller
                 }
             }
 
+            if ($quoteSource?->user && ! $quoteSource->user->is($request->user())) {
+                UserNotificationService::send(
+                    $quoteSource->user, 'posts', 'Yazın yorumla yeniden paylaşıldı',
+                    $request->user()->displayName().' yazını yorumlayarak yeniden paylaştı.',
+                    route('posts.show', $post),
+                );
+                $recipients = $recipients->reject(fn ($recipient) => $recipient->is($quoteSource->user));
+            }
             $recipients->unique('id')->each(fn (\App\Models\User $recipient) => UserNotificationService::send(
                 $recipient,
                 'posts',

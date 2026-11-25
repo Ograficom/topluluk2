@@ -93,50 +93,22 @@ class PostInteractionController extends Controller
     public function quoteForm(Request $request, Post $post): \Illuminate\View\View
     {
         $this->ensureQuoteSource($request, $post);
-        return view('posts.create', ['quoteSource' => $post, 'user' => $request->user()]);
+        return view('posts.create', [
+            'quoteSource' => $post,
+            'user' => $request->user(),
+            'channels' => \App\Models\Channel::query()->active()->orderBy('name')->get(),
+        ]);
     }
 
     public function repost(Request $request, Post $post): RedirectResponse
     {
         $this->ensureQuoteSource($request, $post);
-        $validated = $request->validate([
-            'quote_comment' => ['required', 'string', 'max:5000'],
-        ], [
-            'quote_comment.required' => 'Yeniden paylaşmak için yorumunuzu yazın.',
-            'quote_comment.max' => 'Yorumunuz en fazla 5000 karakter olabilir.',
-        ]);
-        $comment = trim($validated['quote_comment']);
-        if ($comment === '') throw ValidationException::withMessages(['quote_comment' => 'Yorumunuzu yazın.']);
-        $title = 'Yeniden paylaşım';
-        $excerpt = \Illuminate\Support\Str::limit($comment, 500, '');
-        $body = json_encode(['blocks' => [
-            ['type' => 'paragraph', 'data' => ['text' => nl2br(e($comment), false)]],
-        ]], JSON_UNESCAPED_UNICODE | JSON_THROW_ON_ERROR);
-        $isSpam = app(\App\Services\PostSpamFilter::class)->shouldFlag($title, $excerpt, $comment);
-        $quote = DB::transaction(fn () => Post::create([
-            'user_id' => $request->user()->id,
-            'channel_id' => $post->channel?->is_active ? $post->channel_id : null,
-            'quoted_post_id' => $post->id,
-            'title' => $title,
-            'slug' => 'repost-'.\Illuminate\Support\Str::uuid(),
-            'excerpt' => $excerpt,
-            'body' => $body,
-            'is_adult' => $post->is_adult,
-            'is_spam' => $isSpam,
-            'is_published' => ! $isSpam,
-            'published_at' => $isSpam ? null : now(),
-        ]));
-        if ($isSpam) return redirect()->route('posts.index')->with('status', 'Yeniden paylaşımınız incelemeye alındı.');
 
-        if ($post->user && ! $post->user->is($request->user())) {
-            UserNotificationService::send(
-                $post->user, 'posts', 'Yazın yorumla yeniden paylaşıldı',
-                $request->user()->displayName().' yazını yorumlayarak yeniden paylaştı.',
-                route('posts.show', $quote),
-            );
+        try {
+            return app(PostController::class)->publishPost($request, $post);
+        } catch (ValidationException $exception) {
+            throw $exception->redirectTo(route('posts.reposts.create', $post));
         }
-
-        return redirect()->route('posts.show', $quote)->with('status', 'Yazı yorumunuzla yeniden paylaşıldı.');
     }
 
     public function comment(Request $request, Post $post): RedirectResponse

@@ -798,16 +798,35 @@ class RepostFeedTest extends TestCase
         $channel = Channel::create(['name' => 'Alıntı', 'slug' => 'alinti', 'is_active' => true]);
         $original = $this->createPost($channel, ['user_id' => $author->id, 'title' => 'Orijinal yazı']);
         $this->actingAs($viewer)->get(route('posts.reposts.create', $original))->assertOk()
-            ->assertSee('Orijinal yazı')->assertSee('name="quote_comment"', false)
+            ->assertSee('Orijinal yazı')
             ->assertSee('id="createPostModal"', false)
             ->assertSee('data-quote-composer', false)
-            ->assertDontSee('id="post-title"', false);
-        $this->post(route('posts.reposts.toggle', $original), ['quote_comment' => ''])->assertSessionHasErrors('quote_comment');
-        $this->post(route('posts.reposts.toggle', $original), ['quote_comment' => 'Benim değerlendirmem.'])->assertRedirect();
+            ->assertSee('id="post-title"', false)
+            ->assertSee('id="post-channel"', false)
+            ->assertSee('id="post-editorjs"', false)
+            ->assertSee('data-gallery-open', false)
+            ->assertSee('data-composer-tags-toggle', false)
+            ->assertSee('id="postSettingsBtn"', false);
+        $this->post(route('posts.reposts.toggle', $original), [])->assertSessionHasErrors(['title', 'body']);
+        $this->post(route('posts.reposts.toggle', $original), [
+            'title' => 'Alıntı üzerine düşünceler',
+            'body' => 'Benim değerlendirmem.',
+            'excerpt' => 'Benim değerlendirmem.',
+            'channel_id' => $channel->id,
+            'tags' => 'tarih',
+            'content_source' => 'https://example.com/',
+            'show_toc' => '1',
+            'video_url' => 'https://www.youtube.com/watch?v=example',
+        ])->assertRedirect();
         $quote = Post::query()->where('quoted_post_id', $original->id)->firstOrFail();
         $this->assertSame($viewer->id, $quote->user_id);
         $this->assertTrue($quote->is_published);
         $this->assertSame('Benim değerlendirmem.', $quote->excerpt);
+        $this->assertSame('Alıntı üzerine düşünceler', $quote->title);
+        $this->assertSame($channel->id, $quote->channel_id);
+        $this->assertSame('https://example.com/', $quote->content_source);
+        $this->assertTrue($quote->show_toc);
+        $this->assertSame('https://www.youtube.com/watch?v=example', $quote->video_url);
         $this->get(route('posts.show', $quote))->assertOk()->assertSee('Benim değerlendirmem.')->assertSee('Orijinal yazı');
         $this->get(route('posts.index'))->assertOk()->assertSee('Benim değerlendirmem.');
         $this->get(route('profiles.show', $viewer))->assertOk()->assertSee('Benim değerlendirmem.');

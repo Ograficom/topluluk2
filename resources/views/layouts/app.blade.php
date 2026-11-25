@@ -107,7 +107,7 @@
             || request()->filled('reply_to')
             || request()->routeIs(
                 'login', 'legacy.signin', 'register', 'legacy.signup', 'password.*',
-                'posts.create', 'posts.edit', 'channels.create', 'channels.edit',
+                'posts.create', 'posts.edit', 'posts.reposts.create', 'channels.create', 'channels.edit',
                 'settings.*', 'favorites.*', 'messenger.*', 'subscriptions.*',
                 'community.following', 'advertisements.*', 'verification.*'
             );
@@ -192,7 +192,7 @@
     </script>
     @vite('resources/js/app.js')
     <link rel="stylesheet" href="{{ asset('assets/css/post-edit-history.css') }}?v=5">
-    <link rel="stylesheet" href="{{ asset('assets/css/post-quote.css') }}?v=2">
+    <link rel="stylesheet" href="{{ asset('assets/css/post-quote.css') }}?v=3">
     @stack('head')
     @if (! request()->routeIs('cp.*'))
         <script type="application/ld+json">
@@ -739,7 +739,7 @@
         $channelPage = request()->routeIs('channels.show', 'legacy.channel');
     @endphp
     @php
-        $postCreatePage = request()->routeIs('posts.create', 'posts.edit');
+        $postCreatePage = request()->routeIs('posts.create', 'posts.edit', 'posts.reposts.create');
     @endphp
     @php
         $feedPage = request()->routeIs('posts.index');
