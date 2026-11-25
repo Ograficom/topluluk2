@@ -114,7 +114,8 @@
 #createPostBox .editor-inline-gallery {display:grid;gap:8px;margin:8px 0;min-width:0;}
 #createPostBox .editor-inline-gallery img {display:block;width:100%;max-height:280px;object-fit:contain;border-radius:10px;background:#f8fafc;}
 #createPostBox .editor-inline-gallery-note {font-size:12px;color:#64748b;margin:2px 0;}
-#createPostBox .editor-inline-gallery button {justify-self:start;border:0;border-radius:12px;padding:7px 12px;background:#edf4ff;color:#2878f0;font:inherit;font-size:12px;cursor:pointer;}
+#createPostBox .editor-inline-image-tile {position:relative;min-width:0;}
+#createPostBox .editor-inline-image-tile .post-gallery-remove {position:absolute;right:6px;top:6px;}
 #createPostBox .post-create-simple__existing-media {display:flex;flex-wrap:wrap;gap:8px;}
 #createPostBox [data-existing-image] {display:flex;align-items:center;}
 #createPostBox .post-existing-image-tile {position:relative;width:76px;height:76px;border-radius:9px;overflow:hidden;}
@@ -870,76 +871,93 @@
       });
     });
 
+    const fileKey = file => JSON.stringify([file.name, file.size, file.lastModified, file.type]);
     const gallerySources = () => [
-      ...Array.from(form.querySelectorAll('[name="remove_media[]"]:disabled')).map(field =>
-        field.closest('[data-existing-image]')?.querySelector('img')?.getAttribute('src')),
-      ...Array.from(form.querySelectorAll('[data-post-gallery-list] img')).map(image => image.getAttribute('src'))
-    ].filter(Boolean);
+      ...Array.from(form.querySelectorAll('[name="remove_media[]"]:disabled')).map(field => ({
+        path: field.value, src: field.closest('[data-existing-image]')?.querySelector('img')?.getAttribute('src'),
+        remove: field.closest('[data-existing-image]')?.querySelector('[data-existing-image-remove]')
+      })),
+      ...Array.from(form.querySelectorAll('[data-post-gallery-list] [data-gallery-file-key]')).map(item => ({
+        uploadKey: item.dataset.galleryFileKey, src: item.querySelector('img')?.getAttribute('src'),
+        remove: item.querySelector('button')
+      }))
+    ].filter(item => item.src);
+    const imageKey = data => typeof data?.path === 'string' ? 'path:' + data.path
+      : typeof data?.uploadKey === 'string' ? 'upload:' + data.uploadKey : '';
+    const blockData = source => source.path !== undefined ? { path: source.path } : { uploadKey: source.uploadKey };
+    let knownImages = new Set();
 
-    // The block stores placement only; actual images stay in the validated media[] upload.
-    // No temporary blob URLs or arbitrary external paths are persisted in Editor.js JSON.
-    class ComposerGalleryTool {
+    class ComposerImageTool {
       static get isReadOnlySupported() { return true; }
-      constructor({ readOnly }) { this.readOnly = readOnly; }
+      constructor({ data, readOnly }) { this.data = data || {}; this.readOnly = readOnly; }
       render() {
-        this.element = document.createElement('div');
-        this.element.className = 'editor-inline-gallery';
-        this.element.dataset.inlineGalleryPreview = '1';
-        this.refresh();
-        return this.element;
-      }
-      refresh() {
-        if (!this.element) return;
-        this.element.replaceChildren();
-        for (const src of gallerySources()) {
+        const element = document.createElement('div');
+        element.className = 'editor-inline-gallery';
+        element.dataset.inlineImageKey = imageKey(this.data);
+        const source = gallerySources().find(item => imageKey(item) === imageKey(this.data));
+        if (source) {
+          const tile = document.createElement('div');
+          tile.className = 'editor-inline-image-tile';
           const image = document.createElement('img');
-          image.src = src;
+          image.src = source.src;
           image.alt = 'Gönderi görseli';
-          this.element.append(image);
+          tile.append(image);
+          if (!this.readOnly) {
+            const button = document.createElement('button');
+            button.type = 'button';
+            button.className = 'post-gallery-remove';
+            button.textContent = '×';
+            button.setAttribute('aria-label', 'Görseli kaldır');
+            button.addEventListener('click', () => {
+              gallerySources().find(item => imageKey(item) === imageKey(this.data))?.remove?.click();
+            });
+            tile.append(button);
+          }
+          element.append(tile);
+        } else {
+          element.textContent = 'Görsel artık mevcut değil.';
         }
-        if (!this.readOnly) {
-          const note = document.createElement('p');
-          note.className = 'editor-inline-gallery-note';
-          note.textContent = 'Görseller yazının bu konumunda gösterilecek.';
-          const button = document.createElement('button');
-          button.type = 'button';
-          button.textContent = 'Görselleri düzenle';
-          button.addEventListener('click', () => form.querySelector('[data-gallery-open]')?.click());
-          this.element.append(note, button);
-        }
+        return element;
       }
-      save() { return {}; }
-      validate() { return true; }
+      save() { return this.data; }
+      validate(data) { return Boolean(imageKey(data)); }
     }
 
     const refreshInlineGallery = () => {
       if (!activeEditor || !form.isConnected) return;
-      const count = activeEditor.blocks.getBlocksCount();
-      let gallery = null;
-      for (let i = 0; i < count; i++) {
+      const sources = gallerySources();
+      const keys = new Set(sources.map(imageKey));
+      // Remove only the matching block when an attachment is removed.
+      for (let i = activeEditor.blocks.getBlocksCount() - 1; i >= 0; i--) {
         const block = activeEditor.blocks.getBlockByIndex(i);
-        if (block?.name === 'postGallery') { gallery = block; break; }
-      }
-      if (!gallery && gallerySources().length) {
-        const current = insertionIndex >= 0 && insertionIndex < count
-          ? activeEditor.blocks.getBlockByIndex(insertionIndex) : null;
-        const replaceEmpty = current?.name === 'paragraph' && current.isEmpty;
-        const index = replaceEmpty ? insertionIndex : current ? insertionIndex + 1 : count;
-        activeEditor.blocks.insert('postGallery', {}, {}, index, false, Boolean(replaceEmpty));
-      } else if (gallery) {
-        // Re-render just the previews, leaving the block ID and its position unchanged.
-        const preview = gallery.holder?.querySelector('[data-inline-gallery-preview]');
-        if (preview) {
-          preview.querySelectorAll('img').forEach(image => image.remove());
-          const first = preview.firstChild;
-          for (const src of gallerySources()) {
-            const image = document.createElement('img');
-            image.src = src;
-            image.alt = 'Gönderi görseli';
-            preview.insertBefore(image, first);
-          }
+        if (block?.name !== 'postImage') continue;
+        const key = block.holder?.querySelector('[data-inline-image-key]')?.dataset.inlineImageKey;
+        if (!keys.has(key)) {
+          activeEditor.blocks.delete(i);
+          if (insertionIndex >= i) insertionIndex--;
         }
       }
+      const added = sources.filter(source => !knownImages.has(imageKey(source)));
+      knownImages = keys;
+      if (!added.length) return;
+      const count = activeEditor.blocks.getBlocksCount();
+      const current = insertionIndex >= 0 && insertionIndex < count
+        ? activeEditor.blocks.getBlockByIndex(insertionIndex) : null;
+      const replaceEmpty = current?.name === 'paragraph' && current.isEmpty;
+      const index = replaceEmpty ? insertionIndex : current ? insertionIndex + 1 : count;
+      added.forEach((source, offset) => {
+        activeEditor.blocks.insert('postImage', blockData(source), {}, index + offset, false, offset === 0 && Boolean(replaceEmpty));
+      });
+      const next = index + added.length;
+      if (next === activeEditor.blocks.getBlocksCount() || activeEditor.blocks.getBlockByIndex(next)?.name !== 'paragraph') {
+        activeEditor.blocks.insert('paragraph', {}, {}, next, false);
+      }
+      insertionIndex = next;
+      requestAnimationFrame(() => {
+        if (activeEditor && form.isConnected && !form.closest('.is-gallery-open')) {
+          activeEditor.caret.setToBlock(next, 'start');
+        }
+      });
     };
     form.addEventListener('ografi:gallery-changed', refreshInlineGallery);
     form.querySelector('[data-gallery-open]')?.addEventListener('pointerdown', () => {
@@ -1096,7 +1114,7 @@
         if (available.Delimiter) tools.delimiter = available.Delimiter;
         if (available.Table) tools.table = { class: available.Table, inlineToolbar: true, config: { rows: 2, cols: 2 } };
         tools.embed = ComposerEmbedTool;
-        tools.postGallery = ComposerGalleryTool;
+        tools.postImage = ComposerImageTool;
         if (available.InlineCode) tools.inlineCode = available.InlineCode;
         if (available.Marker) tools.marker = available.Marker;
 
@@ -1111,16 +1129,30 @@
             initial = { blocks: plainTextBlocks(input.value) };
           }
         }
+        // Upgrade the old grouped gallery to one independent block per attached image.
+        const sources = gallerySources();
+        const availableKeys = new Set(sources.map(imageKey));
+        const placed = new Set(initial.blocks.filter(block => block?.type === 'postImage').map(block => imageKey(block.data)));
+        const unplaced = sources.filter(source => !placed.has(imageKey(source)));
+        let migrated = false;
+        initial.blocks = initial.blocks.flatMap(block => {
+          if (block?.type === 'postImage') return availableKeys.has(imageKey(block.data)) ? [block] : [];
+          if (block?.type !== 'postGallery') return [block];
+          if (migrated) return [];
+          migrated = true;
+          return unplaced.map(source => ({ type: 'postImage', data: blockData(source) }));
+        });
+        if (!migrated && unplaced.length) {
+          const first = initial.blocks.findIndex(block => block.type === 'paragraph');
+          initial.blocks.splice(first < 0 ? initial.blocks.length : first + 1, 0,
+            ...unplaced.map(source => ({ type: 'postImage', data: blockData(source) })));
+        }
+        knownImages = availableKeys;
         // Never silently discard existing blocks when a required tool is unavailable.
         const unsupported = initial.blocks.filter(block => !block || (block.type !== 'paragraph' && !tools[block.type]));
         if (unsupported.length) throw new Error('Mevcut yazı için gerekli içerik araçları yüklenemedi.');
         initial = { ...initial, blocks: initial.blocks.filter(block => block.type !== 'paragraph' ||
           /[^\s\u00a0\u200b]/.test(new DOMParser().parseFromString(String(block.data?.text || ''), 'text/html').body.textContent || '')) };
-
-        if (gallerySources().length && !initial.blocks.some(block => block.type === 'postGallery')) {
-          const firstParagraph = initial.blocks.findIndex(block => block.type === 'paragraph');
-          initial.blocks.splice(firstParagraph < 0 ? initial.blocks.length : firstParagraph + 1, 0, { type: 'postGallery', data: {} });
-        }
 
         const editor = new Editor({
           holder,
@@ -1172,16 +1204,25 @@
           if (!beginSubmit()) return;
           try {
             const savedData = await editor.save();
-            // A single movable gallery block controls the placement of all attached images.
-            // Removing attachments with X also removes their references from the saved gallery.
-            let gallerySeen = false;
+            const sources = gallerySources();
+            const availableKeys = new Set(sources.map(imageKey));
+            const seen = new Set();
             savedData.blocks = (savedData.blocks || []).filter(block => {
-              if (block.type !== 'postGallery') return true;
-              if (gallerySeen || !gallerySources().length) return false;
-              gallerySeen = true;
+              if (block.type !== 'postImage') return true;
+              const key = imageKey(block.data);
+              if (!availableKeys.has(key) || seen.has(key)) return false;
+              seen.add(key);
               return true;
             });
-            if (gallerySources().length && !gallerySeen) savedData.blocks.push({ type: 'postGallery', data: {} });
+            // The editor order is authoritative, including native block deletion.
+            const fileInput = form.querySelector('[data-post-gallery-input]');
+            const files = Array.from(fileInput?.files || []).filter(file => seen.has('upload:' + fileKey(file)));
+            const indices = new Map(files.map((file, index) => [fileKey(file), index]));
+            for (const block of savedData.blocks) {
+              if (block.type === 'postImage' && typeof block.data.uploadKey === 'string') {
+                block.data = { uploadIndex: indices.get(block.data.uploadKey) };
+              }
+            }
             if (!savedData.blocks.length) {
               setStatus('Lütfen gönderi içeriğini yazın.', true);
               resetSubmit();
@@ -1193,6 +1234,14 @@
               resetSubmit();
               return;
             }
+            if (fileInput && files.length !== fileInput.files.length) {
+              const transfer = new DataTransfer();
+              files.forEach(file => transfer.items.add(file));
+              fileInput.files = transfer.files;
+            }
+            form.querySelectorAll('[name="remove_media[]"]').forEach(field => {
+              field.disabled = seen.has('path:' + field.value);
+            });
             input.value = body;
             const excerptField = form.querySelector('#post-excerpt');
             if (excerptField) excerptField.value = makeExcerpt(savedData) || form.querySelector('#post-title')?.value || 'Yeni yayın';
@@ -1490,6 +1539,7 @@
             attachedFiles().forEach(file => {
                 const item = document.createElement('div');
                 item.className = 'post-composer-gallery-item';
+                item.dataset.galleryFileKey = fileKey(file);
                 const image = document.createElement('img');
                 image.src = previewUrl(file);
                 image.alt = file.name;
@@ -1552,7 +1602,9 @@
             galleryPicker.value = '';
         });
         galleryApply?.addEventListener('click', () => {
-            if (setAttachedFiles(stagedGallery.filter(entry => entry.selected).map(entry => entry.file))) closeGallery();
+            if (setAttachedFiles(stagedGallery.filter(entry => entry.selected).map(entry => entry.file))) {
+                closeGallery();
+            }
         });
         galleryModal?.addEventListener('click', event => { if (event.target === galleryModal) closeGallery(); });
         document.addEventListener('keydown', event => {

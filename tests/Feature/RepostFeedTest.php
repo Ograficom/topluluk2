@@ -721,6 +721,44 @@ class RepostFeedTest extends TestCase
             ->assertDontSee('editorXss()', false);
     }
 
+    public function test_independent_image_blocks_preserve_text_and_image_order_when_created_and_edited(): void
+    {
+        Storage::fake('public');
+        $author = User::factory()->create();
+        $channel = Channel::create(['name' => 'Galeri', 'slug' => 'galeri', 'is_active' => true]);
+        $this->actingAs($author)->post(route('posts.store'), [
+            'title' => 'Sıralı görseller', 'excerpt' => 'Yazı özeti.', 'channel_id' => $channel->id,
+            'body' => json_encode(['blocks' => [
+                ['type' => 'paragraph', 'data' => ['text' => 'Birinci paragraf']],
+                ['type' => 'postImage', 'data' => ['uploadIndex' => 0]],
+                ['type' => 'paragraph', 'data' => ['text' => 'İkinci paragraf']],
+                ['type' => 'postImage', 'data' => ['uploadIndex' => 1]],
+                ['type' => 'paragraph', 'data' => ['text' => 'Üçüncü paragraf']],
+                ['type' => 'postImage', 'data' => ['path' => 'posts/gallery/foreign.png']],
+            ]]),
+            'media' => [UploadedFile::fake()->image('a.png'), UploadedFile::fake()->image('b.png')],
+        ])->assertRedirect();
+        $post = Post::query()->where('title', 'Sıralı görseller')->firstOrFail();
+        [$first, $second] = $post->media;
+        $blocks = json_decode($post->body, true)['blocks'];
+        $this->assertCount(5, $blocks);
+        $this->assertSame(['path' => $first], $blocks[1]['data']);
+        $this->assertSame(['path' => $second], $blocks[3]['data']);
+        $this->get(route('posts.show', $post))->assertOk()->assertSeeInOrder([
+            '<p>Birinci paragraf</p>', 'src="'.asset('storage/'.$first).'"',
+            '<p>İkinci paragraf</p>', 'src="'.asset('storage/'.$second).'"', '<p>Üçüncü paragraf</p>',
+        ], false);
+
+        $this->patch(route('posts.update', $post), [
+            'title' => $post->title, 'excerpt' => $post->excerpt, 'channel_id' => $channel->id,
+            'body' => json_encode(['blocks' => [$blocks[0], $blocks[3], $blocks[2], $blocks[1], $blocks[4]]]),
+        ])->assertRedirect();
+        $this->get(route('posts.show', $post))->assertOk()->assertSeeInOrder([
+            '<p>Birinci paragraf</p>', 'src="'.asset('storage/'.$second).'"',
+            '<p>İkinci paragraf</p>', 'src="'.asset('storage/'.$first).'"',
+        ], false);
+    }
+
     public function test_uploaded_gallery_images_render_inside_post_body(): void
     {
         Storage::fake('public');

@@ -131,12 +131,13 @@ class PostController extends Controller
         if ($request->hasFile('cover_image') && ! $coverImage) throw new \RuntimeException('The post cover image could not be stored.');
 
         $mediaPaths = [];
-        foreach ($request->file('media', []) as $mediaFile) {
+        foreach (array_values($request->file('media', [])) as $mediaFile) {
             $path = $mediaFile->store('posts/gallery', 'public');
             if (! $path) throw new \RuntimeException('A gallery image could not be stored.');
             $mediaPaths[] = $path;
         }
 
+        $validated['body'] = $this->resolvePostImageBlocks($validated['body'], $mediaPaths, $mediaPaths);
         $tags = $this->parseTags($validated['tags'] ?? '');
         $isSpam = app(PostSpamFilter::class)->shouldFlag($validated['title'], $validated['excerpt'], $validated['body']);
         $post = Post::create([
@@ -230,11 +231,14 @@ class PostController extends Controller
         $removeMedia = collect($validated['remove_media'] ?? []);
         $removedMediaPaths = $existingMedia->filter(fn (string $path) => $removeMedia->contains($path));
         $mediaPaths = $existingMedia->reject(fn (string $path) => $removeMedia->contains($path))->values();
-        foreach ($request->file('media', []) as $mediaFile) {
+        $newMediaPaths = [];
+        foreach (array_values($request->file('media', [])) as $mediaFile) {
             $path = $mediaFile->store('posts/gallery', 'public');
             if (! $path) throw new \RuntimeException('A gallery image could not be stored.');
+            $newMediaPaths[] = $path;
             $mediaPaths->push($path);
         }
+        $validated['body'] = $this->resolvePostImageBlocks($validated['body'], $mediaPaths->all(), $newMediaPaths);
 
         $post->fill([
             'media' => $mediaPaths->all(),
@@ -324,6 +328,31 @@ class PostController extends Controller
             ->orderByDesc('published_at')->orderByDesc('id')->limit(3)->get();
 
         return view('posts.show', compact('post', 'replyTo', 'rssItem', 'similarPosts'));
+    }
+
+    private function resolvePostImageBlocks(string $body, array $allowedPaths, array $newPaths): string
+    {
+        $data = json_decode($body, true);
+        if (! is_array($data) || ! is_array($data['blocks'] ?? null)) return $body;
+
+        $seen = [];
+        $blocks = [];
+        foreach ($data['blocks'] as $block) {
+            if (! is_array($block) || ($block['type'] ?? '') !== 'postImage') {
+                $blocks[] = $block;
+                continue;
+            }
+            $path = $block['data']['path'] ?? null;
+            $index = $block['data']['uploadIndex'] ?? null;
+            if (is_int($index)) $path = $newPaths[$index] ?? null;
+            if (! is_string($path) || ! in_array($path, $allowedPaths, true) || isset($seen[$path])) continue;
+            $seen[$path] = true;
+            $block['data'] = ['path' => $path];
+            $blocks[] = $block;
+        }
+        $data['blocks'] = $blocks;
+
+        return json_encode($data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR);
     }
 
     private function deleteUnusedPostImage(string $value): void

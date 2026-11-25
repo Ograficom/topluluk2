@@ -118,9 +118,13 @@
                         'Bu içerik RSS kaynağından alınmıştır. Kaynak:'
                     )
                 )) : null;
-                $inlineGalleryUrls = array_values(array_diff($post->galleryImageUrls(), array_filter([$post->coverImageUrl()])));
-                $galleryHasPosition = collect($editorBlocks ?? [])->contains(fn ($block) => ($block['type'] ?? '') === 'postGallery');
+                $imageMap = array_filter($post->galleryImageMap(), fn ($url) => $url !== $post->coverImageUrl());
+                $positionedPaths = collect($editorBlocks ?? [])->filter(fn ($block) => ($block['type'] ?? '') === 'postImage')
+                    ->map(fn ($block) => data_get($block, 'data.path'))->filter(fn ($path) => is_string($path))->all();
+                $inlineGalleryUrls = array_values(array_unique(array_diff_key($imageMap, array_flip($positionedPaths))));
+                $galleryHasPosition = collect($editorBlocks ?? [])->contains(fn ($block) => in_array($block['type'] ?? '', ['postGallery', 'postImage'], true));
                 $inlineGalleryShown = false;
+                $renderedImageUrls = [];
             @endphp
             @if ($editorBlocks !== null)
                 @foreach ($editorBlocks as $block)
@@ -134,6 +138,16 @@
                             @if (! $galleryHasPosition && ! $inlineGalleryShown && filled($blockData['text'] ?? ''))
                                 @include('posts._inline-gallery', ['urls' => $inlineGalleryUrls, 'post' => $post])
                                 @php $inlineGalleryShown = true; @endphp
+                            @endif
+                            @break
+                        @case('postImage')
+                            @php
+                                $imagePath = $blockData['path'] ?? null;
+                                $imageUrl = is_string($imagePath) ? ($imageMap[$imagePath] ?? null) : null;
+                            @endphp
+                            @if ($imageUrl && ! in_array($imageUrl, $renderedImageUrls, true))
+                                @include('posts._inline-gallery', ['urls' => [$imageUrl], 'post' => $post])
+                                @php $renderedImageUrls[] = $imageUrl; @endphp
                             @endif
                             @break
                         @case('postGallery')

@@ -83,18 +83,26 @@ class Post extends Model
 
     public function galleryImageUrls(): array
     {
-        return collect($this->media ?? [])
-            ->filter(fn ($path) => is_string($path) && trim($path) !== '')
-            ->map(function (string $path): ?string {
-                if (filter_var($path, FILTER_VALIDATE_URL)) {
-                    return in_array(parse_url($path, PHP_URL_SCHEME), ['http', 'https'], true) ? $path : null;
-                }
-                $path = ltrim($path, '/');
-                if (str_contains($path, '..')) return null;
-                if (Str::startsWith($path, 'storage/')) $path = Str::after($path, 'storage/');
-                if (Storage::disk('public')->exists($path)) return asset('storage/'.$path);
-                return is_file(public_path($path)) ? asset($path) : null;
-            })->filter()->unique()->values()->all();
+        return array_values(array_unique($this->galleryImageMap()));
+    }
+
+    public function galleryImageMap(): array
+    {
+        $images = [];
+        foreach ($this->media ?? [] as $original) {
+            if (! is_string($original) || trim($original) === '') continue;
+            if (filter_var($original, FILTER_VALIDATE_URL)) {
+                if (in_array(parse_url($original, PHP_URL_SCHEME), ['http', 'https'], true)) $images[$original] = $original;
+                continue;
+            }
+            $path = ltrim($original, '/');
+            if (str_contains($path, '..')) continue;
+            if (Str::startsWith($path, 'storage/')) $path = Str::after($path, 'storage/');
+            if (Storage::disk('public')->exists($path)) $images[$original] = asset('storage/'.$path);
+            elseif (is_file(public_path($path))) $images[$original] = asset($path);
+        }
+
+        return $images;
     }
 
     public function coverImageUrl(): ?string
