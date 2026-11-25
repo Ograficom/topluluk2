@@ -32,6 +32,9 @@ class PwaManagement extends Page
 
         $this->form->fill([
             'pwa_enabled' => $settings?->pwa_enabled ?? true,
+            'desktop_mode' => $settings?->pwa_advanced['desktop_mode'] ?? 'overlay',
+            'iarc_rating_id' => $settings?->pwa_advanced['iarc_rating_id'] ?? null,
+            'scope_origins' => $settings?->pwa_advanced['scope_origins'] ?? '',
             'pwa_name' => $settings?->pwa_name ?? 'OgraFi',
             'pwa_short_name' => $settings?->pwa_short_name ?? 'OgraFi',
             'pwa_description' => $settings?->pwa_description ?? 'OgraFi topluluk uygulaması',
@@ -71,6 +74,18 @@ class PwaManagement extends Page
                         'landscape' => 'Yatay',
                     ])->required()->default('any'),
                 ])->columns(2),
+            Section::make('Gelişmiş PWA ve Android yetenekleri')
+                ->description('Android paket kimliği: com.ografi.twa. Windows widget, hızlı not ve arka plan eşitlemesi destekleyen cihazlarda kullanılabilir.')
+                ->schema([
+                    Select::make('desktop_mode')->label('Masaüstü pencere biçimi')->options([
+                        'overlay' => 'Özel başlık çubuğu (Window Controls Overlay)',
+                        'tabbed' => 'Sekmeli uygulama (Tabbed)',
+                    ])->required()->default('overlay'),
+                    TextInput::make('iarc_rating_id')->label('IARC sertifika kimliği')->maxLength(128)->nullable()
+                        ->helperText('Google Play/IARC tarafından verilen gerçek sertifika kimliği. Yaş sınırı sayısı değildir.'),
+                    Textarea::make('scope_origins')->label('Ek kapsam alan adları')->rows(3)->maxLength(2000)->nullable()
+                        ->helperText('Her satıra size ait bir HTTPS ografi.com alt alan adı. Ek alan adında /.well-known/web-app-origin-association dosyası ayrıca yayımlanmalıdır.')->columnSpanFull(),
+                ])->columns(2),
             Section::make('Uygulama renkleri')
                 ->description('Tarayıcı üst çubuğu ve uygulama açılış ekranında kullanılacak renkler.')
                 ->schema([
@@ -103,10 +118,22 @@ class PwaManagement extends Page
                 ]);
             }
         }
+        $origins = \App\Support\PwaCapabilities::scopeOrigins($data['scope_origins'] ?? '');
+        $enteredOrigins = array_values(array_unique(preg_split('/\s+/', trim($data['scope_origins'] ?? ''), -1, PREG_SPLIT_NO_EMPTY)));
+        if (count($origins) !== count($enteredOrigins)) {
+            throw \Illuminate\Validation\ValidationException::withMessages([
+                'data.scope_origins' => 'En fazla 10 geçerli HTTPS ografi.com alt alan adı girin; yol, sorgu veya port kullanmayın.',
+            ]);
+        }
         $settings = SiteSetting::current() ?? new SiteSetting();
         $settings->id = 1;
         $settings->fill([
             'pwa_enabled' => (bool) ($data['pwa_enabled'] ?? false),
+            'pwa_advanced' => [
+                'desktop_mode' => $data['desktop_mode'] === 'tabbed' ? 'tabbed' : 'overlay',
+                'iarc_rating_id' => filled($data['iarc_rating_id'] ?? null) ? trim($data['iarc_rating_id']) : null,
+                'scope_origins' => implode("\n", $origins),
+            ],
             'pwa_name' => trim($data['pwa_name']),
             'pwa_short_name' => trim($data['pwa_short_name']),
             'pwa_description' => filled($data['pwa_description'] ?? null) ? trim($data['pwa_description']) : null,

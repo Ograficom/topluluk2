@@ -1,11 +1,11 @@
-const CACHE_VERSION = 'ografi-pwa-v8';
+const CACHE_VERSION = 'ografi-pwa-v9';
 const STATIC_CACHE = CACHE_VERSION + '-static';
 const OFFLINE_URL = '/offline';
 
 self.addEventListener('install', event => {
     event.waitUntil((async () => {
         const cache = await caches.open(STATIC_CACHE);
-        await Promise.allSettled([OFFLINE_URL, '/assets/img/meta/pwa-icon-192.png'].map(url => cache.add(url)));
+        await Promise.allSettled([OFFLINE_URL, '/assets/img/meta/pwa-icon-192.png', '/pwa/notes'].map(url => cache.add(url)));
         await self.skipWaiting();
     })());
 });
@@ -28,6 +28,10 @@ self.addEventListener('fetch', event => {
             try { return await fetch(request); }
             catch (error) {
                 const cache = await caches.open(STATIC_CACHE);
+                if (url.pathname === '/pwa/notes') {
+                    const notePage = await cache.match('/pwa/notes');
+                    if (notePage) return notePage;
+                }
                 return (await cache.match(OFFLINE_URL)) || new Response(
                     '<!doctype html><html lang="tr"><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>OgraFi — Çevrimdışı</title><main><h1>İnternet bağlantısı yok</h1><p>Bağlantın yeniden geldiğinde sayfayı yenile.</p><a href="/">Tekrar dene</a></main></html>',
                     { headers: { 'Content-Type': 'text/html; charset=utf-8' } }
@@ -96,7 +100,7 @@ async function renderQuickAccessWidget(widget) {
     try {
         const [template, data] = await Promise.all([
             fetch('/widgets/quick-access.json', { cache: 'no-cache' }),
-            fetch('/widgets/quick-access-data.json', { cache: 'no-cache' })
+            fetch('/pwa/widget-data', { credentials: 'omit', cache: 'no-cache' })
         ]);
         if (!template.ok || !data.ok) return;
         await self.widgets.updateByTag(QUICK_ACCESS_TAG, {
@@ -138,7 +142,8 @@ const PUBLIC_OFFLINE_ASSETS = [
     '/offline',
     '/assets/img/meta/pwa-icon-192.png',
     '/widgets/quick-access.json',
-    '/widgets/quick-access-data.json'
+    '/pwa/widget-data',
+    '/pwa/notes'
 ];
 async function refreshPublicOfflineAssets() {
     const cache = await caches.open(STATIC_CACHE);

@@ -38,7 +38,13 @@ Route::get('/manifest.webmanifest', function () {
     $startUrl = $settings?->pwa_start_url ?: '/';
     if (! str_starts_with($startUrl, '/') || str_starts_with($startUrl, '//')) $startUrl = '/';
 
-    return response()->json([
+    $advanced = $settings?->pwa_advanced ?? [];
+    $display = $settings?->pwa_display ?: 'standalone';
+    $desktopModes = ($advanced['desktop_mode'] ?? 'overlay') === 'tabbed'
+        ? ['tabbed', 'window-controls-overlay', 'standalone', 'minimal-ui']
+        : ['window-controls-overlay', 'tabbed', 'standalone', 'minimal-ui'];
+
+    $manifest = [
         'id' => '/',
         'name' => $settings?->pwa_name ?: 'OgraFi',
         'short_name' => $settings?->pwa_short_name ?: 'OgraFi',
@@ -48,12 +54,14 @@ Route::get('/manifest.webmanifest', function () {
         'start_url' => $startUrl,
         'scope' => '/',
         'display' => $settings?->pwa_display ?: 'standalone',
-        'display_override' => ($settings?->pwa_display ?? 'standalone') === 'standalone'
-            ? ['window-controls-overlay', 'tabbed', 'standalone', 'minimal-ui']
-            : [$settings->pwa_display],
+        'display_override' => $display === 'standalone' ? $desktopModes : [$display],
         'launch_handler' => ['client_mode' => ['navigate-existing', 'auto']],
         'edge_side_panel' => ['preferred_width' => 480],
-        'tab_strip' => ['new_tab_button' => ['url' => '/']],
+        'tab_strip' => ['new_tab_button' => ['url' => '/last-posts']],
+        'related_applications' => [
+            ['platform' => 'play', 'id' => 'com.ografi.twa', 'url' => 'https://play.google.com/store/apps/details?id=com.ografi.twa'],
+        ],
+        'note_taking' => ['new_note_url' => '/pwa/notes'],
         'share_target' => [
             'action' => '/posts/create',
             'method' => 'GET',
@@ -90,7 +98,9 @@ Route::get('/manifest.webmanifest', function () {
                 'tag' => 'ografi-quick-access',
                 'template' => 'ografi-quick-access',
                 'ms_ac_template' => '/widgets/quick-access.json',
-                'data' => '/widgets/quick-access-data.json',
+                'data' => '/pwa/widget-data',
+                'icons' => [$shortcutIcon],
+                'update' => 3600,
                 'type' => 'application/json',
                 'auth' => false,
                 'multiple' => false,
@@ -123,9 +133,31 @@ Route::get('/manifest.webmanifest', function () {
             ],
         ],
         'prefer_related_applications' => false,
-    ])->header('Content-Type', 'application/manifest+json; charset=UTF-8')
+    ];
+    if (filled($advanced['iarc_rating_id'] ?? null)) {
+        $manifest['iarc_rating_id'] = $advanced['iarc_rating_id'];
+    }
+    $origins = \App\Support\PwaCapabilities::scopeOrigins($advanced['scope_origins'] ?? '');
+    if ($origins !== []) {
+        $manifest['scope_extensions'] = array_map(fn (string $origin) => ['type' => 'origin', 'origin' => $origin], $origins);
+    }
+
+    return response()->json($manifest)->header('Content-Type', 'application/manifest+json; charset=UTF-8')
       ->header('Cache-Control', 'no-cache, no-store, must-revalidate');
 })->name('pwa.manifest');
+
+// Device-local notes and public widget data do not use authenticated content.
+Route::view('/pwa/notes', 'pwa.notes')->name('pwa.notes');
+Route::get('/pwa/widget-data', function () {
+    $headlines = \App\Models\Post::query()->published()->whereNull('advertisement_id')
+        ->where('is_adult', false)->where('is_spam', false)
+        ->latest('published_at')->limit(3)->pluck('title')->map(fn ($title) => \Illuminate\Support\Str::limit(strip_tags($title), 100))->values();
+    return response()->json([
+        'headline' => 'Son gönderiler',
+        'description' => 'Gerçekleşmiş Hayaller',
+        'latest' => $headlines->map(fn ($title) => '• '.$title)->implode("\n") ?: 'Yeni gönderileri keşfet.',
+    ])->header('Cache-Control', 'no-store');
+})->name('pwa.widget-data');
 
 // Registered links may open only known, same-origin pages.
 Route::get('/pwa/open', function (\Illuminate\Http\Request $request) {

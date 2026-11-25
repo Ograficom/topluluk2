@@ -1233,6 +1233,9 @@
                 const registration = await navigator.serviceWorker.ready;
                 const refresh = () => registration.active?.postMessage({ type: 'ografi-refresh-public-assets' });
                 refresh();
+                if (registration.sync) {
+                    try { await registration.sync.register('ografi-public-assets'); } catch (_) {}
+                }
                 window.addEventListener('online', refresh);
                 if (registration.periodicSync && navigator.permissions) {
                     try {

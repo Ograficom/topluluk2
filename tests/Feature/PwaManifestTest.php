@@ -41,11 +41,14 @@ class PwaManifestTest extends TestCase
         $this->assertSame('navigate-existing', $manifest['launch_handler']['client_mode'][0]);
         $this->assertSame(480, $manifest['edge_side_panel']['preferred_width']);
         $this->assertSame('ografi-quick-access', $manifest['widgets'][0]['tag']);
-        foreach (['ms_ac_template', 'data'] as $key) {
-            $file = public_path(ltrim($manifest['widgets'][0][$key], '/'));
-            $this->assertFileExists($file);
-            $this->assertIsArray(json_decode(file_get_contents($file), true, 512, JSON_THROW_ON_ERROR));
-        }
+        $file = public_path(ltrim($manifest['widgets'][0]['ms_ac_template'], '/'));
+        $this->assertFileExists($file);
+        $this->assertIsArray(json_decode(file_get_contents($file), true, 512, JSON_THROW_ON_ERROR));
+        $this->get($manifest['widgets'][0]['data'])->assertOk()->assertJsonStructure(['headline', 'description', 'latest']);
+        $this->assertSame('com.ografi.twa', $manifest['related_applications'][0]['id']);
+        $this->get($manifest['note_taking']['new_note_url'])->assertOk()->assertSee('Hızlı not');
+        $this->assertArrayNotHasKey('iarc_rating_id', $manifest);
+        $this->assertArrayNotHasKey('scope_extensions', $manifest);
         $preview = $manifest['widgets'][0]['screenshots'][0];
         $info = getimagesize(public_path(ltrim($preview['src'], '/')));
         $this->assertSame($preview['sizes'], $info[0].'x'.$info[1]);
@@ -74,6 +77,19 @@ class PwaManifestTest extends TestCase
         $this->assertStringStartsWith('/pwa/icon/512?', $after['icons'][1]['src']);
         $response = $this->get($after['icons'][1]['src'])->assertOk()->assertHeader('Content-Type', 'image/png');
         $this->assertSame($custom, $response->getContent());
+    }
+
+    public function test_advanced_manifest_uses_configured_metadata_and_desktop_preference(): void
+    {
+        $settings = \App\Models\SiteSetting::current() ?? new \App\Models\SiteSetting;
+        $settings->id = 1;
+        $settings->pwa_advanced = ['desktop_mode' => 'tabbed', 'iarc_rating_id' => 'test-only-cert',
+            'scope_origins' => "https://help.ografi.com\nhttps://unrelated.example"];
+        $settings->save();
+        $manifest = $this->get('/manifest.webmanifest')->assertOk()->json();
+        $this->assertSame('tabbed', $manifest['display_override'][0]);
+        $this->assertSame('test-only-cert', $manifest['iarc_rating_id']);
+        $this->assertSame([['type' => 'origin', 'origin' => 'https://help.ografi.com']], $manifest['scope_extensions']);
     }
 
     public function test_custom_protocol_only_opens_allowlisted_internal_pages(): void

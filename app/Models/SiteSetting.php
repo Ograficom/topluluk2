@@ -30,7 +30,7 @@ class SiteSetting extends Model
         'pwa_enabled', 'pwa_name', 'pwa_short_name', 'pwa_description',
         'pwa_start_url', 'pwa_display', 'pwa_orientation', 'pwa_theme_color',
         'pwa_background_color', 'pwa_icon_192_path', 'pwa_icon_512_path',
-        'pwa_maskable_icon_512_path', 'pwa_offline_title', 'pwa_offline_message',
+        'pwa_maskable_icon_512_path', 'pwa_offline_title', 'pwa_offline_message', 'pwa_advanced',
     ];
 
     protected function casts(): array
@@ -48,6 +48,7 @@ class SiteSetting extends Model
             'comment_spam_rate_limit' => 'integer',
             'post_spam_enabled' => 'boolean',
             'pwa_enabled' => 'boolean',
+            'pwa_advanced' => 'array',
             'post_spam_words' => 'array',
         ];
     }
