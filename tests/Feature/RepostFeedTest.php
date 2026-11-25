@@ -704,6 +704,33 @@ class RepostFeedTest extends TestCase
         $this->getJson(route('posts.edit-history', $post))->assertNotFound();
     }
 
+    public function test_manual_post_source_is_saved_rendered_updated_and_removed(): void
+    {
+        $author = User::factory()->create();
+        $channel = Channel::create(['name' => 'Kaynak', 'slug' => 'kaynak', 'is_active' => true]);
+        $source = 'https://www.facebook.com/share/p/123456/';
+        $fields = ['title' => 'Kaynaklı yazı', 'excerpt' => 'Yazı özeti.', 'body' => 'Yazı içeriği.', 'channel_id' => $channel->id];
+        $this->actingAs($author)->post(route('posts.store'), $fields + ['content_source' => $source])->assertRedirect();
+        $post = Post::query()->where('title', $fields['title'])->firstOrFail();
+        $this->assertSame($source, $post->content_source);
+        $this->get(route('posts.show', $post))->assertOk()
+            ->assertSee('class="post-source-card"', false)
+            ->assertSee('href="'.$source.'"', false)
+            ->assertSee('<strong>facebook.com</strong>', false);
+        $this->get(route('posts.edit', $post))->assertOk()->assertSee('value="'.$source.'"', false);
+
+        $this->patch(route('posts.update', $post), $fields + ['content_source' => 'https://www.aa.com.tr/'])->assertRedirect();
+        $this->assertSame('https://www.aa.com.tr/', $post->refresh()->content_source);
+        $this->get(route('posts.show', $post))->assertOk()->assertSee('<strong>aa.com.tr</strong>', false);
+
+        $this->patch(route('posts.update', $post), $fields + ['content_source' => 'javascript:alert(1)'])->assertRedirect();
+        $this->get(route('posts.show', $post))->assertOk()->assertDontSee('href="javascript:alert(1)"', false);
+
+        $this->patch(route('posts.update', $post), $fields + ['content_source' => ''])->assertRedirect();
+        $this->assertNull($post->refresh()->content_source);
+        $this->get(route('posts.show', $post))->assertOk()->assertDontSee('class="post-source-card"', false);
+    }
+
     public function test_author_can_edit_post_with_existing_tags(): void
     {
         $author = User::factory()->create();

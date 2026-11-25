@@ -241,20 +241,29 @@
             @endunless
         </section>
 
-        @if ($rssItem && filled($rssItem->link))
-            @php
-                $rssSourceUrl = $rssItem->link;
-                $rssSourceHost = parse_url($rssSourceUrl, PHP_URL_HOST);
-                $rssSourceHost = $rssSourceHost ? preg_replace('/^www\\./i', '', $rssSourceHost) : $rssSourceUrl;
-            @endphp
+        @php
+            $source = trim((string) ($post->content_source ?? ''));
+            if ($source === '') $source = trim((string) ($rssItem?->link ?? ''));
+            $sourceUrl = filter_var($source, FILTER_VALIDATE_URL)
+                && in_array(strtolower((string) parse_url($source, PHP_URL_SCHEME)), ['http', 'https'], true)
+                && ! preg_match('/[\x00-\x20\x7f\\\\]/', $source)
+                ? $source : null;
+            $sourceHost = $sourceUrl ? parse_url($sourceUrl, PHP_URL_HOST) : null;
+            $sourceLabel = $sourceHost ? preg_replace('/^www\./i', '', $sourceHost) : $source;
+        @endphp
+        @if ($source !== '')
             <aside class="post-source-card" aria-label="İçerik kaynağı">
                 <div class="post-source-card__meta">KAYNAK</div>
-                <a class="post-source-card__link" href="{{ $rssSourceUrl }}" target="_blank" rel="nofollow noopener noreferrer">
-                    <span class="post-source-card__text">
-                        <strong>{{ $rssSourceHost }}</strong>
-                    </span>
-                    <x-repost-icon name="external-link" size="16" />
-                </a>
+                @if ($sourceUrl)
+                    <a class="post-source-card__link" href="{{ $sourceUrl }}" target="_blank" rel="nofollow noopener noreferrer">
+                        <span class="post-source-card__text"><strong>{{ $sourceLabel }}</strong></span>
+                        <x-repost-icon name="external-link" size="16" />
+                    </a>
+                @else
+                    <div class="post-source-card__link">
+                        <span class="post-source-card__text"><strong>{{ $sourceLabel }}</strong></span>
+                    </div>
+                @endif
             </aside>
         @endif
 

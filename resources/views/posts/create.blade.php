@@ -387,7 +387,7 @@
             </label>
             <div class="repost-source-group">
               <label class="repost-source-label" for="post-source">Lütfen kaynağı belirtin.</label>
-              <input type="text" id="post-source" name="content_source" class="repost-source-input" maxlength="1000" value="{{ old('content_source', '') }}">
+              <input type="text" id="post-source" name="content_source" class="repost-source-input" maxlength="1000" value="{{ old('content_source', $post->content_source ?? '') }}" placeholder="https://...">
             </div>
           </div>
         </div>
