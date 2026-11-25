@@ -14,6 +14,13 @@
         .similar-posts{display:block;width:100%;max-width:none;margin:24px 0 0;padding:0;background:transparent;border:0;box-shadow:none;border-radius:0}
         .similar-posts__grid{display:flex;flex-direction:column;gap:14px;width:100%;min-width:0}
         .similar-posts__grid>.card.post{width:100%;max-width:none;min-width:0;margin:0}
+        .editorjs-content :is(b,strong){font-weight:700;}
+        .editorjs-content :is(i,em){font-style:italic;}
+        .editorjs-content u{text-decoration:underline;}
+        .editorjs-content :is(s,strike,del){text-decoration:line-through;}
+        .editorjs-content mark{background:#fff0a3;color:#202633;}
+        .editorjs-content code.inline-code{background:#f0f3f7;border-radius:4px;padding:1px 4px;}
+        .editorjs-content a:not([data-fancybox]){text-decoration:underline;}
         .editorjs-content .post-inline-gallery{display:grid;gap:12px;margin:16px 0;clear:both;}
         .editorjs-content .post-inline-gallery figure{margin:0;min-width:0;}
         .editorjs-content .post-inline-gallery a{display:block;}
@@ -120,10 +127,10 @@
                     @php $blockData = $block['data'] ?? []; @endphp
                     @switch($block['type'] ?? '')
                         @case('header')
-                            <h{{ min(4, max(2, (int) ($blockData['level'] ?? 2))) }}>{{ $blockData['text'] ?? '' }}</h{{ min(4, max(2, (int) ($blockData['level'] ?? 2))) }}>
+                            <h{{ min(4, max(2, (int) ($blockData['level'] ?? 2))) }}>{!! \App\Support\EditorInlineHtml::render($blockData['text'] ?? '') !!}</h{{ min(4, max(2, (int) ($blockData['level'] ?? 2))) }}>
                             @break
                         @case('paragraph')
-                            @if (filled($blockData['text'] ?? ''))<p>{!! nl2br(e($blockData['text'])) !!}</p>@endif
+                            @if (filled($blockData['text'] ?? ''))<p>{!! \App\Support\EditorInlineHtml::render($blockData['text']) !!}</p>@endif
                             @if (! $galleryHasPosition && ! $inlineGalleryShown && filled($blockData['text'] ?? ''))
                                 @include('posts._inline-gallery', ['urls' => $inlineGalleryUrls, 'post' => $post])
                                 @php $inlineGalleryShown = true; @endphp
@@ -145,20 +152,20 @@
                                     @foreach (($blockData['items'] ?? []) as $item)
                                         <li style="display:flex;align-items:baseline;gap:8px">
                                             <span role="img" aria-label="{{ data_get($item, 'meta.checked', false) ? 'Tamamlandı' : 'Tamamlanmadı' }}" style="flex-shrink:0">{{ data_get($item, 'meta.checked', false) ? '☑' : '☐' }}</span>
-                                            <span>{{ is_array($item) ? ($item['content'] ?? '') : $item }}</span>
+                                            <span>{!! \App\Support\EditorInlineHtml::render(is_array($item) ? ($item['content'] ?? '') : $item) !!}</span>
                                         </li>
                                     @endforeach
                                 </ul>
                             @else
                                 <{{ $listTag }}>
                                     @foreach (($blockData['items'] ?? []) as $item)
-                                        <li>{{ is_array($item) ? ($item['content'] ?? '') : $item }}</li>
+                                        <li>{!! \App\Support\EditorInlineHtml::render(is_array($item) ? ($item['content'] ?? '') : $item) !!}</li>
                                     @endforeach
                                 </{{ $listTag }}>
                             @endif
                             @break
                         @case('quote')
-                            <blockquote><p>{{ $blockData['text'] ?? '' }}</p>@if (filled($blockData['caption'] ?? ''))<cite>{{ $blockData['caption'] }}</cite>@endif</blockquote>
+                            <blockquote><p>{!! \App\Support\EditorInlineHtml::render($blockData['text'] ?? '') !!}</p>@if (filled($blockData['caption'] ?? ''))<cite>{!! \App\Support\EditorInlineHtml::render($blockData['caption']) !!}</cite>@endif</blockquote>
                             @break
                         @case('code')
                             <pre><code>{{ $blockData['code'] ?? '' }}</code></pre>
@@ -195,7 +202,7 @@
                         @case('table')
                             <div class="editorjs-table-wrap"><table>
                                 @foreach (($blockData['content'] ?? []) as $row)
-                                    <tr>@foreach ($row as $cell)<td>{{ $cell }}</td>@endforeach</tr>
+                                    <tr>@foreach ($row as $cell)<td>{!! \App\Support\EditorInlineHtml::render($cell) !!}</td>@endforeach</tr>
                                 @endforeach
                             </table></div>
                             @break

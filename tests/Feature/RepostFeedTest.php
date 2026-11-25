@@ -704,6 +704,23 @@ class RepostFeedTest extends TestCase
         ])->assertForbidden();
     }
 
+    public function test_editor_inline_formatting_renders_safely_in_post_detail(): void
+    {
+        $channel = Channel::create(['name' => 'Yazılar', 'slug' => 'yazilar', 'is_active' => true]);
+        $post = $this->createPost($channel, [
+            'body' => json_encode(['blocks' => [
+                ['type' => 'paragraph', 'data' => ['text' => '<b>Eski Türkler</b><br><i>İtalik</i><img src=x onerror=editorXss()>']],
+                ['type' => 'code', 'data' => ['code' => '<b>Örnek</b>']],
+            ]]),
+        ]);
+
+        $this->get(route('posts.show', $post))->assertOk()
+            ->assertSee('<p><b>Eski Türkler</b><br><i>İtalik</i></p>', false)
+            ->assertSee('&lt;b&gt;Örnek&lt;/b&gt;', false)
+            ->assertDontSee('&lt;b&gt;Eski Türkler&lt;/b&gt;', false)
+            ->assertDontSee('editorXss()', false);
+    }
+
     public function test_uploaded_gallery_images_render_inside_post_body(): void
     {
         Storage::fake('public');
