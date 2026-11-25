@@ -1227,8 +1227,8 @@
 <script>
 (() => {
     if (!('serviceWorker' in navigator)) return;
-    window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/sw.js', { scope: '/' })
+    const registerOgrafiWorker = () => {
+        navigator.serviceWorker.register('/sw.js', { scope: '/', updateViaCache: 'none' })
             .then(async () => {
                 const registration = await navigator.serviceWorker.ready;
                 const refresh = () => registration.active?.postMessage({ type: 'ografi-refresh-public-assets' });
@@ -1250,7 +1250,8 @@
                 }
             })
             .catch(error => console.error('OgraFi PWA service worker kaydedilemedi:', error));
-    });
+    };
+    registerOgrafiWorker();
 })();
 </script>
 @stack('scripts')

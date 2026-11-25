@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'ografi-pwa-v9';
+const CACHE_VERSION = 'ografi-pwa-v10';
 const STATIC_CACHE = CACHE_VERSION + '-static';
 const OFFLINE_URL = '/offline';
 
@@ -113,7 +113,21 @@ async function renderQuickAccessWidget(widget) {
 }
 
 self.addEventListener('widgetinstall', event => {
-    event.waitUntil(renderQuickAccessWidget(event.widget));
+    event.waitUntil((async () => {
+        await renderQuickAccessWidget(event.widget);
+        if (event.widget?.definition?.tag !== QUICK_ACCESS_TAG || !self.registration.periodicSync) return;
+        try {
+            const tags = await self.registration.periodicSync.getTags();
+            if (!tags.includes(QUICK_ACCESS_TAG)) {
+                await self.registration.periodicSync.register(QUICK_ACCESS_TAG, { minInterval: 60 * 60 * 1000 });
+            }
+        } catch (_) { /* Host or browser may deny background sync. */ }
+    })());
+});
+self.addEventListener('widgetuninstall', event => {
+    if (event.widget?.definition?.tag !== QUICK_ACCESS_TAG || !self.registration.periodicSync) return;
+    if (event.widget.instances?.length > 1) return;
+    event.waitUntil(self.registration.periodicSync.unregister(QUICK_ACCESS_TAG).catch(() => {}));
 });
 self.addEventListener('widgetresume', event => {
     event.waitUntil(renderQuickAccessWidget(event.widget));
@@ -169,5 +183,12 @@ self.addEventListener('sync', event => {
     if (event.tag === PUBLIC_ASSET_SYNC) event.waitUntil(refreshPublicOfflineAssets());
 });
 self.addEventListener('periodicsync', event => {
-    if (event.tag === PUBLIC_ASSET_SYNC) event.waitUntil(refreshPublicOfflineAssets());
+    if (event.tag === PUBLIC_ASSET_SYNC) {
+        event.waitUntil(refreshPublicOfflineAssets());
+    } else if (event.tag === QUICK_ACCESS_TAG && self.widgets?.getByTag) {
+        event.waitUntil((async () => {
+            const widget = await self.widgets.getByTag(QUICK_ACCESS_TAG);
+            if (widget) await renderQuickAccessWidget(widget);
+        })());
+    }
 });

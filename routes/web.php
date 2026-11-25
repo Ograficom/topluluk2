@@ -105,7 +105,7 @@ Route::get('/manifest.webmanifest', function () {
                 'auth' => false,
                 'multiple' => false,
                 'screenshots' => [
-                    ['src' => '/widgets/quick-access-preview.png', 'sizes' => '320x320', 'type' => 'image/png', 'platform' => 'Windows'],
+                    ['src' => '/widgets/quick-access-preview.png', 'sizes' => '320x320', 'type' => 'image/png', 'platform' => 'Windows', 'label' => 'OgraFi hızlı erişim widgetı'],
                 ],
             ],
         ],
