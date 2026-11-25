@@ -354,7 +354,7 @@
                 <h2 id="post-tags-title">Etiketler</h2>
                 <div class="post-tags-input-wrap">
                     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h16M4 15h16M9 4l-2 16M17 4l-2 16"/></svg>
-                    <input id="post-tags-input" name="tags" form="createPostBox" type="text" maxlength="500" value="{{ old('tags', $post->tags ?? '') }}" placeholder="Etiketleri girin" aria-label="Etiketler">
+                    <input id="post-tags-input" name="tags" form="createPostBox" type="text" maxlength="500" value="{{ old('tags', implode(', ', $post->tags ?? [])) }}" placeholder="Etiketleri girin" aria-label="Etiketler">
                 </div>
             </div>
         </div>

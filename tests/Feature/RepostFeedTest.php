@@ -664,6 +664,46 @@ class RepostFeedTest extends TestCase
         ]);
     }
 
+    public function test_author_can_edit_post_with_existing_tags(): void
+    {
+        $author = User::factory()->create();
+        $channel = Channel::create([
+            'name' => 'Teknoloji',
+            'slug' => 'teknoloji',
+            'is_active' => true,
+        ]);
+        $post = $this->createPost($channel, [
+            'user_id' => $author->id,
+            'tags' => ['laravel', 'php'],
+        ]);
+
+        $this->actingAs($author)
+            ->get(route('posts.edit', $post))
+            ->assertOk()
+            ->assertSee('value="laravel, php"', false)
+            ->assertSee('action="'.route('posts.update', $post).'"', false)
+            ->assertSee('name="_method" value="PATCH"', false);
+
+        $this->patch(route('posts.update', $post), [
+            'title' => 'Güncellenen yazı',
+            'channel_id' => $channel->id,
+            'excerpt' => 'Güncellenen açıklama.',
+            'body' => 'Güncellenen yazı içeriği.',
+            'tags' => 'laravel, php',
+        ])->assertRedirect('/posts/guncellenen-yazi');
+
+        $post->refresh();
+        $this->assertSame('Güncellenen yazı içeriği.', $post->body);
+        $this->assertSame(['laravel', 'php'], $post->tags);
+
+        $this->actingAs(User::factory()->create())
+            ->get(route('posts.edit', $post))
+            ->assertForbidden();
+        $this->patch(route('posts.update', $post), [
+            'title' => 'Yetkisiz değişiklik',
+        ])->assertForbidden();
+    }
+
     public function test_only_administrators_can_create_categories(): void
     {
         $member = User::factory()->create();
