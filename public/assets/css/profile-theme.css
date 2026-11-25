@@ -461,5 +461,26 @@
   .profile-avatar-earned-badge:nth-child(3) { right: 2px !important; bottom: -3px !important; }
   .profile-avatar-earned-badge:nth-child(4) { bottom: -3px !important; left: 2px !important; }
   .profile-avatar-earned-badge:nth-child(5) { top: 18% !important; left: -5px !important; }
-  .profile__meta .profile-reputation-trigger { display: none !important; }
+  /* Keep score and rank visible on phones, below the membership date. */
+  .profile.card .profile__meta .profile-reputation-trigger {
+    display: inline-flex !important;
+    flex: 0 1 auto;
+    align-items: center;
+    gap: 6px;
+    min-width: 0;
+    max-width: 100%;
+    white-space: normal;
+    font-size: .85rem;
+    line-height: 1.4;
+  }
+  .profile.card .profile__meta .profile-reputation-trigger > span {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+  .profile.card .profile__meta .profile-reputation-trigger > img {
+    flex: 0 0 24px;
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+  }
 }
