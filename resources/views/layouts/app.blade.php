@@ -6,6 +6,8 @@
     <meta name="format-detection" content="telephone=no">
     @php
         $pwaSettings = \App\Models\SiteSetting::current();
+        $newYearSettings = \App\Support\NewYearMode::settings($pwaSettings);
+        $newYearActive = \App\Support\NewYearMode::active($newYearSettings) && ! request()->routeIs('messenger.show');
     @endphp
     <meta name="theme-color" content="{{ $pwaSettings?->pwa_theme_color ?? '#f7f9fd' }}">
     <meta name="mobile-web-app-capable" content="yes">
@@ -215,6 +217,9 @@
             ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_HEX_TAG | JSON_HEX_AMP) !!}
         </script>
     @endif
+    @if ($newYearActive)
+        @include('layouts._new-year-styles')
+    @endif
 </head>
 <body data-authenticated="{{ auth()->check() ? 'true' : 'false' }}" @class(['is-messenger-conversation' => request()->routeIs('messenger.show')])>
     <div id="repost-icon-sprite" class="sprite" aria-hidden="true">
@@ -235,7 +240,7 @@
         @endif
         <div class="header__inner container">
             <div class="header__start">
-                <a href="{{ route('posts.index') }}" class="logo header__logo" aria-label="{{ $brandName }} ana sayfa">
+                <a href="{{ route('posts.index') }}" class="logo header__logo{{ $newYearActive && $newYearSettings['logo'] ? ' ografi-ny-logo' : '' }}" aria-label="{{ $brandName }} ana sayfa">
                     <img
                         src="{{ $brandLogoUrl ?? asset('assets/img/meta/logo.svg') }}"
                         alt=""
@@ -244,6 +249,13 @@
                         @class(['logo-icon', 'logo-icon--custom' => $brandLogoUrl])
                         onerror="this.onerror=null;this.src='{{ asset('assets/img/meta/logo.svg') }}';"
                     >
+                    @if ($newYearActive && $newYearSettings['logo'])
+                        <svg class="ografi-ny-hat" viewBox="0 0 32 30" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M5 22C6 10 13 1 23 5c4 2 4 6 5 10l-6 2-3-5-4 11Z" fill="#d93648"/>
+                            <rect x="3" y="20" width="23" height="7" rx="3.5" fill="#fff" stroke="#cde5f8"/>
+                            <circle cx="27" cy="16" r="4" fill="#fff" stroke="#cde5f8"/>
+                        </svg>
+                    @endif
                     <span class="logo-text">{{ $brandName }}</span>
                 </a>
             </div>
@@ -663,6 +675,9 @@
                 @endauth
             </div>
         </div>
+        @if ($newYearActive && $newYearSettings['lights'])
+            <div class="ografi-ny-lights" aria-hidden="true"></div>
+        @endif
     </header>
 
     @guest
@@ -798,6 +813,9 @@
                 @else
                     <section class="feed">
                 @endif
+                    @if ($feedPage && $newYearActive && $newYearSettings['countdown'])
+                        @include('layouts._new-year-countdown')
+                    @endif
                     @if (session('status'))
                         @if ($verificationPage)
                             <div role="status" style="display:inline-flex;align-items:center;gap:10px;padding:8px 14px;background:#2563eb;color:#fff;border-radius:8px;box-shadow:0 1px 2px rgb(0 0 0 / 8%);font-size:14px;">
@@ -1329,5 +1347,8 @@
 })();
 </script>
 @stack('scripts')
+@if ($newYearActive)
+    @include('layouts._new-year-effects')
+@endif
 </body>
 </html>
