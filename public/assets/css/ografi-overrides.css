@@ -11189,3 +11189,148 @@ body:not(.is-messenger-conversation) main.container .main__widgets {
         display:none!important;
     }
 }
+
+
+/* Composer dark palette: original Repost kit.css modal and app.css tagify tokens.
+   Only paint properties are changed. No desktop/mobile geometry is overridden. */
+[data-theme="dark"] #createPostModal.repost-modal-backdrop,
+[data-theme="dark"] #createPostModal > :is(.post-gallery-modal,.post-video-modal,.post-widget-modal):not([hidden]),
+[data-theme="dark"] .post-tags-modal.is-open {
+    background:var(--color-overlay-backdrop)!important;
+}
+[data-theme="dark"] #createPostModal > #createPostBox {
+    color-scheme:dark;
+    background:var(--color-surface-overlay)!important;
+    color:var(--text-color)!important;
+    border-color:var(--border-color)!important;
+}
+[data-theme="dark"] #createPostBox :is(.repost-modal-heading,.repost-modal-username,.repost-title-input) {
+    color:var(--title-color)!important;
+}
+[data-theme="dark"] #createPostBox :is(.repost-content-textarea,.repost-switch-label,.repost-source-input,.composer-block-picker button) {
+    color:var(--text-color)!important;
+}
+[data-theme="dark"] #createPostBox :is(.repost-title-input,.repost-content-textarea) {
+    background:transparent!important;
+}
+[data-theme="dark"] #createPostBox :is(.repost-title-input,.repost-content-textarea,.repost-source-input,.repost-channel-search)::placeholder,
+[data-theme="dark"] #createPostBox #post-editorjs:not(.is-ready):empty::before,
+[data-theme="dark"] #createPostBox #post-editorjs .ce-paragraph[data-placeholder]:empty::before,
+[data-theme="dark"] #createPostBox #post-editorjs [data-placeholder-active]:empty::before {
+    color:var(--color-gray)!important;
+}
+[data-theme="dark"] #createPostBox :is(.repost-icon-btn,.repost-tool-btn,.repost-modal-sep,.repost-modal-cat,.repost-settings-trigger,.repost-source-label,.editor-inline-gallery-note,.post-existing-image-undo) {
+    color:var(--color-gray)!important;
+}
+[data-theme="dark"] #createPostBox :is(.repost-icon-btn,.repost-tool-btn,.repost-modal-cat):hover,
+[data-theme="dark"] #createPostBox .composer-block-picker button:hover {
+    background:var(--content-item-hover-bg)!important;
+    color:var(--title-color)!important;
+}
+[data-theme="dark"] #createPostBox :is(.repost-settings-trigger:hover,.repost-settings-trigger.is-active) {color:var(--title-color)!important;}
+[data-theme="dark"] #createPostBox :is(.repost-modal-avatar,.editor-inline-gallery img,.composer-block-add) {background:var(--gray-200)!important;}
+[data-theme="dark"] #createPostBox .composer-block-add {color:var(--color-gray)!important;}
+[data-theme="dark"] #createPostBox .composer-block-add:is(:hover,[aria-expanded="true"]) {background:var(--gray-300)!important;color:var(--color-primary)!important;}
+[data-theme="dark"] #createPostBox :is(.repost-settings-popover,.composer-block-picker:not([hidden]),.repost-channel-menu) {
+    background:var(--color-surface-overlay)!important;
+    border-color:var(--border-color)!important;
+    color:var(--text-color)!important;
+    box-shadow:var(--shadow-lg)!important;
+}
+[data-theme="dark"] #createPostBox :is(.repost-source-input,.repost-channel-search) {
+    background:var(--card-bg)!important;border-color:var(--gray-300)!important;color:var(--text-color)!important;
+}
+[data-theme="dark"] #createPostBox :is(.repost-source-input,.repost-channel-search):focus {border-color:var(--color-primary)!important;}
+[data-theme="dark"] #createPostBox .repost-switch-slider {background:var(--gray-300)!important;}
+[data-theme="dark"] #createPostBox .repost-switch-row input:checked + .repost-switch-slider,
+[data-theme="dark"] #createPostBox .repost-publish-btn {background:var(--color-primary)!important;color:var(--light-900)!important;}
+[data-theme="dark"] #createPostBox .repost-publish-btn:hover {background:var(--blue-600)!important;}
+[data-theme="dark"] #createPostBox :is(.post-existing-image-undo button,[data-block-picker-status]) {color:var(--color-primary)!important;}
+[data-theme="dark"] #createPostBox [data-editor-error] {color:var(--color-red)!important;}
+/* Editor.js uses its own palette; bridge it to Repost only inside this editor. */
+[data-theme="dark"] #createPostBox #post-editorjs {
+    color:var(--text-color)!important;
+    --color-background:var(--color-surface-overlay);
+    --color-border:var(--gray-300);
+    --color-text-primary:var(--text-color);
+    --color-text-secondary:var(--color-gray);
+    --color-text-icon-active:var(--color-primary);
+    --color-background-item-hover:var(--gray-200);
+    --color-background-item-focus:var(--gray-300);
+    --color-background-item-active:var(--gray-300);
+}
+[data-theme="dark"] #createPostBox #post-editorjs :is(.ce-popover,.ce-inline-toolbar,.ce-conversion-toolbar,.ce-settings) {
+    --color-background:var(--color-surface-overlay)!important;
+    --color-border:var(--gray-300)!important;
+    --color-text-primary:var(--text-color)!important;
+    --color-text-secondary:var(--color-gray)!important;
+    --color-text-icon-active:var(--color-primary)!important;
+    --color-background-item-hover:var(--gray-200)!important;
+    --color-background-item-focus:var(--gray-300)!important;
+    --color-background-item-active:var(--gray-300)!important;
+    color:var(--text-color)!important;
+    border-color:var(--gray-300)!important;
+}
+[data-theme="dark"] #createPostBox #post-editorjs :is(.ce-popover__container,.ce-inline-toolbar,.ce-conversion-toolbar,.ce-settings,.ce-popover-item__icon) {
+    background:var(--color-surface-overlay)!important;
+    color:var(--text-color)!important;
+}
+[data-theme="dark"] #createPostBox #post-editorjs :is(.ce-popover-item,.ce-inline-tool,.ce-toolbar__settings-btn,.ce-conversion-tool,.cdx-settings-button) {
+    color:var(--text-color)!important;
+}
+[data-theme="dark"] #createPostBox #post-editorjs :is(.ce-popover-item,.ce-inline-tool,.ce-toolbar__settings-btn,.ce-conversion-tool,.cdx-settings-button):hover {
+    background:var(--gray-200)!important;
+}
+[data-theme="dark"] #createPostBox #post-editorjs :is(.cdx-search-field,.ce-code__textarea,.ce-inline-toolbar__input,.cdx-input) {
+    background:var(--card-bg)!important;color:var(--text-color)!important;border-color:var(--gray-300)!important;
+}
+[data-theme="dark"] #createPostBox #post-editorjs :is(.cdx-search-field__input,.cdx-search-field__icon) {color:var(--color-gray)!important;}
+[data-theme="dark"] #createPostBox #post-editorjs .cdx-search-field__input:focus {color:var(--text-color)!important;}
+[data-theme="dark"] #createPostBox #post-editorjs :is(.tc-table,.tc-row,.tc-cell,.tc-add-column,.tc-add-row) {--color-border:var(--gray-300);border-color:var(--gray-300)!important;color:var(--text-color)!important;}
+[data-theme="dark"] #createPostBox #post-editorjs .ce-block--selected .ce-block__content {background:var(--gray-200)!important;}
+/* Child dialogs may be moved to body by the composer, so tags use their own root. */
+[data-theme="dark"] #createPostModal > :is(.post-gallery-modal,.post-video-modal,.post-widget-modal):not([hidden]) > :is(.post-gallery-dialog,.post-video-dialog,.post-widget-dialog),
+[data-theme="dark"] .post-tags-modal .post-tags-dialog {
+    color-scheme:dark;
+    background:var(--color-surface-overlay)!important;
+    color:var(--text-color)!important;
+    border-color:var(--border-color)!important;
+    box-shadow:var(--shadow-lg)!important;
+}
+[data-theme="dark"] #createPostModal > :is(.post-gallery-modal,.post-video-modal,.post-widget-modal):not([hidden]) :is(.post-gallery-dialog,.post-video-dialog,.post-widget-dialog) h2,
+[data-theme="dark"] .post-tags-modal .post-tags-dialog h2 {color:var(--title-color)!important;}
+[data-theme="dark"] #createPostModal > :is(.post-gallery-modal,.post-video-modal,.post-widget-modal):not([hidden]) :is(.post-gallery-back,.post-video-back,.post-widget-back),
+[data-theme="dark"] .post-tags-dialog .post-tags-back {background:var(--gray-200)!important;color:var(--color-gray)!important;}
+[data-theme="dark"] #createPostModal > :is(.post-gallery-modal,.post-video-modal,.post-widget-modal):not([hidden]) :is(.post-gallery-back,.post-video-back,.post-widget-back):is(:hover,:active),
+[data-theme="dark"] .post-tags-dialog .post-tags-back:is(:hover,:active) {background:var(--gray-300)!important;color:var(--color-primary)!important;}
+[data-theme="dark"] #createPostModal > .post-gallery-modal:not([hidden]) .post-gallery-dropzone {
+    background:var(--card-bg)!important;border-color:var(--gray-400)!important;
+}
+[data-theme="dark"] #createPostModal > .post-gallery-modal:not([hidden]) .post-gallery-dropzone.is-dragging {background:var(--gray-200)!important;border-color:var(--color-primary)!important;}
+[data-theme="dark"] #createPostModal > .post-gallery-modal:not([hidden]) .post-gallery-dropzone strong {color:var(--title-color)!important;}
+[data-theme="dark"] #createPostModal > .post-gallery-modal:not([hidden]) .post-gallery-dropzone > span,
+[data-theme="dark"] #createPostModal .post-gallery-actions [data-gallery-selected],
+[data-theme="dark"] #createPostModal :is(.post-video-hint,.post-widget-hint) {color:var(--color-gray)!important;}
+[data-theme="dark"] #createPostModal > .post-gallery-modal:not([hidden]) .post-gallery-upload,
+[data-theme="dark"] #createPostModal .post-gallery-tile {background:var(--gray-200)!important;color:var(--text-color)!important;}
+[data-theme="dark"] #createPostModal > .post-gallery-modal:not([hidden]) .post-gallery-upload:hover {background:var(--gray-300)!important;}
+[data-theme="dark"] #createPostModal :is(.post-gallery-picture-icon) {stroke:var(--color-primary)!important;}
+[data-theme="dark"] #createPostModal [data-gallery-error] {color:var(--color-red)!important;}
+[data-theme="dark"] #createPostModal .post-gallery-apply {background:var(--color-primary)!important;color:var(--light-900)!important;}
+[data-theme="dark"] #createPostModal > :is(.post-video-modal,.post-widget-modal) :is(input#post-video-url,textarea#post-widget-code) {
+    background:var(--card-bg)!important;color:var(--text-color)!important;border-color:var(--gray-300)!important;box-shadow:none!important;
+}
+[data-theme="dark"] #createPostModal > :is(.post-video-modal,.post-widget-modal) :is(input#post-video-url,textarea#post-widget-code):focus {
+    border-color:var(--color-primary)!important;
+}
+[data-theme="dark"] .post-tags-dialog :is(.post-tags-input-wrap,.post-location-input-wrap) {background:var(--card-bg)!important;}
+[data-theme="dark"] .post-tags-dialog :is(input#post-tags-input,input#post-location) {color:var(--text-color)!important;}
+[data-theme="dark"] .post-tags-dialog :is(input#post-tags-input,input#post-location)::placeholder {color:var(--color-gray)!important;}
+[data-theme="dark"] .post-tags-dialog :is(.post-tags-input-wrap,.post-location-input-wrap) > svg {stroke:var(--color-gray)!important;}
+[data-theme="dark"] .post-tags-dialog :is(.post-tags-input-wrap,.post-location-input-wrap):has(input:not([type="hidden"]):not(:placeholder-shown)) > svg {stroke:var(--color-primary)!important;}
+[data-theme="dark"] .post-tags-dialog .post-tag-chip {background:var(--gray-150)!important;color:var(--text-color)!important;}
+[data-theme="dark"] .post-tags-dialog :is(.post-tag-chip-remove,.post-location-clear,.post-tag-option-hash,.post-tag-suggestions-title,.post-tag-suggestions-status) {color:var(--color-gray)!important;}
+[data-theme="dark"] .post-tags-dialog .post-tag-chip-remove:hover {background:var(--red-100)!important;color:var(--color-red)!important;}
+[data-theme="dark"] .post-tags-dialog .post-location-clear:hover {background:var(--gray-200)!important;}
+[data-theme="dark"] .post-tags-dialog .post-tag-option {color:var(--text-color)!important;}
+[data-theme="dark"] .post-tags-dialog .post-tag-option:is(:hover,[aria-selected="true"]) {background:var(--gray-200)!important;color:var(--color-primary)!important;}

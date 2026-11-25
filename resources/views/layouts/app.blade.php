@@ -151,7 +151,7 @@
     <link rel="stylesheet" href="{{ asset('assets/css/ografi-app-extensions.css') }}?v=20261125-gallery-visible-v2">
     <link rel="stylesheet" href="{{ asset('assets/css/engine.css') }}?v=repost-original-20261124">
     <link rel="stylesheet" href="{{ asset('assets/css/ografi-engine-extensions.css') }}?v=20261124-v1">
-    <link rel="stylesheet" href="{{ asset('assets/css/ografi-overrides.css') }}?v=20261126-repost-mobile-restore-v5">
+    <link rel="stylesheet" href="{{ asset('assets/css/ografi-overrides.css') }}?v=20261126-composer-dark-v1">
     <script>
         (() => {
             const root = document.documentElement;
