@@ -146,7 +146,7 @@
                 $inlineGalleryShown = false;
                 $renderedImageUrls = [];
                 $tocHeadings = [];
-                foreach ($editorBlocks ?? [] as $index => $block) {
+                foreach (($post->show_toc ? ($editorBlocks ?? []) : []) as $index => $block) {
                     if (! is_array($block) || ! in_array($block['type'] ?? '', ['header', 'paragraph'], true)) continue;
                     $headingHtml = \App\Support\EditorInlineHtml::render(data_get($block, 'data.text', ''));
                     $isHeader = $block['type'] === 'header';

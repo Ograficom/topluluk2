@@ -26,7 +26,7 @@ class Post extends Model
             $editor = auth()->user();
             if ($editor && ($post->getOriginal('is_published') || $post->getOriginal('published_at'))
                 && $post->wasChanged(['title', 'body', 'excerpt', 'channel_id', 'cover_image', 'media',
-                    'video_url', 'video_path', 'tags', 'location', 'meta_description', 'content_source', 'is_adult'])) {
+                    'video_url', 'video_path', 'tags', 'location', 'meta_description', 'content_source', 'is_adult', 'show_toc'])) {
                 \Illuminate\Support\Facades\DB::table('post_edit_histories')->insert([
                     'post_id' => $post->id,
                     'editor_id' => $editor->getAuthIdentifier(),
@@ -61,7 +61,7 @@ class Post extends Model
     protected $fillable = [
         'user_id', 'channel_id', 'advertisement_id', 'title', 'slug', 'excerpt', 'body',
         'cover_image', 'media', 'video_url', 'video_path', 'meta_description', 'content_source', 'location', 'tags', 'is_published',
-        'published_at', 'views', 'is_adult', 'is_spam',
+        'published_at', 'views', 'is_adult', 'is_spam', 'show_toc',
     ];
 
     protected function casts(): array
@@ -73,6 +73,7 @@ class Post extends Model
             'published_at' => 'datetime',
             'is_adult' => 'boolean',
             'is_spam' => 'boolean',
+            'show_toc' => 'boolean',
         ];
     }
 

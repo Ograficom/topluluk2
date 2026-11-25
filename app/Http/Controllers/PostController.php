@@ -139,6 +139,7 @@ class PostController extends Controller
             'video_file' => ['nullable', 'file', 'mimetypes:video/mp4,video/webm,video/quicktime,video/x-matroska', 'max:102400'],
             'tags' => ['nullable', 'string', 'max:500'],
             'is_adult' => ['sometimes', 'boolean'],
+            'show_toc' => ['sometimes', 'boolean'],
         ]);
 
         $slugBase = Str::limit(Str::slug($validated['title']) ?: 'post', 240, '');
@@ -182,6 +183,7 @@ class PostController extends Controller
             'is_spam' => $isSpam,
             'published_at' => $isSpam ? null : now(),
             'is_adult' => $request->boolean('is_adult'),
+            'show_toc' => $request->boolean('show_toc'),
         ]);
         $this->syncTagRecords($post, $tags);
 
@@ -233,6 +235,7 @@ class PostController extends Controller
             'video_file' => ['nullable', 'file', 'mimetypes:video/mp4,video/webm,video/quicktime,video/x-matroska', 'max:102400'],
             'tags' => ['nullable', 'string', 'max:500'],
             'is_adult' => ['sometimes', 'boolean'],
+            'show_toc' => ['sometimes', 'boolean'],
             'remove_cover' => ['sometimes', 'boolean'],
         ]);
 
@@ -278,6 +281,7 @@ class PostController extends Controller
             'body' => $validated['body'],
             'tags' => $tags,
             'is_adult' => $request->boolean('is_adult'),
+            'show_toc' => array_key_exists('show_toc', $validated) ? $request->boolean('show_toc') : (bool) $post->show_toc,
             'is_spam' => ($isSpam || $wasSpam),
         ]);
         if ($isSpam || $wasSpam) $post->is_published = false;

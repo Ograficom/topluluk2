@@ -744,6 +744,8 @@ class RepostFeedTest extends TestCase
             ['type' => 'header', 'data' => ['level' => 2, 'text' => ' ']],
         ]])]);
         $prefix = 'post-'.$post->id.'-heading-';
+        $this->get(route('posts.show', $post))->assertOk()->assertDontSee('data-post-toc', false);
+        $post->update(['show_toc' => true]);
         $this->get(route('posts.show', $post))->assertOk()
             ->assertSee('data-post-toc', false)
             ->assertSee('(3 başlık)')
@@ -766,6 +768,24 @@ class RepostFeedTest extends TestCase
         $post->update(['body' => 'Başlıksız düz yazı']);
         $this->get(route('posts.show', $post))->assertOk()
             ->assertDontSee('data-post-toc', false);
+    }
+
+    public function test_author_can_opt_in_and_out_of_article_contents_per_post(): void
+    {
+        $author = User::factory()->create();
+        $channel = Channel::create(['name' => 'Uzun yazı', 'slug' => 'uzun-yazi', 'is_active' => true]);
+        $fields = ['title' => 'İsteğe bağlı içindekiler', 'excerpt' => 'Özet', 'channel_id' => $channel->id,
+            'body' => json_encode(['blocks' => [['type' => 'header', 'data' => ['level' => 2, 'text' => 'Bir bölüm']]]])];
+        $this->actingAs($author)->post(route('posts.store'), $fields + ['show_toc' => '1'])->assertRedirect();
+        $post = Post::query()->where('title', $fields['title'])->firstOrFail();
+        $this->assertTrue($post->show_toc);
+        $this->get(route('posts.show', $post))->assertOk()->assertSee('data-post-toc', false);
+        $this->get(route('posts.edit', $post))->assertOk()->assertSee('id="post-show-toc" name="show_toc" value="1" checked', false);
+        $this->patch(route('posts.update', $post), $fields)->assertRedirect();
+        $this->assertTrue($post->refresh()->show_toc);
+        $this->patch(route('posts.update', $post), $fields + ['show_toc' => '0'])->assertRedirect();
+        $this->assertFalse($post->refresh()->show_toc);
+        $this->get(route('posts.show', $post))->assertOk()->assertDontSee('data-post-toc', false);
     }
 
     public function test_author_can_edit_post_with_existing_tags(): void

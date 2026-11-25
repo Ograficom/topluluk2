@@ -382,6 +382,11 @@
               <input type="checkbox" id="post-ai-content" name="ai_content_disclosure" value="1" @checked(old('ai_content_disclosure', false))>
               <span class="repost-switch-slider"></span><span class="repost-switch-label">İçerik yapay zeka verileri içermektedir.</span>
             </label>
+            <input type="hidden" name="show_toc" value="0">
+            <label class="repost-switch-row">
+              <input type="checkbox" id="post-show-toc" name="show_toc" value="1" @checked(old('show_toc', $post->show_toc ?? false))>
+              <span class="repost-switch-slider" aria-hidden="true"></span><span class="repost-switch-label">İçindekiler göster</span>
+            </label>
             <div class="repost-source-group">
               <label class="repost-source-label" for="post-source">Lütfen kaynağı belirtin.</label>
               <input type="text" id="post-source" name="content_source" class="repost-source-input" maxlength="1000" value="{{ old('content_source', $post->content_source ?? '') }}" placeholder="https://...">
