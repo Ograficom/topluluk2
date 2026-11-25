@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Schema as DatabaseSchema;
 
 class NewYearManagement extends Page
 {
+    protected static ?string $slug = 'new-year-management';
     protected static string|\UnitEnum|null $navigationGroup = 'Ayarlar';
     protected static ?string $navigationLabel = 'Yeni yıl modu';
     protected static ?string $title = 'Yeni yıl modu';
