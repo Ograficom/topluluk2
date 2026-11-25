@@ -592,29 +592,42 @@
     border-color:#d5deea !important;
     background:#fff !important;
 }
-.post-tags-dialog .post-tags-input-wrap {
+.post-tags-dialog .post-tags-input-wrap,
+.post-tags-dialog .post-tags-input-wrap:focus-within {
     flex:0 0 auto!important;flex-wrap:wrap!important;gap:6px!important;
-    height:auto!important;min-height:44px!important;max-height:none!important;
-    padding:6px 12px!important;overflow:visible!important;
+    height:auto!important;min-height:42px!important;max-height:none!important;
+    padding:7px 14px!important;overflow:visible!important;
+    border:0!important;border-radius:12px!important;background:#f7f8fa!important;
 }
-.post-tags-dialog .post-tags-input-wrap > svg {stroke:#2878f0!important;}
+.post-tags-dialog .post-tags-input-wrap > svg {
+    flex:0 0 16px!important;width:16px!important;height:16px!important;
+    stroke:#8996a9!important;margin-right:6px!important;
+}
 .post-tags-dialog .post-tags-input-wrap input#post-tags-input {
-    flex:1 1 115px!important;width:115px!important;min-width:80px!important;
-    height:30px!important;min-height:30px!important;max-height:30px!important;
-    font:14px/30px Arial,sans-serif!important;
+    flex:1 1 24px!important;width:24px!important;min-width:24px!important;
+    height:28px!important;min-height:28px!important;max-height:28px!important;
+    font:14px/28px Arial,sans-serif!important;
+}
+.post-tags-dialog .post-tags-input-wrap:not(.has-tags) input#post-tags-input {
+    flex-basis:115px!important;min-width:100px!important;
 }
 .post-tags-dialog .post-tag-chip {
-    display:inline-flex;align-items:center;gap:5px;min-width:0;max-width:100%;
-    padding:5px 7px 5px 10px;border-radius:999px;background:#e8edf3;
-    color:#303944;font:14px/1.3 Arial,sans-serif;
+    display:inline-flex!important;align-items:center!important;gap:8px!important;
+    flex:0 0 auto!important;min-width:0!important;max-width:100%!important;
+    min-height:28px!important;box-sizing:border-box!important;
+    padding:4px 7px 4px 11px!important;margin:0!important;
+    border:0!important;border-radius:999px!important;background:#e9edf2!important;
+    color:#30343b!important;font:14px/20px Arial,sans-serif!important;
 }
 .post-tags-dialog .post-tag-chip-label {min-width:0;overflow-wrap:anywhere;}
 .post-tags-dialog .post-tag-chip-remove {
-    display:inline-grid;place-items:center;flex:0 0 20px;width:20px;height:20px;
-    padding:0;border:0;border-radius:50%;background:transparent;color:#71839d;
-    font:16px/1 Arial,sans-serif;cursor:pointer;
+    display:inline-grid!important;place-items:center!important;flex:0 0 12px!important;
+    width:12px!important;height:16px!important;min-width:0!important;min-height:0!important;
+    padding:0!important;margin:0!important;border:0!important;border-radius:50%!important;
+    background:transparent!important;color:#71839d!important;
+    font:12px/1 Arial,sans-serif!important;cursor:pointer;
 }
-.post-tags-dialog .post-tag-chip-remove:hover {background:#d7e1ed;color:#303944;}
+.post-tags-dialog .post-tag-chip-remove:hover {background:#d7e1ed!important;color:#303944!important;}
 .post-tags-dialog .post-tag-chip-remove:focus-visible {outline:2px solid #2878f0;}
 .post-tags-input-wrap input#post-tags-input::placeholder {
     color:#71839d !important;
@@ -1925,6 +1938,8 @@
         const renderTagChips = () => {
             if (!tagsWrap || !tagsInput) return;
             tagsWrap.querySelectorAll('.post-tag-chip').forEach(chip => chip.remove());
+            tagsWrap.classList.toggle('has-tags', selectedTags.length > 0);
+            tagsInput.placeholder = selectedTags.length ? '' : 'Etiketleri girin';
             selectedTags.forEach((name, index) => {
                 const chip = document.createElement('span');
                 chip.className = 'post-tag-chip';
