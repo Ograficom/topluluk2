@@ -73,7 +73,7 @@
         .ografi-store-bottom--standalone { display: block; }
         .ografi-store-bottom .ografi-store-buttons { justify-content: center; }
         @media screen and (max-width: 920px) {
-            .ografi-store-bottom { display: block; }
+            .ografi-store-bottom { display: none; }
         }
         @media (prefers-reduced-motion: reduce) {
             .ografi-store-buttons .btn { transition: none; }
