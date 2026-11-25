@@ -78,7 +78,7 @@ class PwaManagement extends Page
                     TextInput::make('pwa_background_color')->label('Arka plan rengi')->required()->regex('/^#[0-9A-Fa-f]{6}$/')->default('#f7f9fd')->helperText('HEX formatı: #f7f9fd'),
                 ])->columns(2),
             Section::make('Uygulama ikonları')
-                ->description('Yüklenen görseller kare PNG olmalı. Alanlar yüklenen görseli belirtilen boyuta dönüştürür.')
+                ->description('Bu bölüm PWA manifestinin asıl ikon kaynağıdır. Kare PNG yükleyin; boş bırakılan alanlarda varsayılan mavi OgraFi ikonu veya GD destekli diğer ikon boyutu kullanılır.')
                 ->schema([
                     FileUpload::make('pwa_icon_192_path')->label('192 × 192 ikon')->image()->disk('public')->directory('pwa/icons')->visibility('public')->acceptedFileTypes(['image/png'])->imageResizeMode('cover')->imageResizeTargetWidth(192)->imageResizeTargetHeight(192)->maxSize(5120)->helperText('Android ve küçük ekranlar için.'),
                     FileUpload::make('pwa_icon_512_path')->label('512 × 512 ikon')->image()->disk('public')->directory('pwa/icons')->visibility('public')->acceptedFileTypes(['image/png'])->imageResizeMode('cover')->imageResizeTargetWidth(512)->imageResizeTargetHeight(512)->maxSize(5120)->helperText('Chrome yükleme deneyimi için gerekli büyük ikon.'),
@@ -96,6 +96,13 @@ class PwaManagement extends Page
     public function save(): void
     {
         $data = $this->form->getState();
+        foreach (['pwa_icon_192_path' => 192, 'pwa_icon_512_path' => 512, 'pwa_maskable_icon_512_path' => 512] as $field => $size) {
+            if (filled($data[$field] ?? null) && ! \App\Http\Controllers\PwaIconController::uploadedPng($data[$field], $size)) {
+                throw \Illuminate\Validation\ValidationException::withMessages([
+                    'data.'.$field => 'İkon '.$size.' × '.$size.' boyutunda geçerli bir PNG olmalıdır.',
+                ]);
+            }
+        }
         $settings = SiteSetting::current() ?? new SiteSetting();
         $settings->id = 1;
         $settings->fill([

@@ -19,9 +19,15 @@ class PwaManifestTest extends TestCase
         $this->assertCount(3, $manifest['icons']);
 
         foreach (array_merge($manifest['icons'], $manifest['screenshots']) as $image) {
-            $file = public_path(ltrim($image['src'], '/'));
-            $this->assertFileExists($file);
-            $info = getimagesize($file);
+            if (str_starts_with($image['src'], '/pwa/icons/')) {
+                $response = $this->get($image['src'])->assertOk()->assertHeader('Content-Type', 'image/png');
+                $info = getimagesizefromstring($response->getContent());
+            } else {
+                $file = public_path(ltrim($image['src'], '/'));
+                $this->assertFileExists($file);
+                $info = getimagesize($file);
+            }
+            $this->assertIsArray($info);
             $this->assertSame($image['sizes'], $info[0].'x'.$info[1]);
             $this->assertSame($image['type'], $info['mime']);
         }
@@ -46,25 +52,27 @@ class PwaManifestTest extends TestCase
         $this->assertSame($preview['type'], $info['mime']);
     }
 
-    public function test_manifest_prefers_site_branding_logo(): void
+    public function test_panel_icons_take_priority_over_site_branding_and_update_manifest_revision(): void
     {
         $disk = \Illuminate\Support\Facades\Storage::fake('public');
-        $disk->put('site-branding/logo.png', file_get_contents(public_path('assets/img/meta/pwa-icon-512.png')));
         $settings = \App\Models\SiteSetting::current() ?? new \App\Models\SiteSetting;
         $settings->id = 1;
         $settings->brand_logo_path = 'site-branding/logo.png';
+        $disk->put('site-branding/logo.png', file_get_contents(public_path('assets/img/meta/pwa-icon-512.png')));
         $settings->save();
 
-        $manifest = $this->get('/manifest.webmanifest')->assertOk()->json();
-        $this->assertSame('/site-branding/logo', $manifest['icons'][0]['src']);
-        $this->assertSame('512x512', $manifest['icons'][0]['sizes']);
-        $this->get('/site-branding/logo')->assertOk()->assertHeader('Content-Type', 'image/png');
-        foreach ([192, 512] as $size) {
-            $response = $this->get('/site-branding/logo?size='.$size)->assertOk()->assertHeader('Content-Type', 'image/png');
-            $info = getimagesizefromstring($response->getContent());
-            $this->assertSame($size, $info[0]);
-            $this->assertSame($size, $info[1]);
-        }
+        $before = $this->get('/manifest.webmanifest')->assertOk()->json();
+        $this->assertStringStartsWith('/pwa/icons/512.png?', $before['icons'][1]['src']);
+
+        $custom = file_get_contents(public_path('assets/img/meta/pwa-icon-maskable-512.png'));
+        $disk->put('pwa/icons/custom.png', $custom);
+        $settings->pwa_icon_512_path = 'pwa/icons/custom.png';
+        $settings->save();
+
+        $after = $this->get('/manifest.webmanifest')->assertOk()->json();
+        $this->assertNotSame($before['icons'][1]['src'], $after['icons'][1]['src']);
+        $response = $this->get($after['icons'][1]['src'])->assertOk()->assertHeader('Content-Type', 'image/png');
+        $this->assertSame($custom, $response->getContent());
     }
 
     public function test_custom_protocol_only_opens_allowlisted_internal_pages(): void
