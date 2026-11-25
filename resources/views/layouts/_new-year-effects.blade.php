@@ -1,6 +1,6 @@
 <script>
 (() => {
-    const options = @json(['snow' => (bool) $newYearSettings['snow'], 'confetti' => (bool) $newYearSettings['confetti'], 'target' => \App\Support\NewYearMode::target($newYearSettings)->getTimestamp() * 1000]);
+    const options = {{ \Illuminate\Support\Js::from(['snow' => (bool) $newYearSettings['snow'], 'confetti' => (bool) $newYearSettings['confetti'], 'target' => \App\Support\NewYearMode::target($newYearSettings)->getTimestamp() * 1000]) }};
     const card = document.querySelector('[data-ny-card]');
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
     let snowLayer = null;
