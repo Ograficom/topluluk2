@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'ografi-pwa-v10';
+const CACHE_VERSION = 'ografi-pwa-v11';
 const STATIC_CACHE = CACHE_VERSION + '-static';
 const OFFLINE_URL = '/offline';
 
@@ -45,10 +45,17 @@ self.addEventListener('fetch', event => {
         event.respondWith((async () => {
             const cache = await caches.open(STATIC_CACHE);
             const cached = await cache.match(request);
-            if (cached) return cached;
+            // Theme files can change independently of HTML and must be revalidated
+            // online; otherwise a PWA can keep an incompatible mobile stylesheet.
+            const isThemeCode = request.destination === 'style' || request.destination === 'script'
+                || /\.(?:css|m?js)$/i.test(url.pathname);
+            if (cached && !isThemeCode) return cached;
             try {
-                const response = await fetch(request);
-                if (response.ok && response.type === 'basic') cache.put(request, response.clone());
+                const response = await fetch(request, isThemeCode ? { cache: 'no-cache' } : {});
+                if (response.ok && response.type === 'basic') {
+                    try { await cache.put(request, response.clone()); } catch (_) { /* Storage may be unavailable. */ }
+                }
+                if (response.status >= 500 && cached) return cached;
                 return response;
             } catch (error) { return cached || Response.error(); }
         })());
