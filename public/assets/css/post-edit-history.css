@@ -37,14 +37,15 @@
 
 /* A visibility-hidden absolute dropdown still contributes to scrollable overflow.
    Do not let an unopened history menu widen the mobile layout viewport. */
-.post-edit-history:not(.is-open):not(.show) > .post-edit-history-menu {
+.post-edit-history:not(.is-open):not(.show) > .post-edit-history-menu:not(.show) {
     display:none!important;
 }
 .user-box .meta .post-publication-meta {min-width:0;max-width:100%;}
 
 /* The open menu must not enlarge the document's horizontal scroll area. */
 @media screen and (max-width:720px) {
-    .post-edit-history:is(.is-open,.show) > .post-edit-history-menu {
+    .post-edit-history:is(.is-open,.show) > .post-edit-history-menu,
+    .post-edit-history > .post-edit-history-menu.show {
         position:fixed!important;
         left:var(--history-viewport-left,12px)!important;
         right:auto!important;

@@ -11182,38 +11182,10 @@ body:not(.is-messenger-conversation) main.container .main__widgets {
     .feed .editorjs-content :is(pre, .editorjs-table-wrap) { max-width: 100%; overflow-x: auto; }
 }
 
-/* Keep the original Repost single-column mobile layout at viewport width. */
+/* Repost's original mobile grid is unchanged. Closed feed menus must not
+   contribute to scrollable overflow: visibility:hidden alone is insufficient. */
 @media screen and (max-width:720px) {
-    body:not(.is-messenger-conversation) > .header > .header__inner.container,
-    body:not(.is-messenger-conversation) > main.container {
-        box-sizing:border-box;
-        width:100%!important;
-        max-width:100%!important;
-        min-width:0!important;
-        margin-inline:auto!important;
-    }
-    body:not(.is-messenger-conversation) > main.container > .main {
-        width:100%;
-        min-width:0;
-        max-width:100%;
-        grid-template-columns:minmax(0,1fr)!important;
-    }
-    body:not(.is-messenger-conversation) > main.container > .main > .feed {
-        width:100%;
-        max-width:100%;
-        min-width:0;
-    }
-}
-
-/* Mobile page boundary: keep horizontal scrolling inside carousels/tables,
-   never on the document. Preserve the original Repost sizing and vertical scroll. */
-@media screen and (max-width:720px) {
-    html:has(body:not(.is-messenger-conversation)),
-    body:not(.is-messenger-conversation) {
-        width:100%;max-width:100%;min-width:0;overflow-x:clip;
-    }
-    body:not(.is-messenger-conversation) > .header,
-    body:not(.is-messenger-conversation) > main.container {
-        min-width:0;max-width:100%;
+    .feed .dropdown:not(.is-open):not(.show) > .dropdown-menu:not(.show) {
+        display:none!important;
     }
 }
