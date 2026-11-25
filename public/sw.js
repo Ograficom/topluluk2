@@ -1,11 +1,11 @@
-const CACHE_VERSION = 'ografi-pwa-v2';
+const CACHE_VERSION = 'ografi-pwa-v3';
 const STATIC_CACHE = CACHE_VERSION + '-static';
 const OFFLINE_URL = '/offline';
 
 self.addEventListener('install', event => {
     event.waitUntil((async () => {
         const cache = await caches.open(STATIC_CACHE);
-        await Promise.allSettled([OFFLINE_URL, '/assets/img/meta/pwa-icon.svg'].map(url => cache.add(url)));
+        await Promise.allSettled([OFFLINE_URL, '/assets/img/meta/pwa-icon-192.png'].map(url => cache.add(url)));
         await self.skipWaiting();
     })());
 });
@@ -28,7 +28,10 @@ self.addEventListener('fetch', event => {
             try { return await fetch(request); }
             catch (error) {
                 const cache = await caches.open(STATIC_CACHE);
-                return (await cache.match(OFFLINE_URL)) || Response.error();
+                return (await cache.match(OFFLINE_URL)) || new Response(
+                    '<!doctype html><html lang="tr"><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>OgraFi — Çevrimdışı</title><main><h1>İnternet bağlantısı yok</h1><p>Bağlantın yeniden geldiğinde sayfayı yenile.</p><a href="/">Tekrar dene</a></main></html>',
+                    { headers: { 'Content-Type': 'text/html; charset=utf-8' } }
+                );
             }
         })());
         return;
