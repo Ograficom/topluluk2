@@ -19,15 +19,9 @@ class PwaManifestTest extends TestCase
         $this->assertCount(3, $manifest['icons']);
 
         foreach (array_merge($manifest['icons'], $manifest['screenshots']) as $image) {
-            if (str_starts_with($image['src'], '/pwa/icons/')) {
-                $icon = $this->get($image['src'])->assertOk()->assertHeader('Content-Type', 'image/png');
-                $info = getimagesizefromstring($icon->getContent());
-            } else {
-                $file = public_path(ltrim($image['src'], '/'));
-                $this->assertFileExists($file);
-                $info = getimagesize($file);
-            }
-            $this->assertIsArray($info);
+            $file = public_path(ltrim($image['src'], '/'));
+            $this->assertFileExists($file);
+            $info = getimagesize($file);
             $this->assertSame($image['sizes'], $info[0].'x'.$info[1]);
             $this->assertSame($image['type'], $info['mime']);
         }

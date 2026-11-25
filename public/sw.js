@@ -1,11 +1,11 @@
-const CACHE_VERSION = 'ografi-pwa-v6';
+const CACHE_VERSION = 'ografi-pwa-v5';
 const STATIC_CACHE = CACHE_VERSION + '-static';
 const OFFLINE_URL = '/offline';
 
 self.addEventListener('install', event => {
     event.waitUntil((async () => {
         const cache = await caches.open(STATIC_CACHE);
-        await Promise.allSettled([OFFLINE_URL, '/pwa/icons/192.png'].map(url => cache.add(url)));
+        await Promise.allSettled([OFFLINE_URL, '/assets/img/meta/pwa-icon-192.png'].map(url => cache.add(url)));
         await self.skipWaiting();
     })());
 });
@@ -136,7 +136,7 @@ self.addEventListener('widgetclick', event => {
 const PUBLIC_ASSET_SYNC = 'ografi-public-assets';
 const PUBLIC_OFFLINE_ASSETS = [
     '/offline',
-    '/pwa/icons/192.png',
+    '/assets/img/meta/pwa-icon-192.png',
     '/widgets/quick-access.json',
     '/widgets/quick-access-data.json'
 ];
