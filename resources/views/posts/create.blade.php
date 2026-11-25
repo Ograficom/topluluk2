@@ -603,6 +603,7 @@
     flex:0 0 16px!important;width:16px!important;height:16px!important;
     stroke:#8996a9!important;margin-right:6px!important;
 }
+.post-tags-dialog .post-tags-input-wrap:has(#post-tags-input:not(:placeholder-shown)) > svg {stroke:#2878f0!important;}
 .post-tags-dialog .post-tags-input-wrap input#post-tags-input {
     flex:1 1 24px!important;width:24px!important;min-width:24px!important;
     height:28px!important;min-height:28px!important;max-height:28px!important;
@@ -1939,7 +1940,7 @@
             if (!tagsWrap || !tagsInput) return;
             tagsWrap.querySelectorAll('.post-tag-chip').forEach(chip => chip.remove());
             tagsWrap.classList.toggle('has-tags', selectedTags.length > 0);
-            tagsInput.placeholder = selectedTags.length ? '' : 'Etiketleri girin';
+            tagsInput.placeholder = selectedTags.length ? ' ' : 'Etiketleri girin';
             selectedTags.forEach((name, index) => {
                 const chip = document.createElement('span');
                 chip.className = 'post-tag-chip';
