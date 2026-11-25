@@ -1,8 +1,10 @@
 <style>
-    .ografi-ny-hat{position:absolute;left:-4px;top:-7px;width:24px;height:23px;pointer-events:none;transform:rotate(-13deg);z-index:1}
+    .ografi-ny-hat{position:absolute;left:-2px;top:-6px;width:20px;height:19px;pointer-events:none;transform:rotate(-10deg);z-index:2;filter:drop-shadow(0 1px 2px rgba(0,0,0,.12))}
     .ografi-ny-logo{position:relative}
-    .ografi-ny-lights{position:absolute;left:0;right:0;bottom:0;height:3px;background:#4b647d;pointer-events:none;z-index:2}
-    .ografi-ny-lights::after{content:"";position:absolute;top:0;left:0;right:0;height:9px;background:radial-gradient(ellipse 4px 6px at 12px 3px,#ff6d79 80%,transparent 95%),radial-gradient(ellipse 4px 6px at 36px 3px,#ffd36b 80%,transparent 95%),radial-gradient(ellipse 4px 6px at 60px 3px,#7fe4ba 80%,transparent 95%),radial-gradient(ellipse 4px 6px at 84px 3px,#80c8ff 80%,transparent 95%);background-size:96px 9px;filter:drop-shadow(0 2px 3px #92caff)}
+    .ografi-ny-lights{position:absolute;left:12px;right:12px;bottom:0;height:8px;pointer-events:none;z-index:2;opacity:.96;overflow:hidden}
+    .ografi-ny-lights::before{content:"";position:absolute;inset:0 0 auto;height:3px;background:radial-gradient(ellipse 19px 4px at 20px -1px,transparent 85%,#8295aa 92%,transparent 100%) repeat-x;background-size:40px 4px}
+    .ografi-ny-lights::after{content:"";position:absolute;top:1px;left:0;right:0;height:7px;background:radial-gradient(ellipse 3px 4px at 20px 2px,#ff8290 78%,transparent 98%),radial-gradient(ellipse 3px 4px at 60px 2px,#ffd36b 78%,transparent 98%),radial-gradient(ellipse 3px 4px at 100px 2px,#7fe4ba 78%,transparent 98%),radial-gradient(ellipse 3px 4px at 140px 2px,#80c8ff 78%,transparent 98%);background-size:160px 7px;filter:drop-shadow(0 1px 2px rgba(146,202,255,.5))}
+    @media(max-width:768px){.ografi-ny-hat{left:-1px;top:-5px;width:17px;height:16px}.ografi-ny-lights{left:8px;right:8px}}
     .ografi-ny-card{position:relative;isolation:isolate;overflow:hidden;box-sizing:border-box;width:100%;margin:0 0 16px;padding:24px 16px 30px;text-align:center;color:#fff;border-radius:16px;background:radial-gradient(ellipse at 50% 0%,#286cb3,#0b356e 58%,#102653);box-shadow:0 4px 16px #143e7626}
     .ografi-ny-card .ografi-ny-scene{position:absolute;inset:auto 0 0;width:100%;height:100%;z-index:-1;pointer-events:none}
     .ografi-ny-card .ografi-ny-heading{font-size:clamp(15px,2.6vw,23px);font-weight:600;margin:0;color:#fff}
