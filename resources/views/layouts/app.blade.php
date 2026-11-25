@@ -151,7 +151,7 @@
     <link rel="stylesheet" href="{{ asset('assets/css/ografi-app-extensions.css') }}?v=20261125-gallery-visible-v2">
     <link rel="stylesheet" href="{{ asset('assets/css/engine.css') }}?v=repost-original-20261124">
     <link rel="stylesheet" href="{{ asset('assets/css/ografi-engine-extensions.css') }}?v=20261124-v1">
-    <link rel="stylesheet" href="{{ asset('assets/css/ografi-overrides.css') }}?v=20261124-mobile-header-drawer-v2">
+    <link rel="stylesheet" href="{{ asset('assets/css/ografi-overrides.css') }}?v=20261126-mobile-width-v3">
     <script>
         (() => {
             const root = document.documentElement;
@@ -191,7 +191,7 @@
         })();
     </script>
     @vite('resources/js/app.js')
-    <link rel="stylesheet" href="{{ asset('assets/css/post-edit-history.css') }}?v=2">
+    <link rel="stylesheet" href="{{ asset('assets/css/post-edit-history.css') }}?v=3">
     @stack('head')
     @if (! request()->routeIs('cp.*'))
         <script type="application/ld+json">

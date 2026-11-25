@@ -34,3 +34,10 @@
 .post-edit-history .post-edit-history-entry {padding:8px 10px;border-radius:11px;background:var(--gray-100,#f7f8fa);display:grid;gap:4px;overflow-wrap:anywhere;color:var(--text-color);font-size:.85rem;line-height:1.35;}
 .post-edit-history .post-edit-history-entry time {color:var(--gray-500,#71839d);font-size:.75rem;white-space:normal;}
 .post-edit-history [hidden] {display:none!important;}
+
+/* A visibility-hidden absolute dropdown still contributes to scrollable overflow.
+   Do not let an unopened history menu widen the mobile layout viewport. */
+.post-edit-history:not(.is-open):not(.show) > .post-edit-history-menu {
+    display:none!important;
+}
+.user-box .meta .post-publication-meta {min-width:0;max-width:100%;}
