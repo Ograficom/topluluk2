@@ -188,7 +188,7 @@
                             <h{{ min(4, max(2, (int) ($blockData['level'] ?? 2))) }} @if(isset($tocHeadings[$blockIndex])) id="{{ $tocHeadings[$blockIndex]['id'] }}" class="post-toc-heading" @endif>{!! \App\Support\EditorInlineHtml::render($blockData['text'] ?? '') !!}</h{{ min(4, max(2, (int) ($blockData['level'] ?? 2))) }}>
                             @break
                         @case('paragraph')
-                            @if (filled($blockData['text'] ?? ''))<p@if(isset($tocHeadings[$blockIndex])) id="{{ $tocHeadings[$blockIndex]['id'] }}" class="post-toc-heading"@endif>{!! \App\Support\EditorInlineHtml::render($blockData['text']) !!}</p>@endif
+                            @if (filled($blockData['text'] ?? ''))@if(isset($tocHeadings[$blockIndex]))<p id="{{ $tocHeadings[$blockIndex]['id'] }}" class="post-toc-heading">@else<p>@endif{!! \App\Support\EditorInlineHtml::render($blockData['text']) !!}</p>@endif
                             @if (! $galleryHasPosition && ! $inlineGalleryShown && filled($blockData['text'] ?? ''))
                                 @include('posts._inline-gallery', ['urls' => $inlineGalleryUrls, 'post' => $post])
                                 @php $inlineGalleryShown = true; @endphp
