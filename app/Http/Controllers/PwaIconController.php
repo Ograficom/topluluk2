@@ -17,7 +17,7 @@ class PwaIconController extends Controller
     public static function manifestIcons(?SiteSetting $settings): array
     {
         $revision = substr(hash('sha256', json_encode([
-            'ografi-blue-20261125-v1',
+            'ografi-blue-20261125-v2',
             $settings?->pwa_icon_192_path,
             $settings?->pwa_icon_512_path,
             $settings?->pwa_maskable_icon_512_path,
@@ -25,9 +25,19 @@ class PwaIconController extends Controller
         ])), 0, 16);
 
         $icons = [];
-        foreach (self::ICONS as $icon => [$column, $size, $purpose]) {
+        $hasStandardIcon = self::uploadedPng($settings?->pwa_icon_192_path, 192) !== null
+            || self::uploadedPng($settings?->pwa_icon_512_path, 512) !== null;
+        $canResize = function_exists('imagecreatefromstring') && function_exists('imagepng');
+        foreach (self::ICONS as $icon => [$column, $size, $purpose, $fallback]) {
+            // Use an actual public PNG for defaults. Uploaded icons use an
+            // extensionless Laravel route because some web servers intercept
+            // requests ending in .png before they reach the application.
+            $custom = self::uploadedPng($settings?->{$column}, $size) !== null
+                || ($hasStandardIcon && $canResize);
             $icons[] = [
-                'src' => route('pwa.icon', ['icon' => $icon, 'v' => $revision], false),
+                'src' => $custom
+                    ? route('pwa.icon', ['icon' => $icon, 'v' => $revision], false)
+                    : '/assets/img/meta/'.$fallback.'?v='.$revision,
                 'sizes' => $size.'x'.$size,
                 'type' => 'image/png',
                 'purpose' => $purpose,

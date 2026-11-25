@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'ografi-pwa-v7';
+const CACHE_VERSION = 'ografi-pwa-v8';
 const STATIC_CACHE = CACHE_VERSION + '-static';
 const OFFLINE_URL = '/offline';
 
@@ -57,7 +57,7 @@ self.addEventListener('push', event => {
     catch (error) { payload = { title: 'OgraFi', body: event.data ? event.data.text() : 'Yeni bildirimin var.' }; }
     event.waitUntil(self.registration.showNotification(payload.title || 'OgraFi', {
         body: payload.body || 'Yeni bir bildirimin var.',
-        icon: payload.icon || '/pwa/icons/192.png',
+        icon: payload.icon || '/pwa/icon/192',
         badge: '/assets/img/meta/logo.svg',
         tag: payload.tag || undefined,
         data: { url: payload.url || '/' },

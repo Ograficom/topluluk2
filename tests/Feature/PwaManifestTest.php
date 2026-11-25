@@ -19,11 +19,11 @@ class PwaManifestTest extends TestCase
         $this->assertCount(3, $manifest['icons']);
 
         foreach (array_merge($manifest['icons'], $manifest['screenshots']) as $image) {
-            if (str_starts_with($image['src'], '/pwa/icons/')) {
+            if (str_starts_with($image['src'], '/pwa/icon/')) {
                 $response = $this->get($image['src'])->assertOk()->assertHeader('Content-Type', 'image/png');
                 $info = getimagesizefromstring($response->getContent());
             } else {
-                $file = public_path(ltrim($image['src'], '/'));
+                $file = public_path(ltrim(parse_url($image['src'], PHP_URL_PATH), '/'));
                 $this->assertFileExists($file);
                 $info = getimagesize($file);
             }
@@ -62,7 +62,7 @@ class PwaManifestTest extends TestCase
         $settings->save();
 
         $before = $this->get('/manifest.webmanifest')->assertOk()->json();
-        $this->assertStringStartsWith('/pwa/icons/512.png?', $before['icons'][1]['src']);
+        $this->assertStringStartsWith('/assets/img/meta/pwa-icon-512.png?', $before['icons'][1]['src']);
 
         $custom = file_get_contents(public_path('assets/img/meta/pwa-icon-maskable-512.png'));
         $disk->put('pwa/icons/custom.png', $custom);
@@ -71,6 +71,7 @@ class PwaManifestTest extends TestCase
 
         $after = $this->get('/manifest.webmanifest')->assertOk()->json();
         $this->assertNotSame($before['icons'][1]['src'], $after['icons'][1]['src']);
+        $this->assertStringStartsWith('/pwa/icon/512?', $after['icons'][1]['src']);
         $response = $this->get($after['icons'][1]['src'])->assertOk()->assertHeader('Content-Type', 'image/png');
         $this->assertSame($custom, $response->getContent());
     }

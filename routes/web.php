@@ -25,7 +25,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
 
 
-Route::get('/pwa/icons/{icon}.png', [\App\Http\Controllers\PwaIconController::class, 'show'])
+Route::get('/pwa/icon/{icon}', [\App\Http\Controllers\PwaIconController::class, 'show'])
     ->where('icon', '192|512|maskable-512')->name('pwa.icon');
 
 Route::get('/manifest.webmanifest', function () {
