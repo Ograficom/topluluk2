@@ -147,14 +147,18 @@
                 $renderedImageUrls = [];
                 $tocHeadings = [];
                 foreach ($editorBlocks ?? [] as $index => $block) {
-                    if (! is_array($block) || ($block['type'] ?? '') !== 'header') continue;
+                    if (! is_array($block) || ! in_array($block['type'] ?? '', ['header', 'paragraph'], true)) continue;
                     $headingHtml = \App\Support\EditorInlineHtml::render(data_get($block, 'data.text', ''));
+                    $isHeader = $block['type'] === 'header';
+                    // Legacy articles sometimes use a separate fully bold paragraph as a subheading.
+                    if (! $isHeader && ! preg_match('~^\s*<(b|strong)>(?:(?!<br\b).)*</\1>\s*$~isu', $headingHtml)) continue;
                     $headingText = trim(preg_replace('/\s+/u', ' ', html_entity_decode(strip_tags(str_ireplace('<br>', ' ', $headingHtml)), ENT_QUOTES | ENT_HTML5, 'UTF-8')) ?? '');
                     if ($headingText === '') continue;
+                    if (! $isHeader && (mb_strlen($headingText) > 100 || preg_match('/[.!?…]$/u', $headingText))) continue;
                     $tocHeadings[$index] = [
                         'id' => 'post-'.$post->id.'-heading-'.($index + 1),
                         'text' => $headingText,
-                        'level' => min(4, max(2, (int) data_get($block, 'data.level', 2))),
+                        'level' => $isHeader ? min(4, max(2, (int) data_get($block, 'data.level', 2))) : 2,
                     ];
                 }
             @endphp
@@ -184,7 +188,7 @@
                             <h{{ min(4, max(2, (int) ($blockData['level'] ?? 2))) }} @if(isset($tocHeadings[$blockIndex])) id="{{ $tocHeadings[$blockIndex]['id'] }}" class="post-toc-heading" @endif>{!! \App\Support\EditorInlineHtml::render($blockData['text'] ?? '') !!}</h{{ min(4, max(2, (int) ($blockData['level'] ?? 2))) }}>
                             @break
                         @case('paragraph')
-                            @if (filled($blockData['text'] ?? ''))<p>{!! \App\Support\EditorInlineHtml::render($blockData['text']) !!}</p>@endif
+                            @if (filled($blockData['text'] ?? ''))<p@if(isset($tocHeadings[$blockIndex])) id="{{ $tocHeadings[$blockIndex]['id'] }}" class="post-toc-heading"@endif>{!! \App\Support\EditorInlineHtml::render($blockData['text']) !!}</p>@endif
                             @if (! $galleryHasPosition && ! $inlineGalleryShown && filled($blockData['text'] ?? ''))
                                 @include('posts._inline-gallery', ['urls' => $inlineGalleryUrls, 'post' => $post])
                                 @php $inlineGalleryShown = true; @endphp

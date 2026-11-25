@@ -753,6 +753,16 @@ class RepostFeedTest extends TestCase
             ->assertSee('id="'.$prefix.'4"', false)
             ->assertDontSee('href="#'.$prefix.'5"', false)
             ->assertSee('&lt;örnek&gt;', false);
+        $post->update(['body' => json_encode(['blocks' => [
+            ['type' => 'paragraph', 'data' => ['text' => '<strong>Eski ara başlık</strong>']],
+            ['type' => 'paragraph', 'data' => ['text' => '<b>Bu bir açıklama cümlesidir.</b>']],
+            ['type' => 'paragraph', 'data' => ['text' => 'Normal paragraf']],
+        ]])]);
+        $this->get(route('posts.show', $post))->assertOk()
+            ->assertSee('(1 başlık)')
+            ->assertSee('href="#'.$prefix.'1"', false)
+            ->assertDontSee('href="#'.$prefix.'2"', false)
+            ->assertDontSee('href="#'.$prefix.'3"', false);
         $post->update(['body' => 'Başlıksız düz yazı']);
         $this->get(route('posts.show', $post))->assertOk()
             ->assertDontSee('data-post-toc', false);
