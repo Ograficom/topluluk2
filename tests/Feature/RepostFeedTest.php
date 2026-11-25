@@ -807,7 +807,7 @@ class RepostFeedTest extends TestCase
             ->assertSee('data-gallery-open', false)
             ->assertSee('data-composer-tags-toggle', false)
             ->assertSee('id="postSettingsBtn"', false);
-        $this->post(route('posts.reposts.toggle', $original), [])->assertSessionHasErrors(['title', 'body']);
+        $this->post(route('posts.reposts.toggle', $original), [])->assertSessionHasErrors('body');
         $this->post(route('posts.reposts.toggle', $original), [
             'title' => 'Alıntı üzerine düşünceler',
             'body' => 'Benim değerlendirmem.',
@@ -830,6 +830,16 @@ class RepostFeedTest extends TestCase
         $this->get(route('posts.show', $quote))->assertOk()->assertSee('Benim değerlendirmem.')->assertSee('Orijinal yazı');
         $this->get(route('posts.index'))->assertOk()->assertSee('Benim değerlendirmem.');
         $this->get(route('profiles.show', $viewer))->assertOk()->assertSee('Benim değerlendirmem.');
+        $this->post(route('posts.reposts.toggle', $original), [
+            'body' => json_encode(['blocks' => [['type' => 'paragraph', 'data' => ['text' => 'Başlıksız yorum']]]]),
+        ])->assertRedirect();
+        $this->assertDatabaseHas('posts', [
+            'quoted_post_id' => $original->id,
+            'user_id' => $viewer->id,
+            'title' => 'Yeniden paylaşım: '.$original->title,
+            'excerpt' => 'Başlıksız yorum',
+            'is_published' => true,
+        ]);
         $original->update(['is_published' => false]);
         $this->get(route('posts.show', $quote))->assertOk()->assertSee('Orijinal gönderi artık görüntülenemiyor.');
         $this->get(route('posts.reposts.create', $original))->assertNotFound();

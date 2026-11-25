@@ -128,9 +128,9 @@ class PostController extends Controller
     public function publishPost(Request $request, ?Post $quoteSource = null): RedirectResponse
     {
         $validated = $request->validate([
-            'title' => ['required', 'string', 'max:255'],
+            'title' => [$quoteSource ? 'nullable' : 'required', 'string', 'max:255'],
             'channel_id' => ['nullable', Rule::exists('channels', 'id')->where('is_active', true)],
-            'excerpt' => ['required', 'string', 'max:500'],
+            'excerpt' => [$quoteSource ? 'nullable' : 'required', 'string', 'max:500'],
             'meta_description' => ['nullable', 'string', 'max:500'],
             'content_source' => ['nullable', 'string', 'max:1000'],
             'location' => ['nullable', 'string', 'max:255'],
@@ -146,6 +146,20 @@ class PostController extends Controller
             'is_adult' => ['sometimes', 'boolean'],
             'show_toc' => ['sometimes', 'boolean'],
         ]);
+
+        if ($quoteSource) {
+            $validated['title'] = filled($validated['title'] ?? null)
+                ? $validated['title']
+                : Str::limit('Yeniden paylaşım: '.$quoteSource->title, 255, '');
+            if (! filled($validated['excerpt'] ?? null)) {
+                $validated['excerpt'] = Str::limit(trim(strip_tags((string) $validated['body'])), 500, '') ?: $validated['title'];
+                $decoded = json_decode((string) $validated['body'], true);
+                if (is_array($decoded) && is_array($decoded['blocks'] ?? null)) {
+                    $text = collect($decoded['blocks'])->map(fn ($block) => is_array($block) && is_string(data_get($block, 'data.text')) ? strip_tags(data_get($block, 'data.text')) : '')->filter()->implode(' ');
+                    $validated['excerpt'] = Str::limit(trim(html_entity_decode($text, ENT_QUOTES | ENT_HTML5, 'UTF-8')), 500, '') ?: $validated['title'];
+                }
+            }
+        }
 
         $slugBase = Str::limit(Str::slug($validated['title']) ?: 'post', 240, '');
         $slug = $slugBase;

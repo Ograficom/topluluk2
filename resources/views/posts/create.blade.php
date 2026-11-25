@@ -6,7 +6,7 @@
     @unless(isset($post) || isset($quoteSource))
         <script src="{{ asset('assets/js/pwa-file-launch.js') }}" defer></script>
     @endunless
-    @if ($errors->any())
+    @if ($errors->any() && ! isset($quoteSource))
         <div class="card card-body color-red" role="alert">
             @foreach ($errors->all() as $error)
                 <p>{{ $error }}</p>
@@ -293,7 +293,14 @@
 
     <!-- 3. Başlık ve Metin Alanı -->
     <div class="repost-modal-body">
-      <input type="text" class="repost-title-input" id="post-title" name="title" value="{{ old('title', $post->title ?? $sharedTitle ?? '') }}" maxlength="255" placeholder="Başlık" aria-label="Başlık" required>
+      @if (isset($quoteSource) && $errors->any())
+          <div class="color-red small" role="alert" data-quote-server-errors>
+              @foreach ($errors->all() as $error)
+                  <p>{{ $error }}</p>
+              @endforeach
+          </div>
+      @endif
+      <input type="text" class="repost-title-input" id="post-title" name="title" value="{{ old('title', $post->title ?? $sharedTitle ?? '') }}" maxlength="255" placeholder="Başlık" aria-label="Başlık" @if(!isset($quoteSource)) required @endif>
       <input type="hidden" id="post-body" name="body" value="{{ old('body', $post->body ?? $sharedBody ?? '') }}">
       <textarea id="post-excerpt" name="excerpt" hidden>{{ old('excerpt', $post->excerpt ?? $sharedExcerpt ?? '') }}</textarea>
       <div class="repost-editor-wrap">
@@ -1261,6 +1268,13 @@
         errorField.hidden = !isError;
       }
     };
+    if (form.hasAttribute('data-quote-composer')) {
+      form.addEventListener('invalid', event => {
+        const field = event.target;
+        setStatus(field.validationMessage || 'Lütfen gönderi alanlarını kontrol edin.', true);
+        errorField?.scrollIntoView({block:'nearest'});
+      }, true);
+    }
     const escapeText = text => String(text).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
     const plainTextBlocks = text => String(text).replace(/\r\n?/g, '\n').split(/\n{2,}/)
       .filter(part => part.trim()).map(part => ({
@@ -1487,6 +1501,7 @@
             }
             if (!savedData.blocks.length) {
               setStatus('Lütfen gönderi içeriğini yazın.', true);
+              if (form.hasAttribute('data-quote-composer')) errorField?.scrollIntoView({block:'nearest'});
               resetSubmit();
               return;
             }
