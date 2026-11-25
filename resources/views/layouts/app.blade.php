@@ -192,7 +192,7 @@
     </script>
     @vite('resources/js/app.js')
     <link rel="stylesheet" href="{{ asset('assets/css/post-edit-history.css') }}?v=5">
-    <link rel="stylesheet" href="{{ asset('assets/css/post-quote.css') }}?v=1">
+    <link rel="stylesheet" href="{{ asset('assets/css/post-quote.css') }}?v=2">
     @stack('head')
     @if (! request()->routeIs('cp.*'))
         <script type="application/ld+json">
@@ -1107,7 +1107,7 @@
                     modal.dataset.liveComposer = '1';
                     modal.setAttribute('role', 'dialog');
                     modal.setAttribute('aria-modal', 'true');
-                    modal.setAttribute('aria-label', 'Yeni yayın');
+                    modal.setAttribute('aria-label', modal.querySelector('.repost-modal-heading')?.textContent.trim() || 'Yeni yayın');
 
                     document.body.appendChild(modal);
                     document.body.classList.add('post-composer-open');
@@ -1125,7 +1125,7 @@
                         document.body.appendChild(newScript);
                     });
 
-                    modal.querySelector('#post-title')?.focus();
+                    modal.querySelector('#quote-comment, #post-title')?.focus();
                 } catch (error) {
                     console.error('Post composer açılamadı:', error);
                     window.location.href = trigger.href;

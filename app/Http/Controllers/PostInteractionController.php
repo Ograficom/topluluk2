@@ -93,7 +93,7 @@ class PostInteractionController extends Controller
     public function quoteForm(Request $request, Post $post): \Illuminate\View\View
     {
         $this->ensureQuoteSource($request, $post);
-        return view('posts.quote', ['source' => $post]);
+        return view('posts.create', ['quoteSource' => $post, 'user' => $request->user()]);
     }
 
     public function repost(Request $request, Post $post): RedirectResponse

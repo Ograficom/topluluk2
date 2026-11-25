@@ -798,7 +798,10 @@ class RepostFeedTest extends TestCase
         $channel = Channel::create(['name' => 'Alıntı', 'slug' => 'alinti', 'is_active' => true]);
         $original = $this->createPost($channel, ['user_id' => $author->id, 'title' => 'Orijinal yazı']);
         $this->actingAs($viewer)->get(route('posts.reposts.create', $original))->assertOk()
-            ->assertSee('Orijinal yazı')->assertSee('name="quote_comment"', false);
+            ->assertSee('Orijinal yazı')->assertSee('name="quote_comment"', false)
+            ->assertSee('id="createPostModal"', false)
+            ->assertSee('data-quote-composer', false)
+            ->assertDontSee('id="post-title"', false);
         $this->post(route('posts.reposts.toggle', $original), ['quote_comment' => ''])->assertSessionHasErrors('quote_comment');
         $this->post(route('posts.reposts.toggle', $original), ['quote_comment' => 'Benim değerlendirmem.'])->assertRedirect();
         $quote = Post::query()->where('quoted_post_id', $original->id)->firstOrFail();

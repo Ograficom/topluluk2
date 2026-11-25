@@ -12,3 +12,8 @@
 .post-quote-composer textarea{box-sizing:border-box;width:100%;min-width:0;padding:12px;border:1px solid var(--border-color);border-radius:12px;background:var(--card-bg);color:var(--text-color);font:inherit;resize:vertical;}
 .post-quote-composer textarea:focus{outline:2px solid var(--color-primary);outline-offset:1px;}
 .post-quote-composer__actions{display:flex;justify-content:flex-end;gap:8px;flex-wrap:wrap;}
+
+/* The quote composer uses the exact normal composer shell, with only a comment field. */
+#createPostBox[data-quote-composer] .post-quote-comment {box-sizing:border-box;min-width:0;max-width:100%;min-height:96px;padding:0;margin:0;border:0;border-radius:0;box-shadow:none;background:transparent;resize:vertical;overflow-y:auto;flex:none;}
+#createPostBox[data-quote-composer] .post-quote-preview {flex:none;}
+#createPostBox[data-quote-composer] .repost-publish-btn:disabled {opacity:.55;cursor:wait;}

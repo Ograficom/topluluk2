@@ -1,9 +1,12 @@
 @extends('layouts.app')
 
-@section('title', isset($post) ? 'Yazıyı düzenle' : 'Yazı oluştur')
+@section('title', isset($quoteSource) ? 'Yorumla yeniden paylaş' : (isset($post) ? 'Yazıyı düzenle' : 'Yazı oluştur'))
+@if (isset($quoteSource))
+    @section('robots', 'noindex,follow')
+@endif
 
 @section('content')
-    @unless(isset($post))
+    @unless(isset($post) || isset($quoteSource))
         <script src="{{ asset('assets/js/pwa-file-launch.js') }}" defer></script>
     @endunless
     @if ($errors->any())
@@ -246,7 +249,7 @@
 #createPostBox .repost-channel-option[aria-pressed="true"]::after {content:"✓";color:var(--color-primary,#0d6efd);font-size:13px;}
 #createPostBox .repost-channel-empty {margin:5px 0;text-align:center;font-size:12px;color:var(--color-gray,#64748b);}
         </style>
-        <form class="repost-modal-box" id="createPostBox" action="{{ isset($post) ? route('posts.update', $post) : route('posts.store') }}" method="POST" enctype="multipart/form-data">
+        <form class="repost-modal-box" id="createPostBox" @if(isset($quoteSource)) data-quote-composer @endif action="{{ isset($quoteSource) ? route('posts.reposts.toggle', $quoteSource) : (isset($post) ? route('posts.update', $post) : route('posts.store')) }}" method="POST" enctype="multipart/form-data">
     @csrf
     @if (isset($post))
         @method('PATCH')
@@ -254,7 +257,7 @@
 
     <!-- 1. Üst Başlık Satırı -->
     <div class="repost-modal-topbar">
-      <h2 class="repost-modal-heading">{{ isset($post) ? 'Gönderiyi düzenle' : 'Yeni gönderi' }}</h2>
+      <h2 class="repost-modal-heading">{{ isset($quoteSource) ? 'Yeniden paylaş' : (isset($post) ? 'Gönderiyi düzenle' : 'Yeni gönderi') }}</h2>
       <div class="repost-modal-actions">
         <button type="button" class="repost-icon-btn" id="toggleExpandBtn" title="Büyüt / Küçült" aria-label="Büyüt / Küçült" aria-pressed="false">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
@@ -271,6 +274,19 @@
     <div class="repost-modal-userbar">
       <img src="{{ $user->avatarUrl() }}" alt="" class="repost-modal-avatar">
       <span class="repost-modal-username">{{ $user->displayName() }}</span>
+      @if(isset($quoteSource))
+    </div>
+    <div class="repost-modal-body">
+      <textarea id="quote-comment" name="quote_comment" class="repost-content-textarea post-quote-comment" rows="4" maxlength="5000" required placeholder="Bu gönderi hakkında ne düşünüyorsunuz?" aria-label="Yorumunuz">{{ old('quote_comment') }}</textarea>
+      @error('quote_comment')<p class="color-red" role="alert">{{ $message }}</p>@enderror
+      @include('posts._quoted-post', ['source' => $quoteSource])
+    </div>
+    <div class="repost-modal-footer">
+      <div class="post-quote-composer__actions">
+        <button type="submit" class="repost-publish-btn">Yayınla</button>
+      </div>
+    </div>
+      @else
       <span class="repost-modal-sep">›</span>
       <div class="repost-channel-select" data-repost-channel>
       <select class="repost-modal-cat" id="post-channel" name="channel_id" aria-label="Kategori seç">
@@ -410,7 +426,9 @@
                 <button type="button" data-block-action="gallery"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="8" cy="9" r="1.5"/><path d="m3 17 5-5 4 4 4-5 5 6"/></svg><span>Görsel</span></button>
                 <button type="button" data-block-action="video"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="m10 9 5 3-5 3z"/></svg><span>Video</span></button>
             <button type="button" data-block-action="widget"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="m8 6-6 6 6 6m8-12 6 6-6 6"/></svg><span>Widget</span></button></div>
+      @endif
 </form>
+        @unless(isset($quoteSource))
         <div class="post-gallery-modal" data-gallery-modal hidden>
                         <div class="post-gallery-dialog" role="dialog" aria-modal="true" aria-labelledby="post-gallery-title">
                             <button type="button" class="post-gallery-back" data-gallery-close aria-label="Geri dön">
@@ -491,11 +509,53 @@
                 </p>
             </div>
         </div>
+        @endunless
     </div>
 
-
-
-
+@if(isset($quoteSource))
+<script>
+(() => {
+    const start = () => {
+        const form = document.querySelector('#createPostBox[data-quote-composer]');
+        if (!form || form.dataset.quoteInitialized) return;
+        form.dataset.quoteInitialized = '1';
+        const modal = form.closest('#createPostModal');
+        const textarea = form.querySelector('#quote-comment');
+        const expand = form.querySelector('#toggleExpandBtn');
+        const close = form.querySelector('#closePostModalBtn');
+        const publish = form.querySelector('[type="submit"]');
+        expand?.addEventListener('click', () => {
+            const expanded = form.classList.toggle('is-expanded');
+            expand.setAttribute('aria-pressed', String(expanded));
+        });
+        close?.addEventListener('click', () => {
+            if (!modal.dataset.liveComposer) window.location.href = @json(route('posts.show', $quoteSource));
+        });
+        form.addEventListener('keydown', event => {
+            if (event.key === 'Escape' && !modal.dataset.liveComposer) {
+                event.preventDefault();
+                close?.click();
+            }
+        });
+        form.addEventListener('submit', event => {
+            if (!textarea.value.trim()) {
+                event.preventDefault();
+                textarea.setCustomValidity('Yorumunuzu yazın.');
+                textarea.reportValidity();
+                return;
+            }
+            if (publish.disabled) { event.preventDefault(); return; }
+            publish.disabled = true;
+            publish.textContent = 'Yayınlanıyor…';
+        });
+        textarea.addEventListener('input', () => textarea.setCustomValidity(''));
+        textarea.focus({preventScroll:true});
+    };
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start, {once:true});
+    else start();
+})();
+</script>
+@else
 <style id="post-tags-modal-style">
 .post-tags-modal[hidden] { display:none !important; }
 .post-tags-modal.is-open {
@@ -2352,4 +2412,5 @@
     }
 })();
 </script>
+@endif
 @endsection
