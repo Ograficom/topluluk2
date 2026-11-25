@@ -72,6 +72,29 @@ Route::get('/manifest.webmanifest', function () {
         'theme_color' => $settings?->pwa_theme_color ?: '#2563eb',
         'categories' => ['social', 'news'],
         'icons' => $icons,
+        'shortcuts' => [
+            ['name' => 'Gönderi oluştur', 'short_name' => 'Yeni gönderi', 'description' => 'Yeni bir gönderi yaz', 'url' => '/posts/create', 'icons' => [['src' => '/assets/img/meta/pwa-icon-192.png', 'sizes' => '192x192', 'type' => 'image/png']]],
+            ['name' => 'Bildirimler', 'short_name' => 'Bildirimler', 'description' => 'Bildirimlerini görüntüle', 'url' => '/notifications', 'icons' => [['src' => '/assets/img/meta/pwa-icon-192.png', 'sizes' => '192x192', 'type' => 'image/png']]],
+            ['name' => 'Mesajlar', 'short_name' => 'Mesajlar', 'description' => 'Sohbetlerini aç', 'url' => '/messenger', 'icons' => [['src' => '/assets/img/meta/pwa-icon-192.png', 'sizes' => '192x192', 'type' => 'image/png']]],
+            ['name' => 'Son gönderiler', 'short_name' => 'Son gönderiler', 'description' => 'Topluluktaki son gönderileri keşfet', 'url' => '/last-posts', 'icons' => [['src' => '/assets/img/meta/pwa-icon-192.png', 'sizes' => '192x192', 'type' => 'image/png']]],
+        ],
+        'widgets' => [
+            [
+                'name' => 'OgraFi Hızlı Erişim',
+                'short_name' => 'OgraFi',
+                'description' => 'Son gönderilere, kanallara ve yeni gönderi oluşturmaya hızlı eriş.',
+                'tag' => 'ografi-quick-access',
+                'template' => 'ografi-quick-access',
+                'ms_ac_template' => '/widgets/quick-access.json',
+                'data' => '/widgets/quick-access-data.json',
+                'type' => 'application/json',
+                'auth' => false,
+                'multiple' => false,
+                'screenshots' => [
+                    ['src' => '/widgets/quick-access-preview.png', 'sizes' => '320x320', 'type' => 'image/png', 'platform' => 'Windows'],
+                ],
+            ],
+        ],
         'screenshots' => [
             [
                 'src' => '/assets/img/pwa/feed-desktop.jpg',

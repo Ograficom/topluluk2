@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'ografi-pwa-v3';
+const CACHE_VERSION = 'ografi-pwa-v4';
 const STATIC_CACHE = CACHE_VERSION + '-static';
 const OFFLINE_URL = '/offline';
 
@@ -80,4 +80,52 @@ self.addEventListener('notificationclick', event => {
         }
         if (self.clients.openWindow) await self.clients.openWindow(target);
     })());
+});
+
+
+// Windows Widgets Board support. Other browsers ignore these events.
+const QUICK_ACCESS_TAG = 'ografi-quick-access';
+const QUICK_ACCESS_ROUTES = Object.freeze({
+    'latest-posts': '/last-posts',
+    'channels': '/channels',
+    'create-post': '/posts/create'
+});
+
+async function renderQuickAccessWidget(widget) {
+    if (!self.widgets || widget?.definition?.tag !== QUICK_ACCESS_TAG) return;
+    try {
+        const [template, data] = await Promise.all([
+            fetch('/widgets/quick-access.json', { cache: 'no-cache' }),
+            fetch('/widgets/quick-access-data.json', { cache: 'no-cache' })
+        ]);
+        if (!template.ok || !data.ok) return;
+        await self.widgets.updateByTag(QUICK_ACCESS_TAG, {
+            template: await template.text(),
+            data: await data.text()
+        });
+    } catch (error) {
+        console.warn('OgraFi widget güncellenemedi:', error);
+    }
+}
+
+self.addEventListener('widgetinstall', event => {
+    event.waitUntil(renderQuickAccessWidget(event.widget));
+});
+self.addEventListener('widgetresume', event => {
+    event.waitUntil(renderQuickAccessWidget(event.widget));
+});
+self.addEventListener('activate', event => {
+    if (!self.widgets?.getByTag) return;
+    event.waitUntil((async () => {
+        try {
+            await renderQuickAccessWidget(await self.widgets.getByTag(QUICK_ACCESS_TAG));
+        } catch (error) {
+            console.warn('OgraFi widget yüklenemedi:', error);
+        }
+    })());
+});
+self.addEventListener('widgetclick', event => {
+    if (!Object.prototype.hasOwnProperty.call(QUICK_ACCESS_ROUTES, event.action)) return;
+    const target = new URL(QUICK_ACCESS_ROUTES[event.action], self.location.origin).href;
+    event.waitUntil(self.clients.openWindow(target));
 });
