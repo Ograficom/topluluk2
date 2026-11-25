@@ -27,6 +27,59 @@
             body { padding-top: env(titlebar-area-height, 32px); }
             .header { top: env(titlebar-area-height, 32px); }
         }
+
+        .ografi-store-buttons {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 10px;
+        }
+        .ografi-store-buttons .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 0 10px;
+            min-height: 28px;
+            border-radius: 10px;
+            color: var(--gray-500);
+            font-family: inherit;
+            font-size: 12px;
+            font-weight: 500;
+            text-decoration: none;
+            white-space: nowrap;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+            transition: transform .18s ease, background-color .2s ease, color .2s ease;
+        }
+        .ografi-store-buttons svg {
+            width: 15px;
+            height: 15px;
+            flex: 0 0 15px;
+        }
+        @media (hover: hover) {
+            .ografi-store-buttons .btn:hover {
+                color: var(--gray-700);
+                transform: translateY(-1px);
+            }
+        }
+        .ografi-store-buttons .btn:active { transform: scale(.92); }
+        .ografi-store-buttons .btn:focus-visible {
+            outline: 2px solid var(--gray-500);
+            outline-offset: 3px;
+        }
+        .ografi-store-bottom { display: none; padding: 12px 0 24px; }
+        .ografi-store-bottom--standalone { display: block; }
+        .ografi-store-bottom .ografi-store-buttons { justify-content: center; }
+        @media screen and (max-width: 920px) {
+            .ografi-store-bottom { display: block; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .ografi-store-buttons .btn { transition: none; }
+            .ografi-store-buttons .btn:hover,
+            .ografi-store-buttons .btn:active { transform: none; }
+        }
     </style>
     @php
         $seoDescription = trim($__env->yieldContent('description', $seoSettings?->seo_default_description ?: 'OgraFi; teknoloji, gündem, yaşam ve ilgi alanlarında yazıların, fikirlerin ve topluluk sohbetlerinin buluştuğu platformdur.'));
@@ -115,6 +168,24 @@
             root.dataset.theme = theme;
             root.dataset.bsTheme = theme;
             root.style.colorScheme = theme;
+        })();
+    </script>
+
+    <script>
+        (() => {
+            const storeAnimations = new WeakMap();
+            document.addEventListener('click', event => {
+                const button = event.target instanceof Element
+                    ? event.target.closest('.ografi-store-buttons a') : null;
+                if (!button || !button.animate || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+                storeAnimations.get(button)?.cancel();
+                const animation = button.animate([
+                    { transform: 'scale(.92)' },
+                    { transform: 'scale(1.04)', offset: .6 },
+                    { transform: 'scale(1)' }
+                ], { duration: 280, easing: 'ease-out' });
+                storeAnimations.set(button, animation);
+            });
         })();
     </script>
     @vite('resources/js/app.js')
@@ -924,6 +995,9 @@
                 </aside>
                 @endunless
             @endif
+        </div>
+        <div class="ografi-store-bottom{{ $postCreatePage ? ' ografi-store-bottom--standalone' : '' }}">
+            @include('layouts._store-buttons')
         </div>
     </main>
 

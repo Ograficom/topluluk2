@@ -26,4 +26,6 @@
             </a>
         @endforeach
     </nav>
+
+    @include('layouts._store-buttons')
 </footer>
