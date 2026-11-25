@@ -122,6 +122,8 @@
                         @forelse ($posts as $post)
                             @if ($post->advertisement && $post->advertisement->status === 'approved')
                                 @include('advertisements._card', ['ad' => $post->advertisement])
+                            @elseif (! $post->advertisement)
+                                @include('posts._card', ['post' => $post])
                             @else
                             <article class="card post profile-post-card {{ $post->advertisement ? 'profile-post-card--sponsored' : '' }}">
                                 <section class="card-body">

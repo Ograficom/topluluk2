@@ -37,7 +37,7 @@ class ProfileController extends Controller
         $posts = Post::query()
             ->published()
             ->where('user_id', $user->id)
-            ->with(['user', 'channel', 'advertisement'])
+            ->with(['user', 'channel', 'advertisement', 'tagRecords'])
             ->with(['comments' => fn ($query) => $query->with('user')->limit(1)])
             ->withCount('comments')
             ->withCount([

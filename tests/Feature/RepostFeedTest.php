@@ -615,8 +615,11 @@ class RepostFeedTest extends TestCase
             ->assertOk()
             ->assertSee('profile__aside', false)
             ->assertSee('profile-panel-posts', false)
+            ->assertSee('<article class="card post">', false)
             ->assertSee('class="post__short-title-text"', false)
+            ->assertSee('class="post__footer card-body"', false)
             ->assertSee('class="post__options card-body"', false)
+            ->assertSee('class="post-publication-meta"', false)
             ->assertSee('Profil açıklama metni.')
             ->assertSee('Profil yazısı')
             ->assertSee(route('profiles.show', $user), false);
