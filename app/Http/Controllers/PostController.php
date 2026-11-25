@@ -228,7 +228,7 @@ class PostController extends Controller
         $oldVideo = $post->video_path;
         $existingMedia = collect($post->media ?? []);
         $removeMedia = collect($validated['remove_media'] ?? []);
-        foreach ($existingMedia->filter(fn (string $path) => $removeMedia->contains($path)) as $path) Storage::disk('public')->delete($path);
+        $removedMediaPaths = $existingMedia->filter(fn (string $path) => $removeMedia->contains($path));
         $mediaPaths = $existingMedia->reject(fn (string $path) => $removeMedia->contains($path))->values();
         foreach ($request->file('media', []) as $mediaFile) {
             $path = $mediaFile->store('posts/gallery', 'public');
@@ -257,7 +257,9 @@ class PostController extends Controller
         $post->save();
         $this->syncTagRecords($post, $tags);
 
-        if ($oldCover && $oldCover !== $post->cover_image && ! filter_var($oldCover, FILTER_VALIDATE_URL)) Storage::disk('public')->delete($oldCover);
+        // Delete only files no longer referenced by a saved post, never before saving.
+        if ($oldCover && $oldCover !== $post->cover_image) $removedMediaPaths->push($oldCover);
+        foreach ($removedMediaPaths->unique() as $path) $this->deleteUnusedPostImage($path);
         if ($oldVideo && $oldVideo !== $post->video_path) Storage::disk('public')->delete($oldVideo);
 
         if ($isSpam || $wasSpam) {
@@ -322,6 +324,25 @@ class PostController extends Controller
             ->orderByDesc('published_at')->orderByDesc('id')->limit(3)->get();
 
         return view('posts.show', compact('post', 'replyTo', 'rssItem', 'similarPosts'));
+    }
+
+    private function deleteUnusedPostImage(string $value): void
+    {
+        // External RSS/remote images and unrelated storage paths are not owned uploads.
+        if (filter_var($value, FILTER_VALIDATE_URL)) return;
+        $path = ltrim($value, '/');
+        if (str_starts_with($path, 'storage/')) $path = substr($path, 8);
+        if (! preg_match('~\Aposts/(?:gallery/)?[A-Za-z0-9_-][A-Za-z0-9_.-]*\.(?:jpe?g|png|gif|webp)\z~i', $path) || str_contains($path, '..')) return;
+
+        $aliases = [$path, '/'.$path, 'storage/'.$path, '/storage/'.$path, asset('storage/'.$path)];
+        $referenced = Post::query()->where(function (Builder $query) use ($aliases): void {
+            $query->whereIn('cover_image', $aliases);
+            foreach ($aliases as $alias) $query->orWhereJsonContains('media', $alias);
+        })->exists();
+
+        if (! $referenced && ! Storage::disk('public')->delete($path)) {
+            report(new \RuntimeException('Removed post image could not be deleted: '.$path));
+        }
     }
 
     private function parseTags(string $input): array

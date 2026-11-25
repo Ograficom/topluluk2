@@ -704,6 +704,61 @@ class RepostFeedTest extends TestCase
         ])->assertForbidden();
     }
 
+    public function test_post_edit_deletes_removed_local_images_but_keeps_shared_and_unselected_files(): void
+    {
+        Storage::fake('public');
+        $author = User::factory()->create();
+        $channel = Channel::create([
+            'name' => 'Galeri',
+            'slug' => 'galeri',
+            'is_active' => true,
+        ]);
+        $deleted = 'posts/gallery/delete.png';
+        $kept = 'posts/gallery/keep.png';
+        $shared = 'posts/gallery/shared.png';
+        $cover = 'posts/cover.png';
+        $unrelated = 'comments/protected.png';
+        foreach ([$deleted, $kept, $shared, $cover, $unrelated] as $path) {
+            Storage::disk('public')->put($path, 'image');
+        }
+        $post = $this->createPost($channel, [
+            'user_id' => $author->id,
+            'title' => 'Galeri yazısı',
+            'slug' => 'galeri-yazisi',
+            'cover_image' => $cover,
+            'media' => [$deleted, $kept, $shared, $unrelated],
+        ]);
+        $this->createPost($channel, ['cover_image' => 'storage/'.$shared]);
+
+        $this->actingAs($author)->get(route('posts.edit', $post))
+            ->assertOk()
+            ->assertSee('data-existing-image-remove', false)
+            ->assertSee('type="hidden" name="remove_media[]"', false);
+
+        // An invalid save must not delete any files.
+        $this->patch(route('posts.update', $post), ['remove_media' => [$deleted]])
+            ->assertSessionHasErrors('title');
+        Storage::disk('public')->assertExists($deleted);
+
+        $this->patch(route('posts.update', $post), [
+            'title' => $post->title,
+            'excerpt' => $post->excerpt,
+            'body' => $post->body,
+            'channel_id' => $channel->id,
+            'remove_cover' => '1',
+            'remove_media' => [$deleted, $shared, $unrelated, 'posts/gallery/not-owned.png'],
+        ])->assertRedirect(route('posts.show', $post));
+
+        $post->refresh();
+        $this->assertSame([$kept], $post->media);
+        $this->assertNull($post->cover_image);
+        Storage::disk('public')->assertMissing($deleted);
+        Storage::disk('public')->assertMissing($cover);
+        Storage::disk('public')->assertExists($kept);
+        Storage::disk('public')->assertExists($shared);
+        Storage::disk('public')->assertExists($unrelated);
+    }
+
     public function test_only_administrators_can_create_categories(): void
     {
         $member = User::factory()->create();

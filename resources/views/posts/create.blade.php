@@ -110,6 +110,13 @@
 #createPostBox [data-post-gallery-list] .post-composer-gallery-item {position:relative;padding:0;border:0;border-radius:9px;width:76px;height:76px;overflow:hidden;}
 #createPostBox [data-post-gallery-list] .post-composer-gallery-item img {display:block;width:100%;height:100%;object-fit:cover;border-radius:inherit;}
 #createPostBox .post-gallery-remove {position:absolute;right:4px;top:4px;display:grid;place-items:center;width:24px;height:24px;padding:0;border:0;border-radius:50%;background:rgba(15,23,42,.72);color:white;font:18px/1 Arial,sans-serif;cursor:pointer;}
+#createPostBox .post-gallery-remove:hover {background:#dc2626;}
+#createPostBox .post-create-simple__existing-media {display:flex;flex-wrap:wrap;gap:8px;}
+#createPostBox [data-existing-image] {display:flex;align-items:center;}
+#createPostBox .post-existing-image-tile {position:relative;width:76px;height:76px;border-radius:9px;overflow:hidden;}
+#createPostBox .post-existing-image-tile img {display:block;width:100%;height:100%;object-fit:cover;border-radius:inherit;}
+#createPostBox .post-existing-image-undo {display:flex;align-items:center;gap:6px;flex-wrap:wrap;font-size:11px;color:#64748b;}
+#createPostBox .post-existing-image-undo button {border:0;padding:4px;background:transparent;color:#2878f0;font:inherit;cursor:pointer;}
 #createPostModal > .post-gallery-modal:not([hidden]) > .post-gallery-dialog {width:min(480px,calc(100vw - 24px))!important;min-width:0!important;max-height:calc(100dvh - 32px)!important;overflow-y:auto!important;}
 #createPostModal [data-gallery-picker] {display:none!important;}
 #createPostModal .post-gallery-grid {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin:12px 0 0;}
@@ -258,15 +265,36 @@
                     <div class="post-composer-cover-preview" data-post-cover-preview aria-live="polite"></div>
                     <div class="post-composer-file-list" data-post-gallery-list aria-live="polite"></div>
                     @if (isset($post) && $post->coverImageUrl())
-                        <div class="post-composer-existing-cover">
-                            <img src="{{ $post->coverImageUrl() }}" alt="Mevcut kapak görseli">
-                            <label class="small"><input type="checkbox" name="remove_cover" value="1"> Kapağı kaldır</label>
+                        @php $coverRemoved = (bool) old('remove_cover', false); @endphp
+                        <div data-existing-image>
+                            <input type="hidden" name="remove_cover" value="1" data-existing-image-remove-input @disabled(! $coverRemoved)>
+                            <div class="post-existing-image-tile" data-existing-image-tile @if ($coverRemoved) hidden @endif>
+                                <img src="{{ $post->coverImageUrl() }}" alt="Mevcut kapak görseli">
+                                <button type="button" class="post-gallery-remove" data-existing-image-remove aria-label="Kapak görselini kaldır" title="Kapak görselini kaldır">×</button>
+                            </div>
+                            <div class="post-existing-image-undo" data-existing-image-undo @unless ($coverRemoved) hidden @endunless>
+                                <span>Kapak kaldırılacak.</span><button type="button" data-existing-image-restore>Geri al</button>
+                            </div>
                         </div>
                     @endif
                     @if (isset($post) && filled($post->media))
                         <div class="post-create-simple__existing-media">
                             @foreach ($post->media as $mediaPath)
-                                <label><img src="{{ asset('storage/'.$mediaPath) }}" alt=""><input type="checkbox" name="remove_media[]" value="{{ $mediaPath }}"> Kaldır</label>
+                                @php
+                                    $mediaRemoved = in_array($mediaPath, (array) old('remove_media', []), true);
+                                    $relativeMedia = ltrim($mediaPath, '/');
+                                    $mediaUrl = filter_var($mediaPath, FILTER_VALIDATE_URL) ? $mediaPath : asset('storage/'.(str_starts_with($relativeMedia, 'storage/') ? substr($relativeMedia, 8) : $relativeMedia));
+                                @endphp
+                                <div data-existing-image>
+                                    <input type="hidden" name="remove_media[]" value="{{ $mediaPath }}" data-existing-image-remove-input @disabled(! $mediaRemoved)>
+                                    <div class="post-existing-image-tile" data-existing-image-tile @if ($mediaRemoved) hidden @endif>
+                                        <img src="{{ $mediaUrl }}" alt="Mevcut gönderi görseli">
+                                        <button type="button" class="post-gallery-remove" data-existing-image-remove aria-label="Görseli kaldır" title="Görseli kaldır">×</button>
+                                    </div>
+                                    <div class="post-existing-image-undo" data-existing-image-undo @unless ($mediaRemoved) hidden @endunless>
+                                        <span>Görsel kaldırılacak.</span><button type="button" data-existing-image-restore>Geri al</button>
+                                    </div>
+                                </div>
                             @endforeach
                         </div>
                     @endif
@@ -1260,6 +1288,21 @@
 
         const composerOverlay = document.querySelector('.addpost.post-create-simple.post-create-modal-page');
         const composerForm = composerOverlay?.querySelector('#createPostBox');
+        composerForm?.querySelectorAll('[data-existing-image]').forEach(item => {
+            const input = item.querySelector('[data-existing-image-remove-input]');
+            const tile = item.querySelector('[data-existing-image-tile]');
+            const undo = item.querySelector('[data-existing-image-undo]');
+            const remove = item.querySelector('[data-existing-image-remove]');
+            const restore = item.querySelector('[data-existing-image-restore]');
+            const setRemoved = removed => {
+                input.disabled = !removed;
+                tile.hidden = removed;
+                undo.hidden = !removed;
+                (removed ? restore : remove)?.focus({ preventScroll: true });
+            };
+            remove?.addEventListener('click', () => setRemoved(true));
+            restore?.addEventListener('click', () => setRemoved(false));
+        });
         const galleryInput = composerForm?.querySelector('[data-post-gallery-input]');
         const galleryList = composerForm?.querySelector('[data-post-gallery-list]');
         const galleryModal = composerOverlay?.querySelector('[data-gallery-modal]');
