@@ -160,7 +160,7 @@ class ChannelController extends Controller
         $sort = $request->query('sort', 'date');
         $postsQuery = $channel->posts()
             ->published()
-            ->with('user')
+            ->with(['user', 'channel', 'tagRecords'])
             ->with(['comments' => fn ($query) => $query->with('user')->limit(1)])
             ->withCount('comments')
             ->withCount([

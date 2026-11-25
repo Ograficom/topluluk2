@@ -1172,6 +1172,19 @@ class RepostFeedTest extends TestCase
         $this->get(route('posts.show', $pendingPost))->assertNotFound();
     }
 
+    public function test_channel_feed_uses_shared_repost_card_spacing(): void
+    {
+        $channel = Channel::create(['name' => 'Kart düzeni', 'slug' => 'kart-duzeni', 'is_active' => true]);
+        $post = $this->createPost($channel, ['title' => 'Kategori kartı', 'excerpt' => 'Kart açıklaması']);
+
+        $this->get(route('channels.show', $channel))->assertOk()
+            ->assertSee('<article class="card post">', false)
+            ->assertSee('class="post__short-title-text">'.$post->title.'</span>', false)
+            ->assertSee('class="post__footer card-body"', false)
+            ->assertSee('class="post__options card-body"', false)
+            ->assertSee('class="post-publication-meta"', false);
+    }
+
     public function test_channel_pages_only_show_active_channels_and_published_posts(): void
     {
         $channel = Channel::create([
