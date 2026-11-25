@@ -40,6 +40,12 @@ class SitePagesTable
             ->defaultSort('updated_at', 'desc')
             ->recordActions([
                 EditAction::make(),
+                \Filament\Actions\Action::make('feedback')
+                    ->label('Geri bildirimler')
+                    ->icon('heroicon-o-chat-bubble-left-right')
+                    ->url(fn (SitePage $record): string => \App\Filament\Resources\SitePageFeedbacks\SitePageFeedbackResource::getUrl('index', [
+                        'tableFilters' => ['site_page_id' => ['value' => (string) $record->getKey()]],
+                    ])),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([

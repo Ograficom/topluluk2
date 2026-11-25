@@ -25,6 +25,13 @@
     @section('seo_image', $page->og_image)
 @endif
 
+@push('head')
+    <link rel="stylesheet" href="{{ asset('assets/css/site-page-feedback.css') }}?v=1">
+@endpush
+@push('scripts')
+    <script src="{{ asset('assets/js/site-page-feedback.js') }}?v=1" defer></script>
+@endpush
+
 @section('content')
     <article class="card card-body">
         <h1>{{ $page->title }}</h1>
@@ -44,9 +51,13 @@
                     {{ number_format($page->views ?? 0) }}
                 </span>
             </div>
+            <div class="site-feedback-actions">
             @if (auth()->check() && auth()->user()->is_admin)
                 <a class="btn btn-sm btn-secondary" href="{{ \App\Filament\Resources\SitePages\SitePageResource::getUrl('edit', ['record' => $page]) }}">Düzenle</a>
             @endif
+                @include('pages._feedback-trigger')
+            </div>
         </footer>
+        @include('pages._feedback-panel')
     </article>
 @endsection

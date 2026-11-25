@@ -242,6 +242,11 @@ Route::get('/page/{slug}', [CommunityController::class, 'page'])
     ->where('slug', '[A-Za-z0-9_-]+')
     ->name('pages.show');
 
+Route::get('/page/{slug}/feedback', [\App\Http\Controllers\SitePageFeedbackController::class, 'show'])
+    ->where('slug', '[A-Za-z0-9_-]+')->middleware('throttle:60,1')->name('pages.feedback.show');
+Route::post('/page/{slug}/feedback', [\App\Http\Controllers\SitePageFeedbackController::class, 'store'])
+    ->where('slug', '[A-Za-z0-9_-]+')->middleware('throttle:15,1')->name('pages.feedback.store');
+
 // Keep previously shared plural URLs working.
 Route::get('/pages/{slug}', fn (string $slug) => redirect()->route('pages.show', ['slug' => $slug], 301))
     ->where('slug', '[A-Za-z0-9_-]+');
