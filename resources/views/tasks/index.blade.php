@@ -4,7 +4,7 @@
 @section('description', 'OgraFi topluluk görevlerini tamamla, puan kazan ve liderlik tablosunda yüksel.')
 
 @push('head')
-    <link rel="stylesheet" href="{{ asset('assets/css/tasks.css') }}?v=20261125-participations">
+    <link rel="stylesheet" href="{{ asset('assets/css/tasks.css') }}?v=20261125-task-start">
 @endpush
 
 @section('content')
@@ -28,11 +28,18 @@
             @forelse ($tasks as $item)
                 @php
                     $task = $item['task'];
+                    $manualTask = in_array($task['activity'] ?? '', ['event', 'social_follow'], true);
+                    $hasActionUrl = filled($task['action_url'] ?? null) && in_array(parse_url($task['action_url'], PHP_URL_SCHEME), ['http', 'https'], true);
+                    $startRequired = auth()->check() && $manualTask && $hasActionUrl && filled($task['key'] ?? null)
+                        && ! $item['completed'] && ! $item['participation']
+                        && (! filled($task['starts_at'] ?? null) || now()->gte($task['starts_at']))
+                        && (! filled($task['ends_at'] ?? null) || now()->lte($task['ends_at']));
                     $badge = filled($task['reward_badge'] ?? null)
                         ? collect(\App\Models\ReputationSetting::current()->reward_badges ?? [])->firstWhere('name', $task['reward_badge'])
                         : null;
                 @endphp
-                <div class="task-card {{ $item['completed'] ? 'is-completed' : '' }}">
+                <div class="task-card {{ $item['completed'] ? 'is-completed' : '' }}"
+                    @if ($startRequired) data-task-start-key="{{ auth()->id() }}:{{ $task['key'] }}" @endif>
                     <div class="task-card__top">
                         <div class="task-card__icon">
                             @if ($badge && filled($badge['image'] ?? null))
@@ -74,10 +81,10 @@
                             </span>
                         @endif
                     </div>
-                    @if (filled($task['action_url'] ?? null) && in_array(parse_url($task['action_url'], PHP_URL_SCHEME), ['http', 'https'], true))
-                        <a class="btn btn-primary btn-sm" href="{{ $task['action_url'] }}" target="_blank" rel="noopener noreferrer">Görev bağlantısını aç</a>
+                    @if ($hasActionUrl)
+                        <a class="btn btn-primary btn-sm" href="{{ $task['action_url'] }}" target="_blank" rel="noopener noreferrer" @if ($startRequired) data-task-start @endif>{{ $item['completed'] || $item['participation'] ? 'Görev bağlantısını aç' : 'Göreve başla' }}</a>
                     @endif
-                    @if (in_array($task['activity'] ?? '', ['event', 'social_follow'], true))
+                    @if ($manualTask)
                         @auth
                             @if ($item['completed'])
                                 <p class="small color-gray">Görevin onaylandı ve ödülün hesabına eklendi.</p>
@@ -88,6 +95,7 @@
                             @elseif (filled($task['key'] ?? null)
                                 && (! filled($task['starts_at'] ?? null) || now()->gte($task['starts_at']))
                                 && (! filled($task['ends_at'] ?? null) || now()->lte($task['ends_at'])))
+                                <div @if ($startRequired) data-task-completion hidden @endif>
                                 <form action="{{ route('tasks.submit', ['taskKey' => $task['key']]) }}" method="POST" class="task-participation-form">
                                     @csrf
                                     @if (($task['activity'] ?? '') === 'social_follow')
@@ -97,6 +105,7 @@
                                     <button type="submit" class="btn btn-primary btn-sm">Görevi tamamladım</button>
                                 </form>
                                 <p class="small color-gray">Yönetici kontrolünden sonra ödülün verilir.</p>
+                                </div>
                             @else
                                 <p class="small color-gray">Bu görev şu anda başvuru almıyor.</p>
                             @endif
@@ -168,4 +177,42 @@
         @endif
     @endauth
 </article>
+<script>
+(() => {
+    const cards = Array.from(document.querySelectorAll('[data-task-start-key]'));
+    const pending = new Set();
+    const prefix = 'ografi:task-start:';
+    function reveal(card) {
+        const form = card.querySelector('[data-task-completion]');
+        const link = card.querySelector('[data-task-start]');
+        if (form) form.hidden = false;
+        if (link) link.textContent = 'Görev bağlantısını tekrar aç';
+        pending.delete(card);
+    }
+    function stored(card) {
+        try { return localStorage.getItem(prefix + card.dataset.taskStartKey) === '1'; }
+        catch (_) { return false; }
+    }
+    function revealReturning() {
+        if (document.visibilityState === 'hidden') return;
+        pending.forEach(reveal);
+    }
+    for (const card of cards) {
+        const link = card.querySelector('[data-task-start]');
+        if (!link) continue;
+        if (stored(card)) reveal(card);
+        link.addEventListener('click', () => {
+            try { localStorage.setItem(prefix + card.dataset.taskStartKey, '1'); } catch (_) {}
+            pending.add(card);
+        });
+    }
+    window.addEventListener('focus', revealReturning);
+    window.addEventListener('pageshow', revealReturning);
+    document.addEventListener('visibilitychange', revealReturning);
+    // Some mobile browsers open external apps without a focus event.
+    // The next interaction with Ografi also reveals the relevant form.
+    document.addEventListener('pointerdown', revealReturning, { capture: true });
+    document.addEventListener('keydown', revealReturning, { capture: true });
+})();
+</script>
 @endsection

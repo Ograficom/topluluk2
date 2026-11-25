@@ -54,3 +54,5 @@
 .task-participation-form label { font-size:.82rem; font-weight:600; }
 .task-participation-form input { min-width:0; max-width:100%; padding:8px 12px; border:1px solid var(--border-color,#dce2eb); border-radius:9px; background:var(--color-secondary,#f5f7fa); color:var(--text-color); }
 .task-participation-message { padding:8px 12px; border-radius:9px; background:var(--color-secondary,#eef3fb); color:var(--text-color); font-size:.82rem; margin:8px 0; }
+
+.tasks-page [data-task-completion][hidden] { display:none !important; }
