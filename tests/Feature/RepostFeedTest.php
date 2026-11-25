@@ -791,6 +791,28 @@ class RepostFeedTest extends TestCase
         $this->get(route('posts.show', $post))->assertOk()->assertDontSee('data-post-toc', false);
     }
 
+    public function test_repost_publishes_comment_as_a_new_post_with_original_reference(): void
+    {
+        $author = User::factory()->create();
+        $viewer = User::factory()->create();
+        $channel = Channel::create(['name' => 'Alıntı', 'slug' => 'alinti', 'is_active' => true]);
+        $original = $this->createPost($channel, ['user_id' => $author->id, 'title' => 'Orijinal yazı']);
+        $this->actingAs($viewer)->get(route('posts.reposts.create', $original))->assertOk()
+            ->assertSee('Orijinal yazı')->assertSee('name="quote_comment"', false);
+        $this->post(route('posts.reposts.toggle', $original), ['quote_comment' => ''])->assertSessionHasErrors('quote_comment');
+        $this->post(route('posts.reposts.toggle', $original), ['quote_comment' => 'Benim değerlendirmem.'])->assertRedirect();
+        $quote = Post::query()->where('quoted_post_id', $original->id)->firstOrFail();
+        $this->assertSame($viewer->id, $quote->user_id);
+        $this->assertTrue($quote->is_published);
+        $this->assertSame('Benim değerlendirmem.', $quote->excerpt);
+        $this->get(route('posts.show', $quote))->assertOk()->assertSee('Benim değerlendirmem.')->assertSee('Orijinal yazı');
+        $this->get(route('posts.index'))->assertOk()->assertSee('Benim değerlendirmem.');
+        $this->get(route('profiles.show', $viewer))->assertOk()->assertSee('Benim değerlendirmem.');
+        $original->update(['is_published' => false]);
+        $this->get(route('posts.show', $quote))->assertOk()->assertSee('Orijinal gönderi artık görüntülenemiyor.');
+        $this->get(route('posts.reposts.create', $original))->assertNotFound();
+    }
+
     public function test_author_can_edit_post_with_existing_tags(): void
     {
         $author = User::factory()->create();

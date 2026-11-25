@@ -292,6 +292,10 @@
             @endunless
         </section>
 
+        @if ($post->quoted_post_id)
+            @include('posts._quoted-post', ['source' => $post->visibleQuotedPost()])
+        @endif
+
         @php
             $source = trim((string) ($post->content_source ?? ''));
             if ($source === '') $source = trim((string) ($rssItem?->link ?? ''));

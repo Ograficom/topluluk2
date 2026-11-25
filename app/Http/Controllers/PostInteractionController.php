@@ -82,37 +82,61 @@ class PostInteractionController extends Controller
         return back();
     }
 
+    private function ensureQuoteSource(Request $request, Post $post): void
+    {
+        abort_unless(Post::query()->published()->whereKey($post->id)->exists() && ! $post->advertisement_id, 404);
+        abort_if($post->is_adult && ! $request->user()->show_adult_content, 404);
+        abort_if($request->user()->blockedUsers()->whereKey($post->user_id)->exists()
+            || $request->user()->blockedByUsers()->whereKey($post->user_id)->exists(), 404);
+    }
+
+    public function quoteForm(Request $request, Post $post): \Illuminate\View\View
+    {
+        $this->ensureQuoteSource($request, $post);
+        return view('posts.quote', ['source' => $post]);
+    }
+
     public function repost(Request $request, Post $post): RedirectResponse
     {
-        $this->ensurePublished($post);
-        abort_unless(! $post->advertisement_id, 404);
-        $repost = \App\Models\PostRepost::query()
-            ->where('post_id', $post->id)
-            ->where('user_id', $request->user()->id)
-            ->first();
-
-        if ($repost) {
-            $repost->delete();
-
-            return back()->with('status', 'Yeniden paylaşımın kaldırıldı.');
-        }
-
-        \App\Models\PostRepost::create([
-            'post_id' => $post->id,
-            'user_id' => $request->user()->id,
+        $this->ensureQuoteSource($request, $post);
+        $validated = $request->validate([
+            'quote_comment' => ['required', 'string', 'max:5000'],
+        ], [
+            'quote_comment.required' => 'Yeniden paylaşmak için yorumunuzu yazın.',
+            'quote_comment.max' => 'Yorumunuz en fazla 5000 karakter olabilir.',
         ]);
+        $comment = trim($validated['quote_comment']);
+        if ($comment === '') throw ValidationException::withMessages(['quote_comment' => 'Yorumunuzu yazın.']);
+        $title = 'Yeniden paylaşım';
+        $excerpt = \Illuminate\Support\Str::limit($comment, 500, '');
+        $body = json_encode(['blocks' => [
+            ['type' => 'paragraph', 'data' => ['text' => nl2br(e($comment), false)]],
+        ]], JSON_UNESCAPED_UNICODE | JSON_THROW_ON_ERROR);
+        $isSpam = app(\App\Services\PostSpamFilter::class)->shouldFlag($title, $excerpt, $comment);
+        $quote = DB::transaction(fn () => Post::create([
+            'user_id' => $request->user()->id,
+            'channel_id' => $post->channel?->is_active ? $post->channel_id : null,
+            'quoted_post_id' => $post->id,
+            'title' => $title,
+            'slug' => 'repost-'.\Illuminate\Support\Str::uuid(),
+            'excerpt' => $excerpt,
+            'body' => $body,
+            'is_adult' => $post->is_adult,
+            'is_spam' => $isSpam,
+            'is_published' => ! $isSpam,
+            'published_at' => $isSpam ? null : now(),
+        ]));
+        if ($isSpam) return redirect()->route('posts.index')->with('status', 'Yeniden paylaşımınız incelemeye alındı.');
 
         if ($post->user && ! $post->user->is($request->user())) {
             UserNotificationService::send(
-                $post->user,
-                'posts',
-                'Yazın yeniden paylaşıldı',
-                $request->user()->displayName().' yazını yeniden paylaştı: '.$post->title,
-                route('posts.show', $post),
+                $post->user, 'posts', 'Yazın yorumla yeniden paylaşıldı',
+                $request->user()->displayName().' yazını yorumlayarak yeniden paylaştı.',
+                route('posts.show', $quote),
             );
         }
 
-        return back()->with('status', 'Yazı yeniden paylaşıldı.');
+        return redirect()->route('posts.show', $quote)->with('status', 'Yazı yorumunuzla yeniden paylaşıldı.');
     }
 
     public function comment(Request $request, Post $post): RedirectResponse

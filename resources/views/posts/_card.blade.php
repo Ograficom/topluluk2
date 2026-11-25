@@ -67,6 +67,12 @@
         </div>
     </section>
 
+    @if ($post->quoted_post_id)
+        <section class="card-body post-quote-section">
+            @include('posts._quoted-post', ['source' => $post->visibleQuotedPost()])
+        </section>
+    @endif
+
     @if ($post->coverImageUrl() || count($post->galleryImageUrls()) > 0 || filled($post->video_url) || filled($post->video_path))
         <section class="card-body post__short-media">
             @include('posts._media', ['post' => $post])

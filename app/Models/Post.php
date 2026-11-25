@@ -42,7 +42,7 @@ class Post extends Model
 
     private function awardPublicationReputation(): void
     {
-        if (! $this->is_published || $this->is_spam || $this->advertisement_id || ! $this->user) {
+        if (! $this->is_published || $this->is_spam || $this->advertisement_id || $this->quoted_post_id || ! $this->user) {
             return;
         }
 
@@ -61,7 +61,7 @@ class Post extends Model
     protected $fillable = [
         'user_id', 'channel_id', 'advertisement_id', 'title', 'slug', 'excerpt', 'body',
         'cover_image', 'media', 'video_url', 'video_path', 'meta_description', 'content_source', 'location', 'tags', 'is_published',
-        'published_at', 'views', 'is_adult', 'is_spam', 'show_toc',
+        'published_at', 'views', 'is_adult', 'is_spam', 'show_toc', 'quoted_post_id',
     ];
 
     protected function casts(): array
@@ -83,6 +83,19 @@ class Post extends Model
     public function comments(): HasMany { return $this->hasMany(Comment::class)->latest(); }
     public function reactions(): HasMany { return $this->hasMany(PostReaction::class); }
     public function reposts(): HasMany { return $this->hasMany(PostRepost::class); }
+    public function quotedPost(): BelongsTo { return $this->belongsTo(self::class, 'quoted_post_id'); }
+
+    public function visibleQuotedPost(): ?self
+    {
+        if (! $this->quoted_post_id) return null;
+        $viewer = auth()->user();
+
+        return $this->quotedPost()->published()->whereNull('advertisement_id')
+            ->when(! $viewer?->show_adult_content, fn (Builder $query) => $query->where('is_adult', false))
+            ->when($viewer, fn (Builder $query) => $query->whereNotIn('user_id', $viewer->blockedUsers()->select('users.id'))
+                ->whereNotIn('user_id', $viewer->blockedByUsers()->select('users.id')))
+            ->with('user')->first();
+    }
 
     public function tagRecords(): BelongsToMany
     {

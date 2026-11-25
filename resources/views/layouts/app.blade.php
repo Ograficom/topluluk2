@@ -192,6 +192,7 @@
     </script>
     @vite('resources/js/app.js')
     <link rel="stylesheet" href="{{ asset('assets/css/post-edit-history.css') }}?v=5">
+    <link rel="stylesheet" href="{{ asset('assets/css/post-quote.css') }}?v=1">
     @stack('head')
     @if (! request()->routeIs('cp.*'))
         <script type="application/ld+json">
