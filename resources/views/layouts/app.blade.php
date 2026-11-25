@@ -813,7 +813,7 @@
                 @else
                     <section class="feed">
                 @endif
-                    @if ($feedPage && $newYearActive && $newYearSettings['countdown'])
+                    @if (request()->routeIs('posts.index', 'posts.latest', 'legacy.last-posts') && $newYearActive && $newYearSettings['countdown'])
                         @include('layouts._new-year-countdown')
                     @endif
                     @if (session('status'))
