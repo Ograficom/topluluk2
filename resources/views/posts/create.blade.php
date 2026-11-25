@@ -126,7 +126,37 @@
 #createPostBox .post-existing-image-undo button {border:0;padding:4px;background:transparent;color:#2878f0;font:inherit;cursor:pointer;}
 #createPostModal > .post-gallery-modal:not([hidden]) > .post-gallery-dialog {width:min(480px,calc(100vw - 24px))!important;min-width:0!important;max-height:calc(100dvh - 32px)!important;overflow-y:auto!important;}
 /* Larger, readable gallery text on desktop and mobile. */
-#createPostModal > .post-gallery-modal:not([hidden]) .post-gallery-dialog h2 {font-size:20px!important;line-height:1.35!important;margin-bottom:18px!important;}
+#createPostModal > .post-gallery-modal:not([hidden]) > .post-gallery-dialog {position:relative!important;padding:26px 18px 18px!important;}
+#createPostModal > .post-gallery-modal:not([hidden]) .post-gallery-dialog h2 {
+    display:flex!important;align-items:center!important;justify-content:center!important;
+    min-height:36px!important;margin:0 0 16px!important;padding:0 48px!important;
+    text-align:center!important;color:#202633!important;font:700 21px/1.25 Arial,sans-serif!important;
+}
+#createPostModal > .post-gallery-modal:not([hidden]) .post-gallery-back {
+    position:absolute!important;top:26px!important;left:18px!important;
+    display:inline-flex!important;align-items:center!important;justify-content:center!important;
+    width:36px!important;height:36px!important;margin:0!important;padding:0!important;
+    border:0!important;border-radius:50%!important;background:#f0f3f7!important;color:#45546a!important;
+    cursor:pointer!important;touch-action:manipulation;-webkit-tap-highlight-color:transparent;
+    transition:background-color .15s ease,color .15s ease,transform .12s ease,box-shadow .12s ease;
+}
+#createPostModal > .post-gallery-modal:not([hidden]) .post-gallery-back svg {
+    display:block!important;width:23px!important;height:23px!important;fill:none!important;
+    stroke:currentColor!important;stroke-width:2.3!important;stroke-linecap:round!important;
+    stroke-linejoin:round!important;pointer-events:none;
+}
+@media (hover:hover) {
+    #createPostModal > .post-gallery-modal:not([hidden]) .post-gallery-back:hover {background:#e6edf7!important;color:#2878f0!important;}
+}
+#createPostModal > .post-gallery-modal:not([hidden]) .post-gallery-back:active {
+    background:#dce8fa!important;color:#1769ff!important;transform:scale(.9)!important;
+    box-shadow:inset 0 1px 4px rgba(25,50,85,.15);
+}
+#createPostModal > .post-gallery-modal:not([hidden]) .post-gallery-back:focus-visible {outline:2px solid #2878f0!important;outline-offset:3px;}
+@media (prefers-reduced-motion:reduce) {
+    #createPostModal > .post-gallery-modal:not([hidden]) .post-gallery-back {transition:none!important;}
+    #createPostModal > .post-gallery-modal:not([hidden]) .post-gallery-back:active {transform:none!important;}
+}
 #createPostModal > .post-gallery-modal:not([hidden]) .post-gallery-dropzone {padding:18px 14px!important;gap:8px!important;}
 #createPostModal > .post-gallery-modal:not([hidden]) .post-gallery-picture-icon {width:26px!important;height:26px!important;}
 #createPostModal > .post-gallery-modal:not([hidden]) .post-gallery-dropzone strong {font-size:15px!important;line-height:1.45!important;}
