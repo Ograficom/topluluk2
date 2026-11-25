@@ -427,7 +427,8 @@
                 <h2 id="post-tags-title">Etiketler</h2>
                 <div class="post-tags-input-wrap">
                     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h16M4 15h16M9 4l-2 16M17 4l-2 16"/></svg>
-                    <input id="post-tags-input" name="tags" form="createPostBox" type="text" maxlength="500" value="{{ old('tags', implode(', ', $post->tags ?? [])) }}" placeholder="Etiketleri girin" aria-label="Etiketler" autocomplete="off" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="post-tag-suggestions" data-suggestions-url="{{ route('posts.tag-suggestions') }}">
+                    <input type="hidden" id="post-tags-value" name="tags" form="createPostBox" value="{{ old('tags', implode(', ', $post->tags ?? [])) }}">
+                    <input id="post-tags-input" type="text" maxlength="100" enterkeyhint="done" placeholder="Etiketleri girin" aria-label="Etiketler" autocomplete="off" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="post-tag-suggestions" data-suggestions-url="{{ route('posts.tag-suggestions') }}">
                 </div>
                 <div class="post-tag-suggestions" data-tag-suggestions hidden>
                     <p class="post-tag-suggestions-title">Mevcut etiketler</p>
@@ -591,6 +592,30 @@
     border-color:#d5deea !important;
     background:#fff !important;
 }
+.post-tags-dialog .post-tags-input-wrap {
+    flex:0 0 auto!important;flex-wrap:wrap!important;gap:6px!important;
+    height:auto!important;min-height:44px!important;max-height:none!important;
+    padding:6px 12px!important;overflow:visible!important;
+}
+.post-tags-dialog .post-tags-input-wrap > svg {stroke:#2878f0!important;}
+.post-tags-dialog .post-tags-input-wrap input#post-tags-input {
+    flex:1 1 115px!important;width:115px!important;min-width:80px!important;
+    height:30px!important;min-height:30px!important;max-height:30px!important;
+    font:14px/30px Arial,sans-serif!important;
+}
+.post-tags-dialog .post-tag-chip {
+    display:inline-flex;align-items:center;gap:5px;min-width:0;max-width:100%;
+    padding:5px 7px 5px 10px;border-radius:999px;background:#e8edf3;
+    color:#303944;font:14px/1.3 Arial,sans-serif;
+}
+.post-tags-dialog .post-tag-chip-label {min-width:0;overflow-wrap:anywhere;}
+.post-tags-dialog .post-tag-chip-remove {
+    display:inline-grid;place-items:center;flex:0 0 20px;width:20px;height:20px;
+    padding:0;border:0;border-radius:50%;background:transparent;color:#71839d;
+    font:16px/1 Arial,sans-serif;cursor:pointer;
+}
+.post-tags-dialog .post-tag-chip-remove:hover {background:#d7e1ed;color:#303944;}
+.post-tags-dialog .post-tag-chip-remove:focus-visible {outline:2px solid #2878f0;}
 .post-tags-input-wrap input#post-tags-input::placeholder {
     color:#71839d !important;
     opacity:1 !important;
@@ -1886,19 +1911,42 @@
         let tagRequest = null;
         let tagOptions = [];
         let activeTag = -1;
-        const normalizeTag = name => name.trim().replace(/^#+/, '').toLocaleLowerCase('tr-TR');
-        // Work on the tag around the caret, not on the entire comma-separated field.
-        const currentTag = () => {
-            const value = tagsInput?.value || '';
-            const caret = tagsInput?.selectionStart ?? value.length;
-            const separators = Array.from(value.matchAll(/,|\s+(?=#)/gu));
-            let start = 0, end = value.length;
-            for (const separator of separators) {
-                const after = separator.index + separator[0].length;
-                if (after <= caret) start = after;
-                else { end = separator.index; break; }
-            }
-            return { value, start, end, query: value.slice(start, end).trim().replace(/^#+/, '').trim() };
+        const tagsValue = tagsModal?.querySelector('#post-tags-value');
+        const tagsWrap = tagsInput?.closest('.post-tags-input-wrap');
+        const cleanTag = name => String(name).trim().replace(/^#+/, '').trim();
+        const normalizeTag = name => cleanTag(name).toLocaleLowerCase('tr-TR').normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/ı/g, 'i');
+        const splitTags = value => String(value).split(/\s*,\s*|\s+(?=#)|[\r\n]+/u).map(cleanTag).filter(Boolean);
+        let selectedTags = splitTags(tagsValue?.value || '').filter((name, index, all) =>
+            all.findIndex(other => normalizeTag(other) === normalizeTag(name)) === index);
+        const currentTag = () => ({ query: cleanTag(tagsInput?.value || '') });
+        const syncTagValue = () => {
+            if (tagsValue) tagsValue.value = selectedTags.join(', ');
+        };
+        const renderTagChips = () => {
+            if (!tagsWrap || !tagsInput) return;
+            tagsWrap.querySelectorAll('.post-tag-chip').forEach(chip => chip.remove());
+            selectedTags.forEach((name, index) => {
+                const chip = document.createElement('span');
+                chip.className = 'post-tag-chip';
+                const label = document.createElement('span');
+                label.className = 'post-tag-chip-label';
+                label.textContent = name;
+                const remove = document.createElement('button');
+                remove.type = 'button';
+                remove.className = 'post-tag-chip-remove';
+                remove.textContent = '×';
+                remove.setAttribute('aria-label', name + ' etiketini kaldır');
+                remove.addEventListener('click', () => {
+                    selectedTags.splice(index, 1);
+                    syncTagValue();
+                    renderTagChips();
+                    tagsInput.focus({ preventScroll: true });
+                    searchTags();
+                });
+                chip.append(label, remove);
+                tagsWrap.insertBefore(chip, tagsInput);
+            });
+            syncTagValue();
         };
         const setTagStatus = message => {
             if (!suggestionsStatus) return;
@@ -1919,26 +1967,29 @@
             tagRequest?.abort();
             tagRequest = null;
         };
-        const chooseTag = name => {
-            if (!tagsInput) return;
-            const { value, start, end } = currentTag();
-            const parts = value.split(/\s*,\s*|\s+(?=#)/u).map(part => part.trim()).filter(Boolean);
-            const before = value.slice(0, start).trim().replace(/,+$/, '').trim();
-            const after = value.slice(end).trim().replace(/^,+/, '').trim();
-            const existing = [before, after].join(',').split(/\s*,\s*|\s+(?=#)/u).map(normalizeTag);
-            if (existing.includes(normalizeTag(name))) return;
-            const prefix = before ? before + ', ' : '';
-            const next = prefix + name + (after ? ', ' + after : ', ');
-            if (next.length > tagsInput.maxLength || parts.length > 20) {
-                setTagStatus('En fazla 20 etiket ve toplam 500 karakter ekleyebilirsiniz.');
-                return;
+        const chooseTag = (name, focus = true) => {
+            if (!tagsInput) return true;
+            const names = splitTags(name);
+            const next = [...selectedTags];
+            for (const tag of names) {
+                if (next.some(other => normalizeTag(other) === normalizeTag(tag))) continue;
+                if (Array.from(tag).length > 100) {
+                    setTagStatus('Bir etiket en fazla 100 karakter olabilir.');
+                    return false;
+                }
+                next.push(tag);
             }
-            tagsInput.value = next;
-            tagsInput.focus();
-            const position = prefix.length + name.length + 2;
-            tagsInput.setSelectionRange(position, position);
+            if (next.length > 20 || Array.from(next.join(', ')).length > 500) {
+                setTagStatus('En fazla 20 etiket ve toplam 500 karakter ekleyebilirsiniz.');
+                return false;
+            }
+            selectedTags = next;
+            tagsInput.value = '';
+            renderTagChips();
             cancelTagSearch();
             clearTagSuggestions();
+            if (focus) tagsInput.focus({ preventScroll: true });
+            return true;
         };
         const highlightTag = index => {
             activeTag = index;
@@ -1954,9 +2005,7 @@
         const renderTagSuggestions = tags => {
             clearTagSuggestions();
             if (!suggestionsList || !tagsInput) return;
-            const { value, start, end } = currentTag();
-            const used = new Set((value.slice(0, start) + ',' + value.slice(end))
-                .split(/\s*,\s*|\s+(?=#)/u).map(normalizeTag));
+            const used = new Set(selectedTags.map(normalizeTag));
             tagOptions = tags.filter(tag => typeof tag.name === 'string' && !used.has(normalizeTag(tag.name))).slice(0, 8);
             if (!tagOptions.length) {
                 setTagStatus('Mevcut etiket bulunamadı. Yeni etiket yazabilirsiniz.');
@@ -2003,8 +2052,25 @@
                 }
             }, 220);
         };
-        tagsInput?.addEventListener('input', searchTags);
+        renderTagChips();
+        tagsInput?.addEventListener('input', event => {
+            if (!event.isComposing && tagsInput.value.includes(',')) {
+                const last = tagsInput.value.lastIndexOf(',');
+                const pending = tagsInput.value.slice(last + 1);
+                if (chooseTag(tagsInput.value.slice(0, last))) tagsInput.value = pending;
+            }
+            searchTags();
+        });
         tagsInput?.addEventListener('click', searchTags);
+        tagsInput?.addEventListener('compositionend', searchTags);
+        tagsInput?.addEventListener('paste', event => {
+            const text = event.clipboardData?.getData('text') || '';
+            if (!/[,\r\n]|\s+#/.test(text)) return;
+            event.preventDefault();
+            const start = tagsInput.selectionStart ?? tagsInput.value.length;
+            const end = tagsInput.selectionEnd ?? start;
+            chooseTag(tagsInput.value.slice(0, start) + text + tagsInput.value.slice(end));
+        });
         tagsInput?.addEventListener('keydown', event => {
             if (event.isComposing) return;
             if (event.key === 'ArrowDown' && tagOptions.length) {
@@ -2016,8 +2082,16 @@
             } else if (event.key === 'Enter') {
                 event.preventDefault();
                 if (activeTag >= 0 && tagOptions[activeTag]) chooseTag(tagOptions[activeTag].name);
-                else if (tagOptions.length === 1) chooseTag(tagOptions[0].name);
                 else if (currentTag().query) chooseTag(currentTag().query);
+            } else if (event.key === ',') {
+                event.preventDefault();
+                if (currentTag().query) chooseTag(currentTag().query);
+            } else if (event.key === 'Backspace' && !tagsInput.value && selectedTags.length) {
+                event.preventDefault();
+                selectedTags.pop();
+                renderTagChips();
+                cancelTagSearch();
+                clearTagSuggestions();
             } else if (event.key === 'Escape' && tagOptions.length) {
                 event.preventDefault();
                 event.stopPropagation();
@@ -2085,6 +2159,7 @@
             searchTags();
         };
         const closeTagsModal = () => {
+            if (currentTag().query && !chooseTag(currentTag().query, false)) return;
             cancelTagSearch();
             clearTagSuggestions();
             if (tagsModal) {
