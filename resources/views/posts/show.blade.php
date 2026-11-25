@@ -86,6 +86,7 @@
                     <div class="meta">
                         @if ($post->channel)<a href="{{ route('channels.show', $post->channel) }}">{{ $post->channel->name }}</a>@endif
                         <time datetime="{{ $post->published_at?->toAtomString() }}">{{ $post->published_at?->diffForHumans() ?? $post->created_at->diffForHumans() }}</time>
+                        @include('posts._edit-history', ['post' => $post])
                     </div>
                 </div>
             </div>

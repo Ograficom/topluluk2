@@ -280,7 +280,7 @@ class PostController extends Controller
         if ($newVideo) $post->video_path = $newVideo;
         if ($newCover) $post->cover_image = $newCover;
         elseif ($request->boolean('remove_cover')) $post->cover_image = null;
-        $post->save();
+        \Illuminate\Support\Facades\DB::transaction(fn () => $post->save());
         $this->syncTagRecords($post, $tags);
 
         // Delete only files no longer referenced by a saved post, never before saving.
@@ -293,6 +293,30 @@ class PostController extends Controller
         }
 
         return redirect()->route('posts.show', $post)->with('status', 'Yazınız güncellendi.');
+    }
+
+    public function editHistory(Request $request, Post $post): \Illuminate\Http\JsonResponse
+    {
+        abort_unless(Post::query()->published()->whereKey($post->id)->exists(), 404);
+        abort_if($post->is_adult && ! $request->user()?->show_adult_content, 404);
+        if ($request->user()) {
+            abort_if($request->user()->blockedUsers()->whereKey($post->user_id)->exists()
+                || $request->user()->blockedByUsers()->whereKey($post->user_id)->exists(), 404);
+        }
+
+        $validated = $request->validate(['page' => ['nullable', 'integer', 'min:1', 'max:100000']]);
+        $history = \Illuminate\Support\Facades\DB::table('post_edit_histories')
+            ->where('post_id', $post->id)->orderByDesc('id')
+            ->paginate(20, ['editor_name', 'edited_at'], 'page', $validated['page'] ?? 1);
+
+        return response()->json([
+            'count' => $history->total(),
+            'entries' => collect($history->items())->map(fn ($entry) => [
+                'editor' => $entry->editor_name,
+                'date' => \Illuminate\Support\Carbon::parse($entry->edited_at)->toIso8601String(),
+            ])->values(),
+            'next_page' => $history->hasMorePages() ? $history->currentPage() + 1 : null,
+        ])->header('Cache-Control', 'no-store');
     }
 
     public function show(Request $request, Post $post): View

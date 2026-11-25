@@ -22,6 +22,18 @@ class Post extends Model
         });
 
         static::updated(function (Post $post): void {
+            // Count real content edits only, not impressions, reactions or timestamps.
+            $editor = auth()->user();
+            if ($editor && ($post->getOriginal('is_published') || $post->getOriginal('published_at'))
+                && $post->wasChanged(['title', 'body', 'excerpt', 'channel_id', 'cover_image', 'media',
+                    'video_url', 'video_path', 'tags', 'location', 'meta_description', 'is_adult'])) {
+                \Illuminate\Support\Facades\DB::table('post_edit_histories')->insert([
+                    'post_id' => $post->id,
+                    'editor_id' => $editor->getAuthIdentifier(),
+                    'editor_name' => mb_substr($editor->displayName(), 0, 255),
+                    'edited_at' => now(),
+                ]);
+            }
             if ($post->wasChanged(['is_published', 'is_spam'])) {
                 $post->awardPublicationReputation();
             }

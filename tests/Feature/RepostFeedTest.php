@@ -679,6 +679,31 @@ class RepostFeedTest extends TestCase
         $this->getJson(route('posts.tag-suggestions', ['q' => '']))->assertOk()->assertExactJson([]);
     }
 
+    public function test_post_edit_history_records_actual_editors_and_ignores_views(): void
+    {
+        $author = User::factory()->create();
+        $admin = User::factory()->create(['is_admin' => true]);
+        $channel = Channel::create(['name' => 'Geçmiş', 'slug' => 'gecmis', 'is_active' => true]);
+        $post = $this->createPost($channel, ['user_id' => $author->id]);
+
+        $this->getJson(route('posts.edit-history', $post))->assertOk()->assertJsonPath('count', 0);
+        $this->actingAs($author)->get(route('posts.show', $post))->assertOk()
+            ->assertSee('data-edit-history-url', false);
+        $this->getJson(route('posts.edit-history', $post))->assertJsonPath('count', 0);
+
+        $post->refresh()->update(['body' => 'Yazarın düzenlemesi.']);
+        $post->save();
+        $this->actingAs($admin);
+        $post->refresh()->update(['body' => 'Yöneticinin düzenlemesi.']);
+
+        $this->getJson(route('posts.edit-history', $post))->assertOk()
+            ->assertJsonPath('count', 2)
+            ->assertJsonPath('entries.0.editor', $admin->displayName())
+            ->assertJsonPath('entries.1.editor', $author->displayName());
+        $post->update(['is_published' => false]);
+        $this->getJson(route('posts.edit-history', $post))->assertNotFound();
+    }
+
     public function test_author_can_edit_post_with_existing_tags(): void
     {
         $author = User::factory()->create();

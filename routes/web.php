@@ -409,6 +409,7 @@ Route::post('/advertisements/{advertisement}/impression', [AdvertisementControll
 Route::get('/advertisements/{advertisement}', [AdvertisementController::class, 'show'])->name('advertisements.show');
 Route::post('/advertisements/{advertisement}/read', [AdvertisementController::class, 'trackRead'])->middleware('throttle:10,1')->name('advertisements.read');
 Route::get('/advertisements/{advertisement}/click', [AdvertisementController::class, 'click'])->middleware('throttle:60,1')->name('advertisements.click');
+Route::get('/posts/{post:slug}/edit-history', [PostController::class, 'editHistory'])->middleware('throttle:60,1')->name('posts.edit-history');
 Route::get('/posts/{post:slug}', [PostController::class, 'show'])->name('posts.show');
 Route::get('/channels', [ChannelController::class, 'index'])->name('channels.index');
 Route::get('/channels/create', [ChannelController::class, 'create'])->middleware('auth')->name('channels.create');

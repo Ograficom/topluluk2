@@ -32,6 +32,7 @@
                         <time datetime="{{ $post->published_at?->toAtomString() }}">
                             {{ $post->published_at?->diffForHumans() ?? $post->created_at->diffForHumans() }}
                         </time>
+                        @include('posts._edit-history', ['post' => $post])
                     </div>
                 </div>
             </div>
