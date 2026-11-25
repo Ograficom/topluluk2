@@ -353,9 +353,6 @@
         <button type="button" class="repost-tool-btn" title="Görsel" aria-label="Görsel" data-gallery-open>
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><rect x="3" y="4" width="18" height="16" rx="2.5"></rect><circle cx="8.5" cy="9" r="1.25" fill="currentColor" stroke="none"></circle><path stroke-linecap="round" stroke-linejoin="round" d="M4 17l5-4.5 3.5 3 3-2.5L20 17"></path></svg>
         </button>
-        <button type="button" class="repost-tool-btn" title="Konum" aria-label="Konum" data-composer-location-toggle aria-expanded="false">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path stroke-linecap="round" stroke-linejoin="round" d="M12 21c-4-4.2-7-7.6-7-11a7 7 0 1114 0c0 3.4-3 6.8-7 11z"></path><circle cx="12" cy="10" r="2.25"></circle></svg>
-        </button>
         <button type="button" class="repost-tool-btn" title="Video" aria-label="Video" data-composer-video-toggle aria-expanded="false">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><rect x="3" y="5" width="18" height="14" rx="3"></rect><path stroke-linecap="round" stroke-linejoin="round" d="M10.25 9.5l4.5 2.5-4.5 2.5v-5z"></path></svg>
         </button>
