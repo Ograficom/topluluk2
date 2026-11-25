@@ -25,34 +25,18 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
 
 
+Route::get('/pwa/icons/{icon}.png', [\App\Http\Controllers\PwaIconController::class, 'show'])
+    ->where('icon', '192|512|maskable-512')->name('pwa.icon');
+
 Route::get('/manifest.webmanifest', function () {
     $settings = \App\Models\SiteSetting::current();
     abort_unless($settings?->pwa_enabled ?? true, 404);
 
-    $storage = Storage::disk('public');
-    $icons = [];
-
-    foreach ([
-        [$settings?->pwa_icon_192_path, 192, 'any', 'pwa-icon-192.png'],
-        [$settings?->pwa_icon_512_path, 512, 'any', 'pwa-icon-512.png'],
-        [$settings?->pwa_maskable_icon_512_path, 512, 'maskable', 'pwa-icon-maskable-512.png'],
-    ] as [$path, $size, $purpose, $fallback]) {
-        $src = '/assets/img/meta/'.$fallback;
-
-        // Store packaging requires real, square PNG files at both sizes.
-        // Invalid or missing custom uploads must not remove required icons.
-        if (filled($path) && $storage->exists($path)) {
-            $image = @getimagesize($storage->path($path));
-            if ($image !== false && $image[0] === $size && $image[1] === $size && $image[2] === IMAGETYPE_PNG) {
-                $candidate = parse_url($storage->url($path), PHP_URL_PATH);
-                if (is_string($candidate) && str_starts_with($candidate, '/storage/') && is_file(public_path(ltrim($candidate, '/')))) {
-                    $src = $candidate;
-                }
-            }
-        }
-
-        $icons[] = ['src' => $src, 'sizes' => $size.'x'.$size, 'type' => 'image/png', 'purpose' => $purpose];
-    }
+    $icons = [
+        ['src' => '/pwa/icons/192.png', 'sizes' => '192x192', 'type' => 'image/png', 'purpose' => 'any'],
+        ['src' => '/pwa/icons/512.png', 'sizes' => '512x512', 'type' => 'image/png', 'purpose' => 'any'],
+        ['src' => '/pwa/icons/maskable-512.png', 'sizes' => '512x512', 'type' => 'image/png', 'purpose' => 'maskable'],
+    ];
 
     $startUrl = $settings?->pwa_start_url ?: '/';
     if (! str_starts_with($startUrl, '/') || str_starts_with($startUrl, '//')) $startUrl = '/';
@@ -96,10 +80,10 @@ Route::get('/manifest.webmanifest', function () {
         'categories' => ['social', 'news'],
         'icons' => $icons,
         'shortcuts' => [
-            ['name' => 'Gönderi oluştur', 'short_name' => 'Yeni gönderi', 'description' => 'Yeni bir gönderi yaz', 'url' => '/posts/create', 'icons' => [['src' => '/assets/img/meta/pwa-icon-192.png', 'sizes' => '192x192', 'type' => 'image/png']]],
-            ['name' => 'Bildirimler', 'short_name' => 'Bildirimler', 'description' => 'Bildirimlerini görüntüle', 'url' => '/notifications', 'icons' => [['src' => '/assets/img/meta/pwa-icon-192.png', 'sizes' => '192x192', 'type' => 'image/png']]],
-            ['name' => 'Mesajlar', 'short_name' => 'Mesajlar', 'description' => 'Sohbetlerini aç', 'url' => '/messenger', 'icons' => [['src' => '/assets/img/meta/pwa-icon-192.png', 'sizes' => '192x192', 'type' => 'image/png']]],
-            ['name' => 'Son gönderiler', 'short_name' => 'Son gönderiler', 'description' => 'Topluluktaki son gönderileri keşfet', 'url' => '/last-posts', 'icons' => [['src' => '/assets/img/meta/pwa-icon-192.png', 'sizes' => '192x192', 'type' => 'image/png']]],
+            ['name' => 'Gönderi oluştur', 'short_name' => 'Yeni gönderi', 'description' => 'Yeni bir gönderi yaz', 'url' => '/posts/create', 'icons' => [['src' => '/pwa/icons/192.png', 'sizes' => '192x192', 'type' => 'image/png']]],
+            ['name' => 'Bildirimler', 'short_name' => 'Bildirimler', 'description' => 'Bildirimlerini görüntüle', 'url' => '/notifications', 'icons' => [['src' => '/pwa/icons/192.png', 'sizes' => '192x192', 'type' => 'image/png']]],
+            ['name' => 'Mesajlar', 'short_name' => 'Mesajlar', 'description' => 'Sohbetlerini aç', 'url' => '/messenger', 'icons' => [['src' => '/pwa/icons/192.png', 'sizes' => '192x192', 'type' => 'image/png']]],
+            ['name' => 'Son gönderiler', 'short_name' => 'Son gönderiler', 'description' => 'Topluluktaki son gönderileri keşfet', 'url' => '/last-posts', 'icons' => [['src' => '/pwa/icons/192.png', 'sizes' => '192x192', 'type' => 'image/png']]],
         ],
         'widgets' => [
             [

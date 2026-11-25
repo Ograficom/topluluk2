@@ -13,7 +13,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     @if ($pwaSettings?->pwa_enabled ?? true)
         <link rel="manifest" href="{{ route('pwa.manifest', [], false) }}">
-        <link rel="apple-touch-icon" href="{{ $pwaSettings?->pwa_icon_192_path ? \Illuminate\Support\Facades\Storage::disk('public')->url($pwaSettings->pwa_icon_192_path) : '/assets/img/meta/pwa-icon-192.png' }}">
+        <link rel="apple-touch-icon" href="/pwa/icons/192.png">
     @endif
     <title>@yield('title', $brandName) — {{ $brandName }}</title>
     <style>
