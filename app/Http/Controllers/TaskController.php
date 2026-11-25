@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\ReputationSetting;
 use App\Models\TaskCompletion;
+use App\Models\TaskParticipation;
+use Illuminate\Http\RedirectResponse;
 use App\Models\User;
 use App\Services\CommunityTaskService;
 use App\Services\ReputationService;
@@ -13,6 +15,30 @@ use Illuminate\View\View;
 
 class TaskController extends Controller
 {
+    public function submit(Request $request, string $taskKey, CommunityTaskService $taskService): RedirectResponse
+    {
+        $settings = ReputationSetting::current();
+        $user = $request->user();
+        abort_unless($settings->enabled && ! ($settings->exclude_company_accounts && $user->is_company), 403);
+        $task = collect($taskService->tasks())->first(fn (array $item): bool => ($item['key'] ?? '') === $taskKey);
+        abort_unless($task && in_array($task['activity'] ?? '', ['event', 'social_follow'], true), 404);
+        abort_if(filled($task['starts_at'] ?? null) && now()->lt($task['starts_at']), 422);
+        abort_if(filled($task['ends_at'] ?? null) && now()->gt($task['ends_at']), 422);
+        $validated = $request->validate([
+            'external_username' => [$task['activity'] === 'social_follow' ? 'required' : 'nullable', 'string', 'max:100'],
+        ]);
+        if (TaskCompletion::query()->where('user_id', $user->id)->where('task_key', $taskKey)->exists()) {
+            return back()->with('task_status', 'Bu görevi zaten tamamladın.');
+        }
+        $participation = TaskParticipation::query()->firstOrCreate(
+            ['user_id' => $user->id, 'task_key' => $taskKey],
+            ['task_name' => $task['title'], 'external_username' => $validated['external_username'] ?? null, 'status' => 'pending']
+        );
+        return back()->with('task_status', $participation->wasRecentlyCreated
+            ? 'Başvurun yöneticiye iletildi.'
+            : 'Bu görev için daha önce başvurdun.');
+    }
+
     public function index(Request $request, CommunityTaskService $taskService, ReputationService $reputationService): View
     {
         $viewer = $request->user();
@@ -26,7 +52,10 @@ class TaskController extends Controller
             'month' => now()->startOfMonth(),
             default => null,
         };
-        $tasks = collect($taskService->tasks())->map(function (array $task) use ($viewer, $taskService): array {
+        $participations = $viewer
+            ? TaskParticipation::query()->where('user_id', $viewer->id)->get()->keyBy('task_key')
+            : collect();
+        $tasks = collect($taskService->tasks())->map(function (array $task) use ($viewer, $taskService, $participations): array {
             $progress = $viewer ? $taskService->progress($viewer, $task) : 0;
             $target = max(1, (int) ($task['target_count'] ?? 1));
             $key = (string) ($task['key'] ?? '');
@@ -36,6 +65,7 @@ class TaskController extends Controller
 
             return [
                 'task' => $task,
+                'participation' => $participations->get($key),
                 'progress' => min($progress, $target),
                 'target' => $target,
                 'completed' => $completed,

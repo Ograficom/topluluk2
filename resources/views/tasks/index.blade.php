@@ -4,7 +4,7 @@
 @section('description', 'OgraFi topluluk görevlerini tamamla, puan kazan ve liderlik tablosunda yüksel.')
 
 @push('head')
-    <link rel="stylesheet" href="{{ asset('assets/css/tasks.css') }}?v=20261124-tasks-single-column">
+    <link rel="stylesheet" href="{{ asset('assets/css/tasks.css') }}?v=20261125-participations">
 @endpush
 
 @section('content')
@@ -19,6 +19,12 @@
                 <span class="tasks-count">{{ $tasks->count() }}</span>
             </header>
 
+            @if (session('task_status'))
+                <p class="task-participation-message" role="status">{{ session('task_status') }}</p>
+            @endif
+            @if ($errors->has('external_username'))
+                <p class="task-participation-message" role="alert">{{ $errors->first('external_username') }}</p>
+            @endif
             @forelse ($tasks as $item)
                 @php
                     $task = $item['task'];
@@ -72,7 +78,31 @@
                         <a class="btn btn-primary btn-sm" href="{{ $task['action_url'] }}" target="_blank" rel="noopener noreferrer">Görev bağlantısını aç</a>
                     @endif
                     @if (in_array($task['activity'] ?? '', ['event', 'social_follow'], true))
-                        <p class="small color-gray">Tamamladıktan sonra yönetici onayıyla ödülün verilir.</p>
+                        @auth
+                            @if ($item['completed'])
+                                <p class="small color-gray">Görevin onaylandı ve ödülün hesabına eklendi.</p>
+                            @elseif ($item['participation'])
+                                <p class="task-participation-message" role="status">
+                                    {{ match ($item['participation']->status) { 'approved' => 'Başvurun onaylandı.', 'rejected' => 'Başvurun reddedildi.', default => 'Başvurun yönetici onayı bekliyor.' } }}
+                                </p>
+                            @elseif (filled($task['key'] ?? null)
+                                && (! filled($task['starts_at'] ?? null) || now()->gte($task['starts_at']))
+                                && (! filled($task['ends_at'] ?? null) || now()->lte($task['ends_at'])))
+                                <form action="{{ route('tasks.submit', ['taskKey' => $task['key']]) }}" method="POST" class="task-participation-form">
+                                    @csrf
+                                    @if (($task['activity'] ?? '') === 'social_follow')
+                                        <label for="task-social-{{ $loop->index }}">Sosyal medya kullanıcı adın</label>
+                                        <input id="task-social-{{ $loop->index }}" name="external_username" maxlength="100" placeholder="@kullaniciadi" required>
+                                    @endif
+                                    <button type="submit" class="btn btn-primary btn-sm">Görevi tamamladım</button>
+                                </form>
+                                <p class="small color-gray">Yönetici kontrolünden sonra ödülün verilir.</p>
+                            @else
+                                <p class="small color-gray">Bu görev şu anda başvuru almıyor.</p>
+                            @endif
+                        @else
+                            <p class="small color-gray">Görevi tamamladıktan sonra giriş yaparak başvuru gönder.</p>
+                        @endauth
                     @endif
                     @guest
                         <small class="task-login-hint"><a href="{{ route('login') }}">Giriş yap</a> ve görev ilerlemeni takip et.</small>

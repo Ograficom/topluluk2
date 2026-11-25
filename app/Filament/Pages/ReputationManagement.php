@@ -4,6 +4,11 @@ namespace App\Filament\Pages;
 
 use App\Models\ReputationSetting;
 use App\Models\User;
+use App\Models\TaskParticipation;
+use App\Models\TaskCompletion;
+use App\Services\CommunityTaskService;
+use Illuminate\Support\Facades\DB;
+use Livewire\WithPagination;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\FileUpload;
@@ -23,6 +28,9 @@ use Illuminate\Support\Str;
 
 class ReputationManagement extends Page
 {
+    use WithPagination;
+
+    public string $participationFilter = 'pending';
     protected static string|\UnitEnum|null $navigationGroup = 'Kullanıcı Yönetimi';
     protected static ?string $navigationLabel = 'İtibar ve ödüller';
     protected static ?string $title = 'İtibar, puan ve ödül yönetimi';
@@ -99,6 +107,72 @@ class ReputationManagement extends Page
         ])->statePath('data');
     }
 
+    public function updatedParticipationFilter(): void
+    {
+        $this->resetPage('taskParticipantsPage');
+    }
+
+    public function getParticipants()
+    {
+        abort_unless(auth()->user()?->is_admin, 403);
+        return TaskParticipation::query()->with('user')
+            ->when(in_array($this->participationFilter, ['pending', 'approved', 'rejected'], true),
+                fn ($query) => $query->where('status', $this->participationFilter))
+            ->latest()->orderByDesc('id')->paginate(20, ['*'], 'taskParticipantsPage');
+    }
+
+    public function reviewParticipation(int $id, bool $approve): void
+    {
+        abort_unless(auth()->user()?->is_admin, 403);
+        try {
+            $review = DB::transaction(function () use ($id, $approve): ?array {
+                $settings = ReputationSetting::query()->whereKey(ReputationSetting::current()->id)->lockForUpdate()->firstOrFail();
+                $participation = TaskParticipation::query()->with('user')->lockForUpdate()->findOrFail($id);
+                if ($participation->status !== 'pending') return null;
+                $tasks = $settings->tasks ?? [];
+                $index = collect($tasks)->search(fn (array $item): bool => ($item['key'] ?? '') === $participation->task_key);
+                if (TaskCompletion::query()->where('user_id', $participation->user_id)->where('task_key', $participation->task_key)->exists()) {
+                    $participation->update(['status' => 'approved']);
+                    return ['status' => 'approved', 'key' => $participation->task_key, 'users' => $index !== false ? ($tasks[$index]['approved_users'] ?? []) : []];
+                }
+                if (! $approve) {
+                    $participation->update(['status' => 'rejected']);
+                    return ['status' => 'rejected'];
+                }
+                if ($index === false || ! ($tasks[$index]['active'] ?? true) || ! in_array($tasks[$index]['activity'] ?? '', ['event', 'social_follow'], true)) {
+                    throw new \DomainException('Görev artık aktif değil.');
+                }
+                $task = $tasks[$index];
+                if (! $settings->enabled || ($settings->exclude_company_accounts && $participation->user->is_company)
+                    || (filled($task['starts_at'] ?? null) && now()->lt($task['starts_at']))
+                    || (filled($task['ends_at'] ?? null) && now()->gt($task['ends_at']))) {
+                    throw new \DomainException('Görev şu anda ödül vermeye uygun değil.');
+                }
+                $users = array_values(array_unique(array_map('strval', [...($task['approved_users'] ?? []), $participation->user_id])));
+                $tasks[$index]['approved_users'] = $users;
+                $settings->update(['tasks' => $tasks]);
+                app(CommunityTaskService::class)->completeAvailableTasks($participation->user);
+                if (! TaskCompletion::query()->where('user_id', $participation->user_id)->where('task_key', $participation->task_key)->exists()) {
+                    throw new \DomainException('Ödül verilemedi. Görev ayarlarını kontrol edin.');
+                }
+                $participation->update(['status' => 'approved']);
+                return ['status' => 'approved', 'key' => $participation->task_key, 'users' => $users];
+            });
+        } catch (\DomainException $exception) {
+            Notification::make()->title($exception->getMessage())->danger()->send();
+            return;
+        }
+        if ($review === null) return;
+        if ($review['status'] === 'approved') {
+            foreach ($this->data['tasks'] ?? [] as $key => $task) {
+                if (($task['key'] ?? '') === $review['key']) {
+                    $this->data['tasks'][$key]['approved_users'] = array_values(array_unique(array_map('strval', [...($task['approved_users'] ?? []), ...$review['users']])));
+                }
+            }
+        }
+        Notification::make()->title($review['status'] === 'approved' ? 'Başvuru onaylandı, ödül verildi.' : 'Başvuru reddedildi.')->success()->send();
+    }
+
     public function save(): void
     {
         $data = $this->form->getState();
@@ -123,6 +197,8 @@ class ReputationManagement extends Page
         $approvedIds = collect($data['tasks'] ?? [])->whereIn('activity', ['event', 'social_follow'])->pluck('approved_users')->flatten()->unique();
         User::query()->whereIn('id', $approvedIds)->each(function (User $user): void {
             app(\App\Services\CommunityTaskService::class)->completeAvailableTasks($user);
+            $completedKeys = TaskCompletion::query()->where('user_id', $user->id)->pluck('task_key');
+            TaskParticipation::query()->where('user_id', $user->id)->whereIn('task_key', $completedKeys)->update(['status' => 'approved']);
         });
 
         Notification::make()->title('İtibar ve ödül ayarları kaydedildi.')->success()->send();

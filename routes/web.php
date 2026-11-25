@@ -308,6 +308,7 @@ Route::middleware('guest')->group(function (): void {
 Route::middleware(['auth', 'verified'])->group(function (): void {
     Route::post('/notifications/push-subscriptions', [NotificationController::class, 'storePushSubscription'])->middleware('throttle:10,1')->name('notifications.push-subscriptions.store');
     Route::delete('/notifications/push-subscriptions', [NotificationController::class, 'destroyPushSubscription'])->middleware('throttle:10,1')->name('notifications.push-subscriptions.destroy');
+    Route::post('/gorevler/{taskKey}/katil', [TaskController::class, 'submit'])->middleware('throttle:10,1')->where('taskKey', '[A-Za-z0-9_-]{1,120}')->name('tasks.submit');
     Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
     Route::get('/notifications/feed', [NotificationController::class, 'feed'])->middleware('throttle:30,1')->name('notifications.feed');
     Route::get('/notifications/{notification}/open', [NotificationController::class, 'open'])->name('notifications.open');
