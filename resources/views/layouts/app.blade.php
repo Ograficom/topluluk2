@@ -229,10 +229,10 @@
     </div>
 
     <div class="pwa-titlebar" aria-hidden="true">OgraFi</div>
-    @if ($pwaSettings?->pwa_enabled ?? true)
-        @include('layouts._app-install-banner')
-    @endif
     <header class="header">
+        @if (($pwaSettings?->pwa_enabled ?? true) && ! request()->routeIs('messenger.show'))
+            @include('layouts._app-install-banner')
+        @endif
         <div class="header__inner container">
             <div class="header__start">
                 <a href="{{ route('posts.index') }}" class="logo header__logo" aria-label="{{ $brandName }} ana sayfa">

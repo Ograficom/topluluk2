@@ -4,17 +4,30 @@
     @media screen and (max-width: 920px) and (display-mode: browser) {
         .ografi-install-banner:not([hidden]) {
             display: block;
-            padding: 8px 12px 10px;
+            padding: 3px 4px 5px;
+            width: 100%;
+            box-sizing: border-box;
+            background: var(--body-bg, #f4f6fa);
+        }
+        body > header.header:has(> .ografi-install-banner:not([hidden])) {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: var(--body-bg, #f4f6fa);
+        }
+        .pm__header {
+            top: calc(var(--header-height) + var(--ografi-install-banner-height, 0px));
         }
     }
     .ografi-install-banner__card {
         display: flex;
         align-items: center;
-        gap: 10px;
-        max-width: 480px;
+        gap: 8px;
+        width: 100%;
+        box-sizing: border-box;
         margin-inline: auto;
-        padding: 10px;
-        border-radius: 16px;
+        padding: 6px 8px;
+        border-radius: 12px;
         background: var(--card-bg, #fff);
         color: var(--text-color, #212529);
         box-shadow: 0 5px 18px rgb(32 56 96 / 12%);
@@ -23,9 +36,9 @@
     .ografi-install-banner__close {
         display: grid;
         place-items: center;
-        flex: 0 0 24px;
-        width: 24px;
-        height: 32px;
+        flex: 0 0 30px;
+        width: 30px;
+        height: 44px;
         padding: 0;
         border: 0;
         background: transparent;
@@ -81,8 +94,7 @@
     .ografi-install-banner__close:focus-visible,
     .ografi-install-banner__action:focus-visible { outline: 2px solid var(--color-primary); outline-offset: 2px; }
     .ografi-install-banner__help {
-        max-width: 480px;
-        margin: 6px auto 0;
+        margin: 4px 0 0;
         padding: 10px 12px;
         border-radius: 12px;
         background: var(--card-bg, #fff);
@@ -91,7 +103,7 @@
         line-height: 1.5;
     }
     @media (max-width: 340px) {
-        .ografi-install-banner__card { gap: 6px; padding: 8px; }
+        .ografi-install-banner__card { gap: 6px; padding: 5px 6px; }
         .ografi-install-banner__action { padding-inline: 10px; }
     }
     @media (prefers-reduced-motion: reduce) {
@@ -128,8 +140,15 @@
         const androidLink = banner.querySelector('[data-ografi-install-android]');
         const iosButton = banner.querySelector('[data-ografi-install-ios]');
         const help = banner.querySelector('#ografiInstallHelp');
-        const dismiss = () => {
+        const syncBannerHeight = () => {
+            document.documentElement.style.setProperty('--ografi-install-banner-height', banner.offsetHeight + 'px');
+        };
+        const hideBanner = () => {
             banner.hidden = true;
+            syncBannerHeight();
+        };
+        const dismiss = () => {
+            hideBanner();
             try { localStorage.setItem(key, String(Date.now() + 7 * 24 * 60 * 60 * 1000)); } catch (_) {}
         };
         let dismissed = false;
@@ -138,12 +157,19 @@
         androidLink.hidden = !android;
         iosButton.hidden = !ios || android;
         banner.hidden = false;
+        syncBannerHeight();
+        if ('ResizeObserver' in window) {
+            new ResizeObserver(syncBannerHeight).observe(banner);
+        } else {
+            window.addEventListener('resize', syncBannerHeight);
+        }
         banner.querySelector('[data-ografi-install-close]').addEventListener('click', dismiss);
         iosButton.addEventListener('click', () => {
             help.hidden = !help.hidden;
             iosButton.setAttribute('aria-expanded', String(!help.hidden));
+            syncBannerHeight();
         });
-        window.addEventListener('appinstalled', () => { banner.hidden = true; });
-        window.addEventListener('pageshow', () => { if (installed()) banner.hidden = true; });
+        window.addEventListener('appinstalled', hideBanner);
+        window.addEventListener('pageshow', () => { if (installed()) hideBanner(); });
     })();
 </script>
