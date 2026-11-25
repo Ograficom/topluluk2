@@ -1146,7 +1146,9 @@
                 return;
             }
 
-            if (event.target === liveModal || event.target.closest('.addpost__modal-close')) {
+            // Ignore backdrop clicks so an unfinished post is not discarded accidentally.
+            const closeButton = event.target.closest('.addpost__modal-close');
+            if (closeButton && liveModal.contains(closeButton)) {
                 event.preventDefault();
                 closeComposer();
             }
