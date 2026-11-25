@@ -147,9 +147,7 @@
 #createPostModal .post-gallery-apply:hover {background:#1769dc;}
 #createPostModal [data-gallery-error] {margin:8px 0 0;color:#b91c1c;font-size:14px;}
 @media(max-width:360px){#createPostModal .post-gallery-grid{grid-template-columns:repeat(2,minmax(0,1fr));}}
-#createPostBox .post-composer-location-panel:not([hidden]) {display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
-#createPostBox .post-composer-location-panel input {min-width:0;flex:1;border:1px solid #cbd5e1;border-radius:12px;padding:8px;background:#fff;color:#334155;}
-#createPostBox .post-composer-location-panel button {border:0;background:transparent;color:#64748b;font-size:20px;cursor:pointer;}
+
 @media(max-width:640px){#createPostModal.repost-modal-backdrop{padding:12px!important;}#createPostBox :is(.repost-modal-topbar,.repost-modal-userbar,.repost-modal-body,.repost-modal-footer){padding-inline:16px;}#createPostBox .repost-toolbar{gap:10px;}#createPostBox .repost-settings-popover{max-width:calc(100vw - 58px);}}
 @media(prefers-reduced-motion:reduce){#createPostBox{transition:none!important;}}
 
@@ -316,11 +314,7 @@
                         <p class="small color-gray">Mevcut video kayıtlı. Yeni video seçersen değiştirilir.</p>
                     @endif
                     </div>
-      <div class="post-composer-location-panel" data-composer-location-panel hidden>
-                        <label for="post-location">Konum</label>
-                        <input id="post-location" name="location" type="text" maxlength="255" value="{{ old('location', $post->location ?? '') }}" placeholder="Şehir, mekan veya adres">
-                        <button type="button" data-composer-location-close aria-label="Konum alanını kapat">×</button>
-                    </div>
+
     </div>
 
     <!-- 4. Alt Alan: Üstte 5 İkon, Altta Yayın Ayarları + Yayınla -->
@@ -417,6 +411,19 @@
                     <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5m0-8h.01"/></svg>
                     <span>Buraya konu başlıkları, Twitter gönderileri, haritalar ve diğer widget kodlarını yapıştırabilirsiniz.</span>
                 </p>
+            </div>
+        </div>
+        <div class="post-tags-modal post-location-modal" data-location-modal hidden>
+            <div class="post-tags-dialog post-location-dialog" role="dialog" aria-modal="true" aria-labelledby="post-location-title">
+                <button type="button" class="post-tags-back" data-composer-location-close aria-label="Geri dön">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>
+                </button>
+                <h2 id="post-location-title">Konum</h2>
+                <div class="post-location-input-wrap">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21c-4-4.2-7-7.6-7-11a7 7 0 1114 0c0 3.4-3 6.8-7 11z"/><circle cx="12" cy="10" r="2.25"/></svg>
+                    <input id="post-location" name="location" form="createPostBox" type="text" maxlength="255" value="{{ old('location', $post->location ?? '') }}" placeholder="Şehir, mekan veya adres" aria-label="Konum" autocomplete="off" enterkeyhint="done">
+                    <button type="button" class="post-location-clear" data-location-clear aria-label="Konumu temizle" title="Konumu temizle">×</button>
+                </div>
             </div>
         </div>
         <div class="post-tags-modal" data-tags-modal hidden>
@@ -662,6 +669,32 @@
 .post-tags-dialog .post-tag-option:hover,.post-tags-dialog .post-tag-option[aria-selected="true"]{background:#edf4ff;color:#1769ff;}
 .post-tags-dialog .post-tag-option-hash{color:#71839d;font-size:16px;flex:none;}
 .post-tags-dialog .post-tag-suggestions-status{margin:10px 6px 0;color:#71839d;font:13px/1.4 Arial,sans-serif;}
+.post-location-dialog .post-location-input-wrap {
+    display:flex!important;align-items:center!important;gap:10px!important;
+    box-sizing:border-box!important;width:100%!important;min-height:44px!important;
+    padding:7px 14px!important;margin:0!important;border:0!important;border-radius:12px!important;
+    background:#f7f8fa!important;
+}
+.post-location-dialog .post-location-input-wrap > svg {
+    display:block!important;flex:0 0 19px!important;width:19px!important;height:19px!important;
+    fill:none!important;stroke:#8996a9!important;stroke-width:1.8!important;stroke-linecap:round!important;stroke-linejoin:round!important;
+}
+.post-location-dialog .post-location-input-wrap:has(#post-location:not(:placeholder-shown)) > svg {stroke:#2878f0!important;}
+.post-location-dialog input#post-location {
+    display:block!important;flex:1 1 0%!important;min-width:0!important;width:1%!important;
+    margin:0!important;padding:0!important;border:0!important;border-radius:0!important;outline:0!important;
+    box-shadow:none!important;background:transparent!important;color:#303944!important;
+    font:14px/30px Arial,sans-serif!important;
+}
+.post-location-dialog input#post-location::placeholder {color:#71839d!important;opacity:1!important;}
+.post-location-dialog .post-location-clear {
+    display:grid!important;place-items:center!important;flex:0 0 26px!important;width:26px!important;height:26px!important;
+    padding:0!important;border:0!important;border-radius:50%!important;background:transparent!important;
+    color:#71839d!important;font:20px/1 Arial,sans-serif!important;cursor:pointer;
+}
+.post-location-dialog .post-location-clear[hidden]{display:none!important;}
+.post-location-dialog .post-location-clear:hover{background:#e8edf3!important;}
+.post-location-dialog .post-location-clear:active{transform:scale(.9);}
 </style>
 
 <style id="post-widget-modal-style">
@@ -1824,8 +1857,13 @@
         });
 
         const locationToggle = document.querySelector('[data-composer-location-toggle]');
-        const locationPanel = document.querySelector('[data-composer-location-panel]');
-        const locationClose = document.querySelector('[data-composer-location-close]');
+        const locationModal = composerOverlay?.querySelector('[data-location-modal]');
+        const locationClose = locationModal?.querySelector('[data-composer-location-close]');
+        const locationInput = locationModal?.querySelector('#post-location');
+        const locationClear = locationModal?.querySelector('[data-location-clear]');
+        const locationPlaceholder = document.createComment('location-modal-position');
+        locationModal?.parentNode?.insertBefore(locationPlaceholder, locationModal);
+        let previousLocationDisplay = '';
         const videoToggle = document.querySelector('[data-composer-video-toggle]');
         const videoModal = document.querySelector('[data-video-modal]');
         const videoInput = document.getElementById('post-video-url');
@@ -1835,22 +1873,69 @@
         const tagsToggle = document.querySelector('[data-composer-tags-toggle]');
         const tagsModal = document.querySelector('[data-tags-modal]');
         const tagsInput = document.getElementById('post-tags-input');
-        const closeComposerPanels = () => {
-            if (locationPanel) locationPanel.hidden = true;
+        const syncLocation = () => {
+            const hasValue = Boolean(locationInput?.value.trim());
+            if (locationClear) locationClear.hidden = !hasValue;
+            locationToggle?.classList.toggle('is-active', hasValue);
+        };
+        const closeLocationModal = (restoreFocus = true) => {
+            if (!locationModal || locationModal.hidden) return;
+            locationModal.hidden = true;
+            locationModal.classList.remove('is-open');
+            if (locationPlaceholder.parentNode) locationPlaceholder.parentNode.insertBefore(locationModal, locationPlaceholder);
+            if (composerOverlay) {
+                composerOverlay.style.removeProperty('display');
+                if (previousLocationDisplay) composerOverlay.style.display = previousLocationDisplay;
+            }
+            composerForm?.removeAttribute('aria-hidden');
             locationToggle?.setAttribute('aria-expanded', 'false');
+            syncLocation();
+            if (restoreFocus) locationToggle?.focus({ preventScroll: true });
+        };
+        const closeComposerPanels = () => {
+            closeLocationModal(false);
             videoToggle?.setAttribute('aria-expanded', 'false');
         };
-        locationToggle?.addEventListener('click', () => {
-            const opening = locationPanel?.hidden;
+        const openLocationModal = () => {
+            if (!locationModal || !locationInput || !composerOverlay) return;
             closeComposerPanels();
-            if (locationPanel) locationPanel.hidden = !opening;
-            locationToggle.setAttribute('aria-expanded', opening ? 'true' : 'false');
-            if (opening) document.getElementById('post-location')?.focus();
+            previousLocationDisplay = composerOverlay.style.display || '';
+            document.body.appendChild(locationModal);
+            locationModal.hidden = false;
+            locationModal.classList.add('is-open');
+            composerOverlay.style.setProperty('display', 'none', 'important');
+            composerForm?.setAttribute('aria-hidden', 'true');
+            locationToggle?.setAttribute('aria-expanded', 'true');
+            syncLocation();
+            locationInput.focus({ preventScroll: true });
+        };
+        locationToggle?.addEventListener('click', openLocationModal);
+        locationClose?.addEventListener('click', () => closeLocationModal());
+        locationClear?.addEventListener('click', () => {
+            if (locationInput) locationInput.value = '';
+            syncLocation();
+            locationInput?.focus({ preventScroll: true });
         });
-        locationClose?.addEventListener('click', () => {
-            if (locationPanel) locationPanel.hidden = true;
-            locationToggle?.setAttribute('aria-expanded', 'false');
+        locationInput?.addEventListener('input', syncLocation);
+        locationModal?.addEventListener('click', event => {
+            if (event.target === locationModal) closeLocationModal();
         });
+        locationModal?.addEventListener('keydown', event => {
+            if (event.isComposing) return;
+            if (event.key === 'Escape' || (event.key === 'Enter' && event.target === locationInput)) {
+                event.preventDefault();
+                event.stopPropagation();
+                closeLocationModal();
+            } else if (event.key === 'Tab') {
+                const controls = [locationClose, locationInput, locationClear].filter(control => control && !control.hidden);
+                const index = controls.indexOf(document.activeElement);
+                event.preventDefault();
+                event.stopPropagation();
+                controls[(index + (event.shiftKey ? -1 : 1) + controls.length) % controls.length]?.focus();
+            }
+        });
+        composerForm?.addEventListener('ografi:composer-close', () => locationModal?.remove(), { once: true });
+        syncLocation();
         const openVideoModal = () => {
             if (!videoModal) return;
             closeComposerPanels();
@@ -2223,12 +2308,6 @@
                 closeTagsModal();
                 tagsToggle?.focus();
             }
-        });
-
-        document.addEventListener('click', event => {
-            if (locationPanel?.hidden) return;
-            if (event.target.closest('[data-composer-location-panel], [data-composer-location-toggle]')) return;
-            closeComposerPanels();
         });
 
         // Editor initialization owns the submit state and the final content serialization.
