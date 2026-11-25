@@ -368,6 +368,7 @@ Route::middleware(['auth', 'verified'])->group(function (): void {
     Route::put('/advertisements/{advertisement}', [AdvertisementController::class, 'update'])->middleware('throttle:10,1')->name('advertisements.update');
     Route::post('/advertisements', [AdvertisementController::class, 'store'])->middleware('throttle:5,1')->name('advertisements.store');
 
+    Route::get('/composer/tag-suggestions', [PostController::class, 'tagSuggestions'])->middleware('throttle:90,1')->name('posts.tag-suggestions');
     Route::get('/posts/create', [PostController::class, 'create'])->name('posts.create');
     Route::post('/posts', [PostController::class, 'store'])->middleware('throttle:10,1')->name('posts.store');
     Route::get('/posts/{post:slug}/edit', [PostController::class, 'edit'])->name('posts.edit');

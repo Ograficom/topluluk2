@@ -664,6 +664,21 @@ class RepostFeedTest extends TestCase
         ]);
     }
 
+    public function test_composer_suggests_existing_tags_by_turkish_prefix(): void
+    {
+        \App\Models\Tag::create(['name' => 'Atatürk', 'slug' => 'ataturk']);
+        \App\Models\Tag::create(['name' => 'Atatürkçülük', 'slug' => 'ataturkculuk']);
+        \App\Models\Tag::create(['name' => 'Teknoloji', 'slug' => 'teknoloji']);
+        $this->getJson(route('posts.tag-suggestions', ['q' => 'Ata']))->assertUnauthorized();
+        $this->actingAs(User::factory()->create())
+            ->getJson(route('posts.tag-suggestions', ['q' => '#Atatür']))
+            ->assertOk()
+            ->assertJsonCount(2)
+            ->assertJsonFragment(['name' => 'Atatürk', 'slug' => 'ataturk'])
+            ->assertJsonMissing(['name' => 'Teknoloji']);
+        $this->getJson(route('posts.tag-suggestions', ['q' => '']))->assertOk()->assertExactJson([]);
+    }
+
     public function test_author_can_edit_post_with_existing_tags(): void
     {
         $author = User::factory()->create();

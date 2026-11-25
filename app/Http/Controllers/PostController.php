@@ -61,6 +61,28 @@ class PostController extends Controller
         return view('posts.index', compact('posts', 'ads', 'search', 'sort', 'period'));
     }
 
+    public function tagSuggestions(Request $request): \Illuminate\Http\JsonResponse
+    {
+        $validated = $request->validate(['q' => ['nullable', 'string', 'max:100']]);
+        $prefix = Str::slug(trim($validated['q'] ?? '', " \t\n\r#"));
+        if ($prefix === '') return response()->json([])->header('Cache-Control', 'no-store');
+
+        // Slugs normalize Turkish letters and case; the prefix contains no SQL wildcards.
+        $tags = Tag::query()
+            ->where('slug', 'like', $prefix.'%')
+            ->withCount('posts')
+            ->orderByRaw('CASE WHEN slug = ? THEN 0 ELSE 1 END', [$prefix])
+            ->orderByDesc('posts_count')
+            ->orderBy('name')
+            ->limit(12)
+            ->get(['id', 'name', 'slug']);
+
+        return response()->json($tags->map(fn (Tag $tag) => [
+            'name' => $tag->name,
+            'slug' => $tag->slug,
+        ])->values())->header('Cache-Control', 'no-store');
+    }
+
     public function create(Request $request): View
     {
         // Share Target only prepares a draft; never publishes on GET.

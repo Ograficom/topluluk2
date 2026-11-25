@@ -427,8 +427,13 @@
                 <h2 id="post-tags-title">Etiketler</h2>
                 <div class="post-tags-input-wrap">
                     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h16M4 15h16M9 4l-2 16M17 4l-2 16"/></svg>
-                    <input id="post-tags-input" name="tags" form="createPostBox" type="text" maxlength="500" value="{{ old('tags', implode(', ', $post->tags ?? [])) }}" placeholder="Etiketleri girin" aria-label="Etiketler">
+                    <input id="post-tags-input" name="tags" form="createPostBox" type="text" maxlength="500" value="{{ old('tags', implode(', ', $post->tags ?? [])) }}" placeholder="Etiketleri girin" aria-label="Etiketler" autocomplete="off" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="post-tag-suggestions" data-suggestions-url="{{ route('posts.tag-suggestions') }}">
                 </div>
+                <div class="post-tag-suggestions" data-tag-suggestions hidden>
+                    <p class="post-tag-suggestions-title">Mevcut etiketler</p>
+                    <div id="post-tag-suggestions" role="listbox" aria-label="Etiket önerileri"></div>
+                </div>
+                <p class="post-tag-suggestions-status" data-tag-suggestions-status role="status" aria-live="polite" hidden></p>
             </div>
         </div>
         <div class="post-video-modal" data-video-modal hidden>
@@ -478,9 +483,10 @@
     box-sizing:border-box !important;
     width:min(480px, calc(100vw - 32px)) !important;
     min-width:0 !important;
-    height:143px !important;
+    height:auto !important;
     min-height:143px !important;
-    max-height:143px !important;
+    max-height:calc(100dvh - 32px) !important;
+    overflow-y:auto !important;
     margin:0 !important;
     padding:26px 18px 24px !important;
     border:0 !important;
@@ -589,6 +595,14 @@
     color:#71839d !important;
     opacity:1 !important;
 }
+.post-tags-dialog .post-tag-suggestions[hidden],.post-tags-dialog .post-tag-suggestions-status[hidden]{display:none!important;}
+.post-tags-dialog .post-tag-suggestions{margin-top:12px;}
+.post-tags-dialog .post-tag-suggestions-title{margin:0 0 6px;padding:0 6px;color:#71839d;font:600 12px/1.5 Arial,sans-serif;}
+.post-tags-dialog #post-tag-suggestions{display:flex;flex-direction:column;gap:2px;max-height:min(250px,40dvh);overflow-y:auto;}
+.post-tags-dialog .post-tag-option{display:flex;align-items:center;gap:10px;width:100%;min-height:38px;margin:0;padding:8px 10px;border:0;border-radius:10px;background:transparent;color:#303944;font:14px/1.4 Arial,sans-serif;text-align:left;cursor:pointer;overflow-wrap:anywhere;}
+.post-tags-dialog .post-tag-option:hover,.post-tags-dialog .post-tag-option[aria-selected="true"]{background:#edf4ff;color:#1769ff;}
+.post-tags-dialog .post-tag-option-hash{color:#71839d;font-size:16px;flex:none;}
+.post-tags-dialog .post-tag-suggestions-status{margin:10px 6px 0;color:#71839d;font:13px/1.4 Arial,sans-serif;}
 </style>
 
 <style id="post-widget-modal-style">
@@ -1865,6 +1879,156 @@
         document.querySelectorAll('[data-widget-close]').forEach(button => button.addEventListener('click', closeWidgetModal));
         widgetModal?.addEventListener('click', event => { if (event.target === widgetModal) closeWidgetModal(); });
         document.addEventListener('keydown', event => { if (event.key === 'Escape' && widgetModal && !widgetModal.hidden) closeWidgetModal(); });
+        const suggestionsPanel = tagsModal?.querySelector('[data-tag-suggestions]');
+        const suggestionsList = tagsModal?.querySelector('#post-tag-suggestions');
+        const suggestionsStatus = tagsModal?.querySelector('[data-tag-suggestions-status]');
+        let tagTimer = null;
+        let tagRequest = null;
+        let tagOptions = [];
+        let activeTag = -1;
+        const normalizeTag = name => name.trim().replace(/^#+/, '').toLocaleLowerCase('tr-TR');
+        // Work on the tag around the caret, not on the entire comma-separated field.
+        const currentTag = () => {
+            const value = tagsInput?.value || '';
+            const caret = tagsInput?.selectionStart ?? value.length;
+            const separators = Array.from(value.matchAll(/,|\s+(?=#)/gu));
+            let start = 0, end = value.length;
+            for (const separator of separators) {
+                const after = separator.index + separator[0].length;
+                if (after <= caret) start = after;
+                else { end = separator.index; break; }
+            }
+            return { value, start, end, query: value.slice(start, end).trim().replace(/^#+/, '').trim() };
+        };
+        const setTagStatus = message => {
+            if (!suggestionsStatus) return;
+            suggestionsStatus.textContent = message;
+            suggestionsStatus.hidden = !message;
+        };
+        const clearTagSuggestions = () => {
+            tagOptions = [];
+            activeTag = -1;
+            suggestionsList?.replaceChildren();
+            if (suggestionsPanel) suggestionsPanel.hidden = true;
+            tagsInput?.setAttribute('aria-expanded', 'false');
+            tagsInput?.removeAttribute('aria-activedescendant');
+            setTagStatus('');
+        };
+        const cancelTagSearch = () => {
+            clearTimeout(tagTimer);
+            tagRequest?.abort();
+            tagRequest = null;
+        };
+        const chooseTag = name => {
+            if (!tagsInput) return;
+            const { value, start, end } = currentTag();
+            const parts = value.split(/\s*,\s*|\s+(?=#)/u).map(part => part.trim()).filter(Boolean);
+            const before = value.slice(0, start).trim().replace(/,+$/, '').trim();
+            const after = value.slice(end).trim().replace(/^,+/, '').trim();
+            const existing = [before, after].join(',').split(/\s*,\s*|\s+(?=#)/u).map(normalizeTag);
+            if (existing.includes(normalizeTag(name))) return;
+            const prefix = before ? before + ', ' : '';
+            const next = prefix + name + (after ? ', ' + after : ', ');
+            if (next.length > tagsInput.maxLength || parts.length > 20) {
+                setTagStatus('En fazla 20 etiket ve toplam 500 karakter ekleyebilirsiniz.');
+                return;
+            }
+            tagsInput.value = next;
+            tagsInput.focus();
+            const position = prefix.length + name.length + 2;
+            tagsInput.setSelectionRange(position, position);
+            cancelTagSearch();
+            clearTagSuggestions();
+        };
+        const highlightTag = index => {
+            activeTag = index;
+            Array.from(suggestionsList?.children || []).forEach((option, i) => {
+                option.setAttribute('aria-selected', String(i === activeTag));
+            });
+            const option = suggestionsList?.children[activeTag];
+            if (option) {
+                tagsInput.setAttribute('aria-activedescendant', option.id);
+                option.scrollIntoView({ block: 'nearest' });
+            } else tagsInput?.removeAttribute('aria-activedescendant');
+        };
+        const renderTagSuggestions = tags => {
+            clearTagSuggestions();
+            if (!suggestionsList || !tagsInput) return;
+            const { value, start, end } = currentTag();
+            const used = new Set((value.slice(0, start) + ',' + value.slice(end))
+                .split(/\s*,\s*|\s+(?=#)/u).map(normalizeTag));
+            tagOptions = tags.filter(tag => typeof tag.name === 'string' && !used.has(normalizeTag(tag.name))).slice(0, 8);
+            if (!tagOptions.length) {
+                setTagStatus('Mevcut etiket bulunamadı. Yeni etiket yazabilirsiniz.');
+                return;
+            }
+            tagOptions.forEach((tag, index) => {
+                const option = document.createElement('button');
+                option.type = 'button';
+                option.id = 'post-tag-option-' + index;
+                option.className = 'post-tag-option';
+                option.setAttribute('role', 'option');
+                option.setAttribute('aria-selected', 'false');
+                option.tabIndex = -1;
+                const hash = document.createElement('span');
+                hash.className = 'post-tag-option-hash';
+                hash.textContent = '#';
+                const label = document.createElement('span');
+                label.textContent = tag.name;
+                option.append(hash, label);
+                option.addEventListener('pointerdown', event => event.preventDefault());
+                option.addEventListener('click', () => chooseTag(tag.name));
+                suggestionsList.append(option);
+            });
+            suggestionsPanel.hidden = false;
+            tagsInput.setAttribute('aria-expanded', 'true');
+        };
+        const searchTags = () => {
+            cancelTagSearch();
+            clearTagSuggestions();
+            const query = currentTag().query;
+            if (!query || !tagsInput?.dataset.suggestionsUrl || tagsModal?.hidden) return;
+            tagTimer = setTimeout(async () => {
+                const controller = new AbortController();
+                tagRequest = controller;
+                try {
+                    const url = new URL(tagsInput.dataset.suggestionsUrl, window.location.origin);
+                    url.searchParams.set('q', query.slice(0, 100));
+                    const response = await fetch(url, { signal: controller.signal, credentials: 'same-origin', cache: 'no-store', headers: { Accept: 'application/json' } });
+                    if (!response.ok) throw new Error('Tag suggestions HTTP ' + response.status);
+                    const tags = await response.json();
+                    if (!controller.signal.aborted && !tagsModal.hidden && currentTag().query === query && Array.isArray(tags)) renderTagSuggestions(tags);
+                } catch (error) {
+                    if (!controller.signal.aborted) setTagStatus('Öneriler yüklenemedi. Etiketi yazarak ekleyebilirsiniz.');
+                }
+            }, 220);
+        };
+        tagsInput?.addEventListener('input', searchTags);
+        tagsInput?.addEventListener('click', searchTags);
+        tagsInput?.addEventListener('keydown', event => {
+            if (event.isComposing) return;
+            if (event.key === 'ArrowDown' && tagOptions.length) {
+                event.preventDefault();
+                highlightTag((activeTag + 1) % tagOptions.length);
+            } else if (event.key === 'ArrowUp' && tagOptions.length) {
+                event.preventDefault();
+                highlightTag(activeTag <= 0 ? tagOptions.length - 1 : activeTag - 1);
+            } else if (event.key === 'Enter') {
+                event.preventDefault();
+                if (activeTag >= 0 && tagOptions[activeTag]) chooseTag(tagOptions[activeTag].name);
+                else if (tagOptions.length === 1) chooseTag(tagOptions[0].name);
+                else if (currentTag().query) chooseTag(currentTag().query);
+            } else if (event.key === 'Escape' && tagOptions.length) {
+                event.preventDefault();
+                event.stopPropagation();
+                cancelTagSearch();
+                clearTagSuggestions();
+            }
+        });
+        composerForm?.addEventListener('ografi:composer-close', () => {
+            cancelTagSearch();
+            tagsModal?.remove();
+        }, { once: true });
         const tagsModalPlaceholder = tagsModal ? document.createComment('tags-modal-position') : null;
         const tagsModalOriginalParent = tagsModal?.parentNode || null;
         if (tagsModal && tagsModalOriginalParent && tagsModalPlaceholder) {
@@ -1893,7 +2057,7 @@
                 'position:relative', 'inset:auto', 'left:auto', 'top:auto',
                 'display:block', 'flex:0 1 480px', 'box-sizing:border-box',
                 'width:min(480px, calc(100vw - 32px))',
-                'min-width:0', 'height:143px', 'min-height:143px', 'max-height:143px',
+                'min-width:0', 'height:auto', 'min-height:143px', 'max-height:calc(100dvh - 32px)', 'overflow-y:auto',
                 'margin:0', 'padding:26px 18px 24px',
                 'border:0', 'border-radius:26px', 'background:#fff',
                 'box-shadow:0 20px 60px rgba(15,23,42,.2)',
@@ -1918,8 +2082,11 @@
             composerOverlay?.classList.add('is-tags-open');
             tagsToggle?.setAttribute('aria-expanded', 'true');
             window.setTimeout(() => tagsInput?.focus(), 0);
+            searchTags();
         };
         const closeTagsModal = () => {
+            cancelTagSearch();
+            clearTagSuggestions();
             if (tagsModal) {
                 tagsModal.hidden = true;
                 tagsModal.style.cssText = 'display:none !important;';
@@ -1938,7 +2105,14 @@
         tagsToggle?.addEventListener('click', openTagsModal);
         document.querySelectorAll('[data-tags-close]').forEach(button => button.addEventListener('click', closeTagsModal));
         tagsModal?.addEventListener('click', event => { if (event.target === tagsModal) closeTagsModal(); });
-        document.addEventListener('keydown', event => { if (event.key === 'Escape' && tagsModal && !tagsModal.hidden) closeTagsModal(); });
+        tagsModal?.addEventListener('keydown', event => {
+            if (event.key === 'Escape' && !tagsModal.hidden) {
+                event.preventDefault();
+                event.stopPropagation();
+                closeTagsModal();
+                tagsToggle?.focus();
+            }
+        });
 
         document.addEventListener('click', event => {
             if (locationPanel?.hidden) return;
