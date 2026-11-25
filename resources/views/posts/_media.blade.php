@@ -43,7 +43,7 @@
 @endif
 
 @if ($mediaUrls->count() > 1)
-    <div class="post__media f-carousel post__media-paired-carousel is-media-loading" data-fancy-carousel data-paired-carousel aria-label="Gönderi görsel galerisi">
+    <div class="post__media f-carousel post__media-paired-carousel post__media-images" data-fancy-carousel data-paired-carousel aria-label="Gönderi görsel galerisi">
         @if ($censored)
             <div class="post__censored" data-censored="{{ $imageCensoredKey }}">
                 <div class="text-center post__censored-content">
@@ -64,10 +64,9 @@
         @endforeach
         <button class="post__media-nav post__media-nav--prev" type="button" data-carousel-go-prev aria-label="Önceki görsel"><x-repost-icon name="chevron-left" size="18" /></button>
         <button class="post__media-nav post__media-nav--next" type="button" data-carousel-go-next aria-label="Sonraki görsel"><x-repost-icon name="chevron-right" size="18" /></button>
-        <div class="post__media-loader" aria-hidden="true"><span class="loader"></span></div>
     </div>
 @elseif ($mediaUrls->count() === 1)
-    <div class="post__media f-carousel is-media-loading" data-fancy-carousel>
+    <div class="post__media f-carousel post__media-images" data-fancy-carousel>
         @if ($censored)
             <div class="post__censored" data-censored="{{ $imageCensoredKey }}">
                 <div class="text-center post__censored-content">
@@ -99,9 +98,6 @@
         <button class="post__media-nav post__media-nav--next" type="button" data-carousel-go-next aria-label="Sonraki görsel">
             <x-repost-icon name="chevron-right" size="18" />
         </button>
-        <div class="post__media-loader" aria-hidden="true">
-            <span class="loader"></span>
-        </div>
     </div>
 @elseif ($mediaUrls->isNotEmpty())
     <div class="post__media">

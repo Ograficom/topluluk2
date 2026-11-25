@@ -704,6 +704,30 @@ class RepostFeedTest extends TestCase
         ])->assertForbidden();
     }
 
+    public function test_uploaded_gallery_images_render_in_post_detail_without_a_loading_overlay(): void
+    {
+        Storage::fake('public');
+        $author = User::factory()->create();
+        $channel = Channel::create(['name' => 'Galeri', 'slug' => 'galeri', 'is_active' => true]);
+        $this->actingAs($author)->post(route('posts.store'), [
+            'title' => 'Görselli gönderi',
+            'excerpt' => 'Görselli gönderi.',
+            'body' => 'Fotoğraflar burada gösterilir.',
+            'channel_id' => $channel->id,
+            'media' => [UploadedFile::fake()->image('first.png'), UploadedFile::fake()->image('second.png')],
+        ])->assertRedirect();
+
+        $post = Post::query()->where('title', 'Görselli gönderi')->firstOrFail();
+        $this->assertCount(2, $post->media);
+        $response = $this->get(route('posts.show', $post))->assertOk()
+            ->assertSee('post__media-paired-carousel post__media-images', false)
+            ->assertDontSee('post__media-paired-carousel is-media-loading', false);
+        foreach ($post->media as $path) {
+            Storage::disk('public')->assertExists($path);
+            $response->assertSee('src="'.asset('storage/'.$path).'"', false);
+        }
+    }
+
     public function test_post_edit_deletes_removed_local_images_but_keeps_shared_and_unselected_files(): void
     {
         Storage::fake('public');
