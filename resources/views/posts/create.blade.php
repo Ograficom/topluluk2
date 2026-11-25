@@ -90,7 +90,9 @@
 #createPostBox #post-editorjs .ce-popover {--border-radius:12px;--color-border:#e2e8f0;--color-background:#fff;--color-text-primary:#334155;--color-text-icon-active:#0a84ff;overflow:visible;}
 #createPostBox .repost-modal-body:has(.ce-inline-toolbar .ce-popover--opened) {padding-bottom:60px;}
 #createPostBox .repost-modal-body:has(.ce-inline-toolbar .ce-popover--nested.ce-popover--opened) {padding-bottom:230px;}
-#createPostBox .composer-block-add {position:absolute;left:0;top:0;width:26px;height:26px;display:grid;place-items:center;border:0;border-radius:50%;background:#f1f5f9;color:#64748b;padding:0;cursor:pointer;}
+#createPostBox .composer-block-add {position:absolute;left:0;top:var(--composer-block-add-top,0px);z-index:4;width:26px;height:26px;display:grid;place-items:center;border:0;border-radius:50%;background:#f1f5f9;color:#64748b;padding:0;cursor:pointer;}
+#createPostBox .composer-block-add:focus-visible {outline:2px solid #0a84ff;outline-offset:2px;}
+#createPostBox .composer-block-add:disabled {opacity:.45;cursor:wait;}
 #createPostBox .composer-block-add:hover,#createPostBox .composer-block-add[aria-expanded="true"] {background:#e2e8f0;color:#0a84ff;}
 #createPostBox .composer-block-picker:not([hidden]) {position:absolute;z-index:1100;display:flex;flex-direction:column;gap:2px;width:214px;max-width:calc(100% - 24px);max-height:min(350px,calc(100% - 24px));overflow:auto;border:1px solid #e2e8f0;border-radius:12px;background:#fff;padding:6px;box-shadow:0 10px 28px rgba(15,23,42,.08);}
 #createPostBox .composer-block-picker button {display:flex;align-items:center;gap:10px;border:0;border-radius:8px;background:transparent;padding:7px 9px;color:#334155;font-size:14px;cursor:pointer;text-align:left;flex:none;}
@@ -766,8 +768,17 @@
     let insertionIndex = -1;
     let submitting = false;
     let disposed = false;
+    const blockTracking = new AbortController();
+    let blockResizeObserver = null;
+    let blockMutationObserver = null;
+    let blockFrame = 0;
+    if (blockToggle) blockToggle.disabled = true;
     form.addEventListener('ografi:composer-close', () => {
       disposed = true;
+      blockTracking.abort();
+      blockResizeObserver?.disconnect();
+      blockMutationObserver?.disconnect();
+      if (blockFrame) cancelAnimationFrame(blockFrame);
       if (activeEditor) activeEditor.destroy();
       activeEditor = null;
     }, { once: true });
@@ -815,28 +826,126 @@
     });
     form.querySelector('[data-repost-file]')?.addEventListener('click', () => form.querySelector('#post-video-file')?.click());
 
-    const closeBlockPicker = (restoreFocus = false) => {
-      if (blockPicker) blockPicker.hidden = true;
-      blockToggle?.setAttribute('aria-expanded', 'false');
-      if (restoreFocus) blockToggle?.focus();
+    const editorWrap = holder.closest('.repost-editor-wrap');
+    const editorScroll = form.querySelector('.repost-modal-body');
+    let trackedBlock = null;
+
+    const editorBlocks = () => Array.from(holder.querySelectorAll('.codex-editor__redactor > .ce-block'));
+    const findBlock = node => {
+      const element = node?.nodeType === Node.ELEMENT_NODE ? node : node?.parentElement;
+      const block = element?.closest('.ce-block');
+      return block && holder.contains(block) ? block : null;
     };
-    // Preserve the focused block when the pointer moves from the editor to the plus button.
-    blockToggle?.addEventListener('pointerdown', () => {
-      insertionIndex = activeEditor?.blocks.getCurrentBlockIndex() ?? -1;
-    });
-    blockToggle?.addEventListener('click', () => {
-      if (!blockPicker) return;
-      if (!blockPicker.hidden) { closeBlockPicker(); return; }
-      const current = activeEditor?.blocks.getCurrentBlockIndex() ?? -1;
-      if (current >= 0) insertionIndex = current;
-      blockPicker.hidden = false;
-      blockToggle.setAttribute('aria-expanded', 'true');
+    const caretBlock = () => findBlock(window.getSelection()?.focusNode);
+    const visibleBounds = () => {
+      const scrollRect = editorScroll?.getBoundingClientRect();
+      return {
+        top: Math.max(0, scrollRect?.top ?? 0),
+        bottom: Math.min(window.innerHeight, scrollRect?.bottom ?? window.innerHeight)
+      };
+    };
+    const positionBlockPicker = () => {
+      if (!blockPicker || blockPicker.hidden || !blockToggle) return;
       const formRect = form.getBoundingClientRect();
       const toggleRect = blockToggle.getBoundingClientRect();
       const left = Math.max(12, Math.min(toggleRect.right - formRect.left + 7, form.clientWidth - blockPicker.offsetWidth - 12));
       const top = Math.max(12, Math.min(toggleRect.top - formRect.top, form.clientHeight - blockPicker.offsetHeight - 12));
       blockPicker.style.setProperty('left', left + 'px', 'important');
       blockPicker.style.setProperty('top', top + 'px', 'important');
+    };
+    const closeBlockPicker = (restoreFocus = false) => {
+      if (blockPicker) blockPicker.hidden = true;
+      blockToggle?.setAttribute('aria-expanded', 'false');
+      if (restoreFocus) blockToggle?.focus();
+    };
+    const updateBlockToggle = () => {
+      blockFrame = 0;
+      if (!activeEditor || !blockToggle || !editorWrap || !form.isConnected || !holder.getClientRects().length) return;
+      const blocks = editorBlocks();
+      if (!blocks.length) return;
+      const bounds = visibleBounds();
+      const wrapRect = editorWrap.getBoundingClientRect();
+      const isVisible = block => {
+        if (!block || !blocks.includes(block)) return false;
+        const rect = block.getBoundingClientRect();
+        return rect.bottom > bounds.top && rect.top < bounds.bottom;
+      };
+      if (!isVisible(trackedBlock)) {
+        if (blockPicker && !blockPicker.hidden) closeBlockPicker();
+        const selected = caretBlock();
+        trackedBlock = isVisible(selected) ? selected : blocks.find(isVisible) || null;
+      }
+      if (!trackedBlock || bounds.bottom - bounds.top < blockToggle.offsetHeight) {
+        blockToggle.style.visibility = 'hidden';
+        return;
+      }
+      const rect = trackedBlock.getBoundingClientRect();
+      const preferredTop = rect.top + 2;
+      const visibleTop = Math.min(
+        Math.max(preferredTop, bounds.top + 2),
+        bounds.bottom - blockToggle.offsetHeight - 2
+      );
+      const top = Math.max(0, Math.min(visibleTop - wrapRect.top, editorWrap.clientHeight - blockToggle.offsetHeight));
+      blockToggle.style.setProperty('--composer-block-add-top', top + 'px');
+      blockToggle.style.visibility = 'visible';
+      if (!blockPicker?.hidden) positionBlockPicker();
+    };
+    const scheduleBlockToggle = () => {
+      if (!blockFrame && !disposed) blockFrame = requestAnimationFrame(updateBlockToggle);
+    };
+    const trackBlock = node => {
+      if (blockPicker && !blockPicker.hidden) return;
+      const block = findBlock(node);
+      if (!block) return;
+      trackedBlock = block;
+      scheduleBlockToggle();
+    };
+    const startBlockTracking = () => {
+      if (!blockToggle) return;
+      blockToggle.disabled = false;
+      trackedBlock = caretBlock() || editorBlocks()[0] || null;
+      const options = { signal: blockTracking.signal };
+      holder.addEventListener('pointerover', event => {
+        if (event.pointerType !== 'touch') trackBlock(event.target);
+      }, options);
+      holder.addEventListener('pointerdown', event => trackBlock(event.target), options);
+      holder.addEventListener('focusin', event => trackBlock(event.target), options);
+      document.addEventListener('selectionchange', () => {
+        const selected = caretBlock();
+        if (selected && holder.contains(document.activeElement)) trackBlock(selected);
+      }, options);
+      editorScroll?.addEventListener('scroll', scheduleBlockToggle, { ...options, passive: true });
+      window.addEventListener('resize', scheduleBlockToggle, options);
+      if (typeof ResizeObserver === 'function') {
+        blockResizeObserver = new ResizeObserver(scheduleBlockToggle);
+        blockResizeObserver.observe(holder);
+        if (editorScroll) blockResizeObserver.observe(editorScroll);
+      }
+      if (typeof MutationObserver === 'function') {
+        blockMutationObserver = new MutationObserver(scheduleBlockToggle);
+        const redactor = holder.querySelector('.codex-editor__redactor');
+        if (redactor) blockMutationObserver.observe(redactor, { childList: true, subtree: true });
+      }
+      scheduleBlockToggle();
+    };
+
+    // The moving plus belongs to the block next to it, not the previous text selection.
+    const captureInsertionBlock = () => {
+      const blocks = editorBlocks();
+      const index = blocks.indexOf(trackedBlock);
+      insertionIndex = index >= 0 ? index : (activeEditor?.blocks.getCurrentBlockIndex() ?? -1);
+    };
+    blockToggle?.addEventListener('pointerdown', event => {
+      captureInsertionBlock();
+      if (event.pointerType === 'mouse') event.preventDefault();
+    });
+    blockToggle?.addEventListener('click', () => {
+      if (!blockPicker || !activeEditor) return;
+      if (!blockPicker.hidden) { closeBlockPicker(); return; }
+      captureInsertionBlock();
+      blockPicker.hidden = false;
+      blockToggle.setAttribute('aria-expanded', 'true');
+      positionBlockPicker();
     });
     form.addEventListener('click', event => {
       if (!event.target.closest('[data-block-picker], [data-block-picker-toggle]')) closeBlockPicker();
@@ -861,6 +970,8 @@
       const inserted = activeEditor.blocks.insert(type, data, {}, index, true, Boolean(replaceEmpty));
       if (type === 'embed') inserted?.holder?.querySelector('input')?.focus();
       else if (type !== 'delimiter') activeEditor.caret.setToBlock(index, 'start');
+      trackedBlock = inserted?.holder || editorBlocks()[index] || trackedBlock;
+      scheduleBlockToggle();
     }));
 
     blockPicker?.querySelectorAll('[data-block-action]').forEach(option => {
@@ -1190,6 +1301,7 @@
         holder.classList.add('is-ready');
         activeEditor = editor;
         refreshInlineGallery();
+        startBlockTracking();
         if (publishBtn) publishBtn.disabled = false;
 
         if (blockStatus) blockStatus.hidden = true;
