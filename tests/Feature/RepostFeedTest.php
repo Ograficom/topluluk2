@@ -790,6 +790,41 @@ class RepostFeedTest extends TestCase
             ->assertDontSee('editorXss()', false);
     }
 
+    public function test_post_social_preview_prefers_cover_then_first_article_image(): void
+    {
+        Storage::fake('public');
+        $channel = Channel::create(['name' => 'SEO', 'slug' => 'seo', 'is_active' => true]);
+        $first = 'posts/gallery/first.png';
+        $second = 'posts/gallery/second.png';
+        $cover = 'posts/cover.png';
+        foreach ([$first, $second, $cover] as $path) {
+            Storage::disk('public')->put($path, 'image');
+        }
+
+        $post = $this->createPost($channel, [
+            'media' => [$first, $second],
+            'body' => json_encode(['blocks' => [
+                ['type' => 'paragraph', 'data' => ['text' => 'İlk paragraf']],
+                ['type' => 'postImage', 'data' => ['path' => $second]],
+                ['type' => 'postImage', 'data' => ['path' => $first]],
+            ]]),
+        ]);
+        $this->assertSame(asset('storage/'.$second), $post->socialPreviewImageUrl());
+        $this->get(route('posts.show', $post))->assertOk()
+            ->assertSee('<meta property="og:image" content="'.asset('storage/'.$second).'">', false)
+            ->assertSee('<meta name="twitter:image" content="'.asset('storage/'.$second).'">', false)
+            ->assertSee('"image":["'.asset('storage/'.$second).'"]', false);
+
+        $post->update(['cover_image' => $cover]);
+        $this->get(route('posts.show', $post))->assertOk()
+            ->assertSee('<meta property="og:image" content="'.asset('storage/'.$cover).'">', false);
+
+        $post->update(['cover_image' => null, 'body' => 'Eski yazı']);
+        $this->assertSame(asset('storage/'.$first), $post->socialPreviewImageUrl());
+        $post->update(['media' => []]);
+        $this->assertNull($post->socialPreviewImageUrl());
+    }
+
     public function test_independent_image_blocks_preserve_text_and_image_order_when_created_and_edited(): void
     {
         Storage::fake('public');

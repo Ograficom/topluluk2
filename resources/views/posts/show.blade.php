@@ -5,8 +5,9 @@
 
 @section('canonical', route('posts.show', $post))
 @section('og_type', 'article')
-@if ($post->coverImageUrl())
-    @section('seo_image', $post->coverImageUrl())
+@php $postSeoImage = $post->socialPreviewImageUrl(); @endphp
+@if ($postSeoImage)
+    @section('seo_image', $postSeoImage)
 @endif
 
 @push('head')
@@ -46,7 +47,7 @@
             'dateModified' => ($post->updated_at ?: $post->published_at)?->toAtomString(),
             'author' => $post->user ? ['@type' => 'Person', 'name' => $post->user->displayName(), 'url' => route('profiles.show', $post->user)] : ['@type' => 'Organization', 'name' => 'OgraFi'],
             'publisher' => ['@type' => 'Organization', 'name' => 'OgraFi', 'url' => url('/')],
-            'image' => $post->coverImageUrl() ? [$post->coverImageUrl()] : [asset('assets/img/meta/logo.svg')],
+            'image' => $postSeoImage ? [$postSeoImage] : [asset('assets/img/meta/logo.svg')],
             'articleSection' => $post->channel?->name,
             'inLanguage' => 'tr-TR',
         ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_HEX_TAG | JSON_HEX_AMP) !!}

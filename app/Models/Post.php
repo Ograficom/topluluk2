@@ -117,6 +117,27 @@ class Post extends Model
         return $images;
     }
 
+    public function socialPreviewImageUrl(): ?string
+    {
+        if ($cover = $this->coverImageUrl()) return $cover;
+
+        $images = $this->galleryImageMap();
+        if ($images === []) return null;
+
+        // Respect the article's independent Editor.js image order, not upload order.
+        $content = json_decode((string) $this->body, true);
+        $blocks = is_array($content) && is_array($content['blocks'] ?? null)
+            ? $content['blocks'] : [];
+        foreach ($blocks as $block) {
+            if (! is_array($block) || ($block['type'] ?? '') !== 'postImage') continue;
+            $path = data_get($block, 'data.path');
+            if (is_string($path) && isset($images[$path])) return $images[$path];
+        }
+
+        // Legacy gallery posts have no independent image blocks.
+        return reset($images) ?: null;
+    }
+
     public function coverImageUrl(): ?string
     {
         $coverImage = trim((string) $this->cover_image);
