@@ -499,38 +499,58 @@
     transform:none !important;
 }
 .post-tags-dialog h2 {
-    display:block !important;
-    margin:0 0 27px !important;
-    padding:0 !important;
+    display:flex !important;
+    align-items:center !important;
+    justify-content:center !important;
+    min-height:36px !important;
+    margin:0 0 16px !important;
+    padding:0 48px !important;
     text-align:center !important;
-    color:#30343b !important;
-    font:700 18px/1.25 Arial,sans-serif !important;
+    color:#202633 !important;
+    font:700 21px/1.25 Arial,sans-serif !important;
 }
-.post-tags-back {
+.post-tags-dialog .post-tags-back {
     position:absolute !important;
-    top:27px !important;
-    left:25px !important;
+    top:26px !important;
+    left:18px !important;
     display:inline-flex !important;
     align-items:center !important;
     justify-content:center !important;
-    width:22px !important;
-    height:22px !important;
+    width:36px !important;
+    height:36px !important;
     margin:0 !important;
     padding:0 !important;
     border:0 !important;
-    background:transparent !important;
-    color:#71839d !important;
+    border-radius:50% !important;
+    background:#f0f3f7 !important;
+    color:#45546a !important;
     cursor:pointer !important;
+    touch-action:manipulation;
+    -webkit-tap-highlight-color:transparent;
+    transition:background-color .15s ease,color .15s ease,transform .12s ease,box-shadow .12s ease;
 }
-.post-tags-back svg {
+.post-tags-dialog .post-tags-back svg {
     display:block !important;
-    width:21px !important;
-    height:21px !important;
+    width:23px !important;
+    height:23px !important;
     fill:none !important;
     stroke:currentColor !important;
-    stroke-width:1.8 !important;
+    stroke-width:2.3 !important;
     stroke-linecap:round !important;
     stroke-linejoin:round !important;
+    pointer-events:none;
+}
+@media (hover:hover) {
+    .post-tags-dialog .post-tags-back:hover {background:#e6edf7!important;color:#2878f0!important;}
+}
+.post-tags-dialog .post-tags-back:active {
+    background:#dce8fa!important;color:#1769ff!important;
+    transform:scale(.9)!important;box-shadow:inset 0 1px 4px rgba(25,50,85,.15);
+}
+.post-tags-dialog .post-tags-back:focus-visible {outline:2px solid #2878f0!important;outline-offset:3px;}
+@media (prefers-reduced-motion:reduce) {
+    .post-tags-dialog .post-tags-back {transition:none!important;}
+    .post-tags-dialog .post-tags-back:active {transform:none!important;}
 }
 .post-tags-input-wrap {
     display:flex !important;
