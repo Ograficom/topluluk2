@@ -1,0 +1,14 @@
+[
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.ografi.twa",
+      "sha256_cert_fingerprints": [
+        "EF:98:E7:49:60:94:C9:BE:68:AE:C9:47:D0:1A:AD:7F:43:38:E7:10:76:2C:80:FB:BA:93:28:B7:52:DB:D3:C8"
+      ]
+    }
+  }
+]
