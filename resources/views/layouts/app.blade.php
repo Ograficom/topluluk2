@@ -820,9 +820,6 @@
                 @unless ($profilePage || $channelPage)
                 <aside class="main__widgets {{ $feedPage ? 'homepage-index-widgets' : '' }}" aria-label="Sağ sütun">
                     <div class="widgets">
-                        @if ($feedPage)
-                            @include('layouts._community-links-widget')
-                        @endif
                         @include('layouts._tags-widget')
                         <section class="widget card card-body">
                             <header><h2 class="widget__title h6">Popüler yazarlar</h2></header>
