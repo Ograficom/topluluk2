@@ -1,4 +1,5 @@
-@if ($post->is_published && ! $post->is_spam && (! $post->is_adult || auth()->user()?->show_adult_content))
+@if ($post->is_published && ! $post->is_spam && (! $post->is_adult || auth()->user()?->show_adult_content)
+    && \Illuminate\Support\Facades\DB::table('post_edit_histories')->where('post_id', $post->id)->exists())
     <span class="dropdown post-edit-history" data-edit-history-url="{{ route('posts.edit-history', $post) }}">
         <button type="button" class="btn btn-secondary-ghost btn-circle btn-xs post-edit-history-trigger" data-dropdown-toggle aria-expanded="false" aria-label="Düzenleme geçmişini göster" title="Düzenleme geçmişi">
             <x-repost-icon name="clock" size="14" />

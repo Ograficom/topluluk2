@@ -687,12 +687,14 @@ class RepostFeedTest extends TestCase
         $post = $this->createPost($channel, ['user_id' => $author->id]);
 
         $this->getJson(route('posts.edit-history', $post))->assertOk()->assertJsonPath('count', 0);
+        $historyAttribute = 'data-edit-history-url="'.route('posts.edit-history', $post).'"';
         $this->actingAs($author)->get(route('posts.show', $post))->assertOk()
-            ->assertSee('data-edit-history-url', false);
+            ->assertDontSee($historyAttribute, false);
         $this->getJson(route('posts.edit-history', $post))->assertJsonPath('count', 0);
 
         $post->refresh()->update(['body' => 'Yazarın düzenlemesi.']);
         $post->save();
+        $this->get(route('posts.show', $post))->assertOk()->assertSee($historyAttribute, false);
         $this->actingAs($admin);
         $post->refresh()->update(['body' => 'Yöneticinin düzenlemesi.']);
 
