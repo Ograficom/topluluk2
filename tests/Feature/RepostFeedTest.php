@@ -733,6 +733,31 @@ class RepostFeedTest extends TestCase
         $this->get(route('posts.show', $post))->assertOk()->assertDontSee('class="post-source-card"', false);
     }
 
+    public function test_article_contents_lists_actual_headings_with_unique_safe_anchors(): void
+    {
+        $channel = Channel::create(['name' => 'İçindekiler', 'slug' => 'icindekiler', 'is_active' => true]);
+        $post = $this->createPost($channel, ['body' => json_encode(['blocks' => [
+            ['type' => 'paragraph', 'data' => ['text' => 'Giriş paragrafı']],
+            ['type' => 'header', 'data' => ['level' => 2, 'text' => '<b>Türk tarihi</b>']],
+            ['type' => 'header', 'data' => ['level' => 3, 'text' => 'Türk tarihi']],
+            ['type' => 'header', 'data' => ['level' => 4, 'text' => '&lt;örnek&gt;']],
+            ['type' => 'header', 'data' => ['level' => 2, 'text' => ' ']],
+        ]])]);
+        $prefix = 'post-'.$post->id.'-heading-';
+        $this->get(route('posts.show', $post))->assertOk()
+            ->assertSee('data-post-toc', false)
+            ->assertSee('(3 başlık)')
+            ->assertSeeInOrder(['href="#'.$prefix.'2"', 'href="#'.$prefix.'3"', 'href="#'.$prefix.'4"'], false)
+            ->assertSee('id="'.$prefix.'2"', false)
+            ->assertSee('id="'.$prefix.'3"', false)
+            ->assertSee('id="'.$prefix.'4"', false)
+            ->assertDontSee('href="#'.$prefix.'5"', false)
+            ->assertSee('&lt;örnek&gt;', false);
+        $post->update(['body' => 'Başlıksız düz yazı']);
+        $this->get(route('posts.show', $post))->assertOk()
+            ->assertDontSee('data-post-toc', false);
+    }
+
     public function test_author_can_edit_post_with_existing_tags(): void
     {
         $author = User::factory()->create();

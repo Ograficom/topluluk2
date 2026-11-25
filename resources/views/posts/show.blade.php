@@ -12,6 +12,23 @@
 
 @push('head')
     <style>
+        /* Article-only contents panel using Repost's existing theme palette. */
+        .post-toc{box-sizing:border-box;width:100%;min-width:0;margin:16px 0 20px;border:1px solid var(--border-color);border-radius:16px;background:var(--gray-100);color:var(--text-color);}
+        .post-toc__summary{display:flex;align-items:center;gap:8px;min-height:48px;padding:12px 20px;list-style:none;cursor:pointer;user-select:none;font-size:.9rem;line-height:1.4;}
+        .post-toc__summary::-webkit-details-marker{display:none;}
+        .post-toc__summary::marker{content:"";}
+        .post-toc__summary strong{color:var(--title-color);font-weight:700;}
+        .post-toc__count{color:var(--color-gray);font-size:.8rem;}
+        .post-toc__icon,.post-toc__chevron{display:block;flex:none;color:var(--color-gray);}
+        .post-toc__chevron{margin-inline-start:auto;transition:transform .18s ease;}
+        .post-toc[open] .post-toc__chevron{transform:rotate(180deg);}
+        .post-toc__summary:focus-visible,.post-toc__link:focus-visible{outline:2px solid var(--color-primary);outline-offset:-2px;border-radius:8px;}
+        .post-toc__list{list-style:none;margin:0;padding:6px 12px 12px;max-height:min(420px,55vh);overflow-y:auto;overscroll-behavior-y:contain;}
+        .post-toc__link{display:block;padding:7px 12px 7px calc(12px + var(--toc-indent,0)*14px);border-radius:8px;color:var(--text-color);font-size:.9rem;line-height:1.5;overflow-wrap:anywhere;}
+        .post-toc__link:hover{background:var(--gray-150);color:var(--color-primary);}
+        .post-toc-heading{scroll-margin-top:calc(var(--header-height,70px) + var(--ografi-install-banner-height,0px) + 18px);}
+        @media(max-width:480px){.post-toc__summary{padding-inline:14px;}.post-toc__list{padding-inline:6px;}}
+        @media(prefers-reduced-motion:reduce){.post-toc__chevron{transition:none;}}
         .similar-posts{display:block;width:100%;max-width:none;margin:24px 0 0;padding:0;background:transparent;border:0;box-shadow:none;border-radius:0}
         .similar-posts__grid{display:flex;flex-direction:column;gap:14px;width:100%;min-width:0}
         .similar-posts__grid>.card.post{width:100%;max-width:none;min-width:0;margin:0}
@@ -112,8 +129,7 @@
             <div class="post__media-full">@include('posts._media', ['post' => $post, 'coverOnly' => true])</div>
         @endif
 
-        <section class="editor editorjs-content">
-            @php
+        @php
                 $editorContent = json_decode($post->body, true);
                 $editorBlocks = is_array($editorContent) && isset($editorContent['blocks']) && is_array($editorContent['blocks']) ? array_values(array_filter(
                     $editorContent['blocks'],
@@ -129,13 +145,43 @@
                 $galleryHasPosition = collect($editorBlocks ?? [])->contains(fn ($block) => in_array($block['type'] ?? '', ['postGallery', 'postImage'], true));
                 $inlineGalleryShown = false;
                 $renderedImageUrls = [];
+                $tocHeadings = [];
+                foreach ($editorBlocks ?? [] as $index => $block) {
+                    if (! is_array($block) || ($block['type'] ?? '') !== 'header') continue;
+                    $headingHtml = \App\Support\EditorInlineHtml::render(data_get($block, 'data.text', ''));
+                    $headingText = trim(preg_replace('/\s+/u', ' ', html_entity_decode(strip_tags(str_ireplace('<br>', ' ', $headingHtml)), ENT_QUOTES | ENT_HTML5, 'UTF-8')) ?? '');
+                    if ($headingText === '') continue;
+                    $tocHeadings[$index] = [
+                        'id' => 'post-'.$post->id.'-heading-'.($index + 1),
+                        'text' => $headingText,
+                        'level' => min(4, max(2, (int) data_get($block, 'data.level', 2))),
+                    ];
+                }
             @endphp
+        @if ($tocHeadings !== [])
+            <details class="post-toc" data-post-toc>
+                <summary class="post-toc__summary">
+                    <svg class="post-toc__icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M9 6h11M9 12h11M9 18h11M4 6h.1M4 12h.1M4 18h.1"/></svg>
+                    <strong>İçindekiler</strong>
+                    <span class="post-toc__count">({{ count($tocHeadings) }} başlık)</span>
+                    <x-repost-icon name="chevron-down" size="16" class="post-toc__chevron" />
+                </summary>
+                <nav aria-label="Yazının içindekiler listesi">
+                    <ul class="post-toc__list">
+                        @foreach ($tocHeadings as $heading)
+                            <li><a class="post-toc__link" style="--toc-indent:{{ $heading['level'] - 2 }}" href="#{{ $heading['id'] }}">{{ $heading['text'] }}</a></li>
+                        @endforeach
+                    </ul>
+                </nav>
+            </details>
+        @endif
+        <section class="editor editorjs-content">
             @if ($editorBlocks !== null)
-                @foreach ($editorBlocks as $block)
+                @foreach ($editorBlocks as $blockIndex => $block)
                     @php $blockData = $block['data'] ?? []; @endphp
                     @switch($block['type'] ?? '')
                         @case('header')
-                            <h{{ min(4, max(2, (int) ($blockData['level'] ?? 2))) }}>{!! \App\Support\EditorInlineHtml::render($blockData['text'] ?? '') !!}</h{{ min(4, max(2, (int) ($blockData['level'] ?? 2))) }}>
+                            <h{{ min(4, max(2, (int) ($blockData['level'] ?? 2))) }} @if(isset($tocHeadings[$blockIndex])) id="{{ $tocHeadings[$blockIndex]['id'] }}" class="post-toc-heading" @endif>{!! \App\Support\EditorInlineHtml::render($blockData['text'] ?? '') !!}</h{{ min(4, max(2, (int) ($blockData['level'] ?? 2))) }}>
                             @break
                         @case('paragraph')
                             @if (filled($blockData['text'] ?? ''))<p>{!! \App\Support\EditorInlineHtml::render($blockData['text']) !!}</p>@endif
