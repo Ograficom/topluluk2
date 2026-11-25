@@ -14,9 +14,48 @@ use Illuminate\Validation\ValidationException;
 
 class SiteBrandingController extends Controller
 {
-    public function logo(): Response
+    public function logo(Request $request): Response
     {
-        return $this->serveAsset('brand_logo_path');
+        $original = $this->serveAsset('brand_logo_path');
+        $size = $request->query('size');
+        if (! in_array($size, ['192', '512'], true)) return $original;
+
+        $size = (int) $size;
+        $maskable = $request->query('maskable') === '1';
+        $contents = $original->getContent();
+        $info = is_string($contents) ? @getimagesizefromstring($contents) : false;
+        if ($info && $info[0] <= 4096 && $info[1] <= 4096
+            && function_exists('imagecreatefromstring') && function_exists('imagepng')) {
+            $source = @imagecreatefromstring($contents);
+            if ($source) {
+                $canvas = imagecreatetruecolor($size, $size);
+                if ($canvas) {
+                    if ($maskable) {
+                        imagefill($canvas, 0, 0, imagecolorallocate($canvas, 255, 255, 255));
+                        $area = (int) floor($size * 0.56);
+                    } else {
+                        imagealphablending($canvas, false);
+                        imagefill($canvas, 0, 0, imagecolorallocatealpha($canvas, 0, 0, 0, 127));
+                        imagesavealpha($canvas, true);
+                        $area = $size;
+                    }
+                    $scale = min($area / $info[0], $area / $info[1]);
+                    $width = max(1, (int) round($info[0] * $scale));
+                    $height = max(1, (int) round($info[1] * $scale));
+                    imagecopyresampled($canvas, $source, (int) (($size - $width) / 2),
+                        (int) (($size - $height) / 2), 0, 0, $width, $height, $info[0], $info[1]);
+                    ob_start();
+                    imagepng($canvas);
+                    $png = ob_get_clean();
+                    if (is_string($png) && $png !== '') {
+                        return response($png)->header('Content-Type', 'image/png')->header('Cache-Control', 'no-store');
+                    }
+                }
+            }
+        }
+        $fallback = $maskable ? 'pwa-icon-maskable-512.png' : 'pwa-icon-'.$size.'.png';
+        return response(file_get_contents(public_path('assets/img/meta/'.$fallback)))
+            ->header('Content-Type', 'image/png')->header('Cache-Control', 'no-store');
     }
 
     public function favicon(): Response

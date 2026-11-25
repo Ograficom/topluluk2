@@ -46,6 +46,27 @@ class PwaManifestTest extends TestCase
         $this->assertSame($preview['type'], $info['mime']);
     }
 
+    public function test_manifest_prefers_site_branding_logo(): void
+    {
+        $disk = \Illuminate\Support\Facades\Storage::fake('public');
+        $disk->put('site-branding/logo.png', file_get_contents(public_path('assets/img/meta/pwa-icon-512.png')));
+        $settings = \App\Models\SiteSetting::current() ?? new \App\Models\SiteSetting;
+        $settings->id = 1;
+        $settings->brand_logo_path = 'site-branding/logo.png';
+        $settings->save();
+
+        $manifest = $this->get('/manifest.webmanifest')->assertOk()->json();
+        $this->assertSame('/site-branding/logo', $manifest['icons'][0]['src']);
+        $this->assertSame('512x512', $manifest['icons'][0]['sizes']);
+        $this->get('/site-branding/logo')->assertOk()->assertHeader('Content-Type', 'image/png');
+        foreach ([192, 512] as $size) {
+            $response = $this->get('/site-branding/logo?size='.$size)->assertOk()->assertHeader('Content-Type', 'image/png');
+            $info = getimagesizefromstring($response->getContent());
+            $this->assertSame($size, $info[0]);
+            $this->assertSame($size, $info[1]);
+        }
+    }
+
     public function test_custom_protocol_only_opens_allowlisted_internal_pages(): void
     {
         $this->get('/pwa/open?uri='.urlencode('web+ografi://latest'))->assertRedirect('/last-posts');

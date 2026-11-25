@@ -54,6 +54,30 @@ Route::get('/manifest.webmanifest', function () {
         $icons[] = ['src' => $src, 'sizes' => $size.'x'.$size, 'type' => 'image/png', 'purpose' => $purpose];
     }
 
+    // Prefer the actual site branding over separate PWA uploads.
+    $brandIcon = null;
+    if (filled($settings?->brand_logo_path) && $storage->exists($settings->brand_logo_path)) {
+        $brandPath = $settings->brand_logo_path;
+        $info = @getimagesize($storage->path($brandPath));
+        if ($info && in_array($info[2], [IMAGETYPE_PNG, IMAGETYPE_JPEG, IMAGETYPE_WEBP], true)) {
+            $brandIcon = ['src' => '/site-branding/logo', 'sizes' => $info[0].'x'.$info[1], 'type' => $info['mime'], 'purpose' => 'any'];
+            if (function_exists('imagecreatefromstring') && function_exists('imagepng') && $info[0] <= 4096 && $info[1] <= 4096) {
+                $icons = [
+                    ['src' => '/site-branding/logo?size=192', 'sizes' => '192x192', 'type' => 'image/png', 'purpose' => 'any'],
+                    ['src' => '/site-branding/logo?size=512', 'sizes' => '512x512', 'type' => 'image/png', 'purpose' => 'any'],
+                    ['src' => '/site-branding/logo?size=512&maskable=1', 'sizes' => '512x512', 'type' => 'image/png', 'purpose' => 'maskable'],
+                ];
+            }
+        } elseif (strtolower(pathinfo($brandPath, PATHINFO_EXTENSION)) === 'svg') {
+            $brandIcon = ['src' => '/site-branding/logo', 'sizes' => 'any', 'type' => 'image/svg+xml', 'purpose' => 'any'];
+        }
+    }
+    $shortcutIcon = $icons[0];
+    if ($brandIcon) {
+        array_unshift($icons, $brandIcon);
+        if (! function_exists('imagecreatefromstring') || $brandIcon['type'] === 'image/svg+xml') $shortcutIcon = $brandIcon;
+    }
+
     $startUrl = $settings?->pwa_start_url ?: '/';
     if (! str_starts_with($startUrl, '/') || str_starts_with($startUrl, '//')) $startUrl = '/';
 
@@ -96,10 +120,10 @@ Route::get('/manifest.webmanifest', function () {
         'categories' => ['social', 'news'],
         'icons' => $icons,
         'shortcuts' => [
-            ['name' => 'Gönderi oluştur', 'short_name' => 'Yeni gönderi', 'description' => 'Yeni bir gönderi yaz', 'url' => '/posts/create', 'icons' => [['src' => '/assets/img/meta/pwa-icon-192.png', 'sizes' => '192x192', 'type' => 'image/png']]],
-            ['name' => 'Bildirimler', 'short_name' => 'Bildirimler', 'description' => 'Bildirimlerini görüntüle', 'url' => '/notifications', 'icons' => [['src' => '/assets/img/meta/pwa-icon-192.png', 'sizes' => '192x192', 'type' => 'image/png']]],
-            ['name' => 'Mesajlar', 'short_name' => 'Mesajlar', 'description' => 'Sohbetlerini aç', 'url' => '/messenger', 'icons' => [['src' => '/assets/img/meta/pwa-icon-192.png', 'sizes' => '192x192', 'type' => 'image/png']]],
-            ['name' => 'Son gönderiler', 'short_name' => 'Son gönderiler', 'description' => 'Topluluktaki son gönderileri keşfet', 'url' => '/last-posts', 'icons' => [['src' => '/assets/img/meta/pwa-icon-192.png', 'sizes' => '192x192', 'type' => 'image/png']]],
+            ['name' => 'Gönderi oluştur', 'short_name' => 'Yeni gönderi', 'description' => 'Yeni bir gönderi yaz', 'url' => '/posts/create', 'icons' => [$shortcutIcon]],
+            ['name' => 'Bildirimler', 'short_name' => 'Bildirimler', 'description' => 'Bildirimlerini görüntüle', 'url' => '/notifications', 'icons' => [$shortcutIcon]],
+            ['name' => 'Mesajlar', 'short_name' => 'Mesajlar', 'description' => 'Sohbetlerini aç', 'url' => '/messenger', 'icons' => [$shortcutIcon]],
+            ['name' => 'Son gönderiler', 'short_name' => 'Son gönderiler', 'description' => 'Topluluktaki son gönderileri keşfet', 'url' => '/last-posts', 'icons' => [$shortcutIcon]],
         ],
         'widgets' => [
             [
