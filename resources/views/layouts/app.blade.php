@@ -1063,6 +1063,7 @@
             const modal = document.querySelector('.post-create-modal-page[data-live-composer="1"]');
             if (!modal) return;
 
+            modal.querySelector('form')?.dispatchEvent(new Event('ografi:composer-close'));
             modal.remove();
             document.body.classList.remove('post-composer-open');
             document.body.style.overflow = composerPreviousOverflow;

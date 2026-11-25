@@ -81,6 +81,9 @@
 #createPostBox #post-editorjs :is(.codex-editor,.codex-editor__redactor) {min-height:92px;height:auto;overflow:visible;padding-bottom:0!important;margin-right:0!important;}
 #createPostBox #post-editorjs :is(.ce-block__content,.ce-toolbar__content) {max-width:none;margin-left:0;margin-right:0;}
 #createPostBox #post-editorjs .ce-paragraph {font-size:15px;line-height:1.6;padding:2px 0;min-height:24px;overflow-wrap:anywhere;}
+#createPostBox #post-editorjs .ce-block:not(:only-of-type) .ce-paragraph::before {content:none!important;}
+#createPostBox #post-editorjs .ce-toolbar__content {position:relative;}
+#createPostBox [data-editor-error] {margin:4px 0;color:#b91c1c;font-size:13px;line-height:1.45;}
 #createPostBox #post-editorjs [contenteditable="true"] {outline:0;overflow-wrap:anywhere;}
 #createPostBox #post-editorjs .ce-toolbar__plus {display:none!important;}
 #createPostBox #post-editorjs .ce-inline-toolbar {z-index:45;overflow:visible;}
@@ -225,6 +228,7 @@
       <textarea id="post-excerpt" name="excerpt" hidden>{{ old('excerpt', $post->excerpt ?? $sharedExcerpt ?? '') }}</textarea>
       <div class="repost-editor-wrap">
         <span class="repost-sr-only" data-editor-status role="status" aria-live="polite"></span>
+        <p data-editor-error role="alert" hidden></p>
         <button type="button" class="composer-block-add" data-block-picker-toggle aria-label="İçerik bloğu ekle" aria-expanded="false" aria-controls="composer-block-picker" title="Blok ekle"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button>
         <div class="repost-content-textarea" id="post-editorjs" data-placeholder="Bir şeyler yazın..." aria-label="Gönderi içeriği"></div>
         <textarea class="repost-content-textarea" id="postTextarea" rows="4" placeholder="Bir şeyler yazın..." aria-label="Gönderi içeriği" hidden></textarea>
@@ -700,6 +704,13 @@
     const blockOptions = Array.from(blockPicker?.querySelectorAll('[data-insert-block]') || []);
     let activeEditor = null;
     let insertionIndex = -1;
+    let submitting = false;
+    let disposed = false;
+    form.addEventListener('ografi:composer-close', () => {
+      disposed = true;
+      if (activeEditor) activeEditor.destroy();
+      activeEditor = null;
+    }, { once: true });
 
     // Original reference modal interactions, initialized when AJAX clones the dialog.
     const modalBackdrop = document.getElementById('createPostModal');
@@ -749,10 +760,15 @@
       blockToggle?.setAttribute('aria-expanded', 'false');
       if (restoreFocus) blockToggle?.focus();
     };
+    // Preserve the focused block when the pointer moves from the editor to the plus button.
+    blockToggle?.addEventListener('pointerdown', () => {
+      insertionIndex = activeEditor?.blocks.getCurrentBlockIndex() ?? -1;
+    });
     blockToggle?.addEventListener('click', () => {
       if (!blockPicker) return;
       if (!blockPicker.hidden) { closeBlockPicker(); return; }
-      insertionIndex = activeEditor?.blocks.getCurrentBlockIndex() ?? -1;
+      const current = activeEditor?.blocks.getCurrentBlockIndex() ?? -1;
+      if (current >= 0) insertionIndex = current;
       blockPicker.hidden = false;
       blockToggle.setAttribute('aria-expanded', 'true');
       const formRect = form.getBoundingClientRect();
@@ -776,10 +792,13 @@
       if (!activeEditor) return;
       const type = option.dataset.insertBlock;
       const count = activeEditor.blocks.getBlocksCount();
-      const index = insertionIndex >= 0 && insertionIndex < count ? insertionIndex + 1 : count;
+      const current = insertionIndex >= 0 && insertionIndex < count
+        ? activeEditor.blocks.getBlockByIndex(insertionIndex) : null;
+      const replaceEmpty = current?.name === 'paragraph' && current.isEmpty;
+      const index = replaceEmpty ? insertionIndex : current ? insertionIndex + 1 : count;
       const data = type === 'header' ? { text: '', level: 2 } : type === 'list' && option.dataset.listStyle === 'checklist' ? { style: 'checklist', meta: {}, items: [] } : {};
       closeBlockPicker();
-      const inserted = activeEditor.blocks.insert(type, data, {}, index, true);
+      const inserted = activeEditor.blocks.insert(type, data, {}, index, true, Boolean(replaceEmpty));
       if (type === 'embed') inserted?.holder?.querySelector('input')?.focus();
       else if (type !== 'delimiter') activeEditor.caret.setToBlock(index, 'start');
     }));
@@ -819,7 +838,60 @@
       }
     }
 
-    const setStatus = message => { if (status) status.textContent = message; };
+    const errorField = form.querySelector('[data-editor-error]');
+    const setStatus = (message, isError = false) => {
+      if (status) status.textContent = message;
+      if (errorField) {
+        errorField.textContent = isError ? message : '';
+        errorField.hidden = !isError;
+      }
+    };
+    const escapeText = text => String(text).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    const plainTextBlocks = text => String(text).replace(/\r\n?/g, '\n').split(/\n{2,}/)
+      .filter(part => part.trim()).map(part => ({
+        type: 'paragraph', data: { text: escapeText(part).replace(/\n/g, '<br>') }
+      }));
+    const makeExcerpt = savedData => {
+      const parts = [];
+      const collectItems = items => {
+        if (!Array.isArray(items)) return;
+        items.forEach(item => {
+          if (typeof item === 'string') parts.push(item);
+          else if (item && typeof item === 'object') {
+            if (typeof item.content === 'string') parts.push(item.content);
+            collectItems(item.items);
+          }
+        });
+      };
+      for (const block of savedData.blocks || []) {
+        for (const key of ['text', 'caption', 'code']) {
+          if (typeof block.data?.[key] === 'string') parts.push(block.data[key]);
+        }
+        collectItems(block.data?.items);
+        if (Array.isArray(block.data?.content)) {
+          for (const row of block.data.content) if (Array.isArray(row)) parts.push(...row.filter(cell => typeof cell === 'string'));
+        }
+      }
+      return parts.map(part => new DOMParser().parseFromString(part.replace(/<br\s*\/?\s*>/gi, ' '), 'text/html').body.textContent || '')
+        .join(' ').replace(/\s+/g, ' ').trim().slice(0, 500);
+    };
+    const beginSubmit = () => {
+      if (submitting) return false;
+      submitting = true;
+      if (publishBtn) {
+        publishBtn.dataset.originalText = publishBtn.textContent;
+        publishBtn.disabled = true;
+        publishBtn.textContent = 'Kaydediliyor…';
+      }
+      return true;
+    };
+    const resetSubmit = () => {
+      submitting = false;
+      if (publishBtn) {
+        publishBtn.disabled = false;
+        publishBtn.textContent = publishBtn.dataset.originalText || publishBtn.textContent;
+      }
+    };
     const loadScript = (url, timeout = 12000) => new Promise((resolve, reject) => {
       const script = document.createElement('script');
       let settled = false;
@@ -856,12 +928,15 @@
     (async () => {
       try {
         setStatus('Editör yükleniyor…');
-        if (!window.EditorJS) {
-          await loadWithFallback('@editorjs/editorjs@2.30.8');
+        let localTools = null;
+        try {
+          if (typeof window.ografiLoadEditorTools === 'function') localTools = await window.ografiLoadEditorTools();
+        } catch (error) {
+          console.warn('Yerel Editor.js dosyası yüklenemedi, CDN deneniyor:', error);
         }
-        if (typeof window.EditorJS !== 'function') {
-          throw new Error('Editor.js ana dosyası yüklendi ancak EditorJS nesnesi bulunamadı.');
-        }
+        if (!localTools && !window.EditorJS) await loadWithFallback('@editorjs/editorjs@2.30.8');
+        const Editor = localTools?.EditorJS || window.EditorJS;
+        if (typeof Editor !== 'function') throw new Error('Editor.js başlatılamadı.');
 
         const optionalTools = [
           ['@editorjs/header@2.8.8', 'Header'],
@@ -873,18 +948,20 @@
           ['@editorjs/inline-code@1.5.0', 'InlineCode'],
           ['@editorjs/marker@1.4.0', 'Marker']
         ];
-        await Promise.all(optionalTools.map(([path]) => loadOptionalTool(path)));
+        if (!localTools) await Promise.all(optionalTools.filter(([, name]) => !window[name]).map(([path]) => loadOptionalTool(path)));
+        if (disposed || !form.isConnected) return;
+        const available = localTools || window;
 
         const tools = {};
-        if (window.Header) tools.header = { class: window.Header, inlineToolbar: true, config: { levels: [2, 3, 4], defaultLevel: 2 } };
-        if (window.EditorjsList) tools.list = { class: window.EditorjsList, inlineToolbar: true, config: { defaultStyle: 'unordered' } };
-        if (window.Quote) tools.quote = { class: window.Quote, inlineToolbar: true, config: { quotePlaceholder: 'Alıntını yaz…', captionPlaceholder: 'Kaynak' } };
-        if (window.CodeTool) tools.code = { class: window.CodeTool, config: { placeholder: 'Kodunu yaz…' } };
-        if (window.Delimiter) tools.delimiter = window.Delimiter;
-        if (window.Table) tools.table = { class: window.Table, inlineToolbar: true, config: { rows: 2, cols: 2 } };
+        if (available.Header) tools.header = { class: available.Header, inlineToolbar: true, config: { levels: [2, 3, 4], defaultLevel: 2 } };
+        if (available.EditorjsList) tools.list = { class: available.EditorjsList, inlineToolbar: true, config: { defaultStyle: 'unordered' } };
+        if (available.Quote) tools.quote = { class: available.Quote, inlineToolbar: true, config: { quotePlaceholder: 'Alıntını yaz…', captionPlaceholder: 'Kaynak' } };
+        if (available.CodeTool) tools.code = { class: available.CodeTool, config: { placeholder: 'Kodunu yaz…' } };
+        if (available.Delimiter) tools.delimiter = available.Delimiter;
+        if (available.Table) tools.table = { class: available.Table, inlineToolbar: true, config: { rows: 2, cols: 2 } };
         tools.embed = ComposerEmbedTool;
-        if (window.InlineCode) tools.inlineCode = window.InlineCode;
-        if (window.Marker) tools.marker = window.Marker;
+        if (available.InlineCode) tools.inlineCode = available.InlineCode;
+        if (available.Marker) tools.marker = available.Marker;
 
         let initial = { blocks: [] };
         if (input.value.trim()) {
@@ -892,13 +969,18 @@
             const parsed = JSON.parse(input.value);
             initial = parsed && Array.isArray(parsed.blocks)
               ? parsed
-              : { blocks: [{ type: 'paragraph', data: { text: input.value } }] };
+              : { blocks: plainTextBlocks(input.value) };
           } catch (_) {
-            initial = { blocks: input.value.split(/\n{2,}/).filter(Boolean).map(text => ({ type: 'paragraph', data: { text } })) };
+            initial = { blocks: plainTextBlocks(input.value) };
           }
         }
+        // Never silently discard existing blocks when a required tool is unavailable.
+        const unsupported = initial.blocks.filter(block => !block || (block.type !== 'paragraph' && !tools[block.type]));
+        if (unsupported.length) throw new Error('Mevcut yazı için gerekli içerik araçları yüklenemedi.');
+        initial = { ...initial, blocks: initial.blocks.filter(block => block.type !== 'paragraph' ||
+          /[^\s\u00a0\u200b]/.test(new DOMParser().parseFromString(String(block.data?.text || ''), 'text/html').body.textContent || '')) };
 
-        const editor = new window.EditorJS({
+        const editor = new Editor({
           holder,
           placeholder: 'Bir şeyler yazın...',
           minHeight: 84,
@@ -923,14 +1005,14 @@
           onReady: () => {
             holder.classList.add('is-ready');
             setStatus('Editör hazır');
-          },
-          onChange: async () => {
-            try { input.value = JSON.stringify(await editor.save()); }
-            catch (error) { console.error('Editor.js içerik senkronizasyonu:', error); }
           }
         });
 
         await editor.isReady;
+        if (disposed || !form.isConnected) {
+          editor.destroy();
+          return;
+        }
         holder.classList.add('is-ready');
         activeEditor = editor;
         if (publishBtn) publishBtn.disabled = false;
@@ -944,32 +1026,35 @@
 
         form.addEventListener('submit', async event => {
           event.preventDefault();
-          const submitButton = form.querySelector('button[type="submit"]');
-          if (submitButton) submitButton.disabled = true;
+          if (!beginSubmit()) return;
           try {
             const savedData = await editor.save();
-            input.value = JSON.stringify(savedData);
-            const excerptField = document.getElementById('post-excerpt');
-            if (excerptField && !excerptField.value.trim()) {
-              const textFromBlocks = (savedData.blocks || [])
-                .map(block => block.data?.text || block.data?.caption || '')
-                .join(' ')
-                .replace(/<[^>]*>/g, ' ')
-                .replace(/\\s+/g, ' ')
-                .trim();
-              excerptField.value = (textFromBlocks || document.getElementById('post-title')?.value || 'Yeni yayın').slice(0, 500);
+            if (!savedData.blocks?.length) {
+              setStatus('Lütfen gönderi içeriğini yazın.', true);
+              resetSubmit();
+              return;
             }
+            const body = JSON.stringify(savedData);
+            if (body.length > 100000) {
+              setStatus('Yazı çok uzun. İçeriği kısaltıp tekrar deneyin.', true);
+              resetSubmit();
+              return;
+            }
+            input.value = body;
+            const excerptField = form.querySelector('#post-excerpt');
+            if (excerptField) excerptField.value = makeExcerpt(savedData) || form.querySelector('#post-title')?.value || 'Yeni yayın';
             HTMLFormElement.prototype.submit.call(form);
           } catch (error) {
             console.error('Editor.js kaydı başarısız:', error);
-            setStatus('İçerik kaydedilemedi. Tekrar dene.');
-            if (submitButton) submitButton.disabled = false;
+            setStatus('İçerik kaydedilemedi. Tekrar deneyin.', true);
+            resetSubmit();
           }
         });
       } catch (error) {
+        if (disposed || !form.isConnected) return;
         console.error('Editor.js başlatma hatası:', error);
         if (blockStatus) { blockStatus.hidden = false; blockStatus.textContent = 'Editör yüklenemedi. Sayfayı yenile.'; }
-        setStatus('Editör yüklenemedi — bağlantıyı kontrol edip sayfayı yenile.');
+        setStatus('Editör yüklenemedi. Düz metin alanını kullanabilir veya sayfayı yenileyebilirsiniz.', true);
         // Keep the reference textarea usable if the Editor.js CDN is unavailable.
         holder.hidden = true;
         if (blockToggle) blockToggle.hidden = true;
@@ -986,14 +1071,23 @@
           if (structuredBody) {
             textarea.readOnly = true;
             textarea.title = 'Biçimlendirilmiş içeriği düzenlemek için editörün yüklenmesi gerekir.';
+            setStatus('Biçimlendirilmiş içeriği korumak için editör yüklenene kadar metin düzenlenemez. Sayfayı yenileyin.', true);
           }
           const originalText = textarea.value;
-          form.addEventListener('submit', () => {
+          form.addEventListener('submit', event => {
+            if (!beginSubmit()) { event.preventDefault(); return; }
             if (!structuredBody && (textarea.value !== originalText || !input.value)) {
-              input.value = JSON.stringify({ blocks: [{ type: 'paragraph', data: { text: textarea.value.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;') } }] });
+              const blocks = plainTextBlocks(textarea.value);
+              if (!blocks.length) {
+                event.preventDefault();
+                setStatus('Lütfen gönderi içeriğini yazın.', true);
+                resetSubmit();
+                return;
+              }
+              input.value = JSON.stringify({ blocks });
+              const excerpt = form.querySelector('#post-excerpt');
+              if (excerpt) excerpt.value = makeExcerpt({ blocks }) || form.querySelector('#post-title')?.value || '';
             }
-            const excerpt = form.querySelector('#post-excerpt');
-            if (excerpt && !excerpt.value.trim()) excerpt.value = (textarea.value || form.querySelector('#post-title')?.value || '').slice(0,500);
           });
         }
         if (publishBtn) publishBtn.disabled = false;
@@ -1397,15 +1491,7 @@
             closeComposerPanels();
         });
 
-        const form = document.querySelector('.post-create-simple form');
-        form?.addEventListener('submit', () => {
-            const button = form.querySelector('button[type="submit"]');
-            if (button) {
-                button.disabled = true;
-                button.dataset.originalText = button.textContent;
-                button.textContent = 'Hazırlanıyor…';
-            }
-        });
+        // Editor initialization owns the submit state and the final content serialization.
     };
 
     if (document.readyState === 'loading') {
