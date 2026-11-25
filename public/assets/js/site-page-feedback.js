@@ -5,13 +5,15 @@
     const form = panel.querySelector('[data-site-feedback-form]');
     const status = panel.querySelector('.site-feedback-status');
     const buttons = [...panel.querySelectorAll('[data-vote]')];
-    const submit = form.querySelector('[type="submit"]');
+    const submit = panel.querySelector('[type="submit"]');
+    const retry = panel.querySelector('[data-site-feedback-retry]');
     let busy = false;
     let loaded = false;
 
     const say = (message, error = false) => {
         status.textContent = message;
         status.dataset.error = String(error);
+        retry.hidden = !error || loaded;
     };
     const updateControls = () => {
         for (const button of [...buttons, submit]) button.disabled = busy || !loaded;
@@ -51,7 +53,9 @@
                 throw new Error(validation || (response.status === 419
                     ? 'Oturumunuz yenilenmeli. Lütfen sayfayı yenileyin.'
                     : response.status === 429 ? 'Çok fazla işlem yaptınız. Biraz sonra tekrar deneyin.'
-                    : 'İşlem tamamlanamadı. Lütfen tekrar deneyin.'));
+                    : response.status === 503 ? 'Geri bildirim sistemi henüz etkin değil. (503)'
+                    : response.status === 404 ? 'Geri bildirim adresi bulunamadı. (404)'
+                    : 'İşlem tamamlanamadı. (HTTP ' + response.status + ')'));
             }
             if (typeof data.like !== 'number' || typeof data.dislike !== 'number') throw new Error('Geri bildirim bilgileri alınamadı.');
             loaded = true;
@@ -66,20 +70,12 @@
             updateControls();
         }
     };
-    const toggle = (open) => {
-        panel.hidden = !open;
-        trigger.setAttribute('aria-expanded', String(open));
-        if (open) {
-            if (!loaded) request();
-        } else {
-            trigger.focus();
-        }
-    };
-    trigger.addEventListener('click', () => toggle(panel.hidden));
-    panel.querySelector('[data-site-feedback-close]').addEventListener('click', () => toggle(false));
-    panel.addEventListener('keydown', event => {
-        if (event.key === 'Escape') toggle(false);
+    panel.addEventListener('modal:open', () => {
+        trigger.setAttribute('aria-expanded', 'true');
+        request();
     });
+    panel.addEventListener('modal:close', () => trigger.setAttribute('aria-expanded', 'false'));
+    retry.addEventListener('click', () => request());
     buttons.forEach(button => button.addEventListener('click', () => request({ action:'vote', vote:button.dataset.vote })));
     form.addEventListener('submit', async event => {
         event.preventDefault();

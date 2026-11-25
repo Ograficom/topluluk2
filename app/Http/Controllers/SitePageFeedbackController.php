@@ -69,7 +69,12 @@ class SitePageFeedbackController extends Controller
         if ($request->user()) {
             $identity = 'user:'.$request->user()->getAuthIdentifier();
         } else {
-            $identity = 'guest:'.$request->session()->remember('site_feedback_voter', fn () => (string) Str::uuid());
+            $guest = $request->session()->get('site_feedback_voter');
+            if (! is_string($guest) || $guest === '') {
+                $guest = (string) Str::uuid();
+                $request->session()->put('site_feedback_voter', $guest);
+            }
+            $identity = 'guest:'.$guest;
         }
 
         return hash_hmac('sha256', $identity, (string) config('app.key'));

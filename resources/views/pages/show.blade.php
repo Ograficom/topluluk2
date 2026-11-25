@@ -26,10 +26,10 @@
 @endif
 
 @push('head')
-    <link rel="stylesheet" href="{{ asset('assets/css/site-page-feedback.css') }}?v=1">
+    <link rel="stylesheet" href="{{ asset('assets/css/site-page-feedback.css') }}?v=2">
 @endpush
 @push('scripts')
-    <script src="{{ asset('assets/js/site-page-feedback.js') }}?v=1" defer></script>
+    <script src="{{ asset('assets/js/site-page-feedback.js') }}?v=2" defer></script>
 @endpush
 
 @section('content')

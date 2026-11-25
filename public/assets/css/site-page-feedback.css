@@ -1,13 +1,10 @@
-/* Repost static__footer, btn, form-group and theme color tokens. */
-.static__footer { align-items: center; }
+/* Repost kit.css native modal, button and form styles. */
 .site-feedback-actions { display:flex; align-items:center; gap:8px; margin-left:auto; }
-.site-feedback-trigger { display:inline-flex; align-items:center; justify-content:center; min-width:40px; min-height:40px; color:var(--color-gray); }
+.static__footer .site-feedback-trigger { display:inline-flex; align-items:center; justify-content:center; width:28px; height:28px; min-width:28px; min-height:28px; padding:0; color:var(--color-gray); }
+.site-feedback-trigger svg { width:16px; height:16px; flex:none; }
 .site-feedback-trigger[aria-expanded="true"], .site-feedback-trigger:hover { color:var(--color-primary); }
-.site-feedback-panel[hidden] { display:none!important; }
-.site-feedback-panel { margin-top:16px; padding:16px; background:var(--body-bg); border-radius:14px; min-width:0; }
-.site-feedback-heading { display:flex; align-items:center; justify-content:space-between; gap:10px; }
-.site-feedback-heading h2 { margin:0; }
-.site-feedback-votes { display:flex; flex-wrap:wrap; gap:8px; margin:12px 0 16px; }
+.modal.site-feedback-modal[data-modal] { --modal-content-width:450px; }
+.site-feedback-votes { display:flex; flex-wrap:wrap; gap:8px; margin:0 0 16px; }
 .site-feedback-votes .btn { display:inline-flex; align-items:center; gap:8px; }
 .site-feedback-votes [data-count] { font-variant-numeric:tabular-nums; }
 .site-feedback-form { display:flex; flex-direction:column; gap:12px; }
@@ -16,8 +13,8 @@
 .site-feedback-form .form-group label { font-size:.875rem; font-weight:500; }
 .site-feedback-form input, .site-feedback-form select, .site-feedback-form textarea { width:100%; min-width:0; }
 .site-feedback-form textarea { resize:vertical; }
-.site-feedback-submit { display:flex; justify-content:flex-end; }
 .site-feedback-status { color:var(--color-gray); margin:10px 0 0; }
-.site-feedback-status:empty { display:none; }
+.site-feedback-status:empty, [data-site-feedback-retry][hidden] { display:none!important; }
 .site-feedback-status[data-error="true"] { color:var(--color-red, #dc2626); }
-@media(max-width:480px) { .site-feedback-panel { padding:12px; } .site-feedback-submit .btn { width:100%; } .static__footer { gap:8px; } }
+[data-site-feedback-retry] { margin-top:8px; }
+@media(max-width:480px) { .site-feedback-modal .modal-footer .btn { width:100%; } }

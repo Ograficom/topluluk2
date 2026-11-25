@@ -28,6 +28,16 @@ class SitePageFeedbackTest extends TestCase
         $this->assertDatabaseHas('site_page_feedback', ['site_page_id' => $page->id, 'vote' => 'like', 'message' => 'Bir öneri']);
     }
 
+    public function test_page_uses_original_theme_popup(): void
+    {
+        $page = SitePage::query()->create(['title' => 'Popup', 'slug' => 'feedback-popup', 'is_published' => true]);
+        $this->get(route('pages.show', $page->slug))
+            ->assertOk()
+            ->assertSee('data-modal-btn="site-page-feedback"', false)
+            ->assertSee('data-modal="site-page-feedback"', false)
+            ->assertSee('form="site-feedback-form"', false);
+    }
+
     public function test_unpublished_page_and_invalid_feedback_are_rejected(): void
     {
         $page = SitePage::query()->create(['title' => 'Taslak', 'slug' => 'feedback-draft', 'is_published' => false]);
