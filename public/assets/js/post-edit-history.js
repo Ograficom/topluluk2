@@ -48,11 +48,23 @@
             if (requests.get(root) === controller) more.disabled = false;
         }
     }
+    function positionMenu(root) {
+        const menu = root.querySelector('.post-edit-history-menu');
+        if (!menu) return;
+        const rect = root.getBoundingClientRect();
+        const width = menu.offsetWidth || Math.min(270, window.innerWidth - 24);
+        // Keep the leading edge under the clock whenever there is room;
+        // shift just enough to keep the complete menu inside the viewport.
+        const left = Math.max(12, Math.min(rect.left, window.innerWidth - width - 12));
+        root.style.setProperty('--history-menu-left', (left - rect.left) + 'px');
+    }
+    window.addEventListener('resize', () => {
+        document.querySelectorAll('[data-edit-history-url].is-open').forEach(positionMenu);
+    }, {passive:true});
     document.addEventListener('dropdown:open', event => {
         const root = event.target;
         if (!(root instanceof HTMLElement) || !root.matches('[data-edit-history-url]')) return;
-        const width = Math.min(270, window.innerWidth - 24);
-        root.classList.toggle('is-align-end', root.getBoundingClientRect().left + width > window.innerWidth - 8);
+        positionMenu(root);
         load(root);
     });
     document.addEventListener('dropdown:close', event => {

@@ -191,7 +191,7 @@
         })();
     </script>
     @vite('resources/js/app.js')
-    <link rel="stylesheet" href="{{ asset('assets/css/post-edit-history.css') }}?v=1">
+    <link rel="stylesheet" href="{{ asset('assets/css/post-edit-history.css') }}?v=2">
     @stack('head')
     @if (! request()->routeIs('cp.*'))
         <script type="application/ld+json">
@@ -1348,7 +1348,7 @@
     registerOgrafiWorker();
 })();
 </script>
-<script src="{{ asset('assets/js/post-edit-history.js') }}?v=1" defer></script>
+<script src="{{ asset('assets/js/post-edit-history.js') }}?v=2" defer></script>
 @stack('scripts')
 @if ($newYearActive)
     @include('layouts._new-year-effects')

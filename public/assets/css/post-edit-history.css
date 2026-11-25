@@ -1,11 +1,33 @@
 /* Repost kit.css dropdown, btn-secondary-ghost, btn-circle and dropdown-menu-title
    are used directly. Only history-specific sizing and content layout are added. */
-.user-box .meta .post-edit-history {--dropdown-width:270px;--dropdown-offset:5px;flex:0 0 auto;align-self:center;vertical-align:middle;}
-.user-box .meta .post-edit-history .post-edit-history-trigger {width:24px;min-width:24px;height:24px;min-height:24px;padding:0;color:var(--gray-500,#71839d);}
+.user-box .meta .post-publication-meta {
+    display:inline-flex;align-items:center;gap:3px;white-space:nowrap;line-height:1;
+}
+.user-box .meta .post-publication-meta > time {display:inline-block;line-height:1.2;margin:0;padding:0;}
+.user-box .meta .post-edit-history {
+    --dropdown-width:270px;--dropdown-offset:7px;
+    position:relative;display:inline-flex;align-items:center;justify-content:center;
+    flex:0 0 18px;width:18px;height:18px;margin:0;padding:0;align-self:center;
+}
+.user-box .meta .post-edit-history .post-edit-history-trigger {
+    display:inline-flex!important;align-items:center!important;justify-content:center!important;
+    width:18px!important;min-width:18px!important;height:18px!important;min-height:18px!important;
+    margin:0!important;padding:0!important;line-height:1!important;
+    color:var(--color-gray,#71839d);border:0;position:relative;
+}
+.user-box .meta .post-edit-history .post-edit-history-trigger::before {
+    content:"";position:absolute;inset:-3px;
+}
+.user-box .meta .post-edit-history .post-edit-history-trigger svg {display:block;flex:none;width:13px;height:13px;pointer-events:none;}
 .user-box .meta .post-edit-history .post-edit-history-trigger:hover,
 .user-box .meta .post-edit-history .post-edit-history-trigger[aria-expanded="true"] {color:var(--color-primary,#1769ff);}
-.post-edit-history .post-edit-history-menu {white-space:normal;max-width:calc(100vw - 24px);--dropdown-menu-left:0;}
-.post-edit-history.is-align-end .post-edit-history-menu {--dropdown-menu-left:auto;--dropdown-menu-right:0;}
+.post-edit-history > .post-edit-history-menu {
+    white-space:normal;max-width:calc(100vw - 24px);
+    --dropdown-menu-left:var(--history-menu-left,0px);
+    --dropdown-menu-right:auto;
+    --dropdown-menu-translate-x:0;
+    text-align:left;box-sizing:border-box;
+}
 .post-edit-history .post-edit-history-status {padding:4px 10px 8px;line-height:1.4;}
 .post-edit-history .post-edit-history-entries {min-width:0;max-height:240px;overflow-y:auto;}
 .post-edit-history [data-edit-history-entries] {list-style:none;padding:0;margin:0;display:grid;gap:2px;}
