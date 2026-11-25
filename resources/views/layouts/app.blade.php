@@ -229,6 +229,9 @@
     </div>
 
     <div class="pwa-titlebar" aria-hidden="true">OgraFi</div>
+    @if ($pwaSettings?->pwa_enabled ?? true)
+        @include('layouts._app-install-banner')
+    @endif
     <header class="header">
         <div class="header__inner container">
             <div class="header__start">
