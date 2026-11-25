@@ -704,7 +704,7 @@ class RepostFeedTest extends TestCase
         ])->assertForbidden();
     }
 
-    public function test_uploaded_gallery_images_render_in_post_detail_without_a_loading_overlay(): void
+    public function test_uploaded_gallery_images_render_inside_post_body(): void
     {
         Storage::fake('public');
         $author = User::factory()->create();
@@ -712,7 +712,11 @@ class RepostFeedTest extends TestCase
         $this->actingAs($author)->post(route('posts.store'), [
             'title' => 'Görselli gönderi',
             'excerpt' => 'Görselli gönderi.',
-            'body' => 'Fotoğraflar burada gösterilir.',
+            'body' => json_encode(['blocks' => [
+                ['type' => 'paragraph', 'data' => ['text' => 'Önceki paragraf']],
+                ['type' => 'postGallery', 'data' => []],
+                ['type' => 'paragraph', 'data' => ['text' => 'Sonraki paragraf']],
+            ]]),
             'channel_id' => $channel->id,
             'media' => [UploadedFile::fake()->image('first.png'), UploadedFile::fake()->image('second.png')],
         ])->assertRedirect();
@@ -720,8 +724,11 @@ class RepostFeedTest extends TestCase
         $post = Post::query()->where('title', 'Görselli gönderi')->firstOrFail();
         $this->assertCount(2, $post->media);
         $response = $this->get(route('posts.show', $post))->assertOk()
-            ->assertSee('post__media-paired-carousel post__media-images', false)
-            ->assertDontSee('post__media-paired-carousel is-media-loading', false);
+            ->assertSeeInOrder(['<p>Önceki paragraf</p>', 'class="post-inline-gallery"', '<p>Sonraki paragraf</p>'], false);
+        $this->assertSame(1, substr_count($response->getContent(), 'class="post-inline-gallery"'));
+        $post->update(['body' => "Eski ilk paragraf.\n\nEski ikinci paragraf."]);
+        $this->get(route('posts.show', $post))->assertOk()
+            ->assertSeeInOrder(['<p>Eski ilk paragraf.</p>', 'class="post-inline-gallery"', '<p>Eski ikinci paragraf.</p>'], false);
         foreach ($post->media as $path) {
             Storage::disk('public')->assertExists($path);
             $response->assertSee('src="'.asset('storage/'.$path).'"', false);

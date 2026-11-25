@@ -14,6 +14,10 @@
         .similar-posts{display:block;width:100%;max-width:none;margin:24px 0 0;padding:0;background:transparent;border:0;box-shadow:none;border-radius:0}
         .similar-posts__grid{display:flex;flex-direction:column;gap:14px;width:100%;min-width:0}
         .similar-posts__grid>.card.post{width:100%;max-width:none;min-width:0;margin:0}
+        .editorjs-content .post-inline-gallery{display:grid;gap:12px;margin:16px 0;clear:both;}
+        .editorjs-content .post-inline-gallery figure{margin:0;min-width:0;}
+        .editorjs-content .post-inline-gallery a{display:block;}
+        .editorjs-content .post-inline-gallery img{display:block;width:100%;height:auto;max-height:650px;object-fit:contain;border-radius:12px;}
     </style>
 
     <meta property="article:published_time" content="{{ $post->published_at?->toAtomString() }}">
@@ -93,8 +97,8 @@
 
         <h1 class="post__title-full">{{ $post->title }}</h1>
 
-        @if ($post->coverImageUrl() || count($post->galleryImageUrls()) > 0 || filled($post->video_url) || filled($post->video_path))
-            <div class="post__media-full">@include('posts._media', ['post' => $post])</div>
+        @if ($post->coverImageUrl() || filled($post->video_url) || filled($post->video_path))
+            <div class="post__media-full">@include('posts._media', ['post' => $post, 'coverOnly' => true])</div>
         @endif
 
         <section class="editor editorjs-content">
@@ -107,6 +111,9 @@
                         'Bu içerik RSS kaynağından alınmıştır. Kaynak:'
                     )
                 )) : null;
+                $inlineGalleryUrls = array_values(array_diff($post->galleryImageUrls(), array_filter([$post->coverImageUrl()])));
+                $galleryHasPosition = collect($editorBlocks ?? [])->contains(fn ($block) => ($block['type'] ?? '') === 'postGallery');
+                $inlineGalleryShown = false;
             @endphp
             @if ($editorBlocks !== null)
                 @foreach ($editorBlocks as $block)
@@ -117,6 +124,16 @@
                             @break
                         @case('paragraph')
                             @if (filled($blockData['text'] ?? ''))<p>{!! nl2br(e($blockData['text'])) !!}</p>@endif
+                            @if (! $galleryHasPosition && ! $inlineGalleryShown && filled($blockData['text'] ?? ''))
+                                @include('posts._inline-gallery', ['urls' => $inlineGalleryUrls, 'post' => $post])
+                                @php $inlineGalleryShown = true; @endphp
+                            @endif
+                            @break
+                        @case('postGallery')
+                            @if (! $inlineGalleryShown)
+                                @include('posts._inline-gallery', ['urls' => $inlineGalleryUrls, 'post' => $post])
+                                @php $inlineGalleryShown = true; @endphp
+                            @endif
                             @break
                         @case('list')
                             @php
@@ -188,9 +205,16 @@
                 @foreach (preg_split('/\\R{2,}/', trim($post->body)) ?: [] as $paragraph)
                     @if (filled($paragraph) && ! str_starts_with(trim($paragraph), 'Bu içerik RSS kaynağından alınmıştır. Kaynak:'))
                         <p>{!! nl2br(e($paragraph)) !!}</p>
+                        @if (! $inlineGalleryShown)
+                            @include('posts._inline-gallery', ['urls' => $inlineGalleryUrls, 'post' => $post])
+                            @php $inlineGalleryShown = true; @endphp
+                        @endif
                     @endif
                 @endforeach
             @endif
+            @unless ($inlineGalleryShown)
+                @include('posts._inline-gallery', ['urls' => $inlineGalleryUrls, 'post' => $post])
+            @endunless
         </section>
 
         @if ($rssItem && filled($rssItem->link))

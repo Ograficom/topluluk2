@@ -1,7 +1,7 @@
 @php
     $mediaUrls = collect(array_merge(
         array_filter([$post->coverImageUrl()]),
-        $post->galleryImageUrls(),
+        ($coverOnly ?? false) ? [] : $post->galleryImageUrls(),
     ))->unique()->values();
     $mediaGroup = 'post-images-'.$post->id;
     $censored = $post->is_adult && ! auth()->user()?->show_adult_content;
