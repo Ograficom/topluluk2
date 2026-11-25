@@ -125,6 +125,13 @@
 #createPostBox .post-existing-image-undo {display:flex;align-items:center;gap:6px;flex-wrap:wrap;font-size:11px;color:#64748b;}
 #createPostBox .post-existing-image-undo button {border:0;padding:4px;background:transparent;color:#2878f0;font:inherit;cursor:pointer;}
 #createPostModal > .post-gallery-modal:not([hidden]) > .post-gallery-dialog {width:min(480px,calc(100vw - 24px))!important;min-width:0!important;max-height:calc(100dvh - 32px)!important;overflow-y:auto!important;}
+/* Larger, readable gallery text on desktop and mobile. */
+#createPostModal > .post-gallery-modal:not([hidden]) .post-gallery-dialog h2 {font-size:20px!important;line-height:1.35!important;margin-bottom:18px!important;}
+#createPostModal > .post-gallery-modal:not([hidden]) .post-gallery-dropzone {padding:18px 14px!important;gap:8px!important;}
+#createPostModal > .post-gallery-modal:not([hidden]) .post-gallery-picture-icon {width:26px!important;height:26px!important;}
+#createPostModal > .post-gallery-modal:not([hidden]) .post-gallery-dropzone strong {font-size:15px!important;line-height:1.45!important;}
+#createPostModal > .post-gallery-modal:not([hidden]) .post-gallery-dropzone > span {font-size:14px!important;line-height:1.45!important;}
+#createPostModal > .post-gallery-modal:not([hidden]) .post-gallery-upload {font-size:15px!important;min-height:40px!important;height:auto!important;padding:10px 14px!important;line-height:1.35!important;}
 #createPostModal [data-gallery-picker] {display:none!important;}
 #createPostModal .post-gallery-grid {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin:12px 0 0;}
 #createPostModal .post-gallery-grid[hidden],#createPostModal .post-gallery-actions[hidden],#createPostModal [data-gallery-error][hidden] {display:none!important;}
@@ -135,10 +142,10 @@
 #createPostModal .post-gallery-check {position:absolute;top:6px;right:6px;display:grid;place-items:center;width:23px;height:23px;border-radius:50%;border:1.5px solid #fff;background:rgba(15,23,42,.45);color:white;font:700 15px/1 Arial,sans-serif;box-shadow:0 1px 4px #0003;}
 #createPostModal .post-gallery-tile[aria-pressed="true"] .post-gallery-check {background:#2878f0;}
 #createPostModal .post-gallery-actions {display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:12px;}
-#createPostModal .post-gallery-actions [data-gallery-selected] {font-size:12px;color:#64748b!important;}
-#createPostModal .post-gallery-apply {border:0;border-radius:22px;background:#2878f0;color:#fff;font-family:inherit;font-size:13px;font-weight:600;line-height:1.2;padding:11px 17px;cursor:pointer;white-space:nowrap;}
+#createPostModal .post-gallery-actions [data-gallery-selected] {font-size:14px;color:#64748b!important;}
+#createPostModal .post-gallery-apply {border:0;border-radius:22px;background:#2878f0;color:#fff;font-family:inherit;font-size:15px;font-weight:600;line-height:1.2;padding:11px 17px;cursor:pointer;white-space:nowrap;}
 #createPostModal .post-gallery-apply:hover {background:#1769dc;}
-#createPostModal [data-gallery-error] {margin:8px 0 0;color:#b91c1c;font-size:12px;}
+#createPostModal [data-gallery-error] {margin:8px 0 0;color:#b91c1c;font-size:14px;}
 @media(max-width:360px){#createPostModal .post-gallery-grid{grid-template-columns:repeat(2,minmax(0,1fr));}}
 #createPostBox .post-composer-location-panel:not([hidden]) {display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
 #createPostBox .post-composer-location-panel input {min-width:0;flex:1;border:1px solid #cbd5e1;border-radius:12px;padding:8px;background:#fff;color:#334155;}
