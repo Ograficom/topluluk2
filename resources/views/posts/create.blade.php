@@ -105,6 +105,27 @@
 #createPostBox .compose-previews:not(:has(img,p,label)) {display:none;}
 #createPostBox .compose-previews img {width:56px;height:56px;object-fit:cover;border-radius:8px;}
 #createPostBox .post-composer-gallery-item {display:flex;gap:6px;align-items:center;font-size:12px;max-width:180px;overflow:hidden;}
+#createPostBox [data-post-gallery-list] {gap:8px;margin:0;}
+#createPostBox [data-post-gallery-list]:empty {display:none;}
+#createPostBox [data-post-gallery-list] .post-composer-gallery-item {position:relative;padding:0;border:0;border-radius:9px;width:76px;height:76px;overflow:hidden;}
+#createPostBox [data-post-gallery-list] .post-composer-gallery-item img {display:block;width:100%;height:100%;object-fit:cover;border-radius:inherit;}
+#createPostBox .post-gallery-remove {position:absolute;right:4px;top:4px;display:grid;place-items:center;width:24px;height:24px;padding:0;border:0;border-radius:50%;background:rgba(15,23,42,.72);color:white;font:18px/1 Arial,sans-serif;cursor:pointer;}
+#createPostModal > .post-gallery-modal:not([hidden]) > .post-gallery-dialog {width:min(480px,calc(100vw - 24px))!important;min-width:0!important;max-height:calc(100dvh - 32px)!important;overflow-y:auto!important;}
+#createPostModal [data-gallery-picker] {display:none!important;}
+#createPostModal .post-gallery-grid {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin:12px 0 0;}
+#createPostModal .post-gallery-grid[hidden],#createPostModal .post-gallery-actions[hidden],#createPostModal [data-gallery-error][hidden] {display:none!important;}
+#createPostModal .post-gallery-tile {position:relative;display:block;aspect-ratio:1;width:100%;min-width:0;padding:0;border:2px solid transparent;border-radius:11px;background:#eef2f7;overflow:hidden;cursor:pointer;}
+#createPostModal .post-gallery-tile img {display:block;width:100%;height:100%;object-fit:cover;border-radius:8px;pointer-events:none;}
+#createPostModal .post-gallery-tile[aria-pressed="true"] {border-color:#2878f0;}
+#createPostModal .post-gallery-tile:focus-visible {outline:2px solid #2878f0;outline-offset:2px;}
+#createPostModal .post-gallery-check {position:absolute;top:6px;right:6px;display:grid;place-items:center;width:23px;height:23px;border-radius:50%;border:1.5px solid #fff;background:rgba(15,23,42,.45);color:white;font:700 15px/1 Arial,sans-serif;box-shadow:0 1px 4px #0003;}
+#createPostModal .post-gallery-tile[aria-pressed="true"] .post-gallery-check {background:#2878f0;}
+#createPostModal .post-gallery-actions {display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:12px;}
+#createPostModal .post-gallery-actions [data-gallery-selected] {font-size:12px;color:#64748b!important;}
+#createPostModal .post-gallery-apply {border:0;border-radius:22px;background:#2878f0;color:#fff;font-family:inherit;font-size:13px;font-weight:600;line-height:1.2;padding:11px 17px;cursor:pointer;white-space:nowrap;}
+#createPostModal .post-gallery-apply:hover {background:#1769dc;}
+#createPostModal [data-gallery-error] {margin:8px 0 0;color:#b91c1c;font-size:12px;}
+@media(max-width:360px){#createPostModal .post-gallery-grid{grid-template-columns:repeat(2,minmax(0,1fr));}}
 #createPostBox .post-composer-location-panel:not([hidden]) {display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
 #createPostBox .post-composer-location-panel input {min-width:0;flex:1;border:1px solid #cbd5e1;border-radius:12px;padding:8px;background:#fff;color:#334155;}
 #createPostBox .post-composer-location-panel button {border:0;background:transparent;color:#64748b;font-size:20px;cursor:pointer;}
@@ -333,8 +354,14 @@
                                 <strong>Görselleri buraya sürükleyip bırakın.</strong>
                                 <span>veya bunları cihazınızdan seçin</span>
                                 <button type="button" class="post-gallery-upload" data-gallery-choose>Resimleri yükle</button>
-                                <div class="post-gallery-selected" data-gallery-selected aria-live="polite"></div>
-                            </div>
+                                <input type="file" data-gallery-picker accept="image/jpeg,image/png,image/gif,image/webp" multiple hidden aria-label="Görsel seç">
+                             </div>
+                             <p data-gallery-error role="alert" hidden></p>
+                             <div class="post-gallery-grid" data-gallery-grid role="group" aria-label="Gönderiye eklenecek görseller" hidden></div>
+                             <div class="post-gallery-actions" data-gallery-actions hidden>
+                                 <span class="post-gallery-selected" data-gallery-selected aria-live="polite"></span>
+                                 <button type="button" class="post-gallery-apply" data-gallery-apply>Gönderiye ekle</button>
+                             </div>
                         </div>
                     </div>
         <div class="post-widget-modal" data-widget-modal hidden>
@@ -1231,55 +1258,174 @@
             });
         }
 
-        const galleryInput = document.querySelector('[data-post-gallery-input]');
-        const galleryList = document.querySelector('[data-post-gallery-list]');
-        const galleryModal = document.querySelector('[data-gallery-modal]');
-        const galleryDropzone = document.querySelector('[data-gallery-dropzone]');
-        const gallerySelected = document.querySelector('[data-gallery-selected]');
         const composerOverlay = document.querySelector('.addpost.post-create-simple.post-create-modal-page');
         const composerForm = composerOverlay?.querySelector('#createPostBox');
-        const openGallery = () => {
-            if (!galleryModal) return;
-            galleryModal.hidden = false;
-            composerOverlay?.classList.add('is-gallery-open');
-            composerForm?.setAttribute('aria-hidden', 'true');
+        const galleryInput = composerForm?.querySelector('[data-post-gallery-input]');
+        const galleryList = composerForm?.querySelector('[data-post-gallery-list]');
+        const galleryModal = composerOverlay?.querySelector('[data-gallery-modal]');
+        const galleryDropzone = galleryModal?.querySelector('[data-gallery-dropzone]');
+        const galleryPicker = galleryModal?.querySelector('[data-gallery-picker]');
+        const gallerySelected = galleryModal?.querySelector('[data-gallery-selected]');
+        const galleryGrid = galleryModal?.querySelector('[data-gallery-grid]');
+        const galleryActions = galleryModal?.querySelector('[data-gallery-actions]');
+        const galleryApply = galleryModal?.querySelector('[data-gallery-apply]');
+        const galleryError = galleryModal?.querySelector('[data-gallery-error]');
+        const galleryOpen = composerForm?.querySelector('[data-gallery-open]');
+        const galleryAbort = new AbortController();
+        const allowedImages = new Set(['image/jpeg', 'image/png', 'image/gif', 'image/webp']);
+        let stagedGallery = [];
+        const galleryUrls = new Map();
+        const fileKey = file => JSON.stringify([file.name, file.size, file.lastModified, file.type]);
+        const previewUrl = file => {
+            const key = fileKey(file);
+            if (!galleryUrls.has(key)) galleryUrls.set(key, URL.createObjectURL(file));
+            return galleryUrls.get(key);
         };
-        const closeGallery = () => {
-            if (galleryModal) galleryModal.hidden = true;
-            composerOverlay?.classList.remove('is-gallery-open');
-            composerForm?.removeAttribute('aria-hidden');
-        };
-        document.querySelector('[data-gallery-open]')?.addEventListener('click', openGallery);
-        document.querySelectorAll('[data-gallery-close]').forEach(button => button.addEventListener('click', closeGallery));
-        document.querySelector('[data-gallery-choose]')?.addEventListener('click', () => galleryInput?.click());
-        galleryModal?.addEventListener('click', event => { if (event.target === galleryModal) closeGallery(); });
-        document.addEventListener('keydown', event => { if (event.key === 'Escape' && galleryModal && !galleryModal.hidden) closeGallery(); });
-        const showGalleryFiles = () => {
-            if (!galleryInput || !gallerySelected) return;
-            gallerySelected.replaceChildren();
-            const files = Array.from(galleryInput.files || []);
-            if (!files.length) return;
-            const status = document.createElement('span');
-            status.className = 'post-gallery-file-count';
-            status.textContent = files.length + ' görsel seçildi';
-            gallerySelected.append(status);
-            if (galleryList) {
-                galleryList.replaceChildren();
-                files.forEach(file => {
-                    const item = document.createElement('div');
-                    item.className = 'post-composer-gallery-item';
-                    const image = document.createElement('img');
-                    image.src = URL.createObjectURL(file);
-                    image.alt = '';
-                    image.onload = () => URL.revokeObjectURL(image.src);
-                    const name = document.createElement('span');
-                    name.textContent = file.name;
-                    item.append(image, name);
-                    galleryList.append(item);
-                });
+        const attachedFiles = () => Array.from(galleryInput?.files || []);
+        const pruneGalleryUrls = () => {
+            const keep = new Set([...attachedFiles(), ...stagedGallery.map(entry => entry.file)].map(fileKey));
+            for (const [key, url] of galleryUrls) {
+                if (!keep.has(key)) { URL.revokeObjectURL(url); galleryUrls.delete(key); }
             }
         };
+        const showGalleryError = message => {
+            if (!galleryError) return;
+            galleryError.textContent = message;
+            galleryError.hidden = !message;
+        };
+        const updateSelection = () => {
+            const count = stagedGallery.filter(entry => entry.selected).length;
+            if (gallerySelected) gallerySelected.textContent = count + ' / ' + stagedGallery.length + ' görsel seçildi';
+            if (galleryApply) galleryApply.textContent = count ? 'Gönderiye ekle (' + count + ')' : 'Seçimi uygula';
+            if (galleryGrid) galleryGrid.hidden = !stagedGallery.length;
+            if (galleryActions) galleryActions.hidden = !stagedGallery.length;
+        };
+        const renderGallery = () => {
+            if (!galleryGrid) return;
+            galleryGrid.replaceChildren();
+            stagedGallery.forEach(entry => {
+                const tile = document.createElement('button');
+                tile.type = 'button';
+                tile.className = 'post-gallery-tile';
+                tile.setAttribute('aria-label', entry.file.name);
+                tile.setAttribute('aria-pressed', String(entry.selected));
+                tile.title = entry.file.name;
+                const img = document.createElement('img');
+                img.src = previewUrl(entry.file);
+                img.alt = '';
+                const check = document.createElement('span');
+                check.className = 'post-gallery-check';
+                check.setAttribute('aria-hidden', 'true');
+                check.textContent = entry.selected ? '✓' : '';
+                tile.append(img, check);
+                tile.addEventListener('click', () => {
+                    entry.selected = !entry.selected;
+                    tile.setAttribute('aria-pressed', String(entry.selected));
+                    check.textContent = entry.selected ? '✓' : '';
+                    updateSelection();
+                });
+                galleryGrid.append(tile);
+            });
+            updateSelection();
+        };
+        const setAttachedFiles = files => {
+            if (!galleryInput) return false;
+            try {
+                const transfer = new DataTransfer();
+                files.forEach(file => transfer.items.add(file));
+                galleryInput.files = transfer.files;
+                galleryInput.dispatchEvent(new Event('change', { bubbles: true }));
+                return true;
+            } catch (error) {
+                showGalleryError('Görseller gönderiye aktarılamadı. Tarayıcınızı güncelleyip tekrar deneyin.');
+                console.error('Gallery file transfer failed:', error);
+                return false;
+            }
+        };
+        const showGalleryFiles = () => {
+            if (!galleryList) return;
+            galleryList.replaceChildren();
+            attachedFiles().forEach(file => {
+                const item = document.createElement('div');
+                item.className = 'post-composer-gallery-item';
+                const image = document.createElement('img');
+                image.src = previewUrl(file);
+                image.alt = file.name;
+                const remove = document.createElement('button');
+                remove.type = 'button';
+                remove.className = 'post-gallery-remove';
+                remove.textContent = '×';
+                remove.setAttribute('aria-label', file.name + ' görselini kaldır');
+                remove.addEventListener('click', () => {
+                    if (!setAttachedFiles(attachedFiles().filter(attached => fileKey(attached) !== fileKey(file)))) {
+                        window.alert('Görsel kaldırılamadı. Lütfen tekrar deneyin.');
+                    }
+                });
+                item.append(image, remove);
+                galleryList.append(item);
+            });
+            pruneGalleryUrls();
+        };
+        const addGalleryCandidates = files => {
+            let skipped = false;
+            const known = new Set(stagedGallery.map(entry => fileKey(entry.file)));
+            for (const file of files) {
+                if (known.has(fileKey(file))) continue;
+                if (!allowedImages.has(file.type) || file.size > 5 * 1024 * 1024 || file.size === 0 || stagedGallery.length >= 10) {
+                    skipped = true;
+                    continue;
+                }
+                stagedGallery.push({ file, selected: true });
+                known.add(fileKey(file));
+            }
+            showGalleryError(skipped ? 'En fazla 10 görsel seçebilirsiniz. JPG, PNG, GIF veya WEBP; her biri en fazla 5 MB olmalıdır.' : '');
+            renderGallery();
+        };
+        const openGallery = () => {
+            if (!galleryModal) return;
+            stagedGallery = attachedFiles().map(file => ({ file, selected: true }));
+            showGalleryError('');
+            renderGallery();
+            galleryModal.hidden = false;
+            composerOverlay.classList.add('is-gallery-open');
+            composerForm.setAttribute('aria-hidden', 'true');
+            galleryModal.querySelector('[data-gallery-choose]')?.focus({ preventScroll: true });
+        };
+        const closeGallery = () => {
+            if (!galleryModal) return;
+            galleryModal.hidden = true;
+            composerOverlay.classList.remove('is-gallery-open');
+            composerForm.removeAttribute('aria-hidden');
+            stagedGallery = [];
+            galleryGrid?.replaceChildren();
+            pruneGalleryUrls();
+            galleryOpen?.focus({ preventScroll: true });
+        };
+        galleryOpen?.addEventListener('click', openGallery);
+        galleryModal?.querySelectorAll('[data-gallery-close]').forEach(button => button.addEventListener('click', closeGallery));
+        galleryModal?.querySelector('[data-gallery-choose]')?.addEventListener('click', () => galleryPicker?.click());
+        galleryPicker?.addEventListener('change', () => {
+            addGalleryCandidates(Array.from(galleryPicker.files || []));
+            galleryPicker.value = '';
+        });
+        galleryApply?.addEventListener('click', () => {
+            if (setAttachedFiles(stagedGallery.filter(entry => entry.selected).map(entry => entry.file))) closeGallery();
+        });
+        galleryModal?.addEventListener('click', event => { if (event.target === galleryModal) closeGallery(); });
+        document.addEventListener('keydown', event => {
+            if (event.key === 'Escape' && galleryModal?.isConnected && !galleryModal.hidden) {
+                event.preventDefault();
+                event.stopImmediatePropagation();
+                closeGallery();
+            }
+        }, { capture: true, signal: galleryAbort.signal });
+        composerForm?.addEventListener('ografi:composer-close', () => {
+            galleryAbort.abort();
+            for (const url of galleryUrls.values()) URL.revokeObjectURL(url);
+            galleryUrls.clear();
+        }, { once: true });
         galleryInput?.addEventListener('change', showGalleryFiles);
+        showGalleryFiles();
         ['dragenter', 'dragover'].forEach(type => galleryDropzone?.addEventListener(type, event => {
             event.preventDefault(); galleryDropzone.classList.add('is-dragging');
         }));
@@ -1287,12 +1433,7 @@
             event.preventDefault(); galleryDropzone.classList.remove('is-dragging');
         }));
         galleryDropzone?.addEventListener('drop', event => {
-            const files = Array.from(event.dataTransfer?.files || []).filter(file => file.type.startsWith('image/'));
-            if (!files.length || !galleryInput) return;
-            const transfer = new DataTransfer();
-            [...Array.from(galleryInput.files || []), ...files].slice(0, 10).forEach(file => transfer.items.add(file));
-            galleryInput.files = transfer.files;
-            galleryInput.dispatchEvent(new Event('change', { bubbles: true }));
+            addGalleryCandidates(Array.from(event.dataTransfer?.files || []));
         });
 
         const locationToggle = document.querySelector('[data-composer-location-toggle]');
