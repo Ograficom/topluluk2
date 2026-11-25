@@ -16,6 +16,18 @@
         <link rel="apple-touch-icon" href="{{ $pwaSettings?->pwa_icon_192_path ? \Illuminate\Support\Facades\Storage::disk('public')->url($pwaSettings->pwa_icon_192_path) : '/assets/img/meta/pwa-icon-192.png' }}">
     @endif
     <title>@yield('title', $brandName) — {{ $brandName }}</title>
+    <style>
+        .pwa-titlebar { display: none; }
+        @media (display-mode: window-controls-overlay) {
+            .pwa-titlebar { display: flex; align-items: center; position: fixed; z-index: 10000;
+                left: env(titlebar-area-x, 0px); top: env(titlebar-area-y, 0px);
+                width: env(titlebar-area-width, 100%); height: env(titlebar-area-height, 32px);
+                padding-inline: 12px; background: #2563eb; color: #fff;
+                font: 600 13px system-ui; -webkit-app-region: drag; app-region: drag; }
+            body { padding-top: env(titlebar-area-height, 32px); }
+            .header { top: env(titlebar-area-height, 32px); }
+        }
+    </style>
     @php
         $seoDescription = trim($__env->yieldContent('description', $seoSettings?->seo_default_description ?: 'OgraFi; teknoloji, gündem, yaşam ve ilgi alanlarında yazıların, fikirlerin ve topluluk sohbetlerinin buluştuğu platformdur.'));
         $seoTitle = trim($__env->yieldContent('title', $seoSettings?->seo_default_title ?: $brandName));
@@ -145,6 +157,7 @@
         </svg>
     </div>
 
+    <div class="pwa-titlebar" aria-hidden="true">OgraFi</div>
     <header class="header">
         <div class="header__inner container">
             <div class="header__start">
@@ -1216,6 +1229,23 @@
     if (!('serviceWorker' in navigator)) return;
     window.addEventListener('load', () => {
         navigator.serviceWorker.register('/sw.js', { scope: '/' })
+            .then(async () => {
+                const registration = await navigator.serviceWorker.ready;
+                const refresh = () => registration.active?.postMessage({ type: 'ografi-refresh-public-assets' });
+                refresh();
+                window.addEventListener('online', refresh);
+                if (registration.periodicSync && navigator.permissions) {
+                    try {
+                        const permission = await navigator.permissions.query({ name: 'periodic-background-sync' });
+                        if (permission.state === 'granted') {
+                            const tags = await registration.periodicSync.getTags();
+                            if (!tags.includes('ografi-public-assets')) {
+                                await registration.periodicSync.register('ografi-public-assets', { minInterval: 24 * 60 * 60 * 1000 });
+                            }
+                        }
+                    } catch (_) { /* Browser does not permit periodic sync. */ }
+                }
+            })
             .catch(error => console.error('OgraFi PWA service worker kaydedilemedi:', error));
     });
 })();

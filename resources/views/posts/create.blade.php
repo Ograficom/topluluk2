@@ -3,6 +3,9 @@
 @section('title', isset($post) ? 'Yazıyı düzenle' : 'Yazı oluştur')
 
 @section('content')
+    @unless(isset($post))
+        <script src="{{ asset('assets/js/pwa-file-launch.js') }}" defer></script>
+    @endunless
     @if ($errors->any())
         <div class="card card-body color-red" role="alert">
             @foreach ($errors->all() as $error)
@@ -217,9 +220,9 @@
 
     <!-- 3. Başlık ve Metin Alanı -->
     <div class="repost-modal-body">
-      <input type="text" class="repost-title-input" id="post-title" name="title" value="{{ old('title', $post->title ?? '') }}" maxlength="255" placeholder="Başlık" aria-label="Başlık" required>
-      <input type="hidden" id="post-body" name="body" value="{{ old('body', $post->body ?? '') }}">
-      <textarea id="post-excerpt" name="excerpt" hidden>{{ old('excerpt', $post->excerpt ?? '') }}</textarea>
+      <input type="text" class="repost-title-input" id="post-title" name="title" value="{{ old('title', $post->title ?? $sharedTitle ?? '') }}" maxlength="255" placeholder="Başlık" aria-label="Başlık" required>
+      <input type="hidden" id="post-body" name="body" value="{{ old('body', $post->body ?? $sharedBody ?? '') }}">
+      <textarea id="post-excerpt" name="excerpt" hidden>{{ old('excerpt', $post->excerpt ?? $sharedExcerpt ?? '') }}</textarea>
       <div class="repost-editor-wrap">
         <span class="repost-sr-only" data-editor-status role="status" aria-live="polite"></span>
         <button type="button" class="composer-block-add" data-block-picker-toggle aria-label="İçerik bloğu ekle" aria-expanded="false" aria-controls="composer-block-picker" title="Blok ekle"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button>

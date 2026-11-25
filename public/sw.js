@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'ografi-pwa-v4';
+const CACHE_VERSION = 'ografi-pwa-v5';
 const STATIC_CACHE = CACHE_VERSION + '-static';
 const OFFLINE_URL = '/offline';
 
@@ -128,4 +128,41 @@ self.addEventListener('widgetclick', event => {
     if (!Object.prototype.hasOwnProperty.call(QUICK_ACCESS_ROUTES, event.action)) return;
     const target = new URL(QUICK_ACCESS_ROUTES[event.action], self.location.origin).href;
     event.waitUntil(self.clients.openWindow(target));
+});
+
+
+// Refresh public, non-personalized offline assets. Never replay authenticated
+// mutations, publish drafts or cache private feeds in the background.
+const PUBLIC_ASSET_SYNC = 'ografi-public-assets';
+const PUBLIC_OFFLINE_ASSETS = [
+    '/offline',
+    '/assets/img/meta/pwa-icon-192.png',
+    '/widgets/quick-access.json',
+    '/widgets/quick-access-data.json'
+];
+async function refreshPublicOfflineAssets() {
+    const cache = await caches.open(STATIC_CACHE);
+    await Promise.all(PUBLIC_OFFLINE_ASSETS.map(async path => {
+        const response = await fetch(path, { credentials: 'omit', cache: 'no-cache', redirect: 'error' });
+        if (!response.ok) throw new Error('Public asset refresh failed: ' + path);
+        await cache.put(path, response);
+    }));
+    if (self.widgets?.getByTag) {
+        const widget = await self.widgets.getByTag(QUICK_ACCESS_TAG);
+        if (widget) await renderQuickAccessWidget(widget);
+    }
+}
+self.addEventListener('message', event => {
+    if (event.data?.type !== 'ografi-refresh-public-assets') return;
+    event.waitUntil(refreshPublicOfflineAssets().catch(async () => {
+        if (self.registration.sync) {
+            try { await self.registration.sync.register(PUBLIC_ASSET_SYNC); } catch (_) {}
+        }
+    }));
+});
+self.addEventListener('sync', event => {
+    if (event.tag === PUBLIC_ASSET_SYNC) event.waitUntil(refreshPublicOfflineAssets());
+});
+self.addEventListener('periodicsync', event => {
+    if (event.tag === PUBLIC_ASSET_SYNC) event.waitUntil(refreshPublicOfflineAssets());
 });

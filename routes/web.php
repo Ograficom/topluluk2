@@ -67,6 +67,29 @@ Route::get('/manifest.webmanifest', function () {
         'start_url' => $startUrl,
         'scope' => '/',
         'display' => $settings?->pwa_display ?: 'standalone',
+        'display_override' => ($settings?->pwa_display ?? 'standalone') === 'standalone'
+            ? ['window-controls-overlay', 'tabbed', 'standalone', 'minimal-ui']
+            : [$settings->pwa_display],
+        'launch_handler' => ['client_mode' => ['navigate-existing', 'auto']],
+        'edge_side_panel' => ['preferred_width' => 480],
+        'tab_strip' => ['new_tab_button' => ['url' => '/']],
+        'share_target' => [
+            'action' => '/posts/create',
+            'method' => 'GET',
+            'enctype' => 'application/x-www-form-urlencoded',
+            'params' => ['title' => 'share_title', 'text' => 'share_text', 'url' => 'share_url'],
+        ],
+        'file_handlers' => [
+            ['action' => '/posts/create?open_files=1', 'accept' => [
+                'image/jpeg' => ['.jpg', '.jpeg'],
+                'image/png' => ['.png'],
+                'image/webp' => ['.webp'],
+                'image/gif' => ['.gif'],
+            ]],
+        ],
+        'protocol_handlers' => [
+            ['protocol' => 'web+ografi', 'url' => '/pwa/open?uri=%s'],
+        ],
         'orientation' => $settings?->pwa_orientation ?: 'any',
         'background_color' => $settings?->pwa_background_color ?: '#f7f9fd',
         'theme_color' => $settings?->pwa_theme_color ?: '#2563eb',
@@ -122,6 +145,25 @@ Route::get('/manifest.webmanifest', function () {
     ])->header('Content-Type', 'application/manifest+json; charset=UTF-8')
       ->header('Cache-Control', 'no-cache, no-store, must-revalidate');
 })->name('pwa.manifest');
+
+// Registered links may open only known, same-origin pages.
+Route::get('/pwa/open', function (\Illuminate\Http\Request $request) {
+    $uri = $request->query('uri');
+    abort_unless(is_string($uri) && strlen($uri) <= 2048, 400);
+    $parts = parse_url($uri);
+    abort_unless(is_array($parts) && ($parts['scheme'] ?? '') === 'web+ografi', 400);
+    $target = match ($parts['host'] ?? '') {
+        'home' => '/',
+        'latest' => '/last-posts',
+        'channels' => '/channels',
+        'create' => '/posts/create',
+        'notifications' => '/notifications',
+        'messages' => '/messenger',
+        default => null,
+    };
+    abort_unless($target !== null, 400);
+    return redirect($target);
+})->name('pwa.open');
 
 Route::get('/offline', function () {
     return response()->view('pwa.offline', [

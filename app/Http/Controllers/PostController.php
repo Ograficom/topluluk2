@@ -63,7 +63,29 @@ class PostController extends Controller
 
     public function create(Request $request): View
     {
-        return view('posts.create', ['channels' => Channel::query()->active()->orderBy('name')->get(), 'user' => $request->user()]);
+        // Share Target only prepares a draft; never publishes on GET.
+        $readShared = static function (string $key, int $limit) use ($request): string {
+            $value = $request->query($key);
+            return is_string($value) ? mb_substr(trim($value), 0, $limit) : '';
+        };
+        $sharedTitle = $readShared('share_title', 255);
+        $sharedText = $readShared('share_text', 10000);
+        $sharedUrl = $readShared('share_url', 2048);
+        if ($sharedUrl !== '' && ! in_array(parse_url($sharedUrl, PHP_URL_SCHEME), ['http', 'https'], true)) {
+            $sharedUrl = '';
+        }
+        $sharedContent = trim(implode("\n\n", array_filter([$sharedText, $sharedUrl], static fn ($value) => $value !== '')));
+        $sharedBody = $sharedContent === '' ? '' : json_encode([
+            'blocks' => [['type' => 'paragraph', 'data' => ['text' => nl2br(e($sharedContent), false)]]],
+        ], JSON_UNESCAPED_UNICODE | JSON_INVALID_UTF8_SUBSTITUTE);
+
+        return view('posts.create', [
+            'channels' => Channel::query()->active()->orderBy('name')->get(),
+            'user' => $request->user(),
+            'sharedTitle' => $sharedTitle,
+            'sharedBody' => $sharedBody,
+            'sharedExcerpt' => mb_substr($sharedContent, 0, 500),
+        ]);
     }
 
     public function edit(Request $request, Post $post): View
