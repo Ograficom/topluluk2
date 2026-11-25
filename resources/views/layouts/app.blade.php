@@ -151,7 +151,7 @@
     <link rel="stylesheet" href="{{ asset('assets/css/ografi-app-extensions.css') }}?v=20261125-gallery-visible-v2">
     <link rel="stylesheet" href="{{ asset('assets/css/engine.css') }}?v=repost-original-20261124">
     <link rel="stylesheet" href="{{ asset('assets/css/ografi-engine-extensions.css') }}?v=20261124-v1">
-    <link rel="stylesheet" href="{{ asset('assets/css/ografi-overrides.css') }}?v=20261126-mobile-width-v3">
+    <link rel="stylesheet" href="{{ asset('assets/css/ografi-overrides.css') }}?v=20261126-mobile-width-v4">
     <script>
         (() => {
             const root = document.documentElement;
@@ -191,7 +191,7 @@
         })();
     </script>
     @vite('resources/js/app.js')
-    <link rel="stylesheet" href="{{ asset('assets/css/post-edit-history.css') }}?v=3">
+    <link rel="stylesheet" href="{{ asset('assets/css/post-edit-history.css') }}?v=4">
     @stack('head')
     @if (! request()->routeIs('cp.*'))
         <script type="application/ld+json">
@@ -1348,7 +1348,7 @@
     registerOgrafiWorker();
 })();
 </script>
-<script src="{{ asset('assets/js/post-edit-history.js') }}?v=2" defer></script>
+<script src="{{ asset('assets/js/post-edit-history.js') }}?v=3" defer></script>
 @stack('scripts')
 @if ($newYearActive)
     @include('layouts._new-year-effects')

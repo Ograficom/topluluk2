@@ -41,3 +41,17 @@
     display:none!important;
 }
 .user-box .meta .post-publication-meta {min-width:0;max-width:100%;}
+
+/* The open menu must not enlarge the document's horizontal scroll area. */
+@media screen and (max-width:720px) {
+    .post-edit-history:is(.is-open,.show) > .post-edit-history-menu {
+        position:fixed!important;
+        left:var(--history-viewport-left,12px)!important;
+        right:auto!important;
+        top:var(--history-viewport-top,48px)!important;
+        bottom:auto!important;
+        width:min(270px,calc(100vw - 24px));
+        max-height:var(--history-viewport-height,calc(100dvh - 24px));
+        overflow-y:auto;
+    }
+}

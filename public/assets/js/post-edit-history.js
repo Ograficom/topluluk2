@@ -37,6 +37,7 @@
             more.dataset.page = data.next_page || '';
             more.textContent = 'Daha fazla göster';
             row.hidden = !data.next_page;
+            positionMenu(root);
         } catch (error) {
             if (!controller.signal.aborted) {
                 status.textContent = 'Geçmiş yüklenemedi.';
@@ -55,12 +56,30 @@
         const width = menu.offsetWidth || Math.min(270, window.innerWidth - 24);
         // Keep the leading edge under the clock whenever there is room;
         // shift just enough to keep the complete menu inside the viewport.
-        const left = Math.max(12, Math.min(rect.left, window.innerWidth - width - 12));
+        const viewportWidth = document.documentElement.clientWidth;
+        const left = Math.max(12, Math.min(rect.left, viewportWidth - width - 12));
         root.style.setProperty('--history-menu-left', (left - rect.left) + 'px');
+        if (window.matchMedia('(max-width:720px)').matches) {
+            const height = document.documentElement.clientHeight;
+            const menuHeight = Math.min(menu.scrollHeight || 100, height - 24);
+            const below = rect.bottom + 7;
+            const top = below + menuHeight <= height - 12
+                ? below : Math.max(12, Math.min(rect.top - menuHeight - 7, height - menuHeight - 12));
+            root.style.setProperty('--history-viewport-left', left + 'px');
+            root.style.setProperty('--history-viewport-top', Math.max(12, top) + 'px');
+            root.style.setProperty('--history-viewport-height', Math.max(48, height - Math.max(12, top) - 12) + 'px');
+        }
     }
-    window.addEventListener('resize', () => {
-        document.querySelectorAll('[data-edit-history-url].is-open').forEach(positionMenu);
-    }, {passive:true});
+    let positionFrame = 0;
+    function schedulePosition() {
+        if (positionFrame) return;
+        positionFrame = requestAnimationFrame(() => {
+            positionFrame = 0;
+            document.querySelectorAll('[data-edit-history-url].is-open').forEach(positionMenu);
+        });
+    }
+    window.addEventListener('resize', schedulePosition, {passive:true});
+    window.addEventListener('scroll', schedulePosition, {passive:true, capture:true});
     document.addEventListener('dropdown:open', event => {
         const root = event.target;
         if (!(root instanceof HTMLElement) || !root.matches('[data-edit-history-url]')) return;
