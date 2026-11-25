@@ -148,7 +148,7 @@
     <link rel="stylesheet" href="{{ asset('assets/css/kit.css') }}?v=repost-original-20261124">
     <link rel="stylesheet" href="{{ asset('assets/css/ografi-kit-extensions.css') }}?v=20261124-v1">
     <link rel="stylesheet" href="{{ asset('assets/css/app.css') }}?v=repost-original-20261124">
-    <link rel="stylesheet" href="{{ asset('assets/css/ografi-app-extensions.css') }}?v=20261124-v1">
+    <link rel="stylesheet" href="{{ asset('assets/css/ografi-app-extensions.css') }}?v=20261125-gallery-gap-v1">
     <link rel="stylesheet" href="{{ asset('assets/css/engine.css') }}?v=repost-original-20261124">
     <link rel="stylesheet" href="{{ asset('assets/css/ografi-engine-extensions.css') }}?v=20261124-v1">
     <link rel="stylesheet" href="{{ asset('assets/css/ografi-overrides.css') }}?v=20261124-mobile-header-drawer-v2">
