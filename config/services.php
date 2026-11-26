@@ -18,6 +18,8 @@ return [
 
     'facebook' => [
         'app_id' => env('FACEBOOK_APP_ID', env('FACEBOOK_CLIENT_ID')),
+        'graph_version' => env('FACEBOOK_GRAPH_VERSION', 'v27.0'),
+        'access_token' => env('FACEBOOK_GRAPH_ACCESS_TOKEN'),
     ],
 
     'postmark' => [
