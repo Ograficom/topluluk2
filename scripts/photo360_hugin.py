@@ -104,7 +104,7 @@ def alpha_coverage(path, layers=None):
         histogram = alpha.histogram()
         covered = sum(histogram[1:]) / (WIDTH * HEIGHT)
         if covered < 0.998:
-            raise RuntimeError("Küre eksik: %%.1f kapsama. Tavan ve zemini de çekin." % (covered * 100))
+            raise RuntimeError(f"Küre eksik: %{covered * 100:.1f} kapsama. Tavan ve zemini de çekin.")
         if histogram[0] > 0:
             raise RuntimeError("Küre üzerinde çekilmemiş alanlar var. Eksik yönleri yeniden çekin.")
         return im.convert("RGB")
