@@ -18,7 +18,7 @@
         const label = document.createElement('span');
         label.className = 'ografi-panorama-overlay';
         label.setAttribute('aria-hidden', 'true');
-        label.textContent = '↔  280° Keşfet';
+        label.innerHTML = '<svg viewBox="0 0 80 48" width="44" height="27" fill="none" aria-hidden="true" focusable="false"><text x="38" y="29" text-anchor="middle" font-size="29" font-weight="750" font-family="Arial,sans-serif" fill="currentColor">280</text><circle cx="63" cy="7" r="2.8" fill="currentColor"/><path d="M15 19C-6 25 1 39 36 40M65 19C88 26 78 40 43 40M31 34l7 6-7 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
         link.append(label);
     };
     const scan = root => {
