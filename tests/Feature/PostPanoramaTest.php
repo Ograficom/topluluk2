@@ -27,7 +27,7 @@ class PostPanoramaTest extends TestCase
         $post = Post::query()->where('title', $fields['title'])->firstOrFail();
         $this->assertTrue($post->is_panorama);
         $this->get(route('posts.show', $post))->assertOk()->assertSee('data-ografi-panorama-candidate="explicit"', false);
-        $this->get(route('posts.edit', $post))->assertOk()->assertSee('name="is_panorama" value="1" checked', false);
+        $this->get(route('posts.edit', $post))->assertOk()->assertDontSee('id="post-is-panorama"', false)->assertSee('data-photo360-capture', false);
         $this->patch(route('posts.update', $post), $fields)->assertRedirect();
         $this->assertTrue($post->refresh()->is_panorama);
         $this->patch(route('posts.update', $post), $fields + ['is_panorama' => '0'])->assertRedirect();

@@ -23,12 +23,23 @@ class Photo360Controller extends Controller
         return $job;
     }
 
-    public function create(Request $request)
+    private function ensureEngine(): void
     {
-        $data = $request->validate(['count' => 'required|integer|min:24|max:48']);
         foreach (['pto_gen','pto_var','cpfind','cpclean','autooptimiser','checkpto','pano_modify','nona','enblend','python3'] as $binary) {
             abort_unless(is_executable('/usr/bin/'.$binary), 503, '360° işleme motoru sunucuda henüz kurulu değil.');
         }
+    }
+
+    public function health()
+    {
+        $this->ensureEngine();
+        return response()->json(['available'=>true])->header('Cache-Control','private, no-store');
+    }
+
+    public function create(Request $request)
+    {
+        $data = $request->validate(['count' => 'required|integer|min:24|max:48']);
+        $this->ensureEngine();
         $id = (string) Str::uuid();
         DB::transaction(function () use ($request, $data, $id): void {
             DB::table('users')->where('id', $request->user()->id)->lockForUpdate()->first();
@@ -59,9 +70,11 @@ class Photo360Controller extends Controller
             $dir=$this->directory($id);
             $stem=sprintf('frame-%03d',$data['index']);
             $file=$dir.'/'.$stem.'.jpg'; $meta=$dir.'/'.$stem.'.json';
-            if (is_file($file)&&is_file($meta)) return response()->json(['received'=>$job->received]);
-            $data['frame']->move($dir,$stem.'.jpg');
-            File::put($meta,json_encode(['yaw'=>(float)$data['yaw'],'pitch'=>(float)$data['pitch'],'roll'=>(float)$data['roll']], JSON_THROW_ON_ERROR));
+            if (!is_file($file)||!is_file($meta)) {
+                $data['frame']->move($dir,$stem.'.jpg');
+                $written=File::put($meta,json_encode(['yaw'=>(float)$data['yaw'],'pitch'=>(float)$data['pitch'],'roll'=>(float)$data['roll']], JSON_THROW_ON_ERROR),true);
+                abort_unless($written!==false,500,'Çekim kaydedilemedi.');
+            }
             $received=count(glob($dir.'/frame-*.json'));
             DB::table('photo360_jobs')->where('id',$id)->update(['received'=>$received,'updated_at'=>now()]);
             return response()->json(['received'=>$received]);
@@ -73,7 +86,7 @@ class Photo360Controller extends Controller
         DB::transaction(function () use ($request,$id): void {
             $job=$this->owned($request,$id,true);
             if (in_array($job->state,['queued','processing','ready'],true)) return;
-            abort_unless($job->state==='uploading'&&$job->received===$job->expected,422,'Tüm kareler yüklenmedi.');
+            abort_unless($job->state==='uploading'&&(int)$job->received===(int)$job->expected,422,'Tüm kareler yüklenmedi.');
             DB::table('photo360_jobs')->where('id',$id)->update(['state'=>'queued','message'=>'İşleme sırası bekleniyor.','updated_at'=>now()]);
             StitchPhoto360::dispatch($id)->onConnection('photo360')->onQueue('photo360')->afterCommit();
         });

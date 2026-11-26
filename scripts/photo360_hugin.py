@@ -13,7 +13,7 @@ import sys
 import time
 from pathlib import Path
 
-from PIL import Image, ImageChops, ImageFilter
+from PIL import Image, ImageChops
 
 WIDTH, HEIGHT = 4096, 2048
 DEADLINE = 620
@@ -81,16 +81,30 @@ def verify_graph(project, count):
         raise RuntimeError("Ortak görüntü noktaları yetersiz. Daha aydınlık ortamda, kareleri örtüştürerek yeniden çekin.")
     return sum(edges.values())
 
-def alpha_coverage(path):
+def layer_coverage(layers):
+    # Nona cropped TIFFs carry X/Y position in resolution units. Check the
+    # union independently: Enblend may omit alpha if the output is opaque.
+    union = Image.new("L", (WIDTH, HEIGHT), 0)
+    for path in layers:
+        with Image.open(path) as im:
+            if "A" not in im.getbands():
+                raise RuntimeError("Küresel katmanın kapsama maskesi eksik.")
+            x = round(float(im.tag_v2.get(286, 0)) * float(im.tag_v2.get(282, 1)))
+            y = round(float(im.tag_v2.get(287, 0)) * float(im.tag_v2.get(283, 1)))
+            layer = Image.new("L", (WIDTH, HEIGHT), 0)
+            layer.paste(im.getchannel("A"), (x, y))
+            union = ImageChops.lighter(union, layer)
+    return union
+
+def alpha_coverage(path, layers=None):
     with Image.open(path) as im:
-        if im.size != (WIDTH, HEIGHT) or "A" not in im.getbands():
-            raise RuntimeError("Motor tam küresel 2:1 çıktı veya kapsama maskesi üretmedi.")
-        alpha = im.getchannel("A")
+        if im.size != (WIDTH, HEIGHT):
+            raise RuntimeError("Motor tam küresel 2:1 çıktı üretmedi.")
+        alpha = im.getchannel("A") if "A" in im.getbands() else layer_coverage(layers or [])
         histogram = alpha.histogram()
         covered = sum(histogram[1:]) / (WIDTH * HEIGHT)
         if covered < 0.998:
             raise RuntimeError("Küre eksik: %%.1f kapsama. Tavan ve zemini de çekin." % (covered * 100))
-        # Do not paint over large holes. A fully transparent pixel is never real scene data.
         if histogram[0] > 0:
             raise RuntimeError("Küre üzerinde çekilmemiş alanlar var. Eksik yönleri yeniden çekin.")
         return im.convert("RGB")
@@ -136,7 +150,13 @@ def main(directory):
     # Full multi-row matching can recover imperfect motion sensor priors.
     cmd("cpfind","--multirow","--ncores=2","-o","matches.pto","seed.pto")
     cmd("cpclean","-o","clean.pto","matches.pto")
-    verify_graph(directory/"clean.pto",len(inputs))
+    try:
+        verify_graph(directory/"clean.pto",len(inputs))
+    except RuntimeError:
+        notify("Zayıf eşleşmeler için tam çözünürlükte ikinci arama yapılıyor.")
+        cmd("cpfind","--allpairs","--fullscale","--ncores=2","-o","matches-full.pto","seed.pto")
+        cmd("cpclean","-o","clean.pto","matches-full.pto")
+        verify_graph(directory/"clean.pto",len(inputs))
     cmd("checkpto","clean.pto")
     notify("Lens, kamera açıları ve pozlama birlikte optimize ediliyor.")
     cmd("autooptimiser","-a","-m","-l","-o","optimized.pto","clean.pto")
@@ -155,7 +175,7 @@ def main(directory):
     notify("Enblend birleşim sınırlarını ve geçişleri işliyor.")
     cmd("enblend","--wrap=horizontal","--compression=lzw","-f","4096x2048+0+0","-o","sphere.tif",*[f.name for f in layers])
     notify("Kapsama ve çıktı kalitesi kontrol ediliyor.")
-    image=alpha_coverage(directory/"sphere.tif")
+    image=alpha_coverage(directory/"sphere.tif", layers)
     write_jpeg(image,directory/"result.jpg")
 
 if __name__ == "__main__":

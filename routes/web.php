@@ -374,6 +374,7 @@ Route::middleware(['auth', 'verified'])->group(function (): void {
     Route::post('/posts', [PostController::class, 'store'])->middleware('throttle:10,1')->name('posts.store');
 
     Route::prefix('composer/photo360')->group(function (): void {
+        Route::get('/health', [\App\Http\Controllers\Photo360Controller::class, 'health'])->middleware('throttle:20,1')->name('photo360.health');
         Route::post('/', [\App\Http\Controllers\Photo360Controller::class, 'create'])->middleware('throttle:4,60')->name('photo360.create');
         Route::post('/{id}/frame', [\App\Http\Controllers\Photo360Controller::class, 'frame'])->whereUuid('id')->middleware('throttle:90,1')->name('photo360.frame');
         Route::post('/{id}/start', [\App\Http\Controllers\Photo360Controller::class, 'start'])->whereUuid('id')->middleware('throttle:10,1')->name('photo360.start');

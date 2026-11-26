@@ -21,7 +21,7 @@ async function open(onFile){
     if(!navigator.mediaDevices?.getUserMedia||!window.DeviceOrientationEvent){alert('HTTPS, kamera ve hareket sensörü destekli telefon gerekiyor.');return;}
     const permission=typeof DeviceOrientationEvent.requestPermission==='function'?DeviceOrientationEvent.requestPermission():Promise.resolve('granted');
     const dialog=document.createElement('dialog');dialog.className='ografi-photo360-camera';dialog.setAttribute('aria-label','360° fotoğraf çekimi');
-    dialog.innerHTML='<video autoplay muted playsinline></video><img class="ografi-photo360-result" alt="360° önizleme" hidden><div class="ografi-photo360-top"><button type="button" data-close aria-label="Kapat">✕</button><strong>360° Fotoğraf</strong><span data-count>0 / 30</span></div><div class="ografi-photo360-ring" hidden><svg viewBox="0 0 200 200" aria-hidden="true"><circle cx="100" cy="100" r="97"/><ellipse cx="100" cy="100" rx="97" ry="39"/><ellipse cx="100" cy="100" rx="43" ry="97"/><g class="ografi-photo360-gridpoints"></g><path class="ografi-photo360-cross" d="M87 100h26M100 87v26"/></svg><span class="ografi-photo360-dot"></span></div><div class="ografi-photo360-flash"></div><div class="ografi-photo360-bottom"><p role="status">Kamera açılıyor…</p><progress value="0" max="1"></progress><button type="button" data-start hidden>Çekime başla</button><button type="button" data-shot hidden aria-label="Fotoğraf çek"><span></span></button><img class="ografi-photo360-last" alt="Son çekilen fotoğraf" hidden><button type="button" data-restart hidden>Yeniden çek</button><button type="button" data-finish hidden>Fotoğrafı kullan</button></div>';
+    dialog.innerHTML='<video autoplay muted playsinline></video><img class="ografi-photo360-result" alt="360° önizleme" hidden><div class="ografi-photo360-top"><button type="button" data-close aria-label="Kapat">✕</button><strong>360° Fotoğraf</strong><span data-count>0 / 38</span></div><div class="ografi-photo360-ring" hidden><svg viewBox="0 0 200 200" aria-hidden="true"><circle cx="100" cy="100" r="97"/><ellipse cx="100" cy="100" rx="97" ry="39"/><ellipse cx="100" cy="100" rx="43" ry="97"/><g class="ografi-photo360-gridpoints"></g><path class="ografi-photo360-cross" d="M87 100h26M100 87v26"/></svg><span class="ografi-photo360-dot"></span></div><div class="ografi-photo360-flash"></div><div class="ografi-photo360-bottom"><p role="status">Kamera açılıyor…</p><progress value="0" max="1"></progress><button type="button" data-start hidden>Çekime başla</button><button type="button" data-shot hidden aria-label="Fotoğraf çek"><span></span></button><img class="ografi-photo360-last" alt="Son çekilen fotoğraf" hidden><button type="button" data-restart hidden>Yeniden çek</button><button type="button" data-finish hidden>Fotoğrafı kullan</button></div>';
     document.body.append(dialog);
     const q=s=>dialog.querySelector(s),video=q('video'),status=q('[role=status]'),ring=q('.ografi-photo360-ring'),point=q('.ografi-photo360-dot'),count=q('[data-count]'),progress=q('progress'),start=q('[data-start]'),shot=q('[data-shot]'),finish=q('[data-finish]'),restart=q('[data-restart]'),preview=q('.ografi-photo360-result'),last=q('.ografi-photo360-last'),flash=q('.ografi-photo360-flash');
     for(let i=0;i<12;i++){const a=i*Math.PI/6,p=document.createElementNS('http://www.w3.org/2000/svg','circle');p.setAttribute('cx',100+78*Math.cos(a));p.setAttribute('cy',100+78*Math.sin(a));p.setAttribute('r','2.1');q('.ografi-photo360-gridpoints').append(p);}
@@ -47,8 +47,8 @@ async function open(onFile){
         const angle=Math.acos(clamp(z,-1,1))/R;
         point.style.left=(50+clamp(Math.atan2(x,Math.max(.12,z))/R*1.8,-42,42))+'%';
         point.style.top=(50-clamp(Math.atan2(y,Math.max(.12,z))/R*1.8,-42,42))+'%';
-        ring.classList.toggle('is-aligned',angle<=12);
-        status.textContent=!portrait()?'Telefonu dik konuma getirin.':angle<=12?'Hedef hazır. Telefonu sabit tutup çekin.':'Mavi noktayı merkeze getirin.';
+        ring.classList.toggle('is-aligned',angle<=10);
+        status.textContent=!portrait()?'Telefonu dik konuma getirin.':angle<=10?'Hedef hazır. Telefonu sabit tutup çekin.':'Mavi noktayı merkeze getirin.';
     }
     function orientation(e){
         if(![e.alpha,e.beta,e.gamma].every(Number.isFinite))return;
@@ -64,6 +64,7 @@ async function open(onFile){
         if(await permission!=='granted')throw Error('Hareket sensörü izni gerekli.');
         if(closed)return;
         window.addEventListener('deviceorientation',orientation);
+        await request('/health');
         await camera();
     }catch(e){if(!closed)status.textContent=e.message||'Kamera açılamadı.';return;}
     const canvas=document.createElement('canvas'),ctx=canvas.getContext('2d',{alpha:false});
@@ -72,8 +73,8 @@ async function open(onFile){
         if(!portrait()){status.textContent='Telefonu dik konuma getirin.';return;}
         if(Math.abs(current.forward[2])>.25){status.textContent='Önce telefonu düz karşıya tutun.';notice=Date.now()+1800;return;}
         origin=Math.atan2(current.forward[0],current.forward[1]);frames=[];targets=[];
-        // Overlap is deliberate: 30-degree horizontal and 45-degree vertical spacing.
-        for(const [pitch,n] of [[0,12],[45,8],[-45,8],[90,1],[-90,1]])
+        // Dense overlaps make feature matching much more reliable.
+        for(const [pitch,n] of [[0,16],[45,10],[-45,10],[90,1],[-90,1]])
             for(let i=0;i<n;i++)targets.push(direction(origin+i*2*Math.PI/n,pitch*R));
         start.hidden=true;ring.hidden=false;shot.hidden=false;restart.hidden=true;finish.hidden=true;last.hidden=true;preview.hidden=true;video.hidden=false;
         count.textContent='0 / '+targets.length;progress.value=0;guide();
@@ -112,7 +113,7 @@ async function open(onFile){
         if(busy||closed||!ready||!current||!targets[frames.length])return;
         if(!portrait()){status.textContent='Telefonu dik konuma getirin.';return;}
         if(Date.now()-lastSensor>1200){status.textContent='Hareket sensörü güncel değil. Telefonu hareket ettirin.';return;}
-        if(dot(targets[frames.length],current.forward)<Math.cos(12*R)){
+        if(dot(targets[frames.length],current.forward)<Math.cos(10*R)){
             notice=Date.now()+1500;status.textContent='Çekim için mavi noktayı merkeze yaklaştırın.';return;
         }
         busy=true;shot.disabled=true;
