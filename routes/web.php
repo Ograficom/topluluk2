@@ -373,16 +373,6 @@ Route::middleware(['auth', 'verified'])->group(function (): void {
     Route::get('/posts/create', [PostController::class, 'create'])->name('posts.create');
     Route::post('/posts', [PostController::class, 'store'])->middleware('throttle:10,1')->name('posts.store');
 
-    Route::prefix('composer/photo360')->group(function (): void {
-        Route::get('/session', [\App\Http\Controllers\Photo360Controller::class, 'sessionToken'])->middleware('throttle:60,1,photo360-session:')->name('photo360.session');
-        Route::get('/health', [\App\Http\Controllers\Photo360Controller::class, 'health'])->middleware('throttle:20,1,photo360-health:')->name('photo360.health');
-        Route::post('/', [\App\Http\Controllers\Photo360Controller::class, 'create'])->middleware('throttle:4,60,photo360-create:')->name('photo360.create');
-        Route::post('/{id}/frame', [\App\Http\Controllers\Photo360Controller::class, 'frame'])->whereUuid('id')->middleware('throttle:90,1,photo360-frame:')->name('photo360.frame');
-        Route::post('/{id}/start', [\App\Http\Controllers\Photo360Controller::class, 'start'])->whereUuid('id')->middleware('throttle:10,1,photo360-start:')->name('photo360.start');
-        Route::get('/{id}', [\App\Http\Controllers\Photo360Controller::class, 'status'])->whereUuid('id')->middleware('throttle:60,1,photo360-status:')->name('photo360.status');
-        Route::get('/{id}/image', [\App\Http\Controllers\Photo360Controller::class, 'image'])->whereUuid('id')->middleware('throttle:15,1,photo360-image:')->name('photo360.image');
-        Route::delete('/{id}', [\App\Http\Controllers\Photo360Controller::class, 'cancel'])->whereUuid('id')->middleware('throttle:10,1,photo360-cancel:')->name('photo360.cancel');
-    });
     Route::get('/posts/{post:slug}/edit', [PostController::class, 'edit'])->name('posts.edit');
     Route::patch('/posts/{post:slug}', [PostController::class, 'update'])->name('posts.update');
     Route::delete('/posts/{post:slug}', [PostController::class, 'destroy'])->middleware('throttle:10,1')->name('posts.destroy');

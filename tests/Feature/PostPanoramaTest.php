@@ -27,12 +27,34 @@ class PostPanoramaTest extends TestCase
         $post = Post::query()->where('title', $fields['title'])->firstOrFail();
         $this->assertTrue($post->is_panorama);
         $this->get(route('posts.show', $post))->assertOk()->assertSee('data-ografi-panorama-candidate="explicit"', false);
-        $this->get(route('posts.edit', $post))->assertOk()->assertDontSee('id="post-is-panorama"', false)->assertSee('data-photo360-capture', false);
+        $this->get(route('posts.edit', $post))->assertOk()->assertDontSee('id="post-is-panorama"', false)->assertSee('data-photo360-import', false)->assertDontSee('data-photo360-capture', false);
         $this->patch(route('posts.update', $post), $fields)->assertRedirect();
         $this->assertTrue($post->refresh()->is_panorama);
         $this->patch(route('posts.update', $post), $fields + ['is_panorama' => '0'])->assertRedirect();
         $this->assertFalse($post->refresh()->is_panorama);
         $this->get(route('posts.show', $post))->assertOk()->assertDontSee('data-ografi-panorama-candidate="explicit"', false)->assertSee('data-ografi-panorama-candidate="auto"', false);
+    }
+
+    public function test_ready_spherical_photo_upload_still_works_without_camera_routes(): void
+    {
+        Storage::fake('public');
+        $author = User::factory()->create();
+        $channel = Channel::create(['name' => 'Gezi', 'slug' => 'gezi', 'is_active' => true]);
+        $fields = ['title' => 'Hazır 360 fotoğraf', 'excerpt' => 'Gezi özeti.', 'body' => 'Küresel manzara açıklaması.', 'channel_id' => $channel->id];
+        $this->actingAs($author)->get(route('posts.create'))->assertOk()
+            ->assertSee('data-photo360-import', false)->assertDontSee('data-photo360-capture', false)
+            ->assertDontSee('photo360-capture.js', false);
+        $this->post(route('posts.store'), $fields + [
+            'media' => [UploadedFile::fake()->image('ografi-360-import.jpg', 1200, 600)],
+        ])->assertRedirect();
+        $post = Post::query()->where('title', $fields['title'])->firstOrFail();
+        $this->assertCount(1, $post->media);
+        $this->assertStringContainsString('ografi-360-', $post->media[0]);
+        Storage::disk('public')->assertExists($post->media[0]);
+        $this->get(route('posts.show', $post))->assertOk()
+            ->assertSee('ografi-360-', false)->assertSee('data-ografi-panorama-candidate', false);
+        $this->assertFalse(\Illuminate\Support\Facades\Route::has('photo360.create'));
+        $this->assertFalse(\Illuminate\Support\Facades\Route::has('photo360.start'));
     }
 
     public function test_gallery_panorama_can_be_enabled_without_cover(): void
