@@ -23,6 +23,32 @@ class Photo360AccessTest extends TestCase
         $this->assertStringContainsString('no-store',$response->headers->get('Cache-Control'));
     }
 
+    public function test_frame_uploads_do_not_exhaust_start_status_or_session_limits(): void
+    {
+        $owner=User::factory()->create(['email_verified_at'=>now()]);
+        $id=(string)Str::uuid();
+        DB::table('photo360_jobs')->insert(['id'=>$id,'user_id'=>$owner->id,'expected'=>46,
+            'state'=>'uploading','created_at'=>now(),'updated_at'=>now()]);
+        $this->actingAs($owner);
+
+        // Even validation failures count toward Laravel's upload request limit.
+        // 46 requests simulate the largest current camera capture sequence.
+        for ($i=0; $i<46; $i++) {
+            $this->postJson(route('photo360.frame',$id),['index'=>$i])->assertUnprocessable();
+        }
+        $this->getJson(route('photo360.session'))->assertOk();
+        // The controller must reject incomplete uploads, not the throttle.
+        $this->postJson(route('photo360.start',$id))->assertUnprocessable();
+        for ($i=0; $i<60; $i++) {
+            $this->getJson(route('photo360.status',$id))->assertOk();
+        }
+        $this->getJson(route('photo360.status',$id))->assertStatus(429);
+        $this->getJson(route('photo360.session'))->assertOk();
+        $this->postJson(route('photo360.start',$id))->assertUnprocessable();
+        $this->getJson(route('photo360.image',$id))->assertNotFound();
+        $this->deleteJson(route('photo360.cancel',$id))->assertNoContent();
+    }
+
     public function test_private_job_is_only_accessible_by_owner(): void
     {
         $owner=User::factory()->create(['email_verified_at'=>now()]);

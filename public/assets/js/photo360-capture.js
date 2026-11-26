@@ -55,8 +55,27 @@ async function open(onFile){
     const abort=new AbortController();
     let csrf=document.querySelector('meta[name="csrf-token"]')?.content||'', owner=null,uploaded=0;
     const root='/composer/photo360',engineVersion='hugin-enblend-v2';
+    function retrySeconds(response){
+        const raw=response.headers.get('Retry-After');
+        const numeric=raw===null?NaN:Number(raw);
+        if(Number.isFinite(numeric))return Math.max(1,Math.ceil(numeric));
+        const date=raw?Date.parse(raw):NaN;
+        return Number.isFinite(date)?Math.max(1,Math.ceil((date-Date.now())/1000)):5;
+    }
+    async function sendWithThrottle(send,signal){
+        for(let attempt=0;;attempt++){
+            if(signal.aborted)throw Error('İşlem iptal edildi.');
+            const response=await send();
+            if(response.status!==429)return response;
+            const seconds=retrySeconds(response);
+            const message='İstek sınırına ulaşıldı. '+(seconds>=60?Math.ceil(seconds/60)+' dakika':seconds+' saniye')+' sonra tekrar deneyin.';
+            if(attempt>=2||seconds>65){const error=Error(message);error.rateLimited=true;throw error;}
+            if(!closed)status.textContent='İstek sınırı: '+seconds+' saniye sonra otomatik devam edilecek. Çekimler korunuyor.';
+            await sleep((seconds+1)*1000);
+        }
+    }
     async function refreshSession(signal=abort.signal){
-        const response=await fetch(root+'/session',{signal,credentials:'same-origin',headers:{Accept:'application/json'},cache:'no-store'});
+        const response=await sendWithThrottle(()=>fetch(root+'/session',{signal,credentials:'same-origin',headers:{Accept:'application/json'},cache:'no-store'}),signal);
         if(response.status===401||response.status===403||response.redirected)throw Error('Oturumunuz sona ermiş. Bu ekranı kapatmadan başka sekmede aynı hesabınızla giriş yapıp tekrar deneyin.');
         if(!response.ok)throw Error('Oturum doğrulanamadı ('+response.status+'). Tekrar deneyin.');
         const data=await response.json();
@@ -67,8 +86,8 @@ async function open(onFile){
     }
     async function request(path,method='GET',body,signal=abort.signal){
         const send=()=>fetch(root+path,{method,body,signal,credentials:'same-origin',headers:{Accept:'application/json',...(method==='GET'?{}:{'X-CSRF-TOKEN':csrf})},cache:'no-store'});
-        let response=await send();
-        if(response.status===419&&method!=='GET'){await refreshSession(signal);response=await send();}
+        let response=await sendWithThrottle(send,signal);
+        if(response.status===419&&method!=='GET'){await refreshSession(signal);response=await sendWithThrottle(send,signal);}
         if(response.status===419)throw Error('Oturum güvenlik anahtarı doğrulanamadı. Yüklemeyi tekrar deneyin.');
         if(response.status===401||response.status===403||response.redirected)throw Error('Oturum doğrulanamadı. Aynı hesabınızla giriş yapıp tekrar deneyin.');
         if(!response.ok){let msg='İşlem başarısız ('+response.status+').';try{msg=(await response.json()).message||msg;}catch(_){}throw Error(msg);}
@@ -211,7 +230,7 @@ async function open(onFile){
             try{data=await (await request('/'+id)).json();failures=0;}
             catch(error){
                 if(closed)return;
-                if(++failures>=4)throw error;
+                if(error.rateLimited||++failures>=4)throw error;
                 status.textContent='Sunucu bağlantısı yeniden deneniyor…';
                 await sleep(3500);continue;
             }
