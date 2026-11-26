@@ -1,6 +1,9 @@
 .ografi-panorama-hint{font-size:11px;line-height:1.5;opacity:.75;margin:0 0 8px}
 a[data-ografi-panorama]{position:relative;display:block}
-.ografi-panorama-overlay{position:absolute;z-index:2;right:10px;bottom:10px;display:grid;place-items:center;width:52px;height:36px;border-radius:8px;background:rgba(0,0,0,.48);color:#fff;pointer-events:none}.ografi-panorama-overlay svg{display:block;width:44px;height:27px;filter:drop-shadow(0 1px 2px #0005)}
+.ografi-panorama-overlay{position:absolute;z-index:2;right:8px;bottom:8px;display:grid;place-items:center;width:34px;height:24px;border-radius:5px;background:rgba(0,0,0,.48);color:#fff;pointer-events:none}.ografi-panorama-overlay svg{display:block;width:25px;height:15px;filter:drop-shadow(0 1px 2px #0005)}
+.f-carousel__toolbar .ografi-pano-fancy-button svg{width:25px;height:15px;display:block;fill:none;stroke:none}
+.f-carousel__toolbar .ografi-pano-fancy-button[hidden]{display:none!important}
+@media(max-width:640px){.ografi-panorama-overlay{right:6px;bottom:6px;width:30px;height:22px}.ografi-panorama-overlay svg{width:23px;height:14px}}
 .ografi-panorama-dialog{--pano-bg:#fff;--pano-text:#182131;--pano-line:#e5e8ee;--pano-soft:#f3f5f8;--pano-accent:#2563eb;box-sizing:border-box;position:fixed;inset:0;margin:auto;padding:0;border:1px solid var(--pano-line);border-radius:16px;background:var(--pano-bg);color:var(--pano-text);width:min(1080px,calc(100% - 32px));max-width:100%;max-height:calc(100% - 24px);overflow:hidden;box-shadow:0 24px 90px #0004}
 [data-theme=dark] .ografi-panorama-dialog{--pano-bg:#171e29;--pano-text:#e5e7eb;--pano-line:#303a49;--pano-soft:#232c3a;--pano-accent:#82b3ff}
 .ografi-panorama-dialog::backdrop{background:#080d17b8}

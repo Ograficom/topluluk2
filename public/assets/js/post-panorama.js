@@ -5,20 +5,23 @@
     const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
     // Enhance only wide photos, including existing uploads and AJAX-loaded cards.
     const candidateSelector = 'a[data-ografi-panorama-candidate]';
+    const panoramaIcon = '<svg viewBox="0 0 80 48" width="25" height="15" fill="none" aria-hidden="true" focusable="false"><text x="38" y="29" text-anchor="middle" font-size="29" font-weight="750" font-family="Arial,sans-serif" fill="currentColor">280</text><circle cx="63" cy="7" r="2.8" fill="currentColor"/><path d="M15 19C-6 25 1 39 36 40M65 19C88 26 78 40 43 40M31 34l7 6-7 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+    const eligible = (link, image = link?.querySelector('img')) => {
+        if (!(link instanceof HTMLAnchorElement) || !link.matches(candidateSelector)) return false;
+        if (!image?.naturalWidth || !image.naturalHeight) return false;
+        return image.naturalWidth / image.naturalHeight >= (link.dataset.ografiPanoramaCandidate === 'explicit' ? 2 : 3);
+    };
     const prepare = link => {
         if (link.hasAttribute('data-ografi-panorama')) return;
-        const img = link.querySelector('img');
-        if (!img || !img.naturalWidth || !img.naturalHeight) return;
-        const minimum = link.dataset.ografiPanoramaCandidate === 'explicit' ? 2 : 3;
-        if (img.naturalWidth / img.naturalHeight < minimum) return;
+        if (!eligible(link)) return;
         if (typeof HTMLDialogElement === 'undefined' || typeof HTMLDialogElement.prototype.showModal !== 'function') return;
         link.setAttribute('data-ografi-panorama', '');
         link.setAttribute('aria-haspopup', 'dialog');
-        link.setAttribute('aria-label', '280° panoramayı keşfet');
+        link.setAttribute('aria-label', 'Panoramik fotoğrafı büyüt');
         const label = document.createElement('span');
         label.className = 'ografi-panorama-overlay';
         label.setAttribute('aria-hidden', 'true');
-        label.innerHTML = '<svg viewBox="0 0 80 48" width="44" height="27" fill="none" aria-hidden="true" focusable="false"><text x="38" y="29" text-anchor="middle" font-size="29" font-weight="750" font-family="Arial,sans-serif" fill="currentColor">280</text><circle cx="63" cy="7" r="2.8" fill="currentColor"/><path d="M15 19C-6 25 1 39 36 40M65 19C88 26 78 40 43 40M31 34l7 6-7 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+        label.innerHTML = panoramaIcon;
         link.append(label);
     };
     const scan = root => {
@@ -101,12 +104,10 @@
         },dispose(){}};
     }
 
-    document.addEventListener('click', event => {
-        const trigger=event.target instanceof Element && event.target.closest('a[data-ografi-panorama]');
-        if(!trigger||event.defaultPrevented||event.ctrlKey||event.metaKey||event.shiftKey||event.altKey)return;
+    function openPanorama(trigger, sourceUrl) {
+        if (!trigger || document.querySelector('.ografi-panorama-dialog[open]')) return;
         const dialog=document.createElement('dialog');
         if(typeof dialog.showModal!=='function')return;
-        event.preventDefault();event.stopImmediatePropagation();
         dialog.className='ografi-panorama-dialog';
         dialog.setAttribute('aria-label','Panorama görüntüleyici');
         dialog.innerHTML='<div class="ografi-pano-header"><div class="ografi-pano-heading"><span class="ografi-pano-brand">280°</span><strong>Panorama</strong></div><div class="ografi-pano-tools">'+button('expand','Tam ekran')+button('close','Kapat')+'</div></div><div class="ografi-pano-stage" tabindex="0" aria-label="Fotoğrafı sürükleyin veya ok tuşlarını kullanın"><img class="ografi-pano-original" alt="Panoramik fotoğraf" draggable="false" hidden><canvas aria-hidden="true" hidden></canvas><div class="ografi-pano-status" role="status">Fotoğraf yükleniyor…</div><span class="ografi-pano-gesture" hidden>↔ Sürükleyerek keşfet</span></div><div class="ografi-pano-footer" hidden><div class="ografi-pano-modes" role="group" aria-label="Görünüm"><button type="button" data-mode="natural" aria-pressed="true">Doğal</button><button type="button" data-mode="perspective" aria-pressed="false">3B</button><button type="button" data-mode="overview" aria-pressed="false">Tümü</button></div><div class="ografi-pano-map" role="group" aria-label="Panorama önizlemesi"><img alt="" draggable="false"><div class="ografi-pano-window"></div><input type="range" min="0" max="1000" value="500" aria-label="Fotoğrafta yatay gezin"></div><div class="ografi-pano-zoom">'+button('minus','Uzaklaştır')+button('plus','Yakınlaştır')+button('reset','Sıfırla')+'</div></div>';
@@ -223,15 +224,69 @@
             resize?.disconnect();window.removeEventListener('resize',render);renderer?.dispose();document.body.style.overflow=oldOverflow;
             dialog.remove();if(trigger.isConnected)trigger.focus();
         },{once:true});
-        try{dialog.showModal();}catch(_){dialog.remove();location.href=trigger.href;return;}
+        try{dialog.showModal();}catch(_){dialog.remove();location.href=sourceUrl||trigger.href;return;}
         document.body.style.overflow='hidden';
         photo.onload=()=>{
             if(!dialog.open)return;
             ready=true;photo.hidden=false;mapImage.src=photo.src;status.hidden=true;footer.hidden=false;
             hint.hidden=false;hintTimer=setTimeout(()=>{hint.hidden=true;},2500);
-            resize?.observe(stage);window.addEventListener('resize',render);render();
+            resize?.observe(stage);window.addEventListener('resize',render);
+            setMode('perspective');render();
         };
         photo.onerror=()=>{status.textContent='Fotoğraf yüklenemedi.';};
-        photo.src=trigger.href;
+        photo.src=sourceUrl||trigger.href;
+    }
+
+    // Use the bundled Fancybox 6 viewer for every photo first. Only its
+    // dedicated toolbar button can activate the panorama.
+    function syncToolbar(instance) {
+        if (!instance) return;
+        const container=instance.getContainer();
+        const toolbar=container?.querySelector('.f-carousel__toolbar__column.is-right');
+        if (!toolbar) return;
+        const slide=instance.getSlide();
+        const trigger=slide?.triggerEl;
+        const supported=typeof HTMLDialogElement!=='undefined'&&typeof HTMLDialogElement.prototype.showModal==='function';
+        const available=supported&&(eligible(trigger)||eligible(trigger,slide?.el?.querySelector('img')));
+        let control=toolbar.querySelector('[data-ografi-panorama-mode]');
+        if (!available) {
+            if (control) control.hidden=true;
+            return;
+        }
+        if (!control) {
+            control=document.createElement('button');
+            control.type='button';
+            control.className='f-button ografi-pano-fancy-button';
+            control.setAttribute('data-ografi-panorama-mode','');
+            control.setAttribute('aria-label','280° panorama görünümüne geç');
+            control.title='280° panorama';
+            control.innerHTML=panoramaIcon;
+            control.addEventListener('click',event=>{
+                event.preventDefault();event.stopPropagation();
+                const current=instance.getSlide();
+                const link=current?.triggerEl;
+                if (!eligible(link)&&!eligible(link,current?.el?.querySelector('img'))) return;
+                const url=link.href;
+                // Remove the normal viewer first so its keyboard and focus
+                // handlers cannot compete with the panorama dialog.
+                const exit= document.fullscreenElement&&document.exitFullscreen
+                    ? document.exitFullscreen().catch(()=>{}) : Promise.resolve();
+                exit.then(()=>{
+                    instance.destroy();
+                    openPanorama(link,url);
+                });
+            });
+            toolbar.prepend(control);
+        }
+        control.hidden=false;
+    }
+    window.ografiPanoramaToolbar = syncToolbar;
+    // Re-evaluate after an initially lazy-loaded image becomes available.
+    document.addEventListener('load', event=>{
+        if(event.target instanceof HTMLImageElement){
+            const instance=window.Fancybox?.getInstance?.();
+            if(instance)syncToolbar(instance);
+        }
     },true);
+    syncToolbar(window.Fancybox?.getInstance?.());
 })();

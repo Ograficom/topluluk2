@@ -197,7 +197,13 @@ function initFancybox() {
   if (typeof Fancybox === "undefined" || document.body.dataset.fancyboxInit)
     return;
 
-  Fancybox.bind("[data-fancybox]");
+  const syncPanorama = (instance) => window.ografiPanoramaToolbar?.(instance);
+  Fancybox.bind("[data-fancybox]", {
+    on: {
+      ready: syncPanorama,
+      "Carousel.ready Carousel.change Carousel.contentReady": syncPanorama
+    }
+  });
   document.body.dataset.fancyboxInit = "true";
 }
 

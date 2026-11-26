@@ -193,7 +193,7 @@
     @vite('resources/js/app.js')
     <link rel="stylesheet" href="{{ asset('assets/css/post-edit-history.css') }}?v=5">
     <link rel="stylesheet" href="{{ asset('assets/css/post-quote.css') }}?v=4">
-    <link rel="stylesheet" href="{{ asset('assets/css/post-panorama.css') }}?v=5">
+    <link rel="stylesheet" href="{{ asset('assets/css/post-panorama.css') }}?v=6">
     @stack('head')
     @if (! request()->routeIs('cp.*'))
         <script type="application/ld+json">
@@ -1051,7 +1051,7 @@
     <script src="{{ asset('assets/libs/fancyapp/carousel.umd.js') }}"></script>
     <script src="{{ asset('assets/libs/sharer/sharer.min.js') }}"></script>
     <script src="{{ asset('assets/js/app.js') }}?v=20261110-santral-art-top-centered"></script>
-    <script src="{{ asset('assets/js/init.js') }}?v=20261112-postim-swipe"></script>
+    <script src="{{ asset('assets/js/init.js') }}?v=20261126-panorama-toolbar"></script>
 
     @auth
     <script>
@@ -1353,7 +1353,7 @@
 })();
 </script>
 <script src="{{ asset('assets/js/post-edit-history.js') }}?v=3" defer></script>
-<script src="{{ asset('assets/js/post-panorama.js') }}?v=5" defer></script>
+<script src="{{ asset('assets/js/post-panorama.js') }}?v=6" defer></script>
 @stack('scripts')
 @if ($newYearActive)
     @include('layouts._new-year-effects')
