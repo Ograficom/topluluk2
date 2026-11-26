@@ -57,7 +57,7 @@
         @endif
         @foreach ($mediaUrls as $mediaUrl)
             <div class="f-carousel__slide">
-                <a href="{{ $mediaUrl }}" data-fancybox="{{ $mediaGroup }}" aria-label="Görseli büyüt">
+                <a href="{{ $mediaUrl }}" data-fancybox="{{ $mediaGroup }}" @unless($censored) data-ografi-panorama-candidate="{{ $post->is_panorama ? 'explicit' : 'auto' }}" @endunless aria-label="Görseli büyüt">
                     <img src="{{ $mediaUrl }}" alt="{{ $post->title }} - {{ $loop->iteration }}" class="post__media-image" decoding="async" loading="{{ $loop->first ? 'eager' : 'lazy' }}" draggable="false">
                 </a>
             </div>
@@ -80,7 +80,7 @@
         @endif
         @foreach ($mediaUrls as $mediaUrl)
             <div class="f-carousel__slide">
-                <a href="{{ $mediaUrl }}" data-src="{{ $mediaUrl }}" data-fancybox="{{ $mediaGroup }}">
+                <a href="{{ $mediaUrl }}" data-src="{{ $mediaUrl }}" data-fancybox="{{ $mediaGroup }}" @unless($censored) data-ografi-panorama-candidate="{{ $post->is_panorama ? 'explicit' : 'auto' }}" @endunless>
                     <img
                         src="{{ $mediaUrl }}"
                         alt="{{ $post->title }}"
@@ -112,8 +112,9 @@
                 </div>
             </div>
         @endif
-        <a href="{{ $mediaUrls->first() }}" data-fancybox="{{ $mediaGroup }}">
+        <a href="{{ $mediaUrls->first() }}" data-fancybox="{{ $mediaGroup }}" @unless($censored) data-ografi-panorama-candidate="{{ $post->is_panorama ? 'explicit' : 'auto' }}" @endunless>
             <img src="{{ $mediaUrls->first() }}" alt="{{ $post->title }}" class="post__media-image" loading="lazy">
         </a>
     </div>
 @endif
+

@@ -399,6 +399,12 @@
               <input type="checkbox" id="post-show-toc" name="show_toc" value="1" @checked(old('show_toc', $post->show_toc ?? false))>
               <span class="repost-switch-slider" aria-hidden="true"></span><span class="repost-switch-label">İçindekiler göster</span>
             </label>
+            <input type="hidden" name="is_panorama" value="0">
+            <label class="repost-switch-row">
+              <input type="checkbox" id="post-is-panorama" name="is_panorama" value="1" @checked(old('is_panorama', $post->is_panorama ?? false))>
+              <span class="repost-switch-slider" aria-hidden="true"></span><span class="repost-switch-label">Fotoğrafları 280° panorama olarak göster</span>
+            </label>
+            <p class="ografi-panorama-hint">Kapak ve yazı içi panoramaları destekler. Çok geniş fotoğraflar otomatik tanınır. Eksik görüntü alanları oluşturulmaz.</p>
             <div class="repost-source-group">
               <label class="repost-source-label" for="post-source">Lütfen kaynağı belirtin.</label>
               <input type="text" id="post-source" name="content_source" class="repost-source-input" maxlength="1000" value="{{ old('content_source', $post->content_source ?? '') }}" placeholder="https://...">

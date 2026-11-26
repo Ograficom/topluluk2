@@ -145,7 +145,12 @@ class PostController extends Controller
             'tags' => ['nullable', 'string', 'max:500'],
             'is_adult' => ['sometimes', 'boolean'],
             'show_toc' => ['sometimes', 'boolean'],
+            'is_panorama' => ['sometimes', 'boolean'],
         ]);
+
+        if ($request->boolean('is_panorama') && ! $request->hasFile('cover_image') && ! $request->hasFile('media')) {
+            throw \Illuminate\Validation\ValidationException::withMessages(['cover_image' => '280° panorama için bir fotoğraf yükleyin.']);
+        }
 
         if ($quoteSource) {
             $validated['title'] = filled($validated['title'] ?? null)
@@ -204,6 +209,7 @@ class PostController extends Controller
             'published_at' => $isSpam ? null : now(),
             'is_adult' => $request->boolean('is_adult') || (bool) $quoteSource?->is_adult,
             'show_toc' => $request->boolean('show_toc'),
+            'is_panorama' => $request->boolean('is_panorama'),
         ]);
         $this->syncTagRecords($post, $tags);
 
@@ -266,6 +272,7 @@ class PostController extends Controller
             'tags' => ['nullable', 'string', 'max:500'],
             'is_adult' => ['sometimes', 'boolean'],
             'show_toc' => ['sometimes', 'boolean'],
+            'is_panorama' => ['sometimes', 'boolean'],
             'remove_cover' => ['sometimes', 'boolean'],
         ]);
 
@@ -273,6 +280,15 @@ class PostController extends Controller
         $slug = $slugBase;
         for ($suffix = 1; Post::query()->where('slug', $slug)->where('id', '<>', $post->id)->exists(); $suffix++) {
             $slug = Str::limit($slugBase, 240 - strlen((string) $suffix), '').'-'.$suffix;
+        }
+
+        $hasPanoramaCover = $request->hasFile('cover_image') || (! $request->boolean('remove_cover') && $post->coverImageUrl())
+            || $request->hasFile('media')
+            || collect($post->media ?? [])->diff($validated['remove_media'] ?? [])->isNotEmpty();
+        $isPanorama = array_key_exists('is_panorama', $validated)
+            ? $request->boolean('is_panorama') : (bool) $post->is_panorama;
+        if ($isPanorama && ! $hasPanoramaCover && $request->boolean('is_panorama')) {
+            throw \Illuminate\Validation\ValidationException::withMessages(['cover_image' => '280° panorama için bir fotoğraf seçin veya panorama ayarını kapatın.']);
         }
 
         $newVideo = $request->file('video_file')?->store('posts/videos', 'public');
@@ -312,6 +328,7 @@ class PostController extends Controller
             'tags' => $tags,
             'is_adult' => $request->boolean('is_adult'),
             'show_toc' => array_key_exists('show_toc', $validated) ? $request->boolean('show_toc') : (bool) $post->show_toc,
+            'is_panorama' => $isPanorama && $hasPanoramaCover,
             'is_spam' => ($isSpam || $wasSpam),
         ]);
         if ($isSpam || $wasSpam) $post->is_published = false;
