@@ -119,6 +119,15 @@
                         <li><a href="{{ route('posts.edit', $post) }}">Yazıyı düzenle</a></li>
                     @endif
                     <li><button type="button" class="post-report-trigger" data-post-report-open>Yazıyı bildir</button></li>
+                    @if (auth()->user()?->is($post->user) || auth()->user()?->is_admin)
+                        <li>
+                            <form action="{{ route('posts.destroy', $post) }}" method="POST" class="post-delete-form" onsubmit="return window.confirm('Bu yazıyı kalıcı olarak silmek istediğinizden emin misiniz?');">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="post-delete-trigger">Yazıyı sil</button>
+                            </form>
+                        </li>
+                    @endif
                 </ul>
             </div>
         </header>
@@ -548,6 +557,11 @@
         .post-actions-menu__list li{display:block;margin:0;padding:0}
         .post-actions-menu__list a,.post-actions-menu__list button{display:block;width:100%;padding:10px 11px;border:0;border-radius:7px;background:transparent;color:#263247;text-align:left;text-decoration:none;font:inherit;cursor:pointer}
         .post-actions-menu__list a:hover,.post-actions-menu__list button:hover{background:#eff6ff;color:#1d4ed8}
+        .post-actions-menu__list .post-delete-form{margin:0;padding:0}
+        .post-actions-menu__list .post-delete-trigger{color:#dc2626}
+        .post-actions-menu__list .post-delete-trigger:hover{background:#fef2f2;color:#b91c1c}
+        [data-theme="dark"] .post-actions-menu__list .post-delete-trigger{color:#f87171}
+        [data-theme="dark"] .post-actions-menu__list .post-delete-trigger:hover{background:rgba(239,68,68,.12);color:#fca5a5}
         #post-report-dialog::backdrop{background:rgba(15,23,42,.55)}
         #post-report-dialog .post-report-trigger{cursor:pointer}
         .post-report-trigger{width:100%;border:0;background:transparent;text-align:left;padding:0;color:inherit;font:inherit;cursor:pointer}

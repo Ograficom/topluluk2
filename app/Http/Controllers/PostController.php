@@ -350,6 +350,14 @@ class PostController extends Controller
         return redirect()->route('posts.show', $post)->with('status', 'Yazınız güncellendi.');
     }
 
+    public function destroy(Request $request, Post $post): RedirectResponse
+    {
+        $this->authorizeManage($request, $post);
+        \Illuminate\Support\Facades\DB::transaction(fn () => $post->delete());
+
+        return redirect()->route('posts.index')->with('status', 'Yazı silindi.');
+    }
+
     public function editHistory(Request $request, Post $post): \Illuminate\Http\JsonResponse
     {
         abort_unless(Post::query()->published()->whereKey($post->id)->exists(), 404);

@@ -374,6 +374,7 @@ Route::middleware(['auth', 'verified'])->group(function (): void {
     Route::post('/posts', [PostController::class, 'store'])->middleware('throttle:10,1')->name('posts.store');
     Route::get('/posts/{post:slug}/edit', [PostController::class, 'edit'])->name('posts.edit');
     Route::patch('/posts/{post:slug}', [PostController::class, 'update'])->name('posts.update');
+    Route::delete('/posts/{post:slug}', [PostController::class, 'destroy'])->middleware('throttle:10,1')->name('posts.destroy');
 
     Route::get('/settings/social/{provider}/redirect', [SocialAuthController::class, 'linkRedirect'])->middleware('throttle:10,1')->name('oauth.link.redirect');
     Route::delete('/settings/social/{provider}', [SocialAuthController::class, 'unlink'])->middleware('throttle:10,1')->name('oauth.unlink');
