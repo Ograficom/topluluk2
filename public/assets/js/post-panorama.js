@@ -102,80 +102,136 @@
     }
 
     document.addEventListener('click', event => {
-        const trigger = event.target instanceof Element && event.target.closest('a[data-ografi-panorama]');
-        if (!trigger || event.defaultPrevented || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
+        const trigger=event.target instanceof Element && event.target.closest('a[data-ografi-panorama]');
+        if(!trigger||event.defaultPrevented||event.ctrlKey||event.metaKey||event.shiftKey||event.altKey)return;
         const dialog=document.createElement('dialog');
-        if(typeof dialog.showModal!=='function') return;
+        if(typeof dialog.showModal!=='function')return;
         event.preventDefault();event.stopImmediatePropagation();
         dialog.className='ografi-panorama-dialog';
-        dialog.setAttribute('aria-label','280 derece panorama');
-        dialog.innerHTML='<div class="ografi-pano-stage"><canvas tabindex="0" aria-label="Panorama. Ok tuşlarıyla gezinin." hidden></canvas><img class="ografi-pano-original" alt="Orijinal panoramik fotoğraf" hidden><div class="ografi-pano-top"><span class="ografi-pano-name"><b>280°</b> Panorama</span><div class="ografi-pano-tools">'+button('overview','Tüm fotoğraf / panorama')+button('expand','Tam ekran')+button('close','Kapat')+'</div></div><div class="ografi-pano-bottom" hidden><div class="ografi-pano-drag">Sürükleyerek keşfet</div><div class="ografi-pano-bar">'+button('minus','Uzaklaştır')+button('plus','Yakınlaştır')+'<input type="range" min="-140" max="140" step="1" value="0" aria-label="Yatay görüş açısı"><output>0°</output>'+button('reset','Görünümü sıfırla')+'</div></div><div class="ografi-pano-status" role="status">Panorama yükleniyor…</div></div>';
+        dialog.setAttribute('aria-label','Panorama görüntüleyici');
+        dialog.innerHTML='<div class="ografi-pano-header"><div class="ografi-pano-heading"><span class="ografi-pano-brand">280°</span><strong>Panorama</strong></div><div class="ografi-pano-tools">'+button('expand','Tam ekran')+button('close','Kapat')+'</div></div><div class="ografi-pano-stage" tabindex="0" aria-label="Fotoğrafı sürükleyin veya ok tuşlarını kullanın"><img class="ografi-pano-original" alt="Panoramik fotoğraf" draggable="false" hidden><canvas aria-hidden="true" hidden></canvas><div class="ografi-pano-status" role="status">Fotoğraf yükleniyor…</div><span class="ografi-pano-gesture" hidden>↔ Sürükleyerek keşfet</span></div><div class="ografi-pano-footer" hidden><div class="ografi-pano-modes" role="group" aria-label="Görünüm"><button type="button" data-mode="natural" aria-pressed="true">Doğal</button><button type="button" data-mode="perspective" aria-pressed="false">3B</button><button type="button" data-mode="overview" aria-pressed="false">Tümü</button></div><div class="ografi-pano-map" role="group" aria-label="Panorama önizlemesi"><img alt="" draggable="false"><div class="ografi-pano-window"></div><input type="range" min="0" max="1000" value="500" aria-label="Fotoğrafta yatay gezin"></div><div class="ografi-pano-zoom">'+button('minus','Uzaklaştır')+button('plus','Yakınlaştır')+button('reset','Sıfırla')+'</div></div>';
         document.body.append(dialog);
-        let canvas=dialog.querySelector('canvas'), renderer=null, gpu=false;
-        const original=dialog.querySelector('.ografi-pano-original');
-        const image=new Image(), status=dialog.querySelector('[role="status"]'), controls=dialog.querySelector('.ografi-pano-bottom'), range=dialog.querySelector('input'), output=dialog.querySelector('output');
-        const overviewButton=dialog.querySelector('[data-overview]');
-        let yaw=0, fov=120*radians, frame=0, ready=false, overview=false, pointer=null, lastX=0;
+        const stage=dialog.querySelector('.ografi-pano-stage'), photo=stage.querySelector('img'), canvas=stage.querySelector('canvas');
+        const footer=dialog.querySelector('.ografi-pano-footer'), status=dialog.querySelector('[role="status"]'), hint=dialog.querySelector('.ografi-pano-gesture');
+        const map=dialog.querySelector('.ografi-pano-map'), mapImage=map.querySelector('img'), mapWindow=map.querySelector('.ografi-pano-window'), range=map.querySelector('input');
+        const modes=[...dialog.querySelectorAll('[data-mode]')];
+        let mode='natural',ready=false,renderer=null,frame=0,hintTimer=0,renderWidth=0,renderHeight=0;
+        let zoom=1,centerX=.5,centerY=.5,yaw=0,fov=85*radians;
+        const pointers=new Map();
+        const dimensions=()=>{
+            const w=stage.clientWidth,h=stage.clientHeight,iw=photo.naturalWidth,ih=photo.naturalHeight;
+            const fit=Math.min(w/iw,h/ih),fill=Math.max(w/iw,h/ih);
+            // Do not force the photo to fill an oversized viewport; preserve source aspect.
+            const scale=mode==='overview'?fit:Math.max(fit,Math.min(fill,Math.max(1,fit)))*zoom;
+            return {w,h,iw,ih,scale,dw:iw*scale,dh:ih*scale};
+        };
+        const boundCenter=(value,view,drawn)=>drawn<=view?.5:clamp(value,view/(2*drawn),1-view/(2*drawn));
         const draw=()=>{
-            frame=0;if(!ready||!dialog.open||overview||!renderer)return;
-            const rect=canvas.getBoundingClientRect();if(!rect.width||!rect.height)return;
-            const maxPixels=gpu?5000000:2200000;
-            const scale=Math.min(window.devicePixelRatio||1,Math.sqrt(maxPixels/(rect.width*rect.height)));
-            const w=Math.max(1,Math.round(rect.width*scale)),h=Math.max(1,Math.round(rect.height*scale));
-            if(canvas.width!==w)canvas.width=w;if(canvas.height!==h)canvas.height=h;
-            const limit=half-fov/2;yaw=clamp(yaw,-limit,limit);
-            range.min=String(Math.ceil(-limit/radians));range.max=String(Math.floor(limit/radians));range.value=String(Math.round(yaw/radians));output.value=Math.round(yaw/radians)+'°';
-            renderer.draw(w,h,yaw,fov);
+            frame=0;if(!ready||!dialog.open)return;
+            const d=dimensions();if(!d.w||!d.h)return;
+            let visible,left;
+            if(mode==='perspective'&&renderer){
+                const limit=half-fov/2;yaw=clamp(yaw,-limit,limit);
+                const scale=Math.min(devicePixelRatio||1,Math.sqrt(3200000/(d.w*d.h)));
+                const w=Math.max(1,Math.round(d.w*scale)),h=Math.max(1,Math.round(d.h*scale));
+                if(renderWidth!==w||renderHeight!==h){canvas.width=w;canvas.height=h;renderWidth=w;renderHeight=h;}
+                renderer.draw(w,h,yaw,fov);
+                visible=fov/(2*half);left=(yaw+half-fov/2)/(2*half);
+            }else{
+                centerX=boundCenter(centerX,d.w,d.dw);centerY=boundCenter(centerY,d.h,d.dh);
+                const x=(d.w/2)-centerX*d.dw,y=(d.h/2)-centerY*d.dh;
+                photo.style.width=d.dw+'px';photo.style.height=d.dh+'px';
+                photo.style.transform='translate3d('+x+'px,'+y+'px,0)';
+                visible=Math.min(1,d.w/d.dw);left=clamp(centerX-visible/2,0,1-visible);
+            }
+            mapWindow.style.left=(left*100)+'%';mapWindow.style.width=(visible*100)+'%';
+            range.value=String(Math.round((visible>=.999?.5:left/(1-visible))*1000));
+            range.disabled=visible>=.999;
+            dialog.querySelector('[data-minus]').disabled=mode==='overview'||(mode==='perspective'?fov>=105*radians:zoom<=1.001);
+            dialog.querySelector('[data-plus]').disabled=mode==='perspective'?fov<=45*radians:zoom>=4;
         };
         const render=()=>{if(!frame)frame=requestAnimationFrame(draw);};
-        const setOverview=value=>{
-            overview=value;original.hidden=!value;canvas.hidden=value;controls.hidden=value;
-            overviewButton.setAttribute('aria-pressed',String(value));
-            if(!value)render();
+        const setMode=next=>{
+            if(!ready)return;
+            if(next==='perspective'&&!renderer){
+                try{renderer=gpuRenderer(canvas,photo);}catch(_){renderer=null;}
+                if(!renderer){modes.find(b=>b.dataset.mode==='perspective').disabled=true;return;}
+            }
+            mode=next;photo.hidden=mode==='perspective';canvas.hidden=mode!=='perspective';
+            if(mode==='overview'){centerX=.5;centerY=.5;zoom=1;}
+            modes.forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.mode===mode)));
+            render();
         };
-        const zoom=direction=>{if(overview)setOverview(false);fov=clamp(fov+direction*10*radians,45*radians,135*radians);render();};
-        const reset=()=>{yaw=0;fov=120*radians;if(overview)setOverview(false);render();};
-        const resize=typeof ResizeObserver==='function'?new ResizeObserver(render):null;
-        const bindCanvas=()=>{
-            canvas.addEventListener('pointerdown',e=>{if(pointer!==null||e.button!==0)return;pointer=e.pointerId;lastX=e.clientX;canvas.setPointerCapture(pointer);});
-            canvas.addEventListener('pointermove',e=>{if(e.pointerId!==pointer)return;yaw-=(e.clientX-lastX)*fov/Math.max(1,canvas.clientWidth);lastX=e.clientX;render();});
-            ['pointerup','pointercancel','lostpointercapture'].forEach(name=>canvas.addEventListener(name,e=>{if(pointer===e.pointerId)pointer=null;}));
-            canvas.addEventListener('wheel',e=>{e.preventDefault();zoom(e.deltaY>0?1:-1);},{passive:false});
-            canvas.addEventListener('keydown',e=>{
-                if(!['ArrowLeft','ArrowRight','+','-','Home'].includes(e.key))return;e.preventDefault();
-                if(e.key==='ArrowLeft')yaw-=8*radians;if(e.key==='ArrowRight')yaw+=8*radians;
-                if(e.key==='+')zoom(-1);if(e.key==='-')zoom(1);if(e.key==='Home')reset();render();
-            });
-            canvas.addEventListener('webglcontextlost',e=>{e.preventDefault();if(!ready)return;setOverview(true);overviewButton.disabled=true;status.textContent='Panorama görüntüsü kesildi. Orijinal fotoğraf gösteriliyor.';status.hidden=false;});
+        const changeZoom=(factor,atX=.5,atY=.5)=>{
+            if(mode==='overview')setMode('natural');
+            if(mode==='perspective'){fov=clamp(fov/factor,45*radians,105*radians);render();return;}
+            const before=dimensions();
+            const next=clamp(zoom*factor,1,4);if(next===zoom)return;
+            zoom=next;const after=dimensions();
+            centerX+=(atX-.5)*before.w*(1/before.dw-1/after.dw);
+            centerY+=(atY-.5)*before.h*(1/before.dh-1/after.dh);render();
         };
-        range.addEventListener('input',()=>{yaw=Number(range.value)*radians;render();});
-        dialog.querySelector('[data-minus]').addEventListener('click',()=>zoom(1));
-        dialog.querySelector('[data-plus]').addEventListener('click',()=>zoom(-1));
+        const reset=()=>{centerX=.5;centerY=.5;zoom=1;yaw=0;fov=85*radians;render();};
+        const pan=(dx,dy)=>{
+            if(mode==='overview')return;
+            if(mode==='perspective'){yaw-=dx*fov/Math.max(1,stage.clientWidth);}
+            else{const d=dimensions();centerX-=dx/d.dw;centerY-=dy/d.dh;}
+            render();
+        };
+        stage.addEventListener('pointerdown',e=>{
+            if(!ready||e.button!==0)return;
+            pointers.set(e.pointerId,{x:e.clientX,y:e.clientY});
+            stage.setPointerCapture(e.pointerId);hint.hidden=true;
+        });
+        stage.addEventListener('pointermove',e=>{
+            const prev=pointers.get(e.pointerId);if(!prev)return;
+            const others=[...pointers.entries()].filter(([id])=>id!==e.pointerId);
+            const now={x:e.clientX,y:e.clientY};
+            if(others.length){
+                const p=others[0][1],oldDist=Math.hypot(prev.x-p.x,prev.y-p.y),newDist=Math.hypot(now.x-p.x,now.y-p.y),rect=stage.getBoundingClientRect();
+                if(oldDist>8&&newDist>8)changeZoom(newDist/oldDist,((now.x+p.x)/2-rect.left)/rect.width,((now.y+p.y)/2-rect.top)/rect.height);
+                pan((now.x-prev.x)/2,(now.y-prev.y)/2);
+            }else{pan(now.x-prev.x,now.y-prev.y);}
+            pointers.set(e.pointerId,now);
+        });
+        ['pointerup','pointercancel','lostpointercapture'].forEach(type=>stage.addEventListener(type,e=>pointers.delete(e.pointerId)));
+        stage.addEventListener('wheel',e=>{if(!ready)return;e.preventDefault();const r=stage.getBoundingClientRect();changeZoom(e.deltaY<0?1.12:1/1.12,(e.clientX-r.left)/r.width,(e.clientY-r.top)/r.height);},{passive:false});
+        stage.addEventListener('keydown',e=>{
+            if(!ready||!['ArrowLeft','ArrowRight','ArrowUp','ArrowDown','+','-','Home'].includes(e.key))return;
+            e.preventDefault();
+            if(e.key==='ArrowLeft')pan(70,0);if(e.key==='ArrowRight')pan(-70,0);
+            if(e.key==='ArrowUp')pan(0,70);if(e.key==='ArrowDown')pan(0,-70);
+            if(e.key==='+')changeZoom(1.25);if(e.key==='-')changeZoom(.8);if(e.key==='Home')reset();
+        });
+        range.addEventListener('input',()=>{
+            const v=Number(range.value)/1000;
+            if(mode==='perspective'){const limit=half-fov/2;yaw=(v*2-1)*limit;}
+            else{const d=dimensions(),margin=Math.min(.5,d.w/(2*d.dw));centerX=margin+v*(1-2*margin);}
+            render();
+        });
+        modes.forEach(b=>b.addEventListener('click',()=>setMode(b.dataset.mode)));
+        dialog.querySelector('[data-minus]').addEventListener('click',()=>changeZoom(.8));
+        dialog.querySelector('[data-plus]').addEventListener('click',()=>changeZoom(1.25));
         dialog.querySelector('[data-reset]').addEventListener('click',reset);
-        overviewButton.addEventListener('click',()=>{if(ready)setOverview(!overview);});
         dialog.querySelector('[data-expand]').addEventListener('click',e=>{const expanded=dialog.classList.toggle('is-expanded');e.currentTarget.setAttribute('aria-pressed',String(expanded));render();});
         dialog.querySelector('[data-close]').addEventListener('click',()=>dialog.close());
+        canvas.addEventListener('webglcontextlost',e=>{e.preventDefault();renderer=null;setMode('natural');modes.find(b=>b.dataset.mode==='perspective').disabled=true;});
+        const resize=typeof ResizeObserver==='function'?new ResizeObserver(render):null;
+        const oldOverflow=document.body.style.overflow;
         dialog.addEventListener('close',()=>{
-            ready=false;image.onload=image.onerror=null;
-            if(frame)cancelAnimationFrame(frame);resize?.disconnect();window.removeEventListener('resize',render);
-            renderer?.dispose();original.removeAttribute('src');dialog.remove();if(trigger.isConnected)trigger.focus();
+            ready=false;photo.onload=photo.onerror=null;clearTimeout(hintTimer);if(frame)cancelAnimationFrame(frame);
+            resize?.disconnect();window.removeEventListener('resize',render);renderer?.dispose();document.body.style.overflow=oldOverflow;
+            dialog.remove();if(trigger.isConnected)trigger.focus();
         },{once:true});
         try{dialog.showModal();}catch(_){dialog.remove();location.href=trigger.href;return;}
-        image.onload=()=>{
+        document.body.style.overflow='hidden';
+        photo.onload=()=>{
             if(!dialog.open)return;
-            original.src=image.src;
-            if(image.naturalWidth<image.naturalHeight*2){original.hidden=false;overviewButton.disabled=true;status.textContent='Orijinal fotoğraf';return;}
-            try{renderer=gpuRenderer(canvas,image);gpu=!!renderer;}catch(_){renderer=null;}
-            if(!renderer){
-                // A canvas cannot switch context types after a WebGL context was created.
-                const replacement=canvas.cloneNode(false);canvas.replaceWith(replacement);canvas=replacement;
-                renderer=cpuRenderer(canvas,image);
-            }
-            if(!renderer){original.hidden=false;overviewButton.disabled=true;status.textContent='Orijinal fotoğraf';return;}
-            ready=true;bindCanvas();resize?.observe(canvas);window.addEventListener('resize',render);
-            status.hidden=true;setOverview(false);
+            ready=true;photo.hidden=false;mapImage.src=photo.src;status.hidden=true;footer.hidden=false;
+            hint.hidden=false;hintTimer=setTimeout(()=>{hint.hidden=true;},2500);
+            resize?.observe(stage);window.addEventListener('resize',render);render();
         };
-        image.onerror=()=>{status.textContent='Panorama yüklenemedi.';overviewButton.disabled=true;};
-        image.src=trigger.href;
+        photo.onerror=()=>{status.textContent='Fotoğraf yüklenemedi.';};
+        photo.src=trigger.href;
     },true);
 })();
