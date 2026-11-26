@@ -1,302 +1,141 @@
+
 (() => {
 'use strict';
-const R=Math.PI/180, W=2048,H=1024,N=W*H;
-const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
-const dot=(a,b)=>a[0]*b[0]+a[1]*b[1]+a[2]*b[2];
+const R=Math.PI/180;
+const clamp=(x,a,b)=>Math.max(a,Math.min(b,x));
+const dot=(a,b)=>a.reduce((s,v,i)=>s+v*b[i],0);
 const direction=(yaw,pitch)=>[Math.sin(yaw)*Math.cos(pitch),Math.cos(yaw)*Math.cos(pitch),Math.sin(pitch)];
-// W3C device orientation: intrinsic Z-X'-Y'' rotation; rear camera looks along -Z.
+const wrap=a=>((a+180)%360+360)%360-180;
 function axes(e){
     const a=e.alpha*R,b=e.beta*R,g=e.gamma*R,ca=Math.cos(a),sa=Math.sin(a),cb=Math.cos(b),sb=Math.sin(b),cg=Math.cos(g),sg=Math.sin(g);
     return {right:[ca*cg-sa*sb*sg,sa*cg+ca*sb*sg,-cb*sg],up:[-sa*cb,ca*cb,sb],forward:[-ca*sg-sa*sb*cg,-sa*sg+ca*sb*cg,-cb*cg]};
 }
-// Bilinear interpolation avoids nearest-neighbour jagged edges.
-function sample(data,w,h,u,v){
-    if(u<0||v<0||u>=w-1||v>=h-1)return null;
-    const x=Math.floor(u),y=Math.floor(v),a=u-x,b=v-y,i=(y*w+x)*4,j=i+w*4;
-    return [0,1,2].map(c=>(data[i+c]*(1-a)+data[i+4+c]*a)*(1-b)+(data[j+c]*(1-a)+data[j+4+c]*a)*b);
+function poseData(pose,origin){
+    const f=pose.forward,yaw=Math.atan2(f[0],f[1]),pitch=Math.asin(clamp(f[2],-1,1));
+    const right=[Math.cos(yaw),-Math.sin(yaw),0],up=[-Math.sin(yaw)*Math.sin(pitch),-Math.cos(yaw)*Math.sin(pitch),Math.cos(pitch)];
+    return {yaw:wrap((yaw-origin)/R),pitch:pitch/R,roll:wrap(-Math.atan2(dot(pose.right,up),dot(pose.right,right))/R)};
 }
-const luma=(r,g,b)=>.2126*r+.7152*g+.0722*b;
-const smooth=t=>{t=clamp(t,0,1);return t*t*(3-2*t);};
-function project(dx,dy,dz,pose,focal,w,h){
-    const z=dx*pose.forward[0]+dy*pose.forward[1]+dz*pose.forward[2];
-    if(z<=.2)return null;
-    return [(dx*pose.right[0]+dy*pose.right[1]+dz*pose.right[2])/z*focal+w/2,
-        h/2-(dx*pose.up[0]+dy*pose.up[1]+dz*pose.up[2])/z*focal,z];
-}
-// Refine sensor orientation in 3D, including roll and focal length. A flat
-// pixel shift cannot correctly align wide-angle camera frames on a sphere.
-function rotation(yaw,pitch,roll){
-    const a=yaw*R,b=pitch*R,c=roll*R,ca=Math.cos(a),sa=Math.sin(a),cb=Math.cos(b),sb=Math.sin(b),cc=Math.cos(c),sc=Math.sin(c);
-    return [cc*ca-sc*sb*sa,-sc*cb,cc*sa+sc*sb*ca,
-        sc*ca+cc*sb*sa,cc*cb,sc*sa-cc*sb*ca,
-        -cb*sa,sb,cb*ca];
-}
-function rayToCamera(x,y,z,pose){
-    return [x*pose.right[0]+y*pose.right[1]+z*pose.right[2],
-        x*pose.up[0]+y*pose.up[1]+z*pose.up[2],
-        x*pose.forward[0]+y*pose.forward[1]+z*pose.forward[2]];
-}
-function correctedProjection(x,y,z,m,focal,w,h){
-    const a=m[0]*x+m[1]*y+m[2]*z,b=m[3]*x+m[4]*y+m[5]*z,c=m[6]*x+m[7]*y+m[8]*z;
-    if(c<=.2)return null;
-    return [w/2+a/c*focal,h/2-b/c*focal,c];
-}
-function alignFrame(samples,data,w,h,focal){
-    const identity={yaw:0,pitch:0,roll:0,scale:1,matrix:rotation(0,0,0),gain:1,bias:0,confidence:0,reliable:false};
-    if(samples.length<45)return identity;
-    const evaluate=(yaw,pitch,roll,scale)=>{
-        const matrix=rotation(yaw,pitch,roll);
-        let n=0,sa=0,sb=0,saa=0,sbb=0,sab=0,la=0,lb=0,laa=0,lbb=0,lab=0;
-        for(const p of samples){
-            const uv=correctedProjection(p.x,p.y,p.z,matrix,focal*scale,w,h);
-            if(!uv)continue;
-            const rgb=sample(data,w,h,uv[0],uv[1]);if(!rgb)continue;
-            const a=p.lum,b=luma(...rgb),aLog=Math.log(8+a),bLog=Math.log(8+b);
-            n++;sa+=aLog;sb+=bLog;saa+=aLog*aLog;sbb+=bLog*bLog;sab+=aLog*bLog;
-            la+=a;lb+=b;laa+=a*a;lbb+=b*b;lab+=a*b;
-        }
-        if(n<Math.max(35,samples.length*.72))return {...identity,score:Infinity};
-        const va=saa-sa*sa/n,vb=sbb-sb*sb/n,cov=sab-sa*sb/n;
-        const corr=va>.5&&vb>.5?cov/Math.sqrt(va*vb):-1;
-        const rawVar=lbb-lb*lb/n;
-        const gain=rawVar>40?clamp((lab-la*lb/n)/rawVar,.55,1.9):1;
-        const bias=clamp((la-gain*lb)/n,-24,24);
-        return {yaw,pitch,roll,scale,matrix,gain,bias,confidence:corr,
-            score:1-corr+.0005*(yaw*yaw+pitch*pitch+roll*roll)+.09*Math.abs(scale-1),
-            reliable:corr>=.52};
-    };
-    const baseline=evaluate(0,0,0,1);
-    let winner=baseline;
-    // A broad initial search compensates for typical phone FOV differences.
-    for(const scale of [.76,.88,1,1.12,1.26])for(const yaw of [-9,-4.5,0,4.5,9])for(const pitch of [-9,-4.5,0,4.5,9]){
-        const candidate=evaluate(yaw,pitch,0,scale);if(candidate.score<winner.score)winner=candidate;
-    }
-    for(const [angle,zoom] of [[3,.07],[1.5,.035],[.65,.015]]){
-        for(let pass=0;pass<2;pass++){
-            const center=winner;
-            for(const axis of ['yaw','pitch','roll','scale'])for(const sign of [-1,1]){
-                const p={yaw:center.yaw,pitch:center.pitch,roll:center.roll,scale:center.scale};
-                p[axis]+=sign*(axis==='scale'?zoom:angle);
-                if(Math.abs(p.yaw)>15||Math.abs(p.pitch)>15||Math.abs(p.roll)>9||p.scale<.68||p.scale>1.4)continue;
-                const candidate=evaluate(p.yaw,p.pitch,p.roll,p.scale);
-                if(candidate.score<winner.score)winner=candidate;
-            }
-        }
-    }
-    if(!winner.reliable)return {...identity,confidence:winner.confidence};
-    if(baseline.reliable&&baseline.score-winner.score<.012)return baseline;
-    return winner;
-}
-const pause=()=>new Promise(resolve=>setTimeout(resolve,0));
+const sleep=ms=>new Promise(resolve=>setTimeout(resolve,ms));
 async function open(onFile){
     if(document.querySelector('.ografi-photo360-camera[open]'))return;
-    if(!navigator.mediaDevices?.getUserMedia||!window.DeviceOrientationEvent){alert('360° çekim için HTTPS, kamera ve hareket sensörü destekli bir telefon gerekir. Hazır 360° fotoğraf yükleyebilirsiniz.');return;}
-    // Permission requests must start during the original button gesture.
-    let sensorPermission;
-    try{sensorPermission=typeof DeviceOrientationEvent.requestPermission==='function'?DeviceOrientationEvent.requestPermission():Promise.resolve('granted');}catch(_){sensorPermission=Promise.resolve('denied');}
+    if(!navigator.mediaDevices?.getUserMedia||!window.DeviceOrientationEvent){alert('HTTPS, kamera ve hareket sensörü destekli telefon gerekiyor.');return;}
+    const permission=typeof DeviceOrientationEvent.requestPermission==='function'?DeviceOrientationEvent.requestPermission():Promise.resolve('granted');
     const dialog=document.createElement('dialog');dialog.className='ografi-photo360-camera';dialog.setAttribute('aria-label','360° fotoğraf çekimi');
-    dialog.innerHTML='<video autoplay muted playsinline></video><div class="ografi-photo360-top"><button type="button" data-close aria-label="Kapat">✕</button><strong>360° Fotoğraf</strong><span data-count>0 / 0</span></div><div class="ografi-photo360-ring" hidden><svg viewBox="0 0 200 200" aria-hidden="true"><circle cx="100" cy="100" r="97"/><ellipse cx="100" cy="100" rx="97" ry="39"/><ellipse cx="100" cy="100" rx="43" ry="97"/><g class="ografi-photo360-gridpoints"></g><path class="ografi-photo360-cross" d="M87 100h26M100 87v26"/></svg><span class="ografi-photo360-dot"></span></div><div class="ografi-photo360-flash"></div><div class="ografi-photo360-bottom"><p role="status">Kamera ve hareket sensörü izni bekleniyor…</p><progress value="0" max="1"></progress><button type="button" data-start hidden>Çekime başla</button><button type="button" data-shot hidden disabled aria-label="Fotoğraf çek"><span></span></button><img class="ografi-photo360-last" alt="Son çekilen fotoğraf" hidden><button type="button" data-restart hidden>Yeniden çek</button><button type="button" data-finish hidden>Fotoğrafı kullan</button></div>';
+    dialog.innerHTML='<video autoplay muted playsinline></video><img class="ografi-photo360-result" alt="360° önizleme" hidden><div class="ografi-photo360-top"><button type="button" data-close aria-label="Kapat">✕</button><strong>360° Fotoğraf</strong><span data-count>0 / 30</span></div><div class="ografi-photo360-ring" hidden><svg viewBox="0 0 200 200" aria-hidden="true"><circle cx="100" cy="100" r="97"/><ellipse cx="100" cy="100" rx="97" ry="39"/><ellipse cx="100" cy="100" rx="43" ry="97"/><g class="ografi-photo360-gridpoints"></g><path class="ografi-photo360-cross" d="M87 100h26M100 87v26"/></svg><span class="ografi-photo360-dot"></span></div><div class="ografi-photo360-flash"></div><div class="ografi-photo360-bottom"><p role="status">Kamera açılıyor…</p><progress value="0" max="1"></progress><button type="button" data-start hidden>Çekime başla</button><button type="button" data-shot hidden aria-label="Fotoğraf çek"><span></span></button><img class="ografi-photo360-last" alt="Son çekilen fotoğraf" hidden><button type="button" data-restart hidden>Yeniden çek</button><button type="button" data-finish hidden>Fotoğrafı kullan</button></div>';
     document.body.append(dialog);
-    const video=dialog.querySelector('video'),status=dialog.querySelector('[role=status]'),ring=dialog.querySelector('.ografi-photo360-ring'),targetDot=ring.querySelector('.ografi-photo360-dot'),count=dialog.querySelector('[data-count]'),progress=dialog.querySelector('progress'),start=dialog.querySelector('[data-start]'),shot=dialog.querySelector('[data-shot]'),finish=dialog.querySelector('[data-finish]');
-    const last=dialog.querySelector('.ografi-photo360-last'),flash=dialog.querySelector('.ografi-photo360-flash'),grid=ring.querySelector('.ografi-photo360-gridpoints');
-    for(let i=0;i<12;i++){
-        const a=i*Math.PI/6,point=document.createElementNS('http://www.w3.org/2000/svg','circle');
-        point.setAttribute('cx',100+78*Math.cos(a));point.setAttribute('cy',100+78*Math.sin(a));point.setAttribute('r','2.1');grid.append(point);
+    const q=s=>dialog.querySelector(s),video=q('video'),status=q('[role=status]'),ring=q('.ografi-photo360-ring'),point=q('.ografi-photo360-dot'),count=q('[data-count]'),progress=q('progress'),start=q('[data-start]'),shot=q('[data-shot]'),finish=q('[data-finish]'),restart=q('[data-restart]'),preview=q('.ografi-photo360-result'),last=q('.ografi-photo360-last'),flash=q('.ografi-photo360-flash');
+    for(let i=0;i<12;i++){const a=i*Math.PI/6,p=document.createElementNS('http://www.w3.org/2000/svg','circle');p.setAttribute('cx',100+78*Math.cos(a));p.setAttribute('cy',100+78*Math.sin(a));p.setAttribute('r','2.1');q('.ografi-photo360-gridpoints').append(p);}
+    let stream=null,current=null,closed=false,busy=false,ready=false,frames=[],targets=[],origin=0,id=null,resultFile=null,previewUrl=null,notice=0,lastSensor=0;
+    const abort=new AbortController(),csrf=document.querySelector('meta[name="csrf-token"]')?.content||'';
+    const root='/composer/photo360';
+    async function request(path,method='GET',body,signal=abort.signal){
+        const response=await fetch(root+path,{method,body,signal,credentials:'same-origin',headers:{Accept:'application/json','X-CSRF-TOKEN':csrf},cache:'no-store'});
+        if(!response.ok){let msg='İşlem başarısız ('+response.status+').';try{msg=(await response.json()).message||msg;}catch(_){}throw Error(msg);}
+        return response;
     }
-    let stream=null,closed=false,busy=false,current=null,targets=[],index=0,baseYaw=0,coverage=0,shots=0,cameraReady=false,completed=false,lastNotice=0;
-    let output=null,best=null,vectors=null,accum=null,quality=null,focalScale=1,rawFrames=[];
-    const restart=dialog.querySelector('[data-restart]');
-    let previewUrl=null;
-    const preview=document.createElement('img');preview.className='ografi-photo360-result';preview.alt='Birleştirilen 360° fotoğraf';preview.hidden=true;dialog.prepend(preview);
-    const source=document.createElement('canvas'),sc=source.getContext('2d',{willReadFrequently:true});
-    const result=document.createElement('canvas');result.width=W;result.height=H;const rc=result.getContext('2d');
+    function stopCamera(){stream?.getTracks().forEach(t=>t.stop());video.srcObject=null;stream=null;ready=false;}
+    async function camera(){
+        stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:'environment'},width:{ideal:1920},height:{ideal:2560}},audio:false});
+        if(closed){stopCamera();return;}video.srcObject=stream;await video.play();ready=true;
+        if(!current)status.textContent='Telefonu hareket ettirin. Sensör verisi bekleniyor.';
+        else {start.hidden=false;status.textContent='Ortamı aydınlatın; telefonu aynı merkez etrafında döndürün.';}
+    }
     const portrait=()=>!window.matchMedia('(orientation: landscape)').matches;
     function guide(){
-        if(closed||busy||completed||!current||!targets[index])return;
-        shot.disabled=!cameraReady;
-        if(!portrait()){status.textContent='Telefonu dik konuma getirin.';return;}
-        if(Date.now()<lastNotice)return;
-        const t=targets[index],forward=dot(t,current.forward),right=dot(t,current.right),up=dot(t,current.up);
-        const error=Math.acos(clamp(forward,-1,1))/R;
-        const horizontal=Math.atan2(right,Math.max(.12,forward)),vertical=Math.atan2(up,Math.max(.12,forward));
-        targetDot.style.left=(50+clamp(horizontal/R*1.8,-42,42))+'%';
-        targetDot.style.top=(50-clamp(vertical/R*1.8,-42,42))+'%';
-        const aligned=error<=10;ring.classList.toggle('is-aligned',aligned);
-        status.textContent=aligned?'Hedef hazır. Çekim yapın.':forward<0?'Telefonu yavaşça çevirin.':'Mavi noktayı merkeze getirin. İsterseniz şimdi de çekebilirsiniz.';
+        if(closed||busy||!ready||!current||!targets[frames.length]||Date.now()<notice)return;
+        const t=targets[frames.length],z=dot(t,current.forward),x=dot(t,current.right),y=dot(t,current.up);
+        const angle=Math.acos(clamp(z,-1,1))/R;
+        point.style.left=(50+clamp(Math.atan2(x,Math.max(.12,z))/R*1.8,-42,42))+'%';
+        point.style.top=(50-clamp(Math.atan2(y,Math.max(.12,z))/R*1.8,-42,42))+'%';
+        ring.classList.toggle('is-aligned',angle<=12);
+        status.textContent=!portrait()?'Telefonu dik konuma getirin.':angle<=12?'Hedef hazır. Telefonu sabit tutup çekin.':'Mavi noktayı merkeze getirin.';
     }
     function orientation(e){
-        if(e.alpha===null||e.beta===null||e.gamma===null)return;
-        current=axes(e);
-        if(cameraReady&&!targets.length&&!busy&&!completed){start.hidden=false;start.disabled=false;status.textContent='Telefonu dik tutun; kamerayı aynı noktada döndürün. Ortamı mümkünse aydınlatın.';}
+        if(![e.alpha,e.beta,e.gamma].every(Number.isFinite))return;
+        current=axes(e);lastSensor=Date.now();
+        if(ready&&!targets.length&&!busy){start.hidden=false;status.textContent='Telefonu dik tutun; aynı noktadan dönün.';}
         guide();
     }
-    function close(){if(dialog.open)dialog.close();}
-    dialog.querySelector('[data-close]').onclick=close;
-    dialog.addEventListener('close',()=>{closed=true;window.removeEventListener('deviceorientation',orientation);stream?.getTracks().forEach(t=>t.stop());video.srcObject=null;if(previewUrl)URL.revokeObjectURL(previewUrl);dialog.remove();},{once:true});
+    function cancelJob(){const old=id;id=null;if(old)request('/'+old,'DELETE',undefined,new AbortController().signal).catch(()=>{});}
+    q('[data-close]').onclick=()=>dialog.close();
+    dialog.addEventListener('close',()=>{closed=true;abort.abort();cancelJob();stopCamera();window.removeEventListener('deviceorientation',orientation);if(previewUrl)URL.revokeObjectURL(previewUrl);dialog.remove();},{once:true});
     dialog.showModal();
     try{
-        if(await sensorPermission!=='granted')throw Error('Hareket sensörü izni gerekli.');
+        if(await permission!=='granted')throw Error('Hareket sensörü izni gerekli.');
         if(closed)return;
         window.addEventListener('deviceorientation',orientation);
-        stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:'environment'},width:{ideal:1280},height:{ideal:1920}},audio:false});
-        if(closed){stream.getTracks().forEach(t=>t.stop());return;}
-        video.srcObject=stream;await video.play();
-        if(closed)return;
-        cameraReady=true;
-        if(current){start.hidden=false;start.disabled=false;status.textContent='Telefonu dik tutun ve çekime başlayın.';}
-        else status.textContent='Telefonu hareket ettirin. Sensör verisi bekleniyor.';
-    }catch(e){if(!closed)status.textContent=e.message||'Kamera açılamadı. İzinleri kontrol edin.';return;}
+        await camera();
+    }catch(e){if(!closed)status.textContent=e.message||'Kamera açılamadı.';return;}
+    const canvas=document.createElement('canvas'),ctx=canvas.getContext('2d',{alpha:false});
     start.onclick=()=>{
-        if(!current||!cameraReady||!video.videoWidth||busy){status.textContent='Kamera veya sensör henüz hazır değil.';return;}
+        if(!ready||!current||!video.videoWidth||busy)return;
         if(!portrait()){status.textContent='Telefonu dik konuma getirin.';return;}
-        index=0;coverage=0;shots=0;completed=false;lastNotice=0;rawFrames=[];last.hidden=true;finish.hidden=true;restart.hidden=true;progress.value=0;
-        preview.hidden=true;video.hidden=false;if(previewUrl){URL.revokeObjectURL(previewUrl);previewUrl=null;}
-        baseYaw=Math.atan2(current.forward[0],current.forward[1]);
-        targets=[];
-        for(const [pitch,n] of [[0,12],[45,8],[-45,8],[90,1],[-90,1]])for(let i=0;i<n;i++)targets.push(direction(baseYaw+i*2*Math.PI/n,pitch*R));
-        output=rc.createImageData(W,H);best=new Float32Array(N);vectors=new Float32Array(N*3);accum=new Float32Array(N*3);quality=new Float32Array(N);focalScale=1;
-        for(let row=0;row<H;row++){const p=(.5-(row+.5)/H)*Math.PI,cp=Math.cos(p),sp=Math.sin(p);for(let col=0;col<W;col++){const a=((col+.5)/W-.5)*2*Math.PI+baseYaw,k=(row*W+col)*3;vectors[k]=Math.sin(a)*cp;vectors[k+1]=Math.cos(a)*cp;vectors[k+2]=sp;}}
-        count.textContent='0 / '+targets.length;start.hidden=true;ring.hidden=false;shot.hidden=false;shot.disabled=false;guide();
+        if(Math.abs(current.forward[2])>.25){status.textContent='Önce telefonu düz karşıya tutun.';notice=Date.now()+1800;return;}
+        origin=Math.atan2(current.forward[0],current.forward[1]);frames=[];targets=[];
+        // Overlap is deliberate: 30-degree horizontal and 45-degree vertical spacing.
+        for(const [pitch,n] of [[0,12],[45,8],[-45,8],[90,1],[-90,1]])
+            for(let i=0;i<n;i++)targets.push(direction(origin+i*2*Math.PI/n,pitch*R));
+        start.hidden=true;ring.hidden=false;shot.hidden=false;restart.hidden=true;finish.hidden=true;last.hidden=true;preview.hidden=true;video.hidden=false;
+        count.textContent='0 / '+targets.length;progress.value=0;guide();
     };
-    shot.onclick=async()=>{
-        if(closed||busy||completed)return;
-        if(!current||!cameraReady||!video.videoWidth){status.textContent='Kamera veya sensör henüz hazır değil.';return;}
-        if(!portrait()){status.textContent='Telefonu dik konuma getirin.';return;}
-        const pose=current;busy=true;shot.disabled=true;status.textContent='Fotoğraf çekiliyor…';
-        try{
-            // Camera field of view is estimated; browsers do not expose calibrated intrinsics.
-            const factor=Math.min(1,1920/Math.max(video.videoWidth,video.videoHeight));
-            source.width=Math.max(1,Math.round(video.videoWidth*factor));source.height=Math.max(1,Math.round(video.videoHeight*factor));
-            const sw=source.width,sh=source.height;
-            // Some Android browsers deliver landscape frames even with a portrait UI.
-            // Keep the actual video-frame orientation, rather than rejecting the shot.
-            sc.drawImage(video,0,0,sw,sh);
-            last.src=source.toDataURL('image/jpeg',.68);last.hidden=false;
-            flash.classList.remove('is-flashing');void flash.offsetWidth;flash.classList.add('is-flashing');
-            if(navigator.vibrate)navigator.vibrate(30);
-            shots++;status.textContent='Fotoğraf alındı, birleştiriliyor…';
-            const data=sc.getImageData(0,0,sw,sh).data, focal=Math.min(sw,sh)/(2*Math.tan(28*R))*focalScale,out=output.data;
-            // Use the already fused sphere as a reference, sampling only textured overlap.
-            const matches=[];
-            if(coverage){
-                for(let row=8;row<H-8;row+=13)for(let col=8;col<W-8;col+=13){
-                    const k=row*W+col,v=k*3;
-                    if(best[k]<.12||best[k-3]<.12||best[k+3]<.12||best[k-3*W]<.12||best[k+3*W]<.12)continue;
-                    const p=project(vectors[v],vectors[v+1],vectors[v+2],pose,focal,sw,sh);
-                    if(!p||p[0]<sw*.12||p[0]>sw*.88||p[1]<sh*.12||p[1]>sh*.88)continue;
-                    const i=k*4,lum=luma(out[i],out[i+1],out[i+2]);
-                    if(lum<7||lum>245)continue;
-                    const neighbor=q=>luma(out[q*4],out[q*4+1],out[q*4+2]);
-                    if(Math.max(Math.abs(neighbor(k-3)-neighbor(k+3)),Math.abs(neighbor(k-3*W)-neighbor(k+3*W)))<5)continue;
-                    const ray=rayToCamera(vectors[v],vectors[v+1],vectors[v+2],pose);
-                    matches.push({x:ray[0],y:ray[1],z:ray[2],lum});
-                }
-            }
-            const stride=Math.max(1,Math.ceil(matches.length/480));
-            const correction=alignFrame(matches.filter((_,i)=>i%stride===0),data,sw,sh,focal);
-            if(matches.length>=100&&!correction.reliable&&correction.confidence<.18){
-                // Strongly inconsistent overlap is more damaging than a missing frame.
-                // Keep all previously captured pixels and let the user retake this view.
-                shots--;lastNotice=Date.now()+2800;status.textContent='Fotoğraflar eşleşmedi. Telefonu aynı noktada sabit tutun, biraz önceki yöne dönüp tekrar çekin.';setTimeout(guide,2900);return;
-            }
-            // The live guide keeps its nominal camera model; final stitching fits one shared lens.
-            const raw=window.ografiSphereStitch?.grayFrame(source,pose);
-            if(!raw)throw Error('360° işleme motoru yüklenemedi. Sayfayı yenileyin.');
-            const blob=await new Promise(resolve=>source.toBlob(resolve,'image/jpeg',.96));
-            if(!blob)throw Error('Çekim kaydedilemedi. Tekrar deneyin.');
+    async function process(){
+        ring.hidden=true;shot.hidden=true;stopCamera();status.textContent='Çekimler sunucuya yükleniyor…';progress.value=0;
+        const init=new FormData();init.append('count',String(frames.length));
+        id=(await (await request('','POST',init)).json()).id;
+        for(let i=0;i<frames.length;i++){
             if(closed)return;
-            rawFrames.push({...raw,blob});
-            const feather=Math.min(sw,sh)*.32;
-            // Blend overlapping shots with smoothly tapered weights rather
-            // than overwriting an entire region with the newest best frame.
-            for(let row=0;row<H;row++){
-                if(closed)return;
-                for(let col=0;col<W;col++){
-                    const k=row*W+col,v=k*3;
-                    const dx=vectors[v],dy=vectors[v+1],dz=vectors[v+2];
-                    const z=dx*pose.forward[0]+dy*pose.forward[1]+dz*pose.forward[2];
-                    if(z<=.1)continue;
-                    const q=rayToCamera(dx,dy,dz,pose);
-                    const p=correctedProjection(q[0],q[1],q[2],correction.matrix,focal*correction.scale,sw,sh);
-                    if(!p)continue;
-                    const u=p[0],t=p[1];
-                    if(u<1||t<1||u>=sw-1||t>=sh-1)continue;
-                    const score=Math.max(.001,smooth(Math.min(u,sw-1-u,t,sh-1-t)/feather)*Math.pow(p[2],3));
-                    const rgb=sample(data,sw,sh,u,t);if(!rgb)continue;
-                    const o=k*4;
-                    const corrected=rgb.map(c=>clamp(c*correction.gain+correction.bias,0,255));
-                    let weight=score;
-                    if(!best[k])coverage++;
-                    else {
-                        // Avoid double edges in regions affected by nearby objects,
-                        // movement or parallax. Smoothly prefer a centred observation
-                        // when the two registered colours disagree strongly.
-                        const mismatch=Math.max(...corrected.map((c,i)=>Math.abs(c-out[o+i])));
-                        const disagreement=smooth((mismatch-22)/48);
-                        const preference=score/(score+quality[k]+.00001);
-                        weight*=1-disagreement*(1-preference)*.94;
-                        const keep=1-disagreement*preference*.88;
-                        best[k]*=keep;
-                        for(let c=0;c<3;c++)accum[v+c]*=keep;
-                    }
-                    const total=best[k]+weight;
-                    for(let c=0;c<3;c++){
-                        accum[v+c]+=corrected[c]*weight;
-                        out[o+c]=accum[v+c]/total;
-                    }
-                    quality[k]=Math.max(quality[k],score);
-                    best[k]=total;out[o+3]=255;
-                }
-                if(row%48===47)await pause();
+            const f=frames[i],body=new FormData();body.append('index',String(i));body.append('frame',f.blob,'frame-'+i+'.jpg');
+            for(const key of ['yaw','pitch','roll'])body.append(key,String(f.pose[key]));
+            await request('/'+id+'/frame','POST',body);
+            progress.value=(i+1)/frames.length;
+            status.textContent='Kareler yükleniyor '+(i+1)+' / '+frames.length;
+        }
+        await request('/'+id+'/start','POST');
+        progress.removeAttribute('value');
+        // Server processing runs independently of this HTTP request.
+        const until=Date.now()+16*60*1000;
+        while(!closed&&Date.now()<until){
+            const data=await (await request('/'+id)).json();status.textContent=data.message;
+            if(data.state==='failed'||data.state==='cancelled')throw Error(data.message);
+            if(data.state==='ready'){
+                const blob=await (await request('/'+id+'/image')).blob();
+                if(blob.type!=='image/jpeg'||blob.size>5*1024*1024)throw Error('Sunucu geçersiz fotoğraf döndürdü.');
+                resultFile=new File([blob],'ografi-360-'+Date.now()+'.jpg',{type:'image/jpeg'});
+                previewUrl=URL.createObjectURL(resultFile);preview.src=previewUrl;preview.hidden=false;video.hidden=true;
+                progress.value=1;finish.hidden=false;restart.hidden=false;frames=[];return;
             }
-            const percent=coverage/N;
-            // A manual shot always captures real pixels. Only a sufficiently
-            // aligned frame completes the current target; no fake completion.
-            if(dot(targets[index],pose.forward)>=Math.cos(15*R))index++;
-            if(index===targets.length&&percent<.985){
-                // Continue at the centre of an uncovered region, instead of
-                // throwing away the user's captures and restarting.
-                let missing=-1,min=Infinity;
-                for(let k=0;k<N;k+=17){if(best[k]===0){
-                    const col=k%W,row=Math.floor(k/W);
-                    const score=Math.abs(row-H/2)*.01+Math.abs(col-W/2)*.001;
-                    if(score<min){min=score;missing=k;}
-                }}
-                if(missing<0)missing=best.findIndex(v=>v===0);
-                if(missing>=0)targets.push([vectors[missing*3],vectors[missing*3+1],vectors[missing*3+2]]);
-            }
-            count.textContent=index+' / '+targets.length;progress.value=percent;
-            if(percent>=.985){
-                ring.hidden=true;shot.hidden=true;
-                status.textContent='Orijinal kareler yeniden hizalanıyor…';
-                // Release online guide buffers before the full-resolution final pass.
-                output=null;best=null;vectors=null;accum=null;quality=null;
-                let report;
-                try{
-                    report=await window.ografiSphereStitch.stitch(rawFrames,result,baseYaw,message=>{if(!closed)status.textContent=message;},()=>closed);
-                }catch(error){
-                    if(closed)return;
-                    completed=true;restart.hidden=false;status.textContent='Birleştirme başarısız: '+(error.message||'Bilinmeyen hata')+'. Yeniden çekin.';return;
-                }
-                if(closed)return;
-                completed=true;restart.hidden=false;
-                // Always provide a preview. Don't enable publishing if the sphere
-                // is materially incomplete; report weak geometry instead of hiding it.
-                finish.hidden=report.coverage<.98;
-                status.textContent=report.coverage<.98
-                    ? 'Küre eksik (%'+Math.round(report.coverage*100)+'). Yeniden çekin.'
-                    : report.trusted?'Birleştirme tamamlandı. Önizlemeyi kontrol edin.':'Eşleşmeler zayıf. Önizlemeyi kontrol edin; bozuksa daha aydınlık ortamda yeniden çekin.';
-                result.toBlob(blob=>{if(!blob||closed||!completed)return;previewUrl=URL.createObjectURL(blob);preview.src=previewUrl;preview.hidden=false;video.hidden=true;},'image/jpeg',.94);
-                return;
-            }
-            lastNotice=Date.now()+900;
-            status.textContent=shots+' fotoğraf çekildi · %'+Math.round(percent*100)+' kapsama';
-            setTimeout(guide,950);
-        }catch(e){lastNotice=Date.now()+3500;status.textContent=e.message||'Fotoğraf işlenemedi.';setTimeout(guide,3600);}
-        finally{busy=false;shot.disabled=!cameraReady;guide();}
+            await sleep(2500);
+        }
+        throw Error('İşleme zaman aşımı. Sunucu kuyruğunu kontrol edin.');
+    }
+    shot.onclick=async()=>{
+        if(busy||closed||!ready||!current||!targets[frames.length])return;
+        if(!portrait()){status.textContent='Telefonu dik konuma getirin.';return;}
+        if(Date.now()-lastSensor>1200){status.textContent='Hareket sensörü güncel değil. Telefonu hareket ettirin.';return;}
+        if(dot(targets[frames.length],current.forward)<Math.cos(12*R)){
+            notice=Date.now()+1500;status.textContent='Çekim için mavi noktayı merkeze yaklaştırın.';return;
+        }
+        busy=true;shot.disabled=true;
+        try{
+            const factor=Math.min(1,1920/Math.max(video.videoWidth,video.videoHeight));
+            canvas.width=Math.round(video.videoWidth*factor);canvas.height=Math.round(video.videoHeight*factor);
+            if(!canvas.width||!canvas.height)throw Error('Kamera henüz hazır değil.');
+            if(canvas.width>canvas.height)throw Error('Kamera yatay kare gönderiyor. Telefonu dik konuma getirin ve kamerayı yeniden açın.');
+            const pose=poseData(current,origin);
+            ctx.drawImage(video,0,0,canvas.width,canvas.height);
+            const blob=await new Promise(resolve=>canvas.toBlob(resolve,'image/jpeg',.95));
+            if(!blob||blob.size>3*1024*1024)throw Error('Kare kaydedilemedi veya çok büyük.');
+            if(closed)return;
+            frames.push({blob,pose});last.src=canvas.toDataURL('image/jpeg',.55);last.hidden=false;
+            flash.classList.remove('is-flashing');void flash.offsetWidth;flash.classList.add('is-flashing');
+            navigator.vibrate?.(25);count.textContent=frames.length+' / '+targets.length;progress.value=frames.length/targets.length;
+            if(frames.length===targets.length)await process();
+            else {notice=Date.now()+650;status.textContent='Fotoğraf çekildi.';setTimeout(guide,700);}
+        }catch(e){if(!closed){notice=Date.now()+3000;status.textContent=e.message||'Çekim başarısız.';if(!ready){cancelJob();restart.hidden=false;}else setTimeout(guide,3100);}}
+        finally{busy=false;shot.disabled=false;guide();}
     };
-    restart.onclick=()=>{finish.disabled=false;start.onclick();};
-    finish.onclick=()=>{finish.disabled=true;result.toBlob(blob=>{if(closed)return;if(!blob){finish.disabled=false;status.textContent='Fotoğraf oluşturulamadı.';return;}onFile(new File([blob],'ografi-360-'+Date.now()+'.jpg',{type:'image/jpeg'}));close();},'image/jpeg',.94);};
+    restart.onclick=async()=>{if(busy)return;busy=true;cancelJob();frames=[];targets=[];resultFile=null;if(previewUrl){URL.revokeObjectURL(previewUrl);previewUrl=null;}preview.hidden=true;video.hidden=false;finish.hidden=true;restart.hidden=true;progress.value=0;try{await camera();start.hidden=false;}catch(e){status.textContent=e.message;restart.hidden=false;}finally{busy=false;}};
+    finish.onclick=()=>{if(!resultFile)return;onFile(resultFile);dialog.close();};
 }
 window.ografiPhoto360={open};
 })();

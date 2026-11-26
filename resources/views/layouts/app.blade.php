@@ -1354,8 +1354,7 @@
 </script>
 <script src="{{ asset('assets/js/post-edit-history.js') }}?v=3" defer></script>
 <script src="{{ asset('assets/js/post-panorama.js') }}?v=9" defer></script>
-<script src="{{ asset('assets/js/photo360-stitch.js') }}?v=1" defer></script>
-<script src="{{ asset('assets/js/photo360-capture.js') }}?v=5" defer></script>
+<script src="{{ asset('assets/js/photo360-capture.js') }}?v=6" defer></script>
 @stack('scripts')
 @if ($newYearActive)
     @include('layouts._new-year-effects')

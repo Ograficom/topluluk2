@@ -372,6 +372,15 @@ Route::middleware(['auth', 'verified'])->group(function (): void {
     Route::get('/composer/tag-suggestions', [PostController::class, 'tagSuggestions'])->middleware('throttle:90,1')->name('posts.tag-suggestions');
     Route::get('/posts/create', [PostController::class, 'create'])->name('posts.create');
     Route::post('/posts', [PostController::class, 'store'])->middleware('throttle:10,1')->name('posts.store');
+
+    Route::prefix('composer/photo360')->group(function (): void {
+        Route::post('/', [\App\Http\Controllers\Photo360Controller::class, 'create'])->middleware('throttle:4,60')->name('photo360.create');
+        Route::post('/{id}/frame', [\App\Http\Controllers\Photo360Controller::class, 'frame'])->whereUuid('id')->middleware('throttle:90,1')->name('photo360.frame');
+        Route::post('/{id}/start', [\App\Http\Controllers\Photo360Controller::class, 'start'])->whereUuid('id')->middleware('throttle:10,1')->name('photo360.start');
+        Route::get('/{id}', [\App\Http\Controllers\Photo360Controller::class, 'status'])->whereUuid('id')->middleware('throttle:60,1')->name('photo360.status');
+        Route::get('/{id}/image', [\App\Http\Controllers\Photo360Controller::class, 'image'])->whereUuid('id')->middleware('throttle:15,1')->name('photo360.image');
+        Route::delete('/{id}', [\App\Http\Controllers\Photo360Controller::class, 'cancel'])->whereUuid('id')->middleware('throttle:10,1')->name('photo360.cancel');
+    });
     Route::get('/posts/{post:slug}/edit', [PostController::class, 'edit'])->name('posts.edit');
     Route::patch('/posts/{post:slug}', [PostController::class, 'update'])->name('posts.update');
     Route::delete('/posts/{post:slug}', [PostController::class, 'destroy'])->middleware('throttle:10,1')->name('posts.destroy');
