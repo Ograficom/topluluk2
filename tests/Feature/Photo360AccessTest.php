@@ -11,6 +11,18 @@ class Photo360AccessTest extends TestCase
 {
     use RefreshDatabase;
 
+    public function test_session_token_is_authenticated_and_not_cached(): void
+    {
+        $this->getJson(route('photo360.session'))->assertUnauthorized();
+        $user=User::factory()->create(['email_verified_at'=>now()]);
+        $token=Str::random(40);
+        $response=$this->actingAs($user)->withSession(['_token'=>$token])
+            ->getJson(route('photo360.session'));
+        $response->assertOk()->assertJsonPath('csrf_token',$token)
+            ->assertJsonPath('user_id',(string)$user->getAuthIdentifier());
+        $this->assertStringContainsString('no-store',$response->headers->get('Cache-Control'));
+    }
+
     public function test_private_job_is_only_accessible_by_owner(): void
     {
         $owner=User::factory()->create(['email_verified_at'=>now()]);

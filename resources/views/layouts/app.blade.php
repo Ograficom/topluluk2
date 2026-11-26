@@ -3,6 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    @auth
+        <meta name="csrf-token" content="{{ csrf_token() }}">
+    @endauth
     <meta name="format-detection" content="telephone=no">
     @php
         $pwaSettings = \App\Models\SiteSetting::current();
@@ -1354,7 +1357,7 @@
 </script>
 <script src="{{ asset('assets/js/post-edit-history.js') }}?v=3" defer></script>
 <script src="{{ asset('assets/js/post-panorama.js') }}?v=9" defer></script>
-<script src="{{ asset('assets/js/photo360-capture.js') }}?v=10" defer></script>
+<script src="{{ asset('assets/js/photo360-capture.js') }}?v=11" defer></script>
 @stack('scripts')
 @if ($newYearActive)
     @include('layouts._new-year-effects')

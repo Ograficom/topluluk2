@@ -30,6 +30,15 @@ class Photo360Controller extends Controller
         }
     }
 
+    // Read, never rotate or cache, the current authenticated session token.
+    public function sessionToken(Request $request)
+    {
+        return response()->json([
+            'csrf_token' => $request->session()->token(),
+            'user_id' => (string) $request->user()->getAuthIdentifier(),
+        ])->header('Cache-Control', 'private, no-store');
+    }
+
     public function health()
     {
         $this->ensureEngine();
