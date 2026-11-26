@@ -27,7 +27,7 @@ async function open(onFile){
     for(let i=0;i<12;i++){const a=i*Math.PI/6,p=document.createElementNS('http://www.w3.org/2000/svg','circle');p.setAttribute('cx',100+78*Math.cos(a));p.setAttribute('cy',100+78*Math.sin(a));p.setAttribute('r','2.1');q('.ografi-photo360-gridpoints').append(p);}
     let stream=null,current=null,closed=false,busy=false,ready=false,frames=[],targets=[],origin=0,id=null,resultFile=null,previewUrl=null,notice=0,lastSensor=0;
     const abort=new AbortController(),csrf=document.querySelector('meta[name="csrf-token"]')?.content||'';
-    const root='/composer/photo360';
+    const root='/composer/photo360',engineVersion='hugin-enblend-v2';
     async function request(path,method='GET',body,signal=abort.signal){
         const response=await fetch(root+path,{method,body,signal,credentials:'same-origin',headers:{Accept:'application/json','X-CSRF-TOKEN':csrf},cache:'no-store'});
         if(!response.ok){let msg='İşlem başarısız ('+response.status+').';try{msg=(await response.json()).message||msg;}catch(_){}throw Error(msg);}
@@ -48,7 +48,7 @@ async function open(onFile){
         point.style.left=(50+clamp(Math.atan2(x,Math.max(.12,z))/R*1.8,-42,42))+'%';
         point.style.top=(50-clamp(Math.atan2(y,Math.max(.12,z))/R*1.8,-42,42))+'%';
         ring.classList.toggle('is-aligned',angle<=10);
-        status.textContent=!portrait()?'Telefonu dik konuma getirin.':angle<=10?'Hedef hazır. Telefonu sabit tutup çekin.':'Mavi noktayı merkeze getirin.';
+        status.textContent=!portrait()?'Telefonu dik konuma getirin.':angle<=10?'Hedef hazır. Lensi aynı noktada tutup çekin.':'Mavi noktayı merkeze getirin; yer değiştirmeyin.';
     }
     function orientation(e){
         if(![e.alpha,e.beta,e.gamma].every(Number.isFinite))return;
@@ -64,10 +64,30 @@ async function open(onFile){
         if(await permission!=='granted')throw Error('Hareket sensörü izni gerekli.');
         if(closed)return;
         window.addEventListener('deviceorientation',orientation);
-        await request('/health');
+        const health=await (await request('/health')).json();
+        if(health.engine!==engineVersion)throw Error('360° sunucu sürümü ile kamera sürümü eşleşmiyor. Sayfayı yenileyin veya yöneticiye bildirin.');
+        dialog.querySelector('.ografi-photo360-top strong').textContent='360° Fotoğraf · Hugin';
         await camera();
     }catch(e){if(!closed)status.textContent=e.message||'Kamera açılamadı.';return;}
     const canvas=document.createElement('canvas'),ctx=canvas.getContext('2d',{alpha:false});
+    const check=document.createElement('canvas');check.width=160;check.height=120;
+    const qc=check.getContext('2d',{willReadFrequently:true});
+    function qualityWarning(){
+        qc.drawImage(video,0,0,check.width,check.height);
+        const {data}=qc.getImageData(0,0,check.width,check.height),g=new Float32Array(check.width*check.height);
+        let mean=0,dark=0,clipped=0;
+        for(let i=0;i<g.length;i++){const v=.2126*data[i*4]+.7152*data[i*4+1]+.0722*data[i*4+2];g[i]=v;mean+=v;dark+=v<12;clipped+=v>247;}
+        mean/=g.length;
+        let sum=0,sq=0,n=0;
+        for(let y=1;y<check.height-1;y++)for(let x=1;x<check.width-1;x++){
+            const i=y*check.width+x,l=4*g[i]-g[i-1]-g[i+1]-g[i-check.width]-g[i+check.width];sum+=l;sq+=l*l;n++;
+        }
+        const sharpness=sq/n-(sum/n)**2;
+        if(mean<15||dark/g.length>.92)return 'Çok karanlık. Işığı açıp yeniden çekin.';
+        if(clipped/g.length>.8)return 'Kare aşırı aydınlık. Pozlamayı azaltıp yeniden çekin.';
+        if(sharpness<4)return 'Görüntü çok bulanık veya ayrıntısız. Telefonu sabitleyin, ortamı aydınlatın.';
+        return '';
+    }
     start.onclick=()=>{
         if(!ready||!current||!video.videoWidth||busy)return;
         if(!portrait()){status.textContent='Telefonu dik konuma getirin.';return;}
@@ -122,6 +142,8 @@ async function open(onFile){
             canvas.width=Math.round(video.videoWidth*factor);canvas.height=Math.round(video.videoHeight*factor);
             if(!canvas.width||!canvas.height)throw Error('Kamera henüz hazır değil.');
             if(canvas.width>canvas.height)throw Error('Kamera yatay kare gönderiyor. Telefonu dik konuma getirin ve kamerayı yeniden açın.');
+            const warning=qualityWarning();
+            if(warning)throw Error(warning);
             const pose=poseData(current,origin);
             ctx.drawImage(video,0,0,canvas.width,canvas.height);
             const blob=await new Promise(resolve=>canvas.toBlob(resolve,'image/jpeg',.95));

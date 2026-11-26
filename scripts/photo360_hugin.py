@@ -6,7 +6,6 @@ import json
 import math
 import os
 import re
-import shutil
 import signal
 import subprocess
 import sys
@@ -147,33 +146,65 @@ def main(directory):
     cmd("pto_gen","-p","0","-f",round(hfov,3),"-o","base.pto",*inputs)
     cmd("pto_var","--set",",".join(values),"-o","seed.pto","base.pto")
     notify("Hugin ortak görüntü noktalarını arıyor.")
-    # Full multi-row matching can recover imperfect motion sensor priors.
-    cmd("cpfind","--multirow","--ncores=2","-o","matches.pto","seed.pto")
-    cmd("cpclean","-o","clean.pto","matches.pto")
-    try:
-        verify_graph(directory/"clean.pto",len(inputs))
-    except RuntimeError:
-        notify("Zayıf eşleşmeler için tam çözünürlükte ikinci arama yapılıyor.")
-        cmd("cpfind","--allpairs","--fullscale","--ncores=2","-o","matches-full.pto","seed.pto")
-        cmd("cpclean","-o","clean.pto","matches-full.pto")
-        verify_graph(directory/"clean.pto",len(inputs))
-    cmd("checkpto","clean.pto")
+    # Hugin 2024 introduced --allpairs; older releases already use all
+    # pairs by default. Inspect the installed CLI rather than assume a version.
+    help_text = subprocess.run(["/usr/bin/cpfind", "--help"], capture_output=True,
+                               text=True, timeout=10).stdout
+    # Some releases print usage on stderr.
+    if not help_text or "--multirow" not in help_text:
+        help_text = subprocess.run(["/usr/bin/cpfind", "--help"], stdout=subprocess.PIPE,
+                                   stderr=subprocess.STDOUT, text=True, timeout=10).stdout
+    all_pairs = ["--allpairs"] if "--allpairs" in help_text else []
+    strategies = [
+        ["--multirow", "--minmatches=6", "--sieve2size=2"],
+        [*all_pairs, "--fullscale", "--minmatches=6", "--sieve2size=2"],
+    ]
+    for attempt, options in enumerate(strategies):
+        if attempt:
+            notify("Tam çözünürlükte ikinci eşleştirme yapılıyor.")
+        cmd("cpfind",*options,"--ncores=2","-o","matches.pto","seed.pto")
+        cmd("cpclean","-o","clean.pto","matches.pto")
+        try:
+            verify_graph(directory/"clean.pto",len(inputs))
+            cmd("checkpto","clean.pto")
+            break
+        except RuntimeError:
+            if attempt == len(strategies)-1:
+                raise
     notify("Lens, kamera açıları ve pozlama birlikte optimize ediliyor.")
-    cmd("autooptimiser","-a","-m","-l","-o","optimized.pto","clean.pto")
+    # Start with Hugin's staged global geometry optimization. Re-clean after
+    # fitting, then explicitly refine the linked lens FOV and barrel distortion.
+    cmd("autooptimiser","-a","-o","geometry.pto","clean.pto")
+    cmd("cpclean","-o","geometry-clean.pto","geometry.pto")
+    verify_graph(directory/"geometry-clean.pto",len(inputs))
+    cmd("pto_var","--opt=y,p,r,v,b","-o","refine.pto","geometry-clean.pto")
+    cmd("autooptimiser","-n","-o","geometry-refined.pto","refine.pto")
+    before=cmd("checkpto","geometry-clean.pto")
+    after=cmd("checkpto","geometry-refined.pto")
+    def mean_error(stats):
+        match=re.search(r"Mean error\s*:\s*([0-9.]+)",stats)
+        return float(match.group(1)) if match else None
+    a,b=mean_error(before),mean_error(after)
+    chosen="geometry-refined.pto" if a is not None and b is not None and b<=a else "geometry-clean.pto"
+    cmd("autooptimiser","-m","-l","-o","optimized.pto",chosen)
     # Full spherical output, never auto-crop a 360-degree sphere.
     cmd("pano_modify","-p","2","--fov=360x180","--canvas=4096x2048","--crop=0,4096,0,2048","-o","sphere.pto","optimized.pto")
     stats=cmd("checkpto","sphere.pto")
     verify_graph(directory/"sphere.pto",len(inputs))
-    error=re.search(r"Mean error\s*:\s*([0-9.]+)",stats)
-    if error and float(error.group(1))>5.0:
-        raise RuntimeError("Karelerin geometrik hizalama hatası yüksek. Telefonu aynı merkezde döndürerek yeniden çekin.")
+    error=mean_error(stats)
+    maximum=re.search(r"Maximum\s*:\s*([0-9.]+)",stats)
+    if error is None or error>3.0 or (maximum and float(maximum.group(1))>15):
+        raise RuntimeError("Geometrik eşleşme güvenilir değil. Kamera lensini aynı noktada tutarak yeniden çekin.")
+    (directory/"quality.json").write_text(json.dumps({"engine":"hugin-enblend","mean_error_px":error,
+        "maximum_error_px":float(maximum.group(1)) if maximum else None,
+        "control_points":verify_graph(directory/"sphere.pto",len(inputs))}),encoding="utf-8")
     notify("Nona çekimleri küresel yüzeye yansıtıyor.")
     cmd("nona","-m","TIFF_m","-o","warp","sphere.pto")
     layers=sorted(directory.glob("warp*.tif"))
     if len(layers)!=len(inputs):
         raise RuntimeError("Bazı kareler küreye yansıtılamadı.")
     notify("Enblend birleşim sınırlarını ve geçişleri işliyor.")
-    cmd("enblend","--wrap=horizontal","--compression=lzw","-f","4096x2048+0+0","-o","sphere.tif",*[f.name for f in layers])
+    cmd("enblend","--wrap=horizontal","--primary-seam-generator=graph-cut","--compression=lzw","-f","4096x2048+0+0","-o","sphere.tif",*[f.name for f in layers])
     notify("Kapsama ve çıktı kalitesi kontrol ediliyor.")
     image=alpha_coverage(directory/"sphere.tif", layers)
     write_jpeg(image,directory/"result.jpg")

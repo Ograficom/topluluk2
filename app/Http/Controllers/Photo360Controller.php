@@ -33,7 +33,7 @@ class Photo360Controller extends Controller
     public function health()
     {
         $this->ensureEngine();
-        return response()->json(['available'=>true])->header('Cache-Control','private, no-store');
+        return response()->json(['available'=>true,'engine'=>'hugin-enblend-v2'])->header('Cache-Control','private, no-store');
     }
 
     public function create(Request $request)

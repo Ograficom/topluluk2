@@ -40,3 +40,15 @@ node --check public/assets/js/photo360-capture.js
 php artisan test --filter='Photo360AccessTest|PostPanoramaTest'
 ```
 The Python unit tests exercise control-point graph rejection and output coverage. These do not replace an end-to-end Hugin test on real overlapping camera frames. The camera checks the installed binaries before the user starts capturing.
+
+## Verify the running installation before another capture
+The camera header must display **360° Fotoğraf · Hugin**. The authenticated GET /composer/photo360/health must return engine=hugin-enblend-v2. If the header is missing or the version differs, the deployed code or cached asset is old. Use the PHP binary actually configured on the host; check the dedicated worker and do not bypass failing deployment tests.
+
+Run the actual engine smoke test separately from the main application deployment:
+```sh
+apt-get install -y python3-numpy
+/usr/bin/python3 scripts/smoke_photo360_hugin.py
+```
+The smoke test uses a reproducible synthetic textured sphere sampled into overlapping camera frames, not real phone photographs. A passing synthetic test establishes basic CLI interoperability and spherical coverage, not real-world parallax tolerance.
+
+Upstream references: https://hugin.sourceforge.io/docs/manual/Cpfind.html (matching and options); https://hugin.sourceforge.io/docs/manual/Hugin_Photos_tab.html (lens fitting); https://wiki.panotools.org/Checkpto (image connectivity); https://hugin.sourceforge.io/docs/manual/Parallax.html (rotation around the entrance pupil).
