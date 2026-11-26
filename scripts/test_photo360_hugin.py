@@ -61,7 +61,8 @@ class PerformanceTest(unittest.TestCase):
 
     def test_quick_mode_has_no_expensive_fallback(self):
         strategies=h.matching_strategies(["--allpairs"],quick=True)
-        self.assertEqual(len(strategies),1)
+        self.assertEqual([s[0] for s in strategies],["fast","quick-recovery"])
+        self.assertEqual([s[2] for s in strategies],[45,35])
         self.assertIn("--prealigned",strategies[0][1])
         self.assertIn("--fullscale",strategies[0][1])
         self.assertEqual(h.QUICK_COUNT,24)

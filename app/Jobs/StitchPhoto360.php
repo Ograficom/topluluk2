@@ -71,6 +71,13 @@ class StitchPhoto360 implements ShouldQueue
                 ->update(['state'=>'ready','message'=>'360° fotoğraf hazır. Önizlemeyi kontrol edin.','updated_at'=>now()]);
         } catch (Throwable $e) {
             if ($process->isRunning()) $process->stop(1);
+            $diagnosticPath=$dir.'/diagnostics.json';
+            $diagnostics=is_file($diagnosticPath)?json_decode(File::get($diagnosticPath),true):null;
+            \Illuminate\Support\Facades\Log::warning('photo360 failure',[
+                'job_id'=>$this->id,
+                'reason'=>mb_substr($e->getMessage(),0,500),
+                'diagnostics'=>is_array($diagnostics)?$diagnostics:null,
+            ]);
             report($e);
             $this->failed($e);
         } finally {

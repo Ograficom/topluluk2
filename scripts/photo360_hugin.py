@@ -148,7 +148,7 @@ def verify_graph(project, count):
                 seen.add(j)
                 todo.append(j)
     if len(seen) != count or sum(edges.values()) < count * 5:
-        raise RuntimeError("Ortak görüntü noktaları yetersiz. Daha aydınlık ortamda, kareleri örtüştürerek yeniden çekin.")
+        raise RuntimeError(f"Ortak noktalar yetersiz: {len(seen)}/{count} kare bağlı, {sum(edges.values())} nokta.")
     return sum(edges.values())
 
 def layer_coverage(layers):
@@ -231,10 +231,13 @@ def transfer_control_points(proxy_project, full_project, output, proxy_names, fu
 def matching_strategies(all_pairs, fast=True, quick=False):
     if quick:
         # At 640px use the whole working copy for control-point precision.
-        # Do not silently launch the expensive quality-mode fallbacks.
+        # A single bounded recovery at 960px may rescue sparse 640px matches.
+        # Never launch the expensive original-resolution quality fallbacks.
         return [("fast", ["--prealigned", "--fullscale", "--ransacmode=rpy",
             "--ransacdist=10", "--minmatches=6", "--sieve1size=25",
-            "--kdtreesteps=100", "--ransaciter=300"], 65)]
+            "--kdtreesteps=100", "--ransaciter=300"], 45),
+            ("quick-recovery", ["--prealigned", "--fullscale", "--ransacmode=rpy",
+            "--ransacdist=12", "--minmatches=6"], 35)]
     # The native CPFind half-resolution mode is retained. The fast pass
     # limits the feature budget per spatial bucket, not the output image.
     # Every accepted result goes through the same full quality gates.
@@ -310,24 +313,30 @@ def main(directory):
     strategies = matching_strategies(all_pairs, fast=fast, quick=quick)
     proxy_names=[]
     proxy_size=None
-    if fast and max(size)>match_edge:
-        notify("Hızlı eşleştirme için çalışma kopyaları hazırlanıyor.")
+    def prepare_proxy(edge, tag):
+        names, dimensions=[],None
+        notify(f"Eşleştirme kopyaları hazırlanıyor ({edge} px).")
         for index,name in enumerate(inputs):
             with Image.open(directory/name) as im:
-                im.thumbnail((match_edge,match_edge),resampling_filter("LANCZOS"))
-                if proxy_size is None:
-                    proxy_size=im.size
-                if im.size!=proxy_size:
+                im.thumbnail((edge,edge),resampling_filter("LANCZOS"))
+                if dimensions is None:
+                    dimensions=im.size
+                if im.size!=dimensions:
                     raise RuntimeError("Çalışma kopyası boyutları farklı.")
-                proxy_name=f"match-{index:03d}.jpg"
+                proxy_name=f"{tag}-{index:03d}.jpg"
                 im.save(directory/proxy_name,"JPEG",quality=95)
-                proxy_names.append(proxy_name)
-        cmd("pto_gen","-p","0","-f",round(hfov,3),"-o","proxy-base.pto",*proxy_names)
-        cmd("pto_var","--set",",".join(values),"-o","proxy-pose.pto","proxy-base.pto")
+                names.append(proxy_name)
+        cmd("pto_gen","-p","0","-f",round(hfov,3),"-o",tag+"-base.pto",*names)
+        cmd("pto_var","--set",",".join(values),"-o",tag+"-pose.pto",tag+"-base.pto")
         cmd("pano_modify","-p","2","--fov=360x180",canvas_arg,
-            crop_arg,"-o","proxy-seed.pto","proxy-pose.pto")
+            crop_arg,"-o",tag+"-seed.pto",tag+"-pose.pto")
+        return names,dimensions,tag+"-seed.pto"
+    proxy_seed=None
+    if fast and max(size)>match_edge:
+        proxy_names,proxy_size,proxy_seed=prepare_proxy(match_edge,"match")
     labels = {
         "fast": "Hızlı görüntü eşleştirme",
+        "quick-recovery": "Kurtarma eşleştirmesi (960 px)",
         "standard": "Ayrıntılı görüntü eşleştirme",
         "multirow": "Çok sıralı alternatif eşleştirme",
         "full": "Tam çözünürlükte alternatif eşleştirme",
@@ -340,14 +349,20 @@ def main(directory):
                 float(maximum.group(1)) if maximum else math.inf)
     best=None
     selected_strategy = None
+    failures=[]
     for attempt, (strategy, options, limit) in enumerate(strategies):
         if attempt:
             notify("Kalite kontrolü için alternatif eşleştirme yapılıyor.")
         prefix=f"fit-{attempt}"
         try:
-            if strategy=="fast" and proxy_size is not None:
-                cmd("cpfind",*options,f"--ncores={THREADS}","-o",prefix+"-proxy.pto","proxy-seed.pto",
-                    stage="Hızlı görüntü eşleştirme (çalışma kopyaları)",max_seconds=limit)
+            if strategy=="quick-recovery":
+                if time.monotonic()-began>85:
+                    failures.append("Kurtarma için kalan süre yetersiz.")
+                    break
+                proxy_names,proxy_size,proxy_seed=prepare_proxy(960,"rescue")
+            if strategy in ("fast","quick-recovery") and proxy_size is not None:
+                cmd("cpfind",*options,f"--ncores={THREADS}","-o",prefix+"-proxy.pto",proxy_seed,
+                    stage=labels[strategy]+" (çalışma kopyaları)",max_seconds=limit)
                 transfer_control_points(directory/(prefix+"-proxy.pto"),directory/"seed.pto",
                     directory/(prefix+"-matches.pto"),proxy_names,inputs,proxy_size,size)
             else:
@@ -370,8 +385,10 @@ def main(directory):
                 cmd("pto_var","--opt=y,p,r,v,b","-o",prefix+"-lens.pto",prefix+"-clean.pto")
                 cmd("autooptimiser","-n","-o",prefix+"-refined.pto",prefix+"-lens.pto")
                 candidates.append(prefix+"-refined.pto")
+            observed=[]
             for project in candidates:
                 mean,maximum=stats_for(project)
+                observed.append((mean,maximum))
                 if mean<=3 and maximum<=15 and (best is None or mean<best[0]):
                     best=(mean,maximum,project)
             if best is not None:
@@ -380,12 +397,20 @@ def main(directory):
                 verify_graph(directory/best[2],len(inputs))
                 selected_strategy=strategy
                 break
+            failures.append(f"{strategy}: geometri hatası (ortalama/en yüksek): "+", ".join(f"{m:.2f}/{x:.2f}" for m,x in observed))
         except RuntimeError as error:
             best=None
+            failures.append(f"{strategy}: {error}")
             notify("Eşleştirme aşaması: "+str(error))
+        finally:
+            if failures:
+                (directory/"diagnostics.json").write_text(json.dumps({"mode":"quick" if quick else "quality",
+                    "frame_count":len(inputs),"source_size":list(size),"attempt_errors":failures,
+                    "stage_seconds":{key:round(value,2) for key,value in durations.items()}},ensure_ascii=False),encoding="utf-8")
     if best is None:
         if quick:
-            raise RuntimeError("Hızlı modda kareler güvenilir şekilde eşleşmedi veya süre sınırı aşıldı. Daha iyi ışıkta ya da kalite modunda çekin.")
+            reason=failures[-1] if failures else "Geometri doğrulanamadı."
+            raise RuntimeError("Hızlı mod: "+reason[:190])
         raise RuntimeError("Geometrik eşleşme güvenilir değil. Hatalı panorama oluşturulmadı.")
     notify("Kamera açıları doğrulandı; pozlama dengeleniyor.")
     # Photometric optimization only; do not re-level or re-optimize geometry.
@@ -396,7 +421,7 @@ def main(directory):
     if error>3 or maximum>15:
         raise RuntimeError("Son geometri kalite kontrolü başarısız.")
     report={"engine":"hugin-enblend","mode":"quick" if quick else "quality","matching_strategy":selected_strategy,
-        "source_size":list(size),"proxy_size":list(proxy_size) if proxy_size and selected_strategy=="fast" else None,
+        "source_size":list(size),"proxy_size":list(proxy_size) if proxy_size and selected_strategy in ("fast","quick-recovery") else None,
         "threads":THREADS,"mean_error_px":error,"maximum_error_px":maximum,
         "control_points":verify_graph(directory/"sphere.pto",len(inputs))}
     notify("Nona çekimleri küresel yüzeye yansıtıyor.")
