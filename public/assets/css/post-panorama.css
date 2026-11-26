@@ -4,35 +4,17 @@ a[data-ografi-panorama]{position:relative;display:block}
 .f-carousel__toolbar .ografi-pano-fancy-button svg{width:25px;height:15px;display:block;fill:none;stroke:none}
 .f-carousel__toolbar .ografi-pano-fancy-button[hidden]{display:none!important}
 @media(max-width:640px){.ografi-panorama-overlay{right:6px;bottom:6px;width:30px;height:22px}.ografi-panorama-overlay svg{width:23px;height:14px}}
-.ografi-panorama-dialog{--pano-bg:#fff;--pano-text:#182131;--pano-line:#e5e8ee;--pano-soft:#f3f5f8;--pano-accent:#2563eb;box-sizing:border-box;position:fixed;inset:0;margin:auto;padding:0;border:1px solid var(--pano-line);border-radius:16px;background:var(--pano-bg);color:var(--pano-text);width:min(1080px,calc(100% - 32px));max-width:100%;max-height:calc(100% - 24px);overflow:hidden;box-shadow:0 24px 90px #0004}
-[data-theme=dark] .ografi-panorama-dialog{--pano-bg:#171e29;--pano-text:#e5e7eb;--pano-line:#303a49;--pano-soft:#232c3a;--pano-accent:#82b3ff}
-.ografi-panorama-dialog::backdrop{background:#080d17b8}
-.ografi-panorama-dialog[open]{display:flex;flex-direction:column}
-.ografi-panorama-dialog [hidden]{display:none!important}
-.ografi-pano-header{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:10px 14px;flex:none}
-.ografi-pano-heading,.ografi-pano-tools,.ografi-pano-zoom{display:flex;align-items:center;gap:7px}
-.ografi-pano-heading strong{font-size:14px}
-.ografi-pano-brand{font-size:12px;font-weight:750;background:var(--pano-soft);border:1px solid var(--pano-line);border-radius:7px;padding:5px 8px;color:var(--pano-accent)}
-.ografi-pano-stage{position:relative;width:100%;height:clamp(200px,39vw,410px);max-height:calc(100dvh - 150px);background:#101318;overflow:hidden;touch-action:none;cursor:grab;flex:none;isolation:isolate;user-select:none}
-.ografi-pano-stage:active{cursor:grabbing}
-.ografi-pano-stage canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
-.ografi-pano-original{position:absolute;left:0;top:0;display:block;max-width:none!important;max-height:none!important;transform-origin:0 0;pointer-events:none;user-select:none}
-.ografi-pano-footer{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:12px 14px;flex:none}
-.ografi-pano-modes{display:flex;gap:2px;align-items:center;background:var(--pano-soft);border-radius:9px;padding:3px;flex:none}
-.ografi-pano-modes button,.ografi-pano-tools button,.ografi-pano-zoom button{appearance:none;display:grid;place-items:center;background:transparent;color:inherit;border:0;border-radius:7px;cursor:pointer;font:inherit;line-height:1}
-.ografi-pano-tools button,.ografi-pano-zoom button{width:40px;height:40px;flex:none;border:1px solid var(--pano-line)}
-.ografi-pano-modes button{padding:0 11px;height:34px;font-size:12px;font-weight:600}
-.ografi-pano-modes button[aria-pressed=true]{background:var(--pano-bg);color:var(--pano-accent);box-shadow:0 1px 3px #0001}
-.ografi-pano-tools button:hover,.ografi-pano-zoom button:hover{background:var(--pano-soft)}
-.ografi-panorama-dialog button:disabled{opacity:.35;cursor:default}
-.ografi-panorama-dialog button:focus-visible,.ografi-pano-stage:focus-visible,.ografi-pano-map:focus-within{outline:2px solid var(--pano-accent);outline-offset:-2px}
-.ografi-pano-map{position:relative;flex:1;max-width:290px;min-width:85px;height:44px;overflow:hidden;border-radius:7px;background:#111}
-.ografi-pano-map img{display:block;width:100%;height:100%;object-fit:fill;opacity:.65;pointer-events:none}
-.ografi-pano-window{position:absolute;inset:0 auto 0 0;border:2px solid #fff;border-radius:5px;background:#fff2;box-shadow:0 0 0 999px #0004;box-sizing:border-box;pointer-events:none}
-.ografi-pano-map input{position:absolute;inset:0;width:100%;height:100%;opacity:0;margin:0;cursor:ew-resize}
-.ografi-pano-gesture,.ografi-pano-status{position:absolute;left:50%;transform:translateX(-50%);padding:7px 11px;border-radius:999px;color:#fff;background:#0d121bd9;font-size:12px;pointer-events:none;white-space:nowrap}
-.ografi-pano-gesture{bottom:12px}.ografi-pano-status{top:50%;transform:translate(-50%,-50%)}
-.ografi-panorama-dialog.is-expanded{width:100%;height:100%;max-width:none;max-height:none;border-radius:0;border:0}
-.ografi-panorama-dialog.is-expanded .ografi-pano-stage{height:auto;max-height:none;flex:1;min-height:0}
-@media(max-width:640px){.ografi-panorama-dialog{width:100%;max-width:100%;max-height:100dvh;margin:auto 0 0;border-radius:16px 16px 0 0;border-bottom:0;padding-bottom:env(safe-area-inset-bottom,0px)}.ografi-pano-header{padding:8px 12px}.ografi-pano-stage{height:clamp(180px,70vw,360px);max-height:calc(100dvh - 176px)}.ografi-pano-footer{display:grid;grid-template-columns:1fr auto;gap:8px;padding:10px 12px}.ografi-pano-map{grid-column:1/-1;grid-row:1;max-width:none;width:100%;height:40px}.ografi-pano-modes{justify-self:start}.ografi-pano-modes button{padding:0 10px;height:38px}.ografi-pano-tools button,.ografi-pano-zoom button{width:44px;height:44px}.ografi-pano-zoom{gap:4px}.ografi-pano-gesture{bottom:8px}.ografi-panorama-dialog.is-expanded{margin:0;border-radius:0;padding-top:env(safe-area-inset-top,0px)}}
-@media(max-height:450px) and (orientation:landscape){.ografi-panorama-dialog{margin:auto;max-height:100dvh}.ografi-pano-stage{height:clamp(120px,48vh,300px);max-height:calc(100dvh - 110px)}.ografi-pano-footer{display:flex;padding:5px 10px}.ografi-pano-map{max-width:240px;height:30px}.ografi-pano-header{padding:5px 10px}}
+.fancybox__container.ografi-pano-active .fancybox__viewport{visibility:hidden;pointer-events:none}
+.fancybox__container.ografi-pano-active .fancybox__carousel>.f-button.is-arrow{visibility:hidden;pointer-events:none}
+.fancybox__container.ografi-pano-active .f-carousel__toolbar{opacity:1!important;animation:none!important;visibility:visible}
+.fancybox__container.ografi-pano-active .f-carousel__toolbar .f-button{pointer-events:auto}
+.fancybox__container .ografi-pano-fancy-button[aria-pressed=true]{color:#fff;background:#ffffff20}
+.ografi-pano-inline{position:absolute;inset:0;z-index:12;display:grid;place-items:center;padding:58px 16px 24px;box-sizing:border-box;pointer-events:none;outline:0}
+.ografi-pano-surface{position:relative;width:min(100%,1080px);height:min(46vw,56vh,510px);min-height:100px;overflow:hidden;background:#101318;cursor:grab;touch-action:none;pointer-events:auto;user-select:none}
+.ografi-pano-surface:active{cursor:grabbing}
+.ografi-pano-surface canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+.ografi-pano-surface img{position:absolute;left:0;top:0;width:100%;height:100%;object-fit:contain;max-width:none!important;max-height:none!important;transform-origin:0 0;pointer-events:none;user-select:none}
+.ografi-pano-surface [hidden]{display:none!important}
+.ografi-pano-loading{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:13px;color:#fff;background:#0009;padding:6px 10px;white-space:nowrap;pointer-events:none}
+@media(max-width:640px){.ografi-pano-inline{padding:54px 0 18px}.ografi-pano-surface{width:100%;height:min(72vw,55dvh)}}
+@media(max-height:450px) and (orientation:landscape){.ografi-pano-inline{padding:48px 8px 8px}.ografi-pano-surface{height:100%;min-height:0;width:min(100%,900px)}}
