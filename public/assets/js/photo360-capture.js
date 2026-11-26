@@ -25,7 +25,7 @@ async function open(onFile){
     document.body.append(dialog);
     const q=s=>dialog.querySelector(s),video=q('video'),status=q('[role=status]'),ring=q('.ografi-photo360-ring'),point=q('.ografi-photo360-dot'),count=q('[data-count]'),progress=q('progress'),start=q('[data-start]'),shot=q('[data-shot]'),finish=q('[data-finish]'),restart=q('[data-restart]'),preview=q('.ografi-photo360-result'),last=q('.ografi-photo360-last'),flash=q('.ografi-photo360-flash');
     for(let i=0;i<12;i++){const a=i*Math.PI/6,p=document.createElementNS('http://www.w3.org/2000/svg','circle');p.setAttribute('cx',100+78*Math.cos(a));p.setAttribute('cy',100+78*Math.sin(a));p.setAttribute('r','2.1');q('.ografi-photo360-gridpoints').append(p);}
-    let stream=null,current=null,closed=false,busy=false,ready=false,frames=[],targets=[],origin=0,id=null,resultFile=null,previewUrl=null,notice=0,lastSensor=0;
+    let stream=null,current=null,closed=false,busy=false,ready=false,frames=[],targets=[],origin=0,id=null,resultFile=null,previewUrl=null,notice=0,lastSensor=0,warningTarget=-1;
     const abort=new AbortController(),csrf=document.querySelector('meta[name="csrf-token"]')?.content||'';
     const root='/composer/photo360',engineVersion='hugin-enblend-v2';
     async function request(path,method='GET',body,signal=abort.signal){
@@ -92,7 +92,7 @@ async function open(onFile){
         if(!ready||!current||!video.videoWidth||busy)return;
         if(!portrait()){status.textContent='Telefonu dik konuma getirin.';return;}
         if(Math.abs(current.forward[2])>.25){status.textContent='Önce telefonu düz karşıya tutun.';notice=Date.now()+1800;return;}
-        origin=Math.atan2(current.forward[0],current.forward[1]);frames=[];targets=[];
+        origin=Math.atan2(current.forward[0],current.forward[1]);frames=[];targets=[];warningTarget=-1;
         // Dense overlaps make feature matching much more reliable.
         for(const [pitch,n] of [[0,16],[45,10],[-45,10],[90,1],[-90,1]])
             for(let i=0;i<n;i++)targets.push(direction(origin+i*2*Math.PI/n,pitch*R));
@@ -132,8 +132,9 @@ async function open(onFile){
     shot.onclick=async()=>{
         if(busy||closed||!ready||!current||!targets[frames.length])return;
         if(!portrait()){status.textContent='Telefonu dik konuma getirin.';return;}
-        if(Date.now()-lastSensor>1200){status.textContent='Hareket sensörü güncel değil. Telefonu hareket ettirin.';return;}
-        if(dot(targets[frames.length],current.forward)<Math.cos(10*R)){
+        // DeviceOrientation may stop emitting events while the phone is stationary.
+        // Keep the last valid orientation; still require alignment with the target.
+        if(dot(targets[frames.length],current.forward)<Math.cos(15*R)){
             notice=Date.now()+1500;status.textContent='Çekim için mavi noktayı merkeze yaklaştırın.';return;
         }
         busy=true;shot.disabled=true;
@@ -143,13 +144,17 @@ async function open(onFile){
             if(!canvas.width||!canvas.height)throw Error('Kamera henüz hazır değil.');
             if(canvas.width>canvas.height)throw Error('Kamera yatay kare gönderiyor. Telefonu dik konuma getirin ve kamerayı yeniden açın.');
             const warning=qualityWarning();
-            if(warning)throw Error(warning);
+            if(warning && warningTarget!==frames.length){
+                warningTarget=frames.length;notice=Date.now()+4500;
+                status.textContent=warning+' Yine de çekmek için tekrar dokunun.';
+                setTimeout(guide,4600);return;
+            }
             const pose=poseData(current,origin);
             ctx.drawImage(video,0,0,canvas.width,canvas.height);
             const blob=await new Promise(resolve=>canvas.toBlob(resolve,'image/jpeg',.95));
             if(!blob||blob.size>3*1024*1024)throw Error('Kare kaydedilemedi veya çok büyük.');
             if(closed)return;
-            frames.push({blob,pose});last.src=canvas.toDataURL('image/jpeg',.55);last.hidden=false;
+            frames.push({blob,pose});warningTarget=-1;last.src=canvas.toDataURL('image/jpeg',.55);last.hidden=false;
             flash.classList.remove('is-flashing');void flash.offsetWidth;flash.classList.add('is-flashing');
             navigator.vibrate?.(25);count.textContent=frames.length+' / '+targets.length;progress.value=frames.length/targets.length;
             if(frames.length===targets.length)await process();

@@ -144,7 +144,11 @@ def main(directory):
     hfov = math.degrees(2*math.atan(size[0]/min(size)*math.tan(math.radians(28))))
     def cmd(binary,*args): return run(directory,began,binary,*args)
     cmd("pto_gen","-p","0","-f",round(hfov,3),"-o","base.pto",*inputs)
-    cmd("pto_var","--set",",".join(values),"-o","seed.pto","base.pto")
+    cmd("pto_var","--set",",".join(values),"-o","pose.pto","base.pto")
+    # Use the same spherical projection and scale for all optimization and
+    # error measurements. A default narrow output is unsuitable for full spheres.
+    cmd("pano_modify","-p","2","--fov=360x180","--canvas=4096x2048",
+        "--crop=0,4096,0,2048","-o","seed.pto","pose.pto")
     notify("Hugin ortak görüntü noktalarını arıyor.")
     # Hugin 2024 introduced --allpairs; older releases already use all
     # pairs by default. Inspect the installed CLI rather than assume a version.
@@ -156,47 +160,54 @@ def main(directory):
                                    stderr=subprocess.STDOUT, text=True, timeout=10).stdout
     all_pairs = ["--allpairs"] if "--allpairs" in help_text else []
     strategies = [
-        ["--multirow", "--minmatches=6", "--sieve2size=2"],
-        [*all_pairs, "--fullscale", "--minmatches=6", "--sieve2size=2"],
+        ["--prealigned", "--ransacmode=rpy", "--ransacdist=10", "--minmatches=6"],
+        ["--multirow", "--ransacmode=rpy", "--ransacdist=12", "--minmatches=6"],
+        [*all_pairs, "--fullscale", "--ransacmode=rpyv", "--ransacdist=12", "--minmatches=6"],
     ]
+    def stats_for(project):
+        stats=cmd("checkpto",project)
+        mean=re.search(r"Mean error\s*:\s*([0-9.]+)",stats)
+        maximum=re.search(r"Maximum\s*:\s*([0-9.]+)",stats)
+        return (float(mean.group(1)) if mean else math.inf,
+                float(maximum.group(1)) if maximum else math.inf)
+    best=None
     for attempt, options in enumerate(strategies):
         if attempt:
-            notify("Tam çözünürlükte ikinci eşleştirme yapılıyor.")
-        cmd("cpfind",*options,"--ncores=2","-o","matches.pto","seed.pto")
-        cmd("cpclean","-o","clean.pto","matches.pto")
+            notify("Alternatif geometrik eşleştirme yapılıyor.")
+        prefix=f"fit-{attempt}"
         try:
-            verify_graph(directory/"clean.pto",len(inputs))
-            cmd("checkpto","clean.pto")
-            break
-        except RuntimeError:
-            if attempt == len(strategies)-1:
-                raise
-    notify("Lens, kamera açıları ve pozlama birlikte optimize ediliyor.")
-    # Start with Hugin's staged global geometry optimization. Re-clean after
-    # fitting, then explicitly refine the linked lens FOV and barrel distortion.
-    cmd("autooptimiser","-a","-o","geometry.pto","clean.pto")
-    cmd("cpclean","-o","geometry-clean.pto","geometry.pto")
-    verify_graph(directory/"geometry-clean.pto",len(inputs))
-    cmd("pto_var","--opt=y,p,r,v,b","-o","refine.pto","geometry-clean.pto")
-    cmd("autooptimiser","-n","-o","geometry-refined.pto","refine.pto")
-    before=cmd("checkpto","geometry-clean.pto")
-    after=cmd("checkpto","geometry-refined.pto")
-    def mean_error(stats):
-        match=re.search(r"Mean error\s*:\s*([0-9.]+)",stats)
-        return float(match.group(1)) if match else None
-    a,b=mean_error(before),mean_error(after)
-    chosen="geometry-refined.pto" if a is not None and b is not None and b<=a else "geometry-clean.pto"
-    cmd("autooptimiser","-m","-l","-o","optimized.pto",chosen)
-    # Full spherical output, never auto-crop a 360-degree sphere.
-    cmd("pano_modify","-p","2","--fov=360x180","--canvas=4096x2048","--crop=0,4096,0,2048","-o","sphere.pto","optimized.pto")
-    stats=cmd("checkpto","sphere.pto")
-    verify_graph(directory/"sphere.pto",len(inputs))
-    error=mean_error(stats)
-    maximum=re.search(r"Maximum\s*:\s*([0-9.]+)",stats)
-    if error is None or error>3.0 or (maximum and float(maximum.group(1))>15):
-        raise RuntimeError("Geometrik eşleşme güvenilir değil. Kamera lensini aynı noktada tutarak yeniden çekin.")
-    (directory/"quality.json").write_text(json.dumps({"engine":"hugin-enblend","mean_error_px":error,
-        "maximum_error_px":float(maximum.group(1)) if maximum else None,
+            cmd("cpfind",*options,"--ncores=2","-o",prefix+"-matches.pto","seed.pto")
+            cmd("cpclean","--pairwise-checking","-o",prefix+"-pairs.pto",prefix+"-matches.pto")
+            verify_graph(directory/(prefix+"-pairs.pto"),len(inputs))
+            # Preserve sensor pose as the initialization. Do not let the
+            # pairwise auto-align stage replace the initial camera orientations.
+            cmd("pto_var","--opt=y,p,r","-o",prefix+"-orient.pto",prefix+"-pairs.pto")
+            cmd("autooptimiser","-n","-o",prefix+"-rotation.pto",prefix+"-orient.pto")
+            cmd("cpclean","--whole-pano-checking","--skip-optimisation","-o",
+                prefix+"-clean.pto",prefix+"-rotation.pto")
+            verify_graph(directory/(prefix+"-clean.pto"),len(inputs))
+            cmd("pto_var","--opt=y,p,r,v,b","-o",prefix+"-lens.pto",prefix+"-clean.pto")
+            cmd("autooptimiser","-n","-o",prefix+"-refined.pto",prefix+"-lens.pto")
+            for project in [prefix+"-rotation.pto",prefix+"-clean.pto",prefix+"-refined.pto"]:
+                mean,maximum=stats_for(project)
+                if mean<=3 and maximum<=15 and (best is None or mean<best[0]):
+                    best=(mean,maximum,project)
+            if best is not None:
+                break
+        except RuntimeError as error:
+            notify("Eşleştirme aşaması: "+str(error))
+    if best is None:
+        raise RuntimeError("Geometrik eşleşme güvenilir değil. Hatalı panorama oluşturulmadı.")
+    notify("Kamera açıları doğrulandı; pozlama dengeleniyor.")
+    # Photometric optimization only; do not re-level or re-optimize geometry.
+    cmd("autooptimiser","-m","-o","optimized.pto",best[2])
+    cmd("pano_modify","-p","2","--fov=360x180","--canvas=4096x2048",
+        "--crop=0,4096,0,2048","-o","sphere.pto","optimized.pto")
+    error,maximum=stats_for("sphere.pto")
+    if error>3 or maximum>15:
+        raise RuntimeError("Son geometri kalite kontrolü başarısız.")
+    (directory/"quality.json").write_text(json.dumps({"engine":"hugin-enblend",
+        "mean_error_px":error,"maximum_error_px":maximum,
         "control_points":verify_graph(directory/"sphere.pto",len(inputs))}),encoding="utf-8")
     notify("Nona çekimleri küresel yüzeye yansıtıyor.")
     cmd("nona","-m","TIFF_m","-o","warp","sphere.pto")
