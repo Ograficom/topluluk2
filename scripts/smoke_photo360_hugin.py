@@ -15,12 +15,13 @@ from pathlib import Path
 
 import numpy as np
 from PIL import Image, ImageDraw, ImageFilter
+from photo360_hugin import resampling_filter
 
 def make_frames(directory, long_edge=960):
     rng=np.random.default_rng(320)
     w,h=3072,1536
     low=rng.integers(20,235,(h//16,w//16,3),dtype=np.uint8)
-    texture=Image.fromarray(low).resize((w,h),Image.Resampling.BICUBIC)
+    texture=Image.fromarray(low).resize((w,h),resampling_filter("BICUBIC"))
     draw=ImageDraw.Draw(texture)
     for _ in range(3800):
         x,y=map(int,(rng.integers(0,w),rng.integers(0,h)))

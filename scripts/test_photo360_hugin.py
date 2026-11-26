@@ -82,5 +82,20 @@ class ProxyTest(unittest.TestCase):
                 h.transfer_control_points(proxy,full,out,["match-001.jpg","match-000.jpg"],
                     ["input-000.jpg","input-001.jpg"],(480,960),(960,1920))
 
+class PillowCompatibilityTest(unittest.TestCase):
+    def test_old_and_new_filter_api(self):
+        from types import SimpleNamespace
+        old=SimpleNamespace(LANCZOS=1,BICUBIC=3)
+        new=SimpleNamespace(Resampling=SimpleNamespace(LANCZOS=1,BICUBIC=3))
+        for module in (old,new):
+            self.assertEqual(h.resampling_filter("LANCZOS",module),1)
+            self.assertEqual(h.resampling_filter("BICUBIC",module),3)
+
+    def test_real_resize(self):
+        im=Image.new("RGB",(1280,1920),(100,120,140))
+        im.thumbnail((960,960),h.resampling_filter("LANCZOS"))
+        self.assertEqual(im.size,(640,960))
+        self.assertEqual(im.resize((320,480),h.resampling_filter("BICUBIC")).size,(320,480))
+
 if __name__=="__main__":
     unittest.main()

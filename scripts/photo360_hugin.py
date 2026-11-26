@@ -16,6 +16,11 @@ from pathlib import Path
 
 from PIL import Image, ImageChops
 
+# Ubuntu 22.04 ships Pillow 9.0, before the Resampling enum.
+def resampling_filter(name, image_module=Image):
+    return getattr(getattr(image_module, "Resampling", image_module), name)
+
+
 WIDTH, HEIGHT = 4096, 2048
 DEADLINE = 620
 HEARTBEAT = 5
@@ -292,7 +297,7 @@ def main(directory):
         notify("Hızlı eşleştirme için çalışma kopyaları hazırlanıyor.")
         for index,name in enumerate(inputs):
             with Image.open(directory/name) as im:
-                im.thumbnail((MATCH_EDGE,MATCH_EDGE),Image.Resampling.LANCZOS)
+                im.thumbnail((MATCH_EDGE,MATCH_EDGE),resampling_filter("LANCZOS"))
                 if proxy_size is None:
                     proxy_size=im.size
                 if im.size!=proxy_size:
