@@ -19,7 +19,19 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        long-edge: [960, 1920]
+        include:
+          - long-edge: 960
+            mode: quality
+            orientation: ''
+          - long-edge: 1920
+            mode: quality
+            orientation: ''
+          - long-edge: 1920
+            mode: quick
+            orientation: ''
+          - long-edge: 1920
+            mode: quick
+            orientation: '--landscape'
     steps:
       - uses: actions/checkout@v4
       - name: Install actual panorama binaries
@@ -32,4 +44,4 @@ jobs:
           /usr/bin/python3 scripts/test_photo360_hugin.py
           node --check public/assets/js/photo360-capture.js
       - name: Execute real Hugin / Nona / Enblend on synthetic camera frames
-        run: /usr/bin/python3 scripts/smoke_photo360_hugin.py --long-edge ${{ matrix.long-edge }}
+        run: /usr/bin/python3 scripts/smoke_photo360_hugin.py --long-edge ${{ matrix.long-edge }} --mode ${{ matrix.mode }} ${{ matrix.orientation }}

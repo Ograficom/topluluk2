@@ -17,7 +17,7 @@ import numpy as np
 from PIL import Image, ImageDraw, ImageFilter
 from photo360_hugin import resampling_filter
 
-def make_frames(directory, long_edge=960):
+def make_frames(directory, long_edge=960, quick=False, landscape=False):
     rng=np.random.default_rng(320)
     w,h=3072,1536
     low=rng.integers(20,235,(h//16,w//16,3),dtype=np.uint8)
@@ -30,10 +30,13 @@ def make_frames(directory, long_edge=960):
         draw.rectangle((x,y,x+a,y+b),fill=color)
     arr=np.asarray(texture)
     sw,sh=round(long_edge*2/3),long_edge
-    focal=sw/(2*math.tan(math.radians(28)))
+    if landscape: sw,sh=sh,sw
+    focal=min(sw,sh)/(2*math.tan(math.radians(28)))
     x,y=np.meshgrid((np.arange(sw)+.5-sw/2)/focal,(sh/2-np.arange(sh)-.5)/focal)
     index=0
-    for elev,num in [(0,16),(45,10),(-45,10),(90,1),(-90,1)]:
+    rows=([(0,10),(45,6),(-45,6),(90,1),(-90,1)] if quick else
+          ([(0,16),(35,10),(-35,10),(70,5),(-70,5)] if landscape else [(0,16),(45,10),(-45,10),(90,1),(-90,1)]))
+    for elev,num in rows:
         pitch=math.radians(elev)
         for i in range(num):
             yaw=2*math.pi*i/num
@@ -70,7 +73,8 @@ def run_case(source, directory, fast):
             if path.exists(): print(path.read_text()[-18000:])
         raise SystemExit(result.returncode)
     with Image.open(directory/"result.jpg") as image:
-        assert image.size==(4096,2048)
+        expected=(3072,1536) if len(list(source.glob("frame-*.jpg")))==24 else (4096,2048)
+        assert image.size==expected
         assert image.format=="JPEG"
     report=json.loads((directory/"quality.json").read_text())
     assert report["mean_error_px"]<=3
@@ -83,10 +87,14 @@ def main():
     parser=argparse.ArgumentParser()
     parser.add_argument("--long-edge",type=int,choices=[960,1920],default=960)
     parser.add_argument("--compare",action="store_true",help="Run both matching configurations on identical frames.")
+    parser.add_argument("--mode",choices=["quick","quality"],default="quality")
+    parser.add_argument("--landscape",action="store_true")
     args=parser.parse_args()
+    if args.mode=="quick" and args.compare:
+        parser.error("--compare is available only in quality mode")
     with tempfile.TemporaryDirectory(prefix="photo360-smoke-") as temp:
         root=Path(temp);source=root/"source";source.mkdir()
-        make_frames(source,args.long_edge)
+        make_frames(source,args.long_edge,quick=args.mode=="quick",landscape=args.landscape)
         fast=run_case(source,root/"fast",True)
         if args.compare:
             baseline=run_case(source,root/"baseline",False)

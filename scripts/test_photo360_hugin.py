@@ -59,6 +59,15 @@ class PerformanceTest(unittest.TestCase):
         self.assertIn("--sieve1size=25",fast[0][1])
         self.assertEqual(fast[0][2],90)
 
+    def test_quick_mode_has_no_expensive_fallback(self):
+        strategies=h.matching_strategies(["--allpairs"],quick=True)
+        self.assertEqual(len(strategies),1)
+        self.assertIn("--prealigned",strategies[0][1])
+        self.assertIn("--fullscale",strategies[0][1])
+        self.assertEqual(h.QUICK_COUNT,24)
+        self.assertEqual((h.QUICK_WIDTH,h.QUICK_HEIGHT),(3072,1536))
+        self.assertEqual(h.QUICK_DEADLINE,180)
+
     def test_bounded_fast_process_is_terminated(self):
         import time
         with tempfile.TemporaryDirectory() as d:

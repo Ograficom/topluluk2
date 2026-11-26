@@ -26,6 +26,10 @@ DEADLINE = 620
 HEARTBEAT = 5
 FAST_MATCH_LIMIT = 90
 MATCH_EDGE = 960
+QUICK_COUNT = 24
+QUICK_EDGE = 640
+QUICK_WIDTH, QUICK_HEIGHT = 3072, 1536
+QUICK_DEADLINE = 180
 # One worker, bounded CPU use. A two-vCPU host still uses only two threads.
 def cpu_budget():
     try:
@@ -224,7 +228,13 @@ def transfer_control_points(proxy_project, full_project, output, proxy_names, fu
         result.append(f'c n{n} N{N} x{fields["x"]:.6f} y{fields["y"]:.6f} X{fields["X"]:.6f} Y{fields["Y"]:.6f} t0')
     output.write_text("\n".join(result)+"\n",encoding="utf-8")
 
-def matching_strategies(all_pairs, fast=True):
+def matching_strategies(all_pairs, fast=True, quick=False):
+    if quick:
+        # At 640px use the whole working copy for control-point precision.
+        # Do not silently launch the expensive quality-mode fallbacks.
+        return [("fast", ["--prealigned", "--fullscale", "--ransacmode=rpy",
+            "--ransacdist=10", "--minmatches=6", "--sieve1size=25",
+            "--kdtreesteps=100", "--ransaciter=300"], 65)]
     # The native CPFind half-resolution mode is retained. The fast pass
     # limits the feature budget per spatial bucket, not the output image.
     # Every accepted result goes through the same full quality gates.
@@ -241,11 +251,18 @@ def matching_strategies(all_pairs, fast=True):
     return strategies
 
 def main(directory):
+    global WIDTH, HEIGHT, DEADLINE
     began = time.monotonic()
     sources = sorted(directory.glob("frame-*.jpg"))
     if not 24 <= len(sources) <= 48:
         raise RuntimeError("360° için yeterli çekim yok.")
-    notify("Çekimler doğrulanıyor.")
+    quick = len(sources)==QUICK_COUNT
+    WIDTH, HEIGHT = (QUICK_WIDTH, QUICK_HEIGHT) if quick else (4096, 2048)
+    DEADLINE = QUICK_DEADLINE if quick else 620
+    match_edge = QUICK_EDGE if quick else MATCH_EDGE
+    canvas_arg=f"--canvas={WIDTH}x{HEIGHT}"
+    crop_arg=f"--crop=0,{WIDTH},0,{HEIGHT}"
+    notify("Hızlı mod · 24 kare hazırlanıyor." if quick else "Kalite modu · Çekimler doğrulanıyor.")
     inputs, values, size = [], [], None
     for index, file in enumerate(sources):
         if file.name != "frame-%03d.jpg" % index:
@@ -277,8 +294,8 @@ def main(directory):
     cmd("pto_var","--set",",".join(values),"-o","pose.pto","base.pto")
     # Use the same spherical projection and scale for all optimization and
     # error measurements. A default narrow output is unsuitable for full spheres.
-    cmd("pano_modify","-p","2","--fov=360x180","--canvas=4096x2048",
-        "--crop=0,4096,0,2048","-o","seed.pto","pose.pto")
+    cmd("pano_modify","-p","2","--fov=360x180",canvas_arg,
+        crop_arg,"-o","seed.pto","pose.pto")
     notify("Hugin ortak görüntü noktalarını arıyor.")
     # Hugin 2024 introduced --allpairs; older releases already use all
     # pairs by default. Inspect the installed CLI rather than assume a version.
@@ -289,15 +306,15 @@ def main(directory):
         help_text = subprocess.run(["/usr/bin/cpfind", "--help"], stdout=subprocess.PIPE,
                                    stderr=subprocess.STDOUT, text=True, timeout=10).stdout
     all_pairs = ["--allpairs"] if "--allpairs" in help_text else []
-    fast = os.environ.get("PHOTO360_FAST_MATCH", "1") != "0"
-    strategies = matching_strategies(all_pairs, fast=fast)
+    fast = quick or os.environ.get("PHOTO360_FAST_MATCH", "1") != "0"
+    strategies = matching_strategies(all_pairs, fast=fast, quick=quick)
     proxy_names=[]
     proxy_size=None
-    if fast and max(size)>MATCH_EDGE:
+    if fast and max(size)>match_edge:
         notify("Hızlı eşleştirme için çalışma kopyaları hazırlanıyor.")
         for index,name in enumerate(inputs):
             with Image.open(directory/name) as im:
-                im.thumbnail((MATCH_EDGE,MATCH_EDGE),resampling_filter("LANCZOS"))
+                im.thumbnail((match_edge,match_edge),resampling_filter("LANCZOS"))
                 if proxy_size is None:
                     proxy_size=im.size
                 if im.size!=proxy_size:
@@ -307,8 +324,8 @@ def main(directory):
                 proxy_names.append(proxy_name)
         cmd("pto_gen","-p","0","-f",round(hfov,3),"-o","proxy-base.pto",*proxy_names)
         cmd("pto_var","--set",",".join(values),"-o","proxy-pose.pto","proxy-base.pto")
-        cmd("pano_modify","-p","2","--fov=360x180","--canvas=4096x2048",
-            "--crop=0,4096,0,2048","-o","proxy-seed.pto","proxy-pose.pto")
+        cmd("pano_modify","-p","2","--fov=360x180",canvas_arg,
+            crop_arg,"-o","proxy-seed.pto","proxy-pose.pto")
     labels = {
         "fast": "Hızlı görüntü eşleştirme",
         "standard": "Ayrıntılı görüntü eşleştirme",
@@ -345,9 +362,15 @@ def main(directory):
             cmd("cpclean","--whole-pano-checking","--dont-optimize","-o",
                 prefix+"-clean.pto",prefix+"-rotation.pto")
             verify_graph(directory/(prefix+"-clean.pto"),len(inputs))
-            cmd("pto_var","--opt=y,p,r,v,b","-o",prefix+"-lens.pto",prefix+"-clean.pto")
-            cmd("autooptimiser","-n","-o",prefix+"-refined.pto",prefix+"-lens.pto")
-            for project in [prefix+"-rotation.pto",prefix+"-clean.pto",prefix+"-refined.pto"]:
+            candidates=[prefix+"-rotation.pto",prefix+"-clean.pto"]
+            clean_mean,clean_max=stats_for(prefix+"-clean.pto")
+            # Skip an expensive extra lens fit only when cleaned geometry is
+            # already comfortably inside the original acceptance limits.
+            if not quick or clean_mean>1.5 or clean_max>8:
+                cmd("pto_var","--opt=y,p,r,v,b","-o",prefix+"-lens.pto",prefix+"-clean.pto")
+                cmd("autooptimiser","-n","-o",prefix+"-refined.pto",prefix+"-lens.pto")
+                candidates.append(prefix+"-refined.pto")
+            for project in candidates:
                 mean,maximum=stats_for(project)
                 if mean<=3 and maximum<=15 and (best is None or mean<best[0]):
                     best=(mean,maximum,project)
@@ -361,16 +384,18 @@ def main(directory):
             best=None
             notify("Eşleştirme aşaması: "+str(error))
     if best is None:
+        if quick:
+            raise RuntimeError("Hızlı modda kareler güvenilir şekilde eşleşmedi veya süre sınırı aşıldı. Daha iyi ışıkta ya da kalite modunda çekin.")
         raise RuntimeError("Geometrik eşleşme güvenilir değil. Hatalı panorama oluşturulmadı.")
     notify("Kamera açıları doğrulandı; pozlama dengeleniyor.")
     # Photometric optimization only; do not re-level or re-optimize geometry.
     cmd("autooptimiser","-m","-o","optimized.pto",best[2])
-    cmd("pano_modify","-p","2","--fov=360x180","--canvas=4096x2048",
-        "--crop=0,4096,0,2048","-o","sphere.pto","optimized.pto")
+    cmd("pano_modify","-p","2","--fov=360x180",canvas_arg,
+        crop_arg,"-o","sphere.pto","optimized.pto")
     error,maximum=stats_for("sphere.pto")
     if error>3 or maximum>15:
         raise RuntimeError("Son geometri kalite kontrolü başarısız.")
-    report={"engine":"hugin-enblend","matching_strategy":selected_strategy,
+    report={"engine":"hugin-enblend","mode":"quick" if quick else "quality","matching_strategy":selected_strategy,
         "source_size":list(size),"proxy_size":list(proxy_size) if proxy_size and selected_strategy=="fast" else None,
         "threads":THREADS,"mean_error_px":error,"maximum_error_px":maximum,
         "control_points":verify_graph(directory/"sphere.pto",len(inputs))}
@@ -380,9 +405,14 @@ def main(directory):
     if len(layers)!=len(inputs):
         raise RuntimeError("Bazı kareler küreye yansıtılamadı.")
     notify("Enblend birleşim sınırlarını ve geçişleri işliyor.")
-    cmd("enblend","--wrap=horizontal","--primary-seam-generator=graph-cut","--compression=lzw","-f","4096x2048+0+0","-o","sphere.tif",*[f.name for f in layers])
+    seam="nearest-feature-transform" if quick else "graph-cut"
+    cmd("enblend","--wrap=horizontal",f"--primary-seam-generator={seam}",
+        "--compression=none" if quick else "--compression=lzw",
+        "-f",f"{WIDTH}x{HEIGHT}+0+0","-o","sphere.tif",*[f.name for f in layers])
     notify("Kapsama ve çıktı kalitesi kontrol ediliyor.")
     image=alpha_coverage(directory/"sphere.tif", layers)
+    if time.monotonic()-began>=DEADLINE:
+        raise RuntimeError("Görüntü işleme süre sınırına ulaştı.")
     write_jpeg(image,directory/"result.jpg")
     report["elapsed_seconds"]=round(time.monotonic()-began,2)
     report["stage_seconds"]={key:round(value,2) for key,value in durations.items()}
