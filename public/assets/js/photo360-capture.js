@@ -104,7 +104,7 @@ async function open(onFile){
         point.setAttribute('cx',100+78*Math.cos(a));point.setAttribute('cy',100+78*Math.sin(a));point.setAttribute('r','2.1');grid.append(point);
     }
     let stream=null,closed=false,busy=false,current=null,targets=[],index=0,baseYaw=0,coverage=0,shots=0,cameraReady=false,completed=false,lastNotice=0;
-    let output=null,best=null,vectors=null,accum=null,quality=null,focalScale=1;
+    let output=null,best=null,vectors=null,accum=null,quality=null,focalScale=1,rawFrames=[];
     const restart=dialog.querySelector('[data-restart]');
     let previewUrl=null;
     const preview=document.createElement('img');preview.className='ografi-photo360-result';preview.alt='Birleştirilen 360° fotoğraf';preview.hidden=true;dialog.prepend(preview);
@@ -149,7 +149,7 @@ async function open(onFile){
     start.onclick=()=>{
         if(!current||!cameraReady||!video.videoWidth||busy){status.textContent='Kamera veya sensör henüz hazır değil.';return;}
         if(!portrait()){status.textContent='Telefonu dik konuma getirin.';return;}
-        index=0;coverage=0;shots=0;completed=false;lastNotice=0;last.hidden=true;finish.hidden=true;restart.hidden=true;progress.value=0;
+        index=0;coverage=0;shots=0;completed=false;lastNotice=0;rawFrames=[];last.hidden=true;finish.hidden=true;restart.hidden=true;progress.value=0;
         preview.hidden=true;video.hidden=false;if(previewUrl){URL.revokeObjectURL(previewUrl);previewUrl=null;}
         baseYaw=Math.atan2(current.forward[0],current.forward[1]);
         targets=[];
@@ -165,7 +165,7 @@ async function open(onFile){
         const pose=current;busy=true;shot.disabled=true;status.textContent='Fotoğraf çekiliyor…';
         try{
             // Camera field of view is estimated; browsers do not expose calibrated intrinsics.
-            const factor=Math.min(1,1600/Math.max(video.videoWidth,video.videoHeight));
+            const factor=Math.min(1,1920/Math.max(video.videoWidth,video.videoHeight));
             source.width=Math.max(1,Math.round(video.videoWidth*factor));source.height=Math.max(1,Math.round(video.videoHeight*factor));
             const sw=source.width,sh=source.height;
             // Some Android browsers deliver landscape frames even with a portrait UI.
@@ -199,7 +199,13 @@ async function open(onFile){
                 // Keep all previously captured pixels and let the user retake this view.
                 shots--;lastNotice=Date.now()+2800;status.textContent='Fotoğraflar eşleşmedi. Telefonu aynı noktada sabit tutun, biraz önceki yöne dönüp tekrar çekin.';setTimeout(guide,2900);return;
             }
-            if(correction.reliable)focalScale=clamp(focalScale*(1+.18*(correction.scale-1)),.68,1.4);
+            // The live guide keeps its nominal camera model; final stitching fits one shared lens.
+            const raw=window.ografiSphereStitch?.grayFrame(source,pose);
+            if(!raw)throw Error('360° işleme motoru yüklenemedi. Sayfayı yenileyin.');
+            const blob=await new Promise(resolve=>source.toBlob(resolve,'image/jpeg',.96));
+            if(!blob)throw Error('Çekim kaydedilemedi. Tekrar deneyin.');
+            if(closed)return;
+            rawFrames.push({...raw,blob});
             const feather=Math.min(sw,sh)*.32;
             // Blend overlapping shots with smoothly tapered weights rather
             // than overwriting an entire region with the newest best frame.
@@ -261,11 +267,25 @@ async function open(onFile){
             }
             count.textContent=index+' / '+targets.length;progress.value=percent;
             if(percent>=.985){
-                completed=true;ring.hidden=true;shot.hidden=true;
-                for(let k=0;k<N;k++)if(!best[k])output.data[k*4+3]=255;
-                rc.putImageData(output,0,0);finish.hidden=false;
-                status.textContent='Birleştirme tamamlandı. Kenarları ve ışık geçişlerini kontrol edin.';
-                restart.hidden=false;
+                ring.hidden=true;shot.hidden=true;
+                status.textContent='Orijinal kareler yeniden hizalanıyor…';
+                // Release online guide buffers before the full-resolution final pass.
+                output=null;best=null;vectors=null;accum=null;quality=null;
+                let report;
+                try{
+                    report=await window.ografiSphereStitch.stitch(rawFrames,result,baseYaw,message=>{if(!closed)status.textContent=message;},()=>closed);
+                }catch(error){
+                    if(closed)return;
+                    completed=true;restart.hidden=false;status.textContent='Birleştirme başarısız: '+(error.message||'Bilinmeyen hata')+'. Yeniden çekin.';return;
+                }
+                if(closed)return;
+                completed=true;restart.hidden=false;
+                // Always provide a preview. Don't enable publishing if the sphere
+                // is materially incomplete; report weak geometry instead of hiding it.
+                finish.hidden=report.coverage<.98;
+                status.textContent=report.coverage<.98
+                    ? 'Küre eksik (%'+Math.round(report.coverage*100)+'). Yeniden çekin.'
+                    : report.trusted?'Birleştirme tamamlandı. Önizlemeyi kontrol edin.':'Eşleşmeler zayıf. Önizlemeyi kontrol edin; bozuksa daha aydınlık ortamda yeniden çekin.';
                 result.toBlob(blob=>{if(!blob||closed||!completed)return;previewUrl=URL.createObjectURL(blob);preview.src=previewUrl;preview.hidden=false;video.hidden=true;},'image/jpeg',.94);
                 return;
             }
