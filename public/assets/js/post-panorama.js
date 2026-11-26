@@ -6,10 +6,12 @@
     // Enhance only wide photos, including existing uploads and AJAX-loaded cards.
     const candidateSelector = 'a[data-ografi-panorama-candidate]';
     const panoramaIcon = '<svg viewBox="0 0 80 48" width="25" height="15" fill="none" aria-hidden="true" focusable="false"><text x="38" y="29" text-anchor="middle" font-size="29" font-weight="750" font-family="Arial,sans-serif" fill="currentColor">280</text><circle cx="63" cy="7" r="2.8" fill="currentColor"/><path d="M15 19C-6 25 1 39 36 40M65 19C88 26 78 40 43 40M31 34l7 6-7 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+    const isSphere = value => /(?:^|\/)ografi-360-[^/?#]+\.(?:jpe?g|png|webp)(?:[?#]|$)/i.test(value || '');
+    const sphereIcon = panoramaIcon.replace('>280</text>', '>360</text>');
     const eligible = (link, image = link?.querySelector('img')) => {
         if (!(link instanceof HTMLAnchorElement) || !link.matches(candidateSelector)) return false;
         if (!image?.naturalWidth || !image.naturalHeight) return false;
-        return image.naturalWidth / image.naturalHeight >= (link.dataset.ografiPanoramaCandidate === 'explicit' ? 2 : 3);
+        return isSphere(link.href) ? Math.abs(image.naturalWidth/image.naturalHeight-2)<=.035 : image.naturalWidth / image.naturalHeight >= (link.dataset.ografiPanoramaCandidate === 'explicit' ? 2 : 3);
     };
     const prepare = link => {
         if (link.hasAttribute('data-ografi-panorama')) return;
@@ -21,7 +23,7 @@
         const label = document.createElement('span');
         label.className = 'ografi-panorama-overlay';
         label.setAttribute('aria-hidden', 'true');
-        label.innerHTML = panoramaIcon;
+        label.innerHTML = isSphere(link.href) ? sphereIcon : panoramaIcon;
         link.append(label);
     };
     // Use the same intrinsic aspect-ratio test in the composer and public viewer.
@@ -33,7 +35,8 @@
         if (!img.naturalWidth || !img.naturalHeight) return;
         const tile = img.parentElement;
         const badge = tile.querySelector(':scope > .ografi-pano-preview-badge');
-        if (img.naturalWidth / img.naturalHeight < 3) {
+        const spherical = img.dataset.ografiPhoto360 === '1' || isSphere(img.src);
+        if (!spherical && img.naturalWidth / img.naturalHeight < 3) {
             badge?.remove();
             return;
         }
@@ -43,7 +46,7 @@
         label.setAttribute('role', 'img');
         label.setAttribute('aria-label', 'Panoramik fotoğraf algılandı');
         label.title = 'Panoramik fotoğraf algılandı';
-        label.innerHTML = panoramaIcon;
+        label.innerHTML = spherical ? sphereIcon : panoramaIcon;
         tile.append(label);
     };
     const scan = root => {
@@ -70,7 +73,7 @@
 
     // Draw the original-resolution image as a cylindrical perspective in one GPU pass.
     // No readback, JPEG recompression, or low-resolution intermediate image.
-    function gpuRenderer(canvas, image) {
+    function gpuRenderer(canvas, image, spherical=false) {
         const gl = canvas.getContext('webgl', {alpha:false, antialias:false, preserveDrawingBuffer:false});
         if (!gl) return null;
         const compile = (type, source) => {
@@ -82,8 +85,9 @@
         const vs = compile(gl.VERTEX_SHADER, 'attribute vec2 a; void main(){gl_Position=vec4(a,0.0,1.0);}');
         const precision = gl.getShaderPrecisionFormat(gl.FRAGMENT_SHADER, gl.HIGH_FLOAT)?.precision ? 'highp' : 'mediump';
         const fs = compile(gl.FRAGMENT_SHADER, 'precision '+precision+' float; uniform sampler2D photo; uniform vec2 size; uniform float yaw; uniform float fov; uniform float ratio; void main(){float focal=size.x/(2.0*tan(fov/2.0)); float a=atan((gl_FragCoord.x-size.x/2.0)/focal); float u=(yaw+a)/4.8869219056+0.5; float v=0.5-(gl_FragCoord.y-size.y/2.0)/focal*cos(a)*ratio/4.8869219056; if(u<0.0||u>1.0||v<0.0||v>1.0){gl_FragColor=vec4(0.035,0.045,0.06,1.0);}else{gl_FragColor=texture2D(photo,vec2(u,v));}}');
+        const sphereFs = spherical ? compile(gl.FRAGMENT_SHADER, 'precision '+precision+' float; uniform sampler2D photo; uniform vec2 size; uniform float yaw; uniform float fov; uniform float pitch; void main(){float focal=size.x/(2.0*tan(fov/2.0));vec3 d=normalize(vec3((gl_FragCoord.x-size.x/2.0)/focal,(gl_FragCoord.y-size.y/2.0)/focal,1.0));d=vec3(d.x,d.y*cos(pitch)+d.z*sin(pitch),d.z*cos(pitch)-d.y*sin(pitch));float u=fract((atan(d.x,d.z)+yaw)/6.28318530718+0.5);float v=0.5-asin(clamp(d.y,-1.0,1.0))/3.14159265359;gl_FragColor=texture2D(photo,vec2(u,v));}') : null;
         const program = gl.createProgram();
-        gl.attachShader(program, vs); gl.attachShader(program, fs); gl.linkProgram(program);
+        gl.attachShader(program, vs); gl.attachShader(program, sphereFs||fs); gl.linkProgram(program);
         if (!gl.getProgramParameter(program, gl.LINK_STATUS)) throw Error(gl.getProgramInfoLog(program));
         gl.useProgram(program);
         const buffer = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
@@ -95,11 +99,11 @@
         if (Math.max(image.naturalWidth,image.naturalHeight)>gl.getParameter(gl.MAX_TEXTURE_SIZE)) throw Error('Texture size limit');
         gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,image);
         if(gl.getError()!==gl.NO_ERROR) throw Error('Texture upload failed');
-        const uniforms = Object.fromEntries(['size','yaw','fov','ratio'].map(key=>[key,gl.getUniformLocation(program,key)]));
+        const uniforms = Object.fromEntries(['size','yaw','fov','ratio','pitch'].map(key=>[key,gl.getUniformLocation(program,key)]));
         gl.uniform1f(uniforms.ratio,image.naturalWidth/image.naturalHeight);
         return {
-            draw(w,h,yaw,fov){gl.viewport(0,0,w,h);gl.uniform2f(uniforms.size,w,h);gl.uniform1f(uniforms.yaw,yaw);gl.uniform1f(uniforms.fov,fov);gl.drawArrays(gl.TRIANGLE_STRIP,0,4);},
-            dispose(){gl.deleteTexture(texture);gl.deleteBuffer(buffer);gl.deleteProgram(program);gl.deleteShader(vs);gl.deleteShader(fs);}
+            draw(w,h,yaw,fov,pitch=0){gl.viewport(0,0,w,h);gl.uniform2f(uniforms.size,w,h);gl.uniform1f(uniforms.yaw,yaw);gl.uniform1f(uniforms.fov,fov);if(uniforms.pitch)gl.uniform1f(uniforms.pitch,pitch);gl.drawArrays(gl.TRIANGLE_STRIP,0,4);},
+            dispose(){gl.deleteTexture(texture);gl.deleteBuffer(buffer);gl.deleteProgram(program);gl.deleteShader(vs);gl.deleteShader(fs);if(sphereFs)gl.deleteShader(sphereFs);}
         };
     }
     const sessions = new WeakMap();
@@ -117,17 +121,18 @@
         const viewport=carousel?.querySelector('.fancybox__viewport');
         const trigger=slide?.triggerEl;
         if (!carousel||!viewport||!eligible(trigger,trigger?.querySelector('img'))&&!eligible(trigger,slide?.el?.querySelector('img'))) return;
+        const spherical=isSphere(trigger.href);
         const stage=document.createElement('div');
         stage.className='ografi-pano-inline';
         stage.setAttribute('role','region');
-        stage.setAttribute('aria-label','280° panorama');
+        stage.setAttribute('aria-label',spherical?'360° küresel panorama':'280° panorama');
         stage.setAttribute('data-draggable','');
         stage.tabIndex=0;
         stage.innerHTML='<div class="ografi-pano-surface"><canvas aria-hidden="true" hidden></canvas><img alt="Panoramik fotoğraf" draggable="false"><span class="ografi-pano-loading" role="status">Yükleniyor…</span></div>';
         carousel.append(stage);
         const surface=stage.querySelector('.ografi-pano-surface'), canvas=stage.querySelector('canvas'), photo=stage.querySelector('img'), status=stage.querySelector('[role="status"]');
         const wasInert=viewport.inert;
-        let renderer=null,ready=false,disposed=false,frame=0,yaw=0,fov=110*radians,zoom=1,x=.5,y=.5;
+        let renderer=null,ready=false,disposed=false,frame=0,yaw=0,pitch=0,fov=(spherical?90:110)*radians,zoom=1,x=.5,y=.5;
         const pointers=new Map();
         const listeners=[];
         const on=(target,name,fn,options)=>{target.addEventListener(name,fn,options);listeners.push(()=>target.removeEventListener(name,fn,options));};
@@ -148,8 +153,9 @@
                 const w=Math.max(1,Math.round(d.w*scale)),h=Math.max(1,Math.round(d.h*scale));
                 if(canvas.width!==w)canvas.width=w;
                 if(canvas.height!==h)canvas.height=h;
-                yaw=clamp(yaw,-half+fov/2,half-fov/2);
-                renderer.draw(w,h,yaw,fov);
+                if(spherical){yaw=((yaw+Math.PI)%(2*Math.PI)+2*Math.PI)%(2*Math.PI)-Math.PI;pitch=clamp(pitch,-Math.PI/2,Math.PI/2);}
+                else yaw=clamp(yaw,-half+fov/2,half-fov/2);
+                renderer.draw(w,h,yaw,fov,pitch);
             }else{
                 x=bound(x,d.w,d.dw);y=bound(y,d.h,d.dh);
                 photo.style.width=d.dw+'px';photo.style.height=d.dh+'px';
@@ -165,11 +171,11 @@
         }
         function pan(dx,dy){
             if(!ready)return;
-            if(renderer)yaw-=dx*fov/Math.max(1,surface.clientWidth);
+            if(renderer){yaw-=dx*fov/Math.max(1,surface.clientWidth);if(spherical)pitch+=dy*fov/Math.max(1,surface.clientWidth);}
             else {const d=dimensions();x-=dx/d.dw;y-=dy/d.dh;}
             render();
         }
-        function reset(){yaw=0;fov=110*radians;zoom=1;x=.5;y=.5;render();}
+        function reset(){yaw=0;pitch=0;fov=(spherical?90:110)*radians;zoom=1;x=.5;y=.5;render();}
         on(surface,'pointerdown',e=>{
             if(!ready||e.button!==0)return;
             e.stopPropagation();pointers.set(e.pointerId,{x:e.clientX,y:e.clientY});
@@ -236,7 +242,7 @@
         photo.onload=()=>{
             if(disposed)return;
             ready=true;status.hidden=true;
-            try{renderer=gpuRenderer(canvas,photo);}catch(_){renderer=null;}
+            try{renderer=gpuRenderer(canvas,photo,spherical);}catch(_){renderer=null;}
             canvas.hidden=!renderer;photo.hidden=!!renderer;
             render();
         };
@@ -280,6 +286,9 @@
             });
             toolbar.prepend(control);
         }
+        const label=isSphere(trigger.href)?'360°':'280°';
+        control.innerHTML=isSphere(trigger.href)?sphereIcon:panoramaIcon;
+        if(!sessions.has(instance)){control.title=label+' panorama';control.setAttribute('aria-label',label+' panorama görünümüne geç');}
         control.hidden=false;
     }
     window.ografiPanoramaToolbar=syncToolbar;

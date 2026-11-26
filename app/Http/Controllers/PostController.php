@@ -175,12 +175,12 @@ class PostController extends Controller
         $videoPath = $request->file('video_file')?->store('posts/videos', 'public');
         if ($request->hasFile('video_file') && ! $videoPath) throw new \RuntimeException('The post video could not be stored.');
 
-        $coverImage = $request->file('cover_image')?->store('posts', 'public');
+        $coverImage = $request->hasFile('cover_image') ? $this->storePostImage($request->file('cover_image'), 'posts') : null;
         if ($request->hasFile('cover_image') && ! $coverImage) throw new \RuntimeException('The post cover image could not be stored.');
 
         $mediaPaths = [];
         foreach (array_values($request->file('media', [])) as $mediaFile) {
-            $path = $mediaFile->store('posts/gallery', 'public');
+            $path = $this->storePostImage($mediaFile, 'posts/gallery');
             if (! $path) throw new \RuntimeException('A gallery image could not be stored.');
             $mediaPaths[] = $path;
         }
@@ -294,7 +294,7 @@ class PostController extends Controller
         $newVideo = $request->file('video_file')?->store('posts/videos', 'public');
         if ($request->hasFile('video_file') && ! $newVideo) throw new \RuntimeException('The post video could not be stored.');
 
-        $newCover = $request->file('cover_image')?->store('posts', 'public');
+        $newCover = $request->hasFile('cover_image') ? $this->storePostImage($request->file('cover_image'), 'posts') : null;
         if ($request->hasFile('cover_image') && ! $newCover) throw new \RuntimeException('The post cover image could not be stored.');
 
         $tags = $this->parseTags($validated['tags'] ?? '');
@@ -307,7 +307,7 @@ class PostController extends Controller
         $mediaPaths = $existingMedia->reject(fn (string $path) => $removeMedia->contains($path))->values();
         $newMediaPaths = [];
         foreach (array_values($request->file('media', [])) as $mediaFile) {
-            $path = $mediaFile->store('posts/gallery', 'public');
+            $path = $this->storePostImage($mediaFile, 'posts/gallery');
             if (! $path) throw new \RuntimeException('A gallery image could not be stored.');
             $newMediaPaths[] = $path;
             $mediaPaths->push($path);
@@ -462,6 +462,22 @@ class PostController extends Controller
         $data['blocks'] = $blocks;
 
         return json_encode($data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR);
+    }
+
+    private function storePostImage(\Illuminate\Http\UploadedFile $file, string $directory): string|false
+    {
+        $dimensions = @getimagesize($file->getPathname());
+        if ($dimensions && $dimensions[1] > 0 && abs($dimensions[0] / $dimensions[1] - 2) <= 0.035) {
+            $header = @file_get_contents($file->getPathname(), false, null, 0, 262144) ?: '';
+            $isSphere = str_starts_with($file->getClientOriginalName(), 'ografi-360-')
+                || (str_contains($header, 'GPano:ProjectionType') && str_contains($header, 'equirectangular')
+                    && ! str_contains($header, 'GPano:CroppedAreaLeftPixels="1"'));
+            if ($isSphere) {
+                return $file->storeAs($directory, 'ografi-360-'.Str::uuid().'.'.$file->extension(), 'public');
+            }
+        }
+
+        return $file->store($directory, 'public');
     }
 
     private function deleteUnusedPostImage(string $value): void

@@ -434,6 +434,11 @@
                                 <strong>Görselleri buraya sürükleyip bırakın.</strong>
                                 <span>veya bunları cihazınızdan seçin</span>
                                 <button type="button" class="post-gallery-upload" data-gallery-choose>Resimleri yükle</button>
+                                <div class="ografi-photo360-actions">
+                                    <button type="button" data-photo360-capture>360° fotoğraf çek</button>
+                                    <button type="button" data-photo360-import>360° fotoğraf yükle</button>
+                                    <input type="file" accept="image/jpeg,image/png,image/webp" data-photo360-picker hidden>
+                                </div>
                                 <input type="file" data-gallery-picker accept="image/jpeg,image/png,image/gif,image/webp" multiple hidden aria-label="Görsel seç">
                              </div>
                              <p data-gallery-error role="alert" hidden></p>
@@ -1147,6 +1152,7 @@
       })),
       ...Array.from(form.querySelectorAll('[data-post-gallery-list] [data-gallery-file-key]')).map(item => ({
         uploadKey: item.dataset.galleryFileKey, src: item.querySelector('img')?.getAttribute('src'),
+        photo360: item.querySelector('img')?.dataset.ografiPhoto360 === '1',
         remove: item.querySelector('button')
       }))
     ].filter(item => item.src);
@@ -1168,6 +1174,7 @@
           tile.className = 'editor-inline-image-tile';
           const image = document.createElement('img');
           image.src = source.src;
+          if (source.photo360) image.dataset.ografiPhoto360 = '1';
           image.alt = 'Gönderi görseli';
           tile.append(image);
           if (!this.readOnly) {
@@ -1783,6 +1790,7 @@
                 tile.title = entry.file.name;
                 const img = document.createElement('img');
                 img.src = previewUrl(entry.file);
+                 if (entry.file.name.startsWith('ografi-360-')) img.dataset.ografiPhoto360 = '1';
                 img.alt = '';
                 const check = document.createElement('span');
                 check.className = 'post-gallery-check';
@@ -1822,6 +1830,7 @@
                 item.dataset.galleryFileKey = fileKey(file);
                 const image = document.createElement('img');
                 image.src = previewUrl(file);
+                 if (file.name.startsWith('ografi-360-')) image.dataset.ografiPhoto360 = '1';
                 image.alt = file.name;
                 const remove = document.createElement('button');
                 remove.type = 'button';
@@ -1874,7 +1883,27 @@
             pruneGalleryUrls();
             galleryOpen?.focus({ preventScroll: true });
         };
-        galleryOpen?.addEventListener('click', openGallery);
+        galleryModal?.querySelector('[data-photo360-capture]')?.addEventListener('click', () => {
+             if (!window.ografiPhoto360) { showGalleryError('360° kamera yüklenemedi. Sayfayı yenileyin.'); return; }
+             window.ografiPhoto360.open(file => { if (galleryModal.hidden) return; addGalleryCandidates([file]); });
+         });
+         const photo360Picker = galleryModal?.querySelector('[data-photo360-picker]');
+         galleryModal?.querySelector('[data-photo360-import]')?.addEventListener('click', () => photo360Picker?.click());
+         photo360Picker?.addEventListener('change', async () => {
+             const file = photo360Picker.files?.[0]; photo360Picker.value = '';
+             if (!file) return;
+             const url = URL.createObjectURL(file);
+             try {
+                 const img = new Image(); img.src = url; await img.decode();
+                 if (Math.abs(img.naturalWidth / img.naturalHeight - 2) > .035) {
+                     showGalleryError('360° fotoğraf, 2:1 oranında tam küresel (equirectangular) bir görsel olmalıdır.'); return;
+                 }
+                 const ext = file.type === 'image/png' ? 'png' : file.type === 'image/webp' ? 'webp' : 'jpg';
+                 if (!galleryModal.hidden) addGalleryCandidates([new File([file], 'ografi-360-'+Date.now()+'.'+ext, {type:file.type})]);
+             } catch (_) { showGalleryError('360° fotoğraf okunamadı.'); }
+             finally { URL.revokeObjectURL(url); }
+         });
+         galleryOpen?.addEventListener('click', openGallery);
         galleryModal?.querySelectorAll('[data-gallery-close]').forEach(button => button.addEventListener('click', closeGallery));
         galleryModal?.querySelector('[data-gallery-choose]')?.addEventListener('click', () => galleryPicker?.click());
         galleryPicker?.addEventListener('change', () => {
