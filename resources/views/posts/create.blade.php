@@ -1874,7 +1874,7 @@
             galleryModal.querySelector('[data-gallery-choose]')?.focus({ preventScroll: true });
         };
         const closeGallery = () => {
-            if (!galleryModal) return;
+            if (!galleryModal || document.querySelector('.ografi-photo360-camera[open]')) return;
             galleryModal.hidden = true;
             composerOverlay.classList.remove('is-gallery-open');
             composerForm.removeAttribute('aria-hidden');
@@ -1885,7 +1885,12 @@
         };
         galleryModal?.querySelector('[data-photo360-capture]')?.addEventListener('click', () => {
              if (!window.ografiPhoto360) { showGalleryError('360° kamera yüklenemedi. Sayfayı yenileyin.'); return; }
-             window.ografiPhoto360.open(file => { if (galleryModal.hidden) return; addGalleryCandidates([file]); });
+             window.ografiPhoto360.open(file => {
+                 if (!galleryModal.isConnected) return false;
+                 if (galleryModal.hidden) openGallery();
+                 addGalleryCandidates([file]);
+                 return stagedGallery.some(entry => fileKey(entry.file) === fileKey(file));
+             });
          });
          const photo360Picker = galleryModal?.querySelector('[data-photo360-picker]');
          galleryModal?.querySelector('[data-photo360-import]')?.addEventListener('click', () => photo360Picker?.click());
@@ -1917,6 +1922,7 @@
         });
         galleryModal?.addEventListener('click', event => { if (event.target === galleryModal) closeGallery(); });
         document.addEventListener('keydown', event => {
+            if (document.querySelector('.ografi-photo360-camera[open]')) return;
             if (event.key === 'Escape' && galleryModal?.isConnected && !galleryModal.hidden) {
                 event.preventDefault();
                 event.stopImmediatePropagation();

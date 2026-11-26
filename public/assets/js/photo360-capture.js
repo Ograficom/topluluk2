@@ -16,6 +16,32 @@ function poseData(pose,origin){
     return {yaw:wrap((yaw-origin)/R),pitch:pitch/R,roll:wrap(-Math.atan2(dot(pose.right,up),dot(pose.right,right))/R)};
 }
 const sleep=ms=>new Promise(resolve=>setTimeout(resolve,ms));
+// Only completed captures are stored. Account-scoped records never resume
+// under a different authenticated user. Expired drafts are pruned on access.
+const DRAFT_TTL=24*60*60*1000;
+async function draftStore(mode,operation){
+    if(!window.indexedDB)throw Error('Yerel çekim saklama desteklenmiyor.');
+    const db=await new Promise((resolve,reject)=>{
+        const req=indexedDB.open('ografi-photo360-drafts',1);
+        req.onupgradeneeded=()=>req.result.createObjectStore('drafts');
+        req.onsuccess=()=>resolve(req.result);req.onerror=()=>reject(req.error);
+    });
+    try{
+        return await new Promise((resolve,reject)=>{
+            const tx=db.transaction('drafts',mode),store=tx.objectStore('drafts');
+            let value;
+            tx.oncomplete=()=>resolve(value);tx.onerror=()=>reject(tx.error);tx.onabort=()=>reject(tx.error||Error('Yerel kayıt iptal edildi.'));
+            operation(store,result=>{value=result;});
+        });
+    }finally{db.close();}
+}
+const draftGet=key=>draftStore('readonly',(store,done)=>{const req=store.get(key);req.onsuccess=()=>done(req.result);});
+const draftPut=(key,value)=>draftStore('readwrite',store=>store.put(value,key));
+const draftDelete=key=>draftStore('readwrite',store=>{store.delete(key+':frames');store.delete(key+':job');});
+const pruneDrafts=()=>draftStore('readwrite',store=>{
+    const req=store.openCursor();
+    req.onsuccess=()=>{const cursor=req.result;if(!cursor)return;if(!cursor.value?.savedAt||Date.now()-cursor.value.savedAt>DRAFT_TTL)cursor.delete();cursor.continue();};
+});
 async function open(onFile){
     if(document.querySelector('.ografi-photo360-camera[open]'))return;
     if(!navigator.mediaDevices?.getUserMedia||!window.DeviceOrientationEvent){alert('HTTPS, kamera ve hareket sensörü destekli telefon gerekiyor.');return;}
@@ -54,6 +80,25 @@ async function open(onFile){
     }
     const abort=new AbortController();
     let csrf=document.querySelector('meta[name="csrf-token"]')?.content||'', owner=null,uploaded=0;
+    let hasSavedDraft=false, draftLoaded=false, accepted=false, preserveOnClose=false;
+    const draftKey=()=>String(owner);
+    async function saveDraft(){
+        if(!owner||hasSavedDraft||frames.length<24)return;
+        try{
+            await draftPut(draftKey()+':frames',{savedAt:Date.now(),frames});
+            hasSavedDraft=true;
+        }catch(error){console.warn('360° yerel kayıt başarısız:',error);}
+    }
+    async function saveJob(){
+        if(!hasSavedDraft||!owner)return;
+        try{await draftPut(draftKey()+':job',{savedAt:Date.now(),id});}
+        catch(error){console.warn('360° işlem kimliği kaydedilemedi:',error);}
+    }
+    async function clearDraft(){
+        if(!owner)return;
+        try{await draftDelete(draftKey());}catch(error){console.warn('360° yerel kayıt silinemedi:',error);}
+        hasSavedDraft=false;
+    }
     const root='/composer/photo360',engineVersion='hugin-enblend-v2';
     function retrySeconds(response){
         const raw=response.headers.get('Retry-After');
@@ -131,18 +176,60 @@ async function open(onFile){
         guide();
     }
     function cancelJob(){const old=id;id=null;if(old)request('/'+old,'DELETE',undefined,new AbortController().signal).catch(()=>{});}
-    q('[data-close]').onclick=()=>dialog.close();
-    dialog.addEventListener('close',()=>{closed=true;abort.abort();cancelJob();stopCamera();previewObserver?.disconnect();window.removeEventListener('resize',fitPreview);video.removeEventListener('resize',fitPreview);window.removeEventListener('deviceorientation',orientation);if(previewUrl)URL.revokeObjectURL(previewUrl);dialog.remove();},{once:true});
+    // Escape/Android back must not implicitly close a completed capture.
+    dialog.addEventListener('cancel',event=>event.preventDefault());
+    dialog.addEventListener('keydown',event=>{if(event.key==='Escape'){event.preventDefault();event.stopPropagation();}});
+    const onBeforeUnload=event=>{
+        if(!accepted&&(frames.length||busy)){event.preventDefault();event.returnValue='';}
+    };
+    window.addEventListener('beforeunload',onBeforeUnload);
+    q('[data-close]').onclick=()=>{
+        if(busy){status.textContent='İşlem devam ediyor. Tamamlanana kadar ekranı açık tutun.';return;}
+        if(frames.length||id||resultFile){
+            if(hasSavedDraft){
+                if(!window.confirm('Çekimi kapatıp daha sonra devam etmek istiyor musunuz?'))return;
+                preserveOnClose=true;
+            }else if(!window.confirm('Çekimleri kaybetme ihtimaliniz var. Kapatmak istiyor musunuz?'))return;
+        }
+        dialog.close();
+    };
+    dialog.addEventListener('close',()=>{
+        closed=true;abort.abort();
+        // Unexpected closes must not delete a server job with a recoverable draft.
+        if(accepted){cancelJob();void clearDraft();}
+        else if(!preserveOnClose&&!hasSavedDraft&&!busy)cancelJob();
+        stopCamera();previewObserver?.disconnect();window.removeEventListener('resize',fitPreview);
+        video.removeEventListener('resize',fitPreview);window.removeEventListener('deviceorientation',orientation);
+        window.removeEventListener('beforeunload',onBeforeUnload);
+        if(previewUrl)URL.revokeObjectURL(previewUrl);dialog.remove();
+    },{once:true});
     dialog.showModal();
     try{
-        if(await permission!=='granted')throw Error('Hareket sensörü izni gerekli.');
-        if(closed)return;
-        window.addEventListener('deviceorientation',orientation);
+        // Recovery only needs the authenticated session, not live camera access.
         await refreshSession();
+        if(closed)return;
         const health=await (await request('/health')).json();
         if(health.engine!==engineVersion)throw Error('360° sunucu sürümü ile kamera sürümü eşleşmiyor. Sayfayı yenileyin veya yöneticiye bildirin.');
         dialog.querySelector('.ografi-photo360-top strong').textContent='360° Fotoğraf · Hugin';
-        await camera();
+        try{
+            await pruneDrafts();
+            const saved=await draftGet(draftKey()+':frames');
+            const savedJob=await draftGet(draftKey()+':job');
+            if(saved?.frames?.length>=24&&saved.frames.length<=48&&Date.now()-saved.savedAt<DRAFT_TTL){
+                frames=saved.frames;targets=new Array(frames.length).fill(null);
+                id=typeof savedJob?.id==='string'?savedJob.id:null;uploaded=0;
+                hasSavedDraft=true;draftLoaded=true;
+                count.textContent=frames.length+' / '+frames.length;
+                status.textContent='Önceki çekimler bulundu. Yüklemeyi tekrar dene ile devam edin.';
+                retry.hidden=false;restart.hidden=false;
+            }
+        }catch(error){console.warn('360° yerel kayıt okunamadı:',error);}
+        if(!draftLoaded){
+            if(await permission!=='granted')throw Error('Hareket sensörü izni gerekli.');
+            if(closed)return;
+            window.addEventListener('deviceorientation',orientation);
+            await camera();
+        }else{Promise.resolve(permission).catch(()=>{});}
     }catch(e){if(!closed)status.textContent=e.message||'Kamera açılamadı.';return;}
     const canvas=document.createElement('canvas'),ctx=canvas.getContext('2d',{alpha:false});
     const check=document.createElement('canvas');check.width=160;check.height=120;
@@ -192,15 +279,16 @@ async function open(onFile){
         ring.hidden=true;shot.hidden=true;rotateButton.hidden=true;stopCamera();status.textContent='Çekimler sunucuya yükleniyor…';progress.value=0;
         retry.hidden=true;restart.hidden=true;processingTime.hidden=true;
         await refreshSession();
+        await saveDraft();
         let state='uploading';
         if(id){
             const previous=await (await request('/'+id)).json();
             state=previous.state;
-            if(state==='failed'||state==='cancelled'){id=null;uploaded=0;processingStarted=0;state='uploading';}
+            if(state==='failed'||state==='cancelled'){id=null;uploaded=0;processingStarted=0;state='uploading';await saveJob();}
         }
         if(!id){
             const init=new FormData();init.append('count',String(frames.length));
-            id=(await (await request('','POST',init)).json()).id;uploaded=0;
+            id=(await (await request('','POST',init)).json()).id;uploaded=0;await saveJob();
         }
         if(state==='uploading'){
         progress.value=uploaded/frames.length;
@@ -241,7 +329,7 @@ async function open(onFile){
                 if(blob.type!=='image/jpeg'||blob.size>5*1024*1024)throw Error('Sunucu geçersiz fotoğraf döndürdü.');
                 resultFile=new File([blob],'ografi-360-'+Date.now()+'.jpg',{type:'image/jpeg'});
                 previewUrl=URL.createObjectURL(resultFile);preview.src=previewUrl;preview.hidden=false;video.hidden=true;
-                progress.value=1;finish.hidden=false;restart.hidden=false;frames=[];return;
+                progress.value=1;finish.hidden=false;restart.hidden=false;return;
             }
             await sleep(2500);
         }
@@ -288,11 +376,22 @@ async function open(onFile){
         catch(e){if(!closed){status.textContent=e.message||'Yükleme başarısız.';retry.hidden=false;restart.hidden=false;}}
         finally{busy=false;}
     };
-    restart.onclick=async()=>{if(busy)return;busy=true;retry.hidden=true;
+    restart.onclick=async()=>{if(busy)return;if((frames.length||id)&&!window.confirm('Önceki çekimleri silip yeniden başlamak istiyor musunuz?'))return;busy=true;retry.hidden=true;
         try{if(id){await request('/'+id,'DELETE');id=null;}}
         catch(e){status.textContent=e.message;retry.hidden=frames.length!==targets.length;restart.hidden=false;busy=false;return;}
+        await clearDraft();
+        if(draftLoaded){
+            draftLoaded=false;
+            window.addEventListener('deviceorientation',orientation);
+        }
         frames=[];targets=[];uploaded=0;processingStarted=0;processingTime.hidden=true;sessionSize=null;resultFile=null;if(previewUrl){URL.revokeObjectURL(previewUrl);previewUrl=null;}preview.hidden=true;video.hidden=false;finish.hidden=true;restart.hidden=true;progress.value=0;try{await camera();start.hidden=false;}catch(e){status.textContent=e.message;restart.hidden=false;}finally{busy=false;}};
-    finish.onclick=()=>{if(!resultFile)return;onFile(resultFile);dialog.close();};
+    finish.onclick=()=>{
+        if(!resultFile)return;
+        try{
+            if(onFile(resultFile)===false){status.textContent='Fotoğraf galeriye eklenemedi. Galeri dolu olabilir; çekimler korunuyor.';return;}
+            accepted=true;dialog.close();
+        }catch(error){status.textContent='Fotoğraf galeriye eklenemedi. Tekrar deneyin.';}
+    };
 }
 window.ografiPhoto360={open};
 })();

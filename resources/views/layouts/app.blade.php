@@ -1066,6 +1066,7 @@
         let composerPreviousOverflow = '';
 
         const closeComposer = () => {
+            if (document.querySelector('.ografi-photo360-camera[open]')) return;
             const modal = document.querySelector('.post-create-modal-page[data-live-composer="1"]');
             if (!modal) return;
 
@@ -1160,6 +1161,8 @@
         });
 
         document.addEventListener('keydown', event => {
+            // The native camera dialog owns focus and keyboard interaction.
+            if (document.querySelector('.ografi-photo360-camera[open]')) return;
             const modal = document.querySelector('.post-create-modal-page[data-live-composer="1"]');
             if (!modal) return;
 
@@ -1314,6 +1317,10 @@
     let refreshed = false;
     const refreshWhenDue = () => {
         if (refreshed || Date.now() < refreshAt) return;
+        // Never destroy an active composer, camera or its in-flight uploads.
+        if (document.querySelector('.ografi-photo360-camera[open], .post-create-modal-page[data-live-composer="1"]') ||
+            document.body.classList.contains('post-composer-open') ||
+            document.querySelector('.post-create-modal-page form')) return;
         refreshed = true;
         window.location.reload();
     };
@@ -1357,7 +1364,7 @@
 </script>
 <script src="{{ asset('assets/js/post-edit-history.js') }}?v=3" defer></script>
 <script src="{{ asset('assets/js/post-panorama.js') }}?v=9" defer></script>
-<script src="{{ asset('assets/js/photo360-capture.js') }}?v=13" defer></script>
+<script src="{{ asset('assets/js/photo360-capture.js') }}?v=14" defer></script>
 @stack('scripts')
 @if ($newYearActive)
     @include('layouts._new-year-effects')
