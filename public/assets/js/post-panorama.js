@@ -24,14 +24,41 @@
         label.innerHTML = panoramaIcon;
         link.append(label);
     };
+    // Use the same intrinsic aspect-ratio test in the composer and public viewer.
+    // Works with object URLs, pasted/shared uploads, and dynamically inserted editor blocks.
+    const previewSelector = '.ografi-pano-cover-tile, .post-composer-gallery-item, .post-existing-image-tile, .editor-inline-image-tile, .post-gallery-tile';
+    const previewImageSelector = previewSelector.split(', ').map(selector => selector + ' > img').join(', ');
+    const preparePreview = img => {
+        if (!(img instanceof HTMLImageElement) || !img.matches(previewImageSelector)) return;
+        if (!img.naturalWidth || !img.naturalHeight) return;
+        const tile = img.parentElement;
+        const badge = tile.querySelector(':scope > .ografi-pano-preview-badge');
+        if (img.naturalWidth / img.naturalHeight < 3) {
+            badge?.remove();
+            return;
+        }
+        if (badge) return;
+        const label = document.createElement('span');
+        label.className = 'ografi-pano-preview-badge';
+        label.setAttribute('role', 'img');
+        label.setAttribute('aria-label', 'Panoramik fotoğraf algılandı');
+        label.title = 'Panoramik fotoğraf algılandı';
+        label.innerHTML = panoramaIcon;
+        tile.append(label);
+    };
     const scan = root => {
         if (root instanceof Element && root.matches(candidateSelector)) prepare(root);
-        if (root.querySelectorAll) root.querySelectorAll(candidateSelector).forEach(prepare);
+        if (root instanceof HTMLImageElement) preparePreview(root);
+        if (root.querySelectorAll) {
+            root.querySelectorAll(candidateSelector).forEach(prepare);
+            root.querySelectorAll(previewImageSelector).forEach(preparePreview);
+        }
     };
     document.addEventListener('load', event => {
         if (event.target instanceof HTMLImageElement) {
             const link = event.target.closest(candidateSelector);
             if (link) prepare(link);
+            preparePreview(event.target);
         }
     }, true);
     scan(document);
