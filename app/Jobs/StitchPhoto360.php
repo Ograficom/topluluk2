@@ -54,6 +54,19 @@ class StitchPhoto360 implements ShouldQueue
                 $failure=is_file($dir.'/failure.txt')?trim(File::get($dir.'/failure.txt')):'360° işleme başarısız oldu. Daha aydınlık ortamda yeniden çekin.';
                 throw new \RuntimeException($failure);
             }
+            $qualityPath=$dir.'/quality.json';
+            if (is_file($qualityPath)) {
+                $quality=json_decode(File::get($qualityPath),true);
+                if (is_array($quality)) {
+                    \Illuminate\Support\Facades\Log::info('photo360 performance', [
+                        'job_id'=>$this->id,
+                        'metrics'=>array_intersect_key($quality,array_flip([
+                            'elapsed_seconds','stage_seconds','matching_strategy','threads',
+                            'source_size','proxy_size','mean_error_px','maximum_error_px','control_points',
+                        ])),
+                    ]);
+                }
+            }
             DB::table('photo360_jobs')->where('id',$this->id)->where('state','processing')
                 ->update(['state'=>'ready','message'=>'360° fotoğraf hazır. Önizlemeyi kontrol edin.','updated_at'=>now()]);
         } catch (Throwable $e) {

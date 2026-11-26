@@ -16,6 +16,10 @@ jobs:
   hugin:
     runs-on: ubuntu-24.04
     timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        long-edge: [960, 1920]
     steps:
       - uses: actions/checkout@v4
       - name: Install actual panorama binaries
@@ -28,4 +32,4 @@ jobs:
           /usr/bin/python3 scripts/test_photo360_hugin.py
           node --check public/assets/js/photo360-capture.js
       - name: Execute real Hugin / Nona / Enblend on synthetic camera frames
-        run: /usr/bin/python3 scripts/smoke_photo360_hugin.py
+        run: /usr/bin/python3 scripts/smoke_photo360_hugin.py --long-edge ${{ matrix.long-edge }}

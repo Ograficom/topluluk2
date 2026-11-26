@@ -67,5 +67,20 @@ class PerformanceTest(unittest.TestCase):
                       max_seconds=.1)
             self.assertIsNone(h.child)
 
+class ProxyTest(unittest.TestCase):
+    def test_transfer_coordinates_keeps_full_size_project(self):
+        with tempfile.TemporaryDirectory() as d:
+            root=Path(d)
+            proxy=root/"proxy.pto";full=root/"full.pto";out=root/"out.pto"
+            proxy.write_text('p f2 w4096 h2048\n'+'i w480 h960 n"match-000.jpg"\n'+'i w480 h960 n"match-001.jpg"\n'+'c n0 N1 x10 y20 X30 Y40 t0\n')
+            full.write_text('p f2 w4096 h2048\n'+'i w960 h1920 n"input-000.jpg"\n'+'i w960 h1920 n"input-001.jpg"\n')
+            h.transfer_control_points(proxy,full,out,["match-000.jpg","match-001.jpg"],
+                ["input-000.jpg","input-001.jpg"],(480,960),(960,1920))
+            self.assertTrue(out.read_text().startswith(full.read_text()))
+            self.assertIn("x20.500000 y40.500000 X60.500000 Y80.500000",out.read_text())
+            with self.assertRaises(RuntimeError):
+                h.transfer_control_points(proxy,full,out,["match-001.jpg","match-000.jpg"],
+                    ["input-000.jpg","input-001.jpg"],(480,960),(960,1920))
+
 if __name__=="__main__":
     unittest.main()

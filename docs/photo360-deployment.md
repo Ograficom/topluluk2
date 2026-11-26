@@ -61,3 +61,6 @@ Compare on identical synthetic frames, preferably when the production queue is i
 /usr/bin/python3 scripts/smoke_photo360_hugin.py --compare --long-edge 1920
 ```
 The report includes matching strategy, per-stage durations and geometric errors for both runs. 1–3 minutes is a performance target, not a timeout or verified production SLA. Set PHOTO360_FAST_MATCH=0 in the worker environment to disable the additional fast pass without reverting source code.
+
+## Phone-resolution matching and timing
+For source frames larger than 960 pixels on the long edge, the fast CPFind pass works on 960-pixel copies. Only control-point coordinates are transferred back to the original full-size project, with image ordering checked. All optimization, output rendering, coverage gates and fallback strategies operate on original input resolution. The default CI now tests both 960 and 1920 pixel input frames. Successful production jobs write a `photo360 performance` entry to the Laravel log with actual stage durations and matching strategy. No image contents, credentials or frame paths are logged. Proxy matching is disabled together with the fast pass using PHOTO360_FAST_MATCH=0.

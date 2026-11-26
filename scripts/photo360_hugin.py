@@ -20,6 +20,7 @@ WIDTH, HEIGHT = 4096, 2048
 DEADLINE = 620
 HEARTBEAT = 5
 FAST_MATCH_LIMIT = 90
+MATCH_EDGE = 960
 # One worker, bounded CPU use. A two-vCPU host still uses only two threads.
 def cpu_budget():
     try:
@@ -177,6 +178,47 @@ def write_jpeg(image, path):
             return
     raise RuntimeError("Sonuç 5 MB galeri sınırını aşıyor.")
 
+def project_image_names(project):
+    names=[]
+    for line in project.read_text(encoding="utf-8").splitlines():
+        if line.startswith("i "):
+            match=re.search(r'\bn"([^"]+)"',line)
+            if not match:
+                raise RuntimeError("Hugin kare sırası doğrulanamadı.")
+            names.append(Path(match.group(1)).name)
+    return names
+
+def transfer_control_points(proxy_project, full_project, output, proxy_names, full_names, proxy_size, full_size):
+    # CPFind returns coordinates in its input image space. Transform just the
+    # control points back to original pixel centres, leaving full-size lens,
+    # poses, and original image filenames untouched.
+    if project_image_names(proxy_project)!=proxy_names or project_image_names(full_project)!=full_names:
+        raise RuntimeError("Eşleştirme kare sırası değişti.")
+    sx,sy=full_size[0]/proxy_size[0],full_size[1]/proxy_size[1]
+    result=[line for line in full_project.read_text(encoding="utf-8").splitlines()
+            if not line.startswith("c ")]
+    for line in proxy_project.read_text(encoding="utf-8").splitlines():
+        if not line.startswith("c "):
+            continue
+        fields={}
+        for key in ("n","N","x","y","X","Y","t"):
+            match=re.search(r"(?:^|\s)"+key+r"([+-]?(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][+-]?\d+)?)(?=\s|$)",line)
+            if not match:
+                raise RuntimeError("Hugin eşleşme koordinatı okunamadı.")
+            fields[key]=float(match.group(1))
+        if fields["t"]!=0:
+            continue
+        n,N=int(fields["n"]),int(fields["N"])
+        if not (0<=n<len(full_names) and 0<=N<len(full_names) and n!=N):
+            raise RuntimeError("Geçersiz eşleşme karesi.")
+        for key in ("x","y","X","Y"):
+            scale=sx if key.lower()=="x" else sy
+            fields[key]=(fields[key]+.5)*scale-.5
+            if not math.isfinite(fields[key]):
+                raise RuntimeError("Geçersiz eşleşme koordinatı.")
+        result.append(f'c n{n} N{N} x{fields["x"]:.6f} y{fields["y"]:.6f} X{fields["X"]:.6f} Y{fields["Y"]:.6f} t0')
+    output.write_text("\n".join(result)+"\n",encoding="utf-8")
+
 def matching_strategies(all_pairs, fast=True):
     # The native CPFind half-resolution mode is retained. The fast pass
     # limits the feature budget per spatial bucket, not the output image.
@@ -244,6 +286,24 @@ def main(directory):
     all_pairs = ["--allpairs"] if "--allpairs" in help_text else []
     fast = os.environ.get("PHOTO360_FAST_MATCH", "1") != "0"
     strategies = matching_strategies(all_pairs, fast=fast)
+    proxy_names=[]
+    proxy_size=None
+    if fast and max(size)>MATCH_EDGE:
+        notify("Hızlı eşleştirme için çalışma kopyaları hazırlanıyor.")
+        for index,name in enumerate(inputs):
+            with Image.open(directory/name) as im:
+                im.thumbnail((MATCH_EDGE,MATCH_EDGE),Image.Resampling.LANCZOS)
+                if proxy_size is None:
+                    proxy_size=im.size
+                if im.size!=proxy_size:
+                    raise RuntimeError("Çalışma kopyası boyutları farklı.")
+                proxy_name=f"match-{index:03d}.jpg"
+                im.save(directory/proxy_name,"JPEG",quality=95)
+                proxy_names.append(proxy_name)
+        cmd("pto_gen","-p","0","-f",round(hfov,3),"-o","proxy-base.pto",*proxy_names)
+        cmd("pto_var","--set",",".join(values),"-o","proxy-pose.pto","proxy-base.pto")
+        cmd("pano_modify","-p","2","--fov=360x180","--canvas=4096x2048",
+            "--crop=0,4096,0,2048","-o","proxy-seed.pto","proxy-pose.pto")
     labels = {
         "fast": "Hızlı görüntü eşleştirme",
         "standard": "Ayrıntılı görüntü eşleştirme",
@@ -263,8 +323,14 @@ def main(directory):
             notify("Kalite kontrolü için alternatif eşleştirme yapılıyor.")
         prefix=f"fit-{attempt}"
         try:
-            cmd("cpfind",*options,f"--ncores={THREADS}","-o",prefix+"-matches.pto","seed.pto",
-                stage=labels[strategy],max_seconds=limit)
+            if strategy=="fast" and proxy_size is not None:
+                cmd("cpfind",*options,f"--ncores={THREADS}","-o",prefix+"-proxy.pto","proxy-seed.pto",
+                    stage="Hızlı görüntü eşleştirme (çalışma kopyaları)",max_seconds=limit)
+                transfer_control_points(directory/(prefix+"-proxy.pto"),directory/"seed.pto",
+                    directory/(prefix+"-matches.pto"),proxy_names,inputs,proxy_size,size)
+            else:
+                cmd("cpfind",*options,f"--ncores={THREADS}","-o",prefix+"-matches.pto","seed.pto",
+                    stage=labels[strategy],max_seconds=limit)
             cmd("cpclean","--pairwise-checking","-o",prefix+"-pairs.pto",prefix+"-matches.pto")
             verify_graph(directory/(prefix+"-pairs.pto"),len(inputs))
             # Preserve sensor pose as the initialization. Do not let the
@@ -300,6 +366,7 @@ def main(directory):
     if error>3 or maximum>15:
         raise RuntimeError("Son geometri kalite kontrolü başarısız.")
     report={"engine":"hugin-enblend","matching_strategy":selected_strategy,
+        "source_size":list(size),"proxy_size":list(proxy_size) if proxy_size and selected_strategy=="fast" else None,
         "threads":THREADS,"mean_error_px":error,"maximum_error_px":maximum,
         "control_points":verify_graph(directory/"sphere.pto",len(inputs))}
     notify("Nona çekimleri küresel yüzeye yansıtıyor.")
