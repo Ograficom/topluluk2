@@ -50,5 +50,22 @@ class ProgressTest(unittest.TestCase):
     def test_duration_format(self):
         self.assertEqual(h.duration_text(65), "01:05")
 
+class PerformanceTest(unittest.TestCase):
+    def test_fast_pass_preserves_original_fallbacks(self):
+        standard=h.matching_strategies(["--allpairs"],fast=False)
+        fast=h.matching_strategies(["--allpairs"])
+        self.assertEqual(fast[1:],standard)
+        self.assertEqual(fast[0][0],"fast")
+        self.assertIn("--sieve1size=25",fast[0][1])
+        self.assertEqual(fast[0][2],90)
+
+    def test_bounded_fast_process_is_terminated(self):
+        import time
+        with tempfile.TemporaryDirectory() as d:
+            with self.assertRaisesRegex(RuntimeError,"zaman sınırı"):
+                h.run(Path(d),time.monotonic(),"python3","-c","import time; time.sleep(5)",
+                      max_seconds=.1)
+            self.assertIsNone(h.child)
+
 if __name__=="__main__":
     unittest.main()

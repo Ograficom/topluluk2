@@ -9,6 +9,7 @@ import re
 import signal
 import subprocess
 import tempfile
+from collections import defaultdict
 import sys
 import time
 from pathlib import Path
@@ -18,6 +19,20 @@ from PIL import Image, ImageChops
 WIDTH, HEIGHT = 4096, 2048
 DEADLINE = 620
 HEARTBEAT = 5
+FAST_MATCH_LIMIT = 90
+# One worker, bounded CPU use. A two-vCPU host still uses only two threads.
+def cpu_budget():
+    try:
+        available = len(os.sched_getaffinity(0))
+    except (AttributeError, OSError):
+        available = os.cpu_count() or 2
+    try:
+        requested = int(os.environ.get("PHOTO360_THREADS", "4"))
+    except ValueError:
+        requested = 4
+    return max(1, min(available, requested, 4))
+
+THREADS = cpu_budget()
 Image.MAX_IMAGE_PIXELS = 30_000_000
 child = None
 
@@ -49,18 +64,15 @@ STAGES = {
     "enblend": "Görüntü birleşim sınırları işleniyor",
 }
 
-def run(directory, began, binary, *args):
+def run(directory, began, binary, *args, stage=None, max_seconds=None):
     global child
     remaining = DEADLINE - (time.monotonic() - began)
     if remaining <= 0:
         raise RuntimeError("İşleme zaman aşımına uğradı.")
     cmd = ["/usr/bin/" + binary, *map(str, args)]
-    label = STAGES.get(binary, binary)
-    if binary == "cpfind":
-        if "--prealigned" in args: label += " (1/3)"
-        elif "--multirow" in args: label += " (2/3)"
-        else: label += " (3/3)"
+    label = stage or STAGES.get(binary, binary)
     started = time.monotonic()
+    stop_at = min(began + DEADLINE, started + max_seconds) if max_seconds else began + DEADLINE
     notify(f"{label} · 00:00")
     # A temporary output file avoids full pipes and permits periodic heartbeats
     # even when a third-party binary emits no progress or buffers its output.
@@ -68,17 +80,17 @@ def run(directory, began, binary, *args):
     with tempfile.TemporaryFile(dir=directory) as capture:
         child = subprocess.Popen(cmd, cwd=directory, stdout=capture,
                                  stderr=subprocess.STDOUT, start_new_session=True,
-                                 env={**os.environ, "LC_ALL": "C", "OMP_NUM_THREADS": "2"})
+                                 env={**os.environ, "LC_ALL": "C", "OMP_NUM_THREADS": str(THREADS)})
         try:
             while True:
-                remaining = DEADLINE - (time.monotonic() - began)
+                remaining = stop_at - time.monotonic()
                 if remaining <= 0:
                     raise subprocess.TimeoutExpired(cmd, DEADLINE)
                 try:
                     child.wait(timeout=min(HEARTBEAT, remaining))
                     break
                 except subprocess.TimeoutExpired:
-                    if time.monotonic() - began >= DEADLINE:
+                    if time.monotonic() >= stop_at:
                         raise
                     notify(f"{label} · {duration_text(time.monotonic()-started)}")
         except subprocess.TimeoutExpired:
@@ -86,7 +98,7 @@ def run(directory, began, binary, *args):
                 try: os.killpg(child.pid, signal.SIGKILL)
                 except ProcessLookupError: pass
             child.wait()
-            raise RuntimeError(f"{binary}: işleme zaman sınırı aşıldı.")
+            raise RuntimeError(f"{label}: zaman sınırı aşıldı; alternatif yöntem denenebilir.")
         finally:
             returncode = child.poll()
             if returncode is None:
@@ -165,6 +177,22 @@ def write_jpeg(image, path):
             return
     raise RuntimeError("Sonuç 5 MB galeri sınırını aşıyor.")
 
+def matching_strategies(all_pairs, fast=True):
+    # The native CPFind half-resolution mode is retained. The fast pass
+    # limits the feature budget per spatial bucket, not the output image.
+    # Every accepted result goes through the same full quality gates.
+    strategies = []
+    if fast:
+        strategies.append(("fast", ["--prealigned", "--ransacmode=rpy",
+            "--ransacdist=10", "--minmatches=6", "--sieve1size=25",
+            "--kdtreesteps=100", "--ransaciter=300"], FAST_MATCH_LIMIT))
+    strategies.extend([
+        ("standard", ["--prealigned", "--ransacmode=rpy", "--ransacdist=10", "--minmatches=6"], None),
+        ("multirow", ["--multirow", "--ransacmode=rpy", "--ransacdist=12", "--minmatches=6"], None),
+        ("full", [*all_pairs, "--fullscale", "--ransacmode=rpyv", "--ransacdist=12", "--minmatches=6"], None),
+    ])
+    return strategies
+
 def main(directory):
     began = time.monotonic()
     sources = sorted(directory.glob("frame-*.jpg"))
@@ -191,7 +219,13 @@ def main(directory):
                 raise RuntimeError("Geçersiz kamera yönü.")
             values.append("%s%d=%.6f" % (k,index,value))
     hfov = math.degrees(2*math.atan(size[0]/min(size)*math.tan(math.radians(28))))
-    def cmd(binary,*args): return run(directory,began,binary,*args)
+    durations = defaultdict(float)
+    def cmd(binary,*args,**kwargs):
+        started=time.monotonic()
+        try:
+            return run(directory,began,binary,*args,**kwargs)
+        finally:
+            durations[binary] += time.monotonic()-started
     cmd("pto_gen","-p","0","-f",round(hfov,3),"-o","base.pto",*inputs)
     cmd("pto_var","--set",",".join(values),"-o","pose.pto","base.pto")
     # Use the same spherical projection and scale for all optimization and
@@ -208,11 +242,14 @@ def main(directory):
         help_text = subprocess.run(["/usr/bin/cpfind", "--help"], stdout=subprocess.PIPE,
                                    stderr=subprocess.STDOUT, text=True, timeout=10).stdout
     all_pairs = ["--allpairs"] if "--allpairs" in help_text else []
-    strategies = [
-        ["--prealigned", "--ransacmode=rpy", "--ransacdist=10", "--minmatches=6"],
-        ["--multirow", "--ransacmode=rpy", "--ransacdist=12", "--minmatches=6"],
-        [*all_pairs, "--fullscale", "--ransacmode=rpyv", "--ransacdist=12", "--minmatches=6"],
-    ]
+    fast = os.environ.get("PHOTO360_FAST_MATCH", "1") != "0"
+    strategies = matching_strategies(all_pairs, fast=fast)
+    labels = {
+        "fast": "Hızlı görüntü eşleştirme",
+        "standard": "Ayrıntılı görüntü eşleştirme",
+        "multirow": "Çok sıralı alternatif eşleştirme",
+        "full": "Tam çözünürlükte alternatif eşleştirme",
+    }
     def stats_for(project):
         stats=cmd("checkpto",project)
         mean=re.search(r"Mean error\s*:\s*([0-9.]+)",stats)
@@ -220,12 +257,14 @@ def main(directory):
         return (float(mean.group(1)) if mean else math.inf,
                 float(maximum.group(1)) if maximum else math.inf)
     best=None
-    for attempt, options in enumerate(strategies):
+    selected_strategy = None
+    for attempt, (strategy, options, limit) in enumerate(strategies):
         if attempt:
-            notify("Alternatif geometrik eşleştirme yapılıyor.")
+            notify("Kalite kontrolü için alternatif eşleştirme yapılıyor.")
         prefix=f"fit-{attempt}"
         try:
-            cmd("cpfind",*options,"--ncores=2","-o",prefix+"-matches.pto","seed.pto")
+            cmd("cpfind",*options,f"--ncores={THREADS}","-o",prefix+"-matches.pto","seed.pto",
+                stage=labels[strategy],max_seconds=limit)
             cmd("cpclean","--pairwise-checking","-o",prefix+"-pairs.pto",prefix+"-matches.pto")
             verify_graph(directory/(prefix+"-pairs.pto"),len(inputs))
             # Preserve sensor pose as the initialization. Do not let the
@@ -242,8 +281,13 @@ def main(directory):
                 if mean<=3 and maximum<=15 and (best is None or mean<best[0]):
                     best=(mean,maximum,project)
             if best is not None:
+                # The candidate must still connect every source frame;
+                # the best error alone is not sufficient.
+                verify_graph(directory/best[2],len(inputs))
+                selected_strategy=strategy
                 break
         except RuntimeError as error:
+            best=None
             notify("Eşleştirme aşaması: "+str(error))
     if best is None:
         raise RuntimeError("Geometrik eşleşme güvenilir değil. Hatalı panorama oluşturulmadı.")
@@ -255,9 +299,9 @@ def main(directory):
     error,maximum=stats_for("sphere.pto")
     if error>3 or maximum>15:
         raise RuntimeError("Son geometri kalite kontrolü başarısız.")
-    (directory/"quality.json").write_text(json.dumps({"engine":"hugin-enblend",
-        "mean_error_px":error,"maximum_error_px":maximum,
-        "control_points":verify_graph(directory/"sphere.pto",len(inputs))}),encoding="utf-8")
+    report={"engine":"hugin-enblend","matching_strategy":selected_strategy,
+        "threads":THREADS,"mean_error_px":error,"maximum_error_px":maximum,
+        "control_points":verify_graph(directory/"sphere.pto",len(inputs))}
     notify("Nona çekimleri küresel yüzeye yansıtıyor.")
     cmd("nona","-m","TIFF_m","-o","warp","sphere.pto")
     layers=sorted(directory.glob("warp*.tif"))
@@ -268,6 +312,10 @@ def main(directory):
     notify("Kapsama ve çıktı kalitesi kontrol ediliyor.")
     image=alpha_coverage(directory/"sphere.tif", layers)
     write_jpeg(image,directory/"result.jpg")
+    report["elapsed_seconds"]=round(time.monotonic()-began,2)
+    report["stage_seconds"]={key:round(value,2) for key,value in durations.items()}
+    (directory/"quality.json").write_text(json.dumps(report),encoding="utf-8")
+    print(json.dumps({"performance":report},ensure_ascii=False),flush=True)
 
 if __name__ == "__main__":
     folder=Path(sys.argv[1]).resolve()

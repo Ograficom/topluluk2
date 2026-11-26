@@ -52,3 +52,12 @@ apt-get install -y python3-numpy
 The smoke test uses a reproducible synthetic textured sphere sampled into overlapping camera frames, not real phone photographs. A passing synthetic test establishes basic CLI interoperability and spherical coverage, not real-world parallax tolerance.
 
 Upstream references: https://hugin.sourceforge.io/docs/manual/Cpfind.html (matching and options); https://hugin.sourceforge.io/docs/manual/Hugin_Photos_tab.html (lens fitting); https://wiki.panotools.org/Checkpto (image connectivity); https://hugin.sourceforge.io/docs/manual/Parallax.html (rotation around the entrance pupil).
+
+## Fast matching (default)
+The first CPFind pass uses native half-resolution feature detection, prealigned overlap search, 25 features per spatial bucket (instead of the default 100), 100 KD-tree search steps and 300 RANSAC iterations. The fast search is bounded to 90 seconds. If it fails or does not meet the existing geometric quality gates, the original three matching strategies remain available, within the existing overall processing deadline. Output remains 4096x2048, with original JPEG inputs and the same coverage/error gates and Enblend pipeline. Difficult scenes may be slower than before because of the extra attempt; no fixed duration is promised.
+CPU threads are limited to available affinity and at most four, with optional PHOTO360_THREADS=2 override in the service environment.
+Compare on identical synthetic frames, preferably when the production queue is idle:
+```sh
+/usr/bin/python3 scripts/smoke_photo360_hugin.py --compare --long-edge 1920
+```
+The report includes matching strategy, per-stage durations and geometric errors for both runs. 1–3 minutes is a performance target, not a timeout or verified production SLA. Set PHOTO360_FAST_MATCH=0 in the worker environment to disable the additional fast pass without reverting source code.

@@ -2,7 +2,11 @@
 """End-to-end test: render a textured sphere into perspective camera inputs,
 then invoke the same Hugin/Nona/Enblend pipeline as production. No network images.
 """
+import argparse
 import json
+import os
+import shutil
+import time
 import math
 import subprocess
 import sys
@@ -12,7 +16,7 @@ from pathlib import Path
 import numpy as np
 from PIL import Image, ImageDraw, ImageFilter
 
-def make_frames(directory):
+def make_frames(directory, long_edge=960):
     rng=np.random.default_rng(320)
     w,h=3072,1536
     low=rng.integers(20,235,(h//16,w//16,3),dtype=np.uint8)
@@ -24,7 +28,7 @@ def make_frames(directory):
         color=tuple(map(int,rng.integers(20,245,3)))
         draw.rectangle((x,y,x+a,y+b),fill=color)
     arr=np.asarray(texture)
-    sw,sh=640,960
+    sw,sh=round(long_edge*2/3),long_edge
     focal=sw/(2*math.tan(math.radians(28)))
     x,y=np.meshgrid((np.arange(sw)+.5-sw/2)/focal,(sh/2-np.arange(sh)-.5)/focal)
     index=0
@@ -51,23 +55,45 @@ def make_frames(directory):
                 "roll":.4 if i%2 else 0}))
             index+=1
 
+def run_case(source, directory, fast):
+    directory.mkdir()
+    for file in source.glob("frame-*"):
+        shutil.copy2(file,directory/file.name)
+    script=Path(__file__).with_name("photo360_hugin.py")
+    started=time.monotonic()
+    result=subprocess.run([sys.executable,str(script),str(directory)],timeout=700,
+                          env={**os.environ,"PHOTO360_FAST_MATCH":"1" if fast else "0"})
+    if result.returncode:
+        for file in ["failure.txt","engine.log"]:
+            path=directory/file
+            if path.exists(): print(path.read_text()[-18000:])
+        raise SystemExit(result.returncode)
+    with Image.open(directory/"result.jpg") as image:
+        assert image.size==(4096,2048)
+        assert image.format=="JPEG"
+    report=json.loads((directory/"quality.json").read_text())
+    assert report["mean_error_px"]<=3
+    assert report["maximum_error_px"]<=15
+    report["wall_seconds"]=round(time.monotonic()-started,2)
+    print(json.dumps(report,indent=2))
+    return report
+
 def main():
+    parser=argparse.ArgumentParser()
+    parser.add_argument("--long-edge",type=int,choices=[960,1920],default=960)
+    parser.add_argument("--compare",action="store_true",help="Run both matching configurations on identical frames.")
+    args=parser.parse_args()
     with tempfile.TemporaryDirectory(prefix="photo360-smoke-") as temp:
-        directory=Path(temp)
-        make_frames(directory)
-        script=Path(__file__).with_name("photo360_hugin.py")
-        result=subprocess.run([sys.executable,str(script),str(directory)],timeout=700)
-        if result.returncode:
-            for file in ["failure.txt","engine.log"]:
-                path=directory/file
-                if path.exists(): print(path.read_text()[-18000:])
-            raise SystemExit(result.returncode)
-        with Image.open(directory/"result.jpg") as image:
-            assert image.size==(4096,2048)
-            assert image.format=="JPEG"
-        report=json.loads((directory/"quality.json").read_text())
-        assert report["mean_error_px"]<=3
-        print(json.dumps(report,indent=2))
+        root=Path(temp);source=root/"source";source.mkdir()
+        make_frames(source,args.long_edge)
+        fast=run_case(source,root/"fast",True)
+        if args.compare:
+            baseline=run_case(source,root/"baseline",False)
+            print(json.dumps({"fast_seconds":fast["wall_seconds"],
+                              "baseline_seconds":baseline["wall_seconds"],
+                              "speedup":round(baseline["wall_seconds"]/max(.001,fast["wall_seconds"]),2),
+                              "fast_error_px":fast["mean_error_px"],
+                              "baseline_error_px":baseline["mean_error_px"]},indent=2))
         print("Hugin end-to-end synthetic sphere: PASS")
 if __name__=="__main__":
     main()
