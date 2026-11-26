@@ -183,7 +183,7 @@ def main(directory):
             # pairwise auto-align stage replace the initial camera orientations.
             cmd("pto_var","--opt=y,p,r","-o",prefix+"-orient.pto",prefix+"-pairs.pto")
             cmd("autooptimiser","-n","-o",prefix+"-rotation.pto",prefix+"-orient.pto")
-            cmd("cpclean","--whole-pano-checking","--skip-optimisation","-o",
+            cmd("cpclean","--whole-pano-checking","--dont-optimize","-o",
                 prefix+"-clean.pto",prefix+"-rotation.pto")
             verify_graph(directory/(prefix+"-clean.pto"),len(inputs))
             cmd("pto_var","--opt=y,p,r,v,b","-o",prefix+"-lens.pto",prefix+"-clean.pto")
