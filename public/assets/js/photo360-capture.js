@@ -21,11 +21,11 @@ async function open(onFile){
     if(!navigator.mediaDevices?.getUserMedia||!window.DeviceOrientationEvent){alert('HTTPS, kamera ve hareket sensörü destekli telefon gerekiyor.');return;}
     const permission=typeof DeviceOrientationEvent.requestPermission==='function'?DeviceOrientationEvent.requestPermission():Promise.resolve('granted');
     const dialog=document.createElement('dialog');dialog.className='ografi-photo360-camera';dialog.setAttribute('aria-label','360° fotoğraf çekimi');
-    dialog.innerHTML='<video autoplay muted playsinline></video><img class="ografi-photo360-result" alt="360° önizleme" hidden><div class="ografi-photo360-top"><button type="button" data-close aria-label="Kapat">✕</button><strong>360° Fotoğraf</strong><span data-count>0 / 38</span></div><div class="ografi-photo360-ring" hidden><svg viewBox="0 0 200 200" aria-hidden="true"><circle cx="100" cy="100" r="97"/><ellipse cx="100" cy="100" rx="97" ry="39"/><ellipse cx="100" cy="100" rx="43" ry="97"/><g class="ografi-photo360-gridpoints"></g><path class="ografi-photo360-cross" d="M87 100h26M100 87v26"/></svg><span class="ografi-photo360-dot"></span></div><div class="ografi-photo360-flash"></div><div class="ografi-photo360-bottom"><p role="status">Kamera açılıyor…</p><progress value="0" max="1"></progress><button type="button" data-rotate hidden aria-label="Kamera görüntüsünü 90 derece döndür">↻ Görüntüyü döndür</button><button type="button" data-start hidden>Çekime başla</button><button type="button" data-shot hidden aria-label="Fotoğraf çek"><span></span></button><img class="ografi-photo360-last" alt="Son çekilen fotoğraf" hidden><button type="button" data-retry hidden>Yüklemeyi tekrar dene</button><button type="button" data-restart hidden>Yeniden çek</button><button type="button" data-finish hidden>Fotoğrafı kullan</button></div>';
+    dialog.innerHTML='<video autoplay muted playsinline></video><img class="ografi-photo360-result" alt="360° önizleme" hidden><div class="ografi-photo360-top"><button type="button" data-close aria-label="Kapat">✕</button><strong>360° Fotoğraf</strong><span data-count>0 / 38</span></div><div class="ografi-photo360-ring" hidden><svg viewBox="0 0 200 200" aria-hidden="true"><circle cx="100" cy="100" r="97"/><ellipse cx="100" cy="100" rx="97" ry="39"/><ellipse cx="100" cy="100" rx="43" ry="97"/><g class="ografi-photo360-gridpoints"></g><path class="ografi-photo360-cross" d="M87 100h26M100 87v26"/></svg><span class="ografi-photo360-dot"></span></div><div class="ografi-photo360-flash"></div><div class="ografi-photo360-bottom"><p role="status">Kamera açılıyor…</p><span class="ografi-photo360-elapsed" data-processing-time hidden></span><progress value="0" max="1"></progress><button type="button" data-rotate hidden aria-label="Kamera görüntüsünü 90 derece döndür">↻ Görüntüyü döndür</button><button type="button" data-start hidden>Çekime başla</button><button type="button" data-shot hidden aria-label="Fotoğraf çek"><span></span></button><img class="ografi-photo360-last" alt="Son çekilen fotoğraf" hidden><button type="button" data-retry hidden>Yüklemeyi tekrar dene</button><button type="button" data-restart hidden>Yeniden çek</button><button type="button" data-finish hidden>Fotoğrafı kullan</button></div>';
     document.body.append(dialog);
     const q=s=>dialog.querySelector(s),video=q('video'),status=q('[role=status]'),ring=q('.ografi-photo360-ring'),point=q('.ografi-photo360-dot'),count=q('[data-count]'),progress=q('progress'),start=q('[data-start]'),shot=q('[data-shot]'),finish=q('[data-finish]'),restart=q('[data-restart]'),preview=q('.ografi-photo360-result'),last=q('.ografi-photo360-last'),flash=q('.ografi-photo360-flash');
     for(let i=0;i<12;i++){const a=i*Math.PI/6,p=document.createElementNS('http://www.w3.org/2000/svg','circle');p.setAttribute('cx',100+78*Math.cos(a));p.setAttribute('cy',100+78*Math.sin(a));p.setAttribute('r','2.1');q('.ografi-photo360-gridpoints').append(p);}
-    const rotateButton=q('[data-rotate]'),retry=q('[data-retry]');
+    const rotateButton=q('[data-rotate]'),retry=q('[data-retry]'),processingTime=q('[data-processing-time]');
     let stream=null,current=null,closed=false,busy=false,ready=false,frames=[],targets=[],origin=0,id=null,resultFile=null,previewUrl=null,notice=0,lastSensor=0,warningTarget=-1,frameRotation=0,sessionSize=null;
     const frameSize=(w,h,turn)=>turn%2?{w:h,h:w}:{w,h};
     // Fit the complete source frame into the viewport, including any user-selected
@@ -164,15 +164,20 @@ async function open(onFile){
         start.hidden=true;rotateButton.hidden=true;ring.hidden=false;shot.hidden=false;restart.hidden=true;finish.hidden=true;last.hidden=true;preview.hidden=true;video.hidden=false;fitPreview();
         count.textContent='0 / '+targets.length;progress.value=0;guide();
     };
+    function elapsedText(ms){
+        const seconds=Math.max(0,Math.floor(ms/1000));
+        return String(Math.floor(seconds/60)).padStart(2,'0')+':'+String(seconds%60).padStart(2,'0');
+    }
+    let processingStarted=0;
     async function process(){
         ring.hidden=true;shot.hidden=true;rotateButton.hidden=true;stopCamera();status.textContent='Çekimler sunucuya yükleniyor…';progress.value=0;
-        retry.hidden=true;restart.hidden=true;
+        retry.hidden=true;restart.hidden=true;processingTime.hidden=true;
         await refreshSession();
         let state='uploading';
         if(id){
             const previous=await (await request('/'+id)).json();
             state=previous.state;
-            if(state==='failed'||state==='cancelled'){id=null;uploaded=0;state='uploading';}
+            if(state==='failed'||state==='cancelled'){id=null;uploaded=0;processingStarted=0;state='uploading';}
         }
         if(!id){
             const init=new FormData();init.append('count',String(frames.length));
@@ -191,10 +196,26 @@ async function open(onFile){
         await request('/'+id+'/start','POST');
         }
         progress.removeAttribute('value');
-        // Server processing runs independently of this HTTP request.
+        last.hidden=true;
+        if(!processingStarted)processingStarted=Date.now();
+        processingTime.hidden=false;
+        // Elapsed time is real wall time, not a fabricated completion percentage.
+        const tick=()=>{processingTime.textContent='Geçen süre: '+elapsedText(Date.now()-processingStarted);};
+        tick();
+        const timer=setInterval(tick,1000);
         const until=Date.now()+16*60*1000;
+        let failures=0;
+        try{
         while(!closed&&Date.now()<until){
-            const data=await (await request('/'+id)).json();status.textContent=data.message;
+            let data;
+            try{data=await (await request('/'+id)).json();failures=0;}
+            catch(error){
+                if(closed)return;
+                if(++failures>=4)throw error;
+                status.textContent='Sunucu bağlantısı yeniden deneniyor…';
+                await sleep(3500);continue;
+            }
+            status.textContent=data.message;
             if(data.state==='failed'||data.state==='cancelled')throw Error(data.message);
             if(data.state==='ready'){
                 const blob=await (await request('/'+id+'/image')).blob();
@@ -205,7 +226,8 @@ async function open(onFile){
             }
             await sleep(2500);
         }
-        throw Error('İşleme zaman aşımı. Sunucu kuyruğunu kontrol edin.');
+        if(!closed)throw Error('İşleme durumu alınamadı. Tekrar dene düğmesiyle mevcut işlemi kontrol edebilirsiniz.');
+        }finally{clearInterval(timer);}
     }
     shot.onclick=async()=>{
         if(busy||closed||!ready||!current||!targets[frames.length])return;
@@ -250,7 +272,7 @@ async function open(onFile){
     restart.onclick=async()=>{if(busy)return;busy=true;retry.hidden=true;
         try{if(id){await request('/'+id,'DELETE');id=null;}}
         catch(e){status.textContent=e.message;retry.hidden=frames.length!==targets.length;restart.hidden=false;busy=false;return;}
-        frames=[];targets=[];uploaded=0;sessionSize=null;resultFile=null;if(previewUrl){URL.revokeObjectURL(previewUrl);previewUrl=null;}preview.hidden=true;video.hidden=false;finish.hidden=true;restart.hidden=true;progress.value=0;try{await camera();start.hidden=false;}catch(e){status.textContent=e.message;restart.hidden=false;}finally{busy=false;}};
+        frames=[];targets=[];uploaded=0;processingStarted=0;processingTime.hidden=true;sessionSize=null;resultFile=null;if(previewUrl){URL.revokeObjectURL(previewUrl);previewUrl=null;}preview.hidden=true;video.hidden=false;finish.hidden=true;restart.hidden=true;progress.value=0;try{await camera();start.hidden=false;}catch(e){status.textContent=e.message;restart.hidden=false;}finally{busy=false;}};
     finish.onclick=()=>{if(!resultFile)return;onFile(resultFile);dialog.close();};
 }
 window.ografiPhoto360={open};

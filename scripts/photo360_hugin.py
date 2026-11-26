@@ -8,6 +8,7 @@ import os
 import re
 import signal
 import subprocess
+import tempfile
 import sys
 import time
 from pathlib import Path
@@ -16,6 +17,7 @@ from PIL import Image, ImageChops
 
 WIDTH, HEIGHT = 4096, 2048
 DEADLINE = 620
+HEARTBEAT = 5
 Image.MAX_IMAGE_PIXELS = 30_000_000
 child = None
 
@@ -31,28 +33,75 @@ def terminate(sig, frame):
 signal.signal(signal.SIGTERM, terminate)
 signal.signal(signal.SIGINT, terminate)
 
+def duration_text(seconds):
+    minutes, seconds = divmod(max(0, int(seconds)), 60)
+    return f"{minutes:02d}:{seconds:02d}"
+
+STAGES = {
+    "pto_gen": "Çekim projesi hazırlanıyor",
+    "pto_var": "Kamera ve lens parametreleri hazırlanıyor",
+    "pano_modify": "Küresel görüntü alanı hazırlanıyor",
+    "cpfind": "Ortak görüntü noktaları eşleştiriliyor",
+    "cpclean": "Hatalı eşleşmeler temizleniyor",
+    "autooptimiser": "Kamera açıları, lens veya pozlama optimize ediliyor",
+    "checkpto": "Geometrik kalite kontrol ediliyor",
+    "nona": "Kareler küresel yüzeye yansıtılıyor",
+    "enblend": "Görüntü birleşim sınırları işleniyor",
+}
+
 def run(directory, began, binary, *args):
     global child
     remaining = DEADLINE - (time.monotonic() - began)
     if remaining <= 0:
         raise RuntimeError("İşleme zaman aşımına uğradı.")
     cmd = ["/usr/bin/" + binary, *map(str, args)]
-    child = subprocess.Popen(cmd, cwd=directory, stdout=subprocess.PIPE,
-                             stderr=subprocess.STDOUT, start_new_session=True,
-                             env={**os.environ, "LC_ALL": "C", "OMP_NUM_THREADS": "2"})
-    try:
-        data, _ = child.communicate(timeout=remaining)
-    except subprocess.TimeoutExpired:
-        os.killpg(child.pid, signal.SIGKILL)
-        child.communicate()
-        raise RuntimeError("İşleme zaman aşımına uğradı.")
-    output = data.decode("utf-8", errors="replace")
-    (directory / "engine.log").open("a", encoding="utf-8").write(binary + "\n" + output[-12000:] + "\n")
-    if child.returncode != 0:
+    label = STAGES.get(binary, binary)
+    if binary == "cpfind":
+        if "--prealigned" in args: label += " (1/3)"
+        elif "--multirow" in args: label += " (2/3)"
+        else: label += " (3/3)"
+    started = time.monotonic()
+    notify(f"{label} · 00:00")
+    # A temporary output file avoids full pipes and permits periodic heartbeats
+    # even when a third-party binary emits no progress or buffers its output.
+    # It is private and automatically removed, including on failure.
+    with tempfile.TemporaryFile(dir=directory) as capture:
+        child = subprocess.Popen(cmd, cwd=directory, stdout=capture,
+                                 stderr=subprocess.STDOUT, start_new_session=True,
+                                 env={**os.environ, "LC_ALL": "C", "OMP_NUM_THREADS": "2"})
+        try:
+            while True:
+                remaining = DEADLINE - (time.monotonic() - began)
+                if remaining <= 0:
+                    raise subprocess.TimeoutExpired(cmd, DEADLINE)
+                try:
+                    child.wait(timeout=min(HEARTBEAT, remaining))
+                    break
+                except subprocess.TimeoutExpired:
+                    if time.monotonic() - began >= DEADLINE:
+                        raise
+                    notify(f"{label} · {duration_text(time.monotonic()-started)}")
+        except subprocess.TimeoutExpired:
+            if child.poll() is None:
+                try: os.killpg(child.pid, signal.SIGKILL)
+                except ProcessLookupError: pass
+            child.wait()
+            raise RuntimeError(f"{binary}: işleme zaman sınırı aşıldı.")
+        finally:
+            returncode = child.poll()
+            if returncode is None:
+                try: os.killpg(child.pid, signal.SIGKILL)
+                except ProcessLookupError: pass
+                returncode = child.wait()
+            child = None
+        capture.seek(0)
+        output = capture.read().decode("utf-8", errors="replace")
+    with (directory / "engine.log").open("a", encoding="utf-8") as log:
+        log.write(binary + " · " + duration_text(time.monotonic()-started) + "\n" + output[-12000:] + "\n")
+    if returncode != 0:
         if binary == "checkpto":
             raise RuntimeError("Bazı kareler birbirine bağlanamadı. Daha fazla örtüşme ve ışıkla yeniden çekin.")
         raise RuntimeError("360° motorunda " + binary + " işlemi başarısız oldu.")
-    child = None
     return output
 
 def verify_graph(project, count):
