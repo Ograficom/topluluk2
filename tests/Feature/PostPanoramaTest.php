@@ -26,12 +26,29 @@ class PostPanoramaTest extends TestCase
         ])->assertRedirect();
         $post = Post::query()->where('title', $fields['title'])->firstOrFail();
         $this->assertTrue($post->is_panorama);
-        $this->get(route('posts.show', $post))->assertOk()->assertSee('data-ografi-panorama', false);
+        $this->get(route('posts.show', $post))->assertOk()->assertSee('data-ografi-panorama-candidate="explicit"', false);
         $this->get(route('posts.edit', $post))->assertOk()->assertSee('name="is_panorama" value="1" checked', false);
         $this->patch(route('posts.update', $post), $fields)->assertRedirect();
         $this->assertTrue($post->refresh()->is_panorama);
         $this->patch(route('posts.update', $post), $fields + ['is_panorama' => '0'])->assertRedirect();
         $this->assertFalse($post->refresh()->is_panorama);
-        $this->get(route('posts.show', $post))->assertOk()->assertDontSee('data-ografi-panorama', false);
+        $this->get(route('posts.show', $post))->assertOk()->assertDontSee('data-ografi-panorama-candidate="explicit"', false)->assertSee('data-ografi-panorama-candidate="auto"', false);
+    }
+
+    public function test_gallery_panorama_can_be_enabled_without_cover(): void
+    {
+        Storage::fake('public');
+        $author = User::factory()->create();
+        $channel = Channel::create(['name' => 'Gezi', 'slug' => 'gezi', 'is_active' => true]);
+        $fields = ['title' => 'Yazı içi panorama', 'excerpt' => 'Gezi özeti.', 'body' => 'Manzara açıklaması.', 'channel_id' => $channel->id];
+        $this->actingAs($author)->post(route('posts.store'), $fields + [
+            'is_panorama' => '1', 'media' => [UploadedFile::fake()->image('panorama.jpg', 1200, 300)],
+        ])->assertRedirect();
+        $post = Post::query()->where('title', $fields['title'])->firstOrFail();
+        $this->assertTrue($post->is_panorama);
+        $this->assertNull($post->cover_image);
+        $this->get(route('posts.show', $post))->assertOk()->assertSee('data-ografi-panorama-candidate="explicit"', false);
+        $this->patch(route('posts.update', $post), $fields + ['is_panorama' => '1'])->assertRedirect();
+        $this->assertTrue($post->refresh()->is_panorama);
     }
 }

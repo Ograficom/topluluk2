@@ -3,12 +3,48 @@
     const radians = Math.PI / 180;
     const half = 140 * radians;
     const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
+    // Enhance only wide photos, including existing uploads and AJAX-loaded cards.
+    const candidateSelector = 'a[data-ografi-panorama-candidate]';
+    const prepare = link => {
+        if (link.hasAttribute('data-ografi-panorama')) return;
+        const img = link.querySelector('img');
+        if (!img || !img.naturalWidth || !img.naturalHeight) return;
+        const minimum = link.dataset.ografiPanoramaCandidate === 'explicit' ? 2 : 3;
+        if (img.naturalWidth / img.naturalHeight < minimum) return;
+        if (typeof HTMLDialogElement === 'undefined' || typeof HTMLDialogElement.prototype.showModal !== 'function') return;
+        link.setAttribute('data-ografi-panorama', '');
+        link.setAttribute('aria-haspopup', 'dialog');
+        link.setAttribute('aria-label', '280° panoramayı keşfet');
+        const label = document.createElement('span');
+        label.className = 'ografi-panorama-overlay';
+        label.setAttribute('aria-hidden', 'true');
+        label.textContent = '↔  280° Keşfet';
+        link.append(label);
+    };
+    const scan = root => {
+        if (root instanceof Element && root.matches(candidateSelector)) prepare(root);
+        if (root.querySelectorAll) root.querySelectorAll(candidateSelector).forEach(prepare);
+    };
+    document.addEventListener('load', event => {
+        if (event.target instanceof HTMLImageElement) {
+            const link = event.target.closest(candidateSelector);
+            if (link) prepare(link);
+        }
+    }, true);
+    scan(document);
+    new MutationObserver(records => {
+        for (const record of records) {
+            for (const node of record.addedNodes) if (node instanceof Element) scan(node);
+        }
+    }).observe(document.body, {childList:true, subtree:true});
+
     document.addEventListener('click', event => {
         const trigger = event.target instanceof Element && event.target.closest('a[data-ografi-panorama]');
         if (!trigger || event.defaultPrevented || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
         const dialog = document.createElement('dialog');
         if (typeof dialog.showModal !== 'function') return;
         event.preventDefault();
+        event.stopImmediatePropagation();
         dialog.className = 'ografi-panorama-dialog';
         dialog.setAttribute('aria-label', '280 derece panorama');
         dialog.innerHTML = '<header><strong>280° Keşfet</strong><button type="button" data-expand aria-label="Tam ekran">⛶</button><button type="button" data-close aria-label="Kapat">✕</button></header><canvas tabindex="0" aria-label="Panorama. Ok tuşlarıyla gezinin." hidden></canvas><div class="ografi-panorama-controls" hidden><button type="button" data-minus aria-label="Uzaklaştır">−</button><button type="button" data-plus aria-label="Yakınlaştır">+</button><input type="range" min="-140" max="140" step="1" value="0" aria-label="Yatay görüş açısı"><button type="button" data-reset aria-label="Görünümü sıfırla">↺</button></div><p class="ografi-panorama-status" role="status">Panorama yükleniyor…</p><p class="ografi-panorama-status"><a data-original target="_blank" rel="noopener noreferrer">Orijinal fotoğrafı aç</a></p>';
@@ -104,5 +140,5 @@
         };
         image.onerror = () => { status.textContent = 'Panorama yüklenemedi. Orijinal fotoğrafı açmayı deneyin.'; };
         image.src = trigger.href;
-    });
+    }, true);
 })();

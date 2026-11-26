@@ -148,8 +148,8 @@ class PostController extends Controller
             'is_panorama' => ['sometimes', 'boolean'],
         ]);
 
-        if ($request->boolean('is_panorama') && ! $request->hasFile('cover_image')) {
-            throw \Illuminate\Validation\ValidationException::withMessages(['cover_image' => '280° panorama için kapak fotoğrafı yükleyin.']);
+        if ($request->boolean('is_panorama') && ! $request->hasFile('cover_image') && ! $request->hasFile('media')) {
+            throw \Illuminate\Validation\ValidationException::withMessages(['cover_image' => '280° panorama için bir fotoğraf yükleyin.']);
         }
 
         if ($quoteSource) {
@@ -282,11 +282,13 @@ class PostController extends Controller
             $slug = Str::limit($slugBase, 240 - strlen((string) $suffix), '').'-'.$suffix;
         }
 
-        $hasPanoramaCover = $request->hasFile('cover_image') || (! $request->boolean('remove_cover') && $post->coverImageUrl());
+        $hasPanoramaCover = $request->hasFile('cover_image') || (! $request->boolean('remove_cover') && $post->coverImageUrl())
+            || $request->hasFile('media')
+            || collect($post->media ?? [])->diff($validated['remove_media'] ?? [])->isNotEmpty();
         $isPanorama = array_key_exists('is_panorama', $validated)
             ? $request->boolean('is_panorama') : (bool) $post->is_panorama;
         if ($isPanorama && ! $hasPanoramaCover && $request->boolean('is_panorama')) {
-            throw \Illuminate\Validation\ValidationException::withMessages(['cover_image' => '280° panorama için kapak fotoğrafı seçin veya panorama ayarını kapatın.']);
+            throw \Illuminate\Validation\ValidationException::withMessages(['cover_image' => '280° panorama için bir fotoğraf seçin veya panorama ayarını kapatın.']);
         }
 
         $newVideo = $request->file('video_file')?->store('posts/videos', 'public');
