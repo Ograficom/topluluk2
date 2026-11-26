@@ -193,6 +193,7 @@
     @vite('resources/js/app.js')
     <link rel="stylesheet" href="{{ asset('assets/css/post-edit-history.css') }}?v=5">
     <link rel="stylesheet" href="{{ asset('assets/css/post-quote.css') }}?v=4">
+    <link rel="stylesheet" href="{{ asset('assets/css/post-panorama.css') }}?v=1">
     @stack('head')
     @if (! request()->routeIs('cp.*'))
         <script type="application/ld+json">
@@ -1352,6 +1353,7 @@
 })();
 </script>
 <script src="{{ asset('assets/js/post-edit-history.js') }}?v=3" defer></script>
+<script src="{{ asset('assets/js/post-panorama.js') }}?v=1" defer></script>
 @stack('scripts')
 @if ($newYearActive)
     @include('layouts._new-year-effects')

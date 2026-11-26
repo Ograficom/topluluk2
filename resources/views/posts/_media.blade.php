@@ -117,3 +117,12 @@
         </a>
     </div>
 @endif
+
+@if ($post->is_panorama && $post->coverImageUrl() && ! $censored)
+    <div class="ografi-panorama-action">
+        <a class="btn btn-secondary btn-sm ografi-panorama-trigger" href="{{ $post->coverImageUrl() }}" data-ografi-panorama aria-haspopup="dialog">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><ellipse cx="12" cy="12" rx="10" ry="5"/><path d="M2 12v4c0 2.8 4.5 5 10 5s10-2.2 10-5v-4M12 7V3m-3 3 3-3 3 3"/></svg>
+            <span>280° Keşfet</span>
+        </a>
+    </div>
+@endif
